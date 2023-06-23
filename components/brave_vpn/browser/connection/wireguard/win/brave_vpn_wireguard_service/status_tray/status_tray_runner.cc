@@ -28,7 +28,7 @@ namespace brave_vpn {
 
 namespace {
 
-constexpr char kBraveAccountURL[] = "http://account.brave.com/";
+constexpr char kBraveAccountURL[] = "https://account.brave.com/";
 constexpr char kAboutBraveVPNURL[] = "https://brave.com/firewall-vpn/";
 
 std::u16string GetVpnStatusLabel(bool active) {
