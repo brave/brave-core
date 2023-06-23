@@ -66,7 +66,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
-import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
