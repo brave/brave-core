@@ -378,6 +378,54 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
     }
   }, [selectedTimeline])
 
+  const tokenLists = React.useMemo(() => {
+    return <TokenLists
+      userAssetList={userAssetList}
+      estimatedItemSize={58}
+      horizontalPadding={20}
+      onShowPortfolioSettings={
+        () => setShowPortfolioSettings(true)
+      }
+      hideSmallBalances={hidePortfolioSmallBalances}
+      networks={visiblePortfolioNetworks}
+      accounts={usersFilteredAccounts}
+      isPortfolio
+      renderToken={({ item, account }) =>
+        <PortfolioAssetItem
+          action={() => onSelectAsset(item.asset)}
+          key={getAssetIdKey(item.asset)}
+          assetBalance={
+            selectedGroupAssetsByItem ===
+              AccountsGroupByOption.id
+              ? getBalance(account, item.asset)
+              : item.assetBalance
+          }
+          token={item.asset}
+          hideBalances={hidePortfolioBalances}
+          spotPrice={
+            spotPriceRegistry &&
+              !isLoadingSpotPrices
+              ? getTokenPriceAmountFromRegistry(
+                spotPriceRegistry,
+                item.asset
+              ).format()
+              : ''
+          }
+        />
+      }
+    />
+  }, [
+    userAssetList,
+    hidePortfolioSmallBalances,
+    visiblePortfolioNetworks,
+    usersFilteredAccounts,
+    onSelectAsset,
+    selectedGroupAssetsByItem,
+    hidePortfolioBalances,
+    spotPriceRegistry,
+    isLoadingSpotPrices
+  ])
+
   // effects
   React.useEffect(() => {
     dispatch(WalletPageActions.selectAsset({ asset: undefined, timeFrame: selectedTimeline }))
@@ -479,39 +527,11 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
 
       <Switch>
         <Route path={WalletRoutes.PortfolioAssets} exact>
-          <TokenLists
-            userAssetList={userAssetList}
-            estimatedItemSize={58}
-            horizontalPadding={20}
-            onShowPortfolioSettings={() => setShowPortfolioSettings(true)}
-            hideSmallBalances={hidePortfolioSmallBalances}
-            networks={visiblePortfolioNetworks}
-            accounts={usersFilteredAccounts}
-            isPortfolio
-            renderToken={({ item, account }) =>
-              <PortfolioAssetItem
-                action={() => onSelectAsset(item.asset)}
-                key={getAssetIdKey(item.asset)}
-                assetBalance={
-                  selectedGroupAssetsByItem ===
-                    AccountsGroupByOption.id
-                    ? getBalance(account, item.asset)
-                    : item.assetBalance
-                }
-                token={item.asset}
-                hideBalances={hidePortfolioBalances}
-                spotPrice={
-                  spotPriceRegistry &&
-                    !isLoadingSpotPrices
-                    ? getTokenPriceAmountFromRegistry(
-                      spotPriceRegistry,
-                      item.asset
-                    ).format()
-                    : ''
-                }
-              />
-            }
-          />
+          {tokenLists}
+        </Route>
+
+        <Route path={WalletRoutes.AddAssetModal} exact>
+          {tokenLists}
         </Route>
 
         <Route path={WalletRoutes.PortfolioNFTs} exact>
