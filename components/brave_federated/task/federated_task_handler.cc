@@ -18,7 +18,7 @@ namespace brave_federated {
 FederatedTaskHandler::FederatedTaskHandler(const Task& task,
                                            std::unique_ptr<Model> model)
     : task_(task), model_(std::move(model)) {
-  DCHECK(model_);
+  CHECK(model_);
 }
 
 FederatedTaskHandler::~FederatedTaskHandler() = default;

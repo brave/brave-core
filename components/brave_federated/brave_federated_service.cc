@@ -41,7 +41,7 @@ void BraveFederatedService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 }
 
 DataStoreService* BraveFederatedService::GetDataStoreService() const {
-  DCHECK(data_store_service_);
+  CHECK(data_store_service_);
   return data_store_service_.get();
 }
 
@@ -99,14 +99,14 @@ void BraveFederatedService::MaybeStartOrStopOperationalPatterns() {
 }
 
 void BraveFederatedService::MaybeStartOperationalPatterns() {
-  DCHECK(operational_patterns_);
+  CHECK(operational_patterns_);
   if (!operational_patterns_->IsRunning() && ShouldStartOperationalPatterns()) {
     operational_patterns_->Start();
   }
 }
 
 void BraveFederatedService::MaybeStopOperationalPatterns() {
-  DCHECK(operational_patterns_);
+  CHECK(operational_patterns_);
   if (operational_patterns_->IsRunning() && !ShouldStartOperationalPatterns()) {
     operational_patterns_->Stop();
   }

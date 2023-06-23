@@ -17,35 +17,35 @@ constexpr char kPostResultsPolicy[] = "post_results_policy";
 }  // namespace
 
 LearningServiceConfig::LearningServiceConfig() {
-  reconnect_policy_ = {/*.num_errors_to_ignore = */ 0,
-                       /*.initial_delay_ms = */ 10 * 1000,
-                       /*.multiply_factor =*/2.0,
-                       /*.jitter_factor =*/0.0,
-                       /*.maximum_backoff_ms =*/60 * 10 * 1000,
-                       /*.always_use_initial_delay =*/true};
+  reconnect_policy_ = {.num_errors_to_ignore = 0,
+                       .initial_delay_ms = 10 * 1000,
+                       .multiply_factor = 2.0,
+                       .jitter_factor = 0.0,
+                       .maximum_backoff_ms = 60 * 10 * 1000,
+                       .always_use_initial_delay = true};
   request_task_policy_ = {
-      /*.num_errors_to_ignore = */ 0,
-      /*.initial_delay_ms = */
-      features::GetFederatedLearningUpdateCycleInSeconds() * 1000,
-      /*.multiply_factor =*/2.0,
-      /*.jitter_factor =*/0.0,
-      /*.maximum_backoff_ms =*/16 *
+      .num_errors_to_ignore = 0,
+      .initial_delay_ms =
           features::GetFederatedLearningUpdateCycleInSeconds() * 1000,
-      /*.always_use_initial_delay =*/true};
+      .multiply_factor = 2.0,
+      .jitter_factor = 0.0,
+      .maximum_backoff_ms =
+          16 * features::GetFederatedLearningUpdateCycleInSeconds() * 1000,
+      .always_use_initial_delay = true};
   post_results_policy_ = {
-      /*.num_errors_to_ignore = */ 0,
-      /*.initial_delay_ms = */
-      features::GetFederatedLearningUpdateCycleInSeconds() * 1000,
-      /*.multiply_factor =*/2.0,
-      /*.jitter_factor =*/0.0,
-      /*.maximum_backoff_ms =*/16 *
+      .num_errors_to_ignore = 0,
+      .initial_delay_ms =
           features::GetFederatedLearningUpdateCycleInSeconds() * 1000,
-      /*.always_use_initial_delay =*/true};
-  model_spec_ = {/* .num_params = */ 32,
-                 /* .batch_size = */ 32,
-                 /* .learning_rate = */ 0.01,
-                 /* .num_iterations = */ 500,
-                 /* .threshold = */ 0.5};
+      .multiply_factor = 2.0,
+      .jitter_factor = 0.0,
+      .maximum_backoff_ms =
+          16 * features::GetFederatedLearningUpdateCycleInSeconds() * 1000,
+      .always_use_initial_delay = true};
+  model_spec_ = {.num_params = 32,
+                 .batch_size = 32,
+                 .learning_rate = 0.01,
+                 .num_iterations = 500,
+                 .threshold = 0.5};
 }
 
 LearningServiceConfig::LearningServiceConfig(const base::FilePath& path)

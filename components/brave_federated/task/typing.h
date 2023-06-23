@@ -15,15 +15,16 @@
 
 namespace brave_federated {
 
-enum class TaskType {
-  kEvaluation,
-  kTraining,
-};
+enum class TaskType { kEvaluation, kTraining, kUndefined };
 
 struct TaskId {
   std::string id;
   std::string group_id;
   std::string family_id;
+
+  bool IsValid() const {
+    return !id.empty() && !group_id.empty() && !family_id.empty();
+  }
 };
 
 class Task {

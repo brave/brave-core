@@ -53,7 +53,7 @@ void DataStoreService::OnInitializeDatabaseComplete(bool success) {
 void DataStoreService::PurgeDataStoresAfterExpirationDate() {
   for (const auto& entry : data_stores_) {
     AsyncDataStore* data_store = entry.second.get();
-    DCHECK(data_store);
+    CHECK(data_store);
     data_store->PurgeTrainingDataAfterExpirationDate();
   }
 }

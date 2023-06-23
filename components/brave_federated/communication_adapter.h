@@ -12,6 +12,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/time/time.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "net/base/backoff_entry.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -37,7 +38,7 @@ class CommunicationAdapter {
   ~CommunicationAdapter();
 
   using UploadResultCallback = base::OnceCallback<void(TaskResultResponse)>;
-  using GetTaskCallback = base::OnceCallback<void(TaskList, int)>;
+  using GetTaskCallback = base::OnceCallback<void(TaskList, base::TimeDelta)>;
 
   void GetTasks(GetTaskCallback callback);
   void OnGetTasks(GetTaskCallback callback,

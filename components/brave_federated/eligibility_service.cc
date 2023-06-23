@@ -25,13 +25,13 @@ EligibilityService::~EligibilityService() {
 }
 
 void EligibilityService::AddObserver(EligibilityObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
 
   observers_.AddObserver(observer);
 }
 
 void EligibilityService::RemoveObserver(EligibilityObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
 
   observers_.RemoveObserver(observer);
 }
