@@ -64,6 +64,19 @@ class RecentSearchQRCodeScannerController: UIViewController {
 
     scannerView.cameraView.startRunning()
   }
+  
+  override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    scannerView.cameraView.stopRunning()
+    
+    coordinator.animate(alongsideTransition: nil) { [weak self] _ in
+      guard let self else { return }
+      
+      if let orientation = self.view.window?.windowScene?.interfaceOrientation {
+          self.scannerView.cameraView.videoPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation(ui: orientation)
+      }
+      self.scannerView.cameraView.startRunning()
+    }
+  }
 
   // MARK: - Actions
 
