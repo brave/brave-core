@@ -14,10 +14,8 @@ import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playli
 
 import PlayLaterCardOverlayImage from '../assets/playlater-card-overlay.svg'
 import PlaylistInfo from './playlistInfo'
-
-interface CatalogProps {
-  playlists: PlaylistMojo.Playlist[]
-}
+import { useSelector } from 'react-redux'
+import * as States from '../reducers/states'
 
 interface ThumbnailProps {
   isDefaultPlaylist: boolean
@@ -170,10 +168,15 @@ const PlaylistsCatalogFlexBox = styled.div`
 `
 
 // A catalog that shows all playlists
-export default function PlaylistsCatalog ({ playlists }: CatalogProps) {
+export default function PlaylistsCatalog () {
+  const playlists = useSelector<
+    States.ApplicationState,
+    PlaylistMojo.Playlist[] | undefined
+  >(applicationState => applicationState.playlistData?.lists)
+
   return (
     <PlaylistsCatalogFlexBox>
-      {playlists.map((playlist: PlaylistMojo.Playlist) => {
+      {playlists?.map((playlist: PlaylistMojo.Playlist) => {
         return <PlaylistCard key={playlist.id} playlist={playlist} />
       })}
     </PlaylistsCatalogFlexBox>
