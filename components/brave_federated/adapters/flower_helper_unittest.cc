@@ -19,10 +19,6 @@
 
 namespace brave_federated {
 
-std::vector<Weights> g_test_parameters = {{1, 2, 3}, {4, 5, 6}};
-std::map<std::string, double> g_config_metrics = {{"loss", 0.42},
-                                                  {"accuracy", 42.0}};
-
 TEST(BraveFederatedLearningFlowerHelperTest, BuildAnonymousGetTasksPayload) {
   // Arrange
 
@@ -50,9 +46,12 @@ TEST(BraveFederatedLearningFlowerHelperTest, ParseFitTaskListFromResponseBody) {
   flower::Task flower_task;
   flower::ServerMessage server_message;
   flower::ServerMessage_FitIns fit_instruction;
+  const std::vector<Weights> test_parameters = {{1, 2, 3}, {4, 5, 6}};
   *fit_instruction.mutable_parameters() =
-      GetParametersFromVectors(g_test_parameters);
-  *fit_instruction.mutable_config() = MetricsToProto(g_config_metrics);
+      GetParametersFromVectors(test_parameters);
+  std::map<std::string, double> test_configs = {{"loss", 0.42},
+                                                {"accuracy", 42.0}};
+  *fit_instruction.mutable_config() = MetricsToProto(test_configs);
   *server_message.mutable_fit_ins() = fit_instruction;
   *flower_task.mutable_legacy_server_message() = server_message;
   *task_instruction->mutable_task() = flower_task;
@@ -79,13 +78,13 @@ TEST(BraveFederatedLearningFlowerHelperTest, ParseFitTaskListFromResponseBody) {
 
   std::vector<Weights> task_parameters = task.GetParameters();
   EXPECT_EQ(task_parameters.size(), 2U);
-  EXPECT_EQ(task_parameters, g_test_parameters);
+  EXPECT_EQ(task_parameters, test_parameters);
 
   std::map<std::string, float> task_config = task.GetConfig();
   EXPECT_EQ(task_config.size(), 2U);
-  EXPECT_EQ(task_config["loss"], static_cast<float>(g_config_metrics["loss"]));
+  EXPECT_EQ(task_config["loss"], static_cast<float>(test_configs["loss"]));
   EXPECT_EQ(task_config["accuracy"],
-            static_cast<float>(g_config_metrics["accuracy"]));
+            static_cast<float>(test_configs["accuracy"]));
 }
 
 TEST(BraveFederatedLearningFlowerHelperTest,
@@ -101,9 +100,12 @@ TEST(BraveFederatedLearningFlowerHelperTest,
   flower::Task flower_task;
   flower::ServerMessage server_message;
   flower::ServerMessage_EvaluateIns eval_instruction;
+  const std::vector<Weights> test_parameters = {{1, 2, 3}, {4, 5, 6}};
   *eval_instruction.mutable_parameters() =
-      GetParametersFromVectors(g_test_parameters);
-  *eval_instruction.mutable_config() = MetricsToProto(g_config_metrics);
+      GetParametersFromVectors(test_parameters);
+  std::map<std::string, double> test_configs = {{"loss", 0.42},
+                                                {"accuracy", 42.0}};
+  *eval_instruction.mutable_config() = MetricsToProto(test_configs);
   *server_message.mutable_evaluate_ins() = eval_instruction;
   *flower_task.mutable_legacy_server_message() = server_message;
   *task_instruction->mutable_task() = flower_task;
@@ -130,13 +132,13 @@ TEST(BraveFederatedLearningFlowerHelperTest,
 
   std::vector<Weights> task_parameters = task.GetParameters();
   EXPECT_EQ(task_parameters.size(), 2U);
-  EXPECT_EQ(task_parameters, g_test_parameters);
+  EXPECT_EQ(task_parameters, test_parameters);
 
   std::map<std::string, float> task_config = task.GetConfig();
   EXPECT_EQ(task_config.size(), 2U);
-  EXPECT_EQ(task_config["loss"], static_cast<float>(g_config_metrics["loss"]));
+  EXPECT_EQ(task_config["loss"], static_cast<float>(test_configs["loss"]));
   EXPECT_EQ(task_config["accuracy"],
-            static_cast<float>(g_config_metrics["accuracy"]));
+            static_cast<float>(test_configs["accuracy"]));
 }
 
 TEST(BraveFederatedLearningFlowerHelperTest,
@@ -151,9 +153,12 @@ TEST(BraveFederatedLearningFlowerHelperTest,
   flower::Task flower_task;
   flower::ServerMessage server_message;
   flower::ServerMessage_EvaluateIns eval_instruction;
+  const std::vector<Weights> test_parameters = {{1, 2, 3}, {4, 5, 6}};
   *eval_instruction.mutable_parameters() =
-      GetParametersFromVectors(g_test_parameters);
-  *eval_instruction.mutable_config() = MetricsToProto(g_config_metrics);
+      GetParametersFromVectors(test_parameters);
+  std::map<std::string, double> test_configs = {{"loss", 0.42},
+                                                {"accuracy", 42.0}};
+  *eval_instruction.mutable_config() = MetricsToProto(test_configs);
   *server_message.mutable_evaluate_ins() = eval_instruction;
   *flower_task.mutable_legacy_server_message() = server_message;
   *task_instruction->mutable_task() = flower_task;
@@ -181,7 +186,9 @@ TEST(BraveFederatedLearningFlowerHelperTest,
   flower::Task flower_task;
   flower::ServerMessage server_message;
   flower::ServerMessage_EvaluateIns eval_instruction;
-  *eval_instruction.mutable_config() = MetricsToProto(g_config_metrics);
+  std::map<std::string, double> test_configs = {{"loss", 0.42},
+                                                {"accuracy", 42.0}};
+  *eval_instruction.mutable_config() = MetricsToProto(test_configs);
   *server_message.mutable_evaluate_ins() = eval_instruction;
   *flower_task.mutable_legacy_server_message() = server_message;
   *task_instruction->mutable_task() = flower_task;
@@ -206,10 +213,11 @@ TEST(BraveFederatedLearningFlowerHelperTest, BuildPostTrainTaskResultsPayload) {
   size_t dataset_size = 500;
   float loss = 0.42;
   float accuracy = 42.0;
+  const std::vector<Weights> test_parameters = {{1, 2, 3}, {4, 5, 6}};
   std::map<std::string, double> metrics = {{"alpha", 0.42}, {"beta", 42.0}};
 
-  PerformanceReport performance_report = PerformanceReport(
-      dataset_size, loss, accuracy, g_test_parameters, metrics);
+  PerformanceReport performance_report =
+      PerformanceReport(dataset_size, loss, accuracy, test_parameters, metrics);
   TaskResult task_result = TaskResult(task, performance_report);
 
   // Act
@@ -232,7 +240,7 @@ TEST(BraveFederatedLearningFlowerHelperTest, BuildPostTrainTaskResultsPayload) {
   std::vector<Weights> parameters =
       GetVectorsFromParameters(fit_result.parameters());
   EXPECT_EQ(parameters.size(), 2U);
-  EXPECT_EQ(parameters, g_test_parameters);
+  EXPECT_EQ(parameters, test_parameters);
 
   std::map<std::string, float> flower_metrics =
       ConfigsFromProto(fit_result.metrics());
@@ -251,10 +259,11 @@ TEST(BraveFederatedLearningFlowerHelperTest,
   size_t dataset_size = 500;
   float loss = 0.42;
   float accuracy = 42.0;
+  const std::vector<Weights> test_parameters = {{1, 2, 3}, {4, 5, 6}};
   std::map<std::string, double> metrics = {{"alpha", 0.42}, {"beta", 42.0}};
 
-  PerformanceReport performance_report = PerformanceReport(
-      dataset_size, loss, accuracy, g_test_parameters, metrics);
+  PerformanceReport performance_report =
+      PerformanceReport(dataset_size, loss, accuracy, test_parameters, metrics);
   TaskResult task_result = TaskResult(task, performance_report);
 
   // Act
@@ -281,6 +290,30 @@ TEST(BraveFederatedLearningFlowerHelperTest,
   EXPECT_EQ(flower_metrics.size(), 2U);
   EXPECT_EQ(flower_metrics["alpha"], static_cast<float>(metrics["alpha"]));
   EXPECT_EQ(flower_metrics["beta"], static_cast<float>(metrics["beta"]));
+}
+
+TEST(BraveFederatedLearningFlowerHelperTest,
+     BuildPostUndefinedTaskResultsPayload) {
+  // Arrange
+  TaskId task_id = {"42", "23", "8"};
+  TaskType task_type = TaskType::kUndefined;
+  Task task = Task(task_id, task_type, "", {}, {});
+
+  size_t dataset_size = 500;
+  float loss = 0.42;
+  float accuracy = 42.0;
+  const std::vector<Weights> test_parameters = {{1, 2, 3}, {4, 5, 6}};
+  std::map<std::string, double> metrics = {{"alpha", 0.42}, {"beta", 42.0}};
+
+  PerformanceReport performance_report =
+      PerformanceReport(dataset_size, loss, accuracy, test_parameters, metrics);
+  TaskResult task_result = TaskResult(task, performance_report);
+
+  // Act
+  const std::string payload = BuildUploadTaskResultsPayload(task_result);
+
+  // Assert
+  EXPECT_EQ(payload, "");
 }
 
 }  // namespace brave_federated

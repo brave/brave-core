@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/logging.h"
-#include "base/notreached.h"
 #include "brave/components/brave_federated/task/model.h"
 #include "brave/third_party/flower/src/brave/flwr/serde.h"
 #include "brave/third_party/flower/src/proto/flwr/proto/fleet.pb.h"
@@ -35,15 +34,15 @@ std::string BuildGetTasksPayload() {
 }
 
 absl::optional<Task> ParseTask(const flower::TaskIns& task_instruction) {
-  const std::string& id = task_instruction.task_id();
-  const std::string& group_id = task_instruction.group_id();
-  const std::string& workload_id = task_instruction.workload_id();
-  if (id.empty() || group_id.empty() || workload_id.empty()) {
+  const TaskId& task_id = {
+      .id = task_instruction.task_id(),
+      .group_id = task_instruction.group_id(),
+      .family_id = task_instruction.workload_id(),
+  };
+  if (!task_id.IsValid()) {
     VLOG(2) << "Invalid task id received from FL service";
     return absl::nullopt;
   }
-  const TaskId& task_id = {
-      .id = id, .group_id = group_id, .family_id = workload_id};
 
   if (!task_instruction.has_task()) {
     VLOG(2) << "Task object is missing from task instruction";
@@ -58,7 +57,7 @@ absl::optional<Task> ParseTask(const flower::TaskIns& task_instruction) {
   flower::ServerMessage message = flower_task.legacy_server_message();
 
   Configs config;
-  TaskType type;
+  TaskType type = TaskType::kUndefined;
   std::vector<Weights> parameters;
   if (message.has_fit_ins()) {
     type = TaskType::kTraining;
@@ -156,6 +155,10 @@ std::string BuildUploadTaskResultsPayload(const TaskResult& result) {
       }
       *client_message.mutable_evaluate_res() = eval_res;
       break;
+    }
+    case TaskType::kUndefined: {
+      VLOG(1) << "Task type is undefined";
+      return "";
     }
   }
   flower_task.add_ancestry(task_id.id);

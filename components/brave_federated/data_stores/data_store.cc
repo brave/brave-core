@@ -50,7 +50,7 @@ void BindCovariateToStatement(
     int training_instance_id,
     base::Time created_at,
     sql::Statement* stmt) {
-  DCHECK(stmt);
+  CHECK(stmt);
 
   stmt->BindInt(0, training_instance_id);
   stmt->BindInt(1, static_cast<int>(covariate.type));
