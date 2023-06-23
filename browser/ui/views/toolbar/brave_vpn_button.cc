@@ -227,14 +227,10 @@ void BraveVPNButton::UpdateColorsAndInsets() {
   }
   const bool is_connect_error = IsConnectError();
   const bool is_connected = IsConnected();
-  const gfx::Insets paint_insets =
-      gfx::Insets((height() - GetLayoutConstant(LOCATION_BAR_HEIGHT)) / 2);
   const auto bg_color =
       cp->GetColor(is_connect_error ? kColorBraveVpnButtonErrorBackgroundNormal
                                     : kColorBraveVpnButtonBackgroundNormal);
-  SetBackground(views::CreateBackgroundFromPainter(
-      views::Painter::CreateSolidRoundRectPainter(bg_color, kButtonRadius,
-                                                  paint_insets)));
+  SetBackground(views::CreateRoundedRectBackground(bg_color, kButtonRadius));
 
   SetEnabledTextColors(cp->GetColor(is_connect_error
                                         ? kColorBraveVpnButtonTextError
@@ -265,17 +261,42 @@ void BraveVPNButton::UpdateColorsAndInsets() {
 
   // Compute highlight color and border in advance. If not, highlight color and
   // border color are mixed as both have alpha value.
-  // Use different ink drop hover color for each themes.
-  views::InkDrop::Get(this)->SetBaseColor(color_utils::GetResultingPaintColor(
-      cp->GetColor(is_connect_error ? kColorBraveVpnButtonErrorBackgroundHover
-                                    : kColorBraveVpnButtonBorder),
-      bg_color));
-
   // Draw border only for error state.
   SetBorder(GetBorder(color_utils::GetResultingPaintColor(
       cp->GetColor(is_connect_error ? kColorBraveVpnButtonErrorBorder
                                     : kColorBraveVpnButtonBorder),
       bg_color)));
+
+  auto* ink_drop_host = views::InkDrop::Get(this);
+
+  // Use different ink drop hover color for each themes.
+  auto target_base_color = color_utils::GetResultingPaintColor(
+      cp->GetColor(is_connect_error ? kColorBraveVpnButtonErrorBackgroundHover
+                                    : kColorBraveVpnButtonBorder),
+      bg_color);
+  bool need_ink_drop_color_update =
+      target_base_color != ink_drop_host->GetBaseColor();
+
+  // Update ink drop color if needed because we toggle ink drop mode below after
+  // set base color. Toggling could cause subtle flicking.
+  if (!need_ink_drop_color_update) {
+    return;
+  }
+
+  views::InkDrop::Get(this)->SetBaseColor(target_base_color);
+
+  // Hack to update inkdrop color immediately.
+  // W/o this, background color and image are changed but inkdrop color is still
+  // using previous one till button state is changed after changing base color.
+  const auto previous_ink_drop_state =
+      views::InkDrop::Get(this)->GetInkDrop()->GetTargetInkDropState();
+  views::InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::OFF);
+  views::InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::ON);
+  // After toggling, ink drop state is reset. So need to re-apply previous
+  // state.
+  if (previous_ink_drop_state == views::InkDropState::ACTIVATED) {
+    views::InkDrop::Get(this)->GetInkDrop()->SnapToActivated();
+  }
 }
 
 std::u16string BraveVPNButton::GetTooltipText(const gfx::Point& p) const {
