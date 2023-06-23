@@ -36,7 +36,9 @@ static constexpr auto kFarbleAcceptLanguageExceptions =
         {// https://github.com/brave/brave-browser/issues/25309
          "ulta.com", "www.ulta.com",
          // https://github.com/brave/brave-browser/issues/26325
-         "aeroplan.rewardops.com"});
+         "aeroplan.rewardops.com",
+         // https://github.com/brave/brave-browser/issues/31196
+         "login.live.com"});
 }  // namespace
 
 std::string FarbleAcceptLanguageHeader(
