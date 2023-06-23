@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
+import { Route, Switch, BrowserRouter } from 'react-router-dom'
 
 import { initLocale } from 'brave-ui'
 
@@ -31,11 +32,17 @@ import { LibContext } from '../../../../common/context/lib.context'
 export function AndroidSendApp() {
   return (
     <Provider store={store}>
-      <BraveCoreThemeProvider dark={walletDarkTheme} light={walletLightTheme}>
-        <LibContext.Provider value={Lib}>
-          <SendScreen />
-        </LibContext.Provider>
-      </BraveCoreThemeProvider>
+      <BrowserRouter>
+        <BraveCoreThemeProvider dark={walletDarkTheme} light={walletLightTheme}>
+          <LibContext.Provider value={Lib}>
+            <Switch>
+              <Route>
+                <SendScreen />
+              </Route>
+            </Switch>
+          </LibContext.Provider>
+        </BraveCoreThemeProvider>
+      </BrowserRouter>
     </Provider>
   )
 }
