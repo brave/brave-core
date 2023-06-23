@@ -10,23 +10,23 @@
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/task/bind_post_task.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "content/public/common/content_features.h"
 #include "content/public/test/browser_test.h"
 #include "net/dns/mock_host_resolver.h"
-#include "net/http/http_request_headers.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "services/network/public/cpp/client_hints.h"
 #include "services/network/public/mojom/web_client_hints_types.mojom-shared.h"
-#include "third_party/blink/public/common/client_hints/client_hints.h"
 #include "third_party/blink/public/common/features.h"
 
 namespace {
@@ -63,33 +63,7 @@ class ClientHintsBrowserTest
       public ::testing::WithParamInterface<std::tuple<bool, bool>> {
  public:
   ClientHintsBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-
-    https_server_.ServeFilesFromDirectory(test_data_dir);
-    https_server_.RegisterRequestMonitor(
-        base::BindRepeating(&ClientHintsBrowserTest::MonitorResourceRequest,
-                            base::Unretained(this)));
-
-    EXPECT_TRUE(https_server_.Start());
-
-    no_client_hints_headers_url_ = https_server_.GetURL(kNoClientHintsHeaders);
-    client_hints_url_ = https_server_.GetURL(kClientHints);
-    client_hints_delegation_merge_url_ =
-        https_server_.GetURL(kClientHintsDelegationMerge);
-    client_hints_meta_http_equiv_accept_ch_url_ =
-        https_server_.GetURL(KClientHintsMetaHTTPEquivAcceptCH);
-    client_hints_meta_name_accept_ch_url_ =
-        https_server_.GetURL(KClientHintsMetaNameAcceptCH);
-  }
-
-  ClientHintsBrowserTest(const ClientHintsBrowserTest&) = delete;
-
-  ClientHintsBrowserTest& operator=(const ClientHintsBrowserTest&) = delete;
-
-  ~ClientHintsBrowserTest() override = default;
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   bool IsClientHintHeaderEnabled() { return std::get<0>(GetParam()); }
   bool IsBraveClientHintFeatureEnabled() { return std::get<1>(GetParam()); }
@@ -129,11 +103,36 @@ class ClientHintsBrowserTest
   }
 
   void SetUpOnMainThread() override {
+    brave::RegisterPathProvider();
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+
+    https_server_.ServeFilesFromDirectory(test_data_dir);
+    https_server_.RegisterRequestMonitor(base::BindPostTaskToCurrentDefault(
+        base::BindRepeating(&ClientHintsBrowserTest::MonitorResourceRequest,
+                            weak_ptr_factory_.GetWeakPtr())));
+
+    EXPECT_TRUE(https_server_.Start());
+
+    no_client_hints_headers_url_ = https_server_.GetURL(kNoClientHintsHeaders);
+    client_hints_url_ = https_server_.GetURL(kClientHints);
+    client_hints_delegation_merge_url_ =
+        https_server_.GetURL(kClientHintsDelegationMerge);
+    client_hints_meta_http_equiv_accept_ch_url_ =
+        https_server_.GetURL(KClientHintsMetaHTTPEquivAcceptCH);
+    client_hints_meta_name_accept_ch_url_ =
+        https_server_.GetURL(KClientHintsMetaNameAcceptCH);
+
     host_resolver()->AddRule("*", "127.0.0.1");
-    base::RunLoop().RunUntilIdle();
+    InProcessBrowserTest::SetUpOnMainThread();
   }
 
-  void TearDownOnMainThread() override {}
+  void FlushPostedTasks() {
+    base::RunLoop run_loop;
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, run_loop.QuitClosure());
+    run_loop.Run();
+  }
 
   const GURL& no_client_hints_headers_url() const {
     return no_client_hints_headers_url_;
@@ -272,6 +271,8 @@ class ClientHintsBrowserTest
   std::string platform_version_client_hint_value_;
 
   base::test::ScopedFeatureList scoped_feature_list_;
+
+  base::WeakPtrFactory<ClientHintsBrowserTest> weak_ptr_factory_{this};
 };
 
 IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, CheckClientHints) {
@@ -292,6 +293,7 @@ IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, CheckClientHints) {
 
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), no_client_hints_headers_url()));
+  FlushPostedTasks();
   EXPECT_EQ(expected_default_client_hints_count,
             default_client_hints_headers_seen_count())
       << "Default headers seen: " << default_client_hints_headers_seen();
@@ -302,6 +304,7 @@ IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, CheckClientHints) {
 
   reset_client_hints_headers_seen();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), client_hints_url()));
+  FlushPostedTasks();
   EXPECT_EQ(expected_default_client_hints_count,
             default_client_hints_headers_seen_count())
       << "Default headers seen: " << default_client_hints_headers_seen();
@@ -321,6 +324,7 @@ IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, CheckClientHints) {
   reset_client_hints_headers_seen();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), client_hints_meta_http_equiv_accept_ch_url()));
+  FlushPostedTasks();
   EXPECT_EQ(expected_default_client_hints_count,
             default_client_hints_headers_seen_count())
       << "Default headers seen: " << default_client_hints_headers_seen();
@@ -333,6 +337,7 @@ IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, CheckClientHints) {
   reset_client_hints_headers_seen();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), client_hints_meta_name_accept_ch_url()));
+  FlushPostedTasks();
   EXPECT_EQ(expected_default_client_hints_count,
             default_client_hints_headers_seen_count())
       << "Default headers seen: " << default_client_hints_headers_seen();
@@ -345,6 +350,7 @@ IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, CheckClientHints) {
   reset_client_hints_headers_seen();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), client_hints_delegation_merge_url()));
+  FlushPostedTasks();
   EXPECT_EQ(expected_default_client_hints_count,
             default_client_hints_headers_seen_count())
       << "Default headers seen: " << default_client_hints_headers_seen();
