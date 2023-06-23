@@ -40,6 +40,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
@@ -234,28 +235,32 @@ public class Utils {
         if (focusedView != null) imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
     }
 
-    public static void openBuySendSwapActivity(
-            Activity activity, BuySendSwapActivity.ActivityType activityType) {
-        openBuySendSwapActivity(activity, activityType, null);
-    }
-
-    public static void openBuySendSwapActivity(
-            Activity activity, BuySendSwapActivity.ActivityType activityType, String chainId) {
+    public static void openBuySendSwapActivity(@NonNull final Activity activity,
+            @NonNull final BuySendSwapActivity.ActivityType activityType,
+            @Nullable final String chainId) {
         assert activity != null;
-        if (activityType == BuySendSwapActivity.ActivityType.SWAP_V2) {
-            try {
-                BraveActivity.getBraveActivity().openNewOrSelectExistingTab(
-                        BraveActivity.BRAVE_SWAP_URL, true);
-                TabUtils.bringChromeTabbedActivityToTheTop(activity);
-            } catch (BraveActivity.BraveActivityNotFoundException e) {
-                Log.e(TAG, "on Swap tab: " + e);
-            }
-        } else {
-            Intent buySendSwapActivityIntent = new Intent(activity, BuySendSwapActivity.class);
-            buySendSwapActivityIntent.putExtra(
-                    BuySendSwapActivity.ACTIVITY_TYPE, activityType.getValue());
-            buySendSwapActivityIntent.putExtra(BuySendSwapActivity.ASSET_CHAIN_ID, chainId);
-            activity.startActivity(buySendSwapActivityIntent);
+        switch (activityType) {
+            case SWAP_V2:
+                try {
+                    BraveActivity.getBraveActivity().openNewOrSelectExistingTab(
+                            BraveActivity.BRAVE_SWAP_URL, true);
+                    TabUtils.bringChromeTabbedActivityToTheTop(activity);
+                } catch (BraveActivity.BraveActivityNotFoundException e) {
+                    Log.e(TAG, "Error while opening swap tab.", e);
+                }
+                break;
+
+            case BUY:
+            case SEND:
+                Intent buySendSwapActivityIntent = new Intent(activity, BuySendSwapActivity.class);
+                buySendSwapActivityIntent.putExtra(
+                        BuySendSwapActivity.ACTIVITY_TYPE, activityType.getValue());
+                buySendSwapActivityIntent.putExtra(BuySendSwapActivity.ASSET_CHAIN_ID, chainId);
+                activity.startActivity(buySendSwapActivityIntent);
+                break;
+            default:
+                throw new IllegalStateException(
+                        String.format("Activity not found for type %s.", activityType));
         }
     }
 
