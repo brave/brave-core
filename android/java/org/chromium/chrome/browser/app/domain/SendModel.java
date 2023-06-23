@@ -7,19 +7,30 @@ package org.chromium.chrome.browser.app.domain;
 
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
+import org.chromium.brave_wallet.mojom.FilTxData;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
+import org.chromium.brave_wallet.mojom.TxDataUnion;
 import org.chromium.brave_wallet.mojom.TxService;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.mojo.bindings.Callbacks;
 
+import java.text.ParseException;
+
 public class SendModel {
+    private static final String TAG = "SendModel";
+
     private TxService mTxService;
     private KeyringService mKeyringService;
     private BlockchainRegistry mBlockchainRegistry;
@@ -93,5 +104,61 @@ public class SendModel {
                         }
                     });
         }
+    }
+
+    /**
+     * Sends a given amount of Filecoins to a destination address and creates an unapproved
+     * transaction or notifies the callback with an error message. Coin type of blockchain token
+     * must be {@code CoinType.FIL}.
+     * @param token Filecoin blockchain token containing extra data required to create a
+     *         transaction.
+     * @param fromAddress Source address that sends Filecoins.
+     * @param toAddress Destinations address that receives Filecoins.
+     * @param amount Amount of Filecoins to send.
+     * @param callback Callback used to notify if the transaction has been created correctly.
+     */
+    public void sendFilecoinToken(@Nullable final BlockchainToken token,
+            @Nullable final String fromAddress, @NonNull final String toAddress,
+            @Nullable final String amount,
+            @NonNull final Callbacks.Callback3<Boolean, String, String> callback) {
+        if (token == null) {
+            Log.e(TAG, "Token cannot be null.");
+            return;
+        }
+        if (TextUtils.isEmpty(fromAddress)) {
+            Log.e(TAG, "Contract address cannot be null or empty.");
+            return;
+        }
+        if (TextUtils.isEmpty(amount)) {
+            Log.e(TAG, "Amount to send cannot be null or empty.");
+            return;
+        }
+
+        if (token.coin != CoinType.FIL) {
+            throw new IllegalStateException("Coin type must be `CoinType.FIL`.");
+        }
+
+        final FilTxData filTxData = new FilTxData();
+        filTxData.to = toAddress;
+        filTxData.from = fromAddress;
+        try {
+            filTxData.value = Utils.multiplyByDecimals(amount, token.decimals).toString();
+        } catch (ParseException parseException) {
+            Log.e(TAG, "Error while parsing Filecoin amount to send.", parseException);
+            return;
+        }
+        filTxData.nonce = "";
+        filTxData.gasPremium = "";
+        filTxData.gasFeeCap = "";
+        filTxData.gasLimit = "";
+        filTxData.maxFee = "0";
+
+        final TxDataUnion txDataUnion = new TxDataUnion();
+        txDataUnion.setFilTxData(filTxData);
+
+        mTxService.addUnapprovedTransaction(
+                txDataUnion, fromAddress, null, null, (success, txMetaId, errorMessage) -> {
+                    callback.call(success, txMetaId, errorMessage);
+                });
     }
 }

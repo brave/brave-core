@@ -424,8 +424,21 @@ public class Utils {
         return 0;
     }
 
-    // Supposedly toWei shall always end up with an integer
-    private static BigInteger toWeiInternal(String number, int decimals) throws ParseException {
+    /**
+     * Converts a given string to a big integer and multiplies the value of the object by
+     * ten raised to the power of decimals.
+     *
+     * @param number Number to be multiplied, represented as a string.
+     * @param decimals Number of decimals to multiply by.
+     * @return The result of multiplying the number by ten raised to the power of decimals,
+     * expressed as a {@code BigInteger}.
+     * @throws ParseException If the input string cannot be parsed as a {@code BigDecimal}.
+     *
+     * <b>Note:</b>: Supposedly, when converting to Wei the result shall always end up with an
+     * integer.
+     */
+    public static BigInteger multiplyByDecimals(@NonNull final String number, final int decimals)
+            throws ParseException {
         NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
         ParsePosition parsePosition = new ParsePosition(0);
         BigDecimal parsed = null;
@@ -466,7 +479,7 @@ public class Utils {
         }
 
         try {
-            return "0x" + toWeiInternal(number, decimals).toString(16);
+            return "0x" + multiplyByDecimals(number, decimals).toString(16);
         } catch (ParseException ex) {
             return "0x0";
         }
@@ -1063,6 +1076,8 @@ public class Utils {
                             BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID);
             if (isFileCoinEvmNet) {
                 openAddress("/" + txInfo.txHash, activity, coinType, networkInfo);
+            } else if (coinType == CoinType.FIL) {
+                openAddress("?cid=" + txInfo.txHash, activity, coinType, networkInfo);
             } else {
                 openAddress("/tx/" + txInfo.txHash, activity, coinType, networkInfo);
             }
@@ -1075,7 +1090,7 @@ public class Utils {
         if (blockExplorerUrl.length() > 2) {
             blockExplorerUrl = blockExplorerUrl.substring(1, blockExplorerUrl.length() - 1);
         }
-        if (coinType == CoinType.ETH) {
+        if (coinType == CoinType.ETH || coinType == CoinType.FIL) {
             blockExplorerUrl += toAppend;
         } else if (coinType == CoinType.SOL) {
             int iPos = blockExplorerUrl.indexOf("?cluster=");

@@ -244,7 +244,7 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
     private void updateTx(
             TransactionInfo txInfo, WeakReference<BraveWalletBaseActivity> mActivityRef) {
         List<WalletListItemModel> items = _mParsedTransactions.getValue();
-        if (txInfo.txStatus == TransactionStatus.REJECTED
+        if (items != null && txInfo.txStatus == TransactionStatus.REJECTED
                 && items.stream().anyMatch(
                         walletItem -> walletItem.getTransactionInfo().id.equals(txInfo.id))) {
             // Remove rejected transaction
@@ -253,7 +253,7 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
                                     -> !walletItem.getTransactionInfo().id.equals(txInfo.id))
                             .collect(Collectors.toList());
             _mParsedTransactions.postValue(items);
-        } else if (txInfo.txStatus != TransactionStatus.UNAPPROVED) {
+        } else if (items != null && txInfo.txStatus != TransactionStatus.UNAPPROVED) {
             // Update status
             WalletListItemModel walletItemTx =
                     items.stream()
