@@ -62,6 +62,16 @@ export const ChartDate = styled.span`
   color: ${leo.color.text.secondary};
 `
 
+export const AreaWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+`
+
 export const LoadingOverlay = styled.div<{
   isLoading: boolean
 }>`
@@ -72,7 +82,6 @@ export const LoadingOverlay = styled.div<{
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: 10;
   backdrop-filter: blur(5px);
 `
 
