@@ -10,7 +10,7 @@ import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
 // Types
-import { Playlist } from '../../../../definitions/playlist'
+import * as States from '../reducers/states'
 import * as playlistActions from '../actions/playlist_action_creators'
 
 // Components
@@ -21,7 +21,7 @@ import PlaylistItem from './playlistItem'
 
 interface Props {
   actions: typeof playlistActions
-  playlistData: Playlist.State
+  playlistData: States.PlaylistData
 }
 
 const HeaderWrapper = styled.header`
@@ -81,7 +81,7 @@ function App (props: Props) {
   )
 }
 
-export const mapStateToProps = (state: Playlist.ApplicationState) => ({
+export const mapStateToProps = (state: States.ApplicationState) => ({
   playlistData: state.playlistData
 })
 

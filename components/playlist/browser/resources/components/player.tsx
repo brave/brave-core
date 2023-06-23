@@ -8,7 +8,7 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { Playlist } from 'components/definitions/playlist'
+import * as States from 'components/playlist/browser/resources/reducers/states'
 import * as playlistActions from '../actions/playlist_action_creators'
 import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(playlistActions, dispatch)
 })
 
-const mapStateToProps = (state: Playlist.ApplicationState) => ({
+const mapStateToProps = (state: States.ApplicationState) => ({
   currentItem: state.playerState?.currentItem,
   playing: state.playerState?.playing
 })
@@ -37,22 +37,26 @@ const StyledVideo = styled.video`
 function Player ({ currentItem, playing }: Props) {
   // Route changes in props to parent frame.
   React.useEffect(() => {
-    window.parent.postMessage({
-      currentItem,
-      playing
-    }, 'chrome-untrusted://playlist')
+    window.parent.postMessage(
+      {
+        currentItem,
+        playing
+      },
+      'chrome-untrusted://playlist'
+    )
   })
 
   return (
-    <StyledVideo id="player" autoPlay controls
-      onPlay={() => getAllActions().playerStartedPlayingItem(currentItem) }
-      onPause={() => getAllActions().playerStoppedPlayingItem(currentItem) }
-      onEnded={() => getAllActions().playerStoppedPlayingItem(currentItem) }
-      src={currentItem?.mediaPath.url}/>
+    <StyledVideo
+      id='player'
+      autoPlay
+      controls
+      onPlay={() => getAllActions().playerStartedPlayingItem(currentItem)}
+      onPause={() => getAllActions().playerStoppedPlayingItem(currentItem)}
+      onEnded={() => getAllActions().playerStoppedPlayingItem(currentItem)}
+      src={currentItem?.mediaPath.url}
+    />
   )
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Player)
+export default connect(mapStateToProps, mapDispatchToProps)(Player)
