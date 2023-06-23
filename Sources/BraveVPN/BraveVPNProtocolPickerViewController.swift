@@ -92,15 +92,17 @@ extension BraveVPNProtocolPickerViewController: UITableViewDelegate, UITableView
     BraveVPN.changePreferredTransportProtocol(with: tunnelProtocol) { [weak self] success in
       guard let self else { return }
 
-      self.isLoading = false
-
-      if success {
-        self.dismiss(animated: true) {
-          self.showSuccessAlert(text: Strings.VPN.protocolSwitchSuccessPopupText)
+      DispatchQueue.main.async {
+        self.isLoading = false
+        
+        if success {
+          self.dismiss(animated: true) {
+            self.showSuccessAlert(text: Strings.VPN.protocolSwitchSuccessPopupText)
+          }
+        } else {
+          self.showErrorAlert(title: Strings.VPN.protocolPickerErrorTitle,
+                              message: Strings.VPN.protocolPickerErrorMessage)
         }
-      } else {
-        self.showErrorAlert(title: Strings.VPN.protocolPickerErrorTitle,
-                            message: Strings.VPN.protocolPickerErrorMessage)
       }
     }
 
