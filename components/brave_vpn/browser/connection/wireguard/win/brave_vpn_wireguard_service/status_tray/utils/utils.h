@@ -13,7 +13,7 @@ class Size;
 
 namespace brave_vpn {
 bool UseDarkTheme();
-gfx::ImageSkia GetIconFromResources(int icon_id, gfx::Size size);
+gfx::ImageSkia GetIconFromResources(int icon_id, const gfx::Size& size);
 void OpenURLInBrowser(const char* url);
 }  // namespace brave_vpn
 
