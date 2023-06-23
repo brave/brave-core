@@ -74,22 +74,12 @@ void RefillUnblindedTokens::MaybeRefill(const WalletInfo& wallet) {
 
   if (!wallet.IsValid()) {
     BLOG(0, "Failed to refill unblinded tokens due to an invalid wallet");
-
-    if (delegate_) {
-      delegate_->OnFailedToRefillUnblindedTokens();
-    }
-
-    return;
+    return FailedToRefillUnblindedTokens(/*should_retry*/ false);
   }
 
   if (!HasIssuers()) {
     BLOG(0, "Failed to refill unblinded tokens due to missing issuers");
-
-    if (delegate_) {
-      delegate_->OnFailedToRefillUnblindedTokens();
-    }
-
-    return;
+    return FailedToRefillUnblindedTokens(/*should_retry*/ false);
   }
 
   if (!ShouldRefillUnblindedTokens()) {
@@ -236,7 +226,7 @@ void RefillUnblindedTokens::GetSignedTokensCallback(
       delegate_->OnCaptchaRequiredToRefillUnblindedTokens(*captcha_id);
     }
 
-    return;
+    return FailedToRefillUnblindedTokens(/*should_retry*/ false);
   }
 
   // Get public key
