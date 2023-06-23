@@ -65,7 +65,8 @@ import BraveCore
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService
+      swapService: swapService,
+      userAssetManager: TestableWalletUserAssetManager()
     )
     await store.setup()
     
@@ -82,7 +83,8 @@ import BraveCore
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService
+      swapService: swapService,
+      userAssetManager: TestableWalletUserAssetManager()
     )
     await store.setup()
     
@@ -106,6 +108,7 @@ import BraveCore
       rpcService: rpcService,
       walletService: walletService,
       swapService: swapService,
+      userAssetManager: TestableWalletUserAssetManager(),
       origin: origin
     )
     await store.setup()
@@ -123,7 +126,8 @@ import BraveCore
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService
+      swapService: swapService,
+      userAssetManager: TestableWalletUserAssetManager()
     )
     await store.setup()
     
@@ -139,7 +143,8 @@ import BraveCore
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService
+      swapService: swapService,
+      userAssetManager: TestableWalletUserAssetManager()
     )
     
     let expectedAllChains: [BraveWallet.NetworkInfo] = [

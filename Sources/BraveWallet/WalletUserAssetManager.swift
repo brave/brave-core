@@ -14,6 +14,7 @@ public protocol WalletUserAssetManagerType: AnyObject {
   func getUserAsset(_ asset: BraveWallet.BlockchainToken) -> WalletUserAsset?
   func addUserAsset(_ asset: BraveWallet.BlockchainToken, completion: (() -> Void)?)
   func removeUserAsset(_ asset: BraveWallet.BlockchainToken, completion: (() -> Void)?)
+  func removeGroup(for groupId: String, completion: (() -> Void)?)
   func updateUserAsset(for asset: BraveWallet.BlockchainToken, visible: Bool, completion: (() -> Void)?)
 }
 
@@ -78,6 +79,10 @@ public class WalletUserAssetManager: WalletUserAssetManagerType {
     WalletUserAsset.updateUserAsset(for: asset, visible: visible, completion: completion)
   }
   
+  public func removeGroup(for groupId: String, completion: (() -> Void)?) {
+    WalletUserAssetGroup.removeGroup(groupId, completion: completion)
+  }
+  
   public func migrateUserAssets(for coin: BraveWallet.CoinType? = nil, completion: (() -> Void)? = nil) {
     guard !Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.value else {
       return
@@ -132,6 +137,9 @@ public class TestableWalletUserAssetManager: WalletUserAssetManagerType {
   }
   
   public func removeUserAsset(_ asset: BraveWallet.BlockchainToken, completion: (() -> Void)?) {
+  }
+
+  public func removeGroup(for groupId: String, completion: (() -> Void)?) {
   }
   
   public func updateUserAsset(for asset: BraveWallet.BlockchainToken, visible: Bool, completion: (() -> Void)?) {
