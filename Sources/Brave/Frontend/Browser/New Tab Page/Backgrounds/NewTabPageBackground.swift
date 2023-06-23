@@ -19,7 +19,7 @@ class NewTabPageBackground: PreferencesObserver {
   /// The source of new tab page backgrounds
   private let dataSource: NTPDataSource
   /// The current background image & possibly sponsor
-  private(set) var currentBackground: (wallpaper: NTPWallpaper, type: NTPDataSource.BackgroundType)? {
+  private(set) var currentBackground: NTPWallpaper? {
     didSet {
       wallpaperId = UUID()
       changed?()
@@ -29,17 +29,11 @@ class NewTabPageBackground: PreferencesObserver {
   private(set) var wallpaperId = UUID()
   /// The background/wallpaper image if available
   var backgroundImage: UIImage? {
-    currentBackground?.wallpaper.image
+    currentBackground?.backgroundImage
   }
   /// The sponsors logo if available
   var sponsorLogoImage: UIImage? {
-    if let logoOverrideImage = currentBackground?.wallpaper.logo?.image {
-      return logoOverrideImage
-    }
-    if case .withBrandLogo(let logo) = currentBackground?.type {
-      return logo?.image
-    }
-    return nil
+    currentBackground?.logoImage
   }
   /// A block called when the current background image/sponsored logo changes
   /// while the New Tab Page is active

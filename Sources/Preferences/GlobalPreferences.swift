@@ -9,10 +9,6 @@ import Foundation
 ///
 /// Some of these should move to ClientPreferences or their own targets preferences file in the future
 extension Preferences {
-  public final class NTP {
-    public static let ntpCheckDate = Option<TimeInterval?>(key: "ntp.next-check-date", default: nil)
-  }
-  
   public final class BlockStats {
     public static let adsCount = Option<Int>(key: "stats.adblock", default: 0)
     public static let trackersCount = Option<Int>(key: "stats.tracking", default: 0)
