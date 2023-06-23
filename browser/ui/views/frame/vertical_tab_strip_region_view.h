@@ -188,6 +188,8 @@ class VerticalTabStripRegionView : public views::View,
   State state_ = State::kExpanded;
   State last_state_ = State::kExpanded;
 
+  absl::optional<views::Button::ScopedAnchorHighlight> toggle_button_highlight_;
+
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember collapsed_pref_;
   BooleanPrefMember floating_mode_pref_;

@@ -126,6 +126,13 @@ class ToggleButton : public BraveNewTabButton {
   }
 #endif
 
+  void NotifyClick(const ui::Event& event) override {
+    // Bypass NewTab::NotifyClick implementation in order to use
+    // Button::AddAnchorHighlight(). As NewTabButton animate ink drop state to
+    // ActionTriggered in this callback, we shouldn't use it.
+    ImageButton::NotifyClick(event);
+  }
+
  private:
   raw_ptr<VerticalTabStripRegionView> region_view_ = nullptr;
   raw_ptr<const TabStrip> tab_strip_ = nullptr;
@@ -499,6 +506,8 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
     }
   }
 
+  ToggleButton* toggle_button() { return toggle_button_; }
+
   // views::View:
   void OnThemeChanged() override {
     View::OnThemeChanged();
@@ -626,6 +635,10 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
             ? views::ScrollView::ScrollBarMode::kDisabled
             : views::ScrollView::ScrollBarMode::kHiddenButEnabled);
   }
+  DCHECK_EQ(state_, State::kExpanded)
+      << "We expect the default state to be expanded and turn on the highlight";
+  toggle_button_highlight_ =
+      header_view_->toggle_button()->AddAnchorHighlight();
 
   new_tab_button_ = AddChildView(std::make_unique<VerticalTabNewTabButton>(
       original_region_view_->tab_strip_,
@@ -721,6 +734,15 @@ void VerticalTabStripRegionView::SetState(State state) {
   tab_strip->tab_container_->CompleteAnimationAndLayout();
 
   resize_area_->SetEnabled(state == State::kExpanded);
+
+  if (state == State::kExpanded) {
+    if (!toggle_button_highlight_.has_value()) {
+      toggle_button_highlight_ =
+          header_view_->toggle_button()->AddAnchorHighlight();
+    }
+  } else {
+    toggle_button_highlight_.reset();
+  }
 
   if (gfx::Animation::ShouldRenderRichAnimation()) {
     state_ == State::kCollapsed ? width_animation_.Hide()
