@@ -57,26 +57,13 @@ class SpeechRecognizer: ObservableObject {
   private let recognizer = SFSpeechRecognizer()
   
   @MainActor
-  func askForUserPermission(onDeviceRecognitionOnly: Bool = true) async -> Bool {
-    do {
-      // Ask for Record Permission if not permitted throw error
-      guard await AVAudioSession.sharedInstance().hasPermissionToRecord() else {
-        throw RecognizerError.microphoneAccessDenied
-      }
-      
-      if !onDeviceRecognitionOnly {
-        // Ask for Online Speech Recognizer Authorization if not authorized throw error
-        guard await SFSpeechRecognizer.hasAuthorizationToRecognize() else {
-          throw RecognizerError.authorizationAccessDenied
-        }
-      }
-      
-      return true
-    } catch {
-      log.debug("Voice Search Authorization Fault \(error.localizedDescription)")
+  func askForUserPermission() async -> Bool {
+    // Ask for Record Permission if not permitted throw error
+    guard await AVAudioSession.sharedInstance().hasPermissionToRecord() else {
+      return false
     }
     
-    return false
+    return true
   }
   
   @MainActor
@@ -285,16 +272,3 @@ extension AVAudioSession {
     }
   }
 }
-
-extension SFSpeechRecognizer {
-  /// Ask for Speech recognization authorization
-  /// - Returns: Authorization state
-  static func hasAuthorizationToRecognize() async -> Bool {
-    await withCheckedContinuation { continuation in
-      requestAuthorization { status in
-        continuation.resume(returning: status == .authorized)
-      }
-    }
-  }
-}
-
