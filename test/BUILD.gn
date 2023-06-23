@@ -1109,7 +1109,9 @@ test("brave_browser_tests") {
   }
 
   if (enable_request_otr) {
-    deps += [ "//brave/browser/request_otr:browser_tests" ]
+    if (!is_android) {
+      deps += [ "//brave/browser/request_otr:browser_tests" ]
+    }
   }
 
   if (enable_custom_background) {
