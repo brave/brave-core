@@ -6,6 +6,8 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
+import { BrowserRouter } from 'react-router-dom'
+
 import {
   ConnectWithSite,
   ConnectedPanel,
@@ -45,7 +47,7 @@ import {
   AppsListType,
   BraveWallet,
   PanelTypes,
-  WalletAccountType,
+  WalletAccountType
 } from '../constants/types'
 
 import { AppsList } from '../options/apps-list-options'
@@ -66,6 +68,7 @@ import {
   useGetSelectedChainQuery,
 } from '../common/slices/api.slice'
 import { usePendingTransactions } from '../common/hooks/use-pending-transaction'
+import PageContainer from '../page/container'
 
 // Allow BigInts to be stringified
 (BigInt.prototype as any).toJSON = function () {
@@ -80,6 +83,8 @@ function Container () {
   const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
+  const isPanelV2FeatureEnabled =
+    useSafeWalletSelector(WalletSelectors.isPanelV2FeatureEnabled)
 
   // wallet selectors (unsafe)
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
@@ -648,11 +653,17 @@ function Container () {
   }
 
   return (
-    <PanelWrapper isLonger={false}>
-      <ConnectedPanel
-        navAction={navigateTo}
-      />
-    </PanelWrapper>
+    isPanelV2FeatureEnabled
+      ? <BrowserRouter>
+        <PanelWrapper width={390} height={650}>
+          <PageContainer />
+        </PanelWrapper>
+      </BrowserRouter>
+      : <PanelWrapper isLonger={false}>
+        <ConnectedPanel
+          navAction={navigateTo}
+        />
+      </PanelWrapper>
   )
 }
 
