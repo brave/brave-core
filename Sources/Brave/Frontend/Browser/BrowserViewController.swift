@@ -132,7 +132,7 @@ public class BrowserViewController: UIViewController {
   let collapsedURLBarView = CollapsedURLBarView()
 
   // Single data source used for all favorites vcs
-  public let backgroundDataSource = NTPDataSource()
+  public let backgroundDataSource: NTPDataSource
   let feedDataSource = FeedDataSource()
 
   private var postSetupTasks: [() -> Void] = []
@@ -283,6 +283,7 @@ public class BrowserViewController: UIViewController {
     self.migration = migration
     self.crashedLastSession = crashedLastSession
     feedDataSource.historyAPI = braveCore.historyAPI
+    backgroundDataSource = .init(service: braveCore.backgroundImagesService)
     
     let configuration: BraveRewards.Configuration = .current()
 
@@ -456,7 +457,6 @@ public class BrowserViewController: UIViewController {
       self.updateRewardsButtonState()
       self.setupAdsNotificationHandler()
     }
-    Preferences.NewTabPage.selectedCustomTheme.observe(from: self)
     Preferences.Playlist.webMediaSourceCompatibility.observe(from: self)
     Preferences.PrivacyReports.captureShieldsData.observe(from: self)
     Preferences.PrivacyReports.captureVPNAlerts.observe(from: self)
@@ -3012,9 +3012,6 @@ extension BrowserViewController: PreferencesObserver {
     case Preferences.Rewards.hideRewardsIcon.key,
       Preferences.Rewards.rewardsToggledOnce.key:
       updateRewardsButtonState()
-    case Preferences.NewTabPage.selectedCustomTheme.key:
-      Preferences.NTP.ntpCheckDate.value = nil
-      backgroundDataSource.startFetching()
     case Preferences.Playlist.webMediaSourceCompatibility.key:
       if UIDevice.isIpad {
         tabManager.allTabs.forEach {

@@ -445,11 +445,9 @@ extension BrowserViewController {
           let retryDeadline = Date() + retryTime
 
           Preferences.NewTabPage.superReferrerThemeRetryDeadline.value = retryDeadline
-
-          self.backgroundDataSource
-            .fetchSpecificResource(.superReferral(code: code))
-        } else {
-          self.backgroundDataSource.startFetching()
+          
+          // TODO: Set the code in core somehow if we want to support Super Referrals again
+          //       then call updateSponsoredImageComponentIfNeeded
         }
 
         guard let url = offerUrl?.asURL else { return }
@@ -457,7 +455,6 @@ extension BrowserViewController {
       }
     } else {
       urp.pingIfEnoughTimePassed()
-      self.backgroundDataSource.startFetching()
     }
   }
 }

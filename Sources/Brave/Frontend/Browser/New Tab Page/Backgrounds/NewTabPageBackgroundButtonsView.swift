@@ -8,6 +8,7 @@ import BraveUI
 import Preferences
 import Shared
 import SnapKit
+import BraveCore
 
 /// The background view of new tab page which will hold static elements such as
 /// the image credit, brand logos or the share by QR code button
@@ -19,7 +20,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     /// Displays the image credit button showing credit to some `name`
     case imageCredit(_ name: String)
     /// Displays a brands logo button
-    case brandLogo(_ logo: NTPLogo)
+    case brandLogo(_ logo: NTPSponsoredImageLogo)
     /// Displays a button with a little QR code image
     case QRCode
   }
@@ -39,7 +40,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
         imageCreditButton.label.text = String(format: Strings.photoBy, name)
         activeView = imageCreditButton
       case .brandLogo(let logo):
-        sponsorLogoButton.imageView.image = logo.image
+        sponsorLogoButton.imageView.image = UIImage(contentsOfFile: logo.imagePath.path)
         activeView = sponsorLogoButton
       case .QRCode:
         activeView = qrCodeButton

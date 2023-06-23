@@ -363,10 +363,10 @@ class NewTabPageViewController: UIViewController {
         hideNotification()
         return
       }
-      switch background.type {
-      case .regular, .withQRCode:
+      switch background {
+      case .image, .superReferral:
         hideNotification()
-      case .withBrandLogo:
+      case .sponsoredImage:
         // Current background is still a sponsored image so it can stay
         // visible
         break
@@ -379,18 +379,17 @@ class NewTabPageViewController: UIViewController {
 
     hideVisibleSponsoredImageNotification()
 
-    if let backgroundType = background.currentBackground?.type {
-      switch backgroundType {
-      case .regular:
-        if let name = background.currentBackground?.wallpaper.credit?.name {
+    if let background = background.currentBackground {
+      switch background {
+      case .image(let background):
+        if case let name = background.author, !name.isEmpty {
           backgroundButtonsView.activeButton = .imageCredit(name)
         } else {
           backgroundButtonsView.activeButton = .none
         }
-      case .withBrandLogo(let defaultLogo):
-        guard let logo = background.currentBackground?.wallpaper.logo ?? defaultLogo else { break }
-        backgroundButtonsView.activeButton = .brandLogo(logo)
-      case .withQRCode(_):
+      case .sponsoredImage(let background):
+        backgroundButtonsView.activeButton = .brandLogo(background.logo)
+      case .superReferral:
         backgroundButtonsView.activeButton = .QRCode
       }
     } else {
@@ -413,9 +412,11 @@ class NewTabPageViewController: UIViewController {
     }
     
     // If no focal point provided we do nothing. The image is centered by default.
-    guard let focalX = background.currentBackground?.wallpaper.focalPoint?.x else {
+    guard let focalPoint = background.currentBackground?.focalPoint else {
       return
     }
+    
+    let focalX = focalPoint.x
     
     // Calculate the sizing difference between `image` and `imageView` to determine the pixel difference ratio.
     // Most image calculations have to use this property to get coordinates right.
@@ -440,17 +441,13 @@ class NewTabPageViewController: UIViewController {
   }
 
   private func reportSponsoredImageBackgroundEvent(_ event: BraveAds.NewTabPageAdEventType) {
-    guard let backgroundType = background.currentBackground?.type,
-      case .withBrandLogo = backgroundType,
-      let creativeInstanceId = background.currentBackground?.wallpaper.creativeInstanceId
-    else {
-      return
+    if case .sponsoredImage(let sponsoredBackground) = background.currentBackground {
+      rewards.ads.reportNewTabPageAdEvent(
+        background.wallpaperId.uuidString,
+        creativeInstanceId: sponsoredBackground.creativeInstanceId,
+        eventType: event
+      )
     }
-    rewards.ads.reportNewTabPageAdEvent(
-      background.wallpaperId.uuidString,
-      creativeInstanceId: creativeInstanceId,
-      eventType: event
-    )
   }
 
   // MARK: - Notifications
@@ -467,7 +464,7 @@ class NewTabPageViewController: UIViewController {
     }
 
     var isShowingSponseredImage = false
-    if case .withBrandLogo(let logo) = background.currentBackground?.type, logo != nil {
+    if case .sponsoredImage = background.currentBackground {
       isShowingSponseredImage = true
     }
 
@@ -789,20 +786,21 @@ class NewTabPageViewController: UIViewController {
 
   private func tappedActiveBackgroundButton(_ sender: UIControl) {
     guard let background = background.currentBackground else { return }
-    switch background.type {
-    case .regular:
+    switch background {
+    case .image:
       presentImageCredit(sender)
-    case .withBrandLogo(let defaultLogo):
-      guard let logo = background.wallpaper.logo ?? defaultLogo else { break }
-      tappedSponsorButton(logo)
-    case .withQRCode(let code):
+    case .sponsoredImage(let background):
+      tappedSponsorButton(background.logo)
+    case .superReferral(_, let code):
       tappedQRCode(code)
     }
   }
 
-  private func tappedSponsorButton(_ logo: NTPLogo) {
+  private func tappedSponsorButton(_ logo: NTPSponsoredImageLogo) {
     UIImpactFeedbackGenerator(style: .medium).bzzt()
-    delegate?.navigateToInput(logo.destinationUrl, inNewTab: false, switchingToPrivateMode: false)
+    if let url = logo.destinationURL {
+      delegate?.navigateToInput(url.absoluteString, inNewTab: false, switchingToPrivateMode: false)
+    }
 
     reportSponsoredImageBackgroundEvent(.clicked)
   }
@@ -822,15 +820,15 @@ class NewTabPageViewController: UIViewController {
   }
 
   private func presentImageCredit(_ button: UIControl) {
-    guard let credit = background.currentBackground?.wallpaper.credit else { return }
+    guard case .image(let background) = background.currentBackground else { return }
 
-    let alert = UIAlertController(title: credit.name, message: nil, preferredStyle: .actionSheet)
+    let alert = UIAlertController(title: background.author, message: nil, preferredStyle: .actionSheet)
 
-    if let creditWebsite = credit.url, let creditURL = URL(string: creditWebsite) {
+    if let creditURL = background.link {
       let websiteTitle = String(format: Strings.viewOn, creditURL.hostSLD.capitalizeFirstLetter)
       alert.addAction(
         UIAlertAction(title: websiteTitle, style: .default) { [weak self] _ in
-          self?.delegate?.navigateToInput(creditWebsite, inNewTab: false, switchingToPrivateMode: false)
+          self?.delegate?.navigateToInput(creditURL.absoluteString, inNewTab: false, switchingToPrivateMode: false)
         })
     }
 
@@ -1022,7 +1020,7 @@ extension NewTabPageViewController {
     newTabsStorage.add(value: 1, to: Date())
     let newTabsCreatedAnswer = newTabsStorage.maximumDaysCombinedValue
     
-    if case .withBrandLogo = background.currentBackground?.type {
+    if case .sponsoredImage = background.currentBackground {
       sponsoredStorage.add(value: 1, to: Date())
     }
     
