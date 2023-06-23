@@ -1,0 +1,94 @@
+diff --git a/components/site_engagement/content/site_engagement_helper.cc b/components/site_engagement/content/site_engagement_helper.cc
+index 19245d77af03576e2f3988f103a3574847a678a2..489e55b6436b3c0e855ee05a3be1a8bab9baaca3 100644
+--- a/components/site_engagement/content/site_engagement_helper.cc
++++ b/components/site_engagement/content/site_engagement_helper.cc
+@@ -17,6 +17,22 @@
+ #include "content/public/browser/navigation_handle.h"
+ #include "content/public/browser/web_contents.h"
+ 
++#include "brave/components/request_otr/browser/request_otr_storage_tab_helper.h"
++
++#define BRAVE_EARLY_RETURN_IF_OTR                                     \
++  if (content::WebContents* contents = web_contents()) {              \
++    LOG(ERROR) << "0";                                                \
++    if (request_otr::RequestOTRStorageTabHelper* tab_storage =        \
++            request_otr::RequestOTRStorageTabHelper::FromWebContents( \
++                contents)) {                                          \
++      LOG(ERROR) << "1";                                              \
++      if (tab_storage->has_offered_otr()) {                           \
++        LOG(ERROR) << "2";                                            \
++        return;                                                       \
++      }                                                               \
++    }                                                                 \
++  }
++
+ namespace site_engagement {
+ 
+ namespace {
+@@ -114,8 +130,9 @@ void SiteEngagementService::Helper::InputTracker::DidGetUserInteraction(
+     const blink::WebInputEvent& event) {
+   // Only respond to raw key down to avoid multiple triggering on a single input
+   // (e.g. keypress is a key down then key up).
+-  if (!is_tracking_)
++  if (!is_tracking_) {
+     return;
++  }
+ 
+   const blink::WebInputEvent::Type type = event.GetType();
+ 
+@@ -171,8 +188,9 @@ void SiteEngagementService::Helper::MediaTracker::MediaStartedPlaying(
+     const content::MediaPlayerId& id) {
+   // Only begin engagement detection when media actually starts playing.
+   active_media_players_.push_back(id);
+-  if (!IsTimerRunning())
++  if (!IsTimerRunning()) {
+     Start(base::Seconds(g_seconds_delay_after_media_starts));
++  }
+ }
+ 
+ void SiteEngagementService::Helper::MediaTracker::MediaStoppedPlaying(
+@@ -195,15 +213,21 @@ SiteEngagementService::Helper::Helper(
+ 
+ void SiteEngagementService::Helper::RecordUserInput(EngagementType type) {
+   TRACE_EVENT0("SiteEngagement", "RecordUserInput");
++  BRAVE_EARLY_RETURN_IF_OTR
+   content::WebContents* contents = web_contents();
+-  if (contents)
++  if (contents) {
++      LOG(ERROR) << "3";
+     service_->HandleUserInput(contents, type);
++  }
+ }
+ 
+ void SiteEngagementService::Helper::RecordMediaPlaying(bool is_hidden) {
++  BRAVE_EARLY_RETURN_IF_OTR
+   content::WebContents* contents = web_contents();
+-  if (contents)
++  if (contents) {
++      LOG(ERROR) << "4";
+     service_->HandleMediaPlaying(contents, is_hidden);
++  }
+ }
+ 
+ void SiteEngagementService::Helper::DidFinishNavigation(
+@@ -231,8 +255,11 @@ void SiteEngagementService::Helper::DidFinishNavigation(
+   // Prefetchers trigger WasShown() when they are swapped in, so input
+   // engagement will activate even if navigation engagement is not scored.
+   if (prefetch_manager_ &&
+-      prefetch_manager_->GetNoStatePrefetchContents(web_contents()))
++      prefetch_manager_->GetNoStatePrefetchContents(web_contents())) {
+     return;
++  }
++
++  BRAVE_EARLY_RETURN_IF_OTR
+ 
+   service_->HandleNavigation(web_contents(), handle->GetPageTransition());
+ 
+@@ -250,6 +277,7 @@ void SiteEngagementService::Helper::OnVisibilityChanged(
+   } else {
+     // Start a timer to track input if it isn't already running and input isn't
+     // already being tracked.
++    BRAVE_EARLY_RETURN_IF_OTR
+     if (!input_tracker_.IsTimerRunning() && !input_tracker_.is_tracking()) {
+       input_tracker_.Start(base::Seconds(g_seconds_delay_after_show));
+     }
