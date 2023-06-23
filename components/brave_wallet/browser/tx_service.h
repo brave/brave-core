@@ -12,6 +12,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -20,6 +21,16 @@
 #include "mojo/public/cpp/bindings/remote_set.h"
 
 class PrefService;
+
+namespace base {
+class FilePath;
+class SequencedTaskRunner;
+}  // namespace base
+
+namespace value_store {
+class ValueStoreFactory;
+class ValueStoreFrontend;
+}  // namespace value_store
 
 namespace brave_wallet {
 
@@ -40,7 +51,9 @@ class TxService : public KeyedService,
   TxService(JsonRpcService* json_rpc_service,
             BitcoinWalletService* bitcoin_wallet_service,
             KeyringService* keyring_service,
-            PrefService* prefs);
+            PrefService* prefs,
+            const base::FilePath& context_path,
+            scoped_refptr<base::SequencedTaskRunner> ui_task_runner);
   ~TxService() override;
   TxService(const TxService&) = delete;
   TxService operator=(const TxService&) = delete;
@@ -210,6 +223,7 @@ class TxService : public KeyedService,
       ProcessFilHardwareSignatureCallback callback) override;
 
  private:
+  friend class EthereumProviderImplUnitTest;
   friend class EthTxManagerUnitTest;
   friend class SolanaTxManagerUnitTest;
   friend class FilTxManagerUnitTest;
@@ -232,6 +246,9 @@ class TxService : public KeyedService,
   mojo::ReceiverSet<mojom::EthTxManagerProxy> eth_tx_manager_receivers_;
   mojo::ReceiverSet<mojom::SolanaTxManagerProxy> solana_tx_manager_receivers_;
   mojo::ReceiverSet<mojom::FilTxManagerProxy> fil_tx_manager_receivers_;
+
+  scoped_refptr<value_store::ValueStoreFactory> store_factory_;
+  std::unique_ptr<value_store::ValueStoreFrontend> store_;
 
   base::WeakPtrFactory<TxService> weak_factory_;
 };

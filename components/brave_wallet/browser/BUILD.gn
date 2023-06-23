@@ -235,6 +235,7 @@ static_library("browser") {
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/sync_preferences",
+    "//components/value_store",
     "//crypto",
     "//services/data_decoder/public/cpp",
     "//services/network/public/cpp",
@@ -373,6 +374,20 @@ source_set("transaction") {
     "//brave/components/json/rs:rust_lib",
   ]
 }
+
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "test_utils.cc",
+    "test_utils.h",
+  ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//testing/gmock",
+  ]
+}  # source_set("test_support")
 
 generated_types("generated_blockchain_list_schemas") {
   sources = [ "blockchain_list_schemas.idl" ]

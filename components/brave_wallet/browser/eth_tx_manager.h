@@ -37,7 +37,8 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
   EthTxManager(TxService* tx_service,
                JsonRpcService* json_rpc_service,
                KeyringService* keyring_service,
-               PrefService* prefs);
+               PrefService* prefs,
+               value_store::ValueStoreFrontend* store);
   ~EthTxManager() override;
   EthTxManager(const EthTxManager&) = delete;
   EthTxManager operator=(const EthTxManager&) = delete;
@@ -170,6 +171,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
   FRIEND_TEST_ALL_PREFIXES(EthTxManagerUnitTest, RetryTransaction);
   FRIEND_TEST_ALL_PREFIXES(EthTxManagerUnitTest, Reset);
   friend class EthTxManagerUnitTest;
+  friend class EthereumProviderImplUnitTest;
 
   mojom::CoinType GetCoinType() const override;
 

@@ -146,6 +146,7 @@ void TxManager::KeyringReset() {
 void TxManager::Reset() {
   block_tracker_->Stop();
   pending_chain_ids_.clear();
+  tx_state_manager_->WipeTxs();
 }
 
 }  // namespace brave_wallet

@@ -20,15 +20,17 @@ BitcoinTxManager::BitcoinTxManager(TxService* tx_service,
                                    JsonRpcService* json_rpc_service,
                                    BitcoinWalletService* bitcoin_wallet_service,
                                    KeyringService* keyring_service,
-                                   PrefService* prefs)
-    : TxManager(
-          std::make_unique<BitcoinTxStateManager>(prefs, json_rpc_service),
-          std::make_unique<BitcoinBlockTracker>(json_rpc_service,
-                                                bitcoin_wallet_service),
-          tx_service,
-          json_rpc_service,
-          keyring_service,
-          prefs) {}
+                                   PrefService* prefs,
+                                   value_store::ValueStoreFrontend* store)
+    : TxManager(std::make_unique<BitcoinTxStateManager>(prefs,
+                                                        store,
+                                                        json_rpc_service),
+                std::make_unique<BitcoinBlockTracker>(json_rpc_service,
+                                                      bitcoin_wallet_service),
+                tx_service,
+                json_rpc_service,
+                keyring_service,
+                prefs) {}
 
 BitcoinTxManager::~BitcoinTxManager() = default;
 

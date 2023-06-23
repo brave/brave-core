@@ -9,8 +9,10 @@
 
 #include <utility>
 
+#include "base/files/scoped_temp_dir.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -76,12 +78,15 @@ class FilTxManagerUnitTest : public testing::Test {
 
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
+    brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
     json_rpc_service_ =
         std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
     keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         &prefs_, &local_state_);
-    tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(), nullptr,
-                                              keyring_service_.get(), &prefs_);
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    tx_service_ = std::make_unique<TxService>(
+        json_rpc_service_.get(), nullptr, keyring_service_.get(), &prefs_,
+        temp_dir_.GetPath(), base::SequencedTaskRunner::GetCurrentDefault());
 
     keyring_service_->CreateWallet("testing123", base::DoNothing());
     base::RunLoop().RunUntilIdle();
@@ -226,6 +231,7 @@ class FilTxManagerUnitTest : public testing::Test {
  protected:
   base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_;
+  base::ScopedTempDir temp_dir_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   network::TestURLLoaderFactory url_loader_factory_;

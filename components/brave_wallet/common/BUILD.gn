@@ -167,7 +167,11 @@ source_set("test_support") {
     "test_utils.h",
   ]
 
-  deps = [ "//testing/gmock" ]
+  deps = [
+    "//components/value_store",
+    "//components/value_store:test_support",
+    "//testing/gmock",
+  ]
 
   public_deps = [ ":mojom" ]
 }  # source_set("test_support")

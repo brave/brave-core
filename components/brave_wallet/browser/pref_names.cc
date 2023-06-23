@@ -82,6 +82,8 @@ const char kBraveWalletTransactionsChainIdMigrated[] =
     "brave.wallet.transactions.chain_id_migrated";
 const char kBraveWalletSolanaTransactionsV0SupportMigrated[] =
     "brave.wallet.solana_transactions.v0_support_migrated";
+const char kBraveWalletTransactionsFromPrefsToDBMigrated[] =
+    "brave.wallet.transactions.from_prefs_to_db_migrated";
 
 // DEPRECATED
 const char kShowWalletTestNetworksDeprecated[] =

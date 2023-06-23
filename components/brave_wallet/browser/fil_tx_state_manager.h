@@ -26,7 +26,7 @@ class FilTxMeta;
 
 class FilTxStateManager : public TxStateManager {
  public:
-  explicit FilTxStateManager(PrefService* prefs);
+  FilTxStateManager(PrefService* prefs, value_store::ValueStoreFrontend* store);
   ~FilTxStateManager() override;
   FilTxStateManager(const FilTxStateManager&) = delete;
   FilTxStateManager operator=(const FilTxStateManager&) = delete;

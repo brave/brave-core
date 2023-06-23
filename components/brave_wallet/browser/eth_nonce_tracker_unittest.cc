@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/files/scoped_temp_dir.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -18,11 +19,13 @@
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -104,7 +107,13 @@ class EthNonceTrackerUnitTest : public testing::Test {
 TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   JsonRpcService service(shared_url_loader_factory(), GetPrefs());
 
-  EthTxStateManager tx_state_manager(GetPrefs());
+  base::ScopedTempDir temp_dir;
+  scoped_refptr<value_store::TestValueStoreFactory> factory =
+      GetTestValueStoreFactory(temp_dir);
+  std::unique_ptr<value_store::ValueStoreFrontend> storage =
+      GetValueStoreFrontendForTest(factory);
+  EthTxStateManager tx_state_manager(GetPrefs(), storage.get());
+  WaitForTxStateManagerInitialized(&tx_state_manager);
   EthNonceTracker nonce_tracker(&tx_state_manager, &service);
 
   SetTransactionCount(2);
@@ -120,7 +129,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   meta.set_from(EthAddress::FromHex(address).ToChecksumAddress());
   meta.set_status(mojom::TransactionStatus::Confirmed);
   meta.tx()->set_nonce(uint256_t(2));
-  tx_state_manager.AddOrUpdateTx(meta);
+  ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
   GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, address, true, 3);
 
@@ -128,7 +137,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   meta.set_id(TxMeta::GenerateMetaID());
   meta.set_status(mojom::TransactionStatus::Confirmed);
   meta.tx()->set_nonce(uint256_t(3));
-  tx_state_manager.AddOrUpdateTx(meta);
+  ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
   GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, address, true, 4);
 
@@ -136,16 +145,16 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   meta.set_status(mojom::TransactionStatus::Submitted);
   meta.tx()->set_nonce(uint256_t(4));
   meta.set_id(TxMeta::GenerateMetaID());
-  tx_state_manager.AddOrUpdateTx(meta);
+  ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
   meta.set_id(TxMeta::GenerateMetaID());
-  tx_state_manager.AddOrUpdateTx(meta);
+  ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
   GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, address, true, 5);
 
   // tx count: 2, confirmed: [2, 3], pending: [4, 4], sign: [5]
   meta.set_status(mojom::TransactionStatus::Signed);
   meta.set_id(TxMeta::GenerateMetaID());
-  tx_state_manager.AddOrUpdateTx(meta);
+  ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
   GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, address, true, 5);
 

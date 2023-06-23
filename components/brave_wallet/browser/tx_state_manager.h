@@ -24,25 +24,32 @@ namespace base {
 class Value;
 }  // namespace base
 
+namespace value_store {
+class ValueStoreFrontend;
+}  // namespace value_store
+
 namespace brave_wallet {
 
 class TxMeta;
 
 class TxStateManager {
  public:
-  explicit TxStateManager(PrefService* prefs);
+  TxStateManager(PrefService* prefs, value_store::ValueStoreFrontend* store);
   virtual ~TxStateManager();
   TxStateManager(const TxStateManager&) = delete;
 
-  void AddOrUpdateTx(const TxMeta& meta);
+  bool AddOrUpdateTx(const TxMeta& meta);
   std::unique_ptr<TxMeta> GetTx(const std::string& chain_id,
                                 const std::string& id);
-  void DeleteTx(const std::string& chain_id, const std::string& id);
-  void WipeTxs();
+  bool DeleteTx(const std::string& chain_id, const std::string& id);
+  bool WipeTxs();
 
   static void MigrateAddChainIdToTransactionInfo(PrefService* prefs);
   static void MigrateSolanaTransactionsForV0TransactionsSupport(
       PrefService* prefs);
+  static void MigrateTransactionsFromPrefsToDB(
+      PrefService* prefs,
+      value_store::ValueStoreFrontend* store);
 
   std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
       const absl::optional<std::string>& chain_id,
@@ -54,6 +61,7 @@ class TxStateManager {
     virtual void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) {
     }
     virtual void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) {}
+    virtual void OnInitialized() {}
   };
 
   void AddObserver(Observer* observer);
@@ -67,6 +75,17 @@ class TxStateManager {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(TxStateManagerUnitTest, TxOperations);
+  FRIEND_TEST_ALL_PREFIXES(TxStateManagerUnitTest,
+                           MigrateTransactionsFromPrefsToDB);
+  FRIEND_TEST_ALL_PREFIXES(EthTxManagerUnitTest, Reset);
+
+  // Read all txs from db
+  void Initialize();
+  void OnTxsRead(absl::optional<base::Value> txs);
+
+  // Post task to valure store to write to db.
+  void ScheduleWrite();
+
   void RetireTxByStatus(const std::string& chain_id,
                         mojom::TransactionStatus status,
                         size_t max_num);
@@ -88,8 +107,13 @@ class TxStateManager {
   virtual std::string GetTxPrefPathPrefix(
       const absl::optional<std::string>& chain_id) = 0;
 
+  bool initialized_;
+  // In memory txs which will be read during initialization from db and schedule
+  // write to it when changed. We only hold 500 confirmed and 500 rejected
+  // txs, once the limit is reached we will retire oldest entries.
+  base::Value::Dict txs_;
   base::ObserverList<Observer> observers_;
-
+  raw_ptr<value_store::ValueStoreFrontend> store_;
   base::WeakPtrFactory<TxStateManager> weak_factory_;
 };
 

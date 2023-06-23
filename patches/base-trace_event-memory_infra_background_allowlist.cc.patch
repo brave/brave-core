@@ -1,0 +1,12 @@
+diff --git a/base/trace_event/memory_infra_background_allowlist.cc b/base/trace_event/memory_infra_background_allowlist.cc
+index 76a0698380ec5d98ec984ac38f8dfb86e7d6b341..acdc8b4f79d75bb95d6a5fa23019c6fdb243a371 100644
+--- a/base/trace_event/memory_infra_background_allowlist.cc
++++ b/base/trace_event/memory_infra_background_allowlist.cc
+@@ -140,6 +140,7 @@ constexpr auto kAllocatorDumpNameAllowlist = base::MakeFixedFlatSet<
+         "extensions/value_store/Extensions.Database.Open.State/0x?",
+         "extensions/value_store/Extensions.Database.Open.Scripts/0x?",
+         "extensions/value_store/Extensions.Database.Open.WebAppsLockScreen/0x?",
++        "extensions/value_store/Extensions.Database.Open.BraveWallet/0x?",
+         "extensions/value_store/Extensions.Database.Open/0x?",
+         "extensions/value_store/Extensions.Database.Restore/0x?",
+         "extensions/value_store/Extensions.Database.Value.Restore/0x?",

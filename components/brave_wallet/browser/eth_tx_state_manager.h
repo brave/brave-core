@@ -30,7 +30,7 @@ class EthTxMeta;
 
 class EthTxStateManager : public TxStateManager {
  public:
-  explicit EthTxStateManager(PrefService* prefs);
+  EthTxStateManager(PrefService* prefs, value_store::ValueStoreFrontend* store);
   ~EthTxStateManager() override;
   EthTxStateManager(const EthTxStateManager&) = delete;
   EthTxStateManager operator=(const EthTxStateManager&) = delete;

@@ -9,6 +9,8 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/files/scoped_temp_dir.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -23,6 +25,7 @@
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 #include "brave/components/brave_wallet/browser/solana_tx_state_manager.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
@@ -69,12 +72,17 @@ class SolanaTxManagerUnitTest : public testing::Test {
                    false, last_valid_block_height1_);
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
+    brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
     json_rpc_service_ =
         std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
     keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         &prefs_, &local_state_);
-    tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(), nullptr,
-                                              keyring_service_.get(), &prefs_);
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    tx_service_ = std::make_unique<TxService>(
+        json_rpc_service_.get(), nullptr, keyring_service_.get(), &prefs_,
+        temp_dir_.GetPath(), base::SequencedTaskRunner::GetCurrentDefault());
+    WaitForTxStateManagerInitialized(
+        solana_tx_manager()->tx_state_manager_.get());
     CreateWallet();
     AddAccount();
   }
@@ -408,6 +416,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
 
  protected:
   base::test::TaskEnvironment task_environment_;
+  base::ScopedTempDir temp_dir_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   network::TestURLLoaderFactory url_loader_factory_;
@@ -1132,7 +1141,8 @@ TEST_F(SolanaTxManagerUnitTest, ProcessSolanaHardwareSignature) {
                                                    system_transfer_meta_id);
   meta->tx()->message()->set_recent_blockhash(latest_blockhash1_);
   meta->tx()->message()->set_last_valid_block_height(last_valid_block_height1_);
-  solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*meta);
+  ASSERT_TRUE(
+      solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*meta));
 
   // Valid blockhash and valid number of signers is valid
   TestProcessSolanaHardwareSignature(

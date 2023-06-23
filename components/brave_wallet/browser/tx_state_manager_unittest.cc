@@ -8,6 +8,7 @@
 
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 
+#include "base/files/scoped_temp_dir.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
 #include "base/test/bind.h"
@@ -20,6 +21,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -60,7 +62,11 @@ class TxStateManagerUnitTest : public testing::Test {
     // The only different between each coin type's tx state manager in these
     // base functions are their pref paths, so here we just use
     // EthTxStateManager to test common methods in TxStateManager.
-    tx_state_manager_ = std::make_unique<EthTxStateManager>(&prefs_);
+    factory_ = GetTestValueStoreFactory(temp_dir_);
+    storage_ = GetValueStoreFrontendForTest(factory_);
+    tx_state_manager_ =
+        std::make_unique<EthTxStateManager>(&prefs_, storage_.get());
+    WaitForTxStateManagerInitialized(tx_state_manager_.get());
   }
 
   void UpdateCustomNetworks(PrefService* prefs,
@@ -74,23 +80,38 @@ class TxStateManagerUnitTest : public testing::Test {
     }
   }
 
+  absl::optional<base::Value> GetTxs() {
+    base::RunLoop run_loop;
+    absl::optional<base::Value> value_out;
+    storage_->Get("transactions", base::BindLambdaForTesting(
+                                      [&](absl::optional<base::Value> value) {
+                                        value_out = std::move(value);
+                                        run_loop.Quit();
+                                      }));
+    run_loop.Run();
+    return value_out;
+  }
+
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  base::ScopedTempDir temp_dir_;
+  scoped_refptr<value_store::TestValueStoreFactory> factory_;
+  std::unique_ptr<value_store::ValueStoreFrontend> storage_;
   std::unique_ptr<TxStateManager> tx_state_manager_;
 };
 
 TEST_F(TxStateManagerUnitTest, TxOperations) {
-  prefs_.ClearPref(kBraveWalletTransactions);
-
   EthTxMeta meta;
   meta.set_id("001");
   meta.set_chain_id(mojom::kMainnetChainId);
-  EXPECT_FALSE(prefs_.HasPrefPath(kBraveWalletTransactions));
+  EXPECT_FALSE(GetTxs());
   // Add
-  tx_state_manager_->AddOrUpdateTx(meta);
-  EXPECT_TRUE(prefs_.HasPrefPath(kBraveWalletTransactions));
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
+  EXPECT_TRUE(GetTxs());
   {
-    const auto& dict = prefs_.GetDict(kBraveWalletTransactions);
+    auto txs = GetTxs();
+    ASSERT_TRUE(txs);
+    const auto& dict = txs->GetDict();
     EXPECT_EQ(dict.size(), 1u);
     const auto* ethereum_dict = dict.FindDict("ethereum");
     ASSERT_TRUE(ethereum_dict);
@@ -107,9 +128,11 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
 
   meta.set_tx_hash("0xabcd");
   // Update
-  tx_state_manager_->AddOrUpdateTx(meta);
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
   {
-    const auto& dict = prefs_.GetDict(kBraveWalletTransactions);
+    auto txs = GetTxs();
+    ASSERT_TRUE(txs);
+    const auto& dict = txs->GetDict();
     EXPECT_EQ(dict.size(), 1u);
     const auto* ethereum_dict = dict.FindDict("ethereum");
     ASSERT_TRUE(ethereum_dict);
@@ -127,9 +150,11 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
   meta.set_id("002");
   meta.set_tx_hash("0xabff");
   // Add another one
-  tx_state_manager_->AddOrUpdateTx(meta);
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
   {
-    const auto& dict = prefs_.GetDict(kBraveWalletTransactions);
+    auto txs = GetTxs();
+    ASSERT_TRUE(txs);
+    const auto& dict = txs->GetDict();
     EXPECT_EQ(dict.size(), 1u);
     const auto* ethereum_dict = dict.FindDict("ethereum");
     ASSERT_TRUE(ethereum_dict);
@@ -159,9 +184,11 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
   }
 
   // Delete
-  tx_state_manager_->DeleteTx(mojom::kMainnetChainId, "001");
+  ASSERT_TRUE(tx_state_manager_->DeleteTx(mojom::kMainnetChainId, "001"));
   {
-    const auto& dict = prefs_.GetDict(kBraveWalletTransactions);
+    auto txs = GetTxs();
+    ASSERT_TRUE(txs);
+    const auto& dict = txs->GetDict();
     EXPECT_EQ(dict.size(), 1u);
     const auto* ethereum_dict = dict.FindDict("ethereum");
     ASSERT_TRUE(ethereum_dict);
@@ -172,10 +199,11 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
   }
 
   // Purge
-  tx_state_manager_->WipeTxs();
-  EXPECT_TRUE(prefs_.HasPrefPath(kBraveWalletTransactions));
-  EXPECT_FALSE(
-      prefs_.HasPrefPath(std::string(kBraveWalletTransactions) + ".ethereum"));
+  ASSERT_TRUE(tx_state_manager_->WipeTxs());
+  auto txs = GetTxs();
+  const auto& dict = txs->GetDict();
+  EXPECT_EQ(dict.size(), 0u);
+  EXPECT_FALSE(dict.FindByDottedPath("ethereum"));
 }
 
 TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
@@ -209,7 +237,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
       }
       meta.set_status(mojom::TransactionStatus::Submitted);
     }
-    tx_state_manager_->AddOrUpdateTx(meta);
+    ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
   }
 
   EXPECT_EQ(
@@ -325,7 +353,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
   meta.set_id("xyz");
   meta.set_chain_id(custom_chain.chain_id);
   meta.set_status(mojom::TransactionStatus::Submitted);
-  tx_state_manager_->AddOrUpdateTx(meta);
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
 
   // OK: no filter
   EXPECT_EQ(
@@ -377,17 +405,19 @@ TEST_F(TxStateManagerUnitTest, MultiChainId) {
   EthTxMeta meta;
   meta.set_id("001");
   meta.set_chain_id(mojom::kMainnetChainId);
-  tx_state_manager_->AddOrUpdateTx(meta);
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
 
   EXPECT_EQ(tx_state_manager_->GetTx(mojom::kGoerliChainId, "001"), nullptr);
   meta.set_chain_id(mojom::kGoerliChainId);
-  tx_state_manager_->AddOrUpdateTx(meta);
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
 
   EXPECT_EQ(tx_state_manager_->GetTx(mojom::kLocalhostChainId, "001"), nullptr);
   meta.set_chain_id(mojom::kLocalhostChainId);
-  tx_state_manager_->AddOrUpdateTx(meta);
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
 
-  const auto& dict = prefs_.GetDict(kBraveWalletTransactions);
+  auto txs = GetTxs();
+  ASSERT_TRUE(txs);
+  const auto& dict = txs->GetDict();
   EXPECT_EQ(dict.size(), 1u);
   const auto* ethereum_dict = dict.FindDict("ethereum");
   ASSERT_TRUE(ethereum_dict);
@@ -411,9 +441,7 @@ TEST_F(TxStateManagerUnitTest, MultiChainId) {
 }
 
 TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
-  prefs_.ClearPref(kBraveWalletTransactions);
-
-  for (size_t i = 0; i < 20; ++i) {
+  for (size_t i = 0; i < 1000; ++i) {
     EthTxMeta meta;
     meta.set_id(base::NumberToString(i));
     meta.set_chain_id(mojom::kMainnetChainId);
@@ -424,52 +452,51 @@ TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
       meta.set_status(mojom::TransactionStatus::Rejected);
       meta.set_created_time(base::Time::Now());
     }
-    tx_state_manager_->AddOrUpdateTx(meta);
+    ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
   }
 
   EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "0"));
-  EthTxMeta meta21;
-  meta21.set_id("20");
-  meta21.set_chain_id(mojom::kMainnetChainId);
-  meta21.set_status(mojom::TransactionStatus::Confirmed);
-  meta21.set_confirmed_time(base::Time::Now());
-  tx_state_manager_->AddOrUpdateTx(meta21);
+  EthTxMeta meta1000;
+  meta1000.set_id("1000");
+  meta1000.set_chain_id(mojom::kMainnetChainId);
+  meta1000.set_status(mojom::TransactionStatus::Confirmed);
+  meta1000.set_confirmed_time(base::Time::Now());
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta1000));
   EXPECT_FALSE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "0"));
 
   EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "1"));
-  EthTxMeta meta22;
-  meta22.set_id("21");
-  meta22.set_chain_id(mojom::kMainnetChainId);
-  meta22.set_status(mojom::TransactionStatus::Rejected);
-  meta22.set_created_time(base::Time::Now());
-  tx_state_manager_->AddOrUpdateTx(meta22);
+  EthTxMeta meta1001;
+  meta1001.set_id("1001");
+  meta1001.set_chain_id(mojom::kMainnetChainId);
+  meta1001.set_status(mojom::TransactionStatus::Rejected);
+  meta1001.set_created_time(base::Time::Now());
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta1001));
   EXPECT_FALSE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "1"));
 
   // Other status doesn't matter
   EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "2"));
   EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "3"));
-  EthTxMeta meta23;
-  meta23.set_id("22");
-  meta23.set_chain_id(mojom::kMainnetChainId);
-  meta23.set_status(mojom::TransactionStatus::Submitted);
-  meta23.set_created_time(base::Time::Now());
-  tx_state_manager_->AddOrUpdateTx(meta23);
+  EthTxMeta meta1002;
+  meta1002.set_id("1002");
+  meta1002.set_chain_id(mojom::kMainnetChainId);
+  meta1002.set_status(mojom::TransactionStatus::Submitted);
+  meta1002.set_created_time(base::Time::Now());
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta1002));
   EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "2"));
   EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "3"));
 
   // Other chain id doesn't matter
-  EthTxMeta meta24;
-  meta24.set_id("23");
-  meta23.set_chain_id(mojom::kGoerliChainId);
-  meta24.set_status(mojom::TransactionStatus::Confirmed);
-  meta24.set_created_time(base::Time::Now());
-  tx_state_manager_->AddOrUpdateTx(meta24);
+  EthTxMeta meta1003;
+  meta1003.set_id("1003");
+  meta1003.set_chain_id(mojom::kGoerliChainId);
+  meta1003.set_status(mojom::TransactionStatus::Confirmed);
+  meta1003.set_created_time(base::Time::Now());
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta1003));
   EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "2"));
   EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "3"));
 }
 
 TEST_F(TxStateManagerUnitTest, Observer) {
-  prefs_.ClearPref(kBraveWalletTransactions);
   MockTxStateManagerObserver observer(tx_state_manager_.get());
 
   EthTxMeta meta;
@@ -478,7 +505,7 @@ TEST_F(TxStateManagerUnitTest, Observer) {
   EXPECT_CALL(observer,
               OnNewUnapprovedTx(EqualsMojo(meta.ToTransactionInfo())));
   EXPECT_CALL(observer, OnTransactionStatusChanged(_)).Times(0);
-  tx_state_manager_->AddOrUpdateTx(meta);
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
   // Modify
@@ -487,7 +514,7 @@ TEST_F(TxStateManagerUnitTest, Observer) {
   EXPECT_CALL(observer,
               OnTransactionStatusChanged(EqualsMojo(meta.ToTransactionInfo())))
       .Times(1);
-  tx_state_manager_->AddOrUpdateTx(meta);
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 }
 
@@ -680,6 +707,203 @@ TEST_F(TxStateManagerUnitTest,
 
   EXPECT_TRUE(
       prefs_.GetBoolean(kBraveWalletSolanaTransactionsV0SupportMigrated));
+}
+
+TEST_F(TxStateManagerUnitTest, MigrateTransactionsFromPrefsToDB) {
+  tx_state_manager_.reset();
+  ASSERT_FALSE(
+      prefs_.GetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated));
+
+  base::Value::Dict txs_value = ParseJsonDict(R"({
+    "chain_id_migrated": true,
+    "ethereum": {
+        "goerli": {
+            "a336ef2c-9716-4cb7-8bb2-7fce8704a662": {
+                "chain_id": "0x5",
+                "confirmed_time": "13324786394428041",
+                "created_time": "13324692736353962",
+                "from": "0x781efCB08F722664BFaA2eA73b80cD79d115d91A",
+                "id": "a336ef2c-9716-4cb7-8bb2-7fce8704a662",
+                "origin": "https://metamask.github.io/",
+                "sign_only": false,
+                "status": 4,
+                "submitted_time": "13324692739487947",
+                "tx": {
+                    "data": "",
+                    "gas_limit": "0x5208",
+                    "gas_price": "0x2540be400",
+                    "nonce": "0x2",
+                    "r": "w/icWpQJ4QiAgSiyJiXBkXe3WDXwBywAMvRD+qBa5gI=",
+                    "s": "Vu6Lrn1hZeBTdmsjFFRGLgWzgf4VkSBZgAwf+ncOR/0=",
+                    "to": "0x0c54fccd2e384b4bb6f2e405bf5cbc15a017aafb",
+                    "type": 0,
+                    "v": 45,
+                    "value": "0x0"
+                },
+                "tx_hash": "0xdd764b942d8a9b5c75cdd77233b01f1a574fbd80902c86142ddbd4d3d46958cf",
+                "tx_receipt": {
+                    "block_hash": "0x3daa840dc57864bea3f271e87a9a1fef9c6422180e19f29fa6a44efb6c1b517c",
+                    "block_number": "0x85899e",
+                    "contract_address": "",
+                    "cumulative_gas_used": "0x1c9632c",
+                    "from": "",
+                    "gas_used": "0x5208",
+                    "logs_bloom": "",
+                    "status": true,
+                    "to": "",
+                    "transaction_hash": "0xdd764b942d8a9b5c75cdd77233b01f1a574fbd80902c86142ddbd4d3d46958cf",
+                    "transaction_index": "0x7c"
+                }
+            },
+            "c6d9bc1a-b8a2-4abe-919e-3f6c1dc78ef4": {
+                "chain_id": "0x5",
+                "confirmed_time": "0",
+                "created_time": "13319707169377609",
+                "from": "0x781efCB08F722664BFaA2eA73b80cD79d115d91A",
+                "id": "c6d9bc1a-b8a2-4abe-919e-3f6c1dc78ef4",
+                "origin": "http://localhost:8081/",
+                "sign_only": true,
+                "status": 7,
+                "submitted_time": "0",
+                "tx": {
+                    "data": "",
+                    "gas_limit": "0x5208",
+                    "gas_price": "0x25f38e9e00",
+                    "nonce": "0x0",
+                    "r": "P0inhbvJg/GBDhwOqEO5Q5eJo7oRNwrN8JPF1Yt3XXo=",
+                    "s": "AJY2YqS/+4Jfkno1vC3vvdyua1UqNZPAQwhJdYGvGa4=",
+                    "to": "0x781efcb08f722664bfaa2ea73b80cd79d115d91a",
+                    "type": 0,
+                    "v": 46,
+                    "value": "0x16345785d8a0000"
+                },
+                "tx_hash": "0x84bdee6620854fd3cf944a7b5dd8e8245b59db7e96dc3ebb8cce0bd6d523796e",
+                "tx_receipt": {
+                    "block_hash": "",
+                    "block_number": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "contract_address": "",
+                    "cumulative_gas_used": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "from": "",
+                    "gas_used": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "logs_bloom": "",
+                    "status": true,
+                    "to": "",
+                    "transaction_hash": "",
+                    "transaction_index": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                }
+            }
+        },
+        "mainnet": {
+            "71a841a4-83dc-4286-9acd-9b7f50e90fdb": {
+                "chain_id": "0x1",
+                "confirmed_time": "0",
+                "created_time": "13294355643851551",
+                "from": "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
+                "id": "71a841a4-83dc-4286-9acd-9b7f50e90fdb",
+                "status": 2,
+                "submitted_time": "0",
+                "tx": {
+                    "data": "",
+                    "gas_limit": "0x5208",
+                    "gas_price": "0x2540be400",
+                    "nonce": "",
+                    "r": "",
+                    "s": "",
+                    "to": "0x0c54fccd2e384b4bb6f2e405bf5cbc15a017aafb",
+                    "type": 0,
+                    "v": 0,
+                    "value": "0x0"
+                },
+                "tx_hash": "",
+                "tx_receipt": {
+                    "block_hash": "",
+                    "block_number": "0x0",
+                    "contract_address": "",
+                    "cumulative_gas_used": "0x0",
+                    "from": "",
+                    "gas_used": "0x0",
+                    "logs_bloom": "",
+                    "status": true,
+                    "to": "",
+                    "transaction_hash": "",
+                    "transaction_index": "0x0"
+                }
+            }
+        }
+    },
+    "solana": {
+        "devnet": {
+            "40fa081e-55c8-4052-a7e9-e32ffaa44ba8": {
+                "chain_id": "0x67",
+                "confirmed_time": "0",
+                "created_time": "13323288962357519",
+                "from": "GiHuFAKj5xAY5txyjie86V5Kt8tZA2iedxNijE7TUzxX",
+                "id": "40fa081e-55c8-4052-a7e9-e32ffaa44ba8",
+                "origin": "https://solana-labs.github.io/",
+                "signature_status": {
+                    "confirmation_status": "",
+                    "confirmations": "0",
+                    "err": "",
+                    "slot": "0"
+                },
+                "status": 2,
+                "submitted_time": "0",
+                "tx": {
+                    "amount": "0",
+                    "lamports": "0",
+                    "message": {
+                        "fee_payer": "GiHuFAKj5xAY5txyjie86V5Kt8tZA2iedxNijE7TUzxX",
+                        "instructions": [
+                            {
+                                "accounts": [],
+                                "data": "SGVsbG8sIGZyb20gdGhlIFNvbGFuYSBXYWxsZXQgQWRhcHRlciBleGFtcGxlIGFwcCE=",
+                                "program_id": "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"
+                            }
+                        ],
+                        "last_valid_block_height": "0",
+                        "recent_blockhash": "7j1m1fZ1fZg5xcJNfrRuy6bK56fHoPMveRSnuBg7nDCT"
+                    },
+                    "send_options": {
+                        "preflightCommitment": "confirmed"
+                    },
+                    "sign_tx_param": {
+                        "encoded_serialized_msg": "oXXYz2FXF2rpkHeaf8gLdwmYNoSDAxJ57jR8E3DXq44qxjKVsw8fsTdrYvAdtKx2VQNQWyvLRcs7ZAqU2SuaKsv9Ut4XnwiJLUgvLHW4Te6T4g8fxu4Ggand5sBDPqvoebeSycmsvkxBTXr6PJ6Gvq3My6dUQrna5nkGf313FNxhyoEkd1PLoCvG5fuNYhUn4FAKco8PHKJRXGghW",
+                        "signatures": [
+                            {
+                                "public_key": "GiHuFAKj5xAY5txyjie86V5Kt8tZA2iedxNijE7TUzxX"
+                            }
+                        ]
+                    },
+                    "spl_token_mint_address": "",
+                    "to_wallet_address": "",
+                    "tx_type": 11
+                },
+                "tx_hash": ""
+            }
+        }
+    }
+  })");
+  prefs_.Set(kBraveWalletTransactions, base::Value(txs_value.Clone()));
+  TxStateManager::MigrateTransactionsFromPrefsToDB(&prefs_, storage_.get());
+  tx_state_manager_ =
+      std::make_unique<EthTxStateManager>(&prefs_, storage_.get());
+
+  auto txs_from_db = GetTxs();
+  ASSERT_TRUE(txs_from_db);
+  EXPECT_EQ(txs_from_db->GetDict(), txs_value);
+  EXPECT_EQ(tx_state_manager_->txs_, txs_value);
+
+  EXPECT_TRUE(prefs_.GetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated));
+  // We don't clear pref transactions for this migration
+  EXPECT_TRUE(prefs_.HasPrefPath(kBraveWalletTransactions));
+}
+
+TEST_F(TxStateManagerUnitTest, NotInitialized) {
+  tx_state_manager_ =
+      std::make_unique<EthTxStateManager>(&prefs_, storage_.get());
+  EXPECT_FALSE(tx_state_manager_->AddOrUpdateTx(EthTxMeta()));
+  EXPECT_FALSE(tx_state_manager_->DeleteTx(mojom::kMainnetChainId, "001"));
+  EXPECT_FALSE(tx_state_manager_->WipeTxs());
 }
 
 }  // namespace brave_wallet

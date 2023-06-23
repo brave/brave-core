@@ -32,8 +32,9 @@ namespace brave_wallet {
 SolanaTxManager::SolanaTxManager(TxService* tx_service,
                                  JsonRpcService* json_rpc_service,
                                  KeyringService* keyring_service,
-                                 PrefService* prefs)
-    : TxManager(std::make_unique<SolanaTxStateManager>(prefs),
+                                 PrefService* prefs,
+                                 value_store::ValueStoreFrontend* store)
+    : TxManager(std::make_unique<SolanaTxStateManager>(prefs, store),
                 std::make_unique<SolanaBlockTracker>(json_rpc_service),
                 tx_service,
                 json_rpc_service,
@@ -81,7 +82,11 @@ void SolanaTxManager::AddUnapprovedTransaction(
   meta.set_created_time(base::Time::Now());
   meta.set_status(mojom::TransactionStatus::Unapproved);
   meta.set_chain_id(chain_id);
-  tx_state_manager_->AddOrUpdateTx(meta);
+  if (!tx_state_manager_->AddOrUpdateTx(meta)) {
+    std::move(callback).Run(
+        false, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
   std::move(callback).Run(true, meta.id(), "");
 }
 
@@ -130,7 +135,14 @@ void SolanaTxManager::OnGetLatestBlockhash(std::unique_ptr<SolanaTxMeta> meta,
   meta->set_status(mojom::TransactionStatus::Approved);
   meta->tx()->message()->set_recent_blockhash(latest_blockhash);
   meta->tx()->message()->set_last_valid_block_height(last_valid_block_height);
-  tx_state_manager_->AddOrUpdateTx(*meta);
+  if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewSolanaProviderError(
+            mojom::SolanaProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
 
   json_rpc_service_->SendSolanaTransaction(
       meta->chain_id(), meta->tx()->GetSignedTransaction(keyring_service_),
@@ -154,7 +166,10 @@ void SolanaTxManager::OnGetLatestBlockhashHardware(
 
   meta->tx()->message()->set_recent_blockhash(latest_blockhash);
   meta->tx()->message()->set_last_valid_block_height(last_valid_block_height);
-  tx_state_manager_->AddOrUpdateTx(*meta);
+  if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
 
   auto message_signers_pair = meta->tx()->GetSerializedMessage();
   if (!message_signers_pair) {
@@ -195,7 +210,14 @@ void SolanaTxManager::OnSendSolanaTransaction(
     meta->set_status(mojom::TransactionStatus::Error);
   }
 
-  tx_state_manager_->AddOrUpdateTx(*meta);
+  if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewSolanaProviderError(
+            mojom::SolanaProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
 
   if (success) {
     UpdatePendingTransactions(meta->chain_id());
@@ -631,7 +653,14 @@ void SolanaTxManager::ProcessSolanaHardwareSignature(
   }
 
   meta->set_status(mojom::TransactionStatus::Approved);
-  tx_state_manager_->AddOrUpdateTx(*meta);
+  if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewSolanaProviderError(
+            mojom::SolanaProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
 
   json_rpc_service_->SendSolanaTransaction(
       meta->chain_id(), base::Base64Encode(*transaction_bytes),

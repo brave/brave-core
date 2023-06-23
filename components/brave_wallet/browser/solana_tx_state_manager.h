@@ -25,7 +25,8 @@ class SolanaTxMeta;
 
 class SolanaTxStateManager : public TxStateManager {
  public:
-  explicit SolanaTxStateManager(PrefService* prefs);
+  SolanaTxStateManager(PrefService* prefs,
+                       value_store::ValueStoreFrontend* store);
   ~SolanaTxStateManager() override;
   SolanaTxStateManager(const SolanaTxStateManager&) = delete;
   SolanaTxStateManager operator=(const SolanaTxStateManager&) = delete;

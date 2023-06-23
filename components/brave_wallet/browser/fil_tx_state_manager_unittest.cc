@@ -9,12 +9,14 @@
 #include <utility>
 #include <vector>
 
+#include "base/files/scoped_temp_dir.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/fil_tx_meta.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -29,12 +31,18 @@ class FilTxStateManagerUnitTest : public testing::Test {
  protected:
   void SetUp() override {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    fil_tx_state_manager_ = std::make_unique<FilTxStateManager>(GetPrefs());
+    factory_ = GetTestValueStoreFactory(temp_dir_);
+    storage_ = GetValueStoreFrontendForTest(factory_);
+    fil_tx_state_manager_ =
+        std::make_unique<FilTxStateManager>(GetPrefs(), storage_.get());
   }
 
   PrefService* GetPrefs() { return &prefs_; }
 
   base::test::TaskEnvironment task_environment_;
+  base::ScopedTempDir temp_dir_;
+  scoped_refptr<value_store::TestValueStoreFactory> factory_;
+  std::unique_ptr<value_store::ValueStoreFrontend> storage_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   std::unique_ptr<FilTxStateManager> fil_tx_state_manager_;
 };

@@ -33,7 +33,8 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
   SolanaTxManager(TxService* tx_service,
                   JsonRpcService* json_rpc_service,
                   KeyringService* keyring_service,
-                  PrefService* prefs);
+                  PrefService* prefs,
+                  value_store::ValueStoreFrontend* store);
   ~SolanaTxManager() override;
 
   using ProcessSolanaHardwareSignatureCallback =
@@ -102,6 +103,7 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
                                                 const std::string& tx_meta_id);
 
  private:
+  friend class SolanaTxManagerUnitTest;
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, AddAndApproveTransaction);
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, DropTxWithInvalidBlockhash);
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest,
