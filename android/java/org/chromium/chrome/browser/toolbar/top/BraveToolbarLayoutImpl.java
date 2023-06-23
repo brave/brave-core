@@ -41,7 +41,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.widget.ImageViewCompat;
 
-import com.brave.playlist.PlaylistDownloadUtils;
 import com.brave.playlist.enums.PlaylistOptionsEnum;
 import com.brave.playlist.listener.PlaylistOnboardingActionClickListener;
 import com.brave.playlist.listener.PlaylistOptionsListener;
@@ -89,6 +88,7 @@ import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate;
 import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment.PlaylistWarningDialogListener;
+import org.chromium.chrome.browser.playlist.kotlin.PlaylistDownloadUtils;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;

@@ -104,7 +104,8 @@ resources = [
   "res/layout/tooltip_playlist_onboarding_button.xml",
   "res/values/values.xml",
   "res/values-night-v8/values-night-v8.xml",
-  "res/values-sw600dp-v13/values-sw600dp-v13.xml"
+  "res/values-sw600dp-v13/values-sw600dp-v13.xml",
+  "res/values-v26/values-v26.xml"
 ]
 subjar_tuples = []
 subjars = []
