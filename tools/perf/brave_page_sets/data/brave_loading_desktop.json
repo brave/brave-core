@@ -6,6 +6,9 @@
         "BraveSearch_warm": {
             "DEFAULT": "brave_loading_desktop_a1c972475b.wprgo"
         },
+        "Brave_SERP_cold": {
+            "DEFAULT": "brave_loading_desktop_0063446a64.wprgo"
+        },
         "Economist_cold": {
             "DEFAULT": "brave_loading_desktop_a1c972475b.wprgo"
         },

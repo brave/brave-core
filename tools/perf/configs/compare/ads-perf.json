@@ -1,27 +1,27 @@
 {
   "configurations": [
     {
-      "target" : "v1.55.1",
-      "label": "default_v1.55.1",
+      "target" : "v1.55.5",
+      "label": "default_v1.55.5",
       "browser-type": "brave",
       "profile": "brave-typical-v1.46.52",
       "extra-browser-args": [],
       "extra-benchmark-args": [],
     },
     {
-      "target" : "v1.55.1",
-      "label": "ads_in_process_v1.55.1",
+      "target" : "v1.55.5",
+      "label": "ads_in_process_v1.55.5",
       "browser-type": "brave",
       "profile": "brave-typical-v1.46.52",
       "extra-browser-args": ["--enable-features=ShouldLaunchBraveAdsAsInProcessService"],
       "extra-benchmark-args": [],
     },
     {
-      "target" : "v1.55.1",
-      "label": "all_features_v1.55.1",
+      "target" : "v1.55.5",
+      "label": "all_features_v1.55.5",
       "browser-type": "brave",
       "profile": "brave-typical-v1.46.52",
-      "extra-browser-args": ["--enable-features=ShouldAlwaysTriggerBraveSearchResultAdEvents,ShouldAlwaysRunBraveAdsService,ShouldLaunchBraveAdsAsInProcessService"],
+      "extra-browser-args": ["--enable-features=ShouldAlwaysTriggerBraveSearchResultAdEvents,ShouldAlwaysRunBraveAdsService,ShouldLaunchBraveAdsAsInProcessService,ShouldSupportSearchResultAds"],
       "extra-benchmark-args": [],
     },
   ],
@@ -49,7 +49,6 @@
       "name": "system_health.common_desktop",
       "pageset-repeat": 10,
       "stories": [
-        "load:chrome:blank",
         "load:chrome:blank",
         "load:media:youtube:2018",
       ]
