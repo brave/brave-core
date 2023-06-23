@@ -737,8 +737,8 @@
 -PageInfoBubbleViewBrowserTestCookiesSubpage.ClickingFpsButton
 -PageInfoBubbleViewBrowserTestCookiesSubpage.ToggleForBlockingThirdPartyCookies
 
-# This test fails because we don't support the search companion
--CompanionPageBrowserTest.SigninLoadsInNewTab
+# These tests fails because we don't support the search companion
+-CompanionPageBrowserTest.*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
