@@ -60,6 +60,14 @@ export const AccountSelector = (props: Props) => {
     onSelectAddress(address)
   }, [onSelectAddress])
 
+  const isFVMAccount = React.useCallback(
+    (account) =>
+      (selectedNetwork?.chainId === BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID &&
+       account.accountId.keyringId === BraveWallet.KeyringId.kFilecoin) ||
+      (selectedNetwork?.chainId === BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID &&
+       account.accountId.keyringId === BraveWallet.KeyringId.kFilecoinTestnet),
+    [selectedNetwork]);
+
   // Memos
   const accountsByNetwork = React.useMemo(() => {
     if (!selectedNetwork || !selectedAccount) {
@@ -70,12 +78,7 @@ export const AccountSelector = (props: Props) => {
       (account) =>
         account.accountId.coin === selectedNetwork.coin &&
         account.accountId.keyringId === selectedAccount.accountId.keyringId ||
-        ((asset?.contractAddress === "") && 
-        ((selectedNetwork.chainId === BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID &&
-          account.accountId.keyringId === BraveWallet.KeyringId.kFilecoin) ||
-         (selectedNetwork.chainId === BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID) &&
-          account.accountId.keyringId === BraveWallet.KeyringId.kFilecoinTestnet))
-    )
+        (asset?.contractAddress === "" && isFVMAccount(account)))
   }, [accounts, selectedNetwork, selectedAccount, asset])
 
   // Hooks
