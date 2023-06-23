@@ -31,9 +31,6 @@
   <message name="IDS_IDC_CLOSE_WINDOW">
     Close window
   </message>
-  <message name="IDS_IDC_ALWAYS_ON_TOP">
-    Toggle always on top
-  </message>
   <message name="IDS_IDC_NEW_TAB">
     New tab
   </message>
@@ -154,9 +151,6 @@
   <message name="IDS_IDC_FIND">
     Find
   </message>
-  <message name="IDS_IDC_FIND_AND_EDIT_MENU">
-    Find and edit menu
-  </message>
   <message name="IDS_IDC_DEV_TOOLS">
     Developer tools
   </message>
@@ -178,9 +172,6 @@
   <message name="IDS_IDC_TAKE_SCREENSHOT">
     Take screenshot
   </message>
-  <message name="IDS_IDC_HISTORY_MENU">
-    History menu
-  </message>
   <message name="IDS_IDC_TRANSLATE_PAGE">
     Translate page
   </message>
@@ -195,9 +186,6 @@
   </message>
   <message name="IDS_IDC_WINDOW_GROUP_TAB">
     Group tab
-  </message>
-  <message name="IDS_IDC_FOCUS_THIS_TAB">
-    Focus tab
   </message>
   <message name="IDS_IDC_QRCODE_GENERATOR">
     QR code generator
@@ -223,9 +211,6 @@
   <message name="IDS_IDC_SHOW_ADDRESSES">
     Show addresses
   </message>
-  <message name="IDS_IDC_EDIT_MENU">
-    Edit menu
-  </message>
   <message name="IDS_IDC_FIND_NEXT">
     Find next
   </message>
@@ -234,9 +219,6 @@
   </message>
   <message name="IDS_IDC_CLOSE_FIND_OR_STOP">
     Close find or stop
-  </message>
-  <message name="IDS_IDC_FIND_MENU">
-    Find menu
   </message>
   <message name="IDS_IDC_ZOOM_PLUS">
     Zoom in
@@ -310,12 +292,6 @@
   <message name="IDS_IDC_DEV_TOOLS_TOGGLE">
     Dev tools toggle
   </message>
-  <message name="IDS_IDC_SHOW_SETTINGS_RESET_BUBBLE">
-    Reset settings
-  </message>
-  <message name="IDS_IDC_SHOW_SRT_BUBBLE">
-    Show SRT bubble
-  </message>
   <message name="IDS_IDC_TOGGLE_FULLSCREEN_TOOLBAR">
     Toggle fullscreen toolbar
   </message>
@@ -345,9 +321,6 @@
   </message>
   <message name="IDS_IDC_SHOW_BOOKMARK_SIDE_PANEL">
     Show bookmark side panel
-  </message>
-  <message name="IDS_IDC_TRANSLATE_ORIGINAL_LANGUAGE_BASE">
-    Translate original language base
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_OPEN_ALL">
     Bookmark bar open all
@@ -403,12 +376,6 @@
   <message name="IDS_IDC_BOOKMARK_BAR_REMOVE_FROM_BOOKMARKS_BAR">
     Bookmark bar remove from bookmarks bar
   </message>
-  <message name="IDS_IDC_CONTENT_CLIPBOARD_HISTORY_MENU">
-    Content clipboard history menu
-  </message>
-  <message name="IDS_IDC_MEDIA_ROUTER_SHOW_IN_TOOLBAR">
-    Show media router in toolbar
-  </message>
   <message name="IDS_IDC_TAB_SEARCH">
     Tab search
   </message>
@@ -441,9 +408,6 @@
   </message>
   <message name="IDS_IDC_SHOW_BRAVE_VPN_PANEL">
     Show Brave VPN panel
-  </message>
-  <message name="IDS_IDC_BRAVE_VPN_MENU">
-    Brave VPN menu
   </message>
   <message name="IDS_IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON">
     Toggle Brave VPN toolbar button
