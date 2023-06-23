@@ -213,7 +213,7 @@
 </service>
 
 <activity
-    android:name="com.brave.playlist.activity.PlaylistMenuOnboardingActivity"
+    android:name="org.chromium.chrome.browser.playlist.PlaylistMenuOnboardingActivity"
     android:exported="false"
     android:launchMode="singleTask"
     android:theme="@style/Theme.Chromium.Activity.Fullscreen" />

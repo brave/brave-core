@@ -15,6 +15,8 @@ import("//brave/components/permissions/android/java_sources.gni")
 import("//brave/components/safetynet/java_sources.gni")
 import("//components/feed/features.gni")
 
+brave_kotlin_sources = [ "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/activity/PlaylistMenuOnboardingActivity.kt" ]
+
 brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveAdFreeCalloutDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveAppHooks.java",
@@ -474,6 +476,7 @@ brave_java_sources += brave_rewards_java_sources
 brave_java_sources += brave_feed_java_sources
 brave_java_sources += brave_public_tab_management_java_sources
 brave_java_sources += brave_share_java_sources
+brave_java_sources += brave_kotlin_sources
 
 brave_browser_ui_android_appmenu_internal_sources = [
   "//brave/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/BraveAppMenu.java",

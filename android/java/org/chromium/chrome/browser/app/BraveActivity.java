@@ -126,6 +126,7 @@ import org.chromium.chrome.browser.onboarding.v2.HighlightView;
 import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
 import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment;
 import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment.PlaylistWarningDialogListener;
+import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistMenuOnboardingActivity;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -362,7 +363,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         } else if (id == R.id.brave_playlist_id) {
             if (SharedPreferencesManager.getInstance().readBoolean(
                         PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
-                PlaylistUtils.openPlaylistMenuOnboardingActivity(BraveActivity.this);
+                // PlaylistUtils.openPlaylistMenuOnboardingActivity(BraveActivity.this);
+                Intent playlistActivityIntent =
+                        new Intent(BraveActivity.this, PlaylistMenuOnboardingActivity.class);
+                playlistActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(playlistActivityIntent);
                 SharedPreferencesManager.getInstance().writeBoolean(
                         PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
             } else {
