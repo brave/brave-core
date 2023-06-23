@@ -1,12 +1,12 @@
 diff --git a/services/network/resolve_host_request.cc b/services/network/resolve_host_request.cc
-index cb4d289166f2ea1a5a56b76e4294c0cb4baf6c36..eb12395d029bfebb79114001193452a472fe2838 100644
+index 80f62859759dfba5c523e6bf6a9493478b1c7d79..459511f0460e00f2c9881b121bc353593d25dfda 100644
 --- a/services/network/resolve_host_request.cc
 +++ b/services/network/resolve_host_request.cc
 @@ -94,6 +94,7 @@ int ResolveHostRequest::Start(
    mojo::Remote<mojom::ResolveHostClient> response_client(
        std::move(pending_response_client));
    if (rv != net::ERR_IO_PENDING) {
-+    BRAVE_START
++    BRAVE_RESOLVE_HOST_REQUEST_START
      response_client->OnComplete(rv, GetResolveErrorInfo(),
                                  base::OptionalFromPtr(GetAddressResults()),
                                  GetEndpointResultsWithMetadata());

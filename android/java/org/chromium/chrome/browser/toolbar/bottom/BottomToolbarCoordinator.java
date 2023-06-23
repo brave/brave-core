@@ -190,7 +190,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                 && BottomToolbarVariationManager.shouldBottomToolbarBeVisibleInOverviewMode()) {
             mLayoutStateObserver = new LayoutStateProvider.LayoutStateObserver() {
                 @Override
-                public void onStartedShowing(@LayoutType int layoutType, boolean showToolbar) {
+                public void onStartedShowing(@LayoutType int layoutType) {
                     if (layoutType != LayoutType.TAB_SWITCHER) return;
 
                     BrowsingModeBottomToolbarCoordinator browsingModeCoordinator =
@@ -214,8 +214,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                 }
 
                 @Override
-                public void onStartedHiding(
-                        @LayoutType int layoutType, boolean showToolbar, boolean delayAnimation) {
+                public void onStartedHiding(@LayoutType int layoutType) {
                     if (layoutType != LayoutType.TAB_SWITCHER) return;
 
                     BrowsingModeBottomToolbarCoordinator browsingModeCoordinator =

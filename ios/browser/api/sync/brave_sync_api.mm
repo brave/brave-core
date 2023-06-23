@@ -23,17 +23,17 @@
 #include "brave/ios/browser/api/sync/brave_sync_internals+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_worker.h"
 
-#include "components/sync/driver/sync_service.h"
-#include "components/sync/driver/sync_service_impl.h"
-#include "components/sync/driver/sync_service_observer.h"
 #include "components/sync/protocol/sync_protocol_error.h"
+#include "components/sync/service/sync_service.h"
+#include "components/sync/service/sync_service_impl.h"
+#include "components/sync/service/sync_service_observer.h"
 #include "components/sync_device_info/device_info.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
 #include "components/sync_device_info/local_device_info_provider.h"
-#include "ios/chrome/browser/application_context/application_context.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
+#include "ios/chrome/browser/shared/model/application_context/application_context.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/sync/device_info_sync_service_factory.h"
 #include "ios/chrome/browser/sync/sync_service_factory.h"
 #include "ios/chrome/browser/sync/sync_setup_service.h"
@@ -196,8 +196,8 @@ BraveSyncAPIWordsValidationStatus const
   return _worker->IsSyncFeatureActive();
 }
 
-- (bool)isFirstSetupComplete {
-  return _worker->IsFirstSetupComplete();
+- (bool)isInitialSyncFeatureSetupComplete {
+  return _worker->IsInitialSyncFeatureSetupComplete();
 }
 
 - (void)setSetupComplete {

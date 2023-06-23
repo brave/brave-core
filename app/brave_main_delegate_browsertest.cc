@@ -117,6 +117,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kCssSelectorFragmentAnchor,
     &blink::features::kFencedFrames,
     &blink::features::kFledge,
+    &blink::features::kFledgeBiddingAndAuctionServer,
     &blink::features::kFledgeConsiderKAnonymity,
     &blink::features::kFledgeEnforceKAnonymity,
     &blink::features::kInterestGroupStorage,
@@ -185,6 +186,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &history_clusters::internal::kHistoryClustersInternalsPage,
     &history_clusters::internal::kHistoryClustersNavigationContextClustering,
     &history_clusters::internal::kJourneys,
+    &history_clusters::internal::kJourneysNamedNewTabGroups,
     &history_clusters::internal::kJourneysZeroStateFiltering,
     &history_clusters::internal::kOmniboxAction,
     &history_clusters::internal::kOmniboxHistoryClusterProvider,
@@ -202,6 +204,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &network::features::kPrivateStateTokens,
     &network_time::kNetworkTimeServiceQuerying,
     &ntp_features::kNtpAlphaBackgroundCollections,
+    &ntp_features::kNtpBackgroundImageErrorDetection,
     &ntp_features::kNtpChromeCartModule,
     &ntp_features::kNtpHistoryClustersModule,
     &ntp_features::kNtpHistoryClustersModuleLoad,
@@ -218,6 +221,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #endif
     &permissions::features::kPermissionOnDeviceNotificationPredictions,
     &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
+    &privacy_sandbox::kEnforcePrivacySandboxAttestations,
     &privacy_sandbox::kPrivacySandboxSettings3,
     &privacy_sandbox::kPrivacySandboxSettings4,
     &safe_browsing::kExtensionTelemetry,
@@ -248,7 +252,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
     &features::kWinrtGeolocationImplementation,
 #endif
 #if !BUILDFLAG(IS_ANDROID)
-    &performance_manager::features::kBatterySaverModeAvailable,
     &performance_manager::features::kHeuristicMemorySaver,
     &safe_browsing::kDownloadBubble,
     &safe_browsing::kDownloadBubbleV2,

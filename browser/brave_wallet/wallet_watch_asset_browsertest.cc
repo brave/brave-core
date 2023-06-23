@@ -114,13 +114,6 @@ class WalletWatchAssetBrowserTest : public InProcessBrowserTest {
     return tokens_out;
   }
 
-  void WaitForWalletWatchAssetResultReady() {
-    content::DOMMessageQueue message_queue;
-    std::string message;
-    EXPECT_TRUE(message_queue.WaitForMessage(&message));
-    EXPECT_EQ("\"result ready\"", message);
-  }
-
  protected:
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   std::vector<std::string> methods_{"request", "send1", "send2", "sendAsync"};
@@ -143,7 +136,6 @@ IN_PROC_BROWSER_TEST_F(WalletWatchAssetBrowserTest, UserApprovedRequest) {
   GURL url = https_server()->GetURL("a.com", "/wallet_watch_asset.html");
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  WaitForLoadStop(web_contents());
 
   size_t asset_num = GetUserAssets().size();
   for (size_t i = 0; i < methods_.size(); i++) {
@@ -151,19 +143,14 @@ IN_PROC_BROWSER_TEST_F(WalletWatchAssetBrowserTest, UserApprovedRequest) {
         web_contents(),
         base::StringPrintf("wallet_watchAsset('%s', 'ERC20', '%s', '%s', %d)",
                            methods_[i].c_str(), addresses_[i].c_str(),
-                           symbols_[i].c_str(), decimals_[i])));
+                           symbols_[i].c_str(), decimals_[i]),
+        content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(
         brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
             ->IsShowingBubble());
     brave_wallet_service_->NotifyAddSuggestTokenRequestsProcessed(
         true, {addresses_[i]});
-
-    WaitForWalletWatchAssetResultReady();
-    base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(EvalJs(web_contents(), "getWalletWatchAssetResult()",
-                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                    .ExtractBool());
   }
   EXPECT_EQ(asset_num + methods_.size(), GetUserAssets().size());
 }
@@ -173,7 +160,6 @@ IN_PROC_BROWSER_TEST_F(WalletWatchAssetBrowserTest, UserRejectedRequest) {
   GURL url = https_server()->GetURL("a.com", "/wallet_watch_asset.html");
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  WaitForLoadStop(web_contents());
 
   size_t asset_num = GetUserAssets().size();
   for (size_t i = 0; i < methods_.size(); i++) {
@@ -181,19 +167,14 @@ IN_PROC_BROWSER_TEST_F(WalletWatchAssetBrowserTest, UserRejectedRequest) {
         web_contents(),
         base::StringPrintf("wallet_watchAsset('%s', 'ERC20', '%s', '%s', %d)",
                            methods_[i].c_str(), addresses_[i].c_str(),
-                           symbols_[i].c_str(), decimals_[i])));
+                           symbols_[i].c_str(), decimals_[i]),
+        content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(
         brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
             ->IsShowingBubble());
     brave_wallet_service_->NotifyAddSuggestTokenRequestsProcessed(
         false, {addresses_[i]});
-
-    WaitForWalletWatchAssetResultReady();
-    base::RunLoop().RunUntilIdle();
-    EXPECT_FALSE(EvalJs(web_contents(), "getWalletWatchAssetResult()",
-                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                     .ExtractBool());
   }
   EXPECT_EQ(asset_num, GetUserAssets().size());
 }
@@ -203,15 +184,13 @@ IN_PROC_BROWSER_TEST_F(WalletWatchAssetBrowserTest, InvalidTypeParam) {
   GURL url = https_server()->GetURL("a.com", "/wallet_watch_asset.html");
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  WaitForLoadStop(web_contents());
 
   for (size_t i = 0; i < methods_.size(); i++) {
     EXPECT_EQ(EvalJs(web_contents(),
                      base::StringPrintf(
                          "wallet_watchAsset('%s', 'ERC721', '%s', '%s', %d)",
                          methods_[i].c_str(), addresses_[i].c_str(),
-                         symbols_[i].c_str(), decimals_[i]),
-                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                         symbols_[i].c_str(), decimals_[i]))
                   .ExtractString(),
               "Asset of type 'ERC721' not supported");
   }

@@ -1,0 +1,12 @@
+diff --git a/components/sync/service/sync_service_impl.h b/components/sync/service/sync_service_impl.h
+index 28a0bed75cc0fe4bc520d82d1c04c9ea2fca4cfe..c9b30befbc7bb46288b2d116b86f7ccf473038d7 100644
+--- a/components/sync/service/sync_service_impl.h
++++ b/components/sync/service/sync_service_impl.h
+@@ -237,6 +237,7 @@ class SyncServiceImpl : public SyncService,
+   bool IsSyncFeatureConsideredRequested() const override;
+ 
+  private:
++  BRAVE_SYNC_SERVICE_IMPL_H_
+   enum UnrecoverableErrorReason {
+     ERROR_REASON_ENGINE_INIT_FAILURE,
+     ERROR_REASON_ACTIONABLE_ERROR,

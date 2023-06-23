@@ -112,7 +112,7 @@ std::vector<std::string> ChannelsController::GetChannelLocales(
   std::vector<std::string> result;
   const auto& pref = prefs_->GetDict(prefs::kBraveNewsChannels);
   for (const auto&& [locale, channels] : pref) {
-    auto subscribed = channels.FindBoolKey(channel_id).value_or(false);
+    auto subscribed = channels.GetDict().FindBool(channel_id).value_or(false);
     if (subscribed) {
       result.push_back(locale);
     }

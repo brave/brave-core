@@ -4,6 +4,9 @@
   <message name="IDS_EXTENSIONS_VIEW_INCOGNITO" desc="Text that signifies that the extension view is in a Private process.">
     (Private)
   </message>
+  <message name="IDS_EXTENSIONS_DISABLED_PUBLISHED_IN_STORE_REQUIRED_BY_POLICY" desc="Text shown in the extensions settings for extensions disabled because they are no longer published and available on the Web Store as required by enterprise policy">
+    This extension has been disabled by enterprise policy because it is no longer available on the Web Store.
+  </message>
   <message name="IDS_EXTENSIONS_ITEM_ALLOW_INCOGNITO" desc="The text next to the checkbox to enable an extension in Private mode.">
     Allow in Private
   </message>

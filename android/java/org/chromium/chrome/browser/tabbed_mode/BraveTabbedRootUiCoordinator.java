@@ -5,7 +5,7 @@
 
 package org.chromium.chrome.browser.tabbed_mode;
 
-import android.view.ViewGroup;
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -99,7 +99,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @NonNull Supplier<InsetObserverView> insetObserverViewSupplier,
             @NonNull Function<Tab, Boolean> backButtonShouldCloseTabFn,
             OneshotSupplier<TabReparentingController> tabReparentingControllerSupplier,
-            boolean initializeUiWithIncognitoColors, @NonNull BackPressManager backPressManager) {
+            boolean initializeUiWithIncognitoColors, @NonNull BackPressManager backPressManager,
+            @NonNull Supplier<Bundle> savedInstanceStateSupplier) {
         super(activity, onOmniboxFocusChangedListener, shareDelegateSupplier, tabProvider,
                 profileSupplier, bookmarkModelSupplier, tabBookmarkerSupplier,
                 contextualSearchManagerSupplier, tabModelSelectorSupplier, startSurfaceSupplier,
@@ -114,7 +115,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 statusBarColorProvider, ephemeralTabCoordinatorSupplier, intentRequestTracker,
                 controlContainerHeightResource, insetObserverViewSupplier,
                 backButtonShouldCloseTabFn, tabReparentingControllerSupplier,
-                initializeUiWithIncognitoColors, backPressManager);
+                initializeUiWithIncognitoColors, backPressManager, savedInstanceStateSupplier);
 
         mActivity = activity;
     }

@@ -104,13 +104,8 @@ copy("brave") {
         sources += [ "$root_out_dir/apks/MonochromePublic.apk" ]
       }
     } else {
-      if (target_android_output_format == "aab") {
-        deps += [ "//chrome/android:chrome_modern_public_bundle" ]
-        sources += [ "$root_out_dir/apks/ChromeModernPublic.aab" ]
-      } else {
-        deps += [ "//chrome/android:chrome_public_apk" ]
-        sources += [ "$root_out_dir/apks/ChromePublic.apk" ]
-      }
+      deps += [ "//chrome/android:chrome_public_apk" ]
+      sources += [ "$root_out_dir/apks/ChromePublic.apk" ]
     }
   }
   outputs = [ brave_android_output ]

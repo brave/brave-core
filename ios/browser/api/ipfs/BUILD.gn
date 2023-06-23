@@ -15,7 +15,7 @@ source_set("ipfs") {
     "//brave/base/mac",
     "//brave/components/ipfs",
     "//components/user_prefs",
-    "//ios/chrome/browser/browser_state",
+    "//ios/chrome/browser/shared/model/browser_state",
     "//net",
     "//url",
   ]

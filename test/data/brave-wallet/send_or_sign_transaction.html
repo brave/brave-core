@@ -12,7 +12,7 @@
   }
 
   function getPermissionGranted() {
-    window.domAutomationController.send(permissionGranted)
+    return permissionGranted;
   }
 
   var sendOrSignTransactionResult, sendOrSignTransactionError
@@ -80,35 +80,36 @@
   }
 
   function getSendOrSignTransactionResult() {
-    window.domAutomationController.send(sendOrSignTransactionResult)
+    return sendOrSignTransactionResult;
   }
   function getSendOrSignTransactionError() {
-    window.domAutomationController.send(sendOrSignTransactionError)
+    return sendOrSignTransactionError;
   }
   // window.ethereum.selectedAddress and not necessarily the selected account
   function getSelectedAddress() {
-    window.domAutomationController.send(String(window.ethereum.selectedAddress))
+    return String(window.ethereum.selectedAddress);
   }
   function getChainId() {
-    window.domAutomationController.send(window.ethereum.chainId)
+    return window.ethereum.chainId;
   }
   function getNetworkVersion() {
-    window.domAutomationController.send(String(window.ethereum.networkVersion))
+    return String(window.ethereum.networkVersion);
   }
   function getIsUnlocked() {
-    window.ethereum._metamask.isUnlocked().then(result =>
-      window.domAutomationController.send(result))
+    return new Promise(resolve => {
+      window.ethereum._metamask.isUnlocked().then(result => resolve(result));
+    });
   }
   function getIsConnected() {
-    window.domAutomationController.send(window.ethereum.isConnected())
+    return window.ethereum.isConnected();
   }
   function getIsConnectedViaProxy() {
     proxy = new Proxy(window.ethereum, {})
-    window.domAutomationController.send(proxy.isConnected())
+    return proxy.isConnected();
   }
   function getIsBraveWalletViaProxy() {
     proxy = new Proxy(window.ethereum, {})
-    window.domAutomationController.send(proxy.isBraveWallet)
+    return proxy.isBraveWallet;
   }
 </script>
 

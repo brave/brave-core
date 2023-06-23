@@ -269,7 +269,7 @@ void EphemeralStorageBrowserTest::SetStorageValueInFrame(
   std::string script =
       base::StringPrintf("%sStorage.setItem('storage_key', '%s');",
                          ToString(storage_type), value.c_str());
-  ASSERT_TRUE(content::ExecuteScript(host, script));
+  ASSERT_TRUE(content::ExecJs(host, script));
 }
 
 content::EvalJsResult EphemeralStorageBrowserTest::GetStorageValueInFrame(
@@ -284,7 +284,7 @@ void EphemeralStorageBrowserTest::SetCookieInFrame(RenderFrameHost* host,
                                                    std::string cookie) {
   std::string script = base::StringPrintf(
       "document.cookie='%s; path=/; SameSite=None; Secure'", cookie.c_str());
-  ASSERT_TRUE(content::ExecuteScript(host, script));
+  ASSERT_TRUE(content::ExecJs(host, script));
 }
 
 content::EvalJsResult EphemeralStorageBrowserTest::GetCookiesInFrame(

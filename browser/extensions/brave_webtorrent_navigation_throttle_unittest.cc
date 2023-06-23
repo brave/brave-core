@@ -12,6 +12,7 @@
 #include "base/command_line.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ptr.h"
+#include "base/values.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/load_error_reporter.h"
@@ -131,12 +132,11 @@ class BraveWebTorrentNavigationThrottleUnitTest
   }
 
   void AddExtension() {
-    DictionaryBuilder manifest;
-    manifest.Set("name", "ext")
-        .Set("version", "0.1")
-        .Set("manifest_version", 2);
     extension_ = ExtensionBuilder()
-                     .SetManifest(manifest.Build())
+                     .SetManifest(base::Value::Dict()
+                                      .Set("name", "ext")
+                                      .Set("version", "0.1")
+                                      .Set("manifest_version", 2))
                      .SetID(brave_webtorrent_extension_id)
                      .Build();
     ASSERT_TRUE(extension_);

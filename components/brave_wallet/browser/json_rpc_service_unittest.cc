@@ -730,17 +730,18 @@ class JsonRpcServiceUnitTest : public testing::Test {
       return false;
     }
 
-    for (const auto& chain : custom_networks->GetList()) {
-      if (!chain.is_dict()) {
+    for (const auto& item : custom_networks->GetList()) {
+      const auto* chain = item.GetIfDict();
+      if (!chain) {
         continue;
       }
 
-      const std::string* id = chain.GetDict().FindString("chainId");
+      const std::string* id = chain->FindString("chainId");
       if (!id || *id != chain_id) {
         continue;
       }
 
-      return chain.FindBoolKey("is_eip1559").value_or(false);
+      return chain->FindBool("is_eip1559").value_or(false);
     }
 
     return false;

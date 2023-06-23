@@ -5,11 +5,11 @@
 
 #include "brave/ios/app/brave_main_delegate.h"
 
+#include "base/apple/bundle_locations.h"
 #include "base/base_paths.h"
 #include "base/base_switches.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
-#include "base/mac/bundle_locations.h"
 #include "base/path_service.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_component_updater/browser/features.h"
@@ -44,8 +44,8 @@ std::string GetUpdateURLHost() {
 BraveMainDelegate::BraveMainDelegate() {
   base::FilePath path;
   base::PathService::Get(base::DIR_MODULE, &path);
-  base::mac::SetOverrideFrameworkBundlePath(path);
-  base::mac::SetOverrideOuterBundlePath(path);
+  base::apple::SetOverrideFrameworkBundlePath(path);
+  base::apple::SetOverrideOuterBundlePath(path);
 }
 
 BraveMainDelegate::~BraveMainDelegate() {}

@@ -7,7 +7,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/strings/sys_string_conversions.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #import "ios/web/js_messaging/web_view_web_state_map.h"
 #import "ios/web/public/browser_state.h"

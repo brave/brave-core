@@ -13,6 +13,7 @@ import org.chromium.components.browser_ui.widget.dragreorder.DragReorderableRecy
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListLayout;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListToolbar.SearchDelegate;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 
 class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
     // Overridden Chromium's BookmarkToolbarCoordinator.mToolbar
@@ -24,10 +25,10 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
             DragReorderableRecyclerViewAdapter dragReorderableRecyclerViewAdapter,
             boolean isDialogUi, OneshotSupplier<BookmarkDelegate> bookmarkDelegateSupplier,
             BookmarkModel bookmarkModel, BookmarkOpener bookmarkOpener,
-            BookmarkUiPrefs bookmarkUiPrefs) {
+            BookmarkUiPrefs bookmarkUiPrefs, ModalDialogManager modalDialogManager) {
         super(context, selectableListLayout, selectionDelegate, searchDelegate,
                 dragReorderableRecyclerViewAdapter, isDialogUi, bookmarkDelegateSupplier,
-                bookmarkModel, bookmarkOpener, bookmarkUiPrefs);
+                bookmarkModel, bookmarkOpener, bookmarkUiPrefs, modalDialogManager);
 
         if (mToolbar instanceof BraveBookmarkToolbar) {
             ((BraveBookmarkToolbar) mToolbar).setBraveBookmarkDelegate(bookmarkDelegateSupplier);

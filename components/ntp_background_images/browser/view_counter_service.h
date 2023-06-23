@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"

@@ -11,6 +11,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 

@@ -34,6 +34,10 @@ class MockPrivacySandboxDelegate : public PrivacySandboxSettings::Delegate {
   MOCK_METHOD(bool, IsIncognitoProfile, (), (const, override));
   MOCK_METHOD(bool, HasAppropriateTopicsConsent, (), (const, override));
   MOCK_METHOD(bool, IsSubjectToM1NoticeRestricted, (), (const, override));
+  MOCK_METHOD(bool,
+              IsPrivacySandboxCurrentlyUnrestricted,
+              (),
+              (const, override));
 };
 
 class PrivacySandboxSettingsTest : public testing::Test {

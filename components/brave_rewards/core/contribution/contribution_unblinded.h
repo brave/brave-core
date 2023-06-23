@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_promotion.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_sku.h"

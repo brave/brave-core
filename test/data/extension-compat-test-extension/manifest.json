@@ -4,6 +4,6 @@
   "manifest_version": 2,
   "name": "Extension Compat Tester",
   "permissions": ["cookies", "http://a.com/"],
-  "content_security_policy": "default-src 'self'; script-src 'self' 'sha256-dCCnyHXZPS+flQRW+/XLcNgtOt9dxsgyClhYhOSDEMw=';",
+  "content_security_policy": "default-src 'self'; script-src 'self' 'sha256-31e31LQBQVgum7/5clgXSTtrpJAgy42Geb7daYIonf8=';",
   "version": "1.0.0"
 }

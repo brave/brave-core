@@ -5,13 +5,13 @@
 
 #include "brave/browser/brave_shell_integration_mac.h"
 
-#include "base/mac/bundle_locations.h"
+#include "base/apple/bundle_locations.h"
 #include "chrome/browser/mac/dock.h"
 
 namespace shell_integration::mac {
 
 void AddIconToDock(base::OnceCallback<void(bool)> result_callback) {
-  dock::AddIcon([base::mac::MainBundle() bundlePath], nullptr);
+  dock::AddIcon([base::apple::MainBundle() bundlePath], nullptr);
 
   std::move(result_callback)
       .Run(dock::ChromeIsInTheDock() == dock::ChromeInDockTrue);
