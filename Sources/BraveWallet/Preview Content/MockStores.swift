@@ -49,7 +49,8 @@ extension NetworkStore {
       keyringService: MockKeyringService(),
       rpcService: MockJsonRpcService(),
       walletService: MockBraveWalletService(),
-      swapService: MockSwapService()
+      swapService: MockSwapService(),
+      userAssetManager: TestableWalletUserAssetManager()
     )
   }
   

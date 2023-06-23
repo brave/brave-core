@@ -39,7 +39,7 @@ extension PendingRequest: Identifiable {
 enum WebpageRequestResponse: Equatable {
   case switchChain(approved: Bool, originInfo: BraveWallet.OriginInfo)
   case addNetwork(approved: Bool, chainId: String)
-  case addSuggestedToken(approved: Bool, contractAddresses: [String])
+  case addSuggestedToken(approved: Bool, token: BraveWallet.BlockchainToken)
   case signMessage(approved: Bool, id: Int32)
   case getEncryptionPublicKey(approved: Bool, originInfo: BraveWallet.OriginInfo)
   case decrypt(approved: Bool, originInfo: BraveWallet.OriginInfo)
@@ -135,6 +135,7 @@ public class CryptoStore: ObservableObject {
       rpcService: rpcService,
       walletService: walletService,
       swapService: swapService,
+      userAssetManager: userAssetManager,
       origin: origin
     )
     self.portfolioStore = .init(
@@ -477,8 +478,13 @@ public class CryptoStore: ObservableObject {
         rpcService.addEthereumChainRequestCompleted(chainId, approved: approved)
       }
       return
-    case let .addSuggestedToken(approved, contractAddresses):
-      walletService.notifyAddSuggestTokenRequestsProcessed(approved, contractAddresses: contractAddresses)
+    case let .addSuggestedToken(approved, token):
+      if approved {
+        userAssetManager.addUserAsset(token) { [weak self] in
+          self?.updateAssets()
+        }
+      }
+      walletService.notifyAddSuggestTokenRequestsProcessed(approved, contractAddresses: [token.contractAddress])
     case let .signMessage(approved, id):
       walletService.notifySignMessageRequestProcessed(approved, id: id, signature: nil, error: nil)
     case let .getEncryptionPublicKey(approved, originInfo):
@@ -510,7 +516,7 @@ public class CryptoStore: ObservableObject {
       }
       let pendingAddSuggestedTokenRequets = await walletService.pendingAddSuggestTokenRequests()
       pendingAddSuggestedTokenRequets.forEach {
-        handleWebpageRequestResponse(.addSuggestedToken(approved: false, contractAddresses: [$0.token.contractAddress]))
+        handleWebpageRequestResponse(.addSuggestedToken(approved: false, token: $0.token))
       }
       let pendingGetEncryptionPublicKeyRequests = await walletService.pendingGetEncryptionPublicKeyRequests()
       pendingGetEncryptionPublicKeyRequests.forEach {
@@ -591,9 +597,19 @@ extension CryptoStore: BraveWalletJsonRpcServiceObserver {
   }
   
   public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
-    if let addNetworkDappRequestCompletion = addNetworkDappRequestCompletion[chainId] {
-      addNetworkDappRequestCompletion(error.isEmpty ? nil : error)
-      self.addNetworkDappRequestCompletion[chainId] = nil
+    Task { @MainActor in
+      if let addNetworkDappRequestCompletion = addNetworkDappRequestCompletion[chainId] {
+        if error.isEmpty {
+          let allNetworks = await rpcService.allNetworks(.eth)
+          if let network = allNetworks.first(where: { $0.chainId == chainId }) {
+            userAssetManager.addUserAsset(network.nativeToken) { [weak self] in
+              self?.updateAssets()
+            }
+          }
+        }
+        addNetworkDappRequestCompletion(error.isEmpty ? nil : error)
+        self.addNetworkDappRequestCompletion[chainId] = nil
+      }
     }
   }
   
@@ -618,6 +634,7 @@ extension CryptoStore: BraveWalletBraveWalletServiceObserver {
   }
   
   public func onNetworkListChanged() {
+    updateAssets()
   }
   
   public func onDiscoverAssetsStarted() {

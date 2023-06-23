@@ -113,7 +113,7 @@ struct AddSuggestedTokenView: View {
   @ViewBuilder private var actionButtons: some View {
     Button(action: { // cancel
       cryptoStore.handleWebpageRequestResponse(
-        .addSuggestedToken(approved: false, contractAddresses: [token.contractAddress])
+        .addSuggestedToken(approved: false, token: token)
       )
       onDismiss()
     }) {
@@ -125,7 +125,7 @@ struct AddSuggestedTokenView: View {
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
     Button(action: { // approve
       cryptoStore.handleWebpageRequestResponse(
-        .addSuggestedToken(approved: true, contractAddresses: [token.contractAddress])
+        .addSuggestedToken(approved: true, token: token)
       )
       onDismiss()
     }) {

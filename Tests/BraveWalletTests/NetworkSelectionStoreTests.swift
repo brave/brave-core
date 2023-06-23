@@ -67,7 +67,8 @@ import Preferences
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService
+      swapService: swapService,
+      userAssetManager: TestableWalletUserAssetManager()
     )
     await networkStore.setup()
     
@@ -90,6 +91,7 @@ import Preferences
       rpcService: rpcService,
       walletService: walletService,
       swapService: swapService,
+      userAssetManager: TestableWalletUserAssetManager(),
       origin: origin
     )
     await networkStore.setup()
@@ -109,7 +111,8 @@ import Preferences
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService
+      swapService: swapService,
+      userAssetManager: TestableWalletUserAssetManager()
     )
     await networkStore.setup()
     
@@ -126,7 +129,8 @@ import Preferences
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService
+      swapService: swapService,
+      userAssetManager: TestableWalletUserAssetManager()
     )
     await networkStore.setup()
     
@@ -143,7 +147,8 @@ import Preferences
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService
+      swapService: swapService,
+      userAssetManager: TestableWalletUserAssetManager()
     )
     await networkStore.setup()
     
@@ -162,7 +167,8 @@ import Preferences
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService
+      swapService: swapService,
+      userAssetManager: TestableWalletUserAssetManager()
     )
     await networkStore.setup()
     
@@ -182,7 +188,8 @@ import Preferences
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService
+      swapService: swapService,
+      userAssetManager: TestableWalletUserAssetManager()
     )
     await networkStore.setup()
     
@@ -228,7 +235,8 @@ import Preferences
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService
+      swapService: swapService,
+      userAssetManager: TestableWalletUserAssetManager()
     )
     await networkStore.setup()
     

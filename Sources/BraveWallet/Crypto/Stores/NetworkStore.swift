@@ -52,6 +52,7 @@ public class NetworkStore: ObservableObject {
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
   private let swapService: BraveWalletSwapService
+  private let assetManager: WalletUserAssetManagerType
   
   private weak var networkSelectionStore: NetworkSelectionStore?
 
@@ -60,12 +61,14 @@ public class NetworkStore: ObservableObject {
     rpcService: BraveWalletJsonRpcService,
     walletService: BraveWalletBraveWalletService,
     swapService: BraveWalletSwapService,
+    userAssetManager: WalletUserAssetManagerType,
     origin: URLOrigin? = nil
   ) {
     self.keyringService = keyringService
     self.rpcService = rpcService
     self.walletService = walletService
     self.swapService = swapService
+    self.assetManager = userAssetManager
     self.origin = origin
     rpcService.add(self)
     keyringService.add(self)
@@ -193,6 +196,7 @@ public class NetworkStore: ObservableObject {
           Task {
             await updateChainList()
           }
+          customNetworkNativeAssetMigration(network)
           isAddingNewNetwork = false
           completion(true, "")
         } else {
@@ -203,6 +207,7 @@ public class NetworkStore: ObservableObject {
               Task {
                 await self.updateChainList()
               }
+              self.customNetworkNativeAssetMigration(network)
               self.isAddingNewNetwork = false
               completion(false, message)
             }
@@ -235,6 +240,8 @@ public class NetworkStore: ObservableObject {
     completion: @escaping (_ success: Bool) -> Void
   ) {
     rpcService.removeChain(network.id, coin: network.coin, completion: completion)
+    // delete local stored user assets that in this custom network
+    assetManager.removeGroup(for: network.walletUserAssetGroupId, completion: nil)
   }
 
   public func removeCustomNetwork(
@@ -251,6 +258,8 @@ public class NetworkStore: ObservableObject {
         if network.id.lowercased() == defaultSelectedChainId.lowercased() {
           rpcService.setNetwork(BraveWallet.MainnetChainId, coin: .eth, origin: nil, completion: { _ in })
         }
+        // delete local stored user assets that in this custom network
+        assetManager.removeGroup(for: network.walletUserAssetGroupId, completion: nil)
         Task {
           await updateChainList()
         }
@@ -261,6 +270,10 @@ public class NetworkStore: ObservableObject {
   
   @MainActor func selectedNetwork(for coin: BraveWallet.CoinType) async -> BraveWallet.NetworkInfo {
     await rpcService.network(coin, origin: nil)
+  }
+  
+  func customNetworkNativeAssetMigration(_ network: BraveWallet.NetworkInfo, completion: (() -> Void)? = nil) {
+    assetManager.addUserAsset(network.nativeToken, completion: completion)
   }
 }
 

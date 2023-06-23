@@ -509,7 +509,6 @@ struct CustomNetworkDetailsView: View {
         customNetworkError = .failed(errorMessage: errMsg)
         return
       }
-
       presentationMode.dismiss()
     }
   }
