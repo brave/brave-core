@@ -50,6 +50,11 @@ uint16_t UpdateWeeklyStorageWithValueAndGetMax(PrefService* prefs,
   return storage.GetHighestValueInWeek();
 }
 
+bool IsNewsEnabled(PrefService* prefs) {
+  return prefs->GetBoolean(prefs::kBraveNewsOptedIn) &&
+         prefs->GetBoolean(prefs::kNewTabPageShowToday);
+}
+
 uint64_t AddToWeeklyStorageAndGetSum(PrefService* prefs,
                                      const char* pref_name,
                                      int change) {
@@ -185,8 +190,14 @@ void RecordTotalCardViews(PrefService* prefs,
 }
 
 void RecordFeatureEnabledChange(PrefService* prefs) {
-  bool enabled = prefs->GetBoolean(prefs::kBraveNewsOptedIn) &&
-                 prefs->GetBoolean(prefs::kNewTabPageShowToday);
+  bool enabled = IsNewsEnabled(prefs);
+  bool was_ever_enabled = prefs->GetBoolean(prefs::kBraveNewsWasEverEnabled);
+  if (!enabled && !was_ever_enabled) {
+    // If the user clicked "no thanks" on the NTP, then we don't want to record
+    // this as an opt-out, since they were never opted in.
+    return;
+  }
+  prefs->SetBoolean(prefs::kBraveNewsWasEverEnabled, true);
   UMA_HISTOGRAM_BOOLEAN(kIsEnabledHistogramName, enabled);
 }
 
@@ -203,6 +214,10 @@ void RecordAtInit(PrefService* prefs) {
   RecordWeeklyMaxCardViewsCount(prefs, 0);
   RecordWeeklyDisplayAdsViewedCount(prefs, false);
   RecordTotalCardViews(prefs, 0);
+
+  if (IsNewsEnabled(prefs)) {
+    prefs->SetBoolean(prefs::kBraveNewsWasEverEnabled, true);
+  }
 }
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
@@ -217,6 +232,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
       registry, prefs::kBraveNewsFirstSessionTime,
       prefs::kBraveNewsLastSessionTime, prefs::kBraveNewsUsedSecondDay,
       prefs::kBraveNewsDaysInMonthUsedCount, nullptr);
+  registry->RegisterBooleanPref(prefs::kBraveNewsWasEverEnabled, false);
 }
 
 }  // namespace p3a
