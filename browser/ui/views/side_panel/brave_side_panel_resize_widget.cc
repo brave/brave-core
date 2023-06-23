@@ -74,3 +74,8 @@ void SidePanelResizeWidget::OnViewBoundsChanged(views::View* observed_view) {
 
   widget_->SetBounds(rect);
 }
+
+void SidePanelResizeWidget::OnViewIsDeleting(views::View* observed_view) {
+  DCHECK(observations_.IsObservingSource(observed_view));
+  observations_.RemoveObservation(observed_view);
+}
