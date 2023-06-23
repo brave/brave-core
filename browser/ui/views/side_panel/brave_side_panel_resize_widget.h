@@ -36,6 +36,7 @@ class SidePanelResizeWidget : public views::ViewObserver,
 
   // views::ViewObserver overrides:
   void OnViewBoundsChanged(views::View* observed_view) override;
+  void OnViewIsDeleting(views::View* observed_view) override;
 
  private:
   raw_ptr<BraveSidePanel> panel_ = nullptr;
