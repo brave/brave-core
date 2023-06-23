@@ -250,8 +250,16 @@ public class Utils {
                 }
                 break;
 
-            case BUY:
             case SEND:
+                try {
+                    BraveActivity.getBraveActivity().openNewOrSelectExistingTab(
+                            BraveActivity.BRAVE_SEND_URL);
+                    TabUtils.bringChromeTabbedActivityToTheTop(activity);
+                } catch (BraveActivity.BraveActivityNotFoundException e) {
+                    Log.e(TAG, "Error while opening send tab.", e);
+                }
+                break;
+            case BUY:
                 Intent buySendSwapActivityIntent = new Intent(activity, BuySendSwapActivity.class);
                 buySendSwapActivityIntent.putExtra(
                         BuySendSwapActivity.ACTIVITY_TYPE, activityType.getValue());

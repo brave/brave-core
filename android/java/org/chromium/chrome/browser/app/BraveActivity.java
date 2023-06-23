@@ -205,6 +205,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         implements BrowsingDataBridge.OnClearBrowsingDataListener, BraveVpnObserver,
                    OnBraveSetDefaultBrowserListener, ConnectionErrorHandler, PrefObserver,
                    BraveSafeBrowsingApiHandler.BraveSafeBrowsingApiHandlerDelegate {
+    public static final String BRAVE_SEND_URL = "brave://wallet/send";
     public static final String BRAVE_SWAP_URL = "brave://wallet/swap";
     public static final String BRAVE_REWARDS_SETTINGS_URL = "brave://rewards/";
     public static final String BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL =
