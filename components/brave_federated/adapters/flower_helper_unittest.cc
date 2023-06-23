@@ -13,7 +13,6 @@
 #include "brave/third_party/flower/src/brave/flwr/serde.h"
 #include "brave/third_party/flower/src/proto/flwr/proto/fleet.pb.h"
 #include "brave/third_party/flower/src/proto/flwr/proto/node.pb.h"
-#include "gtest/gtest.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveFederatedLearning*
