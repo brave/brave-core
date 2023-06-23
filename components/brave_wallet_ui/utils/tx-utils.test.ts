@@ -24,7 +24,8 @@ import {
   findTransactionToken,
   getETHSwapTransactionBuyAndSellTokens,
   getTransactionGas,
-  getTransactionStatusString
+  getTransactionStatusString,
+  toTxDataUnion
 } from './tx-utils'
 
 describe('Check Transaction Status Strings Value', () => {
@@ -552,5 +553,28 @@ describe('check for insufficient funds errors', () => {
       expect(insufficientFundsError).toBeFalsy()
       expect(insufficientFundsForGasError).toBeFalsy()
     })
+  })
+})
+
+describe('toTxDataUnion', () => {
+  test('works', () => {
+    const filTxData: BraveWallet.FilTxData = {
+      nonce: '',
+      gasPremium: '',
+      gasFeeCap: '',
+      gasLimit: '',
+      maxFee: '0',
+      to: 'to',
+      from: 'from',
+      value: 'value'
+    }
+
+    const union = toTxDataUnion({ filTxData: filTxData })
+
+    expect(Object.keys(union).length).toBe(1)
+    expect(union.filTxData).toBe(filTxData)
+    expect(union.ethTxData).toBe(undefined)
+    expect(union.ethTxData1559).toBe(undefined)
+    expect(union.solanaTxData).toBe(undefined)
   })
 })

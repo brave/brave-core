@@ -1752,3 +1752,9 @@ export const parseTransactionWithPrices = ({
     })
   }
 }
+
+export function toTxDataUnion<D extends keyof BraveWallet.TxDataUnion>(
+  unionItem: Pick<BraveWallet.TxDataUnion, D>
+) {
+  return Object.assign({}, unionItem) as BraveWallet.TxDataUnion
+}
