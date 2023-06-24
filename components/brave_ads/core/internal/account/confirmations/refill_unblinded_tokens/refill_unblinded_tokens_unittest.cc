@@ -112,8 +112,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest,
       .Times(0);
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
-              OnFailedToRefillUnblindedTokens())
-      .Times(0);
+              OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens)
