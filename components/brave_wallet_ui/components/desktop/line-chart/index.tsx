@@ -22,7 +22,8 @@ import CustomTooltip from './custom-tooltip'
 import {
   StyledWrapper,
   LoadingOverlay,
-  LoadIcon
+  LoadIcon,
+  AreaWrapper
 } from './style'
 import { CustomReferenceDot } from './custom-reference-dot'
 
@@ -78,9 +79,7 @@ function LineChart ({
   // render
   return (
     <StyledWrapper style={customStyle}>
-      <LoadingOverlay isLoading={isLoading}>
-        <LoadIcon />
-      </LoadingOverlay>
+      <AreaWrapper>
       <ResponsiveContainer width='100%' height='99%'>
         <AreaChart
           data={chartData}
@@ -145,6 +144,10 @@ function LineChart ({
           />
         </AreaChart>
       </ResponsiveContainer>
+      </AreaWrapper>
+      <LoadingOverlay isLoading={isLoading}>
+        <LoadIcon />
+      </LoadingOverlay>
     </StyledWrapper>
   )
 }
