@@ -10,27 +10,66 @@ import { loadTimeData } from '$web-common/loadTimeData'
 export function useConversationHistory() {
   const [conversationHistory, setConversationHistory] = React.useState<ConversationTurn[]>([])
   const [isGenerating, setIsGenerating] = React.useState(false)
-  const [hasSummarizationFailed, setHasSummarizationFailed] = React.useState(false)
+  const [suggestedQuestions, setSuggestedQuestions] = React.useState<string[]>([])
+  const [canGenerateQuestions, setCanGenerateQuestions] = React.useState(false)
+  const [userAllowsAutoGenerating, setUserAllowsAutoGeneratingState] = React.useState(false)
 
   const getConversationHistory = () => {
     getPageHandlerInstance().pageHandler.getConversationHistory().then(res => setConversationHistory(res.conversationHistory))
   }
 
-  React.useEffect(() => {
-    getConversationHistory()
+  const setUserAllowsAutoGenerating = (value: boolean) => {
+    getPageHandlerInstance().pageHandler.setAutoGenerateQuestions(value)
+  }
 
-    getPageHandlerInstance().callbackRouter.onConversationHistoryUpdate.addListener(getConversationHistory)
-    getPageHandlerInstance().callbackRouter.onAPIRequestInProgress.addListener(setIsGenerating)
-    getPageHandlerInstance().callbackRouter.onContentSummarizationFailed.addListener(() => {
-      setHasSummarizationFailed(true)
-      setTimeout(() => setHasSummarizationFailed(false), 5000)
+  const getSuggestedQuestions = () => {
+    getPageHandlerInstance().pageHandler.getSuggestedQuestions().then(r => {
+      setSuggestedQuestions(r.questions)
+      setCanGenerateQuestions(r.canGenerate)
+      setUserAllowsAutoGeneratingState(r.autoGenerate)
     })
+  }
+
+  const generateSuggestedQuestions = () => {
+    getPageHandlerInstance().pageHandler.generateQuestions()
+  }
+
+  const initialiseForTargetTab = () => {
+    // Replace state from backend
+    // TODO(petemill): Perhaps we need a simple GetState mojom function
+    // and OnStateChanged event so we
+    // don't need to call multiple functions or handle multiple events.
+    getConversationHistory()
+    getSuggestedQuestions()
+  }
+
+  React.useEffect(() => {
+    initialiseForTargetTab()
+
+    getPageHandlerInstance().callbackRouter.onConversationHistoryUpdate.addListener(() => {
+      getConversationHistory()
+      setCanGenerateQuestions(false)
+    })
+    getPageHandlerInstance().callbackRouter.onAPIRequestInProgress.addListener(setIsGenerating)
+    getPageHandlerInstance().callbackRouter.onSuggestedQuestionsChanged
+      .addListener((questions: string[], hasGenerated: boolean, autoGenerate: boolean) => {
+        setSuggestedQuestions(questions)
+        setCanGenerateQuestions(!hasGenerated)
+        setUserAllowsAutoGeneratingState(autoGenerate)
+      })
+
+    // When the target tab changes, clean tab-specific data
+    getPageHandlerInstance().callbackRouter.onTargetTabChanged.addListener(initialiseForTargetTab)
   }, [])
 
   return {
     conversationHistory,
     isGenerating,
-    hasSummarizationFailed
+    suggestedQuestions,
+    canGenerateQuestions,
+    userAllowsAutoGenerating,
+    generateSuggestedQuestions,
+    setUserAllowsAutoGenerating
   }
 }
 

@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/constants.h"
+#include "brave/components/ai_chat/browser/constants.h"
 
 namespace ai_chat {
 
 // Note the blank space intentionally added
 constexpr char kHumanPrompt[] = "\n\nHuman: ";
-constexpr char kHumanPromptPlaceholder[] = "\n\nH: ";
+constexpr char kHumanPromptPlaceholder[] = "\nH: ";
 constexpr char kAIPrompt[] = "\n\nAssistant:";
 constexpr char kAIPromptPlaceholder[] = "\n\nA:";
 constexpr char kAIChatCompletionPath[] = "v1/complete";
