@@ -23,7 +23,7 @@ import getPageHandlerInstance from './api/page_handler'
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 
 function App () {
-  const { conversationHistory, isGenerating, hasSummarizationFailed } = useConversationHistory()
+  const model = useConversationHistory()
   const { value, setValue } = useInput();
   const { hasSeenAgreement, handleAgreeClick } = useAgreement()
 
@@ -39,34 +39,35 @@ function App () {
     setValue('')
   }
 
-  const handleOnSummaryClick = () => {
-    getPageHandlerInstance().pageHandler.requestSummary()
+  const handleQuestionSubmit = (question: string) => {
+    getPageHandlerInstance().pageHandler.submitHumanConversationEntry(question)
   }
 
   let conversationList = <PrivacyMessage />
 
   if (hasSeenAgreement) {
     conversationList = (
-      <ConversationList
-        list={conversationHistory}
-        isLoading={isGenerating}
-      />
+      <>
+        <ConversationList
+          list={model.conversationHistory}
+          isLoading={model.isGenerating}
+          suggestedQuestions={model.suggestedQuestions}
+          canGenerateQuestions={model.canGenerateQuestions}
+          userAllowsAutoGenerating={model.userAllowsAutoGenerating}
+          onSetUserAllowsAutoGenerating={model.setUserAllowsAutoGenerating}
+          onGenerateSuggestedQuestions={model.generateSuggestedQuestions}
+          onQuestionSubmit={handleQuestionSubmit}
+        />
+      </>
     )
   }
-
-  const shouldHideSummarizationButton = !!conversationHistory.length || isGenerating || hasSummarizationFailed
-  const shouldShowInput = !!conversationHistory.length
 
   const inputBox = (
     <InputBox
       value={value}
-      showSummarizeButton={!shouldHideSummarizationButton}
-      showInput={shouldShowInput}
       onInputChange={handleInputChange}
       onSubmit={handleSubmit}
       onKeyDown={handleSubmit}
-      onSummaryClick={handleOnSummaryClick}
-      hasSummarizationFailed={hasSummarizationFailed}
       hasSeenAgreement={hasSeenAgreement}
       onHandleAgreeClick={handleAgreeClick}
     />

@@ -5,13 +5,21 @@
 
 import * as React from 'react'
 import classnames from 'classnames'
+import Button from '@brave/leo/react/button'
+import Checkbox from '@brave/leo/react/checkbox'
 
 import styles from './style.module.scss'
 import { ConversationTurn, CharacterType } from '../../api/page_handler'
 
 interface ConversationListProps {
   list: ConversationTurn[]
+  suggestedQuestions: string[]
   isLoading: boolean
+  canGenerateQuestions: boolean
+  userAllowsAutoGenerating: boolean
+  onSetUserAllowsAutoGenerating: (value: boolean) => void
+  onQuestionSubmit: (question: string) => void
+  onGenerateSuggestedQuestions: () => void
 }
 
 function ConversationList (props: ConversationListProps) {
@@ -53,6 +61,23 @@ function ConversationList (props: ConversationListProps) {
           </div>
         )
       })}
+      <div className={styles.suggestedQuestions}>
+        {props.suggestedQuestions.map(question => (
+          <Button size='small' kind='outline' onClick={() => props.onQuestionSubmit(question)}>
+            {question}
+          </Button>
+        ))}
+        {props.canGenerateQuestions && (
+          <>
+            <Button size='medium' kind='plain' onClick={props.onGenerateSuggestedQuestions}>
+              Suggest some questions for this page
+            </Button>
+          </>
+        )}
+        <Checkbox size='small' checked={props.userAllowsAutoGenerating} onChanged={(e) => props.onSetUserAllowsAutoGenerating(e.detail.checked)}>
+          Automatically suggest questions when I visit a page
+        </Checkbox>
+      </div>
     </div>
   )
 }

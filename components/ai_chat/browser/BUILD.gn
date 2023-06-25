@@ -3,23 +3,15 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//build/buildflag_header.gni")
-import("//mojo/public/tools/bindings/mojom.gni")
+import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
 
-declare_args() {
-  brave_ai_chat_endpoint = ""
-}
+assert(enable_ai_chat)
 
 if (is_official_build) {
   assert(brave_ai_chat_endpoint != "")
 }
 
-buildflag_header("buildflags") {
-  header = "buildflags.h"
-  flags = [ "BRAVE_AI_CHAT_ENDPOINT=\"$brave_ai_chat_endpoint\"" ]
-}
-
-source_set("ai_chat") {
+static_library("browser") {
   sources = [
     "ai_chat_api.cc",
     "ai_chat_api.h",
@@ -27,31 +19,27 @@ source_set("ai_chat") {
     "ai_chat_tab_helper.h",
     "constants.cc",
     "constants.h",
-    "features.cc",
-    "features.h",
-    "pref_names.cc",
-    "pref_names.h",
+    "page_content_fetcher.cc",
+    "page_content_fetcher.h",
   ]
 
   deps = [
-    ":buildflags",
-    ":mojom",
     "//base",
+    "//brave/components/ai_chat/common",
+    "//brave/components/ai_chat/common/buildflags",
+    "//brave/components/ai_chat/common/mojom",
     "//brave/components/api_request_helper",
     "//brave/components/constants",
     "//brave/components/resources:strings_grit",
     "//components/prefs",
+    "//components/user_prefs",
     "//content/public/browser",
     "//net/traffic_annotation",
     "//services/data_decoder/public/cpp",
     "//services/network/public/cpp",
+    "//services/service_manager/public/cpp",
     "//third_party/abseil-cpp:absl",
     "//ui/base",
     "//url",
   ]
-}
-
-mojom("mojom") {
-  sources = [ "ai_chat.mojom" ]
-  public_deps = [ "//mojo/public/mojom/base" ]
 }
