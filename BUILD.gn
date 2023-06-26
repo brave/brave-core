@@ -448,7 +448,7 @@ template("create_dist_template") {
 }
 
 if (should_generate_symbols) {
-  create_dist_template("create_breakpad_symbols_dist") {
+  create_dist_template("create_brave_symbols_dist") {
     if (is_android) {
       output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_android_base-$target_cpu-symbols-$target_android_output_format.zip"
     } else {
@@ -457,7 +457,11 @@ if (should_generate_symbols) {
 
     deps = [ "//brave/app/$current_os:symbol_dist_resources" ]
 
-    dir_inputs = [ "$brave_product_name.breakpad.syms" ]
+    if (is_win) {
+      dir_inputs = [ "$brave_product_name.syms" ]
+    } else {
+      dir_inputs = [ "$brave_product_name.breakpad.syms" ]
+    }
   }
 
   if (is_win) {
@@ -465,7 +469,7 @@ if (should_generate_symbols) {
       output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-native-symbols.7z"
       dir_inputs = [ "$brave_product_name.pdb.syms" ]
 
-      deps = [ "//brave/app/win:generate_breakpad_symbols" ]
+      deps = [ "//brave/app/win:generate_symbols" ]
     }
   } else if (is_mac) {
     copy("create_native_symbols_dist") {
@@ -487,7 +491,7 @@ group("create_symbols_dist") {
 
   if (should_generate_symbols) {
     public_deps += [
-      ":create_breakpad_symbols_dist",
+      ":create_brave_symbols_dist",
       ":create_native_symbols_dist",
     ]
   }
