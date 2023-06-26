@@ -24,9 +24,6 @@
 -ExtensionDialogTest.*
 -ExtensionStartupTest.*
 -ExternalProtocolHandlerSandboxBrowserTest.*
--HeadlessModeDumpDomCommandBrowserTest.HeadlessDumpDom
--HeadlessModeLazyLoadingPrintToPdfCommandBrowserTest.HeadlessLazyLoadingPrintToPdf
--HeadlessModePrintToPdfCommandBrowserTest.HeadlessPrintToPdf
 -HeadlessModeProtocolBrowserTest.ScreencastBasics
 -HeadlessModeScreenshotCommandBrowserTest.HeadlessScreenshot
 -IndividualNetworkContextsPrefetchProxyBrowserTest.*
