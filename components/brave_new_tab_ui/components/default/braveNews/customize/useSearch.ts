@@ -113,6 +113,7 @@ export default function useSearch (query: string) {
     })
     return () => {
       cancelled = true
+      setLoading(false)
     }
   }, [canFetchUrl, feedUrlQuery])
 
