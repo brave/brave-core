@@ -731,7 +731,11 @@ extension BrowserViewController: TopToolbarDelegate {
       if let ntpController = self.activeNewTabPageViewController, ntpController.parent != nil {
         view.insertSubview(favoritesController.view, aboveSubview: ntpController.view)
       } else {
-        view.insertSubview(favoritesController.view, aboveSubview: footer)
+        // Two different behaviors here:
+        // 1. For bottom bar we do not want to show the status bar color
+        // 2. For top bar we do so it matches the address bar background
+        let subview = isUsingBottomBar ? statusBarOverlay : footer
+        view.insertSubview(favoritesController.view, aboveSubview: subview)
       }
       favoritesController.didMove(toParent: self)
 
