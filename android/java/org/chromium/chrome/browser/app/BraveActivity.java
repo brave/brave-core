@@ -1032,32 +1032,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
 
         checkFingerPrintingOnUpgrade();
+        checkForVpnCallout();
 
-        String countryCode = Locale.getDefault().getCountry();
-
-        if (!countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
-                && BraveVpnUtils.isBraveVpnFeatureEnable()
-                && InAppPurchaseWrapper.getInstance().isSubscriptionSupported()) {
-            if (BraveVpnPrefUtils.shouldShowCallout() && !BraveVpnPrefUtils.isSubscriptionPurchase()
-                            && (SharedPreferencesManager.getInstance().readInt(
-                                        BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
-                                            == 1
-                                    && !PackageUtils.isFirstInstall(this))
-                    || (SharedPreferencesManager.getInstance().readInt(
-                                BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
-                                    == 7
-                            && PackageUtils.isFirstInstall(this))) {
-                showVpnCalloutDialog();
-            }
-
-            if (!TextUtils.isEmpty(BraveVpnPrefUtils.getPurchaseToken())
-                    && !TextUtils.isEmpty(BraveVpnPrefUtils.getProductId())) {
-                mIsVerification = true;
-                BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
-                        BraveVpnPrefUtils.getPurchaseToken(), BraveVpnPrefUtils.getProductId(),
-                        BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
-            }
-        }
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)
                 && BraveVpnPrefUtils.isSubscriptionPurchase()
                 && !BraveVpnPrefUtils.isLinkSubscriptionDialogShown()) {
@@ -1079,6 +1055,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
         mNativeInitialized = true;
 
+        String countryCode = Locale.getDefault().getCountry();
         if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
                 && SharedPreferencesManager.getInstance().readBoolean(
                         BravePreferenceKeys.BRAVE_AD_FREE_CALLOUT_DIALOG, true)
@@ -1093,6 +1070,33 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
 
         initBraveNewsController();
+    }
+
+    private void checkForVpnCallout() {
+        String countryCode = Locale.getDefault().getCountry();
+
+        if (!countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
+                && BraveVpnUtils.isBraveVpnFeatureEnable()) {
+            if (BraveVpnPrefUtils.shouldShowCallout() && !BraveVpnPrefUtils.isSubscriptionPurchase()
+                            && (SharedPreferencesManager.getInstance().readInt(
+                                        BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+                                            == 1
+                                    && !PackageUtils.isFirstInstall(this))
+                    || (SharedPreferencesManager.getInstance().readInt(
+                                BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+                                    == 7
+                            && PackageUtils.isFirstInstall(this))) {
+                showVpnCalloutDialog();
+            }
+
+            if (!TextUtils.isEmpty(BraveVpnPrefUtils.getPurchaseToken())
+                    && !TextUtils.isEmpty(BraveVpnPrefUtils.getProductId())) {
+                mIsVerification = true;
+                BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
+                        BraveVpnPrefUtils.getPurchaseToken(), BraveVpnPrefUtils.getProductId(),
+                        BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
+            }
+        }
     }
 
     public void initBraveNewsController() {
