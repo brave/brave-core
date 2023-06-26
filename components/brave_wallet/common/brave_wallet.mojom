@@ -1779,7 +1779,10 @@ interface BraveWalletService {
   // is supported
   GetBalanceScannerSupportedChains() => (array<string> chain_ids);
 
-  // Resets the keyring and the related preferences
+  // Fetches NFTs labeled as spam by SimpleHash
+  GetSpamNFTs(string wallet_address, array<string> chain_ids, string? cursor)
+    => (array<BlockchainToken> tokens, string? cursor);
+
   Reset();
 
   // Used for UI to trigger the allowance discovery

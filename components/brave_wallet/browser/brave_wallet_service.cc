@@ -156,6 +156,30 @@ bool ShouldCheckTokenId(const brave_wallet::mojom::BlockchainTokenPtr& token) {
   return token->is_erc721 || token->is_erc1155;
 }
 
+// net::NetworkTrafficAnnotationTag
+// GetAssetDiscoveryManagerNetworkTrafficAnnotationTag() {
+//   return net::DefineNetworkTrafficAnnotation("brave_wallet_service", R"(
+//       semantics {
+//         sender: "Asset Discovery Manager"
+//         description:
+//           "This service is used to discover crypto assets on behalf "
+//           "of the user interacting with the native Brave wallet."
+//         trigger:
+//           "Triggered by uses of the native Brave wallet."
+//         data:
+//           "NFT assets."
+//         destination: WEBSITE
+//       }
+//       policy {
+//         cookies_allowed: NO
+//         setting:
+//           "You can enable or disable this feature on chrome://flags."
+//         policy_exception_justification:
+//           "Not implemented."
+//       }
+//     )");
+// }
+
 }  // namespace
 
 namespace brave_wallet {
@@ -174,17 +198,16 @@ BraveWalletService::BraveWalletService(
       tx_service_(tx_service),
       profile_prefs_(profile_prefs),
       brave_wallet_p3a_(this, keyring_service, profile_prefs, local_state),
-      asset_discovery_manager_(
-          std::make_unique<AssetDiscoveryManager>(url_loader_factory,
-                                                  this,
-                                                  json_rpc_service,
-                                                  keyring_service,
-                                                  profile_prefs)),
       eth_allowance_manager_(
           std::make_unique<EthAllowanceManager>(json_rpc_service,
                                                 keyring_service,
                                                 profile_prefs)),
       weak_ptr_factory_(this) {
+  simple_hash_client_ = std::make_unique<SimpleHashClient>(url_loader_factory);
+  asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
+      url_loader_factory, this, json_rpc_service, keyring_service,
+      simple_hash_client_.get(), profile_prefs);
+
   if (delegate_) {
     delegate_->AddObserver(this);
   }
@@ -1769,6 +1792,11 @@ void BraveWalletService::GetBalanceScannerSupportedChains(
 
   std::move(callback).Run(chain_ids);
 }
+
+void BraveWalletService::GetSpamNFTs(const std::string& wallet_address,
+                                     const std::vector<std::string>& chain_ids,
+                                     const absl::optional<std::string>& cursor,
+                                     GetSpamNFTsCallback callback) {}
 
 void BraveWalletService::CancelAllSuggestedTokenCallbacks() {
   add_suggest_token_requests_.clear();

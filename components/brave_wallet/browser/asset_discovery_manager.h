@@ -19,6 +19,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/asset_discovery_task.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
+#include "brave/components/brave_wallet/browser/simple_hash_client.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
@@ -28,6 +29,7 @@ namespace brave_wallet {
 
 class BraveWalletService;
 class JsonRpcService;
+class SimpleHashClient;
 class KeyringService;
 
 class AssetDiscoveryManager : public KeyringServiceObserverBase {
@@ -39,6 +41,7 @@ class AssetDiscoveryManager : public KeyringServiceObserverBase {
       BraveWalletService* wallet_service,
       JsonRpcService* json_rpc_service,
       KeyringService* keyring_service,
+      SimpleHashClient* simple_hash_client,
       PrefService* prefs);
 
   AssetDiscoveryManager(const AssetDiscoveryManager&) = delete;
@@ -84,6 +87,7 @@ class AssetDiscoveryManager : public KeyringServiceObserverBase {
   raw_ptr<BraveWalletService> wallet_service_;
   raw_ptr<JsonRpcService> json_rpc_service_;
   raw_ptr<KeyringService> keyring_service_;
+  raw_ptr<SimpleHashClient> simple_hash_client_;
   raw_ptr<PrefService> prefs_;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_service_observer_receiver_{this};
