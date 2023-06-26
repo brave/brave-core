@@ -1,24 +1,24 @@
 {
   "configurations": [
     {
-      "target" : "v1.55.5",
-      "label": "default_v1.55.5",
+      "target" : "v1.55.13",
+      "label": "default_v1.55.13",
       "browser-type": "brave",
       "profile": "brave-typical-v1.46.52",
       "extra-browser-args": [],
       "extra-benchmark-args": [],
     },
     {
-      "target" : "v1.55.5",
-      "label": "ads_in_process_v1.55.5",
+      "target" : "v1.55.13",
+      "label": "ads_in_process_v1.55.13",
       "browser-type": "brave",
       "profile": "brave-typical-v1.46.52",
       "extra-browser-args": ["--enable-features=ShouldLaunchBraveAdsAsInProcessService"],
       "extra-benchmark-args": [],
     },
     {
-      "target" : "v1.55.5",
-      "label": "all_features_v1.55.5",
+      "target" : "v1.55.13",
+      "label": "all_features_v1.55.13",
       "browser-type": "brave",
       "profile": "brave-typical-v1.46.52",
       "extra-browser-args": ["--enable-features=ShouldAlwaysTriggerBraveSearchResultAdEvents,ShouldAlwaysRunBraveAdsService,ShouldLaunchBraveAdsAsInProcessService,ShouldSupportSearchResultAds"],
