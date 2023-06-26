@@ -35,6 +35,9 @@ def IndexFilesFromRepo(orig_func, local_filename, file_list, output_lines,
         output_lines[python3_line_idx] = output_lines[python3_line_idx].replace(
             *python3_replacement)
     else:
+        # This function is called multiple times with the same `output_lines`
+        # list, so on subsequent calls the replacement should already be in
+        # place.
         assert python3_replacement[1] in output_lines[python3_line_idx]
 
     return orig_func(local_filename, file_list, output_lines, follow_junctions)
