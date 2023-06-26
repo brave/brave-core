@@ -804,6 +804,7 @@
 -All/QuietUIPromoBrowserTest.*
 -All/ReportingBrowserTest.*
 -All/SameOriginUaOriginTrialBrowserTest.*
+-All/SaveCardBubbleViewsFullFormBrowserTest.*/*
 -All/SaveCardBubbleViewsFullFormBrowserTestWithAutofillUpstream.*/*
 -All/SaveCardBubbleViewsSyncTransportFullFormBrowserTest.*/*
 -All/ScrollToTextFragmentPolicyTest.*
@@ -1017,10 +1018,15 @@
 -GlobalConfirmInfoBarTest.*
 -GlobalMediaControlsDialogTest.*
 -GooglePFTest.*
+-GooglePFTestDefaultFieldTrialValue.BaseGoogleSearchHasPFForPrefetch
+-GooglePFTestFieldTrialOverride.BaseGoogleSearchHasPFForPrefetch
 -GreaseEnterprisePolicyTest.*
 -GreaseFeatureParamOptOutTest.UpdatedGreaseFeatureParamOptOutTest
 -GuestStartupBrowserCreatorPickerTest.*
 -HangoutServicesBrowserTest.*
+-HeadlessModeDumpDomCommandBrowserTest.HeadlessDumpDom
+-HeadlessModeLazyLoadingPrintToPdfCommandBrowserTest.HeadlessLazyLoadingPrintToPdf
+-HeadlessModePrintToPdfCommandBrowserTest.HeadlessPrintToPdf
 -HintsFetcherBrowserTest.*
 -HintsFetcherSearchPageBrowserTest.*
 -HistoryBrowserTest.*
