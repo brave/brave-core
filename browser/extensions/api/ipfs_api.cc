@@ -477,10 +477,8 @@ ExtensionFunction::ResponseAction IpfsGetSettingsFunction::Run() {
   base::Value::Dict response;
   response.Set("gateway_auto_fallback_enabled",
                prefs->GetBoolean(kIPFSAutoFallbackToGateway));
-  response.Set("auto_redirect_dns_link",
-               prefs->GetBoolean(kIPFSAutoRedirectDNSLink));
-  response.Set("auto_redirect_gateway",
-               prefs->GetBoolean(kIPFSAutoRedirectGateway));
+  response.Set("auto_redirect_to_configured_gateway",
+               prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
   response.Set("storage_max", prefs->GetInteger(kIpfsStorageMax));
   response.Set("gateway_url", prefs->GetString(kIPFSPublicGatewayAddress));
   response.Set("nft_gateway_url",
@@ -559,34 +557,20 @@ ExtensionFunction::ResponseAction IpfsSetResolveMethodFunction::Run() {
   return RespondNow(WithArguments(true));
 }
 
-ExtensionFunction::ResponseAction IpfsSetDNSLinkRedirectEnabledFunction::Run() {
-  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
-    return RespondNow(Error("IPFS not enabled"));
-  }
-
-  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
-
-  absl::optional<ipfs::SetDNSLinkRedirectEnabled::Params> params =
-      ipfs::SetDNSLinkRedirectEnabled::Params::Create(args());
-  EXTENSION_FUNCTION_VALIDATE(params);
-
-  prefs->SetBoolean(kIPFSAutoRedirectDNSLink, params->value);
-  return RespondNow(WithArguments(true));
-}
-
 ExtensionFunction::ResponseAction
-IpfsSetGatewayResourcesRedirectEnabledFunction::Run() {
+IpfsSetAutoRedirectToConfiguredGatewayEnabledFunction::Run() {
   if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
     return RespondNow(Error("IPFS not enabled"));
   }
 
   PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
 
-  absl::optional<ipfs::SetGatewayResourcesRedirectEnabled::Params> params =
-      ipfs::SetGatewayResourcesRedirectEnabled::Params::Create(args());
+  absl::optional<ipfs::SetAutoRedirectToConfiguredGatewayEnabled::Params>
+      params = ipfs::SetAutoRedirectToConfiguredGatewayEnabled::Params::Create(
+          args());
   EXTENSION_FUNCTION_VALIDATE(params);
 
-  prefs->SetBoolean(kIPFSAutoRedirectGateway, params->value);
+  prefs->SetBoolean(kIPFSAutoRedirectToConfiguredGateway, params->value);
   return RespondNow(WithArguments(true));
 }
 

@@ -220,22 +220,14 @@ class IpfsSetResolveMethodFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class IpfsSetGatewayResourcesRedirectEnabledFunction
+class IpfsSetAutoRedirectToConfiguredGatewayEnabledFunction
     : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("ipfs.setGatewayResourcesRedirectEnabled", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("ipfs.setAutoRedirectToConfiguredGatewayEnabled",
+                             UNKNOWN)
 
  protected:
-  ~IpfsSetGatewayResourcesRedirectEnabledFunction() override {}
-  ResponseAction Run() override;
-};
-
-class IpfsSetDNSLinkRedirectEnabledFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("ipfs.setDNSLinkRedirectEnabled", UNKNOWN)
-
- protected:
-  ~IpfsSetDNSLinkRedirectEnabledFunction() override {}
+  ~IpfsSetAutoRedirectToConfiguredGatewayEnabledFunction() override {}
   ResponseAction Run() override;
 };
 

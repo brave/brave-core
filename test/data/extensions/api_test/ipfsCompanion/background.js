@@ -120,18 +120,8 @@ function setPublicGateway(url) {
   })
 }
 
-function setDNSLinkRedirectEnabled(value) {
-  chrome.ipfs.setDNSLinkRedirectEnabled(value, (result) => {
-    if (result) {
-      chrome.test.succeed();
-    } else {
-      chrome.test.fail();
-    }
-  })
-}
-
-function setGatewayResourcesRedirectEnabled(value) {
-  chrome.ipfs.setGatewayResourcesRedirectEnabled(value, (result) => {
+function setAutoRedirectToConfiguredGateway(value) {
+  chrome.ipfs.setAutoRedirectToConfiguredGatewayEnabled(value, (result) => {
     if (result) {
       chrome.test.succeed();
     } else {
@@ -172,8 +162,7 @@ function testBasics() {
           chrome.ipfs.getSettings &&
           chrome.ipfs.setResolveMethod &&
           chrome.ipfs.setPublicGateway &&
-          chrome.ipfs.setDNSLinkRedirectEnabled &&
-          chrome.ipfs.setGatewayResourcesRedirectEnabled &&
+          chrome.ipfs.setAutoRedirectToConfiguredGatewayEnabled &&
           chrome.ipfs.setGatewayFallbackEnabled) {
         chrome.test.succeed();
       } else {

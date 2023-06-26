@@ -221,9 +221,8 @@ IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, GetSettings) {
   ASSERT_TRUE(service);
 
   service->SetAllowIpfsLaunchForTest(true);
+  GetPrefs()->SetBoolean(kIPFSAutoRedirectToConfiguredGateway, true);
   GetPrefs()->SetBoolean(kIPFSAutoFallbackToGateway, true);
-  GetPrefs()->SetBoolean(kIPFSAutoRedirectDNSLink, false);
-  GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
   GetPrefs()->SetInteger(kIpfsStorageMax, 2);
 
   GetPrefs()->SetString(kIPFSPublicGatewayAddress, "https://a.b");
@@ -233,8 +232,8 @@ IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, GetSettings) {
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
 
   std::string expected_json =
-      "{\"gateway_auto_fallback_enabled\": true, \"auto_redirect_dns_link\": "
-      "false, \"auto_redirect_gateway\": true, \"storage_max\": 2, "
+      "{\"gateway_auto_fallback_enabled\": true, "
+      "\"auto_redirect_to_configured_gateway\": true, \"storage_max\": 2, "
       "\"gateway_url\": \"https://a.b\", \"nft_gateway_url\": "
       "\"https://a.b.c\", \"resolve_method\": \"ask\"}";
 
@@ -298,17 +297,10 @@ IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, SetSettings) {
   {
     ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
         browser()->profile(), ipfs_companion_extension_id,
-        "setDNSLinkRedirectEnabled(true)"));
+        "setAutoRedirectToConfiguredGateway(true)"));
     ASSERT_TRUE(catcher.GetNextResult()) << message_;
-    EXPECT_EQ(GetPrefs()->GetBoolean(kIPFSAutoRedirectDNSLink), true);
-  }
-
-  {
-    ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
-        browser()->profile(), ipfs_companion_extension_id,
-        "setGatewayResourcesRedirectEnabled(true)"));
-    ASSERT_TRUE(catcher.GetNextResult()) << message_;
-    EXPECT_EQ(GetPrefs()->GetBoolean(kIPFSAutoRedirectGateway), true);
+    EXPECT_EQ(GetPrefs()->GetBoolean(kIPFSAutoRedirectToConfiguredGateway),
+              true);
   }
 
   {

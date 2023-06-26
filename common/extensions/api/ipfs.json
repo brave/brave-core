@@ -399,31 +399,9 @@
           }
         ]
       }, {
-        "name": "setGatewayResourcesRedirectEnabled",
+        "name": "setAutoRedirectToConfiguredGatewayEnabled",
         "type": "function",
-        "description": "Returns list of ipfs settings",
-        "parameters": [
-          {
-            "name": "value",
-            "type": "boolean",
-            "description": "value"
-          },
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called with status",
-            "parameters": [
-              {
-                "name": "status",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
-      }, {
-        "name": "setDNSLinkRedirectEnabled",
-        "type": "function",
-        "description": "Returns list of ipfs settings",
+        "description": "Sets whether IPFS resouceces should be forwarded to the configured gateway",
         "parameters": [
           {
             "name": "value",
