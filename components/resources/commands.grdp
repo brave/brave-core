@@ -466,6 +466,18 @@
   <message name="IDS_IDC_SHOW_PLAYLIST_BUBBLE">
     Show playlist bubble
   </message>
+  <message name="IDS_IDC_GROUP_TABS_ON_CURRENT_ORIGIN">
+    Group tabs on current origin
+  </message>
+  <message name="IDS_IDC_MOVE_GROUP_TO_NEW_WINDOW">
+    Move group to new window
+  </message>
+  <message name="IDS_IDC_CLOSE_DUPLICATE_TABS">
+    Close duplicate tabs
+  </message>
+  <message name="IDS_IDC_TOGGLE_VERTICAL_TABS_EXPANDED">
+    Toggle vertical tabs expanded
+  </message>
 
   <!-- Shortcuts Page UI Strings -->
   <message name="IDS_SHORTCUTS_PAGE_SEARCH_PLACEHOLDER" desc="Placeholder text in the search box">
