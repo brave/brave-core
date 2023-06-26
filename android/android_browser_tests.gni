@@ -134,6 +134,7 @@ android_test_exception_deps = [
 
 # Tests that run only on Android
 android_only_test_sources = [
+  "//brave/components/brave_wallet/browser/android_swap_page_appearing_browsertest.cc",
   "//chrome/test/android/browsertests_apk/android_browsertests_jni_onload.cc",
   "//chrome/test/base/android/android_browser_test_browsertest_android.cc",
 ]
@@ -142,6 +143,7 @@ android_only_test_deps = [
   ":test_support",
   "//android_webview/common",
   "//brave/browser/partnercustomizations:delegate_public_impl_java",
+  "//brave/components/cosmetic_filters/browser:browser",
   "//chrome:chrome_android_core",
   "//chrome/android:app_hooks_java",
   "//chrome/android:delegate_public_impl_java",
