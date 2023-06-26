@@ -627,7 +627,7 @@ public class BraveRewardsPanel
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT: // UGP grant
                 long claimableUntilGrant = Long.parseLong(args[2]);
                 if (claimableUntilGrant < new Date().getTime()) {
-                    break;
+                    return;
                 }
                 long grantDays =
                         TimeUnit.MILLISECONDS.toDays(claimableUntilGrant - new Date().getTime());
@@ -649,7 +649,7 @@ public class BraveRewardsPanel
                 long createdAtGrantAds = Long.parseLong(args[1]);
                 long claimableUntilGrantAds = Long.parseLong(args[2]);
                 if (claimableUntilGrantAds < new Date().getTime()) {
-                    break;
+                    return;
                 }
                 String createdAtMonthGrantAds = (String) android.text.format.DateFormat.format(
                         "MMMM", new Date(createdAtGrantAds));
