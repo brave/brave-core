@@ -66,14 +66,16 @@ import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
-import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.IntStream;
+
 public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialogFragment
-        implements View.OnClickListener, OnWalletListItemClick, KeyringServiceObserverImplDelegate {
+        implements View.OnClickListener, OnWalletListItemClick, KeyringServiceObserverImplDelegate,
+                   AdapterView.OnItemSelectedListener {
     public static final String TAG_FRAGMENT =
             EditVisibleAssetsBottomSheetDialogFragment.class.getName();
     private WalletCoinAdapter walletCoinAdapter;
@@ -89,6 +91,19 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     private List<NetworkInfo> mCryptoNetworks;
     private UserAssetModel mUserAssetModel;
     private boolean isEditVisibleAssetType;
+    private Spinner mNetworkSp;
+    private NetworkSpinnerAdapter mNetworkAdapter;
+    private ArrayList<NetworkInfo> mSpinnerNetworks;
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (mUserAssetModel == null) return;
+        mSelectedNetwork = mSpinnerNetworks.get(position);
+        mUserAssetModel.fetchAssets(mNftsOnly, mSelectedNetwork);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {}
 
     public interface DismissListener {
         void onDismiss(boolean isAssetsListChanged);
@@ -276,14 +291,11 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
 
         if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
             assert mSelectedNetwork != null;
-            Button networkNameBtn = view.findViewById(R.id.edit_visible_btn_network);
-            AndroidUtils.show(networkNameBtn);
-            networkNameBtn.setText(Utils.getShortNameOfNetwork(mSelectedNetwork.chainName));
-            networkNameBtn.setOnLongClickListener(v -> {
-                Toast.makeText(requireContext(), mSelectedNetwork.chainName, Toast.LENGTH_SHORT)
-                        .show();
-                return true;
-            });
+            mNetworkSp = view.findViewById(R.id.edit_visible_network_spinner);
+            mNetworkAdapter = new NetworkSpinnerAdapter(requireContext(), Collections.emptyList());
+            mNetworkSp.setAdapter(mNetworkAdapter);
+            AndroidUtils.show(mNetworkSp);
+            mNetworkSp.setOnItemSelectedListener(this);
         }
         return view;
     }
@@ -302,6 +314,19 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                     mUserAssetModel.mAssetsResult.observe(getViewLifecycleOwner(), assetsResult -> {
                         setUpAssetsList(getView(), assetsResult.tokens, assetsResult.userAssets);
                     });
+                    if (mNetworkAdapter != null) {
+                        mSpinnerNetworks = new ArrayList<>(networkInfos);
+                        mSpinnerNetworks.add(0, NetworkUtils.getAllNetworkOption(requireContext()));
+                        mNetworkAdapter.setNetworks(mSpinnerNetworks);
+                        int selectedNetworkIndex =
+                                IntStream.range(0, mSpinnerNetworks.size())
+                                        .filter(i
+                                                -> mSpinnerNetworks.get(i).chainId.equals(
+                                                        mSelectedNetwork.chainId))
+                                        .findFirst()
+                                        .orElse(0);
+                        mNetworkSp.setSelection(selectedNetworkIndex, false);
+                    }
                 });
     }
 
