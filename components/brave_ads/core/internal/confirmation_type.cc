@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/confirmation_type.h"
 
+#include "base/debug/crash_logging.h"
 #include "base/notreached.h"
 
 namespace brave_ads {
@@ -53,7 +54,8 @@ ConfirmationType::ConfirmationType(const std::string& value) {
   } else if (value == kConversionType) {
     value_ = kConversion;
   } else {
-    NOTREACHED_NORETURN();
+    SCOPED_CRASH_KEY_STRING32("ConfirmationType", "value", value);
+    NOTREACHED() << "Unexpected value for ConfirmationType: " << value;
   }
 }
 
