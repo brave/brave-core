@@ -82,6 +82,22 @@ class ToggleButton : public BraveNewTabButton {
   // views::Button:
   void OnThemeChanged() override {
     Button::OnThemeChanged();
+
+    FrameColorsChanged();
+  }
+
+  void FrameColorsChanged() override {
+    NewTabButton::FrameColorsChanged();
+
+    // Resets the ink drop highlight color
+    views::InkDrop::Get(this)->GetInkDrop()->HostViewThemeChanged();
+    if (views::InkDrop::Get(this)->GetHighlighted()) {
+      // Note that we're calling this to make InkDropHighlight visible even if
+      // the state could already be transitioned to activated.
+      views::InkDrop::Get(this)->GetInkDrop()->SnapToActivated();
+    }
+
+    // Resets icon.
     auto* cp = GetColorProvider();
     CHECK(cp);
 
@@ -125,6 +141,16 @@ class ToggleButton : public BraveNewTabButton {
     CHECK_EQ(height(), GetIconWidth());
   }
 #endif
+
+  void NotifyClick(const ui::Event& event) override {
+    // Bypass NewTab::NotifyClick implementation in order keep ink drop state
+    // ACTIVATED. As NewTabButton::NotifyClick animate ink drop state to
+    // ActionTriggered after notifying this event, we shouldn't use it.
+    // otherwise, ink drop state will be hidden.
+    views::InkDrop::Get(this)->GetInkDrop()->AnimateToState(
+        views::InkDropState::ACTION_TRIGGERED);
+    ImageButton::NotifyClick(event);
+  }
 
  private:
   raw_ptr<VerticalTabStripRegionView> region_view_ = nullptr;
@@ -185,9 +211,16 @@ class VerticalTabSearchButton : public BraveTabSearchButton {
     return {};
   }
 
+  void OnThemeChanged() override {
+    BraveTabSearchButton::OnThemeChanged();
+    FrameColorsChanged();
+  }
+
   void FrameColorsChanged() override {
     TabSearchButton::FrameColorsChanged();
 
+    // We should call SetImageModel() after FrameColorChanged() to override
+    // the icon.
     SetImageModel(views::Button::STATE_NORMAL,
                   ui::ImageModel::FromVectorIcon(
                       kLeoSearchIcon, kColorBraveVerticalTabHeaderButtonColor,
@@ -499,14 +532,12 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
     }
   }
 
+  ToggleButton* toggle_button() { return toggle_button_; }
+
   // views::View:
   void OnThemeChanged() override {
     View::OnThemeChanged();
 
-    // We should call SetImageModel() after FrameColorChanged() to override
-    // the icon.
-    toggle_button_->FrameColorsChanged();
-    tab_search_button_->FrameColorsChanged();
     SetBackground(views::CreateSolidBackground(
         GetColorProvider()->GetColor(kColorToolbar)));
   }
@@ -626,6 +657,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
             ? views::ScrollView::ScrollBarMode::kDisabled
             : views::ScrollView::ScrollBarMode::kHiddenButEnabled);
   }
+  header_view_->toggle_button()->SetHighlighted(state_ == State::kExpanded);
 
   new_tab_button_ = AddChildView(std::make_unique<VerticalTabNewTabButton>(
       original_region_view_->tab_strip_,
@@ -721,6 +753,7 @@ void VerticalTabStripRegionView::SetState(State state) {
   tab_strip->tab_container_->CompleteAnimationAndLayout();
 
   resize_area_->SetEnabled(state == State::kExpanded);
+  header_view_->toggle_button()->SetHighlighted(state == State::kExpanded);
 
   if (gfx::Animation::ShouldRenderRichAnimation()) {
     state_ == State::kCollapsed ? width_animation_.Hide()
