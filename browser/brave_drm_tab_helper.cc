@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/logging.h"
 #include "base/containers/contains.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/components/constants/pref_names.h"
@@ -15,12 +16,15 @@
 #include "build/build_config.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#endif
 
 using component_updater::ComponentUpdateService;
 
@@ -28,7 +32,7 @@ namespace {
 bool IsAlreadyRegistered(ComponentUpdateService* cus) {
   return base::Contains(cus->GetComponentIDs(), kWidevineComponentId);
 }
-#if !BUILDFLAG(IS_LINUX)
+#if !BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_ANDROID)
 content::WebContents* GetActiveWebContents() {
   if (Browser* browser = chrome::FindLastActive())
     return browser->tab_strip_model()->GetActiveWebContents();
@@ -92,6 +96,7 @@ void BraveDrmTabHelper::DidStartNavigation(
 
 void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
   is_widevine_requested_ = true;
+  LOG(ERROR) << "brave_drm_tab_helper.cc: OnWidevineKeySystemAccessRequest: is_widevine_requested_: " << is_widevine_requested_;
 
   if (ShouldShowWidevineOptIn() && !is_permission_requested_) {
     is_permission_requested_ = true;
@@ -108,6 +113,7 @@ void BraveDrmTabHelper::OnEvent(Events event, const std::string& id) {
     // this tab asks widevine explicitely.
     if (is_widevine_requested_)
       RequestWidevinePermission(web_contents(), true /* for_restart*/);
+#elif BUILDFLAG(IS_ANDROID)
 #else
     // When widevine is ready to use, only active tab that requests widevine is
     // reloaded automatically.

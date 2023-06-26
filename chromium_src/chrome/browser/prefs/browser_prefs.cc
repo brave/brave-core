@@ -78,7 +78,7 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
 
   MigrateObsoleteProfilePrefs_ChromiumImpl(profile);
 
-#if BUILDFLAG(ENABLE_WIDEVINE) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_WIDEVINE)
   // Added 11/2019.
   MigrateWidevinePrefs(profile);
 #endif
@@ -167,7 +167,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   // BEGIN_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
   MigrateObsoleteLocalStatePrefs_ChromiumImpl(local_state);
 
-#if BUILDFLAG(ENABLE_WIDEVINE) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_WIDEVINE)
   // Added 11/2020.
   MigrateObsoleteWidevineLocalStatePrefs(local_state);
 #endif

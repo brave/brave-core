@@ -8,6 +8,8 @@
 
 #include <string>
 
+#include "build/build_config.h"
+
 namespace content {
 class WebContents;
 }  // namespace content
@@ -20,8 +22,10 @@ class PrefRegistrySimple;
 class PrefService;
 class Profile;
 
+#if !BUILDFLAG(IS_ANDROID)
 void EnableWidevineCdmComponent();
 void DisableWidevineCdmComponent();
+#endif
 void RegisterWidevineProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry);
 int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart);

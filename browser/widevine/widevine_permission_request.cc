@@ -5,6 +5,7 @@
 
 #include "brave/browser/widevine/widevine_permission_request.h"
 
+#include "base/logging.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -33,10 +34,12 @@ WidevinePermissionRequest::WidevinePermissionRequest(
 
 WidevinePermissionRequest::~WidevinePermissionRequest() = default;
 
+#if !BUILDFLAG(IS_ANDROID)
 std::u16string WidevinePermissionRequest::GetMessageTextFragment() const {
   return brave_l10n::GetLocalizedResourceUTF16String(
       GetWidevinePermissionRequestTextFrangmentResourceId(for_restart_));
 }
+#endif
 
 void WidevinePermissionRequest::PermissionDecided(ContentSetting result,
                                                   bool is_one_time,
@@ -52,9 +55,11 @@ void WidevinePermissionRequest::PermissionDecided(ContentSetting result,
           FROM_HERE, base::BindOnce(&chrome::AttemptRelaunch));
     }
 #endif
+#if !BUILDFLAG(IS_ANDROID)
     if (!for_restart_) {
       EnableWidevineCdmComponent();
     }
+#endif
     // Permission denied
   } else if (result == ContentSetting::CONTENT_SETTING_BLOCK) {
     DontAskWidevineInstall(web_contents_, dont_ask_widevine_install_);

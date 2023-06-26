@@ -325,7 +325,7 @@ test("brave_unit_tests") {
     ]
   }
 
-  if (enable_widevine && !is_android) {
+  if (enable_widevine) {
     deps += [ "//brave/browser/widevine:unittest" ]
   }
 
@@ -983,7 +983,7 @@ test("brave_browser_tests") {
     deps += [ "//ui/aura:test_support" ]
   }
 
-  if (enable_widevine && !is_android) {
+  if (enable_widevine) {
     deps += [ "//brave/browser/widevine:browser_tests" ]
   }
 

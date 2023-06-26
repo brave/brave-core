@@ -38,7 +38,9 @@ class WidevinePermissionRequest : public permissions::PermissionRequest {
   static bool is_test_;
 
   // PermissionRequest overrides:
+#if !BUILDFLAG(IS_ANDROID)
   std::u16string GetMessageTextFragment() const override;
+#endif
   void PermissionDecided(ContentSetting result,
                          bool is_one_time,
                          bool is_final_decision);

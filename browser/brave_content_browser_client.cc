@@ -183,7 +183,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 #endif
 
-#if BUILDFLAG(ENABLE_WIDEVINE) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/brave_drm_tab_helper.h"
 #endif
 
@@ -505,7 +505,7 @@ void BraveContentBrowserClient::
     RegisterAssociatedInterfaceBindersForRenderFrameHost(
         content::RenderFrameHost& render_frame_host,                // NOLINT
         blink::AssociatedInterfaceRegistry& associated_registry) {  // NOLINT
-#if BUILDFLAG(ENABLE_WIDEVINE) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_WIDEVINE)
   associated_registry.AddInterface<
       brave_drm::mojom::BraveDRM>(base::BindRepeating(
       [](content::RenderFrameHost* render_frame_host,
