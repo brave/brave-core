@@ -140,7 +140,7 @@ import org.chromium.playlist.mojom.PlaylistService;
 import org.chromium.ui.UiUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.base.ViewUtils;
-import org.chromium.ui.interpolators.BakedBezierInterpolator;
+import org.chromium.ui.interpolators.Interpolators;
 import org.chromium.ui.util.ColorUtils;
 import org.chromium.ui.widget.Toast;
 import org.chromium.url.GURL;
@@ -1407,24 +1407,24 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 animator = ObjectAnimator.ofFloat(
                         mBraveShieldsButton, TRANSLATION_X, toolbarButtonTranslationX);
                 animator.setDuration(urlFocusToolbarButtonsDuration);
-                animator.setInterpolator(BakedBezierInterpolator.FADE_OUT_CURVE);
+                animator.setInterpolator(Interpolators.FAST_OUT_LINEAR_IN_INTERPOLATOR);
                 animators.add(animator);
 
                 animator = ObjectAnimator.ofFloat(mBraveShieldsButton, ALPHA, 0);
                 animator.setDuration(urlFocusToolbarButtonsDuration);
-                animator.setInterpolator(BakedBezierInterpolator.FADE_OUT_CURVE);
+                animator.setInterpolator(Interpolators.FAST_OUT_LINEAR_IN_INTERPOLATOR);
                 animators.add(animator);
             } else {
                 animator = ObjectAnimator.ofFloat(mBraveShieldsButton, TRANSLATION_X, 0);
                 animator.setDuration(urlFocusToolbarButtonsDuration);
                 animator.setStartDelay(urlClearFocusTabStackDelayMs);
-                animator.setInterpolator(BakedBezierInterpolator.TRANSFORM_CURVE);
+                animator.setInterpolator(Interpolators.FAST_OUT_SLOW_IN_INTERPOLATOR);
                 animators.add(animator);
 
                 animator = ObjectAnimator.ofFloat(mBraveShieldsButton, ALPHA, 1);
                 animator.setDuration(urlFocusToolbarButtonsDuration);
                 animator.setStartDelay(urlClearFocusTabStackDelayMs);
-                animator.setInterpolator(BakedBezierInterpolator.TRANSFORM_CURVE);
+                animator.setInterpolator(Interpolators.FAST_OUT_SLOW_IN_INTERPOLATOR);
                 animators.add(animator);
             }
         }
