@@ -15,7 +15,7 @@ index f00cd99d2bfa5793d6ed5d96025885ad83af412f..eadeb2cd4b6fc947ab7677b9c8319e1c
  
    base_version_code = int(
 -      '%s%03d00' % (version_values['BUILD'], int(version_values['PATCH'])))
-+      '%02d%02d%03d00' % (int(version_values['MINOR']) + 40, int(version_values['BUILD']), int(version_values['PATCH'])))
++      '%02d%02d%03d00' % (int(version_values['MINOR']) + 41, int(version_values['BUILD']), int(version_values['PATCH'])))
  
    if is_next_build:
      base_version_code += _NEXT_BUILD_VERSION_CODE_DIFF
