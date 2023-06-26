@@ -40,11 +40,22 @@ class SimpleHashClient {
 
   // For discovering NFTs on Solana and Ethereum
   using FetchNFTsFromSimpleHashCallback =
+      base::OnceCallback<void(std::vector<mojom::BlockchainTokenPtr> nfts,
+                              absl::optional<std::string> cursor)>;
+
+  using FetchAllNFTsFromSimpleHashCallback =
       base::OnceCallback<void(std::vector<mojom::BlockchainTokenPtr> nfts)>;
+
   void FetchNFTsFromSimpleHash(const std::string& account_address,
                                const std::vector<std::string>& chain_ids,
+                               absl::optional<std::string> cursor,
                                mojom::CoinType coin,
                                FetchNFTsFromSimpleHashCallback callback);
+
+  void FetchAllNFTsFromSimpleHash(const std::string& account_address,
+                                  const std::vector<std::string>& chain_ids,
+                                  mojom::CoinType coin,
+                                  FetchAllNFTsFromSimpleHashCallback callback);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SimpleHashClientUnitTest, DecodeMintAddress);
@@ -52,18 +63,27 @@ class SimpleHashClient {
                            GetSimpleHashNftsByWalletUrl);
   FRIEND_TEST_ALL_PREFIXES(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash);
 
-  void OnFetchNFTsFromSimpleHash(
-      std::vector<mojom::BlockchainTokenPtr> nfts_so_far,
-      mojom::CoinType coin,
-      FetchNFTsFromSimpleHashCallback callback,
-      APIRequestResult api_request_result);
+  void OnFetchNFTsFromSimpleHash(mojom::CoinType coin,
+                                 FetchNFTsFromSimpleHashCallback callback,
+                                 APIRequestResult api_request_result);
 
-  absl::optional<std::pair<GURL, std::vector<mojom::BlockchainTokenPtr>>>
+  void OnFetchAllNFTsFromSimpleHash(
+      std::vector<mojom::BlockchainTokenPtr> nfts_so_far,
+      const std::string& account_address,
+      const std::vector<std::string>& chain_ids,
+      mojom::CoinType coin,
+      FetchAllNFTsFromSimpleHashCallback callback,
+      std::vector<mojom::BlockchainTokenPtr> nfts,
+      absl::optional<std::string> next_cursor);
+
+  absl::optional<std::pair<absl::optional<std::string>,
+                           std::vector<mojom::BlockchainTokenPtr>>>
   ParseNFTsFromSimpleHash(const base::Value& json_value, mojom::CoinType coin);
 
   static GURL GetSimpleHashNftsByWalletUrl(
       const std::string& account_address,
-      const std::vector<std::string>& chain_ids);
+      const std::vector<std::string>& chain_ids,
+      absl::optional<std::string> cursor);
 
   std::unique_ptr<APIRequestHelper> api_request_helper_;
   base::WeakPtrFactory<SimpleHashClient> weak_ptr_factory_;

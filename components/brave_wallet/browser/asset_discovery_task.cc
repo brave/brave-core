@@ -392,13 +392,13 @@ void AssetDiscoveryTask::DiscoverNFTs(
           base::BindOnce(&AssetDiscoveryTask::MergeDiscoveredNFTs,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   for (const auto& account_address : eth_account_addresses) {
-    simple_hash_client_->FetchNFTsFromSimpleHash(
+    simple_hash_client_->FetchAllNFTsFromSimpleHash(
         account_address, chain_ids.at(mojom::CoinType::ETH),
         mojom::CoinType::ETH, barrier_callback);
   }
 
   for (const auto& account_address : sol_account_addresses) {
-    simple_hash_client_->FetchNFTsFromSimpleHash(
+    simple_hash_client_->FetchAllNFTsFromSimpleHash(
         account_address, chain_ids.at(mojom::CoinType::SOL),
         mojom::CoinType::SOL, barrier_callback);
   }

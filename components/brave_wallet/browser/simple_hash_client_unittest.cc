@@ -72,17 +72,38 @@ class SimpleHashClientUnitTest : public testing::Test {
         }));
   }
 
-  void TestFetchNFTsFromSimpleHash(
+  void TestFetchAllNFTsFromSimpleHash(
       const std::string& account_address,
       const std::vector<std::string>& chain_ids,
       mojom::CoinType coin,
       const std::vector<mojom::BlockchainTokenPtr>& expected_nfts) {
     base::RunLoop run_loop;
-    simple_hash_client_->FetchNFTsFromSimpleHash(
+    simple_hash_client_->FetchAllNFTsFromSimpleHash(
         account_address, chain_ids, coin,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::BlockchainTokenPtr> nfts) {
               ASSERT_EQ(nfts.size(), expected_nfts.size());
+              EXPECT_EQ(nfts, expected_nfts);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
+  void TestFetchNFTsFromSimpleHash(
+      const std::string& account_address,
+      const std::vector<std::string>& chain_ids,
+      absl::optional<std::string> cursor,
+      mojom::CoinType coin,
+      const std::vector<mojom::BlockchainTokenPtr>& expected_nfts,
+      absl::optional<std::string> expected_cursor) {
+    base::RunLoop run_loop;
+    simple_hash_client_->FetchNFTsFromSimpleHash(
+        account_address, chain_ids, cursor, coin,
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::BlockchainTokenPtr> nfts,
+                absl::optional<std::string> returned_cursor) {
+              ASSERT_EQ(nfts.size(), expected_nfts.size());
+              EXPECT_EQ(returned_cursor, expected_cursor);
               EXPECT_EQ(nfts, expected_nfts);
               run_loop.Quit();
             }));
@@ -105,18 +126,19 @@ class SimpleHashClientUnitTest : public testing::Test {
 TEST_F(SimpleHashClientUnitTest, GetSimpleHashNftsByWalletUrl) {
   // Empty address yields empty URL
   EXPECT_EQ(simple_hash_client_->GetSimpleHashNftsByWalletUrl(
-                "", {mojom::kMainnetChainId}),
+                "", {mojom::kMainnetChainId}, absl::nullopt),
             GURL(""));
 
   // Empty chains yields empty URL
-  EXPECT_EQ(simple_hash_client_->GetSimpleHashNftsByWalletUrl(
-                "0x0000000000000000000000000000000000000000", {}),
-            GURL());
+  EXPECT_EQ(
+      simple_hash_client_->GetSimpleHashNftsByWalletUrl(
+          "0x0000000000000000000000000000000000000000", {}, absl::nullopt),
+      GURL());
 
   // One valid chain yields correct URL
   EXPECT_EQ(simple_hash_client_->GetSimpleHashNftsByWalletUrl(
                 "0x0000000000000000000000000000000000000000",
-                {mojom::kMainnetChainId}),
+                {mojom::kMainnetChainId}, absl::nullopt),
             GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
                  "owners?chains=ethereum&wallet_addresses="
                  "0x0000000000000000000000000000000000000000"));
@@ -124,7 +146,8 @@ TEST_F(SimpleHashClientUnitTest, GetSimpleHashNftsByWalletUrl) {
   // Two valid chains yields correct URL
   EXPECT_EQ(simple_hash_client_->GetSimpleHashNftsByWalletUrl(
                 "0x0000000000000000000000000000000000000000",
-                {mojom::kMainnetChainId, mojom::kOptimismMainnetChainId}),
+                {mojom::kMainnetChainId, mojom::kOptimismMainnetChainId},
+                absl::nullopt),
             GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
                  "owners?chains=ethereum%2Coptimism&wallet_addresses="
                  "0x0000000000000000000000000000000000000000"));
@@ -132,8 +155,27 @@ TEST_F(SimpleHashClientUnitTest, GetSimpleHashNftsByWalletUrl) {
   // One invalid chain yields empty URL
   EXPECT_EQ(simple_hash_client_->GetSimpleHashNftsByWalletUrl(
                 "0x0000000000000000000000000000000000000000",
-                {"chain ID not supported by SimpleHash"}),
+                {"chain ID not supported by SimpleHash"}, absl::nullopt),
             GURL());
+
+  // One valid chain with cursor yields correct URL
+  absl::optional<std::string> cursor = "example_cursor";
+  EXPECT_EQ(
+      simple_hash_client_->GetSimpleHashNftsByWalletUrl(
+          "0x0000000000000000000000000000000000000000",
+          {mojom::kMainnetChainId}, cursor),
+      GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
+           "owners?chains=ethereum&wallet_addresses="
+           "0x0000000000000000000000000000000000000000&cursor=example_cursor"));
+
+  // Two valid chains with cursor yields correct URL
+  EXPECT_EQ(
+      simple_hash_client_->GetSimpleHashNftsByWalletUrl(
+          "0x0000000000000000000000000000000000000000",
+          {mojom::kMainnetChainId, mojom::kOptimismMainnetChainId}, cursor),
+      GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
+           "owners?chains=ethereum%2Coptimism&wallet_addresses="
+           "0x0000000000000000000000000000000000000000&cursor=example_cursor"));
 }
 
 TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
@@ -164,7 +206,7 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
                                                         mojom::CoinType::ETH);
   ASSERT_FALSE(result);
 
-  // Invalid next URL (wrong host) yields empty next URL
+  // Missing next_cursor yields empty next_cursor
   json = R"({
     "next": "https://foo.com/api/v0/nfts/owners?chains=ethereum&wallet_addresses=0x00",
     "previous": null,
@@ -190,11 +232,12 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   result = simple_hash_client_->ParseNFTsFromSimpleHash(*json_value,
                                                         mojom::CoinType::ETH);
   ASSERT_TRUE(result);
-  EXPECT_EQ(result->first, GURL());
+  ASSERT_FALSE(result->first);
 
-  // Invalid next URL (not https) yields empty next URL
+  // Null next cursor yields empty next cursor
   json = R"({
     "next": "http://api.simplehash.com/api/v0/nfts/owners?chains=ethereum&wallet_addresses=0x00",
+    "next_cursor": null,
     "previous": null,
     "nfts": [
       {
@@ -218,11 +261,12 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   result = simple_hash_client_->ParseNFTsFromSimpleHash(*json_value,
                                                         mojom::CoinType::ETH);
   ASSERT_TRUE(result);
-  EXPECT_EQ(result->first, GURL());
+  EXPECT_EQ(result->first, absl::nullopt);
 
   // Unsupported CoinType yields nullopt (valid otherwise)
   json = R"({
     "next": null,
+    "next_cursor": "abc123",
     "previous": null,
     "nfts": [
       {
@@ -250,7 +294,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   result = simple_hash_client_->ParseNFTsFromSimpleHash(*json_value,
                                                         mojom::CoinType::ETH);
   ASSERT_TRUE(result);
-  EXPECT_FALSE(result->first.is_valid());
+  ASSERT_TRUE(result->first);
+  EXPECT_EQ(result->first, "abc123");
   EXPECT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
             "0x1111111111111111111111111111111111111111");
@@ -270,7 +315,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
 
   // Valid, 2 ETH NFTs
   json = R"({
-    "next": "https://api.simplehash.com/api/v0/nfts/next",
+    "next": "https://api.simplehash.com/api/v0/nfts/next/abc123",
+    "next_cursor": "abc123",
     "previous": null,
     "nfts": [
       {
@@ -307,8 +353,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   result = simple_hash_client_->ParseNFTsFromSimpleHash(*json_value,
                                                         mojom::CoinType::ETH);
   ASSERT_TRUE(result);
-  EXPECT_EQ(result->first.spec(),
-            "https://simplehash.wallet.brave.com/api/v0/nfts/next");
+  ASSERT_TRUE(result->first);
+  EXPECT_EQ(result->first, "abc123");
   EXPECT_EQ(result->second.size(), 2u);
   EXPECT_EQ(result->second[0]->contract_address,
             "0x1111111111111111111111111111111111111111");
@@ -618,7 +664,7 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   EXPECT_EQ(result->second.size(), 0u);
 }
 
-TEST_F(SimpleHashClientUnitTest, FetchNFTsFromSimpleHash) {
+TEST_F(SimpleHashClientUnitTest, FetchAllNFTsFromSimpleHash) {
   std::vector<mojom::BlockchainTokenPtr> expected_nfts;
   std::string json;
   std::string json2;
@@ -626,22 +672,22 @@ TEST_F(SimpleHashClientUnitTest, FetchNFTsFromSimpleHash) {
   GURL url;
 
   // Empty account address yields empty expected_nfts
-  TestFetchNFTsFromSimpleHash("", {mojom::kMainnetChainId},
-                              mojom::CoinType::ETH, expected_nfts);
+  TestFetchAllNFTsFromSimpleHash("", {mojom::kMainnetChainId},
+                                 mojom::CoinType::ETH, expected_nfts);
 
   // Empty chain IDs yields empty expected_nfts
-  TestFetchNFTsFromSimpleHash("0x0000000000000000000000000000000000000000", {},
-                              mojom::CoinType::ETH, expected_nfts);
+  TestFetchAllNFTsFromSimpleHash("0x0000000000000000000000000000000000000000",
+                                 {}, mojom::CoinType::ETH, expected_nfts);
 
   // Unsupported chain ID yields empty expected_nfts
-  TestFetchNFTsFromSimpleHash("0x0000000000000000000000000000000000000000", {},
-                              mojom::CoinType::FIL, expected_nfts);
+  TestFetchAllNFTsFromSimpleHash("0x0000000000000000000000000000000000000000",
+                                 {}, mojom::CoinType::FIL, expected_nfts);
 
   // Non 2xx response yields empty expected_nfts
   SetHTTPRequestTimeoutInterceptor();
-  TestFetchNFTsFromSimpleHash("0x0000000000000000000000000000000000000000",
-                              {mojom::kMainnetChainId}, mojom::CoinType::ETH,
-                              expected_nfts);
+  TestFetchAllNFTsFromSimpleHash("0x0000000000000000000000000000000000000000",
+                                 {mojom::kMainnetChainId}, mojom::CoinType::ETH,
+                                 expected_nfts);
 
   // 1 NFT is parsed
   json = R"({
@@ -679,15 +725,16 @@ TEST_F(SimpleHashClientUnitTest, FetchNFTsFromSimpleHash) {
       "0x0000000000000000000000000000000000000000");
   responses[url] = json;
   SetInterceptors(responses);
-  TestFetchNFTsFromSimpleHash(
+  TestFetchAllNFTsFromSimpleHash(
       "0x0000000000000000000000000000000000000000",
       {mojom::kMainnetChainId, mojom::kOptimismMainnetChainId},
       mojom::CoinType::ETH, expected_nfts);
 
-  // If 'next' page url is present, it should make another request
+  // If 'next_cursor' page url is present, it should make another request
   responses.clear();
   json = R"({
     "next": "https://api.simplehash.com/api/v0/nfts/next",
+    "next_cursor": "abc123",
     "previous": null,
     "nfts": [
       {
@@ -705,7 +752,10 @@ TEST_F(SimpleHashClientUnitTest, FetchNFTsFromSimpleHash) {
     ]
   })";
   responses[url] = json;
-  GURL next_url = GURL("https://simplehash.wallet.brave.com/api/v0/nfts/next");
+  GURL next_url = GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "owners?chains=ethereum%2Coptimism&wallet_addresses="
+      "0x0000000000000000000000000000000000000000&cursor=abc123");
   json2 = R"({
     "next": null,
     "previous": null,
@@ -738,10 +788,103 @@ TEST_F(SimpleHashClientUnitTest, FetchNFTsFromSimpleHash) {
   nft2->symbol = "FIVE";
   nft2->coin = mojom::CoinType::ETH;
   expected_nfts.push_back(std::move(nft2));
-  TestFetchNFTsFromSimpleHash(
+  TestFetchAllNFTsFromSimpleHash(
       "0x0000000000000000000000000000000000000000",
       {mojom::kMainnetChainId, mojom::kOptimismMainnetChainId},
       mojom::CoinType::ETH, expected_nfts);
 }
 
+TEST_F(SimpleHashClientUnitTest, FetchNFTsFromSimpleHash) {
+  std::map<GURL, std::string> responses;
+  GURL url;
+
+  // Test unsupported coin type
+  TestFetchNFTsFromSimpleHash("0x0000000000000000000000000000000000000000",
+                              {mojom::kMainnetChainId}, absl::nullopt,
+                              mojom::CoinType::FIL, {}, absl::nullopt);
+
+  // Test invalid URL
+  TestFetchNFTsFromSimpleHash("", {mojom::kMainnetChainId}, absl::nullopt,
+                              mojom::CoinType::ETH, {}, absl::nullopt);
+
+  // Non 2xx response yields empty expected_nfts
+  SetHTTPRequestTimeoutInterceptor();
+  TestFetchNFTsFromSimpleHash("0x0000000000000000000000000000000000000000",
+                              {mojom::kMainnetChainId}, absl::nullopt,
+                              mojom::CoinType::ETH, {}, absl::nullopt);
+
+  // Single NFT fetched without cursor argument
+  std::vector<mojom::BlockchainTokenPtr> expected_nfts;
+  auto nft1 = mojom::BlockchainToken::New();
+  nft1->chain_id = mojom::kPolygonMainnetChainId;
+  nft1->contract_address = "0x1111111111111111111111111111111111111111";
+  nft1->token_id = "0x1";
+  nft1->is_erc721 = true;
+  nft1->is_erc1155 = false;
+  nft1->is_erc20 = false;
+  nft1->is_nft = true;
+  nft1->symbol = "ONE";
+  nft1->coin = mojom::CoinType::ETH;
+  expected_nfts.push_back(std::move(nft1));
+
+  std::string json = R"({
+    "next": null,
+    "previous": null,
+    "nfts": [
+      {
+        "chain": "polygon",
+        "contract_address": "0x1111111111111111111111111111111111111111",
+        "token_id": "1",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "ONE"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      }
+    ]
+  })";
+
+  url = GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "owners?chains=ethereum&wallet_addresses="
+      "0x0000000000000000000000000000000000000000");
+  responses[url] = json;
+  SetInterceptors(responses);
+
+  TestFetchNFTsFromSimpleHash(
+      "0x0000000000000000000000000000000000000000", {mojom::kMainnetChainId},
+      absl::nullopt, mojom::CoinType::ETH, expected_nfts, absl::nullopt);
+
+  // Single NFT fetched with cursor argument also returning a cursor
+  url = GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "owners?chains=ethereum&wallet_addresses="
+      "0x0000000000000000000000000000000000000000&cursor=abc123");
+  json = R"({
+    "next": null,
+    "next_cursor": "def456",
+    "previous": null,
+    "nfts": [
+      {
+        "chain": "polygon",
+        "contract_address": "0x1111111111111111111111111111111111111111",
+        "token_id": "1",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "ONE"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      }
+    ]
+  })";
+  responses[url] = json;
+  SetInterceptors(responses);
+  TestFetchNFTsFromSimpleHash("0x0000000000000000000000000000000000000000",
+                              {mojom::kMainnetChainId}, "abc123",
+                              mojom::CoinType::ETH, expected_nfts, "def456");
+}
 }  // namespace brave_wallet

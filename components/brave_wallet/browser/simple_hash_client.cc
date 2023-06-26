@@ -149,23 +149,23 @@ SimpleHashClient::~SimpleHashClient() = default;
 void SimpleHashClient::FetchNFTsFromSimpleHash(
     const std::string& account_address,
     const std::vector<std::string>& chain_ids,
+    absl::optional<std::string> cursor,
     mojom::CoinType coin,
     FetchNFTsFromSimpleHashCallback callback) {
   if (!(coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL)) {
-    std::move(callback).Run({});
+    std::move(callback).Run({}, absl::nullopt);
     return;
   }
 
-  GURL url = GetSimpleHashNftsByWalletUrl(account_address, chain_ids);
+  GURL url = GetSimpleHashNftsByWalletUrl(account_address, chain_ids, cursor);
   if (!url.is_valid()) {
-    std::move(callback).Run({});
+    std::move(callback).Run({}, absl::nullopt);
     return;
   }
-  std::vector<mojom::BlockchainTokenPtr> nfts_so_far = {};
+
   auto internal_callback =
       base::BindOnce(&SimpleHashClient::OnFetchNFTsFromSimpleHash,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(nfts_so_far),
-                     coin, std::move(callback));
+                     weak_ptr_factory_.GetWeakPtr(), coin, std::move(callback));
 
   api_request_helper_->Request("GET", url, "", "", std::move(internal_callback),
                                MakeBraveServicesKeyHeader(),
@@ -173,41 +173,73 @@ void SimpleHashClient::FetchNFTsFromSimpleHash(
 }
 
 void SimpleHashClient::OnFetchNFTsFromSimpleHash(
-    std::vector<mojom::BlockchainTokenPtr> nfts_so_far,
     mojom::CoinType coin,
     FetchNFTsFromSimpleHashCallback callback,
     APIRequestResult api_request_result) {
+  std::vector<mojom::BlockchainTokenPtr> nfts;
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(std::move(nfts_so_far));
+    std::move(callback).Run(std::move(nfts), absl::nullopt);
     return;
   }
 
   // Invalid JSON becomes an empty string after sanitization
   if (api_request_result.body().empty()) {
-    std::move(callback).Run(std::move(nfts_so_far));
+    std::move(callback).Run(std::move(nfts), absl::nullopt);
     return;
   }
 
-  absl::optional<std::pair<GURL, std::vector<mojom::BlockchainTokenPtr>>>
+  absl::optional<std::pair<absl::optional<std::string>,
+                           std::vector<mojom::BlockchainTokenPtr>>>
       result = ParseNFTsFromSimpleHash(api_request_result.value_body(), coin);
   if (!result) {
-    std::move(callback).Run(std::move(nfts_so_far));
+    std::move(callback).Run(std::move(nfts), absl::nullopt);
     return;
   }
 
   for (auto& token : result.value().second) {
+    nfts.push_back(std::move(token));
+  }
+
+  // Otherwise, return the nfts
+  std::move(callback).Run(std::move(nfts), result->first);
+}
+
+void SimpleHashClient::FetchAllNFTsFromSimpleHash(
+    const std::string& account_address,
+    const std::vector<std::string>& chain_ids,
+    mojom::CoinType coin,
+    FetchAllNFTsFromSimpleHashCallback callback) {
+  auto internal_callback = base::BindOnce(
+      &SimpleHashClient::OnFetchAllNFTsFromSimpleHash,
+      weak_ptr_factory_.GetWeakPtr(), std::vector<mojom::BlockchainTokenPtr>(),
+      account_address, chain_ids, coin, std::move(callback));
+
+  FetchNFTsFromSimpleHash(account_address, chain_ids, absl::nullopt, coin,
+                          std::move(internal_callback));
+}
+
+void SimpleHashClient::OnFetchAllNFTsFromSimpleHash(
+    std::vector<mojom::BlockchainTokenPtr> nfts_so_far,
+    const std::string& account_address,
+    const std::vector<std::string>& chain_ids,
+    mojom::CoinType coin,
+    FetchAllNFTsFromSimpleHashCallback callback,
+    std::vector<mojom::BlockchainTokenPtr> nfts,
+    absl::optional<std::string> next_cursor) {
+  // Combine the NFTs with the ones fetched already
+  for (auto& token : nfts) {
     nfts_so_far.push_back(std::move(token));
   }
 
   // If there is a next page, fetch it
-  if (result.value().first.is_valid()) {
+  if (next_cursor) {
     auto internal_callback =
-        base::BindOnce(&SimpleHashClient::OnFetchNFTsFromSimpleHash,
+        base::BindOnce(&SimpleHashClient::OnFetchAllNFTsFromSimpleHash,
                        weak_ptr_factory_.GetWeakPtr(), std::move(nfts_so_far),
-                       coin, std::move(callback));
-    api_request_helper_->Request(
-        "GET", result.value().first, "", "", std::move(internal_callback),
-        MakeBraveServicesKeyHeader(), {.auto_retry_on_network_change = true});
+                       account_address, chain_ids, coin, std::move(callback));
+
+    FetchNFTsFromSimpleHash(account_address, chain_ids, *next_cursor, coin,
+                            std::move(internal_callback));
     return;
   }
 
@@ -215,7 +247,8 @@ void SimpleHashClient::OnFetchNFTsFromSimpleHash(
   std::move(callback).Run(std::move(nfts_so_far));
 }
 
-absl::optional<std::pair<GURL, std::vector<mojom::BlockchainTokenPtr>>>
+absl::optional<std::pair<absl::optional<std::string>,
+                         std::vector<mojom::BlockchainTokenPtr>>>
 SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
                                           mojom::CoinType coin) {
   // Parses responses like this
@@ -406,22 +439,12 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
     return absl::nullopt;
   }
 
-  GURL nextURL;
-  auto* next = dict->FindString("next");
-  if (next) {
-    nextURL = GURL(*next);
-  }
-
-  // Validate the URL of the next page using HTTPS and SimpleHash host
-  // and replace the host with the proxy host
-  if (!nextURL.is_empty() && (nextURL.host() != GURL(kSimpleHashUrl).host() ||
-                              !(nextURL.scheme() == url::kHttpsScheme))) {
-    nextURL = GURL();
+  auto* next_cursor_ptr = dict->FindString("next_cursor");
+  absl::optional<std::string> next_cursor;
+  if (next_cursor_ptr) {
+    next_cursor = *next_cursor_ptr;
   } else {
-    GURL::Replacements replacements;
-    std::string replacement_host = GURL(kSimpleHashBraveProxyUrl).host();
-    replacements.SetHostStr(replacement_host);
-    nextURL = nextURL.ReplaceComponents(replacements);
+    next_cursor = absl::nullopt;
   }
 
   const base::Value::List* nfts = dict->FindList("nfts");
@@ -552,7 +575,7 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
     nft_tokens.push_back(std::move(token));
   }
 
-  return std::make_pair(nextURL, std::move(nft_tokens));
+  return std::make_pair(next_cursor, std::move(nft_tokens));
 }
 
 // static
@@ -560,7 +583,8 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
 // https://simplehash.wallet.brave.com/api/v0/nfts/owners?chains={chains}&wallet_addresses={wallet_addresses}
 GURL SimpleHashClient::GetSimpleHashNftsByWalletUrl(
     const std::string& account_address,
-    const std::vector<std::string>& chain_ids) {
+    const std::vector<std::string>& chain_ids,
+    absl::optional<std::string> cursor) {
   if (chain_ids.empty() || account_address.empty()) {
     return GURL();
   }
@@ -587,6 +611,12 @@ GURL SimpleHashClient::GetSimpleHashNftsByWalletUrl(
   GURL url = GURL(urlStr);
   url = net::AppendQueryParameter(url, "chains", chain_ids_param);
   url = net::AppendQueryParameter(url, "wallet_addresses", account_address);
+
+  // If cursor is provided, add it as a query parameter
+  if (cursor) {
+    url = net::AppendQueryParameter(url, "cursor", *cursor);
+  }
+
   return url;
 }
 
