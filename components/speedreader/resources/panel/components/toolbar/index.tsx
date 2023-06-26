@@ -9,7 +9,7 @@ import * as S from './style'
 import getToolbarAPI, { SiteSettings, AppearanceSettings, TtsSettings, ToolbarColors, Theme, FontSize, FontFamily, PlaybackSpeed } from '../../api/browser'
 import { MainButtonType, MainButtonsList } from '../lists'
 import ReaderModeControl from "../reader-mode-control"
-import OptionsControl from "../options-control"
+import AppearanceControl from "../appearance-control"
 import TtsControl from '../tts-control'
 
 const toColor = (color: number) => {
@@ -108,10 +108,10 @@ function Toolbar() {
         onClick={handleMainButtonClick.bind(this)}
       />
       {activeButton === MainButtonType.None && (
-        <ReaderModeControl onClick={handleClose.bind(this)} />)
+        <ReaderModeControl onClose={handleClose.bind(this)} />)
       }
-      {activeButton === MainButtonType.Options && (
-        <OptionsControl
+      {activeButton === MainButtonType.Appearance && (
+        <AppearanceControl
           appearanceSettings={appearanceSettings}
           onThemeChange={handleThemeChange.bind(this)}
           onFontFamilyChange={handleFontFamilyChange.bind(this)}

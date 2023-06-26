@@ -9,10 +9,11 @@ import { FontFamily, FontSize, PlaybackSpeed, PlaybackState } from '../../api/br
 import classnames from '$web-common/classnames'
 import { loadTimeData } from '$web-common/loadTimeData'
 import Icon from '@brave/leo/react/icon'
+import { getLocale } from '$web-common/locale'
 
 export enum MainButtonType {
   None,
-  Options,
+  Appearance,
   TextToSpeech,
   Speedreader,
   AI
@@ -20,26 +21,30 @@ export enum MainButtonType {
 
 const mainButtonsOptions = [
   {
-    id: 'options',
-    type: MainButtonType.Options,
-    iconName: 'characters'
+    id: 'appearance',
+    type: MainButtonType.Appearance,
+    iconName: 'characters',
+    title: getLocale('braveReaderModeAppearance')
   },
   {
     id: 'tts',
     type: MainButtonType.TextToSpeech,
     iconName: 'headphones',
-    hidden: true  // TODO(boocmp): Enable in future PR.
+    hidden: false,  // TODO(boocmp): Enable in future PR.
+    title: getLocale('braveReaderModeTextToSpeech')
   },
   {
     id: 'speedreader',
     type: MainButtonType.Speedreader,
     iconName: 'product-speedreader',
+    title: getLocale('braveReaderModeSpeedreader')
   },
   {
     id: 'ai',
     type: MainButtonType.AI,
     iconName: 'product-brave-ai',
-    hidden: !loadTimeData.getBoolean('aiChatFeatureEnabled')
+    hidden: !loadTimeData.getBoolean('aiChatFeatureEnabled'),
+    title: getLocale('braveReaderModeAI')
   }
 ]
 
@@ -47,22 +52,26 @@ const fontStyleOptions = [
   {
     id: 'font-sans',
     family: FontFamily.kSans,
-    iconName: 'readermode-sans'
+    iconName: 'readermode-sans',
+    title: getLocale('braveReaderModeAppearanceFontSans')
   },
   {
     id: 'font-serif',
     family: FontFamily.kSerif,
-    iconName: 'readermode-serif'
+    iconName: 'readermode-serif',
+    title: getLocale('braveReaderModeAppearanceFontSerif')
   },
   {
     id: 'font-mono',
     family: FontFamily.kMono,
-    iconName: 'readermode-mono'
+    iconName: 'readermode-mono',
+    title: getLocale('braveReaderModeAppearanceFontMono')
   },
   {
     id: 'font-dyslexic',
     family: FontFamily.kDyslexic,
-    iconName: 'readermode-dislexyc'
+    iconName: 'readermode-dislexyc',
+    title: getLocale('braveReaderModeAppearanceFontDyslexic')
   }
 ]
 
@@ -73,6 +82,7 @@ type OptionType = {
   onClick?: Function
   ariaLabel?: string
   inGroup?: boolean
+  title?: string
 }
 
 function ListBox(props: React.PropsWithChildren<{}>) {
@@ -101,6 +111,7 @@ function ControlButton(props: OptionType) {
       aria-label={props?.ariaLabel}
       onClick={handleClick}
       inGroup={props?.inGroup}
+      title={props?.title}
     >
       {props.children}
     </S.Button>
@@ -124,6 +135,7 @@ export function MainButtonsList(props: MainButtonsListProps) {
           <ControlButton
             id={entry.id}
             key={entry.type}
+            title={entry.title}
             isSelected={props.activeButton === entry.type}
             onClick={handleClick.bind(this, entry.type)}
           >
@@ -152,6 +164,7 @@ export function FontStyleList(props: FontStyleListProps) {
           <ControlButton
             id={entry?.id}
             key={entry.family}
+            title={entry.title}
             isSelected={props.activeFontFamily === entry.family}
             inGroup={true}
             onClick={handleClick.bind(this, entry.family)}

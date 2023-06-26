@@ -11,15 +11,21 @@ export const Box = styled.div`
   align-items: center;
   width: 100%;
   gap: 16px;
+
+  & > *:not(:last-child)::after {
+    content: '';
+    margin-left: 16px;
+    width: 1px;
+    height: 20px;
+    background: var(--color-border);
+  }
 `
 
-export const VDelemiter = styled.div`
-  width: 1px;
-  height: 20px;
-  background: var(--color-border);
-`
-
-export const Close = styled.div`
+export const CloseButton = styled.button`
   background: transparent;
+  height: 28px;
+  padding: 0;
+  justify-content: center;
+  border: 0;
   cursor: pointer;
 `

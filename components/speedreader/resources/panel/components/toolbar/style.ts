@@ -7,7 +7,6 @@ import styled from 'styled-components'
 
 export const Box = styled.div`
   display: flex;
-  background: transparent;
   width: 870px;
   height: 100%;
   user-select: none;

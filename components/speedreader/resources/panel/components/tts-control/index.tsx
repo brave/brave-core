@@ -54,35 +54,33 @@ function TtsControl(props: TtsControlProps) {
           }
         }}
       />
-      <S.VDelemiter />
       <PlaybackSpeedControl
         speed={props.ttsSettings.speed}
         onClick={(speed: PlaybackSpeed) => {
           props.onTtsSpeedChange(speed)
         }}
       />
-      <S.VDelemiter />
       <S.Voice>
         <span>{getLocale('braveReaderModeVoice')}</span>
         <span>
           <select
+            key={props.ttsSettings.voice}
             value={props.ttsSettings.voice}
             onChange={(e) => {
               props.onTtsVoiceChange(e.target.value)
             }}>
             {voices.map(voice => {
               return (
-                <option value={voice.name}>
+                <option key={voice.name} value={voice.name}>
                   {voice.name}
                 </option>)
             })}
           </select>
         </span>
       </S.Voice>
-      <S.VDelemiter />
-      <S.Close onClick={props.onClose}>
+      <S.CloseButton onClick={props.onClose}>
         {getLocale('braveReaderModeClose')}
-      </S.Close>
+      </S.CloseButton>
     </S.Box>
   )
 }

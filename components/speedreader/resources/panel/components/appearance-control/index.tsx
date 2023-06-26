@@ -27,20 +27,17 @@ function AppearanceControl (props: AppearanceControlProps) {
         activeTheme={props.appearanceSettings.theme}
         onClick={props.onThemeChange}
       />
-      <S.VDelemiter />
       <FontStyleList
         activeFontFamily={props.appearanceSettings.fontFamily}
         onClick={props.onFontFamilyChange}
       />
-      <S.VDelemiter />
       <FontSizeList
         currentSize={props.appearanceSettings.fontSize}
         onClick={props.onFontSizeChange}
       />
-      <S.VDelemiter />
-      <S.Close onClick={props.onClose}>
+      <S.CloseButton onClick={props.onClose}>
         {getLocale('braveReaderModeClose')}
-      </S.Close>
+      </S.CloseButton>
     </S.Box>
   )
 }

@@ -8,24 +8,29 @@ import * as S from './style'
 import classnames from '$web-common/classnames'
 import { Theme } from '../../api/browser'
 import Icon from '@brave/leo/react/icon'
+import { getLocale } from '$web-common/locale'
 
 const themeOptions = [
   {
     id: 'theme-light',
     type: Theme.kLight,
+    title: getLocale('braveReaderModeAppearanceThemeLight')
   },
   {
     id: 'theme-sepia',
     type: Theme.kSepia,
+    title: getLocale('braveReaderModeAppearanceThemeSepia')
   },
   {
     id: 'theme-dark',
     type: Theme.kDark,
+    title: getLocale('braveReaderModeAppearanceThemeDark')
   },
   {
     id: 'theme-system',
     type: Theme.kNone,
-    iconName: 'theme-system'
+    iconName: 'theme-system',
+    title: getLocale('braveReaderModeAppearanceThemeSystem')
   }
 ]
 
@@ -52,6 +57,7 @@ function ThemeControl(props: ThemeControlProps) {
           <button
             id={entry.id}
             key={entry.type}
+            title={entry.title}
             role="option"
             className={chipClass}
             aria-selected={props.activeTheme === entry.type}

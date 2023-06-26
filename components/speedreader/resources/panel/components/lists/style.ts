@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import '@brave/leo/tokens/css/variables.css'
 
 export const Box = styled.div`
   display: flex;
@@ -66,12 +67,12 @@ export const Button = styled.button<{inGroup?: boolean}>`
   background-color: transparent;
 
   &.is-active {
-    background-color: rgba(19, 22, 32, 0.08);
+    background-color: var(--leo-color-iconbackground-active);
   }
 
   &:enabled {
     &:hover {
-      background-color: rgba(19, 22, 32, 0.05);
+      background-color: var(--leo-color-iconbackground-hover);
     }
   }
 

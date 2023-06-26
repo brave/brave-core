@@ -4,16 +4,18 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import '@brave/leo/tokens/css/variables.css'
+
 
 export const Box = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 100%;
 `
 
 export const Caption = styled.div`
   display: flex;
+  flex: 1 1 100%;
   font-weight: 400;
   font-size: 13px;
   line-height: 16px;
@@ -24,8 +26,9 @@ export const Caption = styled.div`
   gap: 8px;
 `
 
-export const Button = styled.button`
+export const CloseButton = styled.button`
   display: flex;
+  flex: 1 1 28px;
   width: 28px;
   height: 28px;
   padding: 4px;
@@ -36,7 +39,7 @@ export const Button = styled.button`
   align-items: center;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: var(--leo-color-iconbackground-hover);
   }
 
   background-color: transparent;

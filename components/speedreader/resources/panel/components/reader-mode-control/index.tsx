@@ -10,20 +10,19 @@ import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
 
 interface ReaderModeControlProps {
-  onClick?: Function
+  onClose?: Function
 }
 
 function ReaderModeControl (props: ReaderModeControlProps) {
   return (
     <S.Box>
-      <span></span>
       <S.Caption>
         <Icon name='product-readermode' />
         {getLocale('braveReaderModeCaption')}
       </S.Caption>
-      <S.Button onClick={() => { props.onClick?.() }}>
+      <S.CloseButton onClick={() => { props.onClose?.() }}>
         <Icon name='close' />
-      </S.Button>
+      </S.CloseButton>
     </S.Box>
   )
 }

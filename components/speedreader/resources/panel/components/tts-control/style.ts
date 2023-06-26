@@ -11,12 +11,14 @@ export const Box = styled.div`
   align-items: center;
   width: 100%;
   gap: 16px;
-`
 
-export const VDelemiter = styled.div`
-  width: 1px;
-  height: 20px;
-  background: var(--color-border);
+  & > *:not(:last-child)::after {
+    content: '';
+    margin-left: 16px;
+    width: 1px;
+    height: 20px;
+    background: var(--color-border);
+  }
 `
 
 export const Voice = styled.div`
@@ -24,9 +26,10 @@ export const Voice = styled.div`
   height: 100%;
   align-items: center;
   justify-items: center;
-  gap: 8px;
 
   select {
+    margin-left: 8px;
+
     width: 112px;
     padding: 4px;
     height: 28px;
@@ -43,7 +46,11 @@ export const Voice = styled.div`
   }
 `
 
-export const Close = styled.div`
+export const CloseButton = styled.button`
   background: transparent;
+  height: 28px;
+  padding: 0;
+  justify-content: center;
+  border: 0;
   cursor: pointer;
 `

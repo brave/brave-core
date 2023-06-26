@@ -10,8 +10,6 @@ export const Box = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: transparent;
-  gap: 8px;
 
   #theme-system .icon-box {
     color: black;
@@ -28,6 +26,7 @@ export const Box = styled.div`
     cursor: pointer;
     padding: 0;
     overflow: hidden;
+    margin-left: 8px;
   }
 
   .icon-box {
