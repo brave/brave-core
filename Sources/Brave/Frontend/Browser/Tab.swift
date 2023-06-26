@@ -507,7 +507,7 @@ class Tab: NSObject {
       return Strings.Hotkey.newTabTitle
     }
 
-    if let url = self.url, !InternalURL.isValid(url: url), let shownUrl = url.displayURL?.absoluteString {
+    if let url = self.url, !InternalURL.isValid(url: url), let shownUrl = url.displayURL?.absoluteString, webView != nil {
       syncTab?.setTitle(shownUrl)
       return shownUrl
     }
