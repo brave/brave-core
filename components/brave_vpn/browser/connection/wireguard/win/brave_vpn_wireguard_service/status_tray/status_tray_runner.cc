@@ -14,7 +14,6 @@
 #include "base/run_loop.h"
 #include "base/task/single_thread_task_executor.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common/service_constants.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common/wireguard_utils.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/brave_vpn_tray_command_ids.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/brave_vpn_tray_strings_en.h"
@@ -23,6 +22,7 @@
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/status_tray.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/utils/utils.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
