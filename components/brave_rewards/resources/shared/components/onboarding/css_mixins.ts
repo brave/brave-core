@@ -15,10 +15,6 @@ export const enableRewardsButton = `
   line-height: 20px;
   cursor: pointer;
 
-  &:active {
-    background: var(--brave-color-brandBatActive);
-  }
-
   &[disabled] {
     background: ${leo.color.light.gray[30]};
     cursor: default;
