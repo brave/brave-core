@@ -7,14 +7,12 @@ import * as React from 'react'
 
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 
 import Icon from '@brave/leo/react/icon'
 import { color, font, spacing } from '@brave/leo/tokens/css'
 
-import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 import PlaylistInfo from './playlistInfo'
-import * as States from '../reducers/states'
+import { usePlaylist } from '../reducers/states'
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -22,7 +20,7 @@ const StyledLink = styled(Link)`
 `
 
 interface HeaderProps {
-  playlistId?: String
+  playlistId?: string
 }
 
 const GradientIcon = styled(Icon)`
@@ -60,13 +58,7 @@ const HeaderContainer = styled.div`
 `
 
 export default function Header ({ playlistId }: HeaderProps) {
-  const playlist = useSelector<
-    States.ApplicationState,
-    PlaylistMojo.Playlist | undefined
-  >(applicationState =>
-    applicationState.playlistData?.lists.find(e => e.id === playlistId)
-  )
-
+  const playlist = usePlaylist(playlistId)
   return (
     <HeaderContainer>
       {playlist ? (

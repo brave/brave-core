@@ -7,7 +7,7 @@ import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
-import * as States from 'components/playlist/browser/resources/reducers/states'
+import { ApplicationState, PlaylistData } from 'components/playlist/browser/resources/reducers/states'
 
 // Components for playlist
 import { CloseCircleOIcon } from 'brave-ui/components/icons'
@@ -27,7 +27,7 @@ import { types } from '../constants/playlist_types'
 
 interface Props {
   actions: typeof playlistActions
-  playlistData: States.PlaylistData
+  playlistData: PlaylistData
 }
 
 interface State {
@@ -175,9 +175,7 @@ export class PlaylistPage extends React.Component<Props, State> {
       return
     }
 
-    const item = currentList.items.find(
-      (item: PlaylistMojo.PlaylistItem) => item.id === playlistItemId
-    )
+    const item = currentList.items.find(item => item.id === playlistItemId)
     if (!item) {
       console.error(`There's item with id: ${playlistItemId}`)
       return
@@ -304,7 +302,7 @@ export class PlaylistPage extends React.Component<Props, State> {
   }
 }
 
-export const mapStateToProps = (state: States.ApplicationState) => ({
+export const mapStateToProps = (state: ApplicationState) => ({
   playlistData: state.playlistData
 })
 

@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as States from 'components/playlist/browser/resources/reducers/states'
+import { PlaylistData } from 'components/playlist/browser/resources/reducers/states'
 import { Reducer } from 'redux'
 
 import { types } from '../constants/playlist_types'
 
 import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
-const playlistReducer: Reducer<States.PlaylistData | undefined> = (
-  state: States.PlaylistData | undefined,
+const playlistReducer: Reducer<PlaylistData | undefined> = (
+  state: PlaylistData | undefined,
   action
 ) => {
   if (state === undefined) {
@@ -28,12 +28,6 @@ const playlistReducer: Reducer<States.PlaylistData | undefined> = (
         })
       }
       if (!currentList) currentList = playlists[0]
-
-      if (playlists.length && !currentList) {
-        console.error(
-          "there's no selected playlist even though we have playlists"
-        )
-      }
 
       state = { ...state, currentList, lists: [...playlists] }
       break

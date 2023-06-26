@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as States from 'components/playlist/browser/resources/reducers/states'
+import { PlayerState } from 'components/playlist/browser/resources/reducers/states'
 
 import { getAllActions } from './api/getAllActions'
 
@@ -14,6 +14,6 @@ export default function startReceivingPlayerEvents () {
       return
     }
 
-    getAllActions().playerStateChanged(e.data as States.PlayerState)
+    getAllActions().playerStateChanged(e.data as PlayerState)
   }
 }

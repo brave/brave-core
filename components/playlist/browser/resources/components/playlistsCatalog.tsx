@@ -10,12 +10,12 @@ import { Link } from 'react-router-dom'
 import Icon from '@brave/leo/react/icon'
 import { color } from '@brave/leo/tokens/css'
 
-import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
+import { Playlist } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
 import PlayLaterCardOverlayImage from '../assets/playlater-card-overlay.svg'
 import PlaylistInfo from './playlistInfo'
 import { useSelector } from 'react-redux'
-import * as States from '../reducers/states'
+import { ApplicationState } from '../reducers/states'
 
 interface ThumbnailProps {
   isDefaultPlaylist: boolean
@@ -118,7 +118,7 @@ function PlaylistThumbnail (props: ThumbnailProps) {
 }
 
 // A card UI for representing a playlist.
-function PlaylistCard ({ playlist }: { playlist: PlaylistMojo.Playlist }) {
+function PlaylistCard ({ playlist }: { playlist: Playlist }) {
   const isDefaultPlaylist = playlist.id === 'default'
 
   const thumbnailUrl = React.useMemo(() => {
@@ -169,14 +169,13 @@ const PlaylistsCatalogFlexBox = styled.div`
 
 // A catalog that shows all playlists
 export default function PlaylistsCatalog () {
-  const playlists = useSelector<
-    States.ApplicationState,
-    PlaylistMojo.Playlist[] | undefined
-  >(applicationState => applicationState.playlistData?.lists)
+  const playlists = useSelector<ApplicationState, Playlist[] | undefined>(
+    applicationState => applicationState.playlistData?.lists
+  )
 
   return (
     <PlaylistsCatalogFlexBox>
-      {playlists?.map((playlist: PlaylistMojo.Playlist) => {
+      {playlists?.map((playlist: Playlist) => {
         return <PlaylistCard key={playlist.id} playlist={playlist} />
       })}
     </PlaylistsCatalogFlexBox>

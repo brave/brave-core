@@ -7,10 +7,9 @@ import * as React from 'react'
 import { useSelector } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 
-import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
-import * as States from '../reducers/states'
 import VideoFrame from './videoFrame'
 import PlaylistItem from './playlistItem'
+import { ApplicationState, usePlaylist } from '../reducers/states'
 
 interface MatchParams {
   playlistId: string
@@ -19,16 +18,9 @@ interface MatchParams {
 export default function PlaylistPlayer ({
   match
 }: RouteComponentProps<MatchParams>) {
-  const playlist = useSelector<
-    States.ApplicationState,
-    PlaylistMojo.Playlist | undefined
-  >(applicationState =>
-    applicationState.playlistData?.lists.find(
-      e => e.id === match.params.playlistId
-    )
-  )
+  const playlist = usePlaylist(match.params.playlistId)
 
-  const playing = useSelector<States.ApplicationState, boolean>(
+  const playing = useSelector<ApplicationState, boolean>(
     applicationState =>
       !!applicationState.playlistData?.lastPlayerState?.playing
   )
@@ -38,6 +30,7 @@ export default function PlaylistPlayer ({
       <VideoFrame playing={playing} />
       {playlist?.items.map(item => (
         <PlaylistItem
+          key={item.id}
           id={item.id}
           name={item.name}
           thumbnailUrl={item.thumbnailPath.url}
