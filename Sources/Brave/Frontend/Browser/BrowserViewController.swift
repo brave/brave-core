@@ -104,7 +104,7 @@ public class BrowserViewController: UIViewController {
   var readerModeBar: ReaderModeBarView?
   var readerModeCache: ReaderModeCache
   
-  private let statusBarOverlay: UIView = {
+  let statusBarOverlay: UIView = {
     // Temporary work around for covering the non-clipped web view content
     let statusBarOverlay = UIView()
     statusBarOverlay.backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
@@ -784,8 +784,8 @@ public class BrowserViewController: UIViewController {
     view.addSubview(topTouchArea)
     view.addSubview(bottomBarKeyboardBackground)
     view.addSubview(footer)
-    view.addSubview(header)
     view.addSubview(statusBarOverlay)
+    view.addSubview(header)
     
     // For now we hide some elements so they are not visible
     header.isHidden = true
