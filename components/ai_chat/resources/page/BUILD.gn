@@ -19,6 +19,6 @@ transpile_web_ui("ai_chat_ui") {
 
 pack_web_resources("generated_resources") {
   resource_name = "ai_chat_ui"
-  output_dir = "$root_gen_dir/brave/components/ai_chat_ui"
+  output_dir = "$root_gen_dir/brave/components/ai_chat/resources/page"
   deps = [ ":ai_chat_ui" ]
 }
