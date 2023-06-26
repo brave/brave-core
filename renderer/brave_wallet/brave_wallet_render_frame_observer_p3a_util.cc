@@ -46,11 +46,9 @@ void BraveWalletRenderFrameObserverP3AUtil::ReportJSProviders(
 
   ReportJSProvider(isolate, context, mojom::CoinType::ETH,
                    kEthereumProviderObjectKey,
-                   dynamic_params.brave_use_native_ethereum_wallet,
                    dynamic_params.allow_overwrite_window_ethereum_provider);
   ReportJSProvider(isolate, context, mojom::CoinType::SOL,
                    kSolanaProviderObjectKey,
-                   dynamic_params.brave_use_native_solana_wallet,
                    dynamic_params.allow_overwrite_window_solana_provider);
 }
 
@@ -59,7 +57,6 @@ void BraveWalletRenderFrameObserverP3AUtil::ReportJSProvider(
     v8::Local<v8::Context>& context,
     mojom::CoinType coin_type,
     const char* provider_object_key,
-    bool use_native_wallet_enabled,
     bool allow_provider_overwrite) {
   v8::Local<v8::Value> provider_value;
   v8::Local<v8::Object> provider_obj;
@@ -71,19 +68,15 @@ void BraveWalletRenderFrameObserverP3AUtil::ReportJSProvider(
       provider_value->ToObject(context).ToLocal(&provider_obj)) {
     v8::Local<v8::Value> is_brave_wallet;
 
-    bool strict_native_wallet_enabled =
-        use_native_wallet_enabled && !allow_provider_overwrite;
     if ((GetProperty(context, provider_obj, kIsBraveWalletPropertyName)
              .ToLocal(&is_brave_wallet) &&
-         is_brave_wallet->BooleanValue(isolate)) ||
-        strict_native_wallet_enabled) {
+         is_brave_wallet->BooleanValue(isolate))) {
       provider_type = mojom::JSProviderType::Native;
     } else {
       provider_type = mojom::JSProviderType::ThirdParty;
     }
   }
   brave_wallet_p3a_->ReportJSProvider(provider_type, coin_type,
-                                      use_native_wallet_enabled,
                                       allow_provider_overwrite);
 }
 
