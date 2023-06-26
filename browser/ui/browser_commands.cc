@@ -6,8 +6,10 @@
 #include "brave/browser/ui/browser_commands.h"
 
 #include <string>
+#include <vector>
 
 #include "base/files/file_path.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/net/brave_query_filter.h"
@@ -33,13 +35,17 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/profile_picker.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
+#include "chrome/browser/ui/tabs/tab_group.h"
+#include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_utils.h"
 #include "chrome/common/pref_names.h"
+#include "components/tab_groups/tab_group_visual_data.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/clipboard/clipboard_buffer.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
+#include "url/origin.h"
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -254,6 +260,12 @@ void ToggleVerticalTabStripFloatingMode(Browser* browser) {
       !prefs->GetBoolean(brave_tabs::kVerticalTabsFloatingEnabled));
 }
 
+void ToggleVerticalTabStripExpanded(Browser* browser) {
+  auto* prefs = browser->profile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed,
+                    !prefs->GetBoolean(brave_tabs::kVerticalTabsCollapsed));
+}
+
 void ToggleActiveTabAudioMute(Browser* browser) {
   WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
   if (!contents || !contents->IsCurrentlyAudible()) {
@@ -341,5 +353,54 @@ void ShowPlaylistBubble(Browser* browser) {
   BraveBrowserWindow::From(browser->window())->ShowPlaylistBubble();
 }
 #endif
+
+void GroupTabsOnCurrentOrigin(Browser* browser) {
+  auto url =
+      browser->tab_strip_model()->GetActiveWebContents()->GetVisibleURL();
+  auto origin = url::Origin::Create(url);
+
+  std::vector<int> group_indices;
+  for (int index = 0; index < browser->tab_strip_model()->count(); ++index) {
+    auto* tab = browser->tab_strip_model()->GetWebContentsAt(index);
+    auto tab_origin = url::Origin::Create(tab->GetVisibleURL());
+    if (origin.IsSameOriginWith(tab_origin)) {
+      group_indices.push_back(index);
+    }
+  }
+  auto group_id = browser->tab_strip_model()->AddToNewGroup(group_indices);
+  auto* group =
+      browser->tab_strip_model()->group_model()->GetTabGroup(group_id);
+
+  auto data = *group->visual_data();
+  data.SetTitle(base::UTF8ToUTF16(origin.host()));
+  group->SetVisualData(data);
+}
+
+void MoveGroupToNewWindow(Browser* browser) {
+  auto* tsm = browser->tab_strip_model();
+  auto current_group_id = tsm->GetTabGroupForTab(tsm->active_index());
+  if (!current_group_id.has_value()) {
+    return;
+  }
+
+  tsm->delegate()->MoveGroupToNewWindow(current_group_id.value());
+}
+
+void CloseDuplicateTabs(Browser* browser) {
+  auto* tsm = browser->tab_strip_model();
+  auto url = tsm->GetActiveWebContents()->GetVisibleURL();
+
+  for (int i = tsm->GetTabCount() - 1; i >= 0; --i) {
+    // Don't close the active tab.
+    if (tsm->active_index() == i) {
+      continue;
+    }
+
+    auto* tab = tsm->GetWebContentsAt(i);
+    if (tab->GetVisibleURL() == url) {
+      tab->Close();
+    }
+  }
+}
 
 }  // namespace brave

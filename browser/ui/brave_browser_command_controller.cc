@@ -198,6 +198,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(
       IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE,
       base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
+  UpdateCommandEnabled(
+      IDC_TOGGLE_VERTICAL_TABS_EXPANDED,
+      base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
 
   UpdateCommandEnabled(IDC_CONFIGURE_BRAVE_NEWS,
                        !browser_->profile()->IsOffTheRecord());
@@ -209,6 +212,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_TALK, true);
   UpdateCommandEnabled(IDC_TOGGLE_SHIELDS, true);
   UpdateCommandEnabled(IDC_TOGGLE_JAVASCRIPT, true);
+  UpdateCommandEnabled(IDC_GROUP_TABS_ON_CURRENT_ORIGIN, true);
+  UpdateCommandEnabled(IDC_MOVE_GROUP_TO_NEW_WINDOW, true);
+  UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS, true);
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -384,6 +390,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE:
       brave::ToggleWindowTitleVisibilityForVerticalTabs(&*browser_);
       break;
+    case IDC_TOGGLE_VERTICAL_TABS_EXPANDED:
+      brave::ToggleVerticalTabStripExpanded(&*browser_);
+      break;
     case IDC_CONFIGURE_BRAVE_NEWS:
       brave::ShowBraveNewsConfigure(&*browser_);
       break;
@@ -405,6 +414,15 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
 #else
       NOTREACHED() << " This command shouldn't be enabled";
 #endif
+      break;
+    case IDC_GROUP_TABS_ON_CURRENT_ORIGIN:
+      brave::GroupTabsOnCurrentOrigin(&*browser_);
+      break;
+    case IDC_MOVE_GROUP_TO_NEW_WINDOW:
+      brave::MoveGroupToNewWindow(&*browser_);
+      break;
+    case IDC_CLOSE_DUPLICATE_TABS:
+      brave::CloseDuplicateTabs(&*browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

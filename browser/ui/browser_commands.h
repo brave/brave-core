@@ -37,6 +37,8 @@ void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url);
 void ToggleWindowTitleVisibilityForVerticalTabs(Browser* browser);
 void ToggleVerticalTabStrip(Browser* browser);
 void ToggleVerticalTabStripFloatingMode(Browser* browser);
+void ToggleVerticalTabStripExpanded(Browser* browser);
+
 void ToggleActiveTabAudioMute(Browser* browser);
 void ToggleSidebarPosition(Browser* browser);
 void ToggleSidebar(Browser* browser);
@@ -47,6 +49,10 @@ void ToggleJavascriptEnabled(Browser* browser);
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 void ShowPlaylistBubble(Browser* browser);
 #endif
+
+void GroupTabsOnCurrentOrigin(Browser* browser);
+void MoveGroupToNewWindow(Browser* browser);
+void CloseDuplicateTabs(Browser* browser);
 
 }  // namespace brave
 
