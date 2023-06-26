@@ -117,6 +117,11 @@ def get_images_with_pdbs(args):
         for file in args.additional_files:
             add_if_has_pdb(file, True)
 
+    # Sanity check to ensure we're not missing chrome.dll.pdb.
+    assert any(
+        images_with_pdb.endswith('chrome.dll')
+        for images_with_pdb in images_with_pdbs), "chrome.dll.pdb not found"
+
     return images_with_pdbs
 
 
@@ -138,8 +143,8 @@ async def process_image(args, image_path):
     if image_pdb_fingerprint != pdb_fingerprint:
         raise RuntimeError(
             f"Image PDB fingerprint doesn't match PDB fingerprint:\n"
-            f"  {image_pdb_fingerprint} : {image_path}\n"
-            f"  {pdb_fingerprint} : {pdb_path}")
+            f"{image_pdb_fingerprint} : {image_path}\n"
+            f"{pdb_fingerprint} : {pdb_path}")
 
     await copy_symbol(image_path, image_fingerprint, args.symbols_dir)
     copied_pdb_path = await copy_symbol(pdb_path, pdb_fingerprint,
@@ -163,8 +168,7 @@ async def get_img_fingerprint(image_path):
         'python3.bat',
         os.path.join(ROOT_DIR, 'tools', 'symsrc', 'img_fingerprint.py'),
         image_path,
-    ],
-                                encoding='oem')
+    ])
     return output.strip()
 
 
@@ -174,8 +178,7 @@ async def get_pdb_info_from_img(image_path):
         os.path.join(ROOT_DIR, 'tools', 'symsrc',
                      'pdb_fingerprint_from_img.py'),
         image_path,
-    ],
-                                encoding='oem')
+    ])
     fingerprint, filename = output.strip().split(' ', 1)
     return fingerprint, filename
 
@@ -185,9 +188,10 @@ async def get_pdb_fingerprint(pdb_path):
     llvm_pdbutil_path = os.path.join(ROOT_DIR, 'third_party', 'llvm-build',
                                      'Release+Asserts', 'bin',
                                      'llvm-pdbutil.exe')
+    assert os.path.exists(llvm_pdbutil_path)
 
     stdout = await check_output(
-        [llvm_pdbutil_path, 'dump', '--summary', pdb_path], encoding='oem')
+        [llvm_pdbutil_path, 'dump', '--summary', pdb_path])
 
     guid_match = None
     for line in stdout.splitlines():
@@ -266,8 +270,7 @@ async def run_on_thread_pool(*args, **kwargs):
         run_on_thread_pool.instance.submit(*args, **kwargs))
 
 
-async def check_output(args, **kwargs):
-    encoding = kwargs.pop('encoding', 'oem')
+async def check_output(args, encoding='oem', **kwargs):
     proc = await asyncio.create_subprocess_exec(
         *args,
         stdout=asyncio.subprocess.PIPE,
