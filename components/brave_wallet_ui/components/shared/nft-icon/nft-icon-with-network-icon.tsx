@@ -23,10 +23,11 @@ interface Props extends NftIconProps {
   chainId?: string
   coinType?: BraveWallet.CoinType
   disabled?: boolean
+  hideNetworkIcon?: boolean
 }
 
 export const NftIconWithNetworkIcon = (props: Props) => {
-  const { chainId, coinType, disabled } = props
+  const { chainId, coinType, disabled, hideNetworkIcon } = props
 
   const { data: network } = useGetNetworkQuery(
     coinType !== undefined && chainId !== undefined
@@ -37,11 +38,13 @@ export const NftIconWithNetworkIcon = (props: Props) => {
   return (
     <>
       <NftIcon {...props} />
-      <IconWrapper disabled={disabled}>
-        <NetworkIconWrapper>
-          <CreateNetworkIcon network={network} marginRight={0} />
-        </NetworkIconWrapper>
-      </IconWrapper>
+      {!hideNetworkIcon &&
+        <IconWrapper disabled={disabled}>
+          <NetworkIconWrapper>
+            <CreateNetworkIcon network={network} marginRight={0} />
+          </NetworkIconWrapper>
+        </IconWrapper>
+      }
     </>
   )
 }

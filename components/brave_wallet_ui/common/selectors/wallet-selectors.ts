@@ -42,6 +42,7 @@ export const filteredOutPortfolioAccountAddresses = ({ wallet }: State) =>
   wallet.filteredOutPortfolioAccountAddresses
 export const hidePortfolioSmallBalances = ({ wallet }: State) =>
   wallet.hidePortfolioSmallBalances
+export const showNetworkLogoOnNfts = ({ wallet }: State) => wallet.showNetworkLogoOnNfts
 export const isPanelV2FeatureEnabled = ({ wallet }: State) =>
   wallet.isPanelV2FeatureEnabled
 

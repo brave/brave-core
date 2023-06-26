@@ -29,7 +29,7 @@ export const Tab = styled.div<{ isActive: boolean}>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 600;
@@ -53,10 +53,9 @@ export const LabelSummary = styled.span<{ isActive: boolean }>`
   align-items: center;
   justify-content: center;
   padding: 4px;
-  min-width: 23px;
-  height: 24px;
-  background: ${leo.color.gray['10']};
-  border-radius: 4px;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 6px;
   padding: 4px;
   font-family: 'Poppins';
   font-style: normal;
@@ -68,6 +67,6 @@ export const LabelSummary = styled.span<{ isActive: boolean }>`
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: ${p => p.isActive ? leo.color.text.interactive : leo.color.gray['50']};
-  background-color: ${p => p.isActive ? leo.color.primary['10'] : leo.color.gray['10'] };
   text-align: center;
+  border: 1px solid ${p => p.isActive ? leo.color.primary['40'] : leo.color.gray['50'] }
 `

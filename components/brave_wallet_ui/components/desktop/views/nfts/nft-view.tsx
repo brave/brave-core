@@ -5,15 +5,10 @@
 
 import * as React from 'react'
 
-import { useSelector } from 'react-redux'
 import { useGetVisibleNetworksQuery } from '../../../../common/slices/api.slice'
 
 // types
-import {
-  SupportedTestNetworks,
-  WalletState
-} from '../../../../constants/types'
-import { AllNetworksOption } from '../../../../options/network-filter-options'
+import { BraveWallet, WalletAccountType } from '../../../../constants/types'
 
 // hooks
 
@@ -21,39 +16,23 @@ import { AllNetworksOption } from '../../../../options/network-filter-options'
 import { Nfts } from './components/nfts'
 
 interface Props {
+  nftsList: BraveWallet.BlockchainToken[]
+  accounts: WalletAccountType[]
   onToggleShowIpfsBanner: () => void
+  onShowPortfolioSettings?: () => void
 }
 
-export const NftView = ({ onToggleShowIpfsBanner }: Props) => {
-  // redux
-  const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
-  const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
-
+export const NftView = ({ nftsList, accounts, onToggleShowIpfsBanner, onShowPortfolioSettings }: Props) => {
   // queries
   const { data: networks = [] } = useGetVisibleNetworksQuery()
-
-  // memos
-  const visibleNfts = React.useMemo(() => {
-    if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
-      return userVisibleTokensInfo.filter(
-        (token) =>
-          !SupportedTestNetworks.includes(token.chainId) && token.visible &&
-          (token.isErc721 || token.isNft)
-      )
-    }
-
-    return userVisibleTokensInfo.filter(
-      (token) =>
-        token.chainId === selectedNetworkFilter.chainId &&
-        (token.isErc721 || token.isNft)
-    )
-  }, [userVisibleTokensInfo, selectedNetworkFilter.chainId])
 
   return (
     <Nfts
       networks={networks}
-      nftList={visibleNfts}
+      nftList={nftsList}
+      accounts={accounts}
       onToggleShowIpfsBanner={onToggleShowIpfsBanner}
+      onShowPortfolioSettings={onShowPortfolioSettings}
     />
   )
 }

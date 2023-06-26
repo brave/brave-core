@@ -755,6 +755,7 @@ provideStrings({
 
   // Portfolio Filters
   braveWalletPortfolioFiltersTitle: 'Filters and display settings',
+  braveWalletPortfolioNftsFiltersTitle: 'NFT display settings',
   braveWalletSortAssets: 'Sort assets',
   braveWalletSortAssetsDescription: 'Sort by fiat value or name',
   braveWalletHideSmallBalances: 'Hide small balances',
@@ -768,6 +769,11 @@ provideStrings({
   braveWalletSOLAccountDescrption: 'Solana + SVM Chains',
   braveWalletFILAccountDescrption: 'Filecoin',
   braveWalletBTCAccountDescrption: 'Bitcoin',
+  braveWalletShowNetworkLogoOnNftsTitle: 'Network Logo',
+  braveWalletShowNetworkLogoOnNftsDescription: 'Show network logo on NFTs',
+  braveWalletShowSpamNftsTitle: 'Spam NFTs',
+  braveWalletShowSpamNftsDescription: 'Show Spam NFTs',
+
 
   // Account Filter
   braveWalletAccountFilterAllAccounts: 'All accounts',
