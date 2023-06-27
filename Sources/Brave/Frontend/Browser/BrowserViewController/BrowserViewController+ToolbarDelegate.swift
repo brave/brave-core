@@ -7,6 +7,7 @@ import BraveShared
 import BraveUI
 import Shared
 import BraveCore
+import BraveStrings
 import Storage
 import Data
 import SwiftUI
@@ -913,12 +914,11 @@ extension BrowserViewController: ToolbarDelegate {
 
 extension BrowserViewController: UIContextMenuInteractionDelegate {
   public func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
-    return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [unowned self] _ in
-      var actionMenuChildren: [UIAction] = []
-
+    let configuration =  UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [unowned self] _ in
+      var actionMenu: [UIMenu] = []
+      var pasteMenuChildren: [UIAction] = []
+      
       let pasteGoAction = UIAction(
-        title: Strings.pasteAndGoTitle,
-        image: UIImage(systemName: "doc.on.clipboard.fill"),
         identifier: .pasteAndGo,
         handler: UIAction.deferredActionHandler { _ in
           if let pasteboardContents = UIPasteboard.general.string {
@@ -927,8 +927,6 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
         })
 
       let pasteAction = UIAction(
-        title: Strings.pasteTitle,
-        image: UIImage(systemName: "doc.on.clipboard"),
         identifier: .paste,
         handler: UIAction.deferredActionHandler { _ in
           if let pasteboardContents = UIPasteboard.general.string {
@@ -937,6 +935,12 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
           }
         })
 
+      pasteMenuChildren = [pasteGoAction, pasteAction]
+      
+      if #unavailable(iOS 16.0), isUsingBottomBar {
+        pasteMenuChildren.reverse()
+      }
+      
       let copyAction = UIAction(
         title: Strings.copyAddressTitle,
         image: UIImage(systemName: "doc.on.doc"),
@@ -946,13 +950,27 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
           }
         })
 
+      let copyMenu = UIMenu(title: "", options: .displayInline, children: [copyAction])
+      
       if UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs {
-        actionMenuChildren = [pasteGoAction, pasteAction, copyAction]
+        let pasteMenu = UIMenu(title: "", options: .displayInline, children: pasteMenuChildren)
+        
+        actionMenu = [pasteMenu, copyMenu]
+        
+        if #unavailable(iOS 16.0), isUsingBottomBar {
+          actionMenu.reverse()
+        }
       } else {
-        actionMenuChildren = [copyAction]
+        actionMenu = [copyMenu]
       }
 
-      return UIMenu(title: "", identifier: nil, children: actionMenuChildren)
+      return UIMenu(title: "", identifier: nil, children: actionMenu)
     }
+      
+    if #available(iOS 16.0, *) {
+      configuration.preferredMenuElementOrder = .priority
+    }
+    
+    return configuration
   }
 }
