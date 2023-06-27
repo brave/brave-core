@@ -1,0 +1,25 @@
+[package]
+name = "phf_macros"
+version = "0.8.0"
+authors = ["Steven Fackler <sfackler@gmail.com>"]
+edition = "2018"
+license = "MIT"
+description = "Macros to generate types in the phf crate"
+repository = "https://github.com/sfackler/rust-phf"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = { version = "1", features = ["full"] }
+quote = "1"
+proc-macro2 = "1"
+proc-macro-hack = "0.5.4"
+
+phf_generator = { version = "0.8.0", path = "../phf_generator" }
+phf_shared = { version = "0.8.0", path = "../phf_shared" }
+
+[dev-dependencies]
+trybuild = "1.0"
+phf = { version = "0.8", path = "../phf", features = ["macros", "unicase"] }
+unicase = "2.4.0"

@@ -1,0 +1,8 @@
+Name: rand_chacha
+URL: https://crates.io/crates/rand_chacha
+Description: ChaCha random number generator
+
+Version: 0.2.2
+Security Critical: yes
+License: Apache 2.0
+Revision: e2112c4404c61d3850c0e91f48114db5daf06569

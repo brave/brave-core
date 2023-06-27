@@ -1,0 +1,7 @@
+Name: ff_derive
+URL: https://crates.io/crates/ff_derive
+Description: Procedural macro library used to build custom prime field implementations
+Version: 0.13.0
+Security Critical: yes
+License: Apache 2.0
+Revision: 69c845b4052c65be5c4479176c2756533271c595

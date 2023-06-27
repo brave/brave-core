@@ -1,0 +1,7 @@
+Name: core2
+URL: https://crates.io/crates/core2
+Description: The bare essentials of std::io for use in no_std. Alloc support is optional.
+Version: 0.4.0
+Security Critical: no
+License: Apache 2.0
+Revision: 545e84bcb0f235b12e21351e0c69767958efe2a7

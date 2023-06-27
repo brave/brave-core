@@ -1,0 +1,7 @@
+Name: string_cache
+URL: https://crates.io/crates/string_cache
+Description: A string interning library for Rust, developed as part of the Servo project.
+Version: 0.8.7
+Security Critical: yes
+License: Apache 2.0
+Revision: 34f914c99e8bdc5f2fa842fd04f190c7c9e4df3b

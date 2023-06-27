@@ -1,0 +1,7 @@
+Name: base-x
+URL: https://crates.io/crates/base-x
+Description: Encode/decode any base
+Version: 0.2.11
+Security Critical: no
+License: MIT
+Revision: 5fd81272464eca6a78b4dfff85c1cf25027e4a6b

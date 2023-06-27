@@ -1,0 +1,8 @@
+Name: rand
+URL: https://crates.io/crates/rand
+Description: Random number generators and other randomness functionality.
+
+Version: 0.7.3
+Security Critical: yes
+License: Apache 2.0
+Revision: 074cb6a997f91db653f8a53c755ddc07495ab429

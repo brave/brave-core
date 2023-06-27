@@ -1,0 +1,8 @@
+Name: tracing-log
+URL: https://crates.io/crates/tracing-log
+Description: Provides compatibility between `tracing` and the `log` crate.
+
+Version: 0.1.3
+Security Critical: no
+License: MIT
+Revision: cdbd122933c73c8cdd36f275df89d83ae43bffea

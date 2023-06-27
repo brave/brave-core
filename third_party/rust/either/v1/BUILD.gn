@@ -11,14 +11,14 @@ cargo_crate("lib") {
 
   # Only for usage from third-party crates. Add the crate to
   # third_party.toml to use it from first-party code.
-  visibility = [ "//third_party/rust/*" ]
+  visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
   sources = [ "crate/src/lib.rs" ]
-  edition = "2015"
-  cargo_pkg_version = "1.6.1"
+  edition = "2018"
+  cargo_pkg_version = "1.8.1"
   cargo_pkg_authors = "bluss"
   cargo_pkg_name = "either"
   cargo_pkg_description = "The enum `Either` with variants `Left` and `Right` is a general purpose sum type with two cases."
