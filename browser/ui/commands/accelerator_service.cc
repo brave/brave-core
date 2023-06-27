@@ -105,7 +105,7 @@ void AcceleratorService::Initialize() {
 
 void AcceleratorService::UpdateDefaultAccelerators() {
   auto old_defaults = pref_manager_.GetDefaultAccelerators();
-
+  const auto& unmodifiable = unmodifiable_;
   Accelerators added;
   Accelerators removed;
 
@@ -116,8 +116,11 @@ void AcceleratorService::UpdateDefaultAccelerators() {
     // Note all the added accelerators.
     base::ranges::copy_if(
         new_accelerators, std::back_inserter(added[command_id]),
-        [&old_accelerators](const auto& accelerator) {
-          return !base::Contains(old_accelerators, accelerator);
+        [&old_accelerators, &unmodifiable](const auto& accelerator) {
+          return !base::Contains(old_accelerators, accelerator) ||
+                 // If the accelerator is marked as unmodifiable, be sure to
+                 // reset it.
+                 base::Contains(unmodifiable, accelerator);
         });
 
     // Note all the removed accelerators.
