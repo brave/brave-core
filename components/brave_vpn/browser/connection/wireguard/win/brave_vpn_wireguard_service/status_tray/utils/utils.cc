@@ -11,7 +11,6 @@
 #include <memory>
 
 #include "base/logging.h"
-#include "base/win/registry.h"
 #include "ui/gfx/icon_util.h"
 #include "ui/gfx/image/image_family.h"
 #include "ui/gfx/image/image_skia.h"
@@ -36,22 +35,6 @@ gfx::ImageSkia GetIconFromResources(int icon_id, const gfx::Size& size) {
   }
 
   return family->CreateExact(size).AsImageSkia();
-}
-
-bool UseDarkTheme() {
-  base::win::RegKey key;
-  if (key.Open(HKEY_CURRENT_USER,
-               L"Software\\Microsoft\\Windows\\"
-               L"CurrentVersion\\Themes\\Personalize",
-               KEY_READ) != ERROR_SUCCESS) {
-    return false;
-  }
-  DWORD apps_use_light_theme = 1;
-  if (key.ReadValueDW(L"AppsUseLightTheme", &apps_use_light_theme) !=
-      ERROR_SUCCESS) {
-    return false;
-  }
-  return (apps_use_light_theme == 0);
 }
 
 void OpenURLInBrowser(const char* url) {

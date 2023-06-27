@@ -24,6 +24,7 @@
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "ui/native_theme/native_theme.h"
 
 namespace brave_vpn {
 
@@ -44,7 +45,8 @@ std::u16string GetStatusIconTooltip(bool connected, bool error) {
 }
 
 gfx::ImageSkia GetStatusTrayIcon(bool connected, bool error) {
-  bool dark_theme = UseDarkTheme();
+  bool dark_theme =
+      ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors();
   if (error) {
     int status_icon_id = dark_theme ? IDR_BRAVE_VPN_TRAY_LIGHT_ERROR
                                     : IDR_BRAVE_VPN_TRAY_DARK_ERROR;
