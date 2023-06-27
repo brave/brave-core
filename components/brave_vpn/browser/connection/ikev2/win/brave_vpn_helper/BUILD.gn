@@ -26,9 +26,9 @@ source_set("common") {
 
   deps = [
     "//base",
-    "//brave/components/brave_vpn/browser/connection/common/win",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_vpn/common/win",
     "//chrome/install_static:install_static_util",
   ]
 }
@@ -51,7 +51,7 @@ source_set("lib") {
     "//base",
     "//brave//components/brave_vpn/browser/connection/ikev2/win:ras_utils",
     "//brave//components/brave_vpn/common",
-    "//brave/components/brave_vpn/browser/connection/common/win",
+    "//brave/components/brave_vpn/common/win",
     "//third_party/abseil-cpp:absl",
   ]
 

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_COMMON_WIN_BRAVE_WINDOWS_SERVICE_WATCHER_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_COMMON_WIN_BRAVE_WINDOWS_SERVICE_WATCHER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIN_BRAVE_WINDOWS_SERVICE_WATCHER_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIN_BRAVE_WINDOWS_SERVICE_WATCHER_H_
 
 #include <windows.h>
 #include <string>
@@ -12,7 +12,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/synchronization/waitable_event.h"
 #include "base/synchronization/waitable_event_watcher.h"
-#include "brave/components/brave_vpn/browser/connection/common/win/scoped_sc_handle.h"
+#include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
 
 namespace brave {
 
@@ -43,4 +43,4 @@ class ServiceWatcher {
 
 }  // namespace brave
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_COMMON_WIN_BRAVE_WINDOWS_SERVICE_WATCHER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIN_BRAVE_WINDOWS_SERVICE_WATCHER_H_
