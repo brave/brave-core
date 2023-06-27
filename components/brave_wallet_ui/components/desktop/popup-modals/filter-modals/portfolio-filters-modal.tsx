@@ -269,6 +269,15 @@ export const PortfolioFiltersModal = (props: Props) => {
                 }
               />
 
+              <FilterDropdownSection
+                title={getLocale('braveWalletPortfolioGroupByTitle')}
+                description={getLocale('braveWalletPortfolioGroupByDescription')}
+                icon='stack'
+                dropdownOptions={GroupAssetsByOptions}
+                selectedOptionId={selectedGroupAssetsByOption}
+                onSelectOption={setSelectedGroupAssetsByOption}
+              />
+
               {/* This is commented out until Spam NFTs feature is implemented in core */}
               {/* <FilterToggleSection
                 title={getLocale('braveWalletShowSpamNftsTitle')}
@@ -281,17 +290,9 @@ export const PortfolioFiltersModal = (props: Props) => {
               /> */}
             </>
           }
+
           {!showNftFilters &&
             <>
-              <FilterDropdownSection
-                title={getLocale('braveWalletPortfolioGroupByTitle')}
-                description={getLocale('braveWalletPortfolioGroupByDescription')}
-                icon='stack'
-                dropdownOptions={GroupAssetsByOptions}
-                selectedOptionId={selectedGroupAssetsByOption}
-                onSelectOption={setSelectedGroupAssetsByOption}
-              />
-
               <FilterDropdownSection
                 title={getLocale('braveWalletSortAssets')}
                 description={getLocale('braveWalletSortAssetsDescription')}
