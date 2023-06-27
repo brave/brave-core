@@ -53,7 +53,7 @@ struct NetworkSelectionRootView: View {
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         }, header: {
-          WalletListHeaderView(title: Text("Test Networks"))
+          WalletListHeaderView(title: Text(Strings.Wallet.networkSelectionTestNetworks))
         })
       }
     }

@@ -2829,6 +2829,13 @@ extension Strings {
       value: "Secondary Networks",
       comment: "The title of the section for secondary networks in the network selection view."
     )
+    public static let networkSelectionTestNetworks = NSLocalizedString(
+      "wallet.networkSelectionTestNetworks",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Test Networks",
+      comment: "The title of the section for test networks in the network selection view."
+    )
     public static let networkSelectionTestnetAccessibilityLabel = NSLocalizedString(
       "wallet.networkSelectionTestnetAccessibilityLabel",
       tableName: "BraveWallet",
