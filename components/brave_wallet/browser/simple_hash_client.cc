@@ -12,8 +12,7 @@
 #include "base/environment.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"  // TODO
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/string_utils.h"
 #include "brave/components/constants/brave_services_key.h"

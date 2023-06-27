@@ -1793,11 +1793,12 @@ void BraveWalletService::GetBalanceScannerSupportedChains(
   std::move(callback).Run(chain_ids);
 }
 
-void BraveWalletService::GetSpamNFTs(const std::string& wallet_address,
-                                     const std::vector<std::string>& chain_ids,
-                                     mojom::CoinType coin,
-                                     const absl::optional<std::string>& cursor,
-                                     GetSpamNFTsCallback callback) {
+void BraveWalletService::GetSimpleHashSpamNFTs(
+    const std::string& wallet_address,
+    const std::vector<std::string>& chain_ids,
+    mojom::CoinType coin,
+    const absl::optional<std::string>& cursor,
+    GetSimpleHashSpamNFTsCallback callback) {
   simple_hash_client_->FetchNFTsFromSimpleHash(
       wallet_address, chain_ids, coin, cursor, false /* skip_spam */,
       true /* only_spam */, std::move(callback));

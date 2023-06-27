@@ -1780,10 +1780,11 @@ interface BraveWalletService {
   GetBalanceScannerSupportedChains() => (array<string> chain_ids);
 
   // Fetches NFTs labeled as spam by SimpleHash
-  GetSpamNFTs(string wallet_address,
-              array<string> chain_ids,
-              CoinType coin,
-              string? cursor) => (array<BlockchainToken> tokens, string? cursor);
+  GetSimpleHashSpamNFTs(string wallet_address,
+                        array<string> chain_ids,
+                        CoinType coin,
+                        string? cursor)
+    => (array<BlockchainToken> tokens, string? cursor);
 
   Reset();
 

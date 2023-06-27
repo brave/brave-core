@@ -23,9 +23,6 @@
 
 namespace brave_wallet {
 
-class BraveWalletService;
-class JsonRpcService;
-
 class SimpleHashClient {
  public:
   using APIRequestHelper = api_request_helper::APIRequestHelper;
