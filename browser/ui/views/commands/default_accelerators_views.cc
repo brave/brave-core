@@ -28,16 +28,16 @@ GetDefaultAccelerators() {
         ui::Accelerator(mapping.keycode, mapping.modifiers));
   };
 
-  base::ranges::for_each(
-      GetAcceleratorList(), [&unmodifiable](const AcceleratorMapping& mapping) {
-        unmodifiable.insert(
-            ui::Accelerator(mapping.keycode, mapping.modifiers));
-      });
   base::ranges::for_each(GetAcceleratorList(), add_to_accelerators);
 #if BUILDFLAG(IS_MAC)
   // TODO(sko) These accelerators should be flagged as unmodifiable unless we
   // can modify the OS settings. See the comment in default_accelerator_mac.h
   base::ranges::for_each(GetGlobalAccelerators(), add_to_accelerators);
+  base::ranges::for_each(
+      GetGlobalAccelerators(), [&unmodifiable](const AcceleratorMapping& mapping) {
+        unmodifiable.insert(
+            ui::Accelerator(mapping.keycode, mapping.modifiers));
+      });
 #endif  // BUILDFLAG(IS_MAC)
   return std::tie(defaults, unmodifiable);
 }
