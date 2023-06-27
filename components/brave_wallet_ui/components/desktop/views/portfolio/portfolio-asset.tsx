@@ -110,7 +110,10 @@ export const PortfolioAsset = (props: Props) => {
 
   // routing
   const history = useHistory()
-  const { chainIdOrMarketSymbol, contractOrSymbol } = useParams<{ chainIdOrMarketSymbol?: string, contractOrSymbol?: string }>()
+  const { chainIdOrMarketSymbol, contractOrSymbol } = useParams<{
+    chainIdOrMarketSymbol?: string
+    contractOrSymbol?: string
+  }>()
 
   // redux
   const dispatch = useDispatch()
@@ -216,7 +219,10 @@ export const PortfolioAsset = (props: Props) => {
     }
 
     if (isShowingMarketData) {
-      const coinMarket = coinMarketData.find(token => token.symbol.toLowerCase() === chainIdOrMarketSymbol.toLowerCase())
+      const coinMarket = coinMarketData.find(
+        (token) =>
+          token.symbol.toLowerCase() === chainIdOrMarketSymbol.toLowerCase()
+      )
       let token = undefined as BraveWallet.BlockchainToken | undefined
       if (coinMarket) {
         token = new BraveWallet.BlockchainToken()
@@ -232,16 +238,22 @@ export const PortfolioAsset = (props: Props) => {
       return undefined
     }
     const userToken = userVisibleTokensInfo.find(
-          (token) =>
-            (token.contractAddress.toLowerCase() ===
-              contractOrSymbol.toLowerCase() &&
-              token.chainId === chainIdOrMarketSymbol) ||
-            (token.symbol.toLowerCase() === contractOrSymbol.toLowerCase() &&
-              token.chainId === chainIdOrMarketSymbol &&
-              token.contractAddress === '')
-        )
-        return userToken
-      }, [userVisibleTokensInfo, selectedTimeline, chainIdOrMarketSymbol, contractOrSymbol, isShowingMarketData])
+      (token) =>
+        (token.contractAddress.toLowerCase() ===
+          contractOrSymbol.toLowerCase() &&
+          token.chainId === chainIdOrMarketSymbol) ||
+        (token.symbol.toLowerCase() === contractOrSymbol.toLowerCase() &&
+          token.chainId === chainIdOrMarketSymbol &&
+          token.contractAddress === '')
+    )
+    return userToken
+  }, [
+    userVisibleTokensInfo,
+    selectedTimeline,
+    chainIdOrMarketSymbol,
+    contractOrSymbol,
+    isShowingMarketData
+  ])
 
   const tokenPriceIds = React.useMemo(() =>
     userAssetList

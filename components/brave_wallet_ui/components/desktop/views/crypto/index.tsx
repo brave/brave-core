@@ -227,7 +227,7 @@ const CryptoView = (props: Props) => {
             </StyledWrapper>
           </WalletPageWrapper>
         </Route>
-        
+
         <Route path={WalletRoutes.PortfolioNFTAsset} exact>
           <PortfolioNftAsset />
         </Route>

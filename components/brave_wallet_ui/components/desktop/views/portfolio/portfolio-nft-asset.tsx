@@ -41,28 +41,33 @@ import {
 } from '../../../../common/hooks/use-safe-selector'
 import {
   useGetNetworkQuery,
-  useGetSelectedChainQuery,
+  useGetSelectedChainQuery
 } from '../../../../common/slices/api.slice'
 
 // Styled Components
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
-import {
-  WalletPageWrapper
-} from '../../wallet-page-wrapper/wallet-page-wrapper'
+import { WalletPageWrapper } from '../../wallet-page-wrapper/wallet-page-wrapper'
 import NftAssetHeader from '../../card-headers/nft-asset-header'
 import { StyledWrapper } from './style'
 
 export const PortfolioNftAsset = () => {
   // routing
   const history = useHistory()
-  const { contractAddress, tokenId } = useParams<{ contractAddress: string, tokenId?: string }>()
+  const { contractAddress, tokenId } = useParams<{
+    contractAddress: string
+    tokenId?: string
+  }>()
 
   // redux
   const dispatch = useDispatch()
 
-  const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
+  const userVisibleTokensInfo = useUnsafeWalletSelector(
+    WalletSelectors.userVisibleTokensInfo
+  )
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
-  const selectedNetworkFilter = useUnsafeWalletSelector(WalletSelectors.selectedNetworkFilter)
+  const selectedNetworkFilter = useUnsafeWalletSelector(
+    WalletSelectors.selectedNetworkFilter
+  )
 
   const selectedAsset = useUnsafePageSelector(PageSelectors.selectedAsset)
   const selectedTimeline = useSafePageSelector(PageSelectors.selectedTimeline)
@@ -78,31 +83,33 @@ export const PortfolioNftAsset = () => {
 
   // memos
   // This will scrape all the user's accounts and combine the asset balances for a single asset
-  const fullAssetBalance = React.useCallback((asset: BraveWallet.BlockchainToken) => {
-    const amounts = accounts.filter((account) => account.accountId.coin === asset.coin).map((account) =>
-      getBalance(account, asset))
+  const fullAssetBalance = React.useCallback(
+    (asset: BraveWallet.BlockchainToken) => {
+      const amounts = accounts
+        .filter((account) => account.accountId.coin === asset.coin)
+        .map((account) => getBalance(account, asset))
 
-    // If a user has not yet created a FIL or SOL account,
-    // we return 0 until they create an account
-    if (amounts.length === 0) {
-      return '0'
-    }
+      // If a user has not yet created a FIL or SOL account,
+      // we return 0 until they create an account
+      if (amounts.length === 0) {
+        return '0'
+      }
 
-    return amounts.reduce(function (a, b) {
-      return a !== '' && b !== ''
-        ? new Amount(a).plus(b).format()
-        : ''
-    })
-  }, [accounts])
+      return amounts.reduce(function (a, b) {
+        return a !== '' && b !== '' ? new Amount(a).plus(b).format() : ''
+      })
+    },
+    [accounts]
+  )
 
   // This looks at the users asset list and returns the full balance for each asset
   const userAssetList = React.useMemo(() => {
     const allAssets = userVisibleTokensInfo.map(
       (asset) =>
-      ({
-        asset: asset,
-        assetBalance: fullAssetBalance(asset)
-      } as UserAssetInfoType)
+        ({
+          asset: asset,
+          assetBalance: fullAssetBalance(asset)
+        } as UserAssetInfoType)
     )
     // By default we dont show any testnetwork assets
     if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
@@ -134,44 +141,50 @@ export const PortfolioNftAsset = () => {
   const selectedAssetFromParams = React.useMemo(() => {
     const userToken = userVisibleTokensInfo.find((token) =>
       tokenId
-        ? token.tokenId === tokenId && token.contractAddress.toLowerCase() === contractAddress.toLowerCase()
-        : token.contractAddress.toLowerCase() === contractAddress.toLowerCase())
+        ? token.tokenId === tokenId &&
+          token.contractAddress.toLowerCase() === contractAddress.toLowerCase()
+        : token.contractAddress.toLowerCase() === contractAddress.toLowerCase()
+    )
     return userToken
-  }, [userVisibleTokensInfo, contractAddress,  tokenId])
+  }, [userVisibleTokensInfo, contractAddress, tokenId])
 
   const fullAssetBalances = React.useMemo(() => {
     if (selectedAsset?.contractAddress === '') {
       return userAssetList.find(
         (asset) =>
-          asset.asset.symbol.toLowerCase() === selectedAsset?.symbol.toLowerCase() &&
+          asset.asset.symbol.toLowerCase() ===
+            selectedAsset?.symbol.toLowerCase() &&
           asset.asset.chainId === selectedAsset?.chainId
       )
     }
     return userAssetList.find(
       (asset) =>
-        asset.asset.contractAddress.toLowerCase() === selectedAsset?.contractAddress.toLowerCase() &&
+        asset.asset.contractAddress.toLowerCase() ===
+          selectedAsset?.contractAddress.toLowerCase() &&
         asset.asset.chainId === selectedAsset?.chainId
     )
   }, [userAssetList, selectedAsset])
 
   const goBack = React.useCallback(() => {
-    dispatch(WalletPageActions.selectAsset({ asset: undefined, timeFrame: selectedTimeline }))
+    dispatch(
+      WalletPageActions.selectAsset({
+        asset: undefined,
+        timeFrame: selectedTimeline
+      })
+    )
     dispatch(WalletPageActions.updateNFTMetadata(undefined))
     dispatch(WalletPageActions.updateNftMetadataError(undefined))
     history.goBack()
-  }, [
-    userAssetList,
-    selectedTimeline
-  ])
+  }, [userAssetList, selectedTimeline])
 
   const onSend = React.useCallback(() => {
     if (!selectedAsset || !selectedAssetsNetwork) return
 
     const account = accounts
       .filter((account) => account.accountId.coin === selectedAsset.coin)
-      .find(acc => new Amount(getBalance(acc, selectedAsset)).gte('1'))
+      .find((acc) => new Amount(getBalance(acc, selectedAsset)).gte('1'))
 
-    if(!account) return
+    if (!account) return
 
     history.push(
       WalletRoutes.SendPage.replace(':chainId?', selectedAssetsNetwork.chainId)
@@ -185,7 +198,12 @@ export const PortfolioNftAsset = () => {
   React.useEffect(() => {
     if (selectedAssetFromParams) {
       // load token data
-      dispatch(WalletPageActions.selectAsset({ asset: selectedAssetFromParams, timeFrame: selectedTimeline }))
+      dispatch(
+        WalletPageActions.selectAsset({
+          asset: selectedAssetFromParams,
+          timeFrame: selectedTimeline
+        })
+      )
     }
   }, [selectedAssetFromParams])
 
@@ -207,21 +225,23 @@ export const PortfolioNftAsset = () => {
       hideDivider={false}
       cardHeader={
         <NftAssetHeader
-          onBack={goBack}  
+          onBack={goBack}
           assetName={selectedAsset?.name}
           tokenId={selectedAsset?.tokenId}
-          showSendButton={!new Amount(fullAssetBalances?.assetBalance || '').isZero()}
+          showSendButton={
+            !new Amount(fullAssetBalances?.assetBalance || '').isZero()
+          }
           onSend={onSend}
         />
       }
     >
       <StyledWrapper>
-        {selectedAsset &&
+        {selectedAsset && (
           <NftScreen
             selectedAsset={selectedAsset}
             tokenNetwork={selectedAssetsNetwork}
           />
-        }
+        )}
       </StyledWrapper>
     </WalletPageWrapper>
   )
