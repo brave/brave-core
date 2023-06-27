@@ -39,6 +39,11 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents)
       pref_service_(
           user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())) {
   DCHECK(pref_service_);
+  pref_change_registrar_.Init(pref_service_);
+  pref_change_registrar_.Add(
+      prefs::kBraveChatHasSeenDisclaimer,
+      base::BindRepeating(&AIChatTabHelper::OnUserOptedIn,
+                          weak_ptr_factory_.GetWeakPtr()));
   ai_chat_api_ =
       std::make_unique<AIChatAPI>(web_contents->GetBrowserContext()
                                       ->GetDefaultStoragePartition()
@@ -54,15 +59,15 @@ const std::vector<ConversationTurn>& AIChatTabHelper::GetConversationHistory() {
 void AIChatTabHelper::OnConversationActiveChanged(bool is_conversation_active) {
   is_conversation_active_ = is_conversation_active;
   DVLOG(3) << "Conversation active changed: " << is_conversation_active;
-  if (article_text_.empty() &&
-      web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame()) {
-    // When the UI opens, get the page content
-    GeneratePageText();
-  }
+  MaybeGeneratePageText();
 }
 
 bool AIChatTabHelper::HasUserOptedIn() {
   return pref_service_->GetBoolean(ai_chat::prefs::kBraveChatHasSeenDisclaimer);
+}
+
+void AIChatTabHelper::OnUserOptedIn() {
+  MaybeGeneratePageText();
 }
 
 std::string AIChatTabHelper::GetConversationHistoryString() {
@@ -110,8 +115,17 @@ void AIChatTabHelper::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void AIChatTabHelper::GeneratePageText() {
-  DCHECK(HasUserOptedIn());
+void AIChatTabHelper::MaybeGeneratePageText() {
+  // Make sure user is opted in since this may make a network request
+  // for more page content (e.g. video transcript).
+  // Perf: make sure we're not doing this when the feature
+  // won't be used (e.g. not opted in or no active conversation).
+  if (is_page_text_fetch_in_progress_ || !article_text_.empty() ||
+      !HasUserOptedIn() || !is_conversation_active_ ||
+      !web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame()) {
+    return;
+  }
+
   auto* primary_rfh = web_contents()->GetPrimaryMainFrame();
 
   if (!primary_rfh) {
@@ -119,6 +133,7 @@ void AIChatTabHelper::GeneratePageText() {
                "primary main frame";
     return;
   }
+  is_page_text_fetch_in_progress_ = true;
   FetchPageContent(
       web_contents(),
       base::BindOnce(&AIChatTabHelper::OnTabContentRetrieved,
@@ -132,6 +147,8 @@ void AIChatTabHelper::OnTabContentRetrieved(int64_t for_navigation_id,
     VLOG(1) << __func__ << " for a different navigation. Ignoring.";
     return;
   }
+
+  is_page_text_fetch_in_progress_ = false;
   if (contents_text.empty()) {
     VLOG(1) << __func__ << ": No data";
     return;
@@ -178,6 +195,7 @@ void AIChatTabHelper::CleanUp() {
   chat_history_.clear();
   article_text_.clear();
   suggested_questions_.clear();
+  is_page_text_fetch_in_progress_ = false;
   is_request_in_progress_ = false;
   has_generated_questions_ = false;
   OnSuggestedQuestionsChanged();
@@ -447,9 +465,7 @@ void AIChatTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
   // TODO(petemill): If there are other navigation events to also
   // check if content is available at, then start a queue and make
   // sure we don't have multiple async distills going on at the same time.
-  if (HasUserOptedIn() && is_conversation_active_) {
-    GeneratePageText();
-  }
+  MaybeGeneratePageText();
 }
 
 void AIChatTabHelper::WebContentsDestroyed() {

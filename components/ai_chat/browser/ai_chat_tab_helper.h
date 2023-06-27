@@ -13,6 +13,7 @@
 #include "base/observer_list.h"
 #include "brave/components/ai_chat/browser/ai_chat_api.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -76,8 +77,9 @@ class AIChatTabHelper : public content::WebContentsObserver,
   explicit AIChatTabHelper(content::WebContents* web_contents);
 
   bool HasUserOptedIn();
+  void OnUserOptedIn();
   std::string GetConversationHistoryString();
-  void GeneratePageText();
+  void MaybeGeneratePageText();
   void CleanUp();
   void OnTabContentRetrieved(int64_t for_navigation_id,
                              std::string contents_text,
@@ -101,12 +103,14 @@ class AIChatTabHelper : public content::WebContentsObserver,
   raw_ptr<PrefService> pref_service_;
   std::unique_ptr<AIChatAPI> ai_chat_api_ = nullptr;
 
+  PrefChangeRegistrar pref_change_registrar_;
   base::ObserverList<Observer> observers_;
 
   // TODO(nullhook): Abstract the data model
   std::vector<mojom::ConversationTurn> chat_history_;
   std::string article_text_;
   bool is_conversation_active_ = false;
+  bool is_page_text_fetch_in_progress_ = false;
   bool is_request_in_progress_ = false;
   std::vector<std::string> suggested_questions_;
   bool has_generated_questions_ = false;
