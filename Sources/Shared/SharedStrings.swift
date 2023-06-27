@@ -99,10 +99,3 @@ extension Strings {
 extension Strings {
   public static let externalLinkAppStoreConfirmationTitle = NSLocalizedString("ExternalLinkAppStoreConfirmationTitle", bundle: .module, value: "Open this link in the App Store app?", comment: "Question shown to user when tapping a link that opens the App Store app")
 }
-
-// Location bar long press menu
-extension Strings {
-  public static let pasteAndGoTitle = NSLocalizedString("PasteAndGoTitle", bundle: .module, value: "Paste & Go", comment: "The title for the button that lets you paste and go to a URL")
-  public static let pasteTitle = NSLocalizedString("PasteTitle", bundle: .module, value: "Paste", comment: "The title for the button that lets you paste into the location bar")
-  public static let copyAddressTitle = NSLocalizedString("CopyAddressTitle", bundle: .module, value: "Copy Address", comment: "The title for the button that lets you copy the url from the location bar.")
-}

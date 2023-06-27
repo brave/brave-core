@@ -32,6 +32,7 @@ extension Strings {
   public static let download = NSLocalizedString("CommonDownload", tableName: "BraveShared", bundle: .module, value: "Download", comment: "Text to choose for downloading a file (example: saving an image to phone)")
   public static let showLinkPreviewsActionTitle = NSLocalizedString("ShowLinkPreviewsActionTitle", tableName: "BraveShared", bundle: .module, value: "Show Link Previews", comment: "Context menu item for showing link previews")
   public static let hideLinkPreviewsActionTitle = NSLocalizedString("HideLinkPreviewsActionTitle", tableName: "BraveShared", bundle: .module, value: "Hide Link Previews", comment: "Context menu item for hiding link previews")
+  public static let copyAddressTitle = NSLocalizedString("CopyAddressTitle", bundle: .module, value: "Copy Address", comment: "The title for the button that lets you copy the url from the location bar.")
   public static let learnMore = NSLocalizedString(
     "learnMore", tableName: "BraveShared",
     bundle: .module, value: "Learn More", comment: "")
