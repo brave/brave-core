@@ -35,6 +35,7 @@ import {
   useSetNftDiscoveryEnabledMutation
 } from '../../../../../common/slices/api.slice'
 import { getBalance } from '../../../../../utils/balance-utils'
+import { AccountsGroupByOption, NetworksGroupByOption } from '../../../../../options/group-assets-by-options'
 
 // components
 import SearchBar from '../../../../shared/search-bar'
@@ -52,6 +53,7 @@ import { AddOrEditNftModal } from '../../../popup-modals/add-edit-nft-modal/add-
 import { NftsEmptyState } from './nfts-empty-state/nfts-empty-state'
 import { ButtonIcon, CircleButton } from '../../portfolio/style'
 import { AssetGroupContainer } from '../../../asset-group-container/asset-group-container'
+import { networkEntityAdapter } from '../../../../../common/slices/entities/network.entity'
 
 interface Props {
   networks: BraveWallet.NetworkInfo[]
@@ -65,6 +67,7 @@ export const Nfts = (props: Props) => {
   const {
     nftList,
     accounts,
+    networks,
     onToggleShowIpfsBanner,
     onShowPortfolioSettings
   } = props
@@ -72,6 +75,7 @@ export const Nfts = (props: Props) => {
   // redux
   const isNftPinningFeatureEnabled = useSafeWalletSelector(WalletSelectors.isNftPinningFeatureEnabled)
   const hiddenNfts = useUnsafeWalletSelector(WalletSelectors.removedNonFungibleTokens)
+  const selectedGroupAssetsByItem = useSafeWalletSelector(WalletSelectors.selectedGroupAssetsByItem)
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
@@ -197,11 +201,31 @@ export const Nfts = (props: Props) => {
           nft.coin === account.accountId.coin &&
           new Amount(getBalance(account, nft)).gte('1')
       )
+    }, [renderedList, getBalance])
+
+  // Returns a list of assets based on provided network
+  const getAssetsByNetwork = React.useCallback(
+    (network: BraveWallet.NetworkInfo) => {
+      return renderedList
+        .filter(
+          (asset) =>
+            networkEntityAdapter
+              .selectId(
+                {
+                  chainId: asset.chainId,
+                  coin: asset.coin
+                }).toString() ===
+            networkEntityAdapter
+              .selectId(network).toString()
+        )
     }, [renderedList])
 
   const listUiByAccounts = React.useMemo(() => {
     return accounts.map((account) => (
-      <>
+      <Row
+        width='100%'
+        key={account.address}
+      >
         {getFilteredNftsByAccount(account).length !== 0 && (
           <AssetGroupContainer
             key={account.address}
@@ -223,9 +247,60 @@ export const Nfts = (props: Props) => {
             </NftGrid>
           </AssetGroupContainer>
         )}
-      </>
+      </Row>
     ))
-  }, [renderedList, accounts, getFilteredNftsByAccount, onSelectAsset])
+  }, [accounts, getFilteredNftsByAccount, onSelectAsset])
+
+  const listUiByNetworks = React.useMemo(() => {
+    return networks?.map((network) =>
+      <Row
+        width='100%'
+        key={networkEntityAdapter.selectId(network).toString()}
+      >
+        {getAssetsByNetwork(network).length !== 0 && (
+          <AssetGroupContainer
+            balance=''
+            hideBalance={true}
+            network={network}
+            isDisabled={getAssetsByNetwork(network).length === 0}
+            hasBorder={false}
+          >
+            <NftGrid>
+              {getAssetsByNetwork(network).map((nft) => (
+                <NFTGridViewItem
+                  isHidden={selectedTab === 'hidden'}
+                  key={`${nft.tokenId}-${nft.contractAddress}`}
+                  token={nft}
+                  onSelectAsset={() => onSelectAsset(nft)}
+                />
+              ))}
+            </NftGrid>
+          </AssetGroupContainer>
+        )}
+      </Row>
+    )
+  }, [
+    getAssetsByNetwork,
+    networks,
+    selectedTab
+  ])
+
+  const listUi = React.useMemo(() => {
+    return selectedGroupAssetsByItem === NetworksGroupByOption.id
+      ? listUiByNetworks
+      : selectedGroupAssetsByItem === AccountsGroupByOption.id
+        ? listUiByAccounts
+        : <NftGrid>
+          {renderedList.map(nft => (
+            <NFTGridViewItem
+              isHidden={selectedTab === 'hidden'}
+              key={`${nft.tokenId}-${nft.contractAddress}`}
+              token={nft}
+              onSelectAsset={() => onSelectAsset(nft)}
+            />
+          ))}
+        </NftGrid>
+  }, [listUiByAccounts, listUiByNetworks, selectedGroupAssetsByItem, renderedList])
 
   return (
     <>
@@ -275,7 +350,7 @@ export const Nfts = (props: Props) => {
           ) : (
             <NftsEmptyState onImportNft={toggleShowAddNftModal} />
           )
-        ) : listUiByAccounts}
+        ) : listUi}
       </ScrollableColumn>
       {showAddNftModal && (
         <AddOrEditNftModal
