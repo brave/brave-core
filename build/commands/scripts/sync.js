@@ -252,6 +252,7 @@ async function RunCommand() {
   Log.progress('...gclient sync done.')
 
   await util.applyPatches()
+  util.updateChromeVersion()
 
   if (!program.nohooks) {
     Log.progress('Running gclient runhooks...')

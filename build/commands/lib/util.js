@@ -726,6 +726,34 @@ const util = {
     return applyPatches()
   },
 
+  updateChromeVersion: () => {
+    const braveVersionParts = config.braveVersion.split('.')
+    assert(braveVersionParts.length == 3)
+
+    const versionFilePath = path.join(config.srcDir, 'chrome', 'VERSION')
+    const versionLines = fs.readFileSync(versionFilePath).toString().split('\n')
+    assert(versionLines.length >= 4)
+
+    const versionLineRegex = /^(\w+)=(\d+)$/
+    for (let line = 0; line < 4; ++line) {
+      assert(
+        versionLines[line].search(versionLineRegex) == 0,
+        `${versionLines[line]} (${line}) doesn't match ${versionLineRegex}`
+      )
+      if (line == 0) {
+        // Keep MAJOR.
+        assert(versionLines[line].startsWith('MAJOR='))
+      } else {
+        // Set MINOR, BUILD, PATCH to Brave version.
+        versionLines[line] = versionLines[line].replace(
+          versionLineRegex,
+          `$1=${braveVersionParts[line - 1]}`
+        )
+      }
+    }
+    fs.writeFileSync(versionFilePath, versionLines.join('\n'))
+  },
+
   buildArgsToString: (buildArgs) => {
     let args = ''
     for (let arg in buildArgs) {
