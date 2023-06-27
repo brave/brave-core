@@ -104,7 +104,6 @@ ios_framework_bundle("brave_core_ios_framework") {
 
   configs += [
     ":internal_config",
-    "//brave/build/rust:strip_rust_symbols",
     "//build/config/compiler:enable_arc",
   ]
 

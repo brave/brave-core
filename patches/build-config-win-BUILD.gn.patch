@@ -1,0 +1,13 @@
+diff --git a/build/config/win/BUILD.gn b/build/config/win/BUILD.gn
+index c51ad032acd3f6efe98527db0b3d104ca9b4740d..05739cf280d2042de8fe5ed9437d52cfbe0dbc9e 100644
+--- a/build/config/win/BUILD.gn
++++ b/build/config/win/BUILD.gn
+@@ -118,7 +118,7 @@ config("compiler") {
+         cflags += [ "--target=x86_64-windows" ]
+       }
+     } else if (current_cpu == "arm64") {
+-      cflags += [ "--target=arm64-windows" ]
++      cflags += [ "--target=aarch64-pc-windows" ]
+     } else {
+       assert(false, "unknown current_cpu " + current_cpu)
+     }

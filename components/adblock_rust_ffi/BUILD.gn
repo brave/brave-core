@@ -1,10 +1,12 @@
-# Copyright 2014 The Chromium Authors. All rights reserved.
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/build/cargo.gni")
+import("//build/rust/rust_static_library.gni")
 
-rust_ffi("adblock_rust_ffi") {
+source_set("ffi") {
+  visibility = [ ":*" ]
   sources = [
     "src/lib.h",
     "src/wrapper.cc",
@@ -14,10 +16,23 @@ rust_ffi("adblock_rust_ffi") {
   deps = [ "//base" ]
 }
 
-rust_crate("rust_lib") {
-  inputs = [
-    "Cargo.toml",
-    "cbindgen.toml",
-    "src/lib.rs",
+rust_static_library("rust_lib") {
+  crate_name = "adblock_ffi"
+  crate_root = "src/lib.rs"
+  allow_unsafe = true
+  sources = [ "src/lib.rs" ]
+
+  public_deps = [ ":ffi" ]
+
+  deps = [
+    "//brave/third_party/rust/adblock/v0_7:lib",
+    "//third_party/rust/libc/v0_2:lib",
+    "//third_party/rust/serde_json/v1:lib",
   ]
+
+  if (is_ios) {
+    features = [ "ios" ]
+  } else {
+    features = [ "single_thread_optimizations" ]
+  }
 }

@@ -131,3 +131,7 @@ android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java
 /.github/ @brave/devops-team
 /.github/CODEOWNERS @brave/devops-team @bsclifton
 /.github/PULL_REQUEST_TEMPLATE.md @bsclifton
+
+
+# Semgrep configuration
+/.semgrepignore @thypon

@@ -40,5 +40,5 @@ source_set("brave_news_unit_tests") {
     "//url",
   ]
 
-  public_deps = [ "//brave/components/brave_news/rust:rust-rs" ]
+  public_deps = [ "//brave/components/brave_news/rust:rust_lib" ]
 }

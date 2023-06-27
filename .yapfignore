@@ -1,0 +1,2 @@
+# Ignore everything in third_party/rust.
+third_party/rust/*

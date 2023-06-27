@@ -1,0 +1,154 @@
+diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
+index 23a8da453c3d29ab8efeacbb7da6e01e280afd55..f0ec5690e27652a866f88eec54c0ddb34fabd363 100644
+--- a/build/config/compiler/BUILD.gn
++++ b/build/config/compiler/BUILD.gn
+@@ -772,8 +772,12 @@ config("compiler") {
+       cflags += [ "-fwhole-program-vtables" ]
+ 
+       # whole-program-vtables implies -fsplit-lto-unit, and Rust needs to match
+-      # behaviour.
+-      rustflags += [ "-Zsplit-lto-unit" ]
++      # behaviour. Rust needs to know the linker will be doing LTO in this case
++      # or it rejects the Zsplit-lto-unit flag.
++      rustflags += [
++        "-Zsplit-lto-unit",
++        "-Clinker-plugin-lto=yes",
++      ]
+ 
+       if (!is_win) {
+         ldflags += [ "-fwhole-program-vtables" ]
+@@ -1005,6 +1009,7 @@ config("compiler") {
+       "-Zpanic_abort_tests",
+     ]
+   }
++  rustflags -= brave_remove_rustflags
+ }
+ 
+ # The BUILDCONFIG file sets this config on targets by default, which means when
+@@ -1554,6 +1559,85 @@ config("compiler_arm") {
+   }
+ }
+ 
++# Rust and C++ both provide intrinsics for LLVM to call for math operations. We
++# want to use the C++ intrinsics, not the ones in the Rust compiler_builtins
++# library. The Rust symbols are marked as weak, so that they can be replaced by
++# the C++ symbols. This config ensures the C++ symbols exist and are strong in
++# order to cause that replacement to occur by explicitly linking in clang's
++# compiler-rt library.
++config("compiler_builtins") {
++  visibility = [ ":runtime_library" ]
++
++  _dir = ""
++  _libname = "builtins"
++  _prefix = "lib"
++  _suffix = ""
++  _ext = "a"
++  if (is_win) {
++    _dir = "windows"
++    _prefix = ""
++    _ext = "lib"
++    if (current_cpu == "x64") {
++      _suffix = "-x86_64"
++    } else if (current_cpu == "x86") {
++      _suffix = "-i386"
++    } else if (current_cpu == "arm64") {
++      _suffix = "-arm64"
++    } else {
++      assert(false)  # Unhandled cpu type
++    }
++  } else if (is_mac) {
++    _dir = "darwin"
++    _libname = "osx"
++  } else if (is_ios) {
++    import("//build/config/ios/config.gni")  # For `target_environment`
++
++    _dir = "darwin"
++    if (target_environment == "simulator") {
++      _libname = "iossim"
++    } else {
++      _libname = "ios"
++    }
++  } else if (is_linux || is_chromeos) {
++    if (current_cpu == "x64") {
++      _dir = "x86_64-unknown-linux-gnu"
++    } else if (current_cpu == "x86") {
++      _dir = "i386-unknown-linux-gnu"
++    } else if (current_cpu == "arm") {
++      _dir = "armv7-unknown-linux-gnueabihf"
++    } else {
++      assert(false)  # Unhandled cpu type
++    }
++  } else if (is_fuchsia) {
++    if (current_cpu == "x64") {
++      _dir = "x86_64-unknown-fuchsia"
++    } else if (current_cpu == "arm64") {
++      _dir = "aarch64-unknown-fuchsia"
++    } else {
++      assert(false)  # Unhandled cpu type
++    }
++  } else if (is_android) {
++    _dir = "linux"
++    if (current_cpu == "x64") {
++      _suffix = "-x86_64-android"
++    } else if (current_cpu == "x86") {
++      _suffix = "-i686-android"
++    } else if (current_cpu == "arm") {
++      _suffix = "-arm-android"
++    } else if (current_cpu == "arm64") {
++      _suffix = "-aarch64-android"
++    } else {
++      assert(false)  # Unhandled cpu type
++    }
++  } else {
++    assert(!toolchain_has_rust)  # Unhandled target platform
++  }
++
++  _clang_lib_dir = "$clang_base_path/lib/clang/$clang_version/lib"
++  _lib_file = "${_prefix}clang_rt.${_libname}${_suffix}.${_ext}"
++  libs = [ "$_clang_lib_dir/$_dir/$_lib_file" ]
++}
++
+ # runtime_library -------------------------------------------------------------
+ #
+ # Sets the runtime library and associated options.
+@@ -1575,6 +1659,10 @@ config("runtime_library") {
+     configs += [ "//build/config/c++:runtime_library" ]
+   }
+ 
++  if (toolchain_has_rust && target_os != "win" && target_os != "arm64") {
++    configs += [ ":compiler_builtins" ]
++  }
++
+   # TODO(crbug.com/830987): Come up with a better name for is POSIX + Fuchsia
+   # configuration.
+   if (is_posix || is_fuchsia) {
+@@ -1746,6 +1834,11 @@ config("default_warnings") {
+           # TODO(crbug.com/1412713) Evaluate and possibly enable.
+           "-Wno-deprecated-this-capture",
+         ]
++
++        if (llvm_force_head_revision) {
++          # TODO(https://crbug.com/1448905): Evaluate and possibly enable.
++          cflags += [ "-Wno-builtin-macro-redefined" ]
++        }
+       }
+     }
+   }
+@@ -1951,7 +2044,7 @@ config("no_chromium_code") {
+ config("noshadowing") {
+   # This flag has to be disabled for nacl because the nacl compiler is too
+   # strict about shadowing.
+-  if (is_clang && (!is_nacl || is_nacl_saigo)) {
++  if (is_clang && (!is_nacl || is_nacl_saigo) && !llvm_force_head_revision) {
+     cflags = [ "-Wshadow" ]
+   }
+ }
+@@ -2534,7 +2627,7 @@ config("symbols") {
+       if (use_dwarf5) {
+         cflags += [ "-gdwarf-5" ]
+         rustflags += [ "-Zdwarf-version=5" ]
+-      } else if (!is_apple) {
++      } else {
+         # Recent clang versions default to DWARF5 on Linux, and Android is about
+         # to switch. TODO: Adopt that in controlled way.
+         # Apple platforms still default to 4, so the flag is not needed there.

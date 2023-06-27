@@ -1,39 +1,42 @@
-# Copyright 2020 The Brave Authors. All rights reserved.
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/build/rust/rust_cxx.gni")
+import("//build/rust/rust_static_library.gni")
 
-rust_crate("rust_lib") {
-  visibility = [ "//brave/components/skus/browser/rs:rust_lib" ]
-
-  inputs = [
-    "Cargo.toml",
+rust_static_library("rust_lib") {
+  crate_name = "skus_cxx"
+  crate_root = "src/lib.rs"
+  allow_unsafe = true
+  sources = [
     "src/errors.rs",
     "src/httpclient.rs",
     "src/lib.rs",
     "src/log.rs",
     "src/storage.rs",
   ]
-}
+  cxx_bindings = [ "src/lib.rs" ]
 
-rust_cxx("cxx") {
-  input = [ "src/lib.rs" ]
-  native_header_deps = [ ":shim" ]
+  public_deps = [ ":shim" ]
+
+  deps = [
+    "//brave/components/skus/browser/rs/lib:rust_lib",
+    "//brave/third_party/rust/async_trait/v0_1:lib",
+    "//brave/third_party/rust/futures/v0_3:lib",
+    "//brave/third_party/rust/tracing/v0_1:lib",
+    "//brave/third_party/rust/tracing_subscriber/v0_2:lib",
+    "//third_party/rust/libc/v0_2:lib",
+    "//third_party/rust/serde_json/v1:lib",
+  ]
 }
 
 source_set("shim") {
-  visibility = [
-    ":*",
-    "//brave/components/skus/browser",
-  ]
+  visibility = [ ":*" ]
   sources = [ "src/shim.h" ]
 
-  public_deps = [ "//third_party/abseil-cpp:absl" ]
-
-  deps = [
+  public_deps = [
     "//base",
-    "//brave/build/rust:cxx_cppdeps",
+    "//build/rust:cxx_cppdeps",
   ]
 }
