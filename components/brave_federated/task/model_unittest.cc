@@ -6,8 +6,8 @@
 #include "brave/components/brave_federated/task/model.h"
 #include <cstddef>
 
-#include "brave/components/brave_federated/util/linear_algebra_util.h"
 #include "brave/components/brave_federated/api/config.h"
+#include "brave/components/brave_federated/util/linear_algebra_util.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 

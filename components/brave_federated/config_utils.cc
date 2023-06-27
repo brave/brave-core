@@ -36,10 +36,8 @@ LearningServiceConfig::LearningServiceConfig() {
       .maximum_backoff_ms =
           16 * features::GetFederatedLearningUpdateCycleInSeconds() * 1000,
       .always_use_initial_delay = true};
-  model_spec_.num_params = 32,
-  model_spec_.batch_size = 32,
-  model_spec_.learning_rate = 0.01,
-  model_spec_.num_iterations = 500,
+  model_spec_.num_params = 32, model_spec_.batch_size = 32,
+  model_spec_.learning_rate = 0.01, model_spec_.num_iterations = 500,
   model_spec_.threshold = 0.5;
 }
 
@@ -85,9 +83,12 @@ void LearningServiceConfig::InitServiceConfigFromJSONString(
 
   // Convert api::config::BackoffPolicy to BackoffEntry::Policy
   // parent class
-  convertPolicy<api::config::BackoffPolicy, net::BackoffEntry::Policy>(reconnect_policy, reconnect_policy_);
-  convertPolicy<api::config::BackoffPolicy, net::BackoffEntry::Policy>(request_task_policy, request_task_policy_);
-  convertPolicy<api::config::BackoffPolicy, net::BackoffEntry::Policy>(post_results_policy, post_results_policy_);
+  convertPolicy<api::config::BackoffPolicy, net::BackoffEntry::Policy>(
+      reconnect_policy, reconnect_policy_);
+  convertPolicy<api::config::BackoffPolicy, net::BackoffEntry::Policy>(
+      request_task_policy, request_task_policy_);
+  convertPolicy<api::config::BackoffPolicy, net::BackoffEntry::Policy>(
+      post_results_policy, post_results_policy_);
 }
 
 void LearningServiceConfig::copyModelSpec(const api::config::ModelSpec& src,
@@ -105,7 +106,8 @@ void LearningServiceConfig::convertPolicy(const S& src, T& dst) {
   dst.initial_delay_ms = src.initial_delay_ms;
   dst.multiply_factor = src.multiply_factor;
   dst.jitter_factor = src.jitter_factor;
-  bool ret = base::StringToInt64(src.maximum_backoff_ms, &dst.maximum_backoff_ms);
+  bool ret =
+      base::StringToInt64(src.maximum_backoff_ms, &dst.maximum_backoff_ms);
   DCHECK(ret);
   dst.always_use_initial_delay = src.always_use_initial_delay;
 }

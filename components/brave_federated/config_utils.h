@@ -33,7 +33,7 @@ class LearningServiceConfig {
   api::config::ModelSpec model_spec_ = {};
   void copyModelSpec(const api::config::ModelSpec& src,
                      api::config::ModelSpec& dst);
-  template <typename S,typename T>
+  template <typename S, typename T>
   void convertPolicy(const S& src, T& dst);
 };
 
