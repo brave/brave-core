@@ -13,7 +13,6 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.NftGridFragment;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -124,17 +123,13 @@ public final class WalletConstants {
     public static final String SOL_INS_SIG_VERIFY = "Ed25519SigVerify111111111111111111111111111";
     public static final String SOL_INS_SECP = "KeccakSecp256k11111111111111111111111111111";
 
-    public static final Map<String, Integer> KNOWN_TEST_CHAINS_MAP = new HashMap<>() {
-        {
-            put(BraveWalletConstants.GOERLI_CHAIN_ID, CoinType.ETH);
-            put(BraveWalletConstants.SEPOLIA_CHAIN_ID, CoinType.ETH);
-            put(BraveWalletConstants.LOCALHOST_CHAIN_ID, CoinType.ETH);
-            put(BraveWalletConstants.SOLANA_TESTNET, CoinType.SOL);
-            put(BraveWalletConstants.SOLANA_DEVNET, CoinType.SOL);
-            put(BraveWalletConstants.FILECOIN_TESTNET, CoinType.FIL);
-            put(BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID, CoinType.ETH);
-        }
-    };
+    public static final Map<String, Integer> KNOWN_TEST_CHAINS_MAP = Map.of(
+            BraveWalletConstants.GOERLI_CHAIN_ID, CoinType.ETH,
+            BraveWalletConstants.SEPOLIA_CHAIN_ID, CoinType.ETH,
+            BraveWalletConstants.LOCALHOST_CHAIN_ID, CoinType.ETH,
+            BraveWalletConstants.SOLANA_TESTNET, CoinType.SOL, BraveWalletConstants.SOLANA_DEVNET,
+            CoinType.SOL, BraveWalletConstants.FILECOIN_TESTNET, CoinType.FIL,
+            BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID, CoinType.ETH);
 
     public static final List<String> KNOWN_TEST_CHAIN_IDS =
             new ArrayList<>(KNOWN_TEST_CHAINS_MAP.keySet());
