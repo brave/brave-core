@@ -253,7 +253,7 @@ public class Utils {
             case SEND:
                 try {
                     BraveActivity.getBraveActivity().openNewOrSelectExistingTab(
-                            BraveActivity.BRAVE_SEND_URL);
+                            BraveActivity.BRAVE_SEND_URL, true);
                     TabUtils.bringChromeTabbedActivityToTheTop(activity);
                 } catch (BraveActivity.BraveActivityNotFoundException e) {
                     Log.e(TAG, "Error while opening send tab.", e);
