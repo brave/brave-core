@@ -14,12 +14,9 @@ source_set("status_icon") {
     "tray_menu_model.cc",
     "tray_menu_model.h",
   ]
-
-  public_deps = [ "//skia" ]
-
+  public_deps = [ "//ui/base" ]
   deps = [
     "//brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/utils",
-    "//ui/base",
     "//ui/gfx",
   ]
 }
