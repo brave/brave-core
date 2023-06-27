@@ -12,8 +12,8 @@ import '@brave/leo/tokens/css/variables.css'
 
 import PlaylistsCatalog from '../components/playlistsCatalog'
 import store from '../store'
-
 import { mockData } from './mockData'
+import { getAllActions } from '../api/getAllActions'
 
 export default {
   title: 'Playlist/Components',
@@ -40,6 +40,9 @@ export default {
   ]
 }
 
+getAllActions().playlistLoaded(mockData)
+
 export const Catalog = () => {
-  return <PlaylistsCatalog playlists={mockData}></PlaylistsCatalog>
+  return <PlaylistsCatalog />
 }
+

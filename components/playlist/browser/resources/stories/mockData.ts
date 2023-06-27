@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
+import { Playlist } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
 import thumbnail from './thumbnail.png'
 
-export const mockData: PlaylistMojo.Playlist[] = [
+export const mockData: Playlist[] = [
   {
     id: 'default',
     name: '',

@@ -4,25 +4,13 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { bindActionCreators, Dispatch } from 'redux'
-import { connect } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
-
-// Types
-import { Playlist } from '../../../../definitions/playlist'
-import * as playlistActions from '../actions/playlist_action_creators'
 
 // Components
 import Header from './header'
 import PlaylistsCatalog from './playlistsCatalog'
-import VideoFrame from './videoFrame'
-import PlaylistItem from './playlistItem'
-
-interface Props {
-  actions: typeof playlistActions
-  playlistData: Playlist.State
-}
+import PlaylistPlayer from './playlistPlayer'
 
 const HeaderWrapper = styled.header`
   position: sticky;
@@ -32,61 +20,23 @@ const HeaderWrapper = styled.header`
   z-index: 1;
 `
 
-function App (props: Props) {
+export default function App () {
   return (
     <>
       <HeaderWrapper>
         <Route
           path={'/playlist/:playlistId'}
           children={({ match }) => (
-            <Header
-              playlist={props.playlistData.lists.find(
-                playlist => playlist.id === match?.params.playlistId
-              )}
-            />
+            <Header playlistId={match?.params.playlistId} />
           )}
         />
       </HeaderWrapper>
       <section>
         <Switch>
-          <Route
-            path='/playlist/:playlistId'
-            render={({ match }) => {
-              const playlist = props.playlistData.lists.find(
-                playlist => playlist.id === match.params.playlistId
-              )
-              return (
-                <>
-                  <VideoFrame
-                    playing={!!props.playlistData.lastPlayerState?.playing}
-                  />
-                  {playlist?.items.map(item => (
-                    <PlaylistItem
-                      id={item.id}
-                      name={item.name}
-                      thumbnailUrl={item.thumbnailPath.url}
-                      onClick={() => {}}
-                    />
-                  ))}
-                </>
-              )
-            }}
-          ></Route>
-          <Route path='/'>
-            <PlaylistsCatalog playlists={props.playlistData.lists} />
-          </Route>
+          <Route path='/playlist/:playlistId' component={PlaylistPlayer} />
+          <Route path='/' component={PlaylistsCatalog}></Route>
         </Switch>
       </section>
     </>
   )
 }
-
-export const mapStateToProps = (state: Playlist.ApplicationState) => ({
-  playlistData: state.playlistData
-})
-
-export const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators(playlistActions, dispatch)
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(App)

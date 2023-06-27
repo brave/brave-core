@@ -11,8 +11,8 @@ import { Link } from 'react-router-dom'
 import Icon from '@brave/leo/react/icon'
 import { color, font, spacing } from '@brave/leo/tokens/css'
 
-import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 import PlaylistInfo from './playlistInfo'
+import { usePlaylist } from '../reducers/states'
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -20,7 +20,7 @@ const StyledLink = styled(Link)`
 `
 
 interface HeaderProps {
-  playlist?: PlaylistMojo.Playlist
+  playlistId?: string
 }
 
 const GradientIcon = styled(Icon)`
@@ -57,7 +57,8 @@ const HeaderContainer = styled.div`
   background: ${color.container.background};
 `
 
-export default function Header ({ playlist }: HeaderProps) {
+export default function Header ({ playlistId }: HeaderProps) {
+  const playlist = usePlaylist(playlistId)
   return (
     <HeaderContainer>
       {playlist ? (

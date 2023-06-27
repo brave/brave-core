@@ -4,55 +4,50 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { bindActionCreators, Dispatch } from 'redux'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
-import { Playlist } from 'components/definitions/playlist'
-import * as playlistActions from '../actions/playlist_action_creators'
-import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
+import { ApplicationState } from 'components/playlist/browser/resources/reducers/states'
+import { PlaylistItem } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
 import { getAllActions } from '../api/getAllActions'
-
-export interface Props {
-  actions: any
-  currentItem?: PlaylistMojo.PlaylistItem
-  playing?: boolean
-}
-
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators(playlistActions, dispatch)
-})
-
-const mapStateToProps = (state: Playlist.ApplicationState) => ({
-  currentItem: state.playerState?.currentItem,
-  playing: state.playerState?.playing
-})
 
 const StyledVideo = styled.video`
   width: 100vw;
   height: 100vh;
 `
 
-function Player ({ currentItem, playing }: Props) {
+export default function Player () {
+  const currentItem = useSelector<ApplicationState, PlaylistItem | undefined>(
+    applicationState => applicationState.playerState?.currentItem
+  )
+
+  const playing = useSelector<ApplicationState, PlaylistItem | undefined>(
+    applicationState => applicationState.playerState?.currentItem
+  )
+
   // Route changes in props to parent frame.
   React.useEffect(() => {
-    window.parent.postMessage({
-      currentItem,
-      playing
-    }, 'chrome-untrusted://playlist')
+    window.parent.postMessage(
+      {
+        currentItem,
+        playing
+      },
+      'chrome-untrusted://playlist'
+    )
   })
 
   return (
-    <StyledVideo id="player" autoPlay controls
-      onPlay={() => getAllActions().playerStartedPlayingItem(currentItem) }
-      onPause={() => getAllActions().playerStoppedPlayingItem(currentItem) }
-      onEnded={() => getAllActions().playerStoppedPlayingItem(currentItem) }
-      src={currentItem?.mediaPath.url}/>
+    <StyledVideo
+      id='player'
+      autoPlay
+      controls
+      onPlay={() => getAllActions().playerStartedPlayingItem(currentItem)}
+      onPause={() => getAllActions().playerStoppedPlayingItem(currentItem)}
+      onEnded={() => getAllActions().playerStoppedPlayingItem(currentItem)}
+      src={currentItem?.mediaPath.url}
+    />
   )
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Player)
+// export default connect(mapStateToProps, mapDispatchToProps)(Player)

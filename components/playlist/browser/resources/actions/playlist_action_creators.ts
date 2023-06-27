@@ -5,29 +5,28 @@
 
 import { action } from 'typesafe-actions'
 
-import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
-
-import { Playlist } from 'components/definitions/playlist'
+import { Playlist, PlaylistItem } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m'
+import { PlayerState } from '../reducers/states'
 
 // Constants
 import { types } from '../constants/playlist_types'
 
-export const playlistLoaded = (playlists: PlaylistMojo.Playlist[]) =>
-    action(types.PLAYLIST_LOADED, playlists)
+export const playlistLoaded = (playlists: Playlist[]) =>
+  action(types.PLAYLIST_LOADED, playlists)
 
-export const selectPlaylist = (playlist: PlaylistMojo.Playlist) =>
-    action(types.PLAYLIST_SELECTED, playlist)
+export const selectPlaylist = (playlist: Playlist) =>
+  action(types.PLAYLIST_SELECTED, playlist)
 
-export const selectPlaylistItem = (playlist: PlaylistMojo.PlaylistItem) =>
-    action(types.PLAYLIST_ITEM_SELECTED, playlist)
+export const selectPlaylistItem = (playlist: PlaylistItem) =>
+  action(types.PLAYLIST_ITEM_SELECTED, playlist)
 
-export const playerStateChanged = (playerState: Playlist.PlayerState) =>
-    action(types.PLAYLIST_PLAYER_STATE_CHANGED, playerState)
+export const playerStateChanged = (playerState: PlayerState) =>
+  action(types.PLAYLIST_PLAYER_STATE_CHANGED, playerState)
 
-export const playerStartedPlayingItem =
-    (playlist: PlaylistMojo.PlaylistItem|undefined) =>
-        action(types.PLAYER_STARTED_PLAYING_ITEM)
+export const playerStartedPlayingItem = (
+  playlist: PlaylistItem | undefined
+) => action(types.PLAYER_STARTED_PLAYING_ITEM)
 
-export const playerStoppedPlayingItem =
-    (playlist: PlaylistMojo.PlaylistItem|undefined) =>
-        action(types.PLAYER_STOPPED_PLAYING_ITEM)
+export const playerStoppedPlayingItem = (
+  playlist: PlaylistItem | undefined
+) => action(types.PLAYER_STOPPED_PLAYING_ITEM)

@@ -3,22 +3,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
+import {
+  PageHandlerFactory,
+  Playlist,
+  PlaylistEvent,
+  PlaylistServiceObserverCallbackRouter,
+  PlaylistServiceRemote
+} from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
+
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 
-type PlaylistEventListener = (event: PlaylistMojo.PlaylistEvent) => void
+type PlaylistEventListener = (event: PlaylistEvent) => void
 
 let apiInstance: API
 
 class API {
-  #pageCallbackRouter = new PlaylistMojo.PlaylistServiceObserverCallbackRouter()
-  #pageHandler = new PlaylistMojo.PlaylistServiceRemote()
+  #pageCallbackRouter = new PlaylistServiceObserverCallbackRouter()
+  #pageHandler = new PlaylistServiceRemote()
 
   constructor () {
-    const factory = PlaylistMojo.PageHandlerFactory.getRemote()
+    const factory = PageHandlerFactory.getRemote()
     factory.createPageHandler(
-        this.#pageCallbackRouter.$.bindNewPipeAndPassRemote(),
-        this.#pageHandler.$.bindNewPipeAndPassReceiver())
+      this.#pageCallbackRouter.$.bindNewPipeAndPassRemote(),
+      this.#pageHandler.$.bindNewPipeAndPassReceiver()
+    )
   }
 
   async getAllPlaylists () {
@@ -29,7 +37,7 @@ class API {
     return this.#pageHandler.getPlaylist(id)
   }
 
-  createPlaylist (playlist: PlaylistMojo.Playlist) {
+  createPlaylist (playlist: Playlist) {
     this.#pageHandler.createPlaylist(playlist)
   }
 
@@ -45,11 +53,17 @@ class API {
     let mojoUrl = new Url()
     mojoUrl.url = url
     this.#pageHandler.addMediaFilesFromPageToPlaylist(
-        playlistId, mojoUrl, /* canCache */ true)
+      playlistId,
+      mojoUrl,
+      /* canCache */ true
+    )
   }
 
   addMediaFilesFromActiveTabToPlaylist (playlistId: string) {
-    this.#pageHandler.addMediaFilesFromActiveTabToPlaylist(playlistId, /* canCache */ true)
+    this.#pageHandler.addMediaFilesFromActiveTabToPlaylist(
+      playlistId,
+      /* canCache */ true
+    )
   }
 
   removeItemFromPlaylist (playlistId: string, itemId: string) {
@@ -57,7 +71,10 @@ class API {
   }
 
   recoverLocalData (playlistItemId: string) {
-    this.#pageHandler.recoverLocalDataForItem(playlistItemId, /* updatePageUrlBeforeRecovery= */false)
+    this.#pageHandler.recoverLocalDataForItem(
+      playlistItemId,
+      /* updatePageUrlBeforeRecovery= */ false
+    )
   }
 
   removeLocalData (playlistItemId: string) {
