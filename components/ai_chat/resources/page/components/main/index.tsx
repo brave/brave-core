@@ -10,7 +10,7 @@ import Icon from '@brave/leo/react/icon'
 interface MainProps {
   conversationList: React.ReactNode
   inputBox: React.ReactNode
-  siteTitle: React.ReactNode
+  siteTitle?: React.ReactNode
 }
 
 function Main (props: MainProps) {
@@ -23,9 +23,11 @@ function Main (props: MainProps) {
         </div>
       </div>
       <div className={styles.scroller}>
-        <div className={styles.siteTitleBox}>
-          {props.siteTitle}
-        </div>
+        {props.siteTitle && (
+          <div className={styles.siteTitleBox}>
+            {props.siteTitle}
+          </div>
+        )}
         {props.conversationList}
       </div>
       <div className={styles.inputBox}>

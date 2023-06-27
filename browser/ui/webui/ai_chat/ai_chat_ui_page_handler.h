@@ -73,7 +73,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
                                    bool has_generated,
                                    bool auto_generate) override;
   void OnFaviconImageDataChanged() override;
-  void OnPageLoaded() override;
+  void OnPageHasContent() override;
 
   // TabStripModelObserver
   void OnTabStripModelChanged(
@@ -82,7 +82,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
       const TabStripSelectionChange& selection) override;
 
   void GetFaviconImageData(GetFaviconImageDataCallback callback) override;
-  mojom::SiteInfo BuildSiteInfo();
+  absl::optional<mojom::SiteInfo> BuildSiteInfo();
 
   mojo::Remote<ai_chat::mojom::ChatUIPage> page_;
 

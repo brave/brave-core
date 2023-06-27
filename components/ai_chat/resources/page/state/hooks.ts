@@ -8,7 +8,7 @@ import getPageHandlerInstance, { ConversationTurn, SiteInfo } from '../api/page_
 import { loadTimeData } from '$web-common/loadTimeData'
 
 function toBlobURL (data: number[] | null) {
-  if (!data) return null
+  if (!data) return undefined
 
   const blob = new Blob([new Uint8Array(data)], { type: 'image/*' })
   return URL.createObjectURL(blob)
@@ -20,8 +20,8 @@ export function useConversationHistory() {
   const [suggestedQuestions, setSuggestedQuestions] = React.useState<string[]>([])
   const [canGenerateQuestions, setCanGenerateQuestions] = React.useState(false)
   const [userAllowsAutoGenerating, setUserAllowsAutoGeneratingState] = React.useState(false)
-  const [siteInfo, setSiteInfo] = React.useState<undefined | SiteInfo>(undefined)
-  const [favIconUrl, setFavIconUrl] = React.useState<null | string>(null)
+  const [siteInfo, setSiteInfo] = React.useState<SiteInfo | null>(null)
+  const [favIconUrl, setFavIconUrl] = React.useState<string | undefined>(undefined)
 
   const getConversationHistory = () => {
     getPageHandlerInstance().pageHandler.getConversationHistory().then(res => setConversationHistory(res.conversationHistory))

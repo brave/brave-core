@@ -69,6 +69,7 @@ export const _Main = (props: StoryProps) => {
   }
 
   let conversationList = <PrivacyMessage />
+  let siteTitleElement = null
 
   if (hasSeenAgreement) {
     conversationList = (
@@ -83,6 +84,10 @@ export const _Main = (props: StoryProps) => {
         onQuestionSubmit={() => {}}
       />
     )
+
+    siteTitleElement = (
+      <SiteTitle siteInfo={{ title: "Microsoft is hiking the price of Xbox Series X and Xbox Game Pass" }} favIconUrl="" />
+    )
   }
 
   const inputBox = (
@@ -95,16 +100,12 @@ export const _Main = (props: StoryProps) => {
     />
   )
 
-  const siteTitle = (
-    <SiteTitle siteInfo={{ title: "Microsoft is hiking the price of Xbox Series X and Xbox Game Pass" }} favIconUrl="" />
-  )
-
   return (
     <div className={styles.container}>
       <Main
         conversationList={conversationList}
         inputBox={inputBox}
-        siteTitle={siteTitle}
+        siteTitle={siteTitleElement}
       />
     </div>
   )

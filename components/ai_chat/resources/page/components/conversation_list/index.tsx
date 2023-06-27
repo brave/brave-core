@@ -40,7 +40,7 @@ function ConversationList (props: ConversationListProps) {
   }, [props.list.length, props.isLoading, lastConversationEntryElementRef.current?.clientHeight])
 
   return (
-    <div className={styles.list}>
+    <div>
       {props.list.map((turn, id) => {
         const isLastEntry = (id === (props.list.length - 1))
         const isLoading = isLastEntry && props.isLoading

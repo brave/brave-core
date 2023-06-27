@@ -142,7 +142,9 @@ void AIChatUIPageHandler::SetAutoGenerateQuestions(bool value) {
 }
 
 void AIChatUIPageHandler::GetSiteInfo(GetSiteInfoCallback callback) {
-  std::move(callback).Run(BuildSiteInfo().Clone());
+  auto site_info = BuildSiteInfo();
+  std::move(callback).Run(site_info.has_value() ? site_info.value().Clone()
+                                                : nullptr);
 }
 
 void AIChatUIPageHandler::MarkAgreementAccepted() {
@@ -187,9 +189,12 @@ void AIChatUIPageHandler::OnFaviconImageDataChanged() {
   }
 }
 
-void AIChatUIPageHandler::OnPageLoaded() {
+void AIChatUIPageHandler::OnPageHasContent() {
   if (page_.is_bound()) {
-    page_->OnSiteInfoChanged(BuildSiteInfo().Clone());
+    auto site_info = BuildSiteInfo();
+
+    page_->OnSiteInfoChanged(site_info.has_value() ? site_info.value().Clone()
+                                                   : nullptr);
   }
 }
 
@@ -250,15 +255,16 @@ void AIChatUIPageHandler::GetFaviconImageData(
       &favicon_task_tracker_);
 }
 
-mojom::SiteInfo AIChatUIPageHandler::BuildSiteInfo() {
-  mojom::SiteInfo site_info;
-
-  if (active_chat_tab_helper_) {
+absl::optional<mojom::SiteInfo> AIChatUIPageHandler::BuildSiteInfo() {
+  if (active_chat_tab_helper_ && active_chat_tab_helper_->HasPageContent()) {
+    mojom::SiteInfo site_info;
     site_info.title =
         base::UTF16ToUTF8(active_chat_tab_helper_->web_contents()->GetTitle());
+
+    return site_info;
   }
 
-  return site_info;
+  return absl::nullopt;
 }
 
 void AIChatUIPageHandler::OnVisibilityChanged(content::Visibility visibility) {

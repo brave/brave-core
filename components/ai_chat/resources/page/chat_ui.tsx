@@ -63,12 +63,14 @@ function App () {
       </>
     )
 
-    siteTitleElement = (
-      <SiteTitle
-      siteInfo={model.siteInfo}
-      favIconUrl={model.favIconUrl}
-    />
-    )
+    if (model.siteInfo) {
+      siteTitleElement = (
+        <SiteTitle
+        siteInfo={model.siteInfo}
+        favIconUrl={model.favIconUrl}
+      />
+      )
+    }
   }
 
   const inputBox = (

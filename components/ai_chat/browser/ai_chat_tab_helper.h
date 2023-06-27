@@ -48,7 +48,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
                                              bool has_generated,
                                              bool auto_generate) {}
     virtual void OnFaviconImageDataChanged() {}
-    virtual void OnPageLoaded() {}
+    virtual void OnPageHasContent() {}
   };
 
   AIChatTabHelper(const AIChatTabHelper&) = delete;
@@ -73,6 +73,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void GenerateQuestions();
   std::vector<std::string> GetSuggestedQuestions(bool& can_generate,
                                                  bool& auto_generate);
+  bool HasPageContent();
 
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
@@ -95,6 +96,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
       int64_t for_navigation_id,
       api_request_helper::APIRequestResult result);
   void OnSuggestedQuestionsChanged();
+  void OnPageHasContentChanged();
 
   // content::WebContentsObserver:
   void PrimaryPageChanged(content::Page& page) override;

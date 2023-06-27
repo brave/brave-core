@@ -6,13 +6,16 @@
 .box {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 16px;
   padding: 14px 0;
 }
 
 .titleBox {
-  width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .title {
@@ -32,15 +35,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.imgBox {
-  width: 16px;
-  height: 16px;
 
   img {
-    width: 100%;
-    height: 100%;
+    width: 16px;
+    height: 16px;
     object-fit: contain;
   }
 }

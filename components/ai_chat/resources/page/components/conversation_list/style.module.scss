@@ -3,11 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-.list {
-  // padding: 16px;
-}
-
-.turnBase {
+.turnAI {
   display: flex;
   align-items: flex-start;
   gap: 16px;
@@ -16,12 +12,14 @@
   padding: 16px;
 }
 
-.turnAI {
-  @extend .turnBase;
-}
-
 .turnHuman {
-  @extend .turnBase;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  font: var(--leo-font-secondary-default-regular);
+  color: var(--leo-color-text-primary);
+  padding: 16px;
+
   background-color: var(--leo-color-page-background);
 }
 

@@ -10,16 +10,14 @@ import { SiteInfo } from '../../api/page_handler'
 
 interface SiteTitleProps {
   siteInfo?: SiteInfo
-  favIconUrl: string | null
+  favIconUrl?: string
 }
 
 function SiteTitle (props: SiteTitleProps) {
    return (
     <div className={styles.box}>
       <div className={styles.favIconBox}>
-        <div className={styles.imgBox}>
-          { props.favIconUrl && <img src={props.favIconUrl} /> }
-        </div>
+        { props.favIconUrl && <img src={props.favIconUrl} /> }
       </div>
       <div className={styles.titleBox}>
         <p className={styles.title}>{props.siteInfo?.title}</p>

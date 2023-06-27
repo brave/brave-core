@@ -159,6 +159,8 @@ void AIChatTabHelper::OnTabContentRetrieved(int64_t for_navigation_id,
   is_video_ = is_video;
   article_text_ = contents_text;
 
+  OnPageHasContentChanged();
+
   // Prevent indirect prompt injections being sent to the AI model.
   base::ReplaceSubstringsAfterOffset(&contents_text, 0, ai_chat::kHumanPrompt,
                                      "");
@@ -206,6 +208,7 @@ void AIChatTabHelper::CleanUp() {
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
+    obs.OnPageHasContent();
   }
 }
 
@@ -218,6 +221,10 @@ std::vector<std::string> AIChatTabHelper::GetSuggestedQuestions(
   auto_generate = pref_service_->GetBoolean(
       ai_chat::prefs::kBraveChatAutoGenerateQuestions);
   return suggested_questions_;
+}
+
+bool AIChatTabHelper::HasPageContent() {
+  return !article_text_.empty();
 }
 
 void AIChatTabHelper::GenerateQuestions() {
@@ -445,6 +452,12 @@ void AIChatTabHelper::OnSuggestedQuestionsChanged() {
   }
 }
 
+void AIChatTabHelper::OnPageHasContentChanged() {
+  for (auto& obs : observers_) {
+    obs.OnPageHasContent();
+  }
+}
+
 void AIChatTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   // Store current navigation ID of the main document
@@ -480,10 +493,6 @@ void AIChatTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
   // check if content is available at, then start a queue and make
   // sure we don't have multiple async distills going on at the same time.
   MaybeGeneratePageText();
-
-  for (Observer& obs : observers_) {
-    obs.OnPageLoaded();
-  }
 }
 
 void AIChatTabHelper::WebContentsDestroyed() {
