@@ -12,6 +12,7 @@ export const ToolbarWrapperStyles = styled.div`
   color: var(--color-foreground);
   font-family: ${(p) => p.theme.fontFamily.heading};
   border-bottom: 1px solid var(--color-border);
+  overflow: hidden;
 
   --leo-icon-size: 16px;
 `

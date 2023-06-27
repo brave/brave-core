@@ -29,9 +29,6 @@ class ReaderModeToolbarView : public views::View {
  private:
   gfx::Size CalculatePreferredSize() const override;
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
-  void ChildPreferredSizeChanged(views::View* view) override;
-
-  void UpdateToolbarBounds();
 
   std::unique_ptr<views::WebView> toolbar_;
 };

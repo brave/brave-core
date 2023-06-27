@@ -14,6 +14,7 @@ namespace speedreader {
 constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveReaderModeCaption", IDS_READER_MODE_CAPTION},
     {"braveReaderModeClose", IDS_READER_MODE_CLOSE},
+    {"braveReaderModeExit", IDS_READER_MODE_EXIT},
     {"braveReaderModeVoice", IDS_READER_MODE_VOICE},
     {"braveReaderModeAppearance", IDS_READER_MODE_APPEARANCE},
     {"braveReaderModeAppearanceThemeLight",
@@ -33,6 +34,17 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveReaderModeTextToSpeech", IDS_READER_MODE_TEXT_TO_SPEECH},
     {"braveReaderModeSpeedreader", IDS_READER_MODE_SPEEDREADER},
     {"braveReaderModeAI", IDS_READER_MODE_AI},
+    {"braveReaderModeFontSizeDecrease",
+     IDS_READER_MODE_APPEARANCE_FONT_SIZE_DECREASE},
+    {"braveReaderModeFontSizeIncrease",
+     IDS_READER_MODE_APPEARANCE_FONT_SIZE_INCREASE},
+    {"braveReaderModeTtsRewind", IDS_READER_MODE_TEXT_TO_SPEECH_REWIND},
+    {"braveReaderModeTtsPlayPause", IDS_READER_MODE_TEXT_TO_SPEECH_PLAY_PAUSE},
+    {"braveReaderModeTtsForward", IDS_READER_MODE_TEXT_TO_SPEECH_FORWARD},
+    {"braveReaderModeTtsSpeedDecrease",
+     IDS_READER_MODE_TEXT_TO_SPEECH_SPEED_DECREASE},
+    {"braveReaderModeTtsSpeedIncrease",
+     IDS_READER_MODE_TEXT_TO_SPEECH_SPEED_INCREASE},
 };
 
 }  // namespace speedreader

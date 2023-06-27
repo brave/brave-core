@@ -40,6 +40,9 @@ function Toolbar() {
       style.setProperty('--color-background', toColor(colors.background))
       style.setProperty('--color-foreground', toColor(colors.foreground))
       style.setProperty('--color-border', toColor(colors.border))
+      style.setProperty('--color-button-border', toColor(colors.buttonBorder))
+      style.setProperty('--color-button-hover', toColor(colors.buttonHover))
+      style.setProperty('--color-button-active', toColor(colors.buttonActive))
     })
   }, [])
 

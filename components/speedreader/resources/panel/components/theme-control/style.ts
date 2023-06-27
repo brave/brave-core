@@ -2,7 +2,9 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import styled from 'styled-components'
+import '@brave/leo/tokens/css/variables.css'
 
 export const Box = styled.div`
   display: flex;
@@ -21,8 +23,8 @@ export const Box = styled.div`
 
     width: 20px;
     height: 20px;
-    border-radius: 100px;
-    border: 1px solid var(--color-border);
+    border-radius: var(--leo-radius-full);
+    border: 1px solid var(--color-button-border);
     cursor: pointer;
     padding: 0;
     overflow: hidden;

@@ -268,9 +268,17 @@ void SpeedreaderToolbarDataHandlerImpl::OnThemeChanged() {
   }
 
   auto colors = speedreader::mojom::ToolbarColors::New();
-  colors->background = color_provider->GetColor(kColorToolbar);
-  colors->foreground = color_provider->GetColor(kColorSidebarButtonBase);
-  colors->border = color_provider->GetColor(ui::kColorFrameActive);
+  colors->background =
+      color_provider->GetColor(kColorSpeedreaderToolbarBackground);
+  colors->foreground =
+      color_provider->GetColor(kColorSpeedreaderToolbarForeground);
+  colors->border = color_provider->GetColor(kColorSpeedreaderToolbarBorder);
+  colors->button_hover =
+      color_provider->GetColor(kColorSpeedreaderToolbarButtonHover);
+  colors->button_active =
+      color_provider->GetColor(kColorSpeedreaderToolbarButtonActive);
+  colors->button_border =
+      color_provider->GetColor(kColorSpeedreaderToolbarButtonBorder);
   events_->OnBrowserThemeChanged(std::move(colors));
 }
 

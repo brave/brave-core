@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import styled from 'styled-components'
 import '@brave/leo/tokens/css/variables.css'
 
@@ -19,7 +20,7 @@ const GroupStyles = `
 
   border-radius: 0;
   border-style: solid;
-  border-color: var(--color-border);
+  border-color: var(--color-button-border);
 
   border-left-width: 0;
   border-top-width: 1px;
@@ -28,11 +29,11 @@ const GroupStyles = `
 
   &:first-child {
     border-left-width: 1px;
-    border-radius: 4px 0 0 4px;
+    border-radius: var(--leo-radius-8) 0 0 var(--leo-radius-8);
   }
 
   &:last-child {
-    border-radius: 0 4px 4px 0;
+    border-radius: 0 var(--leo-radius-8) var(--leo-radius-8) 0;
   }
 `
 
@@ -60,19 +61,19 @@ export const Button = styled.button<{inGroup?: boolean}>`
   height: 28px;
   padding: 0;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: var(--leo-radius-8);
   border: 0;
   cursor: pointer;
   align-items: center;
   background-color: transparent;
 
   &.is-active {
-    background-color: var(--leo-color-iconbackground-active);
+    background-color: var(--color-button-active);
   }
 
   &:enabled {
     &:hover {
-      background-color: var(--leo-color-iconbackground-hover);
+      background-color: var(--color-button-hover);
     }
   }
 

@@ -17,7 +17,7 @@ export const Box = styled.div`
     margin-left: 16px;
     width: 1px;
     height: 20px;
-    background: var(--color-border);
+    background: var(--color-button-border);
   }
 `
 

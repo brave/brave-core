@@ -30,7 +30,7 @@ const mainButtonsOptions = [
     id: 'tts',
     type: MainButtonType.TextToSpeech,
     iconName: 'headphones',
-    hidden: false,  // TODO(boocmp): Enable in future PR.
+    hidden: true,  // TODO(boocmp): Enable in future PR.
     title: getLocale('braveReaderModeTextToSpeech')
   },
   {
@@ -205,6 +205,7 @@ export function FontSizeList(props: FontSizeListProps) {
         id='font-size-decrease'
         inGroup={true}
         isSelected={false}
+        title={getLocale('braveReaderModeFontSizeDecrease')}
         onClick={() => updateSize(ActionType.Dec)}
       >
         <Icon name='minus' />
@@ -217,6 +218,7 @@ export function FontSizeList(props: FontSizeListProps) {
         id='font-size-increase'
         inGroup={true}
         isSelected={false}
+        title={getLocale('braveReaderModeFontSizeIncrease')}
         onClick={() => updateSize(ActionType.Inc)}
       >
         <Icon name='plus-add' />
@@ -244,6 +246,7 @@ export function PlaybackControl(props: PlaybackControlProps) {
       <ControlButton
         inGroup={true}
         isSelected={false}
+        title={getLocale('braveReaderModeTtsRewind')}
         onClick={() => { props.onClick?.(Playback.Rewind) }}
       >
         <Icon name='rewind-outline' />
@@ -251,6 +254,7 @@ export function PlaybackControl(props: PlaybackControlProps) {
       <ControlButton
         inGroup={true}
         isSelected={false}
+        title={getLocale('braveReaderModeTtsPlayPause')}
         onClick={() => {
           switch (props.playbackState) {
             case PlaybackState.kPlayingThisPage:
@@ -274,6 +278,7 @@ export function PlaybackControl(props: PlaybackControlProps) {
       <ControlButton
         inGroup={true}
         isSelected={false}
+        title={getLocale('braveReaderModeTtsForward')}
         onClick={() => { props.onClick?.(Playback.Forward) }}
       >
         <Icon name='forward-outline' />
@@ -309,6 +314,7 @@ export function PlaybackSpeedControl(props: PlaybackSpeedControlProps) {
       <ControlButton
         inGroup={true}
         isSelected={false}
+        title={getLocale('braveReaderModeTtsSpeedDecrease')}
         onClick={() => updateSpeed(ActionType.Dec)}
       >
         <Icon name='minus' />
@@ -320,6 +326,7 @@ export function PlaybackSpeedControl(props: PlaybackSpeedControlProps) {
       <ControlButton
         inGroup={true}
         isSelected={false}
+        title={getLocale('braveReaderModeTtsSpeedIncrease')}
         onClick={() => updateSpeed(ActionType.Inc)}
       >
         <Icon name='plus-add' />

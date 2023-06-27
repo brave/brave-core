@@ -6,7 +6,6 @@
 import styled from 'styled-components'
 import '@brave/leo/tokens/css/variables.css'
 
-
 export const Box = styled.div`
   display: flex;
   align-items: center;
@@ -33,13 +32,13 @@ export const CloseButton = styled.button`
   height: 28px;
   padding: 4px;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: var(--leo-radius-8);
   border: 0;
   cursor: pointer;
   align-items: center;
 
   &:hover {
-    background-color: var(--leo-color-iconbackground-hover);
+    background-color: var(--color-button-hover);
   }
 
   background-color: transparent;

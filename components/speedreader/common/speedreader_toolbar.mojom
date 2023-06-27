@@ -65,6 +65,9 @@ struct ToolbarColors {
   uint32 background;
   uint32 foreground;
   uint32 border;
+  uint32 button_hover;
+  uint32 button_active;
+  uint32 button_border;
 };
 
 // Enum is used in prefs. Be careful when changing or extending.

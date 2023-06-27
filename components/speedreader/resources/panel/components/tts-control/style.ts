@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import '@brave/leo/tokens/css/variables.css'
 
 export const Box = styled.div`
   display: flex;
@@ -17,7 +18,7 @@ export const Box = styled.div`
     margin-left: 16px;
     width: 1px;
     height: 20px;
-    background: var(--color-border);
+    background: var(--color-button-border);
   }
 `
 
@@ -37,8 +38,8 @@ export const Voice = styled.div`
     background: var(--color-background);
     color: var(--color-foreground);
 
-    border: 1px solid var(--color-border);
-    border-radius: 4px;
+    border: 1px solid var(--color-button-border);
+    border-radius: var(--leo-radius-4);
 
     &:focus {
       outline: none;

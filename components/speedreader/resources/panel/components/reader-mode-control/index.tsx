@@ -13,14 +13,14 @@ interface ReaderModeControlProps {
   onClose?: Function
 }
 
-function ReaderModeControl (props: ReaderModeControlProps) {
+function ReaderModeControl(props: ReaderModeControlProps) {
   return (
     <S.Box>
       <S.Caption>
         <Icon name='product-readermode' />
         {getLocale('braveReaderModeCaption')}
       </S.Caption>
-      <S.CloseButton onClick={() => { props.onClose?.() }}>
+      <S.CloseButton onClick={() => { props.onClose?.() }} title={getLocale('braveReaderModeExit')}>
         <Icon name='close' />
       </S.CloseButton>
     </S.Box>

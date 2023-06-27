@@ -9,18 +9,26 @@
 
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/ai_chat/features.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/speedreader/common/constants.h"
 #include "brave/components/speedreader/resources/panel/grit/brave_speedreader_toolbar_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/grit/brave_components_resources.h"
+#include "content/public/browser/host_zoom_map.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "content/public/common/url_constants.h"
 
 SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui,
                                            const std::string& name)
     : ui::MojoBubbleWebUIController(web_ui, true),
       profile_(Profile::FromWebUI(web_ui)) {
+  content::HostZoomMap::Get(web_ui->GetWebContents()->GetSiteInstance())
+      ->SetZoomLevelForHostAndScheme(content::kChromeUIScheme,
+                                     kSpeedreaderPanelHost, 0);
+
   browser_ = chrome::FindLastActiveWithProfile(profile_);
 
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(

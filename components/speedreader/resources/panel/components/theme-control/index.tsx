@@ -58,6 +58,7 @@ function ThemeControl(props: ThemeControlProps) {
             id={entry.id}
             key={entry.type}
             title={entry.title}
+            aria-label={entry.title}
             role="option"
             className={chipClass}
             aria-selected={props.activeTheme === entry.type}

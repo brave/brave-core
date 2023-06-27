@@ -20,12 +20,13 @@ struct ContextMenuParams;
 
 namespace {
 
+constexpr const gfx::Size kToolbarSize{870, 40};
+
 class Toolbar : public views::WebView {
  public:
   explicit Toolbar(content::BrowserContext* browser_context)
       : views::WebView(browser_context) {
     LoadInitialURL(GURL(kSpeedreaderPanelURL));
-    EnableSizingFromWebContents(gfx::Size(10, 10), gfx::Size(10000, 500));
   }
 
  private:
@@ -34,11 +35,6 @@ class Toolbar : public views::WebView {
                          const content::ContextMenuParams& params) override {
     // Ignore context menu.
     return true;
-  }
-
-  gfx::Size CalculatePreferredSize() const override {
-    // Returning non-empty size to enable sizing from web contents on Mac.
-    return gfx::Size(1, 1);
   }
 };
 
@@ -61,25 +57,12 @@ content::WebContents* ReaderModeToolbarView::GetWebContentsForTesting() {
 }
 
 gfx::Size ReaderModeToolbarView::CalculatePreferredSize() const {
-  return toolbar_->GetPreferredSize();
+  return kToolbarSize;
 }
 
 void ReaderModeToolbarView::OnBoundsChanged(const gfx::Rect& previous_bounds) {
   views::View::OnBoundsChanged(previous_bounds);
-  UpdateToolbarBounds();
-}
-
-void ReaderModeToolbarView::ChildPreferredSizeChanged(views::View* view) {
-  if (view == toolbar_.get()) {
-    UpdateToolbarBounds();
-  }
-}
-
-void ReaderModeToolbarView::UpdateToolbarBounds() {
-  auto toolbar_size = toolbar_->GetPreferredSize();
-
   auto toolbar_bounds = GetLocalBounds();
-  toolbar_size.SetToMin(bounds().size());
-  toolbar_bounds.ClampToCenteredSize(toolbar_size);
+  toolbar_bounds.ClampToCenteredSize(kToolbarSize);
   toolbar_->SetBoundsRect(toolbar_bounds);
 }
