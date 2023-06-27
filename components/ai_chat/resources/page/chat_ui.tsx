@@ -45,6 +45,7 @@ function App () {
   }
 
   let conversationList = <PrivacyMessage />
+  let siteTitleElement = null
 
   if (hasSeenAgreement) {
     conversationList = (
@@ -61,6 +62,13 @@ function App () {
         />
       </>
     )
+
+    siteTitleElement = (
+      <SiteTitle
+      siteInfo={model.siteInfo}
+      favIconUrl={model.favIconUrl}
+    />
+    )
   }
 
   const inputBox = (
@@ -74,19 +82,12 @@ function App () {
     />
   )
 
-  const siteTitle = (
-    <SiteTitle
-      siteInfo={model.siteInfo}
-      favIconUrl={model.favIconUrl}
-    />
-  )
-
   return (
     <BraveCoreThemeProvider>
       <Main
         conversationList={conversationList}
         inputBox={inputBox}
-        siteTitle={siteTitle}
+        siteTitle={siteTitleElement}
       />
     </BraveCoreThemeProvider>
   )

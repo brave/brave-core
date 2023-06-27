@@ -82,6 +82,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
       const TabStripSelectionChange& selection) override;
 
   void GetFaviconImageData(GetFaviconImageDataCallback callback) override;
+  mojom::SiteInfo BuildSiteInfo();
 
   mojo::Remote<ai_chat::mojom::ChatUIPage> page_;
 

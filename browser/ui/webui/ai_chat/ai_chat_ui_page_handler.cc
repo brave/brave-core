@@ -142,14 +142,7 @@ void AIChatUIPageHandler::SetAutoGenerateQuestions(bool value) {
 }
 
 void AIChatUIPageHandler::GetSiteInfo(GetSiteInfoCallback callback) {
-  mojom::SiteInfo site_info;
-
-  if (active_chat_tab_helper_) {
-    site_info.title =
-        base::UTF16ToUTF8(active_chat_tab_helper_->web_contents()->GetTitle());
-  }
-
-  std::move(callback).Run(site_info.Clone());
+  std::move(callback).Run(BuildSiteInfo().Clone());
 }
 
 void AIChatUIPageHandler::MarkAgreementAccepted() {
@@ -195,12 +188,8 @@ void AIChatUIPageHandler::OnFaviconImageDataChanged() {
 }
 
 void AIChatUIPageHandler::OnPageLoaded() {
-  mojom::SiteInfo site_info;
-
-  if (active_chat_tab_helper_) {
-    site_info.title =
-        base::UTF16ToUTF8(active_chat_tab_helper_->web_contents()->GetTitle());
-    page_->OnSiteInfoChanged(site_info.Clone());
+  if (page_.is_bound()) {
+    page_->OnSiteInfoChanged(BuildSiteInfo().Clone());
   }
 }
 
@@ -259,6 +248,17 @@ void AIChatUIPageHandler::GetFaviconImageData(
       active_page_url, icon_types, kDesiredFaviconSizePixels, true,
       base::BindOnce(on_favicon_available, std::move(callback)),
       &favicon_task_tracker_);
+}
+
+mojom::SiteInfo AIChatUIPageHandler::BuildSiteInfo() {
+  mojom::SiteInfo site_info;
+
+  if (active_chat_tab_helper_) {
+    site_info.title =
+        base::UTF16ToUTF8(active_chat_tab_helper_->web_contents()->GetTitle());
+  }
+
+  return site_info;
 }
 
 void AIChatUIPageHandler::OnVisibilityChanged(content::Visibility visibility) {
