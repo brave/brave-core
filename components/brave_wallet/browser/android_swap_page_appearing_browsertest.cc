@@ -169,7 +169,7 @@ class TestWebUIControllerFactory : public content::WebUIControllerFactory {
       content::WebUI* web_ui,
       const GURL& url) override {
     if (url.host_piece() == kWalletPageHost) {
-      return std::make_unique<SwapPageUI>(web_ui, source_name_);
+      return std::make_unique<AndroidWalletPageUI>(web_ui, source_name_);
     }
 
     return nullptr;
@@ -250,7 +250,7 @@ class AndroidBrowserTestSwap : public PlatformBrowserTest {
       ChromeContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
           render_frame_host, map);
       content::RegisterWebUIControllerInterfaceBinder<
-          brave_wallet::mojom::PageHandlerFactory, SwapPageUI>(map);
+          brave_wallet::mojom::PageHandlerFactory, AndroidWalletPageUI>(map);
       map->Add<cosmetic_filters::mojom::CosmeticFiltersResources>(
           base::BindRepeating(&BindCosmeticFiltersResources));
     }
