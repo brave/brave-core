@@ -1688,7 +1688,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, MigrateProfilePrefs) {
     prefs->SetBoolean(kIPFSAutoRedirectGateway, false);
 
     ipfs::IpfsService::MigrateProfilePrefs(prefs);
-    EXPECT_TRUE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
+    EXPECT_FALSE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
   }
   {
     prefs->ClearPref(kIPFSAutoRedirectToConfiguredGateway);
@@ -1696,7 +1696,23 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, MigrateProfilePrefs) {
     prefs->SetBoolean(kIPFSAutoRedirectGateway, true);
 
     ipfs::IpfsService::MigrateProfilePrefs(prefs);
+    EXPECT_FALSE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
+  }
+  {
+    prefs->ClearPref(kIPFSAutoRedirectToConfiguredGateway);
+    prefs->SetBoolean(kIPFSAutoRedirectDNSLink, true);
+    prefs->SetBoolean(kIPFSAutoRedirectGateway, true);
+
+    ipfs::IpfsService::MigrateProfilePrefs(prefs);
     EXPECT_TRUE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
+  }
+  {
+    prefs->ClearPref(kIPFSAutoRedirectToConfiguredGateway);
+    prefs->SetBoolean(kIPFSAutoRedirectDNSLink, false);
+    prefs->SetBoolean(kIPFSAutoRedirectGateway, false);
+
+    ipfs::IpfsService::MigrateProfilePrefs(prefs);
+    EXPECT_FALSE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
   }
 }
 

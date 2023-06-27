@@ -166,7 +166,7 @@ void IpfsService::MigrateProfilePrefs(PrefService* pref_service) {
   }
   pref_service->SetBoolean(
       kIPFSAutoRedirectToConfiguredGateway,
-      pref_service->GetBoolean(kIPFSAutoRedirectDNSLink) ||
+      pref_service->GetBoolean(kIPFSAutoRedirectDNSLink) &&
           pref_service->GetBoolean(kIPFSAutoRedirectGateway));
   pref_service->ClearPref(kIPFSAutoRedirectDNSLink);
   pref_service->ClearPref(kIPFSAutoRedirectGateway);
