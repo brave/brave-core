@@ -1797,7 +1797,11 @@ void BraveWalletService::GetSpamNFTs(const std::string& wallet_address,
                                      const std::vector<std::string>& chain_ids,
                                      mojom::CoinType coin,
                                      const absl::optional<std::string>& cursor,
-                                     GetSpamNFTsCallback callback) {}
+                                     GetSpamNFTsCallback callback) {
+  simple_hash_client_->FetchNFTsFromSimpleHash(
+      wallet_address, chain_ids, coin, cursor, false /* skip_spam */,
+      true /* only_spam */, std::move(callback));
+}
 
 void BraveWalletService::CancelAllSuggestedTokenCallbacks() {
   add_suggest_token_requests_.clear();

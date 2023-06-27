@@ -94,11 +94,13 @@ class SimpleHashClientUnitTest : public testing::Test {
       const std::vector<std::string>& chain_ids,
       mojom::CoinType coin,
       absl::optional<std::string> cursor,
+      bool skip_spam,
+      bool only_spam,
       const std::vector<mojom::BlockchainTokenPtr>& expected_nfts,
       absl::optional<std::string> expected_cursor) {
     base::RunLoop run_loop;
     simple_hash_client_->FetchNFTsFromSimpleHash(
-        account_address, chain_ids, coin, cursor,
+        account_address, chain_ids, coin, cursor, skip_spam, only_spam,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::BlockchainTokenPtr> nfts,
                 const absl::optional<std::string>& returned_cursor) {
@@ -187,23 +189,23 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
   auto result = simple_hash_client_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::ETH);
+      *json_value, mojom::CoinType::ETH, true, false);
   ASSERT_FALSE(result);
 
   // Missing 'nfts' key yields nullopt
   json = R"({"foo": "bar"})";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(*json_value,
-                                                        mojom::CoinType::ETH);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::ETH, true, false);
   ASSERT_FALSE(result);
 
   // Dictionary type 'nfts' key yields nullopt
   json = R"({"nfts": {}})";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(*json_value,
-                                                        mojom::CoinType::ETH);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::ETH, true, false);
   ASSERT_FALSE(result);
 
   // Missing next_cursor yields empty next_cursor
@@ -229,8 +231,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(*json_value,
-                                                        mojom::CoinType::ETH);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::ETH, true, false);
   ASSERT_TRUE(result);
   ASSERT_FALSE(result->first);
 
@@ -258,8 +260,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(*json_value,
-                                                        mojom::CoinType::ETH);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::ETH, true, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->first, absl::nullopt);
 
@@ -287,12 +289,12 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(*json_value,
-                                                        mojom::CoinType::FIL);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::FIL, true, false);
 
   // Valid, 1 ETH NFT
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(*json_value,
-                                                        mojom::CoinType::ETH);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::ETH, true, false);
   ASSERT_TRUE(result);
   ASSERT_TRUE(result->first);
   EXPECT_EQ(result->first, "abc123");
@@ -350,8 +352,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(*json_value,
-                                                        mojom::CoinType::ETH);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::ETH, true, false);
   ASSERT_TRUE(result);
   ASSERT_TRUE(result->first);
   EXPECT_EQ(result->first, "abc123");
@@ -472,8 +474,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(*json_value,
-                                                        mojom::CoinType::ETH);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::ETH, true, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 1u);
 
@@ -507,8 +509,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
 
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(*json_value,
-                                                        mojom::CoinType::SOL);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::SOL, true, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
@@ -555,8 +557,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(*json_value,
-                                                        mojom::CoinType::SOL);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::SOL, true, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
@@ -606,8 +608,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(*json_value,
-                                                        mojom::CoinType::SOL);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::SOL, true, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
@@ -658,10 +660,27 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(*json_value,
-                                                        mojom::CoinType::SOL);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::SOL, true, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 0u);
+
+  // When only_spam is set and skip_spam is not, spam should be parsed
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::SOL, false, true);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->second.size(), 1u);
+
+  // When only_spam is set and skip_spam is set, parsing should fail
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::SOL, true, true);
+  ASSERT_FALSE(result);
+
+  // When only_spam is false and skip_spam is false, spam should be parsed
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::SOL, false, false);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->second.size(), 1u);
 }
 
 TEST_F(SimpleHashClientUnitTest, FetchAllNFTsFromSimpleHash) {
@@ -731,6 +750,7 @@ TEST_F(SimpleHashClientUnitTest, FetchAllNFTsFromSimpleHash) {
       mojom::CoinType::ETH, expected_nfts);
 
   // If 'next_cursor' page url is present, it should make another request
+  // Also, spam NFTs are ignored.
   responses.clear();
   json = R"({
     "next": "https://api.simplehash.com/api/v0/nfts/next",
@@ -772,6 +792,19 @@ TEST_F(SimpleHashClientUnitTest, FetchAllNFTsFromSimpleHash) {
         "collection": {
           "spam_score": 0
         }
+      },
+      {
+        "nft_id": "ethereum.0x6666666666666666666666666666666666666666.666",
+        "chain": "ethereum",
+        "contract_address": "0x6666666666666666666666666666666666666666",
+        "token_id": "666",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "SIX"
+        },
+        "collection": {
+          "spam_score": 100
+        }
       }
     ]
   })";
@@ -801,18 +834,18 @@ TEST_F(SimpleHashClientUnitTest, FetchNFTsFromSimpleHash) {
   // Test unsupported coin type
   TestFetchNFTsFromSimpleHash("0x0000000000000000000000000000000000000000",
                               {mojom::kMainnetChainId}, mojom::CoinType::FIL,
-                              absl::nullopt, {}, absl::nullopt);
+                              absl::nullopt, true, false, {}, absl::nullopt);
 
   // Test invalid URL
   TestFetchNFTsFromSimpleHash("", {mojom::kMainnetChainId},
-                              mojom::CoinType::ETH, absl::nullopt, {},
-                              absl::nullopt);
+                              mojom::CoinType::ETH, absl::nullopt, true, false,
+                              {}, absl::nullopt);
 
   // Non 2xx response yields empty expected_nfts
   SetHTTPRequestTimeoutInterceptor();
   TestFetchNFTsFromSimpleHash("0x0000000000000000000000000000000000000000",
                               {mojom::kMainnetChainId}, mojom::CoinType::ETH,
-                              absl::nullopt, {}, absl::nullopt);
+                              absl::nullopt, true, false, {}, absl::nullopt);
 
   // Single NFT fetched without cursor argument
   std::vector<mojom::BlockchainTokenPtr> expected_nfts;
@@ -856,7 +889,8 @@ TEST_F(SimpleHashClientUnitTest, FetchNFTsFromSimpleHash) {
 
   TestFetchNFTsFromSimpleHash("0x0000000000000000000000000000000000000000",
                               {mojom::kMainnetChainId}, mojom::CoinType::ETH,
-                              absl::nullopt, expected_nfts, absl::nullopt);
+                              absl::nullopt, true, false, expected_nfts,
+                              absl::nullopt);
 
   // Single NFT fetched with cursor argument also returning a cursor
   url = GURL(
@@ -886,6 +920,51 @@ TEST_F(SimpleHashClientUnitTest, FetchNFTsFromSimpleHash) {
   SetInterceptors(responses);
   TestFetchNFTsFromSimpleHash("0x0000000000000000000000000000000000000000",
                               {mojom::kMainnetChainId}, mojom::CoinType::ETH,
-                              "abc123", expected_nfts, "def456");
+                              "abc123", true, false, expected_nfts, "def456");
+
+  // Test fetching only spam NFTs
+  url = GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "owners?chains=ethereum&wallet_addresses="
+      "0x0000000000000000000000000000000000000000");
+  std::string json_only_spam = R"({
+    "next": null,
+    "previous": null,
+    "nfts": [
+      {
+        "chain": "polygon",
+        "contract_address": "0x3333333333333333333333333333333333333333",
+        "token_id": "3",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "THREE"
+        },
+        "collection": {
+          "spam_score": 100
+        }
+      }
+    ]
+  })";
+  responses[url] = json_only_spam;
+  SetInterceptors(responses);
+
+  std::vector<mojom::BlockchainTokenPtr> expected_nfts_only_spam;
+  auto nft3 = mojom::BlockchainToken::New();
+  nft3->chain_id = mojom::kPolygonMainnetChainId;
+  nft3->contract_address = "0x3333333333333333333333333333333333333333";
+  nft3->token_id = "0x3";
+  nft3->is_erc721 = true;
+  nft3->is_erc1155 = false;
+  nft3->is_erc20 = false;
+  nft3->is_nft = true;
+  nft3->symbol = "THREE";
+  nft3->coin = mojom::CoinType::ETH;
+  expected_nfts_only_spam.push_back(std::move(nft3));
+
+  TestFetchNFTsFromSimpleHash("0x0000000000000000000000000000000000000000",
+                              {mojom::kMainnetChainId}, mojom::CoinType::ETH,
+                              absl::nullopt, false, true,
+                              expected_nfts_only_spam, absl::nullopt);
 }
+
 }  // namespace brave_wallet

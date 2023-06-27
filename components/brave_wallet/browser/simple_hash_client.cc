@@ -151,6 +151,8 @@ void SimpleHashClient::FetchNFTsFromSimpleHash(
     const std::vector<std::string>& chain_ids,
     mojom::CoinType coin,
     const absl::optional<std::string>& cursor,
+    bool skip_spam,
+    bool only_spam,
     FetchNFTsFromSimpleHashCallback callback) {
   if (!(coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL)) {
     std::move(callback).Run({}, absl::nullopt);
@@ -165,7 +167,8 @@ void SimpleHashClient::FetchNFTsFromSimpleHash(
 
   auto internal_callback =
       base::BindOnce(&SimpleHashClient::OnFetchNFTsFromSimpleHash,
-                     weak_ptr_factory_.GetWeakPtr(), coin, std::move(callback));
+                     weak_ptr_factory_.GetWeakPtr(), coin, skip_spam, only_spam,
+                     std::move(callback));
 
   api_request_helper_->Request("GET", url, "", "", std::move(internal_callback),
                                MakeBraveServicesKeyHeader(),
@@ -174,6 +177,8 @@ void SimpleHashClient::FetchNFTsFromSimpleHash(
 
 void SimpleHashClient::OnFetchNFTsFromSimpleHash(
     mojom::CoinType coin,
+    bool skip_spam,
+    bool only_spam,
     FetchNFTsFromSimpleHashCallback callback,
     APIRequestResult api_request_result) {
   std::vector<mojom::BlockchainTokenPtr> nfts;
@@ -190,7 +195,8 @@ void SimpleHashClient::OnFetchNFTsFromSimpleHash(
 
   absl::optional<std::pair<absl::optional<std::string>,
                            std::vector<mojom::BlockchainTokenPtr>>>
-      result = ParseNFTsFromSimpleHash(api_request_result.value_body(), coin);
+      result = ParseNFTsFromSimpleHash(api_request_result.value_body(), coin,
+                                       skip_spam, only_spam);
   if (!result) {
     std::move(callback).Run(std::move(nfts), absl::nullopt);
     return;
@@ -215,6 +221,7 @@ void SimpleHashClient::FetchAllNFTsFromSimpleHash(
       account_address, chain_ids, coin, std::move(callback));
 
   FetchNFTsFromSimpleHash(account_address, chain_ids, coin, absl::nullopt,
+                          true /* skip_spam*/, false /* only spam */,
                           std::move(internal_callback));
 }
 
@@ -239,6 +246,7 @@ void SimpleHashClient::OnFetchAllNFTsFromSimpleHash(
                        account_address, chain_ids, coin, std::move(callback));
 
     FetchNFTsFromSimpleHash(account_address, chain_ids, coin, *next_cursor,
+                            true /* skip_spam */, false /* only_spam */,
                             std::move(internal_callback));
     return;
   }
@@ -250,7 +258,9 @@ void SimpleHashClient::OnFetchAllNFTsFromSimpleHash(
 absl::optional<std::pair<absl::optional<std::string>,
                          std::vector<mojom::BlockchainTokenPtr>>>
 SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
-                                          mojom::CoinType coin) {
+                                          mojom::CoinType coin,
+                                          bool skip_spam,
+                                          bool only_spam) {
   // Parses responses like this
   // {
   //   "next_cursor": null,
@@ -434,6 +444,11 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
     return absl::nullopt;
   }
 
+  // If both skip_spam and only_spam are true, return early.
+  if (skip_spam && only_spam) {
+    return absl::nullopt;
+  }
+
   const base::Value::Dict* dict = json_value.GetIfDict();
   if (!dict) {
     return absl::nullopt;
@@ -456,7 +471,6 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
   for (const auto& nft_value : *nfts) {
     auto token = mojom::BlockchainToken::New();
 
-    // Skip all tokens with a collection.spam_score > 0.
     const base::Value::Dict* nft = nft_value.GetIfDict();
     if (!nft) {
       continue;
@@ -466,7 +480,10 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
       continue;
     }
     absl::optional<int> spam_score = collection->FindInt("spam_score");
-    if (!spam_score || *spam_score > 0) {
+    if (skip_spam && (!spam_score || *spam_score > 0)) {
+      continue;
+    }
+    if (only_spam && (spam_score && *spam_score <= 0)) {
       continue;
     }
 

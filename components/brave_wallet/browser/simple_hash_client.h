@@ -50,6 +50,8 @@ class SimpleHashClient {
                                const std::vector<std::string>& chain_ids,
                                mojom::CoinType coin,
                                const absl::optional<std::string>& cursor,
+                               bool skip_spam,
+                               bool only_spam,
                                FetchNFTsFromSimpleHashCallback callback);
 
   void FetchAllNFTsFromSimpleHash(const std::string& account_address,
@@ -64,6 +66,8 @@ class SimpleHashClient {
   FRIEND_TEST_ALL_PREFIXES(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash);
 
   void OnFetchNFTsFromSimpleHash(mojom::CoinType coin,
+                                 bool skip_spam,
+                                 bool only_spam,
                                  FetchNFTsFromSimpleHashCallback callback,
                                  APIRequestResult api_request_result);
 
@@ -78,7 +82,10 @@ class SimpleHashClient {
 
   absl::optional<std::pair<absl::optional<std::string>,
                            std::vector<mojom::BlockchainTokenPtr>>>
-  ParseNFTsFromSimpleHash(const base::Value& json_value, mojom::CoinType coin);
+  ParseNFTsFromSimpleHash(const base::Value& json_value,
+                          mojom::CoinType coin,
+                          bool skip_spam,
+                          bool only_spam);
 
   static GURL GetSimpleHashNftsByWalletUrl(
       const std::string& account_address,
