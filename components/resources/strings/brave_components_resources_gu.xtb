@@ -67,6 +67,7 @@
 <translation id="2356070529366658676">કહો</translation>
 <translation id="59174027418879706">સક્ષમ</translation>
 <translation id="2501278716633472235">પાછા જાઓ</translation>
+<translation id="1036348656032585052">બંધ કરો</translation>
 <translation id="2903493209154104877">સરનામાંઓ</translation>
 <translation id="1327977588028644528">ગેટવે</translation>
 <translation id="8028993641010258682">કદ</translation>
@@ -86,10 +87,10 @@
 <translation id="8281886186245836920">છોડો</translation>
 <translation id="1483493594462132177">મોકલો</translation>
 <translation id="1177863135347784049">કસ્ટમ</translation>
-<translation id="8168435359814927499">કન્ટેન્ટ</translation>
 <translation id="1383876407941801731">શોધો</translation>
 <translation id="2805756323405976993">એપ્સ</translation>
 <translation id="1987317783729300807">એકાઉન્ટ્સ</translation>
+<translation id="6979737339423435258">હંમેશાં</translation>
 <translation id="629730747756840877">એકાઉન્ટ</translation>
 <translation id="1201402288615127009">આગલું</translation>
 <translation id="8712637175834984815">સમજાઈ ગયું</translation>
@@ -121,6 +122,8 @@
 <translation id="1165039591588034296">ભૂલ</translation>
 <translation id="3380365263193509176">અજ્ઞાત ભૂલ</translation>
 <translation id="9218430445555521422">ડિફોલ્ટ તરીકે સેટ કરો</translation>
+<translation id="3954354850384043518">પ્રક્રિયામાં છે</translation>
+<translation id="4289540628985791613">વિહંગાવલોકન</translation>
 <translation id="4430019312045809116">વૉલ્યૂમ</translation>
 <translation id="6129953537138746214">જગ્યા</translation>
 <translation id="4412698727486357573">સહાયતા કેન્દ્ર</translation>
@@ -134,6 +137,18 @@
 <translation id="932327136139879170">હોમ</translation>
 <translation id="1264974993859112054">રમત-ગમત</translation>
 <translation id="7487067081878637334">તકનીક</translation>
+<translation id="7481312909269577407">ફોર્વર્ડ કરો</translation>
+<translation id="5233638681132016545">નવું ટૅબ</translation>
+<translation id="5210365745912300556">ટૅબ બંધ કરો</translation>
+<translation id="7998918019931843664">બંધ કરેલ ટેબ ફરીથી ખોલો</translation>
+<translation id="9148058034647219655">બહાર નીકળો</translation>
+<translation id="2154710561487035718">URL ની કૉપિ કરો</translation>
+<translation id="8445059357334030806">Brave માં ખોલો</translation>
+<translation id="7724603315864178912">કાપો</translation>
+<translation id="3943857333388298514">પેસ્ટ કરો</translation>
+<translation id="5546865291508181392">શોધો</translation>
+<translation id="6438234780621650381">સેટિંગ્સ ફરીથી સેટ કરો</translation>
+<translation id="8168435359814927499">કન્ટેન્ટ</translation>
 <translation id="6303294677342628402">શિલ્ડ્સ</translation>
 <translation id="7053983685419859001">અવરોધિત કરો</translation>
 <translation id="5657156137487675418">બધી કૂકીઝને મંજૂરી આપો</translation>

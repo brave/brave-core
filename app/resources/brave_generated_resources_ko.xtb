@@ -324,7 +324,6 @@
 <translation id="3357319404342882895">엄격</translation>
 <translation id="8823559166155093873">쿠키 차단</translation>
 <translation id="5770288601196774623">교차 사이트 한정</translation>
-<translation id="6795317840397506736">기본적으로 기억 안 함</translation>
 <translation id="3587482841069643663">전체</translation>
 <translation id="7390783310074170337">기본 보기</translation>
 <translation id="130615081792797568">간단한 보기</translation>
@@ -351,22 +350,10 @@
 <translation id="4182731739150761577">전체 목록 보기</translation>
 <translation id="1340263054776016283">필터 목록 URL 입력</translation>
 <translation id="8578397014396032341">콘텐츠 필터</translation>
+<translation id="3020183492814296499">바로가기</translation>
 <translation id="5567412479632285879">Brave Rewards 비활성화됨</translation>
 <translation id="413570371620795359">Rewards 패널을 열고 활성화하여 시작하세요.</translation>
-<translation id="3849957491997306859">자동 감지됨</translation>
-<translation id="8798099450830957504">기본값</translation>
-<translation id="4851215387785619212">Brave Private Ads</translation>
-<translation id="7808122468353671181">Brave Ads를 보면 토큰이 적립됩니다. 광고는 사용자의 관심사를 기반으로 표시되며 브라우저의 성능을 저해하지 않습니다. 개인 데이터나 인터넷 사용 기록은 절대 브라우저에 남지 않습니다.</translation>
-<translation id="1758947220824279023">표시할 최대 광고 개수</translation>
-<translation id="2356652719351432565">지역 광고 관련성</translation>
-<translation id="2196950072404588793">이 설정을 켜면 Brave가 현재 지역에 적합한 광고를 표시합니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
-<translation id="2433507940547922241">모양</translation>
-<translation id="6112368337882254910">자동 기부</translation>
-<translation id="9132509928968869844">월간 자동 기부 한도</translation>
-<translation id="7286722244752781970">방문을 로그하기 전의 최소 페이지 시간</translation>
-<translation id="4424486208397124985">출판자 접합성을 위한 최소 방문 수</translation>
-<translation id="6248554379744796526">목록에서 비인증 사이트 표시</translation>
-<translation id="924777189963477634">자동 기부를 켜면 <ph name="BEGIN_LINK_TOS"/>이용약관<ph name="END_LINK_TOS"/> 및 <ph name="BEGIN_LINK_PP"/>개인정보처리방침<ph name="END_LINK_PP"/>에 동의하게 됩니다.</translation>
+<translation id="1051600834033686945">Brave Rewards 설정 전체 열기</translation>
 <translation id="6333347122924254968">주소 표시줄에 Brave Rewards 아이콘 표시</translation>
 <translation id="7483857210736407752">사이트상에 팁 버튼 표시</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -378,11 +365,14 @@
 <translation id="958971637207126733">LinkedIn 내장 포스트 허용</translation>
 <translation id="8792121506918889955">WebRTC IP 처리 방침</translation>
 <translation id="6165508094623778733">더 알아보기</translation>
+<translation id="8798099450830957504">기본값</translation>
 <translation id="1822560017823072927">기본 공개 및 비공개 인터페이스</translation>
 <translation id="5825943197137337319">기본 공개 인터페이스 전용</translation>
 <translation id="1689062823386843231">프록시가 아닌 UDP 비활성화히기</translation>
 <translation id="3540231253392253941">푸시 메시지에 Google 서비스 사용</translation>
 <translation id="933652931229970927">진단 보고서 자동 전송</translation>
+<translation id="4891600875049212418">민감한 사이트 방문 시 오프더레코드 활성화</translation>
+<translation id="2356070529366658676">확인</translation>
 <translation id="4846154056248462491">나갈 때</translation>
 <translation id="2808630562319398131">Brave 리워드 데이터 재설정...</translation>
 <translation id="6438096877646138757">닫으면 쿠키가 삭제되는 사이트</translation>
@@ -391,6 +381,27 @@
 <translation id="7050661313034564003">이 사이트의 모든 쿠키 및 로컬에 저장된 데이터 표시</translation>
 <translation id="8339059274628563283"><ph name="SITE"/>에 로컬 저장된 데이터</translation>
 <translation id="1963227389609234879">모두 삭제</translation>
+<translation id="8168435359814927499">콘텐츠</translation>
+<translation id="7702907602086592255">도메인</translation>
+<translation id="3202131003361292969">경로</translation>
+<translation id="5390743329570580756">다음에 대해 보내기:</translation>
+<translation id="6742339027238151589">스크립트에 액세스 가능</translation>
+<translation id="1067048845568873861">생성됨</translation>
+<translation id="5747552184818312860">만료</translation>
+<translation id="3858860766373142691">이름</translation>
+<translation id="361106536627977100">Flash 데이터</translation>
+<translation id="4530494379350999373">오리진</translation>
+<translation id="8195027750202970175">디스크 크기</translation>
+<translation id="9116465289595958864">최종 수정 날짜</translation>
+<translation id="4590324241397107707">데이터베이스 저장소</translation>
+<translation id="5338503421962489998">로컬 저장소</translation>
+<translation id="6032912588568283682">파일 시스템</translation>
+<translation id="8016266267177410919">임시 저장소</translation>
+<translation id="4175737294868205930">영구 저장소</translation>
+<translation id="1234808891666923653">서비스 작업자</translation>
+<translation id="3432762828853624962">공유 작업자</translation>
+<translation id="2927017729816812676">캐시 저장 공간</translation>
+<translation id="1389601498324964367">할당량 관리형 스토리지</translation>
 <translation id="814018970995616154">Brave에 저장된 안전하지 않은 사이트 목록을 이용해 URL을 확인합니다.</translation>
 <translation id="1144810021918451336">위험한 웹사이트, 다운로드 및 확장 프로그램으로부터 사용자를 보호하지 않습니다.</translation>
 <translation id="5570470519803062774">사이트 및 방패 설정</translation>
@@ -535,7 +546,6 @@
 <translation id="4954512758656527938">기본 이더리움 월렛</translation>
 <translation id="7701023802820268122">기본 Solana 월렛</translation>
 <translation id="8488282162676695335">Brave 월렛</translation>
-<translation id="2356070529366658676">확인</translation>
 <translation id="6942354363301686374">확장 프로그램(대체 없음)</translation>
 <translation id="1274962333945373242">암호화폐 월렛(지원 중단)</translation>
 <translation id="702381242110464396">확장 프로그램(Brave 월렛 대체)</translation>
@@ -552,7 +562,7 @@
 <translation id="4440478655766953083">자동으로 NFT 고정</translation>
 <translation id="464460032678285850">Brave 월렛에 추가된 NFT가 자동으로 로컬 IPFS 노드에 고정됩니다.
     참고: 고정 목적으로 IPFS 대몬이 시작되어, 로컬 노드가 캐시된 데이터와 고정된 NFT를 IPFS 네트워크로 공유합니다.</translation>
-<translation id="4993345308607970390">Brave 월렛 초기화</translation>
+<translation id="2326850911705720398">초기화하고 월렛 데이터 지우기</translation>
 <translation id="5887022857624190239">고정된 NFT 지우기</translation>
 <translation id="204584113330893805">고정된 NFT는 로컬 IPFS 노드가 시작될 때 IPFS 네트워크에 호스팅됩니다.
     현재 고정된 NFT가 <ph name="NFT_COUNT"/>개 있습니다.</translation>

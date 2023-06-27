@@ -84,6 +84,7 @@
 <translation id="4805806622840861220">Ponovo pokreni Brave</translation>
 <translation id="1742948938503172561">Prilagodba novog profila u Braveu</translation>
 <translation id="1477146545787277177">Hopa! Brave je pao. Pokrenuti ponovo sada?</translation>
+<translation id="907470742420136113">Brave pokušava izmijeniti postavke za popunjavanje načina plaćanja.</translation>
 <translation id="2585240446624043880">Brave ne može čitati iz svojeg podatkovnog direktorija niti u njega pisati:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -186,6 +187,7 @@
 <translation id="5646769069113654257">Sada ponovo pokrenite Brave</translation>
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">Prikaži Brave na tom jeziku</translation>
+<translation id="585620188971323280">izmjena postavki za popunjavanje načina plaćanja.</translation>
 <translation id="7207456302801184289">Dobro došli u Brave</translation>
 <translation id="8054200348483755053">Brave je otkrio da ove stavke sadrže zlonamjerni softver:</translation>
 <translation id="5895138241574237353">Ponovno pokreni</translation>
@@ -236,6 +238,7 @@
 <translation id="2675662665675552980">Upravlja i time koja se stranica prikazuje prilikom pokretanja Bravea.</translation>
 <translation id="648319183876919572">Poboljšano sigurno pregledavanje pruža vam više zaštite od opasnih web-lokacija i preuzimanja</translation>
 <translation id="5590013613412457132">Deinstaliranje Bravea</translation>
+<translation id="3617744907966785605">Vaša organizacija zatvara Brave kada se ne upotrebljava <ph name="TIMEOUT_DURATION"/>. Podaci o pregledavanju su izbrisani. To može uključivati povijest, automatsko popunjavanje i preuzimanja.</translation>
 <translation id="8646609321956191980">Svaki profil ima vlastite podatke u Braveu kao što su oznake, povijest, zaporke i slično</translation>
 <translation id="2535436634051789953">Možete se prebaciti da biste vidjeli zaporke s nekog drugog profila na Braveu</translation>
 <translation id="2312399718665761438">Brave Braveu šalje tekst koji utipkate u tekstualna polja kako bi ispravio pravopisne pogreške</translation>
@@ -272,6 +275,7 @@ Neke su značajke možda nedostupne. Navedite neki drugi direktorij profila ili 
 <translation id="7025789849649390912">Instaliranje je zaustavljeno.</translation>
 <translation id="1705567146636171298">Ažuriraj Brave</translation>
 <translation id="5499063270485366718">Ako slika nema koristan opis, Brave će ga pokušati pružiti. Da bi se izradili opisi, slike se šalju Braveu.</translation>
+<translation id="2332301637111071062">Vaša organizacija briše podatke iz Bravea kada se ne upotrebljavaju <ph name="TIMEOUT_DURATION"/>. To može uključivati povijest, automatsko popunjavanje i preuzimanja.</translation>
 <translation id="1008530050039597147">Brave treba dopuštenje za fotoaparat za ovu web-lokaciju</translation>
 <translation id="1197672524850678392">Pokretanje Bravea nije uspjelo. Pokušajte ponovo.</translation>
 <translation id="3405035915691517126">Brave ne može provjeriti vaše zaporke. Pokušajte ponovno nakon 24 sata.</translation>
@@ -324,6 +328,7 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="8207657266087451193">Ako slika nema koristan opis, Brave će ga pokušati pružiti. Da bi se izradili opisi, slike se šalju Braveu. To možete isključiti u bilo kojem trenutku u postavkama.</translation>
 <translation id="8622246347342688645">Brave ne može provjeriti vaše zaporke jer niste prijavljeni</translation>
 <translation id="89367911614620585">Datoteka je možda opasna i Brave ju je blokirao.</translation>
+<translation id="6098476632210317894">Vaša organizacija zatvara Brave kada se ne upotrebljava <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="5196445203969439095">Iskoristite prednosti Bravea</translation>
 <translation id="3360368475735266712">Prijavite se da biste sinkronizirali i prilagodili Brave na svim svojim uređajima</translation>
 <translation id="2591326305549412656">E-adresa <ph name="USER_EMAIL_ADDRESS"/> prethodno je upotrebljavala Brave</translation>
@@ -357,6 +362,7 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="8986207147630327271">Dodat ćete poslovni profil u ovaj preglednik i dati administratoru kontrolu samo nad poslovnim profilom.</translation>
 <translation id="82609232232243542">Prijava na Brave</translation>
 <translation id="3273774796888928550">Prijavite se na Brave. Ako se želite prijaviti samo jednom, možete <ph name="GUEST_LINK_BEGIN"/>upotrebljavati uređaj kao gost<ph name="GUEST_LINK_END"/>.</translation>
+<translation id="4561046754724442504">Brave je automatski zatvoren</translation>
 <translation id="5173820533850252773">Brave je zastario</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave će se ponovo pokrenuti za sat vremena}one{Brave će se ponovo pokrenuti za # h}few{Brave će se ponovo pokrenuti za # h}other{Brave će se ponovo pokrenuti za # h}}</translation>
 <translation id="5190991181158966940">Da biste primali buduća Braveova ažuriranja, trebat će vam Windows 10 ili novija verzija. Na ovom se računalu upotrebljava Windows 8.1.</translation>
