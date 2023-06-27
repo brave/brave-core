@@ -38,6 +38,7 @@ static_library("brave_federated") {
   ]
 
   deps = [
+    "//brave/components/brave_federated/api:api",
     "//brave/components/brave_federated/resources",
     "//brave/components/brave_federated/resources:brave_federated_resources",
     "//brave/components/brave_stats/browser",
@@ -49,6 +50,7 @@ static_library("brave_federated") {
     "//services/network/public/cpp",
     "//services/network/public/mojom",
     "//third_party/abseil-cpp:absl",
+    "//ui/base",
   ]
 
   configs += [ "//third_party/eigen3:eigen_includes" ]
@@ -70,6 +72,8 @@ source_set("brave_federated_tests") {
   deps = [
     "//base/test:test_support",
     "//brave/components/brave_federated:brave_federated",
+    "//brave/components/brave_federated/api",
+    "//brave/third_party/flower",
     "//content/test:test_support",
     "//services/network:test_support",
     "//services/network/public/cpp",

@@ -28,6 +28,7 @@ SyntheticDataset::SyntheticDataset(
     const std::vector<float>& bias,
     int num_features,
     size_t size) {
+  DCHECK_GT(num_features, 3);
   std::vector<float> cov_x(num_features, 0.0);
   for (int i = 0; i < num_features; i++) {
     cov_x[i] = pow((i + 1), -1.2);

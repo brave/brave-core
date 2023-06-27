@@ -1,4 +1,7 @@
 static_library("flower") {
   include_dirs = [ "src/brave/flwr" ]
-  deps = [ "//brave/third_party/flower/src/brave/flwr:brave_flwr" ]
+  public_deps = [
+    "//brave/third_party/flower/src/brave/flwr:brave_flwr",
+    "//brave/third_party/flower/src/proto/flwr/proto:transport_proto",
+  ]
 }

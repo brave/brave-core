@@ -16,7 +16,7 @@ EligibilityService::EligibilityService()
               this)) {
   connection_type_ = net::NetworkChangeNotifier::GetConnectionType();
   net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
-  VLOG(2) << "Eligibility Service initialized";
+  VLOG(1) << "FL: Eligibility Service initialized";
 }
 
 EligibilityService::~EligibilityService() {
@@ -43,7 +43,7 @@ void EligibilityService::NotifyObservers(bool is_eligible) {
 }
 
 bool EligibilityService::IsEligible() const {
-  VLOG(2) << "Eligibility Service: is_on_battery_power_ : "
+  VLOG(2) << "FL: Eligibility Service: is_on_battery_power_ : "
           << is_on_battery_power_
           << ", connection_eligibility : " << IsConnectedToWifiOrEthernet();
 
@@ -62,7 +62,7 @@ void EligibilityService::MaybeChangeEligibility() {
 }
 
 bool EligibilityService::IsConnectedToWifiOrEthernet() const {
-  VLOG(2) << "Eligibility Service: connection_type_ : " << connection_type_;
+  VLOG(2) << "FL: Eligibility Service: connection_type_ : " << connection_type_;
 
   return connection_type_ == net::NetworkChangeNotifier::CONNECTION_WIFI ||
          connection_type_ == net::NetworkChangeNotifier::CONNECTION_ETHERNET;

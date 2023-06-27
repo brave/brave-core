@@ -34,7 +34,7 @@ absl::optional<TaskResult> LoadDatasetAndRunTask(
 
   task_runner->SetTrainingData(synthetic_dataset->GetDataPoints());
   task_runner->SetTestData(test_dataset.GetDataPoints());
-  VLOG(2) << "Model and data set. Task runner initialized.";
+  VLOG(2) << "FL: Model and data set. Task runner initialized.";
 
   return task_runner->Run();
 }
@@ -63,8 +63,8 @@ LearningService::LearningService(
       std::make_unique<LearningServiceConfig>(data_resource);
   const net::BackoffEntry::Policy post_results_policy =
       learning_service_config_->GetPostResultsPolicy();
-  model_spec_ =
-      std::make_unique<ModelSpec>(learning_service_config_->GetModelSpec());
+  model_spec_ = std::make_unique<api::config::ModelSpec>(
+      std::move(learning_service_config_->GetModelSpec()));
 
   post_results_policy_ =
       std::make_unique<const net::BackoffEntry::Policy>(post_results_policy);
@@ -92,22 +92,22 @@ void LearningService::Init() {
   CHECK(eligibility_service_);
   CHECK(init_task_timer_);
 
-  VLOG(1) << "Initializing federated learning service.";
+  VLOG(1) << "FL: Initializing federated learning service.";
   eligibility_observation_.Observe(eligibility_service_);
   if (eligibility_service_->IsEligible()) {
     StartParticipating();
   }
 
-  VLOG(1) << "Eligibility: " << eligibility_service_->IsEligible();
+  VLOG(1) << "FL: Eligibility: " << eligibility_service_->IsEligible();
 }
 
 void LearningService::OnEligibilityChanged(bool is_eligible) {
   if (is_eligible) {
     StartParticipating();
-    VLOG(2) << "Eligibility changed, started participating.";
+    VLOG(1) << "FL: Eligibility changed, started participating.";
   } else {
     StopParticipating();
-    VLOG(2) << "Eligibility changed, stopped participating.";
+    VLOG(1) << "FL: Eligibility changed, stopped participating.";
   }
 }
 
@@ -133,7 +133,7 @@ void LearningService::StopParticipating() {
 
 void LearningService::GetTasks() {
   if (communication_adapter_ == nullptr) {
-    VLOG(2) << "Communication adapter not initialized";
+    VLOG(1) << "FL: Communication adapter not initialized";
     return;
   }
 
@@ -147,7 +147,7 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks,
     reconnect_timer_ = std::make_unique<base::RetainingOneShotTimer>();
     reconnect_timer_->Start(FROM_HERE, reconnect, this,
                             &LearningService::GetTasks);
-    VLOG(2) << "No tasks available, reconnecting in " << reconnect;
+    VLOG(2) << "FL: No tasks available, reconnecting in " << reconnect;
     return;
   }
 
@@ -157,17 +157,17 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks,
   auto cursor = config.find("lr");
   if (cursor != config.end()) {
     lr = cursor->second;
-    VLOG(2) << "Learning rate applied from server: " << lr;
+    VLOG(2) << "FL: Learning rate applied from server: " << lr;
   }
   model_spec_->learning_rate = lr;
 
   if (static_cast<int>(task.GetParameters().at(0).size()) !=
           model_spec_->num_params &&
       task.GetParameters().at(1).size() != 1U) {
-    VLOG(2) << "Task specifies a different model size than the client";
+    VLOG(1) << "FL: Task specifies a different model size than the client";
     return;
   }
-  VLOG(2) << "Task model and client model match!";
+  VLOG(1) << "FL: Task model and client model match!";
 
   std::unique_ptr<Model> model = std::make_unique<Model>(*model_spec_);
   model->SetWeights(task.GetParameters().at(0));
@@ -186,12 +186,12 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks,
 
 void LearningService::OnTaskResultComputed(absl::optional<TaskResult> result) {
   if (!result.has_value()) {
-    VLOG(2) << "Task result computation failed";
+    VLOG(1) << "FL: Task result computation failed";
     return;
   }
 
   if (communication_adapter_ == nullptr) {
-    VLOG(2) << "Communication adapter not initialized";
+    VLOG(1) << "FL: Communication adapter not initialized";
     return;
   }
 
@@ -204,9 +204,9 @@ void LearningService::OnUploadTaskResults(TaskResultResponse response) {
   post_results_backoff_entry_->InformOfRequest(response.IsSuccessful());
 
   if (response.IsSuccessful()) {
-    VLOG(2) << "Task results posted successfully";
+    VLOG(1) << "FL: Task results posted successfully";
   } else {
-    VLOG(2) << "Task results posting failed";
+    VLOG(1) << "FL: Task results posting failed";
   }
 
   base::TimeDelta reconnect =
@@ -214,7 +214,7 @@ void LearningService::OnUploadTaskResults(TaskResultResponse response) {
   reconnect_timer_ = std::make_unique<base::RetainingOneShotTimer>();
   reconnect_timer_->Start(FROM_HERE, reconnect, this,
                           &LearningService::GetTasks);
-  VLOG(2) << "Reconnecting in " << reconnect;
+  VLOG(1) << "FL: Reconnecting in " << reconnect;
 }
 
 void LearningService::StartCommunicationAdapter() {

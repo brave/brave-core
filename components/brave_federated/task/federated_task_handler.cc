@@ -27,11 +27,11 @@ absl::optional<TaskResult> FederatedTaskHandler::Run() {
   PerformanceReport report(0, 0, 0, {}, {});
   if (task_.GetType() == TaskType::kTraining) {
     if (training_data_.empty()) {
-      VLOG(1) << "Training data empty";
+      VLOG(3) << "FL: Training data empty";
       return absl::nullopt;
     }
     if (model_->GetBatchSize() > training_data_.size()) {
-      VLOG(1) << "Batch size (" << model_->GetBatchSize()
+      VLOG(3) << "FL: Batch size (" << model_->GetBatchSize()
               << ") < training dataset size(" << training_data_.size() << ")";
       return absl::nullopt;
     }
@@ -39,11 +39,11 @@ absl::optional<TaskResult> FederatedTaskHandler::Run() {
     report = model_->Train(training_data_);
   } else if (task_.GetType() == TaskType::kEvaluation) {
     if (test_data_.empty()) {
-      VLOG(1) << "Test data empty";
+      VLOG(3) << "FL: Test data empty";
       return absl::nullopt;
     }
     if (model_->GetBatchSize() > test_data_.size()) {
-      VLOG(1) << "Batch size (" << model_->GetBatchSize()
+      VLOG(3) << "FL: Batch size (" << model_->GetBatchSize()
               << ") < Test dataset size(" << test_data_.size() << ")";
       return absl::nullopt;
     }

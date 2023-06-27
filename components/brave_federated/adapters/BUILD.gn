@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
-import("//testing/test.gni")
 
 static_library("adapters") {
   sources = [
@@ -13,6 +12,8 @@ static_library("adapters") {
   ]
 
   deps = [
+    "//base",
+    "//brave/components/brave_federated/task",
     "//brave/third_party/flower",
     "//third_party/abseil-cpp:absl",
     "//third_party/protobuf:protobuf_lite",

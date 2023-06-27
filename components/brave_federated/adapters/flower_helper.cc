@@ -19,8 +19,6 @@
 namespace brave_federated {
 
 std::string BuildGetTasksPayload() {
-  std::string request;
-
   flower::Node node;
   node.set_node_id(0);
   node.set_anonymous(true);
@@ -28,33 +26,35 @@ std::string BuildGetTasksPayload() {
   flower::PullTaskInsRequest pull_task_instructions_request;
   *pull_task_instructions_request.mutable_node() = node;
   pull_task_instructions_request.add_task_ids("0");
+
+  std::string request;
   pull_task_instructions_request.SerializeToString(&request);
 
   return request;
 }
 
 absl::optional<Task> ParseTask(const flower::TaskIns& task_instruction) {
-  const TaskId& task_id = {
+  const TaskId task_id = {
       .id = task_instruction.task_id(),
       .group_id = task_instruction.group_id(),
       .family_id = task_instruction.workload_id(),
   };
   if (!task_id.IsValid()) {
-    VLOG(2) << "Invalid task id received from FL service";
+    VLOG(2) << "FL: Invalid task id received from FL service";
     return absl::nullopt;
   }
 
   if (!task_instruction.has_task()) {
-    VLOG(2) << "Task object is missing from task instruction";
+    VLOG(2) << "FL: Task object is missing from task instruction";
     return absl::nullopt;
   }
-  flower::Task flower_task = task_instruction.task();
+  const flower::Task& flower_task = task_instruction.task();
 
   if (!flower_task.has_legacy_server_message()) {
-    VLOG(2) << "Server message is missing from task object";
+    VLOG(2) << "FL: Server message is missing from task object";
     return absl::nullopt;
   }
-  flower::ServerMessage message = flower_task.legacy_server_message();
+  const flower::ServerMessage& message = flower_task.legacy_server_message();
 
   Configs config;
   TaskType type = TaskType::kUndefined;
@@ -63,12 +63,12 @@ absl::optional<Task> ParseTask(const flower::TaskIns& task_instruction) {
     type = TaskType::kTraining;
 
     if (!message.fit_ins().has_parameters()) {
-      VLOG(2) << "Parameters are missing from fit instruction";
+      VLOG(2) << "FL: Parameters are missing from fit instruction";
       return absl::nullopt;
     }
     parameters = GetVectorsFromParameters(message.fit_ins().parameters());
     if (parameters.empty()) {
-      VLOG(2) << "Parameters vectors received from FL service are empty";
+      VLOG(2) << "FL: Parameters vectors received from FL service are empty";
       return absl::nullopt;
     }
     config = ConfigsFromProto(message.fit_ins().config());
@@ -76,17 +76,17 @@ absl::optional<Task> ParseTask(const flower::TaskIns& task_instruction) {
     type = TaskType::kEvaluation;
 
     if (!message.evaluate_ins().has_parameters()) {
-      VLOG(2) << "Parameters are missing from eval instruction";
+      VLOG(2) << "FL: Parameters are missing from eval instruction";
       return absl::nullopt;
     }
     parameters = GetVectorsFromParameters(message.evaluate_ins().parameters());
     if (parameters.empty()) {
-      VLOG(3) << "Parameters vectors received from FL service are empty";
+      VLOG(2) << "FL: Parameters vectors received from FL service are empty";
       return absl::nullopt;
     }
     config = ConfigsFromProto(message.evaluate_ins().config());
   } else {
-    VLOG(2) << "**: Received unrecognized instruction from FL service";
+    VLOG(2) << "FL: Received unrecognized instruction from FL service";
     return absl::nullopt;
   }
 
@@ -97,12 +97,12 @@ absl::optional<TaskList> ParseTaskListFromResponseBody(
     const std::string& response_body) {
   flower::PullTaskInsResponse response;
   if (!response.ParseFromString(response_body)) {
-    VLOG(1) << "Failed to parse response body";
+    VLOG(2) << "FL: Failed to parse response body";
     return absl::nullopt;
   }
 
   if (response.task_ins_list_size() == 0) {
-    VLOG(1) << "No tasks received from FL service";
+    VLOG(2) << "FL: No tasks received from FL service";
     return absl::nullopt;
   }
 
@@ -112,7 +112,7 @@ absl::optional<TaskList> ParseTaskListFromResponseBody(
 
     absl::optional<Task> task = ParseTask(task_instruction);
     if (!task.has_value()) {
-      VLOG(1) << "Failed to parse task instruction";
+      VLOG(2) << "FL: Failed to parse task instruction";
       continue;
     }
 
@@ -121,7 +121,7 @@ absl::optional<TaskList> ParseTaskListFromResponseBody(
     return task_list;
   }
 
-  VLOG(1) << "Failed to parse PullTaskInsRes";
+  VLOG(2) << "FL: Failed to parse PullTaskInsRes";
   return absl::nullopt;
 }
 
@@ -157,7 +157,7 @@ std::string BuildUploadTaskResultsPayload(const TaskResult& result) {
       break;
     }
     case TaskType::kUndefined: {
-      VLOG(1) << "Task type is undefined";
+      VLOG(2) << "FL: Task type is undefined";
       return "";
     }
   }
