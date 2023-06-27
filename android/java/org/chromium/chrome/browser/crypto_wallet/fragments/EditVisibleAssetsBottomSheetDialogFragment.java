@@ -159,15 +159,6 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         return null;
     }
 
-    private JsonRpcService getJsonRpcService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletBaseActivity) {
-            return ((BraveWalletBaseActivity) activity).getJsonRpcService();
-        }
-
-        return null;
-    }
-
     public void setSelectedNetwork(NetworkInfo selectedNetwork) {
         assert selectedNetwork != null;
         mSelectedNetwork = selectedNetwork;
@@ -645,12 +636,14 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     @Override
     public void onMaybeShowTrashButton(
             WalletListItemModel walletListItemModel, ImageView trashButton) {
-        if (mType != WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) return;
+        assert walletListItemModel.getAssetNetwork() != null : "Network should not be null";
+        // Prevent NPE of network, issue:#31303
+        if (mType != WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST
+                && walletListItemModel.getAssetNetwork() == null)
+            return;
 
-        JsonRpcService jsonRpcService = getJsonRpcService();
-        if (jsonRpcService == null) return;
         TokenUtils.isCustomToken(getBlockchainRegistry(), walletListItemModel.getAssetNetwork(),
-                walletListItemModel.getAssetNetwork().coin,
+                walletListItemModel.getBlockchainToken().coin,
                 walletListItemModel.getBlockchainToken(), isCustom -> {
                     if (!isCustom) return;
 
@@ -661,13 +654,15 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     @Override
     public void onAssetCheckedChanged(
             WalletListItemModel walletListItemModel, CheckBox assetCheck, boolean isChecked) {
-        if (mType != WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) return;
-        JsonRpcService jsonRpcService = getJsonRpcService();
-        if (jsonRpcService == null) return;
+        assert walletListItemModel.getAssetNetwork() != null : "Network should not be null";
+        // Prevent NPE of network, issue:#31303
+        if (mType != WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST
+                && walletListItemModel.getAssetNetwork() == null)
+            return;
 
         BlockchainToken thisToken = walletListItemModel.getBlockchainToken();
         TokenUtils.isCustomToken(getBlockchainRegistry(), walletListItemModel.getAssetNetwork(),
-                walletListItemModel.getAssetNetwork().coin, thisToken, isCustom -> {
+                walletListItemModel.getBlockchainToken().coin, thisToken, isCustom -> {
                     // Only show add asset dialog on click when:
                     //    1. It is an ERC721 token
                     //    2. It is a token listed in Registry
