@@ -31,7 +31,7 @@ PerformanceReport::PerformanceReport(
 PerformanceReport::PerformanceReport(const PerformanceReport& other) = default;
 PerformanceReport::~PerformanceReport() = default;
 
-Model::Model(const ModelSpec& model_spec)
+Model::Model(const api::config::ModelSpec& model_spec)
     : num_iterations_(model_spec.num_iterations),
       batch_size_(model_spec.batch_size),
       learning_rate_(model_spec.learning_rate),
@@ -50,7 +50,7 @@ Model::Model(const ModelSpec& model_spec)
 
 Model::~Model() = default;
 
-Weights Model::GetWeights() {
+Weights Model::GetWeights() const {
   return weights_;
 }
 
@@ -58,7 +58,7 @@ void Model::SetWeights(const Weights& new_weights) {
   weights_ = std::move(new_weights);
 }
 
-float Model::GetBias() {
+float Model::GetBias() const {
   return bias_;
 }
 
@@ -117,7 +117,7 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
 
   Weights d_w(features);
   Weights p_w(features);
-  std::vector<float> err(batch_size_, 10000);
+  std::vector<float> err(batch_size_, 0);
   float training_loss = 0.0;
 
   data_prep_duration +=

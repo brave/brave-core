@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_federated/communication_adapter.h"
 
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -31,6 +32,17 @@ namespace {
 
 // Maximum size of the federated server response in bytes.
 const int kMaxFederatedServerResponseSizeBytes = 1024 * 1024;  // 1 MB
+
+std::unique_ptr<network::ResourceRequest> MakeResourceRequest() {
+  auto request = std::make_unique<network::ResourceRequest>();
+  request->headers.SetHeader("Content-Type", "application/protobuf");
+  request->headers.SetHeader("Accept", "application/protobuf");
+  request->headers.SetHeader("X-Brave-FL-Federated-Learning", "?1");
+  request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
+  request->method = net::HttpRequestHeaders::kPostMethod;
+  return request;
+}
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("federated_learning", R"(
@@ -81,16 +93,9 @@ CommunicationAdapter::CommunicationAdapter(
 CommunicationAdapter::~CommunicationAdapter() = default;
 
 void CommunicationAdapter::GetTasks(GetTaskCallback callback) {
-  auto request = std::make_unique<network::ResourceRequest>();
-  request->url = GURL(features::GetFederatedLearningTaskEndpoint());
-  request->headers.SetHeader("Content-Type", "application/protobuf");
-  request->headers.SetHeader("Accept", "application/protobuf");
-  request->headers.SetHeader("X-Brave-FL-Federated-Learning", "?1");
-  request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
-  request->method = net::HttpRequestHeaders::kPostMethod;
-
-  VLOG(2) << "Requesting tasks list " << request->method << " " << request->url;
+  auto request = MakeResourceRequest();
+  VLOG(2) << "FL: Requesting tasks list " << request->method << " "
+          << request->url;
 
   const std::string payload = BuildGetTasksPayload();
 
@@ -117,7 +122,7 @@ void CommunicationAdapter::OnGetTasks(
       reconnect_backoff_entry_->GetTimeUntilRelease();
 
   if (failed_request) {
-    VLOG(1) << "Failed to request tasks, retrying in "
+    VLOG(2) << "FL: Failed to request tasks, retrying in "
             << reconnect_delay_in_seconds;
     return std::move(callback).Run({}, reconnect_delay_in_seconds);
   }
@@ -133,33 +138,26 @@ void CommunicationAdapter::OnGetTasks(
     base::TimeDelta request_task_delay_in_seconds =
         request_task_backoff_entry_->GetTimeUntilRelease();
     if (!task_list.has_value()) {
-      VLOG(1) << "No tasks received from FL service, retrying in "
+      VLOG(2) << "FL: No tasks received from FL service, retrying in "
               << request_task_delay_in_seconds;
       return std::move(callback).Run({}, request_task_delay_in_seconds);
     }
 
-    VLOG(2) << "Received " << task_list.value().size()
+    VLOG(2) << "FL: Received " << task_list.value().size()
             << " tasks from FL service";
 
     return std::move(callback).Run(task_list.value(),
                                    request_task_delay_in_seconds);
   }
 
-  VLOG(1) << "Failed to request tasks. Response code: " << response_code;
+  VLOG(2) << "FL: Failed to request tasks. Response code: " << response_code;
 }
 
 void CommunicationAdapter::UploadTaskResult(const TaskResult& result,
                                             UploadResultCallback callback) {
-  auto request = std::make_unique<network::ResourceRequest>();
-  request->url = GURL(features::GetFederatedLearningResultsEndpoint());
-  request->headers.SetHeader("Content-Type", "application/protobuf");
-  request->headers.SetHeader("Accept", "application/protobuf");
-  request->headers.SetHeader("X-Brave-FL-Federated-Learning", "?1");
-  request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
-  request->method = net::HttpRequestHeaders::kPostMethod;
-
-  VLOG(2) << "Posting Task results " << request->method << " " << request->url;
+  auto request = MakeResourceRequest();
+  VLOG(2) << "FL: Posting Task results " << request->method << " "
+          << request->url;
 
   const std::string payload = BuildUploadTaskResultsPayload(result);
 
@@ -180,7 +178,7 @@ void CommunicationAdapter::OnUploadTaskResult(
   CHECK(url_loader_->ResponseInfo());
 
   if (!url_loader_->ResponseInfo() || !url_loader_->ResponseInfo()->headers) {
-    VLOG(1) << "Failed to post task results";
+    VLOG(2) << "FL: Failed to post task results";
     TaskResultResponse response(/*successful*/ false);
     return std::move(callback).Run(response);
   }
@@ -192,7 +190,7 @@ void CommunicationAdapter::OnUploadTaskResult(
     return std::move(callback).Run(response);
   }
 
-  VLOG(1) << "Response code is not 200" << response_code;
+  VLOG(2) << "FL: Response code is not 200" << response_code;
   TaskResultResponse response(/*successful*/ false);
   return std::move(callback).Run(response);
 }

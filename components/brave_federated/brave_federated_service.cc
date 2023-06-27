@@ -48,7 +48,7 @@ DataStoreService* BraveFederatedService::GetDataStoreService() const {
 ///////////////////////////////////////////////////////////////////////////////
 
 void BraveFederatedService::Init() {
-  VLOG(1) << "Initialising federated service";
+  VLOG(1) << "FL: Initialising federated service";
 
   local_state_change_registrar_.Init(local_state_);
   local_state_change_registrar_.Add(
