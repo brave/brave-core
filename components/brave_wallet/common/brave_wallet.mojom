@@ -1148,6 +1148,8 @@ interface JsonRpcService {
   GetCustomNetworks(CoinType coin) => (array<string> chain_ids);
   GetKnownNetworks(CoinType coin) => (array<string> chain_ids);
   GetHiddenNetworks(CoinType coin) => (array<string> chain_ids);
+  AddHiddenNetwork(CoinType coin, string chain_id) => (bool success);
+  RemoveHiddenNetwork(CoinType coin, string chain_id) => (bool success);
 
   // Obtains the default network's chain ID when there is no origin info
   // available. Ex. wallet page.
