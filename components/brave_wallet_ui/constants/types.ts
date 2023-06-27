@@ -228,6 +228,7 @@ export interface TokenRegistry {
 export interface UIState {
   selectedPendingTransactionId?: string | undefined
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
+  isPanel: boolean
 }
 
 export interface WalletState {

@@ -9,6 +9,14 @@
 
 import * as React from 'react'
 
+// Selectors
+import {
+  useSafeUISelector
+} from '../../../common/hooks/use-safe-selector'
+import {
+  UISelectors
+} from '../../../common/selectors'
+
 // utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
@@ -31,9 +39,12 @@ interface Props {
 }
 
 export const NftAssetHeader = ({ assetName, tokenId, showSendButton, onBack, onSend }: Props) => {
+  // UI Selectors (safe)
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
+
   return (
     <Row
-      padding='26px 0px'
+      padding={isPanel ? '12px 20px' : '26px 0px'}
       justifyContent='space-between'
       alignItems='center'
     >
@@ -50,7 +61,9 @@ export const NftAssetHeader = ({ assetName, tokenId, showSendButton, onBack, onS
             name='arrow-left'
           />
         </CircleButton>
-        <HeaderTitle>
+        <HeaderTitle
+          isPanel={isPanel}
+        >
           {assetName}&nbsp;{tokenId ? `#${new Amount(tokenId).toNumber()}` : ''}
         </HeaderTitle>
       </Row>

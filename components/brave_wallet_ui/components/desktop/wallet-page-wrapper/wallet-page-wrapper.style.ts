@@ -15,7 +15,11 @@ export const layoutSmallWidth = 980
 export const layoutPanelWidth = 660
 export const layoutTopPosition = 68
 
-export const Wrapper = styled.div<{ noPadding?: boolean }>`
+export const Wrapper = styled.div<{
+  noPadding?: boolean
+  isPanel?: boolean
+}>`
+  --layout-top-position: ${(p) => p.isPanel ? 0 : layoutTopPosition}px;
   position: fixed;
   top: 0px;
   bottom: 0px;
@@ -30,7 +34,7 @@ export const Wrapper = styled.div<{ noPadding?: boolean }>`
   padding: ${(p) =>
     p.noPadding
       ? '0px'
-      : `${layoutTopPosition}px 0px`
+      : `var(--layout-top-position) 0px`
   };
 `
 
@@ -39,8 +43,8 @@ export const LayoutCardWrapper = styled.div<{
   headerHeight: number
 }>`
   --header-top-position:
-    calc(${layoutTopPosition}px + ${(p) => p.headerHeight}px);
-  --no-header-top-position: ${layoutTopPosition}px;
+    calc(var(--layout-top-position) + ${(p) => p.headerHeight}px);
+  --no-header-top-position: var(--layout-top-position);
   --top-position: ${(p) =>
     p.hideCardHeader
       ? 'var(--no-header-top-position)'
@@ -76,8 +80,8 @@ export const LayoutCardWrapper = styled.div<{
 
 export const ContainerCard = styled.div<
   {
-    noPadding?: boolean,
-    maxWidth?: number,
+    noPadding?: boolean
+    maxWidth?: number
     hideCardHeader?: boolean
     noMinCardHeight?: boolean
   }>`
@@ -118,13 +122,14 @@ export const ContainerCard = styled.div<
 
 
 export const CardHeaderWrapper = styled.div<{
-    maxWidth?: number,
-  }>`
+  maxWidth?: number
+  isPanel?: boolean
+}>`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  top: ${layoutTopPosition}px;
+  top: var(--layout-top-position);
   position: fixed;
   width: 100%;
   max-width: ${(p) =>
@@ -133,9 +138,9 @@ export const CardHeaderWrapper = styled.div<{
       : 'unset'
   };
   @media screen and (max-width: ${layoutScaleWithNav}px) {
-    padding: ${(p) => p.maxWidth ? '0px': '0px 32px 0px 304px'}; 
-    left: ${(p) => p.maxWidth ? 'unset': '0px'};
-    right: ${(p) => p.maxWidth ? 'unset': '0px'};
+    padding: ${(p) => p.maxWidth ? '0px' : '0px 32px 0px 304px'};
+    left: ${(p) => p.maxWidth ? 'unset' : '0px'};
+    right: ${(p) => p.maxWidth ? 'unset' : '0px'};
     align-items: flex-start;
   }
   @media screen and (max-width: ${layoutSmallWidth}px) {
@@ -151,6 +156,7 @@ export const CardHeaderWrapper = styled.div<{
 
 export const CardHeader = styled.div<{
   shadowOpacity?: number
+  isPanel?: boolean
 }>`
   --shadow-opacity: ${(p) =>
     p.shadowOpacity !== undefined
@@ -159,9 +165,9 @@ export const CardHeader = styled.div<{
   };
   display: flex;
   background-color: ${(p) => p.theme.color.background02};
-  border-radius: 24px 24px 0px 0px;
+  border-radius: ${(p) => p.isPanel ? '0px' : '24px 24px 0px 0px'};
   width: 100%;
-  padding: 0px 32px;
+  padding: ${(p) => p.isPanel ? '0px' : '0px 32px'};
   position: relative;
   max-width: ${maxCardWidth}px;
   box-shadow: 0px 4px 13px -2px rgba(0, 0, 0, var(--shadow-opacity));
@@ -290,7 +296,7 @@ export const BackgroundGradientBottomLayer = styled.div`
 `
 
 export const BlockForHeight = styled.div`
-  top: ${layoutTopPosition}px;
+  top: var(--layout-top-position);
   width: 1px;
   height: calc(${minCardHeight}px + 30px);
   display: flex;
