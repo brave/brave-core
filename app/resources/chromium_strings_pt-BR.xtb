@@ -84,6 +84,7 @@
 <translation id="4805806622840861220">Reiniciar Brave</translation>
 <translation id="1742948938503172561">Personalize seu novo perfil do Brave</translation>
 <translation id="1477146545787277177">O Brave travou. Reiniciar agora?</translation>
+<translation id="907470742420136113">O Brave está tentando modificar as configurações para preenchimento de formas de pagamento.</translation>
 <translation id="2585240446624043880">O Brave não pode ler e gravar neste diretório de dados: <ph name="USER_DATA_DIRECTORY"/></translation>
 <translation id="2423637317249323944">O Brave versão <ph name="PRODUCT_VERSION"/> está instalado</translation>
 <translation id="3286538390144397061">Reiniciar agora</translation>
@@ -91,7 +92,7 @@
 <translation id="8926637909431618259">Continuar executando os aplicativos em segundo plano quando o Brave for fechado</translation>
 <translation id="2711887072399498551">Já existe um perfil do Brave para essa conta</translation>
 <translation id="2645435784669275700">ChromeOS</translation>
-<translation id="2297290224191497273">Alternar para perfil existente do Brave?</translation>
+<translation id="2297290224191497273">Mudar para perfil existente do Brave?</translation>
 <translation id="3412460710772753638">No Gerenciador de senhas neste dispositivo</translation>
 <translation id="2450003541323895471">Você pode usar os perfis do Brave para separar todos seus dados nele. Crie perfis para amigos e familiares ou separe trabalho e lazer.</translation>
 <translation id="9216183508558772570">O Brave enviará uma notificação quando você fizer login com uma senha comprometida</translation>
@@ -184,6 +185,7 @@
 <translation id="5646769069113654257">Reinicie o Brave agora</translation>
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">Exibir Brave neste idioma</translation>
+<translation id="585620188971323280">modificar as configurações para preenchimento de formas de pagamento.</translation>
 <translation id="7207456302801184289">Bem-vindo ao Brave</translation>
 <translation id="8054200348483755053">O Brave encontrou malware nestes itens:</translation>
 <translation id="5895138241574237353">Reiniciar</translation>
@@ -234,6 +236,7 @@
 <translation id="2675662665675552980">Controla também qual página deve ser exibida quando você inicia o Brave.</translation>
 <translation id="648319183876919572">O recurso "Navegação segura com maior proteção" protege você ainda mais contra sites e downloads perigosos</translation>
 <translation id="5590013613412457132">Desinstalar Brave</translation>
+<translation id="3617744907966785605">Sua organização vai fechar o Brave se ele não for usado por <ph name="TIMEOUT_DURATION"/>. Os dados de navegação foram excluídos. Isso pode incluir o histórico, o preenchimento automático e os downloads.</translation>
 <translation id="8646609321956191980">Cada perfil armazena as próprias informações do Brave, como favoritos, histórico, senhas, entre outras</translation>
 <translation id="2535436634051789953">Mude para outro perfil do Brave para conferir as senhas dele</translation>
 <translation id="2312399718665761438">Para corrigir erros de ortografia, o Brave envia ao Brave o texto que você digita nos campos de texto</translation>
@@ -268,6 +271,7 @@
 <translation id="7025789849649390912">Instalação interrompida.</translation>
 <translation id="1705567146636171298">Atualizar o Brave</translation>
 <translation id="5499063270485366718">Se uma imagem não tiver uma descrição útil, o Brave tentará fornecer uma para você. As imagens serão enviadas ao Brave para a criação de descrições.</translation>
+<translation id="2332301637111071062">Sua organização exclui os dados do Brave se eles não forem usados por <ph name="TIMEOUT_DURATION"/>. Isso pode incluir o histórico, o preenchimento automático e os downloads.</translation>
 <translation id="1008530050039597147">O Brave precisa da permissão de acesso à câmera para este site</translation>
 <translation id="1197672524850678392">Não foi possível iniciar o Brave. Tente novamente.</translation>
 <translation id="3405035915691517126">Não foi possível verificar suas senhas. Tente novamente em 24 horas.</translation>
@@ -318,6 +322,7 @@
 <translation id="8207657266087451193">Se uma imagem não tiver uma descrição útil, o Brave tentará fornecer uma para você. As imagens serão enviadas ao Brave para a criação de descrições. É possível desativar essa opção nas configurações a qualquer momento.</translation>
 <translation id="8622246347342688645">O Brave não pode verificar suas senhas porque a conta não está conectada</translation>
 <translation id="89367911614620585">Esse arquivo pode ser perigoso, por isso ele foi bloqueado pelo Brave.</translation>
+<translation id="6098476632210317894">Sua organização vai fechar o Brave se ele não for usado por <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="5196445203969439095">Faça mais com o Brave</translation>
 <translation id="3360368475735266712">Faça login para sincronizar e personalizar o Brave em todos os seus dispositivos</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> estava usando o Brave anteriormente</translation>
@@ -351,6 +356,7 @@
 <translation id="8986207147630327271">Você está adicionando um perfil de trabalho a este navegador. O administrador poderá controlar apenas o perfil de trabalho.</translation>
 <translation id="82609232232243542">Fazer login no Brave</translation>
 <translation id="3273774796888928550">Faça login no Brave. Se você quiser que a conta fique conectada apenas nesta sessão, <ph name="GUEST_LINK_BEGIN"/>use o dispositivo como visitante<ph name="GUEST_LINK_END"/>.</translation>
+<translation id="4561046754724442504">O Brave foi fechado automaticamente</translation>
 <translation id="5173820533850252773">O Brave está desatualizado</translation>
 <translation id="310518206836658214">{0,plural, =1{O Brave será reiniciado em 1 hora}one{O Brave será reiniciado em # hora}other{O Brave será reiniciado em # horas}}</translation>
 <translation id="5190991181158966940">Para receber as próximas atualizações do Brave, você precisa ter do Windows 10 ou versão mais recente. Este computador está usando o Windows 8.1.</translation>

@@ -84,6 +84,7 @@
 <translation id="4805806622840861220">Torna a iniciar Brave</translation>
 <translation id="1742948938503172561">Personalitza el teu perfil de Brave nou</translation>
 <translation id="1477146545787277177">Brave s'ha bloquejat. Voleu tornar-lo a iniciar?</translation>
+<translation id="907470742420136113">Brave està provant de modificar la configuració per emplenar les formes de pagament.</translation>
 <translation id="2585240446624043880">Brave no pot llegir ni escriure en el directori de dades:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -186,6 +187,7 @@
 <translation id="5646769069113654257">Reinicia Brave ara</translation>
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">Mostra Brave en aquest idioma</translation>
+<translation id="585620188971323280">modificar la configuració per emplenar les formes de pagament.</translation>
 <translation id="7207456302801184289">Us donem la benvinguda a Brave</translation>
 <translation id="8054200348483755053">Brave ha detectat que aquests elements contenen programari maliciós:</translation>
 <translation id="5895138241574237353">Reinicia</translation>
@@ -236,6 +238,7 @@
 <translation id="2675662665675552980">També controla la pàgina que es mostra quan inicieu Brave.</translation>
 <translation id="648319183876919572">La Navegació segura millorada és més eficaç a l'hora de protegir-te de baixades i llocs web perillosos</translation>
 <translation id="5590013613412457132">Desinstal·la Brave</translation>
+<translation id="3617744907966785605">La teva organització tanca Brave quan no s'utilitza durant <ph name="TIMEOUT_DURATION"/>. Les dades de navegació s'han suprimit. Això pot incloure l'historial, les dades d'Emplenament automàtic i les baixades.</translation>
 <translation id="8646609321956191980">Cada perfil conserva la seva pròpia informació de Brave, com ara les adreces d'interès, l'historial, les contrasenyes i més</translation>
 <translation id="2535436634051789953">Pots canviar de perfil per veure les contrasenyes d'un altre perfil de Brave</translation>
 <translation id="2312399718665761438">Per corregir els errors d'ortografia, Brave envia a Brave el que escrius als camps de text</translation>
@@ -272,6 +275,7 @@
 <translation id="7025789849649390912">La instal·lació s'ha aturat.</translation>
 <translation id="1705567146636171298">Actualitza Brave</translation>
 <translation id="5499063270485366718">Si una imatge no té una descripció útil, Brave provarà d'oferir-te'n una. Per crear les descripcions, les imatges s'envien a Brave.</translation>
+<translation id="2332301637111071062">La teva organització suprimeix les dades de Brave quan no s'utilitzen durant <ph name="TIMEOUT_DURATION"/>. Això pot incloure l'historial, les dades d'Emplenament automàtic i les baixades.</translation>
 <translation id="1008530050039597147">Brave necessita permís d'accés a la càmera per a aquest lloc web</translation>
 <translation id="1197672524850678392">No s'ha pogut iniciar Brave. Torna-ho a provar.</translation>
 <translation id="3405035915691517126">Brave no pot comprovar les teves contrasenyes. Torna-ho a provar al cap de 24 hores.</translation>
@@ -324,6 +328,7 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="8207657266087451193">Si una imatge no té una descripció útil, Brave provarà d'oferir-te'n una. Per crear les descripcions, les imatges s'envien a Brave. Pots desactivar aquesta funció en qualsevol moment a la configuració.</translation>
 <translation id="8622246347342688645">Brave no pot comprovar les teves contrasenyes perquè no tens la sessió iniciada</translation>
 <translation id="89367911614620585">Brave ha bloquejat aquest fitxer perquè pot ser perillós.</translation>
+<translation id="6098476632210317894">La teva organització tanca Brave quan no s'utilitza durant <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="5196445203969439095">Treu més profit de Brave</translation>
 <translation id="3360368475735266712">Inicia la sessió per sincronitzar i personalitzar Brave en tots els teus dispositius</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> abans utilitzava Brave</translation>
@@ -357,6 +362,7 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="8986207147630327271">Estàs afegint un perfil de treball a aquest navegador i donant control al teu administrador únicament sobre el perfil de treball.</translation>
 <translation id="82609232232243542">Inicia la sessió a Brave</translation>
 <translation id="3273774796888928550">Inicia la sessió a Brave. Si vols iniciar la sessió en un compte només una vegada, pots <ph name="GUEST_LINK_BEGIN"/>utilitzar el dispositiu com a convidat<ph name="GUEST_LINK_END"/>.</translation>
+<translation id="4561046754724442504">Brave s'ha tancat automàticament</translation>
 <translation id="5173820533850252773">Brave no està actualitzat</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave es reiniciarà d'aquí a 1 hora}other{Brave es reiniciarà d'aquí a # hores}}</translation>
 <translation id="5190991181158966940">Per obtenir actualitzacions de Brave en el futur, necessitaràs Windows 10 o una versió posterior. Aquest ordinador utilitza Windows 8.1.</translation>

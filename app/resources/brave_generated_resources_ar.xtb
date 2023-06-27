@@ -324,7 +324,6 @@
 <translation id="3357319404342882895">صارم</translation>
 <translation id="8823559166155093873">حجب ملفات تعريف الارتباط</translation>
 <translation id="5770288601196774623">فقط عبر الموقع</translation>
-<translation id="6795317840397506736">تجاهل افتراضيًا</translation>
 <translation id="3587482841069643663">الكل</translation>
 <translation id="7390783310074170337">العرض الافتراضي</translation>
 <translation id="130615081792797568">عرض بسيط</translation>
@@ -351,22 +350,10 @@
 <translation id="4182731739150761577">عرض القائمة بالكامل</translation>
 <translation id="1340263054776016283">أدخل عنوان URL لقائمة عامل التصفية</translation>
 <translation id="8578397014396032341">عوامل تصفية المحتوى</translation>
+<translation id="3020183492814296499">الاختصارات</translation>
 <translation id="5567412479632285879">تم تعطيل Brave Rewards</translation>
 <translation id="413570371620795359">فتح لوحة المكافآت للتمكين والبدء</translation>
-<translation id="3849957491997306859">يجري الكشف عنه بشكل تلقائي</translation>
-<translation id="8798099450830957504">التلقائي</translation>
-<translation id="4851215387785619212">الإعلانات الخاصة المتعلقة بــ Brave</translation>
-<translation id="7808122468353671181">كسب الرموز من خلال عرض Brave Ads. تستند الإعلانات المقدمة إلى اهتماماتك، كما هو مستدل من سلوك التصفح الخاص بك. لا توجد بيانات شخصية أو سجل تصفح يغادر متصفحك على الإطلاق.</translation>
-<translation id="1758947220824279023">الحد الأقصى لعدد الإعلانات المراد عرضها</translation>
-<translation id="2356652719351432565">ملاءمة الإعلان الإقليمي</translation>
-<translation id="2196950072404588793">يتيح ذلك لـ Brave عرض إعلانات مخصصة لمنطقتك على وجه التحديد. <ph name="BEGIN_LINK"/>اعرف المزيد<ph name="END_LINK"/></translation>
-<translation id="2433507940547922241">المظهر</translation>
-<translation id="6112368337882254910">مساهمة تلقائية</translation>
-<translation id="9132509928968869844">حد المساهمة التلقائية الشهرية</translation>
-<translation id="7286722244752781970">الحد الأدنى لوقت الصفحة قبل تسجيل الزيارة</translation>
-<translation id="4424486208397124985">الحد الأدنى من الزيارات من أجل صلة الناشر</translation>
-<translation id="6248554379744796526">اعرض المواقع التي لم يتم التحقق منها في القائمة</translation>
-<translation id="924777189963477634">من خلال تشغيل المساهمة التلقائية، فإنك توافق على <ph name="BEGIN_LINK_TOS"/>شروط الخدمة <ph name="END_LINK_TOS"/> و <ph name="BEGIN_LINK_PP"/> سياسة الخصوصية <ph name="END_LINK_PP"/></translation>
+<translation id="1051600834033686945">فتح إعدادات Brave Rewards بالكامل</translation>
 <translation id="6333347122924254968">إظهار رمز "مكافآت متصفح Brave" في شريط العنواين</translation>
 <translation id="7483857210736407752">عرض أزرار التلميح على المواقع</translation>
 <translation id="3905400818082450708">ريديت</translation>
@@ -378,11 +365,14 @@
 <translation id="958971637207126733">السماح بالمشاركات المدمجة في LinkedIn</translation>
 <translation id="8792121506918889955">سياسة التعامل مع WebRTC IP</translation>
 <translation id="6165508094623778733">اعرف المزيد</translation>
+<translation id="8798099450830957504">الافتراضي</translation>
 <translation id="1822560017823072927">الواجهات الافتراضية العامة والخاصة</translation>
 <translation id="5825943197137337319">الواجهة العامة الافتراضية فقط</translation>
 <translation id="1689062823386843231">تعطيل UDP التي ليس لها وكيل</translation>
 <translation id="3540231253392253941">استخدم خدمات Google لإرسال الرسائل</translation>
 <translation id="933652931229970927">إرسال تقارير التشخيص تلقائيًا</translation>
+<translation id="4891600875049212418">استمتع بالخصوصية عند زيارة المواقع التي تتضمن محتوى حساسًا</translation>
+<translation id="2356070529366658676">طلب</translation>
 <translation id="4846154056248462491">عند الخروج</translation>
 <translation id="2808630562319398131">إعادة تعيين بيانات مكافآت Brave...</translation>
 <translation id="6438096877646138757">المواقع التي تقوم بمسح ملفات تعريف الارتباط بمجرد إغلاقها</translation>
@@ -391,6 +381,27 @@
 <translation id="7050661313034564003">إظهار جميع ملفات تعريف الارتباط والبيانات المخزنة محليًا لهذا الموقع</translation>
 <translation id="8339059274628563283">بيانات <ph name="SITE"/> المخزنة محليًا</translation>
 <translation id="1963227389609234879">إزالة كلمات المرور كلّها</translation>
+<translation id="8168435359814927499">المحتوى</translation>
+<translation id="7702907602086592255">النطاق</translation>
+<translation id="3202131003361292969">المسار</translation>
+<translation id="5390743329570580756">الإرسال إلى</translation>
+<translation id="6742339027238151589">يمكن الدخول إليه بواسطة النص البرمجي</translation>
+<translation id="1067048845568873861">تم الإنشاء</translation>
+<translation id="5747552184818312860">تاريخ انتهاء الصلاحية</translation>
+<translation id="3858860766373142691">الاسم</translation>
+<translation id="361106536627977100">بيانات فلاش</translation>
+<translation id="4530494379350999373">الأصل</translation>
+<translation id="8195027750202970175">الحجم على القرص</translation>
+<translation id="9116465289595958864">آخر تعديل</translation>
+<translation id="4590324241397107707">تخزين قاعدة البيانات</translation>
+<translation id="5338503421962489998">تخزين محلي</translation>
+<translation id="6032912588568283682">نظام الملفات</translation>
+<translation id="8016266267177410919">التخزين المؤقت</translation>
+<translation id="4175737294868205930">التخزين الثابت</translation>
+<translation id="1234808891666923653">عمال الخدمة</translation>
+<translation id="3432762828853624962">العمال المشتركون</translation>
+<translation id="2927017729816812676">سعة التخزين لذاكرة التخزين المؤقت</translation>
+<translation id="1389601498324964367">تخزين قائم على الحصص</translation>
 <translation id="814018970995616154">يتحقق من عناوين URL بقائمة من المواقع غير الآمنة المخزنة في متصفّح Brave.</translation>
 <translation id="1144810021918451336">لا يحميك من مواقع الويب والتنزيلات والإضافات الخطيرة.</translation>
 <translation id="5570470519803062774">إعدادات الموقع و Shields</translation>
@@ -535,7 +546,6 @@
 <translation id="4954512758656527938">محفظة Ethereum الافتراضية</translation>
 <translation id="7701023802820268122">محفظة Solana الافتراضية</translation>
 <translation id="8488282162676695335">محفظة Brave</translation>
-<translation id="2356070529366658676">طلب</translation>
 <translation id="6942354363301686374">الإضافات (لا يوجد بديل احتياطي)</translation>
 <translation id="1274962333945373242">محافظ العملات المشفرة (مهملة)</translation>
 <translation id="702381242110464396">الإضافات (بديل احتياطي لمحفظة Brave)</translation>
@@ -552,7 +562,7 @@
 <translation id="4440478655766953083">تثبيت الرموز المميزة غير قابلة للاستبدال تلقائيًا</translation>
 <translation id="464460032678285850">قد يتم تثبيت الرموز المميزة غير قابلة للاستبدال (NFT) التي تتم إضافتها إلى Brave Wallet تلقائيًا في عقدة IPFS المحلية.
  ملاحظة: قد يتم بدء تشغيل البرنامج الخفي IPFS لأغراض التثبيت بحيث تشارك العقدة المحلية البيانات المخزنة مؤقتًا والرموز المميزة غير قابلة للاستبدال (NFT) المثبتة على شبكة IPFS.</translation>
-<translation id="4993345308607970390">إعادة تعيين محفظة Brave</translation>
+<translation id="2326850911705720398">إعادة تعيين بيانات المحفظة وحذفها</translation>
 <translation id="5887022857624190239">مسح الرموز المميزة غير القابلة للاستبدال المثبتة</translation>
 <translation id="204584113330893805">تتم استضافة الرموز المميزة غير القابلة للاستبدال المثبتة على شبكة IPFS عند تشغيل عقدة IPFS المحلية.
     لديك <ph name="NFT_COUNT"/> من الرموز المميزة غير القابلة للاستبدال المثبّتة في الوقت الحالي.</translation>

@@ -324,7 +324,6 @@
 <translation id="3357319404342882895">Конкретна</translation>
 <translation id="8823559166155093873">Блокиране на бисквитките</translation>
 <translation id="5770288601196774623">Само между сайтовете</translation>
-<translation id="6795317840397506736">Забравяне по подразбиране</translation>
 <translation id="3587482841069643663">Всички</translation>
 <translation id="7390783310074170337">Изглед по подразбиране</translation>
 <translation id="130615081792797568">Опростен изглед</translation>
@@ -351,22 +350,10 @@
 <translation id="4182731739150761577">Показване на пълния списък</translation>
 <translation id="1340263054776016283">Въвеждане на URL адрес на списък с филтри</translation>
 <translation id="8578397014396032341">Филтри за съдържание</translation>
+<translation id="3020183492814296499">Преки пътища</translation>
 <translation id="5567412479632285879">Наградите на Brave са дезактивирани</translation>
 <translation id="413570371620795359">Отворете панела награди за активиране и започване</translation>
-<translation id="3849957491997306859">Автоматично открити</translation>
-<translation id="8798099450830957504">По подразбиране</translation>
-<translation id="4851215387785619212">Brave Private Ads</translation>
-<translation id="7808122468353671181">Печелете токени, като гледате Brave Ads. Представените реклами се основават на вашите интереси, които се извеждат от поведението ви при сърфиране. Никакви лични данни или история на сърфиране не напускат браузъра ви.</translation>
-<translation id="1758947220824279023">Максимален брой реклами за показване</translation>
-<translation id="2356652719351432565">Уместност на рекламите по отношение на региона</translation>
-<translation id="2196950072404588793">Това позволява на Brave да ви показва реклами, предназначени специално за вашия регион. <ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/></translation>
-<translation id="2433507940547922241">Облик</translation>
-<translation id="6112368337882254910">Автоматично даряване</translation>
-<translation id="9132509928968869844">Месечно ограничение за автоматичен приснос</translation>
-<translation id="7286722244752781970">Минимално време на страницата преди отчитане като посещение</translation>
-<translation id="4424486208397124985">Минимално количество посещения за съответствие на издателя</translation>
-<translation id="6248554379744796526">Показване на непроверени сайтове в списъка</translation>
-<translation id="924777189963477634">С включването на автоматичен принос се съгласявате с <ph name="BEGIN_LINK_TOS"/>Условията за ползване<ph name="END_LINK_TOS"/> и <ph name="BEGIN_LINK_PP"/>Политиката за поверителност<ph name="END_LINK_PP"/>.</translation>
+<translation id="1051600834033686945">Отворете пълните настройки на Brave Rewards</translation>
 <translation id="6333347122924254968">Показване на иконата с награди в Brave в адресната лента</translation>
 <translation id="7483857210736407752">Покажи бутоните за бакшиш на страниците</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -378,11 +365,14 @@
 <translation id="958971637207126733">Разреши вградени публикации на LinkedIn</translation>
 <translation id="8792121506918889955">Политика за работа с IP на WebRTC</translation>
 <translation id="6165508094623778733">Научете повече</translation>
+<translation id="8798099450830957504">По подразбиране</translation>
 <translation id="1822560017823072927">Публични и поверителни интерфейси по подразбиране</translation>
 <translation id="5825943197137337319">Само публичен интерфейс пп подразбиране</translation>
 <translation id="1689062823386843231">Деактивиране на UDP без прокси</translation>
 <translation id="3540231253392253941">Използвайте услугите на Google за насочени съобщения</translation>
 <translation id="933652931229970927">Автоматично изпращане на отчети с диагностика</translation>
+<translation id="4891600875049212418">Преминете в режим „Off-The-Record“, когато посещавате чувствителни сайтове</translation>
+<translation id="2356070529366658676">Попитайте ме</translation>
 <translation id="4846154056248462491">При излизане</translation>
 <translation id="2808630562319398131">Нулиране на данните за Brave награди...</translation>
 <translation id="6438096877646138757">Сайтове, които изчистват бисквитките, когато ги затворите</translation>
@@ -391,6 +381,27 @@
 <translation id="7050661313034564003">Показване на всички бисквитки и локално съхранени данни за този сайт</translation>
 <translation id="8339059274628563283">Локално съхранявани данни от <ph name="SITE"/></translation>
 <translation id="1963227389609234879">Премахване на всички</translation>
+<translation id="8168435359814927499">Съдържание</translation>
+<translation id="7702907602086592255">Домейн</translation>
+<translation id="3202131003361292969">Път</translation>
+<translation id="5390743329570580756">Изпращане за</translation>
+<translation id="6742339027238151589">Достъпно за скрипт</translation>
+<translation id="1067048845568873861">Дата на създаване</translation>
+<translation id="5747552184818312860">Изтича на</translation>
+<translation id="3858860766373142691">Име</translation>
+<translation id="361106536627977100">Данни на Flash</translation>
+<translation id="4530494379350999373">Произход</translation>
+<translation id="8195027750202970175">Размер върху диска</translation>
+<translation id="9116465289595958864">Последна промяна</translation>
+<translation id="4590324241397107707">Хранилище за базата от данни</translation>
+<translation id="5338503421962489998">Локално хранилище</translation>
+<translation id="6032912588568283682">Файлова система</translation>
+<translation id="8016266267177410919">Временно хранилище</translation>
+<translation id="4175737294868205930">Постоянно хранилище</translation>
+<translation id="1234808891666923653">Изпълнители на услуги</translation>
+<translation id="3432762828853624962">Споделени изпълнители</translation>
+<translation id="2927017729816812676">Хранилище за кеш</translation>
+<translation id="1389601498324964367">Управлявано от квоти съхранение</translation>
 <translation id="814018970995616154">Проверява URL адресите със списък с опасни сайтове, съхранявани в Brave.</translation>
 <translation id="1144810021918451336">Не ви предпазва от опасни уебсайтове, изтегляния и разширения.</translation>
 <translation id="5570470519803062774">Настройки на сайта и щитове</translation>
@@ -535,7 +546,6 @@
 <translation id="4954512758656527938">Ethereum портфейл по подразбиране</translation>
 <translation id="7701023802820268122">Solana портфейл по подразбиране</translation>
 <translation id="8488282162676695335">Портфейл в Brave</translation>
-<translation id="2356070529366658676">Попитайте ме</translation>
 <translation id="6942354363301686374">Разширения (без връщане)</translation>
 <translation id="1274962333945373242">Криптопортфейли (отхвърлени)</translation>
 <translation id="702381242110464396">Разширения (връщане към портфейла на Brave)</translation>
@@ -552,7 +562,7 @@
 <translation id="4440478655766953083">Автоматично закачане на NFT</translation>
 <translation id="464460032678285850">NFT, който са добавени към Brave Wallet, могат автоматично да бъдат закачени към локалния IPFS възел.
 Бележка: IPFS daemon може да бъде стартиран за целите на закачане, за да може Вашият локален възел да сподели кеширани данни и закачени NFT към IPFS мрежата.</translation>
-<translation id="4993345308607970390">Нулиране на портфейл в Brave</translation>
+<translation id="2326850911705720398">Нулиране и изчистване на данните на портфейла</translation>
 <translation id="5887022857624190239">Изчистване на закачени NFT</translation>
 <translation id="204584113330893805">Закачените NFT се хостват в мрежата на IPFS, когато се стартира локален IPFS възел.
     Имате <ph name="NFT_COUNT"/> закачени NFT в момента.</translation>

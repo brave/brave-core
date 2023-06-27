@@ -86,6 +86,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="4805806622840861220">Relaunch Brave</translation>
 <translation id="1742948938503172561">Customise your new Brave profile</translation>
 <translation id="1477146545787277177">Whoa! Brave has crashed. Relaunch now?</translation>
+<translation id="907470742420136113">Brave is trying to modify settings for filling payment methods.</translation>
 <translation id="2585240446624043880">Brave cannot read and write to its data directory:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -188,6 +189,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="5646769069113654257">Please restart Brave now</translation>
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">Display Brave in this language</translation>
+<translation id="585620188971323280">modify settings for filling payment methods.</translation>
 <translation id="7207456302801184289">Welcome to Brave</translation>
 <translation id="8054200348483755053">Brave found that these items contain malware:</translation>
 <translation id="5895138241574237353">Restart</translation>
@@ -238,6 +240,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="2675662665675552980">It also controls what page is shown when you start Brave.</translation>
 <translation id="648319183876919572">Enhanced Safe Browsing does more to protect you against dangerous websites and downloads</translation>
 <translation id="5590013613412457132">Uninstall Brave</translation>
+<translation id="3617744907966785605">Your organisation closes Brave when it isn't used for <ph name="TIMEOUT_DURATION"/>. Browsing data was deleted. This could include history, autofill and downloads.</translation>
 <translation id="8646609321956191980">Each profile holds its own Brave info, like bookmarks, history, passwords and more</translation>
 <translation id="2535436634051789953">You can switch to see passwords from another Brave profile</translation>
 <translation id="2312399718665761438">To fix spelling errors, Brave sends the text that you type in text fields to Brave</translation>
@@ -273,6 +276,7 @@ Some features may be unavailable. Please specify a different profile directory o
 <translation id="7025789849649390912">Installation stopped.</translation>
 <translation id="1705567146636171298">Update Brave</translation>
 <translation id="5499063270485366718">If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave.</translation>
+<translation id="2332301637111071062">Your organisation deletes Brave data when it isn't used for <ph name="TIMEOUT_DURATION"/>. This could include history, autofill and downloads.</translation>
 <translation id="1008530050039597147">Brave needs camera permission for this site</translation>
 <translation id="1197672524850678392">Couldn't launch Brave. Try again.</translation>
 <translation id="3405035915691517126">Brave can't check your passwords. Try again after 24 hours.</translation>
@@ -325,6 +329,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="8207657266087451193">If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave. You can turn this off in settings at any time.</translation>
 <translation id="8622246347342688645">Brave can't check your passwords because you're not signed in</translation>
 <translation id="89367911614620585">This file may be dangerous, so Brave has blocked it.</translation>
+<translation id="6098476632210317894">Your organisation closes Brave when it isn't used for <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="5196445203969439095">Do more with Brave</translation>
 <translation id="3360368475735266712">Sign in to sync and personalise Brave across your devices</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> was previously using Brave</translation>
@@ -358,6 +363,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="8986207147630327271">You are adding a work profile to this browser and giving your administrator control over just the work profile.</translation>
 <translation id="82609232232243542">Sign in to Brave</translation>
 <translation id="3273774796888928550">Sign in to Brave If you'd just like to sign in an account once, you can <ph name="GUEST_LINK_BEGIN"/>use the device as guest<ph name="GUEST_LINK_END"/>.</translation>
+<translation id="4561046754724442504">Brave was automatically closed</translation>
 <translation id="5173820533850252773">Brave is out of date</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave will relaunch in an hour}other{Brave will relaunch in # hours}}</translation>
 <translation id="5190991181158966940">To get future Brave updates, you'll need Windows 10 or later. This computer is using Windows 8.1.</translation>

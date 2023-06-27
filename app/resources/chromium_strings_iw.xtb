@@ -8,6 +8,7 @@
 <translation id="5918095577778020936">‏Brave רוצה לייצא את הסיסמאות שלך. יש להקליד את הסיסמה שלך ל-Windows כדי לאפשר זאת.</translation>
 <translation id="5468853758063275923">‏Brave מוגדר כדפדפן ברירת המחדל</translation>
 <translation id="8522292744959221145">‏כדי לבדוק אם שאר הסיסמאות מוגנות מפני פרצות באבטחת מידע ובעיות אבטחה אחרות, <ph name="BEGIN_LINK"/>יש להיכנס ל-Brave<ph name="END_LINK"/>.</translation>
+<translation id="8468770846533807490">{NUM_DEVICES,plural, =0{‏תוספים ל-Brave ניגשו למכשירי ממשק אנושי (HID)}=1{‏תוספים ל-Brave ניגשים למכשירי ממשק אנושי (HID)}one{‏תוספים ל-Brave ניגשים ל-# מכשירי ממשק אנושי (HID)}two{‏תוספים ל-Brave ניגשים ל-# מכשירי ממשק אנושי (HID)}other{‏תוספים ל-Brave ניגשים ל-# מכשירי ממשק אנושי (HID)}}</translation>
 <translation id="8541922081612557424">‏על Brave</translation>
 <translation id="3528799424770515097">{COUNT,plural, =1{‏לפי הגדרת האדמין, Brave נסגר אוטומטית כשלא משתמשים בו במשך דקה. נתוני הגלישה נמחקים. בין הנתונים שיימחקו: היסטוריה, מילוי אוטומטי והורדות.}one{‏לפי הגדרת האדמין, Brave נסגר אוטומטית כשלא משתמשים בו במשך # דקות. נתוני הגלישה נמחקים. בין הנתונים שיימחקו: היסטוריה, מילוי אוטומטי והורדות.}two{‏לפי הגדרת האדמין, Brave נסגר אוטומטית כשלא משתמשים בו במשך # דקות. נתוני הגלישה נמחקים. בין הנתונים שיימחקו: היסטוריה, מילוי אוטומטי והורדות.}other{‏לפי הגדרת האדמין, Brave נסגר אוטומטית כשלא משתמשים בו במשך # דקות. נתוני הגלישה נמחקים. בין הנתונים שיימחקו: היסטוריה, מילוי אוטומטי והורדות.}}</translation>
 <translation id="1203500561924088507">תודה שהתקנת. עליך להפעיל מחדש את הדפדפן לפני השימוש ב-<ph name="BUNDLE_NAME"/>.</translation>
@@ -83,6 +84,7 @@
 <translation id="4805806622840861220">‏הפעלה מחדש של Brave</translation>
 <translation id="1742948938503172561">‏התאמה אישית של פרופיל Brave החדש</translation>
 <translation id="1477146545787277177">‏וואו! Brave קרס. להפעיל מחדש עכשיו?</translation>
+<translation id="907470742420136113">‏Brave מנסה לשנות את ההגדרות למילוי אמצעי התשלום.</translation>
 <translation id="2585240446624043880">‏Brave אינו יכול לקרוא ולכתוב בספריית הנתונים שלו: <ph name="USER_DATA_DIRECTORY"/></translation>
 <translation id="2423637317249323944">‏מותקנת גרסה <ph name="PRODUCT_VERSION"/> של Brave</translation>
 <translation id="3286538390144397061">הפעל מחדש כעת</translation>
@@ -183,6 +185,7 @@
 <translation id="5646769069113654257">‏יש להפעיל מחדש את Brave</translation>
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">‏הצגת Brave בשפה זו</translation>
+<translation id="585620188971323280">לשנות את ההגדרות למילוי אמצעי התשלום.</translation>
 <translation id="7207456302801184289">‏ברוכים הבאים ל-Brave‏</translation>
 <translation id="8054200348483755053">‏מערכת Brave גילתה שהפריטים האלה מכילים תוכנה זדונית:</translation>
 <translation id="5895138241574237353">הפעלה מחדש</translation>
@@ -233,6 +236,7 @@
 <translation id="2675662665675552980">‏הגדרה זו גם קובעת איזה דף מוצג כשמפעילים את Brave.</translation>
 <translation id="648319183876919572">הגרסה המשופרת של הגלישה הבטוחה מגנה עליך טוב יותר מפני הורדות ואתרים מסוכנים</translation>
 <translation id="5590013613412457132">‏הסרה של התקנת Brave</translation>
+<translation id="3617744907966785605">‏לפי הגדרת הארגון, Brave נסגר אוטומטית כשלא משתמשים בו במשך <ph name="TIMEOUT_DURATION"/>. נתוני הגלישה נמחקו. בין הנתונים שנמחקו: היסטוריה, מילוי אוטומטי והורדות.</translation>
 <translation id="8646609321956191980">‏בכל פרופיל מאוחסנים נתוני Brave משלו כמו סימניות, היסטוריה, סיסמאות ועוד</translation>
 <translation id="2535436634051789953">‏אפשר לעבור לפרופיל Brave אחר כדי לראות סיסמאות</translation>
 <translation id="2312399718665761438">‏Brave שולח את הטקסט שמוקלד בשדות טקסט ל-Brave כדי לתקן שגיאות כתיב</translation>
@@ -269,6 +273,7 @@
 <translation id="7025789849649390912">ההתקנה נעצרה.</translation>
 <translation id="1705567146636171298">‏יש לעדכן את Brave‏</translation>
 <translation id="5499063270485366718">‏אם אין לתמונה תיאור מועיל, Brave ינסה לספק לך תיאור. כדי ליצור תיאורים, התמונות נשלחות אל Brave.</translation>
+<translation id="2332301637111071062">‏לפי הגדרת הארגון, נתוני Brave נמחקים אוטומטית כשלא משתמשים בהם במשך <ph name="TIMEOUT_DURATION"/>. בין הנתונים שנמחקו: היסטוריה, מילוי אוטומטי והורדות.</translation>
 <translation id="1008530050039597147">‏נדרשת הרשאת גישה למצלמה ב-Brave עבור האתר הזה</translation>
 <translation id="1197672524850678392">‏לא ניתן היה להפעיל את Brave. יש לנסות שוב.</translation>
 <translation id="3405035915691517126">‏Brave לא יכול לבדוק את הסיסמאות שלך. יש לנסות שוב בעוד 24 שעות.</translation>
@@ -321,6 +326,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="8207657266087451193">‏אם אין לתמונה תיאור מועיל, Brave ינסה לספק לך תיאור. כדי ליצור תיאורים, התמונות נשלחות אל Brave. אפשר להשבית את האפשרות הזו בכל זמן דרך ההגדרות.</translation>
 <translation id="8622246347342688645">‏Brave לא יכול לבדוק את הסיסמאות שלך כי לא נכנסת לחשבון</translation>
 <translation id="89367911614620585">‏Brave‏ חסם את הקובץ הזה כי הוא עלול להיות מסוכן.</translation>
+<translation id="6098476632210317894">‏לפי הגדרת הארגון, Brave נסגר אוטומטית כשלא משתמשים בו במשך <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="5196445203969439095">‏מפיקים את המירב מ-Brave</translation>
 <translation id="3360368475735266712">‏כניסה לחשבון תסנכרן ותתאים אישית את Brave בכל המכשירים שברשותך</translation>
 <translation id="2591326305549412656">‏בכתובת <ph name="USER_EMAIL_ADDRESS"/> השתמשו בעבר ב-Brave</translation>
@@ -338,6 +344,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="7890337656251106515">‏<ph name="BEGIN_BOLD"/>איך אנחנו משתמשים בנתונים האלה:<ph name="END_BOLD"/> אתרים יכולים לשמור מידע ב-Brave לגבי תחומי העניין שלך. לדוגמה, אם ביקרת באתר כדי לקנות נעליים למרתון, האתר עשוי להגדיר 'ריצת מרתון' כתחום עניין שלך. לאחר מכן, בביקור באתר שונה, למשל כדי להירשם למרוץ, יכול להיות שתוצג לך מודעה לנעלי ריצה על סמך תחומי העניין שלך.</translation>
 <translation id="3052349005266761501">‏הפעלת Brave מתבצעת...</translation>
 <translation id="6283840329609797763">‏ההתקנה נכשלה בשל שגיאה לא מזוהה. יש להוריד שוב את Brave.</translation>
+<translation id="4668189655335212354">{NUM_DEVICES,plural, =0{‏תוסף ל-Brave ניגש למכשירי ממשק אנושי (HID)}=1{‏תוסף ל-Brave ניגש למכשיר ממשק אנושי (HID) אחד}one{‏תוסף ל-Brave ניגש ל-# מכשירי ממשק אנושי (HID)}two{‏תוסף ל-Brave ניגש ל-# מכשירי ממשק אנושי (HID)}other{‏תוסף ל-Brave ניגש ל-# מכשירי ממשק אנושי (HID)}}</translation>
 <translation id="2433912322225810055">‏הגדרה זו גם קובעת איזה דף מוצג כשמפעילים את Brave או מבצעים חיפוש מסרגל הכתובות.</translation>
 <translation id="4100716194836114130">‏זהו ה-Brave שלך</translation>
 <translation id="4831743161813926460">‏Brave זקוק להרשאת גישה אל המצלמה והמיקרופון בשביל האתר הזה</translation>
@@ -353,6 +360,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="8986207147630327271">בחרת להוסיף פרופיל עבודה לדפדפן זה ולתת למנהל המערכת שליטה רק על פרופיל העבודה.</translation>
 <translation id="82609232232243542">‏כניסה אל Brave</translation>
 <translation id="3273774796888928550">‏יש להיכנס אל Brave. אם רוצים להיכנס לחשבון באופן חד-פעמי בלבד, אפשר <ph name="GUEST_LINK_BEGIN"/>להשתמש במכשיר כאורח<ph name="GUEST_LINK_END"/>.</translation>
+<translation id="4561046754724442504">‏Brave נסגר באופן אוטומטי</translation>
 <translation id="5173820533850252773">‏Brave אינו מעודכן</translation>
 <translation id="310518206836658214">{0,plural, =1{‏Brave יופעל מחדש בעוד שעה}one{‏Brave יופעל מחדש בעוד # שעות}two{‏Brave יופעל מחדש בעוד # שעות}other{‏Brave יופעל מחדש בעוד # שעות}}</translation>
 <translation id="5190991181158966940">‏כדי לקבל עדכונים של Brave בעתיד, צריך להשתמש ב-Windows מגרסה 10 ואילך. במחשב הזה פועלת מערכת Windows 8.1.</translation>

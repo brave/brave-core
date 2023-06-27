@@ -324,7 +324,6 @@
 <translation id="3357319404342882895">嚴格</translation>
 <translation id="8823559166155093873">封鎖 Cookie</translation>
 <translation id="5770288601196774623">僅跨站</translation>
-<translation id="6795317840397506736">預設移除</translation>
 <translation id="3587482841069643663">全部</translation>
 <translation id="7390783310074170337">預設瀏覽</translation>
 <translation id="130615081792797568">簡式瀏覽</translation>
@@ -351,22 +350,10 @@
 <translation id="4182731739150761577">顯示完整清單</translation>
 <translation id="1340263054776016283">輸入過濾器清單 URL</translation>
 <translation id="8578397014396032341">內容過濾器</translation>
+<translation id="3020183492814296499">捷徑</translation>
 <translation id="5567412479632285879">Brave 獎勵已停用</translation>
 <translation id="413570371620795359">開啟 Rewards 面板即可啟用並開始使用</translation>
-<translation id="3849957491997306859">自動偵測</translation>
-<translation id="8798099450830957504">預設</translation>
-<translation id="4851215387785619212">Brave 私密廣告</translation>
-<translation id="7808122468353671181">透過觀看 Brave 廣告來賺取代幣。我們會從您的瀏覽行為判斷您的喜好，並據此投放廣告。您的瀏覽器不會洩漏任何個人資料或瀏覽記錄。</translation>
-<translation id="1758947220824279023">廣告顯示數量上限</translation>
-<translation id="2356652719351432565">區域廣告相關度</translation>
-<translation id="2196950072404588793">這能讓 Brave 向您顯示所在區域特有的廣告。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
-<translation id="2433507940547922241">外觀</translation>
-<translation id="6112368337882254910">自動捐獻</translation>
-<translation id="9132509928968869844">每月自動捐獻限制</translation>
-<translation id="7286722244752781970">紀錄一次造訪前的最少頁面時間</translation>
-<translation id="4424486208397124985">攸關發布者的最低瀏覽數</translation>
-<translation id="6248554379744796526">在清單中顯示未經驗證的網站</translation>
-<translation id="924777189963477634">開啟自動捐獻即表示您同意<ph name="BEGIN_LINK_TOS"/>服務條款<ph name="END_LINK_TOS"/>與<ph name="BEGIN_LINK_PP"/>隱私政策<ph name="END_LINK_PP"/>。</translation>
+<translation id="1051600834033686945">開啟完整 Brave 獎勵設定</translation>
 <translation id="6333347122924254968">在網址列顯示 Brave 獎勵圖示</translation>
 <translation id="7483857210736407752">在網站上顯示「小費」按鈕</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -378,11 +365,14 @@
 <translation id="958971637207126733">允許 Linkedin 嵌入貼文</translation>
 <translation id="8792121506918889955">WebRTC IP 處理政策</translation>
 <translation id="6165508094623778733">了解更多</translation>
+<translation id="8798099450830957504">預設</translation>
 <translation id="1822560017823072927">預設公共和隱私介面</translation>
 <translation id="5825943197137337319">僅限預設公用介面</translation>
 <translation id="1689062823386843231">停用非代理 UDP</translation>
 <translation id="3540231253392253941">使用 Google 服務來推播訊息</translation>
 <translation id="933652931229970927">自動傳送診斷報告</translation>
+<translation id="4891600875049212418">造訪敏感網站時停止記錄</translation>
+<translation id="2356070529366658676">詢問</translation>
 <translation id="4846154056248462491">離開</translation>
 <translation id="2808630562319398131">重設 Brave 獎勵資料…</translation>
 <translation id="6438096877646138757">關閉時清除 cookie 的網站</translation>
@@ -391,6 +381,27 @@
 <translation id="7050661313034564003">顯示此網站的所有 Cookie 和儲存於本機的資料</translation>
 <translation id="8339059274628563283"><ph name="SITE"/> 儲存在本機的資料</translation>
 <translation id="1963227389609234879">全部移除</translation>
+<translation id="8168435359814927499">內容</translation>
+<translation id="7702907602086592255">網域</translation>
+<translation id="3202131003361292969">路徑</translation>
+<translation id="5390743329570580756">傳送連線類型</translation>
+<translation id="6742339027238151589">可透過指令碼存取</translation>
+<translation id="1067048845568873861">建立時間</translation>
+<translation id="5747552184818312860">有效期限</translation>
+<translation id="3858860766373142691">名稱</translation>
+<translation id="361106536627977100">Flash 資料</translation>
+<translation id="4530494379350999373">來源</translation>
+<translation id="8195027750202970175">佔磁碟容量</translation>
+<translation id="9116465289595958864">上次修改時間</translation>
+<translation id="4590324241397107707">資料庫儲存空間</translation>
+<translation id="5338503421962489998">本機儲存空間</translation>
+<translation id="6032912588568283682">檔案系統</translation>
+<translation id="8016266267177410919">暫時儲存空間</translation>
+<translation id="4175737294868205930">永久儲存空間</translation>
+<translation id="1234808891666923653">Service Workers</translation>
+<translation id="3432762828853624962">Shared Workers</translation>
+<translation id="2927017729816812676">快取儲存空間</translation>
+<translation id="1389601498324964367">配額管理儲存空間</translation>
 <translation id="814018970995616154">以 Brave 中儲存的不安全網站清單檢查 URL。</translation>
 <translation id="1144810021918451336">無法協助您防護危險網站、下載和延伸套件。</translation>
 <translation id="5570470519803062774">網站與 Shields 設定</translation>
@@ -536,7 +547,6 @@
 <translation id="4954512758656527938">預設以太坊錢包</translation>
 <translation id="7701023802820268122">預設 Solana 錢包</translation>
 <translation id="8488282162676695335">Brave 錢包</translation>
-<translation id="2356070529366658676">詢問</translation>
 <translation id="6942354363301686374">擴充功能 (無後援)</translation>
 <translation id="1274962333945373242">Crypto Wallets（已棄用）</translation>
 <translation id="702381242110464396">擴充功能 (Brave 錢包後援)</translation>
@@ -553,7 +563,7 @@
 <translation id="4440478655766953083">自動固定 NFT</translation>
 <translation id="464460032678285850">新增至 Brave 錢包的 NFT 可能會自動固定至本機 IPFS 節點。
     注意：系統可能會為了固定而啟動 IPFS 常駐程式，因此您的本機節點會將快取資料和固定的 NFT 分享到 IPFS 網路。</translation>
-<translation id="4993345308607970390">重設 Brave 錢包</translation>
+<translation id="2326850911705720398">重設並清除錢包資料</translation>
 <translation id="5887022857624190239">清除釘選的 NFT</translation>
 <translation id="204584113330893805">當啟動本機 IPFS 節點時，系統會將已釘選的 NFT 代管至 IPFS 網路。
     您目前有 <ph name="NFT_COUNT"/> 個已釘選的 NFT。</translation>
