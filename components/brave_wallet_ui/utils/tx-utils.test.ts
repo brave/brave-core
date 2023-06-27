@@ -16,7 +16,8 @@ import Amount from './amount'
 import {
   getETHSwapTransactionBuyAndSellTokens,
   getTransactionGas,
-  getTransactionStatusString
+  getTransactionStatusString,
+  toTxDataUnion
 } from './tx-utils'
 
 describe('Check Transaction Status Strings Value', () => {
@@ -151,5 +152,28 @@ describe('getETHSwapTransactionBuyAndSellTokens', () => {
     )
     expect(buyAmountWei.value?.toString()).toEqual(minBuyAmountArg)
     expect(sellAmountWei.value?.toString()).toEqual(sellAmountArg)
+  })
+})
+
+describe('toTxDataUnion', () => {
+  test('works', () => {
+    const filTxData: BraveWallet.FilTxData = {
+      nonce: '',
+      gasPremium: '',
+      gasFeeCap: '',
+      gasLimit: '',
+      maxFee: '0',
+      to: 'to',
+      from: 'from',
+      value: 'value'
+    }
+
+    const union = toTxDataUnion({ filTxData: filTxData })
+
+    expect(Object.keys(union).length).toBe(1)
+    expect(union.filTxData).toBe(filTxData)
+    expect(union.ethTxData).toBe(undefined)
+    expect(union.ethTxData1559).toBe(undefined)
+    expect(union.solanaTxData).toBe(undefined)
   })
 })
