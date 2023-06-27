@@ -1794,8 +1794,8 @@ void BraveWalletService::GetBalanceScannerSupportedChains(
 }
 
 void BraveWalletService::GetSpamNFTs(const std::string& wallet_address,
-                                     mojom::CoinType coin,
                                      const std::vector<std::string>& chain_ids,
+                                     mojom::CoinType coin,
                                      const absl::optional<std::string>& cursor,
                                      GetSpamNFTsCallback callback) {}
 

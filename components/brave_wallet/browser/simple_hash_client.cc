@@ -149,8 +149,8 @@ SimpleHashClient::~SimpleHashClient() = default;
 void SimpleHashClient::FetchNFTsFromSimpleHash(
     const std::string& account_address,
     const std::vector<std::string>& chain_ids,
-    absl::optional<std::string> cursor,
     mojom::CoinType coin,
+    const absl::optional<std::string>& cursor,
     FetchNFTsFromSimpleHashCallback callback) {
   if (!(coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL)) {
     std::move(callback).Run({}, absl::nullopt);
@@ -214,7 +214,7 @@ void SimpleHashClient::FetchAllNFTsFromSimpleHash(
       weak_ptr_factory_.GetWeakPtr(), std::vector<mojom::BlockchainTokenPtr>(),
       account_address, chain_ids, coin, std::move(callback));
 
-  FetchNFTsFromSimpleHash(account_address, chain_ids, absl::nullopt, coin,
+  FetchNFTsFromSimpleHash(account_address, chain_ids, coin, absl::nullopt,
                           std::move(internal_callback));
 }
 
@@ -225,7 +225,7 @@ void SimpleHashClient::OnFetchAllNFTsFromSimpleHash(
     mojom::CoinType coin,
     FetchAllNFTsFromSimpleHashCallback callback,
     std::vector<mojom::BlockchainTokenPtr> nfts,
-    absl::optional<std::string> next_cursor) {
+    const absl::optional<std::string>& next_cursor) {
   // Combine the NFTs with the ones fetched already
   for (auto& token : nfts) {
     nfts_so_far.push_back(std::move(token));
@@ -238,7 +238,7 @@ void SimpleHashClient::OnFetchAllNFTsFromSimpleHash(
                        weak_ptr_factory_.GetWeakPtr(), std::move(nfts_so_far),
                        account_address, chain_ids, coin, std::move(callback));
 
-    FetchNFTsFromSimpleHash(account_address, chain_ids, *next_cursor, coin,
+    FetchNFTsFromSimpleHash(account_address, chain_ids, coin, *next_cursor,
                             std::move(internal_callback));
     return;
   }
@@ -584,7 +584,7 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
 GURL SimpleHashClient::GetSimpleHashNftsByWalletUrl(
     const std::string& account_address,
     const std::vector<std::string>& chain_ids,
-    absl::optional<std::string> cursor) {
+    const absl::optional<std::string>& cursor) {
   if (chain_ids.empty() || account_address.empty()) {
     return GURL();
   }
