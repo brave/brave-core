@@ -16,7 +16,7 @@ Resolves
 
 ## Submitter Checklist:
 
-- [ ] I confirm that no security/privacy review [is needed](https://github.com/brave/brave-browser/wiki/Security-reviews), or that I have [requested](https://github.com/brave/security/issues/new/choose) one
+- [ ] I confirm that no [security/privacy review is needed](https://github.com/brave/brave-browser/wiki/Security-reviews) and no other type of reviews are needed, or that I have [requested](https://github.com/brave/reviews/issues/new/choose) them
 - [ ] There is a [ticket](https://github.com/brave/brave-browser/issues) for my issue
 - [ ] Used Github [auto-closing keywords](https://docs.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue) in the PR description above
 - [ ] Wrote a good [PR/commit description](https://google.github.io/eng-practices/review/developer/cl-descriptions.html)
