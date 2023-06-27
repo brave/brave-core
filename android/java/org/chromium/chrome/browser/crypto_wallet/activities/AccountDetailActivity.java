@@ -43,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class AccountDetailActivity
         extends BraveWalletBaseActivity implements OnWalletListItemClick, ApprovedTxObserver {
@@ -108,26 +109,32 @@ public class AccountDetailActivity
                 mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks, allNetworks -> {
                     PortfolioHelper portfolioHelper =
                             new PortfolioHelper(this, allNetworks, accountInfos);
-                    portfolioHelper.setSelectedNetwork(selectedNetwork);
-                    portfolioHelper.calculateBalances(() -> {
-                        RecyclerView rvAssets = findViewById(R.id.rv_assets);
+                    portfolioHelper.setSelectedNetworks(
+                            allNetworks.stream()
+                                    .filter(networkInfo
+                                            -> networkInfo.coin == mAccountInfo.accountId.coin)
+                                    .collect(Collectors.toList()));
+                    portfolioHelper.fetchAssetsAndDetails(
+                            TokenUtils.TokenType.ALL, portfolioHelperCopy -> {
+                                RecyclerView rvAssets = findViewById(R.id.rv_assets);
 
-                        List<BlockchainToken> userAssets = portfolioHelper.getUserAssets();
-                        HashMap<String, Double> perTokenCryptoSum =
-                                portfolioHelper.getPerTokenCryptoSum();
-                        HashMap<String, Double> perTokenFiatSum =
-                                portfolioHelper.getPerTokenFiatSum();
+                                List<BlockchainToken> userAssets = portfolioHelper.getUserAssets();
+                                HashMap<String, Double> perTokenCryptoSum =
+                                        portfolioHelper.getPerTokenCryptoSum();
+                                HashMap<String, Double> perTokenFiatSum =
+                                        portfolioHelper.getPerTokenFiatSum();
 
-                        String tokensPath =
-                                BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
+                                String tokensPath = BlockchainRegistryFactory.getInstance()
+                                                            .getTokensIconsLocation();
 
-                        WalletCoinAdapter walletCoinAdapter =
-                                Utils.setupVisibleAssetList(userAssets, perTokenCryptoSum,
-                                        perTokenFiatSum, tokensPath, getResources(), allNetworks);
-                        walletCoinAdapter.setOnWalletListItemClick(AccountDetailActivity.this);
-                        rvAssets.setAdapter(walletCoinAdapter);
-                        rvAssets.setLayoutManager(new LinearLayoutManager(this));
-                    });
+                                WalletCoinAdapter walletCoinAdapter = Utils.setupVisibleAssetList(
+                                        userAssets, perTokenCryptoSum, perTokenFiatSum, tokensPath,
+                                        getResources(), allNetworks);
+                                walletCoinAdapter.setOnWalletListItemClick(
+                                        AccountDetailActivity.this);
+                                rvAssets.setAdapter(walletCoinAdapter);
+                                rvAssets.setLayoutManager(new LinearLayoutManager(this));
+                            });
                 });
     }
 
