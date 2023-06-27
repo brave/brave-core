@@ -11,7 +11,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/browser/ui/webui/brave_wallet/android/swap_page_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_ui.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
