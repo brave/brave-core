@@ -17,6 +17,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
@@ -27,6 +28,7 @@ import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkResponsesCollector;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
@@ -290,6 +292,20 @@ public class NetworkModel implements JsonRpcServiceObserver {
         synchronized (mLock) {
             if (mJsonRpcService == null) {
                 return;
+            }
+
+            // Mark hidden networks as visible in preferences.
+            for (Map.Entry<String, Integer> entry :
+                    WalletConstants.KNOWN_TEST_CHAINS_MAP.entrySet()) {
+                if ((!AndroidUtils.isDebugBuild())
+                        && entry.getKey().equals(BraveWalletConstants.LOCALHOST_CHAIN_ID)) {
+                    // Hide local host for non-debug builds.
+                    mJsonRpcService.addHiddenNetwork(
+                            entry.getValue(), entry.getKey(), result -> {/* No-op. */});
+                } else {
+                    mJsonRpcService.removeHiddenNetwork(
+                            entry.getValue(), entry.getKey(), result -> {/* No-op. */});
+                }
             }
 
             getAllNetworks(mJsonRpcService, mSharedData.getSupportedCryptoCoins(),
