@@ -13,6 +13,7 @@ import { NewTabLink } from '../../shared/components/new_tab_link'
 import { GeminiIcon } from '../../shared/components/icons/gemini_icon'
 import { UpholdIcon } from '../../shared/components/icons/uphold_icon'
 import { BitflyerIcon } from '../../shared/components/icons/bitflyer_icon'
+import { ZebPayIcon } from '../../shared/components/icons/zebpay_icon'
 import { supportedWalletRegionsURL } from '../../shared/lib/rewards_urls'
 
 import * as urls from '../../shared/lib/rewards_urls'
@@ -24,6 +25,7 @@ function renderProviderIcon (provider: string) {
     case 'bitflyer': return <BitflyerIcon />
     case 'gemini': return <GeminiIcon />
     case 'uphold': return <UpholdIcon />
+    case 'zebpay': return <ZebPayIcon />
     default: return null
   }
 }

@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -11,6 +12,7 @@ import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { GeminiIcon } from '../icons/gemini_icon'
 import { BitflyerIcon } from '../icons/bitflyer_icon'
 import { UpholdIcon } from '../icons/uphold_icon'
+import { ZebPayIcon } from '../icons/zebpay_icon'
 
 import * as style from './external_wallet_bubble.style'
 
@@ -36,6 +38,7 @@ export function ExternalWalletBubble (props: Props) {
       case 'gemini': return <GeminiIcon />
       case 'bitflyer': return <BitflyerIcon />
       case 'uphold': return <UpholdIcon />
+      case 'zebpay': return <ZebPayIcon />
     }
   }
 

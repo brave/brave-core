@@ -369,8 +369,9 @@ export function AutoContributePanel () {
     )
   }
 
-  // Don't show AC panel for users in bitflyer-enabled regions.
-  if (data.externalWalletProviderList.includes('bitflyer')) {
+  // Don't show AC panel for users in bitFlyer/ZebPay-enabled regions.
+  if (data.externalWalletProviderList.includes('bitflyer')
+   || data.externalWalletProviderList.includes('zebpay')) {
     return null
   }
 

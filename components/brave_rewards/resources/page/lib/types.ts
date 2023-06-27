@@ -251,7 +251,7 @@ export interface ContributionSaved {
   type: RewardsType
 }
 
-export type WalletType = 'uphold' | 'bitflyer' | 'gemini'
+export type WalletType = 'uphold' | 'bitflyer' | 'gemini' | 'zebpay'
 
 export interface ExternalWallet {
   address: string

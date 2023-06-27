@@ -151,6 +151,14 @@ const Config = function () {
   this.upholdSandboxClientSecret = getNPMConfig(['uphold_sandbox_client_secret']) || ''
   this.upholdSandboxFeeAddress = getNPMConfig(['uphold_sandbox_fee_address']) || ''
   this.upholdSandboxOauthUrl = getNPMConfig(['uphold_sandbox_oauth_url']) || ''
+  this.zebPayProductionApiUrl = getNPMConfig(['zebpay_production_api_url']) || ''
+  this.zebPayProductionClientId = getNPMConfig(['zebpay_production_client_id']) || ''
+  this.zebPayProductionClientSecret = getNPMConfig(['zebpay_production_client_secret']) || ''
+  this.zebPayProductionOauthUrl = getNPMConfig(['zebpay_production_oauth_url']) || ''
+  this.zebPaySandboxApiUrl = getNPMConfig(['zebpay_sandbox_api_url']) || ''
+  this.zebPaySandboxClientId = getNPMConfig(['zebpay_sandbox_client_id']) || ''
+  this.zebPaySandboxClientSecret = getNPMConfig(['zebpay_sandbox_client_secret']) || ''
+  this.zebPaySandboxOauthUrl = getNPMConfig(['zebpay_sandbox_oauth_url']) || ''
   this.braveSyncEndpoint = getNPMConfig(['brave_sync_endpoint']) || ''
   this.safeBrowsingApiEndpoint = getNPMConfig(['safebrowsing_api_endpoint']) || ''
   this.updaterProdEndpoint = getNPMConfig(['updater_prod_endpoint']) || ''
@@ -335,6 +343,14 @@ Config.prototype.buildArgs = function () {
     uphold_sandbox_client_secret: this.upholdSandboxClientSecret,
     uphold_sandbox_fee_address: this.upholdSandboxFeeAddress,
     uphold_sandbox_oauth_url: this.upholdSandboxOauthUrl,
+    zebpay_production_api_url: this.zebPayProductionApiUrl,
+    zebpay_production_client_id: this.zebPayProductionClientId,
+    zebpay_production_client_secret: this.zebPayProductionClientSecret,
+    zebpay_production_oauth_url: this.zebPayProductionOauthUrl,
+    zebpay_sandbox_api_url: this.zebPaySandboxApiUrl,
+    zebpay_sandbox_client_id: this.zebPaySandboxClientId,
+    zebpay_sandbox_client_secret: this.zebPaySandboxClientSecret,
+    zebpay_sandbox_oauth_url: this.zebPaySandboxOauthUrl,
     brave_version_major: version_parts[0],
     brave_version_minor: version_parts[1],
     brave_version_build: version_parts[2],
@@ -635,6 +651,14 @@ Config.prototype.buildArgs = function () {
     delete args.uphold_sandbox_client_secret
     delete args.uphold_sandbox_fee_address
     delete args.uphold_sandbox_oauth_url
+    delete args.zebpay_production_api_url
+    delete args.zebpay_production_client_id
+    delete args.zebpay_production_client_secret
+    delete args.zebpay_production_oauth_url
+    delete args.zebpay_sandbox_api_url
+    delete args.zebpay_sandbox_client_id
+    delete args.zebpay_sandbox_client_secret
+    delete args.zebpay_sandbox_oauth_url
     delete args.webcompat_report_api_endpoint
     delete args.use_blink_v8_binding_new_idl_interface
     delete args.v8_enable_verify_heap
@@ -922,6 +946,38 @@ Config.prototype.update = function (options) {
 
   if (options.uphold_sandbox_oauth_url) {
     this.upholdSandboxOauthUrl = options.uphold_sandbox_oauth_url
+  }
+
+  if (options.zebpay_production_api_url) {
+    this.zebPayProductionApiUrl = options.zebpay_production_api_url
+  }
+
+  if (options.zebpay_production_client_id) {
+    this.zebPayProductionClientId = options.zebpay_production_client_id
+  }
+
+  if (options.zebpay_production_client_secret) {
+    this.zebPayProductionClientSecret = options.zebpay_production_client_secret
+  }
+
+  if (options.zebpay_production_oauth_url) {
+    this.zebPayProductionOauthUrl = options.zebpay_production_oauth_url
+  }
+
+  if (options.zebpay_sandbox_api_url) {
+    this.zebPaySandboxApiUrl = options.zebpay_sandbox_api_url
+  }
+
+  if (options.zebpay_sandbox_client_id) {
+    this.zebPaySandboxClientId = options.zebpay_sandbox_client_id
+  }
+
+  if (options.zebpay_sandbox_client_secret) {
+    this.zebPaySandboxClientSecret = options.zebpay_sandbox_client_secret
+  }
+
+  if (options.zebpay_sandbox_oauth_url) {
+    this.zebPaySandboxOauthUrl = options.zebpay_sandbox_oauth_url
   }
 
   if (options.safebrowsing_api_endpoint) {

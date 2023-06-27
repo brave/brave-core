@@ -193,6 +193,7 @@ class PageWallet extends React.Component<Props, State> {
       case 'bitflyer': return 'bitflyer'
       case 'gemini': return 'gemini'
       case 'uphold': return 'uphold'
+      case 'zebpay': return 'zebpay'
       default: return null
     }
   }

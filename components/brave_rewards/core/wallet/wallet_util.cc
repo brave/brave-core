@@ -28,6 +28,7 @@
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
+#include "brave/components/brave_rewards/core/zebpay/zebpay_util.h"
 
 namespace brave_rewards::internal::wallet {
 
@@ -40,6 +41,8 @@ std::string WalletTypeToState(const std::string& wallet_type) {
     return state::kWalletGemini;
   } else if (wallet_type == constant::kWalletUphold) {
     return state::kWalletUphold;
+  } else if (wallet_type == constant::kWalletZebPay) {
+    return state::kWalletZebPay;
   } else if (wallet_type == "test") {
     return "wallets." + wallet_type;
   } else {
@@ -418,6 +421,8 @@ mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
     return gemini::GenerateLinks(std::move(wallet));
   } else if (wallet->type == constant::kWalletUphold) {
     return uphold::GenerateLinks(std::move(wallet));
+  } else if (wallet->type == constant::kWalletZebPay) {
+    return zebpay::GenerateLinks(std::move(wallet));
   } else if (wallet->type == "test") {
     return wallet;
   } else {
@@ -435,6 +440,8 @@ void FetchBalance(RewardsEngineImpl& engine,
     engine.gemini()->FetchBalance(std::move(callback));
   } else if (wallet_type == constant::kWalletUphold) {
     engine.uphold()->FetchBalance(std::move(callback));
+  } else if (wallet_type == constant::kWalletZebPay) {
+    engine.zebpay()->FetchBalance(std::move(callback));
   } else {
     NOTREACHED() << "Unexpected wallet type " << wallet_type << '!';
     std::move(callback).Run(mojom::Result::FAILED, 0.0);

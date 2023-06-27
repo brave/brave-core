@@ -65,6 +65,9 @@ void LoadRewardsURL(
   const GURL uphold_production_oauth_url(
       BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL));
   const GURL uphold_sandbox_oauth_url(BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL));
+  const GURL zebpay_production_oauth_url(
+      BUILDFLAG(ZEBPAY_PRODUCTION_OAUTH_URL));
+  const GURL zebpay_sandbox_oauth_url(BUILDFLAG(ZEBPAY_SANDBOX_OAUTH_URL));
 
   DCHECK(bitflyer_production_url.is_valid() &&
          bitflyer_production_url.has_host());
@@ -77,6 +80,10 @@ void LoadRewardsURL(
          uphold_production_oauth_url.has_host());
   DCHECK(uphold_sandbox_oauth_url.is_valid() &&
          uphold_sandbox_oauth_url.has_host());
+  DCHECK(zebpay_production_oauth_url.is_valid() &&
+         zebpay_production_oauth_url.has_host());
+  DCHECK(zebpay_sandbox_oauth_url.is_valid() &&
+         zebpay_sandbox_oauth_url.has_host());
 
   const auto bitflyer_production_host = bitflyer_production_url.host_piece();
   const auto bitflyer_sandbox_host = bitflyer_sandbox_url.host_piece();
@@ -86,6 +93,9 @@ void LoadRewardsURL(
   const auto uphold_production_oauth_host =
       uphold_production_oauth_url.host_piece();
   const auto uphold_sandbox_oauth_host = uphold_sandbox_oauth_url.host_piece();
+  const auto zebpay_production_oauth_host =
+      zebpay_production_oauth_url.host_piece();
+  const auto zebpay_sandbox_oauth_host = zebpay_sandbox_oauth_url.host_piece();
 
   const base::StringPiece kAllowedDomains[] = {
       bitflyer_production_host,      // bitFlyer production
@@ -93,7 +103,9 @@ void LoadRewardsURL(
       gemini_production_oauth_host,  // Gemini production
       gemini_sandbox_oauth_host,     // Gemini sandbox
       uphold_production_oauth_host,  // Uphold production
-      uphold_sandbox_oauth_host      // Uphold sandbox
+      uphold_sandbox_oauth_host,     // Uphold sandbox
+      zebpay_production_oauth_host,  // ZebPay production
+      zebpay_sandbox_oauth_host      // ZebPay sandbox
   };
 
   bool allowed_domain = false;

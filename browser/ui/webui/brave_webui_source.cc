@@ -760,6 +760,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "processorUphold", IDS_BRAVE_UI_PROCESSOR_UPHOLD },
         { "processorBitflyer", IDS_BRAVE_UI_PROCESSOR_BITFLYER },
         { "processorGemini", IDS_BRAVE_UI_PROCESSOR_GEMINI },
+        { "processorZebPay", IDS_BRAVE_UI_PROCESSOR_ZEBPAY },
         { "promotionAds", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_ADS },
         { "promotionAmount", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_AMOUNT },
         { "promotionClaimedAt", IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_CLAIMED_AT },              // NOLINT

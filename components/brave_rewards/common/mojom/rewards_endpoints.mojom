@@ -5,6 +5,13 @@
 
 module brave_rewards.mojom;
 
+enum GetBalanceZebPayError {
+  kFailedToCreateRequest,
+  kAccessTokenExpired,                  // HTTP 401
+  kUnexpectedStatusCode,                // HTTP xxx
+  kFailedToParseBody
+};
+
 enum GetRecipientIDGeminiError {
   kFailedToCreateRequest,
   kUnexpectedStatusCode,                // HTTP xxx
@@ -99,6 +106,12 @@ enum PostCreateTransactionUpholdError {
 };
 
 enum PostOAuthUpholdError {
+  kFailedToCreateRequest,
+  kUnexpectedStatusCode,                // HTTP xxx
+  kFailedToParseBody
+};
+
+enum PostOAuthZebPayError {
   kFailedToCreateRequest,
   kUnexpectedStatusCode,                // HTTP xxx
   kFailedToParseBody
