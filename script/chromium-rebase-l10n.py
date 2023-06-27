@@ -124,7 +124,7 @@ def generate_overrides_and_replace_strings(source_string_path):
         if textify(original_messages[i]) == textify(modified_messages[i]):
             modified_messages[i].getparent().remove(modified_messages[i])
 
-    # Remove uneeded things from the override grds
+    # Remove unneeded things from the override grds
     nodes_to_remove = [
         '//outputs',
         '//comment()',
