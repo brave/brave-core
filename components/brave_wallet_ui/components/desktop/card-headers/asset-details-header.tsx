@@ -9,9 +9,13 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 // Selectors
 import {
   useUnsafePageSelector,
-  useSafePageSelector
+  useSafePageSelector,
+  useSafeUISelector
 } from '../../../common/hooks/use-safe-selector'
 import { PageSelectors } from '../../../page/selectors'
+import {
+  UISelectors
+} from '../../../common/selectors'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -86,6 +90,9 @@ export const AssetDetailsHeader = (props: Props) => {
   const selectedAsset =
     useUnsafePageSelector(PageSelectors.selectedAsset)
   const selectedTimeline = useSafePageSelector(PageSelectors.selectedTimeline)
+
+  // UI Selectors (safe)
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // queries
   const { data: assetsNetwork } = useGetNetworkQuery(
@@ -169,7 +176,7 @@ export const AssetDetailsHeader = (props: Props) => {
 
   return (
     <Row
-      padding='24px 0px'
+      padding={isPanel ? '12px 20px' : '24px 0px'}
       justifyContent='space-between'
     >
       <Row

@@ -6,10 +6,16 @@
 import * as React from 'react'
 
 // Selectors
-import { WalletSelectors } from '../../../common/selectors'
+import {
+  WalletSelectors,
+  UISelectors
+} from '../../../common/selectors'
 
 // Hooks
-import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import {
+  useSafeWalletSelector,
+  useSafeUISelector
+} from '../../../common/hooks/use-safe-selector'
 
 // Components
 import { WalletNav } from '../wallet-nav/wallet-nav'
@@ -70,6 +76,7 @@ export const WalletPageWrapper = (props: Props) => {
   // Wallet Selectors (safe)
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // State
   const [headerShadowOpacity, setHeaderShadowOpacity]
@@ -141,11 +148,15 @@ export const WalletPageWrapper = (props: Props) => {
           <BackgroundGradientBottomLayer />
         </BackgroundGradientWrapper>
       }
-      <Wrapper noPadding={noPadding}>
+      <Wrapper
+        noPadding={noPadding}
+        isPanel={isPanel}
+      >
         {
           isWalletCreated &&
           !isWalletLocked &&
           !hideHeader &&
+          !isPanel &&
           <TabHeader />
         }
         {
@@ -171,6 +182,7 @@ export const WalletPageWrapper = (props: Props) => {
             {cardHeader &&
               <CardHeaderWrapper
                 maxWidth={cardWidth}
+                isPanel={isPanel}
               >
                 <CardHeaderShadow
                   headerHeight={headerHeight}
@@ -191,9 +203,11 @@ export const WalletPageWrapper = (props: Props) => {
               <CardHeaderWrapper
                 ref={headerRef}
                 maxWidth={cardWidth}
+                isPanel={isPanel}
               >
                 <CardHeader
                   shadowOpacity={headerShadowOpacity}
+                  isPanel={isPanel}
                 >
                   <CardHeaderContentWrapper
                     dividerOpacity={headerDividerOpacity}

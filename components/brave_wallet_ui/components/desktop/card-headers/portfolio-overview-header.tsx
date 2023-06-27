@@ -5,6 +5,16 @@
 
 import * as React from 'react'
 
+// Selectors
+import {
+  UISelectors
+} from '../../../common/selectors'
+
+// Components
+import {
+  DefaultPanelHeader
+} from './default-panel-header'
+
 // Utils
 import { getLocale } from '../../../../common/locale'
 
@@ -12,6 +22,9 @@ import { getLocale } from '../../../../common/locale'
 import {
   useOnClickOutside
 } from '../../../common/hooks/useOnClickOutside'
+import {
+  useSafeUISelector
+} from '../../../common/hooks/use-safe-selector'
 
 import {
   PortfolioOverviewMenu
@@ -27,6 +40,9 @@ import {
 import { Row } from '../../shared/style'
 
 export const PortfolioOverviewHeader = () => {
+  // UI Selectors (safe)
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
+
   // State
   const [showPortfolioOverviewMenu, setShowPortfolioOverviewMenu] =
     React.useState<boolean>(false)
@@ -43,30 +59,35 @@ export const PortfolioOverviewHeader = () => {
   )
 
   return (
-    <Row
-      padding='24px 0px'
-      justifyContent='space-between'
-    >
-      <HeaderTitle>
-        {getLocale('braveWalletTopNavPortfolio')}
-      </HeaderTitle>
-      <MenuWrapper
-        ref={portfolioOverviewMenuRef}
+    isPanel
+      ? <DefaultPanelHeader
+        title={getLocale('braveWalletTopNavPortfolio')}
+        isPortfolio={true}
+      />
+      : <Row
+        padding='24px 0px'
+        justifyContent='space-between'
       >
-        <CircleButton
-          onClick={
-            () => setShowPortfolioOverviewMenu(prev => !prev)
-          }
+        <HeaderTitle>
+          {getLocale('braveWalletTopNavPortfolio')}
+        </HeaderTitle>
+        <MenuWrapper
+          ref={portfolioOverviewMenuRef}
         >
-          <ButtonIcon
-            name='tune'
-          />
-        </CircleButton>
-        {showPortfolioOverviewMenu &&
-          <PortfolioOverviewMenu />
-        }
-      </MenuWrapper>
-    </Row>
+          <CircleButton
+            onClick={
+              () => setShowPortfolioOverviewMenu(prev => !prev)
+            }
+          >
+            <ButtonIcon
+              name='tune'
+            />
+          </CircleButton>
+          {showPortfolioOverviewMenu &&
+            <PortfolioOverviewMenu />
+          }
+        </MenuWrapper>
+      </Row>
   )
 }
 

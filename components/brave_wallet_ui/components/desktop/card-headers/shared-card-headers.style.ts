@@ -8,12 +8,14 @@ import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 import { WalletButton } from '../../shared/style'
 
-export const HeaderTitle = styled.span`
+export const HeaderTitle = styled.span<{
+  isPanel?: boolean
+}>`
   font-family: Poppins;
   font-style: normal;
-  font-size: 28px;
-  font-weight: 500;
-  line-height: 40px;
+  font-size: ${(p) => p.isPanel ? 16 : 28}px;
+  font-weight: ${(p) => p.isPanel ? 600 : 500};
+  line-height: ${(p) => p.isPanel ? 24 : 40}px;
   color: ${leo.color.text.primary};
 `
 

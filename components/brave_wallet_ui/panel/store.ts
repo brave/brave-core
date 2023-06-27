@@ -18,7 +18,10 @@ import walletReducer from '../common/slices/wallet.slice'
 import pageReducer from '../page/reducers/page_reducer'
 import accountsTabReducer from '../page/reducers/accounts-tab-reducer'
 import { panelReducer } from './reducers/panel_reducer'
-import uiReducer from '../common/slices/ui.slice'
+import {
+  uiReducer,
+  defaultUIState
+} from '../common/slices/ui.slice'
 
 // utils
 import { setApiProxyFetcher } from '../common/async/base-query-cache'
@@ -31,6 +34,12 @@ const store = configureStore({
     wallet: walletReducer,
     ui: uiReducer,
     [walletApi.reducerPath]: walletApi.reducer
+  },
+  preloadedState: {
+    ui: {
+      ...defaultUIState,
+      isPanel: true
+    }
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: false
