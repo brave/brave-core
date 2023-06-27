@@ -94,6 +94,7 @@
 <translation id="6554952862405000915">在 Brave 無痕式視窗中開啟連結(&amp;G)</translation>
 <translation id="1742948938503172561">自訂您的新 Brave 設定檔</translation>
 <translation id="1477146545787277177">Brave 當機了，要立即重新啟動嗎？</translation>
+<translation id="907470742420136113">Brave 正嘗試修改填入付款方法的設定。</translation>
 <translation id="2585240446624043880">Brave 無法讀取及寫入數據目錄：
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -200,6 +201,7 @@
 <translation id="5646769069113654257">請立即重新啟動 Brave</translation>
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">以此語言顯示 Brave</translation>
+<translation id="585620188971323280">修改填入付款方法的設定。</translation>
 <translation id="7207456302801184289">歡迎使用 Brave</translation>
 <translation id="8054200348483755053">Brave 發現以下項目含有惡意軟件：</translation>
 <translation id="5895138241574237353">重新啟動</translation>
@@ -250,6 +252,7 @@
 <translation id="2675662665675552980">這個擴充功能也會管制您啟動 Brave 時所顯示的網頁。</translation>
 <translation id="648319183876919572">「強化安全瀏覽」可進一步保護您免受危險網站和下載檔案威脅</translation>
 <translation id="5590013613412457132">解除安裝 Brave</translation>
+<translation id="3617744907966785605">您的機構會在 Brave 閒置 <ph name="TIMEOUT_DURATION"/>後將其關閉。瀏覽資料已刪除，當中可能包括記錄、自動填入資料和下載檔案。</translation>
 <translation id="8646609321956191980">每個設定檔都會保存本身專屬的 Brave 資料，例如書籤、記錄、密碼等</translation>
 <translation id="2535436634051789953">您可切換查看其他 Brave 個人檔案的密碼</translation>
 <translation id="2312399718665761438">為修正拼字錯誤，Brave 會將您在文字欄中輸入的文字傳送給 Brave</translation>
@@ -286,6 +289,7 @@
 <translation id="7025789849649390912">已停止安裝。</translation>
 <translation id="1705567146636171298">更新 Brave</translation>
 <translation id="5499063270485366718">如果圖片並無有用的說明，Brave 會嘗試為您提供說明。因此，圖片將傳送至 Brave 以建立說明。</translation>
+<translation id="2332301637111071062">您的機構會在 Brave 閒置 <ph name="TIMEOUT_DURATION"/>後刪除 Brave 資料，當中可能包括記錄、自動填入資料和下載檔案。</translation>
 <translation id="1008530050039597147">Brave 需要相機權限，才能執行此網站要求的功能</translation>
 <translation id="1197672524850678392">無法啟動 Brave，請再試一次。</translation>
 <translation id="3405035915691517126">Brave 無法檢查密碼，請於 24 小時後再試一次。</translation>
@@ -296,7 +300,7 @@
 <translation id="3403365884036456766">您的偏好設定檔案已損毀或無效。
 
 Brave 無法復原您的設定。</translation>
-<translation id="939305735877869636">BraveHelper</translation>
+<translation id="939305735877869636">Brave</translation>
 <translation id="7339898014177206373">新視窗</translation>
 <translation id="3511996232906761537">您瀏覽的網頁、書籤和其他 Brave 內容都在這裡。</translation>
 <translation id="5380963249588143069">系統管理員已設定由 Brave 開啟 <ph name="ALTERNATIVE_BROWSER_NAME"/> 以存取 <ph name="TARGET_URL_HOSTNAME"/>。</translation>
@@ -340,6 +344,7 @@ Brave 無法復原您的設定。</translation>
 <translation id="8207657266087451193">如果圖片並無有用的說明，Brave 會嘗試為您提供說明。因此，圖片將傳送至 Brave 以建立說明。您可以隨時在設定中關閉此功能。</translation>
 <translation id="8622246347342688645">由於您尚未登入帳戶，因此 Brave 無法檢查密碼</translation>
 <translation id="89367911614620585">此檔案可能不安全，因此 Brave 已封鎖此檔案。</translation>
+<translation id="6098476632210317894">您的機構會在 Brave 閒置 <ph name="TIMEOUT_DURATION"/>後關閉 Brave。</translation>
 <translation id="5196445203969439095">使用 Brave 讓您事半功倍</translation>
 <translation id="3360368475735266712">登入即可在不同裝置上同步和設定個人化的 Brave</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> 以往曾使用 Brave</translation>
@@ -374,6 +379,7 @@ Brave 無法復原您的設定。</translation>
 <translation id="8848045066928358658">為鞏固 Brave 的安全性，我們已將未列在 <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> 中的擴充功能停用，因為它們可能在您不知情的情況下加入瀏覽器。</translation>
 <translation id="82609232232243542">登入 Brave</translation>
 <translation id="3273774796888928550">登入 Brave。如果您想只登入帳戶一次，可以<ph name="GUEST_LINK_BEGIN"/>透過訪客身份使用裝置<ph name="GUEST_LINK_END"/>。</translation>
+<translation id="4561046754724442504">Brave 已自動關閉</translation>
 <translation id="5173820533850252773">Brave 版本過舊</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave 將於 1 小時後重新啟動}other{Brave 將於 # 小時後重新啟動}}</translation>
 <translation id="5190991181158966940">如要取得日後的 Brave 更新，您需要使用 Windows 10 或以上版本。此電腦目前版本為 Windows 8.1。</translation>

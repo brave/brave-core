@@ -84,6 +84,7 @@
 <translation id="4805806622840861220">重新啟動 Brave</translation>
 <translation id="1742948938503172561">自訂新的 Brave 設定檔</translation>
 <translation id="1477146545787277177">Brave 當機了，要立即重新啟動嗎？</translation>
+<translation id="907470742420136113">Brave 正嘗試修改填入付款方式的設定。</translation>
 <translation id="2585240446624043880">Brave 無法讀取及寫入資料目錄：
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -186,6 +187,7 @@
 <translation id="5646769069113654257">請立即重新啟動 Brave</translation>
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">將 Brave 的介面文字設為這種語言</translation>
+<translation id="585620188971323280">修改填入付款方式的設定。</translation>
 <translation id="7207456302801184289">歡迎使用 Brave</translation>
 <translation id="8054200348483755053">Brave 偵測到下列項目含有惡意軟體：</translation>
 <translation id="5895138241574237353">重新啟動</translation>
@@ -236,6 +238,7 @@
 <translation id="2675662665675552980">這個擴充功能也會控管你啟動 Brave 時所顯示的網頁。</translation>
 <translation id="648319183876919572">安全瀏覽強化防護功能可進一步協助你防範危險的網站和下載內容</translation>
 <translation id="5590013613412457132">解除安裝 Brave</translation>
+<translation id="3617744907966785605">由於 Brave 閒置超過 <ph name="TIMEOUT_DURATION"/>，貴機構已將其關閉。瀏覽資料已刪除，當中可能包含歷史記錄、自動填入的資料和下載內容。</translation>
 <translation id="8646609321956191980">每個設定檔都有獨立專屬的 Brave 資訊，例如書籤、歷史記錄和密碼等等</translation>
 <translation id="2535436634051789953">你可以切換查看其他 Brave 設定檔的密碼</translation>
 <translation id="2312399718665761438">為修正拼字錯誤，Brave 會將你在文字欄位輸入的文字傳送給 Brave</translation>
@@ -271,6 +274,7 @@
 <translation id="7025789849649390912">已停止安裝。</translation>
 <translation id="1705567146636171298">更新 Brave</translation>
 <translation id="5499063270485366718">如果圖片缺少有用的說明，Brave 會嘗試為你提供說明。系統會將圖片傳送給 Brave，以便產生說明。</translation>
+<translation id="2332301637111071062">由於 Brave 資料閒置超過 <ph name="TIMEOUT_DURATION"/>，貴機構已將其刪除。當中可能包含歷史記錄、自動填入的資料和下載內容。</translation>
 <translation id="1008530050039597147">Brave 需要相機權限，才能執行這個網站要求的功能</translation>
 <translation id="1197672524850678392">無法啟動 Brave，請再試一次。</translation>
 <translation id="3405035915691517126">Brave 無法檢查你的密碼，請於 24 小時後再試。</translation>
@@ -324,6 +328,7 @@ Brave 無法復原你的設定。</translation>
 <translation id="8207657266087451193">如果圖片缺少有用的說明，Brave 會嘗試為你提供說明。系統會將圖片傳送給 Brave，以便產生說明。你隨時可以在設定中關閉這項功能。</translation>
 <translation id="8622246347342688645">你尚未登入帳戶，因此 Brave 無法檢查你的密碼</translation>
 <translation id="89367911614620585">這個檔案可能不安全，因此遭到 Brave 封鎖。</translation>
+<translation id="6098476632210317894">由於 Brave 閒置超過 <ph name="TIMEOUT_DURATION"/>，貴機構已將其關閉。</translation>
 <translation id="5196445203969439095">Brave 讓你事半功倍</translation>
 <translation id="3360368475735266712">登入即可進行同步處理，讓你在所有裝置上享有個人化的 Brave 體驗</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> 先前使用的是 Brave</translation>
@@ -357,6 +362,7 @@ Brave 無法復原你的設定。</translation>
 <translation id="8986207147630327271">你即將在這個瀏覽器中新增工作資料夾，並僅將工作資料夾的控制權授予管理員。</translation>
 <translation id="82609232232243542">登入 Brave</translation>
 <translation id="3273774796888928550">登入 Brave。如果你只想登入帳戶一次，可以<ph name="GUEST_LINK_BEGIN"/>透過訪客的身分使用這部裝置<ph name="GUEST_LINK_END"/>。</translation>
+<translation id="4561046754724442504">Brave 已自動關閉</translation>
 <translation id="5173820533850252773">Brave 版本過舊</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave 將在 1 小時後重新啟動}other{Brave 將在 # 小時後重新啟動}}</translation>
 <translation id="5190991181158966940">如要取得日後的 Brave 更新，必須使用 Windows 10 以上版本。這部電腦目前版本為 Windows 8.1。</translation>

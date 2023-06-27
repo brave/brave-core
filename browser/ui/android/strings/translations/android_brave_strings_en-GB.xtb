@@ -2,6 +2,33 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="en-GB">
 <translation id="3478449063771497234">Notifications are disabled</translation>
+<translation id="8220484609979012449">\n\nYou can still send crypto contributions to this creator by using your Web3 wallet.</translation>
+<translation id="6385969012847057348">This creator is unable to receive contributions from <ph name="CUSTODIAN"/>.</translation>
+<translation id="6268134562674951939">You don't have enough tokens</translation>
+<translation id="4529874892536380156">Make this a monthly recurring contribution. You can cancel it at any time.</translation>
+<translation id="5562948772940025260">You can only send up to <ph name="AMOUNT"/> BATs using your Brave Rewards balance.</translation>
+<translation id="5012991400231464322">Monthly contributions</translation>
+<translation id="5907051927340164207">You're already sending monthly contributions to this creator</translation>
+<translation id="307555373157330047">You can still send a contribution now, and you can cancel your monthly contributions to this Creator by removing them from <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
+<translation id="5379685283876547860">Contribution sent!</translation>
+<translation id="1041398280582063935">Share your support</translation>
+<translation id="8855543392451028706">Welcome! Users can support this content creator by sending them contributions. It’s a way of thanking them for making great content.</translation>
+<translation id="1235176624390585199"><ph name="TITLE"/> on <ph name="PROVIDER"/></translation>
+<translation id="3699420827646925694">Logged out of <ph name="CUSTODIAN"/></translation>
+<translation id="9038728316393235637">Log in to <ph name="CUSTODIAN"/></translation>
+<translation id="7063168612616047608">Thanks for supporting your favourite creators</translation>
+<translation id="3796032246917966749">It looks like you're logged out of <ph name="CUSTODIAN"/> for Brave Rewards. Log in again to continue.</translation>
+<translation id="594652923071049606">This Creator is not yet verified with Brave Creators. You'll be able to send them contributions once they're verified. <ph name="LEARN_MORE"/></translation>
+<translation id="3733094367889291358">Send contribution</translation>
+<translation id="1899434873745933492">Can't send your contribution</translation>
+<translation id="1794046983410841192">Use Brave Rewards</translation>
+<translation id="8037118277449189044">Use Web3 wallet</translation>
+<translation id="9059356165618961685">Brave Rewards balance</translation>
+<translation id="86107454835395919">Set as monthly contribution</translation>
+<translation id="1177863135347784049">Custom</translation>
+<translation id="4827581232860040208">There was a problem sending your contribution</translation>
+<translation id="3259723213051400722">Please try again.</translation>
+<translation id="8899147737996487517">This Creator has registered with Brave and can receive contributions from Brave Rewards users. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Brave Rewards may not work while notifications are disabled.</translation>
 <translation id="4259212006412783790">TURN ON</translation>
 <translation id="6112331814131703370">Block 'Switch to App' notices</translation>
@@ -16,9 +43,7 @@
 <translation id="5488843227043643519">Leave a Play Store rating?</translation>
 <translation id="5867854497245948308">Thanks for your feedback!</translation>
 <translation id="4935400164159327304">Let us know how we can improve Brave.</translation>
-<translation id="915758461293673891">Tip amount:</translation>
 <translation id="1420756770787071946">Support this creator</translation>
-<translation id="4147995007712611681">You've set up a pending tip!</translation>
 <translation id="8966035543003363155">Brave notifications make it easier</translation>
 <translation id="7662771815233894695">Manage downloads, earn tokens, see weekly usage stats and more.</translation>
 <translation id="4265429476391459783">You're not earning Rewards or receiving Privacy Reports</translation>
@@ -38,33 +63,9 @@
 <translation id="6945863270524203017">Get weekly privacy updates on tracker &amp; ad blocking.</translation>
 <translation id="4324735664183300693">Turn on notifications</translation>
 <translation id="3570081523466826008">Upgrade connections to HTTPS</translation>
-<translation id="5153702175393349577">Next tip date</translation>
-<translation id="8979401359137062629">Please note:</translation>
-<translation id="7277134233385925078">Set monthly tip</translation>
-<translation id="3765933240178364575">One-time tip amount</translation>
-<translation id="1101015459918930887">Your tip can take several minutes to process</translation>
-<translation id="4088764345615745058">Custom tip amount</translation>
-<translation id="8759753423332885148">Learn more.</translation>
-<translation id="3271043362279673449">Thanks for the support!</translation>
-<translation id="3312470408978098625">Your one-time tip has been sent.</translation>
-<translation id="9088057605518918276">Monthly tip has been set.</translation>
-<translation id="2978223787436054634">Tweet about your support</translation>
-<translation id="1166682575529520472">Monthly</translation>
-<translation id="5906820630265272615">BAT Funds</translation>
-<translation id="3586352807094428968">Brave collects 5% of the tip amount as a processing fee.</translation>
-<translation id="7723816962634734185">Custom Amount</translation>
-<translation id="1986030365413628297">e.g. 12.75 BAT</translation>
-<translation id="5087864757604726239">back</translation>
+<translation id="6395059271589866759">Brave collects 5% of the sent amount as a processing fee.</translation>
 <translation id="6661699662755460155">exchange</translation>
-<translation id="864162897141534043">You are about to tip</translation>
-<translation id="7286679368056222644">Your monthly support will be</translation>
-<translation id="8195146845495346281">Minimum tip amount is 0.25 BAT</translation>
-<translation id="4647657427328119430">Not enough tokens.</translation>
-<translation id="2359808026110333948">Continue</translation>
-<translation id="4227681408214010862">Love that #Brave lets me support creators! Just tipped <ph name="NAME"/> with #BAT. If they verify at https://creators.brave.com before <ph name="DATE"/>, the BAT is theirs!</translation>
-<translation id="6231182869178328516">I just tipped <ph name="NAME"/> using the Brave Browser. Check it out at https://brave.com/tips.</translation>
-<translation id="7172012963002631836">There was a problem sending your tip.</translation>
-<translation id="8994556588732085585">Please close and reopen the tipping banner to try again.</translation>
+<translation id="6790981891677399838">I just contributed <ph name="AMOUNT"/> BATs using the Brave Browser. See how you can support your favourite creators and sites too: https://brave.com/rewards</translation>
 <translation id="2278950434998763147">Opens some sites using a secure HTTPS connection instead of plain HTTP.</translation>
 <translation id="5510493033031835532">Auto-redirect AMP pages</translation>
 <translation id="5197219128592971597">Always visit original (non-AMP) page URLs, instead of Google's Accelerated Mobile Page versions</translation>
@@ -140,6 +141,9 @@
 <translation id="152579389256498990">Feed or site URL</translation>
 <translation id="4975944254857623648">Default sources</translation>
 <translation id="253886574765651454">Add source</translation>
+<translation id="254100925533869330">No content</translation>
+<translation id="7172792761509429092">Brave News has no content to show.</translation>
+<translation id="1771307734839364850">Choose content sources</translation>
 <translation id="5787084571334399599">Prevents browser from fingerprinting</translation>
 <translation id="7459000603787995422">Close tabs on exit</translation>
 <translation id="4448697385961650078">Block trackers &amp; ads</translation>
@@ -224,15 +228,7 @@
 <translation id="1545749641540134597">Scan QR Code</translation>
 <translation id="5317781812114905957">Instructions</translation>
 <translation id="8515319483805157233">To search by QR code, align the QR code in the centre of frame.</translation>
-<translation id="8826007068782654809">Thank you</translation>
-<translation id="6665366815203065060">You've just sent a tip to:</translation>
-<translation id="5441565662498481293">You are automatically sending a tip to:</translation>
-<translation id="1628742278973105368">Your first monthly tip will be sent on:</translation>
-<translation id="1642952941091001113">This creator has not yet signed up to receive contributions from Brave users. We'll keep trying to contribute until they verify, or until 90 days have passed.</translation>
-<translation id="8228150955416632026">You're connected to <ph name="WALLET_PROVIDER"/>, but this creator is connected to <ph name="SUPPORTED_WALLET_PROVIDER"/>. This means your tip can't reach this creator. For now, any tip you make will remain pending and retry automatically for 90 days.</translation>
-<translation id="1910721550319506122">Welcome!</translation>
 <translation id="2734870894159530879">Log in to <ph name="WALLET_PROVIDER"/> to see your balance</translation>
-<translation id="5830114181292529917">You can support this site by sending a tip. It's a way of thanking them for making great content.</translation>
 <translation id="7658239707568436148">Cancel</translation>
 <translation id="1201402288615127009">Next</translation>
 <translation id="8481779960444041069">To improve your privacy, set Brave as your default browser</translation>
@@ -271,7 +267,6 @@
 <translation id="1649629664206601032">You have <ph name="TOKEN"/> days left to claim</translation>
 <translation id="683765328936486920">on YouTube</translation>
 <translation id="8969049974285901797">on Twitch</translation>
-<translation id="3101693828171454453">not enough <ph name="TOKEN"/>s</translation>
 <translation id="8038539967102225446">Brave Ads are here!</translation>
 <translation id="222883304157347087">(this device)</translation>
 <translation id="4157741509680155021">DEVICES ON SYNC CHAIN</translation>
@@ -334,6 +329,13 @@
 <translation id="340492034650766959">Delete bookmark</translation>
 <translation id="2149973817440762519">Edit bookmark</translation>
 <translation id="6819319915092566548">View bookmarks</translation>
+<translation id="8457451314607652708">Import bookmarks</translation>
+<translation id="1008186147501209563">Export bookmarks</translation>
+<translation id="6680516947641001448">Select a File to Import bookmarks</translation>
+<translation id="7028125942261647795">Bookmarks imported successfully.</translation>
+<translation id="444953779119381206">Bookmark import failed.</translation>
+<translation id="6606836200439368332">Bookmark export failed.</translation>
+<translation id="1395297034387418032">Bookmarks exported successfully.</translation>
 <translation id="3396347744975515056">Brave Sync has been upgraded and requires setup</translation>
 <translation id="7473245612074035141">Begin Setup</translation>
 <translation id="8985635554450124959">Sync could not be set up</translation>
@@ -359,8 +361,8 @@ Are you sure you want to do this?</translation>
 <translation id="6199596294742117349">This is a private tab</translation>
 <translation id="5858455511731621847">Even though sites you visit in private tabs are not saved locally, they do not make you anonymous or invisible to your ISP, your employer or the sites you are visiting.</translation>
 <translation id="5789441016350810005">Brave Ads sent when browser is in the background</translation>
-<translation id="4059103952779533037">Contributions &amp; tips</translation>
-<translation id="2892744985635833293">Your monthly tips have been processed.</translation>
+<translation id="4973347371961481083">Contributions</translation>
+<translation id="7047578174221019462">Your monthly contributions have been processed.</translation>
 <translation id="3124090095880236567">Turn on Ads</translation>
 <translation id="2975780980638932742">Brave Ads has arrived!</translation>
 <translation id="7541582550122501404">Pending contribution</translation>
@@ -378,7 +380,8 @@ Are you sure you want to do this?</translation>
 <translation id="3794079107601824147">Get paid to see this background image.</translation>
 <translation id="7136586167396205364">Hide sponsored images</translation>
 <translation id="2927095357213611519">You can support web creators with tokens.\nEarn tokens by viewing privacy-respecting ads.</translation>
-<translation id="213787746370741250">Open tabs in Custom Tabs</translation>
+<translation id="2898634658146274982">Open external links in Brave</translation>
+<translation id="5616508928556767259">Opens links from other apps in a Brave webview. Note: Brave must be set as your default browser.</translation>
 <translation id="2394961582378297792">Logged out</translation>
 <translation id="5308380583665731573">Connect</translation>
 <translation id="3368922792935385530">Connected</translation>
@@ -502,7 +505,7 @@ Are you sure you want to do this?</translation>
 <translation id="4328028439561659455">Brave Private Ads appear as notifications on your screen. You control how often you see these ads.</translation>
 <translation id="7712287524451429139">Giving back made effortless</translation>
 <translation id="105037569026952831">Creators receive your token contributions automatically based on your engagement levels that we measure as ‘Attention’.</translation>
-<translation id="5323267338679539010">Say thank you with tips</translation>
+<translation id="3025802705256919103">Say thank you with contributions</translation>
 <translation id="8235783939971604011">Tipping is a way to personally encourage and support content or creators that you love. Get tipping!</translation>
 <translation id="4215679190414901888">Lastly, let’s get you set up</translation>
 <translation id="3494356595346329740">You can change this later.</translation>
@@ -542,6 +545,7 @@ Are you sure you want to do this?</translation>
 <translation id="4472575034687746823">Get started</translation>
 <translation id="2759836790106646094">Back up your wallet now!</translation>
 <translation id="1078873179929044999">In the next step, you’ll see a 12-word recovery phrase, which you can use to recover your primary crypto accounts. Save it somewhere safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.</translation>
+<translation id="2359808026110333948">Continue</translation>
 <translation id="5488357322146334497">Message</translation>
 <translation id="1904000155026201268">I understand that if I lose my recovery phrase, I won’t be able to access my crypto wallet.</translation>
 <translation id="3933122286596948824">Your recovery phrase</translation>
@@ -643,7 +647,7 @@ Are you sure you want to do this?</translation>
 <translation id="7592795625234816917">Image not available</translation>
 <translation id="8239147115686034860">Automatically lock Brave Wallet</translation>
 <translation id="414639769490080648">The number of minutes to wait until the Brave Wallet is automatically locked</translation>
-<translation id="4993345308607970390">Reset Brave Wallet</translation>
+<translation id="2326850911705720398">Reset and clear wallet data</translation>
 <translation id="4322846864135539519">Are you sure you want to reset your Brave Rewards? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "<ph name="CONFIRMATION_PHRASE"/>" to confirm.</translation>
 <translation id="6915083716464390008">Select one of the following options</translation>
 <translation id="7667423728712601865">Buy crypto with Visa or Mastercard.</translation>
@@ -799,7 +803,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="2941112035454246133">Low</translation>
 <translation id="5431902940483264007">Optimal</translation>
 <translation id="7304030187361489308">High</translation>
-<translation id="1177863135347784049">Custom</translation>
 <translation id="4853037749278079787">Maximum fee: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Current base fee: <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">Gas amount limit</translation>
@@ -825,15 +828,12 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="3506416339268164412">The receiving address is a token's contract address</translation>
 <translation id="3494964159182650590">Rewards Summary</translation>
 <translation id="590733288489975971">Rewards from Ads</translation>
-<translation id="2613359062756190460">One-Time Tips</translation>
-<translation id="7577100371127227294">Monthly Tips</translation>
 <translation id="7091980679045978090">Estimated earnings</translation>
-<translation id="1346059596910821859">Tip</translation>
-<translation id="1549705559752367917">Send Tip</translation>
+<translation id="1767561995429774671">Contribute</translation>
 <translation id="7335371657242627509">Include in Auto-Contribute</translation>
 <translation id="6727102863431372879">Set</translation>
 <translation id="3074127054582480056">Attention</translation>
-<translation id="6413162919383874653">Monthly tip</translation>
+<translation id="2280319752798785157">Monthly Contribution</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Show autocomplete in address bar</translation>
@@ -861,7 +861,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="6889920539620318793">Set as active</translation>
 <translation id="2653659639078652383">Submit</translation>
 <translation id="4945690646623486292">Select network</translation>
-<translation id="8853725596990766789">Change amount</translation>
 <translation id="5233638681132016545">New tab</translation>
 <translation id="8006088103295786154">Access Brave Wallet</translation>
 <translation id="8030169304546394654">Disconnected</translation>
@@ -879,7 +878,8 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="1060221736464994328">Allow this site to switch the network?</translation>
 <translation id="2478788592457735063">This will switch the network to a previously added network.</translation>
 <translation id="8756686998207163764">Switch network</translation>
-<translation id="394256914628786902">Enable tab group auto creation</translation>
+<translation id="5324095733417835490">Only open links in current tab group</translation>
+<translation id="2620277345862119868">Automatically opens all links in the current tab group</translation>
 <translation id="5242300593039211344">Lock Wallet</translation>
 <translation id="1108298724135935307">Connected sites</translation>
 <translation id="4255623233927788178">View on block explorer</translation>
@@ -932,9 +932,8 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="8095666712177294104">\n\nPlatform\n</translation>
 <translation id="7080614857771109950">Supports EVM compatible assets on the Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Supports SPL-compatible assets on the Solana blockchain</translation>
+<translation id="4541295941776129088">Store FIL asset</translation>
 <translation id="6575120282593094155">You don’t yet have a <ph name="ACCOUNT_TYPE"/> account. Create one now?</translation>
-<translation id="1448289340149908413">Ethereum</translation>
-<translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">Excluded apps</translation>
 <translation id="8463269357637177759">Allowed regular apps</translation>
 <translation id="4554726425645556940">Allowed system apps</translation>
@@ -942,6 +941,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="5472400694702418949">Add apps to be excluded from the VPN traffic.</translation>
 <translation id="7002577172732106572">Split tunnelling</translation>
 <translation id="2832270987629018596">Not a valid SOL address</translation>
+<translation id="6423985584914773314">Not a valid FIL address</translation>
 <translation id="8181161042860463420">The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it. <ph name="CLICK_START"/>Learn more<ph name="CLICK_END"/></translation>
 <translation id="1304515257839771197">Open the <ph name="APP_NAME"/> app?</translation>
 <translation id="7653028065515320848"><ph name="CLICK_START"/>Learn more about using Rainbow Bridge<ph name="CLICK_END"/></translation>
@@ -1046,7 +1046,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="579702532610384533">Reconnect</translation>
 <translation id="1619753851206150396">You are logged out</translation>
 <translation id="8208669151660770401">This can happen to keep your account secure. Click below to reconnect now.</translation>
-<translation id="2099354965137813181">Monthly tip failed</translation>
+<translation id="6390041270339783491">Monthly contribution failed</translation>
 <translation id="9074594632540931067">Error: BAT unavailable</translation>
 <translation id="5382684862562314222">BAT is not yet supported in your region on Uphold.</translation>
 <translation id="6996157559236886133">Error: Limited Uphold account functionality</translation>
@@ -1060,13 +1060,13 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="4071347720273751665">It looks like you've entered an ENS address. We'll need to use a third-party resolver to resolve this request, which may be able to see your IP address and domain. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">Use ENS offchain domain</translation>
 <translation id="4982630604810554641">Searching for domain ...</translation>
-<translation id="4159738248012488342">Please select amount to tip</translation>
 <translation id="3586775666459823714">NFTs</translation>
 <translation id="707569835145765061">Action required: connect a custodial account or your vBATs will be lost</translation>
 <translation id="1776742005329298234">On <ph name="DUE_DATE"/>, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.</translation>
 <translation id="5089752671190341407">You still have time to contribute your vBATs to your favourite creators</translation>
 <translation id="171158953146804144">On <ph name="DUE_DATE"/>, we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region (<ph name="REGION"/>) to withdraw your earnings. Until then, you can still contribute to your favourite creators.</translation>
 <translation id="8949422576126100041">View page with Speedreader?</translation>
+<translation id="5296840868251496327">Enable Speedreader</translation>
 <translation id="591648995518106347">Automatically loads eligible articles in reader mode</translation>
 <translation id="1295796122927221823">View in reader mode</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> on <ph name="NETWORK"/></translation>
@@ -1078,12 +1078,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="5900576657906675258">Add item to playlist</translation>
 <translation id="349846214503465941">Enable playlist</translation>
 <translation id="1309636029062006520">Make playlists of your favourite audio and videos, and play anytime, anywhere.</translation>
-<translation id="7899390017499980820">Add to playlist button</translation>
-<translation id="6901152954398668317">Show or hide "Add to playlist" button for quick access to add or remove media.</translation>
-<translation id="8404028031709373707">Auto-play</translation>
-<translation id="597781019681241649">Enables auto-play when playlist is opened.</translation>
-<translation id="2625554376218216118">Start playback where I left off</translation>
-<translation id="2953730196265332002">Automatically sync any changes the creator made to a shared playlist.</translation>
 <translation id="3561815498111282415">Auto-save for offline</translation>
 <translation id="1832424694374124654">Automatically saves new playlist items to your device so you can play without an Internet connection.</translation>
 <translation id="8103022210423023846">Auto-save ON</translation>
@@ -1116,11 +1110,12 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="8120600068258956006">Add to playlist</translation>
 <translation id="39991094779686024">Playlists</translation>
 <translation id="1710072605877822603">Add media</translation>
-<translation id="903678009070770568">Add videos to Brave playlist and watch later, even offline</translation>
-<translation id="3063627607780392015">Out of mobile range? Need to calm a crying toddler?</translation>
-<translation id="2041014734809158138">Whether you're on the train, a flight or a long car trip, playlist has you covered.</translation>
-<translation id="7287143275037417932">Or tap the playlist button when it appears</translation>
-<translation id="6959838938954098206">Playlist button appears when there’s media to add. Long press it for options. You can even hide it.</translation>
+<translation id="3874252678044305931">Add videos to Brave Playlist. Playback anytime. Even offline.</translation>
+<translation id="8973629800378391099">Make playlists of your favourite content. Save mobile data. And playback ad-free.</translation>
+<translation id="4936812987266342401">Just tap the button to add videos to a playlist</translation>
+<translation id="6263657785571415306">Stay in flow: add videos while you browse, watch later.</translation>
+<translation id="2839555636100404687">Playback is better in Playlist</translation>
+<translation id="9079526681359439081">Play in the background. Control from the lockscreen. And more …</translation>
 <translation id="3620862810055853183">Open playlist</translation>
 <translation id="3861012838874771868">Open playlist Settings</translation>
 <translation id="5220099266891491416">Hide playlist button</translation>
@@ -1139,6 +1134,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="377872456482681602">Please select items first</translation>
 <translation id="6172429305139364624">Playlist item is not cached.\nPlease cache the item for offline mode.</translation>
 <translation id="3631131732607750008">Content expired. Try again in a few seconds.</translation>
+<translation id="286472539388773794">Please enter valid playlist name</translation>
 <translation id="9085765419770918643">No NFTs here yet.</translation>
 <translation id="8445532667841598737">Ready to add some? Just click the button below to import.</translation>
 <translation id="5925465310724910998">Want your NFTs displayed automatically?</translation>
@@ -1147,4 +1143,10 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="622372328961630111">Automatically add NFTs you own to the Wallet using third party APIs. <ph name="BEGIN_LINK_1"/>Learn more.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Address look-up table account:</translation>
 <translation id="7659483790930268440">Address look-up table index:</translation>
+<translation id="7322560193401221004">Remember file playback position</translation>
+<translation id="7505951907514709271">For individual files, resume playing from the point of last pause</translation>
+<translation id="6835165453349969605">Remember list playback position</translation>
+<translation id="6344103698928069918">For a playlist, resume playing from the point of last pause</translation>
+<translation id="8141583471142904652">Continuous Listening</translation>
+<translation id="851432578283946230">Automatically plays the next items in your playlist</translation>
 </translationbundle>

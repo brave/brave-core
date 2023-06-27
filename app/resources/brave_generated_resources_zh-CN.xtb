@@ -323,7 +323,6 @@
 <translation id="3357319404342882895">严格</translation>
 <translation id="8823559166155093873">阻止 cookies</translation>
 <translation id="5770288601196774623">仅限跨站点</translation>
-<translation id="6795317840397506736">忘记默认值</translation>
 <translation id="3587482841069643663">全部</translation>
 <translation id="7390783310074170337">默认视图</translation>
 <translation id="130615081792797568">简单视图</translation>
@@ -350,22 +349,10 @@
 <translation id="4182731739150761577">显示完整列表</translation>
 <translation id="1340263054776016283">输入过滤器列表 URL</translation>
 <translation id="8578397014396032341">内容过滤</translation>
+<translation id="3020183492814296499">快捷方式</translation>
 <translation id="5567412479632285879">Brave 奖励已禁用</translation>
 <translation id="413570371620795359">打开奖励面板，启用并开始体验服务</translation>
-<translation id="3849957491997306859">自动检测</translation>
-<translation id="8798099450830957504">默认</translation>
-<translation id="4851215387785619212">Brave 专属广告</translation>
-<translation id="7808122468353671181">通过观看 Brave 广告赚取代币。展示的广告是基于您的兴趣（根据您的浏览行为推断而来的）。没有任何个人数据或浏览历史记录会离开您的浏览器。</translation>
-<translation id="1758947220824279023">待显示的最大广告个数</translation>
-<translation id="2356652719351432565">区域广告相关性</translation>
-<translation id="2196950072404588793">这使 Brave 可以向您显示专门针对您所在地区的广告。<ph name="BEGIN_LINK"/>了解详情<ph name="END_LINK"/></translation>
-<translation id="2433507940547922241">外观</translation>
-<translation id="6112368337882254910">自动贡献</translation>
-<translation id="9132509928968869844">每月自动打赏限制</translation>
-<translation id="7286722244752781970">登录访问前最短页面时间</translation>
-<translation id="4424486208397124985">发布者相关性的最低访问量</translation>
-<translation id="6248554379744796526">显示列表中未经验证的站点</translation>
-<translation id="924777189963477634">开启自动打赏即表示您同意<ph name="BEGIN_LINK_TOS"/>服务条款<ph name="END_LINK_TOS"/>和<ph name="BEGIN_LINK_PP"/>隐私政策<ph name="END_LINK_PP"/>。</translation>
+<translation id="1051600834033686945">打开完整的 Brave 奖励设置</translation>
 <translation id="6333347122924254968">在地址栏显示 Brave 奖励图标</translation>
 <translation id="7483857210736407752">在网站上显示提示按钮</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -377,11 +364,14 @@
 <translation id="958971637207126733">允许 LinkedIn 嵌入帖子</translation>
 <translation id="8792121506918889955">WebRTC IP 处理政策</translation>
 <translation id="6165508094623778733">了解更多</translation>
+<translation id="8798099450830957504">默认</translation>
 <translation id="1822560017823072927">默认公共和私人接口</translation>
 <translation id="5825943197137337319">仅限默认公共接口</translation>
 <translation id="1689062823386843231">禁用无代理的 UDP</translation>
 <translation id="3540231253392253941">使用 Google 服务进行推送消息传递</translation>
 <translation id="933652931229970927">自动发送诊断报告</translation>
+<translation id="4891600875049212418">访问敏感网站时不记录在案</translation>
+<translation id="2356070529366658676">询问</translation>
 <translation id="4846154056248462491">退出时</translation>
 <translation id="2808630562319398131">重置 Brave Rewards 计划数据...</translation>
 <translation id="6438096877646138757">关闭时所有网站窗口时清除 cookie 的网站</translation>
@@ -390,6 +380,27 @@
 <translation id="7050661313034564003">显示本网站的所有 cookies 和本地存储数据</translation>
 <translation id="8339059274628563283"><ph name="SITE"/> 本地存储的数据</translation>
 <translation id="1963227389609234879">全部删除</translation>
+<translation id="8168435359814927499">内容</translation>
+<translation id="7702907602086592255">域名</translation>
+<translation id="3202131003361292969">路径</translation>
+<translation id="5390743329570580756">为何发送</translation>
+<translation id="6742339027238151589">脚本可访问</translation>
+<translation id="1067048845568873861">创建时间</translation>
+<translation id="5747552184818312860">到期时间</translation>
+<translation id="3858860766373142691">名称</translation>
+<translation id="361106536627977100">闪存数据</translation>
+<translation id="4530494379350999373">来源</translation>
+<translation id="8195027750202970175">占用的存储空间</translation>
+<translation id="9116465289595958864">上次修改时间</translation>
+<translation id="4590324241397107707">数据库存储</translation>
+<translation id="5338503421962489998">本地存储</translation>
+<translation id="6032912588568283682">文件系统</translation>
+<translation id="8016266267177410919">临时存储</translation>
+<translation id="4175737294868205930">永久存储</translation>
+<translation id="1234808891666923653">Service Workers</translation>
+<translation id="3432762828853624962">Shared Workers</translation>
+<translation id="2927017729816812676">缓存空间</translation>
+<translation id="1389601498324964367">配额管理存储</translation>
 <translation id="814018970995616154">检查带有保存在 Brave 中的不安全站点列表的 URL。</translation>
 <translation id="1144810021918451336">不能保护您免受危险网站、下载和扩展名的侵害。</translation>
 <translation id="5570470519803062774">站点和屏蔽设置</translation>
@@ -534,7 +545,6 @@
 <translation id="4954512758656527938">默认以太坊钱包</translation>
 <translation id="7701023802820268122">默认 Solana 钱包</translation>
 <translation id="8488282162676695335">Brave 钱包</translation>
-<translation id="2356070529366658676">询问</translation>
 <translation id="6942354363301686374">扩展（无备份）</translation>
 <translation id="1274962333945373242">Crypto Wallets（已废弃）</translation>
 <translation id="702381242110464396">扩展（Brave 钱包备份）</translation>
@@ -551,7 +561,7 @@
 <translation id="4440478655766953083">自动固定 NFT</translation>
 <translation id="464460032678285850">添加到 Brave 钱包的 NFT 可能会自动固定到本地 IPFS 节点。
    注意：IPFS 守护进程可能是为了固定目的而启动的，因此您的本地节点将共享缓存的数据和固定的 NFT 到 IPFS 网络。</translation>
-<translation id="4993345308607970390">重置 Brave 钱包</translation>
+<translation id="2326850911705720398">重置和清除钱包数据</translation>
 <translation id="5887022857624190239">清除固定的 NFT</translation>
 <translation id="204584113330893805">当本地 IPFS 节点启动时，固定的 NFT 被托管到 IPFS 网络中。
 您目前拥有 <ph name="NFT_COUNT"/> 个固定的 NFT。</translation>

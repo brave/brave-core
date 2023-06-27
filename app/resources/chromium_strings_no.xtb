@@ -84,6 +84,7 @@
 <translation id="4805806622840861220">Start Brave på nytt</translation>
 <translation id="1742948938503172561">Tilpass den nye Brave-profilen din</translation>
 <translation id="1477146545787277177">Brave har krasjet. Vil du starte den på nytt nå?</translation>
+<translation id="907470742420136113">Brave prøver å endre innstillingene for utfylling av betalingsmåter.</translation>
 <translation id="2585240446624043880">Brave kan ikke lese og skrive til egen datakatalog:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -186,6 +187,7 @@
 <translation id="5646769069113654257">Start Brave på nytt nå</translation>
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">Vis Brave på dette språket</translation>
+<translation id="585620188971323280">endre innstillingene for utfylling av betalingsmåter</translation>
 <translation id="7207456302801184289">Velkommen til Brave</translation>
 <translation id="8054200348483755053">Brave har oppdaget at disse elementene inneholder skadelig programvare:</translation>
 <translation id="5895138241574237353">Start på nytt</translation>
@@ -236,6 +238,7 @@
 <translation id="2675662665675552980">Den styrer også hvilken side som vises når du starter Brave.</translation>
 <translation id="648319183876919572">Safe Browsing med økt beskyttelse gjør mer for å beskytte deg mot farlige nettsteder og nedlastinger</translation>
 <translation id="5590013613412457132">Avinstaller Brave</translation>
+<translation id="3617744907966785605">Organisasjonen din lukker Brave når den ikke har vært i bruk på <ph name="TIMEOUT_DURATION"/>. Nettlesingsdataene ble slettet. Dette kan omfatte loggen, autofyll og nedlastinger.</translation>
 <translation id="8646609321956191980">Hver profil har sin egen Brave-informasjon, som bokmerker, logg, passord med mer</translation>
 <translation id="2535436634051789953">Du kan bytte til å se passord fra en annen Brave-profil</translation>
 <translation id="2312399718665761438">For å rette opp i skrivefeil sender Brave sender tekst du skriver i tekstfelt, til Brave</translation>
@@ -271,6 +274,7 @@ Det er mulig at enkelte funksjoner ikke er tilgjengelige. Angi en annen profilka
 <translation id="7025789849649390912">Installasjonen er stoppet.</translation>
 <translation id="1705567146636171298">Oppdater Brave</translation>
 <translation id="5499063270485366718">Hvis et bilde ikke har noen nyttig beskrivelse, prøver Brave å finne en til deg. For å opprette beskrivelser blir bilder sendt til Brave.</translation>
+<translation id="2332301637111071062">Organisasjonen din sletter Brave-data når de ikke har vært i bruk på <ph name="TIMEOUT_DURATION"/>. Dette kan omfatte loggen, autofyll og nedlastinger.</translation>
 <translation id="1008530050039597147">Brave trenger kameratillatelse for dette nettstedet</translation>
 <translation id="1197672524850678392">Kunne ikke starte Brave. Prøv på nytt.</translation>
 <translation id="3405035915691517126">Brave kan ikke sjekke passordene dine. Prøv på nytt når det har gått 24 timer.</translation>
@@ -323,6 +327,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="8207657266087451193">Hvis et bilde ikke har noen nyttig beskrivelse, prøver Brave å finne en til deg. For å opprette beskrivelser blir bilder sendt til Brave. Du kan slå av dette i innstillingene når som helst.</translation>
 <translation id="8622246347342688645">Brave kan ikke sjekke passordene dine, siden du ikke er logget på</translation>
 <translation id="89367911614620585">Denne filen kan være farlig, så Brave har blokkert den.</translation>
+<translation id="6098476632210317894">Organisasjonen din lukker Brave når den ikke har vært i bruk på <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="5196445203969439095">Gjør mer med Brave</translation>
 <translation id="3360368475735266712">Logg på for å synkronisere og gi Brave et personlig preg på alle enhetene dine</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> brukte Brave tidligere</translation>
@@ -356,6 +361,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="8986207147630327271">Du er i ferd med å legge til en jobbprofil i denne nettleseren og gi administratoren din kontroll over kun jobbprofilen.</translation>
 <translation id="82609232232243542">Logg på Brave</translation>
 <translation id="3273774796888928550">Logg på Brave. Hvis du vil logge på en konto bare én gang, kan du <ph name="GUEST_LINK_BEGIN"/>bruke enheten som gjest<ph name="GUEST_LINK_END"/>.</translation>
+<translation id="4561046754724442504">Brave ble lukket automatisk</translation>
 <translation id="5173820533850252773">Brave er utdatert</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave startes på nytt om en time}other{Brave startes på nytt om # timer}}</translation>
 <translation id="5190991181158966940">For å få fremtidige Brave-oppdateringer må du ha Windows 10 eller nyere. Denne datamaskinen bruker Windows 8.1.</translation>

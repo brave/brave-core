@@ -166,7 +166,6 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="1363819917331173092">Mos ofro t'i përkthesh faqet në <ph name="SOURCE_LANGUAGE"/></translation>
 <translation id="1364822246244961190">Kjo politikë është bllokuar, vlera do të shpërfillet.</translation>
 <translation id="1368318639262510626">Loja Dino. Një dinozaur i pikselizuar shmang kaktuset dhe pterodaktilët ndërsa vrapon përgjatë një peizazhi të shkretuar. Kur dëgjon një sinjalizim audioje, shtyp hapësirën për të kapërcyer mbi pengesa.</translation>
-<translation id="136907351928231527">Mund të duhet deri në një javë që një listë temash të shfaqet këtu bazuar në historikun tënd të shfletimit së fundi.</translation>
 <translation id="1374468813861204354">sugjerime</translation>
 <translation id="1375198122581997741">Rreth versionit</translation>
 <translation id="1376836354785490390">Shfaq më pak</translation>
@@ -182,6 +181,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="1396259464226642517">Ishte i papritur ky rezultat? <ph name="BEGIN_LINK"/>Dërgo komente<ph name="END_LINK"/></translation>
 <translation id="1405567553485452995">Jeshile e çelur</translation>
 <translation id="1406500794671479665">Po verifikon...</translation>
+<translation id="1406812885827747674">Lejo këtë herë</translation>
 <translation id="1407135791313364759">Hapi të gjitha</translation>
 <translation id="1408787208417187241">Tri kapje me tel lart</translation>
 <translation id="1410941016594047814">Zarf ftese</translation>
@@ -202,6 +202,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="1442987760062738829">Shpim</translation>
 <translation id="1446396933673057385">Kontrolli i saktësisë</translation>
 <translation id="1447067628680007684">(x86_64)</translation>
+<translation id="1452803302401719440">Cilësimet që ka zgjedhur prindi yt po të mbajnë më të sigurt në linjë tani</translation>
 <translation id="1453974140256777690">Teksti që ngjit ose bashkëngjit i dërgohet Google Cloud ose palëve të treta për analizim. Për shembull, mund të skanohet për të dhëna delikate.</translation>
 <translation id="1455413310270022028">Goma</translation>
 <translation id="1459693405370120464">Moti</translation>
@@ -253,6 +254,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="1569487616857761740">Fut datën e skadimit</translation>
 <translation id="1385693425784118652">Brave po përpiqet të aktivizojë Windows Hello për plotësimin e fjalëkalimeve.</translation>
 <translation id="1572765991610098222"><ph name="WIDTH"/> x <ph name="HEIGHT"/> inç</translation>
+<translation id="1576277203042721907">Statistikat për blerjet</translation>
 <translation id="1581080074034554886">CVC</translation>
 <translation id="1583429793053364125">Shkoi diçka keq kur po shfaqej faqja e uebit.</translation>
 <translation id="1584492003828271317">Kur shfleton, nëse një reklamë që shikon është e personalizuar, kjo varet nga ky cilësim, nga "Reklamat e sugjeruara nga sajtet", cilësimet e tua të kukive dhe nëse sajti që po shikon i personalizon reklamat</translation>
@@ -420,6 +422,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="2003709556000175978">Rivendos fjalëkalimin tënd tani</translation>
 <translation id="2003775180883135320">Katër shpime lart</translation>
 <translation id="2342444980304536062">Menaxho lejet dhe të dhënat e ruajtura nëpër sajte te cilësimet e Brave</translation>
+<translation id="2012276282211112603">Nuk ka asnjë temë për të shfaqur për momentin</translation>
 <translation id="6955198705411680473">Butoni "Menaxho cilësimet e qasshmërisë". Shtyp "Enter" për të personalizuar veglat e qasshmërisë te cilësimet e Brave</translation>
 <translation id="2021333772895814435">Kjo politikë çaktivizon automatikisht sinkronizimin mes pajisjeve për: <ph name="ACTION_LIST"/>.</translation>
 <translation id="202224654587969958">12 x 19 inç</translation>
@@ -451,6 +454,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="2079545284768500474">Zhbëj</translation>
 <translation id="20817612488360358">Cilësimet e përfaqësuesit të sistemit janë caktuar që të përdoren, por është specifikuar po ashtu një konfigurim i qartë i përfaqësuesit.</translation>
 <translation id="2082238445998314030">Rezultati <ph name="RESULT_NUMBER"/> nga <ph name="TOTAL_RESULTS"/></translation>
+<translation id="2083256696566019397">Lejo në çdo vizitë</translation>
 <translation id="2085876078937250610">Ruaj…</translation>
 <translation id="7333248841044450790">Butoni "Menaxho sinkronizimin". Shtyp "Enter" për të menaxhuar se çfarë informacionesh sinkronizon ti te cilësimet e Brave</translation>
 <translation id="2091887806945687916">Tingulli</translation>
@@ -577,6 +581,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="2380886658946992094">Legal</translation>
 <translation id="5475992123321966556">Personalizo veglat e qasshmërisë te cilësimet e Brave</translation>
 <translation id="2384307209577226199">Parazgjedhja e ndërmarrjes</translation>
+<translation id="238459632961158867">Sajti i uebit</translation>
 <translation id="5244533701344680487">Përditësoje Brave nga cilësimet e tua të Brave</translation>
 <translation id="2386255080630008482">Certifikata e serverit është revokuar.</translation>
 <translation id="239293030466334554">Kabrioletë</translation>
@@ -943,6 +948,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="3380864720620200369">ID-ja e klientit:</translation>
 <translation id="3381668585148405088">Verifiko blerjen tënde</translation>
 <translation id="3383566085871012386">Porosia aktuale me përparësi</translation>
+<translation id="3384522979010096022">Organizata jote nuk të lejon që të shikosh këtë sajt</translation>
 <translation id="3387261909427947069">Mënyrat e pagesës</translation>
 <translation id="3391030046425686457">Adresa e dorëzimit</translation>
 <translation id="3391482648489541560">modifikimi i skedarëve</translation>
@@ -996,6 +1002,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="3531780078352352885">Fletët e punës</translation>
 <translation id="3532844647053365774"><ph name="HOST"/> kërkon të përdorë mikrofonin</translation>
 <translation id="3533328374079021623">Kutia postare 5</translation>
+<translation id="3536227077203206203">Lejohet këtë herë</translation>
 <translation id="3537165859691846083">Letër plus</translation>
 <translation id="3542628208405253498">Imazhi i kartës</translation>
 <translation id="3542768452570884558">Hape lidhjen në një dritare të re</translation>
@@ -1008,6 +1015,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="3566336457819493938">215 x 315 mm</translation>
 <translation id="3567778190852720481">Nuk mund të regjistrohesh me llogarinë e ndërmarrjes (llogaria e ndërmarrjes nuk është e përshtatshme).</translation>
 <translation id="3567901620846335314">100 x 150 mm</translation>
+<translation id="3568886473829759308">Qasu te sajti i uebit për të shikuar informacionet, burimet ose shërbimet e ofruara nga biznesi.</translation>
 <translation id="3574305903863751447"><ph name="CITY"/>, <ph name="STATE"/> <ph name="COUNTRY"/></translation>
 <translation id="3575121482199441727">Lejo për këtë sajt</translation>
 <translation id="3575168918110434329">A4x7</translation>
@@ -1053,6 +1061,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="3658742229777143148">Rishikim</translation>
 <translation id="3664782872746246217">Fjalët kyçe:</translation>
 <translation id="3667704023705708645">Kapitali sipermarrës</translation>
+<translation id="3671117652518853176">Kur është i çaktivizuar, mund të të kërkohet herë pas here që ta verifikosh për qëllime sigurie</translation>
 <translation id="3671540257457995106">Të lejohet ndryshimi i përmasave?</translation>
 <translation id="3672568546897166916">Gabim në <ph name="ERROR_PATH"/>: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="3675563144891642599">Ruli i tretë</translation>
@@ -1086,7 +1095,9 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="3736520371357197498">Nëse i kupton rreziqet për sigurinë tënde, mund <ph name="BEGIN_LINK"/>ta vizitosh këtë faqe të pasigurt<ph name="END_LINK"/> para se të jenë hequr programet e rrezikshme.</translation>
 <translation id="3738166223076830879">Shfletuesi yt menaxhohet nga administratori yt.</translation>
 <translation id="3740319564441798148">Autobusët dhe trenat për distanca të largëta</translation>
+<translation id="3743765582345153106">Verifiko gjithmonë kur përdoret plotësimi automatik</translation>
 <translation id="3744111561329211289">Sinkronizimi në sfond</translation>
+<translation id="3744212718085287312">Të bëhet më e sigurt me një kartë virtuale herën tjetër?</translation>
 <translation id="3744286742364977428">Skedarët që shkarkon dërgohen te Google Cloud ose te palë të treta për analizim. Për shembull, ata mund të skanohen për të dhëna delikate ose softuerë keqdashës dhe mund të ruhen bazuar në politikat e kompanisë.</translation>
 <translation id="3748148204939282805">Sulmuesit në  <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> mund të të mashtrojnë që të bësh diçka të rrezikshme si instalimi i softuerëve ose të zbulosh informacion personal (për shembull, fjalëkalime, numra telefoni ose karta krediti). <ph name="BEGIN_LEARN_MORE_LINK"/>Mëso më shumë<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3748912308089554501">Industria e aviacionit</translation>
@@ -1154,9 +1165,11 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="3927932062596804919">Refuzo</translation>
 <translation id="393316646445601645">Interneti dhe telekomunikacioni</translation>
 <translation id="3939773374150895049">Të përdoret WebAuthn në vend të CVC?</translation>
+<translation id="3941630233824954464">Aktivizo rivërtetimin e detyrueshëm</translation>
 <translation id="3943857333388298514">Ngjite</translation>
 <translation id="3946209740501886391">Gjithmonë pyet në këtë faqe</translation>
 <translation id="3947595700203588284">Mund të kërkojë të lidhet me pajisjet MIDI</translation>
+<translation id="3948588869002647271">Ky aplikacion mungon ose është i dëmtuar</translation>
 <translation id="3949571496842715403">Ky server nuk mund të provonte se është <ph name="DOMAIN"/>; certifikata e tij e sigurisë nuk specifikon "Emrat alternativë të subjektit". Kjo mund të shkaktohet nga një keqkonfigurim ose nga një sulmues që po ndërhyn në lidhjen tënde.</translation>
 <translation id="3949601375789751990">Historiku yt i shfletimit shfaqet këtu</translation>
 <translation id="3949790930165450333"><ph name="DEVICE_NAME"/> (<ph name="DEVICE_ID"/>)</translation>
@@ -1219,6 +1232,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="410148943680000050">Publikimi në desktop</translation>
 <translation id="4103249731201008433">Numri i serisë së pajisjes është i pavlefshëm</translation>
 <translation id="1823668038006695695">Butoni "Krijo sajt", shtyp Enter për të krijuar shpejt një sajt të ri në Brave Sites</translation>
+<translation id="4106887816571530227">Përmbajtja e integruar nuk lejohet</translation>
 <translation id="4110652170750985508">Rishiko pagesën tënde</translation>
 <translation id="4111546256784973544">Lojërat me armë me bojë</translation>
 <translation id="4112140312785995938">Kërko prapa</translation>
@@ -1242,6 +1256,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="4150099059797363385">Zarf kinez nr. 4</translation>
 <translation id="4151403195736952345">Përdor parazgjedhjen globale (zbulo)</translation>
 <translation id="4152318981910038897">{COUNT,plural, =1{Faqja 1}other{Faqja {COUNT}}}</translation>
+<translation id="6923879007831202776">Brave tani do të verifikojë që je ti para se të plotësojë mënyrat e pagesës. Mund ta përditësosh këtë në çdo kohë te <ph name="IDS_AUTOFILL_MANDATORY_REAUTH_CONFIRMATION_SETTINGS_LINK"/>.</translation>
 <translation id="4154664944169082762">Gjurmë gishtash</translation>
 <translation id="4159784952369912983">Vjollcë</translation>
 <translation id="4165986682804962316">Cilësimet e sajtit</translation>
@@ -1281,7 +1296,6 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="4250716950689692560">A4x4</translation>
 <translation id="4253168017788158739">Shënim</translation>
 <translation id="425582637250725228">Ndryshimet që ke bërë mund të mos ruhen.</translation>
-<translation id="425869179292622354">Të bëhet më e sigurt me një kartë virtuale?</translation>
 <translation id="4258748452823770588">Nënshkrim i gabuar</translation>
 <translation id="4261046003697461417">Dokumentet e mbrojtura nuk mund të shënohen</translation>
 <translation id="4265872034478892965">Lejuar nga administratori yt</translation>
@@ -1298,12 +1312,15 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="8314946990939758167">{NUM_CARDS,plural, =1{Kjo kartë është ruajtur në "Llogarinë tënde të Brave"}other{Këto karta janë ruajtur në "Llogarinë tënde të Brave"}}</translation>
 <translation id="2820825061680010514">Privatësia e përmirësuar e reklamave në Brave</translation>
 <translation id="4287885627794386150">Ka të drejtë për provë, por nuk është aktiv</translation>
+<translation id="4290920330097335010">Mos lejo asnjëherë</translation>
+<translation id="4296207570293932800">Një veçori e re e privatësisë së reklamave ofrohet tani</translation>
 <translation id="4297502707443874121">Miniatura për faqen <ph name="THUMBNAIL_PAGE"/></translation>
 <translation id="4298000214066716287">Investimet</translation>
 <translation id="42981349822642051">Zgjero</translation>
 <translation id="4300675098767811073">Shumë shpime djathtas</translation>
 <translation id="4302514097724775343">Trokit te dinozauri për të luajtur</translation>
 <translation id="4304049446746819918">{0,plural, =1{Politika e administratorit nuk rekomandon zhvendosjen e këtij skedari te: <ph name="DESTINATION_NAME"/>}other{Politika e administratorit nuk rekomandon zhvendosjen e këtyre skedarëve te: <ph name="DESTINATION_NAME"/>}}</translation>
+<translation id="4304485328308299773">Lexo vlerësimet e klientëve për produktet, shërbimet ose përvojat për të marrë informacione për vendimet e tua në lidhje me komentet.</translation>
 <translation id="4305666528087210886">Qasja te skedari ishte e pamundur</translation>
 <translation id="4306529830550717874">Të ruhet adresa?</translation>
 <translation id="4306812610847412719">kujtesa e fragmenteve</translation>
@@ -1364,7 +1381,6 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="4451135742916150903">Mund të kërkojë të lidhet me pajisjet HID</translation>
 <translation id="4451684391620232683">Teksti i prezantuar për përdoruesin:</translation>
 <translation id="8416018650396907203">Fjalëkalimi që sapo përdore u gjet në një nxjerrje të paautorizuar të të dhënave. Për të mbrojtur llogaritë e tua, "Menaxheri i fjalëkalimeve i Brave" rekomandon të kontrollosh fjalëkalimet e ruajtura.</translation>
-<translation id="4460315069258617173">Lejohet derisa të mbyllësh skedat për këtë faqe</translation>
 <translation id="4464826014807964867">Sajtet e uebit me informacione nga organizata jote</translation>
 <translation id="447665707681730621"><ph name="BUBBLE_MESSAGE"/>. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="4476953670630786061">Ky formular nuk është i sigurt. Plotësimi automatik është çaktivizuar.</translation>
@@ -1461,6 +1477,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="4724144314178270921">Mund të kërkojë të shikojë tekstin dhe imazhet në kujtesën e fragmenteve</translation>
 <translation id="4726672564094551039">Ringarko politikat</translation>
 <translation id="4728558894243024398">Platforma</translation>
+<translation id="4730977633786878901">Komentet</translation>
 <translation id="4731638775147756694">Ky aplikacion është bllokuar nga administratori yt</translation>
 <translation id="4733082559415072992"><ph name="URL"/> kërkon të përdorë vendndodhjen e pajisjes sate</translation>
 <translation id="4736491186715342415">Automjetet motorike</translation>
@@ -1527,6 +1544,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="4876305945144899064">Nuk ka emër përdoruesi</translation>
 <translation id="4877083676943085827">{COUNT,plural, =0{Asnjë}=1{<ph name="EXAMPLE_DOMAIN_1"/>}=2{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>}other{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>, <ph name="AND_MORE"/>}}</translation>
 <translation id="4877422487531841831">Kërko për <ph name="TEXT"/></translation>
+<translation id="4877521229462766300">Të lejohet përmbajtja e integruar?</translation>
 <translation id="4879491255372875719">Automatike (e parazgjedhur)</translation>
 <translation id="4880827082731008257">Historiku i kërkimeve</translation>
 <translation id="4881695831933465202">Hap</translation>
@@ -1558,6 +1576,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="495170559598752135">Veprimet</translation>
 <translation id="4953689047182316270">Reago ndaj ngjarjeve të qasshmërisë</translation>
 <translation id="4958444002117714549">Zgjero listën</translation>
+<translation id="5398999400894437316">Mund të bësh ndryshime te cilësimet e privatësisë së reklamave të Brave</translation>
 <translation id="4964505745997821360">Sigurimi shëndetësor</translation>
 <translation id="4968522289500246572">Ky aplikacion është projektuar për celular dhe përmasat mund të mos ndryshohen si duhet. Aplikacioni mund të ketë probleme ose të riniset.</translation>
 <translation id="4968665849807487749">Mund të kërkojë të menaxhojë dritaret në të gjitha ekranet e tua</translation>
@@ -1600,6 +1619,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="5045550434625856497">Fjalëkalim i gabuar</translation>
 <translation id="5051305769747448211">Komedia e drejtpërdrejtë</translation>
 <translation id="5056425809654826431">{NUM_FILES,plural, =1{Për ta dërguar këtë skedar duke përdorur "Ndarjen në afërsi", liro hapësirë (<ph name="DISK_SPACE_SIZE"/>) në pajisjen tënde}other{Për ta dërguar këta skedarë duke përdorur "Ndarjen në afërsi", liro hapësirë (<ph name="DISK_SPACE_SIZE"/>) në pajisjen tënde}}</translation>
+<translation id="5060419232449737386">Cilësimet e titrave</translation>
 <translation id="5060483733937416656">Ti zgjodhe që të verifikohesh me Windows Hello në sajtet e uebit që përdorin <ph name="PROVIDER_ORIGIN"/>. Ky ofrues mund të ketë ruajtur informacione për mënyrën tënde të pagesës, të cilat mund <ph name="LINK_TEXT"/>.</translation>
 <translation id="5061227663725596739">Mos dëshiron të thuash <ph name="LOOKALIKE_DOMAIN"/>?</translation>
 <translation id="5066056036849835175">Historiku i printimeve</translation>
@@ -1654,6 +1674,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="5171045022955879922">Kërko ose shkruaj URL-në</translation>
 <translation id="5172758083709347301">Pajisja</translation>
 <translation id="5177076414499237632">Mëso rreth temës dhe burimit të kësaj faqeje</translation>
+<translation id="5179490652562926740">Cilësimet e verifikimit të pagesave u ruajtën</translation>
 <translation id="5179510805599951267">Jo në <ph name="ORIGINAL_LANGUAGE"/>? Raportoje këtë gabim</translation>
 <translation id="518639307526414276">Ushqimi për kafshë dhe artikujt për kujdesin e kafshëve</translation>
 <translation id="5190072300954988691">Kamera dhe mikrofoni nuk lejohen</translation>
@@ -1717,6 +1738,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="5314967030527622926">Krijuesi i broshurës</translation>
 <translation id="5316812925700871227">Rrotullo në drejtim të kundërt të akrepave të orës</translation>
 <translation id="5317780077021120954">Ruaj</translation>
+<translation id="5323043727018853753">Përmbajtja e integruar lejohet</translation>
 <translation id="5323105697514565458"><ph name="FRIENDLY_MATCH_TEXT"/>, <ph name="MATCH_POSITION"/> nga <ph name="NUM_MATCHES"/></translation>
 <translation id="5329858041417644019">Shfletuesi yt nuk është i menaxhuar</translation>
 <translation id="5332219387342487447">Mënyra e dërgimit</translation>
@@ -1767,6 +1789,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="5471337644440862957">Filmat komedi</translation>
 <translation id="5481076368049295676">Kjo përmbajtje mund të përpiqet të instalojë softuerë të rrezikshëm në pajisjen tënde që vjedhin ose fshijnë informacionet e tua. <ph name="BEGIN_LINK"/>Shfaqe gjithsesi<ph name="END_LINK"/></translation>
 <translation id="54817484435770891">Shto një adresë të vlefshme</translation>
+<translation id="5483838506518938965">Je plotësisht gati</translation>
 <translation id="5485973315555778056">Makineria e resë kompjuterike</translation>
 <translation id="5487426985799386720">Ushqimi dhe pijet</translation>
 <translation id="5490432419156082418">Adresat dhe të tjera</translation>
@@ -1955,7 +1978,6 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="5967592137238574583">Modifiko informacionet e kontaktit</translation>
 <translation id="5967867314010545767">Hiqe nga historiku</translation>
 <translation id="5968022600320704045">Asnjë rezultat kërkimi</translation>
-<translation id="5968793460449681917">Në çdo vizitë</translation>
 <translation id="5974052231147553524">Ruli i gjashtë</translation>
 <translation id="5975083100439434680">Zvogëlo</translation>
 <translation id="5979084224081478209">Kontrollo fjalëkalimet</translation>
@@ -2080,6 +2102,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="6284292079994426700">26 x 38 inç</translation>
 <translation id="6284517535531159884">Lloji i burimit të varianteve</translation>
 <translation id="9069724554626063339">Butoni "Menaxho shkarkimet në Brave". Shtyp "Enter" për të menaxhuar skedarët që ke shkarkuar në Brave</translation>
+<translation id="6287197303017372967">Merr udhëzime për te destinacioni yt me informacione kthesë pas kthese duke përdorur veçorinë e navigimit.</translation>
 <translation id="6289939620939689042">Ngjyra e faqes</translation>
 <translation id="6293309776179964942">JIS B5</translation>
 <translation id="6295618774959045776">CVC:</translation>
@@ -2090,6 +2113,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="6306713302480826305">Kjo adresë do të fshihet nga kjo pajisje dhe nga pajisjet e tjera ku je identifikuar</translation>
 <translation id="6312113039770857350">Faqja e uebit nuk është e disponueshme</translation>
 <translation id="6316226860534107313">Motoçikletat dhe skuterat elektrikë</translation>
+<translation id="1413891145337537586">E re: Zgjedhjet e Family Link për Brave zbatohen këtu</translation>
 <translation id="63172326633386613">Menaxho cilësimet e qasshmërisë</translation>
 <translation id="6319249456820053699">Kamerat dhe videokamerat</translation>
 <translation id="6321917430147971392">Kontrollo cilësimet e tua të DNS-së</translation>
@@ -2103,6 +2127,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="633770708279464947">Vlera <ph name="SECURE_DNS_SALT"/> është e pavlefshme dhe nuk do të përdoret.</translation>
 <translation id="6340739886198108203">Politika e administratorit nuk rekomandon nxjerrjen e pamjeve të ekranit apo regjistrimeve kur përmbajtja konfidenciale është e dukshme:</translation>
 <translation id="6341434961864773665">{0,plural, =1{Politika e administratorit nuk rekomandon ngarkimin e këtij skedari te: <ph name="DESTINATION_NAME"/>}other{Politika e administratorit nuk rekomandon ngarkimin e këtyre skedarëve te: <ph name="DESTINATION_NAME"/>}}</translation>
+<translation id="634500758737709758">Udhëzimet</translation>
 <translation id="6348220984832452017">Variantet aktive</translation>
 <translation id="6349101878882523185">Instalo <ph name="APP_NAME"/></translation>
 <translation id="6353505687280762741">{COUNT,plural, =0{Asnjë}=1{1 fjalëkalim (për <ph name="DOMAIN_LIST"/>, sinkronizuar)}=2{2 fjalëkalime (për <ph name="DOMAIN_LIST"/>, sinkronizuar)}other{# fjalëkalime (për <ph name="DOMAIN_LIST"/>, sinkronizuar)}}</translation>
@@ -2114,6 +2139,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="6370022303958842211">Veprimet e qasjes te pajisja si p.sh. identifikimet (duke përfshirë arsyet e dështimit të identifikimit), daljet, kyçjet dhe shkyçjet</translation>
 <translation id="6374469231428023295">Provo përsëri</translation>
 <translation id="6374865374745447009">menaxhimi i dritareve</translation>
+<translation id="6376881782310775282">Serveri i zhvillimit për këtë aplikacion është i paarritshëm</translation>
 <translation id="6377268785556383139">1 rezultat për "<ph name="SEARCH_TEXT"/>"</translation>
 <translation id="6380497234672085559">A0</translation>
 <translation id="6383221683286411806">Tarifime të mundshme përpara.</translation>
@@ -2287,6 +2313,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="6823746213313229853">Radiot me bashkëbisedime</translation>
 <translation id="6825578344716086703">U përpoqe të gjeje <ph name="DOMAIN"/>, por serveri paraqiti një certifikatë të nënshkruar duke përdorur një algoritëm të dobët nënshkrimi. Kjo do të thotë se kredencialet e sigurisë që paraqiti serveri mund të jenë të falsifikuara dhe serveri mund të mos jetë ai që prisje (mund të jesh duke komunikuar me një sulmues).</translation>
 <translation id="6826993739343257035">Të lejohet AR?</translation>
+<translation id="6828150717884939426">Telefono</translation>
 <translation id="6828866289116430505">Gjenetika</translation>
 <translation id="6831043979455480757">Përkthe</translation>
 <translation id="683108308100148227">Fshih artikullin</translation>
@@ -2317,7 +2344,6 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="6897140037006041989">Agjenti i përdoruesit</translation>
 <translation id="6898699227549475383">Organizata (O)</translation>
 <translation id="6899000063526916106">Fut kodin <ph name="NUMBER_OF_DIGITS"/>-shifror</translation>
-<translation id="6907293445143367439">Lejo <ph name="SITE_NAME"/> te:</translation>
 <translation id="6907458757809079309">Palestra</translation>
 <translation id="6910240653697687763"><ph name="URL"/> kërkon të marrë nën kontroll të plotë pajisjet e tua MIDI</translation>
 <translation id="691024665142758461">Shkarko shumë skedarë</translation>
@@ -2374,6 +2400,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="7030436163253143341">Certifikata nuk është e vlefshme</translation>
 <translation id="7031646650991750659">Cilat aplikacione të Google Play ke instaluar</translation>
 <translation id="8918349693525256593"><ph name="MANAGE_GOOGLE_PRIVACY_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Shtyp "Tab" dhe më pas "Enter" për të menaxhuar cilësimet e privatësisë së "Llogarisë sate të Brave"</translation>
+<translation id="7044081119134178347">Kamera lejohet këtë herë</translation>
 <translation id="7048095965575426564">Palosje fizarmonikë (evropiane)</translation>
 <translation id="7050187094878475250">Tentove të arrije <ph name="DOMAIN"/>, por serveri paraqiti një certifikatë, periudha e vlefshmërisë së të cilës është tepër e gjatë dhe nuk mund të jetë e besueshme.</translation>
 <translation id="705310974202322020">{NUM_CARDS,plural, =1{Kjo kartë nuk mund të ruhet për momentin}other{Këto karta nuk mund të ruhen për momentin}}</translation>
@@ -2489,7 +2516,6 @@ Detaje shtesë:
 <translation id="733923710415886693">Certifikata e serverit nuk është zbuluar përmes "Transparencës së certifikatave".</translation>
 <translation id="7341357280245177602">Automjetet e përdorura</translation>
 <translation id="7346048084945669753">Është i lidhur:</translation>
-<translation id="7349921148288539306">Lejohet deri sa ta mbyllësh këtë skedë</translation>
 <translation id="7352651011704765696">Diçka shkoi keq</translation>
 <translation id="7353601530677266744">Linja e komandave</translation>
 <translation id="7354880545102894991">Udhëtimet me kosto të ulët dhe të momentit të fundit</translation>
@@ -2624,6 +2650,7 @@ Detaje shtesë:
 <translation id="7598391785903975535">Më pak se <ph name="UPPER_ESTIMATE"/></translation>
 <translation id="759889825892636187"><ph name="HOST_NAME"/> nuk mund ta administrojë këtë kërkesë aktualisht.</translation>
 <translation id="7600965453749440009">Asnjëherë mos përkthe <ph name="LANGUAGE"/></translation>
+<translation id="8441931256884543961">Zakonisht lidhesh me këtë sajt në mënyrë të sigurt, por Brave nuk mund të përdorte një lidhje të sigurt në këtë moment. Një sulmues mund të jetë duke u përpjekur të përgjojë ose modifikojë lidhjen tënde të internetit. <ph name="BEGIN_LEARN_MORE_LINK"/>Mëso më shumë<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="7610193165460212391">Vlera është jashtë gamës <ph name="VALUE"/>.</translation>
 <translation id="7613889955535752492">Data e skadimit: <ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="5704205738724476508"><ph name="MANAGE_PASSWORDS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, shtyp "Tab", më pas "Enter" për të shikuar dhe menaxhuar fjalëkalimet e tua te cilësimet e Brave</translation>
@@ -2723,6 +2750,7 @@ Detaje shtesë:
 <translation id="7822320754433038727">Gjuetia dhe qitja</translation>
 <translation id="782886543891417279">Lidhja Wi-Fi që po përdor (<ph name="WIFI_NAME"/>) mund të kërkojë që të vizitosh faqen e saj të lidhjes.</translation>
 <translation id="7840103971441592723">Regjistrimi i ekranit ka filluar</translation>
+<translation id="784137052867620416">Statistikat për blerjet</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Asnjë}=1{1 aplikacion (<ph name="EXAMPLE_APP_1"/>)}=2{2 aplikacione (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{# aplikacione (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7162988054835087448">Më vonë, një sajt që viziton ti mund t'i kërkojë Brave temat e tua që të personalizojë reklamat që shikon ti. Brave ndan deri në 3 tema ndërkohë që mbron historikun e shfletimit dhe identitetin tënd.</translation>
@@ -2866,6 +2894,7 @@ Detaje shtesë:
 <translation id="8217748145574471584">Burimet njerëzore</translation>
 <translation id="8218327578424803826">Vendndodhja e caktuar:</translation>
 <translation id="8228419419708659934">Pamja me dy faqe</translation>
+<translation id="8228477714872026922"><ph name="ORIGIN"/> dëshiron të ketë qasje te një pajisje në rrjetin tënd:</translation>
 <translation id="8229288958566709448"><ph name="WIDTH"/> x <ph name="HEIGHT"/> mm</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8231564988424805352">Lojërat sportive</translation>
@@ -2904,6 +2933,7 @@ Detaje shtesë:
 <translation id="8286799286781881307">Aplikacionet e autorizuara nga administratori mund të regjistrojnë të gjitha ekranet e lidhura me pajisjen tënde. Këto informacione mund të përpunohen në nivel lokal ose mund të ngarkohen në serverët e organizatës sate.</translation>
 <translation id="8288807391153049143">Shfaq certifikatën</translation>
 <translation id="8289355894181816810">Kontakto me administratorin e rrjetit nëse nuk je i sigurt se çfarë do të thotë kjo.</translation>
+<translation id="8292520987784410870">Të verifikohen gjithmonë?</translation>
 <translation id="8293206222192510085">Shto një faqeshënues</translation>
 <translation id="829335040383910391">tingulli</translation>
 <translation id="8294431847097064396">Burimi</translation>
@@ -2949,6 +2979,7 @@ Detaje shtesë:
 <translation id="8416694386774425977">Konfigurimi i rrjetit është i pavlefshëm dhe nuk mund të importohej.
 Detaje shtesë:
 <ph name="DEBUG_INFO"/></translation>
+<translation id="8416874502399604126">Mikrofoni lejohet këtë herë</translation>
 <translation id="8424582179843326029"><ph name="FIRST_LABEL"/> <ph name="SECOND_LABEL"/> <ph name="THIRD_LABEL"/></translation>
 <translation id="8427848540066057481">500 x 750 mm</translation>
 <translation id="8428213095426709021">Cilësimet</translation>
@@ -2957,7 +2988,6 @@ Detaje shtesë:
 <translation id="8433057134996913067">Kjo do të bëjë të dalësh nga shumica e sajteve të uebit.</translation>
 <translation id="8434840396568290395">Kafshët shtëpiake</translation>
 <translation id="8437238597147034694">&amp;Zhbëj zhvendosjen</translation>
-<translation id="8438476240229491014">Kujtoje këtë cilësim</translation>
 <translation id="8438786541497918448">Të përdoret kamera dhe mikrofoni?</translation>
 <translation id="8438923942245957911">Ky sajt është raportuar nga organizata jote</translation>
 <translation id="8443613539889492016">Muzika rap dhe hip-hop</translation>
@@ -2975,7 +3005,6 @@ Detaje shtesë:
 <translation id="8474910779563686872">Shfaq detajet e zhvilluesit</translation>
 <translation id="8479754468255770962">Kapje me tel poshtë majtas</translation>
 <translation id="8714154125294613524">Kjo adresë do të fshihet nga "Llogaria jote e Brave", <ph name="ACCOUNT"/></translation>
-<translation id="5142582872611298328">Për të përdorur kartat nga llogaria jote e Brave, identifikohu në Brave</translation>
 <translation id="8488350697529856933">Zbatohet për</translation>
 <translation id="8490137692873530638">Stivuesi 10</translation>
 <translation id="8493948351860045254">Liro hapësirë</translation>
@@ -2995,6 +3024,7 @@ Detaje shtesë:
 <translation id="8539500321752640291">Të lejohen 2 leje?</translation>
 <translation id="8541158209346794904">Pajisje me Bluetooth</translation>
 <translation id="3275395224965468352">Ky sajt merr temat e tua të reklamave nga Brave për të të shfaqur reklama më të përshtatshme</translation>
+<translation id="8541579497401304453">Lidhu me një biznes duke nisur një telefonatë.</translation>
 <translation id="8542014550340843547">Tri kapje me tel poshtë</translation>
 <translation id="8542617028204211143">SRA0</translation>
 <translation id="8543181531796978784">Mund <ph name="BEGIN_ERROR_LINK"/>të raportosh një problem të zbulimit<ph name="END_ERROR_LINK"/> ose, nëse i kupton rreziqet ndaj sigurisë tënde, <ph name="BEGIN_LINK"/>vizito këtë sajt të pasigurt<ph name="END_LINK"/>.</translation>
@@ -3002,9 +3032,11 @@ Detaje shtesë:
 <translation id="854892890027593466">Zarf C6/C5</translation>
 <translation id="8553387990086529628">Destinacionet turistike</translation>
 <translation id="8554010658308662631">Ngarko më shumë</translation>
+<translation id="8554802735558319842">Për më shumë siguri në pajisjet e ndara, aktivizo verifikimin sa herë që paguan duke përdorur plotësimin automatik.</translation>
 <translation id="8554912124839363479">{NUM_PERMISSIONS,plural, =1{RIvendos lejen}other{Rivendos lejet}}</translation>
 <translation id="8555010941760982128">Përdor këtë kod në përfundim të blerjes</translation>
 <translation id="8557066899867184262">Kodi CVC ndodhet në pjesën e pasme të kartës.</translation>
+<translation id="8558347880669160417">Kamera dhe mikrofoni lejohen këtë herë</translation>
 <translation id="8559762987265718583">Nuk mund të vendoset një lidhje private me <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/>sepse data dhe ora (<ph name="DATE_AND_TIME"/>) e pajisjes tënde nuk janë të sakta.</translation>
 <translation id="8564182942834072828">Dokumente të ndara/kopje të parenditura</translation>
 <translation id="8576310925653847813">Sistemet e kinemasë së shtëpisë</translation>
@@ -3184,6 +3216,7 @@ Detaje shtesë:
 <translation id="9048662076076074925">24 x 36 inç</translation>
 <translation id="9049981332609050619">Tentove të gjeje <ph name="DOMAIN"/>, por serveri paraqiti një certifikatë të pavlefshme.</translation>
 <translation id="9050666287014529139">Shprehje kalimi</translation>
+<translation id="104719866786855422">Ne po prezantojmë një veçori të re të privatësisë së reklamave që quajtur matja e reklamave. Brave ndan vetëm informacione shumë të kufizuara mes sajteve, si p.sh. kur të është shfaqur një reklamë, për t'i ndihmuar sajtet të matin performancën e reklamave.</translation>
 <translation id="9056953843249698117">Dyqani</translation>
 <translation id="9062620674789239642">Ai mund të jetë zhvendosur, modifikuar ose fshirë.</translation>
 <translation id="9063398205799684336">Zarf Kaku 2</translation>
@@ -3269,6 +3302,7 @@ Detaje shtesë:
 <translation id="949314938206378263">Ti kërkove që të vizitoje këtë sajt. Prindi yt mund të përgjigjet në Family Link.</translation>
 <translation id="950736567201356821">Tri shpime lart</translation>
 <translation id="961663415146723894">Lidhje poshtë</translation>
+<translation id="961930410699694996">Vendndodhja lejohet këtë herë</translation>
 <translation id="962484866189421427">Kjo përmbajtje mund të përpiqet të instalojë aplikacione mashtruese që pretendojnë se janë diçka tjetër ose që mbledhin të dhëna që mund të përdoren për të të gjurmuar. <ph name="BEGIN_LINK"/>Shfaq gjithsesi<ph name="END_LINK"/></translation>
 <translation id="963837307749850257">Të gjithë përdoruesit</translation>
 <translation id="964050462028070434">Menaxho fjalëkalimet dhe çelësat e kalimit…</translation>

@@ -8,11 +8,11 @@
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "up",
+    "message": "pataas",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "down",
+    "message": "pababa",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {

@@ -324,7 +324,6 @@
 <translation id="3357319404342882895">Αυστηρό</translation>
 <translation id="8823559166155093873">Αποκλεισμός Cookies</translation>
 <translation id="5770288601196774623">Μόνο μεταξύ ιστότοπων</translation>
-<translation id="6795317840397506736">Διαγραφή από προεπιλογή</translation>
 <translation id="3587482841069643663">Όλα</translation>
 <translation id="7390783310074170337">Προεπιλεγμένη προβολή</translation>
 <translation id="130615081792797568">Απλή προβολή</translation>
@@ -351,22 +350,10 @@
 <translation id="4182731739150761577">Προβολή πλήρους λίστας</translation>
 <translation id="1340263054776016283">Εισαγάγετε τη διεύθυνση URL της λίστας φίλτρων</translation>
 <translation id="8578397014396032341">Φιλτράρισμα περιεχομένου</translation>
+<translation id="3020183492814296499">Συντομεύσεις</translation>
 <translation id="5567412479632285879">Οι Ανταμοιβές του Brave είναι απενεργοποιημένες</translation>
 <translation id="413570371620795359">Ανοίξτε το πλαίσιο Ανταμοιβών για να το ενεργοποιήσετε και να ξεκινήσετε</translation>
-<translation id="3849957491997306859">Εντοπίστηκε αυτόματα</translation>
-<translation id="8798099450830957504">Προεπιλογή</translation>
-<translation id="4851215387785619212">Ιδιωτικές διαφημίσεις Brave</translation>
-<translation id="7808122468353671181">Κερδίστε token παρακολουθώντας Διαφημίσεις Brave. Οι Διαφημίσεις βασίζονται στα ενδιαφέροντά σας, όπως προκύπτουν από τη συμπεριφορά περιήγησής σας.  Κανένα προσωπικό στοιχείο ή ιστορικό περιήγησης δεν φεύγει ποτέ από το πρόγραμμα περιήγησής σας.</translation>
-<translation id="1758947220824279023">Μέγιστος αριθμός διαφημίσεων για προβολή</translation>
-<translation id="2356652719351432565">Συνάφεια περιφερειακών διαφημίσεων</translation>
-<translation id="2196950072404588793">Με αυτόν τον τρόπο, το Brave μπορεί να σας δείχνει διαφημίσεις ειδικά για την περιοχή σας. <ph name="BEGIN_LINK"/>Μάθετε περισσότερα<ph name="END_LINK"/></translation>
-<translation id="2433507940547922241">Εμφάνιση</translation>
-<translation id="6112368337882254910">Αυτόματη συνεισφορά</translation>
-<translation id="9132509928968869844">Όριο μηνιαίας αυτόματης συνεισφοράς</translation>
-<translation id="7286722244752781970">Ελάχιστος χρόνος παραμονής στη σελίδα πριν καταγραφεί μία επίσκεψη</translation>
-<translation id="4424486208397124985">Ελάχιστες επισκέψεις για να θεωρείται συναφής ο εκδότης</translation>
-<translation id="6248554379744796526">Εμφάνιση μη επαληθευμένων ιστότοπων σε λίστα</translation>
-<translation id="924777189963477634">Ενεργοποιώντας την Αυτόματη Συνεισφορά, συμφωνείτε με τους <ph name="BEGIN_LINK_TOS"/>Όρους παροχής υπηρεσιών<ph name="END_LINK_TOS"/> και την <ph name="BEGIN_LINK_PP"/>Πολιτική απορρήτου<ph name="END_LINK_PP"/>.</translation>
+<translation id="1051600834033686945">Ανοίξτε όλες τις ρυθμίσεις των Ανταμοιβών Brave</translation>
 <translation id="6333347122924254968">Εμφάνιση εικονιδίου Ανταμοιβές Brave στη γραμμή διευθύνσεων</translation>
 <translation id="7483857210736407752">Εμφάνιση κουμπιού "Συμβουλή" σε ιστοτόπους.</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -378,11 +365,14 @@
 <translation id="958971637207126733">Να επιτρέπονται οι ενσωματωμένες αναρτήσεις LinkedIn</translation>
 <translation id="8792121506918889955">Πολιτική διαχείρισης IP WebRTC</translation>
 <translation id="6165508094623778733">Μάθετε περισσότερα</translation>
+<translation id="8798099450830957504">Προεπιλογή</translation>
 <translation id="1822560017823072927">Προεπιλεγμένο δημόσιο και ιδιωτικό περιβάλλον χρήστη</translation>
 <translation id="5825943197137337319">Μόνο προεπιλεγμένη δημόσια διεπαφή</translation>
 <translation id="1689062823386843231">Απενεργοποίηση UDP χωρίς διαμεσολάβηση</translation>
 <translation id="3540231253392253941">Χρησιμοποιήστε τις υπηρεσίες Google για μηνύματα push</translation>
 <translation id="933652931229970927">Αυτόματη αποστολή αναφορών διαγνωστικών</translation>
+<translation id="4891600875049212418">Μείνετε κάτω από το ραντάρ, όταν επισκέπτεστε ευαίσθητους ιστότοπους</translation>
+<translation id="2356070529366658676">Να ερωτηθώ</translation>
 <translation id="4846154056248462491">Κατά την έξοδο</translation>
 <translation id="2808630562319398131">Επαναφορά δεδομένων Ανταμοιβών του Brave...</translation>
 <translation id="6438096877646138757">Ιστοσελίδες που διαγράφουν τα cookies όταν τις κλείνετε</translation>
@@ -391,6 +381,27 @@
 <translation id="7050661313034564003">Εμφάνιση όλων των cookie και των τοπικά αποθηκευμένων δεδομένων για αυτόν τον ιστότοπο</translation>
 <translation id="8339059274628563283">Τοπικά αποθηκευμένα δεδομένα στο <ph name="SITE"/></translation>
 <translation id="1963227389609234879">Κατάργηση όλων</translation>
+<translation id="8168435359814927499">Περιεχόμενο</translation>
+<translation id="7702907602086592255">Τομέας</translation>
+<translation id="3202131003361292969">Διαδρομή</translation>
+<translation id="5390743329570580756">Αποστολή για</translation>
+<translation id="6742339027238151589">Δυνατότητα πρόσβασης από το σενάριο</translation>
+<translation id="1067048845568873861">Δημιουργήθηκε</translation>
+<translation id="5747552184818312860">Λήγει</translation>
+<translation id="3858860766373142691">Όνομα</translation>
+<translation id="361106536627977100">Δεδομένα Flash</translation>
+<translation id="4530494379350999373">Προέλευση</translation>
+<translation id="8195027750202970175">Μέγεθος στον δίσκο</translation>
+<translation id="9116465289595958864">Τελευταία τροποποίηση</translation>
+<translation id="4590324241397107707">Αποθηκευτικός χώρος βάσης δεδομένων</translation>
+<translation id="5338503421962489998">Τοπικός αποθηκευτικός χώρος</translation>
+<translation id="6032912588568283682">Σύστημα αρχείων</translation>
+<translation id="8016266267177410919">Προσωρινός αποθηκευτικός χώρος</translation>
+<translation id="4175737294868205930">Μόνιμος αποθηκευτικός χώρος</translation>
+<translation id="1234808891666923653">Service Workers</translation>
+<translation id="3432762828853624962">Shared Workers</translation>
+<translation id="2927017729816812676">Αποθηκευτικός χώρος κρυφής μνήμης</translation>
+<translation id="1389601498324964367">Χώρος αποθήκευσης με διαχείριση ορίων</translation>
 <translation id="814018970995616154">Ελέγχει τις διευθύνσεις URL από μια λίστα μη ασφαλών ιστότοπων που είναι αποθηκευμένη στο Brave.</translation>
 <translation id="1144810021918451336">Δεν σας προστατεύει από επικίνδυνους ιστότοπους, λήψεις και επεκτάσεις.</translation>
 <translation id="5570470519803062774">Ρυθμίσεις Ιστοτόπου και Ασπίδων</translation>
@@ -535,7 +546,6 @@
 <translation id="4954512758656527938">Προεπιλεγμένο πορτοφόλι Ethereum</translation>
 <translation id="7701023802820268122">Προεπιλεγμένο πορτοφόλι Solana</translation>
 <translation id="8488282162676695335">Πορτοφόλι Brave</translation>
-<translation id="2356070529366658676">Να ερωτηθώ</translation>
 <translation id="6942354363301686374">Επεκτάσεις (χωρίς μετάπτωση)</translation>
 <translation id="1274962333945373242">Crypto Wallets (Καταργημένο)</translation>
 <translation id="702381242110464396">Επεκτάσεις (μετάπτωση Πορτοφολιού Brave)</translation>
@@ -552,7 +562,7 @@
 <translation id="4440478655766953083">Αυτόματο καρφίτσωμα NFT</translation>
 <translation id="464460032678285850">Τα NFT που προστίθενται στο Πορτοφόλι Brave μπορούν να καρφιτσωθούν αυτόματα στον τοπικό κόμβο IPFS.
     Σημείωση: Το IPFS daemon μπορεί να ξεκινήσει για λόγους καρφιτσώματος, έτσι ώστε ο τοπικός σας κόμβος να κοινοποιεί δεδομένα κρυφής μνήμης και καρφιτσωμένα NFT στο δίκτυο IPFS.</translation>
-<translation id="4993345308607970390">Επαναφορά Πορτοφολιού Brave</translation>
+<translation id="2326850911705720398">Κάντε επαναφορά και εκκαθάριση των δεδομένων πορτοφολιού</translation>
 <translation id="5887022857624190239">Διαγραφή καρφιτσωμένων NFT</translation>
 <translation id="204584113330893805">Τα καρφιτσωμένα NFT φιλοξενούνται στο δίκτυο IPFS όταν ξεκινάει ο τοπικός κόμβος IPFS.
 Αυτήν τη στιγμή, έχετε <ph name="NFT_COUNT"/> καρφιτσωμένα NFT.</translation>
