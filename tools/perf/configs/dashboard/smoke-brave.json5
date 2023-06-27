@@ -18,8 +18,12 @@
       ]
     },
     {
-      "name": "speedometer2-chrome-health",
+      "name": "system_health.common_desktop",
       "pageset-repeat": 1,
+      "stories": [
+        "load:chrome:blank",
+        "browse:news:hackernews:2020",
+      ]
     },
     {
       "name": "system_health.memory_desktop",
@@ -29,6 +33,10 @@
         "browse:news:hackernews:2020",
         "load:media:youtube:2018",
       ]
+    },
+    {
+      "name": "speedometer2",
+      "pageset-repeat": 1,
     },
   ]
 }
