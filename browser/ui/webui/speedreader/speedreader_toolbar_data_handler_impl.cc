@@ -12,7 +12,7 @@
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/components/ai_chat/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
 #include "brave/components/speedreader/tts_player.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -139,11 +139,9 @@ void SpeedreaderToolbarDataHandlerImpl::AiChat() {
   if (!browser_ || !browser_->window()) {
     return;
   }
-  static_cast<BraveBrowserWindow*>(browser_->window())->OpenAiChatPanel();
-
-  if (auto* ai_chat_tab_helper = AIChatTabHelper::FromWebContents(
+  if (auto* ai_chat_tab_helper = ai_chat::AIChatTabHelper::FromWebContents(
           active_tab_helper_->web_contents())) {
-    ai_chat_tab_helper->RequestSummary();
+    static_cast<BraveBrowserWindow*>(browser_->window())->OpenAiChatPanel();
   }
 }
 
