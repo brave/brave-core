@@ -239,7 +239,7 @@ const util = {
     fileMap.add([path.join(braveAppDir, 'resources'), path.join(chromeAppDir, 'resources')])
     fileMap.add([path.join(braveComponentsDir, 'strings'), path.join(chromeComponentsDir, 'strings')])
     fileMap.add([braveAndroidJavaStringsTranslationsDir, chromeAndroidJavaStringsTranslationsDir])
-    fileMap.add([chromeAndroidTabUiJavaStringsTranslationsDir, braveAndroidTabUiJavaStringsTranslationsDir])
+    fileMap.add([braveAndroidTabUiJavaStringsTranslationsDir, chromeAndroidTabUiJavaStringsTranslationsDir])
     // By overwriting, we don't need to modify some grd files.
     fileMap.add([path.join(braveAppDir, 'theme', 'brave'), path.join(chromeAppDir, 'theme', 'brave')])
     fileMap.add([path.join(braveAppDir, 'theme', 'brave'), path.join(chromeAppDir, 'theme', 'chromium')])
