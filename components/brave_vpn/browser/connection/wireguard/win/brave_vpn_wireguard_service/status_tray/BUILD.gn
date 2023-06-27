@@ -11,7 +11,7 @@ source_set("status_tray") {
     "status_tray_runner.h",
   ]
 
-  public_deps = [ "//skia" ]
+  public_deps = [ "//ui/base" ]
 
   deps = [
     "resources",
@@ -21,18 +21,16 @@ source_set("status_tray") {
     "//brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/wireguard/win",
-    "//ui/base",
     "//ui/gfx",
   ]
 
-  libs = [ "Shell32.lib" ]
+  libs = [ "shell32.lib" ]
 }
 
 source_set("unit_tests") {
   testonly = true
 
   sources = [ "status_tray_runner_unittest.cc" ]
-  public_deps = [ "//skia" ]
   deps = [
     ":status_tray",
     "status_icon",
