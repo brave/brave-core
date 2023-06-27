@@ -6,15 +6,10 @@
 #include "brave/components/brave_federated/config_utils.h"
 
 #include "base/json/json_reader.h"
+#include "brave/components/brave_federated/api/config.h"
 #include "brave/components/brave_federated/features.h"
 
 namespace brave_federated {
-
-namespace {
-constexpr char kReconnectPolicy[] = "reconnect_policy";
-constexpr char kRequestTaskPolicy[] = "request_task_policy";
-constexpr char kPostResultsPolicy[] = "post_results_policy";
-}  // namespace
 
 LearningServiceConfig::LearningServiceConfig() {
   reconnect_policy_ = {.num_errors_to_ignore = 0,
@@ -41,11 +36,11 @@ LearningServiceConfig::LearningServiceConfig() {
       .maximum_backoff_ms =
           16 * features::GetFederatedLearningUpdateCycleInSeconds() * 1000,
       .always_use_initial_delay = true};
-  model_spec_ = {.num_params = 32,
-                 .batch_size = 32,
-                 .learning_rate = 0.01,
-                 .num_iterations = 500,
-                 .threshold = 0.5};
+  model_spec_.num_params = 32,
+  model_spec_.batch_size = 32,
+  model_spec_.learning_rate = 0.01,
+  model_spec_.num_iterations = 500,
+  model_spec_.threshold = 0.5;
 }
 
 LearningServiceConfig::LearningServiceConfig(const base::FilePath& path)
@@ -76,55 +71,43 @@ void LearningServiceConfig::InitServiceConfigFromJSONString(
     VLOG(1) << "Error in configuration file: root is not a dict.";
     return;  // return default ctor's initialisation
   }
-
   const base::Value::Dict& dict = root->GetDict();
 
-  base::JSONValueConverter<CustomBackoffEntryPolicy> policy_converter;
-  CustomBackoffEntryPolicy custom_reconnect_policy(reconnect_policy_);
-  CustomBackoffEntryPolicy custom_request_task_policy(request_task_policy_);
-  CustomBackoffEntryPolicy custom_post_results_policy(post_results_policy_);
+  auto config = api::config::Config::FromValue(dict);
+  if (!config) {
+    VLOG(1) << "Error in configuration file: root is not a valid "
+               "brave_federated::Config.";
+  }
+  const auto& reconnect_policy = config->reconnect_policy;
+  const auto& request_task_policy = config->request_task_policy;
+  const auto& post_results_policy = config->post_results_policy;
+  copyModelSpec(config->model_spec, model_spec_);
 
-  bool result = false;
-  const base::Value* reconnect_policy_ptr = dict.Find(kReconnectPolicy);
-  if (reconnect_policy_ptr != nullptr) {
-    result = policy_converter.Convert(*reconnect_policy_ptr,
-                                      &custom_reconnect_policy);
-  }
-  if (!result) {
-    VLOG(1) << "JSON conversion failed for reconnect policy, falling back to "
-               "default values.";
-  }
-  const base::Value* request_task_policy_ptr = dict.Find(kRequestTaskPolicy);
-  if (request_task_policy_ptr != nullptr) {
-    result = policy_converter.Convert(*request_task_policy_ptr,
-                                      &custom_request_task_policy);
-  }
-  if (!result) {
-    VLOG(1) << "JSON conversion failed for request policy, falling back to "
-               "default values.";
-  }
-  const base::Value* post_results_policy_ptr = dict.Find(kPostResultsPolicy);
-  if (post_results_policy_ptr != nullptr) {
-    result = policy_converter.Convert(*post_results_policy_ptr,
-                                      &custom_post_results_policy);
-  }
-  if (!result) {
-    VLOG(1) << "JSON conversion failed for post results policy, falling back "
-               "to default values.";
-  }
-
-  // Convert brave_federated::CustomBackoffEntryPolicy to BackoffEntry::Policy
+  // Convert api::config::BackoffPolicy to BackoffEntry::Policy
   // parent class
-  reconnect_policy_ = custom_reconnect_policy;
-  request_task_policy_ = custom_request_task_policy;
-  post_results_policy_ = custom_post_results_policy;
+  convertPolicy<api::config::BackoffPolicy, net::BackoffEntry::Policy>(reconnect_policy, reconnect_policy_);
+  convertPolicy<api::config::BackoffPolicy, net::BackoffEntry::Policy>(request_task_policy, request_task_policy_);
+  convertPolicy<api::config::BackoffPolicy, net::BackoffEntry::Policy>(post_results_policy, post_results_policy_);
+}
 
-  base::JSONValueConverter<ModelSpec> spec_converter;
-  result = spec_converter.Convert(*(dict.Find("model_spec")), &model_spec_);
-  if (!result) {
-    VLOG(1) << "JSON conversion failed for model spec, falling back to default "
-               "values.";
-  }
+void LearningServiceConfig::copyModelSpec(const api::config::ModelSpec& src,
+                                          api::config::ModelSpec& dst) {
+  dst.num_params = src.num_params;
+  dst.batch_size = src.batch_size;
+  dst.learning_rate = src.learning_rate;
+  dst.num_iterations = src.num_iterations;
+  dst.threshold = src.threshold;
+}
+
+template <typename S, typename T>
+void LearningServiceConfig::convertPolicy(const S& src, T& dst) {
+  dst.num_errors_to_ignore = src.num_errors_to_ignore;
+  dst.initial_delay_ms = src.initial_delay_ms;
+  dst.multiply_factor = src.multiply_factor;
+  dst.jitter_factor = src.jitter_factor;
+  bool ret = base::StringToInt64(src.maximum_backoff_ms, &dst.maximum_backoff_ms);
+  DCHECK(ret);
+  dst.always_use_initial_delay = src.always_use_initial_delay;
 }
 
 net::BackoffEntry::Policy LearningServiceConfig::GetReconnectPolicy() {
@@ -139,7 +122,7 @@ net::BackoffEntry::Policy LearningServiceConfig::GetPostResultsPolicy() {
   return post_results_policy_;
 }
 
-ModelSpec LearningServiceConfig::GetModelSpec() {
+api::config::ModelSpec& LearningServiceConfig::GetModelSpec() {
   return model_spec_;
 }
 }  // namespace brave_federated

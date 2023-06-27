@@ -31,7 +31,7 @@ PerformanceReport::PerformanceReport(
 PerformanceReport::PerformanceReport(const PerformanceReport& other) = default;
 PerformanceReport::~PerformanceReport() = default;
 
-Model::Model(const ModelSpec& model_spec)
+Model::Model(const api::config::ModelSpec& model_spec)
     : num_iterations_(model_spec.num_iterations),
       batch_size_(model_spec.batch_size),
       learning_rate_(model_spec.learning_rate),

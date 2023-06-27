@@ -12,46 +12,10 @@
 #include <string>
 #include <vector>
 
-#include "base/json/json_value_converter.h"
+#include "brave/components/brave_federated/api/config.h"
 #include "brave/components/brave_federated/util/linear_algebra_util.h"
 
 namespace brave_federated {
-
-struct ModelSpec {
-  int num_params;
-  int batch_size;
-  double learning_rate;
-  int num_iterations;
-  double threshold;
-
-  static void RegisterJSONConverter(
-      base::JSONValueConverter<ModelSpec>* spec_converter) {
-    spec_converter->RegisterIntField("num_params", &ModelSpec::num_params);
-    spec_converter->RegisterIntField("batch_size", &ModelSpec::batch_size);
-    spec_converter->RegisterDoubleField("learning_rate",
-                                        &ModelSpec::learning_rate);
-    spec_converter->RegisterIntField("num_iterations",
-                                     &ModelSpec::num_iterations);
-    spec_converter->RegisterDoubleField("threshold", &ModelSpec::threshold);
-  }
-
-  friend std::ostream& operator<<(std::ostream& os, const ModelSpec& obj) {
-    os << "num_params=" << obj.num_params
-       << ", "
-          "batch_size="
-       << obj.batch_size
-       << ", "
-          "learning_rate="
-       << obj.learning_rate
-       << ", "
-          "num_iterations="
-       << obj.num_iterations
-       << ", "
-          "threshold="
-       << obj.threshold;
-    return os;
-  }
-};
 
 struct PerformanceReport {
   size_t dataset_size;
@@ -75,7 +39,7 @@ struct PerformanceReport {
 // parameters of the model, together with any additional metadata.
 class Model {
  public:
-  explicit Model(const ModelSpec& model_spec);
+  explicit Model(const api::config::ModelSpec& model_spec);
   ~Model();
 
   std::vector<float> Predict(const DataSet& dataset);

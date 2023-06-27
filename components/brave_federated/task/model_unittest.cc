@@ -7,6 +7,7 @@
 #include <cstddef>
 
 #include "brave/components/brave_federated/util/linear_algebra_util.h"
+#include "brave/components/brave_federated/api/config.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 
@@ -16,13 +17,15 @@ using testing::ElementsAreArray;
 
 namespace brave_federated {
 
-ModelSpec kModelSpec = {
-    64,   // num_params
-    32,   // batch_size
-    0.1,  // learning_rate
-    10,   // num_iterations
-    0.7   // threshold
-};
+api::config::ModelSpec kModelSpec = [] {
+  api::config::ModelSpec kModelSpec;
+  kModelSpec.num_params = 64;
+  kModelSpec.batch_size = 32;
+  kModelSpec.learning_rate = 0.1;
+  kModelSpec.num_iterations = 10;
+  kModelSpec.threshold = 0.7;
+  return kModelSpec;
+}();
 
 TEST(BraveFederatedLearningModelTest, GetModelSize) {
   // Arrange
@@ -67,13 +70,13 @@ TEST(BraveFederatedLearningModelTest, Train) {
       {5.0, 4.0, 3.0, 2.0, 1.0},
       {1.0, 1.0, 1.0, 1.0, 1.0},
   };
-  ModelSpec model_spec = {
-      static_cast<int>(test_data.at(0).size()) - 1,  // num_params
-      2,                                             // batch_size
-      0.1,                                           // learning_rate
-      1,                                             // num_iterations
-      0.7                                            // threshold
-  };
+  api::config::ModelSpec model_spec = {};
+  model_spec.num_params = static_cast<int>(test_data.at(0).size()) - 1;
+  model_spec.batch_size = 2;
+  model_spec.learning_rate = 0.1;
+  model_spec.num_iterations = 1;
+  model_spec.threshold = 0.7;
+
   Model model(model_spec);
 
   // Act
@@ -89,13 +92,12 @@ TEST(BraveFederatedLearningModelTest, Train) {
 TEST(BraveFederatedLearningModelTest, TrainOnEmptyDataset) {
   // Arrange
   DataSet test_data = {};
-  ModelSpec model_spec = {
-      5,    // num_params
-      2,    // batch_size
-      0.1,  // learning_rate
-      1,    // num_iterations
-      0.7   // threshold
-  };
+  api::config::ModelSpec model_spec = {};
+  model_spec.num_params = 5;
+  model_spec.batch_size = 2;
+  model_spec.learning_rate = 0.1;
+  model_spec.num_iterations = 1;
+  model_spec.threshold = 0.7;
   Model model(model_spec);
 
   // Act
@@ -119,13 +121,12 @@ TEST(BraveFederatedLearningModelTest, Evaluate) {
       {5.0, 4.0, 3.0, 2.0, 1.0},
       {1.0, 1.0, 1.0, 1.0, 1.0},
   };
-  ModelSpec model_spec = {
-      static_cast<int>(test_data.at(0).size()) - 1,  // num_params
-      2,                                             // batch_size
-      0.1,                                           // learning_rate
-      1,                                             // num_iterations
-      0.7                                            // threshold
-  };
+  api::config::ModelSpec model_spec = {};
+  model_spec.num_params = static_cast<int>(test_data.at(0).size()) - 1;
+  model_spec.batch_size = 2;
+  model_spec.learning_rate = 0.1;
+  model_spec.num_iterations = 1;
+  model_spec.threshold = 0.7;
   Model model(model_spec);
 
   // Act
@@ -139,13 +140,12 @@ TEST(BraveFederatedLearningModelTest, Evaluate) {
 TEST(BraveFederatedLearningModelTest, EvaluateWithEmptyDataset) {
   // Arrange
   DataSet test_data = {};
-  ModelSpec model_spec = {
-      5,    // num_params
-      2,    // batch_size
-      0.1,  // learning_rate
-      1,    // num_iterations
-      0.7   // threshold
-  };
+  api::config::ModelSpec model_spec = {};
+  model_spec.num_params = 5;
+  model_spec.batch_size = 2;
+  model_spec.learning_rate = 0.1;
+  model_spec.num_iterations = 1;
+  model_spec.threshold = 0.7;
   Model model(model_spec);
 
   // Act
@@ -166,13 +166,12 @@ TEST(BraveFederatedLearningModelTest, Predict) {
       {5.0, 4.0, 3.0, 2.0, 1.0},
       {1.0, 1.0, 1.0, 1.0, 1.0},
   };
-  ModelSpec model_spec = {
-      static_cast<int>(test_features.at(0).size()),  // num_params
-      2,                                             // batch_size
-      0.1,                                           // learning_rate
-      1,                                             // num_iterations
-      0.7                                            // threshold
-  };
+  api::config::ModelSpec model_spec = {};
+  model_spec.num_params = static_cast<int>(test_features.at(0).size());
+  model_spec.batch_size = 2;
+  model_spec.learning_rate = 0.1;
+  model_spec.num_iterations = 1;
+  model_spec.threshold = 0.7;
   Model model(model_spec);
 
   // Act
@@ -185,13 +184,12 @@ TEST(BraveFederatedLearningModelTest, Predict) {
 TEST(BraveFederatedLearningModelTest, PredictWithEmptyDataset) {
   // Arrange
   DataSet test_data = {};
-  ModelSpec model_spec = {
-      5,    // num_params
-      2,    // batch_size
-      0.1,  // learning_rate
-      1,    // num_iterations
-      0.7   // threshold
-  };
+  api::config::ModelSpec model_spec = {};
+  model_spec.num_params = 5;
+  model_spec.batch_size = 2;
+  model_spec.learning_rate = 0.1;
+  model_spec.num_iterations = 1;
+  model_spec.threshold = 0.7;
   Model model(model_spec);
 
   // Act

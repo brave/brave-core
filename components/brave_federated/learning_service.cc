@@ -64,7 +64,7 @@ LearningService::LearningService(
   const net::BackoffEntry::Policy post_results_policy =
       learning_service_config_->GetPostResultsPolicy();
   model_spec_ =
-      std::make_unique<ModelSpec>(learning_service_config_->GetModelSpec());
+      std::make_shared<api::config::ModelSpec>(std::move(learning_service_config_->GetModelSpec()));
 
   post_results_policy_ =
       std::make_unique<const net::BackoffEntry::Policy>(post_results_policy);

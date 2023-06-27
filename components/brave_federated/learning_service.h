@@ -30,7 +30,6 @@ namespace brave_federated {
 
 class CommunicationAdapter;
 class EligibilityService;
-struct ModelSpec;
 
 // This service manages the collection and execution of federated
 // learning tasks in the Browser. It is also responsible for enforcing the
@@ -71,7 +70,7 @@ class LearningService : public EligibilityObserver {
   std::unique_ptr<const net::BackoffEntry::Policy> post_results_policy_;
   std::unique_ptr<net::BackoffEntry> post_results_backoff_entry_;
 
-  std::unique_ptr<ModelSpec> model_spec_;
+  std::shared_ptr<api::config::ModelSpec> model_spec_;
 
   base::ScopedObservation<EligibilityService, EligibilityObserver>
       eligibility_observation_{this};
