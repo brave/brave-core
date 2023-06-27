@@ -22,6 +22,8 @@ source_set("status_tray") {
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/wireguard/win",
     "//ui/gfx",
+    "//ui/native_theme",
+    "//ui/native_theme:native_theme_browser",
   ]
 
   libs = [ "shell32.lib" ]
