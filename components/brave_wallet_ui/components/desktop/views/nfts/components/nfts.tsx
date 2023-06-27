@@ -51,7 +51,13 @@ import {
 import { Row, ScrollableColumn } from '../../../../shared/style'
 import { AddOrEditNftModal } from '../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 import { NftsEmptyState } from './nfts-empty-state/nfts-empty-state'
-import { ButtonIcon, CircleButton } from '../../portfolio/style'
+import {
+  ButtonIcon,
+  CircleButton,
+  SearchBarWrapper,
+  ControlBarWrapper,
+  SearchButtonWrapper
+} from '../../portfolio/style'
 import { AssetGroupContainer } from '../../../asset-group-container/asset-group-container'
 import { networkEntityAdapter } from '../../../../../common/slices/entities/network.entity'
 
@@ -84,6 +90,7 @@ export const Nfts = (props: Props) => {
     localStorage.getItem(LOCAL_STORAGE_KEYS.IS_ENABLE_NFT_AUTO_DISCOVERY_MODAL_HIDDEN) === null
   )
   const [selectedTab, setSelectedTab] = React.useState<string>('nfts')
+  const [showSearchBar, setShowSearchBar] = React.useState<boolean>(false)
 
   // hooks
   const history = useHistory()
@@ -153,6 +160,10 @@ export const Nfts = (props: Props) => {
     )
   }, [searchValue])
 
+  const onCloseSearchBar = React.useCallback(() => {
+    setShowSearchBar(false)
+    setSearchValue('')
+  }, [])
 
   // memos
   const [sortedNfts, sortedHiddenNfts] = React.useMemo(() => {
@@ -304,41 +315,78 @@ export const Nfts = (props: Props) => {
 
   return (
     <>
-      <Row
+      <ControlBarWrapper
         justifyContent='space-between'
         alignItems='center'
-        padding='0px 32px'
-        marginBottom={12}
+        showSearchBar={showSearchBar}
+        isNFTView={true}
       >
-        <Tabs options={tabOptions} onSelect={onSelectTab} />
-        <Row  width='unset'>
-          <Row style={{ width: 230 }} margin='0px 12px 0px 0px'>
+        {!showSearchBar &&
+          <Tabs options={tabOptions} onSelect={onSelectTab} />
+        }
+        <Row
+          width={showSearchBar ? '100%' : 'unset'}
+        >
+          <SearchBarWrapper
+            margin='0px 12px 0px 0px'
+            showSearchBar={showSearchBar}
+          >
             <SearchBar
               placeholder={getLocale('braveWalletSearchText')}
               action={onSearchValueChange}
               value={searchValue}
               isV2={true}
             />
-          </Row>
-          {isNftPinningFeatureEnabled && nonFungibleTokens.length > 0 && (
-            <CircleButton
-              onClick={onClickIpfsButton}
-              marginRight={12}
+          </SearchBarWrapper>
+          {showSearchBar &&
+            <Row
+              width='unset'
             >
-              <ButtonIcon name='product-ipfs-outline' />
-            </CircleButton>
-          )}
-          <CircleButton
-            onClick={toggleShowAddNftModal}
-            marginRight={12}
-          >
-            <ButtonIcon name='plus-add' />
-          </CircleButton>
-          <CircleButton onClick={onShowPortfolioSettings}>
-            <ButtonIcon name='filter-settings' />
-          </CircleButton>
+              <CircleButton
+                onClick={onCloseSearchBar}
+              >
+                <ButtonIcon name='close' />
+              </CircleButton>
+            </Row>
+          }
+          {!showSearchBar &&
+            <Row
+              width='unset'
+            >
+              <SearchButtonWrapper
+                width='unset'
+              >
+                <CircleButton
+                  marginRight={12}
+                  onClick={() => setShowSearchBar(true)}
+                >
+                  <ButtonIcon name='search' />
+                </CircleButton>
+              </SearchButtonWrapper>
+              {
+                isNftPinningFeatureEnabled &&
+                nonFungibleTokens.length > 0 &&
+                (
+                  <CircleButton
+                    onClick={onClickIpfsButton}
+                    marginRight={12}
+                  >
+                    <ButtonIcon name='product-ipfs-outline' />
+                  </CircleButton>
+                )}
+              <CircleButton
+                onClick={toggleShowAddNftModal}
+                marginRight={12}
+              >
+                <ButtonIcon name='plus-add' />
+              </CircleButton>
+              <CircleButton onClick={onShowPortfolioSettings}>
+                <ButtonIcon name='filter-settings' />
+              </CircleButton>
+            </Row>
+          }
         </Row>
-      </Row>
+      </ControlBarWrapper>
 
       <ScrollableColumn padding='10px 20px 20px 20px'>
         {nftList.length === 0 && hiddenNfts.length === 0 ? (

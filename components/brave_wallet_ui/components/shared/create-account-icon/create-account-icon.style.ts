@@ -24,6 +24,11 @@ export const AccountBox = styled.div<{
       ? `var(--box-${p.size})`
       : 'var(--box-medium)'
   };
+  min-width: ${(p) =>
+    p.size
+      ? `var(--box-${p.size})`
+      : 'var(--box-medium)'
+  };
   height: ${(p) =>
     p.size
       ? `var(--box-${p.size})`

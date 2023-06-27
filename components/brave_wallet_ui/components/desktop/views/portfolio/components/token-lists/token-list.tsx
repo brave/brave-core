@@ -68,7 +68,10 @@ import {
 import {
   FilterTokenRow,
   CircleButton,
-  ButtonIcon
+  ButtonIcon,
+  SearchBarWrapper,
+  ControlBarWrapper,
+  SearchButtonWrapper
 } from '../../style'
 
 interface Props {
@@ -113,6 +116,7 @@ export const TokenLists = ({
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>(tokenId ?? '')
+  const [showSearchBar, setShowSearchBar] = React.useState<boolean>(false)
 
   // methods
 
@@ -372,6 +376,11 @@ export const TokenLists = ({
     sortedFungibleTokensList
   ])
 
+  const onCloseSearchBar = React.useCallback(() => {
+    setShowSearchBar(false)
+    setSearchValue('')
+  }, [])
+
   const listUiByNetworks = React.useMemo(() => {
     return networks?.sort((a, b) => {
       const aBalance = getNetworkFiatValue(a)
@@ -522,24 +531,25 @@ export const TokenLists = ({
       }
 
       {isPortfolio &&
-        <Row
+        <ControlBarWrapper
           justifyContent='space-between'
           alignItems='center'
-          padding='0px 32px'
-          marginBottom={16}
+          showSearchBar={showSearchBar}
         >
-          <Text
-            textSize='16px'
-            isBold={true}
-          >
-            {getLocale('braveWalletAccountsAssets')}
-          </Text>
+          {!showSearchBar &&
+            <Text
+              textSize='16px'
+              isBold={true}
+            >
+              {getLocale('braveWalletAccountsAssets')}
+            </Text>
+          }
           <Row
-            width='unset'
+            width={showSearchBar ? '100%' : 'unset'}
           >
-            <Row
-              style={{ width: 230 }}
+            <SearchBarWrapper
               margin='0px 12px 0px 0px'
+              showSearchBar={showSearchBar}
             >
               <SearchBar
                 placeholder={getLocale('braveWalletSearchText')}
@@ -547,25 +557,48 @@ export const TokenLists = ({
                 value={searchValue}
                 isV2={true}
               />
-            </Row>
-            <Row
-              width='unset'
-            >
-              <CircleButton
-                marginRight={12}
-                onClick={showAddAssetsModal}
+            </SearchBarWrapper>
+            {showSearchBar &&
+              <Row
+                width='unset'
               >
-                <ButtonIcon name='list-settings' />
-              </CircleButton>
+                <CircleButton
+                  onClick={onCloseSearchBar}
+                >
+                  <ButtonIcon name='close' />
+                </CircleButton>
+              </Row>
+            }
+            {!showSearchBar &&
+              <Row
+                width='unset'
+              >
+                <SearchButtonWrapper
+                  width='unset'
+                >
+                  <CircleButton
+                    marginRight={12}
+                    onClick={() => setShowSearchBar(true)}
+                  >
+                    <ButtonIcon name='search' />
+                  </CircleButton>
+                </SearchButtonWrapper>
+                <CircleButton
+                  marginRight={12}
+                  onClick={showAddAssetsModal}
+                >
+                  <ButtonIcon name='list-settings' />
+                </CircleButton>
 
-              <CircleButton
-                onClick={onShowPortfolioSettings}
-              >
-                <ButtonIcon name='filter-settings' />
-              </CircleButton>
-            </Row>
+                <CircleButton
+                  onClick={onShowPortfolioSettings}
+                >
+                  <ButtonIcon name='filter-settings' />
+                </CircleButton>
+              </Row>
+            }
           </Row>
-        </Row>
+        </ControlBarWrapper>
       }
 
       {enableScroll
