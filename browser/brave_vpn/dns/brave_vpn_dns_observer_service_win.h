@@ -12,7 +12,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_observer.h"
-#include "brave/components/brave_vpn/browser/connection/common/win/brave_windows_service_watcher.h"
+#include "brave/components/brave_vpn/common/win/brave_windows_service_watcher.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

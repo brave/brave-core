@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_COMMON_WIN_UTILS_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_COMMON_WIN_UTILS_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIN_UTILS_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIN_UTILS_H_
 
 #include <wrl/client.h>
 #include <string>
@@ -18,4 +18,4 @@ DWORD GetWindowsServiceStatus(const std::wstring& service_name);
 bool SetServiceFailureActions(SC_HANDLE service);
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_COMMON_WIN_UTILS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIN_UTILS_H_

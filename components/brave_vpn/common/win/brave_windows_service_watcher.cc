@@ -3,14 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/connection/common/win/brave_windows_service_watcher.h"
+#include "brave/components/brave_vpn/common/win/brave_windows_service_watcher.h"
 
 #include <utility>
 
 #include "base/logging.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/brave_vpn/browser/connection/common/win/scoped_sc_handle.h"
 
 namespace brave {
 
