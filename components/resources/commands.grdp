@@ -519,6 +519,16 @@
   <message name="IDS_SHORTCUTS_PAGE_SHORTCUT_IN_USE" desc="Message explaining that a shortcut is already in use by another command">
     This combination is being used for <ph name="COMMAND">$1<ex>"New window"</ex></ph>. Saving will override that shortcut.
   </message>
+  <if expr="not is_macosx">
+    <message name="IDS_SHORTCUTS_PAGE_SHORTCUT_UNMODIFIABLE" desc="Message explaining that a shortcut cannot be used because the command it is already being used for cannot be modified">
+      This combination is being used for <ph name="COMMAND">$1<ex>"New window"</ex></ph> and cannot be modified.
+    </message>
+  </if>
+  <if expr="is_macosx">
+    <message name="IDS_SHORTCUTS_PAGE_SHORTCUT_UNMODIFIABLE" desc="Message explaining that a shortcut cannot be used because the command it is already being used for cannot be modified">
+      This combination is being used for <ph name="COMMAND">$1<ex>"New window"</ex></ph> and cannot be modified. Try modifying it through the `App Shortcuts` in System Settings.
+    </message>
+  </if>
   <message name="IDS_SHORTCUTS_PAGE_CANCEL_ADD_SHORTCUT" desc="Text for the button to cancel adding a new shortcut">
     Cancel
   </message>
