@@ -295,7 +295,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
             // Mark hidden networks as visible in preferences.
             for (Map.Entry<String, Integer> entry :
                     WalletConstants.KNOWN_TEST_CHAINS_MAP.entrySet()) {
-                if ((!AndroidUtils.isDebugBuild())
+                if (!AndroidUtils.isDebugBuild()
                         && entry.getKey().equals(BraveWalletConstants.LOCALHOST_CHAIN_ID)) {
                     // Hide local host for non-debug builds.
                     mJsonRpcService.addHiddenNetwork(
