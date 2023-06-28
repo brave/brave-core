@@ -640,9 +640,9 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
   auto* toolbar_view = static_cast<BraveBrowserView*>(browser()->window())
                            ->reader_mode_toolbar_view_.get();
   auto* toolbar = toolbar_view->GetWebContentsForTesting();
-  WaitElement(toolbar, "options");
+  WaitElement(toolbar, "appearance");
 
-  Click(toolbar, "options");
+  Click(toolbar, "appearance");
   {  // change theme
     Click(toolbar, "theme-light");
     WaitAttr(page, "data-theme", "light");
