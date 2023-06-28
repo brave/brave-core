@@ -198,6 +198,8 @@ public class TokenUtils {
     public static void isCustomToken(BlockchainRegistry blockchainRegistry,
             NetworkInfo selectedNetwork, int coinType, BlockchainToken token,
             Callbacks.Callback1<Boolean> callback) {
+        assert !JavaUtils.anyNull(token, selectedNetwork) : "Token or network should not be null";
+        if (JavaUtils.anyNull(token, selectedNetwork)) return;
         getAllTokens(blockchainRegistry, selectedNetwork.chainId, coinType, tokens -> {
             boolean isCustom = true;
             tokens = filterTokens(selectedNetwork, tokens, TokenType.ALL, false);
