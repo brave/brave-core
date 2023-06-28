@@ -6,6 +6,10 @@
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import { useDispatch } from 'react-redux'
+import { useLocation } from 'react-router'
+
+// Types
+import { WalletRoutes } from '../../../../constants/types'
 
 // Options
 import {
@@ -61,16 +65,15 @@ import {
 
 // Styles
 import {
-  Row,
-  Column,
   VerticalDivider,
   VerticalSpacer,
   ScrollableColumn,
   HorizontalSpace
 } from '../../../shared/style'
-import { useLocation } from 'react-router'
-import { WalletRoutes } from '../../../../constants/types'
-
+import {
+  ContentWrapper,
+  ButtonRow
+} from './portfolio-filters-modal.style'
 
 interface Props {
   onClose: () => void
@@ -252,8 +255,7 @@ export const PortfolioFiltersModal = (props: Props) => {
       borderRadius={16}
     >
       <ScrollableColumn>
-        <Column
-          padding='16px 32px'
+        <ContentWrapper
           fullWidth={true}
           alignItems='flex-start'
         >
@@ -330,12 +332,10 @@ export const PortfolioFiltersModal = (props: Props) => {
             setFilteredOutAccountAddresses={setFilteredOutAccountAddresses}
           />
 
-        </Column>
+        </ContentWrapper>
       </ScrollableColumn>
 
-      <Row
-        padding={32}
-      >
+      <ButtonRow>
         <Button
           onClick={onClose}
           kind='outline'
@@ -348,7 +348,7 @@ export const PortfolioFiltersModal = (props: Props) => {
         >
           {getLocale('braveWalletButtonSaveChanges')}
         </Button>
-      </Row>
+      </ButtonRow>
 
     </PopupModal>
   )
