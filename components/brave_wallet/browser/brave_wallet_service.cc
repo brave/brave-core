@@ -639,6 +639,10 @@ bool BraveWalletService::SetAssetSpamStatus(mojom::BlockchainTokenPtr token,
   }
 
   it->GetDict().Set("is_spam", is_spam);
+
+  // Marking a token as spam makes it not visible and vice-versa
+  it->GetDict().Set("visible", !is_spam);
+
   return true;
 }
 

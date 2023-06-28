@@ -1289,26 +1289,29 @@ TEST_F(BraveWalletServiceUnitTest, SetAssetSpamStatus) {
   GetUserAssets(token1->chain_id, mojom::CoinType::ETH, &tokens);
   EXPECT_EQ(tokens.size(), 3u);
   EXPECT_FALSE(tokens[2]->is_spam);  // New token is default not spam
+  EXPECT_TRUE(tokens[2]->visible);   // New token should default to be visible
 
   // Flip spam
   SetAssetSpamStatus(token1.Clone(), true, &success);
   EXPECT_TRUE(success);
 
-  // Verify token has been set as spam
+  // Verify token has been set as spam and is not visible
   GetUserAssets(token1->chain_id, mojom::CoinType::ETH, &tokens);
   EXPECT_EQ(tokens.size(), 3u);
   EXPECT_EQ(tokens[2]->contract_address, token1->contract_address);
   EXPECT_TRUE(tokens[2]->is_spam);
+  EXPECT_FALSE(tokens[2]->visible);  // Should not be visible since it's spam
 
   // Set asset as not spam
   SetAssetSpamStatus(token1.Clone(), false, &success);
   EXPECT_TRUE(success);
 
-  // Verify token has been set as not spam
+  // Verify token has been set as not spam and is visible
   GetUserAssets(token1->chain_id, mojom::CoinType::ETH, &tokens);
   EXPECT_EQ(tokens.size(), 3u);
   EXPECT_EQ(tokens[2]->contract_address, token1->contract_address);
   EXPECT_FALSE(tokens[2]->is_spam);
+  EXPECT_TRUE(tokens[2]->visible);  // Should be visible since it's not spam
 
   // Try to set spam status for non-existing asset
   mojom::BlockchainTokenPtr fakeToken = mojom::BlockchainToken::New();
