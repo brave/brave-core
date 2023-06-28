@@ -15,8 +15,8 @@ transpile_web_ui("playlist_ui") {
       rebase_path("playlist.tsx"),
     ],
     [
-      "playlistPlayer",
-      rebase_path("playlistPlayer.tsx"),
+      "videoFrameContents",
+      rebase_path("videoFrameContents.tsx"),
     ],
   ]
 
