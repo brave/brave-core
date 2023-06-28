@@ -84,6 +84,7 @@
 <translation id="4805806622840861220">‏إعادة تشغيل Brave</translation>
 <translation id="1742948938503172561">‏يمكنك الآن تخصيص ملفك الشخصي الجديد على Brave.</translation>
 <translation id="1477146545787277177">‏للأسف! تعطل Brave. هل تريد إعادة التشغيل الآن؟</translation>
+<translation id="907470742420136113">‏يحاول Brave تعديل إعدادات ميزة "الملء التلقائي" لبيانات طُرق الدفع.</translation>
 <translation id="2585240446624043880">‏يتعذر على Brave القراءة والكتابة في دليل البيانات الخاص به:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -186,6 +187,7 @@
 <translation id="5646769069113654257">‏يُرجى إعادة تشغيل Brave الآن</translation>
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">‏عرض Brave بهذه اللغة</translation>
+<translation id="585620188971323280">يُرجى تعديل إعدادات ميزة "الملء التلقائي" لبيانات طُرق الدفع.</translation>
 <translation id="7207456302801184289">‏مرحبًا بك في Brave</translation>
 <translation id="8054200348483755053">‏رصد Brave أنّ هذه العناصر تحتوي على برامج ضارة:</translation>
 <translation id="5895138241574237353">إعادة التشغيل</translation>
@@ -236,6 +238,7 @@
 <translation id="2675662665675552980">‏كما أنها تتحكم في الصفحة التي تظهر عند تشغيل Brave.</translation>
 <translation id="648319183876919572">تعزِّز ميزة "الحماية المُحسّنة للتصفّح الآمن" حمايتك من المواقع الإلكترونية الضارة وعمليات التنزيل الخطيرة.</translation>
 <translation id="5590013613412457132">‏إزالة Brave</translation>
+<translation id="3617744907966785605">‏تغلق مؤسستك Brave في حال عدم استخدامه لمدّة <ph name="TIMEOUT_DURATION"/>. تم حذف بيانات التصفُّح. ويمكن أن يشمل ذلك بيانات السجلّ والملء التلقائي وعمليات التنزيل.</translation>
 <translation id="8646609321956191980">‏يحتفظ كل ملف شخصي بالمعلومات الخاصة به على Brave، مثل الإشارات المرجعية والسجلّ وكلمات المرور وغير ذلك.</translation>
 <translation id="2535436634051789953">‏يمكنك التبديل للاطّلاع على كلمات المرور من ملف شخصي آخر في Brave.</translation>
 <translation id="2312399718665761438">‏لإصلاح الأخطاء الإملائية، يُرسِل Brave ما تكتبه في حقول النص إلى Brave</translation>
@@ -272,6 +275,7 @@
 <translation id="7025789849649390912">تم إيقاف التثبيت.</translation>
 <translation id="1705567146636171298">‏تحديث Brave</translation>
 <translation id="5499063270485366718">‏في حال لم تتضمن صورة ما وصفًا مفيدًا، سيحاول Brave توفير وصف لك. لإنشاء الأوصاف، سيتم إرسال الصور إلى Brave.</translation>
+<translation id="2332301637111071062">‏تحذف مؤسستك بيانات Brave في حال عدم استخدامها لمدّة <ph name="TIMEOUT_DURATION"/>. ويمكن أن يشمل ذلك بيانات السجلّ والملء التلقائي وعمليات التنزيل.</translation>
 <translation id="1008530050039597147">‏يحتاج Brave إلى إذن للوصول إلى الكاميرا من أجل هذا الموقع الإلكتروني.</translation>
 <translation id="1197672524850678392">‏تعذَّر إطلاق Brave. يُرجى إعادة المحاولة.</translation>
 <translation id="3405035915691517126">‏يتعذّر على Brave التحقُّق من كلمات المرور. يُرجى إعادة المحاولة بعد 24 ساعة.</translation>
@@ -324,6 +328,7 @@
 <translation id="8207657266087451193">‏في حال لم تتضمن صورة ما وصفًا مفيدًا، سيحاول Brave توفير وصف لك. لإنشاء الأوصاف، سيتم إرسال الصور إلى Brave. ويمكنك إيقاف هذه الميزة في الإعدادات في أي وقت.</translation>
 <translation id="8622246347342688645">‏يتعذّر على Brave التحقّق من كلمات المرور لأنك لم تسجّل الدخول.</translation>
 <translation id="89367911614620585">‏قد يكون هذا الملف ضارًا، لذلك فقد حظره Brave.</translation>
+<translation id="6098476632210317894">‏تغلق مؤسستك Brave في حال عدم استخدامه لمدّة <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="5196445203969439095">‏إنجاز المزيد باستخدام Brave</translation>
 <translation id="3360368475735266712">‏يمكنك تسجيل الدخول لمزامنة Brave وتخصيصه على جميع أجهزتك.</translation>
 <translation id="2591326305549412656">‏كان <ph name="USER_EMAIL_ADDRESS"/> يستخدم Brave مسبقًا</translation>
@@ -357,6 +362,7 @@
 <translation id="8986207147630327271">أنت على وشك إضافة ملف شخصي للعمل إلى هذا المتصفِّح ومنح المشرف إمكانية التحكُّم في هذا الملف الشخصي للعمل فقط.</translation>
 <translation id="82609232232243542">‏تسجيل الدخول إلى Brave</translation>
 <translation id="3273774796888928550">‏عليك تسجيل الدخول إلى Brave. إذا كنت تريد تسجيل الدخول باستخدام أحد الحسابات مرة واحدة فقط، يمكنك <ph name="GUEST_LINK_BEGIN"/>استخدام الجهاز في "وضع الضيف"<ph name="GUEST_LINK_END"/>.</translation>
+<translation id="4561046754724442504">‏تم إغلاق Brave تلقائيًا</translation>
 <translation id="5173820533850252773">‏إصدار Brave قديم</translation>
 <translation id="310518206836658214">{0,plural, =1{‏ستتم إعادة تشغيل Brave في غضون ساعة واحدة}zero{‏ستتم إعادة تشغيل Brave في غضون # ساعة}two{‏ستتم إعادة تشغيل Brave في غضون ساعتين}few{‏ستتم إعادة تشغيل Brave في غضون # ساعات}many{‏ستتم إعادة تشغيل Brave في غضون # ساعةً}other{‏ستتم إعادة تشغيل Brave في غضون # ساعة}}</translation>
 <translation id="5190991181158966940">‏للحصول على تحديثات Brave في المستقبل، يجب استخدام جهاز يعمل بنظام التشغيل Windows 10 أو إصدار أحدث. يعمل هذا الكمبيوتر بنظام التشغيل Windows 8.1.</translation>

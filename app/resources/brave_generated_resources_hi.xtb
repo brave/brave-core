@@ -358,7 +358,6 @@ Binance
 <translation id="3357319404342882895">सख्त</translation>
 <translation id="8823559166155093873">कुकीज़ ब्लॉक करें</translation>
 <translation id="5770288601196774623">केवल क्रॉस-साइट</translation>
-<translation id="6795317840397506736">डिफ़ॉल्ट रूप से भूलें</translation>
 <translation id="3587482841069643663">सभी</translation>
 <translation id="7390783310074170337">डिफ़ॉल्ट व्यू</translation>
 <translation id="130615081792797568">सरल व्यू</translation>
@@ -385,22 +384,10 @@ Binance
 <translation id="4182731739150761577">पूरी लिस्ट दिखाएँ</translation>
 <translation id="1340263054776016283">फ़िल्टर लिस्ट का URL डालें</translation>
 <translation id="8578397014396032341">कंटेंट फ़िल्टर</translation>
+<translation id="3020183492814296499">शॉर्टकट</translation>
 <translation id="5567412479632285879">Brave रिवार्ड अक्षम है</translation>
 <translation id="413570371620795359">इस चालू करके शुरू करने के लिए रिवॉर्ड पैनल खोलें</translation>
-<translation id="3849957491997306859">अपने-आप पहचान की गई</translation>
-<translation id="8798099450830957504">सामान्य</translation>
-<translation id="4851215387785619212">Brave प्राइवेट विज्ञापन</translation>
-<translation id="7808122468353671181">Brave के विज्ञापन देखकर टोकन कमाएँ. आप जिस तरह से ब्राउज़ करते हैं, उसी के मुताबिक आपकी पसंद को ध्यान में रखकर आपको विज्ञापन दिखाए जाते हैं. कोई भी निजी डेटा या आपने क्या ब्राउज़ किया, इसकी जानकारी आपके ब्राउज़र से कभी बाहर नहीं जाती.</translation>
-<translation id="1758947220824279023">दिखाए जाने वाले विज्ञापन की अधिकतम संख्या</translation>
-<translation id="2356652719351432565">क्षेत्रीय विज्ञापन से जुड़ी ज़रूरी जानकारी</translation>
-<translation id="2196950072404588793">इससे Brave आपको वो विज्ञापन दिखा पाता है, जो खास तौर पर आपके क्षेत्र के लिए हैं. <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/></translation>
-<translation id="2433507940547922241">प्रकटन</translation>
-<translation id="6112368337882254910">स्वतः-योगदान</translation>
-<translation id="9132509928968869844">ऑटोमैटिक योगदान की हर महीने की सीमा</translation>
-<translation id="7286722244752781970">विजिट दर्ज़ करने के लिए न्यूनतम पेज समय</translation>
-<translation id="4424486208397124985">प्रकाशक की योग्यता के लिए न्यूनतम विज़िट</translation>
-<translation id="6248554379744796526">सूची में गैर-सत्यापित साइट दिखाएं</translation>
-<translation id="924777189963477634">ऑटोमैटिक योगदान को चालू करके आप <ph name="BEGIN_LINK_TOS"/>सेवा की शर्तें<ph name="END_LINK_TOS"/> और <ph name="BEGIN_LINK_PP"/>निजता नीति<ph name="END_LINK_PP"/> पर अपनी सहमति देते हैं.</translation>
+<translation id="1051600834033686945">Brave रिवॉर्ड की सेटिंग पर जाएँ</translation>
 <translation id="6333347122924254968">एड्रेस बार में Brave Rewards आइकॉन दिखाएं</translation>
 <translation id="7483857210736407752">साइट्स पर 'सुझाव' बटन दिखाएँ</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -412,11 +399,14 @@ Binance
 <translation id="958971637207126733">LinkedIn एम्बेडेड पोस्ट की अनुमति दें</translation>
 <translation id="8792121506918889955">WebRTC IP हैंडलिंग पॉलिसी</translation>
 <translation id="6165508094623778733">और जानें</translation>
+<translation id="8798099450830957504">सामान्य</translation>
 <translation id="1822560017823072927">डिफ़ॉल्ट सार्वजनिक और निजी इंटरफेस</translation>
 <translation id="5825943197137337319">केवल डिफ़ॉल्ट सार्वजनिक इंटरफ़ेस</translation>
 <translation id="1689062823386843231">गैर-प्रॉक्सी UDP अक्षम करें</translation>
 <translation id="3540231253392253941">पुश मैसेजिंग के लिए Google सेवाओं का इस्तेमाल करें</translation>
 <translation id="933652931229970927">अपने आप नैदानिक रिपोर्ट भेजें</translation>
+<translation id="4891600875049212418">संवेदनशील वेबसाइट पर जाते समय 'अदृश्य' हो जाएँ</translation>
+<translation id="2356070529366658676">पूछें</translation>
 <translation id="4846154056248462491">बाहर निकलने पर</translation>
 <translation id="2808630562319398131">Brave रिवॉर्ड डेटा रीसेट करें ...</translation>
 <translation id="6438096877646138757">साइटें जो बंद करने पर कुकीज़ को साफ़ करती हैं</translation>
@@ -425,6 +415,27 @@ Binance
 <translation id="7050661313034564003">इस साइट के लिए सभी कूकीज़ और स्थानीय स्तर पर स्टोर किए गए डेटा दिखाएँ</translation>
 <translation id="8339059274628563283"><ph name="SITE"/> स्थानीय रूप से संग्रहित डेटा</translation>
 <translation id="1963227389609234879">सभी को निकालें</translation>
+<translation id="8168435359814927499">सामग्री</translation>
+<translation id="7702907602086592255">डोमेन</translation>
+<translation id="3202131003361292969">पथ</translation>
+<translation id="5390743329570580756">इसके लिए भेजें</translation>
+<translation id="6742339027238151589">स्‍क्रिप्‍ट पर एक्सेस करने योग्य</translation>
+<translation id="1067048845568873861">निर्मित</translation>
+<translation id="5747552184818312860">समय सीमा समाप्ति दिनांक</translation>
+<translation id="3858860766373142691">नाम</translation>
+<translation id="361106536627977100">फ़्लैश डेटा</translation>
+<translation id="4530494379350999373">मूल</translation>
+<translation id="8195027750202970175">डिस्क पर आकार</translation>
+<translation id="9116465289595958864">पिछली बार संशोधित</translation>
+<translation id="4590324241397107707">डेटाबेस मेमोरी</translation>
+<translation id="5338503421962489998">स्थानीय मेमोरी</translation>
+<translation id="6032912588568283682">फ़ाइल सिस्टम</translation>
+<translation id="8016266267177410919">अस्थायी जगह</translation>
+<translation id="4175737294868205930">स्थायी जगह</translation>
+<translation id="1234808891666923653">सेवा कार्यकर्ता</translation>
+<translation id="3432762828853624962">शेयर किए गए वर्कर</translation>
+<translation id="2927017729816812676">संचय मेमोरी</translation>
+<translation id="1389601498324964367">कोटा आधारित स्टोरेज</translation>
 <translation id="814018970995616154">Brave में संग्रहीत असुरक्षित साइटों की सूची के साथ URL की जाँच करता है।</translation>
 <translation id="1144810021918451336">हानिकारक वेबसाइट, डाउनलोड और एक्सटेंशन से आपकी सुरक्षा नहीं करता है।</translation>
 <translation id="5570470519803062774">साइट और शील्ड सेटिंग</translation>
@@ -569,7 +580,6 @@ Binance
 <translation id="4954512758656527938">डिफ़ॉल्ट Ethereum वॉलेट</translation>
 <translation id="7701023802820268122">डिफ़ॉल्ट Solana वॉलेट</translation>
 <translation id="8488282162676695335">Brave वॉलेट</translation>
-<translation id="2356070529366658676">पूछें</translation>
 <translation id="6942354363301686374">एक्सटेंशन (कोई फ़ॉलबैक नहीं)</translation>
 <translation id="1274962333945373242">क्रिप्टो वॉलेट (डेप्रीकेट किए हुए)</translation>
 <translation id="702381242110464396">एक्सटेंशन (Brave वॉलेट फ़ॉलबैक)</translation>
@@ -586,7 +596,7 @@ Binance
 <translation id="4440478655766953083">NFT अपने-आप पिन करना</translation>
 <translation id="464460032678285850">वे NFT जिन्हें Brave वॉलेट में जोड़ा गया है उन्हें लोकल IPFS नोड में अपने-आप जोड़ा जा सकता है।
     नोट: IPFS डीमन को पिन करने के मकसद से चालू किया जा सकता है, जिससे आपका लोकल नोड कैश किए गए डेटा और पिन किए गए NFT को IPFS नेटवर्क से शेयर करेगा।</translation>
-<translation id="4993345308607970390">Brave वॉलेट रीसेट करें</translation>
+<translation id="2326850911705720398">वॉलेट का डेटा रीसेट करें और मिटाएँ</translation>
 <translation id="5887022857624190239">पिन किए गए NFT मिटाएँ</translation>
 <translation id="204584113330893805">स्थानीय IPFS नोड लॉन्च होने पर, पिन किए गए NFT को IPFS नेटवर्क पर होस्ट किया जाता है।
     इस समय आपके पास <ph name="NFT_COUNT"/> पिन किए गए NFT हैं।</translation>

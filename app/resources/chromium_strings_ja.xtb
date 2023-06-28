@@ -84,6 +84,7 @@
 <translation id="4805806622840861220">Brave を再起動します</translation>
 <translation id="1742948938503172561">新しい Brave プロフィールをカスタマイズ</translation>
 <translation id="1477146545787277177">エラー: Brave で問題が発生しました。今すぐ再起動しますか？</translation>
+<translation id="907470742420136113">Brave がお支払い方法の入力の設定を変更しようとしています。</translation>
 <translation id="2585240446624043880">Brave はこのデータ ディレクトリへの読み書きを実行できません:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -186,6 +187,7 @@
 <translation id="5646769069113654257">今すぐ Brave を再起動してください</translation>
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">Brave をこの言語で表示</translation>
+<translation id="585620188971323280">お支払い方法の入力の設定を変更します。</translation>
 <translation id="7207456302801184289">Brave へようこそ</translation>
 <translation id="8054200348483755053">Brave で次のアイテムに不正なソフトウェアが含まれていることが検出されました。</translation>
 <translation id="5895138241574237353">再起動</translation>
@@ -194,7 +196,7 @@
 <translation id="5941711191222866238">最小化</translation>
 <translation id="3613110494561632737">Brave の試用版がランダムに割り当てられた場合は、閲覧履歴が、表示される広告と以下の推定された興味 / 関心に影響します。プライバシーを保護するために、Brave ではユーザーの興味 / 関心が毎月順番に削除されます。ユーザーが削除しない限り、興味 / 関心は更新されます。</translation>
 <translation id="3598551856834560515">同期を開始するには、Brave を更新します</translation>
-<translation id="5225261774087485064">多くのサイトでは、アクセスしたユーザーの興味 / 関心を記憶して、エクスペリエンスをカスタマイズするのが一般的です。そうしたサイトでは、ユーザーの興味 / 関心についての情報を Brave に保存する場合もあります。</translation>
+<translation id="5225261774087485064">多くのウェブサイトでは、アクセスしたユーザーの興味 / 関心を記録して、ユーザー体験をパーソナライズするのが一般的です。そうしたウェブサイトでは、ユーザーの興味 / 関心についての情報を Brave に保存する場合があります。</translation>
 <translation id="6003112304606738118">ダウンロードしています... 残り <ph name="HOURS"/> 時間です</translation>
 <translation id="6040143037577758943">閉じる</translation>
 <translation id="505042220086416644">Brave がさらに速くなりました！最新バージョンをぜひお試しください。</translation>
@@ -236,6 +238,7 @@
 <translation id="2675662665675552980">この拡張機能では、Brave の起動時に表示されるページも制御されます。</translation>
 <translation id="648319183876919572">セーフ ブラウジング保護強化機能では、危険なウェブサイトやダウンロードから高いセキュリティ強度で保護されます</translation>
 <translation id="5590013613412457132">Brave をアンインストール</translation>
+<translation id="3617744907966785605"><ph name="TIMEOUT_DURATION"/> 使用しなかったため、Brave は組織によって終了されます。閲覧データは削除されました。これには、履歴、自動入力、ダウンロードが含まれます。</translation>
 <translation id="8646609321956191980">Brave の情報（ブックマーク、履歴、パスワードなど）はプロフィールごとに分けて保持されます</translation>
 <translation id="2535436634051789953">別の Brave プロフィールに切り替えて、そのプロフィールのパスワードを表示できます</translation>
 <translation id="2312399718665761438">スペルミスを修正するために、テキスト欄に入力したテキストが Brave から Brave に送信されます</translation>
@@ -271,6 +274,7 @@
 <translation id="7025789849649390912">インストールが停止しました。</translation>
 <translation id="1705567146636171298">Brave を更新</translation>
 <translation id="5499063270485366718">画像に有効な説明が設定されていない場合に、Brave で説明を自動的に生成できるよう Brave に画像が送信されます。</translation>
+<translation id="2332301637111071062"><ph name="TIMEOUT_DURATION"/> 使用しなかったため、Brave のデータは組織によって削除されます。これには、履歴、自動入力、ダウンロードが含まれます。</translation>
 <translation id="1008530050039597147">このサイトを利用するには、Brave でカメラの使用を許可する必要があります</translation>
 <translation id="1197672524850678392">Brave を起動できませんでした。もう一度お試しください。</translation>
 <translation id="3405035915691517126">Brave でパスワードを確認できません。24 時間後にもう一度お試しください。</translation>
@@ -323,6 +327,7 @@
 <translation id="8207657266087451193">画像に有効な説明が設定されていない場合に、Brave で説明を自動的に生成できるよう Brave に画像が送信されます。この機能は設定でいつでも無効にできます。</translation>
 <translation id="8622246347342688645">ログインしていないため、Brave でパスワードを確認できません</translation>
 <translation id="89367911614620585">このファイルは危険なファイルの可能性があるため、Brave でブロックしました。</translation>
+<translation id="6098476632210317894"><ph name="TIMEOUT_DURATION"/> 使用しなかったため、Brave は組織によって終了されます。</translation>
 <translation id="5196445203969439095">Brave でもっと便利に</translation>
 <translation id="3360368475735266712">ログインすると、同期してカスタマイズした Brave をどのデバイスでも使用できます</translation>
 <translation id="2591326305549412656">Brave の前回の使用者は <ph name="USER_EMAIL_ADDRESS"/> です</translation>
@@ -356,6 +361,7 @@
 <translation id="8986207147630327271">このブラウザに仕事用プロファイルを追加し、管理者がこの仕事用プロファイルのみを管理できるようにします。</translation>
 <translation id="82609232232243542">Brave にログイン</translation>
 <translation id="3273774796888928550">Brave にログインします。アカウントに今回だけログインする場合は、<ph name="GUEST_LINK_BEGIN"/>デバイスをゲストとして使用<ph name="GUEST_LINK_END"/>できます。</translation>
+<translation id="4561046754724442504">Brave は自動的に終了しました</translation>
 <translation id="5173820533850252773">Brave は古いバージョンです</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave は 1 時間後に再起動されます}other{Brave は # 時間後に再起動されます}}</translation>
 <translation id="5190991181158966940">今後、Brave のアップデートを受信するには、Windows 10 以降が必要となります。このパソコンでは Windows 8.1 が実行されています。</translation>

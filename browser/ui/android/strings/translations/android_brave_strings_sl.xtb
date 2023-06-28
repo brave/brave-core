@@ -2,6 +2,33 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="sl">
 <translation id="3478449063771497234">Obvestila so izključena</translation>
+<translation id="8220484609979012449">\n\nŠe vedno lahko pošiljate kripto prispevke temu ustvarjalcu s svojo denarnico Web3.</translation>
+<translation id="6385969012847057348">Ta ustvarjalec ne more prejemati prispevkov od <ph name="CUSTODIAN"/>.</translation>
+<translation id="6268134562674951939">Nimate dovolj žetonov</translation>
+<translation id="4529874892536380156">Naj bo to mesečni ponavljajoči se prispevek. Prekličete ga lahko kadar koli.</translation>
+<translation id="5562948772940025260">Z dobroimetjem Brave Nagrade lahko pošljete samo do <ph name="AMOUNT"/> BAT.</translation>
+<translation id="5012991400231464322">Mesečni prispevki</translation>
+<translation id="5907051927340164207">Temu ustvarjalcu že pošiljate mesečne prispevke</translation>
+<translation id="307555373157330047">Še vedno lahko pošljete prispevek in lahko prekličete svoje mesečne prispevke temu ustvarjalcu tako, da jih odstranite iz <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
+<translation id="5379685283876547860">Prispevek je poslan!</translation>
+<translation id="1041398280582063935">Delite svojo podporo</translation>
+<translation id="8855543392451028706">Dobrodošli! Uporabniki lahko podprejo tega ustvarjalca vsebin tako, da mu pošljejo prispevke. To je način zahvale za ustvarjanje odlične vsebine.</translation>
+<translation id="1235176624390585199"><ph name="TITLE"/> na <ph name="PROVIDER"/></translation>
+<translation id="3699420827646925694">Odjavljen iz <ph name="CUSTODIAN"/></translation>
+<translation id="9038728316393235637">Prijavite se v <ph name="CUSTODIAN"/></translation>
+<translation id="7063168612616047608">Hvala, ker podpirate svoje najljubše ustvarjalce</translation>
+<translation id="3796032246917966749">Videti je, da ste odjavljeni iz <ph name="CUSTODIAN"/> za Brave Nagrade. Če želite nadaljevati, se ponovno prijavite.</translation>
+<translation id="594652923071049606">Ta ustvarjalec še ni preverjen pri Brave Ustvarjalcih. Ko bo preverjen, mu boste lahko poslali prispevke. <ph name="LEARN_MORE"/></translation>
+<translation id="3733094367889291358">Pošlji prispevek</translation>
+<translation id="1899434873745933492">Vašega prispevka ni mogoče poslati</translation>
+<translation id="1794046983410841192">Uporabite Brave Nagrade</translation>
+<translation id="8037118277449189044">Uporabite denarnico Web3</translation>
+<translation id="9059356165618961685">Stanje Brave Nagrad</translation>
+<translation id="86107454835395919">Nastavite kot mesečni prispevek</translation>
+<translation id="1177863135347784049">Po meri</translation>
+<translation id="4827581232860040208">Pri pošiljanju vašega prispevka je prišlo do težave</translation>
+<translation id="3259723213051400722">Poskusite znova.</translation>
+<translation id="8899147737996487517">Ta ustvarjalec se je registriral pri Brave in lahko prejema prispevke uporabnikov Brave Nagrad. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Ko so obvestila izključena, storitev nagrad Brave morda ne bo delovala.</translation>
 <translation id="4259212006412783790">VKLOP</translation>
 <translation id="6112331814131703370">Onemogočite obvestila 'Prehod na aplikacijo'</translation>
@@ -16,9 +43,7 @@
 <translation id="5488843227043643519">Bi oddali oceno v Play Store?</translation>
 <translation id="5867854497245948308">Hvala za povratno informacijo!</translation>
 <translation id="4935400164159327304">Zaupajte nam, kako lahko Brave še izboljšamo.</translation>
-<translation id="915758461293673891">Znesek prispevka:</translation>
 <translation id="1420756770787071946">Podprite tega ustvarjalca</translation>
-<translation id="4147995007712611681">Nastavili ste prispevek na čakanju!</translation>
 <translation id="8966035543003363155">Z obvestili Brave je lažje</translation>
 <translation id="7662771815233894695">Upravljajte prenose, pridobite žetone, oglejte si tedensko statistiko uporabe in drugo.</translation>
 <translation id="4265429476391459783">Ne pridobivate nagrad ali prejemate poročil o zasebnosti</translation>
@@ -38,33 +63,9 @@
 <translation id="6945863270524203017">Prejemajte tedenske posodobitve zasebnosti na sledilniku za blokiranje oglasov &amp;.</translation>
 <translation id="4324735664183300693">Vklopite obvestila</translation>
 <translation id="3570081523466826008">Posodobi povezave na HTTPS</translation>
-<translation id="5153702175393349577">Datum naslednje donacije</translation>
-<translation id="8979401359137062629">Opomba:</translation>
-<translation id="7277134233385925078">Nastavi mesečno donacijo</translation>
-<translation id="3765933240178364575">Znesek enkratne donacije</translation>
-<translation id="1101015459918930887">Obdelava vaše donacije lahko traja nekaj minut</translation>
-<translation id="4088764345615745058">Znesek napitnine po meri</translation>
-<translation id="8759753423332885148">Več o tem</translation>
-<translation id="3271043362279673449">Hvala za podporo!</translation>
-<translation id="3312470408978098625">Vaša enkratna napitnina je poslana.</translation>
-<translation id="9088057605518918276">Mesečni prispevek je nastavljen.</translation>
-<translation id="2978223787436054634">Tvitnite o vaši podpori</translation>
-<translation id="1166682575529520472">Mesečno</translation>
-<translation id="5906820630265272615">Sredstva BAT</translation>
-<translation id="3586352807094428968">Brave zbira 5% zneska kot pristojbino za obdelavo.</translation>
-<translation id="7723816962634734185">Znesek po meri</translation>
-<translation id="1986030365413628297">npr. 12,75 BAT</translation>
-<translation id="5087864757604726239">nazaj</translation>
+<translation id="6395059271589866759">Brave pobere 5 % poslanega zneska kot provizijo za obdelavo.</translation>
 <translation id="6661699662755460155">zamenjaj</translation>
-<translation id="864162897141534043">Prispevali boste</translation>
-<translation id="7286679368056222644">Vaš mesečni prispevek bo</translation>
-<translation id="8195146845495346281">Najmanjši znesek donacije je 0,25 BAT</translation>
-<translation id="4647657427328119430">Ni dovolj žetonov.</translation>
-<translation id="2359808026110333948">Naprej</translation>
-<translation id="4227681408214010862">Včeš mi je, da na #Brave lahko podpiram ustvarjalce! Uporabniku <ph name="NAME"/> Če na strani https://creators.brave.com prispevek potrdi do <ph name="DATE"/>, se mu bo ta znesek v BAT-ih pripisal!</translation>
-<translation id="6231182869178328516">Ravnokar sem opravil donacijo <ph name="NAME"/> prek brskalnika Brave. Oglej si ga na spletnem mestu https://brave.com/tips.</translation>
-<translation id="7172012963002631836">Pri pošiljanju vašega nasveta je prišlo do težave.</translation>
-<translation id="8994556588732085585">Zaprite in znova odprite pasico za prispevek, da poskusite znova.</translation>
+<translation id="6790981891677399838">Pravkar sem prispeval <ph name="AMOUNT"/> BAT z Brskalnikom Brave. Oglejte si, kako lahko podprete tudi svoje najljubše ustvarjalce in spletna mesta: https://brave.com/rewards</translation>
 <translation id="2278950434998763147">Odpre nekatera spletna mesta z varno povezavo HTTPS namesto z navadnim HTTP.</translation>
 <translation id="5510493033031835532">Samodejno preusmerjanje strani AMP</translation>
 <translation id="5197219128592971597">Vedno obiščite originalne (ki niso AMP) URL-je strani namesto Googlovih različic pospešenih mobilnih strani.</translation>
@@ -140,6 +141,9 @@
 <translation id="152579389256498990">URL naslov vira</translation>
 <translation id="4975944254857623648">Privzeti viri</translation>
 <translation id="253886574765651454">Dodaj vir</translation>
+<translation id="254100925533869330">Ni vsebine</translation>
+<translation id="7172792761509429092">Za novice Brave ni vsebine za prikaz.</translation>
+<translation id="1771307734839364850">Izberite vire vsebine</translation>
 <translation id="5787084571334399599">Preprečuje strežniku ustvarjanje prstnih odtisov</translation>
 <translation id="7459000603787995422">Zapri zavihke ob izhodu</translation>
 <translation id="4448697385961650078">Blokiraj sledilnike in oglase</translation>
@@ -224,15 +228,7 @@
 <translation id="1545749641540134597">Skeniraj QR kodo</translation>
 <translation id="5317781812114905957">Navodila</translation>
 <translation id="8515319483805157233">Če želite iskati po kodi QR, postavite kodo QR na sredino okvirja.</translation>
-<translation id="8826007068782654809">Hvala.</translation>
-<translation id="6665366815203065060">Pravkar ste poslali donacijo prejemniku:</translation>
-<translation id="5441565662498481293">Samodejno pošiljate donacijo prejemniku:</translation>
-<translation id="1628742278973105368">Vaša prva mesečna donacija bo poslana dne:</translation>
-<translation id="1642952941091001113">Ta ustvarjalec se še ni vpisal za prejem prispevkov od uporabnikov Brave. Vaš brskalnik bo nadaljeval s poskušanjem dodelitve prispevkov, dokler se ne potrdijo ali preteče 90 dni.</translation>
-<translation id="8228150955416632026">Vi ste povezani z <ph name="WALLET_PROVIDER"/>, ta ustvarjalec pa je povezan z <ph name="SUPPORTED_WALLET_PROVIDER"/>. To pomeni, da vaša donacija ne more priti do tega ustvarjalca. Zaenkrat bo vsaka donacija, ki jo boste dodelili, ostala na čakanju, sistem pa jo bo poskušal dodeliti še 90 dni.</translation>
-<translation id="1910721550319506122">Dobrodošli!</translation>
 <translation id="2734870894159530879">Za ogled stanja se prijavite v <ph name="WALLET_PROVIDER"/></translation>
-<translation id="5830114181292529917">To spletno stran lahko podprete z donacijo. S tem se lahko na nek način zahvalite za odlično vsebino, ki jo ustvarjajo.</translation>
 <translation id="7658239707568436148">Prekliči</translation>
 <translation id="1201402288615127009">Naprej</translation>
 <translation id="8481779960444041069">Če želite izboljšati svojo zasebnost, nastavite Brave kot privzeti brskalnik</translation>
@@ -271,7 +267,6 @@
 <translation id="1649629664206601032">Za zahtevo imate še <ph name="TOKEN"/> dni</translation>
 <translation id="683765328936486920">na platformi YouTube</translation>
 <translation id="8969049974285901797">na platformi Twitch</translation>
-<translation id="3101693828171454453">ni dovolj <ph name="TOKEN"/>s</translation>
 <translation id="8038539967102225446">Reklame Brave so tukaj!</translation>
 <translation id="222883304157347087">(ta naprava)</translation>
 <translation id="4157741509680155021">NAPRAVE NA SINHRONIZACIJSKI VERIGI</translation>
@@ -334,6 +329,13 @@ Ta izbris je trajen in podatkov ni mogoče obnoviti. Če se odločite za ponovno
 <translation id="340492034650766959">Izbriši zaznamek</translation>
 <translation id="2149973817440762519">Uredi zaznamek</translation>
 <translation id="6819319915092566548">Ogled zaznamkov</translation>
+<translation id="8457451314607652708">Uvozi zaznamke</translation>
+<translation id="1008186147501209563">Izvoz zaznamkov</translation>
+<translation id="6680516947641001448">Izberite datoteko za uvoz zaznamkov</translation>
+<translation id="7028125942261647795">Zaznamki so uspešno uvoženi.</translation>
+<translation id="444953779119381206">Uvoz zaznamkov ni uspel.</translation>
+<translation id="6606836200439368332">Izvoz zaznamka ni uspel.</translation>
+<translation id="1395297034387418032">Zaznamki so uspešno izvoženi.</translation>
 <translation id="3396347744975515056">Sinhronizacija Brave je bila nadgrajena in zahteva nastavitev</translation>
 <translation id="7473245612074035141">Začetek nastavitev</translation>
 <translation id="8985635554450124959">Sinhronizacije ni bilo mogoče nastaviti</translation>
@@ -359,8 +361,8 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="6199596294742117349">To je zavihek brez beleženja zgodovine</translation>
 <translation id="5858455511731621847">Čeprav se spletna mesta, ki jih obiščete v zavihkih brez beleženja zgodovine, ne shranijo lokalno, za vašega ponudnika internetnih storitev, delodajalca ali strani, ki jih obiščete, ne ostanejo anonimna ali nevidna.</translation>
 <translation id="5789441016350810005">Oglasi Brave se pošljejo, ko je brskalnik v ozadju.</translation>
-<translation id="4059103952779533037">Prispevki &amp; napitnine</translation>
-<translation id="2892744985635833293">Vaši mesečni prispevki so obdelani.</translation>
+<translation id="4973347371961481083">Donacije</translation>
+<translation id="7047578174221019462">Vaši mesečni prispevki so bili obdelani.</translation>
 <translation id="3124090095880236567">Vklopi oglase</translation>
 <translation id="2975780980638932742">Prišli so oglasi Brave!</translation>
 <translation id="7541582550122501404">Donacija na čakanju</translation>
@@ -378,7 +380,8 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="3794079107601824147">Prejmite plačilo za ogled te slike ozadja.</translation>
 <translation id="7136586167396205364">Skrij sponzorirane slike</translation>
 <translation id="2927095357213611519">Spletne ustvarjalce lahko podprete z žetoni.\nZaslužite žetone z ogledom oglasov, ki spoštujejo vašo zasebnost.</translation>
-<translation id="213787746370741250">Odpri zavihke v Zavihkih po meri</translation>
+<translation id="2898634658146274982">Odprite zunanje povezave v Brave</translation>
+<translation id="5616508928556767259">Odpre povezave iz drugih aplikacij v spletnem pogledu Brave. Opomba: Brave mora biti nastavljen kot privzeti brskalnik.</translation>
 <translation id="2394961582378297792">Odjavljeni</translation>
 <translation id="5308380583665731573">Povezovanje</translation>
 <translation id="3368922792935385530">Povezano</translation>
@@ -502,7 +505,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="4328028439561659455">Brave Private Ads bo prikazan kot obvestilo na vašem zaslonu. Pogostost prikazovanja teh oglasov lahko nadzirate.</translation>
 <translation id="7712287524451429139">Podpora je zares enostavna</translation>
 <translation id="105037569026952831">Ustvarjalci samodejno prejmejo vaše prispevke žetonov na podlagi vaših ravni angažiranosti, ki jih merimo kot »Pozornost«.</translation>
-<translation id="5323267338679539010">Zahvalite se z vašo podporo</translation>
+<translation id="3025802705256919103">Zahvalite se s prispevki</translation>
 <translation id="8235783939971604011">Z napitnino lahko osebno spodbudite in podprete vsebino ali ustvarjalce, ki jih imate radi. Podelite napitnino!</translation>
 <translation id="4215679190414901888">Za konec pa uredimo še nastavitve</translation>
 <translation id="3494356595346329740">To lahko spremenite pozneje.</translation>
@@ -542,6 +545,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="4472575034687746823">Kako začeti</translation>
 <translation id="2759836790106646094">Naredite varnostno kopijo svoje denarnice!</translation>
 <translation id="1078873179929044999">V naslednjem koraku boste videli obnovitveno frazo z 12 besedami, ki jo lahko uporabite za obnovitev svojih primarnih kripto računov. Shrani ga na varno mesto. Vaš obnovitveni stavek je edini način za ponovno pridobitev dostopa do računa v primeru pozabljenega gesla, izgubljene ali ukradene naprave ali če želite zamenjati denarnico.</translation>
+<translation id="2359808026110333948">Naprej</translation>
 <translation id="5488357322146334497">Sporočilo</translation>
 <translation id="1904000155026201268">Razumem, da če izgubim obnovitveno frazo, ne bom mogel dostopati do svoje kripto denarnice.</translation>
 <translation id="3933122286596948824">Vaša fraza za obnovitev</translation>
@@ -643,7 +647,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="7592795625234816917">Slika ni na voljo</translation>
 <translation id="8239147115686034860">Samodejno zakleni Brave denarnice</translation>
 <translation id="414639769490080648">Število minut čakanja, da se Brave  denarnica samodejno zaklene</translation>
-<translation id="4993345308607970390">Ponastavi denarnico Brave</translation>
+<translation id="2326850911705720398">Ponastavi in počisti podatke denarnice</translation>
 <translation id="4322846864135539519">Ste prepričani, da želite ponastaviti svoje nagrade Brave? Če vaša denarnica ni varnostno kopirana, boste zaradi ponastavitve izgubili vse podatke o računu (vključno z vsemi povezanimi sredstvi). Napišite "<ph name="CONFIRMATION_PHRASE"/>", da potrdite.</translation>
 <translation id="6915083716464390008">Izberite eno od naslednjih možnosti</translation>
 <translation id="7667423728712601865">Kupite kriptovaluto s kartico Visa ali Mastercard.</translation>
@@ -799,7 +803,6 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="2941112035454246133">Nizko</translation>
 <translation id="5431902940483264007">Optimalno</translation>
 <translation id="7304030187361489308">Visoko</translation>
-<translation id="1177863135347784049">Po meri</translation>
 <translation id="4853037749278079787">Maksimalna pristojbina: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Trenutna osnovna pristojbina: <ph name="ASSET_VALUE"/> Gwei</translation>
 <translation id="1011713837432053857">Omejitev količine goriva</translation>
@@ -825,15 +828,12 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="3506416339268164412">Prejemni naslov je pogodbeni naslov žetona</translation>
 <translation id="3494964159182650590">Povzetek nagrad</translation>
 <translation id="590733288489975971">Nagrade z oglaševanjem</translation>
-<translation id="2613359062756190460">Enkratne donacije</translation>
-<translation id="7577100371127227294">Mesečni prispevki</translation>
 <translation id="7091980679045978090">Ocenjen zaslužek</translation>
-<translation id="1346059596910821859">Donacija</translation>
-<translation id="1549705559752367917">Pošlji nasvet</translation>
+<translation id="1767561995429774671">Doniraj</translation>
 <translation id="7335371657242627509">Vključi v samodejno doniranje</translation>
 <translation id="6727102863431372879">Nastavi</translation>
 <translation id="3074127054582480056">Pozornost</translation>
-<translation id="6413162919383874653">Mesečni prispevek</translation>
+<translation id="2280319752798785157">Mesečni prispevek</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Pokaži samodokončanje v naslovni vrstici.</translation>
@@ -861,7 +861,6 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="6889920539620318793">Nastavi kot aktivno</translation>
 <translation id="2653659639078652383">Pošlji</translation>
 <translation id="4945690646623486292">Izberite omrežje</translation>
-<translation id="8853725596990766789">Spremenite količino</translation>
 <translation id="5233638681132016545">Nov zavihek</translation>
 <translation id="8006088103295786154">Dostop do denarnice Brave</translation>
 <translation id="8030169304546394654">Prekinjeno</translation>
@@ -879,7 +878,8 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="1060221736464994328">Ali želite temu mestu dovoliti preklapljanje omrežja?</translation>
 <translation id="2478788592457735063">To bo omrežje preklopilo na predhodno dodano omrežje.</translation>
 <translation id="8756686998207163764">Preklopi omrežje</translation>
-<translation id="394256914628786902">Omogoči samodejno ustvarjanje skupine zavihkov</translation>
+<translation id="5324095733417835490">Odpri samo povezave v trenutni skupini zavihkov</translation>
+<translation id="2620277345862119868">Samodejno odpre vse povezave v trenutni skupini zavihkov</translation>
 <translation id="5242300593039211344">Zakleni denarnico</translation>
 <translation id="1108298724135935307">Povezana spletna mesta</translation>
 <translation id="4255623233927788178">Pogled na raziskovalca blokov</translation>
@@ -932,9 +932,8 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="8095666712177294104">\n\nPlatforma\n</translation>
 <translation id="7080614857771109950">Podpira sredstva, ki so združljiva z EVM na blokovni verigi Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Podpira sredstva, združljiva s SPL, na blokovni verigi Solana</translation>
+<translation id="4541295941776129088">Shrani sredstvo FIL</translation>
 <translation id="6575120282593094155">Nimate še računa <ph name="ACCOUNT_TYPE"/>. Ga želite ustvariti zdaj?</translation>
-<translation id="1448289340149908413">Ethereum</translation>
-<translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">Izvzete aplikacije</translation>
 <translation id="8463269357637177759">Dovoljene redne aplikacije</translation>
 <translation id="4554726425645556940">Dovoljene sistemske aplikacije</translation>
@@ -942,6 +941,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="5472400694702418949">Dodajte aplikacije, ki jih želite izvzeti iz prometa VPN.</translation>
 <translation id="7002577172732106572">Razdeljeno tuneliranje</translation>
 <translation id="2832270987629018596">Ni veljaven naslov SOL</translation>
+<translation id="6423985584914773314">Ni veljaven naslov FIL</translation>
 <translation id="8181161042860463420">Povezani žetonski račun še ne obstaja. Za ustvarjanje in financiranje bo porabljen majhen znesek SOL. <ph name="CLICK_START"/>Več o tem<ph name="CLICK_END"/></translation>
 <translation id="1304515257839771197">Odprem aplikacijo <ph name="APP_NAME"/>?</translation>
 <translation id="7653028065515320848"><ph name="CLICK_START"/>Preberite več o uporabi storitve Rainbow Bridge<ph name="CLICK_END"/></translation>
@@ -1046,7 +1046,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="579702532610384533">Ponovna povezava</translation>
 <translation id="1619753851206150396">Odjavljeni ste</translation>
 <translation id="8208669151660770401">To se lahko zgodi zato, da bo vaš račun varen. Kliknite spodaj, če se želite znova povezati.</translation>
-<translation id="2099354965137813181">Mesečni prispevek neuspešen</translation>
+<translation id="6390041270339783491">Mesečni prispevek ni uspel</translation>
 <translation id="9074594632540931067">Napaka: BAT ni na voljo</translation>
 <translation id="5382684862562314222">BAT še ni podprt v vaši regiji v okviru Uphold.</translation>
 <translation id="6996157559236886133">Napaka: omejena funkcionalnost računa Uphold</translation>
@@ -1060,13 +1060,13 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="4071347720273751665">Kot kaže, ste vnesli naslov ENS. Za razrešitev te zahteve se bomo morali obrniti na tretjo osebo, ki bo morda lahko videla vaš naslov IP in domeno.<ph name="LEARN_MORE"/>.</translation>
 <translation id="4096049525705855774">Uporabite domeno ENS izven verige</translation>
 <translation id="4982630604810554641">Iskanje domene ...</translation>
-<translation id="4159738248012488342">Prosimo, izberite znesek za donacijo</translation>
 <translation id="3586775666459823714">NFT-ji</translation>
 <translation id="707569835145765061">Zahtevano dejanje: povežite skrbniški račun, sicer bo vaš vBAT izgubljen</translation>
 <translation id="1776742005329298234">Dne <ph name="DUE_DATE"/> bomo ukinili podporo za obstoječa virtualna stanja BAT. Povežite skrbniški račun pred tem datumom, da bomo lahko vaše zasluženo stanje prenesli na vaš skrbniški račun, sicer bo vaše stanje izgubljeno.</translation>
 <translation id="5089752671190341407">Še vedno imate čas, da svoj vBAT prispevate svojim najljubšim ustvarjalcem</translation>
 <translation id="171158953146804144">Dne <ph name="DUE_DATE"/> bomo ukinili podporo za obstoječa virtualna stanja BAT. Na žalost v vaši regiji ni razpoložljivih skrbnikov (<ph name="REGION"/>), ki bi lahko dvignili vaš zaslužek. Do takrat lahko še vedno prispevate svojim najljubšim ustvarjalcem.</translation>
 <translation id="8949422576126100041">Ogled strani s programom Speedreader?</translation>
+<translation id="5296840868251496327">Omogoči Hitri bralnik</translation>
 <translation id="591648995518106347">Samodejno naloži ustrezne članke v načinu za branje</translation>
 <translation id="1295796122927221823">Ogled v bralnem načinu</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> na <ph name="NETWORK"/></translation>
@@ -1078,12 +1078,6 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="5900576657906675258">Dodaj element na seznam predvajanja</translation>
 <translation id="349846214503465941">Omogoči seznam predvajanja</translation>
 <translation id="1309636029062006520">Ustvarite sezname predvajanja svojih najljubših zvokov in videoposnetkov ter jih predvajajte kadar koli in kjer koli.</translation>
-<translation id="7899390017499980820">Gumb Dodaj na seznam predvajanja</translation>
-<translation id="6901152954398668317">Pokaži ali skrij gumb »Dodaj na seznam predvajanja« za hiter dostop do dodajanja ali odstranjevanja medijev.</translation>
-<translation id="8404028031709373707">Samodejno predvajanje</translation>
-<translation id="597781019681241649">Omogoča samodejno predvajanje, ko se odpre seznam predvajanja.</translation>
-<translation id="2625554376218216118">Začni predvajanje, kjer sem končal</translation>
-<translation id="2953730196265332002">Samodejno sinhroniziraj vse spremembe, ki jih je ustvarjalec naredil na skupnem seznamu predvajanja.</translation>
 <translation id="3561815498111282415">Samodejno shranjevanje za način brez povezave</translation>
 <translation id="1832424694374124654">Samodejno shrani nove elemente seznama predvajanja v vašo napravo, tako da lahko predvajate brez internetne povezave.</translation>
 <translation id="8103022210423023846">Samodejno shranjevanje je VKLOPLJENO</translation>
@@ -1116,11 +1110,12 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="8120600068258956006">Dodaj na seznam predvajanja</translation>
 <translation id="39991094779686024">Seznami predvajanja</translation>
 <translation id="1710072605877822603">Dodaj medije</translation>
-<translation id="903678009070770568">Videoposnetke dodajte na Seznam predvajanja Brave in si jih oglejte pozneje, tudi brez povezave</translation>
-<translation id="3063627607780392015">Nimate mobilnega signala? Morate pomiriti jokajočega dojenčka?</translation>
-<translation id="2041014734809158138">Ne glede na to, ali ste na podzemni železnici, letalu ali dolgem potovanju z avtomobilom. Seznam predvajanja bo na voljo.</translation>
-<translation id="7287143275037417932">Ali tapnite gumb Seznam predvajanja, ko se prikaže</translation>
-<translation id="6959838938954098206">Gumb seznama predvajanja se prikaže, ko so na voljo mediji, ki jih je treba dodati. Držite ga za prikaz možnosti. Lahko ga celo skrijete.</translation>
+<translation id="3874252678044305931">Dodajte videoposnetke na Seznam predvajanja Brave. Predvajanje kadarkoli. Tudi brez povezave.</translation>
+<translation id="8973629800378391099">Ustvarite sezname predvajanja svoje najljubše vsebine. Prihranite mobilne podatke. In predvajajte brez oglasov.</translation>
+<translation id="4936812987266342401">Za dodajanje videoposnetkov na seznam predvajanja se preprosto dotaknite gumba</translation>
+<translation id="6263657785571415306">Ostanite v toku: med brskanjem dodajte videoposnetke, oglejte si jih pozneje.</translation>
+<translation id="2839555636100404687">Predvajanje je boljše na Seznamu predvajanja</translation>
+<translation id="9079526681359439081">Predvajajte v ozadju. Upravljajte z zaklenjenega zaslona. In več…</translation>
 <translation id="3620862810055853183">Odpri seznam predvajanja</translation>
 <translation id="3861012838874771868">Odpri nastavitve seznama predvajanja</translation>
 <translation id="5220099266891491416">Gumb Skrij seznam predvajanja</translation>
@@ -1139,6 +1134,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="377872456482681602">Najprej izberite elemente</translation>
 <translation id="6172429305139364624">Element seznama predvajanja ni predpomnjen.\nProsimo, predpomnite element za način brez povezave.</translation>
 <translation id="3631131732607750008">Vsebina je potekla. Poskusite ponovno čez nekaj sekund.</translation>
+<translation id="286472539388773794">Vnesite veljavno ime seznama predvajanja</translation>
 <translation id="9085765419770918643">Podatkov NFTs še ni.</translation>
 <translation id="8445532667841598737">Ste pripravljeni na dodajanje podatkov? Preprosto kliknite spodnji gumb za uvoz.</translation>
 <translation id="5925465310724910998">Želite, da se vaši NFT-ji samodejno prikažejo?</translation>
@@ -1147,4 +1143,10 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="622372328961630111">Samodejno dodajte NFT-je, ki jih imate, v denarnico z uporabo API-jev tretjih oseb. <ph name="BEGIN_LINK_1"/>Več o tem.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Račun tabele za iskanje naslovov:</translation>
 <translation id="7659483790930268440">Indeks tabele za iskanje naslovov:</translation>
+<translation id="7322560193401221004">Zapomni si položaj predvajanja datoteke</translation>
+<translation id="7505951907514709271">Za posamezne datoteke nadaljujte predvajanje od točke zadnjega premora</translation>
+<translation id="6835165453349969605">Zapomni si položaj predvajanja seznama</translation>
+<translation id="6344103698928069918">Za seznam predvajanja nadaljujte predvajanje od točke zadnjega premora</translation>
+<translation id="8141583471142904652">Neprekinjeno poslušanje</translation>
+<translation id="851432578283946230">Samodejno predvaja naslednje elemente na seznamu predvajanja</translation>
 </translationbundle>

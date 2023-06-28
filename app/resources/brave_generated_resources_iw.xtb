@@ -323,7 +323,6 @@
 <translation id="3357319404342882895">חמור</translation>
 <translation id="8823559166155093873">חסימת קובצי עוגיות</translation>
 <translation id="5770288601196774623">מרובה-אתרים בלבד</translation>
-<translation id="6795317840397506736">שכח כברירת מחדל</translation>
 <translation id="3587482841069643663">הכל</translation>
 <translation id="7390783310074170337">תצוגת ברירת מחדל</translation>
 <translation id="130615081792797568">תצוגה רגילה</translation>
@@ -350,22 +349,10 @@
 <translation id="4182731739150761577">הצג רשימה מלאה</translation>
 <translation id="1340263054776016283">יש להזין את כתובת האתר של רשימת הסינון</translation>
 <translation id="8578397014396032341">מסנני תוכן</translation>
+<translation id="3020183492814296499">קיצור דרך</translation>
 <translation id="5567412479632285879">Brave Rewards מושבתים</translation>
 <translation id="413570371620795359">פתח לוח תגמולים כדי לאפשר ולהתחיל לעבוד</translation>
-<translation id="3849957491997306859">זוהה אוטומטית</translation>
-<translation id="8798099450830957504">ברירת מחדל</translation>
-<translation id="4851215387785619212">מודעות פרטיות Brave.</translation>
-<translation id="7808122468353671181">הרוויחו tokens על ידי הצגת  Brave Ads. הפרסומות המוצגות מבוססות על תחומי העניין שלכם, כפי שניתן להסיק מהרגלי הגלישה שלכם. אף נתונים אישיים או היסטוריית גלישה לא יעזבו את הדפדפן שלכם.</translation>
-<translation id="1758947220824279023">מספר מרבי של המודעות הניתנות להצגה</translation>
-<translation id="2356652719351432565">פרסומות ממוקדות איזור</translation>
-<translation id="2196950072404588793">כך Brave תוכל להציג לך מודעות המיועדות באופן מיוחד לאזורך.<ph name="BEGIN_LINK"/>פרטים נוספים<ph name="END_LINK"/></translation>
-<translation id="2433507940547922241">מראה</translation>
-<translation id="6112368337882254910">תרומה אוטומטית</translation>
-<translation id="9132509928968869844">גבול התרומה החודשית האוטומטית</translation>
-<translation id="7286722244752781970">זמן מינימלי בדף לפני כניסה שנרשמת כביקור</translation>
-<translation id="4424486208397124985">מספר כניסות מינימלי עבור רלוונטיות של אתר</translation>
-<translation id="6248554379744796526">הצג ברשימה אתרים לא מאומתים</translation>
-<translation id="924777189963477634">על ידי הפעלת Auto-Contribute הינכם מסכימים <ph name="BEGIN_LINK_TOS"/>לתנאי השירות<ph name="END_LINK_TOS"/> <ph name="BEGIN_LINK_PP"/>ומדיניות הפרטיות<ph name="END_LINK_PP"/>.</translation>
+<translation id="1051600834033686945">פתח את הגדרות Brave Rewards המלאות</translation>
 <translation id="6333347122924254968">הצג את סמליל פרסי Brave בשורת הכתובת</translation>
 <translation id="7483857210736407752">הצג כפתורי טיפ באתרים</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -377,11 +364,14 @@
 <translation id="958971637207126733">נא לאפשר פוסטים מוטבעים</translation>
 <translation id="8792121506918889955">מדיניות טיפול ב- WebRTC IP</translation>
 <translation id="6165508094623778733">למידע נוסף</translation>
+<translation id="8798099450830957504">ברירת מחדל</translation>
 <translation id="1822560017823072927">ממשקים ברירת מחדל ציבוריים ופרטיים</translation>
 <translation id="5825943197137337319">ברירת המחדל של הממשק הציבורי בלבד</translation>
 <translation id="1689062823386843231">השבתת UDP ללא פרוקסי</translation>
 <translation id="3540231253392253941">השתמש בשירותי Google לצורך שליחת הודעות פוש</translation>
 <translation id="933652931229970927">שלחו דוחות באופן אוטומטי</translation>
+<translation id="4891600875049212418">עברו ל-Off-The-Record בעת ביקור באתרים רגישים</translation>
+<translation id="2356070529366658676">שאל</translation>
 <translation id="4846154056248462491">ביציאה</translation>
 <translation id="2808630562319398131">אפס נתוני Brave Rewards...</translation>
 <translation id="6438096877646138757">אתרים שמנקים קובצי עוגיות כאשר הם נסגרים</translation>
@@ -390,6 +380,27 @@
 <translation id="7050661313034564003">הצג את כל קובצי ה-cookie והנתונים המאוחסנים מקומית עבור אתר זה</translation>
 <translation id="8339059274628563283">נתונים המאוחסנים באופן מקומי עבור <ph name="SITE"/></translation>
 <translation id="1963227389609234879">הסר הכל</translation>
+<translation id="8168435359814927499">תוכן</translation>
+<translation id="7702907602086592255">דומיין</translation>
+<translation id="3202131003361292969">נתיב</translation>
+<translation id="5390743329570580756">שלח עבור</translation>
+<translation id="6742339027238151589">נגיש לסקריפט</translation>
+<translation id="1067048845568873861">נוצר</translation>
+<translation id="5747552184818312860">מועד תפוגה</translation>
+<translation id="3858860766373142691">שם</translation>
+<translation id="361106536627977100">‏נתוני Flash</translation>
+<translation id="4530494379350999373">מקור</translation>
+<translation id="8195027750202970175">גודל בדיסק</translation>
+<translation id="9116465289595958864">שינוי אחרון</translation>
+<translation id="4590324241397107707">אחסון מסדי נתונים</translation>
+<translation id="5338503421962489998">אחסון מקומי</translation>
+<translation id="6032912588568283682">מערכת קבצים</translation>
+<translation id="8016266267177410919">אחסון זמני</translation>
+<translation id="4175737294868205930">אחסון קבוע</translation>
+<translation id="1234808891666923653">Service Workers</translation>
+<translation id="3432762828853624962">Shared Workers</translation>
+<translation id="2927017729816812676">אחסון קובצי מטמון</translation>
+<translation id="1389601498324964367">אחסון מנוהל לפי מכסה</translation>
 <translation id="814018970995616154">בדיקת כתובות URL באמצעות רשימה של אתרים לא בטוחים ששמורה ב-Brave.</translation>
 <translation id="1144810021918451336">אינו מגן מפני אתרים הורדות והרחבות שעלולים לסכן אותך.</translation>
 <translation id="5570470519803062774">הגדרות אתר ו-Shields</translation>
@@ -534,7 +545,6 @@
 <translation id="4954512758656527938">ארנק ברירת המחדל של Ethereum</translation>
 <translation id="7701023802820268122">ארנק ברירת המחדל של Solana</translation>
 <translation id="8488282162676695335">ארנק Brave</translation>
-<translation id="2356070529366658676">שאל</translation>
 <translation id="6942354363301686374">הרחבות (ללא גיבוי)</translation>
 <translation id="1274962333945373242">ארנקי קריפטו (מבוטלת)</translation>
 <translation id="702381242110464396">הרחבות (החלפה של ארנק Brave)</translation>
@@ -550,7 +560,7 @@
 <translation id="5693968582510626466">ניקוי עסקאות יכול להיות שימושי עבור מפתחים או בעת ניקוי מצב בשרת מקומי</translation>
 <translation id="4440478655766953083">הצמד NFTs באופן אוטומטי</translation>
 <translation id="464460032678285850">NFTs שנוספו לארנק Brave עשויים להיות מוצמדים אוטומטית לצומת IPFS המקומי. הערה: ייתכן שהדמון IPFS יופעל למטרות ההצמדה כך שהצומת המקומי שלך ישתף נתונים מאוחסנים במטמון ו-NFT מוצמדים לרשת IPFS.</translation>
-<translation id="4993345308607970390">איפוס ארנק Brave</translation>
+<translation id="2326850911705720398">אפס ונקה את נתוני הארנק</translation>
 <translation id="5887022857624190239">נקה NFT מוצמדים</translation>
 <translation id="204584113330893805">NFTs מוצמדים מתארחים לרשת IPFS כאשר צומת IPFS מקומי מופעל. יש לך
      <ph name="NFT_COUNT"/> מכשירי NFT מוצמדים כרגע.</translation>
