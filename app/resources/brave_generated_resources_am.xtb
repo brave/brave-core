@@ -327,7 +327,6 @@
 <translation id="3357319404342882895">ጥብቅ</translation>
 <translation id="8823559166155093873">ኩኪዎችን አግድ</translation>
 <translation id="5770288601196774623">ጣቢያ-ብቻ</translation>
-<translation id="6795317840397506736">እንደወረደ እርሳ</translation>
 <translation id="3587482841069643663">ሁሉም</translation>
 <translation id="7390783310074170337">ነባሪ እይታ</translation>
 <translation id="130615081792797568">ቀላል እይታ</translation>
@@ -354,22 +353,10 @@
 <translation id="4182731739150761577">ሙሉ ዝርዝር አሳይ</translation>
 <translation id="1340263054776016283">የማጣሪያ ዝርዝር ዩአርኤልን ያስገቡ</translation>
 <translation id="8578397014396032341">ይዘት ማጣሪያዎች</translation>
+<translation id="3020183492814296499">አቋራጮች</translation>
 <translation id="5567412479632285879">የ Brave Rewards ታግዷል</translation>
 <translation id="413570371620795359">ለማስቻል እና ለማስጀመር የሽልማት ፓነልን ይክፈቱ</translation>
-<translation id="3849957491997306859">በራስ-ፈልግ</translation>
-<translation id="8798099450830957504">እንደወረደ</translation>
-<translation id="4851215387785619212">የ Brave Private ማስታወቂያዎች</translation>
-<translation id="7808122468353671181">የ Brave Ads ን በማየት ቶክኖችን ያግኙ። የቀረቡት ማስታወቂያዎች ከአሰሳ ባህሪዎ እንደተገኘት በእርስዎ ፍላጎቶች ላይ የተመሰረቱ ናቸው። የትኛውም የግል መረጃ ወይም የአሰሳ ታሪክ ከአሳሽዎ አይወጡም።</translation>
-<translation id="1758947220824279023">የሚታየው ከፍተኛው የማስታወቂያ ብዛት</translation>
-<translation id="2356652719351432565">የአከባቢ ማስታወቂያ ተገቢነት</translation>
-<translation id="2196950072404588793">ይህ Brave በተለይ ለአከባቢዎ የታሰቡ ማስታወቂያዎችን እንዲያሳይ ያስችለዋል። <ph name="BEGIN_LINK"/>የበለጠ ይወቁ<ph name="END_LINK"/></translation>
-<translation id="2433507940547922241">ገጽታ</translation>
-<translation id="6112368337882254910">የራስ-አስተዋፅዎ</translation>
-<translation id="9132509928968869844">ወርሀዊ የራስ-መዋጮ አልተሳካም</translation>
-<translation id="7286722244752781970">ከመጎብኘቶ በፊት ዝቅተኛው የገፅ ሰዓት</translation>
-<translation id="4424486208397124985">አንስተኛ የአሳታሚ ጠቃሚነት ጎብኝዎች</translation>
-<translation id="6248554379744796526">በዝርዝሩ ውስጥ ያልተረጋገጡ ድረ ገጾችን አሳይ</translation>
-<translation id="924777189963477634">በራስ-አስተዋጽዖን በማብራት በሚከተለው <ph name="BEGIN_LINK_TOS"/>የኣገልግሎት ውሎች<ph name="END_LINK_TOS"/> እና <ph name="BEGIN_LINK_PP"/>የግላዊነት ፖሊሲ<ph name="END_LINK_PP"/>ተስማምተዋል።</translation>
+<translation id="1051600834033686945">ሙሉ የ Brave Rewards ቅንብሮችን ይክፈቱ</translation>
 <translation id="6333347122924254968">የ Brave ሽልማት አዶን በአድራሻ መጻፍያ ውስጥ አሳይ</translation>
 <translation id="7483857210736407752">ጣቢያዎች ላይ የጠቃሚ ምክር አዝራሮችን አሳይ</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -381,11 +368,14 @@
 <translation id="958971637207126733">LinkedIn ያካተታቸውን ልጥፎችን ፍቀድ</translation>
 <translation id="8792121506918889955">የ WebRTC IP ማስተዳደርያ ፖሊሲ</translation>
 <translation id="6165508094623778733">በተጨማሪ ይወቁ</translation>
+<translation id="8798099450830957504">ዲፎልት</translation>
 <translation id="1822560017823072927">ዲፎልት የጋራና የግል ኢንተርፈረንስ</translation>
 <translation id="5825943197137337319">የጋራ ዲፎልት አጠቃቀም መጋራት ብቻ</translation>
 <translation id="1689062823386843231">ሮክሲ የሌለው UDP ያጥፉ</translation>
 <translation id="3540231253392253941">ለሚላክ መልእክት የ Google አገልግሎቶችን ይጠቀሙ</translation>
 <translation id="933652931229970927">የምርመራ ሪፖርቶችን በራስ-ሰር ላክ</translation>
+<translation id="4891600875049212418">ሚስጥራዊነት ያላቸው ድህረ ገጾችን ሲጎበኙ ከቅጂ-ውጭ በሆነ ሁነታ ይጠቀሙ</translation>
+<translation id="2356070529366658676">ጠይቅ</translation>
 <translation id="4846154056248462491">ሲወጣ</translation>
 <translation id="2808630562319398131">የ Brave ሽልማቶች ውሂብን ዳግም ያስጀምሩ...</translation>
 <translation id="6438096877646138757">ኩኪዎችን ሲዘጉ የሚያጸዱ ጣቢያዎች</translation>
@@ -394,6 +384,27 @@
 <translation id="7050661313034564003">ለዚህ ጣቢያ ሁሉንም ኩኪዎች እና በአካባቢው የተቀመጡ ውሂቦችን ያሳዩ</translation>
 <translation id="8339059274628563283">በአካባቢው የተከማቸ የ<ph name="SITE"/> ውሂብ</translation>
 <translation id="1963227389609234879">ሁሉንም አስወግድ</translation>
+<translation id="8168435359814927499">ይዘት</translation>
+<translation id="7702907602086592255">ጎራ</translation>
+<translation id="3202131003361292969">ዱካ</translation>
+<translation id="5390743329570580756">ላክ ለ</translation>
+<translation id="6742339027238151589">ለስክሪፕቱ ተደራሽ</translation>
+<translation id="1067048845568873861">ተፈጥሯል</translation>
+<translation id="5747552184818312860">ጊዜው አልፎበታል</translation>
+<translation id="3858860766373142691">ስም</translation>
+<translation id="361106536627977100">የFlash ውሂብ</translation>
+<translation id="4530494379350999373">መነሻ</translation>
+<translation id="8195027750202970175">ዲስክ ላይ ያለው መጠን</translation>
+<translation id="9116465289595958864">መጨረሻ ላይ የተቀየሩ</translation>
+<translation id="4590324241397107707">የውሂብ ጎታ ማከማቻ</translation>
+<translation id="5338503421962489998">አካባቢያዊ ማከማቻ</translation>
+<translation id="6032912588568283682">የፋይል ስርዓት</translation>
+<translation id="8016266267177410919">ጊዜያዊ ማከማቻ</translation>
+<translation id="4175737294868205930">ቋሚ ማከማቻ</translation>
+<translation id="1234808891666923653">የአገልግሎት ሰራተኛዎች</translation>
+<translation id="3432762828853624962">የተጋሩ ሠራተኞች</translation>
+<translation id="2927017729816812676">የመሸጎጫ ማከማቻ</translation>
+<translation id="1389601498324964367">የኮታ አሰራር የሚጠቀም ማከማቻ</translation>
 <translation id="814018970995616154">በ Brave ውስጥ ከተከማቹ ደህንነታቸው ያልተጠበቁ ጣቢያዎች ዝርዝር ጋር URLs ን ይፈትሻል።</translation>
 <translation id="1144810021918451336">ከአደገኛ ድርጣቢያዎች፣ ዳውንሎዶች እና ቅጥያዎች አይከላከልልዎትም።</translation>
 <translation id="5570470519803062774">የጣቢያ እና ጋሻዎች ቅንብሮች</translation>
@@ -535,7 +546,6 @@
 <translation id="4954512758656527938">ነባር የ Ethereum ዋሌት</translation>
 <translation id="7701023802820268122">ነባር የ Solana ዋሌት</translation>
 <translation id="8488282162676695335">የBrave ዋሌት</translation>
-<translation id="2356070529366658676">ጠይቅ</translation>
 <translation id="6942354363301686374">ቅጥያ (ምንም ምትኬ የለም)</translation>
 <translation id="1274962333945373242">የክሪፕቶ ዋሌቶች (ተቋርጧል)</translation>
 <translation id="702381242110464396">ቅጥያ (የ Brave ዋሌት አማራጭ)</translation>
@@ -552,7 +562,7 @@
 <translation id="4440478655766953083">በራስ ሰር NFTsን አያይዝ</translation>
 <translation id="464460032678285850">ወደ Brave Wallet የታከሉ NFTs ወደ አካባቢያዊ የIPFS ኖድ በራስ ሰር ሊያያዙ ይችላሉ።
     ማስታወሻ፦ IPFS daemon የእርስዎ አካባቢያዊ ኖድ ካችድ ውሂብን እንዲያጋራ እና NFTs ወደ IPFS አውታረመረብ እንዲያያይዝ፣ ለማያያዝ ሂደቶች ሊጀምር ይችላል።</translation>
-<translation id="4993345308607970390">የ Brave ን ዋሌት እንደገና ያስጀምሩ</translation>
+<translation id="2326850911705720398">የዋሌት ውሂብን አጥፋና ዳግም አስጀምር</translation>
 <translation id="5887022857624190239">የተሰኩ NFTs ን አጽዳ</translation>
 <translation id="204584113330893805">አካባቢያዊ IPFS ኖድ ሲጀመር የተሰኩ NFTs ወደ IPFS አውታረ መረብ ይስተናገዳሉ።
     በአሁኑ ጊዜ <ph name="NFT_COUNT"/> የተሰኩ NFTs አሉዎት።</translation>
