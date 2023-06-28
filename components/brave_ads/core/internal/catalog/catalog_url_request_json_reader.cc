@@ -89,7 +89,10 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
 
       const std::string value = creative_set_node["value"].GetString();
       const bool success = base::StringToDouble(value, &creative_set.value);
-      CHECK(success);
+      if (!success) {
+        BLOG(1, "Failed to parse creative set value " << value);
+        continue;
+      }
 
       if (creative_set_node.HasMember("embedding")) {
         for (const auto& item : creative_set_node["embedding"].GetArray()) {
@@ -112,7 +115,17 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
       for (const auto& segment_node : segments_node) {
         CatalogSegmentInfo segment;
         segment.code = segment_node["code"].GetString();
+        if (segment.code.empty()) {
+          BLOG(1, "Failed to parse empty segment code value");
+          continue;
+        }
+
         segment.name = segment_node["name"].GetString();
+        if (segment.name.empty()) {
+          BLOG(1, "Failed to parse empty segment name value");
+          continue;
+        }
+
         creative_set.segments.push_back(segment);
       }
 
@@ -142,6 +155,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
 
         base::Time end_at;
         if (!base::Time::FromUTCString(campaign.end_at.c_str(), &end_at)) {
+          BLOG(1, "Failed to parse campaign end_at value " << campaign.end_at);
           continue;
         }
 
@@ -177,7 +191,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.payload.target_url = GURL(payload["targetUrl"].GetString());
           if (!creative.payload.target_url.is_valid() ||
               !DoesSupportUrl(creative.payload.target_url)) {
-            BLOG(1, "Invalid target URL for creative instance id "
+            BLOG(1, "Failed to parse target URL for creative instance id "
                         << creative_instance_id);
             continue;
           }
@@ -200,7 +214,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.payload.image_url = GURL(payload["imageUrl"].GetString());
           if (!creative.payload.image_url.is_valid() ||
               !DoesSupportUrl(creative.payload.image_url)) {
-            BLOG(1, "Invalid image URL for creative instance id "
+            BLOG(1, "Failed to parse image URL for creative instance id "
                         << creative_instance_id);
             continue;
           }
@@ -209,7 +223,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.payload.target_url = GURL(payload["targetUrl"].GetString());
           if (!creative.payload.target_url.is_valid() ||
               !DoesSupportUrl(creative.payload.target_url)) {
-            BLOG(1, "Invalid target URL for creative instance id "
+            BLOG(1, "Failed to parse target URL for creative instance id "
                         << creative_instance_id);
             continue;
           }
@@ -236,7 +250,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
               GURL(logo["destinationUrl"].GetString());
           if (!creative.payload.target_url.is_valid() ||
               !DoesSupportUrl(creative.payload.target_url)) {
-            BLOG(1, "Invalid target URL for creative instance id "
+            BLOG(1, "Failed to parse target URL for creative instance id "
                         << creative_instance_id);
             continue;
           }
@@ -253,7 +267,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           }
 
           if (creative.payload.wallpapers.empty()) {
-            BLOG(1, "Invalid wallpapers for creative instance id "
+            BLOG(1, "Failed to parse wallpapers for creative instance id "
                         << creative_instance_id);
             continue;
           }
@@ -276,7 +290,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.payload.target_url = GURL(payload["feed"].GetString());
           if (!creative.payload.target_url.is_valid() ||
               !DoesSupportUrl(creative.payload.target_url)) {
-            BLOG(1, "Invalid target URL for creative instance id "
+            BLOG(1, "Failed to parse target URL for creative instance id "
                         << creative_instance_id);
             continue;
           }
