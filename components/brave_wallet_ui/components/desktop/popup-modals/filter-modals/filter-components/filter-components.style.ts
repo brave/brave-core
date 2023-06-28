@@ -7,6 +7,12 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import LeoIcon from '@brave/leo/react/icon'
 
+// Constants
+import {
+  layoutPanelWidth
+} from '../../../wallet-page-wrapper/wallet-page-wrapper.style'
+
+// Shared Styles
 import {
   Row,
   Column,
@@ -14,9 +20,12 @@ import {
   Text
 } from '../../../../shared/style'
 
-
 export const CheckboxRow = styled(Row)`
   flex-wrap: wrap;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `
 
 export const CheckboxWrapper = styled(Row)`

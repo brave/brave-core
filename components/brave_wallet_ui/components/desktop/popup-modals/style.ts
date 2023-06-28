@@ -5,6 +5,9 @@
 import styled from 'styled-components'
 import CloseIcon from '../../../assets/svg-icons/close.svg'
 import { WalletButton } from '../../shared/style'
+import {
+  layoutPanelWidth
+} from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -32,9 +35,17 @@ export const Modal = styled.div<{ width?: string, borderRadius?: number }>`
   background-color: ${(p) => p.theme.color.background02};
   border-radius: ${(p) => p.borderRadius ? p.borderRadius : 8}px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
-  @media screen and (max-width: 600px) {
-    min-width: 480px;
-    max-width: 480px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    width: unset;
+    min-width: unset;
+    max-width: unset;
+    max-height: unset;
+    position: absolute;
+    border-radius: 16px 16px 0px 0px;
+    top: 32px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
   }
 `
 
