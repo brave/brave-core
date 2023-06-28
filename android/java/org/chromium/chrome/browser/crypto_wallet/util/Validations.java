@@ -122,6 +122,20 @@ public class Validations {
             }
         }
 
+        /**
+         * Checks if the Filecoin contract address provided is valid.
+         * @param address Lowercase Filecoin contract address.
+         * @return {@code true} if the Filecoin contract address is valid, {@code false} otherwise.
+         */
+        private boolean isValidFilAddress(@NonNull final String address) {
+            if (!address.startsWith(BraveWalletConstants.FILECOIN_MAINNET)
+                    && !address.startsWith(BraveWalletConstants.FILECOIN_TESTNET)) {
+                return false;
+            }
+            // Secp256k have 41 address length and BLS keys have 86.
+            return (address.length() == 41 || address.length() == 86);
+        }
+
         private void checkForKnowContracts(String receiverAccountAddressLower,
                 Callbacks.Callback2<String, Boolean> callback, Resources resources) {
             assert mKnownContractAddresses != null;

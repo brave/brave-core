@@ -15,13 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.components.browser_ui.widget.TintedDrawable;
@@ -37,7 +35,6 @@ public class BraveWalletNetworksPreference extends Preference
     private RecyclerView mRecyclerView;
     private NetworkListBaseAdapter mAdapter;
     private BraveWalletAddNetworksFragment.Launcher mLauncher;
-    private BraveWalletService mBraveWalletService;
     private JsonRpcService mJsonRpcService;
 
     public BraveWalletNetworksPreference(Context context, AttributeSet attrs) {
@@ -59,7 +56,6 @@ public class BraveWalletNetworksPreference extends Preference
         mbtAddNetwork.setOnClickListener(view -> { mLauncher.launchAddNetwork("", false); });
         mLauncher.setRefresher(this);
 
-        InitBraveWalletService();
         InitJsonRpcService();
 
         mRecyclerView = (RecyclerView) holder.findViewById(R.id.network_list);
@@ -69,18 +65,13 @@ public class BraveWalletNetworksPreference extends Preference
     }
 
     public void destroy() {
-        mBraveWalletService.close();
         mJsonRpcService.close();
     }
 
     @Override
     public void onConnectionError(MojoException e) {
-        mBraveWalletService.close();
-        mBraveWalletService = null;
         mJsonRpcService.close();
         mJsonRpcService = null;
-
-        InitBraveWalletService();
         InitJsonRpcService();
     }
 
@@ -102,8 +93,8 @@ public class BraveWalletNetworksPreference extends Preference
 
     @Override
     public void onItemSetAsActive(NetworkInfo chain) {
-        assert mBraveWalletService != null;
-        mBraveWalletService.setNetworkForSelectedAccountOnActiveOrigin(chain.chainId, success -> {
+        assert mJsonRpcService != null;
+        mJsonRpcService.setNetwork(chain.chainId, CoinType.ETH, null, success -> {
             if (!success) {
                 return;
             }
@@ -114,14 +105,6 @@ public class BraveWalletNetworksPreference extends Preference
     @Override
     public void refreshNetworksList() {
         updateNetworksList();
-    }
-
-    private void InitBraveWalletService() {
-        if (mBraveWalletService != null) {
-            return;
-        }
-
-        mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
     }
 
     private void InitJsonRpcService() {

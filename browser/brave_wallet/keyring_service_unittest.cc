@@ -507,20 +507,21 @@ class KeyringServiceUnitTest : public testing::Test {
   }
 
   bool SetNetwork(const std::string& chain_id, mojom::CoinType coin) {
-    bool result;
-    base::RunLoop run_loop;
-    json_rpc_service_->SetNetwork(chain_id, coin, absl::nullopt,
-                                  base::BindLambdaForTesting([&](bool success) {
-                                    result = success;
-                                    run_loop.Quit();
-                                  }));
-    run_loop.Run();
-    return result;
+    return json_rpc_service_->SetNetwork(chain_id, coin, absl::nullopt);
   }
 
   static bool Lock(KeyringService* service) {
     service->Lock();
     return service->IsLocked(mojom::kDefaultKeyringId);
+  }
+
+  mojom::AccountInfoPtr FirstSolAccount(KeyringService* service) {
+    return base::ranges::find_if(service->GetAllAccountsSync()->accounts,
+                                 [](auto& acc) {
+                                   return acc->account_id->coin ==
+                                          mojom::CoinType::SOL;
+                                 })
+        ->Clone();
   }
 
   content::BrowserTaskEnvironment task_environment_;
@@ -2593,6 +2594,7 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   ASSERT_TRUE(CreateWallet(&service, "brave"));
 
   auto first_account = service.GetAllAccountsSync()->accounts[0]->Clone();
+  auto first_sol_account = FirstSolAccount(&service);
   auto second_account =
       AddAccount(&service, mojom::CoinType::ETH, mojom::kDefaultKeyringId,
                  "Who does number 2 work for");
@@ -2601,26 +2603,60 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   // This does not depend on being locked
   EXPECT_TRUE(Lock(&service));
 
-  // No account set as the default
+  // Added account is selected.
   EXPECT_EQ(second_account, service.GetSelectedWalletAccount());
   EXPECT_EQ(second_account, service.GetSelectedEthereumDappAccount());
+  EXPECT_EQ(first_sol_account, service.GetSelectedSolanaDappAccount());
 
   NiceMock<TestKeyringServiceObserver> observer(service);
-  // Setting account to a valid address works
+
+  // Can select SOL account. dApp selections don't change.
   EXPECT_CALL(observer,
-              SelectedDappAccountChanged(mojom::CoinType::ETH,
-                                         Eq(std::ref(second_account))));
+              SelectedWalletAccountChanged(Eq(std::ref(first_sol_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
+  EXPECT_TRUE(SetSelectedAccount(&service, first_sol_account->account_id));
+  EXPECT_EQ(first_sol_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(second_account, service.GetSelectedEthereumDappAccount());
+  EXPECT_EQ(first_sol_account, service.GetSelectedSolanaDappAccount());
+  observer.WaitAndVerify();
+
+  // Select back to ETH. dApp selections don't change.
+  EXPECT_CALL(observer,
+              SelectedWalletAccountChanged(Eq(std::ref(second_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
   EXPECT_TRUE(SetSelectedAccount(&service, second_account->account_id));
+  EXPECT_EQ(second_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(second_account, service.GetSelectedEthereumDappAccount());
+  EXPECT_EQ(first_sol_account, service.GetSelectedSolanaDappAccount());
+  observer.WaitAndVerify();
+
+  // Selecting currently selected account does not trigger notifications.
+  EXPECT_CALL(observer, SelectedWalletAccountChanged(_)).Times(0);
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
+  EXPECT_TRUE(SetSelectedAccount(&service, second_account->account_id));
+  EXPECT_EQ(second_account, service.GetSelectedWalletAccount());
   EXPECT_EQ(second_account, service.GetSelectedEthereumDappAccount());
   observer.WaitAndVerify();
 
+  // Setting account to a valid address works
+  EXPECT_CALL(observer,
+              SelectedWalletAccountChanged(Eq(std::ref(first_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(
+                            mojom::CoinType::ETH, Eq(std::ref(first_account))));
+  EXPECT_TRUE(SetSelectedAccount(&service, first_account->account_id));
+  EXPECT_EQ(first_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(first_account, service.GetSelectedEthereumDappAccount());
+  observer.WaitAndVerify();
+
   // Setting account to a non-existing account doesn't work
+  EXPECT_CALL(observer, SelectedWalletAccountChanged(_)).Times(0);
   EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
   EXPECT_FALSE(SetSelectedAccount(
       &service, MakeAccountId(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
                               mojom::AccountKind::kDerived,
                               "0xf83C3cBfF68086F276DD4f87A82DF73B57b21559")));
-  EXPECT_EQ(second_account, service.GetSelectedEthereumDappAccount());
+  EXPECT_EQ(first_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(first_account, service.GetSelectedEthereumDappAccount());
   observer.WaitAndVerify();
 
   // Can import only when unlocked.
@@ -2632,19 +2668,16 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
       "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5",
       mojom::CoinType::ETH);
   ASSERT_TRUE(imported_account);
+  EXPECT_EQ(imported_account, service.GetSelectedWalletAccount());
   EXPECT_EQ(imported_account, service.GetSelectedEthereumDappAccount());
   EXPECT_TRUE(Lock(&service));
   observer.WaitAndVerify();
 
-  EXPECT_CALL(observer,
-              SelectedWalletAccountChanged(Eq(std::ref(imported_account))));
-  EXPECT_CALL(observer,
-              SelectedDappAccountChanged(mojom::CoinType::ETH,
-                                         Eq(std::ref(imported_account))));
-  EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::SOL, _))
-      .Times(0);
+  EXPECT_CALL(observer, SelectedWalletAccountChanged(_)).Times(0);
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
   EXPECT_TRUE(SetSelectedAccount(&service, imported_account->account_id));
   observer.WaitAndVerify();
+  EXPECT_EQ(imported_account, service.GetSelectedWalletAccount());
   EXPECT_EQ(imported_account, service.GetSelectedEthereumDappAccount());
 
   // Removing the imported account resets account selection to first eth acc.
@@ -2670,19 +2703,20 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
       mojom::CoinType::ETH, mojom::kDefaultKeyringId));
   auto hw_account =
       service.AddHardwareAccountsSync(std::move(new_accounts))[0]->Clone();
+  EXPECT_EQ(hw_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(hw_account, service.GetSelectedEthereumDappAccount());
   observer.WaitAndVerify();
 
-  EXPECT_CALL(observer, SelectedWalletAccountChanged(Eq(std::ref(hw_account))));
-  EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::ETH,
-                                                   Eq(std::ref(hw_account))));
-  EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::SOL, _))
-      .Times(0);
+  EXPECT_CALL(observer, SelectedWalletAccountChanged(_)).Times(0);
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
   EXPECT_TRUE(SetSelectedAccount(&service, hw_account->account_id));
   observer.WaitAndVerify();
 
   EXPECT_TRUE(Unlock(&service, "brave"));
 
   // Can set Filecoin account
+  EXPECT_CALL(observer, SelectedWalletAccountChanged(_));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
   auto fil_imported_account = ImportFilecoinAccount(
       &service, "Imported Filecoin account 1",
       // t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q
@@ -2693,6 +2727,11 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   ASSERT_TRUE(fil_imported_account);
   EXPECT_EQ(fil_imported_account->address,
             "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
+  EXPECT_EQ(fil_imported_account, service.GetSelectedWalletAccount());
+  observer.WaitAndVerify();
+
+  EXPECT_CALL(observer, SelectedWalletAccountChanged(_)).Times(0);
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
   EXPECT_TRUE(SetSelectedAccount(&service, fil_imported_account->account_id));
   observer.WaitAndVerify();
   EXPECT_EQ(fil_imported_account, service.GetSelectedWalletAccount());
@@ -2711,14 +2750,12 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   EXPECT_EQ(sol_imported_account, service.GetSelectedSolanaDappAccount());
   observer.WaitAndVerify();
 
-  // Selectin sol account doesn't change eth dapp.
-  EXPECT_CALL(observer,
-              SelectedWalletAccountChanged(Eq(std::ref(sol_imported_account))));
+  // Selecting sol account doesn't change eth dapp.
+  EXPECT_CALL(observer, SelectedWalletAccountChanged(_)).Times(0);
   EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::ETH, _))
       .Times(0);
-  EXPECT_CALL(observer,
-              SelectedDappAccountChanged(mojom::CoinType::SOL,
-                                         Eq(std::ref(sol_imported_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::SOL, _))
+      .Times(0);
   EXPECT_TRUE(SetSelectedAccount(&service, sol_imported_account->account_id));
   EXPECT_EQ(sol_imported_account, service.GetSelectedWalletAccount());
   EXPECT_EQ(sol_imported_account, service.GetSelectedSolanaDappAccount());
@@ -2728,10 +2765,7 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   // Selecting fil account doesn't change eth and sol dapp accounts.
   EXPECT_CALL(observer,
               SelectedWalletAccountChanged(Eq(std::ref(fil_imported_account))));
-  EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::ETH, _))
-      .Times(0);
-  EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::SOL, _))
-      .Times(0);
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
   EXPECT_TRUE(SetSelectedAccount(&service, fil_imported_account->account_id));
   observer.WaitAndVerify();
 
@@ -2745,6 +2779,8 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
       .Times(0);
   EXPECT_TRUE(RemoveAccount(&service, fil_imported_account->account_id,
                             kPasswordBrave));
+  EXPECT_EQ(first_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(first_account, service.GetSelectedEthereumDappAccount());
   observer.WaitAndVerify();
 
   // Select hw account.
@@ -2754,6 +2790,8 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::SOL, _))
       .Times(0);
   EXPECT_TRUE(SetSelectedAccount(&service, hw_account->account_id));
+  EXPECT_EQ(hw_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(hw_account, service.GetSelectedEthereumDappAccount());
   observer.WaitAndVerify();
 
   // Remove selected hw account - switch to frist eth account.
@@ -2764,6 +2802,8 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::SOL, _))
       .Times(0);
   EXPECT_TRUE(RemoveAccount(&service, hw_account->account_id, ""));
+  EXPECT_EQ(first_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(first_account, service.GetSelectedEthereumDappAccount());
   observer.WaitAndVerify();
 
   // Removing not-selected sol account. Only sol dapp observer is called with
@@ -3762,14 +3802,8 @@ TEST_F(KeyringServiceUnitTest, SignMessage) {
   ASSERT_TRUE(RestoreWallet(&service, kMnemonic1, "brave", false));
   base::RunLoop().RunUntilIdle();
 
-  auto default_sol_account =
-      base::ranges::find_if(service.GetAllAccountsSync()->accounts,
-                            [](auto& acc) {
-                              return acc->account_id->coin ==
-                                     mojom::CoinType::SOL;
-                            })
-          ->Clone();
-  EXPECT_EQ(default_sol_account->address,
+  auto first_sol_account = FirstSolAccount(&service);
+  EXPECT_EQ(first_sol_account->address,
             "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
 
   const std::vector<uint8_t> message = {0xde, 0xad, 0xbe, 0xef};
@@ -3786,7 +3820,7 @@ TEST_F(KeyringServiceUnitTest, SignMessage) {
 
   EXPECT_FALSE(
       service
-          .SignMessageBySolanaKeyring(*default_sol_account->account_id, message)
+          .SignMessageBySolanaKeyring(*first_sol_account->account_id, message)
           .empty());
 }
 

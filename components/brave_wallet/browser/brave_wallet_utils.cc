@@ -1546,21 +1546,24 @@ bool SetCurrentChainId(PrefService* prefs,
       !CustomChainExists(prefs, chain_id, coin)) {
     return false;
   }
-
-  // Update per origin network only for valid non-opauqe origin with http/https
-  // scheme.
-  if (origin && !origin->opaque() &&
-      (origin->scheme() == url::kHttpScheme ||
-       origin->scheme() == url::kHttpsScheme)) {
-    ScopedDictPrefUpdate update(prefs, kBraveWalletSelectedNetworksPerOrigin);
-    update->EnsureDict(GetPrefKeyForCoinType(coin))
-        ->Set(origin->Serialize(), chain_id);
+  if (!origin) {
+    ScopedDictPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
+    update->Set(GetPrefKeyForCoinType(coin), chain_id);
+  } else {
+    if (origin->opaque()) {
+      return false;
+    }
+    // Only set per origin network for http/https scheme
+    if (origin->scheme() == url::kHttpScheme ||
+        origin->scheme() == url::kHttpsScheme) {
+      ScopedDictPrefUpdate update(prefs, kBraveWalletSelectedNetworksPerOrigin);
+      update->EnsureDict(GetPrefKeyForCoinType(coin))
+          ->Set(origin->Serialize(), chain_id);
+    } else {
+      ScopedDictPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
+      update->Set(GetPrefKeyForCoinType(coin), chain_id);
+    }
   }
-
-  // Always update default per-coin network as it is last network picked by
-  // user.
-  ScopedDictPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
-  update->Set(GetPrefKeyForCoinType(coin), chain_id);
   return true;
 }
 

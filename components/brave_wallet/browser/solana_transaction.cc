@@ -263,8 +263,6 @@ SolanaTransaction::GetSignedTransactionBytes(
     return absl::nullopt;
   }
 
-  const auto all_accounts = keyring_service->GetAllAccountsSync();
-
   // Assign selected account's signature, and keep signatures for other signers
   // from dApp transaction if exists. Fill empty signatures for
   // non-selected-account signers if their signatures aren't passed by dApp
@@ -281,18 +279,11 @@ SolanaTransaction::GetSignedTransactionBytes(
                                  selected_account_signature->begin(),
                                  selected_account_signature->end());
       } else {
-        for (auto& acc : all_accounts->accounts) {
-          // TODO(apymyshev): how permissions should be checked? What if account
-          // is missing?
-          if (base::EqualsCaseInsensitiveASCII(acc->address, signer)) {
-            std::vector<uint8_t> signature =
-                keyring_service->SignMessageBySolanaKeyring(*acc->account_id,
-                                                            message_bytes);
-            transaction_bytes.insert(transaction_bytes.end(), signature.begin(),
-                                     signature.end());
-            break;
-          }
-        }
+        std::vector<uint8_t> signature =
+            keyring_service->SignMessageBySolanaKeyring(
+                *selected_account->account_id, message_bytes);
+        transaction_bytes.insert(transaction_bytes.end(), signature.begin(),
+                                 signature.end());
       }
       ++num_of_sig;
       continue;

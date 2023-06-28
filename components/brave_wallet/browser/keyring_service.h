@@ -235,7 +235,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   mojom::AccountInfoPtr GetSelectedWalletAccount();
   mojom::AccountInfoPtr GetSelectedEthereumDappAccount();
   mojom::AccountInfoPtr GetSelectedSolanaDappAccount();
-  mojom::AccountInfoPtr GetSelectedDappAccount(mojom::CoinType coin);
   void MaybeFixAccountSelection();
 
  private:
@@ -358,6 +357,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void StopAutoLockTimer();
   void ResetAutoLockTimer();
   void OnAutoLockPreferenceChanged();
+  mojom::AccountInfoPtr GetSelectedDappAccount(mojom::CoinType coin);
   void NotifySelectedWalletAccountChanged(const mojom::AccountInfo& account);
   void NotifySelectedDappAccountChanged(mojom::CoinType coin,
                                         const mojom::AccountInfoPtr& account);

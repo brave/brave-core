@@ -1617,19 +1617,24 @@ public abstract class BraveActivity extends ChromeActivity
         clearObservers();
         mWalletModel.getCryptoModel().getPendingTxHelper().mSelectedPendingRequest.observe(
                 this, transactionInfo -> {
+                    if (transactionInfo == null) {
+                        return;
+                    }
                     // don't show dapps panel if the wallet is locked and requests are being
                     // processed by the approve dialog already
                     mKeyringService.isLocked(locked -> {
-                        if (transactionInfo != null && !locked
-                                && !mIsProcessingPendingDappsTxRequest) {
+                        if (locked) {
+                            return;
+                        }
+
+                        if (!mIsProcessingPendingDappsTxRequest) {
                             mIsProcessingPendingDappsTxRequest = true;
                             openBraveWalletDAppsActivity(
                                     BraveWalletDAppsActivity.ActivityType.CONFIRM_TRANSACTION);
                         }
+
                         // update badge if there's a pending tx
-                        if (transactionInfo != null && !locked) {
-                            updateWalletBadgeVisibility();
-                        }
+                        updateWalletBadgeVisibility();
                     });
                 });
 

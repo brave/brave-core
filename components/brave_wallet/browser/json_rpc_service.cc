@@ -603,15 +603,13 @@ void JsonRpcService::RemoveChain(const std::string& chain_id,
 
 bool JsonRpcService::SetNetwork(const std::string& chain_id,
                                 mojom::CoinType coin,
-                                const absl::optional<url::Origin>& origin,
-                                bool silent) {
+                                const absl::optional<url::Origin>& origin) {
   if (!SetCurrentChainId(prefs_, coin, origin, chain_id)) {
     return false;
   }
 
-  if (!silent) {
-    FireNetworkChanged(coin, chain_id, origin);
-  }
+  FireNetworkChanged(coin, chain_id, origin);
+
   if (coin == mojom::CoinType::ETH) {
     MaybeUpdateIsEip1559(chain_id);
   }
@@ -620,13 +618,9 @@ bool JsonRpcService::SetNetwork(const std::string& chain_id,
 
 void JsonRpcService::SetNetwork(const std::string& chain_id,
                                 mojom::CoinType coin,
-                                const absl::optional<::url::Origin>& origin,
+                                const absl::optional<url::Origin>& origin,
                                 SetNetworkCallback callback) {
-  if (!SetNetwork(chain_id, coin, origin)) {
-    std::move(callback).Run(false);
-  } else {
-    std::move(callback).Run(true);
-  }
+  std::move(callback).Run(SetNetwork(chain_id, coin, origin));
 }
 
 void JsonRpcService::GetNetwork(mojom::CoinType coin,

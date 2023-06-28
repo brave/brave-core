@@ -341,6 +341,14 @@ public class NetworkModel implements JsonRpcServiceObserver {
                 });
     }
 
+    public void setDefaultNetwork(NetworkInfo networkInfo, Callbacks.Callback1<Boolean> callback) {
+        mJsonRpcService.setNetwork(networkInfo.chainId, networkInfo.coin, null, success -> {
+            callback.call(success);
+            mCryptoActions.updateCoinType();
+            init();
+        });
+    }
+
     public void getNetwork(@CoinType.EnumType int coin, Callbacks.Callback1<NetworkInfo> callback) {
         mJsonRpcService.getNetwork(coin, mOrigin, networkInfo -> { callback.call(networkInfo); });
     }

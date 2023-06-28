@@ -1219,21 +1219,19 @@ TEST(BraveWalletUtilsUnitTest, GetAndSetCurrentChainId) {
     EXPECT_EQ(GetCurrentChainId(&prefs, coin_type,
                                 url::Origin::Create(GURL("https://a.com"))),
               mojom::kLocalhostChainId);
-    // default origin also changes
+    // other origin still use default
     EXPECT_EQ(GetCurrentChainId(&prefs, coin_type,
                                 url::Origin::Create(GURL("https://b.com"))),
-              mojom::kLocalhostChainId);
+              default_chain_ids.at(coin_type));
 
-    // opaque changes only default
-    EXPECT_TRUE(SetCurrentChainId(&prefs, coin_type, url::Origin(),
-                                  new_default_chain_ids.at(coin_type)));
+    // opaque cannot change the default
+    EXPECT_FALSE(SetCurrentChainId(&prefs, coin_type, url::Origin(),
+                                   mojom::kLocalhostChainId));
+    EXPECT_FALSE(SetCurrentChainId(&prefs, coin_type,
+                                   url::Origin::Create(GURL("about:blank")),
+                                   mojom::kLocalhostChainId));
     EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, absl::nullopt),
-              new_default_chain_ids.at(coin_type));
-    EXPECT_TRUE(SetCurrentChainId(&prefs, coin_type,
-                                  url::Origin::Create(GURL("about:blank")),
-                                  mojom::kLocalhostChainId));
-    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, absl::nullopt),
-              mojom::kLocalhostChainId);
+              default_chain_ids.at(coin_type));
 
     // now we change the default
     EXPECT_TRUE(SetCurrentChainId(&prefs, coin_type, absl::nullopt,

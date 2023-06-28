@@ -576,8 +576,8 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
                             const absl::optional<::url::Origin>& origin,
                             bool skip_rpc_url_override = false) {
     mojom::NetworkInfoPtr chain;
-    ASSERT_TRUE(json_rpc_service_->SetNetwork(chain_id, mojom::CoinType::ETH,
-                                              origin, false));
+    ASSERT_TRUE(
+        json_rpc_service_->SetNetwork(chain_id, mojom::CoinType::ETH, origin));
     base::RunLoop run_loop;
     json_rpc_service_->GetNetwork(
         mojom::CoinType::ETH, origin,

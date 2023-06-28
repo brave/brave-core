@@ -316,9 +316,15 @@ public class CryptoModel {
 
     public void updateCoinType(Callback1<Integer> callback) {
         mKeyringService.getAllAccounts(allAccounts -> {
-            // Current coin is the coin of selected account.
             @CoinType.EnumType
-            int coin = allAccounts.selectedAccount.accountId.coin;
+            int coin = CoinType.ETH;
+
+            // null selectedAccount may happen in tests.
+            if (allAccounts.selectedAccount != null) {
+                // Current coin is the coin of selected account.
+                coin = allAccounts.selectedAccount.accountId.coin;
+            }
+
             _mCoinTypeMutableLiveData.postValue(coin);
             if (callback != null) {
                 callback.call(coin);

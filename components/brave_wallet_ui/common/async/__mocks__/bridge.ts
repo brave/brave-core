@@ -400,7 +400,7 @@ export class MockedWalletApiProxy {
     getNetwork: async (coin) => {
       return { network: this.chainsForCoins[coin] }
     },
-    setNetwork: async (chainId, coin) => {
+    setNetwork: async (chainId, coin, origin) => {
       this.chainIdsForCoins[coin] = chainId
       const foundNetwork = this.networks.find(
         (net) => net.chainId === chainId && net.coin === coin
