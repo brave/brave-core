@@ -489,6 +489,8 @@
   <message name="IDS_BRAVE_WALLET_UNLOCK_ERROR" desc="Connect hardware wallet panel, error when device unlock failed">Unable to unlock device, try to reconnect</message>
   <message name="IDS_BRAVE_WALLET_UNKNOWN_SCHEME_ERROR" desc="Connect hardware wallet panel, error when requested unsupported scheme for device">Internal error, unknown scheme</message>
   <message name="IDS_BRAVE_WALLET_APPROVAL_TRANSACTION_INTENT" desc="Token approval transaction description">approve</message>
+  <message name="IDS_BRAVE_WALLET_NO_ACCOUNTS_WITH_A_BALANCE" desc="Text for when zero accounts are availble for viewing on the asset details page.">No available accounts</message>
+  <message name="IDS_BRAVE_WALLET_NO_ACCOUNTS_WITH_A_BALANCE_DESCRIPTION" desc="Explanation of why the accounts list is empty.">Accounts with a balance will appear here.</message>
   <message name="IDS_BRAVE_WALLET_LEDGER_VALIDATION_ERROR" desc="Ledger signature validation error text">Ledger: The signature doesnt match the right address</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_ACCOUNT_NOT_FOUND_ERROR" desc="Hardware account not found error message">Hardware account not found</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_JSON_ERROR" desc="Importer error message">JSON data is not expected</message>
@@ -821,8 +823,8 @@
   <message name="IDS_BRAVE_WALLET_ENS_OFFCHAIN_WARNING" desc="ENS offchain lookup warning line">Address resolution requires offchain network requests. Proceed?</message>
   <message name="IDS_BRAVE_WALLET_ADD_ASSET_TOKEN_TAB_TITLE" desc="Title for token tab in add asset tabs">Token</message>
   <message name="IDS_BRAVE_WALLET_ADD_ASSET_NFT_TAB_TITLE" desc="Title for NFT tab in add asset tabs">NFT</message>
-  <message name="IDS_BRAVE_WALLET_NO_TRANSACTIONS_YET" desc="Text for when zero transactions are currently availble for viewing">No transactions to view yet.</message>
-  <message name="IDS_BRAVE_WALLET_NO_TRANSACTIONS_YET_DESCRIPTION" desc="Explanation of why the transaction list is empty, and what to expect after the first transaction is available">Once you make a transaction, you'll be able to view it here.</message>
+  <message name="IDS_BRAVE_WALLET_NO_TRANSACTIONS_YET" desc="Text for when zero transactions are currently availble for viewing">No transaction history</message>
+  <message name="IDS_BRAVE_WALLET_NO_TRANSACTIONS_YET_DESCRIPTION" desc="Explanation of why the transaction list is empty, and what to expect after the first transaction is available">Transactions made with your Brave Wallet will appear here.</message>
   <message name="IDS_BRAVE_WALLET_NFT_FETCHING_ERROR" desc="Error message displayed when nft metadata is not successfully fetched">Something went wrong when fetching NFT details. Please try again later.</message>
   <message name="IDS_BRAVE_WALLET_ENTER_A_PASSSWORD_TO_CONTINUE" desc="Prompt to enter a password before continuing">Enter a password to continue</message>
   <message name="IDS_BRAVE_WALLET_ENTER_YOUR_PASSWORD_TO_START_BACKUP" desc="Password prompt description for backing up wallet">Enter your Brave Wallet password to start backing up wallet.</message>

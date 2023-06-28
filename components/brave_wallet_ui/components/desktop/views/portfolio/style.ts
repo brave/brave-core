@@ -6,6 +6,16 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
+
+// Icons
+import {
+  NoAccountsIconDark,
+  NoAccountsIconLight,
+  NoTransactionsIconDark,
+  NoTransactionsIconLight
+} from '../../../../assets/svg-icons/empty-state-icons'
+
+// Shared Styles
 import {
   AssetIconProps,
   AssetIconFactory,
@@ -133,15 +143,6 @@ export const PercentBubble = styled.div<{ isDown?: boolean }>`
   };
 `
 
-export const EmptyTransactionContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  width: 100%;
-  height: 100px;
-`
-
 export const TransactionPlaceholderText = styled.span`
   font-family: Poppins;
   font-size: 13px;
@@ -150,23 +151,6 @@ export const TransactionPlaceholderText = styled.span`
   font-weight: 600;
   color: ${(p) => p.theme.color.text03};
   margin-left: 10px;
-`
-
-export const AssetBalanceDisplay = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text02};
-`
-
-export const DividerRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
-  width: 100%;
 `
 
 export const Spacer = styled.div`
@@ -330,4 +314,43 @@ export const SearchButtonWrapper = styled(Row)`
   @media screen and (max-width: ${layoutPanelWidth}px) {
     display: flex;
   }
+`
+
+export const EmptyStateIcon = styled.div`
+  width: 100px;
+  height: 100px;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  margin-bottom: 16px;
+`
+
+export const EmptyTransactionsIcon = styled(EmptyStateIcon)`
+  background-image: url(${NoTransactionsIconLight});
+  @media (prefers-color-scheme: dark) {
+    background-image: url(${NoTransactionsIconDark});
+  }
+`
+
+export const EmptyAccountsIcon = styled(EmptyStateIcon)`
+  background-image: url(${NoAccountsIconLight});
+  @media (prefers-color-scheme: dark) {
+    background-image: url(${NoAccountsIconDark});
+  }
+`
+
+export const ToggleVisibilityButton = styled(WalletButton)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  pointer-events: auto;
+  border: none;
+`
+
+export const EyeIcon = styled(Icon)`
+  --leo-icon-size: 20px;
+  color: ${leo.color.icon.default};
 `
