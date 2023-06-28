@@ -1,0 +1,26 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("status_icon") {
+  sources = [
+    "icon_utils.cc",
+    "icon_utils.h",
+    "native_popup_menu.cc",
+    "native_popup_menu.h",
+    "scoped_hmenu.h",
+    "scoped_hwnd.h",
+    "status_icon.cc",
+    "status_icon.h",
+    "status_tray.cc",
+    "status_tray.h",
+    "tray_menu_model.cc",
+    "tray_menu_model.h",
+  ]
+  public_deps = [ "//ui/base" ]
+  deps = [
+    "//base",
+    "//ui/gfx",
+  ]
+}

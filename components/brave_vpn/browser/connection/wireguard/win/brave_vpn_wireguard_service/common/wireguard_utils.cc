@@ -20,8 +20,8 @@
 #include "base/win/registry.h"
 #include "base/win/scoped_bstr.h"
 #include "brave/components/brave_vpn/browser/connection/common/win/utils.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common/service_constants.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service/brave_wireguard_manager_idl.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {

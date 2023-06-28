@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_COMMON_SERVICE_CONSTANTS_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_COMMON_SERVICE_CONSTANTS_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_SERVICE_CONSTANTS_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_SERVICE_CONSTANTS_H_
 
 #include <guiddef.h>
 #include <string>
@@ -26,6 +26,10 @@ constexpr char kBraveVpnWireguardServiceUnnstallSwitchName[] = "uninstall";
 // Load wireguard binaries and connect to vpn using passed config.
 constexpr char kBraveVpnWireguardServiceConnectSwitchName[] = "connect";
 
+// In this mode the service started on user level and expose UI interfaces
+// to work with the service for a user.
+constexpr char kBraveVpnWireguardServiceInteractiveSwitchName[] = "interactive";
+
 const CLSID& GetBraveVpnWireguardServiceClsid();
 const IID& GetBraveVpnWireguardServiceIid();
 std::wstring GetBraveVpnWireguardTunnelServiceName();
@@ -37,4 +41,4 @@ base::FilePath GetBraveVPNWireguardServiceInstallationPath(
     const base::Version& version);
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_COMMON_SERVICE_CONSTANTS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_SERVICE_CONSTANTS_H_

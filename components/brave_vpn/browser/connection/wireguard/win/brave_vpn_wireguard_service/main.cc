@@ -12,10 +12,11 @@
 #include "base/win/scoped_com_initializer.h"
 #include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/brave_wireguard_service_crash_reporter_client.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common/service_constants.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service/install_utils.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service/wireguard_service_runner.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service/wireguard_tunnel_service.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_tray_runner.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "chrome/install_static/product_install_details.h"
 #include "components/crash/core/app/crash_switches.h"
 #include "components/crash/core/app/crashpad.h"
@@ -76,6 +77,14 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE prev, wchar_t*, int) {
   if (!com_initializer.Succeeded()) {
     PLOG(ERROR) << "Failed to initialize COM";
     return -1;
+  }
+  // User level command line. In this mode creates an invisible window and sets
+  // an icon in the status tray to interact with the user. The icon shows a
+  // pop-up menu to control the connection of the Wireguard VPN without
+  // interacting with the browser.
+  if (command_line->HasSwitch(
+          brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName)) {
+    return brave_vpn::StatusTrayRunner::GetInstance()->Run();
   }
 
   // System level command line. In this mode, loads the tunnel.dll and passes it
