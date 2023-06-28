@@ -5,7 +5,10 @@
 
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_tray_runner.h"
 
+#include <windows.h>  // Should be before shellapi.h
 #include <wrl/client.h>
+
+#include <shellapi.h>
 
 #include <memory>
 #include <utility>
@@ -18,9 +21,9 @@
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/brave_vpn_tray_command_ids.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/brave_vpn_tray_strings_en.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/resources/resource.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/icon_utils.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/status_icon.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/status_tray.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/utils/utils.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -29,6 +32,14 @@
 namespace brave_vpn {
 
 namespace {
+
+void OpenURLInBrowser(const char* url) {
+  if (reinterpret_cast<ULONG_PTR>(
+          ShellExecuteA(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL)) <= 32) {
+    VLOG(1) << "Failed to open url in browser:" << url;
+    return;
+  }
+}
 
 std::u16string GetVpnStatusLabel(bool active) {
   std::u16string label = brave::kBraveVpnStatusItemName;

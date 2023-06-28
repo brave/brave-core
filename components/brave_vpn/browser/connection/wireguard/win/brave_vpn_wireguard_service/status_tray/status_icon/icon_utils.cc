@@ -3,14 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/utils/utils.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/icon_utils.h"
 
-#include <windows.h>  // Should be before shellapi.h
-
-#include <shellapi.h>
 #include <memory>
 
-#include "base/logging.h"
 #include "ui/gfx/icon_util.h"
 #include "ui/gfx/image/image_family.h"
 #include "ui/gfx/image/image_skia.h"
@@ -35,14 +31,6 @@ gfx::ImageSkia GetIconFromResources(int icon_id, const gfx::Size& size) {
   }
 
   return family->CreateExact(size).AsImageSkia();
-}
-
-void OpenURLInBrowser(const char* url) {
-  if (reinterpret_cast<ULONG_PTR>(
-          ShellExecuteA(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL)) <= 32) {
-    VLOG(1) << "Failed to open url in browser:" << url;
-    return;
-  }
 }
 
 }  // namespace brave_vpn

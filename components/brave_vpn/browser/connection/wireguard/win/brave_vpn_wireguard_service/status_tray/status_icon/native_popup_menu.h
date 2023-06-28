@@ -10,8 +10,11 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/utils/scoped_hmenu.h"
-#include "ui/base/models/menu_model.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/scoped_hmenu.h"
+
+namespace ui {
+class MenuModel;
+}
 
 namespace brave_vpn {
 

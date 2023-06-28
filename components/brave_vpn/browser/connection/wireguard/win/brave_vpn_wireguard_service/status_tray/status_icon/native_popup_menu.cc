@@ -9,6 +9,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/string_util_win.h"
+#include "ui/base/models/menu_model.h"
 
 namespace brave_vpn {
 

@@ -5,8 +5,12 @@
 
 source_set("status_icon") {
   sources = [
+    "icon_utils.cc",
+    "icon_utils.h",
     "native_popup_menu.cc",
     "native_popup_menu.h",
+    "scoped_hmenu.h",
+    "scoped_hwnd.h",
     "status_icon.cc",
     "status_icon.h",
     "status_tray.cc",
@@ -14,9 +18,10 @@ source_set("status_icon") {
     "tray_menu_model.cc",
     "tray_menu_model.h",
   ]
-  public_deps = [ "//ui/base" ]
+
   deps = [
-    "//brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/utils",
+    "//base",
+    "//ui/base",
     "//ui/gfx",
   ]
 }
