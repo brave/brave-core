@@ -86,7 +86,8 @@ export const Send = (props: Props) => {
     selectedSendOption,
     onHideSelectTokenModal,
     selectTokenModalRef,
-    showSelectTokenModal
+    showSelectTokenModal,
+    isAndroid
   } = props
 
   // Wallet Selectors
