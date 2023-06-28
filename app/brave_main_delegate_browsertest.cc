@@ -138,7 +138,8 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &commerce::kShoppingList,
     &commerce::kShoppingPDPMetrics,
     &commerce::kRetailCoupons,
-    &companion::features::kSidePanelCompanion,
+    &companion::features::internal::kCompanionEnabledByObservingExpsNavigations,
+    &companion::features::internal::kSidePanelCompanion,
     &dips::kFeature,
     &enterprise_connectors::kLocalContentAnalysisEnabled,
 #if !BUILDFLAG(IS_ANDROID)
