@@ -294,7 +294,7 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest,
   auto* prefs =
       user_prefs::UserPrefs::Get(active_contents()->GetBrowserContext());
 
-  prefs->SetBoolean(kIPFSAutoRedirectGateway, true);
+  prefs->SetBoolean(kIPFSAutoRedirectToConfiguredGateway, true);
   prefs->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -332,7 +332,7 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, GatewayRedirectToIPFS) {
   auto* prefs =
       user_prefs::UserPrefs::Get(active_contents()->GetBrowserContext());
 
-  prefs->SetBoolean(kIPFSAutoRedirectGateway, true);
+  prefs->SetBoolean(kIPFSAutoRedirectToConfiguredGateway, true);
   prefs->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -379,7 +379,7 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest,
   auto* prefs =
       user_prefs::UserPrefs::Get(active_contents()->GetBrowserContext());
 
-  prefs->SetBoolean(kIPFSAutoRedirectGateway, true);
+  prefs->SetBoolean(kIPFSAutoRedirectToConfiguredGateway, true);
   prefs->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -429,7 +429,7 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, GatewayRedirectToIPNS) {
   auto* prefs =
       user_prefs::UserPrefs::Get(active_contents()->GetBrowserContext());
 
-  prefs->SetBoolean(kIPFSAutoRedirectGateway, true);
+  prefs->SetBoolean(kIPFSAutoRedirectToConfiguredGateway, true);
   prefs->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -581,7 +581,7 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest,
   auto* prefs =
       user_prefs::UserPrefs::Get(active_contents()->GetBrowserContext());
 
-  prefs->SetBoolean(kIPFSAutoRedirectDNSLink, true);
+  prefs->SetBoolean(kIPFSAutoRedirectToConfiguredGateway, true);
   prefs->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));

@@ -1078,7 +1078,8 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, false);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, false);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -1101,7 +1102,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_DISABLED));
@@ -1124,7 +1126,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -1152,7 +1155,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -1175,7 +1179,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -1199,7 +1204,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -1231,7 +1237,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -1260,7 +1267,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
@@ -1287,7 +1295,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
@@ -1312,7 +1321,8 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
@@ -1667,6 +1677,42 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, DNSResolversConfig) {
     ASSERT_EQ(
         fake_ipfs_service()->ipfs_dns_resolver_->GetFirstDnsOverHttpsServer(),
         absl::nullopt);
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, MigrateProfilePrefs) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  {
+    prefs->ClearPref(kIPFSAutoRedirectToConfiguredGateway);
+    prefs->SetBoolean(kIPFSAutoRedirectDNSLink, true);
+    prefs->SetBoolean(kIPFSAutoRedirectGateway, false);
+
+    ipfs::IpfsService::MigrateProfilePrefs(prefs);
+    EXPECT_FALSE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
+  }
+  {
+    prefs->ClearPref(kIPFSAutoRedirectToConfiguredGateway);
+    prefs->SetBoolean(kIPFSAutoRedirectDNSLink, false);
+    prefs->SetBoolean(kIPFSAutoRedirectGateway, true);
+
+    ipfs::IpfsService::MigrateProfilePrefs(prefs);
+    EXPECT_FALSE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
+  }
+  {
+    prefs->ClearPref(kIPFSAutoRedirectToConfiguredGateway);
+    prefs->SetBoolean(kIPFSAutoRedirectDNSLink, true);
+    prefs->SetBoolean(kIPFSAutoRedirectGateway, true);
+
+    ipfs::IpfsService::MigrateProfilePrefs(prefs);
+    EXPECT_TRUE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
+  }
+  {
+    prefs->ClearPref(kIPFSAutoRedirectToConfiguredGateway);
+    prefs->SetBoolean(kIPFSAutoRedirectDNSLink, false);
+    prefs->SetBoolean(kIPFSAutoRedirectGateway, false);
+
+    ipfs::IpfsService::MigrateProfilePrefs(prefs);
+    EXPECT_FALSE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
   }
 }
 

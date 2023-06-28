@@ -1259,18 +1259,12 @@
   <message name="IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_DESC" desc="The description for the switch of automatically fallback to IPFS public gateway">
     Automatically fall back to public IPFS gateway if your Brave local IPFS node cannot be reached.
   </message>
-  <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_GATEWAY_LABEL" desc="The text label for redirecting IPFS resources to the configured gateway">
-    Redirect IPFS resources to the configured IPFS gateway
+  <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_TO_GATEWAY_WHEN_POSSIBLE_LABEL">
+    Automatically redirect requests for IPFS network resources to the configured gateway.
   </message>
-  <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_GATEWAY_DESC" desc="The description for redirecting IPFS resources to the configured gateway">
-    Requests to IPFS resources, hosted on third-party IPFS gateways will be loaded via selected local or remote gateway.
+  <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_TO_GATEWAY_WHEN_POSSIBLE_DESC">
+    Requests for IPFS resources hosted on third-party IPFS gateways or DNSLINK resources will be routed via the selected local or remote gateway.
     Note: If local node is selected, resource will be requested directly from your computer and cached data may be provided to the IPFS network for some time.
-  </message>
-  <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_DNSLINK_RESOURCES_LABEL" desc="The text label for redirecting IPFS resources for DNSLink">
-    Automatically redirect to IPFS pages via DNSLink when possible
-  </message>
-  <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_DNSLINK_RESOURCES_DESC" desc="The description for redirecting IPFS resources for DNSLink">
-    Automatically uses DNSLink to navigate to an IPFS version of a website when possible
   </message>
   <message name="IDS_SETTINGS_IPFS_COMPANION_ENABLED_DESC" desc="The description for IPFS companion switch in settings">
     Uses the IPFS Companion extension for enhanced IPFS support in Brave, including access to common IPFS tasks from your browser bar.
