@@ -37,7 +37,7 @@ export function AndroidSendApp() {
           <LibContext.Provider value={Lib}>
             <Switch>
               <Route>
-                <SendScreen />
+                <SendScreen isAndroid={true} />
               </Route>
             </Switch>
           </LibContext.Provider>
