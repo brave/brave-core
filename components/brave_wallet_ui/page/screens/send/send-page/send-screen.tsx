@@ -14,7 +14,11 @@ import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 // Components
 import { Send } from '../send/send'
 
-export const SendScreen = () => {
+interface Props {
+  isAndroid?: boolean
+}
+
+export const SendScreen = ({ isAndroid }: Props) => {
   // State
   const [showSelectTokenModal, setShowSelectTokenModal] = React.useState<boolean>(false)
   const [selectedSendOption, setSelectedSendOption] = React.useState<SendOptionTypes>('token')
@@ -39,6 +43,7 @@ export const SendScreen = () => {
         setSelectedSendOption={setSelectedSendOption}
         showSelectTokenModal={showSelectTokenModal}
         selectTokenModalRef={selectTokenModalRef}
+        isAndroid={true}
       />
     </>
   )
