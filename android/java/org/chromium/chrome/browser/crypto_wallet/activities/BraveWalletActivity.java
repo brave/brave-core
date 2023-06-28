@@ -59,7 +59,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNextPage {
-    private static final String TAG = "AssetDetailActivity";
+    private static final String TAG = "BWalletBaseActivity";
 
     private Toolbar mToolbar;
 
