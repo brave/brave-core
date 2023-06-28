@@ -324,7 +324,6 @@
 <translation id="3357319404342882895">厳格</translation>
 <translation id="8823559166155093873">クッキーをブロック</translation>
 <translation id="5770288601196774623">サイト間のみ</translation>
-<translation id="6795317840397506736">デフォルトで忘れる</translation>
 <translation id="3587482841069643663">すべて</translation>
 <translation id="7390783310074170337">デフォルト表示</translation>
 <translation id="130615081792797568">簡略表示</translation>
@@ -351,22 +350,10 @@
 <translation id="4182731739150761577">全リストを表示</translation>
 <translation id="1340263054776016283">フィルターリストのURLを入力</translation>
 <translation id="8578397014396032341">コンテンツフィルター</translation>
+<translation id="3020183492814296499">ショートカット</translation>
 <translation id="5567412479632285879">Brave Rewardsは無効です</translation>
 <translation id="413570371620795359">報酬パネルから有効化してはじめましょう</translation>
-<translation id="3849957491997306859">自動検出</translation>
-<translation id="8798099450830957504">デフォルト</translation>
-<translation id="4851215387785619212">Braveプライベート広告</translation>
-<translation id="7808122468353671181">Brave Adsを表示することでトークンを獲得できます。表示される広告は、閲覧行動から推測される興味や関心に基づきます。個人情報や閲覧履歴が、ブラウザから外部に送られることはありません。</translation>
-<translation id="1758947220824279023">表示する広告の最大数</translation>
-<translation id="2356652719351432565">地域に特化した広告</translation>
-<translation id="2196950072404588793">これにより、Braveはあなたの地域に特化した広告を表示することができます。<ph name="BEGIN_LINK"/>詳しくはこちら<ph name="END_LINK"/></translation>
-<translation id="2433507940547922241">デザイン</translation>
-<translation id="6112368337882254910">自動支援</translation>
-<translation id="9132509928968869844">毎月の自動支援上限</translation>
-<translation id="7286722244752781970">サイト訪問を記録する最小ページ数</translation>
-<translation id="4424486208397124985">サイト関連性推定に使用する最小サイト訪問数</translation>
-<translation id="6248554379744796526">リスト内に未検証のサイトを表示する</translation>
-<translation id="924777189963477634">自動支援を有効にすることで、あなたは<ph name="BEGIN_LINK_TOS"/>利用規約<ph name="END_LINK_TOS"/>と<ph name="BEGIN_LINK_PP"/>プライバシーポリシー<ph name="END_LINK_PP"/>に同意したものとみなされます。</translation>
+<translation id="1051600834033686945">Braveリワードの設定を開く</translation>
 <translation id="6333347122924254968">アドレスバーにBraveリワードのアイコンを表示</translation>
 <translation id="7483857210736407752">サイト上にチップボタンを表示する</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -378,11 +365,14 @@
 <translation id="958971637207126733">LinkedInの埋め込みポストを許可する</translation>
 <translation id="8792121506918889955">WebRTC IP処理ポリシー</translation>
 <translation id="6165508094623778733">詳しく知る</translation>
+<translation id="8798099450830957504">既定</translation>
 <translation id="1822560017823072927">デフォルトのパブリックインターフェイスとプライベートインターフェイス</translation>
 <translation id="5825943197137337319">デフォルトのパブリックインターフェイスのみ</translation>
 <translation id="1689062823386843231">非プロキシUDPを無効にする</translation>
 <translation id="3540231253392253941">プッシュメッセージングにGoogleサービスを使用</translation>
 <translation id="933652931229970927">診断レポートを自動送信する</translation>
+<translation id="4891600875049212418">機密性の高いサイトを訪問する場合はOTRモードに切り替える</translation>
+<translation id="2356070529366658676">確認する</translation>
 <translation id="4846154056248462491">終了時に</translation>
 <translation id="2808630562319398131">Brave Rewardsデータをリセット...</translation>
 <translation id="6438096877646138757">閉じたときにCookiesを消去するサイト</translation>
@@ -391,6 +381,27 @@
 <translation id="7050661313034564003">このサイトのすべてのCookieとローカルに保存されたデータを表示</translation>
 <translation id="8339059274628563283"><ph name="SITE"/> によりデータがローカルに保存されました</translation>
 <translation id="1963227389609234879">すべて削除</translation>
+<translation id="8168435359814927499">コンテンツ</translation>
+<translation id="7702907602086592255">ドメイン</translation>
+<translation id="3202131003361292969">パス</translation>
+<translation id="5390743329570580756">送信先</translation>
+<translation id="6742339027238151589">スクリプトにアクセス可能</translation>
+<translation id="1067048845568873861">作成日</translation>
+<translation id="5747552184818312860">有効期限</translation>
+<translation id="3858860766373142691">名前</translation>
+<translation id="361106536627977100">Flash データ</translation>
+<translation id="4530494379350999373">Origin</translation>
+<translation id="8195027750202970175">ディスク上のサイズ</translation>
+<translation id="9116465289595958864">最終更新</translation>
+<translation id="4590324241397107707">データベース ストレージ</translation>
+<translation id="5338503421962489998">ローカル ストレージ</translation>
+<translation id="6032912588568283682">ファイル システム</translation>
+<translation id="8016266267177410919">一時ストレージ</translation>
+<translation id="4175737294868205930">永続的ストレージ</translation>
+<translation id="1234808891666923653">サービス ワーカー</translation>
+<translation id="3432762828853624962">共有ワーカー</translation>
+<translation id="2927017729816812676">キャッシュ ストレージ</translation>
+<translation id="1389601498324964367">クォータ管理ストレージ</translation>
 <translation id="814018970995616154">Braveに保存された安全でないサイトのリストを使ってURLをチェックします。</translation>
 <translation id="1144810021918451336">危険なウェブサイト、ダウンロード、拡張機能からの保護を無効にする</translation>
 <translation id="5570470519803062774">サイトとシールドの設定</translation>
@@ -535,7 +546,6 @@
 <translation id="4954512758656527938">デフォルトのイーサリアムウォレット</translation>
 <translation id="7701023802820268122">デフォルトの Solana ウォレット</translation>
 <translation id="8488282162676695335">Braveウォレット</translation>
-<translation id="2356070529366658676">確認する</translation>
 <translation id="6942354363301686374">拡張機能（フォールバックなし）</translation>
 <translation id="1274962333945373242">暗号資産ウォレット (非推奨)</translation>
 <translation id="702381242110464396">拡張機能（Braveウォレットのフォールバック）</translation>
@@ -552,7 +562,7 @@
 <translation id="4440478655766953083">NFTを自動でピン留めする</translation>
 <translation id="464460032678285850">Braveウォレットに追加されたNFTは、自動的にローカルIPFSノードにピン留めされる場合があります。
 注：ピン留めのためにIPFSデーモンが起動することがあり、ローカルノードがIPFSネットワークにキャッシュされたデータとピン留めのNFTを共有します。</translation>
-<translation id="4993345308607970390">Braveウォレットをリセット</translation>
+<translation id="2326850911705720398">ウォレットのデータをリセット＆クリア</translation>
 <translation id="5887022857624190239">ピン留めされたNFTをクリアする</translation>
 <translation id="204584113330893805">ピン留めされたNFTは、ローカルIPFSノードが起動したときにIPFSネットワークにホストされます。
 現在、<ph name="NFT_COUNT"/>のピン留めされたNFTがあります。</translation>

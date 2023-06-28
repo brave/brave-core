@@ -86,6 +86,7 @@
 <translation id="4805806622840861220">Brave 다시 시작</translation>
 <translation id="1742948938503172561">새로운 Brave 프로필 맞춤설정</translation>
 <translation id="1477146545787277177">Brave이 다운되었습니다. 다시 시작하시겠습니까?</translation>
+<translation id="907470742420136113">Brave에서 결제 수단 입력 설정을 수정하려고 합니다.</translation>
 <translation id="2585240446624043880">Brave에서 데이터 디렉터리를 읽고 쓸 수 없습니다.
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -188,6 +189,7 @@
 <translation id="5646769069113654257">지금 Brave을 다시 시작하세요</translation>
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">이 언어로 Brave 표시</translation>
+<translation id="585620188971323280">결제 수단 입력 설정을 수정합니다.</translation>
 <translation id="7207456302801184289">Brave에 오신 것을 환영합니다.</translation>
 <translation id="8054200348483755053">Brave에서 다음 항목에 멀웨어가 포함된 것을 발견했습니다.</translation>
 <translation id="5895138241574237353">다시 시작</translation>
@@ -238,6 +240,7 @@
 <translation id="2675662665675552980">또한 Brave을 시작할 때 표시되는 페이지를 설정합니다.</translation>
 <translation id="648319183876919572">향상된 세이프 브라우징은 위험한 웹사이트와 다운로드로부터 사용자를 보호합니다.</translation>
 <translation id="5590013613412457132">Brave 설치 제거</translation>
+<translation id="3617744907966785605"><ph name="TIMEOUT_DURATION"/> 동안 사용하지 않으면 조직에서 Brave을 종료합니다. 인터넷 사용 기록이 삭제되었습니다. 여기에는 방문 기록, 자동 완성, 다운로드가 포함될 수 있습니다.</translation>
 <translation id="8646609321956191980">각 프로필에는 북마크, 방문 기록, 비밀번호 등과 같은 Brave 정보가 보관됩니다.</translation>
 <translation id="2535436634051789953">다른 Brave 프로필의 비밀번호를 보도록 전환할 수 있습니다.</translation>
 <translation id="2312399718665761438">맞춤법 오류를 수정하기 위해 Brave에서 사용자가 입력하는 텍스트를 Brave로 전송합니다.</translation>
@@ -274,6 +277,7 @@
 <translation id="7025789849649390912">설치가 중단되었습니다.</translation>
 <translation id="1705567146636171298">Brave 업데이트</translation>
 <translation id="5499063270485366718">이미지에 유용한 설명이 없으면 Brave에서 자동으로 설명을 제공하려고 시도합니다. 설명을 생성하기 위해 이미지가 Brave로 전송됩니다.</translation>
+<translation id="2332301637111071062"><ph name="TIMEOUT_DURATION"/> 동안 사용하지 않으면 조직에서 Brave 데이터를 삭제합니다. 여기에는 방문 기록, 자동 완성, 다운로드가 포함될 수 있습니다.</translation>
 <translation id="1008530050039597147">Brave에서 사이트에 대한 카메라 권한이 필요합니다.</translation>
 <translation id="1197672524850678392">Brave을 실행할 수 없습니다. 다시 시도해 보세요.</translation>
 <translation id="3405035915691517126">Brave에서 비밀번호를 확인할 수 없습니다. 24시간 후 다시 시도해 보세요.</translation>
@@ -326,6 +330,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8207657266087451193">이미지에 유용한 설명이 없으면 Brave에서 자동으로 설명을 제공하려고 시도합니다. 설명을 생성하기 위해 이미지가 Brave로 전송됩니다. 이 기능은 언제든지 설정에서 사용 중지할 수 있습니다.</translation>
 <translation id="8622246347342688645">로그인되어 있지 않으므로 Brave에서 비밀번호를 확인할 수 없습니다.</translation>
 <translation id="89367911614620585">이 파일은 위험할 수 있으므로 Brave에서 차단했습니다.</translation>
+<translation id="6098476632210317894"><ph name="TIMEOUT_DURATION"/> 동안 사용하지 않으면 조직에서 Brave을 종료합니다.</translation>
 <translation id="5196445203969439095">Brave으로 더 많은 작업하기</translation>
 <translation id="3360368475735266712">로그인하여 모든 기기에서 Brave을 동기화하고 맞춤설정하세요.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/>에서 이전에 Brave을 사용한 적이 있음</translation>
@@ -359,6 +364,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8986207147630327271">직장 프로필을 이 브라우저에 추가하고 직장 프로필 제어 권한을 관리자에게 부여합니다.</translation>
 <translation id="82609232232243542">Brave에 로그인</translation>
 <translation id="3273774796888928550">Brave에 로그인합니다. 계정에 한 번만 로그인하려면 <ph name="GUEST_LINK_BEGIN"/>기기를 게스트로 사용<ph name="GUEST_LINK_END"/>하면 됩니다.</translation>
+<translation id="4561046754724442504">Brave이 자동으로 종료되었습니다</translation>
 <translation id="5173820533850252773">Brave이 이전 버전임</translation>
 <translation id="310518206836658214">{0,plural, =1{1시간 후 Brave이 다시 시작됩니다}other{#시간 후 Brave이 다시 시작됩니다}}</translation>
 <translation id="5190991181158966940">향후 Brave 업데이트를 받으려면 Windows 10 이상이 필요합니다. 이 컴퓨터에서는 Windows 8.1을 사용 중입니다.</translation>

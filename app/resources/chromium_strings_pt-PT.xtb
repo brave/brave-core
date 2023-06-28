@@ -84,6 +84,7 @@
 <translation id="4805806622840861220">Reiniciar o Brave</translation>
 <translation id="1742948938503172561">Personalize o seu novo perfil do Brave</translation>
 <translation id="1477146545787277177">Ups! O Brave falhou. Reiniciar agora?</translation>
+<translation id="907470742420136113">O Brave está a tentar modificar as definições de preenchimento dos métodos de pagamento.</translation>
 <translation id="2585240446624043880">O Brave não consegue ler e escrever no respetivo diretório de dados:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -186,6 +187,7 @@
 <translation id="5646769069113654257">Reinicie o Brave agora</translation>
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">Apresentar o Brave neste idioma</translation>
+<translation id="585620188971323280">modificar as definições de preenchimento dos métodos de pagamento.</translation>
 <translation id="7207456302801184289">Bem-vindo ao Brave</translation>
 <translation id="8054200348483755053">O Brave encontrou software malicioso nestes itens:</translation>
 <translation id="5895138241574237353">Reiniciar</translation>
@@ -236,6 +238,7 @@
 <translation id="2675662665675552980">Também controla a página apresentada quando inicia o Brave.</translation>
 <translation id="648319183876919572">A Navegação segura melhorada faz mais para proteger contra transferências e Websites perigosos</translation>
 <translation id="5590013613412457132">Desinstalar o Brave</translation>
+<translation id="3617744907966785605">A sua organização fecha o Brave quando este não é usado durante <ph name="TIMEOUT_DURATION"/>. Os dados de navegação foram eliminados. Estes dados podem incluir o histórico, o preenchimento automático e as transferências.</translation>
 <translation id="8646609321956191980">Cada perfil possui as suas próprias informações do Brave, como marcadores, histórico, palavras-passe e muito mais.</translation>
 <translation id="2535436634051789953">Pode mudar para ver as palavras-passe de outro perfil do Brave</translation>
 <translation id="2312399718665761438">Para corrigir erros ortográficos, o Brave envia o texto que introduzir nos campos de texto para a Brave.</translation>
@@ -272,6 +275,7 @@ a sincronização. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LI
 <translation id="7025789849649390912">Instalação interrompida.</translation>
 <translation id="1705567146636171298">Atualizar o Brave</translation>
 <translation id="5499063270485366718">Se uma imagem não tiver uma descrição útil, o Brave tenta fornecer uma. Para criar as descrições, são enviadas imagens para a Brave.</translation>
+<translation id="2332301637111071062">A sua organização elimina os dados do Brave quando este não é usado durante <ph name="TIMEOUT_DURATION"/>. Estes dados podem incluir o histórico, o preenchimento automático e as transferências.</translation>
 <translation id="1008530050039597147">O Brave necessita da autorização da câmara para este site</translation>
 <translation id="1197672524850678392">Não foi possível iniciar o Brave. Tente novamente.</translation>
 <translation id="3405035915691517126">O Brave não consegue verificar as suas palavras-passe. Tente novamente após 24 horas.</translation>
@@ -324,6 +328,7 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="8207657266087451193">Se uma imagem não tiver uma descrição útil, o Brave tenta fornecer uma. Para criar as descrições, são enviadas imagens para a Brave. Pode desativar esta opção nas definições em qualquer altura.</translation>
 <translation id="8622246347342688645">O Brave não consegue verificar as suas palavras-passe porque não tem sessão iniciada.</translation>
 <translation id="89367911614620585">Este ficheiro pode ser perigoso. Como tal, o Brave bloqueou-o.</translation>
+<translation id="6098476632210317894">A sua organização fecha o Brave quando este não é usado durante <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="5196445203969439095">Faça mais com o Brave</translation>
 <translation id="3360368475735266712">Inicie sessão para sincronizar e personalizar o Brave em todos os dispositivos.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> estava a utilizar o Brave</translation>
@@ -357,6 +362,7 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="8986207147630327271">Está a adicionar um perfil de trabalho a este navegador e a conceder ao seu administrador controlo apenas sobre o perfil de trabalho.</translation>
 <translation id="82609232232243542">Iniciar sessão no Brave</translation>
 <translation id="3273774796888928550">Inicie sessão no Brave. Se quiser iniciar sessão numa conta apenas uma vez, pode <ph name="GUEST_LINK_BEGIN"/>usar o dispositivo como convidado<ph name="GUEST_LINK_END"/>.</translation>
+<translation id="4561046754724442504">O Brave foi fechado automaticamente</translation>
 <translation id="5173820533850252773">O Brave está desatualizado</translation>
 <translation id="310518206836658214">{0,plural, =1{O Brave será reiniciado dentro de uma hora}other{O Brave será reiniciado dentro de # horas}}</translation>
 <translation id="5190991181158966940">Para obter atualizações futuras do Brave, precisa do Windows 10 ou posterior. Este computador está a usar o Windows 8.1.</translation>

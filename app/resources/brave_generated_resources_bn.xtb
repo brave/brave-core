@@ -324,7 +324,6 @@
 <translation id="3357319404342882895">সঠিক</translation>
 <translation id="8823559166155093873">কুকি-গুলি অবরুদ্ধ করুন</translation>
 <translation id="5770288601196774623">শুধুমাত্র ক্রস-সাইট</translation>
-<translation id="6795317840397506736">ডিফল্ট অনুযায়ী ভুলে যাওয়া</translation>
 <translation id="3587482841069643663">সকল</translation>
 <translation id="7390783310074170337">ডিফল্ট ভিউ</translation>
 <translation id="130615081792797568">সহজ ভিউ</translation>
@@ -351,22 +350,10 @@
 <translation id="4182731739150761577">সম্পূর্ণ ইতিহাস দেখান</translation>
 <translation id="1340263054776016283">ফিল্টারের লিস্ট URL দেখুন</translation>
 <translation id="8578397014396032341">কনটেন্ট ফিল্টার</translation>
+<translation id="3020183492814296499">শর্টকাট</translation>
 <translation id="5567412479632285879">Brave পুরস্কার নিষ্ক্রিয় করা আছে</translation>
 <translation id="413570371620795359">চালু করে শুরু করতে পুরস্কারের প্যানেল খুলুন</translation>
-<translation id="3849957491997306859">স্বয়ংক্রিয়ভাবে সনাক্ত হয়েছে</translation>
-<translation id="8798099450830957504">ডিফল্ট</translation>
-<translation id="4851215387785619212">Brave সম্পর্কিত ব্যক্তিগত বিজ্ঞাপনগুলি</translation>
-<translation id="7808122468353671181">Brave বিজ্ঞাপন দেখে টোকেন উপার্জন করুন। আপনার ব্রাউজিং আচরণ থেকে অনুমান করে আপনার আগ্রহের ভিত্তিতে বিজ্ঞাপন পরিবেশন করা হয়। কোনো ব্যক্তিগত তথ্য বা ব্রাউজিং ইতিহাস কখনো আপনার ব্রাউজার ছেড়ে যায় না।</translation>
-<translation id="1758947220824279023">দেখানোর জন্য বিজ্ঞাপনের সর্বাধিক সংখ্যা</translation>
-<translation id="2356652719351432565">আঞ্চলিক বিজ্ঞাপনের প্রাসঙ্গিকতা</translation>
-<translation id="2196950072404588793">এটি Brave-কে সুনির্দিষ্টভাবে আপনার অঞ্চলের জন্য বিজ্ঞাপনগুলি দেখানোর অনুমতি দেয়। <ph name="BEGIN_LINK"/>আরও জানুন<ph name="END_LINK"/></translation>
-<translation id="2433507940547922241">উপস্থিতি</translation>
-<translation id="6112368337882254910">স্বতঃ-প্রদান</translation>
-<translation id="9132509928968869844">মাসিক স্বয়ংক্রিয় অবদানের সীমা</translation>
-<translation id="7286722244752781970">একটি সাক্ষাত লগ করার জন্য প্রয়োজন ন্যুনতম পেজ টাইম</translation>
-<translation id="4424486208397124985">প্রকাশকের প্রাসঙ্গিকতার জন্য ন্যুনতম সাক্ষাত</translation>
-<translation id="6248554379744796526">তালিকাতে অ-যাচাইকৃত সাইটগুলি দেখান</translation>
-<translation id="924777189963477634">স্বয়ংক্রিয় অবদান চালু করে, আপনি <ph name="BEGIN_LINK_TOS"/>পরিষেবার শর্তাবলী<ph name="END_LINK_TOS"/> এবং <ph name="BEGIN_LINK_PP"/>গোপনীয়তা নীতি<ph name="END_LINK_PP"/>-র সাথে সম্মত হন।</translation>
+<translation id="1051600834033686945">সম্পূর্ণ Brave Rewards সেটিংস খুলুন</translation>
 <translation id="6333347122924254968">Brave রিওয়ার্ডগুলো দেখাতে বলছে</translation>
 <translation id="7483857210736407752">সাইটগুলিতে টিপ বোতামগুলি দেখান</translation>
 <translation id="3905400818082450708">রেড্ডিট</translation>
@@ -378,11 +365,14 @@
 <translation id="958971637207126733">LinkedIn সংস্থাপনগুলির অনুমতি দিন</translation>
 <translation id="8792121506918889955">WebRTC IP পরিচালনার নীতি</translation>
 <translation id="6165508094623778733">আরও জানুন</translation>
+<translation id="8798099450830957504">ডিফল্ট</translation>
 <translation id="1822560017823072927">ডিফল্ট সর্বজনীন এবং ব্যক্তিগত ইন্টারফেসগুলি</translation>
 <translation id="5825943197137337319">শুধু ডিফল্ট সর্বজনীন ইন্টারফেস</translation>
 <translation id="1689062823386843231">নন-প্রক্সি UDP অক্ষম করুন</translation>
 <translation id="3540231253392253941">পুশ মেসেজিংয়ের জন্য Google পরিষেবাগুলি ব্যবহার করুন</translation>
 <translation id="933652931229970927">স্বয়ংক্রিয়ভাবে ক্র্যাশ রিপোর্টগুলো পাঠায়</translation>
+<translation id="4891600875049212418">সংবেদনশীল সাইট ভিজিট করার সময় অফ-দ্য-রেকর্ড হিসাবে যান</translation>
+<translation id="2356070529366658676">জিজ্ঞাসা করুন</translation>
 <translation id="4846154056248462491">প্রস্থানের সময়</translation>
 <translation id="2808630562319398131">Brave Rewards এর ডেটা রিসেট করুন...</translation>
 <translation id="6438096877646138757">আপনি সাইট বন্ধ করে দিলে সেগুলো কুকি সাফ করে</translation>
@@ -391,6 +381,27 @@
 <translation id="7050661313034564003">এই সাইটের জন্য সমস্ত কুকি এবং স্থানীয়ভাবে সঞ্চয় করা ডেটা দেখান</translation>
 <translation id="8339059274628563283"><ph name="SITE"/> স্থানীয়ভাবে ডেটা সংরক্ষণ করেছে</translation>
 <translation id="1963227389609234879">সকল সরান</translation>
+<translation id="8168435359814927499">সামগ্রী</translation>
+<translation id="7702907602086592255">ডোমেন</translation>
+<translation id="3202131003361292969">পাথ</translation>
+<translation id="5390743329570580756">এর জন্য পাঠান</translation>
+<translation id="6742339027238151589">স্ক্রিপ্টে অ্যাক্সেসযোগ্য</translation>
+<translation id="1067048845568873861">তৈরি হয়েছে</translation>
+<translation id="5747552184818312860">মেয়াদ শেষ হবে</translation>
+<translation id="3858860766373142691">নাম</translation>
+<translation id="361106536627977100">ফ্ল্যাশ ডেটা</translation>
+<translation id="4530494379350999373">উৎস</translation>
+<translation id="8195027750202970175">ডিস্কের মাপ</translation>
+<translation id="9116465289595958864">শেষবার সংশোধন করা হয়েছে</translation>
+<translation id="4590324241397107707">ডেটাবেস সঞ্চয়স্থান</translation>
+<translation id="5338503421962489998">স্থানীয় সঞ্চয়স্থান</translation>
+<translation id="6032912588568283682">ফাইল সিস্টেম</translation>
+<translation id="8016266267177410919">অস্থায়ী সঞ্চয়স্থান</translation>
+<translation id="4175737294868205930">বিরতিহীন সঞ্চয়স্থান</translation>
+<translation id="1234808891666923653">সার্ভিস ওয়ার্কার্স</translation>
+<translation id="3432762828853624962">শেয়ার্ড ওয়ার্কার</translation>
+<translation id="2927017729816812676">ক্যাশে সঞ্চয় স্থান</translation>
+<translation id="1389601498324964367">কোটা-পরিচালিত স্টোরেজ</translation>
 <translation id="814018970995616154">Brave এ সঞ্চিত অনিরাপদ সাইটগুলির একটি তালিকার সাথে URLগুলি পরীক্ষা করুন।</translation>
 <translation id="1144810021918451336">আপনাকে বিপজ্জনক ওয়েবসাইট, ডাউনলোড, এবঙ্গ এক্সটেনশনগুলি থেকে রক্ষা করে না।</translation>
 <translation id="5570470519803062774">সাইট এবং শিল্ডগুলির সেটিং-গুলি</translation>
@@ -535,7 +546,6 @@
 <translation id="4954512758656527938">ডিফল্ট ইথেরিয়াম ওয়ালেট</translation>
 <translation id="7701023802820268122">ডিফল্ট Solana ওয়ালেট</translation>
 <translation id="8488282162676695335">Brave ওয়ালেট</translation>
-<translation id="2356070529366658676">জিজ্ঞাসা করুন</translation>
 <translation id="6942354363301686374">এক্সটেনশন (কোনও পিছিয়ে যাওয়ার সুযোগ নেই)</translation>
 <translation id="1274962333945373242">ক্রিপ্টো ওয়ালেট (অপ্রচলিত)</translation>
 <translation id="702381242110464396">এক্সটেনশন (Brave ওয়ালেটে পিছিয়ে যাওয়ার সুযোগ)</translation>
@@ -552,7 +562,7 @@
 <translation id="4440478655766953083">NFTগুলি স্বয়ংক্রিয়ভাবে পিন হয়</translation>
 <translation id="464460032678285850">Brave ওয়ালেটে যুক্ত হওয়া NFTগুলি স্বয়ংক্রিয়ভাবে স্থানীয় IPFS নোডে পিন হতে পারে।
     দ্রষ্টব্য: পিন করার জন্য IPFS ডেমন শুরু করা হতে পারে তাই আপনার স্থানীয় নোড IPFS নেটওয়ার্কে ক্যাশে ডেটা এবং পিন করা NFTগুলি শেয়ার করবে।</translation>
-<translation id="4993345308607970390">Brave ওয়ালেট রিসেট করুন</translation>
+<translation id="2326850911705720398">ওয়ালেট ডেটা রিসেট করুন এবং সাফ করুন</translation>
 <translation id="5887022857624190239">পিন করা NFTগুলো সাফ করুন</translation>
 <translation id="204584113330893805">যখন স্থানীয় IPFS নোড লঞ্চ করা হয় তখন পিন করা NFTগুলো IPFS নেটওয়ারকে হোস্ট করা হয়।
     এই মুহূর্তে আপনার কাছে <ph name="NFT_COUNT"/>টি পিন করা NFT আছে।</translation>

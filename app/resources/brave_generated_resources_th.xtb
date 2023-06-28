@@ -324,7 +324,6 @@
 <translation id="3357319404342882895">เข้มงวด</translation>
 <translation id="8823559166155093873">บล็อกคุกกี้</translation>
 <translation id="5770288601196774623">เฉพาะข้ามเว็บเท่านั้น</translation>
-<translation id="6795317840397506736">ไม่จำค่าเริ่มต้น</translation>
 <translation id="3587482841069643663">ทั้งหมด</translation>
 <translation id="7390783310074170337">มุมมองเริ่มต้น</translation>
 <translation id="130615081792797568">มุมมองอย่างง่าย</translation>
@@ -351,22 +350,10 @@
 <translation id="4182731739150761577">แสดงรายการทั้งหมด</translation>
 <translation id="1340263054776016283">ระบุ URL ของรายการตัวกรอง</translation>
 <translation id="8578397014396032341">ตัวกรองเนื้อหา</translation>
+<translation id="3020183492814296499">ทางลัด</translation>
 <translation id="5567412479632285879">Brave รีวอร์ดปิดใช้งานอยู่</translation>
 <translation id="413570371620795359">เปิดรายการ Rewards เพื่อเปิดใช้งานและเริ่มต้น</translation>
-<translation id="3849957491997306859">ตรวจพบอัตโนมัติ</translation>
-<translation id="8798099450830957504">ค่าเริ่มต้น</translation>
-<translation id="4851215387785619212">โฆษณาส่วนตัว Brave</translation>
-<translation id="7808122468353671181">รับโทเค็นผ่านการชม Brave Ads ที่ระบบจะนำเสนอโฆษณาตามความสนใจของคุณ ตามที่อนุมานได้จากพฤติกรรมการท่องเว็บของคุณ โดยจะไม่มีข้อมูลส่วนตัวหรือประวัติการท่องเว็บใดๆ เล็ดลอดออกจากเบราว์เซอร์ของคุณ</translation>
-<translation id="1758947220824279023">จำนวนโฆษณาสูงสุดที่จะแสดง</translation>
-<translation id="2356652719351432565">โฆษณาในภูมิภาค</translation>
-<translation id="2196950072404588793">การดำเนินการนี้จะอนุญาตให้ Brave แสดงโฆษณาสำหรับภูมิภาคของคุณโดยเฉพาะ<ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/></translation>
-<translation id="2433507940547922241">ลักษณะที่ปรากฏ</translation>
-<translation id="6112368337882254910">มีส่วนร่วมอัตโนมัติ</translation>
-<translation id="9132509928968869844">การจำกัดการสนับสนุนรายเดือนอัตโนมัติ</translation>
-<translation id="7286722244752781970">เวลาแสดงหน้าขั้นต่ำก่อนเข้าสู่ระบบ</translation>
-<translation id="4424486208397124985">การเข้าชมขั้นต่ำสำหรับความเกี่ยวข้องของผู้จัดพิมพ์</translation>
-<translation id="6248554379744796526">แสดงไซต์ที่ไม่ได้ยืนยันในรายการ</translation>
-<translation id="924777189963477634">การเปิดการสนับสนุนอัตโนมัติจะถือว่าคุณยอมรับ<ph name="BEGIN_LINK_TOS"/>ข้อตกลงการใช้บริการ<ph name="END_LINK_TOS"/>และ<ph name="BEGIN_LINK_PP"/>นโยบายความเป็นส่วนตัว<ph name="END_LINK_PP"/></translation>
+<translation id="1051600834033686945">เปิดการตั้งค่า Brave Rewards ทั้งหมด</translation>
 <translation id="6333347122924254968">แสดงไอคอน Brave Rewards ในแถบที่อยู่</translation>
 <translation id="7483857210736407752">แสดงปุ่มทิปในเว็บไซต์</translation>
 <translation id="3905400818082450708">Reddit</translation>
@@ -378,11 +365,14 @@
 <translation id="958971637207126733">อนุญาตโพสต์แบบฝัง LinkedIn</translation>
 <translation id="8792121506918889955">นโยบายการจัดการ WebRTC IP</translation>
 <translation id="6165508094623778733">ดูข้อมูลเพิ่มเติม</translation>
+<translation id="8798099450830957504">ค่าเริ่มต้น</translation>
 <translation id="1822560017823072927">อินเตอร์เฟซสาธารณะและส่วนตัวเริ่มต้น</translation>
 <translation id="5825943197137337319">เฉพาะหน้าอินเตอร์เฟซสาธารณะค่าเดิมเท่านั้น</translation>
 <translation id="1689062823386843231">ปิดการใช้งาน UDP ที่ไม่ใช่พร็อกซี่</translation>
 <translation id="3540231253392253941">ใช้บริการ Google ในการส่งข้อความแบบพุช</translation>
 <translation id="933652931229970927">ส่งรายงานข้อขัดข้องโดยอัตโนมัติ</translation>
+<translation id="4891600875049212418">ไปที่ Off-The-Record เมื่อเยี่ยมชมเว็บไซต์ที่สำคัญ</translation>
+<translation id="2356070529366658676">ถาม</translation>
 <translation id="4846154056248462491">เมื่อออก</translation>
 <translation id="2808630562319398131">รีเซ็ตข้อมูล Brave Rewards...</translation>
 <translation id="6438096877646138757">เว็บไซต์ที่จะล้างคุกกี้เมื่อคุณปิด</translation>
@@ -391,6 +381,27 @@
 <translation id="7050661313034564003">แสดงคุกกี้ทั้งหมดและข้อมูลสำหรับเว็บไซต์นี้ที่เก็บอยู่ในเครื่อง</translation>
 <translation id="8339059274628563283">ข้อมูล <ph name="SITE"/> ที่เก็บไว้ในเครื่อง</translation>
 <translation id="1963227389609234879">นำออกทั้งหมด</translation>
+<translation id="8168435359814927499">เนื้อหา</translation>
+<translation id="7702907602086592255">โดเมน</translation>
+<translation id="3202131003361292969">เส้นทาง</translation>
+<translation id="5390743329570580756">ส่งสำหรับ</translation>
+<translation id="6742339027238151589">การเข้าถึงสคริปต์</translation>
+<translation id="1067048845568873861">สร้างแล้ว</translation>
+<translation id="5747552184818312860">หมดอายุ</translation>
+<translation id="3858860766373142691">ชื่อ</translation>
+<translation id="361106536627977100">ข้อมูล Flash</translation>
+<translation id="4530494379350999373">Origin</translation>
+<translation id="8195027750202970175">ขนาดบนดิสก์</translation>
+<translation id="9116465289595958864">แก้ไขล่าสุด</translation>
+<translation id="4590324241397107707">พื้นที่จัดเก็บฐานข้อมูล</translation>
+<translation id="5338503421962489998">พื้นที่จัดเก็บในตัวเครื่อง</translation>
+<translation id="6032912588568283682">ระบบไฟล์</translation>
+<translation id="8016266267177410919">พื้นที่เก็บข้อมูลชั่วคราว</translation>
+<translation id="4175737294868205930">พื้นที่เก็บข้อมูลถาวร</translation>
+<translation id="1234808891666923653">Service Workers</translation>
+<translation id="3432762828853624962">คนทำงานที่แชร์</translation>
+<translation id="2927017729816812676">พื้นที่เก็บข้อมูลแคช</translation>
+<translation id="1389601498324964367">พื้นที่เก็บข้อมูลจัดการตามโควตา</translation>
 <translation id="814018970995616154">ตรวจสอบ URL ที่มีรายชื่อเว็บไซต์ที่ไม่ปลอดภัยเก็บไว้ใน Brave</translation>
 <translation id="1144810021918451336">ไม่ป้องกันคุณจากเว็บไซต์ การดาวน์โหลด และส่วนขยายที่เป็นอันตราย</translation>
 <translation id="5570470519803062774">การตั้งค่าเว็บไซต์และชิลด์</translation>
@@ -535,7 +546,6 @@
 <translation id="4954512758656527938">วอลเล็ต Ethereum เริ่มต้น</translation>
 <translation id="7701023802820268122">วอลเล็ต Solana เริ่มต้น</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
-<translation id="2356070529366658676">ถาม</translation>
 <translation id="6942354363301686374">ส่วนขยาย (ไม่มีการสำรองข้อมูล)</translation>
 <translation id="1274962333945373242">กระเป๋าเงินคริปโต (ที่เลิกใช้แล้ว)</translation>
 <translation id="702381242110464396">ส่วนขยาย (สำรองข้อมูล Brave วอลเล็ท)</translation>
@@ -552,7 +562,7 @@
 <translation id="4440478655766953083">ตรึง NFT โดยอัตโนมัติ</translation>
 <translation id="464460032678285850">NFT ที่เพิ่มเข้าไปใน Brave Wallet อาจถูกตรึงกับโหนด IPFS เฉพาะที่โดยอัตโนมัติ
     หมายเหตุ: IPFS daemon อาจเริ่มทำงานเพื่อการตรึง ดังนั้น โหนดเฉพาะที่ของคุณจะแชร์ข้อมูลแคชและ NFT ที่ตรึงอยู่กับเครือข่าย IPFS</translation>
-<translation id="4993345308607970390">รีเซ็ตกระเป๋าเงิน Brave</translation>
+<translation id="2326850911705720398">รีเซ็ตและล้างข้อมูลวอลเล็ต</translation>
 <translation id="5887022857624190239">ล้าง NFT ที่ตรึงไว้</translation>
 <translation id="204584113330893805">NFT ที่ตรึงไว้จะถูกโฮสต์กับเครือข่าย IPFS เมื่อเปิดใช้งานโหนด IPFS เฉพาะที่
     คุณมี <ph name="NFT_COUNT"/> ที่ตรึง NFT ไว้อยู่ในขณะนี้</translation>

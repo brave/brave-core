@@ -324,7 +324,6 @@
 <translation id="3357319404342882895">ಸ್ಟ್ರಿಕ್ಟ್</translation>
 <translation id="8823559166155093873">ಕುಕೀಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="5770288601196774623">ಕ್ರಾಸ್-ಸೈಟ್ ಮಾತ್ರ</translation>
-<translation id="6795317840397506736">ಡೀಫಾಲ್ಟ್ ಆಗಿ ಮರೆತುಬಿಡಿ</translation>
 <translation id="3587482841069643663">ಎಲ್ಲ</translation>
 <translation id="7390783310074170337">ಡೀಫಾಲ್ಟ್ ವೀಕ್ಷಣೆ</translation>
 <translation id="130615081792797568">ಸರಳ ವೀಕ್ಷಣೆ</translation>
@@ -351,22 +350,10 @@
 <translation id="4182731739150761577">ಪೂರ್ಣ ಪಟ್ಟಿ ತೋರಿಸಿ</translation>
 <translation id="1340263054776016283">ಫಿಲ್ಟರ್ ಪಟ್ಟಿ URL ನಮೂದಿಸಿ</translation>
 <translation id="8578397014396032341">ವಿಷಯದ ಫಿಲ್ಟರ್‍‍ಗಳು</translation>
+<translation id="3020183492814296499">ಶಾರ್ಟ್‌ಕಟ್‌ಗಳು</translation>
 <translation id="5567412479632285879">Brave ರಿವಾರ್ಡ್ಸ್ ಅನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</translation>
 <translation id="413570371620795359">ಸಕ್ರಿಯಗೊಳಿಸಲು ಮತ್ತು ಪ್ರಾರಂಭಿಸಲು ಬಹುಮಾನಗಳ ಫಲಕವನ್ನು ತೆರೆಯಿರಿ</translation>
-<translation id="3849957491997306859">ಸ್ವಯಂ-ಪತ್ತೆಹಚ್ಚಲಾಗಿದೆ</translation>
-<translation id="8798099450830957504">ಡಿಫಾಲ್ಟ್</translation>
-<translation id="4851215387785619212">Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳು</translation>
-<translation id="7808122468353671181">Brave ಜಾಹೀರಾತುಗಳು ನೋಡುವ ಮೂಲಕ ಟೋಕನ್‌ಗಳನ್ನು ಗಳಿಸಿ. ಪ್ರಸ್ತುತಪಡಿಸಿದ ಜಾಹೀರಾತುಗಳು ನಿಮ್ಮ ಬ್ರೌಸಿಂಗ್ ನಡವಳಿಕೆಯಿಂದ ನಿರ್ಣಯಿಸಿದಂತೆ, ನಿಮ್ಮ ಆಸಕ್ತಿಗಳನ್ನು ಆಧರಿಸಿರುತ್ತದೆ. ಯಾವುದೇ ವೈಯಕ್ತಿಕ ಡೇಟಾ ಅಥವಾ ಬ್ರೌಸಿಂಗ್ ಇತಿಹಾಸವು ಎಂದಿಗೂ ನಿಮ್ಮ ಬ್ರೌಸರ್ ಬಿಟ್ಟು ಹೊರಸಾಗುವುದಿಲ್ಲ.</translation>
-<translation id="1758947220824279023">ಪ್ರದರ್ಶಿಸುವುದಕ್ಕಾಗಿ ಜಾಹೀರಾತುಗಳ ಗರಿಷ್ಠ ಸಂಖ್ಯೆ</translation>
-<translation id="2356652719351432565">ಪ್ರಾದೇಶಿಕ ಜಾಹೀರಾತು ಸೂಕ್ತತೆ</translation>
-<translation id="2196950072404588793">ಇದು ನಿಮ್ಮ ಪ್ರದೇಶಕ್ಕೆ ನಿರ್ದಿಷ್ಟವಾಗಿರುವ ಜಾಹೀರಾತುಗಳನ್ನು ನಿಮಗೆ ತೋರಿಸಲು Brave ಗೆ ಅನುಮತಿಸುತ್ತದೆ. <ph name="BEGIN_LINK"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="END_LINK"/></translation>
-<translation id="2433507940547922241">ಗೋಚರತೆ</translation>
-<translation id="6112368337882254910">ಸ್ವಯಂ-ಕೊಡುಗೆ</translation>
-<translation id="9132509928968869844">ಮಾಸಿಕ ಸ್ವಯಂ-ಕೊಡುಗೆಯ ಮಿತಿ</translation>
-<translation id="7286722244752781970">ಭೇಟಿಗೆ ಲಾಗ್ ಮಾಡುವುದಕ್ಕೂ ಮುಂಚಿನ ಕನಿಷ್ಠ ಪುಟದ ಸಮಯ</translation>
-<translation id="4424486208397124985">ಪ್ರಕಾಶಕರ ಪ್ರಸ್ತುತತೆಗೆ ಕನಿಷ್ಠ ಭೇಟಿಗಳು</translation>
-<translation id="6248554379744796526">ಪಟ್ಟಿಯಲ್ಲಿ ಪರಿಶೀಲಿಸದ ಸೈಟ್‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
-<translation id="924777189963477634">ಸ್ವಯಂ-ಕೊಡುಗೆಯನ್ನು ಆನ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು <ph name="BEGIN_LINK_TOS"/>ಸೇವಾ ನಿಯಮಗಳು<ph name="END_LINK_TOS"/> and <ph name="BEGIN_LINK_PP"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_LINK_PP"/>.ಗೆ ಒಪ್ಪುತ್ತೀರಿ.</translation>
+<translation id="1051600834033686945">ಸಂಪೂರ್ಣ Brave Rewards ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ</translation>
 <translation id="6333347122924254968">ವಿಳಾಸ ಪಟ್ಟಿಯಲ್ಲಿ Brave ಪುರಸ್ಕಾರಗಳ ಐಕಾನ್ ತೋರಿಸಿ</translation>
 <translation id="7483857210736407752">ಸೈಟ್‌ಗಳಲ್ಲಿ ಟಿಪ್ ಬಟನ್‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="3905400818082450708">ರೆಡ್ಡಿಟ್</translation>
@@ -378,11 +365,14 @@
 <translation id="958971637207126733">ಎಂಬೆಡ್ ಮಾಡಲಾದ ಫೋಸ್ಟ್‌ಗಳನ್ನು LinkedIn ನಲ್ಲಿ ಅನುಮತಿಸಿ</translation>
 <translation id="8792121506918889955">WebRTC IP ನಿರ್ವಹಣೆ ನೀತಿ</translation>
 <translation id="6165508094623778733">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</translation>
+<translation id="8798099450830957504">ಡಿಫಾಲ್ಟ್</translation>
 <translation id="1822560017823072927">ಡೀಫಾಲ್ಟ್ ಸಾರ್ವಜನಿಕ ಮತ್ತು ಖಾಸಗಿ ಇಂಟರ್ಫೇಸ್‌ಗಳು</translation>
 <translation id="5825943197137337319">ಡೀಫಾಲ್ಟ್ ಸಾರ್ವಜನಿಕ ಇಂಟರ್ಫೇಸ್ ಮಾತ್ರ</translation>
 <translation id="1689062823386843231">ಪ್ರಾಕ್ಸಿಡ್-ಅಲ್ಲದ UDP ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="3540231253392253941">ಪುಶ್ ಸಂದೇಶ ಕಳುಹಿಸುವಿಕೆಗಾಗಿ Google ಸೇವೆಗಳನ್ನು ಬಳಸಿ</translation>
 <translation id="933652931229970927">ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಡಯಾಗ್ನಾಸ್ಟಿಕ್ ವರದಿಗಳನ್ನು ಕಳುಹಿಸಿ</translation>
+<translation id="4891600875049212418">ಸೂಕ್ಷ್ಮ ಸೈಟ್‌ಗಳಿಗೆ ಭೇಟಿ ನೀಡುವಾಗ ಆಫ್-ದಿ-ರೆಕಾರ್ಡ್ ಸ್ಥಿತಿಗೆ ಹೋಗಿ</translation>
+<translation id="2356070529366658676">ಕೇಳಿ</translation>
 <translation id="4846154056248462491">ತೊರೆಯುವಾಗ</translation>
 <translation id="2808630562319398131">Brave Rewards ಡೇಟಾ ಮರುಹೊಂದಿಸಿ...</translation>
 <translation id="6438096877646138757">ನೀವು ಅವುಗಳನ್ನು ಮುಚ್ಚಿದಾಗ ಕುಕೀಗಳನ್ನು ಕ್ಲಿಯರ್ ಮಾಡುವ ಸೈಟ್‌ಗಳು</translation>
@@ -391,6 +381,27 @@
 <translation id="7050661313034564003">ಈ ಸೈಟ್‌ಗಾಗಿ ಎಲ್ಲಾ ಕುಕೀಗಳು ಮತ್ತು ಸ್ಥಳೀಯವಾಗಿ ಸಂಗ್ರಹಿಸಿದ ಡೇಟಾ ತೋರಿಸಿ</translation>
 <translation id="8339059274628563283"><ph name="SITE"/> ಸ್ಥಳೀಯವಾಗಿ ಸಂಗ್ರಹಿಸಲಾದ ಡೇಟಾ</translation>
 <translation id="1963227389609234879">ಎಲ್ಲವನ್ನೂ ತೆಗೆದುಹಾಕಿ</translation>
+<translation id="8168435359814927499">ವಿಷಯ</translation>
+<translation id="7702907602086592255">ಡೊಮೇನ್</translation>
+<translation id="3202131003361292969">ಪಾಥ್</translation>
+<translation id="5390743329570580756">ಇದಕ್ಕಾಗಿ ಕಳುಹಿಸಿ</translation>
+<translation id="6742339027238151589">ಸ್ಕ್ರಿಪ್ಟ್‌ಗೆ ಪ್ರವೇಶಿಸುವಂತಹದ್ದು</translation>
+<translation id="1067048845568873861">ರಚಿಸಲಾಗಿದೆ</translation>
+<translation id="5747552184818312860">ಅವಧಿ ಮೀರುವುದು</translation>
+<translation id="3858860766373142691">ಹೆಸರು</translation>
+<translation id="361106536627977100">ಫ್ಲ್ಯಾಶ್ ಡೇಟಾ</translation>
+<translation id="4530494379350999373">ಮೂಲ</translation>
+<translation id="8195027750202970175">ಡಿಸ್ಕ್‌ನಲ್ಲಿನ ಗಾತ್ರ</translation>
+<translation id="9116465289595958864">ಕೊನೆಯದಾಗಿ ಮಾರ್ಪಡಿಸಿರುವುದು</translation>
+<translation id="4590324241397107707">ಡೇಟಾಬೇಸ್ ಸಂಗ್ರಹಣೆ</translation>
+<translation id="5338503421962489998">ಸ್ಥಳೀಯ ಸಂಗ್ರಹಣೆ</translation>
+<translation id="6032912588568283682">ಫೈಲ್ ಸಿಸ್ಟಂ</translation>
+<translation id="8016266267177410919">ತಾತ್ಕಾಲಿಕ ಸಂಗ್ರಹ</translation>
+<translation id="4175737294868205930">ಶಾಶ್ವತವಾಗಿರುವ ಸಂಗ್ರಹಣೆ</translation>
+<translation id="1234808891666923653">ಸೇವೆ ಕೆಲಸಗಾರರು</translation>
+<translation id="3432762828853624962">ಹಂಚಿಕೊಳ್ಳಲಾದ ಕೆಲಸಗಾರರು</translation>
+<translation id="2927017729816812676">ಕ್ಯಾಶ್ ಸಂಗ್ರಹಣೆ</translation>
+<translation id="1389601498324964367">ಕೋಟಾ-ನಿರ್ವಹಿತ ಸಂಗ್ರಹಣೆ</translation>
 <translation id="814018970995616154">Brave ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗಿರುವ ಅಸುರಕ್ಷಿತ ಸೈಟ್‌ಗಳ ಪಟ್ಟಿಯೊಂದಿಗೆ URL ಗಳನ್ನು ಪರಿಶೀಲಿಸುತ್ತದೆ.</translation>
 <translation id="1144810021918451336">ಅಪಾಯಕಾರಿ ವೆಬ್‌ಸೈಟ್‌ಗಳು, ಡೌನ್‌ಲೋಡ್‌ಗಳು ಮತ್ತು ವಿಸ್ತರಣೆಗಳ ವಿರುದ್ಧ ನಿಮ್ಮನ್ನು ರಕ್ಷಿಸುವುದಿಲ್ಲ.</translation>
 <translation id="5570470519803062774">ಸೈಟ್ ಮತ್ತು ಶೀಲ್ಡ್‌ಗಳ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
@@ -535,7 +546,6 @@
 <translation id="4954512758656527938">ಡೀಫಾಲ್ಟ್ ಈಥೇರಿಯಮ್ ವ್ಯಾಲೆಟ್</translation>
 <translation id="7701023802820268122">ಡೀಫಾಲ್ಟ್ ಸೊಲಾನಾ ವ್ಯಾಲೆಟ್</translation>
 <translation id="8488282162676695335">Brave ವ್ಯಾಲೆಟ್</translation>
-<translation id="2356070529366658676">ಕೇಳಿ</translation>
 <translation id="6942354363301686374">ವಿಸ್ತರಣೆಗಳು (ಫಾಲ್‌ಬ್ಯಾಕ್ ಇಲ್ಲ)</translation>
 <translation id="1274962333945373242">ಕ್ರಿಪ್ಟೋ ವ್ಯಾಲೆಟ್‌ಗಳು (ಡೆಪ್ರಿಕೇಟೆಡ್)</translation>
 <translation id="702381242110464396">ವಿಸ್ತರಣೆಗಳು (Brave ವ್ಯಾಲೆಟ್ ಫಾಲ್‌ಬ್ಯಾಕ್)</translation>
@@ -552,7 +562,7 @@
 <translation id="4440478655766953083">NFT ಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಪಿನ್ ಮಾಡಿ</translation>
 <translation id="464460032678285850">Brave ವ್ಯಾಲೆಟ್‌ಗೆ ಸೇರಿಸಲಾದ NFT ಗಳನ್ನು ಸ್ಥಳೀಯ IPFS ನೋಡ್‌ಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಪಿನ್ ಮಾಡಬಹುದು.
     ಗಮನಿಸಿ: ಪಿನ್ ಮಾಡುವಿಕೆ ಉದ್ದೇಶಗಳಿಗಾಗಿ IPFS ಡೇಮನ್ ಅನ್ನು ಆರಂಭಿಸಬಹುದು ಇದರಿಂದ ನಿಮ್ಮ ಸ್ಥಳೀಯ ನೋಡ್ ಕ್ಯಾಶ್ ಮಾಡಲಾದ ಡೇಟಾ ಮತ್ತು ಪಿನ್ ಮಾಡಲಾದ NFT ಗಳನ್ನು IPFS ನೆಟ್‌ವರ್ಕ್‌ಗೆ ಹಂಚಿಕೊಳ್ಳುತ್ತದೆ.</translation>
-<translation id="4993345308607970390">Brave ವ್ಯಾಲೆಟ್ ಮರುಹೊಂದಿಸಿ</translation>
+<translation id="2326850911705720398">ವ್ಯಾಲೆಟ್ ಡೇಟಾ ರೀಸೆಟ್ ಮಾಡಿ ಮತ್ತು ಕ್ಲಿಯರ್ ಮಾಡಿ</translation>
 <translation id="5887022857624190239">ಪಿನ್ ಮಾಡಲಾದ NFT ಗಳನ್ನು ತೆರವುಗೊಳಿಸಿ</translation>
 <translation id="204584113330893805">ಸ್ಥಳೀಯ IPFS ನೋಡ್ ಅನ್ನು ಆರಂಭಿಸಿದಾಗ ಪಿನ್ ಮಾಡಲಾದ NFT ಗಳನ್ನು IPFS ನೆಟ್‌ವರ್ಕ್‌ಗೆ ಹೋಸ್ಟ್ ಮಾಡಲಾಗುತ್ತದೆ.
     ಈ ಕ್ಷಣದಲ್ಲಿ ನೀವು <ph name="NFT_COUNT"/> ಪಿನ್ ಮಾಡಲಾದ NFT ಗಳನ್ನು ಹೊಂದಿರುವಿರಿ.</translation>

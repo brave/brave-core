@@ -84,6 +84,7 @@
 <translation id="4805806622840861220">重新启动 Brave</translation>
 <translation id="1742948938503172561">自定义您的新 Brave 个人资料</translation>
 <translation id="1477146545787277177">哎呀！Brave 崩溃了。要立即重新启动吗？</translation>
+<translation id="907470742420136113">Brave 正在尝试修改用于填入付款方式的设置。</translation>
 <translation id="2585240446624043880">Brave 无法读写其数据目录：
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -186,6 +187,7 @@
 <translation id="5646769069113654257">请立即重启 Brave</translation>
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">以这种语言显示 Brave</translation>
+<translation id="585620188971323280">修改用于填入付款方式的设置。</translation>
 <translation id="7207456302801184289">欢迎使用 Brave</translation>
 <translation id="8054200348483755053">Brave 发现这些内容包含恶意软件：</translation>
 <translation id="5895138241574237353">重新启动</translation>
@@ -236,6 +238,7 @@
 <translation id="2675662665675552980">它还能够控制Brave启动后显示的页面。</translation>
 <translation id="648319183876919572">“增强型安全浏览”功能有助于保护您免受危险的网站及下载内容的侵害</translation>
 <translation id="5590013613412457132">卸载 Brave</translation>
+<translation id="3617744907966785605">贵组织会在 Brave 闲置 <ph name="TIMEOUT_DURATION"/>后将其关闭。浏览数据已被删除，其中可能包括历史记录、自动填充和下载内容。</translation>
 <translation id="8646609321956191980">每份个人资料均包含自己的 Brave 信息，例如书签、历史记录、密码等等</translation>
 <translation id="2535436634051789953">您可切换到另一份 Brave 个人资料以查看其中的密码</translation>
 <translation id="2312399718665761438">为了修正拼写错误，Brave 会将您在文本字段中输入的文字发送给 Brave</translation>
@@ -271,6 +274,7 @@
 <translation id="7025789849649390912">已停止安装。</translation>
 <translation id="1705567146636171298">更新 Brave</translation>
 <translation id="5499063270485366718">如果图片缺少有用的说明，则 Brave 会尝试为您提供一条说明。为便于创建说明，系统会将图片发送给 Brave。</translation>
+<translation id="2332301637111071062">贵组织会在 Brave 闲置 <ph name="TIMEOUT_DURATION"/>后删除 Brave 数据，其中可能包括历史记录、自动填充和下载内容。</translation>
 <translation id="1008530050039597147">Brave 需要为此网站授予摄像头权限</translation>
 <translation id="1197672524850678392">无法启动 Brave。请重试。</translation>
 <translation id="3405035915691517126">Brave 无法检查您的密码。请过 24 小时再试。</translation>
@@ -323,6 +327,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="8207657266087451193">如果图片缺少有用的说明，则 Brave 会尝试为您提供一条说明。为便于创建说明，系统会将图片发送给 Brave。您可以随时在“设置”中关闭此功能。</translation>
 <translation id="8622246347342688645">Brave 无法检查您的密码，因为您未登录</translation>
 <translation id="89367911614620585">此文件可能存在危险，因此 Brave 已将其拦截。</translation>
+<translation id="6098476632210317894">贵组织会在 Brave 闲置 <ph name="TIMEOUT_DURATION"/>后将其关闭。</translation>
 <translation id="5196445203969439095">Brave 功能多，任您探索</translation>
 <translation id="3360368475735266712">登录即可在您的所有设备上同步并个性化设置 Brave</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> 之前使用的是 Brave</translation>
@@ -356,6 +361,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="8986207147630327271">您将要向此浏览器添加工作资料并允许您的管理员仅控制此工作资料。</translation>
 <translation id="82609232232243542">登录 Brave</translation>
 <translation id="3273774796888928550">登录 Brave。如果您只想登录帐号一次，可考虑<ph name="GUEST_LINK_BEGIN"/>以访客身份使用设备<ph name="GUEST_LINK_END"/>。</translation>
+<translation id="4561046754724442504">Brave 已自动关闭</translation>
 <translation id="5173820533850252773">Brave版本太旧</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave 将在 1 小时后重新启动}other{Brave 将在 # 小时后重新启动}}</translation>
 <translation id="5190991181158966940">若要接收后续 Brave 更新，您需使用 Windows 10 或更高版本。该计算机目前使用的是 Windows 8.1。</translation>
