@@ -36,6 +36,16 @@ const ColoredIcon = styled(Icon)<{ color: string }>`
   color: ${p => p.color};
 `
 
+const ColoredPlaylistInfo = styled(PlaylistInfo)`
+  & .playlist-name {
+    color: ${color.text.primary};
+  }
+
+  & .playlist-detail {
+    color: ${color.text.secondary};
+  }
+`
+
 const ProductNameContainer = styled.div`
   display: flex;
   gap: 4px;
@@ -66,7 +76,7 @@ export default function Header ({ playlistId }: HeaderProps) {
           <StyledLink to='/'>
             <ColoredIcon name='arrow-left' color={color.icon.default} />
           </StyledLink>
-          <PlaylistInfo
+          <ColoredPlaylistInfo
             isDefaultPlaylist={playlist.id === 'default'}
             itemCount={playlist.items.length}
             playlistName={playlist.name}

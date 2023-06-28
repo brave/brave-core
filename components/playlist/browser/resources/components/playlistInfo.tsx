@@ -46,15 +46,17 @@ export default function PlaylistInfo ({
 }: Props) {
   return (
     <PlaylistInfoContainer className={className}>
-      <PlaylistName>
+      <PlaylistName className='playlist-name'>
         {isDefaultPlaylist ? 'Play Later' : playlistName}{' '}
       </PlaylistName>
-      <PlaylistDetail>{itemCount} items</PlaylistDetail>
+      <PlaylistDetail className='playlist-detail'>
+        {itemCount} items
+      </PlaylistDetail>
       <>{!!totalDuration && <PlaylistDetail>{totalDuration}</PlaylistDetail>}</>
       <>
-        {(!!itemCount ||
+        {(!!itemCount &&
           false) /* TODO(sko) We can't get the file size for now */ && (
-          <PlaylistDetail>300 mb</PlaylistDetail>
+          <PlaylistDetail className='playlist-detail'>300 mb</PlaylistDetail>
         )}
       </>
     </PlaylistInfoContainer>
