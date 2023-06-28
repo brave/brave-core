@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { Provider } from 'react-redux'
 import { withKnobs } from '@storybook/addon-knobs'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, MemoryRouter } from 'react-router-dom'
 
 import '@brave/leo/tokens/css/variables.css'
 
@@ -19,11 +19,13 @@ export default {
   title: 'Playlist/Components',
   decorators: [
     (Story: any) => (
-      <Provider store={store}>
+      <MemoryRouter initialEntries={['/']}>
         <BrowserRouter>
-          <Story />
+          <Provider store={store}>
+            <Story />
+          </Provider>
         </BrowserRouter>
-      </Provider>
+      </MemoryRouter>
     ),
     (Story: any) => (
       <div
@@ -45,4 +47,3 @@ getAllActions().playlistLoaded(mockData)
 export const Catalog = () => {
   return <PlaylistsCatalog />
 }
-
