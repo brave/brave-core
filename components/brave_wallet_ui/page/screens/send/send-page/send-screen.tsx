@@ -43,7 +43,7 @@ export const SendScreen = ({ isAndroid }: Props) => {
         setSelectedSendOption={setSelectedSendOption}
         showSelectTokenModal={showSelectTokenModal}
         selectTokenModalRef={selectTokenModalRef}
-        isAndroid={true}
+        isAndroid={isAndroid}
       />
     </>
   )
