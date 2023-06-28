@@ -169,7 +169,7 @@ class TestWebUIControllerFactory : public content::WebUIControllerFactory {
       content::WebUI* web_ui,
       const GURL& url) override {
     if (url.host_piece() == kWalletPageHost) {
-      return std::make_unique<AndroidWalletPageUI>(web_ui, source_name_);
+      return std::make_unique<AndroidWalletPageUI>(web_ui, url);
     }
 
     return nullptr;
