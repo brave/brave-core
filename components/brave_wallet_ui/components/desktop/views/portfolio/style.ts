@@ -237,6 +237,10 @@ export const SelectTimelineWrapper = styled(Row)`
 export const ControlsRow = styled(Row)`
   box-shadow: 0px -1px 1px rgba(0, 0, 0, 0.02);
   border-radius: 16px;
+  padding: 24px 16px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    padding: 16px;
+  }
 `
 
 export const BalanceAndButtonsWrapper = styled(Column)`
@@ -293,4 +297,37 @@ export const CircleButton = styled(WalletButton) <{
 export const ButtonIcon = styled(Icon)`
   --leo-icon-size: 18px;
   color: ${leo.color.icon.interactive};
+`
+
+export const SearchBarWrapper = styled(Row) <{
+  showSearchBar: boolean
+}>`
+  width: 230px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    display: ${(p) => p.showSearchBar ? 'flex' : 'none'};
+    width: 100%;
+  }
+`
+
+export const ControlBarWrapper = styled(Row) <{
+  showSearchBar: boolean
+  isNFTView?: boolean
+}>`
+  padding: 0px 32px;
+  margin-bottom: 16px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    padding: ${(p) => p.showSearchBar
+    ? p.isNFTView
+      ? '2px'
+      : '0px'
+    : '4px'} 24px 0px 24px;
+    margin-bottom: ${(p) => p.showSearchBar ? 12 : 16}px;
+  }
+`
+
+export const SearchButtonWrapper = styled(Row)`
+  display: none;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    display: flex;
+  }
 `

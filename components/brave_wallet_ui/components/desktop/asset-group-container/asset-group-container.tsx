@@ -30,7 +30,8 @@ import {
 import {
   StyledWrapper,
   CollapseButton,
-  CollapseIcon
+  CollapseIcon,
+  AccountDescriptionWrapper
 } from './asset-group-container.style'
 import {
   Row,
@@ -106,21 +107,25 @@ export const AssetGroupContainer = (props: Props) => {
               accountKind={account.accountId.kind}
               marginRight={16}
             />
-            <Text
-              textSize='14px'
-              isBold={true}
-              textColor='text01'
+            <AccountDescriptionWrapper
+              width='unset'
             >
-              {account.name}
-            </Text>
-            <HorizontalSpace space='8px' />
-            <Text
-              textSize='12px'
-              isBold={false}
-              textColor='text02'
-            >
-              {reduceAddress(account.address)}
-            </Text>
+              <Text
+                textSize='14px'
+                isBold={true}
+                textColor='text01'
+              >
+                {account.name}
+              </Text>
+              <HorizontalSpace space='8px' />
+              <Text
+                textSize='12px'
+                isBold={false}
+                textColor='text02'
+              >
+                {reduceAddress(account.address)}
+              </Text>
+            </AccountDescriptionWrapper>
           </Row>
         }
 

@@ -521,7 +521,7 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
       </Column>
 
       {!hidePortfolioNFTsTab &&
-        <ControlsRow padding='24px 0px'>
+        <ControlsRow>
           <SegmentedControl
             navOptions={PortfolioNavOptions}
             width={384}
