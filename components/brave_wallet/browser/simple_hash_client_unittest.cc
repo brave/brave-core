@@ -10,12 +10,6 @@
 #include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "chrome/browser/prefs/browser_prefs.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
-#include "chrome/test/base/testing_browser_process.h"
-#include "chrome/test/base/testing_profile.h"
-#include "components/prefs/pref_service.h"
-#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -112,16 +106,10 @@ class SimpleHashClientUnitTest : public testing::Test {
     run_loop.Run();
   }
 
-  PrefService* GetPrefs() { return profile_->GetPrefs(); }
-  TestingPrefServiceSimple* GetLocalState() { return local_state_->Get(); }
-
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   content::BrowserTaskEnvironment task_environment_;
-  std::unique_ptr<ScopedTestingLocalState> local_state_;
-  std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<SimpleHashClient> simple_hash_client_;
-  base::test::ScopedFeatureList scoped_feature_list_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
