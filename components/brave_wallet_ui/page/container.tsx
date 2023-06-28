@@ -164,6 +164,7 @@ export const Container = () => {
       walletLocation.includes(WalletRoutes.FundWalletPageStart) ||
       walletLocation.includes(WalletRoutes.PortfolioAssets) ||
       walletLocation.includes(WalletRoutes.PortfolioNFTs) ||
+      walletLocation.includes(WalletRoutes.PortfolioNFTAsset) ||
       walletLocation.includes(WalletRoutes.Market) ||
       walletLocation.includes(WalletRoutes.Swap) ||
       walletLocation.includes(WalletRoutes.SendPageStart) ||
@@ -187,6 +188,7 @@ export const Container = () => {
         walletLocation.includes(WalletRoutes.InspectNfts) ||
         walletLocation.includes(WalletRoutes.PortfolioAssets) ||
         walletLocation.includes(WalletRoutes.PortfolioNFTs) ||
+        walletLocation.includes(WalletRoutes.PortfolioNFTAsset) ||
         walletLocation.includes(WalletRoutes.Market) ||
         walletLocation.includes(WalletRoutes.Activity) ||
         walletLocation.includes(WalletRoutes.Accounts)

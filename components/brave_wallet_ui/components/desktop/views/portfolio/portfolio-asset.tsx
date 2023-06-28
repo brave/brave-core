@@ -52,7 +52,6 @@ import {
 } from '../../line-chart/line-chart-controls/line-chart-controls'
 import AccountsAndTransactionsList from './components/accounts-and-transctions-list'
 import { BridgeToAuroraModal } from '../../popup-modals/bridge-to-aurora-modal/bridge-to-aurora-modal'
-import { NftScreen } from '../../../../nft/components/nft-details/nft-screen'
 
 // Hooks
 import { useMultiChainBuyAssets } from '../../../../common/hooks'
@@ -93,7 +92,6 @@ import {
 import {
   AssetDetailsHeader
 } from '../../card-headers/asset-details-header'
-import NftAssetHeader from '../../card-headers/nft-asset-header'
 
 const rainbowbridgeLink = 'https://rainbowbridge.app'
 const bridgeToAuroraDontShowAgainKey = 'bridgeToAuroraDontShowAgain'
@@ -112,7 +110,10 @@ export const PortfolioAsset = (props: Props) => {
 
   // routing
   const history = useHistory()
-  const { chainIdOrMarketSymbol, contractOrSymbol, tokenId } = useParams<{ chainIdOrMarketSymbol?: string, contractOrSymbol?: string, tokenId?: string }>()
+  const { chainIdOrMarketSymbol, contractOrSymbol } = useParams<{
+    chainIdOrMarketSymbol?: string
+    contractOrSymbol?: string
+  }>()
 
   // redux
   const dispatch = useDispatch()
@@ -130,8 +131,6 @@ export const PortfolioAsset = (props: Props) => {
   const selectedAssetPriceHistory = useUnsafePageSelector(PageSelectors.selectedAssetPriceHistory)
   const selectedTimeline = useSafePageSelector(PageSelectors.selectedTimeline)
   const selectedCoinMarket = useUnsafePageSelector(PageSelectors.selectedCoinMarket)
-  const hiddenNfts =
-    useUnsafeWalletSelector(WalletSelectors.removedNonFungibleTokens)
 
   // queries
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
@@ -220,7 +219,10 @@ export const PortfolioAsset = (props: Props) => {
     }
 
     if (isShowingMarketData) {
-      const coinMarket = coinMarketData.find(token => token.symbol.toLowerCase() === chainIdOrMarketSymbol.toLowerCase())
+      const coinMarket = coinMarketData.find(
+        (token) =>
+          token.symbol.toLowerCase() === chainIdOrMarketSymbol.toLowerCase()
+      )
       let token = undefined as BraveWallet.BlockchainToken | undefined
       if (coinMarket) {
         token = new BraveWallet.BlockchainToken()
@@ -235,21 +237,22 @@ export const PortfolioAsset = (props: Props) => {
     if (!contractOrSymbol) {
       return undefined
     }
-    const userToken = [...userVisibleTokensInfo, ...hiddenNfts]
-    .find((token) =>
-      tokenId
-        ? token.tokenId === tokenId && token.contractAddress.toLowerCase() === contractOrSymbol.toLowerCase() && token.chainId === chainIdOrMarketSymbol
-        : token.contractAddress.toLowerCase() === contractOrSymbol.toLowerCase() && token.chainId === chainIdOrMarketSymbol ||
-        token.symbol.toLowerCase() === contractOrSymbol.toLowerCase() && token.chainId === chainIdOrMarketSymbol && token.contractAddress === '')
+    const userToken = userVisibleTokensInfo.find(
+      (token) =>
+        (token.contractAddress.toLowerCase() ===
+          contractOrSymbol.toLowerCase() &&
+          token.chainId === chainIdOrMarketSymbol) ||
+        (token.symbol.toLowerCase() === contractOrSymbol.toLowerCase() &&
+          token.chainId === chainIdOrMarketSymbol &&
+          token.contractAddress === '')
+    )
     return userToken
   }, [
     userVisibleTokensInfo,
     selectedTimeline,
     chainIdOrMarketSymbol,
     contractOrSymbol,
-    tokenId,
-    isShowingMarketData,
-    hiddenNfts
+    isShowingMarketData
   ])
 
   const tokenPriceIds = React.useMemo(() =>
@@ -389,8 +392,6 @@ export const PortfolioAsset = (props: Props) => {
       .formatAsAsset(8)
   }, [fullAssetBalances, selectedAsset])
 
-  const isNftAsset = selectedAssetFromParams?.isErc721 || selectedAssetFromParams?.isNft
-
   const isSelectedAssetDepositSupported = React.useMemo(() => {
     if (!selectedAsset) {
       return false
@@ -422,14 +423,9 @@ export const PortfolioAsset = (props: Props) => {
       history.push(WalletRoutes.Market)
       return
     }
-    if (isNftAsset) {
-      history.push(WalletRoutes.PortfolioNFTs)
-      return
-    }
     history.push(WalletRoutes.PortfolioAssets)
   }, [
     isShowingMarketData,
-    isNftAsset,
     userAssetList,
     selectedTimeline
   ])
@@ -485,23 +481,6 @@ export const PortfolioAsset = (props: Props) => {
     history.push(`${WalletRoutes.DepositFundsPageStart}/${selectedAsset?.symbol}`)
   }, [selectedAsset?.symbol])
 
-  const onSend = React.useCallback(() => {
-    if (!selectedAsset || !selectedAssetsNetwork) return
-
-    const account = accounts
-      .filter((account) => account.accountId.coin === selectedAsset.coin)
-      .find(acc => new Amount(getBalance(acc, selectedAsset)).gte('1'))
-
-    if(!account) return
-
-    history.push(
-      WalletRoutes.SendPage.replace(':chainId?', selectedAssetsNetwork.chainId)
-        .replace(':accountAddress?', account.address)
-        .replace(':contractAddress?', selectedAsset.contractAddress)
-        .replace(':tokenId?', selectedAsset.tokenId)
-    )
-  }, [selectedAsset, accounts, selectedAssetsNetwork])
-
   // effects
   React.useEffect(() => {
     setfilteredAssetList(userAssetList)
@@ -538,94 +517,80 @@ export const PortfolioAsset = (props: Props) => {
   return (
     <WalletPageWrapper
       wrapContentInBox={true}
-      noCardPadding={!isNftAsset}
-      hideDivider={!isNftAsset}
+      noCardPadding={true}
+      hideDivider={true}
       cardHeader={
-        !isNftAsset
-          ? <AssetDetailsHeader
-            isShowingMarketData={isShowingMarketData}
-            onBack={goBack}
-            onClickTokenDetails={
-              () => setShowTokenDetailsModal(true)
-            }
-            onClickHideToken={
-              () => setShowHideTokenModal(true)
-            }
-          />
-          : <NftAssetHeader
-            onBack={goBack}  
-            assetName={selectedAsset?.name}
-            tokenId={selectedAsset?.tokenId}
-            showSendButton={!new Amount(fullAssetBalances?.assetBalance || '').isZero()}
-            onSend={onSend}
-          />
+        <AssetDetailsHeader
+          isShowingMarketData={isShowingMarketData}
+          onBack={goBack}
+          onClickTokenDetails={
+            () => setShowTokenDetailsModal(true)
+          }
+          onClickHideToken={
+            () => setShowHideTokenModal(true)
+          }
+        />
       }
     >
       <StyledWrapper>
-        {!isNftAsset &&
-          <Row
-            margin='20px 0px 8px 0px'
-          >
-            <LineChartControls
-              onSelectTimeline={onChangeTimeline}
-              selectedTimeline={selectedTimeline}
-            />
-          </Row>
-        }
-
-        {!isNftAsset &&
-          <LineChart
-            priceData={
-              selectedAsset
-                ? formattedPriceHistory
-                : priceHistory
-            }
-            isLoading={
-              selectedAsset
-                ? isLoading
-                : parseFloat(fullPortfolioFiatBalance) === 0
-                  ? false
-                  : isFetchingPortfolioPriceHistory
-            }
-            isDisabled={
-              selectedAsset
-                ? false
-                : parseFloat(fullPortfolioFiatBalance) === 0
-            }
+        <Row
+          margin='20px 0px 8px 0px'
+        >
+          <LineChartControls
+            onSelectTimeline={onChangeTimeline}
+            selectedTimeline={selectedTimeline}
           />
-        }
-        {!isNftAsset &&
-          <Row
-            padding='0px 20px'
-          >
-            <ButtonRow>
-              {isReduxSelectedAssetBuySupported &&
-                <BridgeToAuroraButton
-                  onClick={onSelectBuy}
-                  noBottomMargin={true}
-                >
-                  {getLocale('braveWalletBuy')}
-                </BridgeToAuroraButton>
-              }
-              {isSelectedAssetDepositSupported &&
-                <BridgeToAuroraButton
-                  onClick={onSelectDeposit}
-                  noBottomMargin={true}
-                >
-                  {getLocale('braveWalletAccountsDeposit')}
-                </BridgeToAuroraButton>
-              }
-              {isSelectedAssetBridgeSupported &&
-                <BridgeToAuroraButton
-                  onClick={onBridgeToAuroraButton}
-                  noBottomMargin={true}
-                >
-                  {getLocale('braveWalletBridgeToAuroraButton')}
-                </BridgeToAuroraButton>
-              }
-            </ButtonRow>
-          </Row>
-        }
+        </Row>
+
+        <LineChart
+          priceData={
+            selectedAsset
+              ? formattedPriceHistory
+              : priceHistory
+          }
+          isLoading={
+            selectedAsset
+              ? isLoading
+              : parseFloat(fullPortfolioFiatBalance) === 0
+                ? false
+                : isFetchingPortfolioPriceHistory
+          }
+          isDisabled={
+            selectedAsset
+              ? false
+              : parseFloat(fullPortfolioFiatBalance) === 0
+          }
+        />
+        <Row
+          padding='0px 20px'
+        >
+          <ButtonRow>
+            {isReduxSelectedAssetBuySupported &&
+              <BridgeToAuroraButton
+                onClick={onSelectBuy}
+                noBottomMargin={true}
+              >
+                {getLocale('braveWalletBuy')}
+              </BridgeToAuroraButton>
+            }
+            {isSelectedAssetDepositSupported &&
+              <BridgeToAuroraButton
+                onClick={onSelectDeposit}
+                noBottomMargin={true}
+              >
+                {getLocale('braveWalletAccountsDeposit')}
+              </BridgeToAuroraButton>
+            }
+            {isSelectedAssetBridgeSupported &&
+              <BridgeToAuroraButton
+                onClick={onBridgeToAuroraButton}
+                noBottomMargin={true}
+              >
+                {getLocale('braveWalletBridgeToAuroraButton')}
+              </BridgeToAuroraButton>
+            }
+          </ButtonRow>
+        </Row>
 
         {showBridgeToAuroraModal &&
           <BridgeToAuroraModal
@@ -664,40 +629,33 @@ export const PortfolioAsset = (props: Props) => {
           />
         }
 
-         {isNftAsset && selectedAsset &&
-            <NftScreen
-              selectedAsset={selectedAsset}
-              tokenNetwork={selectedAssetsNetwork}
-            />
-          }
+      {!isShowingMarketData &&
+        <Column
+          padding='0px 20px 20px 20px'
+          fullWidth={true}
+        >
+          <AccountsAndTransactionsList
+            formattedFullAssetBalance={formattedFullAssetBalance}
+            fullAssetFiatBalance={fullAssetFiatBalance}
+            selectedAsset={selectedAsset}
+            selectedAssetTransactions={selectedAssetTransactions}
+            onClickAddAccount={onClickAddAccount}
+          />
+        </Column>
+      }
 
-        {!isShowingMarketData && !isNftAsset &&
-          <Column
-            padding='0px 20px 20px 20px'
-            fullWidth={true}
-          >
-            <AccountsAndTransactionsList
-              formattedFullAssetBalance={formattedFullAssetBalance}
-              fullAssetFiatBalance={fullAssetFiatBalance}
-              selectedAsset={selectedAsset}
-              selectedAssetTransactions={selectedAssetTransactions}
-              onClickAddAccount={onClickAddAccount}
-            />
-          </Column>
-        }
-
-        {isShowingMarketData && selectedCoinMarket &&
-          <Column
-            padding='0px 20px 20px 20px'
-            fullWidth={true}
-          >
-            <CoinStats
-              marketCapRank={selectedCoinMarket.marketCapRank}
-              volume={selectedCoinMarket.totalVolume}
-              marketCap={selectedCoinMarket.marketCap}
-            />
-          </Column>
-        }
+      {isShowingMarketData && selectedCoinMarket &&
+        <Column
+          padding='0px 20px 20px 20px'
+          fullWidth={true}
+        >
+          <CoinStats
+            marketCapRank={selectedCoinMarket.marketCapRank}
+            volume={selectedCoinMarket.totalVolume}
+            marketCap={selectedCoinMarket.marketCap}
+          />
+        </Column>
+      }
       </StyledWrapper>
     </WalletPageWrapper>
   )
