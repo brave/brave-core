@@ -21,6 +21,14 @@
       "pageset-repeat": 20,
       "stories": [
         "load:chrome:blank",
+        "load:media:youtube:2018",
+      ]
+    },
+    {
+      "name": "system_health.common_desktop",
+      "pageset-repeat": 20,
+      "stories": [
+        "load:chrome:blank",
         "browse:news:hackernews:2020",
       ]
     },
