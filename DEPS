@@ -104,6 +104,15 @@ hooks = [
     'pattern': '.',
     'action': ['vpython3', 'script/generate_licenses.py'],
   },
+  {
+    # Overwrite Chromium's LASTCHANGE using the latest Brave version commit.
+    'name': 'brave_lastchange',
+    'pattern': '.',
+    'action': ['python3', '../build/util/lastchange.py',
+               '--output', '../build/util/LASTCHANGE',
+               '--source-dir', '.',
+               '--filter', '^[0-9]\+\.[0-9]\+\.[0-9]\+$'],
+  },
 ]
 
 include_rules = [
