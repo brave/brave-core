@@ -102,11 +102,7 @@ import {
   querySubscriptionOptions60s
 } from '../../../../common/slices/constants'
 
-interface Props {
-  onToggleShowIpfsBanner: () => void
-}
-
-export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
+export const PortfolioOverview = () => {
   // routing
   const history = useHistory()
 
@@ -542,7 +538,6 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
           <NftView
             nftsList={userVisibleNfts}
             accounts={usersFilteredAccounts}
-            onToggleShowIpfsBanner={onToggleShowIpfsBanner}
             onShowPortfolioSettings={() => setShowPortfolioSettings(true)}
           />
         </Route>

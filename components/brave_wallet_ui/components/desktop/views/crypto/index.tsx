@@ -46,12 +46,9 @@ import TransactionsScreen from '../../../../page/screens/transactions/transactio
 import { LocalIpfsNodeScreen } from '../../local-ipfs-node/local-ipfs-node'
 import { InspectNftsScreen } from '../../inspect-nfts/inspect-nfts'
 import { WalletPageActions } from '../../../../page/actions'
-import { useNftPin } from '../../../../common/hooks/nft-pin'
 import {
-  BannerWrapper,
   Column
 } from '../../../shared/style'
-import { NftIpfsBanner } from '../../nft-ipfs-banner/nft-ipfs-banner'
 import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../common/selectors'
 import {
@@ -83,7 +80,6 @@ const CryptoView = (props: Props) => {
 
   // hooks
   useBalanceUpdater()
-  const { isIpfsBannerVisible, nonFungibleTokens, onToggleShowIpfsBanner } = useNftPin()
 
   // accounts tab state
   const accountToRemove = useSelector(({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab.accountToRemove)
@@ -188,16 +184,6 @@ const CryptoView = (props: Props) => {
     showBackupWarning
   ])
 
-  const ipfsBanner = React.useMemo(() => (
-    <>
-      {isNftPinningFeatureEnabled && isIpfsBannerVisible && nonFungibleTokens.length > 0 &&
-        <BannerWrapper>
-          <NftIpfsBanner onDismiss={onToggleShowIpfsBanner} />
-        </BannerWrapper>
-      }
-    </>
-  ), [isNftPinningFeatureEnabled, isIpfsBannerVisible, nonFungibleTokens])
-
   // effects
   React.useEffect(() => {
     dispatch(WalletPageActions.getLocalIpfsNodeStatus())
@@ -219,11 +205,8 @@ const CryptoView = (props: Props) => {
             <StyledWrapper>
               <Column fullWidth={true} padding="20px 20px 0px 20px">
                 {banners}
-                {ipfsBanner}
               </Column>
-              <PortfolioOverview
-                onToggleShowIpfsBanner={onToggleShowIpfsBanner}
-              />
+              <PortfolioOverview />
             </StyledWrapper>
           </WalletPageWrapper>
         </Route>
@@ -245,11 +228,8 @@ const CryptoView = (props: Props) => {
             <StyledWrapper>
               <Column fullWidth={true} padding="20px 20px 0px 20px">
                 {banners}
-                {ipfsBanner}
               </Column>
-              <PortfolioOverview
-                onToggleShowIpfsBanner={onToggleShowIpfsBanner}
-              />
+              <PortfolioOverview />
             </StyledWrapper>
           </WalletPageWrapper>
         </Route>
