@@ -33,7 +33,9 @@ void BraveContentsLayoutManager::Layout(views::View* contents_container) {
   }
 
   int proposed_sidebar_width =
-      sidebar_container_view_->GetPreferredSize().width();
+      sidebar_container_view_->GetVisible()
+          ? sidebar_container_view_->GetPreferredSize().width()
+          : 0;
   int contents_width = contents_container->width();
 
   // Guarantee 20% width for contents at least.

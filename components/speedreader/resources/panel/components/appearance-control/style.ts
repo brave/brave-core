@@ -10,14 +10,19 @@ export const Box = styled.div`
   justify-content: flex-end;
   align-items: center;
   width: 100%;
-  gap: 16px;
+  gap: 6px;
+  padding-right: 8px;
 
-  & > *:not(:last-child)::after {
-    content: '';
-    margin-left: 16px;
-    width: 1px;
-    height: 20px;
-    background: var(--color-button-border);
+  @media screen and (min-width: 600px) {
+    gap: 16px;
+
+    & > *:not(:last-child)::after {
+      content: '';
+      margin-left: 16px;
+      width: 1px;
+      height: 20px;
+      background: var(--color-button-border);
+    }
   }
 `
 
@@ -28,4 +33,9 @@ export const CloseButton = styled.button`
   justify-content: center;
   border: 0;
   cursor: pointer;
+  font-size: 400;
+
+  @media screen and (max-width: 600px) {
+    display: none;
+  }
 `
