@@ -411,8 +411,8 @@ export const Send = (props: Props) => {
         wrapContentInBox={true}
         cardWidth={sendContainerWidth}
         noMinCardHeight={true}
-        hideNav={props.isAndroid}
-        hideHeader={props.isAndroid}
+        hideNav={isAndroid}
+        hideHeader={isAndroid}
         cardHeader={
           <PageTitleHeader title={getLocale('braveWalletSend')}/>
         }
