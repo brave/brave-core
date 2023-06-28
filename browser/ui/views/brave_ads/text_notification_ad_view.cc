@@ -29,7 +29,14 @@ namespace brave_ads {
 
 namespace {
 
+#if BUILDFLAG(IS_WIN)
 constexpr int kNotificationWidth = 350;
+#elif BUILDFLAG(IS_MAC)
+constexpr int kNotificationWidth = 350;
+#elif BUILDFLAG(IS_LINUX)
+constexpr int kNotificationWidth = 370;
+#endif
+
 constexpr int kNotificationHeight = 100;
 
 constexpr auto kContainerViewInsideBorderInsets =
