@@ -58,15 +58,16 @@ function Accelerator({
   return (
     <Row>
       <Keys keys={stringToKeys(accelerator.keys)} />
-      <RemoveButton
-        size="small"
-        kind="plain-faint"
-        onClick={() =>
-          commandsCache.unassignAccelerator(commandId, accelerator.codes)
-        }
-      >
-        <Icon name="remove-circle-outline" />
-      </RemoveButton>
+      {!accelerator.unmodifiable &&
+        <RemoveButton
+          size="small"
+          kind="plain-faint"
+          onClick={() =>
+            commandsCache.unassignAccelerator(commandId, accelerator.codes)
+          }
+        >
+          <Icon name="remove-circle-outline" />
+        </RemoveButton>}
     </Row>
   )
 }
