@@ -46,6 +46,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.UnlockWalletFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.VerifyRecoveryPhraseFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
+import org.chromium.chrome.browser.crypto_wallet.util.DataFilesComponentInstaller;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
@@ -77,6 +78,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private WalletModel mWalletModel;
     private boolean mRestartSetupAction;
     private boolean mRestartRestoreAction;
+    private DataFilesComponentInstaller mDataFilesComponentInstaller;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -211,14 +213,18 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+        mDataFilesComponentInstaller = new DataFilesComponentInstaller();
+        mDataFilesComponentInstaller.setCachedWalletConfiguredOnAndroid(
+                !Utils.shouldShowCryptoOnboarding());
         if (Utils.shouldShowCryptoOnboarding()) {
+            mDataFilesComponentInstaller.registerAndInstallEx();
             setNavigationFragments(ONBOARDING_FIRST_PAGE_ACTION);
         } else if (mKeyringService != null) {
             mKeyringService.isLocked(isLocked -> {
                 if (isLocked) {
                     setNavigationFragments(UNLOCK_WALLET_ACTION);
                 } else {
-                    setCryptoLayout();
+                    waitDataFilesDownloadAndSetCryptoLayout();
                 }
             });
         }
@@ -321,6 +327,14 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 cryptoWalletOnboardingViewPager.setCurrentItem(
                         cryptoWalletOnboardingViewPager.getCurrentItem() + 1);
             }
+        }
+    }
+
+    private void waitDataFilesDownloadAndSetCryptoLayout() {
+        if (!mDataFilesComponentInstaller.needToWaitComponentLoad()) {
+            setCryptoLayout();
+        } else {
+            mDataFilesComponentInstaller.onInstallComplete(() -> { setCryptoLayout(); });
         }
     }
 
@@ -435,7 +449,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 }
                 return;
             }
-            setCryptoLayout();
+            waitDataFilesDownloadAndSetCryptoLayout();
         } else {
             if (cryptoWalletOnboardingViewPager != null) {
                 cryptoWalletOnboardingViewPager.setCurrentItem(
