@@ -39,7 +39,7 @@ const ColoredIcon = styled(Icon)<{ color: string }>`
 const ProductNameContainer = styled.div`
   display: flex;
   gap: 4px;
-  font: ${font.desktop.heading.h4};
+  font: ${font.primary.heading.h4};
 `
 
 const ColoredSpan = styled.span<{ color: string }>`

@@ -24,7 +24,7 @@ const Container = styled.div`
 const CommandsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  font: ${font.desktop.primary.default.regular};
+  font: ${font.primary.default.regular};
   margin-bottom: ${spacing[24]};
   border: 1px solid ${color.divider.subtle};
   border-radius: ${radius[8]};

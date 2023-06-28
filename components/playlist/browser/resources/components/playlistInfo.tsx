@@ -29,12 +29,12 @@ export const PlaylistName = styled.div`
   grid-column: 1 / 4;
   align-self: flex-end;
 
-  font: ${font.desktop.primary.large.semibold};
+  font: ${font.primary.large.semibold};
 `
 
 export const PlaylistDetail = styled.div`
   grid-row: 2;
-  font: ${font.desktop.primary.small.regular};
+  font: ${font.primary.small.regular};
 `
 
 export default function PlaylistInfo ({

@@ -39,7 +39,7 @@ const Kbd = styled.div<{ large?: boolean; square?: boolean }>`
       min-width: 32px;
       border-radius: ${radius[12]};
       padding: ${spacing[16]};
-      font: var(--leo-font-heading-h3);
+      font: ${font.primary.heading.h3};
       box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.05), inset 0px 1px 0px #ffffff;
       background: linear-gradient(180deg, #f4f6f8 0%, #ffffff 100%);
     `}
