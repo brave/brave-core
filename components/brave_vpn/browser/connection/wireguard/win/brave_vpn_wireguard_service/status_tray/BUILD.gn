@@ -10,16 +10,14 @@ source_set("status_tray") {
     "status_tray_runner.cc",
     "status_tray_runner.h",
   ]
-
-  public_deps = [ "//ui/base" ]
-
+  public_deps = [ "status_icon" ]
   deps = [
     "resources",
-    "status_icon",
     "//base",
     "//brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/wireguard/win",
+    "//ui/base",
     "//ui/native_theme",
     "//ui/native_theme:native_theme_browser",
   ]
@@ -33,8 +31,6 @@ source_set("unit_tests") {
   sources = [ "status_tray_runner_unittest.cc" ]
   deps = [
     ":status_tray",
-    "status_icon",
     "//testing/gtest",
-    "//ui/base",
   ]
 }

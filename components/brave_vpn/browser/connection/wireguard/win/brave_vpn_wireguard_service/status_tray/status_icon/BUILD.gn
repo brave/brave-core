@@ -18,10 +18,9 @@ source_set("status_icon") {
     "tray_menu_model.cc",
     "tray_menu_model.h",
   ]
-
+  public_deps = [ "//ui/base" ]
   deps = [
     "//base",
-    "//ui/base",
     "//ui/gfx",
   ]
 }

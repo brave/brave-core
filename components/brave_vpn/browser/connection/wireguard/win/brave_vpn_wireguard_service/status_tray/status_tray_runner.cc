@@ -27,6 +27,7 @@
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "ui/base/models/simple_menu_model.h"
 #include "ui/native_theme/native_theme.h"
 
 namespace brave_vpn {
