@@ -16,7 +16,9 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/sidebar/sidebar_edit_item_bubble_delegate_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
@@ -484,15 +486,20 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
   auto* controller = browser_->sidebar_controller();
   auto index = GetIndexOf(item);
   if (controller->IsActiveIndex(index)) {
-    // TODO(simonhong): This is for demo. We will have another UI for closing.
-    // De-activate active item.
-    controller->ActivateItemAt(absl::nullopt);
+    controller->DeactivateCurrentPanel();
+    return;
+  }
+
+  const auto& item_model = controller->model()->GetAllSidebarItems()[*index];
+  if (item_model.open_in_panel) {
+    controller->ActivatePanelItem(item_model.built_in_item_type);
     return;
   }
 
   WindowOpenDisposition open_disposition = WindowOpenDisposition::CURRENT_TAB;
-  if (event_utils::IsPossibleDispositionEvent(event))
+  if (event_utils::IsPossibleDispositionEvent(event)) {
     open_disposition = ui::DispositionFromEventFlags(event.flags());
+  }
 
   controller->ActivateItemAt(index, open_disposition);
 }

@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
-#include "brave/browser/ui/views/sidebar/sidebar_side_panel_utils.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"

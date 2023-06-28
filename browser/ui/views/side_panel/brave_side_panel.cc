@@ -50,12 +50,6 @@ bool BraveSidePanel::IsRightAligned() {
   return horizontal_alignment_ == kHorizontalAlignRight;
 }
 
-void BraveSidePanel::UpdateVisibility() {
-  const bool any_child_visible = base::ranges::any_of(
-      children(), [](const auto* view) { return view->GetVisible(); });
-  SetVisible(any_child_visible);
-}
-
 void BraveSidePanel::UpdateBorder() {
   if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     constexpr int kBorderThickness = 1;
@@ -71,10 +65,6 @@ void BraveSidePanel::OnSidebarWidthChanged() {
   SetPanelWidth(sidebar_width_.GetValue());
 }
 
-void BraveSidePanel::ChildVisibilityChanged(View* child) {
-  UpdateVisibility();
-}
-
 void BraveSidePanel::OnThemeChanged() {
   View::OnThemeChanged();
   UpdateBorder();
@@ -88,14 +78,6 @@ gfx::Size BraveSidePanel::GetMinimumSize() const {
 void BraveSidePanel::AddedToWidget() {
   resize_widget_ = std::make_unique<SidePanelResizeWidget>(
       this, static_cast<BraveBrowserView*>(browser_view_), this);
-}
-
-void BraveSidePanel::OnChildViewAdded(View* observed_view, View* child) {
-  UpdateVisibility();
-}
-
-void BraveSidePanel::OnChildViewRemoved(View* observed_view, View* child) {
-  UpdateVisibility();
 }
 
 void BraveSidePanel::SetPanelWidth(int width) {

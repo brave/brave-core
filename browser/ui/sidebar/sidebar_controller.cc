@@ -23,6 +23,8 @@
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -65,6 +67,10 @@ bool SidebarController::IsActiveIndex(absl::optional<size_t> index) const {
   return sidebar_model_->active_index() == index;
 }
 
+bool SidebarController::GetIsPanelOperationFromActiveTabChangeAndReset() {
+  return std::exchange(operation_from_active_tab_change_, false);
+}
+
 bool SidebarController::DoesBrowserHaveOpenedTabForItem(
     const SidebarItem& item) const {
   // This method is only for builtin item's icon state updating.
@@ -89,7 +95,8 @@ void SidebarController::ActivateItemAt(absl::optional<size_t> index,
   if (auto* active_tab = browser_->tab_strip_model()->GetActiveWebContents()) {
     helper = SidebarTabHelper::FromWebContents(active_tab);
   }
-  DVLOG(1) << __func__ << " index: " << index.value_or(-1u)
+  DVLOG(1) << __func__
+           << " index: " << (index ? base::NumberToString(*index) : "none")
            << " helper: " << helper;
 
   // disengaged means there is no active item.
@@ -100,7 +107,6 @@ void SidebarController::ActivateItemAt(absl::optional<size_t> index,
       // This tab doesn't have a tab-specific panel now
       helper->RegisterPanelInactive();
     }
-    UpdateSidebarVisibility();
     return;
   }
 
@@ -126,7 +132,6 @@ void SidebarController::ActivateItemAt(absl::optional<size_t> index,
         helper->RegisterPanelActive(item.built_in_item_type);
       }
     }
-    UpdateSidebarVisibility();
     return;
   }
 
@@ -140,13 +145,29 @@ void SidebarController::ActivateItemAt(absl::optional<size_t> index,
     return;
   }
 
-  // Iterate whenever builtin panel icon clicks.
+  // Iterate whenever builtin shortcut type item icon clicks.
   if (IsBuiltInType(item)) {
     IterateOrLoadAtActiveTab(item.url);
     return;
   }
 
   LoadAtTab(item.url);
+}
+
+void SidebarController::ActivatePanelItem(
+    SidebarItem::BuiltInItemType panel_item) {
+  // For panel item activation, SidePanelUI is the single source of truth.
+  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser_);
+  if (panel_item == SidebarItem::BuiltInItemType::kNone) {
+    panel_ui->Close();
+    return;
+  }
+
+  panel_ui->Show(sidebar::SidePanelIdFromSideBarItemType(panel_item));
+}
+
+void SidebarController::DeactivateCurrentPanel() {
+  ActivatePanelItem(SidebarItem::BuiltInItemType::kNone);
 }
 
 bool SidebarController::ActiveTabFromOtherBrowsersForHost(const GURL& url) {
@@ -212,7 +233,7 @@ void SidebarController::LoadAtTab(const GURL& url) {
 
 void SidebarController::OnShowSidebarOptionChanged(
     SidebarService::ShowSidebarOption option) {
-  UpdateSidebarVisibility();
+  sidebar_->SetSidebarShowOption(option);
 }
 
 void SidebarController::OnTabStripModelChanged(
@@ -223,6 +244,7 @@ void SidebarController::OnTabStripModelChanged(
   // panel, or the browser-wide panel if the tab doesn't have a tab-specific
   // panel.
   if (selection.active_tab_changed()) {
+    auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser_);
     // Is there a tab-specific panel for the new active tab?
     absl::optional<SidebarItem::BuiltInItemType> wanted_panel =
         selection.new_contents
@@ -237,17 +259,34 @@ void SidebarController::OnTabStripModelChanged(
           sidebar_model_->active_index() != wanted_index.value()) {
         // Don't pass through null values, as we don't want to close existing
         // panels if we're not opening a tab-specific panel.
-        ActivateItemAt(wanted_index.value());
+        if (!panel_ui->GetCurrentEntryId()) {
+          // Open/Close by tab change doesn't need animation.
+          // UI could refer this for prevent animation.
+          operation_from_active_tab_change_ = true;
+        }
+
+        ActivatePanelItem(wanted_panel.value());
       }
     } else {
       // There is no tab-specific panel for the new active tab
-      // - close any tab-specific panel from the previous tab
-      // - restore previous active index
-      absl::optional<size_t> new_index =
-          browser_active_panel_type_.has_value()
-              ? sidebar_model_->GetIndexOf(browser_active_panel_type_.value())
-              : absl::nullopt;
-      ActivateItemAt(new_index);
+      if (browser_active_panel_type_.has_value()) {
+        // - restore previous active index
+        ActivatePanelItem(browser_active_panel_type_.value());
+      } else {
+        // - close any tab-specific panel from the previous tab
+        auto current_entry_id = panel_ui->GetCurrentEntryId();
+        // When extension side panel is opened, it's not set to
+        // |browser_active_panel_type_|. We don't call ActivateItemAt() for
+        // extension item as our SidebarModel can't manage it now. Only
+        // tab-specific panel should be closed here if it's used.
+        if (current_entry_id &&
+            (current_entry_id != SidePanelEntryId::kExtension)) {
+          // Open/Close by tab change doesn't need animation.
+          // UI could refer this for preven animation.
+          operation_from_active_tab_change_ = true;
+          panel_ui->Close();
+        }
+      }
     }
   }
 }
@@ -272,15 +311,8 @@ void SidebarController::SetSidebar(Sidebar* sidebar) {
     return;
   sidebar_ = sidebar;
 
-  UpdateSidebarVisibility();
   sidebar_model_->Init(HistoryServiceFactory::GetForProfile(
       browser_->profile(), ServiceAccessType::EXPLICIT_ACCESS));
-}
-
-void SidebarController::UpdateSidebarVisibility() {
-  DCHECK(sidebar_);
-  sidebar_->SetSidebarShowOption(
-      GetSidebarService(browser_)->GetSidebarShowOption());
 }
 
 }  // namespace sidebar

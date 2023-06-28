@@ -25,7 +25,8 @@ class SidebarBrowserTest;
 }  // namespace sidebar
 
 // Replacement for chromium's SidePanel which defines a
-// unique inset and border style compared to Brave
+// unique inset and border style compared to Brave.
+// SidebarContainerView controls this panel's visibility.
 class BraveSidePanel : public views::View,
                        public views::ViewObserver,
                        public views::ResizeAreaDelegate {
@@ -55,7 +56,6 @@ class BraveSidePanel : public views::View,
   void OnResize(int resize_amount, bool done_resizing) override;
 
   // views::View:
-  void ChildVisibilityChanged(View* child) override;
   void OnThemeChanged() override;
   gfx::Size GetMinimumSize() const override;
   void AddedToWidget() override;
@@ -65,13 +65,8 @@ class BraveSidePanel : public views::View,
  private:
   friend class sidebar::SidebarBrowserTest;
 
-  void UpdateVisibility();
   void UpdateBorder();
   void OnSidebarWidthChanged();
-
-  // views::ViewObserver:
-  void OnChildViewAdded(View* observed_view, View* child) override;
-  void OnChildViewRemoved(View* observed_view, View* child) override;
 
   HorizontalAlignment horizontal_alignment_ = kHorizontalAlignLeft;
   absl::optional<int> starting_width_on_resize_;
