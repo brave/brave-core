@@ -950,9 +950,14 @@ void PageGraph::AddGraphItem(std::unique_ptr<GraphItem> graph_item) {
                                js_builtin_node);
     }
   } else if (auto* graph_edge = DynamicTo<GraphEdge>(item)) {
-    graph_edge->GetInNode()->AddInEdge(graph_edge);
-    graph_edge->GetOutNode()->AddOutEdge(graph_edge);
-    edges_.push_back(graph_edge);
+    // Connect only same-graph nodes. Multiple graphs can exist, but
+    // interconnection is not implemented.
+    if (graph_edge->GetInNode()->GetContext() ==
+        graph_edge->GetOutNode()->GetContext()) {
+      graph_edge->GetInNode()->AddInEdge(graph_edge);
+      graph_edge->GetOutNode()->AddOutEdge(graph_edge);
+      edges_.push_back(graph_edge);
+    }
   } else {
     NOTREACHED();
   }
