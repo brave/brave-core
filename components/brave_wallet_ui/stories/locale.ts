@@ -591,8 +591,9 @@ provideStrings({
   braveWalletConnectHardwarePanelOpenApp: 'Hardware wallet requires $1 App opened on $2',
 
   // Transaction History Panel (Empty)
-  braveWalletNoTransactionsYet: 'No transactions to view yet.',
-  braveWalletNoTransactionsYetDescription: 'Once you make a transaction, you\'ll be able to view it here.',
+  braveWalletNoTransactionsYet: 'No transaction history',
+  braveWalletNoTransactionsYetDescription:
+    'Transactions made with your Brave Wallet will appear here.',
 
   // Transaction List Item
   braveWalletTransactionSent: 'sent',
@@ -606,6 +607,11 @@ provideStrings({
   braveWalletTransactionPlaceholder: 'Transactions will appear here',
   braveWalletTransactionApproveUnlimited: 'Unlimited',
   braveWalletApprovalTransactionIntent: 'approve',
+
+  // Asset Detail Accounts (Empty)
+  braveWalletNoAccountsWithABalance: 'No available accounts',
+  braveWalletNoAccountsWithABalanceDescription:
+    'Accounts with a balance will appear here.',
 
   // Edit Gas
   braveWalletEditGasTitle1: 'Max priority fee',

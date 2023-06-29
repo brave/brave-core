@@ -10,7 +10,6 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // types
 import {
-  AddAccountNavTypes,
   BraveWallet,
   SupportedTestNetworks,
   UserAssetInfoType,
@@ -379,9 +378,9 @@ export const PortfolioAsset = (props: Props) => {
   )
 
   const formattedFullAssetBalance = fullAssetBalances?.assetBalance
-    ? '(' + new Amount(fullAssetBalances?.assetBalance ?? '')
+    ? new Amount(fullAssetBalances?.assetBalance ?? '')
       .divideByDecimals(selectedAsset?.decimals ?? 18)
-      .formatAsAsset(6, selectedAsset?.symbol ?? '') + ')'
+      .formatAsAsset(6, selectedAsset?.symbol ?? '')
     : ''
 
   const formattedAssetBalance = React.useMemo(() => {
@@ -402,10 +401,6 @@ export const PortfolioAsset = (props: Props) => {
   }, [combinedTokensList, selectedAsset?.symbol])
 
   // methods
-  const onClickAddAccount = React.useCallback((tabId: AddAccountNavTypes) => () => {
-    history.push(WalletRoutes.AddAccountModal)
-  }, [])
-
   const onChangeTimeline = React.useCallback((timeline: BraveWallet.AssetPriceTimeframe) => {
     dispatch(WalletPageActions.selectAsset({
       asset: selectedAsset,
@@ -631,7 +626,7 @@ export const PortfolioAsset = (props: Props) => {
 
       {!isShowingMarketData &&
         <Column
-          padding='0px 20px 20px 20px'
+          padding='0px 24px 24px 24px'
           fullWidth={true}
         >
           <AccountsAndTransactionsList
@@ -639,7 +634,6 @@ export const PortfolioAsset = (props: Props) => {
             fullAssetFiatBalance={fullAssetFiatBalance}
             selectedAsset={selectedAsset}
             selectedAssetTransactions={selectedAssetTransactions}
-            onClickAddAccount={onClickAddAccount}
           />
         </Column>
       }

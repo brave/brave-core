@@ -813,7 +813,11 @@ export enum WalletRoutes {
 
   // NFT Pining
   LocalIpfsNode = '/crypto/local-ipfs-node',
-  InspectNfts = '/crypto/inspect-nfts'
+  InspectNfts = '/crypto/inspect-nfts',
+
+  // Hashes
+  AccountsHash = '#accounts',
+  TransactionsHash = '#transactions'
 }
 
 export const WalletOrigin = 'chrome://wallet'
@@ -1031,6 +1035,7 @@ export type NavIDTypes =
   | 'market'
   | 'accounts'
   | 'assets'
+  | 'transactions'
 
 export interface NavOption {
   id: NavIDTypes

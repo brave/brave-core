@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
 import { useHistory } from 'react-router'
 
 // Types
@@ -15,18 +14,26 @@ import {
 
 // Hooks
 import { useExplorer } from '../../../common/hooks'
-
+import {
+  useOnClickOutside
+} from '../../../common/hooks/useOnClickOutside'
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import Amount from '../../../utils/amount'
-import { getLocale } from '../../../../common/locale'
 import { getPriceIdForToken } from '../../../utils/api-utils'
 import { computeFiatAmount } from '../../../utils/pricing-utils'
 
 // Components
-import { TransactionPopup, WithHideBalancePlaceholder } from '../'
+import WithHideBalancePlaceholder from '../with-hide-balance-placeholder'
 import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
-import { TransactionPopupItem } from '../transaction-popup'
+import {
+  PortfolioAccountMenu
+} from '../wallet-menus/portfolio-account-menu'
+
+// Styled Components
+import {
+  CreateAccountIcon
+} from '../../shared/create-account-icon/create-account-icon'
 
 // Queries
 import {
@@ -46,24 +53,23 @@ import {
   BalanceColumn,
   FiatBalanceText,
   NameAndIcon,
-  AccountCircle,
-  MoreButton,
-  MoreIcon,
+  AccountMenuWrapper,
+  AccountMenuButton,
+  AccountMenuIcon,
   RightSide,
   CopyIcon,
   AddressAndButtonRow
 } from './style'
-import { SellButtonRow, SellButton } from '../../shared/style'
 
 interface Props {
   address: string
+  accountKind: BraveWallet.AccountKind
   defaultCurrencies: DefaultCurrencies
   asset: BraveWallet.BlockchainToken
   assetBalance: string
   selectedNetwork?: BraveWallet.NetworkInfo
   name: string
   hideBalances?: boolean
-  isNft?: boolean
   isSellSupported: boolean
   showSellModal: () => void
 }
@@ -73,11 +79,11 @@ export const PortfolioAccountItem = (props: Props) => {
     asset,
     assetBalance,
     address,
+    accountKind,
     selectedNetwork,
     defaultCurrencies,
     hideBalances,
     name,
-    isNft,
     isSellSupported,
     showSellModal
   } = props
@@ -89,13 +95,12 @@ export const PortfolioAccountItem = (props: Props) => {
   const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
 
   // State
-  const [showAccountPopup, setShowAccountPopup] = React.useState<boolean>(false)
+  const [showAccountMenu, setShowAccountMenu] = React.useState<boolean>(false)
+
+  // Refs
+  const accountMenuRef = React.useRef<HTMLDivElement>(null)
 
   // Memos
-  const orb = React.useMemo(() => {
-    return create({ seed: address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [address])
-
   const formattedAssetBalance: string = React.useMemo(() => {
     return new Amount(assetBalance)
       .divideByDecimals(asset.decimals)
@@ -125,20 +130,30 @@ export const PortfolioAccountItem = (props: Props) => {
   }, [assetBalance])
 
   // Methods
-  const onHideAccountPopup = React.useCallback(() => {
-    if (showAccountPopup) {
-      setShowAccountPopup(false)
-    }
-  }, [showAccountPopup])
-
   const onSelectAccount = React.useCallback(() => {
     history.push(`${WalletRoutes.Accounts}/${address}`)
   }, [address])
 
+  const onHideAccountMenu = React.useCallback(() => {
+    setShowAccountMenu(false)
+  }, [])
+
+  // Hooks
+  useOnClickOutside(
+    accountMenuRef,
+    onHideAccountMenu,
+    showAccountMenu
+  )
+
   return (
-    <StyledWrapper onClick={onHideAccountPopup}>
+    <StyledWrapper>
       <NameAndIcon>
-        <AccountCircle orb={orb} />
+        <CreateAccountIcon
+          size='big'
+          marginRight={12}
+          address={address}
+          accountKind={accountKind}
+        />
         <AccountAndAddress>
           <AccountNameButton onClick={onSelectAccount}>{name}</AccountNameButton>
           <AddressAndButtonRow>
@@ -156,32 +171,35 @@ export const PortfolioAccountItem = (props: Props) => {
             size='small'
             hideBalances={hideBalances ?? false}
           >
-            {!isNft &&
-              <FiatBalanceText>
-                {fiatBalance.formatAsFiat(defaultCurrencies.fiat)}
-              </FiatBalanceText>
-            }
             <AssetBalanceText>
               {`${formattedAssetBalance} ${asset.symbol}`}
             </AssetBalanceText>
+            <FiatBalanceText>
+              {fiatBalance.formatAsFiat(defaultCurrencies.fiat)}
+            </FiatBalanceText>
           </WithHideBalancePlaceholder>
         </BalanceColumn>
-        <SellButtonRow>
-          {isSellSupported && !isAssetsBalanceZero &&
-            <SellButton onClick={showSellModal}>{getLocale('braveWalletSell')}</SellButton>
-          }
-        </SellButtonRow>
-        <MoreButton onClick={() => setShowAccountPopup(true)}>
-          <MoreIcon />
-        </MoreButton>
-        {showAccountPopup &&
-          <TransactionPopup>
-            <TransactionPopupItem
-              onClick={onClickViewOnBlockExplorer('address', address)}
-              text={getLocale('braveWalletTransactionExplorer')}
+        <AccountMenuWrapper
+          ref={accountMenuRef}
+        >
+          <AccountMenuButton
+            onClick={() => setShowAccountMenu(prev => !prev)}
+          >
+            <AccountMenuIcon />
+          </AccountMenuButton>
+          {showAccountMenu &&
+            <PortfolioAccountMenu
+              onClickViewOnExplorer={
+                onClickViewOnBlockExplorer('address', address)
+              }
+              onClickSell={
+                isSellSupported && !isAssetsBalanceZero
+                  ? showSellModal
+                  : undefined
+              }
             />
-          </TransactionPopup>
-        }
+          }
+        </AccountMenuWrapper>
       </RightSide>
     </StyledWrapper>
   )

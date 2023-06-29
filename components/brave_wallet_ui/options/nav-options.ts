@@ -4,7 +4,10 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Types
-import { NavOption, WalletRoutes } from '../constants/types'
+import {
+  NavOption,
+  WalletRoutes
+} from '../constants/types'
 
 export const BuySendSwapDepositOptions: NavOption[] = [
   {
@@ -109,4 +112,19 @@ export const PortfolioNavOptions: NavOption[] = [
     icon: 'grid04',
     route: WalletRoutes.PortfolioNFTs
   },
+]
+
+export const PortfolioAssetOptions: NavOption[] = [
+  {
+    id: 'accounts',
+    name: 'braveWalletTopNavAccounts',
+    icon: 'user-accounts',
+    route: WalletRoutes.AccountsHash
+  },
+  {
+    id: 'transactions',
+    name: 'braveWalletTransactions',
+    icon: 'activity',
+    route: WalletRoutes.TransactionsHash
+  }
 ]
