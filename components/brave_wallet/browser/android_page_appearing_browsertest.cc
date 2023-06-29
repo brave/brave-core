@@ -194,9 +194,9 @@ class TestWebUIControllerFactory : public content::WebUIControllerFactory {
   std::string source_name_;
 };
 
-class AndroidBrowserTestSwap : public PlatformBrowserTest {
+class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
  public:
-  AndroidBrowserTestSwap() {
+  AndroidPageAppearingBrowserTest() {
     factory_ = std::make_unique<TestWebUIControllerFactory>(kWalletPageHost);
     content::WebUIControllerFactory::RegisterFactory(factory_.get());
     scoped_feature_list_.InitWithFeatures(
@@ -373,7 +373,7 @@ class AndroidBrowserTestSwap : public PlatformBrowserTest {
   network::TestURLLoaderFactory url_loader_factory_;
 };
 
-IN_PROC_BROWSER_TEST_F(AndroidBrowserTestSwap, TestSwapPageAppearing) {
+IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSwapPageAppearing) {
   GURL url = GURL("chrome://wallet/swap");
   content::NavigationController::LoadURLParams params(url);
   params.transition_type = ui::PageTransitionFromInt(
