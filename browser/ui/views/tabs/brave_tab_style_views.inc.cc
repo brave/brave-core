@@ -19,7 +19,7 @@ class BraveGM2TabStyle : public GM2TabStyleViews {
   ~BraveGM2TabStyle() override = default;
 
  protected:
-  TabStyle::TabColors CalculateColors() const override;
+  TabStyle::TabColors CalculateTargetColors() const override;
 
   Tab* tab() { return base::to_address(tab_); }
   const Tab* tab() const { return base::to_address(tab_); }
@@ -31,8 +31,8 @@ class BraveGM2TabStyle : public GM2TabStyleViews {
 BraveGM2TabStyle::BraveGM2TabStyle(Tab* tab)
     : GM2TabStyleViews(tab), tab_(tab) {}
 
-TabStyle::TabColors BraveGM2TabStyle::CalculateColors() const {
-  auto colors = GM2TabStyleViews::CalculateColors();
+TabStyle::TabColors BraveGM2TabStyle::CalculateTargetColors() const {
+  auto colors = GM2TabStyleViews::CalculateTargetColors();
   const SkColor inactive_non_hovered_fg_color = SkColorSetA(
       colors.foreground_color,
       gfx::Tween::IntValueBetween(0.7, SK_AlphaTRANSPARENT, SK_AlphaOPAQUE));
@@ -173,7 +173,8 @@ void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
     CHECK(widget);
     const SkColor tab_stroke_color =
         widget->GetColorProvider()->GetColor(kColorBraveVerticalTabSeparator);
-    PaintBackgroundStroke(canvas, TabActive::kActive, tab_stroke_color);
+    PaintBackgroundStroke(canvas, TabStyle::TabSelectionState::kActive,
+                          tab_stroke_color);
   }
 }
 
