@@ -9,10 +9,14 @@
 
 namespace companion {
 namespace features {
+namespace internal {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kCompanionEnabledByObservingExpsNavigations,
+     base::FEATURE_DISABLED_BY_DEFAULT},
     {kSidePanelCompanion, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
+}  // namespace internal
 }  // namespace features
 }  // namespace companion
