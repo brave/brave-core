@@ -10,6 +10,8 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.NativeMethods;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
@@ -43,6 +45,8 @@ public class DataFilesComponentInstaller {
                     mUpdateCompleted = true;
                     if (mUpdateCompleteCallback != null) {
                 mUpdateCompleteCallback.run();
+                // I wish I would have OnceCallback in Java
+                mUpdateCompleteCallback = null;
                     }
         }
     });
@@ -64,6 +68,7 @@ public boolean needToWaitComponentLoad() {
     }
 }
 
+// TODO(AlexeyBarabash): give some best name
 public void onInstallComplete(Runnable callback) {
     assert !mCachedWalletConfiguredOnAndroid;
     synchronized (mLock) {
@@ -71,6 +76,19 @@ public void onInstallComplete(Runnable callback) {
             callback.run();
         } else {
             mUpdateCompleteCallback = callback;
+            // Sentinel task, we don't want to wait more than 10 sec
+            PostTask.postDelayedTask(TaskTraits.UI_DEFAULT, () -> {
+                Log.e(TAG, "DataFilesComponentInstaller.onInstallComplete.lambda 000");
+                synchronized (mLock) {
+                    if (mUpdateCompleteCallback != null) {
+                        Log.e(TAG,
+                                "DataFilesComponentInstaller.onInstallComplete.lambda 001 call mUpdateCompleteCallback.run()");
+                        mUpdateCompleteCallback.run();
+                        // I wish I would have OnceCallback in Java
+                        mUpdateCompleteCallback = null;
+                    }
+                }
+            }, 10 * 1000);
         }
     }
 }
