@@ -211,6 +211,15 @@ class IpfsSetPublicGatewayFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class IpfsSetPublicNFTGatewayFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.setPublicNFTGateway", UNKNOWN)
+
+ protected:
+  ~IpfsSetPublicNFTGatewayFunction() override {}
+  ResponseAction Run() override;
+};
+
 class IpfsSetResolveMethodFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("ipfs.setResolveMethod", UNKNOWN)

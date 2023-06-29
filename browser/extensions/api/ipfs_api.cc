@@ -529,6 +529,26 @@ ExtensionFunction::ResponseAction IpfsSetPublicGatewayFunction::Run() {
   return RespondNow(WithArguments(true));
 }
 
+ExtensionFunction::ResponseAction IpfsSetPublicNFTGatewayFunction::Run() {
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
+    return RespondNow(Error("IPFS not enabled"));
+  }
+
+  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
+
+  absl::optional<ipfs::SetPublicNFTGateway::Params> params =
+      ipfs::SetPublicNFTGateway::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
+
+  GURL url(params->url);
+  if (!url.is_valid()) {
+    return RespondNow(Error("Wrong url format"));
+  }
+
+  prefs->SetString(kIPFSPublicNFTGatewayAddress, params->url);
+  return RespondNow(WithArguments(true));
+}
+
 ExtensionFunction::ResponseAction IpfsSetResolveMethodFunction::Run() {
   if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
     return RespondNow(Error("IPFS not enabled"));

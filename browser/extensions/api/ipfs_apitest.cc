@@ -267,6 +267,15 @@ IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, SetSettings) {
   {
     ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
         browser()->profile(), ipfs_companion_extension_id,
+        "setPublicNFTGateway('https://ipfs.io/')"));
+    ASSERT_TRUE(catcher.GetNextResult()) << message_;
+    EXPECT_EQ(GetPrefs()->GetString(kIPFSPublicNFTGatewayAddress),
+              "https://ipfs.io/");
+  }
+
+  {
+    ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
+        browser()->profile(), ipfs_companion_extension_id,
         "setResolveMethod('ask')"));
     ASSERT_TRUE(catcher.GetNextResult()) << message_;
     EXPECT_EQ(GetPrefs()->GetInteger(kIPFSResolveMethod),

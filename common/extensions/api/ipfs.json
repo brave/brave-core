@@ -379,7 +379,7 @@
       }, {
         "name": "setPublicGateway",
         "type": "function",
-        "description": "Returns list of ipfs settings",
+        "description": "Sets public gateway value",
         "parameters": [
           {
             "name": "url",
@@ -399,6 +399,28 @@
           }
         ]
       }, {
+      "name": "setPublicNFTGateway",
+      "type": "function",
+      "description": "Sets public NFT gateway value",
+      "parameters": [
+        {
+          "name": "url",
+          "type": "string",
+          "description": "Public NFT gateway url"
+        },
+        {
+          "name": "callback",
+          "type": "function",
+          "description": "Function called with status",
+          "parameters": [
+            {
+              "name": "status",
+              "type": "boolean"
+            }
+          ]
+        }
+      ]
+    }, {
         "name": "setAutoRedirectToConfiguredGatewayEnabled",
         "type": "function",
         "description": "Sets whether IPFS resouceces should be forwarded to the configured gateway",

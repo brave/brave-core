@@ -120,6 +120,16 @@ function setPublicGateway(url) {
   })
 }
 
+function setPublicNFTGateway(url) {
+  chrome.ipfs.setPublicNFTGateway(url, (result) => {
+    if (result) {
+      chrome.test.succeed();
+    } else {
+      chrome.test.fail();
+    }
+  })
+}
+
 function setAutoRedirectToConfiguredGateway(value) {
   chrome.ipfs.setAutoRedirectToConfiguredGatewayEnabled(value, (result) => {
     if (result) {
@@ -162,6 +172,7 @@ function testBasics() {
           chrome.ipfs.getSettings &&
           chrome.ipfs.setResolveMethod &&
           chrome.ipfs.setPublicGateway &&
+          chrome.ipfs.setPublicNFTGateway &&
           chrome.ipfs.setAutoRedirectToConfiguredGatewayEnabled &&
           chrome.ipfs.setGatewayFallbackEnabled) {
         chrome.test.succeed();
