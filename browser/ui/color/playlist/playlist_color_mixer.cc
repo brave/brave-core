@@ -14,7 +14,7 @@ namespace playlist {
 
 void AddThemeColorMixer(ui::ColorProvider* provider,
                         leo::Theme theme,
-                        const ui::ColorProviderManager::Key& key) {
+                        const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
   mixer[kColorBravePlaylistAddedIcon] = {
       leo::GetColor(leo::Color::kColorSystemfeedbackSuccessIcon, theme)};

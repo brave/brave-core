@@ -13,11 +13,11 @@
 #include "brave/browser/metrics/metrics_reporting_util.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/ui/cocoa/key_equivalent_constants.h"
 #include "chrome/grit/chromium_strings.h"
 #include "chrome/grit/generated_resources.h"
 #import "third_party/google_toolbox_for_mac/src/AppKit/GTMUILocalizerAndLayoutTweaker.h"
 #include "ui/base/l10n/l10n_util_mac.h"
+#include "ui/color/color_provider_key.h"
 
 @implementation FirstRunDialogViewController {
   BOOL _setAsDefaultBrowser;
