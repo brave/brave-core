@@ -6,9 +6,11 @@
 package org.chromium.chrome.browser.crypto_wallet.util;
 
 import org.chromium.base.Callback;
+import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.NativeMethods;
+import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 /**
@@ -50,6 +52,10 @@ public class DataFilesComponentInstaller {
 public boolean needToWaitComponentLoad() {
     Log.e(TAG, "DataFilesComponentInstaller.needToWaitComponentLoad 000");
     if (mCachedWalletConfiguredOnAndroid) {
+        return false;
+    }
+
+    if (!InternetConnection.isNetworkAvailable(ContextUtils.getApplicationContext())) {
         return false;
     }
 
