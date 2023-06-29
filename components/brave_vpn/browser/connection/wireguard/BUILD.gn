@@ -14,11 +14,12 @@ source_set("wireguard") {
     "brave_vpn_wireguard_connection_api_base.h",
   ]
   deps = [
-    "common",
+    "credentials",
     "//base",
     "//brave/components/brave_vpn/browser/connection:api",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/brave_vpn/common/wireguard",
     "//components/prefs",
     "//services/network/public/cpp",
   ]
