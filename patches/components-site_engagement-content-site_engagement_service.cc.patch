@@ -1,0 +1,28 @@
+diff --git a/components/site_engagement/content/site_engagement_service.cc b/components/site_engagement/content/site_engagement_service.cc
+index f52dc8701610de4b11d5b14b5bc1852cf0da5ef7..d107694345e7ac3736012aa4b5ccec078981a40c 100644
+--- a/components/site_engagement/content/site_engagement_service.cc
++++ b/components/site_engagement/content/site_engagement_service.cc
+@@ -591,6 +591,7 @@ double SiteEngagementService::GetMedianEngagementFromSortedDetails(
+ void SiteEngagementService::HandleMediaPlaying(
+     content::WebContents* web_contents,
+     bool is_hidden) {
++  BRAVE_HANDLE_MEDIA_PLAYING
+   const GURL& url = web_contents->GetLastCommittedURL();
+   if (!ShouldRecordEngagement(url))
+     return;
+@@ -606,6 +607,7 @@ void SiteEngagementService::HandleMediaPlaying(
+ 
+ void SiteEngagementService::HandleNavigation(content::WebContents* web_contents,
+                                              ui::PageTransition transition) {
++  BRAVE_HANDLE_NAVIGATION
+   const GURL& url = web_contents->GetLastCommittedURL();
+   if (!IsEngagementNavigation(transition) || !ShouldRecordEngagement(url))
+     return;
+@@ -618,6 +620,7 @@ void SiteEngagementService::HandleNavigation(content::WebContents* web_contents,
+ 
+ void SiteEngagementService::HandleUserInput(content::WebContents* web_contents,
+                                             EngagementType type) {
++  BRAVE_HANDLE_USER_INPUT
+   const GURL& url = web_contents->GetLastCommittedURL();
+   if (!ShouldRecordEngagement(url))
+     return;

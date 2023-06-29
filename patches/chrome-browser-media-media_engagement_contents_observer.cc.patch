@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/media/media_engagement_contents_observer.cc b/chrome/browser/media/media_engagement_contents_observer.cc
+index e453bbae693399eebe7647fec6b4db9f3dc5f3b6..96b08604e8de354715661f9854b878e611d8bd42 100644
+--- a/chrome/browser/media/media_engagement_contents_observer.cc
++++ b/chrome/browser/media/media_engagement_contents_observer.cc
+@@ -643,6 +643,7 @@ scoped_refptr<MediaEngagementSession>
+ MediaEngagementContentsObserver::GetOrCreateSession(
+     content::NavigationHandle* navigation_handle,
+     content::WebContents* opener) const {
++  BRAVE_GET_OR_CREATE_SESSION
+   url::Origin origin = url::Origin::Create(navigation_handle->GetURL());
+ 
+   if (origin.opaque())
