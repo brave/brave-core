@@ -421,6 +421,10 @@ source_set("ui") {
     }
   }
 
+  if (is_apple) {
+    configs += [ "//build/config/compiler:enable_arc" ]
+  }
+
   if (is_win || is_mac || is_linux) {
     sources += [
       "views/profiles/brave_incognito_menu_view.cc",
