@@ -29,7 +29,7 @@ constexpr char kWp[] = "https://[*.]wp.com/*";
 constexpr char kWordpress[] = "https://[*.]wordpress.com/*";
 constexpr char kLivecom[] = "https://[*.]live.com/*";
 constexpr char kMicrosoftonline[] = "https://[*.]microsoftonline.com/*";
-constexpr char kMsftauth.net[] = "https://[*.].msftauth.net/*";
+constexpr char kMsftauthnet[] = "https://[*.].msftauth.net/*";
 
 // The thread local brave metadata pointer.
 ABSL_CONST_INIT thread_local CookieSettingWithBraveMetadata*
@@ -50,7 +50,7 @@ bool BraveIsAllowedThirdParty(const GURL& url,
                    {ContentSettingsPattern::FromString(kMicrosoftonline),
                     ContentSettingsPattern::FromString(kLivecom)},
                    {ContentSettingsPattern::FromString(kLivecom),
-                    ContentSettingsPattern::FromString(kMsftauth.net)}});
+                    ContentSettingsPattern::FromString(kMsftauthnet)}});
 
   if (net::registry_controlled_domains::GetDomainAndRegistry(
           url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) ==
