@@ -10,14 +10,14 @@
 namespace ui {
 
 void AddNativeUiColorMixer(ColorProvider* provider,
-                           const ColorProviderManager::Key& key) {
+                           const ColorProviderKey& key) {
   if (@available(macOS 10.14, *)) {
     AddNativeUiColorMixer_Chromium(provider, key);
     return;
   }
 
   const bool high_contrast =
-      key.contrast_mode == ColorProviderManager::ContrastMode::kHigh;
+      key.contrast_mode == ColorProviderKey::ContrastMode::kHigh;
   if (high_contrast) {
     AddNativeUiColorMixer_Chromium(provider, key);
     return;

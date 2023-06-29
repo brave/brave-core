@@ -10,11 +10,10 @@
 namespace ui {
 
 void AddBraveUiColorMixer(ColorProvider* provider,
-                          const ColorProviderManager::Key& key) {
+                          const ColorProviderKey& key) {
   ColorMixer& mixer = provider->AddMixer();
 
-  const bool dark_mode =
-      key.color_mode == ColorProviderManager::ColorMode::kDark;
+  const bool dark_mode = key.color_mode == ColorProviderKey::ColorMode::kDark;
 
   // --------------------------------------------------------------------------
   // Border colors
@@ -78,8 +77,7 @@ void AddBraveUiColorMixer(ColorProvider* provider,
                                                          : gfx::kGoogleBlue200};
 }
 
-void AddUiColorMixer(ColorProvider* provider,
-                     const ColorProviderManager::Key& key) {
+void AddUiColorMixer(ColorProvider* provider, const ColorProviderKey& key) {
   AddUiColorMixer_Chromium(provider, key);
   AddBraveUiColorMixer(provider, key);
 }
