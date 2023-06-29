@@ -86,7 +86,9 @@ void RebuildAdEventHistoryFromDatabase() {
         AdsClientHelper::GetInstance()->ResetAdEventHistoryForId(id);
 
         for (const auto& ad_event : ad_events) {
-          RecordAdEvent(ad_event);
+          if (ad_event.IsValid()) {
+            RecordAdEvent(ad_event);
+          }
         }
       }));
 }
