@@ -8,7 +8,6 @@
 #include <algorithm>
 
 #include "base/i18n/rtl.h"
-#include "base/mac/scoped_nsobject.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/browser/brave_shell_integration.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
@@ -49,14 +48,12 @@
                                     IDS_FIRSTRUN_DLG_CANCEL_BUTTON_LABEL)
                          target:self
                          action:@selector(cancel:)];
-  [maybeLaterButton setKeyEquivalent:kKeyEquivalentEscape];
   [maybeLaterButton sizeToFit];
 
   NSButton* makeDefaultButton = [NSButton
       buttonWithTitle:l10n_util::GetNSString(IDS_FIRSTRUN_DLG_OK_BUTTON_LABEL)
                target:self
                action:@selector(ok:)];
-  [makeDefaultButton setKeyEquivalent:kKeyEquivalentReturn];
   [makeDefaultButton sizeToFit];
 
   // Calculate proper dialog width that can include two buttons.
@@ -129,9 +126,9 @@
                                                              alpha:1.0]
                                  : [NSColor whiteColor];
 
-  base::scoped_nsobject<NSView> content_view([[NSView alloc]
-      initWithFrame:NSMakeRect(0, 0, dialogWidth, windowHeight)]);
-  self.view = content_view.get();
+  NSView* content_view = [[NSView alloc]
+      initWithFrame:NSMakeRect(0, 0, dialogWidth, windowHeight)];
+  self.view = content_view;
   [self.view setValue:backgroundColor forKey:@"backgroundColor"];
   [self.view addSubview:headerLabel];
   [self.view addSubview:contentsLabel];
