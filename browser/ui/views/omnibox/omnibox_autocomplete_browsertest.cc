@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/omnibox/browser/omnibox_controller.h"
 #include "components/omnibox/browser/omnibox_edit_model.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
@@ -34,27 +35,27 @@ class OmniboxAutocompleteTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
   EXPECT_FALSE(popup_view()->IsOpen());
-  EXPECT_TRUE(edit_model()->result().empty());
+  EXPECT_TRUE(omnibox_view()->controller()->result().empty());
 
   // Initially autocomplete is enabled.
   EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
       omnibox::kAutocompleteEnabled));
 
-  edit_model()->SetUserText(u"foo");
+  omnibox_view()->SetUserText(u"foo", /* update_popup=*/true);
   edit_model()->StartAutocomplete(false, false);
 
   // Check popup is opened and results are not empty.
-  EXPECT_FALSE(edit_model()->result().empty());
+  EXPECT_FALSE(omnibox_view()->controller()->result().empty());
   EXPECT_TRUE(popup_view()->IsOpen());
 
   edit_model()->StopAutocomplete();
 
   browser()->profile()->GetPrefs()->SetBoolean(omnibox::kAutocompleteEnabled,
                                                false);
-  edit_model()->SetUserText(u"bar");
+  omnibox_view()->SetUserText(u"bar", /* update_popup=*/true);
   edit_model()->StartAutocomplete(false, false);
 
   // Check popup isn't opened and result is empty.
-  EXPECT_TRUE(edit_model()->result().empty());
+  EXPECT_TRUE(omnibox_view()->controller()->result().empty());
   EXPECT_FALSE(popup_view()->IsOpen());
 }
