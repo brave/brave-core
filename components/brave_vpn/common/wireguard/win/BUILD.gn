@@ -11,10 +11,16 @@ source_set("win") {
   sources = [
     "service_constants.cc",
     "service_constants.h",
+    "wireguard_utils.cc",
+    "wireguard_utils.h",
   ]
   deps = [
     "//base",
+    "//brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service:brave_wireguard_manager_idl",
     "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_vpn/common/win",
+    "//brave/components/brave_vpn/common/wireguard",
     "//chrome/install_static:install_static_util",
+    "//third_party/abseil-cpp:absl",
   ]
 }

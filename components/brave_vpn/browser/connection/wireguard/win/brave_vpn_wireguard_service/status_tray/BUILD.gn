@@ -14,7 +14,6 @@ source_set("status_tray") {
   deps = [
     "resources",
     "//base",
-    "//brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/wireguard/win",
     "//ui/base",
