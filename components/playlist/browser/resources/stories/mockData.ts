@@ -48,6 +48,21 @@ export const mockData: Playlist[] = [
         author: 'Creator',
         duration: '0',
         parents: ['2']
+      },
+      {
+        id: '3',
+        name: 'Without thumbnail and cached!',
+        pageSource: { url: 'https://foo.com/' },
+        pageRedirected: { url: 'https://foo.com/' },
+        mediaSource: { url: 'https://foo.com/video.mp4' },
+        mediaPath: { url: 'https://foo.com/video.mp4' },
+        thumbnailSource: { url: '' },
+        thumbnailPath: { url: '' },
+        cached: true,
+        lastPlayedPosition: 0,
+        author: 'Creator',
+        duration: '0',
+        parents: ['2']
       }
     ]
   }
