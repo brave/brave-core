@@ -14,9 +14,6 @@ import {
   useGetSelectedChainQuery
 } from '../../../../../../common/slices/api.slice'
 
-// Types
-import { RefreshBlockchainStateParams } from '../../../constants/types'
-
 // Components
 import { Header } from '../header/header'
 
@@ -32,13 +29,10 @@ import {
 interface Props {
   children?: React.ReactNode
   showPrivacyModal: () => void
-  refreshBlockchainState: (
-    overrides: Partial<RefreshBlockchainStateParams>
-  ) => Promise<void>
 }
 
 export const SwapContainer = (props: Props) => {
-  const { children, showPrivacyModal, refreshBlockchainState } = props
+  const { children, showPrivacyModal } = props
 
   // Queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
@@ -75,7 +69,7 @@ export const SwapContainer = (props: Props) => {
 
   return (
     <Wrapper>
-      <Header refreshBlockchainState={refreshBlockchainState} />
+      <Header />
       <Container ref={ref}>{children}</Container>
       <Row>
         <ActionButton onClick={showPrivacyModal}>

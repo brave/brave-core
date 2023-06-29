@@ -27,9 +27,6 @@ import {
   getEntitiesListFromEntityState
 } from '../../../../../../utils/entities.utils'
 
-// Types
-import { RefreshBlockchainStateParams } from '../../../constants/types'
-
 // Components
 import { AccountListItemButton } from './account-list-item-button'
 
@@ -47,13 +44,10 @@ import {
 
 interface Props {
   onHideModal: () => void
-  refreshBlockchainState: (
-    overrides: Partial<RefreshBlockchainStateParams>
-  ) => Promise<void>
 }
 
 export const AccountModal = (props: Props) => {
-  const { onHideModal, refreshBlockchainState } = props
+  const { onHideModal } = props
 
   // Queries / mutations
   const { data: selectedNetwork } = useGetSelectedChainQuery()
@@ -72,12 +66,8 @@ export const AccountModal = (props: Props) => {
     async (account: AccountInfoEntity) => {
       await setSelectedAccount(account.accountId)
       onHideModal()
-      await refreshBlockchainState({ accountId: account.accountId })
     },
-    [
-      onHideModal,
-      refreshBlockchainState
-    ]
+    [onHideModal]
   )
 
   return (

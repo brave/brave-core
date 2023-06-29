@@ -8,13 +8,15 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
 import {
-  WalletAccountType,
+  BraveWallet,
   SupportedTestNetworks
 } from '../../../../constants/types'
 
 // Selectors
 import { WalletSelectors } from '../../../../common/selectors'
-import { useUnsafeWalletSelector, useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
+import {
+  useUnsafeWalletSelector
+} from '../../../../common/hooks/use-safe-selector'
 
 // Styled Components
 import {
@@ -39,6 +41,7 @@ import { getPriceIdForToken } from '../../../../utils/api-utils'
 
 // Queries
 import {
+  useGetDefaultFiatCurrencyQuery,
   useGetNetworksQuery,
   useGetSelectedChainQuery,
   useGetTokenSpotPricesQuery
@@ -46,27 +49,30 @@ import {
 import {
   querySubscriptionOptions60s
 } from '../../../../common/slices/constants'
+import {
+  TokenBalancesRegistry
+} from '../../../../common/slices/entities/token-balance.entity'
 
 // Hooks
 import { useAccountOrb } from '../../../../common/hooks/use-orb'
 
 interface Props {
-  account: WalletAccountType
+  account: BraveWallet.AccountInfo
   isSelected: boolean
   onSelectAccount: () => void
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined
 }
+
 export const SelectAccountItem = (props: Props) => {
-  const { account, isSelected, onSelectAccount } = props
+  const { account, isSelected, onSelectAccount, tokenBalancesRegistry } = props
 
   // Wallet Selectors
   const userVisibleTokensInfo = useUnsafeWalletSelector(
     WalletSelectors.userVisibleTokensInfo
   )
-  const defaultFiatCurrency = useSafeWalletSelector(
-    WalletSelectors.defaultFiatCurrency
-  )
 
   // Queries
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: networks = [] } = useGetNetworksQuery()
 
@@ -107,19 +113,23 @@ export const SelectAccountItem = (props: Props) => {
     )
   }, [userVisibleTokensInfo, networks, account, selectedNetwork?.coin, selectedNetwork?.chainId])
 
+
+
   const tokenPriceIds = React.useMemo(() =>
     tokenListByAccount.map(getPriceIdForToken),
     [tokenListByAccount]
   )
 
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length ? { ids: tokenPriceIds }: skipToken,
+    tokenPriceIds.length && defaultFiatCurrency
+      ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+      : skipToken,
     querySubscriptionOptions60s
   )
 
   const accountFiatValue = React.useMemo(() => {
     const amounts = tokenListByAccount.map((token) => {
-      const balance = getBalance(account, token)
+      const balance = getBalance(account, token, tokenBalancesRegistry)
 
       return computeFiatAmount({
         spotPriceRegistry,
@@ -136,7 +146,12 @@ export const SelectAccountItem = (props: Props) => {
       return a !== '' && b !== '' ? new Amount(a).plus(b).format() : ''
     })
     return new Amount(reducedAmounts).formatAsFiat(defaultFiatCurrency)
-  }, [tokenListByAccount, spotPriceRegistry, defaultFiatCurrency])
+  }, [
+    tokenListByAccount,
+    spotPriceRegistry,
+    defaultFiatCurrency,
+    tokenBalancesRegistry
+  ])
 
   return (
     <ConnectPanelButton border="top" onClick={onSelectAccount}>

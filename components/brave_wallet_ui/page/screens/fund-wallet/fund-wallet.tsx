@@ -17,7 +17,6 @@ import {
 import {
   BraveWallet,
   UserAssetInfoType,
-  WalletAccountType,
   WalletState
 } from '../../../constants/types'
 
@@ -111,7 +110,8 @@ export const FundWalletScreen = () => {
   const [showAccountSearch, setShowAccountSearch] = React.useState<boolean>(false)
   const [accountSearchText, setAccountSearchText] = React.useState<string>('')
   const [selectedCurrency, setSelectedCurrency] = React.useState<string>(defaultCurrencies.fiat || 'usd')
-  const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType | undefined>()
+  const [selectedAccount, setSelectedAccount] =
+    React.useState<BraveWallet.AccountInfo | undefined>()
   const [showBuyOptions, setShowBuyOptions] = React.useState<boolean>(false)
   const [searchValue, setSearchValue] = React.useState<string>('')
 
@@ -146,7 +146,7 @@ export const FundWalletScreen = () => {
     assetsForFilteredNetwork
   ])
 
-  const accountsForSelectedAssetNetwork: WalletAccountType[] = React.useMemo(() => {
+  const accountsForSelectedAssetNetwork = React.useMemo(() => {
     return selectedAssetNetwork
       ? accounts.filter(a => a.accountId.coin === selectedAssetNetwork.coin)
       : []
@@ -155,7 +155,7 @@ export const FundWalletScreen = () => {
   const needsAccount: boolean =
     !!selectedAsset && accountsForSelectedAssetNetwork.length < 1
 
-  const accountListSearchResults: WalletAccountType[] = React.useMemo(() => {
+  const accountListSearchResults = React.useMemo(() => {
     if (accountSearchText === '') {
       return accountsForSelectedAssetNetwork
     }
@@ -182,10 +182,13 @@ export const FundWalletScreen = () => {
     []
   )
 
-  const onSelectAccountFromSearch = React.useCallback((account: WalletAccountType) => {
-    closeAccountSearch()
-    setSelectedAccount(account)
-  }, [closeAccountSearch])
+  const onSelectAccountFromSearch = React.useCallback(
+    (account: BraveWallet.AccountInfo) => {
+      closeAccountSearch()
+      setSelectedAccount(account)
+    },
+    [closeAccountSearch]
+  )
 
   const nextStep = React.useCallback(() => {
     if (!isNextStepEnabled) {

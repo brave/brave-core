@@ -5,7 +5,6 @@
 
 import {
   BraveWallet,
-  GetPriceHistoryReturnObjectInfo,
   BitcoinNetwork,
 } from '../../constants/types'
 
@@ -73,11 +72,6 @@ export type RecoveryWordsAvailablePayloadType = {
 
 export type UpdateSelectedAssetType = {
   asset?: BraveWallet.BlockchainToken | undefined
-  timeFrame: BraveWallet.AssetPriceTimeframe
-}
-
-export type SelectAssetPayloadType = {
-  priceHistory: GetPriceHistoryReturnObjectInfo | undefined
   timeFrame: BraveWallet.AssetPriceTimeframe
 }
 

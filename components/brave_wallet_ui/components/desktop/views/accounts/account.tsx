@@ -104,6 +104,7 @@ import {
 // Hooks
 import { useScrollIntoView } from '../../../../common/hooks/use-scroll-into-view'
 import {
+  useGetDefaultFiatCurrencyQuery,
   useGetVisibleNetworksQuery,
   useGetUserTokensRegistryQuery,
   useGetTransactionsQuery,
@@ -113,6 +114,9 @@ import {
   querySubscriptionOptions60s
 } from '../../../../common/slices/constants'
 import { useMultiChainSellAssets } from '../../../../common/hooks/use-multi-chain-sell-assets'
+import {
+  useBalancesFetcher
+} from '../../../../common/hooks/use-balances-fetcher'
 
 // Actions
 import { AccountsTabActions } from '../../../../page/reducers/accounts-tab-reducer'
@@ -136,6 +140,7 @@ export const Account = () => {
   }, [accounts, accountId])
 
   // queries
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const { data: networkList = [] } = useGetVisibleNetworksQuery()
   const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
     selectFromResult: result => ({
@@ -213,11 +218,23 @@ export const Account = () => {
     return list
   }, [userVisibleTokensInfo, selectedAccount, networkList])
 
+  const {
+    data: tokenBalancesRegistry,
+  } = useBalancesFetcher(selectedAccount && networkList
+    ? {
+        accounts: [selectedAccount],
+        networks: networkList
+      }
+    : skipToken
+  )
+
   const nonFungibleTokens = React.useMemo(
     () =>
       accountsTokensList.filter(({ isErc721, isNft }) => isErc721 || isNft)
-        .filter((token) => getBalance(selectedAccount, token) !== '0'),
-    [accountsTokensList, selectedAccount]
+        .filter(token =>
+          new Amount(getBalance(selectedAccount, token, tokenBalancesRegistry))
+            .gt(0)),
+    [accountsTokensList, selectedAccount, tokenBalancesRegistry]
   )
 
   const fungibleTokens = React.useMemo(
@@ -228,16 +245,20 @@ export const Account = () => {
 
   const tokenPriceIds = React.useMemo(() =>
     fungibleTokens
-      .filter(token => new Amount(getBalance(selectedAccount, token)).gt(0))
+      .filter(token =>
+        new Amount(getBalance(selectedAccount, token, tokenBalancesRegistry))
+          .gt(0))
       .map(getPriceIdForToken),
-    [fungibleTokens, selectedAccount]
+    [fungibleTokens, selectedAccount, tokenBalancesRegistry]
   )
 
   const {
     data: spotPriceRegistry,
     isLoading: isLoadingSpotPrices
   } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
+    tokenPriceIds.length && defaultFiatCurrency
+      ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+      : skipToken,
     querySubscriptionOptions60s
   )
 
@@ -360,6 +381,7 @@ export const Account = () => {
         <AccountDetailsHeader
           account={selectedAccount}
           onClickMenuOption={onClickMenuOption}
+          tokenBalancesRegistry={tokenBalancesRegistry}
         />
       }
     >
@@ -379,7 +401,9 @@ export const Account = () => {
             <PortfolioAssetItem
               key={getAssetIdKey(asset)}
               action={() => onSelectAsset(asset)}
-              assetBalance={getBalance(selectedAccount, asset)}
+              assetBalance={
+                getBalance(selectedAccount, asset, tokenBalancesRegistry)
+              }
               token={asset}
               isAccountDetails={true}
               showSellModal={() => onClickShowSellModal(asset)}
@@ -483,7 +507,13 @@ export const Account = () => {
           openSellAssetLink={onOpenSellAssetLink}
           showSellModal={showSellModal}
           account={selectedAccount}
-          sellAssetBalance={getBalance(selectedAccount, selectedSellAsset)}
+          sellAssetBalance={
+            getBalance(
+              selectedAccount,
+              selectedSellAsset,
+              tokenBalancesRegistry
+            )
+         }
         />
       }
     </WalletPageWrapper >

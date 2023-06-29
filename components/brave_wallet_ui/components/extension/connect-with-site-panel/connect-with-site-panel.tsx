@@ -4,8 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-
-// Redux
+import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useDispatch } from 'react-redux'
 
 // Actions
@@ -13,7 +12,6 @@ import { PanelActions } from '../../../panel/actions'
 
 // Types
 import {
-  WalletAccountType,
   SerializableOriginInfo,
   WalletRoutes,
   BraveWallet,
@@ -64,6 +62,14 @@ import {
 // Utils
 import { getLocale } from '../../../../common/locale'
 
+// Hooks
+import {
+  useBalancesFetcher
+} from '../../../common/hooks/use-balances-fetcher'
+import {
+  useGetVisibleNetworksQuery
+} from '../../../common/slices/api.slice'
+
 const onClickAddAccount = () => {
   chrome.tabs.create(
     { url: `chrome://wallet${WalletRoutes.AddAccountModal}` },
@@ -76,9 +82,10 @@ const onClickAddAccount = () => {
     }
   )
 }
+
 interface Props {
   originInfo: SerializableOriginInfo
-  accountsToConnect: WalletAccountType[]
+  accountsToConnect: BraveWallet.AccountInfo[]
 }
 
 export const ConnectWithSite = (props: Props) => {
@@ -120,7 +127,7 @@ export const ConnectWithSite = (props: Props) => {
   }, [])
 
   const onSelectAccount = React.useCallback(
-    (account: WalletAccountType) => () => {
+    (account: BraveWallet.AccountInfo) => () => {
       if (addressToConnect === account.address) {
         setAddressToConnect(undefined)
         return
@@ -141,6 +148,18 @@ export const ConnectWithSite = (props: Props) => {
       }
     }
   }
+
+  const { data: networkList = [] } = useGetVisibleNetworksQuery()
+
+  const {
+    data: tokenBalancesRegistry,
+  } = useBalancesFetcher(accountsToConnect && networkList
+    ? {
+        accounts: accountsToConnect,
+        networks: networkList
+      }
+    : skipToken
+  )
 
   return (
     <StyledWrapper>
@@ -184,6 +203,7 @@ export const ConnectWithSite = (props: Props) => {
                   onSelectAccount={onSelectAccount(account)}
                   account={account}
                   isSelected={addressToConnect === account.address}
+                  tokenBalancesRegistry={tokenBalancesRegistry}
                 />
               ))}
             </SelectAddressContainer>

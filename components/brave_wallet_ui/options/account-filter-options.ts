@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { BraveWallet, WalletAccountType } from '../constants/types'
+import { BraveWallet } from '../constants/types'
 import { getLocale } from '../../common/locale'
 
 export const AllAccountsOptionUniqueKey = 'all'
 
-export const AllAccountsOption: WalletAccountType = {
+export const AllAccountsOption: BraveWallet.AccountInfo = {
   address: AllAccountsOptionUniqueKey,
   accountId: {
     coin: 0,
@@ -18,8 +18,6 @@ export const AllAccountsOption: WalletAccountType = {
     uniqueKey: AllAccountsOptionUniqueKey
   },
   name: getLocale('braveWalletAccountFilterAllAccounts'),
-  nativeBalanceRegistry: {},
-  tokenBalanceRegistry: {},
   hardware: undefined
 }
 
@@ -28,12 +26,12 @@ export const isAllAccountsOptionFilter = (selectedAccountFilter: string) => {
 }
 
 export const applySelectedAccountFilter = (
-  accounts: WalletAccountType[],
+  accounts: BraveWallet.AccountInfo[],
   selectedAccountFilter: string
 ): {
-  accounts: WalletAccountType[],
-  allAccounts?: WalletAccountType[],
-  oneAccount?: WalletAccountType
+  accounts: BraveWallet.AccountInfo[]
+  allAccounts?: BraveWallet.AccountInfo[]
+  oneAccount?: BraveWallet.AccountInfo
 } => {
   if (selectedAccountFilter === AllAccountsOptionUniqueKey) {
     return {
@@ -44,7 +42,8 @@ export const applySelectedAccountFilter = (
   }
 
   const account = accounts.find(
-    (account) => account.accountId.uniqueKey === selectedAccountFilter)
+    (account) => account.accountId.uniqueKey === selectedAccountFilter
+  )
   if (account) {
     return {
       accounts: [account],

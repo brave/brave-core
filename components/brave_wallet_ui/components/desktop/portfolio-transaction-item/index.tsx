@@ -258,8 +258,8 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     fiatValue: txTokenFiatValue,
     isLoading: isLoadingTxTokenSpotPrice
   } = useGetTokenSpotPricesQuery(
-    txTokenPriceIds.length
-      ? { ids: txTokenPriceIds }
+    txTokenPriceIds.length && defaultFiatCurrency
+      ? { ids: txTokenPriceIds, toCurrency: defaultFiatCurrency }
       : skipToken,
     {
       skip: !txToken || !normalizedTransferredValue,
@@ -294,7 +294,9 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     gasFeeFiat,
     isLoading: isLoadingGasAssetPrice
   } = useGetTokenSpotPricesQuery(
-    networkTokenPriceIds.length ? { ids: networkTokenPriceIds } : skipToken,
+    networkTokenPriceIds.length && defaultFiatCurrency
+      ? { ids: networkTokenPriceIds, toCurrency: defaultFiatCurrency }
+      : skipToken,
     {
       // TODO: selector
       selectFromResult: (res) => {

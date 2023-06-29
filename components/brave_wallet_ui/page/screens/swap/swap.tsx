@@ -98,7 +98,6 @@ export const Swap = () => {
     submitButtonText,
     isSubmitButtonDisabled,
     swapValidationError,
-    refreshBlockchainState,
     getNetworkAssetsList,
     spotPrices
   } = swap
@@ -146,7 +145,6 @@ export const Swap = () => {
     <>
       <SwapContainer
         showPrivacyModal={() => setShowPrivacyModal(true)}
-        refreshBlockchainState={refreshBlockchainState}
       >
         <Row
           rowWidth='full'
@@ -255,7 +253,6 @@ export const Swap = () => {
           disabledToken={selectingFromOrTo === 'from' ? toToken : fromToken}
           getCachedAssetBalance={getCachedAssetBalance}
           selectingFromOrTo={selectingFromOrTo}
-          refreshBlockchainState={refreshBlockchainState}
           getNetworkAssetsList={getNetworkAssetsList}
         />
       )}

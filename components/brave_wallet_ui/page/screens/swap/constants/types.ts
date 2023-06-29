@@ -38,16 +38,9 @@ export type QuoteOption = {
   braveFee: SwapFee | undefined
 }
 
-export type Registry = Record<string, string>
-
 export type SwapAndSend = {
   label: string
   name: string
-}
-
-export type RefreshBlockchainStateParams = {
-  network: BraveWallet.NetworkInfo
-  accountId: BraveWallet.AccountId
 }
 
 export type GasFeeOption = {

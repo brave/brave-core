@@ -8,7 +8,6 @@ import {
   AppsListType,
   BraveWallet,
   SerializableTransactionInfo,
-  WalletAccountType,
   SpotPriceRegistry
 } from '../../constants/types'
 import { NftsPinningStatusType } from '../../page/constants/action_types'
@@ -187,21 +186,17 @@ export const mockNftPinningStatus: NftsPinningStatusType = {
   }
 }
 
-export const mockAccount: WalletAccountType = {
+export const mockAccount: BraveWallet.AccountInfo = {
   name: 'mockAccountName',
   address: 'mockAddress',
-  nativeBalanceRegistry: {
-    '0x1': '123456'
-  },
   accountId: {
     coin: BraveWallet.CoinType.ETH,
     keyringId: BraveWallet.KeyringId.kDefault,
     kind: BraveWallet.AccountKind.kDerived,
     address: 'mockAddress',
-    uniqueKey: 'mockId',
+    uniqueKey: 'mockId'
   },
-  tokenBalanceRegistry: {},
-  hardware: undefined,
+  hardware: undefined
 }
 
 export const mockEthAccountInfo: BraveWallet.AccountInfo = {
@@ -217,23 +212,17 @@ export const mockEthAccountInfo: BraveWallet.AccountInfo = {
   },
 }
 
-export const mockSolanaAccount: WalletAccountType = {
+export const mockSolanaAccount: BraveWallet.AccountInfo = {
   name: 'MockSolanaAccount',
   address: '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
-  nativeBalanceRegistry: {
-    [BraveWallet.SOLANA_MAINNET]: '1000000000',
-    [BraveWallet.SOLANA_DEVNET]: '1000000000',
-    [BraveWallet.SOLANA_TESTNET]: '1000000000'
-  },
   accountId: {
     coin: BraveWallet.CoinType.SOL,
     keyringId: BraveWallet.KeyringId.kSolana,
     kind: BraveWallet.AccountKind.kDerived,
     address: '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
-    uniqueKey: 'mockId-2',
+    uniqueKey: 'mockId-2'
   },
-  tokenBalanceRegistry: {},
-  hardware: undefined,
+  hardware: undefined
 }
 
 export const mockSolanaAccountInfo: BraveWallet.AccountInfo = {
@@ -249,21 +238,17 @@ export const mockSolanaAccountInfo: BraveWallet.AccountInfo = {
   hardware: undefined
 }
 
-export const mockFilecoinAccount: WalletAccountType = {
+export const mockFilecoinAccount: BraveWallet.AccountInfo = {
   name: 'MockFilecoinAccount',
   address: 't1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti',
-  nativeBalanceRegistry: {
-    [BraveWallet.FILECOIN_MAINNET]: '1000000000'
-  },
   accountId: {
     coin: BraveWallet.CoinType.FIL,
     keyringId: BraveWallet.KeyringId.kFilecoinTestnet,
     kind: BraveWallet.AccountKind.kDerived,
     address: 't1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti',
-    uniqueKey: 'mockId-3',
+    uniqueKey: 'mockId-3'
   },
-  tokenBalanceRegistry: {},
-  hardware: undefined,
+  hardware: undefined
 }
 
 export const mockFilecoinAccountInfo: BraveWallet.AccountInfo = {

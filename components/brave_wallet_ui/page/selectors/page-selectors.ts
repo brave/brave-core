@@ -14,7 +14,6 @@ export const importWalletAttempts = ({ page }: State) => page.importWalletAttemp
 export const invalidMnemonic = ({ page }: State) => page.invalidMnemonic
 export const isCryptoWalletsInitialized = ({ page }: State) => page.isCryptoWalletsInitialized
 export const isFetchingNFTMetadata = ({ page }: State) => page.isFetchingNFTMetadata
-export const isFetchingPriceHistory = ({ page }: State) => page.isFetchingPriceHistory
 export const isImportWalletsCheckComplete = ({ page }: State) => page.isImportWalletsCheckComplete
 export const isMetaMaskInitialized = ({ page }: State) => page.isMetaMaskInitialized
 export const mnemonic = ({ page }: State) => page.mnemonic
@@ -34,9 +33,7 @@ export const importWalletError = ({ page }: State) => page.importWalletError
 export const nftMetadata = ({ page }: State) => page.nftMetadata
 export const nftMetadataError = ({ page }: State) => page.nftMetadataError
 
-export const portfolioPriceHistory = ({ page }: State) => page.portfolioPriceHistory
 export const selectedAsset = ({ page }: State) => page?.selectedAsset
 export const pinStatusOverview = ({ page }: State) => page.pinStatusOverview
-export const selectedAssetPriceHistory = ({ page }: State) => page.selectedAssetPriceHistory
 export const selectedCoinMarket = ({ page }: State) => page.selectedCoinMarket
 export const nftsPinningStatus = ({ page }: State) => page.nftsPinningStatus

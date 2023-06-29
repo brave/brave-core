@@ -29,9 +29,7 @@ import {
 
 import getAPIProxy from './bridge'
 import {
-  refreshTokenPriceHistory,
   refreshSitePermissions,
-  refreshBalances,
   refreshVisibleTokenInfo,
   refreshPortfolioFilterOptions,
   getNFTMetadata
@@ -53,10 +51,7 @@ function getWalletState (store: Store): WalletState {
 }
 
 async function refreshBalancesPricesAndHistory(store: Store) {
-  const state = getWalletState(store)
   await store.dispatch(refreshVisibleTokenInfo())
-  await store.dispatch(refreshBalances())
-  await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
 }
 
 async function refreshWalletInfo (store: Store, payload: RefreshOpts = {}) {
@@ -110,10 +105,6 @@ handler.on(
     walletApi.endpoints.refreshNetworkInfo.initiate()
   ).unwrap()
   await store.dispatch(refreshVisibleTokenInfo())
-
-  if (!payload.skipBalancesRefresh) {
-    await store.dispatch(refreshBalances())
-  }
   await store.dispatch(refreshPortfolioFilterOptions())
 })
 
@@ -224,13 +215,7 @@ handler.on(
       walletApi.endpoints.refreshNetworkInfo.initiate()
     ).unwrap()
     await store.dispatch(refreshVisibleTokenInfo())
-
-    if (!payload.skipBalancesRefresh) {
-      await store.dispatch(refreshBalances())
-    }
-
     await store.dispatch(refreshPortfolioFilterOptions())
-    await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
     await braveWalletService.discoverAssetsOnAllSupportedChains()
   }
 })
@@ -319,15 +304,12 @@ handler.on(WalletActions.setUserAssetVisible.type, async (store: Store, payload:
 handler.on(
   WalletActions.refreshBalancesAndPriceHistory.type,
   async (store: Store) => {
-    store.dispatch(
-      WalletActions.setIsFetchingPortfolioPriceHistory(true)
-    )
     await refreshBalancesPricesAndHistory(store)
-  })
+  }
+)
 
 handler.on(WalletActions.selectPortfolioTimeline.type, async (store: Store, payload: BraveWallet.AssetPriceTimeframe) => {
   store.dispatch(WalletActions.portfolioTimelineUpdated(payload))
-  await store.dispatch(refreshTokenPriceHistory(payload))
 })
 
 handler.on(WalletActions.removeSitePermission.type, async (store: Store, payload: RemoveSitePermissionPayloadType) => {

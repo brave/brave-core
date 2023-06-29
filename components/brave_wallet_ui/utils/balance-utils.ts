@@ -4,36 +4,11 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // types
-import { BraveWallet, WalletAccountType } from '../constants/types'
+import { TokenBalancesRegistry } from '../common/slices/entities/token-balance.entity'
+import { BraveWallet } from '../constants/types'
 
 // utils
-import { createTokenBalanceRegistryKey } from './account-utils'
 import Amount from './amount'
-
-export const getBalance = (account?: WalletAccountType, token?: BraveWallet.BlockchainToken) => {
-  if (!account || !token) {
-    return ''
-  }
-
-  if (!account.tokenBalanceRegistry) {
-    return ''
-  }
-
-  // Return native asset balance
-  if (
-    token.contractAddress === '' &&
-    !token.isErc20 &&
-
-    // Since all coinTypes share the same chainId for localHost networks,
-    // we want to make sure we return the right balance for that token.
-    account.accountId.coin === token.coin
-  ) {
-    return (account.nativeBalanceRegistry || {})[token.chainId || ''] || ''
-  }
-
-  const registryKey = createTokenBalanceRegistryKey(token)
-  return (account.tokenBalanceRegistry || {})[registryKey] || ''
-}
 
 export const formatTokenBalanceWithSymbol = (balance: string, decimals: number, symbol: string, decimalPlace?: number) => {
   return `${new Amount(balance)
@@ -44,10 +19,11 @@ export const formatTokenBalanceWithSymbol = (balance: string, decimals: number, 
 
 export const getPercentAmount = (
   asset: BraveWallet.BlockchainToken,
-  account: WalletAccountType,
-  percent: number
+  account: BraveWallet.AccountInfo,
+  percent: number,
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined
 ): string => {
-  const assetBalance = getBalance(account, asset) || '0'
+  const assetBalance = getBalance(account, asset, tokenBalancesRegistry) || '0'
   const amountWrapped = new Amount(assetBalance).times(percent)
 
   const formattedAmount =
@@ -56,4 +32,33 @@ export const getPercentAmount = (
       : amountWrapped.divideByDecimals(asset.decimals).format(6)
 
   return formattedAmount
+}
+
+export const getBalance = (
+  account: BraveWallet.AccountInfo | undefined,
+  asset: BraveWallet.BlockchainToken | undefined,
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined
+) => {
+  if (!account || !asset || !tokenBalancesRegistry) {
+    return ''
+  }
+
+  const accountBalances =
+    tokenBalancesRegistry?.[account.address] ??
+    tokenBalancesRegistry?.[account.address.toLowerCase()]
+  if (!accountBalances) {
+    return '0'
+  }
+
+  const chainIdBalances =
+    accountBalances[asset.chainId] ??
+    accountBalances[asset.chainId.toString()]
+  if (!chainIdBalances) {
+    return '0'
+  }
+
+  const balance =
+    chainIdBalances[asset.contractAddress] ??
+    chainIdBalances[asset.contractAddress.toLowerCase()]
+  return balance || '0'
 }

@@ -9,7 +9,6 @@ import { useHistory } from 'react-router'
 // types
 import {
   BraveWallet,
-  WalletAccountType,
   WalletRoutes
 } from '../../../constants/types'
 
@@ -209,7 +208,7 @@ export const TransactionsScreen: React.FC = () => {
 
   // methods
   const onSelectAccount = React.useCallback(
-    ({ accountId }: WalletAccountType): void => {
+    ({ accountId }: BraveWallet.AccountInfo): void => {
       history.push(
         updatePageParams({
           address: accountId.address,

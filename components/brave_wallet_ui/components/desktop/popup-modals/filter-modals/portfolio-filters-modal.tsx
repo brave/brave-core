@@ -41,9 +41,6 @@ import {
   HIDE_SMALL_BALANCES_FIAT_THRESHOLD
 } from '../../../../common/constants/magics'
 
-// Hooks
-import { useLib } from '../../../../common/hooks/useLib'
-
 // Utils
 import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
@@ -119,9 +116,6 @@ export const PortfolioFiltersModal = (props: Props) => {
   const [selectedGroupAssetsByOption, setSelectedGroupAssetsByOption] =
     React.useState<string>(selectedGroupAssetsByItem)
   const [showNetworkLogo, setShowNetworkLogo] = React.useState(showNetworkLogoOnNfts)
-
-  // Hooks
-  const { refreshTokenPriceHistory } = useLib()
 
   const onUpdateSelectedGroupAssetsByOption = React.useCallback(() => {
     // Update Selected Group Assets By Option in Local Storage
@@ -232,8 +226,6 @@ export const PortfolioFiltersModal = (props: Props) => {
     onUpdateFilteredOutAccountAddresses()
     onUpdateHidePortfolioSmallBalances()
     onUpdateShowNetworkLogoOnNfts()
-    dispatch(WalletActions.setIsFetchingPortfolioPriceHistory(true))
-    dispatch(refreshTokenPriceHistory(selectedPortfolioTimeline))
     onClose()
   }, [
     onUpdateSelectedGroupAssetsByOption,
@@ -242,7 +234,6 @@ export const PortfolioFiltersModal = (props: Props) => {
     onUpdateFilteredOutAccountAddresses,
     onUpdateHidePortfolioSmallBalances,
     onUpdateShowNetworkLogoOnNfts,
-    refreshTokenPriceHistory,
     selectedPortfolioTimeline,
     onClose
   ])

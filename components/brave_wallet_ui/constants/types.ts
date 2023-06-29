@@ -28,8 +28,9 @@ export type SpotPriceRegistry = {
   [id: string]: BraveWallet.AssetPrice
 }
 
-interface TokenBalanceRegistry {
-  [contractAddress: string]: string
+export type TokenPriceHistory = {
+  date: SerializableTimeDelta
+  close: number
 }
 
 export const FilecoinNetworkTypes = [
@@ -42,11 +43,6 @@ export type WalletAccountTypeName =
   | 'Secondary'
   | 'Ledger'
   | 'Trezor'
-
-export interface WalletAccountType extends BraveWallet.AccountInfo {
-  tokenBalanceRegistry: TokenBalanceRegistry
-  nativeBalanceRegistry: TokenBalanceRegistry
-}
 
 export interface AssetOptionType {
   id: string
@@ -202,11 +198,6 @@ export interface ChartTimelineObjectType {
   id: BraveWallet.AssetPriceTimeframe
 }
 
-export interface PriceDataObjectType {
-  date: Date | number
-  close: number
-}
-
 export interface ImportWalletError {
   hasError: boolean
   errorMessage?: string
@@ -243,11 +234,9 @@ export interface WalletState {
   favoriteApps: BraveWallet.AppItem[]
   isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
-  accounts: WalletAccountType[]
+  accounts: BraveWallet.AccountInfo[]
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   fullTokenList: BraveWallet.BlockchainToken[]
-  portfolioPriceHistory: PriceDataObjectType[]
-  isFetchingPortfolioPriceHistory: boolean
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
   addUserAssetError: boolean
   defaultEthereumWallet: BraveWallet.DefaultWallet
@@ -256,7 +245,7 @@ export interface WalletState {
   solFeeEstimates?: SolFeeEstimates
   hasFeeEstimatesError?: boolean
   gasEstimates?: BraveWallet.GasEstimation1559
-  connectedAccounts: WalletAccountType[]
+  connectedAccounts: BraveWallet.AccountInfo[]
   isMetaMaskInstalled: boolean
   defaultCurrencies: DefaultCurrencies
   isLoadingCoinMarketData: boolean
@@ -279,7 +268,7 @@ export interface WalletState {
   removedNonFungibleTokens: BraveWallet.BlockchainToken[]
   filteredOutPortfolioNetworkKeys: string[]
   filteredOutPortfolioAccountAddresses: string[]
-  hidePortfolioSmallBalances: boolean,
+  hidePortfolioSmallBalances: boolean
   showNetworkLogoOnNfts: boolean
 }
 
@@ -314,10 +303,7 @@ export interface PageState {
   enablingAutoPin: boolean
   isAutoPinEnabled: boolean
   pinStatusOverview: BraveWallet.TokenPinOverview | undefined
-  selectedAssetPriceHistory: GetPriceHistoryReturnInfo[]
-  portfolioPriceHistory: PriceDataObjectType[]
   mnemonic?: string
-  isFetchingPriceHistory: boolean
   setupStillInProgress: boolean
   showIsRestoring: boolean
   importAccountError: ImportAccountErrorType
@@ -362,16 +348,6 @@ export type SwapValidationErrorType =
   | 'insufficientLiquidity'
   | 'unknownError'
 
-export interface GetPriceHistoryReturnInfo {
-  price: string
-  date: TimeDelta
-}
-
-export interface GetPriceHistoryReturnObjectInfo {
-  success: boolean
-  values: GetPriceHistoryReturnInfo[]
-}
-
 export interface GetAllTokensReturnInfo {
   tokens: BraveWallet.BlockchainToken[]
 }
@@ -380,30 +356,9 @@ export interface GetNativeAssetBalancesReturnInfo {
   balances: BraveWallet.JsonRpcService_GetBalance_ResponseParams[][]
 }
 
-export interface BalancePayload {
-  balance: string
-  error: number
-  errorMessage: string
-  chainId: string
-}
-
-export interface GetNativeAssetBalancesPayload {
-  balances: BalancePayload[][]
-}
-
-export interface GetBlockchainTokenBalanceReturnInfo {
-  balances: BalancePayload[][]
-}
-
 export interface GetFlattenedAccountBalancesReturnInfo {
   token: BraveWallet.BlockchainToken
   balance: number
-}
-
-export interface PortfolioTokenHistoryAndInfo {
-  history: GetPriceHistoryReturnObjectInfo
-  token: BraveWallet.BlockchainToken
-  balance: string
 }
 
 export interface BaseTransactionParams {

@@ -12,7 +12,7 @@ import {
 
 // Types
 import {
-  WalletAccountType
+  BraveWallet
 } from '../../../../../../constants/types'
 
 // Utils
@@ -52,14 +52,16 @@ import {
 interface Props {
   selectedSwapAndSendOption: string
   toAnotherAddress: string
-  selectedSwapSendAccount: WalletAccountType | undefined
+  selectedSwapSendAccount: BraveWallet.AccountInfo | undefined
   userConfirmedAddress: boolean
   swapAndSendSelected: boolean
   onChangeSwapAndSendSelected: (value: boolean) => void
   onCheckUserConfirmedAddress: (id: string, checked: boolean) => void
   handleOnSetToAnotherAddress: (value: string) => void
   onSelectSwapAndSendOption: (value: string) => void
-  onSelectSwapSendAccount: (account: WalletAccountType | undefined) => void
+  onSelectSwapSendAccount: (
+    account: BraveWallet.AccountInfo | undefined
+  ) => void
 }
 
 export const SwapAndSend = (props: Props) => {

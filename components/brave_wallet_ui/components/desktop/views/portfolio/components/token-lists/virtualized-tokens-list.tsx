@@ -9,8 +9,7 @@ import { VariableSizeList as List } from 'react-window'
 // types
 import {
   BraveWallet,
-  UserAssetInfoType,
-  WalletAccountType
+  UserAssetInfoType
 } from '../../../../../../constants/types'
 import { getAssetIdKey } from '../../../../../../utils/asset-utils'
 
@@ -20,7 +19,7 @@ type RenderTokenProps = {
   item: UserAssetInfoType
   viewMode: ViewMode
   index: number
-  account?: WalletAccountType
+  account?: BraveWallet.AccountInfo
 }
 
 export type RenderTokenFunc = (props: RenderTokenProps) => JSX.Element | undefined | null

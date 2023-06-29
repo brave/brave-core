@@ -37,8 +37,6 @@ export const {
   keyringRestored,
   locked,
   lockWallet,
-  nativeAssetBalancesUpdated,
-  portfolioPriceHistoryUpdated,
   portfolioTimelineUpdated,
   refreshAll,
   refreshAccountInfo,
@@ -65,7 +63,6 @@ export const {
   setSolFeeEstimates,
   setUserAssetVisible,
   setVisibleTokensInfo,
-  tokenBalancesUpdated,
   unlocked,
   unlockWallet,
   updateTokenPinStatus,
@@ -79,6 +76,5 @@ export const {
   setFilteredOutPortfolioNetworkKeys,
   setFilteredOutPortfolioAccountAddresses,
   setHidePortfolioSmallBalances,
-  setIsFetchingPortfolioPriceHistory,
   setShowNetworkLogoOnNfts
 } = WalletActions

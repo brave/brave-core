@@ -6,9 +6,12 @@
 import * as React from 'react'
 
 import { useGetVisibleNetworksQuery } from '../../../../common/slices/api.slice'
+import {
+  TokenBalancesRegistry
+} from '../../../../common/slices/entities/token-balance.entity'
 
 // types
-import { BraveWallet, WalletAccountType } from '../../../../constants/types'
+import { BraveWallet } from '../../../../constants/types'
 
 // hooks
 
@@ -17,11 +20,17 @@ import { Nfts } from './components/nfts'
 
 interface Props {
   nftsList: BraveWallet.BlockchainToken[]
-  accounts: WalletAccountType[]
+  accounts: BraveWallet.AccountInfo[]
   onShowPortfolioSettings?: () => void
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined
 }
 
-export const NftView = ({ nftsList, accounts, onShowPortfolioSettings }: Props) => {
+export const NftView = ({
+  nftsList,
+  accounts,
+  onShowPortfolioSettings,
+  tokenBalancesRegistry
+}: Props) => {
   // queries
   const { data: networks = [] } = useGetVisibleNetworksQuery()
 
@@ -31,6 +40,7 @@ export const NftView = ({ nftsList, accounts, onShowPortfolioSettings }: Props) 
       nftList={nftsList}
       accounts={accounts}
       onShowPortfolioSettings={onShowPortfolioSettings}
+      tokenBalancesRegistry={tokenBalancesRegistry}
     />
   )
 }

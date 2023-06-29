@@ -9,7 +9,6 @@ import { getLocale } from '../../common/locale'
 // types
 import {
   BraveWallet,
-  WalletAccountType,
   WalletAccountTypeName
 } from '../constants/types'
 
@@ -21,8 +20,11 @@ import { reduceAddress } from './reduce-address'
 import { EntityState } from '@reduxjs/toolkit'
 import { AccountInfoEntity } from '../common/slices/entities/account-info.entity'
 
-export const sortAccountsByName = (accounts: WalletAccountType[]) => {
-  return [...accounts].sort(function (a: WalletAccountType, b: WalletAccountType) {
+export const sortAccountsByName = (accounts: BraveWallet.AccountInfo[]) => {
+  return [...accounts].sort(function (
+    a: BraveWallet.AccountInfo,
+    b: BraveWallet.AccountInfo
+  ) {
     if (a.name < b.name) {
       return -1
     }
@@ -35,11 +37,17 @@ export const sortAccountsByName = (accounts: WalletAccountType[]) => {
   })
 }
 
-export const groupAccountsById = (accounts: WalletAccountType[], key: string) => {
-  return accounts.reduce<Record<string, WalletAccountType[]>>((result, obj) => {
-    (result[obj[key]] = result[obj[key]] || []).push(obj)
-    return result
-  }, {})
+export const groupAccountsById = (
+  accounts: BraveWallet.AccountInfo[],
+  key: string
+) => {
+  return accounts.reduce<Record<string, BraveWallet.AccountInfo[]>>(
+    (result, obj) => {
+      ;(result[obj[key]] = result[obj[key]] || []).push(obj)
+      return result
+    },
+    {}
+  )
 }
 
 export const findAccountByAddress = <T extends { address: string }>(
@@ -87,17 +95,6 @@ export const findAccountName = <
   return accounts.find(
     (account) => account.address.toLowerCase() === address.toLowerCase()
   )?.name
-}
-
-export const createTokenBalanceRegistryKey = (
-  token: Pick<
-    BraveWallet.BlockchainToken,
-    | 'tokenId'
-    | 'isErc721'
-    | 'contractAddress'
-  >
-) => {
-  return token.isErc721 ? `${token.contractAddress.toLowerCase()}#${token.tokenId}` : token.contractAddress.toLowerCase()
 }
 
 export const getAccountType = (

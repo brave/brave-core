@@ -10,6 +10,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 // Hooks
 import { useExplorer } from '../../../common/hooks'
 import {
+  useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
   useGetSolanaEstimatedFeeQuery,
   useGetTokenSpotPricesQuery,
@@ -51,8 +52,7 @@ import { serializedTimeDeltaToJSDate } from '../../../utils/datetime-utils'
 
 // Constants
 import {
-  BraveWallet,
-  DefaultCurrencies,
+  BraveWallet
 } from '../../../constants/types'
 
 // Styled Components
@@ -87,7 +87,6 @@ import { Skeleton } from '../../shared/loading-skeleton/styles'
 interface Props {
   transactionId: string
   visibleTokens: BraveWallet.BlockchainToken[]
-  defaultCurrencies: DefaultCurrencies
   onBack: () => void
 }
 
@@ -95,7 +94,6 @@ const TransactionDetailPanel = (props: Props) => {
   // props
   const {
     transactionId,
-    defaultCurrencies,
     onBack,
   } = props
 
@@ -107,6 +105,7 @@ const TransactionDetailPanel = (props: Props) => {
   )
 
   // queries & query args
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const { transaction } = useTransactionQuery(transactionId || skipToken)
   const txCoinType = transaction
@@ -151,7 +150,9 @@ const TransactionDetailPanel = (props: Props) => {
   const {
     data: spotPriceRegistry = {}
   } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
+    tokenPriceIds.length && defaultFiatCurrency
+      ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+      : skipToken,
     querySubscriptionOptions60s
   )
 
@@ -260,10 +261,10 @@ const TransactionDetailPanel = (props: Props) => {
       txType !== BraveWallet.TransactionType.ERC721SafeTransferFrom &&
       txType !== BraveWallet.TransactionType.ERC20Approve
     ) {
-      return new Amount(fiatValue).formatAsFiat(defaultCurrencies.fiat)
+      return new Amount(fiatValue).formatAsFiat(defaultFiatCurrency)
     }
     return ''
-  }, [fiatValue, txType, defaultCurrencies.fiat])
+  }, [fiatValue, txType, defaultFiatCurrency])
 
   const isFilTransaction = transaction
     ? isFilecoinTransaction(transaction)
@@ -381,7 +382,7 @@ const TransactionDetailPanel = (props: Props) => {
             </DetailTextDark>
             <DetailTextDark>
               {gasFeeFiat ? (
-                new Amount(gasFeeFiat).formatAsFiat(defaultCurrencies.fiat)
+                new Amount(gasFeeFiat).formatAsFiat(defaultFiatCurrency)
               ) : (
                 <Skeleton />
               )}

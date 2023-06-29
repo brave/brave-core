@@ -22,6 +22,7 @@ import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
 
 // Queries
 import {
+  useGetDefaultFiatCurrencyQuery,
   useGetTokenSpotPricesQuery
 } from '../../../common/slices/api.slice'
 import {
@@ -117,8 +118,12 @@ export const EditGas = ({
     [networkAsset]
   )
 
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
+
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    networkTokenPriceIds.length ? { ids: networkTokenPriceIds } : skipToken,
+    networkTokenPriceIds.length && defaultFiatCurrency
+      ? { ids: networkTokenPriceIds, toCurrency: defaultFiatCurrency }
+      : skipToken,
     querySubscriptionOptions60s
   )
 

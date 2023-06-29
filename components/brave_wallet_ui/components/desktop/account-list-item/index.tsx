@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // redux
 import { useDispatch } from 'react-redux'
@@ -23,9 +22,6 @@ import {
 import {
   computeFiatAmount
 } from '../../../utils/pricing-utils'
-import {
-  getPriceIdForToken
-} from '../../../utils/api-utils'
 import Amount from '../../../utils/amount'
 
 // hooks
@@ -44,18 +40,15 @@ import {
 
 // Queries
 import {
-  useGetTokenSpotPricesQuery
-} from '../../../common/slices/api.slice'
-import {
-  querySubscriptionOptions60s
-} from '../../../common/slices/constants'
+  TokenBalancesRegistry
+} from '../../../common/slices/entities/token-balance.entity'
 
 // types
 import {
   BraveWallet,
-  WalletAccountType,
   AccountButtonOptionsObjectType,
-  AccountModalTypes
+  AccountModalTypes,
+  SpotPriceRegistry
 } from '../../../constants/types'
 
 // options
@@ -98,15 +91,20 @@ import {
   Row
 } from '../../shared/style'
 
-export interface Props {
+
+interface Props {
   onDelete?: () => void
-  onClick: (account: WalletAccountType) => void
-  account: WalletAccountType
+  onClick: (account: BraveWallet.AccountInfo) => void
+  account: BraveWallet.AccountInfo
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined
+  spotPriceRegistry: SpotPriceRegistry | undefined
 }
 
 export const AccountListItem = ({
   account,
-  onClick
+  onClick,
+  tokenBalancesRegistry,
+  spotPriceRegistry
 }: Props) => {
   // redux
   const dispatch = useDispatch()
@@ -175,19 +173,9 @@ export const AccountListItem = ({
 
   const tokensWithBalances = React.useMemo(() => {
     return accountsFungibleTokens
-      .filter((token) => new Amount(getBalance(account, token)).gt(0))
-  }, [accountsFungibleTokens])
-
-  const tokenPriceIds = React.useMemo(() =>
-    accountsFungibleTokens
-      .map(token => getPriceIdForToken(token)),
-    [accountsFungibleTokens]
-  )
-
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
-    querySubscriptionOptions60s
-  )
+      .filter((token) =>
+        new Amount(getBalance(account, token, tokenBalancesRegistry)).gt(0))
+  }, [accountsFungibleTokens, tokenBalancesRegistry, account])
 
   const accountsFiatValue = React.useMemo(() => {
     // Return an empty string to display a loading
@@ -208,7 +196,7 @@ export const AccountListItem = ({
       accountsFungibleTokens
         .map((asset) => {
           const balance =
-            getBalance(account, asset)
+            getBalance(account, asset, tokenBalancesRegistry)
           return computeFiatAmount({
             spotPriceRegistry,
             value: balance,
@@ -227,7 +215,9 @@ export const AccountListItem = ({
   }, [
     account,
     userVisibleTokensInfo,
-    accountsFungibleTokens
+    accountsFungibleTokens,
+    tokenBalancesRegistry,
+    spotPriceRegistry
   ])
 
   const buttonOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {

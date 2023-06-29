@@ -15,7 +15,11 @@ import {
   Tooltip
 } from 'recharts'
 
-import { PriceDataObjectType } from '../../../constants/types'
+import {
+  makeSerializableTimeDelta,
+  deserializeTimeDelta
+} from '../../../utils/model-serialization-utils'
+import { TokenPriceHistory } from '../../../constants/types'
 import CustomTooltip from './custom-tooltip'
 
 // Styled Components
@@ -27,8 +31,8 @@ import {
 } from './style'
 import { CustomReferenceDot } from './custom-reference-dot'
 
-export interface Props {
-  priceData: PriceDataObjectType[]
+interface Props {
+  priceData: TokenPriceHistory[] | undefined
   isLoading: boolean
   isDisabled: boolean
   customStyle?: CSSProperties
@@ -37,15 +41,21 @@ export interface Props {
 
 const EmptyChartData = [
   {
-    date: '1',
+    date: makeSerializableTimeDelta({
+      microseconds: 1
+    }),
     close: 1
   },
   {
-    date: '2',
+    date: makeSerializableTimeDelta({
+      microseconds: 2
+    }),
     close: 1
   },
   {
-    date: '3',
+    date: makeSerializableTimeDelta({
+      microseconds: 3
+    }),
     close: 1
   }
 ]
@@ -64,10 +74,14 @@ function LineChart ({
 
   // memos / computed
   const chartData = React.useMemo(() => {
-    if (priceData.length <= 0 || isDisabled) {
-      return EmptyChartData
-    }
-    return priceData
+    const priceHistory = !priceData || priceData.length <= 0 || isDisabled
+      ? EmptyChartData
+      : priceData
+
+    return priceHistory.map(price => ({
+      date: deserializeTimeDelta(price.date),
+      close: price.close
+    }))
   }, [priceData, isDisabled])
 
   const viewBoxHeightHalf = viewBoxHeight / 2
@@ -107,7 +121,7 @@ function LineChart ({
           </defs>
           <YAxis hide={true} domain={['auto', 'auto']} />
           <XAxis hide={true} dataKey='date' />
-          {priceData.length > 0 && !isDisabled && showTooltip &&
+          {priceData && priceData.length > 0 && !isDisabled && showTooltip &&
             <Tooltip
               isAnimationActive={false}
               position={{
@@ -132,7 +146,7 @@ function LineChart ({
             strokeWidth={2}
             stroke={leo.color.icon.interactive}
             fill={
-              priceData.length <= 0
+              !priceData || priceData.length <= 0
                 ? 'none'
                 : 'url(#portfolioGradient)'}
             activeDot={

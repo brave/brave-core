@@ -9,7 +9,6 @@ import { useDispatch } from 'react-redux'
 // types
 import {
   BraveWallet,
-  WalletAccountType,
   WalletRoutes
 } from '../../../../../constants/types'
 
@@ -61,12 +60,16 @@ import {
 } from '../../portfolio/style'
 import { AssetGroupContainer } from '../../../asset-group-container/asset-group-container'
 import { networkEntityAdapter } from '../../../../../common/slices/entities/network.entity'
+import {
+  TokenBalancesRegistry
+} from '../../../../../common/slices/entities/token-balance.entity'
 
 interface Props {
   networks: BraveWallet.NetworkInfo[]
   nftList: BraveWallet.BlockchainToken[],
-  accounts: WalletAccountType[]
+  accounts: BraveWallet.AccountInfo[]
   onShowPortfolioSettings?: () => void
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined
 }
 
 export const Nfts = (props: Props) => {
@@ -74,7 +77,8 @@ export const Nfts = (props: Props) => {
     nftList,
     accounts,
     networks,
-    onShowPortfolioSettings
+    onShowPortfolioSettings,
+    tokenBalancesRegistry
   } = props
 
   // redux
@@ -205,13 +209,13 @@ export const Nfts = (props: Props) => {
 
   // Returns a list of assets based on provided account
   const getFilteredNftsByAccount = React.useCallback(
-    (account: WalletAccountType) => {
+    (account: BraveWallet.AccountInfo) => {
       return renderedList.filter(
         (nft) =>
           nft.coin === account.accountId.coin &&
-          new Amount(getBalance(account, nft)).gte('1')
+          new Amount(getBalance(account, nft, tokenBalancesRegistry)).gte('1')
       )
-    }, [renderedList, getBalance])
+    }, [renderedList, tokenBalancesRegistry])
 
   // Returns a list of assets based on provided network
   const getAssetsByNetwork = React.useCallback(

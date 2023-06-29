@@ -24,6 +24,7 @@ export function createWalletApiBase() {
       'AccountTokenCurrentBalance',
       'CombinedTokenBalanceForAllAccounts',
       'TokenBalancesForChainId',
+      'TokenBalances',
       'DefaultFiatCurrency',
       'ERC721Metadata',
       'SolanaEstimatedFees',
@@ -31,6 +32,8 @@ export function createWalletApiBase() {
       'KnownBlockchainTokens',
       'Network',
       'TokenSpotPrices',
+      'PriceHistory',
+      'PricesHistory',
       'Transactions',
       'TransactionSimulationsEnabled',
       'UserBlockchainTokens',
@@ -40,8 +43,7 @@ export function createWalletApiBase() {
       'BraveRewards-RewardsBalance',
       'BraveRewards-ExternalWallet',
       'NFTPinningStatus',
-      'AutoPinEnabled',
-      'PriceHistory'
+      'AutoPinEnabled'
     ],
     endpoints: ({ mutation, query }) => ({})
   })

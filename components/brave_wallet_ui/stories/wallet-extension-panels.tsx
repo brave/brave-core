@@ -12,7 +12,6 @@ import {
   BraveWallet,
   PanelTypes,
   UIState,
-  WalletAccountType,
   WalletState
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
@@ -59,7 +58,6 @@ import {
   mockTransactionInfo,
   mockedErc20ApprovalTransaction,
 } from './mock-data/mock-transaction-info'
-import { mockDefaultCurrencies } from './mock-data/mock-default-currencies'
 import { mockAccounts, mockedTransactionAccounts } from './mock-data/mock-wallet-accounts'
 import { mockEncryptionKeyRequest, mockDecryptRequest } from './mock-data/mock-encryption-key-payload'
 import { mockOriginInfo } from './mock-data/mock-origin-info'
@@ -596,9 +594,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
   const [selectedPanel, setSelectedPanel] = React.useState<PanelTypes>('main')
   const [panelTitle, setPanelTitle] = React.useState<string>('main')
-  const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType>(
-    mockAccounts[0]
-  )
+  const [selectedAccount, setSelectedAccount] =
+    React.useState<BraveWallet.AccountInfo>(mockAccounts[0])
   const [favoriteApps, setFavoriteApps] = React.useState<BraveWallet.AppItem[]>([
     AppsList()[0].appList[0]
   ])
@@ -616,7 +613,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     navigateTo('activity')
   }
 
-  const onSelectAccount = (account: WalletAccountType) => () => {
+  const onSelectAccount = (account: BraveWallet.AccountInfo) => () => {
     setSelectedAccount(account)
     setSelectedPanel('main')
   }
@@ -717,7 +714,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                       <TransactionDetailPanel
                         transactionId={selectedTransaction.id}
                         onBack={onBackToTransactions}
-                        defaultCurrencies={mockDefaultCurrencies}
                         visibleTokens={mockNewAssetOptions}
                       />
                     </SelectContainer>
@@ -874,7 +870,6 @@ export const _TransactionDetail = () => {
           <ScrollContainer>
             <TransactionDetailPanel
               onBack={mockedFunction}
-              defaultCurrencies={mockDefaultCurrencies}
               visibleTokens={mockNewAssetOptions}
               transactionId={tx.id}
             />

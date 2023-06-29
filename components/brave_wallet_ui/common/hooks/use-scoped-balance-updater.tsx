@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+import { useMemo } from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // hooks
@@ -14,9 +15,15 @@ import { BraveWallet, CoinTypes } from '../../constants/types'
 import { WalletSelectors } from '../selectors'
 
 interface Arg {
-  network: BraveWallet.NetworkInfo
-  account: BraveWallet.AccountInfo
+  network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
+  accounts: BraveWallet.AccountInfo[]
   tokens?: BraveWallet.BlockchainToken[]
+}
+
+const coinTypesMapping = {
+  [BraveWallet.CoinType.SOL]: CoinTypes.SOL,
+  [BraveWallet.CoinType.ETH]: CoinTypes.ETH,
+  [BraveWallet.CoinType.FIL]: CoinTypes.FIL
 }
 
 export const useScopedBalanceUpdater = (arg: Arg | typeof skipToken) => {
@@ -25,31 +32,55 @@ export const useScopedBalanceUpdater = (arg: Arg | typeof skipToken) => {
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
 
+  const args = useMemo(() => {
+    if (arg === skipToken || !arg.accounts) {
+      return []
+    }
+
+    const nonSolArgs = arg.accounts
+      .flatMap((account) =>
+        account.accountId.coin !== CoinTypes.SOL && arg.tokens
+          ? [
+              {
+                address: account.address,
+                chainId: arg.network.chainId,
+                coin: coinTypesMapping[account.accountId.coin],
+                tokens: arg.tokens
+              }
+            ]
+          : []
+      )
+      .filter(({ coin }) => coin !== undefined)
+
+    const solArgs = arg.accounts
+      .flatMap((account) =>
+        account.accountId.coin === CoinTypes.SOL
+          ? [
+              {
+                address: account.address,
+                chainId: arg.network.chainId,
+                coin: CoinTypes.SOL,
+                tokens: arg.tokens
+              }
+            ]
+          : []
+      )
+
+    return [...nonSolArgs, ...solArgs]
+  }, [arg])
+
   return useGetTokenBalancesForChainIdQuery(
     arg !== skipToken &&
-      arg.account &&
-      arg.network &&
       // account and network CoinType can be inconsistent during intermittent
       // updates.
-      arg.account.accountId.coin === arg.network.coin &&
+      arg.accounts.every(
+        (account) => account.accountId.coin === arg.network.coin
+      ) &&
       !isWalletLocked &&
       isWalletCreated &&
-      hasInitialized
-      ? arg.account.accountId.coin === CoinTypes.SOL
-        ? {
-            chainId: arg.network.chainId,
-            coin: CoinTypes.SOL,
-            pubkey: arg.account.address,
-            tokens: arg.tokens
-          }
-        : arg.account.accountId.coin === CoinTypes.ETH && arg.tokens
-        ? {
-            chainId: arg.network.chainId,
-            coin: CoinTypes.ETH,
-            address: arg.account.address,
-            tokens: arg.tokens
-          }
-        : skipToken
+      hasInitialized &&
+      args
+      ? args
       : skipToken,
     defaultQuerySubscriptionOptions
   )
