@@ -4,15 +4,8 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
-import("//build/toolchain/win/midl.gni")
 
 assert(is_win)
-
-midl("brave_wireguard_manager_idl") {
-  sources = [ "brave_wireguard_manager_idl.idl" ]
-
-  writes_tlb = true
-}
 
 source_set("service") {
   sources = [
@@ -26,10 +19,9 @@ source_set("service") {
     "wireguard_tunnel_service.h",
   ]
 
-  public_deps = [ ":brave_wireguard_manager_idl" ]
+  public_deps = [ "//brave/components/brave_vpn/common/wireguard/win:brave_wireguard_manager_idl" ]
   deps = [
     "//base",
-    "//brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common",
     "//brave/components/brave_vpn/common/win",
     "//brave/components/brave_vpn/common/wireguard/win",
     "//chrome/installer/util:with_no_strings",

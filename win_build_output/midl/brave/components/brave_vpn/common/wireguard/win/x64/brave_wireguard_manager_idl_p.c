@@ -6,8 +6,8 @@
  /* File created by MIDL compiler version 8.xx.xxxx */
 /* at a redacted point in time
  */
-/* Compiler settings for ../../brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service/brave_wireguard_manager_idl.idl:
-    Oicf, W1, Zp8, env=Win64 (32b run), target_arch=ARM64 8.01.0628 
+/* Compiler settings for ../../brave/components/brave_vpn/common/wireguard/win/brave_wireguard_manager_idl.idl:
+    Oicf, W1, Zp8, env=Win64 (32b run), target_arch=AMD64 8.xx.xxxx 
     protocol : dce , ms_ext, c_ext, robust
     error checks: allocation ref bounds_check enum stub_data 
     VC __declspec() decoration level: 
@@ -16,7 +16,7 @@
 */
 /* @@MIDL_FILE_HEADING(  ) */
 
-#if defined(_M_ARM64)
+#if defined(_M_AMD64)
 
 
 #pragma warning( disable: 4049 )  /* more than 64k source lines */
@@ -47,7 +47,7 @@
 #include "brave_wireguard_manager_idl.h"
 
 #define TYPE_FORMAT_STRING_SIZE   51                                
-#define PROC_FORMAT_STRING_SIZE   147                               
+#define PROC_FORMAT_STRING_SIZE   133                               
 #define EXPR_FORMAT_STRING_SIZE   1                                 
 #define TRANSMIT_AS_TABLE_SIZE    0            
 #define WIRE_MARSHAL_TABLE_SIZE   1            
@@ -149,7 +149,7 @@ extern const MIDL_STUBLESS_PROXY_INFO IBraveVpnWireguardManager_ProxyInfo;
 
 extern const USER_MARSHAL_ROUTINE_QUADRUPLE UserMarshalRoutines[ WIRE_MARSHAL_TABLE_SIZE ];
 
-#if !defined(__RPC_ARM64__)
+#if !defined(__RPC_WIN64__)
 #error  Invalid build platform for this stub.
 #endif
 
@@ -164,126 +164,112 @@ static const brave_wireguard_manager_idl_MIDL_PROC_FORMAT_STRING brave_wireguard
 			0x6c,		/* Old Flags:  object, Oi2 */
 /*  2 */	NdrFcLong( 0x0 ),	/* 0 */
 /*  6 */	NdrFcShort( 0x3 ),	/* 3 */
-/*  8 */	NdrFcShort( 0x20 ),	/* ARM64 Stack size/offset = 32 */
+/*  8 */	NdrFcShort( 0x20 ),	/* X64 Stack size/offset = 32 */
 /* 10 */	NdrFcShort( 0x0 ),	/* 0 */
 /* 12 */	NdrFcShort( 0x24 ),	/* 36 */
 /* 14 */	0x46,		/* Oi2 Flags:  clt must size, has return, has ext, */
 			0x3,		/* 3 */
-/* 16 */	0xe,		/* 14 */
+/* 16 */	0xa,		/* 10 */
 			0x1,		/* Ext Flags:  new corr desc, */
 /* 18 */	NdrFcShort( 0x0 ),	/* 0 */
 /* 20 */	NdrFcShort( 0x0 ),	/* 0 */
 /* 22 */	NdrFcShort( 0x0 ),	/* 0 */
-/* 24 */	NdrFcShort( 0x3 ),	/* 3 */
-/* 26 */	0x3,		/* 3 */
-			0x80,		/* 128 */
-/* 28 */	0x81,		/* 129 */
-			0x82,		/* 130 */
+/* 24 */	NdrFcShort( 0x0 ),	/* 0 */
 
 	/* Parameter config */
 
-/* 30 */	NdrFcShort( 0x10b ),	/* Flags:  must size, must free, in, simple ref, */
-/* 32 */	NdrFcShort( 0x8 ),	/* ARM64 Stack size/offset = 8 */
-/* 34 */	NdrFcShort( 0x4 ),	/* Type Offset=4 */
+/* 26 */	NdrFcShort( 0x10b ),	/* Flags:  must size, must free, in, simple ref, */
+/* 28 */	NdrFcShort( 0x8 ),	/* X64 Stack size/offset = 8 */
+/* 30 */	NdrFcShort( 0x4 ),	/* Type Offset=4 */
 
 	/* Parameter last_error */
 
-/* 36 */	NdrFcShort( 0x2150 ),	/* Flags:  out, base type, simple ref, srv alloc size=8 */
-/* 38 */	NdrFcShort( 0x10 ),	/* ARM64 Stack size/offset = 16 */
-/* 40 */	0x8,		/* FC_LONG */
+/* 32 */	NdrFcShort( 0x2150 ),	/* Flags:  out, base type, simple ref, srv alloc size=8 */
+/* 34 */	NdrFcShort( 0x10 ),	/* X64 Stack size/offset = 16 */
+/* 36 */	0x8,		/* FC_LONG */
 			0x0,		/* 0 */
 
 	/* Return value */
 
-/* 42 */	NdrFcShort( 0x70 ),	/* Flags:  out, return, base type, */
-/* 44 */	NdrFcShort( 0x18 ),	/* ARM64 Stack size/offset = 24 */
-/* 46 */	0x8,		/* FC_LONG */
+/* 38 */	NdrFcShort( 0x70 ),	/* Flags:  out, return, base type, */
+/* 40 */	NdrFcShort( 0x18 ),	/* X64 Stack size/offset = 24 */
+/* 42 */	0x8,		/* FC_LONG */
 			0x0,		/* 0 */
 
 	/* Procedure DisableVpn */
 
-/* 48 */	0x33,		/* FC_AUTO_HANDLE */
+/* 44 */	0x33,		/* FC_AUTO_HANDLE */
 			0x6c,		/* Old Flags:  object, Oi2 */
-/* 50 */	NdrFcLong( 0x0 ),	/* 0 */
-/* 54 */	NdrFcShort( 0x4 ),	/* 4 */
-/* 56 */	NdrFcShort( 0x18 ),	/* ARM64 Stack size/offset = 24 */
-/* 58 */	NdrFcShort( 0x0 ),	/* 0 */
-/* 60 */	NdrFcShort( 0x24 ),	/* 36 */
-/* 62 */	0x44,		/* Oi2 Flags:  has return, has ext, */
+/* 46 */	NdrFcLong( 0x0 ),	/* 0 */
+/* 50 */	NdrFcShort( 0x4 ),	/* 4 */
+/* 52 */	NdrFcShort( 0x18 ),	/* X64 Stack size/offset = 24 */
+/* 54 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 56 */	NdrFcShort( 0x24 ),	/* 36 */
+/* 58 */	0x44,		/* Oi2 Flags:  has return, has ext, */
 			0x2,		/* 2 */
-/* 64 */	0xe,		/* 14 */
+/* 60 */	0xa,		/* 10 */
 			0x1,		/* Ext Flags:  new corr desc, */
+/* 62 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 64 */	NdrFcShort( 0x0 ),	/* 0 */
 /* 66 */	NdrFcShort( 0x0 ),	/* 0 */
 /* 68 */	NdrFcShort( 0x0 ),	/* 0 */
-/* 70 */	NdrFcShort( 0x0 ),	/* 0 */
-/* 72 */	NdrFcShort( 0x2 ),	/* 2 */
-/* 74 */	0x2,		/* 2 */
-			0x80,		/* 128 */
-/* 76 */	0x81,		/* 129 */
-			0x0,		/* 0 */
 
 	/* Parameter last_error */
 
-/* 78 */	NdrFcShort( 0x2150 ),	/* Flags:  out, base type, simple ref, srv alloc size=8 */
-/* 80 */	NdrFcShort( 0x8 ),	/* ARM64 Stack size/offset = 8 */
-/* 82 */	0x8,		/* FC_LONG */
+/* 70 */	NdrFcShort( 0x2150 ),	/* Flags:  out, base type, simple ref, srv alloc size=8 */
+/* 72 */	NdrFcShort( 0x8 ),	/* X64 Stack size/offset = 8 */
+/* 74 */	0x8,		/* FC_LONG */
 			0x0,		/* 0 */
 
 	/* Return value */
 
-/* 84 */	NdrFcShort( 0x70 ),	/* Flags:  out, return, base type, */
-/* 86 */	NdrFcShort( 0x10 ),	/* ARM64 Stack size/offset = 16 */
-/* 88 */	0x8,		/* FC_LONG */
+/* 76 */	NdrFcShort( 0x70 ),	/* Flags:  out, return, base type, */
+/* 78 */	NdrFcShort( 0x10 ),	/* X64 Stack size/offset = 16 */
+/* 80 */	0x8,		/* FC_LONG */
 			0x0,		/* 0 */
 
 	/* Procedure GenerateKeypair */
 
-/* 90 */	0x33,		/* FC_AUTO_HANDLE */
+/* 82 */	0x33,		/* FC_AUTO_HANDLE */
 			0x6c,		/* Old Flags:  object, Oi2 */
-/* 92 */	NdrFcLong( 0x0 ),	/* 0 */
-/* 96 */	NdrFcShort( 0x5 ),	/* 5 */
-/* 98 */	NdrFcShort( 0x28 ),	/* ARM64 Stack size/offset = 40 */
-/* 100 */	NdrFcShort( 0x0 ),	/* 0 */
-/* 102 */	NdrFcShort( 0x24 ),	/* 36 */
-/* 104 */	0x45,		/* Oi2 Flags:  srv must size, has return, has ext, */
+/* 84 */	NdrFcLong( 0x0 ),	/* 0 */
+/* 88 */	NdrFcShort( 0x5 ),	/* 5 */
+/* 90 */	NdrFcShort( 0x28 ),	/* X64 Stack size/offset = 40 */
+/* 92 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 94 */	NdrFcShort( 0x24 ),	/* 36 */
+/* 96 */	0x45,		/* Oi2 Flags:  srv must size, has return, has ext, */
 			0x4,		/* 4 */
-/* 106 */	0x10,		/* 16 */
+/* 98 */	0xa,		/* 10 */
 			0x3,		/* Ext Flags:  new corr desc, clt corr check, */
-/* 108 */	NdrFcShort( 0x1 ),	/* 1 */
-/* 110 */	NdrFcShort( 0x0 ),	/* 0 */
-/* 112 */	NdrFcShort( 0x0 ),	/* 0 */
-/* 114 */	NdrFcShort( 0x4 ),	/* 4 */
-/* 116 */	0x4,		/* 4 */
-			0x80,		/* 128 */
-/* 118 */	0x81,		/* 129 */
-			0x82,		/* 130 */
-/* 120 */	0x83,		/* 131 */
-			0x0,		/* 0 */
+/* 100 */	NdrFcShort( 0x1 ),	/* 1 */
+/* 102 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 104 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 106 */	NdrFcShort( 0x0 ),	/* 0 */
 
 	/* Parameter public_key */
 
-/* 122 */	NdrFcShort( 0x2113 ),	/* Flags:  must size, must free, out, simple ref, srv alloc size=8 */
-/* 124 */	NdrFcShort( 0x8 ),	/* ARM64 Stack size/offset = 8 */
-/* 126 */	NdrFcShort( 0x28 ),	/* Type Offset=40 */
+/* 108 */	NdrFcShort( 0x2113 ),	/* Flags:  must size, must free, out, simple ref, srv alloc size=8 */
+/* 110 */	NdrFcShort( 0x8 ),	/* X64 Stack size/offset = 8 */
+/* 112 */	NdrFcShort( 0x28 ),	/* Type Offset=40 */
 
 	/* Parameter private_key */
 
-/* 128 */	NdrFcShort( 0x2113 ),	/* Flags:  must size, must free, out, simple ref, srv alloc size=8 */
-/* 130 */	NdrFcShort( 0x10 ),	/* ARM64 Stack size/offset = 16 */
-/* 132 */	NdrFcShort( 0x28 ),	/* Type Offset=40 */
+/* 114 */	NdrFcShort( 0x2113 ),	/* Flags:  must size, must free, out, simple ref, srv alloc size=8 */
+/* 116 */	NdrFcShort( 0x10 ),	/* X64 Stack size/offset = 16 */
+/* 118 */	NdrFcShort( 0x28 ),	/* Type Offset=40 */
 
 	/* Parameter last_error */
 
-/* 134 */	NdrFcShort( 0x2150 ),	/* Flags:  out, base type, simple ref, srv alloc size=8 */
-/* 136 */	NdrFcShort( 0x18 ),	/* ARM64 Stack size/offset = 24 */
-/* 138 */	0x8,		/* FC_LONG */
+/* 120 */	NdrFcShort( 0x2150 ),	/* Flags:  out, base type, simple ref, srv alloc size=8 */
+/* 122 */	NdrFcShort( 0x18 ),	/* X64 Stack size/offset = 24 */
+/* 124 */	0x8,		/* FC_LONG */
 			0x0,		/* 0 */
 
 	/* Return value */
 
-/* 140 */	NdrFcShort( 0x70 ),	/* Flags:  out, return, base type, */
-/* 142 */	NdrFcShort( 0x20 ),	/* ARM64 Stack size/offset = 32 */
-/* 144 */	0x8,		/* FC_LONG */
+/* 126 */	NdrFcShort( 0x70 ),	/* Flags:  out, return, base type, */
+/* 128 */	NdrFcShort( 0x20 ),	/* X64 Stack size/offset = 32 */
+/* 130 */	0x8,		/* FC_LONG */
 			0x0,		/* 0 */
 
 			0x0
@@ -369,8 +355,8 @@ static const USER_MARSHAL_ROUTINE_QUADRUPLE UserMarshalRoutines[ WIRE_MARSHAL_TA
 static const unsigned short IBraveVpnWireguardManager_FormatStringOffsetTable[] =
     {
     0,
-    48,
-    90
+    44,
+    82
     };
 
 static const MIDL_STUBLESS_PROXY_INFO IBraveVpnWireguardManager_ProxyInfo =
@@ -497,5 +483,5 @@ EXTERN_C const ExtendedProxyFileInfo brave_wireguard_manager_idl_ProxyFileInfo =
 #endif
 
 
-#endif /* defined(_M_ARM64) */
+#endif /* defined(_M_AMD64)*/
 
