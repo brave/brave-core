@@ -250,6 +250,13 @@ class SelectAccountTokenStore: ObservableObject {
           )
         }
         .sorted { lhs, rhs in
+          if lhs.network.isKnownTestnet && rhs.network.isKnownTestnet {
+            return (lhs.balance ?? 0) > (rhs.balance ?? 0)
+          } else if lhs.network.isKnownTestnet {
+            return false // sort test networks to end of list
+          } else if rhs.network.isKnownTestnet {
+            return true // sort test networks to end of list
+          }
           return (lhs.balance ?? 0) > (rhs.balance ?? 0)
         }
       return AccountSection(
