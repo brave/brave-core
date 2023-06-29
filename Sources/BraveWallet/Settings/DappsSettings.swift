@@ -185,11 +185,6 @@ private struct SiteRow: View {
   
   let siteConnection: SiteConnection
   
-  private let maxBlockies = 3
-  @ScaledMetric private var blockieSize = 16.0
-  private let maxBlockieSize: CGFloat = 32
-  @ScaledMetric private var blockieDotSize = 2.0
-  
   private var connectedAddresses: String {
     let account = Strings.Wallet.manageSiteConnectionsAccountSingular
     let accounts = Strings.Wallet.manageSiteConnectionsAccountPlural
@@ -220,31 +215,9 @@ private struct SiteRow: View {
     if siteConnection.connectedAddresses.isEmpty {
       EmptyView()
     } else {
-      HStack(spacing: -(min(blockieSize, maxBlockieSize) / 2)) {
-        let numberOfBlockies = min(maxBlockies, siteConnection.connectedAddresses.count)
-        ForEach(0..<numberOfBlockies, id: \.self) { index in
-          Blockie(address: siteConnection.connectedAddresses[index])
-            .frame(width: min(blockieSize, maxBlockieSize), height: min(blockieSize, maxBlockieSize))
-            .overlay(Circle().stroke(Color(.secondaryBraveGroupedBackground), lineWidth: 1))
-            .zIndex(Double(numberOfBlockies - index))
-        }
-        if siteConnection.connectedAddresses.count > maxBlockies {
-          Circle()
-            .foregroundColor(Color(.braveBlurpleTint))
-            .frame(width: min(blockieSize, maxBlockieSize), height: min(blockieSize, maxBlockieSize))
-            .overlay(
-              HStack(spacing: 1) {
-                Circle()
-                  .frame(width: blockieDotSize, height: blockieDotSize)
-                Circle()
-                  .frame(width: blockieDotSize, height: blockieDotSize)
-                Circle()
-                  .frame(width: blockieDotSize, height: blockieDotSize)
-              }
-                .foregroundColor(.white)
-            )
-        }
-      }
+      MultipleAccountBlockiesView(
+        accountAddresses: siteConnection.connectedAddresses
+      )
     }
   }
 }
