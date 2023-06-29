@@ -1803,6 +1803,12 @@ void BraveWalletService::GetSimpleHashSpamNFTs(
     mojom::CoinType coin,
     const absl::optional<std::string>& cursor,
     GetSimpleHashSpamNFTsCallback callback) {
+  // Do not make requests to SimpleHash unless the user has
+  // opted in to NFT discovery.
+  if (!profile_prefs_->GetBoolean(kBraveWalletNftDiscoveryEnabled)) {
+    std::move(callback).Run({}, absl::nullopt);
+    return;
+  }
   simple_hash_client_->FetchNFTsFromSimpleHash(
       wallet_address, chain_ids, coin, cursor, false /* skip_spam */,
       true /* only_spam */, std::move(callback));

@@ -416,6 +416,19 @@ class BraveWalletServiceUnitTest : public testing::Test {
     return BlockchainRegistry::GetInstance();
   }
 
+  void SetInterceptors(std::map<GURL, std::string> responses) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, responses](const network::ResourceRequest& request) {
+          // If the request url is in responses, add that response
+          auto it = responses.find(request.url);
+          if (it != responses.end()) {
+            std::string response = it->second;
+            url_loader_factory_.ClearResponses();
+            url_loader_factory_.AddResponse(request.url.spec(), response);
+          }
+        }));
+  }
+
   void SetGetEthNftStandardInterceptor(
       const GURL& expected_url,
       const std::map<std::string, std::string>& interface_id_to_response) {
@@ -773,6 +786,27 @@ class BraveWalletServiceUnitTest : public testing::Test {
           EXPECT_EQ(enabled, expected_enabled);
           run_loop.Quit();
         }));
+    run_loop.Run();
+  }
+
+  void GetSimpleHashSpamNFTs(
+      const std::string& account_address,
+      const std::vector<std::string>& chain_ids,
+      mojom::CoinType coin,
+      absl::optional<std::string> cursor,
+      const std::vector<mojom::BlockchainTokenPtr>& expected_nfts,
+      absl::optional<std::string> expected_cursor) {
+    base::RunLoop run_loop;
+    service_->GetSimpleHashSpamNFTs(
+        account_address, chain_ids, coin, cursor,
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::BlockchainTokenPtr> nfts,
+                const absl::optional<std::string>& returned_cursor) {
+              ASSERT_EQ(nfts.size(), expected_nfts.size());
+              EXPECT_EQ(returned_cursor, expected_cursor);
+              EXPECT_EQ(nfts, expected_nfts);
+              run_loop.Quit();
+            }));
     run_loop.Run();
   }
 
@@ -2791,6 +2825,71 @@ TEST_F(BraveWalletServiceUnitTest, GetBalanceScannerSupportedChains) {
         ASSERT_EQ(chains.size(), expected_chains.size());
         EXPECT_EQ(chains, expected_chains);
       }));
+}
+
+TEST_F(BraveWalletServiceUnitTest, GetSimpleHashSpamNFTs) {
+  std::vector<mojom::BlockchainTokenPtr> expected_nfts;
+  std::string json = R"({
+    "next": null,
+    "previous": null,
+    "nfts": [
+      {
+        "chain": "polygon",
+        "contract_address": "0x1111111111111111111111111111111111111111",
+        "token_id": "1",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "ONE"
+        },
+        "collection": {
+          "spam_score": 100
+        }
+      },
+      {
+        "chain": "polygon",
+        "contract_address": "0x2222222222222222222222222222222222222222",
+        "token_id": "2",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "TWO"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      }
+    ]
+  })";
+
+  GURL url = GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "owners?chains=ethereum&wallet_addresses="
+      "0x0000000000000000000000000000000000000000");
+  std::map<GURL, std::string> responses;
+  responses[url] = json;
+
+  // First make the call with NFT discovery disabled,
+  // no NFTs should be discovered
+  GetSimpleHashSpamNFTs("0x0000000000000000000000000000000000000000",
+                        {mojom::kMainnetChainId}, mojom::CoinType::ETH,
+                        absl::nullopt, expected_nfts, absl::nullopt);
+
+  // Enable NFT discovery then try again, only the spam NFT should be discovered
+  SetInterceptors(responses);
+  service_->SetNftDiscoveryEnabled(true);
+  auto nft1 = mojom::BlockchainToken::New();
+  nft1->chain_id = mojom::kPolygonMainnetChainId;
+  nft1->contract_address = "0x1111111111111111111111111111111111111111";
+  nft1->token_id = "0x1";
+  nft1->is_erc721 = true;
+  nft1->is_erc1155 = false;
+  nft1->is_erc20 = false;
+  nft1->is_nft = true;
+  nft1->symbol = "ONE";
+  nft1->coin = mojom::CoinType::ETH;
+  expected_nfts.push_back(std::move(nft1));
+  GetSimpleHashSpamNFTs("0x0000000000000000000000000000000000000000",
+                        {mojom::kMainnetChainId}, mojom::CoinType::ETH,
+                        absl::nullopt, expected_nfts, absl::nullopt);
 }
 
 }  // namespace brave_wallet
