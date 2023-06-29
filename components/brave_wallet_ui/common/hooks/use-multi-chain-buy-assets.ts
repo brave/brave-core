@@ -133,9 +133,15 @@ export const useMultiChainBuyAssets = () => {
     const asset = {
       ...selectedAsset,
       symbol:
-        buyOption === BraveWallet.OnRampProvider.kRamp ? getRampAssetSymbol(selectedAsset)
-            : selectedAsset.symbol
+        buyOption === BraveWallet.OnRampProvider.kRamp
+          ? getRampAssetSymbol(selectedAsset)
+          : buyOption === BraveWallet.OnRampProvider.kStripe
+          ? selectedAsset.symbol.toLowerCase()
+          : selectedAsset.symbol
     }
+    const currencyCode = selectedCurrency
+      ? selectedCurrency.currencyCode
+      : 'USD'
 
     getBuyAssetUrl({
       asset,
@@ -143,16 +149,21 @@ export const useMultiChainBuyAssets = () => {
       chainId: selectedAssetNetwork.chainId,
       address: depositAddress,
       amount: buyAmount,
-      currencyCode: selectedCurrency ? selectedCurrency.currencyCode : 'USD'
+      currencyCode:
+        buyOption === BraveWallet.OnRampProvider.kStripe
+          ? currencyCode.toLowerCase()
+          : currencyCode
     })
-      .then(url => {
+      .then((url) => {
         chrome.tabs.create({ url }, () => {
           if (chrome.runtime.lastError) {
-            console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+            console.error(
+              'tabs.create failed: ' + chrome.runtime.lastError.message
+            )
           }
         })
       })
-      .catch(e => console.error(e))
+      .catch((e) => console.error(e))
   }, [
     selectedAsset,
     selectedAssetNetwork,
