@@ -171,6 +171,7 @@ export const CoinGeckoText = styled.span`
 export const FilterTokenRow = styled.div<
   {
     horizontalPadding?: number
+    isV2?: boolean
   }>`
   display: flex;
   flex-direction: row;
@@ -182,6 +183,7 @@ export const FilterTokenRow = styled.div<
       ? p.horizontalPadding
       : 0
   }px;
+  margin-bottom: ${p => p.isV2 ? '16px' : 0 };
 `
 
 export const BridgeToAuroraButton = styled(WalletButton) <

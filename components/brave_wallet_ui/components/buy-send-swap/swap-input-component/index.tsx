@@ -80,6 +80,7 @@ export interface Props {
   customSlippageTolerance?: string
   defaultCurrencies?: DefaultCurrencies
   selectedPreset?: AmountPresetTypes | undefined
+  isV2?: boolean
   onCustomSlippageToleranceChange?: (value: string) => void
   onInputChange?: (value: string, name: string) => void
   onSelectPresetAmount?: (percent: number) => void
@@ -111,6 +112,7 @@ function SwapInputComponent (props: Props) {
     validationError,
     customSlippageTolerance,
     selectedPreset,
+    isV2,
     onCustomSlippageToleranceChange,
     onInputChange,
     onPaste,
@@ -173,7 +175,7 @@ function SwapInputComponent (props: Props) {
           return getLocale('braveWalletSwapTo')
         }
       case 'buyAmount':
-        return getLocale('braveWalletBuy')
+        return ''
       case 'exchange':
         if (orderType === 'market') {
           return `${getLocale('braveWalletSwapMarket')} ${getLocale('braveWalletSwapPriceIn')} ${selectedAsset?.symbol}`
@@ -277,7 +279,7 @@ function SwapInputComponent (props: Props) {
   }, [selectedNetwork, componentType])
 
   return (
-    <BubbleContainer>
+    <BubbleContainer isV2={isV2}>
       {componentType !== 'selector' &&
         <>
           {!(selectedAsset?.isErc721 || selectedAsset?.isNft) &&
@@ -302,8 +304,13 @@ function SwapInputComponent (props: Props) {
           <Row componentType={componentType}>
             {componentType === 'buyAmount' &&
               <AssetButton onClick={onShowCurrencySelection}>
-                <AssetTicker>{CurrencySymbols[selectedCurrency?.currencyCode]}</AssetTicker>
-                <CaratDownIcon />
+                <AssetTicker
+                  isV2={isV2}
+                  role='currency'
+                >
+                  {CurrencySymbols[selectedCurrency?.currencyCode]}
+                </AssetTicker>
+                <CaratDownIcon name='carat-down' />
                 <Spacer />
               </AssetButton>
             }
@@ -326,6 +333,7 @@ function SwapInputComponent (props: Props) {
                   (selectedNetwork?.chainId === BraveWallet.SOLANA_MAINNET && componentType === 'toAmount')
                 }
                 autoFocus={autoFocus}
+                isV2={isV2}
               />
             }
             {componentType === 'exchange' && orderType === 'market' &&
@@ -340,7 +348,10 @@ function SwapInputComponent (props: Props) {
               <AssetButton isERC721={(selectedAsset?.isErc721 || selectedAsset?.isNft)} onClick={onShowSelection}>
                 <ButtonLeftSide>
                   <AssetIconWithPlaceholder asset={selectedAsset} network={selectedNetwork} />
-                  <AssetTicker>
+                  <AssetTicker
+                    isV2={isV2}
+                    role='symbol'
+                  >
                     {getAssetSymbol(selectedAsset?.symbol)} {
                       selectedAsset?.isErc721 && selectedAsset?.tokenId
                         ? '#' + new Amount(selectedAsset.tokenId).toNumber()

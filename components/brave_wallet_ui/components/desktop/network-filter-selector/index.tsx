@@ -45,6 +45,7 @@ interface Props {
   networkListSubset?: BraveWallet.NetworkInfo[]
   selectedNetwork?: BraveWallet.NetworkInfo
   selectedAccount?: Pick<WalletAccountType, 'accountId' | 'address' | 'name'>
+  isV2?: boolean
   onSelectNetwork?: (network: BraveWallet.NetworkInfo) => void
 }
 
@@ -52,7 +53,8 @@ export const NetworkFilterSelector = ({
   networkListSubset,
   onSelectNetwork,
   selectedNetwork: networkProp,
-  selectedAccount: accountProp
+  selectedAccount: accountProp,
+  isV2
 }: Props) => {
   // state
   const [showNetworkFilter, setShowNetworkFilter] = React.useState<boolean>(false)
@@ -154,14 +156,16 @@ export const NetworkFilterSelector = ({
   return (
     <StyledWrapper>
       <DropDownButton
-        onClick={toggleShowNetworkFilter}>
+        isV2={isV2}
+        onClick={toggleShowNetworkFilter}
+      >
         <SelectorLeftSide>
           {selectedNetwork.chainId !== AllNetworksOption.chainId &&
             <CreateNetworkIcon network={selectedNetwork} marginRight={14} size='big' />
           }
           {selectedNetwork.chainName}
         </SelectorLeftSide>
-        <DropDownIcon />
+        <DropDownIcon isV2={isV2} />
       </DropDownButton>
 
       {showNetworkFilter &&

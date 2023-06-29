@@ -32,6 +32,7 @@ interface BaseProps {
   maxHeight?: string
   minHeight?: string
   minWidth?: string
+  isV2?: boolean
 }
 
 type ClickProps = (
@@ -56,7 +57,8 @@ export const NavButton: React.FC<Props> = ({
   needsTopMargin,
   onSubmit,
   text,
-  url
+  url,
+  isV2
 }) => {
   // memos
   const buttonContent = React.useMemo(() => {
@@ -70,7 +72,7 @@ export const NavButton: React.FC<Props> = ({
       {buttonType === 'confirm' &&
         <ConfirmIcon />
       }
-      <ButtonText buttonType={buttonType}>{text}</ButtonText>
+      <ButtonText buttonType={buttonType} isV2={isV2}>{text}</ButtonText>
     </>
   }, [buttonType, text])
 
@@ -95,6 +97,7 @@ export const NavButton: React.FC<Props> = ({
       maxHeight={maxHeight}
       minWidth={minWidth}
       minHeight={minHeight}
+      isV2={isV2}
     >
       {buttonContent}
     </StyledButton>

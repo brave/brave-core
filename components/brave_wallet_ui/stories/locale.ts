@@ -453,6 +453,7 @@ provideStrings({
   braveWalletBuyWithSardine: 'Buy with Sardine',
   braveWalletBuyWithTransak: 'Buy with Transak',
   braveWalletSellWithProvider: 'Sell with $1',
+  braveWalletBuyDisclaimer: 'Financial and transaction data is processed by our onramp partners. Brave does not collect or have access to such data.',
 
   // Fund Wallet Screen
   braveWalletFundWalletTitle: 'To finish your $1 purchase, select one of our partners',

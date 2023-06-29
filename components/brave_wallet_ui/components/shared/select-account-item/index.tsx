@@ -32,7 +32,8 @@ import {
   AccountName,
   LeftSide,
   BigCheckMark,
-  SwitchAccountIconContainer
+  SwitchAccountIconContainer,
+  CaratDown
 } from './style'
 
 export interface Props {
@@ -43,7 +44,8 @@ export interface Props {
   showTooltips?: boolean
   fullAddress?: boolean
   hideAddress?: boolean
-  showSwitchAccountsIcon?: boolean
+  showSwitchAccountsIcon?: boolean,
+  isV2?: boolean
 }
 
 export function SelectAccountItem ({
@@ -54,7 +56,8 @@ export function SelectAccountItem ({
   fullAddress,
   selectedNetwork,
   hideAddress,
-  showSwitchAccountsIcon: showSwitchAccountsLink
+  showSwitchAccountsIcon: showSwitchAccountsLink,
+  isV2
 }: Props) {
   // methods
   const onKeyPress = React.useCallback(({ key }: React.KeyboardEvent) => {
@@ -81,7 +84,11 @@ export function SelectAccountItem ({
 
   // render
   return (
-    <StyledWrapper onKeyPress={onKeyPress} onClick={onSelectAccount}>
+    <StyledWrapper
+      onKeyPress={onKeyPress}
+      onClick={onSelectAccount}
+      isV2={isV2}
+    >
       <LeftSide>
         {!selectedNetwork && <AccountCircle orb={orb} />}
         {selectedNetwork &&
@@ -103,7 +110,7 @@ export function SelectAccountItem ({
           >
             <Row justifyContent={'flex-start'}>
               <AccountName>{reduceAccountDisplayName(accountName, 22)}</AccountName>
-              {showSwitchAccountsLink &&
+              {showSwitchAccountsLink && !isV2 &&
                 <SwitchAccountIconContainer>
                   <SwitchAccountIcon />
                 </SwitchAccountIconContainer>
@@ -125,6 +132,7 @@ export function SelectAccountItem ({
       {isSelected &&
         <BigCheckMark />
       }
+      {isV2 && <CaratDown />}
     </StyledWrapper>
   )
 }

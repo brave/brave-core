@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import styled, { css } from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
 import { LoaderIcon } from 'brave-ui/components/icons'
 
 import { WalletButton } from '../style'
@@ -15,8 +16,9 @@ interface LayoutProps {
 export const StyledWrapper = styled.div<LayoutProps>`
   display: flex;
   flex-direction: row;
-  padding: 10px 0;
-  align-items: flex-start;
+  padding: 8px 16px;
+  align-items: center;
+  justify-content: space-between;
   
   ${(p) => p?.layoutType === 'loose'
     ? css`
@@ -32,10 +34,9 @@ export const StyledWrapper = styled.div<LayoutProps>`
 `
 
 export const Logo = styled.img`
-  width: 46px;
+  width: 40px;
   height: auto;
   margin-right: 16px;
-  margin-top: 16px;
 `
 
 export const Content = styled.div`
@@ -47,20 +48,17 @@ export const Content = styled.div`
 export const Name = styled.span`
   font-family: 'Poppins';
   font-style: normal;
-  font-size: 18px;
-  line-height: 26px;
+  font-size: 16px;
+  line-height: 28px;
   font-weight: 600;
-  letter-spacing: 0.02em;
-  color: ${p => p.theme.color.text01};
+  color: ${leo.color.text.primary};
 `
 
 export const Description = styled.span`
   font-family: 'Poppins';
-  font-weight: 400;
   font-size: 12px;
   line-height: 18px;
-  color: ${p => p.theme.color.text02};
-  margin-bottom: 4px;
+  color: ${leo.color.text.secondary};
 `
 
 export const StyledButton = styled(WalletButton)`
@@ -68,24 +66,26 @@ export const StyledButton = styled(WalletButton)`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border-radius: 44px;
-  padding: 6px 18px;
+  border-radius: 1000px;
+  padding: 9px 12px;
   outline: none;
   background-color: transparent;
-  border: ${p => `1px solid ${p.theme.color.interactive08}`};
-  
+  border: 1px solid ${leo.color.divider.strong};
+  white-space: nowrap;
 `
 
 export const ButtonText = styled.span`
   font-family: 'Poppins';
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  color: ${p => p.theme.color.interactive07};
+  line-height: 16px;
+  letter-spacing: 0.36px;
+  color: ${leo.color.text.interactive};
   text-align: center;
 `
 
 export const LoadIcon = styled(LoaderIcon)`
-  color: ${p => p.theme.color.interactive08};
+  color: ${leo.color.text.interactive};
   height: 13px;
   width: 13px;
 `
