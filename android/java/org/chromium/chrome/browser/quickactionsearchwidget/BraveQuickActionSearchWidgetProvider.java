@@ -14,8 +14,7 @@ import org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidg
 public abstract class BraveQuickActionSearchWidgetProvider extends QuickActionSearchWidgetProvider {
     public static void setWidgetEnabled(
             boolean shouldEnableQuickActionSearchWidget, boolean shouldEnableDinoVariant) {
-        setWidgetComponentEnabled(QuickActionSearchWidgetProviderSearch.class, false);
-        setWidgetComponentEnabled(QuickActionSearchWidgetProviderDino.class, false);
+        // Keeping function body empty as we don't need to enable widgets
     }
 
     public static void setWidgetComponentEnabled(

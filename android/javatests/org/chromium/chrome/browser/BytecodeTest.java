@@ -516,9 +516,6 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider",
                 "setWidgetEnabled", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider",
-                "setWidgetComponentEnabled", false, null));
     }
 
     @Test

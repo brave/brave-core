@@ -17,8 +17,5 @@ public class BraveQuickActionSearchWidgetProviderClassAdapter extends BraveClass
         super(visitor);
         changeMethodOwner(sQuickActionSearchWidgetProviderClassName, "setWidgetEnabled",
                 sBraveQuickActionSearchWidgetProviderClassName);
-
-        deleteMethod(sBraveQuickActionSearchWidgetProviderClassName, "setWidgetComponentEnabled");
-        makePublicMethod(sQuickActionSearchWidgetProviderClassName, "setWidgetComponentEnabled");
     }
 }
