@@ -1436,14 +1436,15 @@ export function createWalletApi () {
               gasEstimation: undefined
             }
 
-            const { errorMessage, success } = await txService.addUnapprovedTransaction(
-              isEIP1559
-                ? toTxDataUnion({ ethTxData1559: txData1559 })
-                : toTxDataUnion({ ethTxData: txData }),
-              payload.fromAccount.address,
-              null,
-              null
-            )
+            const { errorMessage, success } =
+              await txService.addUnapprovedTransaction(
+                isEIP1559
+                  ? toTxDataUnion({ ethTxData1559: txData1559 })
+                  : toTxDataUnion({ ethTxData: txData }),
+                payload.fromAccount.address,
+                null,
+                null
+              )
 
             if (!success && errorMessage) {
               return {
@@ -1553,7 +1554,7 @@ export function createWalletApi () {
 
             const { errorMessage, success } =
               await txService.addUnapprovedTransaction(
-                toTxDataUnion({ solanaTxData: txData ?? undefined}),
+                toTxDataUnion({ solanaTxData: txData ?? undefined }),
                 payload.fromAccount.address,
                 null,
                 null
@@ -2342,7 +2343,7 @@ export function createWalletApi () {
           }
         },
         invalidatesTags: (res, err, arg) =>
-          err ? [] : [TX_CACHE_TAGS.ID(arg.txMetaId)]
+          err ? [] : [TX_CACHE_TAGS.ID(arg.txMetaId), 'GasEstimation1559']
       }),
       updateUnapprovedTransactionSpendAllowance: mutation<
         { success: boolean },
