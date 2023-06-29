@@ -54,10 +54,12 @@ export default function PlaylistInfo ({
       </PlaylistDetail>
       <>{!!totalDuration && <PlaylistDetail>{totalDuration}</PlaylistDetail>}</>
       <>
-        {(!!itemCount &&
-          false) /* TODO(sko) We can't get the file size for now */ && (
-          <PlaylistDetail className='playlist-detail'>300 mb</PlaylistDetail>
-        )}
+        {
+          // TODO(sko) We can't get the file size for now
+          // !!itemCount && (
+          //   <PlaylistDetail className='playlist-detail'>300 mb</PlaylistDetail>
+          // )
+        }
       </>
     </PlaylistInfoContainer>
   )

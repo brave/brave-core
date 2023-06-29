@@ -5,8 +5,6 @@
 
 import { Playlist } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
-import thumbnail from './thumbnail.png'
-
 export const mockData: Playlist[] = [
   {
     id: 'default',
@@ -18,9 +16,9 @@ export const mockData: Playlist[] = [
         pageSource: { url: 'https://foo.com/' },
         pageRedirected: { url: 'https://foo.com/' },
         mediaSource: { url: 'https://foo.com/video.mp4' },
-        mediaPath: { url: 'https://foo.com/video.mp4' },
-        thumbnailSource: { url: thumbnail },
-        thumbnailPath: { url: thumbnail },
+        mediaPath: { url: 'playlist/sample_video.mp4' },
+        thumbnailSource: { url: 'playlist/thumbnail.png' },
+        thumbnailPath: { url: 'playlist/thumbnail.png' },
         cached: false,
         lastPlayedPosition: 0,
         author: 'Creator',
@@ -40,9 +38,9 @@ export const mockData: Playlist[] = [
         pageSource: { url: 'https://foo.com/' },
         pageRedirected: { url: 'https://foo.com/' },
         mediaSource: { url: 'https://foo.com/video.mp4' },
-        mediaPath: { url: 'https://foo.com/video.mp4' },
-        thumbnailSource: { url: thumbnail },
-        thumbnailPath: { url: thumbnail },
+        mediaPath: { url: 'playlist/sample_video.mp4' },
+        thumbnailSource: { url: 'playlist/thumbnail.png' },
+        thumbnailPath: { url: 'playlist/thumbnail.png' },
         cached: false,
         lastPlayedPosition: 0,
         author: 'Creator',
@@ -55,7 +53,7 @@ export const mockData: Playlist[] = [
         pageSource: { url: 'https://foo.com/' },
         pageRedirected: { url: 'https://foo.com/' },
         mediaSource: { url: 'https://foo.com/video.mp4' },
-        mediaPath: { url: 'https://foo.com/video.mp4' },
+        mediaPath: { url: 'playlist/sample_video.mp4' },
         thumbnailSource: { url: '' },
         thumbnailPath: { url: '' },
         cached: true,

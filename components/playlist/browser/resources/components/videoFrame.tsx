@@ -11,9 +11,7 @@ interface Props {
 };
 
 const StyledVideoFrame = styled.iframe`
-  // 16:9 aspect ratio
   width: 100vw;
-  height: 56vw;
   border: none;
 `
 

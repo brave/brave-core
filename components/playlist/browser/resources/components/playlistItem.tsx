@@ -6,7 +6,7 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
 
-import { color, font  } from '@brave/leo/tokens/css'
+import { color, font } from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 import DefaultThumbnailIcon from '../assets/playlist-thumbnail-icon.svg'
 
@@ -26,11 +26,11 @@ const ThumbnailStyle = css`
   border-radius: 4px;
 `
 const StyledThumbnail = styled.img`
-  ${ ThumbnailStyle }
+  ${ThumbnailStyle}
 `
 
 const DefaultThumbnail = styled.div`
-  ${ ThumbnailStyle }
+  ${ThumbnailStyle}
   content: url(${DefaultThumbnailIcon});
 `
 
@@ -85,9 +85,9 @@ export default function PlaylistItem ({
         <ItemName className='playlist-item-name'>{name}</ItemName>
         {
           <ItemDetailsContainer>
-            {false && <span>duration</span> /* TODO(sko) not ready yet */}
-            {cached && <Icon name="check-circle-outline" />}
-            {false && <span>350 MB</span> /* TODO(sko) not ready yet */}
+            {<span>duration</span> && false /* TODO(sko) not ready yet */}
+            {cached && <Icon name='check-circle-outline' />}
+            {<span>350 MB</span> && false /* TODO(sko) not ready yet */}
           </ItemDetailsContainer>
         }
       </ItemInfoContainer>

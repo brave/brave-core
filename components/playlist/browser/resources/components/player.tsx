@@ -11,13 +11,39 @@ import { ApplicationState } from 'components/playlist/browser/resources/reducers
 import { PlaylistItem } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
 import { getAllActions } from '../api/getAllActions'
+import PlayerControls from './playerControls'
+import { color, font } from '@brave/leo/tokens/css'
+import PlayerSeeker from './playerSeeker'
 
 const StyledVideo = styled.video`
+  // 16:9 aspect ratio
   width: 100vw;
-  height: 100vh;
+  height: 56vw;
 `
 
-export default function Player () {
+const PlayerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  user-select: none;  // In order to drag-and-drop on the seeker works well.
+`
+
+const ControlsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  gap: 8px;
+`
+
+const StyledTitle = styled.span`
+  color: ${color.text.primary};
+  font: ${font.desktop.primary.large.semibold};
+`
+
+const StyledPlayerControls = styled(PlayerControls)`
+  padding-top: 8px;
+`
+
+export default function Player() {
   const currentItem = useSelector<ApplicationState, PlaylistItem | undefined>(
     applicationState => applicationState.playerState?.currentItem
   )
@@ -26,28 +52,38 @@ export default function Player () {
     applicationState => applicationState.playerState?.currentItem
   )
 
-  // Route changes in props to parent frame.
   React.useEffect(() => {
-    window.parent.postMessage(
-      {
-        currentItem,
-        playing
-      },
-      'chrome-untrusted://playlist'
-    )
-  })
+    // Route changes in props to parent frame.
+    // Note that we are checking this condition as per SonarCloud.
+    if (location.protocol.startsWith('chrome-untrusted:')) {
+      window.parent.postMessage(
+        {
+          currentItem,
+          playing
+        },
+        'chrome-untrusted://playlist'
+      )
+    }
+  }, [playing])
+
+  let videoElementRef = React.useRef<HTMLVideoElement>(null)
 
   return (
-    <StyledVideo
-      id='player'
-      autoPlay
-      controls
-      onPlay={() => getAllActions().playerStartedPlayingItem(currentItem)}
-      onPause={() => getAllActions().playerStoppedPlayingItem(currentItem)}
-      onEnded={() => getAllActions().playerStoppedPlayingItem(currentItem)}
-      src={currentItem?.mediaPath.url}
-    />
+    <PlayerContainer>
+      <StyledVideo
+        ref={videoElementRef}
+        id='player'
+        autoPlay
+        onPlay={() => getAllActions().playerStartedPlayingItem(currentItem)}
+        onPause={() => getAllActions().playerStoppedPlayingItem(currentItem)}
+        onEnded={() => getAllActions().playerStoppedPlayingItem(currentItem)}
+        src={currentItem?.mediaPath.url}
+      />
+      <ControlsContainer>
+        <StyledTitle>{currentItem?.name}</StyledTitle>
+        <PlayerSeeker videoElementRef={videoElementRef} />
+        <StyledPlayerControls videoElementRef={videoElementRef} />
+      </ControlsContainer>
+    </PlayerContainer>
   )
 }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Player)
