@@ -180,6 +180,8 @@ public struct OnboardingPlaylistView: View {
         case .details:
           DetailsStepView(advance: {
             model.step = .tryItOut
+          }, dismiss: {
+            dismiss()
           })
           .transition(.asymmetric(insertion: .opacity.animation(.default.delay(0.1)), removal: .opacity.animation(.default)))
           .accessibilityFocused($accessibilityFocusStep, equals: .details)
@@ -205,6 +207,8 @@ public struct OnboardingPlaylistView: View {
       if model.step == .details {
         DetailsStepView(advance: {
           model.step = .tryItOut
+        }, dismiss: {
+          dismiss()
         })
         .expandedViewButtons
         .foregroundStyle(.white)
@@ -290,7 +294,7 @@ extension OnboardingPlaylistView {
   
   struct DetailsStepView: View {
     var advance: () -> Void
-    @Environment(\.dismiss) private var dismiss
+    var dismiss: () -> Void
     
     var body: some View {
       VStack(spacing: 24) {
