@@ -752,6 +752,10 @@ const util = {
       }
     }
     fs.writeFileSync(versionFilePath, versionLines.join('\n'))
+    versionLines.pop()
+    console.log(
+      `chrome/VERSION: ${versionLines.join('.').replace(/[A-Z=]/g, '')}`
+    )
   },
 
   buildArgsToString: (buildArgs) => {
