@@ -10,6 +10,7 @@ import RampIcon from '../assets/svg-icons/ramp-icon.svg'
 import SardineIconLight from '../assets/svg-icons/sardine-logo-light.svg'
 import SardineIconDark from '../assets/svg-icons/sardine-logo-dark.svg'
 import TransakIcon from '../assets/svg-icons/transak-logo.svg'
+import StripeIcon from '../assets/svg-icons/stripe-logo.svg'
 
 function getBuyOptions (): BuyOption[] {
   const buyOptions = [{
@@ -25,6 +26,13 @@ function getBuyOptions (): BuyOption[] {
     icon: TransakIcon,
     name: getLocale('braveWalletBuyTransakName'),
     description: getLocale('braveWalletBuyTransakDescription')
+  },
+  {
+    id: BraveWallet.OnRampProvider.kStripe,
+    actionText: getLocale('braveWalletBuyWithStripe'),
+    icon: StripeIcon,
+    name: getLocale('braveWalletBuyStripeName'),
+    description: getLocale('braveWalletBuyStripeDescription')
   },
   {
     id: BraveWallet.OnRampProvider.kSardine,

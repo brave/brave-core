@@ -55,12 +55,14 @@ export const useMultiChainBuyAssets = () => {
       rampAssetOptions: BraveWallet.BlockchainToken[]
       sardineAssetOptions: BraveWallet.BlockchainToken[]
       transakAssetOptions: BraveWallet.BlockchainToken[]
+      stripeAssetOptions: BraveWallet.BlockchainToken[]
       allAssetOptions: BraveWallet.BlockchainToken[]
     }
   >({
     rampAssetOptions: [],
     sardineAssetOptions: [],
     transakAssetOptions: [],
+    stripeAssetOptions: [],
     allAssetOptions: []
   })
 
@@ -73,11 +75,12 @@ export const useMultiChainBuyAssets = () => {
 
   // memos
   const selectedAssetBuyOptions: BuyOption[] = React.useMemo(() => {
-    const { rampAssetOptions, sardineAssetOptions, transakAssetOptions } = options
+    const { rampAssetOptions, sardineAssetOptions, transakAssetOptions, stripeAssetOptions } = options
     const onRampAssetMap = {
       [BraveWallet.OnRampProvider.kRamp]: rampAssetOptions,
       [BraveWallet.OnRampProvider.kSardine]: sardineAssetOptions,
-      [BraveWallet.OnRampProvider.kTransak]: transakAssetOptions
+      [BraveWallet.OnRampProvider.kTransak]: transakAssetOptions,
+      [BraveWallet.OnRampProvider.kStripe]: stripeAssetOptions
     }
     return selectedAsset
       ? [...BuyOptions]
@@ -112,6 +115,7 @@ export const useMultiChainBuyAssets = () => {
             rampAssetOptions: filterTokensByNetworks(result.rampAssetOptions, buyAssetNetworks),
             sardineAssetOptions: filterTokensByNetworks(result.sardineAssetOptions, buyAssetNetworks),
             transakAssetOptions: filterTokensByNetworks(result.transakAssetOptions, buyAssetNetworks),
+            stripeAssetOptions: filterTokensByNetworks(result.stripeAssetOptions, buyAssetNetworks),
             allAssetOptions: filterTokensByNetworks(result.allAssetOptions, buyAssetNetworks)
           })
         }
