@@ -41,6 +41,10 @@ extension BraveWallet.NetworkInfo: Identifiable {
   var shortChainName: String {
     chainName.split(separator: " ").first?.capitalized ?? chainName
   }
+  
+  var isKnownTestnet: Bool {
+    WalletConstants.supportedTestNetworkChainIds.contains(chainId)
+  }
 
   public var nativeToken: BraveWallet.BlockchainToken {
     .init(

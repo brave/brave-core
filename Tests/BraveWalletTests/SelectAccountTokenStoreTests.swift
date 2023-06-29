@@ -20,10 +20,27 @@ import BraveCore
     .mockSolanaNFTToken.copy(asVisibleAsset: true).then { $0.chainId = BraveWallet.SolanaTestnet }
   ]
   private var allUserAssetsInNetworkAssets: [NetworkAssets] {
-    [NetworkAssets(network: .mockMainnet, tokens: [.previewToken.copy(asVisibleAsset: true)], sortOrder: 0),
-     NetworkAssets(network: .mockGoerli, tokens: [.mockUSDCToken.copy(asVisibleAsset: true).then { $0.chainId = BraveWallet.GoerliChainId }], sortOrder: 1),
-     NetworkAssets(network: .mockSolana, tokens: [.mockSolToken.copy(asVisibleAsset: true), .mockSpdToken.copy(asVisibleAsset: false)], sortOrder: 2),
-     NetworkAssets(network: .mockSolanaTestnet, tokens: [.mockSolanaNFTToken.copy(asVisibleAsset: true).then { $0.chainId = BraveWallet.SolanaTestnet }], sortOrder: 3)
+    [
+      NetworkAssets(
+        network: .mockMainnet,
+        tokens: [allUserAssets[0]],
+        sortOrder: 0
+      ),
+      NetworkAssets(
+        network: .mockGoerli,
+        tokens: [allUserAssets[1]],
+        sortOrder: 1
+      ),
+      NetworkAssets(
+        network: .mockSolana,
+        tokens: [allUserAssets[2], allUserAssets[3]],
+        sortOrder: 2
+      ),
+      NetworkAssets(
+        network: .mockSolanaTestnet,
+        tokens: [allUserAssets[4]],
+        sortOrder: 3
+      )
     ]
   }
   
@@ -66,7 +83,7 @@ import BraveCore
     let ethBalanceWei = formatter.weiString(
       from: mockETHBalance,
       radix: .hex,
-      decimals: Int(BraveWallet.BlockchainToken.previewToken.decimals)
+      decimals: Int(allUserAssets[0].decimals)
     ) ?? ""
     let mockETHAssetPrice: BraveWallet.AssetPrice = .init(
       fromAsset: "eth", toAsset: "usd",
@@ -74,7 +91,7 @@ import BraveCore
     let usdcBalanceWei = formatter.weiString(
       from: mockUSDCBalance,
       radix: .hex,
-      decimals: Int(BraveWallet.BlockchainToken.mockUSDCToken.decimals)
+      decimals: Int(allUserAssets[1].decimals)
     ) ?? ""
     let mockUSDCAssetPrice: BraveWallet.AssetPrice = .init(
       fromAsset: allUserAssets[1].assetRatioId.lowercased(), toAsset: "usd",
@@ -110,11 +127,7 @@ import BraveCore
       completion(self.allNetworks.filter { $0.coin == coin })
     }
     rpcService._balance = { accountAddress, _, _, completion in
-      if accountAddress == BraveWallet.AccountInfo.mockEthAccount.address {
-        completion(ethBalanceWei, .success, "") // eth balance for `mockEthAccount`
-        return
-      }
-      completion("0", .success, "") // 0 eth balance for `mockEthAccount2`
+      completion(ethBalanceWei, .success, "") // eth balance for both eth accounts
     }
     rpcService._erc20TokenBalance = { contractAddress, accountAddress, _, completion in
       if accountAddress == self.mockEthAccount2.address {
@@ -198,8 +211,8 @@ import BraveCore
         XCTAssertEqual(accountSections[safe: 0]?.tokenBalances[safe: 1]?.token, self.allUserAssets[1]) // USDC
         
         XCTAssertEqual(accountSections[safe: 1]?.account, self.mockEthAccount2)
-        XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 0]?.token, self.allUserAssets[1]) // USDC
-        XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 1]?.token, self.allUserAssets[0]) // ETH
+        XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 0]?.token, self.allUserAssets[0]) // ETH
+        XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 1]?.token, self.allUserAssets[1]) // USDC (Goerli)
         
         XCTAssertEqual(accountSections[safe: 2]?.account, .mockSolAccount)
         XCTAssertEqual(accountSections[safe: 2]?.tokenBalances[safe: 0]?.token, self.allUserAssets[2]) // SOL
@@ -224,11 +237,17 @@ import BraveCore
     
     // Ethereum Account 2
     XCTAssertEqual(accountSections[safe: 1]?.account, self.mockEthAccount2)
-    XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 0]?.token, self.allUserAssets[1]) // USDC
-    XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 0]?.network.chainId, BraveWallet.GoerliChainId)
-    XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 0]?.balance, mockUSDCBalance)
-    XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 0]?.price, "$4.00")
-    XCTAssertNil(accountSections[safe: 1]?.tokenBalances[safe: 1]) // no ETH balance, token hidden
+    XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 0]?.token, self.allUserAssets[0]) // ETH
+    XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 0]?.network.chainId, BraveWallet.MainnetChainId)
+    XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 0]?.balance, mockETHBalance)
+    XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 0]?.price, "$2,741.75")
+    XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 1]?.token, self.allUserAssets[1]) // USDC
+    XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 1]?.network.chainId, BraveWallet.GoerliChainId)
+    XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 1]?.balance, mockUSDCBalance)
+    XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 1]?.price, "$4.00")
+    let ethAccount2EthBalance = accountSections[safe: 1]?.tokenBalances[safe: 0]?.balance ?? 0
+    let ethAccount2USDCBalance = accountSections[safe: 1]?.tokenBalances[safe: 1]?.balance ?? 0
+    XCTAssertTrue(ethAccount2EthBalance < ethAccount2USDCBalance) // eth has smaller balance, but usdc on testnet
     
     // Solana Account 1
     XCTAssertEqual(accountSections[safe: 2]?.account, .mockSolAccount)
@@ -253,8 +272,8 @@ import BraveCore
     
     // Ethereum Account 2
     XCTAssertEqual(accountSections[safe: 1]?.account, self.mockEthAccount2)
-    XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 0]?.token, self.allUserAssets[1]) // USDC
-    XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 1]?.token, self.allUserAssets[0]) // ETH
+    XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 0]?.token, self.allUserAssets[0]) // ETH
+    XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 1]?.token, self.allUserAssets[1]) // USDC (Goerli)
     
     // Solana Account 1
     XCTAssertEqual(accountSections[safe: 2]?.account, .mockSolAccount)
