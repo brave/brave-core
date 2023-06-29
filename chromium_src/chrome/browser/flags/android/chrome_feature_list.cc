@@ -48,6 +48,7 @@ namespace android {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAddToHomescreenIPH, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kBaselineGM3SurfaceColors, base::FEATURE_DISABLED_BY_DEFAULT},
     // Disable until we sort out UI issues
     // https://github.com/brave/brave-browser/issues/29688
     {kIncognitoReauthenticationForAndroid, base::FEATURE_DISABLED_BY_DEFAULT},
