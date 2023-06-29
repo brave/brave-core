@@ -147,6 +147,11 @@ void BraveMainDelegate::PreSandboxStartup() {
 absl::optional<int> BraveMainDelegate::PostEarlyInitialization(
     ChromeMainDelegate::InvokedIn invoked_in) {
   auto result = ChromeMainDelegate::PostEarlyInitialization(invoked_in);
+  if (result.has_value()) {
+    // An exit code is set. Stop initialization.
+    return result;
+  }
+
   BraveCommandLineHelper command_line(base::CommandLine::ForCurrentProcess());
   std::string update_url = GetUpdateURLHost();
   if (!update_url.empty()) {
