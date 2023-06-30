@@ -161,30 +161,6 @@ bool ShouldCheckTokenId(const brave_wallet::mojom::BlockchainTokenPtr& token) {
   return token->is_erc721 || token->is_erc1155;
 }
 
-// net::NetworkTrafficAnnotationTag
-// GetAssetDiscoveryManagerNetworkTrafficAnnotationTag() {
-//   return net::DefineNetworkTrafficAnnotation("brave_wallet_service", R"(
-//       semantics {
-//         sender: "Asset Discovery Manager"
-//         description:
-//           "This service is used to discover crypto assets on behalf "
-//           "of the user interacting with the native Brave wallet."
-//         trigger:
-//           "Triggered by uses of the native Brave wallet."
-//         data:
-//           "NFT assets."
-//         destination: WEBSITE
-//       }
-//       policy {
-//         cookies_allowed: NO
-//         setting:
-//           "You can enable or disable this feature on chrome://flags."
-//         policy_exception_justification:
-//           "Not implemented."
-//       }
-//     )");
-// }
-
 }  // namespace
 
 namespace brave_wallet {

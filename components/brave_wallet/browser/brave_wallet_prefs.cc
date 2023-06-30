@@ -263,7 +263,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   // Added 03/23 to have is_erc1155 set false for existing ERC1155 tokens.
   BraveWalletService::MigrateUserAssetsAddIsERC1155(prefs);
 
-  // Added 06/23 to have is_spam set false for existing tokens.
+  // Added 07/23 to have is_spam set false for existing tokens.
   BraveWalletService::MigrateUserAssetsAddIsSpam(prefs);
 
   JsonRpcService::MigrateMultichainNetworks(prefs);

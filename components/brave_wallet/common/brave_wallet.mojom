@@ -1786,6 +1786,7 @@ interface BraveWalletService {
                         string? cursor)
     => (array<BlockchainToken> tokens, string? cursor);
 
+  // Resets the keyring and the related preferences
   Reset();
 
   // Used for UI to trigger the allowance discovery

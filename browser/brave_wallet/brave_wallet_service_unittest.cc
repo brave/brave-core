@@ -13,6 +13,7 @@
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
@@ -2055,9 +2056,8 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetsAddIsSpam) {
       ]
     }
   })";
-  auto user_assets_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(user_assets_value);
-  GetPrefs()->Set(kBraveWalletUserAssets, *user_assets_value);
+  auto user_assets_value = base::test::ParseJson(json);
+  GetPrefs()->Set(kBraveWalletUserAssets, user_assets_value);
   ASSERT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletUserAssets));
   BraveWalletService::MigrateUserAssetsAddIsSpam(GetPrefs());
 
@@ -2066,9 +2066,8 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetsAddIsSpam) {
       "\"is_erc721\": false, \"is_spam\": false");
   base::ReplaceSubstringsAfterOffset(&json, 0, "\"is_erc721\": true",
                                      "\"is_erc721\": true, \"is_spam\": false");
-  user_assets_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(user_assets_value);
-  EXPECT_EQ(GetPrefs()->GetValue(kBraveWalletUserAssets), *user_assets_value);
+  user_assets_value = base::test::ParseJson(json);
+  EXPECT_EQ(GetPrefs()->GetValue(kBraveWalletUserAssets), user_assets_value);
 
   EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletUserAssetsAddIsSpamMigrated));
 }
