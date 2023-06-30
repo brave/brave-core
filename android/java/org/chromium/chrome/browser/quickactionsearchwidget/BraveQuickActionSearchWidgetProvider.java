@@ -7,19 +7,9 @@
 
 package org.chromium.chrome.browser.quickactionsearchwidget;
 
-import androidx.annotation.NonNull;
-
-import org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider;
-
 public abstract class BraveQuickActionSearchWidgetProvider extends QuickActionSearchWidgetProvider {
     public static void setWidgetEnabled(
             boolean shouldEnableQuickActionSearchWidget, boolean shouldEnableDinoVariant) {
         // Keeping function body empty as we don't need to enable widgets
-    }
-
-    public static void setWidgetComponentEnabled(
-            @NonNull Class<? extends QuickActionSearchWidgetProvider> component,
-            boolean shouldEnableWidgetComponent) {
-        assert false : "setWidgetComponentEnabled should be redirected to parent in bytecode!";
     }
 }
