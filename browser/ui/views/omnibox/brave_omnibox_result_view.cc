@@ -34,7 +34,9 @@ BraveOmniboxResultView::~BraveOmniboxResultView() = default;
 void BraveOmniboxResultView::ResetChildrenVisibility() {
   // Reset children visibility. Their visibility could be configured later
   // based on |match_| and the current input.
-  suggestion_container_->SetVisible(true);
+  // NOTE: The first child in the result box is supposed to be the
+  // `suggestion_container_`, which used to be stored as a data member.
+  children().front()->SetVisible(true);
   button_row_->SetVisible(true);
   if (brave_search_promotion_view_) {
     brave_search_promotion_view_->SetVisible(false);
@@ -87,7 +89,9 @@ void BraveOmniboxResultView::UpdateForBraveSearchConversion() {
     return;
 
   // Hide upstream children and show our promotion view.
-  suggestion_container_->SetVisible(false);
+  // NOTE: The first child in the result box is supposed to be the
+  // `suggestion_container_`, which used to be stored as a data member.
+  children().front()->SetVisible(false);
   button_row_->SetVisible(false);
 
   if (!brave_search_promotion_view_) {
