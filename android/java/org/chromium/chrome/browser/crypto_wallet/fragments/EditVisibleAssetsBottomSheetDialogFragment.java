@@ -43,7 +43,6 @@ import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
@@ -135,15 +134,6 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         Activity activity = getActivity();
         if (activity instanceof BraveWalletBaseActivity) {
             return ((BraveWalletBaseActivity) activity).getKeyringService();
-        }
-
-        return null;
-    }
-
-    private JsonRpcService getJsonRpcService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletBaseActivity) {
-            return ((BraveWalletBaseActivity) activity).getJsonRpcService();
         }
 
         return null;
@@ -605,10 +595,12 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     @Override
     public void onMaybeShowTrashButton(
             WalletListItemModel walletListItemModel, ImageView trashButton) {
-        if (mType != WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) return;
+        assert walletListItemModel.getAssetNetwork() != null : "Network should not be null";
+        // Prevent NPE of network, issue:#31303
+        if (mType != WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST
+                || walletListItemModel.getAssetNetwork() == null)
+            return;
 
-        JsonRpcService jsonRpcService = getJsonRpcService();
-        if (jsonRpcService == null) return;
         TokenUtils.isCustomToken(getBlockchainRegistry(), walletListItemModel.getAssetNetwork(),
                 walletListItemModel.getAssetNetwork().coin,
                 walletListItemModel.getBlockchainToken(), isCustom -> {
@@ -621,9 +613,11 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     @Override
     public void onAssetCheckedChanged(
             WalletListItemModel walletListItemModel, CheckBox assetCheck, boolean isChecked) {
-        if (mType != WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) return;
-        JsonRpcService jsonRpcService = getJsonRpcService();
-        if (jsonRpcService == null) return;
+        assert walletListItemModel.getAssetNetwork() != null : "Network should not be null";
+        // Prevent NPE of network, issue:#31303
+        if (mType != WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST
+                || walletListItemModel.getAssetNetwork() == null)
+            return;
 
         BlockchainToken thisToken = walletListItemModel.getBlockchainToken();
         TokenUtils.isCustomToken(getBlockchainRegistry(), walletListItemModel.getAssetNetwork(),

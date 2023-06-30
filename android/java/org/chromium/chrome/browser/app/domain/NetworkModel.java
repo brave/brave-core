@@ -26,6 +26,7 @@ import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
+import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkResponsesCollector;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
@@ -40,9 +41,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class NetworkModel implements JsonRpcServiceObserver {
     private JsonRpcService mJsonRpcService;
@@ -138,9 +141,8 @@ public class NetworkModel implements JsonRpcServiceObserver {
             });
         });
         _mDefaultCoinCryptoNetworks.addSource(mSharedData.getCoinTypeLd(), coinType -> {
-            mJsonRpcService.getAllNetworks(coinType, networkInfos -> {
-                _mDefaultCoinCryptoNetworks.postValue(
-                        stripDebugNetwork(context, Arrays.asList(networkInfos)));
+            getAllNetworks(mJsonRpcService, Collections.singletonList(coinType), networkInfoSet -> {
+                _mDefaultCoinCryptoNetworks.postValue(new ArrayList<>(networkInfoSet));
             });
         });
 
@@ -274,7 +276,16 @@ public class NetworkModel implements JsonRpcServiceObserver {
 
         NetworkResponsesCollector networkResponsesCollector =
                 new NetworkResponsesCollector(jsonRpcService, supportedCoins);
-        networkResponsesCollector.getNetworks(networkInfos -> { callback.call(networkInfos); });
+        networkResponsesCollector.getNetworks(networkInfoSet -> {
+            if (!AndroidUtils.isDebugBuild()) {
+                networkInfoSet =
+                        networkInfoSet.stream()
+                                .filter(networkInfo
+                                        -> !NetworkUtils.Filters.isLocalNetwork(networkInfo))
+                                .collect(Collectors.toSet());
+            }
+            callback.call(networkInfoSet);
+        });
     }
 
     public void init() {
@@ -283,10 +294,8 @@ public class NetworkModel implements JsonRpcServiceObserver {
                 return;
             }
 
-            getAllNetworks(mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
-                _mCryptoNetworks.postValue(
-                        stripDebugNetwork(mContext, new ArrayList<>(allNetworks)));
-            });
+            getAllNetworks(mJsonRpcService, mSharedData.getSupportedCryptoCoins(),
+                    allNetworks -> { _mCryptoNetworks.postValue(new ArrayList<>(allNetworks)); });
         }
     }
 
@@ -357,21 +366,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
 
     void setOrigin(Origin origin) {
         mOrigin = origin;
-    }
-
-    private List<NetworkInfo> stripDebugNetwork(Context context, List<NetworkInfo> networkInfos) {
-        if ((context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
-            return networkInfos;
-        } else {
-            List<NetworkInfo> networkInfosFiltered = new ArrayList<>();
-            // remove localhost network
-            for (NetworkInfo networkInfo : networkInfos) {
-                if (!networkInfo.chainId.equals(BraveWalletConstants.LOCALHOST_CHAIN_ID)) {
-                    networkInfosFiltered.add(networkInfo);
-                }
-            }
-            return networkInfosFiltered;
-        }
     }
 
     List<NetworkInfo> getSubTestNetworks(NetworkInfo networkInfo) {

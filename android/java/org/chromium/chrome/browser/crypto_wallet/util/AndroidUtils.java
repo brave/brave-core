@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.util;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 
 public class AndroidUtils {
@@ -119,5 +121,14 @@ public class AndroidUtils {
     public static int getSkeletonRowCount(int skeletonRowHeight) {
         int pxHeight = getScreenHeight();
         return (int) Math.floor(pxHeight / skeletonRowHeight);
+    }
+
+    /**
+     * @return {@code true} if the app is a debug build, {@code false} otherwise.
+     */
+    public static boolean isDebugBuild() {
+        return (ContextUtils.getApplicationContext().getApplicationInfo().flags
+                       & ApplicationInfo.FLAG_DEBUGGABLE)
+                != 0;
     }
 }

@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import android.content.Context;
 import android.text.TextUtils;
 
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.url.mojom.Url;
@@ -26,6 +27,10 @@ public class NetworkUtils {
 
         public static boolean isSameNetwork(NetworkInfo network1, NetworkInfo network2) {
             return isSameNetwork(network1, network2.chainId, network2.coin);
+        }
+
+        public static boolean isLocalNetwork(NetworkInfo network) {
+            return network.chainId.equals(BraveWalletConstants.LOCALHOST_CHAIN_ID);
         }
     }
 
