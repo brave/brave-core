@@ -16,6 +16,7 @@ import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
+import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.content_public.browser.BrowserStartupController;
 
 import java.util.concurrent.Callable;
@@ -39,6 +40,18 @@ public class BraveIntentHandler extends IntentHandler {
         String url = getUrlFromIntent(intent);
         if (url != null && url.equals(CONNECTION_INFO_HELP_URL)) {
             intent.setData(Uri.parse(BRAVE_CONNECTION_INFO_HELP_URL));
+        }
+        String appLinkAction = intent.getAction();
+        Uri appLinkData = intent.getData();
+
+        if (Intent.ACTION_VIEW.equals(appLinkAction) && appLinkData != null) {
+            String lastPathSegment = appLinkData.getLastPathSegment();
+            if (lastPathSegment != null
+                    && (lastPathSegment.equalsIgnoreCase(BraveConstants.DEEPLINK_ANDROID_PLAYLIST)
+                            || lastPathSegment.equalsIgnoreCase(
+                                    BraveConstants.DEEPLINK_ANDROID_VPN))) {
+                return false;
+            }
         }
         return super.onNewIntent(intent);
     }
