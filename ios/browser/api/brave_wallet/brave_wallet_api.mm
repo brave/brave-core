@@ -130,9 +130,15 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
   if (!json_rpc_service) {
     return nil;
   }
+  auto* host_content_settings_map =
+      ios::HostContentSettingsMapFactory::GetForBrowserState(browserState);
+  if (!host_content_settings_map) {
+    return nil;
+  }
 
   auto provider = std::make_unique<brave_wallet::SolanaProviderImpl>(
-      keyring_service, brave_wallet_service, tx_service, json_rpc_service,
+      *host_content_settings_map, keyring_service, brave_wallet_service,
+      tx_service, json_rpc_service,
       std::make_unique<brave_wallet::BraveWalletProviderDelegateBridge>(
           delegate));
   return [[BraveWalletSolanaProviderOwnedImpl alloc]

@@ -255,6 +255,12 @@ void JSSolanaProvider::AccountChangedEvent(
   FireEvent(solana::kAccountChangedEvent, std::move(args));
 }
 
+void JSSolanaProvider::DisconnectEvent() {
+  v8::Isolate* isolate = blink::MainThreadIsolate();
+  v8::HandleScope handle_scope(isolate);
+  FireEvent(kDisconnectEvent, std::vector<v8::Local<v8::Value>>());
+}
+
 void JSSolanaProvider::WillReleaseScriptContext(v8::Local<v8::Context>,
                                                 int32_t world_id) {
   if (world_id != content::ISOLATED_WORLD_ID_GLOBAL) {
@@ -365,7 +371,6 @@ v8::Local<v8::Promise> JSSolanaProvider::Disconnect(gin::Arguments* arguments) {
   std::ignore = resolver.ToLocalChecked()->Resolve(isolate->GetCurrentContext(),
                                                    v8::Undefined(isolate));
 
-  FireEvent(kDisconnectEvent, std::vector<v8::Local<v8::Value>>());
   return resolver.ToLocalChecked()->GetPromise();
 }
 

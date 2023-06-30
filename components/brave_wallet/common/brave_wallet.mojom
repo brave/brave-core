@@ -28,6 +28,8 @@ interface SolanaEventsListener {
   // base58 encoded account, account would be null when switching to an about to
   // be created account
   AccountChangedEvent(string? account);
+  // Wallet initiated disconnect event. Ex. permission revoked
+  DisconnectEvent();
 };
 
 // Pre-defined error codes specified in

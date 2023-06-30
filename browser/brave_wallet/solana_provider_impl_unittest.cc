@@ -46,8 +46,11 @@
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
+
+using testing::_;
 
 namespace brave_wallet {
 
@@ -60,40 +63,24 @@ constexpr char kEncodedSerializedMsg[] =
 constexpr char kHardwareAccountAddr[] =
     "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw";
 
-class TestEventsListener : public mojom::SolanaEventsListener {
+class MockEventsListener : public mojom::SolanaEventsListener {
  public:
-  TestEventsListener() = default;
+  MockEventsListener() = default;
 
-  void AccountChangedEvent(
-      const absl::optional<std::string>& account) override {
-    if (account.has_value()) {
-      account_ = *account;
-    }
-    account_changed_fired_ = true;
-  }
+  MOCK_METHOD(void,
+              AccountChangedEvent,
+              (const absl::optional<std::string>&),
+              (override));
+  MOCK_METHOD(void, DisconnectEvent, (), (override));
 
-  bool AccountChangedFired() const {
+  void WaitAndVerify() {
     base::RunLoop().RunUntilIdle();
-    return account_changed_fired_;
-  }
-
-  std::string GetAccount() const {
-    base::RunLoop().RunUntilIdle();
-    return account_;
+    testing::Mock::VerifyAndClearExpectations(this);
   }
 
   mojo::PendingRemote<mojom::SolanaEventsListener> GetReceiver() {
     return observer_receiver_.BindNewPipeAndPassRemote();
   }
-
-  void Reset() {
-    account_.clear();
-    account_changed_fired_ = false;
-    EXPECT_FALSE(AccountChangedFired());
-  }
-
-  bool account_changed_fired_ = false;
-  std::string account_;
 
  private:
   mojo::Receiver<mojom::SolanaEventsListener> observer_receiver_{this};
@@ -152,11 +139,15 @@ class SolanaProviderImplUnitTest : public testing::Test {
         base::WrapUnique(static_cast<permissions::BravePermissionManager*>(
             PermissionManagerFactory::GetInstance()->BuildServiceInstanceFor(
                 browser_context()))));
+    auto* host_content_settings_map =
+        HostContentSettingsMapFactory::GetForProfile(browser_context());
+    ASSERT_TRUE(host_content_settings_map);
     provider_ = std::make_unique<SolanaProviderImpl>(
-        keyring_service_, brave_wallet_service_, tx_service_, json_rpc_service_,
+        *host_content_settings_map, keyring_service_, brave_wallet_service_,
+        tx_service_, json_rpc_service_,
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
             web_contents(), web_contents()->GetPrimaryMainFrame()));
-    observer_ = std::make_unique<TestEventsListener>();
+    observer_ = std::make_unique<MockEventsListener>();
     provider_->Init(observer_->GetReceiver());
   }
 
@@ -486,7 +477,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
 
  protected:
   std::unique_ptr<SolanaProviderImpl> provider_;
-  std::unique_ptr<TestEventsListener> observer_;
+  std::unique_ptr<MockEventsListener> observer_;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
 
@@ -688,21 +679,22 @@ TEST_F(SolanaProviderImplUnitTest, Disconnect) {
   ASSERT_TRUE(!account.empty());
   ASSERT_TRUE(IsConnected());
 
+  EXPECT_CALL(*observer_, DisconnectEvent());
   provider_->Disconnect();
   EXPECT_FALSE(IsConnected());
+  observer_->WaitAndVerify();
 }
 
 TEST_F(SolanaProviderImplUnitTest,
        AccountChangedEvent_RemoveSelectedHardwareAccount) {
-  ASSERT_FALSE(observer_->AccountChangedFired());
+  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   CreateWallet();
   auto added_hw_account = AddHardwareAccount(kHardwareAccountAddr);
+  observer_->WaitAndVerify();
 
-  EXPECT_FALSE(observer_->AccountChangedFired());
-
+  EXPECT_CALL(*observer_, AccountChangedEvent(absl::optional<std::string>()));
   SetSelectedAccount(added_hw_account->account_id);
-  EXPECT_TRUE(observer_->AccountChangedFired());
-  observer_->Reset();
+  observer_->WaitAndVerify();
 
   // Connect the account.
   Navigate(GURL("https://brave.com"));
@@ -711,24 +703,24 @@ TEST_F(SolanaProviderImplUnitTest,
   ASSERT_TRUE(!account.empty());
   ASSERT_TRUE(IsConnected());
 
+  // Account is empty because GetSelectedAccount returns absl::nullopt.
+  EXPECT_CALL(*observer_, AccountChangedEvent(absl::optional<std::string>()));
   // Remove selected hardware account.
   EXPECT_TRUE(RemoveHardwareAccount(added_hw_account->account_id));
-  EXPECT_TRUE(observer_->AccountChangedFired());
-  // Account is empty because GetSelectedAccount returns absl::nullopt.
-  EXPECT_TRUE(observer_->GetAccount().empty());
-  observer_->Reset();
+  observer_->WaitAndVerify();
 }
 
 TEST_F(SolanaProviderImplUnitTest, AccountChangedEvent) {
-  ASSERT_FALSE(observer_->AccountChangedFired());
+  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   CreateWallet();
   auto added_account = AddAccount();
-  EXPECT_FALSE(observer_->AccountChangedFired());
+  observer_->WaitAndVerify();
 
-  SetSelectedAccount(added_account->account_id);
-  EXPECT_TRUE(observer_->AccountChangedFired());
   // since it is not connected, account is empty
-  EXPECT_TRUE(observer_->GetAccount().empty());
+  EXPECT_CALL(*observer_, AccountChangedEvent(absl::optional<std::string>()));
+  SetSelectedAccount(added_account->account_id);
+  observer_->WaitAndVerify();
+
   // connect the account
   Navigate(GURL("https://brave.com"));
   AddSolanaPermission(GetOrigin(), added_account->account_id);
@@ -736,27 +728,27 @@ TEST_F(SolanaProviderImplUnitTest, AccountChangedEvent) {
   ASSERT_TRUE(!account.empty());
   ASSERT_TRUE(IsConnected());
 
+  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   // add another account
-  observer_->Reset();
   auto added_another_account = AddAccount();
-  EXPECT_FALSE(observer_->AccountChangedFired());
+  observer_->WaitAndVerify();
 
-  SetSelectedAccount(added_another_account->account_id);
-  EXPECT_TRUE(observer_->AccountChangedFired());
   // since it is not connected, account is empty
-  EXPECT_TRUE(observer_->GetAccount().empty());
+  EXPECT_CALL(*observer_, AccountChangedEvent(absl::optional<std::string>()));
+  SetSelectedAccount(added_another_account->account_id);
+  observer_->WaitAndVerify();
 
-  observer_->Reset();
+  EXPECT_CALL(*observer_, AccountChangedEvent(absl::optional<std::string>(
+                              added_account->account_id->address)));
   // now switch back to the account just connected
   SetSelectedAccount(added_account->account_id);
-  EXPECT_TRUE(observer_->AccountChangedFired());
-  EXPECT_EQ(observer_->GetAccount(), added_account->account_id->address);
+  observer_->WaitAndVerify();
 
-  observer_->Reset();
+  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   // select non SOL account
   auto eth_account = GetAccountByIndex(0, mojom::kDefaultKeyringId);
   SetSelectedAccount(eth_account->account_id);
-  EXPECT_FALSE(observer_->AccountChangedFired());
+  observer_->WaitAndVerify();
 }
 
 TEST_F(SolanaProviderImplUnitTest, NoSelectedAccount) {
