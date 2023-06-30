@@ -10,10 +10,12 @@ import androidx.lifecycle.MutableLiveData;
 
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
+import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
@@ -25,6 +27,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class UserAssetModel {
     private final Object mLock = new Object();
@@ -106,22 +109,27 @@ public class UserAssetModel {
 
     private void fetchAllNetworksAssets(boolean nftsOnly) {
         mBraveWalletService.getAllUserAssets(userAssets -> {
-            var supportedNetworkAssets =
+            Stream<BlockchainToken> supportedNetworkAssets =
                     Arrays.stream(userAssets)
                             .filter(token
                                     -> !WalletConstants.UNSUPPORTED_NETWORKS.contains(
                                             token.chainId))
-                            .filter(token -> nftsOnly == token.isNft)
-                            .toArray(BlockchainToken[] ::new);
+                            .filter(token -> nftsOnly == token.isNft);
+            if (!AndroidUtils.isDebugBuild()) {
+                supportedNetworkAssets = supportedNetworkAssets.filter(
+                        token -> !token.chainId.equals(BraveWalletConstants.LOCALHOST_CHAIN_ID));
+            }
+            BlockchainToken[] supportedNetworkAssetsArray =
+                    supportedNetworkAssets.toArray(BlockchainToken[] ::new);
 
             TokenUtils.getAllTokensFiltered(mBlockchainRegistry, mCryptoNetworks,
                     nftsOnly ? TokenUtils.TokenType.NFTS : TokenUtils.TokenType.NON_NFTS,
                     tokens -> {
                         sortByNetwork(tokens);
                         var filteredTokens = TokenUtils.distinctiveConcatenatedArrays(
-                                tokens, supportedNetworkAssets);
+                                tokens, supportedNetworkAssetsArray);
                         _mAssetsResult.postValue(new AssetsResult(Arrays.asList(filteredTokens),
-                                Arrays.asList(supportedNetworkAssets)));
+                                Arrays.asList(supportedNetworkAssetsArray)));
                     });
         });
     }

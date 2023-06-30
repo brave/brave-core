@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public class NetworkResponsesCollector {
     private JsonRpcService mJsonRpcService;
@@ -29,7 +30,7 @@ public class NetworkResponsesCollector {
         mNetworks = new LinkedHashSet<>();
     }
 
-    public void getNetworks(Callbacks.Callback1<HashSet<NetworkInfo>> runWhenDone) {
+    public void getNetworks(Callbacks.Callback1<Set<NetworkInfo>> runWhenDone) {
         AsyncUtils.MultiResponseHandler networkInfosMultiResponse =
                 new AsyncUtils.MultiResponseHandler(coinTypes.size());
         ArrayList<AsyncUtils.GetNetworkResponseContext> accountsPermissionsContexts =
