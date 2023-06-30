@@ -4,6 +4,7 @@
 .brave_gclient_*
 .gclient_*
 .tags*
+.cipd
 /.idea/
 /components/brave_new_tab_ui/data/LICENSE
 /components/brave_webtorrent/extension/out/
@@ -24,8 +25,10 @@ patches/**/*.patchinfo
 /third_party/constellation/crate
 /third_party/playlist_component/src
 /third_party/rapidjson/src
-/third_party/rust/cxx
-/third_party/rust/either/v1/crate
+/third_party/rust/adblock/v0_7/crate
+/third_party/sta_rs/crate/
+/third_party/rust/challenge_bypass_ristretto/v1/crate
+/third_party/rust/kuchiki/v0_8/crate
 *.xcodeproj
 *.swp
 *.pyc

@@ -1,0 +1,9 @@
+Name: sha2
+URL: https://crates.io/crates/sha2
+Description: Pure Rust implementation of the SHA-2 hash function family
+including SHA-224, SHA-256, SHA-384, and SHA-512.
+
+Version: 0.10.6
+Security Critical: yes
+License: Apache 2.0
+Revision: 1731ced4a116d61ba9dc6ee6d0f38fb8102e357a

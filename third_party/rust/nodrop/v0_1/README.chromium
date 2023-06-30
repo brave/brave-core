@@ -1,0 +1,10 @@
+Name: nodrop
+URL: https://crates.io/crates/nodrop
+Description: A wrapper type to inhibit drop (destructor).
+
+***Deprecated: Use ManuallyDrop or MaybeUninit instead!***
+
+Version: 0.1.14
+Security Critical: yes
+License: Apache 2.0
+Revision: c110696a963b7f3be9410b1a421a2c32a0015ed2

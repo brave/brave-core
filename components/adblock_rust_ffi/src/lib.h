@@ -11,7 +11,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#define C_SUBSCRIPTION_DEFAULT_EXPIRES_HOURS (7 * 24)
+#include "build/buildflag.h"
 
 /**
  * Main adblocking engine that allows efficient querying of resources to block.
@@ -33,53 +33,127 @@ typedef struct C_FilterListMetadata C_FilterListMetadata;
  */
 typedef void (*C_DomainResolverCallback)(const char*, uint32_t*, uint32_t*);
 
+extern const uint16_t SUBSCRIPTION_DEFAULT_EXPIRES_HOURS;
+
 /**
- * Passes a callback to the adblock library, allowing it to be used for domain
- * resolution.
- *
- * This is required to be able to use any adblocking functionality.
- *
- * Returns true on success, false if a callback was already set previously.
+ * Destroy a `*c_char` once you are done with it.
  */
-bool set_domain_resolver(C_DomainResolverCallback resolver);
+void c_char_buffer_destroy(char* s);
+
+#if BUILDFLAG(IS_IOS)
+/**
+ * Converts a list in adblock syntax to its corresponding iOS content-blocking
+ * syntax. `truncated` will be set to indicate whether or not some rules had to
+ * be removed to avoid iOS's maximum rule count limit.
+ */
+char* convert_rules_to_content_blocking(const char* rules, bool* truncated);
+#endif
+
+void discard_regex(C_Engine* engine, uint64_t regex_id);
+
+/**
+ * Adds a resource to the engine by name
+ */
+bool engine_add_resource(C_Engine* engine,
+                         const char* key,
+                         const char* content_type,
+                         const char* data);
+
+/**
+ * Adds a tag to the engine for consideration
+ */
+void engine_add_tag(C_Engine* engine, const char* tag);
+
+/**
+ * Create a new `Engine`, interpreting `rules` as a null-terminated C string
+ * and then parsing as a filter list in ABP syntax.
+ */
+C_Engine* engine_create(const char* rules);
 
 /**
  * Create a new `Engine`, interpreting `data` as a C string and then parsing as
  * a filter list in ABP syntax.
  */
-struct C_Engine* engine_create_from_buffer(const char* data, size_t data_size);
+C_Engine* engine_create_from_buffer(const char* data, size_t data_size);
 
 /**
  * Create a new `Engine`, interpreting `data` as a C string and then parsing as
  * a filter list in ABP syntax. Also populates metadata from the filter list
  * into `metadata`.
  */
-struct C_Engine* engine_create_from_buffer_with_metadata(
+C_Engine* engine_create_from_buffer_with_metadata(
     const char* data,
     size_t data_size,
-    struct C_FilterListMetadata** metadata);
-
-/**
- * Create a new `Engine`, interpreting `rules` as a null-terminated C string
- * and then parsing as a filter list in ABP syntax.
- */
-struct C_Engine* engine_create(const char* rules);
+    C_FilterListMetadata** metadata);
 
 /**
  * Create a new `Engine`, interpreting `rules` as a null-terminated C string
  * and then parsing as a filter list in ABP syntax. Also populates metadata
  * from the filter list into `metadata`.
  */
-struct C_Engine* engine_create_with_metadata(
-    const char* rules,
-    struct C_FilterListMetadata** metadata);
+C_Engine* engine_create_with_metadata(const char* rules,
+                                      C_FilterListMetadata** metadata);
 
 /**
- * Scans the beginning of the list for metadata and returns it without parsing
- * any other list content.
+ * Destroy a `EngineDebugInfo` once you are done with it.
  */
-struct C_FilterListMetadata* read_list_metadata(const char* data,
-                                                size_t data_size);
+void engine_debug_info_destroy(C_EngineDebugInfo* debug_info);
+
+/**
+ * Returns the field of EngineDebugInfo structure.
+ */
+void engine_debug_info_get_attr(C_EngineDebugInfo* debug_info,
+                                size_t* compiled_regex_count,
+                                size_t* regex_data_size);
+
+/**
+ * Returns the fields of EngineDebugInfo->regex_data[index].
+ *
+ * |regex| stay untouched if it ==None in the original structure.
+ *
+ * |index| must be in range [0, regex_data.len() - 1].
+ */
+void engine_debug_info_get_regex_entry(C_EngineDebugInfo* debug_info,
+                                       size_t index,
+                                       uint64_t* id,
+                                       char** regex,
+                                       uint64_t* unused_sec,
+                                       uintptr_t* usage_count);
+
+/**
+ * Deserializes a previously serialized data file list.
+ */
+bool engine_deserialize(C_Engine* engine, const char* data, size_t data_size);
+
+/**
+ * Destroy a `Engine` once you are done with it.
+ */
+void engine_destroy(C_Engine* engine);
+
+/**
+ * Returns any CSP directives that should be added to a subdocument or document
+ * request's response headers.
+ */
+char* engine_get_csp_directives(C_Engine* engine,
+                                const char* url,
+                                const char* host,
+                                const char* tab_host,
+                                bool third_party,
+                                const char* resource_type);
+
+/**
+ * Returns a stylesheet containing all generic cosmetic rules that begin with
+ * any of the provided class and id selectors
+ *
+ * The leading '.' or '#' character should not be provided
+ */
+char* engine_hidden_class_id_selectors(C_Engine* engine,
+                                       const char* const* classes,
+                                       size_t classes_size,
+                                       const char* const* ids,
+                                       size_t ids_size,
+                                       const char* const* exceptions,
+                                       size_t exceptions_size);
 
 /**
  * Checks if a `url` matches for the specified `Engine` within the context.
@@ -89,7 +163,7 @@ struct C_FilterListMetadata* read_list_metadata(const char* data,
  * within this engine, rather than being replaced with results just for this
  * engine.
  */
-void engine_match(struct C_Engine* engine,
+void engine_match(C_Engine* engine,
                   const char* url,
                   const char* host,
                   const char* tab_host,
@@ -102,116 +176,73 @@ void engine_match(struct C_Engine* engine,
                   char** rewritten_url);
 
 /**
- * Returns any CSP directives that should be added to a subdocument or document
- * request's response headers.
+ * Removes a tag to the engine for consideration
  */
-char* engine_get_csp_directives(struct C_Engine* engine,
-                                const char* url,
-                                const char* host,
-                                const char* tab_host,
-                                bool third_party,
-                                const char* resource_type);
-
-/**
- * Adds a tag to the engine for consideration
- */
-void engine_add_tag(struct C_Engine* engine, const char* tag);
+void engine_remove_tag(C_Engine* engine, const char* tag);
 
 /**
  * Checks if a tag exists in the engine
  */
-bool engine_tag_exists(struct C_Engine* engine, const char* tag);
+bool engine_tag_exists(C_Engine* engine, const char* tag);
 
 /**
- * Adds a resource to the engine by name
+ * Returns a set of cosmetic filtering resources specific to the given url, in
+ * JSON format
  */
-bool engine_add_resource(struct C_Engine* engine,
-                         const char* key,
-                         const char* content_type,
-                         const char* data);
+char* engine_url_cosmetic_resources(C_Engine* engine, const char* url);
 
 /**
  * Uses a list of `Resource`s from JSON format
  */
-void engine_use_resources(struct C_Engine* engine, const char* resources);
+void engine_use_resources(C_Engine* engine, const char* resources);
 
 /**
- * Removes a tag to the engine for consideration
+ * Destroy a `FilterListMetadata` once you are done with it.
  */
-void engine_remove_tag(struct C_Engine* engine, const char* tag);
-
-/**
- * Deserializes a previously serialized data file list.
- */
-bool engine_deserialize(struct C_Engine* engine,
-                        const char* data,
-                        size_t data_size);
-
-/**
- * Destroy a `Engine` once you are done with it.
- */
-void engine_destroy(struct C_Engine* engine);
-
-/**
- * Puts a pointer to the homepage of the `FilterListMetadata` into `homepage`.
- * Returns `true` if a homepage was returned.
- */
-bool filter_list_metadata_homepage(const struct C_FilterListMetadata* metadata,
-                                   char** homepage);
-
-/**
- * Puts a pointer to the title of the `FilterListMetadata` into `title`.
- * Returns `true` if a title was returned.
- */
-bool filter_list_metadata_title(const struct C_FilterListMetadata* metadata,
-                                char** title);
+void filter_list_metadata_destroy(C_FilterListMetadata* metadata);
 
 /**
  * Returns the amount of time this filter list should be considered valid for,
  * in hours. Defaults to 168 (i.e. 7 days) if unspecified by the
  * `FilterListMetadata`.
  */
-uint16_t filter_list_metadata_expires(
-    const struct C_FilterListMetadata* metadata);
+uint16_t filter_list_metadata_expires(const C_FilterListMetadata* metadata);
 
 /**
- * Destroy a `FilterListMetadata` once you are done with it.
+ * Puts a pointer to the homepage of the `FilterListMetadata` into `homepage`.
+ * Returns `true` if a homepage was returned.
  */
-void filter_list_metadata_destroy(struct C_FilterListMetadata* metadata);
+bool filter_list_metadata_homepage(const C_FilterListMetadata* metadata,
+                                   char** homepage);
+
+/**
+ * Puts a pointer to the title of the `FilterListMetadata` into `title`.
+ * Returns `true` if a title was returned.
+ */
+bool filter_list_metadata_title(const C_FilterListMetadata* metadata,
+                                char** title);
 
 /**
  * Get EngineDebugInfo from the engine. Should be destoyed later by calling
  * engine_debug_info_destroy(..).
  */
-struct C_EngineDebugInfo* get_engine_debug_info(struct C_Engine* engine);
+C_EngineDebugInfo* get_engine_debug_info(C_Engine* engine);
 
 /**
- * Returns the field of EngineDebugInfo structure.
+ * Scans the beginning of the list for metadata and returns it without parsing
+ * any other list content.
  */
-void engine_debug_info_get_attr(struct C_EngineDebugInfo* debug_info,
-                                size_t* compiled_regex_count,
-                                size_t* regex_data_size);
+C_FilterListMetadata* read_list_metadata(const char* data, size_t data_size);
 
 /**
- * Returns the fields of EngineDebugInfo->regex_data[index].
+ * Passes a callback to the adblock library, allowing it to be used for domain
+ * resolution.
  *
- * |regex| stay untouched if it ==None in the original structure.
+ * This is required to be able to use any adblocking functionality.
  *
- * |index| must be in range [0, regex_data.len() - 1].
+ * Returns true on success, false if a callback was already set previously.
  */
-void engine_debug_info_get_regex_entry(struct C_EngineDebugInfo* debug_info,
-                                       size_t index,
-                                       uint64_t* id,
-                                       char** regex,
-                                       uint64_t* unused_sec,
-                                       uintptr_t* usage_count);
-
-/**
- * Destroy a `EngineDebugInfo` once you are done with it.
- */
-void engine_debug_info_destroy(struct C_EngineDebugInfo* debug_info);
-
-void discard_regex(struct C_Engine* engine, uint64_t regex_id);
+bool set_domain_resolver(C_DomainResolverCallback resolver);
 
 /**
  * Setup discard policy for adblock regexps.
@@ -221,42 +252,8 @@ void discard_regex(struct C_Engine* engine, uint64_t regex_id);
  * |discard_unused_sec| time in sec after unused regex will be discarded. Zero
  * means disable discarding completely.
  */
-void setup_discard_policy(struct C_Engine* engine,
+void setup_discard_policy(C_Engine* engine,
                           uint64_t cleanup_interval_sec,
                           uint64_t discard_unused_sec);
 
-/**
- * Destroy a `*c_char` once you are done with it.
- */
-void c_char_buffer_destroy(char* s);
-
-/**
- * Returns a set of cosmetic filtering resources specific to the given url, in
- * JSON format
- */
-char* engine_url_cosmetic_resources(struct C_Engine* engine, const char* url);
-
-/**
- * Returns a stylesheet containing all generic cosmetic rules that begin with
- * any of the provided class and id selectors
- *
- * The leading '.' or '#' character should not be provided
- */
-char* engine_hidden_class_id_selectors(struct C_Engine* engine,
-                                       const char* const* classes,
-                                       size_t classes_size,
-                                       const char* const* ids,
-                                       size_t ids_size,
-                                       const char* const* exceptions,
-                                       size_t exceptions_size);
-
-#if BUILDFLAG(IS_IOS)
-/**
- * Converts a list in adblock syntax to its corresponding iOS content-blocking
- * syntax. `truncated` will be set to indicate whether or not some rules had to
- * be removed to avoid iOS's maximum rule count limit.
- */
-char* convert_rules_to_content_blocking(const char* rules, bool* truncated);
-#endif
-
-#endif  // BRAVE_COMPONENTS_ADBLOCK_RUST_FFI_SRC_LIB_H_
+#endif /* BRAVE_COMPONENTS_ADBLOCK_RUST_FFI_SRC_LIB_H_ */

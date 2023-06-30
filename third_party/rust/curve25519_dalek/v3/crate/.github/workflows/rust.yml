@@ -1,0 +1,131 @@
+name: Rust
+
+on:
+  push:
+    branches: [ '*' ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test-u32:
+    name: Test u32 backend
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --no-default-features --features "std u32_backend"
+
+  test-u64:
+    name: Test u64 backend
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --no-default-features --features "std u64_backend"
+
+  test-simd:
+    name: Test simd backend (nightly)
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: nightly
+        override: true
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --no-default-features --features "std simd_backend"
+
+  test-defaults-serde:
+    name: Test default feature selection and serde
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --features "serde"
+
+  test-alloc-u32:
+    name: Test no_std+alloc with u32 backend
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --lib --no-default-features --features "alloc u32_backend"
+
+  nightly:
+    name: Test nightly compiler
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: nightly
+        override: true
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --features "nightly"
+
+  msrv:
+    name: Current MSRV is 1.41
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: 1.41
+        override: true
+    - uses: actions-rs/cargo@v1
+      with:
+        command: build
+
+  bench:
+    name: Check that benchmarks compile
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true
+    - uses: actions-rs/cargo@v1
+      with:
+        command: bench
+        # This filter selects no benchmarks, so we don't run any, only build them.
+        args: "DONTRUNBENCHMARKS"

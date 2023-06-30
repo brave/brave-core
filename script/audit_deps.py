@@ -37,7 +37,7 @@ NPM_EXCLUDE_PATHS = [
 
 # Use only these (sub)paths for cargo audit.
 CARGO_INCLUDE_PATHS = [
-    os.path.join('build', 'rust'),
+    os.path.join('third_party', 'rust'),
 ]
 
 
@@ -86,7 +86,7 @@ def audit_path(path, args):
 
     if os.path.isfile(os.path.join(path, 'Cargo.toml')) and \
         os.path.isfile(os.path.join(path, 'Cargo.lock')) and \
-        any(full_path.startswith(os.path.join(args.source_root, p, ""))
+        any(path.endswith(os.path.join(args.source_root, p, ""))
             for p in CARGO_INCLUDE_PATHS):
         print(f'Auditing (cargo) {path}')
         return cargo_audit_deps(path, args)

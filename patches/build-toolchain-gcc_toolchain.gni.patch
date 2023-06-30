@@ -1,0 +1,19 @@
+diff --git a/build/toolchain/gcc_toolchain.gni b/build/toolchain/gcc_toolchain.gni
+index 4eb0bbcb1c5b9768cc528e3f12e40ecd53c0be38..d5ee5de276035a4f95d6eaf6403d17989abb915d 100644
+--- a/build/toolchain/gcc_toolchain.gni
++++ b/build/toolchain/gcc_toolchain.gni
+@@ -855,7 +855,14 @@ template("gcc_toolchain") {
+         is_debug = false
+         is_component_build = false
+         is_official_build = false
++        use_clang_coverage = false
++        use_sanitizer_coverage = false
++        generate_linker_map = false
+       }
++
++      # When cross-compiling we don't want to use the target platform's file
++      # extensions.
++      shlib_extension = host_shlib_extension
+     }
+   }
+ }

@@ -1,0 +1,8 @@
+Name: pin-project
+URL: https://crates.io/crates/pin-project
+Description: A crate for safe and ergonomic pin-projection.
+
+Version: 0.4.30
+Security Critical: no
+License: Apache 2.0
+Revision: ff44458eb0f754a3187f482b1720e2946ddfb4ce

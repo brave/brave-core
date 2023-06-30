@@ -35,6 +35,7 @@ def CheckPatchFormatted(input_api, output_api):
         'format',
         '--presubmit',
         '--python',
+        '--no-rust-fmt',
     ]
 
     # Make sure the passed --upstream branch is applied to git cl format.
@@ -50,8 +51,7 @@ def CheckPatchFormatted(input_api, output_api):
     git_cl_format_cmd.append(input_api.PresubmitLocalPath())
 
     # Run git cl format and get return code.
-    git_cl_format_code, _ = git_cl.RunGitWithCode(git_cl_format_cmd,
-                                                  suppress_stderr=True)
+    git_cl_format_code, _ = git_cl.RunGitWithCode(git_cl_format_cmd)
 
     is_format_required = git_cl_format_code == 2
 

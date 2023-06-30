@@ -1,0 +1,7 @@
+Name: libsecp256k1-gen-ecmult
+URL: https://crates.io/crates/libsecp256k1-gen-ecmult
+Description: Generator function of const_gen for libsecp256k1.
+Version: 0.3.0
+Security Critical: no
+License: Apache 2.0
+Revision: 34293f502aeedaefc312993278c5402b221f7f7e
