@@ -359,21 +359,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
         return null;
     }
 
-    private List<NetworkInfo> stripDebugNetwork(Context context, List<NetworkInfo> networkInfos) {
-        if ((context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
-            return networkInfos;
-        } else {
-            List<NetworkInfo> networkInfosFiltered = new ArrayList<>();
-            // remove localhost network
-            for (NetworkInfo networkInfo : networkInfos) {
-                if (!networkInfo.chainId.equals(BraveWalletConstants.LOCALHOST_CHAIN_ID)) {
-                    networkInfosFiltered.add(networkInfo);
-                }
-            }
-            return networkInfosFiltered;
-        }
-    }
-
     List<NetworkInfo> getSubTestNetworks(NetworkInfo networkInfo) {
         List<NetworkInfo> cryptoNws = _mCryptoNetworks.getValue();
         if (cryptoNws == null || cryptoNws.size() == 0
