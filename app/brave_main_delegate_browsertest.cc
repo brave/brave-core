@@ -153,6 +153,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #endif
     &features::kAttributionFencedFrameReportingBeacon,
     &features::kDigitalGoodsApi,
+    &features::kExtensionsMenuInAppMenu,
     &features::kFedCm,
     &features::kFedCmIframeSupport,
     &features::kFedCmUserInfo,
