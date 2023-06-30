@@ -434,8 +434,6 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
   EXPECT_TRUE(console_observer.Wait());
   VerifyConsoleOutputNoErrors(
       console_observer, blink::mojom::ConsoleMessageLevel::kWarning,
-      {"TypeError: Cannot read properties of undefined (reading 'forEach')",
-       "Error calling jsonRpcService.getERC20TokenBalances",
-       "Error querying balance:", "Error: An internal error has occurred"});
+      {});
 }
 }  // namespace brave_wallet
