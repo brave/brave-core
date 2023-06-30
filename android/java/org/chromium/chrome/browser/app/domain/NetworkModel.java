@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.app.domain;
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -39,10 +38,8 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.url.internal.mojom.Origin;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
