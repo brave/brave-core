@@ -945,13 +945,6 @@ class TabWebView: BraveWebView, MenuHelperInterface {
     }
   }
 
-  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-    // The find-in-page selection menu only appears if the webview is the first responder.
-    becomeFirstResponder()
-
-    return super.hitTest(point, with: event)
-  }
-
   // rdar://33283179 Apple bug where `serverTrust` is not defined as KVO when it should be
   override func value(forUndefinedKey key: String) -> Any? {
     if key == #keyPath(WKWebView.serverTrust) {
