@@ -21,16 +21,16 @@
 #include "brave/components/brave_rewards/core/endpoint/promotion/put_captcha/put_captcha.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/put_devicecheck/put_devicecheck.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/put_safetynet/put_safetynet.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint {
 
 class PromotionServer {
  public:
-  explicit PromotionServer(LedgerImpl& ledger);
+  explicit PromotionServer(RewardsEngineImpl& engine);
   ~PromotionServer();
 
   promotion::GetAvailable& get_available() { return get_available_; }

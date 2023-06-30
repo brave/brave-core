@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
@@ -19,7 +19,7 @@ using uphold::Capabilities;
 namespace endpoint {
 namespace uphold {
 
-GetCapabilities::GetCapabilities(LedgerImpl& ledger) : ledger_(ledger) {}
+GetCapabilities::GetCapabilities(RewardsEngineImpl& engine) : engine_(engine) {}
 
 GetCapabilities::~GetCapabilities() = default;
 
@@ -28,7 +28,7 @@ void GetCapabilities::Request(const std::string& token,
   auto request = mojom::UrlRequest::New();
   request->url = GetServerUrl("/v0/me/capabilities");
   request->headers = RequestAuthorization(token);
-  ledger_->LoadURL(std::move(request),
+  engine_->LoadURL(std::move(request),
                    base::BindOnce(&GetCapabilities::OnRequest,
                                   base::Unretained(this), std::move(callback)));
 }
@@ -63,12 +63,11 @@ GetCapabilities::ProcessResponse(const mojom::UrlResponse& response) {
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return {mojom::Result::LEDGER_ERROR, {}};
+    return {mojom::Result::FAILED, {}};
   }
 
   auto capability_map = ParseBody(response.body);
-  return {!capability_map.empty() ? mojom::Result::LEDGER_OK
-                                  : mojom::Result::LEDGER_ERROR,
+  return {!capability_map.empty() ? mojom::Result::OK : mojom::Result::FAILED,
           std::move(capability_map)};
 }
 

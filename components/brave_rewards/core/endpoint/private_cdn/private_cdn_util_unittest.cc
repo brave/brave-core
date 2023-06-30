@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoint/private_cdn/private_cdn_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=PrivateCDNTest.*

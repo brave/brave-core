@@ -9,14 +9,14 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_card.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoint::uphold {
 
-PostCards::PostCards(LedgerImpl& ledger) : ledger_(ledger) {}
+PostCards::PostCards(RewardsEngineImpl& engine) : engine_(engine) {}
 
 PostCards::~PostCards() = default;
 
@@ -42,10 +42,10 @@ mojom::Result PostCards::CheckStatusCode(int status_code) {
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 mojom::Result PostCards::ParseBody(const std::string& body, std::string* id) {
@@ -54,19 +54,19 @@ mojom::Result PostCards::ParseBody(const std::string& body, std::string* id) {
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* id_str = dict.FindString("id");
   if (!id_str) {
     BLOG(0, "Missing id");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   *id = *id_str;
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 void PostCards::Request(const std::string& token, PostCardsCallback callback) {
@@ -77,7 +77,7 @@ void PostCards::Request(const std::string& token, PostCardsCallback callback) {
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
 
-  ledger_->LoadURL(std::move(request),
+  engine_->LoadURL(std::move(request),
                    base::BindOnce(&PostCards::OnRequest, base::Unretained(this),
                                   std::move(callback)));
 }
@@ -88,7 +88,7 @@ void PostCards::OnRequest(PostCardsCallback callback,
   LogUrlResponse(__func__, *response, true);
 
   mojom::Result result = CheckStatusCode(response->status_code);
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     return std::move(callback).Run(result, "");
   }
 

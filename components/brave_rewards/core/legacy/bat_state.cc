@@ -7,29 +7,29 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/core/common/time_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/legacy/bat_helper.h"
 #include "brave/components/brave_rewards/core/legacy/bat_state.h"
 #include "brave/components/brave_rewards/core/legacy/client_properties.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 
 namespace brave_rewards::internal {
 
-LegacyBatState::LegacyBatState(LedgerImpl& ledger) : ledger_(ledger) {}
+LegacyBatState::LegacyBatState(RewardsEngineImpl& engine) : engine_(engine) {}
 
 LegacyBatState::~LegacyBatState() = default;
 
 void LegacyBatState::Load(LegacyResultCallback callback) {
-  ledger_->client()->LoadLedgerState(base::BindOnce(
+  engine_->client()->LoadLegacyState(base::BindOnce(
       &LegacyBatState::OnLoad, base::Unretained(this), std::move(callback)));
 }
 
 void LegacyBatState::OnLoad(LegacyResultCallback callback,
                             mojom::Result result,
                             const std::string& data) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     callback(result);
     return;
   }
@@ -38,7 +38,7 @@ void LegacyBatState::OnLoad(LegacyResultCallback callback,
   if (!state.FromJson(data)) {
     BLOG(0, "Failed to load client state");
     BLOG(6, "Client state contents: " << data);
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -54,7 +54,7 @@ void LegacyBatState::OnLoad(LegacyResultCallback callback,
     state_.boot_timestamp = state_.boot_timestamp / 1000;
   }
 
-  callback(mojom::Result::LEDGER_OK);
+  callback(mojom::Result::OK);
 }
 
 bool LegacyBatState::GetRewardsMainEnabled() const {

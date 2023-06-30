@@ -9,16 +9,16 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace state {
 
 class StateMigrationV12 {
  public:
-  explicit StateMigrationV12(LedgerImpl& ledger);
+  explicit StateMigrationV12(RewardsEngineImpl& engine);
   ~StateMigrationV12();
 
   void Migrate(LegacyResultCallback);
@@ -26,7 +26,7 @@ class StateMigrationV12 {
  private:
   bool MigrateExternalWallet(const std::string& wallet_type);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace state

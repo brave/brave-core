@@ -10,7 +10,7 @@
 #include "brave/components/brave_rewards/core/endpoint/private_cdn/get_publisher/get_publisher.h"
 #include "brave/components/brave_rewards/core/endpoint/private_cdn/private_cdn_util.h"
 #include "brave/components/brave_rewards/core/publisher/protos/channel_response.pb.h"
-#include "brave/components/brave_rewards/core/test/bat_ledger_test.h"
+#include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=GetPublisherTest.*
@@ -19,7 +19,7 @@ namespace brave_rewards::internal {
 namespace endpoint {
 namespace private_cdn {
 
-class GetPublisherTest : public BATLedgerTest {
+class GetPublisherTest : public RewardsEngineTest {
  protected:
   mojom::Result Request(const std::string& id,
                         const std::string& prefix,
@@ -28,7 +28,7 @@ class GetPublisherTest : public BATLedgerTest {
     base::RunLoop run_loop;
     mojom::Result result;
 
-    GetPublisher(*GetLedgerImpl())
+    GetPublisher(*GetEngineImpl())
         .Request(id, prefix,
                  [&run_loop, &result, info](
                      mojom::Result request_result,
@@ -66,7 +66,7 @@ TEST_F(GetPublisherTest, ServerError404) {
   mojom::ServerPublisherInfoPtr info;
 
   result = Request("brave.com", "ce55", &info);
-  EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+  EXPECT_EQ(result, mojom::Result::OK);
   ASSERT_TRUE(info);
   EXPECT_EQ(info->publisher_key, "brave.com");
   EXPECT_EQ(info->status, mojom::PublisherStatus::NOT_VERIFIED);
@@ -92,7 +92,7 @@ TEST_F(GetPublisherTest, UpholdVerified) {
   mojom::ServerPublisherInfoPtr info;
 
   result = Request("brave.com", "ce55", &info);
-  EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+  EXPECT_EQ(result, mojom::Result::OK);
   ASSERT_TRUE(info);
   EXPECT_EQ(info->publisher_key, "brave.com");
   EXPECT_EQ(info->status, mojom::PublisherStatus::UPHOLD_VERIFIED);
@@ -119,7 +119,7 @@ TEST_F(GetPublisherTest, EmptyWalletAddress) {
   mojom::ServerPublisherInfoPtr info;
 
   result = Request("brave.com", "ce55", &info);
-  EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+  EXPECT_EQ(result, mojom::Result::OK);
   ASSERT_TRUE(info);
   EXPECT_EQ(info->publisher_key, "brave.com");
   EXPECT_EQ(info->status, mojom::PublisherStatus::NOT_VERIFIED);

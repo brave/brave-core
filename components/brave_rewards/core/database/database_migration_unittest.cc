@@ -14,30 +14,30 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/database/database_migration.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
-#include "brave/components/brave_rewards/core/test/bat_ledger_test.h"
-#include "brave/components/brave_rewards/core/test/test_ledger_client.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
+#include "brave/components/brave_rewards/core/test/test_rewards_engine_client.h"
 #include "build/build_config.h"
 #include "sql/statement.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=LedgerDatabaseMigrationTest.*
+// npm run test -- brave_unit_tests --filter=RewardsDatabaseMigrationTest.*
 
 namespace brave_rewards::internal {
 using database::DatabaseMigration;
 
-class LedgerDatabaseMigrationTest : public BATLedgerTest {
+class RewardsDatabaseMigrationTest : public RewardsEngineTest {
  public:
-  LedgerDatabaseMigrationTest() { is_testing = true; }
+  RewardsDatabaseMigrationTest() { is_testing = true; }
 
-  ~LedgerDatabaseMigrationTest() override {
+  ~RewardsDatabaseMigrationTest() override {
     DatabaseMigration::SetTargetVersionForTesting(0);
     is_testing = false;
   }
 
  protected:
   sql::Database* GetDB() {
-    return GetTestLedgerClient()->database()->GetInternalDatabaseForTesting();
+    return GetTestClient()->database()->GetInternalDatabaseForTesting();
   }
 
   std::string GetExpectedSchema() {
@@ -95,18 +95,18 @@ class LedgerDatabaseMigrationTest : public BATLedgerTest {
   }
 };
 
-TEST_F(LedgerDatabaseMigrationTest, SchemaCheck) {
+TEST_F(RewardsDatabaseMigrationTest, SchemaCheck) {
   DatabaseMigration::SetTargetVersionForTesting(database::GetCurrentVersion());
-  InitializeLedger();
+  InitializeEngine();
   std::string expected_schema = GetExpectedSchema();
   EXPECT_FALSE(expected_schema.empty());
   EXPECT_EQ(GetDB()->GetSchema(), expected_schema);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_4_ActivityInfo) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_4_ActivityInfo) {
   DatabaseMigration::SetTargetVersionForTesting(4);
   InitializeDatabaseAtVersion(3);
-  InitializeLedger();
+  InitializeEngine();
 
   sql::Statement info_sql(GetDB()->GetUniqueStatement(R"sql(
       SELECT publisher_id, visits FROM activity_info
@@ -126,10 +126,10 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_4_ActivityInfo) {
   EXPECT_EQ(list.at(1)->visits, 5u);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_5_ActivityInfo) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_5_ActivityInfo) {
   DatabaseMigration::SetTargetVersionForTesting(5);
   InitializeDatabaseAtVersion(4);
-  InitializeLedger();
+  InitializeEngine();
 
   sql::Statement info_sql(GetDB()->GetUniqueStatement(R"sql(
       SELECT publisher_id, visits FROM activity_info
@@ -152,10 +152,10 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_5_ActivityInfo) {
   EXPECT_EQ(list.at(2)->visits, 3u);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_6_ActivityInfo) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_6_ActivityInfo) {
   DatabaseMigration::SetTargetVersionForTesting(6);
   InitializeDatabaseAtVersion(5);
-  InitializeLedger();
+  InitializeEngine();
 
   sql::Statement info_sql(GetDB()->GetUniqueStatement(R"sql(
       SELECT publisher_id, visits, duration, score, percent, weight,
@@ -202,10 +202,10 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_6_ActivityInfo) {
   EXPECT_EQ(list.at(2)->reconcile_stamp, 1553423066u);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_8_PendingContribution) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_8_PendingContribution) {
   DatabaseMigration::SetTargetVersionForTesting(8);
   InitializeDatabaseAtVersion(7);
-  InitializeLedger();
+  InitializeEngine();
 
   EXPECT_EQ(CountTableRows("pending_contribution"), 1);
 
@@ -225,10 +225,10 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_8_PendingContribution) {
             static_cast<int>(mojom::RewardsType::ONE_TIME_TIP));
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_11_ContributionInfo) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_11_ContributionInfo) {
   DatabaseMigration::SetTargetVersionForTesting(11);
   InitializeDatabaseAtVersion(10);
-  InitializeLedger();
+  InitializeEngine();
 
   EXPECT_EQ(CountTableRows("contribution_info"), 5);
   EXPECT_EQ(CountTableRows("contribution_info_publishers"), 4);
@@ -269,10 +269,10 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_11_ContributionInfo) {
   EXPECT_EQ(ac_sql.ColumnDouble(6), 0.0);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_12_ContributionInfo) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_12_ContributionInfo) {
   DatabaseMigration::SetTargetVersionForTesting(12);
   InitializeDatabaseAtVersion(11);
-  InitializeLedger();
+  InitializeEngine();
 
   EXPECT_EQ(CountTableRows("pending_contribution"), 4);
 
@@ -296,17 +296,17 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_12_ContributionInfo) {
   EXPECT_FALSE(info_sql.Step());
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_13_Promotion) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_13_Promotion) {
   DatabaseMigration::SetTargetVersionForTesting(13);
   InitializeDatabaseAtVersion(12);
-  InitializeLedger();
+  InitializeEngine();
   EXPECT_EQ(CountTableRows("promotion"), 1);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_14_UnblindedToken) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_14_UnblindedToken) {
   DatabaseMigration::SetTargetVersionForTesting(14);
   InitializeDatabaseAtVersion(13);
-  InitializeLedger();
+  InitializeEngine();
 
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 5);
 
@@ -338,10 +338,10 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_14_UnblindedToken) {
   EXPECT_EQ(promotion_sql.ColumnDouble(0), 1.25);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_16_ContributionInfo) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_16_ContributionInfo) {
   DatabaseMigration::SetTargetVersionForTesting(16);
   InitializeDatabaseAtVersion(15);
-  InitializeLedger();
+  InitializeEngine();
 
   EXPECT_EQ(CountTableRows("contribution_info"), 5);
 
@@ -361,10 +361,10 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_16_ContributionInfo) {
   EXPECT_EQ(list.at(4), 1583310925);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_18_Promotion) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_18_Promotion) {
   DatabaseMigration::SetTargetVersionForTesting(18);
   InitializeDatabaseAtVersion(17);
-  InitializeLedger();
+  InitializeEngine();
 
   EXPECT_EQ(CountTableRows("promotion"), 2);
 
@@ -390,10 +390,10 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_18_Promotion) {
   EXPECT_EQ(status.at(1), 4);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_18_CredsBatch) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_18_CredsBatch) {
   DatabaseMigration::SetTargetVersionForTesting(18);
   InitializeDatabaseAtVersion(17);
-  InitializeLedger();
+  InitializeEngine();
 
   EXPECT_EQ(CountTableRows("creds_batch"), 2);
 
@@ -442,10 +442,10 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_18_CredsBatch) {
   EXPECT_EQ(static_cast<int>(creds_database.status), 2);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_18_UnblindedToken) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_18_UnblindedToken) {
   DatabaseMigration::SetTargetVersionForTesting(18);
   InitializeDatabaseAtVersion(17);
-  InitializeLedger();
+  InitializeEngine();
 
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 80);
 
@@ -468,10 +468,10 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_18_UnblindedToken) {
   EXPECT_EQ(expires_at, 1640995200ul);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_21_ContributionInfoPublishers) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_21_ContributionInfoPublishers) {
   DatabaseMigration::SetTargetVersionForTesting(21);
   InitializeDatabaseAtVersion(20);
-  InitializeLedger();
+  InitializeEngine();
 
   EXPECT_EQ(CountTableRows("contribution_info_publishers"), 4);
 
@@ -510,10 +510,10 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_21_ContributionInfoPublishers) {
   EXPECT_EQ(list.at(3)->contributed_amount, 1.0);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_23_ContributionQueue) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_23_ContributionQueue) {
   DatabaseMigration::SetTargetVersionForTesting(23);
   InitializeDatabaseAtVersion(22);
-  InitializeLedger();
+  InitializeEngine();
 
   EXPECT_EQ(CountTableRows("contribution_queue"), 1);
 
@@ -555,10 +555,10 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_23_ContributionQueue) {
   EXPECT_EQ(queue_publisher.amount_percent, 456.0);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_24_ContributionQueue) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_24_ContributionQueue) {
   DatabaseMigration::SetTargetVersionForTesting(24);
   InitializeDatabaseAtVersion(23);
-  InitializeLedger();
+  InitializeEngine();
 
   EXPECT_EQ(CountTableRows("contribution_queue"), 1);
 
@@ -585,10 +585,10 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_24_ContributionQueue) {
   EXPECT_EQ(contribution_queue.completed_at, 0u);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_26_UnblindedTokens) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_26_UnblindedTokens) {
   DatabaseMigration::SetTargetVersionForTesting(26);
   InitializeDatabaseAtVersion(25);
-  InitializeLedger();
+  InitializeEngine();
 
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 10);
 
@@ -664,10 +664,10 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_26_UnblindedTokens) {
   EXPECT_EQ(token->redeem_type, mojom::RewardsType::ONE_TIME_TIP);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_27_UnblindedTokens) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_27_UnblindedTokens) {
   DatabaseMigration::SetTargetVersionForTesting(27);
   InitializeDatabaseAtVersion(26);
-  InitializeLedger();
+  InitializeEngine();
 
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 1);
 
@@ -698,10 +698,10 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_27_UnblindedTokens) {
   EXPECT_EQ(reserved_at, 0ul);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_28_ServerPublisherInfoCleared) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_28_ServerPublisherInfoCleared) {
   DatabaseMigration::SetTargetVersionForTesting(28);
   InitializeDatabaseAtVersion(27);
-  InitializeLedger();
+  InitializeEngine();
 
   EXPECT_EQ(CountTableRows("server_publisher_info"), 1);
   EXPECT_EQ(CountTableRows("server_publisher_banner"), 1);
@@ -721,69 +721,69 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_28_ServerPublisherInfoCleared) {
   }
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_30_NotBitflyerRegion) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_30_NotBitflyerRegion) {
   DatabaseMigration::SetTargetVersionForTesting(30);
   InitializeDatabaseAtVersion(29);
-  InitializeLedger();
+  InitializeEngine();
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 1);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_30_BitflyerRegion) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_30_BitflyerRegion) {
   DatabaseMigration::SetTargetVersionForTesting(30);
   InitializeDatabaseAtVersion(29);
-  GetTestLedgerClient()->SetIsBitFlyerRegionForTesting(true);
-  InitializeLedger();
+  GetTestClient()->SetIsBitFlyerRegionForTesting(true);
+  InitializeEngine();
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 0);
   EXPECT_EQ(CountTableRows("unblinded_tokens_bap"), 1);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_31) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_31) {
   DatabaseMigration::SetTargetVersionForTesting(31);
   InitializeDatabaseAtVersion(30);
-  InitializeLedger();
+  InitializeEngine();
   EXPECT_TRUE(GetDB()->DoesColumnExist("pending_contribution", "processor"));
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_32_NotBitflyerRegion) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_32_NotBitflyerRegion) {
   DatabaseMigration::SetTargetVersionForTesting(32);
   InitializeDatabaseAtVersion(30);
-  InitializeLedger();
+  InitializeEngine();
   EXPECT_EQ(CountTableRows("balance_report_info"), 1);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_32_BitflyerRegion) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_32_BitflyerRegion) {
   DatabaseMigration::SetTargetVersionForTesting(32);
   InitializeDatabaseAtVersion(30);
-  GetTestLedgerClient()->SetIsBitFlyerRegionForTesting(true);
-  InitializeLedger();
+  GetTestClient()->SetIsBitFlyerRegionForTesting(true);
+  InitializeEngine();
   EXPECT_EQ(CountTableRows("balance_report_info"), 0);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_33) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_33) {
   DatabaseMigration::SetTargetVersionForTesting(33);
   InitializeDatabaseAtVersion(32);
-  InitializeLedger();
+  InitializeEngine();
   EXPECT_FALSE(GetDB()->DoesColumnExist("pending_contribution", "processor"));
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_34) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_34) {
   DatabaseMigration::SetTargetVersionForTesting(34);
   InitializeDatabaseAtVersion(33);
-  InitializeLedger();
+  InitializeEngine();
   EXPECT_TRUE(GetDB()->DoesColumnExist("promotion", "claimable_until"));
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_35) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_35) {
   DatabaseMigration::SetTargetVersionForTesting(35);
   InitializeDatabaseAtVersion(34);
-  InitializeLedger();
+  InitializeEngine();
   EXPECT_FALSE(GetDB()->DoesTableExist("server_publisher_amounts"));
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_36) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_36) {
   DatabaseMigration::SetTargetVersionForTesting(36);
   InitializeDatabaseAtVersion(35);
-  InitializeLedger();
+  InitializeEngine();
   sql::Statement sql(GetDB()->GetUniqueStatement(R"sql(
       SELECT status FROM server_publisher_info
   )sql"));
@@ -791,32 +791,32 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_36) {
   EXPECT_EQ(sql.ColumnInt64(0), 0);
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_37) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_37) {
   DatabaseMigration::SetTargetVersionForTesting(37);
   InitializeDatabaseAtVersion(36);
-  InitializeLedger();
+  InitializeEngine();
   EXPECT_TRUE(GetDB()->DoesTableExist("external_transactions"));
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_38) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_38) {
   DatabaseMigration::SetTargetVersionForTesting(38);
   InitializeDatabaseAtVersion(37);
-  InitializeLedger();
+  InitializeEngine();
   EXPECT_TRUE(
       GetDB()->DoesColumnExist("recurring_donation", "next_contribution_at"));
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_39) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_39) {
   DatabaseMigration::SetTargetVersionForTesting(39);
   InitializeDatabaseAtVersion(38);
-  InitializeLedger();
+  InitializeEngine();
   EXPECT_TRUE(GetDB()->DoesColumnExist("server_publisher_banner", "web3_url"));
 }
 
-TEST_F(LedgerDatabaseMigrationTest, Migration_40) {
+TEST_F(RewardsDatabaseMigrationTest, Migration_40) {
   DatabaseMigration::SetTargetVersionForTesting(40);
   InitializeDatabaseAtVersion(39);
-  InitializeLedger();
+  InitializeEngine();
   EXPECT_FALSE(GetDB()->DoesTableExist("pending_contribution"));
   EXPECT_FALSE(GetDB()->DoesTableExist("processed_publisher"));
 }

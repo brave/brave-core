@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { ConnectExternalWalletError, WalletStatus } from 'gen/brave/components/brave_rewards/common/mojom/ledger_types.mojom.m.js'
+import { ConnectExternalWalletError, WalletStatus } from 'gen/brave/components/brave_rewards/common/mojom/rewards_types.mojom.m.js'
 import { Optional } from '../../shared/lib/optional'
 import { PublisherStatus } from '../../shared/lib/publisher_status'
 import { UserType } from '../../shared/lib/user_type'
@@ -13,12 +13,11 @@ export interface ApplicationState {
 }
 
 export enum Result {
-  LEDGER_OK = 0,
-  LEDGER_ERROR = 1,
+  OK = 0,
+  FAILED = 1,
   NO_PUBLISHER_STATE = 2,
-  NO_LEDGER_STATE = 3,
+  NO_LEGACY_STATE = 3,
   INVALID_PUBLISHER_STATE = 4,
-  INVALID_LEDGER_STATE = 5,
   CAPTCHA_FAILED = 6,
   NO_PUBLISHER_LIST = 7,
   TOO_MANY_RESULTS = 8,

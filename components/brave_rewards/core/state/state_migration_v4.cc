@@ -7,17 +7,18 @@
 
 #include <utility>
 
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
 namespace state {
 
-StateMigrationV4::StateMigrationV4(LedgerImpl& ledger) : ledger_(ledger) {}
+StateMigrationV4::StateMigrationV4(RewardsEngineImpl& engine)
+    : engine_(engine) {}
 
 StateMigrationV4::~StateMigrationV4() = default;
 
 void StateMigrationV4::Migrate(ResultCallback callback) {
-  ledger_->client()->DeleteLog(std::move(callback));
+  engine_->client()->DeleteLog(std::move(callback));
 }
 
 }  // namespace state

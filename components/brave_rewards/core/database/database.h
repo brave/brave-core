@@ -32,17 +32,17 @@
 #include "brave/components/brave_rewards/core/database/database_sku_order.h"
 #include "brave/components/brave_rewards/core/database/database_sku_transaction.h"
 #include "brave/components/brave_rewards/core/database/database_unblinded_token.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_list_reader.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace database {
 
 class Database {
  public:
-  explicit Database(LedgerImpl& ledger);
+  explicit Database(RewardsEngineImpl& engine);
   virtual ~Database();
 
   void Initialize(LegacyResultCallback callback);
@@ -351,7 +351,7 @@ class Database {
       GetUnblindedTokenListCallback callback);
 
  private:
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   DatabaseInitialize initialize_;
   DatabaseActivityInfo activity_info_;
   DatabaseBalanceReport balance_report_;

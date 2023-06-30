@@ -16,8 +16,8 @@
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "crypto/sha2.h"
 
@@ -30,8 +30,8 @@ using wallet_provider::ConnectExternalWallet;
 
 namespace gemini {
 
-ConnectGeminiWallet::ConnectGeminiWallet(LedgerImpl& ledger)
-    : ConnectExternalWallet(ledger), gemini_server_(ledger) {}
+ConnectGeminiWallet::ConnectGeminiWallet(RewardsEngineImpl& engine)
+    : ConnectExternalWallet(engine), gemini_server_(engine) {}
 
 ConnectGeminiWallet::~ConnectGeminiWallet() = default;
 
@@ -43,7 +43,7 @@ void ConnectGeminiWallet::Authorize(OAuthInfo&& oauth_info,
                                     ConnectExternalWalletCallback callback) {
   DCHECK(!oauth_info.code.empty());
 
-  const auto rewards_wallet = ledger_->wallet()->GetWallet();
+  const auto rewards_wallet = engine_->wallet()->GetWallet();
   if (!rewards_wallet) {
     BLOG(0, "Rewards wallet is null!");
     return std::move(callback).Run(
@@ -64,13 +64,13 @@ void ConnectGeminiWallet::Authorize(OAuthInfo&& oauth_info,
 void ConnectGeminiWallet::OnAuthorize(ConnectExternalWalletCallback callback,
                                       mojom::Result result,
                                       std::string&& token) {
-  if (!ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kNotConnected,
+  if (!engine_->gemini()->GetWalletIf({mojom::WalletStatus::kNotConnected,
                                        mojom::WalletStatus::kLoggedOut})) {
     return std::move(callback).Run(
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
   }
 
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Couldn't get token");
     return std::move(callback).Run(
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
@@ -86,7 +86,7 @@ void ConnectGeminiWallet::OnAuthorize(ConnectExternalWalletCallback callback,
       base::BindOnce(&ConnectGeminiWallet::OnGetRecipientID,
                      base::Unretained(this), std::move(callback), token);
 
-  RequestFor<GetRecipientIDGemini>(*ledger_, std::move(token))
+  RequestFor<GetRecipientIDGemini>(*engine_, std::move(token))
       .Send(std::move(on_get_recipient_id));
 }
 
@@ -94,7 +94,7 @@ void ConnectGeminiWallet::OnGetRecipientID(
     ConnectExternalWalletCallback callback,
     std::string&& token,
     endpoints::GetRecipientIDGemini::Result&& result) {
-  if (!ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kNotConnected,
+  if (!engine_->gemini()->GetWalletIf({mojom::WalletStatus::kNotConnected,
                                        mojom::WalletStatus::kLoggedOut})) {
     return std::move(callback).Run(
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
@@ -124,7 +124,7 @@ void ConnectGeminiWallet::OnPostRecipientID(
     std::string&& token,
     mojom::Result result,
     std::string&& recipient_id) {
-  if (!ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kNotConnected,
+  if (!engine_->gemini()->GetWalletIf({mojom::WalletStatus::kNotConnected,
                                        mojom::WalletStatus::kLoggedOut})) {
     return std::move(callback).Run(
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
@@ -138,13 +138,13 @@ void ConnectGeminiWallet::OnPostRecipientID(
 
   if (result == mojom::Result::NOT_FOUND) {
     BLOG(0, "Unverified User");
-    ledger_->database()->SaveEventLog(log::kKYCRequired,
+    engine_->database()->SaveEventLog(log::kKYCRequired,
                                       constant::kWalletGemini);
     return std::move(callback).Run(
         base::unexpected(mojom::ConnectExternalWalletError::kKYCRequired));
   }
 
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Failed to create recipient ID!");
     return std::move(callback).Run(
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
@@ -168,7 +168,7 @@ void ConnectGeminiWallet::OnPostAccount(ConnectExternalWalletCallback callback,
                                         mojom::Result result,
                                         std::string&& linking_info,
                                         std::string&& user_name) {
-  auto wallet = ledger_->gemini()->GetWalletIf(
+  auto wallet = engine_->gemini()->GetWalletIf(
       {mojom::WalletStatus::kNotConnected, mojom::WalletStatus::kLoggedOut});
   if (!wallet) {
     return std::move(callback).Run(
@@ -181,14 +181,14 @@ void ConnectGeminiWallet::OnPostAccount(ConnectExternalWalletCallback callback,
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
   }
 
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Failed to get account info!");
     return std::move(callback).Run(
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
   }
 
   wallet->user_name = std::move(user_name);
-  if (!ledger_->gemini()->SetWallet(std::move(wallet))) {
+  if (!engine_->gemini()->SetWallet(std::move(wallet))) {
     BLOG(0, "Failed to save " << constant::kWalletGemini << " wallet!");
     return std::move(callback).Run(
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
@@ -198,7 +198,7 @@ void ConnectGeminiWallet::OnPostAccount(ConnectExternalWalletCallback callback,
       base::BindOnce(&ConnectGeminiWallet::OnConnect, base::Unretained(this),
                      std::move(callback), std::move(token), recipient_id);
 
-  RequestFor<PostConnectGemini>(*ledger_, std::move(linking_info),
+  RequestFor<PostConnectGemini>(*engine_, std::move(linking_info),
                                 std::move(recipient_id))
       .Send(std::move(on_connect));
 }

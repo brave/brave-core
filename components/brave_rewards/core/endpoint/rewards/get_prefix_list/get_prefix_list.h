@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // GET /publishers/prefix-list
 //
@@ -20,7 +20,7 @@
 // blob
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint {
 namespace rewards {
@@ -30,7 +30,7 @@ using GetPrefixListCallback =
 
 class GetPrefixList {
  public:
-  explicit GetPrefixList(LedgerImpl& ledger);
+  explicit GetPrefixList(RewardsEngineImpl& engine);
   ~GetPrefixList();
 
   void Request(GetPrefixListCallback callback);
@@ -43,7 +43,7 @@ class GetPrefixList {
   void OnRequest(mojom::UrlResponsePtr response,
                  GetPrefixListCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace rewards

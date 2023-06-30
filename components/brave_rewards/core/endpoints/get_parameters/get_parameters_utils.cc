@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "brave/components/brave_rewards/core/endpoints/get_parameters/get_parameters_utils.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace {
 

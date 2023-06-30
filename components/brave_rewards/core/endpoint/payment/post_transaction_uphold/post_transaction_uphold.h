@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // POST /v1/orders/{order_id}/transactions/uphold
 //
@@ -42,7 +42,7 @@
 // }
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint {
 namespace payment {
@@ -52,7 +52,7 @@ using PostTransactionUpholdCallback =
 
 class PostTransactionUphold {
  public:
-  explicit PostTransactionUphold(LedgerImpl& ledger);
+  explicit PostTransactionUphold(RewardsEngineImpl& engine);
   ~PostTransactionUphold();
 
   void Request(const mojom::SKUTransaction& transaction,
@@ -68,7 +68,7 @@ class PostTransactionUphold {
   void OnRequest(mojom::UrlResponsePtr response,
                  PostTransactionUpholdCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace payment

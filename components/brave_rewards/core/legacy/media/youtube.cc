@@ -10,12 +10,12 @@
 #include "base/strings/escape.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/legacy/bat_helper.h"
 #include "brave/components/brave_rewards/core/legacy/media/helper.h"
 #include "brave/components/brave_rewards/core/legacy/media/youtube.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "net/http/http_status_code.h"
 
@@ -25,7 +25,7 @@ using std::placeholders::_3;
 
 namespace brave_rewards::internal {
 
-YouTube::YouTube(LedgerImpl& ledger) : ledger_(ledger) {}
+YouTube::YouTube(RewardsEngineImpl& engine) : engine_(engine) {}
 
 YouTube::~YouTube() = default;
 
@@ -281,7 +281,7 @@ void YouTube::OnMediaActivityError(const mojom::VisitData& visit_data,
     new_visit_data.path = "/";
     new_visit_data.name = name;
 
-    ledger_->publisher()->GetPublisherActivityFromUrl(
+    engine_->publisher()->GetPublisherActivityFromUrl(
         window_id, mojom::VisitData::New(new_visit_data), std::string());
   } else {
     BLOG(0, "Media activity error");
@@ -299,7 +299,7 @@ void YouTube::ProcessMedia(
   std::string media_key = GetMediaKey(media_id, YOUTUBE_MEDIA_TYPE);
   uint64_t duration = GetMediaDurationFromParts(parts, media_key);
 
-  ledger_->database()->GetMediaPublisherInfo(
+  engine_->database()->GetMediaPublisherInfo(
       media_key, std::bind(&YouTube::OnMediaPublisherInfo, this, media_id,
                            media_key, duration, visit_data, 0, _1, _2));
 }
@@ -337,8 +337,7 @@ void YouTube::OnMediaPublisherInfo(const std::string& media_id,
                                    const uint64_t window_id,
                                    mojom::Result result,
                                    mojom::PublisherInfoPtr publisher_info) {
-  if (result != mojom::Result::LEDGER_OK &&
-      result != mojom::Result::NOT_FOUND) {
+  if (result != mojom::Result::OK && result != mojom::Result::NOT_FOUND) {
     BLOG(0, "Failed to get publisher info");
     return;
   }
@@ -361,7 +360,7 @@ void YouTube::OnMediaPublisherInfo(const std::string& media_id,
     new_visit_data.favicon_url = publisher_info->favicon_url;
     std::string id = publisher_info->id;
 
-    ledger_->publisher()->SaveVisit(
+    engine_->publisher()->SaveVisit(
         id, new_visit_data, duration, true, window_id,
         [](mojom::Result, mojom::PublisherInfoPtr) {});
   }
@@ -458,12 +457,12 @@ void YouTube::SavePublisherInfo(const uint64_t duration,
   new_visit_data.name = publisher_name;
   new_visit_data.url = url;
 
-  ledger_->publisher()->SaveVisit(
+  engine_->publisher()->SaveVisit(
       publisher_id, new_visit_data, duration, true, window_id,
       [](mojom::Result, mojom::PublisherInfoPtr) {});
 
   if (!media_key.empty()) {
-    ledger_->database()->SaveMediaPublisherInfo(media_key, publisher_id,
+    engine_->database()->SaveMediaPublisherInfo(media_key, publisher_id,
                                                 [](const mojom::Result) {});
   }
 }
@@ -473,7 +472,7 @@ void YouTube::FetchDataFromUrl(const std::string& url,
   auto request = mojom::UrlRequest::New();
   request->url = url;
   request->skip_log = true;
-  ledger_->LoadURL(std::move(request), callback);
+  engine_->LoadURL(std::move(request), callback);
 }
 
 void YouTube::WatchPath(uint64_t window_id,
@@ -482,7 +481,7 @@ void YouTube::WatchPath(uint64_t window_id,
   std::string media_key = GetMediaKey(media_id, YOUTUBE_MEDIA_TYPE);
 
   if (!media_key.empty() || !media_id.empty()) {
-    ledger_->database()->GetMediaPublisherInfo(
+    engine_->database()->GetMediaPublisherInfo(
         media_key, std::bind(&YouTube::OnMediaPublisherActivity, this, _1, _2,
                              window_id, visit_data, media_key, media_id));
   } else {
@@ -496,8 +495,7 @@ void YouTube::OnMediaPublisherActivity(mojom::Result result,
                                        const mojom::VisitData& visit_data,
                                        const std::string& media_key,
                                        const std::string& media_id) {
-  if (result != mojom::Result::LEDGER_OK &&
-      result != mojom::Result::NOT_FOUND) {
+  if (result != mojom::Result::OK && result != mojom::Result::NOT_FOUND) {
     OnMediaActivityError(visit_data, window_id);
     return;
   }
@@ -514,10 +512,10 @@ void YouTube::GetPublisherPanleInfo(uint64_t window_id,
                                     const mojom::VisitData& visit_data,
                                     const std::string& publisher_key,
                                     bool is_custom_path) {
-  auto filter = ledger_->publisher()->CreateActivityFilter(
+  auto filter = engine_->publisher()->CreateActivityFilter(
       publisher_key, mojom::ExcludeFilter::FILTER_ALL, false,
-      ledger_->state()->GetReconcileStamp(), true, false);
-  ledger_->database()->GetPanelPublisherInfo(
+      engine_->state()->GetReconcileStamp(), true, false);
+  engine_->database()->GetPanelPublisherInfo(
       std::move(filter),
       std::bind(&YouTube::OnPublisherPanleInfo, this, window_id, visit_data,
                 publisher_key, is_custom_path, _1, _2));
@@ -534,7 +532,7 @@ void YouTube::OnPublisherPanleInfo(uint64_t window_id,
                      std::bind(&YouTube::GetChannelHeadlineVideo, this,
                                window_id, visit_data, is_custom_path, _1));
   } else {
-    ledger_->client()->OnPanelPublisherInfo(result, std::move(info), window_id);
+    engine_->client()->OnPanelPublisherInfo(result, std::move(info), window_id);
   }
 }
 
@@ -590,7 +588,7 @@ void YouTube::UserPath(uint64_t window_id, const mojom::VisitData& visit_data) {
   }
 
   std::string media_key = (std::string)YOUTUBE_MEDIA_TYPE + "_user_" + user;
-  ledger_->database()->GetMediaPublisherInfo(
+  engine_->database()->GetMediaPublisherInfo(
       media_key, std::bind(&YouTube::OnUserActivity, this, window_id,
                            visit_data, media_key, _1, _2));
 }
@@ -600,8 +598,7 @@ void YouTube::OnUserActivity(uint64_t window_id,
                              const std::string& media_key,
                              mojom::Result result,
                              mojom::PublisherInfoPtr info) {
-  if (result != mojom::Result::LEDGER_OK &&
-      result != mojom::Result::NOT_FOUND) {
+  if (result != mojom::Result::OK && result != mojom::Result::NOT_FOUND) {
     OnMediaActivityError(visit_data, window_id);
     return;
   }
@@ -627,7 +624,7 @@ void YouTube::OnChannelIdForUser(uint64_t window_id,
     std::string url = GetChannelUrl(channelId);
     std::string publisher_key = GetPublisherKey(channelId);
 
-    ledger_->database()->SaveMediaPublisherInfo(media_key, publisher_key,
+    engine_->database()->SaveMediaPublisherInfo(media_key, publisher_key,
                                                 [](const mojom::Result) {});
 
     mojom::VisitData new_visit_data;

@@ -9,7 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_media_publisher_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 using std::placeholders::_1;
 
@@ -22,8 +22,9 @@ const char kTableName[] = "media_publisher_info";
 
 }  // namespace
 
-DatabaseMediaPublisherInfo::DatabaseMediaPublisherInfo(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseMediaPublisherInfo::DatabaseMediaPublisherInfo(
+    RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabaseMediaPublisherInfo::~DatabaseMediaPublisherInfo() = default;
 
@@ -33,7 +34,7 @@ void DatabaseMediaPublisherInfo::InsertOrUpdate(
     LegacyResultCallback callback) {
   if (media_key.empty() || publisher_key.empty()) {
     BLOG(1, "Data is empty " << media_key << "/" << publisher_key);
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -54,14 +55,14 @@ void DatabaseMediaPublisherInfo::InsertOrUpdate(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseMediaPublisherInfo::GetRecord(const std::string& media_key,
                                            PublisherInfoCallback callback) {
   if (media_key.empty()) {
     BLOG(1, "Media key is empty");
-    return callback(mojom::Result::LEDGER_ERROR, {});
+    return callback(mojom::Result::FAILED, {});
   }
 
   auto transaction = mojom::DBTransaction::New();
@@ -96,7 +97,7 @@ void DatabaseMediaPublisherInfo::GetRecord(const std::string& media_key,
   auto transaction_callback =
       std::bind(&DatabaseMediaPublisherInfo::OnGetRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseMediaPublisherInfo::OnGetRecord(
@@ -105,7 +106,7 @@ void DatabaseMediaPublisherInfo::OnGetRecord(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(1, "Response is wrong");
-    callback(mojom::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::FAILED, {});
     return;
   }
 
@@ -129,7 +130,7 @@ void DatabaseMediaPublisherInfo::OnGetRecord(
   info->excluded =
       static_cast<mojom::PublisherExclude>(GetIntColumn(record, 7));
 
-  callback(mojom::Result::LEDGER_OK, std::move(info));
+  callback(mojom::Result::OK, std::move(info));
 }
 
 }  // namespace database

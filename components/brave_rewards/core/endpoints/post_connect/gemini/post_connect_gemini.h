@@ -23,13 +23,13 @@
 // Response body: -
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoints {
 
 class PostConnectGemini final : public PostConnect {
  public:
-  PostConnectGemini(LedgerImpl& ledger,
+  PostConnectGemini(RewardsEngineImpl& engine,
                     std::string&& linking_info,
                     std::string&& recipient_id);
   ~PostConnectGemini() override;

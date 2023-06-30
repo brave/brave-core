@@ -8,8 +8,8 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/ledger_endpoints.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_endpoints.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
 #include "brave/components/brave_rewards/core/endpoints/result_for.h"
@@ -57,7 +57,7 @@
 // clang-format on
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoints {
 
@@ -74,7 +74,7 @@ class GetParameters final : public RequestBuilder,
  public:
   static Result ProcessResponse(const mojom::UrlResponse&);
 
-  explicit GetParameters(LedgerImpl& ledger);
+  explicit GetParameters(RewardsEngineImpl& engine);
   ~GetParameters() override;
 
  private:

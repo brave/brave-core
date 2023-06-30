@@ -9,9 +9,9 @@
 #include <vector>
 
 #include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -28,7 +28,7 @@ namespace promotion {
 class PostBatLossTest : public testing::Test {
  protected:
   void SetUp() override {
-    ON_CALL(*mock_ledger_impl_.mock_client(),
+    ON_CALL(*mock_engine_impl_.mock_client(),
             GetStringState(state::kWalletBrave, _))
         .WillByDefault([](const std::string&, auto callback) {
           std::string wallet = R"({
@@ -40,12 +40,12 @@ class PostBatLossTest : public testing::Test {
   }
 
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  PostBatLoss loss_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  PostBatLoss loss_{mock_engine_impl_};
 };
 
 TEST_F(PostBatLossTest, ServerOK) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -56,14 +56,14 @@ TEST_F(PostBatLossTest, ServerOK) {
       });
 
   MockFunction<PostBatLossCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::LEDGER_OK)).Times(1);
+  EXPECT_CALL(callback, Call(mojom::Result::OK)).Times(1);
   loss_.Request(30.0, 1, callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostBatLossTest, ServerError500) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -74,14 +74,14 @@ TEST_F(PostBatLossTest, ServerError500) {
       });
 
   MockFunction<PostBatLossCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::LEDGER_ERROR)).Times(1);
+  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
   loss_.Request(30.0, 1, callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostBatLossTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -92,7 +92,7 @@ TEST_F(PostBatLossTest, ServerErrorRandom) {
       });
 
   MockFunction<PostBatLossCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::LEDGER_ERROR)).Times(1);
+  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
   loss_.Request(30.0, 1, callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();

@@ -11,13 +11,13 @@
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoints {
 
 class PostCreateTransaction : public RequestBuilder {
  public:
-  PostCreateTransaction(LedgerImpl& ledger,
+  PostCreateTransaction(RewardsEngineImpl& engine,
                         std::string&& token,
                         std::string&& address,
                         mojom::ExternalTransactionPtr);

@@ -8,7 +8,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_server_publisher_links.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 using std::placeholders::_1;
 
@@ -21,8 +21,9 @@ const char kTableName[] = "server_publisher_links";
 namespace brave_rewards::internal {
 namespace database {
 
-DatabaseServerPublisherLinks::DatabaseServerPublisherLinks(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseServerPublisherLinks::DatabaseServerPublisherLinks(
+    RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabaseServerPublisherLinks::~DatabaseServerPublisherLinks() = default;
 
@@ -99,7 +100,7 @@ void DatabaseServerPublisherLinks::GetRecord(
   auto transaction_callback =
       std::bind(&DatabaseServerPublisherLinks::OnGetRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseServerPublisherLinks::OnGetRecord(

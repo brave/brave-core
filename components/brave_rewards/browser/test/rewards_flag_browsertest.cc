@@ -62,7 +62,7 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
         base::BindRepeating(
             &RewardsFlagBrowserTest::GetTestResponse,
             base::Unretained(this)));
-    rewards_service_->SetLedgerEnvForTesting();
+    rewards_service_->SetEngineEnvForTesting();
 
     test_util::SetOnboardingBypassed(browser());
   }

@@ -10,12 +10,12 @@
 #include <string>
 
 #include "base/logging.h"
-#include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
 #include "brave/components/brave_rewards/core/logging/logging_util.h"
 
 namespace brave_rewards::internal {
 
-void set_ledger_client_for_logging(mojom::LedgerClient* ledger_client);
+void set_client_for_logging(mojom::RewardsEngineClient* client);
 
 void Log(const char* file,
          const int line,
@@ -30,7 +30,7 @@ void Log(const char* file,
 //
 //   --enable-logging=stderr --v=1 --vmodule=foo=2,bar=3
 //
-// This runs BAT Ledger with the global VLOG level set to "print everything at
+// This runs BAT Rewards with the global VLOG level set to "print everything at
 // level 1 and lower", but prints levels up to 2 in foo.cc and levels up to 3 in
 // bar.cc
 //
@@ -38,7 +38,7 @@ void Log(const char* file,
 // whole pathname and not just the module. e.g., "/foo/bar/=2" would change the
 // logging level for all code in source files under a "foo/bar" directory
 //
-// BAT Ledger verbose levels:
+// BAT Rewards verbose levels:
 //
 //   0 Error
 //   1 Info

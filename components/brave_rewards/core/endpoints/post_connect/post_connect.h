@@ -9,16 +9,16 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_rewards/common/mojom/ledger_endpoints.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_endpoints.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
 #include "brave/components/brave_rewards/core/endpoints/result_for.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoints {
 
@@ -36,7 +36,7 @@ class PostConnect : public RequestBuilder, public ResponseHandler<PostConnect> {
   static ConnectExternalWalletResult ToConnectExternalWalletResult(
       const Result&);
 
-  explicit PostConnect(LedgerImpl& ledger);
+  explicit PostConnect(RewardsEngineImpl& engine);
   ~PostConnect() override;
 
  protected:

@@ -17,13 +17,13 @@
 #include "base/memory/raw_ref.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoint/gemini/gemini_server.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/wallet_provider/gemini/connect_gemini_wallet.h"
 #include "brave/components/brave_rewards/core/wallet_provider/gemini/gemini_transfer.h"
 #include "brave/components/brave_rewards/core/wallet_provider/gemini/get_gemini_wallet.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace gemini {
 
@@ -31,7 +31,7 @@ using FetchBalanceCallback = base::OnceCallback<void(mojom::Result, double)>;
 
 class Gemini {
  public:
-  explicit Gemini(LedgerImpl& ledger);
+  explicit Gemini(RewardsEngineImpl& engine);
 
   ~Gemini();
 
@@ -87,7 +87,7 @@ class Gemini {
 
   void RemoveTransferFee(const std::string& contribution_id);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   ConnectGeminiWallet connect_wallet_;
   GetGeminiWallet get_wallet_;
   GeminiTransfer transfer_;

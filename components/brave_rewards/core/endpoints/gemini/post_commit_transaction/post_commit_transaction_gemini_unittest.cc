@@ -11,8 +11,8 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoints/gemini/post_commit_transaction/post_commit_transaction_gemini.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -39,13 +39,13 @@ class PostCommitTransactionGemini
     : public TestWithParam<PostCommitTransactionGeminiParamType> {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
+  MockRewardsEngineImpl mock_engine_impl_;
 };
 
 TEST_P(PostCommitTransactionGemini, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -58,7 +58,7 @@ TEST_P(PostCommitTransactionGemini, Paths) {
   EXPECT_CALL(callback, Run(Result(expected_result))).Times(1);
 
   RequestFor<endpoints::PostCommitTransactionGemini>(
-      mock_ledger_impl_, "token", "address",
+      mock_engine_impl_, "token", "address",
       mojom::ExternalTransaction::New("transaction_id", "contribution_id",
                                       "destination", "amount"))
       .Send(callback.Get());

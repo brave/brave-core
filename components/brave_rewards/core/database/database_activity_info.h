@@ -16,7 +16,7 @@ namespace database {
 
 class DatabaseActivityInfo : public DatabaseTable {
  public:
-  explicit DatabaseActivityInfo(LedgerImpl& ledger);
+  explicit DatabaseActivityInfo(RewardsEngineImpl& engine);
   ~DatabaseActivityInfo() override;
 
   void InsertOrUpdate(mojom::PublisherInfoPtr info,

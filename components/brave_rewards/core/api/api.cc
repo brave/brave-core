@@ -10,7 +10,7 @@
 namespace brave_rewards::internal {
 namespace api {
 
-API::API(LedgerImpl& ledger) : parameters_(ledger) {}
+API::API(RewardsEngineImpl& engine) : parameters_(engine) {}
 
 API::~API() = default;
 

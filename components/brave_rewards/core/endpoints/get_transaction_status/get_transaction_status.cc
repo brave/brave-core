@@ -9,10 +9,10 @@
 
 namespace brave_rewards::internal::endpoints {
 
-GetTransactionStatus::GetTransactionStatus(LedgerImpl& ledger,
+GetTransactionStatus::GetTransactionStatus(RewardsEngineImpl& engine,
                                            std::string&& token,
                                            std::string&& transaction_id)
-    : RequestBuilder(ledger),
+    : RequestBuilder(engine),
       token_(std::move(token)),
       transaction_id_(std::move(transaction_id)) {}
 

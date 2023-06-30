@@ -12,13 +12,13 @@
 #include "brave/components/brave_rewards/core/attestation/attestation.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace attestation {
 
 class AttestationImpl : public Attestation {
  public:
-  explicit AttestationImpl(LedgerImpl& ledger);
+  explicit AttestationImpl(RewardsEngineImpl& engine);
   ~AttestationImpl() override;
 
   void Start(const std::string& payload, StartCallback callback) override;

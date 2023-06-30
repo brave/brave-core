@@ -10,9 +10,9 @@
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_me/get_me.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -27,12 +27,12 @@ namespace uphold {
 class GetMeTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  GetMe me_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  GetMe me_{mock_engine_impl_};
 };
 
 TEST_F(GetMeTest, ServerOK) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -133,7 +133,7 @@ TEST_F(GetMeTest, ServerOK) {
   EXPECT_CALL(callback, Run)
       .Times(1)
       .WillOnce([](mojom::Result result, const internal::uphold::User& user) {
-        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+        EXPECT_EQ(result, mojom::Result::OK);
         EXPECT_EQ(user.name, "John");
         EXPECT_EQ(user.member_id, "b34060c9-5ca3-4bdb-bc32-1f826ecea36e");
         EXPECT_EQ(user.bat_not_allowed, false);
@@ -144,7 +144,7 @@ TEST_F(GetMeTest, ServerOK) {
 }
 
 TEST_F(GetMeTest, ServerError401) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -162,7 +162,7 @@ TEST_F(GetMeTest, ServerError401) {
 }
 
 TEST_F(GetMeTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -173,7 +173,7 @@ TEST_F(GetMeTest, ServerErrorRandom) {
       });
 
   base::MockCallback<GetMeCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, _)).Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, _)).Times(1);
   me_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
 
   task_environment_.RunUntilIdle();

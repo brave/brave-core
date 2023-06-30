@@ -173,12 +173,11 @@ declare namespace NewTab {
   }
 
   export const enum RewardsResult {
-    LEDGER_OK = 0,
-    LEDGER_ERROR = 1,
+    OK = 0,
+    FAILED = 1,
     NO_PUBLISHER_STATE = 2,
-    NO_LEDGER_STATE = 3,
+    NO_LEGACY_STATE = 3,
     INVALID_PUBLISHER_STATE = 4,
-    INVALID_LEDGER_STATE = 5,
     CAPTCHA_FAILED = 6,
     NO_PUBLISHER_LIST = 7,
     TOO_MANY_RESULTS = 8,

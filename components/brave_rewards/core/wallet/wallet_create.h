@@ -9,17 +9,17 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace wallet {
 
 class WalletCreate {
  public:
-  explicit WalletCreate(LedgerImpl& ledger);
+  explicit WalletCreate(RewardsEngineImpl& engine);
 
   void CreateWallet(absl::optional<std::string>&& geo_country,
                     CreateRewardsWalletCallback callback);
@@ -30,7 +30,7 @@ class WalletCreate {
                 absl::optional<std::string>&& geo_country,
                 Result&&);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace wallet

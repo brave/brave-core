@@ -20,7 +20,7 @@ using GetSKUOrderCallback = std::function<void(mojom::SKUOrderPtr)>;
 
 class DatabaseSKUOrder : public DatabaseTable {
  public:
-  explicit DatabaseSKUOrder(LedgerImpl& ledger);
+  explicit DatabaseSKUOrder(RewardsEngineImpl& engine);
   ~DatabaseSKUOrder() override;
 
   void InsertOrUpdate(mojom::SKUOrderPtr info, LegacyResultCallback callback);

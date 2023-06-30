@@ -17,13 +17,13 @@
 #include "base/memory/raw_ref.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoint/bitflyer/bitflyer_server.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/wallet_provider/bitflyer/bitflyer_transfer.h"
 #include "brave/components/brave_rewards/core/wallet_provider/bitflyer/connect_bitflyer_wallet.h"
 #include "brave/components/brave_rewards/core/wallet_provider/bitflyer/get_bitflyer_wallet.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace bitflyer {
 
@@ -31,7 +31,7 @@ using FetchBalanceCallback = base::OnceCallback<void(mojom::Result, double)>;
 
 class Bitflyer {
  public:
-  explicit Bitflyer(LedgerImpl& ledger);
+  explicit Bitflyer(RewardsEngineImpl& engine);
 
   ~Bitflyer();
 
@@ -87,7 +87,7 @@ class Bitflyer {
 
   void RemoveTransferFee(const std::string& contribution_id);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   ConnectBitFlyerWallet connect_wallet_;
   GetBitFlyerWallet get_wallet_;
   BitFlyerTransfer transfer_;

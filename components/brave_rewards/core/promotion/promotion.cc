@@ -17,10 +17,10 @@
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/legacy/wallet_info_properties.h"
 #include "brave/components/brave_rewards/core/promotion/promotion_transfer.h"
 #include "brave/components/brave_rewards/core/promotion/promotion_util.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 
@@ -43,7 +43,7 @@ const int kFetchPromotionsThresholdInSeconds =
     10 * base::Time::kSecondsPerMinute;
 
 void HandleExpiredPromotions(
-    LedgerImpl& ledger_impl,
+    RewardsEngineImpl& engine_impl,
     base::flat_map<std::string, mojom::PromotionPtr>* promotions) {
   DCHECK(promotions);
   if (!promotions) {
@@ -64,7 +64,7 @@ void HandleExpiredPromotions(
 
     if (item.second->expires_at > 0 &&
         item.second->expires_at <= current_time) {
-      ledger_impl.database()->UpdatePromotionStatus(
+      engine_impl.database()->UpdatePromotionStatus(
           item.second->id, mojom::PromotionStatus::OVER,
           [](const mojom::Result _) {});
     }
@@ -73,26 +73,26 @@ void HandleExpiredPromotions(
 
 }  // namespace
 
-Promotion::Promotion(LedgerImpl& ledger)
-    : ledger_(ledger),
-      attestation_(ledger),
-      transfer_(ledger),
-      credentials_(ledger),
-      promotion_server_(ledger) {}
+Promotion::Promotion(RewardsEngineImpl& engine)
+    : engine_(engine),
+      attestation_(engine),
+      transfer_(engine),
+      credentials_(engine),
+      promotion_server_(engine) {}
 
 Promotion::~Promotion() = default;
 
 void Promotion::Initialize() {
-  if (!ledger_->state()->GetPromotionCorruptedMigrated()) {
+  if (!engine_->state()->GetPromotionCorruptedMigrated()) {
     BLOG(1, "Migrating corrupted promotions");
     auto check_callback = std::bind(&Promotion::CheckForCorrupted, this, _1);
 
-    ledger_->database()->GetAllPromotions(check_callback);
+    engine_->database()->GetAllPromotions(check_callback);
   }
 
   auto retry_callback = std::bind(&Promotion::Retry, this, _1);
 
-  ledger_->database()->GetAllPromotions(retry_callback);
+  engine_->database()->GetAllPromotions(retry_callback);
 }
 
 void Promotion::Fetch(FetchPromotionsCallback callback) {
@@ -100,14 +100,14 @@ void Promotion::Fetch(FetchPromotionsCallback callback) {
   // database instead of querying the server again
   if (!is_testing && _environment != mojom::Environment::STAGING) {
     const uint64_t last_promo_stamp =
-        ledger_->state()->GetPromotionLastFetchStamp();
+        engine_->state()->GetPromotionLastFetchStamp();
     const uint64_t now = util::GetCurrentTimeStamp();
     if (now - last_promo_stamp < kFetchPromotionsThresholdInSeconds) {
       auto all_callback =
           base::BindOnce(&Promotion::OnGetAllPromotionsFromDatabase,
                          base::Unretained(this), std::move(callback));
 
-      ledger_->database()->GetAllPromotions(
+      engine_->database()->GetAllPromotions(
           [callback = std::make_shared<decltype(all_callback)>(
                std::move(all_callback))](
               base::flat_map<std::string, mojom::PromotionPtr> promotions) {
@@ -120,7 +120,7 @@ void Promotion::Fetch(FetchPromotionsCallback callback) {
   auto url_callback = base::BindOnce(
       &Promotion::OnFetch, base::Unretained(this), std::move(callback));
 
-  auto client_info = ledger_->GetClientInfo();
+  auto client_info = engine_->GetClientInfo();
   const std::string client = ParseClientInfoToString(std::move(client_info));
   promotion_server_.get_available().Request(client, std::move(url_callback));
 }
@@ -135,8 +135,8 @@ void Promotion::OnFetch(FetchPromotionsCallback callback,
     return;
   }
 
-  if (result == mojom::Result::LEDGER_ERROR) {
-    ProcessFetchedPromotions(mojom::Result::LEDGER_ERROR, std::move(list),
+  if (result == mojom::Result::FAILED) {
+    ProcessFetchedPromotions(mojom::Result::FAILED, std::move(list),
                              std::move(callback));
     return;
   }
@@ -151,7 +151,7 @@ void Promotion::OnFetch(FetchPromotionsCallback callback,
       base::BindOnce(&Promotion::OnGetAllPromotions, base::Unretained(this),
                      std::move(callback), std::move(list));
 
-  ledger_->database()->GetAllPromotions(
+  engine_->database()->GetAllPromotions(
       [callback =
            std::make_shared<decltype(all_callback)>(std::move(all_callback))](
           base::flat_map<std::string, mojom::PromotionPtr> promotions) {
@@ -163,7 +163,7 @@ void Promotion::OnGetAllPromotions(
     FetchPromotionsCallback callback,
     std::vector<mojom::PromotionPtr> list,
     base::flat_map<std::string, mojom::PromotionPtr> promotions) {
-  HandleExpiredPromotions(*ledger_, &promotions);
+  HandleExpiredPromotions(*engine_, &promotions);
 
   std::vector<mojom::PromotionPtr> promotions_ui;
   for (const auto& item : list) {
@@ -189,13 +189,13 @@ void Promotion::OnGetAllPromotions(
       auto legacy_callback =
           std::bind(&Promotion::LegacyClaimedSaved, this, _1,
                     std::make_shared<mojom::PromotionPtr>(item->Clone()));
-      ledger_->database()->SavePromotion(item->Clone(), legacy_callback);
+      engine_->database()->SavePromotion(item->Clone(), legacy_callback);
       continue;
     }
 
     promotions_ui.push_back(item->Clone());
 
-    ledger_->database()->SavePromotion(item->Clone(),
+    engine_->database()->SavePromotion(item->Clone(),
                                        [](const mojom::Result _) {});
   }
 
@@ -211,20 +211,20 @@ void Promotion::OnGetAllPromotions(
         [&promotion](auto& item) { return item->id == promotion.second->id; });
 
     if (!found) {
-      ledger_->database()->UpdatePromotionStatus(promotion.second->id,
+      engine_->database()->UpdatePromotionStatus(promotion.second->id,
                                                  mojom::PromotionStatus::OVER,
                                                  [](const mojom::Result) {});
     }
   }
 
-  ProcessFetchedPromotions(mojom::Result::LEDGER_OK, std::move(promotions_ui),
+  ProcessFetchedPromotions(mojom::Result::OK, std::move(promotions_ui),
                            std::move(callback));
 }
 
 void Promotion::OnGetAllPromotionsFromDatabase(
     FetchPromotionsCallback callback,
     base::flat_map<std::string, mojom::PromotionPtr> promotions) {
-  HandleExpiredPromotions(*ledger_, &promotions);
+  HandleExpiredPromotions(*engine_, &promotions);
 
   std::vector<mojom::PromotionPtr> promotions_ui;
   for (const auto& item : promotions) {
@@ -232,13 +232,13 @@ void Promotion::OnGetAllPromotionsFromDatabase(
       promotions_ui.push_back(item.second->Clone());
     }
   }
-  std::move(callback).Run(mojom::Result::LEDGER_OK, std::move(promotions_ui));
+  std::move(callback).Run(mojom::Result::OK, std::move(promotions_ui));
 }
 
 void Promotion::LegacyClaimedSaved(
     const mojom::Result result,
     std::shared_ptr<mojom::PromotionPtr> shared_promotion) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Save failed");
     return;
   }
@@ -253,7 +253,7 @@ void Promotion::Claim(const std::string& promotion_id,
       base::BindOnce(&Promotion::OnClaimPromotion, base::Unretained(this),
                      std::move(callback), payload);
 
-  ledger_->database()->GetPromotion(
+  engine_->database()->GetPromotion(
       promotion_id,
       [callback = std::make_shared<decltype(promotion_callback)>(
            std::move(promotion_callback))](mojom::PromotionPtr promotion) {
@@ -266,7 +266,7 @@ void Promotion::OnClaimPromotion(ClaimPromotionCallback callback,
                                  mojom::PromotionPtr promotion) {
   if (!promotion) {
     BLOG(0, "Promotion is null");
-    std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
 
@@ -276,10 +276,10 @@ void Promotion::OnClaimPromotion(ClaimPromotionCallback callback,
     return;
   }
 
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet does not exist");
-    std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
 
@@ -293,7 +293,7 @@ void Promotion::Attest(const std::string& promotion_id,
       base::BindOnce(&Promotion::OnAttestPromotion, base::Unretained(this),
                      std::move(callback), solution);
 
-  ledger_->database()->GetPromotion(
+  engine_->database()->GetPromotion(
       promotion_id,
       [callback = std::make_shared<decltype(promotion_callback)>(
            std::move(promotion_callback))](mojom::PromotionPtr promotion) {
@@ -306,7 +306,7 @@ void Promotion::OnAttestPromotion(AttestPromotionCallback callback,
                                   mojom::PromotionPtr promotion) {
   if (!promotion) {
     BLOG(1, "Promotion is null");
-    std::move(callback).Run(mojom::Result::LEDGER_ERROR, nullptr);
+    std::move(callback).Run(mojom::Result::FAILED, nullptr);
     return;
   }
 
@@ -325,7 +325,7 @@ void Promotion::OnAttestPromotion(AttestPromotionCallback callback,
 void Promotion::OnAttestedPromotion(AttestPromotionCallback callback,
                                     const std::string& promotion_id,
                                     mojom::Result result) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Attestation failed " << result);
     std::move(callback).Run(result, nullptr);
     return;
@@ -335,7 +335,7 @@ void Promotion::OnAttestedPromotion(AttestPromotionCallback callback,
       base::BindOnce(&Promotion::OnCompletedAttestation, base::Unretained(this),
                      std::move(callback));
 
-  ledger_->database()->GetPromotion(
+  engine_->database()->GetPromotion(
       promotion_id,
       [callback = std::make_shared<decltype(promotion_callback)>(
            std::move(promotion_callback))](mojom::PromotionPtr promotion) {
@@ -347,7 +347,7 @@ void Promotion::OnCompletedAttestation(AttestPromotionCallback callback,
                                        mojom::PromotionPtr promotion) {
   if (!promotion) {
     BLOG(0, "Promotion does not exist");
-    std::move(callback).Run(mojom::Result::LEDGER_ERROR, nullptr);
+    std::move(callback).Run(mojom::Result::FAILED, nullptr);
     return;
   }
 
@@ -363,7 +363,7 @@ void Promotion::OnCompletedAttestation(AttestPromotionCallback callback,
       base::BindOnce(&Promotion::AttestedSaved, base::Unretained(this),
                      std::move(callback), promotion->Clone());
 
-  ledger_->database()->SavePromotion(
+  engine_->database()->SavePromotion(
       std::move(promotion),
       [callback =
            std::make_shared<decltype(save_callback)>(std::move(save_callback))](
@@ -373,7 +373,7 @@ void Promotion::OnCompletedAttestation(AttestPromotionCallback callback,
 void Promotion::AttestedSaved(AttestPromotionCallback callback,
                               mojom::PromotionPtr promotion,
                               mojom::Result result) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Save failed ");
     std::move(callback).Run(result, nullptr);
     return;
@@ -393,7 +393,7 @@ void Promotion::Complete(AttestPromotionCallback callback,
       base::BindOnce(&Promotion::OnComplete, base::Unretained(this),
                      std::move(callback), result);
 
-  ledger_->database()->GetPromotion(
+  engine_->database()->GetPromotion(
       promotion_id,
       [callback = std::make_shared<decltype(promotion_callback)>(
            std::move(promotion_callback))](mojom::PromotionPtr promotion) {
@@ -405,8 +405,8 @@ void Promotion::OnComplete(AttestPromotionCallback callback,
                            mojom::Result result,
                            mojom::PromotionPtr promotion) {
   BLOG(1, "Promotion completed with result " << result);
-  if (promotion && result == mojom::Result::LEDGER_OK) {
-    ledger_->database()->SaveBalanceReportInfoItem(
+  if (promotion && result == mojom::Result::OK) {
+    engine_->database()->SaveBalanceReportInfoItem(
         util::GetCurrentMonth(), util::GetCurrentYear(),
         ConvertPromotionTypeToReportType(promotion->type),
         promotion->approximate_value, [](mojom::Result) {});
@@ -420,10 +420,10 @@ void Promotion::ProcessFetchedPromotions(
     std::vector<mojom::PromotionPtr> promotions,
     FetchPromotionsCallback callback) {
   const uint64_t now = util::GetCurrentTimeStamp();
-  ledger_->state()->SetPromotionLastFetchStamp(now);
+  engine_->state()->SetPromotionLastFetchStamp(now);
   last_check_timer_.Stop();
   const bool retry =
-      result != mojom::Result::LEDGER_OK && result != mojom::Result::NOT_FOUND;
+      result != mojom::Result::OK && result != mojom::Result::NOT_FOUND;
   Refresh(retry);
   std::move(callback).Run(result, std::move(promotions));
 }
@@ -432,7 +432,7 @@ void Promotion::GetCredentials(ResultCallback callback,
                                mojom::PromotionPtr promotion) {
   if (!promotion) {
     BLOG(0, "Promotion is null");
-    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -455,25 +455,25 @@ void Promotion::CredentialsProcessed(ResultCallback callback,
     retry_timer_.Start(FROM_HERE, base::Seconds(5),
                        base::BindOnce(&Promotion::OnRetryTimerElapsed,
                                       base::Unretained(this)));
-    std::move(callback).Run(mojom::Result::LEDGER_OK);
+    std::move(callback).Run(mojom::Result::OK);
     return;
   }
 
   if (result == mojom::Result::NOT_FOUND) {
-    ledger_->database()->UpdatePromotionStatus(
+    engine_->database()->UpdatePromotionStatus(
         promotion_id, mojom::PromotionStatus::OVER,
         [callback = std::make_shared<decltype(callback)>(std::move(callback))](
             mojom::Result result) { std::move(*callback).Run(result); });
     return;
   }
 
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Credentials process not succeeded " << result);
     std::move(callback).Run(result);
     return;
   }
 
-  ledger_->database()->UpdatePromotionStatus(
+  engine_->database()->UpdatePromotionStatus(
       promotion_id, mojom::PromotionStatus::FINISHED,
       [callback = std::make_shared<decltype(callback)>(std::move(callback))](
           mojom::Result result) { std::move(*callback).Run(result); });
@@ -481,7 +481,7 @@ void Promotion::CredentialsProcessed(ResultCallback callback,
 
 void Promotion::Retry(
     base::flat_map<std::string, mojom::PromotionPtr> promotions) {
-  HandleExpiredPromotions(*ledger_, &promotions);
+  HandleExpiredPromotions(*engine_, &promotions);
 
   for (auto& promotion : promotions) {
     if (!promotion.second) {
@@ -519,7 +519,7 @@ void Promotion::Refresh(const bool retry_after_error) {
     const auto default_time = constant::kPromotionRefreshInterval;
     const uint64_t now = util::GetCurrentTimeStamp();
     const uint64_t last_promo_stamp =
-        ledger_->state()->GetPromotionLastFetchStamp();
+        engine_->state()->GetPromotionLastFetchStamp();
 
     uint64_t time_since_last_promo_check = 0ull;
 
@@ -563,31 +563,31 @@ void Promotion::CheckForCorrupted(
 
   if (corrupted_promotions.empty()) {
     BLOG(1, "No corrupted promotions");
-    CorruptedPromotionFixed(mojom::Result::LEDGER_OK);
+    CorruptedPromotionFixed(mojom::Result::OK);
     return;
   }
 
   auto get_callback = std::bind(&Promotion::CorruptedPromotionFixed, this, _1);
 
-  ledger_->database()->UpdatePromotionsBlankPublicKey(corrupted_promotions,
+  engine_->database()->UpdatePromotionsBlankPublicKey(corrupted_promotions,
                                                       get_callback);
 }
 
 void Promotion::CorruptedPromotionFixed(const mojom::Result result) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Could not update public keys");
     return;
   }
 
   auto check_callback = std::bind(&Promotion::CheckForCorruptedCreds, this, _1);
 
-  ledger_->database()->GetAllCredsBatches(check_callback);
+  engine_->database()->GetAllCredsBatches(check_callback);
 }
 
 void Promotion::CheckForCorruptedCreds(std::vector<mojom::CredsBatchPtr> list) {
   if (list.empty()) {
     BLOG(1, "Creds list is empty");
-    ledger_->state()->SetPromotionCorruptedMigrated(true);
+    engine_->state()->SetPromotionCorruptedMigrated(true);
     return;
   }
 
@@ -609,14 +609,14 @@ void Promotion::CheckForCorruptedCreds(std::vector<mojom::CredsBatchPtr> list) {
 
   if (corrupted_promotions.empty()) {
     BLOG(1, "No corrupted creds");
-    ledger_->state()->SetPromotionCorruptedMigrated(true);
+    engine_->state()->SetPromotionCorruptedMigrated(true);
     return;
   }
 
   auto get_callback = std::bind(&Promotion::CorruptedPromotions, this, _1,
                                 corrupted_promotions);
 
-  ledger_->database()->GetPromotionList(corrupted_promotions, get_callback);
+  engine_->database()->GetPromotionList(corrupted_promotions, get_callback);
 }
 
 void Promotion::CorruptedPromotions(std::vector<mojom::PromotionPtr> promotions,
@@ -633,7 +633,7 @@ void Promotion::CorruptedPromotions(std::vector<mojom::PromotionPtr> promotions,
 
   if (corrupted_claims.empty()) {
     BLOG(1, "No corrupted creds");
-    ledger_->state()->SetPromotionCorruptedMigrated(true);
+    engine_->state()->SetPromotionCorruptedMigrated(true);
     return;
   }
 
@@ -646,17 +646,17 @@ void Promotion::CorruptedPromotions(std::vector<mojom::PromotionPtr> promotions,
 void Promotion::OnCheckForCorrupted(
     const mojom::Result result,
     const std::vector<std::string>& promotion_id_list) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Failed to parse corrupted promotions response");
     return;
   }
 
-  ledger_->state()->SetPromotionCorruptedMigrated(true);
+  engine_->state()->SetPromotionCorruptedMigrated(true);
 
   auto update_callback =
       std::bind(&Promotion::ErrorStatusSaved, this, _1, promotion_id_list);
 
-  ledger_->database()->UpdatePromotionsStatus(
+  engine_->database()->UpdatePromotionsStatus(
       promotion_id_list, mojom::PromotionStatus::CORRUPTED, update_callback);
 }
 
@@ -664,26 +664,26 @@ void Promotion::ErrorStatusSaved(
     const mojom::Result result,
     const std::vector<std::string>& promotion_id_list) {
   // even if promotions fail, let's try to update at least creds
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Promotion status save failed");
   }
 
   auto update_callback = std::bind(&Promotion::ErrorCredsStatusSaved, this, _1);
 
-  ledger_->database()->UpdateCredsBatchesStatus(
+  engine_->database()->UpdateCredsBatchesStatus(
       promotion_id_list, mojom::CredsBatchType::PROMOTION,
       mojom::CredsBatchStatus::CORRUPTED, update_callback);
 }
 
 void Promotion::ErrorCredsStatusSaved(const mojom::Result result) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Creds status save failed");
   }
 
   // let's retry promotions that are valid now
   auto retry_callback = std::bind(&Promotion::Retry, this, _1);
 
-  ledger_->database()->GetAllPromotions(retry_callback);
+  engine_->database()->GetAllPromotions(retry_callback);
 }
 
 void Promotion::TransferTokens(PostSuggestionsClaimCallback callback) {
@@ -691,7 +691,7 @@ void Promotion::TransferTokens(PostSuggestionsClaimCallback callback) {
 }
 
 void Promotion::OnRetryTimerElapsed() {
-  ledger_->database()->GetAllPromotions(std::bind(&Promotion::Retry, this, _1));
+  engine_->database()->GetAllPromotions(std::bind(&Promotion::Retry, this, _1));
 }
 
 void Promotion::OnLastCheckTimerElapsed() {

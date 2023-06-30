@@ -6,16 +6,16 @@
 #include <utility>
 
 #include "base/containers/flat_map.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/legacy/media/media.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "build/build_config.h"
 
 namespace brave_rewards::internal {
 
-Media::Media(LedgerImpl& ledger)
-    : ledger_(ledger), media_youtube_(ledger), media_github_(ledger) {}
+Media::Media(RewardsEngineImpl& engine)
+    : engine_(engine), media_youtube_(engine), media_github_(engine) {}
 
 Media::~Media() = default;
 
@@ -84,7 +84,7 @@ void Media::OnMediaActivityError(mojom::VisitDataPtr visit_data,
   visit_data->path = "/";
   visit_data->name = name;
 
-  ledger_->publisher()->GetPublisherActivityFromUrl(window_id,
+  engine_->publisher()->GetPublisherActivityFromUrl(window_id,
                                                     std::move(visit_data), "");
 }
 

@@ -103,11 +103,11 @@ void OnResultCallback(mojom::DBCommandResponsePtr response,
                       LegacyResultCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
-  callback(mojom::Result::LEDGER_OK);
+  callback(mojom::Result::OK);
 }
 
 int GetIntColumn(mojom::DBRecord* record, const int index) {

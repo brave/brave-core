@@ -9,9 +9,9 @@
 
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/post_transaction_gemini/post_transaction_sku_gemini.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -27,12 +27,12 @@ namespace payment {
 class PostTransactionGeminiTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  PostTransactionGemini order_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  PostTransactionGemini order_{mock_engine_impl_};
 };
 
 TEST_F(PostTransactionGeminiTest, ServerOK) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -47,14 +47,14 @@ TEST_F(PostTransactionGeminiTest, ServerOK) {
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
   MockFunction<PostTransactionGeminiCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::LEDGER_OK)).Times(1);
+  EXPECT_CALL(callback, Call(mojom::Result::OK)).Times(1);
   order_.Request(transaction, callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError400) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -69,14 +69,14 @@ TEST_F(PostTransactionGeminiTest, ServerError400) {
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
   MockFunction<PostTransactionGeminiCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::LEDGER_ERROR)).Times(1);
+  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
   order_.Request(transaction, callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError404) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -98,7 +98,7 @@ TEST_F(PostTransactionGeminiTest, ServerError404) {
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError409) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -113,14 +113,14 @@ TEST_F(PostTransactionGeminiTest, ServerError409) {
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
   MockFunction<PostTransactionGeminiCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::LEDGER_ERROR)).Times(1);
+  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
   order_.Request(transaction, callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError500) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -135,14 +135,14 @@ TEST_F(PostTransactionGeminiTest, ServerError500) {
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
   MockFunction<PostTransactionGeminiCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::LEDGER_ERROR)).Times(1);
+  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
   order_.Request(transaction, callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostTransactionGeminiTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -157,7 +157,7 @@ TEST_F(PostTransactionGeminiTest, ServerErrorRandom) {
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
   MockFunction<PostTransactionGeminiCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::LEDGER_ERROR)).Times(1);
+  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
   order_.Request(transaction, callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();

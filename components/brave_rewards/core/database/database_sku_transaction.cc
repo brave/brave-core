@@ -9,7 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_sku_transaction.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 using std::placeholders::_1;
 
@@ -22,8 +22,8 @@ const char kTableName[] = "sku_transaction";
 
 }  // namespace
 
-DatabaseSKUTransaction::DatabaseSKUTransaction(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseSKUTransaction::DatabaseSKUTransaction(RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabaseSKUTransaction::~DatabaseSKUTransaction() = default;
 
@@ -32,7 +32,7 @@ void DatabaseSKUTransaction::InsertOrUpdate(
     LegacyResultCallback callback) {
   if (!transaction) {
     BLOG(1, "Transcation is null");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -60,7 +60,7 @@ void DatabaseSKUTransaction::InsertOrUpdate(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(db_transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(db_transaction), transaction_callback);
 }
 
 void DatabaseSKUTransaction::SaveExternalTransaction(
@@ -70,7 +70,7 @@ void DatabaseSKUTransaction::SaveExternalTransaction(
   if (transaction_id.empty() || external_transaction_id.empty()) {
     BLOG(1,
          "Data is empty " << transaction_id << "/" << external_transaction_id);
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -93,7 +93,7 @@ void DatabaseSKUTransaction::SaveExternalTransaction(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUTransaction::GetRecordByOrderId(
@@ -129,7 +129,7 @@ void DatabaseSKUTransaction::GetRecordByOrderId(
   auto transaction_callback =
       std::bind(&DatabaseSKUTransaction::OnGetRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUTransaction::OnGetRecord(mojom::DBCommandResponsePtr response,

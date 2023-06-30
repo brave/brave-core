@@ -14,7 +14,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoints {
 
@@ -27,7 +27,7 @@ class RequestBuilder {
   absl::optional<mojom::UrlRequestPtr> Request() const;
 
  protected:
-  explicit RequestBuilder(LedgerImpl& ledger);
+  explicit RequestBuilder(RewardsEngineImpl& engine);
 
   virtual absl::optional<std::string> Url() const = 0;
 
@@ -44,7 +44,7 @@ class RequestBuilder {
 
   virtual uint32_t LoadFlags() const;
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace endpoints

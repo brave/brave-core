@@ -21,7 +21,7 @@ using GetContributionInfoCallback =
 
 class DatabaseContributionInfo : public DatabaseTable {
  public:
-  explicit DatabaseContributionInfo(LedgerImpl& ledger);
+  explicit DatabaseContributionInfo(RewardsEngineImpl& engine);
   ~DatabaseContributionInfo() override;
 
   void InsertOrUpdate(mojom::ContributionInfoPtr info,

@@ -22,13 +22,13 @@
 // Response body: -
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoints {
 
 class PostConnectBitflyer final : public PostConnect {
  public:
-  PostConnectBitflyer(LedgerImpl& ledger, std::string&& linking_info);
+  PostConnectBitflyer(RewardsEngineImpl& engine, std::string&& linking_info);
   ~PostConnectBitflyer() override;
 
  private:

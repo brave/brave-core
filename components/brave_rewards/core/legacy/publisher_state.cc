@@ -5,9 +5,9 @@
 
 #include <utility>
 
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/legacy/publisher_settings_properties.h"
 #include "brave/components/brave_rewards/core/legacy/publisher_state.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -15,8 +15,8 @@ using std::placeholders::_2;
 namespace brave_rewards::internal {
 namespace publisher {
 
-LegacyPublisherState::LegacyPublisherState(LedgerImpl& ledger)
-    : ledger_(ledger) {}
+LegacyPublisherState::LegacyPublisherState(RewardsEngineImpl& engine)
+    : engine_(engine) {}
 
 LegacyPublisherState::~LegacyPublisherState() = default;
 
@@ -33,7 +33,7 @@ bool LegacyPublisherState::GetPublisherAllowNonVerified() const {
 }
 
 void LegacyPublisherState::Load(LegacyResultCallback callback) {
-  ledger_->client()->LoadPublisherState(
+  engine_->client()->LoadPublisherState(
       base::BindOnce(&LegacyPublisherState::OnLoad, base::Unretained(this),
                      std::move(callback)));
 }
@@ -41,19 +41,19 @@ void LegacyPublisherState::Load(LegacyResultCallback callback) {
 void LegacyPublisherState::OnLoad(LegacyResultCallback callback,
                                   mojom::Result result,
                                   const std::string& data) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     callback(result);
     return;
   }
 
   PublisherSettingsProperties state;
   if (!state.FromJson(data)) {
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
   state_ = std::move(state);
-  callback(mojom::Result::LEDGER_OK);
+  callback(mojom::Result::OK);
 }
 
 std::vector<std::string> LegacyPublisherState::GetAlreadyProcessedPublishers()

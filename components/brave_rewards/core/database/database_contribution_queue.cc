@@ -11,7 +11,7 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_contribution_queue.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 using std::placeholders::_1;
 
@@ -24,8 +24,8 @@ const char kTableName[] = "contribution_queue";
 
 }  // namespace
 
-DatabaseContributionQueue::DatabaseContributionQueue(LedgerImpl& ledger)
-    : DatabaseTable(ledger), publishers_(ledger) {}
+DatabaseContributionQueue::DatabaseContributionQueue(RewardsEngineImpl& engine)
+    : DatabaseTable(engine), publishers_(engine) {}
 
 DatabaseContributionQueue::~DatabaseContributionQueue() = default;
 
@@ -33,13 +33,13 @@ void DatabaseContributionQueue::InsertOrUpdate(mojom::ContributionQueuePtr info,
                                                LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Queue is null");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
   if (info->id.empty()) {
     BLOG(0, "Queue id is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -69,7 +69,7 @@ void DatabaseContributionQueue::InsertOrUpdate(mojom::ContributionQueuePtr info,
       std::bind(&DatabaseContributionQueue::OnInsertOrUpdate, this, _1,
                 shared_info, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionQueue::OnInsertOrUpdate(
@@ -79,13 +79,13 @@ void DatabaseContributionQueue::OnInsertOrUpdate(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
   if (!shared_queue) {
     BLOG(0, "Queue is null");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -117,7 +117,7 @@ void DatabaseContributionQueue::GetFirstRecord(
   auto transaction_callback = std::bind(
       &DatabaseContributionQueue::OnGetFirstRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionQueue::OnGetFirstRecord(
@@ -172,7 +172,7 @@ void DatabaseContributionQueue::MarkRecordAsComplete(
     LegacyResultCallback callback) {
   if (id.empty()) {
     BLOG(1, "Id is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -193,7 +193,7 @@ void DatabaseContributionQueue::MarkRecordAsComplete(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace database

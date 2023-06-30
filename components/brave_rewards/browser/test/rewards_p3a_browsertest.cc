@@ -70,7 +70,7 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
     response_->LoadMocks();
     rewards_service_->ForTestingSetTestResponseCallback(base::BindRepeating(
         &RewardsP3ABrowserTest::GetTestResponse, base::Unretained(this)));
-    rewards_service_->SetLedgerEnvForTesting();
+    rewards_service_->SetEngineEnvForTesting();
 
     // Other
     promotion_->Initialize(browser(), rewards_service_);
@@ -168,7 +168,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
                                        p3a::AdsEnabledDuration::kStillEnabled,
                                        1);
 
-  // We can't turn rewards back off without shutting down the ledger
+  // We can't turn rewards back off without shutting down the rewards
   // process, which interferes with other tests running in parallel.
   // Instead rely on the fact that the EnabledDuration P3A measurement
   // is made by the rewards service preference observer.

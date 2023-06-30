@@ -9,8 +9,8 @@
 
 namespace brave_rewards::internal::bitflyer {
 
-GetBitFlyerWallet::GetBitFlyerWallet(LedgerImpl& ledger)
-    : wallet_provider::GetExternalWallet(ledger) {}
+GetBitFlyerWallet::GetBitFlyerWallet(RewardsEngineImpl& engine)
+    : wallet_provider::GetExternalWallet(engine) {}
 
 GetBitFlyerWallet::~GetBitFlyerWallet() = default;
 

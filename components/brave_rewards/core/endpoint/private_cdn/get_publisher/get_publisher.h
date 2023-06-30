@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // GET /publishers/prefixes/{prefix}
 //
@@ -24,7 +24,7 @@
 // https://github.com/brave/brave-core/blob/master/components/brave_rewards/core/publisher/protos/channel_response.proto
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint {
 namespace private_cdn {
@@ -35,7 +35,7 @@ using GetPublisherCallback =
 
 class GetPublisher {
  public:
-  explicit GetPublisher(LedgerImpl& ledger);
+  explicit GetPublisher(RewardsEngineImpl& engine);
   ~GetPublisher();
 
   void Request(const std::string& publisher_key,
@@ -55,7 +55,7 @@ class GetPublisher {
                  const std::string& publisher_key,
                  GetPublisherCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace private_cdn

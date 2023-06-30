@@ -8,7 +8,7 @@
 #include "base/base64.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/buildflags.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
 namespace {

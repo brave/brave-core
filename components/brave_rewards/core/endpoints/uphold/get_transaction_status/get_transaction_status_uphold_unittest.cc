@@ -11,8 +11,8 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/endpoints/uphold/get_transaction_status/get_transaction_status_uphold.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -39,13 +39,13 @@ class GetTransactionStatusUphold
     : public TestWithParam<GetTransactionStatusUpholdParamType> {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
+  MockRewardsEngineImpl mock_engine_impl_;
 };
 
 TEST_P(GetTransactionStatusUphold, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -57,7 +57,7 @@ TEST_P(GetTransactionStatusUphold, Paths) {
   base::MockCallback<base::OnceCallback<void(Result&&)>> callback;
   EXPECT_CALL(callback, Run(Result(expected_result))).Times(1);
 
-  RequestFor<endpoints::GetTransactionStatusUphold>(mock_ledger_impl_, "token",
+  RequestFor<endpoints::GetTransactionStatusUphold>(mock_engine_impl_, "token",
                                                     "transaction_id")
       .Send(callback.Get());
 

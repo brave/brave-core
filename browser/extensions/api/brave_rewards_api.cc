@@ -480,7 +480,7 @@ ExtensionFunction::ResponseAction BraveRewardsTipUserFunction::Run() {
   }
 
   // If the user clicks the tipping button before having opted into the Rewards,
-  // then the Rewards service would not have started the ledger process yet. We
+  // then the Rewards service would not have started the engine process yet. We
   // need to open the Rewards panel for the user to offer opting in.
   if (!rewards_enabled) {
     // Get web contents for this tab
@@ -511,13 +511,13 @@ ExtensionFunction::ResponseAction BraveRewardsTipUserFunction::Run() {
 void BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo(
     const ::brave_rewards::mojom::Result result,
     ::brave_rewards::mojom::PublisherInfoPtr info) {
-  if (result != ::brave_rewards::mojom::Result::LEDGER_OK &&
+  if (result != ::brave_rewards::mojom::Result::OK &&
       result != ::brave_rewards::mojom::Result::NOT_FOUND) {
     Release();
     return;
   }
 
-  if (result == ::brave_rewards::mojom::Result::LEDGER_OK) {
+  if (result == ::brave_rewards::mojom::Result::OK) {
     ShowTipDialog();
     Release();
     return;
@@ -548,7 +548,7 @@ void BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo(
 
 void BraveRewardsTipUserFunction::OnTipUserSavePublisherInfo(
     const ::brave_rewards::mojom::Result result) {
-  if (result != ::brave_rewards::mojom::Result::LEDGER_OK) {
+  if (result != ::brave_rewards::mojom::Result::OK) {
     Release();
     return;
   }
@@ -1040,7 +1040,7 @@ ExtensionFunction::ResponseAction BraveRewardsSaveRecurringTipFunction::Run() {
 
 void BraveRewardsSaveRecurringTipFunction::OnSaveRecurringTip(
     ::brave_rewards::mojom::Result result) {
-  Respond(result == ::brave_rewards::mojom::Result::LEDGER_OK
+  Respond(result == ::brave_rewards::mojom::Result::OK
               ? NoArguments()
               : Error("Failed to save"));
 }

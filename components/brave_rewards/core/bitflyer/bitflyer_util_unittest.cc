@@ -14,11 +14,11 @@
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
 #include "brave/components/brave_rewards/core/buildflags.h"
 #include "brave/components/brave_rewards/core/common/random_util.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
-#include "brave/components/brave_rewards/core/test/test_ledger_client.h"
+#include "brave/components/brave_rewards/core/test/test_rewards_engine_client.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 // npm run test -- brave_unit_tests --filter=*BitflyerUtilTest.*
@@ -83,19 +83,19 @@ TEST_F(BitflyerUtilTest, GetServerUrl) {
 
 TEST_F(BitflyerUtilTest, GetWallet) {
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
+  MockRewardsEngineImpl mock_engine_impl_;
 
   // no wallet
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(),
+  EXPECT_CALL(*mock_engine_impl_.mock_client(),
               GetStringState(state::kWalletBitflyer, _))
       .Times(1)
       .WillOnce([](const std::string&, auto callback) {
         std::move(callback).Run("");
       });
-  auto result = mock_ledger_impl_.bitflyer()->GetWallet();
+  auto result = mock_engine_impl_.bitflyer()->GetWallet();
   EXPECT_FALSE(result);
 
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(),
+  EXPECT_CALL(*mock_engine_impl_.mock_client(),
               GetStringState(state::kWalletBitflyer, _))
       .Times(1)
       .WillOnce([](const std::string&, auto callback) {
@@ -114,7 +114,7 @@ TEST_F(BitflyerUtilTest, GetWallet) {
       });
 
   // Bitflyer wallet
-  result = mock_ledger_impl_.bitflyer()->GetWallet();
+  result = mock_engine_impl_.bitflyer()->GetWallet();
   EXPECT_TRUE(result);
   EXPECT_EQ(result->address, "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af");
   EXPECT_EQ(result->user_name, "test");

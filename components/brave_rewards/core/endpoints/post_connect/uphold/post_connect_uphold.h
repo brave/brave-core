@@ -41,13 +41,13 @@
 // Response body: -
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoints {
 
 class PostConnectUphold final : public PostConnect {
  public:
-  PostConnectUphold(LedgerImpl& ledger, std::string&& address);
+  PostConnectUphold(RewardsEngineImpl& engine, std::string&& address);
   ~PostConnectUphold() override;
 
  private:

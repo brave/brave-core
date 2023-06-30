@@ -9,11 +9,11 @@
 
 namespace brave_rewards::internal::endpoints {
 PostCommitTransaction::PostCommitTransaction(
-    LedgerImpl& ledger,
+    RewardsEngineImpl& engine,
     std::string&& token,
     std::string&& address,
     mojom::ExternalTransactionPtr transaction)
-    : RequestBuilder(ledger),
+    : RequestBuilder(engine),
       token_(std::move(token)),
       address_(std::move(address)),
       transaction_(std::move(transaction)) {

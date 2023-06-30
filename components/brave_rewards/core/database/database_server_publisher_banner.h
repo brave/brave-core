@@ -18,7 +18,7 @@ namespace database {
 
 class DatabaseServerPublisherBanner : public DatabaseTable {
  public:
-  explicit DatabaseServerPublisherBanner(LedgerImpl& ledger);
+  explicit DatabaseServerPublisherBanner(RewardsEngineImpl& engine);
   ~DatabaseServerPublisherBanner() override;
 
   void InsertOrUpdate(mojom::DBTransaction* transaction,

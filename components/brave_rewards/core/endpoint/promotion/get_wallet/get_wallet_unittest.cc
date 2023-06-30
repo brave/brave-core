@@ -11,8 +11,8 @@
 
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -45,8 +45,8 @@ using GetWalletParamType = std::tuple<
 struct GetWalletTest : TestWithParam<GetWalletParamType> {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  GetWallet get_wallet_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  GetWallet get_wallet_{mock_engine_impl_};
 };
 
 INSTANTIATE_TEST_SUITE_P(
@@ -62,7 +62,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {}
       },
-      mojom::Result::LEDGER_ERROR,
+      mojom::Result::FAILED,
       "",
       false
     },
@@ -75,7 +75,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {}
       },
-      mojom::Result::LEDGER_ERROR,
+      mojom::Result::FAILED,
       "",
       false
     },
@@ -98,7 +98,7 @@ INSTANTIATE_TEST_SUITE_P(
         )",
         {}
       },
-      mojom::Result::LEDGER_OK,
+      mojom::Result::OK,
       "",
       false
     },
@@ -126,7 +126,7 @@ INSTANTIATE_TEST_SUITE_P(
         )",
         {}
       },
-      mojom::Result::LEDGER_OK,
+      mojom::Result::OK,
       constant::kWalletUphold,
       false
     },
@@ -154,7 +154,7 @@ INSTANTIATE_TEST_SUITE_P(
         )",
         {}
       },
-      mojom::Result::LEDGER_OK,
+      mojom::Result::OK,
       constant::kWalletUphold,
       true
     }),
@@ -169,7 +169,7 @@ TEST_P(GetWalletTest, Paths) {
   const auto& expected_custodian = std::get<3>(params);
   const auto expected_linked = std::get<4>(params);
 
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
         std::move(callback).Run(

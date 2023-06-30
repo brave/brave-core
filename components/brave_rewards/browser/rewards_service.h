@@ -16,7 +16,7 @@
 #include "base/types/expected.h"
 #include "base/version.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
-#include "brave/components/brave_rewards/common/mojom/ledger_types.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"

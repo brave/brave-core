@@ -10,7 +10,7 @@
 
 #include "base/memory/raw_ref.h"
 #include "base/values.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // POST /v1/promotions/reportclobberedclaims
 //
@@ -30,7 +30,7 @@
 // {Empty}
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint {
 namespace promotion {
@@ -40,7 +40,7 @@ using PostClobberedClaimsCallback =
 
 class PostClobberedClaims {
  public:
-  explicit PostClobberedClaims(LedgerImpl& ledger);
+  explicit PostClobberedClaims(RewardsEngineImpl& engine);
   ~PostClobberedClaims();
 
   void Request(base::Value::List corrupted_claims,
@@ -56,7 +56,7 @@ class PostClobberedClaims {
   void OnRequest(mojom::UrlResponsePtr response,
                  PostClobberedClaimsCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace promotion
