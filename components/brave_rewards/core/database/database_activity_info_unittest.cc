@@ -99,7 +99,8 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
             "ON ai.publisher_id = pi.publisher_id "
             "LEFT JOIN server_publisher_info AS spi "
             "ON spi.publisher_key = pi.publisher_id "
-            "WHERE 1 = 1 AND pi.excluded = ?";
+            "WHERE 1 = 1 AND pi.excluded = ? AND spi.status != 0 AND "
+            "spi.address != ''";
         ASSERT_EQ(transaction->commands[0]->command, query);
         ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 14u);
         ASSERT_EQ(transaction->commands[0]->bindings.size(), 1u);
@@ -131,7 +132,8 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
             "ON ai.publisher_id = pi.publisher_id "
             "LEFT JOIN server_publisher_info AS spi "
             "ON spi.publisher_key = pi.publisher_id "
-            "WHERE 1 = 1 AND ai.publisher_id = ? AND pi.excluded = ?";
+            "WHERE 1 = 1 AND ai.publisher_id = ? AND pi.excluded = ? "
+            "AND spi.status != 0 AND spi.address != ''";
         ASSERT_EQ(transaction->commands[0]->command, query);
         ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 14u);
         ASSERT_EQ(transaction->commands[0]->bindings.size(), 2u);
