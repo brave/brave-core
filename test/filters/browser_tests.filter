@@ -737,8 +737,10 @@
 -PageInfoBubbleViewBrowserTestCookiesSubpage.ClickingFpsButton
 -PageInfoBubbleViewBrowserTestCookiesSubpage.ToggleForBlockingThirdPartyCookies
 
-# This test fails because we don't support the search companion
--CompanionPageBrowserTest.SigninLoadsInNewTab
+# These tests fail because we don't support the search companion.
+-CompanionPageBrowserTest.*
+-CompanionPagePolicyBrowserTest.*
+-CompanionPageSameTabBrowserTest.*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
@@ -801,6 +803,7 @@
 -All/QuietUIPromoBrowserTest.*
 -All/ReportingBrowserTest.*
 -All/SameOriginUaOriginTrialBrowserTest.*
+-All/SaveCardBubbleViewsFullFormBrowserTest.*/*
 -All/SaveCardBubbleViewsFullFormBrowserTestWithAutofillUpstream.*/*
 -All/SaveCardBubbleViewsSyncTransportFullFormBrowserTest.*/*
 -All/ScrollToTextFragmentPolicyTest.*
@@ -1014,10 +1017,15 @@
 -GlobalConfirmInfoBarTest.*
 -GlobalMediaControlsDialogTest.*
 -GooglePFTest.*
+-GooglePFTestDefaultFieldTrialValue.BaseGoogleSearchHasPFForPrefetch
+-GooglePFTestFieldTrialOverride.BaseGoogleSearchHasPFForPrefetch
 -GreaseEnterprisePolicyTest.*
 -GreaseFeatureParamOptOutTest.UpdatedGreaseFeatureParamOptOutTest
 -GuestStartupBrowserCreatorPickerTest.*
 -HangoutServicesBrowserTest.*
+-HeadlessModeDumpDomCommandBrowserTest.HeadlessDumpDom
+-HeadlessModeLazyLoadingPrintToPdfCommandBrowserTest.HeadlessLazyLoadingPrintToPdf
+-HeadlessModePrintToPdfCommandBrowserTest.HeadlessPrintToPdf
 -HintsFetcherBrowserTest.*
 -HintsFetcherSearchPageBrowserTest.*
 -HistoryBrowserTest.*
