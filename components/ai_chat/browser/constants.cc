@@ -8,10 +8,10 @@
 namespace ai_chat {
 
 // Note the blank space intentionally added
-constexpr char kHumanPrompt[] = "\nQ: ";
-constexpr char kHumanPromptPlaceholder[] = "\nQ: ";
-constexpr char kAIPrompt[] = "\nA:";
-constexpr char kAIPromptPlaceholder[] = "\nA:";
+constexpr char kHumanPrompt[] = "\n\n### Instruction: ";
+constexpr char kHumanPromptPlaceholder[] = "\n### Instruction: ";
+constexpr char kAIPrompt[] = "\n\n### Response: ";
+constexpr char kAIPromptPlaceholder[] = "\n### Response:";
 constexpr char kAIChatCompletionPath[] = "v1/complete";
 
 base::span<const webui::LocalizedString> GetLocalizedStrings() {
