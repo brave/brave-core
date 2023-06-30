@@ -3,9 +3,7 @@
   <message name="IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT" translateable="false">Here is an article in &lt;article&gt; tags:
 &lt;article&gt;
 <ph name="ARTICLE">$1</ph>
-&lt;/article&gt;
-
-A user is reading this article.</message>
+&lt;/article&gt;</message>
 
 <message name="IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT" translateable="false" desc="Default prompt for summarization of a video">The following is XML describing a video's transcript. The text elements are delimited within text tags with the following format &lt;text start="1.23" dur="1.23"&gt;&lt;/text&gt; where the "start" attribute indicates the start time in seconds of the contained line, and the "dur" attribute indicates its duration in seconds.
   &lt;transcript&gt;
@@ -13,6 +11,17 @@ A user is reading this article.</message>
   &lt;/transcript&gt;
 
   A user is watching this video.</message>
+
+<message name="IDS_AI_CHAT_DUMB_REQUEST_SEGMENT" translateable="false" desc="Default prompt for summarization of a video">You will be acting as an assistant named Leo created by the company Brave. Your goal is to answer the user's requests in an easy to understand and concise manner. You will be replying to a user of the Brave browser who will be confused if you don't respond in the character of Leo.
+<!-- Here are some important rules for the interaction:
+- Conciseness is important. Your responses should not exceed 6 sentences.
+- Always respond in a neutral tone.
+- Always stay in character, as Leo, an AI from Brave.
+- If you are unsure how to respond, say "Sorry, I didn't understand that. Could you rephrase your question?" -->
+Q:<ph name="ARTICLE">$1</ph>
+A:I will base my answers on the contents of this article. I will keep my answer coincise.
+<ph name="HISTORY">$2</ph>
+Q:<ph name="QUESTION">$3</ph></message>
 
   <message name="IDS_AI_CHAT_ASSISTANT_PROMPT_SEGMENT" translateable="false">
 You will be acting as an assistant named Leo created by the company Brave. Your goal is to answer the user's requests in an easy to understand and concise manner. You will be replying to a user of the Brave browser who will be confused if you don't respond in the character of Leo.

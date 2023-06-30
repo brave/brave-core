@@ -68,10 +68,11 @@ bool AIChatTabHelper::HasUserOptedIn() {
 std::string AIChatTabHelper::GetConversationHistoryString() {
   std::vector<std::string> turn_strings;
   for (const ConversationTurn& turn : chat_history_) {
-    turn_strings.push_back((turn.character_type == CharacterType::HUMAN
-                                ? ai_chat::kHumanPromptPlaceholder
-                                : ai_chat::kAIPromptPlaceholder) +
-                           turn.text);
+    turn_strings.push_back(
+        (turn.character_type == CharacterType::HUMAN
+             ? ai_chat::kHumanPromptPlaceholder
+             : ai_chat::kAIPromptPlaceholder) +
+        turn.text + (turn.character_type == CharacterType::HUMAN ? "" : "\n"));
   }
 
   return base::JoinString(turn_strings, "");
@@ -286,13 +287,13 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
 
   DCHECK(turn.character_type == CharacterType::HUMAN);
 
-  bool is_suggested_question = false;
+  // bool is_suggested_question = false;
 
   // If it's a suggested question, remove it
   auto found_question_iter =
       base::ranges::find(suggested_questions_, turn.text);
   if (found_question_iter != suggested_questions_.end()) {
-    is_suggested_question = true;
+    // is_suggested_question = true;
     suggested_questions_.erase(found_question_iter);
     OnSuggestedQuestionsChanged();
   }
@@ -310,28 +311,27 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   auto prompt_segment_article =
       article_text_.empty()
           ? ""
-          : base::StrCat(
-                {base::ReplaceStringPlaceholders(
-                     l10n_util::GetStringUTF8(
-                         is_video_ ? IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT
-                                   : IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT),
-                     {article_text_}, nullptr),
-                 "\n\n"});
-
-  auto prompt_segment_history =
-      (chat_history_.empty() || is_suggested_question)
-          ? ""
-          : base::ReplaceStringPlaceholders(
+          : base::StrCat({base::ReplaceStringPlaceholders(
                 l10n_util::GetStringUTF8(
-                    IDS_AI_CHAT_ASSISTANT_HISTORY_PROMPT_SEGMENT),
-                {GetConversationHistoryString()}, nullptr);
+                    is_video_ ? IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT
+                              : IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT),
+                {article_text_}, nullptr)});
+
+  // auto prompt_segment_history =
+  //     (chat_history_.empty() || is_suggested_question)
+  //         ? ""
+  //         : base::ReplaceStringPlaceholders(
+  //               l10n_util::GetStringUTF8(
+  //                   IDS_AI_CHAT_ASSISTANT_HISTORY_PROMPT_SEGMENT),
+  //               {GetConversationHistoryString()}, nullptr);
 
   std::string prompt = base::StrCat(
-      {prompt_segment_article,
-       base::ReplaceStringPlaceholders(
-           l10n_util::GetStringUTF8(IDS_AI_CHAT_ASSISTANT_PROMPT_SEGMENT),
-           {prompt_segment_history, question_part}, nullptr),
-       ai_chat::kAIPrompt, " <response>\n"});
+      {base::ReplaceStringPlaceholders(
+           l10n_util::GetStringUTF8(IDS_AI_CHAT_DUMB_REQUEST_SEGMENT),
+           {prompt_segment_article, GetConversationHistoryString(),
+            question_part},
+           nullptr),
+       ai_chat::kAIPrompt});
 
   if (turn.visibility != ConversationTurnVisibility::HIDDEN) {
     AddToConversationHistory(turn);
