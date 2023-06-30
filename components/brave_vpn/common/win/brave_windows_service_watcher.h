@@ -7,6 +7,8 @@
 #define BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIN_BRAVE_WINDOWS_SERVICE_WATCHER_H_
 
 #include <windows.h>
+
+#include <memory>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
@@ -21,22 +23,29 @@ class ServiceWatcher {
   ServiceWatcher();
   virtual ~ServiceWatcher();
 
+  using StateChangedCallback = base::RepeatingCallback<void(int)>;
+
   bool Subscribe(const std::wstring& service_name,
-                 int state,
-                 base::OnceClosure callback);
+                 int mask,
+                 StateChangedCallback callback);
   bool IsWatching() const;
 
+  void StartWatching();
+  std::wstring GetServiceName() const;
+
  protected:
-  void OnServiceSignaled(base::OnceClosure callback,
-                         base::WaitableEvent* service_event);
+  void OnServiceSignaled(base::WaitableEvent* service_event);
 
  private:
   bool is_watching_ = false;
+  int mask_ = 0;
   ScopedScHandle scm_;
   ScopedScHandle service_;
   SERVICE_NOTIFY service_notify_{0};
+  StateChangedCallback callback_;
+  std::wstring service_name_;
   base::WaitableEvent service_stopped_event_;
-  base::WaitableEventWatcher service_watcher_;
+  std::unique_ptr<base::WaitableEventWatcher> service_watcher_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   base::WeakPtrFactory<ServiceWatcher> weak_ptr_factory_{this};
 };

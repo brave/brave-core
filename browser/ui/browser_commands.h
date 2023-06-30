@@ -24,6 +24,7 @@ void CloseWalletBubble(Browser* browser);
 void MaybeDistillAndShowSpeedreaderBubble(Browser* browser);
 void ShowBraveVPNBubble(Browser* browser);
 void ToggleBraveVPNButton(Browser* browser);
+void ToggleBraveVPNTrayIcon();
 void OpenBraveVPNUrls(Browser* browser, int command_id);
 void OpenIpfsFilesWebUI(Browser* browser);
 // Copies an url sanitized by URLSanitizerService.

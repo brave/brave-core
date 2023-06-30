@@ -25,6 +25,7 @@
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/status_tray.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
+#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/models/simple_menu_model.h"
@@ -92,11 +93,15 @@ void StatusTrayRunner::SetupStatusIcon() {
   if (status_icon) {
     status_icon->SetContextMenu(std::make_unique<TrayMenuModel>(this));
   }
+  SubscribeForServiceStopNotifications(
+      connected ? GetBraveVpnWireguardTunnelServiceName()
+                : GetBraveVpnWireguardServiceName());
 }
 
 void StatusTrayRunner::ExecuteCommand(int command_id, int event_flags) {
   switch (command_id) {
     case IDC_BRAVE_VPN_TRAY_EXIT_ICON:
+      wireguard::EnableVPNTrayIcon(false);
       SignalExit();
       break;
     case IDC_BRAVE_VPN_TRAY_CONNECT_VPN_ITEM:
@@ -146,27 +151,71 @@ void StatusTrayRunner::OnMenuWillShow(ui::SimpleMenuModel* source) {
 
 void StatusTrayRunner::OnConnected(bool success) {
   VLOG(1) << __func__ << ":" << success;
-  UpdateIconState(!success);
 }
 
-void StatusTrayRunner::UpdateIconState(bool error) {
+void StatusTrayRunner::UpdateIconState(bool connected, bool error) {
   if (!status_tray_ || !status_tray_->GetStatusIcon()) {
     return;
   }
-  auto connected = IsTunnelServiceRunning();
+
   status_tray_->GetStatusIcon()->UpdateState(
       GetStatusTrayIcon(connected, error),
       GetStatusIconTooltip(connected, error));
 }
 
+void StatusTrayRunner::OnServiceStateChanged(int mask) {
+  auto connected = IsTunnelServiceRunning();
+  UpdateIconState(connected, false);
+  SubscribeForServiceStopNotifications(
+      connected ? GetBraveVpnWireguardTunnelServiceName()
+                : GetBraveVpnWireguardServiceName());
+}
+
+void StatusTrayRunner::SubscribeForServiceStopNotifications(
+    const std::wstring& name) {
+  LOG(ERROR) << __func__ << ":" << name;
+  if (service_watcher_) {
+    if (service_watcher_->GetServiceName() == name) {
+      service_watcher_->StartWatching();
+      return;
+    }
+  }
+  service_watcher_.reset(new brave::ServiceWatcher());
+  if (!service_watcher_->Subscribe(
+          name, SERVICE_NOTIFY_STOPPED,
+          base::BindRepeating(&StatusTrayRunner::OnServiceStateChanged,
+                              weak_factory_.GetWeakPtr()))) {
+    VLOG(1) << "Unable to set service watcher for:" << name;
+  }
+}
+
 void StatusTrayRunner::OnDisconnected(bool success) {
+  auto connected = IsTunnelServiceRunning();
   VLOG(1) << __func__ << ":" << success;
-  UpdateIconState(!success);
+  UpdateIconState(connected, !success);
+}
+
+void StatusTrayRunner::OnStorageUpdated() {
+  VLOG(1) << __func__;
+  if (!wireguard::IsVPNTrayIconEnabled()) {
+    SignalExit();
+  }
+}
+
+void StatusTrayRunner::SubscribeForStorageUpdates() {
+  if (storage_.Create(
+          HKEY_CURRENT_USER,
+          brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
+          KEY_QUERY_VALUE | KEY_NOTIFY) != ERROR_SUCCESS) {
+    return;
+  }
+  storage_.StartWatching(base::BindRepeating(
+      &StatusTrayRunner::OnStorageUpdated, weak_factory_.GetWeakPtr()));
 }
 
 HRESULT StatusTrayRunner::Run() {
   if (!wireguard::GetLastUsedConfigPath().has_value() ||
-      StatusTray::IconWindowExists()) {
+      StatusTray::IconWindowExists() || !wireguard::IsVPNTrayIconEnabled()) {
     return S_OK;
   }
 
@@ -174,6 +223,7 @@ HRESULT StatusTrayRunner::Run() {
   base::ThreadPoolInstance::CreateAndStartWithDefaultParams(
       "Brave VPN Wireguard status tray process");
   SetupStatusIcon();
+  SubscribeForStorageUpdates();
   base::RunLoop loop;
   quit_ = loop.QuitClosure();
   loop.Run();

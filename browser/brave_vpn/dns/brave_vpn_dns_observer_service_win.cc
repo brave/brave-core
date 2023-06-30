@@ -135,13 +135,13 @@ void BraveVpnDnsObserverService::RunServiceWatcher() {
   service_watcher_.reset(new brave::ServiceWatcher());
   if (!service_watcher_->Subscribe(
           brave_vpn::GetBraveVpnHelperServiceName(), SERVICE_NOTIFY_STOPPED,
-          base::BindOnce(&BraveVpnDnsObserverService::OnServiceStopped,
-                         weak_ptr_factory_.GetWeakPtr()))) {
+          base::BindRepeating(&BraveVpnDnsObserverService::OnServiceStopped,
+                              weak_ptr_factory_.GetWeakPtr()))) {
     VLOG(1) << "Unable to set service watcher";
   }
 }
 
-void BraveVpnDnsObserverService::OnServiceStopped() {
+void BraveVpnDnsObserverService::OnServiceStopped(int mask) {
   // Postpone check because the service can be restarted by the system due to
   // configured failure actions.
   content::GetUIThreadTaskRunner({})->PostDelayedTask(

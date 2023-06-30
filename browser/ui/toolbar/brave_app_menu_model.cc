@@ -236,7 +236,8 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
   const bool show_panel_item = IsCommandIdEnabled(IDC_SHOW_BRAVE_VPN_PANEL);
 
   if (show_menu_item) {
-    sub_menus_.push_back(std::make_unique<BraveVPNMenuModel>(browser()));
+    sub_menus_.push_back(std::make_unique<BraveVPNMenuModel>(
+        browser(), browser()->profile()->GetPrefs()));
     InsertSubMenuWithStringIdAt(GetIndexOfBraveVPNItem(), IDC_BRAVE_VPN_MENU,
                                 IDS_BRAVE_VPN_MENU, sub_menus_.back().get());
   } else if (show_panel_item) {
