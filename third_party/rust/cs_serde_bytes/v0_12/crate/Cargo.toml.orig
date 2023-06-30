@@ -1,0 +1,27 @@
+[package]
+name = "cs_serde_bytes"
+version = "0.12.2"
+authors = ["David Tolnay <dtolnay@gmail.com>"]
+license = "MIT OR Apache-2.0"
+description = "Optimized handling of `&[u8]` and `Vec<u8>` for Serde"
+repository = "https://github.com/ChainSafe/serde-bytes"
+keywords = ["serde", "serialization", "no_std"]
+categories = ["encoding"]
+readme = "README.md"
+edition = "2018"
+
+[features]
+default = ["std"]
+std = ["serde/std"]
+alloc = ["serde/alloc"]
+
+[dependencies]
+serde = { version = "1.0", default-features = false }
+
+[dev-dependencies]
+bincode = "1.0"
+serde_derive = "1.0"
+serde_test = "1.0"
+
+[package.metadata.docs.rs]
+targets = ["x86_64-unknown-linux-gnu"]

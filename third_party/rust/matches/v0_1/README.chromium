@@ -1,0 +1,7 @@
+Name: matches
+URL: https://crates.io/crates/matches
+Description: A macro to evaluate, as a boolean, whether an expression matches a pattern.
+Version: 0.1.10
+Security Critical: yes
+License: MIT
+Revision: e66ab5acd06085513490fd8ea41a61ad556c0cf9

@@ -5,16 +5,11 @@
 
 import("//testing/test.gni")
 
-group("rust_lib") {
-  visibility = [ "//brave/build/rust:*" ]
-  deps = [ "rs:rust_lib" ]
-}
-
 source_set("brave_json_unit_tests") {
   testonly = true
   sources = [ "//brave/components/json/json_parser_unittest.cc" ]
   deps = [
-    "//brave/components/json/rs:cxx",
+    "//brave/components/json/rs:rust_lib",
     "//testing/gtest",
   ]
 }  # source_set("brave_wallet_unit_tests")

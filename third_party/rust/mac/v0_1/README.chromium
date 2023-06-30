@@ -1,0 +1,6 @@
+Name: mac
+URL: https://crates.io/crates/mac
+Description: A collection of great and ubiqutitous macros.
+Version: 0.1.1
+Security Critical: yes
+License: Apache 2.0

@@ -9,7 +9,7 @@ publish = false
 base64 = "0.13.0"
 blake2b_simd = "1.0"
 bls-signatures = { version = "0.12", default-features = false, features = ["pairing"] }
-cxx = "1.0"
+cxx = { version = "1.0", features = [ "alloc", "std" ] }
 fvm_shared = { version = "0.7.0 " }
 libsecp256k1 = "0.7"
 num_bigint_chainsafe = { package = "forest_bigint", version = "0.1.2"}

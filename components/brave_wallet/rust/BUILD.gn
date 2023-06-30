@@ -1,13 +1,19 @@
-import("//brave/build/cargo.gni")
-import("//brave/build/rust/rust_cxx.gni")
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
-rust_crate("rust_lib") {
-  inputs = [
-    "lib.rs",
-    "Cargo.toml",
+import("//build/rust/rust_static_library.gni")
+
+rust_static_library("rust_lib") {
+  crate_name = "brave_wallet_cxx"
+  crate_root = "lib.rs"
+  allow_unsafe = true
+  sources = [ "lib.rs" ]
+  cxx_bindings = [ "lib.rs" ]
+
+  deps = [
+    "//brave/third_party/rust/curve25519_dalek/v3:lib",
+    "//brave/third_party/rust/ed25519_dalek_bip32/v0_2:lib",
   ]
-}
-
-rust_cxx("cxx") {
-  input = [ "lib.rs" ]
 }

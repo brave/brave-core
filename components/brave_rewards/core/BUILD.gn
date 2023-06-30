@@ -537,7 +537,7 @@ static_library("ledger") {
     "//base",
     "//brave/components/brave_private_cdn",
     "//brave/third_party/bip39wally-core-native:bip39wally-core",
-    "//brave/third_party/challenge_bypass_ristretto_ffi",
+    "//brave/third_party/challenge_bypass_ristretto_ffi:rust_lib",
     "//brave/third_party/rapidjson",
     "//brave/vendor/bat-native-tweetnacl:tweetnacl",
     "//brave/vendor/brave_base",

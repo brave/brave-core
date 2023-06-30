@@ -1,33 +1,43 @@
-# Copyright 2020 The Brave Authors. All rights reserved.
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/. */
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/build/cargo.gni")
+import("//build/rust/rust_static_library.gni")
 
-# Generate FFI header from Rust source
-cargo_cbindgen("speedreader_ffi_header") {
+rust_static_library("lib") {
   visibility = [ ":*" ]
-  config = "cbindgen.toml"
-  output = "${target_gen_dir}/speedreader_ffi.h"
-
+  crate_name = "speedreader_ffi"
+  crate_root = "lib.rs"
+  edition = "2018"
+  allow_unsafe = true
   sources = [
-    "Cargo.toml",
-    "cbindgen.toml",
     "charbuf.rs",
     "lib.rs",
     "speedreader.rs",
   ]
+
+  deps = [
+    "//brave/components/speedreader/rust/lib",
+    "//third_party/rust/libc/v0_2:lib",
+  ]
 }
 
-rust_ffi("ffi") {
+source_set("ffi_header") {
+  configs += [ "//build/config/compiler:no_chromium_code" ]
+  sources = [ "speedreader_ffi.h" ]
+}
+
+source_set("ffi") {
   sources = [
     "speedreader.cc",
     "speedreader.h",
   ]
 
   deps = [
-    ":speedreader_ffi_header",
+    ":lib",
     "//base",
   ]
+
+  public_deps = [ ":ffi_header" ]
 }

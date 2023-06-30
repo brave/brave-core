@@ -1,0 +1,7 @@
+Name: multibase
+URL: https://crates.io/crates/multibase
+Description: multibase in rust
+Version: 0.9.1
+Security Critical: no
+License: MIT
+Revision: 3c36b28e0072de4b5302bfceedc318aec5c125b0

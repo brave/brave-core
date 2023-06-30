@@ -1,0 +1,86 @@
+[package]
+name = "rand"
+version = "0.7.3"
+authors = ["The Rand Project Developers", "The Rust Project Developers"]
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/rust-random/rand"
+documentation = "https://rust-random.github.io/rand/"
+homepage = "https://crates.io/crates/rand"
+description = """
+Random number generators and other randomness functionality.
+"""
+keywords = ["random", "rng"]
+categories = ["algorithms", "no-std"]
+exclude = ["/utils/*", "/.travis.yml", "/appveyor.yml", ".gitignore"]
+autobenches = true
+edition = "2018"
+
+[badges]
+travis-ci = { repository = "rust-random/rand" }
+appveyor = { repository = "rust-random/rand" }
+
+[features]
+# Meta-features:
+default = ["std"] # without "std" rand uses libcore
+nightly = ["simd_support"] # enables all features requiring nightly rust
+serde1 = [] # does nothing, deprecated
+
+# Optional dependencies:
+std = ["rand_core/std", "rand_chacha/std", "alloc", "getrandom", "libc"]
+alloc = ["rand_core/alloc"]  # enables Vec and Box support (without std)
+# re-export optional WASM dependencies to avoid breakage:
+# Warning: wasm-bindgen and stdweb features will be removed in rand 0.8;
+# recommended to activate via the getrandom crate instead.
+wasm-bindgen = ["getrandom_package/wasm-bindgen"]
+stdweb = ["getrandom_package/stdweb"]
+getrandom = ["getrandom_package", "rand_core/getrandom"]
+
+# Configuration:
+simd_support = ["packed_simd"] # enables SIMD support
+small_rng = ["rand_pcg"]    # enables SmallRng
+
+[workspace]
+members = [
+    "rand_core",
+    "rand_distr",
+    "rand_chacha",
+    "rand_hc",
+    "rand_pcg",
+    "tests/wasm_bindgen",
+]
+
+[dependencies]
+rand_core = { path = "rand_core", version = "0.5.1" }
+rand_pcg = { path = "rand_pcg", version = "0.2", optional = true }
+# Do not depend on 'getrandom_package' directly; use the 'getrandom' feature!
+# This is a dependency because: we forward wasm feature flags
+# This is renamed because: we need getrandom to depend on rand_core/getrandom
+getrandom_package = { version = "0.1.1", package = "getrandom", optional = true }
+log = { version = "0.4.4", optional = true }
+
+[dependencies.packed_simd]
+# NOTE: so far no version works reliably due to dependence on unstable features
+version = "0.3"
+# git = "https://github.com/rust-lang-nursery/packed_simd"
+optional = true
+features = ["into_bits"]
+
+[target.'cfg(unix)'.dependencies]
+# Used for fork protection (reseeding.rs)
+libc = { version = "0.2.22", optional = true, default-features = false }
+
+# Emscripten does not support 128-bit integers, which are used by ChaCha code.
+# We work around this by using a different RNG.
+[target.'cfg(not(target_os = "emscripten"))'.dependencies]
+rand_chacha = { path = "rand_chacha", version = "0.2.1", default-features = false }
+[target.'cfg(target_os = "emscripten")'.dependencies]
+rand_hc = { path = "rand_hc", version = "0.2" }
+
+[dev-dependencies]
+rand_pcg = { path = "rand_pcg", version = "0.2" }
+# Only for benches:
+rand_hc = { path = "rand_hc", version = "0.2" }
+
+[package.metadata.docs.rs]
+all-features = true

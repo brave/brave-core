@@ -1,0 +1,7 @@
+Name: safemem
+URL: https://crates.io/crates/safemem
+Description: Safe wrappers for memory-accessing functions, like `std::ptr::copy()`.
+Version: 0.3.3
+Security Critical: yes
+License: Apache 2.0
+Revision: f43cabeac8b42a62582f74162eebaa55e71333fc

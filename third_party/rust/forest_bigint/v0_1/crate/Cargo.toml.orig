@@ -1,0 +1,20 @@
+[package]
+name = "forest_bigint"
+description = "BigInt utilities for use in Forest"
+license = "MIT OR Apache-2.0"
+version = "0.1.2"
+authors = ["ChainSafe Systems <info@chainsafe.io>"]
+edition = "2018"
+repository = "https://github.com/ChainSafe/forest"
+
+[package.metadata.docs.rs]
+features = ["json"]
+
+[dependencies]
+num-bigint = "0.3"
+serde = { version = "1.0", features = ["derive"] }
+serde_bytes = "0.11.3"
+num-integer = "0.1"
+
+[features]
+json = []

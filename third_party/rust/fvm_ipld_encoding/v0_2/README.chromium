@@ -1,0 +1,7 @@
+Name: fvm_ipld_encoding
+URL: https://crates.io/crates/fvm_ipld_encoding
+Description: Sharded IPLD encoding.
+Version: 0.2.3
+Security Critical: no
+License: Apache 2.0
+Revision: 2b625d24aa14d7af80458480c8be8f2543425765

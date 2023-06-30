@@ -1,0 +1,11 @@
+[package]
+name = "thin-slice"
+version = "0.1.1"
+authors = ["Cameron McCormack <cam@mcc.id.au>"]
+license = "MPL-2.0"
+repository = "https://github.com/heycam/thin-slice"
+description = "An owned slice that packs the slice storage into a single word when possible"
+readme = "README.md"
+keywords = ["slice", "tagged", "pointer"]
+
+[dependencies]
