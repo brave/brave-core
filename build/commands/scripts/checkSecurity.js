@@ -7,11 +7,10 @@ const execSync = require('child_process').execSync
 
 // Grep for any usage of innerHTML / document.write.
 // Ping @security-team before changing this.
-const cmd =
-      'git grep -i -E --not -e \'^\\s*//\' --and ' +
-      '-e \'(innerHTML|document\\.write)\' \':(exclude)*test.cc\' ' +
-      '\':(exclude)test/*\' \':(exclude)*.json\' \':(exclude)build/*\' ' +
-      '\':(exclude)*browsertest*.cc\''
+const cmd = 'git grep -i -E --not -e \'^\\s*//\' --and ' +
+    '-e \'(innerHTML|document\\.write)\' \':(exclude)*test.cc\' ' +
+    '\':(exclude)test/*\' \':(exclude)*.json\' \':(exclude)build/*\' ' +
+    '\':(exclude)*browsertest*.cc\' \':(exclude)third_party/rust/*\''
 
 try {
   const stdout = execSync(cmd)

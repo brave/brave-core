@@ -1,0 +1,7 @@
+Name: memoffset
+URL: https://crates.io/crates/memoffset
+Description: offset_of functionality for Rust structs.
+Version: 0.8.0
+Security Critical: no
+License: MIT
+Revision: 0fac3ac6642dd017a36268c4cdba2f04ec050d11

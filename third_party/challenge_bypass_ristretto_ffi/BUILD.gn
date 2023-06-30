@@ -2,29 +2,36 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-import("//brave/build/cargo.gni")
+import("//build/rust/rust_static_library.gni")
 
-rust_ffi("challenge_bypass_ristretto_ffi") {
+source_set("wrapper") {
+  visibility = [ ":*" ]
   sources = [
     "src/lib.h",
     "src/wrapper.cc",
     "src/wrapper.h",
   ]
 
-  deps = [ "//base" ]
-
-  cflags = [ "-Wunreachable-code-aggressive" ]
-
-  if (is_mac || is_ios) {
-    frameworks = [ "Security.framework" ]
-  }
+  public_deps = [
+    "//base",
+    "//build/rust:cxx_cppdeps",
+    "//third_party/abseil-cpp:absl",
+  ]
 }
 
-# this is a giant hacky temporary workaround to an issue with lto and having
-# anything except rlib in the crate-type section
-rust_crate("rust_lib") {
-  inputs = [
-    "Cargo.toml",
-    "src/lib.rs",
+rust_static_library("rust_lib") {
+  crate_name = "challenge_bypass_ristretto_ffi"
+  crate_root = "src/lib.rs"
+  allow_unsafe = true
+  sources = [ "src/lib.rs" ]
+
+  deps = [
+    "//brave/third_party/rust/challenge_bypass_ristretto/v1:lib",
+    "//brave/third_party/rust/hmac/v0_10:lib",
+    "//brave/third_party/rust/rand/v0_7:lib",
+    "//brave/third_party/rust/sha2/v0_9:lib",
+    "//third_party/rust/base64/v0_13:lib",
   ]
+
+  public_deps = [ ":wrapper" ]
 }

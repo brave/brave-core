@@ -1,0 +1,57 @@
+[package]
+name = "fvm_shared"
+description = "Filecoin Virtual Machine shared types and functions"
+version = "0.7.1"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+authors = ["ChainSafe Systems <info@chainsafe.io>", "Protocol Labs", "Filecoin Core Devs"]
+repository = "https://github.com/filecoin-project/ref-fvm"
+
+[dependencies]
+blake2b_simd = "1.0.0"
+thiserror = "1.0"
+num-traits = "0.2"
+num-derive = "0.3"
+num-bigint = "0.4"
+num-integer = "0.1"
+data-encoding = "2.3.2"
+data-encoding-macro = "0.1.12"
+lazy_static = "1.4.0"
+log = "0.4.8"
+cid = { version = "0.8.5", default-features = false, features = ["serde-codec", "std"] }
+multihash = { version = "0.16.1", default-features = false, features = ["blake2b", "multihash-impl"] }
+unsigned-varint = "0.7.1"
+anyhow = "1.0.51"
+bimap = { version = "0.6.2", features = ["serde"] }
+fvm_ipld_blockstore = { version = "0.1", path = "../ipld/blockstore" }
+fvm_ipld_encoding = { version = "0.2", path = "../ipld/encoding" }
+serde = { version = "1", default-features = false }
+serde_tuple = "0.5"
+serde_repr = "0.1"
+serde_bytes = { package = "cs_serde_bytes", version = "0.12" }
+arbitrary = { version = "1.1", optional = true, features = ["derive"]}
+
+## non-wasm dependencies; these dependencies and the respective code is
+## only activated through non-default features, which the Kernel enables, but
+## not the actors.
+filecoin-proofs-api = { version = "11", default_features = false, optional = true }
+libsecp256k1 = { version = "0.7", optional = true }
+bls-signatures = { version = "0.11", default-features = false, optional = true }
+byteorder = "1.4.3"
+
+[dev-dependencies]
+rand = "0.8"
+rand_chacha = "0.3"
+serde_json = "1.0.56"
+multihash = { version = "0.16.1", default-features = false, features = ["blake2b", "multihash-impl"] }
+
+[features]
+default = []
+crypto = ["libsecp256k1", "blst", "proofs"]
+proofs = ["filecoin-proofs-api"]
+secp256k1 = ["libsecp256k1"]
+blst = ["bls-signatures/blst"]
+pairing = ["bls-signatures/pairing"]
+testing = []
+arb = ["arbitrary"]
+

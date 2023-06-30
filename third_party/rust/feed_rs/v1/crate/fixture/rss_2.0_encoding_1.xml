@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<rss version="2.0" xmlns:atom="https://www.w3.org/2005/Atom">
+<channel>
+<title>RSS Feed do Site Inovação Tecnológica</title>
+<link>https://www.inovacaotecnologica.com.br</link>
+<image>
+<url>https://www.inovacaotecnologica.com.br/imagens/logobol.jpg</url>
+<title>RSS Feed do Site Inovação Tecnológica</title>
+<link>https://www.inovacaotecnologica.com.br</link>
+</image>
+<description>Notícias de ciência, tecnologia e inovação.</description>
+<language>pt-br</language>
+<copyright>Copyright 1999-2020 www.inovacaotecnologica.com.br. Todos os direitos reservados.</copyright>
+<lastBuildDate>Thu, 13 Aug 2020 10:25:33 -0300</lastBuildDate>
+<atom:link href="https://www.inovacaotecnologica.com.br/boletim/rss.xml" rel="self" type="application/rss+xml" />
+<item>
+<title>Revolução nas telas com pontos quânticos impressos em 3D</title>
+<link>https://www.inovacaotecnologica.com.br/noticias/noticia.php?artigo=revolucao-telas-pontos-quanticos-impressos-3d&amp;id=010150200813</link>
+<guid isPermaLink='true'>https://www.inovacaotecnologica.com.br/noticias/noticia.php?artigo=revolucao-telas-pontos-quanticos-impressos-3d&amp;id=010150200813</guid>
+<description>
+<![CDATA[<div style="float:left; padding-right: 10px;"><img src="https://www.inovacaotecnologica.com.br/noticias/mini/010150200813-mini-tela-nanofotonica-3.jpg"></div>
+A nova tecnologia permitiu criar as três cores primárias em 5.600 PPI, excedendo em muito as TVs QLED de 8K, que têm 100 PPI. ]]>
+</description>
+<pubDate>Thu, 13 Aug 2020 06:57:55 -0300</pubDate>
+</item>
+</channel>
+</rss>

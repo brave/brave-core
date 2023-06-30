@@ -1,0 +1,10 @@
+Name: flate2
+URL: https://crates.io/crates/flate2
+Description: DEFLATE compression and decompression exposed as Read/BufRead/Write streams.
+Supports miniz_oxide and multiple zlib implementations. Supports zlib, gzip,
+and raw deflate streams.
+
+Version: 1.0.25
+Security Critical: yes
+License: Apache 2.0
+Revision: 8431d9e0c0fdaea16c4643c723631223802b2c86

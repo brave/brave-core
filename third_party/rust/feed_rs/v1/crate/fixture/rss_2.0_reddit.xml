@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+    <category term=" reddit.com" label="r/ reddit.com"/>
+    <updated>2021-11-13T00:32:22+00:00</updated>
+    <id>/search.rss?q=site%3Akevincox.ca&amp;restrict_sr=&amp;sort=new&amp;t=all</id>
+    <link rel="self"
+          href="https://www.reddit.com/search.rss?q=site%3Akevincox.ca&amp;restrict_sr=&amp;sort=new&amp;t=all"
+          type="application/atom+xml"/>
+    <link rel="alternate"
+          href="https://www.reddit.com/search?q=site%3Akevincox.ca&amp;restrict_sr=&amp;sort=new&amp;t=all"
+          type="text/html"/>
+    <title>reddit.com: search results - site:kevincox.ca</title>
+    <entry>
+        <author>
+            <name>/u/kevincox_ca</name>
+            <uri>https://www.reddit.com/user/kevincox_ca</uri>
+        </author>
+        <category term="kevincox" label="r/kevincox"/>
+        <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/kevincox_ca&quot;&gt;
+            /u/kevincox_ca &lt;/a&gt; &amp;#32; to &amp;#32; &lt;a href=&quot;https://www.reddit.com/r/kevincox/&quot;&gt;
+            r/kevincox &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href=&quot;https://kevincox.ca/2021/11/01/announcing-feedmail/&quot;&gt;[link]&lt;/a&gt;&lt;/span&gt;
+            &amp;#32; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/kevincox/comments/qksbf1/announcing_feedmail/&quot;&gt;[comments]&lt;/a&gt;&lt;/span&gt;
+        </content>
+        <id>t3_qksbf1</id>
+        <link href="https://www.reddit.com/r/kevincox/comments/qksbf1/announcing_feedmail/"/>
+        <updated>2021-11-02T00:46:08+00:00</updated>
+        <published>2021-11-02T00:46:08+00:00</published>
+        <title>Announcing FeedMail</title>
+    </entry>
+</feed>

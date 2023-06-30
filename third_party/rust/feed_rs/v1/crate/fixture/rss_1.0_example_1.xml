@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns="http://purl.org/rss/1.0/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:content="http://purl.org/rss/1.0/modules/content/"
+         xml:lang="ja">
+
+  <channel rdf:about="サイトのRSSのURL">
+    <title>Feed title</title>
+    <link>http://www.example.com/main.html</link>
+    <description>Site description</description>
+    <dc:date>2017-06-13T09:00:00+00:00</dc:date>
+    <dc:language>ja</dc:language>
+    <items>
+      <rdf:Seq>
+        <rdf:li rdf:resource="記事1のURL" />
+        <rdf:li rdf:resource="記事2のURL" />
+      </rdf:Seq>
+    </items>
+  </channel>
+
+  <item rdf:about="記事1のURL">
+    <title>記事1のタイトル</title>
+    <link>記事1のURL</link>
+    <description><![CDATA[記事1の内容]]></description>
+    <dc:creator>記事1の作者名</dc:creator>
+    <dc:date>2017-06-13T09:00:00+00:00</dc:date>
+  </item>
+
+  <item rdf:about="記事2のURL">
+    <title>記事2のタイトル</title>
+    <link>記事2のURL</link>
+    <description><![CDATA[記事2の内容]]></description>
+    <dc:creator>記事2の作者名</dc:creator>
+    <dc:date>2017-06-13T03:18:00+00:0</dc:date>
+  </item>
+</rdf:RDF>

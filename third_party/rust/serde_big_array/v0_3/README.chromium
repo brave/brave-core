@@ -1,0 +1,7 @@
+Name: serde-big-array
+URL: https://crates.io/crates/serde-big-array
+Description: Big array helper for serde.
+Version: 0.3.3
+Security Critical: no
+License: Apache 2.0
+Revision: 46ae7e3db24ff9e3c4b34e7ef810e0f7c59cb5c0

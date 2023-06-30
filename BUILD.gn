@@ -3,8 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/build/cargo.gni")
 import("//brave/build/config.gni")
+import("//brave/build/rust/config.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//build/config/zip.gni")
@@ -211,7 +211,10 @@ if (is_android) {
 
 if (is_mac) {
   group("framework_bundle_data") {
-    deps = [ "components/brave_extension/extension/brave_extension:brave_extension_framework_bundle_data" ]
+    deps = [
+      "components/brave_extension/extension/brave_extension:brave_extension_framework_bundle_data",
+      "//brave/build/rust:framework_exports",
+    ]
   }
 }
 

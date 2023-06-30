@@ -15,7 +15,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 extern "C" {
-#include "lib.h"  // NOLINT
+#include "brave/components/adblock_rust_ffi/src/lib.h"
 }
 
 #if defined(ADBLOCK_SHARED_LIBRARY)
@@ -48,7 +48,7 @@ ConvertRulesToContentBlockingRules(const std::string& rules, bool* truncated);
 #endif
 
 const ADBLOCK_EXPORT uint16_t kSubscriptionDefaultExpiresHours =
-    C_SUBSCRIPTION_DEFAULT_EXPIRES_HOURS;
+    SUBSCRIPTION_DEFAULT_EXPIRES_HOURS;
 
 typedef ADBLOCK_EXPORT struct FilterListMetadata {
   FilterListMetadata();

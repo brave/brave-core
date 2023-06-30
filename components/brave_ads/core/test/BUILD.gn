@@ -513,7 +513,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/l10n/common:test_support",
     "//brave/components/ntp_background_images/common",
     "//brave/components/version_info",
-    "//brave/third_party/challenge_bypass_ristretto_ffi",
+    "//brave/third_party/challenge_bypass_ristretto_ffi:rust_lib",
     "//brave/third_party/rapidjson",
     "//brave/vendor/bat-native-tweetnacl:tweetnacl",
     "//components/variations",

@@ -1,0 +1,23 @@
+diff --git a/build/toolchain/toolchain.gni b/build/toolchain/toolchain.gni
+index 42973fa8281a6381fa83469a375b34f4da9a7af1..8534c829285b3792f78191cd0c8893b5c2c341af 100644
+--- a/build/toolchain/toolchain.gni
++++ b/build/toolchain/toolchain.gni
+@@ -56,6 +56,18 @@ if (is_apple) {
+   assert(false, "Platform not supported")
+ }
+ 
++# Same extension but for the host platform. We have significantly fewer host
++# platforms.
++if (host_os == "mac") {
++  host_shlib_extension = ".dylib"
++} else if (host_os == "win") {
++  host_shlib_extension = ".dll"
++} else if (host_os == "linux") {
++  host_shlib_extension = ".so"
++} else {
++  assert(false, "Host platform not supported")
++}
++
+ # Prefix for shared library files.
+ if (is_posix || is_fuchsia) {
+   shlib_prefix = "lib"
