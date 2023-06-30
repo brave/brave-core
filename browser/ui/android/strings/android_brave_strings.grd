@@ -1466,13 +1466,13 @@ Are you sure you want to do this?
         Disables browser history and local storage when sites request it
       </message>
       <message name="IDS_REQUEST_OTR_OPTION_1" desc="Title for shields option.">
-        Always go off-the-record
+        Always go Off-The-Record
       </message>
       <message name="IDS_REQUEST_OTR_OPTION_2" desc="Title for shields option.">
-        Ask before going off-the-record (standard)
+        Ask before going Off-The-Record (standard)
       </message>
       <message name="IDS_REQUEST_OTR_OPTION_3" desc="Title for shields option.">
-        Never go off-the-record
+        Never go Off-The-Record
       </message>
       <message name="IDS_BLOCK_FINGERPRINTING" desc="Title for shields option.">
         Block Fingerprinting
