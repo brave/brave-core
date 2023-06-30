@@ -26,6 +26,8 @@ struct AdEventInfo final {
 
   ~AdEventInfo();
 
+  [[nodiscard]] bool IsValid() const;
+
   AdType type = AdType::kUndefined;
   ConfirmationType confirmation_type = ConfirmationType::kUndefined;
   std::string placement_id;
