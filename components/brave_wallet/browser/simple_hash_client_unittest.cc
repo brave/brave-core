@@ -950,7 +950,7 @@ TEST_F(SimpleHashClientUnitTest, FetchNFTsFromSimpleHash) {
       "https://simplehash.wallet.brave.com/api/v0/nfts/"
       "owners?chains=ethereum&wallet_addresses="
       "0x0000000000000000000000000000000000000000");
-  std::string json_only_spam = R"({
+  std::string json2 = R"({
     "next": null,
     "previous": null,
     "nfts": [
@@ -965,10 +965,22 @@ TEST_F(SimpleHashClientUnitTest, FetchNFTsFromSimpleHash) {
         "collection": {
           "spam_score": 100
         }
+      },
+      {
+        "chain": "polygon",
+        "contract_address": "0x4444444444444444444444444444444444444444",
+        "token_id": "4",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "FOUR"
+        },
+        "collection": {
+          "spam_score": 0
+        }
       }
     ]
   })";
-  responses[url] = json_only_spam;
+  responses[url] = json2;
   SetInterceptors(responses);
 
   std::vector<mojom::BlockchainTokenPtr> expected_nfts_only_spam;
