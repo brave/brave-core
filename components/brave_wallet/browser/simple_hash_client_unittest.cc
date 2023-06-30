@@ -643,32 +643,67 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
         "extra_metadata": {
           "is_mutable": true
         }
+      },
+      {
+        "nft_id": "solana.BHWBJ7XtBqJJbg9SrAUH4moeF8VpJo3WXyDh6vc1qqLG",
+        "chain": "solana",
+        "contract_address": "BHWBJ7XtBqJJbg9SrAUH4moeF8VpJo3WXyDh6vc1qqLG",
+        "token_id": null,
+        "name": "Mad Lads #8752",
+        "description": "Fock it.",
+        "image_url": "https://cdn.simplehash.com/assets/6fa3b325fd715c0b967988ad76c668b9cf41acb7aeff646ab4135095afd1dea5.png",
+        "contract": {
+          "type": "ProgrammableNonFungible",
+          "name": "Mad Lad #8752",
+          "symbol": "MAD",
+          "deployed_by": null,
+          "deployed_via_contract": null
+        },
+        "collection": {
+          "spam_score": 0
+        }
       }
     ]
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
+
+  // When skip_spam is true and only_spam is false, non spam token should be
+  // parsed
   result = simple_hash_client_->ParseNFTsFromSimpleHash(
       *json_value, mojom::CoinType::SOL, true, false);
   ASSERT_TRUE(result);
-  EXPECT_EQ(result->second.size(), 0u);
+  ASSERT_EQ(result->second.size(), 1u);
+  EXPECT_EQ(result->second[0]->contract_address,
+            "BHWBJ7XtBqJJbg9SrAUH4moeF8VpJo3WXyDh6vc1qqLG");
+  EXPECT_FALSE(result->second[0]->is_spam);
 
-  // When only_spam is set and skip_spam is not, spam should be parsed
+  // When skip_spam is false and only_spam is true, spam token should be parsed
   result = simple_hash_client_->ParseNFTsFromSimpleHash(
       *json_value, mojom::CoinType::SOL, false, true);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 1u);
+  EXPECT_EQ(result->second[0]->contract_address,
+            "AvdAUsR4qgsT5HgyKCVeGjimmyu8xrG3RudFqm5txDDE");
+  EXPECT_FALSE(result->second[0]->is_spam);
 
   // When only_spam is set and skip_spam is set, parsing should fail
   result = simple_hash_client_->ParseNFTsFromSimpleHash(
       *json_value, mojom::CoinType::SOL, true, true);
   ASSERT_FALSE(result);
 
-  // When only_spam is false and skip_spam is false, spam should be parsed
+  // When only_spam is false and skip_spam is false, spam and non spam should be
+  // parsed
   result = simple_hash_client_->ParseNFTsFromSimpleHash(
       *json_value, mojom::CoinType::SOL, false, false);
   ASSERT_TRUE(result);
-  EXPECT_EQ(result->second.size(), 1u);
+  EXPECT_EQ(result->second.size(), 2u);
+  EXPECT_EQ(result->second[0]->contract_address,
+            "AvdAUsR4qgsT5HgyKCVeGjimmyu8xrG3RudFqm5txDDE");
+  EXPECT_FALSE(result->second[0]->is_spam);
+  EXPECT_EQ(result->second[1]->contract_address,
+            "BHWBJ7XtBqJJbg9SrAUH4moeF8VpJo3WXyDh6vc1qqLG");
+  EXPECT_FALSE(result->second[1]->is_spam);
 }
 
 TEST_F(SimpleHashClientUnitTest, FetchAllNFTsFromSimpleHash) {
