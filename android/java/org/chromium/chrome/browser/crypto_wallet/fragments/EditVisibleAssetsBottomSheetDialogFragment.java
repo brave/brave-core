@@ -638,7 +638,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         assert walletListItemModel.getAssetNetwork() != null : "Network should not be null";
         // Prevent NPE of network, issue:#31303
         if (mType != WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST
-                && walletListItemModel.getAssetNetwork() == null)
+                || walletListItemModel.getAssetNetwork() == null)
             return;
 
         TokenUtils.isCustomToken(getBlockchainRegistry(), walletListItemModel.getAssetNetwork(),
@@ -656,7 +656,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         assert walletListItemModel.getAssetNetwork() != null : "Network should not be null";
         // Prevent NPE of network, issue:#31303
         if (mType != WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST
-                && walletListItemModel.getAssetNetwork() == null)
+                || walletListItemModel.getAssetNetwork() == null)
             return;
 
         BlockchainToken thisToken = walletListItemModel.getBlockchainToken();
