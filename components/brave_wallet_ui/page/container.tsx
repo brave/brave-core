@@ -77,7 +77,6 @@ export const Container = () => {
   // state
   const [sessionRoute, setSessionRoute] = React.useState<string | undefined>(undefined)
   const [inputValue, setInputValue] = React.useState<string>('')
-  const [showBuyOptions, setShowBuyOptions] = React.useState<boolean>(false)
   const [showDepositAddress, setShowDepositAddress] = React.useState<boolean>(false)
 
   // methods
@@ -119,17 +118,6 @@ export const Container = () => {
   const onOpenWalletSettings = React.useCallback(() => {
     dispatch(WalletPageActions.openWalletSettings())
   }, [])
-
-  const handleBuyScreenBack = React.useCallback(() => {
-    if (!showBuyOptions && history.length) {
-      return history.goBack()
-    }
-
-    if (showBuyOptions) {
-      // go back to asset selection
-      setShowBuyOptions(false)
-    }
-  }, [showBuyOptions, history])
 
   const handleDepositScreenBack = React.useCallback(() => {
     if (!showDepositAddress && history.length) {
@@ -287,22 +275,7 @@ export const Container = () => {
 
             {!isWalletLocked &&
               <Route path={WalletRoutes.FundWalletPage} exact>
-                <WalletPageWrapper
-                  wrapContentInBox={true}
-                  cardWidth={456}
-                  cardHeader={
-                    <PageTitleHeader
-                      title={getLocale('braveWalletBuy')}
-                      showBackButton={showBuyOptions}
-                      onBack={handleBuyScreenBack}
-                    />
-                  }
-                >
-                  <FundWalletScreen
-                    showBuyOptions={showBuyOptions}
-                    onShowBuyOptions={setShowBuyOptions}
-                  />
-                </WalletPageWrapper>
+                <FundWalletScreen />
               </Route>
             }
 

@@ -390,6 +390,7 @@ export const PortfolioOverview = () => {
       networks={visiblePortfolioNetworks}
       accounts={usersFilteredAccounts}
       isPortfolio
+      isV2={true}
       renderToken={({ item, account }) =>
         <PortfolioAssetItem
           action={() => onSelectAsset(item.asset)}

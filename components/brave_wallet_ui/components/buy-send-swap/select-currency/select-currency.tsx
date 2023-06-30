@@ -21,6 +21,7 @@ import {
 } from '../shared-styles'
 import { SelectCurrencyWrapper } from './select-currency.style'
 import { WalletActions } from '../../../common/actions'
+import { VerticalSpace } from '../../shared/style'
 
 export interface Props {
   onSelectCurrency?: (currency: BraveWallet.OnRampCurrency) => void
@@ -84,7 +85,13 @@ export const SelectCurrency = (props: Props) => {
         onBack={onBack}
         hasAddButton={false}
       />
-      <SearchBar placeholder={getLocale('braveWalletSearchCurrency')} action={filterCurrencyList} autoFocus={true} />
+      <SearchBar
+        placeholder={getLocale('braveWalletSearchCurrency')}
+        action={filterCurrencyList}
+        autoFocus={true}
+        isV2={true}
+      />
+      <VerticalSpace space='16px' />
       <SelectScrollSearchContainer>
         {
           filteredCurrencies.map((currency: BraveWallet.OnRampCurrency) =>

@@ -85,6 +85,7 @@ interface Props {
   horizontalPadding?: number
   hideSmallBalances?: boolean
   isPortfolio?: boolean
+  isV2?: boolean
   onShowPortfolioSettings?: () => void
 }
 
@@ -98,6 +99,7 @@ export const TokenLists = ({
   horizontalPadding,
   hideSmallBalances,
   isPortfolio,
+  isV2,
   onShowPortfolioSettings
 }: Props) => {
   // routing
@@ -518,15 +520,22 @@ export const TokenLists = ({
   return (
     <>
       {!isPortfolio &&
-        <FilterTokenRow horizontalPadding={horizontalPadding}>
+        <FilterTokenRow
+          horizontalPadding={horizontalPadding}
+          isV2={isV2}
+        >
           <Column flex={1} style={{ minWidth: '25%' }} alignItems='flex-start'>
             <SearchBar
               placeholder={getLocale('braveWalletSearchText')}
               action={onSearchValueChange}
               value={searchValue}
+              isV2={isV2}
             />
           </Column>
-          <NetworkFilterSelector networkListSubset={networks} />
+          <NetworkFilterSelector
+            networkListSubset={networks}
+            isV2={isV2}
+          />
         </FilterTokenRow>
       }
 
@@ -555,7 +564,7 @@ export const TokenLists = ({
                 placeholder={getLocale('braveWalletSearchText')}
                 action={onSearchValueChange}
                 value={searchValue}
-                isV2={true}
+                isV2={isV2}
               />
             </SearchBarWrapper>
             {showSearchBar &&
