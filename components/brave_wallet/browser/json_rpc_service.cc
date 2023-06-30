@@ -346,7 +346,7 @@ void JsonRpcService::MigrateShowTestNetworksToggle(PrefService* prefs) {
     return;
   }
 
-  // Show test networks toggle was explictily enabled. Go through coins and
+  // Show test networks toggle was explicitly enabled. Go through coins and
   // remove all test networks from hidden lists.
 
   ScopedDictPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
@@ -761,6 +761,22 @@ void JsonRpcService::GetHiddenNetworks(mojom::CoinType coin,
               base::ToLowerASCII(GetChainIdSync(coin, absl::nullopt)));
 
   std::move(callback).Run(hidden_networks);
+}
+
+void JsonRpcService::AddHiddenNetwork(mojom::CoinType coin,
+                                      const std::string& chain_id,
+                                      AddHiddenNetworkCallback callback) {
+  brave_wallet::AddHiddenNetwork(prefs_, coin, chain_id);
+
+  std::move(callback).Run(true);
+}
+
+void JsonRpcService::RemoveHiddenNetwork(mojom::CoinType coin,
+                                         const std::string& chain_id,
+                                         RemoveHiddenNetworkCallback callback) {
+  brave_wallet::RemoveHiddenNetwork(prefs_, coin, chain_id);
+
+  std::move(callback).Run(true);
 }
 
 std::string JsonRpcService::GetNetworkUrl(

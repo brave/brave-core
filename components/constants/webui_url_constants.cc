@@ -39,7 +39,8 @@ const char kVPNPanelHost[] = "vpn-panel.top-chrome";
 const char kBraveUIWalletPageURL[] = "chrome://wallet/";
 const char kWalletPageHost[] = "wallet";
 #if BUILDFLAG(IS_ANDROID)
-const char kWalletSwapPagePath[] = "wallet/swap";
+const char kWalletSendPagePath[] = "/send";
+const char kWalletSwapPagePath[] = "/swap";
 #endif  // BUILDFLAG(IS_ANDROID)
 const char kExtensionSettingsURL[] = "brave://settings/extensions";
 const char kWalletSettingsURL[] = "brave://settings/wallet";

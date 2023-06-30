@@ -6,12 +6,15 @@
 package org.chromium.chrome.browser.crypto_wallet.util;
 
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.chrome.browser.crypto_wallet.fragments.NftGridFragment;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public final class WalletConstants {
     // Radius of the oval used to round the corners in density-independent pixels.
@@ -120,11 +123,16 @@ public final class WalletConstants {
     public static final String SOL_INS_SIG_VERIFY = "Ed25519SigVerify111111111111111111111111111";
     public static final String SOL_INS_SECP = "KeccakSecp256k11111111111111111111111111111";
 
-    public static final List<String> KNOWN_TEST_CHAIN_IDS = Arrays.asList(
-            BraveWalletConstants.GOERLI_CHAIN_ID, BraveWalletConstants.SEPOLIA_CHAIN_ID,
-            BraveWalletConstants.LOCALHOST_CHAIN_ID, BraveWalletConstants.SOLANA_TESTNET,
-            BraveWalletConstants.SOLANA_DEVNET, BraveWalletConstants.FILECOIN_TESTNET,
-            BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID);
+    public static final Map<String, Integer> KNOWN_TEST_CHAINS_MAP = Map.of(
+            BraveWalletConstants.GOERLI_CHAIN_ID, CoinType.ETH,
+            BraveWalletConstants.SEPOLIA_CHAIN_ID, CoinType.ETH,
+            BraveWalletConstants.LOCALHOST_CHAIN_ID, CoinType.ETH,
+            BraveWalletConstants.SOLANA_TESTNET, CoinType.SOL, BraveWalletConstants.SOLANA_DEVNET,
+            CoinType.SOL, BraveWalletConstants.FILECOIN_TESTNET, CoinType.FIL,
+            BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID, CoinType.ETH);
+
+    public static final List<String> KNOWN_TEST_CHAIN_IDS =
+            new ArrayList<>(KNOWN_TEST_CHAINS_MAP.keySet());
 
     public static final List<Integer> SEND_TRANSACTION_TYPES = Arrays.asList(
             TransactionType.ETH_SEND, TransactionType.ERC20_TRANSFER,

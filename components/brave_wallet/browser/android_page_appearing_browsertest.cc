@@ -11,7 +11,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/browser/ui/webui/brave_wallet/android/swap_page_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_ui.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -169,7 +169,7 @@ class TestWebUIControllerFactory : public content::WebUIControllerFactory {
       content::WebUI* web_ui,
       const GURL& url) override {
     if (url.host_piece() == kWalletPageHost) {
-      return std::make_unique<SwapPageUI>(web_ui, source_name_);
+      return std::make_unique<AndroidWalletPageUI>(web_ui, url);
     }
 
     return nullptr;
@@ -194,9 +194,9 @@ class TestWebUIControllerFactory : public content::WebUIControllerFactory {
   std::string source_name_;
 };
 
-class AndroidBrowserTestSwap : public PlatformBrowserTest {
+class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
  public:
-  AndroidBrowserTestSwap() {
+  AndroidPageAppearingBrowserTest() {
     factory_ = std::make_unique<TestWebUIControllerFactory>(kWalletPageHost);
     content::WebUIControllerFactory::RegisterFactory(factory_.get());
     scoped_feature_list_.InitWithFeatures(
@@ -250,7 +250,7 @@ class AndroidBrowserTestSwap : public PlatformBrowserTest {
       ChromeContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
           render_frame_host, map);
       content::RegisterWebUIControllerInterfaceBinder<
-          brave_wallet::mojom::PageHandlerFactory, SwapPageUI>(map);
+          brave_wallet::mojom::PageHandlerFactory, AndroidWalletPageUI>(map);
       map->Add<cosmetic_filters::mojom::CosmeticFiltersResources>(
           base::BindRepeating(&BindCosmeticFiltersResources));
     }
@@ -373,7 +373,7 @@ class AndroidBrowserTestSwap : public PlatformBrowserTest {
   network::TestURLLoaderFactory url_loader_factory_;
 };
 
-IN_PROC_BROWSER_TEST_F(AndroidBrowserTestSwap, TestSwapPageAppearing) {
+IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSwapPageAppearing) {
   GURL url = GURL("chrome://wallet/swap");
   content::NavigationController::LoadURLParams params(url);
   params.transition_type = ui::PageTransitionFromInt(
@@ -404,5 +404,35 @@ IN_PROC_BROWSER_TEST_F(AndroidBrowserTestSwap, TestSwapPageAppearing) {
       {"TypeError: Cannot read properties of undefined (reading 'forEach')",
        "Error calling jsonRpcService.getERC20TokenBalances",
        "Error querying balance:", "Error: An internal error has occurred"});
+}
+
+IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
+  GURL url = GURL("chrome://wallet/send");
+  content::NavigationController::LoadURLParams params(url);
+  params.transition_type = ui::PageTransitionFromInt(
+      ui::PAGE_TRANSITION_TYPED | ui::PAGE_TRANSITION_FROM_ADDRESS_BAR);
+
+  auto* web_contents = GetActiveWebContents();
+
+  content::ConsoleObserver console_observer(web_contents);
+  console_observer.SetPattern(kConsoleMarker);
+  web_contents->GetController().LoadURLWithParams(params);
+  web_contents->GetOutermostWebContents()->Focus();
+  EXPECT_TRUE(WaitForLoadStop(web_contents));
+  EXPECT_TRUE(web_contents->GetLastCommittedURL() == url)
+      << "Expected URL " << url << " but observed "
+      << web_contents->GetLastCommittedURL();
+
+  auto result =
+      content::EvalJs(web_contents,
+                      base::ReplaceStringPlaceholders(
+                          kPrintConsoleMarkerScript, {kConsoleMarker}, nullptr),
+                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS, 1);
+  EXPECT_TRUE(result.error.empty())
+      << "Could not execute script: " << result.error;
+
+  EXPECT_TRUE(console_observer.Wait());
+  VerifyConsoleOutputNoErrors(console_observer,
+                              blink::mojom::ConsoleMessageLevel::kWarning, {});
 }
 }  // namespace brave_wallet

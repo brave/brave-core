@@ -54,7 +54,7 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/browser/ui/webui/brave_wallet/android/swap_page_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_ui.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #endif
 
@@ -174,14 +174,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new TorInternalsUI(web_ui, url.host());
 #endif
 #if BUILDFLAG(IS_ANDROID)
-  } else if (url.is_valid() &&
-             (url.spec() == base::StringPrintf("%s://%s",
-                                               content::kChromeUIScheme,
-                                               kWalletSwapPagePath) ||
-              url.spec() == base::StringPrintf("%s://%s",
-                                               content::kBraveUIScheme,
-                                               kWalletSwapPagePath))) {
-    return new SwapPageUI(web_ui, url.host());
+  } else if (url.is_valid() && url.host() == kWalletPageHost) {
+    return new AndroidWalletPageUI(web_ui, url);
 #endif
   }
   return nullptr;
@@ -203,11 +197,9 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
        ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) ||
 #endif  // BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
 #if BUILDFLAG(IS_ANDROID)
-      (url.is_valid() &&
-       (url.spec() == base::StringPrintf("%s://%s", content::kChromeUIScheme,
-                                         kWalletSwapPagePath) ||
-        url.spec() == base::StringPrintf("%s://%s", content::kBraveUIScheme,
-                                         kWalletSwapPagePath))) ||
+      (url.is_valid() && url.host_piece() == kWalletPageHost &&
+       (url.path() == kWalletSwapPagePath ||
+        url.path() == kWalletSendPagePath)) ||
 #else
       ((url.host_piece() == kWalletPanelHost ||
         url.host_piece() == kWalletPageHost) &&

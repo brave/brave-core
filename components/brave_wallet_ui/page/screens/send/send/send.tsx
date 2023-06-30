@@ -76,6 +76,7 @@ interface Props {
   setSelectedSendOption: (sendOption: SendOptionTypes) => void
   selectTokenModalRef: React.RefObject<HTMLDivElement>
   showSelectTokenModal: boolean
+  isAndroid?: boolean
 }
 
 export const Send = (props: Props) => {
@@ -85,7 +86,8 @@ export const Send = (props: Props) => {
     selectedSendOption,
     onHideSelectTokenModal,
     selectTokenModalRef,
-    showSelectTokenModal
+    showSelectTokenModal,
+    isAndroid
   } = props
 
   // Wallet Selectors
@@ -410,6 +412,8 @@ export const Send = (props: Props) => {
         wrapContentInBox={true}
         cardWidth={sendContainerWidth}
         noMinCardHeight={true}
+        hideNav={isAndroid}
+        hideHeader={isAndroid}
         cardHeader={
           <PageTitleHeader title={getLocale('braveWalletSend')}/>
         }
