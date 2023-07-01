@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import getPageHandlerInstance, { ConversationTurn, SiteInfo } from '../api/page_handler'
+import getPageHandlerInstance, { ConversationTurn, SiteInfo, AutoGenerateQuestionsPref } from '../api/page_handler'
 import { loadTimeData } from '$web-common/loadTimeData'
 
 function toBlobURL (data: number[] | null) {
@@ -19,7 +19,7 @@ export function useConversationHistory() {
   const [isGenerating, setIsGenerating] = React.useState(false)
   const [suggestedQuestions, setSuggestedQuestions] = React.useState<string[]>([])
   const [canGenerateQuestions, setCanGenerateQuestions] = React.useState(false)
-  const [userAllowsAutoGenerating, setUserAllowsAutoGeneratingState] = React.useState(false)
+  const [userAutoGeneratePref, setUserAutoGeneratePref] = React.useState<AutoGenerateQuestionsPref | undefined>(undefined)
   const [siteInfo, setSiteInfo] = React.useState<SiteInfo | null>(null)
   const [favIconUrl, setFavIconUrl] = React.useState<string | undefined>(undefined)
 
@@ -29,13 +29,14 @@ export function useConversationHistory() {
 
   const setUserAllowsAutoGenerating = (value: boolean) => {
     getPageHandlerInstance().pageHandler.setAutoGenerateQuestions(value)
+    setUserAutoGeneratePref(value ? AutoGenerateQuestionsPref.Enabled : AutoGenerateQuestionsPref.Disabled)
   }
 
   const getSuggestedQuestions = () => {
     getPageHandlerInstance().pageHandler.getSuggestedQuestions().then(r => {
       setSuggestedQuestions(r.questions)
       setCanGenerateQuestions(r.canGenerate)
-      setUserAllowsAutoGeneratingState(r.autoGenerate)
+      setUserAutoGeneratePref(r.autoGenerate)
     })
   }
 
@@ -75,10 +76,10 @@ export function useConversationHistory() {
     })
     getPageHandlerInstance().callbackRouter.onAPIRequestInProgress.addListener(setIsGenerating)
     getPageHandlerInstance().callbackRouter.onSuggestedQuestionsChanged
-      .addListener((questions: string[], hasGenerated: boolean, autoGenerate: boolean) => {
+      .addListener((questions: string[], hasGenerated: boolean, autoGenerate: AutoGenerateQuestionsPref) => {
         setSuggestedQuestions(questions)
         setCanGenerateQuestions(!hasGenerated)
-        setUserAllowsAutoGeneratingState(autoGenerate)
+        setUserAutoGeneratePref(autoGenerate)
       })
 
     // When the target tab changes, clean tab-specific data
@@ -93,7 +94,7 @@ export function useConversationHistory() {
     isGenerating,
     suggestedQuestions,
     canGenerateQuestions,
-    userAllowsAutoGenerating,
+    userAutoGeneratePref,
     siteInfo,
     favIconUrl,
     generateSuggestedQuestions,

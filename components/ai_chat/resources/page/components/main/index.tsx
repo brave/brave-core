@@ -11,6 +11,7 @@ interface MainProps {
   conversationList: React.ReactNode
   inputBox: React.ReactNode
   siteTitle?: React.ReactNode
+  promptAutoSuggestion?: React.ReactNode
 }
 
 function Main (props: MainProps) {
@@ -31,6 +32,7 @@ function Main (props: MainProps) {
         {props.conversationList}
       </div>
       <div className={styles.inputBox}>
+        {props.promptAutoSuggestion}
         {props.inputBox}
       </div>
     </main>

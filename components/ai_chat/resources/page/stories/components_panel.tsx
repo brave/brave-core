@@ -19,6 +19,7 @@ import { useInput } from '../state/hooks'
 import { CharacterType, ConversationTurnVisibility  } from '../api/page_handler'
 import PrivacyMessage from '../components/privacy_message'
 import SiteTitle from '../components/site_title'
+import PromptAutoSuggestion from '../components/prompt_auto_suggestion'
 
 const DATA = [
   {text: 'What is pointer compression?', characterType: CharacterType.HUMAN, visibility: ConversationTurnVisibility.VISIBLE },
@@ -28,7 +29,8 @@ const DATA = [
 const SAMPLE_QUESTIONS = [
   "Summarize this article",
   "What was the score?",
-  "Any injuries?"
+  "Any injuries?",
+  "Why did google executives disregard this character in the company?"
 ]
 
 interface StoryProps {
@@ -70,23 +72,25 @@ export const _Main = (props: StoryProps) => {
 
   let conversationList = <PrivacyMessage />
   let siteTitleElement = null
+  let promptAutoSuggestionElement = null
 
   if (hasSeenAgreement) {
     conversationList = (
       <ConversationList
         list={DATA}
         isLoading={false}
-        canGenerateQuestions={!props.hasQuestions}
         suggestedQuestions={props.hasQuestions ? SAMPLE_QUESTIONS : []}
-        userAllowsAutoGenerating={false}
-        onSetUserAllowsAutoGenerating={() => {}}
-        onGenerateSuggestedQuestions={() => {}}
         onQuestionSubmit={() => {}}
       />
     )
 
     siteTitleElement = (
       <SiteTitle siteInfo={{ title: "Microsoft is hiking the price of Xbox Series X and Xbox Game Pass" }} favIconUrl="" />
+    )
+
+    promptAutoSuggestionElement = (
+      <PromptAutoSuggestion
+      />
     )
   }
 
@@ -106,6 +110,7 @@ export const _Main = (props: StoryProps) => {
         conversationList={conversationList}
         inputBox={inputBox}
         siteTitle={siteTitleElement}
+        promptAutoSuggestion={promptAutoSuggestionElement}
       />
     </div>
   )

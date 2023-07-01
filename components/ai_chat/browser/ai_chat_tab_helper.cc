@@ -214,12 +214,11 @@ void AIChatTabHelper::CleanUp() {
 
 std::vector<std::string> AIChatTabHelper::GetSuggestedQuestions(
     bool& can_generate,
-    bool& auto_generate) {
+    mojom::AutoGenerateQuestionsPref& auto_generate) {
   // Can we get suggested questions
   can_generate = !has_generated_questions_ && !article_text_.empty();
   // Are we allowed to auto-generate
-  auto_generate = pref_service_->GetBoolean(
-      ai_chat::prefs::kBraveChatAutoGenerateQuestions);
+  auto_generate = GetAutoGeneratePref();
   return suggested_questions_;
 }
 
@@ -444,11 +443,9 @@ void AIChatTabHelper::OnAPIStreamDataComplete(
 }
 
 void AIChatTabHelper::OnSuggestedQuestionsChanged() {
-  auto auto_generate = pref_service_->GetBoolean(
-      ai_chat::prefs::kBraveChatAutoGenerateQuestions);
   for (auto& obs : observers_) {
-    obs.OnSuggestedQuestionsChanged(suggested_questions_,
-                                    has_generated_questions_, auto_generate);
+    obs.OnSuggestedQuestionsChanged(
+        suggested_questions_, has_generated_questions_, GetAutoGeneratePref());
   }
 }
 
@@ -481,6 +478,22 @@ void AIChatTabHelper::OnFaviconUpdated(
   for (Observer& obs : observers_) {
     obs.OnFaviconImageDataChanged();
   }
+}
+
+mojom::AutoGenerateQuestionsPref AIChatTabHelper::GetAutoGeneratePref() {
+  mojom::AutoGenerateQuestionsPref pref =
+      mojom::AutoGenerateQuestionsPref::Unset;
+
+  const base::Value* auto_generate_value = pref_service_->GetUserPrefValue(
+      ai_chat::prefs::kBraveChatAutoGenerateQuestions);
+
+  if (auto_generate_value) {
+    pref = (auto_generate_value->GetBool()
+                ? mojom::AutoGenerateQuestionsPref::Enabled
+                : mojom::AutoGenerateQuestionsPref::Disabled);
+  }
+
+  return pref;
 }
 
 void AIChatTabHelper::PrimaryPageChanged(content::Page& page) {

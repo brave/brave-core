@@ -18,8 +18,9 @@ import ConversationList from './components/conversation_list'
 import InputBox from './components/input_box'
 import PrivacyMessage from './components/privacy_message'
 import { useConversationHistory, useInput, useAgreement } from './state/hooks'
-import getPageHandlerInstance from './api/page_handler'
+import getPageHandlerInstance, { AutoGenerateQuestionsPref } from './api/page_handler'
 import SiteTitle from './components/site_title'
+import PromptAutoSuggestion from './components/prompt_auto_suggestion'
 
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 
@@ -44,8 +45,14 @@ function App () {
     getPageHandlerInstance().pageHandler.submitHumanConversationEntry(question)
   }
 
+  const handleOnEnableAutoGenerateQuestion = () => {
+    model.setUserAllowsAutoGenerating(true)
+    model.generateSuggestedQuestions()
+  }
+
   let conversationList = <PrivacyMessage />
   let siteTitleElement = null
+  let promptAutoSuggestionElement = null
 
   if (hasSeenAgreement) {
     conversationList = (
@@ -54,10 +61,6 @@ function App () {
           list={model.conversationHistory}
           isLoading={model.isGenerating}
           suggestedQuestions={model.suggestedQuestions}
-          canGenerateQuestions={model.canGenerateQuestions}
-          userAllowsAutoGenerating={model.userAllowsAutoGenerating}
-          onSetUserAllowsAutoGenerating={model.setUserAllowsAutoGenerating}
-          onGenerateSuggestedQuestions={model.generateSuggestedQuestions}
           onQuestionSubmit={handleQuestionSubmit}
         />
       </>
@@ -69,6 +72,15 @@ function App () {
         siteInfo={model.siteInfo}
         favIconUrl={model.favIconUrl}
       />
+      )
+    }
+
+    if (model.userAutoGeneratePref === AutoGenerateQuestionsPref.Unset && model.canGenerateQuestions) {
+      promptAutoSuggestionElement = (
+        <PromptAutoSuggestion
+          onEnable={handleOnEnableAutoGenerateQuestion}
+          onDismiss={() => model.setUserAllowsAutoGenerating(false)}
+        />
       )
     }
   }
@@ -90,6 +102,7 @@ function App () {
         conversationList={conversationList}
         inputBox={inputBox}
         siteTitle={siteTitleElement}
+        promptAutoSuggestion={promptAutoSuggestionElement}
       />
     </BraveCoreThemeProvider>
   )

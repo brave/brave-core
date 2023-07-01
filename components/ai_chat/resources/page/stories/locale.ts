@@ -7,5 +7,9 @@ import { provideStrings } from '../../../../../.storybook/locale'
 
 provideStrings({
   summarizeFailedLabel: 'The summarizer feature is currently available only for select articles and other long-form web pages.',
-  placeholderLabel: 'Ask Brave AI'
+  placeholderLabel: 'Ask Brave AI',
+  enableQuestionsTitle: 'Enable suggested questions?',
+  enableQuestionsDesc: 'Brave AI can automatically suggest questions based on the content of the site. You can disable it later in Settings.',
+  enableQuestionsButtonLabel: 'Enable',
+  noThanksButtonLabel: 'No Thanks',
 })

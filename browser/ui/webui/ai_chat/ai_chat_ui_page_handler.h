@@ -69,9 +69,10 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   // ChatTabHelper::Observer
   void OnHistoryUpdate() override;
   void OnAPIRequestInProgress(bool in_progress) override;
-  void OnSuggestedQuestionsChanged(std::vector<std::string> questions,
-                                   bool has_generated,
-                                   bool auto_generate) override;
+  void OnSuggestedQuestionsChanged(
+      std::vector<std::string> questions,
+      bool has_generated,
+      mojom::AutoGenerateQuestionsPref auto_generate) override;
   void OnFaviconImageDataChanged() override;
   void OnPageHasContent() override;
 

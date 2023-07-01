@@ -35,7 +35,14 @@
   display: flex;
   flex-direction: column;
   align-items: start;
-  gap: 6px;
+  gap: 8px;
+  padding: 0 16px 16px 64px;
+
+  small {
+    font: var(--leo-font-secondary-small-regular);
+    color: var(--leo-color-text-secondary);
+    margin-bottom: 16px;
+  }
 }
 
 .avatarHuman {
@@ -62,4 +69,12 @@
   margin: 0;
   white-space: pre-wrap;
   padding-top: 5px;
+}
+
+.buttonBox {
+  --leo-icon-size: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  text-align: left;
 }
