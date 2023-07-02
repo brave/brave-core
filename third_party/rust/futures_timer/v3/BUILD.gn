@@ -5,8 +5,8 @@
 import("//build/rust/cargo_crate.gni")
 
 cargo_crate("lib") {
-  crate_name = "futures_retry"
-  epoch = "0.5"
+  crate_name = "futures_timer"
+  epoch = "3"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
 
@@ -14,17 +14,12 @@ cargo_crate("lib") {
   build_native_rust_unit_tests = false
   sources = [ "crate/src/lib.rs" ]
   edition = "2018"
-  cargo_pkg_version = "0.5.0"
-  cargo_pkg_authors = "mexus <gilaldpellaeon@gmail.com>"
-  cargo_pkg_name = "futures-retry"
-  cargo_pkg_description = "Retry your Futures and Streams!"
+  cargo_pkg_version = "3.0.2"
+  cargo_pkg_authors = "Alex Crichton <alex@alexcrichton.com>"
+  cargo_pkg_name = "futures-timer"
+  cargo_pkg_description = "Timeouts for futures."
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
-  deps = [
-    "//brave/third_party/rust/futures/v0_3:lib",
-    "//brave/third_party/rust/futures_timer/v3:lib",
-    "//brave/third_party/rust/pin_project/v0_4:lib",
-  ]
 }
