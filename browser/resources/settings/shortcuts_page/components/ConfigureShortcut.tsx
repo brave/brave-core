@@ -35,7 +35,7 @@ const HintText = styled.div`
   text-align: center;
   margin: ${spacing[40]};
   color: ${color.text.tertiary};
-  font: ${font.desktop.primary.default.regular};
+  font: ${font.primary.default.regular};
 `
 
 const InUseAlert = styled(Alert)`
