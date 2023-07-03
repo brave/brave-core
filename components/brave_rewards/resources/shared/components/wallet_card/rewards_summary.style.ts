@@ -75,15 +75,15 @@ export const dataTable = styled.div`
   }
 
   tr:nth-child(1) td.amount {
-    color: #b13c7a;
+    color: var(--brave-palette-black);
   }
 
   tr:nth-child(2) td.amount {
-    color: #b13c7a;
+    color: var(--brave-palette-black);
   }
 
   tr:nth-child(3) td.amount {
-    color: #8d58c4;
+    color: var(--brave-palette-black);
   }
 
   td.exchange {

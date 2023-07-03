@@ -38,7 +38,7 @@ export const title = styled.div`
   font-weight: 600;
   font-size: 22px;
   line-height: 28px;
-  color: var(--settings-panel-title-color, #495057);
+  color: var(--brave-palette-black);
 `
 
 export const config = styled.div`
