@@ -155,15 +155,21 @@ void SignalsController::OnGotHistory(
         }
       }
     }
-    LOG(ERROR) << "One";
     auto& visits = publisher_visits.at(article->publisher_id);
-    LOG(ERROR) << "Two";
     signals[article->url.spec()] = mojom::Signal::New(
         publisher->user_enabled_status == mojom::UserEnabled::DISABLED,
         channel_subscribed, -1,
         publisher->user_enabled_status == mojom::UserEnabled::ENABLED,
         visits.size() / static_cast<double>(total_publisher_visits), visits,
         GetPopRecency(article));
+  }
+
+  for (const auto& it : publishers) {
+    auto& visits = publisher_visits.at(it.first);
+    signals[it.first] = mojom::Signal::New(
+        it.second->user_enabled_status == mojom::UserEnabled::DISABLED, false,
+        -1, it.second->user_enabled_status == mojom::UserEnabled::ENABLED,
+        visits.size() / static_cast<double>(total_publisher_visits), visits, 0);
   }
 
   for (const auto& channel : channels) {
