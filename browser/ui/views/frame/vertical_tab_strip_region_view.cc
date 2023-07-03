@@ -152,6 +152,18 @@ class ToggleButton : public BraveNewTabButton {
     ImageButton::NotifyClick(event);
   }
 
+  void StateChanged(ButtonState old_state) override {
+    BraveNewTabButton::StateChanged(old_state);
+
+    if (GetState() == views::Button::STATE_NORMAL) {
+      // Double check highlight state after changing state to normal. Dragging
+      // the button can make the highlight effect hidden.
+      // https://github.com/brave/brave-browser/issues/31421
+      SetHighlighted(region_view_->state() ==
+                     VerticalTabStripRegionView::State::kExpanded);
+    }
+  }
+
  private:
   raw_ptr<VerticalTabStripRegionView> region_view_ = nullptr;
   raw_ptr<const TabStrip> tab_strip_ = nullptr;
