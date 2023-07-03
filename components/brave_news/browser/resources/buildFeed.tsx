@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import {
   Channel,
   FeedItemMetadata,
@@ -198,9 +199,10 @@ export const generateCluster = (
 }
 
 export const generateRandomCluster = (info: Info) => {
-  const randomChannel = pickWeighted([...info.channels], (c) =>
+  const randomChannel = pickWeighted([...info.channels.filter(c => c.subscribedLocales.length)], (c) =>
     getChannelWeight(c, info)
   )
+  if (!randomChannel) return
   return generateCluster(info, randomChannel.channelName)
 }
 

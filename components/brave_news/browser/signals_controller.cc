@@ -165,10 +165,21 @@ void SignalsController::OnGotHistory(
   }
 
   for (const auto& it : publishers) {
+    bool channel_subscribed = false;
+    for (const auto& locale_info : it.second->locales) {
+      for (const auto& channel : locale_info->channels) {
+        if (channels_controller_->GetChannelSubscribed(locale_info->locale,
+                                                       channel)) {
+          channel_subscribed = true;
+          break;
+        }
+      }
+    }
     auto& visits = publisher_visits.at(it.first);
     signals[it.first] = mojom::Signal::New(
-        it.second->user_enabled_status == mojom::UserEnabled::DISABLED, false,
-        -1, it.second->user_enabled_status == mojom::UserEnabled::ENABLED,
+        it.second->user_enabled_status == mojom::UserEnabled::DISABLED,
+        channel_subscribed, -1,
+        it.second->user_enabled_status == mojom::UserEnabled::ENABLED,
         visits.size() / static_cast<double>(total_publisher_visits), visits, 0);
   }
 
