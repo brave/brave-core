@@ -739,9 +739,7 @@
 -PageInfoBubbleViewBrowserTestCookiesSubpage.ToggleForBlockingThirdPartyCookies
 
 # These tests fail because we don't support the search companion.
--CompanionPageBrowserTest.*
--CompanionPagePolicyBrowserTest.*
--CompanionPageSameTabBrowserTest.*
+-CompanionPage*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
