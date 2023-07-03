@@ -15,6 +15,7 @@ import {
 import { isComponentInStorybook } from '../utils/string-utils'
 
 const marketUiOrigin = loadTimeData.getString('braveWalletMarketUiBridgeUrl')
+export const braveWalletPanelOrigin = 'chrome://wallet-panel.top-chrome'
 
 // remove trailing /
 export const braveMarketUiOrigin = marketUiOrigin.endsWith('/') ? marketUiOrigin.slice(0, -1) : marketUiOrigin

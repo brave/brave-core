@@ -41,7 +41,8 @@ import {
   UpdateDepositableAssetsMessage,
   UpdateCoinMarketMessage,
   UpdateTradableAssetsMessage,
-  UpdateIframeHeightMessage
+  UpdateIframeHeightMessage,
+  braveWalletPanelOrigin
 } from './market-ui-messages'
 import { filterCoinMarkets, searchCoinMarkets, sortCoinMarkets } from '../utils/coin-market-utils'
 
@@ -115,32 +116,32 @@ const App = () => {
 
   const onMessageEventListener = React.useCallback((event: MessageEvent<MarketCommandMessage>) => {
     // validate message origin
-    if (event.origin !== braveWalletOrigin) return
-
-    const message = event.data
-    switch (message.command) {
-      case MarketUiCommand.UpdateCoinMarkets: {
-        const { payload } = message as UpdateCoinMarketMessage
-        setCoinMarkets(payload.coins)
-        setDefaultCurrencies(payload.defaultCurrencies)
-        break
-      }
-
-      case MarketUiCommand.UpdateTradableAssets: {
-        const { payload } = message as UpdateTradableAssetsMessage
-        setTradableAssets(payload)
-        break
-      }
-
-      case MarketUiCommand.UpdateBuyableAssets: {
-        const { payload } = message as UpdateBuyableAssetsMessage
-        setBuyableAssets(payload)
-        break
-      }
-
-      case MarketUiCommand.UpdateDepositableAssets: {
-        const { payload } = message as UpdateDepositableAssetsMessage
-        setDepositableAssets(payload)
+    if (event.origin === braveWalletOrigin || event.origin === braveWalletPanelOrigin) {
+      const message = event.data
+      switch (message.command) {
+        case MarketUiCommand.UpdateCoinMarkets: {
+          const { payload } = message as UpdateCoinMarketMessage
+          setCoinMarkets(payload.coins)
+          setDefaultCurrencies(payload.defaultCurrencies)
+          break
+        }
+  
+        case MarketUiCommand.UpdateTradableAssets: {
+          const { payload } = message as UpdateTradableAssetsMessage
+          setTradableAssets(payload)
+          break
+        }
+  
+        case MarketUiCommand.UpdateBuyableAssets: {
+          const { payload } = message as UpdateBuyableAssetsMessage
+          setBuyableAssets(payload)
+          break
+        }
+  
+        case MarketUiCommand.UpdateDepositableAssets: {
+          const { payload } = message as UpdateDepositableAssetsMessage
+          setDepositableAssets(payload)
+        }
       }
     }
   }, [])
