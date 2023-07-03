@@ -192,6 +192,14 @@ ui::Accelerator FromCodesString(const std::string& value) {
   std::vector<std::string> parts = base::SplitString(
       value, "+", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
 
+  // Not sure why, but some clients are encountering empty accelerators. If we
+  // encounter one in the wild, just return an empty accelerator instead of
+  // crashing:
+  // https://github.com/brave/brave-browser/issues/31419
+  if (!parts.size()) {
+    return ui::Accelerator();
+  }
+
   auto keyname = parts[parts.size() - 1];
   auto keycode = DomCodeStringToKeyboardCode(keyname);
 
