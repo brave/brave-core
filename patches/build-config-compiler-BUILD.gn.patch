@@ -1,10 +1,10 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index 23a8da453c3d29ab8efeacbb7da6e01e280afd55..729f49bad0168073e898cd89214c1f487574950f 100644
+index 23a8da453c3d29ab8efeacbb7da6e01e280afd55..d49010a937145e8b9830a3c34c782509606f453b 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
 @@ -772,8 +772,12 @@ config("compiler") {
        cflags += [ "-fwhole-program-vtables" ]
-
+ 
        # whole-program-vtables implies -fsplit-lto-unit, and Rust needs to match
 -      # behaviour.
 -      rustflags += [ "-Zsplit-lto-unit" ]
@@ -14,7 +14,7 @@ index 23a8da453c3d29ab8efeacbb7da6e01e280afd55..729f49bad0168073e898cd89214c1f48
 +        "-Zsplit-lto-unit",
 +        "-Clinker-plugin-lto=yes",
 +      ]
-
+ 
        if (!is_win) {
          ldflags += [ "-fwhole-program-vtables" ]
 @@ -1005,6 +1009,7 @@ config("compiler") {
@@ -23,19 +23,19 @@ index 23a8da453c3d29ab8efeacbb7da6e01e280afd55..729f49bad0168073e898cd89214c1f48
    }
 +  rustflags -= brave_remove_rustflags
  }
-
+ 
  # The BUILDCONFIG file sets this config on targets by default, which means when
 @@ -1554,6 +1559,87 @@ config("compiler_arm") {
    }
  }
-
+ 
 +# Rust and C++ both provide intrinsics for LLVM to call for math operations. We
 +# want to use the C++ intrinsics, not the ones in the Rust compiler_builtins
 +# library. The Rust symbols are marked as weak, so that they can be replaced by
 +# the C++ symbols. This config ensures the C++ symbols exist and are strong in
 +# order to cause that replacement to occur by explicitly linking in clang's
 +# compiler-rt library.
-+if (is_linux && current_cpu == "arm64") { config("compiler_builtins") {} } else {
++if ((is_win || is_linux) && current_cpu == "arm64") { config("compiler_builtins") {} } else {
 +config("compiler_builtins") {
 +  visibility = [ ":runtime_library" ]
 +
@@ -116,7 +116,7 @@ index 23a8da453c3d29ab8efeacbb7da6e01e280afd55..729f49bad0168073e898cd89214c1f48
 @@ -1575,6 +1661,10 @@ config("runtime_library") {
      configs += [ "//build/config/c++:runtime_library" ]
    }
-
+ 
 +  if (toolchain_has_rust) {
 +    configs += [ ":compiler_builtins" ]
 +  }
