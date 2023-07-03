@@ -99,6 +99,7 @@ export const FundWalletScreen = () => {
   const [selectedCurrency, setSelectedCurrency] = React.useState<string>(defaultCurrencies.fiat || 'usd')
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType | undefined>()
   const [showBuyOptions, setShowBuyOptions] = React.useState<boolean>(false)
+  console.log(showBuyOptions) 
 
   // memos & computed
   const isNextStepEnabled = !!selectedAsset
