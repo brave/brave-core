@@ -80,7 +80,7 @@ function usePromise<T>(promise: Promise<T>, defaultValue: T, deps: any[]) {
 }
 
 function App() {
-  const [showSignals, setShowSignals] = React.useState(true)
+  const [showSignals, setShowSignals] = React.useState(false)
   const info = usePromise(infoPromise, undefined, [])
 
   const feedElements =

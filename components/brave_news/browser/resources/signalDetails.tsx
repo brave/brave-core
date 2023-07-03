@@ -16,7 +16,7 @@ function Details({ publisher, signal }: { signal: Signal, publisher: Publisher }
     <div>
       <b>Visited Urls:</b> ({signal.visitUrls.length})
       <ul>
-        {signal.visitUrls.map(v => <li key={v}>{v}</li>)}
+        {signal.visitUrls.map(v => <li key={v}><a href={v}>{v}</a></li>)}
       </ul>
     </div>
   </Card>
