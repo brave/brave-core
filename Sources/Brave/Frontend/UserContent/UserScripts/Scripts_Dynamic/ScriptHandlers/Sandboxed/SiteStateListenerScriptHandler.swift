@@ -65,7 +65,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
       if let pageData = tab.currentPageData {
         Task { @MainActor in
           let domain = pageData.domain(persistent: !tab.isPrivate)
-          if domain.areAllShieldsOff { return }
+          guard domain.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true) else { return }
           
           let models = await AdBlockStats.shared.cosmeticFilterModels(forFrameURL: frameURL, domain: domain)
           let setup = try self.makeSetup(from: models, isAggressive: ShieldPreferences.blockAdsAndTrackingLevel.isAggressive)

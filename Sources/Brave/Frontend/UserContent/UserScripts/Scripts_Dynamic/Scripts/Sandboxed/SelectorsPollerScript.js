@@ -140,28 +140,6 @@ window.__firefox__.execute(function($) {
     return hasChanges
   }
 
-  let sendPendingSelectorsPromise
-
-  const sendPendingSelectorsThrottled = () => {
-    if (!args.fetchNewClassIdRulesThrottlingMs) {
-      return sendPendingSelectorsIfNeeded()
-    }
-
-    if (sendPendingSelectorsPromise === undefined) {
-      sendPendingSelectorsPromise = new Promise((resolve, reject) => {
-        window.setTimeout(() => {
-          sendPendingSelectorsPromise = undefined
-
-          sendPendingSelectorsIfNeeded().then((changes) => {
-            resolve(changes)
-          })
-        }, args.fetchNewClassIdRulesThrottlingMs)
-      })
-    }
-
-    return sendPendingSelectorsPromise
-  }
-
   /**
    * Extract any new id selector from the element
    * @param {object} element The element to extract from
@@ -278,10 +256,13 @@ window.__firefox__.execute(function($) {
     const mutationScore = queueSelectorsFromMutations(mutations)
 
     if (mutationScore > 0) {
-      const changes = await sendPendingSelectorsThrottled()
+      const changes = await sendPendingOriginsIfNeeded()
       if (changes) {
         setRulesOnStylesheet()
-        pumpCosmeticFilterQueuesOnIdle()
+        
+        if (!args.hideFirstPartyContent) {
+          pumpCosmeticFilterQueuesOnIdle()
+        }
       }
     }
 
