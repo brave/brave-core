@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/rpm/build.sh b/chrome/installer/linux/rpm/build.sh
-index 3053be4fbf88872a7ae743eed0b13291cb1862e7..15b0bb542d2f0fef5b688dde939a255b8eb3c149 100755
+index 3053be4fbf88872a7ae743eed0b13291cb1862e7..7d22ce1cf6e720e35781d1ac459f483b1ab0788d 100755
 --- a/chrome/installer/linux/rpm/build.sh
 +++ b/chrome/installer/linux/rpm/build.sh
 @@ -15,8 +15,9 @@ gen_spec() {
@@ -18,7 +18,7 @@ index 3053be4fbf88872a7ae743eed0b13291cb1862e7..15b0bb542d2f0fef5b688dde939a255b
    RPM_COMMON_DEPS="${OUTPUTDIR}/rpm_common.deps"
    DEPENDS=$(cat "${RPM_COMMON_DEPS}" | tr '\n' ',')
 +  # Ensure that our signing key is up-to-date (brave/brave-browser#4205).
-+  DEPENDS="brave-keyring, ${DEPENDS}"
++  DEPENDS="brave-keyring >= 1.11-1, ${DEPENDS}"
    gen_spec
  
    # Create temporary rpmbuild dirs.
