@@ -63,25 +63,7 @@ class LedgerImpl : public mojom::Ledger {
   // mojom::Ledger implementation begin (in the order of appearance in Mojom)
   void Initialize(InitializeCallback callback) override;
 
-  void SetEnvironment(mojom::Environment environment) override;
-
-  void SetDebug(bool debug) override;
-
-  void SetReconcileInterval(int32_t interval) override;
-
-  void SetRetryInterval(int32_t interval) override;
-
-  void SetTesting() override;
-
-  void SetStateMigrationTargetVersionForTesting(int32_t version) override;
-
   void GetEnvironment(GetEnvironmentCallback callback) override;
-
-  void GetDebug(GetDebugCallback callback) override;
-
-  void GetReconcileInterval(GetReconcileIntervalCallback callback) override;
-
-  void GetRetryInterval(GetRetryIntervalCallback callback) override;
 
   void CreateRewardsWallet(const std::string& country,
                            CreateRewardsWalletCallback callback) override;
