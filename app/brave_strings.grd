@@ -1705,39 +1705,6 @@ Permissions you've already given to websites and apps may apply to this account.
           Brave is trying to modify settings for filling payment methods.
         </message>
       </if>
-      <!-- Brave Vpn Wireguard service strings  -->
-      <if expr="is_win">
-        <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_DISCONNECTED" desc="Message to be displayed as tooltip for the system tray icon in disconnected state.">
-          Brave VPN: Disconnected
-        </message>
-        <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_CONNECTED" desc="Message to be displayed as tooltip for the system tray icon in connected state.">
-          Brave VPN: Connected
-        </message>
-        <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_ERROR" desc="Message to be displayed as tooltip for the system tray icon in error state.">
-          Brave VPN: Error
-        </message>
-        <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_STATUS_ITEM_ACTIVE" desc="Message to be displayed as the first item in the menu for the system tray icon in connected state.">
-          Status: Active
-        </message>
-        <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_STATUS_ITEM_INACTIVE" desc="Message to be displayed as the first item in the menu for the system tray icon in disconnected state.">
-          Status: Inactive
-        </message>
-        <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_CONNECT_ITEM" desc="Title of the system tray menu item for connect command.">
-          Connect
-        </message>
-        <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_DISCONNECT_ITEM" desc="Title of the system tray menu item for disconnect command.">
-          Disconnect
-        </message>
-        <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_MANAGE_ACCOUNT_ITEM" desc="Title of the system tray menu item for the command to open an account page in the browser.">
-          Manage Account
-        </message>        
-        <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ABOUT_ITEM" desc="Title of the system tray menu item for the command to open about page in the browser.">
-          About Brave VPN
-        </message>        
-        <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_REMOVE_ICON_ITEM" desc="Title of the system tray menu item for the command to remove the icon from the system tray.">
-          Remove icon
-        </message>                
-      </if>
     <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">
           Google Chrome Beta
         </message><message name="IDS_CHROME_SHORTCUT_NAME_DEV" desc="The Chrome shortcut name for dev channel">

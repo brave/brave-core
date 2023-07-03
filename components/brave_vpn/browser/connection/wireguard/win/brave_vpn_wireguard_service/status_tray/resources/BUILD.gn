@@ -16,18 +16,53 @@ source_set("resources") {
 generate_embedded_i18n("generate_strings") {
   visibility = [ ":strings" ]
   extractor_datafile = "//brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/resources/create_wireguard_string_rc.py"
-  grdfile_folder = "//chrome/app/"
+  grdfile_folder = "//brave/components/resources/"
 
-  xtb_relative_path = "resources"
-  grdfile_name = "chromium_strings"
+  xtb_relative_path = "strings"
+  grdfile_name = "brave_components_strings"
+
+  brave_supported_i18_locales = default_embedded_i18_locales - [
+                                  "af",
+                                  "as",
+                                  "az",
+                                  "be",
+                                  "bs",
+                                  "cy",
+                                  "eu",
+                                  "gu",
+                                  "hy",
+                                  "is",
+                                  "ka",
+                                  "kk",
+                                  "km",
+                                  "ky",
+                                  "lo",
+                                  "mk",
+                                  "ml",
+                                  "mn",
+                                  "mr",
+                                  "my",
+                                  "ne",
+                                  "pa",
+                                  "or",
+                                  "si",
+                                  "sq",
+                                  "sr-Latn",
+                                  "ta",
+                                  "te",
+                                  "ur",
+                                  "uz",
+                                  "zh-HK",
+                                  "zu",
+                                ]
 
   grd_files_info = [ [
         grdfile_folder,
         grdfile_name,
         xtb_relative_path,
-        default_embedded_i18_locales,
+        brave_supported_i18_locales,
       ] ]
-  sources = [ "//chrome/app/brave_strings.grd" ]
+  sources = [ "//brave/components/resources/brave_components_strings.grd" ] 
   output_file_name_base = "wireguard_strings"
 }
 
