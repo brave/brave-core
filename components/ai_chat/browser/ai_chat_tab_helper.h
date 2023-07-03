@@ -78,8 +78,10 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   bool HasUserOptedIn();
   void OnUserOptedIn();
+  void OnPermissionChangedAutoGenerateQuestions();
   std::string GetConversationHistoryString();
   void MaybeGeneratePageText();
+  void MaybeGenerateQuestions();
   void CleanUp();
   void OnTabContentRetrieved(int64_t for_navigation_id,
                              std::string contents_text,
