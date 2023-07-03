@@ -23,7 +23,7 @@ const TimeContainer = styled.div`
   justify-content: space-between;
 
   color: ${color.text.secondary};
-  font: ${font.desktop.primary.xSmall.regular};
+  font: ${font.primary.xSmall.regular};
 `
 
 const StyledProgress = styled.progress`

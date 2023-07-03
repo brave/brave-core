@@ -24,7 +24,7 @@ const StyledVideo = styled.video`
 const PlayerContainer = styled.div`
   display: flex;
   flex-direction: column;
-  user-select: none;  // In order to drag-and-drop on the seeker works well.
+  user-select: none; // In order to drag-and-drop on the seeker works well.
 `
 
 const ControlsContainer = styled.div`
@@ -36,14 +36,14 @@ const ControlsContainer = styled.div`
 
 const StyledTitle = styled.span`
   color: ${color.text.primary};
-  font: ${font.desktop.primary.large.semibold};
+  font: ${font.primary.xSmall.regular};
 `
 
 const StyledPlayerControls = styled(PlayerControls)`
   padding-top: 8px;
 `
 
-export default function Player() {
+export default function Player () {
   const currentItem = useSelector<ApplicationState, PlaylistItem | undefined>(
     applicationState => applicationState.playerState?.currentItem
   )

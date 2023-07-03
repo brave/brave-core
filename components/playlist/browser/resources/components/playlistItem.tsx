@@ -50,7 +50,7 @@ const ItemInfoContainer = styled.div`
 
 const ItemName = styled.span`
   color: ${color.text.primary};
-  font: ${font.desktop.primary.default.semibold};
+  font: ${font.primary.xSmall.regular};
   cursor: default;
 `
 
