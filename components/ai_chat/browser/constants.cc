@@ -4,14 +4,15 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/ai_chat/browser/constants.h"
+#include "base/strings/strcat.h"
 
 namespace ai_chat {
 
 // Note the blank space intentionally added
-constexpr char kHumanPrompt[] = "\n\nHuman: ";
+constexpr char kHumanPrompt[] = "Human:";
 constexpr char kHumanPromptPlaceholder[] = "\nH: ";
-constexpr char kAIPrompt[] = "\n\nAssistant:";
-constexpr char kAIPromptPlaceholder[] = "\n\nA:";
+constexpr char kAIPrompt[] = "Assistant:";
+constexpr char kAIPromptPlaceholder[] = "\n\nA: ";
 constexpr char kAIChatCompletionPath[] = "v1/complete";
 
 base::span<const webui::LocalizedString> GetLocalizedStrings() {
@@ -32,4 +33,13 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
 
   return kLocalizedStrings;
 }
+
+std::string GetHumanPromptSegment() {
+  return base::StrCat({"\n\n", kHumanPrompt, " "});
+}
+
+std::string GetAssistantPromptSegment() {
+  return base::StrCat({"\n\n", kAIPrompt});
+}
+
 }  // namespace ai_chat

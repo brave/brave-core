@@ -13,6 +13,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
+#include "base/strings/pattern.h"
 #include "base/strings/strcat.h"
 #include "brave/components/ai_chat/browser/constants.h"
 #include "brave/components/ai_chat/common/buildflags/buildflags.h"
@@ -44,6 +45,38 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
           "Not implemented."
       }
     )");
+}
+
+base::Value::Dict CreateApiParametersDict(
+    const std::string& prompt,
+    const std::vector<std::string> additional_stop_sequences,
+    const bool is_sse_enabled) {
+  base::Value::Dict dict;
+
+  base::Value::List stop_sequences;
+  stop_sequences.Append(ai_chat::GetHumanPromptSegment());
+  for (auto& item : additional_stop_sequences) {
+    stop_sequences.Append(item);
+  }
+
+  const auto model_name = ai_chat::features::kAIModelName.Get();
+  const double temp = ai_chat::features::kAITemperature.Get();
+  
+  DCHECK(!model_name.empty());
+
+  dict.Set("prompt", prompt);
+  dict.Set("max_tokens_to_sample", 400);
+  dict.Set("temperature", temp);
+  dict.Set("top_k", -1);  // disabled
+  dict.Set("top_p", 0.999);
+  dict.Set("model", model_name);
+  dict.Set("stop_sequences", std::move(stop_sequences));
+  dict.Set("stream", is_sse_enabled);
+
+  DVLOG(1) << __func__ << " Prompt: |" << prompt << "|\n";
+  DVLOG(1) << __func__ << " Using model: " << model_name;
+
+  return dict;
 }
 
 std::string CreateJSONRequestBody(base::ValueView node) {
@@ -87,10 +120,19 @@ AIChatAPI::~AIChatAPI() = default;
 
 void AIChatAPI::QueryPrompt(
     const std::string& prompt,
+    const std::vector<std::string> extra_stop_sequences,
     api_request_helper::APIRequestHelper::ResultCallback
         data_completed_callback,
     api_request_helper::APIRequestHelper::DataReceivedCallback
         data_received_callback) {
+  // All queries must have the "Human" and "AI" prompt markers. We do not
+  // prepend / append them here since callers may want to put them in
+  // custom positions.
+  DCHECK(base::MatchPattern(prompt,
+                            base::StrCat({"*", ai_chat::kHumanPrompt, "*"})));
+  DCHECK(
+      base::MatchPattern(prompt, base::StrCat({"*", ai_chat::kAIPrompt, "*"})));
+
   const GURL api_base_url = GetEndpointBaseUrl();
 
   // Validate that the path is valid
@@ -101,8 +143,8 @@ void AIChatAPI::QueryPrompt(
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
 
-  const base::Value::Dict& dict =
-      CreateApiParametersDict(prompt, is_sse_enabled);
+  const base::Value::Dict& dict = CreateApiParametersDict(
+      prompt, std::move(extra_stop_sequences), is_sse_enabled);
   base::flat_map<std::string, std::string> headers;
   headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
   headers.emplace("Accept", "text/event-stream");
@@ -128,32 +170,4 @@ void AIChatAPI::QueryPrompt(
                                 "application/json", std::move(on_result_cb),
                                 headers, {});
   }
-}
-
-base::Value::Dict AIChatAPI::CreateApiParametersDict(
-    const std::string& prompt,
-    const bool is_sse_enabled) {
-  base::Value::Dict dict;
-  base::Value::List stop_sequences;
-  stop_sequences.Append("\n\nHuman:");
-  stop_sequences.Append("</response>");
-
-  const auto model_name = ai_chat::features::kAIModelName.Get();
-  const double temp = ai_chat::features::kAITemperature.Get();
-
-  DCHECK(!model_name.empty());
-
-  dict.Set("prompt", prompt);
-  dict.Set("max_tokens_to_sample", 400);
-  dict.Set("temperature", temp);
-  dict.Set("top_k", -1);  // disabled
-  dict.Set("top_p", 0.999);
-  dict.Set("model", model_name);
-  dict.Set("stop_sequences", std::move(stop_sequences));
-  dict.Set("stream", is_sse_enabled);
-
-  DVLOG(1) << __func__ << " Prompt: |" << prompt << "|\n";
-  DVLOG(1) << __func__ << " Using model: " << model_name;
-
-  return dict;
 }

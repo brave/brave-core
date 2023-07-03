@@ -23,6 +23,9 @@ extern const char kAIChatCompletionPath[];
 
 base::span<const webui::LocalizedString> GetLocalizedStrings();
 
+std::string GetHumanPromptSegment();
+std::string GetAssistantPromptSegment();
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_BROWSER_CONSTANTS_H_

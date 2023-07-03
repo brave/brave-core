@@ -26,15 +26,13 @@ class AIChatAPI {
   // This function queries both types of APIs: SSE and non-SSE.
   // In non-SSE cases, only the data_completed_callback will be triggered.
   void QueryPrompt(const std::string& prompt,
+                   const std::vector<std::string> extra_stop_sequences,
                    api_request_helper::APIRequestHelper::ResultCallback
                        data_completed_callback,
                    api_request_helper::APIRequestHelper::DataReceivedCallback
                        data_received_callback = base::NullCallback());
 
  private:
-  base::Value::Dict CreateApiParametersDict(const std::string& prompt,
-                                            const bool is_sse_enabled);
-
   api_request_helper::APIRequestHelper api_request_helper_;
 };
 
