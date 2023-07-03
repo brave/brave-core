@@ -5,8 +5,6 @@
 
 source_set("status_tray") {
   sources = [
-    "brave_vpn_tray_command_ids.h",
-    "brave_vpn_tray_strings_en.h",
     "status_tray_runner.cc",
     "status_tray_runner.h",
   ]
@@ -17,6 +15,7 @@ source_set("status_tray") {
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/win",
     "//brave/components/brave_vpn/common/wireguard/win",
+    "//brave/components/resources:strings",
     "//ui/base",
     "//ui/native_theme",
     "//ui/native_theme:native_theme_browser",
