@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+STRING_IDS = [
+    'IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_DISCONNECTED',
+    'IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_CONNECTED',
+    'IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_ERROR',
+    'IDS_BRAVE_VPN_WIREGUARD_TRAY_STATUS_ITEM_ACTIVE',
+    'IDS_BRAVE_VPN_WIREGUARD_TRAY_STATUS_ITEM_INACTIVE',
+    'IDS_BRAVE_VPN_WIREGUARD_TRAY_CONNECT_ITEM',
+    'IDS_BRAVE_VPN_WIREGUARD_TRAY_DISCONNECT_ITEM',
+    'IDS_BRAVE_VPN_WIREGUARD_TRAY_MANAGE_ACCOUNT_ITEM',
+    'IDS_BRAVE_VPN_WIREGUARD_TRAY_ABOUT_ITEM',
+    'IDS_BRAVE_VPN_WIREGUARD_TRAY_REMOVE_ICON_ITEM',
+]

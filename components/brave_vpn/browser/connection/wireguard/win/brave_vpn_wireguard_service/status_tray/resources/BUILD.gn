@@ -3,9 +3,35 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//base/win/embedded_i18n/generate_embedded_i18n.gni")
+
 source_set("resources") {
   inputs = [
     "resource.h",
     "resources_en.rc",
   ]
+  deps = [ ":strings" ]
+}
+
+generate_embedded_i18n("generate_strings") {
+  visibility = [ ":strings" ]
+  extractor_datafile = "//brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/resources/create_wireguard_string_rc.py"
+  grdfile_folder = "//chrome/app/"
+
+  xtb_relative_path = "resources"
+  grdfile_name = "chromium_strings"
+
+  grd_files_info = [ [
+        grdfile_folder,
+        grdfile_name,
+        xtb_relative_path,
+        default_embedded_i18_locales,
+      ] ]
+  sources = [ "//chrome/app/brave_strings.grd" ]
+  output_file_name_base = "wireguard_strings"
+}
+
+source_set("strings") {
+  sources = get_target_outputs(":generate_strings")
+  public_deps = [ ":generate_strings" ]
 }
