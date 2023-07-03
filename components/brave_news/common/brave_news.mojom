@@ -194,6 +194,9 @@ struct Signal {
   // Normalized source visit weighting
   double source_visits;
 
+  // The urls which count towards the normalized visit count.
+  array<string> visit_urls;
+
   // A combined measure of popularity & recency.
   double pop_recency;
 };

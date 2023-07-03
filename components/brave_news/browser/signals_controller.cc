@@ -6,6 +6,7 @@
 #include "brave/components/brave_news/browser/signals_controller.h"
 
 #include <cstdint>
+#include <iterator>
 #include <string>
 #include <unordered_set>
 #include <utility>
@@ -100,10 +101,10 @@ void SignalsController::OnGotHistory(
   auto& publishers = publishers_controller_->GetLastPublishers();
   auto channels =
       channels_controller_->GetChannelsFromPublishers(publishers, prefs_);
-  base::flat_map<std::string, uint32_t> history_hosts;
+  base::flat_map<std::string, std::vector<std::string>> origin_visits;
   for (const auto& item : results) {
     auto host = item.url().host();
-    history_hosts[host]++;
+    origin_visits[host].push_back(item.url().spec());
   }
 
   // Start at one - it'll make the calculations very slightly off but it also
@@ -111,19 +112,20 @@ void SignalsController::OnGotHistory(
   uint32_t total_publisher_visits = 1;
   uint32_t total_channel_visits = 1;
 
-  base::flat_map<std::string, uint32_t> publisher_visits;
-  base::flat_map<std::string, uint32_t> channel_visits;
+  base::flat_map<std::string, std::vector<std::string>> publisher_visits;
+  base::flat_map<std::string, std::vector<std::string>> channel_visits;
 
   for (auto& [publisher_id, publisher] : publishers) {
     auto host = publisher->site_url.host();
-    auto history_it = history_hosts.find(host);
-    if (history_it == history_hosts.end()) {
-      publisher_visits[publisher_id] = 0;
+    auto history_it = origin_visits.find(host);
+    if (history_it == origin_visits.end()) {
+      publisher_visits[publisher_id] = {};
       continue;
     }
 
-    publisher_visits[publisher_id] += history_it->second;
-    total_publisher_visits += history_it->second;
+    base::ranges::copy(history_it->second,
+                       std::back_inserter(publisher_visits[publisher_id]));
+    total_publisher_visits += history_it->second.size();
 
     for (const auto& locale_info : publisher->locales) {
       if (locale_info->locale != locale) {
@@ -131,8 +133,9 @@ void SignalsController::OnGotHistory(
       }
 
       for (const auto& channel : locale_info->channels) {
-        total_channel_visits += history_it->second;
-        channel_visits[channel] += history_it->second;
+        total_channel_visits += history_it->second.size();
+        base::ranges::copy(history_it->second,
+                           std::back_inserter(channel_visits[channel]));
       }
       break;
     }
@@ -152,25 +155,26 @@ void SignalsController::OnGotHistory(
         }
       }
     }
+    LOG(ERROR) << "One";
+    auto& visits = publisher_visits.at(article->publisher_id);
+    LOG(ERROR) << "Two";
     signals[article->url.spec()] = mojom::Signal::New(
         publisher->user_enabled_status == mojom::UserEnabled::DISABLED,
         channel_subscribed, -1,
-
         publisher->user_enabled_status == mojom::UserEnabled::ENABLED,
-        publisher_visits.at(article->publisher_id) /
-            static_cast<double>(total_publisher_visits),
+        visits.size() / static_cast<double>(total_publisher_visits), visits,
         GetPopRecency(article));
   }
 
   for (const auto& channel : channels) {
     auto it = channel_visits.find(channel.first);
-    uint32_t visits = it == channel_visits.end() ? 0u : it->second;
+    std::vector<std::string> visits =
+        it == channel_visits.end() ? std::vector<std::string>{} : it->second;
     signals[channel.first] = mojom::Signal::New(
         false,
         channels_controller_->GetChannelSubscribed(locale, channel.first),
-        visits / static_cast<double>(total_channel_visits),
-
-        false, 0, 0);
+        visits.size() / static_cast<double>(total_channel_visits), false, 0,
+        visits, 0);
   }
 
   std::move(callback).Run(std::move(signals));
