@@ -10,10 +10,7 @@ import { FundWalletScreen } from './fund-wallet'
 
 export const _FundWalletScreen = () => {
   return <WalletPageStory>
-    <FundWalletScreen
-      showBuyOptions={false}
-      onShowBuyOptions={() => {}}
-    />
+    <FundWalletScreen />
   </WalletPageStory>
 }
 
