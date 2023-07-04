@@ -191,7 +191,6 @@ GURL NavigationDelegate::GetCurrentURL() const {
 NativeWebState::NativeWebState(Browser* browser, bool off_the_record)
     : browser_(browser),
       session_id_(SessionID::InvalidValue()),
-      navigation_delegate_(nullptr),
       web_state_(nullptr),
       web_state_observer_(nullptr) {
   // First setup SessionID for the web-state
@@ -227,11 +226,6 @@ NativeWebState::NativeWebState(Browser* browser, bool off_the_record)
   web_state_ = web_state.get();
   web_state_observer_ = std::make_unique<Observer>(this);
 
-  // Setup Navigation Delegate for the WebState
-  navigation_delegate_ = std::make_unique<NavigationDelegate>(web_state_);
-  static_cast<web::NavigationManagerImpl*>(web_state_->GetNavigationManager())
-      ->SetDelegate(navigation_delegate_.get());
-
   // Insert the WebState into the Browser && Activate it
   browser_->GetWebStateList()->InsertWebState(
       browser_->GetWebStateList()->count(), std::move(web_state),
@@ -255,7 +249,6 @@ NativeWebState::~NativeWebState() {
   }
 
   // Cleanup everything else in reverse order of construction
-  navigation_delegate_.reset();
   web_state_ = nullptr;
   session_id_ = SessionID::InvalidValue();
   browser_ = nullptr;
