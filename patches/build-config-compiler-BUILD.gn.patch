@@ -1,16 +1,8 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index ae742b0b85a506f550852e611471338bde0da390..bb72d65adcd5a063bba6c86420f6334a8538b7b6 100644
+index ae742b0b85a506f550852e611471338bde0da390..8b403545d7049c89ad22a2ede4f0c536840568b1 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
-@@ -1019,6 +1019,7 @@ config("compiler") {
-   if (use_safe_libcxx) {
-     defines += [ "_LIBCPP_ENABLE_ASSERTIONS=1" ]
-   }
-+  rustflags -= brave_remove_rustflags
- }
- 
- # The BUILDCONFIG file sets this config on targets by default, which means when
-@@ -1568,6 +1569,87 @@ config("compiler_arm") {
+@@ -1568,6 +1568,87 @@ config("compiler_arm") {
    }
  }
  
@@ -98,7 +90,7 @@ index ae742b0b85a506f550852e611471338bde0da390..bb72d65adcd5a063bba6c86420f6334a
  # runtime_library -------------------------------------------------------------
  #
  # Sets the runtime library and associated options.
-@@ -1589,6 +1671,10 @@ config("runtime_library") {
+@@ -1589,6 +1670,10 @@ config("runtime_library") {
      configs += [ "//build/config/c++:runtime_library" ]
    }
  
@@ -109,6 +101,14 @@ index ae742b0b85a506f550852e611471338bde0da390..bb72d65adcd5a063bba6c86420f6334a
    # Rust and C++ both provide intrinsics for LLVM to call for math operations. We
    # want to use the C++ intrinsics, not the ones in the Rust compiler_builtins
    # library. The Rust symbols are marked as weak, so that they can be replaced by
+@@ -1785,6 +1870,7 @@ config("default_warnings") {
+   # an error by default eventually; see
+   # https://github.com/rust-lang/rust/issues/71668
+   rustflags = [ "-Dunsafe_op_in_unsafe_fn" ]
++  rustflags -= brave_remove_rustflags
+ }
+ 
+ # prevent_unsafe_narrowing ----------------------------------------------------
 @@ -2570,7 +2656,7 @@ config("symbols") {
        if (use_dwarf5) {
          cflags += [ "-gdwarf-5" ]
