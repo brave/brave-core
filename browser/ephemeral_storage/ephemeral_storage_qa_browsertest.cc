@@ -388,9 +388,11 @@ class EphemeralStorageTest : public InProcessBrowserTest {
                "document.getElementById('continue-test-url-step-6').value")
             .ExtractString();
 
-    ASSERT_TRUE(
-        tabs_->CloseWebContentsAt(tabs_->GetIndexOfWebContents(original_tab_),
-                                  TabCloseTypes::CLOSE_NONE));
+    const int previous_tab_count = browser()->tab_strip_model()->count();
+    tabs_->CloseWebContentsAt(tabs_->GetIndexOfWebContents(original_tab_),
+                              TabCloseTypes::CLOSE_NONE);
+    ASSERT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
+
     EphemeralStorageServiceFactory::GetInstance()
         ->GetForContext(browser()->profile())
         ->FireCleanupTimersForTesting();

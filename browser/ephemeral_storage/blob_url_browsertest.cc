@@ -190,8 +190,10 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
 
     // Close the first a.com tab, ensure all blobs created there become obsolete
     // and can't be fetched.
-    ASSERT_TRUE(browser()->tab_strip_model()->CloseWebContentsAt(
-        1, TabCloseTypes::CLOSE_NONE));
+    const int previous_tab_count = browser()->tab_strip_model()->count();
+    browser()->tab_strip_model()->CloseWebContentsAt(1,
+                                                     TabCloseTypes::CLOSE_NONE);
+    EXPECT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
     content::RunAllTasksUntilIdle();
     for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
       auto* rfh = a_com2_registered_blobs[idx].rfh.get();
@@ -267,8 +269,10 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
 
     // Close the first a.com tab, ensure all blobs created there become obsolete
     // and can't be fetched.
-    ASSERT_TRUE(browser()->tab_strip_model()->CloseWebContentsAt(
-        1, TabCloseTypes::CLOSE_NONE));
+    const int previous_tab_count = browser()->tab_strip_model()->count();
+    browser()->tab_strip_model()->CloseWebContentsAt(1,
+                                                     TabCloseTypes::CLOSE_NONE);
+    EXPECT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
     content::RunAllTasksUntilIdle();
     for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
       auto* rfh = a_com2_registered_blobs[idx].rfh.get();
