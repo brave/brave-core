@@ -27,7 +27,8 @@ class BraveVPNMenuModel : public ui::SimpleMenuModel,
   }
 #endif  // BUILDFLAG(IS_WIN)
  private:
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNMenuModelUnitTest, TrayIcon);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNMenuModelUnitTest, TrayIconEnabled);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNMenuModelUnitTest, TrayIconDisabled);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNMenuModelUnitTest, ToolbarVPNButton);
 
   // ui::SimpleMenuModel::Delegate override:

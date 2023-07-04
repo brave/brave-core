@@ -5,8 +5,10 @@
 
 #include "brave/browser/ui/toolbar/brave_vpn_menu_model.h"
 
+#include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "components/prefs/pref_service.h"
@@ -29,7 +31,11 @@ class BraveVPNMenuModelUnitTest : public testing::Test {
 };
 
 #if BUILDFLAG(IS_WIN)
-TEST_F(BraveVPNMenuModelUnitTest, TrayIcon) {
+TEST_F(BraveVPNMenuModelUnitTest, TrayIconEnabled) {
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeature(
+      brave_vpn::features::kBraveVPNUseWireguardService);
+
   BraveVPNMenuModel menu_model(nullptr, prefs());
 
   // Cases with Enabled value.
@@ -65,6 +71,24 @@ TEST_F(BraveVPNMenuModelUnitTest, TrayIcon) {
         menu_model.GetLabelAt(tray_index.value()),
         l10n_util::GetStringUTF16(IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM));
   }
+}
+TEST_F(BraveVPNMenuModelUnitTest, TrayIconDisabled) {
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(
+      brave_vpn::features::kBraveVPNUseWireguardService);
+
+  BraveVPNMenuModel menu_model(nullptr, prefs());
+
+  // Cases with Enabled value.
+  menu_model.SetTrayIconEnabledForTesting(true);
+  prefs()->SetBoolean(brave_vpn::prefs::kBraveVPNShowButton, true);
+
+  EXPECT_TRUE(menu_model.IsTrayIconEnabled());
+  menu_model.Clear();
+  EXPECT_EQ(menu_model.GetItemCount(), 0u);
+  menu_model.Build();
+  EXPECT_NE(menu_model.GetItemCount(), 0u);
+  EXPECT_FALSE(menu_model.GetIndexOfCommandId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON));
 }
 #endif  // BUILDFLAG(IS_WIN)
 

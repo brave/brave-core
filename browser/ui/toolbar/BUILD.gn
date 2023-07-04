@@ -42,6 +42,9 @@ source_set("brave_app_menu_unit_test") {
   ]
   if (enable_brave_vpn) {
     sources += [ "//brave/browser/ui/toolbar/brave_vpn_menu_model_unittest.cc" ]
-    deps += [ "//brave/components/brave_vpn/common" ]
+    deps += [
+      "//base",
+      "//brave/components/brave_vpn/common",
+    ]
   }
 }

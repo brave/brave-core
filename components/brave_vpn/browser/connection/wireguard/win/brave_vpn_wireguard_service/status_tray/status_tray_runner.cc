@@ -190,9 +190,7 @@ void StatusTrayRunner::SubscribeForServiceStopNotifications(
 }
 
 void StatusTrayRunner::OnDisconnected(bool success) {
-  auto connected = IsTunnelServiceRunning();
   VLOG(1) << __func__ << ":" << success;
-  UpdateIconState(connected, !success);
 }
 
 void StatusTrayRunner::OnStorageUpdated() {
