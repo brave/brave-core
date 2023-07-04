@@ -254,9 +254,11 @@ WebContents* EphemeralStorageBrowserTest::LoadURLInNewTab(GURL url) {
 void EphemeralStorageBrowserTest::CloseWebContents(WebContents* web_contents) {
   int tab_index =
       browser()->tab_strip_model()->GetIndexOfWebContents(web_contents);
-  bool was_closed = browser()->tab_strip_model()->CloseWebContentsAt(
-      tab_index, TabCloseTypes::CLOSE_NONE);
-  EXPECT_TRUE(was_closed);
+
+  const int previous_tab_count = browser()->tab_strip_model()->count();
+  browser()->tab_strip_model()->CloseWebContentsAt(tab_index,
+                                                   TabCloseTypes::CLOSE_NONE);
+  EXPECT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
 }
 
 void EphemeralStorageBrowserTest::SetStorageValueInFrame(
@@ -661,9 +663,11 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   // an eTLD.
   int tab_index =
       browser()->tab_strip_model()->GetIndexOfWebContents(site_a_tab);
-  bool was_closed = browser()->tab_strip_model()->CloseWebContentsAt(
-      tab_index, TabCloseTypes::CLOSE_NONE);
-  EXPECT_TRUE(was_closed);
+
+  const int previous_tab_count = browser()->tab_strip_model()->count();
+  browser()->tab_strip_model()->CloseWebContentsAt(tab_index,
+                                                   TabCloseTypes::CLOSE_NONE);
+  EXPECT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
   EXPECT_TRUE(WaitForCleanupAfterKeepAlive());
 
   // Navigate the main tab to the same site.
@@ -1142,9 +1146,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageKeepAliveDisabledBrowserTest,
   // an eTLD.
   int tab_index =
       browser()->tab_strip_model()->GetIndexOfWebContents(site_a_tab);
-  bool was_closed = browser()->tab_strip_model()->CloseWebContentsAt(
-      tab_index, TabCloseTypes::CLOSE_NONE);
-  EXPECT_TRUE(was_closed);
+  const int previous_tab_count = browser()->tab_strip_model()->count();
+  browser()->tab_strip_model()->CloseWebContentsAt(tab_index,
+                                                   TabCloseTypes::CLOSE_NONE);
+  EXPECT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
 
   // Navigate the main tab to the same site.
   ASSERT_TRUE(
