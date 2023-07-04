@@ -226,6 +226,9 @@ class TopToolbarView: UIView, ToolbarProtocol {
   lazy var locationContainer = UIView().then {
     $0.translatesAutoresizingMaskIntoConstraints = false
     $0.backgroundColor = .clear
+    $0.layer.cornerRadius = UX.textFieldCornerRadius
+    $0.layer.cornerCurve = .continuous
+    $0.layer.masksToBounds = true
   }
 
   // MARK: Lifecycle
