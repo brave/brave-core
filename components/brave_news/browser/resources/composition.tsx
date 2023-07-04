@@ -1,7 +1,9 @@
 import * as React from "react";
 import { Elements } from "./model";
-import { Channel, Publisher, UserEnabled } from "../../../brave_new_tab_ui/api/brave_news";
+import { Channel, Publisher, Signal, UserEnabled } from "../../../brave_new_tab_ui/api/brave_news";
 import Card from "./card";
+import Flex from "../../../brave_new_tab_ui/components/Flex";
+import Dropdown from "@brave/leo/react/dropdown";
 
 interface Entry {
   type: 'publisher' | 'channel' | 'special',
@@ -25,24 +27,34 @@ function getStats(feed: Elements[], acc: { [id: string]: Entry }) {
   }
 }
 
-function EntryCard({ entry, publishers }: { entry: Entry, publishers: { [id: string]: Publisher } }) {
+function EntryCard({ entry, publishers, signals }: { entry: Entry, publishers: { [id: string]: Publisher }, signals: { [id: string]: Signal } }) {
   const name = entry.type === "publisher" ? publishers[entry.id].publisherName : entry.id
   return <Card>
     <h2>{name}</h2>
-    <b>Subscribed:</b> {entry.subscribed.toString()}
-    <b>Feed count:</b> {entry.count}
+    <div>
+      <b>Subscribed:</b> {entry.subscribed.toString()}
+    </div>
+    <div><b>Feed count:</b> {entry.count}</div>
+    <div>
+      <b>Visit Count:</b> {signals[entry.id]?.visitUrls.length}
+    </div>
   </Card>
 }
 
 export default function Composition({
   feed,
   publishers,
-  channels
+  channels,
+  signals
 }: {
   publishers: { [id: string]: Publisher },
   channels: Channel[],
-  feed: Elements[]
+  feed: Elements[],
+  signals: { [id: string]: Signal }
 }) {
+  const [filterType, setFilterType] = React.useState<'everything' | 'special' | 'channel' | 'publisher'>('everything')
+  const [filter, setFilter] = React.useState('')
+
   const overview: { [id: string]: Entry } = {
     ads: { id: 'ads', type: 'special', count: 0, subscribed: false },
     discover: { id: 'discover', type: 'special', count: 0, subscribed: false }
@@ -56,8 +68,20 @@ export default function Composition({
   }
 
   getStats(feed, overview)
+  const filtered = Object.values(overview)
+    .filter(a => filterType === 'everything' || a.type === filterType)
+    .filter(a => a.id.includes(filter) || publishers[a.id]?.publisherName.includes(filter))
+    .sort((a, b) => b.count - a.count)
 
-  return <div>
-    {Object.entries(overview).map(([, value]) => <EntryCard entry={value} publishers={publishers} />)}
-  </div>
+  return <Flex gap={4} direction="column">
+    <input type="text" value={filter} onChange={e => setFilter(e.target.value)} />
+    <Dropdown value={filterType} onChange={e => setFilterType(e.detail.value)}>
+      <span slot="label">Show stats for:</span>
+      <leo-option>everything</leo-option>
+      <leo-option>publisher</leo-option>
+      <leo-option>channel</leo-option>
+      <leo-option>special</leo-option>
+    </Dropdown>
+    {filtered.map(entry => <EntryCard entry={entry} signals={signals} publishers={publishers} key={entry.id} />)}
+  </Flex>
 }

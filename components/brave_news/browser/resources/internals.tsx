@@ -81,7 +81,7 @@ function usePromise<T>(promise: Promise<T>, defaultValue: T, deps: any[]) {
 }
 
 function App() {
-  const [page, setPage] = React.useState<'feed' | 'signals' | 'composition'>('feed')
+  const [page, setPage] = React.useState<'feed' | 'signals' | 'composition'>('composition')
   const info = usePromise(infoPromise, undefined, [])
 
   const feedElements =
