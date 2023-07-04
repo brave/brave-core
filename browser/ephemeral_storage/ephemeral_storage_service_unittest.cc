@@ -235,6 +235,9 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupFirstPartyStorage) {
 
     service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                           storage_partition_config);
+    EXPECT_EQ(
+        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
+        0u);
 
     {
       ScopedVerifyAndClearExpectations verify(mock_delegate_);
@@ -247,8 +250,16 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupFirstPartyStorage) {
           .Times(test_case.should_cleanup);
       service_->TLDEphemeralLifetimeDestroyed(ephemeral_domain,
                                               storage_partition_config);
+      EXPECT_EQ(profile_.GetPrefs()
+                    ->GetList(kFirstPartyStorageOriginsToCleanup)
+                    .size(),
+                test_case.should_cleanup ? 1u : 0u);
       task_environment_.FastForwardBy(base::Seconds(30));
     }
+
+    EXPECT_EQ(
+        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
+        0u);
   }
 }
 

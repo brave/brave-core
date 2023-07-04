@@ -263,9 +263,10 @@ void EphemeralStorageService::CleanupFirstPartyStorageArea(
   DVLOG(1) << __func__ << " " << ephemeral_domain;
   delegate_->CleanupFirstPartyStorageArea(ephemeral_domain);
   if (!context_->IsOffTheRecord()) {
+    base::Value url_spec(GetFirstPartyStorageURL(ephemeral_domain).spec());
     ScopedListPrefUpdate pref_update(prefs_,
                                      kFirstPartyStorageOriginsToCleanup);
-    pref_update->EraseValue(base::Value(ephemeral_domain));
+    pref_update->EraseValue(url_spec);
   }
 }
 
