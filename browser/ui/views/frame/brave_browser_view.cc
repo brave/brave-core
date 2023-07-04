@@ -165,7 +165,8 @@ class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
 BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     : BrowserView(std::move(browser)) {
   pref_change_registrar_.Init(GetProfile()->GetPrefs());
-  if (!WindowFrameUtil::IsWin10TabSearchCaptionButtonEnabled(browser_.get())) {
+  if (!WindowFrameUtil::IsWindowsTabSearchCaptionButtonEnabled(
+          browser_.get())) {
     pref_change_registrar_.Add(
         kTabsSearchShow,
         base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
@@ -668,7 +669,7 @@ void BraveBrowserView::OnThemeChanged() {
 TabSearchBubbleHost* BraveBrowserView::GetTabSearchBubbleHost() {
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) ||
       !tabs::utils::ShouldShowVerticalTabs(browser()) ||
-      WindowFrameUtil::IsWin10TabSearchCaptionButtonEnabled(browser())) {
+      WindowFrameUtil::IsWindowsTabSearchCaptionButtonEnabled(browser())) {
     return BrowserView::GetTabSearchBubbleHost();
   }
 

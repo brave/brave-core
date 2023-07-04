@@ -534,7 +534,7 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
 
   void UpdateTabSearchButtonVisibility() {
     tab_search_button_->SetVisible(
-        !WindowFrameUtil::IsWin10TabSearchCaptionButtonEnabled(
+        !WindowFrameUtil::IsWindowsTabSearchCaptionButtonEnabled(
             region_view_->browser()) &&
         tab_search_button_->GetPreferredSize().width() +
                 toggle_button_->GetPreferredSize().width() <=
