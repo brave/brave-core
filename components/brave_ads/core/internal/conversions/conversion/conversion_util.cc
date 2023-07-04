@@ -1,0 +1,16 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_ads/core/internal/conversions/conversion/conversion_util.h"
+
+#include "brave/components/brave_ads/core/internal/conversions/conversion/conversion_info.h"
+
+namespace brave_ads {
+
+std::string ConversionTypeToString(const ConversionInfo& conversion) {
+  return conversion.verifiable ? "verifiable conversion" : "conversion";
+}
+
+}  // namespace brave_ads

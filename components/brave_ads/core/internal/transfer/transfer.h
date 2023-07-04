@@ -53,6 +53,7 @@ class Transfer final : public TabManagerObserver {
 
   void Cancel(int32_t tab_id);
 
+  void SuccessfullyTransferredAd(const AdInfo& ad) const;
   void FailedToTransferAd(const AdInfo& ad) const;
 
   void NotifyWillTransferAd(const AdInfo& ad, base::Time time) const;

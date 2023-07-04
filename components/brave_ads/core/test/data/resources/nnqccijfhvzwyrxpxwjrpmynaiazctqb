@@ -1,15 +1,19 @@
 {
   "locale": "us",
   "version": 1,
-  "timestamp": "2021-04-26 09:00:00",
+  "timestamp": "2023-03-19 05:35:00",
   "conversion_id_patterns": {
-    "https://brave.com/foobar": {
-      "id_pattern": "<div.*id=\"conversion-id\".*>(.*)<\/div>",
+    "https://foo.com/bar?qux_id=*": {
+      "id_pattern": "qux_id=(.*)",
+      "search_in": "url"
+    },
+    "https://foo.com/bar": {
+      "id_pattern": "<div.*id=\"xyzzy-id\".*>(.*)<\/div>",
       "search_in": "html"
     },
-    "https://brave.com/foobar?conversion_id=*": {
-      "id_pattern": "conversion_id\\=(.*)",
-      "search_in": "url"
+    "https://qux.com/*/corge": {
+      "id_pattern": "<meta name=\"ad-conversion-id\" content=\"(.*)\">",
+      "search_in": ""
     }
   }
 }

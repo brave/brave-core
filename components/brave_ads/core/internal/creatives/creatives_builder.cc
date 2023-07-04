@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/containers/contains.h"
-#include "base/containers/extend.h"
 #include "base/containers/flat_set.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -18,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creatives_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
@@ -352,12 +352,31 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
       if (entries == 0) {
         BLOG(1, "Creative set id " << creative_set.id << " has no entries");
-
         continue;
       }
 
-      // Conversions
-      base::Extend(creatives.conversions, creative_set.conversions);
+      // Creative set conversions
+      for (const auto& conversion : creative_set.conversions) {
+        CreativeSetConversionInfo creative_set_conversion;
+
+        creative_set_conversion.id = conversion.creative_set_id;
+        creative_set_conversion.url_pattern = conversion.url_pattern;
+        creative_set_conversion.extract_verifiable_id =
+            conversion.extract_verifiable_id;
+        creative_set_conversion.verifiable_advertiser_public_key_base64 =
+            conversion.verifiable_advertiser_public_key_base64;
+        creative_set_conversion.observation_window =
+            conversion.observation_window;
+        creative_set_conversion.expire_at = conversion.expire_at;
+
+        if (!creative_set_conversion.IsValid()) {
+          BLOG(1, "Creative set id " << creative_set.id
+                                     << " has an invalid conversion");
+          continue;
+        }
+
+        creatives.conversions.push_back(creative_set_conversion);
+      }
     }
   }
 

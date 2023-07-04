@@ -31,13 +31,16 @@ struct AdEventInfo final {
   AdType type = AdType::kUndefined;
   ConfirmationType confirmation_type = ConfirmationType::kUndefined;
   std::string placement_id;
-  std::string campaign_id;
-  std::string creative_set_id;
   std::string creative_instance_id;
+  std::string creative_set_id;
+  std::string campaign_id;
   std::string advertiser_id;
   std::string segment;
   base::Time created_at;
 };
+
+bool operator==(const AdEventInfo&, const AdEventInfo&);
+bool operator!=(const AdEventInfo&, const AdEventInfo&);
 
 using AdEventList = std::vector<AdEventInfo>;
 

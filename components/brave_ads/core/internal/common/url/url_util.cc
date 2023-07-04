@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 
-#include <iostream>
-
 #include "base/ranges/algorithm.h"
 #include "base/strings/pattern.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -114,12 +112,29 @@ bool MatchUrlPattern(const GURL& url, const std::string& pattern) {
   return base::MatchPattern(url.spec(), pattern);
 }
 
+bool MatchUrlPattern(const std::vector<GURL>& urls,
+                     const std::string& pattern) {
+  if (urls.empty() || pattern.empty()) {
+    return false;
+  }
+
+  const auto iter = base::ranges::find_if(urls, [&pattern](const GURL& url) {
+    return MatchUrlPattern(url, pattern);
+  });
+
+  return iter != urls.cend();
+}
+
 bool SameDomainOrHost(const GURL& lhs, const GURL& rhs) {
   return net::registry_controlled_domains::SameDomainOrHost(
       lhs, rhs, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
 bool DomainOrHostExists(const std::vector<GURL>& urls, const GURL& url) {
+  if (urls.empty()) {
+    return false;
+  }
+
   return base::ranges::any_of(
       urls, [&url](const GURL& item) { return SameDomainOrHost(item, url); });
 }

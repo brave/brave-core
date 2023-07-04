@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -13,12 +14,10 @@
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/ad_info.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/instance_id_constants.h"
@@ -32,6 +31,7 @@ AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
                          const ConfirmationType& confirmation_type,
                          const base::Time created_at) {
   AdEventInfo ad_event;
+
   ad_event.type = ad_type;
   ad_event.confirmation_type = confirmation_type;
   ad_event.placement_id = base::Uuid::GenerateRandomV4().AsLowercaseString();
@@ -43,61 +43,6 @@ AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
   ad_event.created_at = created_at;
 
   return ad_event;
-}
-
-AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
-                         const AdType& ad_type,
-                         const ConfirmationType& confirmation_type) {
-  return BuildAdEvent(creative_ad, ad_type, confirmation_type, Now());
-}
-
-AdEventInfo BuildAdEvent(const AdInfo& ad,
-                         const AdType& ad_type,
-                         const ConfirmationType& confirmation_type,
-                         const base::Time created_at) {
-  AdEventInfo ad_event;
-  ad_event.type = ad_type;
-  ad_event.confirmation_type = confirmation_type;
-  ad_event.placement_id = base::Uuid::GenerateRandomV4().AsLowercaseString();
-  ad_event.campaign_id = ad.campaign_id;
-  ad_event.creative_set_id = ad.creative_set_id;
-  ad_event.creative_instance_id = ad.creative_instance_id;
-  ad_event.advertiser_id = ad.advertiser_id;
-  ad_event.segment = ad.segment;
-  ad_event.created_at = created_at;
-
-  return ad_event;
-}
-
-AdEventInfo BuildAdEvent(const AdInfo& ad,
-                         const AdType& ad_type,
-                         const ConfirmationType& confirmation_type) {
-  return BuildAdEvent(ad, ad_type, confirmation_type, Now());
-}
-
-AdEventInfo BuildAdEvent(const std::string& placement_id,
-                         const std::string& creative_set_id,
-                         const ConfirmationType& confirmation_type) {
-  AdEventInfo ad_event;
-
-  ad_event.type = AdType::kNotificationAd;
-  ad_event.confirmation_type = confirmation_type;
-  ad_event.placement_id = placement_id;
-  ad_event.campaign_id = kCampaignId;
-  ad_event.creative_set_id = creative_set_id;
-  ad_event.creative_instance_id = kCreativeInstanceId;
-  ad_event.advertiser_id = kAdvertiserId;
-  ad_event.segment = kSegment;
-  ad_event.created_at = Now();
-
-  return ad_event;
-}
-
-AdEventInfo BuildAdEvent(const std::string& creative_set_id,
-                         const ConfirmationType& confirmation_type) {
-  const std::string placement_id =
-      base::Uuid::GenerateRandomV4().AsLowercaseString();
-  return BuildAdEvent(placement_id, creative_set_id, confirmation_type);
 }
 
 void RecordAdEvent(const AdType& type,

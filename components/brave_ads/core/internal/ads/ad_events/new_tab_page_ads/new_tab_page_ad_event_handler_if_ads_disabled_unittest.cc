@@ -26,13 +26,11 @@ namespace brave_ads {
 
 namespace {
 
-CreativeNewTabPageAdInfo BuildAndSaveCreativeAd() {
-  CreativeNewTabPageAdInfo creative_ad =
+NewTabPageAdInfo BuildAndSaveAd() {
+  const CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
-
   database::SaveCreativeNewTabPageAds({creative_ad});
-
-  return creative_ad;
+  return BuildNewTabPageAd(creative_ad);
 }
 
 }  // namespace
@@ -104,10 +102,10 @@ class BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireServedEvent) {
   // Arrange
-  const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
+  const NewTabPageAdInfo ad = BuildAndSaveAd();
 
   // Act
-  FireEvent(kPlacementId, creative_ad.creative_instance_id,
+  FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::NewTabPageAdEventType::kServed,
             /*should_fire_event*/ true);
 
@@ -115,21 +113,21 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireServedEvent) {
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
-  EXPECT_EQ(BuildNewTabPageAd(creative_ad, kPlacementId), ad_);
+  EXPECT_EQ(ad, ad_);
   EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireViewedEvent) {
   // Arrange
-  const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
+  const NewTabPageAdInfo ad = BuildAndSaveAd();
 
-  FireEvent(kPlacementId, creative_ad.creative_instance_id,
+  FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::NewTabPageAdEventType::kServed,
             /*should_fire_event*/ true);
 
   // Act
-  FireEvent(kPlacementId, creative_ad.creative_instance_id,
+  FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::NewTabPageAdEventType::kViewed,
             /*should_fire_event*/ true);
 
@@ -137,7 +135,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireViewedEvent) {
   EXPECT_TRUE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
-  EXPECT_EQ(BuildNewTabPageAd(creative_ad, kPlacementId), ad_);
+  EXPECT_EQ(ad, ad_);
   EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
   EXPECT_EQ(1U,
@@ -147,15 +145,15 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireViewedEvent) {
 TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireViewedEventIfAdPlacementWasAlreadyViewed) {
   // Arrange
-  const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
+  const NewTabPageAdInfo ad = BuildAndSaveAd();
 
-  FireEvents(kPlacementId, creative_ad.creative_instance_id,
+  FireEvents(ad.placement_id, ad.creative_instance_id,
              {mojom::NewTabPageAdEventType::kServed,
               mojom::NewTabPageAdEventType::kViewed},
              /*should_fire_event*/ true);
 
   // Act
-  FireEvent(kPlacementId, creative_ad.creative_instance_id,
+  FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::NewTabPageAdEventType::kViewed, /*should_fire_event*/ false);
 
   // Assert
@@ -168,10 +166,10 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
 TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireViewedEventIfAdPlacementWasNotServed) {
   // Arrange
-  const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
+  const NewTabPageAdInfo ad = BuildAndSaveAd();
 
   // Act
-  FireEvent(kPlacementId, creative_ad.creative_instance_id,
+  FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::NewTabPageAdEventType::kViewed, /*should_fire_event*/ false);
 
   // Assert
@@ -183,15 +181,15 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireClickedEvent) {
   // Arrange
-  const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
+  const NewTabPageAdInfo ad = BuildAndSaveAd();
 
-  FireEvents(kPlacementId, creative_ad.creative_instance_id,
+  FireEvents(ad.placement_id, ad.creative_instance_id,
              {mojom::NewTabPageAdEventType::kServed,
               mojom::NewTabPageAdEventType::kViewed},
              /*should_fire_event*/ true);
 
   // Act
-  FireEvent(kPlacementId, creative_ad.creative_instance_id,
+  FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::NewTabPageAdEventType::kClicked, /*should_fire_event*/ true);
 
   // Assert
@@ -199,7 +197,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireClickedEvent) {
   EXPECT_TRUE(did_view_ad_);
   EXPECT_TRUE(did_click_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
-  EXPECT_EQ(BuildNewTabPageAd(creative_ad, kPlacementId), ad_);
+  EXPECT_EQ(ad, ad_);
   EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
   EXPECT_EQ(1U,
@@ -211,16 +209,16 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireClickedEvent) {
 TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireClickedEventIfAdPlacementWasAlreadyClicked) {
   // Arrange
-  const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
+  const NewTabPageAdInfo ad = BuildAndSaveAd();
 
-  FireEvents(kPlacementId, creative_ad.creative_instance_id,
+  FireEvents(ad.placement_id, ad.creative_instance_id,
              {mojom::NewTabPageAdEventType::kServed,
               mojom::NewTabPageAdEventType::kViewed,
               mojom::NewTabPageAdEventType::kClicked},
              /*should_fire_event*/ true);
 
   // Act
-  FireEvent(kPlacementId, creative_ad.creative_instance_id,
+  FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::NewTabPageAdEventType::kClicked,
             /*should_fire_event*/ false);
 
@@ -236,10 +234,10 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
 TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireClickedEventIfAdPlacementWasNotServed) {
   // Arrange
-  const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
+  const NewTabPageAdInfo ad = BuildAndSaveAd();
 
   // Act
-  FireEvent(kPlacementId, creative_ad.creative_instance_id,
+  FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::NewTabPageAdEventType::kViewed,
             /*should_fire_event*/ false);
 
@@ -289,10 +287,10 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
 TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireEventForMissingCreativeInstanceId) {
   // Arrange
-  const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
+  const NewTabPageAdInfo ad = BuildAndSaveAd();
 
   // Act
-  FireEvent(kPlacementId, kMissingCreativeInstanceId,
+  FireEvent(ad.placement_id, kMissingCreativeInstanceId,
             mojom::NewTabPageAdEventType::kServed,
             /*should_fire_event*/ false);
 

@@ -22,10 +22,13 @@ constexpr const char* kSearchResultAdRequiredAttributes[] = {
     "data-campaign-id",  "data-advertiser-id",        "data-headline-text",
     "data-description",  "data-landing-page",         "data-rewards-value"};
 
-constexpr const char* kSearchResultAdConversionAttributes[] = {
-    "data-conversion-type-value", "data-conversion-url-pattern-value",
-    "data-conversion-advertiser-public-key-value",
+constexpr const char* kRequiredConversionAttributes[] = {
+    "data-conversion-url-pattern-value",
     "data-conversion-observation-window-value"};
+
+constexpr const char* kOptionalConversionAttributes[] = {
+    "data-conversion-extract-external-id-value",
+    "data-conversion-advertiser-public-key-value"};
 
 void CheckRequiredAttributes(
     const mojom::SearchResultAdInfoPtr& search_result_ad) {
@@ -42,10 +45,11 @@ void CheckRequiredAttributes(
 
 void CheckConversionAttributes(
     const mojom::SearchResultAdInfoPtr& search_result_ad) {
-  EXPECT_EQ(search_result_ad->conversion->type, "value6");
-  EXPECT_EQ(search_result_ad->conversion->url_pattern, "value7");
-  EXPECT_EQ(search_result_ad->conversion->advertiser_public_key, "value8");
-  EXPECT_EQ(search_result_ad->conversion->observation_window, 1);
+  EXPECT_EQ(search_result_ad->conversion->url_pattern, "value6");
+  EXPECT_EQ(
+      search_result_ad->conversion->verifiable_advertiser_public_key_base64,
+      "value7");
+  EXPECT_EQ(search_result_ad->conversion->observation_window, base::Days(1));
 }
 
 }  // namespace
@@ -66,7 +70,7 @@ TEST(SearchResultAdConvertingTest, ValidWebPage) {
 }
 
 TEST(SearchResultAdConvertingTest, EmptyConversionAdvertiserPublicKeyValue) {
-  // Change type of "data-conversion-observation-window-value".
+  // Change type of "data-conversion-advertiser-public-key-value".
   std::vector<::schema_org::mojom::EntityPtr> entities =
       CreateTestWebPageEntities(
           {"data-conversion-advertiser-public-key-value"});
@@ -90,10 +94,11 @@ TEST(SearchResultAdConvertingTest, EmptyConversionAdvertiserPublicKeyValue) {
 
   CheckRequiredAttributes(search_result_ad);
 
-  EXPECT_EQ(search_result_ad->conversion->type, "value6");
-  EXPECT_EQ(search_result_ad->conversion->url_pattern, "value7");
-  EXPECT_EQ(search_result_ad->conversion->advertiser_public_key, "");
-  EXPECT_EQ(search_result_ad->conversion->observation_window, 1);
+  EXPECT_EQ(search_result_ad->conversion->url_pattern, "value6");
+  EXPECT_EQ(
+      search_result_ad->conversion->verifiable_advertiser_public_key_base64,
+      "");
+  EXPECT_EQ(search_result_ad->conversion->observation_window, base::Days(1));
 }
 
 TEST(SearchResultAdConvertingTest, NotValidWebPage) {
@@ -178,7 +183,7 @@ TEST(SearchResultAdConvertingTest, AdEntityExtraProperty) {
   CheckConversionAttributes(search_result_ad);
 }
 
-TEST(SearchResultAdConvertingTest, AdEntityPropertySkipped) {
+TEST(SearchResultAdConvertingTest, AdEntityRequiredPropertySkipped) {
   for (const char* attribute : kSearchResultAdRequiredAttributes) {
     std::vector<::schema_org::mojom::EntityPtr> entities =
         CreateTestWebPageEntities({attribute});
@@ -187,7 +192,7 @@ TEST(SearchResultAdConvertingTest, AdEntityPropertySkipped) {
     EXPECT_TRUE(search_result_ads.empty());
   }
 
-  for (const char* attribute : kSearchResultAdConversionAttributes) {
+  for (const char* attribute : kRequiredConversionAttributes) {
     std::vector<::schema_org::mojom::EntityPtr> entities =
         CreateTestWebPageEntities({attribute});
     const auto search_result_ads =
@@ -199,6 +204,22 @@ TEST(SearchResultAdConvertingTest, AdEntityPropertySkipped) {
 
     CheckRequiredAttributes(search_result_ad);
     EXPECT_FALSE(search_result_ad->conversion);
+  }
+}
+
+TEST(SearchResultAdConvertingTest, AdEntityOptionalConversionPropertySkipped) {
+  for (const char* attribute : kOptionalConversionAttributes) {
+    std::vector<::schema_org::mojom::EntityPtr> entities =
+        CreateTestWebPageEntities({attribute});
+    const auto search_result_ads =
+        ConvertWebPageEntitiesToSearchResultAds(entities);
+    EXPECT_EQ(search_result_ads.size(), 1U);
+    const mojom::SearchResultAdInfoPtr& search_result_ad =
+        search_result_ads.at(kTestWebPagePlacementId);
+    ASSERT_TRUE(search_result_ad.get());
+
+    CheckRequiredAttributes(search_result_ad);
+    EXPECT_TRUE(search_result_ad->conversion);
   }
 }
 

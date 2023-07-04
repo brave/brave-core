@@ -97,7 +97,6 @@ void GetCallback(GetAdEventsCallback callback,
   }
 
   AdEventList ad_events;
-
   for (const auto& record : command_response->result->get_records()) {
     const AdEventInfo ad_event = GetFromRecord(&*record);
     ad_events.push_back(ad_event);
@@ -282,7 +281,7 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
   command->sql = base::ReplaceStringPlaceholders(
       "DELETE FROM $1 WHERE creative_set_id NOT IN (SELECT creative_set_id "
       "from creative_ads) AND creative_set_id NOT IN (SELECT creative_set_id "
-      "from creative_ad_conversions) AND DATETIME('now') >= "
+      "from creative_set_conversions) AND DATETIME('now') >= "
       "DATETIME(created_at, 'unixepoch', '+3 month');",
       {GetTableName()}, nullptr);
   transaction->commands.push_back(std::move(command));

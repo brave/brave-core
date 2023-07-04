@@ -19,7 +19,7 @@ class BraveAdsInlineContentAdsPerHourPermissionRuleTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsInlineContentAdsPerHourPermissionRuleTest,
-       AllowAdIfThereIsNoAdsHistory) {
+       AllowAdIfThereAreNoAdEvents) {
   // Arrange
 
   // Act

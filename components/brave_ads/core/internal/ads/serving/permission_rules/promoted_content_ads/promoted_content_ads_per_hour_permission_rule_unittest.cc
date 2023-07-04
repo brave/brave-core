@@ -20,7 +20,7 @@ class BraveAdsPromotedContentAdsPerHourPermissionRuleTest
 };
 
 TEST_F(BraveAdsPromotedContentAdsPerHourPermissionRuleTest,
-       AllowAdIfThereIsNoAdsHistory) {
+       AllowAdIfThereAreNoAdEvents) {
   // Arrange
 
   // Act

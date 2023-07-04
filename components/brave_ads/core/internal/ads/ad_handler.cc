@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/ad_info.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversion/conversion_info.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
 
@@ -123,13 +123,11 @@ void AdHandler::TriggerSearchResultAdEvent(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void AdHandler::OnDidConvertAd(
-    const ConversionQueueItemInfo& conversion_queue_item) {
-  CHECK(conversion_queue_item.IsValid());
+void AdHandler::OnDidConvertAd(const ConversionInfo& conversion) {
+  CHECK(conversion.IsValid());
 
-  account_->Deposit(
-      conversion_queue_item.creative_instance_id, conversion_queue_item.ad_type,
-      conversion_queue_item.segment, ConfirmationType::kConversion);
+  account_->Deposit(conversion.creative_instance_id, conversion.ad_type,
+                    conversion.segment, ConfirmationType::kConversion);
 }
 
 void AdHandler::OnDidTransferAd(const AdInfo& ad) {

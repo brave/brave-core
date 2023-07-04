@@ -62,8 +62,6 @@ void TextEmbeddingProcessor::Process(const std::string& html) {
           return BLOG(1, "Failed to log text embedding HTML event");
         }
 
-        BLOG(3, "Successfully logged text embedding HTML event");
-
         PurgeStaleTextEmbeddingHtmlEvents(
             base::BindOnce([](const bool success) {
               if (!success) {

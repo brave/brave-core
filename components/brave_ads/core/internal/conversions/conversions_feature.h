@@ -17,11 +17,11 @@ BASE_DECLARE_FEATURE(kConversionsFeature);
 
 bool IsConversionFeatureEnabled();
 
-constexpr base::FeatureParam<int> kConversionsResourceVersion{
+constexpr base::FeatureParam<int> kConversionResourceVersion{
     &kConversionsFeature, "resource_version", 1};
 
-constexpr base::FeatureParam<std::string> kConversionsIdPattern{
-    &kConversionsFeature, "conversion_id_pattern",
+constexpr base::FeatureParam<std::string> kHtmlMetaTagConversionIdPattern{
+    &kConversionsFeature, "html_meta_tag_id_pattern",
     R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~"};
 
 }  // namespace brave_ads

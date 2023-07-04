@@ -17,8 +17,7 @@ namespace brave_ads {
 
 class BraveAdsCreativeInstanceExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
-       AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, AllowAdIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -37,10 +36,8 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, AdAllowedAfter1Hour) {
   creative_ad.creative_instance_id = kCreativeInstanceId;
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
-
   ad_events.push_back(ad_event);
 
   const CreativeInstanceExclusionRule exclusion_rule(ad_events);
@@ -95,10 +92,8 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
   creative_ad.creative_instance_id = kCreativeInstanceId;
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
-
   ad_events.push_back(ad_event);
 
   const CreativeInstanceExclusionRule exclusion_rule(ad_events);

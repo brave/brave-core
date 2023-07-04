@@ -7,13 +7,10 @@
 
 #include "brave/components/brave_ads/core/ad_info.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
-#include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -22,37 +19,29 @@ namespace brave_ads {
 
 TEST(BraveAdsAdEventHandlerUtilTest, HasFiredAdEvent) {
   // Arrange
+  const AdInfo ad =
+      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+
   AdEventList ad_events;
-
-  const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
-
-  const AdEventInfo ad_event = BuildAdEvent(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
+  const AdEventInfo ad_event = BuildAdEvent(ad, ConfirmationType::kServed,
+                                            /*created_at*/ Now());
   ad_events.push_back(ad_event);
-
-  const NotificationAdInfo ad =
-      BuildNotificationAd(creative_ad, ad_event.placement_id);
 
   // Act
 
   // Assert
-  EXPECT_TRUE(HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed));
+  EXPECT_TRUE(HasFiredAdEvent(ad, ad_events, ConfirmationType::kServed));
 }
 
 TEST(BraveAdsAdEventHandlerUtilTest, HasNotFiredAdEvent) {
   // Arrange
+  const AdInfo ad =
+      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+
   AdEventList ad_events;
-
-  const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
-
-  const AdEventInfo ad_event = BuildAdEvent(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, ConfirmationType::kServed, /*created_at*/ Now());
   ad_events.push_back(ad_event);
-
-  const NotificationAdInfo ad =
-      BuildNotificationAd(creative_ad, ad_event.placement_id);
 
   // Act
 

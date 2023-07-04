@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/statement/statement_util.h"
 
+#include <iterator>
+
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/pref_names.h"

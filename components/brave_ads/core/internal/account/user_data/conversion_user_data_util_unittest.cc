@@ -5,70 +5,90 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/conversion_user_data_util.h"
 
-#include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_info.h"
+#include <string>
+
+#include "base/json/json_writer.h"
+#include "base/test/values_test_util.h"
+#include "brave/components/brave_ads/core/ad_info.h"
+#include "brave/components/brave_ads/core/confirmation_type.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_builder.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversion/conversion_builder.h"
+#include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_builder.h"
+#include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_info.h"
+#include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/re2/src/re2/re2.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BraveAdsConversionUserDataUtilTest, GetEnvelope) {
+class BraveAdsConversionUserDataUtilTest : public UnitTestBase {};
+
+TEST_F(BraveAdsConversionUserDataUtilTest, BuildVerifiableConversionUserData) {
   // Arrange
+  const AdInfo ad =
+      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
+  const ConversionInfo conversion = BuildConversion(
+      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
+      VerifiableConversionInfo{kVerifiableConversionId,
+                               kVerifiableConversionAdvertiserPublicKey});
   const ConversionQueueItemInfo conversion_queue_item =
-      BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
-                               kConversionAdvertiserPublicKey,
-                               /*should_use_random_uuids*/ false);
+      BuildConversionQueueItem(conversion,
+                               /*process_at*/ Now());
 
   // Act
+  const absl::optional<base::Value::Dict> user_data =
+      MaybeBuildVerifiableConversionUserData(conversion_queue_item);
+  ASSERT_TRUE(user_data);
 
   // Assert
-  EXPECT_TRUE(MaybeBuildVerifiableConversionEnvelope(conversion_queue_item));
+  std::string json;
+  ASSERT_TRUE(base::JSONWriter::Write(*user_data, &json));
+
+  const std::string pattern =
+      R"~({"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":"(.{64})","epk":"(.{44})","nonce":"(.{32})"}})~";
+  EXPECT_TRUE(RE2::FullMatch(json, pattern));
 }
 
-TEST(BraveAdsConversionUserDataUtilTest,
-     DoNotGetEnvelopeIfConversionIdIsEmpty) {
+TEST_F(BraveAdsConversionUserDataUtilTest,
+       DoNotBuildVerifiableConversionUserData) {
   // Arrange
+  const AdInfo ad =
+      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
+  const ConversionInfo conversion = BuildConversion(
+      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
+      /*verifiable_conversion*/ absl::nullopt);
   const ConversionQueueItemInfo conversion_queue_item =
-      BuildConversionQueueItem(AdType::kNotificationAd, kEmptyConversionId,
-                               kConversionAdvertiserPublicKey,
-                               /*should_use_random_uuids*/ false);
+      BuildConversionQueueItem(conversion,
+                               /*process_at*/ Now());
 
   // Act
-  ;
 
   // Assert
-  EXPECT_FALSE(MaybeBuildVerifiableConversionEnvelope(conversion_queue_item));
+  EXPECT_FALSE(MaybeBuildVerifiableConversionUserData(conversion_queue_item));
 }
 
-TEST(BraveAdsConversionUserDataUtilTest,
-     DoNotGetEnvelopeIfAdvertiserPublicKeyIsEmpty) {
+TEST_F(BraveAdsConversionUserDataUtilTest, BuildConversionActionTypeUserData) {
   // Arrange
+  const AdInfo ad =
+      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
+  const ConversionInfo conversion = BuildConversion(
+      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
+      /*verifiable_conversion*/ absl::nullopt);
   const ConversionQueueItemInfo conversion_queue_item =
-      BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
-                               kEmptyConversionAdvertiserPublicKey,
-                               /*should_use_random_uuids*/ false);
+      BuildConversionQueueItem(conversion,
+                               /*process_at*/ Now());
 
   // Act
 
   // Assert
-  EXPECT_FALSE(MaybeBuildVerifiableConversionEnvelope(conversion_queue_item));
-}
-
-TEST(BraveAdsConversionUserDataUtilTest,
-     DoNotGetEnvelopeIfConversionIdAndAdvertiserPublicKeyAreEmpty) {
-  // Arrange
-  const ConversionQueueItemInfo conversion_queue_item =
-      BuildConversionQueueItem(AdType::kNotificationAd, kEmptyConversionId,
-                               kEmptyConversionAdvertiserPublicKey,
-                               /*should_use_random_uuids*/ false);
-
-  // Act
-
-  // Assert
-  EXPECT_FALSE(MaybeBuildVerifiableConversionEnvelope(conversion_queue_item));
+  EXPECT_EQ(base::test::ParseJsonDict(R"({"action":"view"})"),
+            BuildConversionActionTypeUserData(conversion_queue_item));
 }
 
 }  // namespace brave_ads

@@ -6,15 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_CONVERSION_USER_DATA_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_CONVERSION_USER_DATA_UTIL_H_
 
+#include "base/values.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 struct ConversionQueueItemInfo;
-struct VerifiableConversionEnvelopeInfo;
 
-absl::optional<VerifiableConversionEnvelopeInfo>
-MaybeBuildVerifiableConversionEnvelope(
+base::Value::Dict BuildConversionActionTypeUserData(
+    const ConversionQueueItemInfo& conversion_queue_item);
+
+absl::optional<base::Value::Dict> MaybeBuildVerifiableConversionUserData(
     const ConversionQueueItemInfo& conversion_queue_item);
 
 }  // namespace brave_ads

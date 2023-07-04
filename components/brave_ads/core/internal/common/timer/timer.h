@@ -53,6 +53,8 @@ class Timer final {
   // |false|.
   bool Stop();
 
+  base::Time desired_run_time() const { return timer_.desired_run_time(); }
+
  private:
   base::WallClockTimer timer_;
 };

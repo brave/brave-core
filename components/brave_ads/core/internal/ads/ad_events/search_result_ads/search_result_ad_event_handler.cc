@@ -20,9 +20,9 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/search_result_ads/search_result_ad_event_factory.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/search_result_ads/search_result_ad_permission_rules.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversion_builder.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions_database_table.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_builder.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 
@@ -158,77 +158,100 @@ void SearchResultAdEventHandler::FireViewedEvent(
     FireSearchResultAdEventHandlerCallback callback) const {
   CHECK(ad_mojom);
 
+  SaveDeposit(std::move(ad_mojom), std::move(callback));
+}
+
+void SearchResultAdEventHandler::SaveDeposit(
+    mojom::SearchResultAdInfoPtr ad_mojom,
+    FireSearchResultAdEventHandlerCallback callback) const {
+  CHECK(ad_mojom);
+
   const DepositInfo deposit = BuildDeposit(ad_mojom);
   database::table::Deposits deposits_database_table;
   deposits_database_table.Save(
-      deposit, base::BindOnce(&SearchResultAdEventHandler::SaveDepositsCallback,
+      deposit, base::BindOnce(&SearchResultAdEventHandler::SaveDepositCallback,
                               weak_factory_.GetWeakPtr(), std::move(ad_mojom),
                               std::move(callback)));
 }
 
-void SearchResultAdEventHandler::SaveDepositsCallback(
+void SearchResultAdEventHandler::SaveDepositCallback(
     mojom::SearchResultAdInfoPtr ad_mojom,
     FireSearchResultAdEventHandlerCallback callback,
     const bool success) const {
   CHECK(ad_mojom);
 
+  if (!success) {
+    BLOG(0, "Failed to save search result ad deposit");
+    return FailedToFireEvent(BuildSearchResultAd(ad_mojom),
+                             mojom::SearchResultAdEventType::kViewed,
+                             std::move(callback));
+  }
+
+  BLOG(3, "Successfully saved search result ad deposit");
+
+  SaveCreativeSetConversion(std::move(ad_mojom), std::move(callback));
+}
+
+void SearchResultAdEventHandler::SaveCreativeSetConversion(
+    mojom::SearchResultAdInfoPtr ad_mojom,
+    FireSearchResultAdEventHandlerCallback callback) const {
+  CHECK(ad_mojom);
+
+  CreativeSetConversionList creative_set_conversions;
+  if (const absl::optional<CreativeSetConversionInfo> creative_set_conversion =
+          BuildCreativeSetConversion(ad_mojom)) {
+    if (creative_set_conversion->IsValid()) {
+      creative_set_conversions.push_back(*creative_set_conversion);
+    }
+  }
+
+  database::table::CreativeSetConversions database_table;
+  database_table.Save(
+      creative_set_conversions,
+      base::BindOnce(
+          &SearchResultAdEventHandler::SaveCreativeSetConversionCallback,
+          weak_factory_.GetWeakPtr(), std::move(ad_mojom),
+          std::move(callback)));
+}
+
+void SearchResultAdEventHandler::SaveCreativeSetConversionCallback(
+    mojom::SearchResultAdInfoPtr ad_mojom,
+    FireSearchResultAdEventHandlerCallback callback,
+    const bool success) const {
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   if (!success) {
-    BLOG(0, "Failed to save deposits state");
+    BLOG(0, "Failed to save search result ad creative set conversion");
     return FailedToFireEvent(ad, mojom::SearchResultAdEventType::kViewed,
                              std::move(callback));
   }
 
-  BLOG(3, "Successfully saved deposits state");
+  BLOG(3, "Successfully saved search result ad creative set conversion");
 
-  ConversionList conversions;
-  if (const absl::optional<ConversionInfo> conversion =
-          BuildConversion(ad_mojom)) {
-    conversions.push_back(*conversion);
-  }
-
-  database::table::Conversions conversion_database_table;
-  conversion_database_table.Save(
-      conversions,
-      base::BindOnce(&SearchResultAdEventHandler::SaveConversionsCallback,
-                     weak_factory_.GetWeakPtr(), ad, std::move(callback)));
-}
-
-void SearchResultAdEventHandler::SaveConversionsCallback(
-    const SearchResultAdInfo& ad,
-    FireSearchResultAdEventHandlerCallback callback,
-    const bool success) const {
-  if (!success) {
-    BLOG(0, "Failed to save conversions state");
-    return FailedToFireEvent(ad, mojom::SearchResultAdEventType::kViewed,
-                             std::move(callback));
-  }
-
-  BLOG(3, "Successfully saved conversions state");
-
-  const database::table::AdEvents database_table;
-  database_table.GetForType(
-      mojom::AdType::kSearchResultAd,
-      base::BindOnce(&SearchResultAdEventHandler::GetForTypeCallback,
-                     weak_factory_.GetWeakPtr(), ad,
-                     mojom::SearchResultAdEventType::kViewed,
-                     std::move(callback)));
+  MaybeFireEvent(ad, mojom::SearchResultAdEventType::kViewed,
+                 std::move(callback));
 }
 
 void SearchResultAdEventHandler::FireClickedEvent(
     const SearchResultAdInfo& ad,
     FireSearchResultAdEventHandlerCallback callback) const {
+  MaybeFireEvent(ad, mojom::SearchResultAdEventType::kClicked,
+                 std::move(callback));
+}
+
+void SearchResultAdEventHandler::MaybeFireEvent(
+    const SearchResultAdInfo& ad,
+    const mojom::SearchResultAdEventType event_type,
+    FireSearchResultAdEventHandlerCallback callback) const {
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kSearchResultAd,
-      base::BindOnce(&SearchResultAdEventHandler::GetForTypeCallback,
-                     weak_factory_.GetWeakPtr(), ad,
-                     mojom::SearchResultAdEventType::kClicked,
+      base::BindOnce(&SearchResultAdEventHandler::MaybeFireEventCallback,
+                     weak_factory_.GetWeakPtr(), ad, event_type,
                      std::move(callback)));
 }
 
-void SearchResultAdEventHandler::GetForTypeCallback(
+void SearchResultAdEventHandler::MaybeFireEventCallback(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
     FireSearchResultAdEventHandlerCallback callback,

@@ -13,9 +13,9 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversion_queue_database_table.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions_database_table.h"
+#include "brave/components/brave_ads/core/internal/conversions/queue/conversion_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/dayparts_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/embeddings_database_table.h"
@@ -35,9 +35,6 @@ namespace {
 
 void Create(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
-
-  table::Conversions conversions_database_table;
-  conversions_database_table.Create(transaction);
 
   table::ConversionQueue conversion_queue_database_table;
   conversion_queue_database_table.Create(transaction);
@@ -62,6 +59,9 @@ void Create(mojom::DBTransactionInfo* transaction) {
 
   table::Deposits deposits_database_table;
   deposits_database_table.Create(transaction);
+
+  table::CreativeSetConversions creative_set_conversion_database_table;
+  creative_set_conversion_database_table.Create(transaction);
 
   table::CreativeNotificationAds creative_notification_ads_database_table;
   creative_notification_ads_database_table.Create(transaction);
