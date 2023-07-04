@@ -16,7 +16,7 @@ class PrefService;
 class BraveVPNMenuModel : public ui::SimpleMenuModel,
                           public ui::SimpleMenuModel::Delegate {
  public:
-  explicit BraveVPNMenuModel(Browser* browser, PrefService* profile_prefs);
+  BraveVPNMenuModel(Browser* browser, PrefService* profile_prefs);
   ~BraveVPNMenuModel() override;
 
   BraveVPNMenuModel(const BraveVPNMenuModel&) = delete;
