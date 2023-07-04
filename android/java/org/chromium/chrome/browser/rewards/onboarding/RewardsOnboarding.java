@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -7,14 +7,12 @@
 
 package org.chromium.chrome.browser.rewards.onboarding;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -36,7 +34,6 @@ import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
-import org.chromium.chrome.browser.rewards.onboarding.CountrySelectionSpinnerAdapter;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.permissions.PermissionConstants;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
@@ -184,12 +181,6 @@ public class RewardsOnboarding implements BraveRewardsObserver {
         Spinner countrySpinner;
         countrySpinner = mPopupView.findViewById(R.id.country_spinner);
 
-        // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        //     countrySpinner = popupView.findViewById(R.id.country_spinner);
-        // } else {
-        //     // countrySpinner = mBraveRewardsOnboardingModalView.findViewById(
-        //     //         R.id.country_spinner_low_device);
-        // }
         CountrySelectionSpinnerAdapter countrySelectionSpinnerAdapter =
                 new CountrySelectionSpinnerAdapter(mActivity, countryList);
         countrySpinner.setAdapter(countrySelectionSpinnerAdapter);

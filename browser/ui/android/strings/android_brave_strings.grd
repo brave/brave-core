@@ -160,7 +160,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Now you can get rewarded for viewing ads. You’re helping make the web a better place for everyone. And that’s awesome!
       </message>
       <message name="IDS_REWARDS_ONBOARDING_ALL_SET_TITLE"  desc="Woohoo You’re all set!">
-        Woohoo You’re all set!
+        Woohoo! You’re all set!
       </message>
       <message name="IDS_LOADING"  desc="Text for loading text for progressbar">
         Loading...
