@@ -110,7 +110,7 @@ extension BrowserViewController: TopToolbarDelegate {
             webView.findInteraction?.dismissFindNavigator()
           }
           let certificateViewController = CertificateViewController(certificate: certificate, evaluationError: errorDescription)
-          let popover = PopoverController(contentController: certificateViewController, contentSizeBehavior: .preferredContentSize)
+          let popover = PopoverController(contentController: certificateViewController, contentSizeBehavior: .autoLayout(.phoneBounds))
           popover.addsConvenientDismissalMargins = true
           popover.present(from: self.topToolbar.locationView.lockImageView.imageView!, on: self)
         }

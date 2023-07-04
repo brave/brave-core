@@ -370,8 +370,6 @@ class CertificateViewController: UIViewController, PopoverContentComponent {
     controller.view.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
-
-    self.preferredContentSize = CGSize(width: 375.0, height: 667.0)
   }
 
   required init?(coder: NSCoder) {
