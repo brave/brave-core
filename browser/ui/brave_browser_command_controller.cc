@@ -19,6 +19,7 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/common_util.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
@@ -258,7 +259,9 @@ void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
   }
   UpdateCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL, true);
   UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON, true);
-  UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON, true);
+  UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON,
+                       base::FeatureList::IsEnabled(
+                           brave_vpn::features::kBraveVPNUseWireguardService));
   UpdateCommandEnabled(IDC_SEND_BRAVE_VPN_FEEDBACK, true);
   UpdateCommandEnabled(IDC_ABOUT_BRAVE_VPN, true);
   UpdateCommandEnabled(IDC_MANAGE_BRAVE_VPN_PLAN, true);
