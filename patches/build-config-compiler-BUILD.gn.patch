@@ -1,8 +1,8 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index ae742b0b85a506f550852e611471338bde0da390..bb72d65adcd5a063bba6c86420f6334a8538b7b6 100644
+index ae742b0b85a506f550852e611471338bde0da390..8b403545d7049c89ad22a2ede4f0c536840568b1 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
-@@ -1568,6 +1569,87 @@ config("compiler_arm") {
+@@ -1568,6 +1568,87 @@ config("compiler_arm") {
    }
  }
  
@@ -90,7 +90,7 @@ index ae742b0b85a506f550852e611471338bde0da390..bb72d65adcd5a063bba6c86420f6334a
  # runtime_library -------------------------------------------------------------
  #
  # Sets the runtime library and associated options.
-@@ -1589,6 +1671,10 @@ config("runtime_library") {
+@@ -1589,6 +1670,10 @@ config("runtime_library") {
      configs += [ "//build/config/c++:runtime_library" ]
    }
  
