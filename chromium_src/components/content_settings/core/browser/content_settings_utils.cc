@@ -27,7 +27,7 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,
   for (const auto& setting : settings) {
     DCHECK(
         RendererContentSettingRules::IsRendererContentSetting(setting.first));
-    map->GetSettingsForOneType(setting.first, setting.second);
+    *setting.second = map->GetSettingsForOneType(setting.first);
   }
 }
 
