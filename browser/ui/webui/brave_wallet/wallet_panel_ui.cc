@@ -71,7 +71,12 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       std::string("frame-src ") + kUntrustedTrezorURL + " " +
-          kUntrustedLedgerURL + " " + kUntrustedNftURL + ";");
+          kUntrustedLedgerURL + " " + kUntrustedNftURL + " " +
+          kUntrustedMarketURL + ";");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc,
+      std::string("img-src 'self' chrome://resources chrome://erc-token-images "
+                  "https://assets.cgproxy.brave.com data:;"));
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);
