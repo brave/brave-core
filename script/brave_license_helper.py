@@ -75,57 +75,59 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
             "Name": "Omaha",
             "URL": "https://github.com/brave/omaha",
             "License": "Apache-2.0",
-            "License File": "/brave/vendor/omaha/LICENSE.txt",
+            "License File": ["/brave/vendor/omaha/LICENSE.txt"],
         },
         os.path.join('brave', 'vendor', 'omaha', 'third_party', 'breakpad'): {
             "Name": "Breakpad",
             "URL": "https://chromium.googlesource.com/breakpad/breakpad",
-            "License File": "/brave/vendor/omaha/third_party/breakpad/LICENSE",
+            "License File": [
+                "/brave/vendor/omaha/third_party/breakpad/LICENSE"
+            ],
         },
         os.path.join('brave', 'vendor', 'omaha', 'third_party', 'googletest'): {
             "Name": "GoogleTest",
             "URL": "https://github.com/google/googletest",
             "License": "BSD",
             "License File":
-                "/brave/vendor/omaha/third_party/googletest/LICENSE",
+                ["/brave/vendor/omaha/third_party/googletest/LICENSE"],
         },
         os.path.join('brave', 'vendor', 'omaha', 'third_party', 'libzip'): {
             "Name": "libzip",
             "URL": "https://libzip.org",
             "License": "BSD",
-            "License File": "/brave/vendor/omaha/third_party/libzip/LICENSE",
+            "License File": ["/brave/vendor/omaha/third_party/libzip/LICENSE"],
         },
         os.path.join('brave', 'third_party', 'rapidjson'): {
             "Name": "RapidJSON",
             "URL": "https://github.com/Tencent/rapidjson",
             "License": "MIT",
-            "License File": "/brave/third_party/rapidjson/src/license.txt",
+            "License File": ["/brave/third_party/rapidjson/src/license.txt"],
         },
         os.path.join('brave', 'third_party', 'rust'): {
             "Name": "rust-cxx",
             "URL": "https://crates.io/crates/cxx",
             "License": "Apache-2.0",
             "License File": \
-                "/brave/third_party/rust/cxx/v1/crate/LICENSE-APACHE",
+                ["/brave/third_party/rust/cxx/v1/crate/LICENSE-APACHE"],
         },
         os.path.join('brave', 'third_party', 'rust'): {
             "Name": "rust-cxx",
             "URL": "https://crates.io/crates/either",
             "License": "MIT",
             "License File": \
-                "/brave/third_party/rust/either/v1/crate/LICENSE-MIT",
+                ["/brave/third_party/rust/either/v1/crate/LICENSE-MIT"],
         },
         os.path.join('brave', 'vendor', 'omaha', 'third_party', 'zlib'): {
             "Name": "zlib",
             "URL": "https://zlib.net",
             "License": "zlib",
-            "License File": "/brave/vendor/omaha/third_party/zlib/README",
+            "License File": ["/brave/vendor/omaha/third_party/zlib/README"],
         },
         os.path.join('brave', 'vendor', 'python-patch'): {
             "Name": "Python Patch",
             "URL": "https://github.com/brave/python-patch",
             "License": "MIT",
-            "License File": "/brave/vendor/python-patch/doc/LICENSE",
+            "License File": ["/brave/vendor/python-patch/doc/LICENSE"],
         },
         os.path.join('brave', 'vendor', 'requests'): {
             "Name": "Requests",
@@ -141,7 +143,7 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
             "Name": "cryptography",
             "URL": "https://cryptography.io",
             "License": "Apache-2.0",
-            "License File": "/brave/common/licenses/Apache-2.0",
+            "License File": ["/brave/common/licenses/Apache-2.0"],
         },
         os.path.join('brave', 'third_party', 'macholib'): {
             "Name": "macholib",
