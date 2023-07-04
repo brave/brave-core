@@ -306,19 +306,17 @@ export class MockedWalletApiProxy {
     getAllAccounts: async (): Promise<{
       allAccounts: BraveWallet.AllAccountsInfo
     }> => {
+      const selectedAccount = findAccountByAccountId(
+          this.accountInfos,
+          this.selectedAccountId
+      )
+      assert(selectedAccount)
       const allAccounts: BraveWallet.AllAccountsInfo = {
         accounts: this.accountInfos,
-        selectedAccount: findAccountByAccountId(
-          this.accountInfos,
-          this.selectedAccountId
-        )!,
-        ethDappSelectedAccount: findAccountByAccountId(
-          this.accountInfos,
-          this.selectedAccountId
-        ),
+        selectedAccount: selectedAccount,
+        ethDappSelectedAccount: selectedAccount,
         solDappSelectedAccount: mockSolanaAccountInfo
       }
-      assert(allAccounts.selectedAccount)
       return { allAccounts }
     },
     validatePassword: async (password: string) => ({

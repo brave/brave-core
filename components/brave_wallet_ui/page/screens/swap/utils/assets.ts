@@ -9,9 +9,5 @@ export const getBalanceRegistryKey = (
   chainId: string,
   contract: string
 ) => {
-  // TODO(apaymyshev): is it persisted? can we use accountId.uniqueKey?
-  return `${accountId.address.toLocaleLowerCase() //
-    }-${accountId.coin //
-    }-${chainId //
-    }-${contract.toLowerCase()}`
+  return [accountId.uniqueKey, chainId, contract.toLowerCase()].join('-')
 }

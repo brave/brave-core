@@ -23,7 +23,7 @@ export const AccountListItem = (props: Props) => {
 
   const orb = React.useMemo(() => {
     return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [account])
+  }, [account.address])
 
   return (
     <Button disabled={isSelected} onClick={() => onClick(account)}>

@@ -352,7 +352,6 @@ export const FundWalletScreen = () => {
         {needsAccount && showBuyOptions && selectedAssetNetwork &&
           <CreateAccountTab
             network={selectedAssetNetwork}
-            onCreated={() => {}}
             onCancel={goBackToSelectAssets}
           />
         }

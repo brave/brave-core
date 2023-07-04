@@ -75,8 +75,9 @@ export const AccountSelector = (props: Props) => {
       return []
     }
 
-    // TODO(apaymyshev): for bitcoin should allow sending to my account but
+    // TODO(apaymyshev): for bitcoin should allow sending to my account, but
     // from different keyring (i.e. segwit -> taproot)
+    // https://github.com/brave/brave-browser/issues/29262
     return accounts.filter(
       (account) =>
         account.accountId.coin === selectedNetwork.coin &&

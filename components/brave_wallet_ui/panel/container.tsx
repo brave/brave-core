@@ -243,12 +243,15 @@ function Container () {
     dispatch(WalletActions.expandWalletNetworks())
   }
 
-  const onNoAccountForNetwork = (network: BraveWallet.NetworkInfo) => {
-    setNetworkForCreateAccount(network)
-    dispatch(WalletPanelActions.navigateTo('createAccount'))
-  }
+  const onNoAccountForNetwork = React.useCallback(
+    (network: BraveWallet.NetworkInfo) => {
+      setNetworkForCreateAccount(network)
+      dispatch(WalletPanelActions.navigateTo('createAccount'))
+    },
+    [setNetworkForCreateAccount]
+  )
 
-  const onAccountCreatedForNetwork = async () => {
+  const onAccountCreatedForNetwork = React.useCallback(async () => {
     if (networkForCreateAccount) {
       await setNetwork({
         chainId: networkForCreateAccount.chainId,
@@ -258,12 +261,12 @@ function Container () {
     }
 
     dispatch(WalletPanelActions.navigateTo('main'))
-  }
+  }, [networkForCreateAccount, setNetwork, setNetworkForCreateAccount])
 
-  const onCancelAccountCreationForNetwork = () => {
+  const onCancelAccountCreationForNetwork = React.useCallback(() => {
     setNetworkForCreateAccount(undefined)
     dispatch(WalletPanelActions.navigateTo('main'))
-  }
+  }, [setNetworkForCreateAccount])
 
   const onClickInstructions = () => {
     const url = 'https://support.brave.com/hc/en-us/articles/4409309138701'

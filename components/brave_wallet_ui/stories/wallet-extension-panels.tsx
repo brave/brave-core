@@ -933,7 +933,6 @@ export const _CreateAccount = () => {
       <StyledCreateAccountPanel>
         <CreateAccountTab
           network={mockNetworks[0]}
-          onCreated={() => {}}
           onCancel={() => {}}
         />
       </StyledCreateAccountPanel>

@@ -35,7 +35,7 @@ import {
 
 export interface Props {
   network: BraveWallet.NetworkInfo
-  onCreated: () => void
+  onCreated?: () => void
   onCancel: () => void
 }
 
@@ -74,8 +74,9 @@ export const CreateAccountTab = ({
         accountName: suggestedAccountName
       })
     )
-
-    onCreated()
+    if (onCreated) {
+      onCreated()
+    }
   }, [
     isWalletLocked,
     showUnlock,

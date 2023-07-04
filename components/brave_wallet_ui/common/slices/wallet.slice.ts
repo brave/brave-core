@@ -280,17 +280,18 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       },
 
       initialized (state: WalletState, { payload }: PayloadAction<WalletInitializedPayload>) {
-        const toWalletAccountType = (info: BraveWallet.AccountInfo): WalletAccountType => {
-          return {
-            ...info,
-            tokenBalanceRegistry: {},
-            nativeBalanceRegistry: {},
-          }
-        }
 
         state.hasInitialized = true
 
-        state.accounts = payload.allAccounts.accounts.map(toWalletAccountType)
+        state.accounts = payload.allAccounts.accounts.map(
+          (info: BraveWallet.AccountInfo): WalletAccountType => {
+            return {
+              ...info,
+              tokenBalanceRegistry: {},
+              nativeBalanceRegistry: {}
+            }
+          }
+        )
 
         state.isWalletCreated = payload.walletInfo.isWalletCreated
         state.isFilecoinEnabled = payload.walletInfo.isFilecoinEnabled

@@ -332,7 +332,6 @@ export const DepositFundsScreen = (props: Props) => {
       {needsAccount && showDepositAddress && selectedAssetNetwork &&
         <CreateAccountTab
           network={selectedAssetNetwork}
-          onCreated={() => {}}
           onCancel={goBackToSelectAssets}
         />
       }

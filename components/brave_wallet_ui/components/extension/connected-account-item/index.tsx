@@ -22,6 +22,9 @@ import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { create } from 'ethereum-blockies'
 import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
+import { useSetSelectedAccountMutation } from '../../../common/slices/api.slice'
+import { useSelectedAccountQuery } from '../../../common/slices/api.slice.extra'
+import { findAccountByAccountId } from '../../../utils/account-utils'
 import { WalletSelectors } from '../../../common/selectors'
 
 // Styled Components
@@ -36,10 +39,6 @@ import {
   RightSide
 } from './style'
 
-// Utils
-import { useSetSelectedAccountMutation } from '../../../common/slices/api.slice'
-import { useSelectedAccountQuery } from '../../../common/slices/api.slice.extra'
-import { findAccountByAccountId } from '../../../utils/account-utils'
 
 export interface Props {
   account: BraveWallet.AccountInfo
@@ -64,9 +63,7 @@ const SitePermissionAccountItem = (props: Props) => {
     return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [account])
 
-  const isActive = React.useMemo((): boolean => {
-    return account.accountId.uniqueKey === selectedAccount?.accountId.uniqueKey
-  }, [selectedAccount, account])
+  const isActive = account.accountId.uniqueKey === selectedAccount?.accountId.uniqueKey
 
   const hasPermission = React.useMemo((): boolean => {
     return !!findAccountByAccountId(connectedAccounts, account.accountId)

@@ -133,7 +133,7 @@ export const ConnectHardwareWalletPanel = ({
     return getLocale('braveWalletConnectHardwarePanelOpenApp')
       .replace('$1', network)
       .replace('$2', account.name)
-  }, [hardwareWalletCode])
+  }, [hardwareWalletCode, coinType, account.name])
 
   // methods
   const onCancelConnect = React.useCallback(() => {
