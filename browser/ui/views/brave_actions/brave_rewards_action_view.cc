@@ -183,7 +183,8 @@ class RewardsPanelBubbleManager : public WebUIBubbleManager {
   void MaybeInitPersistentRenderer() override {}
 
   base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
-      const absl::optional<gfx::Rect>& anchor) override {
+      const absl::optional<gfx::Rect>& anchor,
+      views::BubbleBorder::Arrow arrow) override {
     auto contents_wrapper =
         std::make_unique<BubbleContentsWrapperT<RewardsPanelUI>>(
             GURL(kBraveRewardsPanelURL), profile_, IDS_BRAVE_UI_BRAVE_REWARDS);
@@ -193,7 +194,7 @@ class RewardsPanelBubbleManager : public WebUIBubbleManager {
     cached_contents_wrapper()->ReloadWebContents();
 
     auto bubble_view = std::make_unique<WebUIBubbleDialogView>(
-        anchor_view_, cached_contents_wrapper(), anchor);
+        anchor_view_, cached_contents_wrapper(), anchor, arrow);
     bubble_view->SetPaintClientToLayer(true);
     bubble_view->set_use_round_corners(true);
     bubble_view->set_corner_radius(kCornerRadius);
