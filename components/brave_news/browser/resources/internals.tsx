@@ -14,7 +14,8 @@ import { Info, generateFeed } from './buildFeed'
 import Elements from './Elements'
 import Config from './configureWeights'
 import SignalDetails from './signalDetails'
-import Button from '@brave/leo/react/button'
+import Composition from './composition'
+import Dropdown from '@brave/leo/react/dropdown'
 
 const Container = styled.div`
   display: flex;
@@ -80,7 +81,7 @@ function usePromise<T>(promise: Promise<T>, defaultValue: T, deps: any[]) {
 }
 
 function App() {
-  const [showSignals, setShowSignals] = React.useState(false)
+  const [page, setPage] = React.useState<'feed' | 'signals' | 'composition'>('feed')
   const info = usePromise(infoPromise, undefined, [])
 
   const feedElements =
@@ -95,15 +96,19 @@ function App() {
       }}
     >
       <Container>
-        <Button onClick={() => setShowSignals(s => !s)}>{showSignals ? 'view feed' : 'view signals'}</Button>
-        {showSignals
-          ? <SignalDetails signals={info?.signals ?? {}} publishers={info?.publishers ?? {}} />
-          : <>
-            <div>
-              <Config />
-            </div>
-            <Elements elements={feedElements} signals={info?.signals ?? {}} />
-          </>}
+        <Dropdown value={page} onChange={e => setPage(e.detail.value)}>
+          <leo-option>feed</leo-option>
+          <leo-option>signals</leo-option>
+          <leo-option>composition</leo-option>
+        </Dropdown>
+        {page === 'feed' && <>
+          <div>
+            <Config />
+          </div>
+          <Elements elements={feedElements} signals={info?.signals ?? {}} />
+        </>}
+        {page === 'signals' && <SignalDetails signals={info?.signals ?? {}} publishers={info?.publishers ?? {}} />}
+        {page === 'composition' && <Composition channels={info?.channels ?? []} feed={feedElements ?? []} publishers={info?.publishers ?? {}} />}
       </Container>
     </div>
   )
