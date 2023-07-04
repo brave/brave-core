@@ -745,6 +745,7 @@ brave_java_resources = [
   "java/res/layout/activity_account_private_key.xml",
   "java/res/layout/activity_account_selector.xml",
   "java/res/layout/activity_add_account.xml",
+  "java/res/layout/activity_add_asset.xml",
   "java/res/layout/activity_advance_tx_setting.xml",
   "java/res/layout/activity_asset_detail.xml",
   "java/res/layout/activity_brave_vpn_plan.xml",
