@@ -10,15 +10,18 @@
 #include "base/command_line.h"
 #include "base/containers/flat_set.h"
 #include "base/task/sequenced_task_runner.h"
-#include "brave/browser/infobars/request_otr_infobar_delegate.h"
 #include "brave/components/request_otr/browser/request_otr_storage_tab_helper.h"
-#include "components/infobars/content/content_infobar_manager.h"
-#include "components/infobars/core/infobar.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
+
+#if defined(TOOLKIT_VIEWS)
+#include "brave/browser/infobars/request_otr_infobar_delegate.h"
+#include "components/infobars/content/content_infobar_manager.h"
+#include "components/infobars/core/infobar.h"
+#endif
 
 using request_otr::RequestOTRStorageTabHelper;
 
@@ -51,8 +54,10 @@ void RequestOTRTabHelper::DidFinishNavigation(
     return;
   }
 
+#if defined(TOOLKIT_VIEWS)
   RequestOTRInfoBarDelegate::Create(
       infobars::ContentInfoBarManager::FromWebContents(web_contents()));
+#endif
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(RequestOTRTabHelper);

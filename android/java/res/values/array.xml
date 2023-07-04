@@ -29,4 +29,10 @@
         <item>@string/https_upgrade_option_3</item>
     </string-array>
 
+    <string-array name="requestOTRTexts">
+        <item>@string/request_otr_option_1</item>
+        <item>@string/request_otr_option_2</item>
+        <item>@string/request_otr_option_3</item>
+    </string-array>
+
 </resources>

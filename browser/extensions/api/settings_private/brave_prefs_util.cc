@@ -282,7 +282,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[prefs::kWebRTCIPHandlingPolicy] =
       settings_api::PrefType::PREF_TYPE_STRING;
   // Request OTR feature
-  (*s_brave_allowlist)[request_otr::prefs::kRequestOTRActionOption] =
+  (*s_brave_allowlist)[request_otr::kRequestOTRActionOption] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
 
   (*s_brave_allowlist)[decentralized_dns::kUnstoppableDomainsResolveMethod] =

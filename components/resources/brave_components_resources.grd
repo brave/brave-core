@@ -89,9 +89,7 @@
       <part file="brave_flags_ui_resources.grdp" />
       <part file="ipfs_resources.grdp" />
       <part file="domain_block_resources.grdp" />
-      <if expr="not is_android">
-        <part file="request_otr_resources.grdp" />
-      </if>
+      <part file="request_otr_resources.grdp" />
       <if expr="not is_ios">
         <part file="decentralized_dns_resources.grdp" />
       </if>

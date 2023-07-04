@@ -17,6 +17,11 @@
 #include "components/keyed_service/core/keyed_service_factory.h"
 #include "content/public/browser/browser_context.h"
 
+#if BUILDFLAG(IS_ANDROID)
+// Include these here to avoid overriding "IsOffTheRecord" in them.
+#include "chrome/browser/ui/android/tab_model/tab_model.h"
+#endif
+
 namespace {
 
 bool BraveTabRequestedOffTheRecord(content::WebContents* web_contents) {

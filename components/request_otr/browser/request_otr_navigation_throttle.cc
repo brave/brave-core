@@ -61,7 +61,7 @@ RequestOTRNavigationThrottle::MaybeCreateThrottleFor(
 
   // If user preference is 'never go off the record', don't bother creating
   // throttle.
-  if (pref_service->GetInteger(prefs::kRequestOTRActionOption) ==
+  if (pref_service->GetInteger(kRequestOTRActionOption) ==
       static_cast<int>(RequestOTRService::RequestOTRActionOption::kNever)) {
     return nullptr;
   }
@@ -183,7 +183,7 @@ RequestOTRNavigationThrottle::MaybeShowInterstitial() {
       web_contents, request_url, ephemeral_storage_service_, pref_service_,
       locale_);
 
-  if (pref_service_->GetInteger(prefs::kRequestOTRActionOption) ==
+  if (pref_service_->GetInteger(kRequestOTRActionOption) ==
       static_cast<int>(RequestOTRService::RequestOTRActionOption::kAlways)) {
     controller_client->ProceedOTR();
     return content::NavigationThrottle::PROCEED;

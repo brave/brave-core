@@ -103,6 +103,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_UNSTOPPABLE_DOMAINS = "unstoppable_domains";
     private static final String PREF_ENS = "ens";
     private static final String PREF_SNS = "sns";
+    private static final String PREF_REQUEST_OTR = "request_otr";
     private static final String PREF_HTTPS_ONLY_MODE_ENABLED_SAVED_STATE =
             "https_only_mode_enabled_saved_state";
 
@@ -128,12 +129,13 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             PREF_HIDE_YOUTUBE_RECOMMENDED_CONTENT, PREF_HIDE_YOUTUBE_DISTRACTING_ELEMENTS,
             PREF_OTHER_PRIVACY_SETTINGS_SECTION, // other section
             PREF_APP_LINKS, PREF_WEBRTC_POLICY, PREF_SAFE_BROWSING, PREF_INCOGNITO_LOCK,
-            PREF_CAN_MAKE_PAYMENT, PREF_UNSTOPPABLE_DOMAINS, PREF_ENS, PREF_SNS, PREF_IPFS_GATEWAY,
-            PREF_SECURE_DNS, PREF_BLOCK_COOKIE_CONSENT_NOTICES, PREF_BLOCK_SWITCH_TO_APP_NOTICES,
-            PREF_DO_NOT_TRACK, PREF_PHONE_AS_A_SECURITY_KEY, PREF_CLOSE_TABS_ON_EXIT, PREF_SEND_P3A,
-            PREF_SEND_CRASH_REPORTS, PREF_BRAVE_STATS_USAGE_PING,
-            PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR, PREF_SEARCH_SUGGESTIONS,
-            PREF_AUTOCOMPLETE_TOP_SITES, PREF_USAGE_STATS, PREF_PRIVACY_SANDBOX};
+            PREF_CAN_MAKE_PAYMENT, PREF_UNSTOPPABLE_DOMAINS, PREF_ENS, PREF_SNS, PREF_REQUEST_OTR,
+            PREF_IPFS_GATEWAY, PREF_SECURE_DNS, PREF_BLOCK_COOKIE_CONSENT_NOTICES,
+            PREF_BLOCK_SWITCH_TO_APP_NOTICES, PREF_DO_NOT_TRACK, PREF_PHONE_AS_A_SECURITY_KEY,
+            PREF_CLOSE_TABS_ON_EXIT, PREF_SEND_P3A, PREF_SEND_CRASH_REPORTS,
+            PREF_BRAVE_STATS_USAGE_PING, PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR,
+            PREF_SEARCH_SUGGESTIONS, PREF_AUTOCOMPLETE_TOP_SITES, PREF_USAGE_STATS,
+            PREF_PRIVACY_SANDBOX};
 
     private static final int STRICT = 0;
     private static final int STANDARD = 1;
@@ -156,6 +158,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private ChromeSwitchPreference mHttpsFirstModePref;
     private BraveDialogPreference mHttpsUpgradePref;
     private BraveDialogPreference mFingerprintingProtectionPref;
+    private BraveDialogPreference mRequestOtrPref;
     private ChromeSwitchPreference mBlockScriptsPref;
     private ChromeSwitchPreference mForgetFirstPartyStoragePref;
     private ChromeSwitchPreference mCloseTabsOnExitPref;
@@ -293,6 +296,9 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mFingerprintingProtectionPref =
                 (BraveDialogPreference) findPreference(PREF_FINGERPRINTING_PROTECTION);
         mFingerprintingProtectionPref.setOnPreferenceChangeListener(this);
+
+        mRequestOtrPref = (BraveDialogPreference) findPreference(PREF_REQUEST_OTR);
+        mRequestOtrPref.setOnPreferenceChangeListener(this);
 
         mFingerprntLanguagePref =
                 (ChromeSwitchPreference) findPreference(PREF_FINGERPRINT_LANGUAGE);
@@ -522,6 +528,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                         break;
                 }
             }
+        } else if (PREF_REQUEST_OTR.equals(key)) {
+            setRequestOtrPref();
         } else if (PREF_FINGERPRINT_LANGUAGE.equals(key)) {
             UserPrefs.get(Profile.getLastUsedRegularProfile())
                     .setBoolean(BravePref.REDUCE_LANGUAGE_ENABLED, (boolean) newValue);
@@ -695,6 +703,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     getActivity().getResources().getString(R.string.block_fingerprinting_option_3));
         }
 
+        setRequestOtrPref();
+
         if (httpsUpgradePref.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
             mHttpsUpgradePref.setCheckedIndex(0);
             mHttpsUpgradePref.setSummary(
@@ -798,6 +808,24 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
 
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_WALLET_SNS)) {
             removePreferenceIfPresent(PREF_SNS);
+        }
+    }
+
+    private void setRequestOtrPref() {
+        int requestOtrPrefValue = UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                          .getInteger(BravePref.REQUEST_OTR_ACTION_OPTION);
+        if (requestOtrPrefValue == BraveShieldsContentSettings.ASK) {
+            mRequestOtrPref.setCheckedIndex(0);
+            mRequestOtrPref.setSummary(
+                    getActivity().getResources().getString(R.string.request_otr_option_1));
+        } else if (requestOtrPrefValue == BraveShieldsContentSettings.ALWAYS) {
+            mRequestOtrPref.setCheckedIndex(1);
+            mRequestOtrPref.setSummary(
+                    getActivity().getResources().getString(R.string.request_otr_option_2));
+        } else if (requestOtrPrefValue == BraveShieldsContentSettings.NEVER) {
+            mRequestOtrPref.setCheckedIndex(2);
+            mRequestOtrPref.setSummary(
+                    getActivity().getResources().getString(R.string.request_otr_option_3));
         }
     }
 
