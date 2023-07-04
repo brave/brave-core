@@ -103,7 +103,7 @@ import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettin
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
-import org.chromium.chrome.browser.rewards.onboarding.RewardsOnBoarding;
+import org.chromium.chrome.browser.rewards.onboarding.RewardsOnboarding;
 import org.chromium.chrome.browser.settings.AppearancePreferences;
 import org.chromium.chrome.browser.shields.BraveShieldsHandler;
 import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
@@ -613,10 +613,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             int deviceWidth = ConfigurationUtils.getDisplayMetrics(activity).get("width");
             boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(activity);
             deviceWidth = (int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95));
-            RewardsOnBoarding panel = new RewardsOnBoarding(mBraveRewardsButton, deviceWidth);
+            RewardsOnboarding panel = new RewardsOnboarding(mBraveRewardsButton, deviceWidth);
             panel.showLikePopDownMenu();
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "RewardsOnBoarding failed " + e);
+            Log.e(TAG, "RewardsOnboarding failed " + e);
         }
     }
 

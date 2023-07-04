@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:visibility="gone">
 
     <ImageView
-        android:id="@+id/rewards_onboarding_error"
+        android:id="@+id/rewards_onboarding_all_set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -15,10 +16,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_warning_circle_filled" />
+        app:srcCompat="@drawable/rewards_onboarding_all_set" />
 
     <TextView
-        android:id="@+id/rewards_onboarding_error_title"
+        android:id="@+id/rewards_onboarding_all_set_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -27,32 +28,32 @@
         android:fontFamily="sans-serif-medium"
         android:gravity="center_horizontal|top"
         android:lineSpacingExtra="10sp"
-        android:text="@string/something_went_wrong_text"
+        android:text="@string/rewards_onboarding_all_set_title"
         android:textColor="@color/terms_of_service_text_color"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rewards_onboarding_error" />
+        app:layout_constraintTop_toBottomOf="@+id/rewards_onboarding_all_set" />
 
     <TextView
-        android:id="@+id/rewards_onboarding_error_description"
+        android:id="@+id/rewards_onboarding_all_set_description"
         android:layout_width="0dp"
-        android:layout_height="46dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:fontFamily="sans-serif"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="10sp"
-        android:text="@string/declare_geo_failed_response_text"
+        android:text="@string/rewards_onboarding_all_set_description"
         android:textColor="@color/terms_of_service_text_color_default"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rewards_onboarding_error_title" />
+        app:layout_constraintTop_toBottomOf="@+id/rewards_onboarding_all_set_title" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/response_action_btn"
+        android:id="@+id/all_set_done_button"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginHorizontal="16dp"
@@ -60,38 +61,31 @@
         android:background="@drawable/tipping_send_button_background"
         android:fontFamily="sans-serif-medium"
         android:paddingHorizontal="24dp"
-        android:text="@string/retry_text"
+        android:text="@string/brave_sync_btn_done"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rewards_onboarding_error_description" />
+        app:layout_constraintTop_toBottomOf="@+id/rewards_onboarding_all_set_description" />
 
     <TextView
-        android:id="@+id/response_error_text"
+        android:id="@+id/how_does_it_work_all_set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="34dp"
         android:background="@android:color/transparent"
         android:fontFamily="sans-serif-medium"
+        android:text="@string/how_does_brave_rewards_work"
         android:textAllCaps="false"
         android:textColor="@color/brave_rating_not_now_text_color"
         android:textSize="13sp"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/response_action_btn" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/response_modal_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@null"
-        android:layout_margin="24dp"
-        android:src="@drawable/btn_close"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toBottomOf="@+id/all_set_done_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>
