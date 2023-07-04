@@ -196,7 +196,7 @@ ui::Accelerator FromCodesString(const std::string& value) {
   // encounter one in the wild, just return an empty accelerator instead of
   // crashing:
   // https://github.com/brave/brave-browser/issues/31419
-  if (!parts.size()) {
+  if (parts.empty()) {
     return ui::Accelerator();
   }
 
