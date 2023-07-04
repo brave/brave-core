@@ -652,10 +652,8 @@ extension BrowserViewController: TopToolbarDelegate {
     } else {
       view.insertSubview(searchController.view, belowSubview: header)
     }
-    searchController.view.snp.makeConstraints { make in
-      make.top.bottom.equalTo(self.view)
-      make.left.right.equalTo(self.view)
-      return
+    searchController.view.snp.makeConstraints {
+      $0.edges.equalTo(view.safeAreaLayoutGuide)
     }
     searchController.didMove(toParent: self)
     searchController.view.setNeedsLayout()

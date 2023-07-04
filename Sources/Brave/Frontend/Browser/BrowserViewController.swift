@@ -1180,9 +1180,25 @@ public class BrowserViewController: UIViewController {
     header.snp.remakeConstraints { make in
       if self.isUsingBottomBar {
         // Need to check Find In Page Bar is enabled in order to aligh it properly when bottom-bar is enabled
-        if let keyboardHeight = keyboardState?.intersectionHeightForView(self.view), keyboardHeight > 0,
-           (presentedViewController == nil || findInPageBar != nil) {
-          var offset = -keyboardHeight
+        var shouldEvaluateKeyboardConstraints = false
+        var activeKeyboardHeight: CGFloat = 0
+        var searchEngineSettingsDismissed = false
+
+        if let keyboardHeight = keyboardState?.intersectionHeightForView(self.view) {
+          activeKeyboardHeight = keyboardHeight
+        }
+        
+        if let presentedNavigationController = presentedViewController as? ModalSettingsNavigationController,
+           let presentedRootController = presentedNavigationController.viewControllers.first,
+           presentedRootController is SearchSettingsTableViewController {
+          searchEngineSettingsDismissed = true
+        }
+        
+        shouldEvaluateKeyboardConstraints = (activeKeyboardHeight > 0)
+          && (presentedViewController == nil || searchEngineSettingsDismissed || findInPageBar != nil)
+                
+        if shouldEvaluateKeyboardConstraints {
+          var offset = -activeKeyboardHeight
           if !topToolbar.inOverlayMode {
             // Showing collapsed URL bar while the keyboard is up
             offset += toolbarVisibilityViewModel.transitionDistance
