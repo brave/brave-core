@@ -108,7 +108,7 @@ function App() {
           <Elements elements={feedElements} signals={info?.signals ?? {}} />
         </>}
         {page === 'signals' && <SignalDetails signals={info?.signals ?? {}} publishers={info?.publishers ?? {}} />}
-        {page === 'composition' && <Composition channels={info?.channels ?? []} feed={feedElements ?? []} publishers={info?.publishers ?? {}} />}
+        {page === 'composition' && <Composition channels={info?.channels ?? []} signals={info?.signals ?? {}} feed={feedElements ?? []} publishers={info?.publishers ?? {}} />}
       </Container>
     </div>
   )

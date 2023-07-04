@@ -1,3 +1,7 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from "react";
 import { Elements } from "./model";
 import { Channel, Publisher, Signal, UserEnabled } from "../../../brave_new_tab_ui/api/brave_news";
@@ -29,14 +33,19 @@ function getStats(feed: Elements[], acc: { [id: string]: Entry }) {
 
 function EntryCard({ entry, publishers, signals }: { entry: Entry, publishers: { [id: string]: Publisher }, signals: { [id: string]: Signal } }) {
   const name = entry.type === "publisher" ? publishers[entry.id].publisherName : entry.id
+  const signal = signals[entry.id]
   return <Card>
     <h2>{name}</h2>
     <div>
       <b>Subscribed:</b> {entry.subscribed.toString()}
     </div>
-    <div><b>Feed count:</b> {entry.count}</div>
+    <div><b>Feed occurrences:</b> {entry.count}</div>
+    <div><b>Weight:</b> {Math.max(signal?.sourceVisits, signal?.channelVisits)}</div>
     <div>
-      <b>Visit Count:</b> {signals[entry.id]?.visitUrls.length}
+      <b>Visits</b> ({signal?.visitUrls.length})
+      <ul>
+        {signal?.visitUrls.map(a => <li key={a}><a href={a}>{a}</a></li>)}
+      </ul>
     </div>
   </Card>
 }
