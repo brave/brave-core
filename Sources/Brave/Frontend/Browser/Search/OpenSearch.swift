@@ -45,6 +45,8 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
       return "Yandex"
     case EngineNames.brave.lowercased():
       return "Brave Search"
+    case "naver".lowercased():
+      return "네이버"
     default:
       return shortName
     }

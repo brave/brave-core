@@ -10,7 +10,7 @@ import Foundation
 class InitialSearchEngines {
   /// Type of search engine available to the user.
   enum SearchEngineID: String, CaseIterable {
-    case google, braveSearch, bing, duckduckgo, yandex, qwant, startpage, ecosia
+    case google, braveSearch, bing, duckduckgo, yandex, qwant, startpage, ecosia, naver, daum
 
     /// Open Search Reference  for default search Engines
     var openSearchReference: String {
@@ -23,6 +23,8 @@ class InitialSearchEngines {
       case .qwant: return "qwant.com/opensearch"
       case .startpage: return "startpage.com/en/opensearch"
       case .ecosia: return "ecosia.org/opensearch"
+      case .naver: return "naver.com"
+      case .daum: return "search.daum.net/OpenSearch"
       }
     }
 
@@ -83,10 +85,12 @@ class InitialSearchEngines {
 
   static let braveSearchDefaultRegions = ["US", "CA", "GB", "FR", "DE", "AD", "AT", "ES", "MX", "BR", "AR", "IN"]
   static let yandexDefaultRegions = ["AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "TZ"]
-  static let ecosiaDefaultRegions = [
+  static let ecosiaEnabledRegions = [
     "AT", "AU", "BE", "CA", "DK", "ES", "FI", "GR", "HU", "IT",
     "LU", "NO", "PT", "US", "GB", "FR", "DE", "NL", "CH", "SE", "IE",
   ]
+  static let naverDefaultRegions = ["KR"]
+  static let daumEnabledRegions = ["KR"]
 
   /// Sets what should be the default search engine for given locale.
   /// If the engine does not exist in `engines` list, it is added to it.
@@ -147,12 +151,20 @@ class InitialSearchEngines {
       defaultSearchEngine = .yandex
     }
 
-    if Self.ecosiaDefaultRegions.contains(region) {
+    if Self.ecosiaEnabledRegions.contains(region) {
       replaceOrInsert(engineId: .ecosia, customId: nil)
     }
 
     if Self.braveSearchDefaultRegions.contains(region) {
       defaultSearchEngine = .braveSearch
+    }
+    
+    if Self.naverDefaultRegions.contains(region) {
+      defaultSearchEngine = .naver
+    }
+    
+    if Self.daumEnabledRegions.contains(region) {
+      replaceOrInsert(engineId: .daum, customId: nil)
     }
   }
 

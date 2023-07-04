@@ -452,6 +452,8 @@ public class SearchEngines {
     case yandex = 6
     case ecosia = 7
     case braveSearch = 8
+    case naver = 9
+    case daum = 10
     
     init(engine: OpenSearchEngine) {
       guard let defaultEngineID = InitialSearchEngines.SearchEngineID.allCases.first(where: {
@@ -469,6 +471,8 @@ public class SearchEngines {
       case .yandex: self = .yandex
       case .ecosia: self = .ecosia
       case .braveSearch: self = .braveSearch
+      case .naver: self = .naver
+      case .daum: self = .daum
       }
     }
   }
