@@ -279,37 +279,4 @@ However, we noticed this helper service is not running - and we don't want to le
   <message name="IDS_BRAVE_VPN_MAIN_PANEL_SESSION_EXPIRED_PART_CONTENT" desc="Content text for session expired panel">
     Please log in to your <ph name="BRAVE_ACCOUNT_BEGIN">$1</ph>Brave Account<ph name="BRAVE_ACCOUNT_END">$2</ph> to refresh your VPN session.
   </message>
-  <!-- Brave Vpn Wireguard service strings  -->
-  <if expr="is_win">
-    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_DISCONNECTED" desc="Message to be displayed as tooltip for the system tray icon in disconnected state.">
-      Brave VPN: Disconnected
-    </message>
-    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_CONNECTED" desc="Message to be displayed as tooltip for the system tray icon in connected state.">
-      Brave VPN: Connected
-    </message>
-    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_ERROR" desc="Message to be displayed as tooltip for the system tray icon in error state.">
-      Brave VPN: Error
-    </message>
-    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_STATUS_ITEM_ACTIVE" desc="Message to be displayed as the first item in the menu for the system tray icon in connected state.">
-      Status: Active
-    </message>
-    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_STATUS_ITEM_INACTIVE" desc="Message to be displayed as the first item in the menu for the system tray icon in disconnected state.">
-      Status: Inactive
-    </message>
-    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_CONNECT_ITEM" desc="Title of the system tray menu item for connect command.">
-      Connect
-    </message>
-    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_DISCONNECT_ITEM" desc="Title of the system tray menu item for disconnect command.">
-      Disconnect
-    </message>
-    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_MANAGE_ACCOUNT_ITEM" desc="Title of the system tray menu item for the command to open an account page in the browser.">
-      Manage Account
-    </message>        
-    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ABOUT_ITEM" desc="Title of the system tray menu item for the command to open about page in the browser.">
-      About Brave VPN
-    </message>        
-    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_REMOVE_ICON_ITEM" desc="Title of the system tray menu item for the command to remove the icon from the system tray.">
-      Remove icon
-    </message>                
-  </if>
 </grit-part>
