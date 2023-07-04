@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import { color, font } from '@brave/leo/tokens/css'
 
 interface Props {
-  videoElementRef: React.RefObject<HTMLVideoElement>
+  videoElement: HTMLVideoElement | null
 }
 
 const SeekerContainer = styled.div`
@@ -40,7 +40,6 @@ const StyledProgress = styled.progress`
     background: rgba(0, 0, 0, 0.1);
     height: var(--progress-stroke-thickness);
     border-radius: calc(var(--progress-stroke-thickness) * 0.5);
-    opacity: 1;
     transform: translate(0, calc((var(--progress-bar-height) - 100%) / 2));
   }
   &::-webkit-progress-value {
@@ -69,21 +68,24 @@ function formatTime (time: number) {
   const hours = stringFormat(Math.floor(time / 3600))
   const minutes = stringFormat(Math.floor((time % 3600) / 60))
   const seconds = stringFormat(Math.floor(time % 60))
-  return `${hours}:${minutes}:${seconds}`
+
+  const parts = [minutes, seconds]
+  if (hours !== '00') parts.unshift(hours)
+  return parts.join(':')
 }
 
 class DragController {
   constructor (
-    videoRef: React.RefObject<HTMLVideoElement>,
+    videoElement: HTMLVideoElement,
     progressElem: HTMLProgressElement,
     updateProgressValue: (value: number) => void
   ) {
-    this.#videoRef = videoRef
+    this.#videoElement =videoElement 
     this.#progressElem = progressElem
     this.#updateProgressValue = updateProgressValue
   }
 
-  #videoRef: React.RefObject<HTMLVideoElement>
+  #videoElement: HTMLVideoElement
   #progressElem: HTMLProgressElement
   #updateProgressValue: (value: number) => void
 
@@ -103,21 +105,21 @@ class DragController {
   }
 
   onMouseDown = (event: MouseEvent) => {
-    if (!this.#videoRef.current) {
+    if (!this.#videoElement) {
       return
     }
 
     this.#isMouseDown = true
     this.#initialState = {
-      playing: !this.#videoRef.current?.paused,
+      playing: !this.#videoElement?.paused,
       clientX: event.clientX,
       value: this.#progressElem.value
     }
 
     // Pause video during drag-and-drop session.
-    this.#videoRef.current.pause()
+    this.#videoElement.pause()
 
-    this.#videoRef.current.currentTime = this.interpolatePxToValue(
+    this.#videoElement.currentTime = this.interpolatePxToValue(
       this.#initialState.clientX - this.#progressElem.offsetLeft
     )
 
@@ -126,7 +128,7 @@ class DragController {
   }
 
   onMouseMove = (event: MouseEvent) => {
-    if (!this.#videoRef.current) {
+    if (!this.#videoElement) {
       return
     }
 
@@ -151,10 +153,10 @@ class DragController {
       event.clientX - this.#progressElem.offsetLeft
     )
 
-    const oldTime = this.#videoRef.current.currentTime
-    this.#videoRef.current.currentTime = newTime
+    const oldTime = this.#videoElement.currentTime
+    this.#videoElement.currentTime = newTime
 
-    if (oldTime === this.#videoRef.current.currentTime) {
+    if (oldTime === this.#videoElement.currentTime) {
       // In case the newTime has changed by time smaller than a second,
       // the |currentTime| won't be updated. In this case <progress> could feel
       // like jank. In order to avoid that, force to update the progress ui.
@@ -166,54 +168,53 @@ class DragController {
     document.removeEventListener('mousemove', this.onMouseMove)
     document.removeEventListener('mouseup', this.onMouseUp)
 
-    if (!this.#videoRef.current) {
+    if (!this.#videoElement) {
       return
     }
 
     this.#isMouseDown = false
 
     if (this.#isDragging) {
-      this.#videoRef.current.currentTime = this.interpolatePxToValue(
+      this.#videoElement.currentTime = this.interpolatePxToValue(
         event.clientX - this.#progressElem.offsetLeft
       )
     } else {
-      this.#videoRef.current.currentTime = this.interpolatePxToValue(
+      this.#videoElement.currentTime = this.interpolatePxToValue(
         this.#initialState!.clientX - this.#progressElem.offsetLeft
       )
     }
 
     // Restore the playing state.
-    if (this.#videoRef.current.paused && this.#initialState!.playing) {
-      this.#videoRef.current.play()
+    if (this.#videoElement.paused && this.#initialState!.playing) {
+      this.#videoElement.play()
     }
   }
 }
 
-export default function PlayerSeeker ({ videoElementRef }: Props) {
+export default function PlayerSeeker ({ videoElement }: Props) {
   const [duration, setDuration] = React.useState(0)
   const [currentTime, setCurrentTime] = React.useState(0)
 
   React.useEffect(() => {
-    const videoElem = videoElementRef.current
-    if (!videoElem) {
+    if (!videoElement) {
       console.error(`Video element doesn't exist`)
       return
     }
 
     const onTimeChanged = () => {
-      setCurrentTime(videoElem.currentTime)
+      setCurrentTime(videoElement.currentTime)
     }
     const onLoaded = () => {
-      setDuration(videoElem.duration)
+      setDuration(videoElement.duration)
       onTimeChanged()
     }
-    videoElem.addEventListener('loadeddata', onLoaded)
-    videoElem.addEventListener('timeupdate', onTimeChanged)
+    videoElement.addEventListener('loadeddata', onLoaded)
+    videoElement.addEventListener('timeupdate', onTimeChanged)
     return () => {
-      videoElem.removeEventListener('loadeddata', onLoaded)
-      videoElem.removeEventListener('timeupdate', onTimeChanged)
+      videoElement.removeEventListener('loadeddata', onLoaded)
+      videoElement.removeEventListener('timeupdate', onTimeChanged)
     }
-  }, [videoElementRef.current])
+  }, [videoElement])
 
   const progressElementRef = React.useRef<HTMLProgressElement>(null)
   React.useEffect(() => {
@@ -223,8 +224,13 @@ export default function PlayerSeeker ({ videoElementRef }: Props) {
       return
     }
 
+    if (!videoElement) {
+      console.error(`Video element doesn't exist`)
+      return
+    }
+
     const dragController = new DragController(
-      videoElementRef,
+      videoElement,
       progressElem,
       setCurrentTime
     )

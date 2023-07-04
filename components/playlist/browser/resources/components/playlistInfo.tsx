@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import { font } from '@brave/leo/tokens/css'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 interface Props {
   isDefaultPlaylist: boolean
@@ -14,6 +14,9 @@ interface Props {
   totalDuration: number
   itemCount: number
   className?: string
+
+  nameColor?: string
+  detailColor?: string
 }
 
 export const PlaylistInfoContainer = styled.div`
@@ -23,18 +26,20 @@ export const PlaylistInfoContainer = styled.div`
   column-gap: 8px;
 `
 
-export const PlaylistName = styled.div`
+export const PlaylistName = styled.div<{ color?: string }>`
   height: 28px;
   grid-row: 1 / 2;
   grid-column: 1 / 4;
   align-self: flex-end;
+  ${p => p.color && css`p.color`}
 
   font: ${font.primary.large.semibold};
 `
 
-export const PlaylistDetail = styled.div`
+export const PlaylistDetail = styled.div<{ color?: string }>`
   grid-row: 2;
   font: ${font.primary.small.regular};
+  ${p => p.color && css`p.color`}
 `
 
 export default function PlaylistInfo ({
@@ -42,25 +47,23 @@ export default function PlaylistInfo ({
   isDefaultPlaylist,
   playlistName,
   itemCount,
-  totalDuration
+  totalDuration,
+  nameColor,
+  detailColor
 }: Props) {
   return (
     <PlaylistInfoContainer className={className}>
-      <PlaylistName className='playlist-name'>
+      <PlaylistName color={nameColor}>
         {isDefaultPlaylist ? 'Play Later' : playlistName}{' '}
       </PlaylistName>
-      <PlaylistDetail className='playlist-detail'>
-        {itemCount} items
-      </PlaylistDetail>
-      <>{!!totalDuration && <PlaylistDetail>{totalDuration}</PlaylistDetail>}</>
-      <>
-        {
-          // TODO(sko) We can't get the file size for now
-          // !!itemCount && (
-          //   <PlaylistDetail className='playlist-detail'>300 mb</PlaylistDetail>
-          // )
-        }
-      </>
+      <PlaylistDetail color={detailColor}>{itemCount} items</PlaylistDetail>
+      {!!totalDuration && (<PlaylistDetail>{totalDuration}</PlaylistDetail>)}
+      {
+        // TODO(sko) We can't get the file size for now
+        // !!itemCount && (
+        //   <PlaylistDetail className='playlist-detail'>300 mb</PlaylistDetail>
+        // )
+      }
     </PlaylistInfoContainer>
   )
 }

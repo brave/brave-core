@@ -10,7 +10,7 @@ import styled from 'styled-components'
 import { color } from '@brave/leo/tokens/css'
 
 interface Props {
-  videoElementRef: React.RefObject<HTMLVideoElement>
+  videoElement?: HTMLVideoElement | null
   className?: string
 }
 
@@ -44,11 +44,10 @@ function Control ({
   )
 }
 
-export default function PlayerControls ({ videoElementRef, className }: Props) {
+export default function PlayerControls ({ videoElement, className }: Props) {
   const [isPlaying, setPlaying] = React.useState(false)
 
   React.useEffect(() => {
-    const videoElement = videoElementRef.current
     if (videoElement) {
       const togglePlayingState = () => {
         videoElement.paused ? videoElement.play() : videoElement.pause()
@@ -69,7 +68,7 @@ export default function PlayerControls ({ videoElementRef, className }: Props) {
     }
 
     return () => {}
-  }, [videoElementRef.current])
+  }, [videoElement])
 
   return (
     <Container className={className}>
@@ -77,45 +76,37 @@ export default function PlayerControls ({ videoElementRef, className }: Props) {
         <Control iconName='start-outline' onClick={() => {}}></Control>
         <Control
           iconName='rewind-15'
-          onClick={() => {
-            if (videoElementRef.current) {
-              videoElementRef.current.currentTime -= 15
-              if (videoElementRef.current.currentTime < 0)
-                videoElementRef.current.currentTime = 0
-            }
-          }}
+          onClick={() => videoElement && (videoElement.currentTime -= 15) }
         ></Control>
         {isPlaying ? (
           <Control
             iconName='pause-filled'
-            onClick={() => {
-              videoElementRef.current?.pause()
-            }}
+            onClick={() => videoElement?.pause()}
           ></Control>
         ) : (
           <Control
             iconName='play-filled'
-            onClick={() => {
-              videoElementRef.current?.play()
-            }}
+            onClick={() => videoElement?.play()}
           ></Control>
         )}
         <Control
           iconName='forward-15'
-          onClick={() => {
-            if (videoElementRef.current) {
-              videoElementRef.current.currentTime += 15
-            }
-          }}
+          onClick={() => videoElement && (videoElement.currentTime += 15)}
         ></Control>
         <Control iconName='end-outline' onClick={() => {}}></Control>
       </div>
       <div>
         <Control iconName='autoplay-off' onClick={() => {}}></Control>
         <Control iconName='shuffle-on' onClick={() => {}}></Control>
-        <Control iconName='sidepanel-open' onClick={() => {}}></Control>
+        {/* TODO(sko) this icon could be changed to sidepanel-open */}
+        <Control iconName='playlist-open-side' onClick={() => {}}></Control>
         <Control iconName='picture-in-picture' onClick={() => {}}></Control>
-        <Control iconName='fullscreen-on' onClick={() => {}}></Control>
+        <Control
+          iconName='fullscreen-on'
+          onClick={() => {
+            videoElement?.requestFullscreen()
+          }}
+        ></Control>
       </div>
     </Container>
   )

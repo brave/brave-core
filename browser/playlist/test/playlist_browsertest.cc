@@ -172,8 +172,9 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
       "document.querySelector('#download-from-active-tab-btn').click();"));
 
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return content::EvalJs(playlist_web_contents,
-                           "!!document.querySelector('.playlist-item');")
+    return content::EvalJs(
+               playlist_web_contents,
+               "!!document.querySelector(`[class^='PlaylistItemContainer']`);")
         .ExtractBool();
   }));
 }
@@ -227,7 +228,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlayWithoutLocalCache) {
   WaitUntil(base::BindLambdaForTesting([&]() {
     auto result = content::EvalJs(playlist_web_contents,
                                   R"-js(
-          const item = document.querySelector('.playlist-item');
+          const item = document.querySelector(`[class^='PlaylistItemContainer']`);
           item && item.parentElement.parentElement
               .querySelector('.playlist-item-cached-state')
               .textContent == 'Cached';
@@ -239,14 +240,14 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlayWithoutLocalCache) {
   // Remove cache
   ASSERT_TRUE(content::ExecJs(playlist_web_contents,
                               R"-js(
-          const item = document.querySelector('.playlist-item');
+          const item = document.querySelector(`[class^='PlaylistItemContainer']`);
           item.parentElement.parentElement
               .querySelector('.playlist-item-cache-btn').click();
         )-js"));
   WaitUntil(base::BindLambdaForTesting([&]() {
     auto result = content::EvalJs(playlist_web_contents,
                                   R"-js(
-          const item = document.querySelector('.playlist-item');
+          const item = document.querySelector(`[class^='PlaylistItemContainer']`);
           item && item.parentElement.parentElement
               .querySelector('.playlist-item-cached-state')
               .textContent != 'Cached';
@@ -258,12 +259,13 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlayWithoutLocalCache) {
   // Try playing the item
   ASSERT_TRUE(content::ExecJs(playlist_web_contents,
                               R"-js(
-          document.querySelector('.playlist-item-thumbnail').click();
+          document.querySelector(`[class^='StyledThumbnail'], [class^='DefaultThumbnail']`).click();
         )-js"));
+
   WaitUntil(base::BindLambdaForTesting([&]() {
     return content::EvalJs(playlist_web_contents,
                            R"-js(
-          document.querySelector('#player')
+          document.querySelector(`#player`)
           .getAttribute('data-playing') === 'true';
         )-js")
         .ExtractBool();

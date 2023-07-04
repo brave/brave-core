@@ -34,7 +34,7 @@ const DefaultThumbnail = styled.div`
   content: url(${DefaultThumbnailIcon});
 `
 
-const PlaylistContainer = styled.li`
+const PlaylistItemContainer = styled.li`
   display: flex;
   padding: 8px 16px 8px 8px;
   align-items: center;
@@ -48,7 +48,7 @@ const ItemInfoContainer = styled.div`
   gap: 4px;
 `
 
-const ItemName = styled.span`
+const PlaylistItemName = styled.span`
   color: ${color.text.primary};
   font: ${font.primary.xSmall.regular};
   cursor: default;
@@ -70,19 +70,15 @@ export default function PlaylistItem ({
   onClick
 }: Props) {
   return (
-    <PlaylistContainer className='playlist-item' onClick={() => onClick(id)}>
+    <PlaylistItemContainer onClick={() => onClick(id)}>
       <a href={`#${id}`} />
       {thumbnailUrl ? (
-        <StyledThumbnail
-          className='playlist-item-thumbnail'
-          data-id={id}
-          src={thumbnailUrl}
-        />
+        <StyledThumbnail src={thumbnailUrl} />
       ) : (
-        <DefaultThumbnail data-id={id} />
+        <DefaultThumbnail />
       )}
       <ItemInfoContainer>
-        <ItemName className='playlist-item-name'>{name}</ItemName>
+        <PlaylistItemName>{name}</PlaylistItemName>
         {
           <ItemDetailsContainer>
             {<span>duration</span> && false /* TODO(sko) not ready yet */}
@@ -91,6 +87,6 @@ export default function PlaylistItem ({
           </ItemDetailsContainer>
         }
       </ItemInfoContainer>
-    </PlaylistContainer>
+    </PlaylistItemContainer>
   )
 }

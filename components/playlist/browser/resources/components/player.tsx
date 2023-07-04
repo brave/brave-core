@@ -16,9 +16,8 @@ import { color, font } from '@brave/leo/tokens/css'
 import PlayerSeeker from './playerSeeker'
 
 const StyledVideo = styled.video`
-  // 16:9 aspect ratio
   width: 100vw;
-  height: 56vw;
+  aspect-ratio: 16 / 9;
 `
 
 const PlayerContainer = styled.div`
@@ -52,6 +51,9 @@ export default function Player () {
     applicationState => applicationState.playerState?.currentItem
   )
 
+  const [videoElement, setVideoElement] =
+    React.useState<HTMLVideoElement | null>(null)
+
   React.useEffect(() => {
     // Route changes in props to parent frame.
     // Note that we are checking this condition as per SonarCloud.
@@ -66,13 +68,10 @@ export default function Player () {
     }
   }, [playing])
 
-  let videoElementRef = React.useRef<HTMLVideoElement>(null)
-
   return (
     <PlayerContainer>
       <StyledVideo
-        ref={videoElementRef}
-        id='player'
+        ref={setVideoElement}
         autoPlay
         onPlay={() => getAllActions().playerStartedPlayingItem(currentItem)}
         onPause={() => getAllActions().playerStoppedPlayingItem(currentItem)}
@@ -81,8 +80,8 @@ export default function Player () {
       />
       <ControlsContainer>
         <StyledTitle>{currentItem?.name}</StyledTitle>
-        <PlayerSeeker videoElementRef={videoElementRef} />
-        <StyledPlayerControls videoElementRef={videoElementRef} />
+        <PlayerSeeker videoElement={videoElement} />
+        <StyledPlayerControls videoElement={videoElement} />
       </ControlsContainer>
     </PlayerContainer>
   )
