@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "brave/components/api_request_helper/api_request_helper.h"
 

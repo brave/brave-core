@@ -8,7 +8,6 @@
 #include <base/containers/flat_map.h>
 
 #include <utility>
-#include <vector>
 
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
