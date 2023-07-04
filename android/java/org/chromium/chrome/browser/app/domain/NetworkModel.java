@@ -129,10 +129,16 @@ public class NetworkModel implements JsonRpcServiceObserver {
             }
         });
         _mChainId.addSource(mSharedData.getCoinTypeLd(), coinType -> {
-            mBraveWalletService.getNetworkForSelectedAccountOnActiveOrigin(networkInfo -> {
-                if (networkInfo != null) {
-                    _mChainId.postValue(networkInfo.chainId);
+            mJsonRpcService.getNetwork(coinType, mOrigin, networkInfo -> {
+                String chainId = networkInfo.chainId;
+                String id = BraveWalletConstants.MAINNET_CHAIN_ID;
+                if (TextUtils.isEmpty(chainId)) {
+                    mJsonRpcService.setNetwork(
+                            id, mSharedData.getCoinType(), mOrigin, hasSetNetwork -> {});
+                } else {
+                    id = chainId;
                 }
+                _mChainId.postValue(id);
             });
         });
         _mDefaultCoinCryptoNetworks.addSource(mSharedData.getCoinTypeLd(), coinType -> {
@@ -310,8 +316,8 @@ public class NetworkModel implements JsonRpcServiceObserver {
         }
     }
 
-    public void setNetworkWithAccountCheck(
-            NetworkInfo networkToBeSetAsSelected, Callbacks.Callback1<Boolean> callback) {
+    public void setNetworkWithAccountCheck(NetworkInfo networkToBeSetAsSelected,
+            boolean setNetworkAsDefault, Callbacks.Callback1<Boolean> callback) {
         NetworkInfo selectedNetwork = _mDefaultNetwork.getValue();
         if (isSameNetwork(networkToBeSetAsSelected, selectedNetwork)) return;
 
@@ -322,13 +328,13 @@ public class NetworkModel implements JsonRpcServiceObserver {
                         callback.call(false);
                         return;
                     }
-                    setNetworkForSelectedAccountOnActiveOrigin(networkToBeSetAsSelected, callback);
+                    if (setNetworkAsDefault) {
+                        setDefaultNetwork(networkToBeSetAsSelected, callback);
+                    } else {
+                        setNetworkForSelectedAccountOnActiveOrigin(
+                                networkToBeSetAsSelected, callback);
+                    }
                 });
-    }
-
-    public void setNetworkWithAccountCheck(String chainId, Callbacks.Callback1<Boolean> callback) {
-        NetworkInfo networkToBeSetAsSelected = getNetwork(chainId);
-        setNetworkWithAccountCheck(networkToBeSetAsSelected, callback);
     }
 
     public void setNetworkForSelectedAccountOnActiveOrigin(

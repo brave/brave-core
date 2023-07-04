@@ -1678,7 +1678,7 @@ public abstract class BraveActivity extends ChromeActivity
                                             networkInfo.symbolName))
                                     .setPositiveButton(R.string.brave_action_yes,
                                             (dialog, which) -> {
-                                                mWalletModel.createAccountAndSetNetwork(
+                                                mWalletModel.createAccountAndSetDefaultNetwork(
                                                         networkInfo);
                                             })
                                     .setNegativeButton(

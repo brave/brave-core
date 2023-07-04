@@ -124,16 +124,13 @@ public class WalletModel {
         mBraveWalletService.getActiveOrigin(originInfo -> { callback.call(originInfo); });
     }
 
-    public void createAccountAndSetNetwork(NetworkInfo networkInfo) {
+    public void createAccountAndSetDefaultNetwork(NetworkInfo networkInfo) {
         getKeyringModel().addAccount(
                 networkInfo.coin, networkInfo.chainId, null, isAccountAdded -> {
-                    getCryptoModel().getNetworkModel().clearCreateAccountState();
+                    getNetworkModel().clearCreateAccountState();
 
                     if (isAccountAdded) {
-                        getCryptoModel()
-                                .getNetworkModel()
-                                .setNetworkForSelectedAccountOnActiveOrigin(
-                                        networkInfo, success -> {});
+                        getNetworkModel().setDefaultNetwork(networkInfo, success -> {});
                     }
                 });
     }

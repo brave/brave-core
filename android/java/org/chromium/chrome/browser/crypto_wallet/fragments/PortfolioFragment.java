@@ -41,6 +41,7 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.NetworkModel;
 import org.chromium.chrome.browser.app.domain.NetworkSelectorModel;
 import org.chromium.chrome.browser.app.domain.PortfolioModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
@@ -169,13 +170,10 @@ public class PortfolioFragment
     }
 
     private void setUpObservers() {
-        mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks.observe(
-                getViewLifecycleOwner(),
+        getNetworkModel().mCryptoNetworks.observe(getViewLifecycleOwner(),
                 allNetworkInfos -> { mAllNetworkInfos = allNetworkInfos; });
-        mNetworkSelectionModel =
-                mWalletModel.getCryptoModel().getNetworkModel().openNetworkSelectorModel(
-                        PortfolioFragment.TAG, NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER,
-                        getLifecycle());
+        mNetworkSelectionModel = getNetworkModel().openNetworkSelectorModel(PortfolioFragment.TAG,
+                NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, getLifecycle());
         // Show pending transactions fab to process pending txs
         mNetworkSelectionModel.getSelectedNetwork().observe(
                 getViewLifecycleOwner(), localNetworkInfo -> {
@@ -210,7 +208,7 @@ public class PortfolioFragment
                     }
                 });
 
-        mWalletModel.getCryptoModel().getNetworkModel().mNeedToCreateAccountForNetwork.observe(
+        getNetworkModel().mNeedToCreateAccountForNetwork.observe(
                 getViewLifecycleOwner(), networkInfo -> {
                     if (networkInfo == null) return;
 
@@ -222,14 +220,12 @@ public class PortfolioFragment
                                             networkInfo.symbolName))
                                     .setPositiveButton(R.string.brave_action_yes,
                                             (dialog, which) -> {
-                                                mWalletModel.createAccountAndSetNetwork(
+                                                mWalletModel.createAccountAndSetDefaultNetwork(
                                                         networkInfo);
                                             })
                                     .setNegativeButton(
                                             R.string.brave_action_no, (dialog, which) -> {
-                                                mWalletModel.getCryptoModel()
-                                                        .getNetworkModel()
-                                                        .clearCreateAccountState();
+                                                getNetworkModel().clearCreateAccountState();
                                                 dialog.dismiss();
                                             });
                     builder.show();
@@ -279,8 +275,7 @@ public class PortfolioFragment
     public void onAssetClick(BlockchainToken asset) {
         NetworkInfo selectedNetwork = null;
         if (mWalletModel != null) {
-            selectedNetwork =
-                    mWalletModel.getCryptoModel().getNetworkModel().getNetwork(asset.chainId);
+            selectedNetwork = getNetworkModel().getNetwork(asset.chainId);
         }
         if (selectedNetwork == null) {
             return;
@@ -370,8 +365,7 @@ public class PortfolioFragment
                     mBalance.invalidate();
 
                     LiveDataUtil.observeOnce(
-                            mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks,
-                            networkInfos -> {
+                            getNetworkModel().mCryptoNetworks, networkInfos -> {
                                 setUpCoinList(mPortfolioHelper.getUserAssets(),
                                         mPortfolioHelper.getPerTokenCryptoSum(),
                                         mPortfolioHelper.getPerTokenFiatSum(), networkInfos);
@@ -456,5 +450,9 @@ public class PortfolioFragment
                 ((BraveWalletActivity) activity).setPendingTxNotificationVisibility(View.VISIBLE);
             else
                 ((BraveWalletActivity) activity).setPendingTxNotificationVisibility(View.GONE);
+    }
+
+    private NetworkModel getNetworkModel() {
+        return mWalletModel.getCryptoModel().getNetworkModel();
     }
 }

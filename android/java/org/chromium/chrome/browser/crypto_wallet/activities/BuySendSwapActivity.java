@@ -61,6 +61,7 @@ import org.chromium.brave_wallet.mojom.TxDataUnion;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.NetworkModel;
 import org.chromium.chrome.browser.app.domain.SendModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
@@ -223,13 +224,12 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 mFromValueText.setText("");
                 mFromValueText.setHint("0");
 
-                mWalletModel.getCryptoModel().getNetworkModel().setNetworkWithAccountCheck(
-                        networkInfo, success -> {
-                            if (!success) {
-                                return;
-                            }
-                            mSelectedNetwork = networkInfo;
-                        });
+                getNetworkModel().setNetworkWithAccountCheck(networkInfo, true, success -> {
+                    if (!success) {
+                        return;
+                    }
+                    mSelectedNetwork = networkInfo;
+                });
             }
 
         } else if (parent.getId() == R.id.accounts_spinner) {
@@ -1123,7 +1123,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
         assert mWalletModel != null;
-        mWalletModel.getCryptoModel().getNetworkModel().mChainNetworkAllNetwork.observe(
+        getNetworkModel().mChainNetworkAllNetwork.observe(
                 this, chainNetworkAllNetwork -> {
                     if (JavaUtils.anyNull(
                                 chainNetworkAllNetwork.first, chainNetworkAllNetwork.second))
@@ -1131,7 +1131,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     mCurrentChainId = chainNetworkAllNetwork.first;
                     mSelectedNetwork = chainNetworkAllNetwork.second;
                     mNetworks = mActivityType != ActivityType.SEND
-                            ? mWalletModel.getCryptoModel().getNetworkModel().stripNoBuyNetworks(
+                            ? getNetworkModel().stripNoBuyNetworks(
                                     chainNetworkAllNetwork.third, mActivityType)
                             : chainNetworkAllNetwork.third;
                     mNetworkAdapter.setNetworks(mNetworks);
@@ -1160,33 +1160,26 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             initAccountsUI();
         });
 
-        mWalletModel.getCryptoModel().getNetworkModel().mNeedToCreateAccountForNetwork.observe(
-                this, networkInfo -> {
-                    if (networkInfo == null) return;
+        getNetworkModel().mNeedToCreateAccountForNetwork.observe(this, networkInfo -> {
+            if (networkInfo == null) return;
 
-                    MaterialAlertDialogBuilder builder =
-                            new MaterialAlertDialogBuilder(
-                                    this, R.style.BraveWalletAlertDialogTheme)
-                                    .setMessage(getString(
-                                            R.string.brave_wallet_create_account_description,
-                                            networkInfo.symbolName))
-                                    .setPositiveButton(R.string.brave_action_yes,
-                                            (dialog, which) -> {
-                                                mWalletModel.createAccountAndSetNetwork(
-                                                        networkInfo);
-                                            })
-                                    .setNegativeButton(
-                                            R.string.brave_action_no, (dialog, which) -> {
-                                                // update mNetworkSpinner to current network
-                                                setSelectedNetwork(mSelectedNetwork, mNetworks);
+            MaterialAlertDialogBuilder builder =
+                    new MaterialAlertDialogBuilder(this, R.style.BraveWalletAlertDialogTheme)
+                            .setMessage(getString(R.string.brave_wallet_create_account_description,
+                                    networkInfo.symbolName))
+                            .setPositiveButton(R.string.brave_action_yes,
+                                    (dialog, which) -> {
+                                        mWalletModel.createAccountAndSetDefaultNetwork(networkInfo);
+                                    })
+                            .setNegativeButton(R.string.brave_action_no, (dialog, which) -> {
+                                // update mNetworkSpinner to current network
+                                setSelectedNetwork(mSelectedNetwork, mNetworks);
 
-                                                mWalletModel.getCryptoModel()
-                                                        .getNetworkModel()
-                                                        .clearCreateAccountState();
-                                                dialog.dismiss();
-                                            });
-                    builder.show();
-                });
+                                getNetworkModel().clearCreateAccountState();
+                                dialog.dismiss();
+                            });
+            builder.show();
+        });
     }
 
     @Override
@@ -1197,9 +1190,15 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     @Override
     public void onTransactionStatusChanged(TransactionInfo txInfo) {}
 
+    private NetworkModel getNetworkModel() {
+        return mWalletModel.getCryptoModel().getNetworkModel();
+    }
+
     private void updateNetworkPerAssetChain(String assetChainId) {
         if (TextUtils.isEmpty(assetChainId)) return;
-        mWalletModel.getCryptoModel().getNetworkModel().setNetworkWithAccountCheck(
-                assetChainId, hasSetNetwork -> {});
+        NetworkInfo networkInfo = getNetworkModel().getNetwork(assetChainId);
+        if (networkInfo != null) {
+            getNetworkModel().setNetworkWithAccountCheck(networkInfo, true, hasSetNetwork -> {});
+        }
     }
 }

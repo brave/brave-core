@@ -2576,7 +2576,7 @@ TEST_F(KeyringServiceUnitTest, SelectHardwareAccount) {
 
   auto imported = service.AddHardwareAccountsSync(std::move(new_accounts));
 
-  // Firest account gets selected.
+  // First account gets selected.
   ASSERT_EQ(service.GetSelectedWalletAccount(), imported.front());
 }
 

@@ -104,13 +104,17 @@ public class NetworkSelectorModel {
             boolean hasAccountOfNetworkType =
                     mNetworkModel.hasAccountOfNetworkType(networkToBeSetAsSelected);
             if (!hasAccountOfNetworkType || mMode == Mode.DEFAULT_WALLET_NETWORK) {
+                // Mode.DEFAULT_WALLET_NETWORK is for panel network selection which means that we
+                // should change active orign's network.
+                boolean setNetworkAsDefault = mMode != Mode.DEFAULT_WALLET_NETWORK;
                 // Delegate to network model to handle account creation flow if required
-                mNetworkModel.setNetworkWithAccountCheck(networkToBeSetAsSelected, isSet -> {
-                    callback.call(isSet);
-                    if (isSet) {
-                        _mSelectedNetwork.postValue(networkToBeSetAsSelected);
-                    }
-                });
+                mNetworkModel.setNetworkWithAccountCheck(
+                        networkToBeSetAsSelected, setNetworkAsDefault, isSet -> {
+                            callback.call(isSet);
+                            if (isSet) {
+                                _mSelectedNetwork.postValue(networkToBeSetAsSelected);
+                            }
+                        });
                 return;
             }
         }
