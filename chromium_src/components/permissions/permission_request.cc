@@ -102,8 +102,6 @@ bool PermissionRequest::SupportsLifetime() const {
     RequestType::kProtectedMediaIdentifier,
 #else
     RequestType::kRegisterProtocolHandler,
-    RequestType::kSecurityAttestation,
-    RequestType::kU2fApiRequest,
 #endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_WIDEVINE)
     RequestType::kWidevine
