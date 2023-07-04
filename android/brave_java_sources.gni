@@ -80,6 +80,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsAdapterFeedCard.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsBottomSheetDialogFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsConnectionErrorHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsControllerFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/CardBuilderFeedCard.java",

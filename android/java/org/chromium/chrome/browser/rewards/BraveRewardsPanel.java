@@ -278,7 +278,7 @@ public class BraveRewardsPanel
                 }
 
                 if (mBraveActivity != null) {
-                    mBraveActivity.OnRewardsPanelDismiss();
+                    mBraveActivity.onRewardsPanelDismiss();
                 }
             }
         });
