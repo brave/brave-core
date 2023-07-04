@@ -54,7 +54,7 @@ const chromiumGeneratedResourcesExcludes = new Set(["chromeos_strings.grdp"])
 // The following are not generated files but still need to be tracked so they get sent to transifex
 // These xtb files don't need to be copied anywhere.
 // brave_generated_resources.grd maps to brave/app/resources/brave_generated_resources*.xtb,
-// brave_components_strings.grd maps to brave/components/resources/strings/brave_components_resources*.xtb
+// brave_components_strings.grd maps to brave/components/resources/strings/brave_components_strings*.xtb
 // messages.json localization is handled inside of brave-extension.
 const braveSpecificGeneratedResourcesPath = path.resolve(path.join(srcDir, 'brave', 'app', 'brave_generated_resources.grd'))
 const braveResourcesComponentsStringsPath = path.resolve(path.join(srcDir, 'brave', 'components', 'resources', 'brave_components_strings.grd'))
