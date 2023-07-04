@@ -19,9 +19,9 @@ export function useConversationHistory() {
   const [isGenerating, setIsGenerating] = React.useState(false)
   const [suggestedQuestions, setSuggestedQuestions] = React.useState<string[]>([])
   const [canGenerateQuestions, setCanGenerateQuestions] = React.useState(false)
-  const [userAutoGeneratePref, setUserAutoGeneratePref] = React.useState<AutoGenerateQuestionsPref | undefined>(undefined)
-  const [siteInfo, setSiteInfo] = React.useState<SiteInfo | null>(null)
-  const [favIconUrl, setFavIconUrl] = React.useState<string | undefined>(undefined)
+  const [userAutoGeneratePref, setUserAutoGeneratePref] = React.useState<AutoGenerateQuestionsPref>()
+  const [siteInfo, setSiteInfo] = React.useState<SiteInfo | null>()
+  const [favIconUrl, setFavIconUrl] = React.useState<string>()
 
   const getConversationHistory = () => {
     getPageHandlerInstance().pageHandler.getConversationHistory().then(res => setConversationHistory(res.conversationHistory))

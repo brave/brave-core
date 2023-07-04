@@ -22,6 +22,7 @@
 .scroller {
   overflow: auto;
   height: 100%;
+  padding-bottom: 16px;
 }
 
 .header {
@@ -51,5 +52,5 @@
 }
 
 .siteTitleBox {
-  padding: 16px;
+  padding: 16px 16px 0 16px;
 }

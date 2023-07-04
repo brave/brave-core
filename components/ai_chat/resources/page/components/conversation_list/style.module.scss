@@ -3,6 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+.list {
+  div[data-turn='assistant'] {
+    padding-bottom: 0;
+  }
+}
+
 .turnAI {
   display: flex;
   align-items: flex-start;
@@ -21,6 +27,7 @@
   padding: 16px;
 
   background-color: var(--leo-color-page-background);
+  margin-top: 16px;
 }
 
 .caret {
@@ -31,18 +38,28 @@
   background-color: currentColor;
 }
 
-.suggestedQuestions {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: 8px;
-  padding: 0 16px 16px 64px;
+.suggestedQuestionsBox {
+  padding: 16px 16px 16px 64px;
 
-  small {
-    font: var(--leo-font-secondary-small-regular);
-    color: var(--leo-color-text-secondary);
-    margin-bottom: 16px;
+  // TODO(nullhook): Make this change in dev leo
+  leo-button {
+    span {
+      align-items: center;
+    }
   }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 8px;
+  }
+}
+
+.suggestedQuestionLabel {
+  font: var(--leo-font-secondary-small-regular);
+  color: var(--leo-color-text-secondary);
+  padding-bottom: 16px;
 }
 
 .avatarHuman {

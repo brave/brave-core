@@ -36,6 +36,7 @@ function ConversationList (props: ConversationListProps) {
 
   return (
     <div>
+      <div className={styles.list}>
       {props.list.map((turn, id) => {
         const isLastEntry = (id === (props.list.length - 1))
         const isLoading = isLastEntry && props.isLoading
@@ -57,7 +58,7 @@ function ConversationList (props: ConversationListProps) {
         })
 
         return (
-          <div key={id} ref={elementRef} className={turnClass}>
+          <div key={id} ref={elementRef} className={turnClass} data-turn={isHuman ? 'human' : 'assistant'}>
             <div className={avatarStyles}>
               <Icon name={isHuman ? 'user-circle' : 'product-brave-ai'} />
             </div>
@@ -68,18 +69,23 @@ function ConversationList (props: ConversationListProps) {
           </div>
         )
       })}
-      {props.suggestedQuestions.length > 0 && (
-        <div className={styles.suggestedQuestions}>
-        <small>Suggested follow-ups</small>
-        {props.suggestedQuestions.map(question => (
-          <Button kind='outline' onClick={() => props.onQuestionSubmit(question)}>
-            <span className={styles.buttonBox}>
-              <Icon name="product-brave-ai" />
-              {question}
-            </span>
-          </Button>
-        ))}
       </div>
+      {props.suggestedQuestions.length > 0 && (
+        <div className={styles.suggestedQuestionsBox}>
+          <div className={styles.suggestedQuestionLabel}>
+            Suggested follow-ups
+          </div>
+          <div>
+            {props.suggestedQuestions.map(question => (
+              <Button kind='outline' onClick={() => props.onQuestionSubmit(question)}>
+                <span className={styles.buttonBox}>
+                  <Icon name="product-brave-ai" />
+                  {question}
+                </span>
+              </Button>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   )

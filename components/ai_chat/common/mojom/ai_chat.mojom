@@ -5,8 +5,6 @@
 
 module ai_chat.mojom;
 
-import "url/mojom/url.mojom";
-
 enum CharacterType {
   HUMAN,
   ASSISTANT
