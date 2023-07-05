@@ -4,34 +4,34 @@
 {
   "SRCDIR": "../..",
   "brave/common/extensions/api/brave_api_resources.grd": {
-    "includes": [49500],
+    "includes": [50800],
   },
   "brave/components/resources/brave_components_resources.grd": {
-    "includes": [49550],
+    "includes": [50850],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_adblock/brave_adblock.grd": {
     "META": {"sizes": {"includes": [50]}},
-    "includes": [49600],
+    "includes": [50900],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_new_tab/brave_new_tab.grd": {
     "META": {"sizes": {"includes": [350]}},
-    "includes": [49650],
+    "includes": [50950],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_welcome/brave_welcome.grd": {
     "META": {"sizes": {"includes": [200]}},
-    "includes": [51000],
+    "includes": [51300],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/settings/brave_settings_resources.grd": {
     "META": {"sizes": {"includes": [400]}},
-    "includes": [51200],
+    "includes": [51400],
   },
   "brave/app/brave_generated_resources.grd": {
-    "includes": [51600],
-    "messages": [52100],
+    "includes": [51900],
+    "messages": [52400],
   },
   "brave/app/theme/brave_theme_resources.grd": {
     "structures": [52600],
@@ -44,7 +44,7 @@
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_sync/brave_sync.grd": {
-    "META": {"sizes": {"includes": [500]}},
+    "META": {"sizes": {"includes": [400]}},
     "includes": [53700],
   },
   # This file is generated during the build.
