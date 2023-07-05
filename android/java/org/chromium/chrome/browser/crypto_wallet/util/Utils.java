@@ -322,10 +322,6 @@ public class Utils {
         });
     }
 
-    public static boolean isDebuggable(Activity activity) {
-        return 0 != (activity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE);
-    }
-
     public static String[] makeNetworksAbbrevList(Activity activity, NetworkInfo[] allNetworks) {
         List<String> categories = new ArrayList<String>();
 
