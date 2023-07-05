@@ -27,7 +27,7 @@ const StyledLink = styled(Link)`
   color: unset;
 `
 
-const PlaylistContainer = styled.div<ThumbnailProps>`
+const PlaylistCardContainer = styled.div<ThumbnailProps>`
   /* Default Playlist background */
   ${p =>
     p.isDefaultPlaylist &&
@@ -120,12 +120,10 @@ function PlaylistThumbnail (props: ThumbnailProps) {
 // A card UI for representing a playlist.
 function PlaylistCard ({ playlist }: { playlist: Playlist }) {
   const isDefaultPlaylist = playlist.id === 'default'
-
   const thumbnailUrl = React.useMemo(() => {
     return playlist.items?.find(item => item.thumbnailPath?.url)?.thumbnailPath
-      .url
+      ?.url
   }, [playlist])
-
   const hasBackground = isDefaultPlaylist || !!thumbnailUrl
 
   const totalDuration = React.useMemo(() => {
@@ -140,7 +138,7 @@ function PlaylistCard ({ playlist }: { playlist: Playlist }) {
 
   return (
     <StyledLink to={`/playlist/${playlist.id}`}>
-      <PlaylistContainer
+      <PlaylistCardContainer
         isDefaultPlaylist={isDefaultPlaylist}
         thumbnailUrl={thumbnailUrl}
       >
@@ -156,7 +154,7 @@ function PlaylistCard ({ playlist }: { playlist: Playlist }) {
           totalDuration={totalDuration}
           hasBackground={hasBackground}
         />
-      </PlaylistContainer>
+      </PlaylistCardContainer>
     </StyledLink>
   )
 }
@@ -165,6 +163,7 @@ const PlaylistsCatalogFlexBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding: 8px;
 `
 
 // A catalog that shows all playlists

@@ -52,7 +52,6 @@ const HeaderContainer = styled.div`
   align-items: center;
   padding: ${spacing[16]};
   gap: ${spacing[16]};
-  height: 100%;
   border-bottom: 1px solid ${color.divider.subtle};
   background: ${color.container.background};
 `

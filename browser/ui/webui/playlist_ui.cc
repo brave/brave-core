@@ -50,6 +50,12 @@ class UntrustedPlayerUI : public ui::UntrustedWebUIController {
         network::mojom::CSPDirectiveName::StyleSrc,
         std::string("style-src chrome-untrusted://resources "
                     "chrome-untrusted://brave-resources 'unsafe-inline';"));
+    source->OverrideContentSecurityPolicy(
+        network::mojom::CSPDirectiveName::ImgSrc,
+        std::string("img-src 'self' chrome-untrusted://resources;"));
+    source->OverrideContentSecurityPolicy(
+        network::mojom::CSPDirectiveName::FontSrc,
+        std::string("font-src 'self' chrome-untrusted://resources;"));
   }
 
   UntrustedPlayerUI(const UntrustedPlayerUI&) = delete;
@@ -95,6 +101,9 @@ PlaylistUI::PlaylistUI(content::WebUI* web_ui, const std::string& name)
       network::mojom::CSPDirectiveName::ImgSrc,
       std::string("img-src 'self' chrome-untrusted://playlist-data "
                   "chrome-untrusted://resources;"));
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FontSrc,
+      std::string("font-src 'self' chrome-untrusted://resources;"));
 
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   source->OverrideContentSecurityPolicy(
