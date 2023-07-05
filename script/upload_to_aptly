@@ -37,10 +37,8 @@ fi
 
 case "$GPG_KEY_ID" in 
     "D8BAD4DE7EE17AF52A834B2D0BB75829C2D4E821"|"9BD198A2D848C482E3550697A8580BDC82D3DC6C"|"E85FFA8E2E90B40B33ED39274FE13824E3FFC656")  # Release keys
-        KEY_NAME=brave-core.asc
         ;;
     "9228DBCE20DDE5EC46488DE90B31DBA06A8A26F9") # Nightly key
-        KEY_NAME=brave-core-nightly.asc
         ;;
     *)
         echo "Error! Unknown key passed in. Bailing out."
@@ -112,8 +110,6 @@ EOF
 
 # Make sure staging and release cache isn't mixed
 rm -Rf ~/.aptly
-
-gpg --export --armor "${GPG_KEY_ID}!" | aws s3 cp --acl public-read - "s3://${S3_BUCKET}/${KEY_NAME}" # key suffix ! forces gpg to use the specified key
 
 for i in ${DIST}; do
 	aptly publish drop -force-drop "$i" "s3:${S3_BUCKET}:" || true

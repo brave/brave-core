@@ -95,7 +95,6 @@ do
     fi
 done
 
-gpg --export --armor "${GPG_KEY_ID}!" | aws s3 cp --acl public-read - "s3://${S3_BUCKET}/${KEY_NAME}"
 aws s3 sync --acl public-read "$TMP_REPO/" "s3://${S3_BUCKET}/"
 
 # Remove temp dir
