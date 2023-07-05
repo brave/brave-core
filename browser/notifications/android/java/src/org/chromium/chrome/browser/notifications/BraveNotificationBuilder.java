@@ -58,9 +58,14 @@ public class BraveNotificationBuilder extends StandardNotificationBuilder {
     private static final int MAX_SCALABLE_PADDING_DP = 3;
 
     /**
-     * The notification body height in compact view mode for Android S.
+     * The notification body height in dp for compact view mode for Android 12 and higher.
      */
-    private static final int COMPACT_BODY_CONTAINER_HEIGHT_S = 40;
+    private static final float COMPACT_BODY_CONTAINER_HEIGHT_DP = 40f;
+
+    /**
+     * The notification title margin top in dp for compact view mode for Android 12 and higher.
+     */
+    private static final float COMPACT_TITLE_MARGIN_TOP_DP = -4f;
 
     private static Bitmap sBraveIcon;
 
@@ -124,8 +129,10 @@ public class BraveNotificationBuilder extends StandardNotificationBuilder {
         // - the dimensions become less than before.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             compactView.setViewPadding(R.id.title, 0, 0, 0, 0);
-            compactView.setViewPadding(R.id.body_container, 0, 0, 0, 0);
-            compactView.setViewLayoutHeight(R.id.body_container, COMPACT_BODY_CONTAINER_HEIGHT_S,
+            compactView.setViewLayoutMargin(R.id.title, RemoteViews.MARGIN_TOP,
+                    COMPACT_TITLE_MARGIN_TOP_DP, TypedValue.COMPLEX_UNIT_DIP);
+            compactView.setViewPadding(R.id.body_container, 0, scaledPadding, 0, 0);
+            compactView.setViewLayoutHeight(R.id.body_container, COMPACT_BODY_CONTAINER_HEIGHT_DP,
                     TypedValue.COMPLEX_UNIT_DIP);
             compactView.setViewVisibility(R.id.icon_frame, View.GONE);
             bigView.setViewVisibility(R.id.icon_frame, View.GONE);

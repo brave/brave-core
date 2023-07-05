@@ -36,7 +36,7 @@
         android:layout_below="@id/title"
         android:layout_toEndOf="@id/icon_frame"
         android:layout_marginBottom="-4dp"
-        android:layout_marginTop="-4dp">
+        android:layout_marginTop="-2dp">
 
         <TextView
             android:id="@+id/body"
