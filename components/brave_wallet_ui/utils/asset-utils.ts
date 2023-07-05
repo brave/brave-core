@@ -245,3 +245,9 @@ export const checkIfTokenNeedsNetworkIcon = (
     getNetworkLogo(network.chainId, network.symbol) !==
     makeNativeAssetLogo(network.symbol, network.chainId)
 }
+
+/**
+ * Evaluates support for stripe
+ * @returns Boolean indicating stripe support
+ */
+export const isStripeSupported = () => navigator.language.toLowerCase() === 'en-us'
