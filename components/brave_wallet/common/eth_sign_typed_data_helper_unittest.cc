@@ -8,10 +8,12 @@
 #include <memory>
 #include <string>
 
-#include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/test/values_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using base::test::ParseJson;
 
 namespace brave_wallet {
 
@@ -20,20 +22,17 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeTypes) {
     "Mail": [
         {"name": "from", "type": "Person"},
         {"name": "to", "type": "Person"},
-        {"name": "contents", "type": "string"}
+        {"name": "contents", "type": "string"},
     ],
     "Person": [
         {"name": "name", "type": "string"},
         {"name": "wallet", "type": "address"}
     ]})");
 
-  auto types_value =
-      base::JSONReader::Read(types_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                             base::JSON_ALLOW_TRAILING_COMMAS);
-  ASSERT_TRUE(types_value);
+  auto types_value = ParseJson(types_json);
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
-      EthSignTypedDataHelper::Create(types_value->GetDict().Clone(),
+      EthSignTypedDataHelper::Create(types_value.GetDict().Clone(),
                                      EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
   const std::string encoded_types_v4 = helper->EncodeTypes("Mail");
@@ -50,6 +49,23 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeTypes) {
   EXPECT_EQ(encoded_types_v4, encoded_types_v3);
   auto typed_hash_v3 = helper->GetTypeHash("Mail");
   EXPECT_EQ(typed_hash_v3, typed_hash_v4);
+
+  // When depended type is not valid
+  types_value = ParseJson(R"({
+    "Mail": [
+        {"name": "from", "type": "Person"},
+        {"name": "to", "type": "Person"},
+        {"name": "contents", "type": "string"},
+    ],
+    "Person": [
+        {"name": "name", "type": "string"},
+        [ "name", "type" ]
+    ]})");
+  helper = EthSignTypedDataHelper::Create(types_value.GetDict().Clone(),
+                                          EthSignTypedDataHelper::Version::kV4);
+  ASSERT_TRUE(helper);
+  EXPECT_EQ(helper->EncodeTypes("Mail"),
+            "Mail(Person from,Person to,string contents)");
 }
 
 TEST(EthSignedTypedDataHelperUnitTest, InvalidEncodeTypes) {
@@ -69,14 +85,16 @@ TEST(EthSignedTypedDataHelperUnitTest, InvalidEncodeTypes) {
            R"({
     "Domain": [
         { "name": "name", "type": 1234 }
+    ]})",
+           R"({
+    "Domain": [
+        {"name": "name", "type": "string"},
+        [ "name", "type" ]
     ]})"}) {
     SCOPED_TRACE(invalid_json);
-    auto invalid_value = base::JSONReader::Read(
-        invalid_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                          base::JSON_ALLOW_TRAILING_COMMAS);
-    ASSERT_TRUE(invalid_value);
+    auto invalid_value = ParseJson(invalid_json);
     std::unique_ptr<EthSignTypedDataHelper> invalid_types_helper =
-        EthSignTypedDataHelper::Create(invalid_value->GetDict().Clone(),
+        EthSignTypedDataHelper::Create(invalid_value.GetDict().Clone(),
                                        EthSignTypedDataHelper::Version::kV4);
     const std::string invalid_encoded_types_v4 =
         invalid_types_helper->EncodeTypes("Domain");
@@ -94,13 +112,11 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeTypesArrays) {
         {"name": "wallet", "type": "address"}
     ]})");
 
-  auto types_value =
-      base::JSONReader::Read(types_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                             base::JSON_ALLOW_TRAILING_COMMAS);
-  ASSERT_TRUE(types_value && types_value->is_dict());
+  auto types_value = ParseJson(types_json);
+  ASSERT_TRUE(types_value.is_dict());
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
-      EthSignTypedDataHelper::Create(types_value->GetDict().Clone(),
+      EthSignTypedDataHelper::Create(types_value.GetDict().Clone(),
                                      EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
   const std::string encoded_types_v4 = helper->EncodeTypes("Mail");
@@ -134,18 +150,12 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodedData) {
     "to":{"name":"Bob","wallet":"0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"},
     "contents":"Hello, Bob!"
     })");
-  auto types_value =
-      base::JSONReader::Read(types_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                             base::JSON_ALLOW_TRAILING_COMMAS);
-  ASSERT_TRUE(types_value);
-  auto data_value =
-      base::JSONReader::Read(data_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                            base::JSON_ALLOW_TRAILING_COMMAS);
-  ASSERT_TRUE(data_value);
-  auto& data_dict = data_value->GetDict();
+  auto types_value = ParseJson(types_json);
+  auto data_value = ParseJson(data_json);
+  auto& data_dict = data_value.GetDict();
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
-      EthSignTypedDataHelper::Create(types_value->GetDict().Clone(),
+      EthSignTypedDataHelper::Create(types_value.GetDict().Clone(),
                                      EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
   auto encoded_mail_v4 = helper->EncodeData("Mail", data_dict);
@@ -175,16 +185,16 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodedData) {
   auto encoded_person_v3 =
       helper->EncodeData("Person", *(data_dict.FindDict("to")));
   EXPECT_EQ(encoded_person_v4, encoded_person_v3);
+
+  // Invalid primary type name
+  EXPECT_FALSE(helper->EncodeData("Brave", data_dict));
 }
 
 TEST(EthSignedTypedDataHelperUnitTest, InvalidEncodedData) {
   const std::string data_json(R"({"name":"Cow"})");
 
-  auto data_value =
-      base::JSONReader::Read(data_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                            base::JSON_ALLOW_TRAILING_COMMAS);
-  ASSERT_TRUE(data_value);
-  auto& data_dict = data_value->GetDict();
+  auto data_value = ParseJson(data_json);
+  auto& data_dict = data_value.GetDict();
 
   for (const std::string& invalid_json : {
            R"({
@@ -204,13 +214,10 @@ TEST(EthSignedTypedDataHelperUnitTest, InvalidEncodedData) {
         { "name": "name", "type": 1234 }
     ]})"}) {
     SCOPED_TRACE(invalid_json);
-    auto invalid_value = base::JSONReader::Read(
-        invalid_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                          base::JSON_ALLOW_TRAILING_COMMAS);
-    ASSERT_TRUE(invalid_value);
+    auto invalid_value = ParseJson(invalid_json);
 
     std::unique_ptr<EthSignTypedDataHelper> invalid_types_helper =
-        EthSignTypedDataHelper::Create(invalid_value->GetDict().Clone(),
+        EthSignTypedDataHelper::Create(invalid_value.GetDict().Clone(),
                                        EthSignTypedDataHelper::Version::kV4);
     auto encoded_domain_v4 =
         invalid_types_helper->EncodeData("Domain", data_dict);
@@ -242,18 +249,12 @@ TEST(EthSignedTypedDataHelperUnitTest, RecursiveCustomTypes) {
       "contents": "Hello Cow"
      }
     })");
-  auto types_value =
-      base::JSONReader::Read(types_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                             base::JSON_ALLOW_TRAILING_COMMAS);
-  ASSERT_TRUE(types_value);
-  auto data_value =
-      base::JSONReader::Read(data_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                            base::JSON_ALLOW_TRAILING_COMMAS);
-  ASSERT_TRUE(data_value);
-  auto& data_dict = data_value->GetDict();
+  auto types_value = ParseJson(types_json);
+  auto data_value = ParseJson(data_json);
+  auto& data_dict = data_value.GetDict();
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
-      EthSignTypedDataHelper::Create(types_value->GetDict().Clone(),
+      EthSignTypedDataHelper::Create(types_value.GetDict().Clone(),
                                      EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
   auto encoded_data_v4 = helper->EncodeData("Mail", data_dict);
@@ -294,18 +295,12 @@ TEST(EthSignedTypedDataHelperUnitTest, MissingFieldInData) {
     "contents":"Hello, Bob!"
     })");
 
-  auto types_value =
-      base::JSONReader::Read(types_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                             base::JSON_ALLOW_TRAILING_COMMAS);
-  ASSERT_TRUE(types_value);
-  auto data_value =
-      base::JSONReader::Read(data_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                            base::JSON_ALLOW_TRAILING_COMMAS);
-  ASSERT_TRUE(data_value);
-  auto& data_dict = data_value->GetDict();
+  auto types_value = ParseJson(types_json);
+  auto data_value = ParseJson(data_json);
+  auto& data_dict = data_value.GetDict();
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
-      EthSignTypedDataHelper::Create(types_value->GetDict().Clone(),
+      EthSignTypedDataHelper::Create(types_value.GetDict().Clone(),
                                      EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
   auto encoded_data_v4 = helper->EncodeData("Mail", data_dict);
@@ -347,18 +342,12 @@ TEST(EthSignedTypedDataHelperUnitTest, ArrayTypes) {
     "contents":"Hello, Alice & Bob!"
     })");
 
-  auto types_value =
-      base::JSONReader::Read(types_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                             base::JSON_ALLOW_TRAILING_COMMAS);
-  ASSERT_TRUE(types_value);
-  auto data_value =
-      base::JSONReader::Read(data_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                            base::JSON_ALLOW_TRAILING_COMMAS);
-  ASSERT_TRUE(data_value);
-  auto& data_dict = data_value->GetDict();
+  auto types_value = ParseJson(types_json);
+  auto data_value = ParseJson(data_json);
+  auto& data_dict = data_value.GetDict();
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
-      EthSignTypedDataHelper::Create(types_value->GetDict().Clone(),
+      EthSignTypedDataHelper::Create(types_value.GetDict().Clone(),
                                      EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
   auto encoded_data = helper->EncodeData("Mail", data_dict);
@@ -470,7 +459,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
   // not 20 bytes
   EXPECT_FALSE(helper->EncodeField(
       "address",
-      base::Value("0x0xaAaAAAAaaAAAaaaAaaAaaaaAAaAaaaaAaAaaAAaABBB")));
+      base::Value("0xaAaAAAAaaAAAaaaAaaAaaaaAAaAaaaaAaAaaAAaABBBb")));
   {
     auto encoded_field = helper->EncodeField(
         "address", base::Value("0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"));
@@ -775,6 +764,12 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
         base::ToLowerASCII(base::HexEncode(*encoded_field)),
         "0000000000000000000000000000000000000000000000000000000000010000");
   }
+  {  // custom type but not dictionary
+    EXPECT_FALSE(helper->EncodeField("Brave123", base::Value(1)));
+    EXPECT_FALSE(helper->EncodeField("Brave123", base::Value("123")));
+    EXPECT_FALSE(helper->EncodeField("Brave123", base::Value(true)));
+    EXPECT_FALSE(helper->EncodeField("Brave123", list));
+  }
 }
 
 TEST(EthSignedTypedDataHelperUnitTest, GetTypedDataMessageToSign) {
@@ -806,32 +801,23 @@ TEST(EthSignedTypedDataHelperUnitTest, GetTypedDataMessageToSign) {
     "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
   })");
 
-  auto types_value =
-      base::JSONReader::Read(types_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                             base::JSON_ALLOW_TRAILING_COMMAS);
-  ASSERT_TRUE(types_value);
-  auto data_value =
-      base::JSONReader::Read(data_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                            base::JSON_ALLOW_TRAILING_COMMAS);
-  ASSERT_TRUE(data_value);
-  auto ds_value =
-      base::JSONReader::Read(ds_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                          base::JSON_ALLOW_TRAILING_COMMAS);
-  ASSERT_TRUE(ds_value);
+  auto types_value = ParseJson(types_json);
+  auto data_value = ParseJson(data_json);
+  auto ds_value = ParseJson(ds_json);
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
-      EthSignTypedDataHelper::Create(types_value->GetDict().Clone(),
+      EthSignTypedDataHelper::Create(types_value.GetDict().Clone(),
                                      EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
 
-  auto ds_hash = helper->HashStruct("EIP712Domain", ds_value->GetDict());
+  auto ds_hash = helper->HashStruct("EIP712Domain", ds_value.GetDict());
   ASSERT_TRUE(ds_hash);
-  auto domain_hash = helper->GetTypedDataDomainHash(ds_value->GetDict());
+  auto domain_hash = helper->GetTypedDataDomainHash(ds_value.GetDict());
   ASSERT_TRUE(domain_hash);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*domain_hash)),
             "f2cee375fa42b42143804025fc449deafd50cc031ca257e0b194a650a912090f");
   auto primary_hash =
-      helper->GetTypedDataPrimaryHash("Mail", data_value->GetDict());
+      helper->GetTypedDataPrimaryHash("Mail", data_value.GetDict());
   ASSERT_TRUE(primary_hash);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*primary_hash)),
             "c52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e");
