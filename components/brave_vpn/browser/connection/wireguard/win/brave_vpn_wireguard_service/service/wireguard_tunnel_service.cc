@@ -34,6 +34,11 @@ namespace {
 
 constexpr wchar_t kBraveWireguardConfig[] = L"wireguard.brave.conf";
 
+// Total time of retries until time out will be
+// kQueryWaitTimeMs * kMaxQueryRetries = X ms.
+constexpr uint16_t kQueryWaitTimeMs = 100;
+constexpr uint16_t kMaxQueryRetries = 20;
+
 struct SidAccessDescriptor {
   const base::win::Sid& sid;
   DWORD access_mask;
@@ -147,6 +152,32 @@ absl::optional<base::FilePath> GetConfigFilePath(
   return WriteConfigToFile(decoded_config);
 }
 
+// Wait until the service is stopped.
+bool WaitForServiceStopped(SC_HANDLE service,
+                           uint16_t max_retries,
+                           uint16_t wait_time_ms) {
+  for (auto i = 0; i < max_retries; ++i) {
+    SERVICE_STATUS service_status;
+    if (!QueryServiceStatus(service, &service_status)) {
+      VLOG(1) << "QueryServiceStatus failed error=" << ::GetLastError();
+      return false;
+    }
+
+    if (service_status.dwCurrentState == SERVICE_STOPPED) {
+      return true;
+    }
+
+    if (service_status.dwCurrentState != SERVICE_STOP_PENDING &&
+        service_status.dwCurrentState != SERVICE_RUNNING) {
+      VLOG(1) << "Cannot stop service state=" << service_status.dwCurrentState;
+      return false;
+    }
+    ::Sleep(wait_time_ms);
+  }
+
+  return false;
+}
+
 }  // namespace
 
 namespace wireguard {
@@ -176,11 +207,13 @@ bool RemoveExistingWireguardService() {
   if (service.IsValid()) {
     if (IsServiceRunning(service.Get())) {
       SERVICE_STATUS stt;
-      // TODO(spylogsster): Wait until service stopped.
-      // https://github.com/brave/brave-browser/issues/30706
       if (!ControlService(service.Get(), SERVICE_CONTROL_STOP, &stt)) {
         VLOG(1) << "ControlService failed to send stop signal";
         return false;
+      }
+      if (!WaitForServiceStopped(service.Get(), kMaxQueryRetries,
+                                 kQueryWaitTimeMs)) {
+        VLOG(1) << "Stopping service timed out";
       }
     }
     if (!DeleteService(service.Get())) {
