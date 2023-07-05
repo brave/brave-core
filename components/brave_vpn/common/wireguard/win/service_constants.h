@@ -11,6 +11,10 @@ namespace brave_vpn {
 constexpr wchar_t kBraveVpnWireguardServiceExecutable[] =
     L"brave_vpn_wireguard_service.exe";
 
+// Registry flag to count service launches for the fallback.
+constexpr wchar_t kBraveVpnWireguardCounterOfTunnelLaunches[] =
+    L"tunnel_launches_counter";
+
 // Register and configure windows service.
 constexpr char kBraveVpnWireguardServiceInstallSwitchName[] = "install";
 

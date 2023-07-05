@@ -19,6 +19,7 @@ constexpr wchar_t kBraveVpnWireguardServiceRegistryStoragePath[] =
     L"Software\\BraveSoftware\\Vpn\\";
 constexpr wchar_t kBraveWireguardConfigKeyName[] = L"ConfigPath";
 constexpr wchar_t kBraveWireguardEnableTrayIconKeyName[] = L"EnableTrayIcon";
+constexpr uint16_t kBraveVpnWireguardMaxFailedAttempts = 5;
 }  // namespace
 
 std::wstring GetBraveVpnWireguardServiceRegistryStoragePath() {
@@ -53,6 +54,22 @@ void EnableVPNTrayIcon(bool value) {
       ERROR_SUCCESS) {
     VLOG(1) << "False to write registry value";
   }
+}
+
+// If the tunnel service failed to launch or crashed more than the limit we
+// should ask user for the fallback to IKEv2 implementation.
+bool ShouldFallbackToIKEv2() {
+  base::win::RegKey key(
+      HKEY_LOCAL_MACHINE,
+      brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
+      KEY_READ);
+  if (!key.Valid()) {
+    VLOG(1) << "Failed to open wireguard service storage";
+    return false;
+  }
+  DWORD launch = 0;
+  key.ReadValueDW(kBraveVpnWireguardCounterOfTunnelLaunches, &launch);
+  return launch >= kBraveVpnWireguardMaxFailedAttempts;
 }
 
 bool UpdateLastUsedConfigPath(const base::FilePath& config_path) {

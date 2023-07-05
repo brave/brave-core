@@ -22,6 +22,7 @@
 #include "base/win/sid.h"
 #include "base/win/windows_types.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/process_utils.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/tunnel_utils.h"
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
@@ -303,6 +304,7 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
   }
 
   {
+    IncrementWireguardTunnelLaunchedFlag();
     base::FilePath directory;
     if (!base::PathService::Get(base::DIR_EXE, &directory)) {
       return S_FALSE;
@@ -320,6 +322,7 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
     }
 
     if (tunnel_proc(config_file_path.value().c_str())) {
+      ResetWireguardTunnelLaunchedFlag();
       return S_OK;
     }
     VLOG(1) << "Failed to activate tunnel service:"
