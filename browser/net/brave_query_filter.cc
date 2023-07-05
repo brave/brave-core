@@ -57,6 +57,8 @@ static constexpr auto kSimpleQueryStringTrackers =
          "bsft_uid", "bsft_clkid",
          // https://github.com/brave/brave-browser/issues/25691
          "guce_referrer", "guce_referrer_sig",
+         // https://github.com/brave/brave-browser/issues/31084
+         "mtm_cid", "pk_cid",
          // https://github.com/brave/brave-browser/issues/26295
          "vgo_ee"});
 
