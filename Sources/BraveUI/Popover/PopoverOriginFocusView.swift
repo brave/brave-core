@@ -91,7 +91,7 @@ struct PopoverOriginFocusView_PreviewProvider: PreviewProvider {
     }
   }
   static var previews: some View {
-    Image(braveSystemName: "leo.product.brave-monochrome")
+    Image(braveSystemName: "leo.brave.icon-monochrome")
       .foregroundStyle(LinearGradient(braveGradient: .lightGradient02))
       .imageScale(.large)
       .padding(8)

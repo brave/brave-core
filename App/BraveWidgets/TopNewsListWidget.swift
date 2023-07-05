@@ -70,7 +70,7 @@ private struct TopNewsListView: View {
   private var headerView: some View {
     HStack {
       HStack(spacing: 4) {
-        Image(braveSystemName: "leo.product.brave-monochrome")
+        Image(braveSystemName: "leo.brave.icon-monochrome")
           .font(.system(size: 12))
           .imageScale(.large)
           .foregroundColor(Color(.braveOrange))
