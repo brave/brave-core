@@ -222,7 +222,7 @@ class RunableConfiguration:
     args.extend(config.extra_benchmark_args)
 
     if self.common_options.verbose:
-      args.extend(['--show-stdout', '--verbose'])
+      args.extend(['--verbose'])
 
     if len(extra_browser_args) > 0:
       args.append('--extra-browser-args=' + ' '.join(extra_browser_args))
