@@ -13,6 +13,7 @@ import Alert from '@brave/leo/react/alert'
 import { useCommands } from '../commands'
 import Dialog from '@brave/leo/react/dialog'
 import { getLocale } from '$web-common/locale'
+import { Accelerator } from 'gen/brave/components/commands/common/commands.mojom.m'
 
 const StyledDialog = styled(Dialog)`
   --leo-dialog-width: 402px;
@@ -157,59 +158,62 @@ export default function ConfigureShortcut(props: {
     ? maxKeys.current.keys
     : stringToKeys(props.value ?? '')
 
-  const conflict = acceleratorLookup[maxKeys.current.codes.join('+')]
+  const shortcut = maxKeys.current.codes.join('+');
+  const conflict = acceleratorLookup[shortcut]
+  // A shortcut cannot be reused if the existing shortcut is unmodifiable.
+  const unmodifiable = commands[conflict]?.accelerators.some((a: Accelerator) => a.codes === shortcut && a.unmodifiable)
   const conflictMessage = React.useMemo(() => {
     if (!conflict) return null
-    const messageParts = getLocale('shortcutsPageShortcutInUse').split('$1')
+    const messageParts = getLocale(unmodifiable ? 'shortcutsPageShortcutUnmodifiable' : 'shortcutsPageShortcutInUse').split('$1')
     return <>
       {messageParts[0]}
       <b>"{commands[conflict].name}"</b>
       {messageParts[1]}
     </>
-  }, [conflict, commands])
+  }, [conflict, commands, unmodifiable])
 
   return (
     <StyledDialog isOpen onClose={props.onCancel}>
-        <KeysContainer>
-          {keys.length ? (
-            <Keys keys={keys} large />
-          ) : (
-            <HintText>
-              {getLocale('shortcutsPageShortcutHint')}
-            </HintText>
-          )}
-        </KeysContainer>
-        {conflict && (
-          <InUseAlert>
-            {conflictMessage}
-          </InUseAlert>
+      <KeysContainer>
+        {keys.length ? (
+          <Keys keys={keys} large />
+        ) : (
+          <HintText>
+            {getLocale('shortcutsPageShortcutHint')}
+          </HintText>
         )}
-        <div slot='actions'>
-          <Button
-            size="large"
-            kind="plain-faint"
-            onClick={() => {
-              setCurrentKeys([])
-              maxKeys.current = new AcceleratorInfo()
-              props.onCancel?.()
-            }}
-          >
-            {getLocale('shortcutsPageCancelAddShortcut')}
-          </Button>
-          <Button
-            size="large"
-            kind="filled"
-            isDisabled={!maxKeys.current.isValid()}
-            onClick={() => {
-              props.onChange({
-                codes: keysToString(maxKeys.current.codes),
-                keys: keysToString(maxKeys.current.keys)
-              })
-            }}
-          >
-            {getLocale('shortcutsPageSaveAddShortcut')}
-          </Button>
-        </div>
+      </KeysContainer>
+      {conflict && (
+        <InUseAlert>
+          {conflictMessage}
+        </InUseAlert>
+      )}
+      <div slot='actions'>
+        <Button
+          size="large"
+          kind="plain-faint"
+          onClick={() => {
+            setCurrentKeys([])
+            maxKeys.current = new AcceleratorInfo()
+            props.onCancel?.()
+          }}
+        >
+          {getLocale('shortcutsPageCancelAddShortcut')}
+        </Button>
+        <Button
+          size="large"
+          kind="filled"
+          isDisabled={!maxKeys.current.isValid() || unmodifiable}
+          onClick={() => {
+            props.onChange({
+              codes: keysToString(maxKeys.current.codes),
+              keys: keysToString(maxKeys.current.keys)
+            })
+          }}
+        >
+          {getLocale('shortcutsPageSaveAddShortcut')}
+        </Button>
+      </div>
     </StyledDialog>
   )
 }
