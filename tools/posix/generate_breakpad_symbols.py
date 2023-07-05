@@ -192,7 +192,7 @@ def GenerateSymbols(options, binaries):
                 if not os.access(dump_syms_bin, os.X_OK):
                     raise Exception(f'Cannot find dump_syms: {dump_syms_bin}')
 
-                syms = GetCommandOutput([dump_syms_bin, '-c', binary])
+                syms = GetCommandOutput([dump_syms_bin, '-d', '-m', binary])
                 module_line = re.match("MODULE [^ ]+ [^ ]+ ([0-9A-F]+) (.*)\n",
                                        syms)
                 output_path = os.path.join(options.symbols_dir,
