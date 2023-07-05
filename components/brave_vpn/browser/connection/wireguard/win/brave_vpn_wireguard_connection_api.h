@@ -49,7 +49,7 @@ class BraveVPNWireguardConnectionAPI
  private:
   void RunServiceWatcher();
   void OnWireguardServiceLaunched(bool success);
-  void OnServiceStopped();
+  void OnServiceStopped(int mask);
   void ResetServiceWatcher();
 
   std::unique_ptr<brave::ServiceWatcher> service_watcher_;

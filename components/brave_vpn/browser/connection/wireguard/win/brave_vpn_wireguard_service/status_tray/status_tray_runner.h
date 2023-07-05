@@ -9,8 +9,10 @@
 #include <memory>
 
 #include "base/no_destructor.h"
+#include "base/win/registry.h"
 #include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/tray_menu_model.h"
+#include "brave/components/brave_vpn/common/win/brave_windows_service_watcher.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ui {
@@ -43,15 +45,21 @@ class StatusTrayRunner : public TrayMenuModel::Delegate {
   bool IsTunnelServiceRunning() const;
   void SetupStatusIcon();
   void SignalExit();
-  void UpdateIconState(bool error);
+  void UpdateIconState(bool connected, bool error);
+  void SubscribeForServiceStopNotifications(const std::wstring& name);
+  void SubscribeForStorageUpdates();
   void OnConnected(bool success);
   void OnDisconnected(bool success);
+  void OnServiceStateChanged(int mask);
+  void OnStorageUpdated();
 
   // TrayMenuModel::Delegate
   void ExecuteCommand(int command_id, int event_flags) override;
   void OnMenuWillShow(ui::SimpleMenuModel* source) override;
 
+  std::unique_ptr<brave::ServiceWatcher> service_watcher_;
   absl::optional<bool> service_running_for_testing_;
+  base::win::RegKey storage_;
   std::unique_ptr<StatusTray> status_tray_;
   base::OnceClosure quit_;
   base::WeakPtrFactory<StatusTrayRunner> weak_factory_{this};

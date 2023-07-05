@@ -26,9 +26,9 @@ VOID CALLBACK OnServiceStoppedCallback(PVOID pParameter) {
 
 void WaitForEvent(HANDLE event,
                   SC_HANDLE service,
+                  int mask,
                   SERVICE_NOTIFY* service_notify) {
-  auto result = NotifyServiceStatusChange(service, SERVICE_NOTIFY_STOPPED,
-                                          service_notify);
+  auto result = NotifyServiceStatusChange(service, mask, service_notify);
   if (result != ERROR_SUCCESS) {
     VLOG(1) << "Unable to subscribe for service notifications:"
             << logging::SystemErrorCodeToString(result);
@@ -47,24 +47,17 @@ void WaitForEvent(HANDLE event,
 ServiceWatcher::ServiceWatcher()
     : task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-           base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {}
+           base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN})) {}
+
 ServiceWatcher::~ServiceWatcher() = default;
 
-void ServiceWatcher::OnServiceSignaled(base::OnceClosure callback,
-                                       base::WaitableEvent* service_event) {
-  if (callback) {
-    is_watching_ = false;
-    std::move(callback).Run();
-  }
-}
-
-bool ServiceWatcher::IsWatching() const {
-  return is_watching_;
+std::wstring ServiceWatcher::GetServiceName() const {
+  return service_name_;
 }
 
 bool ServiceWatcher::Subscribe(const std::wstring& service_name,
-                               int state,
-                               base::OnceClosure callback) {
+                               int mask,
+                               StateChangedCallback callback) {
   scm_.Set(::OpenSCManager(
       nullptr, nullptr, SERVICE_QUERY_STATUS | SC_MANAGER_ENUMERATE_SERVICE));
   if (!scm_.IsValid()) {
@@ -76,23 +69,48 @@ bool ServiceWatcher::Subscribe(const std::wstring& service_name,
   if (!service_.IsValid()) {
     return false;
   }
-
+  service_name_ = service_name;
+  mask_ = mask;
+  callback_ = std::move(callback);
   service_notify_ = {
       .dwVersion = SERVICE_NOTIFY_STATUS_CHANGE,
       .pfnNotifyCallback = (PFN_SC_NOTIFY_CALLBACK)&OnServiceStoppedCallback,
       .pContext = service_stopped_event_.handle()};
 
+  StartWatching();
+  return true;
+}
+
+void ServiceWatcher::StartWatching() {
+  DCHECK(service_.IsValid());
+  DCHECK(!service_name_.empty());
+
+  if (service_watcher_) {
+    service_watcher_->StopWatching();
+  }
+  service_stopped_event_.Reset();
+  service_watcher_.reset(new base::WaitableEventWatcher());
   task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&WaitForEvent, service_stopped_event_.handle(),
-                                service_.get(), &service_notify_));
-
-  service_watcher_.StartWatching(
+                                service_.get(), mask_, &service_notify_));
+  service_watcher_->StartWatching(
       &service_stopped_event_,
       base::BindOnce(&ServiceWatcher::OnServiceSignaled,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)),
+                     weak_ptr_factory_.GetWeakPtr()),
       task_runner_);
   is_watching_ = true;
-  return true;
+}
+
+bool ServiceWatcher::IsWatching() const {
+  return is_watching_;
+}
+
+void ServiceWatcher::OnServiceSignaled(base::WaitableEvent* service_event) {
+  is_watching_ = false;
+  if (!callback_) {
+    return;
+  }
+  callback_.Run(mask_);
 }
 
 }  // namespace brave

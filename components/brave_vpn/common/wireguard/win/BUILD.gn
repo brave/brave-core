@@ -20,6 +20,8 @@ source_set("win") {
   sources = [
     "service_constants.cc",
     "service_constants.h",
+    "storage_utils.cc",
+    "storage_utils.h",
     "wireguard_utils.cc",
     "wireguard_utils.h",
   ]

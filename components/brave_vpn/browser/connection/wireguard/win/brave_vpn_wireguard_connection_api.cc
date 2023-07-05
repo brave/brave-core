@@ -83,7 +83,7 @@ void BraveVPNWireguardConnectionAPI::PlatformConnectImpl(
           weak_factory_.GetWeakPtr()));
 }
 
-void BraveVPNWireguardConnectionAPI::OnServiceStopped() {
+void BraveVPNWireguardConnectionAPI::OnServiceStopped(int mask) {
   // Postpone check because the service can be restarted by the system due to
   // configured failure actions.
   base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
@@ -91,6 +91,7 @@ void BraveVPNWireguardConnectionAPI::OnServiceStopped() {
       base::BindOnce(&BraveVPNWireguardConnectionAPI::CheckConnection,
                      weak_factory_.GetWeakPtr()),
       base::Seconds(kWireguardServiceRestartTimeoutSec));
+  ResetServiceWatcher();
 }
 
 void BraveVPNWireguardConnectionAPI::RunServiceWatcher() {
@@ -101,8 +102,8 @@ void BraveVPNWireguardConnectionAPI::RunServiceWatcher() {
   if (!service_watcher_->Subscribe(
           brave_vpn::GetBraveVpnWireguardTunnelServiceName(),
           SERVICE_NOTIFY_STOPPED,
-          base::BindOnce(&BraveVPNWireguardConnectionAPI::OnServiceStopped,
-                         weak_factory_.GetWeakPtr()))) {
+          base::BindRepeating(&BraveVPNWireguardConnectionAPI::OnServiceStopped,
+                              weak_factory_.GetWeakPtr()))) {
     VLOG(1) << "Unable to set service watcher";
   }
 }

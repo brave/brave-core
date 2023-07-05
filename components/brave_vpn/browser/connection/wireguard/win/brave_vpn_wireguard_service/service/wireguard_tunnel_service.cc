@@ -21,10 +21,11 @@
 #include "base/win/security_descriptor.h"
 #include "base/win/sid.h"
 #include "base/win/windows_types.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service/process_utils.h"
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
-#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils.h"
+#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
@@ -127,6 +128,7 @@ bool IsServiceRunning(SC_HANDLE service) {
   if (!::QueryServiceStatus(service, &service_status)) {
     return false;
   }
+  LOG(ERROR) << "status:" << service_status.dwCurrentState;
   return service_status.dwCurrentState == SERVICE_RUNNING;
 }
 
@@ -174,16 +176,17 @@ bool RemoveExistingWireguardService() {
   if (service.IsValid()) {
     if (IsServiceRunning(service.Get())) {
       SERVICE_STATUS stt;
+      // TODO(spylogsster): Wait until service stopped.
+      // https://github.com/brave/brave-browser/issues/30706
       if (!ControlService(service.Get(), SERVICE_CONTROL_STOP, &stt)) {
         VLOG(1) << "ControlService failed to send stop signal";
         return false;
       }
-      // TODO(spylogsster): Wait until service stopped.
     }
     if (!DeleteService(service.Get())) {
-      VLOG(1) << "DeleteService failed, error: " << std::hex
-              << HRESULTFromLastError();
-      return false;
+      VLOG(1) << "DeleteService failed, error: "
+              << logging::SystemErrorCodeToString(
+                     logging::GetLastSystemErrorCode());
     }
   }
   return true;
@@ -236,7 +239,7 @@ bool CreateAndRunBraveWireguardService(const std::wstring& encoded_config) {
     return false;
   }
 
-  if (!brave_vpn::SetServiceFailureActions(service.Get())) {
+  if (!SetServiceFailureActions(service.Get())) {
     VLOG(1) << "SetServiceFailActions failed:" << std::hex
             << HRESULTFromLastError();
     return false;
@@ -251,7 +254,11 @@ bool CreateAndRunBraveWireguardService(const std::wstring& encoded_config) {
       !UpdateLastUsedConfigPath(config_file_path.value())) {
     VLOG(1) << "Failed to save last used config path";
   }
-
+  // Run tray process each time we establish connection. System tray icon
+  // manages self state to be visible/hidden due to settings. Next we will add
+  // a desktop nitification popup with established connection information which
+  // will be shown on each time.
+  brave_vpn::RunTrayProcessAsUser();
   return DeleteService(service.Get()) != 0;
 }
 

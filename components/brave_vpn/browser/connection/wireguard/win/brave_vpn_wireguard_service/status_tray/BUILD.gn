@@ -15,6 +15,7 @@ source_set("status_tray") {
     "resources",
     "//base",
     "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/win",
     "//brave/components/brave_vpn/common/wireguard/win",
     "//ui/base",
     "//ui/native_theme",

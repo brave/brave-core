@@ -5,7 +5,7 @@
 
 source_set("resources") {
   inputs = [
-    "interactive_resource.h",
+    "resource.h",
     "resources_en.rc",
   ]
 }

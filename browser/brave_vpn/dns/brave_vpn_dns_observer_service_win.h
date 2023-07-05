@@ -49,7 +49,7 @@ class BraveVpnDnsObserverService : public brave_vpn::BraveVPNServiceObserver,
  private:
   friend class BraveVpnDnsObserverServiceUnitTest;
 
-  void OnServiceStopped();
+  void OnServiceStopped(int mask);
   void RunServiceWatcher();
   void OnPrefChanged();
   bool IsDNSHelperLive();
