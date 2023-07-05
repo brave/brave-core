@@ -609,7 +609,11 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     @Override
     public void onMaybeShowTrashButton(
             WalletListItemModel walletListItemModel, ImageView trashButton) {
-        if (mType != WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) return;
+        assert walletListItemModel.getAssetNetwork() != null : "Network should not be null";
+        // Prevent NPE of network, issue:#31303
+        if (mType != WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST
+                || walletListItemModel.getAssetNetwork() == null)
+            return;
 
         JsonRpcService jsonRpcService = getJsonRpcService();
         if (jsonRpcService == null) return;
@@ -628,9 +632,11 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     @Override
     public void onAssetCheckedChanged(
             WalletListItemModel walletListItemModel, CheckBox assetCheck, boolean isChecked) {
-        if (mType != WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) return;
-        JsonRpcService jsonRpcService = getJsonRpcService();
-        if (jsonRpcService == null) return;
+        assert walletListItemModel.getAssetNetwork() != null : "Network should not be null";
+        // Prevent NPE of network, issue:#31303
+        if (mType != WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST
+                || walletListItemModel.getAssetNetwork() == null)
+            return;
 
         BlockchainToken thisToken = walletListItemModel.getBlockchainToken();
         TokenUtils.isCustomToken(getBlockchainRegistry(), walletListItemModel.getAssetNetwork(),
