@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/browser/de_amp_util.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -32,12 +33,16 @@
 
 BraveRendererUpdater::BraveRendererUpdater(
     Profile* profile,
-    brave_wallet::KeyringService* keyring_service)
-    : profile_(profile), keyring_service_(keyring_service) {
+    brave_wallet::KeyringService* keyring_service,
+    PrefService* local_state)
+    : profile_(profile), keyring_service_(keyring_service),
+    local_state_(local_state){
   PrefService* pref_service = profile->GetPrefs();
   brave_wallet_ethereum_provider_.Init(kDefaultEthereumWallet, pref_service);
   brave_wallet_solana_provider_.Init(kDefaultSolanaWallet, pref_service);
   de_amp_enabled_.Init(de_amp::kDeAmpPrefEnabled, pref_service);
+
+  widevine_enabled_.Init(kWidevineOptedIn, local_state);
 
   CheckActiveWallet();
 
@@ -59,6 +64,12 @@ BraveRendererUpdater::BraveRendererUpdater(
       base::BindRepeating(
           &BraveRendererUpdater::CheckActiveWalletAndMaybeUpdateRenderers,
           base::Unretained(this)));
+
+  local_state_change_registrar_.Init(local_state);
+  local_state_change_registrar_.Add(
+      kWidevineOptedIn,
+      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                          base::Unretained(this)));
 }
 
 BraveRendererUpdater::~BraveRendererUpdater() = default;
@@ -183,11 +194,14 @@ void BraveRendererUpdater::UpdateRenderer(
   PrefService* pref_service = profile_->GetPrefs();
   bool de_amp_enabled = de_amp::IsDeAmpEnabled(pref_service);
 
+  bool widevine_enabled = local_state_->GetBoolean(kWidevineOptedIn);
+
   (*renderer_configuration)
       ->SetConfiguration(brave::mojom::DynamicParams::New(
           install_window_brave_ethereum_provider,
           install_window_ethereum_provider,
           allow_overwrite_window_ethereum_provider,
           brave_use_native_solana_wallet,
-          allow_overwrite_window_solana_provider, de_amp_enabled));
+          allow_overwrite_window_solana_provider, de_amp_enabled,
+          widevine_enabled));
 }

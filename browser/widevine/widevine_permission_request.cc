@@ -12,8 +12,10 @@
 #include "build/build_config.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "components/permissions/request_type.h"
+#include "components/url_formatter/elide_url.h"
 #include "components/vector_icons/vector_icons.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/l10n/l10n_util.h"
 
 // static
 bool WidevinePermissionRequest::is_test_ = false;
@@ -34,7 +36,15 @@ WidevinePermissionRequest::WidevinePermissionRequest(
 
 WidevinePermissionRequest::~WidevinePermissionRequest() = default;
 
-#if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
+std::u16string WidevinePermissionRequest::GetDialogMessageText() const {
+  return l10n_util::GetStringFUTF16(
+      GetWidevinePermissionRequestTextFrangmentResourceId(false),
+      url_formatter::FormatUrlForSecurityDisplay(
+                      requesting_origin(),
+                      url_formatter::SchemeDisplay::OMIT_CRYPTOGRAPHIC));
+}
+#else
 std::u16string WidevinePermissionRequest::GetMessageTextFragment() const {
   return brave_l10n::GetLocalizedResourceUTF16String(
       GetWidevinePermissionRequestTextFrangmentResourceId(for_restart_));
@@ -44,6 +54,9 @@ std::u16string WidevinePermissionRequest::GetMessageTextFragment() const {
 void WidevinePermissionRequest::PermissionDecided(ContentSetting result,
                                                   bool is_one_time,
                                                   bool is_final_decision) {
+  LOG(ERROR) << "widevine_permission_request.cc: PermissionDecided: 0";
+  LOG(ERROR) << "widevine_permission_request.cc: PermissionDecided: result: " << result;
+  LOG(ERROR) << "widevine_permission_request.cc: PermissionDecided: IsWidevineOptedIn: " << IsWidevineOptedIn();
   // Permission granted
   if (result == ContentSetting::CONTENT_SETTING_ALLOW) {
 #if BUILDFLAG(IS_LINUX)
@@ -55,14 +68,16 @@ void WidevinePermissionRequest::PermissionDecided(ContentSetting result,
           FROM_HERE, base::BindOnce(&chrome::AttemptRelaunch));
     }
 #endif
-#if !BUILDFLAG(IS_ANDROID)
     if (!for_restart_) {
-      EnableWidevineCdmComponent();
+      EnableWidevineCdm();
     }
-#endif
     // Permission denied
   } else if (result == ContentSetting::CONTENT_SETTING_BLOCK) {
+#if BUILDFLAG(IS_ANDROID)
+    DisableWidevineCdm();
+#else
     DontAskWidevineInstall(web_contents_, dont_ask_widevine_install_);
+#endif
     // Cancelled
   } else {
     DCHECK(result == CONTENT_SETTING_DEFAULT);

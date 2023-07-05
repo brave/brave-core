@@ -5,7 +5,9 @@
 
 #include "brave/renderer/brave_content_renderer_client.h"
 
+#include "base/logging.h"
 #include "base/feature_list.h"
+#include "base/ranges/algorithm.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -23,10 +25,12 @@
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/renderer/chrome_render_thread_observer.h"
 #include "content/public/renderer/render_thread.h"
+#include "media/base/key_system_info.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/platform/web_runtime_features.h"
 #include "third_party/blink/public/web/modules/service_worker/web_service_worker_context_proxy.h"
 #include "third_party/blink/public/web/web_script_controller.h"
+#include "third_party/widevine/cdm/buildflags.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -45,6 +49,38 @@
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/playlist/renderer/playlist_render_frame_observer.h"
 #endif
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+#include "third_party/widevine/cdm/widevine_cdm_common.h"
+#endif
+
+namespace {
+void MaybeRemoveWidevineSupport(
+  media::GetSupportedKeySystemsCB cb, media::KeySystemInfos key_systems) {
+  for (auto& key_system : key_systems) {
+    if (key_system->GetBaseKeySystemName() == kWidevineKeySystem) {
+      LOG(ERROR) << "brave_content_renderer_client.cc: MaybeRemoveWidevineSupport: GetBaseKeySystemName: "
+        << key_system->GetBaseKeySystemName();
+    }
+  }
+#if BUILDFLAG(ENABLE_WIDEVINE) && BUILDFLAG(IS_ANDROID)
+  auto dynamic_params = BraveRenderThreadObserver::GetDynamicParams();
+  LOG(ERROR) << "brave_content_renderer_client.cc: GetSupportedKeySystems: dynamic_params.widevine_enabled: "
+        << (dynamic_params.widevine_enabled);
+  if (!dynamic_params.widevine_enabled) {
+    key_systems.erase(
+      base::ranges::remove(
+        key_systems, kWidevineKeySystem,
+          [](const std::unique_ptr<media::KeySystemInfo> &key_system) {
+            return key_system->GetBaseKeySystemName();
+          }),
+      key_systems.cend());
+  }
+#endif
+  cb.Run(std::move(key_systems));
+}
+
+}  // namespace
 
 BraveContentRendererClient::BraveContentRendererClient() = default;
 
@@ -140,6 +176,12 @@ void BraveContentRendererClient::RenderFrameCreated(
                                               ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif
+}
+
+void BraveContentRendererClient::GetSupportedKeySystems(
+    media::GetSupportedKeySystemsCB cb) {
+  ChromeContentRendererClient::GetSupportedKeySystems(
+    base::BindRepeating(&MaybeRemoveWidevineSupport, cb));
 }
 
 void BraveContentRendererClient::RunScriptsAtDocumentStart(

@@ -22,10 +22,8 @@ class PrefRegistrySimple;
 class PrefService;
 class Profile;
 
-#if !BUILDFLAG(IS_ANDROID)
-void EnableWidevineCdmComponent();
-void DisableWidevineCdmComponent();
-#endif
+void EnableWidevineCdm();
+void DisableWidevineCdm();
 void RegisterWidevineProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry);
 int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart);

@@ -334,7 +334,7 @@ void BraveDefaultExtensionsHandler::SetWidevineEnabled(
 #if BUILDFLAG(ENABLE_WIDEVINE)
   CHECK_EQ(args.size(), 1U);
   bool enabled = args[0].GetBool();
-  enabled ? EnableWidevineCdmComponent() : DisableWidevineCdmComponent();
+  enabled ? EnableWidevineCdm() : DisableWidevineCdm();
   AllowJavascript();
 #endif
 }

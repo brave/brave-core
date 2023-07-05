@@ -75,11 +75,11 @@ void BraveDrmTabHelper::BindBraveDRM(
 
 bool BraveDrmTabHelper::ShouldShowWidevineOptIn() const {
   // If the user already opted in, don't offer it.
-  PrefService* prefs =
-      static_cast<Profile*>(web_contents()->GetBrowserContext())->GetPrefs();
-  if (IsWidevineOptedIn() || !prefs->GetBoolean(kAskWidevineInstall)) {
-    return false;
-  }
+  // PrefService* prefs =
+  //     static_cast<Profile*>(web_contents()->GetBrowserContext())->GetPrefs();
+  // if (IsWidevineOptedIn() || !prefs->GetBoolean(kAskWidevineInstall)) {
+  //   return false;
+  // }
 
   return is_widevine_requested_;
 }

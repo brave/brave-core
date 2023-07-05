@@ -230,6 +230,11 @@
           Restart browser to enable Google Widevine
         </message>
       </if>
+      <if expr="is_android">
+        <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_ENABLE_SYSTEM" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
+          <ph name="URL">$1<ex>https://www.youtube.com</ex></ph> wants to play protected Widevine content. Would you like to enable Android system support for Widevine? By enabling, you'll agree to Google's terms of use.\n\n<ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more about Widevine<ph name="END_LINK">&lt;/link&gt;</ph>
+        </message>
+      </if>
       <message name="IDS_WIDEVINE_INSTALL_MESSAGE" desc="Bubble info text when Widevine is not installed. 'Widevine' is the name of a plugin and should not be translated.">
         Widevine is sometimes needed to play media on a webpage. It's a Google extension loaded from Google servers, which Brave cannot inspect. By installing, you'll agree to Google's terms of use.
       </message>

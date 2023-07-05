@@ -29,7 +29,8 @@ class RenderProcessHost;
 class BraveRendererUpdater : public KeyedService {
  public:
   BraveRendererUpdater(Profile* profile,
-                       brave_wallet::KeyringService* keyring_service);
+                       brave_wallet::KeyringService* keyring_service,
+                       PrefService* local_state);
   BraveRendererUpdater(const BraveRendererUpdater&) = delete;
   BraveRendererUpdater& operator=(const BraveRendererUpdater&) = delete;
   ~BraveRendererUpdater() override;
@@ -60,12 +61,15 @@ class BraveRendererUpdater : public KeyedService {
 
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<brave_wallet::KeyringService> keyring_service_ = nullptr;
+  raw_ptr<PrefService> local_state_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
+  PrefChangeRegistrar local_state_change_registrar_;
 
   // Prefs that we sync to the renderers.
   IntegerPrefMember brave_wallet_ethereum_provider_;
   IntegerPrefMember brave_wallet_solana_provider_;
   BooleanPrefMember de_amp_enabled_;
+  BooleanPrefMember widevine_enabled_;
   bool is_wallet_allowed_for_context_ = false;
   bool is_wallet_created_ = false;
 };

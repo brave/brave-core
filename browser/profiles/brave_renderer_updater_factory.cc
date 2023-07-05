@@ -8,6 +8,7 @@
 #include "base/no_destructor.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/profiles/brave_renderer_updater.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -39,7 +40,7 @@ KeyedService* BraveRendererUpdaterFactory::BuildServiceInstanceFor(
   auto* keyring_service =
       brave_wallet::KeyringServiceFactory::GetServiceForContext(context);
   return new BraveRendererUpdater(static_cast<Profile*>(context),
-                                  keyring_service);
+                                  keyring_service, g_browser_process->local_state());
 }
 
 bool BraveRendererUpdaterFactory::ServiceIsCreatedWithBrowserContext() const {

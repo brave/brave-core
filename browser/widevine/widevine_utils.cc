@@ -81,34 +81,38 @@ void InstallWidevineOnceRegistered() {
 
 }  // namespace
 
-#if !BUILDFLAG(IS_ANDROID)
-void EnableWidevineCdmComponent() {
+void EnableWidevineCdm() {
   if (IsWidevineOptedIn())
     return;
 
   SetWidevineOptedIn(true);
+#if !BUILDFLAG(IS_ANDROID)
   RegisterWidevineCdmComponent(g_browser_process->component_updater(),
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
                                g_browser_process->shared_url_loader_factory(),
 #endif
                                base::BindOnce(&InstallWidevineOnceRegistered));
+#endif
 }
 
-void DisableWidevineCdmComponent() {
+void DisableWidevineCdm() {
   if (!IsWidevineOptedIn())
     return;
 
   SetWidevineOptedIn(false);
+#if !BUILDFLAG(IS_ANDROID)
   g_browser_process->component_updater()->UnregisterComponent(
       kWidevineComponentId);
-}
 #endif
+}
 
 int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart) {
 #if BUILDFLAG(IS_LINUX)
   return for_restart
              ? IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_RESTART_BROWSER
              : IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL;
+#elif BUILDFLAG(IS_ANDROID)
+  return IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_ENABLE_SYSTEM;
 #else
   return IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT;
 #endif
