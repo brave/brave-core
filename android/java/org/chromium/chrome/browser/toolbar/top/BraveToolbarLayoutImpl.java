@@ -103,6 +103,7 @@ import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettin
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
+import org.chromium.chrome.browser.rewards.onboarding.RewardsOnboarding;
 import org.chromium.chrome.browser.settings.AppearancePreferences;
 import org.chromium.chrome.browser.shields.BraveShieldsHandler;
 import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
@@ -126,6 +127,7 @@ import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.util.BraveConstants;
+import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.promo.SearchWidgetPromoPanel;
 import org.chromium.components.embedder_support.util.UrlConstants;
@@ -137,6 +139,7 @@ import org.chromium.playlist.mojom.PlaylistEvent;
 import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistService;
 import org.chromium.ui.UiUtils;
+import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.interpolators.BakedBezierInterpolator;
 import org.chromium.ui.util.ColorUtils;
@@ -565,7 +568,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
                         && mBraveRewardsNativeWorker != null
                         && mBraveRewardsNativeWorker.IsSupported()) {
-                    showBraveRewardsOnboardingModal();
+                    showOnBoarding();
                 }
                 findMediaFiles(tab);
             }
@@ -602,6 +605,19 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 }
             }
         };
+    }
+
+    private void showOnBoarding() {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            int deviceWidth = ConfigurationUtils.getDisplayMetrics(activity).get("width");
+            boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(activity);
+            deviceWidth = (int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95));
+            RewardsOnboarding panel = new RewardsOnboarding(mBraveRewardsButton, deviceWidth);
+            panel.showLikePopDownMenu();
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "RewardsOnboarding failed " + e);
+        }
     }
 
     private static boolean isPlaylistEnabledByPrefsAndFlags() {
@@ -1048,9 +1064,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
         View braveRewardsOnboardingModalView =
                 dialog.findViewById(R.id.brave_rewards_onboarding_modal_layout);
-        // braveRewardsOnboardingModalView.setBackgroundColor(
-        //         context.getResources().getColor(android.R.color.white));
-        braveRewardsOnboardingModalView.setVisibility(View.VISIBLE);
 
         String tosText =
                 String.format(context.getResources().getString(R.string.brave_rewards_tos_text),

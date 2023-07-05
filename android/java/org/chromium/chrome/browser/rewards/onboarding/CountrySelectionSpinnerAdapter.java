@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.rewards;
+package org.chromium.chrome.browser.rewards.onboarding;
 
 import android.content.Context;
 import android.graphics.Typeface;

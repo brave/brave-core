@@ -21,17 +21,13 @@ import android.os.Build;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.URLUtil;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -39,10 +35,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
@@ -81,6 +75,7 @@ import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.rewards.onboarding.RewardsOnboarding;
 import org.chromium.chrome.browser.rewards.tipping.RewardsTippingBannerActivity;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.BraveConstants;
@@ -95,24 +90,24 @@ import org.chromium.ui.text.NoUnderlineClickableSpan;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 public class BraveRewardsPanel
         implements BraveRewardsObserver, BraveRewardsHelper.LargeIconReadyCallback {
     public static final String PREF_WAS_BRAVE_REWARDS_TURNED_ON = "brave_rewards_turned_on";
     public static final String PREF_GRANTS_NOTIFICATION_RECEIVED = "grants_notification_received";
+    public static final String PREF_ON_BOARDING_COMPLETED = "on_boarding_completed";
+    public static final String REWARDS_TOUR_URL = "http://brave.com/rewards-tour";
     public static final String PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED =
             "was_toolbar_bat_logo_button_pressed";
     private static final String UNVERIFIED_USER_UNSUPPORTED_REGION_PAGE =
             "https://support.brave.com/hc/en-us/articles/6539887971469";
-    private static final String NEW_SIGNUP_DISABLED_URL =
+    public static final String NEW_SIGNUP_DISABLED_URL =
             "https://support.brave.com/hc/en-us/articles/9312922941069";
     private static final String BRAVE_REWARDS_PAGE = "https://brave.com/rewards";
     private static final String BRAVE_REWARDS_CHANGES_PAGE = "https://brave.com/rewards-changes";
@@ -150,7 +145,7 @@ public class BraveRewardsPanel
     private static final String AUTO_CONTRIBUTE_GENERAL_ERROR = "1";
     private static final String AUTO_CONTRIBUTE_NOT_ENOUGH_FUNDS = "15";
     private static final String ERROR_CONVERT_PROBI = "ERROR";
-    private static final String WALLET_GENERATION_DISABLED_ERROR = "wallet-generation-disabled";
+    public static final String WALLET_GENERATION_DISABLED_ERROR = "wallet-generation-disabled";
 
     private static final int CLICK_DISABLE_INTERVAL = 1000; // In milliseconds
 
@@ -377,9 +372,10 @@ public class BraveRewardsPanel
         btnRewardsSettings.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mBraveActivity != null)
+                if (mBraveActivity != null) {
                     mBraveActivity.openNewOrSelectExistingTab(
                             BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
+                }
                 dismiss();
             }
         }));
@@ -898,28 +894,6 @@ public class BraveRewardsPanel
     }
 
     @Override
-    public void onGetAvailableCountries(String[] countries) {
-        showDeclareGeoModal(countries);
-    }
-
-    @Override
-    public void onCreateRewardsWallet(String result) {
-        mBraveRewardsOnboardingModalView.setVisibility(View.GONE);
-        if (result.equals(SUCCESS)) {
-            mBraveRewardsNativeWorker.GetAutoContributeProperties();
-            if (!PackageUtils.isFirstInstall(mActivity)) {
-                showRewardsResponseModal(true, result);
-            } else {
-                BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
-                shouldShowOnboardingForConnectAccount = true;
-            }
-        } else {
-            showRewardsResponseModal(false, result);
-        }
-        mBraveRewardsNativeWorker.GetExternalWallet();
-    }
-
-    @Override
     public void OnGetCurrentBalanceReport(double[] report) {
         if (report == null) {
             return;
@@ -1103,7 +1077,20 @@ public class BraveRewardsPanel
         if (mExternalWallet != null) {
             mBraveRewardsNativeWorker.GetRewardsParameters();
         } else {
-            newInstallViewChanges();
+            showOnBoarding();
+        }
+    }
+
+    private void showOnBoarding() {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            int deviceWidth = ConfigurationUtils.getDisplayMetrics(activity).get("width");
+            boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(activity);
+            deviceWidth = (int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95));
+            RewardsOnboarding panel = new RewardsOnboarding(mAnchorView, deviceWidth);
+            panel.showLikePopDownMenu();
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "RewardsOnboarding failed " + e);
         }
     }
 
@@ -1158,7 +1145,7 @@ public class BraveRewardsPanel
                                     && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
                                     && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                                             Profile.getLastUsedRegularProfile())) {
-                                showBraveRewardsOnboardingModal();
+                                showOnBoarding();
                             } else {
                                 // fetchRewardsData();
                                 mBraveRewardsNativeWorker.GetExternalWallet();
@@ -1192,7 +1179,7 @@ public class BraveRewardsPanel
         if (mPopupView != null && mBraveRewardsNativeWorker.IsSupported()) {
             if (!BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
                     && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()) {
-                showBraveRewardsOnboardingModal();
+                showOnBoarding();
             } else if (TextUtils.isEmpty(rewardsCountryCode)) {
                 mBraveRewardsNativeWorker.getAvailableCountries();
             }
@@ -1291,9 +1278,10 @@ public class BraveRewardsPanel
         rewardsSettingsButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mBraveActivity != null)
+                if (mBraveActivity != null) {
                     mBraveActivity.openNewOrSelectExistingTab(
                             BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
+                }
                 dismiss();
             }
         }));
@@ -1370,95 +1358,6 @@ public class BraveRewardsPanel
                 BraveRewardsHelper.setShowDeclareGeoModal(false);
             }
         }
-    }
-
-    private void showBraveRewardsOnboardingModal() {
-        if (mBraveRewardsOnboardingModalView == null) {
-            return;
-        }
-        mBraveRewardsOnboardingModalView.setVisibility(View.VISIBLE);
-        panelShadow(true);
-
-        String tosText =
-                String.format(mActivity.getResources().getString(R.string.brave_rewards_tos_text),
-                        mActivity.getResources().getString(R.string.terms_of_service),
-                        mActivity.getResources().getString(R.string.privacy_policy));
-        int termsOfServiceIndex =
-                tosText.indexOf(mActivity.getResources().getString(R.string.terms_of_service));
-        Spanned tosTextSpanned = BraveRewardsHelper.spannedFromHtmlString(tosText);
-        SpannableString tosTextSS = new SpannableString(tosTextSpanned.toString());
-
-        ClickableSpan tosClickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(@NonNull View textView) {
-                CustomTabActivity.showInfoPage(mActivity, BraveActivity.BRAVE_TERMS_PAGE);
-            }
-            @Override
-            public void updateDrawState(@NonNull TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setUnderlineText(false);
-            }
-        };
-
-        tosTextSS.setSpan(tosClickableSpan, termsOfServiceIndex,
-                termsOfServiceIndex
-                        + mActivity.getResources().getString(R.string.terms_of_service).length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tosTextSS.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(
-                                  R.color.brave_rewards_modal_theme_color)),
-                termsOfServiceIndex,
-                termsOfServiceIndex
-                        + mActivity.getResources().getString(R.string.terms_of_service).length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        ClickableSpan privacyProtectionClickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(@NonNull View textView) {
-                CustomTabActivity.showInfoPage(mActivity, BraveActivity.BRAVE_PRIVACY_POLICY);
-            }
-            @Override
-            public void updateDrawState(@NonNull TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setUnderlineText(false);
-            }
-        };
-
-        int privacyPolicyIndex =
-                tosText.indexOf(mActivity.getResources().getString(R.string.privacy_policy));
-        tosTextSS.setSpan(privacyProtectionClickableSpan, privacyPolicyIndex,
-                privacyPolicyIndex
-                        + mActivity.getResources().getString(R.string.privacy_policy).length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tosTextSS.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(
-                                  R.color.brave_rewards_modal_theme_color)),
-                privacyPolicyIndex,
-                privacyPolicyIndex
-                        + mActivity.getResources().getString(R.string.privacy_policy).length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        TextView tosAndPpText = mBraveRewardsOnboardingModalView.findViewById(
-                R.id.brave_rewards_onboarding_modal_tos_pp_text);
-        tosAndPpText.setMovementMethod(LinkMovementMethod.getInstance());
-        tosAndPpText.setText(tosTextSS);
-
-        TextView takeQuickTourButton =
-                mBraveRewardsOnboardingModalView.findViewById(R.id.take_quick_tour_button);
-        takeQuickTourButton.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBraveRewardsOnboardingModalView.setVisibility(View.GONE);
-                showBraveRewardsOnboarding(false);
-            }
-        }));
-
-        TextView btnBraveRewards =
-                mBraveRewardsOnboardingModalView.findViewById(R.id.start_using_brave_rewards_text);
-        btnBraveRewards.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBraveRewardsNativeWorker.getAvailableCountries();
-            }
-        }));
     }
 
     private void showBraveRewardsOnboarding(boolean shouldShowMoreOption) {
@@ -1552,121 +1451,6 @@ public class BraveRewardsPanel
             if (mBraveRewardsUnverifiedView != null) {
                 enableControls(true, mBraveRewardsUnverifiedView);
             }
-        }
-    }
-
-    // Declare geo changes
-    private void showDeclareGeoModal(String[] countries) {
-        showBraveRewardsOnboardingModal();
-        if (mBraveRewardsOnboardingModalView != null) {
-            TextView modalTitle = mBraveRewardsOnboardingModalView.findViewById(R.id.modal_title);
-            TextView modalText = mBraveRewardsOnboardingModalView.findViewById(R.id.modal_text);
-            TextView btnContinue = mBraveRewardsOnboardingModalView.findViewById(R.id.btn_continue);
-            modalTitle.setText(mActivity.getString(R.string.select_your_country_title));
-            modalTitle.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_location, 0, 0, 0);
-            String declareGeoText = String.format(
-                    mActivity.getResources().getString(R.string.select_your_country_text),
-                    mActivity.getResources().getString(R.string.privacy_policy));
-            int privacyPolicyTextIndex = declareGeoText.indexOf(
-                    mActivity.getResources().getString(R.string.privacy_policy));
-            Spanned declareGeoTextSpanned =
-                    BraveRewardsHelper.spannedFromHtmlString(declareGeoText);
-            SpannableString declareGeoTextSS =
-                    new SpannableString(declareGeoTextSpanned.toString());
-
-            ClickableSpan declareGeoClickableSpan = new ClickableSpan() {
-                @Override
-                public void onClick(@NonNull View textView) {
-                    CustomTabActivity.showInfoPage(mActivity, BraveActivity.BRAVE_PRIVACY_POLICY);
-                }
-                @Override
-                public void updateDrawState(@NonNull TextPaint ds) {
-                    super.updateDrawState(ds);
-                    ds.setUnderlineText(false);
-                }
-            };
-
-            declareGeoTextSS.setSpan(declareGeoClickableSpan, privacyPolicyTextIndex,
-                    privacyPolicyTextIndex
-                            + mActivity.getResources().getString(R.string.privacy_policy).length(),
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            declareGeoTextSS.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(
-                                             R.color.brave_rewards_modal_theme_color)),
-                    privacyPolicyTextIndex,
-                    privacyPolicyTextIndex
-                            + mActivity.getResources().getString(R.string.privacy_policy).length(),
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            modalText.setMovementMethod(LinkMovementMethod.getInstance());
-            modalText.setText(declareGeoTextSS);
-            mBraveRewardsOnboardingModalView.findViewById(R.id.take_quick_tour_button)
-                    .setVisibility(View.GONE);
-            mBraveRewardsOnboardingModalView.findViewById(R.id.start_using_brave_rewards_text)
-                    .setVisibility(View.GONE);
-            btnContinue.setVisibility(View.VISIBLE);
-
-            TreeMap<String, String> sortedCountryMap = new TreeMap<String, String>();
-            for (String countryCode : countries) {
-                sortedCountryMap.put(new Locale("", countryCode).getDisplayCountry(), countryCode);
-            }
-
-            ArrayList<String> countryList = new ArrayList<String>();
-            countryList.add(mActivity.getResources().getString(R.string.select_your_country_title));
-            countryList.addAll(sortedCountryMap.keySet());
-            String defaultCountry = mBraveRewardsNativeWorker.getCountryCode() != null
-                    ? new Locale("", mBraveRewardsNativeWorker.getCountryCode()).getDisplayCountry()
-                    : null;
-            if (defaultCountry != null && countryList.contains(defaultCountry)) {
-                countryList.remove(defaultCountry);
-                countryList.add(1, defaultCountry);
-            }
-
-            String[] countryArray = countryList.toArray(new String[countryList.size()]);
-            Spinner countrySpinner;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                countrySpinner =
-                        mBraveRewardsOnboardingModalView.findViewById(R.id.country_spinner);
-            } else {
-                countrySpinner = mBraveRewardsOnboardingModalView.findViewById(
-                        R.id.country_spinner_low_device);
-            }
-            countrySpinner.setVisibility(View.VISIBLE);
-            CountrySelectionSpinnerAdapter countrySelectionSpinnerAdapter =
-                    new CountrySelectionSpinnerAdapter(mActivity, countryList);
-            countrySpinner.setAdapter(countrySelectionSpinnerAdapter);
-            countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                    if (pos != 0) {
-                        btnContinue.setBackgroundDrawable(ResourcesCompat.getDrawable(
-                                ContextUtils.getApplicationContext().getResources(),
-                                R.drawable.blue_48_rounded_bg, /* theme= */ null));
-                        btnContinue.setEnabled(true);
-                    } else {
-                        btnContinue.setBackgroundDrawable(ResourcesCompat.getDrawable(
-                                ContextUtils.getApplicationContext().getResources(),
-                                R.drawable.set_default_rounded_button_disabled, /* theme= */ null));
-                        btnContinue.setEnabled(false);
-                    }
-                }
-                @Override
-                public void onNothingSelected(AdapterView<?> arg0) {}
-            });
-
-            btnContinue.setOnClickListener((new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!BravePermissionUtils.hasPermission(mAnchorView.getContext(),
-                                PermissionConstants.NOTIFICATION_PERMISSION)
-                            || BravePermissionUtils.isBraveAdsNotificationPermissionBlocked(
-                                    mAnchorView.getContext())) {
-                        requestNotificationPermission();
-                    }
-                    if (countrySpinner != null) {
-                        mBraveRewardsNativeWorker.CreateRewardsWallet(
-                                sortedCountryMap.get(countrySpinner.getSelectedItem().toString()));
-                    }
-                }
-            }));
         }
     }
 
@@ -1853,7 +1637,7 @@ public class BraveRewardsPanel
                 mRewardsMainLayout.setForeground(null);
                 panelShadow(false);
                 if (!isSuccess && !errorMessage.equals(WALLET_GENERATION_DISABLED_ERROR)) {
-                    showBraveRewardsOnboardingModal();
+                    showOnBoarding();
                 }
             }
         }));
