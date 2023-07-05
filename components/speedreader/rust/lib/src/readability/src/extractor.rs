@@ -322,7 +322,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
 }
 
 pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
-    if let Some(first_child) = root.first_child() {
+    if root.first_child().is_some() {
         let meta_area = dom::create_element_simple(dom, "div", "", None);
         dom::set_attr("id", META_DATA_AREA_DIV_ID, meta_area.clone(), true);
 
