@@ -13,7 +13,7 @@ import org.chromium.mojo.system.MojoException;
  */
 public class BraveNewsConnectionErrorHandler implements ConnectionErrorHandler {
     /**
-     *This is a delegate that is implement in the object where the connection is created
+     *This is a delegate that is implemented in the object where the connection is created
      */
     public interface BraveNewsConnectionErrorHandlerDelegate {
         default void initBraveNewsController() {}

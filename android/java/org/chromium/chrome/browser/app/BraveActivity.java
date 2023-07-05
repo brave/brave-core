@@ -110,6 +110,7 @@ import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.informers.BraveAndroidSyncDisabledInformer;
 import org.chromium.chrome.browser.informers.BraveSyncAccountDeletedInformer;
+import org.chromium.chrome.browser.misc_metrics.PrivacyHubMetricsConnectionErrorHandler;
 import org.chromium.chrome.browser.misc_metrics.PrivacyHubMetricsFactory;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
@@ -204,7 +205,9 @@ public abstract class BraveActivity extends ChromeActivity
         implements BrowsingDataBridge.OnClearBrowsingDataListener, BraveVpnObserver,
                    OnBraveSetDefaultBrowserListener, ConnectionErrorHandler, PrefObserver,
                    BraveSafeBrowsingApiHandler.BraveSafeBrowsingApiHandlerDelegate,
-                   BraveNewsConnectionErrorHandler.BraveNewsConnectionErrorHandlerDelegate {
+                   BraveNewsConnectionErrorHandler.BraveNewsConnectionErrorHandlerDelegate,
+                   PrivacyHubMetricsConnectionErrorHandler
+                           .PrivacyHubMetricsConnectionErrorHandlerDelegate {
     public static final String BRAVE_SEND_URL = "brave://wallet/send";
     public static final String BRAVE_SWAP_URL = "brave://wallet/swap";
     public static final String BRAVE_REWARDS_SETTINGS_URL = "brave://rewards/";
@@ -269,6 +272,7 @@ public abstract class BraveActivity extends ChromeActivity
     private NotificationPermissionController mNotificationPermissionController;
     private BraveNewsController mBraveNewsController;
     private BraveNewsConnectionErrorHandler mBraveNewsConnectionErrorHandler;
+    private PrivacyHubMetricsConnectionErrorHandler mPrivacyHubMetricsConnectionErrorHandler;
 
     /**
      * Serves as a general exception for failed attempts to get BraveActivity.
@@ -427,6 +431,7 @@ public abstract class BraveActivity extends ChromeActivity
         super.onDestroyInternal();
         cleanUpBraveNewsController();
         cleanUpWalletNativeServices();
+        cleanUpPrivacyHubMetrics();
     }
 
     public WalletModel getWalletModel() {
@@ -1990,12 +1995,19 @@ public abstract class BraveActivity extends ChromeActivity
         mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
     }
 
-    private void initPrivacyHubMetrics() {
+    @Override
+    public void initPrivacyHubMetrics() {
         if (mPrivacyHubMetrics != null) {
             return;
         }
+        if (mPrivacyHubMetricsConnectionErrorHandler == null) {
+            mPrivacyHubMetricsConnectionErrorHandler =
+                    PrivacyHubMetricsConnectionErrorHandler.getInstance();
+            mPrivacyHubMetricsConnectionErrorHandler.setDelegate(this);
+        }
 
-        mPrivacyHubMetrics = PrivacyHubMetricsFactory.getInstance().getMetricsService(this);
+        mPrivacyHubMetrics = PrivacyHubMetricsFactory.getInstance().getMetricsService(
+                mPrivacyHubMetricsConnectionErrorHandler);
         mPrivacyHubMetrics.recordEnabledStatus(
                 OnboardingPrefManager.getInstance().isBraveStatsEnabled());
     }
@@ -2030,7 +2042,6 @@ public abstract class BraveActivity extends ChromeActivity
         if (mTxService != null) mTxService.close();
         if (mEthTxManagerProxy != null) mEthTxManagerProxy.close();
         if (mSolanaTxManagerProxy != null) mSolanaTxManagerProxy.close();
-        if (mPrivacyHubMetrics != null) mPrivacyHubMetrics.close();
         if (mBraveWalletService != null) mBraveWalletService.close();
         mKeyringService = null;
         mBlockchainRegistry = null;
@@ -2039,8 +2050,13 @@ public abstract class BraveActivity extends ChromeActivity
         mEthTxManagerProxy = null;
         mSolanaTxManagerProxy = null;
         mAssetRatioService = null;
-        mPrivacyHubMetrics = null;
         mBraveWalletService = null;
+    }
+
+    @Override
+    public void cleanUpPrivacyHubMetrics() {
+        if (mPrivacyHubMetrics != null) mPrivacyHubMetrics.close();
+        mPrivacyHubMetrics = null;
     }
 
     @NonNull
