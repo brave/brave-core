@@ -31,15 +31,22 @@ export const PlaylistName = styled.div<{ color?: string }>`
   grid-row: 1 / 2;
   grid-column: 1 / 4;
   align-self: flex-end;
-  ${p => p.color && css`p.color`}
-
+  ${p =>
+    p.color &&
+    css`
+      color: ${p.color};
+    `};
   font: ${font.primary.large.semibold};
 `
 
 export const PlaylistDetail = styled.div<{ color?: string }>`
   grid-row: 2;
   font: ${font.primary.small.regular};
-  ${p => p.color && css`p.color`}
+  ${p =>
+    p.color &&
+    css`
+      color: ${p.color};
+    `};
 `
 
 export default function PlaylistInfo ({
@@ -57,7 +64,7 @@ export default function PlaylistInfo ({
         {isDefaultPlaylist ? 'Play Later' : playlistName}{' '}
       </PlaylistName>
       <PlaylistDetail color={detailColor}>{itemCount} items</PlaylistDetail>
-      {!!totalDuration && (<PlaylistDetail>{totalDuration}</PlaylistDetail>)}
+      {!!totalDuration && <PlaylistDetail>{totalDuration}</PlaylistDetail>}
       {
         // TODO(sko) We can't get the file size for now
         // !!itemCount && (

@@ -76,7 +76,7 @@ export default function PlayerControls ({ videoElement, className }: Props) {
         <Control iconName='start-outline' onClick={() => {}}></Control>
         <Control
           iconName='rewind-15'
-          onClick={() => videoElement && (videoElement.currentTime -= 15) }
+          onClick={() => videoElement && (videoElement.currentTime -= 15)}
         ></Control>
         {isPlaying ? (
           <Control
@@ -100,12 +100,13 @@ export default function PlayerControls ({ videoElement, className }: Props) {
         <Control iconName='shuffle-on' onClick={() => {}}></Control>
         {/* TODO(sko) this icon could be changed to sidepanel-open */}
         <Control iconName='playlist-open-side' onClick={() => {}}></Control>
-        <Control iconName='picture-in-picture' onClick={() => {}}></Control>
+        <Control
+          iconName='picture-in-picture'
+          onClick={() => videoElement?.requestPictureInPicture()}
+        ></Control>
         <Control
           iconName='fullscreen-on'
-          onClick={() => {
-            videoElement?.requestFullscreen()
-          }}
+          onClick={() => videoElement?.requestFullscreen()}
         ></Control>
       </div>
     </Container>
