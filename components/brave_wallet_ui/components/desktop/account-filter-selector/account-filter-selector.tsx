@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
 
 // Redux
 import {
@@ -34,6 +33,9 @@ import {
   SelectorLeftSide,
   ClickAwayArea
 } from '../network-filter-selector/style'
+
+// Hooks
+import { useAccountOrb } from '../../../common/hooks/use-orb'
 
 interface Props {
   onSelectAccount: (account: Pick<WalletAccountType, 'accountId' | 'address' | 'name'>) => void
@@ -73,9 +75,7 @@ export const AccountFilterSelector = ({
     AllAccountsOption
   const selectedNetwork = networkProp || selectedNetworkFilter
 
-  const orb = React.useMemo(() => {
-    return create({ seed: selectedAccount.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [selectedAccount.address])
+  const orb = useAccountOrb(selectedAccount);
 
   // Filters accounts by network if a selectedNetworkFilter is selected
   const accountsFilteredBySelectedNetworkFilter: WalletAccountType[] = React.useMemo(() => {
@@ -103,7 +103,7 @@ export const AccountFilterSelector = ({
         <DropDown>
           {accountsList.map(account =>
             <AccountFilterItem
-              key={account.address}
+              key={account.accountId.uniqueKey}
               account={account}
               selected={account.accountId.uniqueKey === selectedAccount.accountId.uniqueKey}
               showCircle={!isAllAccountsOptionFilter(account.accountId.uniqueKey)}

@@ -12,7 +12,6 @@ import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { getLocale, splitStringForTag } from '../../../../common/locale'
 
 // Components
-import { create } from 'ethereum-blockies'
 import { NavButton, PanelTab } from '..'
 import { CreateSiteOrigin } from '../../shared'
 
@@ -31,6 +30,9 @@ import {
 } from './style'
 
 import { TabRow, URLText } from '../shared-panel-styles'
+
+// Hooks
+import { useAddressOrb } from '../../../common/hooks/use-orb'
 
 export interface Props {
   panelType: 'request' | 'read'
@@ -61,9 +63,7 @@ function EncryptionKeyPanel (props: Props) {
     return accounts.find((account) => account.address.toLowerCase() === payloadAddress.toLowerCase())?.name
   }, [payloadAddress])
 
-  const orb = React.useMemo(() => {
-    return create({ seed: payloadAddress.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [payloadAddress])
+  const orb = useAddressOrb(payloadAddress)
 
   const onDecryptMessage = () => {
     setIsDecrypted(true)

@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import * as EthereumBlockies from 'ethereum-blockies'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Utils
@@ -44,6 +43,7 @@ import {
 import {
   querySubscriptionOptions60s
 } from '../../../common/slices/constants'
+import { useAddressOrb } from '../../../common/hooks/use-orb'
 
 // Components
 import { TransactionIntentDescription } from './transaction-intent-description'
@@ -149,21 +149,8 @@ export const TransactionsListItem = ({
     combinedTokensList
   ])
 
-  const fromOrb = React.useMemo(() => {
-    return EthereumBlockies.create({
-      seed: transaction.fromAddress.toLowerCase(),
-      size: 8,
-      scale: 16
-    }).toDataURL()
-  }, [transaction.fromAddress])
-
-  const toOrb = React.useMemo(() => {
-    if (!transactionDetails) {
-      return undefined
-    }
-
-    return EthereumBlockies.create({ seed: transactionDetails.recipient.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [transactionDetails?.recipient])
+  const fromOrb = useAddressOrb(transaction.fromAddress)
+  const toOrb = useAddressOrb(transactionDetails?.recipient)
 
   const transactionIntentLocale = React.useMemo((): React.ReactNode => {
     if (!transactionDetails) {

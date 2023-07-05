@@ -122,7 +122,7 @@ export const FilterAccountsSection = (props: Props) => {
             width='unset'
             justifyContent='flex-start'
             marginBottom={16}
-            key={account.address}
+            key={account.accountId.uniqueKey}
           >
             <Checkbox
               checked={

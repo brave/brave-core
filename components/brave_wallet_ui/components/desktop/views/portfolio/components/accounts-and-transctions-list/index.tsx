@@ -298,7 +298,7 @@ export const AccountsAndTransactionsList = ({
                     <PortfolioAccountItem
                       asset={selectedAsset}
                       defaultCurrencies={defaultCurrencies}
-                      key={account.address}
+                      key={account.accountId.uniqueKey}
                       name={account.name}
                       address={account.address}
                       accountKind={account.accountId.kind}

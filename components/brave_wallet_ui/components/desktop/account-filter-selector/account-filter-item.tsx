@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
 
 // Types
 import { WalletAccountType } from '../../../constants/types'
@@ -22,6 +21,9 @@ import {
   BigCheckMark
 } from '../network-filter-selector/style'
 
+// Hooks
+import { useAccountOrb } from '../../../common/hooks/use-orb'
+
 export interface Props {
   selected: boolean
   showCircle: boolean
@@ -38,9 +40,7 @@ export const AccountFilterItem = (props: Props) => {
   }, [account, onSelectAccount])
 
   // Memos
-  const orb = React.useMemo(() => {
-    return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [account.address])
+  const orb = useAccountOrb(account)
 
   return (
     <NetworkItemWrapper>

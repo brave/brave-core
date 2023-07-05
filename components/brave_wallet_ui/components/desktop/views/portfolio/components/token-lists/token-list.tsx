@@ -431,7 +431,7 @@ export const TokenLists = ({
       return bBalance.minus(aBalance).toNumber()
     })?.map((account) =>
       <AssetGroupContainer
-        key={account.address}
+        key={account.accountId.uniqueKey}
         balance={
           getAccountFiatValue(account)
             .isUndefined()

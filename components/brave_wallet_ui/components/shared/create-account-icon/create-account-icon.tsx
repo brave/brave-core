@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -13,6 +12,7 @@ import {
   AccountBox,
   AccountIcon
 } from './create-account-icon.style'
+import { useAddressOrb } from '../../../common/hooks/use-orb'
 
 interface Props {
   address: string
@@ -30,15 +30,7 @@ export const CreateAccountIcon = (props: Props) => {
   } = props
 
   // Memos
-  const orb = React.useMemo(() => {
-    return create(
-      {
-        seed: address.toLowerCase(),
-        size: 8,
-        scale: 16
-      }
-    ).toDataURL()
-  }, [address])
+  const orb = useAddressOrb(address)
 
   return (
     <AccountBox

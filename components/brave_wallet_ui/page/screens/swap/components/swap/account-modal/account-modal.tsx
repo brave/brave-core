@@ -136,9 +136,8 @@ export const AccountModal = (props: Props) => {
         </Row>
         {networkAccounts.map((account) => (
           <AccountListItemButton
-            key={account.address}
-            address={account.address}
-            name={account.name}
+            key={account.accountId.uniqueKey}
+            account={account}
             onClick={() => onSelectAccount(account)}
           />
         ))}

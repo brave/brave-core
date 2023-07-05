@@ -19,13 +19,15 @@ import {
 
 // Utils
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
-import { create } from 'ethereum-blockies'
 import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { useSetSelectedAccountMutation } from '../../../common/slices/api.slice'
 import { useSelectedAccountQuery } from '../../../common/slices/api.slice.extra'
 import { findAccountByAccountId } from '../../../utils/account-utils'
 import { WalletSelectors } from '../../../common/selectors'
+
+// Hooks
+import { useAccountOrb } from '../../../common/hooks/use-orb'
 
 // Styled Components
 import {
@@ -59,9 +61,7 @@ const SitePermissionAccountItem = (props: Props) => {
   const selectedCoin = selectedAccount?.accountId.coin
 
   // memos
-  const orb = React.useMemo(() => {
-    return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [account])
+  const orb = useAccountOrb(account)
 
   const isActive = account.accountId.uniqueKey === selectedAccount?.accountId.uniqueKey
 
