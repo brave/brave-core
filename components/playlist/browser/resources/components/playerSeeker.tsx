@@ -26,7 +26,15 @@ const TimeContainer = styled.div`
   font: ${font.primary.xSmall.regular};
 `
 
-const StyledProgress = styled.progress`
+const StyledProgress = styled.progress.attrs(
+  (p: { value: number; max: number }) => ({
+    'style': {
+      '--progress-thumb-left': `calc(${
+        (p.value && p.max ? +p.value / +p.max : 0) * 100
+      }% + var(--progress-bar-height) * -0.5)`
+    }
+  })
+)`
   --progress-background: #423eee; /* TODO(sko) Neither color.button.background or color.semantic.button.background exist for now */
   --progress-bar-height: 12px;
   --progress-stroke-thickness: 2px;
@@ -46,16 +54,11 @@ const StyledProgress = styled.progress`
     border-radius: calc(var(--progress-stroke-thickness) * 0.5);
     background: var(--progress-background);
   }
-  // TODO(sko) Can we split this so that we can avoid creating new class too
-  // many times?
   &::after {
     content: '';
     position: absolute;
     top: 0;
-    left: calc(
-      ${p => (p.value && p.max ? +p.value / +p.max : 0) * 100}% +
-        var(--progress-bar-height) * -0.5
-    );
+    left: var(--progress-thumb-left);
     width: var(--progress-bar-height);
     height: var(--progress-bar-height);
     background: var(--progress-background);
@@ -80,7 +83,7 @@ class DragController {
     progressElem: HTMLProgressElement,
     updateProgressValue: (value: number) => void
   ) {
-    this.#videoElement =videoElement 
+    this.#videoElement = videoElement
     this.#progressElem = progressElem
     this.#updateProgressValue = updateProgressValue
   }
