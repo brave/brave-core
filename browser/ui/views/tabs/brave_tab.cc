@@ -189,6 +189,17 @@ void BraveTab::UpdateIconVisibility() {
       showing_icon_ = !showing_alert_indicator_ && !showing_close_button_;
     }
   }
+
+  // Supplement extra left side padding by updating border.
+  // Upstream gives extra padding to balance with right side padding space but
+  // it's gone when tab doesn't have sufficient available width. In our case,
+  // As we have more narrow left & right padding than upstream, icon seems stick
+  // to left side when extra padding is not used.
+  // We only need to do that when |extra_padding_before_content_| is false.
+  // We update border here because |extra_padding_before_content_| is updated
+  // by Tab::UpdateIconVisibility(). After that layout happens. So, it's good
+  // time to update border now.
+  // UpdateBorder();
 }
 
 void BraveTab::OnLayerBoundsChanged(const gfx::Rect& old_bounds,
@@ -224,6 +235,25 @@ void BraveTab::Layout() {
       ink_drop->HostSizeChanged(close_button_->size());
     }
   }
+}
+
+gfx::Insets BraveTab::GetInsets() const {
+  // Supplement extra left side padding.
+  // Upstream gives extra padding to balance with right side padding space but
+  // it's gone when tab doesn't have sufficient available width. In our case,
+  // As we have more narrow left & right padding than upstream, icon seems stick
+  // to left side when extra padding is not used.
+  // We only need to do that when |extra_padding_before_content_| is false.
+  int extra_left_padding = 0;
+
+  // Add extra padding if upstream tab doesn't have it.
+  if (!extra_padding_before_content_) {
+    extra_left_padding = kExtraLeftPadding;
+  }
+
+  auto insets = Tab::GetInsets();
+  insets.set_left(insets.left() + extra_left_padding);
+  return insets;
 }
 
 void BraveTab::ReorderChildLayers(ui::Layer* parent_layer) {
