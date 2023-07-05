@@ -25,7 +25,7 @@ export const DropDownButton = styled(WalletButton)<
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
-  background-color: ${(p) => p.isV2 ? leo.color.container.highlight : 'none'};
+  background-color: ${(p) => p.isV2 ? leo.color.container.highlight : 'transparent'};
   cursor: pointer;
   outline: none;
   border: ${(p) => p.isV2 ? 'none' : `1px solid ${p.theme.color.interactive08}`};
