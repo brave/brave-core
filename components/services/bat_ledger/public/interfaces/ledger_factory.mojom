@@ -5,9 +5,20 @@
 module brave_rewards.mojom;
 
 import "brave/components/brave_rewards/common/mojom/bat_ledger.mojom";
+import "brave/components/brave_rewards/common/mojom/ledger_types.mojom";
+
+struct LedgerOptions {
+  Environment environment;
+  bool is_testing;
+  bool is_debug;
+  int32 state_migration_target_version_for_testing;
+  int32 reconcile_interval;
+  int32 retry_interval;
+};
 
 interface LedgerFactory {
   CreateLedger(
       pending_associated_receiver<Ledger> ledger_receiver,
-      pending_associated_remote<LedgerClient> ledger_client_remote) => ();
+      pending_associated_remote<LedgerClient> ledger_client_remote,
+      LedgerOptions options) => ();
 };

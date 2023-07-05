@@ -196,14 +196,7 @@ class RewardsServiceImpl : public RewardsService,
 
   p3a::ConversionMonitor* GetP3AConversionMonitor() override;
 
-  void HandleFlags(const RewardsFlags& flags);
-  void SetEnvironment(mojom::Environment environment);
-  void SetDebug(bool debug);
-  void GetDebug(GetDebugCallback callback);
-  void SetReconcileInterval(const int32_t interval);
-  void GetReconcileInterval(GetReconcileIntervalCallback callback);
-  void SetRetryInterval(int32_t interval);
-  void GetRetryInterval(GetRetryIntervalCallback callback);
+  mojom::LedgerOptionsPtr HandleFlags(const RewardsFlags& flags);
 
   void GetAutoContributeProperties(
       GetAutoContributePropertiesCallback callback) override;
@@ -312,7 +305,7 @@ class RewardsServiceImpl : public RewardsService,
   // Testing methods
   void SetLedgerEnvForTesting();
   void SetLedgerStateTargetVersionForTesting(int version);
-  void PrepareLedgerEnvForTesting();
+  void PrepareLedgerEnvForTesting(mojom::LedgerOptions& options);
   void StartContributionsForTesting();
   void ForTestingSetTestResponseCallback(
       const GetTestResponseCallback& callback);

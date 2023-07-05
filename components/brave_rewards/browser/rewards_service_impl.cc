@@ -458,9 +458,12 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
         base::BindOnce(&RewardsServiceImpl::ConnectionClosed, AsWeakPtr()));
   }
 
+  auto options = HandleFlags(RewardsFlags::ForCurrentProcess());
+  PrepareLedgerEnvForTesting(*options);
+
   ledger_factory_->CreateLedger(
       ledger_.BindNewEndpointAndPassReceiver(),
-      receiver_.BindNewEndpointAndPassRemote(),
+      receiver_.BindNewEndpointAndPassRemote(), std::move(options),
       base::BindOnce(&RewardsServiceImpl::OnLedgerCreated, AsWeakPtr()));
 }
 
@@ -468,11 +471,6 @@ void RewardsServiceImpl::OnLedgerCreated() {
   if (!Connected()) {
     return;
   }
-
-  SetEnvironment(GetDefaultServerEnvironment());
-  SetDebug(false);
-  HandleFlags(RewardsFlags::ForCurrentProcess());
-  PrepareLedgerEnvForTesting();
 
   ledger_->Initialize(
       base::BindOnce(&RewardsServiceImpl::OnLedgerInitialized, AsWeakPtr()));
@@ -2048,32 +2046,36 @@ void RewardsServiceImpl::Log(const std::string& file,
   }
 }
 
-// static
-void RewardsServiceImpl::HandleFlags(const RewardsFlags& flags) {
+mojom::LedgerOptionsPtr RewardsServiceImpl::HandleFlags(
+    const RewardsFlags& flags) {
+  auto options = mojom::LedgerOptions::New();
+
   if (flags.environment) {
     switch (*flags.environment) {
       case RewardsFlags::Environment::kDevelopment:
-        SetEnvironment(mojom::Environment::DEVELOPMENT);
+        options->environment = mojom::Environment::DEVELOPMENT;
         break;
       case RewardsFlags::Environment::kStaging:
-        SetEnvironment(mojom::Environment::STAGING);
+        options->environment = mojom::Environment::STAGING;
         break;
       case RewardsFlags::Environment::kProduction:
-        SetEnvironment(mojom::Environment::PRODUCTION);
+        options->environment = mojom::Environment::PRODUCTION;
         break;
     }
+  } else {
+    options->environment = GetDefaultServerEnvironment();
   }
 
   if (flags.debug) {
-    SetDebug(true);
+    options->is_debug = true;
   }
 
   if (flags.reconcile_interval) {
-    SetReconcileInterval(*flags.reconcile_interval);
+    options->reconcile_interval = *flags.reconcile_interval;
   }
 
   if (flags.retry_interval) {
-    SetRetryInterval(*flags.retry_interval);
+    options->retry_interval = *flags.retry_interval;
   }
 
   // The "persist-logs" command-line flag is deprecated and will be removed
@@ -2082,6 +2084,8 @@ void RewardsServiceImpl::HandleFlags(const RewardsFlags& flags) {
   if (flags.persist_logs) {
     persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
   }
+
+  return options;
 }
 
 void RewardsServiceImpl::GetRewardsInternalsInfo(
@@ -2128,15 +2132,16 @@ void RewardsServiceImpl::SetLedgerStateTargetVersionForTesting(int version) {
   ledger_state_target_version_for_testing_ = version;
 }
 
-void RewardsServiceImpl::PrepareLedgerEnvForTesting() {
-  if (!ledger_for_testing_ || !Connected()) {
+void RewardsServiceImpl::PrepareLedgerEnvForTesting(
+    mojom::LedgerOptions& options) {
+  if (!ledger_for_testing_) {
     return;
   }
 
-  ledger_->SetTesting();
-  ledger_->SetStateMigrationTargetVersionForTesting(  // IN-TEST
-      ledger_state_target_version_for_testing_);
-  SetRetryInterval(1);
+  options.is_testing = true;
+  options.state_migration_target_version_for_testing =
+      ledger_state_target_version_for_testing_;
+  options.retry_interval = 1;
 
   profile_->GetPrefs()->SetInteger(prefs::kMinVisitTime, 1);
 }
@@ -2159,56 +2164,6 @@ void RewardsServiceImpl::GetEnvironment(GetEnvironmentCallback callback) {
 
 p3a::ConversionMonitor* RewardsServiceImpl::GetP3AConversionMonitor() {
   return &conversion_monitor_;
-}
-
-void RewardsServiceImpl::GetDebug(GetDebugCallback callback) {
-  if (!Connected()) {
-    return;
-  }
-  ledger_->GetDebug(std::move(callback));
-}
-
-void RewardsServiceImpl::GetReconcileInterval(
-    GetReconcileIntervalCallback callback) {
-  if (!Connected()) {
-    return;
-  }
-  ledger_->GetReconcileInterval(std::move(callback));
-}
-
-void RewardsServiceImpl::GetRetryInterval(GetRetryIntervalCallback callback) {
-  if (!Connected()) {
-    return;
-  }
-  ledger_->GetRetryInterval(std::move(callback));
-}
-
-void RewardsServiceImpl::SetEnvironment(mojom::Environment environment) {
-  if (!Connected()) {
-    return;
-  }
-  ledger_->SetEnvironment(environment);
-}
-
-void RewardsServiceImpl::SetDebug(bool debug) {
-  if (!Connected()) {
-    return;
-  }
-  ledger_->SetDebug(debug);
-}
-
-void RewardsServiceImpl::SetReconcileInterval(const int32_t interval) {
-  if (!Connected()) {
-    return;
-  }
-  ledger_->SetReconcileInterval(interval);
-}
-
-void RewardsServiceImpl::SetRetryInterval(int32_t interval) {
-  if (!Connected()) {
-    return;
-  }
-  ledger_->SetRetryInterval(interval);
 }
 
 void RewardsServiceImpl::PublisherListNormalized(

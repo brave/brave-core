@@ -55,48 +55,8 @@ void LedgerImpl::Initialize(InitializeCallback callback) {
   InitializeDatabase(ToLegacyCallback(std::move(callback)));
 }
 
-void LedgerImpl::SetEnvironment(mojom::Environment environment) {
-  DCHECK(IsUninitialized() || is_testing);
-  _environment = environment;
-}
-
-void LedgerImpl::SetDebug(bool debug) {
-  DCHECK(IsUninitialized() || is_testing);
-  is_debug = debug;
-}
-
-void LedgerImpl::SetReconcileInterval(int32_t interval) {
-  DCHECK(IsUninitialized() || is_testing);
-  reconcile_interval = interval;
-}
-
-void LedgerImpl::SetRetryInterval(int32_t interval) {
-  DCHECK(IsUninitialized() || is_testing);
-  retry_interval = interval;
-}
-
-void LedgerImpl::SetTesting() {
-  is_testing = true;
-}
-
-void LedgerImpl::SetStateMigrationTargetVersionForTesting(int32_t version) {
-  state_migration_target_version_for_testing = version;
-}
-
 void LedgerImpl::GetEnvironment(GetEnvironmentCallback callback) {
   std::move(callback).Run(_environment);
-}
-
-void LedgerImpl::GetDebug(GetDebugCallback callback) {
-  std::move(callback).Run(is_debug);
-}
-
-void LedgerImpl::GetReconcileInterval(GetReconcileIntervalCallback callback) {
-  std::move(callback).Run(reconcile_interval);
-}
-
-void LedgerImpl::GetRetryInterval(GetRetryIntervalCallback callback) {
-  std::move(callback).Run(retry_interval);
 }
 
 void LedgerImpl::CreateRewardsWallet(const std::string& country,

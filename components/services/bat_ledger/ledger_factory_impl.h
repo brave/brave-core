@@ -28,6 +28,7 @@ class LedgerFactoryImpl : public mojom::LedgerFactory {
   void CreateLedger(
       mojo::PendingAssociatedReceiver<mojom::Ledger> ledger_receiver,
       mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote,
+      mojom::LedgerOptionsPtr options,
       CreateLedgerCallback callback) override;
 
  private:

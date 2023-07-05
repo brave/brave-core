@@ -13,25 +13,7 @@ import "mojo/public/mojom/base/values.mojom";
 interface Ledger {
   Initialize() => (Result result);
 
-  SetEnvironment(Environment environment);
-
-  SetDebug(bool debug);
-
-  SetReconcileInterval(int32 interval);
-
-  SetRetryInterval(int32 interval);
-
-  SetTesting();
-
-  SetStateMigrationTargetVersionForTesting(int32 version);
-
   GetEnvironment() => (Environment environment);
-
-  GetDebug() => (bool debug);
-
-  GetReconcileInterval() => (int32 interval);
-
-  GetRetryInterval() => (int32 retry_interval);
 
   CreateRewardsWallet(string country) =>
       (CreateRewardsWalletResult result);
