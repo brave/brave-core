@@ -98,7 +98,7 @@ private struct LockScreenFavoriteView: View {
       .widgetLabel(fav.title ?? "")
       .widgetURL(fav.url)
     } else {
-      Image(braveSystemName: "leo.product.brave-monochrome")
+      Image(braveSystemName: "leo.brave.icon-monochrome")
         .imageScale(.large)
         .font(.system(size: 24))
         .foregroundColor(Color.black)

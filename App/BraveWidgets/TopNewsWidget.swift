@@ -126,7 +126,7 @@ private struct LockScreenTopNewsView: View {
           .layoutPriority(2)
           .multilineTextAlignment(.leading)
         HStack(spacing: 3) {
-          Image(braveSystemName: "leo.product.brave-monochrome")
+          Image(braveSystemName: "leo.brave.icon-monochrome")
             .foregroundColor(.orange)
             .font(.system(size: 12))
             .padding(.trailing, -1)
@@ -174,7 +174,7 @@ private struct WidgetTopNewsView: View {
     if let topic = entry.topic {
       VStack(alignment: .leading) {
         HStack() {
-          Image(braveSystemName: "leo.product.brave-monochrome")
+          Image(braveSystemName: "leo.brave.icon-monochrome")
             .font(.footnote)
             .imageScale(.large)
             .foregroundColor(Color(.braveOrange))
@@ -218,7 +218,7 @@ private struct WidgetTopNewsView: View {
       .widgetURL(topic.url)
     } else {
       VStack(alignment: .leading) {
-        Image(braveSystemName: "leo.product.brave-monochrome")
+        Image(braveSystemName: "leo.brave.icon-monochrome")
           .font(.footnote)
           .imageScale(.large)
           .foregroundColor(Color(.braveOrange))
