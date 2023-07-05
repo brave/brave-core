@@ -85,6 +85,10 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::TearDownOnMainThread();
   }
 
+  mojom::Environment GetDefaultEnvironment() {
+    return rewards_service_->GetDefaultServerEnvironment();
+  }
+
   raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<test_util::RewardsBrowserTestResponse> response_;
@@ -94,7 +98,7 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsStaging) {
   {
     auto options =
         rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    EXPECT_EQ(options->environment, mojom::Environment::STAGING);
+    EXPECT_EQ(options->environment, GetDefaultEnvironment());
   }
 
   {
@@ -181,7 +185,7 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDevelopment) {
   {
     auto options =
         rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    EXPECT_EQ(options->environment, mojom::Environment::STAGING);
+    EXPECT_EQ(options->environment, GetDefaultEnvironment());
   }
 
   {
@@ -211,7 +215,7 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDevelopment) {
     command_line->AppendSwitchASCII("rewards", "development=false");
     auto options =
         rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    EXPECT_EQ(options->environment, mojom::Environment::STAGING);
+    EXPECT_EQ(options->environment, GetDefaultEnvironment());
   }
 
   {
@@ -221,7 +225,7 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDevelopment) {
     command_line->AppendSwitchASCII("rewards", "development=foobar");
     auto options =
         rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    EXPECT_EQ(options->environment, mojom::Environment::STAGING);
+    EXPECT_EQ(options->environment, GetDefaultEnvironment());
   }
 }
 

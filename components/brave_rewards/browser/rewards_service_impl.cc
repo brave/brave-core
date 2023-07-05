@@ -304,8 +304,7 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
           new DiagnosticLog(profile_->GetPath().Append(kDiagnosticLogPath),
                             kDiagnosticLogMaxFileSize,
                             kDiagnosticLogKeepNumLines)),
-      notification_service_(new RewardsNotificationServiceImpl(profile)),
-      next_timer_id_(0) {
+      notification_service_(new RewardsNotificationServiceImpl(profile)) {
   // Set up the rewards data source
   content::URLDataSource::Add(profile_,
                               std::make_unique<BraveRewardsSource>(profile_));

@@ -64,9 +64,10 @@ class SimpleURLLoader;
 }  // namespace network
 
 class Profile;
-class RewardsFlagBrowserTest;
 
 namespace brave_rewards {
+
+class RewardsFlagBrowserTest;
 
 namespace internal {
 class Ledger;
@@ -312,7 +313,7 @@ class RewardsServiceImpl : public RewardsService,
   void StartProcessForTesting(base::OnceClosure callback);
 
  private:
-  friend class ::RewardsFlagBrowserTest;
+  friend class RewardsFlagBrowserTest;
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
@@ -595,8 +596,6 @@ class RewardsServiceImpl : public RewardsService,
   std::unique_ptr<base::RepeatingTimer> notification_periodic_timer_;
   PrefChangeRegistrar profile_pref_change_registrar_;
 
-  uint32_t next_timer_id_;
-  bool reset_states_;
   bool ledger_for_testing_ = false;
   int ledger_state_target_version_for_testing_ = -1;
   bool resetting_rewards_ = false;
