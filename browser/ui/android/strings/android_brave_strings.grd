@@ -2153,7 +2153,7 @@ Are you sure you want to do this?
       The number of minutes to wait until the Brave Wallet is automatically locked
     </message>
     <message name="IDS_BRAVE_WALLET_RESET_SETTINGS_OPTION" desc="Title for preference to reset Brave Wallet.">
-      Reset Brave Wallet
+      Reset and clear wallet data
     </message>
     <message name="IDS_BRAVE_WALLET_RESET_SETTINGS_CONFIRMATION" desc="Confirmation for Brave Wallet reset.">
       Are you sure you want to reset your Brave Rewards? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "<ph name="CONFIRMATION_PHRASE">%1$s<ex>Yes</ex></ph>" to confirm.
