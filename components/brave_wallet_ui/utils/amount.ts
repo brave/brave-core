@@ -11,6 +11,20 @@ export type AbbreviationOptions =
 type BigNumberIsh = BigNumber | string | number
 type AmountLike = Amount | BigNumberIsh
 
+const powers = {
+  trillion: Math.pow(10, 12),
+  billion: Math.pow(10, 9),
+  million: Math.pow(10, 6),
+  thousand: Math.pow(10, 3)
+} as const
+
+const abbreviations = {
+  thousand: 'k',
+  million: 'M',
+  billion: 'B',
+  trillion: 'T'
+} as const
+
 export default class Amount {
   public readonly value?: BigNumber
 
@@ -229,29 +243,15 @@ export default class Amount {
     return result === '' ? '' : `${result} ${symbol}`
   }
 
-  formatAsFiat (currency?: string, maxDecimals?: number): string {
-    let decimals
-    let value
-
+  formatAsFiat (currency?: string, maxDecimals: number = 20): string {
     if (this.value === undefined || this.value.isNaN()) {
       return ''
-    } else if (
-      (this.value.decimalPlaces() ?? 0) < 2 ||
-      this.value.isGreaterThanOrEqualTo(10)
-    ) {
-      decimals = 2
-      value = this.value.toNumber()
-    } else if (this.value.isGreaterThanOrEqualTo(1)) {
-      decimals = 3
-      value = this.value.toNumber()
-    } else {
-      value = new BigNumber(this.format(4)).toNumber()
     }
 
     const options: Intl.NumberFormatOptions = {
       style: 'decimal',
-      minimumFractionDigits: decimals ?? 0,
-      maximumFractionDigits: maxDecimals ?? decimals ?? 20
+      minimumFractionDigits: 2,
+      maximumFractionDigits: maxDecimals
     }
 
     if (currency && CurrencySymbols[currency.toUpperCase()]) {
@@ -260,7 +260,9 @@ export default class Amount {
       options.currencyDisplay = 'narrowSymbol'
     }
 
-    return Intl.NumberFormat(navigator.language, options).format(value)
+    return Intl.NumberFormat(navigator.language, options).format(
+      new BigNumber(this.format(4)).toNumber()
+    )
   }
 
   toHex (): string {
@@ -317,29 +319,21 @@ export default class Amount {
     currency?: string,
     forceAbbreviation?: AbbreviationOptions
   ): string {
-    const powers = {
-      trillion: Math.pow(10, 12),
-      billion: Math.pow(10, 9),
-      million: Math.pow(10, 6),
-      thousand: Math.pow(10, 3)
-    }
-    const abbreviations = {
-      thousand: 'k',
-      million: 'M',
-      billion: 'B',
-      trillion: 'T'
-    }
-
     if (this.value === undefined) {
       return ''
     }
+
+    /**
+     * range is: 0 - 20
+     */
+    const fractionDigits = decimals < 21 && decimals > -1 ? decimals : 20
 
     const formatter = Intl.NumberFormat(navigator.language, {
       style: currency ? 'currency' : 'decimal',
       currency: currency,
       currencyDisplay: 'narrowSymbol',
-      minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals
+      minimumFractionDigits: fractionDigits,
+      maximumFractionDigits: fractionDigits
     })
 
     const abs = this.value.absoluteValue().toNumber()
