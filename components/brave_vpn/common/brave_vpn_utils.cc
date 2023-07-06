@@ -155,6 +155,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(prefs::kBraveVPNShowButton, true);
 #if BUILDFLAG(IS_WIN)
   registry->RegisterBooleanPref(prefs::kBraveVPNShowNotificationDialog, true);
+  registry->RegisterBooleanPref(prefs::kBraveVPNWireguardFallbackDialog, true);
 #endif
 #if BUILDFLAG(IS_ANDROID)
   registry->RegisterStringPref(prefs::kBraveVPNPurchaseTokenAndroid, "");

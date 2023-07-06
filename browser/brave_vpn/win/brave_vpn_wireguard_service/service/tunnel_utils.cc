@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service/tunnel_utils.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/tunnel_utils.h"
 
 #include "base/logging.h"
 #include "base/win/registry.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
+#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
 
 namespace brave_vpn {
 
@@ -17,41 +18,38 @@ namespace {
 constexpr wchar_t kBraveWireguardConfigKeyName[] = L"ConfigPath";
 }  // namespace
 
-// Increments number of launches for the wireguard tunnel service.
-void IncrementWireguardTunnelLaunchedFlag() {
+// Increments number of usages for the wireguard tunnel service.
+void IncrementWireguardUsageFlag() {
   base::win::RegKey key(
       HKEY_LOCAL_MACHINE,
-      brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
-      KEY_ALL_ACCESS);
+      GetBraveVpnWireguardServiceRegistryStoragePath().c_str(), KEY_ALL_ACCESS);
   if (!key.Valid()) {
     VLOG(1) << "Failed to open wireguard service storage";
     return;
   }
   DWORD launch = 0;
-  key.ReadValueDW(kBraveVpnWireguardCounterOfTunnelLaunches, &launch);
+  key.ReadValueDW(kBraveVpnWireguardCounterOfTunnelUsage, &launch);
   launch++;
-  key.WriteValue(kBraveVpnWireguardCounterOfTunnelLaunches, launch);
+  key.WriteValue(kBraveVpnWireguardCounterOfTunnelUsage, launch);
 }
 
 // Resets number of launches for the wireguard tunnel service.
-void ResetWireguardTunnelLaunchedFlag() {
+void ResetWireguardTunnelUsageFlag() {
   base::win::RegKey key(
       HKEY_LOCAL_MACHINE,
-      brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
-      KEY_ALL_ACCESS);
+      GetBraveVpnWireguardServiceRegistryStoragePath().c_str(), KEY_ALL_ACCESS);
   if (!key.Valid()) {
     VLOG(1) << "Failed to open vpn service storage";
     return;
   }
-  key.DeleteValue(kBraveVpnWireguardCounterOfTunnelLaunches);
+  key.DeleteValue(kBraveVpnWireguardCounterOfTunnelUsage);
 }
 
 bool UpdateLastUsedConfigPath(const base::FilePath& config_path) {
   base::win::RegKey storage;
-  if (storage.Create(
-          HKEY_LOCAL_MACHINE,
-          brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
-          KEY_SET_VALUE) != ERROR_SUCCESS) {
+  if (storage.Create(HKEY_LOCAL_MACHINE,
+                     GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
+                     KEY_SET_VALUE) != ERROR_SUCCESS) {
     return false;
   }
   if (storage.WriteValue(kBraveWireguardConfigKeyName,

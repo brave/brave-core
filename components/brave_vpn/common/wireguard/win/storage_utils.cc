@@ -7,6 +7,7 @@
 
 #include "base/logging.h"
 #include "base/win/registry.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 
 namespace brave_vpn {
@@ -19,7 +20,7 @@ constexpr wchar_t kBraveVpnWireguardServiceRegistryStoragePath[] =
     L"Software\\BraveSoftware\\Vpn\\";
 constexpr wchar_t kBraveWireguardConfigKeyName[] = L"ConfigPath";
 constexpr wchar_t kBraveWireguardEnableTrayIconKeyName[] = L"EnableTrayIcon";
-constexpr uint16_t kBraveVpnWireguardMaxFailedAttempts = 5;
+constexpr uint16_t kBraveVpnWireguardMaxFailedAttempts = 3;
 }  // namespace
 
 std::wstring GetBraveVpnWireguardServiceRegistryStoragePath() {
@@ -61,29 +62,14 @@ void EnableVPNTrayIcon(bool value) {
 bool ShouldFallbackToIKEv2() {
   base::win::RegKey key(
       HKEY_LOCAL_MACHINE,
-      brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
-      KEY_READ);
+      GetBraveVpnWireguardServiceRegistryStoragePath().c_str(), KEY_READ);
   if (!key.Valid()) {
     VLOG(1) << "Failed to open wireguard service storage";
     return false;
   }
   DWORD launch = 0;
-  key.ReadValueDW(kBraveVpnWireguardCounterOfTunnelLaunches, &launch);
+  key.ReadValueDW(kBraveVpnWireguardCounterOfTunnelUsage, &launch);
   return launch >= kBraveVpnWireguardMaxFailedAttempts;
-}
-
-bool UpdateLastUsedConfigPath(const base::FilePath& config_path) {
-  base::win::RegKey storage;
-  if (storage.Create(HKEY_LOCAL_MACHINE,
-                     GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
-                     KEY_SET_VALUE) != ERROR_SUCCESS) {
-    return false;
-  }
-  if (storage.WriteValue(kBraveWireguardConfigKeyName,
-                         config_path.value().c_str()) != ERROR_SUCCESS) {
-    return false;
-  }
-  return true;
 }
 
 // Returns last used config path.
