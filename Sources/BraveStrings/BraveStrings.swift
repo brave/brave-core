@@ -21,6 +21,7 @@ import Foundation
 // MARK: - Common Strings
 extension Strings {
   public static let cancelButtonTitle = NSLocalizedString("CancelButtonTitle", tableName: "BraveShared", bundle: .module, value: "Cancel", comment: "")
+  public static let unlockButtonTitle = NSLocalizedString("UnlockButtonTitle", tableName: "BraveShared", bundle: .module, value: "Unlock", comment: "")
   public static let webContentAccessibilityLabel = NSLocalizedString("WebContentAccessibilityLabel", tableName: "BraveShared", bundle: .module, value: "Web content", comment: "Accessibility label for the main web content view")
   public static let shareLinkActionTitle = NSLocalizedString("ShareLinkActionTitle", tableName: "BraveShared", bundle: .module, value: "Share Link", comment: "Context menu item for sharing a link URL")
   public static let showTabs = NSLocalizedString("ShowTabs", tableName: "BraveShared", bundle: .module, value: "Show Tabs", comment: "Accessibility Label for the tabs button in the browser toolbar")

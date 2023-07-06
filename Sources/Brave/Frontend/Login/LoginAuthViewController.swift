@@ -8,10 +8,13 @@ import Preferences
 import BraveUI
 import Shared
 import UIKit
+import LocalAuthentication
+import Combine
 
 class LoginAuthViewController: UITableViewController {
 
   private let windowProtection: WindowProtection?
+  private var localAuthObservers = Set<AnyCancellable>()
 
   // MARK: Lifecycle
 
@@ -19,6 +22,8 @@ class LoginAuthViewController: UITableViewController {
     self.windowProtection = windowProtection
     self.requiresAuthentication = requiresAuthentication
     super.init(nibName: nil, bundle: nil)
+    
+    windowProtection?.isCancellable = true
   }
 
   required init?(coder: NSCoder) {
@@ -29,8 +34,8 @@ class LoginAuthViewController: UITableViewController {
     super.viewWillAppear(animated)
 
     if requiresAuthentication, Preferences.Privacy.lockWithPasscode.value {
-      askForAuthentication() { [weak self] success in
-        if !success {
+      askForAuthentication() { [weak self] success, error in
+        if !success, error != .userCancel {
           self?.navigationController?.popViewController(animated: true)
         }
       }
@@ -58,19 +63,19 @@ class LoginAuthViewController: UITableViewController {
 
   // MARK: Internal
 
-  func askForAuthentication(completion: ((Bool) -> Void)? = nil) {
+  func askForAuthentication(completion: ((Bool, LAError.Code?) -> Void)? = nil) {
     guard let windowProtection = windowProtection else {
-      completion?(false)
+      completion?(false, nil)
       return
     }
 
     if !windowProtection.isPassCodeAvailable {
       showSetPasscodeError() {
-        completion?(false)
+        completion?(false, .passcodeNotSet)
       }
     } else {
-      windowProtection.presentAuthenticationForViewController(determineLockWithPasscode: false) { status in
-        completion?(status)
+      windowProtection.presentAuthenticationForViewController(determineLockWithPasscode: false) { status, error in
+        completion?(status, error)
       }
     }
   }

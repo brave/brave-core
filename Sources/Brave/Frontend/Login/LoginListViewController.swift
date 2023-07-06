@@ -12,6 +12,7 @@ import Storage
 import Data
 import BraveCore
 import Favicon
+import Combine
 
 class LoginListViewController: LoginAuthViewController {
 
@@ -42,6 +43,8 @@ class LoginListViewController: LoginAuthViewController {
   private let emptyStateOverlayView = EmptyStateOverlayView(
     overlayDetails: EmptyOverlayStateDetails(title: Strings.Login.loginListEmptyScreenTitle))
 
+  private var localAuthObservers = Set<AnyCancellable>()
+
   // MARK: Lifecycle
 
   init(passwordAPI: BravePasswordAPI, windowProtection: WindowProtection?) {
@@ -62,6 +65,11 @@ class LoginListViewController: LoginAuthViewController {
           self.fetchLoginInfo()
         }
       })
+    
+    windowProtection?.cancelPressed
+      .sink { [weak self] _ in
+        self?.navigationController?.popViewController(animated: true)
+      }.store(in: &localAuthObservers)
   }
 
   required init?(coder: NSCoder) {
