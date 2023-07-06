@@ -117,6 +117,12 @@ void AdBlockServiceTest::PreRunTestOnMainThread() {
   WaitForAdBlockServiceThreads();
 }
 
+void AdBlockServiceTest::TearDownOnMainThread() {
+  // Unset the host resolver so as not to interfere with later tests.
+  brave::SetAdblockCnameHostResolverForTesting(nullptr);
+  ExtensionBrowserTest::TearDownOnMainThread();
+}
+
 content::WebContents* AdBlockServiceTest::web_contents() {
   return browser()->tab_strip_model()->GetActiveWebContents();
 }
@@ -1041,9 +1047,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                             bad_resource_url.spec().c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 3ULL);
   ASSERT_EQ(4ULL, inner_resolver->num_resolve());
-
-  // Unset the host resolver so as not to interfere with later tests.
-  brave::SetAdblockCnameHostResolverForTesting(nullptr);
 }
 
 // Make sure that an exception for a URL can apply to a blocking decision made
@@ -1129,9 +1132,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                             bad_resource_url.spec().c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 3ULL);
   ASSERT_EQ(4ULL, inner_resolver->num_resolve());
-
-  // Unset the host resolver so as not to interfere with later tests.
-  brave::SetAdblockCnameHostResolverForTesting(nullptr);
 }
 
 class CnameUncloakingFlagDisabledTest : public AdBlockServiceTest {
@@ -1222,9 +1222,6 @@ IN_PROC_BROWSER_TEST_F(CnameUncloakingFlagDisabledTest, NoDnsQueriesIssued) {
                                             bad_resource_url.spec().c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
   ASSERT_EQ(0ULL, inner_resolver->num_resolve());
-
-  // Unset the host resolver so as not to interfere with later tests.
-  brave::SetAdblockCnameHostResolverForTesting(nullptr);
 }
 
 // Load an image from a specific subdomain, and make sure it is blocked.
