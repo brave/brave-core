@@ -66,8 +66,12 @@ def UpdateProfile(profile_name: str, browser_binary: str, new_profile_name: str,
     with subprocess.Popen(args) as process:
       logging.info('Waiting for 2 minutes..')
       time.sleep(120)
-      logging.info('Stop the browser')
-      process.terminate()
+      if sys.platform == 'win32':
+        logging.info('Please close the browser')
+        process.wait()
+      else:
+        logging.info('Closing the browser')
+        process.terminate()
       time.sleep(5)
 
   # Secure Preferences can't be used on another machine.
