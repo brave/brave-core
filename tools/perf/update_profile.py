@@ -41,15 +41,12 @@ def EraseVariationsFromLocalState(local_state_path: str):
     json.dump(local_state, f)
 
 
-def UpdateProfile(profile_name: str,
-                  browser_binary: str,
-                  new_profile_name: str,
+def UpdateProfile(profile_name: str, browser_binary: str, new_profile_name: str,
                   skip_upload: bool):
   assert os.path.exists(browser_binary)
   tmp = tempfile.mkdtemp(prefix='')
   logging.info('Using temp directory %s' % tmp)
-  profile_dir = perf_profile.GetProfilePath(profile_name,
-                                                     tmp)
+  profile_dir = perf_profile.GetProfilePath(profile_name, tmp)
   logging.info('Profile unpacked in %s' % profile_dir)
 
   args = [
@@ -86,10 +83,11 @@ def UpdateProfile(profile_name: str,
   with scoped_cwd(profile_dir):
     make_zip(zip_path, [], ['.'])
 
-  upload_args = [sys.executable,
-                 os.path.join(path_util.GetDepotToolsDir(),
-                              'upload_to_google_storage.py'),
-                 '-b', 'brave-telemetry', zip_path]
+  upload_args = [
+      sys.executable,
+      os.path.join(path_util.GetDepotToolsDir(), 'upload_to_google_storage.py'),
+      '-b', 'brave-telemetry', zip_path
+  ]
   if skip_upload:
     logging.info('Upload skipped, call this to do: ' + ' '.join(upload_args))
   else:
@@ -116,8 +114,8 @@ def main():
                       help='Skip uploading to GCP')
   args = parser.parse_args()
 
-  UpdateProfile(args.profile_name, args.browser_binary,
-                args.new_profile_name, args.skip_upload)
+  UpdateProfile(args.profile_name, args.browser_binary, args.new_profile_name,
+                args.skip_upload)
 
 
 if __name__ == '__main__':
