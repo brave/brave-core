@@ -196,7 +196,7 @@ class SyncWelcomeViewController: SyncViewController {
 
   @objc
   private func newToSyncAction() {
-    askForAuthentication() { [weak self] status in
+    askForAuthentication() { [weak self] status, error in
       guard let self = self, status else { return }
       
       let addDevice = SyncSelectDeviceTypeViewController()
@@ -253,7 +253,7 @@ class SyncWelcomeViewController: SyncViewController {
 
   @objc
   private func existingUserAction() {
-    askForAuthentication() { [weak self] status in
+    askForAuthentication() { [weak self] status, error in
       guard let self = self, status else { return }
       
       let pairCamera = SyncPairCameraViewController(syncAPI: syncAPI)
@@ -264,7 +264,7 @@ class SyncWelcomeViewController: SyncViewController {
   
   @objc
   private func onSyncInternalsAction() {
-    askForAuthentication() { [weak self] status in
+    askForAuthentication() { [weak self] status, error in
       guard let self = self, status else { return }
       
       let syncInternalsController = syncAPI.createSyncInternalsController().then {

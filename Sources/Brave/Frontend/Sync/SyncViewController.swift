@@ -4,21 +4,34 @@ import UIKit
 import Shared
 import BraveShared
 import Data
+import LocalAuthentication
+import Combine
 
 class SyncViewController: UIViewController {
 
   let windowProtection: WindowProtection?
   private let requiresAuthentication: Bool
   private let isModallyPresented: Bool
+  private var localAuthObservers = Set<AnyCancellable>()
 
   // MARK: Lifecycle
 
-  init(windowProtection: WindowProtection? = nil, requiresAuthentication: Bool = false, isModallyPresented: Bool = false) {
+  init(windowProtection: WindowProtection? = nil,
+       requiresAuthentication: Bool = false,
+       isAuthenticationCancellable: Bool = true,
+       isModallyPresented: Bool = false) {
     self.windowProtection = windowProtection
     self.requiresAuthentication = requiresAuthentication
     self.isModallyPresented = isModallyPresented
 
     super.init(nibName: nil, bundle: nil)
+    
+    windowProtection?.isCancellable = isAuthenticationCancellable
+    
+    windowProtection?.cancelPressed
+      .sink { [weak self] _ in
+        self?.dismissSyncController()
+      }.store(in: &localAuthObservers)
   }
 
   required init?(coder: NSCoder) {
@@ -33,15 +46,11 @@ class SyncViewController: UIViewController {
     super.viewWillAppear(animated)
     
     if requiresAuthentication {
-      askForAuthentication() { [weak self] success in
+      askForAuthentication() { [weak self] success, error in
         guard let self else { return }
         
-        if !success {
-          if isModallyPresented {
-            self.dismiss(animated: true)
-          } else {
-            self.navigationController?.popViewController(animated: true)
-          }
+        if !success, error != .userCancel {
+          self.dismissSyncController()
         }
       }
     }
@@ -60,21 +69,29 @@ class SyncViewController: UIViewController {
   
   /// A method to ask biometric authentication to user
   /// - Parameter completion: block returning authentication status
-  func askForAuthentication(completion: ((Bool) -> Void)? = nil) {
+  func askForAuthentication(completion: ((Bool, LAError.Code?) -> Void)? = nil) {
     guard let windowProtection = windowProtection else {
-      completion?(false)
+      completion?(false, nil)
       return
     }
 
     if !windowProtection.isPassCodeAvailable {
       showSetPasscodeError() {
-        completion?(false)
+        completion?(false, LAError.passcodeNotSet)
       }
     } else {
       windowProtection.presentAuthenticationForViewController(
-        determineLockWithPasscode: false) { status in
-          completion?(status)
+        determineLockWithPasscode: false) { status, error in
+          completion?(status, error)
       }
+    }
+  }
+  
+  private func dismissSyncController() {
+    if isModallyPresented {
+      self.dismiss(animated: true)
+    } else {
+      self.navigationController?.popViewController(animated: true)
     }
   }
   

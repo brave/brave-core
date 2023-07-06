@@ -10,6 +10,7 @@ import SwiftKeychainWrapper
 import BraveCore
 import UIKit
 import BraveUI
+import Combine
 
 class LoginInfoViewController: LoginAuthViewController {
 
@@ -69,6 +70,8 @@ class LoginInfoViewController: LoginAuthViewController {
 
     return dateFormatter.string(from: credentials.dateCreated ?? Date())
   }
+
+  private var localAuthObservers = Set<AnyCancellable>()
 
   // MARK: Lifecycle
 
@@ -287,7 +290,7 @@ extension LoginInfoViewController {
 extension LoginInfoViewController {
 
   @objc private func edit() {
-    askForAuthentication() { [weak self] status in
+    askForAuthentication() { [weak self] status, _ in
       guard let self = self, status else { return }
       
       self.isEditingFieldData = true
@@ -410,7 +413,7 @@ extension LoginInfoViewController: LoginInfoTableViewCellDelegate {
   }
 
   func didSelectReveal(_ cell: LoginInfoTableViewCell, completion: ((Bool) -> Void)?) {
-    askForAuthentication() { status in
+    askForAuthentication() { status, _ in
       completion?(status)
     }
   }
@@ -425,7 +428,7 @@ extension LoginInfoViewController: LoginInfoTableViewCellDelegate {
     }
     
     if authenticationRequired {
-      askForAuthentication() { status in
+      askForAuthentication() { status, _ in
         if status {
           addPasswordToPasteBoardWithExpiry()
         }
