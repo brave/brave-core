@@ -15,7 +15,9 @@
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/grit/generated_resources.h"
+#include "ui/base/ui_base_features.h"
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 #include "brave/browser/ipfs/import/ipfs_import_controller.h"
@@ -189,14 +191,24 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
     InsertItemWithStringIdAt(bookmark_item_index.value(), IDC_SHOW_DOWNLOADS,
                              IDS_SHOW_DOWNLOADS);
   }
-  // Move extensions menu under download.
-  ui::SimpleMenuModel* model = static_cast<ui::SimpleMenuModel*>(
-      GetSubmenuModelAt(GetIndexOfCommandId(IDC_MORE_TOOLS_MENU).value()));
-  DCHECK(model);
-  // More tools menu adds extensions item always.
-  DCHECK(model->GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS).has_value());
-  model->RemoveItemAt(
-      model->GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS).value());
+
+  // Hide upstream's extensions item and move extensions menu under download.
+  // Based on feature flags, more tools sub menu includes it or there is
+  // extensions sub menu.
+  if (base::FeatureList::IsEnabled(features::kExtensionsMenuInAppMenu) ||
+      features::IsChromeRefresh2023()) {
+    // Hide extensions sub menu.
+    DCHECK(GetIndexOfCommandId(IDC_EXTENSIONS_SUBMENU).has_value());
+    RemoveItemAt(GetIndexOfCommandId(IDC_EXTENSIONS_SUBMENU).value());
+  } else {
+    // Hide extensions item from more tools sub menu.
+    ui::SimpleMenuModel* model = static_cast<ui::SimpleMenuModel*>(
+        GetSubmenuModelAt(GetIndexOfCommandId(IDC_MORE_TOOLS_MENU).value()));
+    DCHECK(model);
+    DCHECK(model->GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS).has_value());
+    model->RemoveItemAt(
+        model->GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS).value());
+  }
 
   if (IsCommandIdEnabled(IDC_MANAGE_EXTENSIONS)) {
     InsertItemWithStringIdAt(
