@@ -10,6 +10,14 @@
 
 #import "chrome/browser/app_controller_mac.h"
 
+// As AppController:init is marked as UNAVAILABLE, make an extension to
+// workaround it. As the extension's implementation should be inside the
+// original @implementation context, initForBrave() is implemented in
+// chromium_src/../app_controller_mac.mm.
+@interface AppController ()
+- (instancetype)initForBrave;
+@end
+
 // Manages logic to switch hotkey between copy and copy clean link item.
 @interface BraveAppController : AppController
 

@@ -5,10 +5,18 @@
 
 #import "chrome/browser/app_controller_mac.h"
 
-#define dealloc                          \
-  dummy{} - (instancetype)initForBrave { \
-    return [self init];                  \
-  }                                      \
+#import <Foundation/Foundation.h>
+#import <objc/runtime.h>
+
+// Calling [self init] seems to invoke BraveAppController:init, which will end
+// in a inifinite loop. So we should specify the exact class implmeneation.
+#define dealloc                                                                \
+  dummy{} - (instancetype)initForBrave {                                       \
+    IMP imp =                                                                  \
+        class_getMethodImplementation([AppController class], @selector(init)); \
+    id (*callableImp)(id, SEL) = (__typeof__(callableImp))imp;                 \
+    return callableImp(self, @selector(init));                                 \
+  }                                                                            \
   -(void)dealloc
 
 #include "src/chrome/browser/app_controller_mac.mm"

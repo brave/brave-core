@@ -3,7 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#import <Foundation/Foundation.h>
+
 #import "brave/browser/brave_app_controller_mac.h"
+
+#import <Foundation/Foundation.h>
+#import <objc/runtime.h>
 
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_features.h"
@@ -97,6 +102,18 @@
   static BraveAppController* sharedController = [] {
     BraveAppController* sharedController = [[BraveAppController alloc] init];
     NSApp.delegate = sharedController;
+
+    // Some of upstream classes depend on AppController.sharedController
+    // method. In order to make them use our impelementation,
+    // replace the implementation of AppController.
+    // Note that this method will be called by chrome_main_browser_mac.mm
+    // on the start up.
+    Method originalMethod = class_getClassMethod([AppController class],
+                                                 @selector(sharedController));
+    Method replacementMethod = class_getClassMethod(
+        [BraveAppController class], @selector(sharedControllerReplacement));
+    method_exchangeImplementations(originalMethod, replacementMethod);
+
     return sharedController;
   }();
 
@@ -105,8 +122,19 @@
   return sharedController;
 }
 
++ (AppController*)sharedControllerReplacement {
+  // Calling this after the method_exchangeImplementation() in sharedController
+  // will be result in calling AppController.sharedController() method, which
+  // shoudln't happen.
+  return BraveAppController.sharedController;
+}
+
 - (instancetype)init {
-  return [super initForBrave];
+  self = [super initForBrave];
+  return self;
+  // return nil;
+  // self =  [super initForBrave];
+  // return self;
 }
 
 @end  // @implementation BraveAppController
