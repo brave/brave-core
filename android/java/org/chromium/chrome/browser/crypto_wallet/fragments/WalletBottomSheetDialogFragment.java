@@ -6,10 +6,8 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.content.DialogInterface;
-import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -32,7 +30,7 @@ public class WalletBottomSheetDialogFragment extends BottomSheetDialogFragment
         }
     }
 
-    protected void registerKeyRingObserver(KeyringModel keyringModel) {
+    protected void registerKeyringObserver(KeyringModel keyringModel) {
         if (keyringModel == null || mKeyringObserver != null) return;
 
         mKeyringObserver = new KeyringServiceObserverImpl(this);

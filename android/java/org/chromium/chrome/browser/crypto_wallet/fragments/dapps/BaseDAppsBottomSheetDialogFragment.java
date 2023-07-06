@@ -7,8 +7,6 @@ package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
 import android.app.Activity;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;

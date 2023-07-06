@@ -65,10 +65,9 @@ public class SwapBottomSheetDialogFragment
         super.onCreate(savedInstanceState);
         try {
             mWalletModel = BraveActivity.getBraveActivity().getWalletModel();
-            registerKeyRingObserver(mWalletModel.getKeyringModel());
+            registerKeyringObserver(mWalletModel.getKeyringModel());
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onCreate ", e);
-            e.printStackTrace();
         }
     }
 

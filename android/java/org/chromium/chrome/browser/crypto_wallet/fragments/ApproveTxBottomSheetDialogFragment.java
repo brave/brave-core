@@ -30,7 +30,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.base.CommandLine;
@@ -219,9 +218,9 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
-            registerKeyRingObserver(mWalletModel.getKeyringModel());
+            registerKeyringObserver(mWalletModel.getKeyringModel());
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onCreateDialog " + e);
+            Log.e(TAG, "onCreateDialog ", e);
         }
         return dialog;
     }

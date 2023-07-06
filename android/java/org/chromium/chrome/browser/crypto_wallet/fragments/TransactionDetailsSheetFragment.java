@@ -91,7 +91,7 @@ public class TransactionDetailsSheetFragment extends WalletBottomSheetDialogFrag
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
-            registerKeyRingObserver(mWalletModel.getKeyringModel());
+            registerKeyringObserver(mWalletModel.getKeyringModel());
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onCreate ", e);
         }
