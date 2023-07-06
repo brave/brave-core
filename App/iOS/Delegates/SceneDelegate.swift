@@ -88,7 +88,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       braveCore: appDelegate.braveCore,
       profile: sceneInfo.profile,
       diskImageStore: sceneInfo.diskImageStore,
-      migration: sceneInfo.migration)
+      migration: sceneInfo.migration,
+      rewards: sceneInfo.rewards
+    )
 
     if SceneDelegate.shouldHandleUrpLookup {
       // TODO: Find a better way to do this when multiple windows are involved.
@@ -395,7 +397,7 @@ extension SceneDelegate {
 }
 
 extension SceneDelegate {
-  private func createBrowserWindow(scene: UIWindowScene, braveCore: BraveCoreMain, profile: Profile, diskImageStore: DiskImageStore?, migration: Migration?) -> BrowserViewController {
+  private func createBrowserWindow(scene: UIWindowScene, braveCore: BraveCoreMain, profile: Profile, diskImageStore: DiskImageStore?, migration: Migration?, rewards: Brave.BraveRewards) -> BrowserViewController {
     // Make sure current private browsing flag respects the private browsing only user preference
     PrivateBrowsingManager.shared.isPrivateBrowsing = Preferences.Privacy.privateBrowsingOnly.value
 
@@ -408,6 +410,7 @@ extension SceneDelegate {
       profile: profile,
       diskImageStore: diskImageStore,
       braveCore: braveCore,
+      rewards: rewards,
       migration: migration,
       crashedLastSession: crashedLastSession)
 

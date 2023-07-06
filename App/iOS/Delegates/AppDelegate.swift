@@ -38,6 +38,7 @@ extension AppDelegate {
     let profile: Profile
     let diskImageStore: DiskImageStore?
     let migration: Migration?
+    let rewards: Brave.BraveRewards
   }
 }
 
@@ -200,12 +201,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       }
       return nil
     }()
+    
+    // Setup ads
+    let rewardsConfiguration = BraveRewards.Configuration.current()
+    Migration.migrateAdsConfirmations(for: rewardsConfiguration)
 
     // Setup Scene Info
     sceneInfo = SceneInfoModel(
       profile: profile,
       diskImageStore: diskImageStore,
-      migration: migration)
+      migration: migration,
+      rewards: BraveRewards(configuration: rewardsConfiguration))
 
     // Perform migrations
     let profilePrefix = profile.prefs.getBranchPrefix()

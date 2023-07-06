@@ -28,7 +28,7 @@ public class BraveRewards: NSObject {
 
   private let configuration: Configuration
 
-  init(configuration: Configuration) {
+  public init(configuration: Configuration) {
     self.configuration = configuration
 
     ads = BraveAds(stateStoragePath: configuration.storageURL.appendingPathComponent("ads").path)
