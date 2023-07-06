@@ -28,31 +28,31 @@ import java.util.concurrent.Executors;
 public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
     private Context context;
     private LayoutInflater inflater;
-    private List<NetworkInfo> mNetworkInfos;
+    private List<NetworkInfo> mNetworkInfoList;
     private ExecutorService mExecutor;
     private Handler mHandler;
     public float mNetworkTitleSize;
 
-    public NetworkSpinnerAdapter(Context context, List<NetworkInfo> networkInfos) {
+    public NetworkSpinnerAdapter(Context context, List<NetworkInfo> networkInfoList) {
         this.context = context;
         inflater = (LayoutInflater.from(context));
-        mNetworkInfos = networkInfos;
+        mNetworkInfoList = networkInfoList;
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
     }
 
     public NetworkInfo getNetwork(int position) {
-        return mNetworkInfos.get(position);
+        return mNetworkInfoList.get(position);
     }
 
     @Override
     public int getCount() {
-        return mNetworkInfos.size();
+        return mNetworkInfoList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mNetworkInfos.get(position);
+        return mNetworkInfoList.get(position);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
     public View getView(int position, View view, ViewGroup viewGroup) {
         view = inflater.inflate(R.layout.selected_network_item, viewGroup, false);
         TextView name = view.findViewById(R.id.network_name_text);
-        name.setText(mNetworkInfos.get(position).chainName);
+        name.setText(mNetworkInfoList.get(position).chainName);
         if (mNetworkTitleSize > 0) {
             name.setTextSize(mNetworkTitleSize);
         }
@@ -80,16 +80,16 @@ public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
     public View getDropDownView(int position, View view, ViewGroup viewGroup) {
         view = inflater.inflate(R.layout.network_spinner_items, null);
         TextView name = (TextView) view.findViewById(R.id.network_name_text);
-        name.setText(mNetworkInfos.get(position).chainName);
+        name.setText(mNetworkInfoList.get(position).chainName);
         ImageView networkPicture = view.findViewById(R.id.network_picture);
-        Utils.setBlockiesBitmapResource(
-                mExecutor, mHandler, networkPicture, mNetworkInfos.get(position).chainName, false);
+        Utils.setBlockiesBitmapResource(mExecutor, mHandler, networkPicture,
+                mNetworkInfoList.get(position).chainName, false);
 
         return view;
     }
 
-    public void setNetworks(List<NetworkInfo> networkInfos) {
-        mNetworkInfos = networkInfos;
+    public void setNetworks(List<NetworkInfo> networkInfoList) {
+        mNetworkInfoList = networkInfoList;
         notifyDataSetChanged();
     }
 }

@@ -5,45 +5,121 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.NetworkModel;
+import org.chromium.chrome.browser.app.domain.WalletModel;
+import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
+import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
+import org.chromium.chrome.browser.util.LiveDataUtil;
+
+import java.util.Collections;
 
 public class AddAssetActivity extends BraveWalletBaseActivity {
     private static final String TAG = "AddAssetActivity";
 
-    @Override
-    protected void triggerLayoutInflation() {
-        setContentView(R.layout.activity_add_asset);
+    private WalletModel mWalletModel;
+    private NetworkModel mNetworkModel;
 
-        Intent intent = getIntent();
-//        if (intent != null) {
-//            //mChainId = intent.getStringExtra(CHAIN_ID);
-//        }
+    private boolean mNftsOnly;
 
+    private Toolbar mToolbar;
+    private Spinner mNetworkSpinner;
+    private View mAdvancedSection;
+    private TextView mTvDecimalTitle;
+    private EditText mTokenDecimalsEdit;
+    private TextView mTvAddressTitle;
+    private NetworkSpinnerAdapter mNetworkAdapter;
 
-        BraveActivity braveActivity = null;
-        try {
-            braveActivity = BraveActivity.getBraveActivity();
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "triggerLayoutInflation " + e);
-        }
-        assert braveActivity != null;
+    public static Intent getIntent(@NonNull Context context) {
+        Intent intent = new Intent(context, AddAssetActivity.class);
+        // intent.putExtra(Utils.COIN_TYPE, coinForNewAccount);
+        return intent;
     }
 
-//    public static Intent getIntent(Context context, String chainId, BlockchainToken asset,
-//            PortfolioModel.NftDataModel nftDataModel) {
-//        Intent intent = new Intent(context, NftDetailActivity.class);
-//        intent.putExtra(CHAIN_ID, chainId);
-//        intent.putExtra(ASSET_NAME, asset.name);
-//        intent.putExtra(ASSET_CONTRACT_ADDRESS, asset.contractAddress);
-//        intent.putExtra(ASSET_SYMBOL, asset.symbol);
-//        intent.putExtra(NFT_TOKEN_ID_HEX, asset.tokenId);
-//        intent.putExtra(NFT_META_DATA, nftDataModel.nftMetadata);
-//        intent.putExtra(NFT_IS_ERC_721, nftDataModel.token.isErc721);
-//        intent.putExtra(COIN_TYPE, asset.coin);
-//        return intent;
-//    }
+    @Override
+    protected void onPreCreate() {
+        Intent intent = getIntent();
+        //        if (intent != null) {
+        //            mCoinForNewAccount = intent.getIntExtra(Utils.COIN_TYPE, -1);
+        //            mEditedAccountInfo = WalletUtils.getAccountInfoFromIntent(intent);
+        //        }
+        //        mSelectedFilecoinNetwork = BraveWalletConstants.FILECOIN_MAINNET;
+    }
+
+    @Override
+    protected void triggerLayoutInflation() {
+        Log.d(TAG, "triggerLayoutInflation");
+        setContentView(R.layout.activity_add_asset);
+
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mNetworkSpinner = findViewById(R.id.network_spinner);
+        mNetworkAdapter = new NetworkSpinnerAdapter(this, Collections.emptyList());
+        mNetworkAdapter.mNetworkTitleSize = 14;
+        mNetworkSpinner.setAdapter(mNetworkAdapter);
+        mAdvancedSection = findViewById(R.id.advanced_section);
+        mTvDecimalTitle = findViewById(R.id.token_decimals_title);
+        mTokenDecimalsEdit = findViewById(R.id.token_decimals);
+        mTvAddressTitle = findViewById(R.id.token_contract_address_title);
+
+        onInitialLayoutInflationComplete();
+    }
+
+    @Override
+    public void onStartWithNative() {
+        super.onStartWithNative();
+
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            mWalletModel = activity.getWalletModel();
+            mNetworkModel = mWalletModel.getNetworkModel();
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "Error onStartWithNative.", e);
+        }
+
+        LiveDataUtil.observeOnce(mNetworkModel.mCryptoNetworks,
+                networkInfoList -> { mNetworkAdapter.setNetworks(networkInfoList); });
+
+        mNetworkSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                NetworkInfo network = mNetworkAdapter.getNetwork(position);
+                // filterAddCustomAssetTextWatcher.setNetworkInfo(network);
+                if (network.coin == CoinType.ETH) {
+                    mAdvancedSection.setVisibility(mNftsOnly ? View.VISIBLE : View.GONE);
+                } else {
+                    if (network.coin == CoinType.SOL) {
+                        if (mNftsOnly) {
+                            AndroidUtils.gone(mTvDecimalTitle, mTokenDecimalsEdit);
+                        } else {
+                            AndroidUtils.show(mTvDecimalTitle, mTokenDecimalsEdit);
+                        }
+                        mTvAddressTitle.setText(getString(mNftsOnly
+                                        ? R.string.wallet_add_custom_asset_token_address
+                                        : R.string.wallet_add_custom_asset_token_contract_address));
+                    }
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { /* No-op. */
+            }
+        });
+    }
 }

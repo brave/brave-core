@@ -326,7 +326,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         Intent addAssetIntent = new Intent(requireContext(), AddAssetActivity.class);
         startActivity(addAssetIntent);
 
-        //TODO - clean.
+        // TODO - clean.
         if (mWalletModel == null) return;
         Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.brave_wallet_add_custom_asset);
@@ -364,7 +364,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                 }
             }
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) { /* No-op. */
+            }
         });
 
         TextView title = dialog.findViewById(R.id.add_asset_dialog_title);
