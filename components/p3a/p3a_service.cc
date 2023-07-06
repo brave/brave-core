@@ -5,6 +5,7 @@
 
 #include "brave/components/p3a/p3a_service.h"
 
+#include <algorithm>
 #include <string>
 #include <utility>
 
@@ -218,14 +219,6 @@ void P3AService::OnHistogramChanged(const char* histogram_name,
                                     base::HistogramBase::Sample sample) {
   DCHECK(histogram_name != nullptr);
 
-  std::unique_ptr<base::HistogramSamples> samples =
-      base::StatisticsRecorder::FindHistogram(histogram_name)->SnapshotDelta();
-
-  // Stop now if there's nothing to do.
-  if (samples->Iterator()->Done()) {
-    return;
-  }
-
   // Shortcut for the special values, see |kSuspendedMetricValue|
   // description for details.
   if (IsSuspendedMetric(histogram_name, sample)) {
@@ -236,18 +229,29 @@ void P3AService::OnHistogramChanged(const char* histogram_name,
     return;
   }
 
-  // Note that we store only buckets, not actual values.
-  size_t bucket = 0u;
-  const bool ok = samples->Iterator()->GetBucketIndex(&bucket);
-  if (!ok) {
-    LOG(ERROR) << "Only linear histograms are supported at the moment!";
-    NOTREACHED();
-    return;
-  }
+  // Assume that the sample == bucket for P3A measurements.
+  size_t bucket = std::max(sample, 0);
 
   // Special handling of P2A histograms.
   if (base::StartsWith(histogram_name, "Brave.P2A",
                        base::CompareCase::SENSITIVE)) {
+    std::unique_ptr<base::HistogramSamples> samples =
+        base::StatisticsRecorder::FindHistogram(histogram_name)
+            ->SnapshotDelta();
+
+    // Stop now if there's nothing to do.
+    if (samples->Iterator()->Done()) {
+      return;
+    }
+
+    // Note that we store only buckets, not actual values.
+    const bool ok = samples->Iterator()->GetBucketIndex(&bucket);
+    if (!ok) {
+      LOG(ERROR) << "Only linear histograms are supported at the moment!";
+      NOTREACHED();
+      return;
+    }
+
     // We need the bucket count to make proper perturbation.
     // All P2A metrics should be implemented as linear histograms.
     base::SampleVector* vector =
