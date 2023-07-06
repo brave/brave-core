@@ -15,6 +15,8 @@
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/chrome_test_utils.h"
+#include "components/aggregation_service/features.h"
+#include "components/attribution_reporting/features.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/commerce/core/commerce_feature_list.h"
@@ -95,12 +97,14 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, OriginTrialsTest) {
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   // Please, keep alphabetized
   const base::Feature* disabled_features[] = {
+    &aggregation_service::kAggregationServiceMultipleCloudProviders,
 #if BUILDFLAG(IS_ANDROID)
     &android_webview::features::kWebViewAppsPackageNamesServerSideAllowlist,
     &android_webview::features::kWebViewEnumerateDevicesCache,
     &android_webview::features::kWebViewServerSideSampling,
     &android_webview::features::kWebViewMeasureScreenCoverage,
 #endif
+    &attribution_reporting::kAttributionReportingNullAggregatableReports,
     &autofill::features::kAutofillEnableOfferNotificationForPromoCodes,
     &autofill::features::kAutofillEnableRemadeDownstreamMetrics,
     &autofill::features::test::kAutofillServerCommunication,
