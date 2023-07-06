@@ -1280,7 +1280,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         settingsLauncher.launchSettingsActivity(this, BravePlaylistPreferences.class);
     }
 
-    private void openBraveNewsSettings() {
+    public void openBraveNewsSettings() {
         SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS_V2)) {
             settingsLauncher.launchSettingsActivity(this, BraveNewsPreferencesV2.class);
