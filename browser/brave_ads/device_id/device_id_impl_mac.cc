@@ -55,14 +55,17 @@ std::string FindBSDNameOfSystemDisk() {
     return {};
   }
 
+  std::string root_bsd_name;
   for (int i = 0; i < count; i++) {
     const struct statfs& volume = mounted_volumes[i];
     if (std::string(volume.f_mntonname) == kRootDirectory) {
-      return std::string(volume.f_mntfromname);
+      root_bsd_name = std::string(volume.f_mntfromname);
+      break;
     }
   }
 
-  return {};
+  free(mounted_volumes);
+  return root_bsd_name;
 }
 
 // Return the Volume UUID property of a BSD disk name (e.g. '/dev/disk1').
