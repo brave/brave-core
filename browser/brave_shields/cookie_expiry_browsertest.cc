@@ -10,6 +10,7 @@
 
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
+#include "base/test/scoped_mock_time_message_loop_task_runner.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser.h"
@@ -75,17 +76,17 @@ class CookieExpirationTest : public InProcessBrowserTest {
         browser->tab_strip_model()->GetActiveWebContents(), cookie_string));
   }
 
-  void JSCookieStoreWriteCookie(Browser* browser, std::string expires_in_ms) {
+  void JSCookieStoreWriteCookie(Browser* browser, std::string expires) {
     ASSERT_TRUE(content::ExecJs(
         browser->tab_strip_model()->GetActiveWebContents(),
         base::StringPrintf("(async () => {"
                            "return await window.cookieStore.set("
                            "       { name: 'name',"
                            "         value: 'Good',"
-                           "         expires: Date.now() + %s,"
+                           "         expires: %s,"
                            "       });"
                            "})()",
-                           expires_in_ms.c_str())));
+                           expires.c_str())));
   }
 
   std::vector<net::CanonicalCookie> GetAllCookiesDirect(Browser* browser) {
@@ -113,6 +114,28 @@ class CookieExpirationTest : public InProcessBrowserTest {
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
 };
+
+// Test that a session cookie i.e. without a max-age or expiry date is not
+// affected by the cookie expiration policy. Also, is deleted on browser close.
+IN_PROC_BROWSER_TEST_F(CookieExpirationTest, CheckExpiryForSessionCookie) {
+  GURL url = https_server_->GetURL("a.com", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  JSCookieStoreWriteCookie(browser(), "null");
+  std::vector<net::CanonicalCookie> all_cookies =
+      GetAllCookiesDirect(browser());
+  EXPECT_EQ(1u, all_cookies.size());
+  for (const net::CanonicalCookie& cookie : all_cookies) {
+    EXPECT_TRUE(cookie.ExpiryDate().is_null());
+  }
+  // Fast-forward by 8 days and check that the cookie is still there.
+  base::ScopedMockTimeMessageLoopTaskRunner scoped_mock_time_task_runner;
+  scoped_mock_time_task_runner.task_runner()->FastForwardBy(base::Days(8));
+  all_cookies = GetAllCookiesDirect(browser());
+  EXPECT_EQ(1u, all_cookies.size());
+  for (const net::CanonicalCookie& cookie : all_cookies) {
+    EXPECT_TRUE(cookie.ExpiryDate().is_null());
+  }
+}
 
 IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
                        CheckExpiryForDocumentCookieLessThanMax) {
@@ -150,8 +173,9 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
   auto less_than_max = base::Days(2);
   GURL url = https_server_->GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  JSCookieStoreWriteCookie(browser(),
-                           std::to_string(less_than_max.InMilliseconds()));
+  JSCookieStoreWriteCookie(
+      browser(),
+      "Date.now() + " + base::NumberToString(less_than_max.InMilliseconds()));
 
   std::vector<net::CanonicalCookie> all_cookies =
       GetAllCookiesDirect(browser());
@@ -166,8 +190,9 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
                        CheckExpiryForCookieStoreMoreThanMax) {
   GURL url = https_server_->GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  JSCookieStoreWriteCookie(browser(),
-                           std::to_string(k4YearsInDays.InMilliseconds()));
+  JSCookieStoreWriteCookie(
+      browser(),
+      "Date.now() + " + base::NumberToString(k4YearsInDays.InMilliseconds()));
 
   std::vector<net::CanonicalCookie> all_cookies =
       GetAllCookiesDirect(browser());
