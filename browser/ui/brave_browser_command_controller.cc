@@ -20,7 +20,7 @@
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
-#include "brave/components/brave_wallet/common/common_util.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"

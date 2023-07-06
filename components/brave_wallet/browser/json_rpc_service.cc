@@ -36,6 +36,7 @@
 #include "brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -473,10 +474,11 @@ void JsonRpcService::AddChain(mojom::NetworkInfoPtr chain,
     return;
   }
 
-  // Custom networks for FIL and SOL are allowed to replace only known chain
-  // ids. So just update prefs without chain id validation.
+  // Custom networks for FIL, SOL and BTC are allowed to replace only known
+  // chain ids. So just update prefs without chain id validation.
   if (chain->coin == mojom::CoinType::FIL ||
-      chain->coin == mojom::CoinType::SOL) {
+      chain->coin == mojom::CoinType::SOL ||
+      chain->coin == mojom::CoinType::BTC) {
     if (!KnownChainExists(chain_id, chain->coin)) {
       std::move(callback).Run(
           chain_id, mojom::ProviderError::kInternalError,
@@ -921,8 +923,6 @@ void JsonRpcService::GetBalance(const std::string& address,
                                 mojom::CoinType coin,
                                 const std::string& chain_id,
                                 JsonRpcService::GetBalanceCallback callback) {
-  DCHECK_NE(coin, mojom::CoinType::BTC);
-
   auto network_url = GetNetworkURL(prefs_, chain_id, coin);
   if (!network_url.is_valid()) {
     std::move(callback).Run(
@@ -930,6 +930,7 @@ void JsonRpcService::GetBalance(const std::string& address,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
+
   if (coin == mojom::CoinType::ETH) {
     auto internal_callback =
         base::BindOnce(&JsonRpcService::OnEthGetBalance,
@@ -944,6 +945,8 @@ void JsonRpcService::GetBalance(const std::string& address,
     RequestInternal(fil::getBalance(address), true, network_url,
                     std::move(internal_callback));
     return;
+  } else {
+    NOTREACHED();
   }
   std::move(callback).Run("", mojom::ProviderError::kInternalError,
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));

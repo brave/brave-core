@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/base64.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
@@ -21,8 +20,8 @@
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"

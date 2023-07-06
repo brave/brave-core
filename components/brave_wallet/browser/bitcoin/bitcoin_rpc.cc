@@ -5,13 +5,10 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc.h"
 
-#include "base/command_line.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
-#include "brave/components/brave_wallet/common/switches.h"
 #include "net/http/http_request_headers.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -44,7 +41,16 @@ bool IsAsciiAlphaNumeric(const std::string& str) {
   return base::ranges::all_of(str, &base::IsAsciiAlphaNumeric<char>);
 }
 
+bool UrlPathEndsWithSlash(const GURL& base_url) {
+  auto path_piece = base_url.path_piece();
+  return !path_piece.empty() && path_piece.back() == '/';
+}
+
 const GURL MakeGetChainHeightUrl(const GURL& base_url) {
+  if (!UrlPathEndsWithSlash(base_url)) {
+    return GURL();
+  }
+
   GURL::Replacements replacements;
   const std::string path = base::StrCat({base_url.path(), "blocks/tip/height"});
   replacements.SetPathStr(path);
@@ -55,6 +61,9 @@ const GURL MakeGetChainHeightUrl(const GURL& base_url) {
 const GURL MakeAddressHistoryUrl(const GURL& base_url,
                                  const std::string& address,
                                  const std::string& last_seen_txid) {
+  if (!UrlPathEndsWithSlash(base_url)) {
+    return GURL();
+  }
   if (!IsAsciiAlphaNumeric(address) || !IsAsciiAlphaNumeric(last_seen_txid)) {
     return GURL();
   }
@@ -72,28 +81,15 @@ const GURL MakeAddressHistoryUrl(const GURL& base_url,
 }
 
 const GURL MakePostTransactionUrl(const GURL& base_url) {
+  if (!UrlPathEndsWithSlash(base_url)) {
+    return GURL();
+  }
+
   GURL::Replacements replacements;
   const std::string path = base::StrCat({base_url.path(), "tx"});
   replacements.SetPathStr(path);
 
   return base_url.ReplaceComponents(replacements);
-}
-
-std::string BitcoinRpcHost() {
-  return base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
-      brave_wallet::switches::kBitcoinRpcHost);
-}
-
-GURL BaseRpcUrl(const std::string& network_id) {
-  CHECK(brave_wallet::IsBitcoinNetwork(network_id));
-
-  std::string host = BitcoinRpcHost();
-  const char* path = network_id == brave_wallet::mojom::kBitcoinMainnet
-                         ? "/api/"
-                         : "/testnet/api/";
-
-  return GURL(base::StrCat(
-      {url::kHttpsScheme, url::kStandardSchemeSeparator, host, path}));
 }
 
 absl::optional<std::string> ConvertPlainIntToJsonArray(
@@ -111,21 +107,25 @@ absl::optional<std::string> ConvertPlainStringToJsonArray(
 namespace brave_wallet {
 
 BitcoinRpc::BitcoinRpc(
+    PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : api_request_helper_(new APIRequestHelper(GetNetworkTrafficAnnotationTag(),
+    : prefs_(prefs),
+      api_request_helper_(new APIRequestHelper(GetNetworkTrafficAnnotationTag(),
                                                url_loader_factory)) {}
 
 BitcoinRpc::~BitcoinRpc() = default;
 
 void BitcoinRpc::GetChainHeight(const std::string& network_id,
                                 GetChainHeightCallback callback) {
+  GURL network_url = GetNetworkURL(prefs_, network_id, mojom::CoinType::BTC);
+
   auto internal_callback =
       base::BindOnce(&BitcoinRpc::OnGetChainHeight,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   // Response comes as a plain integer which is not accepted by json sanitizer.
   // Wrap response into a json array.
   auto conversion_callback = base::BindOnce(&ConvertPlainIntToJsonArray);
-  RequestInternal(MakeGetChainHeightUrl(BaseRpcUrl(network_id)),
+  RequestInternal(MakeGetChainHeightUrl(network_url),
                   std::move(internal_callback), std::move(conversion_callback));
 }
 
@@ -156,12 +156,13 @@ void BitcoinRpc::GetAddressHistory(const std::string& network_id,
                                    const uint32_t max_block_height,
                                    const std::string& last_seen_txid,
                                    GetAddressHistoryCallback callback) {
+  GURL network_url = GetNetworkURL(prefs_, network_id, mojom::CoinType::BTC);
+
   auto internal_callback = base::BindOnce(
       &BitcoinRpc::OnGetAddressHistory, weak_ptr_factory_.GetWeakPtr(),
       max_block_height, std::move(callback));
-  RequestInternal(
-      MakeAddressHistoryUrl(BaseRpcUrl(network_id), address, last_seen_txid),
-      std::move(internal_callback));
+  RequestInternal(MakeAddressHistoryUrl(network_url, address, last_seen_txid),
+                  std::move(internal_callback));
 }
 
 void BitcoinRpc::OnGetAddressHistory(const uint32_t max_block_height,
@@ -199,6 +200,8 @@ void BitcoinRpc::OnGetAddressHistory(const uint32_t max_block_height,
 void BitcoinRpc::PostTransaction(const std::string& network_id,
                                  const std::vector<uint8_t>& transaction,
                                  PostTransactionCallback callback) {
+  GURL network_url = GetNetworkURL(prefs_, network_id, mojom::CoinType::BTC);
+
   auto payload = base::HexEncode(transaction);
 
   auto internal_callback =
@@ -206,11 +209,10 @@ void BitcoinRpc::PostTransaction(const std::string& network_id,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   auto conversion_callback = base::BindOnce(&ConvertPlainStringToJsonArray);
-  api_request_helper_->Request(net::HttpRequestHeaders::kPostMethod,
-                               MakePostTransactionUrl(BaseRpcUrl(network_id)),
-                               payload, "", std::move(internal_callback), {},
-                               {.auto_retry_on_network_change = true},
-                               std::move(conversion_callback));
+  api_request_helper_->Request(
+      net::HttpRequestHeaders::kPostMethod, MakePostTransactionUrl(network_url),
+      payload, "", std::move(internal_callback), {},
+      {.auto_retry_on_network_change = true}, std::move(conversion_callback));
 }
 
 void BitcoinRpc::OnPostTransaction(PostTransactionCallback callback,

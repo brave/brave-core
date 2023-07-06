@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 
 namespace brave_wallet {
 namespace {

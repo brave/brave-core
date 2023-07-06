@@ -161,11 +161,6 @@ struct SolanaAccountInfo {
   uint64_t rent_epoch;
 };
 
-mojom::AccountIdPtr MakeAccountId(mojom::CoinType coin,
-                                  mojom::KeyringId keyring_id,
-                                  mojom::AccountKind kind,
-                                  const std::string& address);
-
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BRAVE_WALLET_TYPES_H_

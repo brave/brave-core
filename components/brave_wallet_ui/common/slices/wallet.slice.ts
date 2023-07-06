@@ -29,7 +29,6 @@ import {
 } from '../constants/action_types'
 import {
   AddAccountPayloadType,
-  AddBitcoinAccountPayloadType
 } from '../../page/constants/action_types'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 
@@ -38,6 +37,7 @@ import {
   parseJSONFromLocalStorage,
   makeInitialFilteredOutNetworkKeys
 } from '../../utils/local-storage-utils'
+import { findAccountByUniqueKey } from '../../utils/account-utils'
 
 // Options
 import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
@@ -213,8 +213,6 @@ export const WalletAsyncActions = {
     'setSelectedAccountFilterItem'
   ),
   addAccount: createAction<AddAccountPayloadType>('addAccount'), // alias for keyringService.addAccount
-  addBitcoinAccount:
-    createAction<AddBitcoinAccountPayloadType>('addBitcoinAccount'),
   getOnRampCurrencies: createAction('getOnRampCurrencies'),
   autoLockMinutesChanged: createAction('autoLockMinutesChanged'), // No reducer or API logic for this (UNUSED)
   updateTokenPinStatus: createAction<BraveWallet.BlockchainToken>('updateTokenPinStatus')
@@ -466,9 +464,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<BraveWallet.AllAccountsInfo>
       ) => {
         state.accounts.forEach((account) => {
-          const info = payload.accounts.find((info) => {
-            return account.address === info.address
-          })
+          const info = findAccountByUniqueKey(payload.accounts, account.accountId.uniqueKey)
           if (info) {
             account.name = info.name
           }

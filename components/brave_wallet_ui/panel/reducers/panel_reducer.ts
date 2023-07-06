@@ -51,6 +51,7 @@ const defaultState: PanelState = {
       symbolName: 'Ethereum',
       decimals: 18,
       coin: BraveWallet.CoinType.ETH,
+      supportedKeyrings: [BraveWallet.KeyringId.kDefault],
       isEip1559: true
     }
   },

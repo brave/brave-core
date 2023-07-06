@@ -21,6 +21,7 @@ export const emptyNetwork: BraveWallet.NetworkInfo = {
   symbolName: '',
   decimals: 0,
   coin: BraveWallet.CoinType.ETH,
+  supportedKeyrings: [],
   isEip1559: true
 }
 
@@ -33,11 +34,24 @@ export const getNetworkInfo = (chainId: string, coin: BraveWallet.CoinType, list
   return emptyNetwork
 }
 
-export const getNetworksByCoinType = (networks: BraveWallet.NetworkInfo[], coin: BraveWallet.CoinType): BraveWallet.NetworkInfo[] => {
+export const networkMatchesAccount = (
+  network: BraveWallet.NetworkInfo,
+  accountId: BraveWallet.AccountId
+) => {
+  return (
+    network.coin === accountId.coin &&
+    network.supportedKeyrings.includes(accountId.keyringId)
+  )
+}
+
+export const filterNetworksForAccount = (
+  networks: BraveWallet.NetworkInfo[],
+  accountId: BraveWallet.AccountId
+): BraveWallet.NetworkInfo[] => {
   if (!networks) {
     return []
   }
-  return networks.filter((network) => network.coin === coin)
+  return networks.filter((network) => networkMatchesAccount(network, accountId))
 }
 
 export const getTokensNetwork = (networks: BraveWallet.NetworkInfo[], token: BraveWallet.BlockchainToken): BraveWallet.NetworkInfo => {
@@ -67,19 +81,6 @@ export const getCoinFromTxDataUnion = <T extends TxDataPresence> (txDataUnion: T
   if (txDataUnion.solanaTxData) { return BraveWallet.CoinType.SOL }
   // TODO(apaymyshev): bitcoin support
   return BraveWallet.CoinType.ETH
-}
-
-export function getFilecoinKeyringIdFromNetwork (
-  network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
-) {
-  if (network.coin !== BraveWallet.CoinType.FIL) {
-    return undefined
-  }
-  if (network.chainId === BraveWallet.FILECOIN_MAINNET) {
-    return BraveWallet.KeyringId.kFilecoin
-  } else {
-    return BraveWallet.KeyringId.kFilecoinTestnet
-  }
 }
 
 const EIP1559_SUPPORTED_ACCOUNT_TYPE_NAMES = [

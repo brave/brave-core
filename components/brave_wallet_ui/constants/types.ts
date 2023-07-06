@@ -33,11 +33,6 @@ export type TokenPriceHistory = {
   close: number
 }
 
-export const FilecoinNetworkTypes = [
-  BraveWallet.FILECOIN_MAINNET, BraveWallet.FILECOIN_TESTNET
-] as const
-export type FilecoinNetwork = typeof FilecoinNetworkTypes[number]
-
 export type WalletAccountTypeName =
   | 'Primary'
   | 'Secondary'
@@ -841,7 +836,8 @@ export interface TransactionProviderErrorRegistry {
 export const SupportedCoinTypes = [
   BraveWallet.CoinType.SOL,
   BraveWallet.CoinType.ETH,
-  BraveWallet.CoinType.FIL
+  BraveWallet.CoinType.FIL,
+  BraveWallet.CoinType.BTC
 ]
 
 export const SupportedOnRampNetworks = [
@@ -877,7 +873,8 @@ export const SupportedTestNetworks = [
   BraveWallet.SOLANA_DEVNET,
   BraveWallet.SOLANA_TESTNET,
   BraveWallet.FILECOIN_TESTNET,
-  BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID
+  BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID,
+  BraveWallet.BITCOIN_TESTNET,
 ]
 
 /**
@@ -898,7 +895,8 @@ export type CoinType = typeof CoinTypes[keyof typeof CoinTypes]
 export enum CoinTypesMap {
   ETH = BraveWallet.CoinType.ETH,
   FIL = BraveWallet.CoinType.FIL,
-  SOL = BraveWallet.CoinType.SOL
+  SOL = BraveWallet.CoinType.SOL,
+  BTC = BraveWallet.CoinType.BTC
 }
 
 export type BuyOption = {
@@ -1074,11 +1072,25 @@ export type DAppConnectedPermissionsOption = {
   name: string
 }
 
-const BitcoinNetworkTypes = [
+export const FilecoinNetworkTypes = [
+  BraveWallet.FILECOIN_MAINNET, BraveWallet.FILECOIN_TESTNET
+] as const
+export type FilecoinNetwork = typeof FilecoinNetworkTypes[number]
+
+export const FilecoinNetworkLocaleMapping = {
+  [BraveWallet.FILECOIN_MAINNET]: 'Filecoin Mainnet',
+  [BraveWallet.FILECOIN_TESTNET]: 'Filecoin Testnet'
+}
+
+export const BitcoinNetworkTypes = [
   BraveWallet.BITCOIN_MAINNET, BraveWallet.BITCOIN_TESTNET
 ] as const
 export type BitcoinNetwork = typeof BitcoinNetworkTypes[number]
 
+export const BitcoinNetworkLocaleMapping = {
+  [BraveWallet.BITCOIN_MAINNET]: 'Bitcoin Mainnet',
+  [BraveWallet.BITCOIN_TESTNET]: 'Bitcoin Testnet'
+}
 
 export type GasFeeOption = {
   id: string

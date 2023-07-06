@@ -57,6 +57,7 @@
 #include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"

@@ -341,7 +341,7 @@ export const useSwap = () => {
       }
 
       return new Amount(
-        getBalance(selectedAccount, token, tokenBalancesRegistry)
+        getBalance(selectedAccount.accountId, token, tokenBalancesRegistry)
       )
     },
     [tokenBalancesRegistry, selectedAccount]

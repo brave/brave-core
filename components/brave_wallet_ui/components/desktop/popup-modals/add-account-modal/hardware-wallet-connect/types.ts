@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { FilecoinNetwork, HardwareDerivationScheme, LedgerDerivationPaths, TrezorDerivationPaths, SolDerivationPaths } from '../../../../../common/hardware/types'
-import { BraveWallet } from '../../../../../constants/types'
+import { HardwareDerivationScheme, LedgerDerivationPaths, TrezorDerivationPaths, SolDerivationPaths } from '../../../../../common/hardware/types'
+import { BraveWallet, FilecoinNetwork } from '../../../../../constants/types'
 import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
 export { SolDerivationPaths } from '../../../../../common/hardware/types'
 

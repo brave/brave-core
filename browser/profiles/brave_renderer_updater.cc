@@ -11,10 +11,10 @@
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/common/brave_renderer_configuration.mojom.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/de_amp/browser/de_amp_util.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -85,8 +85,9 @@ BraveRendererUpdater::GetRendererConfigurations() {
         renderer_profile->GetOriginalProfile() == profile_) {
       auto renderer_configuration =
           GetRendererConfiguration(it.GetCurrentValue());
-      if (renderer_configuration)
+      if (renderer_configuration) {
         rv.push_back(std::move(renderer_configuration));
+      }
     }
   }
   return rv;
@@ -96,8 +97,9 @@ mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>
 BraveRendererUpdater::GetRendererConfiguration(
     content::RenderProcessHost* render_process_host) {
   IPC::ChannelProxy* channel = render_process_host->GetChannel();
-  if (!channel)
+  if (!channel) {
     return mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>();
+  }
 
   mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>
       renderer_configuration;
@@ -125,8 +127,9 @@ bool BraveRendererUpdater::CheckActiveWallet() {
 
 void BraveRendererUpdater::UpdateAllRenderers() {
   auto renderer_configurations = GetRendererConfigurations();
-  for (auto& renderer_configuration : renderer_configurations)
+  for (auto& renderer_configuration : renderer_configurations) {
     UpdateRenderer(&renderer_configuration);
+  }
 }
 
 void BraveRendererUpdater::UpdateRenderer(

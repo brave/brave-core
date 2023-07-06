@@ -39,6 +39,8 @@ base::Value::Dict GetDefaultUserAssets() {
                        BraveWalletService::GetDefaultSolanaAssets());
   user_assets_pref.Set(kFilecoinPrefKey,
                        BraveWalletService::GetDefaultFilecoinAssets());
+  user_assets_pref.Set(kBitcoinPrefKey,
+                       BraveWalletService::GetDefaultBitcoinAssets());
   return user_assets_pref;
 }
 
@@ -47,6 +49,7 @@ base::Value::Dict GetDefaultSelectedNetworks() {
   selected_networks.Set(kEthereumPrefKey, mojom::kMainnetChainId);
   selected_networks.Set(kSolanaPrefKey, mojom::kSolanaMainnet);
   selected_networks.Set(kFilecoinPrefKey, mojom::kFilecoinMainnet);
+  selected_networks.Set(kBitcoinPrefKey, mojom::kBitcoinMainnet);
 
   return selected_networks;
 }
@@ -56,6 +59,7 @@ base::Value::Dict GetDefaultSelectedNetworksPerOrigin() {
   selected_networks.Set(kEthereumPrefKey, base::Value::Dict());
   selected_networks.Set(kSolanaPrefKey, base::Value::Dict());
   selected_networks.Set(kFilecoinPrefKey, base::Value::Dict());
+  selected_networks.Set(kBitcoinPrefKey, base::Value::Dict());
 
   return selected_networks;
 }
@@ -80,6 +84,14 @@ base::Value::Dict GetDefaultHiddenNetworks() {
   sol_hidden.Append(mojom::kSolanaTestnet);
   sol_hidden.Append(mojom::kLocalhostChainId);
   hidden_networks.Set(kSolanaPrefKey, std::move(sol_hidden));
+
+  // TODO(apaymyshev): fix by
+  // https://github.com/brave/brave-browser/issues/31662
+  /*
+  base::Value::List btc_hidden;
+  btc_hidden.Append(mojom::kBitcoinTestnet);
+  hidden_networks.Set(kBitcoinPrefKey, std::move(btc_hidden));
+  */
 
   return hidden_networks;
 }

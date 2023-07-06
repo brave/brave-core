@@ -7,11 +7,6 @@ import { LedgerError } from './ledgerjs/ledger-messages'
 import { EthereumSignedTx } from './ledgerjs/eth-ledger-messages'
 import { FilSignedLotusMessage } from './ledgerjs/fil-ledger-messages'
 
-export const FilecoinNetworkTypes = [
-  BraveWallet.FILECOIN_MAINNET, BraveWallet.FILECOIN_TESTNET
-] as const
-export type FilecoinNetwork = typeof FilecoinNetworkTypes[number]
-
 export type HardwareWalletResponseCodeType =
   | 'deviceNotConnected'
   | 'deviceBusy'
@@ -72,14 +67,6 @@ type HardwareWalletAccountBytesAddress = BraveWallet.HardwareWalletAccount & {
 
 export type GetAccountsHardwareOperationResult = HardwareOperationResult & {
   payload?: HardwareWalletAccountBytesAddress[]
-}
-
-// Did not create a string for these yet since it is
-// likely these names will be returned from another service
-// that will be localized.
-export const FilecoinNetworkLocaleMapping = {
-  [BraveWallet.FILECOIN_MAINNET]: 'Filecoin Mainnet',
-  [BraveWallet.FILECOIN_TESTNET]: 'Filecoin Testnet'
 }
 
 // Batch size of accounts imported from the device in one step.

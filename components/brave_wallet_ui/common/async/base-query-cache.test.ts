@@ -114,18 +114,19 @@ describe('BaseQueryCache', () => {
     // access the uncached registry
     const registry = await cache.getNetworksRegistry()
     expect(registry.entities).toBeDefined()
-    // once per coin type (ETH, FIL, SOL)
+    // once per coin type (ETH, FIL, SOL, BTC)
+    const numberOfCoins = 4
     expect(getWalletInfoSpy).toHaveBeenCalledTimes(1)
-    expect(getAllNetworksSpy).toHaveBeenCalledTimes(3)
-    expect(getHiddenNetworksSpy).toHaveBeenCalledTimes(3)
+    expect(getAllNetworksSpy).toHaveBeenCalledTimes(numberOfCoins)
+    expect(getHiddenNetworksSpy).toHaveBeenCalledTimes(numberOfCoins)
 
     // re-access the registry, this time from cache
     const cachedRegistry = await cache.getNetworksRegistry()
     expect(cachedRegistry.entities[cachedRegistry.ids[0]]).toBeDefined()
     // no additional calls made
     expect(getWalletInfoSpy).toHaveBeenCalledTimes(1)
-    expect(getAllNetworksSpy).toHaveBeenCalledTimes(3)
-    expect(getHiddenNetworksSpy).toHaveBeenCalledTimes(3)
+    expect(getAllNetworksSpy).toHaveBeenCalledTimes(numberOfCoins)
+    expect(getHiddenNetworksSpy).toHaveBeenCalledTimes(numberOfCoins)
 
     // clear the cache manually
     cache.clearNetworksRegistry()
@@ -133,8 +134,8 @@ describe('BaseQueryCache', () => {
     // access again, repopulating cache with fresh value
     const reCachedRegistry = await cache.getNetworksRegistry()
     expect(reCachedRegistry).toBeDefined()
-    expect(getAllNetworksSpy).toHaveBeenCalledTimes(6)
-    expect(getHiddenNetworksSpy).toHaveBeenCalledTimes(6)
+    expect(getAllNetworksSpy).toHaveBeenCalledTimes(numberOfCoins * 2)
+    expect(getHiddenNetworksSpy).toHaveBeenCalledTimes(numberOfCoins * 2)
     // no need to update wallet-info
     expect(getWalletInfoSpy).toHaveBeenCalledTimes(1)
 

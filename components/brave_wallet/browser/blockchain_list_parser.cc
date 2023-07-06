@@ -11,10 +11,10 @@
 
 #include "base/json/json_reader.h"
 #include "base/logging.h"
-#include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 
 namespace brave_wallet {
@@ -612,6 +612,8 @@ bool ParseChainList(const std::string& json, ChainList* result) {
       continue;
     }
     network->coin = mojom::CoinType::ETH;
+    network->supported_keyrings =
+        GetSupportedKeyringsForNetwork(network->coin, network->chain_id);
 
     result->push_back(std::move(network));
   }

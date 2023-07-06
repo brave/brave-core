@@ -25,7 +25,6 @@ import {
   hasEIP1559Support
 } from '../../utils/network-utils'
 import { getAccountType } from '../../utils/account-utils'
-import Amount from '../../utils/amount'
 import { getAssetIdKey, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
 import { getVisibleNetworksList } from '../slices/api.slice'
 
@@ -107,48 +106,6 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
           reject(result.error)
         })
         .catch(reject)
-    }
-  })
-}
-
-export function getBalanceForChainId (address: string, coin: BraveWallet.CoinType, chainId: string): Promise<string> {
-  return new Promise(async (resolve, reject) => {
-    const { jsonRpcService } = getAPIProxy()
-    if (coin === BraveWallet.CoinType.SOL) {
-      const result = await jsonRpcService.getSolanaBalance(address, chainId)
-      if (result.error === BraveWallet.SolanaProviderError.kSuccess) {
-        resolve(Amount.normalize(result.balance.toString()))
-      } else {
-        reject(result.errorMessage)
-      }
-      return
-    }
-    const result = await jsonRpcService.getBalance(address, coin, chainId)
-    if (result.error === BraveWallet.ProviderError.kSuccess) {
-      resolve(Amount.normalize(result.balance))
-    } else {
-      reject(result.errorMessage)
-    }
-  })
-}
-
-export function getTokenBalanceForChainId (contract: string, address: string, coin: BraveWallet.CoinType, chainId: string): Promise<string> {
-  return new Promise(async (resolve, reject) => {
-    const { jsonRpcService } = getAPIProxy()
-    if (coin === BraveWallet.CoinType.SOL) {
-      const result = await jsonRpcService.getSPLTokenAccountBalance(address, contract, chainId)
-      if (result.error === BraveWallet.SolanaProviderError.kSuccess) {
-        resolve(Amount.normalize(result.amount))
-      } else {
-        reject(result.errorMessage)
-      }
-      return
-    }
-    const result = await jsonRpcService.getERC20TokenBalance(contract, address, chainId)
-    if (result.error === BraveWallet.ProviderError.kSuccess) {
-      resolve(Amount.normalize(result.balance))
-    } else {
-      reject(result.errorMessage)
     }
   })
 }
@@ -309,7 +266,7 @@ export const getAllBuyAssets = async (): Promise<{
     async (chainId: string) =>
       await blockchainRegistry.getBuyTokens(kStripe, chainId)
   )
-  
+
   // add token logos
   const rampAssetOptions: BraveWallet.BlockchainToken[] = await mapLimit(
     rampAssets.flatMap((p) => p.tokens),

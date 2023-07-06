@@ -20,9 +20,7 @@ import {
 // Utils
 import { getLocale } from '../../../../../../common/locale'
 import { getPriceIdForToken } from '../../../../../utils/api-utils'
-import {
-  getFilecoinKeyringIdFromNetwork //
-} from '../../../../../utils/network-utils'
+import { filterNetworksForAccount } from '../../../../../utils/network-utils'
 import {
   computeFiatAmount,
   getTokenPriceAmountFromRegistry
@@ -103,15 +101,9 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         const accountsLocalHost = localHostCoins.find((token) =>
           token.symbol.toUpperCase() === coinName)
 
-        const chainList = networks
-          .filter(
-            (network) =>
-              network.coin === account.accountId.coin &&
-              (network.coin !== BraveWallet.CoinType.FIL ||
-                getFilecoinKeyringIdFromNetwork(network) ===
-                  account.accountId.keyringId)
-          )
-          .map((network) => network.chainId)
+      const chainList = filterNetworksForAccount(networks, account.accountId).map(
+        (network) => network.chainId
+      )
 
         const list = userVisibleTokensInfo.filter(
           (token) =>
@@ -144,7 +136,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       (account: BraveWallet.AccountInfo) => {
         return getTokenListByAccount(account)
           .filter(token => new Amount(
-            getBalance(account, token, tokenBalancesRegistry)).gt(0))
+            getBalance(account.accountId, token, tokenBalancesRegistry)).gt(0))
       },
       [getTokenListByAccount, tokenBalancesRegistry]
     )
@@ -214,7 +206,11 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const getAccountFiatValue = React.useCallback(
       (account: BraveWallet.AccountInfo) => {
         const amounts = getTokensBySearchValue(account).map((token) => {
-          const balance = getBalance(account, token, tokenBalancesRegistry)
+          const balance = getBalance(
+            account.accountId,
+            token,
+            tokenBalancesRegistry
+          )
 
           return computeFiatAmount({
             spotPriceRegistry,
@@ -317,7 +313,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
                 token={token}
                 onClick={() => onSelectSendAsset(token, account)}
                 key={`${token.contractAddress}-${token.chainId}-${token.tokenId}`}
-                balance={getBalance(account, token, tokenBalancesRegistry)}
+                balance={getBalance(account.accountId, token, tokenBalancesRegistry)}
                 spotPrice={
                   spotPriceRegistry
                     ? getTokenPriceAmountFromRegistry(spotPriceRegistry, token)

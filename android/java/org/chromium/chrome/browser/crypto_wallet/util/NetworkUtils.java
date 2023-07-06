@@ -41,6 +41,7 @@ public class NetworkUtils {
             allNetworkInfo.chainId = "all";
             allNetworkInfo.chainName = context.getString(R.string.brave_wallet_network_filter_all);
             allNetworkInfo.coin = 0;
+            allNetworkInfo.supportedKeyrings = new int[0];
             allNetworkInfo.decimals = 0;
             allNetworkInfo.iconUrls = new String[0];
             allNetworkInfo.activeRpcEndpointIndex = 0;

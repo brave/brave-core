@@ -145,26 +145,26 @@ export const AccountsAndTransactionsList = ({
       return []
     }
     return filteredAccountsByCoinType
-      .filter(
-        (account) =>
-          new Amount(getBalance(account, selectedAsset, tokenBalancesRegistry)).gt(0)
+      .filter((account) =>
+        new Amount(
+          getBalance(account.accountId, selectedAsset, tokenBalancesRegistry)
+        ).gt(0)
       )
-      .sort(
-        (a, b) => {
-          const aBalance = computeFiatAmount({
-            spotPriceRegistry,
-            value: getBalance(a, selectedAsset, tokenBalancesRegistry),
-            token: selectedAsset
-          })
-
-          const bBalance = computeFiatAmount({
-            spotPriceRegistry,
-            value: getBalance(b, selectedAsset, tokenBalancesRegistry),
-            token: selectedAsset
-          })
-
-          return bBalance.minus(aBalance).toNumber()
+      .sort((a, b) => {
+        const aBalance = computeFiatAmount({
+          spotPriceRegistry,
+          value: getBalance(a.accountId, selectedAsset, tokenBalancesRegistry),
+          token: selectedAsset
         })
+
+        const bBalance = computeFiatAmount({
+          spotPriceRegistry,
+          value: getBalance(b.accountId, selectedAsset, tokenBalancesRegistry),
+          token: selectedAsset
+        })
+
+        return bBalance.minus(aBalance).toNumber()
+      })
   }, [
     selectedAsset,
     filteredAccountsByCoinType,
@@ -291,15 +291,13 @@ export const AccountsAndTransactionsList = ({
                   <VerticalSpacer space={8} />
                   {accountsList.map(account =>
                     <PortfolioAccountItem
+                      key={account.accountId.uniqueKey}
                       asset={selectedAsset}
                       defaultCurrencies={defaultCurrencies}
-                      key={account.accountId.uniqueKey}
-                      name={account.name}
-                      address={account.address}
-                      accountKind={account.accountId.kind}
+                      account={account}
                       assetBalance={
                         getBalance(
-                          account,
+                          account.accountId,
                           selectedAsset,
                           tokenBalancesRegistry
                         )
@@ -392,7 +390,7 @@ export const AccountsAndTransactionsList = ({
           account={selectedSellAccount}
           sellAssetBalance={
             getBalance(
-              selectedSellAccount,
+              selectedSellAccount?.accountId,
               selectedAsset,
               tokenBalancesRegistry
             )

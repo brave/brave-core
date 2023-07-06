@@ -32,10 +32,10 @@ import {
 
 // Custom types
 import { ErrorMessage, HardwareWalletDerivationPathsMapping } from './types'
-import { HardwareDerivationScheme, LedgerDerivationPaths, FilecoinNetwork, DerivationBatchSize, SolDerivationPaths } from '../../../../../common/hardware/types'
+import { HardwareDerivationScheme, LedgerDerivationPaths, DerivationBatchSize, SolDerivationPaths } from '../../../../../common/hardware/types'
 import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
 import { WalletPageActions } from '../../../../../page/actions'
-import { BraveWallet, CreateAccountOptionsType, WalletState } from '../../../../../constants/types'
+import { BraveWallet, CreateAccountOptionsType, FilecoinNetwork, WalletState } from '../../../../../constants/types'
 import { LedgerError } from '../../../../../common/hardware/ledgerjs/ledger-messages'
 
 // hooks
@@ -251,7 +251,7 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
         onAddAccounts={onAddAccounts}
         filecoinNetwork={filecoinNetwork}
         onChangeFilecoinNetwork={onFilecoinNetworkChanged}
-        selectedAccountType={selectedAccountType}
+        coin={selectedAccountType.coin}
       />
     )
   }

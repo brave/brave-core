@@ -54,6 +54,7 @@ import { getPriceIdForToken } from '../../../../utils/api-utils'
 import {
   networkEntityAdapter
 } from '../../../../common/slices/entities/network.entity'
+import { networkMatchesAccount } from '../../../../utils/network-utils'
 
 // Options
 import { PortfolioNavOptions } from '../../../../options/nav-options'
@@ -215,9 +216,19 @@ export const PortfolioOverview = () => {
   // for a single asset
   const fullAssetBalance = React.useCallback(
     (asset: BraveWallet.BlockchainToken) => {
+      const network = networks?.find(
+        (network) =>
+          network.coin === asset.coin &&
+          network.chainId === asset.chainId
+      )
+
       const amounts = usersFilteredAccounts
-        .filter((account) => account.accountId.coin === asset.coin)
-        .map((account) => getBalance(account, asset, tokenBalancesRegistry))
+        .filter((account) => {
+          return network && networkMatchesAccount(network, account.accountId)
+        })
+        .map((account) =>
+          getBalance(account.accountId, asset, tokenBalancesRegistry)
+        )
 
       // If a user has not yet created a FIL or SOL account,
       // we return 0 until they create an account
@@ -443,7 +454,7 @@ export const PortfolioOverview = () => {
           assetBalance={
             selectedGroupAssetsByItem ===
               AccountsGroupByOption.id
-              ? getBalance(account, item.asset, tokenBalancesRegistry)
+              ? getBalance(account?.accountId, item.asset, tokenBalancesRegistry)
               : item.assetBalance
           }
           token={item.asset}

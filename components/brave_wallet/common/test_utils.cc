@@ -5,9 +5,18 @@
 
 #include "brave/components/brave_wallet/common/test_utils.h"
 
+#include "brave/components/brave_wallet/common/common_utils.h"
+
 namespace brave_wallet {
 
-mojom::NetworkInfo GetTestNetworkInfo1(const std::string& chain_id) {
+bool AllCoinsTested() {
+  // Change harcoded value here only when all failed callers have adequate
+  // testing for newly added coin.
+  return 4 == std::size(kAllCoins);
+}
+
+mojom::NetworkInfo GetTestNetworkInfo1(const std::string& chain_id,
+                                       mojom::CoinType coin) {
   return {chain_id,
           "chain_name",
           {"https://url1.com"},
@@ -17,11 +26,13 @@ mojom::NetworkInfo GetTestNetworkInfo1(const std::string& chain_id) {
           "symbol",
           "symbol_name",
           11,
-          mojom::CoinType::ETH,
+          coin,
+          GetSupportedKeyringsForNetwork(coin, chain_id),
           false};
 }
 
-mojom::NetworkInfo GetTestNetworkInfo2(const std::string& chain_id) {
+mojom::NetworkInfo GetTestNetworkInfo2(const std::string& chain_id,
+                                       mojom::CoinType coin) {
   return {chain_id,
           "chain_name2",
           {"https://url2.com"},
@@ -31,7 +42,8 @@ mojom::NetworkInfo GetTestNetworkInfo2(const std::string& chain_id) {
           "symbol2",
           "symbol_name2",
           22,
-          mojom::CoinType::ETH,
+          coin,
+          GetSupportedKeyringsForNetwork(coin, chain_id),
           true};
 }
 

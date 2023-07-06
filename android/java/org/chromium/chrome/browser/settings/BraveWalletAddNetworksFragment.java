@@ -182,6 +182,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
             return false;
         }
         chain.chainId = strChainId;
+        chain.supportedKeyrings = new int[0];
 
         EditText chainName = view.findViewById(R.id.chain_name);
         String strChainName = chainName.getText().toString().trim();

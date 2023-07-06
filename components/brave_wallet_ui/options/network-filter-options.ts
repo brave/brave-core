@@ -17,6 +17,7 @@ export const AllNetworksOption: BraveWallet.NetworkInfo = {
   rpcEndpoints: [],
   symbol: 'all',
   symbolName: 'all',
+  supportedKeyrings: [],
   isEip1559: false
 }
 

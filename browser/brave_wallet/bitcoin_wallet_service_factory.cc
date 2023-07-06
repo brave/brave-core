@@ -11,9 +11,10 @@
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/storage_partition.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -81,7 +82,7 @@ KeyedService* BitcoinWalletServiceFactory::BuildServiceInstanceFor(
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
   return new BitcoinWalletService(
       KeyringServiceFactory::GetServiceForContext(context),
-      shared_url_loader_factory);
+      user_prefs::UserPrefs::Get(context), shared_url_loader_factory);
 }
 
 content::BrowserContext* BitcoinWalletServiceFactory::GetBrowserContextToUse(

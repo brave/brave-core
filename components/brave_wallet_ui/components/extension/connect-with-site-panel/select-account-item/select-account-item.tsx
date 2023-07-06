@@ -129,7 +129,11 @@ export const SelectAccountItem = (props: Props) => {
 
   const accountFiatValue = React.useMemo(() => {
     const amounts = tokenListByAccount.map((token) => {
-      const balance = getBalance(account, token, tokenBalancesRegistry)
+      const balance = getBalance(
+        account.accountId,
+        token,
+        tokenBalancesRegistry
+      )
 
       return computeFiatAmount({
         spotPriceRegistry,
@@ -154,23 +158,25 @@ export const SelectAccountItem = (props: Props) => {
   ])
 
   return (
-    <ConnectPanelButton border="top" onClick={onSelectAccount}>
+    <ConnectPanelButton border='top' onClick={onSelectAccount}>
       <LeftSide>
         <AccountCircle orb={orb} />
         <NameAndAddressColumn>
           <AccountNameText>
             {reduceAccountDisplayName(account.name, 22)}
           </AccountNameText>
-          <Tooltip
-            isAddress={true}
-            minWidth={120}
-            maxWidth={120}
-            text={account.address}
-          >
-            <AccountAddressText>
-              {reduceAddress(account.address)}
-            </AccountAddressText>
-          </Tooltip>
+          {account.address && (
+            <Tooltip
+              isAddress={true}
+              minWidth={120}
+              maxWidth={120}
+              text={account.address}
+            >
+              <AccountAddressText>
+                {reduceAddress(account.address)}
+              </AccountAddressText>
+            </Tooltip>
+          )}
           {accountFiatValue === '' ? (
             <LoadingSkeleton width={60} height={18} />
           ) : (

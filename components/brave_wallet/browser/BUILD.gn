@@ -311,6 +311,7 @@ source_set("utils") {
     ":constants",
     ":pref_names",
     "//base",
+    "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:buildflags",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/version_info",

@@ -7,7 +7,7 @@ export interface TokenBalancesForChainId {
 }
 
 export type TokenBalancesRegistry = {
-  [address: string]: {
+  [uniqueAccountKey: string]: {
     [chainId: string]: TokenBalancesForChainId
   }
 }

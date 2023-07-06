@@ -12,6 +12,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"

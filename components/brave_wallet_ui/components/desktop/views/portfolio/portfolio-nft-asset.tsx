@@ -93,7 +93,7 @@ export const PortfolioNftAsset = () => {
     return candidateAccounts.find(account =>
       new Amount(
         getBalance(
-          account,
+          account.accountId,
           selectedAssetFromParams,
           tokenBalancesRegistry
         )
@@ -104,7 +104,7 @@ export const PortfolioNftAsset = () => {
     if (!selectedAssetFromParams || !ownerAccount) return false
 
     const balance = getBalance(
-      ownerAccount,
+      ownerAccount.accountId,
       selectedAssetFromParams,
       tokenBalancesRegistry
     )

@@ -9,9 +9,8 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/vector_icons/vector_icons.h"

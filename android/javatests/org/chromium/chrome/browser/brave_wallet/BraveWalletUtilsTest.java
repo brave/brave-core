@@ -483,7 +483,7 @@ public class BraveWalletUtilsTest {
                     String varName = f.getName();
                     if (varName.equals("chainId") || varName.equals("chainName")
                             || varName.equals("blockExplorerUrls") || varName.equals("iconUrls")
-                            || varName.equals("rpcEndpoints")
+                            || varName.equals("rpcEndpoints") || varName.equals("supportedKeyrings")
                             || varName.equals("activeRpcEndpointIndex") || varName.equals("symbol")
                             || varName.equals("symbolName") || varName.equals("isEip1559")) {
                         continue;
@@ -502,6 +502,7 @@ public class BraveWalletUtilsTest {
             }
         }
         testStruct.chainId = "";
+        testStruct.supportedKeyrings = new int[0];
         testStruct.chainName = "";
         testStruct.blockExplorerUrls = new String[0];
         testStruct.iconUrls = new String[0];

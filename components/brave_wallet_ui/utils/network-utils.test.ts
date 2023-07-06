@@ -5,14 +5,15 @@
 import {
   getNetworkInfo,
   emptyNetwork,
-  getNetworksByCoinType,
+  filterNetworksForAccount,
   getTokensNetwork,
   getCoinFromTxDataUnion,
-  getFilecoinKeyringIdFromNetwork
+  networkMatchesAccount
 } from './network-utils'
-import { mockNetworks } from '../stories/mock-data/mock-networks'
+import { mockBitcoinMainnet, mockBitcoinTestnet, mockEthMainnet, mockNetworks } from '../stories/mock-data/mock-networks'
 import { BraveWallet } from '../constants/types'
 import { mockNewAssetOptions } from '../stories/mock-data/mock-asset-options'
+import { mockBitcoinAccount, mockEthAccount } from '../stories/mock-data/mock-wallet-accounts'
 
 const ethToken = mockNewAssetOptions[0]
 const bnbToken = mockNewAssetOptions[2]
@@ -31,14 +32,39 @@ describe('getNetworkInfo', () => {
   })
 })
 
-describe('getNetworksByCoinType', () => {
+describe('networkMatchesAccount', () => {
+  it('ETH mainnet should match ETH account', () => {
+    expect(
+      networkMatchesAccount(mockEthMainnet, mockEthAccount.accountId)
+    ).toBeTruthy()
+  })
+  it('ETH mainnet should not match BTC account', () => {
+    expect(
+      networkMatchesAccount(mockEthMainnet, mockBitcoinAccount.accountId)
+    ).toBeFalsy()
+  })
+  it('BTC mainnet should match Bitcoin mainnet account', () => {
+    expect(
+      networkMatchesAccount(mockBitcoinMainnet, mockBitcoinAccount.accountId)
+    ).toBeTruthy()
+  })
+  it('BTC testnet should not match Bitcoin mainnet account', () => {
+    expect(
+      networkMatchesAccount(mockBitcoinTestnet, mockBitcoinAccount.accountId)
+    ).toBeFalsy()
+  })
+})
+
+describe('filterNetworksForAccount', () => {
   it('CoinType ETH, should return all ETH networks', () => {
     expect(
-      getNetworksByCoinType(mockNetworks, BraveWallet.CoinType.ETH)
+      filterNetworksForAccount(mockNetworks, mockEthAccount.accountId)
     ).toEqual(mockNetworks.filter((n) => n.coin === BraveWallet.CoinType.ETH))
   })
-  it('CoinType random number, should return an empty array', () => {
-    expect(getNetworksByCoinType(mockNetworks, 3000)).toEqual([])
+  it('CoinType BTC, should return Bitcoin mainnet', () => {
+    expect(
+      filterNetworksForAccount(mockNetworks, mockBitcoinAccount.accountId)
+    ).toEqual([mockBitcoinMainnet])
   })
 })
 
@@ -83,20 +109,5 @@ describe('getCoinFromTxDataUnion', () => {
       ethTxData1559: undefined,
       solanaTxData: {} as BraveWallet.SolanaTxData
     })).toEqual(BraveWallet.CoinType.SOL)
-  })
-})
-
-describe('getFilecoinKeyringIdFromNetwork', () => {
-  it('Filecoin testnet', () => {
-    expect(getFilecoinKeyringIdFromNetwork({ chainId: BraveWallet.FILECOIN_TESTNET, coin: BraveWallet.CoinType.FIL } as BraveWallet.NetworkInfo)).toEqual(BraveWallet.KeyringId.kFilecoinTestnet)
-  })
-  it('Filecoin localhost', () => {
-    expect(getFilecoinKeyringIdFromNetwork({ chainId: BraveWallet.LOCALHOST_CHAIN_ID, coin: BraveWallet.CoinType.FIL } as BraveWallet.NetworkInfo)).toEqual(BraveWallet.KeyringId.kFilecoinTestnet)
-  })
-  it('Filecoin mainnet', () => {
-    expect(getFilecoinKeyringIdFromNetwork({ chainId: BraveWallet.FILECOIN_MAINNET, coin: BraveWallet.CoinType.FIL } as BraveWallet.NetworkInfo)).toEqual(BraveWallet.KeyringId.kFilecoin)
-  })
-  it('Non filecoin', () => {
-    expect(getFilecoinKeyringIdFromNetwork({ chainId: BraveWallet.GOERLI_CHAIN_ID, coin: BraveWallet.CoinType.ETH } as BraveWallet.NetworkInfo)).toEqual(undefined)
   })
 })

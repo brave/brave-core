@@ -35,24 +35,26 @@ class BitcoinWalletService : public KeyedService,
  public:
   BitcoinWalletService(
       KeyringService* keyring_service,
+      PrefService* prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~BitcoinWalletService() override;
 
   mojo::PendingRemote<mojom::BitcoinWalletService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BitcoinWalletService> receiver);
 
+  void GetBalance(const std::string& network_id,
+                  mojom::AccountIdPtr account_id,
+                  GetBalanceCallback callback) override;
+
   void GetBitcoinAccountInfo(const std::string& network_id,
-                             mojom::KeyringId keyring_id,
-                             uint32_t account_index,
+                             mojom::AccountIdPtr account_id,
                              GetBitcoinAccountInfoCallback callback) override;
   mojom::BitcoinAccountInfoPtr GetBitcoinAccountInfoSync(
       const std::string& network_id,
-      mojom::KeyringId keyring_id,
-      uint32_t account_index);
+      mojom::AccountIdPtr account_id);
 
   void SendTo(const std::string& network_id,
-              mojom::KeyringId keyring_id,
-              uint32_t account_index,
+              mojom::AccountIdPtr account_id,
               const std::string& address_to,
               uint64_t amount,
               uint64_t fee,
@@ -65,12 +67,10 @@ class BitcoinWalletService : public KeyedService,
   void AccountsAdded(std::vector<mojom::AccountInfoPtr> accounts) override;
 
   void StartDatabaseSynchronizer(const std::string& network_id,
-                                 mojom::KeyringId keyring_id,
-                                 uint32_t account_index);
+                                 const mojom::AccountId& account_id);
 
   absl::optional<std::string> GetUnusedChangeAddress(
-      mojom::KeyringId keyring_id,
-      uint32_t account_index);
+      const mojom::AccountId& account_id);
 
   bool FillUtxoList(SendToContext& context);
   bool PickInputs(SendToContext& context);

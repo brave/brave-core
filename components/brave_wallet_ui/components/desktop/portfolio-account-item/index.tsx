@@ -10,8 +10,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import {
   AccountPageTabs,
   BraveWallet,
-  DefaultCurrencies,
-  WalletRoutes
+  DefaultCurrencies
 } from '../../../constants/types'
 
 // Hooks
@@ -24,6 +23,7 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import Amount from '../../../utils/amount'
 import { getPriceIdForToken } from '../../../utils/api-utils'
 import { computeFiatAmount } from '../../../utils/pricing-utils'
+import { makeAccountRoute } from '../../../utils/routes-utils'
 
 // Components
 import WithHideBalancePlaceholder from '../with-hide-balance-placeholder'
@@ -65,13 +65,11 @@ import {
 } from './style'
 
 interface Props {
-  address: string
-  accountKind: BraveWallet.AccountKind
+  account: BraveWallet.AccountInfo
   defaultCurrencies: DefaultCurrencies
   asset: BraveWallet.BlockchainToken
   assetBalance: string
   selectedNetwork?: BraveWallet.NetworkInfo
-  name: string
   hideBalances?: boolean
   isSellSupported: boolean
   showSellModal: () => void
@@ -81,12 +79,10 @@ export const PortfolioAccountItem = (props: Props) => {
   const {
     asset,
     assetBalance,
-    address,
-    accountKind,
+    account,
     selectedNetwork,
     defaultCurrencies,
     hideBalances,
-    name,
     isSellSupported,
     showSellModal
   } = props
@@ -138,12 +134,8 @@ export const PortfolioAccountItem = (props: Props) => {
 
   // Methods
   const onSelectAccount = React.useCallback(() => {
-    history.push(
-      `${WalletRoutes.Accounts //
-      }/${address //
-      }/${AccountPageTabs.AccountAssetsSub}`
-    )
-  }, [address])
+    history.push(makeAccountRoute(account, AccountPageTabs.AccountAssetsSub))
+  }, [history, account])
 
   const onHideAccountMenu = React.useCallback(() => {
     setShowAccountMenu(false)
@@ -162,17 +154,20 @@ export const PortfolioAccountItem = (props: Props) => {
         <CreateAccountIcon
           size='big'
           marginRight={12}
-          address={address}
-          accountKind={accountKind}
+          account={account}
         />
         <AccountAndAddress>
-          <AccountNameButton onClick={onSelectAccount}>{name}</AccountNameButton>
-          <AddressAndButtonRow>
-            <AccountAddressButton onClick={onSelectAccount}>{reduceAddress(address)}</AccountAddressButton>
-            <CopyTooltip text={address}>
-              <CopyIcon />
-            </CopyTooltip>
-          </AddressAndButtonRow>
+          <AccountNameButton onClick={onSelectAccount}>{account.name}</AccountNameButton>
+          {account.address && (
+            <AddressAndButtonRow>
+              <AccountAddressButton onClick={onSelectAccount}>
+                {reduceAddress(account.address)}
+              </AccountAddressButton>
+              <CopyTooltip text={account.address}>
+                <CopyIcon />
+              </CopyTooltip>
+            </AddressAndButtonRow>
+          )}
         </AccountAndAddress>
 
       </NameAndIcon>
@@ -201,7 +196,7 @@ export const PortfolioAccountItem = (props: Props) => {
           {showAccountMenu &&
             <PortfolioAccountMenu
               onClickViewOnExplorer={
-                onClickViewOnBlockExplorer('address', address)
+                onClickViewOnBlockExplorer('address', account.address)
               }
               onClickSell={
                 isSellSupported && !isAssetsBalanceZero

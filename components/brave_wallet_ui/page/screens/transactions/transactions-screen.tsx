@@ -103,7 +103,7 @@ export const TransactionsScreen: React.FC = () => {
   } = useGetAccountInfosRegistryQuery(undefined)
   const foundAccountFromParam = address
     ? accountInfosRegistry.entities[
-        accountInfoEntityAdaptor.selectId({ address })
+        accountInfoEntityAdaptor.selectIdByAddress(address)
       ]
     : undefined
 

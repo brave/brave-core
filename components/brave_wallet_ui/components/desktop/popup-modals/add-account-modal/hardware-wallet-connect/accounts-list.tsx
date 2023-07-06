@@ -27,7 +27,6 @@ import {
 import { SolDerivationPaths } from '../../../../../common/hardware/types'
 import {
   BraveWallet,
-  CreateAccountOptionsType,
   FilecoinNetwork
 } from '../../../../../constants/types'
 import { getLocale } from '../../../../../../common/locale'
@@ -41,7 +40,7 @@ import { Skeleton } from '../../../../shared/loading-skeleton/styles'
 import { reduceAddress } from '../../../../../utils/reduce-address'
 import Amount from '../../../../../utils/amount'
 import {
-  useGetAccountTokenCurrentBalanceQuery,
+  useGetHardwareAccountDiscoveryBalanceQuery,
   useGetNetworksRegistryQuery
 } from '../../../../../common/slices/api.slice'
 import { useAddressOrb } from '../../../../../common/hooks/use-orb'
@@ -62,7 +61,7 @@ interface Props {
   onAddAccounts: () => void
   filecoinNetwork: FilecoinNetwork
   onChangeFilecoinNetwork: (network: FilecoinNetwork) => void
-  selectedAccountType: CreateAccountOptionsType
+  coin: BraveWallet.CoinType
 }
 
 export const HardwareWalletAccountsList = ({
@@ -77,7 +76,7 @@ export const HardwareWalletAccountsList = ({
   onAddAccounts,
   filecoinNetwork,
   onChangeFilecoinNetwork,
-  selectedAccountType
+  coin
 }: Props) => {
   // queries
   const { data: networksRegistry } = useGetNetworksRegistryQuery()
@@ -88,9 +87,9 @@ export const HardwareWalletAccountsList = ({
   >([])
   const [isLoadingMore, setIsLoadingMore] = React.useState<boolean>(false)
   const [selectedNetworkId, setSelectedNetworkId] = React.useState<EntityId>(
-    selectedAccountType.coin === BraveWallet.CoinType.ETH
+    coin === BraveWallet.CoinType.ETH
       ? BraveWallet.MAINNET_CHAIN_ID
-      : selectedAccountType.coin === BraveWallet.CoinType.SOL
+      : coin === BraveWallet.CoinType.SOL
       ? BraveWallet.SOLANA_MAINNET
       : BraveWallet.FILECOIN_MAINNET
   )
@@ -107,10 +106,10 @@ export const HardwareWalletAccountsList = ({
     if (!networksRegistry) {
       return []
     }
-    return networksRegistry.idsByCoinType[selectedAccountType.coin].map(
+    return networksRegistry.idsByCoinType[coin].map(
       (id) => networksRegistry.entities[id] as BraveWallet.NetworkInfo
     )
-  }, [networksRegistry, selectedAccountType])
+  }, [networksRegistry, coin])
 
   // computed
   const ethDerivationPathsEnum =
@@ -154,11 +153,11 @@ export const HardwareWalletAccountsList = ({
   const onSelectNetwork = React.useCallback(
     (n: BraveWallet.NetworkInfo): void => {
       setSelectedNetworkId(networkEntityAdapter.selectId(n))
-      if (selectedAccountType.coin === BraveWallet.CoinType.FIL) {
+      if (coin === BraveWallet.CoinType.FIL) {
         onChangeFilecoinNetwork(n.chainId as FilecoinNetwork)
       }
     },
-    [selectedAccountType.coin, onChangeFilecoinNetwork]
+    [coin, onChangeFilecoinNetwork]
   )
 
   // effects
@@ -177,9 +176,9 @@ export const HardwareWalletAccountsList = ({
 
     // set network dropdown default value
     setSelectedNetworkId(
-      networksRegistry.idsByCoinType[selectedAccountType.coin][0]
+      networksRegistry.idsByCoinType[coin][0]
     )
-  }, [networksRegistry, selectedAccountType])
+  }, [networksRegistry, coin])
 
   // render
   return (
@@ -191,7 +190,7 @@ export const HardwareWalletAccountsList = ({
             selectedNetwork={networksRegistry?.entities[selectedNetworkId]}
             onSelectNetwork={onSelectNetwork}
           />
-          {selectedAccountType.coin === BraveWallet.CoinType.ETH ? (
+          {coin === BraveWallet.CoinType.ETH ? (
             <Select value={selectedDerivationScheme} onChange={setSelectedDerivationScheme}>
               {Object.keys(ethDerivationPathsEnum).map((path, index) => {
                 const pathValue = ethDerivationPathsEnum[path]
@@ -204,7 +203,7 @@ export const HardwareWalletAccountsList = ({
               })}
             </Select>
           ) : null}
-          {selectedAccountType.coin === BraveWallet.CoinType.SOL ? (
+          {coin === BraveWallet.CoinType.SOL ? (
             <Select value={selectedDerivationScheme} onChange={setSelectedDerivationScheme}>
               {Object.keys(solDerivationPathsEnum).map((path, index) => {
                 const pathLocale = solDerivationPathsEnum[path]
@@ -232,15 +231,15 @@ export const HardwareWalletAccountsList = ({
           </LoadingWrapper>
         )}
 
-        {accounts.length > 0 && filteredAccountList?.length === 0 && (
+        {accounts.length > 0 && filteredAccountList.length === 0 && (
           <NoSearchResultText>
             {getLocale('braveWalletConnectHardwareSearchNothingFound')}
           </NoSearchResultText>
         )}
 
-        {accounts.length > 0 && filteredAccountList.length > 0 && (
+        {accountNativeAsset && accounts.length > 0 && filteredAccountList.length > 0 && (
           <>
-            {filteredAccountList?.map((account) => {
+            {filteredAccountList.map((account) => {
               return (
                 <AccountListItem
                   key={account.derivationPath}
@@ -282,8 +281,9 @@ interface AccountListItemProps {
   onSelect: () => void
   selected: boolean
   disabled: boolean
-  balanceAsset?: Pick<
+  balanceAsset: Pick<
     BraveWallet.BlockchainToken,
+    | 'coin'
     | 'chainId'
     | 'contractAddress'
     | 'isErc721'
@@ -303,20 +303,12 @@ function AccountListItem({
 }: AccountListItemProps) {
   // queries
   const { data: balanceResult, isFetching: isLoadingBalance } =
-    useGetAccountTokenCurrentBalanceQuery(
+    useGetHardwareAccountDiscoveryBalanceQuery(
       {
-        coin: account.coin,
+        coin: balanceAsset.coin,
+        chainId: balanceAsset.chainId,
         address: account.address,
-        token: {
-          coin: account.coin,
-          chainId: balanceAsset?.chainId || '',
-          contractAddress: balanceAsset?.contractAddress || '',
-          isErc721: balanceAsset?.isErc721 || false,
-          isNft: balanceAsset?.isNft || false,
-          tokenId: balanceAsset?.tokenId || ''
-        }
-      },
-      { skip: !balanceAsset }
+      }
     )
 
   // memos
@@ -326,7 +318,7 @@ function AccountListItem({
     if (
       isLoadingBalance ||
       !balanceResult ||
-      balanceAsset?.decimals === undefined
+      balanceAsset.decimals === undefined
     ) {
       return undefined
     }
@@ -337,8 +329,8 @@ function AccountListItem({
   }, [
     isLoadingBalance,
     balanceResult,
-    balanceAsset?.decimals,
-    balanceAsset?.symbol
+    balanceAsset.decimals,
+    balanceAsset.symbol
   ])
 
   // render

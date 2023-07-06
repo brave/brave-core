@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"

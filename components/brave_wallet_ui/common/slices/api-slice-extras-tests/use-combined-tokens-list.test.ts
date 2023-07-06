@@ -45,6 +45,6 @@ describe('useCombinedTokensList', () => {
 
     // done loading
     expect(result.current.isLoading).toBe(false)
-    expect(result.current.data).toHaveLength(15)
+    expect(result.current.data).toHaveLength(16)
   })
 })
