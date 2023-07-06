@@ -5,11 +5,6 @@
 
 #import "chrome/browser/app_controller_mac.h"
 
-#define dealloc                          \
-  dummy{} - (instancetype)initForBrave { \
-    return [self init];                  \
-  }                                      \
-  -(void)dealloc
+#import "brave/browser/brave_app_controller_mac.h"
 
 #include "src/chrome/browser/app_controller_mac.mm"
-#undef dealloc

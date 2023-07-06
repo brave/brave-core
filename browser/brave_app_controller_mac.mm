@@ -3,7 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#import <Foundation/Foundation.h>
+
 #import "brave/browser/brave_app_controller_mac.h"
+
+#import <Foundation/Foundation.h>
+#import <objc/runtime.h>
 
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_features.h"
@@ -13,26 +18,34 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
 
-@implementation BraveAppController
+#if !defined(__has_feature) || !__has_feature(objc_arc)
+#error "This file requires ARC support."
+#endif
 
-@synthesize copyMenuItem = _copyMenuItem;
-@synthesize copyCleanLinkMenuItem = _copyCleanLinkMenuItem;
+@interface BraveAppController () {
+  NSMenuItem* _copyMenuItem;
+  NSMenuItem* _copyCleanLinkMenuItem;
+}
+@end
+
+@implementation BraveAppController
 
 - (void)mainMenuCreated {
   [super mainMenuCreated];
 
   NSMenu* editMenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
   _copyMenuItem = [editMenu itemWithTag:IDC_CONTENT_CONTEXT_COPY];
-  DCHECK(self.copyMenuItem);
-  [[self.copyMenuItem menu] setDelegate:self];
+  DCHECK(_copyMenuItem);
+
+  [[_copyMenuItem menu] setDelegate:self];
   _copyCleanLinkMenuItem = [editMenu itemWithTag:IDC_COPY_CLEAN_LINK];
-  DCHECK(self.copyCleanLinkMenuItem);
-  [[self.copyCleanLinkMenuItem menu] setDelegate:self];
+  DCHECK(_copyCleanLinkMenuItem);
+  [[_copyCleanLinkMenuItem menu] setDelegate:self];
 }
 
 - (void)dealloc {
-  [[self.copyMenuItem menu] setDelegate:nil];
-  [[self.copyCleanLinkMenuItem menu] setDelegate:nil];
+  [[_copyMenuItem menu] setDelegate:nil];
+  [[_copyCleanLinkMenuItem menu] setDelegate:nil];
 }
 
 - (Browser*)getBrowser {
@@ -44,10 +57,10 @@
 }
 
 - (void)setKeyEquivalentToItem:(NSMenuItem*)item {
-  auto* hotkeyItem = item == self.copyMenuItem ? self.copyMenuItem
-                                               : self.copyCleanLinkMenuItem;
-  auto* noHotkeyItem = item == self.copyMenuItem ? self.copyCleanLinkMenuItem
-                                                 : self.copyMenuItem;
+  auto* hotkeyItem =
+      item == _copyMenuItem ? _copyMenuItem : _copyCleanLinkMenuItem;
+  auto* noHotkeyItem =
+      item == _copyMenuItem ? _copyCleanLinkMenuItem : _copyMenuItem;
 
   [hotkeyItem setKeyEquivalent:@"c"];
   [hotkeyItem setKeyEquivalentModifierMask:NSEventModifierFlagCommand];
@@ -57,21 +70,20 @@
 }
 
 - (void)menuNeedsUpdate:(NSMenu*)menu {
-  if (menu != [self.copyMenuItem menu] &&
-      menu != [self.copyCleanLinkMenuItem menu]) {
+  if (menu != [_copyMenuItem menu] && menu != [_copyCleanLinkMenuItem menu]) {
     [super menuNeedsUpdate:menu];
     return;
   }
   if ([self shouldShowCleanLinkItem]) {
-    [self.copyCleanLinkMenuItem setHidden:NO];
+    [_copyCleanLinkMenuItem setHidden:NO];
     if (base::FeatureList::IsEnabled(features::kBraveCopyCleanLinkByDefault)) {
-      [self setKeyEquivalentToItem:self.copyCleanLinkMenuItem];
+      [self setKeyEquivalentToItem:_copyCleanLinkMenuItem];
     } else {
-      [self setKeyEquivalentToItem:self.copyMenuItem];
+      [self setKeyEquivalentToItem:_copyMenuItem];
     }
   } else {
-    [self.copyCleanLinkMenuItem setHidden:YES];
-    [self setKeyEquivalentToItem:self.copyMenuItem];
+    [_copyCleanLinkMenuItem setHidden:YES];
+    [self setKeyEquivalentToItem:_copyMenuItem];
   }
 }
 
@@ -91,22 +103,6 @@
   }
 
   [super executeCommand:sender withProfile:profile];
-}
-
-+ (BraveAppController*)sharedController {
-  static BraveAppController* sharedController = [] {
-    BraveAppController* sharedController = [[BraveAppController alloc] init];
-    NSApp.delegate = sharedController;
-    return sharedController;
-  }();
-
-  CHECK_NE(nil, sharedController);
-  CHECK_EQ(NSApp.delegate, sharedController);
-  return sharedController;
-}
-
-- (instancetype)init {
-  return [super initForBrave];
 }
 
 @end  // @implementation BraveAppController
