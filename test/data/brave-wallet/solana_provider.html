@@ -8,6 +8,7 @@
   var signAllTransactionsResult = ''
   var requestResult = ''
   var accountChangedResult = ''
+  var disconnectEmitted = false
 
   function registerAccountChanged() {
     window.braveSolana.on('accountChanged', result => {
@@ -16,6 +17,13 @@
         } else {
           accountChangedResult = ''
         }
+        window.domAutomationController.send('result ready')
+    })
+  }
+
+  function registerDisconnect() {
+    window.braveSolana.on('disconnect', result => {
+        disconnectEmitted = true
         window.domAutomationController.send('result ready')
     })
   }
@@ -179,6 +187,12 @@
     let result = accountChangedResult;
     accountChangedResult = ''
     return result;
+  }
+
+  function getDisconnectEmitted() {
+    let result = disconnectEmitted
+    disconnectEmitted = false
+    return result
   }
 
   function getIsBraveWalletViaProxy() {

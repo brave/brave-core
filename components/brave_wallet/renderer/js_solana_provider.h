@@ -51,6 +51,7 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
 
   // mojom::SolanaEventsListener
   void AccountChangedEvent(const absl::optional<std::string>& account) override;
+  void DisconnectEvent() override;
 
  private:
   explicit JSSolanaProvider(content::RenderFrame* render_frame);

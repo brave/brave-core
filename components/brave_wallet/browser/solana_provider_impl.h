@@ -14,8 +14,11 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "components/content_settings/core/browser/content_settings_observer.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -33,11 +36,13 @@ class TxService;
 
 class SolanaProviderImpl final : public mojom::SolanaProvider,
                                  public KeyringServiceObserverBase,
-                                 public mojom::TxServiceObserver {
+                                 public mojom::TxServiceObserver,
+                                 public content_settings::Observer {
  public:
   using RequestPermissionsError = mojom::RequestPermissionsError;
 
-  SolanaProviderImpl(KeyringService* keyring_service,
+  SolanaProviderImpl(HostContentSettingsMap& host_content_settings_map,
+                     KeyringService* keyring_service,
                      BraveWalletService* brave_wallet_service,
                      TxService* tx_service,
                      JsonRpcService* json_rpc_service,
@@ -151,12 +156,18 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
   void OnTxServiceReset() override {}
 
+  // content_settings::Observer:
+  void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,
+                               const ContentSettingsPattern& secondary_pattern,
+                               ContentSettingsType content_type) override;
+
   base::flat_map<std::string, SignAndSendTransactionCallback>
       sign_and_send_tx_callbacks_;
   // Pending callback and arg are for waiting user unlock before connect
   ConnectCallback pending_connect_callback_;
   absl::optional<base::Value::Dict> pending_connect_arg_;
 
+  const raw_ref<HostContentSettingsMap> host_content_settings_map_;
   bool account_creation_shown_ = false;
   mojo::Remote<mojom::SolanaEventsListener> events_listener_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
@@ -166,6 +177,8 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   mojo::Receiver<mojom::KeyringServiceObserver> keyring_observer_receiver_{
       this};
   mojo::Receiver<mojom::TxServiceObserver> tx_observer_receiver_{this};
+  base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
+      host_content_settings_map_observation_{this};
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   base::WeakPtrFactory<SolanaProviderImpl> weak_factory_;
 };

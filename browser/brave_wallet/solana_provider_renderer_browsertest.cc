@@ -817,22 +817,6 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Disconnect) {
                 }
                 disconnect();)");
   EXPECT_EQ(base::Value(true), result.value);
-
-  // OnDisconnect
-  auto result2 = EvalJs(
-      web_contents(browser()),
-      R"(async function disconnect() {await window.braveSolana.disconnect()}
-         new Promise(resolve => {
-            window.braveSolana.on('disconnect', (arg) => {
-              if (!arg)
-                resolve(true)
-              else
-                resolve(false)
-            })
-          disconnect();
-         });
-        )");
-  EXPECT_EQ(base::Value(true), result2.value);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignTransaction) {

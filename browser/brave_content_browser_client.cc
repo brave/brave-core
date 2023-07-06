@@ -384,11 +384,19 @@ void MaybeBindSolanaProvider(
     return;
   }
 
+  auto* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(
+          frame_host->GetBrowserContext());
+  if (!host_content_settings_map) {
+    return;
+  }
+
   content::WebContents* web_contents =
       content::WebContents::FromRenderFrameHost(frame_host);
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_wallet::SolanaProviderImpl>(
-          keyring_service, brave_wallet_service, tx_service, json_rpc_service,
+          *host_content_settings_map, keyring_service, brave_wallet_service,
+          tx_service, json_rpc_service,
           std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
               web_contents, frame_host)),
       std::move(receiver));

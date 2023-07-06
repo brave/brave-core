@@ -39,12 +39,14 @@ constexpr char kOptions[] = "options";
 }  // namespace
 
 SolanaProviderImpl::SolanaProviderImpl(
+    HostContentSettingsMap& host_content_settings_map,
     KeyringService* keyring_service,
     BraveWalletService* brave_wallet_service,
     TxService* tx_service,
     JsonRpcService* json_rpc_service,
     std::unique_ptr<BraveWalletProviderDelegate> delegate)
-    : keyring_service_(keyring_service),
+    : host_content_settings_map_(host_content_settings_map),
+      keyring_service_(keyring_service),
       brave_wallet_service_(brave_wallet_service),
       tx_service_(tx_service),
       json_rpc_service_(json_rpc_service),
@@ -56,6 +58,7 @@ SolanaProviderImpl::SolanaProviderImpl(
 
   DCHECK(tx_service);
   tx_service_->AddObserver(tx_observer_receiver_.BindNewPipeAndPassRemote());
+  host_content_settings_map_observation_.Observe(&*host_content_settings_map_);
 }
 
 SolanaProviderImpl::~SolanaProviderImpl() = default;
@@ -138,8 +141,9 @@ void SolanaProviderImpl::Disconnect() {
   DCHECK(keyring_service_);
   absl::optional<std::string> account =
       keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
-  if (account) {
+  if (account && IsAccountConnected(*account)) {
     delegate_->RemoveSolanaConnectedAccount(*account);
+    events_listener_->DisconnectEvent();
   }
 }
 
@@ -564,6 +568,24 @@ void SolanaProviderImpl::OnTransactionStatusChanged(
     NOTREACHED();
   }
   sign_and_send_tx_callbacks_.erase(tx_meta_id);
+}
+
+void SolanaProviderImpl::OnContentSettingChanged(
+    const ContentSettingsPattern& primary_pattern,
+    const ContentSettingsPattern& secondary_pattern,
+    ContentSettingsType content_type) {
+  if (content_type != ContentSettingsType::BRAVE_SOLANA) {
+    return;
+  }
+  absl::optional<std::string> account =
+      keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
+  if (!account) {
+    return;
+  }
+  if (IsAccountConnected(*account) &&
+      !delegate_->IsAccountAllowed(mojom::CoinType::SOL, *account)) {
+    Disconnect();
+  }
 }
 
 void SolanaProviderImpl::SignMessage(

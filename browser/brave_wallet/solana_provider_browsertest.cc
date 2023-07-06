@@ -21,6 +21,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -546,6 +547,10 @@ class SolanaProviderTest : public InProcessBrowserTest {
     ASSERT_TRUE(ExecJs(web_contents(), "registerAccountChanged()"));
   }
 
+  void RegisterSolDisconnect() {
+    ASSERT_TRUE(ExecJs(web_contents(), "registerDisconnect()"));
+  }
+
   void CallSolanaConnect(const content::ToRenderFrameHost& execution_target,
                          bool is_expect_bubble = true) {
     ASSERT_TRUE(ExecJs(execution_target, "solanaConnect()"));
@@ -667,6 +672,10 @@ class SolanaProviderTest : public InProcessBrowserTest {
     return EvalJs(web_contents(), "getAccountChangedResult()").ExtractString();
   }
 
+  bool GetDisconnectEmitted() {
+    return EvalJs(web_contents(), "getDisconnectEmitted()").ExtractBool();
+  }
+
   bool IsSolanaConnected(const content::ToRenderFrameHost& execution_target) {
     return EvalJs(execution_target, "isSolanaConnected()").ExtractBool();
   }
@@ -708,25 +717,76 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusAndPermission) {
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  RegisterSolDisconnect();
 
   ASSERT_FALSE(IsSolanaConnected(web_contents()));
   CallSolanaConnect(web_contents());
   UserGrantPermission(true);
   EXPECT_TRUE(IsSolanaConnected(web_contents()));
 
-  // Removing solana permission doesn't affect connected status.
+  // Removing solana permission will disconnect and emit event.
   host_content_settings_map()->ClearSettingsForOneType(
       ContentSettingsType::BRAVE_SOLANA);
-  EXPECT_TRUE(IsSolanaConnected(web_contents()));
+  EXPECT_FALSE(IsSolanaConnected(web_contents()));
+  EXPECT_TRUE(GetDisconnectEmitted());
 
-  // Doing connect again and reject it doesn't affect connected status either.
+  // Connect it again for following test cases
   CallSolanaConnect(web_contents());
-  UserGrantPermission(false);
-  EXPECT_TRUE(IsSolanaConnected(web_contents()));
+  UserGrantPermission(true);
+  ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
-  // Only disconnect will set connected status to false.
+  // disconnect() will set connected status to false.
   CallSolanaDisconnect(web_contents());
   EXPECT_FALSE(IsSolanaConnected(web_contents()));
+  EXPECT_TRUE(GetDisconnectEmitted());
+
+  // disconnect won't be emitted when there is no connected account
+  CallSolanaDisconnect(web_contents());
+  EXPECT_FALSE(IsSolanaConnected(web_contents()));
+  EXPECT_FALSE(GetDisconnectEmitted());
+
+  // Start testing revoking permission for an origin
+  host_content_settings_map()->ClearSettingsForOneType(
+      ContentSettingsType::BRAVE_SOLANA);
+  // connect for a.test
+  CallSolanaConnect(web_contents());
+  UserGrantPermission(true);
+  ASSERT_TRUE(IsSolanaConnected(web_contents()));
+
+  ASSERT_TRUE(AddTabAtIndex(
+      1, https_server_for_files()->GetURL("b.test", "/solana_provider.html"),
+      ui::PAGE_TRANSITION_TYPED));
+  ASSERT_EQ(browser()->tab_strip_model()->active_index(), 1);
+  RegisterSolDisconnect();
+  // connect for b.test
+  CallSolanaConnect(web_contents());
+  UserGrantPermission(true);
+  ASSERT_TRUE(IsSolanaConnected(web_contents()));
+
+  // Removing solana permission for a.test only
+  host_content_settings_map()->ClearSettingsForOneTypeWithPredicate(
+      ContentSettingsType::BRAVE_SOLANA, base::Time(), base::Time::Max(),
+      base::BindLambdaForTesting(
+          [&url](const ContentSettingsPattern& primary_pattern,
+                 const ContentSettingsPattern& secondary_pattern) {
+            url::Origin new_origin;
+            if (GetSubRequestOrigin(permissions::RequestType::kBraveSolana,
+                                    url::Origin::Create(url), kFirstAccount,
+                                    &new_origin) &&
+                primary_pattern.Matches(new_origin.GetURL())) {
+              return true;
+            }
+            return false;
+          }));
+  // b.test should still be connected
+  EXPECT_TRUE(IsSolanaConnected(web_contents()));
+  EXPECT_FALSE(GetDisconnectEmitted());
+
+  // switch back to a.test and it should be disconnected
+  browser()->tab_strip_model()->ActivateTabAt(0);
+  ASSERT_EQ(browser()->tab_strip_model()->active_index(), 0);
+  EXPECT_FALSE(IsSolanaConnected(web_contents()));
+  EXPECT_TRUE(GetDisconnectEmitted());
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusWithDocumentChanged) {
