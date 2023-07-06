@@ -116,7 +116,7 @@ class CookieExpirationTest : public InProcessBrowserTest {
 };
 
 // Test that a session cookie i.e. without a max-age or expiry date is not
-// affected by the cookie expiration policy. Also, is deleted on browser close.
+// affected by the cookie expiration policy.
 IN_PROC_BROWSER_TEST_F(CookieExpirationTest, CheckExpiryForSessionCookie) {
   GURL url = https_server_->GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
