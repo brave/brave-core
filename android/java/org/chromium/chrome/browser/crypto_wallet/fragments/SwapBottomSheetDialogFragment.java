@@ -16,8 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
@@ -28,7 +26,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 public class SwapBottomSheetDialogFragment
-        extends BottomSheetDialogFragment implements View.OnClickListener {
+        extends WalletBottomSheetDialogFragment implements View.OnClickListener {
     public static final String TAG_FRAGMENT = SwapBottomSheetDialogFragment.class.getName();
     private static final String TAG = "BSS-bottom-dialog";
     private LinearLayout mBuyLayout;
@@ -67,6 +65,7 @@ public class SwapBottomSheetDialogFragment
         super.onCreate(savedInstanceState);
         try {
             mWalletModel = BraveActivity.getBraveActivity().getWalletModel();
+            registerKeyRingObserver(mWalletModel.getKeyringModel());
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onCreate ", e);
             e.printStackTrace();

@@ -25,6 +25,7 @@ import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.KeyringServiceObserver;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl;
 import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.SelectedAccountResponsesCollector;
@@ -305,6 +306,10 @@ public class KeyringModel implements KeyringServiceObserver {
 
     public void isWalletLocked(Callbacks.Callback1<Boolean> callback) {
         mKeyringService.isLocked(isWalletLocked -> callback.call(isWalletLocked));
+    }
+
+    public void registerKeyringObserver(KeyringServiceObserverImpl observer) {
+        mKeyringService.addObserver(observer);
     }
 
     private void handleAddAccountResult(AccountInfo result, Callbacks.Callback1<Boolean> callback) {

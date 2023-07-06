@@ -79,7 +79,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragment {
+public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogFragment {
     private static final String TAG = "ApproveTx";
 
     public static final String TAG_FRAGMENT = ApproveTxBottomSheetDialogFragment.class.getName();
@@ -219,6 +219,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
+            registerKeyRingObserver(mWalletModel.getKeyringModel());
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onCreateDialog " + e);
         }
