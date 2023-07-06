@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import '@brave/leo/tokens/css/variables.css'
 
 export const Box = styled.div`
   display: flex;

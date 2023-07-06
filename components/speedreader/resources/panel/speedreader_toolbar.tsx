@@ -13,6 +13,7 @@ import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
 import Toolbar from './components/toolbar'
 
 import { setIconBasePath } from '@brave/leo/react/icon'
+import '@brave/leo/tokens/css/variables.css'
 
 setIconBasePath('//resources/brave-icons')
 
