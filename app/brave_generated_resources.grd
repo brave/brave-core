@@ -360,6 +360,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_EXTENSION_PROMPT_WARNING_IPFS" desc="Permisson string for access to ipfs api.">
         Publish and retrieve files from IPFS
       </message>
+      <message name="IDS_EXTENSION_PROMPT_WARNING_IPFS_PRIVATE" desc="Permisson string for access to private ipfs api.">
+        Read and modify IPFS settings
+      </message>
       <message name="IDS_LOCATION_BAR_ONION_AVAILABLE" desc="Button in location bar to indicate onion available site to open a new tab in tor window.">
         .onion
       </message>
