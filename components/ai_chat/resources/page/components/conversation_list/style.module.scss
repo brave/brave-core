@@ -77,7 +77,15 @@
 }
 
 .avatarAI {
-  @extend .avatarHuman;
+  --leo-icon-size: 18px;
+
+  width: 32px;
+  height: 32px;
+  border-radius: 100px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: linear-gradient(314.42deg, #FA7250 8.49%, #FF1893 43.72%, #A78AFF 99.51%);
   color: white;
 }
