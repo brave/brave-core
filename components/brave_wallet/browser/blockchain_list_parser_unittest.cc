@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public *
- * License, v. 2.0. If a copy of the MPL was not distributed with this file, You
- * can obtain one at https://mozilla.org/MPL/2.0/. */
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
 #include <utility>
@@ -123,15 +123,16 @@ TEST(ParseTokenListUnitTest, ParseTokenList) {
   auto wrapped_sol = mojom::BlockchainToken::New(
       "So11111111111111111111111111111111111111112", "Wrapped SOL",
       "So11111111111111111111111111111111111111112.png", false, false, false,
-      false, "SOL", 9, true, "", "solana", "0x65", mojom::CoinType::SOL);
+      false, false, "SOL", 9, true, "", "solana", "0x65", mojom::CoinType::SOL);
   auto usdc = mojom::BlockchainToken::New(
       "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", "USD Coin",
       "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png", false, false, false,
-      false, "USDC", 6, true, "", "usd-coin", "0x65", mojom::CoinType::SOL);
+      false, false, "USDC", 6, true, "", "usd-coin", "0x65",
+      mojom::CoinType::SOL);
   auto tsla = mojom::BlockchainToken::New(
       "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ", "Tesla Inc.",
       "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png", false, false, false,
-      false, "TSLA", 8, true, "", "", "0x65", mojom::CoinType::SOL);
+      false, false, "TSLA", 8, true, "", "", "0x65", mojom::CoinType::SOL);
   std::vector<mojom::BlockchainTokenPtr> solana_token_list;
   solana_token_list.push_back(std::move(tsla));
   solana_token_list.push_back(std::move(usdc));

@@ -172,6 +172,7 @@ export const AddCustomTokenForm = (props: Props) => {
         isErc721: false,
         isErc1155: false,
         isNft: false,
+        isSpam: false,
         name: tokenName,
         symbol: tokenSymbol,
         tokenId: '',

@@ -39,6 +39,8 @@ extern const char kBraveWalletUserAssetsAddIsERC1155Migrated[];
 // Added 10/2022 to replace ETH selected network with mainnet if selected
 // network is one of the Ethereum testnets deprecated on 10/5/2022.
 extern const char kBraveWalletDeprecateEthereumTestNetworksMigrated[];
+// Added 06/2023 to set is_spam = false for all existing tokens.
+extern const char kBraveWalletUserAssetsAddIsSpamMigrated[];
 extern const char kBraveWalletAutoLockMinutes[];
 extern const char kSupportEip1559OnLocalhostChain[];
 // Added 02/2022 to migrate ethereum transactions to be under ethereum coin

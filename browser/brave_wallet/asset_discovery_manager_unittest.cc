@@ -133,9 +133,11 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
         shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
         json_rpc_service_, tx_service, GetPrefs(), GetLocalState());
+    simple_hash_client_ =
+        std::make_unique<SimpleHashClient>(shared_url_loader_factory_);
     asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
         shared_url_loader_factory_, wallet_service_.get(), json_rpc_service_,
-        keyring_service_, GetPrefs());
+        keyring_service_, simple_hash_client_.get(), GetPrefs());
     wallet_service_observer_ = std::make_unique<
         TestBraveWalletServiceObserverForAssetDiscoveryManager>();
     wallet_service_->AddObserver(wallet_service_observer_->GetReceiver());
@@ -154,6 +156,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
   std::unique_ptr<ScopedTestingLocalState> local_state_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<BraveWalletService> wallet_service_;
+  std::unique_ptr<SimpleHashClient> simple_hash_client_;
   std::unique_ptr<AssetDiscoveryManager> asset_discovery_manager_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_;
@@ -284,8 +287,8 @@ TEST_F(AssetDiscoveryManagerUnitTest, DiscoverAssetsOnAllSupportedChains) {
   task_environment_.FastForwardBy(
       base::Minutes(kAssetDiscoveryMinutesPerRequest));
   std::queue<std::unique_ptr<AssetDiscoveryTask>> tasks;
-  tasks.push(
-      std::make_unique<AssetDiscoveryTask>(nullptr, nullptr, nullptr, nullptr));
+  tasks.push(std::make_unique<AssetDiscoveryTask>(nullptr, nullptr, nullptr,
+                                                  nullptr, nullptr));
   asset_discovery_manager_->SetQueueForTesting(std::move(tasks));
   TestDiscoverAssetsOnAllSupportedChains({}, true, true, {}, 1);
 

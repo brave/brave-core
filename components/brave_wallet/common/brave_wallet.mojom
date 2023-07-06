@@ -680,6 +680,7 @@ struct BlockchainToken {
   bool is_erc721;
   bool is_erc1155;
   bool is_nft;
+  bool is_spam;
   string symbol;
   int32 decimals;
   bool visible = true;
@@ -1654,6 +1655,9 @@ interface BraveWalletService {
   // This asset could be a token from BlockchainRegistry or a custom token.
   SetUserAssetVisible(BlockchainToken token, bool visible) => (bool success);
 
+  // Sets the spam status of a token
+  SetAssetSpamStatus(BlockchainToken token, bool status) => (bool success);
+
   // Check if the external wallet is installed (Only check installation state
   // regardless of internal state)
   IsExternalWalletInstalled(ExternalWalletType type) => (bool installed);
@@ -1776,6 +1780,13 @@ interface BraveWalletService {
   // Returns a list of chain_ids for which GetERC20TokenBalances
   // is supported
   GetBalanceScannerSupportedChains() => (array<string> chain_ids);
+
+  // Fetches NFTs labeled as spam by SimpleHash
+  GetSimpleHashSpamNFTs(string wallet_address,
+                        array<string> chain_ids,
+                        CoinType coin,
+                        string? cursor)
+    => (array<BlockchainToken> tokens, string? cursor);
 
   // Resets the keyring and the related preferences
   Reset();

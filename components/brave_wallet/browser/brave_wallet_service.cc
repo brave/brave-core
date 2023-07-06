@@ -49,6 +49,7 @@
 //            "is_erc20": false,
 //            "is_erc721": false,
 //            "is_erc1155": false,
+//            "is_spam": false,
 //            "decimals": 18,
 //            "visible": true
 //            ...
@@ -60,6 +61,7 @@
 //            "is_erc20": true,
 //            "is_erc721": false,
 //            "is_erc1155": false,
+//            "is_spam": false,
 //            "decimals": 18,
 //            "visible": true
 //            ...
@@ -71,6 +73,7 @@
 //            "is_erc20": true,
 //            "is_erc721": false,
 //            "is_erc1155": false,
+//            "is_spam": false,
 //            "decimals": 18,
 //            "visible": true
 //            ...
@@ -93,6 +96,7 @@
 //            "is_erc20": false,
 //            "is_erc721": false,
 //            "is_erc1155": false,
+//            "is_spam": false,
 //            "decimals": 9,
 //            "visible": true
 //            ...
@@ -147,6 +151,7 @@ base::Value::Dict GetEthNativeAssetFromChain(
   native_asset.Set("is_erc721", false);
   native_asset.Set("is_erc1155", false);
   native_asset.Set("is_nft", false);
+  native_asset.Set("is_spam", false);
   native_asset.Set("decimals", chain->decimals);
   native_asset.Set("visible", true);
   return native_asset;
@@ -174,17 +179,16 @@ BraveWalletService::BraveWalletService(
       tx_service_(tx_service),
       profile_prefs_(profile_prefs),
       brave_wallet_p3a_(this, keyring_service, profile_prefs, local_state),
-      asset_discovery_manager_(
-          std::make_unique<AssetDiscoveryManager>(url_loader_factory,
-                                                  this,
-                                                  json_rpc_service,
-                                                  keyring_service,
-                                                  profile_prefs)),
       eth_allowance_manager_(
           std::make_unique<EthAllowanceManager>(json_rpc_service,
                                                 keyring_service,
                                                 profile_prefs)),
       weak_ptr_factory_(this) {
+  simple_hash_client_ = std::make_unique<SimpleHashClient>(url_loader_factory);
+  asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
+      url_loader_factory, this, json_rpc_service, keyring_service,
+      simple_hash_client_.get(), profile_prefs);
+
   if (delegate_) {
     delegate_->AddObserver(this);
   }
@@ -420,6 +424,7 @@ bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
   value.Set("is_erc721", token->is_erc721);
   value.Set("is_erc1155", token->is_erc1155);
   value.Set("is_nft", token->is_nft);
+  value.Set("is_spam", token->is_spam);
   value.Set("decimals", token->decimals);
   value.Set("visible", true);
   value.Set("token_id", token->token_id);
@@ -575,6 +580,50 @@ bool BraveWalletService::SetUserAssetVisible(mojom::BlockchainTokenPtr token,
   }
 
   it->GetDict().Set("visible", visible);
+  return true;
+}
+
+void BraveWalletService::SetAssetSpamStatus(
+    mojom::BlockchainTokenPtr token,
+    bool is_spam,
+    SetAssetSpamStatusCallback callback) {
+  std::move(callback).Run(SetAssetSpamStatus(std::move(token), is_spam));
+}
+
+bool BraveWalletService::SetAssetSpamStatus(mojom::BlockchainTokenPtr token,
+                                            bool is_spam) {
+  DCHECK(token);
+
+  absl::optional<std::string> address = GetUserAssetAddress(
+      token->contract_address, token->coin, token->chain_id);
+  if (!address) {
+    return false;
+  }
+
+  const std::string network_id =
+      GetNetworkId(profile_prefs_, token->coin, token->chain_id);
+  if (network_id.empty()) {
+    return false;
+  }
+
+  ScopedDictPrefUpdate update(profile_prefs_, kBraveWalletUserAssets);
+  auto* user_assets_list = update->FindListByDottedPath(
+      base::StrCat({GetPrefKeyForCoinType(token->coin), ".", network_id}));
+  if (!user_assets_list) {
+    return false;
+  }
+
+  auto it = FindAsset(user_assets_list, *address, token->token_id,
+                      ShouldCheckTokenId(token));
+  if (it == user_assets_list->end()) {
+    return false;
+  }
+
+  it->GetDict().Set("is_spam", is_spam);
+
+  // Marking a token as spam makes it not visible and vice-versa
+  it->GetDict().Set("visible", !is_spam);
+
   return true;
 }
 
@@ -1062,6 +1111,42 @@ void BraveWalletService::MigrateUserAssetsAddIsERC1155(PrefService* prefs) {
   prefs->SetBoolean(kBraveWalletUserAssetsAddIsERC1155Migrated, true);
 }
 
+void BraveWalletService::MigrateUserAssetsAddIsSpam(PrefService* prefs) {
+  if (prefs->GetBoolean(kBraveWalletUserAssetsAddIsSpamMigrated)) {
+    return;
+  }
+
+  if (!prefs->HasPrefPath(kBraveWalletUserAssets)) {
+    prefs->SetBoolean(kBraveWalletUserAssetsAddIsSpamMigrated, true);
+    return;
+  }
+
+  ScopedDictPrefUpdate update(prefs, kBraveWalletUserAssets);
+  base::Value::Dict& user_assets_pref = update.Get();
+
+  for (auto user_asset_dict_per_cointype : user_assets_pref) {
+    if (!user_asset_dict_per_cointype.second.is_dict()) {
+      continue;
+    }
+    for (auto user_asset_list_per_chain :
+         user_asset_dict_per_cointype.second.GetDict()) {
+      if (!user_asset_list_per_chain.second.is_list()) {
+        continue;
+      }
+      for (auto& user_asset : user_asset_list_per_chain.second.GetList()) {
+        auto* asset = user_asset.GetIfDict();
+        if (!asset) {
+          continue;
+        }
+        if (!asset->FindBool("is_spam")) {
+          asset->Set("is_spam", false);
+        }
+      }
+    }
+  }
+  prefs->SetBoolean(kBraveWalletUserAssetsAddIsSpamMigrated, true);
+}
+
 // static
 base::Value::Dict BraveWalletService::GetDefaultEthereumAssets() {
   base::Value::Dict user_assets;
@@ -1074,6 +1159,7 @@ base::Value::Dict BraveWalletService::GetDefaultEthereumAssets() {
   bat.Set("is_erc721", false);
   bat.Set("is_erc1155", false);
   bat.Set("is_nft", false);
+  bat.Set("is_spam", false);
   bat.Set("decimals", 18);
   bat.Set("visible", true);
   bat.Set("logo", "bat.png");
@@ -1107,6 +1193,7 @@ base::Value::Dict BraveWalletService::GetDefaultSolanaAssets() {
   sol.Set("is_erc20", false);
   sol.Set("is_erc721", false);
   sol.Set("is_erc1155", false);
+  sol.Set("is_spam", false);
   sol.Set("is_nft", false);
   sol.Set("visible", true);
   sol.Set("logo", "sol.png");
@@ -1133,6 +1220,7 @@ base::Value::Dict BraveWalletService::GetDefaultFilecoinAssets() {
   fil.Set("is_erc20", false);
   fil.Set("is_erc721", false);
   fil.Set("is_erc1155", false);
+  fil.Set("is_spam", false);
   fil.Set("is_nft", false);
   fil.Set("visible", true);
   fil.Set("logo", "fil.png");
@@ -1691,6 +1779,23 @@ void BraveWalletService::GetBalanceScannerSupportedChains(
   }
 
   std::move(callback).Run(chain_ids);
+}
+
+void BraveWalletService::GetSimpleHashSpamNFTs(
+    const std::string& wallet_address,
+    const std::vector<std::string>& chain_ids,
+    mojom::CoinType coin,
+    const absl::optional<std::string>& cursor,
+    GetSimpleHashSpamNFTsCallback callback) {
+  // Do not make requests to SimpleHash unless the user has
+  // opted in to NFT discovery.
+  if (!profile_prefs_->GetBoolean(kBraveWalletNftDiscoveryEnabled)) {
+    std::move(callback).Run({}, absl::nullopt);
+    return;
+  }
+  simple_hash_client_->FetchNFTsFromSimpleHash(
+      wallet_address, chain_ids, coin, cursor, false /* skip_spam */,
+      true /* only_spam */, std::move(callback));
 }
 
 void BraveWalletService::CancelAllSuggestedTokenCallbacks() {

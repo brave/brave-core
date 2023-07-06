@@ -450,6 +450,7 @@ export const getETHSwapTransactionBuyAndSellTokens = ({
           isErc1155: false,
           isErc721: false,
           isNft: false,
+          isSpam: false,
           visible: true
         } as BraveWallet.BlockchainToken
     ).filter((t): t is BraveWallet.BlockchainToken => Boolean(t))

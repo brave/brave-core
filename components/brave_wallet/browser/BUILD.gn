@@ -130,6 +130,8 @@ static_library("browser") {
     "nonce_tracker.h",
     "password_encryptor.cc",
     "password_encryptor.h",
+    "simple_hash_client.cc",
+    "simple_hash_client.h",
     "simulation_request_helper.cc",
     "simulation_request_helper.h",
     "simulation_response_parser.cc",

@@ -62,6 +62,7 @@ export const makeNetworkAsset = <T extends BraveWallet.NetworkInfo | undefined>(
     isErc721: false,
     isErc1155: false,
     isNft: false,
+    isSpam: false,
     decimals: network.decimals,
     visible: true,
     tokenId: '',

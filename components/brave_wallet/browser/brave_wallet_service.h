@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/asset_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
+#include "brave/components/brave_wallet/browser/simple_hash_client.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -50,6 +51,7 @@ class BraveWalletService : public KeyedService,
                            public mojom::BraveWalletService,
                            public BraveWalletServiceDelegate::Observer {
  public:
+  using APIRequestHelper = api_request_helper::APIRequestHelper;
   using SignMessageRequestCallback =
       base::OnceCallback<void(bool,
                               mojom::ByteArrayStringUnionPtr,
@@ -89,6 +91,7 @@ class BraveWalletService : public KeyedService,
   static void MigrateUserAssetsAddIsNFT(PrefService* profile_prefs);
   static void MigrateHiddenNetworks(PrefService* profile_prefs);
   static void MigrateUserAssetsAddIsERC1155(PrefService* profile_prefs);
+  static void MigrateUserAssetsAddIsSpam(PrefService* profile_prefs);
 
   static bool AddUserAsset(mojom::BlockchainTokenPtr token,
                            PrefService* profile_prefs);
@@ -125,6 +128,9 @@ class BraveWalletService : public KeyedService,
   void SetUserAssetVisible(mojom::BlockchainTokenPtr token,
                            bool visible,
                            SetUserAssetVisibleCallback callback) override;
+  void SetAssetSpamStatus(mojom::BlockchainTokenPtr token,
+                          bool is_spam,
+                          SetAssetSpamStatusCallback callback) override;
   void IsExternalWalletInstalled(mojom::ExternalWalletType,
                                  IsExternalWalletInstalledCallback) override;
   void IsExternalWalletInitialized(
@@ -229,6 +235,12 @@ class BraveWalletService : public KeyedService,
   void GetBalanceScannerSupportedChains(
       GetBalanceScannerSupportedChainsCallback callback) override;
 
+  void GetSimpleHashSpamNFTs(const std::string& wallet_address,
+                             const std::vector<std::string>& chain_ids,
+                             mojom::CoinType coin,
+                             const absl::optional<std::string>& cursor,
+                             GetSimpleHashSpamNFTsCallback callback) override;
+
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
 
@@ -317,6 +329,7 @@ class BraveWalletService : public KeyedService,
   bool AddUserAsset(mojom::BlockchainTokenPtr token);
   bool RemoveUserAsset(mojom::BlockchainTokenPtr token);
   bool SetUserAssetVisible(mojom::BlockchainTokenPtr token, bool visible);
+  bool SetAssetSpamStatus(mojom::BlockchainTokenPtr token, bool is_spam);
   mojom::BlockchainTokenPtr GetUserAsset(const std::string& contract_address,
                                          const std::string& token_id,
                                          bool is_nft,
@@ -369,6 +382,7 @@ class BraveWalletService : public KeyedService,
   raw_ptr<TxService> tx_service_ = nullptr;
   raw_ptr<PrefService> profile_prefs_ = nullptr;
   BraveWalletP3A brave_wallet_p3a_;
+  std::unique_ptr<SimpleHashClient> simple_hash_client_;
   std::unique_ptr<AssetDiscoveryManager> asset_discovery_manager_;
   std::unique_ptr<EthAllowanceManager> eth_allowance_manager_;
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;
