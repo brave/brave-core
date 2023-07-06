@@ -274,23 +274,18 @@ public class BrowserViewController: UIViewController {
     profile: Profile,
     diskImageStore: DiskImageStore?,
     braveCore: BraveCoreMain,
+    rewards: BraveRewards,
     migration: Migration?,
     crashedLastSession: Bool
   ) {
     self.profile = profile
     self.braveCore = braveCore
     self.bookmarkManager = BookmarkManager(bookmarksAPI: braveCore.bookmarksAPI)
+    self.rewards = rewards
     self.migration = migration
     self.crashedLastSession = crashedLastSession
     feedDataSource.historyAPI = braveCore.historyAPI
     backgroundDataSource = .init(service: braveCore.backgroundImagesService)
-    
-    let configuration: BraveRewards.Configuration = .current()
-
-    Self.migrateAdsConfirmations(for: configuration)
-
-    // Initialize Rewards
-    self.rewards = BraveRewards(configuration: configuration)
 
     // Initialize TabManager
     self.tabManager = TabManager(
@@ -319,7 +314,7 @@ public class BrowserViewController: UIViewController {
       }
     }
 
-    self.deviceCheckClient = DeviceCheckClient(environment: configuration.environment)
+    self.deviceCheckClient = DeviceCheckClient(environment: BraveRewards.Configuration.current().environment)
 
     if Locale.current.regionCode == "JP" {
       benchmarkBlockingDataSource = BlockingSummaryDataSource()
