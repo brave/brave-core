@@ -146,15 +146,14 @@ void BravePrefProvider::RegisterProfilePrefs(
   registry->RegisterDictionaryPref(
       "brave.migrate.content_settings.exceptions.plugins");
 
-#if BUILDFLAG(IS_ANDROID)
   // This path is no longer registered upstream but we still need it to migrate
-  // Shields settings away from ResourceIdentifier on Android.
+  // Shields settings away from ResourceIdentifier.
   if (!registry->defaults()->GetValue(
           "profile.content_settings.exceptions.plugins", nullptr)) {
     registry->RegisterDictionaryPref(
         "profile.content_settings.exceptions.plugins");
   }
-#endif
+
   registry->RegisterBooleanPref(kBraveShieldsFPSettingsMigration, false);
   registry->RegisterDictionaryPref(kObsoleteShieldCookies);
 }
