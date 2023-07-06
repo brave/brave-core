@@ -414,7 +414,8 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
 
   if (injected_script &&
       base::JSONWriter::Write(*injected_script, &scriptlet_script)) {
-    const bool scriptlet_debug_enabled = false;
+    const bool scriptlet_debug_enabled = base::FeatureList::IsEnabled(
+        brave_shields::features::kBraveAdblockScriptletDebugLogs);
 
     scriptlet_script = base::StringPrintf(
         kScriptletInitScript,
