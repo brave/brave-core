@@ -209,7 +209,7 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterBooleanPref(kBraveWalletSolanaTransactionsV0SupportMigrated,
                                 false);
 
-  // Added 06/2023
+  // Added 07/2023
   registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsSpamMigrated, false);
 }
 

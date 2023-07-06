@@ -269,7 +269,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "is_erc721": false,
       "is_erc1155": false,
       "is_nft": false,
-      "is_spam": false,  // Added this field
+      "is_spam": false,
       "decimals": 18,
       "visible": true,
       "token_id": "",
