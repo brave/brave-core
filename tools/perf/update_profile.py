@@ -19,7 +19,6 @@ import logging
 import os
 import subprocess
 import sys
-import sys
 import tempfile
 import time
 
@@ -31,13 +30,13 @@ from lib.util import make_zip, scoped_cwd
 
 def EraseVariationsFromLocalState(local_state_path: str):
   local_state = {}
-  with open(local_state_path, 'r') as f:
+  with open(local_state_path, 'r', encoding='utf8') as f:
     local_state = json.load(f)
     for k in list(local_state.keys()):
       if k.startswith('variation'):
         local_state.pop(k, None)
 
-  with open(local_state_path, 'w') as f:
+  with open(local_state_path, 'w', encoding='utf8') as f:
     json.dump(local_state, f)
 
 
@@ -45,9 +44,9 @@ def UpdateProfile(profile_name: str, browser_binary: str, new_profile_name: str,
                   skip_upload: bool):
   assert os.path.exists(browser_binary)
   tmp = tempfile.mkdtemp(prefix='')
-  logging.info('Using temp directory %s' % tmp)
+  logging.info('Using temp directory %s', tmp)
   profile_dir = perf_profile.GetProfilePath(profile_name, tmp)
-  logging.info('Profile unpacked in %s' % profile_dir)
+  logging.info('Profile unpacked in %s', profile_dir)
 
   args = [
       browser_binary,
@@ -63,7 +62,7 @@ def UpdateProfile(profile_name: str, browser_binary: str, new_profile_name: str,
   # Run browser for 2 minutes to update the profile.
   # Do this twice to clean the old components.
   for i in range(2):
-    logging.info('Run', ' '.join(args))
+    logging.info('Run %s', ' '.join(args))
     with subprocess.Popen(args) as process:
       logging.info('Waiting for 2 minutes..')
       time.sleep(120)
@@ -79,7 +78,7 @@ def UpdateProfile(profile_name: str, browser_binary: str, new_profile_name: str,
 
   zip_path = os.path.join(path_util.GetBravePerfProfileDir(),
                           new_profile_name + '.zip')
-  logging.info('Creating zipped profile %s' % zip_path)
+  logging.info('Creating zipped profile %s', zip_path)
   with scoped_cwd(profile_dir):
     make_zip(zip_path, [], ['.'])
 
@@ -89,10 +88,10 @@ def UpdateProfile(profile_name: str, browser_binary: str, new_profile_name: str,
       '-b', 'brave-telemetry', zip_path
   ]
   if skip_upload:
-    logging.info('Upload skipped, call this to do: ' + ' '.join(upload_args))
+    logging.info('Upload skipped, call this to do: %s', ' '.join(upload_args))
   else:
     subprocess.check_call(upload_args)
-    logging.info('Please run git add ' + zip_path + '.sha1')
+    logging.info('Please run git add %s.sha1', zip_path)
 
 
 def main():
