@@ -194,6 +194,19 @@ window.__firefox__.includeOnce("Playlist", function($) {
               }
             }
             
+            // No elements found nearby
+            // Select the first of each IF found because some websites can have video elements with zero size.
+            // In such cases, the gesture would not be on or inside the element, so this is a fallback.
+            if (!targetVideo && !targetAudio) {
+              if (videoElements.length > 0) {
+                targetVideo = videoElements[0];
+              }
+              
+              if (audioElements.length > 0) {
+                targetAudio = audioElements[0];
+              }
+            }
+            
             // No elements found nearby so do nothing..
             if (!targetVideo && !targetAudio) {
               return;
