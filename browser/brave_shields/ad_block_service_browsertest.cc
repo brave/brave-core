@@ -87,6 +87,7 @@ using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCookieListDefault;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
+using brave_shields::features::kBraveAdblockScriptletDebugLogs;
 using brave_shields::features::kCosmeticFilteringJsPerformance;
 
 AdBlockServiceTest::AdBlockServiceTest()
@@ -2253,6 +2254,47 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringWindowScriptlet) {
       contents, R"(waitCSSSelector('.ad', 'color', 'Impossible value'))");
   ASSERT_TRUE(result.error.empty());
   EXPECT_EQ(base::Value(true), result.value);
+}
+
+class ScriptletDebugLogsFlagEnabledTest : public AdBlockServiceTest {
+ public:
+  ScriptletDebugLogsFlagEnabledTest() {
+    feature_list_.InitAndEnableFeature(kBraveAdblockScriptletDebugLogs);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+// Test that scriptlet injection has access to `canDebug` inside of
+// `scriptletGlobals`, and that it is set to `true`.
+IN_PROC_BROWSER_TEST_F(ScriptletDebugLogsFlagEnabledTest, CanDebugSetToTrue) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  std::string scriptlet =
+      "(function() {"
+      "  if (scriptletGlobals.get('canDebug')) {"
+      "    window.success = true;"
+      "  }"
+      "})();";
+  std::string scriptlet_base64;
+  base::Base64Encode(scriptlet, &scriptlet_base64);
+  UpdateAdBlockInstanceWithRules(
+      "b.com##+js(debuggable)",
+      "[{"
+      "\"name\": \"debuggable\","
+      "\"aliases\": [],"
+      "\"kind\": {\"mime\": \"application/javascript\"},"
+      "\"content\": \"" +
+          scriptlet_base64 + "\"}]");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  EXPECT_EQ(true, EvalJs(contents, R"(window.success)"));
 }
 
 // Test scriptlet injection with DeAMP enabled
