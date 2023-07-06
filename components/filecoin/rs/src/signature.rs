@@ -14,7 +14,6 @@ use fvm_shared::address::Network;
 use fvm_shared::crypto::signature::Signature;
 use fvm_shared::message::Message as UnsignedMessage;
 use libsecp256k1::util::{SECRET_KEY_SIZE, SIGNATURE_SIZE};
-use libsecp256k1::{sign, Message};
 use multihash::{Code, MultihashDigest};
 use thiserror::Error;
 
