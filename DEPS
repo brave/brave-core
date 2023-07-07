@@ -111,7 +111,7 @@ hooks = [
     'action': ['python3', '../build/util/lastchange.py',
                '--output', '../build/util/LASTCHANGE',
                '--source-dir', '.',
-               '--filter', '^[0-9]\+\.[0-9]\+\.[0-9]\+$'],
+               '--filter', '^[0-9]\{{1,\}}\.[0-9]\{{1,\}}\.[0-9]\{{1,\}}$'],
   },
 ]
 
