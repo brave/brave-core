@@ -350,9 +350,6 @@
 # Flaky upstream test.
 -EncryptedReportingUploadProviderTest.SuccessfullyUploadsRecord
 
-# This test fails because we disable page_info::kPageInfoCookiesSubpage
--PageInfoBubbleViewCookiesSubpageTest.TextsOnButtonsAreCorrect
-
 # This test fails because we insert our own bookmarks submenu into the app menu
 # model
 -TestAppMenuModelCR2023.ModelHasIcons

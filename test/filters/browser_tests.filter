@@ -834,10 +834,6 @@
 # can be removed at that time
 -ExtensionActionRunnerWithUserHostControlsBrowserTest.HandleUserSiteSettingModified_ExtensionHasNoAccess
 
-# These tests fail because we disable page_info::kPageInfoCookiesSubpage
--PageInfoBubbleViewBrowserTestCookiesSubpage.ClickingFpsButton
--PageInfoBubbleViewBrowserTestCookiesSubpage.ToggleForBlockingThirdPartyCookies
-
 # These tests fail because we don't support the search companion.
 -CompanionPage*
 -SidePanelCompanion2BrowserEnabledTest.FeatureEnabled
