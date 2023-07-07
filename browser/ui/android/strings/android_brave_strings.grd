@@ -2767,8 +2767,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_NAME" desc="Add custom asset dialog Token name field">
       Token name
     </message>
-    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_CONTRACT_ADDRESS" desc="Add custom asset dialog Token contract address field">
-      Token contract address
+    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_MINT_ADDRESS" desc="Add custom asset dialog mint address field">
+      Mint address
     </message>
     <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_SYMBOL" desc="Add custom asset dialog Token symbol field">
       Token symbol

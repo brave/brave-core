@@ -827,7 +827,6 @@ brave_java_resources = [
   "java/res/layout/brave_vpn_server_selection_item_layout.xml",
   "java/res/layout/brave_vpn_server_selection_layout.xml",
   "java/res/layout/brave_wallet_accounts_list_item.xml",
-  "java/res/layout/brave_wallet_add_custom_asset.xml",
   "java/res/layout/brave_wallet_add_network.xml",
   "java/res/layout/brave_wallet_autolock_layout.xml",
   "java/res/layout/brave_wallet_connected_sites_list_item.xml",
