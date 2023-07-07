@@ -1024,8 +1024,8 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
         url->SchemeIs(content::kChromeUIScheme) &&
         url->host() == ethereum_remote_client_host) {
       auto* registry = extensions::ExtensionRegistry::Get(browser_context);
-      if (registry->ready_extensions().GetByID(
-              ethereum_remote_client_extension_id)) {
+      if (registry && registry->ready_extensions().GetByID(
+                          ethereum_remote_client_extension_id)) {
         *url = GURL(ethereum_remote_client_base_url);
         return true;
       }

@@ -43,8 +43,7 @@ EthereumRemoteClientService::EthereumRemoteClientService(
           std::move(ethereum_remote_client_delegate)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-           base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {
-}
+           base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {}
 
 EthereumRemoteClientService::~EthereumRemoteClientService() = default;
 
@@ -220,14 +219,15 @@ bool EthereumRemoteClientService::IsLegacyCryptoWalletsSetup() const {
 
 bool EthereumRemoteClientService::IsCryptoWalletsReady() const {
   auto* registry = extensions::ExtensionRegistry::Get(context_);
-  return registry->ready_extensions().Contains(
-      ethereum_remote_client_extension_id);
+  return registry && registry->ready_extensions().Contains(
+                         ethereum_remote_client_extension_id);
 }
 
 void EthereumRemoteClientService::MaybeLoadCryptoWalletsExtension(
     LoadUICallback callback) {
-  if (load_ui_callback_)
+  if (load_ui_callback_) {
     std::move(load_ui_callback_).Run();
+  }
   load_ui_callback_ = std::move(callback);
   ethereum_remote_client_delegate_->MaybeLoadCryptoWalletsExtension(context_);
 }
