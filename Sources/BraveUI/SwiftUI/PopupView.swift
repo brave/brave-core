@@ -54,6 +54,7 @@ public class PopupViewController<Content: View>: UIViewController, UIViewControl
   }
 
   public func animatePresentation(context: UIViewControllerContextTransitioning) {
+    view.frame = context.finalFrame(for: self)
     context.containerView.addSubview(view)
 
     backgroundView.alpha = 0.0
