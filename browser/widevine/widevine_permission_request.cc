@@ -5,7 +5,6 @@
 
 #include "brave/browser/widevine/widevine_permission_request.h"
 
-#include "base/logging.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -54,30 +53,30 @@ std::u16string WidevinePermissionRequest::GetMessageTextFragment() const {
 void WidevinePermissionRequest::PermissionDecided(ContentSetting result,
                                                   bool is_one_time,
                                                   bool is_final_decision) {
-  LOG(ERROR) << "widevine_permission_request.cc: PermissionDecided: 0";
-  LOG(ERROR) << "widevine_permission_request.cc: PermissionDecided: result: " << result;
-  LOG(ERROR) << "widevine_permission_request.cc: PermissionDecided: IsWidevineOptedIn: " << IsWidevineOptedIn();
   // Permission granted
   if (result == ContentSetting::CONTENT_SETTING_ALLOW) {
-#if BUILDFLAG(IS_LINUX)
-    // Prevent relaunch during the browser test.
-    // This will cause abnormal termination during the test.
-    if (for_restart_ && !is_test_) {
-      // Try relaunch after handling permission grant logics in this turn.
-      base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-          FROM_HERE, base::BindOnce(&chrome::AttemptRelaunch));
-    }
-#endif
     if (!for_restart_) {
       EnableWidevineCdm();
+    } else {
+#if BUILDFLAG(IS_ANDROID)
+      EnableWidevineCdm();
+#endif
+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_ANDROID)
+      // Prevent relaunch during the browser test.
+      // This will cause abnormal termination during the test.
+      if (!is_test_) {
+        // Try relaunch after handling permission grant logics in this turn.
+        base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+            FROM_HERE, base::BindOnce(&chrome::AttemptRelaunch));
+      }
+#endif
     }
     // Permission denied
   } else if (result == ContentSetting::CONTENT_SETTING_BLOCK) {
 #if BUILDFLAG(IS_ANDROID)
     DisableWidevineCdm();
-#else
-    DontAskWidevineInstall(web_contents_, dont_ask_widevine_install_);
 #endif
+    DontAskWidevineInstall(web_contents_, dont_ask_widevine_install_);
     // Cancelled
   } else {
     DCHECK(result == CONTENT_SETTING_DEFAULT);

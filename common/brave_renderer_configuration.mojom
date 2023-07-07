@@ -13,7 +13,7 @@ struct DynamicParams {
   bool brave_use_native_solana_wallet = false;
   bool allow_overwrite_window_solana_provider = true;
   bool de_amp_enabled = true;
-  bool widevine_enabled = true;
+  bool widevine_enabled = false;
 };
 
 // Configures the renderer.

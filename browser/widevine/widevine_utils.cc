@@ -5,7 +5,6 @@
 
 #include "brave/browser/widevine/widevine_utils.h"
 
-#include "base/logging.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/task/task_traits.h"
@@ -120,7 +119,6 @@ int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart) {
 
 void RequestWidevinePermission(content::WebContents* web_contents,
                                bool for_restart) {
-  LOG(ERROR) << "widevine_utils.cc: RequestWidevinePermission: 0";
   permissions::PermissionRequestManager::FromWebContents(web_contents)
       ->AddRequest(web_contents->GetPrimaryMainFrame(),
                    new WidevinePermissionRequest(web_contents, for_restart));

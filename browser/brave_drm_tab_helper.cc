@@ -8,7 +8,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/logging.h"
 #include "base/containers/contains.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/components/constants/pref_names.h"
@@ -75,11 +74,11 @@ void BraveDrmTabHelper::BindBraveDRM(
 
 bool BraveDrmTabHelper::ShouldShowWidevineOptIn() const {
   // If the user already opted in, don't offer it.
-  // PrefService* prefs =
-  //     static_cast<Profile*>(web_contents()->GetBrowserContext())->GetPrefs();
-  // if (IsWidevineOptedIn() || !prefs->GetBoolean(kAskWidevineInstall)) {
-  //   return false;
-  // }
+  PrefService* prefs =
+      static_cast<Profile*>(web_contents()->GetBrowserContext())->GetPrefs();
+  if (IsWidevineOptedIn() || !prefs->GetBoolean(kAskWidevineInstall)) {
+    return false;
+  }
 
   return is_widevine_requested_;
 }
@@ -96,11 +95,15 @@ void BraveDrmTabHelper::DidStartNavigation(
 
 void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
   is_widevine_requested_ = true;
-  LOG(ERROR) << "brave_drm_tab_helper.cc: OnWidevineKeySystemAccessRequest: is_widevine_requested_: " << is_widevine_requested_;
+#if BUILDFLAG(IS_ANDROID)
+  bool for_restart = true;
+#else
+  bool for_restart = false;
+#endif
 
   if (ShouldShowWidevineOptIn() && !is_permission_requested_) {
     is_permission_requested_ = true;
-    RequestWidevinePermission(web_contents(), false /* for_restart */);
+    RequestWidevinePermission(web_contents(), for_restart);
   }
 }
 

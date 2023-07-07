@@ -78,6 +78,7 @@ public class BraveMainPreferencesBase
     private static final String PREF_NOTIFICATIONS = "notifications";
     private static final String PREF_PAYMENT_METHODS = "autofill_payment_methods";
     private static final String PREF_ADDRESSES = "autofill_addresses";
+    private static final String PREF_MEDIA = "media";
     private static final String PREF_APPEARANCE = "appearance";
     private static final String PREF_NEW_TAB_PAGE = "background_images";
     private static final String PREF_ACCESSIBILITY = "accessibility";
@@ -306,6 +307,7 @@ public class BraveMainPreferencesBase
         int displaySectionOrder = generalOrder;
         findPreference(PREF_DISPLAY_SECTION).setOrder(++displaySectionOrder);
 
+        findPreference(PREF_MEDIA).setOrder(++displaySectionOrder);
         findPreference(PREF_APPEARANCE).setOrder(++displaySectionOrder);
         findPreference(PREF_NEW_TAB_PAGE).setOrder(++displaySectionOrder);
         findPreference(PREF_ACCESSIBILITY).setOrder(++displaySectionOrder);

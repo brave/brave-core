@@ -5,7 +5,6 @@
 
 #include "brave/renderer/brave_content_renderer_client.h"
 
-#include "base/logging.h"
 #include "base/feature_list.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
@@ -57,16 +56,8 @@
 namespace {
 void MaybeRemoveWidevineSupport(
   media::GetSupportedKeySystemsCB cb, media::KeySystemInfos key_systems) {
-  for (auto& key_system : key_systems) {
-    if (key_system->GetBaseKeySystemName() == kWidevineKeySystem) {
-      LOG(ERROR) << "brave_content_renderer_client.cc: MaybeRemoveWidevineSupport: GetBaseKeySystemName: "
-        << key_system->GetBaseKeySystemName();
-    }
-  }
 #if BUILDFLAG(ENABLE_WIDEVINE) && BUILDFLAG(IS_ANDROID)
   auto dynamic_params = BraveRenderThreadObserver::GetDynamicParams();
-  LOG(ERROR) << "brave_content_renderer_client.cc: GetSupportedKeySystems: dynamic_params.widevine_enabled: "
-        << (dynamic_params.widevine_enabled);
   if (!dynamic_params.widevine_enabled) {
     key_systems.erase(
       base::ranges::remove(
