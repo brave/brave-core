@@ -12,6 +12,7 @@
 #include "base/logging.h"
 #include "base/path_service.h"
 #include "base/win/windows_types.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service/wireguard_tunnel_service.h"
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
@@ -88,6 +89,7 @@ bool InstallBraveWireguardService() {
 
 // Uninstalling and clearing Brave VPN service data.
 bool UninstallBraveWireguardService() {
+  brave_vpn::wireguard::RemoveExistingWireguardService();
   auto last_used_config = brave_vpn::wireguard::GetLastUsedConfigPath();
   if (last_used_config.has_value() &&
       !RemoveWireguardConfigDirectory(last_used_config.value())) {
