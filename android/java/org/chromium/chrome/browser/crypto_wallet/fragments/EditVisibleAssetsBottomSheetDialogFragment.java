@@ -331,32 +331,34 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         super.onAttach(context);
 
         mAddAssetActivityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Intent intent = result.getData();
-                            if (intent == null) {
-                                return;
-                            }
-                            final BlockchainToken token = WalletUtils.getBlockchainTokenFromIntent(intent);
-                            final NetworkInfo networkInfo = WalletUtils.getNetworkInfoFromIntent(intent);
-                            if (token == null || networkInfo == null) {
-                                return;
-                            }
+                new ActivityResultContracts.StartActivityForResult(), result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent intent = result.getData();
+                        if (intent == null) {
+                            return;
+                        }
+                        final BlockchainToken token =
+                                WalletUtils.getBlockchainTokenFromIntent(intent);
+                        final NetworkInfo networkInfo =
+                                WalletUtils.getNetworkInfoFromIntent(intent);
+                        if (token == null || networkInfo == null) {
+                            return;
+                        }
 
-                            boolean isDuplicateToken = false;
-                            for (WalletListItemModel item : walletCoinAdapter.getCheckedAssets()) {
-                                // We can have multiple ERC721 or Solana NFTs with the same name
-                                if (!item.isNft()
-                                        && (item.getTitle().equals(token.name)
-                                        || item.getSubTitle().equals(token.symbol))) {
-                                    isDuplicateToken = true;
-                                    break;
-                                }
+                        boolean isDuplicateToken = false;
+                        for (WalletListItemModel item : walletCoinAdapter.getCheckedAssets()) {
+                            // We can have multiple ERC721 or Solana NFTs with the same name
+                            if (!item.isNft()
+                                    && (item.getTitle().equals(token.name)
+                                            || item.getSubTitle().equals(token.symbol))) {
+                                isDuplicateToken = true;
+                                break;
                             }
-                            if (!isDuplicateToken) {
-                            WalletListItemModel itemModel = new WalletListItemModel(
-                            R.drawable.ic_eth, token.name, token.symbol, token.tokenId, "", "");
+                        }
+                        if (!isDuplicateToken) {
+                            WalletListItemModel itemModel =
+                                    new WalletListItemModel(R.drawable.ic_eth, token.name,
+                                            token.symbol, token.tokenId, "", "");
                             itemModel.setBlockchainToken(token);
                             itemModel.setIconPath(token.logo);
                             itemModel.setAssetNetwork(networkInfo);
@@ -364,18 +366,15 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                             itemModel.setIsUserSelected(true);
                             walletCoinAdapter.addItem(itemModel);
                             mIsAssetsListChanged = true;
-                            }
-
                         }
-                    });
-
+                    }
+                });
     }
 
     private void showAddAssetDialog() {
         Intent addAssetIntent = AddAssetActivity.getIntent(requireContext(), mNftsOnly);
         mAddAssetActivityResultLauncher.launch(addAssetIntent);
     }
-
 
     private void setUpAssetsList(
             View view, List<BlockchainToken> tokens, List<BlockchainToken> userSelectedTokens) {

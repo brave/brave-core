@@ -7,14 +7,14 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.text.Editable;
-import android.text.TextWatcher;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -135,7 +135,8 @@ public class AddAssetActivity extends BraveWalletBaseActivity implements TextWat
                 }
             }
             @Override
-            public void onNothingSelected(AdapterView<?> parent) { /* No-op. */ }
+            public void onNothingSelected(AdapterView<?> parent) { /* No-op. */
+            }
         });
 
         mAdd.setOnClickListener(v -> {
@@ -197,8 +198,7 @@ public class AddAssetActivity extends BraveWalletBaseActivity implements TextWat
         String contractAddressTrimmed = contractAddress.trim();
         if (!contractAddress.equals(contractAddressTrimmed)) {
             // Update the contractAddress and process it within the next onTextChanged pass.
-            mTokenContractAddressEdit.setText(
-                    contractAddressTrimmed, TextView.BufferType.EDITABLE);
+            mTokenContractAddressEdit.setText(contractAddressTrimmed, TextView.BufferType.EDITABLE);
             return;
         }
         String tokenName = mTokenNameEdit.getText().toString();
@@ -230,8 +230,8 @@ public class AddAssetActivity extends BraveWalletBaseActivity implements TextWat
 
         if (tokenName.isEmpty() || tokenSymbol.isEmpty()
                 || (mNetworkInfo.coin == CoinType.ETH
-                && ((mNftsOnly && mTokenIdEdit.getText().toString().isEmpty())
-                || mTokenDecimalsEdit.getText().toString().isEmpty()))) {
+                        && ((mNftsOnly && mTokenIdEdit.getText().toString().isEmpty())
+                                || mTokenDecimalsEdit.getText().toString().isEmpty()))) {
             return;
         }
 
@@ -239,8 +239,10 @@ public class AddAssetActivity extends BraveWalletBaseActivity implements TextWat
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) { /* No-op. */ }
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) { /* No-op. */
+    }
 
     @Override
-    public void afterTextChanged(Editable s) { /* No-op. */ }
+    public void afterTextChanged(Editable s) { /* No-op. */
+    }
 }

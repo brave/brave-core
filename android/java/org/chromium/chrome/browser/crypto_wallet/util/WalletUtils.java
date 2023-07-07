@@ -99,8 +99,6 @@ public class WalletUtils {
         return txDataUnion;
     }
 
-
-
     public static void addAccountInfoToIntent(
             @NonNull final Intent intent, @NonNull final AccountInfo accountInfo) {
         ByteBuffer bb = accountInfo.serialize();
