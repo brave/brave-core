@@ -21,6 +21,11 @@
 @property(nonatomic, readwrite, copy) NSString* rewrittenURL;
 @end
 
+@interface ContentBlockingRulesResult ()
+@property(nonatomic, readwrite, copy) NSString* rulesJSON;
+@property(nonatomic, readwrite) bool truncated;
+@end
+
 @implementation AdblockEngineMatchResult
 - (instancetype)init {
   if ((self = [super init])) {
@@ -31,20 +36,74 @@
 }
 @end
 
+@implementation ContentBlockingRulesResult
+- (instancetype)init {
+  if ((self = [super init])) {
+    self.rulesJSON = @"";
+  }
+  return self;
+}
+@end
+
+/// rust::Box's default constructor is deleted, so we must box it again so we
+/// can assign it `adblock::new_engine()` by default since C++ types inside of
+/// Obj-C built with ARC call their default constructor on `-init` regardless
+class AdblockEngineBox final {
+ public:
+  AdblockEngineBox() : adblock_engine_(adblock::new_engine()) {}
+  AdblockEngineBox(const AdblockEngineBox&) = delete;
+  AdblockEngineBox& operator=(const AdblockEngineBox&) = delete;
+  ~AdblockEngineBox() = default;
+
+  rust::Box<adblock::Engine>& operator->() { return adblock_engine_; }
+  void operator=(rust::Box<adblock::Engine>&& engine) {
+    adblock_engine_ = std::move(engine);
+  }
+
+ private:
+  rust::Box<adblock::Engine> adblock_engine_;
+};
+
 @implementation AdblockEngine {
-  std::unique_ptr<adblock::Engine> adblock_engine;
+  AdblockEngineBox adblock_engine;
 }
 
 - (instancetype)init {
-  return [self initWithRules:@""];
+  // An empty engine is already created with `AdblockEngineBox`
+  return [super init];
 }
 
-- (instancetype)initWithRules:(NSString*)rules {
+- (instancetype)initWithRules:(NSString*)rules error:(NSError**)error {
   if ((self = [super init])) {
-    adblock_engine =
-        std::make_unique<adblock::Engine>(base::SysNSStringToUTF8(rules));
+    if (rules.length > 0) {
+      std::vector<std::uint8_t> vecRules(rules.length);
+      NSData* data = [rules dataUsingEncoding:NSUTF8StringEncoding];
+      if (data) {
+        [data getBytes:vecRules.data() length:data.length];
+      }
+      auto result = adblock::engine_with_rules(vecRules);
+      if (result.result_kind == adblock::ResultKind::Success) {
+        adblock_engine = std::move(result.value);
+      } else {
+        if (error) {
+          *error = [[self class] adblockErrorForKind:result.result_kind
+                                             message:result.error_message];
+        }
+      }
+    }
   }
   return self;
+}
+
++ (NSError*)adblockErrorForKind:(adblock::ResultKind)kind
+                        message:(rust::String)message {
+  return [NSError
+      errorWithDomain:@"com.brave.adblock"
+                 code:static_cast<NSInteger>(kind)
+             userInfo:@{
+               NSLocalizedDescriptionKey :
+                   base::SysUTF8ToNSString(static_cast<std::string>(message))
+             }];
 }
 
 - (AdblockEngineMatchResult*)matchesURL:(NSString*)url
@@ -52,17 +111,39 @@
                                 tabHost:(NSString*)tabHost
                            isThirdParty:(bool)isThirdParty
                            resourceType:(NSString*)resourceType {
+  return [self matchesURL:url
+                       host:host
+                    tabHost:tabHost
+               isThirdParty:isThirdParty
+               resourceType:resourceType
+      previouslyMatchedRule:false
+       forceCheckExceptions:false];
+}
+
+- (AdblockEngineMatchResult*)matchesURL:(NSString*)url
+                                   host:(NSString*)host
+                                tabHost:(NSString*)tabHost
+                           isThirdParty:(bool)isThirdParty
+                           resourceType:(NSString*)resourceType
+                  previouslyMatchedRule:(bool)previouslyMatchedRule
+                   forceCheckExceptions:(bool)forceCheckExceptions {
   auto engine_result = adblock_engine->matches(
       base::SysNSStringToUTF8(url), base::SysNSStringToUTF8(host),
       base::SysNSStringToUTF8(tabHost), base::SysNSStringToUTF8(resourceType),
-      isThirdParty, false, false);
+      isThirdParty, previouslyMatchedRule, forceCheckExceptions);
   auto result = [[AdblockEngineMatchResult alloc] init];
-  result.didMatchRule = engine_result.value.matched;
-  result.didMatchException = engine_result.value.has_exception;
-  result.didMatchImportant = engine_result.value.important;
-  result.redirect = base::SysUTF8ToNSString(engine_result.value.redirect.value);
-  result.rewrittenURL =
-      base::SysUTF8ToNSString(engine_result.value.rewritten_url.value);
+  result.didMatchRule = engine_result.matched;
+  result.didMatchException = engine_result.has_exception;
+  result.didMatchImportant = engine_result.important;
+  if (engine_result.redirect.has_value) {
+    result.redirect = base::SysUTF8ToNSString(
+        static_cast<std::string>(engine_result.redirect.value));
+  }
+  if (engine_result.rewritten_url.has_value) {
+    ;
+    result.rewrittenURL = base::SysUTF8ToNSString(
+        static_cast<std::string>(engine_result.rewritten_url.value));
+  }
   return result;
 }
 
@@ -71,16 +152,17 @@
                          tabHost:(NSString*)tabHost
                     isThirdParty:(bool)isThirdParty
                     resourceType:(NSString*)resourceType {
-  return base::SysUTF8ToNSString(adblock_engine->get_csp_directives(
-      base::SysNSStringToUTF8(url), base::SysNSStringToUTF8(host),
-      base::SysNSStringToUTF8(tabHost), base::SysNSStringToUTF8(resourceType),
-      isThirdParty));
+  return base::SysUTF8ToNSString(
+      static_cast<std::string>(adblock_engine->get_csp_directives(
+          base::SysNSStringToUTF8(url), base::SysNSStringToUTF8(host),
+          base::SysNSStringToUTF8(tabHost),
+          base::SysNSStringToUTF8(resourceType), isThirdParty)));
 }
 
 - (bool)deserialize:(NSData*)data {
-  auto result = adblock_engine->deserialize(
-      static_cast<const char*>(data.bytes), data.length);
-  return result.result_kind == adblock::ResultKind::Success;
+  std::vector<std::uint8_t> vecData(data.length);
+  [data getBytes:vecData.data() length:data.length];
+  return adblock_engine->deserialize(vecData);
 }
 
 - (void)addTag:(NSString*)tag {
@@ -92,44 +174,78 @@
 }
 
 - (bool)tagExists:(NSString*)tag {
-  return adblock_engine->tag_exists(base::SysNSStringToUTF8(tag)).value;
+  return adblock_engine->tag_exists(base::SysNSStringToUTF8(tag));
 }
 
-- (void)addResourceWithKey:(NSString*)key
+- (bool)addResourceWithKey:(NSString*)key
                contentType:(NSString*)contentType
-                      data:(NSString*)data {
-  adblock_engine->add_resource(base::SysNSStringToUTF8(key),
-                               base::SysNSStringToUTF8(contentType),
-                               base::SysNSStringToUTF8(data));
+                      data:(NSString*)data
+                     error:(NSError**)error {
+  const auto result = adblock_engine->add_resource(
+      base::SysNSStringToUTF8(key), base::SysNSStringToUTF8(contentType),
+      base::SysNSStringToUTF8(data));
+  const auto success = result.result_kind == adblock::ResultKind::Success;
+  if (result.result_kind != adblock::ResultKind::Success && error) {
+    *error = [[self class] adblockErrorForKind:result.result_kind
+                                       message:result.error_message];
+  }
+  return success;
 }
 
-- (void)useResources:(NSString*)resources {
-  adblock_engine->use_resources(base::SysNSStringToUTF8(resources));
+- (bool)useResources:(NSString*)resources {
+  return adblock_engine->use_resources(base::SysNSStringToUTF8(resources));
 }
 
 - (NSString*)cosmeticResourcesForURL:(NSString*)url {
-  return base::SysUTF8ToNSString(
-      adblock_engine->url_cosmetic_resources(base::SysNSStringToUTF8(url))
-          .value);
+  return base::SysUTF8ToNSString(static_cast<std::string>(
+      adblock_engine->url_cosmetic_resources(base::SysNSStringToUTF8(url))));
 }
 
-- (NSString*)
+- (nullable NSArray<NSString*>*)
     stylesheetForCosmeticRulesIncludingClasses:(NSArray<NSString*>*)classes
                                            ids:(NSArray<NSString*>*)ids
-                                    exceptions:(NSArray<NSString*>*)exceptions {
-  return base::SysUTF8ToNSString(adblock_engine->hiddenClassIdSelectors(
+                                    exceptions:(NSArray<NSString*>*)exceptions
+                                         error:(NSError**)error {
+  const auto result = adblock_engine->hidden_class_id_selectors(
       brave::ns_to_vector<std::string>(classes),
       brave::ns_to_vector<std::string>(ids),
-      brave::ns_to_vector<std::string>(exceptions)));
+      brave::ns_to_vector<std::string>(exceptions));
+  if (result.result_kind != adblock::ResultKind::Success) {
+    if (error) {
+      *error = [[self class] adblockErrorForKind:result.result_kind
+                                         message:result.error_message];
+    }
+    return nil;
+  }
+  auto selectors = [[NSMutableArray<NSString*> alloc] init];
+  for (auto selector : result.value) {
+    [selectors
+        addObject:base::SysUTF8ToNSString(static_cast<std::string>(selector))];
+  }
+  return [selectors copy];
 }
 
 + (bool)setDomainResolver {
   return adblock::set_domain_resolver();
+}
 
-  +(NSString*)contentBlockerRulesFromFilterSet : (NSString*)filterSet truncated
-      : (bool*)truncated {
-    return base::SysUTF8ToNSString(adblock::ConvertRulesToContentBlockingRules(
-        base::SysNSStringToUTF8(filterSet), truncated));
++ (nullable ContentBlockingRulesResult*)
+    contentBlockerRulesFromFilterSet:(NSString*)filterSet
+                               error:(NSError**)error {
+  auto result = adblock::convert_rules_to_content_blocking(
+      base::SysNSStringToUTF8(filterSet));
+  if (result.result_kind != adblock::ResultKind::Success) {
+    if (error) {
+      *error = [self adblockErrorForKind:result.result_kind
+                                 message:result.error_message];
+    }
+    return nil;
   }
+  auto value = [[ContentBlockingRulesResult alloc] init];
+  value.rulesJSON = base::SysUTF8ToNSString(
+      static_cast<std::string>(result.value.rules_json));
+  value.truncated = result.value.truncated;
+  return value;
+}
 
-  @end
+@end

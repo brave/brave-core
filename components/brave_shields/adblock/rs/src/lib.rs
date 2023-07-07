@@ -25,7 +25,8 @@ mod ffi {
         /// `resolve_domain_position` implemented in adblock_domain_resolver.cc.
         fn set_domain_resolver() -> bool;
 
-        /// Extracts the homepage and title from the metadata contained in a filter list.
+        /// Extracts the homepage and title from the metadata contained in a
+        /// filter list.
         fn read_list_metadata(list: &CxxVector<u8>) -> FilterListMetadata;
 
         /// Enables a given tag for the engine.
@@ -34,8 +35,9 @@ mod ffi {
         fn disable_tag(&mut self, tag: &CxxString);
         /// Returns true if a given tag is enabled for the engine.
         fn tag_exists(&self, key: &CxxString) -> bool;
-        /// Checks if a given request should be blocked and returns an evaluation result struct
-        /// with information on a matching rule and actions.
+        /// Checks if a given request should be blocked and returns an
+        /// evaluation result struct with information on a matching rule
+        /// and actions.
         fn matches(
             &self,
             url: &CxxString,
@@ -85,17 +87,18 @@ mod ffi {
         /// Sets a discard policy for the regex manager.
         fn set_regex_discard_policy(&mut self, new_discard_policy: &RegexManagerDiscardPolicy);
 
-        /// Converts a list in adblock syntax to its corresponding iOS content-blocking
-        /// syntax. `truncated` will be set to indicate whether or not some rules had to
-        /// be removed to avoid iOS's maximum rule count limit.
-        #[cfg(feature = "ios")]
+        /// Converts a list in adblock syntax to its corresponding iOS
+        /// content-blocking syntax. `truncated` will be set to indicate
+        /// whether or not some rules had to be removed to avoid iOS's
+        /// maximum rule count limit.
         fn convert_rules_to_content_blocking(rules: &CxxString) -> ContentBlockingRulesResult;
     }
 
     unsafe extern "C++" {
         include!("brave/components/brave_shields/adblock/resolver/adblock_domain_resolver.h");
 
-        /// Wrapper function for net::registry_controlled_domains::GetDomainAndRegistry
+        /// Wrapper function for
+        /// net::registry_controlled_domains::GetDomainAndRegistry
         /// implemented in Chromium.
         fn resolve_domain_position(host: &CxxString) -> DomainPosition;
     }
@@ -153,12 +156,13 @@ mod ffi {
 
     // The following structs are not generic because generic type parameters are
     // not yet supported in cxx.
-    // Created custom Result structs because cxx auto converts Result<T> to std::exception, and
-    // exceptions are not allowed in Chromium.
+    // Created custom Result structs because cxx auto converts Result<T> to
+    // std::exception, and exceptions are not allowed in Chromium.
 
-    // To check a result for success/error, evaluate the result_kind == ResultKind::Success.
-    // If the condition is false, the result_kind will contain an enum value describing the type of error,
-    // and error_message may contain further details about the error.
+    // To check a result for success/error, evaluate the result_kind ==
+    // ResultKind::Success. If the condition is false, the result_kind will
+    // contain an enum value describing the type of error, and error_message may
+    // contain further details about the error.
     struct UnitResult {
         result_kind: ResultKind,
         error_message: String,

@@ -35,11 +35,12 @@ impl From<&InternalError> for ResultKind {
 
 /// This is an intermediate "result" type.
 ///
-/// The purpose of this is to streamline conversions of typical Rust results to final
-/// cxx-compatible structures that are to be consumed by callers.
+/// The purpose of this is to streamline conversions of typical Rust results to
+/// final cxx-compatible structures that are to be consumed by callers.
 /// The PreResult is generic to make conversions from Rust results easy
-/// (via implementation of the From<Result<T, InternalError>> trait). Since cxx does not support
-/// generics, this PreResult to converted to a similar final structure that is not generic.
+/// (via implementation of the From<Result<T, InternalError>> trait). Since cxx
+/// does not support generics, this PreResult to converted to a similar final
+/// structure that is not generic.
 ///
 /// The typical chain of conversion for "result" types is as follows:
 /// Result<T, InternalError> to PreResult<T> to

@@ -8,6 +8,7 @@ group("rust_lib") {
     "//brave/components/brave_shields/browser:*",
     "//brave/components/brave_shields/common:*",
     "//brave/fuzzers:*",
+    "//brave/ios/browser/api/brave_shields:*",
   ]
   deps = [ "resolver" ]
 
