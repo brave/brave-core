@@ -68,6 +68,11 @@ hooks = [
     'action': ['vpython3', 'build/mac/download_sparkle.py', '1.24.3'],
   },
   {
+    'name': 'download_cryptography',
+    'pattern': '.',
+    'action': ['vpython3', '-m', 'pip', '-q', '--disable-pip-version-check', 'install', '-U', '-t', 'third_party/cryptography', 'cryptography==41.0.1'],
+  },
+  {
     'name': 'wireguard_nt',
     'pattern': '.',
     'condition': 'checkout_win',

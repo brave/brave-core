@@ -7,9 +7,10 @@
 
 import argparse
 import os
+import shutil
 import sys
 
-from lib.config import PLATFORM, SOURCE_ROOT, \
+from lib.config import PLATFORM, SOURCE_ROOT, CHROMIUM_ROOT, \
     enable_verbose_mode, is_verbose_mode
 from lib.util import execute_stdout, scoped_cwd
 
@@ -35,6 +36,7 @@ def main():
 
     setup_python_libs()
     update_node_modules('.')
+    copy_widevine_signature_generator()
 
 
 def parse_args():
@@ -71,6 +73,20 @@ def update_node_modules(dirname, env=None):
         if is_verbose_mode():
             args += ['--verbose']
         execute_stdout(args, env)
+
+
+def copy_widevine_signature_generator():
+    # TODO(mherrmann): Remove this function once
+    # github.com/brave/devops/pull/10052 was deployed.
+    script_dir = os.path.join(CHROMIUM_ROOT, 'third_party', 'widevine',
+                              'scripts')
+    src = os.path.join(script_dir, 'signature_generator_python3.py')
+    dst = os.path.join(script_dir, 'signature_generator.py')
+    try:
+        shutil.copyfile(src, dst)
+    except FileNotFoundError:
+        # This probably means that brave/devops/pull/10052 was deployed.
+        pass
 
 
 def update_win32_python():

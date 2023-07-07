@@ -188,7 +188,7 @@ const Config = function () {
   this.sign_widevine_cert = process.env.SIGN_WIDEVINE_CERT || ''
   this.sign_widevine_key = process.env.SIGN_WIDEVINE_KEY || ''
   this.sign_widevine_passwd = process.env.SIGN_WIDEVINE_PASSPHRASE || ''
-  this.signature_generator = path.join(this.srcDir, 'third_party', 'widevine', 'scripts', 'signature_generator_python3.py') || ''
+  this.signature_generator = path.join(this.srcDir, 'third_party', 'widevine', 'scripts', 'signature_generator.py') || ''
   this.extraGnArgs = {}
   this.extraGnGenOpts = getNPMConfig(['brave_extra_gn_gen_opts']) || ''
   this.extraNinjaOpts = []
@@ -1071,6 +1071,8 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'brave', 'script'))
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'tools', 'grit', 'grit', 'extern'))
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'brave', 'vendor', 'requests'))
+    env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'brave', 'third_party', 'cryptography'))
+    env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'brave', 'third_party', 'macholib'))
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'build'))
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'third_party', 'depot_tools'))
     env.PYTHONUNBUFFERED = '1'

@@ -90,48 +90,16 @@ source_set("browser_tests") {
 }
 
 if (is_win && !skip_signing) {
-  template("sig_file") {
-    assert(defined(invoker.flags), "Need flags in $target_name.")
-    action(target_name) {
-      forward_variables_from(invoker,
-                             [
-                               "sources",
-                               "outputs",
-                               "deps",
-                             ])
-
-      script = "//brave/script/run.py"
-      inputs =
-          [ "//third_party/widevine/scripts/signature_generator_python3.py" ]
-      args = [
-        "PYTHONPATH=" +
-            rebase_path("//brave/third_party/macholib", root_build_dir),
-        "--",
-
-        # We use vpython3 to have access to the `cryptography` library.
-        "vpython3",
-        rebase_path(
-            "//third_party/widevine/scripts/signature_generator_python3.py",
-            root_build_dir),
-        "--input_file",
-        rebase_path(sources[0], root_build_dir),
-        "--output_file",
-        rebase_path(outputs[0], root_build_dir),
-        "--flags",
-        invoker.flags,
-      ]
-    }
-  }
-  sig_file("brave_exe_sig") {
+  widevine_sign_file("brave_exe_sig") {
+    file = "$root_out_dir/presigned_binaries/brave.exe"
+    signature_file = "$root_out_dir/brave.exe.sig"
     flags = "1"
-    sources = [ "$root_out_dir/presigned_binaries/brave.exe" ]
-    outputs = [ "$root_out_dir/brave.exe.sig" ]
     deps = [ "//brave:signed_brave_exe" ]
   }
-  sig_file("chrome_dll_sig") {
+  widevine_sign_file("chrome_dll_sig") {
+    file = "$root_out_dir/presigned_binaries/chrome.dll"
+    signature_file = "$root_out_dir/chrome.dll.sig"
     flags = "0"
-    sources = [ "$root_out_dir/presigned_binaries/chrome.dll" ]
-    outputs = [ "$root_out_dir/chrome.dll.sig" ]
     deps = [ "//brave:signed_chrome_dll" ]
   }
 }

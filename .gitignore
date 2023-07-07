@@ -29,6 +29,7 @@ patches/**/*.patchinfo
 /third_party/rust/kuchiki/v0_8/crate
 /third_party/rust/futures_retry/v0_5/crate
 /third_party/rust/star_constellation/v0_2/crate
+/third_party/cryptography
 /third_party/macholib
 *.xcodeproj
 *.swp
