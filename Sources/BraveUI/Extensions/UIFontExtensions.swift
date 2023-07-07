@@ -6,10 +6,23 @@
 import UIKit
 
 extension UIFont {
-  public static func preferredFont(forTextStyle style: TextStyle, weight: Weight, traitCollection: UITraitCollection? = nil) -> UIFont {
-    let metrics = UIFontMetrics(forTextStyle: style)
-    let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style, compatibleWith: traitCollection)
-    let font = UIFont.systemFont(ofSize: desc.pointSize, weight: weight)
-    return metrics.scaledFont(for: font)
+  /// Extended Dynamic Font Function for custom weight
+  /// - Parameters:
+  ///   - style: textStyle for the dynamic font
+  ///   - weight: weight of the dynamic font to be adjusted
+  public static func preferredFont(for style: TextStyle, weight: Weight, traitCollection: UITraitCollection? = nil) -> UIFont {
+    let fontMetrics = UIFontMetrics(forTextStyle: style)
+    let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style, compatibleWith: traitCollection)
+    let font = UIFont.systemFont(ofSize: fontDescriptor.pointSize, weight: weight)
+
+    return fontMetrics.scaledFont(for: font)
+  }
+
+  public func with(traits: UIFontDescriptor.SymbolicTraits?) -> UIFont {
+    guard let traits = traits, let descriptor = fontDescriptor.withSymbolicTraits(traits) else {
+      return self
+    }
+
+    return UIFont(descriptor: descriptor, size: 0)
   }
 }

@@ -8,10 +8,17 @@ import Shared
 import Preferences
 import StoreKit
 import os.log
+import DesignSystem
 
 class BuyVPNViewController: VPNSetupLoadingController {
     
   let iapObserver: IAPObserver
+  
+  var activeSubcriptionChoice: SubscriptionType = .yearly {
+    didSet {
+      buyVPNView.activeSubcriptionChoice = activeSubcriptionChoice
+    }
+  }
   
   init(iapObserver: IAPObserver) {
     self.iapObserver = iapObserver
@@ -21,18 +28,13 @@ class BuyVPNViewController: VPNSetupLoadingController {
   @available(*, unavailable)
   required init?(coder: NSCoder) { fatalError() }
   
-  private var buyVPNView: View {
-    return view as! View  // swiftlint:disable:this force_cast
-  }
-
-  override func loadView() {
-    view = View()
-  }
-
+  private var buyVPNView = BuyVPNView(with: .yearly)
+  
   override func viewDidLoad() {
     super.viewDidLoad()
 
     title = Strings.VPN.vpnName
+    view.backgroundColor = BraveVPNCommonUI.UX.purpleBackgroundColor
 
     navigationItem.standardAppearance = BraveVPNCommonUI.navigationBarAppearance
     navigationItem.scrollEdgeAppearance = BraveVPNCommonUI.navigationBarAppearance
@@ -40,6 +42,54 @@ class BuyVPNViewController: VPNSetupLoadingController {
     navigationItem.rightBarButtonItem = .init(
       title: Strings.VPN.restorePurchases, style: .done,
       target: self, action: #selector(restorePurchasesAction))
+    
+    let actionTitle = Preferences.VPN.freeTrialUsed.value
+      ? Strings.VPN.activateSubscriptionAction.capitalized
+      : Strings.VPN.freeTrialPeriodAction.capitalized
+    
+    let actionButton = BraveGradientButton(gradient: .backgroundGradient1).then {
+      $0.titleLabel?.font = .systemFont(ofSize: 15, weight: .bold)
+      $0.titleLabel?.textAlignment = .center
+       
+      $0.setTitle(actionTitle, for: .normal)
+      
+      $0.snp.makeConstraints {
+        $0.height.equalTo(50)
+      }
+      
+      $0.layer.do {
+        $0.cornerRadius = 24
+        $0.cornerCurve = .continuous
+        $0.masksToBounds = true
+      }
+      
+      $0.addTarget(self, action: #selector(startSubscriptionAction), for: .touchUpInside)
+    }
+  
+    let seperator = UIView().then {
+      $0.backgroundColor = UIColor.white.withAlphaComponent(0.1)
+      $0.snp.makeConstraints { make in
+        make.height.equalTo(1)
+      }
+    }
+        
+    view.addSubview(buyVPNView)
+    view.addSubview(seperator)
+    view.addSubview(actionButton)
+    
+    buyVPNView.snp.makeConstraints {
+      $0.leading.trailing.top.equalToSuperview()
+    }
+    
+    seperator.snp.makeConstraints() {
+      $0.top.equalTo(buyVPNView.snp.bottom)
+      $0.leading.trailing.equalToSuperview()
+    }
+    
+    actionButton.snp.makeConstraints() {
+      $0.top.equalTo(seperator.snp.bottom).inset(-12)
+      $0.leading.trailing.bottom.equalToSuperview().inset(24)
+    }
 
     buyVPNView.monthlySubButton
       .addTarget(self, action: #selector(monthlySubscriptionAction), for: .touchUpInside)
@@ -67,34 +117,47 @@ class BuyVPNViewController: VPNSetupLoadingController {
     navigationController?.navigationBar.tintColor = UINavigationBar.appearance().tintColor
   }
 
-  // MARK: - Button actions
+  // MARK: - Button Actions
+  
+  @objc func yearlySubscriptionAction() {
+    activeSubcriptionChoice = .yearly
+  }
+  
   @objc func monthlySubscriptionAction() {
-    guard let monthlySub = VPNProductInfo.monthlySubProduct else {
-      Logger.module.error("Failed to retrieve monthly subcription product")
-      return
-    }
-    isLoading = true
-    let payment = SKPayment(product: monthlySub)
-    SKPaymentQueue.default().add(payment)
+    activeSubcriptionChoice = .monthly
   }
 
   @objc func closeView() {
     dismiss(animated: true)
   }
 
-  @objc func yearlySubscriptionAction() {
-    guard let yearlySub = VPNProductInfo.yearlySubProduct else {
-      Logger.module.error("Failed to retrieve yearly subcription product")
-      return
-    }
-    isLoading = true
-    let payment = SKPayment(product: yearlySub)
-    SKPaymentQueue.default().add(payment)
-  }
-
   @objc func restorePurchasesAction() {
     isLoading = true
     SKPaymentQueue.default().restoreCompletedTransactions()
+  }
+  
+  @objc func startSubscriptionAction() {
+    addPaymentForSubcription(type: activeSubcriptionChoice)
+  }
+  
+  private func addPaymentForSubcription(type: SubscriptionType) {
+    var subscriptionProduct: SKProduct?
+    
+    switch type {
+    case .yearly:
+      subscriptionProduct = VPNProductInfo.yearlySubProduct
+    case .monthly:
+      subscriptionProduct = VPNProductInfo.monthlySubProduct
+    }
+    
+    guard let subscriptionProduct = subscriptionProduct else {
+      Logger.module.error("Failed to retrieve \(type.rawValue) subcription product")
+      return
+    }
+    
+    isLoading = true
+    let payment = SKPayment(product: subscriptionProduct)
+    SKPaymentQueue.default().add(payment)
   }
 }
 
@@ -177,5 +240,19 @@ class VPNSetupLoadingController: UIViewController {
 
       overlayView = overlay
     }
+  }
+}
+
+extension BraveGradient {
+  
+  public static var backgroundGradient1: BraveGradient {
+    .init(
+      stops: [
+        .init(color: UIColor(rgb: 0x8b10c6), position: 0.22),
+        .init(color: UIColor(rgb: 0xd02480), position: 0.7),
+        .init(color: UIColor(rgb: 0xe95e3c), position: 0.96),
+      ],
+      angle: .figmaDegrees(138)
+    )
   }
 }

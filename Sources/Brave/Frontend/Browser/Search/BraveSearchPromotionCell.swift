@@ -158,7 +158,7 @@ class BraveSearchPromotionCell: UITableViewCell {
           Strings.BraveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle,
         for: .normal)
       $0.setTitleColor(.braveBlurpleTint, for: .normal)
-      $0.titleLabel?.font = .preferredFont(forTextStyle: .subheadline, weight: .semibold)
+      $0.titleLabel?.font = .preferredFont(for: .subheadline, weight: .semibold)
       $0.titleLabel?.minimumScaleFactor = 0.5
       $0.titleEdgeInsets = titleEdgeInsets
       $0.contentEdgeInsets = contentEdgeInsets
@@ -205,7 +205,7 @@ class TrySearchButton: UIControl {
   let titleLabel = UILabel().then {
     $0.textColor = .white
     $0.text = Strings.BraveSearchPromotion.braveSearchPromotionBannerTryButtonTitle
-    $0.font = .preferredFont(forTextStyle: .subheadline, weight: .semibold)
+    $0.font = .preferredFont(for: .subheadline, weight: .semibold)
     $0.numberOfLines = 0
     $0.lineBreakMode = .byWordWrapping
     $0.textAlignment = .center

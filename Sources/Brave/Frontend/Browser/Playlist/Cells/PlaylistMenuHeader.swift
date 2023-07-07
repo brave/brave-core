@@ -15,7 +15,7 @@ class PlaylistMenuHeader: UITableViewHeaderFooterView {
   }
   
   let titleLabel = UILabel().then {
-    $0.font = .preferredFont(forTextStyle: .title3, weight: .medium)
+    $0.font = .preferredFont(for: .title3, weight: .medium)
     $0.textColor = .bravePrimary
     $0.numberOfLines = 0
     $0.lineBreakMode = .byWordWrapping

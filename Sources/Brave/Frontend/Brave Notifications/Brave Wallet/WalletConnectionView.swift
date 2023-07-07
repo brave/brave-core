@@ -36,7 +36,7 @@ class WalletConnectionView: UIControl {
   private let titleLabel: UILabel = {
     let result = UILabel()
     result.textColor = .white
-    result.font = .preferredFont(forTextStyle: .subheadline, weight: .regular)
+    result.font = .preferredFont(for: .subheadline, weight: .regular)
     result.adjustsFontForContentSizeCategory = false
     result.numberOfLines = 0
     result.text = Strings.Wallet.dappsConnectionNotificationTitle
@@ -117,7 +117,7 @@ class WalletConnectionView: UIControl {
       sizeCategory = .accessibilityMedium
     }
     let traitCollection = UITraitCollection(preferredContentSizeCategory: sizeCategory)
-    return UIFont.preferredFont(forTextStyle: textStyle, weight: weight, traitCollection: traitCollection)
+    return UIFont.preferredFont(for: textStyle, weight: weight, traitCollection: traitCollection)
   }
   
   private func titleText(for origin: URLOrigin) -> NSAttributedString {

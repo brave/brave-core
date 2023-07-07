@@ -54,7 +54,7 @@ class PlaylistCell: UITableViewCell {
   let titleLabel = UILabel().then {
     $0.textColor = .bravePrimary
     $0.numberOfLines = 0
-    $0.font = .preferredFont(forTextStyle: .callout, weight: .medium)
+    $0.font = .preferredFont(for: .callout, weight: .medium)
     $0.setContentCompressionResistancePriority(.required, for: .vertical)
     $0.setContentHuggingPriority(.required, for: .vertical)
   }

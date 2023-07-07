@@ -67,7 +67,7 @@ class WalletTableViewHeaderView: UITableViewHeaderFooterView {
 
   let titleLabel = UILabel().then {
     $0.textColor = .secondaryBraveLabel
-    $0.font = .preferredFont(forTextStyle: .footnote, weight: .medium)
+    $0.font = .preferredFont(for: .footnote, weight: .medium)
     $0.adjustsFontForContentSizeCategory = true
     $0.numberOfLines = 0
   }
