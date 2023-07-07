@@ -60,6 +60,9 @@ class DebounceComponentInstaller;
 
 namespace misc_metrics {
 class MenuMetrics;
+#if !BUILDFLAG(IS_ANDROID)
+class VerticalTabMetrics;
+#endif
 }  // namespace misc_metrics
 
 namespace request_otr {
@@ -153,6 +156,9 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
   brave::BraveFarblingService* brave_farbling_service() override;
   misc_metrics::MenuMetrics* menu_metrics() override;
+#if !BUILDFLAG(IS_ANDROID)
+  misc_metrics::VerticalTabMetrics* vertical_tab_metrics() override;
+#endif
 
  private:
   // BrowserProcessImpl overrides:
@@ -230,6 +236,9 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 
   std::unique_ptr<brave::BraveFarblingService> brave_farbling_service_;
   std::unique_ptr<misc_metrics::MenuMetrics> menu_metrics_;
+#if !BUILDFLAG(IS_ANDROID)
+  std::unique_ptr<misc_metrics::VerticalTabMetrics> vertical_tab_metrics_;
+#endif
   std::unique_ptr<brave_ads::BraveStatsHelper> brave_stats_helper_;
 
   SEQUENCE_CHECKER(sequence_checker_);

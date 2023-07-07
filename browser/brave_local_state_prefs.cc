@@ -45,6 +45,7 @@
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/misc_metrics/vertical_tab_metrics.h"
 #include "brave/browser/p3a/p3a_core_metrics.h"
 #include "brave/browser/ui/whats_new/whats_new_util.h"
 #include "chrome/browser/first_run/first_run.h"
@@ -139,6 +140,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   misc_metrics::PageMetricsService::RegisterPrefs(registry);
   brave_ads::BraveStatsHelper::RegisterLocalStatePrefs(registry);
   misc_metrics::GeneralBrowserUsage::RegisterPrefs(registry);
+#if !BUILDFLAG(IS_ANDROID)
+  misc_metrics::VerticalTabMetrics::RegisterPrefs(registry);
+#endif
 
   playlist::PlaylistServiceFactory::RegisterLocalStatePrefs(registry);
 }

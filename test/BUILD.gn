@@ -1089,6 +1089,7 @@ test("brave_browser_tests") {
   if (!is_android) {
     sources += [
       "//brave/browser/brave_resources_browsertest.cc",
+      "//brave/browser/misc_metrics/vertical_tab_metrics_browsertest.cc",
       "//brave/browser/ssl/certificate_transparency_browsertest.cc",
       "//brave/browser/ui/views/toolbar/wallet_button_notification_source_browsertest.cc",
     ]
