@@ -1529,6 +1529,32 @@ IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, Default1pBlocking) {
 }
 
 // Load a page with an image from a first party and a third party, which both
+// match the same filter in the default engine. They should both be blocked on
+// special URLs like this one.
+IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, SpecialUrlException) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  DisableAggressiveMode();
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  UpdateAdBlockInstanceWithRules("^ad_banner.png");
+
+  // Must use HTTPS because `youtube.com` is in Chromium's HSTS preload list
+  GURL url = https_server_.GetURL("youtube.com", kAdBlockTestPage);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(0, 1, 0, 0);"
+                         "addImage('ad_banner.png')"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(0, 2, 0, 0);"
+                         "addImage('https://thirdparty.com/ad_banner.png')"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+}
+
+// Load a page with an image from a first party and a third party, which both
 // match the same filter in the default engine. Enable aggressive mode, and
 // ensure that both are blocked.
 IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest,
