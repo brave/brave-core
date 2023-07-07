@@ -7,23 +7,30 @@
 
 #include "base/logging.h"
 #include "base/win/registry.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 
 namespace brave_vpn {
 
 namespace wireguard {
 
 namespace {
+// Registry path to Wireguard vpn service storage.
+constexpr wchar_t kBraveVpnWireguardServiceRegistryStoragePath[] =
+    L"Software\\BraveSoftware\\Vpn\\";
 constexpr wchar_t kBraveWireguardConfigKeyName[] = L"ConfigPath";
 constexpr wchar_t kBraveWireguardEnableTrayIconKeyName[] = L"EnableTrayIcon";
 }  // namespace
 
+std::wstring GetBraveVpnWireguardServiceRegistryStoragePath() {
+  return kBraveVpnWireguardServiceRegistryStoragePath +
+         brave_vpn::GetBraveVpnWireguardServiceName();
+}
+
 bool IsVPNTrayIconEnabled() {
   base::win::RegKey storage;
-  if (storage.Open(
-          HKEY_CURRENT_USER,
-          brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
-          KEY_QUERY_VALUE) != ERROR_SUCCESS) {
+  if (storage.Open(HKEY_CURRENT_USER,
+                   GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
+                   KEY_QUERY_VALUE) != ERROR_SUCCESS) {
     return true;
   }
   DWORD value = 1;
@@ -36,10 +43,9 @@ bool IsVPNTrayIconEnabled() {
 
 void EnableVPNTrayIcon(bool value) {
   base::win::RegKey storage;
-  if (storage.Create(
-          HKEY_CURRENT_USER,
-          brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
-          KEY_SET_VALUE) != ERROR_SUCCESS) {
+  if (storage.Create(HKEY_CURRENT_USER,
+                     GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
+                     KEY_SET_VALUE) != ERROR_SUCCESS) {
     return;
   }
 
@@ -51,10 +57,9 @@ void EnableVPNTrayIcon(bool value) {
 
 bool UpdateLastUsedConfigPath(const base::FilePath& config_path) {
   base::win::RegKey storage;
-  if (storage.Create(
-          HKEY_LOCAL_MACHINE,
-          brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
-          KEY_SET_VALUE) != ERROR_SUCCESS) {
+  if (storage.Create(HKEY_LOCAL_MACHINE,
+                     GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
+                     KEY_SET_VALUE) != ERROR_SUCCESS) {
     return false;
   }
   if (storage.WriteValue(kBraveWireguardConfigKeyName,
@@ -68,10 +73,9 @@ bool UpdateLastUsedConfigPath(const base::FilePath& config_path) {
 // We keep config file between launches to be able to reuse it outside of Brave.
 absl::optional<base::FilePath> GetLastUsedConfigPath() {
   base::win::RegKey storage;
-  if (storage.Open(
-          HKEY_LOCAL_MACHINE,
-          brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
-          KEY_QUERY_VALUE) != ERROR_SUCCESS) {
+  if (storage.Open(HKEY_LOCAL_MACHINE,
+                   GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
+                   KEY_QUERY_VALUE) != ERROR_SUCCESS) {
     return absl::nullopt;
   }
   std::wstring value;

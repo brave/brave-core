@@ -3,21 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 
 #include <guiddef.h>
 
 #include "base/containers/cxx20_erase.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "build/build_config.h"
 #include "chrome/install_static/install_util.h"
 
 namespace brave_vpn {
 
 namespace {
-// Registry path to Wireguard vpn service storage.
-constexpr wchar_t kBraveVpnWireguardServiceRegistryStoragePath[] =
-    L"Software\\BraveSoftware\\Vpn\\";
 
 // The service installed to %(VersionDir)s\BraveVpnWireguardService
 constexpr wchar_t kBraveVpnWireguardServiceSubFolder[] =
@@ -79,11 +77,6 @@ constexpr CLSID kBraveWireguardServiceCLSID = {
 #endif
 
 }  // namespace
-
-std::wstring GetBraveVpnWireguardServiceRegistryStoragePath() {
-  return kBraveVpnWireguardServiceRegistryStoragePath +
-         GetBraveVpnWireguardServiceName();
-}
 
 // Returns the Brave Vpn Service CLSID, IID, Name, and Display Name
 // respectively.

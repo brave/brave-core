@@ -16,6 +16,7 @@
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 #include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils.h"
 #include "chrome/installer/util/install_service_work_item.h"
@@ -75,7 +76,7 @@ bool InstallBraveWireguardService() {
       brave_vpn::GetBraveVpnWireguardServiceName(),
       brave_vpn::GetBraveVpnWireguardServiceDisplayName(), SERVICE_DEMAND_START,
       service_cmd, base::CommandLine(base::CommandLine::NO_PROGRAM),
-      brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath(),
+      brave_vpn::wireguard::GetBraveVpnWireguardServiceRegistryStoragePath(),
       {brave_vpn::GetBraveVpnWireguardServiceClsid()},
       {brave_vpn::GetBraveVpnWireguardServiceIid()});
   install_service_work_item.set_best_effort(true);
@@ -99,8 +100,9 @@ bool UninstallBraveWireguardService() {
 
   if (!installer::InstallServiceWorkItem::DeleteService(
           brave_vpn::GetBraveVpnWireguardServiceName(),
-          brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath(), {},
-          {})) {
+          brave_vpn::wireguard::
+              GetBraveVpnWireguardServiceRegistryStoragePath(),
+          {}, {})) {
     LOG(WARNING) << "Failed to delete "
                  << brave_vpn::GetBraveVpnWireguardServiceName();
     return false;
