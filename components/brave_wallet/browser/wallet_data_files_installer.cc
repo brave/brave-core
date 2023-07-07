@@ -34,7 +34,7 @@
 #include "base/threading/platform_thread.h"
 #include "brave/build/android/jni_headers/DataFilesComponentInstaller_jni.h"
 #include "brave/components/brave_wallet/browser/android_data_files_installer.h"
-#include "chrome/browser/browser_process.h"  // TODO: forbidden here, move to browser/android?
+#include "chrome/browser/browser_process.h"  // TODO(AlexeyBarabash): forbidden here, move to browser/android?
 #endif
 
 namespace brave_wallet {
@@ -510,7 +510,7 @@ void NativeRegisterAndInstallCallback(
 
 }  // namespace
 
-// TODO: another namespace?
+// TODO(AlexeyBarabash): another namespace?
 static void JNI_DataFilesComponentInstaller_RegisterAndInstall(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& callback) {

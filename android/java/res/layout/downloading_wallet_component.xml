@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    style="@style/AlertDialogContent">
+
+    <TextView
+        android:id="@+id/text_view_id"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"/>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+    <android.widget.Button android:id="@+id/skip_download_wallet_data_component"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        
+        android:background="@android:color/transparent"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/onboarding_gray"
+
+        android:focusable="true"
+        android:clickable="true"
+        android:gravity="end"
+        android:layout_marginTop="50dp"
+        android:textAllCaps="false"/>
+</LinearLayout>

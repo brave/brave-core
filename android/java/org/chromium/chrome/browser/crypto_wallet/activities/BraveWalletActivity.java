@@ -5,19 +5,28 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.ONBOARDING_ACTION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.ONBOARDING_FIRST_PAGE_ACTION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.RESTORE_WALLET_ACTION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.UNLOCK_WALLET_ACTION;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.os.Build;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -330,10 +339,65 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         }
     }
 
+    @SuppressLint("SetTextI18n")
+    /*TODO(AlexeyBarabash): use mDataFilesComponentInstaller ?*/
+    private void setupDownloadProgress(DataFilesComponentInstaller dataFilesComponentInstaller) {
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.downloading_wallet_component, null);
+
+        TextView theTextView = (TextView) view.findViewById(R.id.text_view_id);
+        theTextView.setText("Downloading");
+
+        AlertDialog.Builder alert =
+                new AlertDialog.Builder(this, R.style.ThemeOverlay_BrowserUI_AlertDialog);
+        if (alert == null) {
+            return;
+        }
+        AlertDialog.Builder alertDialog =
+                alert.setTitle("Brave Wallet data files").setView(view).setCancelable(false);
+        Dialog dialog = alertDialog.create();
+        dialog.setCanceledOnTouchOutside(false);
+
+        Button skipButton = (Button) view.findViewById(R.id.skip_download_wallet_data_component);
+        skipButton.setText("Skip (download later)");
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                // TODO(AlexeyBarabash): that's not perfect - pass as Runnable
+                setCryptoLayout();
+            }
+        });
+
+        dataFilesComponentInstaller.setInfoCallback(new DataFilesComponentInstaller.InfoCallback() {
+            @Override
+            public void onInfo(String info) {
+                // TODO(AlexeyBarabash): this seems to be unused
+            }
+
+            @Override
+            public void onProgress(long downloadedBytes, long totalBytes) {
+                assert totalBytes > 0;
+                assert totalBytes < (long) Integer.MAX_VALUE;
+                assert downloadedBytes < (long) Integer.MAX_VALUE;
+
+                ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
+                progressBar.setMax((int) totalBytes);
+                progressBar.setProgress((int) downloadedBytes, /*animate*/ true);
+            }
+            @Override
+            public void onDownloadUpdateComplete() {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
     private void waitDataFilesDownloadAndSetCryptoLayout() {
         if (!mDataFilesComponentInstaller.needToWaitComponentLoad()) {
             setCryptoLayout();
         } else {
+            setupDownloadProgress(mDataFilesComponentInstaller);
             mDataFilesComponentInstaller.onInstallComplete(() -> { setCryptoLayout(); });
         }
     }

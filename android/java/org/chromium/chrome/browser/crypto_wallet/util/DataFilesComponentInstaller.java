@@ -13,19 +13,33 @@ import org.chromium.base.annotations.NativeMethods;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.browser.InternetConnection;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.component_updater.BraveComponentUpdater;
 
 /**
- * class DataFilesComponentInstaller
+ * Class that manages Brave Wallet Data files component installation for Android
  */
-public class DataFilesComponentInstaller {
-    private static final String TAG = "DataFilesComponentInstaller";
+public class DataFilesComponentInstaller implements BraveComponentUpdater.ComponentUpdaterListener {
+    private static final String TAG = "DFCI";
     private Object mLock = new Object();
     private boolean mUpdateStarted;
     private boolean mUpdateCompleted;
     Runnable mUpdateCompleteCallback;
 
-    private boolean mCachedWalletConfiguredOnAndroid;
+    /**
+     * Callback to be notified about change of component downloading
+     */
+    public interface InfoCallback {
+        void onInfo(String info);
+        void onProgress(long downloadedBytes, long totalBytes);
+        void onDownloadUpdateComplete();
+    }
+    private InfoCallback mInfoCallback;
+
+    private boolean mCachedWalletConfiguredOnAndroid; // TODO(AlexeyBarabash): better name?
+
+    public void setInfoCallback(InfoCallback infoCallback) {
+        mInfoCallback = infoCallback;
+    }
 
     public void setCachedWalletConfiguredOnAndroid(boolean value) {
         mCachedWalletConfiguredOnAndroid = value;
@@ -39,76 +53,114 @@ public class DataFilesComponentInstaller {
             assert !mUpdateCompleted;
 
             mUpdateStarted = true;
-            registerAndInstall((Boolean result) -> {
-                synchronized (mLock) {
-                    mUpdateStarted = false;
-                    mUpdateCompleted = true;
-                    if (mUpdateCompleteCallback != null) {
-                mUpdateCompleteCallback.run();
-                // I wish I would have OnceCallback in Java
-                mUpdateCompleteCallback = null;
-                    }
-        }
-    });
-}
-}
+            registerAndInstall(new Callback<Boolean>() {
+                @Override
+                public void onResult(Boolean result) {
+                    Log.e(TAG, "registerAndInstallEx.onResult 000");
+                    synchronized (mLock) {
+                        mUpdateStarted = false;
+                        mUpdateCompleted = true;
+                        if (mUpdateCompleteCallback != null) {
+                            mUpdateCompleteCallback.run();
+                            mUpdateCompleteCallback = null;
 
-public boolean needToWaitComponentLoad() {
-    Log.e(TAG, "DataFilesComponentInstaller.needToWaitComponentLoad 000");
-    if (mCachedWalletConfiguredOnAndroid) {
-        return false;
-    }
-
-    if (!InternetConnection.isNetworkAvailable(ContextUtils.getApplicationContext())) {
-        return false;
-    }
-
-    synchronized (mLock) {
-        return mUpdateStarted;
-    }
-}
-
-// TODO(AlexeyBarabash): give some best name
-public void onInstallComplete(Runnable callback) {
-    assert !mCachedWalletConfiguredOnAndroid;
-    synchronized (mLock) {
-        if (mUpdateCompleted) {
-            callback.run();
-        } else {
-            mUpdateCompleteCallback = callback;
-            // Sentinel task, we don't want to wait more than 10 sec
-            PostTask.postDelayedTask(TaskTraits.UI_DEFAULT, () -> {
-                Log.e(TAG, "DataFilesComponentInstaller.onInstallComplete.lambda 000");
-                synchronized (mLock) {
-                    if (mUpdateCompleteCallback != null) {
-                        Log.e(TAG,
-                                "DataFilesComponentInstaller.onInstallComplete.lambda 001 call mUpdateCompleteCallback.run()");
-                        mUpdateCompleteCallback.run();
-                        // I wish I would have OnceCallback in Java
-                        mUpdateCompleteCallback = null;
+                            if (mInfoCallback != null) {
+                                mInfoCallback.onDownloadUpdateComplete();
+                                mInfoCallback = null;
+                            }
+                            BraveComponentUpdater.get().removeComponentUpdateEventListener(
+                                    DataFilesComponentInstaller.this);
+                        }
                     }
                 }
-            }, 10 * 1000);
+            }
+
+            );
+
+            BraveComponentUpdater.get().addComponentUpdateEventListener(this);
         }
     }
-}
 
-@CalledByNative
-private static boolean isBraveWalletConfiguredOnAndroid() {
-    return !Utils.shouldShowCryptoOnboarding();
-}
+    @Override
+    public void onComponentUpdateEvent(int event, String id) {
+        final String walletId =
+                "bbckkcdiepaecefgfnibemejliemjnio"; // TODO(AlexeyBarabash): remove duplication
+        if (walletId.equals(id)) {
+            BraveComponentUpdater.CrxUpdateItem item =
+                    BraveComponentUpdater.get().getUpdateState(id);
+            if (item.mDownloadedBytes > 0 && item.mTotalBytes > 0 && mInfoCallback != null) {
+                mInfoCallback.onProgress(item.mDownloadedBytes, item.mTotalBytes);
+            }
+        }
+    }
 
-public static void registerAndInstall(Callback<Boolean> callback) {
-    DataFilesComponentInstallerJni.get().registerAndInstall(callback);
-}
+    public boolean needToWaitComponentLoad() {
+        if (mCachedWalletConfiguredOnAndroid) {
+            return false;
+        }
 
-@CalledByNative
-private static void onRegisterAndInstallDone(Callback<Boolean> callback, Boolean result) {
-    callback.onResult(result);
-}
+        if (!InternetConnection.isNetworkAvailable(ContextUtils.getApplicationContext())) {
+            return false;
+        }
 
-@NativeMethods
-interface Natives {
-    void registerAndInstall(Callback<Boolean> callback);
-}
+        synchronized (mLock) {
+            return mUpdateStarted;
+        }
+    }
+
+    // TODO(AlexeyBarabash): give some better name
+    public void onInstallComplete(Runnable callback) {
+        assert !mCachedWalletConfiguredOnAndroid;
+        synchronized (mLock) {
+            if (mUpdateCompleted) {
+                callback.run();
+            } else {
+                mUpdateCompleteCallback = callback;
+                // Sentinel task, we don't want to wait more than 10 sec
+                // TODO(AlexeyBarabash), how to cancel?
+                // FirstRunAppRestrictionInfo.java - but task is not delayed
+                PostTask.postDelayedTask(TaskTraits.UI_DEFAULT,
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                synchronized (mLock) {
+                                    if (mUpdateCompleteCallback != null) {
+                                        mUpdateCompleteCallback.run();
+                                        mUpdateCompleteCallback = null;
+
+                                        if (mInfoCallback != null) {
+                                            mInfoCallback.onDownloadUpdateComplete();
+                                            mInfoCallback = null;
+                                        }
+                                        BraveComponentUpdater.get()
+                                                .removeComponentUpdateEventListener(
+                                                        DataFilesComponentInstaller.this);
+                                    }
+                                }
+                            }
+                        },
+                        // TODO(AlexeyBarabash): move to constant or get rid of this
+                        5 * 60 * 1000);
+            }
+        }
+    }
+
+    @CalledByNative
+    private static boolean isBraveWalletConfiguredOnAndroid() {
+        return !Utils.shouldShowCryptoOnboarding();
+    }
+
+    public static void registerAndInstall(Callback<Boolean> callback) {
+        DataFilesComponentInstallerJni.get().registerAndInstall(callback);
+    }
+
+    @CalledByNative
+    private static void onRegisterAndInstallDone(Callback<Boolean> callback, Boolean result) {
+        callback.onResult(result);
+    }
+
+    @NativeMethods
+    interface Natives {
+        void registerAndInstall(Callback<Boolean> callback);
+    }
 }
