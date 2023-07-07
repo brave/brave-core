@@ -84,6 +84,12 @@ mod ffi {
         fn discard_regex(&mut self, regex_id: u64);
         /// Sets a discard policy for the regex manager.
         fn set_regex_discard_policy(&mut self, new_discard_policy: &RegexManagerDiscardPolicy);
+
+        /// Converts a list in adblock syntax to its corresponding iOS content-blocking
+        /// syntax. `truncated` will be set to indicate whether or not some rules had to
+        /// be removed to avoid iOS's maximum rule count limit.
+        #[cfg(feature = "ios")]
+        fn convert_rules_to_content_blocking(rules: &CxxString) -> ContentBlockingRulesResult;
     }
 
     unsafe extern "C++" {
@@ -132,6 +138,12 @@ mod ffi {
         expires_hours: OptionalU16,
     }
 
+    #[derive(Default)]
+    struct ContentBlockingRules {
+        rules_json: String,
+        truncated: bool,
+    }
+
     enum ResultKind {
         Success,
         JsonError,
@@ -148,6 +160,12 @@ mod ffi {
     // If the condition is false, the result_kind will contain an enum value describing the type of error,
     // and error_message may contain further details about the error.
     struct UnitResult {
+        result_kind: ResultKind,
+        error_message: String,
+    }
+
+    struct ContentBlockingRulesResult {
+        value: ContentBlockingRules,
         result_kind: ResultKind,
         error_message: String,
     }

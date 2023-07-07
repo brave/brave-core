@@ -18,6 +18,9 @@ use crate::ffi::{
 };
 use crate::result::InternalError;
 
+#[cfg(feature = "ios")]
+use crate::ffi::{ContentBlockingRules, ContentBlockingRulesResult};
+
 pub struct Engine {
     engine: InnerEngine,
 }
@@ -60,6 +63,40 @@ pub fn read_list_metadata(list: &CxxVector<u8>) -> FilterListMetadata {
     std::str::from_utf8(list.as_slice())
         .map(|list| adblock::lists::read_list_metadata(list).into())
         .unwrap_or_default()
+}
+
+#[cfg(feature = "ios")]
+pub fn convert_rules_to_content_blocking(rules: &CxxString) -> ContentBlockingRulesResult {
+    || -> Result<ContentBlockingRules, InternalError> {
+        use adblock::lists::{ParseOptions, RuleTypes};
+
+        /// This value corresponds to `maxRuleCount` here:
+        /// https://github.com/WebKit/WebKit/blob/4a2df13be2253f64d8da58b794d74347a3742652/Source/WebCore/contentextensions/ContentExtensionParser.cpp#L299
+        const MAX_CB_LIST_SIZE: usize = 150000;
+
+        let mut filter_set = FilterSet::new(true);
+        filter_set.add_filter_list(
+            rules.to_str()?,
+            ParseOptions { rule_types: RuleTypes::NetworkOnly, ..Default::default() },
+        );
+
+        // `unwrap` is safe here because `into_content_blocking` only panics if the
+        // `FilterSet` was not created in debug mode
+        let (mut cb_rules, _) = filter_set.into_content_blocking().unwrap();
+        let rules_len = cb_rules.len();
+        let truncated = if rules_len > MAX_CB_LIST_SIZE {
+            // Note that the last rule is always the first-party document exception rule,
+            // which we want to keep. Otherwise, we can arbitrarily truncate rules
+            // before that to ensure that the list can actually compile.
+            cb_rules.swap(rules_len - 1, MAX_CB_LIST_SIZE - 1);
+            cb_rules.truncate(MAX_CB_LIST_SIZE);
+            true
+        } else {
+            false
+        };
+        Ok(ContentBlockingRules { rules_json: serde_json::to_string(&cb_rules)?, truncated })
+    }()
+    .into()
 }
 
 fn convert_cxx_string_vector_to_string_collection<C>(

@@ -82,6 +82,8 @@ where
 
 impl_result_from_trait!(VecStringResult, Vec<String>);
 impl_result_from_trait!(BoxEngineResult, Box<Engine>);
+#[cfg(feature = "ios")]
+impl_result_from_trait!(ContentBlockingRulesResult, ContentBlockingRules);
 
 /// `cxx` doesn't support unit values in structs,
 /// so we have a separate From<_> implementation for the UnitResult.
