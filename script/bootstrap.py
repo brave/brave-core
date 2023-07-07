@@ -76,8 +76,9 @@ def update_node_modules(dirname, env=None):
 
 
 def copy_widevine_signature_generator():
-    # TODO(mherrmann): Remove this function once
-    # github.com/brave/devops/pull/10052 was deployed.
+    # pylint: disable=fixme
+    # TODO: Remove this function once github.com/brave/devops/pull/10052 was
+    # deployed.
     script_dir = os.path.join(CHROMIUM_ROOT, 'third_party', 'widevine',
                               'scripts')
     src = os.path.join(script_dir, 'signature_generator_python3.py')

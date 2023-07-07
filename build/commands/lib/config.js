@@ -1063,18 +1063,33 @@ Config.prototype.getCachePath = function () {
 Object.defineProperty(Config.prototype, 'defaultOptions', {
   get: function () {
     let env = Object.assign({}, process.env)
-    env = this.addPathToEnv(env, path.join(this.depotToolsDir, 'python-bin'), true)
-    env = this.addPathToEnv(env, path.join(this.depotToolsDir, 'python2-bin'), true)
-    env = this.addPathToEnv(env, path.join(this.srcDir, 'third_party', 'rust-toolchain', 'bin'), true)
+    env = this.addPathToEnv(env, path.join(this.depotToolsDir, 'python-bin'),
+                            true)
+    env = this.addPathToEnv(env, path.join(this.depotToolsDir, 'python2-bin'),
+                            true)
+    env = this.addPathToEnv(env, path.join(this.srcDir, 'third_party',
+                                           'rust-toolchain', 'bin'), true)
     env = this.addPathToEnv(env, this.depotToolsDir, true)
-    env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'brave', 'chromium_src', 'python_modules'))
-    env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'brave', 'script'))
-    env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'tools', 'grit', 'grit', 'extern'))
-    env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'brave', 'vendor', 'requests'))
-    env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'brave', 'third_party', 'cryptography'))
-    env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'brave', 'third_party', 'macholib'))
+    env = this.addPythonPathToEnv(env,
+                                  path.join(this.srcDir, 'brave',
+                                            'chromium_src', 'python_modules'))
+    env = this.addPythonPathToEnv(env,
+                                  path.join(this.srcDir, 'brave', 'script'))
+    env = this.addPythonPathToEnv(env,
+                                  path.join(this.srcDir, 'tools', 'grit',
+                                            'grit', 'extern'))
+    env = this.addPythonPathToEnv(env,
+                                  path.join(this.srcDir, 'brave', 'vendor',
+                                            'requests'))
+    env = this.addPythonPathToEnv(env,
+                                  path.join(this.srcDir, 'brave',
+                                            'third_party', 'cryptography'))
+    env = this.addPythonPathToEnv(env,
+                                  path.join(this.srcDir, 'brave', 'third_party',
+                                            'macholib'))
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'build'))
-    env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'third_party', 'depot_tools'))
+    env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'third_party',
+                                                 'depot_tools'))
     env.PYTHONUNBUFFERED = '1'
     env.TARGET_ARCH = this.gypTargetArch // for brave scripts
     env.RUSTUP_HOME = path.join(this.srcDir, 'third_party', 'rust-toolchain')
