@@ -70,6 +70,7 @@ hooks = [
   {
     'name': 'download_cryptography',
     'pattern': '.',
+    # We don't include this as a DEP because building it from source is painful.
     'action': ['vpython3', '-m', 'pip', '-q', '--disable-pip-version-check', 'install', '-U', '-t', 'third_party/cryptography', 'cryptography==41.0.1'],
   },
   {
