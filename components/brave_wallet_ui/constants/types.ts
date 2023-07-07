@@ -817,7 +817,9 @@ export enum WalletRoutes {
 
   // Hashes
   AccountsHash = '#accounts',
-  TransactionsHash = '#transactions'
+  TransactionsHash = '#transactions',
+  MyAssetsHash = '#my-assets',
+  AvailableAssetsHash = '#available-assets'
 }
 
 export const WalletOrigin = 'chrome://wallet'
@@ -1036,6 +1038,8 @@ export type NavIDTypes =
   | 'accounts'
   | 'assets'
   | 'transactions'
+  | 'my_assets'
+  | 'available_assets'
 
 export interface NavOption {
   id: NavIDTypes
