@@ -4,16 +4,24 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 
 // utils
 import { getLocale } from '$web-common/locale'
+import { WalletSelectors } from '../../../../../common/selectors'
 
 // options
 import { CreateAccountOptions } from '../../../../../options/create-account-options'
 
 // types
-import { BraveWallet, CreateAccountOptionsType, WalletState } from '../../../../../constants/types'
+import {
+  BraveWallet,
+  CreateAccountOptionsType
+} from '../../../../../constants/types'
+
+// hooks
+import {
+  useSafeWalletSelector //
+} from '../../../../../common/hooks/use-safe-selector'
 
 // components
 import { DividerLine } from '../../../../extension'
@@ -33,7 +41,10 @@ interface Props {
 
 export const SelectAccountType = ({ buttonText, onSelectAccountType }: Props) => {
   // redux
-  const { isSolanaEnabled, isFilecoinEnabled } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+  const isSolanaEnabled = useSafeWalletSelector(WalletSelectors.isSolanaEnabled)
+  const isFilecoinEnabled = useSafeWalletSelector(
+    WalletSelectors.isFilecoinEnabled
+  )
 
   // render
   return (

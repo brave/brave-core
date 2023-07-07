@@ -4,20 +4,17 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-
-// Constants
-import {
-  WalletState
-} from '../../constants/types'
 
 // utils
 import { getBalance } from '../../utils/balance-utils'
 import Amount from '../../utils/amount'
 import { getPriceIdForToken } from '../../utils/api-utils'
 import { computeFiatAmount } from '../../utils/pricing-utils'
+import { WalletSelectors } from '../selectors'
 
+// hooks
+import { useUnsafeWalletSelector } from './use-safe-selector'
 import {
   useGetSelectedChainQuery,
   useGetTokenSpotPricesQuery
@@ -26,10 +23,12 @@ import { querySubscriptionOptions60s } from '../slices/constants'
 
 export function useAssets () {
   // redux
-  const {
-    selectedAccount,
-    userVisibleTokensInfo,
-  } = useSelector((state: { wallet: WalletState }) => state.wallet)
+  const selectedAccount = useUnsafeWalletSelector(
+    WalletSelectors.selectedAccount
+  )
+  const userVisibleTokensInfo = useUnsafeWalletSelector(
+    WalletSelectors.userVisibleTokensInfo
+  )
 
   // queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
