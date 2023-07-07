@@ -287,8 +287,8 @@ void Conversions::OnDidExhaustConversionQueue() {
 void Conversions::OnHtmlContentDidChange(
     const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
-    const std::string& content) {
-  MaybeConvert(redirect_chain, /*html*/ content);
+    const std::string& html) {
+  MaybeConvert(redirect_chain, html);
 }
 
 }  // namespace brave_ads

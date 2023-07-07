@@ -79,7 +79,7 @@ void TextEmbeddingProcessor::Process(const std::string& html) {
 void TextEmbeddingProcessor::OnHtmlContentDidChange(
     const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
-    const std::string& content) {
+    const std::string& html) {
   if (redirect_chain.empty()) {
     return;
   }
@@ -102,7 +102,7 @@ void TextEmbeddingProcessor::OnHtmlContentDidChange(
     return;
   }
 
-  Process(content);
+  Process(html);
 }
 
 }  // namespace brave_ads
