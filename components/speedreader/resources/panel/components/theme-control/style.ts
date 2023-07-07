@@ -28,6 +28,8 @@ export const Box = styled.div`
     padding: 0;
     overflow: hidden;
     margin-left: 8px;
+    justify-content: center;
+    align-items: center;
   }
 
   .icon-box {
@@ -42,6 +44,11 @@ export const Box = styled.div`
     background: transparent;
     overflow: hidden;
     border: none;
+  }
+
+  .system-theme-icon {
+    --leo-icon-size: 24px;
+    width: var(--leo-icon-size);
   }
 
   .mark {

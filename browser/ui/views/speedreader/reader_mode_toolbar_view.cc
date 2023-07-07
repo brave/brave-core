@@ -65,7 +65,9 @@ void ReaderModeToolbarView::OnBoundsChanged(const gfx::Rect& previous_bounds) {
   auto toolbar_bounds = GetLocalBounds();
   toolbar_bounds.ClampToCenteredSize(kToolbarSize);
 #if BUILDFLAG(IS_WIN)
-  toolbar_bounds.Offset(-7, 0);
+  if (toolbar_bounds.width() >= kToolbarSize.width()) {
+    toolbar_bounds.Offset(-7, 0);
+  }
 #endif
   toolbar_->SetBoundsRect(toolbar_bounds);
 }

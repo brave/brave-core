@@ -65,7 +65,7 @@ function ThemeControl(props: ThemeControlProps) {
             onClick={handleClick.bind(this, entry.type)}
           >
             {entry.iconName && (
-              <Icon name={entry.iconName} className='icon-box' />
+              <Icon name={entry.iconName} className='icon-box system-theme-icon' />
             )}
             {props.activeTheme === entry.type && (
               <Icon name='check-circle-filled' className='mark' id='check-mark' />
