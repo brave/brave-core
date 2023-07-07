@@ -12,6 +12,7 @@ mod result;
 
 use engine::*;
 
+#[allow(unsafe_op_in_unsafe_fn)]
 #[cxx::bridge(namespace = adblock)]
 mod ffi {
     extern "Rust" {

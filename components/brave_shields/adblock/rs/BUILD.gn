@@ -20,7 +20,6 @@ rust_static_library("rust_lib") {
   visibility = [
     "//brave/components/brave_shields/adblock:*",
     "//brave/components/brave_shields/adblock/resolver",
-    "//brave/ios/browser/api/brave_shields:*",
   ]
 
   cxx_bindings = [ "src/lib.rs" ]

@@ -13,13 +13,14 @@ use adblock::url_parser::ResolvesDomain;
 use cxx::{let_cxx_string, CxxString, CxxVector};
 
 use crate::ffi::{
-    resolve_domain_position, BlockerDebugInfo, BlockerResult, BoxEngineResult, FilterListMetadata,
-    RegexManagerDiscardPolicy, UnitResult, VecStringResult,
+    resolve_domain_position, BlockerDebugInfo, BlockerResult, BoxEngineResult,
+    ContentBlockingRulesResult, FilterListMetadata, RegexManagerDiscardPolicy, UnitResult,
+    VecStringResult,
 };
 use crate::result::InternalError;
 
 #[cfg(feature = "ios")]
-use crate::ffi::{ContentBlockingRules, ContentBlockingRulesResult};
+use crate::ffi::ContentBlockingRules;
 
 pub struct Engine {
     engine: InnerEngine,
@@ -97,6 +98,11 @@ pub fn convert_rules_to_content_blocking(rules: &CxxString) -> ContentBlockingRu
         Ok(ContentBlockingRules { rules_json: serde_json::to_string(&cb_rules)?, truncated })
     }()
     .into()
+}
+
+#[cfg(not(feature = "ios"))]
+pub fn convert_rules_to_content_blocking(_rules: &CxxString) -> ContentBlockingRulesResult {
+    panic!("convert_rules_to_content_blocking can only be called on iOS");
 }
 
 fn convert_cxx_string_vector_to_string_collection<C>(
