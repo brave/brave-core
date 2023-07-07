@@ -12,7 +12,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/speedreader/page_distiller.h"
 #include "brave/components/speedreader/common/speedreader.mojom.h"
-#include "brave/components/speedreader/common/speedreader_panel.mojom.h"
+#include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
 #include "brave/components/speedreader/speedreader_throttle_delegate.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "components/dom_distiller/content/browser/distillable_page_utils.h"
@@ -34,10 +34,6 @@ class ViewAndroid;
 #endif
 
 namespace speedreader {
-using mojom::ContentStyle;
-using mojom::FontFamily;
-using mojom::FontSize;
-using mojom::Theme;
 
 namespace test {
 void SetShowOriginalLinkTitle(const std::u16string* title);
@@ -100,6 +96,8 @@ class SpeedreaderTabHelper
   // Displays reader mode information
   void ShowReaderModeBubble();
 
+  void HideReaderModeToolbar();
+
   // Hides speedreader information
   void HideBubble();
 
@@ -108,20 +106,6 @@ class SpeedreaderTabHelper
 
   // mojom::SpeedreaderHost:
   void OnShowOriginalPage() override;
-
-  void SetTheme(Theme theme);
-  Theme GetTheme();
-
-  void SetFontFamily(FontFamily font_family);
-  FontFamily GetFontFamily();
-
-  void SetFontSize(FontSize size);
-  FontSize GetFontSize() const;
-
-  void SetContentStyle(ContentStyle style);
-  ContentStyle GetContentStyle();
-
-  std::string GetCurrentSiteURL();
 
  private:
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;
@@ -158,7 +142,7 @@ class SpeedreaderTabHelper
   void OnPropertyPrefChanged(const std::string& path);
 
   // Updates UI if the tab is visible.
-  void UpdateButtonIfNeeded();
+  void UpdateUI();
 
   // content::WebContentsObserver:
   void DidStartNavigation(
@@ -204,6 +188,7 @@ class SpeedreaderTabHelper
   bool show_original_page_ = false;   // next request should not be distilled
   bool original_page_shown_ = false;  // true if reload was performed using the
                                       // 'show original page' link
+  bool toolbar_hidden_ = false;
 
   DistillState distill_state_ = DistillState::kNone;
   raw_ptr<SpeedreaderBubbleView> speedreader_bubble_ = nullptr;

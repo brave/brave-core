@@ -23,13 +23,19 @@ BraveContentsLayoutManager::~BraveContentsLayoutManager() = default;
 void BraveContentsLayoutManager::Layout(views::View* contents_container) {
   DCHECK(host_ == contents_container);
 
-  // Use upstream layout logic when sidebar is not shown.
-  if (!sidebar_container_view_->GetVisible()) {
+  const bool reader_mode_toolbar_visible =
+      reader_mode_toolbar_view_ && reader_mode_toolbar_view_->GetVisible();
+
+  // Use upstream layout logic when sidebar and reader mode toolbar aren't
+  // shown.
+  if (!sidebar_container_view_->GetVisible() && !reader_mode_toolbar_visible) {
     return ContentsLayoutManager::Layout(contents_container);
   }
 
   int proposed_sidebar_width =
-      sidebar_container_view_->GetPreferredSize().width();
+      sidebar_container_view_->GetVisible()
+          ? sidebar_container_view_->GetPreferredSize().width()
+          : 0;
   int contents_width = contents_container->width();
 
   // Guarantee 20% width for contents at least.
@@ -58,6 +64,19 @@ void BraveContentsLayoutManager::Layout(views::View* contents_container) {
 
   new_devtools_bounds.Offset(sidebar_on_left_ ? proposed_sidebar_width : 0, 0);
   new_contents_bounds.Offset(sidebar_on_left_ ? proposed_sidebar_width : 0, 0);
+
+  gfx::Rect reader_mode_toolbar_bounds;
+  if (reader_mode_toolbar_visible) {
+    reader_mode_toolbar_bounds.SetRect(
+        new_contents_bounds.x(), 0, new_contents_bounds.width(),
+        reader_mode_toolbar_view_->GetPreferredSize().height());
+    reader_mode_toolbar_view_->SetBoundsRect(
+        host_->GetMirroredRect(reader_mode_toolbar_bounds));
+    new_contents_bounds.set_y(reader_mode_toolbar_bounds.height());
+    new_contents_bounds.set_height(contents_height -
+                                   reader_mode_toolbar_bounds.height());
+  }
+
   // DevTools cares about the specific position, so we have to compensate RTL
   // layout here.
   devtools_view_->SetBoundsRect(host_->GetMirroredRect(new_devtools_bounds));

@@ -6,26 +6,31 @@ import * as React from 'react'
 
 import * as S from './style'
 import classnames from '$web-common/classnames'
-import themeLightSvg from '../../svg/themeLight'
-import themeDarkSvg from '../../svg/themeDark'
-import themeSepiaSvg from '../../svg/themeSepia'
 import { Theme } from '../../api/browser'
+import Icon from '@brave/leo/react/icon'
+import { getLocale } from '$web-common/locale'
 
 const themeOptions = [
   {
-    ariaLabel: 'Theme Light',
+    id: 'theme-light',
     type: Theme.kLight,
-    svgIcon: themeLightSvg
+    title: getLocale('braveReaderModeAppearanceThemeLight')
   },
   {
-    ariaLabel: 'Theme Sepia',
+    id: 'theme-sepia',
     type: Theme.kSepia,
-    svgIcon: themeSepiaSvg
+    title: getLocale('braveReaderModeAppearanceThemeSepia')
   },
   {
-    ariaLabel: 'Theme Dark',
+    id: 'theme-dark',
     type: Theme.kDark,
-    svgIcon: themeDarkSvg
+    title: getLocale('braveReaderModeAppearanceThemeDark')
+  },
+  {
+    id: 'theme-system',
+    type: Theme.kNone,
+    iconName: 'theme-system',
+    title: getLocale('braveReaderModeAppearanceThemeSystem')
   }
 ]
 
@@ -34,7 +39,7 @@ interface ThemeControlProps {
   onClick?: Function
 }
 
-function ThemeControl (props: ThemeControlProps) {
+function ThemeControl(props: ThemeControlProps) {
   const handleClick = (themeType: Theme) => {
     props.onClick?.(themeType)
   }
@@ -44,30 +49,26 @@ function ThemeControl (props: ThemeControlProps) {
       {themeOptions.map(entry => {
         const chipClass = classnames({
           'chip': true,
-          'is-active': props.activeTheme === entry.type
-        })
-
-        const iconClass = classnames({
-          'icon-box': true,
           'is-light': entry.type === Theme.kLight,
           'is-dark': entry.type === Theme.kDark,
           'is-sepia': entry.type === Theme.kSepia
         })
-
         return (
           <button
+            id={entry.id}
             key={entry.type}
+            title={entry.title}
+            aria-label={entry.title}
             role="option"
             className={chipClass}
             aria-selected={props.activeTheme === entry.type}
-            aria-label={entry.ariaLabel}
             onClick={handleClick.bind(this, entry.type)}
           >
-            <div className={iconClass}>
-              {<entry.svgIcon />}
-            </div>
+            {entry.iconName && (
+              <Icon name={entry.iconName} className='icon-box system-theme-icon' />
+            )}
             {props.activeTheme === entry.type && (
-              <i><svg name="checkmark-icon" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M9 17.333C4.405 17.333.667 13.595.667 9 .667 4.405 4.405.667 9 .667c4.595 0 8.333 3.738 8.333 8.333 0 4.595-3.738 8.333-8.333 8.333Zm-.172-5.098a.691.691 0 0 1-.956.085L4.4 9.542a.695.695 0 0 1 .867-1.084L8.22 10.82l4.424-5.055a.695.695 0 1 1 1.045.914l-4.861 5.556Z" fill="#737ADE"/></svg></i>
+              <Icon name='check-circle-filled' className='mark' id='check-mark' />
             )}
           </button>
         )

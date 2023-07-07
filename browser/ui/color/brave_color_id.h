@@ -58,7 +58,13 @@
 #define BRAVE_SPEEDREADER_COLOR_IDS      \
   E_CPONLY(kColorSpeedreaderIcon)        \
   E_CPONLY(kColorSpeedreaderToggleThumb) \
-  E_CPONLY(kColorSpeedreaderToggleTrack)
+  E_CPONLY(kColorSpeedreaderToggleTrack) \
+  E_CPONLY(kColorSpeedreaderToolbarBackground) \
+  E_CPONLY(kColorSpeedreaderToolbarBorder) \
+  E_CPONLY(kColorSpeedreaderToolbarForeground) \
+  E_CPONLY(kColorSpeedreaderToolbarButtonHover) \
+  E_CPONLY(kColorSpeedreaderToolbarButtonActive) \
+  E_CPONLY(kColorSpeedreaderToolbarButtonBorder)
 #else
 #define BRAVE_SPEEDREADER_COLOR_IDS
 #endif

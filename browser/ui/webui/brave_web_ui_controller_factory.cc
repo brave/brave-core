@@ -44,7 +44,7 @@
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
-#include "brave/browser/ui/webui/speedreader/speedreader_panel_ui.h"
+#include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter_ui.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -162,7 +162,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kShieldsPanelHost) {
     return new ShieldsPanelUI(web_ui);
   } else if (host == kSpeedreaderPanelHost) {
-    return new SpeedreaderPanelUI(web_ui, url.host());
+    return new SpeedreaderToolbarUI(web_ui, url.host());
   } else if (host == kCookieListOptInHost) {
     if (base::FeatureList::IsEnabled(
             brave_shields::features::kBraveAdblockCookieListOptIn)) {

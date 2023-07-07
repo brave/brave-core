@@ -28,8 +28,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/ui/webui/speedreader/speedreader_panel_ui.h"
-#include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
+#include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #endif
 
 namespace speedreader {
@@ -61,9 +60,6 @@ class BraveBrowserView : public BrowserView,
 
   void SetStarredState(bool is_starred) override;
   void ShowUpdateChromeDialog() override;
-  speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
-      speedreader::SpeedreaderTabHelper* tab_helper,
-      bool is_enabled) override;
   void CreateWalletBubble();
   void CreateApproveWalletBubble();
   void CloseWalletBubble();
@@ -74,8 +70,14 @@ class BraveBrowserView : public BrowserView,
   void StartTabCycling() override;
   views::View* GetAnchorViewForBraveVPNPanel();
   gfx::Rect GetShieldsBubbleRect() override;
-  void ShowSpeedreaderWebUIBubble(Browser* browser) override;
-  void HideSpeedreaderWebUIBubble() override;
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
+      speedreader::SpeedreaderTabHelper* tab_helper,
+      bool is_enabled) override;
+  void ShowReaderModeToolbar() override;
+  void HideReaderModeToolbar() override;
+  void OpenAiChatPanel() override;
+#endif
   bool GetTabStripVisible() const override;
 #if BUILDFLAG(IS_WIN)
   bool GetSupportsTitle() const override;
@@ -108,6 +110,7 @@ class BraveBrowserView : public BrowserView,
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, Fullscreen);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripDragAndDropBrowserTest,
                            DragTabToReorder);
+  FRIEND_TEST_ALL_PREFIXES(SpeedReaderBrowserTest, Toolbar);
 
   static void SetDownloadConfirmReturnForTesting(bool allow);
 
@@ -159,8 +162,7 @@ class BraveBrowserView : public BrowserView,
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  std::unique_ptr<WebUIBubbleManagerT<SpeedreaderPanelUI>>
-      speedreader_webui_bubble_manager_;
+  std::unique_ptr<ReaderModeToolbarView> reader_mode_toolbar_view_;
 #endif
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;

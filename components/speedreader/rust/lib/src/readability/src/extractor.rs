@@ -1,7 +1,7 @@
-// Copyright (c) 2021 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 use crate::{dom, nlp, scorer, util};
 use html5ever::parse_document;
@@ -48,6 +48,11 @@ lazy_static! {
     static ref END_DASH: Regex = Regex::new(r#"\s+(:?[—\-–])\s+.*$"#).unwrap();
     static ref JSONLD_SCHEMA: Regex = Regex::new(r#"^https?://schema\.org[/?\w/?]*$"#).unwrap();
 }
+
+static SHOW_ORIGINAL_DIV_ID: &str = "c93e2206-2f31-4ddc-9828-2bb8e8ed940e";
+static READ_TIME_DIV_ID: &str = "da24e4ef-db57-4b9f-9fa5-548924fc9c32";
+static META_DATA_AREA_DIV_ID: &str = "3bafd2b4-a87d-4471-8134-7a9cca092000";
+static MAIN_CONTENT_DIV_ID: &str = "7c08a417-bf02-4241-a55e-ad5b8dc88f69";
 
 #[derive(Debug)]
 pub struct Product {
@@ -317,12 +322,15 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
 }
 
 pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
-    if let Some(first_child) = root.first_child() {
+    if root.first_child().is_some() {
+        let meta_area = dom::create_element_simple(dom, "div", "", None);
+        dom::set_attr("id", META_DATA_AREA_DIV_ID, meta_area.clone(), true);
+
         // Add in the title
         if !meta.title.is_empty() {
             let title_header =
                 dom::create_element_simple(dom, "h1", "title metadata", Some(&meta.title));
-            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(title_header));
+            dom.append(&meta_area, NodeOrText::AppendNode(title_header));
         }
         // Add in the description
         if let Some(ref text) = meta.description {
@@ -337,17 +345,17 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
                 "subhead metadata",
                 Some(&text[..slice_offset]),
             );
-            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(description));
+            dom.append(&meta_area, NodeOrText::AppendNode(description));
         }
 
         // Vertical split
         if meta.author.is_some() || meta.last_modified.is_some() {
             let splitter = dom::create_element_simple(dom, "hr", "", None);
-            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(splitter));
+            dom.append(&meta_area, NodeOrText::AppendNode(splitter));
         }
 
         let metadata_parent = dom::create_element_simple(dom, "div", "metadata", None);
-        dom.append_before_sibling(&first_child, NodeOrText::AppendNode(metadata_parent.clone()));
+        dom.append(&meta_area, NodeOrText::AppendNode(metadata_parent.clone()));
 
         // Add in the author
         if let Some(ref text) = meta.author {
@@ -370,19 +378,14 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
         // Add 'read time'
         {
             let read_time = dom::create_element_simple(dom, "div", "readtime", None);
-            dom::set_attr("id", "da24e4ef-db57-4b9f-9fa5-548924fc9c32", read_time.clone(), true);
+            dom::set_attr("id", READ_TIME_DIV_ID, read_time.clone(), true);
             dom.append(&metadata_parent, NodeOrText::AppendNode(read_time));
         }
 
         // Add 'show original'
         {
             let show_original_link = dom::create_element_simple(dom, "div", "show_original", None);
-            dom::set_attr(
-                "id",
-                "c93e2206-2f31-4ddc-9828-2bb8e8ed940e",
-                show_original_link.clone(),
-                true,
-            );
+            dom::set_attr("id", SHOW_ORIGINAL_DIV_ID, show_original_link.clone(), true);
             dom.append(&metadata_parent, NodeOrText::AppendNode(show_original_link));
         }
 
@@ -393,8 +396,15 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
             || meta.last_modified.is_some()
         {
             let splitter = dom::create_element_simple(dom, "hr", "", None);
-            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(splitter));
+            dom.append(&meta_area, NodeOrText::AppendNode(splitter));
         }
+
+        let content = dom::create_element_simple(dom, "div", "", None);
+        dom::set_attr("id", MAIN_CONTENT_DIV_ID, content.clone(), true);
+        dom.reparent_children(&root, &content);
+
+        dom.append(&root, NodeOrText::AppendNode(meta_area));
+        dom.append(&root, NodeOrText::AppendNode(content));
 
         // Our CSS formats based on id="article".
         dom::set_attr("id", "article", root, true);

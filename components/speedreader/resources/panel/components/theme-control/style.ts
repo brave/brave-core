@@ -2,46 +2,63 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import styled from 'styled-components'
 
 export const Box = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 6px;
+  display: flex;
+  height: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  #theme-system .icon-box {
+    color: black;
+  }
 
   .chip {
-    --border-color: transparent;
+    display: grid;
+    grid-template-columns: 1fr;
 
-    margin: 0 auto;
-    width: auto;
-    height: 48px;
-    background: transparent;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    position: relative;
-    padding: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: var(--leo-radius-full);
+    border: 1px solid var(--color-button-border);
     cursor: pointer;
-  }
-
-  i {
-    position: absolute;
-    right: 6px;
-    bottom: 4px;
-  }
-
-  .chip.is-active {
-    --border-color: rgba(255, 255, 255, 0.1);
+    padding: 0;
+    overflow: hidden;
+    margin-left: 8px;
+    justify-content: center;
+    align-items: center;
   }
 
   .icon-box {
+    grid-area: 1 / 1 / 2 / 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     width: 100%;
     height: 100%;
     background: transparent;
-    border-radius: 8px;
     overflow: hidden;
+    border: none;
   }
 
-  .is-light { background: #F6F6F9; }
-  .is-dark { background: #17171F; }
-  .is-sepia { background: #E9E0CA; }
+  .system-theme-icon {
+    --leo-icon-size: 24px;
+    width: var(--leo-icon-size);
+  }
+
+  .mark {
+    grid-area: 1 / 1 / 2 / 2;
+    align-self: center;
+    justify-self: center;
+    color: #5F5CF1;
+  }
+
+  .is-light { background-color: #FFFFFF; }
+  .is-dark { background-color: #000000; }
+  .is-sepia { background-color: #F2EBD9; }
 `
