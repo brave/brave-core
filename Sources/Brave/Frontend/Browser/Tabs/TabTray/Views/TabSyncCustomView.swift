@@ -45,7 +45,7 @@ class TabSyncHeaderView: UITableViewHeaderFooterView, TableViewReusable {
   
   let titleLabel = UILabel().then {
     $0.textColor = .braveLabel
-    $0.font = .preferredFont(forTextStyle: .body, weight: .bold)
+    $0.font = .preferredFont(for: .body, weight: .bold)
   }
   
   let descriptionLabel = UILabel().then {

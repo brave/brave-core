@@ -2441,11 +2441,26 @@ extension Strings {
         value: "Powered by",
         comment: "It is used in context: 'Powered by BRAND_NAME'")
 
-    public static let freeTrial =
-      NSLocalizedString("vpn.freeTrial", tableName: "BraveShared", bundle: .module,
-        value: "All plans include a free 7-day trial!",
-        comment: "")
+    public static let freeTrialDetail =
+      NSLocalizedString("vpn.freeTrialDetail", tableName: "BraveShared", bundle: .module,
+        value: "All plans include a %@!",
+        comment: "Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include")
+    
+    public static let freeTrialPeriod =
+      NSLocalizedString("vpn.freeTrialPeriod", tableName: "BraveShared", bundle: .module,
+        value: "free 7-day trial",
+        comment: "Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long")
 
+    public static let freeTrialPeriodAction =
+      NSLocalizedString("vpn.freeTrialPeriodAction", tableName: "BraveShared", bundle: .module,
+        value: "try 7 days free",
+        comment: "The button text that starts the trial action")
+    
+    public static let activateSubscriptionAction =
+      NSLocalizedString("vpn.activateSubscriptionAction", tableName: "BraveShared", bundle: .module,
+        value: "activate",
+        comment: "The button text that starts the subscription action")
+    
     public static let restorePurchases =
       NSLocalizedString("vpn.restorePurchases", tableName: "BraveShared", bundle: .module,
         value: "Restore",
@@ -2504,7 +2519,7 @@ extension Strings {
 
     public static let checkboxEncryption =
       NSLocalizedString("vpn.checkboxEncryption", tableName: "BraveShared", bundle: .module,
-        value: "Uses IKEv2 secure encrypted VPN tunnel",
+        value: "Uses secure encrypted VPN tunnels",
         comment: "Text for a checkbox to present the user benefits for using Brave VPN")
 
     public static let installTitle =
@@ -2821,11 +2836,6 @@ extension Strings {
       NSLocalizedString("vpn.contactFormTitle", tableName: "BraveShared", bundle: .module,
         value: "Brave Firewall + VPN Issue",
         comment: "Title for contact form email.")
-
-    public static let freeTrialDisclaimer =
-      NSLocalizedString("vpn.freeTrialDisclaimer", tableName: "BraveShared", bundle: .module,
-        value: "Try free for 7 days. After 7 days, you will be charged the plan price. ",
-        comment: "Disclaimer about free trial")
 
     public static let iapDisclaimer =
       NSLocalizedString("vpn.iapDisclaimer", tableName: "BraveShared", bundle: .module,

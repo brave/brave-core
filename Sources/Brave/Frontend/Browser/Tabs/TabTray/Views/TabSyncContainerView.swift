@@ -49,7 +49,7 @@ extension TabTrayController {
       let tableTitleLabel = UILabel().then {
         $0.textColor = .braveLabel
         $0.textAlignment = .left
-        $0.font = .preferredFont(forTextStyle: .title2, weight: .bold)
+        $0.font = .preferredFont(for: .title2, weight: .bold)
         $0.text = Strings.OpenTabs.openTabsListTableHeaderTitle
       }
                  
