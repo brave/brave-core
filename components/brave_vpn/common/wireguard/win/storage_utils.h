@@ -13,6 +13,8 @@ namespace brave_vpn {
 
 namespace wireguard {
 
+std::wstring GetBraveVpnWireguardServiceRegistryStoragePath();
+
 bool IsVPNTrayIconEnabled();
 void EnableVPNTrayIcon(bool value);
 

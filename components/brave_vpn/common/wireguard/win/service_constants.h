@@ -6,12 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_SERVICE_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_SERVICE_CONSTANTS_H_
 
-#include <guiddef.h>
-#include <string>
-
-#include "base/files/file_path.h"
-#include "base/version.h"
-
 namespace brave_vpn {
 
 constexpr wchar_t kBraveVpnWireguardServiceExecutable[] =
@@ -30,15 +24,6 @@ constexpr char kBraveVpnWireguardServiceConnectSwitchName[] = "connect";
 // to work with the service for a user.
 constexpr char kBraveVpnWireguardServiceInteractiveSwitchName[] = "interactive";
 
-const CLSID& GetBraveVpnWireguardServiceClsid();
-const IID& GetBraveVpnWireguardServiceIid();
-std::wstring GetBraveVpnWireguardTunnelServiceName();
-std::wstring GetBraveVpnWireguardServiceName();
-std::wstring GetBraveVpnWireguardServiceDisplayName();
-std::wstring GetBraveVpnWireguardServiceRegistryStoragePath();
-base::FilePath GetBraveVPNWireguardServiceInstallationPath(
-    const base::FilePath& target_path,
-    const base::Version& version);
 }  // namespace brave_vpn
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_SERVICE_CONSTANTS_H_

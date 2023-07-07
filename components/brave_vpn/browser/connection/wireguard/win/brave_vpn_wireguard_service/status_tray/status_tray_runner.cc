@@ -24,7 +24,7 @@
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/status_icon.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/status_tray.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 #include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -203,7 +203,7 @@ void StatusTrayRunner::OnStorageUpdated() {
 void StatusTrayRunner::SubscribeForStorageUpdates() {
   if (storage_.Create(
           HKEY_CURRENT_USER,
-          brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
+          wireguard::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
           KEY_QUERY_VALUE | KEY_NOTIFY) != ERROR_SUCCESS) {
     return;
   }
