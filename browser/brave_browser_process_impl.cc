@@ -18,6 +18,7 @@
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/component_updater/brave_component_updater_delegate.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/net/brave_system_request_handler.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
@@ -38,8 +39,6 @@
 #include "brave/components/debounce/common/features.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "brave/components/localhost_permission/localhost_permission_component.h"
-#include "brave/components/misc_metrics/menu_metrics.h"
-#include "brave/components/misc_metrics/privacy_hub_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/histograms_braveizer.h"
@@ -141,8 +140,8 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   // early initialize brave stats
   brave_stats_updater();
 
-  // early initialize menu metrics
-  menu_metrics();
+  // early initialize misc metrics
+  process_misc_metrics();
 }
 
 void BraveBrowserProcessImpl::Init() {
@@ -526,20 +525,11 @@ brave::BraveFarblingService* BraveBrowserProcessImpl::brave_farbling_service() {
   return brave_farbling_service_.get();
 }
 
-misc_metrics::MenuMetrics* BraveBrowserProcessImpl::menu_metrics() {
-#if !BUILDFLAG(IS_ANDROID)
-  if (!menu_metrics_) {
-    menu_metrics_ = std::make_unique<misc_metrics::MenuMetrics>(local_state());
+misc_metrics::ProcessMiscMetrics*
+BraveBrowserProcessImpl::process_misc_metrics() {
+  if (!process_misc_metrics_) {
+    process_misc_metrics_ =
+        std::make_unique<misc_metrics::ProcessMiscMetrics>(local_state());
   }
-#endif
-  return menu_metrics_.get();
-}
-
-misc_metrics::PrivacyHubMetrics*
-BraveBrowserProcessImpl::privacy_hub_metrics() {
-  if (!privacy_hub_metrics_) {
-    privacy_hub_metrics_ =
-        std::make_unique<misc_metrics::PrivacyHubMetrics>(local_state());
-  }
-  return privacy_hub_metrics_.get();
+  return process_misc_metrics_.get();
 }

@@ -9,6 +9,7 @@
 
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/misc_metrics/menu_metrics.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -24,7 +25,8 @@ using views::MenuItemView;
 
 BraveAppMenu::BraveAppMenu(Browser* browser, int run_types)
     : AppMenu(browser, run_types),
-      menu_metrics_(g_brave_browser_process->menu_metrics()) {
+      menu_metrics_(
+          g_brave_browser_process->process_misc_metrics()->menu_metrics()) {
   DCHECK(menu_metrics_);
 }
 

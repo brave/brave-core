@@ -16,4 +16,10 @@ const char kMiscMetricsMenuShownStorage[] =
 const char kMiscMetricsPagesLoadedCount[] = "brave.core_metrics.pages_loaded";
 const char kMiscMetricsPrivacyHubViews[] =
     "brave.misc_metrics.privacy_hub_views";
+const char kMiscMetricsOpenTabsStorage[] =
+    "brave.misc_metrics.open_tabs_storage";
+const char kMiscMetricsGroupTabsStorage[] =
+    "brave.misc_metrics.group_tabs_storage";
+const char kMiscMetricsPinnedTabsStorage[] =
+    "brave.misc_metrics.pinned_tabs_storage";
 }  // namespace misc_metrics
