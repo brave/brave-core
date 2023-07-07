@@ -4,21 +4,26 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import {
-  useDispatch,
-  useSelector
-} from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 // Actions
 import { WalletActions } from '../../../common/actions'
 
 // Types
-import { BraveWallet, WalletAccountType, WalletState } from '../../../constants/types'
+import { BraveWallet, WalletAccountType } from '../../../constants/types'
+
+// Hooks
+import { useSelectedCoinQuery } from '../../../common/slices/api.slice'
+import {
+  useUnsafeWalletSelector
+} from '../../../common/hooks/use-safe-selector'
 
 // Utils
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { create } from 'ethereum-blockies'
 import { getLocale } from '../../../../common/locale'
+import { reduceAddress } from '../../../utils/reduce-address'
+import { WalletSelectors } from '../../../common/selectors'
 
 // Styled Components
 import {
@@ -32,10 +37,6 @@ import {
   RightSide
 } from './style'
 
-// Utils
-import { reduceAddress } from '../../../utils/reduce-address'
-import { useSelectedCoinQuery } from '../../../common/slices/api.slice'
-
 export interface Props {
   account: WalletAccountType
 }
@@ -46,11 +47,9 @@ const SitePermissionAccountItem = (props: Props) => {
   } = props
 
   const dispatch = useDispatch()
-  const {
-    selectedAccount,
-    connectedAccounts,
-    activeOrigin
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+  const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
+  const connectedAccounts = useUnsafeWalletSelector(WalletSelectors.connectedAccounts)
+  const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
 
   // api
   const { selectedCoin } = useSelectedCoinQuery()

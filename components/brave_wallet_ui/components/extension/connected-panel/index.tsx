@@ -5,9 +5,6 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import {
-  useSelector
-} from 'react-redux'
 
 // Proxies
 import getWalletPanelApiProxy from '../../../panel/wallet_panel_api_proxy'
@@ -25,6 +22,7 @@ import { deserializeOrigin } from '../../../utils/model-serialization-utils'
 import { makeNetworkAsset } from '../../../options/asset-options'
 import { getPriceIdForToken } from '../../../utils/api-utils'
 import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
+import { WalletSelectors } from '../../../common/selectors'
 
 // Hooks
 import { useExplorer } from '../../../common/hooks'
@@ -39,12 +37,15 @@ import { useApiProxy } from '../../../common/hooks/use-api-proxy'
 import {
   useScopedBalanceUpdater
 } from '../../../common/hooks/use-scoped-balance-updater'
+import {
+  useSafeWalletSelector,
+  useUnsafeWalletSelector
+} from '../../../common/hooks/use-safe-selector'
 
 // types
 import {
   PanelTypes,
   BraveWallet,
-  WalletState,
   WalletOrigin
 } from '../../../constants/types'
 
@@ -85,12 +86,16 @@ export const ConnectedPanel = (props: Props) => {
     navAction
   } = props
 
-  const {
-    defaultCurrencies,
-    activeOrigin: originInfo,
-    selectedAccount,
-    connectedAccounts
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+  const defaultFiatCurrency = useSafeWalletSelector(
+    WalletSelectors.defaultFiatCurrency
+  )
+  const originInfo = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
+  const selectedAccount = useUnsafeWalletSelector(
+    WalletSelectors.selectedAccount
+  )
+  const connectedAccounts = useUnsafeWalletSelector(
+    WalletSelectors.connectedAccounts
+  )
 
   // queries
   const { currentData: selectedNetwork } = useGetSelectedChainQuery(undefined)
@@ -354,7 +359,7 @@ export const ConnectedPanel = (props: Props) => {
           )}
           {!selectedAccountFiatBalance.isUndefined() ? (
             <FiatBalanceText>
-              {selectedAccountFiatBalance.formatAsFiat(defaultCurrencies.fiat)}
+              {selectedAccountFiatBalance.formatAsFiat(defaultFiatCurrency)}
             </FiatBalanceText>
           ) : (
             <LoadingSkeleton useLightTheme={true} width={80} height={20} />

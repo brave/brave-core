@@ -4,20 +4,21 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import {
-  useDispatch,
-  useSelector
-} from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 // Actions
 import { PanelActions } from '../../../panel/actions'
 
 // Types
-import { WalletAccountType, WalletState } from '../../../constants/types'
+import { WalletAccountType } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
+import { WalletSelectors } from '../../../common/selectors'
+
+// Hooks
 import { useSelectedCoinQuery } from '../../../common/slices/api.slice'
+import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 
 // Components
 import {
@@ -41,11 +42,11 @@ import {
 
 export const SitePermissions = () => {
   const dispatch = useDispatch()
-  const {
-    accounts,
-    connectedAccounts,
-    activeOrigin
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
+  const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
+  const connectedAccounts = useUnsafeWalletSelector(
+    WalletSelectors.connectedAccounts
+  )
 
   // api
   const { selectedCoin } = useSelectedCoinQuery()

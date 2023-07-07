@@ -3,7 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { useSelector } from 'react-redux'
+
+// Types
 import {
   BraveWallet,
   OrderTypes,
@@ -12,18 +13,27 @@ import {
   SwapValidationErrorType,
   AmountPresetTypes,
   DefaultCurrencies,
-  WalletState
 } from '../../../constants/types'
+
+// Options
 import { AmountPresetOptions } from '../../../options/amount-preset-options'
 import { SlippagePresetOptions } from '../../../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../../../options/expiration-preset-options'
-import { getLocale } from '../../../../common/locale'
-import { withPlaceholderIcon, Tooltip } from '../../shared'
 
 // Utils
+import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { CurrencySymbols } from '../../../utils/currency-symbols'
 import Amount from '../../../utils/amount'
+import { WalletSelectors } from '../../../common/selectors'
+
+// Hooks
+import {
+  useUnsafeWalletSelector //
+} from '../../../common/hooks/use-safe-selector'
+
+// Components
+import { withPlaceholderIcon, Tooltip } from '../../shared'
 
 // Styled Components
 import {
@@ -52,6 +62,7 @@ import {
 } from './style'
 
 import { BubbleContainer } from '../shared-styles'
+
 
 export type BuySendSwapInputType =
   | 'toAmount'
@@ -93,6 +104,20 @@ export interface Props {
   onShowCurrencySelection?: () => void
 }
 
+const onClickLearnMore = () => {
+  chrome.tabs.create(
+    { url: 'https://support.brave.com/hc/en-us/articles/4441999049101' },
+    () => {
+      if (chrome.runtime.lastError) {
+        console.error(
+          'tabs.create failed: ' + //
+            chrome.runtime.lastError.message
+        )
+      }
+    }
+  )
+}
+
 function SwapInputComponent (props: Props) {
   const {
     autoFocus,
@@ -128,11 +153,12 @@ function SwapInputComponent (props: Props) {
   const [showSlippageWarning, setShowSlippageWarning] = React.useState<boolean>(false)
 
   // redux
-  const {
-    selectedCurrency: reduxSelectedCurrency,
-    onRampCurrencies: currencies
-  } = useSelector((state: { wallet: WalletState }) => state.wallet)
+  const reduxSelectedCurrency = useUnsafeWalletSelector(
+    WalletSelectors.selectedCurrency
+  )
+  const currencies = useUnsafeWalletSelector(WalletSelectors.onRampCurrencies)
 
+  // methods
   const toggleExpandSelector = () => {
     setExpandSelector(!expandSelector)
   }
@@ -199,19 +225,6 @@ function SwapInputComponent (props: Props) {
     }
   }
 
-  React.useMemo(() => {
-    // Show Warning if slippage is to high
-    if (Number(customSlippageTolerance) >= 6) {
-      setShowSlippageWarning(true)
-      return
-    }
-    setShowSlippageWarning(false)
-  }, [customSlippageTolerance])
-
-  const selectedCurrency = React.useMemo(() => {
-    return reduxSelectedCurrency || currencies[0]
-  }, [reduxSelectedCurrency, currencies])
-
   const handleCustomSlippageToleranceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onCustomSlippageToleranceChange) {
       // This will only formate to only allow Numbers and remove multiple . decimals
@@ -242,6 +255,20 @@ function SwapInputComponent (props: Props) {
       : symbol
   }
 
+  // memos & computed
+  React.useMemo(() => {
+    // Show Warning if slippage is to high
+    if (Number(customSlippageTolerance) >= 6) {
+      setShowSlippageWarning(true)
+      return
+    }
+    setShowSlippageWarning(false)
+  }, [customSlippageTolerance])
+
+  const selectedCurrency = React.useMemo(() => {
+    return reduxSelectedCurrency || currencies[0]
+  }, [reduxSelectedCurrency, currencies])
+
   const fromAmountHasErrors = validationError && [
     'insufficientBalance',
     'insufficientFundsForGas',
@@ -262,14 +289,6 @@ function SwapInputComponent (props: Props) {
       .format(6, true)
     : ''
 
-  const onClickLearnMore = () => {
-    chrome.tabs.create({ url: 'https://support.brave.com/hc/en-us/articles/4441999049101' }, () => {
-      if (chrome.runtime.lastError) {
-        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-      }
-    })
-  }
-
   const placeholderText = React.useMemo((): string => {
     return componentType === 'toAddress'
       ? selectedNetwork?.coin === BraveWallet.CoinType.ETH
@@ -278,6 +297,7 @@ function SwapInputComponent (props: Props) {
       : '0'
   }, [selectedNetwork, componentType])
 
+  // render
   return (
     <BubbleContainer isV2={isV2}>
       {componentType !== 'selector' &&

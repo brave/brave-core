@@ -4,14 +4,13 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import {
   BraveWallet,
   GetEthAddrReturnInfo,
   GetUnstoppableDomainsWalletAddrReturnInfo,
   IsBase58EncodedSolanaPubkeyReturnInfo,
   AmountValidationErrorType,
-  WalletState,
   GetSolAddrReturnInfo,
   CoinTypesMap,
   BaseTransactionParams,
@@ -23,11 +22,13 @@ import { getLocale } from '../../../common/locale'
 import { isValidAddress, isValidFilAddress } from '../../utils/address-utils'
 import { endsWithAny } from '../../utils/string-utils'
 import Amount from '../../utils/amount'
+import { WalletSelectors } from '../selectors'
 
 // hooks
 import { useLib } from './useLib'
 import { useAssets } from './assets'
 import { useGetSelectedChainQuery, walletApi } from '../slices/api.slice'
+import { useUnsafeWalletSelector } from './use-safe-selector'
 
 // constants
 import {
@@ -41,10 +42,10 @@ import { getChecksumEthAddress } from '../async/lib'
 export default function useSend (isSendTab?: boolean) {
   // redux
   const dispatch = useDispatch()
-  const {
-    selectedAccount,
-    fullTokenList,
-  } = useSelector((state: { wallet: WalletState }) => state.wallet)
+  const selectedAccount = useUnsafeWalletSelector(
+    WalletSelectors.selectedAccount
+  )
+  const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
 
   // queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
