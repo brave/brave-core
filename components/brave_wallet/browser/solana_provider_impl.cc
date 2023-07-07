@@ -569,13 +569,12 @@ void SolanaProviderImpl::OnContentSettingChanged(
   if (content_type != ContentSettingsType::BRAVE_SOLANA) {
     return;
   }
-  absl::optional<std::string> account =
-      keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
+  auto account = keyring_service_->GetSelectedSolanaDappAccount();
   if (!account) {
     return;
   }
   if (IsAccountConnected(*account) &&
-      !delegate_->IsAccountAllowed(mojom::CoinType::SOL, *account)) {
+      !delegate_->IsAccountAllowed(mojom::CoinType::SOL, account->address)) {
     Disconnect();
   }
 }

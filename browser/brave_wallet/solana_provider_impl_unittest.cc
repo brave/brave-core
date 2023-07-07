@@ -686,9 +686,12 @@ TEST_F(SolanaProviderImplUnitTest, Disconnect) {
 
 TEST_F(SolanaProviderImplUnitTest,
        AccountChangedEvent_RemoveSelectedHardwareAccount) {
-  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
+  EXPECT_CALL(*observer_, AccountChangedEvent(absl::optional<std::string>()));
   CreateWallet();
+  observer_->WaitAndVerify();
+
   auto added_hw_account = AddHardwareAccount(kHardwareAccountAddr);
+  EXPECT_CALL(*observer_, AccountChangedEvent(absl::optional<std::string>()));
   observer_->WaitAndVerify();
 
   EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
@@ -710,13 +713,17 @@ TEST_F(SolanaProviderImplUnitTest,
 }
 
 TEST_F(SolanaProviderImplUnitTest, AccountChangedEvent) {
-  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
+  EXPECT_CALL(*observer_, AccountChangedEvent(absl::optional<std::string>()));
   CreateWallet();
-  auto added_account = AddAccount();
   observer_->WaitAndVerify();
 
   // since it is not connected, account is empty
   EXPECT_CALL(*observer_, AccountChangedEvent(absl::optional<std::string>()));
+  auto added_account = AddAccount();
+  observer_->WaitAndVerify();
+
+  // selecting same account does not trigger any notifications.
+  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   SetSelectedAccount(added_account->account_id);
   observer_->WaitAndVerify();
 
@@ -727,13 +734,13 @@ TEST_F(SolanaProviderImplUnitTest, AccountChangedEvent) {
   ASSERT_TRUE(!account.empty());
   ASSERT_TRUE(IsConnected());
 
-  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
-  // add another account
+  // add another account selects it, since it is not connected, account is empty
+  EXPECT_CALL(*observer_, AccountChangedEvent(absl::optional<std::string>()));
   auto added_another_account = AddAccount();
   observer_->WaitAndVerify();
 
-  // since it is not connected, account is empty
-  EXPECT_CALL(*observer_, AccountChangedEvent(absl::optional<std::string>()));
+  // selecting same account does not trigger any notifications.
+  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   SetSelectedAccount(added_another_account->account_id);
   observer_->WaitAndVerify();
 
