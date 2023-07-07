@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 742bcf66760a6118690827c3dfee9ed648a0305c..9cd5d081c356ceed2193d82eb49424775f6f9a61 100644
+index 7a0b2dd74a3be12c76859119eb5f400aa354604a..427e8229314287ec9a1cb48d1a117a90c3cc54cc 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -786,6 +786,7 @@ static_library("ui") {
