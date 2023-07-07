@@ -62,7 +62,7 @@ generate_embedded_i18n("generate_strings") {
         brave_supported_i18_locales,
       ] ]
   sources = [ "//brave/components/resources/brave_components_strings.grd" ]
-  output_file_name_base = "wireguard_strings"
+  output_file_name_base = "status_tray_strings"
 }
 
 source_set("strings") {
