@@ -23,8 +23,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
@@ -48,9 +46,8 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class TransactionDetailsSheetFragment extends BottomSheetDialogFragment {
+public class TransactionDetailsSheetFragment extends WalletBottomSheetDialogFragment {
     public static final String TAG = TransactionDetailsSheetFragment.class.getName();
-
     private ExecutorService mExecutor;
     private Handler mHandler;
     private WalletModel mWalletModel;
@@ -94,6 +91,7 @@ public class TransactionDetailsSheetFragment extends BottomSheetDialogFragment {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
+            registerKeyringObserver(mWalletModel.getKeyringModel());
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onCreate ", e);
         }

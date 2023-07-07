@@ -141,6 +141,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/TwoLineItemFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/TxDetailsFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/TxFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/WalletBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/dapps/AddSwitchChainNetworkFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/dapps/AddTokenFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/dapps/BaseDAppsBottomSheetDialogFragment.java",
