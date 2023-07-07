@@ -25,6 +25,15 @@ def CheckToModifyInputApi(input_api, _output_api):
     return []
 
 
+# Check Leo variables actually exist
+def CheckLeoVariables(_, output_api):
+    try:
+        parts = [brave_node.PathInNodeModules('.bin', 'leo-check')]
+        brave_node.RunNode(parts)
+        return []
+    except RuntimeError as err:
+        return [output_api.PresubmitError(err.args[1])]
+
 # Check and fix formatting issues (supports --fix).
 def CheckPatchFormatted(input_api, output_api):
     # Use git cl format to format supported files with Chromium formatters.

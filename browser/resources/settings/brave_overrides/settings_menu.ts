@@ -376,7 +376,7 @@ RegisterPolymerTemplateModifications({
     graphicsEl.setAttribute('class', 'brave-about-graphic')
 
     const icon = document.createElement('leo-icon')
-    icon.setAttribute('name', 'product-brave-color')
+    icon.setAttribute('name', 'brave-icon-release-color')
 
     const metaEl = document.createElement('div')
     metaEl.setAttribute('class', 'brave-about-meta')

@@ -352,7 +352,7 @@
     "webpack-cli": "3.3.12"
   },
   "dependencies": {
-    "@brave/leo": "github:brave/leo#234674f",
+    "@brave/leo": "github:brave/leo#b4557d5",
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
     "@brave/wallet-standard-brave": "~0.0.10",
     "@dnd-kit/core": "6.0.5",
