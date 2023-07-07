@@ -242,7 +242,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &page_image_service::kImageService,
     &page_image_service::kImageServiceSuggestPoweredImages,
 #if !BUILDFLAG(IS_ANDROID)
-    &page_info::kPageInfoCookiesSubpage,
     &permissions::features::kPermissionsPromptSurvey,
     &permissions::features::kRecordPermissionExpirationTimestamps,
 #endif

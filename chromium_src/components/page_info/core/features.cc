@@ -10,10 +10,4 @@
 
 namespace page_info {
 
-OVERRIDE_FEATURE_DEFAULT_STATES({{
-#if !BUILDFLAG(IS_ANDROID)
-    {kPageInfoCookiesSubpage, base::FEATURE_DISABLED_BY_DEFAULT},
-#endif
-}});
-
 }  // namespace page_info
