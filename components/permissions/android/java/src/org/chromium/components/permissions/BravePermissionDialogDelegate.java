@@ -19,8 +19,12 @@ public class BravePermissionDialogDelegate {
     /** Lifetime option index selected by the user. */
     private int mSelectedLifetimeOption;
 
+    /** Whether the request is for Widevine. We need a special layout for it. */
+    private boolean mIsWidevinePermissionRequest;
+
     public BravePermissionDialogDelegate() {
         mSelectedLifetimeOption = -1;
+        mIsWidevinePermissionRequest = false;
     }
 
     @CalledByNative
@@ -48,5 +52,10 @@ public class BravePermissionDialogDelegate {
     @CalledByNative
     public int getSelectedLifetimeOption() {
         return mSelectedLifetimeOption;
+    }
+
+    @CalledByNative
+    public void setIsWidevinePermissionRequest(boolean isWidevineRequest) {
+        mIsWidevinePermissionRequest = isWidevineRequest;
     }
 }

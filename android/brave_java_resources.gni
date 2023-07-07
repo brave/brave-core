@@ -1008,6 +1008,7 @@ brave_java_resources = [
   "java/res/xml/developer_preferences.xml",
   "java/res/xml/ens_preferences.xml",
   "java/res/xml/legal_information_preferences.xml",
+  "java/res/xml/media_preferences.xml",
   "java/res/xml/play_yt_video_in_browser_preferences.xml",
   "java/res/xml/qa_preferences.xml",
   "java/res/xml/quick_action_search_and_bookmark_widget_info.xml",

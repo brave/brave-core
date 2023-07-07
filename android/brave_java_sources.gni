@@ -370,6 +370,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWalletResetTxHistoryAndNoncePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWebrtcPolicyPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWebrtcPolicyPreferencesFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/MediaPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/NetworkListBaseAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/SearchEngineTabModelSelectorObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/SearchPreference.java",

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+      android:key="enable_widevine"
+      android:title="@string/prefs_enable_widevine_title"
+      android:summary="@string/prefs_enable_widevine_summary" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="background_video_playback"
+        android:defaultValue="false"
+        android:icon="@drawable/ic_bg_video_playback"
+        android:title="@string/prefs_background_video_playback"/>
+
+</PreferenceScreen>

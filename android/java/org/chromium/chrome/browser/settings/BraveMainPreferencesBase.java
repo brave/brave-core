@@ -67,7 +67,6 @@ public class BraveMainPreferencesBase
     private static final String PREF_BRAVE_VPN_CALLOUT = "pref_vpn_callout";
     private static final String PREF_STANDARD_SEARCH_ENGINE = "standard_search_engine";
     private static final String PREF_PRIVATE_SEARCH_ENGINE = "private_search_engine";
-    private static final String PREF_BACKGROUND_VIDEO_PLAYBACK = "background_video_playback";
     private static final String PREF_CLOSING_ALL_TABS_CLOSES_BRAVE = "closing_all_tabs_closes_brave";
     private static final String PREF_PRIVACY = "privacy";
     private static final String PREF_SHIELDS_AND_PRIVACY = "brave_shields_and_privacy";
@@ -207,7 +206,6 @@ public class BraveMainPreferencesBase
             || (NTPUtil.isReferralEnabled() && NTPBackgroundImagesBridge.enableSponsoredImages())) {
             removePreferenceIfPresent(PREF_BACKGROUND_IMAGES);
         }
-        setBgPlaybackPreference();
         setCustomTabPreference();
     }
 
@@ -216,17 +214,6 @@ public class BraveMainPreferencesBase
         if (preference instanceof ChromeSwitchPreference) {
             ((ChromeSwitchPreference) preference)
                     .setChecked(BraveLaunchIntentDispatcher.useCustomTabs());
-        }
-    }
-
-    private void setBgPlaybackPreference() {
-        Preference preference = findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK);
-        if (preference instanceof ChromeSwitchPreference) {
-            ((ChromeSwitchPreference) preference)
-                    .setChecked(ChromeFeatureList.isEnabled(
-                                        BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)
-                            || BravePrefServiceBridge.getInstance()
-                                       .getBackgroundVideoPlaybackEnabled());
         }
     }
 
@@ -315,7 +302,6 @@ public class BraveMainPreferencesBase
         } else {
             findPreference(PREF_USE_CUSTOM_TABS).setOrder(++generalOrder);
         }
-        findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK).setOrder(++generalOrder);
 
         int displaySectionOrder = generalOrder;
         findPreference(PREF_DISPLAY_SECTION).setOrder(++displaySectionOrder);
@@ -405,12 +391,6 @@ public class BraveMainPreferencesBase
 
     private void updateSummaries() {
         updateSummary(PREF_BRAVE_STATS, BraveStatsPreferences.getPreferenceSummary());
-
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)
-                || BravePrefServiceBridge.getInstance().getBackgroundVideoPlaybackEnabled()) {
-            updateSummary(
-                    PREF_BACKGROUND_VIDEO_PLAYBACK, R.string.prefs_background_video_playback_on);
-        }
     }
 
     private void overrideChromiumPreferences() {
@@ -425,7 +405,6 @@ public class BraveMainPreferencesBase
 
     private void setPreferenceListeners() {
         findPreference(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE).setOnPreferenceChangeListener(this);
-        findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK).setOnPreferenceChangeListener(this);
     }
 
     private void initRateBrave() {
@@ -466,19 +445,6 @@ public class BraveMainPreferencesBase
         String key = preference.getKey();
         if (PREF_CLOSING_ALL_TABS_CLOSES_BRAVE.equals(key)) {
             CloseBraveManager.setClosingAllTabsClosesBraveEnabled((boolean) newValue);
-        }
-
-        if (PREF_BACKGROUND_VIDEO_PLAYBACK.equals(key)) {
-            BraveFeatureUtil.enableFeature(
-                    BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL, (boolean) newValue,
-                    false);
-            if ((boolean) newValue) {
-                updateSummary(PREF_BACKGROUND_VIDEO_PLAYBACK,
-                        R.string.prefs_background_video_playback_on);
-            } else {
-                findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK).setSummary("");
-            }
-            BraveRelaunchUtils.askForRelaunch(this.getActivity());
         }
 
         return true;

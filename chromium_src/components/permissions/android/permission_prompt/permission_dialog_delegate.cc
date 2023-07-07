@@ -73,19 +73,22 @@ void Brave_PermissionDialogController_createDialog(
 }
 
 }  // namespace
+
+void PermissionDialogJavaDelegate::BraveCreateDialog(
+    JNIEnv* env,
+    const base::android::JavaRef<jobject>& j_delegate) {
+  const std::vector<PermissionRequest*>& requests = permission_prompt_->delegate()->Requests();
+  if (requests.size() == 1 && requests[0]->request_type() == RequestType::kWidevine)
+    Java_BravePermissionDialogDelegate_setIsWidevinePermissionRequest(env, j_delegate, true);
+  if (ShouldShowLifetimeOptions(permission_prompt_->delegate())) SetLifetimeOptions(j_delegate);
+  Brave_PermissionDialogController_createDialog(env, j_delegate);
+}
 }  // namespace permissions
 
 #define BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT \
   ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_);
 #define BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL \
-  ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_); \
-  permission_prompt_->Deny(); \
-} \
-void PermissionDialogJavaDelegate::BraveCreateDialog( \
-    JNIEnv* env, \
-    const base::android::JavaRef<jobject>& j_delegate) { \
-  if (ShouldShowLifetimeOptions(permission_prompt_->delegate())) SetLifetimeOptions(j_delegate); \
-  Brave_PermissionDialogController_createDialog(env, j_delegate);
+  ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_);
 #define Java_PermissionDialogController_createDialog \
   BraveCreateDialog
 
