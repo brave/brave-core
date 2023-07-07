@@ -26,15 +26,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
-    private Context context;
-    private LayoutInflater inflater;
+    private LayoutInflater mInflater;
     private List<NetworkInfo> mNetworkInfoList;
     private ExecutorService mExecutor;
     private Handler mHandler;
 
     public NetworkSpinnerAdapter(Context context, List<NetworkInfo> networkInfoList) {
-        this.context = context;
-        inflater = (LayoutInflater.from(context));
+        mInflater = (LayoutInflater.from(context));
         mNetworkInfoList = networkInfoList;
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
@@ -66,7 +64,7 @@ public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
     // [ViewHolder]
     @SuppressLint("ViewHolder")
     public View getView(int position, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.selected_network_item, viewGroup, false);
+        view = mInflater.inflate(R.layout.selected_network_item, viewGroup, false);
         TextView name = view.findViewById(R.id.network_name_text);
         name.setText(mNetworkInfoList.get(position).chainName);
         return view;
@@ -74,7 +72,7 @@ public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
 
     @Override
     public View getDropDownView(int position, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.network_spinner_items, null);
+        view = mInflater.inflate(R.layout.network_spinner_items, null);
         TextView name = (TextView) view.findViewById(R.id.network_name_text);
         name.setText(mNetworkInfoList.get(position).chainName);
         ImageView networkPicture = view.findViewById(R.id.network_picture);

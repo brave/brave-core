@@ -12,7 +12,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +19,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -81,7 +78,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                    AdapterView.OnItemSelectedListener {
     public static final String TAG_FRAGMENT =
             EditVisibleAssetsBottomSheetDialogFragment.class.getName();
-    private WalletCoinAdapter walletCoinAdapter;
+    private WalletCoinAdapter mWalletCoinAdapter;
     private final WalletCoinAdapter.AdapterType mType;
     private final boolean mNftsOnly;
     private NetworkInfo mSelectedNetwork;
@@ -346,7 +343,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                         }
 
                         boolean isDuplicateToken = false;
-                        for (WalletListItemModel item : walletCoinAdapter.getCheckedAssets()) {
+                        for (WalletListItemModel item : mWalletCoinAdapter.getCheckedAssets()) {
                             // We can have multiple ERC721 or Solana NFTs with the same name
                             if (!item.isNft()
                                     && (item.getTitle().equals(token.name)
@@ -364,7 +361,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                             itemModel.setAssetNetwork(networkInfo);
 
                             itemModel.setIsUserSelected(true);
-                            walletCoinAdapter.addItem(itemModel);
+                            mWalletCoinAdapter.addItem(itemModel);
                             mIsAssetsListChanged = true;
                         }
                     }
@@ -383,7 +380,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             selectedTokensSymbols.add(Utils.tokenToString(userSelectedToken));
         }
         RecyclerView rvAssets = view.findViewById(R.id.rvAssets);
-        walletCoinAdapter = new WalletCoinAdapter(mType);
+        mWalletCoinAdapter = new WalletCoinAdapter(mType);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
         for (int i = 0; i < tokens.size(); i++) {
@@ -407,10 +404,10 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         walletListItemModelList.sort(
                 (item1, item2)
                         -> Boolean.compare(item2.getIsUserSelected(), item1.getIsUserSelected()));
-        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-        walletCoinAdapter.setOnWalletListItemClick(this);
-        walletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
-        rvAssets.setAdapter(walletCoinAdapter);
+        mWalletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+        mWalletCoinAdapter.setOnWalletListItemClick(this);
+        mWalletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
+        rvAssets.setAdapter(mWalletCoinAdapter);
         rvAssets.setLayoutManager(new LinearLayoutManager(getActivity()));
         SearchView searchView = (SearchView) view.findViewById(R.id.searchView);
         searchView.setQueryHint(getText(R.string.search_tokens));
@@ -419,8 +416,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (walletCoinAdapter != null) {
-                    walletCoinAdapter.filter(query, !isEditVisibleAssetType);
+                if (mWalletCoinAdapter != null) {
+                    mWalletCoinAdapter.filter(query, !isEditVisibleAssetType);
                 }
 
                 return true;
@@ -428,8 +425,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (walletCoinAdapter != null) {
-                    walletCoinAdapter.filter(newText, !isEditVisibleAssetType);
+                if (mWalletCoinAdapter != null) {
+                    mWalletCoinAdapter.filter(newText, !isEditVisibleAssetType);
                 }
 
                 return true;
@@ -444,7 +441,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
 
     @Override
     public void onAssetClick(BlockchainToken token) {
-        List<WalletListItemModel> checkedAssets = walletCoinAdapter.getCheckedAssets();
+        List<WalletListItemModel> checkedAssets = mWalletCoinAdapter.getCheckedAssets();
         if (mOnEditVisibleItemClickListener != null) {
             mOnEditVisibleItemClickListener.onAssetClick(checkedAssets.get(0));
         }
@@ -468,7 +465,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                         braveWalletService.removeUserAsset(
                                 walletListItemModel.getBlockchainToken(), (success) -> {
                                     if (success) {
-                                        walletCoinAdapter.removeItem(walletListItemModel);
+                                        mWalletCoinAdapter.removeItem(walletListItemModel);
                                         mIsAssetsListChanged = true;
                                     }
                                 });
@@ -485,8 +482,9 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         assert walletListItemModel.getAssetNetwork() != null : "Network should not be null";
         // Prevent NPE of network, issue:#31303
         if (mType != WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST
-                || walletListItemModel.getAssetNetwork() == null)
+                || walletListItemModel.getAssetNetwork() == null) {
             return;
+        }
 
         TokenUtils.isCustomToken(getBlockchainRegistry(), walletListItemModel.getAssetNetwork(),
                 walletListItemModel.getBlockchainToken().coin,
@@ -503,8 +501,9 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         assert walletListItemModel.getAssetNetwork() != null : "Network should not be null";
         // Prevent NPE of network, issue:#31303
         if (mType != WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST
-                || walletListItemModel.getAssetNetwork() == null)
+                || walletListItemModel.getAssetNetwork() == null) {
             return;
+        }
 
         BlockchainToken thisToken = walletListItemModel.getBlockchainToken();
         TokenUtils.isCustomToken(getBlockchainRegistry(), walletListItemModel.getAssetNetwork(),

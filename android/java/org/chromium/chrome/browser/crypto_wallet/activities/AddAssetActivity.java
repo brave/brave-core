@@ -30,13 +30,17 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.NetworkModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
-import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 
 import java.util.Collections;
 
+/**
+ * Activity to add new assets or NFTs depending on the boolean value passed in the intent.
+ * {@see AddAssetActivity.getIntent(Context, boolean)}.
+ * Used by {@code EditVisibleAssetsBottomSheetDialogFragment}.
+ */
 public class AddAssetActivity extends BraveWalletBaseActivity implements TextWatcher {
     private static final String TAG = "AddAssetActivity";
 
@@ -63,6 +67,13 @@ public class AddAssetActivity extends BraveWalletBaseActivity implements TextWat
     private EditText mTokenSymbolEdit;
     private EditText mTokenIdEdit;
 
+    /**
+     * Gets intent to start new activity {@code AddAssetActivity}.
+     * @param context Android context required to instantiate the intent.
+     * @param nftOnly {@code true} if the activity will add a new NFT,
+     * {@code false} to add a new custom asset.
+     * @return Intent to start new activity {@code AddAssetActivity}.
+     */
     public static Intent getIntent(@NonNull final Context context, final boolean nftOnly) {
         Intent intent = new Intent(context, AddAssetActivity.class);
         intent.putExtra(NFT_CUSTOM_ASSET, nftOnly);
