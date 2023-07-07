@@ -31,7 +31,6 @@ public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
     private List<NetworkInfo> mNetworkInfoList;
     private ExecutorService mExecutor;
     private Handler mHandler;
-    public float mNetworkTitleSize;
 
     public NetworkSpinnerAdapter(Context context, List<NetworkInfo> networkInfoList) {
         this.context = context;
@@ -70,9 +69,6 @@ public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
         view = inflater.inflate(R.layout.selected_network_item, viewGroup, false);
         TextView name = view.findViewById(R.id.network_name_text);
         name.setText(mNetworkInfoList.get(position).chainName);
-        if (mNetworkTitleSize > 0) {
-            name.setTextSize(mNetworkTitleSize);
-        }
         return view;
     }
 

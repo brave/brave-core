@@ -88,7 +88,6 @@ public class AddAssetActivity extends BraveWalletBaseActivity implements TextWat
 
         mNetworkSpinner = findViewById(R.id.network_spinner);
         mNetworkAdapter = new NetworkSpinnerAdapter(this, Collections.emptyList());
-        mNetworkAdapter.mNetworkTitleSize = 14;
         mNetworkSpinner.setAdapter(mNetworkAdapter);
         mTokenIdSection = findViewById(R.id.token_id_section);
         mTokenDecimalSection = findViewById(R.id.token_decimal_section);
