@@ -1094,12 +1094,35 @@ NodeHTML* PageGraph::GetHTMLNode(const DOMNodeId node_id) const {
   return nullptr;
 }
 
-NodeHTMLElement* PageGraph::GetHTMLElementNode(const DOMNodeId node_id) const {
+NodeHTMLElement* PageGraph::GetHTMLElementNode(
+    absl::variant<blink::DOMNodeId, blink::Node*> node_var) {
+  blink::DOMNodeId node_id;
+  blink::Node* node = nullptr;
+  if (absl::holds_alternative<blink::DOMNodeId>(node_var)) {
+    node_id = absl::get<blink::DOMNodeId>(node_var);
+  } else {
+    node = absl::get<blink::Node*>(node_var);
+    node_id = blink::DOMNodeIds::IdForNode(node);
+  }
+
   VLOG(1) << "GetHTMLElementNode) node id: " << node_id;
   auto element_node_it = element_nodes_.find(node_id);
   if (element_node_it != element_nodes_.end()) {
     return element_node_it->value;
   }
+
+  if (!node) {
+    DCHECK(absl::holds_alternative<blink::DOMNodeId>(node_var));
+    node = blink::DOMNodeIds::NodeForId(node_id);
+    CHECK(node);
+  }
+  if (RegisterCurrentlyConstructedNode(node)) {
+    element_node_it = element_nodes_.find(node_id);
+    if (element_node_it != element_nodes_.end()) {
+      return element_node_it->value;
+    }
+  }
+
   CHECK(false) << "HTMLElementNode not found: " << node_id;
   return nullptr;
 }
@@ -1113,24 +1136,24 @@ NodeHTMLText* PageGraph::GetHTMLTextNode(const DOMNodeId node_id) const {
   return nullptr;
 }
 
-NodeHTMLElement* PageGraph::RegisterAndGetHTMLElementNode(blink::Node* node) {
-  RegisterCurrentlyConstructedNode(node);
-  return GetHTMLElementNode(blink::DOMNodeIds::IdForNode(node));
-}
-
-void PageGraph::RegisterCurrentlyConstructedNode(blink::Node* node) {
+bool PageGraph::RegisterCurrentlyConstructedNode(blink::Node* node) {
   auto node_it = currently_constructed_nodes_.find(node);
   if (node_it == currently_constructed_nodes_.end()) {
-    return;
+    // Node is not being constructed currently.
+    return false;
   }
-  if (!node_it->second) {
-    RegisterPageGraphNodeFullyCreated(node);
-    // Node should be removed from currently_constructed_nodes_.
-    DCHECK(!base::Contains(currently_constructed_nodes_, node));
-    // Mark the node as an already registered for the upcoming
-    // RegisterPageGraphNodeFullyCreated call.
-    currently_constructed_nodes_.emplace(node, true);
+  if (node_it->second) {
+    // Node is already registered.
+    return false;
   }
+
+  RegisterPageGraphNodeFullyCreated(node);
+  // Node should be removed from currently_constructed_nodes_.
+  DCHECK(!base::Contains(currently_constructed_nodes_, node));
+  // Mark the node as an already registered for the upcoming
+  // RegisterPageGraphNodeFullyCreated call.
+  currently_constructed_nodes_.emplace(node, true);
+  return true;
 }
 
 void PageGraph::RegisterDocumentNodeCreated(blink::Document* document) {
@@ -1164,7 +1187,7 @@ void PageGraph::RegisterDocumentNodeCreated(blink::Document* document) {
     execution_context_nodes_.insert(execution_context, std::move(nodes));
 
     if (blink::HTMLFrameOwnerElement* owner = document->LocalOwner()) {
-      NodeHTMLElement* owner_graph_node = RegisterAndGetHTMLElementNode(owner);
+      NodeHTMLElement* owner_graph_node = GetHTMLElementNode(owner);
       AddEdge<EdgeCrossDOM>(To<NodeFrameOwner>(owner_graph_node),
                             nodes.parser_node);
     } else if (blink::Document* parent_document = document->ParentDocument()) {
@@ -1224,7 +1247,7 @@ void PageGraph::RegisterHTMLTextNodeInserted(
       GetCurrentActingNode(node->GetExecutionContext());
 
   NodeHTMLElement* parent_graph_node =
-      parent_node ? RegisterAndGetHTMLElementNode(parent_node) : nullptr;
+      parent_node ? GetHTMLElementNode(parent_node) : nullptr;
   NodeHTML* prior_graph_sibling_node =
       before_sibling_id ? GetHTMLNode(before_sibling_id) : nullptr;
   NodeHTMLText* const inserted_node = GetHTMLTextNode(node_id);
@@ -1248,7 +1271,7 @@ void PageGraph::RegisterHTMLElementNodeInserted(
       GetCurrentActingNode(node->GetExecutionContext());
 
   NodeHTMLElement* parent_graph_node =
-      parent_node ? RegisterAndGetHTMLElementNode(parent_node) : nullptr;
+      parent_node ? GetHTMLElementNode(parent_node) : nullptr;
   NodeHTML* prior_graph_sibling_node =
       before_sibling_id ? GetHTMLNode(before_sibling_id) : nullptr;
   NodeHTMLElement* const inserted_node = GetHTMLElementNode(node_id);
@@ -1289,7 +1312,7 @@ void PageGraph::RegisterEventListenerAdd(blink::Node* node,
   NodeActor* const acting_node =
       GetCurrentActingNode(node->GetExecutionContext());
 
-  NodeHTMLElement* const element_node = RegisterAndGetHTMLElementNode(node);
+  NodeHTMLElement* const element_node = GetHTMLElementNode(node);
   AddEdge<EdgeEventListenerAdd>(
       acting_node, element_node, event_type, listener_id,
       script_tracker_.GetScriptNode(node->GetExecutionContext()->GetIsolate(),
@@ -1308,7 +1331,7 @@ void PageGraph::RegisterEventListenerRemove(blink::Node* node,
   NodeActor* const acting_node =
       GetCurrentActingNode(node->GetExecutionContext());
 
-  NodeHTMLElement* const element_node = RegisterAndGetHTMLElementNode(node);
+  NodeHTMLElement* const element_node = GetHTMLElementNode(node);
   AddEdge<EdgeEventListenerRemove>(
       acting_node, element_node, event_type, listener_id,
       script_tracker_.GetScriptNode(node->GetExecutionContext()->GetIsolate(),
@@ -1325,7 +1348,7 @@ void PageGraph::RegisterInlineStyleSet(blink::Node* node,
   NodeActor* const acting_node =
       GetCurrentActingNode(node->GetExecutionContext());
 
-  NodeHTMLElement* const target_node = RegisterAndGetHTMLElementNode(node);
+  NodeHTMLElement* const target_node = GetHTMLElementNode(node);
   AddEdge<EdgeAttributeSet>(acting_node, target_node, attr_name, attr_value,
                             true);
 }
@@ -1339,7 +1362,7 @@ void PageGraph::RegisterInlineStyleDelete(blink::Node* node,
   NodeActor* const acting_node =
       GetCurrentActingNode(node->GetExecutionContext());
 
-  NodeHTMLElement* const target_node = RegisterAndGetHTMLElementNode(node);
+  NodeHTMLElement* const target_node = GetHTMLElementNode(node);
   AddEdge<EdgeAttributeDelete>(acting_node, target_node, attr_name, true);
 }
 
@@ -1353,7 +1376,7 @@ void PageGraph::RegisterAttributeSet(blink::Node* node,
   NodeActor* const acting_node =
       GetCurrentActingNode(node->GetExecutionContext());
 
-  NodeHTMLElement* const target_node = RegisterAndGetHTMLElementNode(node);
+  NodeHTMLElement* const target_node = GetHTMLElementNode(node);
   AddEdge<EdgeAttributeSet>(acting_node, target_node, attr_name, attr_value);
 }
 
@@ -1366,7 +1389,7 @@ void PageGraph::RegisterAttributeDelete(blink::Node* node,
   NodeActor* const acting_node =
       GetCurrentActingNode(node->GetExecutionContext());
 
-  NodeHTMLElement* const target_node = RegisterAndGetHTMLElementNode(node);
+  NodeHTMLElement* const target_node = GetHTMLElementNode(node);
   AddEdge<EdgeAttributeDelete>(acting_node, target_node, attr_name);
 }
 
