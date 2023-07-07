@@ -5,7 +5,7 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
-import { layoutSmallWidth } from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth, layoutSmallWidth } from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 import { WalletButton } from '../../../components/shared/style'
 import { BraveWallet } from '../../../constants/types'
 
@@ -27,6 +27,10 @@ export const TopWrapper = styled.div`
   width: 360px;
   text-align: left;
   margin-bottom: 8px;
+
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    min-width: 100%;
+  }
 `
 
 export const NftName = styled.h2`

@@ -25,18 +25,26 @@ import {
   UpdateNFtMetadataMessage,
   UpdateNftImageLoadingMessage,
   braveNftDisplayOrigin,
+  braveWalletPanelOrigin,
   sendMessageToNftUiFrame
 } from '../../nft-ui-messages'
 import { areSupportedForPinning, extractIpfsUrl } from '../../../common/async/lib'
-import { useNftPin } from '../../../common/hooks/nft-pin'
 import { getLocale } from '../../../../common/locale'
 
 // actions
 import { WalletActions } from '../../../common/actions'
 
+// queries
+import {
+  useGetAutopinEnabledQuery,
+  useGetNftMetadataQuery,
+  useGetNftPinningStatusQuery
+} from '../../../common/slices/api.slice'
+
 // selectors
-import { PageSelectors } from '../../../page/selectors'
-import { useSafePageSelector, useUnsafePageSelector, useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import { //
+  useUnsafeWalletSelector
+} from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
 
 // components
@@ -105,33 +113,31 @@ export const NftScreen = (props: Props) => {
   const [nftIframeLoaded, setNftIframeLoaded] = React.useState(false)
   const [ipfsImageUrl, setIpfsImageUrl] = React.useState<string>()
   const [isNftPinnable, setIsNftPinnable] = React.useState<boolean>(true)
-  const [nftImageLoading, setNftImageLoading] = React.useState<boolean>(true)
+  const [nftImageLoading, setNftImageLoading] = React.useState<boolean>(false)
 
   // redux
-  const isFetchingNFTMetadata = useSafePageSelector(PageSelectors.isFetchingNFTMetadata)
-  const nftMetadata = useUnsafePageSelector(PageSelectors.nftMetadata)
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
-  const nftMetadataError = useSafePageSelector(PageSelectors.nftMetadataError)
-  const isAutoPinEnabled = useSafePageSelector(PageSelectors.isAutoPinEnabled)
-  const nftPinningStatus = useUnsafePageSelector(PageSelectors.nftsPinningStatus)
+
+  // queries
+  const {
+    data: nftMetadata,
+    isLoading: isFetchingNFTMetadata,
+    error: nftMetadataError
+  } = useGetNftMetadataQuery(selectedAsset, {
+    skip: !selectedAsset
+  })
+  const { data: isAutoPinEnabled } = useGetAutopinEnabledQuery()
+  const { data: currentNftPinningStatus } = useGetNftPinningStatusQuery(
+    selectedAsset, {
+    skip: !selectedAsset || !isAutoPinEnabled || !isNftPinnable
+  })
 
   // hooks
   const history = useHistory()
   const dispatch = useDispatch()
-  const { getNftPinningStatus } = useNftPin()
   const onClickViewOnBlockExplorer = useExplorer(tokenNetwork || new BraveWallet.NetworkInfo())
 
   // memos
-  const currentNftPinningStatus = React.useMemo(() => {
-    if (!isAutoPinEnabled) {
-      return undefined
-    }
-    if (selectedAsset && isNftPinnable) {
-      return getNftPinningStatus(selectedAsset)
-    }
-    return undefined
-  }, [isNftPinnable, selectedAsset, nftPinningStatus, isAutoPinEnabled])
-
   const isNftPinned = React.useMemo(() => {
     return currentNftPinningStatus?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNED
   }, [currentNftPinningStatus?.code])
@@ -178,12 +184,15 @@ export const NftScreen = (props: Props) => {
 
   const onMessageEventListener = React.useCallback((event: MessageEvent<CommandMessage>) => {
     // validate message origin
-    if (event.origin !== braveNftDisplayOrigin) return
-
-    const message = event.data
-    if (message.command === NftUiCommand.UpdateNftImageLoading) {
-      const { payload } = message as UpdateNftImageLoadingMessage
-      setNftImageLoading(payload)
+    if (
+      event.origin === braveNftDisplayOrigin ||
+      event.origin === braveWalletPanelOrigin
+    ) {
+      const message = event.data
+      if (message.command === NftUiCommand.UpdateNftImageLoading) {
+        const { payload } = message as UpdateNftImageLoadingMessage
+        setNftImageLoading(payload)
+      }
     }
   }, [])
 
@@ -233,7 +242,7 @@ export const NftScreen = (props: Props) => {
         command: NftUiCommand.UpdateNFTMetadataError,
         payload: {
           displayMode: 'details',
-          error: nftMetadataError
+          error: nftMetadataError as string
         }
       }
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
@@ -273,7 +282,6 @@ export const NftScreen = (props: Props) => {
     nftIframeLoaded,
     nftMetadata,
     nftMetadataError,
-    nftPinningStatus,
     selectedAsset,
     tokenNetwork
   ])
@@ -297,7 +305,7 @@ export const NftScreen = (props: Props) => {
     <StyledWrapper>
       <TopWrapper>
         <NftMultimediaWrapper>
-          {(isFetchingNFTMetadata || nftImageLoading) && 
+          {(isFetchingNFTMetadata) &&
             <Skeleton {...createSkeletonProps(360, 360)} />  
           }
           <NftMultimedia
@@ -446,21 +454,27 @@ export const NftScreen = (props: Props) => {
           </SectionWrapper>
         </>
       )}
-      <Divider />
-      <SectionTitle>
-        {isFetchingNFTMetadata ? (
+      {nftMetadata?.attributes?.length !== 0 && <Divider />}
+      {isFetchingNFTMetadata ? (
+        <SectionTitle>
           <Skeleton {...createSkeletonProps(200, 20)} />
-        ) : (
-          getLocale('braveWalletNFTDetailsProperties')
-        )}
-      </SectionTitle>
+        </SectionTitle>
+      ): (
+        <>
+          {nftMetadata?.attributes?.length !== 0 &&
+            <SectionTitle>
+              {getLocale('braveWalletNFTDetailsProperties')}
+            </SectionTitle>
+          }
+        </>
+      )}
       {isFetchingNFTMetadata ? (
         <Skeleton {...createSkeletonProps('100%', 100)} />
       ) : (
         <>
-          {nftMetadata?.attributes && (
+          {nftMetadata?.attributes?.length !== 0 && (
             <Properties>
-              {nftMetadata.attributes.map((attr, idx) => (
+              {nftMetadata?.attributes?.map((attr, idx) => (
                 <Property key={idx}>
                   <Trait>
                     <TraitType>{attr.traitType}</TraitType>

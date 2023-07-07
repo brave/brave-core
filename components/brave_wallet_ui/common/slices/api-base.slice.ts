@@ -39,6 +39,9 @@ export function createWalletApiBase() {
       'BraveRewards-Enabled',
       'BraveRewards-RewardsBalance',
       'BraveRewards-ExternalWallet',
+      'NFTPinningStatus',
+      'AutoPinEnabled',
+      'PriceHistory'
     ],
     endpoints: ({ mutation, query }) => ({})
   })

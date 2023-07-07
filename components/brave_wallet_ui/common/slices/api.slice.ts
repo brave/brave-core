@@ -25,7 +25,9 @@ import {
   SerializableTransactionInfo,
   SPLTransferFromParams,
   SupportedCoinTypes,
-  SpotPriceRegistry
+  SpotPriceRegistry,
+  GetPriceHistoryReturnInfo,
+  NFTMetadataReturnType
 } from '../../constants/types'
 import {
   CancelTransactionPayload,
@@ -88,7 +90,7 @@ import { shouldReportTransactionP3A, sortTransactionByDate, toTxDataUnion } from
 import {
   makeSerializableTransaction
 } from '../../utils/model-serialization-utils'
-import { addLogoToToken } from '../async/lib'
+import { addLogoToToken, translateToNftGateway } from '../async/lib'
 import {
   dialogErrorFromLedgerErrorCode,
   signLedgerEthereumTransaction,
@@ -158,6 +160,21 @@ interface GetTokenSpotPricesArg {
   timeframe?: BraveWallet.AssetPriceTimeframe
 }
 
+interface GetPriceHistoryArg {
+  /**
+   * Token parameter from getTokenParam(asset)
+   */
+  tokenParam: string
+  /**
+   * Default currency
+   */
+  vsAsset: string
+  /**
+   * Timeframe for which price history will be fetched
+   */
+  timeFrame: number
+}
+
 const NETWORK_TAG_IDS = {
   HIDDEN: 'HIDDEN',
   LIST: 'LIST',
@@ -199,12 +216,7 @@ export function createWalletApi () {
             : [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.REGISTRY }]
       }),
       invalidateAccountInfos: mutation<boolean, void>({
-        queryFn: (
-          arg,
-          api,
-          extraOptions,
-          baseQuery
-        ) => {
+        queryFn: (arg, api, extraOptions, baseQuery) => {
           baseQuery(undefined).cache.clearAccountsRegistry()
           return { data: true }
         },
@@ -214,12 +226,7 @@ export function createWalletApi () {
         ]
       }),
       invalidateSelectedAccount: mutation<boolean, void>({
-        queryFn: (
-          arg,
-          api,
-          extraOptions,
-          baseQuery
-        ) => {
+        queryFn: (arg, api, extraOptions, baseQuery) => {
           baseQuery(undefined).cache.clearSelectedAccount()
           return { data: true }
         },
@@ -255,8 +262,8 @@ export function createWalletApi () {
         queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
           const { cache } = baseQuery(undefined)
 
-          const selectedAccountId =
-            (await cache.getAllAccounts()).selectedAccount?.accountId
+          const selectedAccountId = (await cache.getAllAccounts())
+            .selectedAccount?.accountId
 
           return {
             data: selectedAccountId
@@ -369,9 +376,7 @@ export function createWalletApi () {
         queryFn: () => {
           return { data: true }
         },
-        invalidatesTags: [
-          { type: 'Network', id: NETWORK_TAG_IDS.SELECTED }
-        ]
+        invalidatesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }]
       }),
       getSelectedChain: query<BraveWallet.NetworkInfo | undefined, void>({
         queryFn: async (arg, api, extraOptions, baseQuery) => {
@@ -412,15 +417,22 @@ export function createWalletApi () {
 
             cache.clearSelectedAccount()
             const { accountId: selectedAccountId } =
-              await braveWalletService.ensureSelectedAccountForChain(coin, chainId)
+              await braveWalletService.ensureSelectedAccountForChain(
+                coin,
+                chainId
+              )
             if (!selectedAccountId) {
               return {
                 data: { needsAccountForNetwork: true }
               }
             }
 
-            const { success } =
-              await braveWalletService.setNetworkForSelectedAccountOnActiveOrigin(chainId)
+            const {
+              success //
+            } = await braveWalletService //
+              .setNetworkForSelectedAccountOnActiveOrigin(
+                chainId
+              )
             if (!success) {
               throw new Error(
                 'braveWalletService.SetNetworkForSelectedAccountOnActiveOrigin failed'
@@ -1414,14 +1426,15 @@ export function createWalletApi () {
               gasEstimation: undefined
             }
 
-            const { errorMessage, success } = await txService.addUnapprovedTransaction(
-              isEIP1559
-                ? toTxDataUnion({ ethTxData1559: txData1559 })
-                : toTxDataUnion({ ethTxData: txData }),
-              payload.fromAccount.address,
-              null,
-              null
-            )
+            const { errorMessage, success } =
+              await txService.addUnapprovedTransaction(
+                isEIP1559
+                  ? toTxDataUnion({ ethTxData1559: txData1559 })
+                  : toTxDataUnion({ ethTxData: txData }),
+                payload.fromAccount.address,
+                null,
+                null
+              )
 
             if (!success && errorMessage) {
               return {
@@ -1531,7 +1544,7 @@ export function createWalletApi () {
 
             const { errorMessage, success } =
               await txService.addUnapprovedTransaction(
-                toTxDataUnion({ solanaTxData: txData ?? undefined}),
+                toTxDataUnion({ solanaTxData: txData ?? undefined }),
                 payload.fromAccount.address,
                 null,
                 null
@@ -2676,6 +2689,178 @@ export function createWalletApi () {
           }
         },
         invalidatesTags: ['NftDiscoveryEnabledStatus']
+      }),
+      getPriceHistory: query<GetPriceHistoryReturnInfo[], GetPriceHistoryArg>({
+        queryFn: async (arg, _api, _extraOptions, baseQuery) => {
+          try {
+            const {
+              data: { assetRatioService }
+            } = baseQuery(undefined)
+            const priceHistory = await assetRatioService.getPriceHistory(
+              arg.tokenParam,
+              arg.vsAsset,
+              arg.timeFrame
+            )
+            return {
+              data: priceHistory.values
+            }
+          } catch (error) {
+            const message =
+              'Error getting price history: ' + error?.message ||
+              JSON.stringify(error)
+            console.error('Error getting price history: ', error)
+            return {
+              error: message
+            }
+          }
+        },
+        providesTags: (_result, err, arg) =>
+          err
+            ? ['PriceHistory']
+            : [
+                {
+                  type: 'PriceHistory',
+                  id: `${arg.tokenParam}-${arg.vsAsset}-${arg.timeFrame}`
+                }
+              ]
+      }),
+      getNftMetadata: query<NFTMetadataReturnType, BraveWallet.BlockchainToken>(
+        {
+          queryFn: async (arg, _api, _extraOptions, baseQuery) => {
+            try {
+              const { data: api } = baseQuery(undefined)
+              const { jsonRpcService } = api
+              const result =
+                arg.coin === BraveWallet.CoinType.ETH
+                  ? await jsonRpcService.getERC721Metadata(
+                      arg.contractAddress,
+                      arg.tokenId,
+                      arg.chainId
+                    )
+                  : arg.coin === BraveWallet.CoinType.SOL
+                  ? await jsonRpcService.getSolTokenMetadata(
+                      arg.chainId,
+                      arg.contractAddress
+                    )
+                  : undefined
+
+              if (!result?.error) {
+                const response = result?.response && JSON.parse(result.response)
+                const attributes = Array.isArray(response.attributes)
+                  ? response.attributes.map(
+                      (attr: { trait_type: string; value: string }) => ({
+                        traitType: attr.trait_type,
+                        value: attr.value
+                      })
+                    )
+                  : []
+                const tokenNetwork = await getNetwork(api, arg)
+                const nftMetadata: NFTMetadataReturnType = {
+                  metadataUrl: result?.tokenUrl || '',
+                  chainName: tokenNetwork?.chainName || '',
+                  tokenType:
+                    arg.coin === BraveWallet.CoinType.ETH
+                      ? 'ERC721'
+                      : arg.coin === BraveWallet.CoinType.SOL
+                      ? 'SPL'
+                      : '',
+                  tokenID: arg.tokenId,
+                  imageURL: response.image.startsWith('data:image/')
+                    ? response.image
+                    : await translateToNftGateway(response.image),
+                  imageMimeType: 'image/*',
+                  floorFiatPrice: '',
+                  floorCryptoPrice: '',
+                  contractInformation: {
+                    address: arg.contractAddress,
+                    name: response.name,
+                    description: response.description,
+                    website: '',
+                    facebook: '',
+                    logo: '',
+                    twitter: ''
+                  },
+                  attributes
+                }
+
+                return {
+                  data: nftMetadata
+                }
+              } else {
+                throw new Error(result.errorMessage)
+              }
+            } catch (error) {
+              const message =
+                'Error fetching NFT metadata: ' + error?.message ||
+                JSON.stringify(error)
+              console.error(message)
+              return {
+                error: message
+              }
+            }
+          },
+          providesTags: (_result, err, arg) =>
+            err
+              ? ['ERC721Metadata']
+              : [{ type: 'ERC721Metadata', id: getAssetIdKey(arg) }]
+        }
+      ),
+      getNftPinningStatus: query<
+        BraveWallet.TokenPinStatus | undefined,
+        BraveWallet.BlockchainToken
+      >({
+        queryFn: async (arg, _api, _extraOptions, baseQuery) => {
+          try {
+            const { data: api } = baseQuery(undefined)
+            const { braveWalletPinService } = api
+            const result = await braveWalletPinService.getTokenStatus(arg)
+
+            if (result.error) {
+              throw new Error(result.error.message)
+            } else {
+              if (result.status?.local) {
+                return {
+                  data: result.status.local
+                }
+              } else {
+                throw new Error('Local pinning status is null')
+              }
+            }
+          } catch (error) {
+            const message =
+              'Error fetching NFT Pinning status: ' + error?.message ||
+              JSON.stringify(error)
+            console.error(message)
+            return {
+              error: message
+            }
+          }
+        },
+        providesTags: (_result, err, arg) =>
+          err
+            ? ['NFTPinningStatus']
+            : [{ type: 'NFTPinningStatus', id: getAssetIdKey(arg) }]
+      }),
+      getAutopinEnabled: query<boolean, void>({
+        queryFn: async (_arg, _api, _extraOptions, _baseQuery) => {
+          try {
+            const { braveWalletAutoPinService } = apiProxyFetcher()
+            const result = await braveWalletAutoPinService.isAutoPinEnabled()
+
+            return {
+              data: result.enabled
+            }
+          } catch (error) {
+            console.error('Error getting autopin status: ', error)
+            const message =
+              'Error getting auto-pin status: ' + error?.message ||
+              JSON.stringify(error)
+            return {
+              error: message
+            }
+          }
+        },
+        providesTags: ['AutoPinEnabled']
       })
     }}
   })
@@ -2768,6 +2953,10 @@ export const {
   useLazyGetTokensRegistryQuery,
   useLazyGetTransactionsQuery,
   useLazyGetUserTokensRegistryQuery,
+  useGetPriceHistoryQuery,
+  useGetNftMetadataQuery,
+  useGetNftPinningStatusQuery,
+  useGetAutopinEnabledQuery,
   useNewUnapprovedTxAddedMutation,
   useOpenPanelUIMutation,
   usePrefetch,
