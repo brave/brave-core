@@ -354,7 +354,7 @@
 -AppInfoDialogViewsTest.*
 -AppLauncherHandlerTest.*
 -AssistantSidePanelCoordinatorImplTest.*
--AutofillContextMenuTest/RenderViewContestMenuAutofillTest.ShowAutofillOptions/*
+-AutofillContextMenuTest/RenderViewContextMenuAutofillTest.ShowAutofillOptions/*
 -AvatarToolbarButtonTest.*
 -BackFwdMenuModelIncognitoTest.*
 -BackFwdMenuModelTest.*
