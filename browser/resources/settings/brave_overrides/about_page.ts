@@ -37,6 +37,7 @@ RegisterPolymerTemplateModifications({
       wrapper.setAttribute('href', 'https://brave.com/latest/')
       parent.replaceChild(wrapper, version)
       wrapper.appendChild(version)
+      version.style.color = 'orange';
     }
 
     // Help link shown if update fails
