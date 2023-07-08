@@ -127,11 +127,28 @@ void SolanaProviderImpl::Connect(absl::optional<base::Value::Dict> arg,
         mojom::SolanaProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
   } else {
+    const auto keyring_info = keyring_service_->GetKeyringInfoSync(
+        brave_wallet::mojom::KeyringId::kSolana);
+    std::vector<std::string> addresses;
+    for (const auto& account_info : keyring_info->account_infos) {
+      addresses.push_back(account_info->address);
+    }
+    // filter out already permitted accounts if exists
+    const auto allowed_accounts =
+        delegate_->GetAllowedAccounts(mojom::CoinType::SOL, addresses);
+    if (allowed_accounts) {
+      addresses.erase(base::ranges::remove_if(
+                          addresses,
+                          [&allowed_accounts](const auto& address) {
+                            return base::Contains(*allowed_accounts, address);
+                          }),
+                      addresses.end());
+    }
     delegate_->RequestPermissions(
-        mojom::CoinType::SOL, {account->address},
-        base::BindOnce(&SolanaProviderImpl::OnConnect,
-                       weak_factory_.GetWeakPtr(), account->address,
-                       std::move(callback)));
+        mojom::CoinType::SOL, addresses,
+        base::BindOnce(
+            &SolanaProviderImpl::OnConnect, weak_factory_.GetWeakPtr(),
+            std::move(keyring_info->account_infos), std::move(callback)));
   }
 
   // To show wallet icon on android if wallet is unlocked
@@ -740,7 +757,7 @@ bool SolanaProviderImpl::IsAccountConnected(const mojom::AccountInfo& account) {
 }
 
 void SolanaProviderImpl::OnConnect(
-    const std::string& requested_account,
+    const std::vector<mojom::AccountInfoPtr>& requested_accounts,
     ConnectCallback callback,
     RequestPermissionsError error,
     const absl::optional<std::vector<std::string>>& allowed_accounts) {
@@ -756,9 +773,26 @@ void SolanaProviderImpl::OnConnect(
   } else if (error == RequestPermissionsError::kNone) {
     CHECK(allowed_accounts);
     if (allowed_accounts->size()) {
+      // There should be only one account to be connected
+      CHECK_EQ(allowed_accounts->size(), 1u);
+      auto account = keyring_service_->GetSelectedSolanaDappAccount();
+      // Set connected account to be selected if connected one and selected
+      // account are different.
+      const std::string& allowed_account_address = allowed_accounts->at(0);
+      if (account && account->address != allowed_account_address) {
+        auto account_it = base::ranges::find_if(
+            requested_accounts, [&allowed_account_address](
+                                    const mojom::AccountInfoPtr& account_info) {
+              return account_info->address == allowed_account_address;
+            });
+        CHECK(account_it != requested_accounts.end());
+        // SetSelectedAccount result shouldn't affect connect()
+        keyring_service_->SetSelectedAccountSync(
+            (*account_it)->account_id.Clone());
+      }
       std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
-                              allowed_accounts->at(0));
-      delegate_->AddSolanaConnectedAccount(allowed_accounts->at(0));
+                              allowed_account_address);
+      delegate_->AddSolanaConnectedAccount(allowed_account_address);
     } else {
       std::move(callback).Run(
           mojom::SolanaProviderError::kUserRejectedRequest,

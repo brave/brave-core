@@ -78,7 +78,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
 
   bool IsAccountConnected(const mojom::AccountInfo& account);
   void OnConnect(
-      const std::string& requested_account,
+      const std::vector<mojom::AccountInfoPtr>& requested_accounts,
       ConnectCallback callback,
       RequestPermissionsError error,
       const absl::optional<std::vector<std::string>>& allowed_accounts);

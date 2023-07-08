@@ -488,16 +488,17 @@ class SolanaProviderTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
-  void UserGrantPermission(bool granted) {
+  void UserGrantPermission(bool granted,
+                           const std::string& account = kFirstAccount) {
     if (granted) {
       permissions::BraveWalletPermissionContext::AcceptOrCancel(
-          std::vector<std::string>{kFirstAccount},
+          std::vector<std::string>{account},
           mojom::PermissionLifetimeOption::kForever, web_contents());
     } else {
       permissions::BraveWalletPermissionContext::Cancel(web_contents());
     }
     ASSERT_EQ(EvalJs(web_contents(), "getConnectedAccount()").ExtractString(),
-              granted ? kFirstAccount : "");
+              granted ? account : "");
   }
 
   std::vector<mojom::TransactionInfoPtr> GetAllTransactionInfo() {
@@ -1144,6 +1145,44 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, AccountChangedEventAndReload) {
   SetSelectedAccount(kFirstAccount);
   WaitForResultReady();
   EXPECT_EQ(GetAccountChangedResult(), "");
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectWithNonSelectedAccount) {
+  RestoreWallet();
+  AddAccount("Account 1");
+  AddAccount("Account 2");
+  SetSelectedAccount(kFirstAccount);
+  GURL url =
+      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  CallSolanaConnect(web_contents());
+  UserGrantPermission(false, kSecondAccount);
+  auto selected_account = keyring_service_->GetSelectedSolanaDappAccount();
+  ASSERT_TRUE(selected_account);
+  // Reject connect request won't set selected account
+  EXPECT_EQ(selected_account->address, kFirstAccount);
+  EXPECT_FALSE(IsSolanaConnected(web_contents()));
+
+  CallSolanaConnect(web_contents());
+  UserGrantPermission(true, kSecondAccount);
+  selected_account = keyring_service_->GetSelectedSolanaDappAccount();
+  ASSERT_TRUE(selected_account);
+  // Connect successfuly will set selected acount automatically
+  EXPECT_EQ(selected_account->address, kSecondAccount);
+  EXPECT_TRUE(IsSolanaConnected(web_contents()));
+
+  // Disconnect account 2 which has permission and select account 1 to test
+  // permitted account filtering.
+  CallSolanaDisconnect(web_contents());
+  ASSERT_FALSE(IsSolanaConnected(web_contents()));
+  SetSelectedAccount(kFirstAccount);
+
+  // If permitted account 2 isn't filtered and we reject account 1,
+  // RequestPermissions callback will contain account 2 in allowed accounts
+  CallSolanaConnect(web_contents());
+  UserGrantPermission(false, kFirstAccount);
+  EXPECT_FALSE(IsSolanaConnected(web_contents()));
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
