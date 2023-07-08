@@ -523,6 +523,16 @@
                                  kBraveAdblockMobileNotificationsListDefault), \
       },                                                                       \
       {                                                                        \
+          "brave-adblock-scriptlet-debug-logs",                                \
+          "Enable debug logging for scriptlet injections",                     \
+          "Enable console debugging for scriptlets injected by cosmetic "      \
+          "filtering, exposing additional information that can be useful for " \
+          "filter authors.",                                                   \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveAdblockScriptletDebugLogs),       \
+      },                                                                       \
+      {                                                                        \
           "brave-dark-mode-block",                                             \
           "Enable dark mode blocking fingerprinting protection",               \
           "Always report light mode when fingerprinting protections set to "   \

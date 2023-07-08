@@ -45,7 +45,7 @@ const char kObservingScriptletEntryPoint[] =
 
 const char kScriptletInitScript[] =
     R"((function() {
-          let text = '(function() {\nconst scriptletGlobals = new Map();\nlet deAmpEnabled = %s;\n' + %s + '})()';
+          let text = '(function() {\nconst scriptletGlobals = new Map(%s);\nlet deAmpEnabled = %s;\n' + %s + '})()';
           let script;
           try {
             script = document.createElement('script');
@@ -411,11 +411,16 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
 
   std::string scriptlet_script;
   base::Value* injected_script = resources_dict_->Find("injected_script");
+
   if (injected_script &&
       base::JSONWriter::Write(*injected_script, &scriptlet_script)) {
-    scriptlet_script = base::StringPrintf(kScriptletInitScript,
-                                          de_amp_enabled ? "true" : "false",
-                                          scriptlet_script.c_str());
+    const bool scriptlet_debug_enabled = base::FeatureList::IsEnabled(
+        brave_shields::features::kBraveAdblockScriptletDebugLogs);
+
+    scriptlet_script = base::StringPrintf(
+        kScriptletInitScript,
+        scriptlet_debug_enabled ? "[[\"canDebug\", true]]" : "",
+        de_amp_enabled ? "true" : "false", scriptlet_script.c_str());
   }
   if (!scriptlet_script.empty()) {
     web_frame->ExecuteScriptInIsolatedWorld(
