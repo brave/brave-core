@@ -186,7 +186,7 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
 
   bool force_aggressive = SameDomainOrHost(
       ctx->initiator_url,
-      url::Origin::CreateFromNormalizedTuple("https", "youtube.com", 80),
+      url::Origin::CreateFromNormalizedTuple("https", "youtube.com", 443),
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
   std::string rewritten_url;

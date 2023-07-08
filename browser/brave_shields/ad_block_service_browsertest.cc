@@ -92,14 +92,26 @@ using brave_shields::features::kCosmeticFilteringJsPerformance;
 
 AdBlockServiceTest::AdBlockServiceTest()
     : ws_server_(net::SpawnedTestServer::TYPE_WS,
-                 net::GetWebSocketTestDataDirectory()) {
+                 net::GetWebSocketTestDataDirectory()),
+      https_server_(net::EmbeddedTestServer::Type::TYPE_HTTPS) {
   brave_shields::SetDefaultAdBlockComponentIdAndBase64PublicKeyForTest(
       kDefaultAdBlockComponentTestId, kDefaultAdBlockComponentTest64PublicKey);
 }
 AdBlockServiceTest::~AdBlockServiceTest() = default;
 
+void AdBlockServiceTest::SetUpCommandLine(base::CommandLine* command_line) {
+  InProcessBrowserTest::SetUpCommandLine(command_line);
+  mock_cert_verifier_.SetUpCommandLine(command_line);
+}
+
+void AdBlockServiceTest::SetUpInProcessBrowserTestFixture() {
+  InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+  mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+}
+
 void AdBlockServiceTest::SetUpOnMainThread() {
   ExtensionBrowserTest::SetUpOnMainThread();
+  mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
   host_resolver()->AddRule("*", "127.0.0.1");
   // Most tests are written for aggressive mode. Individual tests should reset
   // this using `DisableAggressiveMode` if they are testing standard mode
@@ -122,6 +134,11 @@ void AdBlockServiceTest::TearDownOnMainThread() {
   // Unset the host resolver so as not to interfere with later tests.
   brave::SetAdblockCnameHostResolverForTesting(nullptr);
   ExtensionBrowserTest::TearDownOnMainThread();
+}
+
+void AdBlockServiceTest::TearDownInProcessBrowserTestFixture() {
+  mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+  InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
 }
 
 content::WebContents* AdBlockServiceTest::web_contents() {
@@ -195,6 +212,11 @@ void AdBlockServiceTest::InitEmbeddedTestServer() {
   brave::RegisterPathProvider();
   base::FilePath test_data_dir;
   base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+
+  https_server_.ServeFilesFromDirectory(test_data_dir);
+  content::SetupCrossSiteRedirector(&https_server_);
+  ASSERT_TRUE(https_server_.Start());
+
   embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
   content::SetupCrossSiteRedirector(embedded_test_server());
   ASSERT_TRUE(embedded_test_server()->Start());
@@ -1504,6 +1526,32 @@ IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, Default1pBlocking) {
                          "setExpectations(1, 1, 0, 0);"
                          "addImage('https://thirdparty.com/ad_banner.png')"));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
+// Load a page with an image from a first party and a third party, which both
+// match the same filter in the default engine. They should both be blocked on
+// special URLs like this one.
+IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, SpecialUrlException) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  DisableAggressiveMode();
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  UpdateAdBlockInstanceWithRules("^ad_banner.png");
+
+  // Must use HTTPS because `youtube.com` is in Chromium's HSTS preload list
+  GURL url = https_server_.GetURL("youtube.com", kAdBlockTestPage);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(0, 1, 0, 0);"
+                         "addImage('ad_banner.png')"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(0, 2, 0, 0);"
+                         "addImage('https://thirdparty.com/ad_banner.png')"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
 }
 
 // Load a page with an image from a first party and a third party, which both

@@ -361,7 +361,11 @@ bool CosmeticFiltersJSHandler::ProcessURL(
   enabled_1st_party_cf_ =
       force_cosmetic_filtering ||
       render_frame_->GetWebFrame()->IsCrossOriginToOutermostMainFrame() ||
-      content_settings->IsFirstPartyCosmeticFilteringEnabled(url_);
+      content_settings->IsFirstPartyCosmeticFilteringEnabled(url_) ||
+      net::registry_controlled_domains::SameDomainOrHost(
+          url_,
+          url::Origin::CreateFromNormalizedTuple("https", "youtube.com", 443),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
   if (callback.has_value()) {
     SCOPED_UMA_HISTOGRAM_TIMER_MICROS(

@@ -27,10 +27,13 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
   ~AdBlockServiceTest() override;
 
   // ExtensionBrowserTest overrides
+  void SetUpCommandLine(base::CommandLine* command_line) override;
+  void SetUpInProcessBrowserTestFixture() override;
   void SetUpOnMainThread() override;
   void SetUp() override;
   void PreRunTestOnMainThread() override;
   void TearDownOnMainThread() override;
+  void TearDownInProcessBrowserTestFixture() override;
 
  protected:
   content::ContentMockCertVerifier mock_cert_verifier_;
@@ -66,6 +69,7 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
 
   net::SpawnedTestServer ws_server_;
   net::EmbeddedTestServer dynamic_server_;
+  net::EmbeddedTestServer https_server_;
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_SHIELDS_AD_BLOCK_SERVICE_BROWSERTEST_H_
