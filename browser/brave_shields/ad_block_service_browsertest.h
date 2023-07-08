@@ -30,6 +30,7 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
   void SetUpOnMainThread() override;
   void SetUp() override;
   void PreRunTestOnMainThread() override;
+  void TearDownOnMainThread() override;
 
  protected:
   content::ContentMockCertVerifier mock_cert_verifier_;

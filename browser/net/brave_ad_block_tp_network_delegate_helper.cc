@@ -47,7 +47,7 @@ const std::string& GetCanonicalName(
 
 }  // namespace
 
-network::HostResolver* g_testing_host_resolver;
+network::HostResolver* g_testing_host_resolver = nullptr;
 
 void SetAdblockCnameHostResolverForTesting(
     network::HostResolver* host_resolver) {

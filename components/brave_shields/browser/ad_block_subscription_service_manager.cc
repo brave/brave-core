@@ -31,7 +31,7 @@
 
 namespace brave_shields {
 
-base::TimeDelta* g_testing_subscription_retry_interval;
+base::TimeDelta* g_testing_subscription_retry_interval = nullptr;
 
 namespace {
 
