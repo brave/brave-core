@@ -35,8 +35,8 @@ function ConversationList (props: ConversationListProps) {
   }, [props.list.length, props.isLoading, lastConversationEntryElementRef.current?.clientHeight])
 
   return (
-    <div>
-      <div className={styles.list}>
+    <>
+      <div>
       {props.list.map((turn, id) => {
         const isLastEntry = (id === (props.list.length - 1))
         const isLoading = isLastEntry && props.isLoading
@@ -48,17 +48,17 @@ function ConversationList (props: ConversationListProps) {
         const isAIAssistant = turn.characterType === CharacterType.ASSISTANT
 
         const turnClass = classnames({
+          [styles.turn]: true,
           [styles.turnAI]: isAIAssistant,
-          [styles.turnHuman]: isHuman,
         })
 
         const avatarStyles = classnames({
+          [styles.avatar]: true,
           [styles.avatarAI]: isAIAssistant,
-          [styles.avatarHuman]: isHuman
         })
 
         return (
-          <div key={id} ref={elementRef} className={turnClass} data-turn={isHuman ? 'human' : 'assistant'}>
+          <div key={id} ref={elementRef} className={turnClass}>
             <div className={avatarStyles}>
               <Icon name={isHuman ? 'user-circle' : 'product-brave-ai'} />
             </div>
@@ -87,7 +87,7 @@ function ConversationList (props: ConversationListProps) {
           </div>
         </div>
       )}
-    </div>
+    </>
   )
 }
 

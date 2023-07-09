@@ -20,15 +20,14 @@
   p {
     font: var(--leo-font-primary-small-regular);
   }
+}
 
-  i {
-    --leo-icon-size: 18px;
-
-    position: absolute;
-    right: 16px;
-    top: 24px;
-    color: var(--leo-color-icon-interactive);
-  }
+.icon {
+  --leo-icon-size: 18px;
+  position: absolute;
+  right: 16px;
+  top: 24px;
+  color: var(--leo-color-icon-interactive);
 }
 
 .actionsBox {

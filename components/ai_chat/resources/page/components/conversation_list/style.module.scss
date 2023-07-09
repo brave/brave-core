@@ -3,31 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-.list {
-  div[data-turn='assistant'] {
-    padding-bottom: 0;
-  }
+.turn {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  font: var(--leo-font-secondary-default-regular);
+  color: var(--leo-color-text-primary);
+  padding: 16px;
+  background-color: var(--leo-color-page-background);
+  margin-top: 16px;
 }
 
 .turnAI {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  font: var(--leo-font-secondary-default-regular);
-  color: var(--leo-color-text-primary);
-  padding: 16px;
-}
-
-.turnHuman {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  font: var(--leo-font-secondary-default-regular);
-  color: var(--leo-color-text-primary);
-  padding: 16px;
-
-  background-color: var(--leo-color-page-background);
-  margin-top: 16px;
+  background-color: transparent;
+  margin-top: initial;
+  padding-bottom: 0;
 }
 
 .caret {
@@ -41,7 +31,6 @@
 .suggestedQuestionsBox {
   padding: 16px 16px 16px 64px;
 
-  // TODO(nullhook): Make this change in dev leo
   leo-button {
     span {
       align-items: center;
@@ -62,9 +51,9 @@
   padding-bottom: 16px;
 }
 
-.avatarHuman {
-  --leo-icon-size: 18px;
 
+.avatar {
+  --leo-icon-size: 18px;
   width: 32px;
   height: 32px;
   background-color: var(--leo-color-container-background);
@@ -77,15 +66,6 @@
 }
 
 .avatarAI {
-  --leo-icon-size: 18px;
-
-  width: 32px;
-  height: 32px;
-  border-radius: 100px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: linear-gradient(314.42deg, #FA7250 8.49%, #FF1893 43.72%, #A78AFF 99.51%);
   color: white;
 }
