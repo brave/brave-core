@@ -33,11 +33,10 @@ TEST(BraveAdsSeenAdvertisersUtilTest,
 TEST(BraveAdsSeenAdvertisersUtilTest,
      DoNotGetLastSeenAdvertiserAtForUnseenAdvertiser) {
   // Arrange
-  AdEventList ad_events;
-
   const CreativeNotificationAdInfo creative_ad_1 =
       BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
 
+  AdEventList ad_events;
   const AdEventInfo ad_event =
       BuildAdEvent(creative_ad_1, AdType::kNotificationAd,
                    ConfirmationType::kViewed, Now() - base::Hours(12));

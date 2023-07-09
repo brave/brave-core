@@ -29,9 +29,9 @@ namespace brave_ads {
 
 namespace {
 
-constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
-
 constexpr base::TimeDelta kDebugCatalogPing = base::Minutes(3);
+
+constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
 
 }  // namespace
 

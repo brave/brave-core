@@ -19,7 +19,7 @@ class BraveAdsNewTabPageAdsPerDayPermissionRuleTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
-       AllowAdIfThereIsNoAdsHistory) {
+       AllowAdIfThereAreNoAdEvents) {
   // Arrange
 
   // Act

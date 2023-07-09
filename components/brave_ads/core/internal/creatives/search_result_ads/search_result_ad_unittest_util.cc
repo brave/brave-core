@@ -9,7 +9,7 @@
 #include "base/uuid.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -20,9 +20,8 @@ constexpr char kHeadlineText[] = "headline";
 constexpr char kDescription[] = "description";
 constexpr int kValue = 1.0;
 
-constexpr char kConversionType[] = "postview";
 constexpr char kConversionUrlPattern[] = "https://brave.com/*";
-constexpr int kConversionObservationWindow = 3;
+constexpr base::TimeDelta kConversionObservationWindow = base::Days(3);
 
 }  // namespace
 
@@ -59,8 +58,6 @@ mojom::SearchResultAdInfoPtr BuildSearchResultAd(
 
   ad->value = kValue;
 
-  ad->conversion = mojom::ConversionInfo::New();
-
   return ad;
 }
 
@@ -69,11 +66,12 @@ mojom::SearchResultAdInfoPtr BuildSearchResultAdWithConversion(
   mojom::SearchResultAdInfoPtr ad =
       BuildSearchResultAd(should_use_random_uuids);
   CHECK(ad);
-  CHECK(ad->conversion);
 
-  ad->conversion->type = kConversionType;
+  ad->conversion = mojom::ConversionInfo::New();
   ad->conversion->url_pattern = kConversionUrlPattern;
-  ad->conversion->advertiser_public_key = kConversionAdvertiserPublicKey;
+  ad->conversion->extract_verifiable_id = true;
+  ad->conversion->verifiable_advertiser_public_key_base64 =
+      kVerifiableConversionAdvertiserPublicKey;
   ad->conversion->observation_window = kConversionObservationWindow;
 
   return ad;

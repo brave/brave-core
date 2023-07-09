@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -7,28 +7,55 @@
 
 #include <utility>
 
-#include "base/check_op.h"
+#include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
-#include "brave/components/brave_ads/core/internal/account/user_data/conversion_user_data_builder.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/conversion_user_data_constants.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/conversion_user_data_util.h"
+#include "brave/components/brave_ads/core/internal/conversions/queue/conversion_queue_database_table.h"
+#include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 void BuildConversionUserData(const std::string& creative_instance_id,
-                             const ConfirmationType& confirmation_type,
-                             BuildConversionUserDataCallback callback) {
+                             BuildUserDataCallback callback) {
   CHECK(!creative_instance_id.empty());
-  CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
 
-  if (confirmation_type != ConfirmationType::kConversion) {
-    return std::move(callback).Run(base::Value::Dict());
-  }
-
-  BuildVerifiableConversionUserData(
+  const database::table::ConversionQueue database_table;
+  database_table.GetForCreativeInstanceId(
       creative_instance_id,
       base::BindOnce(
-          [](BuildVerifiableConversionUserDataCallback callback,
-             base::Value::Dict user_data) {
+          [](BuildUserDataCallback callback, const bool success,
+             const std::string& /*creative_instance_id*/,
+             const ConversionQueueItemList& conversion_queue_items) {
+            if (!success) {
+              return std::move(callback).Run(/*user_data*/ {});
+            }
+
+            if (conversion_queue_items.empty()) {
+              return std::move(callback).Run(/*user_data*/ {});
+            }
+
+            const ConversionQueueItemInfo& conversion_queue_item =
+                conversion_queue_items.front();
+
+            base::Value::List list;
+
+            // Conversion.
+            list.Append(
+                BuildConversionActionTypeUserData(conversion_queue_item));
+
+            // Verifiable conversion.
+            absl::optional<base::Value::Dict> verifiable_conversion_user_data =
+                MaybeBuildVerifiableConversionUserData(conversion_queue_item);
+            if (verifiable_conversion_user_data) {
+              list.Append(std::move(*verifiable_conversion_user_data));
+            }
+
+            base::Value::Dict user_data;
+            user_data.Set(kConversionKey, std::move(list));
+
             std::move(callback).Run(std::move(user_data));
           },
           std::move(callback)));

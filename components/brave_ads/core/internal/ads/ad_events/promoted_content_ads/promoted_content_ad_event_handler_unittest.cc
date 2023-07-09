@@ -8,12 +8,13 @@
 #include <vector>
 
 #include "base/test/mock_callback.h"
-#include "base/uuid.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -32,10 +33,8 @@ namespace {
 
 CreativePromotedContentAdInfo BuildAndSaveCreativeAd() {
   CreativePromotedContentAdInfo creative_ad =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
-
+      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ false);
   database::SaveCreativePromotedContentAds({creative_ad});
-
   return creative_ad;
 }
 
@@ -304,20 +303,21 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
   // Arrange
   ForcePermissionRulesForTesting();
 
-  const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
+  BuildAndSaveCreativeAd();
+
+  const AdInfo ad =
+      BuildAd(AdType::kPromotedContentAd, /*should_use_random_uuids*/ false);
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
-                   ConfirmationType::kServed, Now());
+      BuildAdEvent(ad, ConfirmationType::kServed, /*created_at*/ Now());
 
   const size_t ads_per_hour = kMaximumPromotedContentAdsPerHour.Get();
 
   FireAdEvents(ad_event, ads_per_hour - 1);
 
-  const std::string placement_id =
-      base::Uuid::GenerateRandomV4().AsLowercaseString();
+  AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   // Act
-  FireEvent(placement_id, creative_ad.creative_instance_id,
+  FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::PromotedContentAdEventType::kServed,
             /*should_fire_event*/ true);
 
@@ -331,20 +331,21 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
   // Arrange
   ForcePermissionRulesForTesting();
 
-  const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
+  BuildAndSaveCreativeAd();
+
+  const AdInfo ad =
+      BuildAd(AdType::kPromotedContentAd, /*should_use_random_uuids*/ false);
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
-                   ConfirmationType::kServed, Now());
+      BuildAdEvent(ad, ConfirmationType::kServed, /*created_at*/ Now());
 
   const size_t ads_per_hour = kMaximumPromotedContentAdsPerHour.Get();
 
   FireAdEvents(ad_event, ads_per_hour);
 
-  const std::string placement_id =
-      base::Uuid::GenerateRandomV4().AsLowercaseString();
+  AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   // Act
-  FireEvent(placement_id, creative_ad.creative_instance_id,
+  FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::PromotedContentAdEventType::kServed,
             /*should_fire_event*/ false);
 
@@ -358,22 +359,21 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
   // Arrange
   ForcePermissionRulesForTesting();
 
-  const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
+  BuildAndSaveCreativeAd();
+
+  const AdInfo ad =
+      BuildAd(AdType::kPromotedContentAd, /*should_use_random_uuids*/ false);
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
-                   ConfirmationType::kServed, Now());
+      BuildAdEvent(ad, ConfirmationType::kServed, /*created_at*/ Now());
 
   const size_t ads_per_day = kMaximumPromotedContentAdsPerDay.Get();
 
   FireAdEvents(ad_event, ads_per_day - 1);
 
-  AdvanceClockBy(base::Hours(1));
-
-  const std::string placement_id =
-      base::Uuid::GenerateRandomV4().AsLowercaseString();
+  AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Act
-  FireEvent(placement_id, creative_ad.creative_instance_id,
+  FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::PromotedContentAdEventType::kServed,
             /*should_fire_event*/ true);
 
@@ -387,22 +387,21 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
   // Arrange
   ForcePermissionRulesForTesting();
 
-  const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
+  BuildAndSaveCreativeAd();
+
+  const AdInfo ad =
+      BuildAd(AdType::kPromotedContentAd, /*should_use_random_uuids*/ false);
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
-                   ConfirmationType::kServed, Now());
+      BuildAdEvent(ad, ConfirmationType::kServed, /*created_at*/ Now());
 
   const size_t ads_per_day = kMaximumPromotedContentAdsPerDay.Get();
 
   FireAdEvents(ad_event, ads_per_day);
 
-  AdvanceClockBy(base::Hours(1));
-
-  const std::string placement_id =
-      base::Uuid::GenerateRandomV4().AsLowercaseString();
+  AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Act
-  FireEvent(placement_id, creative_ad.creative_instance_id,
+  FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::PromotedContentAdEventType::kServed,
             /*should_fire_event*/ false);
 

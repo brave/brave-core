@@ -50,7 +50,7 @@ class PurchaseIntentProcessor final : public TabManagerObserver {
   // TabManagerObserver:
   void OnTextContentDidChange(int32_t tab_id,
                               const std::vector<GURL>& redirect_chain,
-                              const std::string& content) override;
+                              const std::string& text) override;
 
   const raw_ref<PurchaseIntentResource> resource_;
 };

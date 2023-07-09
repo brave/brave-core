@@ -17,7 +17,7 @@ namespace brave_ads {
 
 class BraveAdsPerDayExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BraveAdsPerDayExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BraveAdsPerDayExclusionRuleTest, AllowAdIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -52,10 +52,8 @@ TEST_F(BraveAdsPerDayExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
   creative_ad.per_day = 2;
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
-
   ad_events.push_back(ad_event);
 
   const PerDayExclusionRule exclusion_rule(ad_events);
@@ -73,10 +71,8 @@ TEST_F(BraveAdsPerDayExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
   creative_ad.per_day = 2;
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
-
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
@@ -97,10 +93,8 @@ TEST_F(BraveAdsPerDayExclusionRuleTest, DoNotAllowAdIfExceedsCapWithin1Day) {
   creative_ad.per_day = 2;
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
-
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
@@ -121,10 +115,8 @@ TEST_F(BraveAdsPerDayExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
   creative_ad.per_day = 2;
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
-
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 

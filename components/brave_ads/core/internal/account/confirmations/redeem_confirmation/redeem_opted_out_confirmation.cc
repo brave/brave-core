@@ -116,7 +116,7 @@ void RedeemOptedOutConfirmation::SuccessfullyRedeemedConfirmation(
 void RedeemOptedOutConfirmation::FailedToRedeemConfirmation(
     const ConfirmationInfo& confirmation,
     const bool should_retry,
-    bool should_backoff) {
+    const bool should_backoff) {
   BLOG(1, "Failed to redeem opted-out "
               << confirmation.type << " confirmation for "
               << confirmation.ad_type << " with transaction id "

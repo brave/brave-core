@@ -8,8 +8,8 @@
 
 namespace brave_ads::database {
 
-constexpr int kVersion = 29;
-constexpr int kCompatibleVersion = 29;
+constexpr int kVersion = 30;
+constexpr int kCompatibleVersion = 30;
 
 }  // namespace brave_ads::database
 

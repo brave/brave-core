@@ -10,6 +10,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/build_channel_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/build_user_data_callback.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/catalog_user_data.h"
@@ -26,9 +27,9 @@ namespace brave_ads {
 
 namespace {
 
-void BuildCallback(const TransactionInfo& transaction,
-                   BuildUserDataCallback callback,
-                   base::Value::Dict user_data) {
+void BuildConfirmationUserDataCallback(const TransactionInfo& transaction,
+                                       BuildUserDataCallback callback,
+                                       base::Value::Dict user_data) {
   user_data.Merge(BuildBuildChannelUserData());
   user_data.Merge(BuildCatalogUserData());
   user_data.Merge(BuildCreatedAtTimestampUserData(transaction));
@@ -46,9 +47,14 @@ void BuildCallback(const TransactionInfo& transaction,
 
 void BuildConfirmationUserData(const TransactionInfo& transaction,
                                BuildUserDataCallback callback) {
-  BuildConversionUserData(
-      transaction.creative_instance_id, transaction.confirmation_type,
-      base::BindOnce(&BuildCallback, transaction, std::move(callback)));
+  if (transaction.confirmation_type != ConfirmationType::kConversion) {
+    return BuildConfirmationUserDataCallback(transaction, std::move(callback),
+                                             /*user_data*/ {});
+  }
+
+  BuildConversionUserData(transaction.creative_instance_id,
+                          base::BindOnce(&BuildConfirmationUserDataCallback,
+                                         transaction, std::move(callback)));
 }
 
 }  // namespace brave_ads

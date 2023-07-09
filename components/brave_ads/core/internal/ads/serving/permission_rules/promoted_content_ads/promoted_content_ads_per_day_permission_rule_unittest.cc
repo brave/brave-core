@@ -19,7 +19,7 @@ class BraveAdsPromotedContentAdsPerDayPermissionRuleTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
-       AllowAdIfThereIsNoAdsHistory) {
+       AllowAdIfThereAreNoAdEvents) {
   // Arrange
 
   // Act

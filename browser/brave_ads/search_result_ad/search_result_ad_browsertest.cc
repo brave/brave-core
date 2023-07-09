@@ -10,6 +10,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/time/time.h"
 #include "brave/browser/brave_ads/search_result_ad/search_result_ad_tab_helper.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_mock.h"
@@ -237,20 +238,21 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
     EXPECT_DOUBLE_EQ(search_result_ad->value, 0.5 + ad_index);
 
     EXPECT_TRUE(search_result_ad->conversion);
-    EXPECT_EQ(search_result_ad->conversion->type,
-              base::StrCat({"data-conversion-type-value", index}));
     EXPECT_EQ(search_result_ad->conversion->url_pattern,
               base::StrCat({"data-conversion-url-pattern-value", index}));
     if (ad_index == 2) {
-      EXPECT_TRUE(search_result_ad->conversion->advertiser_public_key.empty());
+      EXPECT_FALSE(search_result_ad->conversion->extract_verifiable_id);
+      EXPECT_TRUE(search_result_ad->conversion
+                      ->verifiable_advertiser_public_key_base64.empty());
     } else {
+      EXPECT_TRUE(search_result_ad->conversion->extract_verifiable_id);
       EXPECT_EQ(
-          search_result_ad->conversion->advertiser_public_key,
+          search_result_ad->conversion->verifiable_advertiser_public_key_base64,
           base::StrCat({"data-conversion-advertiser-public-key-value", index}));
     }
-    EXPECT_EQ(
-        static_cast<size_t>(search_result_ad->conversion->observation_window),
-        ad_index);
+    EXPECT_EQ(static_cast<size_t>(
+                  search_result_ad->conversion->observation_window.InDays()),
+              ad_index);
 
     return true;
   }

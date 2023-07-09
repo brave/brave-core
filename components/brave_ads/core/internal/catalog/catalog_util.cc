@@ -10,8 +10,8 @@
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creatives_builder.h"
 #include "brave/components/brave_ads/core/internal/creatives/creatives_info.h"
@@ -43,7 +43,7 @@ void Delete() {
 }
 
 void PurgeExpired() {
-  database::PurgeExpiredConversions();
+  database::PurgeExpiredCreativeSetConversions();
   database::PurgeExpiredDeposits();
 }
 
@@ -63,7 +63,7 @@ void SaveCatalog(const CatalogInfo& catalog) {
   database::SaveCreativeInlineContentAds(creatives.inline_content_ads);
   database::SaveCreativeNewTabPageAds(creatives.new_tab_page_ads);
   database::SaveCreativePromotedContentAds(creatives.promoted_content_ads);
-  database::SaveConversions(creatives.conversions);
+  database::SaveCreativeSetConversions(creatives.conversions);
 }
 
 void ResetCatalog() {

@@ -9,6 +9,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_campaign_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_daypart_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_geo_target_info.h"
+#include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_creative_set_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_os_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_segment_info.h"
@@ -24,7 +25,6 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -169,15 +169,15 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
       catalog_creative_inline_content_ad);
 
   // Conversions
-  ConversionList conversions;
+  CatalogConversionList catalog_conversions;
 
-  ConversionInfo conversion;
-  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
-  conversion.type = "postview";
-  conversion.url_pattern = "https://www.brave.com/1/*";
-  conversion.observation_window = base::Days(30);
-  conversion.expire_at = DistantFuture() + conversion.observation_window;
-  conversions.push_back(conversion);
+  CatalogConversionInfo catalog_conversion;
+  catalog_conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  catalog_conversion.url_pattern = "https://www.brave.com/1/*";
+  catalog_conversion.observation_window = base::Days(30);
+  catalog_conversion.expire_at =
+      DistantFuture() + catalog_conversion.observation_window;
+  catalog_conversions.push_back(catalog_conversion);
 
   // Creative Sets
   CatalogCreativeSetList catalog_creative_sets;
@@ -200,7 +200,7 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
       catalog_creative_new_tab_page_ads;
   catalog_creative_set.creative_promoted_content_ads =
       catalog_creative_promoted_content_ads;
-  catalog_creative_set.conversions = conversions;
+  catalog_creative_set.conversions = catalog_conversions;
   catalog_creative_sets.push_back(catalog_creative_set);
 
   // Dayparts
@@ -367,15 +367,15 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
       catalog_creative_inline_content_ad);
 
   // Conversions
-  ConversionList conversions;
+  CatalogConversionList catalog_conversions;
 
-  ConversionInfo conversion;
-  conversion.creative_set_id = "741cd2ba-3100-45f2-be1e-acedd24e0067";
-  conversion.type = "postclick";
-  conversion.url_pattern = "https://www.brave.com/2/*";
-  conversion.observation_window = base::Days(7);
-  conversion.expire_at = DistantFuture() + conversion.observation_window;
-  conversions.push_back(conversion);
+  CatalogConversionInfo catalog_conversion;
+  catalog_conversion.creative_set_id = "741cd2ba-3100-45f2-be1e-acedd24e0067";
+  catalog_conversion.url_pattern = "https://www.brave.com/2/*";
+  catalog_conversion.observation_window = base::Days(7);
+  catalog_conversion.expire_at =
+      DistantFuture() + catalog_conversion.observation_window;
+  catalog_conversions.push_back(catalog_conversion);
 
   // Creative Sets
   CatalogCreativeSetList catalog_creative_sets;
@@ -397,7 +397,7 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
       catalog_creative_promoted_content_ads;
   catalog_creative_set.creative_inline_content_ads =
       catalog_creative_inline_content_ads;
-  catalog_creative_set.conversions = conversions;
+  catalog_creative_set.conversions = catalog_conversions;
   catalog_creative_sets.push_back(catalog_creative_set);
 
   // Dayparts

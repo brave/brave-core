@@ -17,7 +17,7 @@ namespace brave_ads {
 
 class BraveAdsPerWeekExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -52,10 +52,8 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
   creative_ad.per_week = 2;
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
-
   ad_events.push_back(ad_event);
 
   const PerWeekExclusionRule exclusion_rule(ad_events);
@@ -73,10 +71,8 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Week) {
   creative_ad.per_week = 2;
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
-
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
@@ -97,10 +93,8 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, DoNotAllowAdIfExceedsCapWithin1Week) {
   creative_ad.per_week = 2;
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
-
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
@@ -121,10 +115,8 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
   creative_ad.per_week = 2;
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
-
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 

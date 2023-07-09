@@ -5,26 +5,66 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/conversion_user_data_util.h"
 
-#include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions_util.h"
-#include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_info.h"
-#include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_info.h"
+#include "base/check.h"
+#include "base/functional/callback.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/conversion_user_data_constants.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/conversions/actions/conversion_action_types.h"
+#include "brave/components/brave_ads/core/internal/conversions/actions/conversion_action_types_util.h"
+#include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_info.h"
+#include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_envelope_info.h"
+#include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_envelope_util.h"
+#include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
-absl::optional<VerifiableConversionEnvelopeInfo>
-MaybeBuildVerifiableConversionEnvelope(
+base::Value::Dict BuildConversionActionTypeUserData(
     const ConversionQueueItemInfo& conversion_queue_item) {
-  VerifiableConversionInfo verifiable_conversion;
-  verifiable_conversion.id = conversion_queue_item.conversion_id;
-  verifiable_conversion.public_key =
-      conversion_queue_item.advertiser_public_key;
+  CHECK_NE(ConversionActionType::kUndefined,
+           conversion_queue_item.conversion.action_type);
 
-  if (!verifiable_conversion.IsValid()) {
+  base::Value::Dict user_data = base::Value::Dict().Set(
+      kConversionActionTypeKey,
+      ConversionActionTypeToString(
+          conversion_queue_item.conversion.action_type));
+
+  return user_data;
+}
+
+absl::optional<base::Value::Dict> MaybeBuildVerifiableConversionUserData(
+    const ConversionQueueItemInfo& conversion_queue_item) {
+  if (!conversion_queue_item.conversion.verifiable) {
     return absl::nullopt;
   }
 
-  return SealEnvelope(verifiable_conversion);
+  const VerifiableConversionInfo verifiable_conversion =
+      *conversion_queue_item.conversion.verifiable;
+
+  const absl::optional<VerifiableConversionEnvelopeInfo>
+      sealed_verifiable_conversion_envelope =
+          SealVerifiableConversionEnvelope(verifiable_conversion);
+  if (!sealed_verifiable_conversion_envelope) {
+    BLOG(1, "Failed to seal verifiable conversion envelope for id "
+                << verifiable_conversion.id << " and "
+                << verifiable_conversion.advertiser_public_key_base64
+                << " advertiser public key");
+    return absl::nullopt;
+  }
+
+  base::Value::Dict user_data;
+  user_data.Set(
+      kVerifiableConversionEnvelopeKey,
+      base::Value::Dict()
+          .Set(kVerifiableConversionEnvelopeAlgorithmKey,
+               GetVerifiableConversionEnvelopeAlgorithm())
+          .Set(kVerifiableConversionEnvelopeCipherTextKey,
+               sealed_verifiable_conversion_envelope->ciphertext)
+          .Set(kVerifiableConversionEnvelopeEphemeralPublicKeyKey,
+               sealed_verifiable_conversion_envelope->ephemeral_public_key)
+          .Set(kVerifiableConversionEnvelopeNonceKey,
+               sealed_verifiable_conversion_envelope->nonce));
+  return user_data;
 }
 
 }  // namespace brave_ads

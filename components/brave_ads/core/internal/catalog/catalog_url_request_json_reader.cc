@@ -7,7 +7,6 @@
 
 #include <cstdint>
 
-#include "base/check.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/ad_constants.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
@@ -141,17 +140,22 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
       // Conversions
       const auto conversions = creative_set_node["conversions"].GetArray();
       for (const auto& conversion_node : conversions) {
-        ConversionInfo conversion;
+        CatalogConversionInfo conversion;
+
         conversion.creative_set_id = creative_set.id;
-        conversion.type = conversion_node["type"].GetString();
+
         conversion.url_pattern = conversion_node["urlPattern"].GetString();
-        conversion.observation_window =
-            base::Days(conversion_node["observationWindow"].GetInt());
+
+        conversion.extract_verifiable_id =
+            conversion_node["extractExternalId"].GetBool();
 
         if (conversion_node.HasMember("conversionPublicKey")) {
-          conversion.advertiser_public_key =
+          conversion.verifiable_advertiser_public_key_base64 =
               conversion_node["conversionPublicKey"].GetString();
         }
+
+        conversion.observation_window =
+            base::Days(conversion_node["observationWindow"].GetInt());
 
         base::Time end_at;
         if (!base::Time::FromUTCString(campaign.end_at.c_str(), &end_at)) {
@@ -189,8 +193,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.payload.body = payload["body"].GetString();
           creative.payload.title = payload["title"].GetString();
           creative.payload.target_url = GURL(payload["targetUrl"].GetString());
-          if (!creative.payload.target_url.is_valid() ||
-              !DoesSupportUrl(creative.payload.target_url)) {
+          if (!DoesSupportUrl(creative.payload.target_url)) {
             BLOG(1, "Failed to parse target URL for creative instance id "
                         << creative_instance_id);
             continue;
@@ -212,8 +215,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.payload.title = payload["title"].GetString();
           creative.payload.description = payload["description"].GetString();
           creative.payload.image_url = GURL(payload["imageUrl"].GetString());
-          if (!creative.payload.image_url.is_valid() ||
-              !DoesSupportUrl(creative.payload.image_url)) {
+          if (!DoesSupportUrl(creative.payload.image_url)) {
             BLOG(1, "Failed to parse image URL for creative instance id "
                         << creative_instance_id);
             continue;
@@ -221,8 +223,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.payload.dimensions = payload["dimensions"].GetString();
           creative.payload.cta_text = payload["ctaText"].GetString();
           creative.payload.target_url = GURL(payload["targetUrl"].GetString());
-          if (!creative.payload.target_url.is_valid() ||
-              !DoesSupportUrl(creative.payload.target_url)) {
+          if (!DoesSupportUrl(creative.payload.target_url)) {
             BLOG(1, "Failed to parse target URL for creative instance id "
                         << creative_instance_id);
             continue;
@@ -248,8 +249,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.payload.alt = logo["alt"].GetString();
           creative.payload.target_url =
               GURL(logo["destinationUrl"].GetString());
-          if (!creative.payload.target_url.is_valid() ||
-              !DoesSupportUrl(creative.payload.target_url)) {
+          if (!DoesSupportUrl(creative.payload.target_url)) {
             BLOG(1, "Failed to parse target URL for creative instance id "
                         << creative_instance_id);
             continue;
@@ -288,8 +288,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.payload.title = payload["title"].GetString();
           creative.payload.description = payload["description"].GetString();
           creative.payload.target_url = GURL(payload["feed"].GetString());
-          if (!creative.payload.target_url.is_valid() ||
-              !DoesSupportUrl(creative.payload.target_url)) {
+          if (!DoesSupportUrl(creative.payload.target_url)) {
             BLOG(1, "Failed to parse target URL for creative instance id "
                         << creative_instance_id);
             continue;

@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/ad_info.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
@@ -25,18 +26,8 @@ namespace brave_ads {
 void LogAdEvent(const AdInfo& ad,
                 const ConfirmationType& confirmation_type,
                 AdEventCallback callback) {
-  AdEventInfo ad_event;
-  ad_event.type = ad.type;
-  ad_event.confirmation_type = confirmation_type;
-  ad_event.placement_id = ad.placement_id;
-  ad_event.campaign_id = ad.campaign_id;
-  ad_event.creative_set_id = ad.creative_set_id;
-  ad_event.creative_instance_id = ad.creative_instance_id;
-  ad_event.advertiser_id = ad.advertiser_id;
-  ad_event.segment = ad.segment;
-  ad_event.created_at = base::Time::Now();
-
-  LogAdEvent(ad_event, std::move(callback));
+  LogAdEvent(BuildAdEvent(ad, confirmation_type, base::Time::Now()),
+             std::move(callback));
 }
 
 void LogAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {

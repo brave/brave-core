@@ -30,7 +30,6 @@
 
 namespace brave_ads {
 
-using ::testing::_;
 using ::testing::InSequence;
 using ::testing::NiceMock;
 

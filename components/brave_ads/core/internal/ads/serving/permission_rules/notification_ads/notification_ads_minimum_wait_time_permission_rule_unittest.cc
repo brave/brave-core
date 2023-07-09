@@ -21,7 +21,7 @@ class BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest
 };
 
 TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
-       AllowAdIfThereIsNoAdsHistory) {
+       AllowAdIfThereAreNoAdEvents) {
   // Arrange
 
   // Act

@@ -24,7 +24,6 @@ constexpr const char* kSearchResultAdStringAttributes[] = {
     "data-advertiser-id",
     "data-headline-text",
     "data-description",
-    "data-conversion-type-value",
     "data-conversion-url-pattern-value",
     "data-conversion-advertiser-public-key-value"};
 
@@ -34,6 +33,10 @@ schema_org::mojom::ValuesPtr CreateVectorValuesPtr(std::string value) {
 
 schema_org::mojom::ValuesPtr CreateVectorValuesPtr(int64_t value) {
   return schema_org::mojom::Values::NewLongValues({value});
+}
+
+schema_org::mojom::ValuesPtr CreateVectorValuesPtr(bool value) {
+  return schema_org::mojom::Values::NewBoolValues({value});
 }
 
 class TestWebPageEntitiesConstructor final {
@@ -95,7 +98,10 @@ class TestWebPageEntitiesConstructor final {
     AddProperty<std::string>(&entity->properties, "data-rewards-value", "0.5");
     AddProperty<int64_t>(&entity->properties,
                          "data-conversion-observation-window-value", 1);
+    AddProperty<bool>(&entity->properties,
+                      "data-conversion-extract-external-id-value", true);
 
+    // Generate values for simple string properties.
     int index = 0;
     for (const auto* const* it = std::begin(kSearchResultAdStringAttributes);
          it != std::end(kSearchResultAdStringAttributes); ++it, ++index) {

@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CREATIVES_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CREATIVES_INFO_H_
 
-#include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
@@ -25,11 +25,12 @@ struct CreativesInfo final {
 
   ~CreativesInfo();
 
-  CreativeNotificationAdList notification_ads;
   CreativeInlineContentAdList inline_content_ads;
   CreativeNewTabPageAdList new_tab_page_ads;
+  CreativeNotificationAdList notification_ads;
   CreativePromotedContentAdList promoted_content_ads;
-  ConversionList conversions;
+
+  CreativeSetConversionList conversions;
 };
 
 }  // namespace brave_ads
