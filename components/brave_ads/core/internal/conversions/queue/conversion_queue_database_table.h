@@ -30,7 +30,7 @@ class ConversionQueue final : public TableInterface {
   ConversionQueue();
 
   void Save(const ConversionQueueItemList& conversion_queue_items,
-            ResultCallback callback);
+            ResultCallback callback) const;
 
   void Delete(const ConversionQueueItemInfo& conversion_queue_item,
               ResultCallback callback) const;
@@ -58,8 +58,9 @@ class ConversionQueue final : public TableInterface {
   void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
-  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
-                      const ConversionQueueItemList& conversion_queue_items);
+  void InsertOrUpdate(
+      mojom::DBTransactionInfo* transaction,
+      const ConversionQueueItemList& conversion_queue_items) const;
 
   std::string BuildInsertOrUpdateSql(
       mojom::DBCommandInfo* command,

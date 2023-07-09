@@ -120,21 +120,23 @@ void Conversions::CheckForConversions(
   const CreativeSetConversionList filtered_creative_set_conversions =
       FilterConvertedAndNonMatchingCreativeSetConversions(
           creative_set_conversions, ad_events, redirect_chain);
-
-  BLOG(1, "There are " << creative_set_conversions.size()
-                       << " eligible creative set conversions");
+  if (filtered_creative_set_conversions.empty()) {
+    return BLOG(1, "There are no eligible creative set conversions");
+  }
 
   CreativeSetConversionBuckets creative_set_conversion_buckets =
       SortCreativeSetConversionsIntoBuckets(filtered_creative_set_conversions);
-  if (creative_set_conversion_buckets.empty()) {
-    // There are no matching eligible creative set conversion URL patterns for
-    // the redirect chain.
-    return;
-  }
+
+  BLOG(1, filtered_creative_set_conversions.size()
+              << " out of " << creative_set_conversions.size()
+              << " eligible creative set conversions are sorted into "
+              << creative_set_conversion_buckets.size() << " buckets");
+
+  bool did_convert = false;
 
   // Click-through conversions should take priority over view-through
-  // conversions. Ad events are ordered in descending order by created at; click
-  // events are guaranteed to occur after view events.
+  // conversions. Ad events are ordered in descending order by |created_at|;
+  // click events are guaranteed to occur after view events.
   for (const auto& ad_event : ad_events) {
     // Do we have a bucket with creative set conversions for this ad event?
     const auto iter =
@@ -161,14 +163,20 @@ void Conversions::CheckForConversions(
                           redirect_chain, html, resource_.get().id_patterns,
                           *creative_set_conversion));
 
+    did_convert = true;
+
     // Remove the bucket for this creative set because we should not convert
-    // another ad from the same creative set.
+    // another ad event from the same creative set.
     creative_set_conversion_buckets.erase(ad_event.creative_set_id);
     if (creative_set_conversion_buckets.empty()) {
       // All the buckets have drained, so they will no longer contain
       // conversions; therefore, we should consider our job done!
       break;
     }
+  }
+
+  if (!did_convert) {
+    BLOG(1, "There are no matching conversions");
   }
 }
 
@@ -199,7 +207,6 @@ void Conversions::ConvertCallback(
 
   const ConversionInfo conversion =
       BuildConversion(ad_event, verifiable_conversion);
-
   queue_.Add(conversion);
 }
 

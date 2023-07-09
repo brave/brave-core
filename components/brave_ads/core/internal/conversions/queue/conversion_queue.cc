@@ -31,7 +31,7 @@ void ConversionQueue::Add(const ConversionInfo& conversion) {
       BuildConversionQueueItem(conversion, ProcessQueueItemAt());
   CHECK(conversion_queue_item.IsValid());
 
-  database::table::ConversionQueue database_table;
+  const database::table::ConversionQueue database_table;
   database_table.Save(
       {conversion_queue_item},
       base::BindOnce(&ConversionQueue::AddCallback, weak_factory_.GetWeakPtr(),

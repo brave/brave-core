@@ -46,6 +46,7 @@ CreativeSetConversionList FilterConvertedAndNonMatchingCreativeSetConversions(
       GetConvertedCreativeSets(ad_events);
 
   CreativeSetConversionList filtered_creative_set_conversions;
+
   base::ranges::copy_if(
       creative_set_conversions,
       std::back_inserter(filtered_creative_set_conversions),

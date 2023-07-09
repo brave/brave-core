@@ -15,7 +15,7 @@ namespace brave_ads {
 
 void SaveConversionQueueItems(
     const ConversionQueueItemList& conversion_queue_items) {
-  database::table::ConversionQueue database_table;
+  const database::table::ConversionQueue database_table;
   database_table.Save(
       conversion_queue_items,
       base::BindOnce([](const bool success) { CHECK(success); }));
