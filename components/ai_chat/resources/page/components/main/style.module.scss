@@ -14,9 +14,43 @@
 
 .inputBox {
   width: 100%;
+  padding: 16px;
+  border-top: 1px solid var(--leo-color-divider-subtle);
+  background-color: var(--leo-color-container-background);
 }
 
 .scroller {
   overflow: auto;
   height: 100%;
+  padding-bottom: 16px;
+}
+
+.header {
+  padding: 16px;
+  border-bottom: 1px solid var(--leo-color-divider-subtle);
+  background-color: var(--leo-color-container-background);
+}
+
+.logoBox {
+  --leo-icon-size: 20px;
+  --leo-icon-color: linear-gradient(314.42deg, #FA7250 8.49%, #FF1893 43.72%, #A78AFF 99.51%);
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: var(--leo-font-primary-large-regular);
+}
+
+.logoTitle {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--leo-color-text-secondary);
+
+  span {
+    color: var(--leo-color-text-primary);
+  }
+}
+
+.siteTitleBox {
+  padding: 16px 16px 0 16px;
 }

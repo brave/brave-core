@@ -18,16 +18,21 @@ import InputBox from '../components/input_box'
 import { useInput } from '../state/hooks'
 import { CharacterType, ConversationTurnVisibility  } from '../api/page_handler'
 import PrivacyMessage from '../components/privacy_message'
+import SiteTitle from '../components/site_title'
+import PromptAutoSuggestion from '../components/prompt_auto_suggestion'
 
 const DATA = [
   {text: 'What is pointer compression?', characterType: CharacterType.HUMAN, visibility: ConversationTurnVisibility.VISIBLE },
   {text: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory. The basic idea is that since most pointers will be clustered together and point to objects allocated around the same time, you can store a compressed representation of the pointer and decompress it when needed. Some common ways this is done: Store an offset from a base pointer instead of the full pointer value Store increments/decrements from the previous pointer instead of the full value Use pointer tagging to store extra information in the low bits of the pointer Encode groups of pointers together The tradeoff is some extra CPU cost to decompress the pointers, versus saving memory. This technique is most useful in memory constrained environments.', characterType: CharacterType.ASSISTANT, visibility: ConversationTurnVisibility.VISIBLE },
+  {text: 'What is taylor series?', characterType: CharacterType.HUMAN, visibility: ConversationTurnVisibility.VISIBLE },
+  {text: 'The partial sum formed by the first n + 1 terms of a Taylor series is a polynomial of degree n that is called the nth Taylor polynomial of the function. Taylor polynomials are approximations of a function, which become generally better as n increases.', characterType: CharacterType.ASSISTANT, visibility: ConversationTurnVisibility.VISIBLE },
 ]
 
 const SAMPLE_QUESTIONS = [
   "Summarize this article",
   "What was the score?",
-  "Any injuries?"
+  "Any injuries?",
+  "Why did google executives disregard this character in the company?"
 ]
 
 interface StoryProps {
@@ -68,18 +73,25 @@ export const _Main = (props: StoryProps) => {
   }
 
   let conversationList = <PrivacyMessage />
+  let siteTitleElement = null
+  let promptAutoSuggestionElement = null
 
   if (hasSeenAgreement) {
     conversationList = (
       <ConversationList
         list={DATA}
         isLoading={false}
-        canGenerateQuestions={!props.hasQuestions}
         suggestedQuestions={props.hasQuestions ? SAMPLE_QUESTIONS : []}
-        userAllowsAutoGenerating={false}
-        onSetUserAllowsAutoGenerating={() => {}}
-        onGenerateSuggestedQuestions={() => {}}
         onQuestionSubmit={() => {}}
+      />
+    )
+
+    siteTitleElement = (
+      <SiteTitle siteInfo={{ title: "Microsoft is hiking the price of Xbox Series X and Xbox Game Pass" }} favIconUrl="" />
+    )
+
+    promptAutoSuggestionElement = (
+      <PromptAutoSuggestion
       />
     )
   }
@@ -99,6 +111,8 @@ export const _Main = (props: StoryProps) => {
       <Main
         conversationList={conversationList}
         inputBox={inputBox}
+        siteTitle={siteTitleElement}
+        promptAutoSuggestion={promptAutoSuggestionElement}
       />
     </div>
   )

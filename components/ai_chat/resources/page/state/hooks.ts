@@ -4,15 +4,24 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import getPageHandlerInstance, { ConversationTurn } from '../api/page_handler'
+import getPageHandlerInstance, { ConversationTurn, SiteInfo, AutoGenerateQuestionsPref } from '../api/page_handler'
 import { loadTimeData } from '$web-common/loadTimeData'
+
+function toBlobURL (data: number[] | null) {
+  if (!data) return undefined
+
+  const blob = new Blob([new Uint8Array(data)], { type: 'image/*' })
+  return URL.createObjectURL(blob)
+}
 
 export function useConversationHistory() {
   const [conversationHistory, setConversationHistory] = React.useState<ConversationTurn[]>([])
   const [isGenerating, setIsGenerating] = React.useState(false)
   const [suggestedQuestions, setSuggestedQuestions] = React.useState<string[]>([])
   const [canGenerateQuestions, setCanGenerateQuestions] = React.useState(false)
-  const [userAllowsAutoGenerating, setUserAllowsAutoGeneratingState] = React.useState(false)
+  const [userAutoGeneratePref, setUserAutoGeneratePref] = React.useState<AutoGenerateQuestionsPref>()
+  const [siteInfo, setSiteInfo] = React.useState<SiteInfo | null>()
+  const [favIconUrl, setFavIconUrl] = React.useState<string>()
 
   const getConversationHistory = () => {
     getPageHandlerInstance().pageHandler.getConversationHistory().then(res => setConversationHistory(res.conversationHistory))
@@ -20,18 +29,31 @@ export function useConversationHistory() {
 
   const setUserAllowsAutoGenerating = (value: boolean) => {
     getPageHandlerInstance().pageHandler.setAutoGenerateQuestions(value)
+    setUserAutoGeneratePref(value ? AutoGenerateQuestionsPref.Enabled : AutoGenerateQuestionsPref.Disabled)
   }
 
   const getSuggestedQuestions = () => {
     getPageHandlerInstance().pageHandler.getSuggestedQuestions().then(r => {
       setSuggestedQuestions(r.questions)
       setCanGenerateQuestions(r.canGenerate)
-      setUserAllowsAutoGeneratingState(r.autoGenerate)
+      setUserAutoGeneratePref(r.autoGenerate)
     })
   }
 
   const generateSuggestedQuestions = () => {
     getPageHandlerInstance().pageHandler.generateQuestions()
+  }
+
+  const getSiteInfo = () => {
+    getPageHandlerInstance().pageHandler.getSiteInfo().then(({ siteInfo }) => {
+      setSiteInfo(siteInfo)
+    })
+  }
+
+  const getFaviconData = () => {
+    getPageHandlerInstance().pageHandler.getFaviconImageData().then((data) => {
+      setFavIconUrl(toBlobURL(data.faviconImageData))
+    })
   }
 
   const initialiseForTargetTab = () => {
@@ -41,6 +63,8 @@ export function useConversationHistory() {
     // don't need to call multiple functions or handle multiple events.
     getConversationHistory()
     getSuggestedQuestions()
+    getSiteInfo()
+    getFaviconData()
   }
 
   React.useEffect(() => {
@@ -52,14 +76,17 @@ export function useConversationHistory() {
     })
     getPageHandlerInstance().callbackRouter.onAPIRequestInProgress.addListener(setIsGenerating)
     getPageHandlerInstance().callbackRouter.onSuggestedQuestionsChanged
-      .addListener((questions: string[], hasGenerated: boolean, autoGenerate: boolean) => {
+      .addListener((questions: string[], hasGenerated: boolean, autoGenerate: AutoGenerateQuestionsPref) => {
         setSuggestedQuestions(questions)
         setCanGenerateQuestions(!hasGenerated)
-        setUserAllowsAutoGeneratingState(autoGenerate)
+        setUserAutoGeneratePref(autoGenerate)
       })
 
     // When the target tab changes, clean tab-specific data
     getPageHandlerInstance().callbackRouter.onTargetTabChanged.addListener(initialiseForTargetTab)
+
+    getPageHandlerInstance().callbackRouter.onFaviconImageDataChanged.addListener((faviconImageData: number[]) => setFavIconUrl(toBlobURL(faviconImageData)))
+    getPageHandlerInstance().callbackRouter.onSiteInfoChanged.addListener((siteInfo: SiteInfo) => setSiteInfo(siteInfo))
   }, [])
 
   return {
@@ -67,9 +94,11 @@ export function useConversationHistory() {
     isGenerating,
     suggestedQuestions,
     canGenerateQuestions,
-    userAllowsAutoGenerating,
+    userAutoGeneratePref,
+    siteInfo,
+    favIconUrl,
     generateSuggestedQuestions,
-    setUserAllowsAutoGenerating
+    setUserAllowsAutoGenerating,
   }
 }
 

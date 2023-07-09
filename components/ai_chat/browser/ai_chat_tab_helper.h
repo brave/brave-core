@@ -13,6 +13,7 @@
 #include "base/observer_list.h"
 #include "brave/components/ai_chat/browser/ai_chat_api.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
+#include "components/favicon/core/favicon_driver_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -32,7 +33,8 @@ namespace ai_chat {
 
 // Provides context to an AI Chat conversation in the form of the Tab's content
 class AIChatTabHelper : public content::WebContentsObserver,
-                        public content::WebContentsUserData<AIChatTabHelper> {
+                        public content::WebContentsUserData<AIChatTabHelper>,
+                        public favicon::FaviconDriverObserver {
  public:
   class Observer : public base::CheckedObserver {
    public:
@@ -41,11 +43,13 @@ class AIChatTabHelper : public content::WebContentsObserver,
     virtual void OnHistoryUpdate() {}
     // We are on a page where we can read the content, so we can perform
     // page-specific actions.
-    virtual void OnPageTextIsAvailable(bool is_available) {}
     virtual void OnAPIRequestInProgress(bool in_progress) {}
-    virtual void OnSuggestedQuestionsChanged(std::vector<std::string> questions,
-                                             bool has_generated,
-                                             bool auto_generate) {}
+    virtual void OnSuggestedQuestionsChanged(
+        std::vector<std::string> questions,
+        bool has_generated,
+        mojom::AutoGenerateQuestionsPref auto_generate) {}
+    virtual void OnFaviconImageDataChanged() {}
+    virtual void OnPageHasContent() {}
   };
 
   AIChatTabHelper(const AIChatTabHelper&) = delete;
@@ -68,8 +72,10 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // is available for the current page, or if questions
   // are already generated, nothing will happen.
   void GenerateQuestions();
-  std::vector<std::string> GetSuggestedQuestions(bool& can_generate,
-                                                 bool& auto_generate);
+  std::vector<std::string> GetSuggestedQuestions(
+      bool& can_generate,
+      mojom::AutoGenerateQuestionsPref& auto_generate);
+  bool HasPageContent();
 
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
@@ -92,6 +98,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
       int64_t for_navigation_id,
       api_request_helper::APIRequestResult result);
   void OnSuggestedQuestionsChanged();
+  void OnPageHasContentChanged();
 
   // content::WebContentsObserver:
   void PrimaryPageChanged(content::Page& page) override;
@@ -99,6 +106,15 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void WebContentsDestroyed() override;
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
+
+  // favicon::FaviconDriverObserver
+  void OnFaviconUpdated(favicon::FaviconDriver* favicon_driver,
+                        NotificationIconType notification_icon_type,
+                        const GURL& icon_url,
+                        bool icon_url_changed,
+                        const gfx::Image& image) override;
+
+  mojom::AutoGenerateQuestionsPref GetAutoGeneratePref();
 
   raw_ptr<PrefService> pref_service_;
   std::unique_ptr<AIChatAPI> ai_chat_api_ = nullptr;

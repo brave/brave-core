@@ -15,6 +15,16 @@ enum ConversationTurnVisibility {
   HIDDEN // does not get added to chat history, used as a flag internally
 };
 
+enum AutoGenerateQuestionsPref {
+  Unset,       // User has not made a choice yet
+  Enabled,     // User has chosen to enable auto-generation
+  Disabled     // User has chosen not to enable auto-generation
+};
+
+struct SiteInfo {
+  string title;
+};
+
 // Represents a single turn in a conversation.
 // The character type defines which party initiated the turn in the conversation
 // The text attribute contains the actual content of the turn, which can be a
@@ -32,13 +42,15 @@ interface PageHandler {
   // List of all suggested questions for the active tab in the page's Browser
   // window.
   GetSuggestedQuestions() => (
-      array<string> questions, bool can_generate, bool auto_generate);
+      array<string> questions, bool can_generate, AutoGenerateQuestionsPref auto_generate);
   // The browser should generate some questions and fire an event when they
   // are ready.
   GenerateQuestions();
   SubmitHumanConversationEntry(string input);
   MarkAgreementAccepted();
   SetAutoGenerateQuestions(bool can_auto_generate_questions);
+  GetSiteInfo() => (SiteInfo? site_info);
+  GetFaviconImageData() => (array<uint8>? favicon_image_data);
 };
 
 interface ChatUIPage {
@@ -47,8 +59,10 @@ interface ChatUIPage {
   // Provides the full list of questions for the active tab in the page's
   // Browser window.
   OnSuggestedQuestionsChanged(
-      array<string> questions, bool has_generated, bool auto_generate);
+      array<string> questions, bool has_generated, AutoGenerateQuestionsPref auto_generate);
   // Event for when active tab changes, if it is the target of this chat
   // conversation.
   OnTargetTabChanged();
+  OnSiteInfoChanged(SiteInfo? info);
+  OnFaviconImageDataChanged(array<uint8> favicon_image_data);
 };

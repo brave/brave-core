@@ -51,22 +51,20 @@ function InputBox (props: InputBoxProps) {
   }
 
   return (
-    <div className={styles.container}>
-      <form className={styles.form}>
-        <textarea
-          className={styles.textbox}
-          placeholder={getLocale('placeholderLabel')}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-          value={props.value}
-        />
-        <div>
-          <button className={styles.buttonSend} onClick={handleClick}>
-            <Icon name='send' />
-          </button>
-        </div>
-      </form>
-    </div>
+    <form className={styles.form}>
+      <textarea
+        className={styles.textbox}
+        placeholder={getLocale('placeholderLabel')}
+        onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
+        value={props.value}
+      />
+      <div>
+        <button className={styles.buttonSend} onClick={handleClick}>
+          <Icon name='send' />
+        </button>
+      </div>
+    </form>
   )
 }
 

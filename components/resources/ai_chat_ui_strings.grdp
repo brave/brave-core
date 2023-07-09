@@ -30,4 +30,16 @@
   <message name="IDS_CHAT_UI_API_ERROR" desc="Describes an error occured submitting the API request">
     There was an error processing your message, please try again.
   </message>
+  <message name="IDS_CHAT_UI_ENABLE_QUESTIONS_TITLE" desc="Title to enable suggested questions">
+    Enable suggested questions?
+  </message>
+  <message name="IDS_CHAT_UI_ENABLE_QUESTIONS_DESC" desc="Description about suggested questions">
+    Brave AI can automatically suggest questions based on the content of the site. You can disable it later in Settings.
+  </message>
+  <message name="IDS_CHAT_UI_ENABLE_QUESTIONS_BUTTON_LABEL" desc="A button label to enable suggested questions">
+    Enable
+  </message>
+  <message name="IDS_CHAT_UI_NO_THANKS_BUTTON_LABEL" desc="A button label to skip suggested questions option">
+    No Thanks
+  </message>
 </grit-part>

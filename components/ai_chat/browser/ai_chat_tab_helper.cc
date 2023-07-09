@@ -19,6 +19,7 @@
 #include "brave/components/ai_chat/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/common/pref_names.h"
+#include "components/favicon/content/content_favicon_driver.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -48,6 +49,8 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents)
       std::make_unique<AIChatAPI>(web_contents->GetBrowserContext()
                                       ->GetDefaultStoragePartition()
                                       ->GetURLLoaderFactoryForBrowserProcess());
+  favicon::ContentFaviconDriver::FromWebContents(web_contents)
+      ->AddObserver(this);
 }
 
 AIChatTabHelper::~AIChatTabHelper() = default;
@@ -156,6 +159,8 @@ void AIChatTabHelper::OnTabContentRetrieved(int64_t for_navigation_id,
   is_video_ = is_video;
   article_text_ = contents_text;
 
+  OnPageHasContentChanged();
+
   // Prevent indirect prompt injections being sent to the AI model.
   base::ReplaceSubstringsAfterOffset(&contents_text, 0, ai_chat::kHumanPrompt,
                                      "");
@@ -203,18 +208,22 @@ void AIChatTabHelper::CleanUp() {
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
+    obs.OnPageHasContent();
   }
 }
 
 std::vector<std::string> AIChatTabHelper::GetSuggestedQuestions(
     bool& can_generate,
-    bool& auto_generate) {
+    mojom::AutoGenerateQuestionsPref& auto_generate) {
   // Can we get suggested questions
   can_generate = !has_generated_questions_ && !article_text_.empty();
   // Are we allowed to auto-generate
-  auto_generate = pref_service_->GetBoolean(
-      ai_chat::prefs::kBraveChatAutoGenerateQuestions);
+  auto_generate = GetAutoGeneratePref();
   return suggested_questions_;
+}
+
+bool AIChatTabHelper::HasPageContent() {
+  return !article_text_.empty();
 }
 
 void AIChatTabHelper::GenerateQuestions() {
@@ -434,11 +443,15 @@ void AIChatTabHelper::OnAPIStreamDataComplete(
 }
 
 void AIChatTabHelper::OnSuggestedQuestionsChanged() {
-  auto auto_generate = pref_service_->GetBoolean(
-      ai_chat::prefs::kBraveChatAutoGenerateQuestions);
   for (auto& obs : observers_) {
-    obs.OnSuggestedQuestionsChanged(suggested_questions_,
-                                    has_generated_questions_, auto_generate);
+    obs.OnSuggestedQuestionsChanged(
+        suggested_questions_, has_generated_questions_, GetAutoGeneratePref());
+  }
+}
+
+void AIChatTabHelper::OnPageHasContentChanged() {
+  for (auto& obs : observers_) {
+    obs.OnPageHasContent();
   }
 }
 
@@ -456,6 +469,33 @@ void AIChatTabHelper::DidFinishNavigation(
   current_navigation_id_ = navigation_handle->GetNavigationId();
 }
 
+void AIChatTabHelper::OnFaviconUpdated(
+    favicon::FaviconDriver* favicon_driver,
+    NotificationIconType notification_icon_type,
+    const GURL& icon_url,
+    bool icon_url_changed,
+    const gfx::Image& image) {
+  for (Observer& obs : observers_) {
+    obs.OnFaviconImageDataChanged();
+  }
+}
+
+mojom::AutoGenerateQuestionsPref AIChatTabHelper::GetAutoGeneratePref() {
+  mojom::AutoGenerateQuestionsPref pref =
+      mojom::AutoGenerateQuestionsPref::Unset;
+
+  const base::Value* auto_generate_value = pref_service_->GetUserPrefValue(
+      ai_chat::prefs::kBraveChatAutoGenerateQuestions);
+
+  if (auto_generate_value) {
+    pref = (auto_generate_value->GetBool()
+                ? mojom::AutoGenerateQuestionsPref::Enabled
+                : mojom::AutoGenerateQuestionsPref::Disabled);
+  }
+
+  return pref;
+}
+
 void AIChatTabHelper::PrimaryPageChanged(content::Page& page) {
   CleanUp();
 }
@@ -470,6 +510,8 @@ void AIChatTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
 
 void AIChatTabHelper::WebContentsDestroyed() {
   CleanUp();
+  favicon::ContentFaviconDriver::FromWebContents(web_contents())
+      ->RemoveObserver(this);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);
