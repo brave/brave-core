@@ -24,6 +24,7 @@ const KeysContainer = styled.div`
   flex: 1;
 
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
 
