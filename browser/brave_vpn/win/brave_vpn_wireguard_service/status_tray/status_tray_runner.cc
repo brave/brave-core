@@ -11,8 +11,11 @@
 #include <shellapi.h>
 
 #include <memory>
+#include <string>
 #include <utility>
 
+#include "base/files/file_util.h"
+#include "base/i18n/rtl.h"
 #include "base/logging.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
@@ -38,10 +41,11 @@ namespace brave_vpn {
 
 namespace {
 
-base::FilePath GetResourcesPakFilePath() {
+base::FilePath GetResourcesPakFilePath(const std::string& locale) {
   base::FilePath pak_path;
   base::PathService::Get(base::DIR_ASSETS, &pak_path);
-  pak_path = pak_path.AppendASCII("brave_resources.pak");
+  pak_path = pak_path.AppendASCII("Locales");
+  pak_path = pak_path.AppendASCII(locale + ".pak");
   return pak_path;
 }
 
@@ -239,9 +243,17 @@ HRESULT StatusTrayRunner::Run() {
   base::SingleThreadTaskExecutor task_executor(base::MessagePumpType::UI);
   base::ThreadPoolInstance::CreateAndStartWithDefaultParams(
       "Brave VPN Wireguard status tray process");
-  ui::ResourceBundle::InitSharedInstanceWithPakPath(GetResourcesPakFilePath());
+
+  auto pak_path = GetResourcesPakFilePath(base::i18n::GetConfiguredLocale());
+  if (!base::PathExists(pak_path)) {
+    pak_path = GetResourcesPakFilePath("en-US");
+  }
+  DCHECK(base::PathExists(pak_path));
+  ui::ResourceBundle::InitSharedInstanceWithPakPath(pak_path);
+
   SetupStatusIcon();
   SubscribeForStorageUpdates();
+
   base::RunLoop loop;
   quit_ = loop.QuitClosure();
   loop.Run();

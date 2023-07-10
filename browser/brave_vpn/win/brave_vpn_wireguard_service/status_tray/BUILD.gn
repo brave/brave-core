@@ -13,10 +13,12 @@ source_set("status_tray") {
   deps = [
     "resources",
     "//base",
+    "//base:i18n",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/win",
     "//brave/components/brave_vpn/common/wireguard/win",
-    "//brave/components/resources:strings",
+    "//brave/components/resources:strings_grit",
+    "//chrome:packed_resources",
     "//ui/base",
     "//ui/native_theme",
     "//ui/native_theme:native_theme_browser",
