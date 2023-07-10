@@ -112,6 +112,7 @@ struct PortfolioView: View {
           }
         )
       }
+      .navigationViewStyle(.stack)
       .onDisappear {
         networkStore.closeNetworkSelectionStore()
       }

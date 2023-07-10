@@ -33,6 +33,7 @@ struct TransactionsActivityView: View {
           }
         )
       }
+      .navigationViewStyle(.stack)
       .onDisappear {
         networkStore.closeNetworkSelectionStore()
       }

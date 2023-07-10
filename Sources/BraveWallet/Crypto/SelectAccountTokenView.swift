@@ -98,6 +98,7 @@ struct SelectAccountTokenView: View {
           }
         )
       }
+      .navigationViewStyle(.stack)
       .onDisappear {
         networkStore.closeNetworkSelectionStore()
       }
