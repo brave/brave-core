@@ -272,6 +272,8 @@
 
 # These tests fail because IdentityManager's primary account has no kSignin
 # consent level
+-SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedAllowed
+-SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedNotAllowed
 -SignoutAllowed/SigninManagerTest.*
 -TestAppMenuModelCR2023.ProfileSyncOnTest
 
@@ -308,7 +310,12 @@
 
 # These fail because we disable safe browsing enhanced protection.
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/1
+-All/ClientSideDetectionServiceTest.GetNumReportTestESB/2
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/3
+-All/ClientSideDetectionServiceTest.GetNumReportTestESB/6
+-All/ClientSideDetectionServiceTest.GetNumReportTestESB/7
+-All/ClientSideDetectionServiceTest.TestReceivingImageEmbedderUpdatesAfterResubscription/5
+-All/ClientSideDetectionServiceTest.TestReceivingImageEmbedderUpdatesAfterResubscription/7
 -ChromePingManagerFactoryTest.ShouldFetchAccessTokenForReport_Yes
 -NotificationMetricsLoggerTest.PersistentNotificationSize
 
@@ -347,6 +354,15 @@
 # This test fails because we insert our own bookmarks submenu into the app menu
 # model
 -TestAppMenuModelCR2023.ModelHasIcons
+
+# These tests fail because we set kIsolatedAppsDeveloperModeAllowed to false
+-All/IsolatedWebAppInstallCommandHelperTrustAndSignaturesBundleTest.ErrorsOnBundleError/InstalledBundle
+-All/IsolatedWebAppInstallCommandHelperTrustAndSignaturesBundleTest.SucceedsWhenThereIsNoError/InstalledBundle
+-IsolatedWebAppInstallCommandHelperTrustAndSignaturesTest.DevProxySucceeds
+
+# This test fails because we override Chromium's "what's new" util functionality
+# see brave/chromium_src/chrome/browser/ui/webui/whats_new/whats_new_util.cc
+-WhatsNewUtilTests.ShouldShowForStateUsesChromeVersionForRefresh
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
