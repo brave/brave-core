@@ -12,8 +12,9 @@
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/tts_player.h"
+#include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -22,6 +23,10 @@
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "ui/color/color_provider.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
+#endif
 
 namespace {
 class TtsPlayerDelegate : public speedreader::TtsPlayer::Delegate {
@@ -139,10 +144,12 @@ void SpeedreaderToolbarDataHandlerImpl::AiChat() {
   if (!browser_ || !browser_->window()) {
     return;
   }
+#if BUILDFLAG(ENABLE_AI_CHAT)
   if (auto* ai_chat_tab_helper = ai_chat::AIChatTabHelper::FromWebContents(
           active_tab_helper_->web_contents())) {
     static_cast<BraveBrowserWindow*>(browser_->window())->OpenAiChatPanel();
   }
+#endif
 }
 
 void SpeedreaderToolbarDataHandlerImpl::GetPlaybackState(
