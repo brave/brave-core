@@ -15,8 +15,7 @@ class SyncService;
 namespace autofill {
 class LogManager;
 class PersonalDataManager;
-bool IsCreditCardUploadEnabled(const PrefService* pref_service,
-                               const syncer::SyncService* sync_service,
+bool IsCreditCardUploadEnabled(const syncer::SyncService* sync_service,
                                const std::string& user_email,
                                const std::string& user_country,
                                const AutofillSyncSigninState sync_state,
@@ -24,7 +23,6 @@ bool IsCreditCardUploadEnabled(const PrefService* pref_service,
   return false;
 }
 bool IsCreditCardMigrationEnabled(PersonalDataManager* personal_data_manager,
-                                  PrefService* pref_service,
                                   syncer::SyncService* sync_service,
                                   bool is_test_mode,
                                   LogManager* log_manager) {
