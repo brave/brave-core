@@ -13,8 +13,11 @@
 #include "brave/components/tor/tor_profile_service_impl.h"
 #include "brave/components/tor/tor_utils.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/prefs/incognito_mode_prefs.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/policy/core/common/policy_pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 
 // static
@@ -39,16 +42,30 @@ TorProfileServiceFactory* TorProfileServiceFactory::GetInstance() {
 
 // static
 void TorProfileServiceFactory::SetTorDisabled(bool disabled) {
-  if (g_browser_process)
+  if (g_browser_process) {
     g_browser_process->local_state()->SetBoolean(tor::prefs::kTorDisabled,
                                                  disabled);
+  }
 }
 
 // static
-bool TorProfileServiceFactory::IsTorDisabled() {
-  if (g_browser_process)
+bool TorProfileServiceFactory::IsTorAvailable(
+    content::BrowserContext* context) {
+  const bool incognito_available = IncognitoModePrefs::GetAvailability(
+                                       user_prefs::UserPrefs::Get(context)) !=
+                                   policy::IncognitoModeAvailability::kDisabled;
+  return incognito_available;
+}
+
+// static
+bool TorProfileServiceFactory::IsTorDisabled(content::BrowserContext* context) {
+  if (!IsTorAvailable(context)) {
+    return true;
+  }
+  if (g_browser_process) {
     return g_browser_process->local_state()->GetBoolean(
         tor::prefs::kTorDisabled);
+  }
   return false;
 }
 
@@ -63,8 +80,9 @@ void TorProfileServiceFactory::SetTorBridgesConfig(
 
 // static
 tor::BridgesConfig TorProfileServiceFactory::GetTorBridgesConfig() {
-  if (!g_browser_process)
+  if (!g_browser_process) {
     return {};
+  }
   return tor::BridgesConfig::FromDict(g_browser_process->local_state()->GetDict(
                                           tor::prefs::kBridgesConfig))
       .value_or(tor::BridgesConfig());
@@ -95,7 +113,8 @@ KeyedService* TorProfileServiceFactory::BuildServiceInstanceFor(
 content::BrowserContext* TorProfileServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
   // Only grant service for tor context
-  if (!context->IsTor())
+  if (!context->IsTor()) {
     return nullptr;
+  }
   return context;
 }

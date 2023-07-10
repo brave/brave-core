@@ -390,22 +390,27 @@ void BraveTorHandler::IsTorEnabled(const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(
-      args[0], base::Value(!TorProfileServiceFactory::IsTorDisabled()));
+      args[0], base::Value(!TorProfileServiceFactory::IsTorDisabled(
+                   web_ui()->GetWebContents()->GetBrowserContext())));
 }
 
 void BraveTorHandler::OnTorEnabledChanged() {
   if (IsJavascriptAllowed()) {
     FireWebUIListener("tor-enabled-changed",
-                      base::Value(!TorProfileServiceFactory::IsTorDisabled()));
+                      base::Value(!TorProfileServiceFactory::IsTorDisabled(
+                          web_ui()->GetWebContents()->GetBrowserContext())));
   }
 }
 
 void BraveTorHandler::IsTorManaged(const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
 
+  const bool is_available = TorProfileServiceFactory::IsTorAvailable(
+      web_ui()->GetWebContents()->GetBrowserContext());
+
   const bool is_managed = g_browser_process->local_state()
                               ->FindPreference(tor::prefs::kTorDisabled)
                               ->IsManaged();
   AllowJavascript();
-  ResolveJavascriptCallback(args[0], base::Value(is_managed));
+  ResolveJavascriptCallback(args[0], base::Value(!is_available || is_managed));
 }

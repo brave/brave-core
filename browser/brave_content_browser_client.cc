@@ -1084,7 +1084,7 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   std::unique_ptr<content::NavigationThrottle>
       onion_location_navigation_throttle =
           tor::OnionLocationNavigationThrottle::MaybeCreateThrottleFor(
-              handle, TorProfileServiceFactory::IsTorDisabled(),
+              handle, TorProfileServiceFactory::IsTorDisabled(context),
               std::move(onion_location_navigation_throttle_delegate),
               context->IsTor());
   if (onion_location_navigation_throttle) {
