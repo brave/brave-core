@@ -83,9 +83,7 @@ public class AddAssetActivity extends BraveWalletBaseActivity implements TextWat
     @Override
     protected void onPreCreate() {
         Intent intent = getIntent();
-        if (intent != null) {
-            mNftsOnly = intent.getBooleanExtra(NFT_CUSTOM_ASSET, false);
-        }
+        mNftsOnly = intent.getBooleanExtra(NFT_CUSTOM_ASSET, false);
     }
 
     @Override
@@ -150,7 +148,7 @@ public class AddAssetActivity extends BraveWalletBaseActivity implements TextWat
         });
 
         mAdd.setOnClickListener(v -> {
-            BraveWalletService braveWalletService = mWalletModel.getBraveWalletService();
+            BraveWalletService braveWalletService = getBraveWalletService();
             assert braveWalletService != null;
             final NetworkInfo networkInfo =
                     mNetworkAdapter.getNetwork(mNetworkSpinner.getSelectedItemPosition());
@@ -217,9 +215,9 @@ public class AddAssetActivity extends BraveWalletBaseActivity implements TextWat
         mTokenIdEdit.setEnabled(true);
         mAdd.setEnabled(false);
 
-        AssetRatioService assetRatioService = mWalletModel.getAssetRatioService();
-        if (assetRatioService != null && !contractAddress.isEmpty()
-                && mNetworkInfo.coin == CoinType.ETH) {
+        AssetRatioService assetRatioService = getAssetRatioService();
+        assert assetRatioService != null;
+        if (!contractAddress.isEmpty() && mNetworkInfo.coin == CoinType.ETH) {
             assetRatioService.getTokenInfo(contractAddress, token -> {
                 if (token != null) {
                     mPauseTextWatcher = true;

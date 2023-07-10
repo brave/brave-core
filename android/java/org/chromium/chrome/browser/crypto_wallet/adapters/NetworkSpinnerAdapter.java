@@ -32,7 +32,7 @@ public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
     private Handler mHandler;
 
     public NetworkSpinnerAdapter(Context context, List<NetworkInfo> networkInfoList) {
-        mInflater = (LayoutInflater.from(context));
+        mInflater = LayoutInflater.from(context);
         mNetworkInfoList = networkInfoList;
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
