@@ -46,4 +46,8 @@ std::string Uphold::GetFeeAddress() const {
   return uphold::GetFeeAddress();
 }
 
+void Uphold::CheckEligibility() {
+  static_cast<ConnectUpholdWallet*>(connect_wallet_.get())->CheckEligibility();
+}
+
 }  // namespace brave_rewards::internal::uphold

@@ -247,7 +247,6 @@ void TestRewardsEngineClient::SetValueState(const std::string& name,
 void TestRewardsEngineClient::GetTimeState(const std::string& name,
                                            GetTimeStateCallback callback) {
   const auto* value = state_store_.FindByDottedPath(name);
-  DCHECK(value);
   if (!value) {
     return std::move(callback).Run(base::Time());
   }

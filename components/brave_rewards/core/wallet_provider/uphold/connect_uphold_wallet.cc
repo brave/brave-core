@@ -28,11 +28,7 @@ using wallet_provider::ConnectExternalWallet;
 namespace uphold {
 
 ConnectUpholdWallet::ConnectUpholdWallet(RewardsEngineImpl& engine)
-    : ConnectExternalWallet(engine), card_(engine), server_(engine) {
-  // TODO(https://github.com/brave/brave-browser/issues/31698)
-  eligibility_checker_.Start(FROM_HERE, base::Minutes(1), this,
-                             &ConnectUpholdWallet::CheckEligibility);
-}
+    : ConnectExternalWallet(engine), card_(engine), server_(engine) {}
 
 ConnectUpholdWallet::~ConnectUpholdWallet() = default;
 
@@ -193,10 +189,6 @@ void ConnectUpholdWallet::OnCreateCard(ConnectExternalWalletCallback callback,
 }
 
 void ConnectUpholdWallet::CheckEligibility() {
-  if (!engine_->IsReady()) {
-    return eligibility_checker_.Reset();
-  }
-
   auto wallet =
       engine_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
   if (!wallet) {

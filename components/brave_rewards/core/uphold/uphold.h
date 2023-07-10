@@ -30,6 +30,8 @@ class Uphold final : public wallet_provider::WalletProvider {
 
   std::string GetFeeAddress() const override;
 
+  void CheckEligibility();
+
  private:
   endpoint::UpholdServer server_;
 };
