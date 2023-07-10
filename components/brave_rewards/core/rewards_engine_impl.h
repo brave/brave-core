@@ -26,6 +26,7 @@
 #include "brave/components/brave_rewards/core/recovery/recovery.h"
 #include "brave/components/brave_rewards/core/report/report.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_engine_context.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
@@ -49,7 +50,8 @@ inline constexpr uint64_t kPublisherListRefreshInterval =
     3 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 #endif
 
-class RewardsEngineImpl : public mojom::RewardsEngine {
+class RewardsEngineImpl : public RewardsEngineContext,
+                          public mojom::RewardsEngine {
  public:
   explicit RewardsEngineImpl(
       mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote);

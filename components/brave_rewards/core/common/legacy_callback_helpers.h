@@ -26,6 +26,16 @@ std::function<void(Args...)> ToLegacyCallback(
   };
 }
 
+template <typename... Args>
+base::OnceCallback<void(Args...)> WrapLegacyCallback(
+    std::function<void(Args...)> callback) {
+  return base::BindOnce(
+      [](decltype(callback) wrapped, Args... args) {
+        wrapped(std::forward<Args>(args)...);
+      },
+      std::move(callback));
+}
+
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_COMMON_LEGACY_CALLBACK_HELPERS_H_

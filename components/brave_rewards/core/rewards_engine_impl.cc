@@ -22,7 +22,8 @@ namespace brave_rewards::internal {
 
 RewardsEngineImpl::RewardsEngineImpl(
     mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote)
-    : client_(std::move(client_remote)),
+    : RewardsEngineContext(*this),
+      client_(std::move(client_remote)),
       promotion_(*this),
       publisher_(*this),
       media_(*this),
