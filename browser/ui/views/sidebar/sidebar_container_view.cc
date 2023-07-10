@@ -342,24 +342,21 @@ void SidebarContainerView::AnimationEnded(const gfx::Animation* animation) {
   PreferredSizeChanged();
 
   // Handle children's visibility after animation completes.
-  if (width_animation_.GetCurrentValue() == 1.0) {
-    DVLOG(1) << __func__ << " : Show animation ended.";
-    if (animation_end_width_ !=
-        sidebar_control_view_->GetPreferredSize().width()) {
-      side_panel_->SetVisible(true);
-    }
-
-    ShowOptionsEventDetectWidget(false);
-  } else {
+  const bool hide_animation_ended = (width_animation_.GetCurrentValue() == 0);
+  if (hide_animation_ended) {
     DVLOG(1) << __func__ << " :  Hide animation ended.";
-    if (animation_end_width_ == 0) {
+    // Hide all means panel and control view both are hidden.
+    // Otherwise, only panel is hidden.
+    const bool did_hide_all = animation_end_width_ == 0;
+    if (did_hide_all) {
       ShowOptionsEventDetectWidget(true);
       sidebar_control_view_->SetVisible(false);
-      side_panel_->SetVisible(false);
     } else {
       sidebar_control_view_->SetVisible(true);
-      side_panel_->SetVisible(false);
     }
+    side_panel_->SetVisible(false);
+  } else {
+    DVLOG(1) << __func__ << " : Show animation ended.";
   }
 
   animation_start_width_ = animation_end_width_ = 0;
@@ -461,9 +458,8 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
   DVLOG(1) << __func__ << ": show animation (start, end) width: ("
            << animation_start_width_ << ", " << animation_end_width_ << ")";
 
-  // Panel will be visible after animation completes to prevent panel contents
-  // layout during the animation.
   sidebar_control_view_->SetVisible(true);
+  side_panel_->SetVisible(show_side_panel);
 
   // Don't do show animation for control view when show always options is used.
   // This animation can cause upstream browser test
@@ -541,9 +537,6 @@ void SidebarContainerView::HideSidebar(bool hide_sidebar_control) {
 
   if (ShouldUseAnimation()) {
     DVLOG(1) << __func__ << ": hide with animation";
-    // Hide panel before starting animation to prevent contents layout during
-    // the animation.
-    side_panel_->SetVisible(false);
     width_animation_.Hide();
     return;
   }
