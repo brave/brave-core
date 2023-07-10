@@ -84,7 +84,7 @@ class BraveWalletServiceDelegate {
                                       const std::string& formed_website,
                                       ResetWebSitePermissionCallback callback);
 
-  virtual mojom::OriginInfoPtr GetActiveOrigin();
+  virtual absl::optional<url::Origin> GetActiveOrigin();
 
   virtual void ClearWalletUIStoragePartition();
 

@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
@@ -128,6 +129,26 @@ public class AssetUtils {
         } else {
             return getKeyringForEthOrSolOnly(coinType);
         }
+    }
+
+    public static AccountInfo[] filterAccountsByNetwork(
+            AccountInfo[] accounts, @CoinType.EnumType int coinType, @Nullable String chainId) {
+        @KeyringId.EnumType
+        int keyringId = AssetUtils.getKeyring(coinType, chainId);
+
+        return Arrays.stream(accounts)
+                .filter(acc -> acc.accountId.keyringId == keyringId)
+                .toArray(AccountInfo[] ::new);
+    }
+
+    public static AccountInfo[] filterAccountsByNetwork(
+            List<AccountInfo> accounts, @CoinType.EnumType int coinType, @Nullable String chainId) {
+        @KeyringId.EnumType
+        int keyringId = AssetUtils.getKeyring(coinType, chainId);
+
+        return accounts.stream()
+                .filter(acc -> acc.accountId.keyringId == keyringId)
+                .toArray(AccountInfo[] ::new);
     }
 
     /**

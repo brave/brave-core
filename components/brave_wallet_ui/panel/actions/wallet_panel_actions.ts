@@ -7,7 +7,6 @@ import { createAction } from '@reduxjs/toolkit'
 import {
   ConnectWithSitePayloadType,
   AddSuggestTokenProcessedPayload,
-  CancelConnectHardwareWalletPayload,
   GetEncryptionPublicKeyProcessedPayload,
   DecryptProcessedPayload,
   ShowConnectToSitePayload,
@@ -51,7 +50,7 @@ export const signMessageProcessed = createAction<SignMessageProcessedPayload>('s
 export const signMessageHardware = createAction<SerializableSignMessageRequest>('signMessageHardware')
 export const signMessageHardwareProcessed = createAction<SignMessageProcessedPayload>('signMessageHardwareProcessed')
 export const setHardwareWalletInteractionError = createAction<HardwareWalletResponseCodeType | undefined>('setHardwareWalletInteractionError')
-export const cancelConnectHardwareWallet = createAction<CancelConnectHardwareWalletPayload>('cancelConnectHardwareWallet')
+export const cancelConnectHardwareWallet = createAction<BraveWallet.AccountInfo>('cancelConnectHardwareWallet')
 export const addSuggestToken = createAction<BraveWallet.AddSuggestTokenRequest>('addSuggestToken')
 export const addSuggestTokenProcessed = createAction<AddSuggestTokenProcessedPayload>('addSuggestTokenProcessed')
 export const getEncryptionPublicKey = createAction<SerializableGetEncryptionPublicKeyRequest>('getEncryptionPublicKey')

@@ -15,7 +15,7 @@ import { useGetVisibleNetworksQuery } from '../../../common/slices/api.slice'
 import SelectNetworkItem from '../select-network-item'
 
 interface Props {
-  onSelectCustomNetwork?: (network: BraveWallet.NetworkInfo) => void
+  onSelectCustomNetwork: (network: BraveWallet.NetworkInfo) => void
   selectedNetwork: BraveWallet.NetworkInfo | undefined
   customNetwork?: BraveWallet.NetworkInfo
 }

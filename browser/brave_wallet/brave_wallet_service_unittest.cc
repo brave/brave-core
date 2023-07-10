@@ -619,18 +619,6 @@ class BraveWalletServiceUnitTest : public testing::Test {
     return default_cryptocurrency;
   }
 
-  mojom::CoinType GetSelectedCoin() {
-    base::RunLoop run_loop;
-    mojom::CoinType selected_coin;
-    service_->GetSelectedCoin(
-        base::BindLambdaForTesting([&](mojom::CoinType coin_type) {
-          selected_coin = coin_type;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return selected_coin;
-  }
-
   void SimulateOnGetImportInfo(const std::string& new_password,
                                bool result,
                                const ImportInfo& info,
@@ -1448,17 +1436,6 @@ TEST_F(BraveWalletServiceUnitTest, GetAndSetDefaultBaseCryptocurrency) {
   // SetDefaultBaseCryptocurrency will check that the observer is not fired.
   SetDefaultBaseCryptocurrency("ETH");
   EXPECT_EQ(GetDefaultBaseCryptocurrency(), "ETH");
-}
-
-TEST_F(BraveWalletServiceUnitTest, SelectedCoin) {
-  EXPECT_EQ(static_cast<int>(mojom::CoinType::ETH),
-            GetPrefs()->GetInteger(kBraveWalletSelectedCoin));
-  EXPECT_EQ(mojom::CoinType::ETH, GetSelectedCoin());
-
-  service_->SetSelectedCoin(mojom::CoinType::SOL);
-  EXPECT_EQ(static_cast<int>(mojom::CoinType::SOL),
-            GetPrefs()->GetInteger(kBraveWalletSelectedCoin));
-  EXPECT_EQ(mojom::CoinType::SOL, GetSelectedCoin());
 }
 
 TEST_F(BraveWalletServiceUnitTest, EthAddRemoveSetUserAssetVisible) {
@@ -2889,6 +2866,77 @@ TEST_F(BraveWalletServiceUnitTest, GetSimpleHashSpamNFTs) {
   GetSimpleHashSpamNFTs("0x0000000000000000000000000000000000000000",
                         {mojom::kMainnetChainId}, mojom::CoinType::ETH,
                         absl::nullopt, expected_nfts, absl::nullopt);
+}
+
+TEST_F(BraveWalletServiceUnitTest, EnsureSelectedAccountForChain) {
+  const char* new_password = "brave1234!";
+  bool success;
+  std::string error_message;
+  const char* valid_mnemonic =
+      "drip caution abandon festival order clown oven regular absorb evidence "
+      "crew where";
+  SimulateOnGetImportInfo(new_password, true,
+                          ImportInfo({valid_mnemonic, false, 1}),
+                          ImportError::kNone, &success, &error_message);
+
+  auto accounts = std::move(keyring_service_->GetAllAccountsSync()->accounts);
+  auto eth_account_id = accounts[0]->account_id->Clone();
+  auto sol_account_id = accounts[1]->account_id->Clone();
+  EXPECT_EQ(eth_account_id->coin, mojom::CoinType::ETH);
+  EXPECT_EQ(sol_account_id->coin, mojom::CoinType::SOL);
+
+  // SOL account is selected by default.
+  EXPECT_EQ(
+      sol_account_id,
+      keyring_service_->GetAllAccountsSync()->selected_account->account_id);
+
+  // For solana network switch current account is ok.
+  EXPECT_EQ(sol_account_id, service_->EnsureSelectedAccountForChainSync(
+                                mojom::CoinType::SOL, mojom::kSolanaMainnet));
+  EXPECT_EQ(
+      sol_account_id,
+      keyring_service_->GetAllAccountsSync()->selected_account->account_id);
+
+  // For polygon network we switch to eth account.
+  EXPECT_EQ(eth_account_id,
+            service_->EnsureSelectedAccountForChainSync(
+                mojom::CoinType::ETH, mojom::kPolygonMainnetChainId));
+  EXPECT_EQ(
+      eth_account_id,
+      keyring_service_->GetAllAccountsSync()->selected_account->account_id);
+
+  // For filecoin network there is no account, so eth account is still selected.
+  EXPECT_EQ(mojom::AccountIdPtr(),
+            service_->EnsureSelectedAccountForChainSync(
+                mojom::CoinType::FIL, mojom::kFilecoinMainnet));
+  EXPECT_EQ(
+      eth_account_id,
+      keyring_service_->GetAllAccountsSync()->selected_account->account_id);
+
+  // Create fil account and it gets selected.
+  auto fil_account_id =
+      keyring_service_
+          ->AddAccountSync(mojom::CoinType::FIL, mojom::KeyringId::kFilecoin,
+                           "Fil 1")
+          ->account_id.Clone();
+  EXPECT_EQ(
+      fil_account_id,
+      keyring_service_->GetAllAccountsSync()->selected_account->account_id);
+
+  // Switch to eth account again.
+  EXPECT_EQ(eth_account_id,
+            service_->EnsureSelectedAccountForChainSync(
+                mojom::CoinType::ETH, mojom::kPolygonMainnetChainId));
+  EXPECT_EQ(
+      eth_account_id,
+      keyring_service_->GetAllAccountsSync()->selected_account->account_id);
+
+  // As there is filecoin accoin account we can switch to it.
+  EXPECT_EQ(fil_account_id, service_->EnsureSelectedAccountForChainSync(
+                                mojom::CoinType::FIL, mojom::kFilecoinMainnet));
+  EXPECT_EQ(
+      fil_account_id,
+      keyring_service_->GetAllAccountsSync()->selected_account->account_id);
 }
 
 }  // namespace brave_wallet

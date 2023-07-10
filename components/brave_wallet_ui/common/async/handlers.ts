@@ -8,12 +8,10 @@ import { mapLimit } from 'async'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
 import {
-  ChainChangedEventPayloadType,
   AddSitePermissionPayloadType,
   RemoveSitePermissionPayloadType,
   SetUserAssetVisiblePayloadType,
   UnlockWalletPayloadType,
-  SelectedAccountChangedPayloadType,
   GetCoinMarketPayload,
   UpdateUsetAssetType
 } from '../constants/action_types'
@@ -31,7 +29,6 @@ import {
 
 import getAPIProxy from './bridge'
 import {
-  refreshKeyringInfo,
   refreshTokenPriceHistory,
   refreshSitePermissions,
   refreshBalances,
@@ -65,7 +62,10 @@ async function refreshBalancesPricesAndHistory(store: Store) {
 async function refreshWalletInfo (store: Store, payload: RefreshOpts = {}) {
   const apiProxy = getAPIProxy()
 
-  await store.dispatch(refreshKeyringInfo(payload))
+  const { walletInfo } = await apiProxy.walletHandler.getWalletInfo()
+  const { allAccounts } = await apiProxy.keyringService.getAllAccounts()
+  store.dispatch(WalletActions.initialized({ walletInfo, allAccounts }))
+  store.dispatch(WalletActions.refreshAll(payload))
 
   // refresh networks registry & selected network
   await store.dispatch(
@@ -99,35 +99,6 @@ async function updateAccountInfo (store: Store) {
   } else {
     await refreshWalletInfo(store)
   }
-}
-
-async function updateCoinAccountNetworkInfo (store: Store, coin: BraveWallet.CoinType) {
-  const { accounts } = getWalletState(store)
-  if (accounts.length === 0) {
-    return
-  }
-  const { braveWalletService, keyringService } = getAPIProxy()
-
-  // Update Selected Coin & cached selected network
-  await store
-    .dispatch(walletApi.endpoints.setSelectedCoin.initiate(coin))
-    .unwrap()
-
-  // Updated Selected Account
-  const { address: selectedAccountAddress } =
-    coin === BraveWallet.CoinType.FIL
-      ? await keyringService.getFilecoinSelectedAccount(
-          (
-            await braveWalletService.getChainIdForActiveOrigin(coin)
-          ).chainId
-        )
-      : await keyringService.getSelectedAccount(coin)
-
-  const defaultAccount =
-    accounts.find(
-      (account) => account.address === selectedAccountAddress
-    ) || accounts[0]
-  await store.dispatch(WalletActions.setSelectedAccount(defaultAccount))
 }
 
 handler.on(
@@ -188,24 +159,6 @@ handler.on(WalletActions.backedUp.type, async (store) => {
 
 handler.on(WalletActions.accountsChanged.type, async (store) => {
   await updateAccountInfo(store)
-})
-
-handler.on(WalletActions.chainChangedEvent.type, async (store: Store, payload: ChainChangedEventPayloadType) => {
-  await updateCoinAccountNetworkInfo(store, payload.coin)
-})
-
-handler.on(
-  WalletActions.selectAccount.type,
-  async (store: Store, accountId: BraveWallet.AccountId) => {
-    await store.dispatch(
-      walletApi.endpoints.setSelectedAccount.initiate(accountId)
-    )
-  }
-)
-
-
-handler.on(WalletActions.selectedAccountChanged.type, async (store, payload: SelectedAccountChangedPayloadType) => {
-  await updateCoinAccountNetworkInfo(store, payload.coin)
 })
 
 handler.on(WalletActions.defaultEthereumWalletChanged.type, async (store) => {

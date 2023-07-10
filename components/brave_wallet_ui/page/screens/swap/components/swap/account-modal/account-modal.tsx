@@ -72,7 +72,7 @@ export const AccountModal = (props: Props) => {
     async (account: AccountInfoEntity) => {
       await setSelectedAccount(account.accountId)
       onHideModal()
-      await refreshBlockchainState({ account })
+      await refreshBlockchainState({ accountId: account.accountId })
     },
     [
       onHideModal,

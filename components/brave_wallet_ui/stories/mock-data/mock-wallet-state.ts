@@ -192,7 +192,6 @@ export const mockWalletState: WalletState = {
   isWalletCreated: false,
   isWalletLocked: false,
   portfolioPriceHistory: [],
-  selectedAccount: mockAccount,
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
   userVisibleTokensInfo: [
     {

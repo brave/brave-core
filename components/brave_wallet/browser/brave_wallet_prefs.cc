@@ -107,9 +107,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kDefaultBaseCurrency, "USD");
   registry->RegisterStringPref(kDefaultBaseCryptocurrency, "BTC");
   registry->RegisterBooleanPref(kShowWalletIconOnToolbar, true);
-  registry->RegisterIntegerPref(
-      kBraveWalletSelectedCoin,
-      static_cast<int>(brave_wallet::mojom::CoinType::ETH));
   registry->RegisterDictionaryPref(kBraveWalletTransactions);
   registry->RegisterDictionaryPref(kBraveWalletP3AActiveWalletDict);
   registry->RegisterDictionaryPref(kBraveWalletKeyrings);
@@ -127,7 +124,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(kBraveWalletAutoLockMinutes,
                                 kDefaultWalletAutoLockMinutes);
   registry->RegisterDictionaryPref(kBraveWalletEthAllowancesCache);
-  registry->RegisterStringPref(kBraveWalletSelectedAccount, "");
   registry->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
   registry->RegisterDictionaryPref(kBraveWalletLastTransactionSentTimeDict);
   registry->RegisterTimePref(kBraveWalletLastDiscoveredAssetsAt, base::Time());
@@ -136,6 +132,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kAutoPinEnabled, false);
   registry->RegisterBooleanPref(kShouldShowWalletSuggestionBadge, true);
   registry->RegisterBooleanPref(kBraveWalletNftDiscoveryEnabled, false);
+
+  registry->RegisterStringPref(kBraveWalletSelectedWalletAccount, "");
+  registry->RegisterStringPref(kBraveWalletSelectedEthDappAccount, "");
+  registry->RegisterStringPref(kBraveWalletSelectedSolDappAccount, "");
 }
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
@@ -209,6 +209,11 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterBooleanPref(kBraveWalletSolanaTransactionsV0SupportMigrated,
                                 false);
 
+  // Added 06/2023
+  registry->RegisterIntegerPref(
+      kBraveWalletSelectedCoinDeprecated,
+      static_cast<int>(brave_wallet::mojom::CoinType::ETH));
+
   // Added 07/2023
   registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsSpamMigrated, false);
 }
@@ -226,7 +231,9 @@ void ClearKeyringServiceProfilePrefs(PrefService* prefs) {
   DCHECK(prefs);
   prefs->ClearPref(kBraveWalletKeyrings);
   prefs->ClearPref(kBraveWalletAutoLockMinutes);
-  prefs->ClearPref(kBraveWalletSelectedAccount);
+  prefs->ClearPref(kBraveWalletSelectedWalletAccount);
+  prefs->ClearPref(kBraveWalletSelectedEthDappAccount);
+  prefs->ClearPref(kBraveWalletSelectedSolDappAccount);
 }
 
 void ClearTxServiceProfilePrefs(PrefService* prefs) {

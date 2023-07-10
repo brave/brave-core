@@ -6,11 +6,8 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
 
-// Selectors
-import { WalletSelectors } from '../../../../../../common/selectors'
-import {
-  useUnsafeWalletSelector
-} from '../../../../../../common/hooks/use-safe-selector'
+// Queries
+import { useSelectedAccountQuery } from '../../../../../../common/slices/api.slice.extra'
 
 // Utils
 import { reduceAddress } from '../../../../../../utils/reduce-address'
@@ -36,8 +33,7 @@ export const ConnectWalletButton = (props: Props) => {
   const { onClick } = props
 
   // Selectors
-  const selectedAccount =
-    useUnsafeWalletSelector(WalletSelectors.selectedAccount)
+  const { data: selectedAccount } = useSelectedAccountQuery()
 
   // Memos
   const accountOrb: string | undefined = React.useMemo(() => {

@@ -5,14 +5,10 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import { useDispatch } from 'react-redux'
 
 // Selectors
 import { WalletSelectors } from '../../../../../common/selectors'
 import { useUnsafeWalletSelector } from '../../../../../common/hooks/use-safe-selector'
-
-// Actions
-import { WalletActions } from '../../../../../common/actions/'
 
 // Types
 import { BraveWallet, WalletAccountType, CoinTypesMap, SendOptionTypes } from '../../../../../constants/types'
@@ -32,7 +28,8 @@ import Amount from '../../../../../utils/amount'
 import {
   useGetVisibleNetworksQuery,
   useSetNetworkMutation,
-  useGetTokenSpotPricesQuery
+  useGetTokenSpotPricesQuery,
+  useSetSelectedAccountMutation,
 } from '../../../../../common/slices/api.slice'
 import {
   querySubscriptionOptions60s
@@ -62,9 +59,6 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
   (props: Props, forwardedRef) => {
     const { onClose, selectedSendOption, selectSendAsset } = props
 
-    // Redux
-    const dispatch = useDispatch()
-
     // Wallet Selectors
     const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
     const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
@@ -77,6 +71,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     // Queries & Mutations
     const [setNetwork] = useSetNetworkMutation()
+    const [setSelectedAccount] = useSetSelectedAccountMutation()
     const { data: networks } = useGetVisibleNetworksQuery()
 
     // Methods
@@ -189,7 +184,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         account: WalletAccountType
       ) => {
         selectSendAsset(token)
-        dispatch(WalletActions.selectAccount(account.accountId))
+        await setSelectedAccount(account.accountId)
         await setNetwork({
           chainId: token.chainId,
           coin: token.coin

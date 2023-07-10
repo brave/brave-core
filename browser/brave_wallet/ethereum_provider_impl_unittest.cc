@@ -263,14 +263,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
 
   void SetNetwork(const std::string& chain_id,
                   const absl::optional<::url::Origin>& origin) {
-    base::RunLoop run_loop;
-    json_rpc_service_->SetNetwork(
-        chain_id, mojom::CoinType::ETH, origin,
-        base::BindLambdaForTesting([&run_loop](bool success) {
-          EXPECT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    EXPECT_TRUE(
+        json_rpc_service_->SetNetwork(chain_id, mojom::CoinType::ETH, origin));
   }
 
   void CreateWallet() {

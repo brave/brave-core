@@ -29,6 +29,7 @@ import { useLib } from './useLib'
 import { useAssets } from './assets'
 import { useGetSelectedChainQuery, walletApi } from '../slices/api.slice'
 import { useUnsafeWalletSelector } from './use-safe-selector'
+import { useSelectedAccountQuery } from '../slices/api.slice.extra'
 
 // constants
 import {
@@ -42,13 +43,11 @@ import { getChecksumEthAddress } from '../async/lib'
 export default function useSend (isSendTab?: boolean) {
   // redux
   const dispatch = useDispatch()
-  const selectedAccount = useUnsafeWalletSelector(
-    WalletSelectors.selectedAccount
-  )
   const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
 
   // queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
+  const { data: selectedAccount } = useSelectedAccountQuery()
 
   // custom hooks
   const {

@@ -670,6 +670,10 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     console.log('Will redirect user to network settings')
   }
 
+  const onNoAccountForNetwork = (network: BraveWallet.NetworkInfo) => {
+    console.log('Will expand to Create Account panel')
+  }
+
   const onAddAsset = () => {
     alert('Will redirect to brave://wallet/crypto/portfolio/add-asset')
   }
@@ -703,6 +707,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                       onBack={onBack}
                       hasAddButton={true}
                       onAddNetwork={onAddNetwork}
+                      onNoAccountForNetwork={onNoAccountForNetwork}
                     />
                   </SelectContainer>
                 )}
@@ -798,7 +803,7 @@ _SetupWallet.story = {
 }
 
 export const _ConnectHardwareWallet = () => {
-  const onCancel = (accountAddress: string, coinType: BraveWallet.CoinType) => {
+  const onCancel = (account: BraveWallet.AccountInfo) => {
     // Doesn't do anything in storybook
   }
 
@@ -810,9 +815,7 @@ export const _ConnectHardwareWallet = () => {
   return (
     <StyledExtensionWrapper>
       <ConnectHardwareWalletPanel
-        walletName='Ledger 1'
-        accountAddress='0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14'
-        coinType={BraveWallet.CoinType.ETH}
+        account={{ ...mockAccounts[0], name: 'Ledger 1' }}
         onCancel={onCancel}
         onClickInstructions={onClickInstructions}
         hardwareWalletCode={undefined}
@@ -928,7 +931,10 @@ export const _CreateAccount = () => {
       store={createMockStore({ walletStateOverride: mockCustomStoreState })}
     >
       <StyledCreateAccountPanel>
-        <CreateAccountTab prevNetwork={mockNetworks[0]} />
+        <CreateAccountTab
+          network={mockNetworks[0]}
+          onCancel={() => {}}
+        />
       </StyledCreateAccountPanel>
     </Provider>
   )

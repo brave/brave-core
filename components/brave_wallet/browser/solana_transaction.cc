@@ -258,8 +258,7 @@ SolanaTransaction::GetSignedTransactionBytes(
   }
   CompactU16Encode(signers.size(), &transaction_bytes);
 
-  absl::optional<std::string> selected_account =
-      keyring_service->GetSelectedAccount(mojom::CoinType::SOL);
+  const auto selected_account = keyring_service->GetSelectedSolanaDappAccount();
   if (!selected_account) {
     return absl::nullopt;
   }
@@ -274,14 +273,15 @@ SolanaTransaction::GetSignedTransactionBytes(
   // for this transaction.
   uint8_t num_of_sig = 0;
   for (const auto& signer : signers) {
-    if (*selected_account == signer) {
+    if (base::EqualsCaseInsensitiveASCII(selected_account->address, signer)) {
       if (selected_account_signature) {
         transaction_bytes.insert(transaction_bytes.end(),
                                  selected_account_signature->begin(),
                                  selected_account_signature->end());
       } else {
         std::vector<uint8_t> signature =
-            keyring_service->SignMessageBySolanaKeyring(signer, message_bytes);
+            keyring_service->SignMessageBySolanaKeyring(
+                *selected_account->account_id, message_bytes);
         transaction_bytes.insert(transaction_bytes.end(), signature.begin(),
                                  signature.end());
       }

@@ -152,16 +152,19 @@ class BraveWalletService : public KeyedService,
   void GetDefaultBaseCryptocurrency(
       GetDefaultBaseCryptocurrencyCallback callback) override;
   void SetDefaultBaseCryptocurrency(const std::string& cryptocurrency) override;
-  void GetSelectedCoin(GetSelectedCoinCallback callback) override;
-  void SetSelectedCoin(mojom::CoinType coin) override;
-  void GetChainIdForActiveOrigin(
-      mojom::CoinType coin,
-      GetChainIdForActiveOriginCallback callback) override;
-  std::string GetChainIdForActiveOriginSync(mojom::CoinType coin);
-  void SetChainIdForActiveOrigin(
+  void EnsureSelectedAccountForChain(
       mojom::CoinType coin,
       const std::string& chain_id,
-      SetChainIdForActiveOriginCallback callback) override;
+      EnsureSelectedAccountForChainCallback callback) override;
+  mojom::AccountIdPtr EnsureSelectedAccountForChainSync(
+      mojom::CoinType coin,
+      const std::string& chain_id);
+  void GetNetworkForSelectedAccountOnActiveOrigin(
+      GetNetworkForSelectedAccountOnActiveOriginCallback callback) override;
+  mojom::NetworkInfoPtr GetNetworkForSelectedAccountOnActiveOriginSync();
+  void SetNetworkForSelectedAccountOnActiveOrigin(
+      const std::string& chain_id,
+      SetNetworkForSelectedAccountOnActiveOriginCallback callback) override;
   void AddPermission(mojom::AccountIdPtr account_id,
                      const url::Origin& origin,
                      AddPermissionCallback callback) override;

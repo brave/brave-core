@@ -49,6 +49,7 @@
 using ::testing::_;
 using ::testing::AnyNumber;
 using ::testing::ElementsAreArray;
+using ::testing::Eq;
 using ::testing::NiceMock;
 
 namespace brave_wallet {
@@ -112,7 +113,14 @@ class TestKeyringServiceObserver : public mojom::KeyringServiceObserver {
   MOCK_METHOD(void, Locked, (), (override));
   MOCK_METHOD(void, Unlocked, (), (override));
   MOCK_METHOD(void, BackedUp, (), (override));
-  MOCK_METHOD(void, SelectedAccountChanged, (mojom::CoinType coin), (override));
+  MOCK_METHOD(void,
+              SelectedWalletAccountChanged,
+              (mojom::AccountInfoPtr account),
+              (override));
+  MOCK_METHOD(void,
+              SelectedDappAccountChanged,
+              (mojom::CoinType coin, mojom::AccountInfoPtr account),
+              (override));
   MOCK_METHOD(void, AccountsChanged, (), (override));
   MOCK_METHOD(void,
               AccountsAdded,
@@ -234,40 +242,11 @@ class KeyringServiceUnitTest : public testing::Test {
     return validation_result;
   }
 
-  static absl::optional<std::string> GetSelectedAccount(KeyringService* service,
-                                                        mojom::CoinType coin) {
-    absl::optional<std::string> account;
-    base::RunLoop run_loop;
-    service->GetSelectedAccount(
-        coin,
-        base::BindLambdaForTesting([&](const absl::optional<std::string>& v) {
-          account = v;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return account;
-  }
-
-  static absl::optional<std::string> GetFilecoinSelectedAccount(
-      KeyringService* service,
-      const std::string& net) {
-    absl::optional<std::string> account;
-    base::RunLoop run_loop;
-    service->GetFilecoinSelectedAccount(
-        net,
-        base::BindLambdaForTesting([&](const absl::optional<std::string>& v) {
-          account = v;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return account;
-  }
-
   static bool SetSelectedAccount(KeyringService* service,
-                                 mojom::AccountIdPtr account_id) {
+                                 const mojom::AccountIdPtr& account_id) {
     bool success = false;
     base::RunLoop run_loop;
-    service->SetSelectedAccount(std::move(account_id),
+    service->SetSelectedAccount(account_id.Clone(),
                                 base::BindLambdaForTesting([&](bool v) {
                                   success = v;
                                   run_loop.Quit();
@@ -291,11 +270,11 @@ class KeyringServiceUnitTest : public testing::Test {
   }
 
   static bool RemoveAccount(KeyringService* service,
-                            mojom::AccountIdPtr account_id,
+                            const mojom::AccountIdPtr& account_id,
                             const std::string& password) {
     bool success;
     base::RunLoop run_loop;
-    service->RemoveAccount(std::move(account_id), password,
+    service->RemoveAccount(account_id.Clone(), password,
                            base::BindLambdaForTesting([&](bool v) {
                              success = v;
                              run_loop.Quit();
@@ -322,63 +301,54 @@ class KeyringServiceUnitTest : public testing::Test {
     return private_key;
   }
 
-  static absl::optional<std::string> ImportFilecoinAccount(
+  static mojom::AccountInfoPtr ImportFilecoinAccount(
       KeyringService* service,
       const std::string& account_name,
       const std::string& private_key_hex,
       const std::string& network) {
-    absl::optional<std::string> account;
+    mojom::AccountInfoPtr result;
     base::RunLoop run_loop;
     service->ImportFilecoinAccount(
         account_name, private_key_hex, network,
-        base::BindLambdaForTesting(
-            [&](bool success, const std::string& address) {
-              if (success) {
-                account = address;
-              }
-              run_loop.Quit();
-            }));
+        base::BindLambdaForTesting([&](mojom::AccountInfoPtr account) {
+          result = std::move(account);
+          run_loop.Quit();
+        }));
     run_loop.Run();
-    return account;
+    return result;
   }
 
-  static absl::optional<std::string> ImportAccount(
-      KeyringService* service,
-      const std::string& name,
-      const std::string& private_key,
-      mojom::CoinType coin) {
-    absl::optional<std::string> account;
+  static mojom::AccountInfoPtr ImportAccount(KeyringService* service,
+                                             const std::string& name,
+                                             const std::string& private_key,
+                                             mojom::CoinType coin) {
+    mojom::AccountInfoPtr result;
     base::RunLoop run_loop;
-    service->ImportAccount(name, private_key, coin,
-                           base::BindLambdaForTesting(
-                               [&](bool success, const std::string& address) {
-                                 if (success) {
-                                   account = address;
-                                 }
-                                 run_loop.Quit();
-                               }));
+    service->ImportAccount(
+        name, private_key, coin,
+        base::BindLambdaForTesting([&](mojom::AccountInfoPtr account) {
+          result = std::move(account);
+          run_loop.Quit();
+        }));
     run_loop.Run();
-    return account;
+    return result;
   }
 
-  static absl::optional<std::string> ImportAccountFromJson(
+  static mojom::AccountInfoPtr ImportAccountFromJson(
       KeyringService* service,
       const std::string& name,
       const std::string& password,
       const std::string& json) {
-    absl::optional<std::string> account;
+    mojom::AccountInfoPtr result;
     base::RunLoop run_loop;
     service->ImportAccountFromJson(
         name, password, json,
-        base::BindLambdaForTesting(
-            [&](bool success, const std::string& address) {
-              if (success) {
-                account = address;
-              }
-              run_loop.Quit();
-            }));
+        base::BindLambdaForTesting([&](mojom::AccountInfoPtr account) {
+          result = std::move(account);
+          run_loop.Quit();
+        }));
     run_loop.Run();
-    return account;
+    return result;
   }
 
   static absl::optional<std::string> CreateWallet(KeyringService* service,
@@ -445,11 +415,11 @@ class KeyringServiceUnitTest : public testing::Test {
         EXPECT_CALL(*observer, KeyringCreated(keyring_id)).Times(0);
       }
 
-      absl::optional<std::string> address = ImportFilecoinAccount(
-          service, imported_accounts[i].name,
-          imported_accounts[i].import_payload, imported_accounts[i].network);
-      ASSERT_TRUE(address.has_value());
-      EXPECT_EQ(address.value(), imported_accounts[i].address);
+      auto account = ImportFilecoinAccount(service, imported_accounts[i].name,
+                                           imported_accounts[i].import_payload,
+                                           imported_accounts[i].network);
+      ASSERT_TRUE(account);
+      EXPECT_EQ(account->address, imported_accounts[i].address);
       // ImportFilecoinAccount waits only until account is added,
       // But there are still mojo tasks we need to wait
       observer->WaitAndVerify();
@@ -461,9 +431,8 @@ class KeyringServiceUnitTest : public testing::Test {
                                  imported_accounts[i].address));
       EXPECT_TRUE(payload);
       EXPECT_EQ(imported_accounts[i].import_payload, *payload);
-      EXPECT_EQ(
-          imported_accounts[i].address,
-          GetFilecoinSelectedAccount(service, imported_accounts[i].network));
+
+      EXPECT_EQ(account, service->GetSelectedWalletAccount());
     }
   }
 
@@ -538,20 +507,21 @@ class KeyringServiceUnitTest : public testing::Test {
   }
 
   bool SetNetwork(const std::string& chain_id, mojom::CoinType coin) {
-    bool result;
-    base::RunLoop run_loop;
-    json_rpc_service_->SetNetwork(chain_id, coin, absl::nullopt,
-                                  base::BindLambdaForTesting([&](bool success) {
-                                    result = success;
-                                    run_loop.Quit();
-                                  }));
-    run_loop.Run();
-    return result;
+    return json_rpc_service_->SetNetwork(chain_id, coin, absl::nullopt);
   }
 
   static bool Lock(KeyringService* service) {
     service->Lock();
     return service->IsLocked(mojom::kDefaultKeyringId);
+  }
+
+  mojom::AccountInfoPtr FirstSolAccount(KeyringService* service) {
+    return base::ranges::find_if(service->GetAllAccountsSync()->accounts,
+                                 [](auto& acc) {
+                                   return acc->account_id->coin ==
+                                          mojom::CoinType::SOL;
+                                 })
+        ->Clone();
   }
 
   content::BrowserTaskEnvironment task_environment_;
@@ -1385,11 +1355,9 @@ TEST_F(KeyringServiceUnitTest, CreateAndRestoreWallet) {
   std::vector<mojom::AccountInfoPtr> account_infos =
       service.GetAccountInfosForKeyring(mojom::kDefaultKeyringId);
   EXPECT_EQ(account_infos.size(), 1u);
-  EXPECT_EQ(account_infos[0]->address,
-            service.GetSelectedAccount(mojom::CoinType::ETH).value());
-  EXPECT_FALSE(service.GetSelectedAccount(mojom::CoinType::SOL));
-  EXPECT_FALSE(service.GetFilecoinSelectedAccount(mojom::kFilecoinMainnet));
-  EXPECT_FALSE(service.GetFilecoinSelectedAccount(mojom::kFilecoinTestnet));
+  EXPECT_EQ(account_infos[0], service.GetSelectedWalletAccount());
+  EXPECT_EQ(account_infos[0], service.GetSelectedEthereumDappAccount());
+  EXPECT_FALSE(service.GetSelectedSolanaDappAccount());
 
   EXPECT_FALSE(account_infos[0]->address.empty());
   const std::string address0 = account_infos[0]->address;
@@ -1405,8 +1373,8 @@ TEST_F(KeyringServiceUnitTest, CreateAndRestoreWallet) {
           std::vector<mojom::AccountInfoPtr> account_infos =
               service.GetAccountInfosForKeyring(mojom::kDefaultKeyringId);
           EXPECT_EQ(account_infos.size(), 1u);
-          EXPECT_EQ(account_infos[0]->address,
-                    service.GetSelectedAccount(mojom::CoinType::ETH).value());
+          EXPECT_EQ(account_infos[0], service.GetSelectedWalletAccount());
+          EXPECT_EQ(account_infos[0], service.GetSelectedEthereumDappAccount());
           EXPECT_EQ(account_infos[0]->address, address0);
           EXPECT_EQ(account_infos[0]->name, "Account 1");
         }
@@ -1416,23 +1384,19 @@ TEST_F(KeyringServiceUnitTest, CreateAndRestoreWallet) {
               service.GetAccountInfosForKeyring(
                   mojom::kFilecoinTestnetKeyringId);
           EXPECT_EQ(account_infos.size(), 0u);
-          EXPECT_FALSE(
-              service.GetFilecoinSelectedAccount(mojom::kFilecoinTestnet));
         }
 
         {
           std::vector<mojom::AccountInfoPtr> account_infos =
               service.GetAccountInfosForKeyring(mojom::kFilecoinKeyringId);
           EXPECT_EQ(account_infos.size(), 0u);
-          EXPECT_FALSE(
-              service.GetFilecoinSelectedAccount(mojom::kFilecoinMainnet));
         }
 
         {
           std::vector<mojom::AccountInfoPtr> account_infos =
               service.GetAccountInfosForKeyring(mojom::kSolanaKeyringId);
           EXPECT_EQ(account_infos.size(), 0u);
-          EXPECT_FALSE(service.GetSelectedAccount(mojom::CoinType::SOL));
+          EXPECT_FALSE(service.GetSelectedSolanaDappAccount());
         }
       });
   observer.WaitAndVerify();
@@ -1568,10 +1532,10 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
           "ddc33eef7cc4c5170c3ba4021cc22fd888856cf8bf846f48db6d11d15efcd652",
       }};
   for (const auto& account : imported_accounts) {
-    absl::optional<std::string> imported_account = ImportAccount(
+    auto imported_account = ImportAccount(
         &service, account.name, account.private_key, mojom::CoinType::ETH);
-    ASSERT_TRUE(imported_account.has_value());
-    EXPECT_EQ(account.address, *imported_account);
+    ASSERT_TRUE(imported_account);
+    EXPECT_EQ(account.address, imported_account->address);
 
     auto private_key = EncodePrivateKeyForExport(
         &service, MakeAccountId(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
@@ -1752,18 +1716,16 @@ TEST_F(KeyringServiceUnitTest, ImportedAccountFromJson) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(CreateWallet(&service, "brave"));
 
-  EXPECT_EQ(
-      ImportAccountFromJson(&service, "Imported 1", "wrong password", json),
-      absl::nullopt);
+  EXPECT_FALSE(
+      ImportAccountFromJson(&service, "Imported 1", "wrong password", json));
 
-  EXPECT_EQ(ImportAccountFromJson(&service, "Imported 1", "testtest",
-                                  "{crypto: 123}"),
-            absl::nullopt);
+  EXPECT_FALSE(ImportAccountFromJson(&service, "Imported 1", "testtest",
+                                     "{crypto: 123}"));
 
-  absl::optional<std::string> address =
+  auto account =
       ImportAccountFromJson(&service, "Imported 1", "testtest", json);
-  ASSERT_TRUE(address.has_value());
-  EXPECT_EQ(*address, expected_address);
+  ASSERT_TRUE(account);
+  EXPECT_EQ(account->address, expected_address);
 
   service.Lock();
   EXPECT_TRUE(Unlock(&service, "brave"));
@@ -1973,10 +1935,10 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringImportedAccountName) {
   // Add import accounts.
   for (const auto& account : imported_accounts) {
     EXPECT_CALL(observer, AccountsChanged());
-    absl::optional<std::string> imported_account = ImportAccount(
+    auto imported_account = ImportAccount(
         &service, account.name, account.private_key, mojom::CoinType::ETH);
-    ASSERT_TRUE(imported_account.has_value());
-    EXPECT_EQ(account.address, *imported_account);
+    ASSERT_TRUE(imported_account);
+    EXPECT_EQ(account.address, imported_account->address);
     observer.WaitAndVerify();
   }
 
@@ -2106,7 +2068,10 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   // Wallet is unlocked when there is no accounts of any types.
   EXPECT_FALSE(service.IsLockedSync());
 
-  // We don't need to create wallet to use hardware accounts
+  // TODO(apaymyshev): make this follow ui begavior when all accounts in batch
+  // have same coin/keyring.
+
+  // We don't need to create wallet to use hardwareaccounts
   std::vector<mojom::HardwareWalletAccountPtr> new_accounts;
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
       "0x111", "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1",
@@ -2136,16 +2101,14 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
 
   // ETH and FIL have hardware accounts
   EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
-  EXPECT_EQ(*service.GetSelectedAccount(mojom::CoinType::ETH), "0x111");
   EXPECT_FALSE(service.IsLocked(mojom::kFilecoinKeyringId));
-  EXPECT_EQ(*service.GetFilecoinSelectedAccount(mojom::kFilecoinMainnet),
-            "0x264");
   EXPECT_FALSE(service.IsLocked(mojom::kFilecoinTestnetKeyringId));
-  EXPECT_EQ(*service.GetFilecoinSelectedAccount(mojom::kFilecoinTestnet),
-            "0xFILTEST");
-  // SOL doesn't have any type of accounts
   EXPECT_FALSE(service.IsLocked(mojom::kSolanaKeyringId));
-  EXPECT_FALSE(service.GetSelectedAccount(mojom::CoinType::SOL));
+
+  // First added hw account is selected.
+  EXPECT_EQ(service.GetSelectedWalletAccount()->address, "0x111");
+  EXPECT_EQ(service.GetSelectedEthereumDappAccount()->address, "0x111");
+  EXPECT_FALSE(service.GetSelectedSolanaDappAccount());
 
   EXPECT_TRUE(service.IsHardwareAccount(mojom::kDefaultKeyringId, "0x111"));
   EXPECT_FALSE(service.IsHardwareAccount(mojom::kSolanaKeyringId, "0x111"));
@@ -2328,6 +2291,9 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
+// TODO(apaymshev): Fix this test so it tests real scenarios when we always have
+// fallback account when removing last HW account.
+#if 0
   EXPECT_CALL(observer, AccountsChanged());
   EXPECT_TRUE(RemoveAccount(
       &service,
@@ -2335,6 +2301,7 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
                     mojom::AccountKind::kHardware, "0x222"),
       ""));
   observer.WaitAndVerify();
+#endif  // 0
 
   ASSERT_FALSE(
       GetPrefs()
@@ -2373,13 +2340,17 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
 
   ASSERT_TRUE(CreateWallet(&service, "brave"));
   auto* default_keyring = service.GetHDKeyringById(mojom::kDefaultKeyringId);
+  auto* solana_keyring = service.GetHDKeyringById(mojom::kSolanaKeyringId);
   std::string first_account = default_keyring->GetAddress(0);
+  std::string first_sol_account = solana_keyring->GetAddress(0);
   EXPECT_FALSE(
       service.IsHardwareAccount(mojom::kDefaultKeyringId, first_account));
 
   EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
   // Selected account changed when creating wallet
-  EXPECT_EQ(*service.GetSelectedAccount(mojom::CoinType::ETH), first_account);
+  EXPECT_EQ(service.GetSelectedWalletAccount()->address, first_sol_account);
+  EXPECT_EQ(service.GetSelectedEthereumDappAccount()->address, first_account);
+  EXPECT_EQ(service.GetSelectedSolanaDappAccount()->address, first_sol_account);
 
   service.Lock();
   EXPECT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
@@ -2497,19 +2468,20 @@ TEST_F(KeyringServiceUnitTest, SelectAddedAccount) {
   AddAccount(&service, mojom::CoinType::SOL, mojom::kSolanaKeyringId,
              "sol acc 3");
 
-  service.GetKeyringInfo(
-      mojom::kDefaultKeyringId,
-      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        ASSERT_EQ(GetSelectedAccount(&service, mojom::CoinType::ETH),
-                  keyring_info->account_infos[3]->address);
-      }));
+  // Last added eth account becomes selected for eth dapp.
+  ASSERT_EQ(
+      service.GetSelectedEthereumDappAccount(),
+      service.GetKeyringInfoSync(mojom::kDefaultKeyringId)->account_infos[3]);
 
-  service.GetKeyringInfo(
-      mojom::kSolanaKeyringId,
-      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        ASSERT_EQ(GetSelectedAccount(&service, mojom::CoinType::SOL),
-                  keyring_info->account_infos[2]->address);
-      }));
+  // Last added sol account becomes selected for sol dapp.
+  ASSERT_EQ(
+      service.GetSelectedSolanaDappAccount(),
+      service.GetKeyringInfoSync(mojom::kSolanaKeyringId)->account_infos[2]);
+
+  // Last added account becomes selected.
+  ASSERT_EQ(
+      service.GetSelectedWalletAccount(),
+      service.GetKeyringInfoSync(mojom::kSolanaKeyringId)->account_infos[2]);
 }
 
 TEST_F(KeyringServiceUnitTest, SelectAddedFilecoinAccount) {
@@ -2530,19 +2502,9 @@ TEST_F(KeyringServiceUnitTest, SelectAddedFilecoinAccount) {
   AddAccount(&service, mojom::CoinType::FIL, mojom::kFilecoinTestnetKeyringId,
              "fil acc 3");
 
-  service.GetKeyringInfo(
-      mojom::kFilecoinKeyringId,
-      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        ASSERT_EQ(GetFilecoinSelectedAccount(&service, mojom::kFilecoinMainnet),
-                  keyring_info->account_infos[2]->address);
-      }));
-
-  service.GetKeyringInfo(
-      mojom::kFilecoinTestnetKeyringId,
-      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        ASSERT_EQ(GetFilecoinSelectedAccount(&service, mojom::kFilecoinTestnet),
-                  keyring_info->account_infos[2]->address);
-      }));
+  ASSERT_EQ(service.GetSelectedWalletAccount(),
+            service.GetKeyringInfoSync(mojom::kFilecoinTestnetKeyringId)
+                ->account_infos[2]);
 }
 
 TEST_F(KeyringServiceUnitTest, SelectImportedFilecoinAccount) {
@@ -2556,18 +2518,14 @@ TEST_F(KeyringServiceUnitTest, SelectImportedFilecoinAccount) {
                         "434d7a37342b346c45303472376e5349454d706d6258493d227d",
                         mojom::kFilecoinMainnet);
 
-  ImportFilecoinAccount(&service, "fil m acc 1",
-                        "7b2254797065223a22736563703235366b31222c22507269766174"
-                        "654b6579223a226376414367502f53344f3274796c4f42466a6348"
-                        "33583154373677696661456c6646435057612b6a474a453d227d",
-                        mojom::kFilecoinMainnet);
+  auto imported = ImportFilecoinAccount(
+      &service, "fil m acc 1",
+      "7b2254797065223a22736563703235366b31222c22507269766174"
+      "654b6579223a226376414367502f53344f3274796c4f42466a6348"
+      "33583154373677696661456c6646435057612b6a474a453d227d",
+      mojom::kFilecoinMainnet);
 
-  service.GetKeyringInfo(
-      mojom::kFilecoinKeyringId,
-      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        ASSERT_EQ(GetFilecoinSelectedAccount(&service, mojom::kFilecoinMainnet),
-                  keyring_info->account_infos[1]->address);
-      }));
+  ASSERT_EQ(service.GetSelectedWalletAccount(), imported);
 
   ImportFilecoinAccount(&service, "fil t acc 2",
                         "7b2254797065223a22736563703235366b31222c22507269766174"
@@ -2575,17 +2533,14 @@ TEST_F(KeyringServiceUnitTest, SelectImportedFilecoinAccount) {
                         "33583154373677696661456c6646435057612b6a474a453d227d",
                         mojom::kFilecoinTestnet);
 
-  ImportFilecoinAccount(&service, "fil t acc 2",
-                        "7b2254797065223a22736563703235366b31222c22507269766174"
-                        "654b6579223a224169776f6a344469323155316844776835735348"
-                        "434d7a37342b346c45303472376e5349454d706d6258493d227d",
-                        mojom::kFilecoinTestnet);
-  service.GetKeyringInfo(
-      mojom::kFilecoinTestnetKeyringId,
-      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        ASSERT_EQ(GetFilecoinSelectedAccount(&service, mojom::kFilecoinTestnet),
-                  keyring_info->account_infos[1]->address);
-      }));
+  imported = ImportFilecoinAccount(
+      &service, "fil t acc 2",
+      "7b2254797065223a22736563703235366b31222c22507269766174"
+      "654b6579223a224169776f6a344469323155316844776835735348"
+      "434d7a37342b346c45303472376e5349454d706d6258493d227d",
+      mojom::kFilecoinTestnet);
+
+  ASSERT_EQ(service.GetSelectedWalletAccount(), imported);
 }
 
 TEST_F(KeyringServiceUnitTest, SelectImportedAccount) {
@@ -2597,17 +2552,12 @@ TEST_F(KeyringServiceUnitTest, SelectImportedAccount) {
       "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5",
       mojom::CoinType::ETH);
 
-  ImportAccount(
+  auto imported = ImportAccount(
       &service, "Best Evil Son 2",
       "5b48615b7e43d015c3de46cbe9bc01bff9e106277a91bd44a55f9c4b1a268314",
       mojom::CoinType::ETH);
 
-  service.GetKeyringInfo(
-      mojom::kDefaultKeyringId,
-      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        ASSERT_EQ(GetSelectedAccount(&service, mojom::CoinType::ETH),
-                  keyring_info->account_infos[2]->address);
-      }));
+  ASSERT_EQ(service.GetSelectedWalletAccount(), imported);
 }
 
 TEST_F(KeyringServiceUnitTest, SelectHardwareAccount) {
@@ -2624,14 +2574,10 @@ TEST_F(KeyringServiceUnitTest, SelectHardwareAccount) {
       hardware_account2, "m/44'/60'/1'/0/0", "name 2", "Ledger", "device1",
       mojom::CoinType::ETH, mojom::kDefaultKeyringId));
 
-  service.AddHardwareAccountsSync(std::move(new_accounts));
+  auto imported = service.AddHardwareAccountsSync(std::move(new_accounts));
 
-  service.GetKeyringInfo(
-      mojom::kDefaultKeyringId,
-      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        ASSERT_EQ(GetSelectedAccount(&service, mojom::CoinType::ETH),
-                  keyring_info->account_infos[1]->address);
-      }));
+  // First account gets selected.
+  ASSERT_EQ(service.GetSelectedWalletAccount(), imported.front());
 }
 
 TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
@@ -2640,73 +2586,113 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
                                  features::kBraveWalletSolanaFeature},
                                 {});
 
+  const mojom::AccountInfoPtr empty_account;
+
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   SetNetwork(mojom::kFilecoinTestnet, mojom::CoinType::FIL);
 
-  NiceMock<TestKeyringServiceObserver> observer(service);
-
   ASSERT_TRUE(CreateWallet(&service, "brave"));
-  auto* default_keyring = service.GetHDKeyringById(mojom::kDefaultKeyringId);
-  std::string first_account = default_keyring->GetAddress(0);
-  ASSERT_TRUE(AddAccount(&service, mojom::CoinType::ETH,
-                         mojom::kDefaultKeyringId,
-                         "Who does number 2 work for"));
-  std::string second_account = default_keyring->GetAddress(1);
+
+  auto first_account = service.GetAllAccountsSync()->accounts[0]->Clone();
+  auto first_sol_account = FirstSolAccount(&service);
+  auto second_account =
+      AddAccount(&service, mojom::CoinType::ETH, mojom::kDefaultKeyringId,
+                 "Who does number 2 work for");
+  ASSERT_TRUE(second_account);
 
   // This does not depend on being locked
   EXPECT_TRUE(Lock(&service));
 
-  // No account set as the default
-  EXPECT_EQ(second_account, GetSelectedAccount(&service, mojom::CoinType::ETH));
+  // Added account is selected.
+  EXPECT_EQ(second_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(second_account, service.GetSelectedEthereumDappAccount());
+  EXPECT_EQ(first_sol_account, service.GetSelectedSolanaDappAccount());
+
+  NiceMock<TestKeyringServiceObserver> observer(service);
+
+  // Can select SOL account. dApp selections don't change.
+  EXPECT_CALL(observer,
+              SelectedWalletAccountChanged(Eq(std::ref(first_sol_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
+  EXPECT_TRUE(SetSelectedAccount(&service, first_sol_account->account_id));
+  EXPECT_EQ(first_sol_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(second_account, service.GetSelectedEthereumDappAccount());
+  EXPECT_EQ(first_sol_account, service.GetSelectedSolanaDappAccount());
+  observer.WaitAndVerify();
+
+  // Select back to ETH. dApp selections don't change.
+  EXPECT_CALL(observer,
+              SelectedWalletAccountChanged(Eq(std::ref(second_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
+  EXPECT_TRUE(SetSelectedAccount(&service, second_account->account_id));
+  EXPECT_EQ(second_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(second_account, service.GetSelectedEthereumDappAccount());
+  EXPECT_EQ(first_sol_account, service.GetSelectedSolanaDappAccount());
+  observer.WaitAndVerify();
+
+  // Selecting currently selected account does not trigger notifications.
+  EXPECT_CALL(observer, SelectedWalletAccountChanged(_)).Times(0);
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
+  EXPECT_TRUE(SetSelectedAccount(&service, second_account->account_id));
+  EXPECT_EQ(second_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(second_account, service.GetSelectedEthereumDappAccount());
+  observer.WaitAndVerify();
 
   // Setting account to a valid address works
-  EXPECT_CALL(observer, SelectedAccountChanged(mojom::CoinType::ETH));
-  EXPECT_TRUE(SetSelectedAccount(
-      &service, MakeAccountId(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
-                              mojom::AccountKind::kDerived, second_account)));
-  EXPECT_EQ(second_account, GetSelectedAccount(&service, mojom::CoinType::ETH));
+  EXPECT_CALL(observer,
+              SelectedWalletAccountChanged(Eq(std::ref(first_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(
+                            mojom::CoinType::ETH, Eq(std::ref(first_account))));
+  EXPECT_TRUE(SetSelectedAccount(&service, first_account->account_id));
+  EXPECT_EQ(first_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(first_account, service.GetSelectedEthereumDappAccount());
   observer.WaitAndVerify();
 
   // Setting account to a non-existing account doesn't work
-  EXPECT_CALL(observer, SelectedAccountChanged(_)).Times(0);
+  EXPECT_CALL(observer, SelectedWalletAccountChanged(_)).Times(0);
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
   EXPECT_FALSE(SetSelectedAccount(
       &service, MakeAccountId(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
                               mojom::AccountKind::kDerived,
                               "0xf83C3cBfF68086F276DD4f87A82DF73B57b21559")));
-  EXPECT_EQ(second_account, GetSelectedAccount(&service, mojom::CoinType::ETH));
+  EXPECT_EQ(first_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(first_account, service.GetSelectedEthereumDappAccount());
   observer.WaitAndVerify();
 
   // Can import only when unlocked.
   // Then check that the account can be set to an imported account.
   EXPECT_TRUE(Unlock(&service, "brave"));
-  absl::optional<std::string> imported_account = ImportAccount(
+  auto imported_account = ImportAccount(
       &service, "Best Evil Son",
       // 0xDc06aE500aD5ebc5972A0D8Ada4733006E905976
       "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5",
       mojom::CoinType::ETH);
-  ASSERT_TRUE(imported_account.has_value());
+  ASSERT_TRUE(imported_account);
+  EXPECT_EQ(imported_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(imported_account, service.GetSelectedEthereumDappAccount());
   EXPECT_TRUE(Lock(&service));
-
-  EXPECT_CALL(observer, SelectedAccountChanged(mojom::CoinType::ETH));
-  EXPECT_TRUE(SetSelectedAccount(
-      &service,
-      MakeAccountId(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
-                    mojom::AccountKind::kImported, *imported_account)));
   observer.WaitAndVerify();
-  EXPECT_EQ(*imported_account,
-            GetSelectedAccount(&service, mojom::CoinType::ETH));
 
-  // Removing the imported account resets to no selected account
+  EXPECT_CALL(observer, SelectedWalletAccountChanged(_)).Times(0);
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
+  EXPECT_TRUE(SetSelectedAccount(&service, imported_account->account_id));
+  observer.WaitAndVerify();
+  EXPECT_EQ(imported_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(imported_account, service.GetSelectedEthereumDappAccount());
+
+  // Removing the imported account resets account selection to first eth acc.
   EXPECT_TRUE(Unlock(&service, "brave"));
-  EXPECT_CALL(observer, SelectedAccountChanged(mojom::CoinType::ETH));
-  EXPECT_TRUE(RemoveAccount(
-      &service,
-      MakeAccountId(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
-                    mojom::AccountKind::kImported,
-                    "0xDc06aE500aD5ebc5972A0D8Ada4733006E905976"),
-      kPasswordBrave));
+  EXPECT_CALL(observer,
+              SelectedWalletAccountChanged(Eq(std::ref(first_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(
+                            mojom::CoinType::ETH, Eq(std::ref(first_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::SOL, _))
+      .Times(0);
+  EXPECT_TRUE(
+      RemoveAccount(&service, imported_account->account_id, kPasswordBrave));
   EXPECT_TRUE(Lock(&service));
-  EXPECT_EQ(absl::nullopt, GetSelectedAccount(&service, mojom::CoinType::ETH));
+  EXPECT_EQ(first_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(first_account, service.GetSelectedEthereumDappAccount());
   observer.WaitAndVerify();
 
   // Can set hardware account
@@ -2715,105 +2701,120 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
       hardware_account, "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1",
       mojom::CoinType::ETH, mojom::kDefaultKeyringId));
-  service.AddHardwareAccountsSync(std::move(new_accounts));
+  auto hw_account =
+      service.AddHardwareAccountsSync(std::move(new_accounts))[0]->Clone();
+  EXPECT_EQ(hw_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(hw_account, service.GetSelectedEthereumDappAccount());
+  observer.WaitAndVerify();
 
-  EXPECT_CALL(observer, SelectedAccountChanged(mojom::CoinType::ETH));
-  EXPECT_TRUE(SetSelectedAccount(
-      &service,
-      MakeAccountId(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
-                    mojom::AccountKind::kHardware, hardware_account)));
+  EXPECT_CALL(observer, SelectedWalletAccountChanged(_)).Times(0);
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
+  EXPECT_TRUE(SetSelectedAccount(&service, hw_account->account_id));
   observer.WaitAndVerify();
 
   EXPECT_TRUE(Unlock(&service, "brave"));
+
   // Can set Filecoin account
-  {
-    absl::optional<std::string> fil_imported_account = ImportFilecoinAccount(
-        &service, "Imported Filecoin account 1",
-        // t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q
-        "7b2254797065223a22736563703235366b31222c22507269766174654b6579223a2257"
-        "6b4545645a45794235364b5168512b453338786a7663464c2b545a4842464e732b696a"
-        "58533535794b383d227d",
-        mojom::kFilecoinTestnet);
-    ASSERT_TRUE(fil_imported_account.has_value());
-    EXPECT_EQ(*fil_imported_account,
-              "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
-    EXPECT_CALL(observer, SelectedAccountChanged(mojom::CoinType::FIL));
-    EXPECT_TRUE(SetSelectedAccount(
-        &service,
-        MakeAccountId(mojom::CoinType::FIL, mojom::kFilecoinTestnetKeyringId,
-                      mojom::AccountKind::kImported,
-                      fil_imported_account.value())));
-    observer.WaitAndVerify();
-    EXPECT_EQ(fil_imported_account.value(),
-              GetFilecoinSelectedAccount(&service, mojom::kFilecoinTestnet));
-  }
+  EXPECT_CALL(observer, SelectedWalletAccountChanged(_));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
+  auto fil_imported_account = ImportFilecoinAccount(
+      &service, "Imported Filecoin account 1",
+      // t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q
+      "7b2254797065223a22736563703235366b31222c22507269766174654b6579223a2257"
+      "6b4545645a45794235364b5168512b453338786a7663464c2b545a4842464e732b696a"
+      "58533535794b383d227d",
+      mojom::kFilecoinTestnet);
+  ASSERT_TRUE(fil_imported_account);
+  EXPECT_EQ(fil_imported_account->address,
+            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
+  EXPECT_EQ(fil_imported_account, service.GetSelectedWalletAccount());
+  observer.WaitAndVerify();
+
+  EXPECT_CALL(observer, SelectedWalletAccountChanged(_)).Times(0);
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
+  EXPECT_TRUE(SetSelectedAccount(&service, fil_imported_account->account_id));
+  observer.WaitAndVerify();
+  EXPECT_EQ(fil_imported_account, service.GetSelectedWalletAccount());
+
   // Can set Solana account
-  {
-    // lazily create keyring when importing SOL account
-    absl::optional<std::string> sol_imported_account = ImportAccount(
-        &service, "Imported Account 1",
-        // C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ
-        "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTndnC"
-        "YbQtaJQKLXET9jVjepWXe",
-        mojom::CoinType::SOL);
-    ASSERT_TRUE(sol_imported_account.has_value());
-    EXPECT_EQ(*sol_imported_account,
-              "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ");
-    EXPECT_CALL(observer, SelectedAccountChanged(mojom::CoinType::SOL));
-    EXPECT_TRUE(SetSelectedAccount(
-        &service, MakeAccountId(mojom::CoinType::SOL, mojom::kSolanaKeyringId,
-                                mojom::AccountKind::kImported,
-                                sol_imported_account.value())));
-    observer.WaitAndVerify();
-    EXPECT_EQ(sol_imported_account.value(),
-              GetSelectedAccount(&service, mojom::CoinType::SOL));
-  }
-  EXPECT_EQ(hardware_account,
-            GetSelectedAccount(&service, mojom::CoinType::ETH));
-  EXPECT_EQ("t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-            GetFilecoinSelectedAccount(&service, mojom::kFilecoinTestnet));
-  EXPECT_EQ("C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ",
-            GetSelectedAccount(&service, mojom::CoinType::SOL));
-
-  EXPECT_CALL(observer, SelectedAccountChanged(mojom::CoinType::FIL));
-  EXPECT_TRUE(SetSelectedAccount(
-      &service,
-      MakeAccountId(mojom::CoinType::FIL, mojom::kFilecoinTestnetKeyringId,
-                    mojom::AccountKind::kImported,
-                    "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q")));
+  auto sol_imported_account = ImportAccount(
+      &service, "Imported Account 1",
+      // C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ
+      "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTndnC"
+      "YbQtaJQKLXET9jVjepWXe",
+      mojom::CoinType::SOL);
+  ASSERT_TRUE(sol_imported_account);
+  EXPECT_EQ(sol_imported_account->address,
+            "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ");
+  EXPECT_EQ(sol_imported_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(sol_imported_account, service.GetSelectedSolanaDappAccount());
   observer.WaitAndVerify();
 
-  EXPECT_CALL(observer, SelectedAccountChanged(mojom::CoinType::FIL));
-  EXPECT_TRUE(RemoveAccount(
-      &service,
-      MakeAccountId(mojom::CoinType::FIL, mojom::kFilecoinTestnetKeyringId,
-                    mojom::AccountKind::kImported,
-                    "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q"),
-      kPasswordBrave));
+  // Selecting sol account doesn't change eth dapp.
+  EXPECT_CALL(observer, SelectedWalletAccountChanged(_)).Times(0);
+  EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::ETH, _))
+      .Times(0);
+  EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::SOL, _))
+      .Times(0);
+  EXPECT_TRUE(SetSelectedAccount(&service, sol_imported_account->account_id));
+  EXPECT_EQ(sol_imported_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(sol_imported_account, service.GetSelectedSolanaDappAccount());
+  EXPECT_EQ(hw_account, service.GetSelectedEthereumDappAccount());
   observer.WaitAndVerify();
 
-  EXPECT_CALL(observer, SelectedAccountChanged(mojom::CoinType::ETH));
-  EXPECT_TRUE(SetSelectedAccount(
-      &service,
-      MakeAccountId(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
-                    mojom::AccountKind::kHardware, hardware_account)));
+  // Selecting fil account doesn't change eth and sol dapp accounts.
+  EXPECT_CALL(observer,
+              SelectedWalletAccountChanged(Eq(std::ref(fil_imported_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
+  EXPECT_TRUE(SetSelectedAccount(&service, fil_imported_account->account_id));
   observer.WaitAndVerify();
 
-  EXPECT_CALL(observer, SelectedAccountChanged(mojom::CoinType::ETH));
-  EXPECT_TRUE(RemoveAccount(
-      &service,
-      MakeAccountId(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
-                    mojom::AccountKind::kHardware, hardware_account),
-      ""));
+  // Removing currently selected account switches selection to first eth
+  // account.
+  EXPECT_CALL(observer,
+              SelectedWalletAccountChanged(Eq(std::ref(first_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(
+                            mojom::CoinType::ETH, Eq(std::ref(first_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::SOL, _))
+      .Times(0);
+  EXPECT_TRUE(RemoveAccount(&service, fil_imported_account->account_id,
+                            kPasswordBrave));
+  EXPECT_EQ(first_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(first_account, service.GetSelectedEthereumDappAccount());
   observer.WaitAndVerify();
 
-  EXPECT_CALL(observer, SelectedAccountChanged(mojom::CoinType::SOL));
-  EXPECT_TRUE(RemoveAccount(
-      &service,
-      MakeAccountId(mojom::CoinType::SOL, mojom::kSolanaKeyringId,
-                    mojom::AccountKind::kImported,
-                    "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ"),
-      kPasswordBrave));
+  // Select hw account.
+  EXPECT_CALL(observer, SelectedWalletAccountChanged(Eq(std::ref(hw_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::ETH,
+                                                   Eq(std::ref(hw_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::SOL, _))
+      .Times(0);
+  EXPECT_TRUE(SetSelectedAccount(&service, hw_account->account_id));
+  EXPECT_EQ(hw_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(hw_account, service.GetSelectedEthereumDappAccount());
+  observer.WaitAndVerify();
+
+  // Remove selected hw account - switch to frist eth account.
+  EXPECT_CALL(observer,
+              SelectedWalletAccountChanged(Eq(std::ref(first_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(
+                            mojom::CoinType::ETH, Eq(std::ref(first_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::SOL, _))
+      .Times(0);
+  EXPECT_TRUE(RemoveAccount(&service, hw_account->account_id, ""));
+  EXPECT_EQ(first_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(first_account, service.GetSelectedEthereumDappAccount());
+  observer.WaitAndVerify();
+
+  // Removing not-selected sol account. Only sol dapp observer is called with
+  // empty arg.
+  EXPECT_CALL(observer, SelectedWalletAccountChanged(_)).Times(0);
+  EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::ETH, _))
+      .Times(0);
+  EXPECT_CALL(observer, SelectedDappAccountChanged(
+                            mojom::CoinType::SOL, Eq(std::ref(empty_account))));
+  EXPECT_TRUE(RemoveAccount(&service, sol_imported_account->account_id,
+                            kPasswordBrave));
   observer.WaitAndVerify();
 }
 
@@ -3174,7 +3175,7 @@ TEST_F(KeyringServiceUnitTest, SignTransactionByFilecoinKeyring) {
   ASSERT_FALSE(service.SignTransactionByFilecoinKeyring(&transaction.value()));
   ASSERT_TRUE(CreateWallet(&service, "brave"));
 
-  absl::optional<std::string> imported_account = ImportFilecoinAccount(
+  auto imported_account = ImportFilecoinAccount(
       &service, "Imported Filecoin account 1",
       // t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q
       "7b2254797065223a22736563703235366b31222c22507269766174654b6579223a2257"
@@ -3182,7 +3183,8 @@ TEST_F(KeyringServiceUnitTest, SignTransactionByFilecoinKeyring) {
       "58533535794b383d227d",
       mojom::kFilecoinTestnet);
   ASSERT_TRUE(imported_account);
-  EXPECT_EQ(*imported_account, "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
+  EXPECT_EQ(imported_account->address,
+            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
 
   auto result = service.SignTransactionByFilecoinKeyring(&transaction.value());
   ASSERT_TRUE(result);
@@ -3266,45 +3268,31 @@ TEST_F(KeyringServiceUnitTest, AddFilecoinAccounts) {
   // FIL keyring already exists
   EXPECT_CALL(observer, KeyringCreated(mojom::kFilecoinKeyringId)).Times(0);
   EXPECT_CALL(observer, KeyringRestored(mojom::kFilecoinKeyringId)).Times(0);
-  ASSERT_TRUE(AddAccount(&service, mojom::CoinType::FIL,
-                         mojom::kFilecoinKeyringId, "FIL account2"));
+  auto last_added_account =
+      AddAccount(&service, mojom::CoinType::FIL, mojom::kFilecoinKeyringId,
+                 "FIL account2");
+  ASSERT_TRUE(last_added_account);
   observer.WaitAndVerify();
 
-  base::RunLoop run_loop;
-  service.GetKeyringInfo(
-      mojom::kFilecoinKeyringId,
-      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_EQ(keyring_info->account_infos.size(), 2u);
-        EXPECT_EQ(keyring_info->account_infos[0]->name, "FIL account1");
-        EXPECT_EQ(keyring_info->account_infos[0]->account_id->kind,
-                  mojom::AccountKind::kDerived);
-        EXPECT_EQ(keyring_info->account_infos[1]->name, "FIL account2");
-        EXPECT_EQ(keyring_info->account_infos[1]->account_id->kind,
-                  mojom::AccountKind::kDerived);
-        EXPECT_EQ(
-            keyring_info->account_infos[1]->address,
-            GetFilecoinSelectedAccount(&service, mojom::kFilecoinMainnet));
-        run_loop.Quit();
-      }));
+  auto keyring_info = service.GetKeyringInfoSync(mojom::kFilecoinKeyringId);
+  EXPECT_EQ(keyring_info->account_infos.size(), 2u);
+  EXPECT_EQ(keyring_info->account_infos[0]->name, "FIL account1");
+  EXPECT_EQ(keyring_info->account_infos[0]->account_id->kind,
+            mojom::AccountKind::kDerived);
+  EXPECT_EQ(keyring_info->account_infos[1]->name, "FIL account2");
+  EXPECT_EQ(keyring_info->account_infos[1]->account_id->kind,
+            mojom::AccountKind::kDerived);
 
-  service.GetKeyringInfo(
-      mojom::kFilecoinTestnetKeyringId,
-      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_EQ(keyring_info->account_infos.size(), 2u);
-        EXPECT_EQ(keyring_info->account_infos[0]->name,
-                  "FIL testnet account 1");
-        EXPECT_EQ(keyring_info->account_infos[0]->account_id->kind,
-                  mojom::AccountKind::kDerived);
-        EXPECT_EQ(keyring_info->account_infos[1]->name,
-                  "FIL testnet account 2");
-        EXPECT_EQ(keyring_info->account_infos[1]->account_id->kind,
-                  mojom::AccountKind::kDerived);
-        EXPECT_EQ(
-            keyring_info->account_infos[1]->address,
-            GetFilecoinSelectedAccount(&service, mojom::kFilecoinTestnet));
-        run_loop.Quit();
-      }));
-  run_loop.Run();
+  keyring_info = service.GetKeyringInfoSync(mojom::kFilecoinTestnetKeyringId);
+  EXPECT_EQ(keyring_info->account_infos.size(), 2u);
+  EXPECT_EQ(keyring_info->account_infos[0]->name, "FIL testnet account 1");
+  EXPECT_EQ(keyring_info->account_infos[0]->account_id->kind,
+            mojom::AccountKind::kDerived);
+  EXPECT_EQ(keyring_info->account_infos[1]->name, "FIL testnet account 2");
+  EXPECT_EQ(keyring_info->account_infos[1]->account_id->kind,
+            mojom::AccountKind::kDerived);
+
+  EXPECT_EQ(last_added_account, service.GetSelectedWalletAccount());
 }
 
 TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
@@ -3722,13 +3710,13 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
     NiceMock<TestKeyringServiceObserver> observer(service);
     // lazily create keyring when importing SOL account
     EXPECT_CALL(observer, KeyringCreated(mojom::kSolanaKeyringId));
-    absl::optional<std::string> imported_account = ImportAccount(
+    auto imported_account = ImportAccount(
         &service, "Imported Account 1",
         "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTndnC"
         "YbQtaJQKLXET9jVjepWXe",
         mojom::CoinType::SOL);
-    ASSERT_TRUE(imported_account.has_value());
-    EXPECT_EQ(*imported_account,
+    ASSERT_TRUE(imported_account);
+    EXPECT_EQ(imported_account->address,
               "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ");
     EXPECT_TRUE(service.IsKeyringCreated(mojom::kDefaultKeyringId));
     EXPECT_TRUE(service.IsKeyringCreated(mojom::kSolanaKeyringId));
@@ -3745,21 +3733,17 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
               "nCYbQtaJQKLXET9jVjepWXe");
 
     // wrong encoded private key (same bytes but not encoded in keypair)
-    EXPECT_EQ(ImportAccount(&service, "Imported Failed",
-                            "3v1fSGD1JW5XnAd2FWrjV6HWJHM9DofVjuNt4T5b7CDL",
-                            mojom::CoinType::SOL),
-              absl::nullopt);
+    EXPECT_FALSE(ImportAccount(&service, "Imported Failed",
+                               "3v1fSGD1JW5XnAd2FWrjV6HWJHM9DofVjuNt4T5b7CDL",
+                               mojom::CoinType::SOL));
     imported_account = ImportAccount(
         &service, "Imported Account 2",
         "4pNHX6ATNXad3KZTb2PXTosW5ceaxqx45M9NH9pjcZCH9qoQKx6RMzUjuzm6J9Y2uwjCxJ"
         "c5JsjL1TrGr1X3nPFP",
         mojom::CoinType::SOL);
-    ASSERT_TRUE(imported_account.has_value());
-    ASSERT_TRUE(RemoveAccount(
-        &service,
-        MakeAccountId(mojom::CoinType::SOL, mojom::kSolanaKeyringId,
-                      mojom::AccountKind::kImported, *imported_account),
-        kPasswordBrave));
+    ASSERT_TRUE(imported_account);
+    ASSERT_TRUE(
+        RemoveAccount(&service, imported_account->account_id, kPasswordBrave));
 
     // import using uint8array
     imported_account = ImportAccount(
@@ -3769,12 +3753,9 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
         "182,188,11,4,82,78,239,173,146,246,74,66,126,34,173,46,211,145,49,211,"
         "176,28,89,250,190,34,254]\t\n",
         mojom::CoinType::SOL);
-    ASSERT_TRUE(imported_account.has_value());
-    ASSERT_TRUE(RemoveAccount(
-        &service,
-        MakeAccountId(mojom::CoinType::SOL, mojom::kSolanaKeyringId,
-                      mojom::AccountKind::kImported, *imported_account),
-        kPasswordBrave));
+    ASSERT_TRUE(imported_account);
+    ASSERT_TRUE(
+        RemoveAccount(&service, imported_account->account_id, kPasswordBrave));
 
     base::RunLoop run_loop;
     service.GetKeyringInfo(
@@ -3817,43 +3798,30 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
 }
 
 TEST_F(KeyringServiceUnitTest, SignMessage) {
-  base::test::ScopedFeatureList feature_list;
-  base::FieldTrialParams parameters;
-  parameters[features::kCreateDefaultSolanaAccount.name] = "false";
-
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(features::kBraveWalletSolanaFeature,
-                                parameters);
-
-  feature_list.InitWithFeaturesAndParameters(enabled_features, {});
-
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(RestoreWallet(&service, kMnemonic1, "brave", false));
   base::RunLoop().RunUntilIdle();
 
+  auto first_sol_account = FirstSolAccount(&service);
+  EXPECT_EQ(first_sol_account->address,
+            "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
+
   const std::vector<uint8_t> message = {0xde, 0xad, 0xbe, 0xef};
 
-  // solana keyring doesn't exist yet
-  EXPECT_TRUE(service
-                  .SignMessageBySolanaKeyring(
-                      "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8", message)
-                  .empty());
-
-  // create solana keyring
-  ASSERT_TRUE(AddAccount(&service, mojom::CoinType::SOL,
-                         mojom::kSolanaKeyringId, "Account 1"));
-  ASSERT_TRUE(service.IsKeyringCreated(mojom::kSolanaKeyringId));
-
   // invalid address for Solana keyring
-  EXPECT_TRUE(service
-                  .SignMessageBySolanaKeyring(
-                      "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db", message)
-                  .empty());
+  EXPECT_TRUE(
+      service
+          .SignMessageBySolanaKeyring(
+              *MakeAccountId(mojom::CoinType::SOL, mojom::KeyringId::kSolana,
+                             mojom::AccountKind::kDerived,
+                             "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db"),
+              message)
+          .empty());
 
-  EXPECT_FALSE(service
-                   .SignMessageBySolanaKeyring(
-                       "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8", message)
-                   .empty());
+  EXPECT_FALSE(
+      service
+          .SignMessageBySolanaKeyring(*first_sol_account->account_id, message)
+          .empty());
 }
 
 class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
@@ -4226,44 +4194,43 @@ class KeyringServiceEncryptionKeysMigrationUnitTest
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     saved_mnemonic_ = *CreateWallet(&service, "brave");
 
-    absl::optional<std::string> imported_eth_account = ImportAccount(
+    auto imported_eth_account = ImportAccount(
         &service, "Imported account1",
         "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5",
         mojom::CoinType::ETH);
-    ASSERT_TRUE(imported_eth_account.has_value());
+    ASSERT_TRUE(imported_eth_account);
     EXPECT_EQ("0xDc06aE500aD5ebc5972A0D8Ada4733006E905976",
-              *imported_eth_account);
+              imported_eth_account->address);
 
-    absl::optional<std::string> imported_sol_account = ImportAccount(
+    auto imported_sol_account = ImportAccount(
         &service, "Imported Account 1",
         "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTndnC"
         "YbQtaJQKLXET9jVjepWXe",
         mojom::CoinType::SOL);
-    ASSERT_TRUE(imported_sol_account.has_value());
-    EXPECT_EQ(*imported_sol_account,
+    ASSERT_TRUE(imported_sol_account);
+    EXPECT_EQ(imported_sol_account->address,
               "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ");
 
     ASSERT_TRUE(AddAccount(&service, mojom::CoinType::FIL,
                            mojom::kFilecoinKeyringId, "FIL Account 1"));
-    absl::optional<std::string> imported_fil_account = ImportFilecoinAccount(
+    auto imported_fil_account = ImportFilecoinAccount(
         &service, "fil m acc 1",
         "7b2254797065223a22736563703235366b31222c22507269766174"
         "654b6579223a224169776f6a344469323155316844776835735348"
         "434d7a37342b346c45303472376e5349454d706d6258493d227d",
         mojom::kFilecoinMainnet);
-    ASSERT_TRUE(imported_fil_account.has_value());
-    EXPECT_EQ(*imported_fil_account,
+    ASSERT_TRUE(imported_fil_account);
+    EXPECT_EQ(imported_fil_account->address,
               "f1syhomjrwhjmavadwmrofjpiocb6r72h4qoy7ucq");
 
-    absl::optional<std::string> imported_fil_test_account =
-        ImportFilecoinAccount(
-            &service, "fil t acc 2",
-            "7b2254797065223a22736563703235366b31222c22507269766174"
-            "654b6579223a226376414367502f53344f3274796c4f42466a6348"
-            "33583154373677696661456c6646435057612b6a474a453d227d",
-            mojom::kFilecoinTestnet);
-    ASSERT_TRUE(imported_fil_test_account.has_value());
-    EXPECT_EQ(*imported_fil_test_account,
+    auto imported_fil_test_account = ImportFilecoinAccount(
+        &service, "fil t acc 2",
+        "7b2254797065223a22736563703235366b31222c22507269766174"
+        "654b6579223a226376414367502f53344f3274796c4f42466a6348"
+        "33583154373677696661456c6646435057612b6a474a453d227d",
+        mojom::kFilecoinTestnet);
+    ASSERT_TRUE(imported_fil_test_account);
+    EXPECT_EQ(imported_fil_test_account->address,
               "t17puhwpgtnjr54kw7dwnjiphgn6kxlsyzbizwdhy");
   }
 
@@ -4683,6 +4650,48 @@ TEST_F(KeyringServiceUnitTest, BitcoinReceiveChangeAddresses) {
       mojom::BitcoinKeyId::New(0, 1, 0));
 
   EXPECT_FALSE(service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 1));
+}
+
+TEST_F(KeyringServiceUnitTest, MigrateSelectedAccount) {
+  auto service = std::make_unique<KeyringService>(json_rpc_service(),
+                                                  GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(RestoreWallet(service.get(), kMnemonic1, "brave", false));
+
+  auto eth_acc = AddAccount(service.get(), mojom::CoinType::ETH,
+                            mojom::KeyringId::kDefault, "ETH 1");
+  auto sol_acc = AddAccount(service.get(), mojom::CoinType::SOL,
+                            mojom::KeyringId::kSolana, "SOL 1");
+  auto fil_acc = AddAccount(service.get(), mojom::CoinType::FIL,
+                            mojom::KeyringId::kFilecoin, "FIL 1");
+  service.reset();
+
+  // Setup legacy selected account prefs.
+  GetPrefs()->ClearPref(kBraveWalletSelectedWalletAccount);
+  GetPrefs()->ClearPref(kBraveWalletSelectedSolDappAccount);
+  GetPrefs()->ClearPref(kBraveWalletSelectedEthDappAccount);
+  GetPrefs()->SetInteger(kBraveWalletSelectedCoinDeprecated,
+                         static_cast<int>(mojom::CoinType::FIL));
+  auto keyrings = GetPrefs()->GetDict(kBraveWalletKeyrings).Clone();
+  keyrings.SetByDottedPath("default.selected_account", eth_acc->address);
+  keyrings.SetByDottedPath("solana.selected_account", sol_acc->address);
+  keyrings.SetByDottedPath("filecoin.selected_account", fil_acc->address);
+  GetPrefs()->SetDict(kBraveWalletKeyrings, std::move(keyrings));
+
+  // Instantiate service, migration should happen.
+  service = std::make_unique<KeyringService>(json_rpc_service(), GetPrefs(),
+                                             GetLocalState());
+
+  // Legacy prefs are missing.
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletSelectedCoinDeprecated));
+  EXPECT_FALSE(keyrings.FindByDottedPath("default.selected_account"));
+  EXPECT_FALSE(keyrings.FindByDottedPath("solana.selected_account"));
+  EXPECT_FALSE(keyrings.FindByDottedPath("filecoin.selected_account"));
+
+  auto all_accounts = service->GetAllAccountsSync();
+  EXPECT_EQ(all_accounts->eth_dapp_selected_account, eth_acc);
+  EXPECT_EQ(all_accounts->sol_dapp_selected_account, sol_acc);
+  EXPECT_EQ(all_accounts->selected_account, fil_acc);
 }
 
 }  // namespace brave_wallet

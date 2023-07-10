@@ -10,10 +10,9 @@ import { useDispatch } from 'react-redux'
 import { WalletActions } from '../../../common/actions'
 
 // Types
-import { BraveWallet, WalletAccountType } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Hooks
-import { useSelectedCoinQuery } from '../../../common/slices/api.slice'
 import {
   useUnsafeWalletSelector
 } from '../../../common/hooks/use-safe-selector'
@@ -23,6 +22,9 @@ import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { create } from 'ethereum-blockies'
 import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
+import { useSetSelectedAccountMutation } from '../../../common/slices/api.slice'
+import { useSelectedAccountQuery } from '../../../common/slices/api.slice.extra'
+import { findAccountByAccountId } from '../../../utils/account-utils'
 import { WalletSelectors } from '../../../common/selectors'
 
 // Styled Components
@@ -37,8 +39,9 @@ import {
   RightSide
 } from './style'
 
+
 export interface Props {
-  account: WalletAccountType
+  account: BraveWallet.AccountInfo
 }
 
 const SitePermissionAccountItem = (props: Props) => {
@@ -47,24 +50,23 @@ const SitePermissionAccountItem = (props: Props) => {
   } = props
 
   const dispatch = useDispatch()
-  const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
   const connectedAccounts = useUnsafeWalletSelector(WalletSelectors.connectedAccounts)
   const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
 
   // api
-  const { selectedCoin } = useSelectedCoinQuery()
+  const { data: selectedAccount } = useSelectedAccountQuery()
+  const [setSelectedAccount] = useSetSelectedAccountMutation()
+  const selectedCoin = selectedAccount?.accountId.coin
 
   // memos
   const orb = React.useMemo(() => {
     return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [account.address])
+  }, [account])
 
-  const isActive = React.useMemo((): boolean => {
-    return account.address.toLowerCase() === selectedAccount?.address.toLowerCase()
-  }, [selectedAccount?.address, account.address])
+  const isActive = account.accountId.uniqueKey === selectedAccount?.accountId.uniqueKey
 
   const hasPermission = React.useMemo((): boolean => {
-    return connectedAccounts.some(a => a.address.toLowerCase() === account.address.toLowerCase())
+    return !!findAccountByAccountId(connectedAccounts, account.accountId)
   }, [connectedAccounts, account])
 
   const buttonText = React.useMemo((): string => {
@@ -84,19 +86,19 @@ const SitePermissionAccountItem = (props: Props) => {
   const onClickConnect = React.useCallback(() => {
     dispatch(WalletActions.addSitePermission({ accountId: account.accountId, origin: activeOrigin.origin }))
     if (selectedCoin !== BraveWallet.CoinType.SOL) {
-      dispatch(WalletActions.selectAccount(account.accountId))
+      setSelectedAccount(account.accountId)
     }
   }, [activeOrigin, account, selectedCoin])
 
   const onClickDisconnect = React.useCallback(() => {
     dispatch(WalletActions.removeSitePermission({ accountId: account.accountId, origin: activeOrigin.origin }))
     if (connectedAccounts.length !== 0 && selectedCoin !== BraveWallet.CoinType.SOL) {
-      dispatch(WalletActions.selectAccount(connectedAccounts[0].accountId))
+      setSelectedAccount(account.accountId)
     }
   }, [connectedAccounts, activeOrigin, account, selectedCoin])
 
   const onClickSwitchAccount = React.useCallback(() => {
-    dispatch(WalletActions.selectAccount(account.accountId))
+    setSelectedAccount(account.accountId)
   }, [account])
 
   const onClickConnectDisconnectOrSwitch = React.useCallback(() => {

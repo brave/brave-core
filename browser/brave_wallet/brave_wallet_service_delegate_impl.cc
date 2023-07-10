@@ -19,6 +19,7 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 using content::StoragePartition;
 
@@ -215,20 +216,22 @@ void BraveWalletServiceDelegateImpl::TabChangedAt(
 }
 
 void BraveWalletServiceDelegateImpl::FireActiveOriginChanged() {
-  mojom::OriginInfoPtr origin_info = MakeOriginInfo(GetActiveOriginInternal());
+  mojom::OriginInfoPtr origin_info =
+      MakeOriginInfo(GetActiveOriginInternal().value_or(url::Origin()));
   for (auto& observer : observer_list_) {
     observer.OnActiveOriginChanged(origin_info);
   }
 }
 
-url::Origin BraveWalletServiceDelegateImpl::GetActiveOriginInternal() {
+absl::optional<url::Origin>
+BraveWalletServiceDelegateImpl::GetActiveOriginInternal() {
   content::WebContents* contents = GetActiveWebContents();
   return contents ? contents->GetPrimaryMainFrame()->GetLastCommittedOrigin()
-                  : url::Origin();
+                  : absl::optional<url::Origin>();
 }
 
-mojom::OriginInfoPtr BraveWalletServiceDelegateImpl::GetActiveOrigin() {
-  return MakeOriginInfo(GetActiveOriginInternal());
+absl::optional<url::Origin> BraveWalletServiceDelegateImpl::GetActiveOrigin() {
+  return GetActiveOriginInternal();
 }
 
 void BraveWalletServiceDelegateImpl::ClearWalletUIStoragePartition() {

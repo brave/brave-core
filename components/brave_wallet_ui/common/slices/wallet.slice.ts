@@ -10,7 +10,7 @@ import {
   PortfolioTokenHistoryAndInfo,
   WalletAccountType,
   WalletState,
-  WalletInfo,
+  WalletInitializedPayload,
   DefaultCurrencies,
   GetNativeAssetBalancesPayload,
   SolFeeEstimates,
@@ -20,7 +20,6 @@ import {
 } from '../../constants/types'
 import {
   AddSitePermissionPayloadType,
-  ChainChangedEventPayloadType,
   DefaultBaseCryptocurrencyChanged,
   DefaultBaseCurrencyChanged,
   DefaultEthereumWalletChanged,
@@ -28,7 +27,6 @@ import {
   GetCoinMarketPayload,
   GetCoinMarketsResponse,
   RemoveSitePermissionPayloadType,
-  SelectedAccountChangedPayloadType,
   SetUserAssetVisiblePayloadType,
   SitePermissionsPayloadType,
   UnlockWalletPayloadType,
@@ -45,7 +43,6 @@ import { mojoTimeDeltaToJSDate } from '../../../common/mojomUtils'
 import Amount from '../../utils/amount'
 import {
   createTokenBalanceRegistryKey,
-  findAccountInList
 } from '../../utils/account-utils'
 import {
   parseJSONFromLocalStorage,
@@ -71,7 +68,6 @@ const defaultState: WalletState = {
   favoriteApps: [],
   isWalletBackedUp: false,
   hasIncorrectPassword: false,
-  selectedAccount: {} as WalletAccountType,
   accounts: [],
   userVisibleTokensInfo: [],
   fullTokenList: [],
@@ -203,8 +199,6 @@ export const WalletAsyncActions = {
   ), // alias for ApiProxy.braveWalletService.setUserAssetVisible
   selectAccount: createAction<BraveWallet.AccountId>('selectAccount'), // should use apiProxy - keyringService
   getAllNetworks: createAction('getAllNetworks'), // alias to refreshFullNetworkList
-  chainChangedEvent:
-    createAction<ChainChangedEventPayloadType>('chainChangedEvent'),
   keyringCreated: createAction('keyringCreated'),
   keyringRestored: createAction('keyringRestored'),
   keyringReset: createAction('keyringReset'),
@@ -212,9 +206,6 @@ export const WalletAsyncActions = {
   unlocked: createAction('unlocked'),
   backedUp: createAction('backedUp'),
   accountsChanged: createAction('accountsChanged'),
-  selectedAccountChanged: createAction<SelectedAccountChangedPayloadType>(
-    'selectedAccountChanged'
-  ),
   getAllTokensList: createAction('getAllTokensList'),
   selectPortfolioTimeline: createAction<BraveWallet.AssetPriceTimeframe>(
     'selectPortfolioTimeline'
@@ -288,35 +279,28 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.hasIncorrectPassword = payload
       },
 
-      initialized (state: WalletState, { payload }: PayloadAction<WalletInfo>) {
-        const accounts = payload.accountInfos.map(
-          (info: BraveWallet.AccountInfo, idx: number): WalletAccountType => {
+      initialized (state: WalletState, { payload }: PayloadAction<WalletInitializedPayload>) {
+
+        state.hasInitialized = true
+
+        state.accounts = payload.allAccounts.accounts.map(
+          (info: BraveWallet.AccountInfo): WalletAccountType => {
             return {
               ...info,
               tokenBalanceRegistry: {},
-              nativeBalanceRegistry: {},
+              nativeBalanceRegistry: {}
             }
           }
         )
 
-        const selectedAccount = payload.selectedAccount
-          ? accounts.find(
-              (account) =>
-                account.address.toLowerCase() ===
-                payload.selectedAccount.toLowerCase()
-            ) ?? accounts[0]
-          : accounts[0]
-        state.hasInitialized = true
-        state.isWalletCreated = payload.isWalletCreated
-        state.isFilecoinEnabled = payload.isFilecoinEnabled
-        state.isSolanaEnabled = payload.isSolanaEnabled
-        state.isBitcoinEnabled = payload.isBitcoinEnabled
-        state.isWalletLocked = payload.isWalletLocked
-        state.accounts = accounts
-        state.isWalletBackedUp = payload.isWalletBackedUp
-        state.selectedAccount = selectedAccount
-        state.isNftPinningFeatureEnabled = payload.isNftPinningFeatureEnabled
-        state.isPanelV2FeatureEnabled = payload.isPanelV2FeatureEnabled
+        state.isWalletCreated = payload.walletInfo.isWalletCreated
+        state.isFilecoinEnabled = payload.walletInfo.isFilecoinEnabled
+        state.isSolanaEnabled = payload.walletInfo.isSolanaEnabled
+        state.isBitcoinEnabled = payload.walletInfo.isBitcoinEnabled
+        state.isWalletLocked = payload.walletInfo.isWalletLocked
+        state.isWalletBackedUp = payload.walletInfo.isWalletBackedUp
+        state.isNftPinningFeatureEnabled = payload.walletInfo.isNftPinningFeatureEnabled
+        state.isPanelV2FeatureEnabled = payload.walletInfo.isPanelV2FeatureEnabled
       },
 
       nativeAssetBalancesUpdated: (
@@ -331,8 +315,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
             }
           })
         })
-
-        state.selectedAccount = findAccountInList(state.selectedAccount, state.accounts)
       },
 
       portfolioPriceHistoryUpdated: (
@@ -425,7 +407,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isMetaMaskInstalled = payload
       },
 
-
       setOnRampCurrencies (state: WalletState, { payload }: PayloadAction<BraveWallet.OnRampCurrency[]>) {
         state.onRampCurrencies = payload
       },
@@ -434,11 +415,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.passwordAttempts = payload
       },
 
-      setSelectedAccount (state: WalletState, { payload }: PayloadAction<WalletAccountType>) {
-        state.selectedAccount = payload
-      },
-
-      setSelectedAssetFilterItem (state: WalletState, { payload }: PayloadAction<string>) {
+      setSelectedAssetFilterItem(state: WalletState, { payload }: PayloadAction<string>) {
         state.selectedAssetFilter = payload
       },
 
@@ -574,8 +551,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
             }
           })
         })
-
-        state.selectedAccount = findAccountInList(state.selectedAccount, state.accounts)
       },
 
       refreshAccountInfo: (
@@ -590,11 +565,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
             account.name = info.name
           }
         })
-
-        state.selectedAccount = findAccountInList(
-          state.selectedAccount,
-          state.accounts
-        )
       },
     },
     extraReducers: (builder) => {

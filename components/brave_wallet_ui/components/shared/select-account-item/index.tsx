@@ -6,7 +6,7 @@ import * as React from 'react'
 import { create } from 'ethereum-blockies'
 
 // types
-import { BraveWallet, WalletAccountType } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -37,7 +37,7 @@ import {
 } from './style'
 
 export interface Props {
-  account?: WalletAccountType
+  account?: BraveWallet.AccountInfo
   isSelected?: boolean
   selectedNetwork?: BraveWallet.NetworkInfo
   onSelectAccount?: () => void

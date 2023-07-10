@@ -23,7 +23,9 @@ class KeyringServiceObserverBase : public mojom::KeyringServiceObserver {
   void AccountsChanged() override {}
   void AccountsAdded(std::vector<mojom::AccountInfoPtr> accounts) override {}
   void AutoLockMinutesChanged() override {}
-  void SelectedAccountChanged(mojom::CoinType coin) override {}
+  void SelectedWalletAccountChanged(mojom::AccountInfoPtr account) override {}
+  void SelectedDappAccountChanged(mojom::CoinType coin,
+                                  mojom::AccountInfoPtr account) override {}
 };
 
 }  // namespace brave_wallet

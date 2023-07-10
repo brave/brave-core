@@ -9,6 +9,9 @@ import { useDispatch } from 'react-redux'
 // Actions
 import { PanelActions } from '../../../panel/actions'
 
+// Queries
+import { useSelectedAccountQuery } from '../../../common/slices/api.slice.extra'
+
 // Types
 import { WalletAccountType } from '../../../constants/types'
 
@@ -17,7 +20,6 @@ import { getLocale } from '../../../../common/locale'
 import { WalletSelectors } from '../../../common/selectors'
 
 // Hooks
-import { useSelectedCoinQuery } from '../../../common/slices/api.slice'
 import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 
 // Components
@@ -49,7 +51,8 @@ export const SitePermissions = () => {
   )
 
   // api
-  const { selectedCoin } = useSelectedCoinQuery()
+  const { data: selectedAccount } = useSelectedAccountQuery()
+  const selectedCoin = selectedAccount?.accountId.coin
 
   // methods
   const onAddAccount = React.useCallback(() => {

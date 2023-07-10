@@ -19,6 +19,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
@@ -46,6 +47,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class NetworkModel implements JsonRpcServiceObserver {
+    private BraveWalletService mBraveWalletService;
     private JsonRpcService mJsonRpcService;
     private final Object mLock = new Object();
     private final MediatorLiveData<String> _mChainId;
@@ -76,8 +78,9 @@ public class NetworkModel implements JsonRpcServiceObserver {
     public final LiveData<List<NetworkInfo>> mSecondaryNetworks;
     private Origin mOrigin;
 
-    public NetworkModel(JsonRpcService jsonRpcService, CryptoSharedData sharedData,
-            CryptoSharedActions cryptoSharedActions, Context context) {
+    public NetworkModel(BraveWalletService braveWalletService, JsonRpcService jsonRpcService,
+            CryptoSharedData sharedData, CryptoSharedActions cryptoSharedActions, Context context) {
+        mBraveWalletService = braveWalletService;
         mJsonRpcService = jsonRpcService;
         mSharedData = sharedData;
         mCryptoActions = cryptoSharedActions;
@@ -254,8 +257,10 @@ public class NetworkModel implements JsonRpcServiceObserver {
         });
     }
 
-    public void resetServices(JsonRpcService jsonRpcService) {
+    public void resetServices(
+            BraveWalletService braveWalletService, JsonRpcService jsonRpcService) {
         synchronized (mLock) {
+            mBraveWalletService = braveWalletService;
             mJsonRpcService = jsonRpcService;
         }
         init();
@@ -311,37 +316,43 @@ public class NetworkModel implements JsonRpcServiceObserver {
         }
     }
 
-    public void setNetworkWithAccountCheck(
-            NetworkInfo networkToBeSetAsSelected, Callbacks.Callback1<Boolean> callback) {
+    public void setNetworkWithAccountCheck(NetworkInfo networkToBeSetAsSelected,
+            boolean setNetworkAsDefault, Callbacks.Callback1<Boolean> callback) {
         NetworkInfo selectedNetwork = _mDefaultNetwork.getValue();
         if (isSameNetwork(networkToBeSetAsSelected, selectedNetwork)) return;
-        boolean hasAccountOfNetworkType = hasAccountOfNetworkType(networkToBeSetAsSelected);
-        if (hasAccountOfNetworkType) {
-            mJsonRpcService.setNetwork(networkToBeSetAsSelected.chainId,
-                    networkToBeSetAsSelected.coin, mOrigin, isSelected -> {
-                        callback.call(isSelected);
-                        mCryptoActions.updateCoinType();
-                        init();
-                    });
-        } else {
-            _mNeedToCreateAccountForNetwork.postValue(networkToBeSetAsSelected);
-            callback.call(false);
-        }
+
+        mBraveWalletService.ensureSelectedAccountForChain(
+                networkToBeSetAsSelected.coin, networkToBeSetAsSelected.chainId, accountId -> {
+                    if (accountId == null) {
+                        _mNeedToCreateAccountForNetwork.postValue(networkToBeSetAsSelected);
+                        callback.call(false);
+                        return;
+                    }
+                    if (setNetworkAsDefault) {
+                        setDefaultNetwork(networkToBeSetAsSelected, callback);
+                    } else {
+                        setNetworkForSelectedAccountOnActiveOrigin(
+                                networkToBeSetAsSelected, callback);
+                    }
+                });
     }
 
-    public void setNetworkWithAccountCheck(String chainId, Callbacks.Callback1<Boolean> callback) {
-        NetworkInfo networkToBeSetAsSelected = getNetwork(chainId);
-        setNetworkWithAccountCheck(networkToBeSetAsSelected, callback);
-    }
-
-    public void setNetwork(
+    public void setNetworkForSelectedAccountOnActiveOrigin(
             NetworkInfo networkToBeSetAsSelected, Callbacks.Callback1<Boolean> callback) {
-        mJsonRpcService.setNetwork(networkToBeSetAsSelected.chainId, networkToBeSetAsSelected.coin,
-                mOrigin, isSelected -> {
-                    callback.call(isSelected);
+        mBraveWalletService.setNetworkForSelectedAccountOnActiveOrigin(
+                networkToBeSetAsSelected.chainId, success -> {
+                    callback.call(success);
                     mCryptoActions.updateCoinType();
                     init();
                 });
+    }
+
+    public void setDefaultNetwork(NetworkInfo networkInfo, Callbacks.Callback1<Boolean> callback) {
+        mJsonRpcService.setNetwork(networkInfo.chainId, networkInfo.coin, null, success -> {
+            callback.call(success);
+            mCryptoActions.updateCoinType();
+            init();
+        });
     }
 
     public void getNetwork(@CoinType.EnumType int coin, Callbacks.Callback1<NetworkInfo> callback) {
@@ -429,7 +440,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
     @Override
     public void chainChangedEvent(String chainId, int coin, Origin origin) {
         _mChainId.postValue(chainId);
-        mCryptoActions.updateCoinAccountNetworkInfo(coin);
     }
 
     @Override

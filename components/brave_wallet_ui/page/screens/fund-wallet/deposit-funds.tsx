@@ -25,7 +25,6 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 
 // hooks
 import { useCopyToClipboard } from '../../../common/hooks/use-copy-to-clipboard'
-import { usePrevNetwork } from '../../../common/hooks'
 import { useScrollIntoView } from '../../../common/hooks/use-scroll-into-view'
 import {
   useGetMainnetsQuery,
@@ -80,7 +79,6 @@ export const DepositFundsScreen = (props: Props) => {
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
 
   // custom hooks
-  const { prevNetwork } = usePrevNetwork()
   const { copyToClipboard, isCopied, resetCopyState } = useCopyToClipboard()
   const scrollIntoView = useScrollIntoView()
 
@@ -331,10 +329,9 @@ export const DepositFundsScreen = (props: Props) => {
       }
 
       {/* Creates wallet Account if needed for deposit */}
-      {needsAccount && showDepositAddress &&
+      {needsAccount && showDepositAddress && selectedAssetNetwork &&
         <CreateAccountTab
           network={selectedAssetNetwork}
-          prevNetwork={prevNetwork}
           onCancel={goBackToSelectAssets}
         />
       }

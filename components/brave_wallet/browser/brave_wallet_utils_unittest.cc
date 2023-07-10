@@ -1492,4 +1492,20 @@ TEST(BraveWalletUtilsUnitTest, MakeAccountId) {
                 ->unique_key);
 }
 
+TEST(BraveWalletUtilsUnitTest, CoinSupportsDapps) {
+  for (auto i = int32_t(mojom::CoinType::kMinValue);
+       i <= int32_t(mojom::CoinType::kMaxValue); ++i) {
+    mojom::CoinType coin{i};
+    if (!mojom::IsKnownEnumValue(coin)) {
+      continue;
+    }
+
+    if (coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL) {
+      EXPECT_TRUE(CoinSupportsDapps(coin));
+    } else {
+      EXPECT_FALSE(CoinSupportsDapps(coin));
+    }
+  }
+}
+
 }  // namespace brave_wallet

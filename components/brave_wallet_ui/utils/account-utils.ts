@@ -49,6 +49,32 @@ export const findAccountByAddress = <T extends { address: string }>(
   return accounts.find((account) => address === account.address)
 }
 
+export const findAccountByUniqueKey = <
+  T extends { accountId: { uniqueKey: string } }
+>(
+  accounts: T[],
+  uniqueKey: string | undefined
+): T | undefined => {
+  if (!uniqueKey) {
+    return
+  }
+
+  return accounts.find((account) => uniqueKey === account.accountId.uniqueKey)
+}
+
+export const findAccountByAccountId = <
+  T extends { accountId: { uniqueKey: string } }
+>(
+  accounts: T[],
+  accountId: BraveWallet.AccountId | undefined
+): T | undefined => {
+  if (!accountId) {
+    return
+  }
+
+  return findAccountByUniqueKey(accounts, accountId.uniqueKey)
+}
+
 export const findAccountName = <
   T extends {
     address: string
@@ -108,6 +134,14 @@ export const findAccountFromRegistry = (
   return accounts.entities[address]
 }
 
+export const findAccountFromRegistryByAccountId = (
+  accountId: BraveWallet.AccountId,
+  accounts: EntityState<AccountInfoEntity>
+): AccountInfoEntity | undefined => {
+  // TODO(apaymyshev): should be indexed by uniqueKey
+  return accounts.entities[accountId.address]
+}
+
 export const getAddressLabelFromRegistry = (
   address: string,
   accounts: EntityState<AccountInfoEntity>
@@ -120,6 +154,7 @@ export const getAddressLabelFromRegistry = (
 }
 
 export const getAccountId = (account: { address: string }) => {
+  // TODO(apaymyshev): should use uniuqeKey
   return account.address
 }
 
@@ -127,22 +162,6 @@ export function isHardwareAccount(
   account: Pick<BraveWallet.AccountInfo, 'hardware'>
 ) {
   return !!account.hardware?.deviceId
-}
-
-// FIXME(onyb): replace with findAccountFromRegistry
-export const findAccountInList = (
-  account: WalletAccountType | undefined,
-  accounts: WalletAccountType[]
-) => {
-  if (!account)
-    return account;
-
-  return (
-    accounts.find(
-      (acc) =>
-        acc.address.toLowerCase() === account.address.toLowerCase()
-    ) ?? account
-  )
 }
 
 export const keyringIdForNewAccount = (

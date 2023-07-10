@@ -582,7 +582,8 @@ export const usePendingTransactions = () => {
     getERC20Allowance(
       transactionDetails.recipient,
       transactionInfo.fromAddress,
-      transactionDetails.approvalTarget
+      transactionDetails.approvalTarget,
+      transactionDetails.chainId,
     )
       .then((result) => {
         subscribed && setERC20AllowanceResult(result)

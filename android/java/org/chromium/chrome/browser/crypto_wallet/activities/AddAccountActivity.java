@@ -241,16 +241,16 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
             // Import account from JSON.
             String accountPassword = mImportAccountPasswordText.getText().toString();
             mKeyringService.importAccountFromJson(accountName, accountPassword, privateKey,
-                    (result, address) -> { handleImportAccount(result, true); });
+                    (account) -> { handleImportAccount(account != null, true); });
         } else {
             // Import account from string.
             if (coinType == CoinType.FIL) {
                 mKeyringService.importFilecoinAccount(accountName, privateKey.trim(),
                         mSelectedFilecoinNetwork,
-                        (result, address) -> { handleImportAccount(result, false); });
+                        (account) -> { handleImportAccount(account != null, false); });
             } else {
                 mKeyringService.importAccount(accountName, privateKey.trim(), coinType,
-                        (result, address) -> { handleImportAccount(result, false); });
+                        (account) -> { handleImportAccount(account != null, false); });
             }
         }
     }

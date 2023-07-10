@@ -6,17 +6,8 @@
 import * as React from 'react'
 
 // Queries
-import {
-  useGetSelectedChainQuery
-} from '../../../../../../common/slices/api.slice'
-
-// Selectors
-import {
-  WalletSelectors
-} from '../../../../../../common/selectors'
-import {
-  useUnsafeWalletSelector
-} from '../../../../../../common/hooks/use-safe-selector'
+import { useGetSelectedChainQuery } from '../../../../../../common/slices/api.slice'
+import { useSelectedAccountQuery } from '../../../../../../common/slices/api.slice.extra'
 
 // Utils
 import {
@@ -73,10 +64,7 @@ export const FromSection = (props: Props) => {
 
   // Queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
-
-  // Selectors
-  const selectedAccount =
-    useUnsafeWalletSelector(WalletSelectors.selectedAccount)
+  const { data: selectedAccount } = useSelectedAccountQuery()
 
   // methods
   const onClickHalfPreset = () => {

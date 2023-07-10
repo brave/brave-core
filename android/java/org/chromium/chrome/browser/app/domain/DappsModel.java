@@ -21,7 +21,6 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletAccountCreationRequest;
-import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.mojo.bindings.Callbacks;
@@ -73,33 +72,25 @@ public class DappsModel implements KeyringServiceObserver {
 
     public void fetchAccountsForConnectionReq(@CoinType.EnumType int coinType,
             Callbacks.Callback1<Pair<AccountInfo, List<AccountInfo>>> callback) {
-        if (coinType == CoinType.ETH || coinType == CoinType.SOL) {
-            mKeyringService.getKeyringInfo(
-                    AssetUtils.getKeyringForEthOrSolOnly(coinType), keyringInfo -> {
-                        mKeyringService.getSelectedAccount(coinType, accountAddress -> {
-                            if (coinType == CoinType.SOL) {
-                                // only the selected account is used for solana dapps
-                                for (AccountInfo accountInfo : keyringInfo.accountInfos) {
-                                    if (accountAddress.equals(accountInfo.address)) {
-                                        List<AccountInfo> accountInfos = new ArrayList<>();
-                                        accountInfos.add(accountInfo);
-                                        callback.call(new Pair<>(
-                                                Utils.findAccount(
-                                                        keyringInfo.accountInfos, accountAddress),
-                                                accountInfos));
-                                        return;
-                                    }
-                                }
-                            } else {
-                                callback.call(new Pair<>(
-                                        Utils.findAccount(keyringInfo.accountInfos, accountAddress),
-                                        Arrays.asList(keyringInfo.accountInfos)));
-                            }
-                        });
-                    });
-        } else {
+        if (coinType != CoinType.ETH && coinType != CoinType.SOL) {
             callback.call(new Pair<>(null, Collections.emptyList()));
+            return;
         }
+
+        mKeyringService.getAllAccounts(allAccounts -> {
+            if (coinType == CoinType.SOL) {
+                // only the selected account is used for solana dapps
+                if (allAccounts.solDappSelectedAccount != null) {
+                    List<AccountInfo> accounts = new ArrayList();
+                    accounts.add(allAccounts.solDappSelectedAccount);
+                    callback.call(new Pair<>(allAccounts.solDappSelectedAccount, accounts));
+                }
+            } else {
+                List<AccountInfo> accounts =
+                        Utils.filterAccountsByCoin(allAccounts.accounts, coinType);
+                callback.call(new Pair<>(allAccounts.ethDappSelectedAccount, accounts));
+            }
+        });
     }
 
     public LiveData<List<SignTransactionRequest>> fetchSignTxRequest() {
@@ -322,7 +313,11 @@ public class DappsModel implements KeyringServiceObserver {
     public void autoLockMinutesChanged() {}
 
     @Override
-    public void selectedAccountChanged(int coin) {}
+    public void selectedWalletAccountChanged(AccountInfo accountInfo) {}
+
+    @Override
+    public void selectedDappAccountChanged(
+            @CoinType.EnumType int coinType, AccountInfo accountInfo) {}
 
     @Override
     public void onConnectionError(MojoException e) {}

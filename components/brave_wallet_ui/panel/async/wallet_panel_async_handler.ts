@@ -17,7 +17,6 @@ import {
 import {
   ConnectWithSitePayloadType,
   AddSuggestTokenProcessedPayload,
-  CancelConnectHardwareWalletPayload,
   ShowConnectToSitePayload,
   EthereumChainRequestPayload,
   SignMessageProcessedPayload,
@@ -60,13 +59,7 @@ async function refreshWalletInfo (store: Store) {
   const proxy = getWalletPanelApiProxy()
   const { walletInfo } = await proxy.walletHandler.getWalletInfo()
   const { allAccounts } = await proxy.keyringService.getAllAccounts()
-  store.dispatch(
-    WalletActions.initialized({
-      ...walletInfo,
-      accountInfos: allAccounts.accounts,
-      selectedAccount: ''
-    })
-  )
+  store.dispatch(WalletActions.initialized({ walletInfo, allAccounts }))
   store.dispatch(WalletActions.refreshAll({
     skipBalancesRefresh: true
   }))
@@ -188,12 +181,10 @@ handler.on(PanelActions.cancelConnectToSite.type, async () => {
   apiProxy.panelHandler.closeUI()
 })
 
-handler.on(PanelActions.cancelConnectHardwareWallet.type, async (store: Store, payload: CancelConnectHardwareWalletPayload) => {
-  const found = await findHardwareAccountInfo(payload.accountAddress)
-  if (found && found.hardware) {
-    const info: BraveWallet.HardwareInfo = found.hardware
+handler.on(PanelActions.cancelConnectHardwareWallet.type, async (store: Store, payload: BraveWallet.AccountInfo) => {
+  if (payload.hardware) {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    await cancelHardwareOperation(info.vendor as HardwareVendor, payload.coinType)
+    await cancelHardwareOperation(payload.hardware.vendor as HardwareVendor, payload.accountId.coin)
   }
   // Navigating to main panel view will unmount ConnectHardwareWalletPanel
   // and therefore forfeit connecting to the hardware wallet.

@@ -16,7 +16,7 @@ import type {
 import {
   useGetAccountInfosRegistryQuery,
   useGetNetworkQuery,
-  useGetSelectedAccountAddressQuery,
+  useGetSelectedAccountIdQuery,
   useGetTokensRegistryQuery,
   useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
@@ -33,7 +33,10 @@ import {
   selectAllBlockchainTokensFromQueryResult,
   selectCombinedTokensList
 } from '../slices/entities/blockchain-token.entity'
-import { findAccountFromRegistry } from '../../utils/account-utils'
+import {
+  findAccountFromRegistry,
+  findAccountFromRegistryByAccountId
+} from '../../utils/account-utils'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
 import { selectPendingTransactions } from './entities/transaction.entity'
 
@@ -63,15 +66,15 @@ export const useSelectedAccountQuery = () => {
     isLoading: isLoadingAccounts
   } = useGetAccountInfosRegistryQuery(undefined)
 
-  const { data: selectedAccountAddress, isLoading: isLoadingSelectedAddress } =
-    useGetSelectedAccountAddressQuery(isLoadingAccounts ? skipToken : undefined)
+  const { data: selectedAccountId, isLoading: isLoadingSelectedAccountId } =
+  useGetSelectedAccountIdQuery(isLoadingAccounts ? skipToken : undefined)
 
-  const selectedAccount = selectedAccountAddress
-    ? findAccountFromRegistry(selectedAccountAddress, accountInfosRegistry)
+  const selectedAccount = selectedAccountId
+    ? findAccountFromRegistryByAccountId(selectedAccountId, accountInfosRegistry)
     : undefined
 
   return {
-    isLoading: isLoadingAccounts || isLoadingSelectedAddress,
+    isLoading: isLoadingAccounts || isLoadingSelectedAccountId,
     data: selectedAccount
   }
 }

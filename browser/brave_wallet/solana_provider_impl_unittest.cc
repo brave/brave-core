@@ -644,8 +644,7 @@ TEST_F(SolanaProviderImplUnitTest, ConnectWithNoSolanaAccount) {
       [&]() { account_creation_callback_called = true; }));
   // No solana account
   CreateWallet();
-  keyring_service_->RemoveSelectedAccountForCoin(mojom::CoinType::SOL,
-                                                 mojom::kSolanaKeyringId);
+  keyring_service_->SetSelectedDappAccountInternal(mojom::CoinType::SOL, {});
   account = Connect(absl::nullopt, &error, &error_message);
   EXPECT_TRUE(account.empty());
   EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
@@ -687,12 +686,15 @@ TEST_F(SolanaProviderImplUnitTest, Disconnect) {
 
 TEST_F(SolanaProviderImplUnitTest,
        AccountChangedEvent_RemoveSelectedHardwareAccount) {
-  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
+  EXPECT_CALL(*observer_, AccountChangedEvent(absl::optional<std::string>()));
   CreateWallet();
-  auto added_hw_account = AddHardwareAccount(kHardwareAccountAddr);
   observer_->WaitAndVerify();
 
+  auto added_hw_account = AddHardwareAccount(kHardwareAccountAddr);
   EXPECT_CALL(*observer_, AccountChangedEvent(absl::optional<std::string>()));
+  observer_->WaitAndVerify();
+
+  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   SetSelectedAccount(added_hw_account->account_id);
   observer_->WaitAndVerify();
 
@@ -711,13 +713,17 @@ TEST_F(SolanaProviderImplUnitTest,
 }
 
 TEST_F(SolanaProviderImplUnitTest, AccountChangedEvent) {
-  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
+  EXPECT_CALL(*observer_, AccountChangedEvent(absl::optional<std::string>()));
   CreateWallet();
-  auto added_account = AddAccount();
   observer_->WaitAndVerify();
 
   // since it is not connected, account is empty
   EXPECT_CALL(*observer_, AccountChangedEvent(absl::optional<std::string>()));
+  auto added_account = AddAccount();
+  observer_->WaitAndVerify();
+
+  // selecting same account does not trigger any notifications.
+  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   SetSelectedAccount(added_account->account_id);
   observer_->WaitAndVerify();
 
@@ -728,13 +734,13 @@ TEST_F(SolanaProviderImplUnitTest, AccountChangedEvent) {
   ASSERT_TRUE(!account.empty());
   ASSERT_TRUE(IsConnected());
 
-  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
-  // add another account
+  // add another account selects it, since it is not connected, account is empty
+  EXPECT_CALL(*observer_, AccountChangedEvent(absl::optional<std::string>()));
   auto added_another_account = AddAccount();
   observer_->WaitAndVerify();
 
-  // since it is not connected, account is empty
-  EXPECT_CALL(*observer_, AccountChangedEvent(absl::optional<std::string>()));
+  // selecting same account does not trigger any notifications.
+  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   SetSelectedAccount(added_another_account->account_id);
   observer_->WaitAndVerify();
 
@@ -899,7 +905,7 @@ TEST_F(SolanaProviderImplUnitTest, SignMessage_Hardware) {
 TEST_F(SolanaProviderImplUnitTest, GetDeserializedMessage) {
   CreateWallet();
   auto added_account = AddAccount();
-  EXPECT_FALSE(provider_->GetDeserializedMessage("", added_account->address));
+  EXPECT_FALSE(provider_->GetDeserializedMessage(""));
 
   SolanaInstruction instruction(
       mojom::kSolanaSystemProgramId,
@@ -913,15 +919,14 @@ TEST_F(SolanaProviderImplUnitTest, GetDeserializedMessage) {
   auto serialized_msg = msg->Serialize(nullptr);
   ASSERT_TRUE(serialized_msg);
 
-  auto deserialized_msg = provider_->GetDeserializedMessage(
-      Base58Encode(*serialized_msg), added_account->address);
+  auto deserialized_msg =
+      provider_->GetDeserializedMessage(Base58Encode(*serialized_msg));
   EXPECT_TRUE(deserialized_msg);
 
   // Test current selected account is not the same as the fee payer in the
   // serialized message.
-  deserialized_msg = provider_->GetDeserializedMessage(
-      Base58Encode(*serialized_msg),
-      "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw");
+  deserialized_msg =
+      provider_->GetDeserializedMessage(Base58Encode(*serialized_msg));
   EXPECT_TRUE(deserialized_msg);
 }
 

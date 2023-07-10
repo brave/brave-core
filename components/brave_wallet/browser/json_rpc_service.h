@@ -225,8 +225,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   bool SetNetwork(const std::string& chain_id,
                   mojom::CoinType coin,
-                  const absl::optional<::url::Origin>& origin,
-                  bool silent = false);
+                  const absl::optional<::url::Origin>& origin);
   void SetNetwork(const std::string& chain_id,
                   mojom::CoinType coin,
                   const absl::optional<::url::Origin>& origin,
@@ -234,6 +233,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void GetNetwork(mojom::CoinType coin,
                   const absl::optional<::url::Origin>& origin,
                   GetNetworkCallback callback) override;
+  mojom::NetworkInfoPtr GetNetworkSync(
+      mojom::CoinType coin,
+      const absl::optional<::url::Origin>& origin);
+
   void AddChain(mojom::NetworkInfoPtr chain,
                 AddChainCallback callback) override;
   void AddEthereumChainForOrigin(

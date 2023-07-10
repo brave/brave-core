@@ -1059,15 +1059,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
   bool SetNetwork(const std::string& chain_id,
                   mojom::CoinType coin,
                   const absl::optional<::url::Origin>& origin) {
-    bool result;
-    base::RunLoop run_loop;
-    json_rpc_service_->SetNetwork(chain_id, coin, origin,
-                                  base::BindLambdaForTesting([&](bool success) {
-                                    result = success;
-                                    run_loop.Quit();
-                                  }));
-    run_loop.Run();
-    return result;
+    return json_rpc_service_->SetNetwork(chain_id, coin, origin);
   }
 
   std::string GetChainId(mojom::CoinType coin,
