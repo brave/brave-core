@@ -25,8 +25,8 @@ import { findAccountByAccountId } from '../../utils/account-utils'
 
 export function useAssets () {
   // redux
-  const selectedAccount = useUnsafeWalletSelector(
-    WalletSelectors.selectedAccount
+  const accounts = useUnsafeWalletSelector(
+    WalletSelectors.accounts
   )
   const userVisibleTokensInfo = useUnsafeWalletSelector(
     WalletSelectors.userVisibleTokensInfo
