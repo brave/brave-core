@@ -14,6 +14,7 @@
 #include "brave/components/tor/tor_utils.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/prefs/incognito_mode_prefs.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/policy/core/common/policy_pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -74,6 +75,9 @@ bool TorProfileServiceFactory::IsTorManaged(content::BrowserContext* context) {
 
 // static
 bool TorProfileServiceFactory::IsTorDisabled(content::BrowserContext* context) {
+  if (Profile::FromBrowserContext(context)->IsGuestSession()) {
+    return true;
+  }
   if (IsIncognitoDisabledOrForced(context)) {
     // Tor profile is derived from the incognito profile. If incognito is
     // disabled we can't create the tor profile. If incognito is forced then
