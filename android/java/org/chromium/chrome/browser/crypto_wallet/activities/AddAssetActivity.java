@@ -52,6 +52,7 @@ public class AddAssetActivity extends BraveWalletBaseActivity implements TextWat
 
     private boolean mNftsOnly;
     private boolean mPauseTextWatcher;
+    private boolean mOnStartWithNativeCalled;
 
     private Toolbar mToolbar;
     private Spinner mNetworkSpinner;
@@ -116,6 +117,10 @@ public class AddAssetActivity extends BraveWalletBaseActivity implements TextWat
     @Override
     public void onStartWithNative() {
         super.onStartWithNative();
+        if (mOnStartWithNativeCalled) {
+            return;
+        }
+        mOnStartWithNativeCalled = true;
 
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
