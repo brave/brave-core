@@ -386,7 +386,7 @@ ConversionQueue::ConversionQueue() : batch_size_(kDefaultBatchSize) {}
 
 void ConversionQueue::Save(
     const ConversionQueueItemList& conversion_queue_items,
-    ResultCallback callback) {
+    ResultCallback callback) const {
   if (conversion_queue_items.empty()) {
     return std::move(callback).Run(/*success*/ true);
   }
@@ -569,7 +569,7 @@ void ConversionQueue::Migrate(mojom::DBTransactionInfo* transaction,
 
 void ConversionQueue::InsertOrUpdate(
     mojom::DBTransactionInfo* transaction,
-    const ConversionQueueItemList& conversion_queue_items) {
+    const ConversionQueueItemList& conversion_queue_items) const {
   CHECK(transaction);
 
   if (conversion_queue_items.empty()) {

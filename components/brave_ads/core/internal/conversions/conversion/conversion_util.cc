@@ -9,8 +9,15 @@
 
 namespace brave_ads {
 
+namespace {
+
+constexpr char kVerifiableConversion[] = "verifiable conversion";
+constexpr char kDefaultConversion[] = "conversion";
+
+}  // namespace
+
 std::string ConversionTypeToString(const ConversionInfo& conversion) {
-  return conversion.verifiable ? "verifiable conversion" : "conversion";
+  return conversion.verifiable ? kVerifiableConversion : kDefaultConversion;
 }
 
 }  // namespace brave_ads

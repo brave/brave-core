@@ -217,25 +217,6 @@ void AdEvents::LogEvent(const AdEventInfo& ad_event, ResultCallback callback) {
   RunTransaction(std::move(transaction), std::move(callback));
 }
 
-void AdEvents::GetIf(const std::string& condition,
-                     GetAdEventsCallback callback) const {
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::READ;
-  command->sql = base::ReplaceStringPlaceholders(
-      "SELECT ae.placement_id, ae.type, ae.confirmation_type, ae.campaign_id, "
-      "ae.creative_set_id, ae.creative_instance_id, ae.advertiser_id, "
-      "ae.segment, ae.created_at FROM $1 AS ae WHERE $2 ORDER BY created_at "
-      "DESC;",
-      {GetTableName(), condition}, nullptr);
-  BindRecords(&*command);
-  transaction->commands.push_back(std::move(command));
-
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&GetCallback, std::move(callback)));
-}
-
 void AdEvents::GetAll(GetAdEventsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
