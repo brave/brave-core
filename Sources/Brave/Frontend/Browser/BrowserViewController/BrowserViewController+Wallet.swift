@@ -224,26 +224,17 @@ extension Tab: BraveWalletProviderDelegate {
         completion(.internal, nil)
         return
       }
-      let allowedAccounts = getAllowedAccounts(coinType, accounts: accounts) ?? []
-      if !allowedAccounts.isEmpty {
-        completion(.internal, [])
+      switch coinType {
+      case .eth, .sol:
+        break // only eth/sol supported for DApps.
+      default:
+        completion(.internal, nil)
         return
       }
-      switch coinType {
-      case .eth:
-        if !allowedAccounts.isEmpty {
-          completion(.none, allowedAccounts)
-          return
-        }
-      case .sol:
-        if accounts.count == 1, // only 1 Solana account connect at a time
-           let account = accounts.first,
-           allowedAccounts.contains(account) {
-          completion(.none, allowedAccounts)
-          return
-        }
-      default:
-        completion(.internal, [])
+      let allowedAccounts = getAllowedAccounts(coinType, accounts: accounts) ?? []
+      if !allowedAccounts.isEmpty {
+        // account(s) requested are allowed
+        completion(.none, allowedAccounts)
         return
       }
       
@@ -299,12 +290,19 @@ extension Tab: BraveWalletProviderDelegate {
   
   /// Fetches all allowed accounts for the current origin.
   func getAllowedAccounts(_ type: BraveWallet.CoinType, accounts: [String]) -> [String]? {
+    // For Ethereum, locked status is checked in `EthereumProviderImpl::GetAllowedAccounts`
+    // For Solana, locked status is checked in `SolanaProviderImpl::Connect` before
+    // calling `IsAccountAllowed` delegate method.
     guard let originURL = url?.origin.url,
-          let permissions = Domain.walletPermissions(forUrl: originURL, coin: type) else {
+          let permittedAccountAddresses = Domain.walletPermissions(forUrl: originURL, coin: type) else {
       return []
     }
-    // keyring locked status is checked in `EthereumProviderImpl::GetAllowedAccounts`
-    return permissions
+    // Filter `accounts` requested to return only those permitted
+    return accounts.filter { address in
+      permittedAccountAddresses.contains(where: { permittedAddress in
+        permittedAddress.caseInsensitiveCompare(address) == .orderedSame
+      })
+    }
   }
   
   func isAccountAllowed(_ type: BraveWallet.CoinType, account: String) -> Bool {

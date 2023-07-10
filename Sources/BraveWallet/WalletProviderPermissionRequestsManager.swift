@@ -29,7 +29,9 @@ public struct WebpagePermissionRequest: Equatable {
   public var providerHandler: RequestPermissionsCallback?
   
   public static func == (lhs: Self, rhs: Self) -> Bool {
-    lhs.requestingOrigin == rhs.requestingOrigin && lhs.coinType == rhs.coinType
+    lhs.requestingOrigin == rhs.requestingOrigin
+    && lhs.coinType == rhs.coinType
+    && lhs.requestingAccounts == rhs.requestingAccounts
   }
 }
 
