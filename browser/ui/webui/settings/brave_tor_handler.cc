@@ -405,12 +405,9 @@ void BraveTorHandler::OnTorEnabledChanged() {
 void BraveTorHandler::IsTorManaged(const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
 
-  const bool is_available = TorProfileServiceFactory::IsTorAvailable(
+  const bool is_managed = TorProfileServiceFactory::IsTorManaged(
       web_ui()->GetWebContents()->GetBrowserContext());
 
-  const bool is_managed = g_browser_process->local_state()
-                              ->FindPreference(tor::prefs::kTorDisabled)
-                              ->IsManaged();
   AllowJavascript();
-  ResolveJavascriptCallback(args[0], base::Value(!is_available || is_managed));
+  ResolveJavascriptCallback(args[0], base::Value(is_managed));
 }

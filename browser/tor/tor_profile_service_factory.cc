@@ -20,6 +20,17 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 
+namespace {
+
+bool IsIncognitoDisabledOrForced(content::BrowserContext* context) {
+  const auto availability =
+      IncognitoModePrefs::GetAvailability(user_prefs::UserPrefs::Get(context));
+  return availability == policy::IncognitoModeAvailability::kDisabled ||
+         availability == policy::IncognitoModeAvailability::kForced;
+}
+
+}  // namespace
+
 // static
 tor::TorProfileService* TorProfileServiceFactory::GetForContext(
     content::BrowserContext* context) {
@@ -49,17 +60,25 @@ void TorProfileServiceFactory::SetTorDisabled(bool disabled) {
 }
 
 // static
-bool TorProfileServiceFactory::IsTorAvailable(
-    content::BrowserContext* context) {
-  const bool incognito_available = IncognitoModePrefs::GetAvailability(
-                                       user_prefs::UserPrefs::Get(context)) !=
-                                   policy::IncognitoModeAvailability::kDisabled;
-  return incognito_available;
+bool TorProfileServiceFactory::IsTorManaged(content::BrowserContext* context) {
+  if (IsIncognitoDisabledOrForced(context)) {
+    return true;
+  }
+  if (g_browser_process) {
+    return g_browser_process->local_state()
+        ->FindPreference(tor::prefs::kTorDisabled)
+        ->IsManaged();
+  }
+  return true;
 }
 
 // static
 bool TorProfileServiceFactory::IsTorDisabled(content::BrowserContext* context) {
-  if (!IsTorAvailable(context)) {
+  if (IsIncognitoDisabledOrForced(context)) {
+    // Tor profile is derived from the incognito profile. If incognito is
+    // disabled we can't create the tor profile. If incognito is forced then
+    // browser forces incognito profile on creation (so created Tor profile
+    // replaced by a new raw incognito profile).
     return true;
   }
   if (g_browser_process) {

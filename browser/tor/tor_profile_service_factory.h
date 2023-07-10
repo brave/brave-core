@@ -30,7 +30,7 @@ class TorProfileServiceFactory : public BrowserContextKeyedServiceFactory {
   static TorProfileServiceFactory* GetInstance();
 
   static void SetTorDisabled(bool disabled);
-  static bool IsTorAvailable(content::BrowserContext* context);
+  static bool IsTorManaged(content::BrowserContext* context);
   static bool IsTorDisabled(content::BrowserContext* context);
   static void SetTorBridgesConfig(const tor::BridgesConfig& config);
   static tor::BridgesConfig GetTorBridgesConfig();

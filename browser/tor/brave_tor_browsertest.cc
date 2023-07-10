@@ -33,6 +33,7 @@
 #include "brave/components/tor/tor_utils.h"
 #include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/prefs/incognito_mode_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -150,8 +151,9 @@ class BraveTorTest : public InProcessBrowserTest {
         browser()->profile(), base::BindLambdaForTesting([&](Browser* browser) {
           loop.Quit();
 
-          ASSERT_TRUE(browser);
-          tor_profile = browser->profile();
+          if (browser) {
+            tor_profile = browser->profile();
+          }
         }));
     loop.Run();
     return tor_profile;
@@ -332,12 +334,11 @@ IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, SetupBridges) {
                    nullptr));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, IncognitoDisabled) {
+IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, Incognito) {
   EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorManaged(browser()->profile()));
 
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(),
-                                           GURL("brave://settings/privacy")));
-  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  content::WebContents* web_contents = nullptr;
 
   const auto is_element_enabled = [&](const char* id) {
     return EvalJs(web_contents,
@@ -346,18 +347,13 @@ IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, IncognitoDisabled) {
         .value.GetBool();
   };
 
-  EXPECT_TRUE(is_element_enabled("torEnabled"));
-  EXPECT_TRUE(is_element_enabled("useBridges"));
-  EXPECT_TRUE(is_element_enabled("autoOnionLocation"));
-  EXPECT_TRUE(is_element_enabled("torSnowflake"));
-
   // Disable incognito mode for this profile.
-  PrefService* pref_service = browser()->profile()->GetPrefs();
-  pref_service->SetInteger(
-      policy::policy_prefs::kIncognitoModeAvailability,
-      static_cast<int>(policy::IncognitoModeAvailability::kDisabled));
+  IncognitoModePrefs::SetAvailability(
+      browser()->profile()->GetPrefs(),
+      policy::IncognitoModeAvailability::kDisabled);
 
   EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorManaged(browser()->profile()));
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(),
                                            GURL("brave://settings/privacy")));
@@ -366,6 +362,35 @@ IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, IncognitoDisabled) {
   EXPECT_FALSE(is_element_enabled("torEnabled"));
   EXPECT_FALSE(is_element_enabled("useBridges"));
   EXPECT_FALSE(is_element_enabled("autoOnionLocation"));
+  EXPECT_TRUE(is_element_enabled("torSnowflake"));
+
+  auto* tor_profile = OpenTorWindow();
+  EXPECT_EQ(nullptr, tor_profile);
+
+  // Force incognito mode.
+  IncognitoModePrefs::SetAvailability(
+      browser()->profile()->GetPrefs(),
+      policy::IncognitoModeAvailability::kForced);
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorManaged(browser()->profile()));
+
+  tor_profile = OpenTorWindow();
+  EXPECT_EQ(nullptr, tor_profile);
+
+  // Allow incognito.
+  IncognitoModePrefs::SetAvailability(
+      browser()->profile()->GetPrefs(),
+      policy::IncognitoModeAvailability::kEnabled);
+  tor_profile = OpenTorWindow();
+  EXPECT_NE(nullptr, tor_profile);
+  EXPECT_TRUE(tor_profile->IsTor());
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(),
+                                           GURL("brave://settings/privacy")));
+  web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_TRUE(is_element_enabled("torEnabled"));
+  EXPECT_TRUE(is_element_enabled("useBridges"));
+  EXPECT_TRUE(is_element_enabled("autoOnionLocation"));
   EXPECT_TRUE(is_element_enabled("torSnowflake"));
 }
 
