@@ -23,13 +23,13 @@ const char kTableName[] = "publisher_prefix_list";
 constexpr size_t kHashPrefixSize = 4;
 constexpr size_t kMaxInsertRecords = 100'000;
 
-std::tuple<publisher::PrefixIterator, std::string, size_t> GetPrefixInsertList(
-    publisher::PrefixIterator begin,
-    publisher::PrefixIterator end) {
+std::tuple<PrefixIterator, std::string, size_t> GetPrefixInsertList(
+    PrefixIterator begin,
+    PrefixIterator end) {
   DCHECK(begin != end);
   size_t count = 0;
   std::string values;
-  publisher::PrefixIterator iter = begin;
+  PrefixIterator iter = begin;
   for (iter = begin; iter != end && count < kMaxInsertRecords;
        ++count, ++iter) {
     auto prefix = *iter;
@@ -57,8 +57,7 @@ DatabasePublisherPrefixList::~DatabasePublisherPrefixList() = default;
 void DatabasePublisherPrefixList::Search(
     const std::string& publisher_key,
     SearchPublisherPrefixListCallback callback) {
-  std::string hex =
-      publisher::GetHashPrefixInHex(publisher_key, kHashPrefixSize);
+  std::string hex = GetPublisherHashPrefixInHex(publisher_key, kHashPrefixSize);
 
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
@@ -86,7 +85,7 @@ void DatabasePublisherPrefixList::Search(
       });
 }
 
-void DatabasePublisherPrefixList::Reset(publisher::PrefixListReader reader,
+void DatabasePublisherPrefixList::Reset(PrefixListReader reader,
                                         LegacyResultCallback callback) {
   if (reader_) {
     BLOG(1, "Publisher prefix list batch insert in progress");
@@ -102,7 +101,7 @@ void DatabasePublisherPrefixList::Reset(publisher::PrefixListReader reader,
   InsertNext(reader_->begin(), callback);
 }
 
-void DatabasePublisherPrefixList::InsertNext(publisher::PrefixIterator begin,
+void DatabasePublisherPrefixList::InsertNext(PrefixIterator begin,
                                              LegacyResultCallback callback) {
   DCHECK(reader_ && begin != reader_->end());
 
@@ -129,7 +128,7 @@ void DatabasePublisherPrefixList::InsertNext(publisher::PrefixIterator begin,
 
   transaction->commands.push_back(std::move(command));
 
-  auto iter = std::get<publisher::PrefixIterator>(insert_tuple);
+  auto iter = std::get<PrefixIterator>(insert_tuple);
 
   engine_->RunDBTransaction(
       std::move(transaction),

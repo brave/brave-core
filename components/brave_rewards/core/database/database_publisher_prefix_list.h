@@ -22,16 +22,15 @@ class DatabasePublisherPrefixList : public DatabaseTable {
   explicit DatabasePublisherPrefixList(RewardsEngineImpl& engine);
   ~DatabasePublisherPrefixList() override;
 
-  void Reset(publisher::PrefixListReader reader, LegacyResultCallback callback);
+  void Reset(PrefixListReader reader, LegacyResultCallback callback);
 
   void Search(const std::string& publisher_key,
               SearchPublisherPrefixListCallback callback);
 
  private:
-  void InsertNext(publisher::PrefixIterator begin,
-                  LegacyResultCallback callback);
+  void InsertNext(PrefixIterator begin, LegacyResultCallback callback);
 
-  absl::optional<publisher::PrefixListReader> reader_;
+  absl::optional<PrefixListReader> reader_;
 };
 
 }  // namespace database

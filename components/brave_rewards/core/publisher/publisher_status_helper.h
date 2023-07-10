@@ -8,19 +8,43 @@
 
 #include <vector>
 
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "base/functional/callback.h"
+#include "base/memory/weak_ptr.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/core/rewards_engine_helper.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
 
-namespace publisher {
+class PublisherStatusHelper : public RewardsEngineHelper {
+ public:
+  ~PublisherStatusHelper() override;
 
-// Refreshes the publisher status for each entry in the specified list
-void RefreshPublisherStatus(RewardsEngineImpl& engine,
-                            std::vector<mojom::PublisherInfoPtr>&& info_list,
-                            GetRecurringTipsCallback callback);
+  using RefreshStatusCallback =
+      base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>;
 
-}  // namespace publisher
+  // Refreshes the publisher status for each entry in the specified list.
+  void RefreshStatus(std::vector<mojom::PublisherInfoPtr>&& info_list,
+                     RefreshStatusCallback callback);
+
+ private:
+  friend RewardsEngineContext;
+
+  inline static const char kUserDataKey[] = "publisher-status-helper";
+
+  struct RefreshTaskInfo;
+
+  explicit PublisherStatusHelper(RewardsEngineContext& context);
+
+  void RefreshNext(RefreshTaskInfo task_info);
+
+  void OnPrefixListSearchResult(RefreshTaskInfo task_info, bool exists);
+
+  void OnDatabaseRead(RefreshTaskInfo task_info,
+                      mojom::ServerPublisherInfoPtr server_info);
+
+  base::WeakPtrFactory<PublisherStatusHelper> weak_factory_{this};
+};
+
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PUBLISHER_STATUS_HELPER_H_

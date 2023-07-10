@@ -5,6 +5,10 @@
 
 #include "brave/components/brave_rewards/core/rewards_engine_context.h"
 
+#include "brave/components/brave_rewards/core/publisher/publisher_prefix_list_updater.h"
+#include "brave/components/brave_rewards/core/publisher/publisher_status_helper.h"
+#include "brave/components/brave_rewards/core/publisher/server_publisher_fetcher.h"
+
 namespace brave_rewards::internal {
 
 RewardsEngineContext::RewardsEngineContext(RewardsEngineImpl& engine_impl)
@@ -20,8 +24,9 @@ RewardsEngineContext::~RewardsEngineContext() {
 }
 
 void RewardsEngineContext::AddHelpers() {
-  // Add all helpers here. They will be destroyed in the reverse creation order.
-  //   AddHelper<HelperClass>();
+  AddHelper<ServerPublisherFetcher>();
+  AddHelper<PublisherPrefixListUpdater>();
+  AddHelper<PublisherStatusHelper>();
 }
 
 }  // namespace brave_rewards::internal

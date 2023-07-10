@@ -25,8 +25,8 @@ namespace database {
 
 class DatabasePublisherPrefixListTest : public ::testing::Test {
  protected:
-  publisher::PrefixListReader CreateReader(uint32_t prefix_count) {
-    publisher::PrefixListReader reader;
+  PrefixListReader CreateReader(uint32_t prefix_count) {
+    PrefixListReader reader;
     if (prefix_count == 0) {
       return reader;
     }

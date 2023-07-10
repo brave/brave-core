@@ -12,9 +12,8 @@
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/database/database_server_publisher_info.h"
-#include "brave/components/brave_rewards/core/publisher/publisher_prefix_list_updater.h"
-#include "brave/components/brave_rewards/core/publisher/server_publisher_fetcher.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
@@ -27,8 +26,6 @@ class Publisher {
   explicit Publisher(RewardsEngineImpl& engine);
 
   ~Publisher();
-
-  bool ShouldFetchServerPublisherInfo(mojom::ServerPublisherInfo* server_info);
 
   void FetchServerPublisherInfo(
       const std::string& publisher_key,
@@ -197,9 +194,16 @@ class Publisher {
       bool use_prefix_list,
       database::GetServerPublisherInfoCallback callback);
 
+  void OnPublisherInfoFetched(database::GetServerPublisherInfoCallback callback,
+                              mojom::ServerPublisherInfoPtr info);
+
+  void OnPublisherRefreshed(RefreshPublisherCallback callback,
+                            mojom::ServerPublisherInfoPtr info);
+
+  void OnPrefixListUpdated();
+
   const raw_ref<RewardsEngineImpl> engine_;
-  PublisherPrefixListUpdater prefix_list_updater_;
-  ServerPublisherFetcher server_publisher_fetcher_;
+  base::WeakPtrFactory<Publisher> weak_factory_{this};
 
   // For testing purposes
   friend class PublisherTest;

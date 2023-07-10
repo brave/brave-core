@@ -32,38 +32,48 @@ using std::placeholders::_2;
 namespace brave_rewards::internal {
 namespace publisher {
 
-Publisher::Publisher(RewardsEngineImpl& engine)
-    : engine_(engine),
-      prefix_list_updater_(engine),
-      server_publisher_fetcher_(engine) {}
+Publisher::Publisher(RewardsEngineImpl& engine) : engine_(engine) {}
 
 Publisher::~Publisher() = default;
-
-bool Publisher::ShouldFetchServerPublisherInfo(
-    mojom::ServerPublisherInfo* server_info) {
-  return server_publisher_fetcher_.IsExpired(server_info);
-}
 
 void Publisher::FetchServerPublisherInfo(
     const std::string& publisher_key,
     database::GetServerPublisherInfoCallback callback) {
-  server_publisher_fetcher_.Fetch(publisher_key, callback);
+  engine_->GetHelper<ServerPublisherFetcher>().Fetch(
+      publisher_key,
+      base::BindOnce(&Publisher::OnPublisherInfoFetched,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void Publisher::OnPublisherInfoFetched(
+    database::GetServerPublisherInfoCallback callback,
+    mojom::ServerPublisherInfoPtr info) {
+  callback(std::move(info));
 }
 
 void Publisher::RefreshPublisher(const std::string& publisher_key,
                                  RefreshPublisherCallback callback) {
   // Bypass cache and unconditionally fetch the latest info
   // for the specified publisher.
-  server_publisher_fetcher_.Fetch(publisher_key, [callback](auto server_info) {
-    auto status = server_info ? server_info->status
-                              : mojom::PublisherStatus::NOT_VERIFIED;
-    callback(status);
-  });
+  engine_->GetHelper<ServerPublisherFetcher>().Fetch(
+      publisher_key,
+      base::BindOnce(&Publisher::OnPublisherRefreshed,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void Publisher::OnPublisherRefreshed(RefreshPublisherCallback callback,
+                                     mojom::ServerPublisherInfoPtr info) {
+  callback(info ? info->status : mojom::PublisherStatus::NOT_VERIFIED);
 }
 
 void Publisher::SetPublisherServerListTimer() {
-  prefix_list_updater_.StartAutoUpdate(
-      [this]() { engine_->client()->OnPublisherRegistryUpdated(); });
+  engine_->GetHelper<PublisherPrefixListUpdater>().StartAutoUpdate(
+      base::BindRepeating(&Publisher::OnPrefixListUpdated,
+                          weak_factory_.GetWeakPtr()));
+}
+
+void Publisher::OnPrefixListUpdated() {
+  engine_->client()->OnPublisherRegistryUpdated();
 }
 
 void Publisher::CalcScoreConsts(const int min_duration_seconds) {
@@ -675,7 +685,8 @@ void Publisher::OnServerPublisherInfoLoaded(
     return;
   }
 
-  if (ShouldFetchServerPublisherInfo(server_info.get())) {
+  if (!server_info ||
+      engine_->GetHelper<ServerPublisherFetcher>().IsExpired(*server_info)) {
     // Store the current server publisher info so that if fetching fails
     // we can execute the callback with the last known valid data.
     auto shared_info =

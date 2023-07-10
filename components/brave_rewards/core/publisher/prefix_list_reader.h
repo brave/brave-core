@@ -11,10 +11,9 @@
 #include "brave/components/brave_rewards/core/publisher/prefix_iterator.h"
 
 namespace brave_rewards::internal {
-namespace publisher {
 
-// Parses publisher prefix list files and exposes iterators
-// over the prefixes stored in the list
+// Parses publisher prefix list files and exposes iterators over the prefixes
+// stored in the list.
 class PrefixListReader {
  public:
   enum class ParseError {
@@ -38,23 +37,23 @@ class PrefixListReader {
   ~PrefixListReader();
 
   // Parses a publisher list message and returns a value indicating
-  // whether the message was valid
+  // whether the message was valid.
   ParseError Parse(const std::string& contents);
 
-  // Returns an iterator pointing to the first prefix in the list
+  // Returns an iterator pointing to the first prefix in the list.
   PrefixIterator begin() const {
     return PrefixIterator(prefixes_.data(), 0, prefix_size_);
   }
 
-  // Returns an iterator pointing to the past-the-end element in the list
+  // Returns an iterator pointing to the past-the-end element in the list.
   PrefixIterator end() const {
     return PrefixIterator(prefixes_.data(), size(), prefix_size_);
   }
 
-  // Returns the number of prefixes in the list
+  // Returns the number of prefixes in the list.
   size_t size() const { return prefixes_.size() / prefix_size_; }
 
-  // Returns true if the prefix list is empty
+  // Returns true if the prefix list is empty.
   bool empty() const { return size() == 0; }
 
  private:
@@ -62,7 +61,6 @@ class PrefixListReader {
   std::string prefixes_;
 };
 
-}  // namespace publisher
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PREFIX_LIST_READER_H_

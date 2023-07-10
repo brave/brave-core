@@ -9,20 +9,18 @@
 #include <string>
 
 namespace brave_rewards::internal {
-namespace publisher {
 
 extern const size_t kMinPrefixSize;
 extern const size_t kMaxPrefixSize;
 
 // Returns a hash prefix for the specified publisher key
-std::string GetHashPrefixRaw(const std::string& publisher_key,
-                             size_t prefix_size);
+std::string GetPublisherHashPrefixRaw(const std::string& publisher_key,
+                                      size_t prefix_size);
 
 // Retuns a hash prefix as a hex string for the specified publisher key
-std::string GetHashPrefixInHex(const std::string& publisher_key,
-                               size_t prefix_size);
+std::string GetPublisherHashPrefixInHex(const std::string& publisher_key,
+                                        size_t prefix_size);
 
-}  // namespace publisher
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PREFIX_UTIL_H_

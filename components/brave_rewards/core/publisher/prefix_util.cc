@@ -9,13 +9,12 @@
 #include "crypto/sha2.h"
 
 namespace brave_rewards::internal {
-namespace publisher {
 
 const size_t kMinPrefixSize = 4;
 const size_t kMaxPrefixSize = 32;
 
-std::string GetHashPrefixRaw(const std::string& publisher_key,
-                             size_t prefix_size) {
+std::string GetPublisherHashPrefixRaw(const std::string& publisher_key,
+                                      size_t prefix_size) {
   DCHECK(!publisher_key.empty());
   DCHECK(prefix_size > 0 && prefix_size <= kMaxPrefixSize);
   std::string hash = crypto::SHA256HashString(publisher_key);
@@ -23,11 +22,10 @@ std::string GetHashPrefixRaw(const std::string& publisher_key,
   return hash;
 }
 
-std::string GetHashPrefixInHex(const std::string& publisher_key,
-                               size_t prefix_size) {
-  const std::string raw = GetHashPrefixRaw(publisher_key, prefix_size);
+std::string GetPublisherHashPrefixInHex(const std::string& publisher_key,
+                                        size_t prefix_size) {
+  const std::string raw = GetPublisherHashPrefixRaw(publisher_key, prefix_size);
   return base::HexEncode(raw.data(), raw.size());
 }
 
-}  // namespace publisher
 }  // namespace brave_rewards::internal

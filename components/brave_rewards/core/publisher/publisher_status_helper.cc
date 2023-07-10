@@ -13,8 +13,9 @@
 
 #include "base/memory/raw_ref.h"
 #include "base/time/time.h"
+#include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/publisher/publisher.h"
+#include "brave/components/brave_rewards/core/publisher/server_publisher_fetcher.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
@@ -28,94 +29,98 @@ struct PublisherStatusData {
 
 using PublisherStatusMap = std::map<std::string, PublisherStatusData>;
 
-struct RefreshTaskInfo {
-  RefreshTaskInfo(RewardsEngineImpl& engine,
-                  PublisherStatusMap&& status_map,
-                  std::function<void(PublisherStatusMap)> callback)
-      : engine(engine),
-        map(std::move(status_map)),
-        current(map.begin()),
-        callback(callback) {}
+}  // namespace
 
-  const raw_ref<RewardsEngineImpl> engine;
-  PublisherStatusMap map;
+struct PublisherStatusHelper::RefreshTaskInfo {
+  RefreshTaskInfo(std::vector<mojom::PublisherInfoPtr> info_list,
+                  RefreshStatusCallback callback)
+      : map(std::make_unique<PublisherStatusMap>()),
+        list(std::move(info_list)),
+        callback(std::move(callback)) {
+    for (const auto& info : list) {
+      map->emplace(info->id,
+                   PublisherStatusData{.status = info->status,
+                                       .updated_at = info->status_updated_at});
+    }
+    current = map->begin();
+  }
+
+  RefreshTaskInfo(const RefreshTaskInfo&) = delete;
+  RefreshTaskInfo& operator=(const RefreshTaskInfo&) = delete;
+
+  RefreshTaskInfo(RefreshTaskInfo&&) = default;
+  RefreshTaskInfo& operator=(RefreshTaskInfo&&) = default;
+
+  std::unique_ptr<PublisherStatusMap> map;
   PublisherStatusMap::iterator current;
-  std::function<void(PublisherStatusMap)> callback;
+  std::vector<mojom::PublisherInfoPtr> list;
+  RefreshStatusCallback callback;
 };
 
-void RefreshNext(std::shared_ptr<RefreshTaskInfo> task_info) {
-  DCHECK(task_info);
+PublisherStatusHelper::PublisherStatusHelper(RewardsEngineContext& context)
+    : RewardsEngineHelper(context) {}
 
-  // Find the first map element that has an expired status.
-  task_info->current = std::find_if(
-      task_info->current, task_info->map.end(), [&task_info](auto& key_value) {
+PublisherStatusHelper::~PublisherStatusHelper() = default;
+
+void PublisherStatusHelper::RefreshStatus(
+    std::vector<mojom::PublisherInfoPtr>&& info_list,
+    RefreshStatusCallback callback) {
+  RefreshTaskInfo task_info(std::move(info_list), std::move(callback));
+  RefreshNext(std::move(task_info));
+}
+
+void PublisherStatusHelper::RefreshNext(RefreshTaskInfo task_info) {
+  // Find the next map element that has an expired status.
+  task_info.current = std::find_if(
+      task_info.current, task_info.map->end(), [this](auto& key_value) {
         mojom::ServerPublisherInfo server_info;
         server_info.status = key_value.second.status;
         server_info.updated_at = key_value.second.updated_at;
-        return task_info->engine->publisher()->ShouldFetchServerPublisherInfo(
-            &server_info);
+        return GetHelper<ServerPublisherFetcher>().IsExpired(server_info);
       });
 
-  // Execute the callback if no more expired elements are found.
-  if (task_info->current == task_info->map.end()) {
-    task_info->callback(std::move(task_info->map));
+  // If no more expired elements are found, update the status values in the list
+  // and execute the callback.
+  if (task_info.current == task_info.map->end()) {
+    for (const auto& info : task_info.list) {
+      info->status = task_info.map->at(info->id).status;
+    }
+    std::move(task_info.callback).Run(std::move(task_info.list));
     return;
   }
 
   // Look for publisher key in hash index.
-  auto& key = task_info->current->first;
-  task_info->engine->database()->SearchPublisherPrefixList(
-      key, [task_info](bool exists) {
-        // If the publisher key does not exist in the hash index look for
-        // next expired entry.
-        if (!exists) {
-          ++task_info->current;
-          RefreshNext(task_info);
-          return;
-        }
-        // Fetch current publisher info.
-        auto& key = task_info->current->first;
-        task_info->engine->publisher()->GetServerPublisherInfo(
-            key, [task_info](mojom::ServerPublisherInfoPtr server_info) {
-              // Update status map and continue looking for expired entries.
-              task_info->current->second.status = server_info->status;
-              ++task_info->current;
-              RefreshNext(task_info);
-            });
-      });
+  context().GetEngineImpl().database()->SearchPublisherPrefixList(
+      task_info.current->first,
+      ToLegacyCallback(
+          base::BindOnce(&PublisherStatusHelper::OnPrefixListSearchResult,
+                         weak_factory_.GetWeakPtr(), std::move(task_info))));
 }
 
-void RefreshPublisherStatusMap(
-    RewardsEngineImpl& engine,
-    PublisherStatusMap&& status_map,
-    std::function<void(PublisherStatusMap)> callback) {
-  RefreshNext(std::make_shared<RefreshTaskInfo>(engine, std::move(status_map),
-                                                callback));
-}
-
-}  // namespace
-
-namespace publisher {
-
-void RefreshPublisherStatus(RewardsEngineImpl& engine,
-                            std::vector<mojom::PublisherInfoPtr>&& info_list,
-                            GetRecurringTipsCallback callback) {
-  PublisherStatusMap map;
-  for (const auto& info : info_list) {
-    map[info->id] = {info->status, info->status_updated_at};
+void PublisherStatusHelper::OnPrefixListSearchResult(RefreshTaskInfo task_info,
+                                                     bool exists) {
+  // If the publisher key does not exist in the hash index look for next expired
+  // entry.
+  if (!exists) {
+    ++task_info.current;
+    RefreshNext(std::move(task_info));
+    return;
   }
 
-  auto shared_list = std::make_shared<std::vector<mojom::PublisherInfoPtr>>(
-      std::move(info_list));
-
-  RefreshPublisherStatusMap(engine, std::move(map),
-                            [shared_list, callback](auto map) {
-                              for (const auto& info : *shared_list) {
-                                info->status = map[info->id].status;
-                              }
-                              callback(std::move(*shared_list));
-                            });
+  // Fetch current publisher info.
+  GetHelper<ServerPublisherFetcher>().Fetch(
+      task_info.current->first,
+      base::BindOnce(&PublisherStatusHelper::OnDatabaseRead,
+                     weak_factory_.GetWeakPtr(), std::move(task_info)));
 }
 
-}  // namespace publisher
+void PublisherStatusHelper::OnDatabaseRead(
+    RefreshTaskInfo task_info,
+    mojom::ServerPublisherInfoPtr server_info) {
+  // Update status map and continue looking for expired entries.
+  task_info.current->second.status = server_info->status;
+  ++task_info.current;
+  RefreshNext(std::move(task_info));
+}
+
 }  // namespace brave_rewards::internal

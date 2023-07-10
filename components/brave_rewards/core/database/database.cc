@@ -426,7 +426,7 @@ void Database::SearchPublisherPrefixList(
   publisher_prefix_list_.Search(publisher_prefix, callback);
 }
 
-void Database::ResetPublisherPrefixList(publisher::PrefixListReader reader,
+void Database::ResetPublisherPrefixList(PrefixListReader reader,
                                         LegacyResultCallback callback) {
   publisher_prefix_list_.Reset(std::move(reader), callback);
 }

@@ -11,10 +11,9 @@
 #include "base/strings/string_piece.h"
 
 namespace brave_rewards::internal {
-namespace publisher {
 
-// A random-access iterator over prefixes stored in an
-// uncompressed prefix list, suitable for binary search
+// A random-access iterator over prefixes stored in an uncompressed prefix list,
+// suitable for binary search.
 class PrefixIterator {
  public:
   using iterator_category = std::random_access_iterator_tag;
@@ -112,7 +111,6 @@ class PrefixIterator {
   size_t size_;
 };
 
-}  // namespace publisher
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PREFIX_ITERATOR_H_

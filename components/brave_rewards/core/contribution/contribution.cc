@@ -16,6 +16,7 @@
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
+#include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_util.h"
@@ -888,7 +889,8 @@ void Contribution::GetRecurringTips(GetRecurringTipsCallback callback) {
       [this, callback](std::vector<mojom::PublisherInfoPtr> list) {
         // The publisher status field may be expired. Attempt to refresh
         // expired publisher status values before executing callback.
-        publisher::RefreshPublisherStatus(*engine_, std::move(list), callback);
+        engine_->GetHelper<PublisherStatusHelper>().RefreshStatus(
+            std::move(list), WrapLegacyCallback(callback));
       });
 }
 

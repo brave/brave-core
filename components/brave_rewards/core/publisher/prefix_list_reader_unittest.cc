@@ -14,7 +14,6 @@
 // npm run test -- brave_unit_tests --filter='PrefixListReaderTest.*'
 
 namespace brave_rewards::internal {
-namespace publisher {
 
 class PrefixListReaderTest : public testing::Test {
  protected:
@@ -161,5 +160,4 @@ TEST_F(PrefixListReaderTest, BrotliCompression) {
   ASSERT_EQ(uncompressed, "aaaabbbbccccddddeeeeffffgggghhhh");
 }
 
-}  // namespace publisher
 }  // namespace brave_rewards::internal

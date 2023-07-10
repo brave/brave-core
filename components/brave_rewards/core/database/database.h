@@ -280,7 +280,7 @@ class Database {
   void SearchPublisherPrefixList(const std::string& publisher_key,
                                  SearchPublisherPrefixListCallback callback);
 
-  void ResetPublisherPrefixList(publisher::PrefixListReader reader,
+  void ResetPublisherPrefixList(PrefixListReader reader,
                                 LegacyResultCallback callback);
 
   void InsertServerPublisherInfo(const mojom::ServerPublisherInfo& server_info,

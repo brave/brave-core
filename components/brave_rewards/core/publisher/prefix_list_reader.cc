@@ -12,7 +12,6 @@
 #include "brave/components/brave_rewards/core/publisher/protos/publisher_prefix_list.pb.h"
 
 namespace brave_rewards::internal {
-namespace publisher {
 
 PrefixListReader::PrefixListReader() : prefix_size_(kMinPrefixSize) {}
 
@@ -92,5 +91,4 @@ PrefixListReader::ParseError PrefixListReader::Parse(
   return ParseError::kNone;
 }
 
-}  // namespace publisher
 }  // namespace brave_rewards::internal
