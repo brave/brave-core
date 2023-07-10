@@ -337,8 +337,10 @@ void BraveSyncServiceImpl::OnGotEntityCounts(
   brave_sync::p3a::RecordSyncedObjectsCount(total_entities);
 }
 
-void BraveSyncServiceImpl::OnPreferredDataTypesPrefChange() {
-  SyncServiceImpl::OnPreferredDataTypesPrefChange();
+void BraveSyncServiceImpl::OnPreferredDataTypesPrefChange(
+    bool payments_integration_enabled_changed) {
+  SyncServiceImpl::OnPreferredDataTypesPrefChange(
+      payments_integration_enabled_changed);
 
   brave_sync::p3a::RecordEnabledTypes(
       GetUserSettings()->IsSyncEverythingEnabled(),

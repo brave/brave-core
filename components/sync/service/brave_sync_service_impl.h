@@ -42,7 +42,8 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void OnSyncCycleCompleted(const SyncCycleSnapshot& snapshot) override;
 
   // SyncPrefObserver implementation.
-  void OnPreferredDataTypesPrefChange() override;
+  void OnPreferredDataTypesPrefChange(
+      bool payments_integration_enabled_changed) override;
 
   std::string GetOrCreateSyncCode();
   bool SetSyncCode(const std::string& sync_code);

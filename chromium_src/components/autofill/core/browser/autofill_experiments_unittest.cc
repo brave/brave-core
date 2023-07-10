@@ -12,6 +12,7 @@
 #include "components/autofill/core/common/autofill_prefs.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/sync/base/pref_names.h"
 #include "components/sync/test/test_sync_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -24,7 +25,7 @@ class AutofillExperimentsTest : public testing::Test {
  protected:
   void SetUp() override {
     pref_service_.registry()->RegisterBooleanPref(
-        prefs::kAutofillWalletImportEnabled, true);
+        syncer::prefs::internal::kAutofillWalletImportEnabled, true);
     log_manager_ = LogManager::Create(nullptr, base::RepeatingClosure());
   }
 
@@ -40,9 +41,9 @@ class AutofillExperimentsTest : public testing::Test {
   bool IsCreditCardUploadEnabled(const std::string& user_email,
                                  const std::string& user_country,
                                  const AutofillSyncSigninState sync_state) {
-    return autofill::IsCreditCardUploadEnabled(&pref_service_, &sync_service_,
-                                               user_email, user_country,
-                                               sync_state, log_manager_.get());
+    return autofill::IsCreditCardUploadEnabled(&sync_service_, user_email,
+                                               user_country, sync_state,
+                                               log_manager_.get());
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
