@@ -26,7 +26,22 @@ def CheckToModifyInputApi(input_api, _output_api):
 
 
 # Check Leo variables actually exist
-def CheckLeoVariables(_, output_api):
+def CheckLeoVariables(input_api, output_api):
+    def _web_files_filter(affected_file):
+        return input_api.FilterSourceFile(
+            affected_file,
+            files_to_check=[
+                r'.+\.(js|jsx|ts|tsx|css|less|lss|sass|scss|svelte)$',
+                r'package\.json$'
+            ])
+
+    # If no web files were affected, this shouldn't change any Leo variables, so
+    # we can skip running leo-check.
+    if not any(
+            input_api.AffectedFiles(file_filter=_web_files_filter,
+                                    include_deletes=False)):
+        return []
+
     try:
         parts = [brave_node.PathInNodeModules('.bin', 'leo-check')]
         brave_node.RunNode(parts)
