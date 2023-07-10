@@ -3,10 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
+import { useLocation } from 'react-router-dom'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
-import { BraveWallet } from '../../../constants/types'
+import {
+  BraveWallet,
+  WalletRoutes
+} from '../../../constants/types'
 
 // Utils
 import { isDataURL } from '../../../utils/string-utils'
@@ -16,7 +20,6 @@ import { useGetNetworkQuery } from '../../../common/slices/api.slice'
 
 // Components
 import { withPlaceholderIcon } from '../../shared'
-import { Checkbox } from 'brave-ui'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
 
 // Styled Components
@@ -25,16 +28,18 @@ import {
   AssetName,
   NameAndIcon,
   AssetIcon,
-  DeleteButton,
-  DeleteIcon,
+  Button,
+  Icon,
   RightSide,
   NameAndSymbol,
   AssetSymbol
 } from './style'
+import {
+  HorizontalSpace
+} from '../../shared/style'
 
 export interface Props {
   onSelectAsset: (
-    key: string,
     selected: boolean,
     token: BraveWallet.BlockchainToken
   ) => void
@@ -54,16 +59,19 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
       isSelected
     } = props
 
+    // routing
+    const { hash } = useLocation()
+
     // queries
     const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
 
     // callbacks
-    const onCheck = React.useCallback((key: string, selected: boolean) => {
-      onSelectAsset(key, selected, token)
-    }, [onSelectAsset, token])
+    const onCheck = React.useCallback(() => {
+      onSelectAsset(!isSelected, token)
+    }, [onSelectAsset, token, isSelected])
 
     const onClickAsset = React.useCallback(() => {
-      onSelectAsset(token.contractAddress, !isSelected, token)
+      onSelectAsset(!isSelected, token)
     }, [onSelectAsset, token, isSelected])
 
     const onClickRemoveAsset = React.useCallback(() => {
@@ -96,14 +104,29 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
           </NameAndSymbol>
         </NameAndIcon>
         <RightSide>
-          {isRemovable &&
-            <DeleteButton onClick={onClickRemoveAsset}>
-              <DeleteIcon />
-            </DeleteButton>
+          {
+            isRemovable &&
+            hash !== WalletRoutes.AvailableAssetsHash &&
+            <>
+              <Button onClick={onClickRemoveAsset}>
+                <Icon name='trash' />
+              </Button>
+              <HorizontalSpace space='8px' />
+            </>
           }
-          <Checkbox value={{ [`${token.contractAddress}-${token.symbol}-${token.chainId}-${token.tokenId}`]: isSelected }} onChange={onCheck}>
-            <div data-key={`${token.contractAddress}-${token.symbol}-${token.chainId}-${token.tokenId}`} />
-          </Checkbox>
+          <Button
+            onClick={onCheck}
+          >
+            <Icon
+              name={
+                hash === WalletRoutes.AvailableAssetsHash
+                  ? 'plus-add'
+                  : isSelected
+                    ? 'eye-on'
+                    : 'eye-off'
+              }
+            />
+          </Button>
         </RightSide>
       </StyledWrapper>
     )

@@ -128,3 +128,18 @@ export const PortfolioAssetOptions: NavOption[] = [
     route: WalletRoutes.TransactionsHash
   }
 ]
+
+export const EditVisibleAssetsOptions: NavOption[] = [
+  {
+    id: 'my_assets',
+    name: 'braveWalletMyAssets',
+    icon: '',
+    route: WalletRoutes.MyAssetsHash
+  },
+  {
+    id: 'available_assets',
+    name: 'braveWalletAvailableAssets',
+    icon: '',
+    route: WalletRoutes.AvailableAssetsHash
+  }
+]

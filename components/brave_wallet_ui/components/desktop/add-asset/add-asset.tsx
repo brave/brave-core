@@ -4,19 +4,22 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
-// types
-import { TabNavTypes } from '../../../constants/types'
-
 // options
 import { CUSTOM_ASSET_NAV_OPTIONS } from '../../../options/add-custom-asset-nav-options'
 
 // components
-import { TopTabNav } from '../index'
+import {
+  TabOption,
+  Tabs
+} from '../../shared/tabs/tabs'
 import { AddCustomTokenForm } from '../../shared/add-custom-token-form/add-custom-token-form'
 import { AddNftForm } from '../../shared/add-custom-token-form/add-nft-form'
 
 // styles
 import { AddAssetWrapper } from './add-asset.styles'
+import {
+  PaddedRow
+} from '../popup-modals/style'
 
 interface Props {
   contractAddress: string | undefined
@@ -29,14 +32,14 @@ export const AddAsset = (props: Props) => {
     onHideForm
   } = props
   const [tokenContractAddress, setTokenContractAddress] = React.useState<string>(contractAddress || '')
-  const [selectedTab, setSelectedTab] = React.useState<TabNavTypes>('token')
+  const [selectedTab, setSelectedTab] = React.useState<string>('token')
 
-  const onSelectTab = React.useCallback((id: TabNavTypes) => {
+  const onSelectTab = React.useCallback((tab: TabOption) => {
     // Reset contractAddress when a user switches tabs
     // This will reset the form to avoid the tabs being auto selected based
     // on found token type
     if (tokenContractAddress !== '') setTokenContractAddress('')
-    setSelectedTab(id)
+    setSelectedTab(tab.id)
   }, [tokenContractAddress])
 
   const onNftAssetFound = React.useCallback((contractAddress: string) => {
@@ -55,12 +58,14 @@ export const AddAsset = (props: Props) => {
 
   return (
     <AddAssetWrapper>
-      <TopTabNav
-        tabList={CUSTOM_ASSET_NAV_OPTIONS}
-        selectedTab={selectedTab}
-        onSelectTab={onSelectTab}
-      />
-
+      <PaddedRow
+        justifyContent='flex-start'
+      >
+        <Tabs
+          options={CUSTOM_ASSET_NAV_OPTIONS}
+          onSelect={onSelectTab}
+        />
+      </PaddedRow>
       {selectedTab === 'token'
         ? <AddCustomTokenForm
           contractAddress={tokenContractAddress}

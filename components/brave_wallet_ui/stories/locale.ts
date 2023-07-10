@@ -348,7 +348,6 @@ provideStrings({
   braveWalletWatchListTokenDecimals: 'Decimals of precision',
   braveWalletWatchListAdd: 'Add',
   braveWalletWatchListDoneButton: 'Done',
-  braveWalletWatchListSuggestion: 'Add $1 as a custom token',
   braveWalletWatchListNoAsset: 'No assets named',
   braveWalletWatchListSearchPlaceholder: 'Search assets or contract address',
   braveWalletWatchListError: 'Failed to add custom token, please try again.',
@@ -879,6 +878,14 @@ provideStrings({
   braveWalletMakeTokenVisibleInstructions: 'You can make this asset visible again in the future by clicking the "+ Visible assets" button at the bottom of the "Portfolio" tab',
   braveWalletConfirmHidingToken: 'Hide',
   braveWalletCancelHidingToken: 'Cancel',
+
+  // Visible assets modal
+  braveWalletMyAssets: 'My assets',
+  braveWalletAvailableAssets: 'Available assets',
+  braveWalletDidntFindAssetEndOfList: 'Didn\'t find your asset on the list?',
+  braveWalletDidntFindAssetInList:
+    'If you didn\'t find your asset in this list, you can add it manually by using the button below',
+  braveWalletAssetNotFound: 'Asset not found',
 
   // Request feature button
   braveWalletRequestFeatureButtonText: 'Request feature',

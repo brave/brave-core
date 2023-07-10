@@ -3,18 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {
-  TopTabNavObjectType
-} from '../constants/types'
 import { getLocale } from '$web-common/locale'
+import { TabOption } from '../components/shared/tabs/tabs'
 
-export const CUSTOM_ASSET_NAV_OPTIONS: TopTabNavObjectType[] = [
+export const CUSTOM_ASSET_NAV_OPTIONS: TabOption[] = [
   {
     id: 'token',
-    name: getLocale('braveWalletAddAssetTokenTabTitle')
+    label: getLocale('braveWalletAddAssetTokenTabTitle')
   },
   {
     id: 'nft',
-    name: getLocale('braveWalletAddAssetNftTabTitle')
+    label: getLocale('braveWalletAddAssetNftTabTitle')
   }
 ]

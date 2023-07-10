@@ -248,7 +248,6 @@
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_DECIMALS" desc="Visible assets modal decimals label">Decimals of precision</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_ADD" desc="Visible assets modal add button">Add</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_DONE_BUTTON" desc="Visible assets modal done button">Done</message>
-  <message name="IDS_BRAVE_WALLET_WATCH_LIST_SUGGESTION" desc="Visible assets modal suggestion button">Add <ph name="CONTRACT_ADDRESS"><ex>0x55296f69f40ea6d20e478533c15a6b08b654e758</ex>$1</ph> as a custom token</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_NO_ASSET" desc="Visible assets modal no results placeholder">No assets named</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_SEARCH_PLACEHOLDER" desc="Visible assets modal search input placeholder">Search assets or contract address</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_ERROR" desc="Visible assets modal failed to add token error">Failed to add custom token, please try again.</message>
@@ -818,6 +817,11 @@
   <message name="IDS_BRAVE_WALLET_MAKE_TOKEN_VISIBLE_INSTRUCTIONS" desc="Instructions for making a token visible">You can make this asset visible again in the future by clicking the "+ Visible assets" button at the bottom of the "Portfolio" tab</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_HIDING_TOKEN" desc="Text for confirm hide token action in hide token modal">Hide</message>
   <message name="IDS_BRAVE_WALLET_CANCEL_HIDING_TOKEN" desc="Text for cancel hide token action in hide token modal">Cancel</message>
+  <message name="IDS_BRAVE_WALLET_MY_ASSETS" desc="Visible assets modal, my assets section">My assets</message>
+  <message name="IDS_BRAVE_WALLET_AVAILABLE_ASSETS" desc="Visible assets modal, available assets section">Available assets</message>
+  <message name="IDS_BRAVE_WALLET_DIDNT_FIND_ASSET_END_OF_LIST" desc="Visible assets modal, didnt find asset in at the end of the list">Didn't find your asset on the list?</message>
+  <message name="IDS_BRAVE_WALLET_DIDNT_FIND_ASSET_IN_LIST" desc="Visible assets modal, didnt find asset in list after searching">If you didn't find your asset in this list, you can add it manually by using the button below</message>
+  <message name="IDS_BRAVE_WALLET_ASSET_NOT_FOUND" desc="Visible assets modal, asset not found title">Asset not found</message>
   <message name="IDS_BRAVE_WALLET_REMOVE_ACCOUNT_MODAL_TITLE" desc="Title prompt to confirm removal of a wallet account">Are you sure you want to remove "<ph name="ACCOUNT_NAME">$1<ex>Eth Account 1</ex></ph>"?</message>
   <message name="IDS_BRAVE_WALLET_REQUEST_FEATURE_BUTTON_TEXT" desc="Text displayed in request feature button">Request feature</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_LENGTH_ERROR" desc="Error message for when a supplied recovery phrase has an invalid number of words">Recovery phrase must be 12, 15, 18, 21, or 24 words long</message>
