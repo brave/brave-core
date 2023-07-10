@@ -10,7 +10,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import getWalletPanelApiProxy from '../../../panel/wallet_panel_api_proxy'
 
 // Components
-import { create, background } from 'ethereum-blockies'
+import { background } from 'ethereum-blockies'
 import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
 
 // Utils
@@ -43,6 +43,7 @@ import {
   useSafeWalletSelector,
   useUnsafeWalletSelector
 } from '../../../common/hooks/use-safe-selector'
+import { useAccountOrb } from '../../../common/hooks/use-orb'
 
 // types
 import {
@@ -226,9 +227,7 @@ export const ConnectedPanel = (props: Props) => {
     return background({ seed: selectedAccountAddress.toLowerCase() })
   }, [selectedAccountAddress])
 
-  const orb = React.useMemo(() => {
-    return create({ seed: selectedAccountAddress.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [selectedAccountAddress])
+  const orb = useAccountOrb(selectedAccount)
 
   const selectedAccountFiatBalance = React.useMemo(() => {
     if (

@@ -4,13 +4,15 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
 
 import { BraveWallet } from '../../../../../constants/types'
 
 // Styled Components
 import { Button, AccountCircle } from './account-list-item.style'
 import { Text, Column } from '../../shared.styles'
+
+// Hooks
+import { useAccountOrb } from '../../../../../common/hooks/use-orb'
 
 interface Props {
   account: BraveWallet.AccountInfo
@@ -21,9 +23,8 @@ interface Props {
 export const AccountListItem = (props: Props) => {
   const { onClick, account, isSelected } = props
 
-  const orb = React.useMemo(() => {
-    return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [account.address])
+  // hooks
+  const orb = useAccountOrb(account)
 
   return (
     <Button disabled={isSelected} onClick={() => onClick(account)}>

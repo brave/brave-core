@@ -234,11 +234,11 @@ export const Nfts = (props: Props) => {
     return accounts.map((account) => (
       <Row
         width='100%'
-        key={account.address}
+        key={account.accountId.uniqueKey}
       >
         {getFilteredNftsByAccount(account).length !== 0 && (
           <AssetGroupContainer
-            key={account.address}
+            key={account.accountId.uniqueKey}
             balance=''
             hideBalance={true}
             account={account}

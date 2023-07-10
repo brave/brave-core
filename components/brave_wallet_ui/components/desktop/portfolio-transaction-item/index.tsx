@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
-import * as EthereumBlockies from 'ethereum-blockies'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
@@ -62,6 +61,7 @@ import {
 import {
   useGetCombinedTokensListQuery
 } from '../../../common/slices/api.slice.extra'
+import { useAddressOrb } from '../../../common/hooks/use-orb'
 
 // Styled Components
 import {
@@ -465,21 +465,8 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   )
 
   // memos
-  const fromOrb = React.useMemo(() => {
-    return EthereumBlockies.create({
-      seed: transaction.fromAddress.toLowerCase(),
-      size: 8,
-      scale: 16
-    }).toDataURL()
-  }, [transaction.fromAddress])
-
-  const toOrb = React.useMemo(() => {
-    return EthereumBlockies.create({
-      seed: recipient?.toLowerCase() || '',
-      size: 8,
-      scale: 16
-    }).toDataURL()
-  }, [recipient])
+  const fromOrb = useAddressOrb(transaction.fromAddress)
+  const toOrb = useAddressOrb(recipient)
 
   const transactionIntentDescription = React.useMemo(() => {
     switch (true) {

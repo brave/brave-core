@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
 
 // Constants
 import { BraveWallet, SupportedTestNetworks } from '../../../constants/types'
@@ -17,6 +16,9 @@ import { IconWrapper, Placeholder, NetworkIcon } from './style'
 
 // Options
 import { getNetworkLogo } from '../../../options/asset-options'
+
+// Hooks
+import { useNetworkOrb } from '../../../common/hooks/use-orb'
 
 interface Props {
   network?: BraveWallet.NetworkInfo
@@ -66,15 +68,9 @@ export const CreateNetworkIcon = ({
     return false
   }, [isRemoteURL, isDataURL, networkImageURL])
 
-  const needsPlaceholder = React.useMemo(() => {
-    return networkLogo === '' && (networkImageURL === '' || !isValidIcon)
-  }, [networkLogo, networkImageURL, isValidIcon])
+  const needsPlaceholder = networkLogo === '' && (networkImageURL === '' || !isValidIcon)
 
-  const orb = React.useMemo(() => {
-    if (needsPlaceholder && network) {
-      return create({ seed: network.chainName, size: 8, scale: 16 }).toDataURL()
-    }
-  }, [network, needsPlaceholder])
+  const orb = useNetworkOrb(network)
 
   const remoteImage = React.useMemo(() => {
     if (isRemoteURL) {

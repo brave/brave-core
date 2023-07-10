@@ -119,7 +119,7 @@ export const AccountSelector = (props: Props) => {
             <AccountListButton
               account={account}
               onClick={onClickSelectAccount}
-              key={account.address}
+              key={account.accountId.uniqueKey}
             />
           ))}
         </SelectorBox>

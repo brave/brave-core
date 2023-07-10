@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
 
 // Queries
 import { useSelectedAccountQuery } from '../../../../../../common/slices/api.slice.extra'
@@ -25,6 +24,9 @@ import {
   HiddenResponsiveRow
 } from '../../shared-swap.styles'
 
+// Hooks
+import { useAccountOrb } from '../../../../../../common/hooks/use-orb'
+
 interface Props {
   onClick: () => void
 }
@@ -35,18 +37,8 @@ export const ConnectWalletButton = (props: Props) => {
   // Selectors
   const { data: selectedAccount } = useSelectedAccountQuery()
 
-  // Memos
-  const accountOrb: string | undefined = React.useMemo(() => {
-    if (!selectedAccount?.address) {
-      return
-    }
-
-    return create({
-      seed: selectedAccount.address.toLowerCase() || '',
-      size: 8,
-      scale: 16
-    }).toDataURL()
-  }, [selectedAccount])
+  // hooks
+  const accountOrb = useAccountOrb(selectedAccount)
 
   return (
     <Button onClick={onClick} isConnected={selectedAccount !== undefined}>

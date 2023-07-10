@@ -38,12 +38,12 @@ import { NavButton } from '../../../extension'
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
 import PopupModal from '../index'
 import PasswordInput from '../../../shared/password-input/index'
-import { create } from 'ethereum-blockies'
 
 // hooks
 import { useIsMounted } from '../../../../common/hooks/useIsMounted'
 import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
 import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
+import { useAccountOrb } from '../../../../common/hooks/use-orb'
 
 // style
 import {
@@ -199,11 +199,7 @@ export const AccountSettingsModal = () => {
     return ''
   }, [accountModalType])
 
-  const orb = React.useMemo(() => {
-    if (selectedAccount) {
-      return create({ seed: selectedAccount.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-    }
-  }, [selectedAccount])
+  const orb = useAccountOrb(selectedAccount)
 
   // effects
   React.useEffect(() => {

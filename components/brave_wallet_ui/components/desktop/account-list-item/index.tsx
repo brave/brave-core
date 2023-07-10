@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
 
 // redux
 import { useDispatch } from 'react-redux'
@@ -16,9 +15,8 @@ import { AccountsTabActions } from '../../../page/reducers/accounts-tab-reducer'
 import { reduceAddress } from '../../../utils/reduce-address'
 
 // hooks
-import {
-  useOnClickOutside
-} from '../../../common/hooks/useOnClickOutside'
+import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
+import { useAccountOrb } from '../../../common/hooks/use-orb'
 
 // types
 import {
@@ -116,9 +114,7 @@ export const AccountListItem = ({
   }, [onSelectAccount, onRemoveAccount, onShowAccountsModal])
 
   // memos
-  const orb = React.useMemo(() => {
-    return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [account.address])
+  const orb = useAccountOrb(account);
 
   const buttonOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
     // We are not able to remove a Derived account so we filter out this option.
