@@ -482,17 +482,6 @@ void SetLastInstalledWalletVersionForTest(const base::Version& version) {
 
 #if BUILDFLAG(IS_ANDROID)
 namespace {
-
-base::android::ScopedJavaLocalRef<jobject> GetJavaBoolean(
-    JNIEnv* env,
-    const bool& native_bool) {
-  jclass booleanClass = env->FindClass("java/lang/Boolean");
-  jmethodID methodID = env->GetMethodID(booleanClass, "<init>", "(Z)V");
-  jobject booleanObject = env->NewObject(booleanClass, methodID, native_bool);
-
-  return base::android::ScopedJavaLocalRef<jobject>(env, booleanObject);
-}
-
 void NativeRegisterAndInstallCallback(
     JNIEnv* env,
     base::android::ScopedJavaGlobalRef<jobject> java_callback,
@@ -503,7 +492,7 @@ void NativeRegisterAndInstallCallback(
           [](JNIEnv* env,
              base::android::ScopedJavaGlobalRef<jobject> java_callback) {
             Java_DataFilesComponentInstaller_onRegisterAndInstallDone(
-                env, java_callback, GetJavaBoolean(env, true));
+                env, java_callback);
           },
           env, std::move(java_callback)));
 }

@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
-import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
@@ -53,9 +52,9 @@ public class DataFilesComponentInstaller implements BraveComponentUpdater.Compon
             assert !mUpdateCompleted;
 
             mUpdateStarted = true;
-            registerAndInstall(new Callback<Boolean>() {
+            registerAndInstall(new Runnable() {
                 @Override
-                public void onResult(Boolean result) {
+                public void run() {
                     Log.e(TAG, "registerAndInstallEx.onResult 000");
                     synchronized (mLock) {
                         mUpdateStarted = false;
@@ -150,17 +149,17 @@ public class DataFilesComponentInstaller implements BraveComponentUpdater.Compon
         return !Utils.shouldShowCryptoOnboarding();
     }
 
-    public static void registerAndInstall(Callback<Boolean> callback) {
-        DataFilesComponentInstallerJni.get().registerAndInstall(callback);
+    public static void registerAndInstall(Runnable runnableCallback) {
+        DataFilesComponentInstallerJni.get().registerAndInstall(runnableCallback);
     }
 
     @CalledByNative
-    private static void onRegisterAndInstallDone(Callback<Boolean> callback, Boolean result) {
-        callback.onResult(result);
+    private static void onRegisterAndInstallDone(Runnable runnableCallback) {
+        runnableCallback.run();
     }
 
     @NativeMethods
     interface Natives {
-        void registerAndInstall(Callback<Boolean> callback);
+        void registerAndInstall(Runnable runnableCallback);
     }
 }
