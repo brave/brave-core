@@ -21,9 +21,9 @@ void NativeWidgetNSWindowBridge::SetWindowTitleVisibility(bool visible) {
   // Sometimes title is not visible until window is resized. In order to avoid
   // this, reset title to force it to be visible.
   if (visible) {
-    NSString* title = window_.get().title;
-    window_.get().title = @"";
-    window_.get().title = title;
+    NSString* title = window_.title;
+    window_.title = @"";
+    window_.title = title;
   }
 }
 
@@ -43,13 +43,13 @@ void NativeWidgetNSWindowBridge::ResetWindowControlsPosition() {
   //
   // If this behavior is broken, we should run `class-dump` by ourselves and
   // find out what can be used instead of this.
-  NSView* frameView = window_.get().contentView.superview;
+  NSView* frameView = window_.contentView.superview;
   DCHECK([frameView isKindOfClass:[NSThemeFrame class]]);
-  SEL selector = @selector(_resetTitleBarButtons);
-  if ([frameView respondsToSelector:selector])
-    [frameView performSelector:selector];
-  else
+  if ([frameView respondsToSelector:@selector(_resetTitleBarButtons)]) {
+    [frameView performSelector:@selector(_resetTitleBarButtons)];
+  } else {
     LOG(ERROR) << "Failed to find selector for resetting window controls";
+  }
 }
 
 }  // namespace remote_cocoa
