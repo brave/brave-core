@@ -72,6 +72,7 @@ struct AssetSearchView: View {
           }
         )
       }
+      .navigationViewStyle(.stack)
       .onDisappear {
         cryptoStore.networkStore.closeNetworkSelectionStore()
       }

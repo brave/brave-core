@@ -217,6 +217,7 @@ struct EditUserAssetsView: View {
           }
         )
       }
+      .navigationViewStyle(.stack)
       .onDisappear {
         networkStore.closeNetworkSelectionStore()
       }

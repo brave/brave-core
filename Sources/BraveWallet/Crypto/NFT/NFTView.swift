@@ -118,6 +118,7 @@ struct NFTView: View {
           }
         )
       }
+      .navigationViewStyle(.stack)
       .onDisappear {
         networkStore.closeNetworkSelectionStore()
       }
