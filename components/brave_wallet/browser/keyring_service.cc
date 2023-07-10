@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 
+#include <map>
 #include <set>
 #include <string>
 #include <utility>
@@ -131,6 +132,7 @@ const char kEncryptedMnemonic[] = "encrypted_mnemonic";
 const char kBackupComplete[] = "backup_complete";
 const char kAccountMetas[] = "account_metas";
 const char kAccountName[] = "account_name";
+const char kAccountIndex[] = "account_index";
 const char kHardwareVendor[] = "hardware_vendor";
 const char kImportedAccounts[] = "imported_accounts";
 const char kAccountAddress[] = "account_address";
@@ -176,6 +178,47 @@ std::string GetRootPath(mojom::KeyringId keyring_id) {
 
   NOTREACHED();
   return "";
+}
+
+absl::optional<uint32_t> ExtractAccountIndex(mojom::KeyringId keyring_id,
+                                             const std::string& path) {
+  CHECK(keyring_id == mojom::KeyringId::kDefault ||
+        keyring_id == mojom::KeyringId::kFilecoin ||
+        keyring_id == mojom::KeyringId::kFilecoinTestnet ||
+        keyring_id == mojom::KeyringId::kSolana);
+
+  // m/44'/60'/0'/0/{index}
+  // m/44'/461'/0'/0/{index}
+  // m/44'/1'/0'/0/{index}
+  // m/44'/501'/{index}'/0'
+
+  // For all types remove root path and slash. For Solana also remove '/0'.
+
+  auto account_index = base::StringPiece(path);
+  auto root_path = GetRootPath(keyring_id);
+  if (!base::StartsWith(account_index, root_path)) {
+    return absl::nullopt;
+  }
+  account_index.remove_prefix(root_path.size());
+
+  if (!base::StartsWith(account_index, "/")) {
+    return absl::nullopt;
+  }
+  account_index.remove_prefix(1);
+
+  if (keyring_id == mojom::KeyringId::kSolana) {
+    if (!base::EndsWith(account_index, "'/0'")) {
+      return absl::nullopt;
+    }
+    account_index.remove_suffix(4);
+  }
+
+  uint32_t result = 0;
+  if (!base::StringToUint(account_index, &result)) {
+    return absl::nullopt;
+  }
+
+  return result;
 }
 
 static base::span<const uint8_t> ToSpan(base::StringPiece sp) {
@@ -395,10 +438,10 @@ void RemoveImportedAccountForKeyring(PrefService* profile_prefs,
 
 // Utility structure that helps storing HD accounts in prefs.
 struct DerivedAccountInfo {
-  DerivedAccountInfo(std::string account_path,
+  DerivedAccountInfo(uint32_t account_index,
                      std::string account_name,
                      std::string account_address)
-      : account_path(std::move(account_path)),
+      : account_index(account_index),
         account_name(std::move(account_name)),
         account_address(std::move(account_address)) {}
 
@@ -406,31 +449,37 @@ struct DerivedAccountInfo {
   DerivedAccountInfo(const DerivedAccountInfo& other) = default;
 
   base::Value ToValue() const {
-    base::Value::Dict imported_account;
-    imported_account.Set(kAccountName, account_name);
-    imported_account.Set(kAccountAddress, account_address);
-    return base::Value(std::move(imported_account));
+    base::Value::Dict derived_account;
+    derived_account.Set(kAccountIndex, base::NumberToString(account_index));
+    derived_account.Set(kAccountName, account_name);
+    derived_account.Set(kAccountAddress, account_address);
+    return base::Value(std::move(derived_account));
   }
 
   static absl::optional<DerivedAccountInfo> FromValue(
-      const std::string& account_path,
       const base::Value& value) {
     auto* value_dict = value.GetIfDict();
     if (!value_dict) {
       return absl::nullopt;
     }
-
+    const std::string* account_index_string =
+        value_dict->FindString(kAccountIndex);
     const std::string* account_name = value_dict->FindString(kAccountName);
     const std::string* account_address =
         value_dict->FindString(kAccountAddress);
-    if (!account_name || !account_address) {
+    if (!account_index_string || !account_name || !account_address) {
       return absl::nullopt;
     }
 
-    return DerivedAccountInfo(account_path, *account_name, *account_address);
+    uint32_t account_index = 0;
+    if (!base::StringToUint(*account_index_string, &account_index)) {
+      return absl::nullopt;
+    }
+
+    return DerivedAccountInfo(account_index, *account_name, *account_address);
   }
 
-  std::string account_path;
+  uint32_t account_index;
   std::string account_name;
   std::string account_address;
 };
@@ -439,43 +488,19 @@ struct DerivedAccountInfo {
 std::vector<DerivedAccountInfo> GetDerivedAccountsForKeyring(
     PrefService* profile_prefs,
     mojom::KeyringId keyring_id) {
-  const base::Value::Dict* derived_accounts =
-      GetPrefForKeyringDict(*profile_prefs, kAccountMetas, keyring_id);
+  const base::Value::List* derived_accounts =
+      GetPrefForKeyringList(*profile_prefs, kAccountMetas, keyring_id);
   if (!derived_accounts) {
     return {};
   }
 
-  // TODO(apaymyshev): store derived accounts as an ordered list to avoid
-  // sorting.
-
-  // Pair DerivedAccountInfo with parsed path for sorting.
-  std::vector<std::pair<DerivedAccountInfo, std::vector<uint32_t>>>
-      result_to_sort;
-  for (const auto item : *derived_accounts) {
-    if (auto derived_account =
-            DerivedAccountInfo::FromValue(item.first, item.second)) {
-      // "m/44'/60'/0'/0/5" -> [44, 60, 0, 0, 5]
-      std::vector<uint32_t> tokens;
-      for (auto& token : base::SplitString(
-               item.first, "m'/", base::WhitespaceHandling::TRIM_WHITESPACE,
-               base::SplitResult::SPLIT_WANT_NONEMPTY)) {
-        uint32_t parsed = 0;
-        if (base::StringToUint(token, &parsed)) {
-          tokens.emplace_back(parsed);
-        }
-      }
-
-      result_to_sort.emplace_back(std::move(*derived_account),
-                                  std::move(tokens));
-    }
-  }
-
-  base::ranges::sort(result_to_sort,
-                     [](auto& a, auto& b) { return a.second < b.second; });
-
   std::vector<DerivedAccountInfo> result;
-  for (auto& item : result_to_sort) {
-    result.emplace_back(std::move(item.first));
+  for (auto& item : *derived_accounts) {
+    if (auto derived_account = DerivedAccountInfo::FromValue(item)) {
+      DCHECK_EQ(derived_account->account_index, result.size())
+          << "No gaps allowed";
+      result.emplace_back(std::move(*derived_account));
+    }
   }
 
   return result;
@@ -486,23 +511,19 @@ size_t GetDerivedAccountsNumberForKeyring(PrefService* profile_prefs,
   return GetDerivedAccountsForKeyring(profile_prefs, keyring_id).size();
 }
 
-// Updates hd account in prefs using derivation path as key.
-void SetDerivedAccountInfoForKeyring(PrefService* profile_prefs,
-                                     const DerivedAccountInfo& account,
-                                     mojom::KeyringId keyring_id) {
-  ScopedDictPrefUpdate keyrings_update(profile_prefs, kBraveWalletKeyrings);
-  base::Value::Dict& account_metas =
-      GetDictPrefForKeyringUpdate(keyrings_update, kAccountMetas, keyring_id);
-  account_metas.Set(account.account_path, account.ToValue());
+mojom::AccountIdPtr MakeAccountIdForDerivedAccount(
+    const DerivedAccountInfo& derived_account_info,
+    mojom::KeyringId keyring_id) {
+  return MakeAccountId(GetCoinForKeyring(keyring_id), keyring_id,
+                       mojom::AccountKind::kDerived,
+                       derived_account_info.account_address);
 }
 
 mojom::AccountInfoPtr MakeAccountInfoForDerivedAccount(
     const DerivedAccountInfo& derived_account_info,
     mojom::KeyringId keyring_id) {
   return mojom::AccountInfo::New(
-      MakeAccountId(GetCoinForKeyring(keyring_id), keyring_id,
-                    mojom::AccountKind::kDerived,
-                    derived_account_info.account_address),
+      MakeAccountIdForDerivedAccount(derived_account_info, keyring_id),
       derived_account_info.account_address, derived_account_info.account_name,
       nullptr);
 }
@@ -516,6 +537,16 @@ mojom::AccountInfoPtr MakeAccountInfoForImportedAccount(
                     imported_account_info.account_address),
       imported_account_info.account_address, imported_account_info.account_name,
       nullptr);
+}
+
+void AddDerivedAccountInfoForKeyring(PrefService* profile_prefs,
+                                     const DerivedAccountInfo& account,
+                                     mojom::KeyringId keyring_id) {
+  ScopedDictPrefUpdate keyrings_update(profile_prefs, kBraveWalletKeyrings);
+  base::Value::List& account_metas =
+      GetListPrefForKeyringUpdate(keyrings_update, kAccountMetas, keyring_id);
+  DCHECK_EQ(account.account_index, account_metas.size()) << "No gaps allowed";
+  account_metas.Append(account.ToValue());
 }
 
 bool SetSelectedWalletAccountInPrefs(PrefService* profile_prefs,
@@ -585,6 +616,60 @@ KeyringService::KeyringService(JsonRpcService* json_rpc_service,
 
 KeyringService::~KeyringService() {
   auto_lock_timer_.reset();
+}
+
+// static
+void KeyringService::MigrateDerivedAccountIndex(PrefService* profile_prefs) {
+  ScopedDictPrefUpdate update(profile_prefs, kBraveWalletKeyrings);
+
+  const std::vector<mojom::KeyringId> keyrings = {
+      mojom::KeyringId::kDefault,   mojom::KeyringId::kSolana,
+      mojom::KeyringId::kFilecoin,  mojom::KeyringId::kFilecoinTestnet,
+      mojom::KeyringId::kBitcoin84, mojom::KeyringId::kBitcoin84Testnet};
+
+  for (auto keyring_id : keyrings) {
+    base::Value::Dict* keyring_dict =
+        update->FindDict(KeyringIdPrefString(keyring_id));
+    if (!keyring_dict) {
+      continue;
+    }
+
+    base::Value::Dict* account_metas_dict =
+        keyring_dict->FindDict(kAccountMetas);
+
+    if (!account_metas_dict) {
+      continue;
+    }
+
+    if (IsBitcoinKeyring(keyring_id)) {
+      // Don't bother with migrating bitcoin accounts.
+      account_metas_dict->clear();
+    }
+
+    std::map<uint32_t, base::Value::Dict> new_accounts_map;
+    for (auto acc_item : *account_metas_dict) {
+      auto account_index = ExtractAccountIndex(keyring_id, acc_item.first);
+      if (!account_index) {
+        NOTREACHED() << acc_item.first;
+        continue;
+      }
+      if (!acc_item.second.is_dict()) {
+        NOTREACHED();
+        continue;
+      }
+
+      base::Value::Dict new_account = acc_item.second.GetIfDict()->Clone();
+      new_account.Set(kAccountIndex, base::NumberToString(*account_index));
+      new_accounts_map[*account_index] = std::move(new_account);
+    }
+
+    base::Value::List new_accounts;
+    for (auto& acc : new_accounts_map) {
+      new_accounts.Append(std::move(acc.second));
+    }
+
+    keyring_dict->Set(kAccountMetas, std::move(new_accounts));
+  }
 }
 
 // static
@@ -1408,10 +1493,10 @@ mojom::AccountInfoPtr KeyringService::AddAccountForKeyring(
   }
   DCHECK_EQ(added_accounts.size(), 1u);
 
-  DerivedAccountInfo derived_account_info(added_accounts[0].path, account_name,
-                                          added_accounts[0].address);
+  DerivedAccountInfo derived_account_info(
+      added_accounts[0].account_index, account_name, added_accounts[0].address);
 
-  SetDerivedAccountInfoForKeyring(profile_prefs_, derived_account_info,
+  AddDerivedAccountInfoForKeyring(profile_prefs_, derived_account_info,
                                   keyring_id);
 
   return MakeAccountInfoForDerivedAccount(derived_account_info, keyring_id);
@@ -2189,17 +2274,21 @@ bool KeyringService::SetKeyringDerivedAccountNameInternal(
     const std::string& name) {
   DCHECK(!name.empty());
 
-  auto accounts =
-      GetDerivedAccountsForKeyring(profile_prefs_, account_id.keyring_id);
-  for (auto& account : accounts) {
-    if (account.account_address == account_id.address) {
-      account.account_name = name;
-      SetDerivedAccountInfoForKeyring(profile_prefs_, account,
-                                      account_id.keyring_id);
-      NotifyAccountsChanged();
-      return true;
+  ScopedDictPrefUpdate keyrings_update(profile_prefs_, kBraveWalletKeyrings);
+  base::Value::List& account_metas = GetListPrefForKeyringUpdate(
+      keyrings_update, kAccountMetas, account_id.keyring_id);
+  for (auto& item : account_metas) {
+    if (auto derived_account = DerivedAccountInfo::FromValue(item)) {
+      if (account_id == *MakeAccountIdForDerivedAccount(
+                            *derived_account, account_id.keyring_id)) {
+        derived_account->account_name = name;
+        item = derived_account->ToValue();
+        NotifyAccountsChanged();
+        return true;
+      }
     }
   }
+
   return false;
 }
 
