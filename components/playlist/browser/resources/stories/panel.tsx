@@ -10,18 +10,18 @@ import { withKnobs } from '@storybook/addon-knobs'
 import store from '../store'
 import { getAllActions } from '../api/getAllActions'
 import { mockData } from './mockData'
-import { BrowserRouter } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import App from '../components/app.v1'
 
 export default {
   title: 'Playlist/Panel',
   decorators: [
     (Story: any) => (
-      <BrowserRouter>
+      <MemoryRouter initialEntries={['/']}>
         <Provider store={store}>
           <Story />
         </Provider>
-      </BrowserRouter>
+      </MemoryRouter>
     ),
     (Story: any) => (
       <div

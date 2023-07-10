@@ -7,20 +7,26 @@ import { getAllActions } from './api/getAllActions'
 import { PlayerMessagePayload } from './api/playerApi'
 import { types } from './constants/playlist_types'
 
+export function handlePlayerMessage ({
+  actionType,
+  data
+}: PlayerMessagePayload) {
+  switch (actionType) {
+    case types.PLAYLIST_ITEM_SELECTED:
+      getAllActions().selectPlaylistItem(data)
+      break
+    default:
+      console.error(`Unknown action type: ${actionType}`)
+  }
+}
+
 export default function startReceivingAPIRequest () {
-  window.onmessage = (e) => {
+  window.onmessage = e => {
     if (e.origin !== 'chrome-untrusted://playlist') {
       console.error(`Invalid origin: ${e.origin}`)
       return
     }
 
-    const { actionType, data } = e.data as PlayerMessagePayload
-    switch (actionType) {
-      case types.PLAYLIST_ITEM_SELECTED:
-        getAllActions().selectPlaylistItem(data)
-        break
-      default:
-        console.error(`Unknown action type: ${actionType}`)
-    }
+    handlePlayerMessage(e.data)
   }
 }

@@ -33,6 +33,7 @@ export default function PlaylistPlayer ({
           key={item.id}
           id={item.id}
           name={item.name}
+          cached={item.cached}
           thumbnailUrl={item.thumbnailPath.url}
           onClick={() => {}}
         />

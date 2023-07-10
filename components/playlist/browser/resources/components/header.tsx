@@ -71,6 +71,8 @@ export default function Header ({ playlistId }: HeaderProps) {
             itemCount={playlist.items.length}
             playlistName={playlist.name}
             totalDuration={0}
+            nameColor={color.text.primary}
+            detailColor={color.text.secondary}
           />
         </>
       ) : (

@@ -6,24 +6,29 @@
 import * as React from 'react'
 import { Provider } from 'react-redux'
 import { withKnobs } from '@storybook/addon-knobs'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, MemoryRouter } from 'react-router-dom'
 
 import '@brave/leo/tokens/css/variables.css'
 
-import PlaylistsCatalog from '../components/playlistsCatalog'
 import store from '../store'
 import { mockData } from './mockData'
 import { getAllActions } from '../api/getAllActions'
+import PlaylistsCatalog from '../components/playlistsCatalog'
+import Player from '../components/player'
+import { handlePlayerMessage } from '../playerApiSink'
+import { types } from '../constants/playlist_types'
 
 export default {
   title: 'Playlist/Components',
   decorators: [
     (Story: any) => (
-      <Provider store={store}>
+      <MemoryRouter initialEntries={['/']}>
         <BrowserRouter>
-          <Story />
+          <Provider store={store}>
+            <Story />
+          </Provider>
         </BrowserRouter>
-      </Provider>
+      </MemoryRouter>
     ),
     (Story: any) => (
       <div
@@ -46,3 +51,10 @@ export const Catalog = () => {
   return <PlaylistsCatalog />
 }
 
+export const VideoPlayer = () => {
+  handlePlayerMessage({
+    actionType: types.PLAYLIST_ITEM_SELECTED,
+    data: mockData.at(0)?.items.at(0)
+  })
+  return <Player />
+}
