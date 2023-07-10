@@ -11,16 +11,18 @@
 #include <shellapi.h>
 
 #include <memory>
+#include <string>
 #include <utility>
 
+#include "base/files/file_util.h"
+#include "base/i18n/rtl.h"
 #include "base/logging.h"
+#include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/task/single_thread_task_executor.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/brave_vpn_tray_command_ids.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/l10n_util.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/resources/resource.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/resources/status_tray_strings.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/icon_utils.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/status_icon.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/status_tray.h"
@@ -28,13 +30,24 @@
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 #include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils.h"
+#include "components/grit/brave_components_strings.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/simple_menu_model.h"
+#include "ui/base/resource/resource_bundle.h"
 #include "ui/native_theme/native_theme.h"
 
 namespace brave_vpn {
 
 namespace {
+
+base::FilePath GetResourcesPakFilePath(const std::string& locale) {
+  base::FilePath pak_path;
+  base::PathService::Get(base::DIR_ASSETS, &pak_path);
+  pak_path = pak_path.AppendASCII("Locales");
+  pak_path = pak_path.AppendASCII(locale + ".pak");
+  return pak_path;
+}
 
 void OpenURLInBrowser(const char* url) {
   if (reinterpret_cast<ULONG_PTR>(
@@ -45,19 +58,19 @@ void OpenURLInBrowser(const char* url) {
 }
 
 std::u16string GetVpnStatusLabel(bool active) {
-  return GetLocalizedString(
-      active ? IDS_BRAVE_VPN_WIREGUARD_TRAY_STATUS_ITEM_ACTIVE_BASE
-             : IDS_BRAVE_VPN_WIREGUARD_TRAY_STATUS_ITEM_INACTIVE_BASE);
+  return l10n_util::GetStringUTF16(
+      active ? IDS_BRAVE_VPN_WIREGUARD_TRAY_STATUS_ITEM_ACTIVE
+             : IDS_BRAVE_VPN_WIREGUARD_TRAY_STATUS_ITEM_INACTIVE);
 }
 
 std::u16string GetStatusIconTooltip(bool connected, bool error) {
   if (error) {
-    return GetLocalizedString(
-        IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_ERROR_BASE);
+    return l10n_util::GetStringUTF16(
+        IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_ERROR);
   }
-  return GetLocalizedString(
-      connected ? IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_CONNECTED_BASE
-                : IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_DISCONNECTED_BASE);
+  return l10n_util::GetStringUTF16(
+      connected ? IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_CONNECTED
+                : IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_DISCONNECTED);
 }
 
 gfx::ImageSkia GetStatusTrayIcon(bool connected, bool error) {
@@ -138,25 +151,25 @@ void StatusTrayRunner::OnMenuWillShow(ui::SimpleMenuModel* source) {
   source->AddItem(IDC_BRAVE_VPN_TRAY_STATUS_ITEM, GetVpnStatusLabel(connected));
   source->SetEnabledAt(0, false);
   if (connected) {
-    source->AddItem(
-        IDC_BRAVE_VPN_TRAY_DISCONNECT_VPN_ITEM,
-        GetLocalizedString(IDS_BRAVE_VPN_WIREGUARD_TRAY_DISCONNECT_ITEM_BASE));
+    source->AddItem(IDC_BRAVE_VPN_TRAY_DISCONNECT_VPN_ITEM,
+                    l10n_util::GetStringUTF16(
+                        IDS_BRAVE_VPN_WIREGUARD_TRAY_DISCONNECT_ITEM));
   } else {
     source->AddItem(
         IDC_BRAVE_VPN_TRAY_CONNECT_VPN_ITEM,
-        GetLocalizedString(IDS_BRAVE_VPN_WIREGUARD_TRAY_CONNECT_ITEM_BASE));
+        l10n_util::GetStringUTF16(IDS_BRAVE_VPN_WIREGUARD_TRAY_CONNECT_ITEM));
   }
   source->AddSeparator(ui::NORMAL_SEPARATOR);
   source->AddItem(IDC_BRAVE_VPN_TRAY_MANAGE_ACCOUNT_ITEM,
-                  GetLocalizedString(
-                      IDS_BRAVE_VPN_WIREGUARD_TRAY_MANAGE_ACCOUNT_ITEM_BASE));
+                  l10n_util::GetStringUTF16(
+                      IDS_BRAVE_VPN_WIREGUARD_TRAY_MANAGE_ACCOUNT_ITEM));
   source->AddItem(
       IDC_BRAVE_VPN_TRAY_ABOUT_ITEM,
-      GetLocalizedString(IDS_BRAVE_VPN_WIREGUARD_TRAY_ABOUT_ITEM_BASE));
+      l10n_util::GetStringUTF16(IDS_BRAVE_VPN_WIREGUARD_TRAY_ABOUT_ITEM));
   source->AddSeparator(ui::NORMAL_SEPARATOR);
   source->AddItem(
       IDC_BRAVE_VPN_TRAY_EXIT_ICON,
-      GetLocalizedString(IDS_BRAVE_VPN_WIREGUARD_TRAY_REMOVE_ICON_ITEM_BASE));
+      l10n_util::GetStringUTF16(IDS_BRAVE_VPN_WIREGUARD_TRAY_REMOVE_ICON_ITEM));
 }
 
 void StatusTrayRunner::OnConnected(bool success) {
@@ -230,8 +243,17 @@ HRESULT StatusTrayRunner::Run() {
   base::SingleThreadTaskExecutor task_executor(base::MessagePumpType::UI);
   base::ThreadPoolInstance::CreateAndStartWithDefaultParams(
       "Brave VPN Wireguard status tray process");
+
+  auto pak_path = GetResourcesPakFilePath(base::i18n::GetConfiguredLocale());
+  if (!base::PathExists(pak_path)) {
+    pak_path = GetResourcesPakFilePath("en-US");
+  }
+  DCHECK(base::PathExists(pak_path));
+  ui::ResourceBundle::InitSharedInstanceWithPakPath(pak_path);
+
   SetupStatusIcon();
   SubscribeForStorageUpdates();
+
   base::RunLoop loop;
   quit_ = loop.QuitClosure();
   loop.Run();

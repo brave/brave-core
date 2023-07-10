@@ -105,60 +105,60 @@
     <output filename="brave_components_strings_en-XA.pak" type="data_package" lang="en-XA" />
   </outputs>
   <translations>
-    <file path="strings/brave_components_strings_am.xtb" lang="am" />
-    <file path="strings/brave_components_strings_ar.xtb" lang="ar" />
-    <file path="strings/brave_components_strings_bg.xtb" lang="bg" />
-    <file path="strings/brave_components_strings_bn.xtb" lang="bn" />
-    <file path="strings/brave_components_strings_ca.xtb" lang="ca" />
-    <file path="strings/brave_components_strings_cs.xtb" lang="cs" />
-    <file path="strings/brave_components_strings_da.xtb" lang="da" />
-    <file path="strings/brave_components_strings_de.xtb" lang="de" />
-    <file path="strings/brave_components_strings_el.xtb" lang="el" />
-    <file path="strings/brave_components_strings_en-GB.xtb" lang="en-GB" />
-    <file path="strings/brave_components_strings_es.xtb" lang="es" />
-    <file path="strings/brave_components_strings_es-419.xtb" lang="es-419" />
-    <file path="strings/brave_components_strings_et.xtb" lang="et" />
-    <file path="strings/brave_components_strings_fa.xtb" lang="fa" />
-    <file path="strings/brave_components_strings_fi.xtb" lang="fi" />
-    <file path="strings/brave_components_strings_fil.xtb" lang="fil" />
-    <file path="strings/brave_components_strings_fr.xtb" lang="fr" />
-    <file path="strings/brave_components_strings_fr-CA.xtb" lang="fr-CA" />
-    <file path="strings/brave_components_strings_gl.xtb" lang="gl" />
-    <file path="strings/brave_components_strings_gu.xtb" lang="gu" />
-    <file path="strings/brave_components_strings_hi.xtb" lang="hi" />
-    <file path="strings/brave_components_strings_hr.xtb" lang="hr" />
-    <file path="strings/brave_components_strings_hu.xtb" lang="hu" />
-    <file path="strings/brave_components_strings_id.xtb" lang="id" />
-    <file path="strings/brave_components_strings_it.xtb" lang="it" />
-    <file path="strings/brave_components_strings_iw.xtb" lang="he" />
-    <file path="strings/brave_components_strings_ja.xtb" lang="ja" />
-    <file path="strings/brave_components_strings_kn.xtb" lang="kn" />
-    <file path="strings/brave_components_strings_ko.xtb" lang="ko" />
-    <file path="strings/brave_components_strings_lt.xtb" lang="lt" />
-    <file path="strings/brave_components_strings_lv.xtb" lang="lv" />
-    <file path="strings/brave_components_strings_ml.xtb" lang="ml" />
-    <file path="strings/brave_components_strings_mr.xtb" lang="mr" />
-    <file path="strings/brave_components_strings_ms.xtb" lang="ms" />
-    <file path="strings/brave_components_strings_nl.xtb" lang="nl" />
-    <file path="strings/brave_components_strings_no.xtb" lang="no" />
-    <file path="strings/brave_components_strings_pl.xtb" lang="pl" />
-    <file path="strings/brave_components_strings_pt-BR.xtb" lang="pt-BR" />
-    <file path="strings/brave_components_strings_pt-PT.xtb" lang="pt-PT" />
-    <file path="strings/brave_components_strings_ro.xtb" lang="ro" />
-    <file path="strings/brave_components_strings_ru.xtb" lang="ru" />
-    <file path="strings/brave_components_strings_sk.xtb" lang="sk" />
-    <file path="strings/brave_components_strings_sl.xtb" lang="sl" />
-    <file path="strings/brave_components_strings_sr.xtb" lang="sr" />
-    <file path="strings/brave_components_strings_sv.xtb" lang="sv" />
-    <file path="strings/brave_components_strings_sw.xtb" lang="sw" />
-    <file path="strings/brave_components_strings_ta.xtb" lang="ta" />
-    <file path="strings/brave_components_strings_te.xtb" lang="te" />
-    <file path="strings/brave_components_strings_th.xtb" lang="th" />
-    <file path="strings/brave_components_strings_tr.xtb" lang="tr" />
-    <file path="strings/brave_components_strings_uk.xtb" lang="uk" />
-    <file path="strings/brave_components_strings_vi.xtb" lang="vi" />
-    <file path="strings/brave_components_strings_zh-CN.xtb" lang="zh-CN" />
-    <file path="strings/brave_components_strings_zh-TW.xtb" lang="zh-TW" />
+    <file path="strings/brave_components_resources_am.xtb" lang="am" />
+    <file path="strings/brave_components_resources_ar.xtb" lang="ar" />
+    <file path="strings/brave_components_resources_bg.xtb" lang="bg" />
+    <file path="strings/brave_components_resources_bn.xtb" lang="bn" />
+    <file path="strings/brave_components_resources_ca.xtb" lang="ca" />
+    <file path="strings/brave_components_resources_cs.xtb" lang="cs" />
+    <file path="strings/brave_components_resources_da.xtb" lang="da" />
+    <file path="strings/brave_components_resources_de.xtb" lang="de" />
+    <file path="strings/brave_components_resources_el.xtb" lang="el" />
+    <file path="strings/brave_components_resources_en-GB.xtb" lang="en-GB" />
+    <file path="strings/brave_components_resources_es.xtb" lang="es" />
+    <file path="strings/brave_components_resources_es-419.xtb" lang="es-419" />
+    <file path="strings/brave_components_resources_et.xtb" lang="et" />
+    <file path="strings/brave_components_resources_fa.xtb" lang="fa" />
+    <file path="strings/brave_components_resources_fi.xtb" lang="fi" />
+    <file path="strings/brave_components_resources_fil.xtb" lang="fil" />
+    <file path="strings/brave_components_resources_fr.xtb" lang="fr" />
+    <file path="strings/brave_components_resources_fr-CA.xtb" lang="fr-CA" />
+    <file path="strings/brave_components_resources_gl.xtb" lang="gl" />
+    <file path="strings/brave_components_resources_gu.xtb" lang="gu" />
+    <file path="strings/brave_components_resources_hi.xtb" lang="hi" />
+    <file path="strings/brave_components_resources_hr.xtb" lang="hr" />
+    <file path="strings/brave_components_resources_hu.xtb" lang="hu" />
+    <file path="strings/brave_components_resources_id.xtb" lang="id" />
+    <file path="strings/brave_components_resources_it.xtb" lang="it" />
+    <file path="strings/brave_components_resources_iw.xtb" lang="he" />
+    <file path="strings/brave_components_resources_ja.xtb" lang="ja" />
+    <file path="strings/brave_components_resources_kn.xtb" lang="kn" />
+    <file path="strings/brave_components_resources_ko.xtb" lang="ko" />
+    <file path="strings/brave_components_resources_lt.xtb" lang="lt" />
+    <file path="strings/brave_components_resources_lv.xtb" lang="lv" />
+    <file path="strings/brave_components_resources_ml.xtb" lang="ml" />
+    <file path="strings/brave_components_resources_mr.xtb" lang="mr" />
+    <file path="strings/brave_components_resources_ms.xtb" lang="ms" />
+    <file path="strings/brave_components_resources_nl.xtb" lang="nl" />
+    <file path="strings/brave_components_resources_no.xtb" lang="no" />
+    <file path="strings/brave_components_resources_pl.xtb" lang="pl" />
+    <file path="strings/brave_components_resources_pt-BR.xtb" lang="pt-BR" />
+    <file path="strings/brave_components_resources_pt-PT.xtb" lang="pt-PT" />
+    <file path="strings/brave_components_resources_ro.xtb" lang="ro" />
+    <file path="strings/brave_components_resources_ru.xtb" lang="ru" />
+    <file path="strings/brave_components_resources_sk.xtb" lang="sk" />
+    <file path="strings/brave_components_resources_sl.xtb" lang="sl" />
+    <file path="strings/brave_components_resources_sr.xtb" lang="sr" />
+    <file path="strings/brave_components_resources_sv.xtb" lang="sv" />
+    <file path="strings/brave_components_resources_sw.xtb" lang="sw" />
+    <file path="strings/brave_components_resources_ta.xtb" lang="ta" />
+    <file path="strings/brave_components_resources_te.xtb" lang="te" />
+    <file path="strings/brave_components_resources_th.xtb" lang="th" />
+    <file path="strings/brave_components_resources_tr.xtb" lang="tr" />
+    <file path="strings/brave_components_resources_uk.xtb" lang="uk" />
+    <file path="strings/brave_components_resources_vi.xtb" lang="vi" />
+    <file path="strings/brave_components_resources_zh-CN.xtb" lang="zh-CN" />
+    <file path="strings/brave_components_resources_zh-TW.xtb" lang="zh-TW" />
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
@@ -819,42 +819,6 @@
       </if>
       <if expr="enable_brave_vpn">
         <part file="brave_vpn_strings.grdp" />
-        <!-- Brave Vpn Wireguard service strings  
-        Wireguard service uses generate_embedded_i18n template to work with translations, keeping
-        strings here because base\win\embedded_i18n\create_string_rc.py doesnt work with embedded grdp resources.
-         -->
-        <if expr="is_win">
-          <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_DISCONNECTED" desc="Message to be displayed as tooltip for the system tray icon in disconnected state.">
-            Brave VPN: Disconnected
-          </message>
-          <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_CONNECTED" desc="Message to be displayed as tooltip for the system tray icon in connected state.">
-            Brave VPN: Connected
-          </message>
-          <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_ERROR" desc="Message to be displayed as tooltip for the system tray icon in error state.">
-            Brave VPN: Error
-          </message>
-          <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_STATUS_ITEM_ACTIVE" desc="Message to be displayed as the first item in the menu for the system tray icon in connected state.">
-            Status: Active
-          </message>
-          <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_STATUS_ITEM_INACTIVE" desc="Message to be displayed as the first item in the menu for the system tray icon in disconnected state.">
-            Status: Inactive
-          </message>
-          <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_CONNECT_ITEM" desc="Title of the system tray menu item for connect command.">
-            Connect
-          </message>
-          <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_DISCONNECT_ITEM" desc="Title of the system tray menu item for disconnect command.">
-            Disconnect
-          </message>
-          <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_MANAGE_ACCOUNT_ITEM" desc="Title of the system tray menu item for the command to open an account page in the browser.">
-            Manage Account
-          </message>        
-          <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ABOUT_ITEM" desc="Title of the system tray menu item for the command to open about page in the browser.">
-            About Brave VPN
-          </message>        
-          <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_REMOVE_ICON_ITEM" desc="Title of the system tray menu item for the command to remove the icon from the system tray.">
-            Remove icon
-          </message>
-        </if>
       </if>
     </messages>
   </release>
