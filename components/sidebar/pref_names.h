@@ -14,6 +14,7 @@ constexpr char kSidebarHiddenBuiltInItems[] =
 constexpr char kSidebarShowOption[] = "brave.sidebar.sidebar_show_option";
 constexpr char kSidebarItemAddedFeedbackBubbleShowCount[] =
     "brave.sidebar.item_added_feedback_bubble_shown_count";
+constexpr char kSidePanelWidth[] = "brave.sidebar.side_panel_width";
 
 // Indicates that sidebar alignment was changed by the browser itself, not by
 // users.

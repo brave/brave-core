@@ -217,7 +217,7 @@ void SidebarContainerView::Layout() {
                                    control_view_preferred_width, height());
   if (side_panel_->GetVisible()) {
     side_panel_->SetBounds(side_panel_x, 0,
-                           side_panel_->GetPreferredSize().width(), height());
+                           width() - control_view_preferred_width, height());
   }
 }
 
