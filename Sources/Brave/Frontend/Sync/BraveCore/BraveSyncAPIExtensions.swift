@@ -37,7 +37,7 @@ extension BraveSyncAPI {
       return false
     }
     
-    return (!isSyncFeatureActive && !isFirstSetupComplete) || isSyncAccountDeletedNoticePending
+    return (!isSyncFeatureActive && !isInitialSyncFeatureSetupComplete) || isSyncAccountDeletedNoticePending
   }
 
   var isSendTabToSelfVisible: Bool {

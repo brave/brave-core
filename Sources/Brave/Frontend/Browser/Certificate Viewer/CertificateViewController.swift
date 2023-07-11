@@ -221,16 +221,6 @@ extension CertificateView {
 
     mapping.append(KeyValue(key: Strings.CertificateViewer.commonNameTitle, value: rdns.commonName))
 
-    mapping.append(
-      contentsOf: rdns.streetAddress.map {
-        KeyValue(key: Strings.CertificateViewer.streetAddressTitle, value: $0)
-      })
-
-    mapping.append(
-      contentsOf: rdns.domainComponent.map {
-        KeyValue(key: Strings.CertificateViewer.domainComponentTitle, value: $0)
-      })
-
     mapping.append(KeyValue(key: Strings.CertificateViewer.userIDTitle, value: rdns.userId))
 
     return mapping.compactMap({
