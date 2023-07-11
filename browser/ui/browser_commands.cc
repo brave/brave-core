@@ -194,6 +194,9 @@ void CloseWalletBubble(Browser* browser) {
 }
 
 void CopySanitizedURL(Browser* browser, const GURL& url) {
+  if (!browser || !browser->profile()) {
+    return;
+  }
   GURL sanitized_url = brave::URLSanitizerServiceFactory::GetForBrowserContext(
                            browser->profile())
                            ->SanitizeURL(url);
@@ -207,6 +210,9 @@ void CopySanitizedURL(Browser* browser, const GURL& url) {
 // - Query filter
 // - URLSanitizerService
 void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url) {
+  if (!browser || !browser->profile()) {
+    return;
+  }
   DCHECK(url.SchemeIsHTTPOrHTTPS());
   GURL final_url;
   // Apply debounce rules.
