@@ -36,5 +36,4 @@ bool BraveBrowserWindow::HasSelectedURL() const {
   return false;
 }
 void BraveBrowserWindow::CleanAndCopySelectedURL() {}
-
 #endif

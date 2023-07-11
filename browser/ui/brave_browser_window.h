@@ -57,6 +57,7 @@ class BraveBrowserWindow : public BrowserWindow {
   virtual void ToggleSidebar();
   virtual bool HasSelectedURL() const;
   virtual void CleanAndCopySelectedURL();
+  virtual void ShowBraveHelpBubbleView(const std::string& text) {}
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
@@ -64,7 +65,6 @@ class BraveBrowserWindow : public BrowserWindow {
 #endif
 
   virtual void ShowBraveVPNBubble() {}
-  virtual void ShowBraveHelpBubbleView(const std::string& text) {}
 };
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_

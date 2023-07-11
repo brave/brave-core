@@ -119,12 +119,12 @@ void BraveHelpBubbleHostView::InitElementTrackers() {
       ui::ElementTracker::GetElementTracker()->AddElementShownCallback(
           id, context_,
           base::BindRepeating(&BraveHelpBubbleHostView::OnTrackedElementShown,
-                              base::Unretained(this)));
+                              weak_factory_.GetWeakPtr()));
   hidden_subscription_ =
       ui::ElementTracker::GetElementTracker()->AddElementHiddenCallback(
           id, context_,
           base::BindRepeating(&BraveHelpBubbleHostView::OnTrackedElementHidden,
-                              base::Unretained(this)));
+                              weak_factory_.GetWeakPtr()));
 }
 
 void BraveHelpBubbleHostView::UpdatePosition() {

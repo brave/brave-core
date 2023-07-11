@@ -13,6 +13,12 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
+class PrefRegistrySimple;
+
+namespace onboarding {
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+}  // namespace onboarding
+
 class OnboardingTabHelper
     : public content::WebContentsObserver,
       public content::WebContentsUserData<OnboardingTabHelper>,

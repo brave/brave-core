@@ -16,21 +16,28 @@
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 
+namespace onboarding {
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterTimePref(prefs::kLastShieldsIconHighlightTime,
+                             base::Time());
+}
+}  // namespace onboarding
+
 // static
 void OnboardingTabHelper::MaybeCreateForWebContents(
     content::WebContents* web_contents) {
-  bool is_shields_highlighted = g_browser_process->local_state()->GetBoolean(
-      onboarding::prefs::kOnboardingIsShieldsHighlighted);
+  base::Time last_shields_icon_highlight_time =
+      g_browser_process->local_state()->GetTime(
+          onboarding::prefs::kLastShieldsIconHighlightTime);
 
-  if (is_shields_highlighted) {
-    return;
+  if (last_shields_icon_highlight_time.is_null()) {
+    OnboardingTabHelper::CreateForWebContents(web_contents);
   }
-
-  OnboardingTabHelper::CreateForWebContents(web_contents);
 }
 
 OnboardingTabHelper::~OnboardingTabHelper() = default;
@@ -46,6 +53,10 @@ OnboardingTabHelper::OnboardingTabHelper(content::WebContents* web_contents)
 void OnboardingTabHelper::DidStopLoading() {
   Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
   DCHECK(browser);
+
+  if (!browser) {
+    return;
+  }
 
   auto* active_tab_web_contents =
       browser->tab_strip_model()->GetActiveWebContents();
@@ -92,10 +103,11 @@ void OnboardingTabHelper::PerformBraveShieldsChecksAndShowHelpBubble() {
 }
 
 bool OnboardingTabHelper::CanHighlightBraveShields() {
-  bool is_shields_highlighted = g_browser_process->local_state()->GetBoolean(
-      onboarding::prefs::kOnboardingIsShieldsHighlighted);
+  base::Time last_shields_icon_highlight_time =
+      g_browser_process->local_state()->GetTime(
+          onboarding::prefs::kLastShieldsIconHighlightTime);
 
-  if (is_shields_highlighted) {
+  if (!last_shields_icon_highlight_time.is_null()) {
     return false;
   }
 
@@ -119,8 +131,8 @@ void OnboardingTabHelper::ShowBraveHelpBubbleView() {
   BraveBrowserWindow::From(browser->window())
       ->ShowBraveHelpBubbleView(GetTextForOnboardingShieldsBubble());
 
-  g_browser_process->local_state()->SetBoolean(
-      onboarding::prefs::kOnboardingIsShieldsHighlighted, true);
+  g_browser_process->local_state()->SetTime(
+      onboarding::prefs::kLastShieldsIconHighlightTime, base::Time::Now());
 
   CleanUp();
 }

@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-onboarding_sources = [
+brave_browser_onboarding_sources = [
   "//brave/browser/onboarding/domain_map.cc",
   "//brave/browser/onboarding/domain_map.h",
   "//brave/browser/onboarding/onboarding_tab_helper.cc",
@@ -11,7 +11,7 @@ onboarding_sources = [
   "//brave/browser/onboarding/pref_names.h",
 ]
 
-onboarding_deps = [
+brave_browser_onboarding_deps = [
   "//base",
   "//brave/browser:browser_process",
   "//components/content_settings/core/browser",

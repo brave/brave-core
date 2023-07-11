@@ -202,11 +202,11 @@
     Wildcards are not allowed for Brave Shields.
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITH_COMPANIES" desc="Label for onboarding bubble UI">
+  <message name="IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITH_COMPANIES" desc="Label for the onboarding bubble UI, informing users about Brave Shields blocking company-specific trackers on a website, along with the number of additional trackers blocked.">
     Brave Shields blocked <ph name="COMPANY_LIST">$1</ph> and <ph name="BLOCKED_COUNT">$2</ph> other trackers on <ph name="SITE_URL">$3</ph>
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITHOUT_COMPANIES" desc="Label for onboarding bubble UI">
+  <message name="IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITHOUT_COMPANIES" desc="Label for the onboarding bubble UI, informing users about Brave Shields blocking number of trackers only.">
     Brave Shields blocked <ph name="BLOCKED_COUNT">$1</ph> trackers on <ph name="SITE_URL">$2</ph>
   </message>
 
