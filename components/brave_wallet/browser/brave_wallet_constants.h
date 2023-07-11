@@ -42,6 +42,8 @@ constexpr char kSardineClientTokensURL[] =
     "https://api.sardine.ai/v1/auth/client-tokens";
 constexpr char kTransakURL[] = "https://global.transak.com/";
 constexpr char kTransakApiKey[] = "985d14f0-4cf5-4a4c-8917-78107620d3b7";
+constexpr char kCoinbaseURL[] = "https://pay.coinbase.com";
+constexpr char kCoinbaseAppId[] = "8072ff71-8469-4fef-9404-7c905e2359c9";
 constexpr char kSimpleHashUrl[] = "https://api.simplehash.com";
 constexpr char kSimpleHashBraveProxyUrl[] =
     "https://simplehash.wallet.brave.com";
