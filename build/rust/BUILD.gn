@@ -12,11 +12,6 @@ group("framework_exports") {
     "_ChromeMain",
   ]
 
-  # Should match build/config/sanitizers:options_sources
-  if (is_asan || is_lsan || is_msan || is_tsan || is_ubsan || is_ubsan_vptr ||
-      is_ubsan_security) {
-    output += [ "___asan_default_options" ]
-  }
   if (use_clang_coverage) {
     output += [
       "_lprofDirMode",
