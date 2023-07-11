@@ -31,7 +31,11 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     r.REWARDS = r.BASIC.createSection('/rewards', 'rewards')
   }
   if (loadTimeData.getBoolean('areShortcutsSupported')) {
-    r.SHORTCUTS = r.SYSTEM.createChild('/system/shortcuts')
+    if (r.SYSTEM) {
+      r.SHORTCUTS = r.SYSTEM.createChild('/system/shortcuts')
+    } else if (!isGuest) {
+      console.error('[Brave Settings Overrides] Routes: could not find SYSTEM page')
+    }
   }
   r.SOCIAL_BLOCKING = r.BASIC.createSection('/socialBlocking', 'socialBlocking')
   r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
