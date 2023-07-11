@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -44,7 +45,9 @@ class BraveBrowserWindow : public BrowserWindow {
       bool is_enabled);
   virtual void ShowReaderModeToolbar() {}
   virtual void HideReaderModeToolbar() {}
+#if BUILDFLAG(ENABLE_AI_CHAT)
   virtual void OpenAiChatPanel() {}
+#endif
 #endif
 
 #if defined(TOOLKIT_VIEWS)

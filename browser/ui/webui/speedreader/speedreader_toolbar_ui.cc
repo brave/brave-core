@@ -9,7 +9,6 @@
 
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/ai_chat/common/buildflags/buildflags.h"
-#include "brave/components/ai_chat/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/speedreader/common/constants.h"
@@ -22,6 +21,10 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/features.h"
+#endif
 
 SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui,
                                            const std::string& name)
@@ -46,6 +49,8 @@ SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui,
 #if BUILDFLAG(ENABLE_AI_CHAT)
   source->AddBoolean("aiChatFeatureEnabled",
                      ai_chat::features::IsAIChatEnabled());
+#else
+  source->AddBoolean("aiChatFeatureEnabled", false);
 #endif
 }
 

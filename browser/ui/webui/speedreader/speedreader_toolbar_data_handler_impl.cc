@@ -24,10 +24,6 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "ui/color/color_provider.h"
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
-#endif
-
 namespace {
 class TtsPlayerDelegate : public speedreader::TtsPlayer::Delegate {
  public:
@@ -145,10 +141,7 @@ void SpeedreaderToolbarDataHandlerImpl::AiChat() {
     return;
   }
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (auto* ai_chat_tab_helper = ai_chat::AIChatTabHelper::FromWebContents(
-          active_tab_helper_->web_contents())) {
-    static_cast<BraveBrowserWindow*>(browser_->window())->OpenAiChatPanel();
-  }
+  static_cast<BraveBrowserWindow*>(browser_->window())->OpenAiChatPanel();
 #endif
 }
 

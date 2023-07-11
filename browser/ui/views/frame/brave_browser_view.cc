@@ -83,6 +83,10 @@
 #include "components/grit/brave_components_strings.h"
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/features.h"
+#endif
+
 namespace {
 absl::optional<bool> g_download_confirm_return_allow_for_testing;
 
@@ -421,10 +425,16 @@ void BraveBrowserView::HideReaderModeToolbar() {
   }
 }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 void BraveBrowserView::OpenAiChatPanel() {
+  if (!ai_chat::features::IsAIChatEnabled()) {
+    return;
+  }
+
   SidePanelUI::GetSidePanelUIForBrowser(browser_.get())
       ->Show(SidePanelEntryId::kChatUI);
 }
+#endif
 
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 

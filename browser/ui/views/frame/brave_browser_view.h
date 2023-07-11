@@ -76,7 +76,9 @@ class BraveBrowserView : public BrowserView,
       bool is_enabled) override;
   void ShowReaderModeToolbar() override;
   void HideReaderModeToolbar() override;
+#if BUILDFLAG(ENABLE_AI_CHAT)
   void OpenAiChatPanel() override;
+#endif
 #endif
   bool GetTabStripVisible() const override;
 #if BUILDFLAG(IS_WIN)
