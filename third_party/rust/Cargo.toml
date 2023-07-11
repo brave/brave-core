@@ -176,7 +176,7 @@ version = "0.1"
 [dependencies.tracing-subscriber]
 default-features = false
 version = "0.2.0"
-features = ["ansi", "fmt", "registry"]
+features = ["ansi", "ansi_term", "fmt", "registry", "sharded-slab", "thread_local"]
 
 [dependencies.typenum]
 version = "1"
