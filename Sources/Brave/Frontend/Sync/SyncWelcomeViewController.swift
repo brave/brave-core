@@ -300,7 +300,7 @@ class SyncWelcomeViewController: SyncViewController {
     syncServiceObserver = syncAPI.addServiceStateObserver { [weak self] in
       guard let self = self else { return }
 
-      if !self.syncAPI.isInSyncGroup && !self.syncAPI.isSyncFeatureActive && !self.syncAPI.isFirstSetupComplete {
+      if !self.syncAPI.isInSyncGroup && !self.syncAPI.isSyncFeatureActive && !self.syncAPI.isInitialSyncFeatureSetupComplete {
         let bvc = self.currentScene?.browserViewController
         self.dismiss(animated: true) {
           bvc?.present(SyncAlerts.initializationError, animated: true)

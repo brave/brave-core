@@ -91,8 +91,6 @@ class CertificateUtilsTest: XCTestCase {
     XCTAssertEqual(model.subjectName.organization, ["GitHub, Inc."])
     XCTAssertEqual(model.subjectName.organizationalUnit, [])
     XCTAssertEqual(model.subjectName.commonName, "github.com")
-    XCTAssertEqual(model.subjectName.streetAddress, [])
-    XCTAssertEqual(model.subjectName.domainComponent, [])
     XCTAssertEqual(model.subjectName.userId, "")
 
     XCTAssertEqual(model.issuerName.countryOrRegion, "US")
@@ -101,8 +99,6 @@ class CertificateUtilsTest: XCTestCase {
     XCTAssertEqual(model.issuerName.organization, ["DigiCert, Inc."])
     XCTAssertEqual(model.issuerName.organizationalUnit, [])
     XCTAssertEqual(model.issuerName.commonName, "DigiCert High Assurance TLS Hybrid ECC SHA256 2020 CA1")
-    XCTAssertEqual(model.issuerName.streetAddress, [])
-    XCTAssertEqual(model.issuerName.domainComponent, [])
     XCTAssertEqual(model.issuerName.userId, "")
 
     XCTAssertEqual(model.serialNumber, "0E8BF3770D92D196F0BB61F93C4166BE")
@@ -155,8 +151,6 @@ class CertificateUtilsTest: XCTestCase {
     XCTAssertEqual(model.subjectName.organization, [])
     XCTAssertEqual(model.subjectName.organizationalUnit, [])
     XCTAssertEqual(model.subjectName.commonName, "brave.com")
-    XCTAssertEqual(model.subjectName.streetAddress, [])
-    XCTAssertEqual(model.subjectName.domainComponent, [])
     XCTAssertEqual(model.subjectName.userId, "")
 
     XCTAssertEqual(model.issuerName.countryOrRegion, "US")
@@ -165,8 +159,6 @@ class CertificateUtilsTest: XCTestCase {
     XCTAssertEqual(model.issuerName.organization, ["Amazon"])
     XCTAssertEqual(model.issuerName.organizationalUnit, ["Server CA 1B"])
     XCTAssertEqual(model.issuerName.commonName, "Amazon")
-    XCTAssertEqual(model.issuerName.streetAddress, [])
-    XCTAssertEqual(model.issuerName.domainComponent, [])
     XCTAssertEqual(model.issuerName.userId, "")
 
     XCTAssertEqual(model.serialNumber, "0F03E5078438C49822F3A852EBC02254")
