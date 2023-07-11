@@ -405,7 +405,7 @@ void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
     account_.SetWallet(wallet->payment_id, wallet->recovery_seed);
   }
 
-  AdsClientHelper::GetInstance()->BindPendingObservers();
+  AdsClientHelper::GetInstance()->NotifyPendingObservers();
 
   std::move(callback).Run(/*success*/ true);
 }

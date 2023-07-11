@@ -48,7 +48,7 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
   // AdsClient:
   void AddObserver(brave_ads::AdsClientNotifierObserver* observer) override;
   void RemoveObserver(brave_ads::AdsClientNotifierObserver* observer) override;
-  void BindPendingObservers() override;
+  void NotifyPendingObservers() override;
 
   bool IsNetworkConnectionAvailable() const override;
 
