@@ -22,10 +22,10 @@
   <dict>
     <key>NSAllowsArbitraryLoads</key>
     <true/>
-    <key>com.apple.developer.networking.vpn.api</key>
-    <array>
-      <string>allow-vpn</string>
-    </array>
   </dict>
+  <key>com.apple.developer.networking.vpn.api</key>
+  <array>
+    <string>allow-vpn</string>
+  </array>
 </dict>
 </plist>
