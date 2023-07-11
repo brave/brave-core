@@ -8,12 +8,18 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//build/apple/compile_plist.gni")
 import("//build/apple/tweak_info_plist.gni")
 import("//build/config/mac/rules.gni")
+import("//build/apple/compile_entitlements.gni")
 
 assert(enable_brave_vpn)
 assert(is_mac)
 
 tweak_info_plist("ras_helper_plist") {
-  info_plist = "app-entitlements.plist"
+  info_plist = "Info.plist"
+}
+
+compile_entitlements("entitlements") {
+  entitlements_templates = [ "app-entitlements.plist" ]
+  output_name = "$target_gen_dir/app-entitlements.plist"
 }
 
 mac_app_bundle("brave_vpn_ras_helper") {
@@ -27,6 +33,7 @@ mac_app_bundle("brave_vpn_ras_helper") {
   extra_substitutions = [ "MAC_BUNDLE_IDENTIFIER=$mac_signing_identifier" ]
 
   deps = [ "//base" ]
+
   frameworks = [
     "NetworkExtension.framework",
     "Foundation.framework",
