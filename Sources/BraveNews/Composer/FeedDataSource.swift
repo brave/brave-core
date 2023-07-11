@@ -144,6 +144,8 @@ public class FeedDataSource: ObservableObject {
       DateFormatter().then {
         $0.dateFormat = "yyyy-MM-dd HH:mm:ss"
         $0.timeZone = TimeZone(secondsFromGMT: 0)
+        $0.locale = Locale(identifier: "en_US_POSIX")
+        $0.calendar = Calendar(identifier: .iso8601)
       })
     return decoder
   }()
