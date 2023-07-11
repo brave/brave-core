@@ -198,22 +198,30 @@ class TopToolbarView: UIView, ToolbarProtocol {
   
   private var locationTextContentView: UIStackView?
   
-  private lazy var qrCodeButton = ToolbarButton().then {
+  private var qrCodeButton = ToolbarButton().then {
     $0.accessibilityIdentifier = "TabToolbar.qrCodeButton"
     $0.isAccessibilityElement = true
     $0.accessibilityLabel = Strings.quickActionScanQRCode
     $0.setImage(UIImage(braveSystemNamed: "leo.qr.code", compatibleWith: nil), for: .normal)
     $0.tintColor = .braveLabel
-    $0.addTarget(self, action: #selector(topToolbarDidPressQrCodeButton), for: .touchUpInside)
+    $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+    $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+    $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+    $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
   }
   
-  private lazy var voiceSearchButton = ToolbarButton().then {
+  private var voiceSearchButton = ToolbarButton().then {
     $0.accessibilityIdentifier = "TabToolbar.voiceSearchButton"
     $0.isAccessibilityElement = true
     $0.accessibilityLabel = Strings.tabToolbarVoiceSearchButtonAccessibilityLabel
     $0.setImage(UIImage(braveSystemNamed: "leo.microphone", compatibleWith: nil), for: .normal)
     $0.tintColor = .braveLabel
-    $0.addTarget(self, action: #selector(topToolbarDidPressVoiceSearchButton), for: .touchUpInside)
+    $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+    $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+    $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+    $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
   }
   
   private lazy var locationBarOptionsStackView = UIStackView().then {
@@ -303,6 +311,9 @@ class TopToolbarView: UIView, ToolbarProtocol {
     locationView.addGestureRecognizer(swipeGestureRecognizer)
     
     self.displayTabTraySwipeGestureRecognizer = swipeGestureRecognizer
+    
+    qrCodeButton.addTarget(self, action: #selector(topToolbarDidPressQrCodeButton), for: .touchUpInside)
+    voiceSearchButton.addTarget(self, action: #selector(topToolbarDidPressVoiceSearchButton), for: .touchUpInside)
   }
 
   @available(*, unavailable)
@@ -406,14 +417,9 @@ class TopToolbarView: UIView, ToolbarProtocol {
     let dragInteraction = UIDragInteraction(delegate: self)
     locationTextField.addInteraction(dragInteraction)
 
-    let optionSubviews = [qrCodeButton, voiceSearchButton]
-    optionSubviews.forEach {
-      ($0 as? UIButton)?.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-      $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-      $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-      locationBarOptionsStackView.addArrangedSubview($0)
-    }
-      
+    locationBarOptionsStackView.addArrangedSubview(qrCodeButton)
+    locationBarOptionsStackView.addArrangedSubview(voiceSearchButton)
+   
     let subviews = [locationTextField, locationBarOptionsStackView]
     locationTextContentView = UIStackView(arrangedSubviews: subviews).then {
       $0.layoutMargins = UIEdgeInsets(top: 2, left: 8, bottom: 2, right: 0)
