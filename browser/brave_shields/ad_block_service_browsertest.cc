@@ -228,13 +228,11 @@ void AdBlockServiceTest::GetTestDataDir(base::FilePath* test_data_dir) {
 }
 
 bool AdBlockServiceTest::InstallDefaultAdBlockExtension(
-    const std::string& extension_dir,
-    int expected_change) {
+    const std::string& extension_dir) {
   base::FilePath test_data_dir;
   GetTestDataDir(&test_data_dir);
-  const extensions::Extension* ad_block_extension = InstallExtension(
-      test_data_dir.AppendASCII("adblock-data").AppendASCII(extension_dir),
-      expected_change);
+  const extensions::Extension* ad_block_extension = LoadExtensionAsComponent(
+      test_data_dir.AppendASCII("adblock-data").AppendASCII(extension_dir));
   if (!ad_block_extension)
     return false;
 
@@ -296,9 +294,8 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
 
   if (enable_list) {
     const extensions::Extension* ad_block_extension =
-        InstallExtension(test_data_dir.AppendASCII("adblock-data")
-                             .AppendASCII("adblock-regional"),
-                         1);
+        LoadExtensionAsComponent(test_data_dir.AppendASCII("adblock-data")
+                                     .AppendASCII("adblock-regional"));
     if (!ad_block_extension)
       return false;
 
