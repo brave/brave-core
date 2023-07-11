@@ -229,6 +229,8 @@ export interface UIState {
   selectedPendingTransactionId?: string | undefined
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   isPanel: boolean
+  collapsedPortfolioAccountAddresses: string[]
+  collapsedPortfolioNetworkKeys: string[]
 }
 
 export interface WalletState {
