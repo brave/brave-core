@@ -70,8 +70,8 @@ version = "0.1"
 features = ["serde"]
 
 [dependencies.bitvec]
-default-features = false
 version = "1.0.1"
+features = [ "alloc", "atomic", "std" ]
 
 [dependencies.bls-signatures]
 default-features = false
@@ -79,8 +79,8 @@ version = "0.12"
 features = ["pairing"]
 
 [dependencies.byteorder]
-default-features = false
 version = "1"
+features = [ "i128", "std" ]
 
 [dependencies.challenge-bypass-ristretto]
 version = "1.0.1"
