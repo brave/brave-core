@@ -16,20 +16,10 @@ cargo_crate("lib") {
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [
-    "crate/src/ansi.rs",
-    "crate/src/debug.rs",
-    "crate/src/difference.rs",
-    "crate/src/display.rs",
-    "crate/src/lib.rs",
-    "crate/src/style.rs",
-    "crate/src/util.rs",
-    "crate/src/windows.rs",
-    "crate/src/write.rs",
-  ]
+  sources = [ "crate/src/lib.rs" ]
   edition = "2015"
   cargo_pkg_version = "0.12.1"
-  cargo_pkg_authors = "ogham@bsago.me Ryan Scheel (Havvy) <ryan.havvy@gmail.com> Josh Triplett <josh@joshtriplett.org>"
+  cargo_pkg_authors = "ogham@bsago.me, Ryan Scheel (Havvy) <ryan.havvy@gmail.com>, Josh Triplett <josh@joshtriplett.org>"
   cargo_pkg_name = "ansi_term"
   cargo_pkg_description =
       "Library for ANSI terminal colours and styles (bold, underline)"
@@ -37,7 +27,8 @@ cargo_crate("lib") {
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = []
   if (is_win) {
-    deps = [ "//third_party/rust/winapi/v0_3:lib" ]
+    deps += [ "//third_party/rust/winapi/v0_3:lib" ]
   }
 }

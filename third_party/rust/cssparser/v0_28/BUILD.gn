@@ -35,9 +35,9 @@ cargo_crate("lib") {
     "//third_party/rust/itoa/v0_4:lib",
   ]
   build_deps = [
-    "//third_party/rust/proc_macro2/v1:lib",
-    "//third_party/rust/quote/v1:lib",
-    "//third_party/rust/syn/v1:lib",
+    "//brave/third_party/rust/syn/v1:buildrs_support",
+    "//third_party/rust/proc_macro2/v1:buildrs_support",
+    "//third_party/rust/quote/v1:buildrs_support",
   ]
   build_root = "crate/build.rs"
   build_sources = [ "crate/build.rs" ]

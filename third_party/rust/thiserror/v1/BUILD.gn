@@ -23,4 +23,6 @@ cargo_crate("lib") {
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [ "//brave/third_party/rust/thiserror_impl/v1:lib" ]
+  build_root = "crate/build.rs"
+  build_sources = [ "crate/build.rs" ]
 }

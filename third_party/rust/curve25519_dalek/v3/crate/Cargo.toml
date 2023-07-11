@@ -62,7 +62,7 @@ version = "^2.2.1"
 default-features = false
 
 [dependencies.zeroize]
-version = ">=1, <1.4"
+version = "1"
 default-features = false
 [dev-dependencies.bincode]
 version = "1"

@@ -10,39 +10,41 @@ members = ["cxxbridge_cmd/v1/crate"]
 
 [dependencies]
 anyhow = "1"
-async-trait = "0.1"
-base64 = "0.13"
-bincode = "1"
-bitflags = "1"
-bitvec = "1"
-blake2b_simd = "1"
+async-trait = "0.1.64"
+base64 = "0.13.0"
+bincode = "1.3.0"
+bitflags = "1.2"
+blake2b_simd = "1.0"
 cargo-platform = "0.1"
 cargo_metadata = "0.14"
 cfg-if = "1"
 clap = "4"
+cpufeatures = "0.2"
+curve25519-dalek = "3.2.1"
 cxxbridge-cmd = "1"
-data-encoding = "2"
+data-encoding = "2.1.2"
 derive_more = "0.99"
-futures-retry = "0.5"
-fvm_ipld_encoding = "0.2"
-git-version = "0.3"
+ed25519-dalek-bip32 = "0.2.0"
+feed-rs = "1.3.0"
+forest_bigint = "0.1.2"
+futures = "0.3.19"
+futures-retry = "0.5.0"
+fvm_ipld_encoding = "0.2.0"
+git-version = "0.3.5"
 hex = "0.4"
 hex-literal = "0.4"
 hmac = "0.10"
-html5ever = "0.25"
-http = "0.1"
-kuchiki = "0.8"
+kuchiki = "0.8.1"
 lazy_static = "1"
+libc = "0.2"
 libsecp256k1 = "0.7"
-lifeguard = "0.6"
+lifeguard = "^ 0.6.1"
 log = "0.4"
-lol_html = "0.3"
-markup5ever = "0.10"
+lol_html = "0.3.0"
 once_cell = "1"
 proc-macro2 = "1"
 quote = "1"
 rand = "0.8"
-rand_core = "0.6"
 rand_pcg = "0.3"
 regex = "1"
 rstest_reuse = "0.5"
@@ -51,35 +53,50 @@ serde_json = "1"
 sha2 = "0.9"
 small_ctor = "0.1"
 static_assertions = "1"
-strobe-rs = "0.8"
+strobe-rs = "0.8.1"
 tempfile = "3"
-thiserror = "1"
-url = "2"
-urlencoding = "1"
+thiserror = "^1.0.30"
+url = "2.2"
+urlencoding = "1.1.1"
 wycheproof = "0.4"
-zeroize = "1"
 
 [dependencies.adblock]
 default-features = false
-version = "0.7"
+version = "0.7.9"
 features = ["full-regex-handling", "debug-info", "css-validation"]
 
 [dependencies.bigdecimal]
 version = "0.1"
 features = ["serde"]
 
+[dependencies.bitvec]
+default-features = false
+version = "1.0.1"
+
 [dependencies.bls-signatures]
 default-features = false
 version = "0.12"
 features = ["pairing"]
+
+[dependencies.byteorder]
+default-features = false
+version = "1"
+
+[dependencies.challenge-bypass-ristretto]
+version = "1.0.1"
+features = ["base64"]
 
 [dependencies.chrono]
 default-features = false
 version = "0.4"
 features = ["clock", "serde"]
 
+[dependencies.cssparser]
+version = "0.28"
+build-script-outputs = ["tokenizer.rs"]
+
 [dependencies.cxx]
-version = "1"
+version = "1.0"
 features = ["alloc", "std"]
 
 [dependencies.env_logger]
@@ -87,17 +104,38 @@ default-features = false
 version = "0.10"
 features = ["color", "regex"]
 
+[dependencies.ff]
+version = "0.13"
+features = ["derive"]
+
 [dependencies.flate2]
 default-features = false
-version = "1"
+version = "1.0.25"
 features = ["rust_backend"]
 
 [dependencies.fvm_shared]
-version = "0.7 "
+version = "0.7.0 "
+
+[dependencies.html5ever]
+version = "0.25.1"
+
+[dependencies.http]
+version = "0.1"
+
+[dependencies.markup5ever]
+version = "0.10"
 
 [dependencies.memoffset]
 version = "0.6"
 features = ["unstable_const"]
+
+[dependencies.num-bigint]
+version = "0.4"
+build-script-outputs = ["radix_bases.rs"]
+
+[dependencies.rand_core]
+default-features = false
+version = "0.6"
 
 [dependencies.rstest]
 default-features = false
@@ -107,8 +145,12 @@ version = "0.17"
 version = "1"
 build-script-outputs = ["version.rs"]
 
+[dependencies.selectors]
+version = "0.23"
+build-script-outputs = ["ascii_case_insensitive_html_attributes.rs"]
+
 [dependencies.serde]
-version = "1"
+version = "^1.0.117"
 features = ["derive"]
 
 [dependencies.serde_json_lenient]
@@ -120,12 +162,25 @@ version = "1"
 features = ["full"]
 
 [dependencies.time]
-version = "0.3"
+version = "0.3.5"
 features = ["formatting", "macros", "parsing"]
 
 [dependencies.toml]
 version = "0.5"
 features = ["preserve_order"]
+
+[dependencies.tracing]
+default-features = false
+version = "0.1"
+
+[dependencies.tracing-subscriber]
+default-features = false
+version = "0.2.0"
+features = ["ansi", "fmt", "registry"]
+
+[dependencies.typenum]
+version = "1"
+build-script-outputs = ["consts.rs", "op.rs"]
 
 [dependencies.unicode-linebreak]
 version = "0.1"
@@ -134,6 +189,10 @@ build-script-outputs = ["tables.rs"]
 [dependencies.uuid]
 version = "0.8"
 features = ["serde"]
+
+[dependencies.zeroize]
+version = "1.5.5"
+features = ["zeroize_derive"]
 [patch.crates-io.adblock_v0_7]
 path = "adblock/v0_7/crate"
 package = "adblock"
@@ -194,10 +253,6 @@ package = "base-x"
 path = "base64/v0_13/crate"
 package = "base64"
 
-[patch.crates-io.base64_v0_9]
-path = "base64/v0_9/crate"
-package = "base64"
-
 [patch.crates-io.bigdecimal_v0_1]
 path = "bigdecimal/v0_1/crate"
 package = "bigdecimal"
@@ -222,14 +277,6 @@ package = "bitvec"
 path = "blake2b_simd/v1/crate"
 package = "blake2b_simd"
 
-[patch.crates-io.blake2s_simd_v1]
-path = "blake2s_simd/v1/crate"
-package = "blake2s_simd"
-
-[patch.crates-io.blake3_v1]
-path = "blake3/v1/crate"
-package = "blake3"
-
 [patch.crates-io.block-buffer_v0_10]
 path = "block_buffer/v0_10/crate"
 package = "block-buffer"
@@ -252,10 +299,6 @@ package = "byteorder"
 
 [patch.crates-io.bytes_v0_4]
 path = "bytes/v0_4/crate"
-package = "bytes"
-
-[patch.crates-io.bytes_v0_5]
-path = "bytes/v0_5/crate"
 package = "bytes"
 
 [patch.crates-io.camino_v1]
@@ -514,6 +557,10 @@ package = "futures-sink"
 path = "futures_task/v0_3/crate"
 package = "futures-task"
 
+[patch.crates-io.futures-timer_v3]
+path = "futures_timer/v3/crate"
+package = "futures-timer"
+
 [patch.crates-io.futures-util_v0_3]
 path = "futures_util/v0_3/crate"
 package = "futures-util"
@@ -718,10 +765,6 @@ package = "memchr"
 path = "memoffset/v0_6/crate"
 package = "memoffset"
 
-[patch.crates-io.memoffset_v0_8]
-path = "memoffset/v0_8/crate"
-package = "memoffset"
-
 [patch.crates-io.mime_v0_3]
 path = "mime/v0_3/crate"
 package = "mime"
@@ -754,6 +797,10 @@ package = "nodrop"
 path = "num_bigint/v0_2/crate"
 package = "num-bigint"
 
+[patch.crates-io.num-bigint_v0_3]
+path = "num_bigint/v0_3/crate"
+package = "num-bigint"
+
 [patch.crates-io.num-bigint_v0_4]
 path = "num_bigint/v0_4/crate"
 package = "num-bigint"
@@ -769,10 +816,6 @@ package = "num-integer"
 [patch.crates-io.num-traits_v0_2]
 path = "num_traits/v0_2/crate"
 package = "num-traits"
-
-[patch.crates-io.num_cpus_v1]
-path = "num_cpus/v1/crate"
-package = "num_cpus"
 
 [patch.crates-io.once_cell_v1]
 path = "once_cell/v1/crate"
@@ -837,10 +880,6 @@ package = "phf"
 [patch.crates-io.pin-project-internal_v0_4]
 path = "pin_project_internal/v0_4/crate"
 package = "pin-project-internal"
-
-[patch.crates-io.pin-project-lite_v0_1]
-path = "pin_project_lite/v0_1/crate"
-package = "pin-project-lite"
 
 [patch.crates-io.pin-project-lite_v0_2]
 path = "pin_project_lite/v0_2/crate"
@@ -925,10 +964,6 @@ package = "rand"
 [patch.crates-io.rand_v0_8]
 path = "rand/v0_8/crate"
 package = "rand"
-
-[patch.crates-io.regex-automata_v0_1]
-path = "regex_automata/v0_1/crate"
-package = "regex-automata"
 
 [patch.crates-io.regex-syntax_v0_6]
 path = "regex_syntax/v0_6/crate"
@@ -1154,10 +1189,6 @@ package = "time-core"
 path = "time_macros/v0_2/crate"
 package = "time-macros"
 
-[patch.crates-io.time_v0_1]
-path = "time/v0_1/crate"
-package = "time"
-
 [patch.crates-io.time_v0_3]
 path = "time/v0_3/crate"
 package = "time"
@@ -1170,29 +1201,13 @@ package = "tinyvec_macros"
 path = "tinyvec/v1/crate"
 package = "tinyvec"
 
-[patch.crates-io.tokio_v0_2]
-path = "tokio/v0_2/crate"
-package = "tokio"
-
 [patch.crates-io.toml_v0_5]
 path = "toml/v0_5/crate"
 package = "toml"
 
-[patch.crates-io.tracing-attributes_v0_1]
-path = "tracing_attributes/v0_1/crate"
-package = "tracing-attributes"
-
 [patch.crates-io.tracing-core_v0_1]
 path = "tracing_core/v0_1/crate"
 package = "tracing-core"
-
-[patch.crates-io.tracing-log_v0_1]
-path = "tracing_log/v0_1/crate"
-package = "tracing-log"
-
-[patch.crates-io.tracing-serde_v0_1]
-path = "tracing_serde/v0_1/crate"
-package = "tracing-serde"
 
 [patch.crates-io.tracing-subscriber_v0_2]
 path = "tracing_subscriber/v0_2/crate"
