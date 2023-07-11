@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -319,6 +320,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 02/2023
   TxStateManager::MigrateAddChainIdToTransactionInfo(prefs);
+
+  // Added 07/2023
+  KeyringService::MigrateDerivedAccountIndex(prefs);
 }
 
 }  // namespace brave_wallet

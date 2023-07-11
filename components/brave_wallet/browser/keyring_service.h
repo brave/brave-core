@@ -54,6 +54,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                  PrefService* local_state);
   ~KeyringService() override;
 
+  static void MigrateDerivedAccountIndex(PrefService* profile_prefs);
+
   void MaybeMigrateSelectedAccountPrefs();
   static absl::optional<int>& GetPbkdf2IterationsForTesting();
   static void MigrateObsoleteProfilePrefs(PrefService* profile_prefs);

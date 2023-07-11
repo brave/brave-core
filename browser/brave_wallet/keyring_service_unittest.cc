@@ -1280,6 +1280,73 @@ TEST_F(KeyringServiceUnitTest, AccountMetasForKeyring) {
   EXPECT_EQ(*KeyringService::GetPrefForKeyring(*GetPrefs(), kAccountMetas,
                                                mojom::kDefaultKeyringId),
             base::test::ParseJson(R"(
+  [
+    {
+        "account_index" : "0",
+        "account_address": "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
+        "account_name": "Account 1"
+    },
+    {
+        "account_index" : "1",
+        "account_address": "0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0",
+        "account_name": "AccountETH"
+    }
+  ]
+  )"));
+
+  EXPECT_EQ(*KeyringService::GetPrefForKeyring(*GetPrefs(), kAccountMetas,
+                                               mojom::kSolanaKeyringId),
+            base::test::ParseJson(R"(
+  [
+    {
+        "account_index" : "0",
+        "account_address": "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+        "account_name": "Solana Account 1"
+    },
+    {
+        "account_index" : "1",
+        "account_address": "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV",
+        "account_name": "AccountSOL"
+    }
+  ]
+  )"));
+
+  EXPECT_EQ(*KeyringService::GetPrefForKeyring(*GetPrefs(), kAccountMetas,
+                                               mojom::kFilecoinKeyringId),
+            base::test::ParseJson(R"(
+  [
+    {
+        "account_index" : "0",
+        "account_address": "f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava",
+        "account_name": "AccountFIL"
+    }
+  ]
+  )"));
+
+  EXPECT_EQ(*KeyringService::GetPrefForKeyring(
+                *GetPrefs(), kAccountMetas, mojom::kFilecoinTestnetKeyringId),
+            base::test::ParseJson(R"(
+  [
+    {
+      "account_index" : "0",
+      "account_address": "t1dca7adhz5lbvin5n3qlw67munu6xhn5fpb77nly",
+      "account_name": "AccountFILTest"
+    }
+  ]
+  )"));
+}
+
+TEST_F(KeyringServiceUnitTest, MigrateDerivedAccountIndex) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletFilecoinFeature};
+
+  {
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+    ASSERT_TRUE(RestoreWallet(&service, kMnemonic1, "brave", false));
+  }
+
+  KeyringService::SetPrefForKeyring(GetPrefs(), kAccountMetas,
+                                    base::test::ParseJson(R"(
   {
     "m/44'/60'/0'/0/0": {
         "account_address": "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
@@ -1289,11 +1356,11 @@ TEST_F(KeyringServiceUnitTest, AccountMetasForKeyring) {
         "account_address": "0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0",
         "account_name": "AccountETH"
     }
-  })"));
+  })"),
+                                    mojom::kDefaultKeyringId);
 
-  EXPECT_EQ(*KeyringService::GetPrefForKeyring(*GetPrefs(), kAccountMetas,
-                                               mojom::kSolanaKeyringId),
-            base::test::ParseJson(R"(
+  KeyringService::SetPrefForKeyring(GetPrefs(), kAccountMetas,
+                                    base::test::ParseJson(R"(
   {
     "m/44'/501'/0'/0'": {
         "account_address": "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
@@ -1303,27 +1370,100 @@ TEST_F(KeyringServiceUnitTest, AccountMetasForKeyring) {
         "account_address": "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV",
         "account_name": "AccountSOL"
     }
-  })"));
+  })"),
+                                    mojom::kSolanaKeyringId);
 
-  EXPECT_EQ(*KeyringService::GetPrefForKeyring(*GetPrefs(), kAccountMetas,
-                                               mojom::kFilecoinKeyringId),
-            base::test::ParseJson(R"(
+  KeyringService::SetPrefForKeyring(GetPrefs(), kAccountMetas,
+                                    base::test::ParseJson(R"(
   {
     "m/44'/461'/0'/0/0": {
         "account_address": "f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava",
         "account_name": "AccountFIL"
     }
-  })"));
+  })"),
+                                    mojom::kFilecoinKeyringId);
 
-  EXPECT_EQ(*KeyringService::GetPrefForKeyring(
-                *GetPrefs(), kAccountMetas, mojom::kFilecoinTestnetKeyringId),
-            base::test::ParseJson(R"(
+  KeyringService::SetPrefForKeyring(GetPrefs(), kAccountMetas,
+                                    base::test::ParseJson(R"(
   {
     "m/44'/1'/0'/0/0": {
       "account_address": "t1dca7adhz5lbvin5n3qlw67munu6xhn5fpb77nly",
       "account_name": "AccountFILTest"
     }
-  })"));
+  })"),
+                                    mojom::kFilecoinTestnetKeyringId);
+
+  KeyringService::MigrateDerivedAccountIndex(GetPrefs());
+
+  EXPECT_EQ(*KeyringService::GetPrefForKeyring(*GetPrefs(), kAccountMetas,
+                                               mojom::kDefaultKeyringId),
+            base::test::ParseJson(R"(
+  [
+    {
+        "account_index" : "0",
+        "account_address": "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
+        "account_name": "Account 1"
+    },
+    {
+        "account_index" : "1",
+        "account_address": "0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0",
+        "account_name": "AccountETH"
+    }
+  ]
+  )"));
+
+  EXPECT_EQ(*KeyringService::GetPrefForKeyring(*GetPrefs(), kAccountMetas,
+                                               mojom::kSolanaKeyringId),
+            base::test::ParseJson(R"(
+  [
+    {
+        "account_index" : "0",
+        "account_address": "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+        "account_name": "Solana Account 1"
+    },
+    {
+        "account_index" : "1",
+        "account_address": "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV",
+        "account_name": "AccountSOL"
+    }
+  ]
+  )"));
+
+  EXPECT_EQ(*KeyringService::GetPrefForKeyring(*GetPrefs(), kAccountMetas,
+                                               mojom::kFilecoinKeyringId),
+            base::test::ParseJson(R"(
+  [
+    {
+        "account_index" : "0",
+        "account_address": "f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava",
+        "account_name": "AccountFIL"
+    }
+  ]
+  )"));
+
+  EXPECT_EQ(*KeyringService::GetPrefForKeyring(
+                *GetPrefs(), kAccountMetas, mojom::kFilecoinTestnetKeyringId),
+            base::test::ParseJson(R"(
+  [
+    {
+      "account_index" : "0",
+      "account_address": "t1dca7adhz5lbvin5n3qlw67munu6xhn5fpb77nly",
+      "account_name": "AccountFILTest"
+    }
+  ]
+  )"));
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  auto accounts = service.GetAllAccountInfos();
+  EXPECT_EQ(accounts.size(), 6u);
+  EXPECT_EQ(accounts[0]->address, "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
+  EXPECT_EQ(accounts[1]->address, "0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0");
+  EXPECT_EQ(accounts[2]->address, "f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava");
+  EXPECT_EQ(accounts[3]->address, "t1dca7adhz5lbvin5n3qlw67munu6xhn5fpb77nly");
+  EXPECT_EQ(accounts[4]->address,
+            "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
+  EXPECT_EQ(accounts[5]->address,
+            "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV");
 }
 
 TEST_F(KeyringServiceUnitTest, CreateAndRestoreWallet) {
@@ -3532,6 +3672,7 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
     EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
     EXPECT_NE(service.encryptors_.at(mojom::kFilecoinKeyringId), nullptr);
+    service.Reset();
   }
   {
     // Create wallet with enabled filecoin & solana
@@ -3545,6 +3686,7 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
     EXPECT_NE(service.encryptors_.at(mojom::kFilecoinKeyringId), nullptr);
     EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
+    service.Reset();
   }
   {
     // Create wallet and enable filecoin & solana before unlock
@@ -3563,6 +3705,7 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
     EXPECT_NE(service.encryptors_.at(mojom::kFilecoinKeyringId), nullptr);
     EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
+    service.Reset();
   }
   {
     // Create default wallet and enable filecoin solana before restore
