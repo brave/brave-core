@@ -290,10 +290,10 @@ However, we noticed this helper service is not running - and we don't want to le
       Brave VPN: Error
     </message>
     <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_STATUS_ITEM_ACTIVE" desc="Message to be displayed as the first item in the menu for the system tray icon in connected state.">
-      Status: Active
+      Status: Connected
     </message>
     <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_STATUS_ITEM_INACTIVE" desc="Message to be displayed as the first item in the menu for the system tray icon in disconnected state.">
-      Status: Inactive
+      Status: Disconnected
     </message>
     <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_CONNECT_ITEM" desc="Title of the system tray menu item for connect command.">
       Connect
