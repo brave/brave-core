@@ -236,6 +236,47 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachIfWalletCreated) {
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
 }
 
+IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, EIP6369) {
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(
+          browser()->profile());
+  keyring_service->CreateWallet("password", base::DoNothing());
+
+  brave_wallet::SetDefaultEthereumWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+
+  const GURL url = https_server_.GetURL("/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  constexpr char kEvalIsBraveWallet[] = "window.ethereum.isBraveWallet";
+  EXPECT_TRUE(
+      content::EvalJs(primary_main_frame(), kEvalIsBraveWallet).ExtractBool());
+
+  std::string command = R"(
+    (async () => {
+      try {
+        let promise = new Promise((resolve) => {
+          const listener = (event) => {
+            window.removeEventListener("eip6963:announceProvider", listener);
+            let is_brave_wallet = event.detail.info.name === "Brave Wallet" &&
+                                  event.detail.provider.isBraveWallet === true;
+            resolve(is_brave_wallet);
+          }
+          window.addEventListener("eip6963:announceProvider", listener);
+          window.dispatchEvent(new Event("eip6963:requestProvider"));
+        })
+        return await promise;
+      } catch (e) {
+        return false;
+      }
+    })();)";
+
+  EXPECT_TRUE(content::EvalJs(primary_main_frame(), command).ExtractBool());
+
+  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+}
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                        DoNotAttachIfMetaMaskInstalled) {

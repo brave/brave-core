@@ -13,6 +13,7 @@
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/uuid.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -20,6 +21,7 @@
 #include "brave/components/brave_wallet/renderer/resource_helper.h"
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
+#include "components/grit/brave_components_resources.h"
 #include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/function_template.h"
@@ -105,6 +107,7 @@ void JSEthereumProvider::SendResponse(
 
 JSEthereumProvider::JSEthereumProvider(content::RenderFrame* render_frame)
     : RenderFrameObserver(render_frame) {
+  uuid_ = base::Uuid::GenerateRandomV4().AsLowercaseString();
   EnsureConnected();
 }
 
@@ -223,6 +226,9 @@ void JSEthereumProvider::Install(bool allow_overwrite_window_ethereum_provider,
                 LoadDataResource(
                     IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS),
                 kEthereumProviderScript);
+
+  provider->BindRequestProviderListener();
+  provider->AnnounceProvider();
 }
 
 bool JSEthereumProvider::GetIsBraveWallet() {
@@ -641,6 +647,130 @@ void JSEthereumProvider::MessageEvent(const std::string& subscription_id,
   event_args.Set("type", "eth_subscription");
   event_args.Set("data", std::move(data));
   FireEvent(ethereum::kMessageEvent, event_args);
+}
+
+void JSEthereumProvider::OnProviderRequested() {
+  AnnounceProvider();
+}
+
+void JSEthereumProvider::BindRequestProviderListener() {
+  v8::Isolate* isolate = blink::MainThreadIsolate();
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context =
+      render_frame()->GetWebFrame()->MainWorldScriptContext();
+
+  auto onProviderRequested = gin::CreateFunctionTemplate(
+      isolate, base::BindRepeating(&JSEthereumProvider::OnProviderRequested,
+                                   weak_ptr_factory_.GetWeakPtr()));
+  auto functionInstance =
+      onProviderRequested->GetFunction(context).ToLocalChecked();
+
+  std::vector<v8::Local<v8::Value>> args;
+  args.push_back(content::V8ValueConverter::Create()->ToV8Value(
+      base::Value("eip6963:requestProvider"), context));
+  args.push_back(std::move(functionInstance));
+
+  CallMethodOfObject(render_frame()->GetWebFrame(), "window",
+                     "addEventListener", std::move(args));
+}
+
+void JSEthereumProvider::AnnounceProvider() {
+  v8::Isolate* isolate = blink::MainThreadIsolate();
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context =
+      render_frame()->GetWebFrame()->MainWorldScriptContext();
+
+  base::Value::Dict provider_info_value;
+  provider_info_value.Set("rDNS", "com.brave.wallet");
+  provider_info_value.Set("uuid", uuid_);
+  provider_info_value.Set("name", "Brave Wallet");
+  provider_info_value.Set("icon", GetBraveWalletImage());
+
+  auto detail = v8::Object::New(isolate);
+  auto info_object = content::V8ValueConverter::Create()->ToV8Value(
+      std::move(provider_info_value), context);
+
+  if (!info_object.As<v8::Object>()
+           ->SetIntegrityLevel(isolate->GetCurrentContext(),
+                               v8::IntegrityLevel::kFrozen)
+           .ToChecked()) {
+    NOTREACHED();
+    return;
+  }
+
+  if (detail
+          ->Set(context,
+                content::V8ValueConverter::Create()->ToV8Value(
+                    base::Value("info"), context),
+                std::move(info_object))
+          .IsNothing()) {
+    NOTREACHED();
+    return;
+  }
+
+  auto provider =
+      GetProperty(context, context->Global(), kEthereum).ToLocalChecked();
+
+  if (detail
+          ->Set(context,
+                content::V8ValueConverter::Create()->ToV8Value(
+                    base::Value("provider"), context),
+                std::move(provider))
+          .IsNothing()) {
+    NOTREACHED();
+    return;
+  }
+
+  if (detail
+          ->SetIntegrityLevel(isolate->GetCurrentContext(),
+                              v8::IntegrityLevel::kFrozen)
+          .IsNothing()) {
+    NOTREACHED();
+    return;
+  }
+
+  auto event_content = v8::Object::New(isolate);
+  if (event_content
+          ->Set(context,
+                content::V8ValueConverter::Create()->ToV8Value(
+                    base::Value("detail"), context),
+                std::move(detail))
+          .IsNothing()) {
+    NOTREACHED();
+    return;
+  }
+
+  v8::Local<v8::Function> custom_event =
+      GetProperty(context, context->Global(), "CustomEvent")
+          .ToLocalChecked()
+          .As<v8::Function>();
+
+  v8::Local<v8::Value> custom_event_args[] = {
+      content::V8ValueConverter::Create()->ToV8Value(
+          base::Value("eip6963:announceProvider"), context),
+      std::move(event_content)};
+
+  v8::Local<v8::Value> custom_event_value =
+      custom_event->NewInstanceWithSideEffectType(context, 2, custom_event_args)
+          .ToLocalChecked();
+
+  v8::Local<v8::Function> dispatch_event =
+      GetProperty(context, context->Global(), "dispatchEvent")
+          .ToLocalChecked()
+          .As<v8::Function>();
+
+  v8::Local<v8::Value> dispatch_event_args[] = {std::move(custom_event_value)};
+
+  dispatch_event->Call(context, context->Global(), 1, dispatch_event_args)
+      .ToLocalChecked();
+}
+
+const std::string& JSEthereumProvider::GetBraveWalletImage() {
+  if (!brave_wallet_image_) {
+    brave_wallet_image_ =
+        LoadImageResourceAsDataUrl(IDR_BRAVE_WALLET_PROVIDER_ICON);
+  }
+  return brave_wallet_image_.value();
 }
 
 }  // namespace brave_wallet
