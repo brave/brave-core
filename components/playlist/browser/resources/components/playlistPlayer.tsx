@@ -37,10 +37,12 @@ export default function PlaylistPlayer ({
           name={item.name}
           cached={item.cached}
           thumbnailUrl={item.thumbnailPath.url}
-          onClick={() => postMessageToPlayer({
-            actionType: types.PLAYLIST_ITEM_SELECTED,
-            data: { ...item, mediaPath: { url: item.mediaPath?.url } }
-          })}
+          onClick={() =>
+            postMessageToPlayer({
+              actionType: types.PLAYLIST_ITEM_SELECTED,
+              data: item
+            })
+          }
         />
       ))}
     </>

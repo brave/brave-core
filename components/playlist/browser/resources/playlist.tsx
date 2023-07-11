@@ -16,9 +16,6 @@ import App from './components/app.v1'
 
 // Theme
 
-import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
-import Theme from 'brave-ui/theme/brave-default'
-import DarkTheme from 'brave-ui/theme/brave-dark'
 import wireApiEventsToStore from './apiEventsToStore'
 import startReceivingPlayerEvents from './playerEventSink'
 
@@ -29,9 +26,7 @@ function initialize () {
   render(
     <BrowserRouter>
       <Provider store={store}>
-        <BraveCoreThemeProvider dark={DarkTheme} light={Theme}>
-          <App />
-        </BraveCoreThemeProvider>
+        <App />
       </Provider>
     </BrowserRouter>,
     document.getElementById('root')

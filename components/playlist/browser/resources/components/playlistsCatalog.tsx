@@ -122,7 +122,7 @@ function PlaylistCard ({ playlist }: { playlist: Playlist }) {
   const isDefaultPlaylist = playlist.id === 'default'
   const thumbnailUrl = React.useMemo(() => {
     return playlist.items?.find(item => item.thumbnailPath?.url)?.thumbnailPath
-      ?.url
+      .url
   }, [playlist])
   const hasBackground = isDefaultPlaylist || !!thumbnailUrl
 
