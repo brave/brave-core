@@ -18,11 +18,6 @@ struct C_CRewriter {
   uint8_t _private[0];
 };
 
-struct C_CharBuf {
-  const char* data;
-  size_t len;
-};
-
 extern "C" {
 
 /// Complete rewriting for this instance.
