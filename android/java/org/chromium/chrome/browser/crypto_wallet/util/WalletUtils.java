@@ -9,10 +9,13 @@ import android.content.Context;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxData;
 import org.chromium.brave_wallet.mojom.TxDataUnion;
 import org.chromium.chrome.R;
@@ -30,6 +33,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class WalletUtils {
+    private static final String ACCOUNT_INFO = "accountInfo";
+    private static final String BLOCKCHAIN_TOKEN = "blockchainToken";
+    private static final String NETWORK_INFO = "networkInfo";
+
     private static String getNewAccountPrefixForCoin(@CoinType.EnumType int coinType) {
         switch (coinType) {
             case CoinType.ETH:
@@ -92,10 +99,8 @@ public class WalletUtils {
         return txDataUnion;
     }
 
-    private static final String ACCOUNT_INFO = "accountInfo";
-
     public static void addAccountInfoToIntent(
-            @NonNull Intent intent, @NonNull AccountInfo accountInfo) {
+            @NonNull final Intent intent, @NonNull final AccountInfo accountInfo) {
         ByteBuffer bb = accountInfo.serialize();
         byte[] bytes = new byte[bb.remaining()];
         bb.get(bytes);
@@ -103,11 +108,48 @@ public class WalletUtils {
         intent.putExtra(ACCOUNT_INFO, bytes);
     }
 
-    public static AccountInfo getAccountInfoFromIntent(@NonNull Intent intent) {
+    @Nullable
+    public static AccountInfo getAccountInfoFromIntent(@NonNull final Intent intent) {
         byte[] bytes = intent.getByteArrayExtra(ACCOUNT_INFO);
         if (bytes == null) {
             return null;
         }
         return AccountInfo.deserialize(ByteBuffer.wrap(bytes));
+    }
+
+    public static void addBlockchainTokenToIntent(
+            @NonNull final Intent intent, @NonNull final BlockchainToken blockchainToken) {
+        ByteBuffer bb = blockchainToken.serialize();
+        byte[] bytes = new byte[bb.remaining()];
+        bb.get(bytes);
+
+        intent.putExtra(BLOCKCHAIN_TOKEN, bytes);
+    }
+
+    @Nullable
+    public static BlockchainToken getBlockchainTokenFromIntent(@NonNull final Intent intent) {
+        byte[] bytes = intent.getByteArrayExtra(BLOCKCHAIN_TOKEN);
+        if (bytes == null) {
+            return null;
+        }
+        return BlockchainToken.deserialize(ByteBuffer.wrap(bytes));
+    }
+
+    public static void addNetworkInfoToIntent(
+            @NonNull final Intent intent, @NonNull final NetworkInfo networkInfo) {
+        ByteBuffer bb = networkInfo.serialize();
+        byte[] bytes = new byte[bb.remaining()];
+        bb.get(bytes);
+
+        intent.putExtra(NETWORK_INFO, bytes);
+    }
+
+    @Nullable
+    public static NetworkInfo getNetworkInfoFromIntent(@NonNull final Intent intent) {
+        byte[] bytes = intent.getByteArrayExtra(NETWORK_INFO);
+        if (bytes == null) {
+            return null;
+        }
+        return NetworkInfo.deserialize(ByteBuffer.wrap(bytes));
     }
 }
