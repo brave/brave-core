@@ -20,7 +20,7 @@
 - (bool)canShowNotificationAdsWhileBrowserIsBackgrounded;
 - (void)addObserver:(brave_ads::AdsClientNotifierObserver*)observer;
 - (void)removeObserver:(brave_ads::AdsClientNotifierObserver*)observer;
-- (void)bindPendingObservers;
+- (void)notifyPendingObservers;
 - (bool)isNetworkConnectionAvailable;
 - (bool)canShowNotificationAds;
 - (void)loadFileResource:(const std::string&)id
