@@ -23,12 +23,12 @@ import org.json.JSONException;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRewardsHelper;
-import org.chromium.chrome.browser.BraveRewardsNativeWorker;
-import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
-import org.chromium.chrome.browser.rewards.BraveRewardsBannerInfo;
+import org.chromium.chrome.browser.rewards.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.rewards.BraveRewardsObserver;
+import org.chromium.chrome.browser.rewards.model.BraveRewardsBannerInfo;
+import org.chromium.chrome.browser.rewards.util.BraveRewardsHelper;
 import org.chromium.chrome.browser.util.TabUtils;
 
 import java.util.HashMap;

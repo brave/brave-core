@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser;
+package org.chromium.chrome.browser.rewards;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -19,6 +19,9 @@ import android.widget.TextView;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.rewards.model.BraveRewardsExternalWallet;
+import org.chromium.chrome.browser.rewards.util.BraveRewardsHelper;
+import org.chromium.chrome.browser.rewards.util.BraveWalletProvider;
 
 import java.util.Locale;
 
@@ -66,7 +69,7 @@ public class BraveRewardsVerifyWalletActivity extends Activity {
     }
 
     void SetVerifyWalletBtnClickHandler() {
-        Button btnVerifyWallet = (Button)findViewById(R.id.verify_wallet_btn);
+        Button btnVerifyWallet = (Button) findViewById(R.id.verify_wallet_btn);
         btnVerifyWallet.setOnClickListener((View v) -> {
             String login_url = getIntent().getStringExtra(BraveRewardsExternalWallet.LOGIN_URL);
             Intent intent = new Intent();
@@ -78,30 +81,28 @@ public class BraveRewardsVerifyWalletActivity extends Activity {
 
     @SuppressLint("ClickableViewAccessibility")
     void SetUpholdLinkHandler() {
-        TextView uphold_link = (TextView)findViewById(R.id.service_provider_txt);
+        TextView uphold_link = (TextView) findViewById(R.id.service_provider_txt);
         final String part1 = getResources().getString(R.string.verify_wallet_service_note);
         final String part2 = walletTypeString;
         final String built_service_str = String.format(Locale.US, "%s <b>%s</b>", part1, part2);
         Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(built_service_str);
         uphold_link.setText(toInsert);
 
-        uphold_link.setOnTouchListener(
-                (View view, MotionEvent motionEvent) -> {
-                    boolean event_consumed = false;
-                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                        int offset = uphold_link.getOffsetForPosition(
-                                motionEvent.getX(), motionEvent.getY());
+        uphold_link.setOnTouchListener((View view, MotionEvent motionEvent) -> {
+            boolean event_consumed = false;
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                int offset =
+                        uphold_link.getOffsetForPosition(motionEvent.getX(), motionEvent.getY());
 
-                        if (BraveRewardsHelper.subtextAtOffset(built_service_str, part2, offset) ){
-                            Intent intent = new Intent();
-                            intent.putExtra(
-                                    BraveActivity.OPEN_URL, BraveWalletProvider.UPHOLD_ORIGIN_URL);
-                            setResult(RESULT_OK, intent);
-                            finish();
-                            event_consumed = true;
-                        }
-                    }
-                    return event_consumed;
+                if (BraveRewardsHelper.subtextAtOffset(built_service_str, part2, offset)) {
+                    Intent intent = new Intent();
+                    intent.putExtra(BraveActivity.OPEN_URL, BraveWalletProvider.UPHOLD_ORIGIN_URL);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                    event_consumed = true;
+                }
+            }
+            return event_consumed;
         });
     }
 }

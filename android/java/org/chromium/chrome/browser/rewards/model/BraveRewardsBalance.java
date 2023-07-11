@@ -4,44 +4,43 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
-package org.chromium.chrome.browser;
+package org.chromium.chrome.browser.rewards.model;
 
 import androidx.annotation.VisibleForTesting;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class BraveRewardsBalance {
-    public static final String WALLET_BLINDED = "blinded";
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
+public class BraveRewardsBalance {
     /**
      * matching consts in
      * src/brave/components/brave_rewards/browser/balance.h
      */
-    public static final String JSON_TOTAL = "total";
-    public static final String JSON_WALLETS = "wallets";
+    private static final String JSON_TOTAL = "total";
+    private static final String JSON_WALLETS = "wallets";
 
     private double mTotal;
-    Map <String, Double> mWallets;
+    private Map<String, Double> mWallets;
 
-    BraveRewardsBalance (String json_balance) throws JSONException {
-        fromJson (json_balance);
+    public BraveRewardsBalance(String json_balance) throws JSONException {
+        fromJson(json_balance);
     }
 
     private void fromJson(String json_balance) throws JSONException {
         JSONObject jsonroot = new JSONObject(json_balance);
         mTotal = jsonroot.getDouble(JSON_TOTAL);
 
-        mWallets = new HashMap <>();
+        mWallets = new HashMap<>();
         JSONObject json_wallets = jsonroot.getJSONObject(JSON_WALLETS);
         Iterator<String> keys = json_wallets.keys();
-        while(keys.hasNext()) {
+        while (keys.hasNext()) {
             String key = keys.next();
             Double val = json_wallets.getDouble(key);
-            mWallets.put (key, val);
+            mWallets.put(key, val);
         }
     }
 
@@ -52,8 +51,7 @@ public class BraveRewardsBalance {
     @VisibleForTesting
     @Override
     public String toString() {
-        return "BraveRewardsBalance{" +
-                "mTotal=" + mTotal +
-                ", mWallets=" + mWallets +'}';
+        return "BraveRewardsBalance{"
+                + "mTotal=" + mTotal + ", mWallets=" + mWallets + '}';
     }
 }

@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRewardsHelper;
+import org.chromium.chrome.browser.rewards.util.BraveRewardsHelper;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
 import java.io.IOException;

@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.settings;
+package org.chromium.chrome.browser.rewards.settings;
 
 import android.os.Bundle;
-import androidx.preference.PreferenceDialogFragmentCompat;
 import android.view.View;
 
-import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import androidx.preference.PreferenceDialogFragmentCompat;
+
+import org.chromium.chrome.browser.rewards.BraveRewardsNativeWorker;
 
 /**
  * The dialog used to reset Brave Rewards.

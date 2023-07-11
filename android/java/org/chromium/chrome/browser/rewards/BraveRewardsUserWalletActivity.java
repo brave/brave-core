@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser;
+package org.chromium.chrome.browser.rewards;
 
 import android.content.Intent;
 import android.view.MenuItem;
@@ -21,6 +21,8 @@ import org.chromium.brave_rewards.mojom.WalletStatus;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.rewards.model.BraveRewardsExternalWallet;
+import org.chromium.chrome.browser.rewards.util.BraveWalletProvider;
 
 public class BraveRewardsUserWalletActivity
         extends AsyncInitializationActivity implements View.OnClickListener {

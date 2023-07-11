@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
-package org.chromium.chrome.browser;
+package org.chromium.chrome.browser.rewards.model;
 
 import android.content.Context;
 
@@ -18,7 +18,7 @@ import org.chromium.brave_rewards.mojom.WalletStatus;
 import org.chromium.chrome.R;
 
 public class BraveRewardsExternalWallet {
-    //fields
+    // fields
     public static final String ACCOUNT_URL = "account_url";
     public static final String ADDRESS = "address";
     public static final String STATUS = "status";
@@ -64,7 +64,7 @@ public class BraveRewardsExternalWallet {
     }
 
     public BraveRewardsExternalWallet(String json_external_wallet) throws JSONException {
-        fromJson (json_external_wallet);
+        fromJson(json_external_wallet);
     }
 
     private void fromJson(String json_external_wallet) throws JSONException {
@@ -90,10 +90,9 @@ public class BraveRewardsExternalWallet {
     public static String WalletStatusToString(int status) {
         String value = "";
         Context context = ContextUtils.getApplicationContext();
-        switch (status){
+        switch (status) {
             case WalletStatus.NOT_CONNECTED:
-                value = context.getResources().getString(
-                    R.string.user_wallet_status_not_connected);
+                value = context.getResources().getString(R.string.user_wallet_status_not_connected);
                 break;
             case WalletStatus.CONNECTED:
                 value = context.getResources().getString(R.string.brave_ui_wallet_button_connected);
