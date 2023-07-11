@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Dropdown from '@brave/leo/react/dropdown'
 
 // Utils
 import {
@@ -22,7 +21,7 @@ import {
   Description,
   IconWrapper,
   Icon,
-  DropdownWrapper
+  DropdownFilter
 } from './filter-components.style'
 import {
   Row,
@@ -100,25 +99,23 @@ export const FilterDropdownSection = (props: Props) => {
           </Description>
         </Column>
       </Row>
-      <DropdownWrapper>
-        <Dropdown
-          onChange={(e) => onSelectOption(e.detail.value)}
-          value={selectedOptionId}
-        >
-          <div slot='value'>
-            {getLocale(selectedDropdownName)}
-          </div>
-          {dropdownOptions.map((option) =>
+      <DropdownFilter
+        onChange={(e) => onSelectOption(e.detail.value)}
+        value={selectedOptionId}
+      >
+        <div slot='value'>
+          {getLocale(selectedDropdownName)}
+        </div>
+        {dropdownOptions.map((option) =>
 
-            <dropdown-option
-              value={option.id}
-              key={option.id}
-            >
-              {getLocale(option.name)}
-            </dropdown-option>
-          )}
-        </Dropdown>
-      </DropdownWrapper>
+          <dropdown-option
+            value={option.id}
+            key={option.id}
+          >
+            {getLocale(option.name)}
+          </dropdown-option>
+        )}
+      </DropdownFilter>
     </Row>
   )
 }
