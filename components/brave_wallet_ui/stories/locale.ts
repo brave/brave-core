@@ -286,9 +286,8 @@ provideStrings({
 
   // Accounts Tab
   braveWalletAccountsPrimary: 'Primary crypto accounts',
-  braveWalletAccountsPrimaryDisclaimer: 'You can create primary accounts in Brave Wallet that may be backed up or restored from your recovery phrase. To learn more about account types visit account help',
   braveWalletAccountsSecondary: 'Imported accounts',
-  braveWalletAccountsSecondaryDisclaimer: 'These accounts can be used with Web3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.',
+  braveWalletConnectedHardwareWallets: 'Connected hardware wallets',
   braveWalletAccountsAssets: 'Assets',
   braveWalletAccountsEditVisibleAssets: 'Visible assets',
 
@@ -316,6 +315,7 @@ provideStrings({
   braveWalletImportAccountUploadButton: 'Choose file',
   braveWalletImportAccountUploadPlaceholder: 'No file chosen',
   braveWalletImportAccountError: 'Failed to import account, please try again.',
+  braveWalletImportAccount: 'Import account',
 
   // Connect Hardware Wallet
   braveWalletConnectHardwareTitle: 'Select your hardware wallet device',

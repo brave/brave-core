@@ -25,7 +25,7 @@ import { makeNativeAssetLogo } from '../../../options/asset-options'
 import { translateToNftGateway } from '../../../common/async/lib'
 
 interface Config {
-  size: 'big' | 'medium' | 'small'
+  size: 'big' | 'medium' | 'small' | 'tiny'
   marginLeft?: number
   marginRight?: number
 }

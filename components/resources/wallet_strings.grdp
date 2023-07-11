@@ -194,8 +194,7 @@
   <message name="IDS_BRAVE_WALLET_PASTE_FROM_CLIPBOARD" desc="Paste from clipboard">Paste from clipboard</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_PRIMARY" desc="Accounts screen primary accounts title">Primary crypto accounts</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_SECONDARY" desc="Accounts screen secondary accounts title">Imported accounts</message>
-  <message name="IDS_BRAVE_WALLET_ACCOUNTS_PRIMARY_DISCLAIMER" desc="Accounts screen primary description">You can create primary accounts in Brave Wallet that may be backed up or restored from your recovery phrase. To learn more about account types visit account help.</message>
-  <message name="IDS_BRAVE_WALLET_ACCOUNTS_SECONDARY_DISCLAIMER" desc="Accounts screen secondary description">These accounts can be used with Web3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.</message>
+  <message name="IDS_BRAVE_WALLET_CONNECTED_HARDWARE_WALLETS" desc="Accounts screen connected hardware wallets">Connected hardware wallets</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_ASSETS" desc="Accounts screen assets title">Assets</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_EDIT_VISIBLE_ASSETS" desc="Accounts screen visible assets button">Visible assets</message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_CREATE" desc="Add account modal create button">Create</message>
@@ -219,6 +218,7 @@
   <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_UPLOAD_BUTTON" desc="Add account modal choose file button">Choose file</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_UPLOAD_PLACEHOLDER" desc="Add account modal file placeholder">No file chosen</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_ERROR" desc="Add account modal failed to import error">Failed to import account, please try again.</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT" desc="Import account button">Import account</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_TITLE" desc="Connect hardware wallet title">Select your hardware wallet device</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_INFO1" desc="Connect hardware wallet info1">Connect your <ph name="HARDWARE_DEVICE"><ex>Ledger</ex>$1</ph> wallet directly to your computer.</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_INFO2" desc="Connect hardware wallet info2">Unlock your device and select the <ph name="BLOCKCHAIN_NETWORK"><ex>Ethereum</ex>$1</ph> app.</message>

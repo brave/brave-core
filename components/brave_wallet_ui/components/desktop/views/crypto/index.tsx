@@ -259,17 +259,7 @@ const CryptoView = (props: Props) => {
         </Route>
 
         <Route path={WalletRoutes.Accounts}>
-          <WalletPageWrapper
-            wrapContentInBox
-            cardHeader={
-              <PageTitleHeader title={getLocale('braveWalletTopNavAccounts')} />
-            }
-          >
-            <StyledWrapper>
-              {banners}
-              <Accounts />
-            </StyledWrapper>
-          </WalletPageWrapper>
+          <Accounts />
         </Route>
 
         {/* Market */}
