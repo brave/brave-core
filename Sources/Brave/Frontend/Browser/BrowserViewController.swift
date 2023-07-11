@@ -875,7 +875,7 @@ public class BrowserViewController: UIViewController {
       .removeDuplicates()
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
         self?.updateStatusBarOverlayColor()
-        self?.bottomBarKeyboardBackground.backgroundColor = self?.statusBarOverlay.backgroundColor
+        self?.bottomBarKeyboardBackground.backgroundColor = self?.topToolbar.backgroundColor
       })
     
     appReviewCancelable = AppReviewManager.shared
@@ -896,7 +896,7 @@ public class BrowserViewController: UIViewController {
       .receive(on: RunLoop.main)
       .sink { [weak self] _ in
         self?.updateStatusBarOverlayColor()
-        self?.bottomBarKeyboardBackground.backgroundColor = self?.statusBarOverlay.backgroundColor
+        self?.bottomBarKeyboardBackground.backgroundColor = self?.topToolbar.backgroundColor
       }
       .store(in: &cancellables)
     
