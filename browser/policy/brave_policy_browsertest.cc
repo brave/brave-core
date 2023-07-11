@@ -59,7 +59,7 @@ class TorDisabledPolicyBrowserTest : public BravePolicyTest {
 IN_PROC_BROWSER_TEST_F(TorDisabledPolicyBrowserTest, TorDisabledPrefValueTest) {
   // When policy is set, explicit setting doesn't change its pref value.
   TorProfileServiceFactory::SetTorDisabled(false);
-  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled());
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
 }
 
 class TorEnabledPolicyBrowserTest : public BravePolicyTest {
@@ -81,7 +81,7 @@ class TorEnabledPolicyBrowserTest : public BravePolicyTest {
 IN_PROC_BROWSER_TEST_F(TorEnabledPolicyBrowserTest, TorDisabledPrefValueTest) {
   // When policy is set, explicit setting doesn't change its pref value.
   TorProfileServiceFactory::SetTorDisabled(true);
-  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
 }
 #endif
 
