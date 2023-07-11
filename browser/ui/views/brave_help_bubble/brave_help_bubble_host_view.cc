@@ -133,10 +133,6 @@ void BraveHelpBubbleHostView::UpdatePosition() {
   auto tracked_element_origin =
       tracked_element_->GetBoundsInScreen().CenterPoint();
 
-  BrowserView* browser_view = BrowserView::GetBrowserViewForNativeWindow(
-      GetWidget()->GetNativeWindow());
-  int browser_frame_top_space = browser_view->frame()->GetTopInset();
-
   auto circle_center = gfx::Point(kWidth / 2, kHeight / 2);
 
   // Calculate the final origin point by taking into account the Browser
@@ -146,7 +142,7 @@ void BraveHelpBubbleHostView::UpdatePosition() {
                                circle_center.x() + kBraveActionLeftMarginExtra);
   tracked_element_origin.set_y(tracked_element_origin.y() -
                                browser_root_view_origin.y() -
-                               circle_center.y() - browser_frame_top_space);
+                               circle_center.y());
 
   SetPosition({tracked_element_origin.x(), tracked_element_origin.y()});
 }
