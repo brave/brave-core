@@ -52,6 +52,10 @@ class BraveSidePanel : public views::View,
   bool IsRightAligned();
   gfx::Size GetContentSizeUpperBound() const { return gfx::Size(); }
 
+  void set_fixed_contents_width(absl::optional<int> fixed_width) {
+    fixed_contents_width_ = fixed_width;
+  }
+
   // views::ResizeAreaDelegate:
   void OnResize(int resize_amount, bool done_resizing) override;
 
@@ -59,6 +63,7 @@ class BraveSidePanel : public views::View,
   void OnThemeChanged() override;
   gfx::Size GetMinimumSize() const override;
   void AddedToWidget() override;
+  void Layout() override;
 
   void SetMinimumSidePanelContentsWidthForTesting(int width) {}
 
@@ -66,12 +71,17 @@ class BraveSidePanel : public views::View,
   friend class sidebar::SidebarBrowserTest;
 
   void UpdateBorder();
-  void OnSidebarWidthChanged();
+  void OnSidePanelWidthChanged();
 
   HorizontalAlignment horizontal_alignment_ = kHorizontalAlignLeft;
   absl::optional<int> starting_width_on_resize_;
+
+  // If this is set, use this width for panel contents during the layout
+  // instead of using this panel's bounds. This is used to prevent panel
+  // contents layout while sidebar show/hide animation is in-progress.
+  absl::optional<int> fixed_contents_width_;
   raw_ptr<BrowserView> browser_view_ = nullptr;
-  IntegerPrefMember sidebar_width_;
+  IntegerPrefMember side_panel_width_;
   std::unique_ptr<SidePanelResizeWidget> resize_widget_;
 };
 

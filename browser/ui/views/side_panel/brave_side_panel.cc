@@ -17,19 +17,17 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
 #include "ui/views/border.h"
-#include "ui/views/layout/fill_layout.h"
 
 BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
                                HorizontalAlignment horizontal_alignment)
     : browser_view_(browser_view) {
   SetVisible(false);
-  SetLayoutManager(std::make_unique<views::FillLayout>());
-  sidebar_width_.Init(
+  side_panel_width_.Init(
       sidebar::kSidePanelWidth, browser_view_->GetProfile()->GetPrefs(),
-      base::BindRepeating(&BraveSidePanel::OnSidebarWidthChanged,
+      base::BindRepeating(&BraveSidePanel::OnSidePanelWidthChanged,
                           base::Unretained(this)));
 
-  OnSidebarWidthChanged();
+  OnSidePanelWidthChanged();
   AddObserver(this);
 }
 
@@ -61,8 +59,8 @@ void BraveSidePanel::UpdateBorder() {
   }
 }
 
-void BraveSidePanel::OnSidebarWidthChanged() {
-  SetPanelWidth(sidebar_width_.GetValue());
+void BraveSidePanel::OnSidePanelWidthChanged() {
+  SetPanelWidth(side_panel_width_.GetValue());
 }
 
 void BraveSidePanel::OnThemeChanged() {
@@ -80,21 +78,46 @@ void BraveSidePanel::AddedToWidget() {
       this, static_cast<BraveBrowserView*>(browser_view_), this);
 }
 
+void BraveSidePanel::Layout() {
+  if (children().empty()) {
+    return;
+  }
+
+  // Panel contents is the only child.
+  DCHECK_EQ(1UL, children().size());
+
+  if (fixed_contents_width_) {
+    gfx::Rect panel_contents_rect(0, 0, *fixed_contents_width_, height());
+    panel_contents_rect.Inset(GetInsets());
+    children()[0]->SetBoundsRect(panel_contents_rect);
+    return;
+  }
+
+  children()[0]->SetBoundsRect(GetContentsBounds());
+}
+
 void BraveSidePanel::SetPanelWidth(int width) {
   // Only the width is used by BrowserViewLayout.
   SetPreferredSize(gfx::Size(width, 0));
 }
 
 void BraveSidePanel::OnResize(int resize_amount, bool done_resizing) {
-  DCHECK(GetVisible());
-
   if (!starting_width_on_resize_) {
     starting_width_on_resize_ = width();
   }
   int proposed_width = *starting_width_on_resize_ +
                        (IsRightAligned() ? -resize_amount : resize_amount);
+
   if (done_resizing) {
     starting_width_on_resize_ = absl::nullopt;
+    // Before arriving resizing doen event, user could hide sidebar because
+    // resizing done event is arrived a little bit later after user stops
+    // resizing. And resizing done event is arrived as a result of
+    // ResizeArea::OnMouseCaptureLost(). In this situation, just skip below
+    // width caching.
+    if (!GetVisible()) {
+      return;
+    }
   }
 
   const int minimum_width = GetMinimumSize().width();
@@ -106,7 +129,7 @@ void BraveSidePanel::OnResize(int resize_amount, bool done_resizing) {
     SetPanelWidth(proposed_width);
   }
 
-  sidebar_width_.SetValue(proposed_width);
+  side_panel_width_.SetValue(proposed_width);
 }
 
 BEGIN_METADATA(BraveSidePanel, views::View)

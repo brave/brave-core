@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 
-#include <memory>
+#include <algorithm>
 #include <utility>
 
 #include "base/auto_reset.h"
@@ -18,6 +18,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/components/constants/pref_names.h"
@@ -216,10 +217,9 @@ void SidebarContainerView::UpdateBackground() {
 }
 
 void SidebarContainerView::AddChildViews() {
-  // Insert to index 0 because |side_panel_| will already be at 0 but
-  // we want the controls first.
   sidebar_control_view_ =
-      AddChildViewAt(std::make_unique<SidebarControlView>(this, browser_), 0);
+      AddChildView(std::make_unique<SidebarControlView>(this, browser_));
+  sidebar_control_view_->SetPaintToLayer();
 
   // Hide by default. Visibility will be controlled by show options callback
   // later.
@@ -339,6 +339,8 @@ void SidebarContainerView::AnimationProgressed(
 }
 
 void SidebarContainerView::AnimationEnded(const gfx::Animation* animation) {
+  side_panel_->set_fixed_contents_width(absl::nullopt);
+
   PreferredSizeChanged();
 
   // Handle children's visibility after animation completes.
@@ -428,6 +430,7 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
   }
 
   width_animation_.Reset();
+  side_panel_->set_fixed_contents_width(absl::nullopt);
 
   // Calculate the start & end width for animation. Both are used when
   // calculating preferred width during the show animation.
@@ -450,13 +453,13 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
     animation_end_width_ += side_panel_->GetPreferredSize().width();
   }
 
+  DVLOG(1) << __func__ << ": show animation (start, end) width: ("
+           << animation_start_width_ << ", " << animation_end_width_ << ")";
+
   if (animation_start_width_ == animation_end_width_) {
     DVLOG(1) << __func__ << ": don't need show animation.";
     return;
   }
-
-  DVLOG(1) << __func__ << ": show animation (start, end) width: ("
-           << animation_start_width_ << ", " << animation_end_width_ << ")";
 
   sidebar_control_view_->SetVisible(true);
   side_panel_->SetVisible(show_side_panel);
@@ -477,6 +480,25 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
   // Animation will trigger layout by changing preferred size.
   if (ShouldUseAnimation()) {
     DVLOG(1) << __func__ << ": show with animation";
+    if (show_side_panel) {
+      // To show side panel with animation, we need to know exact fianl end
+      // width and BraveContentsLayoutManager only knows it because side panel's
+      // preferred size could be different with current width by resizing window
+      // size. If window size doesn't have sufficent width for sidebar's
+      // preferred width, BraveContentsLayoutManager allocates more smaller
+      // width to it.
+      auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
+      const int target_sidebar_width =
+          static_cast<BraveContentsLayoutManager*>(
+              browser_view->contents_container()->GetLayoutManager())
+              ->CalculateTargetSideBarWidth();
+      animation_end_width_ =
+          std::min(animation_end_width_, target_sidebar_width);
+      side_panel_->set_fixed_contents_width(
+          animation_end_width_ -
+          sidebar_control_view_->GetPreferredSize().width());
+    }
+
     width_animation_.Show();
     return;
   }
@@ -500,6 +522,7 @@ void SidebarContainerView::HideSidebar(bool hide_sidebar_control) {
   }
 
   width_animation_.Reset(1.0);
+  side_panel_->set_fixed_contents_width(absl::nullopt);
 
   // Calculate the start & end width for animation. Both are used when
   // calculating preferred width during the hide animation.
@@ -507,11 +530,11 @@ void SidebarContainerView::HideSidebar(bool hide_sidebar_control) {
   animation_end_width_ = 0;
 
   if (sidebar_control_view_->GetVisible()) {
-    animation_start_width_ = sidebar_control_view_->GetPreferredSize().width();
+    animation_start_width_ = sidebar_control_view_->width();
   }
 
   if (side_panel_->GetVisible()) {
-    animation_start_width_ += side_panel_->GetPreferredSize().width();
+    animation_start_width_ += side_panel_->width();
   }
 
   if (!hide_sidebar_control) {
@@ -537,6 +560,11 @@ void SidebarContainerView::HideSidebar(bool hide_sidebar_control) {
 
   if (ShouldUseAnimation()) {
     DVLOG(1) << __func__ << ": hide with animation";
+
+    if (side_panel_->GetVisible()) {
+      side_panel_->set_fixed_contents_width(side_panel_->width());
+    }
+
     width_animation_.Hide();
     return;
   }
