@@ -16,10 +16,9 @@ const HeaderWrapper = styled.header<{ isPlaylistPlayerPage: boolean }>`
   position: sticky;
   width: 100%;
   height: ${({ isPlaylistPlayerPage }) =>
-    isPlaylistPlayerPage ? '74px' : '56px;'}
+    isPlaylistPlayerPage ? '74px' : '56px'};
   top: 0;
   z-index: 1;
-  
 `
 
 export default function App () {

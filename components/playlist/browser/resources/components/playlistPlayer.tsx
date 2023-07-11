@@ -10,6 +10,8 @@ import { RouteComponentProps } from 'react-router-dom'
 import VideoFrame from './videoFrame'
 import PlaylistItem from './playlistItem'
 import { ApplicationState, usePlaylist } from '../reducers/states'
+import postMessageToPlayer from '../api/playerApi'
+import { types } from '../constants/playlist_types'
 
 interface MatchParams {
   playlistId: string
@@ -35,7 +37,12 @@ export default function PlaylistPlayer ({
           name={item.name}
           cached={item.cached}
           thumbnailUrl={item.thumbnailPath.url}
-          onClick={() => {}}
+          onClick={() =>
+            postMessageToPlayer({
+              actionType: types.PLAYLIST_ITEM_SELECTED,
+              data: item
+            })
+          }
         />
       ))}
     </>

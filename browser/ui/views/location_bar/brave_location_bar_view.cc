@@ -145,14 +145,19 @@ bool BraveLocationBarView::ShouldShowIPFSLocationView() const {
 }
 
 void BraveLocationBarView::ShowPlaylistBubble() {
+  if (auto* playlist_action_icon_view = GetPlaylistActionIconView()) {
+    playlist_action_icon_view->ShowPlaylistBubble();
+  }
+}
+
+PlaylistActionIconView* BraveLocationBarView::GetPlaylistActionIconView() {
   auto* playlist_action_icon_view =
       page_action_icon_controller()->GetPlaylistActionIconView();
-  if (!playlist_action_icon_view || !playlist_action_icon_view->GetVisible()) {
-    return;
+  if (!playlist_action_icon_view) {
+    return nullptr;
   }
 
-  views::AsViewClass<PlaylistActionIconView>(playlist_action_icon_view)
-      ->ShowPlaylistBubble();
+  return views::AsViewClass<PlaylistActionIconView>(playlist_action_icon_view);
 }
 
 void BraveLocationBarView::Update(content::WebContents* contents) {

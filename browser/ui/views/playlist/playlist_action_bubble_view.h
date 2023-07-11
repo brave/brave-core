@@ -20,7 +20,7 @@ class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
                          playlist::PlaylistTabHelper* playlist_tab_helper);
   static bool IsShowingBubble();
   static void CloseBubble();
-  static views::BubbleDialogDelegateView* GetBubble();
+  static PlaylistActionBubbleView* GetBubble();
 
   ~PlaylistActionBubbleView() override;
 
