@@ -451,7 +451,7 @@ void AdsImpl::MigrateNotificationStateCallback(InitializeCallback callback,
 
   is_initialized_ = true;
 
-  AdsClientHelper::GetInstance()->BindPendingObservers();
+  AdsClientHelper::GetInstance()->NotifyPendingObservers();
 
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kInitializedAds);

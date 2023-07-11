@@ -37,7 +37,7 @@ void BatAdsClientMojoBridge::RemoveObserver(
   notifier_impl_.RemoveObserver(observer);
 }
 
-void BatAdsClientMojoBridge::BindPendingObservers() {
+void BatAdsClientMojoBridge::NotifyPendingObservers() {
   notifier_impl_.BindReceiver();
 }
 
