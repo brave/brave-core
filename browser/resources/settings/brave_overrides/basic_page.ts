@@ -19,6 +19,7 @@ import '../brave_web3_domains_page/brave_web3_domains_page.js'
 import '../default_brave_shields_page/default_brave_shields_page.js'
 import '../getting_started_page/getting_started.js'
 import '../social_blocking_page/social_blocking_page.js'
+import '../brave_leo_assistant_page/brave_leo_assistant_page.js'
 
 import {html, RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
 
@@ -250,6 +251,19 @@ RegisterPolymerTemplateModifications({
           prefs: '{{prefs}}'
         }
       ))
+      const sectionLeoAssist = document.createElement('template')
+      sectionLeoAssist.setAttribute('is', 'dom-if')
+      sectionLeoAssist.setAttribute('restamp', true)
+      sectionLeoAssist
+        .setAttribute('if', '[[showPage_(pageVisibility.leoAssistant)]]')
+      sectionLeoAssist.content.appendChild(createSectionElement(
+        'leoAssistant',
+        'leoAssistant',
+        'settings-brave-leo-assistant-page',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
       const sectionNewTab = document.createElement('template')
       sectionNewTab.setAttribute('is', 'dom-if')
       sectionNewTab.setAttribute('restamp', true)
@@ -314,6 +328,8 @@ RegisterPolymerTemplateModifications({
       last = last.insertAdjacentElement('afterend', sectionWeb3Domains)
       // Insert Tor
       last = last.insertAdjacentElement('afterend', sectionTor)
+      // Insert Leo Assistant
+      last = last.insertAdjacentElement('afterend', sectionLeoAssist)
 
       // Advanced
       const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility.advancedSettings)]]"]')

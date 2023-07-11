@@ -64,7 +64,10 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   } else {
     console.error('[Brave Settings Overrides] could not find expected route /content/siteDetails')
   }
-
+  if (pageVisibility.leoAssistant) {
+    r.BRAVE_LEO_ASSISTANT =
+      r.BASIC.createSection('/leo-assistance', 'leoAssistant')
+  }
   if (r.SITE_SETTINGS) {
     r.SITE_SETTINGS_AUTOPLAY = r.SITE_SETTINGS.createChild('autoplay')
     const isGoogleSignInFeatureEnabled = loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')

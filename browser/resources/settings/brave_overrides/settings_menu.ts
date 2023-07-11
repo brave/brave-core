@@ -327,7 +327,15 @@ RegisterPolymerTemplateModifications({
       'wallet',
     )
 
+    const leoAssistantEl = createMenuElement(
+      loadTimeData.getString('leoAssistant'),
+      '/leo-assistance',
+      'product-brave-ai',
+      'leoAssistant',
+    )
+
     extensionEl.insertAdjacentElement('afterend', web3El)
+    web3El.insertAdjacentElement('afterend', leoAssistantEl)
 
     // Move autofill to advanced
     const autofillEl = getMenuElement(templateContent, '/autofill')

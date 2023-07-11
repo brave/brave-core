@@ -27,6 +27,7 @@
 #include "brave/browser/ui/webui/settings/brave_sync_handler.h"
 #include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/commands/common/commands.mojom.h"
@@ -66,6 +67,11 @@
 #include "brave/browser/ui/webui/settings/brave_tor_snowflake_extension_handler.h"
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ui/webui/settings/brave_settings_leo_assistant_handler.h"
+#include "brave/components/ai_chat/common/features.h"
+#endif
+
 using ntp_background_images::ViewCounterServiceFactory;
 
 BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
@@ -80,6 +86,10 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
   web_ui->AddMessageHandler(std::make_unique<BraveSyncHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveWalletHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveAdBlockHandler>());
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  web_ui->AddMessageHandler(
+      std::make_unique<settings::BraveLeoAssistantHandler>());
+#endif
 #if BUILDFLAG(ENABLE_TOR)
   web_ui->AddMessageHandler(std::make_unique<BraveTorHandler>());
 #endif
@@ -168,6 +178,11 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "verticalTabStripFeatureEnabled",
       base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  html_source->AddBoolean("isLeoAssistantDisabled",
+                          !ai_chat::features::IsAIChatEnabled());
 #endif
 }
 

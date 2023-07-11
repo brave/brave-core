@@ -9,6 +9,7 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -45,6 +46,10 @@
 
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/pref_names.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -263,6 +268,12 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kIpfsStorageMax] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
+#endif
+
+// Leo Assistant pref
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  (*s_brave_allowlist)[ai_chat::prefs::kBraveChatAutoGenerateQuestions] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)

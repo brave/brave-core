@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
+import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
 import("//tools/json_schema_compiler/json_features.gni")
@@ -25,6 +26,10 @@ json_features("api_features") {
 
   if (enable_ipfs) {
     sources += [ "_ipfs_api_features.json" ]
+  }
+
+  if (enable_ai_chat) {
+    sources += [ "_leo_api_features.json" ]
   }
 }
 
@@ -65,6 +70,10 @@ brave_extensions_api_schema_sources = [
 
 if (enable_ipfs) {
   brave_extensions_api_schema_sources += [ "ipfs.json" ]
+}
+
+if (enable_ai_chat) {
+  brave_extensions_api_schema_sources += [ "leo.json" ]
 }
 
 if (ethereum_remote_client_enabled) {
