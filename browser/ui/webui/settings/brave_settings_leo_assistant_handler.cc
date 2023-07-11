@@ -19,7 +19,7 @@ void BraveLeoAssistantHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "initLeoAssistant",
       base::BindRepeating(&BraveLeoAssistantHandler::HandleInitLeoAssistant,
-                          base::Unretained(this)));
+                          weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveLeoAssistantHandler::HandleInitLeoAssistant(
