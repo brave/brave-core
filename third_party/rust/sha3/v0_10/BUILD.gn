@@ -15,8 +15,7 @@ cargo_crate("lib") {
   sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.10.3"
-  cargo_pkg_authors =
-      "RustCrypto Developers"
+  cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "sha3"
   cargo_pkg_description = "SHA-3 (Keccak) hash function."
   library_configs -= [ "//build/config/compiler:chromium_code" ]
@@ -25,7 +24,7 @@ cargo_crate("lib") {
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
     "//brave/third_party/rust/digest/v0_10:lib",
-    "//brave/third_party/rust/keccak/v0_1:lib"
+    "//brave/third_party/rust/keccak/v0_1:lib",
   ]
   features = [ "std" ]
 }

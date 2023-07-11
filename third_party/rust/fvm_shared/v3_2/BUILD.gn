@@ -39,8 +39,8 @@ cargo_crate("lib") {
     "//brave/third_party/rust/thiserror/v1:lib",
     "//brave/third_party/rust/unsigned_varint/v0_7:lib",
     "//third_party/rust/anyhow/v1:lib",
+    "//third_party/rust/bitflags/v1:lib",
     "//third_party/rust/lazy_static/v1:lib",
     "//third_party/rust/serde/v1:lib",
-    "//third_party/rust/bitflags/v1:lib",
   ]
 }
