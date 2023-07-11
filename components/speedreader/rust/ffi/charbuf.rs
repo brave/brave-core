@@ -32,8 +32,3 @@ impl Drop for CharBuf {
         drop(unsafe { Box::from_raw(bytes) });
     }
 }
-
-#[no_mangle]
-pub extern "C" fn speedreader_str_free(string: CharBuf) {
-    drop(string);
-}

@@ -64,8 +64,6 @@ void speedreader_free(C_SpeedReader* speedreader);
 /// New instance of SpeedReader. Must be freed by calling `speedreader_free`.
 C_SpeedReader* speedreader_new();
 
-void speedreader_str_free(C_CharBuf str);
-
 }  // extern "C"
 
 }  // namespace speedreader
