@@ -2217,7 +2217,8 @@ public class BrowserViewController: UIViewController {
   }
   
   public override var preferredStatusBarStyle: UIStatusBarStyle {
-    if isUsingBottomBar, let webView = tabManager.selectedTab?.webView, let color = webView.sampledPageTopColor {
+    if isUsingBottomBar, let tab = tabManager.selectedTab, tab.url.map(InternalURL.isValid) == false,
+       let color = tab.webView?.sampledPageTopColor {
       return color.isLight ? .darkContent : .lightContent
     }
     return super.preferredStatusBarStyle
@@ -2225,7 +2226,8 @@ public class BrowserViewController: UIViewController {
   
   func updateStatusBarOverlayColor() {
     defer { setNeedsStatusBarAppearanceUpdate() }
-    guard isUsingBottomBar, let color = tabManager.selectedTab?.webView?.sampledPageTopColor else {
+    guard isUsingBottomBar, let tab = tabManager.selectedTab, tab.url.map(InternalURL.isValid) == false,
+          let color = tab.webView?.sampledPageTopColor else {
       if PrivateBrowsingManager.shared.isPrivateBrowsing {
         statusBarOverlay.backgroundColor = .privateModeBackground
       } else {
