@@ -27,13 +27,11 @@ import { Row } from '../../shared/style'
 
 interface Props {
   title: string
-  isPortfolio?: boolean
 }
 
 export const DefaultPanelHeader = (props: Props) => {
   const {
-    title,
-    isPortfolio
+    title
   } = props
 
   // State
@@ -88,9 +86,7 @@ export const DefaultPanelHeader = (props: Props) => {
           />
         </Button>
         {showSettingsMenu &&
-          <DefaultPanelMenu
-            isPortfolio={isPortfolio}
-          />
+          <DefaultPanelMenu />
         }
       </MenuWrapper>
     </Row>

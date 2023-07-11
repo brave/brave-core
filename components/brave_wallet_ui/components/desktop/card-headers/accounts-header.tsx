@@ -27,8 +27,8 @@ import {
 } from '../../../common/hooks/use-safe-selector'
 
 import {
-  PortfolioOverviewMenu
-} from '../wallet-menus/portfolio-overview-menu'
+  AccountsMenu
+} from '../wallet-menus/accounts-menu'
 
 // Styled Components
 import {
@@ -39,7 +39,7 @@ import {
 } from './shared-card-headers.style'
 import { Row } from '../../shared/style'
 
-export const PortfolioOverviewHeader = () => {
+export const AccountsHeader = () => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
@@ -61,14 +61,14 @@ export const PortfolioOverviewHeader = () => {
   return (
     isPanel
       ? <DefaultPanelHeader
-        title={getLocale('braveWalletTopNavPortfolio')}
+        title={getLocale('braveWalletTopNavAccounts')}
       />
       : <Row
         padding='24px 0px'
         justifyContent='space-between'
       >
         <HeaderTitle>
-          {getLocale('braveWalletTopNavPortfolio')}
+          {getLocale('braveWalletTopNavAccounts')}
         </HeaderTitle>
         <MenuWrapper
           ref={portfolioOverviewMenuRef}
@@ -79,15 +79,15 @@ export const PortfolioOverviewHeader = () => {
             }
           >
             <ButtonIcon
-              name='tune'
+              name='plus-add'
             />
           </CircleButton>
           {showPortfolioOverviewMenu &&
-            <PortfolioOverviewMenu />
+            <AccountsMenu />
           }
         </MenuWrapper>
       </Row>
   )
 }
 
-export default PortfolioOverviewHeader
+export default AccountsHeader

@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 import { WalletButton } from '../../shared/style'
-import ClipboardIcon from '../../../assets/svg-icons/copy-to-clipboard-icon.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -40,15 +39,18 @@ export const AccountNameButton = styled(WalletButton)`
   border: none;
   font-family: Poppins;
   font-size: 14px;
-  line-height: 24px;
+  line-height: 20px;
   font-weight: 600;
   color: ${leo.color.text.primary};
+  margin: 0px;
+  padding: 0px;
 `
 
 export const AccountAddressButton = styled(AccountNameButton)`
   font-size: 12px;
   line-height: 18px;
   font-weight: 400;
+  margin-right: 6px;
 `
 
 export const AddressAndButtonRow = styled.div`
@@ -111,13 +113,10 @@ export const AccountMenuIcon = styled(Icon).attrs({
   color: ${leo.color.icon.default};
 `
 
-export const CopyIcon = styled.div`
+export const CopyIcon = styled(Icon).attrs({
+  name: 'copy'
+})`
   cursor: pointer;
-  width: 14px;
-  height: 14px;
-  background-color: ${(p) => p.theme.color.interactive07};
-  -webkit-mask-image: url(${ClipboardIcon});
-  mask-image: url(${ClipboardIcon});
-  mask-size: cover;
-  margin-left: 6px;
+  --leo-icon-size: 14px;
+  color: ${leo.color.icon.default};
 `

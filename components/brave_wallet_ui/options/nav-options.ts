@@ -143,3 +143,24 @@ export const EditVisibleAssetsOptions: NavOption[] = [
     route: WalletRoutes.AvailableAssetsHash
   }
 ]
+
+export const CreateAccountOptions: NavOption[] = [
+  {
+    id: 'accounts',
+    name: 'braveWalletCreateAccountButton',
+    icon: 'plus-add',
+    route: WalletRoutes.CreateAccountModalStart
+  },
+  {
+    id: 'accounts',
+    name: 'braveWalletImportAccount',
+    icon: 'product-brave-wallet',
+    route: WalletRoutes.ImportAccountModalStart
+  },
+  {
+    id: 'accounts',
+    name: 'braveWalletConnectHardwareWallet',
+    icon: 'flashdrive',
+    route: WalletRoutes.AddHardwareAccountModalStart
+  },
+]
