@@ -8,20 +8,11 @@ cargo_crate("lib") {
   crate_name = "cpufeatures"
   epoch = "0.2"
   crate_type = "rlib"
-
-  # Only for usage from third-party crates. Add the crate to
-  # third_party.toml to use it from first-party code.
-  visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [
-    "crate/src/aarch64.rs",
-    "crate/src/lib.rs",
-    "crate/src/miri.rs",
-    "crate/src/x86.rs",
-  ]
+  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.2.5"
   cargo_pkg_authors = "RustCrypto Developers"
@@ -31,8 +22,8 @@ cargo_crate("lib") {
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
-
+  deps = []
   if (target_cpu == "arm64" && (is_mac || is_android || is_linux)) {
-    deps = [ "//third_party/rust/libc/v0_2:lib" ]
+    deps += [ "//third_party/rust/libc/v0_2:lib" ]
   }
 }

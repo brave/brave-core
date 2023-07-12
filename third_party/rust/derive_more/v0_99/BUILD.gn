@@ -8,10 +8,6 @@ cargo_crate("lib") {
   crate_name = "derive_more"
   epoch = "0.99"
   crate_type = "proc-macro"
-
-  # Only for usage from third-party crates. Add the crate to
-  # third_party.toml to use it from first-party code.
-  # visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
 
   # Unit tests skipped. Generate with --with-tests to include them.

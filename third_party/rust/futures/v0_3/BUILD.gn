@@ -8,10 +8,6 @@ cargo_crate("lib") {
   crate_name = "futures"
   epoch = "0.3"
   crate_type = "rlib"
-
-  # Only for usage from third-party crates. Add the crate to
-  # third_party.toml to use it from first-party code.
-  #  visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
 
   # Unit tests skipped. Generate with --with-tests to include them.
@@ -20,7 +16,7 @@ cargo_crate("lib") {
   edition = "2018"
   cargo_pkg_version = "0.3.27"
   cargo_pkg_name = "futures"
-  cargo_pkg_description = "An implementation of futures and streams featuring zero allocations,composability, and iterator-like interfaces."
+  cargo_pkg_description = "An implementation of futures and streams featuring zero allocations, composability, and iterator-like interfaces."
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
