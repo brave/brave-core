@@ -22,21 +22,21 @@ cargo_crate("lib") {
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
-  build_root = "crate/build.rs"
-  build_sources = [ "crate/build.rs" ]
-  build_deps = [
-    "//brave/third_party/rust/phf_codegen/v0_8:buildrs_support",
-    "//brave/third_party/rust/string_cache_codegen/v0_5:buildrs_support",
-  ]
-  build_script_outputs = [
-    "generated.rs",
-    "named_entities.rs",
-  ]
   deps = [
     "//brave/third_party/rust/phf/v0_8:lib",
     "//brave/third_party/rust/string_cache/v0_8:lib",
     "//brave/third_party/rust/tendril/v0_4:lib",
     "//third_party/rust/log/v0_4:lib",
+  ]
+  build_deps = [
+    "//brave/third_party/rust/phf_codegen/v0_8:buildrs_support",
+    "//brave/third_party/rust/string_cache_codegen/v0_5:buildrs_support",
+  ]
+  build_root = "crate/build.rs"
+  build_sources = [ "crate/build.rs" ]
+  build_script_outputs = [
+    "generated.rs",
+    "named_entities.rs",
   ]
   cargo_manifest_dir =
       rebase_path("//brave/third_party/rust/markup5ever/v0_10/crate")

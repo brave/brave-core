@@ -22,7 +22,7 @@ cargo_crate("lib") {
   cargo_pkg_authors =
       "kwantam <kwantam@gmail.com>, Manish Goregaokar <manishsmail@gmail.com>"
   cargo_pkg_name = "unicode-normalization"
-  cargo_pkg_description = "This crate provides functions for normalization ofUnicode strings, including Canonical and CompatibleDecomposition and Recomposition, as described inUnicode Standard Annex #15."
+  cargo_pkg_description = "This crate provides functions for normalization of Unicode strings, including Canonical and Compatible Decomposition and Recomposition, as described in Unicode Standard Annex #15."
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]

@@ -699,8 +699,10 @@ const util = {
       args.push('--js')
     if (options.python)
       args.push('--python')
-     if (options.rust)
+    if (options.rust)
       args.push('--rust-fmt')
+    else
+      args.push('--no-rust-fmt')
     if (options.swift)
       args.push('--swift-format')
     util.run(cmd, args, cmd_options)

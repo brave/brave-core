@@ -39,11 +39,9 @@ cargo_crate("lib") {
     "alloc",
     "getrandom",
     "getrandom_package",
+    "libc",
     "rand_pcg",
     "small_rng",
     "std",
   ]
-  if (!is_win) {
-    features += [ "libc" ]
-  }
 }

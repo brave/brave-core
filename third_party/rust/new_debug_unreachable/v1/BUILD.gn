@@ -5,7 +5,7 @@
 import("//build/rust/cargo_crate.gni")
 
 cargo_crate("lib") {
-  crate_name = "debug_unreachable"
+  crate_name = "new_debug_unreachable"
   epoch = "1"
   crate_type = "rlib"
 

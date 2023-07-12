@@ -23,7 +23,6 @@ cargo_crate("lib") {
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
-
   deps = [
     "//brave/third_party/rust/cssparser/v0_28:lib",
     "//brave/third_party/rust/flate2/v1:lib",
