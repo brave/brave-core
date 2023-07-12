@@ -9,8 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 

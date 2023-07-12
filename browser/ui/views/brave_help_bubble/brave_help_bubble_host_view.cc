@@ -6,7 +6,7 @@
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 
 #include "cc/paint/paint_shader.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "extensions/common/constants.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "third_party/skia/include/core/SkPoint.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -19,7 +19,6 @@
 #include "ui/views/bubble/bubble_border.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/layout/box_layout.h"
-#include "ui/views/layout/fill_layout.h"
 #include "ui/views/view_class_properties.h"
 
 namespace {

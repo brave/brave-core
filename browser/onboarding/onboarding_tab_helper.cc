@@ -12,6 +12,7 @@
 #include "brave/browser/onboarding/domain_map.h"
 #include "brave/browser/onboarding/pref_names.h"
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/brave_shields_data_controller.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/ui/browser_finder.h"

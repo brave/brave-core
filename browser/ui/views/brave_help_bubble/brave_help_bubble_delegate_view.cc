@@ -18,7 +18,6 @@
 #include "ui/views/bubble/bubble_border_arrow_utils.h"
 #include "ui/views/bubble/bubble_frame_view.h"
 #include "ui/views/controls/label.h"
-#include "ui/views/layout/fill_layout.h"
 #include "ui/views/widget/widget_delegate.h"
 
 using views::BubbleBorder;

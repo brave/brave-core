@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/browser/ui/brave_shields_data_controller.h"
+#include "base/scoped_observation.h"
 #include "components/permissions/permission_request_manager.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
