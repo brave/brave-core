@@ -11,13 +11,18 @@
 #include <vector>
 
 #include "base/functional/callback_forward.h"
+#include "base/memory/raw_ptr.h"
+#include "chrome/browser/net/system_network_context_manager.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "net/base/host_port_pair.h"
 #include "net/base/network_anonymization_key.h"
 #include "net/dns/public/dns_query_type.h"
 #include "services/network/public/cpp/resolve_host_client_base.h"
 #include "services/network/public/mojom/host_resolver.mojom.h"
-#include "services/network/public/mojom/network_context.mojom.h"
+
+namespace content {
+class BrowserContext;
+}  // namespace content
 
 namespace ipfs {
 
@@ -25,7 +30,7 @@ namespace ipfs {
 // automatically adds it to the host.
 class IPFSHostResolver : public network::ResolveHostClientBase {
  public:
-  explicit IPFSHostResolver(network::mojom::NetworkContext& network_context,
+  explicit IPFSHostResolver(content::BrowserContext* browser_context,
                             const std::string& prefix = std::string());
   ~IPFSHostResolver() override;
 
@@ -40,6 +45,10 @@ class IPFSHostResolver : public network::ResolveHostClientBase {
 
   std::string host() const { return resolving_host_; }
   absl::optional<std::string> dnslink() const { return dnslink_; }
+  void SetNetworkContextForTesting(
+      network::mojom::NetworkContext* network_context) {
+    network_context_for_testing_ = network_context;
+  }
 
  private:
   // network::mojom::ResolveHostClient implementation:
@@ -49,12 +58,15 @@ class IPFSHostResolver : public network::ResolveHostClientBase {
                   const absl::optional<net::HostResolverEndpointResults>&
                       endpoint_results_with_metadata) override;
   void OnTextResults(const std::vector<std::string>& text_results) override;
+  network::mojom::NetworkContext* GetNetworkContext();
 
   std::string resolving_host_;
   std::string prefix_;
   absl::optional<std::string> dnslink_;
+  absl::optional<network::mojom::NetworkContext*> network_context_for_testing_ =
+      nullptr;
 
-  raw_ref<network::mojom::NetworkContext> network_context_;
+  raw_ptr<content::BrowserContext> browser_context_;
   HostTextResultsCallback resolved_callback_;
 
   mojo::Receiver<network::mojom::ResolveHostClient> receiver_{this};
