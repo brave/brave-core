@@ -26,7 +26,8 @@ PlaylistActionIconView::PlaylistActionIconView(
                          icon_label_bubble_delegate,
                          page_action_icon_delegate,
                          "PlaylistActionIconView",
-                         /*ephemeral=*/false) {
+                         /*ephemeral=*/false),
+      browser_(browser) {
   SetVisible(false);
 }
 
@@ -68,15 +69,11 @@ void PlaylistActionIconView::ShowPlaylistBubble() {
       playlist_tab_helper->AddItems(std::move(items_to_add));
       return;
     }
-
-    DCHECK_GE(found_item_count, 1u);
-    PlaylistActionBubbleView::ShowBubble(this, playlist_tab_helper);
-    return;
   }
 
-  DCHECK(saved_item_count);
+  DCHECK(saved_item_count || found_item_count > 1u);
   DCHECK_EQ(last_web_contents_, GetWebContents());
-  PlaylistActionBubbleView::ShowBubble(this, playlist_tab_helper);
+  PlaylistActionBubbleView::ShowBubble(browser_, this, playlist_tab_helper);
 }
 
 const gfx::VectorIcon& PlaylistActionIconView::GetVectorIcon() const {

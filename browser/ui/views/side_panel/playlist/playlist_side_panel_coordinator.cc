@@ -8,6 +8,9 @@
 #include <memory>
 
 #include "base/functional/callback.h"
+#include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_web_view.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/app/vector_icons/vector_icons.h"
@@ -24,7 +27,8 @@
 #include "ui/views/vector_icons.h"
 
 PlaylistSidePanelCoordinator::PlaylistSidePanelCoordinator(Browser* browser)
-    : BrowserUserData<PlaylistSidePanelCoordinator>(*browser) {}
+    : BrowserUserData<PlaylistSidePanelCoordinator>(*browser),
+      browser_(browser) {}
 
 PlaylistSidePanelCoordinator::~PlaylistSidePanelCoordinator() = default;
 
@@ -36,6 +40,33 @@ void PlaylistSidePanelCoordinator::CreateAndRegisterEntry(
       ui::ImageModel(),
       base::BindRepeating(&PlaylistSidePanelCoordinator::CreateWebView,
                           base::Unretained(this))));
+}
+
+void PlaylistSidePanelCoordinator::ActivatePanel() {
+  auto* sidebar_controller =
+      static_cast<BraveBrowser*>(browser_.get())->sidebar_controller();
+  auto* sidebar_model = sidebar_controller->model();
+  const auto& sidebar_items = sidebar_model->GetAllSidebarItems();
+  auto iter = base::ranges::find_if(sidebar_items, [](const auto& item) {
+    return item.built_in_item_type ==
+           sidebar::SidebarItem::BuiltInItemType::kPlaylist;
+  });
+  sidebar_controller->ActivateItemAt(
+      std::distance(sidebar_items.begin(), iter));
+}
+
+void PlaylistSidePanelCoordinator::LoadPlaylist(const std::string& playlist_id,
+                                                const std::string& item_id) {
+  CHECK(contents_wrapper());
+
+  auto* web_contents = contents_wrapper()->web_contents();
+  CHECK(web_contents);
+
+  CHECK(!playlist_id.empty());
+  web_contents->GetController().LoadURL(
+      GURL("chrome-untrusted://playlist/playlist/" + playlist_id + "#" +
+           item_id),
+      {}, ui::PageTransition::PAGE_TRANSITION_AUTO_BOOKMARK, {});
 }
 
 std::unique_ptr<views::View> PlaylistSidePanelCoordinator::CreateWebView() {

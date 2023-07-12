@@ -6,12 +6,14 @@
 #include "brave/browser/ui/views/playlist/playlist_action_bubble_view.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/playlist/playlist_tab_helper.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -62,7 +64,8 @@ class ConfirmBubble : public PlaylistActionBubbleView {
  public:
   METADATA_HEADER(ConfirmBubble);
 
-  ConfirmBubble(views::View* anchor,
+  ConfirmBubble(Browser* browser,
+                views::View* anchor,
                 playlist::PlaylistTabHelper* playlist_tab_helper);
   ~ConfirmBubble() override = default;
 
@@ -102,9 +105,10 @@ void ConfirmBubble::Row::Layout() {
       {label()->width() + label()->x() - contents_x, label()->height()});
 }
 
-ConfirmBubble::ConfirmBubble(views::View* anchor,
+ConfirmBubble::ConfirmBubble(Browser* browser,
+                             views::View* anchor,
                              playlist::PlaylistTabHelper* playlist_tab_helper)
-    : PlaylistActionBubbleView(anchor, playlist_tab_helper) {
+    : PlaylistActionBubbleView(browser, anchor, playlist_tab_helper) {
   // What this look like
   // https://user-images.githubusercontent.com/5474642/243532057-4bbbe779-47a1-4c3a-bd34-ce1334cf1d1d.png
   set_margins({});
@@ -150,7 +154,22 @@ ConfirmBubble::ConfirmBubble(views::View* anchor,
 }
 
 void ConfirmBubble::OpenInPlaylist() {
-  NOTIMPLEMENTED();
+  auto* side_panel_coordinator =
+      PlaylistSidePanelCoordinator::FromBrowser(browser_);
+
+  // Technically, the saved items could belong to multiple playlists
+  // at the same time and their parent playlists could be different from each
+  // other's. But for simplicity, we just open the first one assuming that most
+  // users keep items from a site in a same playlist.
+  const auto& saved_items = playlist_tab_helper_->saved_items();
+  CHECK(saved_items.size());
+  CHECK(saved_items.front()->parents.size());
+  const std::string& playlist_id = saved_items.front()->parents.front();
+  const std::string& item_id = saved_items.front()->id;
+
+  CHECK(side_panel_coordinator);
+  side_panel_coordinator->ActivatePanel();
+  side_panel_coordinator->LoadPlaylist(playlist_id, item_id);
 }
 
 void ConfirmBubble::ChangeFolder() {
@@ -185,7 +204,8 @@ END_METADATA
 class AddBubble : public PlaylistActionBubbleView {
  public:
   METADATA_HEADER(AddBubble);
-  AddBubble(views::View* anchor,
+  AddBubble(Browser* browser,
+            views::View* anchor,
             playlist::PlaylistTabHelper* playlist_tab_helper);
 
  private:
@@ -296,9 +316,10 @@ void AddBubble::ItemRow::UpdateBackground() {
   }
 }
 
-AddBubble::AddBubble(views::View* anchor,
+AddBubble::AddBubble(Browser* browser,
+                     views::View* anchor,
                      playlist::PlaylistTabHelper* playlist_tab_helper)
-    : PlaylistActionBubbleView(anchor, playlist_tab_helper) {
+    : PlaylistActionBubbleView(browser, anchor, playlist_tab_helper) {
   // What this look like
   // https://user-images.githubusercontent.com/5474642/243532255-f82fc740-eea0-4c52-b43a-378ab703d229.png
   SetTitle(l10n_util::GetStringUTF16(IDS_PLAYLIST_ADD_TO_PLAYLIST));
@@ -382,15 +403,16 @@ END_METADATA
 
 // static
 void PlaylistActionBubbleView::ShowBubble(
+    Browser* browser,
     views::View* anchor,
     playlist::PlaylistTabHelper* playlist_tab_helper) {
   DCHECK(!g_bubble);
   DCHECK(playlist_tab_helper);
 
   if (playlist_tab_helper->saved_items().size()) {
-    g_bubble = new ConfirmBubble(anchor, playlist_tab_helper);
+    g_bubble = new ConfirmBubble(browser, anchor, playlist_tab_helper);
   } else if (playlist_tab_helper->found_items().size()) {
-    g_bubble = new AddBubble(anchor, playlist_tab_helper);
+    g_bubble = new AddBubble(browser, anchor, playlist_tab_helper);
   } else {
     NOTREACHED() << "Caller should filter this case";
   }
@@ -415,9 +437,11 @@ PlaylistActionBubbleView* PlaylistActionBubbleView::GetBubble() {
 }
 
 PlaylistActionBubbleView::PlaylistActionBubbleView(
+    Browser* browser,
     views::View* anchor,
     playlist::PlaylistTabHelper* playlist_tab_helper)
     : BubbleDialogDelegateView(anchor, views::BubbleBorder::Arrow::TOP_RIGHT),
+      browser_(browser),
       playlist_tab_helper_(playlist_tab_helper) {}
 
 PlaylistActionBubbleView::~PlaylistActionBubbleView() = default;
