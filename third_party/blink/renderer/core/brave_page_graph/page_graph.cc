@@ -1105,12 +1105,19 @@ NodeHTMLElement* PageGraph::GetHTMLElementNode(
     node_id = blink::DOMNodeIds::IdForNode(node);
   }
 
+  // This function uses node_id in most scenarios, because a node is already
+  // registered in 99.9% of calls. A single lookup in element_nodes_ is all we
+  // need.
   VLOG(1) << "GetHTMLElementNode) node id: " << node_id;
   auto element_node_it = element_nodes_.find(node_id);
   if (element_node_it != element_nodes_.end()) {
     return element_node_it->value;
   }
 
+  // We can get here when a node constructor triggers a synchronous
+  // WillSendRequest or RegisterAttributeSet event which PG should handle, but
+  // because the node is not fully constructed yet, we need to register it
+  // preemptively at this point.
   if (!node) {
     DCHECK(absl::holds_alternative<blink::DOMNodeId>(node_var));
     node = blink::DOMNodeIds::NodeForId(node_id);
@@ -1123,6 +1130,8 @@ NodeHTMLElement* PageGraph::GetHTMLElementNode(
     }
   }
 
+  // If a node is not found at this point, then something is wrong and there
+  // might be another edge case we need to handle.
   CHECK(false) << "HTMLElementNode not found: " << node_id;
   return nullptr;
 }
