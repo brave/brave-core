@@ -28,8 +28,7 @@ namespace ipfs {
 
 class FakeIPFSHostResolver : public ipfs::IPFSHostResolver {
  public:
-  explicit FakeIPFSHostResolver(network::mojom::NetworkContext& context)
-      : ipfs::IPFSHostResolver(context) {}
+  FakeIPFSHostResolver() : ipfs::IPFSHostResolver(nullptr) {}
   ~FakeIPFSHostResolver() override = default;
   void Resolve(const net::HostPortPair& host,
                const net::NetworkAnonymizationKey& anonymization_key,
@@ -60,9 +59,10 @@ class IpfsTabHelperUnitTest : public testing::Test {
     test_network_context_ = std::make_unique<network::TestNetworkContext>();
     profile_ = profile_manager_.CreateTestingProfile("TestProfile");
     web_contents_ = content::TestWebContents::Create(profile(), nullptr);
-    auto ipfs_host_resolver =
-        std::make_unique<FakeIPFSHostResolver>(*test_network_context_);
+    auto ipfs_host_resolver = std::make_unique<FakeIPFSHostResolver>();
     ipfs_host_resolver_ = ipfs_host_resolver.get();
+    ipfs_host_resolver_->SetNetworkContextForTesting(
+        test_network_context_.get());
     ASSERT_TRUE(web_contents_.get());
     ASSERT_TRUE(
         ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents_.get()));
