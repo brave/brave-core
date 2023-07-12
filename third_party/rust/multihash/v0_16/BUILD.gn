@@ -11,7 +11,7 @@ cargo_crate("lib") {
 
   # Only for usage from third-party crates. Add the crate to
   # third_party.toml to use it from first-party code.
-  visibility = [ "//brave/third_party/rust/*" ]
+  visibility = [ "//third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
 
   # Unit tests skipped. Generate with --with-tests to include them.
@@ -34,7 +34,6 @@ cargo_crate("lib") {
     "//brave/third_party/rust/unsigned_varint/v0_7:lib",
     "//third_party/rust/serde/v1:lib",
   ]
-
   features = [
     "alloc",
     "blake2b",
@@ -47,7 +46,6 @@ cargo_crate("lib") {
     "serde-codec",
     "std",
   ]
-
   cargo_manifest_dir =
       rebase_path("//brave/third_party/rust/multihash/v0_16/crate")
   rustenv = [ "CARGO_MANIFEST_DIR=$cargo_manifest_dir" ]

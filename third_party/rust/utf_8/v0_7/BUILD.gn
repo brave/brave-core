@@ -20,7 +20,7 @@ cargo_crate("lib") {
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
   sources = [ "crate/src/lib.rs" ]
-  edition = "2018"
+  edition = "2015"
   cargo_pkg_version = "0.7.6"
   cargo_pkg_authors = "Simon Sapin <simon.sapin@exyr.org>"
   cargo_pkg_name = "utf-8"
