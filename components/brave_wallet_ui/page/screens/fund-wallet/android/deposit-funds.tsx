@@ -29,16 +29,16 @@ import BraveCoreThemeProvider
   from '../../../../../common/BraveCoreThemeProvider'
 import { DepositFundsScreen } from '../deposit-funds'
 import { LibContext } from '../../../../common/context/lib.context'
-import { ApiProxyContext } from '../../../../common/context/api-proxy.context'    
+import { ApiProxyContext }
+  from '../../../../common/context/api-proxy.context'    
 
-import {
-  WalletPageWrapper
-} from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+import { WalletPageWrapper } 
+  from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
 import { PageTitleHeader } from '../../../../components/desktop/card-headers/page-title-header'
 
 export function AndroidDepositApp() {
   let history = useHistory()
-  
+
   const [showDepositAddress, setShowDepositAddress] = React.useState<boolean>(false)
 
   const handleDepositScreenBack = React.useCallback(() => {
