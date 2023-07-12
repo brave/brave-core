@@ -101,6 +101,9 @@ class PlaylistMediaFileDownloader
   void NotifyFail(const std::string& id);
   void NotifySucceed(const std::string& id, const std::string& media_file_path);
 
+  void ScheduleToCancelDownloadItem(const std::string& guid);
+  void CancelDownloadItem(const std::string& guid);
+
   void ScheduleToDetachCachedFile(download::DownloadItem* item);
   void DetachCachedFile(download::DownloadItem* item);
 
@@ -123,6 +126,7 @@ class PlaylistMediaFileDownloader
   // All below variables are only for playlist creation.
   base::FilePath destination_path_;
   mojom::PlaylistItemPtr current_item_;
+  std::string current_download_item_guid_;
 
   // true when this class is working for playlist now.
   bool in_progress_ = false;

@@ -131,6 +131,22 @@ void PlaylistMediaFileDownloader::NotifySucceed(
   ResetDownloadStatus();
 }
 
+void PlaylistMediaFileDownloader::ScheduleToCancelDownloadItem(
+    const std::string& guid) {
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&PlaylistMediaFileDownloader::CancelDownloadItem,
+                     weak_factory_.GetWeakPtr(), guid));
+}
+
+void PlaylistMediaFileDownloader::CancelDownloadItem(const std::string& guid) {
+  if (auto* download_item = download_manager_->GetDownloadByGuid(guid);
+      download_item &&
+      download_item->GetState() == download::DownloadItem::IN_PROGRESS) {
+    download_item->Cancel(/*user_canceled=*/true);
+  }
+}
+
 void PlaylistMediaFileDownloader::ScheduleToDetachCachedFile(
     download::DownloadItem* item) {
   for (auto& download : download_manager_->TakeInProgressDownloads()) {
@@ -213,9 +229,16 @@ void PlaylistMediaFileDownloader::DownloadMediaFileForPlaylistItem(
 void PlaylistMediaFileDownloader::OnDownloadCreated(
     download::DownloadItem* item) {
   DVLOG(2) << __func__;
-  DCHECK(current_item_) << "This shouldn't happen as we unobserve the manager "
-                           "when a process for an item is done";
-  DCHECK_EQ(item->GetGuid(), current_item_->id);
+  if (current_item_) {
+    DCHECK_EQ(item->GetGuid(), current_item_->id);
+    DCHECK(current_download_item_guid_.empty());
+    current_download_item_guid_ = item->GetGuid();
+  } else {
+    // This can happen when a user canceled it. But we should
+    // observe the item anyway to handle the lifecycle of
+    // download item.
+    ScheduleToCancelDownloadItem(item->GetGuid());
+  }
 
   DCHECK(!download_item_observation_.IsObservingSource(item));
   download_item_observation_.AddObservation(item);
@@ -342,6 +365,10 @@ void PlaylistMediaFileDownloader::ResetDownloadStatus() {
   in_progress_ = false;
   current_item_.reset();
   destination_path_.clear();
+  if (!current_download_item_guid_.empty()) {
+    ScheduleToCancelDownloadItem(current_download_item_guid_);
+    current_download_item_guid_.clear();
+  }
 }
 
 }  // namespace playlist

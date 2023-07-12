@@ -51,6 +51,12 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     public void onItemCreated(PlaylistItem item) {}
 
     @Override
+    public void onItemAddedToList(String playlistId, String itemId) {}
+
+    @Override
+    public void onItemRemovedFromList(String playlistId, String itemId) {}
+
+    @Override
     public void onItemDeleted(String id) {}
 
     @Override
