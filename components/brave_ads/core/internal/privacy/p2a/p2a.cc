@@ -10,13 +10,10 @@
 
 namespace brave_ads::privacy::p2a {
 
-void RecordEvent(const std::string& name,
-                 const std::vector<std::string>& questions) {
-  CHECK(!name.empty());
-  CHECK(!questions.empty());
+void RecordEvent(const std::vector<std::string>& events) {
+  CHECK(!events.empty());
 
-  AdsClientHelper::GetInstance()->RecordP2AEvent(name,
-                                                 QuestionsToValue(questions));
+  AdsClientHelper::GetInstance()->RecordP2AEvents(EventsToValue(events));
 }
 
 }  // namespace brave_ads::privacy::p2a

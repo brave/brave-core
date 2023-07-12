@@ -81,7 +81,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, Serve) {
                                       ConfirmationType::kServed));
       });
 
-  EXPECT_CALL(ads_client_mock_, RecordP2AEvent).Times(0);
+  EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
   // Act
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
@@ -93,7 +93,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, DoNotServe) {
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run(kDimensions, ad));
 
-  EXPECT_CALL(ads_client_mock_, RecordP2AEvent).Times(0);
+  EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
   // Act
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());

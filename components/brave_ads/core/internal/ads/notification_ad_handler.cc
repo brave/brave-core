@@ -166,8 +166,7 @@ void NotificationAdHandler::OnOpportunityAroseToServeNotificationAd(
     const SegmentList& segments) {
   BLOG(1, "Opportunity arose to serve a notification ad");
 
-  privacy::p2a::RecordAdOpportunityForSegments(AdType::kNotificationAd,
-                                               segments);
+  privacy::p2a::RecordAdOpportunity(AdType::kNotificationAd, segments);
 }
 
 void NotificationAdHandler::OnDidServeNotificationAd(

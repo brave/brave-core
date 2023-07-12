@@ -10,7 +10,7 @@ See [anonymous confirmation token redemption](../utility/redeem_confirmation/REA
 |---|---|---|---|
 | buildChannel  | no  | no  | Browser build channel  |
 | catalog  | no  | no  |  Catalog id  |
-| conversion  | yes  | no  | Envelope encryption for verifiable conversions  |
+| conversion  | yes  | no  | Encrypted verifiable conversion envelope  |
 | createdAtTimestamp  | no  | no  | Privacy-preserving [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp  |
 | diagnosticId  | yes  | yes  | Diagnostic id from brave://rewards-internals to help diagnose issues.  |
 | locale  | yes  | no  | Privacy-preserving operating system locale  |

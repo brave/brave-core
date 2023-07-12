@@ -99,8 +99,7 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
   void RunDBTransaction(brave_ads::mojom::DBTransactionInfoPtr transaction,
                         brave_ads::RunDBTransactionCallback callback) override;
 
-  void RecordP2AEvent(const std::string& name,
-                      base::Value::List value) override;
+  void RecordP2AEvents(base::Value::List events) override;
 
   void AddTrainingSample(std::vector<brave_federated::mojom::CovariateInfoPtr>
                              training_sample) override;

@@ -1700,12 +1700,12 @@ void AdsServiceImpl::RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
       std::move(callback));
 }
 
-void AdsServiceImpl::RecordP2AEvent(const std::string& /*name*/,
-                                    base::Value::List list) {
-  for (const auto& item : list) {
-    CHECK(item.is_string());
-    RecordInWeeklyStorageAndEmitP2AHistogramAnswer(profile_->GetPrefs(),
-                                                   item.GetString());
+void AdsServiceImpl::RecordP2AEvents(base::Value::List events) {
+  for (const auto& event : events) {
+    CHECK(event.is_string());
+
+    RecordInWeeklyStorageAndEmitP2AHistogramName(profile_->GetPrefs(),
+                                                 /*name*/ event.GetString());
   }
 }
 

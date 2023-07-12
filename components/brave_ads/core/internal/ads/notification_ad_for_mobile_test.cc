@@ -16,7 +16,6 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/internal/history/history_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/privacy/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "net/http/http_status_code.h"
 
@@ -66,9 +65,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
       }));
 
-  const std::string name =
-      privacy::p2a::GetAdOpportunityNameForAdType(AdType::kNotificationAd);
-  EXPECT_CALL(ads_client_mock_, RecordP2AEvent(name, _));
+  EXPECT_CALL(ads_client_mock_, RecordP2AEvents(_));
 
   EXPECT_CALL(ads_client_mock_, AddTrainingSample).Times(0);
 
@@ -81,7 +78,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
   // Arrange
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd).Times(0);
 
-  EXPECT_CALL(ads_client_mock_, RecordP2AEvent).Times(0);
+  EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
   EXPECT_CALL(ads_client_mock_, AddTrainingSample).Times(0);
 

@@ -13,7 +13,7 @@
 
 namespace brave_ads::privacy::p2a {
 
-base::Value::List QuestionsToValue(const std::vector<std::string>& questions);
+base::Value::List EventsToValue(const std::vector<std::string>& events);
 
 }  // namespace brave_ads::privacy::p2a
 
