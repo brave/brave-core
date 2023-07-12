@@ -30,6 +30,7 @@ struct ReaderModeUtils {
       .replacingOccurrences(of: "%READER-TITLE%", with: readabilityResult.title.javaScriptEscapedString?.unquotedIfNecessary ?? readabilityResult.title.htmlEntityEncodedString)
       .replacingOccurrences(of: "%READER-CREDITS%", with: readabilityResult.credits.javaScriptEscapedString?.unquotedIfNecessary ?? readabilityResult.credits.htmlEntityEncodedString)
       .replacingOccurrences(of: "%READER-CONTENT%", with: readabilityResult.content)
+      .replacingOccurrences(of: "%READER-DIRECTION%", with: readabilityResult.direction.javaScriptEscapedString?.unquotedIfNecessary ?? readabilityResult.direction.htmlEntityEncodedString)
       .replacingOccurrences(of: "%READER-MESSAGE%", with: "")
   }
 }
