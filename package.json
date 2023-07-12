@@ -388,7 +388,7 @@
     "webtorrent": "^0.114.0"
   },
   "overrides": {
-    "loader-utils": "2.0.3",
+    "loader-utils": "2.0.4",
     "json5": "2.2.3"
   }
 }
