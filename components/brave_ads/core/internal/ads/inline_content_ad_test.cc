@@ -16,15 +16,12 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/history/history_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/privacy/p2a/impressions/p2a_impression.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
-
-using ::testing::_;
 
 namespace {
 constexpr char kDimensions[] = "200x100";
@@ -117,10 +114,6 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
         ASSERT_EQ(1U, GetAdEventCount(AdType::kInlineContentAd,
                                       ConfirmationType::kServed));
 
-        const std::string name = privacy::p2a::GetAdImpressionNameForAdType(
-            AdType::kInlineContentAd);
-        EXPECT_CALL(ads_client_mock_, RecordP2AEvent(name, _));
-
         // Act
         TriggerInlineContentAdEvent(ad->placement_id, ad->creative_instance_id,
                                     mojom::InlineContentAdEventType::kViewed,
@@ -150,10 +143,6 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
         ASSERT_TRUE(ad->IsValid());
         ASSERT_EQ(1U, GetAdEventCount(AdType::kInlineContentAd,
                                       ConfirmationType::kServed));
-
-        const std::string name = privacy::p2a::GetAdImpressionNameForAdType(
-            AdType::kInlineContentAd);
-        EXPECT_CALL(ads_client_mock_, RecordP2AEvent(name, _));
 
         TriggerInlineContentAdEvent(ad->placement_id, ad->creative_instance_id,
                                     mojom::InlineContentAdEventType::kViewed,

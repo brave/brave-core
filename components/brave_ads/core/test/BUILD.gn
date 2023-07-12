@@ -465,7 +465,6 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_signature_unittest_util.cc",
     "//brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_signature_unittest_util.h",
     "//brave/components/brave_ads/core/internal/privacy/locale/country_code_util_unittest.cc",
-    "//brave/components/brave_ads/core/internal/privacy/p2a/impressions/p2a_impression_questions_unittest.cc",
     "//brave/components/brave_ads/core/internal/privacy/p2a/opportunities/p2a_opportunity_questions_unittest.cc",
     "//brave/components/brave_ads/core/internal/privacy/p2a/p2a_unittest.cc",
     "//brave/components/brave_ads/core/internal/privacy/p2a/p2a_value_util_unittest.cc",

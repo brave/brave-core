@@ -16,7 +16,6 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
-#include "brave/components/brave_ads/core/internal/privacy/p2a/impressions/p2a_impression.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
 
@@ -147,8 +146,6 @@ void InlineContentAdHandler::OnDidFireInlineContentAdViewedEvent(
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kViewed);
-
-  privacy::p2a::RecordAdImpression(ad);
 }
 
 void InlineContentAdHandler::OnDidFireInlineContentAdClickedEvent(

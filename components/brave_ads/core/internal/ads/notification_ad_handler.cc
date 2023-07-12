@@ -25,7 +25,6 @@
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_served_at_predictor_variable_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
-#include "brave/components/brave_ads/core/internal/privacy/p2a/impressions/p2a_impression.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feedback_info.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
@@ -210,8 +209,6 @@ void NotificationAdHandler::OnDidFireNotificationAdViewedEvent(
                     ConfirmationType::kViewed);
 
   SetNotificationAdServedAtPredictorVariable(base::Time::Now());
-
-  privacy::p2a::RecordAdImpression(ad);
 }
 
 void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
