@@ -103,7 +103,7 @@ RegisterPolymerTemplateModifications({
           getTrustedHTML`
             <site-details-permission
               category="[[contentSettingsTypesEnum_.LOCALHOST_ACCESS]]"
-              icon="settings:devices">
+              icon="smartphone-desktop">
             </site-details-permission>
           `)
         const localhostAccessSettings = templateContent.querySelector(
