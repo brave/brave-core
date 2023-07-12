@@ -3,10 +3,10 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-""" A script to automate updating the perf profile for CI
+""" A script to automate updating the perf profiles for perf CI
 
-It downloads and unpacks the old profile, run the browser twice to upload the
-components and other stuff, makes a new zip and uploads it to GCP.
+It downloads and unpacks an old profile, run the browser twice to upload the
+components/other things, makes a new zip and uploads it to GCP.
 
 Example usage:
 vpython3 update_profile.py brave-typical-v1.46.52 brave-typical-mac-v1.55.98
@@ -61,7 +61,7 @@ def UpdateProfile(profile_name: str, browser_binary: str, new_profile_name: str,
 
   # Run browser for 2 minutes to update the profile.
   # Do this twice to clean the old components.
-  for i in range(2):
+  for _ in range(2):
     logging.info('Run %s', ' '.join(args))
     with subprocess.Popen(args) as process:
       logging.info('Waiting for 2 minutes..')
@@ -105,7 +105,7 @@ def main():
   parser = argparse.ArgumentParser()
   parser.add_argument('profile_name',
                       type=str,
-                      help='Profile name (a filename in ./profiles)')
+                      help='Profile name to update (a filename in ./profiles)')
   parser.add_argument('new_profile_name',
                       type=str,
                       help='New profile name to store the result')
