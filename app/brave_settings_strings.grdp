@@ -640,7 +640,7 @@
 
   <!-- Localhost access setting -->
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS" desc="Label for localhost site settings.">
-    Localhost Access
+    Localhost access
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_ASK" desc="Label for localhost access site settings.">
     Sites can request access to localhost resources

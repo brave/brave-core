@@ -715,7 +715,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <!-- LOCALHOST SIGN IN SITE SETTING -->
       <message name="IDS_LOCALHOST_TITLE" desc="Label for localhost site settings.">
-        Localhost Access
+        Localhost access
       </message>
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_LOCALHOST_ASK" desc="Label for localhost site settings.">
         Sites can request access to localhost resources
