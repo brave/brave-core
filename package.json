@@ -284,7 +284,7 @@
     "@types/array-move": "2.0.0",
     "@types/async": "^3.2.20",
     "@types/chrome": "0.0.241",
-    "@types/enzyme": "3.10.12",
+    "@types/enzyme": "3.10.13",
     "@types/enzyme-adapter-react-16": "1.0.6",
     "@types/jest": "26.0.24",
     "@types/qr-image": "3.2.5",
