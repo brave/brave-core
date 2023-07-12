@@ -43,7 +43,10 @@ def CheckLeoVariables(input_api, output_api):
         return []
 
     try:
-        parts = [brave_node.PathInNodeModules('.bin', 'leo-check')]
+        parts = [
+            brave_node.PathInNodeModules('@brave', 'leo', 'src', 'scripts',
+                                         'audit-tokens.js')
+        ]
         brave_node.RunNode(parts)
         return []
     except RuntimeError as err:
