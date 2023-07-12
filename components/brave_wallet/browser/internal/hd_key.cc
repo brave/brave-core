@@ -44,9 +44,10 @@ const secp256k1_context* GetSecp256k1Ctx() {
     secp256k1_context* context = secp256k1_context_create(
         SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
 
-    uint8_t bytes[kContextRandomizeSize] = {};
-    crypto::RandBytes(bytes, sizeof(bytes));
-    [[maybe_unused]] int result = secp256k1_context_randomize(context, bytes);
+    SecureVector bytes(kContextRandomizeSize);
+    crypto::RandBytes(bytes.data(), bytes.size());
+    [[maybe_unused]] int result =
+        secp256k1_context_randomize(context, bytes.data());
 
     return context;
   }();
