@@ -436,4 +436,35 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
       console_observer, blink::mojom::ConsoleMessageLevel::kWarning,
       {"TypeError: Cannot read properties of undefined (reading 'forEach')"});
 }
+
+IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestDepositPageAppearing) {
+  GURL url = GURL("chrome://wallet/crypto/deposit-funds");
+  content::NavigationController::LoadURLParams params(url);
+  params.transition_type = ui::PageTransitionFromInt(
+      ui::PAGE_TRANSITION_TYPED | ui::PAGE_TRANSITION_FROM_ADDRESS_BAR);
+
+  auto* web_contents = GetActiveWebContents();
+
+  content::ConsoleObserver console_observer(web_contents);
+  console_observer.SetPattern(kConsoleMarker);
+  web_contents->GetController().LoadURLWithParams(params);
+  web_contents->GetOutermostWebContents()->Focus();
+  EXPECT_TRUE(WaitForLoadStop(web_contents));
+  EXPECT_TRUE(web_contents->GetLastCommittedURL() == url)
+      << "Expected URL " << url << " but observed "
+      << web_contents->GetLastCommittedURL();
+
+  auto result =
+      content::EvalJs(web_contents,
+                      base::ReplaceStringPlaceholders(
+                          kPrintConsoleMarkerScript, {kConsoleMarker}, nullptr),
+                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS, 1);
+  EXPECT_TRUE(result.error.empty())
+      << "Could not execute script: " << result.error;
+
+  EXPECT_TRUE(console_observer.Wait());
+  VerifyConsoleOutputNoErrors(
+      console_observer, blink::mojom::ConsoleMessageLevel::kWarning,
+      {"TypeError: Cannot read properties of undefined (reading 'forEach')"});
+}
 }  // namespace brave_wallet
