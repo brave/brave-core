@@ -18,7 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.rewards.BraveRewardsNativeWorker;
 
 import java.util.ArrayList;
 import java.util.Locale;

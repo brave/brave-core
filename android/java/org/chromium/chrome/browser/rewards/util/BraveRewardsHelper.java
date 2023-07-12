@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser;
+package org.chromium.chrome.browser.rewards.util;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -29,8 +29,11 @@ import androidx.annotation.Nullable;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveAdsNativeHelper;
+import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.rewards.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.browser_ui.widget.RoundedIconGenerator;
 import org.chromium.components.favicon.IconType;
@@ -69,10 +72,10 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     private final Handler mHandler = new Handler();
     private int mFetchCount;
     private final int MAX_FAVICON_FETCH_COUNT = 8;
-    public static final int CROSS_FADE_DURATION = 1000; //ms
-    public static final int THANKYOU_FADE_OUT_DURATION = 1500; //ms
-    public static final int THANKYOU_FADE_IN_DURATION = 1500; //ms
-    public static final int THANKYOU_STAY_DURATION = 2000; //ms
+    public static final int CROSS_FADE_DURATION = 1000; // ms
+    public static final int THANKYOU_FADE_OUT_DURATION = 1500; // ms
+    public static final int THANKYOU_FADE_IN_DURATION = 1500; // ms
+    public static final int THANKYOU_STAY_DURATION = 2000; // ms
     private static final float DP_PER_INCH_MDPI = 160f;
     private Tab mTab;
     private Profile mProfile;
@@ -211,11 +214,11 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
             mLargeIconBridge.destroy();
             mLargeIconBridge = null;
         }
-        mCallback =  null;
+        mCallback = null;
     }
 
     public void detach() {
-        mCallback =  null;
+        mCallback = null;
     }
 
     public void retrieveLargeIcon(String favIconURL, LargeIconReadyCallback callback) {
@@ -258,7 +261,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     @Override
     @CalledByNative("LargeIconCallback")
     public void onLargeIconAvailable(@Nullable Bitmap icon, int fallbackColor,
-                                     boolean isFallbackColorDefault, @IconType int iconType) {
+            boolean isFallbackColorDefault, @IconType int iconType) {
         if (mFaviconUrl.isEmpty()) {
             return;
         }
@@ -280,21 +283,22 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
             }, FAVICON_FETCH_INTERVAL);
             return;
         }
-        //else: icon is available
+        // else: icon is available
 
         if (mCallback != null) {
             mCallback.onLargeIconReady(icon);
         }
     }
 
-
     public static Bitmap getCircularBitmap(Bitmap bitmap) {
         Bitmap output;
 
         if (bitmap.getWidth() > bitmap.getHeight()) {
-            output = Bitmap.createBitmap(bitmap.getHeight(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+            output = Bitmap.createBitmap(
+                    bitmap.getHeight(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         } else {
-            output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getWidth(), Bitmap.Config.ARGB_8888);
+            output = Bitmap.createBitmap(
+                    bitmap.getWidth(), bitmap.getWidth(), Bitmap.Config.ARGB_8888);
         }
 
         Canvas canvas = new Canvas(output);
@@ -321,147 +325,144 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     }
 
     static public ChromeTabbedActivity getChromeTabbedActivity() {
-      return BraveActivity.getChromeTabbedActivity();
+        return BraveActivity.getChromeTabbedActivity();
     }
 
     static public BraveActivity getBraveActivity()
             throws BraveActivity.BraveActivityNotFoundException {
-      return BraveActivity.getBraveActivity();
+        return BraveActivity.getBraveActivity();
     }
 
-  static public String getCurrentMonth(Calendar currentTime,
-      Resources resources, boolean upper_case) {
-    String month = resources.getString(R.string.brave_ui_month_jan);
-    switch (currentTime.get(Calendar.MONTH)) {
-      case Calendar.JANUARY:
-        month = resources.getString(R.string.brave_ui_month_jan);
-        break;
-      case Calendar.FEBRUARY:
-        month = resources.getString(R.string.brave_ui_month_feb);
-        break;
-      case Calendar.MARCH:
-        month = resources.getString(R.string.brave_ui_month_mar);
-        break;
-      case Calendar.APRIL:
-        month = resources.getString(R.string.brave_ui_month_apr);
-        break;
-      case Calendar.MAY:
-        month = resources.getString(R.string.brave_ui_month_may);
-        break;
-      case Calendar.JUNE:
-        month = resources.getString(R.string.brave_ui_month_jun);
-        break;
-      case Calendar.JULY:
-        month = resources.getString(R.string.brave_ui_month_jul);
-        break;
-      case Calendar.AUGUST:
-        month = resources.getString(R.string.brave_ui_month_aug);
-        break;
-      case Calendar.SEPTEMBER:
-        month = resources.getString(R.string.brave_ui_month_sep);
-        break;
-      case Calendar.OCTOBER:
-        month = resources.getString(R.string.brave_ui_month_oct);
-        break;
-      case Calendar.NOVEMBER:
-        month = resources.getString(R.string.brave_ui_month_nov);
-        break;
-      case Calendar.DECEMBER:
-        month = resources.getString(R.string.brave_ui_month_dec);
-        break;
-    }
-    if (!upper_case && !month.isEmpty()) {
-      return month.substring(0, 1) + month.substring(1).toLowerCase(Locale.getDefault());
-    }
+    static public String getCurrentMonth(
+            Calendar currentTime, Resources resources, boolean upper_case) {
+        String month = resources.getString(R.string.brave_ui_month_jan);
+        switch (currentTime.get(Calendar.MONTH)) {
+            case Calendar.JANUARY:
+                month = resources.getString(R.string.brave_ui_month_jan);
+                break;
+            case Calendar.FEBRUARY:
+                month = resources.getString(R.string.brave_ui_month_feb);
+                break;
+            case Calendar.MARCH:
+                month = resources.getString(R.string.brave_ui_month_mar);
+                break;
+            case Calendar.APRIL:
+                month = resources.getString(R.string.brave_ui_month_apr);
+                break;
+            case Calendar.MAY:
+                month = resources.getString(R.string.brave_ui_month_may);
+                break;
+            case Calendar.JUNE:
+                month = resources.getString(R.string.brave_ui_month_jun);
+                break;
+            case Calendar.JULY:
+                month = resources.getString(R.string.brave_ui_month_jul);
+                break;
+            case Calendar.AUGUST:
+                month = resources.getString(R.string.brave_ui_month_aug);
+                break;
+            case Calendar.SEPTEMBER:
+                month = resources.getString(R.string.brave_ui_month_sep);
+                break;
+            case Calendar.OCTOBER:
+                month = resources.getString(R.string.brave_ui_month_oct);
+                break;
+            case Calendar.NOVEMBER:
+                month = resources.getString(R.string.brave_ui_month_nov);
+                break;
+            case Calendar.DECEMBER:
+                month = resources.getString(R.string.brave_ui_month_dec);
+                break;
+        }
+        if (!upper_case && !month.isEmpty()) {
+            return month.substring(0, 1) + month.substring(1).toLowerCase(Locale.getDefault());
+        }
 
-    return month;
-  }
-
-  static public String getCurrentYear(Resources resources) {
-    Calendar currentTime = Calendar.getInstance();
-    return Integer.toString(currentTime.get(Calendar.YEAR));
-  }
-
-  public static Tab currentActiveChromeTabbedActivityTab() {
-      ChromeTabbedActivity activity = BraveRewardsHelper.getChromeTabbedActivity();
-      if (activity == null || activity.getTabModelSelector() == null) {
-          return null;
-      }
-      return activity.getActivityTab();
-  }
-
-  /**
-   *
-   * @param fadeout: can be null
-   * @param fadein: can be null
-   * @param fade_out_visibility: View.INVISIBLE or View.GONE
-   * @param fadeInAlpha: fade in alpha level
-   * @param fade_out_visibility: fade in/out time (ms)
-   */
-  public static void crossfade(final View fadeout, final View fadein, int fade_out_visibility, float fadeInAlpha, int fade_time) {
-    if (fade_time < 0) {
-        fade_time = 0;
+        return month;
     }
 
-    if (fadeInAlpha < 0 || fadeInAlpha > 1) {
-        fadeInAlpha= 1f;
+    static public String getCurrentYear(Resources resources) {
+        Calendar currentTime = Calendar.getInstance();
+        return Integer.toString(currentTime.get(Calendar.YEAR));
     }
 
-    final int fade_out_visibility_local =
-    (fade_out_visibility != View.GONE && fade_out_visibility != View.INVISIBLE) ?
-      View.GONE : fade_out_visibility;
-
-    // Set the content view to 0% opacity but visible, so that it is visible
-    // (but fully transparent) during the animation.
-    if (fadein != null) {
-      fadein.setAlpha(0f);
-      fadein.setVisibility(View.VISIBLE);
-
-      // Animate the content view to 100% opacity, and clear any animation
-      // listener set on the view.
-      fadein.animate()
-              .alpha(fadeInAlpha)
-              .setDuration(fade_time)
-              .setListener(null);
+    public static Tab currentActiveChromeTabbedActivityTab() {
+        ChromeTabbedActivity activity = BraveRewardsHelper.getChromeTabbedActivity();
+        if (activity == null || activity.getTabModelSelector() == null) {
+            return null;
+        }
+        return activity.getActivityTab();
     }
 
-    // Animate the loading view to 0% opacity. After the animation ends,
-    // set its visibility to GONE as an optimization step (it won't
-    // participate in layout passes, etc.)
-    if (fadeout != null) {
-      fadeout.animate()
-              .alpha(0f)
-              .setDuration(fade_time)
-              .setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                  fadeout.setVisibility(fade_out_visibility_local);
-                }
-              });
-    }
-  }
+    /**
+     *
+     * @param fadeout: can be null
+     * @param fadein: can be null
+     * @param fade_out_visibility: View.INVISIBLE or View.GONE
+     * @param fadeInAlpha: fade in alpha level
+     * @param fade_out_visibility: fade in/out time (ms)
+     */
+    public static void crossfade(final View fadeout, final View fadein, int fade_out_visibility,
+            float fadeInAlpha, int fade_time) {
+        if (fade_time < 0) {
+            fade_time = 0;
+        }
 
-  public static double probiToDouble(String probi) {
-      final String PROBI_POWER = "1000000000000000000";
-      double val = Double.NaN;
-      try {
-          BigDecimal probiNumber = new BigDecimal(probi);
-          BigDecimal dividerNumber = new BigDecimal(PROBI_POWER);
-          val = probiNumber.divide(dividerNumber).doubleValue();
-      }
-      catch(NumberFormatException e) {
-          val = Double.NaN;
-      }
-      return val;
-  }
+        if (fadeInAlpha < 0 || fadeInAlpha > 1) {
+            fadeInAlpha = 1f;
+        }
+
+        final int fade_out_visibility_local =
+                (fade_out_visibility != View.GONE && fade_out_visibility != View.INVISIBLE)
+                ? View.GONE
+                : fade_out_visibility;
+
+        // Set the content view to 0% opacity but visible, so that it is visible
+        // (but fully transparent) during the animation.
+        if (fadein != null) {
+            fadein.setAlpha(0f);
+            fadein.setVisibility(View.VISIBLE);
+
+            // Animate the content view to 100% opacity, and clear any animation
+            // listener set on the view.
+            fadein.animate().alpha(fadeInAlpha).setDuration(fade_time).setListener(null);
+        }
+
+        // Animate the loading view to 0% opacity. After the animation ends,
+        // set its visibility to GONE as an optimization step (it won't
+        // participate in layout passes, etc.)
+        if (fadeout != null) {
+            fadeout.animate().alpha(0f).setDuration(fade_time).setListener(
+                    new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            fadeout.setVisibility(fade_out_visibility_local);
+                        }
+                    });
+        }
+    }
+
+    public static double probiToDouble(String probi) {
+        final String PROBI_POWER = "1000000000000000000";
+        double val = Double.NaN;
+        try {
+            BigDecimal probiNumber = new BigDecimal(probi);
+            BigDecimal dividerNumber = new BigDecimal(PROBI_POWER);
+            val = probiNumber.divide(dividerNumber).doubleValue();
+        } catch (NumberFormatException e) {
+            val = Double.NaN;
+        }
+        return val;
+    }
 
     /**
      * Expands touchable area of a small view
-      * @param parentView
+     * @param parentView
      * @param childView
      * @param extraPadding: dp
      */
-  public static void expandTouchArea(final View parentView, final View childView, final int extraPadding) {
+    public static void expandTouchArea(
+            final View parentView, final View childView, final int extraPadding) {
         parentView.post(new Runnable() {
             @Override
             public void run() {
@@ -489,13 +490,12 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         return Math.round(px);
     }
 
-
     public static boolean subtextAtOffset(String text, String subtext, int offset) {
         boolean ret_value = false;
         final int startIndex = text.indexOf(subtext);
         if (startIndex >= 0) {
             final int endIndex = startIndex + subtext.length();
-            if (offset >= startIndex && offset  < endIndex) {
+            if (offset >= startIndex && offset < endIndex) {
                 ret_value = true;
             }
         }

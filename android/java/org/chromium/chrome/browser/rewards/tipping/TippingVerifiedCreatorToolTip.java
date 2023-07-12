@@ -25,8 +25,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.rewards.util.BraveRewardsHelper;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 
 public class TippingVerifiedCreatorToolTip {

@@ -30,8 +30,8 @@ import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.chrome.browser.BraveLocalState;
-import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.rewards.util.BraveRewardsHelper;
 
 import java.security.SecureRandom;
 import java.util.Calendar;
