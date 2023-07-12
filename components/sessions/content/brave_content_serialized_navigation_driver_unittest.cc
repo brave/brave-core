@@ -25,11 +25,16 @@ TEST(BraveContentSerializedNavigationDriverTest,
   // When post data is present, the page state should be sanitized.
   EXPECT_EQ(std::string(), driver->GetSanitizedPageStateForPickle(&navigation));
 
-  navigation.set_virtual_url(GURL("chrome://wallet"));
-  // Check encoded data is not empty but clean state only with url info.
+  // Check encoded data is not empty but clean state only with url info for
+  // chrome overridable url by extension.
+  navigation.set_virtual_url(GURL("chrome://newtab"));
   EXPECT_EQ(blink::PageState::CreateFromURL(navigation.original_request_url())
                 .ToEncodedData(),
             driver->GetSanitizedPageStateForPickle(&navigation));
+
+  // Check encoded data is empty.
+  navigation.set_virtual_url(GURL("chrome://wallet"));
+  EXPECT_EQ(std::string(), driver->GetSanitizedPageStateForPickle(&navigation));
 }
 
 // Tests that PageState data is left unsanitized when post data is absent.
@@ -43,11 +48,17 @@ TEST(BraveContentSerializedNavigationDriverTest,
   ASSERT_FALSE(navigation.has_post_data());
   EXPECT_EQ(test_data::kEncodedPageState,
             driver->GetSanitizedPageStateForPickle(&navigation));
-  navigation.set_virtual_url(GURL("chrome://wallet"));
-  // Check encoded data is not empty but clean state only with url info.
+
+  // Check encoded data is not empty but clean state only with url info for
+  // chrome overridable url by extension.
+  navigation.set_virtual_url(GURL("chrome://newtab"));
   EXPECT_EQ(blink::PageState::CreateFromURL(navigation.original_request_url())
                 .ToEncodedData(),
             driver->GetSanitizedPageStateForPickle(&navigation));
+
+  // Check encoded data is empty.
+  navigation.set_virtual_url(GURL("chrome://wallet"));
+  EXPECT_EQ(std::string(), driver->GetSanitizedPageStateForPickle(&navigation));
 }
 
 }  // namespace sessions
