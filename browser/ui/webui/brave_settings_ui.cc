@@ -67,10 +67,8 @@
 #include "brave/browser/ui/webui/settings/brave_tor_snowflake_extension_handler.h"
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/settings/brave_settings_leo_assistant_handler.h"
 #include "brave/components/ai_chat/common/features.h"
-#endif
 
 using ntp_background_images::ViewCounterServiceFactory;
 
@@ -180,10 +178,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   html_source->AddBoolean("isLeoAssistantDisabled",
                           !ai_chat::features::IsAIChatEnabled());
-#endif
 }
 
 // static

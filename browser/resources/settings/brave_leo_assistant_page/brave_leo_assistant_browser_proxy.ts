@@ -11,10 +11,9 @@
 }
 
  export interface BraveLeoAssistantBrowserProxy {
-  reset(): Promise<boolean>
-  getShowLeoAssistantIcon(): Promise<boolean>
-  setShowLeoAssistantIcon(value: boolean): Promise<boolean>
-  initLeoAssistant(): void
+  resetLeoData(): Promise<boolean>
+  getLeoIconVisibility(): Promise<boolean>
+  toggleLeoIcon(): void
  }
 
  export class BraveLeoAssistantBrowserProxyImpl
@@ -24,38 +23,16 @@
      return instance || (instance = new BraveLeoAssistantBrowserProxyImpl())
    }
 
-   reset () {
-    return new Promise<boolean>((resolve) => {
-      if (!chrome.leo) {
-        resolve(false)
-        return
-      }
-      chrome.leo.reset(resolve)
-    })
-   }
-
-   getShowLeoAssistantIcon () {
-    return new Promise<boolean>(resolve => {
-      if (!chrome.leo) {
-        resolve(false)
-        return
-      }
-      chrome.leo.getShowLeoAssistantIcon(resolve)
-    })
+  getLeoIconVisibility() {
+    return sendWithPromise('getLeoIconVisibility')
   }
 
-  setShowLeoAssistantIcon (value: boolean) {
-    return new Promise<boolean>(resolve => {
-      if (!chrome.leo) {
-        resolve(false)
-        return
-      }
-      chrome.leo.setShowLeoAssistantIcon(value, resolve)
-    })
+  toggleLeoIcon() {
+    chrome.send('toggleLeoIcon')
   }
 
-  initLeoAssistant() {
-    sendWithPromise('initLeoAssistant')
+  resetLeoData() {
+    return sendWithPromise('resetLeoData')
   }
  }
 

@@ -129,7 +129,6 @@ brave_settings_ts_definitions = [
   "//brave/components/definitions/chrome_brave_theme.d.ts",
   "//brave/components/definitions/chrome_ipfs.d.ts",
   "//brave/components/definitions/chrome_brave_wallet.d.ts",
-  "//brave/components/definitions/chrome_leo.d.ts",
 ]
 
 # Generate the list for inclusion via preprocess and exclusion for chromium's preprocess

@@ -27,10 +27,6 @@ json_features("api_features") {
   if (enable_ipfs) {
     sources += [ "_ipfs_api_features.json" ]
   }
-
-  if (enable_ai_chat) {
-    sources += [ "_leo_api_features.json" ]
-  }
 }
 
 json_features("permission_features") {
@@ -70,10 +66,6 @@ brave_extensions_api_schema_sources = [
 
 if (enable_ipfs) {
   brave_extensions_api_schema_sources += [ "ipfs.json" ]
-}
-
-if (enable_ai_chat) {
-  brave_extensions_api_schema_sources += [ "leo.json" ]
 }
 
 if (ethereum_remote_client_enabled) {

@@ -329,7 +329,7 @@ RegisterPolymerTemplateModifications({
 
     const leoAssistantEl = createMenuElement(
       loadTimeData.getString('leoAssistant'),
-      '/leo-assistance',
+      '/leo-assistant',
       'product-brave-ai',
       'leoAssistant',
     )

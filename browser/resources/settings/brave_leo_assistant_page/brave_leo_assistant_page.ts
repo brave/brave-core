@@ -39,30 +39,27 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
     }
 
     leoAssistantShowOnToolbarPref_: boolean
-    leoAssistantShowPromptsPref_: boolean
     browserProxy_: BraveLeoAssistantBrowserProxy =
       BraveLeoAssistantBrowserProxyImpl.getInstance()
 
-    onResetAssistanceData_() {
-      this.browserProxy_.reset().then((result) => {
-        if(result) {
-          window.alert(this.i18n('braveLeoAssistantResetConfirmed'))
-          this.getShowLeoAssistantIcon_()
-        }
+    onResetAssistantData_() {
+      this.browserProxy_.resetLeoData().then((result) => {
+        if(!result)
+          return;
+
+        window.alert(this.i18n('braveLeoAssistantResetConfirmed'))
       })
     }
 
     override ready () {
       super.ready()
 
-      this.browserProxy_.initLeoAssistant()
-
-      this.browserProxy_.getShowLeoAssistantIcon().then((result) => {
-        this.onShowLeoAssistantIcon_(result)
-      })
+      this.updateShowLeoAssistantIcon_()
 
       this.addWebUiListener('settings-brave-leo-assistant-changed',
-      () => { this.getShowLeoAssistantIcon_() })
+      (isLeoVisible: boolean) => { 
+        this.leoAssistantShowOnToolbarPref_ = isLeoVisible 
+      })
     }
 
     itemPref_(enabled: boolean) {
@@ -73,25 +70,15 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       }
     }
 
-    private getShowLeoAssistantIcon_() {
-      this.browserProxy_.getShowLeoAssistantIcon().then((result) => {
-        this.onShowLeoAssistantIcon_(result)
+    private updateShowLeoAssistantIcon_() {
+      this.browserProxy_.getLeoIconVisibility().then((result) => {
+        this.leoAssistantShowOnToolbarPref_ = result
       })
-    }
-
-    private onShowLeoAssistantIcon_(isLeoIconVisible: boolean) {
-      this.leoAssistantShowOnToolbarPref_ = isLeoIconVisible
     }
 
     onLeoAssistantShowOnToolbarChange_(e: any) {
       e.stopPropagation()
-      this.browserProxy_
-      .setShowLeoAssistantIcon(!this.leoAssistantShowOnToolbarPref_)
-      .then((result) => {
-        if(result) {
-          this.onShowLeoAssistantIcon_(!this.leoAssistantShowOnToolbarPref_)
-        }
-      })
+      this.browserProxy_.toggleLeoIcon()
     }
 }
 

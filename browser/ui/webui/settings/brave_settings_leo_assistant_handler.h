@@ -36,14 +36,16 @@ class BraveLeoAssistantHandler : public settings::SettingsPageUIHandler,
   void OnItemAdded(const sidebar::SidebarItem& item, size_t index) override;
   void OnItemRemoved(const sidebar::SidebarItem& item, size_t index) override;
 
-  void HandleInitLeoAssistant(const base::Value::List& args);
-  void NotifyChatUiChanged();
+  void NotifyChatUiChanged(const bool& isLeoVisible);
+
+  void HandleToggleLeoIcon(const base::Value::List& args);
+  void HandleGetLeoIconVisibility(const base::Value::List& args);
+  void HandleResetLeoData(const base::Value::List& args);
 
   raw_ptr<Profile> profile_ = nullptr;
   base::ScopedObservation<sidebar::SidebarService,
                           sidebar::SidebarService::Observer>
       sidebar_service_observer_{this};
-  base::WeakPtrFactory<BraveLeoAssistantHandler> weak_ptr_factory_{this};
 };
 
 }  // namespace settings
