@@ -761,6 +761,14 @@
           FEATURE_VALUE_TYPE(blink::features::kFileSystemAccessAPI),           \
       },                                                                       \
       {                                                                        \
+          "brave-web-serial-api",                                              \
+          "Web Serial API",                                                    \
+          "Enables the Web Serial API, giving websites access to serial "      \
+          "ports",                                                             \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(blink::features::kBraveWebSerialAPI),             \
+      },                                                                       \
+      {                                                                        \
           "navigator-connection-attribute",                                    \
           "Enable navigator.connection attribute",                             \
           "Enables the navigator.connection API. Enabling this API will "      \

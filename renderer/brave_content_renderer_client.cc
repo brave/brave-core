@@ -62,7 +62,9 @@ void BraveContentRendererClient::
     blink::WebRuntimeFeatures::EnableFeatureFromString(
         "FileSystemAccessAPIExperimental", false);
   }
-  blink::WebRuntimeFeatures::EnableFeatureFromString("Serial", false);
+  if (!base::FeatureList::IsEnabled(blink::features::kBraveWebSerialAPI)) {
+    blink::WebRuntimeFeatures::EnableFeatureFromString("Serial", false);
+  }
   blink::WebRuntimeFeatures::EnableFeatureFromString(
       "SpeculationRulesPrefetchProxy", false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("AdTagging", false);
