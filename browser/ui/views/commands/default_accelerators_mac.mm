@@ -54,7 +54,11 @@ AcceleratorMapping ToAcceleratorMapping(NSMenuItem* item) {
   DVLOG(2) << __FUNCTION__ << item.tag << " > "
            << base::SysNSStringToUTF16(keyEquivalent);
 
-  const unsigned short charCode = [keyEquivalent characterAtIndex:0];
+  // The ui::KeybaordCode only contains the uppercase characters, we should
+  // capitalize them.
+  // https://source.chromium.org/chromium/chromium/src/+/main:ui/events/keycodes/keyboard_codes_win.h;l=63;drc=3e1a26c44c024d97dc9a4c09bbc6a2365398ca2c
+  const unsigned short charCode =
+      [[keyEquivalent uppercaseString] characterAtIndex:0];
   const int keyCode = ui::MacKeyCodeForWindowsKeyCode(
       static_cast<ui::KeyboardCode>(charCode), /*flags=*/0,
       /*us_keyboard_shifted_character=*/nullptr,
