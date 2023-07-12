@@ -22,7 +22,7 @@ rust_static_library("rust_lib") {
     "//brave/third_party/rust/cid/v0_8:lib",
     "//brave/third_party/rust/forest_bigint/v0_1:lib",
     "//brave/third_party/rust/fvm_ipld_encoding/v0_3:lib",
-    "//brave/third_party/rust/fvm_shared/v3_2:lib",
+    "//brave/third_party/rust/fvm_shared/v3:lib",
     "//brave/third_party/rust/libsecp256k1/v0_7:lib",
     "//brave/third_party/rust/libsecp256k1/v0_7:lib",
     "//brave/third_party/rust/multihash/v0_16:lib",

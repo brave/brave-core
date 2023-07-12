@@ -6,7 +6,7 @@ import("//build/rust/cargo_crate.gni")
 
 cargo_crate("lib") {
   crate_name = "fvm_shared"
-  epoch = "3.2"
+  epoch = "3"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
 
