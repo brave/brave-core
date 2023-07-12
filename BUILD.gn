@@ -167,6 +167,13 @@ group("brave") {
       "//chrome",
     ]
   }
+  data_deps = []
+  if (enable_brave_vpn) {
+    if (is_win) {
+      data_deps +=
+          [ "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service" ]
+    }
+  }
 }
 
 group("resources") {
