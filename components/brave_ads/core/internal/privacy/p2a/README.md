@@ -1,5 +1,5 @@
-# P2A (Privacy Preserving Anonymous)
+# P2A (Privacy Advertising Analytics)
 
-Record privacy preserving anonymous metrics.
+Record privacy preserving metrics.
 
 Please add to it!
