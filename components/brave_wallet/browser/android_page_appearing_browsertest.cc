@@ -437,7 +437,8 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
       {"TypeError: Cannot read properties of undefined (reading 'forEach')"});
 }
 
-IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestDepositPageAppearing) {
+IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
+                       TestDepositPageAppearing) {
   GURL url = GURL("chrome://wallet/crypto/deposit-funds");
   content::NavigationController::LoadURLParams params(url);
   params.transition_type = ui::PageTransitionFromInt(

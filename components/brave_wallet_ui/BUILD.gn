@@ -11,15 +11,15 @@ import("//tools/grit/repack.gni")
 repack("resources") {
   if (is_android) {
     deps = [
+      "//brave/components/brave_wallet_ui/page/screens/fund-wallet/android:brave_wallet_deposit_page_generated",
       "//brave/components/brave_wallet_ui/page/screens/send/android:brave_wallet_send_page_generated",
       "//brave/components/brave_wallet_ui/page/screens/swap/android:brave_wallet_swap_page_generated",
-      "//brave/components/brave_wallet_ui/page/screens/fund-wallet/android:brave_wallet_deposit_page_generated",
     ]
 
     sources = [
+      "$root_gen_dir/brave/components/brave_wallet_page/resources/brave_wallet_deposit_page_generated.pak",
       "$root_gen_dir/brave/components/brave_wallet_page/resources/brave_wallet_send_page_generated.pak",
       "$root_gen_dir/brave/components/brave_wallet_page/resources/brave_wallet_swap_page_generated.pak",
-      "$root_gen_dir/brave/components/brave_wallet_page/resources/brave_wallet_deposit_page_generated.pak",
     ]
   } else {
     deps = [
