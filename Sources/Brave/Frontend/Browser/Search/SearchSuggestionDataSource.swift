@@ -108,6 +108,12 @@ class SearchSuggestionDataSource {
   }
   
   func querySuggestClient() {
+    // Do not query suggestions if user is not opt_ed in
+    if !Preferences.Search.shouldShowSuggestionsOptIn.value {
+      Logger.module.info("Suggestions are not enabled")
+      return
+    }
+    
     cancelPendingSuggestionsRequests()
 
     let localSearchQuery = searchQuery.lowercased()

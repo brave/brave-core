@@ -55,7 +55,7 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
   let image: UIImage
   let isCustomEngine: Bool
   let searchTemplate: String
-  fileprivate let suggestTemplate: String?
+  let suggestTemplate: String?
 
   fileprivate let SearchTermComponent = "{searchTerms}"
   fileprivate let LocaleTermComponent = "{moz:locale}"
