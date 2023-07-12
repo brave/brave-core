@@ -1,13 +1,18 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-
-import { EthereumSignTypedDataMessage, EthereumSignTypedDataTypes } from "trezor-connect"
-
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
+/**
+ *  Note these types are copied from trezor-connect so that an import is
+ *  not needed outside of the untrusted-frame. If you require new additional
+ *  types, visit https://github.com/trezor/connect/blob/develop/src/ts/types/networks/ethereum.d.ts
+ *  where they can be copied from.
+ */
+
 export interface Unsuccessful {
   success: false
-  payload: { error: string, code?: string }
+  payload: { error: string; code?: string }
 }
 
 export interface Success<T> {
@@ -100,4 +105,29 @@ export interface EthereumSignTypedHash {
 export type MessageSignature = {
   address: string
   signature: string
+}
+
+export interface EthereumSignTypedDataTypeProperty {
+  name: string
+  type: string
+}
+
+export interface EthereumSignTypedDataTypes {
+  EIP712Domain: EthereumSignTypedDataTypeProperty[]
+  [additionalProperties: string]: EthereumSignTypedDataTypeProperty[]
+}
+
+export interface EthereumSignTypedDataMessage<
+  T extends EthereumSignTypedDataTypes
+> {
+  types: T
+  primaryType: keyof T
+  domain: {
+    name?: string
+    version?: string
+    chainId?: number | bigint
+    verifyingContract?: string
+    salt?: ArrayBuffer
+  }
+  message: { [fieldName: string]: any }
 }
