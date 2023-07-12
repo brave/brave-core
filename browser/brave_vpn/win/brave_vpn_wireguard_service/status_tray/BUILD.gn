@@ -1,0 +1,38 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("status_tray") {
+  sources = [
+    "brave_vpn_tray_command_ids.h",
+    "status_tray_runner.cc",
+    "status_tray_runner.h",
+  ]
+  public_deps = [ "status_icon" ]
+  deps = [
+    "resources",
+    "//base",
+    "//base:i18n",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/win",
+    "//brave/components/brave_vpn/common/wireguard/win",
+    "//brave/components/resources:strings_grit",
+    "//chrome:packed_resources",
+    "//ui/base",
+    "//ui/native_theme",
+    "//ui/native_theme:native_theme_browser",
+  ]
+
+  libs = [ "shell32.lib" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "status_tray_runner_unittest.cc" ]
+  deps = [
+    ":status_tray",
+    "//testing/gtest",
+  ]
+}
