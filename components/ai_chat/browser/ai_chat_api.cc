@@ -139,13 +139,13 @@ base::Value::Dict AIChatAPI::CreateApiParametersDict(
   stop_sequences.Append("</response>");
 
   const auto model_name = ai_chat::features::kAIModelName.Get();
-  const double model_temp = ai_chat::features::kAIModelTemperature.Get();
+  const double temp = ai_chat::features::kAITemperature.Get();
 
   DCHECK(!model_name.empty());
 
   dict.Set("prompt", prompt);
   dict.Set("max_tokens_to_sample", 400);
-  dict.Set("temperature", model_temp);
+  dict.Set("temperature", temp);
   dict.Set("top_k", -1);  // disabled
   dict.Set("top_p", 0.999);
   dict.Set("model", model_name);
