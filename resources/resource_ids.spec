@@ -215,6 +215,10 @@
     "META": {"sizes": {"includes": [250]}},
     "includes": [61350],
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_deposit_page/brave_wallet_deposit_page.grd": {
+    "META": {"sizes": {"includes": [250]}},
+    "includes": [61370],
+  },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-tip_panel/tip_panel.grd": {
     "META": {"sizes": {"includes": [100]}},
     "includes": [61400]
