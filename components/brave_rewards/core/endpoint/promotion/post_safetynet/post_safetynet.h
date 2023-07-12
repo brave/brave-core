@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // POST /v2/attestations/safetynet
 //
@@ -33,7 +33,7 @@
 // }
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint {
 namespace promotion {
@@ -43,7 +43,7 @@ using PostSafetynetCallback =
 
 class PostSafetynet {
  public:
-  explicit PostSafetynet(LedgerImpl& ledger);
+  explicit PostSafetynet(RewardsEngineImpl& engine);
   ~PostSafetynet();
 
   void Request(PostSafetynetCallback callback);
@@ -60,7 +60,7 @@ class PostSafetynet {
   void OnRequest(PostSafetynetCallback callback,
                  mojom::UrlResponsePtr response);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace promotion

@@ -10,9 +10,9 @@
 
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -44,7 +44,7 @@ class PostSuggestionsClaimTest : public testing::Test {
   }
 
   void SetUp() override {
-    ON_CALL(*mock_ledger_impl_.mock_client(),
+    ON_CALL(*mock_engine_impl_.mock_client(),
             GetStringState(state::kWalletBrave, _))
         .WillByDefault([](const std::string&, auto callback) {
           std::string wallet = R"({
@@ -56,13 +56,13 @@ class PostSuggestionsClaimTest : public testing::Test {
   }
 
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  PostSuggestionsClaim claim_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  PostSuggestionsClaim claim_{mock_engine_impl_};
   credential::CredentialsRedeem redeem_;
 };
 
 TEST_F(PostSuggestionsClaimTest, ServerOK) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -75,8 +75,8 @@ TEST_F(PostSuggestionsClaimTest, ServerOK) {
       });
 
   base::MockCallback<PostSuggestionsClaimCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_OK,
-                            "1af0bf71-c81c-4b18-9188-a0d3c4a1b53b"))
+  EXPECT_CALL(callback,
+              Run(mojom::Result::OK, "1af0bf71-c81c-4b18-9188-a0d3c4a1b53b"))
       .Times(1);
   claim_.Request(redeem_, callback.Get());
 
@@ -84,7 +84,7 @@ TEST_F(PostSuggestionsClaimTest, ServerOK) {
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerNeedsRetry) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -95,14 +95,14 @@ TEST_F(PostSuggestionsClaimTest, ServerNeedsRetry) {
       });
 
   base::MockCallback<PostSuggestionsClaimCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, "")).Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, "")).Times(1);
   claim_.Request(redeem_, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerError400) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -113,14 +113,14 @@ TEST_F(PostSuggestionsClaimTest, ServerError400) {
       });
 
   base::MockCallback<PostSuggestionsClaimCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, "")).Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, "")).Times(1);
   claim_.Request(redeem_, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerError500) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -131,7 +131,7 @@ TEST_F(PostSuggestionsClaimTest, ServerError500) {
       });
 
   base::MockCallback<PostSuggestionsClaimCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, "")).Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, "")).Times(1);
   claim_.Request(redeem_, callback.Get());
 
   task_environment_.RunUntilIdle();

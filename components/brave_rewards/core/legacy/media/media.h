@@ -10,17 +10,17 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/media/github.h"
 #include "brave/components/brave_rewards/core/legacy/media/youtube.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
 
-class LedgerImpl;
+class RewardsEngineImpl;
 
 class Media {
  public:
-  explicit Media(LedgerImpl& ledger);
+  explicit Media(RewardsEngineImpl& engine);
 
   ~Media();
 
@@ -50,7 +50,7 @@ class Media {
                             const std::string& type,
                             uint64_t windowId);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   YouTube media_youtube_;
   GitHub media_github_;
 };

@@ -181,7 +181,7 @@ class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
         base::BindRepeating(
             &GreaselionServiceTest::GetTestResponse,
             base::Unretained(this)));
-    rewards_service_->SetLedgerEnvForTesting();
+    rewards_service_->SetEngineEnvForTesting();
     GreaselionService* greaselion_service =
         GreaselionServiceFactory::GetForBrowserContext(profile());
     // wait for the Greaselion service to install all the extensions it creates

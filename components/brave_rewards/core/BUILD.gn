@@ -51,7 +51,7 @@ buildflag_header("buildflags") {
 }
 
 group("core") {
-  public_deps = [ ":ledger" ]
+  public_deps = [ ":engine" ]
 }
 
 source_set("headers") {
@@ -67,10 +67,10 @@ source_set("headers") {
 
   sources = [
     "global_constants.h",
-    "ledger_callbacks.h",
-    "ledger_database.cc",
-    "ledger_database.h",
     "mojom_structs.h",
+    "rewards_callbacks.h",
+    "rewards_database.cc",
+    "rewards_database.h",
   ]
 
   deps = [ "//sql:sql" ]
@@ -78,8 +78,8 @@ source_set("headers") {
   public_deps = [
     ":buildflags",
     "//brave/components/brave_rewards/common/mojom:interfaces",
-    "//brave/components/brave_rewards/common/mojom:ledger_interfaces",
-    "//brave/components/brave_rewards/common/mojom:ledger_types",
+    "//brave/components/brave_rewards/common/mojom:rewards_interfaces",
+    "//brave/components/brave_rewards/common/mojom:rewards_types",
   ]
 }
 
@@ -90,7 +90,7 @@ proto_library("publishers_proto") {
   ]
 }
 
-static_library("ledger") {
+static_library("engine") {
   visibility = [ ":*" ]
 
   output_name = "brave_rewards_core"
@@ -388,8 +388,6 @@ static_library("ledger") {
     "gemini/gemini.h",
     "gemini/gemini_util.cc",
     "gemini/gemini_util.h",
-    "ledger_impl.cc",
-    "ledger_impl.h",
     "legacy/bat_helper.cc",
     "legacy/bat_helper.h",
     "legacy/bat_state.cc",
@@ -449,6 +447,8 @@ static_library("ledger") {
     "recovery/recovery_empty_balance.h",
     "report/report.cc",
     "report/report.h",
+    "rewards_engine_impl.cc",
+    "rewards_engine_impl.h",
     "sku/sku.cc",
     "sku/sku.h",
     "sku/sku_common.cc",

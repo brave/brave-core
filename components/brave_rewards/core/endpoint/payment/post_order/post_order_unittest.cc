@@ -9,9 +9,9 @@
 
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/post_order/post_order.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -28,12 +28,12 @@ namespace payment {
 class PostOrderTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  PostOrder order_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  PostOrder order_{mock_engine_impl_};
 };
 
 TEST_F(PostOrderTest, ServerOK) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -94,7 +94,7 @@ TEST_F(PostOrderTest, ServerOK) {
         expected_order.status = mojom::SKUOrderStatus::PENDING;
         expected_order.items.push_back(std::move(expected_order_item));
 
-        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+        EXPECT_EQ(result, mojom::Result::OK);
         EXPECT_TRUE(expected_order.Equals(*order));
       });
   order_.Request(items, callback.AsStdFunction());
@@ -103,7 +103,7 @@ TEST_F(PostOrderTest, ServerOK) {
 }
 
 TEST_F(PostOrderTest, ServerError400) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -128,7 +128,7 @@ TEST_F(PostOrderTest, ServerError400) {
 }
 
 TEST_F(PostOrderTest, ServerError500) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -153,7 +153,7 @@ TEST_F(PostOrderTest, ServerError500) {
 }
 
 TEST_F(PostOrderTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -171,7 +171,7 @@ TEST_F(PostOrderTest, ServerErrorRandom) {
   items.push_back(item);
 
   MockFunction<PostOrderCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::LEDGER_ERROR, IsFalse())).Times(1);
+  EXPECT_CALL(callback, Call(mojom::Result::FAILED, IsFalse())).Times(1);
   order_.Request(items, callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();

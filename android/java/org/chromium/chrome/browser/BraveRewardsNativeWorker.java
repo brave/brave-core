@@ -42,10 +42,10 @@ public class BraveRewardsNativeWorker {
     public static final int REWARDS_NOTIFICATION_ADS_ONBOARDING = 9;
     public static final int REWARDS_NOTIFICATION_VERIFIED_PUBLISHER = 10;
     public static final int REWARDS_NOTIFICATION_PENDING_NOT_ENOUGH_FUNDS = 11;
-    public static final int REWARDS_NOTIFICATION_GENERAL_LEDGER = 12;
+    public static final int REWARDS_NOTIFICATION_GENERAL = 12;
 
-    public static final int LEDGER_OK = 0;
-    public static final int LEDGER_ERROR = 1;
+    public static final int OK = 0;
+    public static final int FAILED = 1;
     public static final int BAT_NOT_ALLOWED = 25;
     public static final int SAFETYNET_ATTESTATION_FAILED = 27;
 

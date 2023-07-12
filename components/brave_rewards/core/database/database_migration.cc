@@ -51,8 +51,8 @@
 #include "brave/components/brave_rewards/core/database/migration/migration_v7.h"
 #include "brave/components/brave_rewards/core/database/migration/migration_v8.h"
 #include "brave/components/brave_rewards/core/database/migration/migration_v9.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "third_party/re2/src/re2/re2.h"
 
 // NOTICE!!
@@ -66,7 +66,8 @@ namespace database {
 
 uint32_t DatabaseMigration::test_target_version_ = 0;
 
-DatabaseMigration::DatabaseMigration(LedgerImpl& ledger) : ledger_(ledger) {}
+DatabaseMigration::DatabaseMigration(RewardsEngineImpl& engine)
+    : engine_(engine) {}
 
 DatabaseMigration::~DatabaseMigration() = default;
 
@@ -82,7 +83,7 @@ void DatabaseMigration::Start(uint32_t table_version,
                                       : database::GetCurrentVersion();
 
   if (target_version == table_version) {
-    callback(mojom::Result::LEDGER_OK);
+    callback(mojom::Result::OK);
     return;
   }
 
@@ -94,7 +95,7 @@ void DatabaseMigration::Start(uint32_t table_version,
   // order to prevent display of BAP historical information in monthly reports.
   std::string migration_v30 = "";
   std::string migration_v32 = "";
-  if (ledger_->IsBitFlyerRegion()) {
+  if (engine_->IsBitFlyerRegion()) {
     migration_v30 = migration::v30;
     migration_v32 = migration::v32;
   }
@@ -166,20 +167,20 @@ void DatabaseMigration::Start(uint32_t table_version,
   const std::string message =
       base::StringPrintf("%d->%d", start_version, migrated_version);
 
-  ledger_->RunDBTransaction(
+  engine_->RunDBTransaction(
       std::move(transaction), [this, callback, message, migrated_version](
                                   mojom::DBCommandResponsePtr response) {
         if (response &&
             response->status == mojom::DBCommandResponse::Status::RESPONSE_OK) {
           // The event_log table was introduced in v29.
           if (migrated_version >= 29) {
-            ledger_->database()->SaveEventLog(log::kDatabaseMigrated, message);
+            engine_->database()->SaveEventLog(log::kDatabaseMigrated, message);
           }
-          callback(mojom::Result::LEDGER_OK);
+          callback(mojom::Result::OK);
           return;
         }
 
-        callback(mojom::Result::LEDGER_ERROR);
+        callback(mojom::Result::FAILED);
       });
 }
 

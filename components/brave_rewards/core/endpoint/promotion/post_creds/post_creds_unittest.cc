@@ -10,9 +10,9 @@
 
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -28,7 +28,7 @@ namespace promotion {
 class PostCredsTest : public testing::Test {
  protected:
   void SetUp() override {
-    ON_CALL(*mock_ledger_impl_.mock_client(),
+    ON_CALL(*mock_engine_impl_.mock_client(),
             GetStringState(state::kWalletBrave, _))
         .WillByDefault([](const std::string&, auto callback) {
           std::string wallet = R"({
@@ -40,12 +40,12 @@ class PostCredsTest : public testing::Test {
   }
 
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  PostCreds creds_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  PostCreds creds_{mock_engine_impl_};
 };
 
 TEST_F(PostCredsTest, ServerOK) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -61,8 +61,8 @@ TEST_F(PostCredsTest, ServerOK) {
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   base::MockCallback<PostCredsCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_OK,
-                            "53714048-9675-419e-baa3-369d85a2facb"))
+  EXPECT_CALL(callback,
+              Run(mojom::Result::OK, "53714048-9675-419e-baa3-369d85a2facb"))
       .Times(1);
   creds_.Request("ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
                  callback.Get());
@@ -71,7 +71,7 @@ TEST_F(PostCredsTest, ServerOK) {
 }
 
 TEST_F(PostCredsTest, ServerError400) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -85,7 +85,7 @@ TEST_F(PostCredsTest, ServerError400) {
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   base::MockCallback<PostCredsCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, _)).Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, _)).Times(1);
   creds_.Request("ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
                  callback.Get());
 
@@ -93,7 +93,7 @@ TEST_F(PostCredsTest, ServerError400) {
 }
 
 TEST_F(PostCredsTest, ServerError403) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -107,7 +107,7 @@ TEST_F(PostCredsTest, ServerError403) {
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   base::MockCallback<PostCredsCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, _)).Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, _)).Times(1);
   creds_.Request("ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
                  callback.Get());
 
@@ -115,7 +115,7 @@ TEST_F(PostCredsTest, ServerError403) {
 }
 
 TEST_F(PostCredsTest, ServerError409) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -129,7 +129,7 @@ TEST_F(PostCredsTest, ServerError409) {
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   base::MockCallback<PostCredsCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, _)).Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, _)).Times(1);
   creds_.Request("ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
                  callback.Get());
 
@@ -137,7 +137,7 @@ TEST_F(PostCredsTest, ServerError409) {
 }
 
 TEST_F(PostCredsTest, ServerError410) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -159,7 +159,7 @@ TEST_F(PostCredsTest, ServerError410) {
 }
 
 TEST_F(PostCredsTest, ServerError500) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -173,7 +173,7 @@ TEST_F(PostCredsTest, ServerError500) {
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   base::MockCallback<PostCredsCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, _)).Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, _)).Times(1);
   creds_.Request("ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
                  callback.Get());
 
@@ -181,7 +181,7 @@ TEST_F(PostCredsTest, ServerError500) {
 }
 
 TEST_F(PostCredsTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -195,7 +195,7 @@ TEST_F(PostCredsTest, ServerErrorRandom) {
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   base::MockCallback<PostCredsCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, _)).Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, _)).Times(1);
   creds_.Request("ff50981d-47de-4210-848d-995e186901a1", std::move(creds),
                  callback.Get());
 

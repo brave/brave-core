@@ -7,16 +7,16 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PRIVATE_CDN_PRIVATE_CDN_SERVER_H_
 
 #include "brave/components/brave_rewards/core/endpoint/private_cdn/get_publisher/get_publisher.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint {
 
 class PrivateCDNServer {
  public:
-  explicit PrivateCDNServer(LedgerImpl& ledger);
+  explicit PrivateCDNServer(RewardsEngineImpl& engine);
   ~PrivateCDNServer();
 
   private_cdn::GetPublisher& get_publisher() { return get_publisher_; }

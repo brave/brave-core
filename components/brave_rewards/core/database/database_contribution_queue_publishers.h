@@ -16,7 +16,7 @@ namespace database {
 
 class DatabaseContributionQueuePublishers : public DatabaseTable {
  public:
-  explicit DatabaseContributionQueuePublishers(LedgerImpl& ledger);
+  explicit DatabaseContributionQueuePublishers(RewardsEngineImpl& engine);
   ~DatabaseContributionQueuePublishers() override;
 
   void InsertOrUpdate(const std::string& id,

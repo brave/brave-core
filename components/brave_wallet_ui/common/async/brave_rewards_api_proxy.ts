@@ -127,7 +127,7 @@ export class BraveRewardsProxy {
 
   onInitialized = (callback: () => any) =>
     chrome.braveRewards.initialized.addListener((error) => {
-      if (error === RewardsExtension.Result.LEDGER_OK) {
+      if (error === RewardsExtension.Result.OK) {
         callback()
       } else {
         console.error(`rewards onInitialized error: ${error}`)

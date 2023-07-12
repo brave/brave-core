@@ -10,8 +10,8 @@
 
 #include "base/strings/string_split.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/report/report.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -19,7 +19,7 @@ using std::placeholders::_2;
 namespace brave_rewards::internal {
 namespace report {
 
-Report::Report(LedgerImpl& ledger) : ledger_(ledger) {}
+Report::Report(RewardsEngineImpl& engine) : engine_(engine) {}
 
 Report::~Report() = default;
 
@@ -29,7 +29,7 @@ void Report::GetMonthly(const mojom::ActivityMonth month,
   auto balance_callback =
       std::bind(&Report::OnBalance, this, _1, _2, month, year, callback);
 
-  ledger_->database()->GetBalanceReportInfo(month, year, balance_callback);
+  engine_->database()->GetBalanceReportInfo(month, year, balance_callback);
 }
 
 void Report::OnBalance(const mojom::Result result,
@@ -37,7 +37,7 @@ void Report::OnBalance(const mojom::Result result,
                        const mojom::ActivityMonth month,
                        const uint32_t year,
                        GetMonthlyReportCallback callback) {
-  if (result != mojom::Result::LEDGER_OK || !balance_report) {
+  if (result != mojom::Result::OK || !balance_report) {
     BLOG(0, "Could not get balance report");
     callback(result, nullptr);
     return;
@@ -51,7 +51,7 @@ void Report::OnBalance(const mojom::Result result,
       std::make_shared<mojom::MonthlyReportInfoPtr>(std::move(monthly_report)),
       callback);
 
-  ledger_->database()->GetTransactionReport(month, year, transaction_callback);
+  engine_->database()->GetTransactionReport(month, year, transaction_callback);
 }
 
 void Report::OnTransactions(
@@ -62,7 +62,7 @@ void Report::OnTransactions(
     GetMonthlyReportCallback callback) {
   if (!shared_report) {
     BLOG(0, "Could not parse monthly report");
-    callback(mojom::Result::LEDGER_ERROR, nullptr);
+    callback(mojom::Result::FAILED, nullptr);
     return;
   }
 
@@ -71,7 +71,7 @@ void Report::OnTransactions(
   auto contribution_callback =
       std::bind(&Report::OnContributions, this, _1, shared_report, callback);
 
-  ledger_->database()->GetContributionReport(month, year,
+  engine_->database()->GetContributionReport(month, year,
                                              contribution_callback);
 }
 
@@ -81,13 +81,13 @@ void Report::OnContributions(
     GetMonthlyReportCallback callback) {
   if (!shared_report) {
     BLOG(0, "Could not parse monthly report");
-    callback(mojom::Result::LEDGER_ERROR, nullptr);
+    callback(mojom::Result::FAILED, nullptr);
     return;
   }
 
   (*shared_report)->contributions = std::move(contribution_report);
 
-  callback(mojom::Result::LEDGER_OK, std::move(*shared_report));
+  callback(mojom::Result::OK, std::move(*shared_report));
 }
 
 // This will be removed when we move reports in database and just order in db
@@ -116,7 +116,7 @@ void Report::GetAllMonthlyIds(GetAllMonthlyReportIdsCallback callback) {
   auto balance_reports_callback =
       std::bind(&Report::OnGetAllBalanceReports, this, _1, callback);
 
-  ledger_->database()->GetAllBalanceReports(balance_reports_callback);
+  engine_->database()->GetAllBalanceReports(balance_reports_callback);
 }
 
 void Report::OnGetAllBalanceReports(

@@ -9,7 +9,7 @@
 #include "base/base64.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -18,7 +18,7 @@ namespace brave_rewards::internal {
 namespace endpoint {
 namespace promotion {
 
-GetCaptcha::GetCaptcha(LedgerImpl& ledger) : ledger_(ledger) {}
+GetCaptcha::GetCaptcha(RewardsEngineImpl& engine) : engine_(engine) {}
 
 GetCaptcha::~GetCaptcha() = default;
 
@@ -32,7 +32,7 @@ std::string GetCaptcha::GetUrl(const std::string& captcha_id) {
 mojom::Result GetCaptcha::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid captcha id");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
@@ -42,15 +42,15 @@ mojom::Result GetCaptcha::CheckStatusCode(const int status_code) {
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Failed to generate the captcha image");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 mojom::Result GetCaptcha::ParseBody(const std::string& body,
@@ -62,7 +62,7 @@ mojom::Result GetCaptcha::ParseBody(const std::string& body,
   *image =
       base::StringPrintf("data:image/jpeg;base64,%s", encoded_image.c_str());
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 void GetCaptcha::Request(const std::string& captcha_id,
@@ -72,7 +72,7 @@ void GetCaptcha::Request(const std::string& captcha_id,
 
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(captcha_id);
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  engine_->LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetCaptcha::OnRequest(GetCaptchaCallback callback,
@@ -83,7 +83,7 @@ void GetCaptcha::OnRequest(GetCaptchaCallback callback,
   std::string image;
   mojom::Result result = CheckStatusCode(response->status_code);
 
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     std::move(callback).Run(result, image);
     return;
   }

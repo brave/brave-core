@@ -10,7 +10,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -19,8 +19,8 @@ namespace brave_rewards::internal {
 namespace endpoint {
 namespace payment {
 
-PostTransactionUphold::PostTransactionUphold(LedgerImpl& ledger)
-    : ledger_(ledger) {}
+PostTransactionUphold::PostTransactionUphold(RewardsEngineImpl& engine)
+    : engine_(engine) {}
 
 PostTransactionUphold::~PostTransactionUphold() = default;
 
@@ -45,7 +45,7 @@ std::string PostTransactionUphold::GeneratePayload(
 mojom::Result PostTransactionUphold::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
@@ -55,20 +55,20 @@ mojom::Result PostTransactionUphold::CheckStatusCode(const int status_code) {
 
   if (status_code == net::HTTP_CONFLICT) {
     BLOG(0, "External transaction id already submitted");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   if (status_code != net::HTTP_CREATED && status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 void PostTransactionUphold::Request(const mojom::SKUTransaction& transaction,
@@ -81,7 +81,7 @@ void PostTransactionUphold::Request(const mojom::SKUTransaction& transaction,
   request->content = GeneratePayload(transaction);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  engine_->LoadURL(std::move(request), url_callback);
 }
 
 void PostTransactionUphold::OnRequest(mojom::UrlResponsePtr response,

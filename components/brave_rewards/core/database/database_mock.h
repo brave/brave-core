@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_rewards::internal {
@@ -18,7 +18,7 @@ namespace database {
 
 class MockDatabase : public Database {
  public:
-  explicit MockDatabase(LedgerImpl& ledger);
+  explicit MockDatabase(RewardsEngineImpl& engine);
 
   ~MockDatabase() override;
 

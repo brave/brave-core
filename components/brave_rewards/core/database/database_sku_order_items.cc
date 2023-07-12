@@ -9,7 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_sku_order_items.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 using std::placeholders::_1;
 
@@ -22,8 +22,8 @@ const char kTableName[] = "sku_order_items";
 
 }  // namespace
 
-DatabaseSKUOrderItems::DatabaseSKUOrderItems(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseSKUOrderItems::DatabaseSKUOrderItems(RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabaseSKUOrderItems::~DatabaseSKUOrderItems() = default;
 
@@ -99,7 +99,7 @@ void DatabaseSKUOrderItems::GetRecordsByOrderId(
   auto transaction_callback = std::bind(
       &DatabaseSKUOrderItems::OnGetRecordsByOrderId, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUOrderItems::OnGetRecordsByOrderId(

@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/common/security_util.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
@@ -21,8 +21,8 @@ namespace brave_rewards::internal {
 namespace endpoint {
 namespace promotion {
 
-PostSuggestionsClaim::PostSuggestionsClaim(LedgerImpl& ledger)
-    : ledger_(ledger) {}
+PostSuggestionsClaim::PostSuggestionsClaim(RewardsEngineImpl& engine)
+    : engine_(engine) {}
 
 PostSuggestionsClaim::~PostSuggestionsClaim() = default;
 
@@ -32,7 +32,7 @@ std::string PostSuggestionsClaim::GetUrl() {
 
 std::string PostSuggestionsClaim::GeneratePayload(
     const credential::CredentialsRedeem& redeem) {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
     return "";
@@ -53,7 +53,7 @@ std::string PostSuggestionsClaim::GeneratePayload(
 mojom::Result PostSuggestionsClaim::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_SERVICE_UNAVAILABLE) {
@@ -63,20 +63,20 @@ mojom::Result PostSuggestionsClaim::CheckStatusCode(const int status_code) {
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 void PostSuggestionsClaim::Request(const credential::CredentialsRedeem& redeem,
                                    PostSuggestionsClaimCallback callback) {
   const std::string payload = GeneratePayload(redeem);
 
-  auto wallet = ledger_->wallet()->GetWallet();
+  auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
 
@@ -94,7 +94,7 @@ void PostSuggestionsClaim::Request(const credential::CredentialsRedeem& redeem,
   request->headers = headers;
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  engine_->LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PostSuggestionsClaim::OnRequest(PostSuggestionsClaimCallback callback,
@@ -102,7 +102,7 @@ void PostSuggestionsClaim::OnRequest(PostSuggestionsClaimCallback callback,
   DCHECK(response);
   LogUrlResponse(__func__, *response);
   auto result = CheckStatusCode(response->status_code);
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     std::move(callback).Run(result, "");
     return;
   }
@@ -110,7 +110,7 @@ void PostSuggestionsClaim::OnRequest(PostSuggestionsClaimCallback callback,
   absl::optional<base::Value> value = base::JSONReader::Read(response->body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
 
@@ -118,7 +118,7 @@ void PostSuggestionsClaim::OnRequest(PostSuggestionsClaimCallback callback,
   auto* drain_id = dict.FindString("drainId");
   if (!drain_id) {
     BLOG(0, "Missing drain id");
-    std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
+    std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
   std::move(callback).Run(result, std::move(*drain_id));

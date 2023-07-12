@@ -10,18 +10,18 @@
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal {
 
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace contribution {
 
 class ContributionTip {
  public:
-  explicit ContributionTip(LedgerImpl& ledger);
+  explicit ContributionTip(RewardsEngineImpl& engine);
 
   ~ContributionTip();
 
@@ -43,7 +43,7 @@ class ContributionTip {
 
   void OnPendingTipSaved(mojom::Result result);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace contribution

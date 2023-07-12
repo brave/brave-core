@@ -511,7 +511,7 @@ public class BraveRewardsPanel
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_TIPS_PROCESSED:
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_ADS_ONBOARDING:
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_PENDING_NOT_ENOUGH_FUNDS:
-            case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GENERAL_LEDGER:
+            case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GENERAL:
             case REWARDS_NOTIFICATION_NO_INTERNET:
             case REWARDS_PROMOTION_CLAIM_ERROR:
                 valid = true;
@@ -701,7 +701,7 @@ public class BraveRewardsPanel
                         R.string.brave_ui_verified_publisher_notification, pubName);
                 notificationIcon = R.drawable.ic_notification_pending;
                 break;
-            case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GENERAL_LEDGER:
+            case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GENERAL:
                 notificationClaimImg.setVisibility(View.GONE);
                 notificationClaimSubText.setVisibility(View.GONE);
                 String errorType = args[0];
@@ -876,7 +876,7 @@ public class BraveRewardsPanel
     // Rewards data callbacks
     @Override
     public void OnClaimPromotion(int responseCode) {
-        if (responseCode != BraveRewardsNativeWorker.LEDGER_OK) {
+        if (responseCode != BraveRewardsNativeWorker.OK) {
             String args[] = {};
             showNotification(
                     REWARDS_PROMOTION_CLAIM_ERROR_ID, REWARDS_PROMOTION_CLAIM_ERROR, 0, args);

@@ -16,7 +16,7 @@ namespace database {
 
 class DatabaseBalanceReport : public DatabaseTable {
  public:
-  explicit DatabaseBalanceReport(LedgerImpl& ledger);
+  explicit DatabaseBalanceReport(RewardsEngineImpl& engine);
   ~DatabaseBalanceReport() override;
 
   void InsertOrUpdate(mojom::BalanceReportInfoPtr info,

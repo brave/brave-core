@@ -10,8 +10,8 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/database/database_activity_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 
 // npm run test -- brave_unit_tests --filter=DatabaseActivityInfoTest.*
 
@@ -24,12 +24,12 @@ namespace database {
 class DatabaseActivityInfoTest : public ::testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  DatabaseActivityInfo activity_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  DatabaseActivityInfo activity_{mock_engine_impl_};
 };
 
 TEST_F(DatabaseActivityInfoTest, InsertOrUpdateNull) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .Times(0);
 
   MockFunction<LegacyResultCallback> callback;
@@ -40,7 +40,7 @@ TEST_F(DatabaseActivityInfoTest, InsertOrUpdateNull) {
 }
 
 TEST_F(DatabaseActivityInfoTest, InsertOrUpdateOk) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .Times(1)
       .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
@@ -72,7 +72,7 @@ TEST_F(DatabaseActivityInfoTest, InsertOrUpdateOk) {
 }
 
 TEST_F(DatabaseActivityInfoTest, GetRecordsListNull) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .Times(0);
 
   MockFunction<GetActivityInfoListCallback> callback;
@@ -83,7 +83,7 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListNull) {
 }
 
 TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .Times(1)
       .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
@@ -116,7 +116,7 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
 }
 
 TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .Times(1)
       .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
@@ -151,7 +151,7 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
 }
 
 TEST_F(DatabaseActivityInfoTest, DeleteRecordEmpty) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .Times(0);
 
   MockFunction<LegacyResultCallback> callback;
@@ -162,13 +162,13 @@ TEST_F(DatabaseActivityInfoTest, DeleteRecordEmpty) {
 }
 
 TEST_F(DatabaseActivityInfoTest, DeleteRecordOk) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), GetUint64State(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), GetUint64State(_, _))
       .Times(1)
       .WillOnce([](const std::string&, auto callback) {
         std::move(callback).Run(1597744617);
       });
 
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .Times(1)
       .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);

@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_rewards/common/mojom/ledger_endpoints.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_endpoints.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
 #include "brave/components/brave_rewards/core/endpoints/result_for.h"
@@ -35,7 +35,7 @@
 // ]
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoints {
 
@@ -53,7 +53,7 @@ class GetRecipientIDGemini final
  public:
   static Result ProcessResponse(const mojom::UrlResponse&);
 
-  GetRecipientIDGemini(LedgerImpl& ledger, std::string&& token);
+  GetRecipientIDGemini(RewardsEngineImpl& engine, std::string&& token);
   ~GetRecipientIDGemini() override;
 
  private:

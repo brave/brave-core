@@ -46,7 +46,7 @@ static_library("browser") {
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common/buildflags",
     "//brave/components/resources",
-    "//brave/components/services/bat_ledger/public/interfaces",
+    "//brave/components/services/bat_rewards/public/interfaces",
     "//mojo/public/cpp/bindings",
     "//net",
     "//services/data_decoder/public/cpp",

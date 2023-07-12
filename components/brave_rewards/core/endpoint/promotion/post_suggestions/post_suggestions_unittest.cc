@@ -9,9 +9,9 @@
 #include <vector>
 
 #include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -27,12 +27,12 @@ namespace promotion {
 class PostSuggestionsTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  PostSuggestions suggestions_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  PostSuggestions suggestions_{mock_engine_impl_};
 };
 
 TEST_F(PostSuggestionsTest, ServerOK) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -58,14 +58,14 @@ TEST_F(PostSuggestionsTest, ServerOK) {
   redeem.contribution_id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
 
   MockFunction<PostSuggestionsCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::LEDGER_OK)).Times(1);
+  EXPECT_CALL(callback, Call(mojom::Result::OK)).Times(1);
   suggestions_.Request(redeem, callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostSuggestionsTest, ServerError400) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -91,14 +91,14 @@ TEST_F(PostSuggestionsTest, ServerError400) {
   redeem.contribution_id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
 
   MockFunction<PostSuggestionsCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::LEDGER_ERROR)).Times(1);
+  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
   suggestions_.Request(redeem, callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostSuggestionsTest, ServerError500) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -124,7 +124,7 @@ TEST_F(PostSuggestionsTest, ServerError500) {
   redeem.contribution_id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
 
   MockFunction<PostSuggestionsCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::LEDGER_ERROR)).Times(1);
+  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
   suggestions_.Request(redeem, callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();

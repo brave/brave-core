@@ -9,8 +9,8 @@
 
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_list_reader.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "net/http/http_status_code.h"
 
@@ -28,8 +28,9 @@ constexpr int64_t kMaxRetryAfterFailureDelay = 4 * base::Time::kSecondsPerHour;
 namespace brave_rewards::internal {
 namespace publisher {
 
-PublisherPrefixListUpdater::PublisherPrefixListUpdater(LedgerImpl& ledger)
-    : ledger_(ledger), rewards_server_(ledger) {}
+PublisherPrefixListUpdater::PublisherPrefixListUpdater(
+    RewardsEngineImpl& engine)
+    : engine_(engine), rewards_server_(engine) {}
 
 PublisherPrefixListUpdater::~PublisherPrefixListUpdater() = default;
 
@@ -67,7 +68,7 @@ void PublisherPrefixListUpdater::OnFetchTimerElapsed() {
 
 void PublisherPrefixListUpdater::OnFetchCompleted(const mojom::Result result,
                                                   const std::string& body) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Invalid server response for publisher prefix list");
     StartFetchTimer(FROM_HERE, GetRetryAfterFailureDelay());
     return;
@@ -94,7 +95,7 @@ void PublisherPrefixListUpdater::OnFetchCompleted(const mojom::Result result,
   retry_count_ = 0;
 
   BLOG(1, "Resetting publisher prefix list table");
-  ledger_->database()->ResetPublisherPrefixList(
+  engine_->database()->ResetPublisherPrefixList(
       std::move(reader),
       std::bind(&PublisherPrefixListUpdater::OnPrefixListInserted, this, _1));
 }
@@ -106,13 +107,13 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(
   // successful fetch time for calculation of next refresh interval.
   // In order to avoid unecessary server load, do not attempt to retry
   // using a failure delay if the database insert was unsuccessful.
-  ledger_->state()->SetServerPublisherListStamp(util::GetCurrentTimeStamp());
+  engine_->state()->SetServerPublisherListStamp(util::GetCurrentTimeStamp());
 
   if (auto_update_) {
     StartFetchTimer(FROM_HERE, GetAutoUpdateDelay());
   }
 
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Error updating publisher prefix list table: " << result);
     return;
   }
@@ -123,7 +124,7 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(
 }
 
 base::TimeDelta PublisherPrefixListUpdater::GetAutoUpdateDelay() {
-  uint64_t last_fetch_sec = ledger_->state()->GetServerPublisherListStamp();
+  uint64_t last_fetch_sec = engine_->state()->GetServerPublisherListStamp();
 
   auto now = base::Time::Now();
   auto fetch_time =

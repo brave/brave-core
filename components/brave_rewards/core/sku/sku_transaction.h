@@ -14,16 +14,16 @@
 #include "brave/components/brave_rewards/core/database/database_external_transactions.h"
 #include "brave/components/brave_rewards/core/database/database_sku_transaction.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_server.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace sku {
 
 class SKUTransaction {
  public:
-  explicit SKUTransaction(LedgerImpl& ledger);
+  explicit SKUTransaction(RewardsEngineImpl& engine);
   ~SKUTransaction();
 
   void Run(mojom::SKUOrderPtr order,
@@ -77,7 +77,7 @@ class SKUTransaction {
   void OnSendExternalTransaction(mojom::Result result,
                                  LegacyResultCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   endpoint::PaymentServer payment_server_;
 };
 

@@ -19,7 +19,7 @@ namespace credential {
 
 class CredentialsPromotion : public Credentials {
  public:
-  explicit CredentialsPromotion(LedgerImpl& ledger);
+  explicit CredentialsPromotion(RewardsEngineImpl& engine);
   ~CredentialsPromotion() override;
 
   void Start(const CredentialsTrigger& trigger,
@@ -99,7 +99,7 @@ class CredentialsPromotion : public Credentials {
                      mojom::Result result,
                      std::string drain_id);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   CredentialsCommon common_;
   endpoint::PromotionServer promotion_server_;
 };

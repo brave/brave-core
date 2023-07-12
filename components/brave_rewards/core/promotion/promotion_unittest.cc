@@ -12,10 +12,10 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_mock.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/promotion/promotion.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -31,7 +31,7 @@ namespace brave_rewards::internal::promotion {
 class PromotionTest : public testing::Test {
  protected:
   void SetUp() override {
-    ON_CALL(*mock_ledger_impl_.mock_client(),
+    ON_CALL(*mock_engine_impl_.mock_client(),
             GetStringState(state::kWalletBrave, _))
         .WillByDefault([](const std::string&, auto callback) {
           std::move(callback).Run(R"(
@@ -42,20 +42,20 @@ class PromotionTest : public testing::Test {
           )");
         });
 
-    ON_CALL(*mock_ledger_impl_.mock_client(), GetClientInfo(_))
+    ON_CALL(*mock_engine_impl_.mock_client(), GetClientInfo(_))
         .WillByDefault([](auto callback) {
           std::move(callback).Run(mojom::ClientInfo::New());
         });
   }
 
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  Promotion promotion_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  Promotion promotion_{mock_engine_impl_};
 };
 
 TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
   EXPECT_CALL(
-      *mock_ledger_impl_.mock_client(),
+      *mock_engine_impl_.mock_client(),
       LoadURL(Pointee(Field(&mojom::UrlRequest::url,
                             HasSubstr("/v1/promotions"
                                       "?migrate=true&paymentId=fa5dea51-"
@@ -89,7 +89,7 @@ TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
       });
 
   bool inserted = false;
-  EXPECT_CALL(*mock_ledger_impl_.mock_database(), GetAllPromotions(_))
+  EXPECT_CALL(*mock_engine_impl_.mock_database(), GetAllPromotions(_))
       .Times(2)
       .WillRepeatedly([&inserted](auto callback) {
         base::flat_map<std::string, mojom::PromotionPtr> map;
@@ -109,14 +109,14 @@ TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
 
   // to suppress the Fetch(base::DoNothing()) calls
   // triggered by Promotion::OnLastCheckTimerElapsed()
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(),
+  EXPECT_CALL(*mock_engine_impl_.mock_client(),
               GetUint64State(state::kPromotionLastFetchStamp, _))
       .Times(2)
       .WillRepeatedly([](const std::string&, auto callback) {
         std::move(callback).Run(util::GetCurrentTimeStamp());
       });
 
-  EXPECT_CALL(*mock_ledger_impl_.mock_database(), SavePromotion(_, _)).Times(1);
+  EXPECT_CALL(*mock_engine_impl_.mock_database(), SavePromotion(_, _)).Times(1);
 
   base::MockCallback<FetchPromotionsCallback> callback;
   EXPECT_CALL(callback, Run).Times(2);

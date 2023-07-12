@@ -38,7 +38,7 @@ extern const char kBadgeText[];
 extern const char kUseRewardsStagingServer[];
 extern const char kExternalWalletType[];
 
-// Defined in native-ledger
+// Defined in core
 extern const char kServerPublisherListStamp[];
 extern const char kUpholdAnonAddress[];  // DEPRECATED
 extern const char kPromotionLastFetchStamp[];

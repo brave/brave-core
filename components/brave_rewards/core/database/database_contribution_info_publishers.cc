@@ -9,7 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_contribution_info_publishers.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 using std::placeholders::_1;
 
@@ -23,8 +23,8 @@ const char kTableName[] = "contribution_info_publishers";
 }  // namespace
 
 DatabaseContributionInfoPublishers::DatabaseContributionInfoPublishers(
-    LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+    RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabaseContributionInfoPublishers::~DatabaseContributionInfoPublishers() =
     default;
@@ -89,7 +89,7 @@ void DatabaseContributionInfoPublishers::GetRecordByContributionList(
       &DatabaseContributionInfoPublishers::OnGetRecordByContributionList, this,
       _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfoPublishers::OnGetRecordByContributionList(
@@ -159,7 +159,7 @@ void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
       &DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap,
       this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
@@ -200,7 +200,7 @@ void DatabaseContributionInfoPublishers::UpdateContributedAmount(
     LegacyResultCallback callback) {
   if (contribution_id.empty() || publisher_key.empty()) {
     BLOG(1, "Data is empty " << contribution_id << "/" << publisher_key);
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -225,7 +225,7 @@ void DatabaseContributionInfoPublishers::UpdateContributedAmount(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace database

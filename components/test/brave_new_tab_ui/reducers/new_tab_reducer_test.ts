@@ -54,7 +54,7 @@ describe('newTabReducer', () => {
     describe('WALLET_CREATED', () => {
       // TODO
     })
-    describe('LEDGER_OK', () => {
+    describe('OK', () => {
       // TODO
     })
     describe('ON_ADS_ENABLED', () => {

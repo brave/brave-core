@@ -14,9 +14,9 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_util.h"
 #include "brave/components/brave_rewards/core/publisher/protos/channel_response.pb.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave_base/random.h"
 
 using std::placeholders::_1;
@@ -40,8 +40,8 @@ int64_t GetCacheExpiryInSeconds() {
 
 namespace publisher {
 
-ServerPublisherFetcher::ServerPublisherFetcher(LedgerImpl& ledger)
-    : ledger_(ledger), private_cdn_server_(ledger) {}
+ServerPublisherFetcher::ServerPublisherFetcher(RewardsEngineImpl& engine)
+    : engine_(engine), private_cdn_server_(engine) {}
 
 ServerPublisherFetcher::~ServerPublisherFetcher() = default;
 
@@ -69,7 +69,7 @@ void ServerPublisherFetcher::OnFetchCompleted(
     const mojom::Result result,
     mojom::ServerPublisherInfoPtr info,
     const std::string& publisher_key) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     RunCallbacks(publisher_key, nullptr);
     return;
   }
@@ -80,9 +80,9 @@ void ServerPublisherFetcher::OnFetchCompleted(
       std::make_shared<mojom::ServerPublisherInfoPtr>(std::move(info));
 
   // Store the result for subsequent lookups.
-  ledger_->database()->InsertServerPublisherInfo(
+  engine_->database()->InsertServerPublisherInfo(
       **shared_info, [this, publisher_key, shared_info](mojom::Result result) {
-        if (result != mojom::Result::LEDGER_OK) {
+        if (result != mojom::Result::OK) {
           BLOG(0, "Error saving server publisher info record");
         }
         RunCallbacks(publisher_key, std::move(*shared_info));
@@ -113,7 +113,7 @@ bool ServerPublisherFetcher::IsExpired(
 void ServerPublisherFetcher::PurgeExpiredRecords() {
   BLOG(1, "Purging expired server publisher info records");
   int64_t max_age = GetCacheExpiryInSeconds() * 2;
-  ledger_->database()->DeleteExpiredServerPublisherInfo(max_age,
+  engine_->database()->DeleteExpiredServerPublisherInfo(max_age,
                                                         [](auto result) {});
 }
 
@@ -136,7 +136,7 @@ void ServerPublisherFetcher::RunCallbacks(
   for (auto& callback : callbacks) {
     callback(server_info ? server_info.Clone() : nullptr);
   }
-  ledger_->client()->OnPublisherUpdated(publisher_key);
+  engine_->client()->OnPublisherUpdated(publisher_key);
 }
 
 }  // namespace publisher

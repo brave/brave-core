@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // POST /v1/wallets/{payment_id}/events/batloss/{version}
 //
@@ -28,7 +28,7 @@
 // {Empty}
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint {
 namespace promotion {
@@ -37,7 +37,7 @@ using PostBatLossCallback = std::function<void(const mojom::Result result)>;
 
 class PostBatLoss {
  public:
-  explicit PostBatLoss(LedgerImpl& ledger);
+  explicit PostBatLoss(RewardsEngineImpl& engine);
   ~PostBatLoss();
 
   void Request(const double amount,
@@ -53,7 +53,7 @@ class PostBatLoss {
 
   void OnRequest(mojom::UrlResponsePtr response, PostBatLossCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace promotion

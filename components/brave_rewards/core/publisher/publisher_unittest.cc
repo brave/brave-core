@@ -9,10 +9,10 @@
 #include "base/containers/flat_map.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/database/database_mock.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -44,17 +44,17 @@ class PublisherTest : public testing::Test {
   }
 
   void SetUp() override {
-    ON_CALL(*mock_ledger_impl_.mock_client(), GetDoubleState(state::kScoreA, _))
+    ON_CALL(*mock_engine_impl_.mock_client(), GetDoubleState(state::kScoreA, _))
         .WillByDefault([this](const std::string&, auto callback) {
           std::move(callback).Run(a_);
         });
 
-    ON_CALL(*mock_ledger_impl_.mock_client(), GetDoubleState(state::kScoreB, _))
+    ON_CALL(*mock_engine_impl_.mock_client(), GetDoubleState(state::kScoreB, _))
         .WillByDefault([this](const std::string&, auto callback) {
           std::move(callback).Run(b_);
         });
 
-    ON_CALL(*mock_ledger_impl_.mock_client(), SetDoubleState(_, _, _))
+    ON_CALL(*mock_engine_impl_.mock_client(), SetDoubleState(_, _, _))
         .WillByDefault(
             [this](const std::string& key, double value, auto callback) {
               if (key == state::kScoreA) {
@@ -68,15 +68,15 @@ class PublisherTest : public testing::Test {
               }
             });
 
-    ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+    ON_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
         .WillByDefault([](mojom::DBTransactionPtr, auto callback) {
           std::move(callback).Run(db_error_response->Clone());
         });
   }
 
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  Publisher publisher_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  Publisher publisher_{mock_engine_impl_};
 
   double a_ = 0;
   double b_ = 0;

@@ -20,7 +20,7 @@ using GetSKUOrderItemsCallback =
 
 class DatabaseSKUOrderItems : public DatabaseTable {
  public:
-  explicit DatabaseSKUOrderItems(LedgerImpl& ledger);
+  explicit DatabaseSKUOrderItems(RewardsEngineImpl& engine);
   ~DatabaseSKUOrderItems() override;
 
   void InsertOrUpdateList(mojom::DBTransaction* transaction,

@@ -13,18 +13,18 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/database/database_server_publisher_info.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_prefix_list_updater.h"
 #include "brave/components/brave_rewards/core/publisher/server_publisher_fetcher.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace publisher {
 
 class Publisher {
  public:
-  explicit Publisher(LedgerImpl& ledger);
+  explicit Publisher(RewardsEngineImpl& engine);
 
   ~Publisher();
 
@@ -197,7 +197,7 @@ class Publisher {
       bool use_prefix_list,
       database::GetServerPublisherInfoCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   PublisherPrefixListUpdater prefix_list_updater_;
   ServerPublisherFetcher server_publisher_fetcher_;
 

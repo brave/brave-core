@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // GET /v1/captchas/{captcha_id}.png
 //
@@ -25,7 +25,7 @@
 // {PNG data}
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint {
 namespace promotion {
@@ -35,7 +35,7 @@ using GetCaptchaCallback =
 
 class GetCaptcha {
  public:
-  explicit GetCaptcha(LedgerImpl& ledger);
+  explicit GetCaptcha(RewardsEngineImpl& engine);
   ~GetCaptcha();
 
   void Request(const std::string& captcha_id, GetCaptchaCallback callback);
@@ -49,7 +49,7 @@ class GetCaptcha {
 
   void OnRequest(GetCaptchaCallback callback, mojom::UrlResponsePtr response);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace promotion

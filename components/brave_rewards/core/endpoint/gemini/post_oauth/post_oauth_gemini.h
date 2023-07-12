@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // POST https://exchange.sandbox.gemini.com/auth/token
 //
@@ -39,7 +39,7 @@
 // }
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint::gemini {
 
@@ -48,7 +48,7 @@ using PostOauthCallback =
 
 class PostOauth {
  public:
-  explicit PostOauth(LedgerImpl& ledger);
+  explicit PostOauth(RewardsEngineImpl& engine);
   ~PostOauth();
 
   void Request(const std::string& external_account_id,
@@ -65,7 +65,7 @@ class PostOauth {
 
   void OnRequest(PostOauthCallback, mojom::UrlResponsePtr);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace endpoint::gemini

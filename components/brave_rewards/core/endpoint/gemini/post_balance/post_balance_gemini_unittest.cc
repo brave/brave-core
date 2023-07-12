@@ -9,9 +9,9 @@
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/gemini/post_balance/post_balance_gemini.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -26,12 +26,12 @@ namespace gemini {
 class GeminiPostBalanceTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  PostBalance balance_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  PostBalance balance_{mock_engine_impl_};
 };
 
 TEST_F(GeminiPostBalanceTest, ServerOK) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -71,14 +71,14 @@ TEST_F(GeminiPostBalanceTest, ServerOK) {
       });
 
   base::MockCallback<PostBalanceCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_OK, 5000.0)).Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::OK, 5000.0)).Times(1);
   balance_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(GeminiPostBalanceTest, ServerError401) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -96,7 +96,7 @@ TEST_F(GeminiPostBalanceTest, ServerError401) {
 }
 
 TEST_F(GeminiPostBalanceTest, ServerError403) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -114,7 +114,7 @@ TEST_F(GeminiPostBalanceTest, ServerError403) {
 }
 
 TEST_F(GeminiPostBalanceTest, ServerError404) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -132,7 +132,7 @@ TEST_F(GeminiPostBalanceTest, ServerError404) {
 }
 
 TEST_F(GeminiPostBalanceTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -143,7 +143,7 @@ TEST_F(GeminiPostBalanceTest, ServerErrorRandom) {
       });
 
   base::MockCallback<PostBalanceCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, 0.0)).Times(1);
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, 0.0)).Times(1);
   balance_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
 
   task_environment_.RunUntilIdle();

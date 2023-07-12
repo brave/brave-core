@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // POST https://api.gemini.com/v1/payments/recipientIds
 // Payload:
@@ -39,7 +39,7 @@
 // }
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint::gemini {
 
@@ -48,7 +48,7 @@ using PostRecipientIdCallback =
 
 class PostRecipientId {
  public:
-  explicit PostRecipientId(LedgerImpl& ledger);
+  explicit PostRecipientId(RewardsEngineImpl& engine);
   ~PostRecipientId();
 
   void Request(const std::string& token, PostRecipientIdCallback);
@@ -61,7 +61,7 @@ class PostRecipientId {
   void OnRequest(PostRecipientIdCallback, mojom::UrlResponsePtr);
   std::string GeneratePayload();
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace endpoint::gemini

@@ -15,7 +15,7 @@ namespace database {
 
 class DatabaseMediaPublisherInfo : public DatabaseTable {
  public:
-  explicit DatabaseMediaPublisherInfo(LedgerImpl& ledger);
+  explicit DatabaseMediaPublisherInfo(RewardsEngineImpl& engine);
   ~DatabaseMediaPublisherInfo() override;
 
   void InsertOrUpdate(const std::string& media_key,

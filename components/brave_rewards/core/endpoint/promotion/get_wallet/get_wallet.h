@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // GET /v3/wallet/{payment_id}
 //
@@ -38,7 +38,7 @@
 // }
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint {
 namespace promotion {
@@ -48,7 +48,7 @@ using GetWalletCallback = std::function<
 
 class GetWallet {
  public:
-  explicit GetWallet(LedgerImpl& ledger);
+  explicit GetWallet(RewardsEngineImpl& engine);
   ~GetWallet();
 
   void Request(GetWalletCallback callback) const;
@@ -65,7 +65,7 @@ class GetWallet {
                           std::string* custodian,
                           bool* linked) const;
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace promotion

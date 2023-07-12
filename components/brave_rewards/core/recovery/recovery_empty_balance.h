@@ -14,13 +14,13 @@
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace recovery {
 
 class EmptyBalance {
  public:
-  explicit EmptyBalance(LedgerImpl& ledger);
+  explicit EmptyBalance(RewardsEngineImpl& engine);
   ~EmptyBalance();
 
   void Check();
@@ -48,7 +48,7 @@ class EmptyBalance {
 
   void Sent(const mojom::Result result);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   endpoint::PromotionServer promotion_server_;
 };
 

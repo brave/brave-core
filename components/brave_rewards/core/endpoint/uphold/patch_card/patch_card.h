@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 // PATCH https://api.uphold.com/v0/me/cards/{wallet_address}
 //
@@ -81,7 +81,7 @@
 // }
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint::uphold {
 
@@ -89,7 +89,7 @@ using PatchCardCallback = base::OnceCallback<void(mojom::Result)>;
 
 class PatchCard {
  public:
-  explicit PatchCard(LedgerImpl& ledger);
+  explicit PatchCard(RewardsEngineImpl& engine);
   ~PatchCard();
 
   void Request(const std::string& token,
@@ -105,7 +105,7 @@ class PatchCard {
 
   void OnRequest(PatchCardCallback, mojom::UrlResponsePtr);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace endpoint::uphold
