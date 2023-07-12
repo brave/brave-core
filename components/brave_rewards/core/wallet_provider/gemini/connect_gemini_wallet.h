@@ -48,7 +48,8 @@ class ConnectGeminiWallet : public wallet_provider::ConnectExternalWallet {
                      std::string&& recipient_id,
                      mojom::Result,
                      std::string&& linking_info,
-                     std::string&& user_name);
+                     std::string&& user_name,
+                     std::string&& country_id);
 
   endpoint::GeminiServer gemini_server_;
 };

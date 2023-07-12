@@ -40,7 +40,7 @@ class ConnectTestWallet : public wallet_provider::ConnectExternalWallet {
   const char* WalletType() const override { return "test"; }
 
   void Authorize(OAuthInfo&&, ConnectExternalWalletCallback callback) override {
-    OnConnect(std::move(callback), "token", "address",
+    OnConnect(std::move(callback), "token", "address", "country",
               Result(post_connect_result_));
   }
 

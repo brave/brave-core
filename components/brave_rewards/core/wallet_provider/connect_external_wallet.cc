@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/logging/event_log_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
 namespace brave_rewards::internal {
@@ -121,6 +122,7 @@ void ConnectExternalWallet::OnConnect(
     ConnectExternalWalletCallback callback,
     std::string&& token,
     std::string&& address,
+    std::string&& country_id,
     endpoints::PostConnect::Result&& result) const {
   auto wallet = GetWalletIf(
       *engine_, WalletType(),
@@ -166,6 +168,13 @@ void ConnectExternalWallet::OnConnect(
   engine_->database()->SaveEventLog(
       log::kWalletVerified,
       WalletType() + std::string("/") + abbreviated_address);
+
+  // Update the user's "declared country" based on the information provided by
+  // the wallet provider.
+  if (!country_id.empty()) {
+    engine_->SetState(state::kDeclaredGeo, country_id);
+  }
+
   std::move(callback).Run({});
 }
 

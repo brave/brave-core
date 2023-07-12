@@ -136,6 +136,7 @@ TEST_F(GetMeTest, ServerOK) {
         EXPECT_EQ(result, mojom::Result::OK);
         EXPECT_EQ(user.name, "John");
         EXPECT_EQ(user.member_id, "b34060c9-5ca3-4bdb-bc32-1f826ecea36e");
+        EXPECT_EQ(user.country_id, "US");
         EXPECT_EQ(user.bat_not_allowed, false);
       });
   me_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());

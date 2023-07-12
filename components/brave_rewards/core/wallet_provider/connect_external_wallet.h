@@ -40,6 +40,7 @@ class ConnectExternalWallet {
   void OnConnect(ConnectExternalWalletCallback,
                  std::string&& token,
                  std::string&& address,
+                 std::string&& country_id,
                  endpoints::PostConnect::Result&&) const;
 
   const raw_ref<RewardsEngineImpl> engine_;

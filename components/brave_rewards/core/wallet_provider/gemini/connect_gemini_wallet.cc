@@ -167,7 +167,8 @@ void ConnectGeminiWallet::OnPostAccount(ConnectExternalWalletCallback callback,
                                         std::string&& recipient_id,
                                         mojom::Result result,
                                         std::string&& linking_info,
-                                        std::string&& user_name) {
+                                        std::string&& user_name,
+                                        std::string&& country_id) {
   auto wallet = engine_->gemini()->GetWalletIf(
       {mojom::WalletStatus::kNotConnected, mojom::WalletStatus::kLoggedOut});
   if (!wallet) {
@@ -196,7 +197,8 @@ void ConnectGeminiWallet::OnPostAccount(ConnectExternalWalletCallback callback,
 
   auto on_connect =
       base::BindOnce(&ConnectGeminiWallet::OnConnect, base::Unretained(this),
-                     std::move(callback), std::move(token), recipient_id);
+                     std::move(callback), std::move(token), recipient_id,
+                     std::move(country_id));
 
   RequestFor<PostConnectGemini>(*engine_, std::move(linking_info),
                                 std::move(recipient_id))
