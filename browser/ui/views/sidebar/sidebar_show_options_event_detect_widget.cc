@@ -33,7 +33,7 @@ class SidebarShowOptionsEventDetectWidget::ContentsView : public views::View {
   ContentsView& operator=(const ContentsView&) = delete;
 
   void OnMouseEntered(const ui::MouseEvent& event) override {
-    delegate_->ShowSidebar();
+    delegate_->ShowSidebarControlView();
   }
 
  private:
@@ -59,7 +59,7 @@ SidebarShowOptionsEventDetectWidget::~SidebarShowOptionsEventDetectWidget() =
 void SidebarShowOptionsEventDetectWidget::Show() {
   DCHECK(widget_);
   AdjustWidgetBounds();
-  widget_->Show();
+  widget_->ShowInactive();
 }
 
 void SidebarShowOptionsEventDetectWidget::Hide() {
@@ -95,6 +95,12 @@ SidebarShowOptionsEventDetectWidget::CreateWidget(Delegate& delegate) {
 void SidebarShowOptionsEventDetectWidget::OnViewBoundsChanged(
     views::View* observed_view) {
   AdjustWidgetBounds();
+}
+
+void SidebarShowOptionsEventDetectWidget::OnViewIsDeleting(
+    views::View* observed_view) {
+  DCHECK(observation_.IsObservingSource(observed_view));
+  observation_.Reset();
 }
 
 void SidebarShowOptionsEventDetectWidget::AdjustWidgetBounds() {

@@ -27,6 +27,8 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
     reader_mode_toolbar_view_ = reader_mode_toolbar_view;
   }
 
+  int CalculateTargetSideBarWidth() const;
+
   // ContentsLayoutManager overrides:
   void Layout(views::View* contents_container) override;
 

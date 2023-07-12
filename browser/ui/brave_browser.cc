@@ -68,7 +68,7 @@ void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
   if (changed_flags & content::INVALIDATE_TYPE_URL) {
     if (source == tab_strip_model_->GetActiveWebContents()) {
       if (sidebar_controller_)
-        sidebar_controller_->sidebar()->UpdateSidebar();
+        sidebar_controller_->sidebar()->UpdateSidebarItemsState();
     }
   }
 #endif
@@ -123,7 +123,7 @@ void BraveBrowser::OnTabStripModelChanged(
   if (change.type() == TabStripModelChange::Type::kInserted ||
       change.type() == TabStripModelChange::Type::kRemoved ||
       selection.active_tab_changed())
-    sidebar_controller_->sidebar()->UpdateSidebar();
+    sidebar_controller_->sidebar()->UpdateSidebarItemsState();
 #endif
 }
 
