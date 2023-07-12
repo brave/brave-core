@@ -13,11 +13,13 @@ const runPerfTests = (passthroughArgs, perf_config, targets) => {
   if (process.platform === 'win32') {
     targets = '"' + targets + '"'
   }
-    args = [
+  args = [
     path.join(
       config.braveCoreDir, 'tools', 'perf', 'run_dashboard_perftests.py'),
-    '--config=' + perf_config,
-    '--targets=' + targets,
+    '--config',
+    perf_config,
+    '--targets',
+    targets,
     '--verbose',
   ]
   args.push(...passthroughArgs)
