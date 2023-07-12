@@ -1,6 +1,9 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
+
+import { EthereumSignTypedDataMessage, EthereumSignTypedDataTypes } from "trezor-connect"
+
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 export interface Unsuccessful {
   success: false
@@ -90,6 +93,8 @@ export interface EthereumSignTypedHash {
   path: string | number[]
   domain_separator_hash: string
   message_hash: string
+  metamask_v4_compat: boolean
+  data: EthereumSignTypedDataMessage<EthereumSignTypedDataTypes>
 }
 
 export type MessageSignature = {
