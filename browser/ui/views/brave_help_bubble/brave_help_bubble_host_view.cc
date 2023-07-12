@@ -24,20 +24,32 @@
 namespace {
 constexpr int kWidth = 60;
 constexpr int kHeight = 60;
-constexpr base::TimeDelta kPulsingDuration = base::Milliseconds(1000);
-constexpr SkPoint kPts[] = {{0, 0}, {60, 60}};
-constexpr SkColor4f kColors[] = {{0.66, 0.10, 0.47, 1.f},
-                                 {0.22, 0.17, 0.81, 1.f}};
-constexpr SkScalar kPositions[] = {0.0, 0.65, 1.0};
+
+// The points here are defined as start and end points of the gradient,
+// associated with an entire rect
+constexpr SkPoint kPts[] = {{0, 0}, {kWidth, kHeight}};
+
+// Colors are ported from Figma, but the order is intentionally flipped for
+// proper gradient interpolation. Figma has the order as 1, 2, 3, here it's
+// represented as 3, 2, 1
+constexpr SkColor4f kColors[] = {{0.65f, 0.54f, 1, 1},
+                                 {1, 0.09f, 0.57f, 1},
+                                 {0.98f, 0.44f, 0.31f, 1}};
+
+// These are positions for each element in kColors
+constexpr SkScalar kPositions[] = {0.0, 0.43, 0.93};
+
 sk_sp<cc::PaintShader> kBraveGradient =
     cc::PaintShader::MakeLinearGradient(kPts,
                                         kColors,
                                         kPositions,
-                                        std::size(kPts),
+                                        std::size(kColors),
                                         SkTileMode::kClamp);
 
 void SchedulePulsingAnimation(ui::Layer* layer) {
   DCHECK(layer);
+
+  constexpr base::TimeDelta kPulsingDuration = base::Milliseconds(1000);
 
   const gfx::Rect local_bounds(layer->bounds().size());
   views::AnimationBuilder()
@@ -172,7 +184,7 @@ void BraveHelpBubbleHostView::OnPaint(gfx::Canvas* canvas) {
   flags.setShader(kBraveGradient);
   flags.setStrokeWidth(2.f);
   canvas->DrawCircle(GetContentsBounds().CenterPoint(), 27.f, flags);
-  flags.setStrokeWidth(5.f);
+  flags.setStrokeWidth(6.f);
   canvas->DrawCircle(GetContentsBounds().CenterPoint(), 20.f, flags);
 }
 
