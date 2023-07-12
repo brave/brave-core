@@ -51,8 +51,8 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.rewards.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.rewards.BraveRewardsObserver;
-import org.chromium.chrome.browser.rewards.model.BraveRewardsBalance;
-import org.chromium.chrome.browser.rewards.model.BraveRewardsExternalWallet;
+import org.chromium.chrome.browser.rewards.model.RewardsBalance;
+import org.chromium.chrome.browser.rewards.model.RewardsExternalWallet;
 import org.chromium.chrome.browser.rewards.util.BraveRewardsHelper;
 import org.chromium.chrome.browser.rewards.util.BraveWalletProvider;
 import org.chromium.chrome.browser.util.TabUtils;
@@ -98,7 +98,7 @@ public class RewardsTippingPanelFragment
 
     private double mRate;
     private boolean mIsBatCurrency;
-    private BraveRewardsExternalWallet mExternalWallet;
+    private RewardsExternalWallet mExternalWallet;
     private ProgressBar mTipProgressBar;
 
     private TextView mUsdSymbol1;
@@ -243,7 +243,7 @@ public class RewardsTippingPanelFragment
 
         if (!TextUtils.isEmpty(externalWallet)) {
             try {
-                mExternalWallet = new BraveRewardsExternalWallet(externalWallet);
+                mExternalWallet = new RewardsExternalWallet(externalWallet);
                 walletStatus = mExternalWallet.getStatus();
                 if (walletStatus != WalletStatus.NOT_CONNECTED) {
                     if (walletStatus == WalletStatus.LOGGED_OUT) {
@@ -521,7 +521,7 @@ public class RewardsTippingPanelFragment
 
     void setBalanceText(View view) {
         double balance = DEFAULT_AMOUNT;
-        BraveRewardsBalance rewards_balance = mBraveRewardsNativeWorker.GetWalletBalance();
+        RewardsBalance rewards_balance = mBraveRewardsNativeWorker.GetWalletBalance();
         if (rewards_balance != null) {
             balance = rewards_balance.getTotal();
             mBalance = balance;

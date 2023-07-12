@@ -21,7 +21,7 @@ import org.chromium.brave_rewards.mojom.WalletStatus;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
-import org.chromium.chrome.browser.rewards.model.BraveRewardsExternalWallet;
+import org.chromium.chrome.browser.rewards.model.RewardsExternalWallet;
 import org.chromium.chrome.browser.rewards.util.BraveWalletProvider;
 
 public class BraveRewardsUserWalletActivity
@@ -50,7 +50,7 @@ public class BraveRewardsUserWalletActivity
     private void setUIControls() {
         Intent intent = getIntent();
         final int status =
-                intent.getIntExtra(BraveRewardsExternalWallet.STATUS, UNDEFINED_WALLET_STATUS);
+                intent.getIntExtra(RewardsExternalWallet.STATUS, UNDEFINED_WALLET_STATUS);
         TextView txtUserId = (TextView) findViewById(R.id.user_id);
         TextView txtUserStatus = (TextView) findViewById(R.id.user_status);
         Button btnGotoProvider = (Button) findViewById(R.id.provider_action);
@@ -64,17 +64,17 @@ public class BraveRewardsUserWalletActivity
 
         switch (status) {
             case WalletStatus.CONNECTED:
-                txtUserStatus.setText(BraveRewardsExternalWallet.WalletStatusToString(status));
+                txtUserStatus.setText(RewardsExternalWallet.WalletStatusToString(status));
                 break;
             case WalletStatus.LOGGED_OUT:
-                txtUserStatus.setText(BraveRewardsExternalWallet.WalletStatusToString(status));
+                txtUserStatus.setText(RewardsExternalWallet.WalletStatusToString(status));
                 break;
             case UNDEFINED_WALLET_STATUS:
                 finish();
                 break;
         }
 
-        String userId = intent.getStringExtra(BraveRewardsExternalWallet.USER_NAME);
+        String userId = intent.getStringExtra(RewardsExternalWallet.USER_NAME);
         txtUserId.setText(userId);
         txtUserId.setCompoundDrawablesWithIntrinsicBounds(getWalletIcon(walletType), 0, 0, 0);
     }
@@ -104,19 +104,18 @@ public class BraveRewardsUserWalletActivity
         if (view.getId() == R.id.provider_action) {
             if (getIntent() != null) {
                 int walletStatus = getIntent().getIntExtra(
-                        BraveRewardsExternalWallet.STATUS, UNDEFINED_WALLET_STATUS);
+                        RewardsExternalWallet.STATUS, UNDEFINED_WALLET_STATUS);
                 if (walletStatus == WalletStatus.CONNECTED) {
-                    if (getIntent().getStringExtra(BraveRewardsExternalWallet.ACCOUNT_URL)
-                            != null) {
+                    if (getIntent().getStringExtra(RewardsExternalWallet.ACCOUNT_URL) != null) {
                         Intent intent = new Intent();
                         intent.putExtra(BraveActivity.OPEN_URL,
-                                getIntent().getStringExtra(BraveRewardsExternalWallet.ACCOUNT_URL));
+                                getIntent().getStringExtra(RewardsExternalWallet.ACCOUNT_URL));
                         setResult(RESULT_OK, intent);
                     }
                 } else if (walletStatus == WalletStatus.LOGGED_OUT) {
                     Intent intent = new Intent();
                     intent.putExtra(BraveActivity.OPEN_URL,
-                            getIntent().getStringExtra(BraveRewardsExternalWallet.LOGIN_URL));
+                            getIntent().getStringExtra(RewardsExternalWallet.LOGIN_URL));
                     setResult(RESULT_OK, intent);
                 }
                 finish();

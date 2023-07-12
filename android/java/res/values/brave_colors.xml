@@ -138,9 +138,6 @@
     <color name="user_wallet_background">#F1F3F5</color>
     <color name="user_wallet_status">#49CC69</color>
 
-    <!-- User wallet -->
-    <color name="user_wallet_dimmed_note">#E6E3F4</color>
-
     <color name="qr_button_color">@android:color/white</color>
     <color name="section_divider_color">#c8c7cc</color>
     <color name="shield_title_color">@android:color/black</color>

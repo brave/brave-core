@@ -27,7 +27,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.rewards.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.rewards.BraveRewardsObserver;
-import org.chromium.chrome.browser.rewards.model.BraveRewardsBannerInfo;
+import org.chromium.chrome.browser.rewards.model.RewardsBannerInfo;
 import org.chromium.chrome.browser.rewards.util.BraveRewardsHelper;
 import org.chromium.chrome.browser.util.TabUtils;
 
@@ -43,7 +43,7 @@ public class RewardsTippingBannerActivity
     private final int PUBLISHER_ICON_SIDE_LEN = 64; // dp
     private static final String TAG = "TippingBanner";
     private int currentTabId_ = -1;
-    private BraveRewardsBannerInfo mBannerInfo;
+    private RewardsBannerInfo mBannerInfo;
 
     private BraveRewardsHelper mIconFetcher;
 
@@ -125,7 +125,7 @@ public class RewardsTippingBannerActivity
     @Override
     public void onPublisherBanner(String jsonBannerInfo) {
         try {
-            mBannerInfo = new BraveRewardsBannerInfo(jsonBannerInfo);
+            mBannerInfo = new RewardsBannerInfo(jsonBannerInfo);
             setTitle();
             setDescription();
             setLogo();

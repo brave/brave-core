@@ -17,7 +17,7 @@ import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_rewards.mojom.PublisherStatus;
-import org.chromium.chrome.browser.rewards.model.BraveRewardsBalance;
+import org.chromium.chrome.browser.rewards.model.RewardsBalance;
 import org.chromium.chrome.browser.rewards.util.BraveRewardsHelper;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.embedder_support.util.UrlConstants;
@@ -215,13 +215,13 @@ public class BraveRewardsNativeWorker {
     }
 
     @Nullable
-    public BraveRewardsBalance GetWalletBalance() {
+    public RewardsBalance GetWalletBalance() {
         synchronized (lock) {
             String json = BraveRewardsNativeWorkerJni.get().getWalletBalance(
                     mNativeBraveRewardsNativeWorker);
-            BraveRewardsBalance balance = null;
+            RewardsBalance balance = null;
             try {
-                balance = new BraveRewardsBalance(json);
+                balance = new RewardsBalance(json);
             } catch (JSONException e) {
                 balance = null;
             }

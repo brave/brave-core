@@ -10,10 +10,6 @@
     android:exported="false" />
 
 <activity
-    android:name="org.chromium.chrome.browser.BraveRewardsVerifyWalletActivity"
-    android:theme="@style/Theme.Chromium.Activity.Fullscreen"/>
-
-<activity
     android:name="org.chromium.chrome.browser.BraveRewardsUserWalletActivity"
     android:theme="@style/BraveTranslucent"/>
 

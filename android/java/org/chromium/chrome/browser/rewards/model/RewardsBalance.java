@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class BraveRewardsBalance {
+public class RewardsBalance {
     /**
      * matching consts in
      * src/brave/components/brave_rewards/browser/balance.h
@@ -26,7 +26,7 @@ public class BraveRewardsBalance {
     private double mTotal;
     private Map<String, Double> mWallets;
 
-    public BraveRewardsBalance(String json_balance) throws JSONException {
+    public RewardsBalance(String json_balance) throws JSONException {
         fromJson(json_balance);
     }
 
@@ -51,7 +51,7 @@ public class BraveRewardsBalance {
     @VisibleForTesting
     @Override
     public String toString() {
-        return "BraveRewardsBalance{"
+        return "RewardsBalance{"
                 + "mTotal=" + mTotal + ", mWallets=" + mWallets + '}';
     }
 }

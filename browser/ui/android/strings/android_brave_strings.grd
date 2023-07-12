@@ -1366,33 +1366,6 @@ Are you sure you want to do this?
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_CONNECTED" desc="">
         Connected
       </message>
-      <message name="IDS_VERIFY_WALLET_HEADER">
-        Verifying your wallet is optional
-      </message>
-      <message name="IDS_VERIFY_WALLET_HEADER1">
-        But if you verify, you can...
-      </message>
-      <message name="IDS_VERIFY_WALLET_UPHOLD_BENEFITS1">
-        Withdraw BAT that you earn from viewing privacy-respecting ads
-      </message>
-      <message name="IDS_VERIFY_WALLET_UPHOLD_BENEFITS2">
-        Purchase additional BAT with credit cards and other sources
-      </message>
-      <message name="IDS_VERIFY_WALLET_UPHOLD_BENEFITS3">
-        Withdraw BAT that you may have previously added to your Brave Rewards wallet
-      </message>
-      <message name="IDS_VERIFY_WALLET_BITFLYER_BENEFITS1">
-        Withdraw BAT that you earn from viewing privacy-respecting ads
-      </message>
-      <message name="IDS_VERIFY_WALLET_BITFLYER_BENEFITS2">
-        Purchase additional BAT with credit cards and other sources
-      </message>
-      <message name="IDS_VERIFY_WALLET_BITFLYER_BENEFITS3">
-         Withdraw BAT that you may have previously added to your Brave Rewards wallet
-      </message>
-      <message name="IDS_VERIFY_WALLET_SERVICE_NOTE">
-        Our wallet service is provided by
-      </message>
       <message name="IDS_UPHOLD">
         Uphold
       </message>
@@ -1401,12 +1374,6 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_GEMINI">
         Gemini
-      </message>
-      <message name="IDS_VERIFY_WALLET_PROVIDER_NOTE1">
-        Uphold may require you to verify your identity based on services requested.
-      </message>
-      <message name="IDS_VERIFY_WALLET_BRAVE_NOTE1">
-        Brave Software Inc. does not process, store, or access any of the personal information that you provide to <ph name="WALLET_PROVIDER">%1$s</ph> when you establish an account with them.
       </message>
       <message name="IDS_USER_WALLET_GOTO_PROVIDER">
         Go to my <ph name="WALLET_PROVIDER">%1$s</ph> account

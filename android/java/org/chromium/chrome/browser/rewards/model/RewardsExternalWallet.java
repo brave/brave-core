@@ -17,7 +17,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.brave_rewards.mojom.WalletStatus;
 import org.chromium.chrome.R;
 
-public class BraveRewardsExternalWallet {
+public class RewardsExternalWallet {
     // fields
     public static final String ACCOUNT_URL = "account_url";
     public static final String ADDRESS = "address";
@@ -63,7 +63,7 @@ public class BraveRewardsExternalWallet {
         return mLoginUrl;
     }
 
-    public BraveRewardsExternalWallet(String json_external_wallet) throws JSONException {
+    public RewardsExternalWallet(String json_external_wallet) throws JSONException {
         fromJson(json_external_wallet);
     }
 
@@ -81,7 +81,7 @@ public class BraveRewardsExternalWallet {
     @VisibleForTesting
     @Override
     public String toString() {
-        return "BraveRewardsExternalWallet{"
+        return "RewardsExternalWallet{"
                 + "mAccountUrl='" + mAccountUrl + '\'' + ", mAddress='" + mAddress + '\''
                 + ", mStatus=" + mStatus + ", mToken='" + mToken + '\'' + ", mUserName='"
                 + mUserName + '\'' + ", mLoginUrl='" + mLoginUrl + '\'' + '}';

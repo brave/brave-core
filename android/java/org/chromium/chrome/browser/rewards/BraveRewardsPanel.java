@@ -71,8 +71,8 @@ import org.chromium.chrome.browser.rewards.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.rewards.BraveRewardsObserver;
 import org.chromium.chrome.browser.rewards.BraveRewardsOnboardingPagerAdapter;
 import org.chromium.chrome.browser.rewards.BraveRewardsUserWalletActivity;
-import org.chromium.chrome.browser.rewards.model.BraveRewardsBalance;
-import org.chromium.chrome.browser.rewards.model.BraveRewardsExternalWallet;
+import org.chromium.chrome.browser.rewards.model.RewardsBalance;
+import org.chromium.chrome.browser.rewards.model.RewardsExternalWallet;
 import org.chromium.chrome.browser.rewards.onboarding.RewardsOnboarding;
 import org.chromium.chrome.browser.rewards.tipping.RewardsTippingBannerActivity;
 import org.chromium.chrome.browser.rewards.util.BraveRewardsHelper;
@@ -191,7 +191,7 @@ public class BraveRewardsPanel
     private boolean mAutoContributeEnabled;
     private TextView mPublisherAttention;
 
-    private BraveRewardsExternalWallet mExternalWallet;
+    private RewardsExternalWallet mExternalWallet;
 
     private View mNotificationLayout;
     private View mNotificationPermissionLayout;
@@ -1015,7 +1015,7 @@ public class BraveRewardsPanel
                                 : View.VISIBLE);
                 mWalletBalanceProgress.setVisibility(View.GONE);
                 if (mBraveRewardsNativeWorker != null) {
-                    BraveRewardsBalance walletBalanceObject =
+                    RewardsBalance walletBalanceObject =
                             mBraveRewardsNativeWorker.GetWalletBalance();
                     double walletBalance = 0;
                     if (walletBalanceObject != null) {
@@ -1069,7 +1069,7 @@ public class BraveRewardsPanel
     public void OnGetExternalWallet(String externalWallet) {
         if (!TextUtils.isEmpty(externalWallet)) {
             try {
-                mExternalWallet = new BraveRewardsExternalWallet(externalWallet);
+                mExternalWallet = new RewardsExternalWallet(externalWallet);
             } catch (JSONException e) {
                 mExternalWallet = null;
             }
@@ -1760,8 +1760,7 @@ public class BraveRewardsPanel
         btnVerifyWallet.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BraveRewardsBalance walletBalanceObject =
-                        mBraveRewardsNativeWorker.GetWalletBalance();
+                RewardsBalance walletBalanceObject = mBraveRewardsNativeWorker.GetWalletBalance();
                 double walletBalance = 0;
                 if (walletBalanceObject != null) {
                     walletBalance = walletBalanceObject.getTotal();
@@ -2056,12 +2055,12 @@ public class BraveRewardsPanel
         }
 
         Intent intent = new Intent(ContextUtils.getApplicationContext(), clazz);
-        intent.putExtra(BraveRewardsExternalWallet.ACCOUNT_URL, mExternalWallet.getAccountUrl());
-        intent.putExtra(BraveRewardsExternalWallet.ADDRESS, mExternalWallet.getAddress());
-        intent.putExtra(BraveRewardsExternalWallet.LOGIN_URL, mExternalWallet.getLoginUrl());
-        intent.putExtra(BraveRewardsExternalWallet.STATUS, mExternalWallet.getStatus());
-        intent.putExtra(BraveRewardsExternalWallet.TOKEN, mExternalWallet.getToken());
-        intent.putExtra(BraveRewardsExternalWallet.USER_NAME, mExternalWallet.getUserName());
+        intent.putExtra(RewardsExternalWallet.ACCOUNT_URL, mExternalWallet.getAccountUrl());
+        intent.putExtra(RewardsExternalWallet.ADDRESS, mExternalWallet.getAddress());
+        intent.putExtra(RewardsExternalWallet.LOGIN_URL, mExternalWallet.getLoginUrl());
+        intent.putExtra(RewardsExternalWallet.STATUS, mExternalWallet.getStatus());
+        intent.putExtra(RewardsExternalWallet.TOKEN, mExternalWallet.getToken());
+        intent.putExtra(RewardsExternalWallet.USER_NAME, mExternalWallet.getUserName());
         return intent;
     }
 

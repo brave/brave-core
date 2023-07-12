@@ -18,7 +18,7 @@ import java.util.HashMap;
 /**
  * BraveRewardsNativeWorker.GetPublisherBanner json response converted to this pojo class
  * */
-public class BraveRewardsBannerInfo {
+public class RewardsBannerInfo {
     public static final String PUBLISHER_KEY = "publisher_key";
     public static final String TITLE = "title";
     public static final String NAME = "name";
@@ -82,7 +82,7 @@ public class BraveRewardsBannerInfo {
         return mWeb3Url;
     }
 
-    public BraveRewardsBannerInfo(String json_external_wallet) throws JSONException {
+    public RewardsBannerInfo(String json_external_wallet) throws JSONException {
         fromJson(json_external_wallet);
     }
 
@@ -115,7 +115,7 @@ public class BraveRewardsBannerInfo {
     @VisibleForTesting
     @Override
     public String toString() {
-        return "BraveRewardsBannerInfo{"
+        return "RewardsBannerInfo{"
                 + "mPublisherKey='" + mPublisherKey + '\'' + ", mTitle='" + mTitle + '\''
                 + ", mName='" + mName + '\'' + ", mDescription='" + mDescription + '\''
                 + ", mBackground='" + mBackground + '\'' + ", mLogo='" + mLogo + '\''
