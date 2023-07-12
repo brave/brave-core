@@ -608,6 +608,30 @@ extension Strings {
     public static let deleteEngineAlertDescription = NSLocalizedString("customSearchEngine.deleteEngineAlertDescription", tableName: "BraveShared", bundle: .module,
       value: "Deleting a custom search engine while it is default will switch default engine automatically.",
       comment: "The warning description shown to user when custom search engine will be deleted while it is default search engine.")
+    
+    public static let customSearchEngineAddErrorTitle = NSLocalizedString("customSearchEngine.customSearchEngineAddErrorTitle", tableName: "BraveShared", bundle: .module,
+      value: "Error Adding Custom Search Engine",
+      comment: "A title explaining that an error shown while adding custom search engine")
+    
+    public static let insecureSearchTemplateURLErrorDescription = NSLocalizedString("customSearchEngine.insecureSearchTemplateURLErrorDescription", tableName: "BraveShared", bundle: .module,
+      value: "Insecure Custom Search Template for",
+      comment: "A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line")
+    
+    public static let insecureSuggestionTemplateURLErrorDescription = NSLocalizedString("customSearchEngine.insecureSuggestionTemplateURLErrorDescription", tableName: "BraveShared", bundle: .module,
+      value: "Insecure Custom Suggestion Template for",
+      comment: "A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line")
+    
+    public static let searchTemplateTitle = NSLocalizedString("customSearchEngine.searchTemplateTitle", tableName: "BraveShared", bundle: .module,
+      value: "Search Template:",
+      comment: "Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line")
+    
+    public static let suggestionTemplateTitle = NSLocalizedString("customSearchEngine.suggestionTemplateTitle", tableName: "BraveShared", bundle: .module,
+      value: "Suggestion Template:",
+      comment: "Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line")
+    
+    public static let engineExistsAlertDescription = NSLocalizedString("customSearchEngine.engineAlertExistsAlertDescription", tableName: "BraveShared", bundle: .module,
+      value: "A search engine with the same name already exists.",
+      comment: "The warning description shown to user when custom search engine already exists.")
   }
 }
 
