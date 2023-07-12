@@ -54,7 +54,7 @@ function getPageVisibility () {
     // custom properties
     braveSync: !loadTimeData.getBoolean('isSyncDisabled'),
     braveWallet: loadTimeData.getBoolean('isBraveWalletAllowed'),
-    leoAssistant: !loadTimeData.getBoolean('isLeoAssistantDisabled'),
+    leoAssistant: loadTimeData.getBoolean('isLeoAssistantAllowed'),
   }
   // Proxy so we can respond to any other property
   return new Proxy(staticProps, {

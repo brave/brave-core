@@ -181,10 +181,10 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  html_source->AddBoolean("isLeoAssistantDisabled",
-                          !ai_chat::features::IsAIChatEnabled());
+  html_source->AddBoolean("isLeoAssistantAllowed",
+                          ai_chat::features::IsAIChatEnabled());
 #else
-  html_source->AddBoolean("isLeoAssistantDisabled",true);
+  html_source->AddBoolean("isLeoAssistantAllowed",false);
 #endif
 }
 
