@@ -28,6 +28,7 @@ def main():
   parser = argparse.ArgumentParser()
   perf_test_runner.CommonOptions.add_common_parser_args(parser)
   parser.add_argument('--config', required=True, type=str)
+  parser.add_argument('--target_os', required=False, type=str)
   args = parser.parse_args()
 
   log_level = logging.DEBUG if args.verbose else logging.INFO
