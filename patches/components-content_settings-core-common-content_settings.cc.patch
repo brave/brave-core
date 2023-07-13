@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/content_settings.cc b/components/content_settings/core/common/content_settings.cc
-index 9fa95733b041775e4672724672024297fa9e3741..8c0afba70d46b929ed89f8bc5f2c87d0d3a4615e 100644
+index b3ae95a65a60988f82c328a401406a1e015240f9..cdc6eaac1e960deeb9dc33069bd56c176c80fc26 100644
 --- a/components/content_settings/core/common/content_settings.cc
 +++ b/components/content_settings/core/common/content_settings.cc
-@@ -127,6 +127,7 @@ constexpr auto kHistogramValue = base::MakeFixedFlatMap<ContentSettingsType,
+@@ -128,6 +128,7 @@ constexpr auto kHistogramValue = base::MakeFixedFlatMap<ContentSettingsType,
  
      // As mentioned at the top, please don't forget to update ContentType in
      // enums.xml when you add entries here!

@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/signing/config_factory.py b/chrome/installer/mac/signing/config_factory.py
-index 42b6ef8fcdb07b5296d9ff30ce8d34d552e3b985..6318ad3e0185139b3d4d47e0946c29ac83a16e94 100644
+index 1783d30bb358af52478d262e77b60f8226358c88..2f1ead14b522cadc25131677548ee9e915b7d0c5 100644
 --- a/chrome/installer/mac/signing/config_factory.py
 +++ b/chrome/installer/mac/signing/config_factory.py
 @@ -8,6 +8,8 @@ def get_class():
