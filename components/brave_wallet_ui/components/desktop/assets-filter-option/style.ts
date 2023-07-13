@@ -4,20 +4,30 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
+import { WalletButton } from '../../shared/style'
 
-interface StyleProps {
-  selected?: boolean
-}
-
-export const Option = styled.li<Partial<StyleProps>>`
+export const Option = styled(WalletButton) <
+  {
+    selected?: boolean
+  }>`
   display: flex;
   align-items: center;
-  padding: 10px 0;
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  justify-content: flex-start;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 8px;
+  outline: none;
+  border: none;
+  background: none;
+  padding: 12px 8px;
+  margin: 0px 0px 8px 0px;
+  background-color: transparent;
+  &:hover {
+    background-color: ${leo.color.divider.subtle};
+  }
   font-weight: ${(p) => p.selected ? 600 : 'normal'};
   cursor: pointer;
+  width: 100%;
+  color: ${leo.color.text.primary}
 `

@@ -16,8 +16,9 @@ export const TopRow = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-  margin-bottom: 20px;
   gap: 10px;
+  position: static;
+  top: 0;
 `
 
 export const AssetsColumnWrapper = styled.div`
