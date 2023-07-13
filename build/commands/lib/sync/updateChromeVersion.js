@@ -6,6 +6,7 @@
 const assert = require('assert')
 const fs = require('fs')
 const path = require('path')
+const Log = require('./logging')
 
 function updateChromeVersion(config) {
   const braveVersionParts = config.braveVersion.split('.')
@@ -16,6 +17,7 @@ function updateChromeVersion(config) {
 
   // chrome/VERSION eol=lf in .gitattributes.
   const versionLines = versionFileContent.split('\n')
+  // There's an empty line after version lines, so expect at least 4 lines.
   assert(versionLines.length >= 4)
 
   // Match all VERSION file lines (MAJOR=123, MINOR=0, etc.).
@@ -37,16 +39,17 @@ function updateChromeVersion(config) {
     }
   }
 
-  const newVersionFileContent = versionLines.join('\n')
-  if (newVersionFileContent !== versionFileContent) {
-    fs.writeFileSync(versionFilePath, versionLines.join('\n'))
-  }
-
   const versionToLog = versionLines
     .filter((n) => n)
     .join('.')
     .replace(/[A-Z=]/g, '')
-  console.log(`chrome/VERSION: ${versionToLog}`)
+  const newVersionFileContent = versionLines.join('\n')
+  if (newVersionFileContent !== versionFileContent) {
+    fs.writeFileSync(versionFilePath, versionLines.join('\n'))
+    Log.status(`Updated chrome/VERSION: ${versionToLog}`)
+  } else {
+    console.log(`chrome/VERSION: ${versionToLog}`)
+  }
 }
 
 module.exports = updateChromeVersion
