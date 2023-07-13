@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/metrics/histogram_macros.h"
+#include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -164,6 +165,34 @@ bool ShouldCheckTokenId(const brave_wallet::mojom::BlockchainTokenPtr& token) {
 }  // namespace
 
 namespace brave_wallet {
+
+namespace {
+bool AccountMatchesCoinAndChain(const mojom::AccountId& account_id,
+                                mojom::CoinType coin,
+                                const std::string& chain_id) {
+  switch (coin) {
+    case mojom::CoinType::ETH: {
+      return account_id.coin == mojom::CoinType::ETH;
+    }
+    case mojom::CoinType::SOL: {
+      return account_id.coin == mojom::CoinType::SOL;
+    }
+    case mojom::CoinType::FIL: {
+      if (account_id.coin != mojom::CoinType::FIL) {
+        return false;
+      }
+      return (chain_id == mojom::kFilecoinTestnet &&
+              account_id.keyring_id == mojom::KeyringId::kFilecoinTestnet) ||
+             (chain_id == mojom::kFilecoinMainnet &&
+              account_id.keyring_id == mojom::KeyringId::kFilecoin);
+    }
+    case mojom::CoinType::BTC: {
+      NOTREACHED();
+      return false;
+    }
+  }
+}
+}  // namespace
 
 BraveWalletService::BraveWalletService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -757,31 +786,90 @@ void BraveWalletService::SetDefaultBaseCryptocurrency(
   }
 }
 
-void BraveWalletService::GetSelectedCoin(GetSelectedCoinCallback callback) {
-  std::move(callback).Run(::brave_wallet::GetSelectedCoin(profile_prefs_));
-}
-
-void BraveWalletService::SetSelectedCoin(mojom::CoinType coin) {
-  ::brave_wallet::SetSelectedCoin(profile_prefs_, coin);
-}
-
-void BraveWalletService::GetChainIdForActiveOrigin(
-    mojom::CoinType coin,
-    GetChainIdForActiveOriginCallback callback) {
-  std::move(callback).Run(GetChainIdForActiveOriginSync(coin));
-}
-
-std::string BraveWalletService::GetChainIdForActiveOriginSync(
-    mojom::CoinType coin) {
-  return json_rpc_service_->GetChainIdSync(coin, GetActiveOriginSync()->origin);
-}
-
-void BraveWalletService::SetChainIdForActiveOrigin(
+void BraveWalletService::EnsureSelectedAccountForChain(
     mojom::CoinType coin,
     const std::string& chain_id,
-    SetChainIdForActiveOriginCallback callback) {
+    EnsureSelectedAccountForChainCallback callback) {
+  std::move(callback).Run(EnsureSelectedAccountForChainSync(coin, chain_id));
+}
+
+mojom::AccountIdPtr BraveWalletService::EnsureSelectedAccountForChainSync(
+    mojom::CoinType coin,
+    const std::string& chain_id) {
+  auto all_accounts = keyring_service_->GetAllAccountsSync();
+  // Selected account already matches coin/chain_id pair, just return.
+  if (AccountMatchesCoinAndChain(*all_accounts->selected_account->account_id,
+                                 coin, chain_id)) {
+    return all_accounts->selected_account->account_id.Clone();
+  }
+
+  mojom::AccountIdPtr acc_to_select;
+
+  // Prefer currently dapp selected account if available. This matches legacy
+  // behaior.
+  // TODO(apaymyshev): implement account selection history pref to prefer
+  // picking recently used matching account in a general way.
+  if (coin == mojom::CoinType::ETH && all_accounts->eth_dapp_selected_account) {
+    acc_to_select =
+        all_accounts->eth_dapp_selected_account->account_id->Clone();
+    DCHECK(AccountMatchesCoinAndChain(*acc_to_select, coin, chain_id));
+  } else if (coin == mojom::CoinType::SOL &&
+             all_accounts->sol_dapp_selected_account) {
+    acc_to_select =
+        all_accounts->sol_dapp_selected_account->account_id->Clone();
+    DCHECK(AccountMatchesCoinAndChain(*acc_to_select, coin, chain_id));
+  }
+
+  if (!acc_to_select) {
+    // Find any account that matches coin/chain_id
+    for (auto& acc : all_accounts->accounts) {
+      if (AccountMatchesCoinAndChain(*acc->account_id, coin, chain_id)) {
+        acc_to_select = acc->account_id.Clone();
+        break;
+      }
+    }
+  }
+
+  if (!acc_to_select) {
+    return {};
+  }
+
+  keyring_service_->SetSelectedAccountSync(acc_to_select.Clone());
+  return acc_to_select.Clone();
+}
+
+void BraveWalletService::GetNetworkForSelectedAccountOnActiveOrigin(
+    GetNetworkForSelectedAccountOnActiveOriginCallback callback) {
+  std::move(callback).Run(GetNetworkForSelectedAccountOnActiveOriginSync());
+}
+
+mojom::NetworkInfoPtr
+BraveWalletService::GetNetworkForSelectedAccountOnActiveOriginSync() {
+  auto selected_account = keyring_service_->GetSelectedWalletAccount();
+  // This may happen in tests.
+  if (!selected_account) {
+    return {};
+  }
+
+  return json_rpc_service_->GetNetworkSync(selected_account->account_id->coin,
+                                           delegate_->GetActiveOrigin());
+}
+
+void BraveWalletService::SetNetworkForSelectedAccountOnActiveOrigin(
+    const std::string& chain_id,
+    SetNetworkForSelectedAccountOnActiveOriginCallback callback) {
+  auto selected_account = keyring_service_->GetSelectedWalletAccount();
+  CHECK(selected_account);
+  if (!AccountMatchesCoinAndChain(*selected_account->account_id,
+                                  selected_account->account_id->coin,
+                                  chain_id)) {
+    std::move(callback).Run(false);
+    return;
+  }
+
   std::move(callback).Run(json_rpc_service_->SetNetwork(
-      chain_id, coin, GetActiveOriginSync()->origin));
+      chain_id, selected_account->account_id->coin,
+      delegate_->GetActiveOrigin()));
 }
 
 void BraveWalletService::OnDefaultEthereumWalletChanged() {
@@ -1250,7 +1338,7 @@ void BraveWalletService::GetActiveOrigin(GetActiveOriginCallback callback) {
 
 mojom::OriginInfoPtr BraveWalletService::GetActiveOriginSync() {
   if (delegate_) {
-    return delegate_->GetActiveOrigin();
+    return MakeOriginInfo(delegate_->GetActiveOrigin().value_or(url::Origin()));
   } else {
     return MakeOriginInfo(url::Origin());
   }

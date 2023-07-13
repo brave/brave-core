@@ -9,13 +9,13 @@
 
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoint::uphold {
 
-PatchCard::PatchCard(LedgerImpl& ledger) : ledger_(ledger) {}
+PatchCard::PatchCard(RewardsEngineImpl& engine) : engine_(engine) {}
 
 PatchCard::~PatchCard() = default;
 
@@ -44,10 +44,10 @@ mojom::Result PatchCard::CheckStatusCode(int status_code) {
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 void PatchCard::Request(const std::string& token,
@@ -60,7 +60,7 @@ void PatchCard::Request(const std::string& token,
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::PATCH;
 
-  ledger_->LoadURL(std::move(request),
+  engine_->LoadURL(std::move(request),
                    base::BindOnce(&PatchCard::OnRequest, base::Unretained(this),
                                   std::move(callback)));
 }

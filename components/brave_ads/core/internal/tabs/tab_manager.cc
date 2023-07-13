@@ -99,18 +99,18 @@ void TabManager::NotifyDidOpenNewTab(const TabInfo& tab) const {
 void TabManager::NotifyTextContentDidChange(
     const int32_t id,
     const std::vector<GURL>& redirect_chain,
-    const std::string& content) {
+    const std::string& text) {
   for (TabManagerObserver& observer : observers_) {
-    observer.OnTextContentDidChange(id, redirect_chain, content);
+    observer.OnTextContentDidChange(id, redirect_chain, text);
   }
 }
 
 void TabManager::NotifyHtmlContentDidChange(
     const int32_t id,
     const std::vector<GURL>& redirect_chain,
-    const std::string& content) {
+    const std::string& html) {
   for (TabManagerObserver& observer : observers_) {
-    observer.OnHtmlContentDidChange(id, redirect_chain, content);
+    observer.OnHtmlContentDidChange(id, redirect_chain, html);
   }
 }
 
@@ -135,30 +135,30 @@ void TabManager::NotifyTabDidStopPlayingMedia(const int32_t id) const {
 void TabManager::OnNotifyTabHtmlContentDidChange(
     const int32_t id,
     const std::vector<GURL>& redirect_chain,
-    const std::string& content) {
+    const std::string& html) {
   CHECK(!redirect_chain.empty());
 
-  const uint32_t hash = base::FastHash(content);
+  const uint32_t hash = base::FastHash(html);
   if (hash != last_html_content_hash_) {
     last_html_content_hash_ = hash;
 
     BLOG(2, "Tab id " << id << " HTML content changed");
-    NotifyHtmlContentDidChange(id, redirect_chain, content);
+    NotifyHtmlContentDidChange(id, redirect_chain, html);
   }
 }
 
 void TabManager::OnNotifyTabTextContentDidChange(
     const int32_t id,
     const std::vector<GURL>& redirect_chain,
-    const std::string& content) {
+    const std::string& text) {
   CHECK(!redirect_chain.empty());
 
-  const uint32_t hash = base::FastHash(content);
+  const uint32_t hash = base::FastHash(text);
   if (hash != last_text_content_hash_) {
     last_text_content_hash_ = hash;
 
     BLOG(2, "Tab id " << id << " text content changed");
-    NotifyTextContentDidChange(id, redirect_chain, content);
+    NotifyTextContentDidChange(id, redirect_chain, text);
   }
 }
 

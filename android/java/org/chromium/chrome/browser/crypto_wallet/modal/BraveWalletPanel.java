@@ -34,6 +34,7 @@ import androidx.lifecycle.Observer;
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
 import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.AllAccountsInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
@@ -81,7 +82,6 @@ public class BraveWalletPanel implements DialogInterface {
     private TextView mAmountAsset;
     private TextView mAmountFiat;
     private View mCvSolConnectionStatus;
-    private AccountInfo[] mAccountInfos;
     private HashSet<AccountInfo> mAccountsWithPermissions;
     private ExecutorService mExecutor;
     private Handler mHandler;
@@ -89,30 +89,23 @@ public class BraveWalletPanel implements DialogInterface {
     private ImageView mAccountChangeAnchor;
     private View mContainerConstraintLayout;
     private WalletModel mWalletModel;
+    private AllAccountsInfo mAllAccountsInfo;
     private AccountInfo mSelectedAccount;
     private NetworkInfo mSelectedNetwork;
-    private final Observer<AccountInfo> mAccountInfoObserver = accountInfo -> {
-        if (accountInfo == null) {
-            mBtnConnectedStatus.setVisibility(View.GONE);
-            mCvSolConnectionStatus.setVisibility(View.GONE);
-            return;
-        }
-        mSelectedAccount = accountInfo;
-        mBraveWalletPanelServices.getKeyringService().getKeyringInfo(
-                mSelectedAccount.accountId.keyringId, keyringInfo -> {
-                    if (keyringInfo != null) {
-                        mAccountInfos = keyringInfo.accountInfos;
-                    }
-                    AccountsPermissionsHelper accountsPermissionsHelper =
-                            new AccountsPermissionsHelper(
-                                    mBraveWalletPanelServices.getBraveWalletService(),
-                                    mAccountInfos, Utils.getCurrentMojomOrigin());
-                    accountsPermissionsHelper.checkAccounts(() -> {
-                        mAccountsWithPermissions =
-                                accountsPermissionsHelper.getAccountsWithPermissions();
-                        updateAccountInfo(mSelectedAccount);
-                    });
-                });
+    private final Observer<AllAccountsInfo> mAllAccountsInfoObserver = allAccountsInfo -> {
+        mAllAccountsInfo = allAccountsInfo;
+        mSelectedAccount = mAllAccountsInfo.selectedAccount;
+
+        AccountsPermissionsHelper accountsPermissionsHelper =
+                new AccountsPermissionsHelper(mBraveWalletPanelServices.getBraveWalletService(),
+                        Utils.filterAccountsByCoin(
+                                     mAllAccountsInfo.accounts, mSelectedAccount.accountId.coin)
+                                .toArray(new AccountInfo[0]),
+                        Utils.getCurrentMojomOrigin());
+        accountsPermissionsHelper.checkAccounts(() -> {
+            mAccountsWithPermissions = accountsPermissionsHelper.getAccountsWithPermissions();
+            updateAccountInfo(mSelectedAccount);
+        });
     };
 
     private final Observer<NetworkInfo> mDefaultNetworkObserver = networkInfo -> {
@@ -135,7 +128,6 @@ public class BraveWalletPanel implements DialogInterface {
         mAnchorViewHost = anchorViewHost;
         mOnDismissListener = onDismissListener;
         mActivity = BraveActivity.getChromeTabbedActivity();
-        mAccountInfos = new AccountInfo[0];
         mBraveWalletPanelServices = braveWalletPanelServices;
 
         mPopupWindow = new PopupWindow(mAnchorViewHost.getContext());
@@ -272,15 +264,13 @@ public class BraveWalletPanel implements DialogInterface {
 
     private void setUpObservers() {
         cleanUpObservers();
-        mWalletModel.getKeyringModel().getSelectedAccountOrAccountPerOrigin().observeForever(
-                mAccountInfoObserver);
+        mWalletModel.getKeyringModel().mAllAccountsInfo.observeForever(mAllAccountsInfoObserver);
         mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.observeForever(
                 mDefaultNetworkObserver);
     }
 
     private void cleanUpObservers() {
-        mWalletModel.getKeyringModel().getSelectedAccountOrAccountPerOrigin().removeObserver(
-                mAccountInfoObserver);
+        mWalletModel.getKeyringModel().mAllAccountsInfo.removeObserver(mAllAccountsInfoObserver);
         mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.removeObserver(
                 mDefaultNetworkObserver);
     }

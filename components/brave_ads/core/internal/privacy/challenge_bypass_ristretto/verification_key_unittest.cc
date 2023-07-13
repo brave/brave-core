@@ -9,7 +9,6 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_key_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_signature.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_signature_unittest_util.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

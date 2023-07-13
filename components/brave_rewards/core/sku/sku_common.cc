@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/sku/sku_common.h"
 
 using std::placeholders::_1;
@@ -15,8 +15,8 @@ using std::placeholders::_1;
 namespace brave_rewards::internal {
 namespace sku {
 
-SKUCommon::SKUCommon(LedgerImpl& ledger)
-    : ledger_(ledger), order_(ledger), transaction_(ledger) {}
+SKUCommon::SKUCommon(RewardsEngineImpl& engine)
+    : engine_(engine), order_(engine), transaction_(engine) {}
 
 SKUCommon::~SKUCommon() = default;
 
@@ -31,7 +31,7 @@ void SKUCommon::CreateTransaction(mojom::SKUOrderPtr order,
                                   SKUOrderCallback callback) {
   if (!order) {
     BLOG(0, "Order not found");
-    callback(mojom::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::FAILED, "");
     return;
   }
 
@@ -44,27 +44,27 @@ void SKUCommon::CreateTransaction(mojom::SKUOrderPtr order,
 void SKUCommon::OnTransactionCompleted(const mojom::Result result,
                                        const std::string& order_id,
                                        SKUOrderCallback callback) {
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     BLOG(0, "Order status was not updated");
     callback(result, "");
     return;
   }
 
-  callback(mojom::Result::LEDGER_OK, order_id);
+  callback(mojom::Result::OK, order_id);
 }
 
 void SKUCommon::SendExternalTransaction(const std::string& order_id,
                                         SKUOrderCallback callback) {
   if (order_id.empty()) {
     BLOG(0, "Order id is empty");
-    callback(mojom::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::FAILED, "");
     return;
   }
 
   auto get_callback =
       std::bind(&SKUCommon::GetSKUTransactionByOrderId, this, _1, callback);
 
-  ledger_->database()->GetSKUTransactionByOrderId(order_id, get_callback);
+  engine_->database()->GetSKUTransactionByOrderId(order_id, get_callback);
 }
 
 void SKUCommon::GetSKUTransactionByOrderId(
@@ -76,11 +76,11 @@ void SKUCommon::GetSKUTransactionByOrderId(
     BLOG(0,
          "Failed to get SKU transaction from database, or there's no "
          "transaction with this order_id!");
-    return callback(mojom::Result::LEDGER_ERROR, "");
+    return callback(mojom::Result::FAILED, "");
   }
 
   transaction_.SendExternalTransaction(
-      mojom::Result::LEDGER_OK, *transaction,
+      mojom::Result::OK, *transaction,
       std::bind(&SKUCommon::OnTransactionCompleted, this, _1,
                 transaction->order_id, std::move(callback)));
 }

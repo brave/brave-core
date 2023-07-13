@@ -10,7 +10,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_activity_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 
 using std::placeholders::_1;
@@ -124,8 +124,8 @@ void GenerateActivityFilterBind(mojom::DBCommand* command,
 
 namespace database {
 
-DatabaseActivityInfo::DatabaseActivityInfo(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseActivityInfo::DatabaseActivityInfo(RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabaseActivityInfo::~DatabaseActivityInfo() = default;
 
@@ -133,7 +133,7 @@ void DatabaseActivityInfo::NormalizeList(
     std::vector<mojom::PublisherInfoPtr> list,
     LegacyResultCallback callback) {
   if (list.empty()) {
-    callback(mojom::Result::LEDGER_OK);
+    callback(mojom::Result::OK);
     return;
   }
   std::string main_query;
@@ -144,7 +144,7 @@ void DatabaseActivityInfo::NormalizeList(
   }
 
   if (main_query.empty()) {
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -158,25 +158,25 @@ void DatabaseActivityInfo::NormalizeList(
   auto shared_list =
       std::make_shared<std::vector<mojom::PublisherInfoPtr>>(std::move(list));
 
-  ledger_->RunDBTransaction(
+  engine_->RunDBTransaction(
       std::move(transaction),
       [this, shared_list, callback](mojom::DBCommandResponsePtr response) {
         if (!response ||
             response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-          callback(mojom::Result::LEDGER_ERROR);
+          callback(mojom::Result::FAILED);
           return;
         }
 
-        ledger_->client()->PublisherListNormalized(std::move(*shared_list));
+        engine_->client()->PublisherListNormalized(std::move(*shared_list));
 
-        callback(mojom::Result::LEDGER_OK);
+        callback(mojom::Result::OK);
       });
 }
 
 void DatabaseActivityInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
                                           LegacyResultCallback callback) {
   if (!info) {
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -204,7 +204,7 @@ void DatabaseActivityInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseActivityInfo::GetRecordsList(
@@ -260,7 +260,7 @@ void DatabaseActivityInfo::GetRecordsList(
   auto transaction_callback =
       std::bind(&DatabaseActivityInfo::OnGetRecordsList, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseActivityInfo::OnGetRecordsList(
@@ -303,7 +303,7 @@ void DatabaseActivityInfo::OnGetRecordsList(
 void DatabaseActivityInfo::DeleteRecord(const std::string& publisher_key,
                                         LegacyResultCallback callback) {
   if (publisher_key.empty()) {
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -318,13 +318,13 @@ void DatabaseActivityInfo::DeleteRecord(const std::string& publisher_key,
   command->command = query;
 
   BindString(command.get(), 0, publisher_key);
-  BindInt64(command.get(), 1, ledger_->state()->GetReconcileStamp());
+  BindInt64(command.get(), 1, engine_->state()->GetReconcileStamp());
 
   transaction->commands.push_back(std::move(command));
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseActivityInfo::GetPublishersVisitedCount(
@@ -341,7 +341,7 @@ void DatabaseActivityInfo::GetPublishersVisitedCount(
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
   command->command = query;
-  BindInt64(command.get(), 0, ledger_->state()->GetReconcileStamp());
+  BindInt64(command.get(), 0, engine_->state()->GetReconcileStamp());
   command->record_bindings = {mojom::DBCommand::RecordBindingType::INT_TYPE};
   transaction->commands.push_back(std::move(command));
 
@@ -358,7 +358,7 @@ void DatabaseActivityInfo::GetPublishersVisitedCount(
     std::move(callback).Run(GetIntColumn(record, 0));
   };
 
-  ledger_->RunDBTransaction(std::move(transaction),
+  engine_->RunDBTransaction(std::move(transaction),
                             base::BindOnce(on_read, std::move(callback)));
 }
 

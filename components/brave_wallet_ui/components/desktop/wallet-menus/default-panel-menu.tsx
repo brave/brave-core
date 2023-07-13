@@ -30,6 +30,11 @@ import {
 // actions
 import { WalletActions } from '../../../common/actions'
 
+// Options
+import {
+  CreateAccountOptions
+} from '../../../options/nav-options'
+
 // utils
 import { getLocale } from '../../../../common/locale'
 import { useGetSelectedChainQuery } from '../../../common/slices/api.slice'
@@ -51,14 +56,12 @@ import {
 export interface Props {
   onClosePopup?: () => void
   yPosition?: number
-  isPortfolio?: boolean
 }
 
 export const DefaultPanelMenu = (props: Props) => {
   const {
     onClosePopup,
-    yPosition,
-    isPortfolio
+    yPosition
   } = props
 
   // Routing
@@ -216,7 +219,7 @@ export const DefaultPanelMenu = (props: Props) => {
       <VerticalDivider />
       <VerticalSpace space='8px' />
 
-      {isPortfolio &&
+      {walletLocation === WalletRoutes.Portfolio &&
         <>
           <ToggleRow onClick={onToggleHideBalances}>
             <Row>
@@ -260,6 +263,27 @@ export const DefaultPanelMenu = (props: Props) => {
             />
           </ToggleRow>
 
+          <VerticalDivider />
+          <VerticalSpace space='8px' />
+        </>
+      }
+
+      {walletLocation === WalletRoutes.Accounts &&
+        <>
+          {CreateAccountOptions.map((option) =>
+            <PopupButton
+              key={option.name}
+              onClick={
+                () => history.push(option.route)
+              }
+              minWidth={240}
+            >
+              <ButtonIcon name={option.icon} />
+              <PopupButtonText>
+                {getLocale(option.name)}
+              </PopupButtonText>
+            </PopupButton>
+          )}
           <VerticalDivider />
           <VerticalSpace space='8px' />
         </>

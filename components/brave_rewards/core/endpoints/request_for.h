@@ -13,8 +13,8 @@
 #include "base/memory/raw_ref.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/logging.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal::endpoints {
@@ -31,9 +31,9 @@ template <typename Endpoint>
 class RequestFor {
  public:
   template <typename... Ts>
-  RequestFor(LedgerImpl& ledger, Ts&&... ts)
-      : ledger_(ledger),
-        request_(Endpoint(ledger, std::forward<Ts>(ts)...).Request()) {
+  RequestFor(RewardsEngineImpl& engine, Ts&&... ts)
+      : engine_(engine),
+        request_(Endpoint(engine, std::forward<Ts>(ts)...).Request()) {
     static_assert(std::is_base_of_v<RequestBuilder, Endpoint>,
                   "Endpoint should be derived from RequestBuilder!");
   }
@@ -60,12 +60,12 @@ class RequestFor {
       return;
     }
 
-    ledger_->LoadURL(std::move(*request_), base::BindOnce(&Endpoint::OnResponse,
+    engine_->LoadURL(std::move(*request_), base::BindOnce(&Endpoint::OnResponse,
                                                           std::move(callback)));
   }
 
  private:
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   absl::optional<mojom::UrlRequestPtr> request_;
 };
 

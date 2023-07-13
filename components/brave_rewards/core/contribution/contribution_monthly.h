@@ -10,17 +10,17 @@
 
 #include "base/memory/raw_ref.h"
 #include "base/time/time.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace contribution {
 
 class ContributionMonthly {
  public:
-  explicit ContributionMonthly(LedgerImpl& ledger);
+  explicit ContributionMonthly(RewardsEngineImpl& engine);
 
   ~ContributionMonthly();
 
@@ -38,7 +38,7 @@ class ContributionMonthly {
       LegacyResultCallback callback,
       bool success);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace contribution

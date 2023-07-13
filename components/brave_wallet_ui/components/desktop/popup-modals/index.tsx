@@ -24,6 +24,7 @@ export interface Props {
   headerPaddingVertical?: number
   headerPaddingHorizontal?: number
   borderRadius?: number
+  height?: string
 }
 
 const ESC_KEY = 'Escape'
@@ -39,6 +40,7 @@ const PopupModal = React.forwardRef<HTMLDivElement, Props>(
       showDivider,
       hideHeader,
       onClose,
+      height,
       children
     } = props
 
@@ -58,7 +60,12 @@ const PopupModal = React.forwardRef<HTMLDivElement, Props>(
 
     return (
       <StyledWrapper>
-        <Modal width={width} borderRadius={borderRadius} ref={forwardedRef}>
+        <Modal
+          width={width}
+          borderRadius={borderRadius}
+          height={height}
+          ref={forwardedRef}
+        >
           {!hideHeader &&
             <Header
               headerPaddingHorizontal={headerPaddingHorizontal}

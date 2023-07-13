@@ -118,8 +118,9 @@ export class PlaylistPage extends React.Component<Props, State> {
                 <PlaylistItem
                   id={item.id}
                   name={item.name}
-                  onClick={this.onClickItem.bind(this)}
+                  cached={item.cached}
                   thumbnailUrl={this.getImgSrc(item)}
+                  onClick={(e) => this.onClickItem(e)}
                 />
               )
             },

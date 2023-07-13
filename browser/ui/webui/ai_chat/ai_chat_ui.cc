@@ -23,7 +23,6 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
-#include "services/network/public/mojom/content_security_policy.mojom.h"
 
 AIChatUI::AIChatUI(content::WebUI* web_ui)
     : ui::UntrustedWebUIController(web_ui),
@@ -60,7 +59,7 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
       "style-src 'self' 'unsafe-inline' chrome-untrusted://resources;");
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
-      "img-src 'self' chrome-untrusted://resources;");
+      "img-src 'self' blob: chrome-untrusted://resources;");
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
       "font-src 'self' data: chrome-untrusted://resources;");

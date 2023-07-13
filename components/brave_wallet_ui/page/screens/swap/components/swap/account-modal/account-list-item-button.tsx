@@ -4,7 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
+
+import { BraveWallet } from '../../../../../../constants/types'
 
 // Utils
 import {
@@ -22,33 +23,28 @@ import {
   HorizontalSpacer,
 } from '../../shared-swap.styles'
 
+// Hooks
+import { useAccountOrb } from '../../../../../../common/hooks/use-orb'
+
 interface Props {
-  name: string
-  address: string
+  account: BraveWallet.AccountInfo
   onClick: () => void
 }
 
 export const AccountListItemButton = (props: Props) => {
-  const { onClick, address, name } = props
+  const { onClick, account } = props
 
-  // Memos
-  const accountOrb: string = React.useMemo(() => {
-    return create({
-      seed: address.toLowerCase() || '',
-      size: 8,
-      scale: 16
-    }).toDataURL()
-  }, [address])
+  const accountOrb = useAccountOrb(account)
 
   return (
     <AccountButton onClick={onClick}>
       <AccountCircle orb={accountOrb} />{' '}
       <AccountText textSize='14px' isBold={true}>
-        {name}
+        {account.name}
       </AccountText>
       <HorizontalSpacer size={4} />
       <Text textSize='14px' textColor='text03' isBold={false}>
-        {reduceAddress(address)}
+        {reduceAddress(account.address)}
       </Text>
     </AccountButton>
   )

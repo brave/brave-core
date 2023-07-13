@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
-import { create } from 'ethereum-blockies'
 import { ThunkDispatch } from '@reduxjs/toolkit'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
@@ -35,6 +34,7 @@ import { makeNetworkAsset } from '../../options/asset-options'
 // Custom Hooks
 import useTokenInfo from './token'
 import { useLib } from './useLib'
+import { useAddressOrb } from './use-orb'
 import {
   useSafeUISelector,
   useSafeWalletSelector,
@@ -467,21 +467,8 @@ export const usePendingTransactions = () => {
     [transactionInfo, unconfirmedGroupTransactionIds])
 
   // memos
-  const fromOrb = React.useMemo(() => {
-    return create({
-      seed: transactionInfo?.fromAddress.toLowerCase(),
-      size: 8,
-      scale: 16
-    }).toDataURL()
-  }, [transactionInfo?.fromAddress])
-
-  const toOrb = React.useMemo(() => {
-    return create({
-      seed: transactionDetails?.recipient.toLowerCase(),
-      size: 8,
-      scale: 10
-    }).toDataURL()
-  }, [transactionDetails?.recipient])
+  const fromOrb = useAddressOrb(transactionInfo?.fromAddress)
+  const toOrb = useAddressOrb(transactionDetails?.recipient, { scale: 10 })
 
   const fromAccountName = React.useMemo(() => {
     return findAccountName(accounts, transactionInfo?.fromAddress ?? '') ?? reduceAddress(transactionInfo?.fromAddress ?? '')
@@ -582,7 +569,8 @@ export const usePendingTransactions = () => {
     getERC20Allowance(
       transactionDetails.recipient,
       transactionInfo.fromAddress,
-      transactionDetails.approvalTarget
+      transactionDetails.approvalTarget,
+      transactionDetails.chainId,
     )
       .then((result) => {
         subscribed && setERC20AllowanceResult(result)

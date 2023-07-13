@@ -10,7 +10,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/values.h"
-#include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal::endpoints {

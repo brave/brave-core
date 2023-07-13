@@ -40,7 +40,7 @@ void RewardsBrowserTestPromotion::OnFetchPromotions(
     RewardsService* rewards_service,
     const mojom::Result result,
     const std::vector<mojom::PromotionPtr>& list) {
-  ASSERT_EQ(result, mojom::Result::LEDGER_OK);
+  ASSERT_EQ(result, mojom::Result::OK);
   initialized_ = true;
 
   if (wait_for_initialization_loop_) {
@@ -64,7 +64,7 @@ void RewardsBrowserTestPromotion::OnPromotionFinished(
     const mojom::Result result,
     mojom::PromotionPtr promotion) {
   if (should_succeed_) {
-    ASSERT_EQ(static_cast<mojom::Result>(result), mojom::Result::LEDGER_OK);
+    ASSERT_EQ(static_cast<mojom::Result>(result), mojom::Result::OK);
   }
 
   finished_ = true;

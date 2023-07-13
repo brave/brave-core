@@ -10,7 +10,7 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_contribution_queue_publishers.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 using std::placeholders::_1;
 
@@ -24,8 +24,8 @@ const char kTableName[] = "contribution_queue_publishers";
 }  // namespace
 
 DatabaseContributionQueuePublishers::DatabaseContributionQueuePublishers(
-    LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+    RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabaseContributionQueuePublishers::~DatabaseContributionQueuePublishers() =
     default;
@@ -36,7 +36,7 @@ void DatabaseContributionQueuePublishers::InsertOrUpdate(
     LegacyResultCallback callback) {
   if (id.empty() || list.empty()) {
     BLOG(1, "Empty data");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -61,7 +61,7 @@ void DatabaseContributionQueuePublishers::InsertOrUpdate(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
@@ -95,7 +95,7 @@ void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
       std::bind(&DatabaseContributionQueuePublishers::OnGetRecordsByQueueId,
                 this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionQueuePublishers::OnGetRecordsByQueueId(

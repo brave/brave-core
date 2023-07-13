@@ -28,7 +28,7 @@ const iconMap = {
   'settings:payment-handler': 'credit-card', // payment handlers
   'settings:bluetooth-scanning': 'bluetooth', // bluetooth scanning
   'settings:insecure-content': 'warning-triangle-outline', // insecure content
-  'settings:federated-identity-api': '', // federacted identity (unused)
+  'settings:federated-identity-api': '', // federated identity (unused)
   'settings:vr-headset': 'virtual-reality', // virtual reality & virtual reality
   'settings:window-management': 'windows-open', // window management
   'settings:local-fonts': 'font-size',
@@ -37,6 +37,7 @@ const iconMap = {
   'user': 'user',
   'autoplay-on': 'autoplay-on',
   'ethereum-on': 'ethereum-on',
+  'smartphone-desktop': 'smartphone-desktop', // localhost access
   'solana-on': 'solana-on',
   'smartphone-hand': 'smartphone-hand',
 } as const

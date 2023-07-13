@@ -715,7 +715,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <!-- LOCALHOST SIGN IN SITE SETTING -->
       <message name="IDS_LOCALHOST_TITLE" desc="Label for localhost site settings.">
-        Localhost Access
+        Localhost access
       </message>
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_LOCALHOST_ASK" desc="Label for localhost site settings.">
         Sites can request access to localhost resources
@@ -2794,8 +2794,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_NAME" desc="Add custom asset dialog Token name field">
       Token name
     </message>
-    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_CONTRACT_ADDRESS" desc="Add custom asset dialog Token contract address field">
-      Token contract address
+    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_MINT_ADDRESS" desc="Add custom asset dialog mint address field">
+      Mint address
     </message>
     <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_SYMBOL" desc="Add custom asset dialog Token symbol field">
       Token symbol

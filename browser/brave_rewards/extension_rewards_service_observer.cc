@@ -113,7 +113,7 @@ void ExtensionRewardsServiceObserver::OnPromotionFinished(
     const brave_rewards::mojom::Result result,
     brave_rewards::mojom::PromotionPtr promotion) {
   auto* event_router = extensions::EventRouter::Get(profile_);
-  if (!event_router || result != brave_rewards::mojom::Result::LEDGER_OK) {
+  if (!event_router || result != brave_rewards::mojom::Result::OK) {
     return;
   }
 

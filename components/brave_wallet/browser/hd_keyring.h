@@ -20,7 +20,7 @@ namespace brave_wallet {
 class EthTransaction;
 
 struct AddedAcountInfo {
-  std::string path;
+  uint32_t account_index;
   std::string address;
 };
 

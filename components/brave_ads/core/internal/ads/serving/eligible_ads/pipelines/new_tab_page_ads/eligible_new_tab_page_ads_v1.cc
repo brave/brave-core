@@ -38,7 +38,7 @@ EligibleNewTabPageAdsV1::~EligibleNewTabPageAdsV1() = default;
 void EligibleNewTabPageAdsV1::GetForUserModel(
     UserModelInfo user_model,
     EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
-  BLOG(1, "Get eligible new tab page ads:");
+  BLOG(1, "Get eligible new tab page ads");
 
   const database::table::AdEvents database_table;
   database_table.GetForType(

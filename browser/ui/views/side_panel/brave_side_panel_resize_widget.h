@@ -36,6 +36,8 @@ class SidePanelResizeWidget : public views::ViewObserver,
 
   // views::ViewObserver overrides:
   void OnViewBoundsChanged(views::View* observed_view) override;
+  void OnViewVisibilityChanged(views::View* observed_view,
+                               views::View* starting_view) override;
   void OnViewIsDeleting(views::View* observed_view) override;
 
  private:

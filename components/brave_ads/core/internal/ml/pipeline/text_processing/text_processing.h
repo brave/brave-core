@@ -43,9 +43,9 @@ class TextProcessing final {
   absl::optional<PredictionMap> Apply(std::unique_ptr<Data> input_data) const;
 
   absl::optional<PredictionMap> GetTopPredictions(
-      const std::string& content) const;
+      const std::string& text) const;
 
-  absl::optional<PredictionMap> ClassifyPage(const std::string& content) const;
+  absl::optional<PredictionMap> ClassifyPage(const std::string& text) const;
 
  private:
   bool is_initialized_ = false;

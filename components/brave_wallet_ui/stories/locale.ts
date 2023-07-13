@@ -286,9 +286,8 @@ provideStrings({
 
   // Accounts Tab
   braveWalletAccountsPrimary: 'Primary crypto accounts',
-  braveWalletAccountsPrimaryDisclaimer: 'You can create primary accounts in Brave Wallet that may be backed up or restored from your recovery phrase. To learn more about account types visit account help',
   braveWalletAccountsSecondary: 'Imported accounts',
-  braveWalletAccountsSecondaryDisclaimer: 'These accounts can be used with Web3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.',
+  braveWalletConnectedHardwareWallets: 'Connected hardware wallets',
   braveWalletAccountsAssets: 'Assets',
   braveWalletAccountsEditVisibleAssets: 'Visible assets',
 
@@ -316,6 +315,7 @@ provideStrings({
   braveWalletImportAccountUploadButton: 'Choose file',
   braveWalletImportAccountUploadPlaceholder: 'No file chosen',
   braveWalletImportAccountError: 'Failed to import account, please try again.',
+  braveWalletImportAccount: 'Import account',
 
   // Connect Hardware Wallet
   braveWalletConnectHardwareTitle: 'Select your hardware wallet device',
@@ -348,7 +348,6 @@ provideStrings({
   braveWalletWatchListTokenDecimals: 'Decimals of precision',
   braveWalletWatchListAdd: 'Add',
   braveWalletWatchListDoneButton: 'Done',
-  braveWalletWatchListSuggestion: 'Add $1 as a custom token',
   braveWalletWatchListNoAsset: 'No assets named',
   braveWalletWatchListSearchPlaceholder: 'Search assets or contract address',
   braveWalletWatchListError: 'Failed to add custom token, please try again.',
@@ -879,6 +878,14 @@ provideStrings({
   braveWalletMakeTokenVisibleInstructions: 'You can make this asset visible again in the future by clicking the "+ Visible assets" button at the bottom of the "Portfolio" tab',
   braveWalletConfirmHidingToken: 'Hide',
   braveWalletCancelHidingToken: 'Cancel',
+
+  // Visible assets modal
+  braveWalletMyAssets: 'My assets',
+  braveWalletAvailableAssets: 'Available assets',
+  braveWalletDidntFindAssetEndOfList: 'Didn\'t find your asset on the list?',
+  braveWalletDidntFindAssetInList:
+    'If you didn\'t find your asset in this list, you can add it manually by using the button below',
+  braveWalletAssetNotFound: 'Asset not found',
 
   // Request feature button
   braveWalletRequestFeatureButtonText: 'Request feature',

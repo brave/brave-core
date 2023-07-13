@@ -5,19 +5,34 @@
 
 import * as React from 'react'
 import styles from './style.module.scss'
+import Icon from '@brave/leo/react/icon'
 
 interface MainProps {
   conversationList: React.ReactNode
   inputBox: React.ReactNode
+  siteTitle?: React.ReactNode
+  promptAutoSuggestion?: React.ReactNode
 }
 
 function Main (props: MainProps) {
   return (
     <main className={styles.main}>
+      <div className={styles.header}>
+        <div className={styles.logoBox}>
+          <Icon name="product-brave-ai" />
+          <div className={styles.logoTitle}>Brave <span>Leo</span></div>
+        </div>
+      </div>
       <div className={styles.scroller}>
+        {props.siteTitle && (
+          <div className={styles.siteTitleBox}>
+            {props.siteTitle}
+          </div>
+        )}
         {props.conversationList}
       </div>
       <div className={styles.inputBox}>
+        {props.promptAutoSuggestion}
         {props.inputBox}
       </div>
     </main>

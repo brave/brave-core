@@ -72,7 +72,7 @@ export const AccountModal = (props: Props) => {
     async (account: AccountInfoEntity) => {
       await setSelectedAccount(account.accountId)
       onHideModal()
-      await refreshBlockchainState({ account })
+      await refreshBlockchainState({ accountId: account.accountId })
     },
     [
       onHideModal,
@@ -136,9 +136,8 @@ export const AccountModal = (props: Props) => {
         </Row>
         {networkAccounts.map((account) => (
           <AccountListItemButton
-            key={account.address}
-            address={account.address}
-            name={account.name}
+            key={account.accountId.uniqueKey}
+            account={account}
             onClick={() => onSelectAccount(account)}
           />
         ))}

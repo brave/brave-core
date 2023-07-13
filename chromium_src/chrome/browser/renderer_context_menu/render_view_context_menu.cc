@@ -455,7 +455,7 @@ void BraveRenderViewContextMenu::InitMenu() {
 
 #if BUILDFLAG(ENABLE_TOR)
   // Add Open Link with Tor
-  if (!TorProfileServiceFactory::IsTorDisabled() &&
+  if (!TorProfileServiceFactory::IsTorDisabled(GetProfile()) &&
       content_type_->SupportsGroup(ContextMenuContentType::ITEM_GROUP_LINK) &&
       !params_.link_url.is_empty()) {
     const Browser* browser = GetBrowser();

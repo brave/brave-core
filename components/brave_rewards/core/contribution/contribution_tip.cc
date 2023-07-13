@@ -14,12 +14,12 @@
 #include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal::contribution {
 
-ContributionTip::ContributionTip(LedgerImpl& ledger) : ledger_(ledger) {}
+ContributionTip::ContributionTip(RewardsEngineImpl& engine) : engine_(engine) {}
 
 ContributionTip::~ContributionTip() = default;
 
@@ -32,7 +32,7 @@ void ContributionTip::Process(const std::string& publisher_id,
     return;
   }
 
-  ledger_->publisher()->GetServerPublisherInfo(
+  engine_->publisher()->GetServerPublisherInfo(
       publisher_id,
       ToLegacyCallback(base::BindOnce(&ContributionTip::OnPublisherDataRead,
                                       base::Unretained(this), publisher_id,
@@ -64,7 +64,7 @@ void ContributionTip::OnPublisherDataRead(
   queue->partial = false;
   queue->publishers = std::move(queue_list);
 
-  ledger_->database()->SaveContributionQueue(
+  engine_->database()->SaveContributionQueue(
       std::move(queue),
       ToLegacyCallback(
           base::BindOnce(&ContributionTip::OnQueueSaved, base::Unretained(this),
@@ -74,8 +74,8 @@ void ContributionTip::OnPublisherDataRead(
 void ContributionTip::OnQueueSaved(const std::string& queue_id,
                                    ProcessCallback callback,
                                    mojom::Result result) {
-  if (result == mojom::Result::LEDGER_OK) {
-    ledger_->contribution()->ProcessContributionQueue();
+  if (result == mojom::Result::OK) {
+    engine_->contribution()->ProcessContributionQueue();
     std::move(callback).Run(queue_id);
   } else {
     BLOG(0, "Queue was not saved");

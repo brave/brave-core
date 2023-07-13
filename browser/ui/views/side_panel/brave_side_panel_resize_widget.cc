@@ -46,7 +46,9 @@ SidePanelResizeWidget::SidePanelResizeWidget(
                                         browser_view->sidebar_host_view());
 #endif
 
-  widget_->ShowInactive();
+  if (panel_->GetVisible()) {
+    widget_->ShowInactive();
+  }
 }
 
 SidePanelResizeWidget::~SidePanelResizeWidget() = default;
@@ -73,6 +75,18 @@ void SidePanelResizeWidget::OnViewBoundsChanged(views::View* observed_view) {
 #endif
 
   widget_->SetBounds(rect);
+}
+
+void SidePanelResizeWidget::OnViewVisibilityChanged(
+    views::View* observed_view,
+    views::View* starting_view) {
+  // As this widget is for resizing side panel,
+  // show only this when panel is visible.
+  if (panel_ != observed_view) {
+    return;
+  }
+
+  panel_->GetVisible() ? widget_->ShowInactive() : widget_->Hide();
 }
 
 void SidePanelResizeWidget::OnViewIsDeleting(views::View* observed_view) {

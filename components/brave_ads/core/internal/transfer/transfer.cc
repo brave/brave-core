@@ -97,13 +97,7 @@ void Transfer::TransferAdCallback(const int32_t tab_id,
   }
 
   if (tab->redirect_chain.empty()) {
-    // TODO(https://github.com/brave/brave-browser/issues/24970): Decouple
-    // |BrowserListObserver| from |AdsTabHelper| because right now,
-    // |OnTabDidChange| is also called when the browser becomes active or
-    // inactive, which can have an empty redirect chain if the navigation for a
-    // tab did not complete before calling |OnTabDidChange|, which caused a
-    // crash.
-    return;
+    return FailedToTransferAd(ad);
   }
 
   if (!DomainOrHostExists(redirect_chain, tab->redirect_chain.back())) {
@@ -121,11 +115,7 @@ void Transfer::LogAdEventCallback(const AdInfo& ad, const bool success) {
     return FailedToTransferAd(ad);
   }
 
-  BLOG(6, "Successfully logged transferred ad event");
-
-  BLOG(1, "Transferred ad for " << ad.target_url);
-
-  NotifyDidTransferAd(ad);
+  SuccessfullyTransferredAd(ad);
 }
 
 void Transfer::Cancel(const int32_t tab_id) {
@@ -142,6 +132,12 @@ void Transfer::Cancel(const int32_t tab_id) {
               << tab_id);
 
   NotifyCanceledTransfer(last_clicked_ad_, tab_id);
+}
+
+void Transfer::SuccessfullyTransferredAd(const AdInfo& ad) const {
+  BLOG(1, "Transferred ad for " << ad.target_url);
+
+  NotifyDidTransferAd(ad);
 }
 
 void Transfer::FailedToTransferAd(const AdInfo& ad) const {
@@ -177,16 +173,6 @@ void Transfer::NotifyFailedToTransferAd(const AdInfo& ad) const {
 }
 
 void Transfer::OnTabDidChange(const TabInfo& tab) {
-  if (tab.redirect_chain.empty()) {
-    // TODO(https://github.com/brave/brave-browser/issues/24970): Decouple
-    // |BrowserListObserver| from |AdsTabHelper| because right now,
-    // |OnTabDidChange| is also called when the browser becomes active or
-    // inactive, which can have an empty redirect chain if the navigation for a
-    // tab did not complete before calling |OnTabDidChange|, which caused a
-    // crash.
-    return;
-  }
-
   MaybeTransferAd(tab.id, tab.redirect_chain);
 }
 

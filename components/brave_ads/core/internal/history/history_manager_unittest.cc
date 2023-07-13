@@ -102,7 +102,7 @@ class BraveAdsHistoryManagerTest : public HistoryManagerObserver,
 TEST_F(BraveAdsHistoryManagerTest, AddNotificationAd) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ false);
+      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   // Act
@@ -121,7 +121,7 @@ TEST_F(BraveAdsHistoryManagerTest,
   DisableBravePrivateAds();
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ false);
+      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   // Act
@@ -134,7 +134,7 @@ TEST_F(BraveAdsHistoryManagerTest,
 TEST_F(BraveAdsHistoryManagerTest, AddNewTabPageAd) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ false);
+      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
 
   // Act
@@ -153,7 +153,7 @@ TEST_F(BraveAdsHistoryManagerTest,
   DisableBravePrivateAds();
 
   const CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ false);
+      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
 
   // Act
@@ -166,7 +166,7 @@ TEST_F(BraveAdsHistoryManagerTest,
 TEST_F(BraveAdsHistoryManagerTest, AddPromotedContentAd) {
   // Arrange
   const CreativePromotedContentAdInfo creative_ad =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ false);
+      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
   const PromotedContentAdInfo ad = BuildPromotedContentAd(creative_ad);
 
   // Act
@@ -185,7 +185,7 @@ TEST_F(BraveAdsHistoryManagerTest,
   DisableBravePrivateAds();
 
   const CreativePromotedContentAdInfo creative_ad =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ false);
+      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
   const PromotedContentAdInfo ad = BuildPromotedContentAd(creative_ad);
 
   // Act
@@ -198,7 +198,7 @@ TEST_F(BraveAdsHistoryManagerTest,
 TEST_F(BraveAdsHistoryManagerTest, AddInlineContentAd) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd(/*should_use_random_uuids*/ false);
+      BuildCreativeInlineContentAd(/*should_use_random_uuids*/ true);
   const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);
 
   // Act
@@ -217,7 +217,7 @@ TEST_F(BraveAdsHistoryManagerTest,
   DisableBravePrivateAds();
 
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd(/*should_use_random_uuids*/ false);
+      BuildCreativeInlineContentAd(/*should_use_random_uuids*/ true);
   const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);
 
   // Act
@@ -230,7 +230,7 @@ TEST_F(BraveAdsHistoryManagerTest,
 TEST_F(BraveAdsHistoryManagerTest, AddSearchResultAd) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAd(/*should_use_random_uuids*/ false);
+      BuildSearchResultAd(/*should_use_random_uuids*/ true);
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   // Act
@@ -249,7 +249,7 @@ TEST_F(BraveAdsHistoryManagerTest,
   DisableBravePrivateAds();
 
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAd(/*should_use_random_uuids*/ false);
+      BuildSearchResultAd(/*should_use_random_uuids*/ true);
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   // Act

@@ -12,7 +12,9 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "base/task/cancelable_task_tracker.h"
 #include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
@@ -27,6 +29,10 @@ class TabStripModel;
 namespace content {
 class WebContents;
 }
+
+namespace favicon {
+class FaviconService;
+}  // namespace favicon
 
 namespace ai_chat {
 class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
@@ -54,6 +60,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void GetSuggestedQuestions(GetSuggestedQuestionsCallback callback) override;
   void GenerateQuestions() override;
   void SetAutoGenerateQuestions(bool can_auto_generate_questions) override;
+  void GetSiteInfo(GetSiteInfoCallback callback) override;
 
   // content::WebContentsObserver:
   void OnVisibilityChanged(content::Visibility visibility) override;
@@ -62,9 +69,12 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   // ChatTabHelper::Observer
   void OnHistoryUpdate() override;
   void OnAPIRequestInProgress(bool in_progress) override;
-  void OnSuggestedQuestionsChanged(std::vector<std::string> questions,
-                                   bool has_generated,
-                                   bool auto_generate) override;
+  void OnSuggestedQuestionsChanged(
+      std::vector<std::string> questions,
+      bool has_generated,
+      mojom::AutoGenerateQuestionsPref auto_generate) override;
+  void OnFaviconImageDataChanged() override;
+  void OnPageHasContent() override;
 
   // TabStripModelObserver
   void OnTabStripModelChanged(
@@ -72,15 +82,23 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
 
+  void GetFaviconImageData(GetFaviconImageDataCallback callback) override;
+  absl::optional<mojom::SiteInfo> BuildSiteInfo();
+
   mojo::Remote<ai_chat::mojom::ChatUIPage> page_;
 
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
+  raw_ptr<favicon::FaviconService> favicon_service_ = nullptr;
+  raw_ptr<Profile> profile_ = nullptr;
+
+  base::CancelableTaskTracker favicon_task_tracker_;
 
   base::ScopedObservation<AIChatTabHelper, AIChatTabHelper::Observer>
       chat_tab_helper_observation_{this};
 
-  raw_ptr<Profile> profile_ = nullptr;
   mojo::Receiver<ai_chat::mojom::PageHandler> receiver_;
+
+  base::WeakPtrFactory<AIChatUIPageHandler> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat

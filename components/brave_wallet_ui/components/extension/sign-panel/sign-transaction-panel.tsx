@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
-import { create } from 'ethereum-blockies'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Actions
@@ -20,6 +19,9 @@ import { useUnsafePanelSelector, useUnsafeWalletSelector } from '../../../common
 import { WalletSelectors } from '../../../common/selectors'
 import { PanelSelectors } from '../../../panel/selectors'
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'
+
+// Hooks
+import { useAddressOrb } from '../../../common/hooks/use-orb'
 
 // Components
 import NavButton from '../buttons/nav-button/index'
@@ -100,9 +102,7 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
   >(undefined)
 
   // memos
-  const orb = React.useMemo(() => {
-    return create({ seed: selectedQueueData?.fromAddress?.toLowerCase() ?? '', size: 8, scale: 16 }).toDataURL()
-  }, [selectedQueueData?.fromAddress])
+  const orb = useAddressOrb(selectedQueueData?.fromAddress)
 
   const signTransactionQueueInfo = React.useMemo(() => {
     return {

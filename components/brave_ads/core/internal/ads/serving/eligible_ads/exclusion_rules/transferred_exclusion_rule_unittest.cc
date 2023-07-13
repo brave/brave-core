@@ -28,7 +28,7 @@ constexpr const char* kCampaignIds[] = {"60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
 
 class BraveAdsTransferredExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BraveAdsTransferredExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BraveAdsTransferredExclusionRuleTest, AllowAdIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -65,13 +65,10 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
   creative_ad_2.campaign_id = kCampaignIds[1];
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event =
       BuildAdEvent(creative_ad_2, AdType::kNotificationAd,
                    ConfirmationType::kTransferred, Now());
-
   ad_events.push_back(ad_event);
-
   const TransferredExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2) - base::Milliseconds(1));
@@ -155,11 +152,9 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
   creative_ad.campaign_id = kCampaignIds[0];
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event =
       BuildAdEvent(creative_ad, AdType::kNotificationAd,
                    ConfirmationType::kTransferred, Now());
-
   ad_events.push_back(ad_event);
 
   const TransferredExclusionRule exclusion_rule(ad_events);
@@ -191,11 +186,9 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
   creative_ad.campaign_id = kCampaignIds[0];
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event =
       BuildAdEvent(creative_ad, AdType::kNotificationAd,
                    ConfirmationType::kTransferred, Now());
-
   ad_events.push_back(ad_event);
 
   const TransferredExclusionRule exclusion_rule(ad_events);
@@ -227,11 +220,9 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
   creative_ad.campaign_id = kCampaignIds[0];
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event =
       BuildAdEvent(creative_ad, AdType::kNotificationAd,
                    ConfirmationType::kTransferred, Now());
-
   ad_events.push_back(ad_event);
 
   const TransferredExclusionRule exclusion_rule(ad_events);
@@ -267,11 +258,9 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
   creative_ad_2.campaign_id = kCampaignIds[1];
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event =
       BuildAdEvent(creative_ad_2, AdType::kNotificationAd,
                    ConfirmationType::kTransferred, Now());
-
   ad_events.push_back(ad_event);
 
   const TransferredExclusionRule exclusion_rule(ad_events);

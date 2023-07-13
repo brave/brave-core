@@ -61,7 +61,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 }
 
 TEST_F(BraveAdsSubdivisionTargetingTest,
-       AllowAndFetchWhenBraveNewsOptedInPrefDidChangeIfBraveNewsAdsAreEnabled) {
+       AllowAndFetchIfBraveNewsOptedInPrefDidChangeIfBraveNewsAdsAreEnabled) {
   // Arrange
   DisableBravePrivateAds();
   SetDefaultBooleanPref(brave_news::prefs::kBraveNewsOptedIn, false);

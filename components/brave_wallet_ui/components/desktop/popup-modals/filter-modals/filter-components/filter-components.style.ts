@@ -5,6 +5,7 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
+import Dropdown from '@brave/leo/react/dropdown'
 import LeoIcon from '@brave/leo/react/icon'
 
 // Constants
@@ -74,6 +75,6 @@ export const Icon = styled(LeoIcon)`
   color: ${leo.color.icon.default};
 `
 
-export const DropdownWrapper = styled.div`
+export const DropdownFilter = styled(Dropdown)`
   min-width: 40%;
 `

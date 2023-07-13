@@ -1,3 +1,8 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 use super::*;
 
 // NOTE: we don't use CStr and CString as the transfer type because UTF8
@@ -10,10 +15,7 @@ pub struct CharBuf {
 
 impl CharBuf {
     pub fn new(string: String) -> Self {
-        CharBuf {
-            len: string.len(),
-            data: Box::into_raw(string.into_boxed_str()) as *const c_char,
-        }
+        CharBuf { len: string.len(), data: Box::into_raw(string.into_boxed_str()) as *const c_char }
     }
 
     #[inline]
@@ -31,9 +33,4 @@ impl Drop for CharBuf {
 
         drop(unsafe { Box::from_raw(bytes) });
     }
-}
-
-#[no_mangle]
-pub extern "C" fn speedreader_str_free(string: CharBuf) {
-    drop(string);
 }

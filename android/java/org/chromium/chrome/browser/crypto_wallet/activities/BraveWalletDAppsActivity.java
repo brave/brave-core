@@ -178,19 +178,17 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         } else if (mActivityType == ActivityType.ADD_TOKEN) {
             mFragment = new AddTokenFragment();
         } else if (mActivityType == ActivityType.CONFIRM_TRANSACTION) {
-            mWalletModel.getKeyringModel().getDefaultAccountPerCoin(defaultAccountPerCoin -> {
-                AccountInfo[] accountInfos = defaultAccountPerCoin.toArray(new AccountInfo[0]);
+            mKeyringService.getAllAccounts(allAccounts -> {
                 if (mPendingTxHelper != null) {
                     mPendingTxHelper.destroy();
                 }
-                mPendingTxHelper =
-                        new PendingTxHelper(getTxService(), accountInfos, false, true, null);
+                mPendingTxHelper = new PendingTxHelper(
+                        getTxService(), allAccounts.accounts, false, true, null);
                 mPendingTxHelper.mHasNoPendingTxAfterProcessing.observe(this, hasNoPendingTx -> {
                     if (hasNoPendingTx) {
                         finish();
                     }
                 });
-                final AccountInfo[] accounts = accountInfos;
                 mPendingTxHelper.mSelectedPendingRequest.observe(this, transactionInfo -> {
                     if (transactionInfo == null
                             || mPendingTxHelper.getPendingTransactions().size() == 0) {
@@ -203,7 +201,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                         approveTxBottomSheetDialogFragment.dismiss();
                     }
                     String accountName = "";
-                    for (AccountInfo accountInfo : accounts) {
+                    for (AccountInfo accountInfo : allAccounts.accounts) {
                         if (accountInfo.address.equals(transactionInfo.fromAddress)) {
                             accountName = accountInfo.name;
                             break;

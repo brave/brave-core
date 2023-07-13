@@ -6,6 +6,9 @@ import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
+// Hooks
+import { useAddressOrb } from '../../../common/hooks/use-orb'
+
 // Types
 import {
   SerializableSignMessageRequest,
@@ -23,7 +26,6 @@ import { isHardwareAccount } from '../../../utils/account-utils'
 // Components
 import { NavButton, PanelTab } from '../'
 import { CreateSiteOrigin } from '../../shared'
-import { create } from 'ethereum-blockies'
 
 // Styled Components
 import {
@@ -109,9 +111,7 @@ export const SignPanel = (props: Props) => {
   const [renderUnicode, setRenderUnicode] = React.useState<boolean>(true)
 
   // memos
-  const orb = React.useMemo(() => {
-    return create({ seed: selectedQueueData.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [selectedQueueData.address])
+  const orb = useAddressOrb(selectedQueueData.address)
 
   const signMessageQueueInfo = React.useMemo(() => {
     return {

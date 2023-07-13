@@ -5,12 +5,10 @@
 
 import useAssets from './assets'
 import useSend from './send'
-import usePreset from './select-preset'
 import useTokenInfo from './token'
 import useExplorer from './explorer'
 import useAssetManagement from './assets-management'
 import useHasAccount from './has-account'
-import usePrevNetwork from './previous-network'
 import useIsMounted from './useIsMounted'
 import { useMultiChainBuyAssets } from './use-multi-chain-buy-assets'
 import useBalanceUpdater from './use-balance-updater'
@@ -23,8 +21,6 @@ export {
   useHasAccount,
   useIsMounted,
   useLib,
-  usePreset,
-  usePrevNetwork,
   useSend,
   useTokenInfo,
   useMultiChainBuyAssets,

@@ -10,13 +10,14 @@
 #include "base/base64.h"
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/common/security_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 
 namespace brave_rewards::internal::endpoints {
 
-PostConnectUphold::PostConnectUphold(LedgerImpl& ledger, std::string&& address)
-    : PostConnect(ledger), address_(std::move(address)) {}
+PostConnectUphold::PostConnectUphold(RewardsEngineImpl& engine,
+                                     std::string&& address)
+    : PostConnect(engine), address_(std::move(address)) {}
 
 PostConnectUphold::~PostConnectUphold() = default;
 
@@ -26,7 +27,7 @@ absl::optional<std::string> PostConnectUphold::Content() const {
     return absl::nullopt;
   }
 
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
     return absl::nullopt;

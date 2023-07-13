@@ -62,7 +62,6 @@ export const PortfolioOverviewHeader = () => {
     isPanel
       ? <DefaultPanelHeader
         title={getLocale('braveWalletTopNavPortfolio')}
-        isPortfolio={true}
       />
       : <Row
         padding='24px 0px'

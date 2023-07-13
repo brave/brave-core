@@ -155,7 +155,6 @@ void Confirmations::CreateAndRedeemOptedIn(
 void Confirmations::RecreateOptedInDynamicUserDataAndRedeem(
     const ConfirmationInfo& confirmation) {
   CHECK(IsValid(confirmation));
-  CHECK(ShouldRewardUser());
 
   BuildConfirmationDynamicUserData(base::BindOnce(
       &Confirmations::RecreateOptedInDynamicUserDataAndRedeemCallback,
@@ -166,7 +165,6 @@ void Confirmations::RecreateOptedInDynamicUserDataAndRedeemCallback(
     const ConfirmationInfo& confirmation,
     base::Value::Dict dynamic_opted_in_user_data) {
   CHECK(IsValid(confirmation));
-  CHECK(ShouldRewardUser());
 
   ConfirmationInfo mutable_confirmation(confirmation);
   mutable_confirmation.opted_in->user_data.dynamic =

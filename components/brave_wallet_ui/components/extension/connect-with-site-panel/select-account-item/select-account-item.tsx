@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import { create } from 'ethereum-blockies'
 
 // Types
 import {
@@ -48,6 +47,9 @@ import {
   querySubscriptionOptions60s
 } from '../../../../common/slices/constants'
 
+// Hooks
+import { useAccountOrb } from '../../../../common/hooks/use-orb'
+
 interface Props {
   account: WalletAccountType
   isSelected: boolean
@@ -69,13 +71,7 @@ export const SelectAccountItem = (props: Props) => {
   const { data: networks = [] } = useGetNetworksQuery()
 
   // Memos
-  const orb = React.useMemo(() => {
-    return create({
-      seed: account.address.toLowerCase(),
-      size: 8,
-      scale: 16
-    }).toDataURL()
-  }, [account.address])
+  const orb = useAccountOrb(account)
 
   const tokenListByAccount = React.useMemo(() => {
     if (

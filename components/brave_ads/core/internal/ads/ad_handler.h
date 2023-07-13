@@ -36,7 +36,7 @@ namespace brave_ads {
 class Account;
 class Transfer;
 struct AdInfo;
-struct ConversionQueueItemInfo;
+struct ConversionInfo;
 
 class AdHandler final : public ConversionsObserver, TransferObserver {
  public:
@@ -79,8 +79,7 @@ class AdHandler final : public ConversionsObserver, TransferObserver {
 
  private:
   // ConversionsObserver:
-  void OnDidConvertAd(
-      const ConversionQueueItemInfo& conversion_queue_item) override;
+  void OnDidConvertAd(const ConversionInfo& conversion) override;
 
   // TransferObserver:
   void OnDidTransferAd(const AdInfo& ad) override;

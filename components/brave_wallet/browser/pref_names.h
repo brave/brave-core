@@ -13,12 +13,14 @@ extern const char kDefaultBaseCurrency[];
 extern const char kDefaultBaseCryptocurrency[];
 extern const char kBraveWalletTransactions[];
 extern const char kShowWalletIconOnToolbar[];
-extern const char kBraveWalletSelectedCoin[];
 extern const char kBraveWalletLastUnlockTime[];
 extern const char kBraveWalletPingReportedUnlockTime[];
 extern const char kBraveWalletP3ALastReportTime[];
 extern const char kBraveWalletP3AFirstReportTime[];
 extern const char kBraveWalletP3AWeeklyStorage[];
+extern const char kBraveWalletSelectedWalletAccount[];
+extern const char kBraveWalletSelectedEthDappAccount[];
+extern const char kBraveWalletSelectedSolDappAccount[];
 extern const char kBraveWalletKeyrings[];
 extern const char kBraveWalletCustomNetworks[];
 extern const char kBraveWalletHiddenNetworks[];
@@ -67,7 +69,6 @@ extern const char kBraveWalletSolanaTransactionsV0SupportMigrated[];
 
 // DEPRECATED
 extern const char kShowWalletTestNetworksDeprecated[];
-extern const char kBraveWalletSelectedAccount[];
 extern const char kBraveWalletWeb3ProviderDeprecated[];
 extern const char kDefaultWalletDeprecated[];
 extern const char kBraveWalletCustomNetworksDeprecated[];
@@ -79,5 +80,7 @@ extern const char
     kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated2[];
 extern const char kPinnedNFTAssets[];
 extern const char kAutoPinEnabled[];
+// 06/2023
+extern const char kBraveWalletSelectedCoinDeprecated[];
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_

@@ -12,9 +12,9 @@
 
 namespace brave_rewards::internal::endpoints {
 
-PostConnectBitflyer::PostConnectBitflyer(LedgerImpl& ledger,
+PostConnectBitflyer::PostConnectBitflyer(RewardsEngineImpl& engine,
                                          std::string&& linking_info)
-    : PostConnect(ledger), linking_info_(std::move(linking_info)) {}
+    : PostConnect(engine), linking_info_(std::move(linking_info)) {}
 
 PostConnectBitflyer::~PostConnectBitflyer() = default;
 

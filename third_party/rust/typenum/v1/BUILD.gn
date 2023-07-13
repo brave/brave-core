@@ -16,23 +16,13 @@ cargo_crate("lib") {
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [
-    "crate/src/array.rs",
-    "crate/src/bit.rs",
-    "crate/src/int.rs",
-    "crate/src/lib.rs",
-    "crate/src/marker_traits.rs",
-    "crate/src/operator_aliases.rs",
-    "crate/src/private.rs",
-    "crate/src/type_operators.rs",
-    "crate/src/uint.rs",
-  ]
+  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "1.16.0"
   cargo_pkg_authors =
       "Paho Lurie-Gregg <paho@paholg.com>, Andre Bogus <bogusandre@gmail.com>"
   cargo_pkg_name = "typenum"
-  cargo_pkg_description = "Typenum is a Rust library for type-level numbers evaluated at    compile time. It currently supports bits, unsigned integers, and signed    integers. It also provides a type-level array of type-level numbers, but its    implementation is incomplete."
+  cargo_pkg_description = "Typenum is a Rust library for type-level numbers evaluated at     compile time. It currently supports bits, unsigned integers, and signed     integers. It also provides a type-level array of type-level numbers, but its     implementation is incomplete."
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]

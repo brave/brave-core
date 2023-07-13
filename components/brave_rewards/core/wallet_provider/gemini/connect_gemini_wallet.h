@@ -11,17 +11,17 @@
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_rewards/core/endpoint/gemini/gemini_server.h"
 #include "brave/components/brave_rewards/core/endpoints/gemini/get_recipient_id/get_recipient_id_gemini.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace gemini {
 
 class ConnectGeminiWallet : public wallet_provider::ConnectExternalWallet {
  public:
-  explicit ConnectGeminiWallet(LedgerImpl& ledger);
+  explicit ConnectGeminiWallet(RewardsEngineImpl& engine);
 
   ~ConnectGeminiWallet() override;
 

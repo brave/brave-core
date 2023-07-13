@@ -8,7 +8,7 @@
 namespace brave_rewards::internal {
 namespace database {
 
-MockDatabase::MockDatabase(LedgerImpl& ledger) : Database(ledger) {}
+MockDatabase::MockDatabase(RewardsEngineImpl& engine) : Database(engine) {}
 
 MockDatabase::~MockDatabase() = default;
 

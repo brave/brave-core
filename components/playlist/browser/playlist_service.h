@@ -189,6 +189,8 @@ class PlaylistService : public KeyedService,
 
   void OnMediaUpdatedFromContents(content::WebContents* contents);
 
+  bool HasPlaylistItem(const std::string& id) const;
+
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
   friend class ::PlaylistBrowserTest;
@@ -233,8 +235,6 @@ class PlaylistService : public KeyedService,
   // contents that is different from the given |contents|.
   bool ShouldGetMediaFromBackgroundWebContents(
       content::WebContents* contents) const;
-
-  bool HasPlaylistItem(const std::string& id) const;
 
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);
   void DownloadThumbnail(const mojom::PlaylistItemPtr& item);

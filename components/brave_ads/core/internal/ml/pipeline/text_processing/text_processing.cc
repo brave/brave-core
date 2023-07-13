@@ -94,10 +94,10 @@ absl::optional<PredictionMap> TextProcessing::Apply(
 }
 
 absl::optional<PredictionMap> TextProcessing::GetTopPredictions(
-    const std::string& content) const {
-  std::string stripped_content = StripNonAlphaCharacters(content);
+    const std::string& text) const {
+  std::string stripped_text = StripNonAlphaCharacters(text);
   const absl::optional<PredictionMap> predictions =
-      Apply(std::make_unique<TextData>(std::move(stripped_content)));
+      Apply(std::make_unique<TextData>(std::move(stripped_text)));
   if (!predictions) {
     return absl::nullopt;
   }
@@ -114,12 +114,12 @@ absl::optional<PredictionMap> TextProcessing::GetTopPredictions(
 }
 
 absl::optional<PredictionMap> TextProcessing::ClassifyPage(
-    const std::string& content) const {
+    const std::string& text) const {
   if (!IsInitialized()) {
     return PredictionMap{};
   }
 
-  return GetTopPredictions(content);
+  return GetTopPredictions(text);
 }
 
 }  // namespace brave_ads::ml::pipeline

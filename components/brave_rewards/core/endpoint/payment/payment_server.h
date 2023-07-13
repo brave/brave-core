@@ -12,16 +12,16 @@
 #include "brave/components/brave_rewards/core/endpoint/payment/post_transaction_gemini/post_transaction_sku_gemini.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/post_transaction_uphold/post_transaction_uphold.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/post_votes/post_votes.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint {
 
 class PaymentServer {
  public:
-  explicit PaymentServer(LedgerImpl& ledger);
+  explicit PaymentServer(RewardsEngineImpl& engine);
   ~PaymentServer();
 
   payment::PostOrder& post_order() { return post_order_; }

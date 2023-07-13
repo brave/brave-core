@@ -31,6 +31,8 @@ static_library("browser") {
     "//brave/components/api_request_helper",
     "//brave/components/constants",
     "//brave/components/resources:strings_grit",
+    "//components/favicon/content",
+    "//components/favicon/core",
     "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",

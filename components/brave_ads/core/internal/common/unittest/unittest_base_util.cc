@@ -35,7 +35,6 @@
 
 namespace brave_ads {
 
-using ::testing::_;
 using ::testing::Invoke;
 
 namespace {

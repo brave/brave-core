@@ -17,6 +17,7 @@
 #include "base/task/thread_pool.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "brave/components/playlist/browser/playlist_service.h"
+#include "net/base/filename_util.h"
 #include "url/gurl.h"
 
 namespace playlist {
@@ -77,9 +78,15 @@ void PlaylistDataSource::StartDataRequest(
       return;
     }
   } else if (type_string == "media") {
-    if (!service_->GetMediaPath(id, &data_path)) {
+    if (!service_->HasPlaylistItem(id)) {
       std::move(got_data_callback).Run(nullptr);
       return;
+    }
+
+    auto item = service_->GetPlaylistItem(id);
+    DCHECK(item->cached);
+    if (!net::FileURLToFilePath(item->media_path, &data_path)) {
+      std::move(got_data_callback).Run(nullptr);
     }
   } else {
     NOTREACHED() << "type is neither of {thumbnail,media}/ : " << type_string;

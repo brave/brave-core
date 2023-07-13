@@ -98,7 +98,8 @@ public class SwapBottomSheetDialogFragment
 
         if (!JavaUtils.anyNull(mWalletModel, mNetworkInfo)) {
             BuySendSwapActivity.ActivityType finalActivityType = activityType;
-            mWalletModel.getNetworkModel().setNetwork(
+            // TODO(apaymyshev): buy/send/swap should be decoupled from panel selected network.
+            mWalletModel.getNetworkModel().setDefaultNetwork(
                     mNetworkInfo, isSelected -> { openBssAndDismiss(finalActivityType); });
             return;
         }

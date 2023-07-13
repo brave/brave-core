@@ -10,12 +10,12 @@
 #include "content/public/browser/service_process_host.h"
 
 namespace brave_rewards::mojom {
-class LedgerFactory;
+class RewardsEngineFactory;
 }  // namespace brave_rewards::mojom
 
 template <>
 inline sandbox::mojom::Sandbox
-content::GetServiceSandboxType<brave_rewards::mojom::LedgerFactory>() {
+content::GetServiceSandboxType<brave_rewards::mojom::RewardsEngineFactory>() {
 #if !BUILDFLAG(IS_ANDROID)
   return sandbox::mojom::Sandbox::kNoSandbox;
 #else

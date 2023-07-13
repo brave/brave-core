@@ -10,7 +10,7 @@
 #include "brave/components/brave_rewards/core/database/database_balance_report.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 using std::placeholders::_1;
 
@@ -48,8 +48,8 @@ std::string GetTypeColumn(mojom::ReportType type) {
 
 namespace database {
 
-DatabaseBalanceReport::DatabaseBalanceReport(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseBalanceReport::DatabaseBalanceReport(RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabaseBalanceReport::~DatabaseBalanceReport() = default;
 
@@ -57,7 +57,7 @@ void DatabaseBalanceReport::InsertOrUpdate(mojom::BalanceReportInfoPtr info,
                                            LegacyResultCallback callback) {
   if (!info || info->id.empty()) {
     BLOG(1, "Id is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -85,7 +85,7 @@ void DatabaseBalanceReport::InsertOrUpdate(mojom::BalanceReportInfoPtr info,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseBalanceReport::InsertOrUpdateList(
@@ -93,7 +93,7 @@ void DatabaseBalanceReport::InsertOrUpdateList(
     LegacyResultCallback callback) {
   if (list.empty()) {
     BLOG(1, "List is empty");
-    callback(mojom::Result::LEDGER_OK);
+    callback(mojom::Result::OK);
     return;
   }
 
@@ -123,7 +123,7 @@ void DatabaseBalanceReport::InsertOrUpdateList(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseBalanceReport::SetAmount(mojom::ActivityMonth month,
@@ -133,7 +133,7 @@ void DatabaseBalanceReport::SetAmount(mojom::ActivityMonth month,
                                       LegacyResultCallback callback) {
   if (month == mojom::ActivityMonth::ANY || year == 0) {
     BLOG(1, "Record size is not correct " << month << "/" << year);
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
   auto transaction = mojom::DBTransaction::New();
@@ -166,7 +166,7 @@ void DatabaseBalanceReport::SetAmount(mojom::ActivityMonth month,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseBalanceReport::GetRecord(mojom::ActivityMonth month,
@@ -174,7 +174,7 @@ void DatabaseBalanceReport::GetRecord(mojom::ActivityMonth month,
                                       GetBalanceReportCallback callback) {
   if (month == mojom::ActivityMonth::ANY || year == 0) {
     BLOG(1, "Record size is not correct " << month << "/" << year);
-    callback(mojom::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::FAILED, {});
     return;
   }
 
@@ -218,21 +218,21 @@ void DatabaseBalanceReport::GetRecord(mojom::ActivityMonth month,
   auto transaction_callback =
       std::bind(&DatabaseBalanceReport::OnGetRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 void DatabaseBalanceReport::OnGetRecord(mojom::DBCommandResponsePtr response,
                                         GetBalanceReportCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
-    callback(mojom::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::FAILED, {});
     return;
   }
 
   if (response->result->get_records().size() != 1) {
     BLOG(1, "Record size is not correct: "
                 << response->result->get_records().size());
-    callback(mojom::Result::LEDGER_ERROR, {});
+    callback(mojom::Result::FAILED, {});
     return;
   }
 
@@ -246,7 +246,7 @@ void DatabaseBalanceReport::OnGetRecord(mojom::DBCommandResponsePtr response,
   info->recurring_donation = GetDoubleColumn(record, 4);
   info->one_time_donation = GetDoubleColumn(record, 5);
 
-  callback(mojom::Result::LEDGER_OK, std::move(info));
+  callback(mojom::Result::OK, std::move(info));
 }
 
 void DatabaseBalanceReport::GetAllRecords(
@@ -275,7 +275,7 @@ void DatabaseBalanceReport::GetAllRecords(
   auto transaction_callback =
       std::bind(&DatabaseBalanceReport::OnGetAllRecords, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseBalanceReport::OnGetAllRecords(
@@ -319,7 +319,7 @@ void DatabaseBalanceReport::DeleteAllRecords(LegacyResultCallback callback) {
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace database

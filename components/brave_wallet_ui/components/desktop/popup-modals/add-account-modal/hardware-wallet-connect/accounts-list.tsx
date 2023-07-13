@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
 import { EntityId } from '@reduxjs/toolkit'
 import { Checkbox, Select } from 'brave-ui/components'
 import {
@@ -25,8 +24,13 @@ import {
   HardwareWalletDerivationPathsMapping,
   SolHardwareWalletDerivationPathLocaleMapping
 } from './types'
-import { FilecoinNetwork, SolDerivationPaths } from '../../../../../common/hardware/types'
-import { BraveWallet, WalletAccountType, CreateAccountOptionsType } from '../../../../../constants/types'
+import { SolDerivationPaths } from '../../../../../common/hardware/types'
+import {
+  BraveWallet,
+  WalletAccountType,
+  CreateAccountOptionsType,
+  FilecoinNetwork
+} from '../../../../../constants/types'
 import { getLocale } from '../../../../../../common/locale'
 import { NavButton } from '../../../../extension'
 import { SearchBar } from '../../../../shared'
@@ -41,6 +45,7 @@ import {
   useGetAccountTokenCurrentBalanceQuery,
   useGetNetworksRegistryQuery
 } from '../../../../../common/slices/api.slice'
+import { useAddressOrb } from '../../../../../common/hooks/use-orb'
 import { makeNetworkAsset } from '../../../../../options/asset-options'
 import {
   networkEntityAdapter
@@ -316,13 +321,7 @@ function AccountListItem({
     )
 
   // memos
-  const orb = React.useMemo(() => {
-    return create({
-      seed: account.address.toLowerCase(),
-      size: 8,
-      scale: 16
-    }).toDataURL()
-  }, [account.address])
+  const orb = useAddressOrb(account.address)
 
   const balance = React.useMemo(() => {
     if (

@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -8,19 +8,12 @@
 
 #include <string>
 
-#include "base/functional/callback_forward.h"
-#include "base/values.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/build_user_data_callback.h"
 
 namespace brave_ads {
 
-class ConfirmationType;
-
-using BuildConversionUserDataCallback =
-    base::OnceCallback<void(base::Value::Dict user_data)>;
-
 void BuildConversionUserData(const std::string& creative_instance_id,
-                             const ConfirmationType& confirmation_type,
-                             BuildConversionUserDataCallback callback);
+                             BuildUserDataCallback callback);
 
 }  // namespace brave_ads
 

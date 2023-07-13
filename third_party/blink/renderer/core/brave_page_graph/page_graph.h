@@ -17,6 +17,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/scripts/script_tracker.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "third_party/abseil-cpp/absl/types/variant.h"
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
@@ -290,10 +291,10 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   };
 
   NodeHTML* GetHTMLNode(const blink::DOMNodeId node_id) const;
-  NodeHTMLElement* GetHTMLElementNode(const blink::DOMNodeId node_id) const;
+  NodeHTMLElement* GetHTMLElementNode(
+      absl::variant<blink::DOMNodeId, blink::Node*> node_var);
   NodeHTMLText* GetHTMLTextNode(const blink::DOMNodeId node_id) const;
-  NodeHTMLElement* RegisterAndGetHTMLElementNode(blink::Node* node);
-  void RegisterCurrentlyConstructedNode(blink::Node* node);
+  bool RegisterCurrentlyConstructedNode(blink::Node* node);
 
   void RegisterDocumentNodeCreated(blink::Document* node);
   void RegisterHTMLTextNodeCreated(blink::CharacterData* node);

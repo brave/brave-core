@@ -7,22 +7,22 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_V7_H_
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace state {
 
 class StateMigrationV7 {
  public:
-  explicit StateMigrationV7(LedgerImpl& ledger);
+  explicit StateMigrationV7(RewardsEngineImpl& engine);
   ~StateMigrationV7();
 
   void Migrate(LegacyResultCallback callback);
 
  private:
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace state

@@ -23,8 +23,6 @@ class AdEvents final : public TableInterface {
  public:
   void LogEvent(const AdEventInfo& ad_event, ResultCallback callback);
 
-  void GetIf(const std::string& condition, GetAdEventsCallback callback) const;
-
   void GetAll(GetAdEventsCallback callback) const;
 
   void GetForType(mojom::AdType ad_type, GetAdEventsCallback callback) const;

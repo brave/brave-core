@@ -5,14 +5,13 @@
 
 #include "base/functional/bind.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/creative_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -34,10 +33,10 @@ class BraveAdsDatabaseMigrationTest
 
 TEST_P(BraveAdsDatabaseMigrationTest, MigrateFromSchema) {
   // Arrange
-  const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_uuids*/ true);
-  const AdEventInfo ad_event = BuildAdEvent(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
+  const AdInfo ad =
+      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now());
 
   // Act
   LogAdEvent(ad_event,

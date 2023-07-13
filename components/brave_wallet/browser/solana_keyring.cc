@@ -198,7 +198,7 @@ absl::optional<std::string> SolanaKeyring::GetAssociatedMetadataAccount(
 }
 
 std::unique_ptr<HDKeyBase> SolanaKeyring::DeriveAccount(uint32_t index) const {
-  // m/44'/501/{index}'/0
+  // m/44'/501'/{index}'/0'
   return root_->DeriveHardenedChild(index)->DeriveHardenedChild(0);
 }
 

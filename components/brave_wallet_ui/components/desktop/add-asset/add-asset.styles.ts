@@ -10,4 +10,5 @@ export const AddAssetWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 100%;
+  flex: 1;
 `

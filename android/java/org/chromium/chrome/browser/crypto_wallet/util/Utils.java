@@ -114,6 +114,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Utils {
     private static final String TAG = "Utils";
@@ -1063,6 +1064,13 @@ public class Utils {
                 return acc;
 
         return null;
+    }
+
+    public static List<AccountInfo> filterAccountsByCoin(
+            AccountInfo[] accounts, @CoinType.EnumType int coinType) {
+        return Arrays.stream(accounts)
+                .filter(account -> { return account.accountId.coin == coinType; })
+                .collect(Collectors.toList());
     }
 
     public static void openTransaction(TransactionInfo txInfo, AppCompatActivity activity,

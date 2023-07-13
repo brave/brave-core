@@ -806,7 +806,7 @@ void RewardsDOMHandler::OnPromotionFinished(
     brave_rewards::RewardsService* rewards_service,
     const brave_rewards::mojom::Result result,
     brave_rewards::mojom::PromotionPtr promotion) {
-  if (result != brave_rewards::mojom::Result::LEDGER_OK) {
+  if (result != brave_rewards::mojom::Result::OK) {
     return;
   }
 

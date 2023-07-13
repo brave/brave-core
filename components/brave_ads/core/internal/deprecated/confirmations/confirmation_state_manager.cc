@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 
 #include <cstdint>
+#include <iterator>
 #include <utility>
 
 #include "base/check.h"
@@ -196,10 +197,6 @@ void ConfirmationStateManager::Save() {
 
 absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
     const base::Value::Dict& dict) const {
-  if (!wallet_) {
-    return absl::nullopt;
-  }
-
   OptedInInfo opted_in;
 
   // Token
@@ -239,6 +236,11 @@ absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
             unblinded_token_dict->FindString("signature")) {
       opted_in.unblinded_token.signature = *value;
     } else {
+      // Legacy migration.
+      if (!wallet_) {
+        return absl::nullopt;
+      }
+
       const absl::optional<std::string> unblinded_token_base64 =
           opted_in.unblinded_token.value.EncodeBase64();
       if (!unblinded_token_base64) {

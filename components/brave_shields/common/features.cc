@@ -41,6 +41,9 @@ BASE_FEATURE(kBraveAdblockCookieListOptIn,
 BASE_FEATURE(kBraveAdblockCosmeticFiltering,
              "BraveAdblockCosmeticFiltering",
              base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveAdblockScriptletDebugLogs,
+             "BraveAdblockScriptletDebugLogs",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 BASE_FEATURE(kBraveAdblockCspRules,
              "BraveAdblockCspRules",
              base::FEATURE_ENABLED_BY_DEFAULT);

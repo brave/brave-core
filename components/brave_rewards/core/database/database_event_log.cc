@@ -11,7 +11,7 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_event_log.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 using std::placeholders::_1;
 
@@ -24,8 +24,8 @@ const char kTableName[] = "event_log";
 
 }  // namespace
 
-DatabaseEventLog::DatabaseEventLog(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseEventLog::DatabaseEventLog(RewardsEngineImpl& engine)
+    : DatabaseTable(engine) {}
 
 DatabaseEventLog::~DatabaseEventLog() = default;
 
@@ -55,7 +55,7 @@ void DatabaseEventLog::Insert(const std::string& key,
 
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(std::move(transaction),
+  engine_->RunDBTransaction(std::move(transaction),
                             [](mojom::DBCommandResponsePtr response) {});
 }
 
@@ -92,7 +92,7 @@ void DatabaseEventLog::InsertRecords(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseEventLog::GetLastRecords(GetEventLogsCallback callback) {
@@ -119,7 +119,7 @@ void DatabaseEventLog::GetLastRecords(GetEventLogsCallback callback) {
   auto transaction_callback =
       std::bind(&DatabaseEventLog::OnGetAllRecords, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseEventLog::OnGetAllRecords(mojom::DBCommandResponsePtr response,

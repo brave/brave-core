@@ -400,7 +400,7 @@ void PlaylistActionBubbleView::CloseBubble() {
 }
 
 // static
-views::BubbleDialogDelegateView* PlaylistActionBubbleView::GetBubble() {
+PlaylistActionBubbleView* PlaylistActionBubbleView::GetBubble() {
   return g_bubble;
 }
 

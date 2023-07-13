@@ -1617,20 +1617,24 @@ public abstract class BraveActivity extends ChromeActivity
         clearObservers();
         mWalletModel.getCryptoModel().getPendingTxHelper().mSelectedPendingRequest.observe(
                 this, transactionInfo -> {
+                    if (transactionInfo == null) {
+                        return;
+                    }
                     // don't show dapps panel if the wallet is locked and requests are being
                     // processed by the approve dialog already
-                    mWalletModel.getKeyringModel().getKeyringInfo(keyringInfo -> {
-                        if (transactionInfo != null && keyringInfo != null && !keyringInfo.isLocked
-                                && !mIsProcessingPendingDappsTxRequest) {
+                    mKeyringService.isLocked(locked -> {
+                        if (locked) {
+                            return;
+                        }
+
+                        if (!mIsProcessingPendingDappsTxRequest) {
                             mIsProcessingPendingDappsTxRequest = true;
                             openBraveWalletDAppsActivity(
                                     BraveWalletDAppsActivity.ActivityType.CONFIRM_TRANSACTION);
                         }
+
                         // update badge if there's a pending tx
-                        if (transactionInfo != null && keyringInfo != null
-                                && !keyringInfo.isLocked) {
-                            updateWalletBadgeVisibility();
-                        }
+                        updateWalletBadgeVisibility();
                     });
                 });
 
@@ -1640,9 +1644,6 @@ public abstract class BraveActivity extends ChromeActivity
         mWalletModel.getDappsModel().mPendingWalletAccountCreationRequest.observe(this, request -> {
             if (request == null) return;
             mWalletModel.getKeyringModel().isWalletLocked(isLocked -> {
-                // Cannot use mWalletModel.getKeyringModel().getKeyringInfo().isLocked as account
-                // creation request can be triggered when the wallet is locked and keyringInfo will
-                // be null
                 if (!BraveWalletPreferences.getPrefWeb3NotificationsEnabled()) return;
                 if (isLocked) {
                     Tab tab = getActivityTab();
@@ -1668,6 +1669,7 @@ public abstract class BraveActivity extends ChromeActivity
         mWalletModel.getCryptoModel().getNetworkModel().mNeedToCreateAccountForNetwork.observe(
                 this, networkInfo -> {
                     if (networkInfo == null) return;
+
                     MaterialAlertDialogBuilder builder =
                             new MaterialAlertDialogBuilder(
                                     this, R.style.BraveWalletAlertDialogTheme)
@@ -1676,22 +1678,8 @@ public abstract class BraveActivity extends ChromeActivity
                                             networkInfo.symbolName))
                                     .setPositiveButton(R.string.brave_action_yes,
                                             (dialog, which) -> {
-                                                mWalletModel.getCryptoModel()
-                                                        .getNetworkModel()
-                                                        .setNetwork(networkInfo, success -> {
-                                                            if (success) {
-                                                                mWalletModel.getKeyringModel()
-                                                                        .addAccount(
-                                                                                networkInfo.coin,
-                                                                                networkInfo.chainId,
-                                                                                null,
-                                                                                isAccountAdded
-                                                                                -> {});
-                                                            }
-                                                            mWalletModel.getCryptoModel()
-                                                                    .getNetworkModel()
-                                                                    .clearCreateAccountState();
-                                                        });
+                                                mWalletModel.createAccountAndSetDefaultNetwork(
+                                                        networkInfo);
                                             })
                                     .setNegativeButton(
                                             R.string.brave_action_no, (dialog, which) -> {

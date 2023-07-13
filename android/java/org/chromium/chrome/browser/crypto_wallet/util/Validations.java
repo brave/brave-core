@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import androidx.annotation.NonNull;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
@@ -33,9 +34,9 @@ public class Validations {
 
         public void validate(NetworkInfo selectedNetwork, KeyringService keyringService,
                 BlockchainRegistry blockchainRegistry, BraveWalletService braveWalletService,
-                String senderAccountAddress, String receiverAccountAddress,
+                AccountInfo fromAccount, String receiverAccountAddress,
                 Callbacks.Callback2<String, Boolean> callback) {
-            String senderAccountAddressLower = senderAccountAddress.toLowerCase(Locale.ENGLISH);
+            String senderAccountAddressLower = fromAccount.address.toLowerCase(Locale.ENGLISH);
 
             String receiverAccountAddressLower = receiverAccountAddress.toLowerCase(Locale.ENGLISH);
 
@@ -46,86 +47,79 @@ public class Validations {
                 return;
             }
 
-            braveWalletService.getSelectedCoin(coinType -> {
-                if (coinType == CoinType.SOL) {
-                    braveWalletService.isBase58EncodedSolanaPubkey(
-                            senderAccountAddress, success -> {
-                                String responseMsg = "";
-                                if (!success) {
-                                    responseMsg = resources.getString(R.string.invalid_sol_address);
-                                }
-                                callback.call(responseMsg, success);
-                            });
-                } else if (coinType == CoinType.FIL) {
-                    if (receiverAccountAddress.isEmpty()) {
-                        return;
+            @CoinType.EnumType
+            int coinType = fromAccount.accountId.coin;
+            if (coinType == CoinType.SOL) {
+                // TODO(apaymyshev):  why are we validating wallet's account?
+                braveWalletService.isBase58EncodedSolanaPubkey(fromAccount.address, success -> {
+                    String responseMsg = "";
+                    if (!success) {
+                        responseMsg = resources.getString(R.string.invalid_sol_address);
                     }
-                    final boolean showErrorMessage = !isValidFilAddress(receiverAccountAddress);
-                    final String errorMessage = showErrorMessage
-                            ? resources.getString(R.string.invalid_fil_address)
-                            : "";
-                    callback.call(errorMessage, showErrorMessage);
-                } else {
-                    // Steps to validate:
-                    // 1. Valid hex string
-                    //      0x <20 bytes | 40 chars>
-                    // 2. Not equal to ours address
-                    // 3. Not one of token's contract addresses
-                    // 4. Has valid checksum
-
-                    String receiverAccountAddressUpper =
-                            Utils.maybeHexStrToUpperCase(receiverAccountAddress);
-
-                    byte[] bytesReceiverAccountAddress =
-                            Utils.hexStrToNumberArray(receiverAccountAddress);
-                    if (!receiverAccountAddress.isEmpty()
-                            && bytesReceiverAccountAddress.length
-                                    != VALID_ACCOUNT_ADDRESS_BYTE_LENGTH) {
-                        callback.call(
-                                resources.getString(R.string.wallet_not_valid_eth_address), true);
-                        return;
-                    }
-
-                    mIsKnowContracts = false;
-                    if (mKnownContractAddresses == null) {
-                        assert braveWalletService != null;
-                        assert blockchainRegistry != null;
-                        assert selectedNetwork != null;
-
-                        TokenUtils.getAllTokensFiltered(braveWalletService, blockchainRegistry,
-                                selectedNetwork, selectedNetwork.coin, TokenUtils.TokenType.ALL,
-                                (tokens) -> {
-                                    fillKnowContracts(tokens);
-                                    checkForKnowContracts(
-                                            receiverAccountAddressLower, callback, resources);
-                                });
-                    } else {
-                        checkForKnowContracts(receiverAccountAddressLower, callback, resources);
-                    }
-                    if (mIsKnowContracts) return;
-
-                    keyringService.getChecksumEthAddress(
-                            receiverAccountAddress, checksum_address -> {
-                                if (receiverAccountAddress.equals(checksum_address)
-                                        || receiverAccountAddress.isEmpty()) {
-                                    callback.call("", false);
-                                } else if (receiverAccountAddressLower.equals(
-                                                   receiverAccountAddress)
-                                        || receiverAccountAddressUpper.equals(
-                                                receiverAccountAddress)) {
-                                    callback.call(
-                                            resources.getString(
-                                                    R.string.address_missing_checksum_warning),
-                                            false);
-                                } else {
-                                    callback.call(
-                                            resources.getString(
-                                                    R.string.address_not_valid_checksum_error),
-                                            true);
-                                }
-                            });
+                    callback.call(responseMsg, success);
+                });
+            } else if (coinType == CoinType.FIL) {
+                if (receiverAccountAddress.isEmpty()) {
+                    return;
                 }
-            });
+                final boolean showErrorMessage = !isValidFilAddress(receiverAccountAddress);
+                final String errorMessage =
+                        showErrorMessage ? resources.getString(R.string.invalid_fil_address) : "";
+                callback.call(errorMessage, showErrorMessage);
+            } else {
+                // Steps to validate:
+                // 1. Valid hex string
+                //      0x <20 bytes | 40 chars>
+                // 2. Not equal to ours address
+                // 3. Not one of token's contract addresses
+                // 4. Has valid checksum
+
+                String receiverAccountAddressUpper =
+                        Utils.maybeHexStrToUpperCase(receiverAccountAddress);
+
+                byte[] bytesReceiverAccountAddress =
+                        Utils.hexStrToNumberArray(receiverAccountAddress);
+                if (!receiverAccountAddress.isEmpty()
+                        && bytesReceiverAccountAddress.length
+                                != VALID_ACCOUNT_ADDRESS_BYTE_LENGTH) {
+                    callback.call(resources.getString(R.string.wallet_not_valid_eth_address), true);
+                    return;
+                }
+
+                mIsKnowContracts = false;
+                if (mKnownContractAddresses == null) {
+                    assert braveWalletService != null;
+                    assert blockchainRegistry != null;
+                    assert selectedNetwork != null;
+
+                    TokenUtils.getAllTokensFiltered(braveWalletService, blockchainRegistry,
+                            selectedNetwork, selectedNetwork.coin, TokenUtils.TokenType.ALL,
+                            (tokens) -> {
+                                fillKnowContracts(tokens);
+                                checkForKnowContracts(
+                                        receiverAccountAddressLower, callback, resources);
+                            });
+                } else {
+                    checkForKnowContracts(receiverAccountAddressLower, callback, resources);
+                }
+                if (mIsKnowContracts) return;
+
+                keyringService.getChecksumEthAddress(receiverAccountAddress, checksum_address -> {
+                    if (receiverAccountAddress.equals(checksum_address)
+                            || receiverAccountAddress.isEmpty()) {
+                        callback.call("", false);
+                    } else if (receiverAccountAddressLower.equals(receiverAccountAddress)
+                            || receiverAccountAddressUpper.equals(receiverAccountAddress)) {
+                        callback.call(
+                                resources.getString(R.string.address_missing_checksum_warning),
+                                false);
+                    } else {
+                        callback.call(
+                                resources.getString(R.string.address_not_valid_checksum_error),
+                                true);
+                    }
+                });
+            }
         }
 
         /**

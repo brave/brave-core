@@ -26,7 +26,7 @@ constexpr const char* kCreativeSetIds[] = {
 
 class BraveAdsTotalMaxExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BraveAdsTotalMaxExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BraveAdsTotalMaxExclusionRuleTest, AllowAdIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetIds[0];
@@ -47,10 +47,8 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
   creative_ad.total_max = 2;
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
-
   ad_events.push_back(ad_event);
 
   const TotalMaxExclusionRule exclusion_rule(ad_events);
@@ -72,10 +70,8 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest,
   creative_ad_2.creative_set_id = kCreativeSetIds[1];
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad_2, AdType::kNotificationAd, ConfirmationType::kServed, Now());
-
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
@@ -108,10 +104,8 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
   creative_ad.total_max = 2;
 
   AdEventList ad_events;
-
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
-
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 

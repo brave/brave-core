@@ -159,7 +159,7 @@ def CheckLicense(input_api, output_api):
     files_to_check = input_api.DEFAULT_FILES_TO_CHECK + (r'.+\.gni?$', )
     files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (
         r"\.storybook/",
-        r"ios/browser/api/ledger/legacy_database/core_data_models/",
+        r"ios/browser/api/brave_rewards/legacy_database/core_data_models/",
         r'win_build_output/',
     )
 

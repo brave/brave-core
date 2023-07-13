@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -6,19 +6,18 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSIONS_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSIONS_UTIL_H_
 
-#include <string>
-
-#include "third_party/abseil-cpp/absl/types/optional.h"
+namespace base {
+class TimeDelta;
+}  // namespace base
 
 namespace brave_ads {
 
-struct VerifiableConversionEnvelopeInfo;
-struct VerifiableConversionInfo;
+struct AdEventInfo;
 
-std::string GetAlgorithm();
+bool CanConvertAdEvent(const AdEventInfo& ad_event);
 
-absl::optional<VerifiableConversionEnvelopeInfo> SealEnvelope(
-    const VerifiableConversionInfo& verifiable_conversion);
+bool HasObservationWindowForAdEventExpired(base::TimeDelta observation_window,
+                                           const AdEventInfo& ad_event);
 
 }  // namespace brave_ads
 

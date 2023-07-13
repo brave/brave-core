@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import * as EthereumBlockies from 'ethereum-blockies'
 import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
@@ -27,6 +26,7 @@ import {
 import {
   querySubscriptionOptions60s
 } from '../../../common/slices/constants'
+import { useAddressOrb } from '../../../common/hooks/use-orb'
 
 // Utils
 import { makeNetworkAsset } from '../../../options/asset-options'
@@ -200,23 +200,11 @@ const TransactionDetailPanel = (props: Props) => {
     symbol,
   } = transactionDetails || {}
 
-  const fromOrb = React.useMemo(() => {
-    return EthereumBlockies.create({
-      seed: transaction?.fromAddress.toLowerCase(),
-      size: 8,
-      scale: 16
-    }).toDataURL()
-  }, [transaction?.fromAddress])
+  const fromOrb = useAddressOrb(transaction?.fromAddress)
 
   const to = transaction ? getTransactionToAddress(transaction) : ''
 
-  const toOrb = React.useMemo(() => {
-    return EthereumBlockies.create({
-      seed: to.toLowerCase(),
-      size: 8,
-      scale: 16
-    }).toDataURL()
-  }, [to])
+  const toOrb = useAddressOrb(to)
 
   const transactionTitle = React.useMemo((): string => {
     if (!transaction) {

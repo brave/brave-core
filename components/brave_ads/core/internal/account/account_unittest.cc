@@ -346,12 +346,12 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   privacy::SetUnblindedTokens(/*count*/ 1);
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ false);
+      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
   account_->Deposit(creative_ad.creative_instance_id, AdType::kNotificationAd,
-                    kSegment, ConfirmationType::kViewed);
+                    creative_ad.segment, ConfirmationType::kViewed);
 
   // Assert
   EXPECT_TRUE(did_process_deposit_);
@@ -422,7 +422,7 @@ TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ false);
+      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act

@@ -70,7 +70,6 @@ export class BaseQueryCache {
   private _walletInfo?: BraveWallet.WalletInfo
   private _allAccountsInfo?: BraveWallet.AllAccountsInfo
   private _accountsRegistry?: AccountInfoEntityState
-  private _selectedAccountAddress?: string | null
   private _userTokensRegistry?: BlockchainTokenEntityAdaptorState
 
   getWalletInfo = async () => {
@@ -82,7 +81,7 @@ export class BaseQueryCache {
     return this._walletInfo
   }
 
-  getAllAccountsInfo = async () => {
+  getAllAccounts = async () => {
     if (!this._allAccountsInfo) {
       const { allAccounts } =
         await apiProxyFetcher().keyringService.getAllAccounts()
@@ -93,7 +92,7 @@ export class BaseQueryCache {
 
   getAccountsRegistry = async () => {
     if (!this._accountsRegistry) {
-      const allAccounts = await this.getAllAccountsInfo()
+      const allAccounts = await this.getAllAccounts()
 
       this._accountsRegistry = accountInfoEntityAdaptor.setAll(
         accountInfoEntityAdaptorInitialState,
@@ -101,29 +100,6 @@ export class BaseQueryCache {
       )
     }
     return this._accountsRegistry
-  }
-
-  getSelectedAccountAddress = async () => {
-    if (!this._selectedAccountAddress) {
-      const { braveWalletService, keyringService } = apiProxyFetcher()
-      const { coin: selectedCoin } = await braveWalletService.getSelectedCoin()
-
-      if (selectedCoin === BraveWallet.CoinType.FIL) {
-        const { chainId } = await braveWalletService.getChainIdForActiveOrigin(
-          selectedCoin
-        )
-        const { address } = await keyringService.getFilecoinSelectedAccount(
-          chainId
-        )
-        this._selectedAccountAddress = address
-      } else {
-        const { address } = await keyringService.getSelectedAccount(
-          selectedCoin
-        )
-        this._selectedAccountAddress = address
-      }
-    }
-    return this._selectedAccountAddress
   }
 
   clearWalletInfo = () => {
@@ -137,7 +113,7 @@ export class BaseQueryCache {
   }
 
   clearSelectedAccount = () => {
-    this._selectedAccountAddress = undefined
+    this.clearAccountsRegistry()
   }
 
   getNetworksRegistry = async () => {

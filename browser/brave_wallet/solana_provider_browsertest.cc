@@ -404,7 +404,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
     // Update rpc url for kLocalhostChainId
     mojom::NetworkInfoPtr chain;
     json_rpc_service_->SetNetwork(mojom::kLocalhostChainId,
-                                  mojom::CoinType::SOL, absl::nullopt, true);
+                                  mojom::CoinType::SOL, absl::nullopt);
     base::RunLoop run_loop;
     json_rpc_service_->GetNetwork(
         mojom::CoinType::SOL, absl::nullopt,

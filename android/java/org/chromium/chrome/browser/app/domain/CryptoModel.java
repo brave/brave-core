@@ -33,13 +33,11 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
-import org.chromium.chrome.browser.crypto_wallet.util.SelectedAccountResponsesCollector;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.mojo.bindings.Callbacks.Callback1;
 import org.chromium.url.internal.mojom.Origin;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -97,8 +95,8 @@ public class CryptoModel {
         mCryptoSharedActions = cryptoSharedActions;
         mSharedData = new CryptoSharedDataImpl();
         mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, true, null);
-        mNetworkModel =
-                new NetworkModel(mJsonRpcService, mSharedData, mCryptoSharedActions, context);
+        mNetworkModel = new NetworkModel(
+                mBraveWalletService, mJsonRpcService, mSharedData, mCryptoSharedActions, context);
         mPortfolioModel = new PortfolioModel(context, mTxService, mKeyringService,
                 mBlockchainRegistry, mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy,
                 mBraveWalletService, mAssetRatioService, mSharedData);
@@ -125,7 +123,7 @@ public class CryptoModel {
             this.mBraveWalletService = mBraveWalletService;
             this.mAssetRatioService = mAssetRatioService;
             mPendingTxHelper.setTxService(mTxService);
-            mNetworkModel.resetServices(mJsonRpcService);
+            mNetworkModel.resetServices(mBraveWalletService, mJsonRpcService);
             mPortfolioModel.resetServices(context, mTxService, mKeyringService, mBlockchainRegistry,
                     mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
                     mAssetRatioService);
@@ -159,8 +157,7 @@ public class CryptoModel {
                         }
                         return pendingTransactionInfo;
                     });
-            mBraveWalletService.getSelectedCoin(
-                    coinType -> { _mCoinTypeMutableLiveData.postValue(coinType); });
+            updateCoinType();
             mNetworkModel.init();
         }
     }
@@ -197,24 +194,12 @@ public class CryptoModel {
 
     public void refreshTransactions() {
         synchronized (mLock) {
-            if (mKeyringService == null || mPendingTxHelper == null
-                    || mBraveWalletService == null) {
+            if (mKeyringService == null || mPendingTxHelper == null) {
                 return;
             }
-            List<Integer> coins = new ArrayList<>();
-            for (CryptoAccountTypeInfo cryptoAccountTypeInfo :
-                    mSharedData.getSupportedCryptoAccountTypes()) {
-                coins.add(cryptoAccountTypeInfo.getCoinType());
-            }
 
-            mKeyringService.getAllAccounts(allAccounts -> {
-                new SelectedAccountResponsesCollector(mKeyringService, mJsonRpcService, coins,
-                        Arrays.asList(allAccounts.accounts))
-                        .getAccounts(mOrigin, defaultAccountPerCoin -> {
-                            mPendingTxHelper.setAccountInfos(
-                                    new ArrayList<>(defaultAccountPerCoin));
-                        });
-            });
+            mKeyringService.getAllAccounts(
+                    allAccounts -> { mPendingTxHelper.setAccountInfos(allAccounts.accounts); });
         }
     }
 
@@ -330,10 +315,19 @@ public class CryptoModel {
     }
 
     public void updateCoinType(Callback1<Integer> callback) {
-        mBraveWalletService.getSelectedCoin(coinType -> {
-            _mCoinTypeMutableLiveData.postValue(coinType);
+        mKeyringService.getAllAccounts(allAccounts -> {
+            @CoinType.EnumType
+            int coin = CoinType.ETH;
+
+            // null selectedAccount may happen in tests.
+            if (allAccounts.selectedAccount != null) {
+                // Current coin is the coin of selected account.
+                coin = allAccounts.selectedAccount.accountId.coin;
+            }
+
+            _mCoinTypeMutableLiveData.postValue(coin);
             if (callback != null) {
-                callback.call(coinType);
+                callback.call(coin);
             }
         });
     }

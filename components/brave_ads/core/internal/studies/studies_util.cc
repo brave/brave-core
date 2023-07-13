@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/studies/studies_util.h"
 
+#include <iterator>
+
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"

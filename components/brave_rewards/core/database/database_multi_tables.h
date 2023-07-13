@@ -10,16 +10,16 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace database {
 
 class DatabaseMultiTables {
  public:
-  explicit DatabaseMultiTables(LedgerImpl& ledger);
+  explicit DatabaseMultiTables(RewardsEngineImpl& engine);
   ~DatabaseMultiTables();
 
   void GetTransactionReport(const mojom::ActivityMonth month,
@@ -33,7 +33,7 @@ class DatabaseMultiTables {
       const int year,
       GetTransactionReportCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 };
 
 }  // namespace database

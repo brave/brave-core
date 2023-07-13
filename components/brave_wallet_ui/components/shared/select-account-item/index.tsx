@@ -3,10 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
 
 // types
-import { BraveWallet, WalletAccountType } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -36,8 +35,11 @@ import {
   CaratDown
 } from './style'
 
+// hooks
+import { useAccountOrb } from '../../../common/hooks/use-orb'
+
 export interface Props {
-  account?: WalletAccountType
+  account?: BraveWallet.AccountInfo
   isSelected?: boolean
   selectedNetwork?: BraveWallet.NetworkInfo
   onSelectAccount?: () => void
@@ -71,9 +73,7 @@ export function SelectAccountItem ({
   const accountAddress = account?.address || ''
   const accountName = account?.name || ''
 
-  const orb = React.useMemo(() => {
-    return create({ seed: accountAddress.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [accountAddress])
+  const orb = useAccountOrb(account)
 
   const PossibleToolTip = React.useMemo(() => {
     return showTooltips ? Tooltip : ({ children }: React.PropsWithChildren<{

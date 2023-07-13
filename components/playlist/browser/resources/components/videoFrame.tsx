@@ -7,18 +7,25 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 interface Props {
- playing: boolean
-};
+  playing: boolean
+}
 
 const StyledVideoFrame = styled.iframe`
-  // 16:9 aspect ratio
   width: 100vw;
-  height: 56vw;
+  // 16:9 aspect ratio for video and fixed height for the controls area
+  height: calc(56vw + 160px);
   border: none;
 `
 
-export default function videoFrame ({ playing }: Props) {
-    return (
-      <StyledVideoFrame id="player" src="chrome-untrusted://playlist-player" allow="autoplay" scrolling="no" sandbox="allow-scripts allow-same-origin" data-playing={playing} />
-    )
+export default function VideoFrame ({ playing }: Props) {
+  return (
+    <StyledVideoFrame
+      id='player'
+      src='chrome-untrusted://playlist-player'
+      allow='autoplay'
+      scrolling='no'
+      sandbox='allow-scripts allow-same-origin'
+      data-playing={playing}
+    />
+  )
 }

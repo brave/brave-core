@@ -43,12 +43,22 @@ class SidebarController : public SidebarService::Observer,
   SidebarController(const SidebarController&) = delete;
   SidebarController& operator=(const SidebarController&) = delete;
 
+  // NOTE: Don't call this directly for panel item. Use ActivatePanelItem().
+  // This should be called as a result of SidePanelCoordinator's entry
+  // opening/closing event. If this method is called directly for activating
+  // panel, SidePanelCoordinator doesn't know about it.
+
   // |disposition| is only valid for shortcut type. If |disposition| is not
   // CURRENT_TAB, item at |index| is handled based on |disposition|.
   void ActivateItemAt(
       absl::optional<size_t> index,
       WindowOpenDisposition disposition = WindowOpenDisposition::CURRENT_TAB);
   void AddItemWithCurrentTab();
+
+  // Ask panel item activation state change to SidePanelUI.
+  void ActivatePanelItem(SidebarItem::BuiltInItemType panel_item);
+  void DeactivateCurrentPanel();
+
   // If current browser doesn't have a tab for |url|, active tab will load
   // |url|. Otherwise, existing tab will be activated.
   // ShowSingletonTab() has similar functionality but it loads url in the
@@ -56,6 +66,7 @@ class SidebarController : public SidebarService::Observer,
   void LoadAtTab(const GURL& url);
 
   bool IsActiveIndex(absl::optional<size_t> index) const;
+  bool GetIsPanelOperationFromActiveTabChangeAndReset();
 
   bool DoesBrowserHaveOpenedTabForItem(const SidebarItem& item) const;
 
@@ -76,7 +87,6 @@ class SidebarController : public SidebarService::Observer,
 
  private:
   void OnPreferenceChanged(const std::string& pref_name);
-  void UpdateSidebarVisibility();
 
   // Iterate tabs by host (if tabs with host of URL exist).
   // Otherwise, load URL in the active tab.
@@ -94,6 +104,8 @@ class SidebarController : public SidebarService::Observer,
   absl::optional<SidebarItem::BuiltInItemType> browser_active_panel_type_ =
       absl::nullopt;
 
+  // True if panel opening/closing request from active tab change.
+  bool operation_from_active_tab_change_ = false;
   std::unique_ptr<SidebarModel> sidebar_model_;
   base::ScopedObservation<SidebarService, SidebarService::Observer>
       sidebar_service_observed_{this};

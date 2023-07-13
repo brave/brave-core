@@ -644,7 +644,7 @@ void BraveBrowserView::OnWidgetActivationChanged(views::Widget* widget,
   // state is changed. With this, active window could have correct sidebar item
   // state.
   if (sidebar_container_view_) {
-    sidebar_container_view_->UpdateSidebar();
+    sidebar_container_view_->UpdateSidebarItemsState();
   }
 }
 

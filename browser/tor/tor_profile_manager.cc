@@ -47,6 +47,9 @@ void TorProfileManager::SwitchToTorProfile(
     base::OnceCallback<void(Browser*)> callback) {
   Profile* tor_profile =
       TorProfileManager::GetInstance().GetTorProfile(original_profile);
+  if (!tor_profile) {
+    return std::move(callback).Run(nullptr);
+  }
   profiles::OpenBrowserWindowForProfile(
       std::move(callback), /*always_create=*/false,
       /*is_new_profile=*/false, /*unblock_extensions=*/false, tor_profile);
@@ -69,6 +72,10 @@ TorProfileManager::~TorProfileManager() {
 }
 
 Profile* TorProfileManager::GetTorProfile(Profile* profile) {
+  if (TorProfileServiceFactory::IsTorDisabled(profile)) {
+    return nullptr;
+  }
+
   Profile* tor_profile = profile->GetOriginalProfile()->GetOffTheRecordProfile(
       Profile::OTRProfileID(tor::kTorProfileID),
       /*create_if_needed=*/true);

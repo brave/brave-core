@@ -8,16 +8,11 @@ import * as React from 'react'
 // Redux
 import { useDispatch } from 'react-redux'
 import { WalletActions } from '../../../common/actions'
-import { PanelActions } from '../../../panel/actions'
 import {
   useSafeWalletSelector,
   useUnsafeWalletSelector
 } from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
-import {
-  useGetSelectedChainQuery,
-  useSetNetworkMutation
-} from '../../../common/slices/api.slice'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -39,34 +34,23 @@ import {
 } from './style'
 
 export interface Props {
-  isPanel?: boolean
-  network?: BraveWallet.NetworkInfo
-  prevNetwork?: BraveWallet.NetworkInfo | undefined
-  onCancel?: () => void
+  network: BraveWallet.NetworkInfo
+  onCreated?: () => void
+  onCancel: () => void
 }
 
 export const CreateAccountTab = ({
-  isPanel,
-  prevNetwork,
-  network,
-  onCancel
+  network: accountNetwork,
+  onCreated,
+  onCancel,
 }: Props) => {
   // redux
   const dispatch = useDispatch()
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
 
-  // queries
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
-  const [setNetwork] = useSetNetworkMutation()
-
   // state
   const [showUnlock, setShowUnlock] = React.useState<boolean>(false)
-
-  // memos
-  const accountNetwork = React.useMemo(() => {
-    return network || selectedNetwork
-  }, [network, selectedNetwork])
 
   const suggestedAccountName = React.useMemo((): string => {
     return accountNetwork
@@ -74,44 +58,10 @@ export const CreateAccountTab = ({
       : ''
   }, [accounts, accountNetwork])
 
-  // methods
-  const onCancelCreateAccount = React.useCallback(async () => {
-    if (onCancel) {
-      return onCancel()
-    }
-    if (prevNetwork) {
-      await setNetwork({
-        chainId: prevNetwork.chainId,
-        coin: prevNetwork.coin
-      })
-    }
-
-    // prevNetwork can become undefined if the 
-    // user closes and then reopens
-    // the wallet, we need to have a fallback network
-    // when the user clicks No or else the user will get
-    // stuck on the createAccount screen.
-    if (!prevNetwork) {
-      await setNetwork({
-        chainId: BraveWallet.MAINNET_CHAIN_ID,
-        coin: BraveWallet.CoinType.ETH
-      })
-    }
-
-    if (isPanel) {
-      dispatch(PanelActions.navigateTo('main'))
-    }
-  }, [onCancel, prevNetwork, isPanel, setNetwork])
-
   const onCreateAccount = React.useCallback(() => {
     // unlock needed to create accounts
     if (isWalletLocked && !showUnlock) {
       return setShowUnlock(true)
-    }
-
-    // Do nothing if accountNetwork is undefined
-    if (!accountNetwork) {
-      return
     }
 
     dispatch(
@@ -124,16 +74,15 @@ export const CreateAccountTab = ({
         accountName: suggestedAccountName
       })
     )
-
-    if (isPanel) {
-      dispatch(PanelActions.navigateTo('main'))
+    if (onCreated) {
+      onCreated()
     }
   }, [
     isWalletLocked,
     showUnlock,
     accountNetwork,
     suggestedAccountName,
-    isPanel
+    onCreated,
   ])
 
   const handleUnlockAttempt = React.useCallback((password: string): void => {
@@ -174,7 +123,7 @@ export const CreateAccountTab = ({
       <ButtonRow>
         <NavButton
           buttonType='secondary'
-          onSubmit={onCancelCreateAccount}
+          onSubmit={onCancel}
           text={getLocale('braveWalletCreateAccountNo')}
         />
         <NavButton

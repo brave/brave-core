@@ -92,8 +92,15 @@ export const useSwap = () => {
   const nativeAsset = useMemo(() => makeNetworkAsset(selectedNetwork), [selectedNetwork])
   const [getAccountTokenCurrentBalanceLazy] = useLazyGetAccountTokenCurrentBalanceQuery()
   const getBalance = useCallback(
-    async (account: AccountInfoEntity, token: BraveWallet.BlockchainToken) => {
-      return await getAccountTokenCurrentBalanceLazy({ coin: account.accountId.coin, address: account.address, token }).unwrap()
+    async (
+      accountId: BraveWallet.AccountId,
+      token: BraveWallet.BlockchainToken
+    ) => {
+      return await getAccountTokenCurrentBalanceLazy({
+        coin: accountId.coin,
+        address: accountId.address,
+        token
+      }).unwrap()
     },
     [getAccountTokenCurrentBalanceLazy]
   )
@@ -211,16 +218,16 @@ export const useSwap = () => {
   )
 
   const getAssetBalanceFactory = useCallback(
-    (account: AccountInfoEntity, network: BraveWallet.NetworkInfo) =>
+    (accountId: BraveWallet.AccountId, network: BraveWallet.NetworkInfo) =>
       async (asset: BraveWallet.BlockchainToken) => {
         const balanceRegistryKey = getBalanceRegistryKey(
-          account,
+          accountId,
           asset.chainId,
           asset.contractAddress
         )
 
         try {
-          const result = await getBalance(account, asset)
+          const result = await getBalance(accountId, asset)
           return {
             key: balanceRegistryKey,
             value: result
@@ -242,13 +249,13 @@ export const useSwap = () => {
         abortController.abort()
       }
 
-      let overriddenParams = {
+      const overriddenParams: Partial<RefreshBlockchainStateParams> = {
         network: selectedNetwork,
-        account: selectedAccount,
+        accountId: selectedAccount?.accountId,
         ...overrides
       }
 
-      if (!overriddenParams.account) {
+      if (!overriddenParams.accountId) {
         return
       }
 
@@ -256,12 +263,12 @@ export const useSwap = () => {
         return
       }
 
-      const { network, account } = overriddenParams
-      const networkAccount =
-        account.accountId.coin !== network.coin
-          ? accounts.find(account => account.accountId.coin === network.coin)
-          : account
-      if (!networkAccount) {
+      const { network, accountId } = overriddenParams
+      const networkAccountId =
+        accountId.coin !== network.coin
+          ? accounts.find(account => account.accountId.coin === network.coin)?.accountId
+          : accountId
+      if (!networkAccountId) {
         return
       }
 
@@ -271,7 +278,7 @@ export const useSwap = () => {
 
       // Update native asset balance first, since it's the default asset on
       // first load.
-      const balanceFactory = getAssetBalanceFactory(networkAccount, network)
+      const balanceFactory = getAssetBalanceFactory(networkAccountId, network)
       const nativeAccountBalanceResult = await balanceFactory(makeNetworkAsset(network))
 
       // The dependency on tokenBalances is intentional. We want to make sure
@@ -297,14 +304,14 @@ export const useSwap = () => {
         let tokenBalancesResult
         if (network.coin === BraveWallet.CoinType.ETH) {
           tokenBalancesResult = await getTokenBalances({
-            address: networkAccount.address,
+            address: networkAccountId.address,
             tokens: networkTokens,
             chainId: network.chainId,
             coin: CoinTypes.ETH
           }).unwrap()
         } else if (network.coin === BraveWallet.CoinType.SOL) {
           tokenBalancesResult = await getTokenBalances({
-            pubkey: networkAccount.address,
+            pubkey: networkAccountId.address,
             chainId: network.chainId,
             coin: CoinTypes.SOL
           }).unwrap()
@@ -315,7 +322,7 @@ export const useSwap = () => {
 
         const tokenBalancesWithRegistryKeys = Object.entries(tokenBalancesResult)
           .map(([key, value]) => [
-            getBalanceRegistryKey(networkAccount, network.chainId, key),
+            getBalanceRegistryKey(networkAccountId, network.chainId, key),
             value
           ])
           .filter(([_, value]) => new Amount(value).isPositive())
@@ -556,7 +563,7 @@ export const useSwap = () => {
       }
 
       const balanceRegistryKey = getBalanceRegistryKey(
-        selectedAccount,
+        selectedAccount.accountId,
         token.chainId,
         token.contractAddress
       )
@@ -574,7 +581,7 @@ export const useSwap = () => {
     await handleOnSetFromAmount('')
 
     if (toToken && selectedAccount && selectedNetwork) {
-      const balance = await getAssetBalanceFactory(selectedAccount, selectedNetwork)(toToken)
+      const balance = await getAssetBalanceFactory(selectedAccount.accountId, selectedNetwork)(toToken)
       dispatchBalancesUpdate({
         payload: {
           [balance.key]: balance.value
@@ -646,7 +653,7 @@ export const useSwap = () => {
       }
 
       if (selectedAccount && selectedNetwork) {
-        const balance = await getAssetBalanceFactory(selectedAccount, selectedNetwork)(token)
+        const balance = await getAssetBalanceFactory(selectedAccount.accountId, selectedNetwork)(token)
         dispatchBalancesUpdate({
           payload: {
             [balance.key]: balance.value

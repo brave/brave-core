@@ -40,3 +40,20 @@ export const formatTokenBalanceWithSymbol = (balance: string, decimals: number, 
     .divideByDecimals(decimals)
     .format(decimalPlace ?? 6, true)} ${symbol}`
 }
+
+
+export const getPercentAmount = (
+  asset: BraveWallet.BlockchainToken,
+  account: WalletAccountType,
+  percent: number
+): string => {
+  const assetBalance = getBalance(account, asset) || '0'
+  const amountWrapped = new Amount(assetBalance).times(percent)
+
+  const formattedAmount =
+    percent === 1
+      ? amountWrapped.divideByDecimals(asset.decimals).format()
+      : amountWrapped.divideByDecimals(asset.decimals).format(6)
+
+  return formattedAmount
+}

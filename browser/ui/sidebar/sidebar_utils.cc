@@ -8,10 +8,10 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/constants.h"
-#include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/search/search.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
@@ -21,6 +21,8 @@
 #include "content/public/common/url_constants.h"
 
 namespace sidebar {
+
+using BuiltInItemType = SidebarItem::BuiltInItemType;
 
 namespace {
 
@@ -107,6 +109,35 @@ bool CanAddCurrentActiveTabToSidebar(Browser* browser) {
     return false;
 
   return true;
+}
+
+SidePanelEntryId SidePanelIdFromSideBarItemType(BuiltInItemType type) {
+  switch (type) {
+    case BuiltInItemType::kReadingList:
+      return SidePanelEntryId::kReadingList;
+    case BuiltInItemType::kBookmarks:
+      return SidePanelEntryId::kBookmarks;
+    case BuiltInItemType::kPlaylist:
+      return SidePanelEntryId::kPlaylist;
+    case BuiltInItemType::kChatUI:
+      return SidePanelEntryId::kChatUI;
+    case BuiltInItemType::kWallet:
+      [[fallthrough]];
+    case BuiltInItemType::kBraveTalk:
+      [[fallthrough]];
+    case BuiltInItemType::kHistory:
+      [[fallthrough]];
+    case BuiltInItemType::kNone:
+      // Add a new case for any new types which we want to support.
+      NOTREACHED() << "Asked for a panel Id from a sidebar item which should "
+                      "not have a panel Id, sending Reading List instead.";
+      return SidePanelEntryId::kReadingList;
+  }
+}
+
+SidePanelEntryId SidePanelIdFromSideBarItem(const SidebarItem& item) {
+  DCHECK(item.open_in_panel);
+  return SidePanelIdFromSideBarItemType(item.built_in_item_type);
 }
 
 }  // namespace sidebar

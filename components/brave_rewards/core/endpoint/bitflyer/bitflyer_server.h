@@ -8,16 +8,16 @@
 
 #include "brave/components/brave_rewards/core/endpoint/bitflyer/get_balance/get_balance_bitflyer.h"
 #include "brave/components/brave_rewards/core/endpoint/bitflyer/post_oauth/post_oauth_bitflyer.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace endpoint {
 
 class BitflyerServer {
  public:
-  explicit BitflyerServer(LedgerImpl& ledger);
+  explicit BitflyerServer(RewardsEngineImpl& engine);
   ~BitflyerServer();
 
   bitflyer::GetBalance& get_balance() { return get_balance_; }

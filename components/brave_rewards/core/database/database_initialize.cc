@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_rewards/core/database/database_initialize.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
 using std::placeholders::_1;
@@ -16,8 +16,8 @@ using std::placeholders::_2;
 namespace brave_rewards::internal {
 namespace database {
 
-DatabaseInitialize::DatabaseInitialize(LedgerImpl& ledger)
-    : ledger_(ledger), migration_(ledger) {}
+DatabaseInitialize::DatabaseInitialize(RewardsEngineImpl& engine)
+    : engine_(engine), migration_(engine) {}
 
 DatabaseInitialize::~DatabaseInitialize() = default;
 
@@ -29,7 +29,7 @@ void DatabaseInitialize::Start(LegacyResultCallback callback) {
   command->type = mojom::DBCommand::Type::INITIALIZE;
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(
+  engine_->RunDBTransaction(
       std::move(transaction),
       std::bind(&DatabaseInitialize::OnInitialize, this, _1, callback));
 }

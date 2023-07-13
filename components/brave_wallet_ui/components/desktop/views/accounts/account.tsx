@@ -7,7 +7,6 @@ import * as React from 'react'
 import { Redirect, useParams, useLocation } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import { create } from 'ethereum-blockies'
 
 // Selectors
 import { useSafeWalletSelector, useUnsafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
@@ -77,6 +76,7 @@ import {
   querySubscriptionOptions60s
 } from '../../../../common/slices/constants'
 import { useMultiChainSellAssets } from '../../../../common/hooks/use-multi-chain-sell-assets'
+import { useAccountOrb } from '../../../../common/hooks/use-orb'
 
 // Actions
 import { AccountsTabActions } from '../../../../page/reducers/accounts-tab-reducer'
@@ -137,11 +137,7 @@ export const Account = () => {
   } = useMultiChainSellAssets()
 
   // memos
-  const orb = React.useMemo(() => {
-    if (selectedAccount) {
-      return create({ seed: selectedAccount.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-    }
-  }, [selectedAccount])
+  const orb = useAccountOrb(selectedAccount)
 
   const transactionList = React.useMemo(() => {
     return sortTransactionByDate(unsortedTransactionList, 'descending')

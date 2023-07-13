@@ -220,6 +220,8 @@ source_set("ui") {
         "webui/ai_chat/ai_chat_ui_page_handler.cc",
         "webui/ai_chat/ai_chat_ui_page_handler.h",
       ]
+
+      deps += [ "//chrome/browser/favicon" ]
     }
 
     if (is_mac) {
@@ -724,8 +726,6 @@ source_set("ui") {
       "views/sidebar/sidebar_items_scroll_view.h",
       "views/sidebar/sidebar_show_options_event_detect_widget.cc",
       "views/sidebar/sidebar_show_options_event_detect_widget.h",
-      "views/sidebar/sidebar_side_panel_utils.cc",
-      "views/sidebar/sidebar_side_panel_utils.h",
     ]
   }
 

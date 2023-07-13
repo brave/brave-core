@@ -33,6 +33,10 @@ export const icon = styled.div`
   img {
     height: 32px;
     width: auto;
+
+    &.rounded {
+      border-radius: 50%;
+    }
   }
 `
 

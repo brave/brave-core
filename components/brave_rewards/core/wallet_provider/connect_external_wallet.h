@@ -12,16 +12,16 @@
 #include "base/memory/raw_ref.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/endpoints/post_connect/post_connect.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace wallet_provider {
 
 class ConnectExternalWallet {
  public:
-  explicit ConnectExternalWallet(LedgerImpl& ledger);
+  explicit ConnectExternalWallet(RewardsEngineImpl& engine);
 
   virtual ~ConnectExternalWallet();
 
@@ -42,7 +42,7 @@ class ConnectExternalWallet {
                  std::string&& address,
                  endpoints::PostConnect::Result&&) const;
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
 
  private:
   absl::optional<OAuthInfo> ExchangeOAuthInfo(mojom::ExternalWalletPtr) const;

@@ -19,7 +19,7 @@
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_capabilities/get_capabilities.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_me/get_me.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/uphold_server.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_card.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_user.h"
 #include "brave/components/brave_rewards/core/wallet_provider/uphold/connect_uphold_wallet.h"
@@ -27,7 +27,7 @@
 #include "brave/components/brave_rewards/core/wallet_provider/uphold/uphold_transfer.h"
 
 namespace brave_rewards::internal {
-class LedgerImpl;
+class RewardsEngineImpl;
 
 namespace uphold {
 
@@ -37,7 +37,7 @@ using endpoint::uphold::GetMeCallback;
 
 class Uphold {
  public:
-  explicit Uphold(LedgerImpl& ledger);
+  explicit Uphold(RewardsEngineImpl& engine);
 
   ~Uphold();
 
@@ -104,7 +104,7 @@ class Uphold {
 
   void RemoveTransferFee(const std::string& contribution_id);
 
-  const raw_ref<LedgerImpl> ledger_;
+  const raw_ref<RewardsEngineImpl> engine_;
   UpholdCard card_;
   ConnectUpholdWallet connect_wallet_;
   GetUpholdWallet get_wallet_;

@@ -12,7 +12,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -21,7 +21,7 @@ namespace brave_rewards::internal {
 namespace endpoint {
 namespace payment {
 
-PostVotes::PostVotes(LedgerImpl& ledger) : ledger_(ledger) {}
+PostVotes::PostVotes(RewardsEngineImpl& engine) : engine_(engine) {}
 
 PostVotes::~PostVotes() = default;
 
@@ -68,10 +68,10 @@ mojom::Result PostVotes::CheckStatusCode(const int status_code) {
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 void PostVotes::Request(const credential::CredentialsRedeem& redeem,
@@ -83,7 +83,7 @@ void PostVotes::Request(const credential::CredentialsRedeem& redeem,
   request->content = GeneratePayload(redeem);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  engine_->LoadURL(std::move(request), url_callback);
 }
 
 void PostVotes::OnRequest(mojom::UrlResponsePtr response,

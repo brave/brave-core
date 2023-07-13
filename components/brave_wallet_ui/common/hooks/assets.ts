@@ -16,15 +16,17 @@ import { WalletSelectors } from '../selectors'
 // hooks
 import { useUnsafeWalletSelector } from './use-safe-selector'
 import {
+  useGetSelectedAccountIdQuery,
   useGetSelectedChainQuery,
   useGetTokenSpotPricesQuery
 } from '../slices/api.slice'
 import { querySubscriptionOptions60s } from '../slices/constants'
+import { findAccountByAccountId } from '../../utils/account-utils'
 
 export function useAssets () {
   // redux
-  const selectedAccount = useUnsafeWalletSelector(
-    WalletSelectors.selectedAccount
+  const accounts = useUnsafeWalletSelector(
+    WalletSelectors.accounts
   )
   const userVisibleTokensInfo = useUnsafeWalletSelector(
     WalletSelectors.userVisibleTokensInfo
@@ -32,6 +34,7 @@ export function useAssets () {
 
   // queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
+  const { data: selectedAccountId } = useGetSelectedAccountIdQuery()
 
   // memos
   const assetsByNetwork = React.useMemo(() => {
@@ -45,6 +48,10 @@ export function useAssets () {
       token.coin === selectedNetwork.coin
     )
   }, [userVisibleTokensInfo, selectedNetwork])
+
+  const selectedAccount = React.useMemo(() => {
+    return findAccountByAccountId(accounts, selectedAccountId)
+  }, [accounts, selectedAccountId])
 
   const tokenPriceIds = React.useMemo(
     () =>

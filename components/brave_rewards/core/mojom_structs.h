@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_MOJOM_STRUCTS_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_MOJOM_STRUCTS_H_
 
-#include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/ledger_database.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_database.mojom.h"
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_MOJOM_STRUCTS_H_

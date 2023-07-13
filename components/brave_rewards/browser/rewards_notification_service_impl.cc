@@ -327,7 +327,7 @@ void RewardsNotificationServiceImpl::OnFetchPromotions(
     RewardsService* rewards_service,
     const mojom::Result result,
     const std::vector<mojom::PromotionPtr>& list) {
-  if (static_cast<mojom::Result>(result) != mojom::Result::LEDGER_OK) {
+  if (static_cast<mojom::Result>(result) != mojom::Result::OK) {
     return;
   }
 
@@ -384,12 +384,11 @@ void RewardsNotificationServiceImpl::OnReconcileComplete(
   }
 
   const bool completed_auto_contribute =
-      result == mojom::Result::LEDGER_OK &&
+      result == mojom::Result::OK &&
       type == mojom::RewardsType::AUTO_CONTRIBUTE;
 
   if (completed_auto_contribute || result == mojom::Result::NOT_ENOUGH_FUNDS ||
-      result == mojom::Result::LEDGER_ERROR ||
-      result == mojom::Result::TIP_ERROR) {
+      result == mojom::Result::FAILED || result == mojom::Result::TIP_ERROR) {
     RewardsNotificationService::RewardsNotificationArgs args;
     args.push_back(contribution_id);
     args.push_back(base::NumberToString(static_cast<int>(result)));

@@ -179,7 +179,8 @@ export function useZeroEx (params: SwapParams) {
           const allowance = await getERC20Allowance(
             priceQuoteResponse.response.sellTokenAddress,
             selectedAccount.address,
-            priceQuoteResponse.response.allowanceTarget
+            priceQuoteResponse.response.allowanceTarget,
+            selectedNetwork.chainId,
           )
           hasAllowanceResult = new Amount(allowance).gte(priceQuoteResponse.response.sellAmount)
         } catch (e) {

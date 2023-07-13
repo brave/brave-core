@@ -11,9 +11,9 @@
 #include "base/strings/string_piece.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/database/database_publisher_prefix_list.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/publisher/protos/publisher_prefix_list.pb.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 
 // npm run test -- brave_unit_tests --filter=DatabasePublisherPrefixListTest.*
 
@@ -51,12 +51,12 @@ class DatabasePublisherPrefixListTest : public ::testing::Test {
   }
 
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  DatabasePublisherPrefixList database_prefix_list_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  DatabasePublisherPrefixList database_prefix_list_{mock_engine_impl_};
 };
 
 TEST_F(DatabasePublisherPrefixListTest, Reset) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .Times(2)
       .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         EXPECT_TRUE(transaction);

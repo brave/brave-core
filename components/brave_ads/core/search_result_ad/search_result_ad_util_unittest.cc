@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/core/search_result_ad/search_result_ad_util.h"
+
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 

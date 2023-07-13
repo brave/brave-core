@@ -1,0 +1,23 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("lib") {
+  visibility = [
+    "//brave/test:*",
+    "//chrome/utility:*",
+  ]
+
+  sources = [
+    "rewards_engine_factory.cc",
+    "rewards_engine_factory.h",
+  ]
+
+  public_deps = [
+    "public/interfaces",
+    "//brave/components/brave_rewards/core",
+  ]
+
+  deps = [ "//mojo/public/cpp/system" ]
+}

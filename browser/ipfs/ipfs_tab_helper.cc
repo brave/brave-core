@@ -23,7 +23,6 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
-#include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "net/base/url_util.h"
 #include "net/http/http_status_code.h"
@@ -71,11 +70,8 @@ IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
       content::WebContentsUserData<IPFSTabHelper>(*web_contents),
       pref_service_(
           user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())) {
-  auto* storage_partition =
-      web_contents->GetBrowserContext()->GetDefaultStoragePartition();
-
   resolver_ = std::make_unique<IPFSHostResolver>(
-      *storage_partition->GetNetworkContext(), kDnsDomainPrefix);
+      web_contents->GetBrowserContext(), kDnsDomainPrefix);
   pref_change_registrar_.Init(pref_service_);
   pref_change_registrar_.Add(
       kIPFSResolveMethod,

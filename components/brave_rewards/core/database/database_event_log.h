@@ -16,7 +16,7 @@ namespace database {
 
 class DatabaseEventLog : public DatabaseTable {
  public:
-  explicit DatabaseEventLog(LedgerImpl& ledger);
+  explicit DatabaseEventLog(RewardsEngineImpl& engine);
   ~DatabaseEventLog() override;
 
   void Insert(const std::string& key, const std::string& value);

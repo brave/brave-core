@@ -229,6 +229,8 @@ export interface UIState {
   selectedPendingTransactionId?: string | undefined
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   isPanel: boolean
+  collapsedPortfolioAccountAddresses: string[]
+  collapsedPortfolioNetworkKeys: string[]
 }
 
 export interface WalletState {
@@ -241,7 +243,6 @@ export interface WalletState {
   favoriteApps: BraveWallet.AppItem[]
   isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
-  selectedAccount?: WalletAccountType
   accounts: WalletAccountType[]
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   fullTokenList: BraveWallet.BlockchainToken[]
@@ -344,9 +345,9 @@ export interface WalletPanelState {
   ui: UIState
 }
 
-export interface WalletInfo extends BraveWallet.WalletInfo {
-  accountInfos: BraveWallet.AccountInfo[]
-  selectedAccount: string
+export interface WalletInitializedPayload {
+  walletInfo: BraveWallet.WalletInfo
+  allAccounts: BraveWallet.AllAccountsInfo
 }
 
 export type AmountValidationErrorType =
@@ -817,7 +818,9 @@ export enum WalletRoutes {
 
   // Hashes
   AccountsHash = '#accounts',
-  TransactionsHash = '#transactions'
+  TransactionsHash = '#transactions',
+  MyAssetsHash = '#my-assets',
+  AvailableAssetsHash = '#available-assets'
 }
 
 export const WalletOrigin = 'chrome://wallet'
@@ -1036,6 +1039,8 @@ export type NavIDTypes =
   | 'accounts'
   | 'assets'
   | 'transactions'
+  | 'my_assets'
+  | 'available_assets'
 
 export interface NavOption {
   id: NavIDTypes

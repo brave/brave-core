@@ -3,36 +3,24 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-.list {
+.turn {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  font: var(--leo-font-secondary-default-regular);
+  color: var(--leo-color-text-primary);
   padding: 16px;
+  background-color: var(--leo-color-page-background);
+  margin-top: 16px;
 }
-
-.textBase {
-  p {
-   margin: 0;
-   white-space: pre-wrap;
-  }
- }
 
 .turnAI {
-  @extend .textBase;
-  padding: 16px;
-}
-
-.turnHuman {
-  @extend .textBase;
-  padding: 0 16px 16px 0;
-
-  // bubble wrap
-  p:first-child {
-    background-color: var(--leo-color-container-highlight);
-    padding: 16px;
-    border-radius: 16px 16px 2px 16px;
-  }
+  background-color: transparent;
+  margin-top: initial;
+  padding-bottom: 0;
 }
 
 .caret {
-  @extend .textBase;
   display: inline-block;
   margin-left: 5px;
   width: 8px;
@@ -40,9 +28,58 @@
   background-color: currentColor;
 }
 
-.suggestedQuestions {
+.suggestedQuestionsBox {
+  padding: 16px 16px 16px 64px;
+
+  leo-button {
+    span {
+      align-items: center;
+    }
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 8px;
+  }
+}
+
+.suggestedQuestionLabel {
+  font: var(--leo-font-secondary-small-regular);
+  color: var(--leo-color-text-secondary);
+  padding-bottom: 16px;
+}
+
+
+.avatar {
+  --leo-icon-size: 18px;
+  width: 32px;
+  height: 32px;
+  background-color: var(--leo-color-container-background);
+  border-radius: 100px;
+  flex-shrink: 0;
+  color: var(--leo-color-icon-default);
   display: flex;
-  flex-direction: column;
-  align-items: start;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarAI {
+  background: linear-gradient(314.42deg, #FA7250 8.49%, #FF1893 43.72%, #A78AFF 99.51%);
+  color: white;
+}
+
+.message {
+  margin: 0;
+  white-space: pre-wrap;
+  padding-top: 5px;
+}
+
+.buttonBox {
+  --leo-icon-size: 20px;
+  display: flex;
+  align-items: flex-start;
   gap: 6px;
+  text-align: left;
 }

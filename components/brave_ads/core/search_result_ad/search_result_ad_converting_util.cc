@@ -41,24 +41,34 @@ constexpr char kDataLandingPage[] = "data-landing-page";
 constexpr char kDataHeadlineText[] = "data-headline-text";
 constexpr char kDataDescription[] = "data-description";
 constexpr char kDataRewardsValue[] = "data-rewards-value";
-constexpr char kDataConversionTypeValue[] = "data-conversion-type-value";
 constexpr char kDataConversionUrlPatternValue[] =
     "data-conversion-url-pattern-value";
+constexpr char kDataConversionExtractVerifiableIdValue[] =
+    "data-conversion-extract-external-id-value";
 constexpr char kDataConversionAdvertiserPublicKeyValue[] =
     "data-conversion-advertiser-public-key-value";
 constexpr char kDataConversionObservationWindowValue[] =
     "data-conversion-observation-window-value";
 
+// The list of search result ad attributes. All of them are required.
 constexpr auto kSearchResultAdRequiredAttributes =
     base::MakeFixedFlatSet<base::StringPiece>(
         {kDataPlacementId, kDataCreativeInstanceId, kDataCreativeSetId,
          kDataCampaignId, kDataAdvertiserId, kDataLandingPage,
          kDataHeadlineText, kDataDescription, kDataRewardsValue});
 
-constexpr auto kSearchResultAdConversionAttributes =
+// The list of all conversion attributes, including optional.
+constexpr auto kAllConversionAttributes =
     base::MakeFixedFlatSet<base::StringPiece>(
-        {kDataConversionTypeValue, kDataConversionUrlPatternValue,
+        {kDataConversionUrlPatternValue,
+         kDataConversionExtractVerifiableIdValue,
          kDataConversionAdvertiserPublicKeyValue,
+         kDataConversionObservationWindowValue});
+
+// The list of required (non-optional) conversion attributes.
+constexpr auto kRequiredConversionAttributes =
+    base::MakeFixedFlatSet<base::StringPiece>(
+        {kDataConversionUrlPatternValue,
          kDataConversionObservationWindowValue});
 
 bool GetStringValue(const schema_org::mojom::PropertyPtr& ad_property,
@@ -72,8 +82,8 @@ bool GetStringValue(const schema_org::mojom::PropertyPtr& ad_property,
     return false;
   }
 
-  const std::string& value = ad_property->values->get_string_values().front();
-  *out_value = value;
+  *out_value = ad_property->values->get_string_values().front();
+
   return true;
 }
 
@@ -88,6 +98,22 @@ bool GetNotEmptyStringValue(const schema_org::mojom::PropertyPtr& ad_property,
   if (out_value->empty()) {
     return false;
   }
+
+  return true;
+}
+
+bool GetBoolValue(const schema_org::mojom::PropertyPtr& ad_property,
+                  bool* out_value) {
+  CHECK(ad_property);
+  CHECK(out_value);
+
+  // Wrong attribute type.
+  if (!ad_property->values->is_bool_values() ||
+      ad_property->values->get_bool_values().size() != 1) {
+    return false;
+  }
+
+  *out_value = ad_property->values->get_bool_values().front();
 
   return true;
 }
@@ -120,8 +146,8 @@ bool GetDoubleValue(const schema_org::mojom::PropertyPtr& ad_property,
     return false;
   }
 
-  const std::string& value = ad_property->values->get_string_values().front();
-  return base::StringToDouble(value, out_value);
+  return base::StringToDouble(ad_property->values->get_string_values().front(),
+                              out_value);
 }
 
 bool GetUrlValue(const schema_org::mojom::PropertyPtr& ad_property,
@@ -135,13 +161,13 @@ bool GetUrlValue(const schema_org::mojom::PropertyPtr& ad_property,
     return false;
   }
 
-  const std::string& value = ad_property->values->get_string_values().front();
-  const GURL url(value);
+  const GURL url(ad_property->values->get_string_values().front());
   if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme)) {
     return false;
   }
 
   *out_value = url;
+
   return true;
 }
 
@@ -200,20 +226,28 @@ bool SetConversionProperty(const schema_org::mojom::PropertyPtr& ad_property,
   CHECK(conversion);
 
   const std::string& name = ad_property->name;
-  if (name == kDataConversionTypeValue) {
-    return GetNotEmptyStringValue(ad_property, &conversion->type);
-  }
 
   if (name == kDataConversionUrlPatternValue) {
     return GetNotEmptyStringValue(ad_property, &conversion->url_pattern);
   }
 
+  if (name == kDataConversionExtractVerifiableIdValue) {
+    return GetBoolValue(ad_property, &conversion->extract_verifiable_id);
+  }
+
   if (name == kDataConversionAdvertiserPublicKeyValue) {
-    return GetStringValue(ad_property, &conversion->advertiser_public_key);
+    return GetStringValue(ad_property,
+                          &conversion->verifiable_advertiser_public_key_base64);
   }
 
   if (name == kDataConversionObservationWindowValue) {
-    return GetIntValue(ad_property, &conversion->observation_window);
+    int32_t observation_window;
+    const bool success = GetIntValue(ad_property, &observation_window);
+    if (success) {
+      conversion->observation_window = base::Days(observation_window);
+    }
+
+    return success;
   }
 
   NOTREACHED_NORETURN();
@@ -246,8 +280,7 @@ void ConvertEntityToSearchResultAd(const schema_org::mojom::EntityPtr& entity,
                        << property_name;
       }
       found_attributes.insert(property_name);
-    } else if (base::Contains(kSearchResultAdConversionAttributes,
-                              property_name)) {
+    } else if (base::Contains(kAllConversionAttributes, property_name)) {
       if (!SetConversionProperty(ad_property, conversion.get())) {
         return VLOG(6) << "Cannot read search result ad attribute value: "
                        << property_name;
@@ -271,8 +304,8 @@ void ConvertEntityToSearchResultAd(const schema_org::mojom::EntityPtr& entity,
   if (!found_conversion_attributes.empty()) {
     std::vector<base::StringPiece> absent_conversion_attributes;
     base::ranges::set_difference(
-        kSearchResultAdConversionAttributes.cbegin(),
-        kSearchResultAdConversionAttributes.cend(),
+        kRequiredConversionAttributes.cbegin(),
+        kRequiredConversionAttributes.cend(),
         found_conversion_attributes.cbegin(),
         found_conversion_attributes.cend(),
         std::back_inserter(absent_conversion_attributes));
@@ -332,12 +365,14 @@ void LogSearchResultAdMap(const SearchResultAdMap& search_result_ads) {
             << "\": " << search_result_ad->description << "\n  \""
             << kDataRewardsValue << "\": " << search_result_ad->value;
     if (search_result_ad->conversion) {
-      VLOG(6) << "Conversion attributes:\n  \"" << kDataConversionTypeValue
-              << "\": " << search_result_ad->conversion->type << "\n  \""
+      VLOG(6) << "Conversion attributes:\n  \""
               << kDataConversionUrlPatternValue
               << "\": " << search_result_ad->conversion->url_pattern << "\n  \""
-              << kDataConversionAdvertiserPublicKeyValue
-              << "\": " << search_result_ad->conversion->advertiser_public_key
+              << kDataConversionExtractVerifiableIdValue
+              << "\": " << search_result_ad->conversion->extract_verifiable_id
+              << "\n  \"" << kDataConversionAdvertiserPublicKeyValue << "\": "
+              << search_result_ad->conversion
+                     ->verifiable_advertiser_public_key_base64
               << "\n  \"" << kDataConversionObservationWindowValue
               << "\": " << search_result_ad->conversion->observation_window;
     }

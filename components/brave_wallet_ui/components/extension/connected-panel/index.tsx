@@ -10,13 +10,14 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import getWalletPanelApiProxy from '../../../panel/wallet_panel_api_proxy'
 
 // Components
-import { create, background } from 'ethereum-blockies'
+import { background } from 'ethereum-blockies'
 import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
+import { findAccountByAccountId } from '../../../utils/account-utils'
 import Amount from '../../../utils/amount'
 import { deserializeOrigin } from '../../../utils/model-serialization-utils'
 import { makeNetworkAsset } from '../../../options/asset-options'
@@ -33,6 +34,7 @@ import {
 import {
   querySubscriptionOptions60s
 } from '../../../common/slices/constants'
+import { useSelectedAccountQuery } from '../../../common/slices/api.slice.extra'
 import { useApiProxy } from '../../../common/hooks/use-api-proxy'
 import {
   useScopedBalanceUpdater
@@ -41,6 +43,7 @@ import {
   useSafeWalletSelector,
   useUnsafeWalletSelector
 } from '../../../common/hooks/use-safe-selector'
+import { useAccountOrb } from '../../../common/hooks/use-orb'
 
 // types
 import {
@@ -90,9 +93,6 @@ export const ConnectedPanel = (props: Props) => {
     WalletSelectors.defaultFiatCurrency
   )
   const originInfo = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
-  const selectedAccount = useUnsafeWalletSelector(
-    WalletSelectors.selectedAccount
-  )
   const connectedAccounts = useUnsafeWalletSelector(
     WalletSelectors.connectedAccounts
   )
@@ -100,6 +100,7 @@ export const ConnectedPanel = (props: Props) => {
   // queries
   const { currentData: selectedNetwork } = useGetSelectedChainQuery(undefined)
   const selectedCoin = selectedNetwork?.coin
+  const { data: selectedAccount } = useSelectedAccountQuery()
 
   const networkAsset = React.useMemo(() =>
     makeNetworkAsset(selectedNetwork),
@@ -141,6 +142,7 @@ export const ConnectedPanel = (props: Props) => {
   const [isPermissionDenied, setIsPermissionDenied] = React.useState<boolean>(false)
 
   // computed
+  // TODO(apaymyshev): handle bitcoin address
   const selectedAccountAddress = selectedAccount?.address || ''
   const selectedAccountName = selectedAccount?.name || ''
 
@@ -225,9 +227,7 @@ export const ConnectedPanel = (props: Props) => {
     return background({ seed: selectedAccountAddress.toLowerCase() })
   }, [selectedAccountAddress])
 
-  const orb = React.useMemo(() => {
-    return create({ seed: selectedAccountAddress.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [selectedAccountAddress])
+  const orb = useAccountOrb(selectedAccount)
 
   const selectedAccountFiatBalance = React.useMemo(() => {
     if (
@@ -254,15 +254,18 @@ export const ConnectedPanel = (props: Props) => {
   ])
 
   const isConnected = React.useMemo((): boolean => {
+    if (!selectedAccount) {
+      return false
+    }
     if (selectedCoin === BraveWallet.CoinType.SOL) {
       return isSolanaConnected
     }
     if (originInfo.originSpec === WalletOrigin) {
       return true
     } else {
-      return connectedAccounts.some(account => account.address === selectedAccountAddress)
+      return !!findAccountByAccountId(connectedAccounts, selectedAccount.accountId)
     }
-  }, [connectedAccounts, selectedAccountAddress, originInfo, selectedCoin, isSolanaConnected])
+  }, [connectedAccounts, selectedAccount, originInfo, selectedCoin, isSolanaConnected])
 
   const connectedStatusText = React.useMemo((): string => {
     if (isPermissionDenied) {

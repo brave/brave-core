@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // redux
 import { useDispatch } from 'react-redux'
@@ -14,11 +14,41 @@ import { AccountsTabActions } from '../../../page/reducers/accounts-tab-reducer'
 
 // utils
 import { reduceAddress } from '../../../utils/reduce-address'
+import {
+  getAccountTypeDescription
+} from '../../../utils/account-utils'
+import {
+  getBalance
+} from '../../../utils/balance-utils'
+import {
+  computeFiatAmount
+} from '../../../utils/pricing-utils'
+import {
+  getPriceIdForToken
+} from '../../../utils/api-utils'
+import Amount from '../../../utils/amount'
 
 // hooks
+import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
+
+// Selectors
 import {
-  useOnClickOutside
-} from '../../../common/hooks/useOnClickOutside'
+  UISelectors,
+  WalletSelectors
+} from '../../../common/selectors'
+import {
+  useSafeUISelector,
+  useSafeWalletSelector,
+  useUnsafeWalletSelector
+} from '../../../common/hooks/use-safe-selector'
+
+// Queries
+import {
+  useGetTokenSpotPricesQuery
+} from '../../../common/slices/api.slice'
+import {
+  querySubscriptionOptions60s
+} from '../../../common/slices/constants'
 
 // types
 import {
@@ -36,17 +66,23 @@ import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
 import {
   AccountActionsMenu
 } from '../wallet-menus/account-actions-menu'
+import {
+  CreateAccountIcon
+} from '../../shared/create-account-icon/create-account-icon'
+import {
+  TokenIconsStack
+} from '../../shared/icon-stacks/token-icons-stack'
+import LoadingSkeleton from '../../shared/loading-skeleton'
 
 // style
 import {
   StyledWrapper,
   NameAndIcon,
-  AccountCircle,
   AccountMenuWrapper,
-  HardwareIcon,
-  AccountNameRow,
   AccountMenuButton,
-  AccountMenuIcon
+  AccountMenuIcon,
+  AccountBalanceText,
+  AccountDescription
 } from './style'
 
 import {
@@ -56,6 +92,11 @@ import {
   AddressAndButtonRow,
   CopyIcon
 } from '../portfolio-account-item/style'
+
+import {
+  HorizontalSpace,
+  Row
+} from '../../shared/style'
 
 export interface Props {
   onDelete?: () => void
@@ -69,6 +110,15 @@ export const AccountListItem = ({
 }: Props) => {
   // redux
   const dispatch = useDispatch()
+
+  // selectors
+  const userVisibleTokensInfo = useUnsafeWalletSelector(
+    WalletSelectors.userVisibleTokensInfo
+  )
+  const defaultFiatCurrency = useSafeWalletSelector(
+    WalletSelectors.defaultFiatCurrency
+  )
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // state
   const [showAccountMenu, setShowAccountMenu] = React.useState<boolean>(false)
@@ -116,9 +166,69 @@ export const AccountListItem = ({
   }, [onSelectAccount, onRemoveAccount, onShowAccountsModal])
 
   // memos
-  const orb = React.useMemo(() => {
-    return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [account.address])
+  const accountsFungibleTokens = React.useMemo(() => {
+    return userVisibleTokensInfo.filter((asset) => asset.visible)
+      .filter((token) => token.coin === account.accountId.coin)
+      .filter((token) =>
+        !token.isErc721 && !token.isErc1155 && !token.isNft)
+  }, [userVisibleTokensInfo, account])
+
+  const tokensWithBalances = React.useMemo(() => {
+    return accountsFungibleTokens
+      .filter((token) => new Amount(getBalance(account, token)).gt(0))
+  }, [accountsFungibleTokens])
+
+  const tokenPriceIds = React.useMemo(() =>
+    accountsFungibleTokens
+      .map(token => getPriceIdForToken(token)),
+    [accountsFungibleTokens]
+  )
+
+  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
+    querySubscriptionOptions60s
+  )
+
+  const accountsFiatValue = React.useMemo(() => {
+    // Return an empty string to display a loading
+    // skeleton while assets are populated.
+    if (userVisibleTokensInfo.length === 0) {
+      return Amount.empty()
+    }
+    // Return a 0 balance if the account has no
+    // assets to display.
+    if (
+      accountsFungibleTokens
+        .length === 0
+    ) {
+      return new Amount(0)
+    }
+
+    const amounts =
+      accountsFungibleTokens
+        .map((asset) => {
+          const balance =
+            getBalance(account, asset)
+          return computeFiatAmount({
+            spotPriceRegistry,
+            value: balance,
+            token: asset
+          })
+        })
+
+    const reducedAmounts =
+      amounts.reduce(function (a, b) {
+        return a.plus(b)
+      })
+
+    return !reducedAmounts.isUndefined()
+      ? reducedAmounts
+      : Amount.empty()
+  }, [
+    account,
+    userVisibleTokensInfo,
+    accountsFungibleTokens
+  ])
 
   const buttonOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
     // We are not able to remove a Derived account so we filter out this option.
@@ -132,43 +242,79 @@ export const AccountListItem = ({
     return AccountButtonOptions
   }, [account])
 
-  const isHardwareAccount = account.accountId.kind === BraveWallet.AccountKind.kHardware;
-
   // render
   return (
     <StyledWrapper>
       <NameAndIcon>
-        <AccountCircle orb={orb} />
+        <CreateAccountIcon
+          size='big'
+          address={account.address}
+          accountKind={account.accountId.kind}
+          marginRight={16}
+        />
         <AccountAndAddress>
-          <AccountNameRow>
-            {isHardwareAccount && <HardwareIcon />}
-            <AccountNameButton onClick={onSelectAccount}>{account.name}</AccountNameButton>
-          </AccountNameRow>
+          <AccountNameButton
+            onClick={onSelectAccount}
+          >
+            {account.name}
+          </AccountNameButton>
           <AddressAndButtonRow>
-            <AccountAddressButton onClick={onSelectAccount}>{reduceAddress(account.address)}</AccountAddressButton>
+            <AccountAddressButton
+              onClick={onSelectAccount}
+            >
+              {reduceAddress(account.address)}
+            </AccountAddressButton>
             <CopyTooltip text={account.address}>
               <CopyIcon />
             </CopyTooltip>
           </AddressAndButtonRow>
+          <AccountDescription>
+            {getAccountTypeDescription(account.accountId.coin)}
+          </AccountDescription>
         </AccountAndAddress>
       </NameAndIcon>
-      <AccountMenuWrapper
-        ref={accountMenuRef}
+      <Row
+        width='unset'
       >
-        <AccountMenuButton
-          onClick={() => setShowAccountMenu(prev => !prev)}
+        {accountsFiatValue.isUndefined() ? (
+          <>
+            {!isPanel &&
+              <>
+                <LoadingSkeleton width={60} height={14} />
+                <HorizontalSpace space='26px' /></>
+            }
+            <LoadingSkeleton width={60} height={14} />
+            <HorizontalSpace space='12px' />
+          </>
+        ) : (
+          <>
+            {!isPanel &&
+              <TokenIconsStack tokens={tokensWithBalances} />
+            }
+            <AccountBalanceText
+              textSize='14px'
+              isBold={true}
+            >
+              {accountsFiatValue.formatAsFiat(defaultFiatCurrency)}
+            </AccountBalanceText>
+          </>
+        )}
+        <AccountMenuWrapper
+          ref={accountMenuRef}
         >
-          <AccountMenuIcon
-            name='more-vertical'
-          />
-        </AccountMenuButton>
-        {showAccountMenu &&
-          <AccountActionsMenu
-            onClick={onClickButtonOption}
-            options={buttonOptions}
-          />
-        }
-      </AccountMenuWrapper>
+          <AccountMenuButton
+            onClick={() => setShowAccountMenu(prev => !prev)}
+          >
+            <AccountMenuIcon />
+          </AccountMenuButton>
+          {showAccountMenu &&
+            <AccountActionsMenu
+              onClick={onClickButtonOption}
+              options={buttonOptions}
+            />
+          }
+        </AccountMenuWrapper>
+      </Row>
     </StyledWrapper>
   )
 }

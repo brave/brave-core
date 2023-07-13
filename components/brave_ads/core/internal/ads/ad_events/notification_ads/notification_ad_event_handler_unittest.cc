@@ -25,7 +25,7 @@ namespace brave_ads {
 
 namespace {
 
-NotificationAdInfo BuildAndSaveNotificationAd() {
+NotificationAdInfo BuildAndSaveAd() {
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
   NotificationAdInfo ad = BuildNotificationAd(creative_ad);
@@ -104,7 +104,7 @@ class BraveAdsNotificationAdEventHandlerTest
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireServedEvent) {
   // Arrange
-  const NotificationAdInfo ad = BuildAndSaveNotificationAd();
+  const NotificationAdInfo ad = BuildAndSaveAd();
 
   // Act
   FireEvent(ad.placement_id, mojom::NotificationAdEventType::kServed,
@@ -124,7 +124,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireServedEvent) {
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireViewedEvent) {
   // Arrange
-  const NotificationAdInfo ad = BuildAndSaveNotificationAd();
+  const NotificationAdInfo ad = BuildAndSaveAd();
 
   // Act
   FireEvent(ad.placement_id, mojom::NotificationAdEventType::kViewed,
@@ -144,7 +144,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireViewedEvent) {
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireClickedEvent) {
   // Arrange
-  const NotificationAdInfo ad = BuildAndSaveNotificationAd();
+  const NotificationAdInfo ad = BuildAndSaveAd();
 
   // Act
   FireEvent(ad.placement_id, mojom::NotificationAdEventType::kClicked,
@@ -164,7 +164,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireClickedEvent) {
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
   // Arrange
-  const NotificationAdInfo ad = BuildAndSaveNotificationAd();
+  const NotificationAdInfo ad = BuildAndSaveAd();
 
   // Act
   FireEvent(ad.placement_id, mojom::NotificationAdEventType::kDismissed,
@@ -184,7 +184,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
   // Arrange
-  const NotificationAdInfo ad = BuildAndSaveNotificationAd();
+  const NotificationAdInfo ad = BuildAndSaveAd();
 
   // Act
   FireEvent(ad.placement_id, mojom::NotificationAdEventType::kTimedOut,

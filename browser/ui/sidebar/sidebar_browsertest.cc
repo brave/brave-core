@@ -109,7 +109,11 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return sidebar_items_contents_view;
   }
 
-  void SimulateSidebarItemClickAt(int index) const {
+  // If the item at |index| is panel item, this will return after waiting
+  // model's active index is changed as active index could not be not updated
+  // synchronously. Panel activation is done via SidePanelCoordinator instead of
+  // asking activation to SidebarController directly.
+  void SimulateSidebarItemClickAt(size_t index) {
     auto sidebar_items_contents_view =
         GetSidebarItemsContentsView(controller());
 
@@ -120,6 +124,11 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     ui::MouseEvent event(ui::ET_MOUSE_PRESSED, origin, origin,
                          ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON, 0);
     sidebar_items_contents_view->OnItemPressed(item, event);
+
+    if (model()->GetAllSidebarItems()[index].open_in_panel) {
+      WaitUntil(base::BindLambdaForTesting(
+          [&]() { return model()->active_index() == index; }));
+    }
   }
 
   SidebarControlView* GetSidebarControlView() const {
@@ -386,11 +395,14 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_SidePanelResizeTest) {
             prefs->GetInteger(sidebar::kSidePanelWidth));
 
   browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+
+  // Wait till sidebar animation ends.
   WaitUntil(base::BindLambdaForTesting(
-      [&]() { return GetSidePanel()->width() != 0; }));
+      [&]() { return GetSidePanel()->width() == kDefaultSidePanelWidth; }));
 
   // Test smaller panel width than default(minimum) and check smaller than
-  // default is not applied. Positive offset value is for reducing width.
+  // default is not applied. Positive offset value is for reducing width in
+  // right-sided sidebar.
   GetSidePanel()->OnResize(30, true);
   // Check panel width is not changed.
   EXPECT_EQ(kDefaultSidePanelWidth,
@@ -402,7 +414,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_SidePanelResizeTest) {
             GetSidePanelResizeWidget()->GetWindowBoundsInScreen().x());
 
   // Increase panel width and check resize handle widget's position.
-  // Negative offset value is for increasing width.
+  // Negative offset value is for increasing width in right-sided
+  // sidebar.
   GetSidePanel()->OnResize(-20, true);
   EXPECT_EQ(kDefaultSidePanelWidth + 20,
             prefs->GetInteger(sidebar::kSidePanelWidth));
@@ -430,8 +443,10 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidePanelResizeTest) {
   EXPECT_EQ(kExpectedPanelWidth, prefs->GetInteger(sidebar::kSidePanelWidth));
 
   browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+
+  // Wait till sidebar animation ends.
   WaitUntil(base::BindLambdaForTesting(
-      [&]() { return GetSidePanel()->width() != 0; }));
+      [&]() { return GetSidePanel()->width() == kExpectedPanelWidth; }));
   EXPECT_EQ(kExpectedPanelWidth, GetSidePanel()->width());
 }
 

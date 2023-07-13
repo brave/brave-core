@@ -18,7 +18,7 @@ export const mockParsedTransactionInfo = parseTransactionWithPrices({
     ...mockWalletState.userVisibleTokensInfo,
     ...mockWalletState.fullTokenList
   ],
-  spotPrices: mockWalletState.transactionSpotPrices,
+  spotPriceRegistry: {},
   tx: mockTransactionInfo,
   gasFee: mockWalletState.solFeeEstimates?.fee.toString() ?? '',
   transactionNetwork: mockNetworks.find(
@@ -34,7 +34,7 @@ export const mockedParsedErc20ApprovalTransaction = parseTransactionWithPrices({
     ...mockWalletState.userVisibleTokensInfo,
     ...mockWalletState.fullTokenList
   ],
-  spotPrices: mockWalletState.transactionSpotPrices,
+  spotPriceRegistry: {},
   tx: mockedErc20ApprovalTransaction,
   gasFee: mockWalletState.solFeeEstimates?.fee.toString() ?? '',
   transactionNetwork: mockNetworks.find(

@@ -15,14 +15,14 @@ cargo_crate("lib") {
   sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.2.25"
-  cargo_pkg_authors = "Eliza Weisman <eliza@buoyant.io> David Barsky <me@davidbarsky.com> Tokio Contributors <team@tokio.rs>"
-  cargo_pkg_name = "tracing-subsciber"
-  cargo_pkg_description = "Application-level tracing for Rust."
+  cargo_pkg_authors = "Eliza Weisman <eliza@buoyant.io>, David Barsky <me@davidbarsky.com>, Tokio Contributors <team@tokio.rs>"
+  cargo_pkg_name = "tracing-subscriber"
+  cargo_pkg_description =
+      "Utilities for implementing and composing `tracing` subscribers."
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
-
   deps = [
     "//brave/third_party/rust/ansi_term/v0_12:lib",
     "//brave/third_party/rust/sharded_slab/v0_1:lib",
@@ -30,11 +30,12 @@ cargo_crate("lib") {
     "//brave/third_party/rust/tracing/v0_1:lib",
     "//brave/third_party/rust/tracing_core/v0_1:lib",
   ]
-
   features = [
     "ansi",
     "ansi_term",
     "fmt",
     "registry",
+    "sharded-slab",
+    "thread_local",
   ]
 }

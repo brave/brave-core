@@ -79,7 +79,7 @@ void TextClassificationProcessor::Process(const std::string& text) {
 void TextClassificationProcessor::OnTextContentDidChange(
     const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
-    const std::string& content) {
+    const std::string& text) {
   if (redirect_chain.empty()) {
     return;
   }
@@ -98,7 +98,7 @@ void TextClassificationProcessor::OnTextContentDidChange(
                 "text content");
   }
 
-  Process(content);
+  Process(text);
 }
 
 }  // namespace brave_ads

@@ -169,12 +169,12 @@ export function PublisherCard () {
   return (
     <style.root data-test-id='publisher-card'>
       <style.heading>
-        {
-          publisherInfo.icon &&
-            <style.icon>
-              <img src={publisherInfo.icon} />
-            </style.icon>
-        }
+        <style.icon>
+          <img
+            className={publisherInfo.platform ? 'rounded' : ''}
+            src={publisherInfo.icon}
+          />
+        </style.icon>
         <style.name>
           {getPublisherName()}
           <style.status>

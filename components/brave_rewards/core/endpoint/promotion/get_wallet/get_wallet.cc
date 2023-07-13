@@ -9,7 +9,7 @@
 
 #include "base/json/json_reader.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
@@ -19,19 +19,19 @@ namespace brave_rewards::internal {
 namespace endpoint {
 namespace promotion {
 
-GetWallet::GetWallet(LedgerImpl& ledger) : ledger_{ledger} {}
+GetWallet::GetWallet(RewardsEngineImpl& engine) : engine_{engine} {}
 
 GetWallet::~GetWallet() = default;
 
 void GetWallet::Request(GetWalletCallback callback) const {
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
-  ledger_->LoadURL(std::move(request),
+  engine_->LoadURL(std::move(request),
                    std::bind(&GetWallet::OnRequest, this, _1, callback));
 }
 
 std::string GetWallet::GetUrl() const {
-  const auto rewards_wallet = ledger_->wallet()->GetWallet();
+  const auto rewards_wallet = engine_->wallet()->GetWallet();
   if (!rewards_wallet) {
     BLOG(0, "Rewards wallet is null!");
     return "";
@@ -46,7 +46,7 @@ void GetWallet::OnRequest(mojom::UrlResponsePtr response,
   LogUrlResponse(__func__, *response);
 
   mojom::Result result = CheckStatusCode(response->status_code);
-  if (result != mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::OK) {
     return callback(result, std::string{}, false);
   }
 
@@ -59,20 +59,20 @@ void GetWallet::OnRequest(mojom::UrlResponsePtr response,
 mojom::Result GetWallet::CheckStatusCode(int status_code) const {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid payment id");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
     BLOG(0, "Unrecognized payment id");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   if (status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 mojom::Result GetWallet::ParseBody(const std::string& body,
@@ -86,7 +86,7 @@ mojom::Result GetWallet::ParseBody(const std::string& body,
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return mojom::Result::LEDGER_ERROR;
+    return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
@@ -98,14 +98,14 @@ mojom::Result GetWallet::ParseBody(const std::string& body,
         deposit_account_provider->FindString("linkingId");
 
     if (!name || !id || !linking_id) {
-      return mojom::Result::LEDGER_ERROR;
+      return mojom::Result::FAILED;
     }
 
     *custodian = *name;
     *linked = !id->empty() && !linking_id->empty();
   }
 
-  return mojom::Result::LEDGER_OK;
+  return mojom::Result::OK;
 }
 
 }  // namespace promotion

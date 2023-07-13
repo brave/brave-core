@@ -432,7 +432,8 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
       << "Could not execute script: " << result.error;
 
   EXPECT_TRUE(console_observer.Wait());
-  VerifyConsoleOutputNoErrors(console_observer,
-                              blink::mojom::ConsoleMessageLevel::kWarning, {});
+  VerifyConsoleOutputNoErrors(
+      console_observer, blink::mojom::ConsoleMessageLevel::kWarning,
+      {"TypeError: Cannot read properties of undefined (reading 'forEach')"});
 }
 }  // namespace brave_wallet

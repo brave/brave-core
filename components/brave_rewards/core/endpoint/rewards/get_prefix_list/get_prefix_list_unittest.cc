@@ -9,9 +9,9 @@
 
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/rewards/get_prefix_list/get_prefix_list.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -27,12 +27,12 @@ namespace rewards {
 class GetPrefixListTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  GetPrefixList list_{mock_ledger_impl_};
+  MockRewardsEngineImpl mock_engine_impl_;
+  GetPrefixList list_{mock_engine_impl_};
 };
 
 TEST_F(GetPrefixListTest, ServerOK) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -43,14 +43,14 @@ TEST_F(GetPrefixListTest, ServerOK) {
       });
 
   MockFunction<GetPrefixListCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::LEDGER_OK, "blob")).Times(1);
+  EXPECT_CALL(callback, Call(mojom::Result::OK, "blob")).Times(1);
   list_.Request(callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetPrefixListTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -61,14 +61,14 @@ TEST_F(GetPrefixListTest, ServerErrorRandom) {
       });
 
   MockFunction<GetPrefixListCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::LEDGER_ERROR, "")).Times(1);
+  EXPECT_CALL(callback, Call(mojom::Result::FAILED, "")).Times(1);
   list_.Request(callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetPrefixListTest, ServerBodyEmpty) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -79,7 +79,7 @@ TEST_F(GetPrefixListTest, ServerBodyEmpty) {
       });
 
   MockFunction<GetPrefixListCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::LEDGER_ERROR, "")).Times(1);
+  EXPECT_CALL(callback, Call(mojom::Result::FAILED, "")).Times(1);
   list_.Request(callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();

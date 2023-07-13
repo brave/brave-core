@@ -9,13 +9,12 @@ import * as React from 'react'
 import { BraveWallet, WalletAccountType } from '../../../../constants/types'
 
 // Utils
-import { formatTokenBalanceWithSymbol } from '../../../../utils/balance-utils'
+import { formatTokenBalanceWithSymbol, getPercentAmount } from '../../../../utils/balance-utils'
 import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
 
 // Hooks
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
-import { usePreset } from '../../../../common/hooks'
 
 // Components
 import PopupModal from '../../../desktop/popup-modals'
@@ -61,15 +60,6 @@ export const SellAssetModal = (props: Props) => {
     onClose
   } = props
 
-  // Hooks
-  const onSelectPresetAmount = usePreset(
-    {
-      onSetAmount: setSellAmount,
-      asset: selectedAsset,
-      account: account
-    }
-  )
-
   // Refs
   const sellAssetModalRef = React.useRef<HTMLDivElement>(null)
 
@@ -94,8 +84,12 @@ export const SellAssetModal = (props: Props) => {
   )
 
   const setPresetAmountValue = React.useCallback((percent: number) => {
-    onSelectPresetAmount(percent)
-  }, [onSelectPresetAmount])
+    if (!selectedAsset || !account) {
+      return
+    }
+
+    setSellAmount(getPercentAmount(selectedAsset, account, percent))
+  }, [setSellAmount, selectedAsset, account])
 
   const onCloseSellModal = React.useCallback(() => {
     setSellAmount('')

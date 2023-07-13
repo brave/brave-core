@@ -9,7 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_sku_order.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 using std::placeholders::_1;
 
@@ -22,8 +22,8 @@ const char kTableName[] = "sku_order";
 
 }  // namespace
 
-DatabaseSKUOrder::DatabaseSKUOrder(LedgerImpl& ledger)
-    : DatabaseTable(ledger), items_(ledger) {}
+DatabaseSKUOrder::DatabaseSKUOrder(RewardsEngineImpl& engine)
+    : DatabaseTable(engine), items_(engine) {}
 
 DatabaseSKUOrder::~DatabaseSKUOrder() = default;
 
@@ -31,7 +31,7 @@ void DatabaseSKUOrder::InsertOrUpdate(mojom::SKUOrderPtr order,
                                       LegacyResultCallback callback) {
   if (!order) {
     BLOG(1, "Order is null");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -61,7 +61,7 @@ void DatabaseSKUOrder::InsertOrUpdate(mojom::SKUOrderPtr order,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUOrder::UpdateStatus(const std::string& order_id,
@@ -69,7 +69,7 @@ void DatabaseSKUOrder::UpdateStatus(const std::string& order_id,
                                     LegacyResultCallback callback) {
   if (order_id.empty()) {
     BLOG(1, "Order id is empty");
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -89,7 +89,7 @@ void DatabaseSKUOrder::UpdateStatus(const std::string& order_id,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUOrder::GetRecord(const std::string& order_id,
@@ -126,7 +126,7 @@ void DatabaseSKUOrder::GetRecord(const std::string& order_id,
   auto transaction_callback =
       std::bind(&DatabaseSKUOrder::OnGetRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUOrder::OnGetRecord(mojom::DBCommandResponsePtr response,
@@ -209,7 +209,7 @@ void DatabaseSKUOrder::GetRecordByContributionId(
   auto transaction_callback =
       std::bind(&DatabaseSKUOrder::OnGetRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
@@ -219,7 +219,7 @@ void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
   if (order_id.empty() || contribution_id.empty()) {
     BLOG(1, "Order/contribution id is empty " << order_id << "/"
                                               << contribution_id);
-    callback(mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::FAILED);
     return;
   }
 
@@ -239,7 +239,7 @@ void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace database

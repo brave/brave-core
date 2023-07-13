@@ -57,8 +57,3 @@ export type DecryptProcessedPayload = {
   approved: boolean
   origin: SerializableOrigin
 }
-
-export type CancelConnectHardwareWalletPayload = {
-  accountAddress: string
-  coinType: BraveWallet.CoinType
-}

@@ -33,17 +33,9 @@ void BraveContentsLayoutManager::Layout(views::View* contents_container) {
   }
 
   int proposed_sidebar_width =
-      sidebar_container_view_->GetVisible()
-          ? sidebar_container_view_->GetPreferredSize().width()
-          : 0;
-  int contents_width = contents_container->width();
-
-  // Guarantee 20% width for contents at least.
-  if ((contents_width - proposed_sidebar_width) <= contents_width * 0.2) {
-    proposed_sidebar_width = std::min(static_cast<int>(contents_width * 0.8),
-                                      proposed_sidebar_width);
-  }
-  contents_width -= proposed_sidebar_width;
+      sidebar_container_view_->GetVisible() ? CalculateTargetSideBarWidth() : 0;
+  const int contents_width =
+      contents_container->width() - proposed_sidebar_width;
 
   int sidebar_x = 0;
   if (!sidebar_on_left_) {
@@ -81,4 +73,18 @@ void BraveContentsLayoutManager::Layout(views::View* contents_container) {
   // layout here.
   devtools_view_->SetBoundsRect(host_->GetMirroredRect(new_devtools_bounds));
   contents_view_->SetBoundsRect(host_->GetMirroredRect(new_contents_bounds));
+}
+
+int BraveContentsLayoutManager::CalculateTargetSideBarWidth() const {
+  int proposed_sidebar_width =
+      sidebar_container_view_->GetPreferredSize().width();
+  const int contents_width = host_->width();
+
+  // Guarantee 20% width for contents at least.
+  if ((contents_width - proposed_sidebar_width) <= contents_width * 0.2) {
+    proposed_sidebar_width = std::min(static_cast<int>(contents_width * 0.8),
+                                      proposed_sidebar_width);
+  }
+
+  return proposed_sidebar_width;
 }

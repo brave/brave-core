@@ -8,7 +8,9 @@ import { Reducer } from 'redux'
 
 import { types } from '../constants/playlist_types'
 
-import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
+import { Playlist } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
+
+import { fixUpMediaURL, fixUpThumbnailURL } from '../utils/urlFixer'
 
 const playlistReducer: Reducer<PlaylistData | undefined> = (
   state: PlaylistData | undefined,
@@ -20,10 +22,21 @@ const playlistReducer: Reducer<PlaylistData | undefined> = (
 
   switch (action.type) {
     case types.PLAYLIST_LOADED:
-      const playlists = action.payload
-      let currentList: PlaylistMojo.Playlist | undefined
+      const playlists = action.payload as Playlist[]
+
+      // Fix up local thumbnail url to chrome-untrusted
+      if (location.protocol === 'chrome-untrusted:') {
+        for (const playlist of playlists) {
+          for (const item of playlist.items) {
+            fixUpThumbnailURL(item)
+            fixUpMediaURL(item)
+          }
+        }
+      }
+
+      let currentList: Playlist | undefined
       if (state.currentList) {
-        currentList = playlists.find((list: PlaylistMojo.Playlist) => {
+        currentList = playlists.find((list: Playlist) => {
           return list.id === state?.currentList?.id
         })
       }

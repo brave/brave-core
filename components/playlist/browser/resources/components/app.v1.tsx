@@ -12,10 +12,11 @@ import Header from './header'
 import PlaylistsCatalog from './playlistsCatalog'
 import PlaylistPlayer from './playlistPlayer'
 
-const HeaderWrapper = styled.header`
+const HeaderWrapper = styled.header<{ isPlaylistPlayerPage: boolean }>`
   position: sticky;
   width: 100%;
-  height: 56px;
+  height: ${({ isPlaylistPlayerPage }) =>
+    isPlaylistPlayerPage ? '74px' : '56px'};
   top: 0;
   z-index: 1;
 `
@@ -23,14 +24,17 @@ const HeaderWrapper = styled.header`
 export default function App () {
   return (
     <>
-      <HeaderWrapper>
-        <Route
-          path={'/playlist/:playlistId'}
-          children={({ match }) => (
-            <Header playlistId={match?.params.playlistId} />
-          )}
-        />
-      </HeaderWrapper>
+      <Route
+        path={'/playlist/:playlistId'}
+        children={({ match }) => {
+          const playlistId = match?.params.playlistId
+          return (
+            <HeaderWrapper isPlaylistPlayerPage={!!playlistId}>
+              <Header playlistId={playlistId} />
+            </HeaderWrapper>
+          )
+        }}
+      />
       <section>
         <Switch>
           <Route path='/playlist/:playlistId' component={PlaylistPlayer} />

@@ -8,7 +8,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_server_publisher_banner.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 using std::placeholders::_1;
 
@@ -21,8 +21,9 @@ const char kTableName[] = "server_publisher_banner";
 namespace brave_rewards::internal {
 namespace database {
 
-DatabaseServerPublisherBanner::DatabaseServerPublisherBanner(LedgerImpl& ledger)
-    : DatabaseTable(ledger), links_(ledger) {}
+DatabaseServerPublisherBanner::DatabaseServerPublisherBanner(
+    RewardsEngineImpl& engine)
+    : DatabaseTable(engine), links_(engine) {}
 
 DatabaseServerPublisherBanner::~DatabaseServerPublisherBanner() = default;
 
@@ -112,7 +113,7 @@ void DatabaseServerPublisherBanner::GetRecord(
       std::bind(&DatabaseServerPublisherBanner::OnGetRecord, this, _1,
                 publisher_key, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseServerPublisherBanner::OnGetRecord(

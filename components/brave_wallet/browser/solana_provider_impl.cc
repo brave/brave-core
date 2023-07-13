@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/notreached.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
@@ -79,8 +80,7 @@ void SolanaProviderImpl::Connect(absl::optional<base::Value::Dict> arg,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
     return;
   }
-  absl::optional<std::string> account =
-      keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
+  auto account = keyring_service_->GetSelectedSolanaDappAccount();
   if (!account) {
     // Prompt users to create a Solana account. If wallet is not setup, users
     // will be lead to onboarding first.
@@ -116,20 +116,21 @@ void SolanaProviderImpl::Connect(absl::optional<base::Value::Dict> arg,
   }
 
   const bool allowed =
-      delegate_->IsAccountAllowed(mojom::CoinType::SOL, *account);
+      delegate_->IsAccountAllowed(mojom::CoinType::SOL, account->address);
 
   if (allowed) {
-    std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "", *account);
-    delegate_->AddSolanaConnectedAccount(*account);
+    std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
+                            account->address);
+    delegate_->AddSolanaConnectedAccount(account->address);
   } else if (!allowed && is_eagerly_connect) {
     std::move(callback).Run(
         mojom::SolanaProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
   } else {
     delegate_->RequestPermissions(
-        mojom::CoinType::SOL, {*account},
+        mojom::CoinType::SOL, {account->address},
         base::BindOnce(&SolanaProviderImpl::OnConnect,
-                       weak_factory_.GetWeakPtr(), *account,
+                       weak_factory_.GetWeakPtr(), account->address,
                        std::move(callback)));
   }
 
@@ -139,18 +140,16 @@ void SolanaProviderImpl::Connect(absl::optional<base::Value::Dict> arg,
 
 void SolanaProviderImpl::Disconnect() {
   DCHECK(keyring_service_);
-  absl::optional<std::string> account =
-      keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
+  auto account = keyring_service_->GetSelectedSolanaDappAccount();
   if (account && IsAccountConnected(*account)) {
-    delegate_->RemoveSolanaConnectedAccount(*account);
+    delegate_->RemoveSolanaConnectedAccount(account->address);
     events_listener_->DisconnectEvent();
   }
 }
 
 void SolanaProviderImpl::IsConnected(IsConnectedCallback callback) {
   DCHECK(keyring_service_);
-  absl::optional<std::string> account =
-      keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
+  auto account = keyring_service_->GetSelectedSolanaDappAccount();
   if (!account) {
     std::move(callback).Run(false);
   } else {
@@ -159,14 +158,13 @@ void SolanaProviderImpl::IsConnected(IsConnectedCallback callback) {
 }
 
 void SolanaProviderImpl::GetPublicKey(GetPublicKeyCallback callback) {
-  absl::optional<std::string> account =
-      keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
+  auto account = keyring_service_->GetSelectedSolanaDappAccount();
   if (!account) {
     std::move(callback).Run("");
     return;
   }
   if (IsAccountConnected(*account)) {
-    std::move(callback).Run(*account);
+    std::move(callback).Run(account->address);
   } else {
     std::move(callback).Run("");
   }
@@ -174,8 +172,7 @@ void SolanaProviderImpl::GetPublicKey(GetPublicKeyCallback callback) {
 
 absl::optional<std::pair<SolanaMessage, std::vector<uint8_t>>>
 SolanaProviderImpl::GetDeserializedMessage(
-    const std::string& encoded_serialized_msg,
-    const std::string& account) {
+    const std::string& encoded_serialized_msg) {
   std::vector<uint8_t> message_bytes;
   if (!Base58Decode(encoded_serialized_msg, &message_bytes, kSolanaMaxTxSize,
                     false)) {
@@ -199,8 +196,7 @@ SolanaProviderImpl::GetDeserializedMessage(
 void SolanaProviderImpl::SignTransaction(
     mojom::SolanaSignTransactionParamPtr param,
     SignTransactionCallback callback) {
-  absl::optional<std::string> account =
-      keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
+  auto account = keyring_service_->GetSelectedSolanaDappAccount();
   if (!account) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
                             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
@@ -215,8 +211,7 @@ void SolanaProviderImpl::SignTransaction(
                             mojom::SolanaMessageVersion::kLegacy);
     return;
   }
-  auto msg_pair =
-      GetDeserializedMessage(param->encoded_serialized_msg, *account);
+  auto msg_pair = GetDeserializedMessage(param->encoded_serialized_msg);
   if (!msg_pair) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
                             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
@@ -228,10 +223,10 @@ void SolanaProviderImpl::SignTransaction(
   const std::string chain_id = json_rpc_service_->GetChainIdSync(
       mojom::CoinType::SOL, delegate_->GetOrigin());
   const std::string blockhash = msg_pair->first.recent_blockhash();
-  auto internal_callback =
-      base::BindOnce(&SolanaProviderImpl::ContinueSignTransaction,
-                     weak_factory_.GetWeakPtr(), std::move(msg_pair),
-                     std::move(param), *account, chain_id, std::move(callback));
+  auto internal_callback = base::BindOnce(
+      &SolanaProviderImpl::ContinueSignTransaction, weak_factory_.GetWeakPtr(),
+      std::move(msg_pair), std::move(param), account->address, chain_id,
+      std::move(callback));
   json_rpc_service_->IsSolanaBlockhashValid(chain_id, blockhash, absl::nullopt,
                                             std::move(internal_callback));
 }
@@ -314,8 +309,7 @@ void SolanaProviderImpl::OnSignTransactionRequestProcessed(
 void SolanaProviderImpl::SignAllTransactions(
     std::vector<mojom::SolanaSignTransactionParamPtr> params,
     SignAllTransactionsCallback callback) {
-  absl::optional<std::string> account =
-      keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
+  auto account = keyring_service_->GetSelectedSolanaDappAccount();
   if (!account) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
                             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
@@ -338,8 +332,7 @@ void SolanaProviderImpl::SignAllTransactions(
   const std::string chain_id = json_rpc_service_->GetChainIdSync(
       mojom::CoinType::SOL, delegate_->GetOrigin());
   for (auto& param : params) {
-    auto msg_pair =
-        GetDeserializedMessage(param->encoded_serialized_msg, *account);
+    auto msg_pair = GetDeserializedMessage(param->encoded_serialized_msg);
     if (!msg_pair) {
       std::move(callback).Run(
           mojom::SolanaProviderError::kInternalError,
@@ -364,7 +357,8 @@ void SolanaProviderImpl::SignAllTransactions(
       params.size(),
       base::BindOnce(&SolanaProviderImpl::ContinueSignAllTransactions,
                      weak_factory_.GetWeakPtr(), std::move(tx_datas),
-                     std::move(txs), std::move(raw_messages), *account,
+                     std::move(txs), std::move(raw_messages),
+                     std::move(account),
                      json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL,
                                                        delegate_->GetOrigin()),
                      std::move(callback)));
@@ -387,13 +381,12 @@ void SolanaProviderImpl::ContinueSignAllTransactions(
     std::vector<mojom::TxDataUnionPtr> tx_datas,
     std::vector<std::unique_ptr<SolanaTransaction>> txs,
     std::vector<mojom::ByteArrayStringUnionPtr> raw_messages,
-    const std::string& account,
+    mojom::AccountInfoPtr account,
     const std::string& chain_id,
     SignAllTransactionsCallback callback,
     const std::vector<bool>& is_valids) {
-  if (std::find_if_not(is_valids.begin(), is_valids.end(), [](auto is_valid) {
-        return is_valid;
-      }) != is_valids.end()) {
+  if (base::ranges::any_of(is_valids,
+                           [](auto is_valid) { return !is_valid; })) {
     std::move(callback).Run(
         mojom::SolanaProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_BLOCKHASH_ERROR),
@@ -403,20 +396,21 @@ void SolanaProviderImpl::ContinueSignAllTransactions(
   }
 
   auto request = mojom::SignAllTransactionsRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), -1, account, std::move(tx_datas),
-      std::move(raw_messages), mojom::CoinType::SOL, chain_id);
+      MakeOriginInfo(delegate_->GetOrigin()), -1, account->address,
+      std::move(tx_datas), std::move(raw_messages), mojom::CoinType::SOL,
+      chain_id);
 
   brave_wallet_service_->AddSignAllTransactionsRequest(
       std::move(request),
       base::BindOnce(&SolanaProviderImpl::OnSignAllTransactionsRequestProcessed,
-                     weak_factory_.GetWeakPtr(), std::move(txs), account,
-                     std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(txs),
+                     std::move(account), std::move(callback)));
   delegate_->ShowPanel();
 }
 
 void SolanaProviderImpl::OnSignAllTransactionsRequestProcessed(
     const std::vector<std::unique_ptr<SolanaTransaction>>& txs,
-    const std::string& account,
+    mojom::AccountInfoPtr account,
     SignAllTransactionsCallback callback,
     bool approved,
     absl::optional<std::vector<mojom::ByteArrayStringUnionPtr>> signatures,
@@ -438,7 +432,7 @@ void SolanaProviderImpl::OnSignAllTransactionsRequestProcessed(
   }
 
   bool is_hardware_account =
-      keyring_service_->IsHardwareAccount(mojom::kSolanaKeyringId, account);
+      account->account_id->kind == mojom::AccountKind::kHardware;
   if (is_hardware_account &&
       (!signatures || signatures->size() != txs.size())) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
@@ -480,8 +474,7 @@ void SolanaProviderImpl::SignAndSendTransaction(
     mojom::SolanaSignTransactionParamPtr param,
     absl::optional<base::Value::Dict> send_options,
     SignAndSendTransactionCallback callback) {
-  absl::optional<std::string> account =
-      keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
+  auto account = keyring_service_->GetSelectedSolanaDappAccount();
   if (!account) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
                             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
@@ -495,8 +488,7 @@ void SolanaProviderImpl::SignAndSendTransaction(
     return;
   }
 
-  auto msg_pair =
-      GetDeserializedMessage(param->encoded_serialized_msg, *account);
+  auto msg_pair = GetDeserializedMessage(param->encoded_serialized_msg);
   if (!msg_pair) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
                             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
@@ -511,8 +503,8 @@ void SolanaProviderImpl::SignAndSendTransaction(
       SolanaTransaction::SendOptions::FromValue(std::move(send_options)));
 
   tx_service_->AddUnapprovedTransaction(
-      mojom::TxDataUnion::NewSolanaTxData(tx.ToSolanaTxData()), *account,
-      delegate_->GetOrigin(), absl::nullopt,
+      mojom::TxDataUnion::NewSolanaTxData(tx.ToSolanaTxData()),
+      account->address, delegate_->GetOrigin(), absl::nullopt,
       base::BindOnce(&SolanaProviderImpl::OnAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -577,13 +569,12 @@ void SolanaProviderImpl::OnContentSettingChanged(
   if (content_type != ContentSettingsType::BRAVE_SOLANA) {
     return;
   }
-  absl::optional<std::string> account =
-      keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
+  auto account = keyring_service_->GetSelectedSolanaDappAccount();
   if (!account) {
     return;
   }
   if (IsAccountConnected(*account) &&
-      !delegate_->IsAccountAllowed(mojom::CoinType::SOL, *account)) {
+      !delegate_->IsAccountAllowed(mojom::CoinType::SOL, account->address)) {
     Disconnect();
   }
 }
@@ -592,8 +583,7 @@ void SolanaProviderImpl::SignMessage(
     const std::vector<uint8_t>& blob_msg,
     const absl::optional<std::string>& display_encoding,
     SignMessageCallback callback) {
-  absl::optional<std::string> account =
-      keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
+  auto account = keyring_service_->GetSelectedSolanaDappAccount();
   if (!account) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
                             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
@@ -620,15 +610,15 @@ void SolanaProviderImpl::SignMessage(
     message = std::string(blob_msg.begin(), blob_msg.end());
   }
   auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), -1, *account, "", message, false,
-      absl::nullopt, absl::nullopt, blob_msg, mojom::CoinType::SOL,
+      MakeOriginInfo(delegate_->GetOrigin()), -1, account->address, "", message,
+      false, absl::nullopt, absl::nullopt, blob_msg, mojom::CoinType::SOL,
       json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL,
                                         delegate_->GetOrigin()));
 
   brave_wallet_service_->AddSignMessageRequest(
       std::move(request),
       base::BindOnce(&SolanaProviderImpl::OnSignMessageRequestProcessed,
-                     weak_factory_.GetWeakPtr(), blob_msg, *account,
+                     weak_factory_.GetWeakPtr(), blob_msg, std::move(account),
                      std::move(callback)));
   delegate_->ShowPanel();
 }
@@ -745,8 +735,8 @@ void SolanaProviderImpl::Request(base::Value::Dict arg,
   }
 }
 
-bool SolanaProviderImpl::IsAccountConnected(const std::string& account) {
-  return delegate_->IsSolanaAccountConnected(account);
+bool SolanaProviderImpl::IsAccountConnected(const mojom::AccountInfo& account) {
+  return delegate_->IsSolanaAccountConnected(account.address);
 }
 
 void SolanaProviderImpl::OnConnect(
@@ -781,7 +771,7 @@ void SolanaProviderImpl::OnConnect(
 
 void SolanaProviderImpl::OnSignMessageRequestProcessed(
     const std::vector<uint8_t>& blob_msg,
-    const std::string& account,
+    const mojom::AccountInfoPtr& account,
     SignMessageCallback callback,
     bool approved,
     mojom::ByteArrayStringUnionPtr signature,
@@ -801,11 +791,10 @@ void SolanaProviderImpl::OnSignMessageRequestProcessed(
     return;
   }
 
-  bool is_hardware_account =
-      keyring_service_->IsHardwareAccount(mojom::kSolanaKeyringId, account);
   absl::optional<std::vector<uint8_t>> sig_bytes;
-  if (!is_hardware_account) {
-    sig_bytes = keyring_service_->SignMessageBySolanaKeyring(account, blob_msg);
+  if (account->account_id->kind != mojom::AccountKind::kHardware) {
+    sig_bytes = keyring_service_->SignMessageBySolanaKeyring(
+        *account->account_id, blob_msg);
   } else if (signature && signature->is_bytes()) {
     sig_bytes = signature->get_bytes();
   }
@@ -817,7 +806,7 @@ void SolanaProviderImpl::OnSignMessageRequestProcessed(
     return;
   }
 
-  result.Set(kPublicKey, account);
+  result.Set(kPublicKey, account->address);
   result.Set(kSignature, Base58Encode(*sig_bytes));
 
   std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
@@ -882,16 +871,15 @@ void SolanaProviderImpl::Unlocked() {
   }
 }
 
-void SolanaProviderImpl::SelectedAccountChanged(mojom::CoinType coin) {
+void SolanaProviderImpl::SelectedDappAccountChanged(
+    mojom::CoinType coin,
+    mojom::AccountInfoPtr account) {
   if (!events_listener_.is_bound() || coin != mojom::CoinType::SOL) {
     return;
   }
 
-  DCHECK(keyring_service_);
-  absl::optional<std::string> account =
-      keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
   if (account && IsAccountConnected(*account)) {
-    events_listener_->AccountChangedEvent(account);
+    events_listener_->AccountChangedEvent(account->address);
   } else {
     events_listener_->AccountChangedEvent(absl::nullopt);
   }
