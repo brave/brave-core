@@ -188,6 +188,9 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
     EXPECT_TRUE(permission_request_manager->IsRequestInProgress())
         << "case: " << i;
     EXPECT_TRUE(observer->IsShowingBubble()) << "case: " << i;
+    // update anchor should not dismiss the bubble
+    permission_request_manager->UpdateAnchor();
+    EXPECT_TRUE(observer->IsShowingBubble()) << "case: " << i;
     EXPECT_FALSE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
 
     // Check sub-requests are created as expected.
@@ -229,6 +232,9 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
     content::RunAllTasksUntilIdle();
     EXPECT_TRUE(permission_request_manager->IsRequestInProgress())
         << "case: " << i;
+    EXPECT_TRUE(observer->IsShowingBubble()) << "case: " << i;
+    // update anchor should not dismiss the bubble
+    permission_request_manager->UpdateAnchor();
     EXPECT_TRUE(observer->IsShowingBubble()) << "case: " << i;
     EXPECT_FALSE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
 
@@ -323,6 +329,9 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
 
     EXPECT_TRUE(permission_request_manager->IsRequestInProgress())
         << "case: " << i;
+    EXPECT_TRUE(observer->IsShowingBubble()) << "case: " << i;
+    // update anchor should not dismiss the bubble
+    permission_request_manager->UpdateAnchor();
     EXPECT_TRUE(observer->IsShowingBubble()) << "case: " << i;
     EXPECT_FALSE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
 
