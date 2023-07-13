@@ -6,6 +6,7 @@
 #include "brave/browser/prefs/brave_pref_service_incognito_allowlist.h"
 
 #include "base/no_destructor.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/common/pref_names.h"
@@ -13,6 +14,10 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/components/sidebar/pref_names.h"
@@ -31,6 +36,10 @@ const std::vector<const char*>& GetBravePersistentPrefNames() {
 #if defined(TOOLKIT_VIEWS)
         sidebar::kSidePanelWidth,
 #endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+        ai_chat::prefs::kBraveChatHasSeenDisclaimer,
+        ai_chat::prefs::kBraveChatAutoGenerateQuestions,
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
   });
 
   return *brave_allowlist;

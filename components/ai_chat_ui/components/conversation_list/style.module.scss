@@ -39,3 +39,10 @@
   height: 12px;
   background-color: currentColor;
 }
+
+.suggestedQuestions {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 6px;
+}

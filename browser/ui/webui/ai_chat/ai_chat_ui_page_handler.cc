@@ -9,32 +9,56 @@
 #include <utility>
 #include <vector>
 
-#include "brave/components/ai_chat/constants.h"
-#include "brave/components/ai_chat/pref_names.h"
+#include "base/notreached.h"
+#include "brave/components/ai_chat/browser/constants.h"
+#include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/visibility.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_observer.h"
 
-using ai_chat::mojom::CharacterType;
-using ai_chat::mojom::ConversationTurn;
-using ai_chat::mojom::ConversationTurnVisibility;
+namespace ai_chat {
+
+using mojom::CharacterType;
+using mojom::ConversationTurn;
+using mojom::ConversationTurnVisibility;
 
 AIChatUIPageHandler::AIChatUIPageHandler(
+    content::WebContents* owner_web_contents,
     TabStripModel* tab_strip_model,
     Profile* profile,
     mojo::PendingReceiver<ai_chat::mojom::PageHandler> receiver)
-    : profile_(profile), receiver_(this, std::move(receiver)) {
+    : content::WebContentsObserver(owner_web_contents),
+      profile_(profile),
+      receiver_(this, std::move(receiver)) {
   DCHECK(tab_strip_model);
-  tab_strip_model->AddObserver(this);
-
-  auto* web_contents = tab_strip_model->GetActiveWebContents();
-  if (!web_contents) {
-    return;
+  // Detect if we are in target-tab mode, or standalone mode. Standalone mode
+  // means Chat is opened as its own tab in the tab strip and not a side panel.
+  bool is_standalone = (tab_strip_model->GetIndexOfWebContents(
+                            owner_web_contents) != TabStripModel::kNoTab);
+  if (!is_standalone) {
+    tab_strip_model->AddObserver(this);
+    auto* web_contents = tab_strip_model->GetActiveWebContents();
+    if (!web_contents) {
+      return;
+    }
+    active_chat_tab_helper_ =
+        ai_chat::AIChatTabHelper::FromWebContents(web_contents);
+    chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
+    bool is_visible =
+        (web_contents->GetVisibility() == content::Visibility::VISIBLE) ? true
+                                                                        : false;
+    active_chat_tab_helper_->OnConversationActiveChanged(is_visible);
+  } else {
+    // TODO(petemill): Enable conversation without the TabHelper. Conversation
+    // logic should be extracted from the TabHelper to a new virtual class, e.g.
+    // AIChatConverser, that the TabHelper can implement and a
+    // StandaloneAIChatConverser can also implement and be instantiated here.
+    NOTIMPLEMENTED();
   }
-
-  active_chat_tab_helper_ = AIChatTabHelper::FromWebContents(web_contents);
-
-  chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
 }
 
 AIChatUIPageHandler::~AIChatUIPageHandler() = default;
@@ -66,6 +90,10 @@ void AIChatUIPageHandler::SubmitHumanConversationEntry(
 
 void AIChatUIPageHandler::GetConversationHistory(
     GetConversationHistoryCallback callback) {
+  if (!active_chat_tab_helper_) {
+    std::move(callback).Run({});
+    return;
+  }
   std::vector<ConversationTurn> history =
       active_chat_tab_helper_->GetConversationHistory();
 
@@ -83,13 +111,29 @@ void AIChatUIPageHandler::GetConversationHistory(
   std::move(callback).Run(std::move(list));
 }
 
-void AIChatUIPageHandler::RequestSummary() {
-  active_chat_tab_helper_->RequestSummary();
+void AIChatUIPageHandler::GetSuggestedQuestions(
+    GetSuggestedQuestionsCallback callback) {
+  bool can_generate;
+  bool auto_generate;
+  std::move(callback).Run(active_chat_tab_helper_->GetSuggestedQuestions(
+                              can_generate, auto_generate),
+                          can_generate, auto_generate);
+}
+
+void AIChatUIPageHandler::GenerateQuestions() {
+  if (active_chat_tab_helper_) {
+    active_chat_tab_helper_->GenerateQuestions();
+  }
+}
+
+void AIChatUIPageHandler::SetAutoGenerateQuestions(bool value) {
+  profile_->GetPrefs()->SetBoolean(
+      ai_chat::prefs::kBraveChatAutoGenerateQuestions, value);
 }
 
 void AIChatUIPageHandler::MarkAgreementAccepted() {
-  profile_->GetOriginalProfile()->GetPrefs()->SetBoolean(
-      ai_chat::prefs::kBraveChatHasSeenDisclaimer, true);
+  profile_->GetPrefs()->SetBoolean(ai_chat::prefs::kBraveChatHasSeenDisclaimer,
+                                   true);
 }
 
 void AIChatUIPageHandler::OnHistoryUpdate() {
@@ -104,9 +148,13 @@ void AIChatUIPageHandler::OnAPIRequestInProgress(bool in_progress) {
   }
 }
 
-void AIChatUIPageHandler::OnRequestSummaryFailed() {
+void AIChatUIPageHandler::OnSuggestedQuestionsChanged(
+    std::vector<std::string> questions,
+    bool has_generated,
+    bool auto_generate) {
   if (page_.is_bound()) {
-    page_->OnContentSummarizationFailed();
+    page_->OnSuggestedQuestionsChanged(std::move(questions), has_generated,
+                                       auto_generate);
   }
 }
 
@@ -123,7 +171,25 @@ void AIChatUIPageHandler::OnTabStripModelChanged(
     if (selection.new_contents) {
       active_chat_tab_helper_ =
           AIChatTabHelper::FromWebContents(selection.new_contents);
+      // Let the tab helper know if the UI is visible
+      active_chat_tab_helper_->OnConversationActiveChanged(
+          (web_contents()->GetVisibility() == content::Visibility::VISIBLE)
+              ? true
+              : false);
       chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
     }
+    // Reset state
+    page_->OnTargetTabChanged();
   }
 }
+
+void AIChatUIPageHandler::OnVisibilityChanged(content::Visibility visibility) {
+  // WebUI visibility changed (not target tab)
+  if (active_chat_tab_helper_) {
+    bool is_visible =
+        (visibility == content::Visibility::VISIBLE) ? true : false;
+    active_chat_tab_helper_->OnConversationActiveChanged(is_visible);
+  }
+}
+
+}  // namespace ai_chat
