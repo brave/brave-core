@@ -34,16 +34,28 @@ cargo_crate("lib") {
     "//brave/third_party/rust/unsigned_varint/v0_7:lib",
     "//third_party/rust/serde/v1:lib",
   ]
+  aliased_deps = {
+    ripemd_rs = "//third_party/rust/ripemd/v0_1:lib__rlib"
+    sha_2 = "//third_party/rust/sha2/v0_10:lib__rlib"
+    sha_3 = "//third_party/rust/sha3/v0_10:lib__rlib"
+  }
   features = [
     "alloc",
     "blake2b",
     "blake2b_simd",
     "derive",
+    "digest",
     "multihash-derive",
     "multihash-impl",
+    "ripemd",
+    "ripemd-rs",
     "serde",
     "serde-big-array",
     "serde-codec",
+    "sha-2",
+    "sha-3",
+    "sha2",
+    "sha3",
     "std",
   ]
   cargo_manifest_dir =
