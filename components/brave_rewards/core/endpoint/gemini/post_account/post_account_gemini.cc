@@ -27,9 +27,11 @@ std::string PostAccount::GetUrl() {
 
 mojom::Result PostAccount::ParseBody(const std::string& body,
                                      std::string* linking_info,
-                                     std::string* user_name) {
+                                     std::string* user_name,
+                                     std::string* country_id) {
   DCHECK(linking_info);
   DCHECK(user_name);
+  DCHECK(country_id);
 
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
@@ -67,8 +69,11 @@ mojom::Result PostAccount::ParseBody(const std::string& body,
     return mojom::Result::FAILED;
   }
 
+  const auto* country = (*users)[0].GetDict().FindString("countryCode");
+
   *linking_info = *linking_information;
   *user_name = *name;
+  *country_id = country ? *country : "";
 
   return mojom::Result::OK;
 }
@@ -92,14 +97,15 @@ void PostAccount::OnRequest(PostAccountCallback callback,
 
   mojom::Result result = CheckStatusCode(response->status_code);
   if (result != mojom::Result::OK) {
-    return std::move(callback).Run(result, "", "");
+    return std::move(callback).Run(result, "", "", "");
   }
 
   std::string linking_info;
   std::string user_name;
-  result = ParseBody(response->body, &linking_info, &user_name);
-  std::move(callback).Run(result, std::move(linking_info),
-                          std::move(user_name));
+  std::string country_id;
+  result = ParseBody(response->body, &linking_info, &user_name, &country_id);
+  std::move(callback).Run(result, std::move(linking_info), std::move(user_name),
+                          std::move(country_id));
 }
 
 }  // namespace brave_rewards::internal::endpoint::gemini

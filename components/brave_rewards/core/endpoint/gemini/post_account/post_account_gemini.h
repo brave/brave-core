@@ -43,8 +43,10 @@ class RewardsEngineImpl;
 
 namespace endpoint::gemini {
 
-using PostAccountCallback = base::OnceCallback<
-    void(mojom::Result, std::string&& linking_info, std::string&& user_name)>;
+using PostAccountCallback = base::OnceCallback<void(mojom::Result,
+                                                    std::string&& linking_info,
+                                                    std::string&& user_name,
+                                                    std::string&& country_id)>;
 
 class PostAccount {
  public:
@@ -58,7 +60,8 @@ class PostAccount {
 
   mojom::Result ParseBody(const std::string& body,
                           std::string* linking_info,
-                          std::string* user_name);
+                          std::string* user_name,
+                          std::string* country_id);
 
   void OnRequest(PostAccountCallback, mojom::UrlResponsePtr);
 

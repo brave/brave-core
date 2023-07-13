@@ -39,11 +39,13 @@ class ConnectUpholdWallet : public wallet_provider::ConnectExternalWallet {
 
   void OnGetCapabilities(ConnectExternalWalletCallback,
                          const std::string& access_token,
+                         const std::string& country_id,
                          mojom::Result,
                          internal::uphold::Capabilities) const;
 
   void OnCreateCard(ConnectExternalWalletCallback,
                     const std::string& access_token,
+                    const std::string& country_id,
                     mojom::Result,
                     std::string&& id) const;
 

@@ -60,6 +60,10 @@ mojom::Result GetMe::ParseBody(const std::string& body,
     user->member_id = *id;
   }
 
+  if (const auto* country = dict.FindString("identityCountry")) {
+    user->country_id = *country;
+  }
+
   const auto* currencies = dict.FindList("currencies");
   if (currencies) {
     const std::string currency = "BAT";

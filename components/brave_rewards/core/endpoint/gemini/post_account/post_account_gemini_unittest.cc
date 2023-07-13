@@ -59,7 +59,7 @@ TEST_F(GeminiPostAccountTest, ServerOK) {
 
   base::MockCallback<PostAccountCallback> callback;
   EXPECT_CALL(callback, Run(mojom::Result::OK, std::string("mocktoken"),
-                            std::string("Test")))
+                            std::string("Test"), std::string("US")))
       .Times(1);
   post_account_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
                         callback.Get());
@@ -79,8 +79,8 @@ TEST_F(GeminiPostAccountTest, ServerError401) {
       });
 
   base::MockCallback<PostAccountCallback> callback;
-  EXPECT_CALL(callback,
-              Run(mojom::Result::EXPIRED_TOKEN, std::string(), std::string()))
+  EXPECT_CALL(callback, Run(mojom::Result::EXPIRED_TOKEN, std::string(),
+                            std::string(), std::string()))
       .Times(1);
   post_account_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
                         callback.Get());
@@ -100,8 +100,8 @@ TEST_F(GeminiPostAccountTest, ServerError403) {
       });
 
   base::MockCallback<PostAccountCallback> callback;
-  EXPECT_CALL(callback,
-              Run(mojom::Result::EXPIRED_TOKEN, std::string(), std::string()))
+  EXPECT_CALL(callback, Run(mojom::Result::EXPIRED_TOKEN, std::string(),
+                            std::string(), std::string()))
       .Times(1);
   post_account_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
                         callback.Get());
@@ -121,8 +121,8 @@ TEST_F(GeminiPostAccountTest, ServerError404) {
       });
 
   base::MockCallback<PostAccountCallback> callback;
-  EXPECT_CALL(callback,
-              Run(mojom::Result::NOT_FOUND, std::string(), std::string()))
+  EXPECT_CALL(callback, Run(mojom::Result::NOT_FOUND, std::string(),
+                            std::string(), std::string()))
       .Times(1);
   post_account_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
                         callback.Get());
@@ -142,8 +142,8 @@ TEST_F(GeminiPostAccountTest, ServerErrorRandom) {
       });
 
   base::MockCallback<PostAccountCallback> callback;
-  EXPECT_CALL(callback,
-              Run(mojom::Result::FAILED, std::string(), std::string()))
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, std::string(), std::string(),
+                            std::string()))
       .Times(1);
   post_account_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
                         callback.Get());

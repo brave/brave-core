@@ -495,6 +495,7 @@ static_library("engine") {
     "uphold/uphold_capabilities.h",
     "uphold/uphold_card.cc",
     "uphold/uphold_card.h",
+    "uphold/uphold_user.cc",
     "uphold/uphold_user.h",
     "uphold/uphold_util.cc",
     "uphold/uphold_util.h",

@@ -117,15 +117,17 @@ void ConnectUpholdWallet::OnGetUser(ConnectExternalWalletCallback callback,
       base::BindOnce(
           // NOLINTNEXTLINE
           static_cast<void (ConnectUpholdWallet::*)(
-              ConnectExternalWalletCallback, const std::string&, mojom::Result,
-              internal::uphold::Capabilities) const>(
-              &ConnectUpholdWallet::OnGetCapabilities),
-          base::Unretained(this), std::move(callback), access_token));
+              ConnectExternalWalletCallback, const std::string&,
+              const std::string&, mojom::Result, internal::uphold::Capabilities)
+                          const>(&ConnectUpholdWallet::OnGetCapabilities),
+          base::Unretained(this), std::move(callback), access_token,
+          user.country_id));
 }
 
 void ConnectUpholdWallet::OnGetCapabilities(
     ConnectExternalWalletCallback callback,
     const std::string& access_token,
+    const std::string& country_id,
     mojom::Result result,
     Capabilities capabilities) const {
   auto wallet = engine_->uphold()->GetWalletIf(
@@ -160,11 +162,12 @@ void ConnectUpholdWallet::OnGetCapabilities(
   engine_->uphold()->CreateCard(
       access_token,
       base::BindOnce(&ConnectUpholdWallet::OnCreateCard, base::Unretained(this),
-                     std::move(callback), access_token));
+                     std::move(callback), access_token, country_id));
 }
 
 void ConnectUpholdWallet::OnCreateCard(ConnectExternalWalletCallback callback,
                                        const std::string& access_token,
+                                       const std::string& country_id,
                                        mojom::Result result,
                                        std::string&& id) const {
   if (!engine_->uphold()->GetWalletIf({mojom::WalletStatus::kNotConnected,
@@ -192,7 +195,7 @@ void ConnectUpholdWallet::OnCreateCard(ConnectExternalWalletCallback callback,
 
   auto on_connect =
       base::BindOnce(&ConnectUpholdWallet::OnConnect, base::Unretained(this),
-                     std::move(callback), access_token, id);
+                     std::move(callback), access_token, id, country_id);
 
   RequestFor<PostConnectUphold>(*engine_, std::move(id))
       .Send(std::move(on_connect));
