@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
+import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
@@ -17,6 +18,8 @@ import org.chromium.chrome.browser.component_updater.BraveComponentUpdater;
 /**
  * Class that manages Brave Wallet Data files component installation for Android
  */
+
+@JNINamespace("chrome::android")
 public class DataFilesComponentInstaller implements BraveComponentUpdater.ComponentUpdaterListener {
     private static final String TAG = "DFCI";
     private Object mLock = new Object();

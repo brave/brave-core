@@ -31,10 +31,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 #if BUILDFLAG(IS_ANDROID)
-#include "base/threading/platform_thread.h"
-#include "brave/build/android/jni_headers/DataFilesComponentInstaller_jni.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer_android_util.h"
-#include "chrome/browser/browser_process.h"  // TODO(AlexeyBarabash): forbidden here, move to browser/android?
 #endif
 
 namespace brave_wallet {
@@ -463,6 +460,20 @@ void RegisterWalletDataFilesComponent(
   }
 }
 
+void RegisterWalletDataFilesComponentOnDemand(
+    component_updater::ComponentUpdateService* cus,
+    base::OnceClosure on_component_completely_installed) {
+  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
+      std::make_unique<brave_wallet::WalletDataFilesInstallerPolicy>(
+          std::move(on_component_completely_installed)));
+
+  installer->Register(
+      cus, base::BindOnce([]() {
+        brave_component_updater::BraveOnDemandUpdater::GetInstance()
+            ->OnDemandUpdate(brave_wallet::kComponentId);
+      }));
+}
+
 absl::optional<base::Version> GetLastInstalledWalletVersion() {
   return last_installed_wallet_version;
 }
@@ -472,47 +483,3 @@ void SetLastInstalledWalletVersionForTest(const base::Version& version) {
 }
 
 }  // namespace brave_wallet
-
-#if BUILDFLAG(IS_ANDROID)
-namespace {
-void NativeRegisterAndInstallCallback(
-    JNIEnv* env,
-    base::android::ScopedJavaGlobalRef<jobject> java_callback,
-    scoped_refptr<base::SequencedTaskRunner> post_response_runner) {
-  post_response_runner->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          [](JNIEnv* env,
-             base::android::ScopedJavaGlobalRef<jobject> java_callback) {
-            Java_DataFilesComponentInstaller_onRegisterAndInstallDone(
-                env, java_callback);
-          },
-          env, std::move(java_callback)));
-}
-
-}  // namespace
-
-// TODO(AlexeyBarabash): another namespace?
-static void JNI_DataFilesComponentInstaller_RegisterAndInstall(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& callback) {
-  component_updater::ComponentUpdateService* cus =
-      g_browser_process->component_updater();
-
-  base::android::ScopedJavaGlobalRef<jobject> java_callback;
-  java_callback.Reset(env, callback);
-
-  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<brave_wallet::WalletDataFilesInstallerPolicy>(
-          base::BindOnce(&NativeRegisterAndInstallCallback, env,
-                         std::move(java_callback),
-                         base::SequencedTaskRunner::GetCurrentDefault())));
-
-  installer->Register(
-      cus, base::BindOnce([]() {
-        brave_component_updater::BraveOnDemandUpdater::GetInstance()
-            ->OnDemandUpdate(brave_wallet::kComponentId);
-      }));
-}
-
-#endif  // #if BUILDFLAG(IS_ANDROID)
