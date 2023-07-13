@@ -1,7 +1,7 @@
 [package]
 name = "fvm_shared"
 description = "Filecoin Virtual Machine shared types and functions"
-version = "3.2.0"
+version = "3.3.0"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 authors = ["ChainSafe Systems <info@chainsafe.io>", "Protocol Labs", "Filecoin Core Devs"]

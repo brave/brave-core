@@ -480,13 +480,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cs_serde_bytes"
-version = "0.12.2"
-dependencies = [
- "serde",
-]
-
-[[package]]
 name = "cssparser"
 version = "0.27.2"
 dependencies = [
@@ -891,7 +884,7 @@ dependencies = [
 
 [[package]]
 name = "fvm_shared"
-version = "3.2.0"
+version = "3.3.0"
 dependencies = [
  "anyhow",
  "bitflags",

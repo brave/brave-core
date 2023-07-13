@@ -14,7 +14,7 @@ cargo_crate("lib") {
   build_native_rust_unit_tests = false
   sources = [ "crate/src/lib.rs" ]
   edition = "2021"
-  cargo_pkg_version = "3.2.0"
+  cargo_pkg_version = "3.3.0"
   cargo_pkg_authors =
       "ChainSafe Systems <info@chainsafe.io>, Protocol Labs, Filecoin Core Devs"
   cargo_pkg_name = "fvm_shared"
