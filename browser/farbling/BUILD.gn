@@ -45,6 +45,7 @@ if (!is_android) {
       "//components/prefs",
       "//content/public/browser",
       "//content/test:test_support",
+      "//ui/color:test_support",
       "//ui/native_theme:test_support",
     ]
   }
