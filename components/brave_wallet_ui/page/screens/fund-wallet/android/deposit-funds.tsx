@@ -36,6 +36,9 @@ import { WalletPageWrapper }
   from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
 import { PageTitleHeader } from '../../../../components/desktop/card-headers/page-title-header'
 
+import { setIconBasePath } from '@brave/leo/react/icon'
+setIconBasePath('chrome://resources/brave-icons')
+
 export function AndroidDepositApp() {
   let history = useHistory()
 
