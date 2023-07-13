@@ -76,7 +76,7 @@ export default function Header ({ playlistId }: HeaderProps) {
         </>
       ) : (
         <>
-          <GradientIcon name='product-playlist-bold-add' />
+          <GradientIcon name='product-playlist-bold-add-color' />
           <ProductNameContainer>
             <ColoredSpan color={color.text.secondary}>Brave</ColoredSpan>
             <ColoredSpan color={color.text.primary}>Playlist</ColoredSpan>
