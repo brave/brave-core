@@ -24,6 +24,7 @@ import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.util.TabUtils;
 
 public class SwapBottomSheetDialogFragment
         extends WalletBottomSheetDialogFragment implements View.OnClickListener {
@@ -32,6 +33,7 @@ public class SwapBottomSheetDialogFragment
     private LinearLayout mBuyLayout;
     private LinearLayout mSendLayout;
     private LinearLayout mSwapLayout;
+    private LinearLayout mDepositLayout;
     private NetworkInfo mNetworkInfo;
     private WalletModel mWalletModel;
 
@@ -84,26 +86,38 @@ public class SwapBottomSheetDialogFragment
         mSendLayout.setOnClickListener(this);
         mSwapLayout = view.findViewById(R.id.swap_layout);
         mSwapLayout.setOnClickListener(this);
+        mDepositLayout = view.findViewById(R.id.deposit_layout);
+        mDepositLayout.setOnClickListener(this);
         return view;
     }
 
     @Override
     public void onClick(View view) {
-        BuySendSwapActivity.ActivityType activityType = BuySendSwapActivity.ActivityType.BUY;
-        if (view == mSendLayout) {
-            activityType = BuySendSwapActivity.ActivityType.SEND;
-        } else if (view == mSwapLayout) {
-            activityType = BuySendSwapActivity.ActivityType.SWAP_V2;
-        }
+        if (view == mDepositLayout) {
+            try {
+                BraveActivity.getBraveActivity().openNewOrSelectExistingTab(
+                        BraveActivity.BRAVE_DEPOSIT_URL, true);
+                TabUtils.bringChromeTabbedActivityToTheTop(requireActivity());
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
+                Log.e(TAG, "Error while opening deposit tab.", e);
+            }
+        } else {
+            BuySendSwapActivity.ActivityType activityType = BuySendSwapActivity.ActivityType.BUY;
+            if (view == mSendLayout) {
+                activityType = BuySendSwapActivity.ActivityType.SEND;
+            } else if (view == mSwapLayout) {
+                activityType = BuySendSwapActivity.ActivityType.SWAP_V2;
+            }
 
-        if (!JavaUtils.anyNull(mWalletModel, mNetworkInfo)) {
-            BuySendSwapActivity.ActivityType finalActivityType = activityType;
-            // TODO(apaymyshev): buy/send/swap should be decoupled from panel selected network.
-            mWalletModel.getNetworkModel().setDefaultNetwork(
-                    mNetworkInfo, isSelected -> { openBssAndDismiss(finalActivityType); });
-            return;
+            if (!JavaUtils.anyNull(mWalletModel, mNetworkInfo)) {
+                BuySendSwapActivity.ActivityType finalActivityType = activityType;
+                // TODO(apaymyshev): buy/send/swap should be decoupled from panel selected network.
+                mWalletModel.getNetworkModel().setDefaultNetwork(
+                        mNetworkInfo, isSelected -> { openBssAndDismiss(finalActivityType); });
+                return;
+            }
+            openBssAndDismiss(activityType);
         }
-        openBssAndDismiss(activityType);
     }
 
     // Open buy send swap (BSS)
