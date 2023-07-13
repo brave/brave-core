@@ -1,8 +1,8 @@
 diff --git a/tools/metrics/histograms/metadata/histogram_suffixes_list.xml b/tools/metrics/histograms/metadata/histogram_suffixes_list.xml
-index 8fd154fc2457cc9eeb282af5dbf3496f67f1375d..8bc0f95177adeb44f8ef9efbc2bc5569f683db6d 100644
+index 823ed407276f16b083444f11931fea8cd9b8032f..86abe78dfcfd67cd06bcde795595c9497c0a4eee 100644
 --- a/tools/metrics/histograms/metadata/histogram_suffixes_list.xml
 +++ b/tools/metrics/histograms/metadata/histogram_suffixes_list.xml
-@@ -3743,6 +3743,7 @@ chromium-metrics-reviews@google.com.
+@@ -3608,6 +3608,7 @@ chromium-metrics-reviews@google.com.
    <suffix name="ProtectedMedia" label="Protected media permission"/>
    <suffix name="PushMessaging" label="Push messaging permission"/>
    <suffix name="Quota" label="Quota permission"/>

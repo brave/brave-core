@@ -1,5 +1,5 @@
 diff --git a/build/rust/BUILD.gn b/build/rust/BUILD.gn
-index 3c33c0d626d3eb0c749ad92b028ae946c39ba846..0490566f2ad4100c83b01ada9a3913542a3fc659 100644
+index 17c7efbb7abd2376b2c83656c9dab9d6fc732e05..609dab84217b4d17e1c53ff572c23460431b1f72 100644
 --- a/build/rust/BUILD.gn
 +++ b/build/rust/BUILD.gn
 @@ -28,10 +28,15 @@ if (toolchain_has_rust) {

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.h b/chrome/browser/ui/views/location_bar/location_bar_view.h
-index 609ce268ada178d65c9a6fb5ea2bac563b515577..6b7ca0655d6509cdd9a83ca99c19c5dae2882c3a 100644
+index aaf197d2037116f54b31dc0d8085245740817ed5..f7776159b4537b7ce14ff9450ef2cd7dda5f08ce 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.h
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.h
-@@ -112,6 +112,7 @@ class LocationBarView : public LocationBar,
+@@ -109,6 +109,7 @@ class LocationBarView : public LocationBar,
    int GetBorderRadius() const;
  
    // Initializes the LocationBarView.
@@ -10,7 +10,7 @@ index 609ce268ada178d65c9a6fb5ea2bac563b515577..6b7ca0655d6509cdd9a83ca99c19c5da
    void Init();
  
    // True if this instance has been initialized by calling Init, which can only
-@@ -164,6 +165,7 @@ class LocationBarView : public LocationBar,
+@@ -161,6 +162,7 @@ class LocationBarView : public LocationBar,
  
    // Updates the controller, and, if |contents| is non-null, restores saved
    // state that the tab holds.
@@ -18,7 +18,7 @@ index 609ce268ada178d65c9a6fb5ea2bac563b515577..6b7ca0655d6509cdd9a83ca99c19c5da
    void Update(content::WebContents* contents);
  
    // Clears the location bar's state for |contents|.
-@@ -247,6 +249,7 @@ class LocationBarView : public LocationBar,
+@@ -243,6 +245,7 @@ class LocationBarView : public LocationBar,
    std::vector<ContentSettingImageView*>& GetContentSettingViewsForTest() {
      return content_setting_views_;
    }

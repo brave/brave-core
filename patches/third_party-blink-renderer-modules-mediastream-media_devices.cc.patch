@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/mediastream/media_devices.cc b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-index 0d2f8de445f93ca2a88da97ee2a13ae950310dc6..50e77395a7fcd68b280798192e53a0ed08a29136 100644
+index b1bc1fe263304b7d1409ee8c47af61c5186afad0..0cf35ce44dc21bac90ef20e26f40c829c14d41a5 100644
 --- a/third_party/blink/renderer/modules/mediastream/media_devices.cc
 +++ b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-@@ -955,6 +955,7 @@ void MediaDevices::DevicesEnumerated(
+@@ -956,6 +956,7 @@ void MediaDevices::DevicesEnumerated(
      }
    }
  
