@@ -152,6 +152,13 @@ bool PlaylistService::AddItemsToPlaylist(
   }
 
   playlists_update->Set(playlist_id, ConvertPlaylistToValue(playlist));
+
+  for (auto& observer : observers_) {
+    for (const auto& item_id : item_ids) {
+      observer->OnItemAddedToList(playlist_id, item_id);
+    }
+  }
+
   return true;
 }
 
@@ -196,26 +203,24 @@ bool PlaylistService::RemoveItemFromPlaylist(const PlaylistId& playlist_id,
 
   // Try to remove |playlist_id| from item->parents or delete the this item
   // if there's no other parent playlist.
-  GetPlaylistItem(
-      *item_id,
-      base::BindOnce(
-          [](PlaylistService* service, const std::string& playlist_id,
-             bool delete_item, mojom::PlaylistItemPtr item) {
-            if (delete_item && item->parents.size() == 1) {
-              DCHECK_EQ(item->parents.front(), playlist_id);
-              service->DeletePlaylistItemData(item->id);
-              return;
-            }
+  auto item = GetPlaylistItem(*item_id);
+  if (delete_item && item->parents.size() == 1) {
+    DCHECK_EQ(item->parents.front(), *playlist_id);
+    DeletePlaylistItemData(item->id);
+    return true;
+  }
 
-            // There're other playlists referencing this. Don't delete item
-            // and update the item's parent playlists data.
-            auto iter = base::ranges::find(item->parents, playlist_id);
-            DCHECK(iter != item->parents.end());
-            item->parents.erase(iter);
-            service->UpdatePlaylistItemValue(
-                item->id, base::Value(ConvertPlaylistItemToValue(item)));
-          },
-          this, *playlist_id, delete_item));
+  // There're other playlists referencing this. Don't delete item
+  // and update the item's parent playlists data.
+  auto iter = base::ranges::find(item->parents, *playlist_id);
+  DCHECK(iter != item->parents.end());
+  item->parents.erase(iter);
+  UpdatePlaylistItemValue(item->id,
+                          base::Value(ConvertPlaylistItemToValue(item)));
+
+  for (auto& observer : observers_) {
+    observer->OnItemRemovedFromList(*playlist_id, item->id);
+  }
 
   return true;
 }

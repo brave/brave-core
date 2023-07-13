@@ -138,7 +138,7 @@ ConfirmBubble::ConfirmBubble(views::View* anchor,
       l10n_util::GetStringUTF16(IDS_PLAYLIST_REMOVE_FROM_PLAYLIST),
       ui::ImageModel::FromVectorIcon(kLeoTrashIcon, ui::kColorMenuIcon,
                                      kIconSize),
-      base::BindRepeating(&ConfirmBubble::OpenInPlaylist,
+      base::BindRepeating(&ConfirmBubble::RemoveFromPlaylist,
                           base::Unretained(this))));
   AddChildView(std::make_unique<views::Separator>());
   AddChildView(std::make_unique<Row>(
@@ -158,7 +158,17 @@ void ConfirmBubble::ChangeFolder() {
 }
 
 void ConfirmBubble::RemoveFromPlaylist() {
-  NOTIMPLEMENTED();
+  CHECK(playlist_tab_helper_);
+  const auto& saved_items = playlist_tab_helper_->saved_items();
+  CHECK(saved_items.size());
+
+  std::vector<playlist::mojom::PlaylistItemPtr> items;
+  base::ranges::transform(saved_items, std::back_inserter(items),
+                          [](const auto& item) { return item->Clone(); });
+
+  playlist_tab_helper_->RemoveItems(std::move(items));
+
+  GetWidget()->Close();
 }
 
 void ConfirmBubble::MoreMediaInContents() {

@@ -57,7 +57,7 @@ void PlaylistMediaFileDownloadManager::CancelDownloadRequest(
   VLOG(2) << __func__ << " " << id;
 
   // Cancel if currently downloading item is id.
-  // Otherwise, GetNextPlaylistItemTarget() will drop canceled one.
+  // Otherwise, PopNextJob() will drop canceled one.
   if (GetCurrentDownloadingPlaylistItemID() == id) {
     CancelCurrentDownloadingPlaylistItem();
     TryStartingDownloadTask();

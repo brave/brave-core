@@ -44,6 +44,7 @@ class PlaylistTabHelper
   bool is_adding_items() const { return is_adding_items_; }
 
   void AddItems(std::vector<mojom::PlaylistItemPtr> items);
+  void RemoveItems(std::vector<mojom::PlaylistItemPtr> items);
 
   base::WeakPtr<PlaylistTabHelper> GetWeakPtr();
 
@@ -56,7 +57,12 @@ class PlaylistTabHelper
   void OnEvent(mojom::PlaylistEvent event,
                const std::string& playlist_id) override {}
   void OnItemCreated(mojom::PlaylistItemPtr item) override;
+  void OnItemAddedToList(const std::string& playlist_id,
+                         const std::string& item_id) override;
+  void OnItemRemovedFromList(const std::string& playlist_id,
+                             const std::string& item_id) override;
   void OnItemDeleted(const std::string& id) override;
+
   void OnMediaFileDownloadProgressed(
       const std::string& id,
       int64_t total_bytes,

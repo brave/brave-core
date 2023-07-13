@@ -59,17 +59,23 @@ void PlaylistTabHelper::AddItems(std::vector<mojom::PlaylistItemPtr> items) {
   DCHECK(items.size());
   is_adding_items_ = true;
 
-  auto* contents = web_contents();
-  CHECK(contents);
-
-  auto* service = PlaylistServiceFactory::GetForBrowserContext(
-      contents->GetBrowserContext());
-  CHECK(service);
-
-  service->AddMediaFiles(
+  CHECK(service_);
+  service_->AddMediaFiles(
       std::move(items), kDefaultPlaylistID,
       /* can_cache= */ true,
       base::BindOnce(&PlaylistTabHelper::OnAddedItems, base::Unretained(this)));
+}
+
+void PlaylistTabHelper::RemoveItems(std::vector<mojom::PlaylistItemPtr> items) {
+  CHECK(service_);
+  DCHECK(!items.empty());
+
+  for (const auto& item : items) {
+    DCHECK(!item->parents.empty());
+    for (const auto& playlist_id : item->parents) {
+      service_->RemoveItemFromPlaylist(playlist_id, item->id);
+    }
+  }
 }
 
 base::WeakPtr<PlaylistTabHelper> PlaylistTabHelper::GetWeakPtr() {
@@ -118,6 +124,41 @@ void PlaylistTabHelper::OnItemCreated(mojom::PlaylistItemPtr item) {
   }
 
   saved_items_.push_back(std::move(item));
+  for (auto& observer : observers_) {
+    observer.OnSavedItemsChanged(saved_items_);
+  }
+}
+
+void PlaylistTabHelper::OnItemAddedToList(const std::string& playlist_id,
+                                          const std::string& item_id) {
+  auto iter = base::ranges::find_if(saved_items_, [&item_id](const auto& item) {
+    return item->id == item_id;
+  });
+
+  if (iter == saved_items_.end()) {
+    return;
+  }
+
+  (*iter)->parents.push_back(playlist_id);
+
+  for (auto& observer : observers_) {
+    observer.OnSavedItemsChanged(saved_items_);
+  }
+}
+
+void PlaylistTabHelper::OnItemRemovedFromList(const std::string& playlist_id,
+                                              const std::string& item_id) {
+  auto iter = base::ranges::find_if(saved_items_, [&item_id](const auto& item) {
+    return item->id == item_id;
+  });
+
+  if (iter == saved_items_.end()) {
+    return;
+  }
+
+  auto& parents = (*iter)->parents;
+  parents.erase(base::ranges::remove(parents, playlist_id), parents.end());
+
   for (auto& observer : observers_) {
     observer.OnSavedItemsChanged(saved_items_);
   }

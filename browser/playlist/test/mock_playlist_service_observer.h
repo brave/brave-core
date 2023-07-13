@@ -49,6 +49,14 @@ class MockPlaylistServiceObserver
               OnItemCreated,
               (playlist::mojom::PlaylistItemPtr item),
               (override));
+  MOCK_METHOD(void,
+              OnItemAddedToList,
+              (const std::string& playlist_id, const std::string& item_id),
+              (override));
+  MOCK_METHOD(void,
+              OnItemRemovedFromList,
+              (const std::string& playlist_id, const std::string& item_id),
+              (override));
   MOCK_METHOD(void, OnItemDeleted, (const std::string& id), (override));
 
  private:
