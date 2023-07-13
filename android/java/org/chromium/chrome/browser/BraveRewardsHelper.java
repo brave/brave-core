@@ -77,6 +77,11 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     private Tab mTab;
     private Profile mProfile;
 
+    public static boolean isRewardsEnabled() {
+        BraveRewardsNativeWorker worker = BraveRewardsNativeWorker.getInstance();
+        return worker != null && worker.isRewardsEnabled();
+    }
+
     public static void resetRewards() {
         SharedPreferences.Editor sharedPreferencesEditor =
                 ContextUtils.getAppSharedPreferences().edit();
@@ -132,7 +137,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
                         && System.currentTimeMillis() > getNextRewardsOnboardingModalDate())
                 && shouldShowBraveRewardsOnboardingModal() && braveRewardsNativeWorker != null
                 && braveRewardsNativeWorker.IsSupported()) {
-            if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
+            if (isRewardsEnabled()) {
                 setRewardsOnboardingModalShown(true);
                 return false;
             } else {

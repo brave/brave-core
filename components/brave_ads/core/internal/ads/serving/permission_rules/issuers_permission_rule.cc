@@ -13,7 +13,7 @@ namespace brave_ads {
 namespace {
 
 bool DoesRespectCap() {
-  if (!ShouldRewardUser()) {
+  if (!UserHasJoinedBraveRewards()) {
     return true;
   }
 

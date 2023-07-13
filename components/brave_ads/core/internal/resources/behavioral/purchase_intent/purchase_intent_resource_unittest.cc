@@ -96,9 +96,9 @@ TEST_F(BraveAdsPurchaseIntentResourceTest, LoadResourceWhenLocaleDidChange) {
 
 TEST_F(
     BraveAdsPurchaseIntentResourceTest,
-    DoNotLoadResourceWhenLocaleDidChangeIfBravePrivateAdsAndBraveNewsAdsAreDisabled) {
+    DoNotLoadResourceWhenLocaleDidChangeIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableNotificationAds();
   DisableBraveNewsAds();
 
   LoadResource(kCountryComponentId);
@@ -125,12 +125,12 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest,
-       LoadResourceWhenEnabledPrefDidChange) {
+       LoadResourceWhenOptedInToNotificationAdsPrefDidChange) {
   // Arrange
   LoadResource(kCountryComponentId);
 
   // Act
-  NotifyPrefDidChange(prefs::kEnabled);
+  NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
   task_environment_.RunUntilIdle();
 
   // Assert
@@ -139,15 +139,15 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
 
 TEST_F(
     BraveAdsPurchaseIntentResourceTest,
-    DoNotLoadResourceWhenEnabledPrefDidChangeIfBravePrivateAdsAndBraveNewsAdsAreDisabled) {
+    DoNotLoadResourceWhenOptedInToNotificationAdsPrefDidChangeIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableNotificationAds();
   DisableBraveNewsAds();
 
   LoadResource(kCountryComponentId);
 
   // Act
-  NotifyPrefDidChange(prefs::kEnabled);
+  NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
   task_environment_.RunUntilIdle();
 
   // Assert
@@ -155,12 +155,12 @@ TEST_F(
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest,
-       DoNotResetResourceWhenEnabledPrefDidChange) {
+       DoNotResetResourceWhenOptedInToNotificationAdsPrefDidChange) {
   // Arrange
   LoadResource(kCountryComponentId);
 
   // Act
-  NotifyPrefDidChange(prefs::kEnabled);
+  NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
   task_environment_.RunUntilIdle();
 
   // Assert
@@ -192,9 +192,9 @@ TEST_F(
 
 TEST_F(
     BraveAdsPurchaseIntentResourceTest,
-    DoNotLoadResourceWhenDidUpdateResourceComponentIfBravePrivateAdsAndBraveNewsAdsAreDisabled) {
+    DoNotLoadResourceWhenDidUpdateResourceComponentIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableNotificationAds();
   DisableBraveNewsAds();
 
   // Act

@@ -284,9 +284,9 @@ TEST_F(BraveAdsConversionsTest,
 }
 
 TEST_F(BraveAdsConversionsTest,
-       DoNotConvertViewedNotificationAdIfBravePrivateAdsAreDisabled) {
+       DoNotConvertViewedNotificationAdIfOptedOutOfNotificationAds) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableNotificationAds();
 
   const AdInfo ad =
       BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
@@ -305,7 +305,7 @@ TEST_F(BraveAdsConversionsTest,
 }
 
 TEST_F(BraveAdsConversionsTest,
-       ConvertViewedNotificationAdIfBravePrivateAdsAreEnabled) {
+       ConvertViewedNotificationAdIfOptedInToNotificationAds) {
   // Arrange
   const AdInfo ad =
       BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
@@ -328,9 +328,9 @@ TEST_F(BraveAdsConversionsTest,
 }
 
 TEST_F(BraveAdsConversionsTest,
-       DoNotConvertClickedNotificationAdIfBravePrivateAdsAreDisabled) {
+       DoNotConvertClickedNotificationAdIfOptedOutOfNotificationAds) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableNotificationAds();
 
   const AdInfo ad =
       BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
@@ -350,7 +350,7 @@ TEST_F(BraveAdsConversionsTest,
 }
 
 TEST_F(BraveAdsConversionsTest,
-       ConvertClickedNotificationAdIfBravePrivateAdsAreEnabled) {
+       ConvertClickedNotificationAdIfOptedInToNotificationAds) {
   // Arrange
   const AdInfo ad =
       BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
@@ -466,7 +466,7 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfAdsAreDisabled) {
   // Arrange
   DisableBraveNewsAds();
-  DisableBravePrivateAds();
+  DisableNotificationAds();
   DisableNewTabPageAds();
 
   const AdInfo ad =
@@ -514,7 +514,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfAdsAreEnabled) {
 TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdIfAdsAreDisabled) {
   // Arrange
   DisableBraveNewsAds();
-  DisableBravePrivateAds();
+  DisableNotificationAds();
   DisableNewTabPageAds();
 
   const AdInfo ad =

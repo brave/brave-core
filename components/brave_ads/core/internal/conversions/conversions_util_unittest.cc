@@ -169,9 +169,9 @@ TEST_F(BraveAdsConversionsUtilTest, CannotConvertNotificationAdEvent) {
 }
 
 TEST_F(BraveAdsConversionsUtilTest,
-       CannotConvertNotificationAdEventIfBravePrivateAdsAreDisabled) {
+       CannotConvertNotificationAdEventIfOptedOutOfNotificationAds) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableNotificationAds();
 
   const AdInfo ad =
       BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
@@ -282,7 +282,7 @@ TEST_F(BraveAdsConversionsUtilTest,
        CanConvertSearchResultAdEventIfAdsAreDisabled) {
   // Arrange
   DisableBraveNewsAds();
-  DisableBravePrivateAds();
+  DisableNotificationAds();
   DisableNewTabPageAds();
 
   const AdInfo ad =

@@ -83,7 +83,7 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
     if (g_brave_browser_process->p3a_service() != nullptr) {
       ntp_p3a_helper = std::make_unique<NTPP3AHelperImpl>(
           g_browser_process->local_state(),
-          g_brave_browser_process->p3a_service(), ads_service);
+          g_brave_browser_process->p3a_service(), profile->GetPrefs());
     }
 
     return new ViewCounterService(

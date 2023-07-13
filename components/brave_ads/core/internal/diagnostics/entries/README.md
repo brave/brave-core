@@ -7,8 +7,10 @@ Diagnostic information to help identify the root cause of issues that users may 
 | catalog id  |
 | catalog last updated at  |
 | device id  |
-| enabled  |
 | last unidle at  |
 | locale  |
+| opted-in to brave news ads  |
+| opted-in to new tab page ads  |
+| opted-in to notification ads  |
 
 Please add to it!

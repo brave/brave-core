@@ -141,7 +141,7 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
                                     R.string.ads_per_hour),
                             adsValue));
                 }
-                if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+                if (BraveAdsNativeHelper.nativeIsOptedInToNotificationAds(
                             Profile.getLastUsedRegularProfile())) {
                     BraveRewardsNativeWorker.getInstance().SetAdsPerHour((int) slider.getValue());
                 }

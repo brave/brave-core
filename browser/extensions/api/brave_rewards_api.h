@@ -344,16 +344,6 @@ class BraveRewardsAttestPromotionFunction : public ExtensionFunction {
                          brave_rewards::mojom::PromotionPtr promotion);
 };
 
-class BraveRewardsSaveAdsSettingFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.saveAdsSetting", UNKNOWN)
-
- protected:
-  ~BraveRewardsSaveAdsSettingFunction() override;
-
-  ResponseAction Run() override;
-};
-
 class BraveRewardsSetAutoContributeEnabledFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.setAutoContributeEnabled", UNKNOWN)
@@ -573,16 +563,6 @@ class BraveRewardsGetPrefsFunction : public ExtensionFunction {
  private:
   void GetAutoContributePropertiesCallback(
       brave_rewards::mojom::AutoContributePropertiesPtr properties);
-};
-
-class BraveRewardsUpdatePrefsFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.updatePrefs", UNKNOWN)
-
- protected:
-  ~BraveRewardsUpdatePrefsFunction() override;
-
-  ResponseAction Run() override;
 };
 
 }  // namespace api

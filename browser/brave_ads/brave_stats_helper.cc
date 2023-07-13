@@ -128,7 +128,7 @@ void BraveStatsHelper::OnLastUsedProfileChanged() {
   ads_enabled_pref_change_registrar_.RemoveAll();
   ads_enabled_pref_change_registrar_.Init(profile_prefs);
   ads_enabled_pref_change_registrar_.Add(
-      prefs::kEnabled,
+      prefs::kOptedInToNotificationAds,
       base::BindRepeating(&BraveStatsHelper::Update, base::Unretained(this)));
   Update();
 }
@@ -138,7 +138,7 @@ void BraveStatsHelper::Update() {
   if (profile_prefs == nullptr) {
     return;
   }
-  bool is_enabled = profile_prefs->GetBoolean(prefs::kEnabled);
+  bool is_enabled = profile_prefs->GetBoolean(prefs::kOptedInToNotificationAds);
   UpdateLocalStateAdsEnabled(is_enabled);
   MaybeReportAdsInstallationTimeMetric(is_enabled);
 }

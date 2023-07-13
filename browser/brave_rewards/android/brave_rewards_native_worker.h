@@ -49,6 +49,8 @@ class BraveRewardsNativeWorker
   std::string StringifyResult(
       brave_rewards::mojom::CreateRewardsWalletResult result);
 
+  bool IsRewardsEnabled(JNIEnv* env);
+
   void CreateRewardsWallet(
       JNIEnv* env,
       const base::android::JavaParamRef<jstring>& country_code);

@@ -15,15 +15,17 @@
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 
 namespace brave_ads {
 
-bool UserHasOptedInToBravePrivateAds() {
-  return AdsClientHelper::GetInstance()->GetBooleanPref(prefs::kEnabled);
+bool UserHasJoinedBraveRewards() {
+  return AdsClientHelper::GetInstance()->GetBooleanPref(
+      brave_rewards::prefs::kEnabled);
 }
 
-bool UserHasOptedInToBraveNews() {
+bool UserHasOptedInToBraveNewsAds() {
   return AdsClientHelper::GetInstance()->GetBooleanPref(
              brave_news::prefs::kBraveNewsOptedIn) &&
          AdsClientHelper::GetInstance()->GetBooleanPref(
@@ -38,8 +40,10 @@ bool UserHasOptedInToNewTabPageAds() {
                  kNewTabPageShowSponsoredImagesBackgroundImage);
 }
 
-bool ShouldRewardUser() {
-  return UserHasOptedInToBravePrivateAds();
+bool UserHasOptedInToNotificationAds() {
+  return UserHasJoinedBraveRewards() &&
+         AdsClientHelper::GetInstance()->GetBooleanPref(
+             prefs::kOptedInToNotificationAds);
 }
 
 void ResetRewards(ResetRewardsCallback callback) {

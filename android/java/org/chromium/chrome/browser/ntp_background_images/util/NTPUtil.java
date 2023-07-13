@@ -29,7 +29,6 @@ import android.widget.TextView;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
@@ -67,13 +66,10 @@ public class NTPUtil {
     public static int checkForNonDisruptiveBanner(NTPImage ntpImage, SponsoredTab sponsoredTab) {
         Context context = ContextUtils.getApplicationContext();
         if(sponsoredTab.shouldShowBanner()) {
-            if(PackageUtils.isFirstInstall(context)
-                && ntpImage instanceof Wallpaper
-                && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
+            if (PackageUtils.isFirstInstall(context) && ntpImage instanceof Wallpaper
+                    && !BraveRewardsHelper.isRewardsEnabled()) {
                 return SponsoredImageUtil.BR_ON_ADS_OFF ;
-            } else if (ntpImage instanceof Wallpaper
-                    && BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                            Profile.getLastUsedRegularProfile())) {
+            } else if (ntpImage instanceof Wallpaper && BraveRewardsHelper.isRewardsEnabled()) {
                 return SponsoredImageUtil.BR_ON_ADS_ON;
             }
         }
@@ -82,8 +78,7 @@ public class NTPUtil {
 
     public static void showBREBottomBanner(View view) {
         Context context = ContextUtils.getApplicationContext();
-        if (!PackageUtils.isFirstInstall(context)
-                && BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
+        if (!PackageUtils.isFirstInstall(context) && BraveRewardsHelper.isRewardsEnabled()
                 && ContextUtils.getAppSharedPreferences().getBoolean(
                         BackgroundImagesPreferences.PREF_SHOW_BRE_BANNER, true)) {
             final ViewGroup breBottomBannerLayout = (ViewGroup) view.findViewById(R.id.bre_banner);
@@ -119,8 +114,7 @@ public class NTPUtil {
         nonDisruptiveBannerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                            Profile.getLastUsedRegularProfile())) {
+                if (BraveRewardsHelper.isRewardsEnabled()) {
                     clickOnBottomBanner(chromeActivity, ntpType, nonDisruptiveBannerLayout,
                             sponsoredTab, newTabPageListener);
                 } else {

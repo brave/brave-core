@@ -73,7 +73,7 @@ class Account final : public AdsClientNotifierObserver,
 
   void InitializeConfirmations();
 
-  void MaybeRewardUsers();
+  void MaybeRewardUser();
   void InitializeRewards();
   void ShutdownRewards();
 

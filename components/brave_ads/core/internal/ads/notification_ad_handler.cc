@@ -46,7 +46,7 @@ void FireEventCallback(TriggerAdEventCallback callback,
 }
 
 void MaybeCloseAllNotifications() {
-  if (!UserHasOptedInToBravePrivateAds()) {
+  if (!UserHasOptedInToNotificationAds()) {
     NotificationAdManager::GetInstance().CloseAll();
   }
 }
@@ -94,8 +94,8 @@ void NotificationAdHandler::TriggerEvent(
   CHECK_NE(mojom::NotificationAdEventType::kServed, event_type)
       << " should not be called with kServed as this event is handled when "
          "calling TriggerEvent with kViewed";
-  CHECK(UserHasOptedInToBravePrivateAds())
-      << " should only be called if user has opted-in to Brave Private Ads";
+  CHECK(UserHasJoinedBraveRewards())
+      << " should only be called if user has joined Brave Rewards";
 
   if (event_type == mojom::NotificationAdEventType::kViewed) {
     return event_handler_.FireEvent(
@@ -130,7 +130,7 @@ void NotificationAdHandler::OnNotifyDidInitializeAds() {
 }
 
 void NotificationAdHandler::OnNotifyPrefDidChange(const std::string& path) {
-  if (path == prefs::kEnabled) {
+  if (path == prefs::kOptedInToNotificationAds) {
     MaybeCloseAllNotifications();
 
     MaybeServeAtRegularIntervals();

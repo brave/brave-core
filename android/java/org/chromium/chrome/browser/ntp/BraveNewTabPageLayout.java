@@ -59,7 +59,6 @@ import org.chromium.brave_news.mojom.FeedItemMetadata;
 import org.chromium.brave_news.mojom.FeedPage;
 import org.chromium.brave_news.mojom.FeedPageItem;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
@@ -1166,11 +1165,8 @@ public class BraveNewTabPageLayout
     private void checkForNonDisruptiveBanner(NTPImage ntpImage) {
         int brOption = NTPUtil.checkForNonDisruptiveBanner(ntpImage, mSponsoredTab);
         if (SponsoredImageUtil.BR_INVALID_OPTION != brOption && !NTPUtil.isReferralEnabled()
-                && ((!BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                             Profile.getLastUsedRegularProfile())
-                            && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal())
-                        || BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                                Profile.getLastUsedRegularProfile()))
+                && ((BraveRewardsHelper.isRewardsEnabled()
+                        || BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()))
                 && (!ContextUtils.getAppSharedPreferences().getBoolean(
                             BraveNewsPreferencesV2.PREF_SHOW_OPTIN, true)
                         && !BravePrefServiceBridge.getInstance().getShowNews())) {

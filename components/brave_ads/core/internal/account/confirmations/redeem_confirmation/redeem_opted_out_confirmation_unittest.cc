@@ -29,7 +29,7 @@ class BraveAdsRedeemOptedOutConfirmationTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    DisableBravePrivateAds();
+    DisableBraveRewards();
   }
 
   NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;

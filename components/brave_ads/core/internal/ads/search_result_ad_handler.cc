@@ -55,7 +55,7 @@ void SearchResultAd::TriggerEvent(
       << " should not be called with kServed as this event is handled when "
          "calling TriggerEvent with kViewed";
 
-  if (!UserHasOptedInToBravePrivateAds() &&
+  if (!UserHasJoinedBraveRewards() &&
       !ShouldAlwaysTriggerSearchResultAdEvents()) {
     return std::move(callback).Run(/*success*/ false);
   }

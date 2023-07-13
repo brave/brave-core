@@ -38,9 +38,9 @@ class BraveAdsCreateOptedOutConfirmationUrlRequestBuilderTest
 };
 
 TEST_F(BraveAdsCreateOptedOutConfirmationUrlRequestBuilderTest,
-       BuildUrlIfBravePrivateAdsAreDisabled) {
+       BuildUrlIfBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   MockBuildChannel(BuildChannelType::kRelease);
 

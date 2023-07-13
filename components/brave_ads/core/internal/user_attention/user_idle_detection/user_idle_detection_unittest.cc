@@ -15,7 +15,7 @@ namespace brave_ads {
 class BraveAdsUserIdleDetectionTest : public UnitTestBase {};
 
 TEST_F(BraveAdsUserIdleDetectionTest,
-       UserDidBecomeActiveIfBravePrivateAdsAreEnabled) {
+       UserDidBecomeActiveIfOptedInToNotificationAds) {
   // Arrange
   EXPECT_CALL(ads_client_mock_, Log);
 
@@ -27,7 +27,7 @@ TEST_F(BraveAdsUserIdleDetectionTest,
 }
 
 TEST_F(BraveAdsUserIdleDetectionTest,
-       UserDidBecomeActiveIfScreenWasLockedAndBravePrivateAdsAreEnabled) {
+       UserDidBecomeActiveIfScreenWasLockedAndBraveRewardsAreEnabled) {
   // Arrange
   EXPECT_CALL(ads_client_mock_, Log).Times(2);
 
@@ -39,9 +39,9 @@ TEST_F(BraveAdsUserIdleDetectionTest,
 }
 
 TEST_F(BraveAdsUserIdleDetectionTest,
-       UserDidBecomeActiveIfBravePrivateAdsAreDisabled) {
+       UserDidBecomeActiveIfBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   EXPECT_CALL(ads_client_mock_, Log).Times(0);
 
@@ -53,7 +53,7 @@ TEST_F(BraveAdsUserIdleDetectionTest,
 }
 
 TEST_F(BraveAdsUserIdleDetectionTest,
-       UserDidBecomeIdleIfBravePrivateAdsAreEnabled) {
+       UserDidBecomeIdleIfBraveRewardsAreEnabled) {
   // Arrange
 
   EXPECT_CALL(ads_client_mock_, Log);
@@ -65,9 +65,9 @@ TEST_F(BraveAdsUserIdleDetectionTest,
 }
 
 TEST_F(BraveAdsUserIdleDetectionTest,
-       UserDidBecomeIdleIfBravePrivateAdsAreDisabled) {
+       UserDidBecomeIdleIfBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   EXPECT_CALL(ads_client_mock_, Log).Times(0);
 

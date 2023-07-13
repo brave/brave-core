@@ -367,8 +367,8 @@ void RewardsServiceImpl::Init(
   CheckPreferences();
   InitPrefChangeRegistrar();
   p3a::RecordAdsEnabledDuration(
-      profile_->GetPrefs(),
-      profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled));
+      profile_->GetPrefs(), profile_->GetPrefs()->GetBoolean(
+                                brave_ads::prefs::kOptedInToNotificationAds));
 }
 
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
@@ -378,7 +378,7 @@ void RewardsServiceImpl::InitPrefChangeRegistrar() {
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
                           base::Unretained(this)));
   profile_pref_change_registrar_.Add(
-      brave_ads::prefs::kEnabled,
+      brave_ads::prefs::kOptedInToNotificationAds,
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
                           base::Unretained(this)));
 }
@@ -394,29 +394,28 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
   }
 
   if (key == prefs::kAutoContributeEnabled ||
-      key == brave_ads::prefs::kEnabled) {
+      key == brave_ads::prefs::kOptedInToNotificationAds) {
     p3a::RecordAdsEnabledDuration(
-        profile_->GetPrefs(),
-        profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled));
+        profile_->GetPrefs(), profile_->GetPrefs()->GetBoolean(
+                                  brave_ads::prefs::kOptedInToNotificationAds));
   }
-
-  if (key == brave_ads::prefs::kEnabled) {
-    bool ads_enabled =
-        profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled);
 
 #if BUILDFLAG(ENABLE_GREASELION)
+  if (key == brave_ads::prefs::kOptedInToNotificationAds) {
     if (greaselion_service_) {
-      greaselion_service_->SetFeatureEnabled(greaselion::ADS, ads_enabled);
+      greaselion_service_->SetFeatureEnabled(
+          greaselion::ADS, profile_->GetPrefs()->GetBoolean(
+                               brave_ads::prefs::kOptedInToNotificationAds));
     }
-#endif
   }
+#endif
 }
 
 void RewardsServiceImpl::CheckPreferences() {
   auto* prefs = profile_->GetPrefs();
 
   if (prefs->GetBoolean(prefs::kAutoContributeEnabled) ||
-      prefs->GetBoolean(brave_ads::prefs::kEnabled)) {
+      prefs->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds)) {
     // If the user has enabled Ads or AC, but the "enabled" pref is missing, set
     // the "enabled" pref to true.
     if (!prefs->GetUserPrefValue(prefs::kEnabled)) {
@@ -521,7 +520,7 @@ void RewardsServiceImpl::CreateRewardsWallet(
       if (!prefs->GetBoolean(prefs::kEnabled)) {
         prefs->SetBoolean(prefs::kEnabled, true);
         prefs->SetString(prefs::kUserVersion, prefs::kCurrentUserVersion);
-        prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
+        prefs->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds, true);
 
         // Fetch the user's balance before turning on AC. We don't want to
         // automatically turn on AC if for some reason the user has a current
@@ -1323,8 +1322,8 @@ void RewardsServiceImpl::EnableGreaselion() {
       greaselion::AUTO_CONTRIBUTION,
       profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled));
   greaselion_service_->SetFeatureEnabled(
-      greaselion::ADS,
-      profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled));
+      greaselion::ADS, profile_->GetPrefs()->GetBoolean(
+                           brave_ads::prefs::kOptedInToNotificationAds));
 
   const bool show_buttons =
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipButtonsEnabled);

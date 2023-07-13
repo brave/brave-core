@@ -88,7 +88,7 @@ TEST_F(BraveAdsConfirmationUtilTest, FailToCreateOptedInConfirmation) {
 
 TEST_F(BraveAdsConfirmationUtilTest, CreateOptedOutConfirmation) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 

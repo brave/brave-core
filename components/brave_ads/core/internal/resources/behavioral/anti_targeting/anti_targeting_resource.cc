@@ -17,13 +17,14 @@
 #include "brave/components/brave_ads/core/internal/resources/country_components.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
 #include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 
 namespace brave_ads {
 
 namespace {
 
 bool DoesRequireResource() {
-  return UserHasOptedInToBravePrivateAds() || UserHasOptedInToBraveNews();
+  return UserHasOptedInToBraveNewsAds() || UserHasOptedInToNotificationAds();
 }
 
 }  // namespace
@@ -98,7 +99,9 @@ void AntiTargetingResource::OnNotifyLocaleDidChange(
 }
 
 void AntiTargetingResource::OnNotifyPrefDidChange(const std::string& path) {
-  if (path == prefs::kEnabled || path == brave_news::prefs::kBraveNewsOptedIn ||
+  if (path == brave_rewards::prefs::kEnabled ||
+      path == prefs::kOptedInToNotificationAds ||
+      path == brave_news::prefs::kBraveNewsOptedIn ||
       path == brave_news::prefs::kNewTabPageShowToday) {
     MaybeLoadOrReset();
   }

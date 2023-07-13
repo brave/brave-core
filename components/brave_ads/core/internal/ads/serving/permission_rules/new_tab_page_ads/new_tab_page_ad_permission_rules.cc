@@ -17,7 +17,7 @@ namespace brave_ads {
 
 // static
 bool NewTabPageAdPermissionRules::HasPermission() {
-  if (!ShouldRewardUser()) {
+  if (!UserHasJoinedBraveRewards()) {
     return true;
   }
 

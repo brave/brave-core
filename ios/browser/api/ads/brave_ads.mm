@@ -81,7 +81,7 @@ static NSString* const kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey =
     @"BATAutoDetectedAdsSubdivisionTargetingCodePrefKey";
 
 static NSString* const kEnabledPrefKey =
-    base::SysUTF8ToNSString(brave_ads::prefs::kEnabled);
+    base::SysUTF8ToNSString(brave_ads::prefs::kOptedInToNotificationAds);
 static NSString* const kMaximumNotificationAdsPerHourPrefKey =
     base::SysUTF8ToNSString(brave_ads::prefs::kMaximumNotificationAdsPerHour);
 static NSString* const kShouldAllowSubdivisionTargetingPrefKey =

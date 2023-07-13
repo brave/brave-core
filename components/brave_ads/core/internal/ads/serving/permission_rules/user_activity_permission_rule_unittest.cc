@@ -54,9 +54,10 @@ TEST_F(BraveAdsUserActivityPermissionRuleTest,
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BraveAdsUserActivityPermissionRuleTest, AllowAdIfShouldNotRewardUser) {
+TEST_F(BraveAdsUserActivityPermissionRuleTest,
+       ShouldAllowIfUserHasNotJoinedBraveRewards) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   // Act
 
@@ -65,7 +66,7 @@ TEST_F(BraveAdsUserActivityPermissionRuleTest, AllowAdIfShouldNotRewardUser) {
 }
 
 TEST_F(BraveAdsUserActivityPermissionRuleTest,
-       AllowAdIfUserActivityScoreIsGreaterThanTheThreshold) {
+       ShouldAllowIfUserActivityScoreIsGreaterThanTheThreshold) {
   // Arrange
 
   // Act
@@ -81,7 +82,7 @@ TEST_F(BraveAdsUserActivityPermissionRuleTest,
 }
 
 TEST_F(BraveAdsUserActivityPermissionRuleTest,
-       DoNotAllowAdIfUserActivityScoreIsLessThanTheThreshold) {
+       ShouldNotAllowIfUserActivityScoreIsLessThanTheThreshold) {
   // Arrange
 
   // Act

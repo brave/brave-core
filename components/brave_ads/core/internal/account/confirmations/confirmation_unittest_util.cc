@@ -23,7 +23,7 @@ absl::optional<ConfirmationInfo> BuildConfirmation(
     const TransactionInfo& transaction) {
   CHECK(token_generator);
 
-  return ShouldRewardUser()
+  return UserHasJoinedBraveRewards()
              ? CreateOptedInConfirmation(token_generator, transaction,
                                          /*user_data*/ {})
              : CreateOptedOutConfirmation(transaction);

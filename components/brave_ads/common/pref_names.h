@@ -24,7 +24,7 @@ extern const char kNotificationAdDidFallbackToCustom[];
 extern const char kSupportedCountryCodesLastSchemaVersion[];
 
 // Brave Ads enabled/disabled pref
-extern const char kEnabled[];
+extern const char kOptedInToNotificationAds[];
 extern const char kEnabledForLastProfile[];
 extern const char kEverEnabledForAnyProfile[];
 

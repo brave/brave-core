@@ -35,14 +35,14 @@ NewTabPageAdInfo BuildAndSaveAd() {
 
 }  // namespace
 
-class BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest
+class BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest
     : public NewTabPageAdEventHandlerDelegate,
       public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    DisableBravePrivateAds();
+    DisableBraveRewards();
 
     event_handler_.SetDelegate(this);
   }
@@ -100,7 +100,8 @@ class BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest
   bool did_fail_to_fire_event_ = false;
 };
 
-TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireServedEvent) {
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
+       FireServedEvent) {
   // Arrange
   const NewTabPageAdInfo ad = BuildAndSaveAd();
 
@@ -118,7 +119,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireServedEvent) {
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
 }
 
-TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireViewedEvent) {
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
+       FireViewedEvent) {
   // Arrange
   const NewTabPageAdInfo ad = BuildAndSaveAd();
 
@@ -142,7 +144,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireViewedEvent) {
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
-TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
        DoNotFireViewedEventIfAdPlacementWasAlreadyViewed) {
   // Arrange
   const NewTabPageAdInfo ad = BuildAndSaveAd();
@@ -163,7 +165,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
-TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
        DoNotFireViewedEventIfAdPlacementWasNotServed) {
   // Arrange
   const NewTabPageAdInfo ad = BuildAndSaveAd();
@@ -179,7 +181,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
-TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireClickedEvent) {
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
+       FireClickedEvent) {
   // Arrange
   const NewTabPageAdInfo ad = BuildAndSaveAd();
 
@@ -206,7 +209,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireClickedEvent) {
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
 }
 
-TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
        DoNotFireClickedEventIfAdPlacementWasAlreadyClicked) {
   // Arrange
   const NewTabPageAdInfo ad = BuildAndSaveAd();
@@ -231,7 +234,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
 }
 
-TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
        DoNotFireClickedEventIfAdPlacementWasNotServed) {
   // Arrange
   const NewTabPageAdInfo ad = BuildAndSaveAd();
@@ -248,7 +251,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
-TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
        DoNotFireEventWithInvalidPlacementId) {
   // Arrange
 
@@ -266,7 +269,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
 }
 
-TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
        DoNotFireEventWithInvalidCreativeInstanceId) {
   // Arrange
 
@@ -284,7 +287,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
 }
 
-TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
        DoNotFireEventForMissingCreativeInstanceId) {
   // Arrange
   const NewTabPageAdInfo ad = BuildAndSaveAd();

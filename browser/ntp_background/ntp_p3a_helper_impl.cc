@@ -15,7 +15,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/components/p3a_utils/bucket.h"
@@ -51,12 +51,11 @@ constexpr base::TimeDelta kLandingTime = base::Seconds(10);
 
 NTPP3AHelperImpl::NTPP3AHelperImpl(PrefService* local_state,
                                    p3a::P3AService* p3a_service,
-                                   brave_ads::AdsService* ads_service)
-    : local_state_(local_state),
-      p3a_service_(p3a_service),
-      ads_service_(ads_service) {
+                                   PrefService* prefs)
+    : local_state_(local_state), p3a_service_(p3a_service), prefs_(prefs) {
   DCHECK(local_state);
   DCHECK(p3a_service);
+  DCHECK(prefs);
   metric_sent_subscription_ =
       p3a_service->RegisterMetricCycledCallback(base::BindRepeating(
           &NTPP3AHelperImpl::OnP3AMetricCycled, base::Unretained(this)));
@@ -132,7 +131,7 @@ void NTPP3AHelperImpl::OnP3ARotation(p3a::MetricLogType log_type,
       BuildHistogramName(kCreativeTotalInstanceId, kCreativeTotalCountEventKey);
   // Always send the creative total if ads are disabled (as per spec),
   // or send the total if there were outstanding events sent
-  if ((ads_service_ != nullptr && !ads_service_->IsEnabled()) ||
+  if (!prefs_->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds) ||
       total_active_creatives > 0) {
     p3a_service_->RegisterDynamicMetric(creative_total_histogram_name,
                                         p3a::MetricLogType::kExpress);

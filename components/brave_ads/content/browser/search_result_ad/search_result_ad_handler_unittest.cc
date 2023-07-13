@@ -108,18 +108,6 @@ class SearchResultAdHandlerTest : public ::testing::Test {
 };
 
 TEST_F(SearchResultAdHandlerTest,
-       BraveAdsDisabledMaybeCreateSearchResultAdHandler) {
-  EXPECT_CALL(ads_service_mock_, IsEnabled()).WillOnce(Return(false));
-
-  auto search_result_ad_handler =
-      SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_mock_, GURL(kAllowedDomain),
-          /*should_trigger_viewed_event*/ true);
-
-  EXPECT_FALSE(search_result_ad_handler.get());
-}
-
-TEST_F(SearchResultAdHandlerTest,
        IncognitoModeMaybeCreateSearchResultAdHandler) {
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
@@ -130,8 +118,6 @@ TEST_F(SearchResultAdHandlerTest,
 
 TEST_F(SearchResultAdHandlerTest,
        NotAllowedDomainMaybeCreateSearchResultAdHandler) {
-  EXPECT_CALL(ads_service_mock_, IsEnabled()).WillOnce(Return(true));
-
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
           &ads_service_mock_, GURL(kNotAllowedDomain),
@@ -141,7 +127,6 @@ TEST_F(SearchResultAdHandlerTest,
 }
 
 TEST_F(SearchResultAdHandlerTest, NullWebPage) {
-  EXPECT_CALL(ads_service_mock_, IsEnabled()).WillRepeatedly(Return(true));
   EXPECT_CALL(
       ads_service_mock_,
       TriggerSearchResultAdEvent(_, mojom::SearchResultAdEventType::kViewed, _))
@@ -175,7 +160,6 @@ TEST_F(SearchResultAdHandlerTest, NullWebPage) {
 }
 
 TEST_F(SearchResultAdHandlerTest, EmptyWebPage) {
-  EXPECT_CALL(ads_service_mock_, IsEnabled()).WillRepeatedly(Return(true));
   EXPECT_CALL(
       ads_service_mock_,
       TriggerSearchResultAdEvent(_, mojom::SearchResultAdEventType::kViewed, _))
@@ -209,7 +193,6 @@ TEST_F(SearchResultAdHandlerTest, EmptyWebPage) {
 }
 
 TEST_F(SearchResultAdHandlerTest, NotValidSearchResultAd) {
-  EXPECT_CALL(ads_service_mock_, IsEnabled()).WillRepeatedly(Return(true));
   EXPECT_CALL(
       ads_service_mock_,
       TriggerSearchResultAdEvent(_, mojom::SearchResultAdEventType::kViewed, _))
@@ -244,7 +227,6 @@ TEST_F(SearchResultAdHandlerTest, NotValidSearchResultAd) {
 }
 
 TEST_F(SearchResultAdHandlerTest, EmptyConversions) {
-  EXPECT_CALL(ads_service_mock_, IsEnabled()).WillRepeatedly(Return(true));
   EXPECT_CALL(
       ads_service_mock_,
       TriggerSearchResultAdEvent(_, mojom::SearchResultAdEventType::kViewed, _))
@@ -282,47 +264,10 @@ TEST_F(SearchResultAdHandlerTest, EmptyConversions) {
       GetSearchResultAdClickedUrl());
 }
 
-TEST_F(SearchResultAdHandlerTest, BraveAdsBecomeDisabled) {
-  EXPECT_CALL(ads_service_mock_, IsEnabled()).WillOnce(Return(true));
-
-  auto search_result_ad_handler =
-      SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_mock_, GURL(kAllowedDomain),
-          /*should_trigger_viewed_event*/ true);
-  ASSERT_TRUE(search_result_ad_handler.get());
-  Mock::VerifyAndClearExpectations(&ads_service_mock_);
-
-  EXPECT_CALL(ads_service_mock_, IsEnabled()).WillRepeatedly(Return(false));
-  EXPECT_CALL(
-      ads_service_mock_,
-      TriggerSearchResultAdEvent(_, mojom::SearchResultAdEventType::kViewed, _))
-      .Times(0);
-  EXPECT_CALL(ads_service_mock_,
-              TriggerSearchResultAdEvent(
-                  _, mojom::SearchResultAdEventType::kClicked, _))
-      .Times(0);
-
-  base::MockCallback<OnRetrieveSearchResultAdCallback> callback;
-  EXPECT_CALL(callback, Run(_))
-      .WillOnce([&search_result_ad_handler](
-                    const std::vector<std::string>& placement_ids) {
-        for (const std::string& placement_id : placement_ids) {
-          search_result_ad_handler->MaybeTriggerSearchResultAdViewedEvent(
-              placement_id);
-        }
-      });
-  SimulateOnRetrieveSearchResultAdEntities(search_result_ad_handler.get(),
-                                           callback.Get(), CreateTestWebPage());
-
-  search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
-      GetSearchResultAdClickedUrl());
-}
-
 TEST_F(SearchResultAdHandlerTest, BraveAdsViewedClicked) {
   blink::mojom::WebPagePtr web_page = CreateTestWebPage();
   ASSERT_TRUE(web_page);
 
-  EXPECT_CALL(ads_service_mock_, IsEnabled()).WillRepeatedly(Return(true));
   EXPECT_CALL(
       ads_service_mock_,
       TriggerSearchResultAdEvent(_, mojom::SearchResultAdEventType::kViewed, _))
@@ -376,7 +321,6 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsViewedClicked) {
 }
 
 TEST_F(SearchResultAdHandlerTest, BraveAdsTabRestored) {
-  EXPECT_CALL(ads_service_mock_, IsEnabled()).WillRepeatedly(Return(true));
   EXPECT_CALL(
       ads_service_mock_,
       TriggerSearchResultAdEvent(_, mojom::SearchResultAdEventType::kViewed, _))
@@ -408,7 +352,6 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsTabRestored) {
 }
 
 TEST_F(SearchResultAdHandlerTest, WrongClickedUrl) {
-  EXPECT_CALL(ads_service_mock_, IsEnabled()).WillRepeatedly(Return(true));
   EXPECT_CALL(ads_service_mock_,
               TriggerSearchResultAdEvent(
                   _, mojom::SearchResultAdEventType::kViewed, _));

@@ -946,29 +946,6 @@ void BraveRewardsAttestPromotionFunction::OnAttestPromotion(
   Respond(WithArguments(static_cast<int>(result), std::move(data)));
 }
 
-BraveRewardsSaveAdsSettingFunction::~BraveRewardsSaveAdsSettingFunction() =
-    default;
-
-ExtensionFunction::ResponseAction BraveRewardsSaveAdsSettingFunction::Run() {
-  absl::optional<brave_rewards::SaveAdsSetting::Params> params =
-      brave_rewards::SaveAdsSetting::Params::Create(args());
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service) {
-    return RespondNow(Error("Service is not initialized"));
-  }
-
-  if (params->key == "adsEnabled") {
-    profile->GetPrefs()->SetBoolean(
-        brave_ads::prefs::kEnabled,
-        params->value == "true" && brave_ads::IsSupportedRegion());
-  }
-
-  return RespondNow(NoArguments());
-}
-
 BraveRewardsSetAutoContributeEnabledFunction::
     ~BraveRewardsSetAutoContributeEnabledFunction() = default;
 
@@ -1411,39 +1388,6 @@ void BraveRewardsGetPrefsFunction::GetAutoContributePropertiesCallback(
             properties ? properties->enabled_contribute : false);
   prefs.Set("autoContributeAmount", properties ? properties->amount : 0.0);
   Respond(WithArguments(std::move(prefs)));
-}
-
-BraveRewardsUpdatePrefsFunction::~BraveRewardsUpdatePrefsFunction() = default;
-
-ExtensionFunction::ResponseAction BraveRewardsUpdatePrefsFunction::Run() {
-  auto params = brave_rewards::UpdatePrefs::Params::Create(args());
-  EXTENSION_FUNCTION_VALIDATE(params);
-
-  auto* profile = Profile::FromBrowserContext(browser_context());
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-
-  if (rewards_service) {
-    auto& ac_enabled = params->prefs.auto_contribute_enabled;
-    if (ac_enabled)
-      rewards_service->SetAutoContributeEnabled(*ac_enabled);
-
-    auto& ac_amount = params->prefs.auto_contribute_amount;
-    if (ac_amount)
-      rewards_service->SetAutoContributionAmount(*ac_amount);
-  }
-
-  auto& ads_enabled = params->prefs.ads_enabled;
-  if (ads_enabled) {
-    profile->GetPrefs()->SetBoolean(brave_ads::prefs::kEnabled, *ads_enabled);
-  }
-
-  auto& ads_per_hour = params->prefs.ads_per_hour;
-  if (ads_per_hour) {
-    profile->GetPrefs()->SetInt64(
-        brave_ads::prefs::kMaximumNotificationAdsPerHour, *ads_per_hour);
-  }
-
-  return RespondNow(NoArguments());
 }
 
 }  // namespace extensions::api

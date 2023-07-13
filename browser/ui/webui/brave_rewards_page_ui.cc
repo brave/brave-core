@@ -519,7 +519,7 @@ void RewardsDOMHandler::InitPrefChangeRegistrar() {
   pref_change_registrar_.Init(profile->GetPrefs());
 
   pref_change_registrar_.Add(
-      brave_ads::prefs::kEnabled,
+      brave_ads::prefs::kOptedInToNotificationAds,
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
@@ -568,11 +568,11 @@ void RewardsDOMHandler::InitPrefChangeRegistrar() {
       brave_news::prefs::kBraveNewsOptedIn,
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
+
   pref_change_registrar_.Add(
       brave_news::prefs::kNewTabPageShowToday,
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
-
   pref_change_registrar_.Add(
       ntp_background_images::prefs::
           kNewTabPageShowSponsoredImagesBackgroundImage,
@@ -1211,7 +1211,7 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
                brave_ads::GetSupportedSubdivisionsAsValueList());
 
   ads_data.Set("notificationAdsEnabled",
-               prefs->GetBoolean(brave_ads::prefs::kEnabled));
+               prefs->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds));
 
   ads_data.Set(
       "newTabAdsEnabled",
@@ -1437,7 +1437,8 @@ void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
   const std::string value = args[1].GetString();
 
   if (key == "notificationAdsEnabled") {
-    prefs->SetBoolean(brave_ads::prefs::kEnabled, value == "true");
+    prefs->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds,
+                      value == "true");
   } else if (key == "adsPerHour") {
     int64_t int64_value;
     if (!base::StringToInt64(value, &int64_value)) {

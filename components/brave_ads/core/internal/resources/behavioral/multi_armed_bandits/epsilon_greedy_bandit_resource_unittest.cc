@@ -53,7 +53,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest, IsNotInitialized) {
 }
 
 TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
-       LoadResourceIfBravePrivateAdsAndBraveNewsAdsAreEnabled) {
+       LoadResourceIfNotificationAdsAndBraveNewsAdsAreEnabled) {
   // Arrange
 
   // Act
@@ -64,9 +64,9 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
 }
 
 TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
-       LoadResourceIfBravePrivateAdsAreDisabledAndBraveNewsAdsAreEnabled) {
+       LoadResourceIfOptedOutOfNotificationAdsAndOptedInToBraveNewsAds) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableNotificationAds();
 
   // Act
   LoadResource("catalog.json");
@@ -76,7 +76,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
 }
 
 TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
-       LoadResourceIfBravePrivateAdsAreEnabledAndBraveNewsAdsAreDisabled) {
+       LoadResourceIfOptedInToNotificationAdsAndOptedOutOfBraveNewsAds) {
   // Arrange
   DisableBraveNewsAds();
 
@@ -98,9 +98,9 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest, LoadResourceIfEmptyCatalog) {
 }
 
 TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
-       DoNotLoadResourceIfBravePrivateAdsAndBraveNewsAdsAreDisabled) {
+       DoNotLoadResourceIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableNotificationAds();
   DisableBraveNewsAds();
 
   // Act
@@ -112,15 +112,15 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
 
 TEST_F(
     BraveAdsEpsilonGreedyBanditResourceTest,
-    ResetResourceWhenEnabledPrefDidChangeIfBravePrivateAdsAndBraveNewsAdsAreDisabled) {
+    ResetResourceWhenOptedInToNotificationAdsPrefDidChangeIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
   LoadResource("catalog.json");
 
-  DisableBravePrivateAds();
+  DisableNotificationAds();
   DisableBraveNewsAds();
 
   // Act
-  NotifyPrefDidChange(prefs::kEnabled);
+  NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
 
   // Assert
   EXPECT_FALSE(resource_->IsInitialized());
@@ -128,12 +128,12 @@ TEST_F(
 
 TEST_F(
     BraveAdsEpsilonGreedyBanditResourceTest,
-    DoNotResetResourceWhenEnabledPrefDidChangeIfBravePrivateAdsOrBraveNewsAdsAreEnabled) {
+    DoNotResetResourceWhenOptedInToNotificationAdsPrefDidChangeIfNotificationAdsOrBraveNewsAdsAreEnabled) {
   // Arrange
   LoadResource("catalog.json");
 
   // Act
-  NotifyPrefDidChange(prefs::kEnabled);
+  NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
 
   // Assert
   EXPECT_TRUE(resource_->IsInitialized());

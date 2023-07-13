@@ -17,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 
 namespace brave_ads {
@@ -29,8 +30,9 @@ bool DoesRequireResourceForNewTabPageAds() {
 }
 
 bool DoesRequireResource() {
-  return UserHasOptedInToBravePrivateAds() || UserHasOptedInToBraveNews() ||
-         DoesRequireResourceForNewTabPageAds();
+  return UserHasOptedInToBraveNewsAds() ||
+         DoesRequireResourceForNewTabPageAds() ||
+         UserHasOptedInToNotificationAds();
 }
 
 }  // namespace
@@ -108,7 +110,9 @@ void Catalog::OnNotifyDidInitializeAds() {
 }
 
 void Catalog::OnNotifyPrefDidChange(const std::string& path) {
-  if (path == prefs::kEnabled || path == brave_news::prefs::kBraveNewsOptedIn ||
+  if (path == brave_rewards::prefs::kEnabled ||
+      path == prefs::kOptedInToNotificationAds ||
+      path == brave_news::prefs::kBraveNewsOptedIn ||
       path == brave_news::prefs::kNewTabPageShowToday ||
       path == ntp_background_images::prefs::kNewTabPageShowBackgroundImage ||
       path == ntp_background_images::prefs::

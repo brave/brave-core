@@ -26,7 +26,7 @@ UserIdleDetection::~UserIdleDetection() {
 void UserIdleDetection::OnNotifyUserDidBecomeActive(
     const base::TimeDelta idle_time,
     const bool screen_was_locked) {
-  if (!UserHasOptedInToBravePrivateAds()) {
+  if (!UserHasJoinedBraveRewards()) {
     return;
   }
 
@@ -39,7 +39,7 @@ void UserIdleDetection::OnNotifyUserDidBecomeActive(
 }
 
 void UserIdleDetection::OnNotifyUserDidBecomeIdle() {
-  if (!UserHasOptedInToBravePrivateAds()) {
+  if (!UserHasJoinedBraveRewards()) {
     return;
   }
 

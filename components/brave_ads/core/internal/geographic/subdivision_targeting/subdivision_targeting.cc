@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_url_request.h"
 #include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace brave_ads {
@@ -24,7 +25,7 @@ constexpr char kAuto[] = "AUTO";
 constexpr char kDisabled[] = "DISABLED";
 
 bool DoesRequireResource() {
-  return UserHasOptedInToBravePrivateAds() || UserHasOptedInToBraveNews();
+  return UserHasOptedInToBraveNewsAds() || UserHasOptedInToNotificationAds();
 }
 
 }  // namespace
@@ -245,7 +246,9 @@ void SubdivisionTargeting::OnNotifyLocaleDidChange(const std::string& locale) {
 }
 
 void SubdivisionTargeting::OnNotifyPrefDidChange(const std::string& path) {
-  if (path == prefs::kEnabled || path == brave_news::prefs::kBraveNewsOptedIn ||
+  if (path == brave_rewards::prefs::kEnabled ||
+      path == prefs::kOptedInToNotificationAds ||
+      path == brave_news::prefs::kBraveNewsOptedIn ||
       path == brave_news::prefs::kNewTabPageShowToday) {
     Initialize();
   } else if (path == prefs::kSubdivisionTargetingAutoDetectedSubdivision) {

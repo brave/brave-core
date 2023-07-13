@@ -68,7 +68,6 @@ import org.chromium.brave_shields.mojom.CookieListOptInPageAndroidHandler;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.brave_shields.mojom.FilterListConstants;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
@@ -563,10 +562,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 }
                 if (PackageUtils.isFirstInstall(getContext()) && tab.getUrl().getSpec() != null
                         && (tab.getUrl().getSpec().equals(BraveActivity.BRAVE_REWARDS_SETTINGS_URL))
-                        && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                                Profile.getLastUsedRegularProfile())
                         && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
                         && mBraveRewardsNativeWorker != null
+                        && !mBraveRewardsNativeWorker.isRewardsEnabled()
                         && mBraveRewardsNativeWorker.IsSupported()) {
                     showOnBoarding();
                 }
@@ -1307,10 +1305,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private boolean checkForRewardsOnboarding() {
-        return PackageUtils.isFirstInstall(getContext())
-                && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                        Profile.getLastUsedRegularProfile())
-                && mBraveRewardsNativeWorker != null && mBraveRewardsNativeWorker.IsSupported()
+        return PackageUtils.isFirstInstall(getContext()) && mBraveRewardsNativeWorker != null
+                && !mBraveRewardsNativeWorker.isRewardsEnabled()
+                && mBraveRewardsNativeWorker.IsSupported()
                 && !OnboardingPrefManager.getInstance().isOnboardingShown();
     }
 
