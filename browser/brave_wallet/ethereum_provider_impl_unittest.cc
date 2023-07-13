@@ -234,7 +234,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     asset_ratio_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
     tx_service_ = TxServiceFactory::GetServiceForContext(browser_context());
-    WaitForTxStateManagerInitialized(eth_tx_manager()->tx_state_manager_.get());
+    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
     brave_wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser_context());

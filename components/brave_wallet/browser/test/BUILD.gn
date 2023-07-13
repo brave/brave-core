@@ -79,6 +79,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/swap_service_unittest.cc",
     "//brave/components/brave_wallet/browser/tx_meta_unittest.cc",
     "//brave/components/brave_wallet/browser/tx_state_manager_unittest.cc",
+    "//brave/components/brave_wallet/browser/tx_storage_delegate_impl_unittest.cc",
     "//brave/components/brave_wallet/browser/unstoppable_domains_dns_resolve_unittest.cc",
     "//brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls_unittest.cc",
   ]

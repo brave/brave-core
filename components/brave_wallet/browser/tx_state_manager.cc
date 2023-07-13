@@ -12,11 +12,12 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/scoped_txs_update.h"
 #include "brave/components/brave_wallet/browser/solana_message.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
+#include "brave/components/brave_wallet/browser/tx_storage_delegate.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "components/value_store/value_store_frontend.h"
 #include "url/origin.h"
 
 namespace brave_wallet {
@@ -25,7 +26,6 @@ namespace {
 
 constexpr size_t kMaxConfirmedTxNum = 500;
 constexpr size_t kMaxRejectedTxNum = 500;
-constexpr char kStorageTransactions[] = "transactions";
 
 }  // namespace
 
@@ -109,44 +109,25 @@ bool TxStateManager::ValueToTxMeta(const base::Value::Dict& value,
   return true;
 }
 
-TxStateManager::TxStateManager(PrefService* prefs,
-                               value_store::ValueStoreFrontend* store)
-    : prefs_(prefs), initialized_(false), store_(store), weak_factory_(this) {
-  Initialize();
+TxStateManager::TxStateManager(PrefService* prefs, TxStorageDelegate* delegate)
+    : prefs_(prefs), delegate_(delegate), weak_factory_(this) {
+  DCHECK(delegate);
 }
 
 TxStateManager::~TxStateManager() = default;
 
-void TxStateManager::Initialize() {
-  store_->Get(kStorageTransactions, base::BindOnce(&TxStateManager::OnTxsRead,
-                                                   weak_factory_.GetWeakPtr()));
-}
-
-void TxStateManager::OnTxsRead(absl::optional<base::Value> txs) {
-  if (txs) {
-    txs_ = std::move(txs->GetDict());
-  }
-  initialized_ = true;
-  for (auto& observer : observers_) {
-    observer.OnInitialized();
-  }
-}
-
-void TxStateManager::ScheduleWrite() {
-  DCHECK(initialized_) << "storage is not initialized yet";
-  store_->Set(kStorageTransactions, base::Value(txs_.Clone()));
-}
-
 bool TxStateManager::AddOrUpdateTx(const TxMeta& meta) {
-  if (!initialized_) {
+  if (!delegate_->IsInitialized()) {
     return false;
   }
   const std::string path =
       base::JoinString({GetTxPrefPathPrefix(meta.chain_id()), meta.id()}, ".");
-
-  bool is_add = txs_.FindByDottedPath(path) == nullptr;
-  txs_.SetByDottedPath(path, meta.ToValue());
-  ScheduleWrite();
+  bool is_add = false;
+  {
+    ScopedTxsUpdate update(delegate_);
+    is_add = update->FindByDottedPath(path) == nullptr;
+    update->SetByDottedPath(path, meta.ToValue());
+  }
   if (!is_add) {
     for (auto& observer : observers_) {
       observer.OnTransactionStatusChanged(meta.ToTransactionInfo());
@@ -167,7 +148,11 @@ bool TxStateManager::AddOrUpdateTx(const TxMeta& meta) {
 
 std::unique_ptr<TxMeta> TxStateManager::GetTx(const std::string& chain_id,
                                               const std::string& id) {
-  const base::Value::Dict* value = txs_.FindDictByDottedPath(
+  if (!delegate_->IsInitialized()) {
+    return nullptr;
+  }
+  const auto& txs = delegate_->GetTxs();
+  const base::Value::Dict* value = txs.FindDictByDottedPath(
       base::JoinString({GetTxPrefPathPrefix(chain_id), id}, "."));
   if (!value) {
     return nullptr;
@@ -178,21 +163,25 @@ std::unique_ptr<TxMeta> TxStateManager::GetTx(const std::string& chain_id,
 
 bool TxStateManager::DeleteTx(const std::string& chain_id,
                               const std::string& id) {
-  if (!initialized_) {
+  if (!delegate_->IsInitialized()) {
     return false;
   }
-  txs_.RemoveByDottedPath(
-      base::JoinString({GetTxPrefPathPrefix(chain_id), id}, "."));
-  ScheduleWrite();
+  {
+    ScopedTxsUpdate update(delegate_);
+    update->RemoveByDottedPath(
+        base::JoinString({GetTxPrefPathPrefix(chain_id), id}, "."));
+  }
   return true;
 }
 
 bool TxStateManager::WipeTxs() {
-  if (!initialized_) {
+  if (!delegate_->IsInitialized()) {
     return false;
   }
-  txs_.RemoveByDottedPath(GetTxPrefPathPrefix(absl::nullopt));
-  ScheduleWrite();
+  {
+    ScopedTxsUpdate update(delegate_);
+    update->RemoveByDottedPath(GetTxPrefPathPrefix(absl::nullopt));
+  }
   return true;
 }
 
@@ -201,8 +190,12 @@ std::vector<std::unique_ptr<TxMeta>> TxStateManager::GetTransactionsByStatus(
     const absl::optional<mojom::TransactionStatus>& status,
     const absl::optional<std::string>& from) {
   std::vector<std::unique_ptr<TxMeta>> result;
+  if (!delegate_->IsInitialized()) {
+    return result;
+  }
+  const auto& txs = delegate_->GetTxs();
   const base::Value::Dict* network_dict =
-      txs_.FindDictByDottedPath(GetTxPrefPathPrefix(chain_id));
+      txs.FindDictByDottedPath(GetTxPrefPathPrefix(chain_id));
   if (!network_dict) {
     return result;
   }
@@ -370,27 +363,6 @@ void TxStateManager::MigrateSolanaTransactionsForV0TransactionsSupport(
   }
 
   prefs->SetBoolean(kBraveWalletSolanaTransactionsV0SupportMigrated, true);
-}
-
-// static
-void TxStateManager::MigrateTransactionsFromPrefsToDB(
-    PrefService* prefs,
-    value_store::ValueStoreFrontend* store) {
-  if (prefs->GetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated)) {
-    return;
-  }
-
-  if (!prefs->HasPrefPath(kBraveWalletTransactions)) {
-    prefs->SetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated, true);
-    return;
-  }
-
-  const auto& txs = prefs->GetDict(kBraveWalletTransactions);
-  store->Set(kStorageTransactions, base::Value(txs.Clone()));
-
-  // Keep kBraveWalletTransactions in case we need to revert the migration and
-  // remove it when we delete the pref
-  prefs->SetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated, true);
 }
 
 }  // namespace brave_wallet

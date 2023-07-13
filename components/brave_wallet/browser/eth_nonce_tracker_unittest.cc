@@ -21,11 +21,11 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
+#include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -45,7 +45,8 @@ class EthNonceTrackerUnitTest : public testing::Test {
   }
 
   void SetUp() override {
-    brave_wallet::RegisterProfilePrefs(prefs_.registry());
+    RegisterProfilePrefs(prefs_.registry());
+    RegisterProfilePrefsForMigration(prefs_.registry());
   }
 
   PrefService* GetPrefs() { return &prefs_; }
@@ -110,10 +111,10 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   base::ScopedTempDir temp_dir;
   scoped_refptr<value_store::TestValueStoreFactory> factory =
       GetTestValueStoreFactory(temp_dir);
-  std::unique_ptr<value_store::ValueStoreFrontend> storage =
-      GetValueStoreFrontendForTest(factory);
-  EthTxStateManager tx_state_manager(GetPrefs(), storage.get());
-  WaitForTxStateManagerInitialized(&tx_state_manager);
+  std::unique_ptr<TxStorageDelegateImpl> delegate =
+      GetTxStorageDelegateForTest(GetPrefs(), factory);
+  WaitForTxStorageDelegateInitialized(delegate.get());
+  EthTxStateManager tx_state_manager(GetPrefs(), delegate.get());
   EthNonceTracker nonce_tracker(&tx_state_manager, &service);
 
   SetTransactionCount(2);

@@ -15,8 +15,10 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/fil_tx_meta.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
+#include "brave/components/brave_wallet/browser/tx_storage_delegate.h"
+#include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -30,11 +32,12 @@ class FilTxStateManagerUnitTest : public testing::Test {
 
  protected:
   void SetUp() override {
-    brave_wallet::RegisterProfilePrefs(prefs_.registry());
+    RegisterProfilePrefs(prefs_.registry());
+    RegisterProfilePrefsForMigration(prefs_.registry());
     factory_ = GetTestValueStoreFactory(temp_dir_);
-    storage_ = GetValueStoreFrontendForTest(factory_);
+    delegate_ = GetTxStorageDelegateForTest(GetPrefs(), factory_);
     fil_tx_state_manager_ =
-        std::make_unique<FilTxStateManager>(GetPrefs(), storage_.get());
+        std::make_unique<FilTxStateManager>(GetPrefs(), delegate_.get());
   }
 
   PrefService* GetPrefs() { return &prefs_; }
@@ -42,7 +45,7 @@ class FilTxStateManagerUnitTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
   scoped_refptr<value_store::TestValueStoreFactory> factory_;
-  std::unique_ptr<value_store::ValueStoreFrontend> storage_;
+  std::unique_ptr<TxStorageDelegateImpl> delegate_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   std::unique_ptr<FilTxStateManager> fil_tx_state_manager_;
 };

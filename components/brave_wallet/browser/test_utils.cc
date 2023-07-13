@@ -5,30 +5,49 @@
 
 #include "brave/components/brave_wallet/browser/test_utils.h"
 
+#include "base/files/scoped_temp_dir.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
-#include "brave/components/brave_wallet/browser/tx_state_manager.h"
+#include "base/task/sequenced_task_runner.h"
+#include "brave/components/brave_wallet/browser/tx_storage_delegate.h"
+#include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 
 namespace brave_wallet {
 
-void WaitForTxStateManagerInitialized(TxStateManager* tx_state_manager) {
+void WaitForTxStorageDelegateInitialized(TxStorageDelegate* delegate) {
   base::RunLoop run_loop;
-  class TestTxStateManagerObserver : public TxStateManager::Observer {
+  class TestTxStorageDelegateObserver : public TxStorageDelegate::Observer {
    public:
-    explicit TestTxStateManagerObserver(TxStateManager* tx_state_manager,
-                                        base::RunLoop& run_loop)
+    explicit TestTxStorageDelegateObserver(TxStorageDelegate* delegate,
+                                           base::RunLoop& run_loop)
         : run_loop_(run_loop) {
-      observation_.Observe(tx_state_manager);
+      observation_.Observe(delegate);
     }
 
-    void OnInitialized() override { run_loop_.Quit(); }
+    void OnStorageInitialized() override { run_loop_.Quit(); }
 
    private:
-    base::ScopedObservation<TxStateManager, TxStateManager::Observer>
+    base::ScopedObservation<TxStorageDelegate, TxStorageDelegate::Observer>
         observation_{this};
     base::RunLoop& run_loop_;
-  } observer(tx_state_manager, run_loop);
+  } observer(delegate, run_loop);
   run_loop.Run();
+}
+
+scoped_refptr<value_store::TestValueStoreFactory> GetTestValueStoreFactory(
+    base::ScopedTempDir& temp_dir) {
+  CHECK(temp_dir.CreateUniqueTempDir());
+
+  base::FilePath db_path = temp_dir.GetPath().AppendASCII("temp_db");
+
+  return new value_store::TestValueStoreFactory(db_path);
+}
+
+std::unique_ptr<TxStorageDelegateImpl> GetTxStorageDelegateForTest(
+    PrefService* prefs,
+    scoped_refptr<value_store::ValueStoreFactory> store_factory) {
+  return std::make_unique<TxStorageDelegateImpl>(
+      prefs, store_factory, base::SequencedTaskRunner::GetCurrentDefault());
 }
 
 }  // namespace brave_wallet

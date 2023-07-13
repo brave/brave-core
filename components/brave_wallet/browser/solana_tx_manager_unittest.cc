@@ -81,8 +81,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), nullptr, keyring_service_.get(), &prefs_,
         temp_dir_.GetPath(), base::SequencedTaskRunner::GetCurrentDefault());
-    WaitForTxStateManagerInitialized(
-        solana_tx_manager()->tx_state_manager_.get());
+    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
     CreateWallet();
     AddAccount();
   }

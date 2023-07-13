@@ -28,7 +28,7 @@ class BitcoinTxManager : public TxManager {
                    BitcoinWalletService* bitcoin_wallet_service,
                    KeyringService* keyring_service,
                    PrefService* prefs,
-                   value_store::ValueStoreFrontend* store);
+                   TxStorageDelegate* delegate);
   ~BitcoinTxManager() override;
   BitcoinTxManager(const BitcoinTxManager&) = delete;
   BitcoinTxManager& operator=(const BitcoinTxManager&) = delete;

@@ -32,10 +32,13 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/browser/tx_storage_delegate.h"
+#include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "components/value_store/value_store_frontend.h"
 #include "content/public/test/browser_task_environment.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -46,6 +49,9 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
+
+using base::test::ParseJson;
+using base::test::ParseJsonDict;
 
 namespace brave_wallet {
 
@@ -199,8 +205,7 @@ class EthTxManagerUnitTest : public testing::Test {
                                                ->at(0)
                                                .As<network::DataElementBytes>()
                                                .AsStringPiece());
-          base::Value::Dict request_value =
-              base::test::ParseJsonDict(request_string);
+          base::Value::Dict request_value = ParseJsonDict(request_string);
           std::string* method = request_value.FindString("method");
           ASSERT_TRUE(method);
 
@@ -253,9 +258,9 @@ class EthTxManagerUnitTest : public testing::Test {
           }
         }));
 
-    brave_wallet::RegisterProfilePrefs(profile_prefs_.registry());
-    brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
-    brave_wallet::RegisterProfilePrefsForMigration(profile_prefs_.registry());
+    RegisterProfilePrefs(profile_prefs_.registry());
+    RegisterLocalStatePrefs(local_state_.registry());
+    RegisterProfilePrefsForMigration(profile_prefs_.registry());
     json_rpc_service_ = std::make_unique<JsonRpcService>(
         shared_url_loader_factory_, &profile_prefs_);
     keyring_service_ = std::make_unique<KeyringService>(
@@ -2499,14 +2504,26 @@ TEST_F(EthTxManagerUnitTest, Reset) {
   auto tx = EthTransaction::FromTxData(tx_data, false);
   meta.set_tx(std::make_unique<EthTransaction>(*tx));
   ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
-  EXPECT_EQ(eth_tx_manager()->tx_state_manager_->txs_.size(), 1u);
+  EXPECT_EQ(tx_service_->GetDelegateForTesting()->GetTxs().size(), 1u);
+  GetPrefs()->Set(kBraveWalletTransactions, ParseJson(R"({"ethereum":{}})"));
 
   tx_service_->Reset();
 
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletTransactions));
   EXPECT_TRUE(eth_tx_manager()->pending_chain_ids_.empty());
   EXPECT_FALSE(
       eth_tx_manager()->block_tracker_->IsRunning(mojom::kLocalhostChainId));
-  EXPECT_TRUE(eth_tx_manager()->tx_state_manager_->txs_.empty());
+  // cache should be empty
+  EXPECT_TRUE(tx_service_->GetDelegateForTesting()->GetTxs().empty());
+  // db should be empty
+  base::RunLoop run_loop;
+  static_cast<TxStorageDelegateImpl*>(tx_service_->GetDelegateForTesting())
+      ->store_->Get("transactions", base::BindLambdaForTesting(
+                                        [&](absl::optional<base::Value> value) {
+                                          EXPECT_FALSE(value);
+                                          run_loop.Quit();
+                                        }));
+  run_loop.Run();
 }
 
 }  //  namespace brave_wallet

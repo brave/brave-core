@@ -15,11 +15,10 @@
 
 namespace brave_wallet {
 
-BitcoinTxStateManager::BitcoinTxStateManager(
-    PrefService* prefs,
-    value_store::ValueStoreFrontend* store,
-    JsonRpcService* json_rpc_service)
-    : TxStateManager(prefs, store) {}
+BitcoinTxStateManager::BitcoinTxStateManager(PrefService* prefs,
+                                             TxStorageDelegate* delegate,
+                                             JsonRpcService* json_rpc_service)
+    : TxStateManager(prefs, delegate) {}
 
 BitcoinTxStateManager::~BitcoinTxStateManager() = default;
 

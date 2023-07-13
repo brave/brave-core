@@ -17,8 +17,8 @@
 #include "brave/components/brave_wallet/browser/fil_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
+#include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -37,7 +37,8 @@ class FilNonceTrackerUnitTest : public testing::Test {
   }
 
   void SetUp() override {
-    brave_wallet::RegisterProfilePrefs(prefs_.registry());
+    RegisterProfilePrefs(prefs_.registry());
+    RegisterProfilePrefsForMigration(prefs_.registry());
   }
 
   PrefService* GetPrefs() { return &prefs_; }
@@ -100,10 +101,10 @@ TEST_F(FilNonceTrackerUnitTest, GetNonce) {
   base::ScopedTempDir temp_dir;
   scoped_refptr<value_store::TestValueStoreFactory> factory =
       GetTestValueStoreFactory(temp_dir);
-  std::unique_ptr<value_store::ValueStoreFrontend> storage =
-      GetValueStoreFrontendForTest(factory);
-  FilTxStateManager tx_state_manager(GetPrefs(), storage.get());
-  WaitForTxStateManagerInitialized(&tx_state_manager);
+  std::unique_ptr<TxStorageDelegateImpl> delegate =
+      GetTxStorageDelegateForTest(GetPrefs(), factory);
+  WaitForTxStorageDelegateInitialized(delegate.get());
+  FilTxStateManager tx_state_manager(GetPrefs(), delegate.get());
   FilNonceTracker nonce_tracker(&tx_state_manager, &service);
 
   SetTransactionCount(2);

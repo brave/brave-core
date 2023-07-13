@@ -241,6 +241,12 @@ void ClearKeyringServiceProfilePrefs(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletSelectedSolDappAccount);
 }
 
+void ClearTxServiceProfilePrefs(PrefService* prefs) {
+  DCHECK(prefs);
+  // Remove this when we remove kBraveWalletTransactions.
+  prefs->ClearPref(kBraveWalletTransactions);
+}
+
 void ClearBraveWalletServicePrefs(PrefService* prefs) {
   DCHECK(prefs);
   prefs->ClearPref(kBraveWalletUserAssets);

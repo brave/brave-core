@@ -20,7 +20,6 @@
 #include "brave/components/brave_wallet/browser/fil_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
-#include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -32,8 +31,8 @@ FilTxManager::FilTxManager(TxService* tx_service,
                            JsonRpcService* json_rpc_service,
                            KeyringService* keyring_service,
                            PrefService* prefs,
-                           value_store::ValueStoreFrontend* store)
-    : TxManager(std::make_unique<FilTxStateManager>(prefs, store),
+                           TxStorageDelegate* delegate)
+    : TxManager(std::make_unique<FilTxStateManager>(prefs, delegate),
                 std::make_unique<FilBlockTracker>(json_rpc_service),
                 tx_service,
                 json_rpc_service,

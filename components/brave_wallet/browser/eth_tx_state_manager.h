@@ -26,11 +26,12 @@ class Value;
 namespace brave_wallet {
 
 class TxMeta;
+class TxStorageDelegate;
 class EthTxMeta;
 
 class EthTxStateManager : public TxStateManager {
  public:
-  EthTxStateManager(PrefService* prefs, value_store::ValueStoreFrontend* store);
+  EthTxStateManager(PrefService* prefs, TxStorageDelegate* delegate);
   ~EthTxStateManager() override;
   EthTxStateManager(const EthTxStateManager&) = delete;
   EthTxStateManager operator=(const EthTxStateManager&) = delete;

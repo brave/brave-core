@@ -33,8 +33,8 @@ SolanaTxManager::SolanaTxManager(TxService* tx_service,
                                  JsonRpcService* json_rpc_service,
                                  KeyringService* keyring_service,
                                  PrefService* prefs,
-                                 value_store::ValueStoreFrontend* store)
-    : TxManager(std::make_unique<SolanaTxStateManager>(prefs, store),
+                                 TxStorageDelegate* delegate)
+    : TxManager(std::make_unique<SolanaTxStateManager>(prefs, delegate),
                 std::make_unique<SolanaBlockTracker>(json_rpc_service),
                 tx_service,
                 json_rpc_service,

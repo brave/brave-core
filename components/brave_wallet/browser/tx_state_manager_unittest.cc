@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
+#include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -57,16 +58,16 @@ class TxStateManagerUnitTest : public testing::Test {
 
  protected:
   void SetUp() override {
-    brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
+    RegisterProfilePrefs(prefs_.registry());
+    RegisterProfilePrefsForMigration(prefs_.registry());
     // The only different between each coin type's tx state manager in these
     // base functions are their pref paths, so here we just use
     // EthTxStateManager to test common methods in TxStateManager.
     factory_ = GetTestValueStoreFactory(temp_dir_);
-    storage_ = GetValueStoreFrontendForTest(factory_);
+    delegate_ = GetTxStorageDelegateForTest(&prefs_, factory_);
+    WaitForTxStorageDelegateInitialized(delegate_.get());
     tx_state_manager_ =
-        std::make_unique<EthTxStateManager>(&prefs_, storage_.get());
-    WaitForTxStateManagerInitialized(tx_state_manager_.get());
+        std::make_unique<EthTxStateManager>(&prefs_, delegate_.get());
   }
 
   void UpdateCustomNetworks(PrefService* prefs,
@@ -83,11 +84,12 @@ class TxStateManagerUnitTest : public testing::Test {
   absl::optional<base::Value> GetTxs() {
     base::RunLoop run_loop;
     absl::optional<base::Value> value_out;
-    storage_->Get("transactions", base::BindLambdaForTesting(
-                                      [&](absl::optional<base::Value> value) {
-                                        value_out = std::move(value);
-                                        run_loop.Quit();
-                                      }));
+    delegate_->store_->Get(
+        "transactions",
+        base::BindLambdaForTesting([&](absl::optional<base::Value> value) {
+          value_out = std::move(value);
+          run_loop.Quit();
+        }));
     run_loop.Run();
     return value_out;
   }
@@ -96,7 +98,7 @@ class TxStateManagerUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   base::ScopedTempDir temp_dir_;
   scoped_refptr<value_store::TestValueStoreFactory> factory_;
-  std::unique_ptr<value_store::ValueStoreFrontend> storage_;
+  std::unique_ptr<TxStorageDelegateImpl> delegate_;
   std::unique_ptr<TxStateManager> tx_state_manager_;
 };
 
@@ -707,203 +709,6 @@ TEST_F(TxStateManagerUnitTest,
 
   EXPECT_TRUE(
       prefs_.GetBoolean(kBraveWalletSolanaTransactionsV0SupportMigrated));
-}
-
-TEST_F(TxStateManagerUnitTest, MigrateTransactionsFromPrefsToDB) {
-  tx_state_manager_.reset();
-  ASSERT_FALSE(
-      prefs_.GetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated));
-
-  base::Value::Dict txs_value = ParseJsonDict(R"({
-    "chain_id_migrated": true,
-    "ethereum": {
-        "goerli": {
-            "a336ef2c-9716-4cb7-8bb2-7fce8704a662": {
-                "chain_id": "0x5",
-                "confirmed_time": "13324786394428041",
-                "created_time": "13324692736353962",
-                "from": "0x781efCB08F722664BFaA2eA73b80cD79d115d91A",
-                "id": "a336ef2c-9716-4cb7-8bb2-7fce8704a662",
-                "origin": "https://metamask.github.io/",
-                "sign_only": false,
-                "status": 4,
-                "submitted_time": "13324692739487947",
-                "tx": {
-                    "data": "",
-                    "gas_limit": "0x5208",
-                    "gas_price": "0x2540be400",
-                    "nonce": "0x2",
-                    "r": "w/icWpQJ4QiAgSiyJiXBkXe3WDXwBywAMvRD+qBa5gI=",
-                    "s": "Vu6Lrn1hZeBTdmsjFFRGLgWzgf4VkSBZgAwf+ncOR/0=",
-                    "to": "0x0c54fccd2e384b4bb6f2e405bf5cbc15a017aafb",
-                    "type": 0,
-                    "v": 45,
-                    "value": "0x0"
-                },
-                "tx_hash": "0xdd764b942d8a9b5c75cdd77233b01f1a574fbd80902c86142ddbd4d3d46958cf",
-                "tx_receipt": {
-                    "block_hash": "0x3daa840dc57864bea3f271e87a9a1fef9c6422180e19f29fa6a44efb6c1b517c",
-                    "block_number": "0x85899e",
-                    "contract_address": "",
-                    "cumulative_gas_used": "0x1c9632c",
-                    "from": "",
-                    "gas_used": "0x5208",
-                    "logs_bloom": "",
-                    "status": true,
-                    "to": "",
-                    "transaction_hash": "0xdd764b942d8a9b5c75cdd77233b01f1a574fbd80902c86142ddbd4d3d46958cf",
-                    "transaction_index": "0x7c"
-                }
-            },
-            "c6d9bc1a-b8a2-4abe-919e-3f6c1dc78ef4": {
-                "chain_id": "0x5",
-                "confirmed_time": "0",
-                "created_time": "13319707169377609",
-                "from": "0x781efCB08F722664BFaA2eA73b80cD79d115d91A",
-                "id": "c6d9bc1a-b8a2-4abe-919e-3f6c1dc78ef4",
-                "origin": "http://localhost:8081/",
-                "sign_only": true,
-                "status": 7,
-                "submitted_time": "0",
-                "tx": {
-                    "data": "",
-                    "gas_limit": "0x5208",
-                    "gas_price": "0x25f38e9e00",
-                    "nonce": "0x0",
-                    "r": "P0inhbvJg/GBDhwOqEO5Q5eJo7oRNwrN8JPF1Yt3XXo=",
-                    "s": "AJY2YqS/+4Jfkno1vC3vvdyua1UqNZPAQwhJdYGvGa4=",
-                    "to": "0x781efcb08f722664bfaa2ea73b80cd79d115d91a",
-                    "type": 0,
-                    "v": 46,
-                    "value": "0x16345785d8a0000"
-                },
-                "tx_hash": "0x84bdee6620854fd3cf944a7b5dd8e8245b59db7e96dc3ebb8cce0bd6d523796e",
-                "tx_receipt": {
-                    "block_hash": "",
-                    "block_number": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                    "contract_address": "",
-                    "cumulative_gas_used": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                    "from": "",
-                    "gas_used": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                    "logs_bloom": "",
-                    "status": true,
-                    "to": "",
-                    "transaction_hash": "",
-                    "transaction_index": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                }
-            }
-        },
-        "mainnet": {
-            "71a841a4-83dc-4286-9acd-9b7f50e90fdb": {
-                "chain_id": "0x1",
-                "confirmed_time": "0",
-                "created_time": "13294355643851551",
-                "from": "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
-                "id": "71a841a4-83dc-4286-9acd-9b7f50e90fdb",
-                "status": 2,
-                "submitted_time": "0",
-                "tx": {
-                    "data": "",
-                    "gas_limit": "0x5208",
-                    "gas_price": "0x2540be400",
-                    "nonce": "",
-                    "r": "",
-                    "s": "",
-                    "to": "0x0c54fccd2e384b4bb6f2e405bf5cbc15a017aafb",
-                    "type": 0,
-                    "v": 0,
-                    "value": "0x0"
-                },
-                "tx_hash": "",
-                "tx_receipt": {
-                    "block_hash": "",
-                    "block_number": "0x0",
-                    "contract_address": "",
-                    "cumulative_gas_used": "0x0",
-                    "from": "",
-                    "gas_used": "0x0",
-                    "logs_bloom": "",
-                    "status": true,
-                    "to": "",
-                    "transaction_hash": "",
-                    "transaction_index": "0x0"
-                }
-            }
-        }
-    },
-    "solana": {
-        "devnet": {
-            "40fa081e-55c8-4052-a7e9-e32ffaa44ba8": {
-                "chain_id": "0x67",
-                "confirmed_time": "0",
-                "created_time": "13323288962357519",
-                "from": "GiHuFAKj5xAY5txyjie86V5Kt8tZA2iedxNijE7TUzxX",
-                "id": "40fa081e-55c8-4052-a7e9-e32ffaa44ba8",
-                "origin": "https://solana-labs.github.io/",
-                "signature_status": {
-                    "confirmation_status": "",
-                    "confirmations": "0",
-                    "err": "",
-                    "slot": "0"
-                },
-                "status": 2,
-                "submitted_time": "0",
-                "tx": {
-                    "amount": "0",
-                    "lamports": "0",
-                    "message": {
-                        "fee_payer": "GiHuFAKj5xAY5txyjie86V5Kt8tZA2iedxNijE7TUzxX",
-                        "instructions": [
-                            {
-                                "accounts": [],
-                                "data": "SGVsbG8sIGZyb20gdGhlIFNvbGFuYSBXYWxsZXQgQWRhcHRlciBleGFtcGxlIGFwcCE=",
-                                "program_id": "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"
-                            }
-                        ],
-                        "last_valid_block_height": "0",
-                        "recent_blockhash": "7j1m1fZ1fZg5xcJNfrRuy6bK56fHoPMveRSnuBg7nDCT"
-                    },
-                    "send_options": {
-                        "preflightCommitment": "confirmed"
-                    },
-                    "sign_tx_param": {
-                        "encoded_serialized_msg": "oXXYz2FXF2rpkHeaf8gLdwmYNoSDAxJ57jR8E3DXq44qxjKVsw8fsTdrYvAdtKx2VQNQWyvLRcs7ZAqU2SuaKsv9Ut4XnwiJLUgvLHW4Te6T4g8fxu4Ggand5sBDPqvoebeSycmsvkxBTXr6PJ6Gvq3My6dUQrna5nkGf313FNxhyoEkd1PLoCvG5fuNYhUn4FAKco8PHKJRXGghW",
-                        "signatures": [
-                            {
-                                "public_key": "GiHuFAKj5xAY5txyjie86V5Kt8tZA2iedxNijE7TUzxX"
-                            }
-                        ]
-                    },
-                    "spl_token_mint_address": "",
-                    "to_wallet_address": "",
-                    "tx_type": 11
-                },
-                "tx_hash": ""
-            }
-        }
-    }
-  })");
-  prefs_.Set(kBraveWalletTransactions, base::Value(txs_value.Clone()));
-  TxStateManager::MigrateTransactionsFromPrefsToDB(&prefs_, storage_.get());
-  tx_state_manager_ =
-      std::make_unique<EthTxStateManager>(&prefs_, storage_.get());
-
-  auto txs_from_db = GetTxs();
-  ASSERT_TRUE(txs_from_db);
-  EXPECT_EQ(txs_from_db->GetDict(), txs_value);
-  EXPECT_EQ(tx_state_manager_->txs_, txs_value);
-
-  EXPECT_TRUE(prefs_.GetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated));
-  // We don't clear pref transactions for this migration
-  EXPECT_TRUE(prefs_.HasPrefPath(kBraveWalletTransactions));
-}
-
-TEST_F(TxStateManagerUnitTest, NotInitialized) {
-  tx_state_manager_ =
-      std::make_unique<EthTxStateManager>(&prefs_, storage_.get());
-  EXPECT_FALSE(tx_state_manager_->AddOrUpdateTx(EthTxMeta()));
-  EXPECT_FALSE(tx_state_manager_->DeleteTx(mojom::kMainnetChainId, "001"));
-  EXPECT_FALSE(tx_state_manager_->WipeTxs());
 }
 
 }  // namespace brave_wallet

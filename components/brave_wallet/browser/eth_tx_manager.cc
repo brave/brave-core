@@ -114,8 +114,8 @@ EthTxManager::EthTxManager(TxService* tx_service,
                            JsonRpcService* json_rpc_service,
                            KeyringService* keyring_service,
                            PrefService* prefs,
-                           value_store::ValueStoreFrontend* store)
-    : TxManager(std::make_unique<EthTxStateManager>(prefs, store),
+                           TxStorageDelegate* delegate)
+    : TxManager(std::make_unique<EthTxStateManager>(prefs, delegate),
                 std::make_unique<EthBlockTracker>(json_rpc_service),
                 tx_service,
                 json_rpc_service,

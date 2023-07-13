@@ -130,6 +130,8 @@ static_library("browser") {
     "nonce_tracker.h",
     "password_encryptor.cc",
     "password_encryptor.h",
+    "scoped_txs_update.cc",
+    "scoped_txs_update.h",
     "simple_hash_client.cc",
     "simple_hash_client.h",
     "simulation_request_helper.cc",
@@ -188,6 +190,9 @@ static_library("browser") {
     "tx_service.h",
     "tx_state_manager.cc",
     "tx_state_manager.h",
+    "tx_storage_delegate.h",
+    "tx_storage_delegate_impl.cc",
+    "tx_storage_delegate_impl.h",
     "unstoppable_domains_dns_resolve.cc",
     "unstoppable_domains_dns_resolve.h",
     "unstoppable_domains_multichain_calls.cc",
@@ -384,8 +389,13 @@ source_set("test_support") {
 
   deps = [
     ":browser",
-    "//base",
     "//testing/gmock",
+  ]
+
+  public_deps = [
+    "//base",
+    "//components/value_store",
+    "//components/value_store:test_support",
   ]
 }  # source_set("test_support")
 

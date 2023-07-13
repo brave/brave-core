@@ -6,11 +6,31 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TEST_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TEST_UTILS_H_
 
+#include <memory>
+
+#include "base/memory/scoped_refptr.h"
+#include "components/value_store/test_value_store_factory.h"
+#include "components/value_store/value_store_frontend.h"
+
+class PrefService;
+
+namespace base {
+class ScopedTempDir;
+}  // namespace base
+
 namespace brave_wallet {
 
-class TxStateManager;
+class TxStorageDelegate;
+class TxStorageDelegateImpl;
 
-void WaitForTxStateManagerInitialized(TxStateManager* tx_state_manager);
+void WaitForTxStorageDelegateInitialized(TxStorageDelegate* delegate);
+
+scoped_refptr<value_store::TestValueStoreFactory> GetTestValueStoreFactory(
+    base::ScopedTempDir& temp_dir);
+
+std::unique_ptr<TxStorageDelegateImpl> GetTxStorageDelegateForTest(
+    PrefService* prefs,
+    scoped_refptr<value_store::ValueStoreFactory> store_factory);
 
 }  // namespace brave_wallet
 

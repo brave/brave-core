@@ -21,10 +21,10 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
+#include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
-#include "brave/components/brave_wallet/common/test_utils.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
@@ -53,10 +53,10 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();
     factory_ = GetTestValueStoreFactory(temp_dir_);
-    storage_ = GetValueStoreFrontendForTest(factory_);
+    delegate_ = GetTxStorageDelegateForTest(GetPrefs(), factory_);
+    WaitForTxStorageDelegateInitialized(delegate_.get());
     tx_state_manager_ =
-        std::make_unique<EthTxStateManager>(GetPrefs(), storage_.get());
-    WaitForTxStateManagerInitialized(tx_state_manager_.get());
+        std::make_unique<EthTxStateManager>(GetPrefs(), delegate_.get());
   }
 
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
@@ -81,6 +81,7 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
   base::ScopedTempDir temp_dir_;
   scoped_refptr<value_store::TestValueStoreFactory> factory_;
   std::unique_ptr<value_store::ValueStoreFrontend> storage_;
+  std::unique_ptr<TxStorageDelegateImpl> delegate_;
   std::unique_ptr<TestingProfile> profile_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };

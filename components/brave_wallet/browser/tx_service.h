@@ -29,7 +29,6 @@ class SequencedTaskRunner;
 
 namespace value_store {
 class ValueStoreFactory;
-class ValueStoreFrontend;
 }  // namespace value_store
 
 namespace brave_wallet {
@@ -38,6 +37,8 @@ class JsonRpcService;
 class BitcoinWalletService;
 class KeyringService;
 class TxManager;
+class TxStorageDelegate;
+class TxStorageDelegateImpl;
 class EthTxManager;
 class SolanaTxManager;
 class FilTxManager;
@@ -222,12 +223,15 @@ class TxService : public KeyedService,
       const std::string& signed_message,
       ProcessFilHardwareSignatureCallback callback) override;
 
+  TxStorageDelegate* GetDelegateForTesting();
+
  private:
   friend class EthereumProviderImplUnitTest;
   friend class EthTxManagerUnitTest;
   friend class SolanaTxManagerUnitTest;
   friend class FilTxManagerUnitTest;
 
+  void MigrateTransactionsFromPrefsToDB(PrefService* prefs);
   void OnGetAllTransactionInfo(GetPendingTransactionsCountCallback callback,
                                size_t counter,
                                mojom::CoinType coin,
@@ -248,7 +252,7 @@ class TxService : public KeyedService,
   mojo::ReceiverSet<mojom::FilTxManagerProxy> fil_tx_manager_receivers_;
 
   scoped_refptr<value_store::ValueStoreFactory> store_factory_;
-  std::unique_ptr<value_store::ValueStoreFrontend> store_;
+  std::unique_ptr<TxStorageDelegateImpl> delegate_;
 
   base::WeakPtrFactory<TxService> weak_factory_;
 };
