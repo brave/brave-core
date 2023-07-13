@@ -13,6 +13,7 @@ CI/run-network-audit:
 - patches/chrome-VERSION.patch
 
 CI/run-upstream-tests:
+- brave/browser/about_flags.cc
 - chromium_src/**/*features.cc
 
 CI/storybook-url:
