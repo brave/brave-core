@@ -52,7 +52,7 @@ public class BrowserViewController: UIViewController {
   
   private(set) lazy var topToolbar: TopToolbarView = {
     // Setup the URL bar, wrapped in a view to get transparency effect
-    let topToolbar = TopToolbarView()
+    let topToolbar = TopToolbarView(voiceSearchSupported: speechRecognizer.isVoiceSearchAvailable)
     topToolbar.translatesAutoresizingMaskIntoConstraints = false
     topToolbar.delegate = self
     topToolbar.tabToolbarDelegate = self
@@ -145,7 +145,8 @@ public class BrowserViewController: UIViewController {
   /// Voice Search
   var voiceSearchViewController: PopupViewController<VoiceSearchInputView>?
   var voiceSearchCancelable: AnyCancellable?
-
+  let speechRecognizer = SpeechRecognizer()
+  
   /// Custom Search Engine
   var openSearchEngine: OpenSearchReference?
 

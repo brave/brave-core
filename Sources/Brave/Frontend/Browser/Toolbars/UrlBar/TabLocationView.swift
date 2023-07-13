@@ -211,6 +211,7 @@ class TabLocationView: UIView {
     $0.accessibilityIdentifier = "TabToolbar.voiceSearchButton"
     $0.isAccessibilityElement = true
     $0.accessibilityLabel = Strings.tabToolbarVoiceSearchButtonAccessibilityLabel
+    $0.isHidden = !isVoiceSearchAvailable
     $0.setImage(UIImage(braveSystemNamed: "leo.microphone", compatibleWith: nil), for: .normal)
     $0.tintColor = .braveLabel
     $0.addTarget(self, action: #selector(didTapVoiceSearchButton), for: .touchUpInside)
@@ -248,12 +249,16 @@ class TabLocationView: UIView {
     $0.insetsLayoutMarginsFromSafeArea = false
   }
 
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  private var isVoiceSearchAvailable: Bool
+
+  init(voiceSearchSupported: Bool) {
+    isVoiceSearchAvailable = voiceSearchSupported
+    
+    super.init(frame: .zero)
 
     backgroundColor = .braveBackground
 
-    self.tabObservers = registerFor(.didChangeContentBlocking, .didGainFocus, queue: .main)
+    tabObservers = registerFor(.didChangeContentBlocking, .didGainFocus, queue: .main)
 
     longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressLocationBar))
     longPressRecognizer.delegate = self
@@ -264,7 +269,12 @@ class TabLocationView: UIView {
     addGestureRecognizer(longPressRecognizer)
     addGestureRecognizer(tapRecognizer)
     
-    let optionSubviews = [readerModeButton, walletButton, playlistButton, voiceSearchButton, reloadButton, separatorLine, shieldsButton, rewardsButton]
+    var optionSubviews: [UIView] = [readerModeButton, walletButton, playlistButton]
+    if isVoiceSearchAvailable {
+      optionSubviews.append(voiceSearchButton)
+    }
+    optionSubviews.append(contentsOf: [reloadButton, separatorLine, shieldsButton, rewardsButton])
+    
     optionSubviews.forEach {
       ($0 as? UIButton)?.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
       $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
@@ -375,7 +385,7 @@ class TabLocationView: UIView {
     urlTextField.text = URLFormatter.formatURL(url?.withoutWWW.absoluteString ?? "", formatTypes: [.omitDefaults], unescapeOptions: []).removeSchemeFromURLString(url?.scheme)
     
     reloadButton.isHidden = url == nil
-    voiceSearchButton.isHidden = url != nil
+    voiceSearchButton.isHidden = (url != nil) || !isVoiceSearchAvailable
   }
 
   // MARK: Long Press Actions

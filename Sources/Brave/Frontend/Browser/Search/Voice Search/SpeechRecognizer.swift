@@ -42,7 +42,7 @@ class SpeechRecognizer: ObservableObject {
   @Published private(set) var animationType: AnimationType = .pulse(scale: 1)
 
   var isVoiceSearchAvailable: Bool {
-    if let recognizer, recognizer.isAvailable {
+    if let recognizer, recognizer.isAvailable, recognizer.supportsOnDeviceRecognition {
       return true
     }
     
