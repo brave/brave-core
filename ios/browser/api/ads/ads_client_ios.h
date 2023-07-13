@@ -23,7 +23,7 @@ class AdsClientIOS : public brave_ads::AdsClient {
 
   void AddObserver(brave_ads::AdsClientNotifierObserver* observer) override;
   void RemoveObserver(brave_ads::AdsClientNotifierObserver* observer) override;
-  void BindPendingObservers() override;
+  void NotifyPendingObservers() override;
   bool IsNetworkConnectionAvailable() const override;
   bool IsBrowserActive() const override;
   bool IsBrowserInFullScreenMode() const override;
