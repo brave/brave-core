@@ -1404,9 +1404,6 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_RESET_AND_CLEAR_DATA_LABEL" desc="The text for settings option">
     Clear Leo data
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_RESET_CONFIRMED" desc="Reset Leo Assistant settings confirmed message text">
-    Leo was reset
-  </message>
   <!-- Avatars. Generated via zsh and node:
         declare -i a=56
         for file in $(cat < avatarlist); do node -e "console.log(\`<message name=\"IDS_BRAVE_AVATAR_LABEL_$a\" desc=\"The label for the $file avatar.\">

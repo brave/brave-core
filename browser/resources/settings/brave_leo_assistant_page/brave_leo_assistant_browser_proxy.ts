@@ -5,13 +5,8 @@
 
  import {sendWithPromise} from 'chrome://resources/js/cr.js';
 
- export type NewTabOption = {
-  name: string
-  value: number // corresponds to NewTabPageShowsOptions enum
-}
-
  export interface BraveLeoAssistantBrowserProxy {
-  resetLeoData(): Promise<boolean>
+  resetLeoData(): void
   getLeoIconVisibility(): Promise<boolean>
   toggleLeoIcon(): void
  }
@@ -32,7 +27,7 @@
   }
 
   resetLeoData() {
-    return sendWithPromise('resetLeoData')
+    chrome.send('resetLeoData')
   }
  }
 

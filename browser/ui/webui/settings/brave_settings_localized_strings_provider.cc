@@ -365,8 +365,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_LEO_ASSISTANT_SHOW_SUGGESTED_PROMPTS_LABEL},
     {"braveLeoAssistantResetAndClearDataLabel",
      IDS_SETTINGS_LEO_ASSISTANT_RESET_AND_CLEAR_DATA_LABEL},
-    {"braveLeoAssistantResetConfirmed",
-     IDS_SETTINGS_LEO_ASSISTANT_RESET_CONFIRMED},
 #endif
     // New Tab Page
     {"braveNewTab", IDS_SETTINGS_NEW_TAB},
