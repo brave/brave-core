@@ -17,14 +17,14 @@
         "IGN_warm",
       ]
     },
-    {
-      "name": "system_health.common_desktop",
-      "pageset-repeat": 1,
-      "stories": [
-        "load:chrome:blank",
-        "browse:news:hackernews:2020",
-      ]
-    },
+    // {
+    //   "name": "system_health.common_desktop",
+    //   "pageset-repeat": 1,
+    //   "stories": [
+    //     "load:chrome:blank",
+    //     "browse:news:hackernews:2020",
+    //   ]
+    // },
     {
       "name": "system_health.memory_desktop",
       "pageset-repeat": 1,
