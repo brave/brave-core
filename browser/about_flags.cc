@@ -76,7 +76,7 @@
 #endif
 
 #if BUILDFLAG(IS_WIN)
-#include "brave/sandbox/win/src/module_file_name_interception.h"
+#include "sandbox/policy/features.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -151,16 +151,17 @@
           FEATURE_VALUE_TYPE(request_otr::features::kBraveRequestOTRTab),     \
       }))
 
-#define BRAVE_MODULE_FILENAME_PATCH                                           \
-  IF_BUILDFLAG(IS_WIN,                                                        \
-               EXPAND_FEATURE_ENTRIES({                                       \
-                   "brave-module-filename-patch",                             \
-                   "Enable Module Filename patch",                            \
-                   "Enables patching of executable's name from brave.exe to " \
-                   "chrome.exe in sandboxed processes.",                      \
-                   kOsWin,                                                    \
-                   FEATURE_VALUE_TYPE(sandbox::kModuleFileNamePatch),         \
-               }))
+#define BRAVE_MODULE_FILENAME_PATCH                                            \
+  IF_BUILDFLAG(                                                                \
+      IS_WIN,                                                                  \
+      EXPAND_FEATURE_ENTRIES({                                                 \
+          "brave-module-filename-patch",                                       \
+          "Enable Module Filename patch",                                      \
+          "Enables patching of executable's name from brave.exe to "           \
+          "chrome.exe in sandboxed processes.",                                \
+          kOsWin,                                                              \
+          FEATURE_VALUE_TYPE(sandbox::policy::features::kModuleFileNamePatch), \
+      }))
 
 #define BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                               \
   IF_BUILDFLAG(                                                            \
