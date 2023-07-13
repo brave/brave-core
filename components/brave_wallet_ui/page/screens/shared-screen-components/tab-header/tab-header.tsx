@@ -29,7 +29,13 @@ import {
   WalletSettingsMenu
 } from '../../../../components/desktop/wallet-menus/wallet-settings-menu'
 
-export const TabHeader = () => {
+export interface Props {
+  hideHeaderMenu?: boolean
+}
+
+export const TabHeader = (props: Props) => {
+  const { hideHeaderMenu } = props
+
   // Routing
   const history = useHistory()
 
@@ -57,20 +63,22 @@ export const TabHeader = () => {
       <Row rowHeight='full' verticalAlign='center'>
         <BraveLogo />
       </Row>
-      <SettingsWrapper
-        ref={settingsModalRef}
-      >
-        <SettingsButton onClick={() => setShowSettings(prev => !prev)}>
-          <SettingsIcon name='more-horizontal' />
-        </SettingsButton>
-        {showSettings &&
-          <WalletSettingsMenu
-            onClickBackup={onShowBackup}
-            onClosePopup={() => setShowSettings(false)}
-            yPosition={50}
-          />
-        }
-      </SettingsWrapper>
+      {!hideHeaderMenu &&
+        <SettingsWrapper
+          ref={settingsModalRef}
+        >
+          <SettingsButton onClick={() => setShowSettings(prev => !prev)}>
+            <SettingsIcon name='more-horizontal' />
+          </SettingsButton>
+          {showSettings &&
+            <WalletSettingsMenu
+              onClickBackup={onShowBackup}
+              onClosePopup={() => setShowSettings(false)}
+              yPosition={50}
+            />
+          }
+        </SettingsWrapper>
+      }
     </HeaderWrapper>
   )
 }

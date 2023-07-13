@@ -326,7 +326,7 @@ function Container () {
     )
   }
 
-  if (isWalletLocked) {
+  if (isWalletLocked && !isPanelV2FeatureEnabled) {
     return (
       <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>

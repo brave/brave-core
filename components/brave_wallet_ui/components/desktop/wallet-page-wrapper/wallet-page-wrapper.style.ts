@@ -39,6 +39,7 @@ export const Wrapper = styled.div<{
 `
 
 export const LayoutCardWrapper = styled.div<{
+  hideNav?: boolean
   hideCardHeader?: boolean
   headerHeight: number
 }>`
@@ -50,6 +51,11 @@ export const LayoutCardWrapper = styled.div<{
       ? 'var(--no-header-top-position)'
       : 'var(--header-top-position)'
   };
+  --bottom-position: ${(p) =>
+    p.hideNav
+      ? 0
+      : layoutSmallCardBottom
+  }px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -69,7 +75,7 @@ export const LayoutCardWrapper = styled.div<{
     align-items: flex-start;
   }
   @media screen and (max-width: ${layoutSmallWidth}px) {
-    bottom: ${layoutSmallCardBottom}px;
+    bottom: var(--bottom-position);
     padding: 0px 32px 32px 32px;
     align-items: center;
   }
@@ -84,6 +90,7 @@ export const ContainerCard = styled.div<
     maxWidth?: number
     hideCardHeader?: boolean
     noMinCardHeight?: boolean
+    noBorderRadius?: boolean
   }>`
   display: flex;
   flex: none;
@@ -111,11 +118,13 @@ export const ContainerCard = styled.div<
     width: 100%;
   }
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    min-height: calc(100vh - ${layoutSmallCardBottom}px - var(--top-position));
+    min-height: calc(100vh - var(--bottom-position) - var(--top-position));
     border-radius: ${(p) =>
-    p.hideCardHeader
-      ? '24px 24px 0px 0px'
-      : '0px'
+    p.noBorderRadius
+      ? '0px'
+      : p.hideCardHeader
+        ? '24px 24px 0px 0px'
+        : '0px'
   };
   }
 `

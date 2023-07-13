@@ -179,7 +179,8 @@ export const Container = () => {
         walletLocation.includes(WalletRoutes.PortfolioNFTAsset) ||
         walletLocation.includes(WalletRoutes.Market) ||
         walletLocation.includes(WalletRoutes.Activity) ||
-        walletLocation.includes(WalletRoutes.Accounts)
+        walletLocation.includes(WalletRoutes.Accounts) ||
+        walletLocation === WalletRoutes.Unlock
       ) {
         toobarElement.hidden = true
         rootElement.style.setProperty('min-height', '100vh')
@@ -244,20 +245,22 @@ export const Container = () => {
 
             {isWalletLocked &&
               <Route path={WalletRoutes.Unlock} exact={true}>
-                <WalletPageLayout>
-                  <WalletSubViewLayout>
-                    <SimplePageWrapper>
-                      <LockScreen
-                        value={inputValue}
-                        onSubmit={unlockWallet}
-                        disabled={inputValue === ''}
-                        onPasswordChanged={handlePasswordChanged}
-                        hasPasswordError={hasIncorrectPassword}
-                        onShowRestore={onToggleShowRestore}
-                      />
-                    </SimplePageWrapper>
-                  </WalletSubViewLayout>
-                </WalletPageLayout>
+                <WalletPageWrapper
+                  wrapContentInBox={true}
+                  cardWidth={680}
+                  hideNav={true}
+                  hideHeaderMenu={true}
+                  noBorderRadius={true}
+                >
+                  <LockScreen
+                    value={inputValue}
+                    onSubmit={unlockWallet}
+                    disabled={inputValue === ''}
+                    onPasswordChanged={handlePasswordChanged}
+                    hasPasswordError={hasIncorrectPassword}
+                    onShowRestore={onToggleShowRestore}
+                  />
+                </WalletPageWrapper>
               </Route>
             }
 
