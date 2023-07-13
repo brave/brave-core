@@ -37,7 +37,7 @@ void BraveTabSearchButton::SetBubbleArrow(views::BubbleBorder::Arrow arrow) {
       ->SetBubbleArrow(arrow);
 }
 
-int BraveTabSearchButton::GetCornerRadius() const {
+int BraveTabSearchButton::GetCornerRadius() {
   return ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
       views::Emphasis::kMaximum, GetContentsBounds().size());
 }

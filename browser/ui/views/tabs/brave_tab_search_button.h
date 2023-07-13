@@ -23,7 +23,7 @@ class BraveTabSearchButton : public TabSearchButton {
 
   // TabSearchButton overrides:
   gfx::Size CalculatePreferredSize() const override;
-  int GetCornerRadius() const override;
+  int GetCornerRadius() override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_SEARCH_BUTTON_H_
