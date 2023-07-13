@@ -5,6 +5,8 @@
 
 #include "brave/renderer/brave_content_renderer_client.h"
 
+#include <utility>
+
 #include "base/feature_list.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
@@ -24,7 +26,6 @@
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/renderer/chrome_render_thread_observer.h"
 #include "content/public/renderer/render_thread.h"
-#include "media/base/key_system_info.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/platform/web_runtime_features.h"
 #include "third_party/blink/public/web/modules/service_worker/web_service_worker_context_proxy.h"
@@ -50,22 +51,23 @@
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
+#include "media/base/key_system_info.h"
 #include "third_party/widevine/cdm/widevine_cdm_common.h"
 #endif
 
 namespace {
-void MaybeRemoveWidevineSupport(
-  media::GetSupportedKeySystemsCB cb, media::KeySystemInfos key_systems) {
+void MaybeRemoveWidevineSupport(media::GetSupportedKeySystemsCB cb,
+                                media::KeySystemInfos key_systems) {
 #if BUILDFLAG(ENABLE_WIDEVINE) && BUILDFLAG(IS_ANDROID)
   auto dynamic_params = BraveRenderThreadObserver::GetDynamicParams();
   if (!dynamic_params.widevine_enabled) {
     key_systems.erase(
-      base::ranges::remove(
-        key_systems, kWidevineKeySystem,
-          [](const std::unique_ptr<media::KeySystemInfo> &key_system) {
-            return key_system->GetBaseKeySystemName();
-          }),
-      key_systems.cend());
+        base::ranges::remove(
+            key_systems, kWidevineKeySystem,
+            [](const std::unique_ptr<media::KeySystemInfo>& key_system) {
+              return key_system->GetBaseKeySystemName();
+            }),
+        key_systems.cend());
   }
 #endif
   cb.Run(std::move(key_systems));
@@ -172,7 +174,7 @@ void BraveContentRendererClient::RenderFrameCreated(
 void BraveContentRendererClient::GetSupportedKeySystems(
     media::GetSupportedKeySystemsCB cb) {
   ChromeContentRendererClient::GetSupportedKeySystems(
-    base::BindRepeating(&MaybeRemoveWidevineSupport, cb));
+      base::BindRepeating(&MaybeRemoveWidevineSupport, cb));
 }
 
 void BraveContentRendererClient::RunScriptsAtDocumentStart(

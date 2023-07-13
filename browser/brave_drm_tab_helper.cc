@@ -19,7 +19,7 @@
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 
-#if !BUILDFLAG(IS_ANDROID)
+#if defined(TOOLKIT_VIEWS)
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -116,8 +116,7 @@ void BraveDrmTabHelper::OnEvent(Events event, const std::string& id) {
     // this tab asks widevine explicitely.
     if (is_widevine_requested_)
       RequestWidevinePermission(web_contents(), true /* for_restart*/);
-#elif BUILDFLAG(IS_ANDROID)
-#else
+#elif !BUILDFLAG(IS_ANDROID)
     // When widevine is ready to use, only active tab that requests widevine is
     // reloaded automatically.
     if (is_widevine_requested_)

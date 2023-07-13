@@ -78,7 +78,7 @@
         android:fragment="org.chromium.chrome.browser.settings.MediaPreferences"
         android:key="media"
         android:order="16"
-        android:icon="@drawable/ic_appearance"
+        android:icon="@drawable/ic_media"
         android:title="@string/prefs_media"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.settings.AppearancePreferences"

@@ -14,6 +14,7 @@
         android:key="background_video_playback"
         android:defaultValue="false"
         android:icon="@drawable/ic_bg_video_playback"
-        android:title="@string/prefs_background_video_playback"/>
+        android:title="@string/prefs_background_video_playback"
+        android:summary="@string/prefs_background_video_playback_on" />
 
 </PreferenceScreen>

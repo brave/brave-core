@@ -8,6 +8,7 @@ package org.chromium.components.permissions;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 
+/* PermissionDialogDelegate override */
 @JNINamespace("permissions")
 public class BravePermissionDialogDelegate {
     /** Text to show before lifetime options. */

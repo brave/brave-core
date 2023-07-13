@@ -5,14 +5,11 @@
 
 package org.chromium.chrome.browser.settings;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.preference.Preference;
 
 import org.chromium.base.BraveFeatureList;
-import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveLocalState;
@@ -20,16 +17,12 @@ import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
-import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
-import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
-import org.chromium.components.user_prefs.UserPrefs;
 
-public class MediaPreferences extends BravePreferenceFragment
-        implements Preference.OnPreferenceChangeListener {
+/* Class for Media section of main preferences */
+public class MediaPreferences
+        extends BravePreferenceFragment implements Preference.OnPreferenceChangeListener {
     public static final String PREF_ENABLE_WIDEVINE = "enable_widevine";
     public static final String PREF_BACKGROUND_VIDEO_PLAYBACK = "background_video_playback";
 
@@ -59,14 +52,10 @@ public class MediaPreferences extends BravePreferenceFragment
                 (ChromeSwitchPreference) findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK);
         if (backgroundVideoPlaybackPref != null) {
             backgroundVideoPlaybackPref.setOnPreferenceChangeListener(this);
-            boolean enabled = ChromeFeatureList.isEnabled(
-                                        BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)
-                            || BravePrefServiceBridge.getInstance()
-                                       .getBackgroundVideoPlaybackEnabled();
+            boolean enabled =
+                    ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)
+                    || BravePrefServiceBridge.getInstance().getBackgroundVideoPlaybackEnabled();
             backgroundVideoPlaybackPref.setChecked(enabled);
-            if (enabled) {
-                backgroundVideoPlaybackPref.setSummary( R.string.prefs_background_video_playback_on);
-            }
         }
     }
 
@@ -76,21 +65,14 @@ public class MediaPreferences extends BravePreferenceFragment
         boolean shouldRelaunch = false;
         if (PREF_ENABLE_WIDEVINE.equals(key)) {
             ChromeSwitchPreference enableWidevinePref =
-                (ChromeSwitchPreference) findPreference(PREF_ENABLE_WIDEVINE);
-            BraveLocalState.get().setBoolean(
-                            BravePref.WIDEVINE_OPTED_IN,
-                            !BraveLocalState.get().getBoolean(BravePref.WIDEVINE_OPTED_IN));
+                    (ChromeSwitchPreference) findPreference(PREF_ENABLE_WIDEVINE);
+            BraveLocalState.get().setBoolean(BravePref.WIDEVINE_OPTED_IN,
+                    !BraveLocalState.get().getBoolean(BravePref.WIDEVINE_OPTED_IN));
             shouldRelaunch = true;
         } else if (PREF_BACKGROUND_VIDEO_PLAYBACK.equals(key)) {
             BraveFeatureUtil.enableFeature(
                     BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL, (boolean) newValue,
                     false);
-            if ((boolean) newValue) {
-                findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK).setSummary(
-                        R.string.prefs_background_video_playback_on);
-            } else {
-                findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK).setSummary("");
-            }
             shouldRelaunch = true;
         }
 
@@ -100,5 +82,4 @@ public class MediaPreferences extends BravePreferenceFragment
 
         return true;
     }
-
 }

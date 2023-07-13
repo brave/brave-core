@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#define CreateJavaDelegate \
-  Java_PermissionDialogController_createDialog_BraveImpl(JNIEnv* env, const base::android::JavaRef<jobject>& obj); \
+#define CreateJavaDelegate                                      \
+  Java_PermissionDialogController_createDialog_BraveImpl(       \
+      JNIEnv* env, const base::android::JavaRef<jobject>& obj); \
   virtual void CreateJavaDelegate
 #include "components/permissions/android/permission_prompt/permission_dialog_delegate.h"
 #undef CreateJavaDelegate
@@ -73,20 +74,23 @@ void ApplyLifetimeToPermissionRequests(
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 bool IsWidevineRequest(PermissionPromptAndroid* permission_prompt) {
-  const std::vector<PermissionRequest*>& requests = permission_prompt->delegate()->Requests();
-  return requests.size() == 1 && requests[0]->request_type() == RequestType::kWidevine;
+  const std::vector<PermissionRequest*>& requests =
+      permission_prompt->delegate()->Requests();
+  return requests.size() == 1 &&
+         requests[0]->request_type() == RequestType::kWidevine;
 }
 #endif
 
-void ApplyWidevineDontAskOption(
-    JNIEnv* env,
-    const JavaParamRef<jobject>& obj,
-    PermissionPromptAndroid* permission_prompt) {
+void ApplyWidevineDontAskOption(JNIEnv* env,
+                                const JavaParamRef<jobject>& obj,
+                                PermissionPromptAndroid* permission_prompt) {
 #if BUILDFLAG(ENABLE_WIDEVINE)
   if (IsWidevineRequest(permission_prompt)) {
-    const bool dontAsk = Java_BravePermissionDialogDelegate_getWidevineDontAsk(env, obj);
-    WidevinePermissionRequest* widevineRequest = static_cast<WidevinePermissionRequest*>(
-      permission_prompt->delegate()->Requests()[0]);
+    const bool dontAsk =
+        Java_BravePermissionDialogDelegate_getWidevineDontAsk(env, obj);
+    WidevinePermissionRequest* widevineRequest =
+        static_cast<WidevinePermissionRequest*>(
+            permission_prompt->delegate()->Requests()[0]);
     widevineRequest->set_dont_ask_widevine_install(dontAsk);
   }
 #endif
@@ -94,22 +98,29 @@ void ApplyWidevineDontAskOption(
 
 }  // namespace
 
-void PermissionDialogJavaDelegate::Java_PermissionDialogController_createDialog_BraveImpl(
-    JNIEnv* env,
-    const base::android::JavaRef<jobject>& j_delegate) {
-  if (IsWidevineRequest(permission_prompt_))
-    Java_BravePermissionDialogDelegate_setIsWidevinePermissionRequest(env, j_delegate, true);
-  if (ShouldShowLifetimeOptions(permission_prompt_->delegate())) SetLifetimeOptions(j_delegate);
+void PermissionDialogJavaDelegate::
+    Java_PermissionDialogController_createDialog_BraveImpl(
+        JNIEnv* env,
+        const base::android::JavaRef<jobject>& j_delegate) {
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  if (IsWidevineRequest(permission_prompt_)) {
+    Java_BravePermissionDialogDelegate_setIsWidevinePermissionRequest(
+        env, j_delegate, true);
+  }
+#endif
+  if (ShouldShowLifetimeOptions(permission_prompt_->delegate())) {
+    SetLifetimeOptions(j_delegate);
+  }
 
   Java_PermissionDialogController_createDialog(env, j_delegate);
 }
 
 }  // namespace permissions
 
-#define BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT \
+#define BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT                    \
   ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_); \
   ApplyWidevineDontAskOption(env, obj, permission_prompt_);
-#define BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL \
+#define BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL                    \
   ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_); \
   ApplyWidevineDontAskOption(env, obj, permission_prompt_);
 #define Java_PermissionDialogController_createDialog \

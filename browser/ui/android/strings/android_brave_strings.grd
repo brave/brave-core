@@ -820,7 +820,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
           <ph name="BEGIN_LINK">&lt;LINK&gt;</ph>Learn more about Widevine<ph name="END_LINK">&lt;/LINK&gt;</ph>
       </message>
       <message name="IDS_WIDEVINE_PERMISSION_REQUEST_PRIMARY_BUTTON_TEXT" desc="Primary button text for Widevine permission request.">
-          ALLOW (RELAUNCH NOW)
+          Allow (Relaunch Now)
       </message>
       <message name="IDS_PREFS_APPEARANCE" desc="Title of Appearance settings, which allows the user to change display settings. [CHAR-LIMIT=32]">
         Appearance

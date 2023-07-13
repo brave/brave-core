@@ -46,21 +46,20 @@ source_set("widevine") {
 source_set("unittest") {
   testonly = true
 
-  sources = [ "widevine_cdm_component_installer_unittest.cc" ]
-  deps = [
-    "//testing/gtest",
-    "//third_party/widevine/cdm:buildflags",
-  ]
+  if (enable_widevine_cdm_component) {
+    sources = [ "widevine_cdm_component_installer_unittest.cc" ]
+    deps = [
+      "//testing/gtest",
+      "//third_party/widevine/cdm:buildflags",
+    ]
+  }
 }
 
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [
-    "widevine_permission_request_browsertest.cc",
-    "widevine_prefs_migration_browsertest.cc",
-  ]
+  sources = [ "widevine_prefs_migration_browsertest.cc" ]
 
   deps = [
     ":widevine",
@@ -72,21 +71,25 @@ source_set("browser_tests") {
     "//chrome/browser",
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile",
-    "//chrome/browser/ui",
     "//chrome/common",
+    "//chrome/test:test_support",
     "//components/prefs",
     "//content/public/browser",
     "//content/test:test_support",
     "//testing/gtest",
     "//third_party/widevine/cdm:buildflags",
-    "//url",
   ]
 
   if (toolkit_views) {
+    sources += [ "widevine_permission_request_browsertest.cc" ]
     deps += [
+      "//chrome/browser/ui",
       "//chrome/test:test_support_ui",
       "//ui/views",
+      "//url",
     ]
+  } else {
+    deps += [ "//chrome/test:test_support_ui_android" ]
   }
 }
 

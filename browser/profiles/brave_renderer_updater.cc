@@ -35,8 +35,9 @@ BraveRendererUpdater::BraveRendererUpdater(
     Profile* profile,
     brave_wallet::KeyringService* keyring_service,
     PrefService* local_state)
-    : profile_(profile), keyring_service_(keyring_service),
-    local_state_(local_state){
+    : profile_(profile),
+      keyring_service_(keyring_service),
+      local_state_(local_state) {
   PrefService* pref_service = profile->GetPrefs();
   brave_wallet_ethereum_provider_.Init(kDefaultEthereumWallet, pref_service);
   brave_wallet_solana_provider_.Init(kDefaultSolanaWallet, pref_service);

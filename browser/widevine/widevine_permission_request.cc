@@ -40,8 +40,8 @@ std::u16string WidevinePermissionRequest::GetDialogMessageText() const {
   return l10n_util::GetStringFUTF16(
       GetWidevinePermissionRequestTextFrangmentResourceId(false),
       url_formatter::FormatUrlForSecurityDisplay(
-                      requesting_origin(),
-                      url_formatter::SchemeDisplay::OMIT_CRYPTOGRAPHIC));
+          requesting_origin(),
+          url_formatter::SchemeDisplay::OMIT_CRYPTOGRAPHIC));
 }
 #else
 std::u16string WidevinePermissionRequest::GetMessageTextFragment() const {
@@ -61,7 +61,6 @@ void WidevinePermissionRequest::PermissionDecided(ContentSetting result,
 #if BUILDFLAG(IS_ANDROID)
       EnableWidevineCdm();
 #endif
-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_ANDROID)
       // Prevent relaunch during the browser test.
       // This will cause abnormal termination during the test.
       if (!is_test_) {
@@ -69,13 +68,9 @@ void WidevinePermissionRequest::PermissionDecided(ContentSetting result,
         base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
             FROM_HERE, base::BindOnce(&chrome::AttemptRelaunch));
       }
-#endif
     }
     // Permission denied
   } else if (result == ContentSetting::CONTENT_SETTING_BLOCK) {
-#if BUILDFLAG(IS_ANDROID)
-    DisableWidevineCdm();
-#endif
     DontAskWidevineInstall(web_contents_, dont_ask_widevine_install_);
     // Cancelled
   } else {

@@ -16,9 +16,7 @@ import android.provider.Browser;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.text.style.UnderlineSpan;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -27,10 +25,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.core.widget.TextViewCompat;
 
-import org.chromium.base.IntentUtils;
 import org.chromium.base.ApiCompatibilityUtils;
+import org.chromium.base.IntentUtils;
 import org.chromium.ui.LayoutInflaterUtils;
 import org.chromium.ui.UiUtils;
 import org.chromium.ui.base.ViewUtils;
@@ -63,26 +60,27 @@ class BravePermissionDialogModel {
         return model;
     }
 
-    private static PropertyModel createModelForWidevineRequest(ModalDialogProperties.Controller controller,
-            PermissionDialogDelegate delegate, Runnable touchFilteredCallback) {
+    private static PropertyModel createModelForWidevineRequest(
+            ModalDialogProperties.Controller controller, PermissionDialogDelegate delegate,
+            Runnable touchFilteredCallback) {
         BravePermissionDialogDelegate braveDelegate =
-            (BravePermissionDialogDelegate) (Object) delegate;
+                (BravePermissionDialogDelegate) (Object) delegate;
         Context context = delegate.getWindow().getContext().get();
         assert context != null;
-        View customView = LayoutInflaterUtils.inflate(context, R.layout.widevine_permission_request_custom_view, null);
+        View customView = LayoutInflaterUtils.inflate(
+                context, R.layout.widevine_permission_request_custom_view, null);
 
         String messageText = delegate.getMessageText();
         // Override Allow button text
         String primaryButtonText = context.getResources().getString(
                 R.string.widevine_permission_request_primary_button_text);
         assert !TextUtils.isEmpty(messageText) && !TextUtils.isEmpty(primaryButtonText);
-        SpannableString learnMoreLink = SpanApplier.applySpans(context.getResources().getString(
-                    R.string.widevine_permission_request_link),
+        SpannableString learnMoreLink = SpanApplier.applySpans(
+                context.getResources().getString(R.string.widevine_permission_request_link),
                 new SpanApplier.SpanInfo("<LINK>", "</LINK>",
-                        new NoUnderlineClickableSpan(
-                                context, R.color.brave_link, result -> {
-                                    openUrlInCustomTab(context, URL_WIDEVINE_LEARN_MORE);
-                                })));
+                        new NoUnderlineClickableSpan(context, R.color.brave_link, result -> {
+                            openUrlInCustomTab(context, URL_WIDEVINE_LEARN_MORE);
+                        })));
 
         TextView messageTextView = customView.findViewById(R.id.message);
         messageTextView.setText(messageText);
@@ -93,23 +91,25 @@ class BravePermissionDialogModel {
         linkTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
         CheckBox checkbox = customView.findViewById(R.id.checkbox);
-        checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            braveDelegate.setWidevineDontAsk(isChecked);
-        });
+        checkbox.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> { braveDelegate.setWidevineDontAsk(isChecked); });
 
-        PropertyModel model = new PropertyModel.Builder(ModalDialogProperties.ALL_KEYS)
-                .with(ModalDialogProperties.CONTROLLER, controller)
-                .with(ModalDialogProperties.TITLE,
-                        context.getResources().getString(R.string.widevine_permission_request_title))
-                .with(ModalDialogProperties.CUSTOM_VIEW, customView)
-                .with(ModalDialogProperties.POSITIVE_BUTTON_TEXT, primaryButtonText)
-                .with(ModalDialogProperties.NEGATIVE_BUTTON_TEXT, delegate.getSecondaryButtonText())
-                .with(ModalDialogProperties.CONTENT_DESCRIPTION, messageText)
-                .with(ModalDialogProperties.FILTER_TOUCH_FOR_SECURITY, true)
-                .with(ModalDialogProperties.TOUCH_FILTERED_CALLBACK, touchFilteredCallback)
-                .with(ModalDialogProperties.BUTTON_TAP_PROTECTION_PERIOD_MS,
-                        UiUtils.PROMPT_INPUT_PROTECTION_SHORT_DELAY_MS)
-                .build();
+        PropertyModel model =
+                new PropertyModel.Builder(ModalDialogProperties.ALL_KEYS)
+                        .with(ModalDialogProperties.CONTROLLER, controller)
+                        .with(ModalDialogProperties.TITLE,
+                                context.getResources().getString(
+                                        R.string.widevine_permission_request_title))
+                        .with(ModalDialogProperties.CUSTOM_VIEW, customView)
+                        .with(ModalDialogProperties.POSITIVE_BUTTON_TEXT, primaryButtonText)
+                        .with(ModalDialogProperties.NEGATIVE_BUTTON_TEXT,
+                                delegate.getSecondaryButtonText())
+                        .with(ModalDialogProperties.CONTENT_DESCRIPTION, messageText)
+                        .with(ModalDialogProperties.FILTER_TOUCH_FOR_SECURITY, true)
+                        .with(ModalDialogProperties.TOUCH_FILTERED_CALLBACK, touchFilteredCallback)
+                        .with(ModalDialogProperties.BUTTON_TAP_PROTECTION_PERIOD_MS,
+                                UiUtils.PROMPT_INPUT_PROTECTION_SHORT_DELAY_MS)
+                        .build();
 
         return model;
     }

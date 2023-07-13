@@ -40,7 +40,8 @@ KeyedService* BraveRendererUpdaterFactory::BuildServiceInstanceFor(
   auto* keyring_service =
       brave_wallet::KeyringServiceFactory::GetServiceForContext(context);
   return new BraveRendererUpdater(static_cast<Profile*>(context),
-                                  keyring_service, g_browser_process->local_state());
+                                  keyring_service,
+                                  g_browser_process->local_state());
 }
 
 bool BraveRendererUpdaterFactory::ServiceIsCreatedWithBrowserContext() const {

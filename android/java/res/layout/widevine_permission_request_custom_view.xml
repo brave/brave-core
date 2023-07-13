@@ -28,7 +28,7 @@ found in the LICENSE file.
             android:id="@+id/checkbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="12dp"
             android:layout_gravity="center_horizontal"
             android:buttonTint="@color/brave_action_color"
             android:paddingVertical="8dp"

@@ -7,16 +7,33 @@
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
+
+#if BUILDFLAG(IS_ANDROID)
+#include "chrome/test/base/android/android_browser_test.h"
+#include "chrome/test/base/chrome_test_utils.h"
+#else
+#include "chrome/browser/ui/browser.h"
+#include "chrome/test/base/in_process_browser_test.h"
+#endif
 
 namespace {
 constexpr bool kWidevineOptedInTestValue = true;
 }  // namespace
 
-using WidevinePrefsMigrationTest = InProcessBrowserTest;
+class WidevinePrefsMigrationTest : public PlatformBrowserTest {
+ public:
+  WidevinePrefsMigrationTest() {}
+
+  Profile* GetProfile() {
+#if BUILDFLAG(IS_ANDROID)
+    return chrome_test_utils::GetProfile(this);
+#else
+    return browser()->profile();
+#endif
+  }
+};
 
 IN_PROC_BROWSER_TEST_F(WidevinePrefsMigrationTest, PrefMigrationTest) {
   g_browser_process->local_state()->ClearPref(kWidevineOptedIn);
@@ -24,11 +41,11 @@ IN_PROC_BROWSER_TEST_F(WidevinePrefsMigrationTest, PrefMigrationTest) {
       FindPreference(kWidevineOptedIn)->IsDefaultValue());
 
   // Set profile prefs explicitly for migration test.
-  browser()->profile()->GetPrefs()->SetBoolean(kWidevineOptedIn,
-                                               kWidevineOptedInTestValue);
+  GetProfile()->GetPrefs()->SetBoolean(kWidevineOptedIn,
+                                       kWidevineOptedInTestValue);
 
   // Migrate and check it's done properly with previous profile prefs value.
-  MigrateWidevinePrefs(browser()->profile());
+  MigrateWidevinePrefs(GetProfile());
   EXPECT_FALSE(g_browser_process->local_state()->
       FindPreference(kWidevineOptedIn)->IsDefaultValue());
   EXPECT_EQ(kWidevineOptedInTestValue,

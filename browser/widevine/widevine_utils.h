@@ -6,10 +6,6 @@
 #ifndef BRAVE_BROWSER_WIDEVINE_WIDEVINE_UTILS_H_
 #define BRAVE_BROWSER_WIDEVINE_WIDEVINE_UTILS_H_
 
-#include <string>
-
-#include "build/build_config.h"
-
 namespace content {
 class WebContents;
 }  // namespace content
@@ -22,8 +18,8 @@ class PrefRegistrySimple;
 class PrefService;
 class Profile;
 
-// On Android, kWidevineOptedIn is written through EnableWidevineCdm() for the permission prompt,
-// but r/w through BraveLocalState.java on preference screen
+// On Android, kWidevineOptedIn is written through EnableWidevineCdm() for the
+// permission prompt, but r/w through BraveLocalState.java on preference screen
 void EnableWidevineCdm();
 void DisableWidevineCdm();
 void RegisterWidevineProfilePrefsForMigration(
