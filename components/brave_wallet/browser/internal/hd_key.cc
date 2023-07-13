@@ -22,6 +22,7 @@
 #include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1_recovery.h"
 #include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
 #include "crypto/encryptor.h"
+#include "crypto/random.h"
 #include "crypto/symmetric_key.h"
 #include "third_party/boringssl/src/include/openssl/hmac.h"
 
@@ -36,6 +37,23 @@ constexpr size_t kSHA512Length = 64;
 constexpr uint32_t kHardenedOffset = 0x80000000;
 constexpr size_t kSerializationLength = 78;
 constexpr size_t kMaxDerSignatureSize = 72;
+constexpr size_t kContextRandomizeSize = 32;
+
+const secp256k1_context* GetSecp256k1Ctx() {
+  static const secp256k1_context* const kSecp256k1Ctx = [] {
+    secp256k1_context* context = secp256k1_context_create(
+        SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
+
+    SecureVector bytes(kContextRandomizeSize);
+    crypto::RandBytes(bytes.data(), bytes.size());
+    [[maybe_unused]] int result =
+        secp256k1_context_randomize(context, bytes.data());
+
+    return context;
+  }();
+
+  return kSecp256k1Ctx;
+}
 
 bool UTCPasswordVerification(const std::string& derived_key,
                              const std::vector<uint8_t>& ciphertext,
@@ -89,16 +107,8 @@ bool UTCDecryptPrivateKey(const std::string& derived_key,
 
 }  // namespace
 
-HDKey::HDKey()
-    : identifier_(20),
-      public_key_(33),
-      chain_code_(32),
-      secp256k1_ctx_(secp256k1_context_create(SECP256K1_CONTEXT_SIGN |
-                                              SECP256K1_CONTEXT_VERIFY)) {}
-
-HDKey::~HDKey() {
-  secp256k1_context_destroy(secp256k1_ctx_);
-}
+HDKey::HDKey() : identifier_(20), public_key_(33), chain_code_(32) {}
+HDKey::~HDKey() = default;
 
 // static
 std::unique_ptr<HDKey> HDKey::GenerateFromSeed(
@@ -394,7 +404,7 @@ void HDKey::SetPublicKey(const std::vector<uint8_t>& value) {
   }
   // Verify public key
   secp256k1_pubkey pubkey;
-  if (!secp256k1_ec_pubkey_parse(secp256k1_ctx_, &pubkey, value.data(),
+  if (!secp256k1_ec_pubkey_parse(GetSecp256k1Ctx(), &pubkey, value.data(),
                                  value.size())) {
     LOG(ERROR) << __func__ << ": not a valid public key";
     return;
@@ -420,12 +430,12 @@ std::vector<uint8_t> HDKey::GetUncompressedPublicKey() const {
   size_t public_key_len = 65;
   std::vector<uint8_t> public_key(public_key_len);
   secp256k1_pubkey pubkey;
-  if (!secp256k1_ec_pubkey_parse(secp256k1_ctx_, &pubkey, public_key_.data(),
+  if (!secp256k1_ec_pubkey_parse(GetSecp256k1Ctx(), &pubkey, public_key_.data(),
                                  public_key_.size())) {
     LOG(ERROR) << __func__ << ": secp256k1_ec_pubkey_parse failed";
     return public_key;
   }
-  if (!secp256k1_ec_pubkey_serialize(secp256k1_ctx_, public_key.data(),
+  if (!secp256k1_ec_pubkey_serialize(GetSecp256k1Ctx(), public_key.data(),
                                      &public_key_len, &pubkey,
                                      SECP256K1_EC_UNCOMPRESSED)) {
     LOG(ERROR) << __func__ << ": secp256k1_ec_pubkey_serialize failed";
@@ -544,7 +554,7 @@ std::unique_ptr<HDKey> HDKey::DeriveChild(uint32_t index) {
     // Also Private parent key -> public child key because we always create
     // public key.
     SecureVector private_key = private_key_;
-    if (!secp256k1_ec_seckey_tweak_add(secp256k1_ctx_, private_key.data(),
+    if (!secp256k1_ec_seckey_tweak_add(GetSecp256k1Ctx(), private_key.data(),
                                        IL.data())) {
       LOG(ERROR) << __func__ << ": secp256k1_ec_seckey_tweak_add failed";
       return nullptr;
@@ -554,19 +564,19 @@ std::unique_ptr<HDKey> HDKey::DeriveChild(uint32_t index) {
     // Public parent key -> public child key (Normal only)
     DCHECK(!is_hardened);
     secp256k1_pubkey pubkey;
-    if (!secp256k1_ec_pubkey_parse(secp256k1_ctx_, &pubkey, public_key_.data(),
-                                   public_key_.size())) {
+    if (!secp256k1_ec_pubkey_parse(GetSecp256k1Ctx(), &pubkey,
+                                   public_key_.data(), public_key_.size())) {
       LOG(ERROR) << __func__ << ": secp256k1_ec_pubkey_parse failed";
       return nullptr;
     }
 
-    if (!secp256k1_ec_pubkey_tweak_add(secp256k1_ctx_, &pubkey, IL.data())) {
+    if (!secp256k1_ec_pubkey_tweak_add(GetSecp256k1Ctx(), &pubkey, IL.data())) {
       LOG(ERROR) << __func__ << ": secp256k1_ec_pubkey_tweak_add failed";
       return nullptr;
     }
     size_t public_key_len = 33;
     std::vector<uint8_t> public_key(public_key_len);
-    if (!secp256k1_ec_pubkey_serialize(secp256k1_ctx_, public_key.data(),
+    if (!secp256k1_ec_pubkey_serialize(GetSecp256k1Ctx(), public_key.data(),
                                        &public_key_len, &pubkey,
                                        SECP256K1_EC_COMPRESSED)) {
       LOG(ERROR) << __func__ << ": secp256k1_ec_pubkey_serialize failed";
@@ -656,28 +666,28 @@ std::vector<uint8_t> HDKey::SignCompact(const std::vector<uint8_t>& msg,
   }
   if (!recid) {
     secp256k1_ecdsa_signature ecdsa_sig;
-    if (!secp256k1_ecdsa_sign(secp256k1_ctx_, &ecdsa_sig, msg.data(),
+    if (!secp256k1_ecdsa_sign(GetSecp256k1Ctx(), &ecdsa_sig, msg.data(),
                               private_key_.data(),
                               secp256k1_nonce_function_rfc6979, nullptr)) {
       LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign failed";
       return sig;
     }
 
-    if (!secp256k1_ecdsa_signature_serialize_compact(secp256k1_ctx_, sig.data(),
-                                                     &ecdsa_sig)) {
+    if (!secp256k1_ecdsa_signature_serialize_compact(GetSecp256k1Ctx(),
+                                                     sig.data(), &ecdsa_sig)) {
       LOG(ERROR) << __func__
                  << ": secp256k1_ecdsa_signature_serialize_compact failed";
     }
   } else {
     secp256k1_ecdsa_recoverable_signature ecdsa_sig;
     if (!secp256k1_ecdsa_sign_recoverable(
-            secp256k1_ctx_, &ecdsa_sig, msg.data(), private_key_.data(),
+            GetSecp256k1Ctx(), &ecdsa_sig, msg.data(), private_key_.data(),
             secp256k1_nonce_function_rfc6979, nullptr)) {
       LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign_recoverable failed";
       return sig;
     }
     if (!secp256k1_ecdsa_recoverable_signature_serialize_compact(
-            secp256k1_ctx_, sig.data(), recid, &ecdsa_sig)) {
+            GetSecp256k1Ctx(), sig.data(), recid, &ecdsa_sig)) {
       LOG(ERROR)
           << __func__
           << ": secp256k1_ecdsa_recoverable_signature_serialize_compact failed";
@@ -692,7 +702,7 @@ absl::optional<std::vector<uint8_t>> HDKey::SignDer(
     base::span<const uint8_t, 32> msg) {
   unsigned char extra_entropy[32] = {0};
   secp256k1_ecdsa_signature ecdsa_sig;
-  if (!secp256k1_ecdsa_sign(secp256k1_ctx_, &ecdsa_sig, msg.data(),
+  if (!secp256k1_ecdsa_sign(GetSecp256k1Ctx(), &ecdsa_sig, msg.data(),
                             private_key_.data(),
                             secp256k1_nonce_function_rfc6979, nullptr)) {
     LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign failed";
@@ -709,12 +719,12 @@ absl::optional<std::vector<uint8_t>> HDKey::SignDer(
 
   // Grind R https://github.com/bitcoin/bitcoin/pull/13666
   uint32_t extra_entropy_counter = 0;
-  while (!sig_has_low_r(secp256k1_ctx_, &ecdsa_sig)) {
+  while (!sig_has_low_r(GetSecp256k1Ctx(), &ecdsa_sig)) {
     (*reinterpret_cast<uint32_t*>(extra_entropy)) =
         base::ByteSwapToLE32(++extra_entropy_counter);
 
     if (!secp256k1_ecdsa_sign(
-            secp256k1_ctx_, &ecdsa_sig, msg.data(), private_key_.data(),
+            GetSecp256k1Ctx(), &ecdsa_sig, msg.data(), private_key_.data(),
             secp256k1_nonce_function_rfc6979, extra_entropy)) {
       LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign failed";
       return absl::nullopt;
@@ -723,8 +733,8 @@ absl::optional<std::vector<uint8_t>> HDKey::SignDer(
 
   std::vector<uint8_t> sig_der(kMaxDerSignatureSize);
   size_t sig_der_length = sig_der.size();
-  if (!secp256k1_ecdsa_signature_serialize_der(secp256k1_ctx_, sig_der.data(),
-                                               &sig_der_length, &ecdsa_sig)) {
+  if (!secp256k1_ecdsa_signature_serialize_der(
+          GetSecp256k1Ctx(), sig_der.data(), &sig_der_length, &ecdsa_sig)) {
     return absl::nullopt;
   }
   sig_der.resize(sig_der_length);
@@ -742,19 +752,19 @@ bool HDKey::Verify(const std::vector<uint8_t>& msg,
   }
 
   secp256k1_ecdsa_signature ecdsa_sig;
-  if (!secp256k1_ecdsa_signature_parse_compact(secp256k1_ctx_, &ecdsa_sig,
+  if (!secp256k1_ecdsa_signature_parse_compact(GetSecp256k1Ctx(), &ecdsa_sig,
                                                sig.data())) {
     LOG(ERROR) << __func__
                << ": secp256k1_ecdsa_signature_parse_compact failed";
     return false;
   }
   secp256k1_pubkey pubkey;
-  if (!secp256k1_ec_pubkey_parse(secp256k1_ctx_, &pubkey, public_key_.data(),
+  if (!secp256k1_ec_pubkey_parse(GetSecp256k1Ctx(), &pubkey, public_key_.data(),
                                  public_key_.size())) {
     LOG(ERROR) << __func__ << ": secp256k1_ec_pubkey_parse failed";
     return false;
   }
-  if (!secp256k1_ecdsa_verify(secp256k1_ctx_, &ecdsa_sig, msg.data(),
+  if (!secp256k1_ecdsa_verify(GetSecp256k1Ctx(), &ecdsa_sig, msg.data(),
                               &pubkey)) {
     LOG(ERROR) << __func__ << ": secp256k1_ecdsa_verify failed";
     return false;
@@ -779,7 +789,7 @@ std::vector<uint8_t> HDKey::RecoverCompact(bool compressed,
 
   secp256k1_ecdsa_recoverable_signature ecdsa_sig;
   if (!secp256k1_ecdsa_recoverable_signature_parse_compact(
-          secp256k1_ctx_, &ecdsa_sig, sig.data(), recid)) {
+          GetSecp256k1Ctx(), &ecdsa_sig, sig.data(), recid)) {
     LOG(ERROR)
         << __func__
         << ": secp256k1_ecdsa_recoverable_signature_parse_compact failed";
@@ -787,14 +797,14 @@ std::vector<uint8_t> HDKey::RecoverCompact(bool compressed,
   }
 
   secp256k1_pubkey pubkey;
-  if (!secp256k1_ecdsa_recover(secp256k1_ctx_, &pubkey, &ecdsa_sig,
+  if (!secp256k1_ecdsa_recover(GetSecp256k1Ctx(), &pubkey, &ecdsa_sig,
                                msg.data())) {
     LOG(ERROR) << __func__ << ": secp256k1_ecdsa_recover failed";
     return public_key;
   }
 
   if (!secp256k1_ec_pubkey_serialize(
-          secp256k1_ctx_, public_key.data(), &public_key_len, &pubkey,
+          GetSecp256k1Ctx(), public_key.data(), &public_key_len, &pubkey,
           compressed ? SECP256K1_EC_COMPRESSED : SECP256K1_EC_UNCOMPRESSED)) {
     LOG(ERROR) << "secp256k1_ec_pubkey_serialize failed";
   }
@@ -804,13 +814,13 @@ std::vector<uint8_t> HDKey::RecoverCompact(bool compressed,
 
 void HDKey::GeneratePublicKey() {
   secp256k1_pubkey public_key;
-  if (!secp256k1_ec_pubkey_create(secp256k1_ctx_, &public_key,
+  if (!secp256k1_ec_pubkey_create(GetSecp256k1Ctx(), &public_key,
                                   private_key_.data())) {
     LOG(ERROR) << "secp256k1_ec_pubkey_create failed";
     return;
   }
   size_t public_key_len = 33;
-  if (!secp256k1_ec_pubkey_serialize(secp256k1_ctx_, public_key_.data(),
+  if (!secp256k1_ec_pubkey_serialize(GetSecp256k1Ctx(), public_key_.data(),
                                      &public_key_len, &public_key,
                                      SECP256K1_EC_COMPRESSED)) {
     LOG(ERROR) << "secp256k1_ec_pubkey_serialize failed";
