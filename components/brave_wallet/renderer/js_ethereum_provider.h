@@ -135,6 +135,7 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
   std::string first_allowed_account_;
   std::string uuid_;
   absl::optional<std::string> brave_wallet_image_;
+  v8::Global<v8::Object> ethereum_provider_proxy_;
   base::WeakPtrFactory<JSEthereumProvider> weak_ptr_factory_{this};
 };
 

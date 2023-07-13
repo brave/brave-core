@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_strings.h"
 #include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/function_template.h"
@@ -31,6 +32,7 @@
 #include "third_party/blink/public/mojom/devtools/console_message.mojom.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
 namespace {
@@ -227,6 +229,8 @@ void JSEthereumProvider::Install(bool allow_overwrite_window_ethereum_provider,
                     IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS),
                 kEthereumProviderScript);
 
+  provider->ethereum_provider_proxy_ =
+      v8::Global<v8::Object>(isolate, ethereum_proxy);
   provider->BindRequestProviderListener();
   provider->AnnounceProvider();
 }
@@ -681,9 +685,10 @@ void JSEthereumProvider::AnnounceProvider() {
       render_frame()->GetWebFrame()->MainWorldScriptContext();
 
   base::Value::Dict provider_info_value;
-  provider_info_value.Set("rDNS", "com.brave.wallet");
+  provider_info_value.Set("rdns", "com.brave.wallet");
   provider_info_value.Set("uuid", uuid_);
-  provider_info_value.Set("name", "Brave Wallet");
+  provider_info_value.Set(
+      "name", l10n_util::GetStringUTF8(IDS_WALLET_EIP6963_PROVIDER_NAME));
   provider_info_value.Set("icon", GetBraveWalletImage());
 
   auto detail = v8::Object::New(isolate);
@@ -708,14 +713,11 @@ void JSEthereumProvider::AnnounceProvider() {
     return;
   }
 
-  auto provider =
-      GetProperty(context, context->Global(), kEthereum).ToLocalChecked();
-
   if (detail
           ->Set(context,
                 content::V8ValueConverter::Create()->ToV8Value(
                     base::Value("provider"), context),
-                std::move(provider))
+                ethereum_provider_proxy_.Get(isolate))
           .IsNothing()) {
     NOTREACHED();
     return;
