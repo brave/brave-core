@@ -119,7 +119,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   
   private var locationTextField: AutocompleteTextField?
 
-  lazy var locationView = TabLocationView().then {
+  lazy var locationView = TabLocationView(voiceSearchSupported: isVoiceSearchAvailable).then {
     $0.translatesAutoresizingMaskIntoConstraints = false
     $0.readerModeState = ReaderModeState.unavailable
     $0.delegate = self
@@ -198,7 +198,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   
   private var locationTextContentView: UIStackView?
   
-  private var qrCodeButton = ToolbarButton().then {
+  private lazy var qrCodeButton = ToolbarButton().then {
     $0.accessibilityIdentifier = "TabToolbar.qrCodeButton"
     $0.isAccessibilityElement = true
     $0.accessibilityLabel = Strings.quickActionScanQRCode
@@ -211,12 +211,13 @@ class TopToolbarView: UIView, ToolbarProtocol {
     $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
   }
   
-  private var voiceSearchButton = ToolbarButton().then {
+  private lazy var voiceSearchButton = ToolbarButton().then {
     $0.accessibilityIdentifier = "TabToolbar.voiceSearchButton"
     $0.isAccessibilityElement = true
     $0.accessibilityLabel = Strings.tabToolbarVoiceSearchButtonAccessibilityLabel
     $0.setImage(UIImage(braveSystemNamed: "leo.microphone", compatibleWith: nil), for: .normal)
     $0.tintColor = .braveLabel
+    $0.isHidden = !isVoiceSearchAvailable
     $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
     $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
@@ -226,6 +227,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   
   private lazy var locationBarOptionsStackView = UIStackView().then {
     $0.alignment = .center
+    $0.isHidden = true
     $0.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 3)
     $0.isLayoutMarginsRelativeArrangement = true
     $0.insetsLayoutMarginsFromSafeArea = false
@@ -238,12 +240,16 @@ class TopToolbarView: UIView, ToolbarProtocol {
     $0.layer.cornerCurve = .continuous
     $0.layer.masksToBounds = true
   }
+  
+  private var isVoiceSearchAvailable: Bool
 
   // MARK: Lifecycle
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-
+  init(voiceSearchSupported: Bool) {
+    isVoiceSearchAvailable = voiceSearchSupported
+    
+    super.init(frame: .zero)
+    
     backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
 
     locationContainer.addSubview(locationView)
@@ -417,8 +423,12 @@ class TopToolbarView: UIView, ToolbarProtocol {
     let dragInteraction = UIDragInteraction(delegate: self)
     locationTextField.addInteraction(dragInteraction)
 
-    locationBarOptionsStackView.addArrangedSubview(qrCodeButton)
-    locationBarOptionsStackView.addArrangedSubview(voiceSearchButton)
+    if RecentSearchQRCodeScannerController.hasCameraSupport {
+      locationBarOptionsStackView.addArrangedSubview(qrCodeButton)
+    }
+    if isVoiceSearchAvailable {
+      locationBarOptionsStackView.addArrangedSubview(voiceSearchButton)
+    }
    
     let subviews = [locationTextField, locationBarOptionsStackView]
     locationTextContentView = UIStackView(arrangedSubviews: subviews).then {
@@ -513,11 +523,11 @@ class TopToolbarView: UIView, ToolbarProtocol {
   func setLocation(_ location: String?, search: Bool) {
     guard let text = location, !text.isEmpty else {
       locationTextField?.text = location
-      updateLocationBarRightView(showQrCodeButton: true)
+      updateLocationBarRightView(showToolbarActions: true)
       return
     }
 
-    updateLocationBarRightView(showQrCodeButton: false)
+    updateLocationBarRightView(showToolbarActions: false)
 
     if search {
       locationTextField?.text = text
@@ -620,14 +630,20 @@ class TopToolbarView: UIView, ToolbarProtocol {
     layoutIfNeeded()
   }
 
-  private func updateLocationBarRightView(showQrCodeButton: Bool) {
+  private func updateLocationBarRightView(showToolbarActions: Bool) {
+    locationBarOptionsStackView.isHidden = !showToolbarActions
+
     if RecentSearchQRCodeScannerController.hasCameraSupport {
-      qrCodeButton.isHidden = !showQrCodeButton
+      qrCodeButton.isHidden = !showToolbarActions
     } else {
       qrCodeButton.isHidden = true
     }
     
-    locationBarOptionsStackView.isHidden = !showQrCodeButton
+    if isVoiceSearchAvailable {
+      voiceSearchButton.isHidden = !showToolbarActions
+    } else {
+      voiceSearchButton.isHidden = true
+    }
   }
 
   /// Update the shields icon based on whether or not shields are enabled for this site
@@ -787,27 +803,27 @@ extension TopToolbarView: AutocompleteTextFieldDelegate {
 
   func autocompleteTextField(_ autocompleteTextField: AutocompleteTextField, didEnterText text: String) {
     delegate?.topToolbar(self, didEnterText: text)
-    updateLocationBarRightView(showQrCodeButton: text.isEmpty)
+    updateLocationBarRightView(showToolbarActions: text.isEmpty)
   }
 
   func autocompleteTextField(_ autocompleteTextField: AutocompleteTextField, didDeleteAutoSelectedText text: String) {
-    updateLocationBarRightView(showQrCodeButton: text.isEmpty)
+    updateLocationBarRightView(showToolbarActions: text.isEmpty)
   }
 
   func autocompleteTextFieldDidBeginEditing(_ autocompleteTextField: AutocompleteTextField) {
     autocompleteTextField.highlightAll()
-    updateLocationBarRightView(showQrCodeButton: locationView.urlTextField.text?.isEmpty == true)
+    updateLocationBarRightView(showToolbarActions: locationView.urlTextField.text?.isEmpty == true)
   }
 
   func autocompleteTextFieldShouldClear(_ autocompleteTextField: AutocompleteTextField) -> Bool {
     delegate?.topToolbar(self, didEnterText: "")
-    updateLocationBarRightView(showQrCodeButton: true)
+    updateLocationBarRightView(showToolbarActions: true)
     return true
   }
 
   func autocompleteTextFieldDidCancel(_ autocompleteTextField: AutocompleteTextField) {
     leaveOverlayMode(didCancel: true)
-    updateLocationBarRightView(showQrCodeButton: false)
+    updateLocationBarRightView(showToolbarActions: false)
   }
 }
 

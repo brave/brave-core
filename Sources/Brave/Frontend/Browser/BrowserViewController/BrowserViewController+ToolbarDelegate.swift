@@ -535,8 +535,6 @@ extension BrowserViewController: TopToolbarDelegate {
   
   func topToolbarDidPressVoiceSearchButton(_ urlBar: TopToolbarView) {
     Task { @MainActor in
-      let speechRecognizer = SpeechRecognizer()
-
       onPendingRequestUpdatedCancellable = speechRecognizer.$finalizedRecognition.sink { [weak self] finalizedRecognition in
         guard let self else { return }
         
