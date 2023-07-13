@@ -45,14 +45,8 @@ void PlaylistSidePanelCoordinator::CreateAndRegisterEntry(
 void PlaylistSidePanelCoordinator::ActivatePanel() {
   auto* sidebar_controller =
       static_cast<BraveBrowser*>(browser_.get())->sidebar_controller();
-  auto* sidebar_model = sidebar_controller->model();
-  const auto& sidebar_items = sidebar_model->GetAllSidebarItems();
-  auto iter = base::ranges::find_if(sidebar_items, [](const auto& item) {
-    return item.built_in_item_type ==
-           sidebar::SidebarItem::BuiltInItemType::kPlaylist;
-  });
-  sidebar_controller->ActivateItemAt(
-      std::distance(sidebar_items.begin(), iter));
+  sidebar_controller->ActivatePanelItem(
+      sidebar::SidebarItem::BuiltInItemType::kPlaylist);
 }
 
 void PlaylistSidePanelCoordinator::LoadPlaylist(const std::string& playlist_id,

@@ -154,9 +154,6 @@ ConfirmBubble::ConfirmBubble(Browser* browser,
 }
 
 void ConfirmBubble::OpenInPlaylist() {
-  auto* side_panel_coordinator =
-      PlaylistSidePanelCoordinator::FromBrowser(browser_);
-
   // Technically, the saved items could belong to multiple playlists
   // at the same time and their parent playlists could be different from each
   // other's. But for simplicity, we just open the first one assuming that most
@@ -167,6 +164,8 @@ void ConfirmBubble::OpenInPlaylist() {
   const std::string& playlist_id = saved_items.front()->parents.front();
   const std::string& item_id = saved_items.front()->id;
 
+  auto* side_panel_coordinator =
+      PlaylistSidePanelCoordinator::FromBrowser(browser_);
   CHECK(side_panel_coordinator);
   side_panel_coordinator->ActivatePanel();
   side_panel_coordinator->LoadPlaylist(playlist_id, item_id);
