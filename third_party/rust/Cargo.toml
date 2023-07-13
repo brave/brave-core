@@ -29,7 +29,8 @@ feed-rs = "1.3.0"
 forest_bigint = "0.1.2"
 futures = "0.3.19"
 futures-retry = "0.5.0"
-fvm_ipld_encoding = "0.2.0"
+fvm_ipld_encoding = "0.3"
+fvm_shared = "3"
 git-version = "0.3.5"
 hex = "0.4"
 hex-literal = "0.4"
@@ -112,9 +113,6 @@ features = ["derive"]
 default-features = false
 version = "1.0.25"
 features = ["rust_backend"]
-
-[dependencies.fvm_shared]
-version = "0.7.0 "
 
 [dependencies.html5ever]
 version = "0.25.1"
@@ -257,10 +255,6 @@ package = "base64"
 path = "bigdecimal/v0_1/crate"
 package = "bigdecimal"
 
-[patch.crates-io.bimap_v0_6]
-path = "bimap/v0_6/crate"
-package = "bimap"
-
 [patch.crates-io.bincode_v1]
 path = "bincode/v1/crate"
 package = "bincode"
@@ -388,10 +382,6 @@ package = "crypto-mac"
 [patch.crates-io.crypto-mac_v0_8]
 path = "crypto_mac/v0_8/crate"
 package = "crypto-mac"
-
-[patch.crates-io.cs_serde_bytes_v0_12]
-path = "cs_serde_bytes/v0_12/crate"
-package = "cs_serde_bytes"
 
 [patch.crates-io.cssparser-macros_v0_6]
 path = "cssparser_macros/v0_6/crate"
@@ -573,12 +563,12 @@ package = "futures"
 path = "fvm_ipld_blockstore/v0_1/crate"
 package = "fvm_ipld_blockstore"
 
-[patch.crates-io.fvm_ipld_encoding_v0_2]
-path = "fvm_ipld_encoding/v0_2/crate"
+[patch.crates-io.fvm_ipld_encoding_v0_3]
+path = "fvm_ipld_encoding/v0_3/crate"
 package = "fvm_ipld_encoding"
 
-[patch.crates-io.fvm_shared_v0_7]
-path = "fvm_shared/v0_7/crate"
+[patch.crates-io.fvm_shared_v3]
+path = "fvm_shared/v3/crate"
 package = "fvm_shared"
 
 [patch.crates-io.fxhash_v0_2]
@@ -977,6 +967,10 @@ package = "regex"
 path = "remove_dir_all/v0_5/crate"
 package = "remove_dir_all"
 
+[patch.crates-io.ripemd_v0_1]
+path = "ripemd/v0_1/crate"
+package = "ripemd"
+
 [patch.crates-io.rmp-serde_v0_13]
 path = "rmp_serde/v0_13/crate"
 package = "rmp-serde"
@@ -1088,6 +1082,10 @@ package = "sha2"
 [patch.crates-io.sha2_v0_9]
 path = "sha2/v0_9/crate"
 package = "sha2"
+
+[patch.crates-io.sha3_v0_10]
+path = "sha3/v0_10/crate"
+package = "sha3"
 
 [patch.crates-io.sharded-slab_v0_1]
 path = "sharded_slab/v0_1/crate"

@@ -8,6 +8,10 @@ cargo_crate("lib") {
   crate_name = "sha3"
   epoch = "0.10"
   crate_type = "rlib"
+
+  # Only for usage from third-party crates. Add the crate to
+  # third_party.toml to use it from first-party code.
+  visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
 
   # Unit tests skipped. Generate with --with-tests to include them.
@@ -17,7 +21,7 @@ cargo_crate("lib") {
   cargo_pkg_version = "0.10.3"
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "sha3"
-  cargo_pkg_description = "SHA-3 (Keccak) hash function."
+  cargo_pkg_description = "SHA-3 (Keccak) hash function"
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
@@ -26,5 +30,4 @@ cargo_crate("lib") {
     "//brave/third_party/rust/digest/v0_10:lib",
     "//brave/third_party/rust/keccak/v0_1:lib",
   ]
-  features = [ "std" ]
 }
