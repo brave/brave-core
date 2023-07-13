@@ -1,4 +1,4 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -45,7 +45,7 @@ public class DataFilesComponentInstaller implements BraveComponentUpdater.Compon
     }
 
     public void registerAndInstallEx() {
-        assert !isBraveWalletConfiguredOnAndroid();
+        assert !WalletDataFilesInstallerUtil.isBraveWalletConfiguredOnAndroid();
 
         synchronized (mLock) {
             assert !mUpdateStarted;
@@ -142,11 +142,6 @@ public class DataFilesComponentInstaller implements BraveComponentUpdater.Compon
                         5 * 60 * 1000);
             }
         }
-    }
-
-    @CalledByNative
-    private static boolean isBraveWalletConfiguredOnAndroid() {
-        return !Utils.shouldShowCryptoOnboarding();
     }
 
     public static void registerAndInstall(Runnable runnableCallback) {

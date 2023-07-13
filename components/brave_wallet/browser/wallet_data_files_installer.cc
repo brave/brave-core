@@ -33,18 +33,11 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "base/threading/platform_thread.h"
 #include "brave/build/android/jni_headers/DataFilesComponentInstaller_jni.h"
-#include "brave/components/brave_wallet/browser/android_data_files_installer.h"
+#include "brave/components/brave_wallet/browser/wallet_data_files_installer_android_util.h"
 #include "chrome/browser/browser_process.h"  // TODO(AlexeyBarabash): forbidden here, move to browser/android?
 #endif
 
 namespace brave_wallet {
-
-#if BUILDFLAG(IS_ANDROID)
-bool IsBraveWalletConfiguredOnAndroid() {
-  JNIEnv* env = base::android::AttachCurrentThread();
-  return Java_DataFilesComponentInstaller_isBraveWalletConfiguredOnAndroid(env);
-}
-#endif
 
 namespace {
 
