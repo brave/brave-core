@@ -34,6 +34,7 @@
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -450,6 +451,38 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidePanelResizeTest) {
   EXPECT_EQ(kExpectedPanelWidth, GetSidePanel()->width());
 }
 
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
+  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+
+  // Show bookmarks entry and it has active index.
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  // Wait till sidebar show ends.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->width() == kDefaultSidePanelWidth; }));
+  EXPECT_TRUE(model()->active_index().has_value());
+
+  // Cache bookmarks entry index to remove it later.
+  const auto bookmark_item_index = model()->active_index().value();
+
+  // Close panel and wait till panel closing animation ends. Panel is hidden
+  // when closing completes.
+  panel_ui->Close();
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !GetSidePanel()->GetVisible(); }));
+  EXPECT_FALSE(!!panel_ui->GetCurrentEntryId());
+
+  // Remove bookmarks and check it's gone.
+  SidebarServiceFactory::GetForProfile(browser()->profile())
+      ->RemoveItemAt(bookmark_item_index);
+  EXPECT_FALSE(!!model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
+
+  // Show bookmarks entry again and wait till sidebar panel gets visible
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->GetVisible(); }));
+  EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
+}
+
 class SidebarBrowserTestWithPlaylist : public SidebarBrowserTest {
  public:
   SidebarBrowserTestWithPlaylist() {
@@ -535,6 +568,62 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat, TabSpecificPanel) {
   // Global panel should be open when Tab 2 is active
   tab_model()->ActivateTabAt(2);
   EXPECT_EQ(model()->active_index(), global_item_index);
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
+                       TabSpecificPanelAndUnManagedPanel) {
+  // Collect item indexes for test and remove global item.
+  constexpr auto kGlobalItemType = SidebarItem::BuiltInItemType::kBookmarks;
+  constexpr auto kTabSpecificItemType = SidebarItem::BuiltInItemType::kChatUI;
+  auto global_item_index = model()->GetIndexOf(kGlobalItemType);
+  ASSERT_TRUE(global_item_index.has_value());
+  SidebarServiceFactory::GetForProfile(browser()->profile())
+      ->RemoveItemAt(*global_item_index);
+  EXPECT_FALSE(!!model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
+
+  auto tab_specific_item_index = model()->GetIndexOf(kTabSpecificItemType);
+  ASSERT_TRUE(tab_specific_item_index.has_value());
+  // Open 2 more tabs
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("brave://newtab/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("brave://newtab/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  ASSERT_EQ(tab_model()->GetTabCount(), 3);
+
+  // Open a unmanaged "global" panel from Tab 0
+  tab_model()->ActivateTabAt(0);
+  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  // Unmanaged entry could not be active.
+  EXPECT_FALSE(!!model()->active_index());
+  // Wait till sidebar show ends.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->width() == kDefaultSidePanelWidth; }));
+
+  // Open a "tab specific" panel from Tab 1
+  tab_model()->ActivateTabAt(1);
+  SimulateSidebarItemClickAt(tab_specific_item_index.value());
+  EXPECT_EQ(SidePanelEntryId::kChatUI, panel_ui->GetCurrentEntryId());
+  EXPECT_TRUE(GetSidePanel()->GetVisible());
+  // Tab Specific panel should be open when Tab 1 is active
+  EXPECT_EQ(model()->active_index(), tab_specific_item_index);
+
+  // Global panel should be open when Tab 0 is active
+  tab_model()->ActivateTabAt(0);
+  EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
+  // Unmanaged entry could not be active.
+  EXPECT_FALSE(!!model()->active_index());
+
+  // Global panel should be open when Tab 2 is active
+  tab_model()->ActivateTabAt(2);
+  EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
+
+  // Unmanaged entry could not be active.
+  EXPECT_FALSE(!!model()->active_index());
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,

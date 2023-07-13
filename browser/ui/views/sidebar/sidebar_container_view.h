@@ -44,6 +44,9 @@ class SidePanelEntry;
 // and panel view includes each panel's webview.
 // This class controls the visibility of control and panel view based on panel
 // item state and show options.
+// In the comments, we use the term "managed panel entry" and it means that
+// entry is managed by sidebar model. Only managed entry has its item in sidebar
+// UI.
 class SidebarContainerView
     : public sidebar::Sidebar,
       public SidebarControlView::Delegate,
@@ -74,6 +77,7 @@ class SidebarContainerView
   void SetSidebarShowOption(
       sidebar::SidebarService::ShowSidebarOption show_option) override;
   void UpdateSidebarItemsState() override;
+  bool HasActiveContextualEntry() override;
 
   // SidebarControlView::Delegate overrides:
   void MenuClosed() override;
