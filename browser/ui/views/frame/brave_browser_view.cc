@@ -41,6 +41,7 @@
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -81,6 +82,10 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "components/grit/brave_components_strings.h"
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/features.h"
 #endif
 
 namespace {
@@ -421,10 +426,16 @@ void BraveBrowserView::HideReaderModeToolbar() {
   }
 }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 void BraveBrowserView::OpenAiChatPanel() {
+  if (!ai_chat::features::IsAIChatEnabled()) {
+    return;
+  }
+
   SidePanelUI::GetSidePanelUIForBrowser(browser_.get())
       ->Show(SidePanelEntryId::kChatUI);
 }
+#endif
 
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 

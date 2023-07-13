@@ -8,11 +8,12 @@
 #include <utility>
 
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/components/ai_chat/common/features.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/speedreader/common/constants.h"
 #include "brave/components/speedreader/resources/panel/grit/brave_speedreader_toolbar_generated_map.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/grit/brave_components_resources.h"
@@ -20,6 +21,10 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/features.h"
+#endif
 
 SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui,
                                            const std::string& name)
@@ -41,8 +46,12 @@ SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui,
     source->AddString(str.name, l10n_str);
   }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   source->AddBoolean("aiChatFeatureEnabled",
                      ai_chat::features::IsAIChatEnabled());
+#else
+  source->AddBoolean("aiChatFeatureEnabled", false);
+#endif
 }
 
 SpeedreaderToolbarUI::~SpeedreaderToolbarUI() = default;
