@@ -158,6 +158,9 @@ void SidebarController::ActivatePanelItem(
     SidebarItem::BuiltInItemType panel_item) {
   // For panel item activation, SidePanelUI is the single source of truth.
   auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser_);
+  if (!panel_ui) {
+    return;
+  }
   if (panel_item == SidebarItem::BuiltInItemType::kNone) {
     panel_ui->Close();
     return;
@@ -245,6 +248,9 @@ void SidebarController::OnTabStripModelChanged(
   // panel.
   if (selection.active_tab_changed()) {
     auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser_);
+    if (!panel_ui) {
+      return;
+    }
     // Is there a tab-specific panel for the new active tab?
     absl::optional<SidebarItem::BuiltInItemType> wanted_panel =
         selection.new_contents
