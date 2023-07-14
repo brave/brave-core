@@ -268,7 +268,7 @@
         "dir": "src",
         "tag": "115.0.5790.75",
         "repository": {
-          "url": "https://github.com/chromium/chromium"
+          "url": "https://github.com/brave/chromium"
         }
       }
     }
