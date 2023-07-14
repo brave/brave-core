@@ -26,7 +26,7 @@ import {
 } from '../../../../utils/tx-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
-import { getPriceIdForToken } from '../../../../utils/api-utils'
+import { getPriceIdForToken, getTokenParam } from '../../../../utils/api-utils'
 import {
   auroraSupportedContractAddresses,
   getAssetIdKey
@@ -56,7 +56,6 @@ import { BridgeToAuroraModal } from '../../popup-modals/bridge-to-aurora-modal/b
 import { useMultiChainBuyAssets } from '../../../../common/hooks'
 import {
   useSafePageSelector,
-  useSafeWalletSelector,
   useUnsafePageSelector,
   useUnsafeWalletSelector
 } from '../../../../common/hooks/use-safe-selector'
@@ -64,7 +63,9 @@ import {
   useGetNetworkQuery,
   useGetSelectedChainQuery,
   useGetTransactionsQuery,
-  useGetTokenSpotPricesQuery
+  useGetTokenSpotPricesQuery,
+  useGetPriceHistoryQuery,
+  useGetDefaultFiatCurrencyQuery
 } from '../../../../common/slices/api.slice'
 import {
   useGetCombinedTokensListQuery
@@ -99,6 +100,11 @@ interface Props {
   isShowingMarketData?: boolean
 }
 
+const emptyPriceList: Array<{
+  date: Date
+  close: number
+}> = []
+
 export const PortfolioAsset = (props: Props) => {
   const { isShowingMarketData } = props
   // state
@@ -106,6 +112,9 @@ export const PortfolioAsset = (props: Props) => {
   const [dontShowAuroraWarning, setDontShowAuroraWarning] = React.useState<boolean>(false)
   const [showTokenDetailsModal, setShowTokenDetailsModal] = React.useState<boolean>(false)
   const [showHideTokenModel, setShowHideTokenModal] = React.useState<boolean>(false)
+  const [selectedTimeline, setSelectedTimeline] = React.useState<number>(
+    BraveWallet.AssetPriceTimeframe.OneDay
+  )
 
   // routing
   const history = useHistory()
@@ -121,32 +130,89 @@ export const PortfolioAsset = (props: Props) => {
   const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
   const portfolioPriceHistory = useUnsafeWalletSelector(WalletSelectors.portfolioPriceHistory)
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
-  const isFetchingPortfolioPriceHistory = useSafeWalletSelector(WalletSelectors.isFetchingPortfolioPriceHistory)
   const selectedNetworkFilter = useUnsafeWalletSelector(WalletSelectors.selectedNetworkFilter)
   const coinMarketData = useUnsafeWalletSelector(WalletSelectors.coinMarketData)
 
   const isLoading = useSafePageSelector(PageSelectors.isFetchingPriceHistory)
-  const selectedAsset = useUnsafePageSelector(PageSelectors.selectedAsset)
-  const selectedAssetPriceHistory = useUnsafePageSelector(PageSelectors.selectedAssetPriceHistory)
-  const selectedTimeline = useSafePageSelector(PageSelectors.selectedTimeline)
   const selectedCoinMarket = useUnsafePageSelector(PageSelectors.selectedCoinMarket)
+
+  // params
+  const selectedAssetFromParams = React.useMemo(() => {
+    if (!chainIdOrMarketSymbol) {
+      return undefined
+    }
+
+    if (isShowingMarketData) {
+      const marketSymbolLower = chainIdOrMarketSymbol.toLowerCase()
+      const coinMarket = coinMarketData.find(
+        (token) =>
+          token.symbol.toLowerCase() === marketSymbolLower
+      )
+      let token = undefined as BraveWallet.BlockchainToken | undefined
+      if (coinMarket) {
+        token = new BraveWallet.BlockchainToken()
+        token.coingeckoId = coinMarket.id
+        token.name = coinMarket.name
+        token.contractAddress = ''
+        token.symbol = coinMarket.symbol.toUpperCase()
+        token.logo = coinMarket.image
+      }
+      return token
+    }
+    if (!contractOrSymbol) {
+      return undefined
+    }
+    const contractOrSymbolLower = contractOrSymbol.toLowerCase()
+    const userToken = userVisibleTokensInfo.find(
+      (token) =>
+        (token.contractAddress.toLowerCase() === contractOrSymbolLower &&
+          token.chainId === chainIdOrMarketSymbol) ||
+        (token.symbol.toLowerCase() === contractOrSymbolLower &&
+          token.chainId === chainIdOrMarketSymbol &&
+          token.contractAddress === '')
+    )
+    return userToken
+  }, [
+    userVisibleTokensInfo,
+    selectedTimeline,
+    chainIdOrMarketSymbol,
+    contractOrSymbol,
+    isShowingMarketData
+  ])
 
   // queries
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
+
+  const { data: defaultFiat } = useGetDefaultFiatCurrencyQuery()
+
   const { data: assetsNetwork } = useGetNetworkQuery(
-    selectedAsset ?? skipToken //
+    selectedAssetFromParams ?? skipToken //
   )
+
   const { data: selectedNetwork } = useGetSelectedChainQuery(undefined, {
     skip: !!assetsNetwork
   })
   const selectedAssetsNetwork = assetsNetwork || selectedNetwork
 
   const { data: transactionsByNetwork = [] } = useGetTransactionsQuery(
-    selectedAsset
+    selectedAssetFromParams
       ? {
         address: null,
-        chainId: selectedAsset.chainId,
-        coinType: selectedAsset.coin
+        chainId: selectedAssetFromParams.chainId,
+        coinType: selectedAssetFromParams.coin
+      }
+      : skipToken
+  )
+
+  const {
+    data: selectedAssetPriceHistory,
+    isLoading: isFetchingPortfolioPriceHistory
+  } = useGetPriceHistoryQuery(
+    selectedAssetFromParams && defaultFiat
+      ? {
+        tokenParam: getTokenParam(selectedAssetFromParams),
+        timeFrame: selectedTimeline,
+        vsAsset: defaultFiat
       }
       : skipToken
   )
@@ -212,47 +278,6 @@ export const PortfolioAsset = (props: Props) => {
   const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetInfoType[]>(userAssetList)
 
   // memos / computed
-  const selectedAssetFromParams = React.useMemo(() => {
-    if (!chainIdOrMarketSymbol) {
-      return undefined
-    }
-
-    if (isShowingMarketData) {
-      const coinMarket = coinMarketData.find(
-        (token) =>
-          token.symbol.toLowerCase() === chainIdOrMarketSymbol.toLowerCase()
-      )
-      let token = undefined as BraveWallet.BlockchainToken | undefined
-      if (coinMarket) {
-        token = new BraveWallet.BlockchainToken()
-        token.coingeckoId = coinMarket.id
-        token.name = coinMarket.name
-        token.contractAddress = ''
-        token.symbol = coinMarket.symbol.toUpperCase()
-        token.logo = coinMarket.image
-      }
-      return token
-    }
-    if (!contractOrSymbol) {
-      return undefined
-    }
-    const userToken = userVisibleTokensInfo.find(
-      (token) =>
-        (token.contractAddress.toLowerCase() ===
-          contractOrSymbol.toLowerCase() &&
-          token.chainId === chainIdOrMarketSymbol) ||
-        (token.symbol.toLowerCase() === contractOrSymbol.toLowerCase() &&
-          token.chainId === chainIdOrMarketSymbol &&
-          token.contractAddress === '')
-    )
-    return userToken
-  }, [
-    userVisibleTokensInfo,
-    selectedTimeline,
-    chainIdOrMarketSymbol,
-    contractOrSymbol,
-    isShowingMarketData
-  ])
 
   const tokenPriceIds = React.useMemo(() =>
     userAssetList
@@ -264,7 +289,7 @@ export const PortfolioAsset = (props: Props) => {
         selectedAssetFromParams
           ? [getPriceIdForToken(selectedAssetFromParams)]
           : []
-    ),
+      ),
     [userAssetList, selectedAssetFromParams]
   )
 
@@ -309,7 +334,7 @@ export const PortfolioAsset = (props: Props) => {
   }, [userAssetList, spotPriceRegistry])
 
   const formattedPriceHistory = React.useMemo(() => {
-    return selectedAssetPriceHistory.map((obj) => {
+    return selectedAssetPriceHistory?.map((obj) => {
       return {
         date: mojoTimeDeltaToJSDate(obj.date),
         close: Number(obj.price)
@@ -323,49 +348,54 @@ export const PortfolioAsset = (props: Props) => {
     } else {
       return portfolioPriceHistory
     }
-  }, [portfolioPriceHistory, fullPortfolioFiatBalance])
+  }, [
+    portfolioPriceHistory,
+    fullPortfolioFiatBalance,
+    selectedAssetPriceHistory
+  ])
 
   const selectedAssetTransactions = React.useMemo(() => {
-    if (selectedAsset) {
+    if (selectedAssetFromParams) {
       const filteredTransactions = transactionsByNetwork.filter((tx) => {
-        const token = findTransactionToken(tx, [selectedAsset])
+        const token = findTransactionToken(tx, [selectedAssetFromParams])
 
         const { sellToken, buyToken } = getETHSwapTransactionBuyAndSellTokens({
           nativeAsset: makeNetworkAsset(selectedAssetsNetwork),
-          tokensList: [selectedAsset],
+          tokensList: [selectedAssetFromParams],
           tx
         })
-
+        const selectedAssetIdKey = getAssetIdKey(selectedAssetFromParams)
         return (
-          (token && getAssetIdKey(selectedAsset) === getAssetIdKey(token)) ||
-          (sellToken &&
-            getAssetIdKey(selectedAsset) === getAssetIdKey(sellToken)) ||
-          (buyToken && getAssetIdKey(selectedAsset) === getAssetIdKey(buyToken))
+          (token && selectedAssetIdKey === getAssetIdKey(token)) ||
+          (sellToken && selectedAssetIdKey === getAssetIdKey(sellToken)) ||
+          (buyToken && selectedAssetIdKey === getAssetIdKey(buyToken))
         )
       })
       return sortTransactionByDate(filteredTransactions, 'descending')
     }
     return []
   }, [
-    selectedAsset,
+    selectedAssetFromParams,
     transactionsByNetwork,
     selectedAssetsNetwork
   ])
 
   const fullAssetBalances = React.useMemo(() => {
-    if (selectedAsset?.contractAddress === '') {
+    if (selectedAssetFromParams?.contractAddress === '') {
       return filteredAssetList.find(
         (asset) =>
-          asset.asset.symbol.toLowerCase() === selectedAsset?.symbol.toLowerCase() &&
-          asset.asset.chainId === selectedAsset?.chainId
+          asset.asset.symbol.toLowerCase() ===
+            selectedAssetFromParams?.symbol.toLowerCase() &&
+          asset.asset.chainId === selectedAssetFromParams?.chainId
       )
     }
     return filteredAssetList.find(
       (asset) =>
-        asset.asset.contractAddress.toLowerCase() === selectedAsset?.contractAddress.toLowerCase() &&
-        asset.asset.chainId === selectedAsset?.chainId
+        asset.asset.contractAddress.toLowerCase() ===
+          selectedAssetFromParams?.contractAddress.toLowerCase() &&
+        asset.asset.chainId === selectedAssetFromParams.chainId
     )
-  }, [filteredAssetList, selectedAsset])
+  }, [filteredAssetList, selectedAssetFromParams])
 
   const fullAssetFiatBalance = React.useMemo(() => fullAssetBalances?.assetBalance
     ? computeFiatAmount({
@@ -379,34 +409,38 @@ export const PortfolioAsset = (props: Props) => {
 
   const formattedFullAssetBalance = fullAssetBalances?.assetBalance
     ? new Amount(fullAssetBalances?.assetBalance ?? '')
-      .divideByDecimals(selectedAsset?.decimals ?? 18)
-      .formatAsAsset(6, selectedAsset?.symbol ?? '')
+      .divideByDecimals(selectedAssetFromParams?.decimals ?? 18)
+      .formatAsAsset(6, selectedAssetFromParams?.symbol ?? '')
     : ''
 
   const formattedAssetBalance = React.useMemo(() => {
     if (!fullAssetBalances?.assetBalance) return ''
 
     return new Amount(fullAssetBalances.assetBalance)
-      .divideByDecimals(selectedAsset?.decimals ?? 18)
+      .divideByDecimals(selectedAssetFromParams?.decimals ?? 18)
       .formatAsAsset(8)
-  }, [fullAssetBalances, selectedAsset])
+  }, [fullAssetBalances, selectedAssetFromParams])
 
   const isSelectedAssetDepositSupported = React.useMemo(() => {
-    if (!selectedAsset) {
+    if (!selectedAssetFromParams) {
       return false
     }
 
-    return combinedTokensList.some(token =>
-      token.symbol.toLowerCase() === selectedAsset.symbol.toLowerCase())
-  }, [combinedTokensList, selectedAsset?.symbol])
+    return combinedTokensList.some(
+      (token) =>
+        token.symbol.toLowerCase() ===
+        selectedAssetFromParams.symbol.toLowerCase()
+    )
+  }, [combinedTokensList, selectedAssetFromParams?.symbol])
 
   // methods
   const onChangeTimeline = React.useCallback((timeline: BraveWallet.AssetPriceTimeframe) => {
+    setSelectedTimeline(timeline)
     dispatch(WalletPageActions.selectAsset({
-      asset: selectedAsset,
+      asset: selectedAssetFromParams,
       timeFrame: timeline
     }))
-  }, [selectedAsset])
+  }, [selectedAssetFromParams])
 
   const goBack = React.useCallback(() => {
     dispatch(WalletPageActions.selectAsset({ asset: undefined, timeFrame: selectedTimeline }))
@@ -456,8 +490,13 @@ export const PortfolioAsset = (props: Props) => {
   const onCloseHideTokenModal = React.useCallback(() => setShowHideTokenModal(false), [])
 
   const onHideAsset = React.useCallback(() => {
-    if (!selectedAsset) return
-    dispatch(WalletActions.setUserAssetVisible({ token: selectedAsset, isVisible: false }))
+    if (!selectedAssetFromParams) return
+    dispatch(
+      WalletActions.setUserAssetVisible({
+        token: selectedAssetFromParams,
+        isVisible: false
+      })
+    )
     dispatch(WalletActions.refreshBalancesAndPriceHistory())
     dispatch(WalletPageActions.selectAsset({
       asset: undefined,
@@ -466,15 +505,19 @@ export const PortfolioAsset = (props: Props) => {
     if (showHideTokenModel) setShowHideTokenModal(false)
     if (showTokenDetailsModal) setShowTokenDetailsModal(false)
     history.push(WalletRoutes.PortfolioAssets)
-  }, [selectedAsset, showTokenDetailsModal])
+  }, [selectedAssetFromParams, showTokenDetailsModal])
 
   const onSelectBuy = React.useCallback(() => {
-    history.push(`${WalletRoutes.FundWalletPageStart}/${selectedAsset?.symbol}`)
-  }, [selectedAsset?.symbol])
+    history.push(
+      `${WalletRoutes.FundWalletPageStart}/${selectedAssetFromParams?.symbol}`
+    )
+  }, [selectedAssetFromParams?.symbol])
 
   const onSelectDeposit = React.useCallback(() => {
-    history.push(`${WalletRoutes.DepositFundsPageStart}/${selectedAsset?.symbol}`)
-  }, [selectedAsset?.symbol])
+    history.push(
+      `${WalletRoutes.DepositFundsPageStart}/${selectedAssetFromParams?.symbol}`
+    )
+  }, [selectedAssetFromParams?.symbol])
 
   // effects
   React.useEffect(() => {
@@ -516,6 +559,7 @@ export const PortfolioAsset = (props: Props) => {
       hideDivider={true}
       cardHeader={
         <AssetDetailsHeader
+          selectedAsset={selectedAssetFromParams}
           isShowingMarketData={isShowingMarketData}
           onBack={goBack}
           onClickTokenDetails={
@@ -539,19 +583,19 @@ export const PortfolioAsset = (props: Props) => {
 
         <LineChart
           priceData={
-            selectedAsset
-              ? formattedPriceHistory
+            selectedAssetFromParams
+              ? formattedPriceHistory || emptyPriceList
               : priceHistory
           }
           isLoading={
-            selectedAsset
+            selectedAssetFromParams
               ? isLoading
               : parseFloat(fullPortfolioFiatBalance) === 0
                 ? false
                 : isFetchingPortfolioPriceHistory
           }
           isDisabled={
-            selectedAsset
+            selectedAssetFromParams
               ? false
               : parseFloat(fullPortfolioFiatBalance) === 0
           }
@@ -597,11 +641,11 @@ export const PortfolioAsset = (props: Props) => {
         }
 
         {showTokenDetailsModal &&
-          selectedAsset &&
+          selectedAssetFromParams &&
           selectedAssetsNetwork &&
           <TokenDetailsModal
             onClose={onCloseTokenDetailsModal}
-            selectedAsset={selectedAsset}
+            selectedAsset={selectedAssetFromParams}
             selectedAssetNetwork={selectedAssetsNetwork}
             assetBalance={formattedAssetBalance}
             formattedFiatBalance={
@@ -614,42 +658,42 @@ export const PortfolioAsset = (props: Props) => {
         }
 
         {showHideTokenModel &&
-          selectedAsset &&
+          selectedAssetFromParams &&
           selectedAssetsNetwork &&
           <HideTokenModal
-            selectedAsset={selectedAsset}
+            selectedAsset={selectedAssetFromParams}
             selectedAssetNetwork={selectedAssetsNetwork}
             onClose={onCloseHideTokenModal}
             onHideAsset={onHideAsset}
           />
         }
 
-      {!isShowingMarketData &&
-        <Column
-          padding='0px 24px 24px 24px'
-          fullWidth={true}
-        >
-          <AccountsAndTransactionsList
-            formattedFullAssetBalance={formattedFullAssetBalance}
-            fullAssetFiatBalance={fullAssetFiatBalance}
-            selectedAsset={selectedAsset}
-            selectedAssetTransactions={selectedAssetTransactions}
-          />
-        </Column>
-      }
+        {!isShowingMarketData &&
+          <Column
+            padding='0px 24px 24px 24px'
+            fullWidth={true}
+          >
+            <AccountsAndTransactionsList
+              formattedFullAssetBalance={formattedFullAssetBalance}
+              fullAssetFiatBalance={fullAssetFiatBalance}
+              selectedAsset={selectedAssetFromParams}
+              selectedAssetTransactions={selectedAssetTransactions}
+            />
+          </Column>
+        }
 
-      {isShowingMarketData && selectedCoinMarket &&
-        <Column
-          padding='0px 20px 20px 20px'
-          fullWidth={true}
-        >
-          <CoinStats
-            marketCapRank={selectedCoinMarket.marketCapRank}
-            volume={selectedCoinMarket.totalVolume}
-            marketCap={selectedCoinMarket.marketCap}
-          />
-        </Column>
-      }
+        {isShowingMarketData && selectedCoinMarket &&
+          <Column
+            padding='0px 20px 20px 20px'
+            fullWidth={true}
+          >
+            <CoinStats
+              marketCapRank={selectedCoinMarket.marketCapRank}
+              volume={selectedCoinMarket.totalVolume}
+              marketCap={selectedCoinMarket.marketCap}
+            />
+          </Column>
+        }
       </StyledWrapper>
     </WalletPageWrapper>
   )

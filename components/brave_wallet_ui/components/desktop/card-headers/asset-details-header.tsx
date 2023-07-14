@@ -8,7 +8,6 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Selectors
 import {
-  useUnsafePageSelector,
   useSafePageSelector,
   useSafeUISelector
 } from '../../../common/hooks/use-safe-selector'
@@ -22,6 +21,7 @@ import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 import { getPriceIdForToken } from '../../../utils/api-utils'
 import { getTokenPriceFromRegistry } from '../../../utils/pricing-utils'
+import { BraveWallet } from '../../../constants/types'
 
 // Queries
 import {
@@ -72,6 +72,7 @@ const AssetIconWithPlaceholder =
   )
 
 interface Props {
+  selectedAsset?: BraveWallet.BlockchainToken
   onBack: () => void
   onClickTokenDetails: () => void
   onClickHideToken: () => void
@@ -80,6 +81,7 @@ interface Props {
 
 export const AssetDetailsHeader = (props: Props) => {
   const {
+    selectedAsset,
     onBack,
     onClickHideToken,
     onClickTokenDetails,
@@ -87,8 +89,6 @@ export const AssetDetailsHeader = (props: Props) => {
   } = props
 
   // selectors
-  const selectedAsset =
-    useUnsafePageSelector(PageSelectors.selectedAsset)
   const selectedTimeline = useSafePageSelector(PageSelectors.selectedTimeline)
 
   // UI Selectors (safe)
