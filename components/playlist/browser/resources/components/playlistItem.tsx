@@ -69,9 +69,27 @@ export default function PlaylistItem ({
   cached,
   onClick
 }: Props) {
+  const anchorElem = React.useRef<HTMLAnchorElement>(null)
+
+  const scrollToThisIfNeeded = React.useCallback(() => {
+    if (window.location.hash.replace('#', '') !== id) return
+
+    if (anchorElem.current)
+      window.scrollTo({ top: anchorElem.current.offsetTop })
+  }, [id])
+
+  React.useEffect(() => {
+    window.addEventListener('hashchange', scrollToThisIfNeeded)
+    return () => {
+      window.removeEventListener('hashchange', scrollToThisIfNeeded)
+    }
+  }, [scrollToThisIfNeeded])
+
+  React.useEffect(() => scrollToThisIfNeeded(), [])
+
   return (
     <PlaylistItemContainer onClick={() => onClick(id)}>
-      <a href={`#${id}`} />
+      <a ref={anchorElem} href={`#${id}`} />
       {thumbnailUrl ? (
         <StyledThumbnail src={thumbnailUrl} />
       ) : (

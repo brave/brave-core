@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_PLAYLIST_PLAYLIST_SIDE_PANEL_COORDINATOR_H_
 
 #include <memory>
+#include <string>
 
 #include "base/scoped_observation.h"
 #include "chrome/browser/ui/browser_user_data.h"
@@ -37,6 +38,9 @@ class PlaylistSidePanelCoordinator
     return contents_wrapper_.get();
   }
 
+  void ActivatePanel();
+  void LoadPlaylist(const std::string& playlist_id, const std::string& item_id);
+
   // views::ViewObserver:
   void OnViewIsDeleting(views::View* view) override;
 
@@ -46,6 +50,8 @@ class PlaylistSidePanelCoordinator
   void DestroyWebContentsIfNeeded();
 
   std::unique_ptr<views::View> CreateWebView();
+
+  raw_ptr<Browser> browser_ = nullptr;
 
   std::unique_ptr<BubbleContentsWrapperT<playlist::PlaylistUI>>
       contents_wrapper_;

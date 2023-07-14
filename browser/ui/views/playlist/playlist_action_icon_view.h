@@ -57,6 +57,8 @@ class PlaylistActionIconView : public PageActionIconView,
   void OnAddedItemFromTabHelper(
       const std::vector<playlist::mojom::PlaylistItemPtr>& items) override;
 
+  raw_ptr<Browser> browser_ = nullptr;
+
   State state_ = State::kNone;
 
   raw_ptr<content::WebContents> last_web_contents_ = nullptr;
