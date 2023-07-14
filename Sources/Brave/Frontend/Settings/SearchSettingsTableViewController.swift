@@ -67,12 +67,6 @@ class SearchSettingsTableViewController: UITableViewController {
       .sorted { $0.shortName < $1.shortName }
       .sorted { engine, _ in engine.shortName == OpenSearchEngine.EngineNames.brave }
 
-    if isPrivate {
-      orderedEngines =
-        orderedEngines
-        .filter { !$0.isCustomEngine || $0.engineID == OpenSearchEngine.migratedYahooEngineID }
-    }
-
     if let priorityEngine = InitialSearchEngines().priorityEngine?.rawValue {
       orderedEngines =
         orderedEngines
