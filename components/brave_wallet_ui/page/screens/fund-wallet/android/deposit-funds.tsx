@@ -30,11 +30,12 @@ import BraveCoreThemeProvider
 import { DepositFundsScreen } from '../deposit-funds'
 import { LibContext } from '../../../../common/context/lib.context'
 import { ApiProxyContext }
-  from '../../../../common/context/api-proxy.context'    
+  from '../../../../common/context/api-proxy.context'
 
-import { WalletPageWrapper } 
+import { WalletPageWrapper }
   from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
-import { PageTitleHeader } from '../../../../components/desktop/card-headers/page-title-header'
+import { PageTitleHeader }
+  from '../../../../components/desktop/card-headers/page-title-header'
 
 import { setIconBasePath } from '@brave/leo/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
