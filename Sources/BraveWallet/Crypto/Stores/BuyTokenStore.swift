@@ -158,12 +158,7 @@ public class BuyTokenStore: ObservableObject {
   
   @MainActor
   func updateInfo() async {
-    // check device language to determine if we support `Sardine`
-    if Locale.preferredLanguages.first?.caseInsensitiveCompare("en-us") == .orderedSame {
-      orderedSupportedBuyOptions = [.ramp, .sardine, .transak]
-    } else {
-      orderedSupportedBuyOptions = [.ramp, .transak]
-    }
+    orderedSupportedBuyOptions = [.ramp, .sardine, .transak]
     
     let coin = await walletService.selectedCoin()
     selectedNetwork = await rpcService.network(coin, origin: nil)
