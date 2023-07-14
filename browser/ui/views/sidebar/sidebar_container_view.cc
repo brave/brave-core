@@ -662,11 +662,9 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
       auto side_bar_index = sidebar_model_->GetIndexOf(item);
       auto* controller = browser_->sidebar_controller();
       controller->ActivateItemAt(side_bar_index);
-      return;
+      break;
     }
   }
-
-  ShowSidebarAll();
 }
 
 void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
