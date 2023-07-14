@@ -73,6 +73,7 @@ const buildTests = (suite, buildConfig = config.defaultBuildConfig, options = {}
     config.buildTarget = suite
   }
   util.touchOverriddenFiles()
+  util.touchGsutilChangeLogFile()
   util.buildTarget()
 }
 
