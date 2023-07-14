@@ -11,8 +11,6 @@
 #include "base/mac/foundation_util.h"
 #include "base/mac/mac_logging.h"
 #include "base/mac/mac_util.h"
-#include "base/mac/scoped_nsautorelease_pool.h"
-#include "base/mac/scoped_nsobject.h"
 #include "base/memory/raw_ptr.h"
 
 @interface BackgroundHelperDelegateMac : NSObject {
@@ -60,14 +58,14 @@ namespace brave_ads {
 class BackgroundHelperMac::BackgroundHelperDelegate {
  public:
   explicit BackgroundHelperDelegate(BackgroundHelper* background_helper) {
-    delegate_.reset(
-        [[BackgroundHelperDelegateMac alloc] initWithHelper:background_helper]);
+    delegate_ =
+        [[BackgroundHelperDelegateMac alloc] initWithHelper:background_helper];
   }
 
   ~BackgroundHelperDelegate() = default;
 
  private:
-  base::scoped_nsobject<BackgroundHelperDelegateMac> delegate_;
+  BackgroundHelperDelegateMac* __strong delegate_;
 };
 
 BackgroundHelperMac::BackgroundHelperMac() {
