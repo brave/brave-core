@@ -130,7 +130,7 @@ public class SwapBottomSheetDialogFragment
 
     // Open buy send swap (BSS)
     private void openBssAndDismiss(BuySendSwapActivity.ActivityType activityType) {
-        Utils.openBuySendSwapActivity(getActivity(), activityType, null);
+        Utils.openBuySendSwapActivity(getActivity(), activityType);
         dismiss();
     }
 

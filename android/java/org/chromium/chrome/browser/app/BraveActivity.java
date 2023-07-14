@@ -208,6 +208,7 @@ public abstract class BraveActivity extends ChromeActivity
                    BraveNewsConnectionErrorHandler.BraveNewsConnectionErrorHandlerDelegate,
                    PrivacyHubMetricsConnectionErrorHandler
                            .PrivacyHubMetricsConnectionErrorHandlerDelegate {
+    public static final String BRAVE_BUY_URL = "brave://wallet/fund-wallet";
     public static final String BRAVE_SEND_URL = "brave://wallet/send";
     public static final String BRAVE_SWAP_URL = "brave://wallet/swap";
     public static final String BRAVE_DEPOSIT_URL = "brave://wallet/deposit-funds";
@@ -1575,8 +1576,6 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public Tab openNewOrSelectExistingTab(String url, boolean refresh) {
-        TabModel tabModel = getCurrentTabModel();
-        int tabRewardsIndex = TabModelUtils.getTabIndexByUrl(tabModel, url);
         Tab tab = selectExistingTab(url);
         if (tab != null) {
             if (refresh) {
