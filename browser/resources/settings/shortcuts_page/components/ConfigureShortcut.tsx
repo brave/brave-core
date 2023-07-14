@@ -56,41 +56,46 @@ const keyTransforms = {
 const getKey = (key: string) => keyTransforms[key] || key
 
 class AcceleratorInfo {
-  codes: string[] = []
-  keys: string[] = []
+  get codes() {
+    return [...this.#modifiers, this.#key?.code!].filter(k => k)
+  }
+
+  get keys() {
+    return [...this.#modifiers, this.#key?.key!].filter(k => k)
+  }
+
+  #key?: { code: string, key: string }
+  #modifiers: string[] = []
 
   add(e: KeyboardEvent) {
     if (e.ctrlKey) {
-      this.codes.push(getKey('Control'))
-      this.keys.push(getKey('Control'))
+      this.#modifiers.push(getKey('Control'))
     }
     if (e.altKey) {
-      this.codes.push(getKey('Alt'))
-      this.keys.push(getKey('Alt'))
+      this.#modifiers.push(getKey('Alt'))
     }
 
     if (e.shiftKey) {
-      this.codes.push(getKey('Shift'))
-      this.keys.push(getKey('Shift'))
+      this.#modifiers.push(getKey('Shift'))
     }
 
     if (e.metaKey) {
-      this.codes.push(getKey('Meta'))
-      this.keys.push(getKey('Meta'))
+      this.#modifiers.push(getKey('Meta'))
     }
 
     if (!modifiers.includes(e.key)) {
-      this.codes.push(getKey(e.code))
-      this.keys.push(getKey(e.key))
+      this.#key = {
+        key: e.key,
+        code: e.code
+      }
     }
 
-    this.keys = Array.from(new Set(this.keys))
-    this.codes = Array.from(new Set(this.codes))
+    this.#modifiers = Array.from(new Set(this.#modifiers))
   }
 
   isValid() {
-    // There needs to be at least one non-modifier key
-    return this.keys.some((k) => !modifiers.includes(k))
+    // There needs to be one non-modifier key
+    return !!this.#key
   }
 }
 
