@@ -332,7 +332,7 @@ void FilTxManager::OnGetNextNonceForHardware(
   meta->set_status(mojom::TransactionStatus::Approved);
   tx_state_manager_->AddOrUpdateTx(*meta);
 
-  auto message = meta->tx()->GetMessageToSign();
+  auto message = meta->tx()->GetMessageToSignJson();
   if (!message.has_value()) {
     std::move(callback).Run(nullptr);
     return;

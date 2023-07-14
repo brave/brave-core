@@ -186,14 +186,14 @@ base64 = "0.13.0"
 blake2b_simd = "1.0"
 bls-signatures = { version = "0.12", default-features = false, features = ["pairing"] }
 cxx = { version = "1.0", features = [ "alloc", "std" ] }
-fvm_shared = { version = "0.7.0 " }
+fvm_shared = "3"
 libsecp256k1 = "0.7"
 # libsecp missing build_script_outputs = [ "const.rs", "const_gen.rs" ]
 forest_bigint = "0.1.2"
 serde = { version = "^1.0.117", features = ["derive"] }
 # serde_json = "^1.0.59"
 thiserror = "^1.0.30"
-fvm_ipld_encoding = "0.2.0"
+fvm_ipld_encoding = "0.3"
 
 cpufeatures = "0.2" # sha2 and keccak dep
 # missing linux conditional
