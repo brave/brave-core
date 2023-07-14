@@ -88,6 +88,14 @@ RegisterPolymerComponentReplacement(
               lists_.permissionsAdvanced.splice(indexForIdleDetection, 1)
             }
           }
+          if (!loadTimeData.getBoolean('isBraveWebSerialApiEnabled')) {
+            let indexForSerialPorts = lists_.permissionsAdvanced.findIndex(item => item.id === ContentSettingsTypes.SERIAL_PORTS)
+            if (indexForSerialPorts === -1) {
+              console.error('Could not find SERIAL_PORTS site settings item')
+            } else {
+              lists_.permissionsAdvanced.splice(indexForSerialPorts, 1)
+            }
+          }
           let indexForAutoplay = lists_.permissionsAdvanced.findIndex(item => item.id === ContentSettingsTypes.AUTOMATIC_DOWNLOADS)
           if (indexForAutoplay === -1) {
             console.error('Could not find automatic downloads site settings item')
