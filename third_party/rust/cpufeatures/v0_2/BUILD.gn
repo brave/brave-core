@@ -8,6 +8,10 @@ cargo_crate("lib") {
   crate_name = "cpufeatures"
   epoch = "0.2"
   crate_type = "rlib"
+
+  # Only for usage from third-party crates. Add the crate to
+  # third_party.toml to use it from first-party code.
+  visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
 
   # Unit tests skipped. Generate with --with-tests to include them.
@@ -23,7 +27,13 @@ cargo_crate("lib") {
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = []
-  if (target_cpu == "arm64" && (is_mac || is_android || is_linux)) {
+  if (is_android && target_cpu == "arm64") {
+    deps += [ "//third_party/rust/libc/v0_2:lib" ]
+  }
+  if (is_mac && target_cpu == "arm64") {
+    deps += [ "//third_party/rust/libc/v0_2:lib" ]
+  }
+  if (is_linux && target_cpu == "arm64") {
     deps += [ "//third_party/rust/libc/v0_2:lib" ]
   }
 }

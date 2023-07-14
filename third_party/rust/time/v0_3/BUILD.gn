@@ -31,10 +31,8 @@ cargo_crate("lib") {
   features = [
     "alloc",
     "formatting",
-    "iota",
     "macros",
     "parsing",
     "std",
-    "time-macros",
   ]
 }

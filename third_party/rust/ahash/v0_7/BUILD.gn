@@ -32,6 +32,6 @@ cargo_crate("lib") {
     deps += [ "//third_party/rust/getrandom/v0_2:lib" ]
   }
   build_deps = [ "//brave/third_party/rust/version_check/v0_9:buildrs_support" ]
-  build_root = "crate/build.rs"
-  build_sources = [ "crate/build.rs" ]
+  build_root = "crate/./build.rs"
+  build_sources = [ "crate/./build.rs" ]
 }

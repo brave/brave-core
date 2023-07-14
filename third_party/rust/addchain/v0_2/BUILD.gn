@@ -9,6 +9,9 @@ cargo_crate("lib") {
   epoch = "0.2"
   crate_type = "rlib"
 
+  # Only for usage from third-party crates. Add the crate to
+  # third_party.toml to use it from first-party code.
+  visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
 
   # Unit tests skipped. Generate with --with-tests to include them.
