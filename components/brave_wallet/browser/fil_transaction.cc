@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -192,47 +193,86 @@ absl::optional<FilTransaction> FilTransaction::FromValue(
   return tx;
 }
 
-absl::optional<std::string> FilTransaction::GetMessageToSign() const {
+base::Value FilTransaction::GetMessageToSign() const {
   auto value = ToValue();
   value.Remove("MaxFee");
-  value.Set("Method", 0);
+  if (to_.protocol() == mojom::FilecoinAddressProtocol::DELEGATED) {
+    // https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0054.md#invokecontract-method-number-38444508371
+    value.Set("Method", "3844450837");
+  } else {
+    value.Set("Method", "0");
+  }
   value.Set("Version", 0);
   value.Set("Params", "");
   const std::string* nonce_value = value.FindString("Nonce");
   bool nonce_empty = nonce_value && nonce_value->empty();
-  // Nonce is empty usually for first transactions. We set it to 0 and skip
-  // conversion bellow to get correct signature.
+  // Nonce is empty usually for first transactions. We set it to 0
   if (nonce_empty) {
-    value.Set("Nonce", 0);
+    value.Set("Nonce", "0");
   }
-  std::string json;
-  base::JSONWriter::Write(value, &json);
+  return base::Value(std::move(value));
+}
 
+absl::optional<std::string> FilTransaction::GetMessageToSignJson() const {
+  std::string json;
+  if (!base::JSONWriter::Write(GetMessageToSign(), &json)) {
+    return absl::nullopt;
+  }
+
+  return ConvertMesssageStringFieldsToInt64("", json);
+}
+
+// static
+absl::optional<std::string> FilTransaction::ConvertMesssageStringFieldsToInt64(
+    const std::string& path,
+    const std::string& json) {
   std::string converted_json =
-      json::convert_string_value_to_int64("/GasLimit", json.c_str(), false)
+      json::convert_string_value_to_int64(path + "/GasLimit", json, true)
           .c_str();
+  converted_json = json::convert_string_value_to_uint64(
+                       path + "/Nonce", converted_json.c_str(), true)
+                       .c_str();
+  converted_json = json::convert_string_value_to_uint64(
+                       path + "/Method", converted_json.c_str(), true)
+                       .c_str();
   if (converted_json.empty()) {
     return absl::nullopt;
   }
-  if (!nonce_empty) {
-    converted_json = json::convert_string_value_to_uint64(
-                         "/Nonce", converted_json.c_str(), false)
-                         .c_str();
-  }
   return converted_json;
+}
+
+// static
+absl::optional<std::string> FilTransaction::ConvertSignedTxStringFieldsToInt64(
+    const std::string& path,
+    const std::string& json) {
+  return ConvertMesssageStringFieldsToInt64(path + "/Message", json);
+}
+
+// static
+absl::optional<base::Value> FilTransaction::DeserializeSignedTx(
+    const std::string& signed_tx) {
+  std::string json =
+      json::convert_int64_value_to_string("/Message/GasLimit", signed_tx, true)
+          .c_str();
+  json =
+      json::convert_int64_value_to_string("/Message/Nonce", json, true).c_str();
+  json = json::convert_int64_value_to_string("/Message/Method", json, true)
+             .c_str();
+  return base::JSONReader::Read(json);
 }
 
 // https://spec.filecoin.io/algorithms/crypto/signatures/#section-algorithms.crypto.signatures
 absl::optional<std::string> FilTransaction::GetSignedTransaction(
     const std::vector<uint8_t>& private_key) const {
   auto message = GetMessageToSign();
-  if (!message) {
+  auto message_json = GetMessageToSignJson();
+  if (!message_json) {
     return absl::nullopt;
   }
   base::Value::Dict signature;
   {
     std::string data(filecoin::transaction_sign(
-        *message,
+        from_.network() == mojom::kFilecoinMainnet, *message_json,
         rust::Slice<const uint8_t>{private_key.data(), private_key.size()}));
     if (data.empty()) {
       return absl::nullopt;
@@ -246,14 +286,13 @@ absl::optional<std::string> FilTransaction::GetSignedTransaction(
                       : SigType::BLSSigType;
   signature.Set("Type", sig_type);
   base::Value::Dict dict;
-  dict.Set("Message", "{message}");
+  dict.Set("Message", std::move(message));
   dict.Set("Signature", std::move(signature));
   std::string json;
   if (!base::JSONWriter::Write(dict, &json)) {
     return absl::nullopt;
   }
-  base::ReplaceFirstSubstringAfterOffset(&json, 0, "\"{message}\"", *message);
-  return json;
+  return ConvertMesssageStringFieldsToInt64("/Message", json);
 }
 
 mojom::FilTxDataPtr FilTransaction::ToFilTxData() const {

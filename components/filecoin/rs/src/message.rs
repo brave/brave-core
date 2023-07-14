@@ -1,15 +1,22 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 use fvm_ipld_encoding::RawBytes;
 use fvm_shared::address::Address;
 use fvm_shared::econ::TokenAmount;
+use fvm_shared::message::Message;
 use fvm_shared::MethodNum;
 use serde::{Deserialize, Serialize};
 
+#[cfg_attr(feature = "with-arbitrary", derive(arbitrary::Arbitrary))]
 #[derive(Serialize, Deserialize)]
-#[serde(remote = "fvm_shared::message::Message", rename_all = "PascalCase")]
-// https://github.com/Zondax/filecoin-signing-tools/blob/2e7b005b4733761de11d4a252cb481ca5aedb029/extras/src/message.rs#L15
+// https://github.com/Zondax/filecoin-signing-tools/blob/222362ae38a1ccd8523ea026d5298d4718b43e2b/extras/src/message.rs#L15
+#[serde(remote = "Message", rename_all = "PascalCase")]
 pub struct MessageAPI {
     #[serde(skip)]
-    pub version: i64,
+    pub version: u64,
     #[serde(with = "address")]
     pub from: Address,
     #[serde(with = "address")]
@@ -18,11 +25,11 @@ pub struct MessageAPI {
     pub sequence: u64,
     #[serde(with = "tokenamount")]
     pub value: TokenAmount,
-    #[serde(rename="Method")]
+    #[serde(rename = "Method")]
     pub method_num: MethodNum,
     #[serde(with = "rawbytes")]
     pub params: RawBytes,
-    pub gas_limit: i64,
+    pub gas_limit: u64,
     #[serde(with = "tokenamount")]
     pub gas_fee_cap: TokenAmount,
     #[serde(with = "tokenamount")]
@@ -30,6 +37,7 @@ pub struct MessageAPI {
 }
 
 pub mod tokenamount {
+    use fvm_shared::bigint::BigInt;
     use fvm_shared::econ::TokenAmount;
     use serde::{de, Deserialize, Deserializer, Serializer};
     use std::str::FromStr;
@@ -47,7 +55,8 @@ pub mod tokenamount {
         D: Deserializer<'de>,
     {
         let s = String::deserialize(deserializer)?;
-        TokenAmount::from_str(&s).map_err(de::Error::custom)
+        let atto = BigInt::from_str(&s).map_err(de::Error::custom)?;
+        Ok(TokenAmount::from_atto(atto))
     }
 }
 

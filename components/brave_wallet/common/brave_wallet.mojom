@@ -586,7 +586,8 @@ const string kP3ACountTestNetworksLoadTimeKey = "braveWalletP3ACountTestNetworks
 
 enum FilecoinAddressProtocol {
   SECP256K1 = 1, // Represents the address SECP256K1 protocol
-  BLS = 3 // Represents the address BLS protocol
+  BLS = 3, // Represents the address BLS protocol
+  DELEGATED = 4
 };
 
 struct HardwareWalletAccount {

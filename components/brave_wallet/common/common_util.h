@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_COMMON_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_COMMON_UTIL_H_
 
+#include <stddef.h>
+
 class PrefService;
 
 namespace brave_wallet {
