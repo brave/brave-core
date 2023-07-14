@@ -595,8 +595,7 @@ void PageGraph::DidFinishLoading(uint64_t identifier,
                                  blink::DocumentLoader*,
                                  base::TimeTicks finish_time,
                                  int64_t encoded_data_length,
-                                 int64_t decoded_body_length,
-                                 bool should_report_corb_blocking) {
+                                 int64_t decoded_body_length) {
   if (TrackedRequestRecord* request_record =
           request_tracker_.GetTrackingRecord(identifier)) {
     RegisterRequestComplete(identifier, encoded_data_length);
