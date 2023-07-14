@@ -5,7 +5,7 @@
 
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
-#include "brave/build/android/jni_headers/DataFilesComponentInstaller_jni.h"
+#include "brave/build/android/jni_headers/WalletDataFilesInstaller_jni.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -25,7 +25,7 @@ void NativeRegisterAndInstallCallback(
       base::BindOnce(
           [](JNIEnv* env,
              base::android::ScopedJavaGlobalRef<jobject> java_callback) {
-            Java_DataFilesComponentInstaller_onRegisterAndInstallDone(
+            Java_WalletDataFilesInstaller_onRegisterAndInstallDone(
                 env, java_callback);
           },
           env, std::move(java_callback)));
@@ -33,7 +33,8 @@ void NativeRegisterAndInstallCallback(
 
 }  // namespace
 
-static void JNI_DataFilesComponentInstaller_RegisterAndInstall(
+static void
+JNI_WalletDataFilesInstaller_RegisterWalletDataFilesComponentOnDemand(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& callback) {
   component_updater::ComponentUpdateService* cus =

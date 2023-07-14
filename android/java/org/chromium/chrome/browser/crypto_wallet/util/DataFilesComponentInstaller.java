@@ -6,10 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.util;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.base.Log;
-import org.chromium.base.annotations.CalledByNative;
-import org.chromium.base.annotations.JNINamespace;
-import org.chromium.base.annotations.NativeMethods;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.browser.InternetConnection;
@@ -18,8 +14,6 @@ import org.chromium.chrome.browser.component_updater.BraveComponentUpdater;
 /**
  * Class that manages Brave Wallet Data files component installation for Android
  */
-
-@JNINamespace("chrome::android")
 public class DataFilesComponentInstaller implements BraveComponentUpdater.ComponentUpdaterListener {
     private static final String TAG = "DFCI";
     private Object mLock = new Object();
@@ -55,10 +49,9 @@ public class DataFilesComponentInstaller implements BraveComponentUpdater.Compon
             assert !mUpdateCompleted;
 
             mUpdateStarted = true;
-            registerAndInstall(new Runnable() {
+            WalletDataFilesInstaller.registerWalletDataFilesComponentOnDemand(new Runnable() {
                 @Override
                 public void run() {
-                    Log.e(TAG, "registerAndInstallEx.onResult 000");
                     synchronized (mLock) {
                         mUpdateStarted = false;
                         mUpdateCompleted = true;
@@ -145,19 +138,5 @@ public class DataFilesComponentInstaller implements BraveComponentUpdater.Compon
                         5 * 60 * 1000);
             }
         }
-    }
-
-    public static void registerAndInstall(Runnable runnableCallback) {
-        DataFilesComponentInstallerJni.get().registerAndInstall(runnableCallback);
-    }
-
-    @CalledByNative
-    private static void onRegisterAndInstallDone(Runnable runnableCallback) {
-        runnableCallback.run();
-    }
-
-    @NativeMethods
-    interface Natives {
-        void registerAndInstall(Runnable runnableCallback);
     }
 }
