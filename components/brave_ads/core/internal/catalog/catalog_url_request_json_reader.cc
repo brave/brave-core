@@ -146,8 +146,10 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
 
         conversion.url_pattern = conversion_node["urlPattern"].GetString();
 
-        conversion.extract_verifiable_id =
-            conversion_node["extractExternalId"].GetBool();
+        if (conversion_node.HasMember("extractExternalId")) {
+          conversion.extract_verifiable_id =
+              conversion_node["extractExternalId"].GetBool();
+        }
 
         if (conversion_node.HasMember("conversionPublicKey")) {
           conversion.verifiable_advertiser_public_key_base64 =
