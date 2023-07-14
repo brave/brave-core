@@ -55,8 +55,8 @@ NS_SWIFT_NAME(URLSpoofChecker.TopDomainEntry)
 - (instancetype)init NS_UNAVAILABLE;
 /// The domain name.
 @property(nonatomic, readonly) NSString* domain;
-/// True if the domain is in the top 500.
-@property(nonatomic, readonly) bool isTop500;
+/// True if the domain is in the top 1000 bucket.
+@property(nonatomic, readonly) bool isTopBucket;
 /// Type of the skeleton stored in the trie node.
 @property(nonatomic, readonly) BraveSpoofCheckerSkeletonType skeletonType;
 @end
