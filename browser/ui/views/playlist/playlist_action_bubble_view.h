@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_PLAYLIST_PLAYLIST_ACTION_BUBBLE_VIEW_H_
 
 class Browser;
+class PlaylistActionIconView;
 
 namespace playlist {
 class PlaylistTabHelper;
@@ -19,7 +20,7 @@ class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
   METADATA_HEADER(PlaylistActionBubbleView);
 
   static void ShowBubble(Browser* browser,
-                         views::View* anchor,
+                         PlaylistActionIconView* anchor,
                          playlist::PlaylistTabHelper* playlist_tab_helper);
   static bool IsShowingBubble();
   static void CloseBubble();
@@ -32,11 +33,14 @@ class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
 
  protected:
   PlaylistActionBubbleView(Browser* browser,
-                           views::View* anchor,
+                           PlaylistActionIconView* anchor,
                            playlist::PlaylistTabHelper* playlist_tab_helper);
 
-  raw_ptr<Browser> browser_;
+  raw_ptr<Browser> browser_ = nullptr;
   raw_ptr<playlist::PlaylistTabHelper> playlist_tab_helper_ = nullptr;
+
+  // Our anchor.
+  raw_ptr<PlaylistActionIconView> icon_view_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PLAYLIST_PLAYLIST_ACTION_BUBBLE_VIEW_H_
