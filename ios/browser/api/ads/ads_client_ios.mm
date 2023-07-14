@@ -28,8 +28,8 @@ void AdsClientIOS::RemoveObserver(
   [bridge_ removeObserver:observer];
 }
 
-void AdsClientIOS::BindPendingObservers() {
-  [bridge_ bindPendingObservers];
+void AdsClientIOS::NotifyPendingObservers() {
+  [bridge_ notifyPendingObservers];
 }
 
 bool AdsClientIOS::IsNetworkConnectionAvailable() const {

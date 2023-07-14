@@ -195,8 +195,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     adEventHistory = new brave_ads::AdEventHistory();
 
     adsClient = new AdsClientIOS(self);
-    adsClientNotifier = new brave_ads::AdsClientNotifier();
-    ads = brave_ads::Ads::CreateInstance(adsClient);
   }
   return self;
 }
@@ -216,13 +214,20 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
   if (ads != nil) {
     delete ads;
-    delete adsClientNotifier;
-    delete adsClient;
-    ads = nil;
-    adsClientNotifier = nil;
-    adsClient = nil;
-    adEventHistory = nil;
   }
+  if (adsClientNotifier != nil) {
+    delete adsClientNotifier;
+  }
+  if (adsClient != nil) {
+    delete adsClient;
+  }
+  if (adEventHistory != nil) {
+    delete adEventHistory;
+  }
+  ads = nil;
+  adsClientNotifier = nil;
+  adsClient = nil;
+  adEventHistory = nil;
 }
 
 - (NSString*)prefsPath {
@@ -239,7 +244,16 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)initializeWithSysInfo:(BraveAdsSysInfo*)sysInfo
              buildChannelInfo:(BraveAdsBuildChannelInfo*)buildChannelInfo
+                   walletInfo:(BraveAdsWalletInfo*)walletInfo
                    completion:(void (^)(bool))completion {
+  if ([self isAdsServiceRunning]) {
+    completion(false);
+    return;
+  }
+
+  adsClientNotifier = new brave_ads::AdsClientNotifier();
+  ads = brave_ads::Ads::CreateInstance(adsClient);
+
   auto cppSysInfo =
       sysInfo ? sysInfo.cppObjPtr : brave_ads::mojom::SysInfo::New();
   ads->SetSysInfo(std::move(cppSysInfo));
@@ -248,10 +262,27 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                                  : brave_ads::mojom::BuildChannelInfo::New();
   ads->SetBuildChannel(std::move(cppBuildChannelInfo));
   ads->SetFlags(brave_ads::BuildFlags());
+
+  if (walletInfo) {
+    ads->OnRewardsWalletDidChange(
+        base::SysNSStringToUTF8(walletInfo.paymentId),
+        base::SysNSStringToUTF8(walletInfo.recoverySeed));
+  }
+
   ads->Initialize(base::BindOnce(^(const bool success) {
     [self periodicallyCheckForAdsResourceUpdates];
     [self registerAdsResources];
     completion(success);
+    if (!success) {
+      if (self->ads != nil) {
+        delete self->ads;
+      }
+      if (self->adsClientNotifier != nil) {
+        delete self->adsClientNotifier;
+      }
+      self->ads = nil;
+      self->adsClientNotifier = nil;
+    }
   }));
 }
 
@@ -319,7 +350,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (BOOL)isAdsServiceRunning {
-  return ads != nil;
+  return ads != nil && adsClientNotifier != nil;
 }
 
 #pragma mark - Configuration
@@ -452,14 +483,21 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 #pragma mark - Observers
 
 - (void)addObserver:(brave_ads::AdsClientNotifierObserver*)observer {
-  adsClientNotifier->AddObserver(observer);
+  if (adsClientNotifier != nil) {
+    adsClientNotifier->AddObserver(observer);
+  }
 }
 
 - (void)removeObserver:(brave_ads::AdsClientNotifierObserver*)observer {
-  adsClientNotifier->RemoveObserver(observer);
+  if (adsClientNotifier != nil) {
+    adsClientNotifier->RemoveObserver(observer);
+  }
 }
 
-- (void)bindPendingObservers {
+- (void)notifyPendingObservers {
+  if (adsClientNotifier != nil) {
+    adsClientNotifier->NotifyPendingObservers();
+  }
 }
 
 - (void)applicationDidBecomeActive {

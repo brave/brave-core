@@ -7,15 +7,19 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_ADS_CLIENT_NOTIFIER_H_
 
 #include <cstdint>
+#include <memory>
 #include <string>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 
 class GURL;
 
 namespace brave_ads {
+
+class AdsClientNotifierQueue;
 
 class AdsClientNotifier {
  public:
@@ -31,6 +35,9 @@ class AdsClientNotifier {
 
   void AddObserver(AdsClientNotifierObserver* observer);
   void RemoveObserver(AdsClientNotifierObserver* observer);
+
+  // Invoked to fire all pending observer events.
+  void NotifyPendingObservers();
 
   // Called when the user changes the locale of their operating system. This
   // call is not required if the operating system restarts the browser when
@@ -116,8 +123,23 @@ class AdsClientNotifier {
   // Invoked when the user solves an adaptive captch.
   void NotifyDidSolveAdaptiveCaptcha() const;
 
+  void set_should_queue_notifications_for_testing(
+      bool should_queue_notifications) {
+    should_queue_notifications_ = should_queue_notifications;
+  }
+
  private:
   base::ObserverList<AdsClientNotifierObserver> observers_;
+
+  std::unique_ptr<AdsClientNotifierQueue> pending_notifier_queue_;
+
+#if BUILDFLAG(IS_IOS)
+  bool should_queue_notifications_ = true;
+#else
+  bool should_queue_notifications_ = false;
+#endif  // BUILDFLAG(IS_IOS)
+
+  base::WeakPtrFactory<AdsClientNotifier> weak_factory_{this};
 };
 
 }  // namespace brave_ads
