@@ -10,9 +10,15 @@ import { getMockChrome } from './testData'
 ;(global as any).document = window.document
 ;(global as any).navigator = window.navigator
 
+// Fail on jsdom errors.
+window._virtualConsole.removeAllListeners('jsdomError')
+window._virtualConsole.addListener('jsdomError', fail)
+
 window.location = {
   search: '?testTorrentId'
 } as any
+
+// window.alert = jest.fn()
 
 global.decodeURIComponent = () => 'test'
 

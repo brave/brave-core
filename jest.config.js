@@ -18,6 +18,19 @@ function getBuildOuptutPathList (buildOutputRelativePath) {
   ])
 }
 
+function getReporters() {
+  if (process.env.TEAMCITY_VERSION !== undefined) {
+    return [
+      [
+        '<rootDir>/tools/teamcity/jest_reporter/index.js',
+        { 'suiteName': 'jest' }
+      ]
+    ]
+  } else {
+    return ['default']
+  }
+}
+
 module.exports = {
   preset: "ts-jest/presets/default",
   testEnvironment: "<rootDir>/components/test/testEnvironment.js",
@@ -39,7 +52,7 @@ module.exports = {
   clearMocks: true,
   resetMocks: true,
   resetModules: true,
-  collectCoverage: true,
+  collectCoverage: false,
   collectCoverageFrom: [
     "<rootDir>/build/commands/lib/*",
     "<rootDir>/components/**/**/*.ts",
@@ -58,6 +71,8 @@ module.exports = {
     "<rootDir>/components/test/**/*_test.{ts,tsx}"
   ],
   testPathIgnorePatterns: [
+    "<rootDir>/build/rustup",
+    "<rootDir>/third_party",
     "lib/test.js"
   ],
   transformIgnorePatterns: [
@@ -65,9 +80,6 @@ module.exports = {
   ],
   setupFilesAfterEnv: [
     "<rootDir>/components/test/testSetup.ts"
-  ],
-  setupFiles: [
-    "<rootDir>/components/test/testPolyfills.ts"
   ],
   moduleNameMapper: {
     "\\.(jpg|jpeg|png|gif|eot|otf|svg|ttf|woff|woff2)$": "<rootDir>/components/test/fileMock.ts",
@@ -86,5 +98,6 @@ module.exports = {
     "^gen\\/(.*)": getBuildOuptutPathList('gen/$1'),
     "chrome:\/\/resources\\/(.*)":
       getBuildOuptutPathList('gen/ui/webui/resources/tsc/$1')
-  }
+  },
+  reporters: getReporters()
 }

@@ -10,7 +10,7 @@ import {
 
 describe('cleanupRecoveryPhraseInput', () => {
   it('prevents a space at the begining of the phrase', () => {
-    expect(cleanupRecoveryPhraseInput(' phrase words here')).toBe('phrase words here')
+    expect(cleanupRecoveryPhraseInput(' phrase words here')).toBe('phrase words heree')
   })
 
   it('removes periods', () => {
