@@ -763,8 +763,8 @@
       {                                                                        \
           "brave-web-serial-api",                                              \
           "Web Serial API",                                                    \
-          "Enables the Web Serial API, giving websites access to serial "      \
-          "ports",                                                             \
+          "Enables the Web Serial API, allowing websites to request access "   \
+          "to serial ports ",                                                  \
           kOsDesktop,                                                          \
           FEATURE_VALUE_TYPE(blink::features::kBraveWebSerialAPI),             \
       },                                                                       \
