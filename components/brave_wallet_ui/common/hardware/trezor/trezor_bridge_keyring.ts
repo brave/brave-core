@@ -161,7 +161,14 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
       payload: {
         path: path,
         domain_separator_hash: domainSeparatorHex,
-        message_hash: hashStructMessageHex
+        message_hash: hashStructMessageHex,
+        metamask_v4_compat: true,
+        data: {
+          types: { EIP712Domain: [] },
+          primaryType: 'UnknownType',
+          domain: {},
+          message: {},
+        }
       },
       origin: window.origin
     })
