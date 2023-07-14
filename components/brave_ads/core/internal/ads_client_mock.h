@@ -30,7 +30,7 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD1(AddObserver, void(AdsClientNotifierObserver*));
   MOCK_METHOD1(RemoveObserver, void(AdsClientNotifierObserver*));
-  MOCK_METHOD0(BindPendingObservers, void());
+  MOCK_METHOD0(NotifyPendingObservers, void());
 
   MOCK_CONST_METHOD0(IsNetworkConnectionAvailable, bool());
 
