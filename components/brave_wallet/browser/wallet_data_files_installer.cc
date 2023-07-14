@@ -482,4 +482,8 @@ void SetLastInstalledWalletVersionForTest(const base::Version& version) {
   last_installed_wallet_version = version;
 }
 
+std::string GetWalletDataFilesComponentId() {
+  return kComponentId;
+}
+
 }  // namespace brave_wallet

@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/android/jni_android.h"
+#include "base/android/jni_string.h"
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/build/android/jni_headers/WalletDataFilesInstaller_jni.h"
@@ -47,6 +49,12 @@ JNI_WalletDataFilesInstaller_RegisterWalletDataFilesComponentOnDemand(
       cus, base::BindOnce(&NativeRegisterAndInstallCallback, env,
                           std::move(java_callback),
                           base::SequencedTaskRunner::GetCurrentDefault()));
+}
+
+static base::android::ScopedJavaLocalRef<jstring>
+JNI_WalletDataFilesInstaller_GetWalletDataFilesComponentId(JNIEnv* env) {
+  return base::android::ConvertUTF8ToJavaString(
+      env, ::brave_wallet::GetWalletDataFilesComponentId());
 }
 
 }  // namespace android

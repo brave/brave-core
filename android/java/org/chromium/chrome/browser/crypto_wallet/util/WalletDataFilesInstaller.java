@@ -23,8 +23,13 @@ public class WalletDataFilesInstaller {
         onDone.run();
     }
 
+    public static String getWalletDataFilesComponentId() {
+        return WalletDataFilesInstallerJni.get().getWalletDataFilesComponentId();
+    }
+
     @NativeMethods
     interface Natives {
         void registerWalletDataFilesComponentOnDemand(Runnable onDone);
+        String getWalletDataFilesComponentId();
     }
 }

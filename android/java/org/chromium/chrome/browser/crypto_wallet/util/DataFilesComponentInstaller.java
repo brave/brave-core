@@ -16,6 +16,8 @@ import org.chromium.chrome.browser.component_updater.BraveComponentUpdater;
  */
 public class DataFilesComponentInstaller implements BraveComponentUpdater.ComponentUpdaterListener {
     private static final String TAG = "DFCI";
+    private static final String WALLET_COMPONENT_ID =
+            WalletDataFilesInstaller.getWalletDataFilesComponentId();
     private Object mLock = new Object();
     private boolean mUpdateStarted;
     private boolean mUpdateCompleted;
@@ -68,9 +70,7 @@ public class DataFilesComponentInstaller implements BraveComponentUpdater.Compon
                         }
                     }
                 }
-            }
-
-            );
+            });
 
             BraveComponentUpdater.get().addComponentUpdateEventListener(this);
         }
@@ -78,9 +78,7 @@ public class DataFilesComponentInstaller implements BraveComponentUpdater.Compon
 
     @Override
     public void onComponentUpdateEvent(int event, String id) {
-        final String walletId =
-                "bbckkcdiepaecefgfnibemejliemjnio"; // TODO(AlexeyBarabash): remove duplication
-        if (walletId.equals(id)) {
+        if (WALLET_COMPONENT_ID.equals(id)) {
             BraveComponentUpdater.CrxUpdateItem item =
                     BraveComponentUpdater.get().getUpdateState(id);
             if (item.mDownloadedBytes > 0 && item.mTotalBytes > 0 && mInfoCallback != null) {
