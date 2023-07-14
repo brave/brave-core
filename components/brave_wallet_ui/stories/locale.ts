@@ -252,6 +252,7 @@ provideStrings({
   braveWalletLockScreenTitle: 'Enter password to unlock wallet',
   braveWalletLockScreenButton: 'Unlock',
   braveWalletLockScreenError: 'Incorrect password',
+  braveWalletUnlockWallet: 'Unlock Wallet',
 
   // Wallet More Popup
   braveWalletWalletPopupSettings: 'Settings',
