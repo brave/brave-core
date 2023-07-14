@@ -14,6 +14,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "components/constrained_window/constrained_window_views.h"
@@ -25,6 +26,12 @@
 #include "ui/views/controls/link.h"
 #include "ui/views/controls/styled_label.h"
 #include "ui/views/layout/box_layout.h"
+
+namespace brave {
+void ShowBraveVpnIKEv2FallbackDialog() {
+  brave_vpn::BraveVpnFallbackDialogView::Show(chrome::FindLastActive());
+}
+}  // namespace brave
 
 namespace brave_vpn {
 

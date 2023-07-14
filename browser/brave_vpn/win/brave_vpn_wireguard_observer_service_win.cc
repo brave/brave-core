@@ -5,9 +5,8 @@
 
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_service_win.h"
 
-#include "brave/browser/ui/views/brave_vpn/brave_vpn_fallback_dialog_view.h"
+#include "brave/browser/ui/browser_dialogs.h"
 #include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
-#include "chrome/browser/ui/browser_finder.h"
 
 namespace brave_vpn {
 
@@ -20,7 +19,7 @@ void BraveVpnWireguardObserverService::ShowFallbackDialog() {
     dialog_callback_.Run();
     return;
   }
-  BraveVpnFallbackDialogView::Show(chrome::FindLastActive());
+  brave::ShowBraveVpnIKEv2FallbackDialog();
 }
 
 void BraveVpnWireguardObserverService::OnConnectionStateChanged(
