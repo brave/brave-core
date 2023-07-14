@@ -9,6 +9,7 @@ const path = require('path')
 const config = require('../lib/config')
 const util = require('../lib/util')
 const Log = require('../lib/sync/logging')
+const updateChromeVersion = require('../lib/sync/updateChromeVersion')
 const chalk = require('chalk')
 
 program
@@ -252,6 +253,7 @@ async function RunCommand() {
   Log.progress('...gclient sync done.')
 
   await util.applyPatches()
+  updateChromeVersion(config)
 
   if (!program.nohooks) {
     Log.progress('Running gclient runhooks...')
