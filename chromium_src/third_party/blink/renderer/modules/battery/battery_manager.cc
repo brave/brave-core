@@ -103,7 +103,7 @@ void BatteryManager::Trace(blink::Visitor* visitor) const {
   visitor->Trace(battery_dispatcher_);
   Supplement<Navigator>::Trace(visitor);
   PlatformEventController::Trace(visitor);
-  EventTargetWithInlineData::Trace(visitor);
+  EventTarget::Trace(visitor);
   ExecutionContextLifecycleStateObserver::Trace(visitor);
 }
 
