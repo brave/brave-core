@@ -50,10 +50,13 @@ import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.base.task.AsyncTask;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_news.mojom.Article;
 import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.brave_news.mojom.CardType;
 import org.chromium.brave_news.mojom.DisplayAd;
+import org.chromium.brave_news.mojom.Feed;
 import org.chromium.brave_news.mojom.FeedItem;
 import org.chromium.brave_news.mojom.FeedItemMetadata;
 import org.chromium.brave_news.mojom.FeedPage;
@@ -890,119 +893,112 @@ public class BraveNewTabPageLayout
 
     @Override
     public void getFeed(boolean isNewContent) {
-        if (!isNewContent) {
-            mNtpAdapter.setImageCreditAlpha(1f);
-            mNtpAdapter.setNewsLoading(true);
+        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
+            if (!isNewContent) {
+                mNtpAdapter.setImageCreditAlpha(1f);
+                mNtpAdapter.setNewsLoading(true);
+            }
+            initBraveNewsController();
+            mBraveNewsController.getFeed(feed -> { runFeed(isNewContent, feed); });
+        });
+    }
+
+    private void runFeed(boolean isNewContent, Feed feed) {
+        if (feed == null) {
+            processFeed(isNewContent);
+            return;
         }
 
-        ExecutorService executors = Executors.newFixedThreadPool(1);
-        initBraveNewsController();
+        mFeedHash = feed.hash;
+        mNtpAdapter.notifyItemRangeRemoved(
+                mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount() + 1,
+                mNewsItemsFeedCard.size());
+        mNewsItemsFeedCard.clear();
+        BraveNewsUtils.initCurrentAds();
+        SharedPreferencesManager.getInstance().writeString(
+                BravePreferenceKeys.BRAVE_NEWS_FEED_HASH, feed.hash);
 
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                mBraveNewsController.getFeed((feed) -> {
-                    if (feed == null) {
-                        processFeed(isNewContent);
-                        return;
+        if (feed.featuredItem != null) {
+            // process Featured item
+            FeedItem featuredItem = feed.featuredItem;
+            FeedItemsCard featuredItemsCard = new FeedItemsCard();
+
+            FeedItemMetadata featuredItemMetaData = new FeedItemMetadata();
+            Article featuredArticle = featuredItem.getArticle();
+            FeedItemMetadata featuredArticleData = featuredArticle.data;
+
+            FeedItemCard featuredItemCard = new FeedItemCard();
+            List<FeedItemCard> featuredCardItems = new ArrayList<>();
+
+            featuredItemsCard.setCardType(CardType.HEADLINE);
+            featuredItemsCard.setUuid(UUID.randomUUID().toString());
+
+            featuredItemCard.setFeedItem(featuredItem);
+            featuredCardItems.add(featuredItemCard);
+
+            featuredItemsCard.setFeedItems(featuredCardItems);
+            mNewsItemsFeedCard.add(featuredItemsCard);
+        }
+
+        if (mNewsItemsFeedCard.size() > 0 || (feed.pages != null && feed.pages.length > 0)) {
+            //  adds empty card to trigger Display ad call for the second card, when the
+            //  user starts scrolling
+            FeedItemsCard displayAdCard = new FeedItemsCard();
+            DisplayAd displayAd = new DisplayAd();
+            displayAdCard.setCardType(CardType.DISPLAY_AD);
+            displayAdCard.setDisplayAd(displayAd);
+            displayAdCard.setUuid(UUID.randomUUID().toString());
+            mNewsItemsFeedCard.add(displayAdCard);
+        }
+
+        // start page loop
+        int noPages = 0;
+        int itemIndex = 0;
+        for (FeedPage page : feed.pages) {
+            for (FeedPageItem cardData : page.items) {
+                // if for any reason we get an empty object, unless it's a
+                // DISPLAY_AD we skip it
+                if (cardData.cardType != CardType.DISPLAY_AD) {
+                    if (cardData.items.length == 0) {
+                        continue;
                     }
+                }
 
-                    mFeedHash = feed.hash;
-                    mNtpAdapter.notifyItemRangeRemoved(
-                            mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount() + 1,
-                            mNewsItemsFeedCard.size());
-                    mNewsItemsFeedCard.clear();
-                    BraveNewsUtils.initCurrentAds();
-                    SharedPreferencesManager.getInstance().writeString(
-                            BravePreferenceKeys.BRAVE_NEWS_FEED_HASH, feed.hash);
+                FeedItemsCard feedItemsCard = new FeedItemsCard();
+                feedItemsCard.setCardType(cardData.cardType);
+                feedItemsCard.setUuid(UUID.randomUUID().toString());
+                List<FeedItemCard> cardItems = new ArrayList<>();
+                for (FeedItem item : cardData.items) {
+                    FeedItemMetadata itemMetaData = new FeedItemMetadata();
+                    FeedItemCard feedItemCard = new FeedItemCard();
+                    feedItemCard.setFeedItem(item);
 
-                    if (feed.featuredItem != null) {
-                        // process Featured item
-                        FeedItem featuredItem = feed.featuredItem;
-                        FeedItemsCard featuredItemsCard = new FeedItemsCard();
+                    cardItems.add(feedItemCard);
 
-                        FeedItemMetadata featuredItemMetaData = new FeedItemMetadata();
-                        Article featuredArticle = featuredItem.getArticle();
-                        FeedItemMetadata featuredArticleData = featuredArticle.data;
+                    feedItemsCard.setFeedItems(cardItems);
+                }
 
-                        FeedItemCard featuredItemCard = new FeedItemCard();
-                        List<FeedItemCard> featuredCardItems = new ArrayList<>();
+                mNewsItemsFeedCard.add(feedItemsCard);
 
-                        featuredItemsCard.setCardType(CardType.HEADLINE);
-                        featuredItemsCard.setUuid(UUID.randomUUID().toString());
-
-                        featuredItemCard.setFeedItem(featuredItem);
-                        featuredCardItems.add(featuredItemCard);
-
-                        featuredItemsCard.setFeedItems(featuredCardItems);
-                        mNewsItemsFeedCard.add(featuredItemsCard);
-                    }
-
-                    if (mNewsItemsFeedCard.size() > 0
-                            || (feed.pages != null && feed.pages.length > 0)) {
-                        //  adds empty card to trigger Display ad call for the second card, when the
-                        //  user starts scrolling
-                        FeedItemsCard displayAdCard = new FeedItemsCard();
-                        DisplayAd displayAd = new DisplayAd();
-                        displayAdCard.setCardType(CardType.DISPLAY_AD);
-                        displayAdCard.setDisplayAd(displayAd);
-                        displayAdCard.setUuid(UUID.randomUUID().toString());
-                        mNewsItemsFeedCard.add(displayAdCard);
-                    }
-
-                    // start page loop
-                    int noPages = 0;
-                    int itemIndex = 0;
-                    for (FeedPage page : feed.pages) {
-                        for (FeedPageItem cardData : page.items) {
-                            // if for any reason we get an empty object, unless it's a
-                            // DISPLAY_AD we skip it
-                            if (cardData.cardType != CardType.DISPLAY_AD) {
-                                if (cardData.items.length == 0) {
-                                    continue;
-                                }
-                            }
-
-                            FeedItemsCard feedItemsCard = new FeedItemsCard();
-                            feedItemsCard.setCardType(cardData.cardType);
-                            feedItemsCard.setUuid(UUID.randomUUID().toString());
-                            List<FeedItemCard> cardItems = new ArrayList<>();
-                            for (FeedItem item : cardData.items) {
-                                FeedItemMetadata itemMetaData = new FeedItemMetadata();
-                                FeedItemCard feedItemCard = new FeedItemCard();
-                                feedItemCard.setFeedItem(item);
-
-                                cardItems.add(feedItemCard);
-
-                                feedItemsCard.setFeedItems(cardItems);
-                            }
-
-                            mNewsItemsFeedCard.add(feedItemsCard);
-
-                            // For show brave rating UI in news list at 10 th row
-                            if (RateUtils.getInstance().shouldShowRateDialog(mActivity)
-                                    && mNewsItemsFeedCard.size() == SHOW_BRAVE_RATE_ENTRY_AT) {
-                                // Dummy entry for Rating prompt
-                                FeedItemsCard dummy = new FeedItemsCard();
-                                dummy.setCardType(CardBuilderFeedCard.CARDTYPE_BRAVE_RATING);
-                                dummy.setUuid(UUID.randomUUID().toString());
-                                mNewsItemsFeedCard.add(dummy);
-                            }
-                        }
-                    } // end page loop
-
-                    processFeed(isNewContent);
-                    try {
-                        BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
-                        BraveActivity.getBraveActivity().setLoadedFeed(true);
-                    } catch (BraveActivity.BraveActivityNotFoundException e) {
-                        Log.e(TAG, "getFeed " + e);
-                    }
-                });
+                // For show brave rating UI in news list at 10 th row
+                if (RateUtils.getInstance().shouldShowRateDialog(mActivity)
+                        && mNewsItemsFeedCard.size() == SHOW_BRAVE_RATE_ENTRY_AT) {
+                    // Dummy entry for Rating prompt
+                    FeedItemsCard dummy = new FeedItemsCard();
+                    dummy.setCardType(CardBuilderFeedCard.CARDTYPE_BRAVE_RATING);
+                    dummy.setUuid(UUID.randomUUID().toString());
+                    mNewsItemsFeedCard.add(dummy);
+                }
             }
-        };
+        } // end page loop
 
-        executors.submit(runnable);
+        processFeed(isNewContent);
+        try {
+            BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
+            BraveActivity.getBraveActivity().setLoadedFeed(true);
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "getFeed " + e);
+        }
     }
 
     private void refreshFeed() {
