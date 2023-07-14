@@ -10,9 +10,12 @@ namespace ai_chat {
 // Note the blank space intentionally added
 constexpr char kHumanPrompt[] = "\n\nHuman: ";
 constexpr char kHumanPromptPlaceholder[] = "\nH: ";
+constexpr char kAILabelLlama[] = "\n### Response:\n";
 constexpr char kAIPrompt[] = "\n\nAssistant:";
 constexpr char kAIPromptPlaceholder[] = "\n\nA:";
+constexpr char kHumanLabelLlama[] = "\n\n### Instruction:\n";
 constexpr char kAIChatCompletionPath[] = "v1/complete";
+constexpr char kOpenLlamaModelName[] = "open-llama-13b-open-instruct-8k";
 
 base::span<const webui::LocalizedString> GetLocalizedStrings() {
   constexpr webui::LocalizedString kLocalizedStrings[] = {

@@ -113,6 +113,10 @@ class AIChatTabHelper : public content::WebContentsObserver,
                         const GURL& icon_url,
                         bool icon_url_changed,
                         const gfx::Image& image) override;
+  std::string BuildClaudePrompt(const mojom::ConversationTurn& turn,
+                                bool is_suggested_question);
+  std::string BuildLlamaPrompt(const mojom::ConversationTurn& turn,
+                               bool is_suggested_question);
 
   mojom::AutoGenerateQuestionsPref GetAutoGeneratePref();
 

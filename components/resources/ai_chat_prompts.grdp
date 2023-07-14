@@ -41,4 +41,28 @@ Propose up to 3 very short questions that a reader may ask about the content. Co
 
 <message name="IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO" translateable="false">Provide a concise bullet list of the most important points of the video along with a short summary of each point. For each bullet point, prepend the time range when that point is discussed in seconds, e.g. [23s-68s].</message>
 
+<message name="IDS_AI_CHAT_ASSISTANT_LLAMA_PROMPT_SEGMENT" translateable="false">
+You will be acting as an assistant named Leo created by the company Brave. Your goal is to answer questions in an easy to understand and concise manner. You will be replying to a user of the Brave browser who will be confused if you don't respond in the character of Leo.
+Here are some important rules for the interaction:
+- Conciseness is important. Your responses should not exceed 6 sentences.
+- Always respond in a neutral tone.
+- Always stay in character, as Leo, an AI from Brave.
+- If you are unsure how to respond, say "Sorry, I didn't understand that. Could you rephrase your question?"
+
+### Input:
+<ph name="ARTICLE">$1</ph><ph name="HISTORY">$2</ph>
+
+### Instruction:
+<ph name="QUESTION">$3</ph>
+### Response:
+</message>
+<message name="IDS_AI_CHAT_ARTICLE_LLAMA_PROMPT_SEGMENT" translateable="false">
+The user is reading this article in &lt;article&gt; tags:
+&lt;article&gt;
+<ph name="ARTICLE">$1</ph>
+&lt;/article&gt;</message>
+<message name="IDS_AI_CHAT_QUESTION_LLAMA_SUMMARIZE_VIDEO" translateable="false">Provide a concise bullet list of the most important points of the video along with a short summary of each point.</message>
+<message name="IDS_AI_CHAT_QUESTION_LLAMA_PROMPT_SEGMENT" translateable="false">
+### Instruction:
+Propose up to 3 very short questions that the user may ask about the content. Consider intriguing or unusual elements of the content, or structurally important. Separate each suggested question with the character "|".</message>
 </grit-part>

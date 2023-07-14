@@ -17,6 +17,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/ai_chat/browser/constants.h"
 #include "brave/components/ai_chat/browser/page_content_fetcher.h"
+#include "brave/components/ai_chat/common/features.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/common/pref_names.h"
 #include "components/favicon/content/content_favicon_driver.h"
@@ -76,10 +77,17 @@ void AIChatTabHelper::OnUserOptedIn() {
 std::string AIChatTabHelper::GetConversationHistoryString() {
   std::vector<std::string> turn_strings;
   for (const ConversationTurn& turn : chat_history_) {
-    turn_strings.push_back((turn.character_type == CharacterType::HUMAN
-                                ? ai_chat::kHumanPromptPlaceholder
-                                : ai_chat::kAIPromptPlaceholder) +
-                           turn.text);
+    if (ai_chat::features::kAIModelName.Get() == kOpenLlamaModelName) {
+      turn_strings.push_back((turn.character_type == CharacterType::HUMAN
+                                  ? ai_chat::kHumanLabelLlama
+                                  : ai_chat::kAILabelLlama) +
+                             turn.text);
+    } else {
+      turn_strings.push_back((turn.character_type == CharacterType::HUMAN
+                                  ? ai_chat::kHumanPromptPlaceholder
+                                  : ai_chat::kAIPromptPlaceholder) +
+                             turn.text);
+    }
   }
 
   return base::JoinString(turn_strings, "");
@@ -243,15 +251,28 @@ void AIChatTabHelper::GenerateQuestions() {
 
   has_generated_questions_ = true;
   OnSuggestedQuestionsChanged();
+  std::string prompt;
+  if (ai_chat::features::kAIModelName.Get() == kOpenLlamaModelName) {
+    prompt = base::StrCat(
+        {base::ReplaceStringPlaceholders(
+             l10n_util::GetStringUTF8(
+                 is_video_ ? IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT
+                           : IDS_AI_CHAT_ARTICLE_LLAMA_PROMPT_SEGMENT),
+             {article_text_}, nullptr),
+         "\n",
+         l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_LLAMA_PROMPT_SEGMENT),
+         ai_chat::kAILabelLlama});
 
-  std::string prompt = base::StrCat(
-      {base::ReplaceStringPlaceholders(
-           l10n_util::GetStringUTF8(is_video_
-                                        ? IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT
-                                        : IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT),
-           {article_text_}, nullptr),
-       "\n\n", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PROMPT_SEGMENT),
-       ai_chat::kAIPrompt, " <response>"});
+  } else {
+    prompt = base::StrCat(
+        {base::ReplaceStringPlaceholders(
+             l10n_util::GetStringUTF8(is_video_
+                                          ? IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT
+                                          : IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT),
+             {article_text_}, nullptr),
+         "\n\n", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PROMPT_SEGMENT),
+         ai_chat::kAIPrompt, " <response>"});
+  }
   // Make API request for questions.
   // Do not call SetRequestInProgress, this progress
   // does not need to be shown to the UI.
@@ -304,26 +325,9 @@ void AIChatTabHelper::OnAPISuggestedQuestionsResponse(
   DVLOG(2) << "Got questions:" << base::JoinString(suggested_questions_, "\n");
 }
 
-void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
-    const ConversationTurn& turn) {
-  // This function should not be presented in the UI if the user has not
-  // opted-in yet.
-  DCHECK(HasUserOptedIn());
-  DCHECK(is_conversation_active_);
-
-  DCHECK(turn.character_type == CharacterType::HUMAN);
-
-  bool is_suggested_question = false;
-
-  // If it's a suggested question, remove it
-  auto found_question_iter =
-      base::ranges::find(suggested_questions_, turn.text);
-  if (found_question_iter != suggested_questions_.end()) {
-    is_suggested_question = true;
-    suggested_questions_.erase(found_question_iter);
-    OnSuggestedQuestionsChanged();
-  }
-
+std::string AIChatTabHelper::BuildClaudePrompt(
+    const mojom::ConversationTurn& turn,
+    bool is_suggested_question) {
   std::string question_part;
   // TODO(petemill): Tokenize the summary question so that we
   // don't have to do this weird substitution.
@@ -359,6 +363,66 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
            l10n_util::GetStringUTF8(IDS_AI_CHAT_ASSISTANT_PROMPT_SEGMENT),
            {prompt_segment_history, question_part}, nullptr),
        ai_chat::kAIPrompt, " <response>\n"});
+
+  return prompt;
+}
+
+std::string AIChatTabHelper::BuildLlamaPrompt(
+    const mojom::ConversationTurn& turn,
+    bool is_suggested_question) {
+  std::string question_part;
+  // TODO(petemill): Tokenize the summary question so that we
+  // don't have to do this weird substitution.
+  if (turn.text == "Summarize this video") {
+    question_part =
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_LLAMA_SUMMARIZE_VIDEO);
+  } else {
+    question_part = turn.text;
+  }
+
+  auto prompt_segment_article =
+      article_text_.empty()
+          ? ""
+          : base::StrCat({base::ReplaceStringPlaceholders(
+                l10n_util::GetStringUTF8(
+                    is_video_ ? IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT
+                              : IDS_AI_CHAT_ARTICLE_LLAMA_PROMPT_SEGMENT),
+                {article_text_}, nullptr)});
+
+  std::string prompt = base::StrCat({base::ReplaceStringPlaceholders(
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_ASSISTANT_LLAMA_PROMPT_SEGMENT),
+      {prompt_segment_article, GetConversationHistoryString(), question_part},
+      nullptr)});
+
+  return prompt;
+}
+
+void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
+    const ConversationTurn& turn) {
+  // This function should not be presented in the UI if the user has not
+  // opted-in yet.
+  DCHECK(HasUserOptedIn());
+  DCHECK(is_conversation_active_);
+
+  DCHECK(turn.character_type == CharacterType::HUMAN);
+
+  bool is_suggested_question = false;
+
+  // If it's a suggested question, remove it
+  auto found_question_iter =
+      base::ranges::find(suggested_questions_, turn.text);
+  if (found_question_iter != suggested_questions_.end()) {
+    is_suggested_question = true;
+    suggested_questions_.erase(found_question_iter);
+    OnSuggestedQuestionsChanged();
+  }
+
+  std::string prompt;
+  if (ai_chat::features::kAIModelName.Get() == kOpenLlamaModelName) {
+    prompt = BuildLlamaPrompt(turn, is_suggested_question);
+  } else {
+    prompt = BuildClaudePrompt(turn, is_suggested_question);
+  }
 
   if (turn.visibility != ConversationTurnVisibility::HIDDEN) {
     AddToConversationHistory(turn);
