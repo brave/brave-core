@@ -13,7 +13,10 @@ constexpr char kHumanPrompt[] = "Human:";
 constexpr char kHumanPromptPlaceholder[] = "\nH: ";
 constexpr char kAIPrompt[] = "Assistant:";
 constexpr char kAIPromptPlaceholder[] = "\n\nA: ";
+constexpr char kAILabelLlama[] = "\nLeo: ";
+constexpr char kHumanLabelLlama[] = "\nUser: ";
 constexpr char kAIChatCompletionPath[] = "v1/complete";
+constexpr char kOpenLlamaModelName[] = "open-llama-13b-open-instruct-8k";
 
 base::span<const webui::LocalizedString> GetLocalizedStrings() {
   constexpr webui::LocalizedString kLocalizedStrings[] = {

@@ -41,4 +41,35 @@ Propose up to 3 very short questions that a reader may ask about the content. Co
 
 <message name="IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO" translateable="false">Provide a concise bullet list of the most important points of the video along with a short summary of each point. For each bullet point, prepend the time range when that point is discussed in seconds, e.g. [23s-68s].</message>
 
+<message name="IDS_AI_CHAT_LLAMA_PROMPT_START" translateable="false">
+Below is an instruction that describes a task. Write a response that appropriately completes the request.
+
+### Instruction:</message>
+
+<message name="IDS_AI_CHAT_VIDEO_LLAMA_PROMPT_SEGMENT" translateable="false">
+The following is XML describing a video's transcript. The text elements are delimited within text tags with the following format &lt;text start="1.23" dur="1.23"&gt;&lt;/text&gt; where the "start" attribute indicates the start time in seconds of the contained line, and the "dur" attribute indicates its duration in seconds.
+&lt;transcript&gt;<ph name="TRANSCRIPT">$1</ph>&lt;/transcript&gt;
+
+Provide a concise bullet list of the most important points of the video along with a short summary of each point.
+</message>
+
+<message name="IDS_AI_CHAT_ARTICLE_QUESTION_LLAMA_PROMPT_SEGMENT" translateable="false">
+Propose a couple very short questions about this article that a reader may ask about the content. Consider intriguing or unusual elements of the content, or structurally important. Separate each question with the vertical bar character "|".
+&lt;article&gt;<ph name="ARTICLE">$1</ph>&lt;/article&gt;
+</message>
+
+<message name="IDS_AI_CHAT_ARTICLE_LLAMA_PROMPT_SEGMENT" translateable="false">
+You are Leo, an AI assistant created by the company Brave. You are having a dialogue with a user of the Brave browser who is asking questions about an article they are reading. Your goal is to answer questions in an easy to understand and concise manner. Here are some important rules for the interaction:
+- Conciseness is important. Your responses should not exceed 6 sentences.
+- Always respond in a neutral tone.
+- Always stay in character, as Leo, an AI from Brave.
+- If you are unsure how to respond, say "Sorry, I didn't understand that. Could you rephrase your question?"
+
+This is the article:
+&lt;article&gt;<ph name="ARTICLE">$1</ph>&lt;/article&gt;
+<ph name="HISTORY">$2</ph>
+User: <ph name="QUESTION">$3</ph>
+</message>
+
+<message name="IDS_AI_CHAT_PROMPT_END" translateable="false">### Response:</message>
 </grit-part>
