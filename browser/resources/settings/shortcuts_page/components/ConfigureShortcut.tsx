@@ -94,7 +94,7 @@ class AcceleratorInfo {
   }
 
   isValid() {
-    // There needs to be at least one non-modifier key
+    // There needs to be one non-modifier key
     return !!this.#key
   }
 }
