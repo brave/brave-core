@@ -6,8 +6,6 @@
 #include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection_util.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection_feature.h"
 
 namespace brave_ads {
@@ -23,23 +21,6 @@ bool HasExceededMaximumIdleTime(const base::TimeDelta idle_time) {
   }
 
   return idle_time > maximum_idle_time;
-}
-
-bool MaybeUpdateIdleTimeThreshold() {
-  const int last_idle_time_threshold =
-      AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIdleTimeThreshold);
-
-  const int idle_time_threshold =
-      static_cast<int>(kIdleTimeThreshold.Get().InSeconds());
-
-  if (idle_time_threshold == last_idle_time_threshold) {
-    return false;
-  }
-
-  AdsClientHelper::GetInstance()->SetIntegerPref(prefs::kIdleTimeThreshold,
-                                                 idle_time_threshold);
-
-  return true;
 }
 
 }  // namespace brave_ads

@@ -43,8 +43,6 @@ void AdsService::RegisterProfilePrefs(
 
   registry->RegisterInt64Pref(prefs::kMaximumNotificationAdsPerHour, -1);
 
-  registry->RegisterIntegerPref(prefs::kIdleTimeThreshold, 15);
-
   registry->RegisterBooleanPref(prefs::kShouldAllowSubdivisionTargeting, false);
   registry->RegisterStringPref(prefs::kSubdivisionTargetingSubdivision, "AUTO");
   registry->RegisterStringPref(

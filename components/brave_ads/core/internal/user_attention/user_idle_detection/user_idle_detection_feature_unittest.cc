@@ -40,52 +40,6 @@ TEST(BraveAdsUserIdleDetectionFeatureTest, IsDisabled) {
   EXPECT_FALSE(IsUserIdleDetectionFeatureEnabled());
 }
 
-TEST(BraveAdsUserIdleDetectionFeatureTest, GetIdleTimeThreshold) {
-  // Arrange
-  base::FieldTrialParams params;
-  params["idle_time_threshold"] = "7s";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kUserIdleDetectionFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-
-  // Assert
-  EXPECT_EQ(base::Seconds(7), kIdleTimeThreshold.Get());
-}
-
-TEST(BraveAdsUserIdleDetectionFeatureTest, DefaultIdleTimeThreshold) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_EQ(base::Seconds(5), kIdleTimeThreshold.Get());
-}
-
-TEST(BraveAdsUserIdleDetectionFeatureTest,
-     DefaultIdleTimeThresholdWhenDisabled) {
-  // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kUserIdleDetectionFeature);
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-
-  // Assert
-  EXPECT_EQ(base::Seconds(5), kIdleTimeThreshold.Get());
-}
-
 TEST(BraveAdsUserIdleDetectionFeatureTest, GetMaximumIdleTime) {
   // Arrange
   base::FieldTrialParams params;

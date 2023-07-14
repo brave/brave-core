@@ -15,6 +15,7 @@
 #include "base/strings/string_split.h"
 #include "brave/components/brave_ads/common/notification_ad_feature.h"
 #include "brave/components/brave_ads/common/search_result_ad_feature.h"
+#include "brave/components/brave_ads/common/user_attention_feature.h"
 #include "brave/components/brave_ads/core/internal/account/account_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_feature.h"
@@ -47,7 +48,8 @@ const base::Feature* const kFeatures[] = {&kAccountFeature,
                                           &kPurchaseIntentFeature,
                                           &kSearchResultAdFeature,
                                           &kTextClassificationFeature,
-                                          &kUserActivityFeature};
+                                          &kUserActivityFeature,
+                                          &kUserAttentionFeature};
 
 constexpr char kFeaturesSeparators[] = ",:<";
 

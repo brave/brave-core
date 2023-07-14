@@ -37,9 +37,6 @@ extern const char kNotificationAds[];
 extern const char kServeAdAt[];
 extern const char kBrowserVersionNumber[];
 
-// Idle state prefs
-extern const char kIdleTimeThreshold[];
-
 // Subdivision targeting prefs
 extern const char kShouldAllowSubdivisionTargeting[];
 extern const char kSubdivisionTargetingSubdivision[];
