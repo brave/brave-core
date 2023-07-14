@@ -168,11 +168,13 @@ class BuyTokenStoreTests: XCTestCase {
     
     await store.updateInfo()
     
-    XCTAssertEqual(store.orderedSupportedBuyOptions.count, 2)
+    XCTAssertEqual(store.orderedSupportedBuyOptions.count, 3)
     XCTAssertNotNil(store.orderedSupportedBuyOptions.first)
-    XCTAssertEqual(store.orderedSupportedBuyOptions.first!, .ramp)
+    XCTAssertEqual(store.orderedSupportedBuyOptions.first, .ramp)
+    XCTAssertNotNil(store.orderedSupportedBuyOptions[safe: 1])
+    XCTAssertEqual(store.orderedSupportedBuyOptions[safe: 1], .sardine)
     XCTAssertNotNil(store.orderedSupportedBuyOptions.last)
-    XCTAssertEqual(store.orderedSupportedBuyOptions.last!, .transak)
+    XCTAssertEqual(store.orderedSupportedBuyOptions.last, .transak)
   }
   
   @MainActor
