@@ -9,6 +9,8 @@
 #include <utility>
 
 #include "base/command_line.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/bitcoin_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
@@ -70,13 +72,17 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      std::string("frame-src ") + kUntrustedTrezorURL + " " +
-          kUntrustedLedgerURL + " " + kUntrustedNftURL + " " +
-          kUntrustedMarketURL + ";");
+      base::JoinString(
+          {"frame-src", kUntrustedTrezorURL, kUntrustedLedgerURL,
+           kUntrustedNftURL, base::StrCat({kUntrustedMarketURL, ";"})},
+          " "));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
-      std::string("img-src 'self' chrome://resources chrome://erc-token-images "
-                  "https://assets.cgproxy.brave.com data:;"));
+      base::JoinString(
+          {"img-src", "'self'", "chrome://resources",
+           "chrome://erc-token-images", "chrome://favicon", "chrome://image",
+           "https://assets.cgproxy.brave.com", base::StrCat({"data:", ";"})},
+          " "));
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);
