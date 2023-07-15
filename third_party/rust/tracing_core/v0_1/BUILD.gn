@@ -30,5 +30,6 @@ cargo_crate("lib") {
   features = [
     "once_cell",
     "std",
+    "valuable",
   ]
 }

@@ -93,7 +93,6 @@ libc = { version = "0.2" }
 # serde_json = "1.0"
 tracing-subscriber = { version = "0.2.0", default-features = false, features = ["ansi", "ansi_term", "fmt", "registry", "sharded-slab", "thread_local"] }
 # tracing = "0.1"
-tracing-attributes = "0.1"
 
 #skus
 http = { version = "0.1" }
@@ -205,7 +204,7 @@ gn-variables-lib = '''
   cargo_manifest_dir =
       rebase_path("//brave/third_party/rust/multihash/v0_16/crate")
   rustenv = [ "CARGO_MANIFEST_DIR=$cargo_manifest_dir" ]
-```
+'''
 
 [dependencies.tracing]
 version = "0.1"
@@ -295,10 +294,20 @@ build-script-outputs = [ "lib.rs" ]
 [dependencies.markup5ever]
 version = "0.10"
 build-script-outputs = [ "generated.rs", "named_entities.rs" ]
+gn-variables-lib = '''
+cargo_manifest_dir =
+    rebase_path("//brave/third_party/rust/markup5ever/v0_10/crate")
+rustenv = [ "CARGO_MANIFEST_DIR=$cargo_manifest_dir" ]
+'''
 
 [dependencies.html5ever]
 version = "0.25.1"
 build-script-outputs = [ "rules.rs" ]
+gn-variables-lib = '''
+cargo_manifest_dir =
+    rebase_path("//brave/third_party/rust/html5ever/v0_25/crate")
+rustenv = [ "CARGO_MANIFEST_DIR=$cargo_manifest_dir" ]
+'''
 
 [dependencies.typenum]
 version = "1"

@@ -33,6 +33,7 @@ cargo_crate("lib") {
     "consts.rs",
     "op.rs",
   ]
+
   # These are output to the console, but the cargo_crate build script doesn't
   # currently handle this
   target_lib_dir = rebase_path(target_gen_dir)

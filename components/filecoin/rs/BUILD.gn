@@ -31,4 +31,8 @@ rust_static_library("rust_lib") {
     "//third_party/rust/serde/v1:lib",
     "//third_party/rust/serde_json/v1:lib",
   ]
+
+  aliased_deps = {
+    num_bigint_chainsafe = "//brave/third_party/rust/forest_bigint/v0_1:lib__rlib"
+  }
 }

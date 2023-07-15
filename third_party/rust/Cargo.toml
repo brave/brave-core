@@ -53,7 +53,6 @@ static_assertions = "1"
 strobe-rs = "0.8.1"
 tempfile = "3"
 thiserror = "^1.0.30"
-tracing-attributes = "0.1"
 url = "2.2"
 urlencoding = "1.1.1"
 wycheproof = "0.4"
@@ -62,7 +61,7 @@ wycheproof = "0.4"
 default-features = false
 version = "0.7.9"
 features = ["full-regex-handling", "debug-info", "css-validation"]
-gn-variables-lib = "if (is_ios) {\n    features += [\n      \"content-blocking\",\n      \"serde_json\",\n    ]\n\n    deps += [ \"//third_party/rust/serde_json/v1:lib\" ]\n  } else {\n    features += [\n      \"object-pooling\",\n      \"lifeguard\",\n      \"unsync-regex-caching\",\n    ]\n\n    deps += [ \"//brave/third_party/rust/lifeguard/v0_6:lib\" ]\n  }\n"
+gn-variables-lib = "if (is_ios) {\n    features += [\n      \"content-blocking\",\n      \"serde_json\",\n    ]\n    deps += [ \"//third_party/rust/serde_json/v1:lib\" ]\n  } else {\n    features += [\n      \"object-pooling\",\n      \"lifeguard\",\n      \"unsync-regex-caching\",\n    ]\n    deps += [ \"//brave/third_party/rust/lifeguard/v0_6:lib\" ]\n  }\n"
 
 [dependencies.bigdecimal]
 version = "0.1"
@@ -127,6 +126,7 @@ features = ["rust_backend"]
 [dependencies.html5ever]
 version = "0.25.1"
 build-script-outputs = ["rules.rs"]
+gn-variables-lib = "cargo_manifest_dir =\n    rebase_path(\"//brave/third_party/rust/html5ever/v0_25/crate\")\nrustenv = [ \"CARGO_MANIFEST_DIR=$cargo_manifest_dir\" ]\n"
 
 [dependencies.http]
 version = "0.1"
@@ -147,6 +147,7 @@ build-script-outputs = ["const.rs", "const_gen.rs"]
 [dependencies.markup5ever]
 version = "0.10"
 build-script-outputs = ["generated.rs", "named_entities.rs"]
+gn-variables-lib = "cargo_manifest_dir =\n    rebase_path(\"//brave/third_party/rust/markup5ever/v0_10/crate\")\nrustenv = [ \"CARGO_MANIFEST_DIR=$cargo_manifest_dir\" ]\n"
 
 [dependencies.memoffset]
 version = "0.6"
@@ -155,7 +156,8 @@ features = ["unstable_const"]
 [dependencies.multihash]
 default-features = false
 version = "0.16"
-features = ["multihash-impl", "blake2b", "sha2", "sha3", "ripemd"]
+features = ["multihash-impl", "blake2b"]
+gn-variables-lib = "  deps += [\n    \"//brave/third_party/rust/digest/v0_10:lib\",\n    \"//brave/third_party/rust/ripemd/v0_1:lib\",\n    \"//brave/third_party/rust/sha2/v0_10:lib\",\n    \"//brave/third_party/rust/sha3/v0_10:lib\",\n  ]\n  cargo_manifest_dir =\n      rebase_path(\"//brave/third_party/rust/multihash/v0_16/crate\")\n  rustenv = [ \"CARGO_MANIFEST_DIR=$cargo_manifest_dir\" ]\n"
 
 [dependencies.num-bigint]
 version = "0.4"
