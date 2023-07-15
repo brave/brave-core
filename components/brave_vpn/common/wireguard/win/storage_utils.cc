@@ -65,7 +65,7 @@ bool ShouldFallbackToIKEv2() {
       GetBraveVpnWireguardServiceRegistryStoragePath().c_str(), KEY_READ);
   if (!key.Valid()) {
     VLOG(1) << "Failed to open wireguard service storage";
-    return false;
+    return true;
   }
   DWORD launch = 0;
   key.ReadValueDW(kBraveVpnWireguardCounterOfTunnelUsage, &launch);
