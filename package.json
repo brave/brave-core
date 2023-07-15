@@ -338,7 +338,7 @@
     "sass-loader": "10.2.1",
     "sinon": "7.5.0",
     "style-loader": "0.23.1",
-    "styled-components": "5.3.9",
+    "styled-components": "5.3.11",
     "terser": "5.16.2",
     "trezor-connect": "8.2.12-extended",
     "ts-jest": "26.5.6",
