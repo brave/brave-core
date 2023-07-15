@@ -12,6 +12,6 @@ An advertisement, or ad, is a form of marketing communication that is used to pr
 
 Users are rewarded for ad impressions if they are opted-in to Brave Private Ads on brave://rewards.
 
-¹ `kServed` events should not be manually triggered as they are handled when calling `MaybeServe`. `PurgeOrphanedAdEventsForType` should be called periodically to remove orphaned served events, i.e., ads that were served but never viewed.
-² `kServed` events should not be manually triggered as they are handled when calling `TriggerEvent` with `kViewed` unless already triggerd by ¹.
-³ Only responsible for triggering ad events and not serving the ad.
+1. `kServed` events should not be manually triggered as they are handled when calling `MaybeServe`. `PurgeOrphanedAdEventsForType` should be called periodically to remove orphaned served events, i.e., ads that were served but never viewed.
+2. `kServed` events should not be manually triggered as they are handled when calling `TriggerEvent` with `kViewed` unless already triggerd by ¹.
+3. Only responsible for triggering ad events and not serving the ad.

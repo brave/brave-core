@@ -596,6 +596,18 @@ void AdsServiceImpl::InitializePrefChangeRegistrar() {
                           base::Unretained(this)));
 
   pref_change_registrar_.Add(
+      prefs::kSubdivisionTargetingSubdivision,
+      base::BindRepeating(&AdsServiceImpl::NotifyPrefChanged,
+                          base::Unretained(this),
+                          prefs::kSubdivisionTargetingSubdivision));
+
+  pref_change_registrar_.Add(
+      prefs::kSubdivisionTargetingAutoDetectedSubdivision,
+      base::BindRepeating(&AdsServiceImpl::NotifyPrefChanged,
+                          base::Unretained(this),
+                          prefs::kSubdivisionTargetingAutoDetectedSubdivision));
+
+  pref_change_registrar_.Add(
       brave_news::prefs::kBraveNewsOptedIn,
       base::BindRepeating(&AdsServiceImpl::OnBraveNewsOptedInPrefChanged,
                           base::Unretained(this)));
@@ -1068,31 +1080,6 @@ int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
   }
 
   return ads_per_hour;
-}
-
-bool AdsServiceImpl::ShouldAllowSubdivisionTargeting() const {
-  return GetPrefService()->GetBoolean(prefs::kShouldAllowSubdivisionTargeting);
-}
-
-std::string AdsServiceImpl::GetSubdivisionTargetingCode() const {
-  return GetPrefService()->GetString(prefs::kSubdivisionTargetingSubdivision);
-}
-
-void AdsServiceImpl::SetSubdivisionTargetingCode(
-    const std::string& subdivision_targeting_code) {
-  SetStringPref(prefs::kSubdivisionTargetingSubdivision,
-                subdivision_targeting_code);
-}
-
-std::string AdsServiceImpl::GetAutoDetectedSubdivisionTargetingCode() const {
-  return GetPrefService()->GetString(
-      prefs::kSubdivisionTargetingAutoDetectedSubdivision);
-}
-
-void AdsServiceImpl::SetAutoDetectedSubdivisionTargetingCode(
-    const std::string& subdivision_targeting_code) {
-  SetStringPref(prefs::kSubdivisionTargetingAutoDetectedSubdivision,
-                subdivision_targeting_code);
 }
 
 bool AdsServiceImpl::NeedsBrowserUpgradeToServeAds() const {

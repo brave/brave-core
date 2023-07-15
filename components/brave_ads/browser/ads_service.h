@@ -52,27 +52,6 @@ class AdsService : public KeyedService {
   // Returns the maximum number of notification ads that can be served per hour.
   virtual int64_t GetMaximumNotificationAdsPerHour() const = 0;
 
-  // Returns |true| if subdivision targeting is supported.
-  virtual bool ShouldAllowSubdivisionTargeting() const = 0;
-
-  // Returns the subdivision targeting code. See
-  // https://en.wikipedia.org/wiki/ISO_3166-2.
-  virtual std::string GetSubdivisionTargetingCode() const = 0;
-
-  // Called to set the subdivision targeting code. See
-  // https://en.wikipedia.org/wiki/ISO_3166-2.
-  virtual void SetSubdivisionTargetingCode(
-      const std::string& subdivision_targeting_code) = 0;
-
-  // Returns the auto detected subdivision targeting code. See
-  // https://en.wikipedia.org/wiki/ISO_3166-2.
-  virtual std::string GetAutoDetectedSubdivisionTargetingCode() const = 0;
-
-  // Called to set the auto detected subdivision targeting code. See
-  // https://en.wikipedia.org/wiki/ISO_3166-2.
-  virtual void SetAutoDetectedSubdivisionTargetingCode(
-      const std::string& subdivision_targeting_code) = 0;
-
   // Called if a browser upgrade is required to serve ads.
   virtual bool NeedsBrowserUpgradeToServeAds() const = 0;
 
