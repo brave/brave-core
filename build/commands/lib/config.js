@@ -1065,6 +1065,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     let env = Object.assign({}, process.env)
     env = this.addPathToEnv(env, path.join(this.depotToolsDir, 'python-bin'), true)
     env = this.addPathToEnv(env, path.join(this.depotToolsDir, 'python2-bin'), true)
+    env = this.addPathToEnv(env, path.join(this.srcDir, 'third_party', 'rust-toolchain', 'bin'), true)
     env = this.addPathToEnv(env, this.depotToolsDir, true)
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'brave', 'chromium_src', 'python_modules'))
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'brave', 'script'))
@@ -1074,7 +1075,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'third_party', 'depot_tools'))
     env.PYTHONUNBUFFERED = '1'
     env.TARGET_ARCH = this.gypTargetArch // for brave scripts
-
+    env.RUSTUP_HOME = path.join(this.srcDir, 'third_party', 'rust-toolchain')
     // Fix `gclient runhooks` - broken since depot_tools a7b20b34f85432b5958963b75edcedfef9cf01fd
     env.GSUTIL_ENABLE_LUCI_AUTH = '0'
 
