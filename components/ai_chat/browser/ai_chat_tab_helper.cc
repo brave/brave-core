@@ -45,6 +45,11 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents)
       prefs::kBraveChatHasSeenDisclaimer,
       base::BindRepeating(&AIChatTabHelper::OnUserOptedIn,
                           weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      prefs::kBraveChatAutoGenerateQuestions,
+      base::BindRepeating(
+          &AIChatTabHelper::OnPermissionChangedAutoGenerateQuestions,
+          weak_ptr_factory_.GetWeakPtr()));
   ai_chat_api_ =
       std::make_unique<AIChatAPI>(web_contents->GetBrowserContext()
                                       ->GetDefaultStoragePartition()
@@ -63,6 +68,7 @@ void AIChatTabHelper::OnConversationActiveChanged(bool is_conversation_active) {
   is_conversation_active_ = is_conversation_active;
   DVLOG(3) << "Conversation active changed: " << is_conversation_active;
   MaybeGeneratePageText();
+  MaybeGenerateQuestions();
 }
 
 bool AIChatTabHelper::HasUserOptedIn() {
@@ -71,6 +77,10 @@ bool AIChatTabHelper::HasUserOptedIn() {
 
 void AIChatTabHelper::OnUserOptedIn() {
   MaybeGeneratePageText();
+}
+
+void AIChatTabHelper::OnPermissionChangedAutoGenerateQuestions() {
+  MaybeGenerateQuestions();
 }
 
 std::string AIChatTabHelper::GetConversationHistoryString() {
@@ -143,6 +153,18 @@ void AIChatTabHelper::MaybeGeneratePageText() {
                      weak_ptr_factory_.GetWeakPtr(), current_navigation_id_));
 }
 
+void AIChatTabHelper::MaybeGenerateQuestions() {
+  // Automatically fetch questions related to page content, if allowed
+  bool can_auto_fetch_questions =
+      HasUserOptedIn() && is_conversation_active_ &&
+      pref_service_->GetBoolean(
+          ai_chat::prefs::kBraveChatAutoGenerateQuestions) &&
+      !article_text_.empty() && (suggested_questions_.size() <= 1);
+  if (can_auto_fetch_questions) {
+    GenerateQuestions();
+  }
+}
+
 void AIChatTabHelper::OnTabContentRetrieved(int64_t for_navigation_id,
                                             std::string contents_text,
                                             bool is_video) {
@@ -185,15 +207,7 @@ void AIChatTabHelper::OnTabContentRetrieved(int64_t for_navigation_id,
   suggested_questions_.emplace_back(is_video_ ? "Summarize this video"
                                               : "Summarize this page");
   OnSuggestedQuestionsChanged();
-  // Automatically fetch questions related to page content, if allowed
-  bool can_auto_fetch_questions =
-      HasUserOptedIn() && is_conversation_active_ &&
-      pref_service_->GetBoolean(
-          ai_chat::prefs::kBraveChatAutoGenerateQuestions) &&
-      !article_text_.empty() && (suggested_questions_.size() <= 1);
-  if (can_auto_fetch_questions) {
-    GenerateQuestions();
-  }
+  MaybeGenerateQuestions();
 }
 
 void AIChatTabHelper::CleanUp() {
