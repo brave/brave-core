@@ -9,7 +9,8 @@ Jenkinsfile @brave/devops-team
 DEPS @brave/deps-reviewers
 script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
-**/Cargo.* @brave/rust-deps-reviewers
+**/Cargo.* @brave/rust-deps-reviewers @bridiver
+third_party/rust @brave/rust-deps-reviewers @bridiver
 
 # Strings
 **/*.grd @brave/string-reviewers-team
