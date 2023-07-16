@@ -350,8 +350,10 @@ std::string AIChatTabHelper::BuildClaudePrompt(
   // TODO(petemill): Tokenize the summary question so that we
   // don't have to do this weird substitution.
   if (turn.text == "Summarize this video") {
-    question_part =
-        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO);
+    question_part = base::StrCat(
+        {l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO_BULLETS),
+         l10n_util::GetStringUTF8(
+             IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO_TIMESTAMPS)});
   } else {
     question_part = turn.text;
   }
@@ -392,8 +394,9 @@ std::string AIChatTabHelper::BuildLlamaPrompt(
   // TODO(petemill): Tokenize the summary question so that we
   // don't have to do this weird substitution.
   if (turn.text == "Summarize this video") {
+    // Only ask llama to include bullet points in the summary, not timestamps.
     question_part =
-        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO);
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO_BULLETS);
   } else {
     question_part = turn.text;
   }

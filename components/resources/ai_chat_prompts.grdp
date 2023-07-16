@@ -39,7 +39,9 @@ Here is the conversational history (between the user and you) prior to the quest
 <message name="IDS_AI_CHAT_QUESTION_PROMPT_SEGMENT" translateable="false">
 Propose up to 3 very short questions that a reader may ask about the content. Consider intriguing or unusual elements of the content, or structurally important. Separate each suggested question with the character "|". End the question list with a &lt;/response&gt; tag.</message>
 
-<message name="IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO" translateable="false">Provide a concise bullet list of the most important points of the video along with a short summary of each point. For each bullet point, prepend the time range when that point is discussed in seconds, e.g. [23s-68s].</message>
+<message name="IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO_TIMESTAMPS" translateable="false"> For each bullet point, prepend the time range when that point is discussed in seconds, e.g. [23s-68s].</message>
+
+<message name="IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO_BULLETS" translateable="false">Provide a concise bullet list of the most important points of the video along with a short summary of each point.</message>
 
 <message name="IDS_AI_CHAT_LLAMA_PROMPT_START" translateable="false">
 Below is an instruction that describes a task. Write a response that appropriately completes the request.
