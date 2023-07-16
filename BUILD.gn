@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
-import("//brave/build/rust/config.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//build/config/zip.gni")
@@ -611,6 +610,37 @@ if (is_mac) {
   }
 }
 
+cargo_audit_target_dir = "$root_build_dir/cargo_audit"
+cargo_audit_exe = "$cargo_audit_target_dir/release/cargo-audit"
+cargo_audit_src = "//brave/tools/crates/cargo_audit/v0_17/crate"
+if (is_win) {
+  cargo_audit_exe += ".exe"
+}
+
+action("build_cargo_audit") {
+  script = "//build/gn_run_binary.py"
+
+  cargo_exe = "//third_party/rust-toolchain/bin/cargo"
+  if (is_win) {
+    cargo_exe += ".exe"
+  }
+
+  inputs = [
+    cargo_exe,
+    "$cargo_audit_src/Cargo.lock",
+  ]
+  outputs = [ cargo_audit_exe ]
+  args = [
+    rebase_path(cargo_exe),
+    "build",
+    "--release",
+    "--manifest-path",
+    rebase_path("$cargo_audit_src/Cargo.toml"),
+    "--target-dir",
+    rebase_path(cargo_audit_target_dir),
+  ]
+}
+
 action("audit_deps") {
   script = "//brave/script/audit_deps.py"
 
@@ -618,13 +648,14 @@ action("audit_deps") {
 
   args = [
     "--source_root=" + rebase_path("//brave"),
-    "--rustup_home=" + rebase_path(rustup_home),
-    "--cargo_home=" + rebase_path(rustup_home),
+    "--cargo_audit_exe=" + rebase_path(cargo_audit_exe),
   ]
 
   if (audit_dev_deps) {
     args += [ "--audit_dev_deps" ]
   }
+
+  deps = [ ":build_cargo_audit" ]
 }
 
 group("tools") {
