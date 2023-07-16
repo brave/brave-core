@@ -60,7 +60,7 @@ base::Value::Dict CreateApiParametersDict(
 
   const auto model_name = ai_chat::features::kAIModelName.Get();
   const double temp = ai_chat::features::kAITemperature.Get();
-  
+
   DCHECK(!model_name.empty());
 
   dict.Set("prompt", prompt);
