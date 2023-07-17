@@ -257,12 +257,7 @@ static_library("browser") {
       "wallet_data_files_installer_android_util.cc",
       "wallet_data_files_installer_android_util.h",
     ]
-    deps += [
-      # Required for #include "brave/build/android/jni_headers/...
-      "//brave/build/android:jni_headers",  # TODO: make separate, as
-                                            # "//brave/browser/brave_ads/android:jni_headers",
-                                            # for example does
-    ]
+    deps += [ "//brave/build/android:jni_headers" ]
   }
 }
 

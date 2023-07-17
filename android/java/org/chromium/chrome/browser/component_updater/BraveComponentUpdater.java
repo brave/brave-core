@@ -21,11 +21,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Class for handling progress of component update in Java.
- * Basically this is just bridge to native component updater classes.
+ * Basically this is just bridge to native component updater classes at
+ * brave_component_updater_android.cc.
  */
 @JNINamespace("chrome::android")
 public class BraveComponentUpdater {
-    private static final String TAG = "ComponentUpdater";
+    private static final String TAG = "BCU";
     private long mNativeBraveComponentUpdaterAndroid;
     private static BraveComponentUpdater sBraveComponentUpdater;
 
