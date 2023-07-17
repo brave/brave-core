@@ -45,6 +45,10 @@ function App () {
     getPageHandlerInstance().pageHandler.submitHumanConversationEntry(question)
   }
 
+  const handleRetrySubmit = (uuid: string) => {
+    getPageHandlerInstance().pageHandler.retryHumanConversationEntry(uuid)
+  }
+
   const handleOnEnableAutoGenerateQuestion = () => {
     model.setUserAllowsAutoGenerating(true)
     model.generateSuggestedQuestions()
@@ -62,6 +66,7 @@ function App () {
           isLoading={model.isGenerating}
           suggestedQuestions={model.suggestedQuestions}
           onQuestionSubmit={handleQuestionSubmit}
+          onRetrySubmit={handleRetrySubmit}
         />
       </>
     )

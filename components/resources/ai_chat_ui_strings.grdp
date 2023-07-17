@@ -28,7 +28,10 @@
     Ask Brave AI
   </message>
   <message name="IDS_CHAT_UI_API_ERROR" desc="Describes an error occured submitting the API request">
-    There was an error processing your message, please try again.
+    There was a network issue connecting to Leo, check your connection and try again
+  </message>
+  <message name="IDS_CHAT_UI_API_TOO_MANY_REQUESTS_ERROR" desc="Describes an error occured when max count of API requests exceeded">
+    You have reached the current rate limit for Leo. Please try again later
   </message>
   <message name="IDS_CHAT_UI_ENABLE_QUESTIONS_TITLE" desc="Title to enable suggested questions">
     Enable suggested questions?
@@ -41,5 +44,8 @@
   </message>
   <message name="IDS_CHAT_UI_NO_THANKS_BUTTON_LABEL" desc="A button label to skip suggested questions option">
     No Thanks
+  </message>
+  <message name="IDS_CHAT_UI_RETRY_BUTTON_LABEL" desc="A button label to retry question">
+    Retry
   </message>
 </grit-part>

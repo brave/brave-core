@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_TAB_HELPER_H_
 
+#include <map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -61,10 +62,14 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // whether content is retrieved and queries are sent for the conversation
   // when the page changes.
   void OnConversationActiveChanged(bool is_conversation_active);
-  void AddToConversationHistory(const mojom::ConversationTurn& turn);
-  void UpdateOrCreateLastAssistantEntry(const std::string& text);
+  void AddToConversationHistory(const mojom::ConversationTurn& turn,
+                                const bool& is_retry);
+  void UpdateOrCreateLastAssistantEntry(const std::string& text,
+                                        const std::string& uuid,
+                                        const bool& is_retry);
   void MakeAPIRequestWithConversationHistoryUpdate(
       const mojom::ConversationTurn& turn);
+  void RetryAPIRequest(const std::string& uuid);
   bool IsRequestInProgress();
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
@@ -93,8 +98,12 @@ class AIChatTabHelper : public content::WebContentsObserver,
                              std::string contents_text,
                              bool is_video = false);
   void OnAPIStreamDataReceived(int64_t for_navigation_id,
+                               const std::string& uuid,
+                               const bool& is_retry,
                                data_decoder::DataDecoder::ValueOrError result);
   void OnAPIStreamDataComplete(int64_t for_navigation_id,
+                               const std::string& uuid,
+                               const bool& is_retry,
                                api_request_helper::APIRequestResult result);
   void OnAPISuggestedQuestionsResponse(
       int64_t for_navigation_id,
@@ -126,6 +135,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   // TODO(nullhook): Abstract the data model
   std::vector<mojom::ConversationTurn> chat_history_;
+  std::map<std::string, std::string> chat_prompts_retry_cache_;
   std::string article_text_;
   bool is_conversation_active_ = false;
   bool is_page_text_fetch_in_progress_ = false;
