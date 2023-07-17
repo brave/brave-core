@@ -110,8 +110,9 @@ void BraveTab::UpdateIconVisibility() {
               controller()->GetBrowser());
       // When floating mode enabled, we don't show close button as the tab strip
       // will be expanded as soon as mouse hovers onto the tab.
-      showing_close_button_ =
-          !showing_alert_indicator_ && !can_enter_floating_mode && is_active;
+      showing_close_button_ = !showing_alert_indicator_ &&
+                              !can_enter_floating_mode && is_active &&
+                              mouse_hovered();
       showing_icon_ = !showing_alert_indicator_ && !showing_close_button_;
     }
   }
@@ -119,16 +120,23 @@ void BraveTab::UpdateIconVisibility() {
 
 void BraveTab::Layout() {
   Tab::Layout();
+
+  auto* close_ink_drop = views::InkDrop::Get(close_button_)->GetInkDrop();
+  DCHECK(close_ink_drop);
+
   if (IsAtMinWidthForVerticalTabStrip()) {
     if (showing_close_button_) {
       close_button_->SetX(GetLocalBounds().CenterPoint().x() -
                           (close_button_->width() / 2));
 
       // In order to reset ink drop bounds based on new padding.
-      auto* ink_drop = views::InkDrop::Get(close_button_)->GetInkDrop();
-      DCHECK(ink_drop);
-      ink_drop->HostSizeChanged(close_button_->size());
+      close_ink_drop->HostSizeChanged(close_button_->size());
     }
+    // When the tab is collapsed in vertical tabs mode, add back a short hover
+    // animation for the close button to smooth out the tab hover UX.
+    close_ink_drop->SetHoverHighlightFadeDuration(base::Milliseconds(150));
+  } else {
+    close_ink_drop->SetHoverHighlightFadeDuration(base::TimeDelta());
   }
 }
 
