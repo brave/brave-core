@@ -267,6 +267,7 @@ void AIChatTabHelper::GenerateQuestions() {
   OnSuggestedQuestionsChanged();
 
   std::string prompt;
+  std::vector<std::string> stop_sequences;
   if (ai_chat::features::kAIModelName.Get() == kOpenLlamaModelName) {
     if (is_video_) {
       // Suggested questions on videos is not supported for llama right now.
@@ -279,6 +280,8 @@ void AIChatTabHelper::GenerateQuestions() {
                  IDS_AI_CHAT_ARTICLE_QUESTION_LLAMA_PROMPT_SEGMENT),
              {article_text_}, nullptr),
          "\n\n", l10n_util::GetStringUTF8(IDS_AI_CHAT_PROMPT_END)});
+    stop_sequences.push_back("\n\nUser:");
+    stop_sequences.push_back("\nUser:");
   } else {
     prompt = base::StrCat(
         {GetHumanPromptSegment(),
@@ -289,13 +292,14 @@ void AIChatTabHelper::GenerateQuestions() {
              {article_text_}, nullptr),
          "\n\n", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PROMPT_SEGMENT),
          GetAssistantPromptSegment(), " <response>"});
+    stop_sequences.push_back("</response>");
   }
   // Make API request for questions.
   // Do not call SetRequestInProgress, this progress
   // does not need to be shown to the UI.
   auto navigation_id_for_query = current_navigation_id_;
   ai_chat_api_->QueryPrompt(
-      prompt, {"</response>"},
+      prompt, stop_sequences,
       base::BindOnce(&AIChatTabHelper::OnAPISuggestedQuestionsResponse,
                      weak_ptr_factory_.GetWeakPtr(),
                      std::move(navigation_id_for_query)));
