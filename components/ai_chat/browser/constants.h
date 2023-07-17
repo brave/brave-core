@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_BROWSER_CONSTANTS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_BROWSER_CONSTANTS_H_
 
+#include <string>
+
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/webui/web_ui_util.h"
 
@@ -22,6 +24,9 @@ extern const char kAIPromptPlaceholder[];
 extern const char kAIChatCompletionPath[];
 
 base::span<const webui::LocalizedString> GetLocalizedStrings();
+
+std::string GetHumanPromptSegment();
+std::string GetAssistantPromptSegment();
 
 }  // namespace ai_chat
 

@@ -259,21 +259,23 @@ void AIChatTabHelper::GenerateQuestions() {
   OnSuggestedQuestionsChanged();
 
   std::string prompt = base::StrCat(
-      {base::ReplaceStringPlaceholders(
+      {GetHumanPromptSegment(),
+       base::ReplaceStringPlaceholders(
            l10n_util::GetStringUTF8(is_video_
                                         ? IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT
                                         : IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT),
            {article_text_}, nullptr),
        "\n\n", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PROMPT_SEGMENT),
-       ai_chat::kAIPrompt, " <response>"});
+       GetAssistantPromptSegment(), " <response>"});
   // Make API request for questions.
   // Do not call SetRequestInProgress, this progress
   // does not need to be shown to the UI.
   auto navigation_id_for_query = current_navigation_id_;
   ai_chat_api_->QueryPrompt(
-      prompt, base::BindOnce(&AIChatTabHelper::OnAPISuggestedQuestionsResponse,
-                             weak_ptr_factory_.GetWeakPtr(),
-                             std::move(navigation_id_for_query)));
+      prompt, {"</response>"},
+      base::BindOnce(&AIChatTabHelper::OnAPISuggestedQuestionsResponse,
+                     weak_ptr_factory_.GetWeakPtr(),
+                     std::move(navigation_id_for_query)));
 }
 
 void AIChatTabHelper::OnAPISuggestedQuestionsResponse(
@@ -368,11 +370,11 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
                 {GetConversationHistoryString()}, nullptr);
 
   std::string prompt = base::StrCat(
-      {prompt_segment_article,
+      {GetHumanPromptSegment(), prompt_segment_article,
        base::ReplaceStringPlaceholders(
            l10n_util::GetStringUTF8(IDS_AI_CHAT_ASSISTANT_PROMPT_SEGMENT),
            {prompt_segment_history, question_part}, nullptr),
-       ai_chat::kAIPrompt, " <response>\n"});
+       GetAssistantPromptSegment(), " <response>\n"});
 
   if (turn.visibility != ConversationTurnVisibility::HIDDEN) {
     AddToConversationHistory(turn);
@@ -388,7 +390,7 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
                      weak_ptr_factory_.GetWeakPtr(), current_navigation_id_);
 
   is_request_in_progress_ = true;
-  ai_chat_api_->QueryPrompt(std::move(prompt),
+  ai_chat_api_->QueryPrompt(std::move(prompt), {"</response>"},
                             std::move(data_completed_callback),
                             std::move(data_received_callback));
 }
