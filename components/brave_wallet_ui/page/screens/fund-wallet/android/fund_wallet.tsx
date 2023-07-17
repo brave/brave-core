@@ -29,6 +29,8 @@ import BraveCoreThemeProvider
 import { FundWalletScreen } from '../fund-wallet'
 import { LibContext } from '../../../../common/context/lib.context'
 import { ApiProxyContext } from '../../../../common/context/api-proxy.context'
+import { setIconBasePath } from '@brave/leo/react/icon'
+setIconBasePath('chrome://resources/brave-icons')
 
 export function AndroidFundWalletApp() {
   return (
@@ -49,7 +51,7 @@ export function AndroidFundWalletApp() {
     </Provider>
   )
 }
-
+// TODO: write tests for buy tab web ui
 function initialize() {
   initLocale(loadTimeData.data_)
   store.dispatch(WalletActions.initialize({}))
