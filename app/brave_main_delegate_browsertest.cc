@@ -8,9 +8,11 @@
 #include "build/build_config.h"
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/companion/core/features.h"
+#include "chrome/browser/companion/visual_search/features.h"
 #include "chrome/browser/dips/dips_features.h"
 #include "chrome/browser/domain_reliability/service_factory.h"
 #include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
+#include "chrome/browser/promos/promos_features.h"
 #include "chrome/browser/signin/signin_features.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_switches.h"
@@ -21,6 +23,7 @@
 #include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/commerce/core/commerce_feature_list.h"
 #include "components/component_updater/component_updater_switches.h"
+#include "components/content_settings/core/common/features.h"
 #include "components/embedder_support/switches.h"
 #include "components/history/core/browser/features.h"
 #include "components/history_clusters/core/features.h"
@@ -62,6 +65,10 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/translate/core/common/translate_util.h"
 #include "extensions/common/extension_features.h"
+#endif
+
+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
+#include "components/device_signals/core/common/signals_features.h"
 #endif
 
 using BraveMainDelegateBrowserTest = PlatformBrowserTest;
@@ -112,6 +119,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kAdInterestGroupAPI,
     &blink::features::kAllowURNsInIframes,
     &blink::features::kBackgroundResourceFetch,
+    &blink::features::kBiddingAndScoringDebugReportingAPI,
     &blink::features::kBrowsingTopics,
     &blink::features::kBrowsingTopicsXHR,
     &blink::features::kClientHintsMetaEquivDelegateCH,
@@ -143,8 +151,13 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &commerce::kRetailCoupons,
     &companion::features::internal::kCompanionEnabledByObservingExpsNavigations,
     &companion::features::internal::kSidePanelCompanion,
+    &companion::visual_search::features::kVisualSearchSuggestions,
+    &content_settings::features::kUserBypassUI,
     &dips::kFeature,
     &enterprise_connectors::kLocalContentAnalysisEnabled,
+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
+    &enterprise_signals::features::kDeviceSignalsConsentDialog,
+#endif
 #if !BUILDFLAG(IS_ANDROID)
     &extensions_features::kExtensionsManifestV3Only,
 #endif
@@ -168,6 +181,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kNotificationTriggers,
     &features::kOmniboxTriggerForNoStatePrefetch,
     &features::kOmniboxTriggerForPrerender2,
+#if BUILDFLAG(IS_ANDROID)
+    &features::kPrivacyGuideAndroidPostMVP,
+#endif
     &features::kPrivacySandboxAdsAPIsOverride,
     &features::kSCTAuditing,
     &features::kSignedExchangeReportingForDistributors,
@@ -190,6 +206,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &history_clusters::internal::kHistoryClustersInternalsPage,
     &history_clusters::internal::kHistoryClustersNavigationContextClustering,
     &history_clusters::internal::kJourneys,
+    &history_clusters::internal::kJourneysImages,
     &history_clusters::internal::kJourneysNamedNewTabGroups,
     &history_clusters::internal::kJourneysZeroStateFiltering,
     &history_clusters::internal::kOmniboxAction,
@@ -212,12 +229,14 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &ntp_features::kNtpChromeCartModule,
     &ntp_features::kNtpHistoryClustersModule,
     &ntp_features::kNtpHistoryClustersModuleLoad,
+    &omnibox::kInspireMe,
     &omnibox::kOmniboxSteadyStateHeight,
     &omnibox::kRichAutocompletion,
     &optimization_guide::features::kOptimizationHints,
     &optimization_guide::features::kRemoteOptimizationGuideFetching,
     &optimization_guide::features::
         kRemoteOptimizationGuideFetchingAnonymousDataConsent,
+    &page_image_service::kImageService,
     &page_image_service::kImageServiceSuggestPoweredImages,
 #if !BUILDFLAG(IS_ANDROID)
     &page_info::kPageInfoCookiesSubpage,
@@ -230,6 +249,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &privacy_sandbox::kEnforcePrivacySandboxAttestations,
     &privacy_sandbox::kPrivacySandboxSettings3,
     &privacy_sandbox::kPrivacySandboxSettings4,
+    &promos_features::kIOSPromoPasswordBubble,
     &safe_browsing::kExtensionTelemetry,
     &safe_browsing::kExtensionTelemetryDeclarativeNetRequestSignal,
     &segmentation_platform::features::kSegmentationPlatformDeviceTier,
@@ -237,6 +257,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &send_tab_to_self::kSendTabToSelfSigninPromo,
     &shared_highlighting::kIOSSharedHighlightingV2,
     &shared_highlighting::kSharedHighlightingAmp,
+    &shared_highlighting::kSharedHighlightingManager,
     &subresource_filter::kAdTagging,
 #if !BUILDFLAG(IS_ANDROID)
     &translate::kTFLiteLanguageDetectionEnabled,
