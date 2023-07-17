@@ -52,6 +52,10 @@ class MockEthTxManagerProxy: BraveWalletEthTxManagerProxy {
   func makeErc1155Transfer(fromData from: String, to: String, tokenId: String, value: String, contractAddress: String, completion: @escaping (Bool, [NSNumber]) -> Void) {
     completion(false, [])
   }
+
+  func makeFilForwarderTransferData(_ toAddressFil: String, completion: @escaping (Bool, [NSNumber]) -> Void) {
+    completion(false, [])
+  }
 }
 
 #endif

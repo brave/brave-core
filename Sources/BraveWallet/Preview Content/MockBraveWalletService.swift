@@ -150,15 +150,15 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     self.coin = coin
   }
   
-  func addPermission(_ coin: BraveWallet.CoinType, origin: URLOrigin, account: String, completion: @escaping (Bool) -> Void) {
+  func addPermission(_ accountId: BraveWallet.AccountId, origin: URLOrigin, completion: @escaping (Bool) -> Void) {
     completion(false)
   }
   
-  func hasPermission(_ coin: BraveWallet.CoinType, origin: URLOrigin, account: String, completion: @escaping (Bool, Bool) -> Void) {
+  func hasPermission(_ accountId: BraveWallet.AccountId, origin: URLOrigin, completion: @escaping (Bool, Bool) -> Void) {
     completion(false, false)
   }
   
-  func resetPermission(_ coin: BraveWallet.CoinType, origin: URLOrigin, account: String, completion: @escaping (Bool) -> Void) {
+  func resetPermission(_ accountId: BraveWallet.AccountId, origin: URLOrigin, completion: @escaping (Bool) -> Void) {
     completion(false)
   }
   
@@ -233,6 +233,10 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   }
   
   func balanceScannerSupportedChains(_ completion: @escaping ([String]) -> Void) {
+    completion([])
+  }
+
+  func discoverEthAllowances(_ completion: @escaping ([BraveWallet.AllowanceInfo]) -> Void) {
     completion([])
   }
 }

@@ -551,7 +551,7 @@ extension CryptoStore: BraveWalletKeyringServiceObserver {
     WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(coins: [.eth, .sol])
     rejectAllPendingWebpageRequests()
   }
-  public func keyringCreated(_ keyringId: String) {
+  public func keyringCreated(_ keyringId: BraveWallet.KeyringId) {
     Task { @MainActor [weak self] in
       if let newCoin = WalletConstants.supportedCoinTypes.first(where: { $0.keyringId == keyringId }) {
         self?.userAssetManager.migrateUserAssets(for: newCoin, completion: {
@@ -560,7 +560,7 @@ extension CryptoStore: BraveWalletKeyringServiceObserver {
       }
     }
   }
-  public func keyringRestored(_ keyringId: String) {
+  public func keyringRestored(_ keyringId: BraveWallet.KeyringId) {
     // if a keyring is restored, we want to reset user assets local storage
     // and migrate with for new keyring
     WalletUserAssetGroup.removeAllGroup() { [weak self] in

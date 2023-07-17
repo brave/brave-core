@@ -38,7 +38,7 @@ class TransactionsActivityStoreTests: XCTestCase {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
     keyringService._keyringInfo = { keyringId, completion in
-      if keyringId == BraveWallet.DefaultKeyringId {
+      if keyringId == BraveWallet.KeyringId.default {
         completion(.mockDefaultKeyringInfo)
       } else {
         completion(.mockSolanaKeyringInfo)

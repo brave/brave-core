@@ -95,7 +95,7 @@ import BraveCore
         isLocked: false,
         isBackedUp: true,
         accountInfos: [])
-      if id == BraveWallet.DefaultKeyringId {
+      if id == BraveWallet.KeyringId.default {
         keyring.accountInfos = accountInfos.filter { $0.coin == .eth }
       } else {
         keyring.accountInfos = accountInfos.filter { $0.coin == .sol }

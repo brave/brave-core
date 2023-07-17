@@ -131,11 +131,18 @@ extension BraveWallet.BlockchainToken {
 
 extension BraveWallet.AccountInfo {
   static var previewAccount: BraveWallet.AccountInfo {
-    let account = BraveWallet.AccountInfo()
-    account.name = "Account 1"
-    account.address = "0x879240B2D6179E9EC40BC2AFFF9E9EC40BC2AFFF"
-    account.keyringId = BraveWallet.DefaultKeyringId
-    return account
+    .init(
+      accountId: .init(
+        coin: .eth,
+        keyringId: BraveWallet.KeyringId.default,
+        kind: .derived,
+        address: "0x879240B2D6179E9EC40BC2AFFF9E9EC40BC2AFFF",
+        uniqueKey: "0x879240B2D6179E9EC40BC2AFFF9E9EC40BC2AFFF"
+      ),
+      address: "0x879240B2D6179E9EC40BC2AFFF9E9EC40BC2AFFF",
+      name: "Account 1",
+      hardware: nil
+    )
   }
 }
 
@@ -172,7 +179,8 @@ extension BraveWallet.TransactionInfo {
       confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
       originInfo: .init(),
       groupId: nil,
-      chainId: BraveWallet.MainnetChainId
+      chainId: BraveWallet.MainnetChainId,
+      effectiveRecipient: "0x3f2116ef98fcab1a9c3c2d8988e0064ab59acfca"
     )
   }
   static var previewConfirmedSwap: BraveWallet.TransactionInfo {
@@ -210,7 +218,8 @@ extension BraveWallet.TransactionInfo {
       confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
       originInfo: .init(),
       groupId: nil,
-      chainId: BraveWallet.MainnetChainId
+      chainId: BraveWallet.MainnetChainId,
+      effectiveRecipient: "0xdef1c0ded9bec7f1a1670819833240f027b25eff"
     )
   }
   /// Approved Unlimited DAI
@@ -246,7 +255,8 @@ extension BraveWallet.TransactionInfo {
       confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
       originInfo: .init(),
       groupId: nil,
-      chainId: BraveWallet.MainnetChainId
+      chainId: BraveWallet.MainnetChainId,
+      effectiveRecipient: BraveWallet.BlockchainToken.previewDaiToken.contractAddress
     )
   }
   /// Solana System Transfer
@@ -283,7 +293,8 @@ extension BraveWallet.TransactionInfo {
       confirmedTime: Date(timeIntervalSince1970: 1667854820), // Monday, November 7, 2022 9:00:20 PM GMT
       originInfo: .init(),
       groupId: nil,
-      chainId: BraveWallet.SolanaMainnet
+      chainId: BraveWallet.SolanaMainnet,
+      effectiveRecipient: nil // Currently only available for ETH and FIL
     )
   }
   /// Solana Token Transfer
@@ -320,7 +331,8 @@ extension BraveWallet.TransactionInfo {
       confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
       originInfo: .init(),
       groupId: nil,
-      chainId: BraveWallet.SolanaMainnet
+      chainId: BraveWallet.SolanaMainnet,
+      effectiveRecipient: nil // Currently only available for ETH and FIL
     )
   }
   static private func _transactionBase64ToData(_ base64String: String) -> [NSNumber] {

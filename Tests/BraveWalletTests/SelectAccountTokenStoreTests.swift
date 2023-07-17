@@ -52,12 +52,16 @@ import BraveCore
   ]
   
   private let mockEthAccount2: BraveWallet.AccountInfo = .init(
+    accountId: .init(
+      coin: .eth,
+      keyringId: BraveWallet.KeyringId.default,
+      kind: .derived,
+      address: "mock_eth_id_2",
+      uniqueKey: "mock_eth_id_2"
+    ),
     address: "mock_eth_id_2",
     name: "Ethereum Account 2",
-    isImported: false,
-    hardware: nil,
-    coin: .eth,
-    keyringId: BraveWallet.DefaultKeyringId
+    hardware: nil
   )
   
   private let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
@@ -102,9 +106,9 @@ import BraveCore
     
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._keyringInfo = { keyringId, completion in
-      if keyringId == BraveWallet.DefaultKeyringId {
+      if keyringId == BraveWallet.KeyringId.default {
         let keyring: BraveWallet.KeyringInfo = .init(
-          id: BraveWallet.DefaultKeyringId,
+          id: BraveWallet.KeyringId.default,
           isKeyringCreated: true,
           isLocked: false,
           isBackedUp: true,
@@ -113,7 +117,7 @@ import BraveCore
         completion(keyring)
       } else {
         let keyring: BraveWallet.KeyringInfo = .init(
-          id: BraveWallet.SolanaKeyringId,
+          id: BraveWallet.KeyringId.solana,
           isKeyringCreated: true,
           isLocked: false,
           isBackedUp: true,

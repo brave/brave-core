@@ -445,7 +445,8 @@ class NewTabPageViewController: UIViewController {
       rewards.ads.reportNewTabPageAdEvent(
         background.wallpaperId.uuidString,
         creativeInstanceId: sponsoredBackground.creativeInstanceId,
-        eventType: event
+        eventType: event,
+        completion: { _ in }
       )
     }
   }
@@ -560,7 +561,7 @@ class NewTabPageViewController: UIViewController {
       Preferences.BraveNews.userOptedIn.value = true
       Preferences.BraveNews.isShowingOptIn.value = false
       Preferences.BraveNews.isEnabled.value = true
-      rewards.ads.initialize { [weak self] _ in
+      rewards.ads.initialize(walletInfo: .init()) { [weak self] _ in
         // Initialize ads if it hasn't already been done
         self?.loadFeedContents()
       }
@@ -588,7 +589,8 @@ class NewTabPageViewController: UIViewController {
         rewards.ads.reportPromotedContentAdEvent(
           item.content.urlHash,
           creativeInstanceId: creativeInstanceID,
-          eventType: .clicked
+          eventType: .clicked,
+          completion: { _ in }
         )
       }
       delegate?.navigateToInput(
@@ -616,7 +618,8 @@ class NewTabPageViewController: UIViewController {
         rewards.ads.reportInlineContentAdEvent(
           ad.placementID,
           creativeInstanceId: ad.creativeInstanceID,
-          eventType: .clicked
+          eventType: .clicked,
+          completion: { _ in }
         )
       }
       delegate?.navigateToInput(
