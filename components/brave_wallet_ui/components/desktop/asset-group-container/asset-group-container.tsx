@@ -62,6 +62,7 @@ import {
 interface Props {
   network?: BraveWallet.NetworkInfo | undefined
   account?: BraveWallet.AccountInfo | undefined
+  isSkeleton?: boolean
   isDisabled?: boolean
   balance: string
   hideBalance?: boolean
@@ -74,6 +75,7 @@ export const AssetGroupContainer = (props: Props) => {
     balance,
     hideBalance,
     account,
+    isSkeleton,
     isDisabled,
     network,
     children,
@@ -175,7 +177,16 @@ export const AssetGroupContainer = (props: Props) => {
         onClick={onToggleCollapsed}
         disabled={isDisabled}
       >
-        {network &&
+        {isSkeleton &&
+          <Row
+            width='unset'
+          >
+            <LoadingSkeleton width={24} height={24} circle={!!network} />
+            <HorizontalSpace space='16px' />
+            <LoadingSkeleton width={60} height={14} />
+          </Row>
+        }
+        {network && !isSkeleton &&
           <Row
             width='unset'
           >
@@ -194,7 +205,7 @@ export const AssetGroupContainer = (props: Props) => {
           </Row>
         }
 
-        {account &&
+        {account && !isSkeleton &&
           <Row
             width='unset'
           >
