@@ -458,7 +458,7 @@ if (should_generate_symbols) {
       output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
     }
 
-    deps = [ "//brave/app/$current_os:symbol_dist_resources" ]
+    deps = [ "//brave/app/$target_os:symbol_dist_resources" ]
 
     if (is_win) {
       dir_inputs = [ "$brave_product_name.syms" ]
@@ -490,7 +490,7 @@ if (should_generate_symbols) {
 group("create_symbols_dist") {
   # Currently on some platforms (Android, Linux) this target generate more
   # than just symbols, so always depend on it.
-  public_deps = [ "//brave/app/$current_os:symbol_dist_resources" ]
+  public_deps = [ "//brave/app/$target_os:symbol_dist_resources" ]
 
   if (should_generate_symbols) {
     public_deps += [
@@ -547,7 +547,7 @@ action("create_dist_zips") {
 
     deps = [
       ":brave_license_dist_resources",
-      "app/$current_os:dist_resources",
+      "app/$target_os:dist_resources",
     ]
 
     if (!is_mac && !is_android && !is_ios) {
