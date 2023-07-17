@@ -133,6 +133,7 @@ class PlaylistService : public KeyedService,
   std::vector<mojom::PlaylistItemPtr> GetAllPlaylistItems();
   mojom::PlaylistItemPtr GetPlaylistItem(const std::string& id);
   mojom::PlaylistPtr GetPlaylist(const std::string& id);
+  std::vector<mojom::PlaylistPtr> GetAllPlaylists();
 
   // mojom::PlaylistService:
   // TODO(sko) Make getters without callbacks and simplify codes in

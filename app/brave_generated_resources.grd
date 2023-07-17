@@ -1138,7 +1138,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
             Open in Playlist
           </message>
           <message name="IDS_PLAYLIST_CHANGE_FOLDER" desc="A menu name to move items to another folder">
-            Open Folder
+            Change Folder
           </message>
           <message name="IDS_PLAYLIST_REMOVE_FROM_PLAYLIST" desc="A menu name to remove items">
             Remove from Playlist
@@ -1155,7 +1155,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
             Open in playlist
           </message>
           <message name="IDS_PLAYLIST_CHANGE_FOLDER" desc="A menu name to move items to another folder">
-            Open folder
+            Change folder
           </message>
           <message name="IDS_PLAYLIST_REMOVE_FROM_PLAYLIST" desc="A menu name to remove items">
             Remove from Playlist
@@ -1167,6 +1167,30 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
             Add selected
           </message>
         </if>
+        <message name="IDS_PLAYLIST_MOVE_MEDIA_DIALOG_TITLE" desc="A window title for a dialog to move media to another folder">
+          Move Media
+        </message>
+        <message name="IDS_PLAYLIST_MOVE_MEDIA_DIALOG_NEW_PLAYLIST" desc="A label for a button to create a new playlist and move media to it">
+          New Playlist
+        </message>
+        <message name="IDS_PLAYLIST_MOVE_MEDIA_DIALOG_BACK" desc="A label for 'Back' button ">
+          Back
+        </message>
+        <message name="IDS_PLAYLIST_MOVE_MEDIA_DIALOG_OK" desc="A label for 'OK' button on move dialog">
+          Save
+        </message>
+        <message name="IDS_PLAYLIST_MOVE_MEDIA_DIALOG_CREATE_AND_MOVE" desc="A label for 'OK' button when creating a new playlist and moving media">
+          Create and move
+        </message>
+        <message name="IDS_PLAYLIST_MOVE_MEDIA_DIALOG_DESCRIPTION" desc="A description for move dialog">
+          Select a folder to move this media to
+        </message>
+        <message name="IDS_PLAYLIST_MOVE_MEDIA_DIALOG_PLAYLIST_NAME" desc="A title for new playlist's name textfield">
+          Playlist name
+        </message>
+        <message name="IDS_PLAYLIST_MOVE_MEDIA_DIALOG_SELECTED_ITEMS" desc="Shows how many items are about to be moved">
+          <ph name="NUM_ITEMS">$1<ex>4</ex></ph> selected
+        </message>
       </if>
 
       <!--Add new items to the appropriate sections above -->

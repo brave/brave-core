@@ -102,11 +102,13 @@
     E_CPONLY(kColorBraveVerticalTabNTBTextColor)        \
     E_CPONLY(kColorBraveVerticalTabNTBShortcutTextColor)
 
-#define BRAVE_PLAYLIST_COLOR_IDS                    \
-    E_CPONLY(kColorBravePlaylistAddedIcon)          \
-    E_CPONLY(kColorBravePlaylistCheckedIcon)        \
-    E_CPONLY(kColorBravePlaylistSelectedBackground) \
-    E_CPONLY(kColorBravePlaylistListBorder)
+#define BRAVE_PLAYLIST_COLOR_IDS                                      \
+    E_CPONLY(kColorBravePlaylistAddedIcon)                            \
+    E_CPONLY(kColorBravePlaylistCheckedIcon)                          \
+    E_CPONLY(kColorBravePlaylistSelectedBackground)                   \
+    E_CPONLY(kColorBravePlaylistListBorder)                           \
+    E_CPONLY(kColorBravePlaylistMoveDialogDescription)                \
+    E_CPONLY(kColorBravePlaylistMoveDialogCreatePlaylistAndMoveTitle)
 
 #define BRAVE_COLOR_IDS               \
     BRAVE_COMMON_COLOR_IDS            \

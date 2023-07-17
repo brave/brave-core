@@ -12,7 +12,9 @@
 
 #include "brave/browser/playlist/playlist_tab_helper.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/views/playlist/playlist_action_dialogs.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
+#include "brave/browser/ui/views/playlist/selectable_list_view.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_theme_resources.h"
@@ -45,30 +47,6 @@ void ShowBubble(std::unique_ptr<ActionBubbleView> bubble) {
   auto* widget = views::BubbleDialogDelegateView::CreateBubble(g_bubble);
   widget->Show();
 }
-
-////////////////////////////////////////////////////////////////////////////////
-// DefaultThumbnailBackground
-//
-// The default thumbnail could be used in various ratio. So we use static image
-// for foreground and draw background programmatically.
-class DefaultThumbnailBackground : public views::Background {
- public:
-  using Background::Background;
-  ~DefaultThumbnailBackground() override = default;
-
-  // views::Background:
-  void Paint(gfx::Canvas* canvas, views::View* view) const override {
-    const auto& bounds = view->GetContentsBounds();
-    cc::PaintFlags flags;
-    flags.setBlendMode(SkBlendMode::kSrcOver);
-    flags.setShader(
-        gfx::CreateGradientShader(bounds.bottom_right(), bounds.origin(),
-                                  /*start=*/SkColorSetRGB(0x32, 0x2F, 0xB4),
-                                  /*end*/ SkColorSetRGB(0x38, 0x35, 0xCA)));
-
-    canvas->DrawRect(bounds, flags);
-  }
-};
 
 ////////////////////////////////////////////////////////////////////////////////
 // ConfirmBubble
@@ -133,36 +111,10 @@ class AddBubble : public PlaylistActionBubbleView {
             const std::vector<playlist::mojom::PlaylistItemPtr>& items);
 
  private:
-  class ItemRow : public views::Button {
-   public:
-    static constexpr int kWidth = 288;
-
-    ItemRow(playlist::mojom::PlaylistItemPtr item,
-            base::RepeatingCallback<void(const ItemRow&)> callback);
-
-    bool selected() const { return selected_; }
-    const playlist::mojom::PlaylistItemPtr& item() const { return item_; }
-
-    // views::Button:
-    int GetHeightForWidth(int width) const override;
-    void OnThemeChanged() override;
-
-   private:
-    ItemRow& OnPressed(const ui::Event& event);
-
-    void SetSelected(bool selected);
-    void UpdateBackground();
-
-    playlist::mojom::PlaylistItemPtr item_;
-    bool selected_ = true;
-
-    raw_ptr<views::ImageView> selected_icon_ = nullptr;
-  };
-
   void AddSelected();
-  void OnItemPressed(const ItemRow& row);
+  void OnSelectionChanged();
 
-  base::flat_set<const ItemRow*> selected_views_;
+  raw_ptr<SelectableItemsView> list_view_ = nullptr;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -214,12 +166,14 @@ ConfirmBubble::ConfirmBubble(Browser* browser,
                                      ui::kColorMenuIcon, kIconSize),
       base::BindRepeating(&ConfirmBubble::OpenInPlaylist,
                           base::Unretained(this))));
-  AddChildView(std::make_unique<Row>(
-      l10n_util::GetStringUTF16(IDS_PLAYLIST_CHANGE_FOLDER),
-      ui::ImageModel::FromVectorIcon(kLeoFolderExchangeIcon, ui::kColorMenuIcon,
-                                     kIconSize),
-      base::BindRepeating(&ConfirmBubble::ChangeFolder,
-                          base::Unretained(this))));
+  if (PlaylistMoveDialog::CanMoveItems(playlist_tab_helper_->saved_items())) {
+    AddChildView(std::make_unique<Row>(
+        l10n_util::GetStringUTF16(IDS_PLAYLIST_CHANGE_FOLDER),
+        ui::ImageModel::FromVectorIcon(kLeoFolderExchangeIcon,
+                                       ui::kColorMenuIcon, kIconSize),
+        base::BindRepeating(&ConfirmBubble::ChangeFolder,
+                            base::Unretained(this))));
+  }
   AddChildView(std::make_unique<Row>(
       l10n_util::GetStringUTF16(IDS_PLAYLIST_REMOVE_FROM_PLAYLIST),
       ui::ImageModel::FromVectorIcon(kLeoTrashIcon, ui::kColorMenuIcon,
@@ -270,7 +224,8 @@ void ConfirmBubble::OpenInPlaylist() {
 }
 
 void ConfirmBubble::ChangeFolder() {
-  NOTIMPLEMENTED();
+  PlaylistActionDialog::Show<PlaylistMoveDialog>(
+      static_cast<BrowserView*>(browser_->window()), playlist_tab_helper_);
 }
 
 void ConfirmBubble::RemoveFromPlaylist() {
@@ -323,81 +278,6 @@ END_METADATA
 
 ////////////////////////////////////////////////////////////////////////////////
 // AddBubble Impl
-AddBubble::ItemRow::ItemRow(
-    playlist::mojom::PlaylistItemPtr item,
-    base::RepeatingCallback<void(const ItemRow&)> callback)
-    : Button(base::BindRepeating(&ItemRow::OnPressed, base::Unretained(this))
-                 .Then(callback)),
-      item_(std::move(item)) {
-  auto* layout = SetLayoutManager(std::make_unique<views::BoxLayout>(
-      views::BoxLayout::Orientation::kHorizontal, gfx::Insets(8),
-      /*between_child_spacing=*/16));
-  layout->set_cross_axis_alignment(
-      views::BoxLayout::CrossAxisAlignment::kCenter);
-
-  SetPreferredSize(gfx::Size(288, 64));
-
-  auto* thumbnail = AddChildView(std::make_unique<views::ImageView>());
-  constexpr gfx::Size kThumbnailSize(64, 48);
-  // TODO(sko) We can't set the item's thumbnail for now. We need some
-  // prerequisite.
-  //  * Download the thumbnail from network
-  //  * Sanitize the image
-  thumbnail->SetImage(
-      ui::ImageModel::FromResourceId(IDR_PLAYLIST_DEFAULT_THUMBNAIL));
-  thumbnail->SetBackground(std::make_unique<DefaultThumbnailBackground>());
-  thumbnail->SetHorizontalAlignment(views::ImageViewBase::Alignment::kCenter);
-  thumbnail->SetVerticalAlignment(views::ImageViewBase::Alignment::kCenter);
-  thumbnail->SetPreferredSize(kThumbnailSize);
-  thumbnail->SetImageSize({kThumbnailSize.height(), kThumbnailSize.height()});
-
-  auto* title = AddChildView(
-      std::make_unique<views::Label>(base::UTF8ToUTF16(item_->name)));
-  title->SetHorizontalAlignment(gfx::ALIGN_LEFT);
-  layout->SetFlexForView(title, 1);
-
-  selected_icon_ = AddChildView(std::make_unique<views::ImageView>());
-  selected_icon_->SetImage(ui::ImageModel::FromVectorIcon(
-      kLeoCheckCircleOutlineIcon, kColorBravePlaylistCheckedIcon, 20));
-}
-
-int AddBubble::ItemRow::GetHeightForWidth(int width) const {
-  return GetPreferredSize().height();
-}
-
-void AddBubble::ItemRow::OnThemeChanged() {
-  views::Button::OnThemeChanged();
-  UpdateBackground();
-}
-
-AddBubble::ItemRow& AddBubble::ItemRow::OnPressed(const ui::Event& event) {
-  SetSelected(!selected_);
-  return *this;
-}
-
-void AddBubble::ItemRow::SetSelected(bool selected) {
-  if (selected_ == selected) {
-    return;
-  }
-
-  selected_ = selected;
-  selected_icon_->SetVisible(selected_);
-
-  UpdateBackground();
-}
-
-void AddBubble::ItemRow::UpdateBackground() {
-  auto* cp = GetColorProvider();
-  DCHECK(cp);
-
-  if (selected_) {
-    SetBackground(views::CreateSolidBackground(
-        cp->GetColor(kColorBravePlaylistSelectedBackground)));
-  } else {
-    SetBackground(nullptr);
-  }
-}
-
 AddBubble::AddBubble(Browser* browser,
                      PlaylistActionIconView* anchor,
                      playlist::PlaylistTabHelper* playlist_tab_helper)
@@ -432,20 +312,16 @@ AddBubble::AddBubble(Browser* browser,
       /*thickness=*/1,
       /*corner_radius=*/4.f, kColorBravePlaylistListBorder));
 
-  auto* contents =
-      scroll_view->SetContents(std::make_unique<views::BoxLayoutView>());
-  contents->SetOrientation(views::BoxLayout::Orientation::kVertical);
-
-  for (const auto& item : items) {
-    selected_views_.insert(contents->AddChildView(std::make_unique<ItemRow>(
-        item.Clone(), base::BindRepeating(&AddBubble::OnItemPressed,
-                                          base::Unretained(this)))));
-  }
+  list_view_ = scroll_view->SetContents(std::make_unique<SelectableItemsView>(
+      items, base::BindRepeating(&AddBubble::OnSelectionChanged,
+                                 base::Unretained(this))));
+  list_view_->SetSelected(items);
 
   // Fix preferred width. This is for ignoring insets that could be added by
   // border.
+  static constexpr int kWidth = 288;
   scroll_view->SetPreferredSize(
-      gfx::Size(ItemRow::kWidth, scroll_view->GetPreferredSize().height()));
+      gfx::Size(kWidth, scroll_view->GetPreferredSize().height()));
 
   SetButtonLabel(ui::DialogButton::DIALOG_BUTTON_OK,
                  l10n_util::GetStringUTF16(IDS_PLAYLIST_ADD_SELECTED));
@@ -459,18 +335,16 @@ AddBubble::AddBubble(Browser* browser,
 
 void AddBubble::AddSelected() {
   CHECK(playlist_tab_helper_);
-  CHECK(selected_views_.size())
-      << "The button should be disabled when nothing is selected.";
 
   if (playlist_tab_helper_->is_adding_items()) {
     // Don't do anything when already adding
     return;
   }
 
-  std::vector<playlist::mojom::PlaylistItemPtr> items;
-  base::ranges::transform(
-      selected_views_, std::back_inserter(items),
-      [](const auto* view) { return view->item().Clone(); });
+  std::vector<playlist::mojom::PlaylistItemPtr> items =
+      list_view_->GetSelected();
+  CHECK(items.size())
+      << "The button should be disabled when nothing is selected.";
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
@@ -478,14 +352,8 @@ void AddBubble::AddSelected() {
                      playlist_tab_helper_->GetWeakPtr(), std::move(items)));
 }
 
-void AddBubble::OnItemPressed(const ItemRow& row) {
-  if (row.selected()) {
-    selected_views_.insert(&row);
-  } else {
-    selected_views_.erase(&row);
-  }
-
-  if (bool has_selected = selected_views_.size();
+void AddBubble::OnSelectionChanged() {
+  if (bool has_selected = list_view_->HasSelected();
       has_selected != IsDialogButtonEnabled(ui::DIALOG_BUTTON_OK)) {
     SetButtonEnabled(ui::DIALOG_BUTTON_OK, has_selected);
   }
