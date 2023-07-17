@@ -55,14 +55,6 @@ void BraveVpnFallbackDialogView::Show(Browser* browser) {
     return;
   }
 
-  // The dialog eats mouse events which results in the close button
-  // getting stuck in the hover state. Reset the window controls to
-  // prevent this.
-  BrowserView::GetBrowserViewForBrowser(browser)
-      ->GetWidget()
-      ->non_client_view()
-      ->ResetWindowControls();
-
   constrained_window::CreateBrowserModalDialogViews(
       new BraveVpnFallbackDialogView(browser),
       browser->window()->GetNativeWindow())

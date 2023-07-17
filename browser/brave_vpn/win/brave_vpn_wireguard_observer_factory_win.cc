@@ -38,10 +38,8 @@ KeyedService* BraveVpnWireguardObserverFactory::BuildServiceInstanceFor(
 BraveVpnWireguardObserverService*
 BraveVpnWireguardObserverFactory::GetServiceForContext(
     content::BrowserContext* context) {
-  if (!base::FeatureList::IsEnabled(
-          brave_vpn::features::kBraveVPNUseWireguardService)) {
-    return nullptr;
-  }
+  DCHECK(base::FeatureList::IsEnabled(
+      brave_vpn::features::kBraveVPNUseWireguardService));
   DCHECK(brave_vpn::IsAllowedForContext(context));
   return static_cast<BraveVpnWireguardObserverService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));

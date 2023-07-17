@@ -168,7 +168,7 @@ wireguard::WireguardKeyPair WireguardGenerateKeypairImpl() {
           service.Get(), RPC_C_AUTHN_DEFAULT, RPC_C_AUTHZ_DEFAULT,
           COLE_DEFAULT_PRINCIPAL, RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
           RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_DYNAMIC_CLOAKING))) {
-    VLOG(1) << "Unable to call EnableVpn interface";
+    VLOG(1) << "Unable to call CoSetProxyBlanket";
     return absl::nullopt;
   }
 

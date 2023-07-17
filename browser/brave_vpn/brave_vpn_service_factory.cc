@@ -63,9 +63,13 @@ BraveVpnServiceFactory::BraveVpnServiceFactory()
           "BraveVpnService",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(skus::SkusServiceFactory::GetInstance());
-
 #if BUILDFLAG(IS_WIN)
-  DependsOn(brave_vpn::BraveVpnDnsObserverFactory::GetInstance());
+  if (base::FeatureList::IsEnabled(
+          brave_vpn::features::kBraveVPNUseWireguardService)) {
+    DependsOn(brave_vpn::BraveVpnWireguardObserverFactory::GetInstance());
+  } else {
+    DependsOn(brave_vpn::BraveVpnDnsObserverFactory::GetInstance());
+  }
 #endif
 }
 
