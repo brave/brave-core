@@ -51,8 +51,10 @@ executable("vpntool") {
     "userenv.lib",
   ]
   deps = [
+    ":ras_utils",
     ":win",
     "//base",
-    "//brave/components/brave_vpn/browser/connection/ikev2/win:ras_utils",
+    "//brave/components/brave_vpn/browser/connection:common",
+    "//brave/components/brave_vpn/browser/connection/wireguard/win",
   ]
 }

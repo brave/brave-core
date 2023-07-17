@@ -23,7 +23,6 @@
 
 using brave_vpn::ras::CheckConnectionResult;
 using brave_vpn::ras::CreateEntry;
-using brave_vpn::ras::GetPhonebookPath;
 using brave_vpn::ras::RasOperationResult;
 using brave_vpn::ras::RemoveEntry;
 
