@@ -366,10 +366,10 @@ extension AssetDetailStore: BraveWalletKeyringServiceObserver {
     update()
   }
 
-  func keyringCreated(_ keyringId: String) {
+  func keyringCreated(_ keyringId: BraveWallet.KeyringId) {
   }
 
-  func keyringRestored(_ keyringId: String) {
+  func keyringRestored(_ keyringId: BraveWallet.KeyringId) {
   }
 
   func locked() {

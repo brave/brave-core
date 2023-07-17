@@ -22,7 +22,7 @@ class SettingsStoreTests: XCTestCase {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._keyringInfo = { _, completion in
       let keyring: BraveWallet.KeyringInfo = .init(
-        id: BraveWallet.DefaultKeyringId,
+        id: BraveWallet.KeyringId.default,
         isKeyringCreated: true,
         isLocked: false,
         isBackedUp: true,

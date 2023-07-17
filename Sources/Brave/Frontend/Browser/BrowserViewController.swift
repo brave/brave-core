@@ -335,7 +335,7 @@ public class BrowserViewController: UIViewController {
       if rewards.isEnabled {
         rewards.startLedgerService(nil)
       } else {
-        rewards.ads.initialize { _ in }
+        rewards.ads.initialize(walletInfo: .init()) { _ in }
       }
     }
 

@@ -25,7 +25,7 @@ import BraveCore
     keyringService._keyringInfo = { keyringId, completion in
       let isEthereumKeyringId = keyringId == BraveWallet.CoinType.eth.keyringId
       let keyring: BraveWallet.KeyringInfo = .init(
-        id: BraveWallet.DefaultKeyringId,
+        id: BraveWallet.KeyringId.default,
         isKeyringCreated: true,
         isLocked: false,
         isBackedUp: true,

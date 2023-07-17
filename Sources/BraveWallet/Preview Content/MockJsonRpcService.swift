@@ -138,6 +138,10 @@ class MockJsonRpcService: BraveWalletJsonRpcService {
   func splTokenAccountBalance(_ walletAddress: String, tokenMintAddress: String, chainId: String, completion: @escaping (String, UInt8, String, BraveWallet.SolanaProviderError, String) -> Void) {
     completion("", 0, "", .internalError, "Error Message")
   }
+
+  func splTokenBalances(_ pubkey: String, chainId: String, completion: @escaping ([BraveWallet.SPLTokenAmount], BraveWallet.SolanaProviderError, String) -> Void) {
+    completion([], .internalError, "Error Message")
+  }
   
   func erc1155TokenBalance(_ contractAddress: String, tokenId: String, accountAddress: String, chainId: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
     completion("", .internalError, "")

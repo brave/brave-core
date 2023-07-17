@@ -82,9 +82,9 @@ class PortfolioStoreTests: XCTestCase {
     // setup test services
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._keyringInfo = { keyringId, completion in
-      if keyringId == BraveWallet.DefaultKeyringId {
+      if keyringId == BraveWallet.KeyringId.default {
         let keyring: BraveWallet.KeyringInfo = .init(
-          id: BraveWallet.DefaultKeyringId,
+          id: BraveWallet.KeyringId.default,
           isKeyringCreated: true,
           isLocked: false,
           isBackedUp: true,
@@ -93,7 +93,7 @@ class PortfolioStoreTests: XCTestCase {
         completion(keyring)
       } else {
         let keyring: BraveWallet.KeyringInfo = .init(
-          id: BraveWallet.SolanaKeyringId,
+          id: BraveWallet.KeyringId.solana,
           isKeyringCreated: true,
           isLocked: false,
           isBackedUp: true,

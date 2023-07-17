@@ -21,11 +21,11 @@ class KeyringStoreTests: XCTestCase {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._keyringInfo = { keyringId, completion in
       switch keyringId {
-      case BraveWallet.DefaultKeyringId:
+      case BraveWallet.KeyringId.default:
         completion(.mockDefaultKeyringInfo)
-      case BraveWallet.SolanaKeyringId:
+      case BraveWallet.KeyringId.solana:
         completion(.mockSolanaKeyringInfo)
-      case BraveWallet.FilecoinKeyringId:
+      case BraveWallet.KeyringId.filecoin:
         completion(.mockFilecoinKeyringInfo)
       default:
         completion(.init())
@@ -34,7 +34,7 @@ class KeyringStoreTests: XCTestCase {
     keyringService._addObserver = { _ in }
     keyringService._isLocked = { $0(false) }
     keyringService._selectedAccount = { $1(currentSelectedAccount.address) }
-    keyringService._setSelectedAccount = { $3(true) }
+    keyringService._setSelectedAccount = { $1(true) }
     
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }

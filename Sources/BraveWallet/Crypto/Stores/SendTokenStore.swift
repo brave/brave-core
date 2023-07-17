@@ -195,7 +195,7 @@ public class SendTokenStore: ObservableObject {
       
       let selectedAccount = await self.keyringService.selectedAccount(selectedCoin)
       if selectedAccount != account.address {
-        _ = await self.keyringService.setSelectedAccount(account.coin, keyringId: account.keyringId, address: account.address)
+        _ = await self.keyringService.setSelectedAccount(account.accountId)
       }
       
       let selectedChain = await rpcService.network(selectedCoin, origin: nil)
@@ -617,10 +617,10 @@ extension SendTokenStore: BraveWalletKeyringServiceObserver {
   public func keyringReset() {
   }
 
-  public func keyringCreated(_ keyringId: String) {
+  public func keyringCreated(_ keyringId: BraveWallet.KeyringId) {
   }
 
-  public func keyringRestored(_ keyringId: String) {
+  public func keyringRestored(_ keyringId: BraveWallet.KeyringId) {
   }
 
   public func locked() {

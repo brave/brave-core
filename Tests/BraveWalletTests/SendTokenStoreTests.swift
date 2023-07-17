@@ -31,7 +31,7 @@ class SendTokenStoreTests: XCTestCase {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
     keyringService._selectedAccount = { $1(accountAddress) }
-    keyringService._setSelectedAccount = { _, _, _, completion in completion(true) }
+    keyringService._setSelectedAccount = { _, completion in completion(true) }
     keyringService._checksumEthAddress = { address, completion in completion(address) }
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._network = { $2(selectedNetwork) }
@@ -1308,10 +1308,18 @@ class SendTokenStoreTests: XCTestCase {
     .copy(asVisibleAsset: true).then {
       $0.chainId = BraveWallet.GoerliChainId
     }
-  private lazy var account2: BraveWallet.AccountInfo = (account.copy() as! BraveWallet.AccountInfo).then {
-    $0.name = "Account 2"
-    $0.address = "0x2222222222179E9EC40BC2AFFF9E9EC40BC2AFFF"
-  }
+  private let account2: BraveWallet.AccountInfo = .init(
+    accountId: .init(
+      coin: .eth,
+      keyringId: BraveWallet.KeyringId.default,
+      kind: .derived,
+      address: "mock_eth_id_2",
+      uniqueKey: "mock_eth_id_2"
+    ),
+    address: "mock_eth_id_2",
+    name: "Ethereum Account 2",
+    hardware: nil
+  )
 
   /// Test `didSelect(account:token:)` with a new token that is on the currently selected account and currently selected network.
   @MainActor func testDidSelectSameAccountSameNetwork() async {
@@ -1371,9 +1379,9 @@ class SendTokenStoreTests: XCTestCase {
       selectedNetwork: .mockGoerli
     )
     let setSelectedAccountExpectation = expectation(description: "setSelectedAccountExpectation")
-    keyringService._setSelectedAccount = { coin, keyringId, address, completion in
+    keyringService._setSelectedAccount = { accountId, completion in
       defer { setSelectedAccountExpectation.fulfill() }
-      XCTAssertEqual(address, self.account2.address)
+      XCTAssertEqual(accountId.address, self.account2.address)
       completion(true)
     }
     let store = SendTokenStore(
@@ -1419,9 +1427,9 @@ class SendTokenStoreTests: XCTestCase {
       allNetworks: allNetworks
     )
     let setSelectedAccountExpectation = expectation(description: "setSelectedAccountExpectation")
-    keyringService._setSelectedAccount = { coin, keyringId, address, completion in
+    keyringService._setSelectedAccount = { accountId, completion in
       defer { setSelectedAccountExpectation.fulfill() }
-      XCTAssertEqual(address, self.account2.address)
+      XCTAssertEqual(accountId.address, self.account2.address)
       completion(true)
     }
     let setNetworkExpectation = expectation(description: "setNetworkExpectation")
@@ -1485,9 +1493,9 @@ class SendTokenStoreTests: XCTestCase {
       allNetworks: allNetworks
     )
     let setSelectedAccountExpectation = expectation(description: "setSelectedAccountExpectation")
-    keyringService._setSelectedAccount = { coin, keyringId, address, completion in
+    keyringService._setSelectedAccount = { accountId, completion in
       defer { setSelectedAccountExpectation.fulfill() }
-      XCTAssertEqual(address, BraveWallet.AccountInfo.mockSolAccount.address)
+      XCTAssertEqual(accountId.address, BraveWallet.AccountInfo.mockSolAccount.address)
       completion(true)
     }
     let setNetworkExpectation = expectation(description: "setNetworkExpectation")

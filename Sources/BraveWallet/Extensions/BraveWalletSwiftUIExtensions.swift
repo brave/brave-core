@@ -12,7 +12,16 @@ extension BraveWallet.AccountInfo: Identifiable {
     address
   }
   public var isPrimary: Bool {
-    !isImported
+    // no hardware support on iOS
+    accountId.kind != .imported
+  }
+  
+  public var isImported: Bool {
+    accountId.kind == .imported
+  }
+  
+  public var coin: BraveWallet.CoinType {
+    accountId.coin
   }
 }
 

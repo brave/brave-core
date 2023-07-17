@@ -92,19 +92,30 @@ extension BraveWallet.OriginInfo {
   }
 }
 
+extension BraveWallet.AccountId {
+  /// Two `AccountIds` equal iff their `unique_key` fields equal. Use this to
+  /// check AccountIds for equality or to store as string keys. Persist with
+  /// caution as format may change.
+  /// https://github.com/brave/brave-core/pull/18767
+  open override func isEqual(_ object: Any?) -> Bool {
+    guard let object = object as? BraveWallet.AccountId else { return false }
+    return self.uniqueKey == object.uniqueKey
+  }
+}
+
 extension BraveWallet.CoinType {
-  public var keyringId: String {
+  public var keyringId: BraveWallet.KeyringId {
     switch self {
     case .eth:
-      return BraveWallet.DefaultKeyringId
+      return BraveWallet.KeyringId.default
     case .sol:
-      return BraveWallet.SolanaKeyringId
+      return BraveWallet.KeyringId.solana
     case .fil:
-      return BraveWallet.FilecoinKeyringId
+      return BraveWallet.KeyringId.filecoin
     case .btc:
-      return BraveWallet.BitcoinKeyring84Id
+      return BraveWallet.KeyringId.bitcoin84
     @unknown default:
-      return BraveWallet.DefaultKeyringId
+      return BraveWallet.KeyringId.default
     }
   }
   

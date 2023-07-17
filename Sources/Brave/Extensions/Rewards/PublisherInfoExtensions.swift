@@ -30,7 +30,6 @@ extension ProviderDisplayString {
 }
 
 extension BraveCore.BraveRewards.PublisherInfo: ProviderDisplayString {}
-extension BraveCore.BraveRewards.PendingContributionInfo: ProviderDisplayString {}
 
 extension BraveCore.BraveRewards.PublisherInfo {
   /// The display name to show when showing Publisher names (example: "X on GitHub", "Y on
