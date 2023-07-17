@@ -98,7 +98,7 @@ public class NetworkStore: ObservableObject {
     self.allChains = await rpcService.allNetworksForSupportedCoins()
     
     let customChainIds = await rpcService.customNetworks(.eth) // only support Ethereum custom chains
-    self.customChains = allChains.filter { customChainIds.contains($0.id) }
+    self.customChains = allChains.filter { customChainIds.contains($0.chainId) }
   }
   
   func isCustomChain(_ network: BraveWallet.NetworkInfo) -> Bool {

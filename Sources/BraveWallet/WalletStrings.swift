@@ -2568,7 +2568,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "None",
-      comment: "The value shown when selecting the default wallet as none / no wallet in wallet settings."
+      comment: "The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets."
     )
     public static let walletPanelUnlockWallet = NSLocalizedString(
       "wallet.walletPanelUnlockWallet",
@@ -2821,6 +2821,13 @@ extension Strings {
       bundle: .module,
       value: "Select Network",
       comment: "The title of the to select a network from the available networks"
+    )
+    public static let networkSelectionPrimaryNetworks = NSLocalizedString(
+      "wallet.networkSelectionPrimaryNetworks",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Primary Networks",
+      comment: "The title of the section for primary networks in the network selection view."
     )
     public static let networkSelectionSecondaryNetworks = NSLocalizedString(
       "wallet.networkSelectionSecondaryNetworks",
@@ -4113,6 +4120,153 @@ extension Strings {
       bundle: .module,
       value: "Deselect All",
       comment: "The title of a button that Deselects all visible options."
+    )
+    public static let filtersAndDisplaySettings = NSLocalizedString(
+      "wallet.filtersAndDisplaySettings",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Filters and Display Settings",
+      comment: "The title of the modal for filtering Portfolio and NFT views."
+    )
+    public static let lowToHighSortOption = NSLocalizedString(
+      "wallet.lowToHighSortOption",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Low to High",
+      comment: "The title of the sort option that sorts lowest value to highest value. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let highToLowSortOption = NSLocalizedString(
+      "wallet.highToLowSortOption",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "High to Low",
+      comment: "The title of the sort option that sorts highest value to lowest value. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let aToZSortOption = NSLocalizedString(
+      "wallet.aToZSortOption",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "A to Z",
+      comment: "The title of the sort option that sorts alphabetically from A to Z. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let zToASortOption = NSLocalizedString(
+      "wallet.highToLowSortOption",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Z to A",
+      comment: "The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let sortAssetsTitle = NSLocalizedString(
+      "wallet.sortAssetsTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Sort Assets",
+      comment: "The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let sortAssetsDescription = NSLocalizedString(
+      "wallet.sortAssetsDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Sort by fiat value or name",
+      comment: "The description label of the sort option that sorts assets by their fiat value, shown below the title. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let hideSmallBalancesTitle = NSLocalizedString(
+      "wallet.hideSmallBalancesTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Hide Small Balances",
+      comment: "The label of the filter option that hides assets if their fiat value is below $1. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let hideSmallBalancesDescription = NSLocalizedString(
+      "wallet.hideSmallBalancesDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Assets with value less than $1",
+      comment: "The description label of the filter option that hides assets if their fiat value is below $1, shown below the title. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let selectAccountsTitle = NSLocalizedString(
+      "wallet.selectAccountsTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Select Accounts",
+      comment: "The label of the filter option that allows users to select which accounts to filter assets by. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let selectAccountsDescription = NSLocalizedString(
+      "wallet.selectAccountsDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Select accounts to filter by",
+      comment: "The description label of the filter option that allows users to select which accounts to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let allAccountsLabel = NSLocalizedString(
+      "wallet.allAccountsLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "All accounts",
+      comment: "The label of badge beside the filter option that allows users to select which accounts to filter assets by, when all accounts are selected. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let selectNetworksTitle = NSLocalizedString(
+      "wallet.selectNetworksTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Select Networks",
+      comment: "The label of the filter option that allows users to select which networks to filter assets by. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let selectNetworksDescription = NSLocalizedString(
+      "wallet.selectNetworksDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Select networks to filter by",
+      comment: "The description label of the filter option that allows users to select which networks to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let allNetworksLabel = NSLocalizedString(
+      "wallet.allNetworksLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "All accounts",
+      comment: "The label of badge beside the filter option that allows users to select which accounts to filter assets by, when all accounts are selected. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let saveChangesButtonTitle = NSLocalizedString(
+      "wallet.saveChangesButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Save Changes",
+      comment: "The title of the label of the button to save all changes. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let groupByTitle = NSLocalizedString(
+      "wallet.groupByTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Group By",
+      comment: "The label of the sort option that groups assets by the selected filter value. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let groupByDescription = NSLocalizedString(
+      "wallet.groupByDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Group assets by",
+      comment: "The description label of the sort option that groups assets by the selected filter value, shown below the title. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let groupByNoneOptionTitle = NSLocalizedString(
+      "wallet.groupByNoneOptionTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "None",
+      comment: "The title of the sort option that does not group assets. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let groupByAccountsOptionTitle = NSLocalizedString(
+      "wallet.groupByAccountsOptionTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Accounts",
+      comment: "The title of the sort option that groups assets by each account. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let groupByNetworksOptionTitle = NSLocalizedString(
+      "wallet.groupByNetworksTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Networks",
+      comment: "The title of the sort option that groups assets by each network. Used in Portfolio/NFT filters and display settings."
     )
   }
 }

@@ -32,10 +32,13 @@ struct AccountPicker: View {
       }
     }
     .sheet(isPresented: $isPresentingPicker) {
-      AccountListView(
-        keyringStore: keyringStore,
-        onDismiss: { isPresentingPicker = false }
-      )
+      NavigationView {
+        AccountSelectionView(
+          keyringStore: keyringStore,
+          onDismiss: { isPresentingPicker = false }
+        )
+      }
+      .navigationViewStyle(.stack)
     }
   }
 

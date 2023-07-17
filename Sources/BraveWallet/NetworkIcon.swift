@@ -11,7 +11,7 @@ struct NetworkIcon: View {
   
   var network: BraveWallet.NetworkInfo
 
-  @ScaledMetric private var length: CGFloat = 30
+  @ScaledMetric var length: CGFloat = 30
   
   var body: some View {
     Group {

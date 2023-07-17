@@ -12,6 +12,7 @@ import Strings
 import LocalAuthentication
 import Combine
 import Data
+import Preferences
 
 struct AutoLockInterval: Identifiable, Hashable {
   var value: Int32
@@ -309,6 +310,10 @@ public class KeyringStore: ObservableObject {
       for coin in WalletConstants.supportedCoinTypes {
         Domain.clearAllWalletPermissions(for: coin)
       }
+      Preferences.Wallet.sortOrderFilter.reset()
+      Preferences.Wallet.isHidingSmallBalancesFilter.reset()
+      Preferences.Wallet.nonSelectedAccountsFilter.reset()
+      Preferences.Wallet.nonSelectedNetworksFilter.reset()
       completion?(isMnemonicValid)
     }
   }
