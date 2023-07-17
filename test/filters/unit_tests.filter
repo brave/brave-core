@@ -362,6 +362,9 @@
 # see brave/chromium_src/chrome/browser/ui/webui/whats_new/whats_new_util.cc
 -WhatsNewUtilTests.ShouldShowForStateUsesChromeVersionForRefresh
 
+# This test fails because we disable page_image_service::kImageService feature.
+-NewTabPageModulesTest.MakeModuleIdNames
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
