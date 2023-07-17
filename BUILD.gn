@@ -613,7 +613,7 @@ if (is_mac) {
 cargo_audit_target_dir = "$root_build_dir/cargo_audit"
 cargo_audit_exe = "$cargo_audit_target_dir/release/cargo-audit"
 cargo_audit_src = "//brave/tools/crates/cargo_audit/v0_17/crate"
-if (is_win) {
+if (host_os == "win") {
   cargo_audit_exe += ".exe"
 }
 
@@ -621,7 +621,7 @@ action("build_cargo_audit") {
   script = "//build/gn_run_binary.py"
 
   cargo_exe = "//third_party/rust-toolchain/bin/cargo"
-  if (is_win) {
+  if (host_os == "win") {
     cargo_exe += ".exe"
   }
 
