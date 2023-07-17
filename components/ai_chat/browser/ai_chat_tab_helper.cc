@@ -401,14 +401,26 @@ std::string AIChatTabHelper::BuildLlamaPrompt(
     question_part = turn.text;
   }
 
+  auto prompt_segment_article =
+      article_text_.empty()
+          ? ""
+          : base::StrCat(
+                {base::ReplaceStringPlaceholders(
+                     l10n_util::GetStringUTF8(
+                         is_video_ ? IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT
+                                   : IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT),
+                     {article_text_}, nullptr),
+                 "\n"});
+
   std::string prompt = base::StrCat({
       l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA_PROMPT_START),
       "\n",
       base::ReplaceStringPlaceholders(
           l10n_util::GetStringUTF8(
               is_video_ ? IDS_AI_CHAT_VIDEO_LLAMA_PROMPT_SEGMENT
-                        : IDS_AI_CHAT_ARTICLE_LLAMA_PROMPT_SEGMENT),
-          {article_text_, GetConversationHistoryString(), question_part},
+                        : IDS_AI_CHAT_ASSISTANT_LLAMA_PROMPT_SEGMENT),
+          {prompt_segment_article, GetConversationHistoryString(),
+           question_part},
           nullptr),
       "\n\n",
       l10n_util::GetStringUTF8(IDS_AI_CHAT_PROMPT_END),
