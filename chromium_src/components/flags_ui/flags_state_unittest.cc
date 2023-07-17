@@ -27,25 +27,26 @@ TEST_F(FlagsStateTest, ShowDefaultState) {
                                       base::BindRepeating(&SkipFeatureEntry));
   ASSERT_EQ(11u, supported_entries.size());
 
-  auto get_default_option_description = [&](base::StringPiece name) {
-    SCOPED_TRACE(name);
-    auto entry_it =
-        base::ranges::find_if(supported_entries, [&](const base::Value& entry) {
-          return *entry.GetDict().FindString("internal_name") == name;
-        });
-    EXPECT_TRUE(entry_it != supported_entries.end());
-    auto* options = entry_it->GetDict().FindList("options");
-    EXPECT_TRUE(options);
-    auto* description = (*options)[0].GetDict().FindString("description");
-    EXPECT_TRUE(description);
-    return *description;
-  };
+  auto check_default_option_description =
+      [&](base::StringPiece name, base::StringPiece expected_description) {
+        SCOPED_TRACE(name);
+        auto entry_it = base::ranges::find_if(
+            supported_entries, [&](const base::Value& entry) {
+              return *entry.GetDict().FindString("internal_name") == name;
+            });
+        ASSERT_TRUE(entry_it != supported_entries.end());
+        auto* options = entry_it->GetDict().FindList("options");
+        ASSERT_TRUE(options && !options->empty());
+        auto* description = (*options)[0].GetDict().FindString("description");
+        ASSERT_TRUE(description);
+        EXPECT_EQ(*description, expected_description);
+      };
 
-  EXPECT_EQ("Default (Enabled)", get_default_option_description(kFlags7));
-  EXPECT_EQ("Default", get_default_option_description(kFlags8));
-  EXPECT_EQ("Default (Enabled)", get_default_option_description(kFlags9));
-  EXPECT_EQ("Default (Disabled*)", get_default_option_description(kFlags10));
-  EXPECT_EQ("Default (Disabled)", get_default_option_description(kFlags12));
+  check_default_option_description(kFlags7, "Default (Enabled)");
+  check_default_option_description(kFlags8, "Default");
+  check_default_option_description(kFlags9, "Default (Enabled)");
+  check_default_option_description(kFlags10, "Default (Disabled*)");
+  check_default_option_description(kFlags12, "Default (Disabled)");
 }
 
 }  // namespace flags_ui

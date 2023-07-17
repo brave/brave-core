@@ -101,8 +101,7 @@ bool FeatureList::IsFeatureOverridden(const std::string& feature_name) const {
 }
 
 // static
-FeatureState FeatureList::GetDefaultOrOverriddenFeatureState(
-    const Feature& feature) {
+FeatureState FeatureList::GetCompileTimeFeatureState(const Feature& feature) {
   const auto& default_state_overrides = internal::GetDefaultStateOverrides();
   const auto default_state_override_it = default_state_overrides.find(feature);
   return default_state_override_it != default_state_overrides.end()
@@ -113,8 +112,8 @@ FeatureState FeatureList::GetDefaultOrOverriddenFeatureState(
 }  // namespace base
 
 // This replaces |default_state| compare blocks with a modified one that
-// includes the state override check.
-#define default_state name&& GetDefaultOrOverriddenFeatureState(feature)
+// includes the compile time override check.
+#define default_state name&& GetCompileTimeFeatureState(feature)
 #define IsFeatureOverridden IsFeatureOverridden_ChromiumImpl
 
 #include "src/base/feature_list.cc"
