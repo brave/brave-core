@@ -20,6 +20,11 @@ import {
 import { PanelTitles } from '../../options/panel-titles'
 import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
+const defaultOriginInfoShort: BraveWallet.OriginInfoShort = {
+  originSpec: '',
+  eTldPlusOne: ''
+}
+
 const defaultOriginInfo: SerializableOriginInfo = {
   origin: {
     scheme: '',
@@ -38,7 +43,7 @@ const defaultState: PanelState = {
   panelTitle: '',
   connectingAccounts: [],
   addChainRequest: {
-    originInfo: defaultOriginInfo,
+    originInfo: defaultOriginInfoShort,
     networkInfo: {
       chainId: BraveWallet.MAINNET_CHAIN_ID,
       chainName: 'Ethereum Mainnet',

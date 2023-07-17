@@ -194,10 +194,6 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
   void OnTxServiceReset() override {}
 
-  void OnAddEthereumChain(const std::string& chain_id,
-                          mojom::ProviderError error,
-                          const std::string& error_message);
-
   void OnChainApprovalResult(const std::string& chain_id,
                              const std::string& error);
   void OnAddUnapprovedTransaction(RequestCallback callback,

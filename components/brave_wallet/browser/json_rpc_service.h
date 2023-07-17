@@ -46,6 +46,7 @@ namespace brave_wallet {
 
 class EnsResolverTask;
 class NftMetadataFetcher;
+struct PendingAddChainRequest;
 
 class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
  public:
@@ -239,10 +240,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void AddChain(mojom::NetworkInfoPtr chain,
                 AddChainCallback callback) override;
-  void AddEthereumChainForOrigin(
-      mojom::NetworkInfoPtr chain,
-      const url::Origin& origin,
-      AddEthereumChainForOriginCallback callback) override;
+  std::string AddEthereumChainForOrigin(mojom::NetworkInfoPtr chain,
+                                        const url::Origin& origin);
   void AddEthereumChainRequestCompleted(const std::string& chain_id,
                                         bool approved) override;
   void RemoveChain(const std::string& chain_id,
@@ -689,7 +688,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   std::unique_ptr<APIRequestHelper> api_request_helper_;
   std::unique_ptr<APIRequestHelper> api_request_helper_ens_offchain_;
   // <chain_id, mojom::AddChainRequest>
-  base::flat_map<std::string, mojom::AddChainRequestPtr>
+  base::flat_map<std::string, PendingAddChainRequest>
       add_chain_pending_requests_;
   // <origin, chain_id>
   base::flat_map<url::Origin, std::string> switch_chain_requests_;

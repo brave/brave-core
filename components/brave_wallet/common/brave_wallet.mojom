@@ -1086,7 +1086,7 @@ struct OriginInfoShort {
 };
 
 struct AddChainRequest {
-  OriginInfo origin_info;
+  OriginInfoShort origin_info;
   NetworkInfo network_info;
 };
 
@@ -1144,7 +1144,6 @@ enum ResolveMethod {
 interface JsonRpcService {
   // Checks the chain ID for an ethereum chain that should be added
   AddChain(NetworkInfo chain) => (string chain_id, ProviderError error, string error_message);
-  AddEthereumChainForOrigin(NetworkInfo chain, url.mojom.Origin origin) => (string chain_id, ProviderError error, string error_message);
   AddEthereumChainRequestCompleted(string chain_id, bool approved);
   RemoveChain(string chain_id, CoinType coin) => (bool success);
   GetPendingAddChainRequests() => (array<AddChainRequest> requests);

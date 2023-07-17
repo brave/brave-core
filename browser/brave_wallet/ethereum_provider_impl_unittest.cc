@@ -1024,29 +1024,6 @@ TEST_F(EthereumProviderImplUnitTest, OnAddEthereumChain) {
   GURL url("https://brave.com");
   Navigate(url);
   base::RunLoop run_loop;
-  provider()->AddEthereumChain(
-      R"({"params": [{
-        "chainId": "0x111",
-        "chainName": "Binance1 Smart Chain",
-        "rpcUrls": ["https://bsc-dataseed.binance.org/"],
-      },]})",
-      base::BindLambdaForTesting(
-          [&run_loop](base::Value id, base::Value formed_response,
-                      const bool reject,
-                      const std::string& first_allowed_account,
-                      const bool update_bind_js_properties) {
-            mojom::ProviderError error = mojom::ProviderError::kUnknown;
-            std::string error_message;
-            GetErrorCodeMessage(std::move(formed_response), &error,
-                                &error_message);
-            EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
-            EXPECT_EQ(error_message, "test");
-            run_loop.Quit();
-          }),
-      base::Value());
-  provider()->OnAddEthereumChain(
-      "0x111", mojom::ProviderError::kUserRejectedRequest, "test");
-  run_loop.Run();
 
   // Test missing valid rpc URLs.
   base::RunLoop run_loop2;

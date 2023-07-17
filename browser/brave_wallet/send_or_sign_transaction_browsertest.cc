@@ -288,19 +288,9 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     mojom::NetworkInfo chain = GetTestNetworkInfo1(chain_id);
     chain.rpc_endpoints =
         std::vector<GURL>({https_server_for_rpc()->base_url()});
-    base::RunLoop run_loop;
-    mojom::ProviderError error_out;
-    json_rpc_service_->AddEthereumChainForOrigin(
-        chain.Clone(), origin,
-        base::BindLambdaForTesting(
-            [&run_loop, &error_out](const std::string& chain_id,
-                                    mojom::ProviderError error,
-                                    const std::string& error_message) {
-              error_out = error;
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-    if (error_out != mojom::ProviderError::kSuccess) {
+    auto error_message =
+        json_rpc_service_->AddEthereumChainForOrigin(chain.Clone(), origin);
+    if (!error_message.empty()) {
       return;
     }
 

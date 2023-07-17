@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { BraveWallet, SerializableOriginInfo } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 
 // Components
@@ -33,7 +33,7 @@ import {
 export type tabs = 'network' | 'details'
 
 export interface Props {
-  originInfo: SerializableOriginInfo
+  originInfo: BraveWallet.OriginInfoShort
   networkPayload: BraveWallet.NetworkInfo
   panelType: 'add' | 'change'
   onCancel: () => void

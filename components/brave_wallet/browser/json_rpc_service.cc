@@ -34,6 +34,7 @@
 #include "brave/components/brave_wallet/browser/solana_response_parser.h"
 #include "brave/components/brave_wallet/browser/unstoppable_domains_dns_resolve.h"
 #include "brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -249,6 +250,11 @@ constexpr char kAccountNotCreatedError[] = "could not find account";
 
 namespace brave_wallet {
 
+struct PendingAddChainRequest {
+  mojom::AddChainRequestPtr request;
+  url::Origin origin;
+};
+
 JsonRpcService::JsonRpcService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* prefs,
@@ -438,7 +444,7 @@ void JsonRpcService::FirePendingRequestCompleted(const std::string& chain_id,
 
 bool JsonRpcService::HasRequestFromOrigin(const url::Origin& origin) const {
   for (const auto& request : add_chain_pending_requests_) {
-    if (request.second->origin_info->origin == origin) {
+    if (request.second.origin == origin) {
       return true;
     }
   }
@@ -449,7 +455,7 @@ void JsonRpcService::GetPendingAddChainRequests(
     GetPendingAddChainRequestsCallback callback) {
   std::vector<mojom::AddChainRequestPtr> all_requests;
   for (const auto& request : add_chain_pending_requests_) {
-    all_requests.push_back(request.second.Clone());
+    all_requests.push_back(request.second.request.Clone());
   }
   std::move(callback).Run(std::move(all_requests));
 }
@@ -517,29 +523,23 @@ void JsonRpcService::OnEthChainIdValidated(
   std::move(callback).Run(chain_id, mojom::ProviderError::kSuccess, "");
 }
 
-void JsonRpcService::AddEthereumChainForOrigin(
+std::string JsonRpcService::AddEthereumChainForOrigin(
     mojom::NetworkInfoPtr chain,
-    const url::Origin& origin,
-    AddEthereumChainForOriginCallback callback) {
+    const url::Origin& origin) {
   auto chain_id = chain->chain_id;
   if (KnownChainExists(chain_id, mojom::CoinType::ETH) ||
       CustomChainExists(prefs_, chain_id, mojom::CoinType::ETH)) {
-    std::move(callback).Run(
-        chain_id, mojom::ProviderError::kUserRejectedRequest,
-        l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS));
-    return;
+    return l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS);
   }
   if (origin.opaque() || add_chain_pending_requests_.contains(chain_id) ||
       HasRequestFromOrigin(origin)) {
-    std::move(callback).Run(
-        chain_id, mojom::ProviderError::kUserRejectedRequest,
-        l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
-    return;
+    return l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR);
   }
 
-  add_chain_pending_requests_[chain_id] =
-      mojom::AddChainRequest::New(MakeOriginInfo(origin), std::move(chain));
-  std::move(callback).Run(chain_id, mojom::ProviderError::kSuccess, "");
+  add_chain_pending_requests_[chain_id].origin = origin;
+  add_chain_pending_requests_[chain_id].request = mojom::AddChainRequest::New(
+      MakeOriginInfoShort(origin), std::move(chain));
+  return "";
 }
 
 void JsonRpcService::AddEthereumChainRequestCompleted(
@@ -556,7 +556,8 @@ void JsonRpcService::AddEthereumChainRequestCompleted(
     return;
   }
 
-  const auto& chain = *add_chain_pending_requests_.at(chain_id)->network_info;
+  const auto& chain =
+      *add_chain_pending_requests_[chain_id].request->network_info;
   GURL url = MaybeAddInfuraProjectId(GetActiveEndpointUrl(chain));
   if (!url.is_valid()) {
     FirePendingRequestCompleted(
@@ -580,7 +581,8 @@ void JsonRpcService::OnEthChainIdValidatedForOrigin(
     return;
   }
 
-  const auto& chain = *add_chain_pending_requests_.at(chain_id)->network_info;
+  const auto& chain =
+      *add_chain_pending_requests_[chain_id].request->network_info;
   if (ParseSingleStringResult(api_request_result.value_body()) != chain_id &&
       !skip_eth_chain_id_validation_for_testing_) {
     FirePendingRequestCompleted(

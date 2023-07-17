@@ -274,7 +274,7 @@ export interface PanelState {
   lastSelectedPanel?: PanelTypes
   panelTitle: string
   connectingAccounts: string[]
-  addChainRequest: SerializableAddChainRequest
+  addChainRequest: BraveWallet.AddChainRequest
   signMessageData: SerializableSignMessageRequest[]
   signTransactionRequests: BraveWallet.SignTransactionRequest[]
   signAllTransactionsRequests: BraveWallet.SignAllTransactionsRequest[]
@@ -526,8 +526,6 @@ export type SerializableAddSuggestTokenRequest = Omit<BraveWallet.AddSuggestToke
 }
 
 export type SerializableSignMessageRequest = WithSerializableOriginInfo<BraveWallet.SignMessageRequest>
-
-export type SerializableAddChainRequest = WithSerializableOriginInfo<BraveWallet.AddChainRequest>
 
 export type SerializableGetEncryptionPublicKeyRequest = WithSerializableOriginInfo<BraveWallet.GetEncryptionPublicKeyRequest>
 

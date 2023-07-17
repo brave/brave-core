@@ -204,35 +204,20 @@ void EthereumProviderImpl::AddEthereumChain(const std::string& json_payload,
                             "", true);
     return;
   }
+  auto error_message = json_rpc_service_->AddEthereumChainForOrigin(
+      chain->Clone(), delegate_->GetOrigin());
+
+  if (!error_message.empty()) {
+    base::Value formed_response = GetProviderErrorDictionary(
+        mojom::ProviderError::kUserRejectedRequest, error_message);
+    reject = true;
+    std::move(std::move(callback))
+        .Run(std::move(id), std::move(formed_response), reject, "", true);
+    return;
+  }
+
   chain_callbacks_[chain_id_lower] = std::move(callback);
   chain_ids_[chain_id_lower] = std::move(id);
-  json_rpc_service_->AddEthereumChainForOrigin(
-      chain->Clone(), delegate_->GetOrigin(),
-      base::BindOnce(&EthereumProviderImpl::OnAddEthereumChain,
-                     weak_factory_.GetWeakPtr()));
-}
-
-void EthereumProviderImpl::OnAddEthereumChain(
-    const std::string& chain_id,
-    mojom::ProviderError error,
-    const std::string& error_message) {
-  DCHECK(delegate_);
-  std::string chain_id_lower = base::ToLowerASCII(chain_id);
-  if (!chain_callbacks_.contains(chain_id_lower) ||
-      !chain_ids_.contains(chain_id_lower)) {
-    return;
-  }
-  if (error != mojom::ProviderError::kSuccess) {
-    base::Value formed_response =
-        GetProviderErrorDictionary(error, error_message);
-    bool reject = true;
-    std::move(chain_callbacks_[chain_id_lower])
-        .Run(std::move(chain_ids_[chain_id_lower]), std::move(formed_response),
-             reject, "", true);
-    chain_callbacks_.erase(chain_id_lower);
-    chain_ids_.erase(chain_id_lower);
-    return;
-  }
   delegate_->ShowPanel();
 }
 
