@@ -32,7 +32,8 @@ struct RasOperationResult {
 
 // Returns human readable error description.
 std::string GetRasErrorMessage(DWORD error);
-std::wstring GetPhonebookPath(const std::wstring& entry_name);
+std::wstring GetPhonebookPath(const std::wstring& entry_name,
+                              std::string* error);
 
 RasOperationResult CreateEntry(const BraveVPNConnectionInfo& info);
 RasOperationResult RemoveEntry(const std::wstring& entry_name);

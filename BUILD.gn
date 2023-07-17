@@ -658,13 +658,6 @@ action("audit_deps") {
   deps = [ ":build_cargo_audit" ]
 }
 
-group("tools") {
-  if (is_win && enable_brave_vpn) {
-    deps =
-        [ "//brave/components/brave_vpn/browser/connection/ikev2/win:vpntool" ]
-  }
-}
-
 if (is_redirect_cc_build) {
   group("redirect_cc") {
     deps = [ "//brave/tools/redirect_cc" ]
