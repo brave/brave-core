@@ -4223,8 +4223,8 @@ extension Strings {
       "wallet.allNetworksLabel",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "All accounts",
-      comment: "The label of badge beside the filter option that allows users to select which accounts to filter assets by, when all accounts are selected. Used in Portfolio/NFT filters and display settings."
+      value: "All networks",
+      comment: "The label of badge beside the filter option that allows users to select which networks to filter assets by, when all networks are selected. Used in Portfolio/NFT filters and display settings."
     )
     public static let saveChangesButtonTitle = NSLocalizedString(
       "wallet.saveChangesButtonTitle",

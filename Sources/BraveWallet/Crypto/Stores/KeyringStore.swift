@@ -74,6 +74,8 @@ public class KeyringStore: ObservableObject {
     isBackedUp: false,
     accountInfos: []
   )
+  /// A boolean indciates front-end has or has not loaded Keyring from the core
+  @Published var isDefaultKeyringLoaded = false
   /// Whether or not the user should be viewing the onboarding flow to setup a keyring
   @Published private(set) var isOnboardingVisible: Bool = false
   /// Whether or not the last time the wallet was locked was due to the user manually locking it
@@ -181,6 +183,7 @@ public class KeyringStore: ObservableObject {
       self.defaultAccounts = await keyringService.defaultAccounts(for: WalletConstants.supportedCoinTypes)
       if let defaultKeyring = allKeyrings.first(where: { $0.id == BraveWallet.KeyringId.default }) {
         self.defaultKeyring = defaultKeyring
+        self.isDefaultKeyringLoaded = true
         self.isDefaultKeyringCreated = defaultKeyring.isKeyringCreated
       }
       self.allKeyrings = allKeyrings
