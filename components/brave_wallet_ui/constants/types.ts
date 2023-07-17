@@ -971,6 +971,31 @@ export interface DropdownFilterOption {
 
 export type ImportAccountErrorType = boolean | undefined
 
+export type MarketGridHeader = {
+  id: MarketGridColumnTypes
+  label?: string
+  width?: string
+  hideOnPanel?: boolean
+  hideOnSmall?: boolean
+  sortable?: boolean
+  customStyles?: React.CSSProperties
+}
+
+
+export interface MarketGridCell {
+  customStyle?: React.CSSProperties
+  content: React.ReactNode
+}
+
+export interface MarketGridRow {
+  id: string
+  customStyles?: React.CSSProperties
+  content: MarketGridCell[]
+  data: any
+  onClick?: (data: any) => void
+}
+
+
 export type MarketAssetFilterOption =
   | 'all'
   | 'tradable'
@@ -984,7 +1009,7 @@ export type SortOrder =
   | 'asc'
   | 'desc'
 
-export type MarketDataTableColumnTypes =
+export type MarketGridColumnTypes =
   | 'assets'
   | 'currentPrice'
   | 'duration'

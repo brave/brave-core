@@ -27,6 +27,9 @@ import { ContainerCard, LayoutCardWrapper } from '../components/desktop/wallet-p
 import { NFTGridViewItem } from '../components/desktop/views/portfolio/components/nft-grid-view/nft-grid-view-item'
 import { TabOption, Tabs } from '../components/shared/tabs/tabs'
 import { AutoDiscoveryEmptyState } from '../components/desktop/views/nfts/components/auto-discovery-empty-state/auto-discovery-empty-state'
+import { MarketGrid } from '../components/shared/market-grid/market-grid'
+import { marketGridHeaders } from '../options/market-data-headers'
+import { coinMarketMockData } from './mock-data/mock-coin-market-data'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -295,5 +298,31 @@ export const _Tabs = () => {
       options={options}
       onSelect={(option) => console.log(option)}
     />
+  )
+}
+
+export const _MarketGrid = () => {
+  return (
+    <div
+      style={{
+        width: '700px'
+      }}
+    >
+      <MarketGrid
+        headers={marketGridHeaders}
+        coinMarketData={coinMarketMockData}
+        showEmptyState={false}
+        sortedBy='marketCap'
+        onSort={(columnId, sortOrder) => console.log(`sort by ${columnId} ${sortOrder}`)}
+        onSelectCoinMarket={() => {}}
+        isBuySupported={() => true}
+        isDepositSupported={() => false}
+        onClickBuy={() => {}}
+        onClickDeposit={() => {}}
+        onUpdateIframeHeight={() => {}}
+        fiatCurrency={'USD'}
+      />
+
+    </div>
   )
 }

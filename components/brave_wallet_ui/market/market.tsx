@@ -11,7 +11,6 @@ import { loadTimeData } from '../../common/loadTimeData'
 
 // css
 import 'emptykit.css'
-import 'chrome://resources/brave/fonts/poppins.css'
 import './css/market.css'
 
 // theme setup
@@ -19,12 +18,16 @@ import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
 
+// leo icons setup
+import { setIconBasePath } from '@brave/leo/react/icon'
+setIconBasePath('chrome-untrusted://resources/brave-icons')
+
 // constants
 import {
   BraveWallet,
   DefaultCurrencies,
   MarketAssetFilterOption,
-  MarketDataTableColumnTypes,
+  MarketGridColumnTypes,
   SortOrder
 } from '../constants/types'
 
@@ -48,20 +51,19 @@ import { filterCoinMarkets, searchCoinMarkets, sortCoinMarkets } from '../utils/
 
 // Options
 import { AssetFilterOptions } from '../options/market-data-filter-options'
-import { marketDataTableHeaders } from '../options/market-data-headers'
+import { marketGridHeaders } from '../options/market-data-headers'
 
 // components
-import { MarketDataTable } from '../components/market-datatable'
 import { TopRow } from '../components/desktop/views/market/style'
 import { AssetsFilterDropdown } from '../components/desktop'
 import { SearchBar } from '../components/shared'
+import { MarketGrid } from '../components/shared/market-grid/market-grid'
 
 const App = () => {
   // State
-  const [tableHeaders, setTableHeaders] = React.useState(marketDataTableHeaders)
   const [currentFilter, setCurrentFilter] = React.useState<MarketAssetFilterOption>('all')
   const [sortOrder, setSortOrder] = React.useState<SortOrder>('desc')
-  const [sortByColumnId, setSortByColumnId] = React.useState<MarketDataTableColumnTypes>('marketCap')
+  const [sortByColumnId, setSortByColumnId] = React.useState<MarketGridColumnTypes>('marketCap')
   const [searchTerm, setSearchTerm] = React.useState('')
   const [coinMarkets, setCoinMarkets] = React.useState<BraveWallet.CoinMarket[]>([])
   const [tradableAssets, setTradableAssets] = React.useState<BraveWallet.BlockchainToken[]>([])
@@ -146,22 +148,7 @@ const App = () => {
     }
   }, [])
 
-  const onSort = React.useCallback((columnId: MarketDataTableColumnTypes, newSortOrder: SortOrder) => {
-    const updatedTableHeaders = tableHeaders.map(header => {
-      if (header.id === columnId) {
-        return {
-          ...header,
-          sortOrder: newSortOrder
-        }
-      } else {
-        return {
-          ...header,
-          sortOrder: undefined
-        }
-      }
-    })
-
-    setTableHeaders(updatedTableHeaders)
+  const onSort = React.useCallback((columnId: MarketGridColumnTypes, newSortOrder: SortOrder) => {
     setSortByColumnId(columnId)
     setSortOrder(newSortOrder)
   }, [])
@@ -199,13 +186,16 @@ const App = () => {
               action={event => {
                 setSearchTerm(event.target.value)
               }}
+              isV2={true}
             />
           </TopRow>
-          <MarketDataTable
-            headers={tableHeaders}
+          <MarketGrid
+            headers={marketGridHeaders}
             coinMarketData={visibleCoinMarkets}
             showEmptyState={searchTerm !== '' || currentFilter !== 'all'}
             fiatCurrency={defaultCurrencies?.fiat ?? 'USD'}
+            sortedBy={sortByColumnId}
+            sortOrder={sortOrder}
             onSelectCoinMarket={onSelectCoinMarket}
             onSort={onSort}
             isBuySupported={isBuySupported}

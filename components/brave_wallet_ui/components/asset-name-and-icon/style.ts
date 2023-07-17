@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -27,14 +28,22 @@ export const NameAndSymbolWrapper = styled.div`
 `
 
 export const AssetName = styled.span`
+  color: ${leo.color.text.primary};
   font-family: Poppins;
   font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
   line-height: 20px;
-  letter-spacing: 0.01em;
-  color: ${p => p.theme.color.text01};
+  letter-spacing: 0.28px;
 `
 
-export const AssetSymbol = styled(AssetName)`
-  color: ${p => p.theme.color.text03};
+export const AssetSymbol = styled.span`
+  color: ${leo.color.legacy.text2};
+  font-family: Poppins;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: 0.24px;
   text-transform: uppercase;
 `
