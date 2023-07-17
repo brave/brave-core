@@ -59,26 +59,30 @@ source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "widevine_prefs_migration_browsertest.cc" ]
+  sources = []
+  deps = []
 
-  deps = [
-    ":widevine",
-    "//base",
-    "//brave/browser",
-    "//brave/common",
-    "//brave/components/constants",
-    "//brave/components/widevine:constants",
-    "//chrome/browser",
-    "//chrome/browser:browser_process",
-    "//chrome/browser/profiles:profile",
-    "//chrome/common",
-    "//chrome/test:test_support",
-    "//components/prefs",
-    "//content/public/browser",
-    "//content/test:test_support",
-    "//testing/gtest",
-    "//third_party/widevine/cdm:buildflags",
-  ]
+  if (!is_android) {
+    sources += [ "widevine_prefs_migration_browsertest.cc" ]
+    deps += [
+      ":widevine",
+      "//base",
+      "//brave/browser",
+      "//brave/common",
+      "//brave/components/constants",
+      "//brave/components/widevine:constants",
+      "//chrome/browser",
+      "//chrome/browser:browser_process",
+      "//chrome/browser/profiles:profile",
+      "//chrome/common",
+      "//chrome/test:test_support",
+      "//components/prefs",
+      "//content/public/browser",
+      "//content/test:test_support",
+      "//testing/gtest",
+      "//third_party/widevine/cdm:buildflags",
+    ]
+  }
 
   if (toolkit_views) {
     sources += [ "widevine_permission_request_browsertest.cc" ]
@@ -88,8 +92,6 @@ source_set("browser_tests") {
       "//ui/views",
       "//url",
     ]
-  } else {
-    deps += [ "//chrome/test:test_support_ui_android" ]
   }
 }
 

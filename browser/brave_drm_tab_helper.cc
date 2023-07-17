@@ -19,7 +19,7 @@
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 
-#if defined(TOOLKIT_VIEWS)
+#if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -108,6 +108,7 @@ void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
 }
 
 void BraveDrmTabHelper::OnEvent(Events event, const std::string& id) {
+#if !BUILDFLAG(IS_ANDROID)
   if (event == ComponentUpdateService::Observer::Events::COMPONENT_UPDATED &&
       id == kWidevineComponentId) {
 #if BUILDFLAG(IS_LINUX)
@@ -116,7 +117,7 @@ void BraveDrmTabHelper::OnEvent(Events event, const std::string& id) {
     // this tab asks widevine explicitely.
     if (is_widevine_requested_)
       RequestWidevinePermission(web_contents(), true /* for_restart*/);
-#elif !BUILDFLAG(IS_ANDROID)
+#else
     // When widevine is ready to use, only active tab that requests widevine is
     // reloaded automatically.
     if (is_widevine_requested_)
@@ -125,6 +126,7 @@ void BraveDrmTabHelper::OnEvent(Events event, const std::string& id) {
     // Stop observing component update event.
     observer_.Reset();
   }
+#endif
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveDrmTabHelper);
