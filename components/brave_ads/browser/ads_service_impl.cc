@@ -890,8 +890,8 @@ void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
             << placement_id;
   }
 
-  if (IsReminderNotificationAd(placement_id)) {
-    const GURL target_url = GetReminderNotificationAdTargetUrl();
+  if (IsReminder(placement_id)) {
+    const GURL target_url = GetReminderTargetUrl();
     OpenNewTabWithUrl(target_url);
     return CloseNotificationAd(placement_id);
   }
@@ -1492,7 +1492,7 @@ void AdsServiceImpl::ShowReminder(const mojom::ReminderType type) {
   if (IsEnabled() && CheckIfCanShowNotificationAds()) {
     // TODO(https://github.com/brave/brave-browser/issues/29587): Decouple Brave
     // Ads reminders from notification ads.
-    ShowNotificationAd(GetReminder(type));
+    ShowNotificationAd(BuildReminder(type));
   }
 #endif
 }

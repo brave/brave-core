@@ -25,7 +25,7 @@ constexpr char kReminderNotificationAdTargetUrl[] =
 
 namespace {
 
-base::Value::Dict GetClickedSameAdMultipleTimesReminder() {
+base::Value::Dict BuildClickedSameAdMultipleTimesReminder() {
   base::Value::Dict dict;
 
   dict.Set(kNotificationAdPlacementIdKey, kReminderNotificationAdPlacementId);
@@ -41,7 +41,7 @@ base::Value::Dict GetClickedSameAdMultipleTimesReminder() {
   return dict;
 }
 
-base::Value::Dict GetExternalWalletConnectedReminder() {
+base::Value::Dict BuildExternalWalletConnectedReminder() {
   base::Value::Dict dict;
 
   dict.Set(kNotificationAdPlacementIdKey, kReminderNotificationAdPlacementId);
@@ -58,25 +58,25 @@ base::Value::Dict GetExternalWalletConnectedReminder() {
 
 }  // namespace
 
-base::Value::Dict GetReminder(const mojom::ReminderType type) {
+base::Value::Dict BuildReminder(const mojom::ReminderType type) {
   switch (type) {
     case mojom::ReminderType::kClickedSameAdMultipleTimes: {
-      return GetClickedSameAdMultipleTimesReminder();
+      return BuildClickedSameAdMultipleTimesReminder();
     }
 
     case mojom::ReminderType::kExternalWalletConnected: {
-      return GetExternalWalletConnectedReminder();
+      return BuildExternalWalletConnectedReminder();
     }
   }
 
   NOTREACHED_NORETURN() << "Unexpected value for mojom::ReminderType: " << type;
 }
 
-bool IsReminderNotificationAd(const std::string& placement_id) {
+bool IsReminder(const std::string& placement_id) {
   return placement_id == kReminderNotificationAdPlacementId;
 }
 
-GURL GetReminderNotificationAdTargetUrl() {
+GURL GetReminderTargetUrl() {
   return GURL(kReminderNotificationAdTargetUrl);
 }
 
