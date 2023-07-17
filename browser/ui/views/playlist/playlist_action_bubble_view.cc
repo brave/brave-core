@@ -209,9 +209,9 @@ ConfirmBubble::ConfirmBubble(Browser* browser,
                                      kIconSize),
       base::BindRepeating(&ConfirmBubble::RemoveFromPlaylist,
                           base::Unretained(this))));
-  AddChildView(std::make_unique<views::Separator>());
 
   if (playlist_tab_helper->GetUnsavedItems().size()) {
+    AddChildView(std::make_unique<views::Separator>());
     AddChildView(std::make_unique<Row>(
         l10n_util::GetStringUTF16(IDS_PLAYLIST_MORE_MEDIA_IN_THIS_PAGE),
         ui::ImageModel::FromVectorIcon(kLeoProductPlaylistIcon,
