@@ -186,6 +186,10 @@ export const DefaultPanelMenu = (props: Props) => {
         ))
   }, [hidePortfolioNFTsTab, walletLocation])
 
+  const showPortfolioSettings =
+    walletLocation === WalletRoutes.PortfolioNFTs ||
+    walletLocation === WalletRoutes.PortfolioAssets
+
   return (
     <StyledWrapper
       yPosition={yPosition}
@@ -219,7 +223,7 @@ export const DefaultPanelMenu = (props: Props) => {
       <VerticalDivider />
       <VerticalSpace space='8px' />
 
-      {walletLocation === WalletRoutes.Portfolio &&
+      {showPortfolioSettings &&
         <>
           <ToggleRow onClick={onToggleHideBalances}>
             <Row>
