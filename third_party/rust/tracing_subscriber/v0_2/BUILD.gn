@@ -27,7 +27,6 @@ cargo_crate("lib") {
     "//brave/third_party/rust/ansi_term/v0_12:lib",
     "//brave/third_party/rust/sharded_slab/v0_1:lib",
     "//brave/third_party/rust/thread_local/v1:lib",
-    "//brave/third_party/rust/tracing/v0_1:lib",
     "//brave/third_party/rust/tracing_core/v0_1:lib",
   ]
   features = [

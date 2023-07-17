@@ -19,8 +19,6 @@ cargo-platform = "0.1"
 cargo_metadata = "0.14"
 cfg-if = "1"
 clap = "4"
-cpufeatures = "0.2"
-curve25519-dalek = "3.2.1"
 cxxbridge-cmd = "1"
 data-encoding = "2.1.2"
 derive_more = "0.99"
@@ -37,7 +35,6 @@ hmac = "0.10"
 kuchiki = "0.8.1"
 lazy_static = "1"
 libc = "0.2"
-libsecp256k1 = "0.7"
 lifeguard = "^ 0.6.1"
 log = "0.4"
 lol_html = "0.3.0"
@@ -50,7 +47,6 @@ regex = "1"
 rstest_reuse = "0.5"
 semver = "1"
 serde_json = "1"
-sha2 = "0.9"
 small_ctor = "0.1"
 static_assertions = "1"
 strobe-rs = "0.8.1"
@@ -64,6 +60,7 @@ wycheproof = "0.4"
 default-features = false
 version = "0.7.9"
 features = ["full-regex-handling", "debug-info", "css-validation"]
+gn-variables-lib = "if (is_ios) {\n    features += [\n      \"content-blocking\",\n      \"serde_json\",\n    ]\n    deps += [ \"//third_party/rust/serde_json/v1:lib\" ]\n  } else {\n    features += [\n      \"object-pooling\",\n      \"lifeguard\",\n      \"unsync-regex-caching\",\n    ]\n    deps += [ \"//brave/third_party/rust/lifeguard/v0_6:lib\" ]\n  }\n"
 
 [dependencies.bigdecimal]
 version = "0.1"
@@ -71,7 +68,7 @@ features = ["serde"]
 
 [dependencies.bitvec]
 version = "1.0.1"
-features = [ "alloc", "atomic", "std" ]
+features = ["alloc", "atomic", "std"]
 
 [dependencies.bls-signatures]
 default-features = false
@@ -79,21 +76,33 @@ version = "0.12"
 features = ["pairing"]
 
 [dependencies.byteorder]
+default-features = false
 version = "1"
-features = [ "i128", "std" ]
 
 [dependencies.challenge-bypass-ristretto]
 version = "1.0.1"
-features = ["base64"]
+features = ["alloc", "base64", "serde", "serde_base64", "std", "u64_backend"]
 
 [dependencies.chrono]
 default-features = false
 version = "0.4"
 features = ["clock", "serde"]
 
+[dependencies.cpufeatures]
+version = "0.2"
+gn-variables-lib = "if (is_linux && target_cpu == \"arm64\") {\n  deps += [ \"//third_party/rust/libc/v0_2:lib\" ]\n}\n"
+
+[dependencies.crunchy]
+version = "0.2"
+build-script-outputs = ["lib.rs"]
+
 [dependencies.cssparser]
 version = "0.28"
 build-script-outputs = ["tokenizer.rs"]
+
+[dependencies.curve25519-dalek]
+version = "3.2.1"
+features = ["alloc", "serde", "std", "u64_backend"]
 
 [dependencies.cxx]
 version = "1.0"
@@ -118,16 +127,39 @@ version = "0.7.0 "
 
 [dependencies.html5ever]
 version = "0.25.1"
+build-script-outputs = ["rules.rs"]
+gn-variables-lib = "cargo_manifest_dir =\n    rebase_path(\"//brave/third_party/rust/html5ever/v0_25/crate\")\nrustenv = [ \"CARGO_MANIFEST_DIR=$cargo_manifest_dir\" ]\n"
 
 [dependencies.http]
 version = "0.1"
 
+[dependencies.iana-time-zone]
+version = "0.1.45"
+features = ["fallback"]
+gn-variables-lib = "if (is_mac) {\n    deps += [ \"//third_party/rust/core_foundation_sys/v0_8:lib\" ]\n  }\n"
+
+[dependencies.keccak]
+version = "0.1.3"
+gn-variables-lib = "if (target_cpu == \"arm64\" &&\n    (target_os == \"mac\" || target_os == \"linux\" || target_os == \"ios\")) {\n  deps = [ \"//brave/third_party/rust/cpufeatures/v0_2:lib\" ]\n}\n"
+
+[dependencies.libsecp256k1]
+version = "0.7"
+build-script-outputs = ["const.rs", "const_gen.rs"]
+
 [dependencies.markup5ever]
 version = "0.10"
+build-script-outputs = ["generated.rs", "named_entities.rs"]
+gn-variables-lib = "cargo_manifest_dir =\n    rebase_path(\"//brave/third_party/rust/markup5ever/v0_10/crate\")\nrustenv = [ \"CARGO_MANIFEST_DIR=$cargo_manifest_dir\" ]\n"
 
 [dependencies.memoffset]
 version = "0.6"
 features = ["unstable_const"]
+
+[dependencies.multihash]
+default-features = false
+version = "0.16"
+features = ["multihash-impl", "blake2b"]
+gn-variables-lib = "  deps += [\n    \"//brave/third_party/rust/digest/v0_10:lib\",\n    \"//brave/third_party/rust/ripemd/v0_1:lib\",\n    \"//brave/third_party/rust/sha2/v0_10:lib\",\n    \"//brave/third_party/rust/sha3/v0_10:lib\",\n  ]\n  cargo_manifest_dir =\n      rebase_path(\"//brave/third_party/rust/multihash/v0_16/crate\")\n  rustenv = [ \"CARGO_MANIFEST_DIR=$cargo_manifest_dir\" ]\n"
 
 [dependencies.num-bigint]
 version = "0.4"
@@ -157,6 +189,10 @@ features = ["derive"]
 version = "0.1"
 features = ["unbounded_depth", "float_roundtrip"]
 
+[dependencies.sha2]
+version = "0.9"
+gn-variables-lib = "if ((target_cpu == \"arm64\" &&\n    (target_os == \"mac\" || target_os == \"linux\" || target_os == \"ios\")) ||\n      target_cpu == \"x64\" || target_cpu == \"x86\") {\n  deps += [ \"//brave/third_party/rust/cpufeatures/v0_2:lib\" ]\n}\n"
+
 [dependencies.syn]
 version = "1"
 features = ["full"]
@@ -170,8 +206,8 @@ version = "0.5"
 features = ["preserve_order"]
 
 [dependencies.tracing]
-default-features = false
 version = "0.1"
+features = ["attributes", "std", "tracing-attributes"]
 
 [dependencies.tracing-subscriber]
 default-features = false
@@ -181,6 +217,7 @@ features = ["ansi", "ansi_term", "fmt", "registry", "sharded-slab", "thread_loca
 [dependencies.typenum]
 version = "1"
 build-script-outputs = ["consts.rs", "op.rs"]
+gn-variables-lib = "# These are output to the console, but the cargo_crate build script doesn't\n# currently handle this\ntarget_lib_dir = rebase_path(target_gen_dir)\nrustenv = [\n  \"TYPENUM_BUILD_CONSTS=$target_lib_dir/lib/consts.rs\",\n  \"TYPENUM_BUILD_OP=$target_lib_dir/lib/op.rs\",\n]\n"
 
 [dependencies.unicode-linebreak]
 version = "0.1"
@@ -1204,6 +1241,10 @@ package = "tinyvec"
 [patch.crates-io.toml_v0_5]
 path = "toml/v0_5/crate"
 package = "toml"
+
+[patch.crates-io.tracing-attributes_v0_1]
+path = "tracing_attributes/v0_1/crate"
+package = "tracing-attributes"
 
 [patch.crates-io.tracing-core_v0_1]
 path = "tracing_core/v0_1/crate"

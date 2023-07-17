@@ -5,7 +5,7 @@
 import("//build/rust/cargo_crate.gni")
 
 cargo_crate("lib") {
-  crate_name = "num_bigint_chainsafe"
+  crate_name = "forest_bigint"
   epoch = "0.1"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
