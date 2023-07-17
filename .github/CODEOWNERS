@@ -10,6 +10,7 @@ DEPS @brave/deps-reviewers
 script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
 **/Cargo.* @brave/rust-deps-reviewers
+third_party/rust @bridiver
 
 # Strings
 **/*.grd @brave/string-reviewers-team

@@ -28,12 +28,7 @@ cargo_crate("lib") {
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   build_root = "crate/build/main.rs"
-  build_sources = [
-    "crate/build/generic_const_mappings.rs",
-    "crate/build/main.rs",
-    "crate/build/op.rs",
-    "crate/build/tests.rs",
-  ]
+  build_sources = [ "crate/build/main.rs" ]
   build_script_outputs = [
     "consts.rs",
     "op.rs",
