@@ -15,6 +15,11 @@ enum ConversationTurnVisibility {
   HIDDEN // does not get added to chat history, used as a flag internally
 };
 
+enum ConversationTurnStatus {
+  NORMAL,     // Simple text
+  ERROR       // Error description
+};
+
 enum AutoGenerateQuestionsPref {
   Unset,       // User has not made a choice yet
   Enabled,     // User has chosen to enable auto-generation
@@ -33,6 +38,8 @@ struct ConversationTurn {
   CharacterType character_type;
   ConversationTurnVisibility visibility;
   string text;
+  ConversationTurnStatus status;
+  string uuid;
 };
 
 // Browser-side handler for requests from WebUI page.
@@ -55,6 +62,7 @@ interface PageHandler {
   OpenBraveLeoWiki();
   DisconnectPageContents();
   ClearConversationHistory();
+  RetryHumanConversationEntry(string uuid);
 };
 
 interface ChatUIPage {

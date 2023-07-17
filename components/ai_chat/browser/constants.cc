@@ -37,7 +37,8 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"enableQuestionsDesc", IDS_CHAT_UI_ENABLE_QUESTIONS_DESC},
       {"enableQuestionsButtonLabel", IDS_CHAT_UI_ENABLE_QUESTIONS_BUTTON_LABEL},
       {"noThanksButtonLabel", IDS_CHAT_UI_NO_THANKS_BUTTON_LABEL},
-      {"pageContentWarning", IDS_CHAT_UI_PAGE_CONTENT_WARNING}};
+      {"pageContentWarning", IDS_CHAT_UI_PAGE_CONTENT_WARNING},
+      {"retryButtonLabel", IDS_CHAT_UI_RETRY_BUTTON_LABEL}};
 
   return kLocalizedStrings;
 }

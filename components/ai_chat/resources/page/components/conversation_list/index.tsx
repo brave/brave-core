@@ -9,13 +9,16 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
 import styles from './style.module.scss'
-import { ConversationTurn, CharacterType } from '../../api/page_handler'
+import { ConversationTurn, CharacterType, ConversationTurnStatus }
+  from '../../api/page_handler'
+import { getLocale } from '$web-common/locale'
 
 interface ConversationListProps {
   list: ConversationTurn[]
   suggestedQuestions: string[]
   isLoading: boolean
   onQuestionSubmit: (question: string) => void
+  onRetrySubmit: (uuid: string) => void
 }
 
 function ConversationList (props: ConversationListProps) {
@@ -46,6 +49,16 @@ function ConversationList (props: ConversationListProps) {
 
         const isHuman = turn.characterType === CharacterType.HUMAN
         const isAIAssistant = turn.characterType === CharacterType.ASSISTANT
+        const isError = turn.status === ConversationTurnStatus.ERROR
+
+        let iconName = 'user-circle'
+        if(!isHuman) {
+          iconName = 'product-brave-ai'
+        }
+
+        if(isError) {
+          iconName = 'warning-circle-filled'
+        }
 
         const turnClass = classnames({
           [styles.turn]: true,
@@ -60,11 +73,23 @@ function ConversationList (props: ConversationListProps) {
         return (
           <div key={id} ref={elementRef} className={turnClass}>
             <div className={avatarStyles}>
-              <Icon name={isHuman ? 'user-circle' : 'product-brave-ai'} />
+                <Icon name={iconName} />
             </div>
             <div className={styles.message}>
               {turn.text}
               {isLoading && <span className={styles.caret}/>}
+              {isError &&
+                <div>
+                <span>
+                  <Button kind='outline' onClick={() =>
+                      props.onRetrySubmit(props.list[id - 1].uuid)}>
+                    <span className={styles.buttonBox}>
+                      {getLocale('retryButtonLabel')}
+                    </span>
+                  </Button>
+                </span>
+                </div>
+              }
             </div>
           </div>
         )

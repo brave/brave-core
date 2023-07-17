@@ -11,6 +11,7 @@
 
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/uuid.h"
 #include "brave/components/ai_chat/browser/constants.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/common/pref_names.h"
@@ -31,6 +32,7 @@ namespace ai_chat {
 
 using mojom::CharacterType;
 using mojom::ConversationTurn;
+using mojom::ConversationTurnStatus;
 using mojom::ConversationTurnVisibility;
 
 AIChatUIPageHandler::AIChatUIPageHandler(
@@ -77,6 +79,9 @@ void AIChatUIPageHandler::SetClientPage(
     mojo::PendingRemote<ai_chat::mojom::ChatUIPage> page) {
   page_.Bind(std::move(page));
 }
+void AIChatUIPageHandler::RetryHumanConversationEntry(const std::string& uuid) {
+  active_chat_tab_helper_->RetryAPIRequest(uuid);
+}
 
 void AIChatUIPageHandler::SubmitHumanConversationEntry(
     const std::string& input) {
@@ -95,7 +100,9 @@ void AIChatUIPageHandler::SubmitHumanConversationEntry(
   base::ReplaceSubstringsAfterOffset(&input_copy, 0, "</question>", "");
 
   active_chat_tab_helper_->MakeAPIRequestWithConversationHistoryUpdate(
-      {CharacterType::HUMAN, ConversationTurnVisibility::VISIBLE, input_copy});
+      {CharacterType::HUMAN, ConversationTurnVisibility::VISIBLE, input_copy,
+       ConversationTurnStatus::NORMAL,
+       base::Uuid::GenerateRandomV4().AsLowercaseString()});
 }
 
 void AIChatUIPageHandler::GetConversationHistory(

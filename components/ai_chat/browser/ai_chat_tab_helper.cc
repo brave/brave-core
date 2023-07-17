@@ -17,6 +17,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "base/uuid.h"
 #include "brave/components/ai_chat/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/browser/constants.h"
 #include "brave/components/ai_chat/browser/page_content_fetcher.h"
@@ -30,10 +31,12 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/storage_partition.h"
+#include "net/http/http_status_code.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using ai_chat::mojom::CharacterType;
 using ai_chat::mojom::ConversationTurn;
+using ai_chat::mojom::ConversationTurnStatus;
 using ai_chat::mojom::ConversationTurnVisibility;
 
 namespace {
@@ -109,8 +112,26 @@ std::string AIChatTabHelper::GetConversationHistoryString() {
   return base::JoinString(turn_strings, "");
 }
 
-void AIChatTabHelper::AddToConversationHistory(const ConversationTurn& turn) {
-  chat_history_.push_back(turn);
+void AIChatTabHelper::AddToConversationHistory(const ConversationTurn& turn,
+                                               const bool& is_retry) {
+  if (!is_retry) {
+    chat_history_.push_back(turn);
+  } else {
+    auto chat_history_iter = base::ranges::find_if(
+        chat_history_,
+        [&turn](const auto& item) { return turn.uuid == item.uuid; });
+
+    if (turn.status == mojom::ConversationTurnStatus::ERROR) {
+      // iterate to the error message
+      chat_history_iter++;
+    }
+
+    if (chat_history_iter == chat_history_.end()) {
+      return;
+    }
+
+    chat_history_iter->text = turn.text;
+  }
 
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
@@ -127,15 +148,30 @@ void AIChatTabHelper::AddToConversationHistory(const ConversationTurn& turn) {
 }
 
 void AIChatTabHelper::UpdateOrCreateLastAssistantEntry(
-    std::string updated_text) {
-  updated_text = base::TrimWhitespaceASCII(updated_text, base::TRIM_LEADING);
+    const std::string& updated_text,
+    const std::string& uuid,
+    const bool& is_retry) {
   if (chat_history_.empty() ||
       chat_history_.back().character_type != CharacterType::ASSISTANT) {
-    AddToConversationHistory({CharacterType::ASSISTANT,
-                              ConversationTurnVisibility::VISIBLE,
-                              updated_text});
+    AddToConversationHistory(
+        {CharacterType::ASSISTANT, ConversationTurnVisibility::VISIBLE,
+         updated_text, ConversationTurnStatus::NORMAL,
+         base::Uuid::GenerateRandomV4().AsLowercaseString()},
+        false);
   } else {
-    chat_history_.back().text = updated_text;
+    if (is_retry) {
+      auto chat_history_iter = base::ranges::find_if(
+          chat_history_,
+          [&uuid](const auto& item) { return uuid == item.uuid; });
+
+      // iterate to the error message
+      chat_history_iter++;
+
+      chat_history_iter->text = updated_text;
+      chat_history_iter->status = mojom::ConversationTurnStatus::NORMAL;
+    } else {
+      chat_history_.back().text = updated_text;
+    }
   }
 
   // Trigger an observer update to refresh the UI.
@@ -423,6 +459,32 @@ void AIChatTabHelper::OnAPISuggestedQuestionsResponse(
   DVLOG(2) << "Got questions:" << base::JoinString(suggested_questions_, "\n");
 }
 
+void AIChatTabHelper::RetryAPIRequest(const std::string& uuid) {
+  auto chat_history_iter = base::ranges::find_if(
+      chat_history_, [&uuid](const auto& item) { return uuid == item.uuid; });
+
+  if (chat_history_iter == chat_history_.end() ||
+      !chat_prompts_retry_cache_.contains(uuid)) {
+    return;
+  }
+
+  auto prompt = chat_prompts_retry_cache_[uuid];
+
+  DCHECK(ai_chat_api_);
+  auto data_received_callback = base::BindRepeating(
+      &AIChatTabHelper::OnAPIStreamDataReceived, weak_ptr_factory_.GetWeakPtr(),
+      current_navigation_id_, uuid, true);
+
+  auto data_completed_callback = base::BindOnce(
+      &AIChatTabHelper::OnAPIStreamDataComplete, weak_ptr_factory_.GetWeakPtr(),
+      current_navigation_id_, uuid, true);
+
+  is_request_in_progress_ = true;
+  ai_chat_api_->QueryPrompt(std::move(prompt),
+                            std::move(data_completed_callback),
+                            std::move(data_received_callback));
+}
+
 std::string AIChatTabHelper::BuildClaudePrompt(const std::string& question_part,
                                                bool is_suggested_question) {
   auto prompt_segment_article =
@@ -672,17 +734,21 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   }
 
   if (turn.visibility != ConversationTurnVisibility::HIDDEN) {
-    AddToConversationHistory(turn);
+    AddToConversationHistory(turn, false);
   }
 
   DCHECK(ai_chat_api_);
   auto data_received_callback = base::BindRepeating(
       &AIChatTabHelper::OnAPIStreamDataReceived, weak_ptr_factory_.GetWeakPtr(),
-      current_navigation_id_);
+      current_navigation_id_, turn.uuid, false);
 
-  auto data_completed_callback =
-      base::BindOnce(&AIChatTabHelper::OnAPIStreamDataComplete,
-                     weak_ptr_factory_.GetWeakPtr(), current_navigation_id_);
+  auto data_completed_callback = base::BindOnce(
+      &AIChatTabHelper::OnAPIStreamDataComplete, weak_ptr_factory_.GetWeakPtr(),
+      current_navigation_id_, turn.uuid, false);
+
+  if (!chat_prompts_retry_cache_.contains(turn.uuid)) {
+    chat_prompts_retry_cache_[turn.uuid] = prompt;
+  }
 
   is_request_in_progress_ = true;
   ai_chat_api_->QueryPrompt(std::move(prompt), {"</response>"},
@@ -698,6 +764,8 @@ bool AIChatTabHelper::IsRequestInProgress() {
 
 void AIChatTabHelper::OnAPIStreamDataReceived(
     int64_t for_navigation_id,
+    const std::string& uuid,
+    const bool& is_retry,
     data_decoder::DataDecoder::ValueOrError result) {
   if (for_navigation_id != current_navigation_id_) {
     VLOG(1) << __func__ << " for a different navigation. Ignoring.";
@@ -709,7 +777,7 @@ void AIChatTabHelper::OnAPIStreamDataReceived(
 
   if (const std::string* completion =
           result->GetDict().FindString("completion")) {
-    UpdateOrCreateLastAssistantEntry(*completion);
+    UpdateOrCreateLastAssistantEntry(*completion, uuid, is_retry);
 
     // Trigger an observer update to refresh the UI.
     for (auto& obs : observers_) {
@@ -720,6 +788,8 @@ void AIChatTabHelper::OnAPIStreamDataReceived(
 
 void AIChatTabHelper::OnAPIStreamDataComplete(
     int64_t for_navigation_id,
+    const std::string& uuid,
+    const bool& is_retry,
     api_request_helper::APIRequestResult result) {
   if (for_navigation_id != current_navigation_id_) {
     VLOG(1) << __func__ << " for a different navigation. Ignoring.";
@@ -735,17 +805,29 @@ void AIChatTabHelper::OnAPIStreamDataComplete(
         const std::string& trimmed =
             std::string(base::TrimWhitespaceASCII(*completion, base::TRIM_ALL));
         AddToConversationHistory(
-            ConversationTurn{CharacterType::ASSISTANT,
-                             ConversationTurnVisibility::VISIBLE, trimmed});
+            ConversationTurn{
+                CharacterType::ASSISTANT, ConversationTurnVisibility::VISIBLE,
+                *completion, ConversationTurnStatus::NORMAL,
+                base::Uuid::GenerateRandomV4().AsLowercaseString()},
+            is_retry);
       }
     }
+
+    chat_prompts_retry_cache_.erase(uuid);
   }
 
   if (!success) {
+    auto error_description(l10n_util::GetStringUTF8(IDS_CHAT_UI_API_ERROR));
+    if (net::HTTP_TOO_MANY_REQUESTS == result.response_code()) {
+      error_description =
+          l10n_util::GetStringUTF8(IDS_CHAT_UI_API_TOO_MANY_REQUESTS_ERROR);
+    }
     // TODO(petemill): show error state separate from assistant message
-    AddToConversationHistory(ConversationTurn{
-        CharacterType::ASSISTANT, ConversationTurnVisibility::VISIBLE,
-        l10n_util::GetStringUTF8(IDS_CHAT_UI_API_ERROR)});
+    AddToConversationHistory(
+        ConversationTurn{CharacterType::ASSISTANT,
+                         ConversationTurnVisibility::VISIBLE, error_description,
+                         ConversationTurnStatus::ERROR, uuid},
+        is_retry);
   }
 
   is_request_in_progress_ = false;
