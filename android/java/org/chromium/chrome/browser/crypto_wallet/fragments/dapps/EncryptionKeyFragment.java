@@ -144,7 +144,7 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
                     mDecryptRequest = decryptRequest;
                     mTveTldPlusOne.setVisibility(View.VISIBLE);
                     mTvMessageDecrypt.setVisibility(View.VISIBLE);
-                    mTveTldPlusOne.setText(Utils.geteTLD(mDecryptRequest.originInfo.eTldPlusOne));
+                    mTveTldPlusOne.setText(Utils.geteTLD(mDecryptRequest.originInfo));
                     mTvMessage.setText(R.string.brave_wallet_read_encrypted_message_title);
                     mBtProvideAllow.setText(R.string.brave_wallet_read_encrypted_message_button);
                     mTvMessageDecrypt.setOnClickListener(v -> {
@@ -164,7 +164,7 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
                     isPositiveActionTriggered(v), mEncryptionPublicKeyRequest.originInfo.origin);
         } else if (mActivityType == BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST) {
             mWalletModel.getDappsModel().processDecryptRequest(
-                    isPositiveActionTriggered(v), mDecryptRequest.originInfo.origin);
+                    mDecryptRequest.requestId, isPositiveActionTriggered(v));
         }
     }
 

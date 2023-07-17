@@ -182,6 +182,7 @@ std::string GetWeb3ClientVersion();
 std::string eTLDPlusOne(const url::Origin& origin);
 
 mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin);
+mojom::OriginInfoShortPtr MakeOriginInfoShort(const url::Origin& origin);
 
 }  // namespace brave_wallet
 

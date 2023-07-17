@@ -6,7 +6,6 @@
 import {
   BraveWallet,
   ObjWithOriginInfo,
-  SerializableDecryptRequest,
   SerializableGetEncryptionPublicKeyRequest,
   SerializableOrigin,
   SerializableOriginInfo,
@@ -191,10 +190,6 @@ export const makeSerializableSignMessageRequest = (req: BraveWallet.SignMessageR
 }
 
 export const makeSerializableGetEncryptionPublicKeyRequest = (req: BraveWallet.GetEncryptionPublicKeyRequest): SerializableGetEncryptionPublicKeyRequest => {
-  return makeOriginInfoPropSerializable(req)
-}
-
-export const makeSerializableDecryptRequest = (req: BraveWallet.DecryptRequest): SerializableDecryptRequest => {
   return makeOriginInfoPropSerializable(req)
 }
 

@@ -1080,6 +1080,11 @@ struct OriginInfo {
   string e_tld_plus_one;
 };
 
+struct OriginInfoShort {
+  string origin_spec;
+  string e_tld_plus_one;
+};
+
 struct AddChainRequest {
   OriginInfo origin_info;
   NetworkInfo network_info;
@@ -1096,9 +1101,10 @@ struct GetEncryptionPublicKeyRequest {
 };
 
 struct DecryptRequest {
-  OriginInfo origin_info;
+  string request_id;
+  OriginInfoShort origin_info;
   string address;
-  string? unsafe_message;
+  string unsafe_message;
 };
 
 struct OptionalMaxRetries {
@@ -1768,8 +1774,7 @@ interface BraveWalletService {
 
   // This is used for UI notifying native when the user approves or
   // rejects decrypting data for an origin
-  NotifyDecryptRequestProcessed(bool approved, url.mojom.Origin origin);
-
+  NotifyDecryptRequestProcessed(string request_id, bool approved);
   GetPendingDecryptRequests() => (array<DecryptRequest> requests);
 
   IsBase58EncodedSolanaPubkey(string key) => (bool result);

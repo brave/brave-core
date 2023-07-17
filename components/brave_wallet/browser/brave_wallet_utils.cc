@@ -1749,6 +1749,10 @@ mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin) {
                                 eTLDPlusOne(origin));
 }
 
+mojom::OriginInfoShortPtr MakeOriginInfoShort(const url::Origin& origin) {
+  return mojom::OriginInfoShort::New(origin.Serialize(), eTLDPlusOne(origin));
+}
+
 // Returns a string used for web3_clientVersion in the form of
 // Brave/v[version]
 std::string GetWeb3ClientVersion() {

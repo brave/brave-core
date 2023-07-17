@@ -43,7 +43,6 @@ import { isRemoteImageURL } from '../../utils/string-utils'
 import { HardwareVendor } from 'components/brave_wallet_ui/common/api/hardware_keyrings'
 import {
   deserializeOrigin,
-  makeSerializableDecryptRequest,
   makeSerializableGetEncryptionPublicKeyRequest,
   makeSerializableSignMessageRequest,
   makeSerializableSwitchChainRequest
@@ -288,12 +287,10 @@ handler.on(PanelActions.getEncryptionPublicKeyProcessed.type, async (store: Stor
 handler.on(PanelActions.decryptProcessed.type, async (store: Store, payload: DecryptProcessedPayload) => {
   const apiProxy = getWalletPanelApiProxy()
   const braveWalletService = apiProxy.braveWalletService
-  braveWalletService.notifyDecryptRequestProcessed(payload.approved, deserializeOrigin(payload.origin))
+  braveWalletService.notifyDecryptRequestProcessed(payload.requestId, payload.approved)
   const decryptRequest = await getPendingDecryptRequest()
   if (decryptRequest) {
-    store.dispatch(PanelActions.decrypt(
-      makeSerializableDecryptRequest(decryptRequest)
-    ))
+    store.dispatch(PanelActions.decrypt(decryptRequest))
     return
   }
   apiProxy.panelHandler.closeUI()
@@ -678,9 +675,7 @@ handler.on(WalletActions.initialize.type, async (store) => {
     }
     const decryptRequest = await getPendingDecryptRequest()
     if (decryptRequest) {
-      store.dispatch(PanelActions.decrypt(
-        makeSerializableDecryptRequest(decryptRequest)
-      ))
+      store.dispatch(PanelActions.decrypt(decryptRequest))
       return
     }
   }

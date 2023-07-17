@@ -9,7 +9,6 @@ import {
   PanelState,
   PanelTypes,
   SerializableAddSuggestTokenRequest,
-  SerializableDecryptRequest,
   SerializableGetEncryptionPublicKeyRequest,
   SerializableOriginInfo,
   SerializableSignMessageRequest
@@ -75,7 +74,11 @@ const defaultState: PanelState = {
     address: ''
   },
   decryptRequest: {
-    originInfo: defaultOriginInfo,
+    requestId: '',
+    originInfo: {
+      originSpec: '',
+      eTldPlusOne: ''
+    },
     address: '',
     unsafeMessage: ''
   },
@@ -146,7 +149,7 @@ export const createPanelReducer = (initialState: PanelState) => {
     }
   })
 
-  reducer.on(PanelActions.decrypt.type, (state: any, request: SerializableDecryptRequest) => {
+  reducer.on(PanelActions.decrypt.type, (state: any, request: BraveWallet.DecryptRequest) => {
     return {
       ...state,
       decryptRequest: request

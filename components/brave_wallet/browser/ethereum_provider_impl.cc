@@ -590,9 +590,7 @@ void EthereumProviderImpl::ContinueDecryptWithSanitizedJson(
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
 
-  auto request = mojom::DecryptRequest::New(MakeOriginInfo(origin), address,
-                                            unsafe_message);
-  brave_wallet_service_->AddDecryptRequest(std::move(request),
+  brave_wallet_service_->AddDecryptRequest(origin, address, unsafe_message,
                                            std::move(callback), std::move(id));
   delegate_->ShowPanel();
 }

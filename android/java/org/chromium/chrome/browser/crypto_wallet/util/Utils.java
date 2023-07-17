@@ -69,6 +69,7 @@ import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinMarket;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.OriginInfoShort;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
@@ -1415,6 +1416,10 @@ public class Utils {
         GURL url = getCurentTabUrl();
 
         return Utils.geteTLD(url, etldPlusOne);
+    }
+
+    public static Spanned geteTLD(OriginInfoShort originInfoShort) {
+        return Utils.geteTLD(originInfoShort.originSpec, originInfoShort.etldPlusOne);
     }
 
     public static Spanned geteTLD(GURL url, String etldPlusOne) {

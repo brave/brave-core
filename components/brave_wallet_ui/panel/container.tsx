@@ -290,11 +290,21 @@ function Container () {
   }
 
   const onAllowReadingEncryptedMessage = () => {
-    dispatch(WalletPanelActions.decryptProcessed({ approved: true, origin: decryptRequest.originInfo.origin }))
+    dispatch(
+      WalletPanelActions.decryptProcessed({
+        requestId: decryptRequest.requestId,
+        approved: false
+      })
+    )
   }
 
   const onCancelAllowReadingEncryptedMessage = () => {
-    dispatch(WalletPanelActions.decryptProcessed({ approved: false, origin: decryptRequest.originInfo.origin }))
+    dispatch(
+      WalletPanelActions.decryptProcessed({
+        requestId: decryptRequest.requestId,
+        approved: false
+      })
+    )
   }
 
   const onBack = React.useCallback(() => {

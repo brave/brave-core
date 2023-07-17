@@ -19,7 +19,6 @@ import {
 import {
   BraveWallet,
   PanelTypes,
-  SerializableDecryptRequest,
   SerializableGetEncryptionPublicKeyRequest,
   SerializableSignMessageRequest,
   SerializableSwitchChainRequest
@@ -55,7 +54,7 @@ export const addSuggestToken = createAction<BraveWallet.AddSuggestTokenRequest>(
 export const addSuggestTokenProcessed = createAction<AddSuggestTokenProcessedPayload>('addSuggestTokenProcessed')
 export const getEncryptionPublicKey = createAction<SerializableGetEncryptionPublicKeyRequest>('getEncryptionPublicKey')
 export const getEncryptionPublicKeyProcessed = createAction<GetEncryptionPublicKeyProcessedPayload>('getEncryptionPublicKeyProcessed')
-export const decrypt = createAction<SerializableDecryptRequest>('decrypt')
+export const decrypt = createAction<BraveWallet.DecryptRequest>('decrypt')
 export const decryptProcessed = createAction<DecryptProcessedPayload>('decryptProcessed')
 export const setSelectedTransactionId = createAction<string | undefined>(
   'setSelectedTransactionId'

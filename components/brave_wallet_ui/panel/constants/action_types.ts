@@ -54,6 +54,6 @@ export type GetEncryptionPublicKeyProcessedPayload = {
 }
 
 export type DecryptProcessedPayload = {
+  requestId: string
   approved: boolean
-  origin: SerializableOrigin
 }

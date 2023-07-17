@@ -168,12 +168,12 @@ public class DappsModel implements KeyringServiceObserver {
         }
     }
 
-    public void processDecryptRequest(boolean isApproved, Origin origin) {
+    public void processDecryptRequest(String requestId, boolean isApproved) {
         synchronized (mLock) {
             if (mBraveWalletService == null) {
                 return;
             }
-            mBraveWalletService.notifyDecryptRequestProcessed(isApproved, origin);
+            mBraveWalletService.notifyDecryptRequestProcessed(requestId, isApproved);
             mBraveWalletService.getPendingDecryptRequests(requests -> {
                 if (requests != null && requests.length > 0) {
                     _mProcessNextDAppsRequest.postValue(
