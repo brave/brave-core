@@ -76,14 +76,26 @@ export const dataTable = styled.div`
 
   tr:nth-child(1) td.amount {
     color: var(--brave-palette-black);
+
+    .brave-theme-dark & {
+      color: var(--brave-palette-neutral400);
+    }
   }
 
   tr:nth-child(2) td.amount {
     color: var(--brave-palette-black);
+
+    .brave-theme-dark & {
+      color: var(--brave-palette-neutral400);
+    }
   }
 
   tr:nth-child(3) td.amount {
     color: var(--brave-palette-black);
+
+    .brave-theme-dark & {
+      color: var(--brave-palette-neutral400);
+    }
   }
 
   td.exchange {
