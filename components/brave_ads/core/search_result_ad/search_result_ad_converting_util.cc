@@ -43,8 +43,6 @@ constexpr char kDataDescription[] = "data-description";
 constexpr char kDataRewardsValue[] = "data-rewards-value";
 constexpr char kDataConversionUrlPatternValue[] =
     "data-conversion-url-pattern-value";
-constexpr char kDataConversionExtractVerifiableIdValue[] =
-    "data-conversion-extract-external-id-value";
 constexpr char kDataConversionAdvertiserPublicKeyValue[] =
     "data-conversion-advertiser-public-key-value";
 constexpr char kDataConversionObservationWindowValue[] =
@@ -61,7 +59,6 @@ constexpr auto kSearchResultAdRequiredAttributes =
 constexpr auto kAllConversionAttributes =
     base::MakeFixedFlatSet<base::StringPiece>(
         {kDataConversionUrlPatternValue,
-         kDataConversionExtractVerifiableIdValue,
          kDataConversionAdvertiserPublicKeyValue,
          kDataConversionObservationWindowValue});
 
@@ -98,22 +95,6 @@ bool GetNotEmptyStringValue(const schema_org::mojom::PropertyPtr& ad_property,
   if (out_value->empty()) {
     return false;
   }
-
-  return true;
-}
-
-bool GetBoolValue(const schema_org::mojom::PropertyPtr& ad_property,
-                  bool* out_value) {
-  CHECK(ad_property);
-  CHECK(out_value);
-
-  // Wrong attribute type.
-  if (!ad_property->values->is_bool_values() ||
-      ad_property->values->get_bool_values().size() != 1) {
-    return false;
-  }
-
-  *out_value = ad_property->values->get_bool_values().front();
 
   return true;
 }
@@ -231,13 +212,16 @@ bool SetConversionProperty(const schema_org::mojom::PropertyPtr& ad_property,
     return GetNotEmptyStringValue(ad_property, &conversion->url_pattern);
   }
 
-  if (name == kDataConversionExtractVerifiableIdValue) {
-    return GetBoolValue(ad_property, &conversion->extract_verifiable_id);
-  }
-
   if (name == kDataConversionAdvertiserPublicKeyValue) {
-    return GetStringValue(ad_property,
-                          &conversion->verifiable_advertiser_public_key_base64);
+    std::string verifiable_advertiser_public_key_base64;
+    const bool success =
+        GetStringValue(ad_property, &verifiable_advertiser_public_key_base64);
+    if (success && !verifiable_advertiser_public_key_base64.empty()) {
+      conversion->verifiable_advertiser_public_key_base64 =
+          verifiable_advertiser_public_key_base64;
+    }
+
+    return success;
   }
 
   if (name == kDataConversionObservationWindowValue) {
@@ -368,11 +352,9 @@ void LogSearchResultAdMap(const SearchResultAdMap& search_result_ads) {
       VLOG(6) << "Conversion attributes:\n  \""
               << kDataConversionUrlPatternValue
               << "\": " << search_result_ad->conversion->url_pattern << "\n  \""
-              << kDataConversionExtractVerifiableIdValue
-              << "\": " << search_result_ad->conversion->extract_verifiable_id
-              << "\n  \"" << kDataConversionAdvertiserPublicKeyValue << "\": "
+              << kDataConversionAdvertiserPublicKeyValue << "\": "
               << search_result_ad->conversion
-                     ->verifiable_advertiser_public_key_base64
+                     ->verifiable_advertiser_public_key_base64.value_or("")
               << "\n  \"" << kDataConversionObservationWindowValue
               << "\": " << search_result_ad->conversion->observation_window;
     }

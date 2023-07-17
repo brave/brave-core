@@ -14,13 +14,12 @@ CreativeSetConversionInfo BuildVerifiableCreativeSetConversion(
     const std::string& creative_set_id,
     const std::string& url_pattern,
     const base::TimeDelta observation_window,
-    const bool should_extract_verifiable_id,
-    const std::string& verifiable_advertiser_public_key_base64) {
+    const absl::optional<std::string>&
+        verifiable_advertiser_public_key_base64) {
   CreativeSetConversionInfo creative_set_conversion;
 
   creative_set_conversion.id = creative_set_id;
   creative_set_conversion.url_pattern = url_pattern;
-  creative_set_conversion.extract_verifiable_id = should_extract_verifiable_id;
   creative_set_conversion.verifiable_advertiser_public_key_base64 =
       verifiable_advertiser_public_key_base64;
   creative_set_conversion.observation_window = observation_window;
@@ -34,14 +33,13 @@ void BuildAndSaveVerifiableCreativeSetConversion(
     const std::string& creative_set_id,
     const std::string& url_pattern,
     const base::TimeDelta observation_window,
-    const bool should_extract_verifiable_id,
-    const std::string& verifiable_advertiser_public_key_base64) {
+    const absl::optional<std::string>&
+        verifiable_advertiser_public_key_base64) {
   CreativeSetConversionList creative_set_conversions;
 
   const CreativeSetConversionInfo creative_set_conversion =
       BuildVerifiableCreativeSetConversion(
           creative_set_id, url_pattern, observation_window,
-          should_extract_verifiable_id,
           verifiable_advertiser_public_key_base64);
   creative_set_conversions.push_back(creative_set_conversion);
 
@@ -54,8 +52,7 @@ CreativeSetConversionInfo BuildCreativeSetConversion(
     const base::TimeDelta observation_window) {
   return BuildVerifiableCreativeSetConversion(
       creative_set_id, url_pattern, observation_window,
-      /*should_extract_verifiable_id*/ false,
-      /*verifiable_advertiser_public_key_base64*/ {});
+      /*verifiable_advertiser_public_key_base64*/ absl::nullopt);
 }
 
 void BuildAndSaveCreativeSetConversion(
@@ -64,8 +61,7 @@ void BuildAndSaveCreativeSetConversion(
     const base::TimeDelta observation_window) {
   BuildAndSaveVerifiableCreativeSetConversion(
       creative_set_id, url_pattern, observation_window,
-      /*should_extract_verifiable_id*/ false,
-      /*verifiable_advertiser_public_key_base64*/ {});
+      /*verifiable_advertiser_public_key_base64*/ absl::nullopt);
 }
 
 }  // namespace brave_ads

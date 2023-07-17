@@ -36,7 +36,6 @@ bool operator==(const CreativeSetConversionInfo& lhs,
       [](const CreativeSetConversionInfo& creative_set_conversion) {
         return std::tie(
             creative_set_conversion.id, creative_set_conversion.url_pattern,
-            creative_set_conversion.extract_verifiable_id,
             creative_set_conversion.verifiable_advertiser_public_key_base64,
             creative_set_conversion.observation_window,
             creative_set_conversion.expire_at);

@@ -23,9 +23,6 @@ absl::optional<CreativeSetConversionInfo> BuildCreativeSetConversion(
 
   creative_set_conversion.url_pattern = ad_mojom->conversion->url_pattern;
 
-  creative_set_conversion.extract_verifiable_id =
-      ad_mojom->conversion->extract_verifiable_id;
-
   creative_set_conversion.verifiable_advertiser_public_key_base64 =
       ad_mojom->conversion->verifiable_advertiser_public_key_base64;
 

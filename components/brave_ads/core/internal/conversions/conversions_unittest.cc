@@ -813,7 +813,6 @@ TEST_F(BraveAdsConversionsTest,
   BuildAndSaveVerifiableCreativeSetConversion(
       ad.creative_set_id, kMatchingUrlPattern,
       /*observation_window*/ base::Days(3),
-      /*should_extract_verifiable_id*/ true,
       kEmptyVerifiableConversionAdvertiserPublicKey);
 
   FireAdEventsAdvancingTheClockAfterEach(
@@ -844,7 +843,6 @@ TEST_F(
       ad.creative_set_id,
       /*url_pattern*/ "https://www.baz.com/*",
       /*observation_window*/ base::Days(3),
-      /*should_extract_verifiable_id*/ true,
       kVerifiableConversionAdvertiserPublicKey);
 
   FireAdEventsAdvancingTheClockAfterEach(
@@ -876,7 +874,6 @@ TEST_F(BraveAdsConversionsTest,
   BuildAndSaveVerifiableCreativeSetConversion(
       ad.creative_set_id, kMatchingUrlPattern,
       /*observation_window*/ base::Days(3),
-      /*should_extract_verifiable_id*/ true,
       kVerifiableConversionAdvertiserPublicKey);
 
   FireAdEventsAdvancingTheClockAfterEach(
@@ -904,7 +901,6 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
   BuildAndSaveVerifiableCreativeSetConversion(
       ad.creative_set_id, kMatchingUrlPattern,
       /*observation_window*/ base::Days(3),
-      /*should_extract_verifiable_id*/ true,
       kVerifiableConversionAdvertiserPublicKey);
 
   FireAdEventsAdvancingTheClockAfterEach(
@@ -934,7 +930,6 @@ TEST_F(BraveAdsConversionsTest,
   BuildAndSaveVerifiableCreativeSetConversion(
       ad.creative_set_id, kMatchingUrlPattern,
       /*observation_window*/ base::Days(3),
-      /*should_extract_verifiable_id*/ true,
       kVerifiableConversionAdvertiserPublicKey);
 
   FireAdEventsAdvancingTheClockAfterEach(
@@ -962,7 +957,6 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableHtmlConversionIdExists) {
   BuildAndSaveVerifiableCreativeSetConversion(
       ad.creative_set_id, kMatchingUrlPattern,
       /*observation_window*/ base::Days(3),
-      /*should_extract_verifiable_id*/ true,
       kVerifiableConversionAdvertiserPublicKey);
 
   FireAdEventsAdvancingTheClockAfterEach(
@@ -993,7 +987,6 @@ TEST_F(
   BuildAndSaveVerifiableCreativeSetConversion(
       ad.creative_set_id, kAnotherMatchingUrlPattern,
       /*observation_window*/ base::Days(3),
-      /*should_extract_verifiable_id*/ true,
       kVerifiableConversionAdvertiserPublicKey);
 
   FireAdEventsAdvancingTheClockAfterEach(
@@ -1022,7 +1015,6 @@ TEST_F(BraveAdsConversionsTest,
   BuildAndSaveVerifiableCreativeSetConversion(
       ad.creative_set_id, kAnotherMatchingUrlPattern,
       /*observation_window*/ base::Days(3),
-      /*should_extract_verifiable_id*/ true,
       kVerifiableConversionAdvertiserPublicKey);
 
   FireAdEventsAdvancingTheClockAfterEach(

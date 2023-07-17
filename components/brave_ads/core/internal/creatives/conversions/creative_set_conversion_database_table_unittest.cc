@@ -44,7 +44,7 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   const CreativeSetConversionInfo creative_set_conversion_1 =
       BuildVerifiableCreativeSetConversion(
           kCreativeSetId, /*url_pattern*/ "https://www.brave.com/*",
-          /*observation_window*/ base::Days(3), /*extract_verifiable_id*/ true,
+          /*observation_window*/ base::Days(3),
           kVerifiableConversionAdvertiserPublicKey);
   creative_set_conversions.push_back(creative_set_conversion_1);
 
@@ -78,7 +78,7 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   const CreativeSetConversionInfo creative_set_conversion =
       BuildVerifiableCreativeSetConversion(
           kCreativeSetId, /*url_pattern*/ "https://www.brave.com/*",
-          /*observation_window*/ base::Days(3), /*extract_verifiable_id*/ true,
+          /*observation_window*/ base::Days(3),
           kVerifiableConversionAdvertiserPublicKey);
   creative_set_conversions.push_back(creative_set_conversion);
 
@@ -148,7 +148,6 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
           kCreativeSetId,
           /*url_pattern*/ "https://www.brave.com/1",
           /*observation_window*/ base::Days(3),
-          /*extract_verifiable_id*/ true,
           kVerifiableConversionAdvertiserPublicKey);
   creative_set_conversions_1.push_back(creative_set_conversion_1);
 
@@ -162,7 +161,6 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
           kCreativeSetId,
           /*url_pattern*/ "https://www.brave.com/2",
           /*observation_window*/ base::Days(30),
-          /*extract_verifiable_id*/ true,
           kVerifiableConversionAdvertiserPublicKey);
   creative_set_conversions_2.push_back(creative_set_conversion_2);
 

@@ -69,7 +69,6 @@ mojom::SearchResultAdInfoPtr BuildSearchResultAdWithConversion(
 
   ad->conversion = mojom::ConversionInfo::New();
   ad->conversion->url_pattern = kConversionUrlPattern;
-  ad->conversion->extract_verifiable_id = true;
   ad->conversion->verifiable_advertiser_public_key_base64 =
       kVerifiableConversionAdvertiserPublicKey;
   ad->conversion->observation_window = kConversionObservationWindow;

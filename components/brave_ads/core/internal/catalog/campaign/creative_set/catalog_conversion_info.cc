@@ -29,7 +29,6 @@ bool operator==(const CatalogConversionInfo& lhs,
                 const CatalogConversionInfo& rhs) {
   const auto tie = [](const CatalogConversionInfo& conversion) {
     return std::tie(conversion.creative_set_id, conversion.url_pattern,
-                    conversion.extract_verifiable_id,
                     conversion.verifiable_advertiser_public_key_base64,
                     conversion.observation_window, conversion.expire_at);
   };

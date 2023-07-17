@@ -8,6 +8,8 @@
 
 #include <string>
 
+#include "third_party/abseil-cpp/absl/types/optional.h"
+
 namespace base {
 class TimeDelta;
 }  // namespace base
@@ -20,15 +22,13 @@ CreativeSetConversionInfo BuildVerifiableCreativeSetConversion(
     const std::string& creative_set_id,
     const std::string& url_pattern,
     base::TimeDelta observation_window,
-    bool should_extract_verifiable_id,
-    const std::string& verifiable_advertiser_public_key_base64);
+    const absl::optional<std::string>& verifiable_advertiser_public_key_base64);
 
 void BuildAndSaveVerifiableCreativeSetConversion(
     const std::string& creative_set_id,
     const std::string& url_pattern,
     base::TimeDelta observation_window,
-    bool should_extract_verifiable_id,
-    const std::string& verifiable_advertiser_public_key_base64);
+    const absl::optional<std::string>& verifiable_advertiser_public_key_base64);
 
 CreativeSetConversionInfo BuildCreativeSetConversion(
     const std::string& creative_set_id,

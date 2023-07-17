@@ -507,7 +507,6 @@ TEST_F(BraveAdsDatabaseMigrationIssue17231Test,
       CreativeSetConversionInfo expected_creative_set_conversion;
       expected_creative_set_conversion.id = creative_set_ids.at(i);
       expected_creative_set_conversion.url_pattern = url_patterns.at(i);
-      expected_creative_set_conversion.extract_verifiable_id = true;
       expected_creative_set_conversion.observation_window =
           base::Days(observation_windows.at(i));
       expected_creative_set_conversion.expire_at =

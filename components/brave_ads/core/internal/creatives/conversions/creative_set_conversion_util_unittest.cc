@@ -141,7 +141,6 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
           kCreativeSetId,
           /*url_pattern*/ "https://foo.com/*",
           /*observation_window*/ base::Days(7),
-          /*should_extract_verifiable_id*/ true,
           kVerifiableConversionAdvertiserPublicKey);
   creative_set_conversions.push_back(creative_set_conversion_1);
 
@@ -176,7 +175,6 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
           kCreativeSetId,
           /*url_pattern*/ "https://foo.com/*",
           /*observation_window*/ base::Days(7),
-          /*should_extract_verifiable_id*/ true,
           kVerifiableConversionAdvertiserPublicKey);
   creative_set_conversions.push_back(creative_set_conversion);
 

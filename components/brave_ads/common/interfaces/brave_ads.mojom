@@ -63,8 +63,7 @@ enum AdType {
 
 struct ConversionInfo {
   string url_pattern;
-  bool extract_verifiable_id;
-  string verifiable_advertiser_public_key_base64;
+  string? verifiable_advertiser_public_key_base64;
   mojo_base.mojom.TimeDelta observation_window;
 };
 
