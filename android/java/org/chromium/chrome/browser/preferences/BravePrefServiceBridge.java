@@ -10,6 +10,7 @@ import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.chrome.browser.profiles.Profile;
 
+/* OMG NO!!!! */
 /**
  * Please don't add anything in that file. We are going to refactor it soon.
  * Check this PRs on how to handle preferences correctly:
