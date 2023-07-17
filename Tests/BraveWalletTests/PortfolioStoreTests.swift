@@ -6,17 +6,32 @@
 import Combine
 import XCTest
 import BraveCore
+import Preferences
 @testable import BraveWallet
 
 class PortfolioStoreTests: XCTestCase {
 
   private var cancellables: Set<AnyCancellable> = .init()
   
+  override func setUp() {
+    resetFilters()
+  }
+  override func tearDown() {
+    resetFilters()
+  }
+  private func resetFilters() {
+    Preferences.Wallet.sortOrderFilter.reset()
+    Preferences.Wallet.isHidingSmallBalancesFilter.reset()
+    Preferences.Wallet.nonSelectedAccountsFilter.reset()
+    Preferences.Wallet.nonSelectedNetworksFilter.reset()
+  }
+  
   /// Test `update()` will fetch all visible user assets from all networks and display them sorted by their balance.
-  func testUpdate() {
+  func testUpdate() async {
     let mockETHBalance: Double = 0.896
     let mockETHPrice: String = "3059.99" // ETH value = $2741.75104
-    let mockUSDCBalance: Double = 4
+    let mockUSDCBalanceAccount1: Double = 0.5
+    let mockUSDCBalanceAccount2: Double = 0.25
     let mockUSDCPrice: String = "1" // USDC value = $4
     let mockSOLLamportBalance: UInt64 = 3876535000 // ~3.8765 SOL
     let mockSOLBalance: Double = 3.8765 // lamports rounded
@@ -42,7 +57,12 @@ class PortfolioStoreTests: XCTestCase {
     let totalSolBalanceValue: Double = (Double(mockSOLAssetPrice.price) ?? 0) * mockSOLBalance
     
     // config Ethereum
-    let mockEthAccountInfos: [BraveWallet.AccountInfo] = [.mockEthAccount]
+    let ethAccount1: BraveWallet.AccountInfo = .mockEthAccount
+    let ethAccount2 = (BraveWallet.AccountInfo.mockEthAccount.copy() as! BraveWallet.AccountInfo).then {
+      $0.address = "mock_eth_id_2"
+      $0.name = "Ethereum Account 2"
+    }
+    let mockEthAccountInfos: [BraveWallet.AccountInfo] = [ethAccount1, ethAccount2]
     let ethNetwork: BraveWallet.NetworkInfo = .mockMainnet
     let mockEthUserAssets: [BraveWallet.BlockchainToken] = [
       .previewToken.copy(asVisibleAsset: true),
@@ -55,8 +75,13 @@ class PortfolioStoreTests: XCTestCase {
       radix: .hex,
       decimals: Int(BraveWallet.BlockchainToken.previewToken.decimals)
     ) ?? ""
-    let usdcBalanceWei = formatter.weiString(
-      from: mockUSDCBalance,
+    let usdcAccount1BalanceWei = formatter.weiString(
+      from: mockUSDCBalanceAccount1,
+      radix: .hex,
+      decimals: Int(BraveWallet.BlockchainToken.mockUSDCToken.decimals)
+    ) ?? ""
+    let usdcAccount2BalanceWei = formatter.weiString(
+      from: mockUSDCBalanceAccount2,
       radix: .hex,
       decimals: Int(BraveWallet.BlockchainToken.mockUSDCToken.decimals)
     ) ?? ""
@@ -74,38 +99,37 @@ class PortfolioStoreTests: XCTestCase {
       .init(date: Date(), price: mockUSDCPrice)
     ]
     let totalEthBalanceValue: Double = (Double(mockETHAssetPrice.price) ?? 0) * mockETHBalance
-    let totalUSDCBalanceValue: Double = (Double(mockUSDCAssetPrice.price) ?? 0) * mockUSDCBalance
+    var totalUSDCBalanceValue: Double = 0
+    totalUSDCBalanceValue += (Double(mockUSDCAssetPrice.price) ?? 0) * mockUSDCBalanceAccount1
+    totalUSDCBalanceValue += (Double(mockUSDCAssetPrice.price) ?? 0) * mockUSDCBalanceAccount2
     
     let totalBalanceValue = totalEthBalanceValue + totalSolBalanceValue + totalUSDCBalanceValue
     let totalBalance = currencyFormatter.string(from: NSNumber(value: totalBalanceValue)) ?? ""
     
+    let ethKeyring: BraveWallet.KeyringInfo = .init(
+      id: BraveWallet.KeyringId.default,
+      isKeyringCreated: true,
+      isLocked: false,
+      isBackedUp: true,
+      accountInfos: mockEthAccountInfos
+    )
+    let solKeyring: BraveWallet.KeyringInfo = .init(
+      id: BraveWallet.KeyringId.solana,
+      isKeyringCreated: true,
+      isLocked: false,
+      isBackedUp: true,
+      accountInfos: mockSolAccountInfos
+    )
+    
     // setup test services
     let keyringService = BraveWallet.TestKeyringService()
-    keyringService._keyringInfo = { keyringId, completion in
-      if keyringId == BraveWallet.KeyringId.default {
-        let keyring: BraveWallet.KeyringInfo = .init(
-          id: BraveWallet.KeyringId.default,
-          isKeyringCreated: true,
-          isLocked: false,
-          isBackedUp: true,
-          accountInfos: mockEthAccountInfos
-        )
-        completion(keyring)
-      } else {
-        let keyring: BraveWallet.KeyringInfo = .init(
-          id: BraveWallet.KeyringId.solana,
-          isKeyringCreated: true,
-          isLocked: false,
-          isBackedUp: true,
-          accountInfos: mockSolAccountInfos
-        )
-        completion(keyring)
-      }
-    }
     keyringService._addObserver = { _ in }
     keyringService._isLocked = { completion in
       // unlocked would cause `update()` from call in `init` to be called prior to test being setup.g
       completion(true)
+    }
+    keyringService._allAccounts = {
+      $0(.init(accounts: ethKeyring.accountInfos + solKeyring.accountInfos))
     }
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }
@@ -123,14 +147,29 @@ class PortfolioStoreTests: XCTestCase {
         XCTFail("Should not fetch unknown network")
       }
     }
-    rpcService._balance = { _, _, _, completion in
-      completion(ethBalanceWei, .success, "") // eth balance
+    rpcService._balance = { accountAddress, _, _, completion in
+      // eth balance
+      if accountAddress == ethAccount1.address {
+        completion(ethBalanceWei, .success, "")
+      } else {
+        completion("", .success, "")
+      }
     }
-    rpcService._erc20TokenBalance = { contractAddress, _, _, completion in
-      completion(usdcBalanceWei, .success, "") // usdc balance
+    rpcService._erc20TokenBalance = { contractAddress, accountAddress, _, completion in
+      // usdc balance
+      if accountAddress == ethAccount1.address {
+        completion(usdcAccount1BalanceWei, .success, "")
+      } else {
+        completion(usdcAccount2BalanceWei, .success, "")
+      }
     }
-    rpcService._erc721TokenBalance = { contractAddress, _, _, _, completion in
-      completion(mockNFTBalanceWei, .success, "") // eth nft balance
+    rpcService._erc721TokenBalance = { contractAddress, _, accountAddress, _, completion in
+      // eth nft balance
+      if accountAddress == ethAccount1.address {
+        completion(mockNFTBalanceWei, .success, "")
+      } else {
+        completion("", .success, "")
+      }
     }
     rpcService._solanaBalance = { accountAddress, chainId, completion in
       completion(mockSOLLamportBalance, .success, "") // sol balance
@@ -180,12 +219,12 @@ class PortfolioStoreTests: XCTestCase {
     }
     
     let mockAssetManager = TestableWalletUserAssetManager()
-    mockAssetManager._getAllVisibleAssetsInNetworkAssets = { _ in
-      [NetworkAssets(network: .mockMainnet, tokens: mockEthUserAssets.filter({ $0.visible == true }), sortOrder: 0),
-       NetworkAssets(network: .mockSolana, tokens: mockSolUserAssets.filter({ $0.visible == true }), sortOrder: 1)
-      ]
+    mockAssetManager._getAllVisibleAssetsInNetworkAssets = { networks in
+      [
+        NetworkAssets(network: .mockMainnet, tokens: mockEthUserAssets.filter({ $0.visible == true }), sortOrder: 0),
+        NetworkAssets(network: .mockSolana, tokens: mockSolUserAssets.filter({ $0.visible == true }), sortOrder: 1)
+      ].filter { networkAsset in networks.contains(where: { $0 == networkAsset.network }) }
     }
-    
     // setup store
     let store = PortfolioStore(
       keyringService: keyringService,
@@ -196,7 +235,8 @@ class PortfolioStoreTests: XCTestCase {
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
     )
-    // test that `update()` will assign new value to `userVisibleAssets` publisher
+    
+    // MARK: Default update() Test
     let userVisibleAssetsException = expectation(description: "update-userVisibleAssets")
     XCTAssertTrue(store.userVisibleAssets.isEmpty)  // Initial state
     store.$userVisibleAssets
@@ -211,27 +251,33 @@ class PortfolioStoreTests: XCTestCase {
         }
         // ETH on Ethereum mainnet, SOL on Solana mainnet, USDC on Ethereum mainnet
         XCTAssertEqual(lastUpdatedVisibleAssets.count, 3)
-        // ETH
+        // ETH (value ~= $2741.7510399999996)
         XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.token.symbol,
                        BraveWallet.BlockchainToken.previewToken.symbol)
         XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.price,
                        mockETHAssetPrice.price)
         XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.history,
                        mockETHPriceHistory)
-        // SOL
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.decimalBalance,
+                       mockETHBalance)
+        // SOL (value = $775.3)
         XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.token.symbol,
                        BraveWallet.BlockchainToken.mockSolToken.symbol)
         XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.price,
                        mockSOLAssetPrice.price)
         XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.history,
                        mockSOLPriceHistory)
-        // USDC first with largest balance
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.decimalBalance,
+                       mockSOLBalance)
+        // USDC (value $0.5)
         XCTAssertEqual(lastUpdatedVisibleAssets[safe: 2]?.token.symbol,
                        BraveWallet.BlockchainToken.mockUSDCToken.symbol)
         XCTAssertEqual(lastUpdatedVisibleAssets[safe: 2]?.price,
                        mockUSDCAssetPrice.price)
         XCTAssertEqual(lastUpdatedVisibleAssets[safe: 2]?.history,
                        mockUSDCPriceHistory)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 2]?.decimalBalance,
+                       mockUSDCBalanceAccount1 + mockUSDCBalanceAccount2)
       }.store(in: &cancellables)
     // test that `update()` will assign new value to `balance` publisher
     let balanceException = expectation(description: "update-balance")
@@ -256,9 +302,209 @@ class PortfolioStoreTests: XCTestCase {
       }
       .store(in: &cancellables)
     store.update()
-    waitForExpectations(timeout: 1) { error in
-      XCTAssertNil(error)
-    }
+    await fulfillment(of: [userVisibleAssetsException, balanceException, isLoadingBalancesException], timeout: 1)
+    cancellables.removeAll()
+    
+    // MARK: Sort Order Filter Test (Smallest value first)
+    let sortExpectation = expectation(description: "update-sortOrder")
+    store.$userVisibleAssets
+      .dropFirst()
+      .collect(2)
+      .sink { userVisibleAssets in
+        defer { sortExpectation.fulfill() }
+        XCTAssertEqual(userVisibleAssets.count, 2) // empty assets, populated assets
+        guard let lastUpdatedVisibleAssets = userVisibleAssets.last else {
+          XCTFail("Unexpected test result")
+          return
+        }
+        // USDC on Ethereum mainnet, SOL on Solana mainnet, ETH on Ethereum mainnet
+        XCTAssertEqual(lastUpdatedVisibleAssets.count, 3)
+        // USDC (value $0.75)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockUSDCToken.symbol)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.price,
+                       mockUSDCAssetPrice.price)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.history,
+                       mockUSDCPriceHistory)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.decimalBalance,
+                       mockUSDCBalanceAccount1 + mockUSDCBalanceAccount2)
+        // SOL (value = $775.3)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockSolToken.symbol)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.price,
+                       mockSOLAssetPrice.price)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.history,
+                       mockSOLPriceHistory)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.decimalBalance,
+                       mockSOLBalance)
+        // ETH (value ~= $2741.7510399999996)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 2]?.token.symbol,
+                       BraveWallet.BlockchainToken.previewToken.symbol)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 2]?.price,
+                       mockETHAssetPrice.price)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 2]?.history,
+                       mockETHPriceHistory)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 2]?.decimalBalance,
+                       mockETHBalance)
+      }.store(in: &cancellables)
+    
+    // change sort to ascending
+    store.saveFilters(.init(
+      groupBy: store.filters.groupBy,
+      sortOrder: .valueAsc,
+      isHidingSmallBalances: store.filters.isHidingSmallBalances,
+      accounts: store.filters.accounts,
+      networks: store.filters.networks
+    ))
+    await fulfillment(of: [sortExpectation], timeout: 1)
+    cancellables.removeAll()
+    
+    // MARK: Hide Small Balances Test (tokens with value < $1 hidden)
+    let hideSmallBalancesExpectation = expectation(description: "update-hideSmallBalances")
+    store.$userVisibleAssets
+      .dropFirst()
+      .collect(2)
+      .sink { userVisibleAssets in
+        defer { hideSmallBalancesExpectation.fulfill() }
+        XCTAssertEqual(userVisibleAssets.count, 2) // empty assets, populated assets
+        guard let lastUpdatedVisibleAssets = userVisibleAssets.last else {
+          XCTFail("Unexpected test result")
+          return
+        }
+        // ETH on Ethereum mainnet, SOL on Solana mainnet
+        XCTAssertEqual(lastUpdatedVisibleAssets.count, 2) // USDC hidden for small balance
+        // ETH (value ~= 2741.7510399999996)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.token.symbol,
+                       BraveWallet.BlockchainToken.previewToken.symbol)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.price,
+                       mockETHAssetPrice.price)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.history,
+                       mockETHPriceHistory)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.decimalBalance,
+                       mockETHBalance)
+        // SOL (value = 775.3)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockSolToken.symbol)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.price,
+                       mockSOLAssetPrice.price)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.history,
+                       mockSOLPriceHistory)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.decimalBalance,
+                       mockSOLBalance)
+        // USDC (value 0.75), hidden
+        XCTAssertNil(lastUpdatedVisibleAssets[safe: 2])
+      }.store(in: &cancellables)
+    store.saveFilters(.init(
+      groupBy: store.filters.groupBy,
+      sortOrder: .valueDesc,
+      isHidingSmallBalances: true,
+      accounts: store.filters.accounts,
+      networks: store.filters.networks
+    ))
+    await fulfillment(of: [hideSmallBalancesExpectation], timeout: 1)
+    cancellables.removeAll()
+    
+    // MARK: Account Filter Test (Ethereum account 2 de-selected)
+    let accountsExpectation = expectation(description: "update-accounts")
+    store.$userVisibleAssets
+      .dropFirst()
+      .collect(2)
+      .sink { userVisibleAssets in
+        defer { accountsExpectation.fulfill() }
+        XCTAssertEqual(userVisibleAssets.count, 2) // empty assets, populated assets
+        guard let lastUpdatedVisibleAssets = userVisibleAssets.last else {
+          XCTFail("Unexpected test result")
+          return
+        }
+        // ETH on Ethereum mainnet, SOL on Solana mainnet, USDC on Ethereum mainnet
+        XCTAssertEqual(lastUpdatedVisibleAssets.count, 3)
+        // ETH (value ~= 2741.7510399999996)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.token.symbol,
+                       BraveWallet.BlockchainToken.previewToken.symbol)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.price,
+                       mockETHAssetPrice.price)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.history,
+                       mockETHPriceHistory)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.decimalBalance,
+                       mockETHBalance)
+        // SOL (value = 775.3)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockSolToken.symbol)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.price,
+                       mockSOLAssetPrice.price)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.history,
+                       mockSOLPriceHistory)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.decimalBalance,
+                       mockSOLBalance)
+        // USDC (value 0.5, ethAccount2 hidden!)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 2]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockUSDCToken.symbol)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 2]?.price,
+                       mockUSDCAssetPrice.price)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 2]?.history,
+                       mockUSDCPriceHistory)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 2]?.decimalBalance,
+                       mockUSDCBalanceAccount1) // verify account 2 hidden
+      }.store(in: &cancellables)
+    store.saveFilters(.init(
+      groupBy: store.filters.groupBy,
+      sortOrder: .valueDesc,
+      isHidingSmallBalances: false,
+      accounts: store.filters.accounts.map { // deselect ethAccount2
+        .init(isSelected: $0.model.address != ethAccount2.address, model: $0.model)
+      },
+      networks: store.filters.networks
+    ))
+    await fulfillment(of: [accountsExpectation], timeout: 1)
+    cancellables.removeAll()
+    
+    // MARK: Network Filter Test (Solana networks de-selected)
+    let networksExpectation = expectation(description: "update-networks")
+    store.$userVisibleAssets
+      .dropFirst()
+      .collect(2)
+      .sink { userVisibleAssets in
+        defer { networksExpectation.fulfill() }
+        XCTAssertEqual(userVisibleAssets.count, 2) // empty assets, populated assets
+        guard let lastUpdatedVisibleAssets = userVisibleAssets.last else {
+          XCTFail("Unexpected test result")
+          return
+        }
+        // ETH on Ethereum mainnet, USDC on Ethereum mainnet
+        XCTAssertEqual(lastUpdatedVisibleAssets.count, 2)
+        // ETH (value ~= 2741.7510399999996)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.token.symbol,
+                       BraveWallet.BlockchainToken.previewToken.symbol)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.price,
+                       mockETHAssetPrice.price)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.history,
+                       mockETHPriceHistory)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.decimalBalance,
+                       mockETHBalance)
+        // USDC (value 0.75)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockUSDCToken.symbol)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.price,
+                       mockUSDCAssetPrice.price)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.history,
+                       mockUSDCPriceHistory)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.decimalBalance,
+                       mockUSDCBalanceAccount1 + mockUSDCBalanceAccount2)
+        // SOL (value = 0, SOL networks hidden)
+        XCTAssertNil(lastUpdatedVisibleAssets[safe: 2])
+      }.store(in: &cancellables)
+    store.saveFilters(.init(
+      groupBy: store.filters.groupBy,
+      sortOrder: .valueDesc,
+      isHidingSmallBalances: false,
+      accounts: store.filters.accounts.map { // re-select all accounts
+        .init(isSelected: true, model: $0.model)
+      },
+      networks: store.filters.networks.map { // only select Ethereum networks
+        .init(isSelected: $0.model.coin == .eth, model: $0.model)
+      }
+    ))
+    await fulfillment(of: [networksExpectation], timeout: 1)
   }
 }
 

@@ -111,12 +111,15 @@ public struct CryptoView: View {
             case .panelUnlockOrSetup:
               EmptyView()
             case .accountSelection:
-              AccountListView(
-                keyringStore: keyringStore,
-                onDismiss: {
-                  dismissAction()
-                }
-              )
+              NavigationView {
+                AccountSelectionView(
+                  keyringStore: keyringStore,
+                  onDismiss: {
+                    dismissAction()
+                  }
+                )
+              }
+              .navigationViewStyle(.stack)
             case .transactionHistory:
               NavigationView {
                 AccountTransactionListView(

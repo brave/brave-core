@@ -8,6 +8,7 @@ import BraveCore
 import SwiftUI
 import Combine
 import Data
+import Preferences
 
 public struct AssetViewModel: Identifiable, Equatable {
   var token: BraveWallet.BlockchainToken
@@ -21,19 +22,32 @@ public struct AssetViewModel: Identifiable, Equatable {
   }
   
   /// Sort by the fiat/value of the asset (price x balance), otherwise by balance when price is unavailable.
-  static func sortedByValue(lhs: AssetViewModel, rhs: AssetViewModel) -> Bool {
-    if let lhsPrice = Double(lhs.price),
-       let rhsPrice = Double(rhs.price) {
-      return (lhsPrice * lhs.decimalBalance) > (rhsPrice * rhs.decimalBalance)
-    } else if let lhsPrice = Double(lhs.price), (lhsPrice * lhs.decimalBalance) > 0 {
-      // lhs has a non-zero value
-      return true
-    } else if let rhsPrice = Double(rhs.price), (rhsPrice * rhs.decimalBalance) > 0 {
-      // rhs has a non-zero value
-      return false
+  static func sorted(by sortOrder: SortOrder = .valueDesc, lhs: AssetViewModel, rhs: AssetViewModel) -> Bool {
+    switch sortOrder {
+    case .valueAsc, .valueDesc:
+      if let lhsPrice = Double(lhs.price),
+         let rhsPrice = Double(rhs.price) {
+        if sortOrder == .valueAsc {
+          return (lhsPrice * lhs.decimalBalance) < (rhsPrice * rhs.decimalBalance)
+        }
+        return (lhsPrice * lhs.decimalBalance) > (rhsPrice * rhs.decimalBalance)
+      } else if let lhsPrice = Double(lhs.price), (lhsPrice * lhs.decimalBalance) > 0 {
+        // lhs has a non-zero value
+        return true
+      } else if let rhsPrice = Double(rhs.price), (rhsPrice * rhs.decimalBalance) > 0 {
+        // rhs has a non-zero value
+        return false
+      }
+      // price unavailable, sort by balance
+      if sortOrder == .valueAsc {
+        return lhs.decimalBalance < rhs.decimalBalance
+      }
+      return lhs.decimalBalance > rhs.decimalBalance
+    case .alphaAsc:
+      return lhs.token.name.localizedStandardCompare(rhs.token.name) == .orderedAscending
+    case .alphaDesc:
+      return lhs.token.name.localizedStandardCompare(rhs.token.name) == .orderedDescending
     }
-    // price unavailable, sort by balance
-    return lhs.decimalBalance > rhs.decimalBalance
   }
 }
 
@@ -74,13 +88,36 @@ public class PortfolioStore: ObservableObject {
     }
   }
   
-  @Published var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = [] {
-    didSet {
-      guard !oldValue.isEmpty else { return } // initial assignment to `networkFilters`
-      update()
-    }
-  }
   @Published private(set) var isLoadingDiscoverAssets: Bool = false
+  
+  /// All User Accounts
+  var allAccounts: [BraveWallet.AccountInfo] = []
+  /// All available networks
+  var allNetworks: [BraveWallet.NetworkInfo] = []
+  var filters: Filters {
+    let nonSelectedAccountAddresses = Preferences.Wallet.nonSelectedAccountsFilter.value
+    let nonSelectedNetworkChainIds = Preferences.Wallet.nonSelectedNetworksFilter.value
+    return Filters(
+      groupBy: .none,
+      sortOrder: SortOrder(rawValue: Preferences.Wallet.sortOrderFilter.value) ?? .valueDesc,
+      isHidingSmallBalances: Preferences.Wallet.isHidingSmallBalancesFilter.value,
+      accounts: allAccounts.map { account in
+          .init(
+            isSelected: !nonSelectedAccountAddresses.contains(where: { $0 == account.address }),
+            model: account
+          )
+      },
+      networks: allNetworks.map { network in
+          .init(
+            isSelected: !nonSelectedNetworkChainIds.contains(where: { $0 == network.chainId }),
+            model: network
+          )
+      }
+    )
+  }
+  /// Flag indicating when we are saving filters. Since we are observing multiple `Preference.Option`s,
+  /// we should avoid calling `update()` in `preferencesDidChange()` unless another view changed.
+  private var isSavingFilters: Bool = false
 
   public private(set) lazy var userAssetsStore: UserAssetsStore = .init(
     blockchainRegistry: self.blockchainRegistry,
@@ -139,30 +176,46 @@ public class PortfolioStore: ObservableObject {
     walletService.defaultBaseCurrency { [self] currencyCode in
       self.currencyCode = currencyCode
     }
+    Preferences.Wallet.showTestNetworks.observe(from: self)
+    Preferences.Wallet.sortOrderFilter.observe(from: self)
+    Preferences.Wallet.isHidingSmallBalancesFilter.observe(from: self)
+    Preferences.Wallet.nonSelectedAccountsFilter.observe(from: self)
+    Preferences.Wallet.nonSelectedNetworksFilter.observe(from: self)
   }
   
   func update() {
     self.updateTask?.cancel()
     self.updateTask = Task { @MainActor in
       self.isLoadingBalances = true
-      // setup network filters if not currently setup
-      if self.networkFilters.isEmpty {
-        self.networkFilters = await self.rpcService.allNetworksForSupportedCoins().map {
-          .init(isSelected: !WalletConstants.supportedTestNetworkChainIds.contains($0.chainId), model: $0)
+      self.allAccounts = await keyringService.allAccounts().accounts
+      self.allNetworks = await rpcService.allNetworksForSupportedCoins().filter { network in
+        if !Preferences.Wallet.showTestNetworks.value { // filter out test networks
+          return !WalletConstants.supportedTestNetworkChainIds.contains(where: { $0 == network.chainId })
         }
+        return true
       }
-      let networks: [BraveWallet.NetworkInfo] = self.networkFilters.filter(\.isSelected).map(\.model)
+      let filters = self.filters
+      let selectedAcounts = filters.accounts.filter(\.isSelected).map(\.model)
+      let selectedNetworks = filters.networks.filter(\.isSelected).map(\.model)
       struct NetworkAssets: Equatable {
         let network: BraveWallet.NetworkInfo
         let tokens: [BraveWallet.BlockchainToken]
         let sortOrder: Int
       }
-      let allVisibleUserAssets = assetManager.getAllVisibleAssetsInNetworkAssets(networks: networks)
+      let allVisibleUserAssets = assetManager.getAllVisibleAssetsInNetworkAssets(networks: selectedNetworks)
       var updatedUserVisibleAssets = buildAssetViewModels(allVisibleUserAssets: allVisibleUserAssets)
       // update userVisibleAssets on display immediately with empty values. Issue #5567
       self.userVisibleAssets = updatedUserVisibleAssets
-        .sorted(by: AssetViewModel.sortedByValue(lhs:rhs:))
-      let keyrings = await self.keyringService.keyrings(for: WalletConstants.supportedCoinTypes)
+        .optionallyFilter(
+          shouldFilter: filters.isHidingSmallBalances,
+          isIncluded: { assetViewModel in
+            let value = (Double(assetViewModel.price) ?? 0) * assetViewModel.decimalBalance
+            return value >= 1
+          }
+        )
+        .sorted(by: { lhs, rhs in
+          AssetViewModel.sorted(by: filters.sortOrder, lhs: lhs, rhs: rhs)
+        })
       guard !Task.isCancelled else { return }
       typealias TokenNetworkAccounts = (token: BraveWallet.BlockchainToken, network: BraveWallet.NetworkInfo, accounts: [BraveWallet.AccountInfo])
       let allTokenNetworkAccounts = allVisibleUserAssets.flatMap { networkAssets in
@@ -170,7 +223,7 @@ public class PortfolioStore: ObservableObject {
           TokenNetworkAccounts(
             token: token,
             network: networkAssets.network,
-            accounts: keyrings.first(where: { $0.coin == token.coin })?.accountInfos ?? []
+            accounts: selectedAcounts.filter { $0.coin == token.coin }
           )
         }
       }
@@ -219,7 +272,16 @@ public class PortfolioStore: ObservableObject {
       guard !Task.isCancelled else { return }
       updatedUserVisibleAssets = buildAssetViewModels(allVisibleUserAssets: allVisibleUserAssets)
       self.userVisibleAssets = updatedUserVisibleAssets
-        .sorted(by: AssetViewModel.sortedByValue(lhs:rhs:))
+        .optionallyFilter(
+          shouldFilter: filters.isHidingSmallBalances,
+          isIncluded: { assetViewModel in
+            let value = (Double(assetViewModel.price) ?? 0) * assetViewModel.decimalBalance
+            return value >= 1
+          }
+        )
+        .sorted(by: { lhs, rhs in
+          AssetViewModel.sorted(by: filters.sortOrder, lhs: lhs, rhs: rhs)
+        })
       
       // Compute balance based on current prices
       let currentBalance = userVisibleAssets
@@ -311,7 +373,10 @@ extension PortfolioStore: BraveWalletKeyringServiceObserver {
   }
 
   public func accountsChanged() {
-    update()
+    Task { @MainActor in
+      // An account was added or removed, `update()` will update `allAccounts`.
+      update()
+    }
   }
   public func backedUp() {
   }
@@ -354,12 +419,8 @@ extension PortfolioStore: BraveWalletBraveWalletServiceObserver {
 
   public func onNetworkListChanged() {
     Task { @MainActor in
-      // A network was added or removed, update our network filters for the change.
-      self.networkFilters = await self.rpcService.allNetworksForSupportedCoins().map { network in
-        let defaultValue = !WalletConstants.supportedTestNetworkChainIds.contains(network.chainId)
-        let existingSelectionValue = self.networkFilters.first(where: { $0.model.chainId == network.chainId})?.isSelected
-        return .init(isSelected: existingSelectionValue ?? defaultValue, model: network)
-      }
+      // A network was added or removed, `update()` will update `allNetworks`.
+      update()
     }
   }
   
@@ -379,5 +440,35 @@ extension PortfolioStore: BraveWalletBraveWalletServiceObserver {
   }
   
   public func onResetWallet() {
+  }
+}
+
+extension PortfolioStore: PreferencesObserver {
+  func saveFilters(_ filters: Filters) {
+    isSavingFilters = true
+    defer {
+      isSavingFilters = false
+      update()
+    }
+    Preferences.Wallet.sortOrderFilter.value = filters.sortOrder.rawValue
+    Preferences.Wallet.isHidingSmallBalancesFilter.value = filters.isHidingSmallBalances
+    Preferences.Wallet.nonSelectedAccountsFilter.value = filters.accounts
+      .filter({ !$0.isSelected })
+      .map(\.model.address)
+    Preferences.Wallet.nonSelectedNetworksFilter.value = filters.networks
+      .filter({ !$0.isSelected })
+      .map(\.model.chainId)
+  }
+  public func preferencesDidChange(for key: String) {
+    guard !isSavingFilters else { return }
+    update()
+  }
+}
+
+extension Array {
+  /// `filter` helper that skips iterating through the entire array when not applying any filtering.
+  @inlinable public func optionallyFilter(shouldFilter: Bool, isIncluded: (Element) throws -> Bool) rethrows -> [Element] {
+    guard shouldFilter else { return self }
+    return try filter(isIncluded)
   }
 }

@@ -362,7 +362,7 @@ extension BraveWallet.AccountInfo {
       uniqueKey: "mock_eth_id"
     ),
     address: "mock_eth_id",
-    name: "mock_eth_name",
+    name: "Ethereum Account 1",
     hardware: nil
   )
   
@@ -375,7 +375,7 @@ extension BraveWallet.AccountInfo {
       uniqueKey: "mock_sol_id"
     ),
     address: "mock_sol_id",
-    name: "mock_sol_name",
+    name: "Solana Account 1",
     hardware: nil
   )
   
@@ -388,7 +388,7 @@ extension BraveWallet.AccountInfo {
       uniqueKey: "mock_fil_id"
     ),
     address: "mock_fil_id",
-    name: "mock_fil_name",
+    name: "Filecoin Account 1",
     hardware: nil
   )
 }

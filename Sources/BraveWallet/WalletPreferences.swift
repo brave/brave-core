@@ -47,6 +47,15 @@ extension Preferences {
     /// The option for users to turn off aurora popup
     public static let showAuroraPopup = Option<Bool>(key: "wallet.show-aurora-popup", default: true)
     
+    // MARK: Portfolio & NFT filters
+    public static let sortOrderFilter = Option<Int>(key: "wallet.sortOrderFilter", default: SortOrder.valueDesc.rawValue)
+    public static let isHidingSmallBalancesFilter = Option<Bool>(key: "wallet.isHidingSmallBalancesFilter", default: false)
+    public static let nonSelectedAccountsFilter = Option<[String]>(key: "wallet.nonSelectedAccountsFilter", default: [])
+    public static let nonSelectedNetworksFilter = Option<[String]>(
+      key: "wallet.nonSelectedNetworksFilter",
+      default: WalletConstants.supportedTestNetworkChainIds
+    )
+    
     /// Reset Wallet Preferences based on coin type
     public static func reset(for coin: BraveWallet.CoinType) {
       switch coin {

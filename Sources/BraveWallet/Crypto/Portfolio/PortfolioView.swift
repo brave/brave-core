@@ -12,6 +12,7 @@ import Strings
 import DesignSystem
 import BraveUI
 import Shared
+import Preferences
 
 struct PortfolioView: View {
   var cryptoStore: CryptoStore
@@ -22,7 +23,7 @@ struct PortfolioView: View {
   @State private var dismissedBackupBannerThisSession: Bool = false
   @State private var isPresentingBackup: Bool = false
   @State private var isPresentingEditUserAssets: Bool = false
-  @State private var isPresentingNetworkFilter: Bool = false
+  @State private var isPresentingFiltersDisplaySettings: Bool = false
   
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.buySendSwapDestination)
@@ -93,29 +94,34 @@ struct PortfolioView: View {
     }
   }
   
-  private var networkFilterButton: some View {
+  private var filtersButton: some View {
     Button(action: {
-      self.isPresentingNetworkFilter = true
+      self.isPresentingFiltersDisplaySettings = true
     }) {
       Image(braveSystemName: "leo.tune")
         .font(.footnote.weight(.medium))
         .foregroundColor(Color(.braveBlurpleTint))
         .clipShape(Rectangle())
     }
-    .sheet(isPresented: $isPresentingNetworkFilter) {
-      NavigationView {
-        NetworkFilterView(
-          networks: portfolioStore.networkFilters,
-          networkStore: networkStore,
-          saveAction: { selectedNetworks in
-            portfolioStore.networkFilters = selectedNetworks
-          }
-        )
-      }
-      .navigationViewStyle(.stack)
-      .onDisappear {
-        networkStore.closeNetworkSelectionStore()
-      }
+    .sheet(isPresented: $isPresentingFiltersDisplaySettings) {
+      FiltersDisplaySettingsView(
+        filters: portfolioStore.filters,
+        networkStore: networkStore,
+        save: { filters in
+          portfolioStore.saveFilters(filters)
+        }
+      )
+      .osAvailabilityModifiers({ view in
+        if #available(iOS 16, *) {
+          view
+            .presentationDetents([
+              .fraction(0.6),
+              .large
+            ])
+        } else {
+          view
+        }
+      })
     }
   }
 
@@ -159,7 +165,7 @@ struct PortfolioView: View {
               .padding(.leading, 5)
           }
           Spacer()
-          networkFilterButton
+          filtersButton
         }
         .textCase(nil)
         .padding(.horizontal, -8)
