@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/components/page_image_service/features.cc"
+#include "src/content/browser/attribution_reporting/attribution_features.cc"
 
 #include "base/feature_override.h"
 
-namespace page_image_service {
+namespace content {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kImageService, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kImageServiceSuggestPoweredImages, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kAttributionStorageUseBuiltInRecoveryIfSupported,
+     base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
-}  // namespace page_image_service
+}  // namespace content

@@ -94,7 +94,9 @@ source_set("browser_tests") {
       "//chrome/app:command_ids",
       "//chrome/browser",
       "//chrome/browser/companion/core",
+      "//chrome/browser/companion/visual_search/",
       "//chrome/browser/enterprise/connectors/analysis:features",
+      "//chrome/browser/promos:utils",
       "//chrome/browser/ui",
       "//chrome/common:chrome_features",
       "//chrome/common:non_code_constants",
@@ -106,6 +108,7 @@ source_set("browser_tests") {
       "//components/autofill/core/common",
       "//components/commerce/core:feature_list",
       "//components/component_updater",
+      "//components/content_settings/core/common:features",
       "//components/embedder_support",
       "//components/history_clusters/core",
       "//components/language/core/common",
@@ -129,6 +132,10 @@ source_set("browser_tests") {
       "//services/device/public/cpp:device_features",
       "//testing/gtest",
     ]
+
+    if (is_linux || is_win || is_mac) {
+      deps += [ "//components/device_signals/core/common:features" ]
+    }
   }
 }
 
