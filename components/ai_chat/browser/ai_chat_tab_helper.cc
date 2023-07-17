@@ -32,6 +32,11 @@ using ai_chat::mojom::CharacterType;
 using ai_chat::mojom::ConversationTurn;
 using ai_chat::mojom::ConversationTurnVisibility;
 
+namespace {
+static constexpr char kChromeScheme[] = "chrome";
+static constexpr char kBraveScheme[] = "brave";
+}  // namespace
+
 namespace ai_chat {
 
 AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents)
@@ -136,6 +141,12 @@ void AIChatTabHelper::MaybeGeneratePageText() {
   if (is_page_text_fetch_in_progress_ || !article_text_.empty() ||
       !HasUserOptedIn() || !is_conversation_active_ ||
       !web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame()) {
+    return;
+  }
+
+  const GURL url = web_contents()->GetURL();
+
+  if (url.SchemeIs(kBraveScheme) || url.SchemeIs(kChromeScheme)) {
     return;
   }
 
