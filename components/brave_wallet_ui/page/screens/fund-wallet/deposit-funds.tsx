@@ -11,6 +11,10 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import { getLocale } from '../../../../common/locale'
 import { generateQRCode } from '../../../utils/qr-code-utils'
 import { makeNetworkAsset } from '../../../options/asset-options'
+import {
+  getBatTokensFromList,
+  getAssetIdKey
+} from '../../../utils/asset-utils'
 
 // types
 import {
@@ -51,7 +55,9 @@ import {
 } from './fund-wallet.style'
 
 // components
-import { TokenLists } from '../../../components/desktop/views/portfolio/components/token-lists/token-list'
+import {
+  VirtualizedTokensList
+} from '../../../components/desktop/views/portfolio/components/token-lists/virtualized-tokens-list'
 import SearchBar from '../../../components/shared/search-bar/index'
 import SelectAccountItem from '../../../components/shared/select-account-item/index'
 import SelectAccount from '../../../components/shared/select-account/index'
@@ -61,10 +67,17 @@ import { NavButton } from '../../../components/extension/buttons/nav-button/inde
 import CreateAccountTab from '../../../components/buy-send-swap/create-account/index'
 import SelectHeader from '../../../components/buy-send-swap/select-header/index'
 import {
-  getBatTokensFromList,
-  getAssetIdKey
-} from '../../../utils/asset-utils'
-import { DepositTitle } from './deposit-funds.style'
+  FilterTokenRow //
+} from '../../../components/desktop/views/portfolio/style'
+import {
+  NetworkFilterSelector //
+} from '../../../components/desktop/network-filter-selector'
+
+const itemSize = 82
+
+function getItemSize (index: number): number {
+  return itemSize
+}
 
 interface Props {
   showDepositAddress: boolean
@@ -90,6 +103,7 @@ export const DepositFundsScreen = (props: Props) => {
     BraveWallet.BlockchainToken | undefined
   >(undefined)
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType | undefined>()
+  const [searchValue, setSearchValue] = React.useState<string>('')
 
   // queries
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
@@ -111,8 +125,7 @@ export const DepositFundsScreen = (props: Props) => {
     return [
       ...mainnetNetworkAssetsList,
       ...bat,
-      ...nonBat
-        .filter(token => token.contractAddress)
+      ...nonBat.filter((token) => token.contractAddress)
     ]
   }, [mainnetNetworkAssetsList, combinedTokensList])
 
@@ -143,6 +156,22 @@ export const DepositFundsScreen = (props: Props) => {
       return item.name.toLowerCase().startsWith(accountSearchText.toLowerCase())
     })
   }, [accountSearchText, accountsForSelectedAssetNetwork])
+
+  const assetListSearchResults = React.useMemo(() => {
+    if (searchValue === '') {
+      return assetsForFilteredNetwork
+    }
+    return assetsForFilteredNetwork.filter((item) => {
+      const searchValueLower = searchValue.toLowerCase()
+      return (
+        item.asset.name.toLowerCase().startsWith(searchValueLower) ||
+        item.asset.symbol.toLowerCase().startsWith(searchValueLower)
+      )
+    })
+  }, [
+    searchValue,
+    assetsForFilteredNetwork
+  ])
 
   const depositTitleText: string = React.useMemo(() => {
     const isNativeAsset = (
@@ -176,6 +205,14 @@ export const DepositFundsScreen = (props: Props) => {
   const openAccountSearch = React.useCallback(() => setShowAccountSearch(true), [])
   const closeAccountSearch = React.useCallback(() => setShowAccountSearch(false), [])
   const onSearchTextChanged = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => setAccountSearchText(e.target.value), [])
+
+  // This filters a list of assets when the user types in search bar
+  const onSearchValueChange = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchValue(event.target.value)
+    },
+    []
+  )
 
   const onSelectAccountFromSearch = React.useCallback((account: WalletAccountType) => () => {
     closeAccountSearch()
@@ -274,43 +311,53 @@ export const DepositFundsScreen = (props: Props) => {
   // render
   return (
     <>
-
       {/* Asset Selection */}
-      {!showDepositAddress &&
+      {!showDepositAddress && (
         <>
           <SelectAssetWrapper>
 
-            <DepositTitle>
-              {getLocale('braveWalletDepositFundsTitle')}
-            </DepositTitle>
+            <FilterTokenRow horizontalPadding={0} isV2={false}>
+              <Column
+                flex={1}
+                style={{ minWidth: '25%' }}
+                alignItems='flex-start'
+              >
+                <SearchBar
+                  placeholder={getLocale('braveWalletSearchText')}
+                  action={onSearchValueChange}
+                  value={searchValue}
+                  isV2={false}
+                />
+              </Column>
+              <NetworkFilterSelector isV2={false} />
+            </FilterTokenRow>
 
-            {fullAssetsList.length
-              ? <TokenLists
-                enableScroll
-                maxListHeight={'38vh'}
-                userAssetList={assetsForFilteredNetwork}
-                networks={mainnetsList}
-                estimatedItemSize={100}
-                renderToken={({
-                  item: { asset }
-                }) => <BuyAssetOptionItem
+            {fullAssetsList.length ? (
+              <VirtualizedTokensList
+                getItemSize={getItemSize}
+                userAssetList={assetListSearchResults}
+                estimatedItemSize={itemSize}
+                renderToken={({ item: { asset } }) => (
+                  <BuyAssetOptionItem
                     isSelected={checkIsDepositAssetSelected(asset)}
                     key={getAssetIdKey(asset)}
                     token={asset}
                     onClick={setSelectedAsset}
-                    ref={(ref) => handleScrollIntoView(asset, ref)} />}
+                    ref={(ref) => handleScrollIntoView(asset, ref)}
+                  />
+                )}
               />
-              : <Column>
+            ) : (
+              <Column>
                 <LoadingIcon
                   opacity={1}
                   size={'100px'}
                   color={'interactive05'}
                 />
               </Column>
-            }
+            )}
 
             <VerticalSpace space={'12px'} />
-
           </SelectAssetWrapper>
 
           <NextButtonRow>
@@ -326,7 +373,7 @@ export const DepositFundsScreen = (props: Props) => {
             />
           </NextButtonRow>
         </>
-      }
+      )}
 
       {/* Creates wallet Account if needed for deposit */}
       {needsAccount && showDepositAddress && selectedAssetNetwork &&

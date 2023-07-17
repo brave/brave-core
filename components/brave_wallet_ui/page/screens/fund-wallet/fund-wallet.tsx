@@ -9,7 +9,9 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // utils
 import { getLocale } from '../../../../common/locale'
-import { getAssetIdKey } from '../../../utils/asset-utils'
+import {
+  getAssetIdKey
+} from '../../../utils/asset-utils'
 
 // types
 import {
@@ -18,7 +20,6 @@ import {
   WalletAccountType,
   WalletState
 } from '../../../constants/types'
-import { RenderTokenFunc } from '../../../components/desktop/views/portfolio/components/token-lists/virtualized-tokens-list'
 
 // options
 import { AllNetworksOption } from '../../../options/network-filter-options'
@@ -47,11 +48,14 @@ import {
 } from './fund-wallet.style'
 
 // components
+import {
+  RenderTokenFunc,
+  VirtualizedTokensList
+} from '../../../components/desktop/views/portfolio/components/token-lists/virtualized-tokens-list'
 import SearchBar from '../../../components/shared/search-bar'
 import SelectAccountItem from '../../../components/shared/select-account-item'
 import SelectAccount from '../../../components/shared/select-account'
 import { BuyAssetOptionItem } from '../../../components/shared/buy-option/buy-asset-option'
-import { TokenLists } from '../../../components/desktop/views/portfolio/components/token-lists/token-list'
 import { NavButton } from '../../../components/extension/buttons/nav-button/index'
 import CreateAccountTab from '../../../components/buy-send-swap/create-account'
 import SwapInputComponent from '../../../components/buy-send-swap/swap-input-component'
@@ -59,6 +63,18 @@ import SelectHeader from '../../../components/buy-send-swap/select-header'
 import { SelectCurrency } from '../../../components/buy-send-swap/select-currency/select-currency'
 import WalletPageWrapper from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
 import { PageTitleHeader } from '../../../components/desktop/card-headers/page-title-header'
+import {
+  FilterTokenRow //
+} from '../../../components/desktop/views/portfolio/style'
+import {
+  NetworkFilterSelector //
+} from '../../../components/desktop/network-filter-selector'
+
+const itemSize = 82
+
+function getItemSize (index: number): number {
+  return itemSize
+}
 
 export const FundWalletScreen = () => {
   // redux
@@ -97,6 +113,7 @@ export const FundWalletScreen = () => {
   const [selectedCurrency, setSelectedCurrency] = React.useState<string>(defaultCurrencies.fiat || 'usd')
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType | undefined>()
   const [showBuyOptions, setShowBuyOptions] = React.useState<boolean>(false)
+  const [searchValue, setSearchValue] = React.useState<string>('')
 
   // memos & computed
   const isNextStepEnabled = !!selectedAsset
@@ -112,6 +129,22 @@ export const FundWalletScreen = () => {
 
     return assets.map(asset => ({ asset, assetBalance: '1' }))
   }, [selectedNetworkFilter.chainId, allBuyAssetOptions])
+
+  const assetListSearchResults = React.useMemo(() => {
+    if (searchValue === '') {
+      return assetsForFilteredNetwork
+    }
+    return assetsForFilteredNetwork.filter((item) => {
+      const searchValueLower = searchValue.toLowerCase()
+      return (
+        item.asset.name.toLowerCase().startsWith(searchValueLower) ||
+        item.asset.symbol.toLowerCase().startsWith(searchValueLower)
+      )
+    })
+  }, [
+    searchValue,
+    assetsForFilteredNetwork
+  ])
 
   const accountsForSelectedAssetNetwork: WalletAccountType[] = React.useMemo(() => {
     return selectedAssetNetwork
@@ -140,6 +173,14 @@ export const FundWalletScreen = () => {
   const openAccountSearch = React.useCallback(() => setShowAccountSearch(true), [])
   const closeAccountSearch = React.useCallback(() => setShowAccountSearch(false), [])
   const onSearchTextChanged = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => setAccountSearchText(e.target.value), [])
+
+  // This filters a list of assets when the user types in search bar
+  const onSearchValueChange = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchValue(event.target.value)
+    },
+    []
+  )
 
   const onSelectAccountFromSearch = React.useCallback((account: WalletAccountType) => {
     closeAccountSearch()
@@ -263,19 +304,19 @@ export const FundWalletScreen = () => {
       wrapContentInBox={true}
       cardHeader={
         <PageTitleHeader
-          title={selectedAsset ? `${getLocale('braveWalletBuy')} ${selectedAsset.symbol}` : getLocale('braveWalletBuy')}
+          title={
+            selectedAsset
+              ? `${getLocale('braveWalletBuy')} ${selectedAsset.symbol}`
+              : getLocale('braveWalletBuy')
+          }
           showBackButton={showBuyOptions}
           onBack={onBack}
         />
       }
     >
-
-      <Column
-        padding='0 12px'
-        fullWidth
-      >
+      <Column padding='0 12px' fullWidth>
         {/* Fiat Selection */}
-        {showFiatSelection &&
+        {showFiatSelection && (
           <SelectCurrency
             onSelectCurrency={
               // this internally sets the currency via redux,
@@ -287,10 +328,10 @@ export const FundWalletScreen = () => {
             }
             onBack={() => setShowFiatSelection(false)}
           />
-        }
+        )}
 
         {/* Asset Selection */}
-        {!showBuyOptions && !showFiatSelection &&
+        {!showBuyOptions && !showFiatSelection && (
           <>
             <SelectAssetWrapper>
               <Row marginBottom={8}>
@@ -308,27 +349,39 @@ export const FundWalletScreen = () => {
                 />
               </Row>
 
-              {allBuyAssetOptions.length
-                ? <TokenLists
-                  enableScroll
-                  maxListHeight='38vh'
-                  userAssetList={assetsForFilteredNetwork}
-                  networks={networksFilterOptions}
-                  estimatedItemSize={100}
-                  renderToken={renderToken}
-                  isV2={true}
-                />
-                : <Column>
-                  <LoadingIcon
-                    opacity={1}
-                    size='100px'
-                    color='interactive05'
+              <FilterTokenRow horizontalPadding={0} isV2={false}>
+                <Column
+                  flex={1}
+                  style={{ minWidth: '25%' }}
+                  alignItems='flex-start'
+                >
+                  <SearchBar
+                    placeholder={getLocale('braveWalletSearchText')}
+                    action={onSearchValueChange}
+                    value={searchValue}
+                    isV2={false}
                   />
                 </Column>
-              }
+                <NetworkFilterSelector
+                  isV2={false}
+                  networkListSubset={networksFilterOptions}
+                />
+              </FilterTokenRow>
+
+              {allBuyAssetOptions.length ? (
+                <VirtualizedTokensList
+                  getItemSize={getItemSize}
+                  userAssetList={assetListSearchResults}
+                  estimatedItemSize={itemSize}
+                  renderToken={renderToken}
+                />
+              ) : (
+                <Column>
+                  <LoadingIcon opacity={1} size='100px' color='interactive05' />
+                </Column>
+              )}
 
               <VerticalSpace space='24px' />
-
             </SelectAssetWrapper>
 
             <NextButtonRow>
@@ -346,27 +399,26 @@ export const FundWalletScreen = () => {
               />
             </NextButtonRow>
           </>
-        }
+        )}
 
         {/* Creates wallet Account if needed */}
-        {needsAccount && showBuyOptions && selectedAssetNetwork &&
+        {needsAccount && showBuyOptions && selectedAssetNetwork && (
           <CreateAccountTab
             network={selectedAssetNetwork}
             onCancel={goBackToSelectAssets}
           />
-        }
+        )}
 
         {/* Buy Option selection & Account selection/search */}
-        {!needsAccount && showBuyOptions &&
+        {!needsAccount && showBuyOptions && (
           <>
-            {!showAccountSearch &&
+            {!showAccountSearch && (
               <>
-
                 <Title>
-                  {
-                    getLocale('braveWalletFundWalletTitle')
-                      .replace('$1', selectedAsset?.symbol ?? '')
-                  }
+                  {getLocale('braveWalletFundWalletTitle').replace(
+                    '$1',
+                    selectedAsset?.symbol ?? ''
+                  )}
                 </Title>
 
                 <Description>
@@ -375,10 +427,7 @@ export const FundWalletScreen = () => {
 
                 <VerticalSpace space='16px' />
 
-                <Row
-                  justifyContent='space-around'
-                  alignItems='center'
-                >
+                <Row justifyContent='space-around' alignItems='center'>
                   <Flex>
                     <SelectAccountItem
                       selectedNetwork={selectedAssetNetwork}
@@ -404,14 +453,12 @@ export const FundWalletScreen = () => {
 
                 <Alert>
                   <InfoIcon name='info-filled' />
-                  <AlertText>
-                    {getLocale('braveWalletBuyDisclaimer')}
-                  </AlertText>
+                  <AlertText>{getLocale('braveWalletBuyDisclaimer')}</AlertText>
                 </Alert>
               </>
-            }
+            )}
 
-            {showAccountSearch &&
+            {showAccountSearch && (
               <SearchWrapper>
                 <SelectHeader
                   title={getLocale('braveWalletSelectAccount')}
@@ -433,11 +480,11 @@ export const FundWalletScreen = () => {
                   />
                 </ScrollContainer>
               </SearchWrapper>
-            }
+            )}
           </>
-        }
+        )}
       </Column>
-   </WalletPageWrapper>
+    </WalletPageWrapper>
   )
 }
 
