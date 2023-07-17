@@ -1,12 +1,6 @@
 use_relative_paths = True
 
-gclient_gn_args_file = 'build/config/gclient_args.gni'
-gclient_gn_args = [
-  'brave_rust_version'
-]
-
 vars = {
-  'brave_rust_version': Str('1.69.0'),
   'download_prebuilt_sparkle': True,
 }
 
@@ -84,19 +78,6 @@ hooks = [
     'pattern': '.',
     'condition': 'checkout_win',
     'action': ['vpython3', 'build/win/download_brave_vpn_wireguard_binaries.py', 'v0.5.3', 'brave-vpn-wireguard-tunnel-dlls'],
-  },
-  {
-    'name': 'download_rust_deps',
-    'pattern': '.',
-    'action': [
-      'vpython3', 'script/download_rust_deps.py',
-      '--rust_version={brave_rust_version}',
-      '--checkout_android={checkout_android}',
-      '--checkout_ios={checkout_ios}',
-      '--checkout_linux={checkout_linux}',
-      '--checkout_mac={checkout_mac}',
-      '--checkout_win={checkout_win}',
-    ]
   },
   {
     # Install Web Discovery Project dependencies for Windows, Linux, and macOS
