@@ -130,8 +130,8 @@ void AIChatAPI::QueryPrompt(
     // custom positions.
     DCHECK(base::MatchPattern(prompt,
                               base::StrCat({"*", ai_chat::kHumanPrompt, "*"})));
-    DCHECK(
-        base::MatchPattern(prompt, base::StrCat({"*", ai_chat::kAIPrompt, "*"})));
+    DCHECK(base::MatchPattern(prompt,
+                              base::StrCat({"*", ai_chat::kAIPrompt, "*"})));
   }
 
   const GURL api_base_url = GetEndpointBaseUrl();

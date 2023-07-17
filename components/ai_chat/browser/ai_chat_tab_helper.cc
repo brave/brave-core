@@ -281,14 +281,14 @@ void AIChatTabHelper::GenerateQuestions() {
          "\n\n", l10n_util::GetStringUTF8(IDS_AI_CHAT_PROMPT_END)});
   } else {
     prompt = base::StrCat(
-      {GetHumanPromptSegment(),
-       base::ReplaceStringPlaceholders(
-           l10n_util::GetStringUTF8(is_video_
-                                        ? IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT
-                                        : IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT),
-           {article_text_}, nullptr),
-       "\n\n", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PROMPT_SEGMENT),
-       GetAssistantPromptSegment(), " <response>"});
+        {GetHumanPromptSegment(),
+         base::ReplaceStringPlaceholders(
+             l10n_util::GetStringUTF8(is_video_
+                                          ? IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT
+                                          : IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT),
+             {article_text_}, nullptr),
+         "\n\n", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PROMPT_SEGMENT),
+         GetAssistantPromptSegment(), " <response>"});
   }
   // Make API request for questions.
   // Do not call SetRequestInProgress, this progress
