@@ -138,7 +138,6 @@ class AdsServiceImpl : public AdsService,
   void OnEnabledPrefChanged();
   void OnEnabledPrefChangedCallback(
       brave_rewards::mojom::RewardsWalletPtr wallet);
-  void OnIdleTimeThresholdPrefChanged();
   void OnBraveNewsOptedInPrefChanged();
   void OnNewTabPageShowTodayPrefChanged();
   void NotifyPrefChanged(const std::string& path) const;

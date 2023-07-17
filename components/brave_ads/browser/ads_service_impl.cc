@@ -40,6 +40,7 @@
 #include "brave/components/brave_ads/common/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/common/notification_ad_feature.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/common/user_attention_feature.h"
 #include "brave/components/brave_ads/core/ad_constants.h"
 #include "brave/components/brave_ads/core/ads_util.h"
 #include "brave/components/brave_ads/core/database.h"
@@ -591,11 +592,6 @@ void AdsServiceImpl::InitializePrefChangeRegistrar() {
                           prefs::kMaximumNotificationAdsPerHour));
 
   pref_change_registrar_.Add(
-      prefs::kIdleTimeThreshold,
-      base::BindRepeating(&AdsServiceImpl::OnIdleTimeThresholdPrefChanged,
-                          base::Unretained(this)));
-
-  pref_change_registrar_.Add(
       prefs::kSubdivisionTargetingSubdivision,
       base::BindRepeating(&AdsServiceImpl::NotifyPrefChanged,
                           base::Unretained(this),
@@ -654,11 +650,6 @@ void AdsServiceImpl::OnEnabledPrefChangedCallback(
   NotifyPrefChanged(prefs::kEnabled);
 }
 
-void AdsServiceImpl::OnIdleTimeThresholdPrefChanged() {
-  NotifyPrefChanged(prefs::kIdleTimeThreshold);
-  CheckIdleStateAfterDelay();
-}
-
 void AdsServiceImpl::OnBraveNewsOptedInPrefChanged() {
   if (!CanStartBatAdsService()) {
     return Shutdown();
@@ -713,11 +704,9 @@ void AdsServiceImpl::CheckIdleStateAfterDelay() {
 }
 
 void AdsServiceImpl::CheckIdleState() {
-  const int idle_threshold =
-      GetPrefService()->GetInteger(prefs::kIdleTimeThreshold);
-  const ui::IdleState idle_state = ui::CalculateIdleState(idle_threshold);
-  ProcessIdleState(idle_state, last_idle_time_);
-
+  const int64_t idle_threshold = kIdleThreshold.Get().InSeconds();
+  ProcessIdleState(ui::CalculateIdleState(static_cast<int>(idle_threshold)),
+                   last_idle_time_);
   last_idle_time_ = base::Seconds(ui::CalculateIdleTime());
 }
 

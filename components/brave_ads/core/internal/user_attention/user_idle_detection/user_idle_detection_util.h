@@ -16,8 +16,6 @@ bool MaybeScreenWasLocked(bool screen_was_locked);
 
 bool HasExceededMaximumIdleTime(base::TimeDelta idle_time);
 
-bool MaybeUpdateIdleTimeThreshold();
-
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ATTENTION_USER_IDLE_DETECTION_USER_IDLE_DETECTION_UTIL_H_

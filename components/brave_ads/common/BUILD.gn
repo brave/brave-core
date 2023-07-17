@@ -20,6 +20,8 @@ static_library("common") {
     "pref_names.h",
     "search_result_ad_feature.cc",
     "search_result_ad_feature.h",
+    "user_attention_feature.cc",
+    "user_attention_feature.h",
   ]
 
   deps = [ "//base" ]

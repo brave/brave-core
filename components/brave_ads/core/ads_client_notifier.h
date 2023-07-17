@@ -105,15 +105,14 @@ class AdsClientNotifier {
   virtual void NotifyUserGestureEventTriggered(
       int32_t page_transition_type) const;
 
-  // Invoked when a user has been idle for the threshold set in
-  // |prefs::kIdleTimeThreshold|. NOTE: This should not be called on mobile
-  // devices.
+  // Invoked when a user has been idle for the given threshold. NOTE: This
+  // should not be called on mobile devices.
   void NotifyUserDidBecomeIdle() const;
 
-  // Called when a user is no longer idle. |idle_time| is the amount of time in
-  // seconds that the user was idle. |screen_was_locked| should be |true| if the
-  // screen was locked, otherwise |false|. NOTE: This should not be called on
-  // mobile devices.
+  // Called when a user is no longer idle. |idle_time| is the duration of time
+  // that the user was idle. |screen_was_locked| should be |true| if the screen
+  // was locked, otherwise |false|. NOTE: This should not be called on mobile
+  // devices.
   void NotifyUserDidBecomeActive(base::TimeDelta idle_time,
                                  bool screen_was_locked) const;
 

@@ -220,8 +220,6 @@ void MockDefaultPrefs() {
 
   SetDefaultInt64Pref(prefs::kMaximumNotificationAdsPerHour, -1);
 
-  SetDefaultIntegerPref(prefs::kIdleTimeThreshold, 15);
-
   SetDefaultBooleanPref(prefs::kShouldAllowSubdivisionTargeting, false);
   SetDefaultStringPref(prefs::kSubdivisionTargetingSubdivision, "AUTO");
   SetDefaultStringPref(prefs::kSubdivisionTargetingAutoDetectedSubdivision, "");

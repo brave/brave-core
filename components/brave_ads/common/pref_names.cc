@@ -50,9 +50,6 @@ const char kServeAdAt[] = "brave.brave_ads.serve_ad_at";
 // Browser version
 const char kBrowserVersionNumber[] = "brave.brave_ads.browser_version_number";
 
-// Stores the idle time threshold before checking if an ad can be served
-const char kIdleTimeThreshold[] = "brave.brave_ads.idle_threshold";
-
 // Stores whether Brave ads should allow subdivision ad targeting
 const char kShouldAllowSubdivisionTargeting[] =
     "brave.brave_ads.should_allow_ads_subdivision_targeting";

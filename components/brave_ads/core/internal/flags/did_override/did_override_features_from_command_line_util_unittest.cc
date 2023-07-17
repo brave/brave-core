@@ -15,6 +15,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/common/notification_ad_feature.h"
 #include "brave/components/brave_ads/common/search_result_ad_feature.h"
+#include "brave/components/brave_ads/common/user_attention_feature.h"
 #include "brave/components/brave_ads/core/internal/account/account_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_feature.h"
@@ -76,6 +77,7 @@ struct ParamInfo final {
     {{::switches::kEnableFeatures, kSearchResultAdFeature.name}, true},
     {{::switches::kEnableFeatures, kTextClassificationFeature.name}, true},
     {{::switches::kEnableFeatures, kUserActivityFeature.name}, true},
+    {{::switches::kEnableFeatures, kUserAttentionFeature.name}, true},
     {{::switches::kEnableFeatures, {}}, false},
     {{variations::switches::kForceFieldTrialParams, "FooBar"}, false},
     {{variations::switches::kForceFieldTrialParams,
@@ -119,6 +121,8 @@ struct ParamInfo final {
       kTextClassificationFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams, kUserActivityFeature.name},
+     true},
+    {{variations::switches::kForceFieldTrialParams, kUserAttentionFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams, {}}, false}};
 

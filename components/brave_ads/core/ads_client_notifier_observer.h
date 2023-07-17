@@ -100,9 +100,8 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
   virtual void OnNotifyUserGestureEventTriggered(int32_t page_transition_type) {
   }
 
-  // Invoked when a user has been idle for the threshold set in
-  // |prefs::kIdleTimeThreshold|. NOTE: This should not be called on mobile
-  // devices.
+  // Invoked when a user has been idle for the given threshold. NOTE: This
+  // should not be called on mobile devices.
   virtual void OnNotifyUserDidBecomeIdle() {}
 
   // Called when a user is no longer idle. |idle_time| is the amount of time in
