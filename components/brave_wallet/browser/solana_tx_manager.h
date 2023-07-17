@@ -33,7 +33,8 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
   SolanaTxManager(TxService* tx_service,
                   JsonRpcService* json_rpc_service,
                   KeyringService* keyring_service,
-                  PrefService* prefs);
+                  PrefService* prefs,
+                  TxStorageDelegate* delegate);
   ~SolanaTxManager() override;
 
   using ProcessSolanaHardwareSignatureCallback =

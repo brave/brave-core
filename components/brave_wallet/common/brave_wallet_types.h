@@ -91,7 +91,7 @@ struct TransactionReceipt {
   std::string contract_address;
   std::vector<Log> logs;
   std::string logs_bloom;
-  bool status;
+  bool status = false;
 };
 
 struct ImportInfo {

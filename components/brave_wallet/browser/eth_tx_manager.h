@@ -37,7 +37,8 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
   EthTxManager(TxService* tx_service,
                JsonRpcService* json_rpc_service,
                KeyringService* keyring_service,
-               PrefService* prefs);
+               PrefService* prefs,
+               TxStorageDelegate* delegate);
   ~EthTxManager() override;
   EthTxManager(const EthTxManager&) = delete;
   EthTxManager operator=(const EthTxManager&) = delete;

@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/no_destructor.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/bitcoin_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
@@ -151,7 +152,8 @@ KeyedService* TxServiceFactory::BuildServiceInstanceFor(
       new TxService(JsonRpcServiceFactory::GetServiceForContext(context),
                     BitcoinWalletServiceFactory::GetServiceForContext(context),
                     KeyringServiceFactory::GetServiceForContext(context),
-                    user_prefs::UserPrefs::Get(context));
+                    user_prefs::UserPrefs::Get(context), context->GetPath(),
+                    base::SequencedTaskRunner::GetCurrentDefault());
 #if !BUILDFLAG(IS_ANDROID)
   RegisterWalletNotificationService(context, tx_service);
 #endif

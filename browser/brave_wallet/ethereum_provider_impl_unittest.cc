@@ -34,12 +34,13 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_pending_tx_tracker.h"
-#include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
+#include "brave/components/brave_wallet/browser/eth_tx_manager.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -233,6 +234,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     asset_ratio_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
     tx_service_ = TxServiceFactory::GetServiceForContext(browser_context());
+    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
     brave_wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser_context());
@@ -251,6 +253,11 @@ class EthereumProviderImplUnitTest : public testing::Test {
 
     observer_ = std::make_unique<TestEventsListener>();
     provider_->Init(observer_->GetReceiver());
+  }
+
+  EthTxManager* eth_tx_manager() {
+    return static_cast<EthTxManager*>(
+        tx_service_->GetTxManager(mojom::CoinType::ETH));
   }
 
   void SetInterceptor(const std::string& content) {

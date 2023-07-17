@@ -11,7 +11,9 @@
 #include <utility>
 #include <vector>
 
+#include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -30,10 +32,14 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/browser/tx_storage_delegate.h"
+#include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "components/value_store/value_store_frontend.h"
+#include "content/public/test/browser_task_environment.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -43,6 +49,9 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
+
+using base::test::ParseJson;
+using base::test::ParseJsonDict;
 
 namespace brave_wallet {
 
@@ -196,8 +205,7 @@ class EthTxManagerUnitTest : public testing::Test {
                                                ->at(0)
                                                .As<network::DataElementBytes>()
                                                .AsStringPiece());
-          base::Value::Dict request_value =
-              base::test::ParseJsonDict(request_string);
+          base::Value::Dict request_value = ParseJsonDict(request_string);
           std::string* method = request_value.FindString("method");
           ASSERT_TRUE(method);
 
@@ -250,15 +258,17 @@ class EthTxManagerUnitTest : public testing::Test {
           }
         }));
 
-    brave_wallet::RegisterProfilePrefs(profile_prefs_.registry());
-    brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
+    RegisterProfilePrefs(profile_prefs_.registry());
+    RegisterLocalStatePrefs(local_state_.registry());
+    RegisterProfilePrefsForMigration(profile_prefs_.registry());
     json_rpc_service_ = std::make_unique<JsonRpcService>(
         shared_url_loader_factory_, &profile_prefs_);
     keyring_service_ = std::make_unique<KeyringService>(
         json_rpc_service_.get(), &profile_prefs_, &local_state_);
-    tx_service_ =
-        std::make_unique<TxService>(json_rpc_service_.get(), nullptr,
-                                    keyring_service_.get(), &profile_prefs_);
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    tx_service_ = std::make_unique<TxService>(
+        json_rpc_service_.get(), nullptr, keyring_service_.get(), GetPrefs(),
+        temp_dir_.GetPath(), base::SequencedTaskRunner::GetCurrentDefault());
 
     keyring_service_->CreateWallet("testing123", base::DoNothing());
     base::RunLoop().RunUntilIdle();
@@ -329,7 +339,7 @@ class EthTxManagerUnitTest : public testing::Test {
     meta.set_status(status);
     meta.set_tx(std::make_unique<EthTransaction>(*tx));
     meta.set_group_id(group_id);
-    eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta);
+    ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
 
     bool callback_called = false;
     eth_tx_manager()->SpeedupOrCancelTransaction(
@@ -370,7 +380,7 @@ class EthTxManagerUnitTest : public testing::Test {
     meta.set_status(status);
     meta.set_tx(std::make_unique<Eip1559Transaction>(*tx1559));
     meta.set_group_id(group_id);
-    eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta);
+    ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
 
     bool callback_called = false;
     eth_tx_manager()->SpeedupOrCancelTransaction(
@@ -470,6 +480,7 @@ class EthTxManagerUnitTest : public testing::Test {
  protected:
   base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_;
+  base::ScopedTempDir temp_dir_;
   sync_preferences::TestingPrefServiceSyncable profile_prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   network::TestURLLoaderFactory url_loader_factory_;
@@ -1952,13 +1963,13 @@ TEST_F(EthTxManagerUnitTest, TestSubmittedToConfirmed) {
   meta.set_chain_id(mojom::kLocalhostChainId);
   meta.set_from(addr1.ToChecksumAddress());
   meta.set_status(mojom::TransactionStatus::Submitted);
-  eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta);
+  ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
   meta.set_id("002");
   meta.set_chain_id(mojom::kMainnetChainId);
   meta.set_from(addr2.ToChecksumAddress());
   meta.tx()->set_nonce(uint256_t(4));
   meta.set_status(mojom::TransactionStatus::Submitted);
-  eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta);
+  ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
 
   eth_tx_manager()->UpdatePendingTransactions(absl::nullopt);
 
@@ -2017,13 +2028,13 @@ TEST_F(EthTxManagerUnitTest, TestSubmittedToConfirmed) {
   meta.set_chain_id(mojom::kLocalhostChainId);
   meta.set_from(addr1.ToChecksumAddress());
   meta.set_status(mojom::TransactionStatus::Submitted);
-  eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta);
+  ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
   meta.set_id("002");
   meta.set_chain_id(mojom::kMainnetChainId);
   meta.set_from(addr2.ToChecksumAddress());
   meta.tx()->set_nonce(uint256_t(4));
   meta.set_status(mojom::TransactionStatus::Submitted);
-  eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta);
+  ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
   keyring_service_->Lock();
   task_environment_.FastForwardBy(
       base::Seconds(kBlockTrackerDefaultTimeInSeconds + 1));
@@ -2310,7 +2321,7 @@ TEST_F(EthTxManagerUnitTest, RetryTransaction) {
           .ToChecksumAddress());
   meta.set_status(mojom::TransactionStatus::Error);
   meta.set_tx(std::make_unique<EthTransaction>(*tx));
-  eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta);
+  ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
 
   bool callback_called = false;
   std::string tx_meta_id;
@@ -2342,7 +2353,7 @@ TEST_F(EthTxManagerUnitTest, RetryTransaction) {
   meta.set_chain_id(mojom::kLocalhostChainId);
   meta.set_status(mojom::TransactionStatus::Error);
   meta.set_tx(std::make_unique<Eip1559Transaction>(*tx1559));
-  eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta);
+  ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
 
   eth_tx_manager()->RetryTransaction(
       mojom::kLocalhostChainId, "002",
@@ -2492,15 +2503,27 @@ TEST_F(EthTxManagerUnitTest, Reset) {
       "0x016345785d8a0000", std::vector<uint8_t>(), false, absl::nullopt);
   auto tx = EthTransaction::FromTxData(tx_data, false);
   meta.set_tx(std::make_unique<EthTransaction>(*tx));
-  eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta);
-  EXPECT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletTransactions));
+  ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
+  EXPECT_EQ(tx_service_->GetDelegateForTesting()->GetTxs().size(), 1u);
+  GetPrefs()->Set(kBraveWalletTransactions, ParseJson(R"({"ethereum":{}})"));
 
   tx_service_->Reset();
 
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletTransactions));
   EXPECT_TRUE(eth_tx_manager()->pending_chain_ids_.empty());
   EXPECT_FALSE(
       eth_tx_manager()->block_tracker_->IsRunning(mojom::kLocalhostChainId));
-  EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletTransactions));
+  // cache should be empty
+  EXPECT_TRUE(tx_service_->GetDelegateForTesting()->GetTxs().empty());
+  // db should be empty
+  base::RunLoop run_loop;
+  static_cast<TxStorageDelegateImpl*>(tx_service_->GetDelegateForTesting())
+      ->store_->Get("transactions", base::BindLambdaForTesting(
+                                        [&](absl::optional<base::Value> value) {
+                                          EXPECT_FALSE(value);
+                                          run_loop.Quit();
+                                        }));
+  run_loop.Run();
 }
 
 }  //  namespace brave_wallet

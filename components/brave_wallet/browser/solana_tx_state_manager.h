@@ -21,11 +21,12 @@ class Value;
 namespace brave_wallet {
 
 class TxMeta;
+class TxStorageDelegate;
 class SolanaTxMeta;
 
 class SolanaTxStateManager : public TxStateManager {
  public:
-  explicit SolanaTxStateManager(PrefService* prefs);
+  SolanaTxStateManager(PrefService* prefs, TxStorageDelegate* delegate);
   ~SolanaTxStateManager() override;
   SolanaTxStateManager(const SolanaTxStateManager&) = delete;
   SolanaTxStateManager operator=(const SolanaTxStateManager&) = delete;

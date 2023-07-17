@@ -16,6 +16,8 @@
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/web/public/thread/web_task_traits.h"
+#include "ios/web/public/thread/web_thread.h"
 
 namespace brave_wallet {
 
@@ -77,9 +79,10 @@ std::unique_ptr<KeyedService> TxServiceFactory::BuildServiceInstanceFor(
   auto* keyring_service =
       KeyringServiceFactory::GetServiceForState(browser_state);
   // TODO(apaymyshev): support bitcoin for ios.
-  std::unique_ptr<TxService> tx_service(
-      new TxService(json_rpc_service, /*bitcoin_wallet_service=*/nullptr,
-                    keyring_service, browser_state->GetPrefs()));
+  std::unique_ptr<TxService> tx_service(new TxService(
+      json_rpc_service, /*bitcoin_wallet_service=*/nullptr, keyring_service,
+      browser_state->GetPrefs(), browser_state->GetStatePath(),
+      web::GetUIThreadTaskRunner({})));
   return tx_service;
 }
 

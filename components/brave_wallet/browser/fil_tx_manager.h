@@ -31,7 +31,8 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
   FilTxManager(TxService* tx_service,
                JsonRpcService* json_rpc_service,
                KeyringService* keyring_service,
-               PrefService* prefs);
+               PrefService* prefs,
+               TxStorageDelegate* delegate);
   ~FilTxManager() override;
   FilTxManager(const FilTxManager&) = delete;
   FilTxManager operator=(const FilTxManager&) = delete;

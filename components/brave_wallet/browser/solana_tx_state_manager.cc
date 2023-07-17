@@ -15,8 +15,9 @@
 
 namespace brave_wallet {
 
-SolanaTxStateManager::SolanaTxStateManager(PrefService* prefs)
-    : TxStateManager(prefs) {}
+SolanaTxStateManager::SolanaTxStateManager(PrefService* prefs,
+                                           TxStorageDelegate* delegate)
+    : TxStateManager(prefs, delegate) {}
 
 SolanaTxStateManager::~SolanaTxStateManager() = default;
 

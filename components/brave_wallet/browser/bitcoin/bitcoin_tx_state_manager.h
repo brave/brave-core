@@ -21,11 +21,14 @@ class Value;
 namespace brave_wallet {
 
 class TxMeta;
+class TxStorageDelegate;
 class JsonRpcService;
 
 class BitcoinTxStateManager : public TxStateManager {
  public:
-  BitcoinTxStateManager(PrefService* prefs, JsonRpcService* json_rpc_service);
+  BitcoinTxStateManager(PrefService* prefs,
+                        TxStorageDelegate* delegate,
+                        JsonRpcService* json_rpc_service);
   ~BitcoinTxStateManager() override;
   BitcoinTxStateManager(const BitcoinTxStateManager&) = delete;
   BitcoinTxStateManager operator=(const BitcoinTxStateManager&) = delete;

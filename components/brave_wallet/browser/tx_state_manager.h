@@ -27,18 +27,19 @@ class Value;
 namespace brave_wallet {
 
 class TxMeta;
+class TxStorageDelegate;
 
 class TxStateManager {
  public:
-  explicit TxStateManager(PrefService* prefs);
+  TxStateManager(PrefService* prefs, TxStorageDelegate* delegate);
   virtual ~TxStateManager();
   TxStateManager(const TxStateManager&) = delete;
 
-  void AddOrUpdateTx(const TxMeta& meta);
+  bool AddOrUpdateTx(const TxMeta& meta);
   std::unique_ptr<TxMeta> GetTx(const std::string& chain_id,
                                 const std::string& id);
-  void DeleteTx(const std::string& chain_id, const std::string& id);
-  void WipeTxs();
+  bool DeleteTx(const std::string& chain_id, const std::string& id);
+  bool WipeTxs();
 
   static void MigrateAddChainIdToTransactionInfo(PrefService* prefs);
   static void MigrateSolanaTransactionsForV0TransactionsSupport(
@@ -67,6 +68,8 @@ class TxStateManager {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(TxStateManagerUnitTest, TxOperations);
+  FRIEND_TEST_ALL_PREFIXES(EthTxManagerUnitTest, Reset);
+
   void RetireTxByStatus(const std::string& chain_id,
                         mojom::TransactionStatus status,
                         size_t max_num);
@@ -88,8 +91,8 @@ class TxStateManager {
   virtual std::string GetTxPrefPathPrefix(
       const absl::optional<std::string>& chain_id) = 0;
 
+  raw_ptr<TxStorageDelegate> delegate_ = nullptr;
   base::ObserverList<Observer> observers_;
-
   base::WeakPtrFactory<TxStateManager> weak_factory_;
 };
 

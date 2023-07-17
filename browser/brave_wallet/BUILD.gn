@@ -187,6 +187,7 @@ source_set("unit_tests") {
     "//brave/components/brave_wallet/browser:hd_keyring",
     "//brave/components/brave_wallet/browser:permission_utils",
     "//brave/components/brave_wallet/browser:pref_names",
+    "//brave/components/brave_wallet/browser:test_support",
     "//brave/components/brave_wallet/browser:transaction",
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common",

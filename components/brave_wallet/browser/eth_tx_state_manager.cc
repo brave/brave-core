@@ -20,8 +20,9 @@
 
 namespace brave_wallet {
 
-EthTxStateManager::EthTxStateManager(PrefService* prefs)
-    : TxStateManager(prefs) {}
+EthTxStateManager::EthTxStateManager(PrefService* prefs,
+                                     TxStorageDelegate* delegate)
+    : TxStateManager(prefs, delegate) {}
 
 EthTxStateManager::~EthTxStateManager() = default;
 

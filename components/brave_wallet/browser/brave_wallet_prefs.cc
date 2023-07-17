@@ -217,6 +217,10 @@ void RegisterProfilePrefsForMigration(
 
   // Added 07/2023
   registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsSpamMigrated, false);
+
+  // Added 07/2023
+  registry->RegisterBooleanPref(kBraveWalletTransactionsFromPrefsToDBMigrated,
+                                false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -239,6 +243,7 @@ void ClearKeyringServiceProfilePrefs(PrefService* prefs) {
 
 void ClearTxServiceProfilePrefs(PrefService* prefs) {
   DCHECK(prefs);
+  // Remove this when we remove kBraveWalletTransactions.
   prefs->ClearPref(kBraveWalletTransactions);
 }
 

@@ -66,6 +66,8 @@ extern const char kBraveWalletLastTransactionSentTimeDict[];
 extern const char kBraveWalletTransactionsChainIdMigrated[];
 // Added 04/2023 to migrate solana transactions for v0 transaction support.
 extern const char kBraveWalletSolanaTransactionsV0SupportMigrated[];
+// Added 07/2023 to migrate transactions from prefs to DB.
+extern const char kBraveWalletTransactionsFromPrefsToDBMigrated[];
 
 // DEPRECATED
 extern const char kShowWalletTestNetworksDeprecated[];

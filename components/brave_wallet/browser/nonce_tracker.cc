@@ -22,14 +22,9 @@ NonceTracker::NonceTracker(TxStateManager* tx_state_manager,
 
 NonceTracker::~NonceTracker() = default;
 
-absl::optional<uint256_t> NonceTracker::GetFinalNonce(
-    const std::string& chain_id,
-    const std::string& from,
-    uint256_t network_nonce) {
-  if (!nonce_lock_.Try()) {
-    return absl::nullopt;
-  }
-
+uint256_t NonceTracker::GetFinalNonce(const std::string& chain_id,
+                                      const std::string& from,
+                                      uint256_t network_nonce) {
   auto confirmed_transactions = tx_state_manager_->GetTransactionsByStatus(
       chain_id, mojom::TransactionStatus::Confirmed, from);
   uint256_t local_highest = GetHighestLocallyConfirmed(confirmed_transactions);
@@ -44,7 +39,6 @@ absl::optional<uint256_t> NonceTracker::GetFinalNonce(
 
   uint256_t nonce = std::max(network_nonce, highest_continuous_from);
 
-  nonce_lock_.Release();
   return nonce;
 }
 

@@ -18,8 +18,9 @@
 
 namespace brave_wallet {
 
-FilTxStateManager::FilTxStateManager(PrefService* prefs)
-    : TxStateManager(prefs) {}
+FilTxStateManager::FilTxStateManager(PrefService* prefs,
+                                     TxStorageDelegate* delegate)
+    : TxStateManager(prefs, delegate) {}
 
 FilTxStateManager::~FilTxStateManager() = default;
 

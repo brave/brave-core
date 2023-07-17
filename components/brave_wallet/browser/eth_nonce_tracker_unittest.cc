@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/files/scoped_temp_dir.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -18,7 +19,9 @@
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
+#include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -42,7 +45,8 @@ class EthNonceTrackerUnitTest : public testing::Test {
   }
 
   void SetUp() override {
-    brave_wallet::RegisterProfilePrefs(prefs_.registry());
+    RegisterProfilePrefs(prefs_.registry());
+    RegisterProfilePrefsForMigration(prefs_.registry());
   }
 
   PrefService* GetPrefs() { return &prefs_; }
@@ -104,7 +108,13 @@ class EthNonceTrackerUnitTest : public testing::Test {
 TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   JsonRpcService service(shared_url_loader_factory(), GetPrefs());
 
-  EthTxStateManager tx_state_manager(GetPrefs());
+  base::ScopedTempDir temp_dir;
+  scoped_refptr<value_store::TestValueStoreFactory> factory =
+      GetTestValueStoreFactory(temp_dir);
+  std::unique_ptr<TxStorageDelegateImpl> delegate =
+      GetTxStorageDelegateForTest(GetPrefs(), factory);
+  WaitForTxStorageDelegateInitialized(delegate.get());
+  EthTxStateManager tx_state_manager(GetPrefs(), delegate.get());
   EthNonceTracker nonce_tracker(&tx_state_manager, &service);
 
   SetTransactionCount(2);
@@ -120,7 +130,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   meta.set_from(EthAddress::FromHex(address).ToChecksumAddress());
   meta.set_status(mojom::TransactionStatus::Confirmed);
   meta.tx()->set_nonce(uint256_t(2));
-  tx_state_manager.AddOrUpdateTx(meta);
+  ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
   GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, address, true, 3);
 
@@ -128,7 +138,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   meta.set_id(TxMeta::GenerateMetaID());
   meta.set_status(mojom::TransactionStatus::Confirmed);
   meta.tx()->set_nonce(uint256_t(3));
-  tx_state_manager.AddOrUpdateTx(meta);
+  ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
   GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, address, true, 4);
 
@@ -136,40 +146,21 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   meta.set_status(mojom::TransactionStatus::Submitted);
   meta.tx()->set_nonce(uint256_t(4));
   meta.set_id(TxMeta::GenerateMetaID());
-  tx_state_manager.AddOrUpdateTx(meta);
+  ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
   meta.set_id(TxMeta::GenerateMetaID());
-  tx_state_manager.AddOrUpdateTx(meta);
+  ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
   GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, address, true, 5);
 
   // tx count: 2, confirmed: [2, 3], pending: [4, 4], sign: [5]
   meta.set_status(mojom::TransactionStatus::Signed);
   meta.set_id(TxMeta::GenerateMetaID());
-  tx_state_manager.AddOrUpdateTx(meta);
+  ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
   GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, address, true, 5);
 
   // tx count: 2, confirmed: null, pending: null (mainnet)
   GetNextNonce(&nonce_tracker, mojom::kMainnetChainId, address, true, 2);
-}
-
-TEST_F(EthNonceTrackerUnitTest, NonceLock) {
-  JsonRpcService service(shared_url_loader_factory(), GetPrefs());
-  EthTxStateManager tx_state_manager(GetPrefs());
-  EthNonceTracker nonce_tracker(&tx_state_manager, &service);
-
-  SetTransactionCount(4);
-
-  base::Lock* lock = nonce_tracker.GetLock();
-  lock->Acquire();
-  const std::string addr("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
-  GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, addr, false, 0);
-  GetNextNonce(&nonce_tracker, mojom::kMainnetChainId, addr, false, 0);
-
-  lock->Release();
-
-  GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, addr, true, 4);
-  GetNextNonce(&nonce_tracker, mojom::kMainnetChainId, addr, true, 4);
 }
 
 }  // namespace brave_wallet
