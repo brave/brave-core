@@ -278,10 +278,10 @@ void ConfirmBubble::MoreMediaInContents() {
       browser_.get(), icon_view_->GetWeakPtr());
 
   SetCloseCallback(
-      // WindowClosing should be called first to clean up data before showing up
-      // new bubble. This callback is called by itself, it's okay to pass
-      // Unretained().
-      base::BindOnce(&PlaylistActionBubbleView::WindowClosing,
+      // WindowClosingImpl should be called first to clean up data before
+      // showing up new bubble. This callback is called by itself, it's okay to
+      // pass Unretained().
+      base::BindOnce(&PlaylistActionBubbleView::WindowClosingImpl,
                      base::Unretained(this))
           .Then(std::move(show_add_bubble)));
 
@@ -508,7 +508,13 @@ PlaylistActionBubbleView::~PlaylistActionBubbleView() = default;
 void PlaylistActionBubbleView::WindowClosing() {
   BubbleDialogDelegateView::WindowClosing();
 
-  // g_bubble could be different one when new bubble is showing up subsequently.
+  WindowClosingImpl();
+}
+
+void PlaylistActionBubbleView::WindowClosingImpl() {
+  // This method could be called multiple times during the closing process in
+  // order to show up a subsequent action bubble. So we should check if
+  // |g_bubble| is already filled up with a new bubble.
   if (g_bubble == this) {
     g_bubble = nullptr;
   }

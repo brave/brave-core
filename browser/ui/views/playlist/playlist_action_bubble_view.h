@@ -28,6 +28,8 @@ class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
 
   ~PlaylistActionBubbleView() override;
 
+  void WindowClosingImpl();
+
   // views::BubbleDialogDelegateView:
   void WindowClosing() override;
 
