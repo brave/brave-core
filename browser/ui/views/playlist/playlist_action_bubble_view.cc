@@ -419,8 +419,12 @@ AddBubble::AddBubble(Browser* browser,
 
   SetButtonLabel(ui::DialogButton::DIALOG_BUTTON_OK,
                  l10n_util::GetStringUTF16(IDS_PLAYLIST_ADD_SELECTED));
-  SetAcceptCallback(
-      base::BindRepeating(&AddBubble::AddSelected, base::Unretained(this)));
+
+  // This callback is called by itself, it's okay to pass Unretained(this).
+  SetAcceptCallback(base::BindOnce(&PlaylistActionBubbleView::WindowClosingImpl,
+                                   base::Unretained(this))
+                        .Then(base::BindOnce(&AddBubble::AddSelected,
+                                             base::Unretained(this))));
 }
 
 void AddBubble::AddSelected() {
