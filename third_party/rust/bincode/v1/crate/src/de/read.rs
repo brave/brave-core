@@ -141,12 +141,7 @@ where
     R: io::Read,
 {
     fn fill_buffer(&mut self, length: usize) -> Result<()> {
-        // Reserve and fill extra space if needed
-        let current_length = self.temp_buffer.len();
-        if length > current_length {
-            self.temp_buffer.reserve_exact(length - current_length);
-            self.temp_buffer.resize(length, 0);
-        }
+        self.temp_buffer.resize(length, 0);
 
         self.reader.read_exact(&mut self.temp_buffer)?;
 
@@ -183,5 +178,25 @@ where
     {
         self.fill_buffer(length)?;
         visitor.visit_bytes(&self.temp_buffer[..])
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::IoReader;
+
+    #[test]
+    fn test_fill_buffer() {
+        let buffer = vec![0u8; 64];
+        let mut reader = IoReader::new(buffer.as_slice());
+
+        reader.fill_buffer(20).unwrap();
+        assert_eq!(20, reader.temp_buffer.len());
+
+        reader.fill_buffer(30).unwrap();
+        assert_eq!(30, reader.temp_buffer.len());
+
+        reader.fill_buffer(5).unwrap();
+        assert_eq!(5, reader.temp_buffer.len());
     }
 }

@@ -22,14 +22,13 @@ patches/**/*.patchinfo
 /third_party/bip39wally-core-native/
 /third_party/ethash/src
 /third_party/bitcoin-core/src
-/third_party/constellation/crate
 /third_party/playlist_component/src
 /third_party/rapidjson/src
 /third_party/rust/adblock/v0_7/crate
-/third_party/sta_rs/crate/
 /third_party/rust/challenge_bypass_ristretto/v1/crate
 /third_party/rust/kuchiki/v0_8/crate
 /third_party/rust/futures_retry/v0_5/crate
+/third_party/rust/star_constellation/v0_2/crate
 *.xcodeproj
 *.swp
 *.pyc

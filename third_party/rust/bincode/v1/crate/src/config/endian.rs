@@ -1,7 +1,5 @@
-use byteorder::{self, ByteOrder};
-
 pub trait BincodeByteOrder {
-    type Endian: ByteOrder + 'static;
+    type Endian: ::byteorder::ByteOrder + 'static;
 }
 
 /// Little-endian byte ordering.
@@ -17,13 +15,13 @@ pub struct BigEndian;
 pub struct NativeEndian;
 
 impl BincodeByteOrder for LittleEndian {
-    type Endian = byteorder::LittleEndian;
+    type Endian = ::byteorder::LittleEndian;
 }
 
 impl BincodeByteOrder for BigEndian {
-    type Endian = byteorder::BigEndian;
+    type Endian = ::byteorder::BigEndian;
 }
 
 impl BincodeByteOrder for NativeEndian {
-    type Endian = byteorder::NativeEndian;
+    type Endian = ::byteorder::NativeEndian;
 }
