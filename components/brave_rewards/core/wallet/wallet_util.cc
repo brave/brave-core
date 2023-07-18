@@ -245,13 +245,18 @@ mojom::ExternalWalletPtr EnsureValidCreation(const std::string& wallet_type,
 // Valid transitions:
 // - kNotConnected ==> kConnected:
 //    - on successful wallet connection
+// - kConnected ==> kNotConnected:
+//    - on getting notified of linkage termination on the server side
 // - kConnected ==> kLoggedOut:
 //    - on access token expiry
 //    - on losing eligibility for wallet connection (Uphold-only)
+// - kLoggedOut ==> kNotConnected:
+//    - on getting notified of linkage termination on the server side
 // - kLoggedOut ==> kConnected:
 //    - on successful (re)connection
 //
 // Invariants:
+// - kNotConnected: token and address are cleared
 // - kConnected: needs !token.empty() && !address.empty()
 // - kLoggedOut: token and address are cleared
 mojom::ExternalWalletPtr EnsureValidTransition(mojom::ExternalWalletPtr wallet,
@@ -269,8 +274,14 @@ mojom::ExternalWalletPtr EnsureValidTransition(mojom::ExternalWalletPtr wallet,
   // kLoggedOut ==> kConnected
   const bool wallet_reconnection = from == mojom::WalletStatus::kLoggedOut &&
                                    to == mojom::WalletStatus::kConnected;
+  // kConnected ==> kNotConnected || kLoggedOut ==> kNotConnected
+  const bool linkage_termination = (from == mojom::WalletStatus::kConnected &&
+                                    to == mojom::WalletStatus::kNotConnected) ||
+                                   (from == mojom::WalletStatus::kLoggedOut &&
+                                    to == mojom::WalletStatus::kNotConnected);
 
-  if (!wallet_connection && !wallet_logout && !wallet_reconnection) {
+  if (!wallet_connection && !wallet_logout && !wallet_reconnection &&
+      !linkage_termination) {
     BLOG(0, "Invalid " << wallet_type << " wallet status transition: " << from
                        << " ==> " << to << '!');
     return nullptr;
@@ -286,6 +297,7 @@ mojom::ExternalWalletPtr EnsureValidTransition(mojom::ExternalWalletPtr wallet,
       }
 
       break;
+    case mojom::WalletStatus::kNotConnected:
     case mojom::WalletStatus::kLoggedOut:
       // token.empty() && address.empty()
       wallet = mojom::ExternalWallet::New();
@@ -294,11 +306,6 @@ mojom::ExternalWalletPtr EnsureValidTransition(mojom::ExternalWalletPtr wallet,
       wallet->one_time_string = util::GenerateRandomHexString();
       wallet->code_verifier = util::GeneratePKCECodeVerifier();
       break;
-    case mojom::WalletStatus::kNotConnected:
-      NOTREACHED()
-          << "No transitions to kNotConnected are permitted (except for "
-             "when the wallet is being created)!";
-      return nullptr;
   }
 
   wallet->status = to;

@@ -380,6 +380,8 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   // This method is virtualised for test-only purposes.
   virtual database::Database* database();
 
+  bool IsReady() const;
+
  private:
   enum class ReadyState {
     kUninitialized,
@@ -389,8 +391,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   };
 
   bool IsUninitialized() const;
-
-  bool IsReady() const;
 
   virtual void InitializeDatabase(LegacyResultCallback callback);
 

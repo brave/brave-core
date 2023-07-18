@@ -27,6 +27,14 @@ enum GetTransactionStatusUpholdError {
   kFailedToParseBody
 };
 
+enum GetWalletError {
+  kFailedToCreateRequest,
+  kInvalidRequest,                      // HTTP 400
+  kRewardsPaymentIDNotFound,            // HTTP 404
+  kUnexpectedStatusCode,                // HTTP xxx
+  kFailedToParseBody
+};
+
 enum PatchWalletsError {
   kFailedToCreateRequest,
   kInvalidRequest,                      // HTTP 400, HTTP 403

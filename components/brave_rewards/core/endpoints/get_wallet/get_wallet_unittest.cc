@@ -3,50 +3,52 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/core/endpoint/promotion/get_wallet/get_wallet.h"
-
 #include <string>
 #include <tuple>
 #include <utility>
 
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_rewards/core/endpoints/get_wallet/get_wallet.h"
+#include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
+#include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=*GetWalletTest*
 
 using ::testing::_;
-using ::testing::MockFunction;
-using ::testing::TestParamInfo;
 using ::testing::TestWithParam;
 using ::testing::Values;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
-
-template <typename ParamType>
-std::string NameSuffixGenerator(const TestParamInfo<ParamType>& info) {
-  return std::get<0>(info.param);
-}
+namespace brave_rewards::internal::endpoints::test {
+using Error = GetWallet::Error;
+using Result = GetWallet::Result;
 
 // clang-format off
 using GetWalletParamType = std::tuple<
-    std::string,        // test name suffix
+    std::string,         // test name suffix
     mojom::UrlResponse,  // Rewards Get Wallet response
-    mojom::Result,       // expected result
-    std::string,        // expected custodian
-    bool                // expected linked
+    Result               // expected result
 >;
 
-struct GetWalletTest : TestWithParam<GetWalletParamType> {
+class GetWalletTest : public TestWithParam<GetWalletParamType> {
  protected:
+  void SetUp() override {
+    ON_CALL(*mock_engine_impl_.mock_client(),
+            GetStringState(state::kWalletBrave, _))
+        .WillByDefault([](const std::string&, auto callback) {
+          std::move(callback).Run(R"({
+            "payment_id": "fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
+            "recovery_seed": "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
+          })");
+        });
+  }
+
   base::test::TaskEnvironment task_environment_;
   MockRewardsEngineImpl mock_engine_impl_;
-  GetWallet get_wallet_{mock_engine_impl_};
 };
 
 INSTANTIATE_TEST_SUITE_P(
@@ -62,9 +64,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {}
       },
-      mojom::Result::FAILED,
-      "",
-      false
+      base::unexpected(Error::kInvalidRequest)
     },
     GetWalletParamType{
       "ServerError404",
@@ -75,9 +75,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {}
       },
-      mojom::Result::FAILED,
-      "",
-      false
+      base::unexpected(Error::kRewardsPaymentIDNotFound)
     },
     GetWalletParamType{
       "ServerOK_not_linked",
@@ -98,9 +96,7 @@ INSTANTIATE_TEST_SUITE_P(
         )",
         {}
       },
-      mojom::Result::OK,
-      "",
-      false
+      {}
     },
     GetWalletParamType{
       "ServerOK_was_linked_but_currently_disconnected",
@@ -126,9 +122,7 @@ INSTANTIATE_TEST_SUITE_P(
         )",
         {}
       },
-      mojom::Result::OK,
-      constant::kWalletUphold,
-      false
+      std::pair{constant::kWalletUphold, false}
     },
     GetWalletParamType{
       "ServerOK_fully_linked",
@@ -154,37 +148,28 @@ INSTANTIATE_TEST_SUITE_P(
         )",
         {}
       },
-      mojom::Result::OK,
-      constant::kWalletUphold,
-      true
+      std::pair{constant::kWalletUphold, true}
     }),
-  NameSuffixGenerator<GetWalletParamType>
+    [](const auto& info) {
+      return std::get<0>(info.param);
+    }
 );
 // clang-format on
 
 TEST_P(GetWalletTest, Paths) {
-  const auto& params = GetParam();
-  const auto& rewards_services_get_wallet_response = std::get<1>(params);
-  const auto expected_result = std::get<2>(params);
-  const auto& expected_custodian = std::get<3>(params);
-  const auto expected_linked = std::get<4>(params);
+  const auto& [ignore, response, result] = GetParam();
 
   EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
-        std::move(callback).Run(
-            mojom::UrlResponse::New(rewards_services_get_wallet_response));
+        std::move(callback).Run(response.Clone());
       });
 
-  MockFunction<GetWalletCallback> callback;
-  EXPECT_CALL(callback,
-              Call(expected_result, expected_custodian, expected_linked))
-      .Times(1);
-  get_wallet_.Request(callback.AsStdFunction());
+  base::MockCallback<base::OnceCallback<void(Result&&)>> callback;
+  EXPECT_CALL(callback, Run(Result(result))).Times(1);
+  RequestFor<GetWallet>(mock_engine_impl_).Send(callback.Get());
 
   task_environment_.RunUntilIdle();
 }
 
-}  // namespace promotion
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoints::test

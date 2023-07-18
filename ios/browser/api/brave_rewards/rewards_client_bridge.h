@@ -146,6 +146,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)externalWalletConnected;
 - (void)externalWalletLoggedOut;
 - (void)externalWalletReconnected;
+- (void)externalWalletDisconnected;
 - (void)deleteLog:
     (brave_rewards::mojom::RewardsEngineClient::DeleteLogCallback)callback;
 - (void)

@@ -107,6 +107,7 @@ class RewardsClientIOS : public brave_rewards::mojom::RewardsEngineClient {
   void ExternalWalletConnected() override;
   void ExternalWalletLoggedOut() override;
   void ExternalWalletReconnected() override;
+  void ExternalWalletDisconnected() override;
   void DeleteLog(DeleteLogCallback callback) override;
   void EncryptString(const std::string& value,
                      EncryptStringCallback callback) override;

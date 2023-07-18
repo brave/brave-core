@@ -282,6 +282,12 @@
         "parameters": []
       },
       {
+        "name": "onExternalWalletDisconnected",
+        "type": "function",
+        "description": "Fired when an external wallet is disconnected",
+        "parameters": []
+      },
+      {
         "name": "onUnblindedTokensReady",
         "type": "function",
         "description": "Fired when we get unblinded tokens",

@@ -188,6 +188,9 @@ void RewardsClientIOS::ExternalWalletLoggedOut() {
 void RewardsClientIOS::ExternalWalletReconnected() {
   [bridge_ externalWalletReconnected];
 }
+void RewardsClientIOS::ExternalWalletDisconnected() {
+  [bridge_ externalWalletDisconnected];
+}
 void RewardsClientIOS::DeleteLog(DeleteLogCallback callback) {
   [bridge_ deleteLog:std::move(callback)];
 }

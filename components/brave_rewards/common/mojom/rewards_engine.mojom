@@ -263,6 +263,8 @@ interface RewardsEngineClient {
 
   ExternalWalletReconnected();
 
+  ExternalWalletDisconnected();
+
   DeleteLog() => (Result result);
 
   [Sync]

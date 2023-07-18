@@ -63,6 +63,8 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver {
 
   void OnExternalWalletLoggedOut() override;
 
+  void OnExternalWalletDisconnected() override;
+
   void OnUnblindedTokensReady(
       brave_rewards::RewardsService* rewards_service) override;
 

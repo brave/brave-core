@@ -15,7 +15,6 @@ PromotionServer::PromotionServer(RewardsEngineImpl& engine)
       get_signed_creds_(engine),
       post_clobbered_claims_(engine),
       post_bat_loss_(engine),
-      get_wallet_(engine),
       post_captcha_(engine),
       get_captcha_(engine),
       put_captcha_(engine),

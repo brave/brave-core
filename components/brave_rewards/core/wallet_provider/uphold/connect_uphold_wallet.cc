@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "brave/components/brave_rewards/core/common/random_util.h"
 #include "brave/components/brave_rewards/core/endpoints/post_connect/uphold/post_connect_uphold.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
@@ -29,8 +28,9 @@ namespace uphold {
 
 ConnectUpholdWallet::ConnectUpholdWallet(RewardsEngineImpl& engine)
     : ConnectExternalWallet(engine) {
-  eligibility_checker_.Start(FROM_HERE, base::Minutes(is_testing ? 3 : 15),
-                             this, &ConnectUpholdWallet::CheckEligibility);
+  // TODO(https://github.com/brave/brave-browser/issues/31698)
+  eligibility_checker_.Start(FROM_HERE, base::Minutes(1), this,
+                             &ConnectUpholdWallet::CheckEligibility);
 }
 
 ConnectUpholdWallet::~ConnectUpholdWallet() = default;
@@ -202,6 +202,10 @@ void ConnectUpholdWallet::OnCreateCard(ConnectExternalWalletCallback callback,
 }
 
 void ConnectUpholdWallet::CheckEligibility() {
+  if (!engine_->IsReady()) {
+    return eligibility_checker_.Reset();
+  }
+
   auto wallet =
       engine_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
   if (!wallet) {
