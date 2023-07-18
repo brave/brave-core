@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // Types
-import { SerializableOriginInfo } from '../../../../constants/types'
+import { BraveWallet } from '../../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
@@ -37,7 +37,7 @@ import { HorizontalSpace, Column, Row } from '../../../shared/style'
 import { useAddressOrb } from '../../../../common/hooks/use-orb'
 
 interface Props {
-  originInfo: SerializableOriginInfo
+  originInfo: BraveWallet.OriginInfoShort
   isReadyToConnect: boolean
   onBack: () => void
   address?: string

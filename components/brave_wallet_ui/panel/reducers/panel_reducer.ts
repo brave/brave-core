@@ -8,8 +8,7 @@ import {
   BraveWallet,
   PanelState,
   PanelTypes,
-  SerializableAddSuggestTokenRequest,
-  SerializableOriginInfo
+  SerializableAddSuggestTokenRequest
 } from '../../constants/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import {
@@ -18,18 +17,7 @@ import {
 import { PanelTitles } from '../../options/panel-titles'
 import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
-const defaultOriginInfoShort: BraveWallet.OriginInfoShort = {
-  originSpec: '',
-  eTldPlusOne: ''
-}
-
-const defaultOriginInfo: SerializableOriginInfo = {
-  origin: {
-    scheme: '',
-    host: '',
-    port: 0,
-    nonceIfOpaque: undefined
-  },
+const defaultOriginInfo: BraveWallet.OriginInfoShort = {
   originSpec: '',
   eTldPlusOne: ''
 }
@@ -41,7 +29,7 @@ const defaultState: PanelState = {
   panelTitle: '',
   connectingAccounts: [],
   addChainRequest: {
-    originInfo: defaultOriginInfoShort,
+    originInfo: defaultOriginInfo,
     networkInfo: {
       chainId: BraveWallet.MAINNET_CHAIN_ID,
       chainName: 'Ethereum Mainnet',
@@ -58,7 +46,7 @@ const defaultState: PanelState = {
     }
   },
   signMessageData: [{
-    originInfo: defaultOriginInfoShort,
+    originInfo: defaultOriginInfo,
     id: -1,
     address: '',
     domain: '',
@@ -74,7 +62,7 @@ const defaultState: PanelState = {
   signTransactionRequests: [],
   getEncryptionPublicKeyRequest: {
     requestId: '',
-    originInfo: defaultOriginInfoShort,
+    originInfo: defaultOriginInfo,
     address: ''
   },
   decryptRequest: {
@@ -88,7 +76,7 @@ const defaultState: PanelState = {
   },
   switchChainRequest: {
     requestId: '',
-    originInfo: defaultOriginInfoShort,
+    originInfo: defaultOriginInfo,
     chainId: ''
   },
   hardwareWalletCode: undefined,

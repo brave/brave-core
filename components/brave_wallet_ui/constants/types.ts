@@ -269,7 +269,7 @@ export interface WalletState {
 
 export interface PanelState {
   hasInitialized: boolean
-  connectToSiteOrigin: SerializableOriginInfo
+  connectToSiteOrigin: BraveWallet.OriginInfoShort
   selectedPanel: PanelTypes
   lastSelectedPanel?: PanelTypes
   panelTitle: string

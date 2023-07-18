@@ -588,18 +588,9 @@ handler.on(WalletActions.initialize.type, async (store) => {
   const url = new URL(window.location.href)
   if (url.hash === '#connectWithSite') {
     const accounts = url.searchParams.getAll('addr') || []
-    const originScheme = url.searchParams.get('origin-scheme') || ''
-    const originHost = url.searchParams.get('origin-host') || ''
-    const originPort = Number(url.searchParams.get('origin-port') || 0)
     const originSpec = url.searchParams.get('origin-spec') || ''
     const eTldPlusOne = url.searchParams.get('etld-plus-one') || ''
-    const originInfo: BraveWallet.OriginInfo = {
-      origin: {
-        scheme: originScheme,
-        host: originHost,
-        port: originPort,
-        nonceIfOpaque: undefined
-      },
+    const originInfo: BraveWallet.OriginInfoShort = {
       originSpec: originSpec,
       eTldPlusOne: eTldPlusOne
     }

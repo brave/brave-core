@@ -16,7 +16,7 @@ export type ConnectWithSitePayloadType = {
 
 export type ShowConnectToSitePayload = {
   accounts: string[]
-  originInfo: BraveWallet.OriginInfo
+  originInfo: BraveWallet.OriginInfoShort
 }
 
 export type EthereumChainRequestPayload = {
