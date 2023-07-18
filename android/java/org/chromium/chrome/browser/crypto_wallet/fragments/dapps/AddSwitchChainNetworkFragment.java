@@ -241,7 +241,7 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
     private void processSwitchChainRequest(
             SwitchChainRequest switchChainRequest, boolean isApproved) {
         mBraveWalletBaseActivity.getJsonRpcService().notifySwitchChainRequestProcessed(
-                isApproved, switchChainRequest.originInfo.origin);
+                switchChainRequest.requestId, isApproved);
     }
 
     private void processAddChainRequest(NetworkInfo networkInfo, boolean isApproved) {

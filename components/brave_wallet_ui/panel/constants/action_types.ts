@@ -39,8 +39,8 @@ export type SignAllTransactionsProcessedPayload = {
 }
 
 export type SwitchEthereumChainProcessedPayload = {
+  requestId: string
   approved: boolean
-  origin: SerializableOrigin
 }
 
 export type AddSuggestTokenProcessedPayload = {

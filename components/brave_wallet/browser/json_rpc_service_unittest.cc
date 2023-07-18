@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/functional/callback_helpers.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 
 #include "base/base64.h"
@@ -4119,15 +4120,15 @@ TEST_F(JsonRpcServiceUnitTest, Reset) {
   EXPECT_TRUE(prefs()->HasPrefPath(kBraveWalletCustomNetworks));
   EXPECT_EQ(GetCurrentChainId(prefs(), mojom::CoinType::ETH, absl::nullopt),
             mojom::kLocalhostChainId);
-  // This isn't valid data for these maps but we are just checking to make sure
-  // it gets cleared
-  json_rpc_service_->AddEthereumChainForOrigin(chain.Clone(), url::Origin());
-  json_rpc_service_->switch_chain_requests_[url::Origin()] = "";
-  json_rpc_service_->switch_chain_callbacks_[url::Origin()] =
-      base::BindLambdaForTesting(
-          [&](base::Value id, base::Value formed_response, const bool reject,
-              const std::string& first_allowed_account,
-              const bool update_bind_js_properties) {});
+
+  auto origin = url::Origin::Create(GURL("https://brave.com"));
+  json_rpc_service_->AddEthereumChainForOrigin(
+      GetTestNetworkInfo1("0x123").Clone(), origin);
+  json_rpc_service_->AddSwitchEthereumChainRequest(
+      "0x1", origin, base::DoNothing(), base::Value());
+
+  EXPECT_FALSE(json_rpc_service_->add_chain_pending_requests_.empty());
+  EXPECT_FALSE(json_rpc_service_->pending_switch_chain_requests_.empty());
 
   json_rpc_service_->Reset();
 
@@ -4137,8 +4138,7 @@ TEST_F(JsonRpcServiceUnitTest, Reset) {
             mojom::kMainnetChainId);
   EXPECT_FALSE(prefs()->HasPrefPath(kSupportEip1559OnLocalhostChain));
   EXPECT_TRUE(json_rpc_service_->add_chain_pending_requests_.empty());
-  EXPECT_TRUE(json_rpc_service_->switch_chain_requests_.empty());
-  EXPECT_TRUE(json_rpc_service_->switch_chain_callbacks_.empty());
+  EXPECT_TRUE(json_rpc_service_->pending_switch_chain_requests_.empty());
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetSolanaBalance) {

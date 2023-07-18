@@ -269,6 +269,12 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
     loop.Run();
   }
 
+  std::string GetPendingSwitchChainRequestId() {
+    auto requests = GetJsonRpcService()->GetPendingSwitchChainRequestsSync();
+    EXPECT_EQ(1u, requests.size());
+    return requests[0]->request_id;
+  }
+
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
@@ -293,7 +299,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddEthereumChainApproved) {
   CallAndWaitForEthereumChainRequestCompleted(
       kSomeChainId, true, brave_wallet::mojom::CoinType::ETH, "");
   const url::Origin origin = url::Origin::Create(url);
-  GetJsonRpcService()->NotifySwitchChainRequestProcessed(true, origin);
+  GetJsonRpcService()->NotifySwitchChainRequestProcessed(
+      GetPendingSwitchChainRequestId(), true);
   auto result_first = EvalJs(contents, kScriptWaitForEvent);
   EXPECT_EQ(base::Value(true), result_first.value);
   ASSERT_FALSE(GetAllEthCustomChains().empty());
@@ -417,7 +424,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest,
   CallAndWaitForEthereumChainRequestCompleted(
       "0x11", true, brave_wallet::mojom::CoinType::ETH, "");
   const url::Origin origin = url::Origin::Create(urlB);
-  GetJsonRpcService()->NotifySwitchChainRequestProcessed(false, origin);
+  GetJsonRpcService()->NotifySwitchChainRequestProcessed(
+      GetPendingSwitchChainRequestId(), false);
   auto rejected_same_id = EvalJs(web_contentsB, kScriptWaitForEvent);
   EXPECT_EQ(base::Value(false), rejected_same_id.value);
   base::RunLoop().RunUntilIdle();
@@ -467,7 +475,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddDifferentChainsSwitch) {
   CallAndWaitForEthereumChainRequestCompleted(
       "0x11", true, brave_wallet::mojom::CoinType::ETH, "");
   const url::Origin origin = url::Origin::Create(urlB);
-  GetJsonRpcService()->NotifySwitchChainRequestProcessed(true, origin);
+  GetJsonRpcService()->NotifySwitchChainRequestProcessed(
+      GetPendingSwitchChainRequestId(), true);
   auto rejected_same_id = EvalJs(web_contentsB, kScriptWaitForEvent);
   EXPECT_EQ(base::Value(true), rejected_same_id.value);
   base::RunLoop().RunUntilIdle();

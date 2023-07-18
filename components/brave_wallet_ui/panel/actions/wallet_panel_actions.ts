@@ -20,8 +20,7 @@ import {
   BraveWallet,
   PanelTypes,
   SerializableGetEncryptionPublicKeyRequest,
-  SerializableSignMessageRequest,
-  SerializableSwitchChainRequest
+  SerializableSignMessageRequest
 } from '../../constants/types'
 import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
@@ -31,7 +30,7 @@ export const visibilityChanged = createAction<boolean>('visibilityChanged')
 export const showConnectToSite = createAction<ShowConnectToSitePayload>('showConnectToSite')
 export const addEthereumChain = createAction<BraveWallet.AddChainRequest>('addEthereumChain')
 export const addEthereumChainRequestCompleted = createAction<EthereumChainRequestPayload>('addEthereumChainRequestCompleted')
-export const switchEthereumChain = createAction<SerializableSwitchChainRequest>('switchEthereumChain')
+export const switchEthereumChain = createAction<BraveWallet.SwitchChainRequest>('switchEthereumChain')
 export const switchEthereumChainProcessed = createAction<SwitchEthereumChainProcessedPayload>('switchEthereumChainProcessed')
 export const showUnlock = createAction('showUnlock')
 export const setupWallet = createAction('setupWallet')

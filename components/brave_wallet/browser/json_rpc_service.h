@@ -47,6 +47,7 @@ namespace brave_wallet {
 class EnsResolverTask;
 class NftMetadataFetcher;
 struct PendingAddChainRequest;
+struct PendingSwitchChainRequest;
 
 class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
  public:
@@ -261,8 +262,9 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       GetPendingAddChainRequestsCallback callback) override;
   void GetPendingSwitchChainRequests(
       GetPendingSwitchChainRequestsCallback callback) override;
-  void NotifySwitchChainRequestProcessed(bool approved,
-                                         const url::Origin& origin) override;
+  std::vector<mojom::SwitchChainRequestPtr> GetPendingSwitchChainRequestsSync();
+  void NotifySwitchChainRequestProcessed(const std::string& request_id,
+                                         bool approved) override;
   void GetAllNetworks(mojom::CoinType coin,
                       GetAllNetworksCallback callback) override;
   void GetCustomNetworks(mojom::CoinType coin,
@@ -522,7 +524,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                           const absl::optional<url::Origin>& origin);
   void FirePendingRequestCompleted(const std::string& chain_id,
                                    const std::string& error);
-  bool HasRequestFromOrigin(const url::Origin& origin) const;
+  bool HasAddChainRequestFromOrigin(const url::Origin& origin) const;
+  bool HasSwitchChainRequestFromOrigin(const url::Origin& origin) const;
   void RemoveChainIdRequest(const std::string& chain_id);
   void OnGetFilStateSearchMsgLimited(
       GetFilStateSearchMsgLimitedCallback callback,
@@ -687,13 +690,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<APIRequestHelper> api_request_helper_;
   std::unique_ptr<APIRequestHelper> api_request_helper_ens_offchain_;
-  // <chain_id, mojom::AddChainRequest>
   base::flat_map<std::string, PendingAddChainRequest>
       add_chain_pending_requests_;
-  // <origin, chain_id>
-  base::flat_map<url::Origin, std::string> switch_chain_requests_;
-  base::flat_map<url::Origin, RequestCallback> switch_chain_callbacks_;
-  base::flat_map<url::Origin, base::Value> switch_chain_ids_;
+  base::flat_map<std::string, PendingSwitchChainRequest>
+      pending_switch_chain_requests_;
 
   unstoppable_domains::MultichainCalls<unstoppable_domains::WalletAddressKey,
                                        std::string>

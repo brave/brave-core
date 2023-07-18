@@ -823,8 +823,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
             }),
         base::Value());
     if (user_approved) {
-      json_rpc_service_->NotifySwitchChainRequestProcessed(*user_approved,
-                                                           GetOrigin());
+      json_rpc_service_->NotifySwitchChainRequestProcessed(
+          GetPendingSwitchChainRequestId(), *user_approved);
     }
     run_loop.Run();
   }
@@ -956,6 +956,12 @@ class EthereumProviderImplUnitTest : public testing::Test {
             }));
     run_loop.Run();
     return requests_out;
+  }
+
+  std::string GetPendingSwitchChainRequestId() {
+    auto requests = json_rpc_service_->GetPendingSwitchChainRequestsSync();
+    EXPECT_EQ(1u, requests.size());
+    return requests[0]->request_id;
   }
 
  protected:
@@ -2524,7 +2530,8 @@ TEST_F(EthereumProviderImplUnitTest, SwitchEthereumChain) {
   EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
-  json_rpc_service()->NotifySwitchChainRequestProcessed(true, GetOrigin());
+  json_rpc_service()->NotifySwitchChainRequestProcessed(
+      GetPendingSwitchChainRequestId(), true);
   run_loop.Run();
   EXPECT_EQ(
       json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, GetOrigin()),
@@ -2559,7 +2566,8 @@ TEST_F(EthereumProviderImplUnitTest, AddEthereumChainSwitchesForInnactive) {
           }),
       base::Value());
   EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
-  json_rpc_service_->NotifySwitchChainRequestProcessed(true, GetOrigin());
+  json_rpc_service_->NotifySwitchChainRequestProcessed(
+      GetPendingSwitchChainRequestId(), true);
   run_loop.Run();
   brave_wallet_tab_helper()->CloseBubble();
   EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());

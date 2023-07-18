@@ -205,11 +205,11 @@ function Container () {
   }
 
   const onApproveChangeNetwork = () => {
-    dispatch(WalletPanelActions.switchEthereumChainProcessed({ approved: true, origin: switchChainRequest.originInfo.origin }))
+    dispatch(WalletPanelActions.switchEthereumChainProcessed({ requestId: switchChainRequest.requestId, approved: true }))
   }
 
   const onCancelChangeNetwork = () => {
-    dispatch(WalletPanelActions.switchEthereumChainProcessed({ approved: false, origin: switchChainRequest.originInfo.origin }))
+    dispatch(WalletPanelActions.switchEthereumChainProcessed({ requestId: switchChainRequest.requestId, approved: false }))
   }
 
   const onCancelConnectHardwareWallet = (account: BraveWallet.AccountInfo) => {

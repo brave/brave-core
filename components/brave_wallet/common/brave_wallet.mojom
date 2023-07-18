@@ -1091,7 +1091,8 @@ struct AddChainRequest {
 };
 
 struct SwitchChainRequest {
-  OriginInfo origin_info;
+  string request_id;
+  OriginInfoShort origin_info;
   string chain_id;
 };
 
@@ -1150,7 +1151,7 @@ interface JsonRpcService {
 
   // This is used for UI notifying native when the user approves or
   // rejects SwitchChainRequest
-  NotifySwitchChainRequestProcessed(bool approved, url.mojom.Origin origin);
+  NotifySwitchChainRequestProcessed(string request_id, bool approved);
   GetPendingSwitchChainRequests() => (array<SwitchChainRequest> requests);
 
   SetNetwork(string chain_id, CoinType coin, url.mojom.Origin? origin)

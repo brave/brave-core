@@ -12,7 +12,6 @@ import {
   SerializableSignMessageRequest,
   SerializableSolanaTxData,
   SerializableSolanaTxDataSendOptions,
-  SerializableSwitchChainRequest,
   SerializableTimeDelta,
   SerializableTransactionInfo,
   SerializableTxDataUnion,
@@ -190,9 +189,5 @@ export const makeSerializableSignMessageRequest = (req: BraveWallet.SignMessageR
 }
 
 export const makeSerializableGetEncryptionPublicKeyRequest = (req: BraveWallet.GetEncryptionPublicKeyRequest): SerializableGetEncryptionPublicKeyRequest => {
-  return makeOriginInfoPropSerializable(req)
-}
-
-export const makeSerializableSwitchChainRequest = (req: BraveWallet.SwitchChainRequest): SerializableSwitchChainRequest => {
   return makeOriginInfoPropSerializable(req)
 }

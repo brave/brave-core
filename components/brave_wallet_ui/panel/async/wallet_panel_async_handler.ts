@@ -11,8 +11,7 @@ import {
   WalletPanelState,
   PanelState,
   WalletRoutes,
-  SerializableSignMessageRequest,
-  SerializableSwitchChainRequest
+  SerializableSignMessageRequest
 } from '../../constants/types'
 import {
   ConnectWithSitePayloadType,
@@ -45,7 +44,6 @@ import {
   deserializeOrigin,
   makeSerializableGetEncryptionPublicKeyRequest,
   makeSerializableSignMessageRequest,
-  makeSerializableSwitchChainRequest
 } from '../../utils/model-serialization-utils'
 
 const handler = new AsyncActionHandler()
@@ -235,7 +233,7 @@ handler.on(PanelActions.addEthereumChainRequestCompleted.type, async (store: any
   apiProxy.panelHandler.closeUI()
 })
 
-handler.on(PanelActions.switchEthereumChain.type, async (store: Store, request: SerializableSwitchChainRequest) => {
+handler.on(PanelActions.switchEthereumChain.type, async (store: Store, request: BraveWallet.SwitchChainRequest) => {
   // We need to get current network list first because switch chain doesn't
   // require permission connect first.
   await refreshWalletInfo(store)
@@ -259,12 +257,10 @@ handler.on(PanelActions.decrypt.type, async (store: Store) => {
 handler.on(PanelActions.switchEthereumChainProcessed.type, async (store: Store, payload: SwitchEthereumChainProcessedPayload) => {
   const apiProxy = getWalletPanelApiProxy()
   const jsonRpcService = apiProxy.jsonRpcService
-  jsonRpcService.notifySwitchChainRequestProcessed(payload.approved, deserializeOrigin(payload.origin))
+  jsonRpcService.notifySwitchChainRequestProcessed(payload.requestId, payload.approved)
   const switchChainRequest = await getPendingSwitchChainRequest()
   if (switchChainRequest) {
-    store.dispatch(PanelActions.switchEthereumChain(
-      makeSerializableSwitchChainRequest(switchChainRequest)
-    ))
+    store.dispatch(PanelActions.switchEthereumChain(switchChainRequest))
     return
   }
   apiProxy.panelHandler.closeUI()
@@ -656,9 +652,7 @@ handler.on(WalletActions.initialize.type, async (store) => {
     }
     const switchChainRequest = await getPendingSwitchChainRequest()
     if (switchChainRequest) {
-      store.dispatch(PanelActions.switchEthereumChain(
-        makeSerializableSwitchChainRequest(switchChainRequest)
-      ))
+      store.dispatch(PanelActions.switchEthereumChain(switchChainRequest))
       return
     }
     const addSuggestTokenRequest = await getPendingAddSuggestTokenRequest()

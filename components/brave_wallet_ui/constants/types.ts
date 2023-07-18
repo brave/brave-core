@@ -280,7 +280,7 @@ export interface PanelState {
   signAllTransactionsRequests: BraveWallet.SignAllTransactionsRequest[]
   getEncryptionPublicKeyRequest: SerializableGetEncryptionPublicKeyRequest
   decryptRequest: BraveWallet.DecryptRequest
-  switchChainRequest: SerializableSwitchChainRequest
+  switchChainRequest: BraveWallet.SwitchChainRequest
   hardwareWalletCode?: HardwareWalletResponseCodeType
   suggestedTokenRequest?: SerializableAddSuggestTokenRequest
   selectedTransactionId?: string
@@ -528,8 +528,6 @@ export type SerializableAddSuggestTokenRequest = Omit<BraveWallet.AddSuggestToke
 export type SerializableSignMessageRequest = WithSerializableOriginInfo<BraveWallet.SignMessageRequest>
 
 export type SerializableGetEncryptionPublicKeyRequest = WithSerializableOriginInfo<BraveWallet.GetEncryptionPublicKeyRequest>
-
-export type SerializableSwitchChainRequest = WithSerializableOriginInfo<BraveWallet.SwitchChainRequest>
 
 export type GetEthAddrReturnInfo = BraveWallet.JsonRpcService_EnsGetEthAddr_ResponseParams
 export type GetSolAddrReturnInfo = BraveWallet.JsonRpcService_SnsGetSolAddr_ResponseParams
