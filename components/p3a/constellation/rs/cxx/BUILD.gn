@@ -14,9 +14,5 @@ rust_static_library("rust_lib") {
 
   cxx_bindings = [ "src/lib.rs" ]
 
-  deps = [ "//brave/third_party/constellation:rust_lib" ]
-
-  aliased_deps = {
-    star_constellation = "//brave/third_party/constellation:rust_lib__rlib"
-  }
+  deps = [ "//brave/third_party/rust/star_constellation/v0_2:lib" ]
 }

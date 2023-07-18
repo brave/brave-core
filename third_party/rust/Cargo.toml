@@ -12,7 +12,6 @@ members = ["cxxbridge_cmd/v1/crate"]
 anyhow = "1"
 async-trait = "0.1.64"
 base64 = "0.13.0"
-bincode = "1.3.0"
 bitflags = "1.2"
 blake2b_simd = "1.0"
 cargo-platform = "0.1"
@@ -21,7 +20,6 @@ cfg-if = "1"
 clap = "4"
 cxxbridge-cmd = "1"
 data-encoding = "2.1.2"
-derive_more = "0.99"
 ed25519-dalek-bip32 = "0.2.0"
 feed-rs = "1.3.0"
 forest_bigint = "0.1.2"
@@ -48,8 +46,8 @@ rstest_reuse = "0.5"
 semver = "1"
 serde_json = "1"
 small_ctor = "0.1"
+star-constellation = "0.2"
 static_assertions = "1"
-strobe-rs = "0.8.1"
 tempfile = "3"
 thiserror = "^1.0.30"
 url = "2.2"
@@ -66,18 +64,10 @@ gn-variables-lib = "if (is_ios) {\n    features += [\n      \"content-blocking\"
 version = "0.1"
 features = ["serde"]
 
-[dependencies.bitvec]
-version = "1.0.1"
-features = ["alloc", "atomic", "std"]
-
 [dependencies.bls-signatures]
 default-features = false
 version = "0.12"
 features = ["pairing"]
-
-[dependencies.byteorder]
-default-features = false
-version = "1"
 
 [dependencies.challenge-bypass-ristretto]
 version = "1.0.1"
@@ -90,7 +80,7 @@ features = ["clock", "serde"]
 
 [dependencies.cpufeatures]
 version = "0.2"
-gn-variables-lib = "if (is_linux && target_cpu == \"arm64\") {\n  deps += [ \"//third_party/rust/libc/v0_2:lib\" ]\n}\n"
+gn-variables-lib = "if (is_linux && current_cpu == \"arm64\") {\n  deps += [ \"//third_party/rust/libc/v0_2:lib\" ]\n}\n"
 
 [dependencies.crunchy]
 version = "0.2"
@@ -112,10 +102,6 @@ features = ["alloc", "std"]
 default-features = false
 version = "0.10"
 features = ["color", "regex"]
-
-[dependencies.ff]
-version = "0.13"
-features = ["derive"]
 
 [dependencies.flate2]
 default-features = false
@@ -140,7 +126,7 @@ gn-variables-lib = "if (is_mac) {\n    deps += [ \"//third_party/rust/core_found
 
 [dependencies.keccak]
 version = "0.1.3"
-gn-variables-lib = "if (target_cpu == \"arm64\" &&\n    (target_os == \"mac\" || target_os == \"linux\" || target_os == \"ios\")) {\n  deps = [ \"//brave/third_party/rust/cpufeatures/v0_2:lib\" ]\n}\n"
+gn-variables-lib = "if (current_cpu == \"arm64\" &&\n    (current_os == \"mac\" || current_os == \"linux\" || current_os == \"ios\")) {\n  deps = [ \"//brave/third_party/rust/cpufeatures/v0_2:lib\" ]\n}\n"
 
 [dependencies.libsecp256k1]
 version = "0.7"
@@ -165,10 +151,6 @@ gn-variables-lib = "  deps += [\n    \"//brave/third_party/rust/digest/v0_10:lib
 version = "0.4"
 build-script-outputs = ["radix_bases.rs"]
 
-[dependencies.rand_core]
-default-features = false
-version = "0.6"
-
 [dependencies.rstest]
 default-features = false
 version = "0.17"
@@ -191,7 +173,7 @@ features = ["unbounded_depth", "float_roundtrip"]
 
 [dependencies.sha2]
 version = "0.9"
-gn-variables-lib = "if ((target_cpu == \"arm64\" &&\n    (target_os == \"mac\" || target_os == \"linux\" || target_os == \"ios\")) ||\n      target_cpu == \"x64\" || target_cpu == \"x86\") {\n  deps += [ \"//brave/third_party/rust/cpufeatures/v0_2:lib\" ]\n}\n"
+gn-variables-lib = "if ((current_cpu == \"arm64\" &&\n    (current_os == \"mac\" || current_os == \"linux\" || current_os == \"ios\")) ||\n      current_cpu == \"x64\" || current_cpu == \"x86\") {\n  deps += [ \"//brave/third_party/rust/cpufeatures/v0_2:lib\" ]\n}\n"
 
 [dependencies.syn]
 version = "1"
@@ -226,10 +208,6 @@ build-script-outputs = ["tables.rs"]
 [dependencies.uuid]
 version = "0.8"
 features = ["serde"]
-
-[dependencies.zeroize]
-version = "1.5.5"
-features = ["zeroize_derive"]
 [patch.crates-io.adblock_v0_7]
 path = "adblock/v0_7/crate"
 package = "adblock"
@@ -241,6 +219,10 @@ package = "addchain"
 [patch.crates-io.adler_v1]
 path = "adler/v1/crate"
 package = "adler"
+
+[patch.crates-io.adss-rs_v0_2]
+path = "adss_rs/v0_2/crate"
+package = "adss-rs"
 
 [patch.crates-io.ahash_v0_7]
 path = "ahash/v0_7/crate"
@@ -930,6 +912,10 @@ package = "pin-project"
 path = "pin_utils/v0_1/crate"
 package = "pin-utils"
 
+[patch.crates-io.ppoprf_v0_2]
+path = "ppoprf/v0_2/crate"
+package = "ppoprf"
+
 [patch.crates-io.ppv-lite86_v0_2]
 path = "ppv_lite86/v0_2/crate"
 package = "ppv-lite86"
@@ -1130,6 +1116,10 @@ package = "sha2"
 path = "sharded_slab/v0_1/crate"
 package = "sharded-slab"
 
+[patch.crates-io.sharks_v0_5]
+path = "sharks/v0_5/crate"
+package = "sharks"
+
 [patch.crates-io.signature_v1]
 path = "signature/v1/crate"
 package = "signature"
@@ -1150,9 +1140,17 @@ package = "small_ctor"
 path = "smallvec/v1/crate"
 package = "smallvec"
 
+[patch.crates-io.sta-rs_v0_2]
+path = "sta_rs/v0_2/crate"
+package = "sta-rs"
+
 [patch.crates-io.stable_deref_trait_v1]
 path = "stable_deref_trait/v1/crate"
 package = "stable_deref_trait"
+
+[patch.crates-io.star-constellation_v0_2]
+path = "star_constellation/v0_2/crate"
+package = "star-constellation"
 
 [patch.crates-io.static_assertions_v1]
 path = "static_assertions/v1/crate"
@@ -1165,6 +1163,10 @@ package = "string_cache_codegen"
 [patch.crates-io.string_cache_v0_8]
 path = "string_cache/v0_8/crate"
 package = "string_cache"
+
+[patch.crates-io.strobe-rng_v0_2]
+path = "strobe_rng/v0_2/crate"
+package = "strobe-rng"
 
 [patch.crates-io.strobe-rs_v0_8]
 path = "strobe_rs/v0_8/crate"
