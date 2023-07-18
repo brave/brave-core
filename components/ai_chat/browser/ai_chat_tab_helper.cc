@@ -26,6 +26,7 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/storage_partition.h"
+#include "content/public/common/url_constants.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using ai_chat::mojom::CharacterType;
@@ -33,8 +34,8 @@ using ai_chat::mojom::ConversationTurn;
 using ai_chat::mojom::ConversationTurnVisibility;
 
 namespace {
-static constexpr char kChromeScheme[] = "chrome";
-static constexpr char kBraveScheme[] = "brave";
+static const char* kAllowedSchemes[] = {url::kHttpsScheme, url::kHttpScheme,
+                                        url::kFileScheme, url::kDataScheme};
 }  // namespace
 
 namespace ai_chat {
@@ -134,6 +135,12 @@ void AIChatTabHelper::RemoveObserver(Observer* observer) {
 }
 
 void AIChatTabHelper::MaybeGeneratePageText() {
+  const GURL url = web_contents()->GetURL();
+
+  if (!base::Contains(kAllowedSchemes, url.scheme())) {
+    return;
+  }
+
   // Make sure user is opted in since this may make a network request
   // for more page content (e.g. video transcript).
   // Perf: make sure we're not doing this when the feature
@@ -141,12 +148,6 @@ void AIChatTabHelper::MaybeGeneratePageText() {
   if (is_page_text_fetch_in_progress_ || !article_text_.empty() ||
       !HasUserOptedIn() || !is_conversation_active_ ||
       !web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame()) {
-    return;
-  }
-
-  const GURL url = web_contents()->GetURL();
-
-  if (url.SchemeIs(kBraveScheme) || url.SchemeIs(kChromeScheme)) {
     return;
   }
 
