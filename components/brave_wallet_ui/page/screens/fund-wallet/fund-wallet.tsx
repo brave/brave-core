@@ -401,7 +401,7 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
                 onSubmit={nextStep}
                 disabled={!isNextStepEnabled}
                 isV2={true}
-                minWidth='436px'
+                minWidth='360px'
               />
             </NextButtonRow>
           </>
