@@ -9,22 +9,6 @@ import Preferences
 import Shared
 import BraveUI
 
-enum YoutubeHighQualityPreference: String, CaseIterable {
-  case off
-  case wifi
-  case on
-}
-
-extension YoutubeHighQualityPreference: RepresentableOptionType {
-  var displayString: String {
-    switch self {
-    case .off: return Strings.youtubeMediaQualityOff
-    case .wifi: return Strings.youtubeMediaQualityWifi
-    case .on: return Strings.youtubeMediaQualityOn
-    }
-  }
-}
-
 class YoutubeQualityScriptHandler: NSObject, TabContentScript {
   private weak var tab: Tab?
   private var url: URL?
