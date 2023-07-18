@@ -76,19 +76,17 @@ function ConversationList (props: ConversationListProps) {
                 <Icon name={iconName} />
             </div>
             <div className={styles.message}>
-              {turn.text}
-              {isLoading && <span className={styles.caret}/>}
-              {isError &&
-                <div>
-                <span>
-                  <Button kind='outline' onClick={() =>
-                      props.onRetrySubmit(props.list[id - 1].uuid)}>
-                    <span className={styles.buttonBox}>
-                      {getLocale('retryButtonLabel')}
-                    </span>
-                  </Button>
-                </span>
-                </div>
+              <div className={styles.messageTextBox}>
+                {turn.text}
+                {isLoading && <span className={styles.caret}/>}
+              </div>
+              {isError &&                
+                <Button kind='outline' onClick={() =>
+                    props.onRetrySubmit(props.list[id - 1].uuid)}>
+                  <span className={styles.buttonBox}>
+                    {getLocale('retryButtonLabel')}
+                  </span>
+                </Button>
               }
             </div>
           </div>

@@ -79,3 +79,15 @@
   white-space: pre-wrap;
   padding-top: 5px;
 }
+
+.buttonBox {
+  --leo-icon-size: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  text-align: left;
+}
+
+.messageTextBox {
+  margin-bottom: 5px;
+}
