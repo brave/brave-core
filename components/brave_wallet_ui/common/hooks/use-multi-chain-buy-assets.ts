@@ -165,7 +165,7 @@ export const useMultiChainBuyAssets = () => {
           })
         } else {
           // Tabs.create is desktop specific. Using window.open for android.
-          window.open(url, "_blank");
+          window.open(url, "_blank", 'noopener');
         }
       })
       .catch((e) => console.error(e))
