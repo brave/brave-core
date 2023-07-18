@@ -6,6 +6,7 @@
 source_set("status_tray") {
   sources = [
     "brave_vpn_tray_command_ids.h",
+    "brave_vpn_tray_strings_en.h",
     "status_tray_runner.cc",
     "status_tray_runner.h",
   ]
