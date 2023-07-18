@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator.h"
 #include "brave/components/brave_ads/core/internal/reminder/reminder.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_reactions/user_reactions.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -151,6 +152,7 @@ class AdsImpl final : public Ads, public AccountObserver {
 
   AdHandler ad_handler_;
 
+  UserIdleDetection user_idle_detection_;
   UserReactions user_reactions_;
 
   Reminder reminder_;

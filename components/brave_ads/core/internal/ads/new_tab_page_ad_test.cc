@@ -39,7 +39,7 @@ class BraveAdsNewTabPageAdIntegrationTest : public UnitTestBase {
            /*response_body*/ "/catalog_with_new_tab_page_ad.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
 
-    EXPECT_CALL(ads_client_mock_, RecordP2AEvent).Times(0);
+    EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
   }
 
   void TriggerNewTabPageAdEvent(const std::string& placement_id,

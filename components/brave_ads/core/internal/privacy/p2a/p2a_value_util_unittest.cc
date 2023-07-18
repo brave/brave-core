@@ -13,27 +13,27 @@
 namespace brave_ads::privacy::p2a {
 
 namespace {
-constexpr char kQuestionsAsJson[] = R"(["question_1","question_2"])";
+constexpr char kEventsAsJson[] = R"(["event_1","event_2"])";
 }  // namespace
 
-TEST(BraveAdsP2AValueUtilTest, QuestionsToValue) {
+TEST(BraveAdsP2AValueUtilTest, EventsToValue) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_EQ(base::test::ParseJsonList(kQuestionsAsJson),
-            QuestionsToValue({"question_1", "question_2"}));
+  EXPECT_EQ(base::test::ParseJsonList(kEventsAsJson),
+            EventsToValue({"event_1", "event_2"}));
 }
 
-TEST(BraveAdsP2AValueUtilTest, NoQuestionsToValue) {
+TEST(BraveAdsP2AValueUtilTest, EmptyEventsToValue) {
   // Arrange
 
   // Act
-  const base::Value::List list = QuestionsToValue({});
+  const base::Value::List events = EventsToValue({});
 
   // Assert
-  EXPECT_TRUE(list.empty());
+  EXPECT_TRUE(events.empty());
 }
 
 }  // namespace brave_ads::privacy::p2a

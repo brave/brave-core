@@ -7,6 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -17,6 +18,7 @@ class BraveAdsUserIdleDetectionTest : public UnitTestBase {};
 TEST_F(BraveAdsUserIdleDetectionTest,
        UserDidBecomeActiveIfBravePrivateAdsAreEnabled) {
   // Arrange
+  UserIdleDetection user_idle_detection;
   EXPECT_CALL(ads_client_mock_, Log);
 
   // Act
@@ -29,6 +31,7 @@ TEST_F(BraveAdsUserIdleDetectionTest,
 TEST_F(BraveAdsUserIdleDetectionTest,
        UserDidBecomeActiveIfScreenWasLockedAndBravePrivateAdsAreEnabled) {
   // Arrange
+  UserIdleDetection user_idle_detection;
   EXPECT_CALL(ads_client_mock_, Log).Times(2);
 
   // Act
@@ -43,6 +46,7 @@ TEST_F(BraveAdsUserIdleDetectionTest,
   // Arrange
   DisableBravePrivateAds();
 
+  UserIdleDetection user_idle_detection;
   EXPECT_CALL(ads_client_mock_, Log).Times(0);
 
   // Act
@@ -56,6 +60,7 @@ TEST_F(BraveAdsUserIdleDetectionTest,
        UserDidBecomeIdleIfBravePrivateAdsAreEnabled) {
   // Arrange
 
+  UserIdleDetection user_idle_detection;
   EXPECT_CALL(ads_client_mock_, Log);
 
   // Act
@@ -69,6 +74,7 @@ TEST_F(BraveAdsUserIdleDetectionTest,
   // Arrange
   DisableBravePrivateAds();
 
+  UserIdleDetection user_idle_detection;
   EXPECT_CALL(ads_client_mock_, Log).Times(0);
 
   // Act

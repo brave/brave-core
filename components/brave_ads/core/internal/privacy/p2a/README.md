@@ -1,5 +1,5 @@
-# P2A (Privacy Preserving Anonymous)
+# P2A (Private Advertising Analytics)
 
-Record privacy preserving anonymous metrics.
+Record [private advertising analytics](https://github.com/brave/brave-browser/wiki/Randomized-Response-for-Private-Advertising-Analytics).
 
 Please add to it!

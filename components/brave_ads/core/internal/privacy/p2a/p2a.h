@@ -11,8 +11,7 @@
 
 namespace brave_ads::privacy::p2a {
 
-void RecordEvent(const std::string& name,
-                 const std::vector<std::string>& questions);
+void RecordEvent(const std::vector<std::string>& events);
 
 }  // namespace brave_ads::privacy::p2a
 

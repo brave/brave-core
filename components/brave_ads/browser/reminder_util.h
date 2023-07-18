@@ -15,11 +15,11 @@ class GURL;
 
 namespace brave_ads {
 
-base::Value::Dict GetReminder(mojom::ReminderType type);
+base::Value::Dict BuildReminder(mojom::ReminderType type);
 
-bool IsReminderNotificationAd(const std::string& placement_id);
+bool IsReminder(const std::string& placement_id);
 
-GURL GetReminderNotificationAdTargetUrl();
+GURL GetReminderTargetUrl();
 
 }  // namespace brave_ads
 
