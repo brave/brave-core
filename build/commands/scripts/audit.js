@@ -10,6 +10,7 @@ let options = config.defaultOptions
 options.continueOnFail = false
 const outputDir = config.outputDir + '_audit'
 
+util.updateBranding()
 let args = util.buildArgsToString(config.buildArgs())
 if (process.argv.includes('--audit_dev_deps')) {
   args = args + 'audit_dev_deps=true'
