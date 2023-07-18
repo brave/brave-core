@@ -276,7 +276,7 @@ class UserScriptManager {
     customScripts: Set<UserScriptType>
   ) {
     guard let webView = tab.webView else {
-      assertionFailure("Injecting Scripts into a Tab that has no WebView")
+      Logger.module.info("Injecting Scripts into a Tab that has no WebView")
       return
     }
     
