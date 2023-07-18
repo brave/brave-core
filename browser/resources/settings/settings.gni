@@ -1,3 +1,8 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//chrome/browser/resources/settings/settings.gni")
 
@@ -20,6 +25,10 @@ if (enable_pin_shortcut) {
   settings_namespace_rewrites += [
     "settings.PinShortcutPageBrowserProxyImpl|PinShortcutPageBrowserProxyImpl",
   ]
+}
+
+if (enable_ai_chat) {
+  settings_namespace_rewrites += [ "settings.BraveLeoAssistantBrowserProxyImpl|BraveLeoAssistantBrowserProxyImpl" ]
 }
 
 settings_auto_imports =

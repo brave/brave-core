@@ -1391,6 +1391,19 @@
     Disable mute function in tab speaker icons
   </message>
 
+  <!-- Settings / Leo Assistant -->
+  <message name="IDS_SETTINGS_LEO_ASSISTANT" desc="Title for an item in the 'Leo Assistant' section of Brave Settings">
+    Leo
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_ICON_ON_TOOLBAR_LABEL" desc="The text for settings option">
+    Show Leo icon in the sidebar
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_SUGGESTED_PROMPTS_LABEL" desc="The text for settings option">
+    Show suggested prompts in the conversation
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_RESET_AND_CLEAR_DATA_LABEL" desc="The text for settings option">
+    Clear Leo data
+  </message>
   <!-- Avatars. Generated via zsh and node:
         declare -i a=56
         for file in $(cat < avatarlist); do node -e "console.log(\`<message name=\"IDS_BRAVE_AVATAR_LABEL_$a\" desc=\"The label for the $file avatar.\">

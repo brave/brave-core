@@ -1,0 +1,21 @@
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this file,
+You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<style include="settings-shared md-select iron-flex">
+</style>
+<settings-toggle-button class="cr-row hr"
+  pref="[[itemPref_(leoAssistantShowOnToolbarPref_)]]"
+  label="$i18n{braveLeoAssistantShowIconOnToolbarLabel}"
+  on-settings-boolean-control-change="onLeoAssistantShowOnToolbarChange_">
+</settings-toggle-button>
+<settings-toggle-button class="cr-row hr"
+  pref="{{prefs.brave.ai_chat.auto_generate_questions}}"
+  label="$i18n{braveLeoAssistantShowSuggestedPromptsLabel}">
+</settings-toggle-button>
+<div class="settings-box " on-click="onResetAssistantData_">
+    <div class="flex cr-padded-text reset-wallet">
+      <div>$i18n{braveLeoAssistantResetAndClearDataLabel}</div>
+    </div>
+</div>
