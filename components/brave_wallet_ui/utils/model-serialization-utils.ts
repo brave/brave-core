@@ -5,18 +5,15 @@
 
 import {
   BraveWallet,
-  ObjWithOriginInfo,
   SerializableOrigin,
   SerializableOriginInfo,
-  SerializableSignMessageRequest,
   SerializableSolanaTxData,
   SerializableSolanaTxDataSendOptions,
   SerializableTimeDelta,
   SerializableTransactionInfo,
   SerializableTxDataUnion,
   SerializableUnguessableToken,
-  TimeDelta,
-  WithSerializableOriginInfo
+  TimeDelta
 } from '../constants/types'
 
 export function makeSerializableTimeDelta (td: TimeDelta | SerializableTimeDelta): SerializableTimeDelta {
@@ -174,15 +171,4 @@ export function deserializeTransaction(
     createdTime: deserializeTimeDelta(tx.createdTime),
     submittedTime: deserializeTimeDelta(tx.submittedTime)
   }
-}
-
-export const makeOriginInfoPropSerializable = <T extends ObjWithOriginInfo>(req: T): WithSerializableOriginInfo<T> => {
-  return {
-    ...req,
-    originInfo: makeSerializableOriginInfo(req.originInfo)
-  }
-}
-
-export const makeSerializableSignMessageRequest = (req: BraveWallet.SignMessageRequest): SerializableSignMessageRequest => {
-  return makeOriginInfoPropSerializable(req)
 }

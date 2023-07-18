@@ -9,8 +9,7 @@ import {
   PanelState,
   PanelTypes,
   SerializableAddSuggestTokenRequest,
-  SerializableOriginInfo,
-  SerializableSignMessageRequest
+  SerializableOriginInfo
 } from '../../constants/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import {
@@ -59,7 +58,7 @@ const defaultState: PanelState = {
     }
   },
   signMessageData: [{
-    originInfo: defaultOriginInfo,
+    originInfo: defaultOriginInfoShort,
     id: -1,
     address: '',
     domain: '',
@@ -162,7 +161,7 @@ export const createPanelReducer = (initialState: PanelState) => {
     }
   })
 
-  reducer.on(PanelActions.signMessage.type, (state, payload: SerializableSignMessageRequest[]) => {
+  reducer.on(PanelActions.signMessage.type, (state, payload: BraveWallet.SignMessageRequest[]) => {
     return {
       ...state,
       signMessageData: payload

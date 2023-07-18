@@ -627,8 +627,9 @@ void SolanaProviderImpl::SignMessage(
     message = std::string(blob_msg.begin(), blob_msg.end());
   }
   auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), -1, account->address, "", message,
-      false, absl::nullopt, absl::nullopt, blob_msg, mojom::CoinType::SOL,
+      MakeOriginInfoShort(delegate_->GetOrigin()), -1, account->address, "",
+      message, false, absl::nullopt, absl::nullopt, blob_msg,
+      mojom::CoinType::SOL,
       json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL,
                                         delegate_->GetOrigin()));
 

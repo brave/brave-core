@@ -125,8 +125,7 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
             if (mCurrentSignMessageRequest.originInfo != null
                     && URLUtil.isValidUrl(mCurrentSignMessageRequest.originInfo.originSpec)) {
                 mWebSite.setText(
-                        Utils.geteTLD(new GURL(mCurrentSignMessageRequest.originInfo.originSpec),
-                                mCurrentSignMessageRequest.originInfo.eTldPlusOne));
+                        Utils.geteTLD(mCurrentSignMessageRequest.originInfo));
             }
             updateAccount(mCurrentSignMessageRequest.address);
             updateNetwork(mCurrentSignMessageRequest.chainId);

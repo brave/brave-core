@@ -1588,7 +1588,7 @@ interface BraveWalletServiceTokenObserver {
 };
 
 struct SignMessageRequest {
-  OriginInfo origin_info;
+  OriginInfoShort origin_info;
   int32 id;
   string address;
   string domain;

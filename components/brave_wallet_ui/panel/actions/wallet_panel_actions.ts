@@ -18,8 +18,7 @@ import {
 } from '../constants/action_types'
 import {
   BraveWallet,
-  PanelTypes,
-  SerializableSignMessageRequest
+  PanelTypes
 } from '../../constants/types'
 import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
@@ -42,9 +41,9 @@ export const expandWalletAddAsset = createAction('expandWalletAddAsset')
 export const navigateTo = createAction<PanelTypes>('navigateTo')
 export const navigateToMain = createAction('navigateToMain')
 export const navigateBack = createAction('navigateBack')
-export const signMessage = createAction<SerializableSignMessageRequest[]>('signMessage')
+export const signMessage = createAction<BraveWallet.SignMessageRequest[]>('signMessage')
 export const signMessageProcessed = createAction<SignMessageProcessedPayload>('signMessageProcessed')
-export const signMessageHardware = createAction<SerializableSignMessageRequest>('signMessageHardware')
+export const signMessageHardware = createAction<BraveWallet.SignMessageRequest>('signMessageHardware')
 export const signMessageHardwareProcessed = createAction<SignMessageProcessedPayload>('signMessageHardwareProcessed')
 export const setHardwareWalletInteractionError = createAction<HardwareWalletResponseCodeType | undefined>('setHardwareWalletInteractionError')
 export const cancelConnectHardwareWallet = createAction<BraveWallet.AccountInfo>('cancelConnectHardwareWallet')

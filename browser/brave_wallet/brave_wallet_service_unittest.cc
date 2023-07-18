@@ -2267,8 +2267,8 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
-  mojom::OriginInfoPtr origin_info =
-      MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
+  mojom::OriginInfoShortPtr origin_info =
+      MakeOriginInfoShort(url::Origin::Create(GURL("https://brave.com")));
   std::string expected_signature = std::string("0xSiGnEd");
   std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
   std::string domain = "{}";
@@ -2326,8 +2326,8 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, SignMessage) {
-  mojom::OriginInfoPtr origin_info =
-      MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
+  mojom::OriginInfoShortPtr origin_info =
+      MakeOriginInfoShort(url::Origin::Create(GURL("https://brave.com")));
   std::string expected_signature = std::string("0xSiGnEd");
   std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
   std::string domain = "{}";
@@ -2565,8 +2565,8 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   EXPECT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletUserAssets));
   EXPECT_TRUE(GetPrefs()->HasPrefPath(kDefaultBaseCurrency));
   EXPECT_TRUE(GetPrefs()->HasPrefPath(kDefaultBaseCryptocurrency));
-  mojom::OriginInfoPtr origin_info =
-      MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
+  mojom::OriginInfoShortPtr origin_info =
+      MakeOriginInfoShort(url::Origin::Create(GURL("https://brave.com")));
   std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
   std::string domain = "{}";
   std::string message = "0xAB";

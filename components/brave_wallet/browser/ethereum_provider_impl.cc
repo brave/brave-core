@@ -649,7 +649,7 @@ void EthereumProviderImpl::SignMessageInternal(
   }
 
   auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), -1, address, domain, message,
+      MakeOriginInfoShort(delegate_->GetOrigin()), -1, address, domain, message,
       is_eip712, domain_hash, primary_hash, absl::nullopt, mojom::CoinType::ETH,
       json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH,
                                         delegate_->GetOrigin()));

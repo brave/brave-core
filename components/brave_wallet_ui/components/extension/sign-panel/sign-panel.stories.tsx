@@ -10,16 +10,15 @@ import SignPanel from '.'
 import { mockAccounts } from '../../../stories/mock-data/mock-wallet-accounts'
 
 import {
-  BraveWallet,
-  SerializableSignMessageRequest
+  BraveWallet
 } from '../../../constants/types'
-import { mockOriginInfo } from '../../../stories/mock-data/mock-origin-info'
+import { mockOriginInfoShort } from '../../../stories/mock-data/mock-origin-info'
 
-const signMessageData: SerializableSignMessageRequest = {
+const signMessageData: BraveWallet.SignMessageRequest = {
   id: 0,
   address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
   message: 'To avoid digital cat burglars, sign below to authenticate with CryptoKitties.',
-  originInfo: mockOriginInfo,
+  originInfo: mockOriginInfoShort,
   coin: BraveWallet.CoinType.ETH,
   isEip712: true,
   domainHash: '',

@@ -10,8 +10,7 @@ import {
   BraveWallet,
   WalletPanelState,
   PanelState,
-  WalletRoutes,
-  SerializableSignMessageRequest
+  WalletRoutes
 } from '../../constants/types'
 import {
   ConnectWithSitePayloadType,
@@ -40,9 +39,6 @@ import { getLocale } from '../../../common/locale'
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
 import { isRemoteImageURL } from '../../utils/string-utils'
 import { HardwareVendor } from 'components/brave_wallet_ui/common/api/hardware_keyrings'
-import {
-  makeSerializableSignMessageRequest,
-} from '../../utils/model-serialization-utils'
 
 const handler = new AsyncActionHandler()
 
@@ -300,9 +296,7 @@ handler.on(PanelActions.signMessageProcessed.type, async (store: Store, payload:
   braveWalletService.notifySignMessageRequestProcessed(payload.approved, payload.id, null, null)
   const signMessageRequests = await getPendingSignMessageRequests()
   if (signMessageRequests) {
-    store.dispatch(PanelActions.signMessage(
-      signMessageRequests.map(makeSerializableSignMessageRequest)
-    ))
+    store.dispatch(PanelActions.signMessage(signMessageRequests))
     return
   }
   apiProxy.panelHandler.closeUI()
@@ -314,7 +308,7 @@ function toByteArrayStringUnion<D extends keyof BraveWallet.ByteArrayStringUnion
   return Object.assign({}, unionItem) as BraveWallet.ByteArrayStringUnion
 }
 
-handler.on(PanelActions.signMessageHardware.type, async (store, messageData: SerializableSignMessageRequest) => {
+handler.on(PanelActions.signMessageHardware.type, async (store, messageData: BraveWallet.SignMessageRequest) => {
   const apiProxy = getWalletPanelApiProxy()
   const hardwareAccount = await findHardwareAccountInfo(messageData.address)
   if (!hardwareAccount || !hardwareAccount.hardware) {
@@ -323,9 +317,7 @@ handler.on(PanelActions.signMessageHardware.type, async (store, messageData: Ser
       null, getLocale('braveWalletHardwareAccountNotFound'))
     const signMessageRequests = await getPendingSignMessageRequests()
     if (signMessageRequests) {
-      store.dispatch(PanelActions.signMessage(
-        signMessageRequests.map(makeSerializableSignMessageRequest)
-      ))
+      store.dispatch(PanelActions.signMessage(signMessageRequests))
       return
     }
     apiProxy.panelHandler.closeUI()
@@ -373,9 +365,7 @@ handler.on(PanelActions.signMessageHardwareProcessed.type, async (store, payload
   braveWalletService.notifySignMessageRequestProcessed(payload.approved, payload.id, payload.signature || null, payload.error || null)
   const signMessageRequests = await getPendingSignMessageRequests()
   if (signMessageRequests) {
-    store.dispatch(PanelActions.signMessage(
-      signMessageRequests.map(makeSerializableSignMessageRequest)
-    ))
+    store.dispatch(PanelActions.signMessage(signMessageRequests))
     return
   }
   apiProxy.panelHandler.closeUI()
@@ -641,9 +631,7 @@ handler.on(WalletActions.initialize.type, async (store) => {
 
     const signMessageRequests = await getPendingSignMessageRequests()
     if (signMessageRequests) {
-      store.dispatch(PanelActions.signMessage(
-        signMessageRequests.map(makeSerializableSignMessageRequest)
-      ))
+      store.dispatch(PanelActions.signMessage(signMessageRequests))
       return
     }
     const switchChainRequest = await getPendingSwitchChainRequest()
