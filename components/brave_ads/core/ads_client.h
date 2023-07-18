@@ -134,7 +134,7 @@ class ADS_EXPORT AdsClient {
   // Called to update brave://rewards.
   virtual void UpdateAdRewards() = 0;
 
-  // Record a P2A (Privacy Advertising Analytics) |events|.
+  // Record a P2A (Private Advertising Analytics) |events|.
   virtual void RecordP2AEvents(base::Value::List events) = 0;
 
   // Add |training_sample|.

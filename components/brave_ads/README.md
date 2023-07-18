@@ -33,7 +33,7 @@ A place to define all specific terms and vocabulary for the Brave Ads component,
 | Issuers  | Refers to public keys used to sign privacy-preserving Blinded Tokens. See [challenge-bypass-ristretto](https://github.com/brave-intl/challenge-bypass-ristretto) and [privacy pass cryptographic protocol](https://www.petsymposium.org/2018/files/papers/issue3/popets-2018-0026.pdf).  |
 | Multi-armed bandits  | Multi-armed bandits optimize the allocation of resources between different ad variations or strategies to maximize performance.  |
 | Non-Brave Rewards user  | Refers to a user who has not joined Brave Rewards and will not be rewarded BAT for viewing ads.  |
-| P2A  | Privacy Advertising Analytics. See [P2A](https://github.com/brave/brave-browser/wiki/Randomized-Response-for-Private-Advertising-Analytics).  |
+| P2A  | Private Advertising Analytics. See [P2A](https://github.com/brave/brave-browser/wiki/Randomized-Response-for-Private-Advertising-Analytics).  |
 | P3A  | Privacy-Preserving Product Analytics. See [P3A](https://brave.com/privacy-preserving-product-analytics-p3a/).  |
 | Pacing  | Rate at which an ad campaign uses up its pre-set number of impressions.  |
 | Placement  | The location at which an ad is displayed to the user. Also known as an ad unit.  |
