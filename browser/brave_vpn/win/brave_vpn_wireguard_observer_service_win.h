@@ -29,6 +29,9 @@ class BraveVpnWireguardObserverService
   void OnConnectionStateChanged(
       brave_vpn::mojom::ConnectionState state) override;
 
+ private:
+  friend class BraveVpnWireguardObserverServiceUnitTest;
+
   void SetDialogCallbackForTesting(base::RepeatingClosure callback) {
     dialog_callback_ = std::move(callback);
   }
@@ -36,9 +39,6 @@ class BraveVpnWireguardObserverService
   void SetFallbackForTesting(bool should_fallback_for_testing) {
     should_fallback_for_testing_ = should_fallback_for_testing;
   }
-
- private:
-  friend class BraveVpnWireguardObserverServiceUnitTest;
 
   void ShowFallbackDialog();
   bool ShouldShowFallbackDialog() const;

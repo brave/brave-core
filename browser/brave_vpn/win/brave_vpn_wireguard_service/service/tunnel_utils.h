@@ -12,7 +12,7 @@ namespace brave_vpn {
 
 namespace wireguard {
 
-void IncrementWireguardUsageFlag();
+void IncrementWireguardTunnelUsageFlag();
 void ResetWireguardTunnelUsageFlag();
 bool UpdateLastUsedConfigPath(const base::FilePath& config_path);
 

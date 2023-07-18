@@ -19,7 +19,7 @@ constexpr wchar_t kBraveWireguardConfigKeyName[] = L"ConfigPath";
 }  // namespace
 
 // Increments number of usages for the wireguard tunnel service.
-void IncrementWireguardUsageFlag() {
+void IncrementWireguardTunnelUsageFlag() {
   base::win::RegKey key(
       HKEY_LOCAL_MACHINE,
       GetBraveVpnWireguardServiceRegistryStoragePath().c_str(), KEY_ALL_ACCESS);

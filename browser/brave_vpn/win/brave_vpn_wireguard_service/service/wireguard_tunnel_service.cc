@@ -187,7 +187,7 @@ namespace wireguard {
 // Creates and launches a new Wireguard Windows service using passed config.
 // Before to start a new service it checks and removes existing if exists.
 bool LaunchWireguardService(const std::wstring& config) {
-  IncrementWireguardUsageFlag();
+  IncrementWireguardTunnelUsageFlag();
   if (!RemoveExistingWireguardService()) {
     VLOG(1) << "Failed to remove existing brave wireguard service";
     return false;
@@ -349,13 +349,13 @@ bool WireguardGenerateKeypair(std::string* public_key,
   if (!generate_proc) {
     VLOG(1) << __func__ << ": WireGuardGenerateKeypair not found error: "
             << tunnel_lib.GetError()->ToString();
-    IncrementWireguardUsageFlag();
+    IncrementWireguardTunnelUsageFlag();
     return false;
   }
   if (generate_proc(public_key_bytes.data(), private_key_bytes.data())) {
     VLOG(1) << __func__ << "Unable to generate keys, error:"
             << tunnel_lib.GetError()->ToString();
-    IncrementWireguardUsageFlag();
+    IncrementWireguardTunnelUsageFlag();
     return false;
   }
 
