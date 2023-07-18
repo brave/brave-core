@@ -298,7 +298,7 @@
     "@typescript-eslint/eslint-plugin": "5.51.0",
     "acorn": "8.0.5",
     "babel-loader": "8.2.3",
-    "brave-ui": "github:brave/brave-ui#e4c049880199ac652b8f69610b8b70d1cd6d906f",
+    "brave-ui": "github:brave/brave-ui#11019732ef5fc09a75bae371c3f3ffece651d97c",
     "chalk": "4.1.2",
     "commander": "2.20.3",
     "css-loader": "3.6.0",
