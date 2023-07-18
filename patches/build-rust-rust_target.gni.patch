@@ -1,0 +1,14 @@
+diff --git a/build/rust/rust_target.gni b/build/rust/rust_target.gni
+index 1fdad6338f3aeb5cf2d1811891bd26173e981525..37332a6483218c3084507ef55689710b60da4f31 100644
+--- a/build/rust/rust_target.gni
++++ b/build/rust/rust_target.gni
+@@ -172,8 +172,7 @@ template("rust_target") {
+                "outside the Chromium build.")
+     _cxx_bindings = invoker.cxx_bindings
+   }
+-  _rustenv = [ "OUT_DIR=" +
+-               rebase_path(_env_out_dir, get_path_info(_crate_root, "dir")) ]
++  _rustenv = [ "OUT_DIR=" + rebase_path(_env_out_dir) ]
+   if (defined(invoker.rustenv)) {
+     _rustenv += invoker.rustenv
+   }
