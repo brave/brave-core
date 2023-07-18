@@ -19,7 +19,6 @@ import {
 import {
   BraveWallet,
   PanelTypes,
-  SerializableGetEncryptionPublicKeyRequest,
   SerializableSignMessageRequest
 } from '../../constants/types'
 import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
@@ -51,7 +50,7 @@ export const setHardwareWalletInteractionError = createAction<HardwareWalletResp
 export const cancelConnectHardwareWallet = createAction<BraveWallet.AccountInfo>('cancelConnectHardwareWallet')
 export const addSuggestToken = createAction<BraveWallet.AddSuggestTokenRequest>('addSuggestToken')
 export const addSuggestTokenProcessed = createAction<AddSuggestTokenProcessedPayload>('addSuggestTokenProcessed')
-export const getEncryptionPublicKey = createAction<SerializableGetEncryptionPublicKeyRequest>('getEncryptionPublicKey')
+export const getEncryptionPublicKey = createAction<BraveWallet.GetEncryptionPublicKeyRequest>('getEncryptionPublicKey')
 export const getEncryptionPublicKeyProcessed = createAction<GetEncryptionPublicKeyProcessedPayload>('getEncryptionPublicKeyProcessed')
 export const decrypt = createAction<BraveWallet.DecryptRequest>('decrypt')
 export const decryptProcessed = createAction<DecryptProcessedPayload>('decryptProcessed')

@@ -4,14 +4,14 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import {
   BraveWallet,
-  SerializableGetEncryptionPublicKeyRequest
 } from '../../constants/types'
 
-import { mockOriginInfo, mockOriginInfoShort } from './mock-origin-info'
+import { mockOriginInfoShort } from './mock-origin-info'
 
-export const mockEncryptionKeyRequest: SerializableGetEncryptionPublicKeyRequest = {
+export const mockEncryptionKeyRequest: BraveWallet.GetEncryptionPublicKeyRequest = {
+  requestId: 'random_id',
   address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
-  originInfo: mockOriginInfo
+  originInfo: mockOriginInfoShort
 }
 
 export const mockDecryptRequest: BraveWallet.DecryptRequest = {

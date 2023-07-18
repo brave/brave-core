@@ -47,6 +47,7 @@ class JsonRpcService;
 class TxService;
 class EthAllowanceManager;
 struct PendingDecryptRequest;
+struct PendingGetEncryptPublicKeyRequest;
 
 class BraveWalletService : public KeyedService,
                            public mojom::BraveWalletService,
@@ -219,8 +220,8 @@ class BraveWalletService : public KeyedService,
   void NotifyAddSuggestTokenRequestsProcessed(
       bool approved,
       const std::vector<std::string>& contract_addresses) override;
-  void NotifyGetPublicKeyRequestProcessed(bool approved,
-                                          const url::Origin& origin) override;
+  void NotifyGetPublicKeyRequestProcessed(const std::string& request_id,
+                                          bool approved) override;
   void NotifyDecryptRequestProcessed(const std::string& request_id,
                                      bool approved) override;
 
@@ -314,6 +315,10 @@ class BraveWalletService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, Reset);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetUserAssetAddress);
 
+  bool HasPendingDecryptRequestForOrigin(const url::Origin& origin) const;
+  bool HasPendingGetEncryptionPublicKeyRequestForOrigin(
+      const url::Origin& origin) const;
+
   void OnDefaultEthereumWalletChanged();
   void OnDefaultSolanaWalletChanged();
   void OnDefaultBaseCurrencyChanged();
@@ -377,11 +382,8 @@ class BraveWalletService : public KeyedService,
   base::flat_map<std::string, base::Value> add_suggest_token_ids_;
   base::flat_map<std::string, mojom::AddSuggestTokenRequestPtr>
       add_suggest_token_requests_;
-  base::flat_map<url::Origin, std::string>
-      add_get_encryption_public_key_requests_;
-  base::flat_map<url::Origin, mojom::EthereumProvider::RequestCallback>
-      add_get_encryption_public_key_callbacks_;
-  base::flat_map<url::Origin, base::Value> get_encryption_public_key_ids_;
+  base::flat_map<std::string, PendingGetEncryptPublicKeyRequest>
+      pending_get_encryption_public_key_requests_;
   base::flat_map<std::string, PendingDecryptRequest> pending_decrypt_requests_;
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
   mojo::RemoteSet<mojom::BraveWalletServiceTokenObserver> token_observers_;

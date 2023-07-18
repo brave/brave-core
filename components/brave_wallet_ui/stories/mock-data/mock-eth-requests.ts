@@ -27,7 +27,8 @@ export const mockAddChainRequest = {
 }
 
 export const mockGetEncryptionPublicKeyRequest = {
-  originInfo: mockOriginInfo,
+  requestId: '',
+  originInfo: mockOriginInfoShort,
   address: ''
 }
 
@@ -39,6 +40,7 @@ export const mockDecryptRequest = {
 }
 
 export const mockSwitchChainRequest = {
-  originInfo: mockOriginInfo,
+  requestId: '',
+  originInfo: mockOriginInfoShort,
   chainId: ''
 }

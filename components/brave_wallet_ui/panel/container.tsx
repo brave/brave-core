@@ -282,11 +282,11 @@ function Container () {
   }
 
   const onProvideEncryptionKey = () => {
-    dispatch(WalletPanelActions.getEncryptionPublicKeyProcessed({ approved: true, origin: getEncryptionPublicKeyRequest.originInfo.origin }))
+    dispatch(WalletPanelActions.getEncryptionPublicKeyProcessed({ requestId: getEncryptionPublicKeyRequest.requestId, approved: true }))
   }
 
   const onCancelProvideEncryptionKey = () => {
-    dispatch(WalletPanelActions.getEncryptionPublicKeyProcessed({ approved: false, origin: getEncryptionPublicKeyRequest.originInfo.origin }))
+    dispatch(WalletPanelActions.getEncryptionPublicKeyProcessed({ requestId: getEncryptionPublicKeyRequest.requestId, approved: false }))
   }
 
   const onAllowReadingEncryptedMessage = () => {

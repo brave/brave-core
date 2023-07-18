@@ -860,11 +860,11 @@ class EthereumProviderImplUnitTest : public testing::Test {
     auto requests = GetPendingGetEncryptionPublicKeyRequests();
     if (requests.size() > 0) {
       ASSERT_EQ(requests.size(), 1u);
-      EXPECT_EQ(requests[0]->origin_info, MakeOriginInfo(GetOrigin()));
+      EXPECT_EQ(requests[0]->origin_info, MakeOriginInfoShort(GetOrigin()));
       EXPECT_EQ(requests[0]->address, address);
       EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
-      brave_wallet_service_->NotifyGetPublicKeyRequestProcessed(approved,
-                                                                GetOrigin());
+      brave_wallet_service_->NotifyGetPublicKeyRequestProcessed(
+          requests[0]->request_id, approved);
     }
     run_loop.Run();
   }

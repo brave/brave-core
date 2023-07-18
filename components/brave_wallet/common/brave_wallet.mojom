@@ -1097,7 +1097,8 @@ struct SwitchChainRequest {
 };
 
 struct GetEncryptionPublicKeyRequest {
-  OriginInfo origin_info;
+  string request_id;
+  OriginInfoShort origin_info;
   string address;
 };
 
@@ -1769,7 +1770,7 @@ interface BraveWalletService {
 
   // This is used for UI notifying native when the user approves or
   // rejects getting the public key for an origin
-  NotifyGetPublicKeyRequestProcessed(bool approved, url.mojom.Origin origin);
+  NotifyGetPublicKeyRequestProcessed(string request_id, bool approved);
   GetPendingGetEncryptionPublicKeyRequests() => (array<GetEncryptionPublicKeyRequest> requests);
 
   // This is used for UI notifying native when the user approves or

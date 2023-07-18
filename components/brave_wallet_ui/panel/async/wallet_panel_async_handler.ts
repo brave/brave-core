@@ -41,8 +41,6 @@ import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
 import { isRemoteImageURL } from '../../utils/string-utils'
 import { HardwareVendor } from 'components/brave_wallet_ui/common/api/hardware_keyrings'
 import {
-  deserializeOrigin,
-  makeSerializableGetEncryptionPublicKeyRequest,
   makeSerializableSignMessageRequest,
 } from '../../utils/model-serialization-utils'
 
@@ -269,12 +267,10 @@ handler.on(PanelActions.switchEthereumChainProcessed.type, async (store: Store, 
 handler.on(PanelActions.getEncryptionPublicKeyProcessed.type, async (store: Store, payload: GetEncryptionPublicKeyProcessedPayload) => {
   const apiProxy = getWalletPanelApiProxy()
   const braveWalletService = apiProxy.braveWalletService
-  braveWalletService.notifyGetPublicKeyRequestProcessed(payload.approved, deserializeOrigin(payload.origin))
+  braveWalletService.notifyGetPublicKeyRequestProcessed(payload.requestId, payload.approved)
   const getEncryptionPublicKeyRequest = await getPendingGetEncryptionPublicKeyRequest()
   if (getEncryptionPublicKeyRequest) {
-    store.dispatch(PanelActions.getEncryptionPublicKey(
-      makeSerializableGetEncryptionPublicKeyRequest(getEncryptionPublicKeyRequest)
-    ))
+    store.dispatch(PanelActions.getEncryptionPublicKey(getEncryptionPublicKeyRequest))
     return
   }
   apiProxy.panelHandler.closeUI()
@@ -662,9 +658,7 @@ handler.on(WalletActions.initialize.type, async (store) => {
     }
     const getEncryptionPublicKeyRequest = await getPendingGetEncryptionPublicKeyRequest()
     if (getEncryptionPublicKeyRequest) {
-      store.dispatch(PanelActions.getEncryptionPublicKey(
-        makeSerializableGetEncryptionPublicKeyRequest(getEncryptionPublicKeyRequest)
-      ))
+      store.dispatch(PanelActions.getEncryptionPublicKey(getEncryptionPublicKeyRequest))
       return
     }
     const decryptRequest = await getPendingDecryptRequest()

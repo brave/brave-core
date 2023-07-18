@@ -1419,7 +1419,14 @@ public class Utils {
     }
 
     public static Spanned geteTLD(OriginInfoShort originInfoShort) {
-        return Utils.geteTLD(originInfoShort.originSpec, originInfoShort.etldPlusOne);
+        StringBuilder builder = new StringBuilder();
+        builder.append(originInfoShort.originSpec);
+        int index = builder.indexOf(originInfoShort.etldPlusOne);
+        if (index > 0 && index < builder.length()) {
+            builder.insert(index, "<b>");
+            builder.insert(builder.length(), "</b>");
+        }
+        return AndroidUtils.formatHTML(builder.toString());
     }
 
     public static Spanned geteTLD(GURL url, String etldPlusOne) {
