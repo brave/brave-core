@@ -378,7 +378,7 @@ void AIChatTabHelper::RetryAPIRequest(const std::string& uuid) {
       current_navigation_id_, uuid, true);
 
   is_request_in_progress_ = true;
-  ai_chat_api_->QueryPrompt(std::move(prompt),
+  ai_chat_api_->QueryPrompt(std::move(prompt), {"</response>"},
                             std::move(data_completed_callback),
                             std::move(data_received_callback));
 }
