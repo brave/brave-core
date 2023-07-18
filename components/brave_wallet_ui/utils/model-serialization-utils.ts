@@ -144,7 +144,7 @@ export function deserializeSolanaTxData(
 export function makeSerializableTransaction (tx: BraveWallet.TransactionInfo): SerializableTransactionInfo {
   return {
     ...tx,
-    originInfo: makeSerializableOriginInfo(tx.originInfo),
+    originInfo: tx.originInfo,
     txDataUnion: tx.txDataUnion.solanaTxData
       ? { solanaTxData: makeSerializableSolanaTxData(tx.txDataUnion.solanaTxData) }
       : tx.txDataUnion as SerializableTxDataUnion,
@@ -163,9 +163,6 @@ export function deserializeTransaction(
 
   return {
     ...tx,
-    originInfo: tx.originInfo
-      ? deserializeOriginInfo(tx.originInfo)
-      : tx.originInfo,
     txDataUnion: txDataUnion as BraveWallet.TxDataUnion,
     confirmedTime: deserializeTimeDelta(tx.confirmedTime),
     createdTime: deserializeTimeDelta(tx.createdTime),

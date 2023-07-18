@@ -1002,7 +1002,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[0]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[0]->tx_type);
-  EXPECT_EQ(MakeOriginInfo(https_server_for_files()->GetOrigin("a.test")),
+  EXPECT_EQ(MakeOriginInfoShort(https_server_for_files()->GetOrigin("a.test")),
             infos[0]->origin_info);
   const std::string tx1_id = infos[0]->id;
   RejectTransaction(tx1_id);
@@ -1039,7 +1039,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[tx2_index]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[tx2_index]->tx_type);
-  EXPECT_EQ(MakeOriginInfo(https_server_for_files()->GetOrigin("a.test")),
+  EXPECT_EQ(MakeOriginInfoShort(https_server_for_files()->GetOrigin("a.test")),
             infos[tx2_index]->origin_info);
 
   ApproveTransaction(infos[tx2_index]->id);
@@ -1081,7 +1081,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[tx3_index]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[tx3_index]->tx_type);
-  EXPECT_EQ(MakeOriginInfo(https_server_for_files()->GetOrigin("a.test")),
+  EXPECT_EQ(MakeOriginInfoShort(https_server_for_files()->GetOrigin("a.test")),
             infos[tx3_index]->origin_info);
 
   ApproveTransaction(tx3_id);

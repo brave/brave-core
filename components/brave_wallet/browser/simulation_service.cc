@@ -214,8 +214,7 @@ void SimulationService::ScanSolanaTransaction(
     return;
   }
 
-  const auto& encoded_params =
-      solana::EncodeScanTransactionParams(std::move(request));
+  const auto& encoded_params = solana::EncodeScanTransactionParams(request);
   if (!encoded_params) {
     std::move(callback).Run(
         nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -279,8 +278,7 @@ void SimulationService::ScanEVMTransaction(
     return;
   }
 
-  const auto& encoded_params =
-      evm::EncodeScanTransactionParams(std::move(tx_info));
+  const auto& encoded_params = evm::EncodeScanTransactionParams(tx_info);
   if (!encoded_params) {
     std::move(callback).Run(
         nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));

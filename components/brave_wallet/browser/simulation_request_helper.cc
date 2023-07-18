@@ -21,7 +21,7 @@ namespace brave_wallet {
 
 namespace {
 
-base::Value::Dict GetMetadata(mojom::OriginInfoPtr origin_info) {
+base::Value::Dict GetMetadata(const mojom::OriginInfoShortPtr& origin_info) {
   base::Value::Dict metadata_object;
 
   if (origin_info && origin_info->origin_spec != "chrome://wallet" &&
@@ -43,7 +43,7 @@ base::Value::Dict GetMetadata(mojom::OriginInfoPtr origin_info) {
 namespace evm {
 
 absl::optional<std::string> EncodeScanTransactionParams(
-    mojom::TransactionInfoPtr tx_info) {
+    const mojom::TransactionInfoPtr& tx_info) {
   if (!tx_info) {
     return absl::nullopt;
   }
@@ -94,7 +94,7 @@ absl::optional<std::string> EncodeScanTransactionParams(
 
   base::Value::Dict params;
   params.Set("txObject", std::move(tx_object));
-  params.Set("metadata", GetMetadata(std::move(tx_info->origin_info)));
+  params.Set("metadata", GetMetadata(tx_info->origin_info));
   params.Set("userAccount", tx_info->from_address);
 
   return GetJSON(base::Value(std::move(params)));
@@ -146,7 +146,7 @@ absl::optional<std::string> GetBase64TransactionFromTxDataUnion(
 }  // namespace
 
 absl::optional<std::string> EncodeScanTransactionParams(
-    mojom::SolanaTransactionRequestUnionPtr request) {
+    const mojom::SolanaTransactionRequestUnionPtr& request) {
   if (!request) {
     return absl::nullopt;
   }
@@ -166,8 +166,7 @@ absl::optional<std::string> EncodeScanTransactionParams(
     base::Value::List transactions;
     transactions.Append(*serialized_tx);
     params.Set("transactions", std::move(transactions));
-    params.Set("metadata",
-               GetMetadata(std::move(sign_transaction_request->origin_info)));
+    params.Set("metadata", GetMetadata(sign_transaction_request->origin_info));
     params.Set("userAccount", sign_transaction_request->from_address);
   } else if (request->is_sign_all_transactions_request()) {
     const auto& sign_all_transactions_request =
@@ -201,7 +200,7 @@ absl::optional<std::string> EncodeScanTransactionParams(
     transactions.Append(*serialized_tx);
     params.Set("transactions", std::move(transactions));
 
-    params.Set("metadata", GetMetadata(std::move(tx_info->origin_info)));
+    params.Set("metadata", GetMetadata(tx_info->origin_info));
     params.Set("userAccount", tx_info->from_address);
   } else {
     return absl::nullopt;

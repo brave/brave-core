@@ -142,7 +142,7 @@ mojom::SignAllTransactionsRequestPtr MakeSolanaSignAllTransactionsRequest(
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsEVMType0DefaultOrigin) {
   auto tx_info = GetCannedScanEVMTransactionParams(false, absl::nullopt);
-  auto encoded_params = evm::EncodeScanTransactionParams(std::move(tx_info));
+  auto encoded_params = evm::EncodeScanTransactionParams(tx_info);
 
   std::string expected_params(R"(
     {
@@ -167,7 +167,7 @@ TEST(SimulationRequestHelperUnitTest,
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsEVMType2DefaultOrigin) {
   auto tx_info = GetCannedScanEVMTransactionParams(true, absl::nullopt);
-  auto encoded_params = evm::EncodeScanTransactionParams(std::move(tx_info));
+  auto encoded_params = evm::EncodeScanTransactionParams(tx_info);
   std::string expected_params(R"(
     {
       "metadata":{
@@ -192,7 +192,7 @@ TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsEVMType0CustomOrigin) {
   auto tx_info =
       GetCannedScanEVMTransactionParams(false, "https://example.com");
-  auto encoded_params = evm::EncodeScanTransactionParams(std::move(tx_info));
+  auto encoded_params = evm::EncodeScanTransactionParams(tx_info);
   std::string expected_params(R"(
     {
       "metadata":{
@@ -216,7 +216,7 @@ TEST(SimulationRequestHelperUnitTest,
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsEVMType2CustomOrigin) {
   auto tx_info = GetCannedScanEVMTransactionParams(true, "https://example.com");
-  auto encoded_params = evm::EncodeScanTransactionParams(std::move(tx_info));
+  auto encoded_params = evm::EncodeScanTransactionParams(tx_info);
   std::string expected_params(R"(
     {
       "metadata":{
@@ -240,7 +240,7 @@ TEST(SimulationRequestHelperUnitTest,
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsEVMInvalidTxData) {
   auto tx_info = GetCannedScanSolanaTransactionParams(absl::nullopt);
-  auto encoded_params = evm::EncodeScanTransactionParams(std::move(tx_info));
+  auto encoded_params = evm::EncodeScanTransactionParams(tx_info);
 
   // KO: Invalid tx data is not encoded.
   EXPECT_FALSE(encoded_params);
@@ -256,7 +256,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto tx_info = GetCannedScanSolanaTransactionParams(absl::nullopt);
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
-  auto encoded_params = solana::EncodeScanTransactionParams(std::move(request));
+  auto encoded_params = solana::EncodeScanTransactionParams(request);
 
   std::string expected_params(R"(
     {
@@ -280,7 +280,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto tx_info = GetCannedScanSolanaTransactionParams("https://example.com");
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
-  auto encoded_params = solana::EncodeScanTransactionParams(std::move(request));
+  auto encoded_params = solana::EncodeScanTransactionParams(request);
 
   std::string expected_params(R"(
     {
@@ -307,7 +307,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto request =
       mojom::SolanaTransactionRequestUnion::NewSignTransactionRequest(
           std::move(parsed));
-  auto encoded_params = solana::EncodeScanTransactionParams(std::move(request));
+  auto encoded_params = solana::EncodeScanTransactionParams(request);
 
   std::string expected_params(R"(
     {
@@ -334,7 +334,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto request =
       mojom::SolanaTransactionRequestUnion::NewSignTransactionRequest(
           std::move(parsed));
-  auto encoded_params = solana::EncodeScanTransactionParams(std::move(request));
+  auto encoded_params = solana::EncodeScanTransactionParams(request);
 
   std::string expected_params(R"(
     {
@@ -361,7 +361,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto request =
       mojom::SolanaTransactionRequestUnion::NewSignAllTransactionsRequest(
           std::move(parsed));
-  auto encoded_params = solana::EncodeScanTransactionParams(std::move(request));
+  auto encoded_params = solana::EncodeScanTransactionParams(request);
 
   std::string expected_params(R"(
     {
@@ -388,7 +388,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto request =
       mojom::SolanaTransactionRequestUnion::NewSignAllTransactionsRequest(
           std::move(parsed));
-  auto encoded_params = solana::EncodeScanTransactionParams(std::move(request));
+  auto encoded_params = solana::EncodeScanTransactionParams(request);
 
   std::string expected_params(R"(
     {
@@ -412,7 +412,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto tx_info = GetCannedScanEVMTransactionParams(false, absl::nullopt);
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
-  auto encoded_params = solana::EncodeScanTransactionParams(std::move(request));
+  auto encoded_params = solana::EncodeScanTransactionParams(request);
 
   // KO: Invalid tx data is not encoded.
   EXPECT_FALSE(encoded_params);

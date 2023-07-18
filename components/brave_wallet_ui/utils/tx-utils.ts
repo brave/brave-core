@@ -13,7 +13,6 @@ import {
   SerializableTransactionInfo,
   TimeDelta,
   SerializableTimeDelta,
-  SerializableOriginInfo,
   SortingOrder,
   TransactionInfo,
   SpotPriceRegistry
@@ -42,10 +41,7 @@ import { toProperCase } from './string-utils'
 import { computeFiatAmount, getTokenPriceAmountFromRegistry } from './pricing-utils'
 import { makeNetworkAsset } from '../options/asset-options'
 import { getAddressLabel } from './account-utils'
-import {
-  makeSerializableTimeDelta,
-  makeSerializableOriginInfo
-} from './model-serialization-utils'
+import { makeSerializableTimeDelta } from './model-serialization-utils'
 import { weiToEther } from './web3-utils'
 
 export type EIP1559TransactionInfo = TransactionInfo & {
@@ -109,7 +105,7 @@ export interface ParsedTransaction
   isSwap?: boolean
   intent: string
   chainId: string
-  originInfo?: SerializableOriginInfo | undefined
+  originInfo?: BraveWallet.OriginInfoShort | undefined
 
   // Value
   value: string
@@ -1674,7 +1670,7 @@ export const parseTransactionWithoutPrices = ({
     minBuyAmountWei: buyAmountWei,
     missingGasLimitError,
     nonce: getTransactionNonce(tx),
-    originInfo: makeSerializableOriginInfo(tx.originInfo),
+    originInfo: tx.originInfo,
     recipient: to,
     recipientLabel: getAddressLabel(to, accounts),
     sameAddressError,

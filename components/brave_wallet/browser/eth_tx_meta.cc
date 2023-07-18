@@ -144,7 +144,7 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
       base::Milliseconds(created_time_.ToJavaTime()),
       base::Milliseconds(submitted_time_.ToJavaTime()),
       base::Milliseconds(confirmed_time_.ToJavaTime()),
-      origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, group_id_,
+      origin_.has_value() ? MakeOriginInfoShort(*origin_) : nullptr, group_id_,
       chain_id_, final_recepient);
 }
 

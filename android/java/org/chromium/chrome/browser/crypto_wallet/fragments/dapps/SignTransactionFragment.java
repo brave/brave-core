@@ -215,8 +215,7 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
         updateNetwork(coin);
         if (originInfo != null && URLUtil.isValidUrl(originInfo.originSpec)) {
             mWebSite.setVisibility(View.VISIBLE);
-            mWebSite.setText(
-                    Utils.geteTLD(new GURL(originInfo.originSpec), originInfo.eTldPlusOne));
+            mWebSite.setText(Utils.geteTLD(originInfo));
         }
     }
 

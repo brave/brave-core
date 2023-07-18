@@ -12,10 +12,10 @@ import { URLText } from '../../shared-panel-styles'
 import CreateSiteOrigin from '../../../shared/create-site-origin'
 
 // Types
-import { SerializableOriginInfo } from '../../../../constants/types'
+import { BraveWallet } from '../../../../constants/types'
 
 interface Props {
-  originInfo: SerializableOriginInfo
+  originInfo: BraveWallet.OriginInfoShort
 }
 
 export function Origin (props: Props) {

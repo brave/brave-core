@@ -430,7 +430,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(default_account()->address,
                                                  infos[0]->from_address));
     EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[0]->tx_status);
-    EXPECT_EQ(MakeOriginInfo(https_server_for_files()->GetOrigin("a.com")),
+    EXPECT_EQ(MakeOriginInfoShort(https_server_for_files()->GetOrigin("a.com")),
               infos[0]->origin_info);
     ASSERT_TRUE(infos[0]->tx_data_union->is_eth_tx_data_1559());
     EXPECT_TRUE(infos[0]
@@ -495,7 +495,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(default_account()->address,
                                                  infos[0]->from_address));
     EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[0]->tx_status);
-    EXPECT_EQ(MakeOriginInfo(https_server_for_files()->GetOrigin("a.com")),
+    EXPECT_EQ(MakeOriginInfoShort(https_server_for_files()->GetOrigin("a.com")),
               infos[0]->origin_info);
     ASSERT_TRUE(infos[0]->tx_data_union->is_eth_tx_data_1559());
     EXPECT_TRUE(infos[0]

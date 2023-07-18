@@ -1390,7 +1390,7 @@ struct TransactionInfo {
   mojo_base.mojom.TimeDelta created_time;
   mojo_base.mojom.TimeDelta submitted_time;
   mojo_base.mojom.TimeDelta confirmed_time;
-  OriginInfo? origin_info;
+  OriginInfoShort? origin_info;
   string? group_id;
   string chain_id;
   // Currently only available for ETH and FIL
@@ -1607,7 +1607,7 @@ struct SignMessageRequest {
 };
 
 struct SignTransactionRequest {
-  OriginInfo origin_info;
+  OriginInfoShort origin_info;
   int32 id;
   string from_address;
   TxDataUnion tx_data;
@@ -1617,7 +1617,7 @@ struct SignTransactionRequest {
 };
 
 struct SignAllTransactionsRequest {
-  OriginInfo origin_info;
+  OriginInfoShort origin_info;
   int32 id;
   string from_address;
   array<TxDataUnion> tx_datas;
