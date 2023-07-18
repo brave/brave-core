@@ -221,7 +221,7 @@
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_fund_wallet_page/brave_wallet_fund_wallet_page.grd": {
     "META": {"sizes": {"includes": [250]}},
-    "includes": [61370],
+    "includes": [61390],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-tip_panel/tip_panel.grd": {
     "META": {"sizes": {"includes": [100]}},

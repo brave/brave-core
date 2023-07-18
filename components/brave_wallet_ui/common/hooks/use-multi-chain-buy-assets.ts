@@ -164,7 +164,7 @@ export const useMultiChainBuyAssets = () => {
             }
           })
         } else {
-          // Tabs.create is desktop specific. Using window open for android
+          // Tabs.create is desktop specific. Using window.open for android.
           window.open(url, "_blank");
         }
       })
