@@ -244,12 +244,7 @@ HRESULT StatusTrayRunner::Run() {
   base::ThreadPoolInstance::CreateAndStartWithDefaultParams(
       "Brave VPN Wireguard status tray process");
 
-  auto pak_path = GetResourcesPakFilePath(base::i18n::GetConfiguredLocale());
-  if (!base::PathExists(pak_path)) {
-    pak_path = GetResourcesPakFilePath("en-US");
-  }
-  DCHECK(base::PathExists(pak_path));
-  ui::ResourceBundle::InitSharedInstanceWithPakPath(pak_path);
+  InitResourceBundle();
 
   SetupStatusIcon();
   SubscribeForStorageUpdates();
@@ -258,6 +253,16 @@ HRESULT StatusTrayRunner::Run() {
   quit_ = loop.QuitClosure();
   loop.Run();
   return S_OK;
+}
+
+void StatusTrayRunner::InitResourceBundle() {
+  auto pak_path = GetResourcesPakFilePath(base::i18n::GetConfiguredLocale());
+  if (!base::PathExists(pak_path)) {
+    pak_path = GetResourcesPakFilePath("en-US");
+  }
+  LOG(ERROR) << pak_path;
+  CHECK(base::PathExists(pak_path));
+  ui::ResourceBundle::InitSharedInstanceWithPakPath(pak_path);
 }
 
 void StatusTrayRunner::SignalExit() {

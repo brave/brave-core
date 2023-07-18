@@ -31,6 +31,7 @@ class StatusTrayRunner : public TrayMenuModel::Delegate {
   StatusTrayRunner& operator=(const StatusTrayRunner&) = delete;
 
   HRESULT Run();
+  void InitResourceBundle();
 
   void SetTunnelServiceRunningForTesting(bool value) {
     service_running_for_testing_ = value;

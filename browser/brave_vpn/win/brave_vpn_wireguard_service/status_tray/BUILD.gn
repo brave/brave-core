@@ -33,6 +33,7 @@ source_set("unit_tests") {
   sources = [ "status_tray_runner_unittest.cc" ]
   deps = [
     ":status_tray",
+    "//chrome:packed_resources",
     "//testing/gtest",
   ]
 }
