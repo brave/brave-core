@@ -17,7 +17,7 @@ enum ConversationTurnVisibility {
 
 enum ConversationTurnStatus {
   NORMAL,     // Simple text
-  ERROR       // Error description
+  ABNORMAL    // Error description
 };
 
 enum AutoGenerateQuestionsPref {

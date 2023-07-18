@@ -107,7 +107,7 @@ void AIChatTabHelper::AddToConversationHistory(const ConversationTurn& turn,
         chat_history_,
         [&turn](const auto& item) { return turn.uuid == item.uuid; });
 
-    if (turn.status == mojom::ConversationTurnStatus::ERROR) {
+    if (turn.status == mojom::ConversationTurnStatus::ABNORMAL) {
       // iterate to the error message
       chat_history_iter++;
     }
@@ -529,7 +529,7 @@ void AIChatTabHelper::OnAPIStreamDataComplete(
     AddToConversationHistory(
         ConversationTurn{CharacterType::ASSISTANT,
                          ConversationTurnVisibility::VISIBLE, error_description,
-                         ConversationTurnStatus::ERROR, uuid},
+                         ConversationTurnStatus::ABNORMAL, uuid},
         is_retry);
   }
 

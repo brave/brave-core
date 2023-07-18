@@ -49,7 +49,7 @@ function ConversationList (props: ConversationListProps) {
 
         const isHuman = turn.characterType === CharacterType.HUMAN
         const isAIAssistant = turn.characterType === CharacterType.ASSISTANT
-        const isError = turn.status === ConversationTurnStatus.ERROR
+        const isError = turn.status === ConversationTurnStatus.ABNORMAL
 
         let iconName = 'user-circle'
         if(!isHuman) {
