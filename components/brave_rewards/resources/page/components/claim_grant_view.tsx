@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -30,18 +31,18 @@ export function ClaimGrantView (props: Props) {
 
   return (
     <style.root>
-      <style.amount>
+      <style.amountInfo>
         <style.graphic><MoneyBagIcon /></style.graphic>
         {
           grantInfo.amount > 0 &&
-            <div>
+            <style.amount>
               <TokenAmount
                 amount={grantInfo.amount}
                 minimumFractionDigits={2}
               />
-            </div>
+            </style.amount>
         }
-      </style.amount>
+      </style.amountInfo>
       <style.text>
         <style.title>
           {formatMessage(getString(title), [formatGrantMonth(grantInfo)])}

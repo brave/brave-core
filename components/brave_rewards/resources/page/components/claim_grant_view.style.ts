@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -16,7 +17,7 @@ export const root = styled.div`
   overflow: hidden;
 `
 
-export const amount = styled.div`
+export const amountInfo = styled.div`
   flex: 0 1 auto;
   margin: 10px 0;
   padding-left: 16px;
@@ -41,6 +42,11 @@ export const graphic = styled.div`
     width: auto;
     display: block;
   }
+`
+
+export const amount = styled.div`
+  display: flex;
+  gap: 2px;
 `
 
 export const text = styled.div`

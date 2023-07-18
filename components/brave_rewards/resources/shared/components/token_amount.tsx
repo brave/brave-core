@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -26,7 +27,7 @@ export function TokenAmount (props: Props) {
   return (
     <>
       <span className='amount'>{formatter.format(props.amount || 0)}</span>
-      {!props.hideCurrency && <>&nbsp;<span className='currency'>BAT</span></>}
+      {!props.hideCurrency && <>{' '}<span className='currency'>BAT</span></>}
     </>
   )
 }

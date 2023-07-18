@@ -1,10 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 export const localeStrings = {
   rewardsAdGrantAmount: '$1 Rewards: $2',
   rewardsAdGrantTitle: 'Your $1 Ad Rewards are here!',
+  rewardsBalanceInfoText: 'Now that you\'re connected to ZebPay, any previous balance you had will be deposited into your ZebPay account as part of your next earnings payout. Once it arrives, you\'ll see your BAT reflected in your Rewards balance.',
+  rewardsBalanceTitle: 'Balance',
   rewardsBraveRewards: 'Brave Rewards',
   rewardsClaimRewards: 'Claim Rewards',
   rewardsClaimTokens: 'Claim Tokens',
@@ -32,7 +35,6 @@ export const localeStrings = {
   rewardsSelectCountryText: 'To continue using Brave Rewards, select your country so we can show you the right options and ads for your region. $1Privacy Policy$2',
   rewardsSettings: 'Rewards settings',
   rewardsStartUsingRewards: 'Start using Rewards',
-  rewardsBalanceTitle: 'Balance',
   rewardsTokenGrantTitle: 'A token grant is available!',
   rewardsVBATNoticeTitle1: 'Action required: Connect a custodial account or your vBAT will be lost',
   rewardsVBATNoticeText1: 'On $1, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.',
