@@ -30,6 +30,7 @@
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
+#include "brave/components/brave_news/browser/raw_feed_controller.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -99,12 +100,16 @@ BraveNewsController::BraveNewsController(
                              &unsupported_publisher_migrator_,
                              &api_request_helper_),
       channels_controller_(prefs_, &publishers_controller_),
-      feed_controller_(&publishers_controller_,
-                       &direct_feed_controller_,
-                       &channels_controller_,
-                       history_service,
-                       &api_request_helper_,
-                       prefs_),
+      raw_feed_controller_(publishers_controller_,
+                           channels_controller_,
+                           api_request_helper_),
+      feed_controller_(publishers_controller_,
+                       direct_feed_controller_,
+                       channels_controller_,
+                       raw_feed_controller_,
+                       *history_service,
+                       api_request_helper_,
+                       *prefs_),
       suggestions_controller_(prefs_,
                               &publishers_controller_,
                               &api_request_helper_,
@@ -618,7 +623,7 @@ void BraveNewsController::CheckForFeedsUpdate() {
   if (!GetIsEnabled(prefs_)) {
     return;
   }
-  feed_controller_.UpdateIfRemoteChanged();
+  raw_feed_controller_.UpdateRemoteIfChanged();
 }
 
 void BraveNewsController::Prefetch() {

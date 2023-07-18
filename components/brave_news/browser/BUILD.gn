@@ -32,6 +32,8 @@ static_library("browser") {
     "publishers_controller.h",
     "publishers_parsing.cc",
     "publishers_parsing.h",
+    "raw_feed_controller.cc",
+    "raw_feed_controller.h",
     "suggestions_controller.cc",
     "suggestions_controller.h",
     "unsupported_publisher_migrator.cc",
