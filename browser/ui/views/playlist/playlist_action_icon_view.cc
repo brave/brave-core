@@ -76,6 +76,10 @@ void PlaylistActionIconView::ShowPlaylistBubble() {
   PlaylistActionBubbleView::ShowBubble(browser_, this, playlist_tab_helper);
 }
 
+base::WeakPtr<PlaylistActionIconView> PlaylistActionIconView::GetWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
 const gfx::VectorIcon& PlaylistActionIconView::GetVectorIcon() const {
   return state_ == State::kAdded ? kLeoProductPlaylistAddedIcon
                                  : kLeoProductPlaylistAddIcon;

@@ -38,6 +38,8 @@ class PlaylistTabHelper
     return found_items_;
   }
 
+  std::vector<mojom::PlaylistItemPtr> GetUnsavedItems() const;
+
   void AddObserver(PlaylistTabHelperObserver* observer);
   void RemoveObserver(PlaylistTabHelperObserver* observer);
 

@@ -13,6 +13,7 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/playlist/playlist_tab_helper.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/grit/generated_resources.h"
@@ -31,6 +32,19 @@
 namespace {
 
 PlaylistActionBubbleView* g_bubble = nullptr;
+
+template <class ActionBubbleView,
+          typename std::enable_if_t<
+              std::is_base_of_v<PlaylistActionBubbleView, ActionBubbleView>>* =
+              nullptr>
+void ShowBubble(std::unique_ptr<ActionBubbleView> bubble) {
+  DCHECK(!g_bubble);
+
+  g_bubble = bubble.release();
+
+  auto* widget = views::BubbleDialogDelegateView::CreateBubble(g_bubble);
+  widget->Show();
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // DefaultThumbnailBackground
@@ -65,7 +79,7 @@ class ConfirmBubble : public PlaylistActionBubbleView {
   METADATA_HEADER(ConfirmBubble);
 
   ConfirmBubble(Browser* browser,
-                views::View* anchor,
+                PlaylistActionIconView* anchor,
                 playlist::PlaylistTabHelper* playlist_tab_helper);
   ~ConfirmBubble() override = default;
 
@@ -87,6 +101,57 @@ class ConfirmBubble : public PlaylistActionBubbleView {
   void MoreMediaInContents();
 };
 
+////////////////////////////////////////////////////////////////////////////////
+// AddBubble
+//  * Shows when users try adding items found from the current contents.
+//  * Shows a list of found items and users can select which one to add.
+class AddBubble : public PlaylistActionBubbleView {
+ public:
+  METADATA_HEADER(AddBubble);
+  AddBubble(Browser* browser,
+            PlaylistActionIconView* anchor,
+            playlist::PlaylistTabHelper* playlist_tab_helper);
+  AddBubble(Browser* browser,
+            PlaylistActionIconView* anchor,
+            playlist::PlaylistTabHelper* playlist_tab_helper,
+            const std::vector<playlist::mojom::PlaylistItemPtr>& items);
+
+ private:
+  class ItemRow : public views::Button {
+   public:
+    static constexpr int kWidth = 288;
+
+    ItemRow(playlist::mojom::PlaylistItemPtr item,
+            base::RepeatingCallback<void(const ItemRow&)> callback);
+
+    bool selected() const { return selected_; }
+    const playlist::mojom::PlaylistItemPtr& item() const { return item_; }
+
+    // views::Button:
+    int GetHeightForWidth(int width) const override;
+    void OnThemeChanged() override;
+
+   private:
+    ItemRow& OnPressed(const ui::Event& event);
+
+    void SetSelected(bool selected);
+    void UpdateBackground();
+
+    playlist::mojom::PlaylistItemPtr item_;
+    bool selected_ = true;
+
+    raw_ptr<views::ImageView> selected_icon_ = nullptr;
+  };
+
+  void AddSelected();
+  void OnItemPressed(const ItemRow& row);
+
+  base::flat_set<const ItemRow*> selected_views_;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+// ConfirmBubble Impl
+
 ConfirmBubble::Row::Row(const std::u16string& text,
                         const ui::ImageModel& icon,
                         views::Button::PressedCallback callback)
@@ -106,7 +171,7 @@ void ConfirmBubble::Row::Layout() {
 }
 
 ConfirmBubble::ConfirmBubble(Browser* browser,
-                             views::View* anchor,
+                             PlaylistActionIconView* anchor,
                              playlist::PlaylistTabHelper* playlist_tab_helper)
     : PlaylistActionBubbleView(browser, anchor, playlist_tab_helper) {
   // What this look like
@@ -144,13 +209,16 @@ ConfirmBubble::ConfirmBubble(Browser* browser,
                                      kIconSize),
       base::BindRepeating(&ConfirmBubble::RemoveFromPlaylist,
                           base::Unretained(this))));
-  AddChildView(std::make_unique<views::Separator>());
-  AddChildView(std::make_unique<Row>(
-      l10n_util::GetStringUTF16(IDS_PLAYLIST_MORE_MEDIA_IN_THIS_PAGE),
-      ui::ImageModel::FromVectorIcon(kLeoProductPlaylistIcon,
-                                     ui::kColorMenuIcon, kIconSize),
-      base::BindRepeating(&ConfirmBubble::MoreMediaInContents,
-                          base::Unretained(this))));
+
+  if (playlist_tab_helper->GetUnsavedItems().size()) {
+    AddChildView(std::make_unique<views::Separator>());
+    AddChildView(std::make_unique<Row>(
+        l10n_util::GetStringUTF16(IDS_PLAYLIST_MORE_MEDIA_IN_THIS_PAGE),
+        ui::ImageModel::FromVectorIcon(kLeoProductPlaylistIcon,
+                                       ui::kColorMenuIcon, kIconSize),
+        base::BindRepeating(&ConfirmBubble::MoreMediaInContents,
+                            base::Unretained(this))));
+  }
 }
 
 void ConfirmBubble::OpenInPlaylist() {
@@ -190,56 +258,41 @@ void ConfirmBubble::RemoveFromPlaylist() {
 }
 
 void ConfirmBubble::MoreMediaInContents() {
-  NOTIMPLEMENTED();
+  auto show_add_bubble = base::BindOnce(
+      [](base::WeakPtr<playlist::PlaylistTabHelper> tab_helper,
+         Browser* browser, base::WeakPtr<PlaylistActionIconView> anchor) {
+        if (!tab_helper || !anchor) {
+          return;
+        }
+
+        if (!tab_helper->found_items().size()) {
+          return;
+        }
+
+        ::ShowBubble(
+            std::make_unique<AddBubble>(browser, anchor.get(), tab_helper.get(),
+                                        tab_helper->GetUnsavedItems()));
+      },
+      playlist_tab_helper_->GetWeakPtr(),
+      // |Browser| outlives TabHelper so it's okay to bind raw ptr here
+      browser_.get(), icon_view_->GetWeakPtr());
+
+  SetCloseCallback(
+      // WindowClosingImpl should be called first to clean up data before
+      // showing up new bubble. This callback is called by itself, it's okay to
+      // pass Unretained().
+      base::BindOnce(&PlaylistActionBubbleView::WindowClosingImpl,
+                     base::Unretained(this))
+          .Then(std::move(show_add_bubble)));
+
+  GetWidget()->Close();
 }
 
 BEGIN_METADATA(ConfirmBubble, PlaylistActionBubbleView)
 END_METADATA
 
 ////////////////////////////////////////////////////////////////////////////////
-// AddBubble
-//  * Shows when users try adding items found from the current contents.
-//  * Shows a list of found items and users can select which one to add.
-class AddBubble : public PlaylistActionBubbleView {
- public:
-  METADATA_HEADER(AddBubble);
-  AddBubble(Browser* browser,
-            views::View* anchor,
-            playlist::PlaylistTabHelper* playlist_tab_helper);
-
- private:
-  class ItemRow : public views::Button {
-   public:
-    static constexpr int kWidth = 288;
-
-    ItemRow(playlist::mojom::PlaylistItemPtr item,
-            base::RepeatingCallback<void(const ItemRow&)> callback);
-
-    bool selected() const { return selected_; }
-    const playlist::mojom::PlaylistItemPtr& item() const { return item_; }
-
-    // views::Button:
-    int GetHeightForWidth(int width) const override;
-    void OnThemeChanged() override;
-
-   private:
-    ItemRow& OnPressed(const ui::Event& event);
-
-    void SetSelected(bool selected);
-    void UpdateBackground();
-
-    playlist::mojom::PlaylistItemPtr item_;
-    bool selected_ = true;
-
-    raw_ptr<views::ImageView> selected_icon_ = nullptr;
-  };
-
-  void AddSelected();
-  void OnItemPressed(const ItemRow& row);
-
-  base::flat_set<const ItemRow*> selected_views_;
-};
-
+// AddBubble Impl
 AddBubble::ItemRow::ItemRow(
     playlist::mojom::PlaylistItemPtr item,
     base::RepeatingCallback<void(const ItemRow&)> callback)
@@ -316,8 +369,17 @@ void AddBubble::ItemRow::UpdateBackground() {
 }
 
 AddBubble::AddBubble(Browser* browser,
-                     views::View* anchor,
+                     PlaylistActionIconView* anchor,
                      playlist::PlaylistTabHelper* playlist_tab_helper)
+    : AddBubble(browser,
+                anchor,
+                playlist_tab_helper,
+                playlist_tab_helper->found_items()) {}
+
+AddBubble::AddBubble(Browser* browser,
+                     PlaylistActionIconView* anchor,
+                     playlist::PlaylistTabHelper* playlist_tab_helper,
+                     const std::vector<playlist::mojom::PlaylistItemPtr>& items)
     : PlaylistActionBubbleView(browser, anchor, playlist_tab_helper) {
   // What this look like
   // https://user-images.githubusercontent.com/5474642/243532255-f82fc740-eea0-4c52-b43a-378ab703d229.png
@@ -344,7 +406,7 @@ AddBubble::AddBubble(Browser* browser,
       scroll_view->SetContents(std::make_unique<views::BoxLayoutView>());
   contents->SetOrientation(views::BoxLayout::Orientation::kVertical);
 
-  for (const auto& item : playlist_tab_helper->found_items()) {
+  for (const auto& item : items) {
     selected_views_.insert(contents->AddChildView(std::make_unique<ItemRow>(
         item.Clone(), base::BindRepeating(&AddBubble::OnItemPressed,
                                           base::Unretained(this)))));
@@ -357,8 +419,12 @@ AddBubble::AddBubble(Browser* browser,
 
   SetButtonLabel(ui::DialogButton::DIALOG_BUTTON_OK,
                  l10n_util::GetStringUTF16(IDS_PLAYLIST_ADD_SELECTED));
-  SetAcceptCallback(
-      base::BindRepeating(&AddBubble::AddSelected, base::Unretained(this)));
+
+  // This callback is called by itself, it's okay to pass Unretained(this).
+  SetAcceptCallback(base::BindOnce(&PlaylistActionBubbleView::WindowClosingImpl,
+                                   base::Unretained(this))
+                        .Then(base::BindOnce(&AddBubble::AddSelected,
+                                             base::Unretained(this))));
 }
 
 void AddBubble::AddSelected() {
@@ -403,20 +469,17 @@ END_METADATA
 // static
 void PlaylistActionBubbleView::ShowBubble(
     Browser* browser,
-    views::View* anchor,
+    PlaylistActionIconView* anchor,
     playlist::PlaylistTabHelper* playlist_tab_helper) {
-  DCHECK(!g_bubble);
-  DCHECK(playlist_tab_helper);
-
   if (playlist_tab_helper->saved_items().size()) {
-    g_bubble = new ConfirmBubble(browser, anchor, playlist_tab_helper);
+    ::ShowBubble(
+        std::make_unique<ConfirmBubble>(browser, anchor, playlist_tab_helper));
   } else if (playlist_tab_helper->found_items().size()) {
-    g_bubble = new AddBubble(browser, anchor, playlist_tab_helper);
+    ::ShowBubble(
+        std::make_unique<AddBubble>(browser, anchor, playlist_tab_helper));
   } else {
     NOTREACHED() << "Caller should filter this case";
   }
-  auto* widget = views::BubbleDialogDelegateView::CreateBubble(g_bubble);
-  widget->Show();
 }
 
 // static
@@ -437,19 +500,28 @@ PlaylistActionBubbleView* PlaylistActionBubbleView::GetBubble() {
 
 PlaylistActionBubbleView::PlaylistActionBubbleView(
     Browser* browser,
-    views::View* anchor,
+    PlaylistActionIconView* anchor,
     playlist::PlaylistTabHelper* playlist_tab_helper)
     : BubbleDialogDelegateView(anchor, views::BubbleBorder::Arrow::TOP_RIGHT),
       browser_(browser),
-      playlist_tab_helper_(playlist_tab_helper) {}
+      playlist_tab_helper_(playlist_tab_helper),
+      icon_view_(anchor) {}
 
 PlaylistActionBubbleView::~PlaylistActionBubbleView() = default;
 
 void PlaylistActionBubbleView::WindowClosing() {
   BubbleDialogDelegateView::WindowClosing();
 
-  DCHECK_EQ(g_bubble, this);
-  g_bubble = nullptr;
+  WindowClosingImpl();
+}
+
+void PlaylistActionBubbleView::WindowClosingImpl() {
+  // This method could be called multiple times during the closing process in
+  // order to show up a subsequent action bubble. So we should check if
+  // |g_bubble| is already filled up with a new bubble.
+  if (g_bubble == this) {
+    g_bubble = nullptr;
+  }
 }
 
 BEGIN_METADATA(PlaylistActionBubbleView, views::BubbleDialogDelegateView)

@@ -31,6 +31,8 @@ class PlaylistActionIconView : public PageActionIconView,
 
   void ShowPlaylistBubble();
 
+  base::WeakPtr<PlaylistActionIconView> GetWeakPtr();
+
   // PageActionIconView:
   void OnExecuting(ExecuteSource execute_source) override {}
   views::BubbleDialogDelegate* GetBubble() const override;

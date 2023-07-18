@@ -259,6 +259,25 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
   }
 }
 
+std::vector<mojom::PlaylistItemPtr> PlaylistTabHelper::GetUnsavedItems() const {
+  if (found_items_.empty()) {
+    return {};
+  }
+
+  base::flat_set<std::string> saved_items;
+  base::ranges::transform(saved_items_,
+                          std::inserter(saved_items, saved_items.begin()),
+                          [](const auto& item) { return item->id; });
+
+  std::vector<mojom::PlaylistItemPtr> unsaved_items;
+  for (const auto& found_item : found_items_) {
+    if (!base::Contains(saved_items, found_item->id)) {
+      unsaved_items.push_back(found_item->Clone());
+    }
+  }
+  return unsaved_items;
+}
+
 void PlaylistTabHelper::OnAddedItems(
     std::vector<mojom::PlaylistItemPtr> items) {
   // mojo based observer tends to be notified later. i.e. OnItemCreated() will
