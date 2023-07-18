@@ -210,18 +210,20 @@ void AcceleratorService::ResetAcceleratorsForCommand(int command_id) {
 }
 
 void AcceleratorService::ResetAccelerators() {
-  accelerators_ = default_accelerators_;
-
   std::vector<int> commands;
   for (const auto command : GetCommands()) {
     pref_manager_.ClearAccelerators(command);
     commands.push_back(command);
 
     // Make sure we add all the accelerators back.
-    for (const auto& accelerator : accelerators_[command]) {
+    for (const auto& accelerator : default_accelerators_[command]) {
       pref_manager_.AddAccelerator(command, accelerator);
     }
   }
+
+  // Load the default accelerators back.
+  accelerators_ = pref_manager_.GetAccelerators();
+
   NotifyCommandsChanged(commands);
 }
 
