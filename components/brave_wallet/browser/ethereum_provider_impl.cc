@@ -1381,7 +1381,7 @@ void EthereumProviderImpl::AddSuggestToken(mojom::BlockchainTokenPtr token,
   }
 
   auto request = mojom::AddSuggestTokenRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), std::move(token));
+      MakeOriginInfoShort(delegate_->GetOrigin()), std::move(token));
   brave_wallet_service_->AddSuggestTokenRequest(
       std::move(request), std::move(callback), std::move(id));
   delegate_->ShowPanel();

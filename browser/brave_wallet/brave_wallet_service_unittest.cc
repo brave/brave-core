@@ -706,7 +706,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
                        bool run_switch_network = false) {
     mojom::AddSuggestTokenRequestPtr request =
         mojom::AddSuggestTokenRequest::New(
-            MakeOriginInfo(url::Origin::Create(GURL("https://brave.com"))),
+            MakeOriginInfoShort(url::Origin::Create(GURL("https://brave.com"))),
             suggested_token.Clone());
     base::RunLoop run_loop;
     service_->AddSuggestTokenRequest(

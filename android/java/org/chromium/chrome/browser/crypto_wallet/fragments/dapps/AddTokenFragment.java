@@ -118,8 +118,7 @@ public class AddTokenFragment extends BaseDAppsFragment {
 
     private void fillOriginInfo(OriginInfo originInfo) {
         if (originInfo != null && URLUtil.isValidUrl(originInfo.originSpec)) {
-            GURL url = new GURL(originInfo.originSpec);
-            mWebSite.setText(Utils.geteTLD(url, originInfo.eTldPlusOne));
+            mWebSite.setText(Utils.geteTLD(originInfo));
         }
     }
 

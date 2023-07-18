@@ -7,8 +7,7 @@ import { createReducer } from 'redux-act'
 import {
   BraveWallet,
   PanelState,
-  PanelTypes,
-  SerializableAddSuggestTokenRequest
+  PanelTypes
 } from '../../constants/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import {
@@ -177,7 +176,7 @@ export const createPanelReducer = (initialState: PanelState) => {
     }
   })
 
-  reducer.on(PanelActions.addSuggestToken.type, (state: PanelState, payload: SerializableAddSuggestTokenRequest): PanelState => {
+  reducer.on(PanelActions.addSuggestToken.type, (state: PanelState, payload: BraveWallet.AddSuggestTokenRequest): PanelState => {
     return {
       ...state,
       suggestedTokenRequest: payload

@@ -282,7 +282,7 @@ export interface PanelState {
   decryptRequest: BraveWallet.DecryptRequest
   switchChainRequest: BraveWallet.SwitchChainRequest
   hardwareWalletCode?: HardwareWalletResponseCodeType
-  suggestedTokenRequest?: SerializableAddSuggestTokenRequest
+  suggestedTokenRequest?: BraveWallet.AddSuggestTokenRequest
   selectedTransactionId?: string
 }
 
@@ -512,10 +512,6 @@ export type SerializableTransactionInfo = Omit<
 export type TransactionInfo =
   | BraveWallet.TransactionInfo
   | SerializableTransactionInfo
-
-export type SerializableAddSuggestTokenRequest = Omit<BraveWallet.AddSuggestTokenRequest, 'origin'> & {
-  origin: SerializableOriginInfo
-}
 
 export type GetEthAddrReturnInfo = BraveWallet.JsonRpcService_EnsGetEthAddr_ResponseParams
 export type GetSolAddrReturnInfo = BraveWallet.JsonRpcService_SnsGetSolAddr_ResponseParams

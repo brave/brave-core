@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
-import { BraveWallet, SerializableOriginInfo } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Styled Components
 import {
@@ -35,7 +35,7 @@ import { useExplorer } from '../../../common/hooks'
 export interface Props {
   onCancel: () => void
   onAddToken: () => void
-  originInfo: SerializableOriginInfo
+  originInfo: BraveWallet.OriginInfoShort
   selectedNetwork?: BraveWallet.NetworkInfo
   token?: BraveWallet.BlockchainToken
 }
