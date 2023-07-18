@@ -10,11 +10,11 @@
 #include <utility>
 #include <vector>
 
-#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/playlist/playlist_tab_helper.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
