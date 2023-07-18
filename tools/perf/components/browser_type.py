@@ -108,7 +108,7 @@ def _GetChromeDownloadUrl(version: ChromiumVersion,
 
 
 def _DownloadArchiveAndUnpack(output_directory: str, url: str):
-  f = tempfile.mktemp(dir=output_directory)
+  _, f = tempfile.mkstemp(dir=output_directory)
   _DownloadFile(url, f)
   extract_zip(f, output_directory)
 
