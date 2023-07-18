@@ -1,3 +1,32 @@
+//! `bincode` uses a Builder-pattern to configure the Serializers and Deserializers in this
+//! crate. This means that if you need to customize the behavior of `bincode`, you should create an
+//! instance of the `DefaultOptions` struct:
+//!
+//! ```rust
+//! use bincode::Options;
+//! let my_options = bincode::DefaultOptions::new();
+//! ```
+//!
+//! # Options Struct vs bincode functions
+//!
+//! Due to historical reasons, the default options used by the `serialize()` and `deserialize()`
+//! family of functions are different than the default options created by the `DefaultOptions` struct:
+//!
+//! |          | Byte limit | Endianness | Int Encoding | Trailing Behavior |
+//! |----------|------------|------------|--------------|-------------------|
+//! | struct   | Unlimited  | Little     | Varint       | Reject            |
+//! | function | Unlimited  | Little     | Fixint       | Allow             |
+//!
+//! This means that if you want to use the `Serialize` / `Deserialize` structs with the same
+//! settings as the functions, you should adjust the `DefaultOptions` struct like so:
+//!
+//! ```rust
+//! use bincode::Options;
+//! let my_options = bincode::DefaultOptions::new()
+//!     .with_fixint_encoding()
+//!     .allow_trailing_bytes();
+//! ```
+
 use de::read::BincodeRead;
 use error::Result;
 use serde;
@@ -27,6 +56,23 @@ mod trailing;
 /// ### Defaults
 /// By default bincode will use little-endian encoding for multi-byte integers, and will not
 /// limit the number of serialized/deserialized bytes.
+///
+/// ### Configuring `DefaultOptions`
+///
+/// `DefaultOptions` implements the [Options] trait, which means it exposes functions to change the behavior of bincode.
+///
+/// For example, if you wanted to limit the bincode deserializer to 1 kilobyte of user input:
+///
+/// ```rust
+/// use bincode::Options;
+/// let my_options = bincode::DefaultOptions::new().with_limit(1024);
+/// ```
+///
+/// ### DefaultOptions struct vs. functions
+///
+/// The default configuration used by this struct is not the same as that used by the bincode
+/// helper functions in the root of this crate. See the
+/// [config](index.html#options-struct-vs-bincode-functions) module for more details
 #[derive(Copy, Clone)]
 pub struct DefaultOptions(Infinite);
 
@@ -79,8 +125,6 @@ impl InternalOptions for DefaultOptions {
 ///
 /// When a byte limit is set, bincode will return `Err` on any deserialization that goes over the limit, or any
 /// serialization that goes over the limit.
-/// Sets the byte limit to be unlimited.
-/// This is the default.
 pub trait Options: InternalOptions + Sized {
     /// Sets the byte limit to be unlimited.
     /// This is the default.
@@ -242,12 +286,14 @@ pub struct WithOtherEndian<O: Options, E: BincodeByteOrder> {
 }
 
 /// A configuration struct with a user-specified length encoding
+#[derive(Clone, Copy)]
 pub struct WithOtherIntEncoding<O: Options, I: IntEncoding> {
     options: O,
     _length: PhantomData<I>,
 }
 
 /// A configuration struct with a user-specified trailing bytes behavior.
+#[derive(Clone, Copy)]
 pub struct WithOtherTrailing<O: Options, T: TrailingBytes> {
     options: O,
     _trailing: PhantomData<T>,

@@ -2,7 +2,6 @@
 extern crate serde_derive;
 
 extern crate bincode;
-extern crate byteorder;
 #[macro_use]
 extern crate serde;
 extern crate serde_bytes;
@@ -879,4 +878,22 @@ fn test_varint_length_prefixes() {
             .unwrap(),
         (1 + std::mem::size_of::<u32>()) as u64
     ); // 2 ** 16 + 1
+}
+
+#[test]
+fn test_byte_vec_struct() {
+    #[derive(PartialEq, Eq, Clone, Serialize, Deserialize, Debug)]
+    struct ByteVecs {
+        a: Vec<u8>,
+        b: Vec<u8>,
+        c: Vec<u8>,
+    };
+
+    let byte_struct = ByteVecs {
+        a: vec![2; 20],
+        b: vec![3; 30],
+        c: vec![1; 10],
+    };
+
+    the_same(byte_struct);
 }
