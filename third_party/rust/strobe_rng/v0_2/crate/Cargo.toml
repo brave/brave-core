@@ -1,0 +1,10 @@
+[package]
+name = "strobe-rng"
+version = "0.2.0"
+authors = ["eV <ev@7pr.xyz>"]
+license = "MPL-2.0"
+edition = "2018"
+
+[dependencies]
+strobe-rs = "0.8.1"
+rand_core = "0.6.3"

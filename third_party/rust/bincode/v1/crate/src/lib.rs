@@ -24,20 +24,19 @@
 //! Support for `i128` and `u128` is automatically enabled on Rust toolchains
 //! greater than or equal to `1.26.0` and disabled for targets which do not support it
 
-#![doc(html_root_url = "https://docs.rs/bincode/1.3.0")]
+#![doc(html_root_url = "https://docs.rs/bincode/1.3.3")]
 #![crate_name = "bincode"]
 #![crate_type = "rlib"]
 #![crate_type = "dylib"]
 
-extern crate byteorder;
 #[macro_use]
 extern crate serde;
 
-/// Configuration settings for bincode.
 pub mod config;
 /// Deserialize bincode data to a Rust data structure.
 pub mod de;
 
+mod byteorder;
 mod error;
 mod internal;
 mod ser;
@@ -63,6 +62,12 @@ pub fn config() -> Config {
 
 /// Get a default configuration object.
 ///
+/// **Warning:** the default configuration returned by this function
+/// is not the same as that used by the other functions in this
+/// module. See the
+/// [config](config/index.html#options-struct-vs-bincode-functions)
+/// module for more details
+///
 /// ### Default Configuration:
 ///
 /// | Byte limit | Endianness | Int Encoding | Trailing Behavior |
@@ -77,6 +82,11 @@ pub fn options() -> DefaultOptions {
 ///
 /// If the serialization would take more bytes than allowed by the size limit, an error
 /// is returned and *no bytes* will be written into the `Writer`.
+///
+/// **Warning:** the default configuration used by this function is not
+/// the same as that used by the `DefaultOptions` struct. See the
+/// [config](config/index.html#options-struct-vs-bincode-functions)
+/// module for more details
 pub fn serialize_into<W, T: ?Sized>(writer: W, value: &T) -> Result<()>
 where
     W: std::io::Write,
@@ -88,6 +98,11 @@ where
 }
 
 /// Serializes a serializable object into a `Vec` of bytes using the default configuration.
+///
+/// **Warning:** the default configuration used by this function is not
+/// the same as that used by the `DefaultOptions` struct. See the
+/// [config](config/index.html#options-struct-vs-bincode-functions)
+/// module for more details
 pub fn serialize<T: ?Sized>(value: &T) -> Result<Vec<u8>>
 where
     T: serde::Serialize,
@@ -101,6 +116,11 @@ where
 /// Deserializes an object directly from a `Read`er using the default configuration.
 ///
 /// If this returns an `Error`, `reader` may be in an invalid state.
+///
+/// **Warning:** the default configuration used by this function is not
+/// the same as that used by the `DefaultOptions` struct. See the
+/// [config](config/index.html#options-struct-vs-bincode-functions)
+/// module for more details
 pub fn deserialize_from<R, T>(reader: R) -> Result<T>
 where
     R: std::io::Read,
@@ -117,6 +137,11 @@ where
 /// `BincodeRead` for performance reasons.
 ///
 /// If this returns an `Error`, `reader` may be in an invalid state.
+///
+/// **Warning:** the default configuration used by this function is not
+/// the same as that used by the `DefaultOptions` struct. See the
+/// [config](config/index.html#options-struct-vs-bincode-functions)
+/// module for more details
 pub fn deserialize_from_custom<'a, R, T>(reader: R) -> Result<T>
 where
     R: de::read::BincodeRead<'a>,
@@ -144,6 +169,11 @@ where
 }
 
 /// Deserializes a slice of bytes into an instance of `T` using the default configuration.
+///
+/// **Warning:** the default configuration used by this function is not
+/// the same as that used by the `DefaultOptions` struct. See the
+/// [config](config/index.html#options-struct-vs-bincode-functions)
+/// module for more details
 pub fn deserialize<'a, T>(bytes: &'a [u8]) -> Result<T>
 where
     T: serde::de::Deserialize<'a>,
@@ -155,6 +185,11 @@ where
 }
 
 /// Returns the size that an object would be if serialized using Bincode with the default configuration.
+///
+/// **Warning:** the default configuration used by this function is not
+/// the same as that used by the `DefaultOptions` struct. See the
+/// [config](config/index.html#options-struct-vs-bincode-functions)
+/// module for more details
 pub fn serialized_size<T: ?Sized>(value: &T) -> Result<u64>
 where
     T: serde::Serialize,

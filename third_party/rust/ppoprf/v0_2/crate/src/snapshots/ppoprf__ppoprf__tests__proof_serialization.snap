@@ -1,0 +1,5 @@
+---
+source: ppoprf/src/ppoprf.rs
+expression: "base64::encode(&proof_bincode)"
+---
+BwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcPDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw==
