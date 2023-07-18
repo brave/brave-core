@@ -6,18 +6,14 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_FLAGS_UI_FLAGS_STATE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_FLAGS_UI_FLAGS_STATE_H_
 
-// Inject an alias for this method so it can be called by this name from
-// chromium_src/chrome/browser/about_flags.cc where a function with the same
-// name is overridden, but internally calls the method in this class.
-#define SetFeatureEntryEnabled                                          \
-  SetFeatureEntryEnabled_ChromiumImpl(FlagsStorage* flags_storage,      \
-                                      const std::string& internal_name, \
-                                      bool enable) {                    \
-    SetFeatureEntryEnabled(flags_storage, internal_name, enable);       \
-  }                                                                     \
-  void SetFeatureEntryEnabled
+#define GetFlagFeatureEntries(...)                                             \
+  GetFlagFeatureEntries(__VA_ARGS__);                                          \
+  base::Value::List CreateOptionsData(                                         \
+      const FeatureEntry& entry, const std::set<std::string>& enabled_entries) \
+      const
 
 #include "src/components/flags_ui/flags_state.h"  // IWYU pragma: export
-#undef SetFeatureEntryEnabled
+
+#undef GetFlagFeatureEntries
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_FLAGS_UI_FLAGS_STATE_H_
