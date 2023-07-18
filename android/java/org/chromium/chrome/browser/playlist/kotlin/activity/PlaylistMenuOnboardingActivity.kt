@@ -10,12 +10,12 @@ import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.viewpager2.widget.ViewPager2
-import org.chromium.chrome.R;
-import com.brave.playlist.adapter.PlaylistOnboardingFragmentStateAdapter
-import com.brave.playlist.extension.afterMeasured
-import com.brave.playlist.extension.showOnboardingGradientBg
-import com.brave.playlist.util.ConstantUtils
-import com.brave.playlist.util.PlaylistUtils
+import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.kotlin.adapter.PlaylistOnboardingFragmentStateAdapter
+import org.chromium.chrome.browser.playlist.kotlin.extension.afterMeasured
+import org.chromium.chrome.browser.playlist.kotlin.extension.showOnboardingGradientBg
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 

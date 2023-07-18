@@ -218,11 +218,11 @@
     android:launchMode="singleTask"
     android:theme="@style/Theme.Chromium.Activity.Fullscreen" />
 
-<service android:name="com.brave.playlist.PlaylistVideoService"
+<service android:name="org.chromium.chrome.browser.playlist.kotlin.PlaylistVideoService"
     android:exported="false"/>
 
     <service
-            android:name="com.brave.playlist.PlaylistDownloadService"
+            android:name="org.chromium.chrome.browser.playlist.kotlin.PlaylistDownloadService"
             android:exported="false"
             android:foregroundServiceType="mediaPlayback"
             android:stopWithTask="false" />
