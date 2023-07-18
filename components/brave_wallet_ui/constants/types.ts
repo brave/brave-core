@@ -236,7 +236,7 @@ export interface WalletState {
   addUserAssetError: boolean
   defaultEthereumWallet: BraveWallet.DefaultWallet
   defaultSolanaWallet: BraveWallet.DefaultWallet
-  activeOrigin: SerializableOriginInfo
+  activeOrigin: BraveWallet.OriginInfoShort
   solFeeEstimates?: SolFeeEstimates
   hasFeeEstimatesError?: boolean
   gasEstimates?: BraveWallet.GasEstimation1559
@@ -437,14 +437,10 @@ export interface SendETHFilForwardTransactionParams extends BaseTransactionParam
  */
 export type SerializableTimeDelta = Record<keyof TimeDelta, number>
 
-type UnguessableToken = Exclude<BraveWallet.OriginInfo['origin']['nonceIfOpaque'], undefined>
-
 /**
  * Used to properly store `UnguessableToken`s in redux store,
  * since bigints are not serializable by default
  */
-export type SerializableUnguessableToken = Record<keyof UnguessableToken, string>
-
 export type Defined<T> = Exclude<T, undefined>
 
 export type SerializableSolanaTxDataMaxRetries = {
@@ -468,20 +464,6 @@ export type SerializableSolanaTxData = Omit<
   lamports: string
   amount: string
   sendOptions: SerializableSolanaTxDataSendOptions
-}
-
-export type SerializableOrigin = Omit<
-  BraveWallet.OriginInfo['origin'],
-  | 'nonceIfOpaque'
-> & {
-  nonceIfOpaque: SerializableUnguessableToken | undefined
-}
-
-export type SerializableOriginInfo = Omit<
-  BraveWallet.OriginInfo,
-  | 'origin'
-> & {
-  origin: SerializableOrigin
 }
 
 export type SerializableTxDataUnion = {

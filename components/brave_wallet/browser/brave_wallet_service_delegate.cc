@@ -31,33 +31,27 @@ void BraveWalletServiceDelegate::GetImportInfoFromExternalWallet(
   std::move(callback).Run(false, ImportInfo(), ImportError::kInternalError);
 }
 
-void BraveWalletServiceDelegate::AddPermission(mojom::CoinType coin,
+bool BraveWalletServiceDelegate::AddPermission(mojom::CoinType coin,
                                                const url::Origin& origin,
-                                               const std::string& account,
-                                               AddPermissionCallback callback) {
-  std::move(callback).Run(false);
+                                               const std::string& account) {
+  return false;
 }
 
-void BraveWalletServiceDelegate::HasPermission(mojom::CoinType coin,
+bool BraveWalletServiceDelegate::HasPermission(mojom::CoinType coin,
                                                const url::Origin& origin,
-                                               const std::string& account,
-                                               HasPermissionCallback callback) {
-  std::move(callback).Run(false, false);
+                                               const std::string& account) {
+  return false;
 }
 
-void BraveWalletServiceDelegate::ResetPermission(
-    mojom::CoinType coin,
-    const url::Origin& origin,
-    const std::string& account,
-    ResetPermissionCallback callback) {
-  std::move(callback).Run(false);
+bool BraveWalletServiceDelegate::ResetPermission(mojom::CoinType coin,
+                                                 const url::Origin& origin,
+                                                 const std::string& account) {
+  return false;
 }
 
-void BraveWalletServiceDelegate::IsPermissionDenied(
-    mojom::CoinType coin,
-    const url::Origin& origin,
-    IsPermissionDeniedCallback callback) {
-  std::move(callback).Run(false);
+bool BraveWalletServiceDelegate::IsPermissionDenied(mojom::CoinType coin,
+                                                    const url::Origin& origin) {
+  return false;
 }
 
 absl::optional<url::Origin> BraveWalletServiceDelegate::GetActiveOrigin() {

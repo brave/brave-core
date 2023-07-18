@@ -1744,11 +1744,6 @@ std::string eTLDPlusOne(const url::Origin& origin) {
       origin, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
-mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin) {
-  return mojom::OriginInfo::New(origin, origin.Serialize(),
-                                eTLDPlusOne(origin));
-}
-
 mojom::OriginInfoShortPtr MakeOriginInfoShort(const url::Origin& origin) {
   return mojom::OriginInfoShort::New(origin.Serialize(), eTLDPlusOne(origin));
 }

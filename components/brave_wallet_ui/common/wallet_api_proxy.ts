@@ -8,7 +8,7 @@ import { Store } from './async/types'
 import { getBraveKeyring } from './api/hardware_keyrings'
 import { BraveWallet } from '../constants/types'
 import { objectEquals } from '../utils/object-utils'
-import { makeSerializableOriginInfo, makeSerializableTransaction } from '../utils/model-serialization-utils'
+import { makeSerializableTransaction } from '../utils/model-serialization-utils'
 import { WalletPageActions } from '../page/actions'
 import { walletApi } from './slices/api.slice'
 import { getCoinFromTxDataUnion } from '../utils/network-utils'
@@ -153,9 +153,7 @@ export class WalletApiProxy {
           return
         }
 
-        store.dispatch(WalletActions.activeOriginChanged(
-          makeSerializableOriginInfo(originInfo)
-        ))
+        store.dispatch(WalletActions.activeOriginChanged(originInfo))
       },
       onDefaultEthereumWalletChanged: function (defaultWallet) {
         store.dispatch(WalletActions.defaultEthereumWalletChanged({ defaultWallet }))

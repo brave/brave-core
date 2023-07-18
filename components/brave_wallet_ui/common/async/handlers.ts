@@ -39,7 +39,6 @@ import {
   getVisibleNetworksList,
   walletApi
 } from '../slices/api.slice'
-import { deserializeOrigin, makeSerializableOriginInfo } from '../../utils/model-serialization-utils'
 
 const handler = new AsyncActionHandler()
 
@@ -114,9 +113,7 @@ handler.on(
   // Initialize active origin state.
   const braveWalletService = getAPIProxy().braveWalletService
   const { originInfo } = await braveWalletService.getActiveOrigin()
-  store.dispatch(WalletActions.activeOriginChanged(
-    makeSerializableOriginInfo(originInfo)
-  ))
+  store.dispatch(WalletActions.activeOriginChanged(originInfo))
   await refreshWalletInfo(store, payload)
 })
 
@@ -313,13 +310,13 @@ handler.on(WalletActions.selectPortfolioTimeline.type, async (store: Store, payl
 
 handler.on(WalletActions.removeSitePermission.type, async (store: Store, payload: RemoveSitePermissionPayloadType) => {
   const braveWalletService = getAPIProxy().braveWalletService
-  await braveWalletService.resetPermission(payload.accountId, deserializeOrigin(payload.origin))
+  await braveWalletService.resetPermission(payload.accountId)
   await refreshWalletInfo(store)
 })
 
 handler.on(WalletActions.addSitePermission.type, async (store: Store, payload: AddSitePermissionPayloadType) => {
   const braveWalletService = getAPIProxy().braveWalletService
-  await braveWalletService.addPermission(payload.accountId, deserializeOrigin(payload.origin))
+  await braveWalletService.addPermission(payload.accountId)
   await refreshWalletInfo(store)
 })
 

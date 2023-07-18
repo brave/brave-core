@@ -9,7 +9,6 @@ import {
   WalletInitializedPayload,
   DefaultCurrencies,
   SolFeeEstimates,
-  SerializableOriginInfo,
   NetworkFilterType,
   RefreshOpts
 } from '../../constants/types'
@@ -77,12 +76,6 @@ const defaultState: WalletState = {
   activeOrigin: {
     eTldPlusOne: '',
     originSpec: '',
-    origin: {
-      scheme: '',
-      host: '',
-      port: 0,
-      nonceIfOpaque: undefined
-    }
   },
   gasEstimates: undefined,
   connectedAccounts: [],
@@ -226,7 +219,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
     reducers: {
       activeOriginChanged(
         state: WalletState,
-        { payload }: PayloadAction<SerializableOriginInfo>
+        { payload }: PayloadAction<BraveWallet.OriginInfoShort>
       ) {
         state.activeOrigin = payload
       },

@@ -221,9 +221,9 @@ BraveWalletService::BraveWalletService(
       url_loader_factory, this, json_rpc_service, keyring_service,
       simple_hash_client_.get(), profile_prefs);
 
-  if (delegate_) {
-    delegate_->AddObserver(this);
-  }
+  CHECK(delegate_);
+  delegate_->AddObserver(this);
+
   DCHECK(profile_prefs_);
 
   pref_change_registrar_.Init(profile_prefs_);
@@ -695,21 +695,13 @@ mojom::BlockchainTokenPtr BraveWalletService::GetUserAsset(
 void BraveWalletService::IsExternalWalletInstalled(
     mojom::ExternalWalletType type,
     IsExternalWalletInstalledCallback callback) {
-  if (delegate_) {
-    delegate_->IsExternalWalletInstalled(type, std::move(callback));
-  } else {
-    std::move(callback).Run(false);
-  }
+  delegate_->IsExternalWalletInstalled(type, std::move(callback));
 }
 
 void BraveWalletService::IsExternalWalletInitialized(
     mojom::ExternalWalletType type,
     IsExternalWalletInitializedCallback callback) {
-  if (delegate_) {
-    delegate_->IsExternalWalletInitialized(type, std::move(callback));
-  } else {
-    std::move(callback).Run(false);
-  }
+  delegate_->IsExternalWalletInitialized(type, std::move(callback));
 }
 
 void BraveWalletService::ImportFromExternalWallet(
@@ -717,16 +709,11 @@ void BraveWalletService::ImportFromExternalWallet(
     const std::string& password,
     const std::string& new_password,
     ImportFromExternalWalletCallback callback) {
-  if (delegate_) {
-    delegate_->GetImportInfoFromExternalWallet(
-        type, password,
-        base::BindOnce(&BraveWalletService::OnGetImportInfo,
-                       weak_ptr_factory_.GetWeakPtr(), new_password,
-                       std::move(callback)));
-  } else {
-    std::move(callback).Run(false, l10n_util::GetStringUTF8(
-                                       IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR));
-  }
+  delegate_->GetImportInfoFromExternalWallet(
+      type, password,
+      base::BindOnce(&BraveWalletService::OnGetImportInfo,
+                     weak_ptr_factory_.GetWeakPtr(), new_password,
+                     std::move(callback)));
 }
 
 void BraveWalletService::GetDefaultEthereumWallet(
@@ -941,69 +928,71 @@ void BraveWalletService::OnBraveWalletNftDiscoveryEnabled() {
 }
 
 void BraveWalletService::AddPermission(mojom::AccountIdPtr account_id,
-                                       const url::Origin& origin,
                                        AddPermissionCallback callback) {
-  if (delegate_) {
-    delegate_->AddPermission(account_id->coin, origin, account_id->address,
-                             std::move(callback));
-  } else {
+  auto origin = delegate_->GetActiveOrigin();
+  if (!origin) {
     std::move(callback).Run(false);
+    return;
   }
+
+  std::move(callback).Run(
+      delegate_->AddPermission(account_id->coin, *origin, account_id->address));
 }
 
-void BraveWalletService::HasPermission(mojom::AccountIdPtr account_id,
-                                       const url::Origin& origin,
-                                       HasPermissionCallback callback) {
-  if (delegate_) {
-    delegate_->HasPermission(account_id->coin, origin, account_id->address,
-                             std::move(callback));
-  } else {
-    std::move(callback).Run(false, false);
+void BraveWalletService::HasPermission(
+    std::vector<mojom::AccountIdPtr> accounts,
+    HasPermissionCallback callback) {
+  auto origin = delegate_->GetActiveOrigin();
+  if (!origin) {
+    std::move(callback).Run(false, {});
+    return;
   }
+
+  std::vector<mojom::AccountIdPtr> result;
+  for (auto& account_id : accounts) {
+    if (delegate_->HasPermission(account_id->coin, *origin,
+                                 account_id->address)) {
+      result.push_back(account_id->Clone());
+    }
+  }
+  std::move(callback).Run(true, std::move(result));
 }
 
 void BraveWalletService::ResetPermission(mojom::AccountIdPtr account_id,
-                                         const url::Origin& origin,
                                          ResetPermissionCallback callback) {
-  if (delegate_) {
-    delegate_->ResetPermission(account_id->coin, origin, account_id->address,
-                               std::move(callback));
-  } else {
+  auto origin = delegate_->GetActiveOrigin();
+  if (!origin) {
     std::move(callback).Run(false);
+    return;
   }
+
+  std::move(callback).Run(delegate_->ResetPermission(account_id->coin, *origin,
+                                                     account_id->address));
 }
 
 void BraveWalletService::IsPermissionDenied(
     mojom::CoinType coin,
-    const url::Origin& origin,
     IsPermissionDeniedCallback callback) {
-  if (delegate_) {
-    delegate_->IsPermissionDenied(coin, origin, std::move(callback));
-  } else {
+  auto origin = delegate_->GetActiveOrigin();
+  if (!origin) {
     std::move(callback).Run(false);
+    return;
   }
+
+  std::move(callback).Run(delegate_->IsPermissionDenied(coin, *origin));
 }
 
 void BraveWalletService::GetWebSitesWithPermission(
     mojom::CoinType coin,
     GetWebSitesWithPermissionCallback callback) {
-  if (delegate_) {
-    delegate_->GetWebSitesWithPermission(coin, std::move(callback));
-  } else {
-    std::move(callback).Run(std::vector<std::string>());
-  }
+  delegate_->GetWebSitesWithPermission(coin, std::move(callback));
 }
 
 void BraveWalletService::ResetWebSitePermission(
     mojom::CoinType coin,
     const std::string& formed_website,
     ResetWebSitePermissionCallback callback) {
-  if (delegate_) {
-    delegate_->ResetWebSitePermission(coin, formed_website,
-                                      std::move(callback));
-  } else {
-    std::move(callback).Run(false);
-  }
+  delegate_->ResetWebSitePermission(coin, formed_website, std::move(callback));
 }
 
 // static
@@ -1399,18 +1388,9 @@ void BraveWalletService::GetActiveOrigin(GetActiveOriginCallback callback) {
   std::move(callback).Run(GetActiveOriginSync());
 }
 
-mojom::OriginInfoPtr BraveWalletService::GetActiveOriginSync() {
-  if (delegate_) {
-    return MakeOriginInfo(delegate_->GetActiveOrigin().value_or(url::Origin()));
-  } else {
-    return MakeOriginInfo(url::Origin());
-  }
-}
-
-void BraveWalletService::GeteTLDPlusOneFromOrigin(
-    const url::Origin& origin,
-    GeteTLDPlusOneFromOriginCallback callback) {
-  std::move(callback).Run(MakeOriginInfo(origin));
+mojom::OriginInfoShortPtr BraveWalletService::GetActiveOriginSync() {
+  return MakeOriginInfoShort(
+      delegate_->GetActiveOrigin().value_or(url::Origin()));
 }
 
 void BraveWalletService::GetPendingSignMessageRequests(
@@ -1523,7 +1503,7 @@ void BraveWalletService::AddTokenObserver(
 }
 
 void BraveWalletService::OnActiveOriginChanged(
-    const mojom::OriginInfoPtr& origin_info) {
+    const mojom::OriginInfoShortPtr& origin_info) {
   for (const auto& observer : observers_) {
     observer->OnActiveOriginChanged(origin_info.Clone());
   }

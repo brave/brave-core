@@ -53,7 +53,6 @@ const SitePermissionAccountItem = (props: Props) => {
 
   const dispatch = useDispatch()
   const connectedAccounts = useUnsafeWalletSelector(WalletSelectors.connectedAccounts)
-  const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
 
   // api
   const { data: selectedAccount } = useSelectedAccountQuery()
@@ -84,18 +83,18 @@ const SitePermissionAccountItem = (props: Props) => {
 
   // methods
   const onClickConnect = React.useCallback(() => {
-    dispatch(WalletActions.addSitePermission({ accountId: account.accountId, origin: activeOrigin.origin }))
+    dispatch(WalletActions.addSitePermission({ accountId: account.accountId }))
     if (selectedCoin !== BraveWallet.CoinType.SOL) {
       setSelectedAccount(account.accountId)
     }
-  }, [activeOrigin, account, selectedCoin])
+  }, [account, selectedCoin])
 
   const onClickDisconnect = React.useCallback(() => {
-    dispatch(WalletActions.removeSitePermission({ accountId: account.accountId, origin: activeOrigin.origin }))
+    dispatch(WalletActions.removeSitePermission({ accountId: account.accountId }))
     if (connectedAccounts.length !== 0 && selectedCoin !== BraveWallet.CoinType.SOL) {
       setSelectedAccount(account.accountId)
     }
-  }, [connectedAccounts, activeOrigin, account, selectedCoin])
+  }, [connectedAccounts, account, selectedCoin])
 
   const onClickSwitchAccount = React.useCallback(() => {
     setSelectedAccount(account.accountId)

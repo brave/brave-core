@@ -29,8 +29,8 @@ namespace brave_wallet {
 namespace {
 
 void OnGetActiveOrigin(bool* callback_called,
-                       mojom::OriginInfoPtr expected_active_origin,
-                       mojom::OriginInfoPtr active_origin) {
+                       mojom::OriginInfoShortPtr expected_active_origin,
+                       mojom::OriginInfoShortPtr active_origin) {
   EXPECT_EQ(expected_active_origin, active_origin);
   *callback_called = true;
 }
@@ -42,11 +42,11 @@ class TestBraveWalletServiceObserver
  public:
   TestBraveWalletServiceObserver() = default;
 
-  void OnActiveOriginChanged(mojom::OriginInfoPtr origin_info) override {
+  void OnActiveOriginChanged(mojom::OriginInfoShortPtr origin_info) override {
     active_origin_info_ = origin_info->Clone();
   }
 
-  const mojom::OriginInfoPtr& active_origin_info() const {
+  const mojom::OriginInfoShortPtr& active_origin_info() const {
     return active_origin_info_;
   }
 
@@ -58,7 +58,7 @@ class TestBraveWalletServiceObserver
   void Reset() { active_origin_info_ = {}; }
 
  private:
-  mojom::OriginInfoPtr active_origin_info_;
+  mojom::OriginInfoShortPtr active_origin_info_;
   mojo::Receiver<brave_wallet::mojom::BraveWalletServiceObserver>
       observer_receiver_{this};
 };
@@ -96,8 +96,7 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   GURL url = https_server()->GetURL("a.test", "/simple.html");
-  mojom::OriginInfoPtr expected_origin_info =
-      MakeOriginInfo(url::Origin::Create(url));
+  auto expected_origin_info = MakeOriginInfoShort(url::Origin::Create(url));
   TestBraveWalletServiceObserver observer;
   wallet_service()->AddObserver(observer.GetReceiver());
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -110,7 +109,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   EXPECT_EQ(observer.active_origin_info(), expected_origin_info);
 
   url = https_server()->GetURL("b.test", "/simple.html");
-  expected_origin_info = MakeOriginInfo(url::Origin::Create(url));
+  expected_origin_info = MakeOriginInfoShort(url::Origin::Create(url));
   callback_called = false;
   observer.Reset();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -121,7 +120,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   EXPECT_EQ(observer.active_origin_info(), expected_origin_info);
 
   url = https_server()->GetURL("c.test", "/simple.html");
-  expected_origin_info = MakeOriginInfo(url::Origin::Create(url));
+  expected_origin_info = MakeOriginInfoShort(url::Origin::Create(url));
   observer.Reset();
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
@@ -133,7 +132,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   EXPECT_EQ(observer.active_origin_info(), expected_origin_info);
 
   url = https_server()->GetURL("d.test", "/simple.html");
-  expected_origin_info = MakeOriginInfo(url::Origin::Create(url));
+  expected_origin_info = MakeOriginInfoShort(url::Origin::Create(url));
   observer.Reset();
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_WINDOW,

@@ -5,14 +5,11 @@
 
 import {
   BraveWallet,
-  SerializableOrigin,
-  SerializableOriginInfo,
   SerializableSolanaTxData,
   SerializableSolanaTxDataSendOptions,
   SerializableTimeDelta,
   SerializableTransactionInfo,
   SerializableTxDataUnion,
-  SerializableUnguessableToken,
   TimeDelta
 } from '../constants/types'
 
@@ -25,62 +22,6 @@ export function makeSerializableTimeDelta (td: TimeDelta | SerializableTimeDelta
 export function deserializeTimeDelta (td: SerializableTimeDelta): TimeDelta {
   return {
     microseconds: BigInt(td.microseconds)
-  }
-}
-
-export function makeSerializableUnguessableToken (
-  token:
-    | BraveWallet.OriginInfo['origin']['nonceIfOpaque']
-    | SerializableUnguessableToken
-): SerializableUnguessableToken | undefined {
-  if (!token) {
-    return undefined
-  }
-
-  return {
-    high: token.high.toString(),
-    low: token.low.toString()
-  }
-}
-
-export function deserializableUnguessableToken (token?: SerializableUnguessableToken): BraveWallet.OriginInfo['origin']['nonceIfOpaque'] {
-  if (!token) {
-    return undefined
-  }
-
-  return {
-    high: BigInt(token.high),
-    low: BigInt(token.low)
-  }
-}
-
-type OriginInfo = BraveWallet.OriginInfo | SerializableOriginInfo
-
-export function makeSerializableOriginInfo <
-  T extends OriginInfo | undefined
-> (originInfo: T): T extends OriginInfo ? SerializableOriginInfo : undefined {
-  return (originInfo ? {
-    ...originInfo,
-    origin: {
-      ...originInfo?.origin,
-      nonceIfOpaque: makeSerializableUnguessableToken(originInfo?.origin.nonceIfOpaque)
-    }
-  } : undefined) as T extends OriginInfo ? SerializableOriginInfo : undefined
-}
-
-export function deserializeOrigin (origin: SerializableOrigin): BraveWallet.OriginInfo['origin'] {
-  return {
-    ...origin,
-    nonceIfOpaque: deserializableUnguessableToken(origin.nonceIfOpaque)
-  }
-}
-
-export function deserializeOriginInfo(
-  originInfo: SerializableOriginInfo
-): BraveWallet.OriginInfo {
-  return {
-    ...originInfo,
-    origin: deserializeOrigin(originInfo.origin)
   }
 }
 

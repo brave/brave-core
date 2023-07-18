@@ -115,8 +115,8 @@ public class BraveDappPermissionPromptDialog
 
         InitBraveWalletService();
         TextView domain = customView.findViewById(R.id.domain);
-        mBraveWalletService.geteTldPlusOneFromOrigin(Utils.getCurrentMojomOrigin(),
-                origin -> { domain.setText(Utils.geteTLD(origin.eTldPlusOne)); });
+        getBraveWalletService().getActiveOrigin(
+                originInfo -> { domain.setText(Utils.geteTLD(originInfo)); });
 
         mPropertyModel =
                 new PropertyModel.Builder(ModalDialogProperties.ALL_KEYS)

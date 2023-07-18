@@ -1074,12 +1074,6 @@ struct NetworkInfo {
   bool is_eip1559; // only for ETH.
 };
 
-struct OriginInfo {
-  url.mojom.Origin origin;
-  string origin_spec;
-  string e_tld_plus_one;
-};
-
 struct OriginInfoShort {
   string origin_spec;
   string e_tld_plus_one;
@@ -1555,7 +1549,7 @@ interface FilTxManagerProxy {
 
 interface BraveWalletServiceObserver {
   // Fired when the active origin is changed along with its eTLD+1
-  OnActiveOriginChanged(OriginInfo origin_info);
+  OnActiveOriginChanged(OriginInfoShort origin_info);
 
   // Fired when the default Ethereum wallet setting changes
   OnDefaultEthereumWalletChanged(DefaultWallet wallet);
@@ -1715,29 +1709,23 @@ interface BraveWalletService {
   GetNetworkForSelectedAccountOnActiveOrigin() => (NetworkInfo? network);
   SetNetworkForSelectedAccountOnActiveOrigin(string chain_id) => (bool success);
 
-  // TODO(apaymyshev): it seems these three permisisons methods should imply and
-  // use current active origin.
-  // Adds the permission of coin type for the account
-  AddPermission(AccountId account_id, url.mojom.Origin origin)
+  // Adds the permission for the account on active origin.
+  AddPermission(AccountId account_id)
     => (bool success);
 
-  // Checks if the permission of coin is allowed for the origin on the account
-  HasPermission(AccountId account_id, url.mojom.Origin origin)
-    => (bool success, bool has_permission);
+  // Filters accounts with permissions on active origin.
+  HasPermission(array<AccountId> accounts)
+    => (bool success, array<AccountId> accounts_with_permission);
 
-  // Resets the permission of coin for the account
-  ResetPermission(AccountId account_id, url.mojom.Origin origin)
+  // Resets the permission of coin for the account on active origin.
+  ResetPermission(AccountId account_id)
     => (bool success);
 
-  // Check if permission is denied for the origin
-  IsPermissionDenied(CoinType coin, url.mojom.Origin origin) => (bool denied);
+  // Check if permission is denied for the active origin.
+  IsPermissionDenied(CoinType coin) => (bool denied);
 
   // Obtains the active origin info.
-  GetActiveOrigin() => (OriginInfo origin_info);
-
-  // Obtains the active origin info with eTLD+1
-  GeteTLDPlusOneFromOrigin(url.mojom.Origin origin)
-    => (OriginInfo origin_info);
+  GetActiveOrigin() => (OriginInfoShort origin_info);
 
   // Gets all websites with a permission of coin
   GetWebSitesWithPermission(CoinType coin) => (array<string> web_sites);

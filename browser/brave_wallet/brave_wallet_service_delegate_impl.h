@@ -46,21 +46,17 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
                                        const std::string& password,
                                        GetImportInfoCallback callback) override;
 
-  void AddPermission(mojom::CoinType coin,
+  bool AddPermission(mojom::CoinType coin,
                      const url::Origin& origin,
-                     const std::string& account,
-                     AddPermissionCallback callback) override;
-  void HasPermission(mojom::CoinType coin,
+                     const std::string& account) override;
+  bool HasPermission(mojom::CoinType coin,
                      const url::Origin& origin,
-                     const std::string& account,
-                     HasPermissionCallback callback) override;
-  void ResetPermission(mojom::CoinType coin,
+                     const std::string& account) override;
+  bool ResetPermission(mojom::CoinType coin,
                        const url::Origin& origin,
-                       const std::string& account,
-                       ResetPermissionCallback callback) override;
-  void IsPermissionDenied(mojom::CoinType coin,
-                          const url::Origin& origin,
-                          IsPermissionDeniedCallback callback) override;
+                       const std::string& account) override;
+  bool IsPermissionDenied(mojom::CoinType coin,
+                          const url::Origin& origin) override;
 
   absl::optional<url::Origin> GetActiveOrigin() override;
 

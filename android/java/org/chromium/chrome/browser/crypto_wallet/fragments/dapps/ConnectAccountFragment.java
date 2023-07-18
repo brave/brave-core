@@ -112,8 +112,8 @@ public class ConnectAccountFragment extends BaseDAppsFragment
         mRecyclerView = view.findViewById(R.id.accounts_list);
         mFavicon = view.findViewById(R.id.favicon);
 
-        getBraveWalletService().geteTldPlusOneFromOrigin(Utils.getCurrentMojomOrigin(),
-                origin -> { mWebSite.setText(Utils.geteTLD(origin.eTldPlusOne)); });
+        getBraveWalletService().getActiveOrigin(
+                riginInfo -> { mWebSite.setText(Utils.geteTLD(originInfo)); });
         initComponents();
 
         return view;
@@ -177,42 +177,39 @@ public class ConnectAccountFragment extends BaseDAppsFragment
 
     @Override
     public void connectAccount(AccountInfo account) {
-        getBraveWalletService().addPermission(
-                account.accountId, Utils.getCurrentMojomOrigin(), success -> {
-                    if (!success) {
-                        return;
-                    }
-                    if (CoinType.SOL != account.accountId.coin) {
-                        getKeyringService().setSelectedAccount(account.accountId, setSuccess -> {});
-                    }
-                    updateAccounts();
-                });
+        getBraveWalletService().addPermission(account.accountId, success -> {
+            if (!success) {
+                return;
+            }
+            if (CoinType.SOL != account.accountId.coin) {
+                getKeyringService().setSelectedAccount(account.accountId, setSuccess -> {});
+            }
+            updateAccounts();
+        });
     }
 
     @Override
     public void disconnectAccount(AccountInfo account) {
-        getBraveWalletService().resetPermission(
-                account.accountId, Utils.getCurrentMojomOrigin(), success -> {
-                    if (!success) {
-                        return;
-                    }
-                    if (!WalletUtils.accountIdsEqual(mSelectedAccount, account)) {
-                        updateAccounts();
-                        return;
-                    }
+        getBraveWalletService().resetPermission(account.accountId, success -> {
+            if (!success) {
+                return;
+            }
+            if (!WalletUtils.accountIdsEqual(mSelectedAccount, account)) {
+                updateAccounts();
+                return;
+            }
 
-                    assert mAccountsWithPermissions != null;
-                    Iterator<AccountInfo> it = mAccountsWithPermissions.iterator();
-                    while (it.hasNext()) {
-                        AccountInfo accountInfo = it.next();
-                        if (!WalletUtils.accountIdsEqual(accountInfo, account)) {
-                            getKeyringService().setSelectedAccount(
-                                    accountInfo.accountId, setSuccess -> {});
-                            break;
-                        }
-                    }
-                    updateAccounts();
-                });
+            assert mAccountsWithPermissions != null;
+            Iterator<AccountInfo> it = mAccountsWithPermissions.iterator();
+            while (it.hasNext()) {
+                AccountInfo accountInfo = it.next();
+                if (!WalletUtils.accountIdsEqual(accountInfo, account)) {
+                    getKeyringService().setSelectedAccount(accountInfo.accountId, setSuccess -> {});
+                    break;
+                }
+            }
+            updateAccounts();
+        });
     }
 
     @Override

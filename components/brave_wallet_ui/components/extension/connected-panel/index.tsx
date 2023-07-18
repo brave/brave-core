@@ -19,7 +19,6 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { findAccountByAccountId } from '../../../utils/account-utils'
 import Amount from '../../../utils/amount'
-import { deserializeOrigin } from '../../../utils/model-serialization-utils'
 import { makeNetworkAsset } from '../../../options/asset-options'
 import { getPriceIdForToken } from '../../../utils/api-utils'
 import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
@@ -187,7 +186,7 @@ export const ConnectedPanel = (props: Props) => {
 
     if (selectedCoin) {
       (async () => {
-        await braveWalletService.isPermissionDenied(selectedCoin, deserializeOrigin(originInfo.origin))
+        await braveWalletService.isPermissionDenied(selectedCoin)
           .then(result => {
             if (subscribed) {
               setIsPermissionDenied(result.denied)
@@ -200,7 +199,9 @@ export const ConnectedPanel = (props: Props) => {
     return () => {
       subscribed = false
     }
-  }, [braveWalletService, selectedCoin, originInfo.origin])
+    // Keep dependency on originInfo. When braveWalletService.isPermissionDenied
+    // is moved to api slice it's cached value should be reset on activeOriginChanged event.
+  }, [braveWalletService, selectedCoin, originInfo])
 
   React.useEffect(() => {
     let subscribed = true
@@ -310,7 +311,10 @@ export const ConnectedPanel = (props: Props) => {
     if (selectedCoin === BraveWallet.CoinType.SOL) {
       return connectedAccounts.length !== 0
     }
-    return originInfo?.origin?.scheme !== 'chrome'
+    if (!originInfo)
+      return false
+
+    return !originInfo.originSpec.startsWith('chrome')
   }, [selectedCoin, connectedAccounts, originInfo, isPermissionDenied])
 
   // computed
