@@ -35,8 +35,6 @@ void BindRecords(mojom::DBCommandInfo* command) {
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // creative_set_id
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // url_pattern
       mojom::DBCommandInfo::RecordBindingType::
-          BOOL_TYPE,  // extract_verifiable_id
-      mojom::DBCommandInfo::RecordBindingType::
           STRING_TYPE,  // verifiable_advertiser_public_key
       mojom::DBCommandInfo::RecordBindingType::INT_TYPE,   // observation_window
       mojom::DBCommandInfo::RecordBindingType::INT64_TYPE  // expire_at
@@ -54,9 +52,9 @@ size_t BindParameters(
   for (const auto& creative_set_conversion : creative_set_conversions) {
     BindString(command, index++, creative_set_conversion.id);
     BindString(command, index++, creative_set_conversion.url_pattern);
-    BindBool(command, index++, creative_set_conversion.extract_verifiable_id);
     BindString(command, index++,
-               creative_set_conversion.verifiable_advertiser_public_key_base64);
+               creative_set_conversion.verifiable_advertiser_public_key_base64
+                   .value_or(""));
     BindInt(command, index++,
             creative_set_conversion.observation_window.InDays());
     BindInt64(command, index++,
@@ -76,12 +74,15 @@ CreativeSetConversionInfo GetFromRecord(mojom::DBRecordInfo* record) {
 
   creative_set_conversion.id = ColumnString(record, 0);
   creative_set_conversion.url_pattern = ColumnString(record, 1);
-  creative_set_conversion.extract_verifiable_id = ColumnBool(record, 2);
-  creative_set_conversion.verifiable_advertiser_public_key_base64 =
-      ColumnString(record, 3);
-  creative_set_conversion.observation_window = base::Days(ColumnInt(record, 4));
+  const std::string verifiable_advertiser_public_key_base64 =
+      ColumnString(record, 2);
+  if (!verifiable_advertiser_public_key_base64.empty()) {
+    creative_set_conversion.verifiable_advertiser_public_key_base64 =
+        verifiable_advertiser_public_key_base64;
+  }
+  creative_set_conversion.observation_window = base::Days(ColumnInt(record, 3));
   creative_set_conversion.expire_at = base::Time::FromDeltaSinceWindowsEpoch(
-      base::Microseconds(ColumnInt64(record, 5)));
+      base::Microseconds(ColumnInt64(record, 4)));
 
   return creative_set_conversion;
 }
@@ -91,7 +92,7 @@ void GetCallback(GetConversionsCallback callback,
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-    BLOG(0, "Failed to get creative conversions");
+    BLOG(0, "Failed to get creative set conversions");
     return std::move(callback).Run(/*success*/ false,
                                    /*conversion_queue_items*/ {});
   }
@@ -202,6 +203,38 @@ void MigrateToV30(mojom::DBTransactionInfo* transaction) {
               "creative_set_conversions");
 }
 
+void MigrateToV31(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  // Create a temporary table deprecating |extract_verifiable_id| column.
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE creative_set_conversions_temp (creative_set_id TEXT NOT "
+      "NULL, url_pattern TEXT NOT NULL, verifiable_advertiser_public_key TEXT, "
+      "observation_window INTEGER NOT NULL, expire_at TIMESTAMP NOT NULL, "
+      "UNIQUE(creative_set_id) ON CONFLICT REPLACE, PRIMARY "
+      "KEY(creative_set_id));";
+  transaction->commands.push_back(std::move(command));
+
+  // Copy columns to temporary table.
+  const std::vector<std::string> from_columns = {
+      "creative_set_id", "url_pattern", "verifiable_advertiser_public_key",
+      "observation_window", "expire_at"};
+
+  const std::vector<std::string> to_columns = {
+      "creative_set_id", "url_pattern", "verifiable_advertiser_public_key",
+      "observation_window", "expire_at"};
+
+  CopyTableColumns(transaction, "creative_set_conversions",
+                   "creative_set_conversions_temp", from_columns, to_columns,
+                   /*should_drop*/ true);
+
+  // Rename temporary table.
+  RenameTable(transaction, "creative_set_conversions_temp",
+              "creative_set_conversions");
+}
+
 }  // namespace
 
 void CreativeSetConversions::Save(
@@ -223,7 +256,7 @@ void CreativeSetConversions::GetAll(GetConversionsCallback callback) const {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::StringPrintf(
-      "SELECT ac.creative_set_id, ac.url_pattern, ac.extract_verifiable_id, "
+      "SELECT ac.creative_set_id, ac.url_pattern, "
       "ac.verifiable_advertiser_public_key, ac.observation_window, "
       "ac.expire_at FROM %s AS ac WHERE %" PRId64 " < expire_at;",
       GetTableName().c_str(),
@@ -258,10 +291,10 @@ void CreativeSetConversions::Create(mojom::DBTransactionInfo* transaction) {
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
       "CREATE TABLE creative_set_conversions (creative_set_id TEXT NOT NULL, "
-      "url_pattern TEXT NOT NULL, extract_verifiable_id INTEGER NOT NULL, "
-      "verifiable_advertiser_public_key TEXT, observation_window INTEGER NOT "
-      "NULL, expire_at TIMESTAMP NOT NULL, UNIQUE(creative_set_id) ON CONFLICT "
-      "REPLACE, PRIMARY KEY(creative_set_id));";
+      "url_pattern TEXT NOT NULL, verifiable_advertiser_public_key TEXT, "
+      "observation_window INTEGER NOT NULL, expire_at TIMESTAMP NOT NULL, "
+      "UNIQUE(creative_set_id) ON CONFLICT REPLACE, PRIMARY "
+      "KEY(creative_set_id));";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -287,6 +320,11 @@ void CreativeSetConversions::Migrate(mojom::DBTransactionInfo* transaction,
 
     case 30: {
       MigrateToV30(transaction);
+      break;
+    }
+
+    case 31: {
+      MigrateToV31(transaction);
       break;
     }
   }
@@ -319,10 +357,10 @@ std::string CreativeSetConversions::BuildInsertOrUpdateSql(
 
   return base::ReplaceStringPlaceholders(
       "INSERT OR REPLACE INTO $1 (creative_set_id, url_pattern, "
-      "extract_verifiable_id, verifiable_advertiser_public_key, "
-      "observation_window, expire_at) VALUES $2;",
+      "verifiable_advertiser_public_key, observation_window, expire_at) VALUES "
+      "$2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count*/ 6, binded_parameters_count)},
+                           /*parameters_count*/ 5, binded_parameters_count)},
       nullptr);
 }
 

@@ -34,7 +34,6 @@ TEST_F(BraveAdsVerifiableConversionBuilderTest, BuildVerifiableConversionId) {
            /*id_pattern*/ R"(<div.*id="xyzzy-id".*>(.*)</div>)"}});
 
   CreativeSetConversionInfo creative_set_conversion;
-  creative_set_conversion.extract_verifiable_id = true;
   creative_set_conversion.verifiable_advertiser_public_key_base64 =
       kVerifiableConversionAdvertiserPublicKey;
 

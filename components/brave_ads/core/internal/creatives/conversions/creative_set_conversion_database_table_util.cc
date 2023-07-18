@@ -15,10 +15,10 @@ void PurgeExpiredCreativeSetConversions() {
   const table::CreativeSetConversions database_table;
   database_table.PurgeExpired(base::BindOnce([](const bool success) {
     if (!success) {
-      return BLOG(0, "Failed to purge expired conversions");
+      return BLOG(0, "Failed to purge expired creative set conversions");
     }
 
-    BLOG(3, "Successfully purged expired conversions");
+    BLOG(3, "Successfully purged expired creative set conversions");
   }));
 }
 
@@ -28,10 +28,11 @@ void SaveCreativeSetConversions(
   database_table.Save(creative_set_conversions,
                       base::BindOnce([](const bool success) {
                         if (!success) {
-                          return BLOG(0, "Failed to save conversions");
+                          return BLOG(
+                              0, "Failed to save creative set conversions");
                         }
 
-                        BLOG(3, "Successfully saved conversions");
+                        BLOG(3, "Successfully saved creative set conversions");
                       }));
 }
 

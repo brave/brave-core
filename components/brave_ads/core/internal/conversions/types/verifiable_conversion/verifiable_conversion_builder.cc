@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_builder.h"
 
-#include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_builder_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_id_pattern/verifiable_conversion_id_pattern_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
@@ -18,7 +17,7 @@ absl::optional<VerifiableConversionInfo> MaybeBuildVerifiableConversion(
     const std::string& html,
     const ConversionResourceIdPatternMap& resource_id_patterns,
     const CreativeSetConversionInfo& creative_set_conversion) {
-  if (!ShouldExtractVerifiableConversionId(creative_set_conversion)) {
+  if (!creative_set_conversion.verifiable_advertiser_public_key_base64) {
     return absl::nullopt;
   }
 
@@ -31,7 +30,7 @@ absl::optional<VerifiableConversionInfo> MaybeBuildVerifiableConversion(
 
   return VerifiableConversionInfo{
       *verifiable_conversion_id,
-      creative_set_conversion.verifiable_advertiser_public_key_base64};
+      *creative_set_conversion.verifiable_advertiser_public_key_base64};
 }
 
 }  // namespace brave_ads

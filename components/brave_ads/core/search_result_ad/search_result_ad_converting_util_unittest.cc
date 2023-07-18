@@ -95,9 +95,8 @@ TEST(SearchResultAdConvertingTest, EmptyConversionAdvertiserPublicKeyValue) {
   CheckRequiredAttributes(search_result_ad);
 
   EXPECT_EQ(search_result_ad->conversion->url_pattern, "value6");
-  EXPECT_EQ(
-      search_result_ad->conversion->verifiable_advertiser_public_key_base64,
-      "");
+  EXPECT_FALSE(
+      search_result_ad->conversion->verifiable_advertiser_public_key_base64);
   EXPECT_EQ(search_result_ad->conversion->observation_window, base::Days(1));
 }
 

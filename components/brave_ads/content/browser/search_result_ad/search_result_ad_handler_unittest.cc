@@ -73,8 +73,6 @@ void CompareSearchResultAdInfosWithNonEmptyConversion(
   EXPECT_EQ(search_result_ad_info1->value, search_result_ad_info2->value);
   ASSERT_TRUE(search_result_ad_info1->conversion);
   ASSERT_TRUE(search_result_ad_info2->conversion);
-  EXPECT_EQ(search_result_ad_info1->conversion->extract_verifiable_id,
-            search_result_ad_info2->conversion->extract_verifiable_id);
   EXPECT_EQ(search_result_ad_info1->conversion->observation_window,
             search_result_ad_info2->conversion->observation_window);
   EXPECT_EQ(search_result_ad_info1->conversion->url_pattern,

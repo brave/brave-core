@@ -361,8 +361,6 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
         creative_set_conversion.id = conversion.creative_set_id;
         creative_set_conversion.url_pattern = conversion.url_pattern;
-        creative_set_conversion.extract_verifiable_id =
-            conversion.extract_verifiable_id;
         creative_set_conversion.verifiable_advertiser_public_key_base64 =
             conversion.verifiable_advertiser_public_key_base64;
         creative_set_conversion.observation_window =

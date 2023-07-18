@@ -241,11 +241,9 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
     EXPECT_EQ(search_result_ad->conversion->url_pattern,
               base::StrCat({"data-conversion-url-pattern-value", index}));
     if (ad_index == 2) {
-      EXPECT_FALSE(search_result_ad->conversion->extract_verifiable_id);
-      EXPECT_TRUE(search_result_ad->conversion
-                      ->verifiable_advertiser_public_key_base64.empty());
+      EXPECT_FALSE(search_result_ad->conversion
+                       ->verifiable_advertiser_public_key_base64);
     } else {
-      EXPECT_TRUE(search_result_ad->conversion->extract_verifiable_id);
       EXPECT_EQ(
           search_result_ad->conversion->verifiable_advertiser_public_key_base64,
           base::StrCat({"data-conversion-advertiser-public-key-value", index}));
