@@ -491,7 +491,7 @@ static bool CustomLogHandler(int severity,
 
 + (bool)initializeICUForTesting {
   base::FilePath path;
-  base::PathService::Get(base::DIR_ASSETS, &path);
+  base::GetModuleDir(&path);
   base::apple::SetOverrideFrameworkBundlePath(path);
   base::apple::SetOverrideOuterBundlePath(path);
   return base::i18n::InitializeICU();
