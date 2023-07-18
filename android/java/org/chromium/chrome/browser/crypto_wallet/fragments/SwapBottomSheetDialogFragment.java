@@ -91,16 +91,21 @@ public class SwapBottomSheetDialogFragment
         return view;
     }
 
+    private void setDefaultNetwork(@NonNull final Callback callback,
+            @Nullable final BuySendSwapActivity.ActivityType activityType) {
+        if (!JavaUtils.anyNull(mWalletModel, mNetworkInfo)) {
+            // TODO(apaymyshev): buy/send/swap should be decoupled from panel selected network.
+            mWalletModel.getNetworkModel().setDefaultNetwork(
+                    mNetworkInfo, isSelected -> callback.run(activityType));
+        } else {
+            callback.run(activityType);
+        }
+    }
+
     @Override
     public void onClick(View view) {
         if (view == mDepositLayout) {
-            try {
-                BraveActivity.getBraveActivity().openNewOrSelectExistingTab(
-                        BraveActivity.BRAVE_DEPOSIT_URL, true);
-                TabUtils.bringChromeTabbedActivityToTheTop(requireActivity());
-            } catch (BraveActivity.BraveActivityNotFoundException e) {
-                Log.e(TAG, "Error while opening deposit tab.", e);
-            }
+            setDefaultNetwork(activityType -> openDepositWebUi(), null);
         } else {
             BuySendSwapActivity.ActivityType activityType = BuySendSwapActivity.ActivityType.BUY;
             if (view == mSendLayout) {
@@ -109,14 +114,17 @@ public class SwapBottomSheetDialogFragment
                 activityType = BuySendSwapActivity.ActivityType.SWAP_V2;
             }
 
-            if (!JavaUtils.anyNull(mWalletModel, mNetworkInfo)) {
-                BuySendSwapActivity.ActivityType finalActivityType = activityType;
-                // TODO(apaymyshev): buy/send/swap should be decoupled from panel selected network.
-                mWalletModel.getNetworkModel().setDefaultNetwork(
-                        mNetworkInfo, isSelected -> { openBssAndDismiss(finalActivityType); });
-                return;
-            }
-            openBssAndDismiss(activityType);
+            setDefaultNetwork(this::openBssAndDismiss, activityType);
+        }
+    }
+
+    private void openDepositWebUi() {
+        try {
+            BraveActivity.getBraveActivity().openNewOrSelectExistingTab(
+                    BraveActivity.BRAVE_DEPOSIT_URL, true);
+            TabUtils.bringChromeTabbedActivityToTheTop(requireActivity());
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "Error while opening deposit tab.", e);
         }
     }
 
@@ -124,5 +132,17 @@ public class SwapBottomSheetDialogFragment
     private void openBssAndDismiss(BuySendSwapActivity.ActivityType activityType) {
         Utils.openBuySendSwapActivity(getActivity(), activityType, null);
         dismiss();
+    }
+
+    /**
+     * Generic callback used by {@code setDefaultNetwork} that runs an action with a given activity
+     * type.
+     */
+    private interface Callback {
+        /**
+         * Runs an action with a given activity type.
+         * @param activityType given activity type. May be null.
+         */
+        void run(@Nullable final BuySendSwapActivity.ActivityType activityType);
     }
 }

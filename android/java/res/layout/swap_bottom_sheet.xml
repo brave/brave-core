@@ -17,23 +17,20 @@
         android:orientation="vertical">
 
         <TextView
+            style="@style/BraveWalletTextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="4dp"
             android:paddingStart="24dp"
-            android:textColor="@color/wallet_text_color"
             android:text="@string/buy"
             android:textSize="16sp" />
 
         <TextView
+            style="@style/BraveWalletTextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:paddingStart="24dp"
-            android:textColor="@color/wallet_secondary_layout_text_color"
-            android:text="@string/buy_swap_text"
-            android:textSize="14sp" />
+            android:text="@string/buy_swap_text" />
 
         <View
             android:layout_width="match_parent"
@@ -53,23 +50,20 @@
         android:orientation="vertical">
 
         <TextView
+            style="@style/BraveWalletTextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="4dp"
             android:paddingStart="24dp"
-            android:textColor="@color/wallet_text_color"
             android:text="@string/send"
             android:textSize="16sp" />
 
         <TextView
+            style="@style/BraveWalletTextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:paddingStart="24dp"
-            android:text="@string/send_swap_text"
-            android:textColor="@color/wallet_secondary_layout_text_color"
-            android:textSize="14sp" />
+            android:text="@string/send_swap_text" />
 
         <View
             android:layout_width="match_parent"
@@ -89,23 +83,20 @@
         android:orientation="vertical">
 
         <TextView
+            style="@style/BraveWalletTextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="4dp"
             android:paddingStart="24dp"
-            android:textColor="@color/wallet_text_color"
             android:text="@string/swap"
             android:textSize="16sp" />
 
         <TextView
+            style="@style/BraveWalletTextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:paddingStart="24dp"
-            android:textColor="@color/wallet_secondary_layout_text_color"
-            android:text="@string/swap_text"
-            android:textSize="14sp" />
+            android:text="@string/swap_text" />
 
         <View
             android:layout_width="match_parent"
@@ -125,23 +116,20 @@
         android:orientation="vertical">
 
         <TextView
+            style="@style/BraveWalletTextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="4dp"
             android:paddingStart="24dp"
-            android:textColor="@color/wallet_text_color"
             android:text="@string/deposit"
             android:textSize="16sp" />
 
         <TextView
+            style="@style/BraveWalletTextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:paddingStart="24dp"
-            android:textColor="@color/wallet_secondary_layout_text_color"
-            android:text="@string/deposit_description"
-            android:textSize="14sp" />
+            android:text="@string/deposit_description" />
 
     </LinearLayout>
 
