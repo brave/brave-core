@@ -8,9 +8,11 @@
 
 #include <list>
 #include <variant>
+#include <vector>
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/rust/lib.rs.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -22,6 +24,12 @@ struct DirectFeedError {
   std::string body_content;
 };
 
+struct DirectFeedResult {
+  std::string id;
+  std::string title;
+  std::vector<mojom::ArticlePtr> articles;
+};
+
 struct DirectFeedResponse {
   GURL url;
   GURL final_url;
@@ -29,7 +37,7 @@ struct DirectFeedResponse {
   std::string charset;
 
   // If success, this will be |FeedData|, otherwise an error.
-  absl::variant<FeedData, DirectFeedError> result;
+  absl::variant<DirectFeedResult, DirectFeedError> result;
 };
 
 using DownloadFeedCallback = base::OnceCallback<void(DirectFeedResponse)>;
@@ -53,7 +61,7 @@ class DirectFeedFetcher {
                         const std::unique_ptr<std::string> response_body);
   void OnParsedFeedData(DownloadFeedCallback callback,
                         DirectFeedResponse result,
-                        absl::variant<FeedData, DirectFeedError> data);
+                        absl::variant<DirectFeedResult, DirectFeedError> data);
 
   SimpleURLLoaderList url_loaders_;
 

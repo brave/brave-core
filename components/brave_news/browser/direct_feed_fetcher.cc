@@ -16,10 +16,10 @@
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/rust/lib.rs.h"
-#include "net/base/load_flags_list.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
@@ -67,7 +67,7 @@ mojom::ArticlePtr RustFeedItemToArticle(const FeedItem& rust_feed_item,
 }
 
 using ParseFeedCallback =
-    base::OnceCallback<void(absl::variant<FeedData, DirectFeedError>)>;
+    base::OnceCallback<void(absl::variant<DirectFeedResult, DirectFeedError>)>;
 void ParseFeedDataOffMainThread(const GURL& feed_url,
                                 std::string body_content,
                                 ParseFeedCallback callback) {
@@ -77,7 +77,7 @@ void ParseFeedDataOffMainThread(const GURL& feed_url,
       FROM_HERE,
       base::BindOnce(
           [](const GURL& feed_url, std::string body_content)
-              -> absl::variant<FeedData, DirectFeedError> {
+              -> absl::variant<DirectFeedResult, DirectFeedError> {
             brave_news::FeedData data;
             if (!parse_feed_bytes(::rust::Slice<const uint8_t>(
                                       (const uint8_t*)body_content.data(),
@@ -90,7 +90,35 @@ void ParseFeedDataOffMainThread(const GURL& feed_url,
               error.body_content = std::move(body_content);
               return error;
             }
-            return data;
+
+            DirectFeedResult result;
+            result.id = (std::string)data.id;
+            result.title = (std::string)data.title;
+            for (auto entry : data.items) {
+              auto item = RustFeedItemToArticle(entry, result.id);
+              if (!item->data->url.SchemeIsHTTPOrHTTPS()) {
+                continue;
+              }
+
+              result.articles.emplace_back(std::move(item));
+
+              if (result.articles.size() >= kMaxArticlesPerDirectFeedSource) {
+                break;
+              }
+            }
+
+            // Add variety to score, same as brave feed aggregator
+            // Sort by score, ascending
+            std::sort(result.articles.begin(), result.articles.end(),
+                      [](mojom::ArticlePtr& a, mojom::ArticlePtr& b) {
+                        return (a.get()->data->score < b.get()->data->score);
+                      });
+            double variety = 2.0;
+            for (auto& article : result.articles) {
+              article->data->score = article->data->score * variety;
+              variety = variety * 2.0;
+            }
+            return result;
           },
           feed_url, std::move(body_content)),
       std::move(callback));
@@ -171,10 +199,7 @@ void DirectFeedFetcher::OnFeedDownloaded(
 void DirectFeedFetcher::OnParsedFeedData(
     DownloadFeedCallback callback,
     DirectFeedResponse result,
-    absl::variant<FeedData, DirectFeedError> data) {
-  if (absl::holds_alternative<FeedData>(data)) {
-    result.success = true;
-  }
+    absl::variant<DirectFeedResult, DirectFeedError> data) {
   result.result = std::move(data);
   std::move(callback).Run(std::move(result));
 }
