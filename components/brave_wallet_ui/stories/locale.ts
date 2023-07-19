@@ -158,7 +158,7 @@ provideStrings({
   braveWalletImportExistingWallet: 'Import existing wallet',
   braveWalletWelcomeRestoreButton: 'Restore',
   braveWalletConnectHardwareWallet: 'Connect hardware wallet',
-  braveWalletWelcomeDividerText: 'Or',
+  braveWalletWelcomeDividerText: 'or',
 
   // Onboarding - Disclosures
   braveWalletDisclosuresTitle: 'Legal stuff',
@@ -366,6 +366,11 @@ provideStrings({
   braveWalletAccountsExport: 'Export',
   braveWalletAccountsDeposit: 'Deposit',
   braveWalletAccountsRemove: 'Remove',
+
+  // Empty Token List State
+  braveWalletNoAvailableAssets: 'No available assets',
+  braveWalletNoAvailableAssetsDescription:
+    'Deposit or purchase tokens to get started. If you don\'t see tokens from an imported account, check the filters and display settings. Unknown tokens may need to be added as custom assets.',
 
   // AmountPresets
   braveWalletPreset25: '25%',

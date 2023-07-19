@@ -233,7 +233,6 @@ export const PortfolioOverview = () => {
 
   const tokenPriceIds = React.useMemo(() =>
     visibleAssetOptions
-      .filter(({ assetBalance }) => new Amount(assetBalance).gt(0))
       .filter(({ asset }) =>
         !asset.isErc721 && !asset.isErc1155 && !asset.isNft)
       .map(({ asset }) => getPriceIdForToken(asset)),
@@ -250,7 +249,7 @@ export const PortfolioOverview = () => {
 
   // This will scrape all of the user's accounts and combine the fiat value for every asset
   const fullPortfolioFiatBalance = React.useMemo((): Amount => {
-    if (allNetworksAreHidden) {
+    if (allNetworksAreHidden || usersFilteredAccounts.length === 0) {
       return Amount.zero()
     }
 
@@ -280,7 +279,8 @@ export const PortfolioOverview = () => {
       visibleAssetOptions,
       spotPriceRegistry,
       isLoadingSpotPrices,
-      allNetworksAreHidden
+      allNetworksAreHidden,
+      usersFilteredAccounts.length
     ])
 
   const formattedFullPortfolioFiatBalance = React.useMemo(() => {

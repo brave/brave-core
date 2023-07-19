@@ -41,6 +41,9 @@ import {
 import { getBalance } from '../../../../../../utils/balance-utils'
 import { getPriceIdForToken } from '../../../../../../utils/api-utils'
 import { computeFiatAmount } from '../../../../../../utils/pricing-utils'
+import {
+  emptyNetwork
+} from '../../../../../../utils/network-utils'
 
 // Components
 import SearchBar from '../../../../../shared/search-bar/index'
@@ -49,6 +52,9 @@ import { PortfolioAssetItemLoadingSkeleton } from '../../../../portfolio-asset-i
 import {
   AssetGroupContainer
 } from '../../../../asset-group-container/asset-group-container'
+import {
+  EmptyTokenListState
+} from '../empty-token-list-state/empty-token-list-state'
 
 // Queries
 import {
@@ -410,15 +416,43 @@ export const TokenLists = ({
     setSearchValue('')
   }, [])
 
-  const listUiByNetworks = React.useMemo(() => {
-    if (!networks) {
+  const noNetworks = !networks || networks.length === 0
+  const noAccounts = !accounts || accounts.length === 0
+  const showEmptyState = noNetworks || noAccounts
+
+  const sortedNetworksWithBalances = React.useMemo(() => {
+    if (noNetworks) {
       return undefined
     }
-    return [...networks].sort((a, b) => {
+    return [...networks].filter((network) => {
+      return getNetworkFiatValue(network).gt(0)
+    }).sort((a, b) => {
       const aBalance = getNetworkFiatValue(a)
       const bBalance = getNetworkFiatValue(b)
       return bBalance.minus(aBalance).toNumber()
-    })?.map((network) => {
+    })
+  }, [
+    networks,
+    noNetworks,
+    getNetworkFiatValue
+  ])
+
+  const listUiByNetworks = React.useMemo(() => {
+    if (showEmptyState) {
+      return <EmptyTokenListState />
+    }
+    if (
+      !sortedNetworksWithBalances ||
+      sortedNetworksWithBalances.length === 0
+    ) {
+      return <AssetGroupContainer
+        balance=''
+        isSkeleton={true}
+        isDisabled={true}
+        network={emptyNetwork}
+      />
+    }
+    return sortedNetworksWithBalances.map((network) => {
       const networksFiatValue = getNetworkFiatValue(network)
       const networksAssets = getAssetsByNetwork(network)
       return <AssetGroupContainer
@@ -451,20 +485,44 @@ export const TokenLists = ({
     getAssetsByNetwork,
     getNetworkFiatValue,
     renderToken,
-    networks,
+    showEmptyState,
+    sortedNetworksWithBalances,
     defaultCurrencies.fiat,
     assetAutoDiscoveryCompleted
   ])
 
-  const listUiByAccounts = React.useMemo(() => {
-    if (!accounts) {
+  const sortedAccountsWithBalances = React.useMemo(() => {
+    if (noAccounts) {
       return undefined
     }
-    return [...accounts].sort((a, b) => {
+    return [...accounts].filter((account) => {
+      return getAccountFiatValue(account).gt(0)
+    }).sort((a, b) => {
       const aBalance = getAccountFiatValue(a)
       const bBalance = getAccountFiatValue(b)
       return bBalance.minus(aBalance).toNumber()
-    })?.map((account) => {
+    })
+  }, [
+    accounts,
+    noAccounts,
+    getAccountFiatValue
+  ])
+
+  const listUiByAccounts = React.useMemo(() => {
+    if (showEmptyState) {
+      return <EmptyTokenListState />
+    }
+    if (
+      !sortedAccountsWithBalances ||
+      sortedAccountsWithBalances.length === 0
+    ) {
+      return <AssetGroupContainer
+        balance=''
+        isSkeleton={true}
+        isDisabled={true}
+      />
+    }
+    return sortedAccountsWithBalances.map((account) => {
       const accountsFiatValue = getAccountFiatValue(account)
       const accountsAssets = getSortedAssetsByAccount(account)
       return <AssetGroupContainer
@@ -496,9 +554,10 @@ export const TokenLists = ({
     getSortedAssetsByAccount,
     getAccountFiatValue,
     renderToken,
-    accounts,
+    showEmptyState,
     defaultCurrencies.fiat,
-    assetAutoDiscoveryCompleted
+    assetAutoDiscoveryCompleted,
+    sortedAccountsWithBalances
   ])
 
   const listUi = React.useMemo(() => {
@@ -507,19 +566,21 @@ export const TokenLists = ({
         ? listUiByNetworks
         : selectedGroupAssetsByItem === AccountsGroupByOption.id
           ? listUiByAccounts
-          : <>
-            {
-              getSortedFungibleTokensList(filteredAssetList)
-                .map((token, index) =>
-                  renderToken(
-                    { index, item: token, viewMode: 'list' }
+          : noNetworks
+            ? <EmptyTokenListState />
+            : <>
+              {
+                getSortedFungibleTokensList(filteredAssetList)
+                  .map((token, index) =>
+                    renderToken(
+                      { index, item: token, viewMode: 'list' }
+                    )
                   )
-                )
-            }
-            {!assetAutoDiscoveryCompleted &&
-              <PortfolioAssetItemLoadingSkeleton />
-            }
-          </>
+              }
+              {!assetAutoDiscoveryCompleted &&
+                <PortfolioAssetItemLoadingSkeleton />
+              }
+            </>
     }
     return <>
       {
@@ -540,7 +601,8 @@ export const TokenLists = ({
     renderToken,
     assetAutoDiscoveryCompleted,
     isPortfolio,
-    getSortedFungibleTokensList
+    getSortedFungibleTokensList,
+    noNetworks
   ])
 
   // effects
@@ -591,17 +653,19 @@ export const TokenLists = ({
           <Row
             width={showSearchBar ? '100%' : 'unset'}
           >
-            <SearchBarWrapper
-              margin='0px 12px 0px 0px'
-              showSearchBar={showSearchBar}
-            >
-              <SearchBar
-                placeholder={getLocale('braveWalletSearchText')}
-                action={onSearchValueChange}
-                value={searchValue}
-                isV2={isV2}
-              />
-            </SearchBarWrapper>
+            {!showEmptyState &&
+              <SearchBarWrapper
+                margin='0px 12px 0px 0px'
+                showSearchBar={showSearchBar}
+              >
+                <SearchBar
+                  placeholder={getLocale('braveWalletSearchText')}
+                  action={onSearchValueChange}
+                  value={searchValue}
+                  isV2={isV2}
+                />
+              </SearchBarWrapper>
+            }
             {showSearchBar &&
               <Row
                 width='unset'
@@ -617,16 +681,18 @@ export const TokenLists = ({
               <Row
                 width='unset'
               >
-                <SearchButtonWrapper
-                  width='unset'
-                >
-                  <CircleButton
-                    marginRight={12}
-                    onClick={() => setShowSearchBar(true)}
+                {!showEmptyState &&
+                  <SearchButtonWrapper
+                    width='unset'
                   >
-                    <ButtonIcon name='search' />
-                  </CircleButton>
-                </SearchButtonWrapper>
+                    <CircleButton
+                      marginRight={12}
+                      onClick={() => setShowSearchBar(true)}
+                    >
+                      <ButtonIcon name='search' />
+                    </CircleButton>
+                  </SearchButtonWrapper>
+                }
                 <CircleButton
                   marginRight={12}
                   onClick={showAddAssetsModal}

@@ -52,7 +52,7 @@ import {
 // Options
 import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
 import {
-  AccountsGroupByOption
+  NoneGroupByOption
 } from '../../options/group-assets-by-options'
 import { AllNetworksOptionDefault } from '../../options/network-filter-options'
 import { AllAccountsOptionUniqueKey } from '../../options/account-filter-options'
@@ -118,7 +118,7 @@ const defaultState: WalletState = {
       .getItem(
         LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_ASSETS_BY
       ) ||
-      AccountsGroupByOption.id,
+    NoneGroupByOption.id,
   selectedAccountFilter: AllAccountsOptionUniqueKey,
   solFeeEstimates: undefined,
   onRampCurrencies: [] as BraveWallet.OnRampCurrency[],
