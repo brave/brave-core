@@ -1388,9 +1388,8 @@ void BraveWalletService::GetActiveOrigin(GetActiveOriginCallback callback) {
   std::move(callback).Run(GetActiveOriginSync());
 }
 
-mojom::OriginInfoShortPtr BraveWalletService::GetActiveOriginSync() {
-  return MakeOriginInfoShort(
-      delegate_->GetActiveOrigin().value_or(url::Origin()));
+mojom::OriginInfoPtr BraveWalletService::GetActiveOriginSync() {
+  return MakeOriginInfo(delegate_->GetActiveOrigin().value_or(url::Origin()));
 }
 
 void BraveWalletService::GetPendingSignMessageRequests(
@@ -1503,7 +1502,7 @@ void BraveWalletService::AddTokenObserver(
 }
 
 void BraveWalletService::OnActiveOriginChanged(
-    const mojom::OriginInfoShortPtr& origin_info) {
+    const mojom::OriginInfoPtr& origin_info) {
   for (const auto& observer : observers_) {
     observer->OnActiveOriginChanged(origin_info.Clone());
   }
@@ -1679,7 +1678,7 @@ void BraveWalletService::AddGetPublicKeyRequest(
   pending_request.origin = origin;
   pending_request.encryption_public_key_request =
       mojom::GetEncryptionPublicKeyRequest::New(
-          request_id, MakeOriginInfoShort(origin), address);
+          request_id, MakeOriginInfo(origin), address);
   pending_request.encryption_public_key_callback = std::move(callback);
   pending_request.encryption_public_key_id = std::move(id);
 }
@@ -1706,9 +1705,8 @@ void BraveWalletService::AddDecryptRequest(
   auto request_id = GenerateRandomId();
   auto& pending_request = pending_decrypt_requests_[request_id];
   pending_request.origin = origin;
-  pending_request.decrypt_request =
-      mojom::DecryptRequest::New(request_id, MakeOriginInfoShort(origin),
-                                 address, std::move(unsafe_message));
+  pending_request.decrypt_request = mojom::DecryptRequest::New(
+      request_id, MakeOriginInfo(origin), address, std::move(unsafe_message));
   pending_request.decrypt_callback = std::move(callback);
   pending_request.decrypt_id = std::move(id);
 }

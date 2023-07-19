@@ -105,7 +105,7 @@ export interface ParsedTransaction
   isSwap?: boolean
   intent: string
   chainId: string
-  originInfo?: BraveWallet.OriginInfoShort | undefined
+  originInfo?: BraveWallet.OriginInfo | undefined
 
   // Value
   value: string

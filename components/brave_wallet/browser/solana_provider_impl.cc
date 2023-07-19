@@ -269,7 +269,7 @@ void SolanaProviderImpl::ContinueSignTransaction(
                                                 std::move(param));
   tx->set_tx_type(mojom::TransactionType::SolanaDappSignTransaction);
   auto request = mojom::SignTransactionRequest::New(
-      MakeOriginInfoShort(delegate_->GetOrigin()), -1, account,
+      MakeOriginInfo(delegate_->GetOrigin()), -1, account,
       mojom::TxDataUnion::NewSolanaTxData(tx->ToSolanaTxData()),
       mojom::ByteArrayStringUnion::NewBytes(std::move(msg_pair->second)),
       mojom::CoinType::SOL, chain_id);
@@ -413,7 +413,7 @@ void SolanaProviderImpl::ContinueSignAllTransactions(
   }
 
   auto request = mojom::SignAllTransactionsRequest::New(
-      MakeOriginInfoShort(delegate_->GetOrigin()), -1, account->address,
+      MakeOriginInfo(delegate_->GetOrigin()), -1, account->address,
       std::move(tx_datas), std::move(raw_messages), mojom::CoinType::SOL,
       chain_id);
 
@@ -627,9 +627,8 @@ void SolanaProviderImpl::SignMessage(
     message = std::string(blob_msg.begin(), blob_msg.end());
   }
   auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfoShort(delegate_->GetOrigin()), -1, account->address, "",
-      message, false, absl::nullopt, absl::nullopt, blob_msg,
-      mojom::CoinType::SOL,
+      MakeOriginInfo(delegate_->GetOrigin()), -1, account->address, "", message,
+      false, absl::nullopt, absl::nullopt, blob_msg, mojom::CoinType::SOL,
       json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL,
                                         delegate_->GetOrigin()));
 

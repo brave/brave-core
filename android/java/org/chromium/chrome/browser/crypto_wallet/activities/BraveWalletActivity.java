@@ -134,7 +134,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
 
         try {
             mWalletModel = BraveActivity.getBraveActivity().getWalletModel();
-            
+
             // Update network model to use default network.
             getNetworkModel().updateMode(NetworkModel.Mode.WALLET_MODE);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
@@ -145,8 +145,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
             NetworkInfo ethNetwork = null;
             // Always show buy send swap with ETH
             if (mWalletModel != null) {
-                ethNetwork = getNetworkModel().getNetwork(
-                        BraveWalletConstants.MAINNET_CHAIN_ID);
+                ethNetwork = getNetworkModel().getNetwork(BraveWalletConstants.MAINNET_CHAIN_ID);
             }
             SwapBottomSheetDialogFragment swapBottomSheetDialogFragment =
                     SwapBottomSheetDialogFragment.newInstance();

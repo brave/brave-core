@@ -5,7 +5,7 @@
 
 import { mockNetwork } from '../../common/constants/mocks'
 import { BraveWallet } from '../../constants/types'
-import { mockOriginInfo, mockOriginInfoShort } from './mock-origin-info'
+import { mockOriginInfo } from './mock-origin-info'
 
 export const mockSignMessageRequest = {
   originInfo: mockOriginInfo,
@@ -22,25 +22,25 @@ export const mockSignMessageRequest = {
 }
 
 export const mockAddChainRequest = {
-  originInfo: mockOriginInfoShort,
+  originInfo: mockOriginInfo,
   networkInfo: mockNetwork
 }
 
 export const mockGetEncryptionPublicKeyRequest = {
   requestId: '',
-  originInfo: mockOriginInfoShort,
+  originInfo: mockOriginInfo,
   address: ''
 }
 
 export const mockDecryptRequest = {
   requestId: '',
-  originInfo: mockOriginInfoShort,
+  originInfo: mockOriginInfo,
   address: '',
   unsafeMessage: ''
 }
 
 export const mockSwitchChainRequest = {
   requestId: '',
-  originInfo: mockOriginInfoShort,
+  originInfo: mockOriginInfo,
   chainId: ''
 }

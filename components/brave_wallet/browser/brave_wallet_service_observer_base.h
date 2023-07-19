@@ -15,7 +15,7 @@ namespace brave_wallet {
 
 class BraveWalletServiceObserverBase
     : public brave_wallet::mojom::BraveWalletServiceObserver {
-  void OnActiveOriginChanged(mojom::OriginInfoShortPtr origin_info) override {}
+  void OnActiveOriginChanged(mojom::OriginInfoPtr origin_info) override {}
   void OnDefaultEthereumWalletChanged(
       brave_wallet::mojom::DefaultWallet wallet) override {}
   void OnDefaultSolanaWalletChanged(

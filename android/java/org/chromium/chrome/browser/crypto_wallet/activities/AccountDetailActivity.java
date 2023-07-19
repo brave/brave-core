@@ -196,9 +196,8 @@ public class AccountDetailActivity
         }
         assert mJsonRpcService != null && mWalletModel != null;
         setUpAssetList();
-        LiveDataUtil.observeOnce(getNetworkModel().mDefaultNetwork, selectedNetwork -> {
-            fetchAccountInfo(selectedNetwork);
-        });
+        LiveDataUtil.observeOnce(getNetworkModel().mDefaultNetwork,
+                selectedNetwork -> { fetchAccountInfo(selectedNetwork); });
     }
 
     @Override

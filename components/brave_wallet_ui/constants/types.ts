@@ -236,7 +236,7 @@ export interface WalletState {
   addUserAssetError: boolean
   defaultEthereumWallet: BraveWallet.DefaultWallet
   defaultSolanaWallet: BraveWallet.DefaultWallet
-  activeOrigin: BraveWallet.OriginInfoShort
+  activeOrigin: BraveWallet.OriginInfo
   solFeeEstimates?: SolFeeEstimates
   hasFeeEstimatesError?: boolean
   gasEstimates?: BraveWallet.GasEstimation1559
@@ -269,7 +269,7 @@ export interface WalletState {
 
 export interface PanelState {
   hasInitialized: boolean
-  connectToSiteOrigin: BraveWallet.OriginInfoShort
+  connectToSiteOrigin: BraveWallet.OriginInfo
   selectedPanel: PanelTypes
   lastSelectedPanel?: PanelTypes
   panelTitle: string

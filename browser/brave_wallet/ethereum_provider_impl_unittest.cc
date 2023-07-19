@@ -855,7 +855,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     auto requests = GetPendingGetEncryptionPublicKeyRequests();
     if (requests.size() > 0) {
       ASSERT_EQ(requests.size(), 1u);
-      EXPECT_EQ(requests[0]->origin_info, MakeOriginInfoShort(GetOrigin()));
+      EXPECT_EQ(requests[0]->origin_info, MakeOriginInfo(GetOrigin()));
       EXPECT_EQ(requests[0]->address, address);
       EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
       brave_wallet_service_->NotifyGetPublicKeyRequestProcessed(
@@ -895,7 +895,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     auto requests = GetPendingDecryptRequests();
     if (requests.size() > 0) {
       ASSERT_EQ(requests.size(), 1u);
-      EXPECT_EQ(requests[0]->origin_info, MakeOriginInfoShort(GetOrigin()));
+      EXPECT_EQ(requests[0]->origin_info, MakeOriginInfo(GetOrigin()));
       EXPECT_EQ(requests[0]->address, address);
       EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
       brave_wallet_service_->NotifyDecryptRequestProcessed(

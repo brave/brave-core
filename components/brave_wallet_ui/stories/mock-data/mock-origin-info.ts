@@ -6,7 +6,7 @@ import { BraveWallet } from '../../constants/types'
 
 export const mockeTldPlusOne = 'uniswap.org'
 
-export const mockOriginInfoShort: BraveWallet.OriginInfoShort = {
+export const mockOriginInfo: BraveWallet.OriginInfo = {
   originSpec: 'https://with_a_really_looooooong_site_name.fixme.uniswap.org',
   eTldPlusOne: mockeTldPlusOne
 }

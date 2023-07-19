@@ -556,8 +556,8 @@ std::string JsonRpcService::AddEthereumChainForOrigin(
   }
 
   add_chain_pending_requests_[chain_id].origin = origin;
-  add_chain_pending_requests_[chain_id].request = mojom::AddChainRequest::New(
-      MakeOriginInfoShort(origin), std::move(chain));
+  add_chain_pending_requests_[chain_id].request =
+      mojom::AddChainRequest::New(MakeOriginInfo(origin), std::move(chain));
   return "";
 }
 
@@ -2758,7 +2758,7 @@ bool JsonRpcService::AddSwitchEthereumChainRequest(const std::string& chain_id,
   auto request_id = GenerateRandomId();
   auto& pending_request = pending_switch_chain_requests_[request_id];
   pending_request.switch_chain_request = mojom::SwitchChainRequest::New(
-      request_id, MakeOriginInfoShort(origin), chain_id);
+      request_id, MakeOriginInfo(origin), chain_id);
   pending_request.origin = origin;
   pending_request.switch_chain_callback = std::move(callback);
   pending_request.switch_chain_id = std::move(id);

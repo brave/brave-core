@@ -16,7 +16,7 @@ import {
 import { PanelTitles } from '../../options/panel-titles'
 import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
-const defaultOriginInfo: BraveWallet.OriginInfoShort = {
+const defaultOriginInfo: BraveWallet.OriginInfo = {
   originSpec: '',
   eTldPlusOne: ''
 }

@@ -219,7 +219,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
     reducers: {
       activeOriginChanged(
         state: WalletState,
-        { payload }: PayloadAction<BraveWallet.OriginInfoShort>
+        { payload }: PayloadAction<BraveWallet.OriginInfo>
       ) {
         state.activeOrigin = payload
       },

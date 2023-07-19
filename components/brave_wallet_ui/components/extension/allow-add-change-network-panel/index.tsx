@@ -33,7 +33,7 @@ import {
 export type tabs = 'network' | 'details'
 
 export interface Props {
-  originInfo: BraveWallet.OriginInfoShort
+  originInfo: BraveWallet.OriginInfo
   networkPayload: BraveWallet.NetworkInfo
   panelType: 'add' | 'change'
   onCancel: () => void

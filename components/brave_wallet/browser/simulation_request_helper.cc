@@ -21,7 +21,7 @@ namespace brave_wallet {
 
 namespace {
 
-base::Value::Dict GetMetadata(const mojom::OriginInfoShortPtr& origin_info) {
+base::Value::Dict GetMetadata(const mojom::OriginInfoPtr& origin_info) {
   base::Value::Dict metadata_object;
 
   if (origin_info && origin_info->origin_spec != "chrome://wallet" &&

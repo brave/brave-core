@@ -35,7 +35,7 @@ import { useExplorer } from '../../../common/hooks'
 export interface Props {
   onCancel: () => void
   onAddToken: () => void
-  originInfo: BraveWallet.OriginInfoShort
+  originInfo: BraveWallet.OriginInfo
   selectedNetwork?: BraveWallet.NetworkInfo
   token?: BraveWallet.BlockchainToken
 }

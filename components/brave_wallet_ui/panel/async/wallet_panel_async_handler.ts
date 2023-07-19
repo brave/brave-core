@@ -590,7 +590,7 @@ handler.on(WalletActions.initialize.type, async (store) => {
     const accounts = url.searchParams.getAll('addr') || []
     const originSpec = url.searchParams.get('origin-spec') || ''
     const eTldPlusOne = url.searchParams.get('etld-plus-one') || ''
-    const originInfo: BraveWallet.OriginInfoShort = {
+    const originInfo: BraveWallet.OriginInfo = {
       originSpec: originSpec,
       eTldPlusOne: eTldPlusOne
     }

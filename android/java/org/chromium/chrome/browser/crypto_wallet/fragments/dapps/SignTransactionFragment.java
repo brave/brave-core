@@ -30,7 +30,7 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.OriginInfoShort;
+import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.SignAllTransactionsRequest;
 import org.chromium.brave_wallet.mojom.SignTransactionRequest;
 import org.chromium.brave_wallet.mojom.SolanaInstruction;
@@ -176,7 +176,7 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
         @CoinType.EnumType
         int coin = CoinType.ETH;
         String chainId = null;
-        OriginInfoShort originInfo = null;
+        OriginInfo originInfo = null;
         switch (mActivityType) {
             case SIGN_TRANSACTION:
                 if (mTxRequestNumber >= mSignTransactionRequests.size()) {

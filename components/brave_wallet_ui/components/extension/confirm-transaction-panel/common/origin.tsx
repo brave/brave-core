@@ -15,7 +15,7 @@ import CreateSiteOrigin from '../../../shared/create-site-origin'
 import { BraveWallet } from '../../../../constants/types'
 
 interface Props {
-  originInfo: BraveWallet.OriginInfoShort
+  originInfo: BraveWallet.OriginInfo
 }
 
 export function Origin (props: Props) {

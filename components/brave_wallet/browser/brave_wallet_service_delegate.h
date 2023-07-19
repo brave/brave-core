@@ -42,7 +42,7 @@ class BraveWalletServiceDelegate {
   class Observer : public base::CheckedObserver {
    public:
     virtual void OnActiveOriginChanged(
-        const mojom::OriginInfoShortPtr& origin_info) {}
+        const mojom::OriginInfoPtr& origin_info) {}
   };
   virtual void AddObserver(Observer* observer) {}
   virtual void RemoveObserver(Observer* observer) {}

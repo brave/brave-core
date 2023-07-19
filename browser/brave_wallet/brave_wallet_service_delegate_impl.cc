@@ -208,7 +208,7 @@ void BraveWalletServiceDelegateImpl::TabChangedAt(
 
 void BraveWalletServiceDelegateImpl::FireActiveOriginChanged() {
   auto origin_info =
-      MakeOriginInfoShort(GetActiveOriginInternal().value_or(url::Origin()));
+      MakeOriginInfo(GetActiveOriginInternal().value_or(url::Origin()));
   for (auto& observer : observer_list_) {
     observer.OnActiveOriginChanged(origin_info);
   }

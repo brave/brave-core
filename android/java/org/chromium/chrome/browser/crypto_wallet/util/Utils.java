@@ -70,7 +70,7 @@ import org.chromium.brave_wallet.mojom.CoinMarket;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.OriginInfoShort;
+import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
@@ -1406,10 +1406,10 @@ public class Utils {
         }
     }
 
-    public static String geteTldHtmlString(OriginInfoShort originInfoShort) {
+    public static String geteTldHtmlString(OriginInfo originInfo) {
         StringBuilder builder = new StringBuilder();
-        builder.append(originInfoShort.originSpec);
-        int index = builder.lastIndexOf(originInfoShort.eTldPlusOne);
+        builder.append(originInfo.originSpec);
+        int index = builder.lastIndexOf(originInfo.eTldPlusOne);
         if (index > 0 && index < builder.length()) {
             builder.insert(index, "<b>");
             builder.insert(builder.length(), "</b>");
@@ -1417,8 +1417,8 @@ public class Utils {
         return builder.toString();
     }
 
-    public static Spanned geteTldSpanned(OriginInfoShort originInfoShort) {
-        return AndroidUtils.formatHTML(geteTldHtmlString(originInfoShort));
+    public static Spanned geteTldSpanned(OriginInfo originInfo) {
+        return AndroidUtils.formatHTML(geteTldHtmlString(originInfo));
     }
 
     @NonNull

@@ -649,7 +649,7 @@ void EthereumProviderImpl::SignMessageInternal(
   }
 
   auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfoShort(delegate_->GetOrigin()), -1, address, domain, message,
+      MakeOriginInfo(delegate_->GetOrigin()), -1, address, domain, message,
       is_eip712, domain_hash, primary_hash, absl::nullopt, mojom::CoinType::ETH,
       json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH,
                                         delegate_->GetOrigin()));
@@ -1381,7 +1381,7 @@ void EthereumProviderImpl::AddSuggestToken(mojom::BlockchainTokenPtr token,
   }
 
   auto request = mojom::AddSuggestTokenRequest::New(
-      MakeOriginInfoShort(delegate_->GetOrigin()), std::move(token));
+      MakeOriginInfo(delegate_->GetOrigin()), std::move(token));
   brave_wallet_service_->AddSuggestTokenRequest(
       std::move(request), std::move(callback), std::move(id));
   delegate_->ShowPanel();

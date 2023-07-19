@@ -68,8 +68,9 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
   EXPECT_EQ(ti->tx_status, meta.status());
   EXPECT_EQ(ti->from_address, meta.from());
   EXPECT_EQ(ti->tx_hash, meta.tx_hash());
-  EXPECT_EQ(ti->origin_info, MakeOriginInfoShort(url::Origin::Create(
-                                 GURL("https://test.brave.com/"))));
+  EXPECT_EQ(
+      ti->origin_info,
+      MakeOriginInfo(url::Origin::Create(GURL("https://test.brave.com/"))));
   EXPECT_EQ(ti->group_id, meta.group_id());
 
   EXPECT_EQ(meta.created_time().ToJavaTime(),

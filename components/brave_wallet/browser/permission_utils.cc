@@ -190,7 +190,7 @@ GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,
     query_parts.push_back(base::StringPrintf("addr=%s", account.c_str()));
   }
 
-  auto origin_info = MakeOriginInfoShort(origin);
+  auto origin_info = MakeOriginInfo(origin);
 
   query_parts.push_back(
       base::StringPrintf("origin-spec=%s", origin_info->origin_spec.c_str()));
