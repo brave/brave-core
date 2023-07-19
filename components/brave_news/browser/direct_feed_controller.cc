@@ -162,7 +162,7 @@ void DirectFeedController::FindFeedsImpl(
 void DirectFeedController::OnFindFeedsImplDownloadedFeed(
     const GURL& feed_url,
     DirectFeedResponse response) {
-  if (auto* feed = absl::get_if<FeedData>(&response.result)) {
+  if (auto* feed = absl::get_if<DirectFeedResult>(&response.result)) {
     std::vector<mojom::FeedSearchResultItemPtr> results;
 
     auto feed_result = mojom::FeedSearchResultItem::New();
@@ -186,8 +186,8 @@ void DirectFeedController::OnFindFeedsImplDownloadedFeed(
            std::vector<DirectFeedResponse> responses) {
           std::vector<mojom::FeedSearchResultItemPtr> results;
           for (const auto& response : responses) {
-            if (auto* feed = absl::get_if<FeedData>(&response.result)) {
-              if (feed->title.empty() || feed->items.empty()) {
+            if (auto* feed = absl::get_if<DirectFeedResult>(&response.result)) {
+              if (feed->title.empty() || feed->articles.empty()) {
                 continue;
               }
               auto feed_result = mojom::FeedSearchResultItem::New();
@@ -264,7 +264,7 @@ void DirectFeedController::VerifyFeedUrl(const GURL& feed_url,
             // Handle response
             std::string title = "";
             bool success = false;
-            if (auto* feed = absl::get_if<FeedData>(&response.result)) {
+            if (auto* feed = absl::get_if<DirectFeedResult>(&response.result)) {
               title = feed->title.c_str();
               success = true;
             }
@@ -318,14 +318,12 @@ void DirectFeedController::DownloadFeedContent(const GURL& feed_url,
       [](GetArticlesCallback callback, const std::string& publisher_id,
          DirectFeedResponse data) {
         // Validate response
-        if (auto* feed = absl::get_if<FeedData>(&data.result)) {
+        if (auto* feed = absl::get_if<DirectFeedResult>(&data.result)) {
           // Valid feed, convert items
           VLOG(1) << "Valid feed parsed from " << data.url.spec();
-          Articles articles;
-          DirectFeedController::BuildArticles(articles, std::move(*feed),
-                                              publisher_id);
-          VLOG(1) << "Direct feed retrieved article count: " << articles.size();
-          std::move(callback).Run(std::move(articles));
+          VLOG(1) << "Direct feed retrieved article count: "
+                  << feed->articles.size();
+          std::move(callback).Run(std::move(feed->articles));
           return;
         }
         std::move(callback).Run({});
@@ -333,37 +331,6 @@ void DirectFeedController::DownloadFeedContent(const GURL& feed_url,
       std::move(callback), publisher_id);
   // Make request
   DownloadFeed(feed_url, std::move(response_handler));
-}
-
-// static
-void DirectFeedController::BuildArticles(Articles& articles,
-                                         const FeedData& data,
-                                         const std::string& publisher_id) {
-  for (auto entry : data.items) {
-    auto item = RustFeedItemToArticle(entry, publisher_id);
-    // Only allow http and https links
-    if (!item->data->url.SchemeIsHTTPOrHTTPS()) {
-      continue;
-    }
-    articles.emplace_back(std::move(item));
-    // Limit to a certain count of articles, since for now the content
-    // is only shown in a single combined feed, and the user cannot view
-    // feed items per source.
-    if (articles.size() >= kMaxArticlesPerDirectFeedSource) {
-      break;
-    }
-  }
-  // Add variety to score, same as brave feed aggregator
-  // Sort by score, ascending
-  std::sort(articles.begin(), articles.end(),
-            [](mojom::ArticlePtr& a, mojom::ArticlePtr& b) {
-              return (a.get()->data->score < b.get()->data->score);
-            });
-  double variety = 2.0;
-  for (auto& entry : articles) {
-    entry->data->score = entry->data->score * variety;
-    variety = variety * 2.0;
-  }
 }
 
 void DirectFeedController::DownloadFeed(const GURL& feed_url,

@@ -20,6 +20,8 @@
 
 namespace brave_news {
 
+constexpr std::size_t kMaxArticlesPerDirectFeedSource = 100;
+
 struct DirectFeedError {
   std::string body_content;
 };

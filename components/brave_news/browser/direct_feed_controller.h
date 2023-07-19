@@ -16,11 +16,8 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
-#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-#include "brave/components/brave_news/rust/lib.rs.h"
 #include "url/gurl.h"
 
 class PrefService;
@@ -31,8 +28,6 @@ class SimpleURLLoader;
 }  // namespace network
 
 namespace brave_news {
-
-constexpr std::size_t kMaxArticlesPerDirectFeedSource = 100;
 
 using Articles = std::vector<mojom::ArticlePtr>;
 using GetArticlesCallback = base::OnceCallback<void(Articles)>;
@@ -90,11 +85,6 @@ class DirectFeedController {
   FRIEND_TEST_ALL_PREFIXES(BraveNewsDirectFeed, ParseToArticle);
   FRIEND_TEST_ALL_PREFIXES(BraveNewsDirectFeed, ParseOnlyAllowsHTTPLinks);
 
-  // Convert from a parsed feed's FeedData to the mojom Article objects used
-  // in Brave News.
-  static void BuildArticles(Articles& articles,
-                            const FeedData& data,
-                            const std::string& publisher_id);
   void DownloadFeedContent(const GURL& feed_url,
                            const std::string& publisher_id,
                            GetArticlesCallback callback);
