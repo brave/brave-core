@@ -271,6 +271,15 @@ void BraveSearchConversionPromotionView::ResetChildrenVisibility() {
 void BraveSearchConversionPromotionView::SetTypeAndInput(
     brave_search_conversion::ConversionType type,
     const std::u16string& input) {
+  // Don't need to update promotion ui if input is same.
+  // Not sure why but upstream calls OmniboxResultView::SetMatch() multiple
+  // times for same match. As this called again after selected,
+  // |selected_| state is cleared if not early returned for same input
+  // condition.
+  if (input_ == input) {
+    return;
+  }
+
   DCHECK_NE(ConversionType::kNone, type);
 
   type_ = type;
