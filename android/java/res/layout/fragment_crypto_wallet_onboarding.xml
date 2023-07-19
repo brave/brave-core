@@ -2,6 +2,9 @@
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"
@@ -18,7 +21,7 @@
         <org.chromium.chrome.browser.custom_layout.NonSwipeableViewPager
             android:id="@+id/crypto_wallet_onboarding_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content" />
 
         <ImageView
             android:id="@+id/onboarding_back_button"
@@ -29,6 +32,19 @@
             android:layout_gravity="start|top"
             android:contentDescription="@null"/>
 
+        <TextView
+            android:id="@+id/onboarding_component_download_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="~ONBOARING_4~"
+
+            tools:ignore="HardcodedText"
+
+            android:textColor="@color/wallet_text_color"
+            android:textSize="18sp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:gravity="center_horizontal"
+            android:background="#00ff00"/>
     </FrameLayout>
 
 </androidx.core.widget.NestedScrollView>

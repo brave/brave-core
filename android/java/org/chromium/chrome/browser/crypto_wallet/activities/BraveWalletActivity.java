@@ -5,28 +5,21 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
-
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.ONBOARDING_ACTION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.ONBOARDING_FIRST_PAGE_ACTION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.RESTORE_WALLET_ACTION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.UNLOCK_WALLET_ACTION;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.os.Build;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -67,6 +60,7 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNextPage {
     private static final String TAG = "AssetDetailActivity";
@@ -88,6 +82,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private boolean mRestartSetupAction;
     private boolean mRestartRestoreAction;
     private DataFilesComponentInstaller mDataFilesComponentInstaller;
+    private TextView mComponentDownloadProgress;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -216,6 +211,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         mModalDialogManager = new ModalDialogManager(
                 new AppModalPresenter(this), ModalDialogManager.ModalDialogType.APP);
 
+        mComponentDownloadProgress = findViewById(R.id.onboarding_component_download_progress);
+
         onInitialLayoutInflationComplete();
     }
 
@@ -233,7 +230,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 if (isLocked) {
                     setNavigationFragments(UNLOCK_WALLET_ACTION);
                 } else {
-                    waitDataFilesDownloadAndSetCryptoLayout();
+                    setCryptoLayout();
                 }
             });
         }
@@ -328,6 +325,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 addBackupWalletSequence(navigationItems, true);
                 cryptoWalletOnboardingPagerAdapter.replaceWithNavigationItems(
                         navigationItems, cryptoWalletOnboardingViewPager.getCurrentItem() + 1);
+
+                setupDownloadProgress(mDataFilesComponentInstaller);
             }
 
             cryptoWalletOnboardingPagerAdapter.notifyDataSetChanged();
@@ -342,33 +341,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     @SuppressLint("SetTextI18n")
     /*TODO(AlexeyBarabash): use mDataFilesComponentInstaller ?*/
     private void setupDownloadProgress(DataFilesComponentInstaller dataFilesComponentInstaller) {
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.downloading_wallet_component, null);
-
-        TextView theTextView = (TextView) view.findViewById(R.id.text_view_id);
-        theTextView.setText("Downloading");
-
-        AlertDialog.Builder alert =
-                new AlertDialog.Builder(this, R.style.ThemeOverlay_BrowserUI_AlertDialog);
-        if (alert == null) {
-            return;
-        }
-        AlertDialog.Builder alertDialog =
-                alert.setTitle("Brave Wallet data files").setView(view).setCancelable(false);
-        Dialog dialog = alertDialog.create();
-        dialog.setCanceledOnTouchOutside(false);
-
-        Button skipButton = (Button) view.findViewById(R.id.skip_download_wallet_data_component);
-        skipButton.setText("Skip (download later)");
-        skipButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                // TODO(AlexeyBarabash): that's not perfect - pass as Runnable
-                setCryptoLayout();
-            }
-        });
-
         dataFilesComponentInstaller.setInfoCallback(new DataFilesComponentInstaller.InfoCallback() {
             @Override
             public void onInfo(String info) {
@@ -381,25 +353,22 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 assert totalBytes < (long) Integer.MAX_VALUE;
                 assert downloadedBytes < (long) Integer.MAX_VALUE;
 
-                ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
-                progressBar.setMax((int) totalBytes);
-                progressBar.setProgress((int) downloadedBytes, /*animate*/ true);
+                if (totalBytes > 0 && downloadedBytes == totalBytes) {
+                    mComponentDownloadProgress.setText("Downloading Wallet data file * 100%");
+                    mComponentDownloadProgress.setVisibility(View.GONE);
+                    return;
+                }
+                mComponentDownloadProgress.setVisibility(View.VISIBLE);
+                String progressText =
+                        String.format(Locale.ENGLISH, "Downloading Wallet data file * %d%%",
+                                (int) (100 * downloadedBytes / totalBytes));
+                mComponentDownloadProgress.setText(progressText);
             }
             @Override
             public void onDownloadUpdateComplete() {
-                dialog.dismiss();
+                mComponentDownloadProgress.setVisibility(View.GONE);
             }
         });
-        dialog.show();
-    }
-
-    private void waitDataFilesDownloadAndSetCryptoLayout() {
-        if (!mDataFilesComponentInstaller.needToWaitComponentLoad()) {
-            setCryptoLayout();
-        } else {
-            setupDownloadProgress(mDataFilesComponentInstaller);
-            mDataFilesComponentInstaller.onInstallComplete(() -> { setCryptoLayout(); });
-        }
     }
 
     private void setCryptoLayout() {
@@ -513,7 +482,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 }
                 return;
             }
-            waitDataFilesDownloadAndSetCryptoLayout();
+            setCryptoLayout();
         } else {
             if (cryptoWalletOnboardingViewPager != null) {
                 cryptoWalletOnboardingViewPager.setCurrentItem(
