@@ -25,17 +25,25 @@ import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 
+import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.about_settings.AboutChromeSettings;
 import org.chromium.chrome.browser.about_settings.AboutSettingsBridge;
 import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 
 import java.util.TimeZone;
 
 public class BraveVpnSupportActivity extends AsyncInitializationActivity {
     private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
+    private final OneshotSupplierImpl<Profile> mProfileSupplier;
+
+    public BraveVpnSupportActivity() {
+        mProfileSupplier = new OneshotSupplierImpl<>();
+    }
 
     private void initializeViews() {
         setContentView(R.layout.activity_brave_vpn_support);
@@ -137,7 +145,8 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
 
     @Override
     protected void triggerLayoutInflation() {
-        mFirstRunFlowSequencer = new BraveFirstRunFlowSequencer(this) {
+        mProfileSupplier.set(Profile.getLastUsedRegularProfile());
+        mFirstRunFlowSequencer = new BraveFirstRunFlowSequencer(this, mProfileSupplier) {
             @Override
             public void onFlowIsKnown(Bundle freProperties) {
                 initializeViews();
