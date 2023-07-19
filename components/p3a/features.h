@@ -13,8 +13,11 @@ namespace features {
 
 // See https://github.com/brave/brave-browser/issues/24338 for more info.
 BASE_DECLARE_FEATURE(kConstellation);
+// See https://github.com/brave/brave-browser/issues/31718 for more info.
+BASE_DECLARE_FEATURE(kConstellationEnclaveAttestation);
 
 bool IsConstellationEnabled();
+bool IsConstellationEnclaveAttestationEnabled();
 
 }  // namespace features
 }  // namespace p3a
