@@ -7,9 +7,11 @@
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_DIRECT_FEED_FETCHER_H_
 
 #include <list>
+#include <variant>
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/rust/lib.rs.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -22,6 +24,12 @@ struct DirectFeedData {
   GURL url;
   bool success = false;
 };
+
+struct DirectFeedError {
+
+};
+
+using Response = std::variant<DirectFeedData, DirectFeedError>;
 
 using DownloadFeedCallback = base::OnceCallback<void(DirectFeedData)>;
 

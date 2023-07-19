@@ -19,6 +19,7 @@
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/uuid.h"
+#include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/browser/html_parsing.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
@@ -70,7 +71,9 @@ DirectFeedController::FindFeedRequest::~FindFeedRequest() = default;
 DirectFeedController::DirectFeedController(
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : prefs_(prefs), url_loader_factory_(url_loader_factory) {}
+    : prefs_(prefs),
+      fetcher_(url_loader_factory),
+      url_loader_factory_(url_loader_factory) {}
 
 DirectFeedController::~DirectFeedController() = default;
 
@@ -149,6 +152,7 @@ void DirectFeedController::FindFeeds(
       {possible_feed_or_site_url, std::move(callback)});
   FindFeedsImpl(possible_feed_or_site_url);
 }
+
 
 void DirectFeedController::FindFeedsImpl(
     const GURL& possible_feed_or_site_url) {
@@ -331,18 +335,17 @@ void DirectFeedController::VerifyFeedUrl(const GURL& feed_url,
   // TODO(petemill): Cache for a certain amount of time since user
   // will likely add to their user feed sources. Unless this is already
   // cached via network service?
-  DownloadFeed(feed_url, base::BindOnce(
-                             [](IsValidCallback callback,
-                                std::unique_ptr<DirectFeedResponse> response) {
-                               // Handle response
-                               std::string title = "";
-                               if (response->success) {
-                                 title = response->data.title.c_str();
-                               }
-                               std::move(callback).Run(response->success,
-                                                       title);
-                             },
-                             std::move(callback)));
+  DownloadFeed(feed_url,
+               base::BindOnce(
+                   [](IsValidCallback callback, DirectFeedData response) {
+                     // Handle response
+                     std::string title = "";
+                     if (response.success) {
+                       title = response.data.title.c_str();
+                     }
+                     std::move(callback).Run(response.success, title);
+                   },
+                   std::move(callback)));
 }
 
 void DirectFeedController::DownloadAllContent(
@@ -386,25 +389,25 @@ void DirectFeedController::DownloadFeedContent(const GURL& feed_url,
                                                const std::string& publisher_id,
                                                GetArticlesCallback callback) {
   // Handle Data
-  auto responseHandler = base::BindOnce(
+  auto response_handler = base::BindOnce(
       [](GetArticlesCallback callback, const std::string& publisher_id,
-         std::unique_ptr<DirectFeedResponse> response) {
+         DirectFeedData response) {
         // Validate response
-        if (!response->success) {
+        if (!response.success) {
           std::move(callback).Run({});
           return;
         }
         // Valid feed, convert items
-        VLOG(1) << "Valid feed parsed from " << response->url.spec();
+        VLOG(1) << "Valid feed parsed from " << response.url.spec();
         Articles articles;
-        DirectFeedController::BuildArticles(articles, response->data,
+        DirectFeedController::BuildArticles(articles, response.data,
                                             publisher_id);
         VLOG(1) << "Direct feed retrieved article count: " << articles.size();
         std::move(callback).Run(std::move(articles));
       },
       std::move(callback), publisher_id);
   // Make request
-  DownloadFeed(feed_url, std::move(responseHandler));
+  DownloadFeed(feed_url, std::move(response_handler));
 }
 
 // static
@@ -440,68 +443,7 @@ void DirectFeedController::BuildArticles(Articles& articles,
 
 void DirectFeedController::DownloadFeed(const GURL& feed_url,
                                         DownloadFeedCallback callback) {
-  // Make request
-  auto request = std::make_unique<network::ResourceRequest>();
-  request->url = feed_url;
-  request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
-  request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  request->method = net::HttpRequestHeaders::kGetMethod;
-  auto url_loader = network::SimpleURLLoader::Create(
-      std::move(request), GetNetworkTrafficAnnotationTag());
-  url_loader->SetRetryOptions(
-      1, network::SimpleURLLoader::RetryMode::RETRY_ON_5XX |
-             network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
-  url_loader->SetAllowHttpErrorResults(true);
-  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
-  iter->get()->DownloadToString(
-      url_loader_factory_.get(),
-      // Handle response
-      base::BindOnce(&DirectFeedController::OnResponse, base::Unretained(this),
-                     iter, std::move(callback), feed_url),
-      5 * 1024 * 1024);
-}
-
-void DirectFeedController::OnResponse(
-    SimpleURLLoaderList::iterator iter,
-    DownloadFeedCallback callback,
-    const GURL& feed_url,
-    const std::unique_ptr<std::string> response_body) {
-  // Parse response data
-  auto* loader = iter->get();
-  auto response_code = -1;
-  base::flat_map<std::string, std::string> headers;
-  if (loader->ResponseInfo()) {
-    auto headers_list = loader->ResponseInfo()->headers;
-    if (headers_list) {
-      response_code = headers_list->response_code();
-    }
-  }
-  url_loaders_.erase(iter);
-  // Validate if we get a feed
-  std::string body_content = response_body ? *response_body : "";
-  // TODO(petemill): handle any url redirects and change the stored feed url?
-  auto result = std::make_unique<DirectFeedResponse>(DirectFeedResponse());
-  result->url = feed_url;
-  if (response_code < 200 || response_code >= 300 || body_content.empty()) {
-    VLOG(1) << feed_url.spec()
-            << " invalid response, status: " << response_code;
-    std::move(callback).Run(std::move(result));
-    return;
-  }
-
-  // Response is valid, but still might not be a feed
-  ParseFeedDataOffMainThread(feed_url, std::move(body_content),
-                             base::BindOnce(
-                                 [](DownloadFeedCallback callback,
-                                    std::unique_ptr<DirectFeedResponse> result,
-                                    absl::optional<FeedData> data) {
-                                   if (data) {
-                                     result->success = true;
-                                     result->data = data.value();
-                                   }
-                                   std::move(callback).Run(std::move(result));
-                                 },
-                                 std::move(callback), std::move(result)));
+  fetcher_.DownloadFeed(feed_url, std::move(callback));
 }
 
 }  // namespace brave_news

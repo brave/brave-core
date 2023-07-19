@@ -15,6 +15,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/scoped_refptr.h"
+#include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -44,8 +45,6 @@ using Articles = std::vector<mojom::ArticlePtr>;
 using GetArticlesCallback = base::OnceCallback<void(Articles)>;
 using GetFeedItemsCallback =
     base::OnceCallback<void(std::vector<mojom::FeedItemPtr>)>;
-using DownloadFeedCallback =
-    base::OnceCallback<void(std::unique_ptr<DirectFeedResponse>)>;
 using IsValidCallback =
     base::OnceCallback<void(const bool is_valid, const std::string& title)>;
 
@@ -119,6 +118,7 @@ class DirectFeedController {
 
   raw_ptr<PrefService> prefs_;
   SimpleURLLoaderList url_loaders_;
+  DirectFeedFetcher fetcher_;
 
   // TODO(sko) We should have a way to cancel requests.
   // e.g. Navigate to different sites, quit app.
