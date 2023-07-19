@@ -4,12 +4,12 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 (function() {
-  if (!window.ethereum) {
+  if (!window.braveEthereum) {
     return
   }
   var EventEmitter = require('events')
   var BraveWeb3ProviderEventEmitter = new EventEmitter()
-  $Object.defineProperties(window.ethereum, {
+  $Object.defineProperties(window.braveEthereum, {
     on: {
       value: BraveWeb3ProviderEventEmitter.on,
       writable: false

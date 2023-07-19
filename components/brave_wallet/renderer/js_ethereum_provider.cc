@@ -28,15 +28,16 @@
 #include "gin/function_template.h"
 #include "gin/handle.h"
 #include "gin/object_template_builder.h"
+#include "third_party/abseil-cpp/absl/base/macros.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/mojom/devtools/console_message.mojom.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
-
 namespace {
 
+constexpr char kBraveEthereum[] = "braveEthereum";
 constexpr char kEthereum[] = "ethereum";
 constexpr char kEmit[] = "emit";
 constexpr char kIsBraveWallet[] = "isBraveWallet";
@@ -149,7 +150,8 @@ bool JSEthereumProvider::EnsureConnected() {
 }
 
 // static
-void JSEthereumProvider::Install(bool allow_overwrite_window_ethereum_provider,
+void JSEthereumProvider::Install(bool install_ethereum_provider,
+                                 bool allow_overwrite_window_ethereum_provider,
                                  content::RenderFrame* render_frame) {
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::HandleScope handle_scope(isolate);
@@ -164,12 +166,6 @@ void JSEthereumProvider::Install(bool allow_overwrite_window_ethereum_provider,
 
   // Check window.ethereum existence.
   v8::Local<v8::Object> global = context->Global();
-  v8::Local<v8::Value> ethereum_value =
-      global->Get(context, gin::StringToV8(isolate, kEthereum))
-          .ToLocalChecked();
-  if (!ethereum_value->IsUndefined()) {
-    return;
-  }
 
   gin::Handle<JSEthereumProvider> provider =
       gin::CreateHandle(isolate, new JSEthereumProvider(render_frame));
@@ -200,13 +196,25 @@ void JSEthereumProvider::Install(bool allow_overwrite_window_ethereum_provider,
     return;
   }
 
-  if (!allow_overwrite_window_ethereum_provider) {
+  // Set window.ethereumProvider
+  {
     SetProviderNonWritable(context, global, ethereum_proxy,
-                           gin::StringToV8(isolate, kEthereum), true);
-  } else {
-    global
-        ->Set(context, gin::StringToSymbol(isolate, kEthereum), ethereum_proxy)
-        .Check();
+                           gin::StringToV8(isolate, kBraveEthereum), true);
+  }
+
+  v8::Local<v8::Value> ethereum_value =
+      global->Get(context, gin::StringToV8(isolate, kEthereum))
+          .ToLocalChecked();
+  if (install_ethereum_provider && ethereum_value->IsUndefined()) {
+    if (!allow_overwrite_window_ethereum_provider) {
+      SetProviderNonWritable(context, global, ethereum_proxy,
+                             gin::StringToV8(isolate, kEthereum), true);
+    } else {
+      global
+          ->Set(context, gin::StringToSymbol(isolate, kEthereum),
+                ethereum_proxy)
+          .Check();
+    }
   }
 
   // Non-function properties are readonly guaranteed by gin::Wrappable
@@ -229,8 +237,6 @@ void JSEthereumProvider::Install(bool allow_overwrite_window_ethereum_provider,
                     IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS),
                 kEthereumProviderScript);
 
-  provider->ethereum_provider_proxy_ =
-      v8::Global<v8::Object>(isolate, ethereum_proxy);
   provider->BindRequestProviderListener();
   provider->AnnounceProvider();
 }
@@ -595,7 +601,7 @@ void JSEthereumProvider::FireEvent(const std::string& event,
     args.push_back(
         content::V8ValueConverter::Create()->ToV8Value(argument, context));
   }
-  CallMethodOfObject(render_frame()->GetWebFrame(), kEthereum, kEmit,
+  CallMethodOfObject(render_frame()->GetWebFrame(), kBraveEthereum, kEmit,
                      std::move(args));
 }
 
@@ -713,11 +719,14 @@ void JSEthereumProvider::AnnounceProvider() {
     return;
   }
 
+  auto provider =
+      GetProperty(context, context->Global(), kBraveEthereum).ToLocalChecked();
+
   if (detail
           ->Set(context,
                 content::V8ValueConverter::Create()->ToV8Value(
                     base::Value("provider"), context),
-                ethereum_provider_proxy_.Get(isolate))
+                provider)
           .IsNothing()) {
     NOTREACHED();
     return;
@@ -753,7 +762,9 @@ void JSEthereumProvider::AnnounceProvider() {
       std::move(event_content)};
 
   v8::Local<v8::Value> custom_event_value =
-      custom_event->NewInstanceWithSideEffectType(context, 2, custom_event_args)
+      custom_event
+          ->NewInstance(context, ABSL_ARRAYSIZE(custom_event_args),
+                        custom_event_args)
           .ToLocalChecked();
 
   v8::Local<v8::Function> dispatch_event =
@@ -763,7 +774,9 @@ void JSEthereumProvider::AnnounceProvider() {
 
   v8::Local<v8::Value> dispatch_event_args[] = {std::move(custom_event_value)};
 
-  dispatch_event->Call(context, context->Global(), 1, dispatch_event_args)
+  dispatch_event
+      ->Call(context, context->Global(), ABSL_ARRAYSIZE(dispatch_event_args),
+             dispatch_event_args)
       .ToLocalChecked();
 }
 

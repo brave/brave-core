@@ -41,6 +41,26 @@
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 namespace {
+
+constexpr char kTestEIP6963[] = R"(
+    (async () => {
+      try {
+        let promise = new Promise((resolve) => {
+          const listener = (event) => {
+            window.removeEventListener("eip6963:announceProvider", listener);
+            let is_brave_wallet = event.detail.info.name === "Brave Wallet" &&
+                                  event.detail.provider.isBraveWallet === true;
+            resolve(is_brave_wallet);
+          }
+          window.addEventListener("eip6963:announceProvider", listener);
+          window.dispatchEvent(new Event("eip6963:requestProvider"));
+        })
+        return await promise;
+      } catch (e) {
+        return false;
+      }
+    })();)";
+
 std::string NonWriteableScriptProperty(const std::string& property) {
   return base::StringPrintf(
       R"(window.ethereum.%s = "brave";
@@ -253,26 +273,8 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, EIP6369) {
   EXPECT_TRUE(
       content::EvalJs(primary_main_frame(), kEvalIsBraveWallet).ExtractBool());
 
-  std::string command = R"(
-    (async () => {
-      try {
-        let promise = new Promise((resolve) => {
-          const listener = (event) => {
-            window.removeEventListener("eip6963:announceProvider", listener);
-            let is_brave_wallet = event.detail.info.name === "Brave Wallet" &&
-                                  event.detail.provider.isBraveWallet === true;
-            resolve(is_brave_wallet);
-          }
-          window.addEventListener("eip6963:announceProvider", listener);
-          window.dispatchEvent(new Event("eip6963:requestProvider"));
-        })
-        return await promise;
-      } catch (e) {
-        return false;
-      }
-    })();)";
-
-  EXPECT_TRUE(content::EvalJs(primary_main_frame(), command).ExtractBool());
+  EXPECT_TRUE(
+      content::EvalJs(primary_main_frame(), kTestEIP6963).ExtractBool());
 
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
 }
@@ -280,49 +282,24 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, EIP6369) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
-                       EIP6369_MetaMaskAttached) {
+                       EIP6369_WithoutEthereumInstalled) {
   auto* keyring_service =
       brave_wallet::KeyringServiceFactory::GetServiceForContext(
           browser()->profile());
   keyring_service->CreateWallet("password", base::DoNothing());
 
-  scoped_refptr<const extensions::Extension> extension(
-      extensions::ExtensionBuilder("MetaMask")
-          .SetID(metamask_extension_id)
-          .Build());
-  extensions::ExtensionSystem::Get(browser()->profile())
-      ->extension_service()
-      ->AddExtension(extension.get());
-
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
-      brave_wallet::mojom::DefaultWallet::BraveWallet);
+      brave_wallet::mojom::DefaultWallet::None);
 
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  constexpr char kEvalIsBraveWallet[] = "window.ethereum.isBraveWallet";
+  constexpr char kEvalIsBraveWallet[] = "window.braveEthereum.isBraveWallet";
   EXPECT_TRUE(
       content::EvalJs(primary_main_frame(), kEvalIsBraveWallet).ExtractBool());
 
-  std::string command = R"(
-    (async () => {
-      try {
-        let promise = new Promise((resolve) => {
-          const listener = (event) => {
-            window.removeEventListener("eip6963:announceProvider", listener);
-            let is_brave_wallet = event.detail.info.name === "Brave Wallet" &&
-                                  event.detail.provider.isBraveWallet === true;
-            resolve(is_brave_wallet);
-          }
-          window.addEventListener("eip6963:announceProvider", listener);
-          window.dispatchEvent(new Event("eip6963:requestProvider"));
-        })
-        return await promise;
-      } catch (e) {
-        return false;
-      }
-    })();)";
+  std::string command = kTestEIP6963;
 
   EXPECT_TRUE(content::EvalJs(primary_main_frame(), command).ExtractBool());
 
@@ -351,10 +328,19 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  std::string command = "window.ethereum.isBraveWallet";
-  EXPECT_TRUE(content::EvalJs(primary_main_frame(), command)
-                  .error.find("Cannot read properties of undefined") !=
-              std::string::npos);
+  {
+    std::string command = "window.ethereum.isBraveWallet";
+    EXPECT_TRUE(content::EvalJs(primary_main_frame(), command)
+                    .error.find("Cannot read properties of undefined") !=
+                std::string::npos);
+  }
+
+  {
+    std::string command = "window.braveEthereum.isBraveWallet";
+    EXPECT_EQ(base::Value(true),
+              content::EvalJs(primary_main_frame(), command).value);
+  }
+
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
 }
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
@@ -377,13 +363,27 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonWritable) {
        {"on", "emit", "removeListener", "removeAllListeners", "request",
         "isConnected", "enable", "sendAsync"}) {
     SCOPED_TRACE(method);
-    auto result =
-        EvalJs(web_contents(), NonWriteableScriptMethod("ethereum", method));
-    EXPECT_EQ(base::Value(true), result.value) << result.error;
+    {
+      auto result =
+          EvalJs(web_contents(), NonWriteableScriptMethod("ethereum", method));
+      EXPECT_EQ(base::Value(true), result.value) << result.error;
+    }
+
+    {
+      auto result = EvalJs(web_contents(),
+                           NonWriteableScriptMethod("braveEthereum", method));
+      EXPECT_EQ(base::Value(true), result.value) << result.error;
+    }
   }
   {
     auto result =
         EvalJs(web_contents(), NonWriteableScriptMethod("ethereum", "send"));
+    EXPECT_EQ(base::Value(false), result.value) << result.error;
+  }
+
+  {
+    auto result = EvalJs(web_contents(),
+                         NonWriteableScriptMethod("braveEthereum", "send"));
     EXPECT_EQ(base::Value(false), result.value) << result.error;
   }
 
@@ -421,6 +421,25 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonConfigurable) {
        } catch (e) {}
        window.ethereum = 42;
        typeof window.ethereum === 'object'
+    )";
+  EXPECT_TRUE(content::EvalJs(primary_main_frame(), overwrite).ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
+                       BraveEthereum_NonConfigurable) {
+  brave_wallet::SetDefaultEthereumWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::None);
+  const GURL url = https_server_.GetURL("/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  std::string overwrite =
+      R"(try {
+         Object.defineProperty(window, 'braveEthereum', {
+           writable: true,
+         });
+       } catch (e) {}
+       window.braveEthereum = 42;
+       typeof window.braveEthereum === 'object'
     )";
   EXPECT_TRUE(content::EvalJs(primary_main_frame(), overwrite).ExtractBool());
 }

@@ -33,7 +33,8 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
   JSEthereumProvider(const JSEthereumProvider&) = delete;
   JSEthereumProvider& operator=(const JSEthereumProvider&) = delete;
 
-  static void Install(bool allow_overwrite_window_ethereum_provider,
+  static void Install(bool install_ethereum_provider,
+                      bool allow_overwrite_window_ethereum_provider,
                       content::RenderFrame* render_frame);
 
   // gin::WrappableBase
@@ -135,7 +136,6 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
   std::string first_allowed_account_;
   std::string uuid_;
   absl::optional<std::string> brave_wallet_image_;
-  v8::Global<v8::Object> ethereum_provider_proxy_;
   base::WeakPtrFactory<JSEthereumProvider> weak_ptr_factory_{this};
 };
 
