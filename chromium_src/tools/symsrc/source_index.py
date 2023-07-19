@@ -3,9 +3,22 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import os
+
 from pathlib import Path
 
 import override_utils
+
+GIT_BAT = 'git.bat'
+
+
+def IsGitIgnored(local_file_dir, local_filename):
+    ignore_info = RunCommand(GIT_BAT,
+                             'check-ignore',
+                             local_filename,
+                             cwd=local_file_dir,
+                             raise_on_failure=False)
+    return bool(ignore_info)
 
 
 @override_utils.override_function(globals())
@@ -18,10 +31,29 @@ def GetCasedFilePath(_orig_func, filename):
 def RunCommand(orig_func, *cmd, **kwargs):
     # Git output is actually UTF-8, so handle it properly. Assert is added to
     # ensure this won't fail silently if `git.bat` will be replaced.
-    assert cmd[0] in ('cmd', 'git.bat'), cmd[0]
-    if cmd[0] == 'git.bat':
+    assert cmd[0] in ('cmd', GIT_BAT), cmd[0]
+    if cmd[0] == GIT_BAT:
         kwargs.setdefault('encoding', 'utf-8')
     return orig_func(*cmd, **kwargs)
+
+
+@override_utils.override_function(globals())
+def ExtractGitInfo(orig_func, local_filename):
+    cased_filename = GetCasedFilePath(local_filename)  # pylint: disable=no-value-for-parameter
+    local_file_basename = os.path.basename(cased_filename)
+    local_file_dir = os.path.dirname(cased_filename)
+    if IsGitIgnored(local_file_dir, local_file_basename):
+        return None
+
+    return orig_func(local_filename)
+
+
+@override_utils.override_function(globals())
+def DirectoryIsPartOfPublicGitRepository(orig_func, local_dir):
+    if IsGitIgnored(local_dir, '.'):
+        return False
+
+    return orig_func(local_dir)
 
 
 @override_utils.override_function(globals())
