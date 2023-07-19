@@ -73,7 +73,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     private static final int INVALIDATE_CREDENTIAL_TIMER_COUNT = 5000;
 
     private static final String VPN_SUPPORT_PAGE =
-            "https://support.brave.com/hc/en-us/articles/360045045952";
+            "https://support.brave.com/hc/en-us/articles/4410838268429";
     private static final String MANAGE_SUBSCRIPTION_PAGE =
             "https://play.google.com/store/account/subscriptions";
 
