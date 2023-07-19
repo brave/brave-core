@@ -19,7 +19,7 @@ public class BraveTabUiThemeProvider {
     public static int getTitleTextColor(Context context, boolean isIncognito, boolean isSelected) {
         if (isSelected) {
             return ApiCompatibilityUtils.getColor(
-                    context.getResources(), R.color.baseline_neutral_900);
+                    context.getResources(), R.color.baseline_neutral_10);
         }
 
         return TabUiThemeProvider.getTitleTextColor(context, isIncognito, isSelected);
@@ -28,7 +28,7 @@ public class BraveTabUiThemeProvider {
     public static ColorStateList getActionButtonTintList(
             Context context, boolean isIncognito, boolean isSelected) {
         if (isSelected) {
-            return AppCompatResources.getColorStateList(context, R.color.baseline_neutral_900);
+            return AppCompatResources.getColorStateList(context, R.color.baseline_neutral_10);
         }
 
         return TabUiThemeProvider.getActionButtonTintList(context, isIncognito, isSelected);
