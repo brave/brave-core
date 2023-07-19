@@ -29,7 +29,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "url/gurl.h"
 
 namespace brave_news {
@@ -169,7 +168,7 @@ void DirectFeedController::OnFindFeedsImplDownloadedFeed(
           std::vector<mojom::FeedSearchResultItemPtr> results;
           for (const auto& response : responses) {
             if (auto* feed = absl::get_if<DirectFeedResult>(&response.result)) {
-              if (feed->title.empty() || feed->articles.empty()) {
+              if (feed->title.empty()) {
                 continue;
               }
               auto feed_result = mojom::FeedSearchResultItem::New();
