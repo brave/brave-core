@@ -66,3 +66,11 @@ index d7ceb4f02120ec22640efc0ab92706c06a110c01..6677ae1444cefaea6beb62fac84e748e
  
      # More deps for DFMs.
      if (dfmify_dev_ui) {
+@@ -3523,6 +3531,7 @@ generate_jni("chrome_jni_headers") {
+     "java/src/org/chromium/chrome/browser/webapps/WebApkUpdateManager.java",
+     "java/src/org/chromium/chrome/browser/webapps/WebappRegistry.java",
+   ]
++  sources += brave_jni_headers_sources
+ 
+   if (enable_vr) {
+     sources += [ "features/vr/java/src/org/chromium/chrome/browser/vr/VrModuleProvider.java" ]
