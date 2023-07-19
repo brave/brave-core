@@ -58,155 +58,111 @@ FeedFetcher::FeedFetcher(
 
 FeedFetcher::~FeedFetcher() = default;
 
-void FeedFetcher::GetOrFetchFeed(FetchFeedCallback callback) {
-  VLOG(1) << __FUNCTION__;
-
-  if (!current_feed_items_.empty()) {
-    VLOG(1) << __FUNCTION__ << " - returning feed from cache";
-    std::move(callback).Run(Clone(current_feed_items_));
-    return;
-  }
-
-  VLOG(1) << __FUNCTION__ << " - no cached feed, updating";
-  on_current_update_complete_->Post(
-      FROM_HERE,
-      base::BindOnce(
-          [](base::WeakPtr<FeedFetcher> controller,
-             FetchFeedCallback callback) {
-            if (!controller) {
-              return;
-            }
-            VLOG(1) << __FUNCTION__ << " - received updated feed ("
-                    << controller->current_feed_items_.size() << " items)";
-            std::move(callback).Run(Clone(controller->current_feed_items_));
-          },
-          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-  EnsureFeedIsUpdating();
-}
-
-void FeedFetcher::EnsureFeedIsUpdating() {
-  if (is_update_in_progress_) {
-    return;
-  }
-
-  is_update_in_progress_ = true;
-
-  publishers_controller_->GetOrFetchPublishers(base::BindOnce(
-      [](base::WeakPtr<FeedFetcher> controller, Publishers publishers) {
-        if (!controller) {
-          return;
-        }
-
-        if (publishers.empty()) {
-          LOG(ERROR) << "Brave News Publisher list was empty";
-          controller->NotifyUpdateDone();
-          return;
-        }
-
-        auto locales = GetMinimalLocalesSet(
-            controller->channels_controller_->GetChannelLocales(), publishers);
-        auto downloaded_callback = base::BarrierCallback<FeedItems>(
-            locales.size(),
-            base::BindOnce(
-                [](base::WeakPtr<FeedFetcher> controller, Publishers publishers,
-                   std::vector<FeedItems> feed_items_unflat) {
-                  if (!controller) {
-                    return;
-                  }
-
-                  std::size_t total_size = 0;
-                  for (const auto& collection : feed_items_unflat) {
-                    total_size += collection.size();
-                  }
-                  VLOG(1) << "All feed item fetches done with item count: "
-                          << total_size;
-                  if (total_size == 0) {
-                    controller->ResetFeed();
-                    controller->NotifyUpdateDone();
-                    return;
-                  }
-
-                  controller->current_feed_items_.clear();
-                  controller->current_feed_items_.reserve(total_size);
-                  for (auto& collection : feed_items_unflat) {
-                    controller->current_feed_items_.insert(
-                        controller->current_feed_items_.end(),
-                        std::make_move_iterator(collection.begin()),
-                        std::make_move_iterator(collection.end()));
-                  }
-
-                  controller->NotifyUpdateDone();
-                },
-                controller->weak_ptr_factory_.GetWeakPtr(),
-                std::move(publishers)));
-
-        for (const auto& locale : locales) {
-          auto response_handler = base::BindOnce(
-              [](base::WeakPtr<FeedFetcher> controller, std::string locale,
-                 GetRawFeedCallback callback,
-                 api_request_helper::APIRequestResult api_request_result) {
-                if (!controller) {
-                  return;
-                }
-
-                std::string etag;
-                if (api_request_result.headers().contains(kEtagHeaderKey)) {
-                  etag = api_request_result.headers().at(kEtagHeaderKey);
-                }
-
-                VLOG(1) << "Downloaded feed, status: "
-                        << api_request_result.response_code()
-                        << " etag: " << etag;
-
-                // Handle bad response
-                if (api_request_result.response_code() != 200 ||
-                    api_request_result.value_body().is_none()) {
-                  LOG(ERROR)
-                      << "Bad response from brave news feed.json. Status: "
-                      << api_request_result.response_code();
-                  std::move(callback).Run({});
-                  return;
-                }
-
-                controller->locale_feed_etags_[locale] = etag;
-                std::move(callback).Run(
-                    ParseFeedItems(api_request_result.value_body()));
-              },
-              controller, locale, downloaded_callback);
-          GURL feed_url(GetFeedUrl(locale));
-          VLOG(1) << "Making feed request to " << feed_url.spec();
-          controller->api_request_helper_->Request("GET", feed_url, "", "",
-                                                   std::move(response_handler));
-        }
-      },
-      weak_ptr_factory_.GetWeakPtr()));
-}
-
-void FeedFetcher::IsUpdateAvailable(ETags etags, UpdateAvailableCallback callback) {
+void FeedFetcher::FetchFeed(FetchFeedCallback callback) {
   VLOG(1) << __FUNCTION__;
 
   publishers_controller_->GetOrFetchPublishers(
-      base::BindOnce(&FeedFetcher::OnIsUpdateAvailableFetchedPublishers,
+      base::BindOnce(&FeedFetcher::OnFetchFeedFetchedPublishers,
                      std::move(callback), weak_ptr_factory_.GetWeakPtr()));
 }
 
+void FeedFetcher::OnFetchFeedFetchedPublishers(FetchFeedCallback callback,
+                                               Publishers publishers) {
+  if (publishers.empty()) {
+    LOG(ERROR) << "Brave News Publisher list was empty";
+    std::move(callback).Run({}, {});
+    return;
+  }
+
+  auto locales = GetMinimalLocalesSet(channels_controller_->GetChannelLocales(),
+                                      publishers);
+  auto downloaded_callback = base::BarrierCallback<FeedItems>(
+      locales.size(),
+      base::BindOnce(&FeedFetcher::OnFetchFeedFetchedPublishers,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(publishers)));
+
+  for (const auto& locale : locales) {
+    auto response_handler = base::BindOnce(&FeedFetcher::OnFetchFeedFetchedFeed,
+                                           locale, downloaded_callback);
+    GURL feed_url(GetFeedUrl(locale));
+    VLOG(1) << "Making feed request to " << feed_url.spec();
+    api_request_helper_->Request("GET", feed_url, "", "",
+                                 std::move(response_handler));
+  }
+}
+
+void FeedFetcher::OnFetchFeedFetchedFeed(
+    std::string locale,
+    FetchLocaleFeedCallback callback,
+    api_request_helper::APIRequestResult result) {
+  std::string etag;
+  if (result.headers().contains(kEtagHeaderKey)) {
+    etag = result.headers().at(kEtagHeaderKey);
+  }
+
+  VLOG(1) << "Downloaded feed, status: " << result.response_code()
+          << " etag: " << etag;
+
+  // Handle bad response
+  if (result.response_code() != 200 || result.value_body().is_none()) {
+    LOG(ERROR) << "Bad response from brave news feed.json. Status: "
+               << result.response_code();
+    std::move(callback).Run({});
+    return;
+  }
+
+  // TODO:
+  // locale_feed_etags_[locale] = etag;
+  std::move(callback).Run(ParseFeedItems(result.value_body()));
+}
+
+void FeedFetcher::OnFetchFeedFetchedAll(
+    FetchFeedCallback callback,
+    Publishers publishers,
+    std::vector<FeedItems> feed_items_unflat) {
+  std::size_t total_size = 0;
+  for (const auto& collection : feed_items_unflat) {
+    total_size += collection.size();
+  }
+  VLOG(1) << "All feed item fetches done with item count: " << total_size;
+
+  FeedItems result;
+  result.reserve(total_size);
+  for (auto& collection : feed_items_unflat) {
+    result.insert(result.end(), std::make_move_iterator(collection.begin()),
+                  std::make_move_iterator(collection.end()));
+  }
+
+  // TODO: Return etags here.
+  std::move(callback).Run(std::move(result), {});
+}
+
+void FeedFetcher::IsUpdateAvailable(ETags etags,
+                                    UpdateAvailableCallback callback) {
+  VLOG(1) << __FUNCTION__;
+
+  publishers_controller_->GetOrFetchPublishers(base::BindOnce(
+      &FeedFetcher::OnIsUpdateAvailableFetchedPublishers, std::move(etags),
+      std::move(callback), weak_ptr_factory_.GetWeakPtr()));
+}
+
 void FeedFetcher::OnIsUpdateAvailableFetchedPublishers(
-    const Publishers& publishers,
-    UpdateAvailableCallback callback) {
-  auto locales = GetMinimalLocalesSet(
-      controller->channels_controller_->GetChannelLocales(), publishers);
+    ETags etags,
+    UpdateAvailableCallback callback,
+    Publishers publishers) {
+  auto locales = GetMinimalLocalesSet(channels_controller_->GetChannelLocales(),
+                                      publishers);
   VLOG(1) << __FUNCTION__ << " - going to fetch feed items for "
           << locales.size() << " locales.";
   auto check_completed_callback = base::BarrierCallback<bool>(
       locales.size(),
       base::BindOnce(&FeedFetcher::OnIsUpdateAvailableCheckedFeeds,
-                     std::move(callback),
-                     controller->weak_ptr_factory_.GetWeakPtr()));
+                     std::move(callback), weak_ptr_factory_.GetWeakPtr()));
 
   for (const auto& locale : locales) {
-    auto it = locale_feed_etags_.find(locale);
+    auto it = etags.find(locale);
     // If we haven't fetched this feed yet, we need to update it.
-    if (it == locale_feed_etags_.end()) {
+    if (it == etags.end()) {
       check_completed_callback.Run(true);
       continue;
     }
@@ -225,8 +181,8 @@ void FeedFetcher::OnIsUpdateAvailableFetchedHead(
     base::RepeatingCallback<void(bool)> has_update_callback,
     api_request_helper::APIRequestResult result) {
   std::string etag;
-  if (api_request_result.headers().contains(kEtagHeaderKey)) {
-    etag = api_request_result.headers().at(kEtagHeaderKey);
+  if (result.headers().contains(kEtagHeaderKey)) {
+    etag = result.headers().at(kEtagHeaderKey);
   }
   // Empty etag means perhaps server isn't supporting
   // the header right now, so we assume we should
@@ -253,8 +209,8 @@ void FeedFetcher::OnIsUpdateAvailableFetchedHead(
 }
 
 void FeedFetcher::OnIsUpdateAvailableCheckedFeeds(
-    std::vector<bool> has_updates,
-    UpdateAvailableCallback callback) {
+    UpdateAvailableCallback callback,
+    std::vector<bool> has_updates) {
   std::move(callback).Run(base::ranges::any_of(
       has_updates, [](bool has_update) { return has_update; }));
 }
