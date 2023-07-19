@@ -210,7 +210,7 @@ public abstract class BraveActivity extends ChromeActivity
                            .PrivacyHubMetricsConnectionErrorHandlerDelegate {
     public static final String BRAVE_SEND_URL = "brave://wallet/send";
     public static final String BRAVE_SWAP_URL = "brave://wallet/swap";
-    public static final String BRAVE_DEPOSIT_URL = "brave://wallet/crypto/deposit-funds";
+    public static final String BRAVE_DEPOSIT_URL = "brave://wallet/deposit-funds";
     public static final String BRAVE_REWARDS_SETTINGS_URL = "brave://rewards/";
     public static final String BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL =
             "brave://rewards/#verify";
