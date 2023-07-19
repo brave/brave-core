@@ -82,7 +82,7 @@ export type DefaultBaseCryptocurrencyChanged = {
 }
 
 export type SitePermissionsPayloadType = {
-  accounts: BraveWallet.AccountInfo[]
+  accounts: BraveWallet.AccountId[]
 }
 
 export type RemoveSitePermissionPayloadType = {

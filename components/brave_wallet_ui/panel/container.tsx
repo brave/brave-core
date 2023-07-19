@@ -494,7 +494,6 @@ function Container () {
             decryptPayload={decryptRequest}
             accounts={accounts}
             selectedNetwork={selectedNetwork}
-            eTldPlusOne={activeOrigin.eTldPlusOne}
             onCancel={
               selectedPanel === 'provideEncryptionKey'
                 ? onCancelProvideEncryptionKey

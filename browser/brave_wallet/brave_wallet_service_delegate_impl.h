@@ -22,7 +22,8 @@
 
 namespace content {
 class BrowserContext;
-}
+class WebContents;
+}  // namespace content
 
 namespace brave_wallet {
 
@@ -36,6 +37,9 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
   BraveWalletServiceDelegateImpl& operator=(
       const BraveWalletServiceDelegateImpl&) = delete;
   ~BraveWalletServiceDelegateImpl() override;
+
+  static void SetActiveWebContentsForTesting(
+      content::WebContents* web_contents);
 
   void IsExternalWalletInstalled(mojom::ExternalWalletType,
                                  IsExternalWalletInstalledCallback) override;

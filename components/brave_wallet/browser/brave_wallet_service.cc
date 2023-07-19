@@ -8,7 +8,6 @@
 #include <map>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
@@ -34,7 +33,6 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "crypto/random.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
@@ -161,12 +159,6 @@ base::Value::Dict GetEthNativeAssetFromChain(
 
 bool ShouldCheckTokenId(const brave_wallet::mojom::BlockchainTokenPtr& token) {
   return token->is_erc721 || token->is_erc1155;
-}
-
-std::string GenerateRandomId() {
-  std::vector<uint8_t> bytes(32);
-  crypto::RandBytes(bytes);
-  return base::HexEncode(bytes);
 }
 
 }  // namespace
@@ -1672,7 +1664,7 @@ void BraveWalletService::AddGetPublicKeyRequest(
     return;
   }
 
-  auto request_id = GenerateRandomId();
+  auto request_id = GenerateRandomHexString();
   auto& pending_request =
       pending_get_encryption_public_key_requests_[request_id];
   pending_request.origin = origin;
@@ -1690,9 +1682,7 @@ void BraveWalletService::AddDecryptRequest(
     mojom::EthereumProvider::RequestCallback callback,
     base::Value id) {
   // There can be only 1 request per origin
-  if (base::ranges::any_of(pending_decrypt_requests_, [origin](auto& req) {
-        return req.second.origin == origin;
-      })) {
+  if (HasPendingDecryptRequestForOrigin(origin)) {
     bool reject = true;
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kUserRejectedRequest,
@@ -1702,7 +1692,7 @@ void BraveWalletService::AddDecryptRequest(
     return;
   }
 
-  auto request_id = GenerateRandomId();
+  auto request_id = GenerateRandomHexString();
   auto& pending_request = pending_decrypt_requests_[request_id];
   pending_request.origin = origin;
   pending_request.decrypt_request = mojom::DecryptRequest::New(
@@ -1714,8 +1704,8 @@ void BraveWalletService::AddDecryptRequest(
 void BraveWalletService::GetPendingGetEncryptionPublicKeyRequests(
     GetPendingGetEncryptionPublicKeyRequestsCallback callback) {
   std::vector<mojom::GetEncryptionPublicKeyRequestPtr> requests;
-  for (const auto& [_, request] : pending_get_encryption_public_key_requests_) {
-    requests.push_back(request.encryption_public_key_request.Clone());
+  for (const auto& request : pending_get_encryption_public_key_requests_) {
+    requests.push_back(request.second.encryption_public_key_request.Clone());
   }
   std::move(callback).Run(std::move(requests));
 }
@@ -1826,6 +1816,8 @@ void BraveWalletService::NotifyDecryptRequestProcessed(
   auto request = std::move(pending_decrypt_requests_[request_id]);
   pending_decrypt_requests_.erase(request_id);
 
+  std::string unsafe_message =
+      std::move(request.decrypt_request->unsafe_message);
   auto callback = std::move(request.decrypt_callback);
   base::Value id = std::move(request.decrypt_id);
 
@@ -1833,9 +1825,8 @@ void BraveWalletService::NotifyDecryptRequestProcessed(
   if (approved) {
     std::string key;
     reject = false;
-    std::move(callback).Run(
-        std::move(id), base::Value(request.decrypt_request->unsafe_message),
-        reject, "", false);
+    std::move(callback).Run(std::move(id), base::Value(unsafe_message), reject,
+                            "", false);
   } else {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kUserRejectedRequest,

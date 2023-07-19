@@ -15,6 +15,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
@@ -103,6 +104,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
     provider_.reset();
     web_contents_.reset();
     profile_.SetPermissionControllerDelegate(nullptr);
+    BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(nullptr);
   }
 
   void SetUp() override {
@@ -110,6 +112,8 @@ class SolanaProviderImplUnitTest : public testing::Test {
         TestingBrowserProcess::GetGlobal());
     web_contents_ =
         content::TestWebContents::Create(browser_context(), nullptr);
+    BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(
+        web_contents_.get());
     brave_wallet::BraveWalletTabHelper::CreateForWebContents(
         web_contents_.get());
     brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);

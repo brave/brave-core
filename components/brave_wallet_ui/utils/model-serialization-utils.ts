@@ -85,7 +85,6 @@ export function deserializeSolanaTxData(
 export function makeSerializableTransaction (tx: BraveWallet.TransactionInfo): SerializableTransactionInfo {
   return {
     ...tx,
-    originInfo: tx.originInfo,
     txDataUnion: tx.txDataUnion.solanaTxData
       ? { solanaTxData: makeSerializableSolanaTxData(tx.txDataUnion.solanaTxData) }
       : tx.txDataUnion as SerializableTxDataUnion,

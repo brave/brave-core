@@ -249,12 +249,6 @@ export class MockedWalletApiProxy {
     getActiveOrigin: async () => {
       return {
         originInfo: {
-          origin: {
-            scheme: 'https',
-            host: 'brave.com',
-            port: 443,
-            nonceIfOpaque: undefined
-          },
           originSpec: 'https://brave.com',
           eTldPlusOne: 'brave.com'
         }

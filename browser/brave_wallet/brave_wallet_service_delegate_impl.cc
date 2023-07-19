@@ -27,7 +27,13 @@ namespace brave_wallet {
 
 namespace {
 
+content::WebContents* g_web_contents_for_testing = nullptr;
+
 content::WebContents* GetActiveWebContents() {
+  if (g_web_contents_for_testing) {
+    return g_web_contents_for_testing;
+  }
+
   Browser* browser = chrome::FindLastActive();
   return browser ? browser->tab_strip_model()->GetActiveWebContents() : nullptr;
 }
@@ -52,6 +58,12 @@ BraveWalletServiceDelegateImpl::BraveWalletServiceDelegateImpl(
 }
 
 BraveWalletServiceDelegateImpl::~BraveWalletServiceDelegateImpl() = default;
+
+// static
+void BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(
+    content::WebContents* web_contents) {
+  g_web_contents_for_testing = web_contents;
+}
 
 void BraveWalletServiceDelegateImpl::AddObserver(
     BraveWalletServiceDelegate::Observer* observer) {
@@ -207,7 +219,7 @@ void BraveWalletServiceDelegateImpl::TabChangedAt(
 }
 
 void BraveWalletServiceDelegateImpl::FireActiveOriginChanged() {
-  auto origin_info =
+  mojom::OriginInfoPtr origin_info =
       MakeOriginInfo(GetActiveOriginInternal().value_or(url::Origin()));
   for (auto& observer : observer_list_) {
     observer.OnActiveOriginChanged(origin_info);

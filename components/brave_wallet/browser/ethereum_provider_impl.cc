@@ -205,14 +205,14 @@ void EthereumProviderImpl::AddEthereumChain(const std::string& json_payload,
     return;
   }
   auto error_message = json_rpc_service_->AddEthereumChainForOrigin(
-      chain->Clone(), delegate_->GetOrigin());
+      std::move(chain), delegate_->GetOrigin());
 
   if (!error_message.empty()) {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kUserRejectedRequest, error_message);
     reject = true;
-    std::move(std::move(callback))
-        .Run(std::move(id), std::move(formed_response), reject, "", true);
+    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
+                            "", true);
     return;
   }
 

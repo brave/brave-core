@@ -23,7 +23,6 @@ import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { useSetSelectedAccountMutation } from '../../../common/slices/api.slice'
 import { useSelectedAccountQuery } from '../../../common/slices/api.slice.extra'
-import { findAccountByAccountId } from '../../../utils/account-utils'
 import { WalletSelectors } from '../../../common/selectors'
 
 // Hooks
@@ -65,8 +64,9 @@ const SitePermissionAccountItem = (props: Props) => {
   const isActive = account.accountId.uniqueKey === selectedAccount?.accountId.uniqueKey
 
   const hasPermission = React.useMemo((): boolean => {
-    return !!findAccountByAccountId(connectedAccounts, account.accountId)
-  }, [connectedAccounts, account])
+    return connectedAccounts.some(
+      (accountId) => accountId.uniqueKey === account.accountId.uniqueKey
+    )  }, [connectedAccounts, account])
 
   const buttonText = React.useMemo((): string => {
     if (selectedCoin === BraveWallet.CoinType.SOL) {

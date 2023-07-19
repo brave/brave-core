@@ -17,7 +17,6 @@ import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
 import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
-import { findAccountByAccountId } from '../../../utils/account-utils'
 import Amount from '../../../utils/amount'
 import { makeNetworkAsset } from '../../../options/asset-options'
 import { getPriceIdForToken } from '../../../utils/api-utils'
@@ -286,7 +285,9 @@ export const ConnectedPanel = (props: Props) => {
     if (originInfo.originSpec === WalletOrigin) {
       return true
     } else {
-      return !!findAccountByAccountId(connectedAccounts, selectedAccount.accountId)
+      return connectedAccounts.some(
+        (accountId) => accountId.uniqueKey === selectedAccount.accountId.uniqueKey
+      )
     }
   }, [connectedAccounts, selectedAccount, originInfo, selectedCoin, isSolanaConnected])
 

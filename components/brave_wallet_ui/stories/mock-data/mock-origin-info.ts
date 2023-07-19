@@ -4,9 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import { BraveWallet } from '../../constants/types'
 
-export const mockeTldPlusOne = 'uniswap.org'
-
 export const mockOriginInfo: BraveWallet.OriginInfo = {
   originSpec: 'https://with_a_really_looooooong_site_name.fixme.uniswap.org',
-  eTldPlusOne: mockeTldPlusOne
+  eTldPlusOne: 'uniswap.org'
 }

@@ -24,6 +24,7 @@
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
@@ -214,6 +215,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     provider_.reset();
     web_contents_.reset();
     profile_.SetPermissionControllerDelegate(nullptr);
+    BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(nullptr);
   }
 
   void SetUp() override {
@@ -221,6 +223,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
         TestingBrowserProcess::GetGlobal());
     web_contents_ =
         content::TestWebContents::Create(browser_context(), nullptr);
+    BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(
+        web_contents_.get());
     permissions::PermissionRequestManager::CreateForWebContents(web_contents());
     json_rpc_service_ =
         JsonRpcServiceFactory::GetServiceForContext(browser_context());

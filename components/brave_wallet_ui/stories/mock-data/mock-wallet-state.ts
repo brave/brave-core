@@ -137,12 +137,6 @@ export const mockWalletState: WalletState = {
     mockAccount3
   ],
   activeOrigin: {
-    origin: {
-      scheme: 'https',
-      host: 'app.uniswap.org',
-      port: 443,
-      nonceIfOpaque: undefined
-    },
     originSpec: 'https://app.uniswap.org',
     eTldPlusOne: 'uniswap.org'
   },

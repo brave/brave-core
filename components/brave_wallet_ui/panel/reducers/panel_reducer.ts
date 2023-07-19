@@ -66,10 +66,7 @@ const defaultState: PanelState = {
   },
   decryptRequest: {
     requestId: '',
-    originInfo: {
-      originSpec: '',
-      eTldPlusOne: ''
-    },
+    originInfo: defaultOriginInfo,
     address: '',
     unsafeMessage: ''
   },
