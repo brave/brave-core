@@ -9,11 +9,11 @@
 
 #include "base/logging.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/views/playlist/playlist_action_bubble_view.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 
 PlaylistActionIconView::PlaylistActionIconView(

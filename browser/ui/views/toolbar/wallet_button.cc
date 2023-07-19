@@ -7,7 +7,6 @@
 
 #include <vector>
 
-#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -15,6 +14,7 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -87,8 +87,9 @@ class WalletButtonMenuModel : public ui::SimpleMenuModel,
 
   // ui::SimpleMenuModel::Delegate override:
   void ExecuteCommand(int command_id, int event_flags) override {
-    if (command_id == HideBraveWalletIcon)
+    if (command_id == HideBraveWalletIcon) {
       prefs_->SetBoolean(kShowWalletIconOnToolbar, false);
+    }
   }
 
   void Build() {
@@ -247,8 +248,9 @@ bool WalletButton::IsBubbleClosedForTesting() {
 
 views::View* WalletButton::GetAsAnchorView() {
   View* anchor_view = this;
-  if (!prefs_->GetBoolean(kShowWalletIconOnToolbar))
+  if (!prefs_->GetBoolean(kShowWalletIconOnToolbar)) {
     anchor_view = backup_anchor_view_;
+  }
   return anchor_view;
 }
 

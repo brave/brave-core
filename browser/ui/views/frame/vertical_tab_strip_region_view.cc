@@ -20,6 +20,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -471,11 +472,13 @@ class VerticalTabStripScrollContentsView : public views::View {
 
   // views::View:
   void ChildPreferredSizeChanged(views::View* child) override {
-    if (base::FeatureList::IsEnabled(features::kScrollableTabStrip))
+    if (base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
       return;
+    }
 
-    if (in_preferred_size_changed_)
+    if (in_preferred_size_changed_) {
       return;
+    }
 
     // Prevent reentrance caused by container_->Layout()
     base::AutoReset<bool> in_preferred_size_change(&in_preferred_size_changed_,
@@ -738,20 +741,23 @@ void VerticalTabStripRegionView::OnWidgetDestroying(views::Widget* widget) {
 
 bool VerticalTabStripRegionView::IsTabFullscreen() const {
   auto* exclusive_access_manager = browser_->exclusive_access_manager();
-  if (!exclusive_access_manager)
+  if (!exclusive_access_manager) {
     return false;
+  }
 
   auto* fullscreen_controller =
       exclusive_access_manager->fullscreen_controller();
-  if (!fullscreen_controller)
+  if (!fullscreen_controller) {
     return false;
+  }
 
   return fullscreen_controller->IsWindowFullscreenForTabOrPending();
 }
 
 void VerticalTabStripRegionView::SetState(State state) {
-  if (state_ == state)
+  if (state_ == state) {
     return;
+  }
 
   mouse_enter_timer_.Stop();
 
@@ -791,8 +797,9 @@ void VerticalTabStripRegionView::UpdateStateAfterDragAndDropFinished(
 
 VerticalTabStripRegionView::ScopedStateResetter
 VerticalTabStripRegionView::ExpandTabStripForDragging() {
-  if (state_ == State::kExpanded)
+  if (state_ == State::kExpanded) {
     return {};
+  }
 
   auto resetter = std::make_unique<base::ScopedClosureRunner>(base::BindOnce(
       &VerticalTabStripRegionView::UpdateStateAfterDragAndDropFinished,
@@ -884,8 +891,9 @@ void VerticalTabStripRegionView::Layout() {
   scroll_view_->SetPosition(contents_bounds.origin());
 
   auto scroll_viewport_height = scroll_view_->height() - header_size.height();
-  if (scroll_view_->GetMaxHeight() != scroll_viewport_height)
+  if (scroll_view_->GetMaxHeight() != scroll_viewport_height) {
     scroll_view_->ClipHeightTo(0, scroll_viewport_height);
+  }
 
   if (base::FeatureList::IsEnabled(features::kScrollableTabStrip) &&
       tabs::utils::ShouldShowVerticalTabs(browser_)) {
@@ -1001,8 +1009,9 @@ void VerticalTabStripRegionView::OnMouseExited() {
   }
 
   mouse_enter_timer_.Stop();
-  if (state_ == State::kFloating)
+  if (state_ == State::kFloating) {
     SetState(State::kCollapsed);
+  }
 }
 
 void VerticalTabStripRegionView::OnMouseEntered(const ui::MouseEvent& event) {
@@ -1015,8 +1024,9 @@ void VerticalTabStripRegionView::OnMouseEntered() {
   }
 
   // During tab dragging, this could be already expanded.
-  if (state_ == State::kExpanded)
+  if (state_ == State::kExpanded) {
     return;
+  }
 
   ScheduleFloatingModeTimer();
 }
@@ -1088,8 +1098,9 @@ void VerticalTabStripRegionView::OnTabStripModelChanged(
     return;
   }
 
-  if (!selection.active_tab_changed())
+  if (!selection.active_tab_changed()) {
     return;
+  }
 
   ScrollActiveTabToBeVisible();
 }
@@ -1183,13 +1194,15 @@ void VerticalTabStripRegionView::OnCollapsedPrefChanged() {
 
 void VerticalTabStripRegionView::OnFloatingModePrefChanged() {
   if (!tabs::utils::IsFloatingVerticalTabsEnabled(browser_)) {
-    if (state_ == State::kFloating)
+    if (state_ == State::kFloating) {
       SetState(State::kCollapsed);
+    }
     return;
   }
 
-  if (IsMouseHovered())
+  if (IsMouseHovered()) {
     ScheduleFloatingModeTimer();
+  }
 }
 
 gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
@@ -1200,8 +1213,9 @@ gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
     return {};
   }
 
-  if (IsTabFullscreen())
+  if (IsTabFullscreen()) {
     return {};
+  }
 
   return {GetPreferredWidthForState(state, include_border, ignore_animation),
           View::CalculatePreferredSize().height()};

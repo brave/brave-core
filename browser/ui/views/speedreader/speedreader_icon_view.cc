@@ -11,11 +11,11 @@
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/speedreader/common/features.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
@@ -101,13 +101,15 @@ void SpeedreaderIconView::OnExecuting(
 
 views::BubbleDialogDelegate* SpeedreaderIconView::GetBubble() const {
   const auto* web_contents = GetWebContents();
-  if (!web_contents)
+  if (!web_contents) {
     return nullptr;
+  }
 
   const auto* tab_helper =
       speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
-  if (!tab_helper)
+  if (!tab_helper) {
     return nullptr;
+  }
 
   return reinterpret_cast<LocationBarBubbleDelegateView*>(
       tab_helper->speedreader_bubble_view());
@@ -119,8 +121,9 @@ DistillState SpeedreaderIconView::GetDistillState() const {
   if (web_contents) {
     auto* tab_helper =
         speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
-    if (tab_helper)
+    if (tab_helper) {
       state = tab_helper->PageDistillState();
+    }
   }
   return state;
 }
