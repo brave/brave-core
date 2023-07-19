@@ -16,8 +16,8 @@ extern const char kP2AStoragePrefNamePrefix[];
 
 // Notification prefs
 extern const char kShouldShowOnboardingNotification[];
-extern const char kNotificationAdLastScreenPositionX[];
-extern const char kNotificationAdLastScreenPositionY[];
+extern const char kNotificationAdLastNormalizedDisplayCoordinateX[];
+extern const char kNotificationAdLastNormalizedDisplayCoordinateY[];
 extern const char kNotificationAdDidFallbackToCustom[];
 
 // Migration prefs
