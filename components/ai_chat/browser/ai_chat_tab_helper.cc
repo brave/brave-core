@@ -135,7 +135,7 @@ void AIChatTabHelper::RemoveObserver(Observer* observer) {
 }
 
 void AIChatTabHelper::MaybeGeneratePageText() {
-  const GURL url = web_contents()->GetURL();
+  const GURL url = web_contents()->GetLastCommittedURL();
 
   if (!base::Contains(kAllowedSchemes, url.scheme())) {
     return;
