@@ -12,7 +12,9 @@
 #include <utility>
 #include <vector>
 
+#include "absl/types/variant.h"
 #include "base/barrier_callback.h"
+#include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
@@ -40,19 +42,6 @@
 #include "url/gurl.h"
 
 namespace brave_news {
-
-namespace {
-
-std::string GetResponseCharset(network::SimpleURLLoader* loader) {
-  auto* response_info = loader->ResponseInfo();
-  if (!response_info) {
-    return "utf-8";
-  }
-
-  return response_info->charset.empty() ? "utf-8" : response_info->charset;
-}
-
-}  // namespace
 
 DirectFeedController::FindFeedRequest::FindFeedRequest(
     const GURL& possible_feed_or_site_url,
@@ -153,140 +142,73 @@ void DirectFeedController::FindFeeds(
   FindFeedsImpl(possible_feed_or_site_url);
 }
 
-
 void DirectFeedController::FindFeedsImpl(
     const GURL& possible_feed_or_site_url) {
   DVLOG(2) << __FUNCTION__ << " " << possible_feed_or_site_url.spec();
-  // Download and check headers. If it's an html document, then parse for rss
-  // items
-  auto request = std::make_unique<network::ResourceRequest>();
-  request->url = possible_feed_or_site_url;
-  request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
-  request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  request->method = net::HttpRequestHeaders::kGetMethod;
-  auto url_loader = network::SimpleURLLoader::Create(
-      std::move(request), GetNetworkTrafficAnnotationTag());
-  url_loader->SetRetryOptions(
-      1, network::SimpleURLLoader::RetryMode::RETRY_ON_5XX |
-             network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
-  url_loader->SetAllowHttpErrorResults(true);
-  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
-  iter->get()->DownloadToString(
-      url_loader_factory_.get(),
-      // Handle response
+  fetcher_.DownloadFeed(
+      possible_feed_or_site_url,
       base::BindOnce(
-          [](DirectFeedController* direct_feed_controller,
-             SimpleURLLoaderList::iterator iter,
+          [](GURL possible_feed_or_site_url,
              mojom::BraveNewsController::FindFeedsCallback callback,
-             const GURL& feed_url,
-             const std::unique_ptr<std::string> response_body) {
-            VLOG(1) << "1";
-            VLOG(1) << "Download complete of " << feed_url.spec();
-            // Parse response data
-            auto* loader = iter->get();
-            auto response_code = -1;
-            std::string mime_type;
-            GURL final_url(loader->GetFinalURL());
-            base::flat_map<std::string, std::string> headers;
-            std::string charset = GetResponseCharset(loader);
-            if (loader->ResponseInfo()) {
-              auto headers_list = loader->ResponseInfo()->headers;
-              mime_type = loader->ResponseInfo()->mime_type;
-              if (headers_list) {
-                response_code = headers_list->response_code();
-              }
-            }
-            direct_feed_controller->url_loaders_.erase(iter);
+             DirectFeedResponse data) {
 
-            // Check valid response
-            std::string body_content = response_body ? *response_body : "";
-            if (response_code != 200 || body_content.empty()) {
-              VLOG(1) << feed_url.spec()
-                      << " invalid response, status: " << response_code;
-              std::move(callback).Run(
-                  std::vector<mojom::FeedSearchResultItemPtr>());
-              return;
-            }
-
-            // Response is valid, but still might not be a feed
-            ParseFeedDataOffMainThread(
-                feed_url, body_content,
-                base::BindOnce(
-                    [](const GURL& feed_url, const GURL& final_url,
-                       const std::string& charset, const std::string& mime_type,
-                       const std::string& body_content,
-                       DirectFeedController* direct_feed_controller,
-                       mojom::BraveNewsController::FindFeedsCallback callback,
-                       absl::optional<FeedData> data) {
-                      std::vector<mojom::FeedSearchResultItemPtr> results;
-                      if (data) {
-                        auto feed_result = mojom::FeedSearchResultItem::New();
-                        feed_result->feed_title = (std::string)data->title;
-                        feed_result->feed_url = feed_url;
-                        results.emplace_back(std::move(feed_result));
-                        std::move(callback).Run(std::move(results));
-                        return;
-                      }
-
-                      // Maybe it's an html doc
-                      if (!mime_type.empty() &&
-                          mime_type.find("html") != std::string::npos) {
-                        VLOG(1) << "Had html type";
-                        // Get feed links from doc
-                        auto feed_urls = GetFeedURLsFromHTMLDocument(
-                            charset, body_content, final_url);
-                        auto all_done_handler = base::BindOnce(
-                            [](mojom::BraveNewsController::FindFeedsCallback
-                                   callback,
-                               std::vector<std::unique_ptr<DirectFeedResponse>>
-                                   responses) {
-                              std::vector<mojom::FeedSearchResultItemPtr>
-                                  results;
-                              for (const auto& response : responses) {
-                                if (response->success &&
-                                    !response->data.title.empty() &&
-                                    !response->data.items.empty()) {
-                                  auto feed_result =
-                                      mojom::FeedSearchResultItem::New();
-                                  feed_result->feed_title =
-                                      (std::string)response->data.title;
-                                  feed_result->feed_url = response->url;
-                                  results.emplace_back(std::move(feed_result));
-                                }
-                              }
-                              VLOG(1) << "Valid feeds found via HTML content: "
-                                      << results.size();
-                              std::move(callback).Run(std::move(results));
-                            },
-                            std::move(callback));
-                        VLOG(1) << "Feed URLs found in HTML content: "
-                                << feed_urls.size();
-                        auto feed_handler = base::BarrierCallback<
-                            std::unique_ptr<DirectFeedResponse>>(
-                            feed_urls.size(), std::move(all_done_handler));
-                        for (auto& url : feed_urls) {
-                          direct_feed_controller->DownloadFeed(url,
-                                                               feed_handler);
-                        }
-                        return;
-                      }
-                      // Invalid content found at url
-                      VLOG(1) << feed_url.spec()
-                              << " not a valid feed or html doc.";
-                      VLOG(2) << "Response body was:";
-                      VLOG(2) << body_content;
-                      std::move(callback).Run(std::move(results));
-                    },
-                    feed_url, final_url, charset, mime_type, body_content,
-                    base::Unretained(direct_feed_controller),
-                    std::move(callback)));
           },
-          base::Unretained(this), iter,
+          possible_feed_or_site_url,
           base::BindOnce(&DirectFeedController::OnFindFeedsImplResponse,
                          weak_ptr_factory_.GetWeakPtr(),
-                         possible_feed_or_site_url),
-          possible_feed_or_site_url),
-      5 * 1024 * 1024);
+                         possible_feed_or_site_url)));
+}
+
+void DirectFeedController::OnFindFeedsImplDownloadedFeed(
+    const GURL& feed_url,
+    DirectFeedResponse response) {
+  if (auto* feed = absl::get_if<FeedData>(&response.result)) {
+    std::vector<mojom::FeedSearchResultItemPtr> results;
+
+    auto feed_result = mojom::FeedSearchResultItem::New();
+    feed_result->feed_title = (std::string)feed->title;
+    feed_result->feed_url = feed_url;
+    results.emplace_back(std::move(feed_result));
+    OnFindFeedsImplResponse(feed_url, std::move(results));
+    return;
+  }
+
+  if (!response.mime_type.empty() &&
+      response.mime_type.find("html") != std::string::npos) {
+    auto& body_content =
+        absl::get<DirectFeedError>(response.result).body_content;
+    VLOG(1) << "Had html type";
+    // Get feed links from doc
+    auto feed_urls = GetFeedURLsFromHTMLDocument(response.charset, body_content,
+                                                 response.final_url);
+    auto all_done_handler = base::BindOnce(
+        [](mojom::BraveNewsController::FindFeedsCallback callback,
+           std::vector<DirectFeedResponse> responses) {
+          std::vector<mojom::FeedSearchResultItemPtr> results;
+          for (const auto& response : responses) {
+            if (auto* feed = absl::get_if<FeedData>(&response.result)) {
+              if (feed->title.empty() || feed->items.empty()) {
+                continue;
+              }
+              auto feed_result = mojom::FeedSearchResultItem::New();
+              feed_result->feed_title = (std::string)feed->title;
+              feed_result->feed_url = response.url;
+              results.emplace_back(std::move(feed_result));
+            }
+          }
+          VLOG(1) << "Valid feeds found via HTML content: " << results.size();
+          std::move(callback).Run(std::move(results));
+        },
+        base::BindOnce(&DirectFeedController::OnFindFeedsImplResponse,
+                       weak_ptr_factory_.GetWeakPtr(), feed_url));
+    VLOG(1) << "Feed URLs found in HTML content: " << feed_urls.size();
+    auto feed_handler = base::BarrierCallback<DirectFeedResponse>(
+        feed_urls.size(), std::move(all_done_handler));
+    for (auto& url : feed_urls) {
+      DownloadFeed(url, feed_handler);
+    }
+    return;
+  }
 }
 
 void DirectFeedController::OnFindFeedsImplResponse(
@@ -335,17 +257,20 @@ void DirectFeedController::VerifyFeedUrl(const GURL& feed_url,
   // TODO(petemill): Cache for a certain amount of time since user
   // will likely add to their user feed sources. Unless this is already
   // cached via network service?
-  DownloadFeed(feed_url,
-               base::BindOnce(
-                   [](IsValidCallback callback, DirectFeedData response) {
-                     // Handle response
-                     std::string title = "";
-                     if (response.success) {
-                       title = response.data.title.c_str();
-                     }
-                     std::move(callback).Run(response.success, title);
-                   },
-                   std::move(callback)));
+  DownloadFeed(
+      feed_url,
+      base::BindOnce(
+          [](IsValidCallback callback, DirectFeedResponse response) {
+            // Handle response
+            std::string title = "";
+            bool success = false;
+            if (auto* feed = absl::get_if<FeedData>(&response.result)) {
+              title = feed->title.c_str();
+              success = true;
+            }
+            std::move(callback).Run(success, title);
+          },
+          std::move(callback)));
 }
 
 void DirectFeedController::DownloadAllContent(
@@ -391,19 +316,19 @@ void DirectFeedController::DownloadFeedContent(const GURL& feed_url,
   // Handle Data
   auto response_handler = base::BindOnce(
       [](GetArticlesCallback callback, const std::string& publisher_id,
-         DirectFeedData response) {
+         DirectFeedResponse data) {
         // Validate response
-        if (!response.success) {
-          std::move(callback).Run({});
+        if (auto* feed = absl::get_if<FeedData>(&data.result)) {
+          // Valid feed, convert items
+          VLOG(1) << "Valid feed parsed from " << data.url.spec();
+          Articles articles;
+          DirectFeedController::BuildArticles(articles, std::move(*feed),
+                                              publisher_id);
+          VLOG(1) << "Direct feed retrieved article count: " << articles.size();
+          std::move(callback).Run(std::move(articles));
           return;
         }
-        // Valid feed, convert items
-        VLOG(1) << "Valid feed parsed from " << response.url.spec();
-        Articles articles;
-        DirectFeedController::BuildArticles(articles, response.data,
-                                            publisher_id);
-        VLOG(1) << "Direct feed retrieved article count: " << articles.size();
-        std::move(callback).Run(std::move(articles));
+        std::move(callback).Run({});
       },
       std::move(callback), publisher_id);
   // Make request

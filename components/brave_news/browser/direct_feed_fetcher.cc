@@ -8,13 +8,17 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <variant>
 
+#include "absl/types/internal/variant.h"
+#include "absl/types/variant.h"
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/rust/lib.rs.h"
 #include "net/base/load_flags_list.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -24,6 +28,15 @@
 namespace brave_news {
 
 namespace {
+
+std::string GetResponseCharset(network::SimpleURLLoader* loader) {
+  auto* response_info = loader->ResponseInfo();
+  if (!response_info) {
+    return "utf-8";
+  }
+
+  return response_info->charset.empty() ? "utf-8" : response_info->charset;
+}
 
 mojom::ArticlePtr RustFeedItemToArticle(const FeedItem& rust_feed_item,
                                         const std::string& publisher_id) {
@@ -53,7 +66,8 @@ mojom::ArticlePtr RustFeedItemToArticle(const FeedItem& rust_feed_item,
   return article;
 }
 
-using ParseFeedCallback = base::OnceCallback<void(absl::optional<FeedData>)>;
+using ParseFeedCallback =
+    base::OnceCallback<void(absl::variant<FeedData, DirectFeedError>)>;
 void ParseFeedDataOffMainThread(const GURL& feed_url,
                                 std::string body_content,
                                 ParseFeedCallback callback) {
@@ -62,8 +76,8 @@ void ParseFeedDataOffMainThread(const GURL& feed_url,
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(
-          [](const GURL& feed_url,
-             std::string body_content) -> absl::optional<FeedData> {
+          [](const GURL& feed_url, std::string body_content)
+              -> absl::variant<FeedData, DirectFeedError> {
             brave_news::FeedData data;
             if (!parse_feed_bytes(::rust::Slice<const uint8_t>(
                                       (const uint8_t*)body_content.data(),
@@ -72,7 +86,9 @@ void ParseFeedDataOffMainThread(const GURL& feed_url,
               VLOG(1) << feed_url.spec() << " not a valid feed.";
               VLOG(2) << "Response body was:";
               VLOG(2) << body_content;
-              return absl::nullopt;
+              DirectFeedError error;
+              error.body_content = std::move(body_content);
+              return error;
             }
             return data;
           },
@@ -119,8 +135,14 @@ void DirectFeedFetcher::OnFeedDownloaded(
   auto* loader = iter->get();
   auto response_code = -1;
 
+  auto result = DirectFeedResponse();
+  result.charset = GetResponseCharset(loader);
+  result.url = feed_url;
+  result.final_url = loader->GetFinalURL();
+
   if (loader->ResponseInfo()) {
     auto headers_list = loader->ResponseInfo()->headers;
+    result.mime_type = loader->ResponseInfo()->mime_type;
     if (headers_list) {
       response_code = headers_list->response_code();
     }
@@ -129,11 +151,12 @@ void DirectFeedFetcher::OnFeedDownloaded(
   url_loaders_.erase(iter);
 
   std::string body_content = response_body ? *response_body : "";
-  auto result = DirectFeedData();
-  result.url = feed_url;
 
   if (response_code < 200 || response_code >= 300 || body_content.empty()) {
     VLOG(1) << feed_url.spec() << " invalid response, state: " << response_code;
+    DirectFeedError error;
+    error.body_content = std::move(body_content);
+    result.result = std::move(error);
     std::move(callback).Run(std::move(result));
     return;
   }
@@ -145,13 +168,14 @@ void DirectFeedFetcher::OnFeedDownloaded(
                      std::move(result)));
 }
 
-void DirectFeedFetcher::OnParsedFeedData(DownloadFeedCallback callback,
-                                         DirectFeedData result,
-                                         absl::optional<FeedData> data) {
-  if (data) {
+void DirectFeedFetcher::OnParsedFeedData(
+    DownloadFeedCallback callback,
+    DirectFeedResponse result,
+    absl::variant<FeedData, DirectFeedError> data) {
+  if (absl::holds_alternative<FeedData>(data)) {
     result.success = true;
-    result.data = data.value();
   }
+  result.result = std::move(data);
   std::move(callback).Run(std::move(result));
 }
 

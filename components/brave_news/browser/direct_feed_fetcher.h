@@ -11,7 +11,6 @@
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/rust/lib.rs.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -19,19 +18,21 @@
 
 namespace brave_news {
 
-struct DirectFeedData {
-  FeedData data;
-  GURL url;
-  bool success = false;
-};
-
 struct DirectFeedError {
-
+  std::string body_content;
 };
 
-using Response = std::variant<DirectFeedData, DirectFeedError>;
+struct DirectFeedResponse {
+  GURL url;
+  GURL final_url;
+  std::string mime_type;
+  std::string charset;
 
-using DownloadFeedCallback = base::OnceCallback<void(DirectFeedData)>;
+  // If success, this will be |FeedData|, otherwise an error.
+  absl::variant<FeedData, DirectFeedError> result;
+};
+
+using DownloadFeedCallback = base::OnceCallback<void(DirectFeedResponse)>;
 
 class DirectFeedFetcher {
  public:
@@ -51,8 +52,8 @@ class DirectFeedFetcher {
                         const GURL& feed_url,
                         const std::unique_ptr<std::string> response_body);
   void OnParsedFeedData(DownloadFeedCallback callback,
-                        DirectFeedData result,
-                        absl::optional<FeedData> data);
+                        DirectFeedResponse result,
+                        absl::variant<FeedData, DirectFeedError> data);
 
   SimpleURLLoaderList url_loaders_;
 

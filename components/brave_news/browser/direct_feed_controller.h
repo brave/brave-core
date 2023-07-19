@@ -34,13 +34,6 @@ namespace brave_news {
 
 constexpr std::size_t kMaxArticlesPerDirectFeedSource = 100;
 
-struct DirectFeedResponse {
- public:
-  FeedData data;
-  GURL url;
-  bool success = false;
-};
-
 using Articles = std::vector<mojom::ArticlePtr>;
 using GetArticlesCallback = base::OnceCallback<void(Articles)>;
 using GetFeedItemsCallback =
@@ -112,6 +105,7 @@ class DirectFeedController {
                   const std::unique_ptr<std::string> response_body);
 
   void FindFeedsImpl(const GURL& possible_feed_or_site_url);
+  void OnFindFeedsImplDownloadedFeed(const GURL& feed_url, DirectFeedResponse result);
   void OnFindFeedsImplResponse(
       const GURL& feed_url,
       std::vector<mojom::FeedSearchResultItemPtr> results);
