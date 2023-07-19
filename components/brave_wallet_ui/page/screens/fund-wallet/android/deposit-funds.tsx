@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { render } from 'react-dom'
-import { Route, Switch, BrowserRouter, useHistory } from 'react-router-dom'
+import { Route, Switch, BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
 import { initLocale } from 'brave-ui'
@@ -41,20 +41,14 @@ import { setIconBasePath } from '@brave/leo/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
 
 export function AndroidDepositApp() {
-  let history = useHistory()
-
   const [showDepositAddress, setShowDepositAddress] = React.useState<boolean>(false)
 
   const handleDepositScreenBack = React.useCallback(() => {
-    if (!showDepositAddress && history.length) {
-      return history.goBack()
-    }
-
     if (showDepositAddress) {
       // go back to asset selection
       setShowDepositAddress(false)
     }
-  }, [showDepositAddress, history])
+  }, [showDepositAddress])
 
   return (
     <Provider store={store}>
