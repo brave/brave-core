@@ -18,6 +18,8 @@ static_library("browser") {
     "combined_feed_parsing.h",
     "direct_feed_controller.cc",
     "direct_feed_controller.h",
+    "direct_feed_fetcher.cc",
+    "direct_feed_fetcher.h",
     "feed_building.cc",
     "feed_building.h",
     "feed_controller.cc",
