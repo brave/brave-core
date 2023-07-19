@@ -7,7 +7,6 @@
 
 import argparse
 import os
-import shutil
 import sys
 
 from lib.config import PLATFORM, SOURCE_ROOT, CHROMIUM_ROOT, \
