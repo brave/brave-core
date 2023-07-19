@@ -51,8 +51,7 @@ DirectFeedController::FindFeedRequest::~FindFeedRequest() = default;
 DirectFeedController::DirectFeedController(
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : prefs_(prefs),
-      fetcher_(url_loader_factory) {}
+    : prefs_(prefs), fetcher_(url_loader_factory) {}
 
 DirectFeedController::~DirectFeedController() = default;
 
@@ -137,16 +136,9 @@ void DirectFeedController::FindFeedsImpl(
   DVLOG(2) << __FUNCTION__ << " " << possible_feed_or_site_url.spec();
   fetcher_.DownloadFeed(
       possible_feed_or_site_url,
-      base::BindOnce(
-          [](GURL possible_feed_or_site_url,
-             mojom::BraveNewsController::FindFeedsCallback callback,
-             DirectFeedResponse data) {
-
-          },
-          possible_feed_or_site_url,
-          base::BindOnce(&DirectFeedController::OnFindFeedsImplResponse,
-                         weak_ptr_factory_.GetWeakPtr(),
-                         possible_feed_or_site_url)));
+      base::BindOnce(&DirectFeedController::OnFindFeedsImplDownloadedFeed,
+                     weak_ptr_factory_.GetWeakPtr(),
+                     possible_feed_or_site_url));
 }
 
 void DirectFeedController::OnFindFeedsImplDownloadedFeed(
