@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
 
 import { initLocale } from 'brave-ui'
 
@@ -39,15 +38,13 @@ setIconBasePath('chrome://resources/brave-icons')
 export function AndroidFundWalletApp() {
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <BraveCoreThemeProvider dark={walletDarkTheme} light={walletLightTheme}>
-          <ApiProxyContext.Provider value={walletPageApiProxy}>
-            <LibContext.Provider value={Lib}>
-              <FundWalletScreen isAndroid={true} />
-            </LibContext.Provider>
-          </ApiProxyContext.Provider>
-        </BraveCoreThemeProvider>
-      </BrowserRouter>
+      <BraveCoreThemeProvider dark={walletDarkTheme} light={walletLightTheme}>
+        <ApiProxyContext.Provider value={walletPageApiProxy}>
+          <LibContext.Provider value={Lib}>
+            <FundWalletScreen isAndroid={true} />
+          </LibContext.Provider>
+        </ApiProxyContext.Provider>
+      </BraveCoreThemeProvider>
     </Provider>
   )
 }
