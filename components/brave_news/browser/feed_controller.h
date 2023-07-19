@@ -18,7 +18,6 @@
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
-#include "brave/components/brave_news/browser/raw_feed_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_service.h"
@@ -35,19 +34,19 @@ using GetFeedCallback = mojom::BraveNewsController::GetFeedCallback;
 using FeedItems = std::vector<mojom::FeedItemPtr>;
 using GetFeedItemsCallback = base::OnceCallback<void(FeedItems)>;
 
-class FeedController : public RawFeedController::Observer {
+class FeedController : public PublishersController::Observer {
  public:
-  FeedController(PublishersController& publishers_controller,
-                 DirectFeedController& direct_feed_controller,
-                 ChannelsController& channels_controller,
-                 RawFeedController& raw_feed_controller,
-                 history::HistoryService& history_service,
-                 api_request_helper::APIRequestHelper& api_request_helper,
-                 PrefService& prefs);
+  FeedController(PublishersController* publishers_controller,
+                 DirectFeedController* direct_feed_controller,
+                 ChannelsController* channels_controller,
+                 history::HistoryService* history_service,
+                 api_request_helper::APIRequestHelper* api_request_helper,
+                 PrefService* prefs);
   ~FeedController() override;
   FeedController(const FeedController&) = delete;
   FeedController& operator=(const FeedController&) = delete;
 
+  // Checks if latest cached (or in-progress fetched) feed matches incoming hash
   void DoesFeedVersionDiffer(
       const std::string& matching_hash,
       mojom::BraveNewsController::IsFeedUpdateAvailableCallback callback);
@@ -55,37 +54,44 @@ class FeedController : public RawFeedController::Observer {
   void AddListener(mojo::PendingRemote<mojom::FeedListener> listener);
   // Provides a clone of data so that caller can take ownership or dispose
   void GetOrFetchFeed(GetFeedCallback callback);
+  // Perform an update to the feed from source, but not more than once
+  // if a fetch is already in-progress.
   void EnsureFeedIsUpdating();
-
   // Same as GetOrFetchFeed with no callback - ensures that a fetch has
   // occured and that we have data (if there was no problem fetching or
   // parsing).
   void EnsureFeedIsCached();
+  void UpdateIfRemoteChanged();
   void ClearCache();
 
-  // RawFeedController::Observer
-  void OnFeedUpdated(const FeedItems& feed) override;
+  // PublishersController::Observer
+  //
+  // We need to know when Publishers changes so that we can fetch
+  // or at least re-parse the feed and either exclude or include
+  // new, removed or turned-off publishers (according to either user-preference
+  // or remote defaults).
+  void OnPublishersUpdated(PublishersController* publishers) override;
 
  private:
+  void FetchCombinedFeed(GetFeedItemsCallback callback);
   void GetOrFetchFeed(base::OnceClosure callback);
   void ResetFeed();
   void NotifyUpdateDone();
 
-  const raw_ref<PrefService> prefs_;
-  const raw_ref<PublishersController> publishers_controller_;
-  const raw_ref<DirectFeedController> direct_feed_controller_;
-  const raw_ref<ChannelsController> channels_controller_;
-  const raw_ref<RawFeedController> raw_feed_controller_;
-  const raw_ref<history::HistoryService> history_service_;
-  const raw_ref<api_request_helper::APIRequestHelper> api_request_helper_;
+  raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<PublishersController> publishers_controller_ = nullptr;
+  raw_ptr<DirectFeedController> direct_feed_controller_ = nullptr;
+  raw_ptr<ChannelsController> channels_controller_ = nullptr;
+  raw_ptr<history::HistoryService> history_service_ = nullptr;
+  raw_ptr<api_request_helper::APIRequestHelper> api_request_helper_ = nullptr;
 
   // The task tracker for the HistoryService callbacks.
   base::CancelableTaskTracker task_tracker_;
   // Internal callers subscribe to this to know when the current in-progress
   // fetch and parse is complete.
   std::unique_ptr<base::OneShotEvent> on_current_update_complete_;
-  base::ScopedObservation<RawFeedController, FeedController>
-      raw_feed_observation_{this};
+  base::ScopedObservation<PublishersController, PublishersController::Observer>
+      publishers_observation_;
   mojo::RemoteSet<mojom::FeedListener> listeners_;
   // Store a copy of the feed in memory so we don't fetch new data from remote
   // every time the UI opens.

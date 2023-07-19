@@ -99,12 +99,12 @@ BraveNewsController::BraveNewsController(
                              &unsupported_publisher_migrator_,
                              &api_request_helper_),
       channels_controller_(prefs_, &publishers_controller_),
-      feed_controller_(publishers_controller_,
-                       direct_feed_controller_,
-                       channels_controller_,
-                       *history_service,
-                       api_request_helper_,
-                       *prefs_),
+      feed_controller_(&publishers_controller_,
+                       &direct_feed_controller_,
+                       &channels_controller_,
+                       history_service,
+                       &api_request_helper_,
+                       prefs_),
       suggestions_controller_(prefs_,
                               &publishers_controller_,
                               &api_request_helper_,
@@ -618,6 +618,7 @@ void BraveNewsController::CheckForFeedsUpdate() {
   if (!GetIsEnabled(prefs_)) {
     return;
   }
+  feed_controller_.UpdateIfRemoteChanged();
 }
 
 void BraveNewsController::Prefetch() {
