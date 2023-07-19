@@ -28,6 +28,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
+#include "brave/browser/ui/views/brave_education/browser_brave_education_service.h"
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 #include "brave/browser/ui/views/brave_rewards/tip_panel_bubble_host.h"
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
@@ -58,6 +59,8 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
+#include "chrome/browser/user_education/user_education_service.h"
+#include "chrome/browser/user_education/user_education_service_factory.h"
 #include "chrome/common/pref_names.h"
 #include "extensions/buildflags/buildflags.h"
 #include "ui/base/accelerators/accelerator.h"
@@ -235,6 +238,12 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
       base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                           base::Unretained(this)));
 #endif
+
+  auto* user_education_service =
+      UserEducationServiceFactory::GetForBrowserContext(GetProfile());
+  if (user_education_service) {
+    MaybeRegisterBraveTutorials(user_education_service->tutorial_registry());
+  }
 
   // Only normal window (tabbed) should have sidebar.
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_.get());

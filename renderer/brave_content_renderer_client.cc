@@ -9,6 +9,7 @@
 
 #include "base/feature_list.h"
 #include "base/ranges/algorithm.h"
+#include "brave/components/brave_education/renderer/education_page_enhancer.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -173,6 +174,9 @@ void BraveContentRendererClient::RenderFrameCreated(
                                               ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif
+
+  new brave_education::EducationPageEnhancer(render_frame,
+                                             ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
 void BraveContentRendererClient::GetSupportedKeySystems(

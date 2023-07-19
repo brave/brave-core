@@ -137,6 +137,8 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/core",
   "//brave/components/brave_component_updater/browser",
+  "//brave/components/brave_education/browser",
+  "//brave/components/brave_education/common/mojom",
   "//brave/components/brave_federated",
   "//brave/components/brave_new_tab_ui:mojom",
   "//brave/components/brave_news/common:mojom",

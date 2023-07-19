@@ -37,6 +37,8 @@
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_education/browser/education_request_handler.h"
+#include "brave/components/brave_education/common/mojom/brave_education.mojom.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_navigation_throttle.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
@@ -302,6 +304,16 @@ void BindPlaylistRenderFrameBrowserClient(
 }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
+void BindBraveEducationRequestHandler(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<brave_education::mojom::EducationRequestHandler>
+        receiver) {
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<brave_education::EducationRequestHandler>(
+          frame_host->GetGlobalId()),
+      std::move(receiver));
+}
+
 void MaybeBindWalletP3A(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A> receiver) {
@@ -458,6 +470,7 @@ void MaybeBindBraveVpnImpl(
                                                     std::move(receiver));
 }
 #endif
+
 void MaybeBindSkusSdkImpl(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<skus::mojom::SkusService> receiver) {
@@ -765,6 +778,9 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   map->Add<playlist::mojom::PlaylistRenderFrameBrowserClient>(
       base::BindRepeating(&BindPlaylistRenderFrameBrowserClient));
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
+  map->Add<brave_education::mojom::EducationRequestHandler>(
+      base::BindRepeating(&BindBraveEducationRequestHandler));
 }
 
 bool BraveContentBrowserClient::HandleExternalProtocol(

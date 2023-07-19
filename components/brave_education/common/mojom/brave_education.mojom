@@ -1,0 +1,22 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_education.mojom;
+
+enum SettingsPageTarget {
+  kNone
+};
+
+// Handles product education requests coming from an education-enhanced page.
+// All modifications to this interface require a security review.
+interface EducationRequestHandler {
+
+  // Opens the settings page in a new tab. If `relative_url` is non-empty, it
+  // will be appended to the settings page URL, allowing access to settings
+  // subsections. When `target` is a value other than `kNone`, the settings page
+  // will display an appropriate help bubble anchored on the target element.
+  ShowSettingsPage(string relative_url, SettingsPageTarget target);
+
+};
