@@ -14,7 +14,7 @@ struct TransactionSummary: Equatable, Identifiable {
   /// Account name for the from address of the transaction
   let namedFromAddress: String
   /// To address of the transaction
-  var toAddress: String { txInfo.ethTxToAddress }
+  var toAddress: String
   /// Account name for the to address of the transaction
   let namedToAddress: String
   /// The title for the transaction summary.
@@ -58,9 +58,19 @@ extension TransactionParser {
       currencyFormatter: currencyFormatter,
       decimalFormatStyle: .balance // use 4 digit precision for summary
     ) else {
+      let toAddress: String
+      switch transaction.coin {
+      case .eth:
+        toAddress = transaction.ethTxToAddress
+      case .sol:
+        toAddress = transaction.txDataUnion.solanaTxData?.toWalletAddress ?? ""
+      default:
+        toAddress = ""
+      }
       return .init(
         txInfo: transaction,
         namedFromAddress: NamedAddresses.name(for: transaction.fromAddress, accounts: accountInfos),
+        toAddress: toAddress,
         namedToAddress: NamedAddresses.name(for: transaction.ethTxToAddress, accounts: accountInfos),
         title: "",
         gasFee: gasFee(
@@ -78,6 +88,7 @@ extension TransactionParser {
       return .init(
         txInfo: transaction,
         namedFromAddress: parsedTransaction.namedFromAddress,
+        toAddress: parsedTransaction.toAddress,
         namedToAddress: parsedTransaction.namedToAddress,
         title: title,
         gasFee: details.gasFee,
@@ -88,6 +99,7 @@ extension TransactionParser {
       return .init(
         txInfo: transaction,
         namedFromAddress: parsedTransaction.namedFromAddress,
+        toAddress: parsedTransaction.toAddress,
         namedToAddress: parsedTransaction.namedToAddress,
         title: title,
         gasFee: details.gasFee,
@@ -102,6 +114,7 @@ extension TransactionParser {
       return .init(
         txInfo: transaction,
         namedFromAddress: parsedTransaction.namedFromAddress,
+        toAddress: parsedTransaction.toAddress,
         namedToAddress: parsedTransaction.namedToAddress,
         title: title,
         gasFee: details.gasFee,
@@ -117,6 +130,7 @@ extension TransactionParser {
       return .init(
         txInfo: transaction,
         namedFromAddress: parsedTransaction.namedFromAddress,
+        toAddress: parsedTransaction.toAddress,
         namedToAddress: parsedTransaction.namedToAddress,
         title: title,
         gasFee: details.gasFee,
@@ -132,6 +146,7 @@ extension TransactionParser {
       return .init(
         txInfo: transaction,
         namedFromAddress: parsedTransaction.namedFromAddress,
+        toAddress: parsedTransaction.toAddress,
         namedToAddress: parsedTransaction.namedToAddress,
         title: title,
         gasFee: nil,
@@ -142,6 +157,7 @@ extension TransactionParser {
       return .init(
         txInfo: transaction,
         namedFromAddress: parsedTransaction.namedFromAddress,
+        toAddress: parsedTransaction.toAddress,
         namedToAddress: parsedTransaction.namedToAddress,
         title: title,
         gasFee: details.gasFee,
@@ -157,13 +173,14 @@ extension TransactionParser {
       return .init(
         txInfo: transaction,
         namedFromAddress: parsedTransaction.namedFromAddress,
+        toAddress: parsedTransaction.toAddress,
         namedToAddress: parsedTransaction.namedToAddress,
         title: title,
         gasFee: parsedTransaction.gasFee,
         networkSymbol: parsedTransaction.networkSymbol
       )
     case .other:
-      return .init(txInfo: .init(), namedFromAddress: "", namedToAddress: "", title: "", gasFee: nil, networkSymbol: "")
+      return .init(txInfo: .init(), namedFromAddress: "", toAddress: "", namedToAddress: "", title: "", gasFee: nil, networkSymbol: "")
     }
   }
 }
