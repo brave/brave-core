@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <iterator>
+#include <locale>
 #include <memory>
 #include <string>
 #include <unordered_set>
@@ -26,6 +27,7 @@
 #include "brave/components/brave_news/browser/combined_feed_parsing.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/feed_building.h"
+#include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/locales_helper.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/urls.h"
@@ -37,18 +39,6 @@
 #include "components/prefs/pref_service.h"
 
 namespace brave_news {
-
-namespace {
-
-const char kEtagHeaderKey[] = "etag";
-
-GURL GetFeedUrl(const std::string& default_locale) {
-  GURL feed_url("https://" + brave_news::GetHostname() + "/brave-today/feed." +
-                default_locale + "json");
-  return feed_url;
-}
-
-}  // namespace
 
 FeedController::FeedController(
     PublishersController* publishers_controller,
@@ -63,8 +53,10 @@ FeedController::FeedController(
       channels_controller_(channels_controller),
       history_service_(history_service),
       api_request_helper_(api_request_helper),
-      on_current_update_complete_(new base::OneShotEvent()),
-      publishers_observation_(this) {
+      feed_fetcher_(*publishers_controller,
+                    *channels_controller,
+                    *api_request_helper),
+      on_current_update_complete_(new base::OneShotEvent()) {
   publishers_observation_.Observe(publishers_controller);
 }
 
@@ -158,7 +150,7 @@ void FeedController::EnsureFeedIsUpdating() {
               }
 
               // Get history hosts via callback
-              auto onHistory = base::BindOnce(
+              auto on_history = base::BindOnce(
                   [](FeedController* controller, FeedItems all_feed_items,
                      Publishers publishers, history::QueryResults results) {
                     std::unordered_set<std::string> history_hosts;
@@ -186,7 +178,7 @@ void FeedController::EnsureFeedIsUpdating() {
               options.max_count = 2000;
               options.SetRecentDayRange(14);
               controller->history_service_->QueryHistory(
-                  std::u16string(), options, std::move(onHistory),
+                  std::u16string(), options, std::move(on_history),
                   &controller->task_tracker_);
             },
             base::Unretained(controller), std::move(publishers));
@@ -217,74 +209,19 @@ void FeedController::UpdateIfRemoteChanged() {
     return;
   }
 
-  publishers_controller_->GetOrFetchPublishers(base::BindOnce(
-      [](FeedController* controller, Publishers publishers) {
-        auto locales = GetMinimalLocalesSet(
-            controller->channels_controller_->GetChannelLocales(), publishers);
-        VLOG(1) << "Going to fetch feed items for " << locales.size()
-                << " locales.";
-        auto check_completed_callback = base::BarrierCallback<bool>(
-            locales.size(),
-            base::BindOnce(
-                [](FeedController* controller, std::vector<bool> updates) {
-                  if (base::ranges::any_of(updates, [](bool has_update) {
-                        return has_update;
-                      })) {
-                    // TODO(fallaciousreasoning): Only fetch the specific feed
-                    // which changes.
-                    controller->EnsureFeedIsUpdating();
-                  }
-                },
-                base::Unretained(controller)));
+  feed_fetcher_.IsUpdateAvailable(
+      locale_feed_etags_,
+      base::BindOnce(
+          [](FeedController* controller, bool has_update) {
+            if (!has_update) {
+              return;
+            }
 
-        for (const auto& locale : locales) {
-          auto it = controller->locale_feed_etags_.find(locale);
-          // If we haven't fetched this feed yet, we need to update it.
-          if (it == controller->locale_feed_etags_.end()) {
-            check_completed_callback.Run(true);
-            continue;
-          }
-
-          // Get new Etag
-          controller->api_request_helper_->Request(
-              "HEAD", GetFeedUrl(locale), "", "",
-              base::BindOnce(
-                  [](std::string current_etag,
-                     base::RepeatingCallback<void(bool)> has_update_callback,
-                     api_request_helper::APIRequestResult api_request_result) {
-                    std::string etag;
-                    if (api_request_result.headers().contains(kEtagHeaderKey)) {
-                      etag = api_request_result.headers().at(kEtagHeaderKey);
-                    }
-                    // Empty etag means perhaps server isn't supporting
-                    // the header right now, so we assume we should
-                    // always fetch the body at these times.
-                    if (etag.empty()) {
-                      LOG(ERROR)
-                          << "Brave News did not get correct etag, "
-                             "therefore assuming etags aren't working and feed "
-                             "changed.";
-                      has_update_callback.Run(false);
-                      return;
-                    }
-                    VLOG(1) << "Comparing feed etag - "
-                               "Original: "
-                            << current_etag << " Remote: " << etag;
-                    // Compare remote etag with last feed fetch.
-                    if (current_etag == etag) {
-                      // Nothing to do
-                      has_update_callback.Run(false);
-                      return;
-                    }
-                    // Needs update
-                    has_update_callback.Run(true);
-                  },
-                  it->second, check_completed_callback),
-              brave::private_cdn_headers,
-              {.auto_retry_on_network_change = true});
-        }
-      },
-      base::Unretained(this)));
+            controller->EnsureFeedIsUpdating();
+          },
+          // Note: Unretained is safe here because this class owns the
+          // FeedFetcher, which uses WeakPtrs internally.
+          base::Unretained(this)));
 }
 
 void FeedController::ClearCache() {
@@ -297,73 +234,14 @@ void FeedController::OnPublishersUpdated(PublishersController* controller) {
 }
 
 void FeedController::FetchCombinedFeed(GetFeedItemsCallback callback) {
-  publishers_controller_->GetOrFetchPublishers(base::BindOnce(
+  feed_fetcher_.FetchFeed(base::BindOnce(
       [](FeedController* controller, GetFeedItemsCallback callback,
-         Publishers publishers) {
-        auto locales = GetMinimalLocalesSet(
-            controller->channels_controller_->GetChannelLocales(), publishers);
-        VLOG(1) << "Going to fetch feed items for " << locales.size()
-                << " locales.";
-        auto locales_fetched_callback = base::BarrierCallback<FeedItems>(
-            locales.size(),
-            base::BindOnce(
-                [](GetFeedItemsCallback callback,
-                   std::vector<FeedItems> feed_items_unflat) {
-                  std::size_t total_size = 0;
-                  for (const auto& collection : feed_items_unflat) {
-                    total_size += collection.size();
-                  }
-
-                  FeedItems all_feed_items;
-                  all_feed_items.reserve(total_size);
-                  for (auto& collection : feed_items_unflat) {
-                    all_feed_items.insert(
-                        all_feed_items.end(),
-                        std::make_move_iterator(collection.begin()),
-                        std::make_move_iterator(collection.end()));
-                  }
-                  std::move(callback).Run(std::move(all_feed_items));
-                },
-                std::move(callback)));
-
-        for (const auto& locale : locales) {
-          // Handle the response
-          auto response_handler = base::BindOnce(
-              [](FeedController* controller, std::string locale,
-                 GetFeedItemsCallback callback,
-                 api_request_helper::APIRequestResult api_request_result) {
-                std::string etag;
-                if (api_request_result.headers().contains(kEtagHeaderKey)) {
-                  etag = api_request_result.headers().at(kEtagHeaderKey);
-                }
-                VLOG(1) << "Downloaded feed, status: "
-                        << api_request_result.response_code()
-                        << " etag: " << etag;
-                // Handle bad response
-                if (api_request_result.response_code() != 200 ||
-                    api_request_result.value_body().is_none()) {
-                  LOG(ERROR)
-                      << "Bad response from brave news feed.json. Status: "
-                      << api_request_result.response_code();
-                  std::move(callback).Run({});
-                  return;
-                }
-                // Only mark cache time of remote request if
-                // parsing was successful
-                controller->locale_feed_etags_[locale] = etag;
-                std::move(callback).Run(
-                    ParseFeedItems(api_request_result.value_body()));
-              },
-              base::Unretained(controller), locale, locales_fetched_callback);
-          // Send the request
-          GURL feed_url(GetFeedUrl(locale));
-          VLOG(1) << "Making feed request to " << feed_url.spec();
-          controller->api_request_helper_->Request(
-              "GET", feed_url, "", "", std::move(response_handler),
-              brave::private_cdn_headers,
-              {.auto_retry_on_network_change = true});
-        }
+         FeedItems feed, ETags etags) {
+        controller->locale_feed_etags_ = std::move(etags);
+        std::move(callback).Run(std::move(feed));
       },
+      // Unretained is safe because we own the FeedFetcher, and it uses WeakPtr
+      // internally so this callback won't fire if we are destructed.
       base::Unretained(this), std::move(callback)));
 }
 

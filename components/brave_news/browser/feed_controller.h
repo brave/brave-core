@@ -17,6 +17,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
+#include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "components/history/core/browser/history_service.h"
@@ -85,13 +86,15 @@ class FeedController : public PublishersController::Observer {
   raw_ptr<history::HistoryService> history_service_ = nullptr;
   raw_ptr<api_request_helper::APIRequestHelper> api_request_helper_ = nullptr;
 
+  FeedFetcher feed_fetcher_;
+
   // The task tracker for the HistoryService callbacks.
   base::CancelableTaskTracker task_tracker_;
   // Internal callers subscribe to this to know when the current in-progress
   // fetch and parse is complete.
   std::unique_ptr<base::OneShotEvent> on_current_update_complete_;
   base::ScopedObservation<PublishersController, PublishersController::Observer>
-      publishers_observation_;
+      publishers_observation_{this};
   mojo::RemoteSet<mojom::FeedListener> listeners_;
   // Store a copy of the feed in memory so we don't fetch new data from remote
   // every time the UI opens.
