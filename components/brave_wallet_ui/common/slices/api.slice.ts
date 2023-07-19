@@ -158,6 +158,7 @@ interface GetTransactionsQueryArg {
 interface GetTokenSpotPricesArg {
   ids: string[]
   timeframe?: BraveWallet.AssetPriceTimeframe
+  toCurrency?: string
 }
 
 interface GetPriceHistoryArg {
@@ -489,7 +490,7 @@ export function createWalletApi () {
       //
       getTokenSpotPrices: query<SpotPriceRegistry, GetTokenSpotPricesArg>({
         queryFn: async (
-          { ids, timeframe },
+          { ids, timeframe, toCurrency },
           { dispatch },
           extraOptions,
           baseQuery
@@ -499,7 +500,7 @@ export function createWalletApi () {
               data: { assetRatioService }
             } = baseQuery(undefined)
 
-            const defaultFiatCurrency: string = await dispatch(
+            const defaultFiatCurrency: string = toCurrency || await dispatch(
               walletApi.endpoints.getDefaultFiatCurrency.initiate(undefined)
             ).unwrap()
 
