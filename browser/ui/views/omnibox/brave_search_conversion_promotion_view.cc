@@ -149,11 +149,11 @@ class ButtonTypeDismissButton : public views::ImageButton {
   ButtonTypeDismissButton& operator=(const ButtonTypeDismissButton&) = delete;
 
   void GetAccessibleNodeData(ui::AXNodeData* node_data) override {
-    node_data->SetName(brave_l10n::GetLocalizedResourceUTF16String(
-        IDS_ACC_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON));
     // Although this appears visually as a button, expose as a list box option
     // so that it matches the other options within its list box container.
     node_data->role = ax::mojom::Role::kListBoxOption;
+    node_data->SetName(brave_l10n::GetLocalizedResourceUTF16String(
+        IDS_ACC_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON));
   }
 };
 
