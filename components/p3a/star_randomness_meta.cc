@@ -13,6 +13,7 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
+#include "brave/components/p3a/features.h"
 #include "brave/components/p3a/network_annotations.h"
 #include "brave/components/p3a/nitro_utils/attestation.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -101,9 +102,14 @@ void StarRandomnessMeta::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kApprovedCertFPPrefName, "");
 }
 
+bool StarRandomnessMeta::ShouldAttestEnclave() {
+  return !config_->disable_star_attestation &&
+         features::IsConstellationEnclaveAttestationEnabled();
+}
+
 bool StarRandomnessMeta::VerifyRandomnessCert(
     network::SimpleURLLoader* url_loader) {
-  if (config_->disable_star_attestation) {
+  if (!ShouldAttestEnclave()) {
     VLOG(2) << "StarRandomnessMeta: skipping approved cert check";
     return true;
   }
@@ -134,7 +140,7 @@ bool StarRandomnessMeta::VerifyRandomnessCert(
 void StarRandomnessMeta::RequestServerInfo() {
   rnd_server_info_ = nullptr;
 
-  if (!config_->disable_star_attestation && !approved_cert_fp_.has_value()) {
+  if (ShouldAttestEnclave() && !approved_cert_fp_.has_value()) {
     AttestServer(true);
     return;
   }
