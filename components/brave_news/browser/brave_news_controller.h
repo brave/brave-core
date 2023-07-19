@@ -21,7 +21,6 @@
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/feed_controller.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
-#include "brave/components/brave_news/browser/raw_feed_controller.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
@@ -154,7 +153,6 @@ class BraveNewsController : public KeyedService,
   UnsupportedPublisherMigrator unsupported_publisher_migrator_;
   PublishersController publishers_controller_;
   ChannelsController channels_controller_;
-  RawFeedController raw_feed_controller_;
   FeedController feed_controller_;
   SuggestionsController suggestions_controller_;
 

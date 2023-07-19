@@ -55,7 +55,7 @@ FeedController::FeedController(
       history_service_(history_service),
       api_request_helper_(api_request_helper),
       on_current_update_complete_(new base::OneShotEvent()) {
-  raw_feed_observation_.Observe(&*raw_feed_controller_);
+  publishers_controller_.Observe(this);
 }
 
 FeedController::~FeedController() = default;

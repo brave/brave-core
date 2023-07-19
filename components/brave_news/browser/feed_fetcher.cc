@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_news/browser/raw_feed_controller.h"
+#include "brave/components/brave_news/browser/feed_fetcher.h"
 
 #include <cstddef>
 #include <iterator>
@@ -48,27 +48,17 @@ FeedItems Clone(const FeedItems& source) {
 
 }  // namespace
 
-RawFeedController::RawFeedController(
+FeedFetcher::FeedFetcher(
     PublishersController& publishers_controller,
     ChannelsController& channels_controller,
     api_request_helper::APIRequestHelper& api_request_helper)
     : publishers_controller_(publishers_controller),
       channels_controller_(channels_controller),
-      api_request_helper_(api_request_helper) {
-  publishers_observation_.Observe(&*publishers_controller_);
-}
+      api_request_helper_(api_request_helper) {}
 
-RawFeedController::~RawFeedController() = default;
+FeedFetcher::~FeedFetcher() = default;
 
-void RawFeedController::AddObserver(Observer* observer) {
-  observers_.AddObserver(observer);
-}
-
-void RawFeedController::RemoveObserver(Observer* observer) {
-  observers_.RemoveObserver(observer);
-}
-
-void RawFeedController::GetOrFetchFeed(GetRawFeedCallback callback) {
+void FeedFetcher::GetOrFetchFeed(FetchFeedCallback callback) {
   VLOG(1) << __FUNCTION__;
 
   if (!current_feed_items_.empty()) {
@@ -81,8 +71,9 @@ void RawFeedController::GetOrFetchFeed(GetRawFeedCallback callback) {
   on_current_update_complete_->Post(
       FROM_HERE,
       base::BindOnce(
-          [](base::WeakPtr<RawFeedController> controller, GetRawFeedCallback callback) {
-            if (!controller){
+          [](base::WeakPtr<FeedFetcher> controller,
+             FetchFeedCallback callback) {
+            if (!controller) {
               return;
             }
             VLOG(1) << __FUNCTION__ << " - received updated feed ("
@@ -93,7 +84,7 @@ void RawFeedController::GetOrFetchFeed(GetRawFeedCallback callback) {
   EnsureFeedIsUpdating();
 }
 
-void RawFeedController::EnsureFeedIsUpdating() {
+void FeedFetcher::EnsureFeedIsUpdating() {
   if (is_update_in_progress_) {
     return;
   }
@@ -101,7 +92,7 @@ void RawFeedController::EnsureFeedIsUpdating() {
   is_update_in_progress_ = true;
 
   publishers_controller_->GetOrFetchPublishers(base::BindOnce(
-      [](base::WeakPtr<RawFeedController> controller, Publishers publishers) {
+      [](base::WeakPtr<FeedFetcher> controller, Publishers publishers) {
         if (!controller) {
           return;
         }
@@ -117,8 +108,7 @@ void RawFeedController::EnsureFeedIsUpdating() {
         auto downloaded_callback = base::BarrierCallback<FeedItems>(
             locales.size(),
             base::BindOnce(
-                [](base::WeakPtr<RawFeedController> controller,
-                   Publishers publishers,
+                [](base::WeakPtr<FeedFetcher> controller, Publishers publishers,
                    std::vector<FeedItems> feed_items_unflat) {
                   if (!controller) {
                     return;
@@ -152,8 +142,8 @@ void RawFeedController::EnsureFeedIsUpdating() {
 
         for (const auto& locale : locales) {
           auto response_handler = base::BindOnce(
-              [](base::WeakPtr<RawFeedController> controller,
-                 std::string locale, GetRawFeedCallback callback,
+              [](base::WeakPtr<FeedFetcher> controller, std::string locale,
+                 GetRawFeedCallback callback,
                  api_request_helper::APIRequestResult api_request_result) {
                 if (!controller) {
                   return;
@@ -192,115 +182,81 @@ void RawFeedController::EnsureFeedIsUpdating() {
       weak_ptr_factory_.GetWeakPtr()));
 }
 
-void RawFeedController::UpdateRemoteIfChanged() {
+void FeedFetcher::IsUpdateAvailable(ETags etags, UpdateAvailableCallback callback) {
   VLOG(1) << __FUNCTION__;
-  // If already updating, nothing to do,
-  // we don't want to collide with an update
-  // which starts and completes before our HEAD
-  // request completes (which admittedly is very unlikely).
-  if (is_update_in_progress_) {
-    VLOG(1) << __FUNCTION__
-            << " - not updating, an update is already in progress";
+
+  publishers_controller_->GetOrFetchPublishers(
+      base::BindOnce(&FeedFetcher::OnIsUpdateAvailableFetchedPublishers,
+                     std::move(callback), weak_ptr_factory_.GetWeakPtr()));
+}
+
+void FeedFetcher::OnIsUpdateAvailableFetchedPublishers(
+    const Publishers& publishers,
+    UpdateAvailableCallback callback) {
+  auto locales = GetMinimalLocalesSet(
+      controller->channels_controller_->GetChannelLocales(), publishers);
+  VLOG(1) << __FUNCTION__ << " - going to fetch feed items for "
+          << locales.size() << " locales.";
+  auto check_completed_callback = base::BarrierCallback<bool>(
+      locales.size(),
+      base::BindOnce(&FeedFetcher::OnIsUpdateAvailableCheckedFeeds,
+                     std::move(callback),
+                     controller->weak_ptr_factory_.GetWeakPtr()));
+
+  for (const auto& locale : locales) {
+    auto it = locale_feed_etags_.find(locale);
+    // If we haven't fetched this feed yet, we need to update it.
+    if (it == locale_feed_etags_.end()) {
+      check_completed_callback.Run(true);
+      continue;
+    }
+
+    // Get new Etag
+    api_request_helper_->Request(
+        "HEAD", GetFeedUrl(locale), "", "",
+        base::BindOnce(&FeedFetcher::OnIsUpdateAvailableFetchedHead, it->second,
+                       check_completed_callback),
+        brave::private_cdn_headers, {.auto_retry_on_network_change = true});
+  }
+}
+
+void FeedFetcher::OnIsUpdateAvailableFetchedHead(
+    std::string current_etag,
+    base::RepeatingCallback<void(bool)> has_update_callback,
+    api_request_helper::APIRequestResult result) {
+  std::string etag;
+  if (api_request_result.headers().contains(kEtagHeaderKey)) {
+    etag = api_request_result.headers().at(kEtagHeaderKey);
+  }
+  // Empty etag means perhaps server isn't supporting
+  // the header right now, so we assume we should
+  // always fetch the body at these times.
+  if (etag.empty()) {
+    LOG(ERROR) << "Brave News did not get correct etag, "
+                  "therefore assuming etags aren't working and feed "
+                  "changed.";
+    has_update_callback.Run(true);
+    return;
+  }
+  VLOG(1) << "Comparing feed etag - "
+             "Original: "
+          << current_etag << " Remote: " << etag;
+  // Compare remote etag with last feed fetch.
+  if (current_etag == etag) {
+    // Nothing to do
+    has_update_callback.Run(false);
     return;
   }
 
-  publishers_controller_->GetOrFetchPublishers(base::BindOnce(
-      [](base::WeakPtr<RawFeedController> controller, Publishers publishers) {
-        if (!controller) {
-          return;
-        }
-
-        auto locales = GetMinimalLocalesSet(
-            controller->channels_controller_->GetChannelLocales(), publishers);
-        VLOG(1) << __FUNCTION__ << " - going to fetch feed items for "
-                << locales.size() << " locales.";
-        auto check_completed_callback = base::BarrierCallback<bool>(
-            locales.size(),
-            base::BindOnce(
-                [](base::WeakPtr<RawFeedController> controller,
-                   std::vector<bool> updates) {
-                  if (!controller) {
-                    return;
-                  }
-
-                  if (base::ranges::any_of(updates, [](bool has_update) {
-                        return has_update;
-                      })) {
-                    // TODO(fallaciousreasoning): Only fetch the specific feed
-                    // which changes.
-                    controller->EnsureFeedIsUpdating();
-                  }
-                },
-                controller->weak_ptr_factory_.GetWeakPtr()));
-
-        for (const auto& locale : locales) {
-          auto it = controller->locale_feed_etags_.find(locale);
-          // If we haven't fetched this feed yet, we need to update it.
-          if (it == controller->locale_feed_etags_.end()) {
-            check_completed_callback.Run(true);
-            continue;
-          }
-
-          // Get new Etag
-          controller->api_request_helper_->Request(
-              "HEAD", GetFeedUrl(locale), "", "",
-              base::BindOnce(
-                  [](std::string current_etag,
-                     base::RepeatingCallback<void(bool)> has_update_callback,
-                     api_request_helper::APIRequestResult api_request_result) {
-                    std::string etag;
-                    if (api_request_result.headers().contains(kEtagHeaderKey)) {
-                      etag = api_request_result.headers().at(kEtagHeaderKey);
-                    }
-                    // Empty etag means perhaps server isn't supporting
-                    // the header right now, so we assume we should
-                    // always fetch the body at these times.
-                    if (etag.empty()) {
-                      LOG(ERROR)
-                          << "Brave News did not get correct etag, "
-                             "therefore assuming etags aren't working and feed "
-                             "changed.";
-                      has_update_callback.Run(false);
-                      return;
-                    }
-                    VLOG(1) << "Comparing feed etag - "
-                               "Original: "
-                            << current_etag << " Remote: " << etag;
-                    // Compare remote etag with last feed fetch.
-                    if (current_etag == etag) {
-                      // Nothing to do
-                      has_update_callback.Run(false);
-                      return;
-                    }
-                    // Needs update
-                    has_update_callback.Run(true);
-                  },
-                  it->second, check_completed_callback),
-              brave::private_cdn_headers,
-              {.auto_retry_on_network_change = true});
-        }
-      },
-      weak_ptr_factory_.GetWeakPtr()));
+  // Needs update
+  has_update_callback.Run(true);
 }
 
-void RawFeedController::ClearCache() {
-  ResetFeed();
-  locale_feed_etags_.clear();
-}
-
-void RawFeedController::OnPublishersUpdated(PublishersController* publishers) {
-  UpdateRemoteIfChanged();
-}
-
-void RawFeedController::ResetFeed() {
-  current_feed_items_.clear();
-}
-
-void RawFeedController::NotifyUpdateDone() {
-  on_current_update_complete_->Signal();
-
-  is_update_in_progress_ = false;
-  on_current_update_complete_ = std::make_unique<base::OneShotEvent>();
+void FeedFetcher::OnIsUpdateAvailableCheckedFeeds(
+    std::vector<bool> has_updates,
+    UpdateAvailableCallback callback) {
+  std::move(callback).Run(base::ranges::any_of(
+      has_updates, [](bool has_update) { return has_update; }));
 }
 
 }  // namespace brave_news
