@@ -85,14 +85,10 @@ class AdsServiceMock : public AdsService {
   MOCK_METHOD2(ToggleLikeAd, void(base::Value::Dict, ToggleLikeAdCallback));
   MOCK_METHOD2(ToggleDislikeAd,
                void(base::Value::Dict, ToggleDislikeAdCallback));
-  MOCK_METHOD3(ToggleLikeCategory,
-               void(const std::string&,
-                    mojom::UserReactionType,
-                    ToggleLikeCategoryCallback));
-  MOCK_METHOD3(ToggleDislikeCategory,
-               void(const std::string&,
-                    mojom::UserReactionType,
-                    ToggleDislikeCategoryCallback));
+  MOCK_METHOD2(ToggleLikeCategory,
+               void(base::Value::Dict, ToggleLikeCategoryCallback));
+  MOCK_METHOD2(ToggleDislikeCategory,
+               void(base::Value::Dict, ToggleDislikeCategoryCallback));
   MOCK_METHOD2(ToggleSaveAd, void(base::Value::Dict, ToggleSaveAdCallback));
   MOCK_METHOD2(ToggleMarkAdAsInappropriate,
                void(base::Value::Dict, ToggleMarkAdAsInappropriateCallback));

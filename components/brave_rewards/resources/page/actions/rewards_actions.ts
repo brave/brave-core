@@ -171,18 +171,16 @@ export const onToggleAdThumbDown = (result: Rewards.ToggleLikeAction) => action(
   result
 })
 
-export const toggleAdOptIn = (category: string, optAction: number) => action(types.TOGGLE_AD_OPT_IN, {
-  category,
-  optAction
+export const toggleAdOptIn = (categoryContent: Rewards.CategoryContent) => action(types.TOGGLE_AD_OPT_IN, {
+  categoryContent
 })
 
 export const onToggleAdOptIn = (result: Rewards.ToggleOptAction) => action(types.ON_TOGGLE_AD_OPT_IN, {
   result
 })
 
-export const toggleAdOptOut = (category: string, optAction: number) => action(types.TOGGLE_AD_OPT_OUT, {
-  category,
-  optAction
+export const toggleAdOptOut = (categoryContent: Rewards.CategoryContent) => action(types.TOGGLE_AD_OPT_OUT, {
+  categoryContent
 })
 
 export const onToggleAdOptOut = (result: Rewards.ToggleOptAction) => action(types.ON_TOGGLE_AD_OPT_OUT, {

@@ -261,8 +261,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.TOGGLE_AD_OPT_IN: {
-      chrome.send('brave_rewards.toggleAdOptIn',
-                  [action.payload.category, action.payload.optAction])
+      chrome.send('brave_rewards.toggleAdOptIn', [action.payload.categoryContent])
       break
     }
     case types.ON_TOGGLE_AD_OPT_IN: {
@@ -270,8 +269,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.TOGGLE_AD_OPT_OUT: {
-      chrome.send('brave_rewards.toggleAdOptOut',
-                  [action.payload.category, action.payload.optAction])
+      chrome.send('brave_rewards.toggleAdOptOut', [action.payload.categoryContent])
       break
     }
     case types.ON_TOGGLE_AD_OPT_OUT: {

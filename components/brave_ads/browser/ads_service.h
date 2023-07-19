@@ -179,20 +179,16 @@ class AdsService : public KeyedService {
                                ToggleDislikeAdCallback callback) = 0;
 
   // Called to like a category. This is a toggle, so calling it again returns
-  // the setting to the neutral state. The callback takes two arguments -
-  // |std::string| containing the category. |mojom::UserReactionType| containing
-  // the user reaction type.
-  virtual void ToggleLikeCategory(const std::string& category,
-                                  mojom::UserReactionType user_reaction_type,
+  // the setting to the neutral state. The callback takes one argument -
+  // |base::Value::Dict| containing the current state.
+  virtual void ToggleLikeCategory(base::Value::Dict value,
                                   ToggleLikeCategoryCallback callback) = 0;
 
-  // Called to dislike a category. This is a toggle, so calling it again returns
-  // the setting to the neutral state. The callback takes two arguments -
-  // |std::string| containing the category. |mojom::UserReactionType| containing
-  // the user reaction type.
+  // Called to dislike a category. This is a toggle, so calling it again
+  // returns the setting to the neutral state. The callback takes one argument -
+  // |base::Value::Dict| containing the current state.
   virtual void ToggleDislikeCategory(
-      const std::string& category,
-      mojom::UserReactionType user_reaction_type,
+      base::Value::Dict value,
       ToggleDislikeCategoryCallback callback) = 0;
 
   // Called to save an ad for later viewing. This is a toggle, so calling it

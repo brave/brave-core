@@ -10,7 +10,9 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/ad_content_info.h"
 #include "brave/components/brave_ads/core/ad_content_value_util.h"
+#include "brave/components/brave_ads/core/category_content_value_util.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
@@ -248,18 +250,16 @@ mojom::UserReactionType AdsImpl::ToggleDislikeAd(
 }
 
 mojom::UserReactionType AdsImpl::ToggleLikeCategory(
-    const std::string& category,
-    const mojom::UserReactionType user_reaction_type) {
+    const base::Value::Dict& value) {
   return is_initialized_ ? HistoryManager::GetInstance().LikeCategory(
-                               category, user_reaction_type)
+                               CategoryContentFromValue(value))
                          : mojom::UserReactionType::kNeutral;
 }
 
 mojom::UserReactionType AdsImpl::ToggleDislikeCategory(
-    const std::string& category,
-    const mojom::UserReactionType user_reaction_type) {
+    const base::Value::Dict& value) {
   return is_initialized_ ? HistoryManager::GetInstance().DislikeCategory(
-                               category, user_reaction_type)
+                               CategoryContentFromValue(value))
                          : mojom::UserReactionType::kNeutral;
 }
 

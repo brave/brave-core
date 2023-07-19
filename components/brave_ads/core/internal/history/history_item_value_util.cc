@@ -10,7 +10,7 @@
 #include "base/json/values_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_ads/core/ad_content_value_util.h"
-#include "brave/components/brave_ads/core/internal/history/category_content_value_util.h"
+#include "brave/components/brave_ads/core/category_content_value_util.h"
 
 namespace brave_ads {
 

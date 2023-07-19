@@ -102,11 +102,9 @@ class AdsImpl final : public Ads, public AccountObserver {
   mojom::UserReactionType ToggleDislikeAd(
       const base::Value::Dict& value) override;
   mojom::UserReactionType ToggleLikeCategory(
-      const std::string& category,
-      mojom::UserReactionType user_reaction_type) override;
+      const base::Value::Dict& value) override;
   mojom::UserReactionType ToggleDislikeCategory(
-      const std::string& category,
-      mojom::UserReactionType user_reaction_type) override;
+      const base::Value::Dict& value) override;
   bool ToggleSaveAd(const base::Value::Dict& value) override;
   bool ToggleMarkAdAsInappropriate(const base::Value::Dict& value) override;
 

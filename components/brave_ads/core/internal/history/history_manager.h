@@ -67,11 +67,9 @@ class HistoryManager final {
   mojom::UserReactionType DislikeAd(const AdContentInfo& ad_content) const;
 
   mojom::UserReactionType LikeCategory(
-      const std::string& category,
-      mojom::UserReactionType user_reaction_type) const;
+      const CategoryContentInfo& category_content) const;
   mojom::UserReactionType DislikeCategory(
-      const std::string& category,
-      mojom::UserReactionType user_reaction_type) const;
+      const CategoryContentInfo& category_content) const;
 
   bool ToggleSaveAd(const AdContentInfo& ad_content) const;
 

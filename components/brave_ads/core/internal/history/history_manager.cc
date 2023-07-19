@@ -152,26 +152,22 @@ mojom::UserReactionType HistoryManager::DislikeAd(
 }
 
 mojom::UserReactionType HistoryManager::LikeCategory(
-    const std::string& category,
-    const mojom::UserReactionType user_reaction_type) const {
+    const CategoryContentInfo& category_content) const {
   const mojom::UserReactionType toggled_user_reaction_type =
-      ClientStateManager::GetInstance().ToggleLikeCategory(category,
-                                                           user_reaction_type);
+      ClientStateManager::GetInstance().ToggleLikeCategory(category_content);
   if (toggled_user_reaction_type == mojom::UserReactionType::kLike) {
-    NotifyDidLikeCategory(category);
+    NotifyDidLikeCategory(category_content.category);
   }
 
   return toggled_user_reaction_type;
 }
 
 mojom::UserReactionType HistoryManager::DislikeCategory(
-    const std::string& category,
-    const mojom::UserReactionType user_reaction_type) const {
+    const CategoryContentInfo& category_content) const {
   const mojom::UserReactionType toggled_user_reaction_type =
-      ClientStateManager::GetInstance().ToggleDislikeCategory(
-          category, user_reaction_type);
+      ClientStateManager::GetInstance().ToggleDislikeCategory(category_content);
   if (toggled_user_reaction_type == mojom::UserReactionType::kDislike) {
-    NotifyDidDislikeCategory(category);
+    NotifyDidDislikeCategory(category_content.category);
   }
 
   return toggled_user_reaction_type;

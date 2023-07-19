@@ -201,12 +201,10 @@ interface BatAds {
       (mojo_base.mojom.DictionaryValue value);
   ToggleDislikeAd(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
-  ToggleLikeCategory(string category,
-                     brave_ads.mojom.UserReactionType user_reaction_type) =>
-      (string category, brave_ads.mojom.UserReactionType user_reaction_type);
-  ToggleDislikeCategory(string category,
-                        brave_ads.mojom.UserReactionType user_reaction_type) =>
-      (string category, brave_ads.mojom.UserReactionType user_reaction_type);
+  ToggleLikeCategory(mojo_base.mojom.DictionaryValue value) =>
+      (mojo_base.mojom.DictionaryValue value);
+  ToggleDislikeCategory(mojo_base.mojom.DictionaryValue value) =>
+      (mojo_base.mojom.DictionaryValue value);
   ToggleSaveAd(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
   ToggleMarkAdAsInappropriate(mojo_base.mojom.DictionaryValue value) =>

@@ -370,16 +370,8 @@ export function AdsPanel () {
           },
           categoryContent: {
             ...categoryContent,
-            onOptIn: () => {
-              actions.toggleAdOptIn(
-                categoryContent.category,
-                categoryContent.optAction)
-            },
-            onOptOut: () => {
-              actions.toggleAdOptOut(
-                categoryContent.category,
-                categoryContent.optAction)
-            }
+            onOptIn: () => actions.toggleAdOptIn(categoryContent),
+            onOptOut: () => actions.toggleAdOptOut(categoryContent)
           }
         }
 

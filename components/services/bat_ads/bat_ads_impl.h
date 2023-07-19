@@ -100,13 +100,10 @@ class BatAdsImpl : public mojom::BatAds {
                     ToggleLikeAdCallback callback) override;
   void ToggleDislikeAd(base::Value::Dict value,
                        ToggleLikeAdCallback callback) override;
-  void ToggleLikeCategory(const std::string& category,
-                          brave_ads::mojom::UserReactionType user_reaction_type,
+  void ToggleLikeCategory(base::Value::Dict value,
                           ToggleLikeCategoryCallback callback) override;
-  void ToggleDislikeCategory(
-      const std::string& category,
-      brave_ads::mojom::UserReactionType user_reaction_type,
-      ToggleDislikeCategoryCallback callback) override;
+  void ToggleDislikeCategory(base::Value::Dict value,
+                             ToggleDislikeCategoryCallback callback) override;
   void ToggleSaveAd(base::Value::Dict value,
                     ToggleSaveAdCallback callback) override;
   void ToggleMarkAdAsInappropriate(
