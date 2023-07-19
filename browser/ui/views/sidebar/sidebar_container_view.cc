@@ -28,6 +28,7 @@
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
@@ -190,6 +191,21 @@ void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
 void SidebarContainerView::UpdateSidebarItemsState() {
   // control view has items.
   sidebar_control_view_->Update();
+}
+
+bool SidebarContainerView::HasActiveContextualEntry() {
+  auto* web_contents = browser_->tab_strip_model()->GetActiveWebContents();
+  if (!web_contents) {
+    return false;
+  }
+
+  auto* active_contextual_registry = SidePanelRegistry::Get(web_contents);
+  if (active_contextual_registry &&
+      active_contextual_registry->active_entry()) {
+    return true;
+  }
+
+  return false;
 }
 
 void SidebarContainerView::MenuClosed() {
@@ -373,13 +389,21 @@ void SidebarContainerView::OnActiveIndexChanged(
   if (new_index) {
     ShowSidebarAll();
   } else {
-    // Special handling for side panel extension.
-    // If sidebar extension is active, active index is none now.
-    // Don't hide sidebar to make sidebar extension visible.
-    if (side_panel_coordinator_->GetCurrentEntryId() ==
-        SidePanelEntryId::kExtension) {
+    // If sidebar model's active index is changed to none,
+    // there are two possible scenarios.
+    // 1. Managed entry is de-activated and no other entry is shown.
+    //    In this case, we should hide panel.
+    // 2. Managed entry is de-activated and non-managed entry is shown.
+    //    In this case, we should not hide panel.
+    // When changing panel entry from managed to non-managed by calling
+    // SidePanelCoordinator::Show(), OnEntryShown() for non-managed is
+    // arrived first and then OnEntryHidden() for managed is called.
+    // And this method is called by last OnEntryHidden(). So, coordinator
+    // already has non-managed entry.
+    if (side_panel_coordinator_->GetCurrentEntryId()) {
       return;
     }
+
     HideSidebarForShowOption();
   }
 }
@@ -644,42 +668,44 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
   // as well as Sidebar as there are other ways than Sidebar for SidePanel
   // items to be shown and hidden, e.g. toolbar button.
   DVLOG(1) << "Panel shown: " << entry->name();
+  auto* controller = browser_->sidebar_controller();
 
-  // Handling side panel extension till we have item for it.
-  if (entry->key().extension_id()) {
-    // If side panel is shown by side panel extension, showing should
-    // be done here because side panel extension is not controlled by our
-    // sidebar model.
-    ShowSidebarAll();
-    return;
-  }
+  // Asked to set here because SidebarController doesn't know non-managed entry
+  // activation.
+  // Set browser active panel when panel is shown.
+  controller->SetBrowserActivePanelKey(entry->key());
 
+  // Handling if |entry| is managed one.
   for (const auto& item : sidebar_model_->GetAllSidebarItems()) {
     if (!item.open_in_panel) {
       continue;
     }
     if (entry->key().id() == sidebar::SidePanelIdFromSideBarItem(item)) {
       auto side_bar_index = sidebar_model_->GetIndexOf(item);
-      auto* controller = browser_->sidebar_controller();
       controller->ActivateItemAt(side_bar_index);
-      break;
+      return;
     }
   }
+
+  // Handling non-managed entry. It should be shown here instead of
+  // asking to SidebarModel.
+  // If side panel is shown by this kind of panel, showing should
+  // be done here because it is not controlled by our sidebar model.
+  ShowSidebarAll();
 }
 
 void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
   // Make sure item is deselected
   DVLOG(1) << "Panel hidden: " << entry->name();
+  auto* controller = browser_->sidebar_controller();
 
-  if (entry->key().extension_id() &&
-      !side_panel_coordinator_->GetCurrentEntryId()) {
-    // If side panel is closed by togging side panel extension, hiding should
-    // be done here because side panel extension is not controlled by our
-    // sidebar model.
-    HideSidebarForShowOption();
-    return;
+  // Asked to clear here because SidebarController doesn't know non-managed
+  // entry's de-activation. Clear browser active panel when panel is hidden.
+  if (!side_panel_coordinator_->GetCurrentEntryId()) {
+    controller->ClearBrowserActivePanelKey();
   }
 
+  // Handling if |entry| is managed one.
   for (const auto& item : sidebar_model_->GetAllSidebarItems()) {
     if (!item.open_in_panel) {
       continue;
@@ -687,12 +713,18 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
 
     if (entry->key().id() == sidebar::SidePanelIdFromSideBarItem(item)) {
       auto side_bar_index = sidebar_model_->GetIndexOf(item);
-      auto* controller = browser_->sidebar_controller();
       if (controller->IsActiveIndex(side_bar_index)) {
         controller->ActivateItemAt(absl::nullopt);
+        return;
       }
-      break;
     }
+  }
+
+  // Handling non-managed entry.
+  // If non-managed entry is hidden and there is no active entry,
+  // panel should be hidden here.
+  if (!side_panel_coordinator_->GetCurrentEntryId()) {
+    HideSidebarForShowOption();
   }
 }
 

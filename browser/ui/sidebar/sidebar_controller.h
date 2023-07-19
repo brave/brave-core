@@ -13,6 +13,7 @@
 #include "base/scoped_observation.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_key.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/window_open_disposition.h"
@@ -66,6 +67,8 @@ class SidebarController : public SidebarService::Observer,
   void LoadAtTab(const GURL& url);
 
   bool IsActiveIndex(absl::optional<size_t> index) const;
+  void SetBrowserActivePanelKey(absl::optional<SidePanelEntryKey> entry_key);
+  void ClearBrowserActivePanelKey();
   bool GetIsPanelOperationFromActiveTabChangeAndReset();
 
   bool DoesBrowserHaveOpenedTabForItem(const SidebarItem& item) const;
@@ -99,10 +102,9 @@ class SidebarController : public SidebarService::Observer,
   raw_ptr<BraveBrowser> browser_ = nullptr;
   // Interface to view.
   raw_ptr<Sidebar> sidebar_ = nullptr;
-  // If there is a tab-specific panel open, this is the type to restore
+  // If there is a tab-specific panel open, this is the entry key to restore
   // when changing active tab to a tab without a tab-specific panel open.
-  absl::optional<SidebarItem::BuiltInItemType> browser_active_panel_type_ =
-      absl::nullopt;
+  absl::optional<SidePanelEntryKey> browser_active_panel_key_;
 
   // True if panel opening/closing request from active tab change.
   bool operation_from_active_tab_change_ = false;
