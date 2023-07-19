@@ -17,14 +17,18 @@
 #include "base/location.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
+#include "base/ranges/algorithm.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/combined_feed_parsing.h"
+#include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_controller.h"
 #include "brave/components/brave_news/browser/locales_helper.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/urls.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_private_cdn/headers.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -57,9 +61,8 @@ FeedFetcher::FeedFetcher(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : publishers_controller_(publishers_controller),
       channels_controller_(channels_controller),
-      url_loader_factory_(url_loader_factory),
-      api_request_helper_(GetNetworkTrafficAnnotationTag(),
-                          url_loader_factory_) {}
+      api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
+      direct_feed_fetcher_(url_loader_factory) {}
 
 FeedFetcher::~FeedFetcher() = default;
 
@@ -81,8 +84,16 @@ void FeedFetcher::OnFetchFeedFetchedPublishers(FetchFeedCallback callback,
 
   auto locales = GetMinimalLocalesSet(channels_controller_->GetChannelLocales(),
                                       publishers);
+  std::vector<mojom::PublisherPtr> direct_publishers;
+  for (const auto& [_, publisher] : publishers) {
+    if (publisher->type != mojom::PublisherType::DIRECT_SOURCE) {
+      continue;
+    }
+    direct_publishers.push_back(publisher->Clone());
+  }
+
   auto downloaded_callback = base::BarrierCallback<FeedSourceResult>(
-      locales.size(),
+      locales.size() + direct_publishers.size(),
       base::BindOnce(&FeedFetcher::OnFetchFeedFetchedAll,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
                      std::move(publishers)));
@@ -95,6 +106,30 @@ void FeedFetcher::OnFetchFeedFetchedPublishers(FetchFeedCallback callback,
         base::BindOnce(&FeedFetcher::OnFetchFeedFetchedFeed,
                        weak_ptr_factory_.GetWeakPtr(), locale,
                        downloaded_callback));
+  }
+
+  for (const auto& direct_publisher : direct_publishers) {
+    LOG(ERROR) << "Trying to download from "
+               << direct_publisher->feed_source.spec();
+    direct_feed_fetcher_.DownloadFeed(
+        direct_publisher->feed_source, direct_publisher->publisher_id,
+        base::BindOnce(
+            [](base::RepeatingCallback<void(FeedSourceResult)> cb,
+               std::string publisher_id, DirectFeedResponse response) {
+              FeedSourceResult result;
+              result.key = publisher_id;
+
+              if (auto* feed =
+                      absl::get_if<DirectFeedResult>(&response.result)) {
+                base::ranges::transform(
+                    feed->articles, std::back_inserter(result.items),
+                    [](auto& article) {
+                      return mojom::FeedItem::NewArticle(std::move(article));
+                    });
+              }
+              cb.Run(std::move(result));
+            },
+            downloaded_callback, direct_publisher->publisher_id));
   }
 }
 
