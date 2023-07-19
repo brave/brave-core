@@ -51,6 +51,7 @@ interface PageHandler {
   SetAutoGenerateQuestions(bool can_auto_generate_questions);
   GetSiteInfo() => (SiteInfo? site_info);
   GetFaviconImageData() => (array<uint8>? favicon_image_data);
+  OpenBraveLeoSettings();
 };
 
 interface ChatUIPage {

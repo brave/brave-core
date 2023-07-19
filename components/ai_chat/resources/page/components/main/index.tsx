@@ -6,21 +6,28 @@
 import * as React from 'react'
 import styles from './style.module.scss'
 import Icon from '@brave/leo/react/icon'
+import Button from '@brave/leo/react/button'
 
 interface MainProps {
   conversationList: React.ReactNode
   inputBox: React.ReactNode
   siteTitle?: React.ReactNode
   promptAutoSuggestion?: React.ReactNode
+  onSettingsClick?: () => void
 }
 
 function Main (props: MainProps) {
   return (
     <main className={styles.main}>
       <div className={styles.header}>
-        <div className={styles.logoBox}>
+        <div className={styles.logo}>
           <Icon name="product-brave-ai" />
           <div className={styles.logoTitle}>Brave <span>Leo</span></div>
+        </div>
+        <div className={styles.actions}>
+          <Button kind="plain" title="Settings" onClick={props.onSettingsClick}>
+              <Icon name="settings" />
+          </Button>
         </div>
       </div>
       <div className={styles.scroller}>

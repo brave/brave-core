@@ -29,9 +29,17 @@
   padding: 16px;
   border-bottom: 1px solid var(--leo-color-divider-subtle);
   background-color: var(--leo-color-container-background);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.logoBox {
+.actions {
+  --leo-icon-size: 20px;
+  --leo-icon-color: var(--leo-color-icon-default);
+}
+
+.logo {
   --leo-icon-size: 20px;
   --leo-icon-color: linear-gradient(314.42deg, #FA7250 8.49%, #FF1893 43.72%, #A78AFF 99.51%);
 

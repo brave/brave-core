@@ -103,6 +103,7 @@ function App () {
         inputBox={inputBox}
         siteTitle={siteTitleElement}
         promptAutoSuggestion={promptAutoSuggestionElement}
+        onSettingsClick={() => getPageHandlerInstance().pageHandler.openBraveLeoSettings()}
       />
     </BraveCoreThemeProvider>
   )
