@@ -18,11 +18,11 @@
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/rust/lib.rs.h"
+#include "net/base/load_flags.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "ui/base/l10n/time_format.h"
-#include "net/base/load_flags.h"
 
 namespace brave_news {
 
@@ -68,6 +68,7 @@ mojom::ArticlePtr RustFeedItemToArticle(const FeedItem& rust_feed_item,
 using ParseFeedCallback =
     base::OnceCallback<void(absl::variant<DirectFeedResult, DirectFeedError>)>;
 void ParseFeedDataOffMainThread(const GURL& feed_url,
+                                std::string publisher_id,
                                 std::string body_content,
                                 ParseFeedCallback callback) {
   // TODO(sko) Maybe we should have a thread traits so that app can be shutdown
@@ -75,7 +76,8 @@ void ParseFeedDataOffMainThread(const GURL& feed_url,
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(
-          [](const GURL& feed_url, std::string body_content)
+          [](const GURL& feed_url, std::string publisher_id,
+             std::string body_content)
               -> absl::variant<DirectFeedResult, DirectFeedError> {
             brave_news::FeedData data;
             if (!parse_feed_bytes(::rust::Slice<const uint8_t>(
@@ -91,7 +93,7 @@ void ParseFeedDataOffMainThread(const GURL& feed_url,
             }
 
             DirectFeedResult result;
-            result.id = (std::string)data.id;
+            result.id = publisher_id;
             result.title = (std::string)data.title;
             for (auto entry : data.items) {
               auto item = RustFeedItemToArticle(entry, result.id);
@@ -119,7 +121,7 @@ void ParseFeedDataOffMainThread(const GURL& feed_url,
             }
             return result;
           },
-          feed_url, std::move(body_content)),
+          feed_url, std::move(publisher_id), std::move(body_content)),
       std::move(callback));
 }
 
@@ -140,6 +142,7 @@ DirectFeedFetcher::DirectFeedFetcher(
 DirectFeedFetcher::~DirectFeedFetcher() = default;
 
 void DirectFeedFetcher::DownloadFeed(const GURL& url,
+                                     std::string publisher_id,
                                      DownloadFeedCallback callback) {
   // Make request
   auto request = std::make_unique<network::ResourceRequest>();
@@ -159,7 +162,7 @@ void DirectFeedFetcher::DownloadFeed(const GURL& url,
       // Handle response
       base::BindOnce(&DirectFeedFetcher::OnFeedDownloaded,
                      weak_ptr_factory_.GetWeakPtr(), iter, std::move(callback),
-                     url),
+                     url, std::move(publisher_id)),
       5 * 1024 * 1024);
 }
 
@@ -167,6 +170,7 @@ void DirectFeedFetcher::OnFeedDownloaded(
     SimpleURLLoaderList::iterator iter,
     DownloadFeedCallback callback,
     const GURL& feed_url,
+    std::string publisher_id,
     std::unique_ptr<std::string> response_body) {
   auto* loader = iter->get();
   auto response_code = -1;
@@ -198,7 +202,7 @@ void DirectFeedFetcher::OnFeedDownloaded(
   }
 
   ParseFeedDataOffMainThread(
-      feed_url, std::move(body_content),
+      feed_url, std::move(publisher_id), std::move(body_content),
       base::BindOnce(&DirectFeedFetcher::OnParsedFeedData,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
                      std::move(result)));

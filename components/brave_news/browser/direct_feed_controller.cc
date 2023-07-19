@@ -134,7 +134,7 @@ void DirectFeedController::FindFeedsImpl(
     const GURL& possible_feed_or_site_url) {
   DVLOG(2) << __FUNCTION__ << " " << possible_feed_or_site_url.spec();
   fetcher_.DownloadFeed(
-      possible_feed_or_site_url,
+      possible_feed_or_site_url, "",
       base::BindOnce(&DirectFeedController::OnFindFeedsImplDownloadedFeed,
                      weak_ptr_factory_.GetWeakPtr(),
                      possible_feed_or_site_url));
@@ -186,7 +186,7 @@ void DirectFeedController::OnFindFeedsImplDownloadedFeed(
     auto feed_handler = base::BarrierCallback<DirectFeedResponse>(
         feed_urls.size(), std::move(all_done_handler));
     for (auto& url : feed_urls) {
-      DownloadFeed(url, feed_handler);
+      fetcher_.DownloadFeed(url, "", feed_handler);
     }
     return;
   }
@@ -238,8 +238,8 @@ void DirectFeedController::VerifyFeedUrl(const GURL& feed_url,
   // TODO(petemill): Cache for a certain amount of time since user
   // will likely add to their user feed sources. Unless this is already
   // cached via network service?
-  DownloadFeed(
-      feed_url,
+  fetcher_.DownloadFeed(
+      feed_url, "",
       base::BindOnce(
           [](IsValidCallback callback, DirectFeedResponse response) {
             // Handle response
@@ -304,9 +304,6 @@ void DirectFeedController::DownloadFeedContent(const GURL& feed_url,
           VLOG(1) << "Valid feed parsed from " << data.url.spec();
           VLOG(1) << "Direct feed retrieved article count: "
                   << feed->articles.size();
-          for (const auto& article : feed->articles) {
-            article->data->publisher_id = publisher_id;
-          }
           std::move(callback).Run(std::move(feed->articles));
           return;
         }
@@ -314,7 +311,7 @@ void DirectFeedController::DownloadFeedContent(const GURL& feed_url,
       },
       std::move(callback), publisher_id);
   // Make request
-  fetcher_.DownloadFeed(feed_url, std::move(response_handler));
+  fetcher_.DownloadFeed(feed_url, publisher_id, std::move(response_handler));
 }
 
 }  // namespace brave_news

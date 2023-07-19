@@ -36,12 +36,13 @@ using GetFeedItemsCallback = base::OnceCallback<void(FeedItems)>;
 
 class FeedController : public PublishersController::Observer {
  public:
-  FeedController(PublishersController* publishers_controller,
-                 DirectFeedController* direct_feed_controller,
-                 ChannelsController* channels_controller,
-                 history::HistoryService* history_service,
-                 scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-                 PrefService* prefs);
+  FeedController(
+      PublishersController* publishers_controller,
+      DirectFeedController* direct_feed_controller,
+      ChannelsController* channels_controller,
+      history::HistoryService* history_service,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PrefService* prefs);
   ~FeedController() override;
   FeedController(const FeedController&) = delete;
   FeedController& operator=(const FeedController&) = delete;

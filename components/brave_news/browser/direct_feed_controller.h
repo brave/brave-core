@@ -87,7 +87,8 @@ class DirectFeedController {
                            GetArticlesCallback callback);
 
   void FindFeedsImpl(const GURL& possible_feed_or_site_url);
-  void OnFindFeedsImplDownloadedFeed(const GURL& feed_url, DirectFeedResponse result);
+  void OnFindFeedsImplDownloadedFeed(const GURL& feed_url,
+                                     DirectFeedResponse result);
   void OnFindFeedsImplResponse(
       const GURL& feed_url,
       std::vector<mojom::FeedSearchResultItemPtr> results);
