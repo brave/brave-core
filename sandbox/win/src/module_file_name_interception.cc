@@ -61,7 +61,7 @@ template <template <class T> class FromTo, typename CharT>
 absl::optional<DWORD> PatchFilenameImpl(CharT* filename,
                                         DWORD length,
                                         DWORD size) {
-  if (!base::EndsWith(base::BasicStringPiece(filename, length),
+  if (!base::EndsWith(base::BasicStringPiece<CharT>(filename, length),
                       FromTo<CharT>::kBrave,
                       base::CompareCase::INSENSITIVE_ASCII)) {
     return absl::nullopt;
