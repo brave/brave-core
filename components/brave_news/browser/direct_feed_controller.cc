@@ -18,16 +18,11 @@
 #include "base/functional/callback.h"
 #include "base/location.h"
 #include "base/logging.h"
-#include "base/strings/string_util.h"
-#include "base/strings/utf_string_conversions.h"
-#include "base/task/thread_pool.h"
-#include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/brave_news/browser/html_parsing.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
-#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_news/rust/lib.rs.h"
@@ -41,12 +36,12 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-#include "ui/base/l10n/time_format.h"
 #include "url/gurl.h"
 
 namespace brave_news {
 
 namespace {
+
 std::string GetResponseCharset(network::SimpleURLLoader* loader) {
   auto* response_info = loader->ResponseInfo();
   if (!response_info) {
@@ -54,61 +49,6 @@ std::string GetResponseCharset(network::SimpleURLLoader* loader) {
   }
 
   return response_info->charset.empty() ? "utf-8" : response_info->charset;
-}
-
-mojom::ArticlePtr RustFeedItemToArticle(const FeedItem& rust_feed_item,
-                                        const std::string& publisher_id) {
-  // We don't include description since there does not exist a
-  // UI which uses that field at the moment.
-  auto metadata = mojom::FeedItemMetadata::New();
-  metadata->publisher_id = publisher_id;
-  metadata->title = static_cast<std::string>(rust_feed_item.title);
-  metadata->image = mojom::Image::NewImageUrl(
-      GURL(static_cast<std::string>(rust_feed_item.image_url)));
-  metadata->url =
-      GURL(static_cast<std::string>(rust_feed_item.destination_url));
-  metadata->publish_time =
-      base::Time::FromJsTime(rust_feed_item.published_timestamp * 1000);
-  // Get language-specific relative time
-  base::TimeDelta relative_time_delta =
-      base::Time::Now() - metadata->publish_time;
-  metadata->relative_time_description =
-      base::UTF16ToUTF8(ui::TimeFormat::Simple(
-          ui::TimeFormat::Format::FORMAT_ELAPSED,
-          ui::TimeFormat::Length::LENGTH_LONG, relative_time_delta));
-  auto article = mojom::Article::New();
-  article->data = std::move(metadata);
-  // Calculate score same method as brave news aggregator
-  auto seconds_since_publish = relative_time_delta.InSeconds();
-  article->data->score = std::abs(std::log(seconds_since_publish));
-  return article;
-}
-
-using ParseFeedCallback = base::OnceCallback<void(absl::optional<FeedData>)>;
-void ParseFeedDataOffMainThread(const GURL& feed_url,
-                                std::string body_content,
-                                ParseFeedCallback callback) {
-  // TODO(sko) Maybe we should have a thread traits so that app can be shutdown
-  // while the worker threads are still working.
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(
-          [](const GURL& feed_url,
-             std::string body_content) -> absl::optional<FeedData> {
-            brave_news::FeedData data;
-            if (!parse_feed_bytes(::rust::Slice<const uint8_t>(
-                                      (const uint8_t*)body_content.data(),
-                                      body_content.size()),
-                                  data)) {
-              VLOG(1) << feed_url.spec() << " not a valid feed.";
-              VLOG(2) << "Response body was:";
-              VLOG(2) << body_content;
-              return absl::nullopt;
-            }
-            return data;
-          },
-          feed_url, std::move(body_content)),
-      std::move(callback));
 }
 
 }  // namespace

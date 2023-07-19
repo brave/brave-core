@@ -18,8 +18,8 @@
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "brave/components/brave_news/rust/lib.rs.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/components/brave_news/rust/lib.rs.h"
 #include "url/gurl.h"
 
 class PrefService;
