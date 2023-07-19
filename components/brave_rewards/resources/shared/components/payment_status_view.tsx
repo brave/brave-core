@@ -8,7 +8,6 @@ import { LocaleContext, formatMessage } from '../lib/locale_context'
 import { ProviderPayoutStatus } from '../lib/provider_payout_status'
 
 import { NewTabLink } from './new_tab_link'
-import { EarningsRange } from './earnings_range'
 import { MoneyBagIcon } from './icons/money_bag_icon'
 import { PaymentCompleteIcon } from './icons/payment_complete_icon'
 
@@ -19,6 +18,11 @@ const pendingDaysFormatter = new Intl.NumberFormat(undefined, {
   unit: 'day',
   unitDisplay: 'long',
   maximumFractionDigits: 0
+})
+
+const dateFormatter = Intl.DateTimeFormat(undefined, {
+  month: 'long',
+  day: 'numeric'
 })
 
 const monthNameFormatter = new Intl.DateTimeFormat(undefined, {
@@ -52,27 +56,24 @@ export function getDaysUntilRewardsPayment (nextPaymentDate: number | Date) {
   return pendingDaysFormatter.format(days)
 }
 
+function formatPaymentDate (nextPaymentDate: number | Date) {
+  if (typeof nextPaymentDate === 'number') {
+    nextPaymentDate = new Date(nextPaymentDate)
+  }
+
+  // Round next payment date down to midnight local time
+  nextPaymentDate = new Date(
+    nextPaymentDate.getFullYear(),
+    nextPaymentDate.getMonth(),
+    nextPaymentDate.getDate())
+
+  return dateFormatter.format(nextPaymentDate)
+}
+
 function getPaymentMonth () {
   const date = new Date()
   const lastMonth = new Date(date.getFullYear(), date.getMonth() - 1)
   return monthNameFormatter.format(lastMonth)
-}
-
-interface RewardAmountProps {
-  min: number
-  max: number
-}
-
-function RewardAmount (props: RewardAmountProps) {
-  return (
-    <span className='rewards-payment-amount'>
-      <EarningsRange
-        minimum={props.min}
-        maximum={props.max}
-        minimumFractionDigits={3}
-      />
-    </span>
-  )
 }
 
 interface Props {
@@ -89,28 +90,6 @@ export function PaymentStatusView (props: Props) {
     return null
   }
 
-  const estimatedPendingDays = getDaysUntilRewardsPayment(props.nextPaymentDate)
-  if (estimatedPendingDays) {
-    return (
-      <div className='rewards-payment-pending'>
-        <div><MoneyBagIcon /></div>
-        <div>
-          {
-            formatMessage(getString('rewardsPaymentPending'), [
-              getPaymentMonth(),
-              <RewardAmount
-                key='amount'
-                min={props.minEarnings}
-                max={props.maxEarnings}
-              />,
-              estimatedPendingDays
-            ])
-          }
-        </div>
-      </div>
-    )
-  }
-
   if (props.providerPayoutStatus === 'complete') {
     return (
       <div className='rewards-payment-completed'>
@@ -120,7 +99,12 @@ export function PaymentStatusView (props: Props) {
             formatMessage(getString('rewardsPaymentCompleted'), [
               getPaymentMonth()
             ])
-          }
+          }&nbsp;
+          <span className='rewards-payment-link'>
+            <NewTabLink key='support' href={urls.contactSupportURL}>
+              {getString('rewardsPaymentSupport')}
+            </NewTabLink>
+          </span>
         </div>
       </div>
     )
@@ -132,19 +116,31 @@ export function PaymentStatusView (props: Props) {
         <div>
           {
             formatMessage(getString('rewardsPaymentProcessing'), [
-              getPaymentMonth(),
-              <RewardAmount
-                key='amount'
-                min={props.minEarnings}
-                max={props.maxEarnings}
-              />
+              getPaymentMonth()
             ])
           }&nbsp;
-          <span className='rewards-payment-check-status'>
+          <span className='rewards-payment-link'>
             <NewTabLink key='status' href={urls.payoutStatusURL}>
               {getString('rewardsPaymentCheckStatus')}
             </NewTabLink>
           </span>
+        </div>
+      </div>
+    )
+  }
+
+  const estimatedPendingDays = getDaysUntilRewardsPayment(props.nextPaymentDate)
+  if (estimatedPendingDays) {
+    return (
+      <div className='rewards-payment-pending'>
+        <div><MoneyBagIcon /></div>
+        <div>
+          {
+            formatMessage(getString('rewardsPaymentPending'), [
+              getPaymentMonth(),
+              formatPaymentDate(props.nextPaymentDate)
+            ])
+          }
         </div>
       </div>
     )

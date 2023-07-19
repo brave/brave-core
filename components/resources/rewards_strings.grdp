@@ -5,13 +5,16 @@
     Check status
   </message>
   <message name="IDS_REWARDS_PAYMENT_COMPLETED" desc="">
-    Congrats! Your <ph name="MONTH">$1<ex>October</ex></ph> rewards have arrived!
+    The payout for <ph name="MONTH">$1<ex>October</ex></ph> rewards has completed.
   </message>
   <message name="IDS_REWARDS_PAYMENT_PENDING" desc="">
-    Your <ph name="MONTH">$1<ex>October</ex></ph> earnings of <ph name="AMOUNT">$2<ex>1.5 - 1.6 BAT</ex></ph> will arrive in <ph name="DAYS">$3<ex>4 days</ex></ph>.
+    The payout for <ph name="MONTH">$1<ex>October</ex></ph> rewards will begin processing by <ph name="DATE">$2<ex>October 5</ex></ph>.
   </message>
   <message name="IDS_REWARDS_PAYMENT_PROCESSING" desc="">
-    Your <ph name="MONTH">$1<ex>October</ex></ph> earnings of <ph name="AMOUNT">$2<ex>1.5 - 1.6 BAT</ex></ph> are on the way. Keep an eye out!
+    The payout for <ph name="MONTH">$1<ex>October</ex></ph> rewards is in progress.
+  </message>
+  <message name="IDS_REWARDS_PAYMENT_SUPPORT" desc="">
+    Support
   </message>
 
   <!-- Rewards "card-and-summary" -->

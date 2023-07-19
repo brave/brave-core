@@ -215,16 +215,11 @@ export const pendingRewards = styled.div`
     text-decoration: none;
   }
 
-  .rewards-payment-amount {
-    font-weight: 600;
-  }
-
   .rewards-payment-completed {
     background: #E7FDEA;
   }
 
-  .rewards-payment-check-status {
-    display: block;
+  .rewards-payment-link {
     padding-top: 4px;
     font-size: 12px;
     line-height: 18px;
