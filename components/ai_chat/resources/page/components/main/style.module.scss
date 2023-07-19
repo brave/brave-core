@@ -26,7 +26,7 @@
 }
 
 .header {
-  padding: 16px;
+  padding: 8px 16px;
   border-bottom: 1px solid var(--leo-color-divider-subtle);
   background-color: var(--leo-color-container-background);
   display: flex;
@@ -53,6 +53,7 @@
   font-weight: 600;
   font-size: 16px;
   color: var(--leo-color-text-secondary);
+  line-height: 1;
 
   span {
     color: var(--leo-color-text-primary);
