@@ -74,7 +74,6 @@ class FeedController : public PublishersController::Observer {
   void OnPublishersUpdated(PublishersController* publishers) override;
 
  private:
-  void FetchCombinedFeed(GetFeedItemsCallback callback);
   void GetOrFetchFeed(base::OnceClosure callback);
   void ResetFeed();
   void NotifyUpdateDone();

@@ -22,17 +22,8 @@
 
 class PrefService;
 
-namespace network {
-class SharedURLLoaderFactory;
-class SimpleURLLoader;
-}  // namespace network
-
 namespace brave_news {
 
-using Articles = std::vector<mojom::ArticlePtr>;
-using GetArticlesCallback = base::OnceCallback<void(Articles)>;
-using GetFeedItemsCallback =
-    base::OnceCallback<void(std::vector<mojom::FeedItemPtr>)>;
 using IsValidCallback =
     base::OnceCallback<void(const bool is_valid, const std::string& title)>;
 
@@ -59,8 +50,6 @@ class DirectFeedController {
   // Returns a list of all the direct feeds currently subscribed to.
   std::vector<mojom::PublisherPtr> ParseDirectFeedsPref();
   void VerifyFeedUrl(const GURL& feed_url, IsValidCallback callback);
-  void DownloadAllContent(std::vector<mojom::PublisherPtr> publishers,
-                          GetFeedItemsCallback callback);
   void FindFeeds(const GURL& possible_feed_or_site_url,
                  mojom::BraveNewsController::FindFeedsCallback callback);
 
@@ -81,10 +70,6 @@ class DirectFeedController {
 
   FRIEND_TEST_ALL_PREFIXES(BraveNewsDirectFeed, ParseToArticle);
   FRIEND_TEST_ALL_PREFIXES(BraveNewsDirectFeed, ParseOnlyAllowsHTTPLinks);
-
-  void DownloadFeedContent(const GURL& feed_url,
-                           const std::string& publisher_id,
-                           GetArticlesCallback callback);
 
   void FindFeedsImpl(const GURL& possible_feed_or_site_url);
   void OnFindFeedsImplDownloadedFeed(const GURL& feed_url,

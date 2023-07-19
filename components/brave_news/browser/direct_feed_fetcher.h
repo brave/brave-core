@@ -7,7 +7,8 @@
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_DIRECT_FEED_FETCHER_H_
 
 #include <list>
-#include <variant>
+#include <memory>
+#include <string>
 #include <vector>
 
 #include "base/functional/callback_forward.h"

@@ -12,23 +12,18 @@
 #include <utility>
 #include <vector>
 
-#include "absl/types/variant.h"
 #include "base/barrier_callback.h"
-#include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/location.h"
-#include "base/logging.h"
 #include "base/uuid.h"
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/browser/html_parsing.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "services/network/public/cpp/simple_url_loader.h"
+#include "third_party/abseil-cpp/absl/types/variant.h"
 #include "url/gurl.h"
 
 namespace brave_news {
@@ -252,66 +247,6 @@ void DirectFeedController::VerifyFeedUrl(const GURL& feed_url,
             std::move(callback).Run(success, title);
           },
           std::move(callback)));
-}
-
-void DirectFeedController::DownloadAllContent(
-    std::vector<mojom::PublisherPtr> publishers,
-    GetFeedItemsCallback callback) {
-  // Handle when all retrieve operations are complete
-  auto all_done_handler = base::BindOnce(
-      [](GetFeedItemsCallback callback, std::vector<Articles> results) {
-        VLOG(1) << "All direct feeds retrieved.";
-        std::size_t total_size = 0;
-        for (const auto& collection : results) {
-          total_size += collection.size();
-        }
-        std::vector<mojom::FeedItemPtr> all_feed_articles;
-        all_feed_articles.reserve(total_size);
-        for (auto& collection : results) {
-          auto it = collection.begin();
-          while (it != collection.end()) {
-            all_feed_articles.insert(
-                all_feed_articles.end(),
-                mojom::FeedItem::NewArticle(*std::make_move_iterator(it)));
-            it = collection.erase(it);
-          }
-        }
-        std::move(callback).Run(std::move(all_feed_articles));
-      },
-      std::move(callback));
-  // Perform requests in parallel and wait for completion
-  auto feed_content_handler = base::BarrierCallback<Articles>(
-      publishers.size(), std::move(all_done_handler));
-  base::flat_set<GURL> direct_feed_urls;
-  for (auto& publisher : publishers) {
-    VLOG(1) << "Downloading feed content from "
-            << publisher->feed_source.spec();
-    DownloadFeedContent(publisher->feed_source, publisher->publisher_id,
-                        feed_content_handler);
-  }
-}
-
-void DirectFeedController::DownloadFeedContent(const GURL& feed_url,
-                                               const std::string& publisher_id,
-                                               GetArticlesCallback callback) {
-  // Handle Data
-  auto response_handler = base::BindOnce(
-      [](GetArticlesCallback callback, const std::string& publisher_id,
-         DirectFeedResponse data) {
-        // Validate response
-        if (auto* feed = absl::get_if<DirectFeedResult>(&data.result)) {
-          // Valid feed, convert items
-          VLOG(1) << "Valid feed parsed from " << data.url.spec();
-          VLOG(1) << "Direct feed retrieved article count: "
-                  << feed->articles.size();
-          std::move(callback).Run(std::move(feed->articles));
-          return;
-        }
-        std::move(callback).Run({});
-      },
-      std::move(callback), publisher_id);
-  // Make request
-  fetcher_.DownloadFeed(feed_url, publisher_id, std::move(response_handler));
 }
 
 }  // namespace brave_news

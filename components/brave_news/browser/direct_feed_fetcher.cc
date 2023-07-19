@@ -5,13 +5,12 @@
 
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <utility>
 #include <variant>
 
-#include "absl/types/internal/variant.h"
-#include "absl/types/variant.h"
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
@@ -22,6 +21,7 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
+#include "third_party/abseil-cpp/absl/types/variant.h"
 #include "ui/base/l10n/time_format.h"
 
 namespace brave_news {

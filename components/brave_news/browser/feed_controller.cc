@@ -113,45 +113,25 @@ void FeedController::EnsureFeedIsUpdating() {
           controller->NotifyUpdateDone();
           return;
         }
-        // Find the sources which will be downloaded directly
-        std::vector<mojom::PublisherPtr> direct_feed_publishers;
-        for (auto& publisher : publishers) {
-          if (publisher.second->type == mojom::PublisherType::DIRECT_SOURCE) {
-            direct_feed_publishers.emplace_back(publisher.second->Clone());
-          }
-        }
 
         // Handle all feed items downloaded
         // Fetch https request via callback
-        auto feed_items_handler = base::BindOnce(
+        controller->feed_fetcher_.FetchFeed(base::BindOnce(
             [](FeedController* controller, Publishers publishers,
-               std::vector<FeedItems> feed_items_unflat) {
-              // flatten the vectors
-              std::size_t total_size = 0;
-              for (const auto& collection : feed_items_unflat) {
-                total_size += collection.size();
-              }
+               FeedItems items, ETags etags) {
+              controller->locale_feed_etags_ = std::move(etags);
+
               VLOG(1) << "All feed item fetches done with item count: "
-                      << total_size;
-              if (total_size == 0) {
+                      << items.size();
+              if (items.size() == 0) {
                 controller->ResetFeed();
                 controller->NotifyUpdateDone();
                 return;
               }
-              FeedItems all_feed_items;
-              all_feed_items.reserve(total_size);
-              for (auto& collection : feed_items_unflat) {
-                auto it = collection.begin();
-                while (it != collection.end()) {
-                  all_feed_items.insert(all_feed_items.end(),
-                                        *std::make_move_iterator(it));
-                  it = collection.erase(it);
-                }
-              }
 
               // Get history hosts via callback
               auto on_history = base::BindOnce(
-                  [](FeedController* controller, FeedItems all_feed_items,
+                  [](FeedController* controller, FeedItems items,
                      Publishers publishers, history::QueryResults results) {
                     std::unordered_set<std::string> history_hosts;
                     for (const auto& item : results) {
@@ -162,7 +142,7 @@ void FeedController::EnsureFeedIsUpdating() {
                     // Parse directly to in-memory property
                     controller->ResetFeed();
                     std::vector<mojom::FeedItemPtr> feed_items;
-                    if (BuildFeed(all_feed_items, history_hosts, &publishers,
+                    if (BuildFeed(items, history_hosts, &publishers,
                                   &controller->current_feed_,
                                   controller->prefs_)) {
                     } else {
@@ -172,7 +152,7 @@ void FeedController::EnsureFeedIsUpdating() {
                     // or errored.
                     controller->NotifyUpdateDone();
                   },
-                  base::Unretained(controller), std::move(all_feed_items),
+                  base::Unretained(controller), std::move(items),
                   std::move(publishers));
               history::QueryOptions options;
               options.max_count = 2000;
@@ -181,15 +161,7 @@ void FeedController::EnsureFeedIsUpdating() {
                   std::u16string(), options, std::move(on_history),
                   &controller->task_tracker_);
             },
-            base::Unretained(controller), std::move(publishers));
-        // Perform all feed downloads in parallel
-        auto fetch_items_handler =
-            base::BarrierCallback<FeedItems>(2, std::move(feed_items_handler));
-        controller->FetchCombinedFeed(fetch_items_handler);
-        VLOG(1) << "Feed Controller found " << direct_feed_publishers.size()
-                << " direct feeds.";
-        controller->direct_feed_controller_->DownloadAllContent(
-            std::move(direct_feed_publishers), fetch_items_handler);
+            base::Unretained(controller), std::move(publishers)));
       },
       base::Unretained(this)));
 }
@@ -231,18 +203,6 @@ void FeedController::ClearCache() {
 void FeedController::OnPublishersUpdated(PublishersController* controller) {
   VLOG(1) << "OnPublishersUpdated";
   EnsureFeedIsUpdating();
-}
-
-void FeedController::FetchCombinedFeed(GetFeedItemsCallback callback) {
-  feed_fetcher_.FetchFeed(base::BindOnce(
-      [](FeedController* controller, GetFeedItemsCallback callback,
-         FeedItems feed, ETags etags) {
-        controller->locale_feed_etags_ = std::move(etags);
-        std::move(callback).Run(std::move(feed));
-      },
-      // Unretained is safe because we own the FeedFetcher, and it uses WeakPtr
-      // internally so this callback won't fire if we are destructed.
-      base::Unretained(this), std::move(callback)));
 }
 
 void FeedController::GetOrFetchFeed(base::OnceClosure callback) {
