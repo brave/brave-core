@@ -236,11 +236,12 @@ public class BraveToolbarManager extends ToolbarManager {
             if (TabUiFeatureUtilities.isTabGroupsAndroidEnabled(mActivity)) {
                 mTabGroupUi = TabManagementDelegateProvider.getDelegate().createTabGroupUi(
                         mActivity, mBottomControls.findViewById(R.id.bottom_container_slot),
-                        mIncognitoStateProvider, mScrimCoordinator, mOmniboxFocusStateSupplier,
-                        mBottomSheetController, mActivityLifecycleDispatcher,
-                        mIsWarmOnResumeSupplier, mTabModelSelector, mTabContentManager,
-                        mCompositorViewHolder, mCompositorViewHolder::getDynamicResourceLoader,
-                        mTabCreatorManager, mLayoutStateProviderSupplier, mSnackbarManager);
+                        mBrowserControlsSizer, mIncognitoStateProvider, mScrimCoordinator,
+                        mOmniboxFocusStateSupplier, mBottomSheetController,
+                        mActivityLifecycleDispatcher, mIsWarmOnResumeSupplier, mTabModelSelector,
+                        mTabContentManager, mCompositorViewHolder,
+                        mCompositorViewHolder::getDynamicResourceLoader, mTabCreatorManager,
+                        mLayoutStateProviderSupplier, mSnackbarManager);
             }
             mBottomControlsCoordinatorSupplier.set(new BraveBottomControlsCoordinator(
                     mLayoutStateProviderSupplier,
