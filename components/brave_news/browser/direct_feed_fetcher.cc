@@ -12,11 +12,9 @@
 
 #include "absl/types/internal/variant.h"
 #include "absl/types/variant.h"
-#include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/rust/lib.rs.h"
@@ -24,6 +22,7 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "ui/base/l10n/time_format.h"
+#include "net/base/load_flags.h"
 
 namespace brave_news {
 
@@ -125,6 +124,15 @@ void ParseFeedDataOffMainThread(const GURL& feed_url,
 }
 
 }  // namespace
+
+DirectFeedResult::DirectFeedResult() = default;
+DirectFeedResult::~DirectFeedResult() = default;
+DirectFeedResult::DirectFeedResult(DirectFeedResult&&) = default;
+DirectFeedResult& DirectFeedResult::operator=(DirectFeedResult&&) = default;
+
+DirectFeedResponse::DirectFeedResponse() = default;
+DirectFeedResponse::~DirectFeedResponse() = default;
+DirectFeedResponse::DirectFeedResponse(DirectFeedResponse&&) = default;
 
 DirectFeedFetcher::DirectFeedFetcher(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)

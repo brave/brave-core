@@ -30,6 +30,13 @@ struct DirectFeedResult {
   std::string id;
   std::string title;
   std::vector<mojom::ArticlePtr> articles;
+
+  DirectFeedResult();
+  ~DirectFeedResult();
+  DirectFeedResult(DirectFeedResult&&);
+  DirectFeedResult& operator=(DirectFeedResult&&);
+  DirectFeedResult(const DirectFeedResult&) = delete;
+  DirectFeedResult& operator=(const DirectFeedResult&) = delete;
 };
 
 struct DirectFeedResponse {
@@ -40,6 +47,12 @@ struct DirectFeedResponse {
 
   // If success, this will be |FeedData|, otherwise an error.
   absl::variant<DirectFeedResult, DirectFeedError> result;
+
+  DirectFeedResponse();
+  ~DirectFeedResponse();
+  DirectFeedResponse(DirectFeedResponse&&);
+  DirectFeedResponse(const DirectFeedResponse&) = delete;
+  DirectFeedResponse& operator=(const DirectFeedResponse&) = delete;
 };
 
 using DownloadFeedCallback = base::OnceCallback<void(DirectFeedResponse)>;

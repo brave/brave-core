@@ -14,7 +14,6 @@
 
 #include "absl/types/variant.h"
 #include "base/barrier_callback.h"
-#include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
@@ -23,22 +22,14 @@
 #include "base/uuid.h"
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/browser/html_parsing.h"
-#include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
-#include "brave/components/brave_news/rust/lib.rs.h"
-#include "brave/components/brave_private_cdn/headers.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "net/base/load_flags.h"
-#include "net/http/http_request_headers.h"
-#include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_news {
@@ -61,8 +52,7 @@ DirectFeedController::DirectFeedController(
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : prefs_(prefs),
-      fetcher_(url_loader_factory),
-      url_loader_factory_(url_loader_factory) {}
+      fetcher_(url_loader_factory) {}
 
 DirectFeedController::~DirectFeedController() = default;
 

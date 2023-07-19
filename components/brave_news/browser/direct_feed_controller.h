@@ -40,7 +40,7 @@ using IsValidCallback =
 // directly from the feed source server.
 class DirectFeedController {
  public:
-  explicit DirectFeedController(
+  DirectFeedController(
       PrefService* prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~DirectFeedController();
@@ -79,9 +79,6 @@ class DirectFeedController {
   // TODO(sko) We might want to adjust this value.
   static constexpr size_t kMaxOngoingRequests = 2;
 
-  using SimpleURLLoaderList =
-      std::list<std::unique_ptr<network::SimpleURLLoader>>;
-
   FRIEND_TEST_ALL_PREFIXES(BraveNewsDirectFeed, ParseToArticle);
   FRIEND_TEST_ALL_PREFIXES(BraveNewsDirectFeed, ParseOnlyAllowsHTTPLinks);
 
@@ -89,10 +86,6 @@ class DirectFeedController {
                            const std::string& publisher_id,
                            GetArticlesCallback callback);
   void DownloadFeed(const GURL& feed_url, DownloadFeedCallback callback);
-  void OnResponse(SimpleURLLoaderList::iterator iter,
-                  DownloadFeedCallback callback,
-                  const GURL& feed_url,
-                  const std::unique_ptr<std::string> response_body);
 
   void FindFeedsImpl(const GURL& possible_feed_or_site_url);
   void OnFindFeedsImplDownloadedFeed(const GURL& feed_url, DirectFeedResponse result);
@@ -101,7 +94,6 @@ class DirectFeedController {
       std::vector<mojom::FeedSearchResultItemPtr> results);
 
   raw_ptr<PrefService> prefs_;
-  SimpleURLLoaderList url_loaders_;
   DirectFeedFetcher fetcher_;
 
   // TODO(sko) We should have a way to cancel requests.
@@ -110,8 +102,6 @@ class DirectFeedController {
   // detection and app from shutdown.
   std::queue<FindFeedRequest> pending_requests_;
   base::flat_map<GURL, std::vector<FindFeedRequest>> ongoing_requests_;
-
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   base::WeakPtrFactory<DirectFeedController> weak_ptr_factory_{this};
 };
