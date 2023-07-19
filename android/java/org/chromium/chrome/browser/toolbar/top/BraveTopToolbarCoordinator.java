@@ -14,6 +14,7 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
+import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
@@ -70,7 +71,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ObservableSupplier<Boolean> compositorInMotionSupplier,
             BrowserStateBrowserControlsVisibilityDelegate
                     browserStateBrowserControlsVisibilityDelegate,
-            boolean shouldCreateLogoInStartToolbar) {
+            boolean shouldCreateLogoInStartToolbar, FullscreenManager fullscreenManager) {
         super(controlContainer, toolbarStub, fullscreenToolbarStub, toolbarLayout,
                 toolbarDataProvider, tabController, userEducationHelper, buttonDataProviders,
                 layoutStateProviderSupplier, normalThemeColorProvider, overviewThemeColorProvider,
@@ -83,7 +84,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 partnerHomepageEnabledSupplier, offlineDownloader, initializeWithIncognitoColors,
                 startSurfaceLogoClickedCallback, isStartSurfaceRefactorEnabled, constraintsSupplier,
                 compositorInMotionSupplier, browserStateBrowserControlsVisibilityDelegate,
-                shouldCreateLogoInStartToolbar);
+                shouldCreateLogoInStartToolbar, fullscreenManager);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
