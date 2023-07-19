@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { Route, Switch, BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 import { initLocale } from 'brave-ui'
 
@@ -43,11 +43,7 @@ export function AndroidFundWalletApp() {
         <BraveCoreThemeProvider dark={walletDarkTheme} light={walletLightTheme}>
           <ApiProxyContext.Provider value={walletPageApiProxy}>
             <LibContext.Provider value={Lib}>
-              <Switch>
-                <Route>
-                  <FundWalletScreen isAndroid={true} />
-                </Route>
-              </Switch>
+              <FundWalletScreen isAndroid={true} />
             </LibContext.Provider>
           </ApiProxyContext.Provider>
         </BraveCoreThemeProvider>
