@@ -120,6 +120,7 @@ void FeedController::EnsureFeedIsUpdating() {
             direct_feed_publishers.emplace_back(publisher.second->Clone());
           }
         }
+        LOG(ERROR) << direct_feed_publishers.size();
         // Handle all feed items downloaded
         // Fetch https request via callback
         auto feed_items_handler = base::BindOnce(
@@ -130,7 +131,7 @@ void FeedController::EnsureFeedIsUpdating() {
               for (const auto& collection : feed_items_unflat) {
                 total_size += collection.size();
               }
-              VLOG(1) << "All feed item fetches done with item count: "
+              LOG(ERROR) << "All feed item fetches done with item count: "
                       << total_size;
               if (total_size == 0) {
                 controller->ResetFeed();
@@ -164,6 +165,8 @@ void FeedController::EnsureFeedIsUpdating() {
                     if (BuildFeed(all_feed_items, history_hosts, &publishers,
                                   &controller->current_feed_,
                                   controller->prefs_)) {
+                                  LOG(ERROR) << "Built Feed. Has " << controller->current_feed_.pages.size() << " pages";
+                                  LOG(ERROR) << "Had " << all_feed_items.size();
                     } else {
                       VLOG(1) << "ParseFeed reported failure.";
                     }

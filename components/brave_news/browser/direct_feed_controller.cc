@@ -304,6 +304,9 @@ void DirectFeedController::DownloadFeedContent(const GURL& feed_url,
           VLOG(1) << "Valid feed parsed from " << data.url.spec();
           VLOG(1) << "Direct feed retrieved article count: "
                   << feed->articles.size();
+          for (const auto& article : feed->articles) {
+            article->data->publisher_id = publisher_id;
+          }
           std::move(callback).Run(std::move(feed->articles));
           return;
         }
@@ -311,12 +314,7 @@ void DirectFeedController::DownloadFeedContent(const GURL& feed_url,
       },
       std::move(callback), publisher_id);
   // Make request
-  DownloadFeed(feed_url, std::move(response_handler));
-}
-
-void DirectFeedController::DownloadFeed(const GURL& feed_url,
-                                        DownloadFeedCallback callback) {
-  fetcher_.DownloadFeed(feed_url, std::move(callback));
+  fetcher_.DownloadFeed(feed_url, std::move(response_handler));
 }
 
 }  // namespace brave_news

@@ -85,7 +85,6 @@ class DirectFeedController {
   void DownloadFeedContent(const GURL& feed_url,
                            const std::string& publisher_id,
                            GetArticlesCallback callback);
-  void DownloadFeed(const GURL& feed_url, DownloadFeedCallback callback);
 
   void FindFeedsImpl(const GURL& possible_feed_or_site_url);
   void OnFindFeedsImplDownloadedFeed(const GURL& feed_url, DirectFeedResponse result);
