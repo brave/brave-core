@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import { render } from 'react-dom'
-import { Route, Switch, BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
 import { initLocale } from 'brave-ui'
@@ -52,36 +51,30 @@ export function AndroidDepositApp() {
 
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <BraveCoreThemeProvider dark={walletDarkTheme} light={walletLightTheme}>
-          <ApiProxyContext.Provider value={walletPageApiProxy}>
-            <LibContext.Provider value={Lib}>
-              <Switch>
-                <Route>
-                  <WalletPageWrapper
-                    wrapContentInBox={true}
-                    hideNav={true}
-                    hideHeader={true}
-                    cardWidth={456}
-                    cardHeader={
-                      <PageTitleHeader
-                        title={getLocale('braveWalletDepositCryptoButton')}
-                        showBackButton={showDepositAddress}
-                        onBack={handleDepositScreenBack}
-                      />
-                    }
-                  >
-                    <DepositFundsScreen
-                      showDepositAddress={showDepositAddress}
-                      onShowDepositAddress={setShowDepositAddress}
-                    />
-                  </WalletPageWrapper>
-                </Route>
-              </Switch>
-            </LibContext.Provider>
-          </ApiProxyContext.Provider>
-        </BraveCoreThemeProvider>
-      </BrowserRouter>
+      <BraveCoreThemeProvider dark={walletDarkTheme} light={walletLightTheme}>
+        <ApiProxyContext.Provider value={walletPageApiProxy}>
+          <LibContext.Provider value={Lib}>
+            <WalletPageWrapper
+              wrapContentInBox={true}
+              hideNav={true}
+              hideHeader={true}
+              cardWidth={456}
+              cardHeader={
+                <PageTitleHeader
+                  title={getLocale('braveWalletDepositCryptoButton')}
+                  showBackButton={showDepositAddress}
+                  onBack={handleDepositScreenBack}
+                />
+              }
+            >
+              <DepositFundsScreen
+                showDepositAddress={showDepositAddress}
+                onShowDepositAddress={setShowDepositAddress}
+              />
+            </WalletPageWrapper>
+          </LibContext.Provider>
+        </ApiProxyContext.Provider>
+      </BraveCoreThemeProvider>
     </Provider>
   )
 }
