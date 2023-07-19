@@ -75,6 +75,8 @@ class StarRandomnessMeta {
   RandomnessServerInfo* GetCachedRandomnessServerInfo();
 
  private:
+  bool ShouldAttestEnclave();
+
   void AttestServer(bool make_info_request_after);
 
   void HandleServerInfoResponse(std::unique_ptr<std::string> response_body);
