@@ -22,9 +22,11 @@
 #include "brave/components/brave_news/browser/combined_feed_parsing.h"
 #include "brave/components/brave_news/browser/feed_controller.h"
 #include "brave/components/brave_news/browser/locales_helper.h"
+#include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_private_cdn/headers.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_news {
 
@@ -46,15 +48,18 @@ FeedFetcher::FeedSourceResult::FeedSourceResult(std::string key,
                                                 FeedItems items)
     : key(std::move(key)), etag(std::move(etag)), items(std::move(items)) {}
 FeedFetcher::FeedSourceResult::~FeedSourceResult() = default;
-FeedFetcher::FeedSourceResult::FeedSourceResult(FeedFetcher::FeedSourceResult&&) = default;
+FeedFetcher::FeedSourceResult::FeedSourceResult(
+    FeedFetcher::FeedSourceResult&&) = default;
 
 FeedFetcher::FeedFetcher(
     PublishersController& publishers_controller,
     ChannelsController& channels_controller,
-    api_request_helper::APIRequestHelper& api_request_helper)
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : publishers_controller_(publishers_controller),
       channels_controller_(channels_controller),
-      api_request_helper_(api_request_helper) {}
+      url_loader_factory_(url_loader_factory),
+      api_request_helper_(GetNetworkTrafficAnnotationTag(),
+                          url_loader_factory_) {}
 
 FeedFetcher::~FeedFetcher() = default;
 
@@ -85,7 +90,7 @@ void FeedFetcher::OnFetchFeedFetchedPublishers(FetchFeedCallback callback,
   for (const auto& locale : locales) {
     GURL feed_url(GetFeedUrl(locale));
     VLOG(1) << "Making feed request to " << feed_url.spec();
-    api_request_helper_->Request(
+    api_request_helper_.Request(
         "GET", feed_url, "", "",
         base::BindOnce(&FeedFetcher::OnFetchFeedFetchedFeed,
                        weak_ptr_factory_.GetWeakPtr(), locale,
@@ -168,7 +173,7 @@ void FeedFetcher::OnIsUpdateAvailableFetchedPublishers(
     }
 
     // Get new Etag
-    api_request_helper_->Request(
+    api_request_helper_.Request(
         "HEAD", GetFeedUrl(locale), "", "",
         base::BindOnce(&FeedFetcher::OnIsUpdateAvailableFetchedHead,
                        weak_ptr_factory_.GetWeakPtr(), it->second,

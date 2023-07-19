@@ -14,7 +14,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/scoped_observation.h"
-#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
@@ -41,7 +40,7 @@ class FeedController : public PublishersController::Observer {
                  DirectFeedController* direct_feed_controller,
                  ChannelsController* channels_controller,
                  history::HistoryService* history_service,
-                 api_request_helper::APIRequestHelper* api_request_helper,
+                 scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
                  PrefService* prefs);
   ~FeedController() override;
   FeedController(const FeedController&) = delete;
@@ -84,7 +83,6 @@ class FeedController : public PublishersController::Observer {
   raw_ptr<DirectFeedController> direct_feed_controller_ = nullptr;
   raw_ptr<ChannelsController> channels_controller_ = nullptr;
   raw_ptr<history::HistoryService> history_service_ = nullptr;
-  raw_ptr<api_request_helper::APIRequestHelper> api_request_helper_ = nullptr;
 
   FeedFetcher feed_fetcher_;
 

@@ -103,7 +103,7 @@ BraveNewsController::BraveNewsController(
                        &direct_feed_controller_,
                        &channels_controller_,
                        history_service,
-                       &api_request_helper_,
+                       url_loader_factory,
                        prefs_),
       suggestions_controller_(prefs_,
                               &publishers_controller_,

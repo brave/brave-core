@@ -16,7 +16,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_news/common/brave_news.mojom.h"
 
 namespace brave_news {
 
@@ -30,7 +30,7 @@ class FeedFetcher {
   explicit FeedFetcher(
       PublishersController& publishers_controller,
       ChannelsController& channels_controller,
-      api_request_helper::APIRequestHelper& api_request_helper);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~FeedFetcher();
   FeedFetcher(const FeedFetcher&) = delete;
   FeedFetcher& operator=(const FeedFetcher&) = delete;
@@ -78,7 +78,9 @@ class FeedFetcher {
 
   const raw_ref<PublishersController> publishers_controller_;
   const raw_ref<ChannelsController> channels_controller_;
-  const raw_ref<api_request_helper::APIRequestHelper> api_request_helper_;
+
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  api_request_helper::APIRequestHelper api_request_helper_;
 
   base::WeakPtrFactory<FeedFetcher> weak_ptr_factory_{this};
 };

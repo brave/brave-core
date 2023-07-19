@@ -22,7 +22,6 @@
 #include "base/logging.h"
 #include "base/one_shot_event.h"
 #include "base/strings/string_util.h"
-#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/combined_feed_parsing.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
@@ -37,6 +36,7 @@
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/prefs/pref_service.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_news {
 
@@ -45,17 +45,16 @@ FeedController::FeedController(
     DirectFeedController* direct_feed_controller,
     ChannelsController* channels_controller,
     history::HistoryService* history_service,
-    api_request_helper::APIRequestHelper* api_request_helper,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* prefs)
     : prefs_(prefs),
       publishers_controller_(publishers_controller),
       direct_feed_controller_(direct_feed_controller),
       channels_controller_(channels_controller),
       history_service_(history_service),
-      api_request_helper_(api_request_helper),
       feed_fetcher_(*publishers_controller,
                     *channels_controller,
-                    *api_request_helper),
+                    url_loader_factory),
       on_current_update_complete_(new base::OneShotEvent()) {
   publishers_observation_.Observe(publishers_controller);
 }
