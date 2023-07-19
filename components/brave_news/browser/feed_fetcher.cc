@@ -38,14 +38,6 @@ GURL GetFeedUrl(const std::string& locale) {
   return feed_url;
 }
 
-FeedItems Clone(const FeedItems& source) {
-  FeedItems result;
-  for (const auto& item : source) {
-    result.push_back(item->Clone());
-  }
-  return result;
-}
-
 }  // namespace
 
 FeedFetcher::FeedFetcher(
@@ -63,7 +55,7 @@ void FeedFetcher::FetchFeed(FetchFeedCallback callback) {
 
   publishers_controller_->GetOrFetchPublishers(
       base::BindOnce(&FeedFetcher::OnFetchFeedFetchedPublishers,
-                     std::move(callback), weak_ptr_factory_.GetWeakPtr()));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void FeedFetcher::OnFetchFeedFetchedPublishers(FetchFeedCallback callback,
@@ -78,16 +70,18 @@ void FeedFetcher::OnFetchFeedFetchedPublishers(FetchFeedCallback callback,
                                       publishers);
   auto downloaded_callback = base::BarrierCallback<FeedItems>(
       locales.size(),
-      base::BindOnce(&FeedFetcher::OnFetchFeedFetchedPublishers,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(publishers)));
+      base::BindOnce(&FeedFetcher::OnFetchFeedFetchedAll,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     std::move(publishers)));
 
   for (const auto& locale : locales) {
-    auto response_handler = base::BindOnce(&FeedFetcher::OnFetchFeedFetchedFeed,
-                                           locale, downloaded_callback);
     GURL feed_url(GetFeedUrl(locale));
     VLOG(1) << "Making feed request to " << feed_url.spec();
-    api_request_helper_->Request("GET", feed_url, "", "",
-                                 std::move(response_handler));
+    api_request_helper_->Request(
+        "GET", feed_url, "", "",
+        base::BindOnce(&FeedFetcher::OnFetchFeedFetchedFeed,
+                       weak_ptr_factory_.GetWeakPtr(), locale,
+                       downloaded_callback));
   }
 }
 
@@ -142,8 +136,8 @@ void FeedFetcher::IsUpdateAvailable(ETags etags,
   VLOG(1) << __FUNCTION__;
 
   publishers_controller_->GetOrFetchPublishers(base::BindOnce(
-      &FeedFetcher::OnIsUpdateAvailableFetchedPublishers, std::move(etags),
-      std::move(callback), weak_ptr_factory_.GetWeakPtr()));
+      &FeedFetcher::OnIsUpdateAvailableFetchedPublishers,
+      weak_ptr_factory_.GetWeakPtr(), std::move(etags), std::move(callback)));
 }
 
 void FeedFetcher::OnIsUpdateAvailableFetchedPublishers(
@@ -157,7 +151,7 @@ void FeedFetcher::OnIsUpdateAvailableFetchedPublishers(
   auto check_completed_callback = base::BarrierCallback<bool>(
       locales.size(),
       base::BindOnce(&FeedFetcher::OnIsUpdateAvailableCheckedFeeds,
-                     std::move(callback), weak_ptr_factory_.GetWeakPtr()));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 
   for (const auto& locale : locales) {
     auto it = etags.find(locale);
@@ -170,7 +164,8 @@ void FeedFetcher::OnIsUpdateAvailableFetchedPublishers(
     // Get new Etag
     api_request_helper_->Request(
         "HEAD", GetFeedUrl(locale), "", "",
-        base::BindOnce(&FeedFetcher::OnIsUpdateAvailableFetchedHead, it->second,
+        base::BindOnce(&FeedFetcher::OnIsUpdateAvailableFetchedHead,
+                       weak_ptr_factory_.GetWeakPtr(), it->second,
                        check_completed_callback),
         brave::private_cdn_headers, {.auto_retry_on_network_change = true});
   }
