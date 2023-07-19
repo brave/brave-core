@@ -23,7 +23,6 @@ namespace brave_news {
 using FeedItems = std::vector<mojom::FeedItemPtr>;
 using ETags = base::flat_map<std::string, std::string>;
 using FetchFeedCallback = base::OnceCallback<void(FeedItems items, ETags tags)>;
-using FetchLocaleFeedCallback = base::OnceCallback<void(FeedItems items)>;
 using UpdateAvailableCallback = base::OnceCallback<void(bool)>;
 
 class FeedFetcher {
@@ -41,15 +40,30 @@ class FeedFetcher {
   void IsUpdateAvailable(ETags etags, UpdateAvailableCallback callback);
 
  private:
+  struct FeedSourceResult {
+    std::string key;
+    std::string etag;
+    FeedItems items;
+
+    FeedSourceResult();
+    FeedSourceResult(std::string key, std::string etag, FeedItems items);
+    ~FeedSourceResult();
+    FeedSourceResult(FeedSourceResult&&);
+    FeedSourceResult(const FeedSourceResult&) = delete;
+    FeedSourceResult& operator=(const FeedSourceResult&) = delete;
+  };
+  using FetchFeedSourceCallback =
+      base::OnceCallback<void(FeedSourceResult items)>;
+
   // Steps for |FetchFeed|
   void OnFetchFeedFetchedPublishers(FetchFeedCallback callback,
                                     Publishers publishers);
   void OnFetchFeedFetchedFeed(std::string locale,
-                              FetchLocaleFeedCallback callback,
+                              FetchFeedSourceCallback callback,
                               api_request_helper::APIRequestResult result);
   void OnFetchFeedFetchedAll(FetchFeedCallback callback,
                              Publishers publishers,
-                             std::vector<FeedItems> feed_items_unflat);
+                             std::vector<FeedSourceResult> results);
 
   // Steps for |IsUpdateAvailable|
   void OnIsUpdateAvailableFetchedPublishers(ETags etags,

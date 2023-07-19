@@ -40,6 +40,14 @@ GURL GetFeedUrl(const std::string& locale) {
 
 }  // namespace
 
+FeedFetcher::FeedSourceResult::FeedSourceResult() = default;
+FeedFetcher::FeedSourceResult::FeedSourceResult(std::string key,
+                                                std::string etag,
+                                                FeedItems items)
+    : key(std::move(key)), etag(std::move(etag)), items(std::move(items)) {}
+FeedFetcher::FeedSourceResult::~FeedSourceResult() = default;
+FeedFetcher::FeedSourceResult::FeedSourceResult(FeedFetcher::FeedSourceResult&&) = default;
+
 FeedFetcher::FeedFetcher(
     PublishersController& publishers_controller,
     ChannelsController& channels_controller,
@@ -68,7 +76,7 @@ void FeedFetcher::OnFetchFeedFetchedPublishers(FetchFeedCallback callback,
 
   auto locales = GetMinimalLocalesSet(channels_controller_->GetChannelLocales(),
                                       publishers);
-  auto downloaded_callback = base::BarrierCallback<FeedItems>(
+  auto downloaded_callback = base::BarrierCallback<FeedSourceResult>(
       locales.size(),
       base::BindOnce(&FeedFetcher::OnFetchFeedFetchedAll,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
@@ -87,7 +95,7 @@ void FeedFetcher::OnFetchFeedFetchedPublishers(FetchFeedCallback callback,
 
 void FeedFetcher::OnFetchFeedFetchedFeed(
     std::string locale,
-    FetchLocaleFeedCallback callback,
+    FetchFeedSourceCallback callback,
     api_request_helper::APIRequestResult result) {
   std::string etag;
   if (result.headers().contains(kEtagHeaderKey)) {
@@ -105,30 +113,28 @@ void FeedFetcher::OnFetchFeedFetchedFeed(
     return;
   }
 
-  // TODO:
-  // locale_feed_etags_[locale] = etag;
-  std::move(callback).Run(ParseFeedItems(result.value_body()));
+  std::move(callback).Run({locale, etag, ParseFeedItems(result.value_body())});
 }
 
-void FeedFetcher::OnFetchFeedFetchedAll(
-    FetchFeedCallback callback,
-    Publishers publishers,
-    std::vector<FeedItems> feed_items_unflat) {
+void FeedFetcher::OnFetchFeedFetchedAll(FetchFeedCallback callback,
+                                        Publishers publishers,
+                                        std::vector<FeedSourceResult> results) {
   std::size_t total_size = 0;
-  for (const auto& collection : feed_items_unflat) {
-    total_size += collection.size();
+  for (const auto& result : results) {
+    total_size += result.items.size();
   }
   VLOG(1) << "All feed item fetches done with item count: " << total_size;
 
-  FeedItems result;
-  result.reserve(total_size);
-  for (auto& collection : feed_items_unflat) {
-    result.insert(result.end(), std::make_move_iterator(collection.begin()),
-                  std::make_move_iterator(collection.end()));
+  ETags etags;
+  FeedItems feed;
+  feed.reserve(total_size);
+  for (auto& result : results) {
+    etags[result.key] = result.etag;
+    feed.insert(feed.end(), std::make_move_iterator(result.items.begin()),
+                std::make_move_iterator(result.items.end()));
   }
 
-  // TODO: Return etags here.
-  std::move(callback).Run(std::move(result), {});
+  std::move(callback).Run(std::move(feed), std::move(etags));
 }
 
 void FeedFetcher::IsUpdateAvailable(ETags etags,
