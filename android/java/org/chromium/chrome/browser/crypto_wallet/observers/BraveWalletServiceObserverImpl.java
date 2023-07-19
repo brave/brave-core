@@ -7,14 +7,14 @@ package org.chromium.chrome.browser.crypto_wallet.observers;
 
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletServiceObserver;
-import org.chromium.brave_wallet.mojom.OriginInfo;
+import org.chromium.brave_wallet.mojom.OriginInfoShort;
 import org.chromium.mojo.system.MojoException;
 
 import java.lang.ref.WeakReference;
 
 public class BraveWalletServiceObserverImpl implements BraveWalletServiceObserver {
     public interface BraveWalletServiceObserverImplDelegate {
-        default void onActiveOriginChanged(OriginInfo originInfo) {}
+        default void onActiveOriginChanged(OriginInfoShort originInfo) {}
 
         default void onDefaultEthereumWalletChanged(int wallet) {}
 
@@ -40,7 +40,7 @@ public class BraveWalletServiceObserverImpl implements BraveWalletServiceObserve
     }
 
     @Override
-    public void onActiveOriginChanged(OriginInfo originInfo) {
+    public void onActiveOriginChanged(OriginInfoShort originInfo) {
         if (isActive()) getRef().onActiveOriginChanged(originInfo);
     }
 

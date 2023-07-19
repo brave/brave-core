@@ -44,6 +44,7 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.NetworkModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletProviderDelegateImplHelper;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountSelectorActivity;
@@ -53,7 +54,9 @@ import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetsPricesHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.BalanceHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.components.embedder_support.util.BraveUrlConstants;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -100,11 +103,10 @@ public class BraveWalletPanel implements DialogInterface {
                 new AccountsPermissionsHelper(mBraveWalletPanelServices.getBraveWalletService(),
                         Utils.filterAccountsByCoin(
                                      mAllAccountsInfo.accounts, mSelectedAccount.accountId.coin)
-                                .toArray(new AccountInfo[0]),
-                        Utils.getCurrentMojomOrigin());
+                                .toArray(new AccountInfo[0]));
         accountsPermissionsHelper.checkAccounts(() -> {
             mAccountsWithPermissions = accountsPermissionsHelper.getAccountsWithPermissions();
-            updateAccountInfo(mSelectedAccount);
+            updateSelectedAccountInfo();
         });
     };
 
@@ -153,10 +155,9 @@ public class BraveWalletPanel implements DialogInterface {
             }
         });
         try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            mWalletModel = activity.getWalletModel();
-            // Update the origin in domain layer to use the network per origin
-            mWalletModel.getActiveOrigin(originInfo -> { mWalletModel.setOriginInfo(originInfo); });
+            mWalletModel = BraveActivity.getBraveActivity().getWalletModel();
+            // Update network model to use network per origin
+            getNetworkModel().updateMode(NetworkModel.Mode.PANEL_MODE);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "BraveWalletPanel Constructor " + e);
         }
@@ -265,41 +266,39 @@ public class BraveWalletPanel implements DialogInterface {
     private void setUpObservers() {
         cleanUpObservers();
         mWalletModel.getKeyringModel().mAllAccountsInfo.observeForever(mAllAccountsInfoObserver);
-        mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.observeForever(
-                mDefaultNetworkObserver);
+        getNetworkModel().mDefaultNetwork.observeForever(mDefaultNetworkObserver);
     }
 
     private void cleanUpObservers() {
         mWalletModel.getKeyringModel().mAllAccountsInfo.removeObserver(mAllAccountsInfoObserver);
-        mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.removeObserver(
-                mDefaultNetworkObserver);
+        getNetworkModel().mDefaultNetwork.removeObserver(mDefaultNetworkObserver);
     }
 
-    private void updateAccountInfo(AccountInfo selectedAccount) {
+    private void updateSelectedAccountInfo() {
         Utils.setBlockiesBitmapResource(
-                mExecutor, mHandler, mAccountImage, selectedAccount.address, true);
+                mExecutor, mHandler, mAccountImage, mSelectedAccount.address, true);
         Utils.setBlockiesBackground(
-                mExecutor, mHandler, mContainerConstraintLayout, selectedAccount.address, true);
-        mAccountName.setText(selectedAccount.name);
-        mAccountAddress.setText(Utils.stripAccountAddress(selectedAccount.address));
-        getBalance(selectedAccount);
-        updateAccountConnected(selectedAccount);
+                mExecutor, mHandler, mContainerConstraintLayout, mSelectedAccount.address, true);
+        mAccountName.setText(mSelectedAccount.name);
+        mAccountAddress.setText(Utils.stripAccountAddress(mSelectedAccount.address));
+        updateSelectedAccountBalance();
+        updateSelectedAccountConnectionState();
     }
 
-    private void updateAccountConnected(AccountInfo selectedAccount) {
-        if (CoinType.SOL == selectedAccount.accountId.coin) {
+    private void updateSelectedAccountConnectionState() {
+        if (CoinType.SOL == mSelectedAccount.accountId.coin) {
             if (mAccountsWithPermissions.size() == 0) {
                 mBtnConnectedStatus.setText("");
                 mBtnConnectedStatus.setVisibility(View.GONE);
                 mCvSolConnectionStatus.setVisibility(View.GONE);
             } else {
-                isSolanaConnected(selectedAccount);
+                isSolanaConnected(mSelectedAccount);
             }
-        } else {
+        } else if (CoinType.ETH == mSelectedAccount.accountId.coin) {
             Iterator<AccountInfo> it = mAccountsWithPermissions.iterator();
             boolean isConnected = false;
             while (it.hasNext()) {
-                if (it.next().address.equals(selectedAccount.address)) {
+                if (WalletUtils.accountIdsEqual(it.next(), mSelectedAccount)) {
                     isConnected = true;
                     break;
                 }
@@ -365,25 +364,22 @@ public class BraveWalletPanel implements DialogInterface {
         }
     }
 
-    private void getBalance(AccountInfo selectedAccount) {
-        if (selectedAccount == null) {
-            return;
-        }
-        mWalletModel.getCryptoModel().getNetworkModel().getNetwork(
-                selectedAccount.accountId.coin, selectedNetwork -> {
+    private void updateSelectedAccountBalance() {
+        LiveDataUtil.observeOnce(
+                getNetworkModel().mDefaultNetwork, selectedNetwork -> {
                     BlockchainToken asset = Utils.makeNetworkAsset(selectedNetwork);
                     AssetsPricesHelper.fetchPrices(mBraveWalletPanelServices.getAssetRatioService(),
                             new BlockchainToken[] {asset}, assetPrices -> {
                                 BalanceHelper.getNativeAssetsBalances(
                                         mBraveWalletPanelServices.getJsonRpcService(),
-                                        selectedNetwork, new AccountInfo[] {selectedAccount},
+                                        selectedNetwork, new AccountInfo[] {mSelectedAccount},
                                         (coinType, nativeAssetsBalances) -> {
                                             double price = Utils.getOrDefault(assetPrices,
                                                     asset.symbol.toLowerCase(Locale.getDefault()),
                                                     0.0d);
                                             double balance =
                                                     Utils.getOrDefault(nativeAssetsBalances,
-                                                            selectedAccount.address.toLowerCase(
+                                                            mSelectedAccount.address.toLowerCase(
                                                                     Locale.getDefault()),
                                                             0.0d);
                                             String fiatBalanceString = String.format(
@@ -446,8 +442,7 @@ public class BraveWalletPanel implements DialogInterface {
             }
         });
         mBtnSelectedNetwork.setOnLongClickListener(v -> {
-            NetworkInfo networkInfo =
-                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+            NetworkInfo networkInfo = getNetworkModel().mDefaultNetwork.getValue();
             if (networkInfo != null) {
                 Toast.makeText(mActivity, networkInfo.chainName, Toast.LENGTH_SHORT).show();
             }
@@ -465,4 +460,8 @@ public class BraveWalletPanel implements DialogInterface {
             Log.e(TAG, "ConnectedAccountClick click " + e);
         }
     };
+
+    private NetworkModel getNetworkModel() {
+        return mWalletModel.getCryptoModel().getNetworkModel();
+    }
 }

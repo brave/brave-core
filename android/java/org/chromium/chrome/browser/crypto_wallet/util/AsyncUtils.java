@@ -195,23 +195,6 @@ public class AsyncUtils {
         }
     }
 
-    public static class GetHasEthereumPermissionResponseContext
-            extends SingleResponseBaseContext implements BraveWalletService.HasPermission_Response {
-        public Boolean success;
-        public Boolean hasPermission;
-
-        public GetHasEthereumPermissionResponseContext(Runnable responseCompleteCallback) {
-            super(responseCompleteCallback);
-        }
-
-        @Override
-        public void call(Boolean success, Boolean hasPermission) {
-            this.success = success;
-            this.hasPermission = hasPermission;
-            super.fireResponseCompleteCallback();
-        }
-    }
-
     public static class GetAllTransactionInfoResponseContext
             extends SingleResponseBaseContext implements TxService.GetAllTransactionInfo_Response {
         public TransactionInfo[] txInfos;

@@ -26,7 +26,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.system.Pair;
-import org.chromium.url.internal.mojom.Origin;
 
 import java.util.ArrayList;
 import java.util.Arrays;

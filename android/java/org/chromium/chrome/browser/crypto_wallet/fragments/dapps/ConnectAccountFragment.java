@@ -71,8 +71,8 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     @SuppressLint("NotifyDataSetChanged")
     private void updateAccounts() {
         if (mSelectedAccount == null || mAccountInfos == null) return;
-        AccountsPermissionsHelper accountsPermissionsHelper = new AccountsPermissionsHelper(
-                getBraveWalletService(), mAccountInfos, Utils.getCurrentMojomOrigin());
+        AccountsPermissionsHelper accountsPermissionsHelper =
+                new AccountsPermissionsHelper(getBraveWalletService(), mAccountInfos);
         accountsPermissionsHelper.checkAccounts(() -> {
             mAccountsWithPermissions = accountsPermissionsHelper.getAccountsWithPermissions();
             mAccountsConnected.setText(
@@ -113,7 +113,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
         mFavicon = view.findViewById(R.id.favicon);
 
         getBraveWalletService().getActiveOrigin(
-                riginInfo -> { mWebSite.setText(Utils.geteTLD(originInfo)); });
+                originInfo -> { mWebSite.setText(Utils.geteTldSpanned(originInfo)); });
         initComponents();
 
         return view;

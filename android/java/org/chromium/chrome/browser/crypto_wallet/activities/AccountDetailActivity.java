@@ -26,6 +26,7 @@ import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.NetworkModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
@@ -102,11 +103,11 @@ public class AccountDetailActivity
         onInitialLayoutInflationComplete();
     }
 
-    private void setUpAssetList(NetworkInfo selectedNetwork) {
+    private void setUpAssetList() {
         AccountInfo[] accountInfos = new AccountInfo[] {mAccountInfo};
         if (mWalletModel == null) return;
         LiveDataUtil.observeOnce(
-                mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks, allNetworks -> {
+                getNetworkModel().mCryptoNetworks, allNetworks -> {
                     PortfolioHelper portfolioHelper =
                             new PortfolioHelper(this, allNetworks, accountInfos);
                     portfolioHelper.setSelectedNetworks(
@@ -138,11 +139,11 @@ public class AccountDetailActivity
                 });
     }
 
+    // TODO(apaymyshev): this should not depend on selectedNetwork
     private void fetchAccountInfo(NetworkInfo selectedNetwork) {
         AccountInfo[] accounts = {mAccountInfo};
-
         LiveDataUtil.observeOnce(
-                mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks, allNetworks -> {
+                getNetworkModel().mCryptoNetworks, allNetworks -> {
                     Utils.getTxExtraInfo(new WeakReference<>(this), TokenUtils.TokenType.ALL,
                             allNetworks, selectedNetwork, accounts, null, false,
                             (assetPrices, fullTokenList, nativeAssetsBalances,
@@ -194,11 +195,10 @@ public class AccountDetailActivity
             Log.e(TAG, "finishNativeInitialization " + e);
         }
         assert mJsonRpcService != null && mWalletModel != null;
-        mJsonRpcService.getNetwork(
-                mAccountInfo.accountId.coin, mWalletModel.getActiveOrigin(), selectedNetwork -> {
-                    setUpAssetList(selectedNetwork);
-                    fetchAccountInfo(selectedNetwork);
-                });
+        setUpAssetList();
+        LiveDataUtil.observeOnce(getNetworkModel().mDefaultNetwork, selectedNetwork -> {
+            fetchAccountInfo(selectedNetwork);
+        });
     }
 
     @Override
@@ -209,7 +209,7 @@ public class AccountDetailActivity
     @Override
     public void onTransactionClick(TransactionInfo txInfo) {
         if (mWalletModel == null) return;
-        NetworkInfo txNetwork = mWalletModel.getNetworkModel().getNetwork(txInfo.chainId);
+        NetworkInfo txNetwork = getNetworkModel().getNetwork(txInfo.chainId);
         Utils.openTransaction(txInfo, this, mAccountInfo.name, txNetwork.coin, txNetwork);
     }
 
@@ -251,5 +251,9 @@ public class AccountDetailActivity
     private void initState() {
         mWalletTxCoinAdapter =
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
+    }
+
+    private NetworkModel getNetworkModel() {
+        return mWalletModel.getNetworkModel();
     }
 }

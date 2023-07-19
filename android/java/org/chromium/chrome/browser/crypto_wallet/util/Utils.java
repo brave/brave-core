@@ -1406,38 +1406,10 @@ public class Utils {
         }
     }
 
-    public static String geteTLDHTMLFormatted(String etldPlusOne) {
-        GURL url = getCurentTabUrl();
-
-        return Utils.geteTLDHTMLFormatted(url, etldPlusOne);
-    }
-
-    public static Spanned geteTLD(String etldPlusOne) {
-        GURL url = getCurentTabUrl();
-
-        return Utils.geteTLD(url, etldPlusOne);
-    }
-
-    public static Spanned geteTLD(OriginInfoShort originInfoShort) {
+    public static String geteTldHtmlString(OriginInfoShort originInfoShort) {
         StringBuilder builder = new StringBuilder();
         builder.append(originInfoShort.originSpec);
-        int index = builder.indexOf(originInfoShort.etldPlusOne);
-        if (index > 0 && index < builder.length()) {
-            builder.insert(index, "<b>");
-            builder.insert(builder.length(), "</b>");
-        }
-        return AndroidUtils.formatHTML(builder.toString());
-    }
-
-    public static Spanned geteTLD(GURL url, String etldPlusOne) {
-        String formattedeTLD = geteTLDHTMLFormatted(url, etldPlusOne);
-        return AndroidUtils.formatHTML(formattedeTLD);
-    }
-
-    private static String geteTLDHTMLFormatted(GURL url, String etldPlusOne) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(url.getScheme()).append("://").append(url.getHost());
-        int index = builder.indexOf(etldPlusOne);
+        int index = builder.lastIndexOf(originInfoShort.eTldPlusOne);
         if (index > 0 && index < builder.length()) {
             builder.insert(index, "<b>");
             builder.insert(builder.length(), "</b>");
@@ -1445,12 +1417,8 @@ public class Utils {
         return builder.toString();
     }
 
-    public static GURL getCurentTabUrl() {
-        ChromeTabbedActivity activity = BraveActivity.getChromeTabbedActivity();
-        if (activity != null && activity.getActivityTab() != null) {
-            return activity.getActivityTab().getUrl().getOrigin();
-        }
-        return GURL.emptyGURL();
+    public static Spanned geteTldSpanned(OriginInfoShort originInfoShort) {
+        return AndroidUtils.formatHTML(geteTldHtmlString(originInfoShort));
     }
 
     @NonNull

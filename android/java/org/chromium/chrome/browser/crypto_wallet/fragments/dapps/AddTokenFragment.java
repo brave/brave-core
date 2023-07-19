@@ -21,7 +21,7 @@ import android.widget.TextView;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AddSuggestTokenRequest;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.OriginInfo;
+import org.chromium.brave_wallet.mojom.OriginInfoShort;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
@@ -116,9 +116,9 @@ public class AddTokenFragment extends BaseDAppsFragment {
         });
     }
 
-    private void fillOriginInfo(OriginInfo originInfo) {
+    private void fillOriginInfo(OriginInfoShort originInfo) {
         if (originInfo != null && URLUtil.isValidUrl(originInfo.originSpec)) {
-            mWebSite.setText(Utils.geteTLD(originInfo));
+            mWebSite.setText(Utils.geteTldSpanned(originInfo));
         }
     }
 

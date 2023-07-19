@@ -5,25 +5,26 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.url.internal.mojom.Origin;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 public class AccountsPermissionsHelper {
     private BraveWalletService mBraveWalletService;
     private AccountInfo[] mAccounts;
-    private Origin mOrigin;
     private HashSet<AccountInfo> mAccountsWithPermissions;
 
     public AccountsPermissionsHelper(
-            BraveWalletService braveWalletService, AccountInfo[] accounts, Origin origin) {
+            BraveWalletService braveWalletService, AccountInfo[] accounts) {
         assert braveWalletService != null;
         assert accounts != null;
         mBraveWalletService = braveWalletService;
-        mOrigin = origin;
         mAccounts = accounts;
         mAccountsWithPermissions = new HashSet<AccountInfo>();
     }
@@ -32,35 +33,20 @@ public class AccountsPermissionsHelper {
         return mAccountsWithPermissions;
     }
 
+    private static boolean containsAccount(AccountId[] accounts, AccountId searchFor) {
+        return Arrays.stream(accounts).anyMatch(
+                acc -> { return WalletUtils.accountIdsEqual(acc, searchFor); });
+    }
+
     public void checkAccounts(Runnable runWhenDone) {
-        AsyncUtils.MultiResponseHandler accountsPermissionsMultiResponse =
-                new AsyncUtils.MultiResponseHandler(mAccounts.length);
-        ArrayList<AsyncUtils.GetHasEthereumPermissionResponseContext> accountsPermissionsContexts =
-                new ArrayList<AsyncUtils.GetHasEthereumPermissionResponseContext>();
-        for (AccountInfo account : mAccounts) {
-            AsyncUtils.GetHasEthereumPermissionResponseContext accountPermissionContext =
-                    new AsyncUtils.GetHasEthereumPermissionResponseContext(
-                            accountsPermissionsMultiResponse.singleResponseComplete);
+        AccountId[] allAccountIds =
+                Arrays.stream(mAccounts).map(acc -> acc.accountId).toArray(AccountId[] ::new);
+        mBraveWalletService.hasPermission(allAccountIds, (success, filteredAccounts) -> {
+            mAccountsWithPermissions =
+                    Arrays.stream(mAccounts)
+                            .filter(acc -> containsAccount(filteredAccounts, acc.accountId))
+                            .collect(Collectors.toCollection(HashSet::new));
 
-            accountsPermissionsContexts.add(accountPermissionContext);
-
-            mBraveWalletService.hasPermission(account.accountId, mOrigin, accountPermissionContext);
-        }
-
-        accountsPermissionsMultiResponse.setWhenAllCompletedAction(() -> {
-            int currentPos = 0;
-            for (AsyncUtils.GetHasEthereumPermissionResponseContext accountPermissionContext :
-                    accountsPermissionsContexts) {
-                assert mAccounts.length > currentPos;
-                currentPos++;
-                if (!accountPermissionContext.success) {
-                    continue;
-                }
-
-                if (accountPermissionContext.hasPermission) {
-                    mAccountsWithPermissions.add(mAccounts[currentPos - 1]);
-                }
-            }
             runWhenDone.run();
         });
     }

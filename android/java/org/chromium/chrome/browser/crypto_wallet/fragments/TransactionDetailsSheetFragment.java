@@ -130,8 +130,7 @@ public class TransactionDetailsSheetFragment extends WalletBottomSheetDialogFrag
         if (mTxInfo.originInfo != null && URLUtil.isValidUrl(mTxInfo.originInfo.originSpec)) {
             TextView domain = view.findViewById(R.id.domain);
             domain.setVisibility(View.VISIBLE);
-            domain.setText(Utils.geteTLD(
-                    new GURL(mTxInfo.originInfo.originSpec), mTxInfo.originInfo.eTldPlusOne));
+            domain.setText(Utils.geteTldSpanned(mTxInfo.originInfo));
         }
 
         if (mParsedTx.getType() == TransactionType.ERC20_APPROVE) {

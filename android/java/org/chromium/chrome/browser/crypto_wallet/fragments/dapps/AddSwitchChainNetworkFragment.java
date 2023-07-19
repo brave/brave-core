@@ -30,7 +30,6 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import org.chromium.brave_wallet.mojom.AddChainRequest;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.OriginInfoShort;
 import org.chromium.brave_wallet.mojom.SwitchChainRequest;
 import org.chromium.chrome.R;
@@ -210,9 +209,8 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
 
     private void fillOriginInfo(OriginInfoShort originInfo) {
         if (originInfo != null && URLUtil.isValidUrl(originInfo.originSpec)) {
-            GURL url = new GURL(originInfo.originSpec);
-            mSiteTv.setText(Utils.geteTLD(url, originInfo.eTldPlusOne));
-            showFavIcon(url);
+            mSiteTv.setText(Utils.geteTldSpanned(originInfo));
+            showFavIcon(new GURL(originInfo.originSpec));
         }
     }
 

@@ -134,8 +134,7 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
                         mEncryptionPublicKeyRequest = encryptionPublicKeyRequest;
                         String formattedeTLD = String.format(
                                 getString(R.string.brave_wallet_provide_encryption_key_description),
-                                Utils.geteTLDHTMLFormatted(
-                                        encryptionPublicKeyRequest.originInfo.eTldPlusOne));
+                                Utils.geteTldHtmlString(encryptionPublicKeyRequest.originInfo));
                         mTvMessageDesc.setText(AndroidUtils.formatHTML(formattedeTLD));
                     }
                 });
@@ -144,7 +143,7 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
                     mDecryptRequest = decryptRequest;
                     mTveTldPlusOne.setVisibility(View.VISIBLE);
                     mTvMessageDecrypt.setVisibility(View.VISIBLE);
-                    mTveTldPlusOne.setText(Utils.geteTLD(mDecryptRequest.originInfo));
+                    mTveTldPlusOne.setText(Utils.geteTldSpanned(mDecryptRequest.originInfo));
                     mTvMessage.setText(R.string.brave_wallet_read_encrypted_message_title);
                     mBtProvideAllow.setText(R.string.brave_wallet_read_encrypted_message_button);
                     mTvMessageDecrypt.setOnClickListener(v -> {

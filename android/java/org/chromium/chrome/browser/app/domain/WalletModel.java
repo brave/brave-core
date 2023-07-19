@@ -14,13 +14,11 @@ import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.mojo.bindings.Callbacks;
-import org.chromium.url.internal.mojom.Origin;
 
 // Under development, some parts not tested so use with caution
 // A container for all the native services and APIs
@@ -40,9 +38,6 @@ public class WalletModel {
     private final MarketModel mMarketModel;
     private Context mContext;
     private CryptoActions mCryptoActions;
-
-    private OriginInfo mOriginInfo;
-    private Origin mOrigin;
 
     public WalletModel(Context context, KeyringService keyringService,
             BlockchainRegistry blockchainRegistry, JsonRpcService jsonRpcService,
@@ -97,31 +92,6 @@ public class WalletModel {
         mKeyringModel.resetService(mContext, mKeyringService, braveWalletService);
         mMarketModel.resetService(mAssetRatioService);
         init();
-    }
-
-    public void setOriginInfo(OriginInfo originInfo) {
-        if (mOriginInfo != null && originInfo != null
-                && mOriginInfo.originSpec.equals(originInfo.originSpec)) {
-            // Don't update origin if same.
-            return;
-        }
-        mOriginInfo = originInfo;
-        mOrigin = JavaUtils.safeVal(mOriginInfo, originInfo1 -> originInfo1.origin);
-        mCryptoModel.setOrigin(mOrigin);
-        getNetworkModel().setOrigin(mOrigin);
-        mCryptoModel.updateCoinType();
-    }
-
-    public Origin getActiveOrigin() {
-        return mOrigin;
-    }
-
-    /**
-     * Fetch active origin from core.
-     * @param callback to get the {@code OriginInfo} core response.
-     */
-    public void getActiveOrigin(Callbacks.Callback1<OriginInfo> callback) {
-        mBraveWalletService.getActiveOrigin(originInfo -> { callback.call(originInfo); });
     }
 
     public void createAccountAndSetDefaultNetwork(NetworkInfo networkInfo) {
