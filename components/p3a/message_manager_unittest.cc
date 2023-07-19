@@ -63,7 +63,10 @@ class P3AMessageManagerTest : public testing::Test,
  protected:
   void SetUpManager(bool is_constellation_enabled) {
     if (is_constellation_enabled) {
-      scoped_feature_list_.InitWithFeatures({features::kConstellation}, {});
+      scoped_feature_list_.InitWithFeatures(
+          {features::kConstellation,
+           features::kConstellationEnclaveAttestation},
+          {});
     }
 
     base::Time future_mock_time;
