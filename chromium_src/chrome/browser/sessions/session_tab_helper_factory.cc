@@ -12,13 +12,10 @@ class BraveSessionTabHelper : public sessions::SessionTabHelper {
  public:
   void NavigationEntryCommitted(
       const content::LoadCommittedDetails& load_details) override {
-    LOG(ERROR) << "0";
     if (request_otr::RequestOTRStorageTabHelper* tab_storage =
             request_otr::RequestOTRStorageTabHelper::FromWebContents(
                 web_contents())) {
-      LOG(ERROR) << "1";
       if (tab_storage->has_offered_otr()) {
-        LOG(ERROR) << "2";
         return;
       }
     }
@@ -38,9 +35,10 @@ class BraveSessionTabHelper : public sessions::SessionTabHelper {
 
 }  // namespace brave
 
-#define CreateForWebContents(CONTENTS, LOOKUP) \
-  FromWebContents(CONTENTS) ? return           \
-                            : BraveSessionTabHelper::Create(CONTENTS, LOOKUP)
+#define CreateForWebContents(CONTENTS, LOOKUP)                 \
+  FromWebContents(CONTENTS)                                    \
+      ? brave::BraveSessionTabHelper::Create(CONTENTS, LOOKUP) \
+      : brave::BraveSessionTabHelper::Create(CONTENTS, LOOKUP)
 
 #include "src/chrome/browser/sessions/session_tab_helper_factory.cc"
 
