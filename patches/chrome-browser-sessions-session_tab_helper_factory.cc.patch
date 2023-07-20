@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sessions/session_tab_helper_factory.cc b/chrome/browser/sessions/session_tab_helper_factory.cc
-index 6ca3ae1db1495646ff6997ce293200c7c4cd3303..0f8b6b62348c7c7dd31f65a837ce82522ecb86cc 100644
+index 6ca3ae1db1495646ff6997ce293200c7c4cd3303..877acf6d568ed77f2da794e6f7892f916d032fff 100644
 --- a/chrome/browser/sessions/session_tab_helper_factory.cc
 +++ b/chrome/browser/sessions/session_tab_helper_factory.cc
 @@ -49,7 +49,8 @@ void CreateSessionServiceTabHelper(content::WebContents* contents) {
@@ -8,7 +8,7 @@ index 6ca3ae1db1495646ff6997ce293200c7c4cd3303..0f8b6b62348c7c7dd31f65a837ce8252
  #endif
 -  sessions::SessionTabHelper::CreateForWebContents(contents, std::move(lookup));
 +  LOG(ERROR) << "-1";
-+  BraveSessionTabHelper::Create(contents, std::move(lookup));
++  brave::BraveSessionTabHelper::Create(contents, std::move(lookup));
  
  #if BUILDFLAG(ENABLE_EXTENSIONS)
    auto* observer =

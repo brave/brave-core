@@ -6,7 +6,7 @@
 #include "brave/components/request_otr/browser/request_otr_storage_tab_helper.h"
 #include "components/sessions/content/session_tab_helper.h"
 
-namespace {
+namespace brave {
 
 class BraveSessionTabHelper : public sessions::SessionTabHelper {
  public:

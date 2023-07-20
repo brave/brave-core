@@ -9,12 +9,16 @@
 // Include these here to avoid false positives with the redeclaration
 #include "content/public/browser/web_contents_user_data.h"
 
-#define WEB_CONTENTS_USER_DATA_KEY_DECL \
-  friend class BraveSessionTabHelper;   \
-  WEB_CONTENTS_USER_DATA_KEY_DECL
+namespace brave {
+class BraveSessionTabHelper;
+}
+
+#define GetDelegate() \
+  GetDelegate();      \
+  friend class brave::BraveSessionTabHelper
 
 #include "src/components/sessions/content/session_tab_helper.h"  // IWYU pragma: export
 
-#undef WEB_CONTENTS_USER_DATA_KEY_DECL
+#undef GetDelegate
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SESSIONS_CONTENT_SESSION_TAB_HELPER_H_
