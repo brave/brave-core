@@ -22,7 +22,7 @@ bool CanConvertAdEvent(const AdEventInfo& ad_event) {
   switch (ad_event.type.value()) {
     case AdType::kInlineContentAd:
     case AdType::kPromotedContentAd: {
-      return UserHasOptedInToBraveNews();
+      return UserHasOptedInToBraveNewsAds();
     }
 
     case AdType::kNewTabPageAd: {
@@ -30,7 +30,7 @@ bool CanConvertAdEvent(const AdEventInfo& ad_event) {
     }
 
     case AdType::kNotificationAd: {
-      return UserHasOptedInToBravePrivateAds();
+      return UserHasOptedInToNotificationAds();
     }
 
     case AdType::kSearchResultAd: {

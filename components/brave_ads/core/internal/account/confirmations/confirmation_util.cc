@@ -46,7 +46,7 @@ absl::optional<OptedInInfo> CreateOptedIn(
     const OptedInUserDataInfo& opted_in_user_data) {
   CHECK(token_generator);
   CHECK(IsValid(confirmation));
-  CHECK(ShouldRewardUser());
+  CHECK(UserHasJoinedBraveRewards());
 
   OptedInInfo opted_in;
 
@@ -114,7 +114,7 @@ absl::optional<ConfirmationInfo> CreateOptedInConfirmation(
     const OptedInUserDataInfo& opted_in_user_data) {
   CHECK(token_generator);
   CHECK(transaction.IsValid());
-  CHECK(ShouldRewardUser());
+  CHECK(UserHasJoinedBraveRewards());
 
   ConfirmationInfo confirmation;
   confirmation.transaction_id = transaction.id;
@@ -139,7 +139,7 @@ absl::optional<ConfirmationInfo> CreateOptedInConfirmation(
 absl::optional<ConfirmationInfo> CreateOptedOutConfirmation(
     const TransactionInfo& transaction) {
   CHECK(transaction.IsValid());
-  CHECK(!ShouldRewardUser());
+  CHECK(!UserHasJoinedBraveRewards());
 
   ConfirmationInfo confirmation;
   confirmation.transaction_id = transaction.id;

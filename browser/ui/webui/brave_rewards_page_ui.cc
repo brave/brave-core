@@ -25,6 +25,7 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/ads_util.h"
 #include "brave/components/brave_ads/core/supported_subdivisions.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -36,6 +37,7 @@
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile.h"
@@ -517,7 +519,7 @@ void RewardsDOMHandler::InitPrefChangeRegistrar() {
   pref_change_registrar_.Init(profile->GetPrefs());
 
   pref_change_registrar_.Add(
-      brave_ads::prefs::kEnabled,
+      brave_ads::prefs::kOptedInToNotificationAds,
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
@@ -559,6 +561,21 @@ void RewardsDOMHandler::InitPrefChangeRegistrar() {
                           base::Unretained(this)));
   pref_change_registrar_.Add(
       brave_rewards::prefs::kInlineTipGithubEnabled,
+      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
+                          base::Unretained(this)));
+
+  pref_change_registrar_.Add(
+      brave_news::prefs::kBraveNewsOptedIn,
+      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
+                          base::Unretained(this)));
+
+  pref_change_registrar_.Add(
+      brave_news::prefs::kNewTabPageShowToday,
+      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      ntp_background_images::prefs::
+          kNewTabPageShowSponsoredImagesBackgroundImage,
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
 }
@@ -1173,10 +1190,9 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
 
   base::Value::Dict ads_data;
   ads_data.Set("adsIsSupported", brave_ads::IsSupportedRegion());
-  ads_data.Set("adsEnabled", ads_service_->IsEnabled());
   ads_data.Set(
       "adsPerHour",
-      static_cast<int>(ads_service_->GetMaximumNotificationAdsPerHour()));
+      static_cast<double>(ads_service_->GetMaximumNotificationAdsPerHour()));
   ads_data.Set(
       kAdsSubdivisionTargeting,
       prefs->GetString(brave_ads::prefs::kSubdivisionTargetingSubdivision));
@@ -1193,6 +1209,17 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
 
   ads_data.Set("subdivisions",
                brave_ads::GetSupportedSubdivisionsAsValueList());
+
+  ads_data.Set("notificationAdsEnabled",
+               prefs->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds));
+
+  ads_data.Set(
+      "newTabAdsEnabled",
+      prefs->GetBoolean(ntp_background_images::prefs::
+                            kNewTabPageShowSponsoredImagesBackgroundImage));
+  ads_data.Set("newsAdsEnabled",
+               prefs->GetBoolean(brave_news::prefs::kBraveNewsOptedIn) &&
+                   prefs->GetBoolean(brave_news::prefs::kNewTabPageShowToday));
 
   CallJavascriptFunction("brave_rewards.adsData", ads_data);
 }
@@ -1409,9 +1436,9 @@ void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
   const std::string key = args[0].GetString();
   const std::string value = args[1].GetString();
 
-  if (key == "adsEnabled") {
-    prefs->SetBoolean(brave_ads::prefs::kEnabled,
-                      value == "true" && brave_ads::IsSupportedRegion());
+  if (key == "notificationAdsEnabled") {
+    prefs->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds,
+                      value == "true");
   } else if (key == "adsPerHour") {
     int64_t int64_value;
     if (!base::StringToInt64(value, &int64_value)) {
@@ -1421,6 +1448,10 @@ void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
 
     prefs->SetInt64(brave_ads::prefs::kMaximumNotificationAdsPerHour,
                     int64_value);
+  } else if (key == "newTabAdsEnabled") {
+    prefs->SetBoolean(ntp_background_images::prefs::
+                          kNewTabPageShowSponsoredImagesBackgroundImage,
+                      value == "true");
   } else if (key == kAdsSubdivisionTargeting) {
     prefs->SetString(brave_ads::prefs::kSubdivisionTargetingSubdivision, value);
   } else if (key == kAutoDetectedSubdivisionTargeting) {
@@ -1465,6 +1496,12 @@ void RewardsDOMHandler::OnGetStatement(
   dict.Set("adsMaxEarningsThisMonth", statement->max_earnings_this_month);
   dict.Set("adsMinEarningsLastMonth", statement->min_earnings_last_month);
   dict.Set("adsMaxEarningsLastMonth", statement->max_earnings_last_month);
+
+  base::Value::Dict ad_types_received;
+  for (const auto& [ad_type, count] : statement->ad_types_received_this_month) {
+    ad_types_received.Set(ad_type, base::Value(count));
+  }
+  dict.Set("adTypesReceivedThisMonth", std::move(ad_types_received));
 
   CallJavascriptFunction("brave_rewards.statement", dict);
 }
@@ -1513,8 +1550,6 @@ void RewardsDOMHandler::GetEnabledInlineTippingPlatforms(
     const base::Value::List& args) {
   AllowJavascript();
 
-  // TODO(zenparsing): Consider using a PrefChangeRegistrar to monitor changes
-  // to these values.
   auto* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
   base::Value::List list;
 

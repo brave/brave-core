@@ -155,9 +155,9 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
 }
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest,
-       TriggerViewedEventIfBravePrivateAdsAreDisabled) {
+       TriggerViewedEventIfBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -186,9 +186,9 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
 TEST_F(
     BraveAdsNewTabPageAdIntegrationTest,
-    DoNotTriggerViewedEventIfShouldNotAlwaysTriggerAdEventsAndBravePrivateAdsAreDisabled) {
+    DoNotTriggerViewedEventIfShouldNotAlwaysTriggerAdEventsAndBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   // Act
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
@@ -250,9 +250,9 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
 }
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest,
-       TriggerClickedEventIfBravePrivateAdsAreDisabled) {
+       TriggerClickedEventIfBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -287,9 +287,9 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
 TEST_F(
     BraveAdsNewTabPageAdIntegrationTest,
-    DoNotTriggerClickedEventIfShouldNotAlwaysTriggerAdEventsAndBravePrivateAdsAreDisabled) {
+    DoNotTriggerClickedEventIfShouldNotAlwaysTriggerAdEventsAndBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
                            mojom::NewTabPageAdEventType::kViewed,

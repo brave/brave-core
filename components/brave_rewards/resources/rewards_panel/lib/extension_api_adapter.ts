@@ -43,8 +43,6 @@ export function getSettings () {
   return new Promise<Settings>((resolve) => {
     chrome.braveRewards.getPrefs((prefs) => {
       resolve({
-        adsEnabled: prefs.adsEnabled,
-        adsPerHour: prefs.adsPerHour,
         autoContributeEnabled: prefs.autoContributeEnabled,
         autoContributeAmount: prefs.autoContributeAmount
       })

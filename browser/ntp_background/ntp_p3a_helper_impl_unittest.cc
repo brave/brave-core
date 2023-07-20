@@ -11,14 +11,15 @@
 #include "base/strings/strcat.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
-#include "brave/components/brave_ads/browser/ads_service_mock.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -52,6 +53,8 @@ class NTPP3AHelperImplTest : public testing::Test {
                                    /*first_run*/ false);
     NTPP3AHelperImpl::RegisterLocalStatePrefs(local_state_.registry());
 
+    brave_ads::AdsService::RegisterProfilePrefs(prefs_.registry());
+
     p3a::P3AConfig config;
     config.p3a_json_upload_url = GURL(kTestP3AJsonHost);
     config.p2a_json_upload_url = GURL(kTestP2AJsonHost);
@@ -60,7 +63,7 @@ class NTPP3AHelperImplTest : public testing::Test {
         local_state_, "release", "2049-01-01", std::move(config)));
 
     ntp_p3a_helper_ = std::make_unique<NTPP3AHelperImpl>(
-        &local_state_, p3a_service_.get(), &ads_service_mock_);
+        &local_state_, p3a_service_.get(), &prefs_);
   }
 
   std::string GetExpectedHistogramName(const std::string& event_type) {
@@ -71,16 +74,14 @@ class NTPP3AHelperImplTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
 
-  brave_ads::AdsServiceMock ads_service_mock_;
   scoped_refptr<p3a::P3AService> p3a_service_;
   TestingPrefServiceSimple local_state_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
 
   std::unique_ptr<NTPP3AHelperImpl> ntp_p3a_helper_;
 };
 
 TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReported) {
-  EXPECT_CALL(ads_service_mock_, IsEnabled()).Times(testing::AtLeast(1));
-
   ntp_p3a_helper_->RecordView(kTestCreativeMetricId);
 
   const std::string histogram_name = GetExpectedHistogramName(kViewsEventType);
@@ -123,8 +124,6 @@ TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReported) {
 }
 
 TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReportedWhileInflight) {
-  EXPECT_CALL(ads_service_mock_, IsEnabled()).Times(testing::AtLeast(1));
-
   ntp_p3a_helper_->RecordClickAndMaybeLand(kTestCreativeMetricId);
   ntp_p3a_helper_->RecordClickAndMaybeLand(kTestCreativeMetricId);
 
@@ -171,8 +170,6 @@ TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReportedWhileInflight) {
 }
 
 TEST_F(NTPP3AHelperImplTest, LandCountReported) {
-  EXPECT_CALL(ads_service_mock_, IsEnabled()).Times(testing::AtLeast(1));
-
   ntp_p3a_helper_->RecordClickAndMaybeLand(kTestCreativeMetricId);
 
   const std::string histogram_name = GetExpectedHistogramName(kLandsEventType);
@@ -242,8 +239,6 @@ TEST_F(NTPP3AHelperImplTest, LandCountReported) {
 }
 
 TEST_F(NTPP3AHelperImplTest, StopSendingAfterEnablingAds) {
-  EXPECT_CALL(ads_service_mock_, IsEnabled()).Times(testing::AtLeast(1));
-
   const std::string histogram_name = GetExpectedHistogramName(kViewsEventType);
 
   ntp_p3a_helper_->RecordView(kTestCreativeMetricId);
@@ -265,9 +260,7 @@ TEST_F(NTPP3AHelperImplTest, StopSendingAfterEnablingAds) {
 
   ntp_p3a_helper_->RecordView(kTestCreativeMetricId);
 
-  EXPECT_CALL(ads_service_mock_, IsEnabled())
-      .Times(testing::AtLeast(1))
-      .WillRepeatedly(testing::Return(true));
+  prefs_.SetBoolean(brave_ads::prefs::kOptedInToNotificationAds, true);
 
   ntp_p3a_helper_->OnP3ARotation(p3a::MetricLogType::kExpress,
                                  /*is_star*/ false);

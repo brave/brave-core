@@ -28,9 +28,10 @@ TEST_F(BraveAdsIssuersPermissionRuleTest, AllowAd) {
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BraveAdsIssuersPermissionRuleTest, AllowAdIfShouldNotRewardUser) {
+TEST_F(BraveAdsIssuersPermissionRuleTest,
+       ShouldAllowIfUserHasNotJoinedBraveRewards) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   // Act
 
@@ -38,7 +39,7 @@ TEST_F(BraveAdsIssuersPermissionRuleTest, AllowAdIfShouldNotRewardUser) {
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BraveAdsIssuersPermissionRuleTest, DoNotAllowAdIfNoIssuers) {
+TEST_F(BraveAdsIssuersPermissionRuleTest, ShouldNotAllowIfNoIssuers) {
   // Arrange
 
   // Act

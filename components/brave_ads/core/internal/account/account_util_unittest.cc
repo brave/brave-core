@@ -29,32 +29,51 @@ class BraveAdsAccountUtilTest : public UnitTestBase {
   NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
 };
 
-TEST_F(BraveAdsAccountUtilTest, UserHasOptedInToBravePrivateAds) {
+TEST_F(BraveAdsAccountUtilTest, UserHasJoinedBraveRewards) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_TRUE(UserHasOptedInToBravePrivateAds());
+  EXPECT_TRUE(UserHasJoinedBraveRewards());
 }
 
-TEST_F(BraveAdsAccountUtilTest, UserHasNotOptedInToBravePrivateAds) {
+TEST_F(BraveAdsAccountUtilTest, ShouldNotRewardUser) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   // Act
 
   // Assert
-  EXPECT_FALSE(UserHasOptedInToBravePrivateAds());
+  EXPECT_FALSE(UserHasJoinedBraveRewards());
 }
 
-TEST_F(BraveAdsAccountUtilTest, UserHasOptedInToBraveNews) {
+TEST_F(BraveAdsAccountUtilTest, UserHasOptedInToNotificationAds) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_TRUE(UserHasOptedInToBraveNews());
+  EXPECT_TRUE(UserHasOptedInToNotificationAds());
+}
+
+TEST_F(BraveAdsAccountUtilTest, UserHasNotOptedInToNotificationAds) {
+  // Arrange
+  DisableNotificationAds();
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(UserHasOptedInToNotificationAds());
+}
+
+TEST_F(BraveAdsAccountUtilTest, UserHasOptedInToBraveNewsAds) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(UserHasOptedInToBraveNewsAds());
 }
 
 TEST_F(BraveAdsAccountUtilTest, UserHasNotOptedInToBraveNews) {
@@ -64,7 +83,7 @@ TEST_F(BraveAdsAccountUtilTest, UserHasNotOptedInToBraveNews) {
   // Act
 
   // Assert
-  EXPECT_FALSE(UserHasOptedInToBraveNews());
+  EXPECT_FALSE(UserHasOptedInToBraveNewsAds());
 }
 
 TEST_F(BraveAdsAccountUtilTest, UserHasOptedInToNewTabPageAds) {
@@ -84,25 +103,6 @@ TEST_F(BraveAdsAccountUtilTest, UserHasNotOptedInToNewTabPageAds) {
 
   // Assert
   EXPECT_FALSE(UserHasOptedInToNewTabPageAds());
-}
-
-TEST_F(BraveAdsAccountUtilTest, ShouldRewardUser) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_TRUE(ShouldRewardUser());
-}
-
-TEST_F(BraveAdsAccountUtilTest, ShouldNotRewardUser) {
-  // Arrange
-  DisableBravePrivateAds();
-
-  // Act
-
-  // Assert
-  EXPECT_FALSE(ShouldRewardUser());
 }
 
 TEST_F(BraveAdsAccountUtilTest, ResetRewards) {

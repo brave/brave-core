@@ -72,6 +72,7 @@ export function Wallet () {
             autoContributeEnabled={true}
             onExternalWalletAction={actionLogger('onExternalWalletAction')}
             onViewStatement={actionLogger('onViewStatement')}
+            onManageAds={actionLogger('onManageAds')}
           />
         </div>
       </WithThemeVariables>

@@ -42,15 +42,15 @@ class BraveAdsSubdivisionTargetingTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsSubdivisionTargetingTest,
-       AllowAndFetchWhenEnabledPrefDidChangeIfBravePrivateAdsAreEnabled) {
+       AllowAndFetchWhenOptingInToNotificationAds) {
   // Arrange
-  DisableBravePrivateAds();
   DisableBraveNewsAds();
+  DisableNotificationAds();
 
   MockHttpOkUrlResponse(/*country*/ "US", /*region*/ "CA");
 
   // Act
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, true);
+  ads_client_mock_.SetBooleanPref(prefs::kOptedInToNotificationAds, true);
 
   // Assert
   EXPECT_TRUE(SubdivisionTargeting::ShouldAllow());
@@ -61,34 +61,15 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 }
 
 TEST_F(BraveAdsSubdivisionTargetingTest,
-       AllowAndFetchIfBraveNewsOptedInPrefDidChangeIfBraveNewsAdsAreEnabled) {
+       AllowAndFetchWhenOptingInToBraveNewsAds) {
   // Arrange
-  DisableBravePrivateAds();
-  SetDefaultBooleanPref(brave_news::prefs::kBraveNewsOptedIn, false);
+  DisableBraveNewsAds();
+  DisableNotificationAds();
 
   MockHttpOkUrlResponse(/*country*/ "US", /*region*/ "CA");
 
   // Act
   ads_client_mock_.SetBooleanPref(brave_news::prefs::kBraveNewsOptedIn, true);
-
-  // Assert
-  EXPECT_TRUE(SubdivisionTargeting::ShouldAllow());
-  EXPECT_FALSE(subdivision_targeting_->IsDisabled());
-  EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
-  EXPECT_EQ("US-CA", ads_client_mock_.GetStringPref(
-                         prefs::kSubdivisionTargetingAutoDetectedSubdivision));
-}
-
-TEST_F(
-    BraveAdsSubdivisionTargetingTest,
-    AllowAndFetchWhenNewTabPageShowTodayPrefDidChangeIfBraveNewsAdsAreEnabled) {
-  // Arrange
-  DisableBravePrivateAds();
-  SetDefaultBooleanPref(brave_news::prefs::kNewTabPageShowToday, false);
-
-  MockHttpOkUrlResponse(/*country*/ "US", /*region*/ "CA");
-
-  // Act
   ads_client_mock_.SetBooleanPref(brave_news::prefs::kNewTabPageShowToday,
                                   true);
 
@@ -101,7 +82,7 @@ TEST_F(
 }
 
 TEST_F(BraveAdsSubdivisionTargetingTest,
-       DoNotFetchWhenEnabledPrefDidChangeIfBravePrivateAdsAreDisabled) {
+       DoNotFetchWhenOptingOutOfNotificationAds) {
   // Arrange
   DisableBraveNewsAds();
 
@@ -112,16 +93,15 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
   EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
 
   // Act
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_.SetBooleanPref(prefs::kOptedInToNotificationAds, false);
 
   // Assert
 }
 
 TEST_F(BraveAdsSubdivisionTargetingTest,
-       DoNotFetchWhenEnabledPrefDidChangeIfBraveNewsOptedInIsDisabled) {
+       DoNotFetchWhenOptingOutOfBraveNewsAds) {
   // Arrange
-  DisableBravePrivateAds();
-  SetDefaultBooleanPref(brave_news::prefs::kNewTabPageShowToday, false);
+  DisableNotificationAds();
 
   MockHttpOkUrlResponse(/*country*/ "US", /*region*/ "CA");
 
@@ -131,23 +111,6 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 
   // Act
   ads_client_mock_.SetBooleanPref(brave_news::prefs::kBraveNewsOptedIn, false);
-
-  // Assert
-}
-
-TEST_F(BraveAdsSubdivisionTargetingTest,
-       DoNotFetchWhenEnabledPrefDidChangeIfNewTabPageShowTodayIsDisabled) {
-  // Arrange
-  DisableBravePrivateAds();
-  SetDefaultBooleanPref(brave_news::prefs::kBraveNewsOptedIn, false);
-
-  MockHttpOkUrlResponse(/*country*/ "US", /*region*/ "CA");
-
-  NotifyDidInitializeAds();
-
-  EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
-
-  // Act
   ads_client_mock_.SetBooleanPref(brave_news::prefs::kNewTabPageShowToday,
                                   false);
 

@@ -18,7 +18,8 @@ class BraveAdsUnblindedTokensPermissionRuleTest : public UnitTestBase {
   const UnblindedTokensPermissionRule permission_rule_;
 };
 
-TEST_F(BraveAdsUnblindedTokensPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
+TEST_F(BraveAdsUnblindedTokensPermissionRuleTest,
+       ShouldAllowIfDoesNotExceedCap) {
   // Arrange
   privacy::SetUnblindedTokens(/*count*/ 10);
 
@@ -29,9 +30,9 @@ TEST_F(BraveAdsUnblindedTokensPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
 }
 
 TEST_F(BraveAdsUnblindedTokensPermissionRuleTest,
-       AllowAdIfShouldNotRewardUser) {
+       ShouldAllowIfUserHasNotJoinedBraveRewards) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   // Act
 
@@ -40,7 +41,7 @@ TEST_F(BraveAdsUnblindedTokensPermissionRuleTest,
 }
 
 TEST_F(BraveAdsUnblindedTokensPermissionRuleTest,
-       DoNotAllowAdIfNoUnblindedTokens) {
+       ShouldNotAllowIfNoUnblindedTokens) {
   // Arrange
 
   // Act
@@ -49,7 +50,7 @@ TEST_F(BraveAdsUnblindedTokensPermissionRuleTest,
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BraveAdsUnblindedTokensPermissionRuleTest, DoNotAllowAdIfExceedsCap) {
+TEST_F(BraveAdsUnblindedTokensPermissionRuleTest, ShouldNotAllowIfExceedsCap) {
   // Arrange
   privacy::SetUnblindedTokens(/*count*/ 9);
 

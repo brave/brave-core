@@ -96,8 +96,9 @@ class AdsServiceImpl : public AdsService,
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
-  bool UserHasOptedInToBravePrivateAds() const;
-  bool UserHasOptedInToBraveNews() const;
+  bool UserHasOptedInToBraveNewsAds() const;
+  bool UserHasOptedInToNewTabPageAds() const;
+  bool UserHasOptedInToNotificationAds() const;
 
   void InitializeNotificationsForCurrentProfile() const;
 
@@ -135,18 +136,17 @@ class AdsServiceImpl : public AdsService,
   void CloseAdaptiveCaptcha();
 
   void InitializePrefChangeRegistrar();
-  void OnEnabledPrefChanged();
-  void OnEnabledPrefChangedCallback(
-      brave_rewards::mojom::RewardsWalletPtr wallet);
-  void OnBraveNewsOptedInPrefChanged();
-  void OnNewTabPageShowTodayPrefChanged();
+  void InitializeBraveRewardsPrefChangeRegistrar();
+  void InitializeSubdivisionTargetingPrefChangeRegistrar();
+  void InitializeBraveNewsAdsPrefChangeRegistrar();
+  void InitializeNewTabPageAdsPrefChangeRegistrar();
+  void InitializeNotificationAdsPrefChangeRegistrar();
+  void OnOptedInToAdsPrefChanged(const std::string& path);
   void NotifyPrefChanged(const std::string& path) const;
 
+  void GetRewardsWallet();
   void NotifyRewardsWalletDidUpdate(
       brave_rewards::mojom::RewardsWalletPtr wallet);
-
-  void GetRewardsWallet();
-  void GetRewardsWalletCallback(brave_rewards::mojom::RewardsWalletPtr wallet);
 
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple idle
   // state business logic.
@@ -181,19 +181,10 @@ class AdsServiceImpl : public AdsService,
                           UrlRequestCallback callback,
                           std::unique_ptr<std::string> response_body);
 
-  PrefService* GetPrefService();
-  const PrefService* GetPrefService() const;
-
-  // TODO(https://github.com/brave/brave-browser/issues/14673) Decouple
-  // migration business logic.
-  void DisableAdsIfUnsupportedRegion();
-
   // KeyedService:
   void Shutdown() override;
 
   // AdsService:
-  bool IsEnabled() const override;
-
   int64_t GetMaximumNotificationAdsPerHour() const override;
 
   bool NeedsBrowserUpgradeToServeAds() const override;

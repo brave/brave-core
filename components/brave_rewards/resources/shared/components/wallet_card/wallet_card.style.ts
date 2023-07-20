@@ -84,6 +84,30 @@ export const earningsTooltip = styled.div`
   }
 `
 
+export const manageAds = styled.div`
+  margin-top: 14px;
+
+  button {
+    color: ${leo.color.light.text.interactive};
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .icon {
+    height: 9px;
+    width: auto;
+    color: ${leo.color.light.icon.interactive};
+  }
+`
+
 export const earningsDisplay = styled.div`
   margin-top: 4px;
   display: flex;

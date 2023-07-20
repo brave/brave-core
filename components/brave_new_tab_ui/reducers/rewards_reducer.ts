@@ -11,11 +11,6 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
   const payload = action.payload
 
   switch (action.type) {
-    case types.ON_ADS_ENABLED:
-      state = { ...state }
-      state.rewardsState.enabledAds = payload.enabled
-      break
-
     case types.ON_ADS_ACCOUNT_STATEMENT:
       state = { ...state }
       state.rewardsState.adsAccountStatement = payload.adsAccountStatement
@@ -89,8 +84,6 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
           userType: preInitialRewardsDataPayload.userType,
           isUnsupportedRegion: preInitialRewardsDataPayload.isUnsupportedRegion,
           declaredCountry: preInitialRewardsDataPayload.declaredCountry,
-          enabledAds: preInitialRewardsDataPayload.enabledAds,
-          adsSupported: preInitialRewardsDataPayload.adsSupported,
           needsBrowserUpgradeToServeAds: preInitialRewardsDataPayload.needsBrowserUpgradeToServeAds
         }
       }
@@ -126,8 +119,7 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
         ...state,
         rewardsState: {
           ...state.rewardsState,
-          rewardsEnabled: false,
-          enabledAds: false
+          rewardsEnabled: false
         }
       }
       break

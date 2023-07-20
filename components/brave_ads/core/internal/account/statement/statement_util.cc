@@ -68,12 +68,12 @@ std::pair<double, double> GetEstimatedEarningsForLastMonth(
   return {range_low * kMinEstimatedEarningsMultiplier.Get(), range_high};
 }
 
-int GetAdsReceivedThisMonth(const TransactionList& transactions) {
+base::flat_map<std::string, int32_t> GetAdTypesReceivedThisMonth(
+    const TransactionList& transactions) {
   const base::Time from_time = GetLocalTimeAtBeginningOfThisMonth();
   const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
 
-  return static_cast<int>(
-      GetAdsReceivedForDateRange(transactions, from_time, to_time));
+  return GetAdTypesReceivedForDateRange(transactions, from_time, to_time);
 }
 
 }  // namespace brave_ads

@@ -46,9 +46,6 @@ class AdsService : public KeyedService {
   // static
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
-  // Returns |true| if ads are enabled.
-  virtual bool IsEnabled() const = 0;
-
   // Returns the maximum number of notification ads that can be served per hour.
   virtual int64_t GetMaximumNotificationAdsPerHour() const = 0;
 

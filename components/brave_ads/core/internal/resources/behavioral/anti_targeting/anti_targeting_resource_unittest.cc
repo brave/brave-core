@@ -96,9 +96,9 @@ TEST_F(BraveAdsAntiTargetingResourceTest, LoadResourceWhenLocaleDidChange) {
 
 TEST_F(
     BraveAdsAntiTargetingResourceTest,
-    DoNotLoadResourceWhenLocaleDidChangeIfBravePrivateAdsAndBraveNewsAdsAreDisabled) {
+    DoNotLoadResourceWhenLocaleDidChangeIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableNotificationAds();
   DisableBraveNewsAds();
 
   LoadResource(kCountryComponentId);
@@ -130,7 +130,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
   LoadResource(kCountryComponentId);
 
   // Act
-  NotifyPrefDidChange(prefs::kEnabled);
+  NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
   task_environment_.RunUntilIdle();
 
   // Assert
@@ -139,15 +139,15 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
 
 TEST_F(
     BraveAdsAntiTargetingResourceTest,
-    DoNotLoadResourceWhenEnabledPrefDidChangeIfBravePrivateAdsAndBraveNewsAdsAreDisabled) {
+    DoNotLoadResourceWhenEnabledPrefDidChangeIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableNotificationAds();
   DisableBraveNewsAds();
 
   LoadResource(kCountryComponentId);
 
   // Act
-  NotifyPrefDidChange(prefs::kEnabled);
+  NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
   task_environment_.RunUntilIdle();
 
   // Assert
@@ -160,7 +160,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
   LoadResource(kCountryComponentId);
 
   // Act
-  NotifyPrefDidChange(prefs::kEnabled);
+  NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
   task_environment_.RunUntilIdle();
 
   // Assert
@@ -192,9 +192,9 @@ TEST_F(
 
 TEST_F(
     BraveAdsAntiTargetingResourceTest,
-    DoNotLoadResourceWhenDidUpdateResourceComponentIfBravePrivateAdsAndBraveNewsAdsAreDisabled) {
+    DoNotLoadResourceWhenDidUpdateResourceComponentIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableNotificationAds();
   DisableBraveNewsAds();
 
   // Act

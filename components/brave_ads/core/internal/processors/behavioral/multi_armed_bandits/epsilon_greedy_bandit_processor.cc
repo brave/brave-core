@@ -23,6 +23,7 @@
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_segments.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 
 namespace brave_ads {
 
@@ -32,7 +33,7 @@ constexpr double kDefaultArmValue = 1.0;
 constexpr int kDefaultArmPulls = 0;
 
 bool DoesRequireResource() {
-  return UserHasOptedInToBravePrivateAds() || UserHasOptedInToBraveNews();
+  return UserHasOptedInToBraveNewsAds() || UserHasOptedInToNotificationAds();
 }
 
 void MaybeAddOrResetArms(EpsilonGreedyBanditArmMap& arms) {
@@ -188,7 +189,9 @@ void EpsilonGreedyBanditProcessor::OnNotifyDidInitializeAds() {
 
 void EpsilonGreedyBanditProcessor::OnNotifyPrefDidChange(
     const std::string& path) {
-  if (path == prefs::kEnabled || path == brave_news::prefs::kBraveNewsOptedIn ||
+  if (path == brave_rewards::prefs::kEnabled ||
+      path == prefs::kOptedInToNotificationAds ||
+      path == brave_news::prefs::kBraveNewsOptedIn ||
       path == brave_news::prefs::kNewTabPageShowToday) {
     MaybeInitializeOrResetArms();
   }

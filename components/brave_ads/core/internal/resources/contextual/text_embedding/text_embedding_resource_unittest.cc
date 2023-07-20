@@ -95,9 +95,9 @@ TEST_F(BraveAdsTextEmbeddingResourceTest, LoadResourceWhenLocaleDidChange) {
 }
 
 TEST_F(BraveAdsTextEmbeddingResourceTest,
-       DoNotLoadResourceWhenLocaleDidChangeIfBravePrivateAdsAreDisabled) {
+       DoNotLoadResourceWhenLocaleDidChangeIfOptedOutOfNotificationAds) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableNotificationAds();
 
   LoadResource(kLanguageComponentId);
 
@@ -123,27 +123,28 @@ TEST_F(BraveAdsTextEmbeddingResourceTest,
 }
 
 TEST_F(BraveAdsTextEmbeddingResourceTest,
-       LoadResourceWhenEnabledPrefDidChange) {
+       LoadResourceWhenOptedInToNotificationAdsPrefDidChange) {
   // Arrange
   LoadResource(kLanguageComponentId);
 
   // Act
-  NotifyPrefDidChange(prefs::kEnabled);
+  NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
   task_environment_.RunUntilIdle();
 
   // Assert
   EXPECT_TRUE(resource_->IsInitialized());
 }
 
-TEST_F(BraveAdsTextEmbeddingResourceTest,
-       DoNotLoadResourceWhenEnabledPrefDidChangeIfBravePrivateAdsAreDisabled) {
+TEST_F(
+    BraveAdsTextEmbeddingResourceTest,
+    DoNotLoadResourceWhenOptedInToNotificationAdsPrefDidChangeIfOptedOutOfNotificationAds) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableNotificationAds();
 
   LoadResource(kLanguageComponentId);
 
   // Act
-  NotifyPrefDidChange(prefs::kEnabled);
+  NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
   task_environment_.RunUntilIdle();
 
   // Assert
@@ -151,12 +152,12 @@ TEST_F(BraveAdsTextEmbeddingResourceTest,
 }
 
 TEST_F(BraveAdsTextEmbeddingResourceTest,
-       ResetResourceWhenEnabledPrefDidChange) {
+       ResetResourceWhenOptedInToNotificationAdsPrefDidChange) {
   // Arrange
   LoadResource(kLanguageComponentId);
 
   // Act
-  NotifyPrefDidChange(prefs::kEnabled);
+  NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
   task_environment_.RunUntilIdle();
 
   // Assert
@@ -188,9 +189,9 @@ TEST_F(
 
 TEST_F(
     BraveAdsTextEmbeddingResourceTest,
-    DoNotLoadResourceWhenDidUpdateResourceComponentIfBravePrivateAdsAreDisabled) {
+    DoNotLoadResourceWhenDidUpdateResourceComponentIfOptedOutOfNotificationAds) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableNotificationAds();
 
   // Act
   LoadResource(kLanguageComponentId);

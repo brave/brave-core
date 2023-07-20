@@ -122,7 +122,7 @@ TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForLastMonth) {
   EXPECT_DOUBLE_EQ(0.04, max);
 }
 
-TEST_F(BraveAdsStatementUtilTest, GetAdsReceivedThisMonth) {
+TEST_F(BraveAdsStatementUtilTest, GetAdTypesReceivedThisMonth) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
@@ -147,9 +147,11 @@ TEST_F(BraveAdsStatementUtilTest, GetAdsReceivedThisMonth) {
   transactions.push_back(transaction_4);
 
   // Act
+  auto result = GetAdTypesReceivedThisMonth(transactions);
 
   // Assert
-  EXPECT_EQ(2, GetAdsReceivedThisMonth(transactions));
+  EXPECT_EQ(1ull, result.size());
+  EXPECT_EQ(result["ad_notification"], 2);
 }
 
 }  // namespace brave_ads

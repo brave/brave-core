@@ -121,10 +121,6 @@ chrome.braveRewards.initialized.addListener(fetchRewardsData)
 
 chrome.braveRewards.onRewardsWalletUpdated.addListener(fetchRewardsData)
 
-chrome.braveRewards.onAdsEnabled.addListener((enabled: boolean) => {
-  getActions().onAdsEnabled(enabled)
-})
-
 chrome.braveRewards.onPromotions.addListener((result: number, promotions: NewTab.Promotion[]) => {
   getActions().onPromotions(result, promotions)
 })

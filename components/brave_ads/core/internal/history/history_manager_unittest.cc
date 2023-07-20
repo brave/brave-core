@@ -116,9 +116,9 @@ TEST_F(BraveAdsHistoryManagerTest, AddNotificationAd) {
 }
 
 TEST_F(BraveAdsHistoryManagerTest,
-       DoNotAddNotificationAdIfBravePrivateAdsAreDisabled) {
+       DoNotAddNotificationAdIfBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
@@ -148,9 +148,9 @@ TEST_F(BraveAdsHistoryManagerTest, AddNewTabPageAd) {
 }
 
 TEST_F(BraveAdsHistoryManagerTest,
-       DoNotAddNewTabPageAdIfBravePrivateAdsAreDisabled) {
+       DoNotAddNewTabPageAdIfBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   const CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
@@ -180,9 +180,9 @@ TEST_F(BraveAdsHistoryManagerTest, AddPromotedContentAd) {
 }
 
 TEST_F(BraveAdsHistoryManagerTest,
-       DoNotAddPromotedContentAdIfBravePrivateAdsAreDisabled) {
+       DoNotAddPromotedContentAdIfBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   const CreativePromotedContentAdInfo creative_ad =
       BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
@@ -212,9 +212,9 @@ TEST_F(BraveAdsHistoryManagerTest, AddInlineContentAd) {
 }
 
 TEST_F(BraveAdsHistoryManagerTest,
-       DoNotAddInlineContentAdIfBravePrivateAdsAreDisabled) {
+       DoNotAddInlineContentAdIfBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   const CreativeInlineContentAdInfo creative_ad =
       BuildCreativeInlineContentAd(/*should_use_random_uuids*/ true);
@@ -244,9 +244,9 @@ TEST_F(BraveAdsHistoryManagerTest, AddSearchResultAd) {
 }
 
 TEST_F(BraveAdsHistoryManagerTest,
-       DoNotAddSearchResultAdIfBravePrivateAdsAreDisabled) {
+       DoNotAddSearchResultAdIfBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildSearchResultAd(/*should_use_random_uuids*/ true);

@@ -59,8 +59,9 @@ void MaybeEnableBraveFeatureForPerfTesting(Profile* profile) {
     return;
   }
 
-  // Ads
-  profile->GetPrefs()->SetBoolean(brave_ads::prefs::kEnabled, true);
+  // Notification Ads
+  profile->GetPrefs()->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds,
+                                  true);
 
   // Rewards
   auto* rewards_service =

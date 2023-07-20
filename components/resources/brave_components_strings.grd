@@ -257,7 +257,6 @@
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ENABLE_REWARDS" desc="Text of the button to enable Rewards">Enable Rewards</message>
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_NOT_EARNING_TITLE" desc="Title of message about not yet earning from sponsored images">You can earn for seeing Sponsored Images.</message>
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_OFF_REWARDS_ON_DESCRPTION" desc="Description about turning on Sponsored Images when Rewards is on">As a Brave Rewards user, you can earn BAT for seeing Sponsored Images.</message>
-      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_ADS_OFF_DESCRIPTION" desc="Description about Sponsored Images when Ads is off">You can earn BAT for seeing Sponsored Images when you enable Brave Ads. When Brave Ads is off, turning on Sponsored Images still supports Brave's mission.</message>
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_DESCRIPTION" desc="Description about turning off Sponsored Images">As a Brave Rewards user, you earn BAT for Sponsored Images you see. Disabling Sponsored Images will reduce how much you earn.</message>
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_REWARDS_ON_NO_CUSTODIAN_DESCRIPTION" desc="Description about not having a connected Rewards custodian">You can earn BAT for seeing Sponsored Images when you connect a custodial account to Brave Rewards. In the meantime, you're helping to support creators with Sponsored Images.</message>
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_REWARDS_OFF_DESCRIPTION" desc="Description about sponsored images when Rewards is off">You can earn BAT for seeing Sponsored Images with Brave Rewards. Not a Rewards user? Turning on Sponsored Images still supports Brave's mission.</message>
@@ -444,25 +443,43 @@
       </if>
 
       <!-- WebUI rewards resources -->
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Brave Private Ads</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESC" desc="">
-        Brave Private Ads are unobtrusive and private by design. Ads are based on your interests, but no personal data or browsing history ever leaves your device. Best of all, Brave Private Ads let you earn BAT (<ph name="BEGIN_LINK">$1</ph>Basic Attention Token<ph name="END_LINK">$2</ph>) just for viewing.
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Manage Brave Ads</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESCRIPTION" desc="">
+        Control what kinds of Brave Ads you see, and how often.
+      </message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESCRIPTION_EARN" desc="">
+        The more you see, the more you can earn.
+      </message>
+      <message name="IDS_BRAVE_REWARDS_NEW_TAB_AD_COUNT_LABEL" desc="">
+        New tab page ads
+      </message>
+      <message name="IDS_BRAVE_REWARDS_NOTIFICATION_AD_COUNT_LABEL" desc="">
+        Push notifications
+      </message>
+      <message name="IDS_BRAVE_REWARDS_NEWS_AD_COUNT_LABEL" desc="">
+        Brave News
+      </message>
+      <message name="IDS_BRAVE_REWARDS_NEWS_AD_INFO" desc="">
+        Brave News contains ads that cannot be independently disabled.
+      </message>
+      <message name="IDS_BRAVE_REWARDS_NEWS_AD_INFO_DISABLED" desc="">
+        Brave News is currently disabled.
       </message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC" desc="">An automatic way to support sites and content creators. Set a monthly contribution and browse normally. <ph name="BEGIN_LINK">$1</ph>Verified sites and creators<ph name="END_LINK">$2</ph> you visit will receive contributions from you each month based on the amount of time you spend on their content.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS" desc="">Current earnings this month (estimated)</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PAYMENT_DATE" desc="">Next payment date</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOTIFICATIONS_RECEIVED" desc="">Ads received this month</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS" desc="">Estimated earnings this month</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PAYMENT_DATE" desc="">Next earnings payout date</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TOTAL_RECEIVED" desc="">Total ads received this month</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_REGION" desc="">Sorry! Ads are not yet available in your region.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_DEVICE" desc="">Brave Rewards and Ads are not available on your device at this time.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR" desc="">Notification ad frequency</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_0" desc="">None</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_1" desc="">Up to 1 ad per hour</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_2" desc="">Up to 2 ads per hour</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_3" desc="">Up to 3 ads per hour</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_4" desc="">Up to 4 ads per hour</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_5" desc="">Up to 5 ads per hour</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_10" desc="">Up to 10 ads per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_1" desc="">Max 1 per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_2" desc="">Max 2 per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_3" desc="">Max 3 per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_4" desc="">Max 4 per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_5" desc="">Max 5 per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_10" desc="">Max 10 per hour</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_TITLE" desc="">Regional ad relevance</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DESCRIPTION" desc="">This allows Brave to show you ads meant specifically for your region.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_LEARN" desc="">Learn More</message>

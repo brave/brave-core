@@ -84,7 +84,7 @@ export const itemLabel = styled.div`
   color: #495057;
 `
 
-export const itemDescription = styled.div`
+export const itemDetails = styled.div`
   padding-top: 8px;
   color: #686978;
 `

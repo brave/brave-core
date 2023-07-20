@@ -15,7 +15,7 @@ namespace brave_ads {
 
 class BraveAdsAdsReceivedUtilTest : public UnitTestBase {};
 
-TEST_F(BraveAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
+TEST_F(BraveAdsAdsReceivedUtilTest, GetAdTypesReceivedForDateRange) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
@@ -43,11 +43,25 @@ TEST_F(BraveAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
       BuildUnreconciledTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
   transactions.push_back(transaction_4);
 
+  TransactionInfo transaction_5 =
+      BuildUnreconciledTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
+  transaction_5.ad_type = AdType::kNewTabPageAd;
+  transactions.push_back(transaction_5);
+
+  TransactionInfo transaction_6 =
+      BuildUnreconciledTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
+  transaction_6.ad_type = AdType::kInlineContentAd;
+  transactions.push_back(transaction_6);
+
   // Act
+  auto result =
+      GetAdTypesReceivedForDateRange(transactions, from_time, DistantFuture());
 
   // Assert
-  EXPECT_EQ(
-      2U, GetAdsReceivedForDateRange(transactions, from_time, DistantFuture()));
+  EXPECT_EQ(result.size(), 3ull);
+  EXPECT_EQ(result["ad_notification"], 2);
+  EXPECT_EQ(result["new_tab_page_ad"], 1);
+  EXPECT_EQ(result["inline_content_ad"], 1);
 }
 
 TEST_F(BraveAdsAdsReceivedUtilTest, DoNotGetAdsReceivedForDateRange) {
@@ -67,21 +81,23 @@ TEST_F(BraveAdsAdsReceivedUtilTest, DoNotGetAdsReceivedForDateRange) {
   AdvanceClockTo(TimeFromString("1 January 2021", /*is_local*/ true));
 
   // Act
+  auto result =
+      GetAdTypesReceivedForDateRange(transactions, Now(), DistantFuture());
 
   // Assert
-  EXPECT_EQ(0U,
-            GetAdsReceivedForDateRange(transactions, Now(), DistantFuture()));
+  EXPECT_TRUE(result.empty());
 }
 
-TEST_F(BraveAdsAdsReceivedUtilTest, GetAdsReceivedForNoTransactions) {
+TEST_F(BraveAdsAdsReceivedUtilTest, GetAdTypesReceivedForNoTransactions) {
   // Arrange
   const TransactionList transactions;
 
   // Act
+  auto result = GetAdTypesReceivedForDateRange(transactions, DistantPast(),
+                                               DistantFuture());
 
   // Assert
-  EXPECT_EQ(0U, GetAdsReceivedForDateRange(transactions, DistantPast(),
-                                           DistantFuture()));
+  EXPECT_TRUE(result.empty());
 }
 
 }  // namespace brave_ads

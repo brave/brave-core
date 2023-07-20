@@ -16,7 +16,7 @@
 namespace brave_ads {
 
 bool ShouldServe() {
-  return UserHasOptedInToBravePrivateAds();
+  return UserHasOptedInToNotificationAds();
 }
 
 bool CanServeIfUserIsActive() {

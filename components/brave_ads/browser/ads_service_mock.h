@@ -27,8 +27,6 @@ class AdsServiceMock : public AdsService {
 
   ~AdsServiceMock() override;
 
-  MOCK_CONST_METHOD0(IsEnabled, bool());
-
   MOCK_CONST_METHOD0(GetMaximumNotificationAdsPerHour, int64_t());
 
   MOCK_CONST_METHOD0(NeedsBrowserUpgradeToServeAds, bool());

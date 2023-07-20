@@ -16,6 +16,7 @@ import { OptInIcon } from '../icons/optin_icon'
 import { SettingsIcon } from '../icons/settings_icon'
 import { InfoIcon } from './icons/info_icon'
 import { ArrowNextIcon } from '../icons/arrow_next_icon'
+import { CaretIcon } from '../icons/caret_icon'
 import { EarningsRange } from '../earnings_range'
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
@@ -56,8 +57,6 @@ interface Props {
   vbatDeadline: number | undefined
   isUnsupportedRegion: boolean
   declaredCountry: string
-  adsEnabled: boolean
-  adsSupported: boolean
   needsBrowserUpgradeToServeAds: boolean
   rewardsBalance: Optional<number>
   exchangeRate: number
@@ -74,7 +73,6 @@ interface Props {
   publishersVisited: number
   canConnectAccount: boolean
   onEnableRewards: () => void
-  onEnableAds: () => void
   onSelectCountry: () => void
   onClaimGrant: () => void
 }
@@ -128,7 +126,7 @@ export function RewardsCard (props: Props) {
       )
     }
 
-    if (props.needsBrowserUpgradeToServeAds && props.adsSupported) {
+    if (props.needsBrowserUpgradeToServeAds) {
       return (
         <style.balance>
           <style.needsBrowserUpdateView>
@@ -240,10 +238,6 @@ export function RewardsCard (props: Props) {
   }
 
   function renderEarnings () {
-    if (!props.adsEnabled) {
-      return null
-    }
-
     return (
       <>
         <style.earningsHeader>
@@ -254,6 +248,12 @@ export function RewardsCard (props: Props) {
               <div className='tooltip'>
                 <style.earningsTooltip>
                   {getString('rewardsEarningInfoText')}
+                  <style.manageAds>
+                    <NewTabLink href={urls.settingsURL}>
+                      {getString('rewardsManageAds')}
+                      <CaretIcon direction='right' />
+                    </NewTabLink>
+                  </style.manageAds>
                 </style.earningsTooltip>
               </div>
             </style.earningsInfo>
@@ -281,25 +281,6 @@ export function RewardsCard (props: Props) {
             }
           </div>
         </style.earningsDisplay>
-      </>
-    )
-  }
-
-  function renderAdsOptIn () {
-    if (props.adsEnabled || !props.adsSupported) {
-      return null
-    }
-
-    return (
-      <>
-        <style.adsOptIn>
-          {getString('rewardsOptInText')}
-        </style.adsOptIn>
-        <style.primaryAction>
-          <button onClick={props.onEnableAds}>
-            {getString('rewardsEnableBraveAds')}
-          </button>
-        </style.primaryAction>
       </>
     )
   }
@@ -335,22 +316,6 @@ export function RewardsCard (props: Props) {
 
   function renderLimited () {
     const onConnect = () => { window.open(urls.connectURL, '_blank', 'noreferrer') }
-
-    if (!props.adsEnabled) {
-      return (
-        <style.root>
-          <RewardsCardHeader />
-          <style.adsOptIn>
-            {getString('rewardsAboutRewards')}
-          </style.adsOptIn>
-          <style.primaryAction>
-            <button onClick={props.onEnableAds}>
-              {getString('rewardsStartUsingRewards')}
-            </button>
-          </style.primaryAction>
-        </style.root>
-      )
-    }
 
     return (
       <style.root>
@@ -422,7 +387,6 @@ export function RewardsCard (props: Props) {
       <RewardsCardHeader />
       {renderBalance()}
       {renderEarnings()}
-      {renderAdsOptIn()}
       {renderSettingsLink()}
     </style.root>
   )

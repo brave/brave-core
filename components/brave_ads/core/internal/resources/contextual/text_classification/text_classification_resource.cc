@@ -17,13 +17,14 @@
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource_constants.h"
 #include "brave/components/brave_ads/core/internal/resources/language_components.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 
 namespace brave_ads {
 
 namespace {
 
 bool DoesRequireResource() {
-  return UserHasOptedInToBravePrivateAds();
+  return UserHasOptedInToNotificationAds();
 }
 
 }  // namespace
@@ -101,7 +102,8 @@ void TextClassificationResource::OnNotifyLocaleDidChange(
 
 void TextClassificationResource::OnNotifyPrefDidChange(
     const std::string& path) {
-  if (path == prefs::kEnabled) {
+  if (path == brave_rewards::prefs::kEnabled ||
+      path == prefs::kOptedInToNotificationAds) {
     MaybeLoadOrReset();
   }
 }

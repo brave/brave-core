@@ -180,7 +180,7 @@ TEST_F(BraveAdsAccountTest, GetWallet) {
   EXPECT_EQ(expected_wallet, account_->GetWallet());
 }
 
-TEST_F(BraveAdsAccountTest, GetIssuersIfBravePrivateAdsAreEnabled) {
+TEST_F(BraveAdsAccountTest, GetIssuersIfBraveRewardsAreEnabled) {
   // Arrange
   const URLResponseMap url_responses = {
       {BuildIssuersUrlPath(), {{net::HTTP_OK, BuildIssuersUrlResponseBody()}}}};
@@ -194,9 +194,9 @@ TEST_F(BraveAdsAccountTest, GetIssuersIfBravePrivateAdsAreEnabled) {
   EXPECT_EQ(BuildIssuers(), GetIssuers());
 }
 
-TEST_F(BraveAdsAccountTest, DoNotGetIssuersIfBravePrivateAdsAreDisabled) {
+TEST_F(BraveAdsAccountTest, DoNotGetIssuersIfBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
 
@@ -497,6 +497,7 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
     expected_statement->next_payment_date =
         TimeFromString("7 January 2021 23:59:59.999", /*is_local*/ false);
     expected_statement->ads_received_this_month = 3;
+    expected_statement->ad_types_received_this_month = {{"ad_notification", 3}};
 
     EXPECT_EQ(expected_statement, statement);
   }));
@@ -504,9 +505,9 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
   // Assert
 }
 
-TEST_F(BraveAdsAccountTest, DoNotGetStatementIfBravePrivateAdsAreDisabled) {
+TEST_F(BraveAdsAccountTest, DoNotGetStatementIfBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   // Act
   Account::GetStatement(base::BindOnce(

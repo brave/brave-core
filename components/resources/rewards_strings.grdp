@@ -33,6 +33,9 @@
   <message name="IDS_REWARDS_WALLET_LOG_INTO_YOUR_ACCOUNT" desc="">
     Log in to your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account
   </message>
+  <message name="IDS_REWARDS_WALLET_MANAGE_ADS" desc="">
+    Manage ads
+  </message>
   <message name="IDS_REWARDS_WALLET_MONTHLY_TIPS" desc="">
     Monthly Contributions
   </message>
@@ -115,9 +118,6 @@
   <message name="IDS_REWARDS_WIDGET_HOW_DOES_IT_WORK" desc="">
     How does it work?
   </message>
-  <message name="IDS_REWARDS_WIDGET_ENABLE_BRAVE_ADS" desc="">
-    Enable Brave Ads
-  </message>
   <message name="IDS_REWARDS_WIDGET_GRANT_DAYS_REMAINING" desc="">
     You have <ph name="DAYS">$1<ex>80 days</ex></ph> left to claim
   </message>
@@ -192,17 +192,11 @@
   <message name="IDS_REWARDS_PANEL_CANCEL" desc="">
     Cancel
   </message>
-  <message name="IDS_REWARDS_PANEL_ABOUT_REWARDS_TEXT" desc="">
-    Using Brave Rewards helps support content creators, and lets you earn BAT.
-  </message>
   <message name="IDS_REWARDS_PANEL_HEADER_TITLE" desc="">
     Brave Rewards
   </message>
-  <message name="IDS_REWARDS_PANEL_HEADER_TEXT_ADS_ENABLED" desc="">
+  <message name="IDS_REWARDS_PANEL_HEADER_TEXT" desc="">
     You are helping support content creators
-  </message>
-  <message name="IDS_REWARDS_PANEL_HEADER_TEXT_ADS_DISABLED" desc="">
-    Turn on to help support content creators
   </message>
   <message name="IDS_REWARDS_PANEL_REWARDS_SETTINGS" desc="">
     Rewards settings

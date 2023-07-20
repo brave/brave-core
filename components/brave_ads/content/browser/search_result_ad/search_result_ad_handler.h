@@ -55,8 +55,6 @@ class SearchResultAdHandler final {
   SearchResultAdHandler(AdsService* ads_service,
                         bool should_trigger_viewed_event);
 
-  bool IsEnabled();
-
   void OnRetrieveSearchResultAdEntities(
       mojo::Remote<blink::mojom::DocumentMetadata> document_metadata,
       base::OnceCallback<void(std::vector<std::string>)> callback,

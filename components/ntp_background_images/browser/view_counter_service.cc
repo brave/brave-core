@@ -12,15 +12,14 @@
 
 #include "base/check_is_test.h"
 #include "base/feature_list.h"
-#include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_p3a_helper.h"
@@ -35,7 +34,6 @@
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-#include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
 #endif
 
 namespace {
@@ -98,7 +96,7 @@ ViewCounterService::ViewCounterService(
 
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
-      brave_ads::prefs::kEnabled,
+      brave_rewards::prefs::kEnabled,
       base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(prefs::kNewTabPageSuperReferralThemesOption,
@@ -128,7 +126,8 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
         brave_ads::mojom::NewTabPageAdEventType::kViewed,
         /*intentional*/ base::DoNothing());
 
-    if (ntp_p3a_helper_ && !ads_service_->IsEnabled()) {
+    if (ntp_p3a_helper_ &&
+        !prefs_->GetBoolean(brave_rewards::prefs::kEnabled)) {
       // Should only report to P3A if ads are disabled, as required by spec.
       ntp_p3a_helper_->RecordView(creative_instance_id);
     }
@@ -203,7 +202,7 @@ ViewCounterService::GetCurrentBrandedWallpaper() const {
   }
 
   const bool should_frequency_cap_ads =
-      ads_service_ && ads_service_->IsEnabled();
+      prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
   if (should_frequency_cap_ads && !images_data->IsSuperReferral()) {
     return GetCurrentBrandedWallpaperByAdInfo();
   }
@@ -297,7 +296,7 @@ void ViewCounterService::ResetModel() {
 }
 
 void ViewCounterService::OnPreferenceChanged(const std::string& pref_name) {
-  if (pref_name == brave_ads::prefs::kEnabled) {
+  if (pref_name == brave_rewards::prefs::kEnabled) {
     ResetNotificationState();
     return;
   }
@@ -335,7 +334,7 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
       brave_ads::mojom::NewTabPageAdEventType::kClicked,
       /*intentional*/ base::DoNothing());
 
-  if (ntp_p3a_helper_ && !ads_service_->IsEnabled()) {
+  if (ntp_p3a_helper_ && !prefs_->GetBoolean(brave_rewards::prefs::kEnabled)) {
     // Should only report to P3A if ads are disabled, as required by spec.
     ntp_p3a_helper_->RecordClickAndMaybeLand(creative_instance_id);
   }
@@ -416,8 +415,8 @@ std::string ViewCounterService::GetSuperReferralCode() const {
 
 void ViewCounterService::MaybePrefetchNewTabPageAd() {
   NTPSponsoredImagesData* images_data = GetCurrentBrandedWallpaperData();
-  if (!IsBrandedWallpaperActive() || !ads_service_ ||
-      !ads_service_->IsEnabled() || !images_data ||
+  if (!ads_service_ || !IsBrandedWallpaperActive() ||
+      !prefs_->GetBoolean(brave_rewards::prefs::kEnabled) || !images_data ||
       images_data->IsSuperReferral()) {
     return;
   }

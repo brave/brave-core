@@ -31,14 +31,16 @@
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_interface.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 
 namespace brave_ads {
 
 namespace {
 
 bool ShouldResetIssuersAndConfirmations() {
-  return ShouldRewardUser() && AdsClientHelper::GetInstance()->GetBooleanPref(
-                                   prefs::kShouldMigrateVerifiedRewardsUser);
+  return UserHasJoinedBraveRewards() &&
+         AdsClientHelper::GetInstance()->GetBooleanPref(
+             prefs::kShouldMigrateVerifiedRewardsUser);
 }
 
 }  // namespace
@@ -116,7 +118,7 @@ void Account::Deposit(const std::string& creative_instance_id,
 
 // static
 void Account::GetStatement(GetStatementOfAccountsCallback callback) {
-  if (!ShouldRewardUser()) {
+  if (!UserHasJoinedBraveRewards()) {
     return std::move(callback).Run(/*statement*/ nullptr);
   }
 
@@ -128,7 +130,7 @@ void Account::GetStatement(GetStatementOfAccountsCallback callback) {
 void Account::Initialize() {
   MaybeResetConfirmationsAndIssuers();
 
-  MaybeRewardUsers();
+  MaybeRewardUser();
 
   NotifyStatementOfAccountsDidChange();
 
@@ -142,8 +144,8 @@ void Account::InitializeConfirmations() {
   confirmations_->SetDelegate(this);
 }
 
-void Account::MaybeRewardUsers() {
-  return ShouldRewardUser() ? InitializeRewards() : ShutdownRewards();
+void Account::MaybeRewardUser() {
+  UserHasJoinedBraveRewards() ? InitializeRewards() : ShutdownRewards();
 }
 
 void Account::InitializeRewards() {
@@ -214,7 +216,7 @@ void Account::ProcessDeposit(const std::string& creative_instance_id,
                              const std::string& segment,
                              const ConfirmationType& confirmation_type,
                              const double value) const {
-  if (!ShouldRewardUser()) {
+  if (!UserHasJoinedBraveRewards()) {
     return SuccessfullyProcessedDeposit(BuildTransaction(
         creative_instance_id, segment, value, ad_type, confirmation_type));
   }
@@ -369,7 +371,7 @@ void Account::OnNotifyDidInitializeAds() {
 }
 
 void Account::OnNotifyPrefDidChange(const std::string& path) {
-  if (path == prefs::kEnabled) {
+  if (path == brave_rewards::prefs::kEnabled) {
     Initialize();
   } else if (path == prefs::kShouldMigrateVerifiedRewardsUser) {
     MaybeResetConfirmationsAndIssuers();

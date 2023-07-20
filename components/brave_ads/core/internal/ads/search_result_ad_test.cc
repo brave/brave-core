@@ -173,9 +173,9 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
-       TriggerViewedEventsIfBravePrivateAdsAreDisabled) {
+       TriggerViewedEventsIfBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -210,9 +210,9 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
 
 TEST_F(
     BraveAdsSearchResultAdIntegrationTest,
-    DoNotTriggerViewedEventIfShouldNotAlwaysTriggerAdEventsAndBravePrivateAdsAreDisabled) {
+    DoNotTriggerViewedEventIfShouldNotAlwaysTriggerAdEventsAndBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   // Act
   TriggerSearchResultAdEvent(
@@ -230,9 +230,9 @@ TEST_F(
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
-       TriggerQueuedViewedEventsIfBravePrivateAdsAreDisabled) {
+       TriggerQueuedViewedEventsIfBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -280,9 +280,9 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
-       TriggerClickedEventIfBravePrivateAdsAreDisabled) {
+       TriggerClickedEventIfBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -320,9 +320,9 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
 
 TEST_F(
     BraveAdsSearchResultAdIntegrationTest,
-    DoNotTriggerClickedEventIfShouldNotAlwaysTriggerAdEventsAndBravePrivateAdsAreDisabled) {
+    DoNotTriggerClickedEventIfShouldNotAlwaysTriggerAdEventsAndBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   const mojom::SearchResultAdInfoPtr search_result_ad =
       BuildSearchResultAd(/*should_use_random_uuids*/ true);

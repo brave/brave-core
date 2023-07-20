@@ -26,6 +26,7 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -98,6 +99,13 @@ std::string BraveRewardsNativeWorker::StringifyResult(
     case brave_rewards::mojom::CreateRewardsWalletResult::kUnexpected:
       return "unexpected-error";
   }
+}
+
+bool BraveRewardsNativeWorker::IsRewardsEnabled(JNIEnv* env) {
+  return ProfileManager::GetActiveUserProfile()
+      ->GetOriginalProfile()
+      ->GetPrefs()
+      ->GetBoolean(brave_rewards::prefs::kEnabled);
 }
 
 void BraveRewardsNativeWorker::CreateRewardsWallet(

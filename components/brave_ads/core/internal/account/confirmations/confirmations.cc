@@ -85,8 +85,8 @@ Confirmations::~Confirmations() {
 void Confirmations::Confirm(const TransactionInfo& transaction) {
   CHECK(transaction.IsValid());
 
-  ShouldRewardUser() ? ConfirmOptedIn(transaction)
-                     : ConfirmOptedOut(transaction);
+  UserHasJoinedBraveRewards() ? ConfirmOptedIn(transaction)
+                              : ConfirmOptedOut(transaction);
 }
 
 void Confirmations::ProcessRetryQueue() {
@@ -99,7 +99,7 @@ void Confirmations::ProcessRetryQueue() {
 
 void Confirmations::ConfirmOptedIn(const TransactionInfo& transaction) {
   CHECK(transaction.IsValid());
-  CHECK(ShouldRewardUser());
+  CHECK(UserHasJoinedBraveRewards());
 
   BLOG(1, "Confirming opted-in " << transaction.confirmation_type << " for "
                                  << transaction.ad_type
@@ -112,7 +112,7 @@ void Confirmations::ConfirmOptedIn(const TransactionInfo& transaction) {
 
 void Confirmations::BuildDynamicUserData(const TransactionInfo& transaction) {
   CHECK(transaction.IsValid());
-  CHECK(ShouldRewardUser());
+  CHECK(UserHasJoinedBraveRewards());
 
   BuildConfirmationDynamicUserData(
       base::BindOnce(&Confirmations::BuildFixedUserData,
@@ -123,7 +123,7 @@ void Confirmations::BuildFixedUserData(
     const TransactionInfo& transaction,
     base::Value::Dict dynamic_opted_in_user_data) {
   CHECK(transaction.IsValid());
-  CHECK(ShouldRewardUser());
+  CHECK(UserHasJoinedBraveRewards());
 
   BuildConfirmationUserData(
       transaction, base::BindOnce(&Confirmations::CreateAndRedeemOptedIn,
@@ -136,7 +136,7 @@ void Confirmations::CreateAndRedeemOptedIn(
     base::Value::Dict dynamic_opted_in_user_data,
     base::Value::Dict fixed_opted_in_user_data) {
   CHECK(transaction.IsValid());
-  CHECK(ShouldRewardUser());
+  CHECK(UserHasJoinedBraveRewards());
 
   OptedInUserDataInfo opted_in_user_data;
   opted_in_user_data.dynamic = std::move(dynamic_opted_in_user_data);
@@ -177,7 +177,7 @@ void Confirmations::RecreateOptedInDynamicUserDataAndRedeemCallback(
 
 void Confirmations::ConfirmOptedOut(const TransactionInfo& transaction) {
   CHECK(transaction.IsValid());
-  CHECK(!ShouldRewardUser());
+  CHECK(!UserHasJoinedBraveRewards());
 
   BLOG(1, "Confirming opted-out " << transaction.confirmation_type << " for "
                                   << transaction.ad_type
@@ -191,7 +191,7 @@ void Confirmations::ConfirmOptedOut(const TransactionInfo& transaction) {
 void Confirmations::CreateAndRedeemOptedOut(
     const TransactionInfo& transaction) {
   CHECK(transaction.IsValid());
-  CHECK(!ShouldRewardUser());
+  CHECK(!UserHasJoinedBraveRewards());
 
   const absl::optional<ConfirmationInfo> confirmation =
       CreateOptedOutConfirmation(transaction);

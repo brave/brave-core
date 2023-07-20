@@ -315,6 +315,24 @@ export const earningsTooltip = styled.div`
   }
 `
 
+export const manageAds = styled.div`
+  margin-top: 14px;
+
+  a {
+    color: ${leo.color.light.text.interactive};
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    text-decoration: none;
+  }
+
+  .icon {
+    height: 9px;
+    width: auto;
+    color: ${leo.color.light.icon.interactive};
+  }
+`
+
 export const earningsHeaderBorder = styled.div`
   flex: 1 1 auto;
   border-top: 1px solid ${leo.color.dark.text.disabled};
@@ -356,14 +374,6 @@ export const hiddenEarnings = styled.div`
     color: ${leo.color.dark.text.primary};
     text-decoration: none;
   }
-`
-
-export const adsOptIn = styled.div`
-  margin: 8px 0 15px;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
 `
 
 export const primaryAction = styled.div`

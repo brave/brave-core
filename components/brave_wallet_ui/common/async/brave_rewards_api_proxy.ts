@@ -99,8 +99,6 @@ export class BraveRewardsProxy {
     })
   }
 
-  onAdsEnabled = chrome.braveRewards.onAdsEnabled.addListener
-
   onCompleteReset = chrome.braveRewards.onCompleteReset.addListener
 
   onExternalWalletConnected =

@@ -21,7 +21,7 @@ class BraveAdsMediaPermissionRuleTest : public UnitTestBase {
   const MediaPermissionRule permission_rule_;
 };
 
-TEST_F(BraveAdsMediaPermissionRuleTest, AllowAdIfMediaIsNotPlaying) {
+TEST_F(BraveAdsMediaPermissionRuleTest, ShouldAllowIfMediaIsNotPlaying) {
   // Arrange
 
   // Act
@@ -30,7 +30,8 @@ TEST_F(BraveAdsMediaPermissionRuleTest, AllowAdIfMediaIsNotPlaying) {
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BraveAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedForSingleTab) {
+TEST_F(BraveAdsMediaPermissionRuleTest,
+       ShouldAllowIfMediaIsStoppedForSingleTab) {
   // Arrange
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
@@ -45,7 +46,8 @@ TEST_F(BraveAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedForSingleTab) {
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BraveAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedOnMultipleTabs) {
+TEST_F(BraveAdsMediaPermissionRuleTest,
+       ShouldAllowIfMediaIsStoppedOnMultipleTabs) {
   // Arrange
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
@@ -63,7 +65,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedOnMultipleTabs) {
 }
 
 TEST_F(BraveAdsMediaPermissionRuleTest,
-       AllowAdIfMediaIsPlayingOnMultipleTabsButStoppedForVisibleTab) {
+       ShouldAllowIfMediaIsPlayingOnMultipleTabsButStoppedForVisibleTab) {
   // Arrange
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
@@ -80,7 +82,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
 }
 
 TEST_F(BraveAdsMediaPermissionRuleTest,
-       DoNotAllowAdIfMediaIsPlayingOnVisibleTab) {
+       ShouldNotAllowIfMediaIsPlayingOnVisibleTab) {
   // Arrange
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
@@ -93,8 +95,9 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BraveAdsMediaPermissionRuleTest,
-       AlwaysAllowAdIfMediaIsPlayingOnVisibleTabIfPermissionRuleIsDisabled) {
+TEST_F(
+    BraveAdsMediaPermissionRuleTest,
+    ShouldAlwaysAllowIfMediaIsPlayingOnVisibleTabIfPermissionRuleIsDisabled) {
   // Arrange
   base::FieldTrialParams params;
   params["should_only_serve_ads_if_media_is_not_playing"] = "false";
@@ -120,7 +123,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
 }
 
 TEST_F(BraveAdsMediaPermissionRuleTest,
-       DoNotAllowAdIfMediaIsPlayingOnMultipleTabs) {
+       ShouldNotAllowIfMediaIsPlayingOnMultipleTabs) {
   // Arrange
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
@@ -135,7 +138,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
 }
 
 TEST_F(BraveAdsMediaPermissionRuleTest,
-       DoNotAllowAdIfMediaIsPlayingOnMultipleTabsButStoppedForOccludedTab) {
+       ShouldNotAllowIfMediaIsPlayingOnMultipleTabsButStoppedForOccludedTab) {
   // Arrange
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},

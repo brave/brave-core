@@ -16,11 +16,9 @@ import org.chromium.base.ApplicationStatus;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.task.AsyncTask;
-import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.components.embedder_support.util.UrlConstants;
@@ -111,12 +109,12 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                 case RetentionNotificationUtil.DAY_35:
                     // Can't check for rewards code in background
                     try {
-                        if (braveActivity != null
-                                && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                                        Profile.getLastUsedRegularProfile())
-                                && BraveRewardsNativeWorker.getInstance() != null
-                                && BraveRewardsNativeWorker.getInstance().IsSupported()) {
-                            createNotification(context, intent);
+                        BraveRewardsNativeWorker rewardsNativeWorker =
+                                BraveRewardsNativeWorker.getInstance();
+                        if (braveActivity != null && rewardsNativeWorker != null
+                                && !rewardsNativeWorker.isRewardsEnabled()
+                                && rewardsNativeWorker.IsSupported()) {
+                                createNotification(context, intent);
                         }
                     } catch (IllegalStateException exc) {
                         // We can receive 'Browser hasn't finished initialization yet!' if

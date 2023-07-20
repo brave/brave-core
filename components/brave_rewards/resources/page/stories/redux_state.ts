@@ -11,8 +11,6 @@ export const reduxState: Rewards.ApplicationState = {
   rewardsData: {
     ...defaultState(),
 
-    enabledAds: false,
-    enabledAdsMigrated: false,
     enabledContribute: true,
     contributionMinTime: 8,
     contributionMinVisits: 1,
@@ -108,17 +106,23 @@ export const reduxState: Rewards.ApplicationState = {
       }
     ],
     adsData: {
-      adsEnabled: false,
       adsPerHour: 0,
       adsSubdivisionTargeting: '',
       automaticallyDetectedAdsSubdivisionTargeting: '',
       shouldAllowAdsSubdivisionTargeting: true,
       subdivisions: [],
-      adsUIEnabled: true,
       adsIsSupported: true,
       needsBrowserUpgradeToServeAds: false,
+      notificationAdsEnabled: false,
+      newTabAdsEnabled: false,
+      newsAdsEnabled: true,
       adsNextPaymentDate: 0,
-      adsReceivedThisMonth: 0,
+      adsReceivedThisMonth: 4,
+      adTypesReceivedThisMonth: {
+        inline_content_ad: 1,
+        ad_notification: 1,
+        new_tab_page_ad: 2
+      },
       adsMinEarningsThisMonth: 0,
       adsMaxEarningsThisMonth: 0,
       adsMinEarningsLastMonth: 0,

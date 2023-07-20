@@ -544,9 +544,9 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidResignActiveEvent) {
 }
 
 TEST_F(BraveAdsUserActivityManagerTest,
-       DoNotRecordEventIfBravePrivateAdsAreDisabled) {
+       DoNotRecordEventIfBraveRewardsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableBraveRewards();
 
   const UserActivityEventType event_type =
       UserActivityEventType::kInitializedAds;

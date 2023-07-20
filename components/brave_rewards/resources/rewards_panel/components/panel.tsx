@@ -128,6 +128,7 @@ export function Panel () {
           summaryData={summaryData}
           autoContributeEnabled={settings.autoContributeEnabled}
           onExternalWalletAction={host.handleExternalWalletAction}
+          onManageAds={onSettingsClick}
         />
         {activeView === 'tip' && <PublisherCard />}
         <NavBar

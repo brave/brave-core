@@ -76,7 +76,7 @@ HistoryItemList HistoryManager::Get(const HistoryFilterType filter_type,
 
 void HistoryManager::Add(const InlineContentAdInfo& ad,
                          const ConfirmationType& confirmation_type) const {
-  if (!UserHasOptedInToBravePrivateAds()) {
+  if (!UserHasJoinedBraveRewards()) {
     return;
   }
 
@@ -87,7 +87,7 @@ void HistoryManager::Add(const InlineContentAdInfo& ad,
 
 void HistoryManager::Add(const NewTabPageAdInfo& ad,
                          const ConfirmationType& confirmation_type) const {
-  if (!UserHasOptedInToBravePrivateAds()) {
+  if (!UserHasJoinedBraveRewards()) {
     return;
   }
 
@@ -98,7 +98,7 @@ void HistoryManager::Add(const NewTabPageAdInfo& ad,
 
 void HistoryManager::Add(const NotificationAdInfo& ad,
                          const ConfirmationType& confirmation_type) const {
-  if (!UserHasOptedInToBravePrivateAds()) {
+  if (!UserHasJoinedBraveRewards()) {
     return;
   }
 
@@ -109,7 +109,7 @@ void HistoryManager::Add(const NotificationAdInfo& ad,
 
 void HistoryManager::Add(const PromotedContentAdInfo& ad,
                          const ConfirmationType& confirmation_type) const {
-  if (!UserHasOptedInToBravePrivateAds()) {
+  if (!UserHasJoinedBraveRewards()) {
     return;
   }
 
@@ -120,7 +120,7 @@ void HistoryManager::Add(const PromotedContentAdInfo& ad,
 
 void HistoryManager::Add(const SearchResultAdInfo& ad,
                          const ConfirmationType& confirmation_type) const {
-  if (!UserHasOptedInToBravePrivateAds()) {
+  if (!UserHasJoinedBraveRewards()) {
     return;
   }
 

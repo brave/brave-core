@@ -63,7 +63,7 @@ UserActivityManager& UserActivityManager::GetInstance() {
 }
 
 void UserActivityManager::RecordEvent(const UserActivityEventType event_type) {
-  if (!UserHasOptedInToBravePrivateAds()) {
+  if (!UserHasJoinedBraveRewards()) {
     return;
   }
 

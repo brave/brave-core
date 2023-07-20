@@ -15,7 +15,7 @@ namespace {
 constexpr int kUnblindedTokensMinimumThreshold = 10;
 
 bool DoesRespectCap() {
-  if (!ShouldRewardUser()) {
+  if (!UserHasJoinedBraveRewards()) {
     return true;
   }
 

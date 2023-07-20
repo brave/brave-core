@@ -365,13 +365,14 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
 ConfirmationList ConfirmationStateManager::GetFailedConfirmations() const {
   CHECK(is_initialized_);
 
-  if (ShouldRewardUser()) {
+  if (UserHasJoinedBraveRewards()) {
     return failed_confirmations_;
   }
 
-  // User is not opted-in to Brave Private Ads so only return opted-out
-  // confirmations, opted-in confirmations will be redeemed if and when the user
-  // rejoins Brave Private Ads.
+  // User has not joined Brave Rewards so only return opted-out confirmations,
+  // opted-in confirmations will be redeemed if and when the user rejoins Brave
+  // Rewards.
+
   ConfirmationList opted_out_confirmations;
 
   base::ranges::copy_if(failed_confirmations_,

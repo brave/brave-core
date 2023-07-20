@@ -168,7 +168,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "sponsoredImageEnableRewards", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ENABLE_REWARDS},
         { "sponsoredImageNotEarningTitle", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_NOT_EARNING_TITLE},
         { "sponsoredImageOffRewardsOnDescription", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_OFF_REWARDS_ON_DESCRPTION},  // NOLINT
-        { "sponsoredImageOnAdsOff", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_ADS_OFF_DESCRIPTION},  // NOLINT
         { "sponsoredImageOnDescription", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_DESCRIPTION},  // NOLINT
         { "sponsoredImageOnRewardsOnNoCustodianDescription", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_REWARDS_ON_NO_CUSTODIAN_DESCRIPTION},  // NOLINT
         { "sponsoredImageRewardsOffDescription", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_REWARDS_OFF_DESCRIPTION},  // NOLINT
@@ -319,9 +318,9 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "rewardsEarningsTitle", IDS_REWARDS_WIDGET_EARNINGS_TITLE },
         { "rewardsEarningInfoText", IDS_REWARDS_WIDGET_EARNING_INFO_TEXT },
         { "rewardsHowDoesItWork", IDS_REWARDS_WIDGET_HOW_DOES_IT_WORK},
-        { "rewardsEnableBraveAds", IDS_REWARDS_WIDGET_ENABLE_BRAVE_ADS },
         { "rewardsGrantDaysRemaining", IDS_REWARDS_WIDGET_GRANT_DAYS_REMAINING },  // NOLINT
         { "rewardsLearnMore", IDS_REWARDS_LEARN_MORE },
+        { "rewardsManageAds", IDS_REWARDS_WALLET_MANAGE_ADS },
         { "rewardsOptInHeader", IDS_REWARDS_WIDGET_OPT_IN_HEADER },
         { "rewardsOptInTerms", IDS_BRAVE_REWARDS_ONBOARDING_TERMS },
         { "rewardsOptInText", IDS_REWARDS_WIDGET_OPT_IN_TEXT },
@@ -371,8 +370,9 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
     }, {
       std::string("rewards"), {
         { "adsCurrentEarnings",  IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS },
-        { "adsDesc",  IDS_BRAVE_REWARDS_LOCAL_ADS_DESC },
-        { "adsNotificationsReceived",  IDS_BRAVE_REWARDS_LOCAL_ADS_NOTIFICATIONS_RECEIVED },     // NOLINT
+        { "adsDescription",  IDS_BRAVE_REWARDS_LOCAL_ADS_DESCRIPTION },
+        { "adsDescriptionEarn",  IDS_BRAVE_REWARDS_LOCAL_ADS_DESCRIPTION_EARN },
+        { "adsTotalReceivedLabel",  IDS_BRAVE_REWARDS_LOCAL_ADS_TOTAL_RECEIVED },  // NOLINT
         { "adsNotSupportedRegion", IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_REGION },           // NOLINT
         { "adsNotSupportedDevice", IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_DEVICE },           // NOLINT
         { "adsPaymentDate",  IDS_BRAVE_REWARDS_LOCAL_ADS_PAYMENT_DATE },
@@ -392,6 +392,11 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "adsSubdivisionTargetingDisable",  IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DISABLE },  // NOLINT
         { "adsSubdivisionTargetingDisabled",  IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DISABLED },  // NOLINT
         { "adsTitle",  IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE },
+        { "newTabAdCountLabel", IDS_BRAVE_REWARDS_NEW_TAB_AD_COUNT_LABEL},
+        { "notificationAdCountLabel", IDS_BRAVE_REWARDS_NOTIFICATION_AD_COUNT_LABEL},  // NOLINT
+        { "newsAdCountLabel", IDS_BRAVE_REWARDS_NEWS_AD_COUNT_LABEL},
+        { "newsAdInfo", IDS_BRAVE_REWARDS_NEWS_AD_INFO },
+        { "newsAdInfoDisabled", IDS_BRAVE_REWARDS_NEWS_AD_INFO_DISABLED },
         { "appErrorTitle", IDS_REWARDS_APP_ERROR_TITLE },
 
         { "bat", IDS_BRAVE_UI_BAT_REWARDS_TEXT },

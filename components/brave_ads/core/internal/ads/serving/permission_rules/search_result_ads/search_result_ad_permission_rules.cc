@@ -14,7 +14,7 @@ namespace brave_ads {
 
 // static
 bool SearchResultAdPermissionRules::HasPermission() {
-  if (!ShouldRewardUser()) {
+  if (!UserHasJoinedBraveRewards()) {
     return true;
   }
 

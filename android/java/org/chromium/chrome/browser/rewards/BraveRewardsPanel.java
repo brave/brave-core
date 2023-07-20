@@ -1143,8 +1143,7 @@ public class BraveRewardsPanel
 
                             if (mPopupView != null && mBraveRewardsNativeWorker.IsSupported()
                                     && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
-                                    && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                                            Profile.getLastUsedRegularProfile())) {
+                                    && !BraveRewardsHelper.isRewardsEnabled()) {
                                 showOnBoarding();
                             } else {
                                 // fetchRewardsData();
@@ -1177,7 +1176,7 @@ public class BraveRewardsPanel
                                             .getString(BravePref.DECLARED_GEO);
 
         if (mPopupView != null && mBraveRewardsNativeWorker.IsSupported()) {
-            if (!BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
+            if (!BraveRewardsHelper.isRewardsEnabled()
                     && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()) {
                 showOnBoarding();
             } else if (TextUtils.isEmpty(rewardsCountryCode)) {
@@ -1248,7 +1247,7 @@ public class BraveRewardsPanel
         braveRewardsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                BraveAdsNativeHelper.nativeSetAdsEnabled(
+                BraveAdsNativeHelper.nativeSetOptedInToNotificationAds(
                         Profile.getLastUsedRegularProfile(), isChecked);
                 showUnverifiedLayout();
             }
@@ -1294,7 +1293,8 @@ public class BraveRewardsPanel
             }
         }));
 
-        if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
+        if (BraveAdsNativeHelper.nativeIsOptedInToNotificationAds(
+                    Profile.getLastUsedRegularProfile())) {
             if (mRewardsMainLayout != null) {
                 mRewardsMainLayout.setVisibility(View.GONE);
             }

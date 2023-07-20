@@ -31,8 +31,8 @@ const char kNotificationAdDidFallbackToCustom[] =
 const char kSupportedCountryCodesLastSchemaVersion[] =
     "brave.brave_ads.supported_regions_last_schema_version_number";
 
-// Stores whether Brave ads is enabled or disabled
-const char kEnabled[] = "brave.brave_ads.enabled";
+// Stores whether user has opted-in to notifications ads
+const char kOptedInToNotificationAds[] = "brave.brave_ads.enabled";
 const char kEnabledForLastProfile[] = "brave.brave_ads.enabled_last_profile";
 const char kEverEnabledForAnyProfile[] =
     "brave.brave_ads.ever_enabled_any_profile";

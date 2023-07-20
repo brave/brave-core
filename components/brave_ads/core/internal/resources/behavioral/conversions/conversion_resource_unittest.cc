@@ -92,9 +92,9 @@ TEST_F(BraveAdsConversionResourceTest, LoadResourceWhenLocaleDidChange) {
 
 TEST_F(
     BraveAdsConversionResourceTest,
-    LoadResourceWhenLocaleDidChangeIfBravePrivateAdsAndBraveNewsAdsAreDisabled) {
+    LoadResourceWhenLocaleDidChangeIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableNotificationAds();
   DisableBraveNewsAds();
 
   // Act
@@ -130,9 +130,9 @@ TEST_F(
 
 TEST_F(
     BraveAdsConversionResourceTest,
-    LoadResourceWhenDidUpdateResourceComponentIfBravePrivateAdsAndBraveNewsAdsAreDisabled) {
+    LoadResourceWhenDidUpdateResourceComponentIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableBravePrivateAds();
+  DisableNotificationAds();
   DisableBraveNewsAds();
 
   // Act

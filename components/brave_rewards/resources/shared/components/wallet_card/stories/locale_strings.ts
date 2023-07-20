@@ -15,6 +15,7 @@ export const localeStrings = {
   walletEstimatedEarnings: 'Estimated earnings',
   walletEarningInfoText: 'This reflects your estimated earnings range for Brave Ads this month.',
   walletLogIntoYourAccount: 'Log in to your $1 account',
+  walletManageAds: 'Manage ads',
   walletMonthlyTips: 'Monthly Contributions',
   walletOneTimeTips: 'Contributions',
   walletPendingContributions: 'Pending contributions',
@@ -23,5 +24,5 @@ export const localeStrings = {
   walletUnverified: 'Connect',
   walletViewStatement: 'View statement',
   walletVerified: 'Connected',
-  walletBalanceTitle: 'Balance'
+  walletBalanceTitle: 'Balance',
 }
