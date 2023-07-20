@@ -5,7 +5,7 @@
     "profile": "brave-typical-win-v1.55.98",
     "extra-browser-args": [],
     "extra-benchmark-args": [],
-    "save-artifacts": false,
+    "save-artifacts": true,
   }],
   "benchmarks": [
     {
@@ -23,14 +23,6 @@
       "stories": [
         "load:chrome:blank",
         "load:media:youtube:2018",
-      ]
-    },
-    {
-      "name": "system_health.common_desktop",
-      "pageset-repeat": 10,
-      "stories": [
-        "load:chrome:blank",
-        "browse:news:hackernews:2020",
       ]
     },
     {
