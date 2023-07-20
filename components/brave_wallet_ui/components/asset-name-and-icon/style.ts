@@ -32,18 +32,16 @@ export const AssetName = styled.span`
   font-family: Poppins;
   font-size: 14px;
   font-style: normal;
-  font-weight: 700;
-  line-height: 20px;
-  letter-spacing: 0.28px;
+  font-weight: 600;
+  line-height: 24px;
 `
 
 export const AssetSymbol = styled.span`
-  color: ${leo.color.legacy.text2};
+  color: ${leo.color.text.secondary};
   font-family: Poppins;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
   line-height: 18px;
-  letter-spacing: 0.24px;
   text-transform: uppercase;
 `

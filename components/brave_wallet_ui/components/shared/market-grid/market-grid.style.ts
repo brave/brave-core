@@ -60,7 +60,7 @@ export const HeaderItem = styled.div<{
   font-style: normal;
   font-weight: 600;
   line-height: 18px;
-  color: ${leo.color.legacy.text3};
+  color: ${leo.color.text.tertiary};
   ${({ hideOnPanel }) =>
     hideOnPanel &&
     css`
@@ -156,8 +156,7 @@ export const TextWrapper = styled.div<{
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  letter-spacing: 0.14px;
-  color: ${leo.color.legacy.text2};
+  color: ${leo.color.text.primary};
 `
 
 export const ButtonsRow = styled.div`
