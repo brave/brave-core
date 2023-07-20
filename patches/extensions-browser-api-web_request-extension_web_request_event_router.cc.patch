@@ -1,0 +1,12 @@
+diff --git a/extensions/browser/api/web_request/extension_web_request_event_router.cc b/extensions/browser/api/web_request/extension_web_request_event_router.cc
+index 7a29adc72df19d359272bb37fa55d8b9b5cb9912..6eff2126c6a85481be86fcb3526eb224e5b20119 100644
+--- a/extensions/browser/api/web_request/extension_web_request_event_router.cc
++++ b/extensions/browser/api/web_request/extension_web_request_event_router.cc
+@@ -1168,6 +1168,7 @@ ExtensionWebRequestEventRouter::OnAuthRequired(
+     const net::AuthChallengeInfo& auth_info,
+     AuthCallback callback,
+     net::AuthCredentials* credentials) {
++  BRAVE_EXTENSION_WEB_REQUEST_EVENT_ROUTER_ON_AUTH_REQUIRED
+   // No browser_context means that this is for authentication challenges in the
+   // system context. Skip in that case. Also skip sensitive requests.
+   if (!browser_context ||
