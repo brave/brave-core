@@ -35,6 +35,10 @@ class BraveSessionTabHelper : public sessions::SessionTabHelper {
 
 }  // namespace brave
 
+// This is a way to redefine CreateForWebContents to call our custom create
+// method (above) without actually patching the upstream file. The upstream
+// code checks FromWebContents and exits before this is called, so this ternary
+// will only ever execute if the tab helper does not already exist.
 #define CreateForWebContents(CONTENTS, LOOKUP)                 \
   FromWebContents(CONTENTS)                                    \
       ? brave::BraveSessionTabHelper::Create(CONTENTS, LOOKUP) \
