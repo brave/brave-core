@@ -6,7 +6,7 @@
 #include "brave/components/request_otr/browser/request_otr_storage_tab_helper.h"
 #include "components/sessions/content/session_tab_helper.h"
 
-namespace brave {
+namespace {
 
 class BraveSessionTabHelper : public sessions::SessionTabHelper {
  public:
@@ -23,6 +23,12 @@ class BraveSessionTabHelper : public sessions::SessionTabHelper {
       }
     }
     sessions::SessionTabHelper::NavigationEntryCommitted(load_details);
+  }
+
+  static void Create(content::WebContents* contents, DelegateLookup lookup) {
+    contents->SetUserData(sessions::SessionTabHelper::kUserDataKey,
+                          base::WrapUnique(new BraveSessionTabHelper(
+                              contents, std::move(lookup))));
   }
 };
 
