@@ -17,8 +17,6 @@ import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TxService;
-import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
-import org.chromium.mojo.bindings.Callbacks;
 
 // Under development, some parts not tested so use with caution
 // A container for all the native services and APIs

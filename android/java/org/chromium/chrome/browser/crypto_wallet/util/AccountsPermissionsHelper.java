@@ -8,9 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.stream.Collectors;

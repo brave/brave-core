@@ -38,7 +38,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransaction;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
-import org.chromium.url.GURL;
 
 import java.util.ArrayList;
 import java.util.List;

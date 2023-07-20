@@ -93,7 +93,6 @@ import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 import org.chromium.ui.widget.Toast;
-import org.chromium.url.GURL;
 
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
