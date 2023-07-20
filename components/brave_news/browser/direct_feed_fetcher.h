@@ -22,6 +22,8 @@ namespace brave_news {
 
 constexpr std::size_t kMaxArticlesPerDirectFeedSource = 100;
 
+struct FeedData;
+
 struct DirectFeedError {
   std::string body_content;
 };
@@ -56,6 +58,11 @@ struct DirectFeedResponse {
 };
 
 using DownloadFeedCallback = base::OnceCallback<void(DirectFeedResponse)>;
+
+// Exposed for testing.
+void ConvertFeedDataToArticles(std::vector<mojom::ArticlePtr>& articles,
+                               FeedData data,
+                               const std::string& publisher_id);
 
 class DirectFeedFetcher {
  public:

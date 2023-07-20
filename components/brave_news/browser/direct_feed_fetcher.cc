@@ -95,30 +95,8 @@ void ParseFeedDataOffMainThread(const GURL& feed_url,
             DirectFeedResult result;
             result.id = publisher_id;
             result.title = (std::string)data.title;
-            for (auto entry : data.items) {
-              auto item = RustFeedItemToArticle(entry, result.id);
-              if (!item->data->url.SchemeIsHTTPOrHTTPS()) {
-                continue;
-              }
-
-              result.articles.emplace_back(std::move(item));
-
-              if (result.articles.size() >= kMaxArticlesPerDirectFeedSource) {
-                break;
-              }
-            }
-
-            // Add variety to score, same as brave feed aggregator
-            // Sort by score, ascending
-            std::sort(result.articles.begin(), result.articles.end(),
-                      [](mojom::ArticlePtr& a, mojom::ArticlePtr& b) {
-                        return (a.get()->data->score < b.get()->data->score);
-                      });
-            double variety = 2.0;
-            for (auto& article : result.articles) {
-              article->data->score = article->data->score * variety;
-              variety = variety * 2.0;
-            }
+            ConvertFeedDataToArticles(result.articles, std::move(data),
+                                      result.id);
             return result;
           },
           feed_url, std::move(publisher_id), std::move(body_content)),
@@ -126,6 +104,35 @@ void ParseFeedDataOffMainThread(const GURL& feed_url,
 }
 
 }  // namespace
+
+void ConvertFeedDataToArticles(std::vector<mojom::ArticlePtr>& articles,
+                               FeedData data,
+                               const std::string& publisher_id) {
+  for (auto entry : data.items) {
+    auto item = RustFeedItemToArticle(entry, publisher_id);
+    if (!item->data->url.SchemeIsHTTPOrHTTPS()) {
+      continue;
+    }
+
+    articles.emplace_back(std::move(item));
+
+    if (articles.size() >= kMaxArticlesPerDirectFeedSource) {
+      break;
+    }
+  }
+
+  // Add variety to score, same as brave feed aggregator
+  // Sort by score, ascending
+  std::sort(articles.begin(), articles.end(),
+            [](mojom::ArticlePtr& a, mojom::ArticlePtr& b) {
+              return (a.get()->data->score < b.get()->data->score);
+            });
+  double variety = 2.0;
+  for (auto& article : articles) {
+    article->data->score = article->data->score * variety;
+    variety = variety * 2.0;
+  }
+}
 
 DirectFeedResult::DirectFeedResult() = default;
 DirectFeedResult::~DirectFeedResult() = default;

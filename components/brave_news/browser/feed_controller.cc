@@ -6,9 +6,7 @@
 #include "brave/components/brave_news/browser/feed_controller.h"
 
 #include <algorithm>
-#include <cstddef>
 #include <iterator>
-#include <locale>
 #include <memory>
 #include <string>
 #include <unordered_set>
