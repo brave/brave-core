@@ -206,7 +206,8 @@ class BraveBrowserTypeImpl(BrowserType):
 
   def _DownloadDmgAndExtract(self, tag: BraveVersion, out_dir: str) -> str:
     assert sys.platform == 'darwin'
-    dmg_name = f'Brave-Browser-{self._channel}-{platform.machine()}.dmg'
+    mac_platform = 'arm64' if platform.processor() == 'arm' else 'x64'
+    dmg_name = f'Brave-Browser-{self._channel}-{mac_platform}.dmg'
     url = _GetBraveDownloadUrl(tag, dmg_name)
     logging.info('Downloading %s', url)
     f = urlopen(url)
