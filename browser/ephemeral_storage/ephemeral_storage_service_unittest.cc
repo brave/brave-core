@@ -124,7 +124,7 @@ TEST_F(EphemeralStorageServiceTest, EphemeralCleanup) {
     ScopedVerifyAndClearExpectations verify(mock_delegate_);
     ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
     service_->TLDEphemeralLifetimeDestroyed(ephemeral_domain,
-                                            storage_partition_config);
+                                            storage_partition_config, false);
     task_environment_.FastForwardBy(base::Seconds(10));
   }
 
@@ -137,7 +137,7 @@ TEST_F(EphemeralStorageServiceTest, EphemeralCleanup) {
     ScopedVerifyAndClearExpectations verify(mock_delegate_);
     ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
     service_->TLDEphemeralLifetimeDestroyed(ephemeral_domain,
-                                            storage_partition_config);
+                                            storage_partition_config, false);
     task_environment_.FastForwardBy(base::Seconds(20));
   }
 
@@ -180,7 +180,7 @@ TEST_F(EphemeralStorageServiceNoKeepAliveTest, ImmediateCleanup) {
     EXPECT_CALL(mock_observer_, OnCleanupTLDEphemeralArea(key));
     EXPECT_CALL(*mock_delegate_, CleanupTLDEphemeralArea(key));
     service_->TLDEphemeralLifetimeDestroyed(ephemeral_domain,
-                                            storage_partition_config);
+                                            storage_partition_config, false);
   }
 }
 
@@ -225,10 +225,6 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupFirstPartyStorage) {
     SCOPED_TRACE(testing::Message()
                  << test_case.shields_enabled << test_case.forget_first_party);
     host_content_settings_map()->SetContentSettingDefaultScope(
-        url, url, ContentSettingsType::BRAVE_SHIELDS,
-        test_case.shields_enabled ? CONTENT_SETTING_ALLOW
-                                  : CONTENT_SETTING_BLOCK);
-    host_content_settings_map()->SetContentSettingDefaultScope(
         url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
         test_case.forget_first_party ? CONTENT_SETTING_BLOCK
                                      : CONTENT_SETTING_ALLOW);
@@ -249,7 +245,8 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupFirstPartyStorage) {
                   CleanupFirstPartyStorageArea(ephemeral_domain))
           .Times(test_case.should_cleanup);
       service_->TLDEphemeralLifetimeDestroyed(ephemeral_domain,
-                                              storage_partition_config);
+                                              storage_partition_config,
+                                              !test_case.shields_enabled);
       EXPECT_EQ(profile_.GetPrefs()
                     ->GetList(kFirstPartyStorageOriginsToCleanup)
                     .size(),
@@ -285,7 +282,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnRestart) {
     ScopedVerifyAndClearExpectations verify(mock_delegate_);
     ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
     service_->TLDEphemeralLifetimeDestroyed(ephemeral_domain,
-                                            storage_partition_config);
+                                            storage_partition_config, false);
     EXPECT_EQ(
         profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
         1u);
@@ -335,7 +332,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
       0u);
 
   service_->TLDEphemeralLifetimeDestroyed(ephemeral_domain,
-                                          storage_partition_config);
+                                          storage_partition_config, false);
   EXPECT_EQ(
       profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
       1u);
@@ -388,7 +385,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, OffTheRecordSkipsPrefs) {
             0u);
 
   otr_service->TLDEphemeralLifetimeDestroyed(ephemeral_domain,
-                                             storage_partition_config);
+                                             storage_partition_config, false);
   EXPECT_EQ(otr_profile->GetPrefs()
                 ->GetList(kFirstPartyStorageOriginsToCleanup)
                 .size(),

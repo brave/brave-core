@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
@@ -54,6 +55,8 @@ class TLDEphemeralLifetime : public base::RefCounted<TLDEphemeralLifetime> {
     return storage_partition_config_;
   }
 
+  void SetShieldsStateOnHost(const std::string& host, bool enabled);
+
  private:
   friend class RefCounted<TLDEphemeralLifetime>;
   virtual ~TLDEphemeralLifetime();
@@ -63,6 +66,7 @@ class TLDEphemeralLifetime : public base::RefCounted<TLDEphemeralLifetime> {
   TLDEphemeralLifetimeKey key_;
   base::WeakPtr<EphemeralStorageService> ephemeral_storage_service_;
   const content::StoragePartitionConfig storage_partition_config_;
+  base::flat_map<std::string, bool> shields_state_on_hosts_;
 
   base::WeakPtrFactory<TLDEphemeralLifetime> weak_factory_{this};
 };
