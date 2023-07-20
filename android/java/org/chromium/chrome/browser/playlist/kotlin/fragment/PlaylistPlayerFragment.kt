@@ -36,30 +36,31 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.mediarouter.app.MediaRouteButton
 import androidx.recyclerview.widget.RecyclerView
 import org.chromium.chrome.browser.playlist.kotlin.PlaylistVideoService
-import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel
+import com.brave.playlist.PlaylistViewModel
 import org.chromium.chrome.R
-import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistItemAdapter
-import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
-import org.chromium.chrome.browser.playlist.kotlin.extension.afterMeasured
-import org.chromium.chrome.browser.playlist.kotlin.extension.dpToPx
-import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemClickListener
-import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
-import org.chromium.chrome.browser.playlist.kotlin.local_database.PlaylistRepository
-import org.chromium.chrome.browser.playlist.kotlin.model.*
+import com.brave.playlist.adapter.recyclerview.PlaylistItemAdapter
+import com.brave.playlist.enums.PlaylistOptionsEnum
+import com.brave.playlist.extension.afterMeasured
+import com.brave.playlist.extension.dpToPx
+import com.brave.playlist.listener.PlaylistItemClickListener
+import com.brave.playlist.listener.PlaylistItemOptionsListener
+import com.brave.playlist.local_database.PlaylistRepository
+import com.brave.playlist.model.*
+import androidx.lifecycle.ViewModelStoreOwner
 import com.brave.playlist.slidingpanel.BottomPanelLayout
-import org.chromium.chrome.browser.playlist.kotlin.util.ConnectionUtils
-import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.DEFAULT_PLAYLIST
-import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.PLAYER_ITEMS
-import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.PLAYLIST_MODEL
-import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.PLAYLIST_NAME
-import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.SELECTED_PLAYLIST_ITEM_ID
-import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.TAG
-import org.chromium.chrome.browser.playlist.kotlin.util.MediaUtils
-import org.chromium.chrome.browser.playlist.kotlin.util.MenuUtils
-import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils
-import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.rememberFilePlaybackPosition
-import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
-import org.chromium.chrome.browser.playlist.kotlin.view.PlaylistToolbar
+import com.brave.playlist.util.ConnectionUtils
+import com.brave.playlist.util.ConstantUtils.DEFAULT_PLAYLIST
+import com.brave.playlist.util.ConstantUtils.PLAYER_ITEMS
+import com.brave.playlist.util.ConstantUtils.PLAYLIST_MODEL
+import com.brave.playlist.util.ConstantUtils.PLAYLIST_NAME
+import com.brave.playlist.util.ConstantUtils.SELECTED_PLAYLIST_ITEM_ID
+import com.brave.playlist.util.ConstantUtils.TAG
+import com.brave.playlist.util.MediaUtils
+import com.brave.playlist.util.MenuUtils
+import com.brave.playlist.util.PlaylistPreferenceUtils
+import com.brave.playlist.util.PlaylistPreferenceUtils.rememberFilePlaybackPosition
+import com.brave.playlist.util.PlaylistUtils
+import com.brave.playlist.view.PlaylistToolbar
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -173,8 +174,8 @@ class PlaylistPlayerFragment : Fragment(R.layout.fragment_playlist_player), Play
         mPlaylistToolbar.visibility = View.VISIBLE
         val windowInsetsController =
             WindowCompat.getInsetsController(
-                activity!!.window,
-                activity!!.window.decorView
+                requireActivity().window,
+                requireActivity().window.decorView
             )
         windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
         mBackImg.visibility = View.GONE
@@ -208,8 +209,8 @@ class PlaylistPlayerFragment : Fragment(R.layout.fragment_playlist_player), Play
         mPlaylistToolbar.visibility = View.GONE
         val windowInsetsController =
             WindowCompat.getInsetsController(
-                activity!!.window,
-                activity!!.window.decorView
+                requireActivity().window,
+                requireActivity().window.decorView
             )
         windowInsetsController.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
@@ -258,10 +259,7 @@ class PlaylistPlayerFragment : Fragment(R.layout.fragment_playlist_player), Play
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mPlaylistViewModel = ViewModelProvider(
-                this,
-                ViewModelProvider.NewInstanceFactory()
-            )[PlaylistViewModel::class.java]
+        mPlaylistViewModel = ViewModelProvider(requireActivity() as ViewModelStoreOwner)[PlaylistViewModel::class.java]
 
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
 

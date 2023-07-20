@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.playlist;
 import static com.google.android.exoplayer2.upstream.HttpUtil.buildRangeRequestHeader;
 import static com.google.android.exoplayer2.util.Assertions.checkNotNull;
 import static com.google.android.exoplayer2.util.Util.castNonNull;
+
 import static java.lang.Math.min;
 
 import android.net.Uri;
@@ -40,7 +41,6 @@ import java.util.List;
 import java.util.Map;
 
 public class BraveChromiumHttpDataSource implements HttpDataSource {
-
     /**
      * The default connection timeout, in milliseconds.
      */
@@ -71,13 +71,10 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
     private long bytesToRead;
     private long bytesRead;
 
-    private BraveChromiumHttpDataSource(
-            @Nullable String userAgent,
-            int connectTimeoutMillis,
-            int readTimeoutMillis,
-            @Nullable RequestProperties defaultRequestProperties,
+    private BraveChromiumHttpDataSource(@Nullable String userAgent, int connectTimeoutMillis,
+            int readTimeoutMillis, @Nullable RequestProperties defaultRequestProperties,
             @Nullable Predicate<String> contentTypePredicate) {
-//        super(/* isNetwork= */ true);
+        //        super(/* isNetwork= */ true);
         this.userAgent = userAgent;
         this.connectTimeoutMillis = connectTimeoutMillis;
         this.readTimeoutMillis = readTimeoutMillis;
@@ -111,14 +108,15 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
                     return;
                 }
             } else if (bytesRemaining <= MAX_BYTES_TO_DRAIN) {
-                // There isn't much data left. Prefer to allow it to drain, which may allow the socket to be
-                // re-used.
+                // There isn't much data left. Prefer to allow it to drain, which may allow the
+                // socket to be re-used.
                 return;
             }
             String className = inputStream.getClass().getName();
-            if ("com.android.okhttp.internal.http.HttpTransport$ChunkedInputStream".equals(className)
+            if ("com.android.okhttp.internal.http.HttpTransport$ChunkedInputStream".equals(
+                        className)
                     || "com.android.okhttp.internal.http.HttpTransport$FixedLengthInputStream"
-                    .equals(className)) {
+                               .equals(className)) {
                 Class<?> superclass = inputStream.getClass().getSuperclass();
                 Method unexpectedEndOfInput =
                         checkNotNull(superclass).getDeclaredMethod("unexpectedEndOfInput");
@@ -126,14 +124,15 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
                 unexpectedEndOfInput.invoke(inputStream);
             }
         } catch (Exception e) {
-            // If an IOException then the connection didn't ever have an input stream, or it was closed
-            // already. If another type of exception then something went wrong, most likely the device
-            // isn't using okhttp.
+            // If an IOException then the connection didn't ever have an input stream, or it was
+            // closed already. If another type of exception then something went wrong, most likely
+            // the device isn't using okhttp.
         }
     }
 
     /**
-     * @deprecated Use {@link BraveChromiumHttpDataSource.Factory#setContentTypePredicate(Predicate)}
+     * @deprecated Use {@link
+     *         BraveChromiumHttpDataSource.Factory#setContentTypePredicate(Predicate)}
      * instead.
      */
     @Deprecated
@@ -179,9 +178,7 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
     }
 
     @Override
-    public void addTransferListener(TransferListener transferListener) {
-
-    }
+    public void addTransferListener(TransferListener transferListener) {}
 
     /**
      * Opens the source to read the specified data.
@@ -192,7 +189,7 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
         Log.e("NTP", "open : dataspec : " + dataSpec.toString());
         bytesRead = 0;
         bytesToRead = 0;
-//        transferInitializing(dataSpec);
+        //        transferInitializing(dataSpec);
 
         String responseMessage;
         HttpURLConnection connection;
@@ -211,16 +208,17 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
         if (responseCode < 200 || responseCode > 299) {
             Map<String, List<String>> headers = connection.getHeaderFields();
             if (responseCode == 416) {
-                long documentSize =
-                        HttpUtil.getDocumentSize(connection.getHeaderField(HttpHeaders.CONTENT_RANGE));
+                long documentSize = HttpUtil.getDocumentSize(
+                        connection.getHeaderField(HttpHeaders.CONTENT_RANGE));
                 if (dataSpec.position == documentSize) {
                     opened = true;
-//                    transferStarted(dataSpec);
+                    //                    transferStarted(dataSpec);
                     return dataSpec.length != C.LENGTH_UNSET ? dataSpec.length : 0;
                 }
             }
 
-            @Nullable InputStream errorStream = connection.getErrorStream();
+            @Nullable
+            InputStream errorStream = connection.getErrorStream();
             byte[] errorResponseBody;
             try {
                 errorResponseBody =
@@ -230,10 +228,9 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
             }
             closeConnectionQuietly();
             @Nullable
-            IOException cause =
-                    responseCode == 416
-                            ? new DataSourceException(PlaybackException.ERROR_CODE_IO_READ_POSITION_OUT_OF_RANGE)
-                            : null;
+            IOException cause = responseCode == 416 ? new DataSourceException(
+                                        PlaybackException.ERROR_CODE_IO_READ_POSITION_OUT_OF_RANGE)
+                                                    : null;
             throw new InvalidResponseCodeException(
                     responseCode, responseMessage, cause, headers, dataSpec, errorResponseBody);
         }
@@ -249,26 +246,21 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
             bytesToRead = dataSpec.length;
         } else {
             long contentLength =
-                    HttpUtil.getContentLength(
-                            connection.getHeaderField(HttpHeaders.CONTENT_LENGTH),
+                    HttpUtil.getContentLength(connection.getHeaderField(HttpHeaders.CONTENT_LENGTH),
                             connection.getHeaderField(HttpHeaders.CONTENT_RANGE));
-            bytesToRead =
-                    (contentLength);
+            bytesToRead = (contentLength);
         }
 
         try {
             inputStream = connection.getInputStream();
         } catch (IOException e) {
             closeConnectionQuietly();
-            throw new HttpDataSourceException(
-                    e,
-                    dataSpec,
-                    PlaybackException.ERROR_CODE_IO_UNSPECIFIED,
-                    HttpDataSourceException.TYPE_OPEN);
+            throw new HttpDataSourceException(e, dataSpec,
+                    PlaybackException.ERROR_CODE_IO_UNSPECIFIED, HttpDataSourceException.TYPE_OPEN);
         }
 
         opened = true;
-//        transferStarted(dataSpec);
+        //        transferStarted(dataSpec);
 
         return bytesToRead;
     }
@@ -286,7 +278,8 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
     @Override
     public void close() throws HttpDataSourceException {
         try {
-            @Nullable InputStream inputStream = this.inputStream;
+            @Nullable
+            InputStream inputStream = this.inputStream;
             if (inputStream != null) {
                 long bytesRemaining =
                         bytesToRead == C.LENGTH_UNSET ? C.LENGTH_UNSET : bytesToRead - bytesRead;
@@ -294,9 +287,7 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
-                    throw new HttpDataSourceException(
-                            e,
-                            castNonNull(dataSpec),
+                    throw new HttpDataSourceException(e, castNonNull(dataSpec),
                             PlaybackException.ERROR_CODE_IO_UNSPECIFIED,
                             HttpDataSourceException.TYPE_CLOSE);
                 }
@@ -306,7 +297,7 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
             closeConnectionQuietly();
             if (opened) {
                 opened = false;
-//                transferEnded();
+                //                transferEnded();
             }
         }
     }
@@ -316,17 +307,14 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
      */
     private HttpURLConnection makeConnection(DataSpec dataSpec) throws IOException {
         URL url = new URL(dataSpec.uri.toString());
-        @DataSpec.HttpMethod int httpMethod = dataSpec.httpMethod;
-        @Nullable byte[] httpBody = dataSpec.httpBody;
+        @DataSpec.HttpMethod
+        int httpMethod = dataSpec.httpMethod;
+        @Nullable
+        byte[] httpBody = dataSpec.httpBody;
         long position = dataSpec.position;
         long length = dataSpec.length;
         return makeConnection(
-                url,
-                httpMethod,
-                httpBody,
-                position,
-                length,
-                dataSpec.httpRequestHeaders);
+                url, httpMethod, httpBody, position, length, dataSpec.httpRequestHeaders);
     }
 
     /**
@@ -339,14 +327,9 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
      * @param length            The length of the requested data, or {@link C#LENGTH_UNSET}.
      * @param requestParameters parameters (HTTP headers) to include in request.
      */
-    private HttpURLConnection makeConnection(
-            URL url,
-            @DataSpec.HttpMethod int httpMethod,
-            @Nullable byte[] httpBody,
-            long position,
-            long length,
-            Map<String, String> requestParameters)
-            throws IOException {
+    private HttpURLConnection makeConnection(URL url, @DataSpec.HttpMethod int httpMethod,
+            @Nullable byte[] httpBody, long position, long length,
+            Map<String, String> requestParameters) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setConnectTimeout(connectTimeoutMillis);
         connection.setReadTimeout(readTimeoutMillis);
@@ -362,7 +345,8 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
             connection.setRequestProperty(property.getKey(), property.getValue());
         }
 
-        @Nullable String rangeHeader = buildRangeRequestHeader(position, length);
+        @Nullable
+        String rangeHeader = buildRangeRequestHeader(position, length);
         if (rangeHeader != null) {
             connection.setRequestProperty(HttpHeaders.RANGE, rangeHeader);
         }
@@ -385,11 +369,12 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
     }
 
     /**
-     * Reads up to {@code length} bytes of data and stores them into {@code buffer}, starting at index
+     * Reads up to {@code length} bytes of data and stores them into {@code buffer}, starting at
+     * index
      * {@code offset}.
      *
-     * <p>This method blocks until at least one byte of data can be read, the end of the opened range
-     * is detected, or an exception is thrown.
+     * <p>This method blocks until at least one byte of data can be read, the end of the opened
+     * range is detected, or an exception is thrown.
      *
      * @param buffer     The buffer into which the read data should be stored.
      * @param offset     The start offset into {@code buffer} at which data should be written.
@@ -418,7 +403,7 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
         }
 
         bytesRead += read;
-//        bytesTransferred(read);
+        //        bytesTransferred(read);
         return read;
     }
 
@@ -440,7 +425,6 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
      * {@link DataSource.Factory} for {@link BraveChromiumHttpDataSource} instances.
      */
     public static final class Factory implements HttpDataSource.Factory {
-
         private final RequestProperties defaultRequestProperties;
         private final int connectTimeoutMs;
         private final int readTimeoutMs;
@@ -463,7 +447,8 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
         }
 
         @Override
-        public BraveChromiumHttpDataSource.Factory setDefaultRequestProperties(Map<String, String> defaultRequestProperties) {
+        public BraveChromiumHttpDataSource.Factory setDefaultRequestProperties(
+                Map<String, String> defaultRequestProperties) {
             this.defaultRequestProperties.clearAndSet(defaultRequestProperties);
             return this;
         }
@@ -471,12 +456,8 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
         @Override
         public BraveChromiumHttpDataSource createDataSource() {
             BraveChromiumHttpDataSource dataSource =
-                    new BraveChromiumHttpDataSource(
-                            userAgent,
-                            connectTimeoutMs,
-                            readTimeoutMs,
-                            defaultRequestProperties,
-                            contentTypePredicate);
+                    new BraveChromiumHttpDataSource(userAgent, connectTimeoutMs, readTimeoutMs,
+                            defaultRequestProperties, contentTypePredicate);
             if (transferListener != null) {
                 dataSource.addTransferListener(transferListener);
             }
@@ -484,3 +465,4 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
         }
     }
 }
+ 

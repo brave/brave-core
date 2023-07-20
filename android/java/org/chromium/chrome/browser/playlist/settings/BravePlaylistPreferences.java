@@ -10,7 +10,7 @@ import android.os.Handler;
 
 import androidx.preference.Preference;
 
-import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils;
+import com.brave.playlist.util.PlaylistPreferenceUtils;
 
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;

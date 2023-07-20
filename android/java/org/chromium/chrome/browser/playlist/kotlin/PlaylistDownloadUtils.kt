@@ -10,8 +10,8 @@ package org.chromium.chrome.browser.playlist.kotlin
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
-import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
+import com.brave.playlist.model.PlaylistItemModel
+import com.brave.playlist.util.ConstantUtils
 import org.chromium.chrome.browser.playlist.BraveChromiumHttpDataSource
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.database.DatabaseProvider

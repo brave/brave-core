@@ -9,7 +9,7 @@ package org.chromium.chrome.browser.playlist.kotlin
 
 import android.app.Notification
 import android.content.Context
-import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.PLAYLIST_CHANNEL_ID
+import com.brave.playlist.util.ConstantUtils.PLAYLIST_CHANNEL_ID
 import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.android.exoplayer2.offline.DownloadService

@@ -30,34 +30,36 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import org.chromium.chrome.browser.playlist.kotlin.PlaylistDownloadUtils
 import org.chromium.chrome.browser.playlist.kotlin.PlaylistVideoService
-import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel
+import com.brave.playlist.PlaylistViewModel
 import org.chromium.chrome.R
-import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistItemAdapter
-import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
-import org.chromium.chrome.browser.playlist.kotlin.extension.afterMeasured
-import org.chromium.chrome.browser.playlist.kotlin.listener.ItemInteractionListener
-import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemClickListener
-import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
-import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener
-import org.chromium.chrome.browser.playlist.kotlin.listener.StartDragListener
-import org.chromium.chrome.browser.playlist.kotlin.model.MoveOrCopyModel
-import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
-import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemOptionModel
-import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
-import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOptionsModel
-import org.chromium.chrome.browser.playlist.kotlin.util.ConnectionUtils
-import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.CURRENT_PLAYING_ITEM_ID
-import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.DEFAULT_PLAYLIST
-import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.TAG
-import org.chromium.chrome.browser.playlist.kotlin.util.MediaUtils
-import org.chromium.chrome.browser.playlist.kotlin.util.MenuUtils
-import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistItemGestureHelper
-import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils
-import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.getLatestPlaylistItem
-import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.recentlyPlayedPlaylist
-import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.rememberListPlaybackPosition
-import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
-import org.chromium.chrome.browser.playlist.kotlin.view.PlaylistToolbar
+import com.brave.playlist.adapter.recyclerview.PlaylistItemAdapter
+import com.brave.playlist.enums.PlaylistOptionsEnum
+import com.brave.playlist.extension.afterMeasured
+import com.brave.playlist.listener.ItemInteractionListener
+import com.brave.playlist.listener.PlaylistItemClickListener
+import com.brave.playlist.listener.PlaylistItemOptionsListener
+import com.brave.playlist.listener.PlaylistOptionsListener
+import com.brave.playlist.listener.StartDragListener
+import com.brave.playlist.fragment.NewPlaylistFragment
+import com.brave.playlist.model.MoveOrCopyModel
+import com.brave.playlist.model.PlaylistItemModel
+import com.brave.playlist.model.PlaylistItemOptionModel
+import com.brave.playlist.model.PlaylistModel
+import com.brave.playlist.model.PlaylistOptionsModel
+import com.brave.playlist.util.ConnectionUtils
+import com.brave.playlist.util.ConstantUtils.CURRENT_PLAYING_ITEM_ID
+import com.brave.playlist.util.ConstantUtils.DEFAULT_PLAYLIST
+import com.brave.playlist.util.ConstantUtils.TAG
+import com.brave.playlist.util.MediaUtils
+import com.brave.playlist.util.MenuUtils
+import com.brave.playlist.util.PlaylistItemGestureHelper
+import com.brave.playlist.util.PlaylistPreferenceUtils
+import com.brave.playlist.util.PlaylistPreferenceUtils.getLatestPlaylistItem
+import com.brave.playlist.util.PlaylistPreferenceUtils.recentlyPlayedPlaylist
+import com.brave.playlist.util.PlaylistPreferenceUtils.rememberListPlaybackPosition
+import com.brave.playlist.util.PlaylistUtils
+import com.brave.playlist.view.PlaylistToolbar
+import androidx.lifecycle.ViewModelStoreOwner
 import com.bumptech.glide.Glide
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -93,10 +95,7 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mPlaylistViewModel = ViewModelProvider(
-                this,
-                ViewModelProvider.NewInstanceFactory()
-            )[PlaylistViewModel::class.java]
+        mPlaylistViewModel = ViewModelProvider(requireActivity() as ViewModelStoreOwner)[PlaylistViewModel::class.java]
 
         mEmptyView = view.findViewById(R.id.empty_view)
         mPlaylistView = view.findViewById(R.id.playlist_view)
@@ -181,7 +180,7 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
             mPlaylistModel = playlistData
 
             view.findViewById<Button>(R.id.btBrowseForMedia).setOnClickListener {
-                activity!!.finish()
+                activity?.finish()
             }
 
             playlistData.items.forEach { playlistItemModel ->
