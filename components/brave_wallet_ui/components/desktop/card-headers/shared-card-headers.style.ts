@@ -73,3 +73,9 @@ export const SendButton = styled(WalletButton)`
   color: ${leo.color.white};
   border: none;
 `
+
+export const HorizontalDivider = styled.div`
+  width: 1px;
+  height: 48px;
+  background-color: ${leo.color.divider.subtle};
+`

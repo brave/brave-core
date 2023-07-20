@@ -291,6 +291,7 @@ provideStrings({
   braveWalletConnectedHardwareWallets: 'Connected hardware wallets',
   braveWalletAccountsAssets: 'Assets',
   braveWalletAccountsEditVisibleAssets: 'Visible assets',
+  braveWalletAccountBalance: 'Account balance',
 
   // Add Account Options
   braveWalletCreateAccount: 'Create $1 account',

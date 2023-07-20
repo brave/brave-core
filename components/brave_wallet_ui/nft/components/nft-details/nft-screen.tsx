@@ -7,7 +7,12 @@ import { useHistory } from 'react-router'
 import { useDispatch } from 'react-redux'
 
 // types
-import { BraveWallet, WalletAccountType, WalletRoutes } from '../../../constants/types'
+import {
+  BraveWallet,
+  WalletAccountType,
+  WalletRoutes,
+  AccountPageTabs
+} from '../../../constants/types'
 
 // hooks
 import useExplorer from '../../../common/hooks/explorer'
@@ -207,7 +212,11 @@ export const NftScreen = (props: Props) => {
   }, [selectedAsset])
 
   const onClickViewAccount = React.useCallback((account: WalletAccountType) => {
-    history.push(`${WalletRoutes.Accounts}/${account.address}`)
+    history.push(
+      `${WalletRoutes.Accounts //
+      }/${account.address //
+      }/${AccountPageTabs.AccountAssetsSub}`
+    )
   }, [])
 
   // effects

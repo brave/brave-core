@@ -4,7 +4,12 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { Redirect, useParams, useLocation } from 'react-router'
+import {
+  Redirect,
+  useParams,
+  useLocation,
+  useHistory
+} from 'react-router'
 import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
@@ -17,11 +22,11 @@ import {
   BraveWallet,
   CoinTypesMap,
   WalletRoutes,
-  AccountButtonOptionsObjectType
+  AccountModalTypes,
+  AccountPageTabs
 } from '../../../../constants/types'
 
 // utils
-import { reduceAddress } from '../../../../utils/reduce-address'
 import { getLocale } from '../../../../../common/locale'
 import { sortTransactionByDate } from '../../../../utils/tx-utils'
 import { getBalance } from '../../../../utils/balance-utils'
@@ -36,33 +41,65 @@ import { getPriceIdForToken } from '../../../../utils/api-utils'
 import {
   selectAllUserAssetsFromQueryResult
 } from '../../../../common/slices/entities/blockchain-token.entity'
+import {
+  getAssetIdKey
+} from '../../../../utils/asset-utils'
 
 // Styled Components
 import {
-  StyledWrapper,
-  SubDivider,
-  WalletInfoRow,
-  WalletAddress,
-  WalletName,
-  AccountCircle,
-  WalletInfoLeftSide,
-  SubviewSectionTitle,
-  TransactionPlaceholderContainer,
-  AccountButtonsRow
+  ControlsWrapper,
+  AssetsWrapper,
+  NFTsWrapper,
+  TransactionsWrapper
 } from './style'
-import { TransactionPlaceholderText, Spacer } from '../portfolio/style'
-import { ScrollableColumn, Column } from '../../../shared/style'
+import {
+  Column,
+  VerticalSpace,
+  Text
+} from '../../../shared/style'
+import {
+  EmptyTransactionsIcon
+} from '../portfolio/style'
+import {
+  NftGrid
+} from '../nfts/components/nfts.styles'
 
 // Components
-import { PortfolioTransactionItem } from '../../portfolio-transaction-item/index'
-import { PortfolioAssetItemLoadingSkeleton } from '../../portfolio-asset-item/portfolio-asset-item-loading-skeleton'
-import { PortfolioAssetItem } from '../../portfolio-asset-item/index'
-import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
-import { AccountListItemOptionButton } from '../../account-list-item/account-list-item-option-button'
-import { SellAssetModal } from '../../popup-modals/sell-asset-modal/sell-asset-modal'
+import {
+  PortfolioTransactionItem
+} from '../../portfolio-transaction-item/index'
+import {
+  PortfolioAssetItemLoadingSkeleton
+} from '../../portfolio-asset-item/portfolio-asset-item-loading-skeleton'
+import {
+  PortfolioAssetItem
+} from '../../portfolio-asset-item/index'
+import {
+  SellAssetModal
+} from '../../popup-modals/sell-asset-modal/sell-asset-modal'
+import {
+  AccountDetailsHeader
+} from '../../card-headers/account-details-header'
+import {
+  SegmentedControl
+} from '../../../shared/segmented-control/segmented-control'
+import {
+  NFTGridViewItem
+} from '../portfolio/components/nft-grid-view/nft-grid-view-item'
+import {
+  NftsEmptyState
+} from '../nfts/components/nfts-empty-state/nfts-empty-state'
+import {
+  AddOrEditNftModal
+} from '../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
+import {
+  WalletPageWrapper
+} from '../../wallet-page-wrapper/wallet-page-wrapper'
 
 // options
-import { AccountButtonOptions } from '../../../../options/account-list-button-options'
+import {
+  AccountDetailsOptions
+} from '../../../../options/nav-options'
 
 // Hooks
 import { useScrollIntoView } from '../../../../common/hooks/use-scroll-into-view'
@@ -76,15 +113,16 @@ import {
   querySubscriptionOptions60s
 } from '../../../../common/slices/constants'
 import { useMultiChainSellAssets } from '../../../../common/hooks/use-multi-chain-sell-assets'
-import { useAccountOrb } from '../../../../common/hooks/use-orb'
 
 // Actions
 import { AccountsTabActions } from '../../../../page/reducers/accounts-tab-reducer'
 
 export const Account = () => {
   // routing
-  const { id: accountId } = useParams<{ id: string }>()
+  const { accountId, selectedTab } =
+    useParams<{ accountId: string, selectedTab?: string }>()
   const { hash: transactionID } = useLocation()
+  const history = useHistory()
 
   // redux
   const dispatch = useDispatch()
@@ -120,6 +158,7 @@ export const Account = () => {
 
   // state
   const [showSellModal, setShowSellModal] = React.useState<boolean>(false)
+  const [showAddNftModal, setShowAddNftModal] = React.useState<boolean>(false)
 
   // custom hooks
   const scrollIntoView = useScrollIntoView()
@@ -137,8 +176,6 @@ export const Account = () => {
   } = useMultiChainSellAssets()
 
   // memos
-  const orb = useAccountOrb(selectedAccount)
-
   const transactionList = React.useMemo(() => {
     return sortTransactionByDate(unsortedTransactionList, 'descending')
   }, [unsortedTransactionList])
@@ -204,20 +241,18 @@ export const Account = () => {
     querySubscriptionOptions60s
   )
 
-  const buttonOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
-    const filteredButtonOptions = AccountButtonOptions.filter((option: AccountButtonOptionsObjectType) => option.id !== 'details')
-    // We are not able to remove a Derviced account so we filter out this option.
-    if (selectedAccount?.accountId.kind === BraveWallet.AccountKind.kDerived) {
-      return filteredButtonOptions.filter((option: AccountButtonOptionsObjectType) => option.id !== 'remove')
-    }
-    // We are not able to fetch Private Keys for a Hardware account so we filter out this option.
-    if (selectedAccount?.accountId.kind === BraveWallet.AccountKind.kHardware) {
-      return filteredButtonOptions.filter((option: AccountButtonOptionsObjectType) => option.id !== 'privateKey')
-    }
-    return filteredButtonOptions
-  }, [selectedAccount])
+  const routeOptions = React.useMemo(() => {
+    return AccountDetailsOptions.map((option) => {
+      return {
+        ...option,
+        route: `${WalletRoutes.Accounts //
+          }/${accountId //
+          }/${option.route}` as WalletRoutes
+      }
+    })
+  }, [accountId])
 
-  // methods
+  // Methods
   const onRemoveAccount = React.useCallback(() => {
     if (selectedAccount) {
       dispatch(
@@ -229,15 +264,19 @@ export const Account = () => {
     }
   }, [selectedAccount, dispatch])
 
-  const onClickButtonOption = React.useCallback((option: AccountButtonOptionsObjectType) => () => {
-    if (option.id === 'remove') {
-      onRemoveAccount()
-      return
-    }
-    dispatch(AccountsTabActions.setShowAccountModal(true))
-    dispatch(AccountsTabActions.setAccountModalType(option.id))
-    dispatch(AccountsTabActions.setSelectedAccount(selectedAccount))
-  }, [onRemoveAccount, dispatch])
+  const onClickMenuOption = React.useCallback(
+    (option: AccountModalTypes) => {
+      if (option === 'remove') {
+        onRemoveAccount()
+        return
+      }
+      dispatch(AccountsTabActions.setShowAccountModal(true))
+      dispatch(AccountsTabActions.setAccountModalType(option))
+      dispatch(AccountsTabActions.setSelectedAccount(selectedAccount))
+    }, [
+    onRemoveAccount,
+    selectedAccount
+  ])
 
   const checkIsTransactionFocused = React.useCallback((id: string): boolean => {
     if (transactionID !== '') {
@@ -263,6 +302,32 @@ export const Account = () => {
     }
   }, [selectedSellAsset, selectedAccount?.address, openSellAssetLink])
 
+  const onSelectAsset = React.useCallback(
+    (asset: BraveWallet.BlockchainToken) => {
+      if (asset.contractAddress === '') {
+        history.push(
+          `${WalletRoutes.PortfolioAssets //
+          }/${asset.chainId //
+          }/${asset.symbol}`
+        )
+        return
+      }
+      if (asset.isErc721 || asset.isNft || asset.isErc1155) {
+        history.push(
+          `${WalletRoutes.PortfolioNFTs //
+          }/${asset.chainId //
+          }/${asset.contractAddress //
+          }/${asset.tokenId}`
+        )
+        return
+      }
+      history.push(
+        `${WalletRoutes.PortfolioAssets //
+        }/${asset.chainId //
+        }/${asset.contractAddress}`
+      )
+    }, [])
+
   // Effects
   React.useEffect(() => {
     if (allSellAssetOptions.length === 0) {
@@ -275,119 +340,139 @@ export const Account = () => {
     return <Redirect to={WalletRoutes.Accounts} />
   }
 
+  if (transactionID && !selectedTab) {
+    return <Redirect to={
+      `${WalletRoutes.Accounts //
+      }/${accountId //
+      }/${AccountPageTabs.AccountTransactionsSub //
+      }${transactionID}`
+    }
+    />
+  }
+
   // render
   return (
-    <StyledWrapper>
-      <WalletInfoLeftSide>
-        <AccountCircle orb={orb} />
-        <WalletName>{selectedAccount.name}</WalletName>
-        <CopyTooltip text={selectedAccount.address}>
-          <WalletAddress>{reduceAddress(selectedAccount.address)}</WalletAddress>
-        </CopyTooltip>
-      </WalletInfoLeftSide>
+    <WalletPageWrapper
+      wrapContentInBox
+      hideDivider={true}
+      noCardPadding={true}
+      cardHeader={
+        <AccountDetailsHeader
+          account={selectedAccount}
+          onClickMenuOption={onClickMenuOption}
+        />
+      }
+    >
+      <ControlsWrapper
+        fullWidth={true}
+      >
+        <SegmentedControl
+          navOptions={routeOptions}
+        />
+      </ControlsWrapper>
 
-      <WalletInfoRow>
-        <AccountButtonsRow>
-          {buttonOptions.map((option) =>
-            <AccountListItemOptionButton
-              key={option.id}
-              option={option}
-              onClick={onClickButtonOption(option)}
+      {selectedTab === AccountPageTabs.AccountAssetsSub && (
+        <AssetsWrapper
+          fullWidth={true}
+        >
+          {fungibleTokens.map((asset) =>
+            <PortfolioAssetItem
+              key={getAssetIdKey(asset)}
+              action={() => onSelectAsset(asset)}
+              assetBalance={getBalance(selectedAccount, asset)}
+              token={asset}
+              isAccountDetails={true}
+              showSellModal={() => onClickShowSellModal(asset)}
+              isSellSupported={checkIsAssetSellSupported(asset)}
+              spotPrice={
+                spotPriceRegistry && !isLoadingSpotPrices
+                  ? getTokenPriceAmountFromRegistry(spotPriceRegistry, asset)
+                    .format()
+                  : ''
+              }
             />
           )}
-        </AccountButtonsRow>
-      </WalletInfoRow>
+          {!assetAutoDiscoveryCompleted &&
+            <PortfolioAssetItemLoadingSkeleton />
+          }
+        </AssetsWrapper>
+      )}
 
-      <Spacer />
-      <Spacer />
+      {selectedTab === AccountPageTabs.AccountNFTsSub && (
+        <NFTsWrapper
+          fullWidth={true}
+        >
+          {nonFungibleTokens?.length !== 0 ? (
+            <NftGrid>
+              {nonFungibleTokens?.map((nft) =>
+                <NFTGridViewItem
+                  isHidden={false}
+                  key={getAssetIdKey(nft)}
+                  token={nft}
+                  onSelectAsset={() => onSelectAsset(nft)}
+                />
+              )}
+            </NftGrid>
+          ) : (
+            <NftsEmptyState
+              onImportNft={() => setShowAddNftModal(true)}
+            />
+          )}
+        </NFTsWrapper>
+      )}
 
-      <ScrollableColumn>
-        <Column fullWidth={true} alignItems='flex-start'>
-          <SubviewSectionTitle>
-            {getLocale('braveWalletAccountsAssets')}
-          </SubviewSectionTitle>
-          <SubDivider />
-          <Spacer />
-        </Column>
-
-        {fungibleTokens.map((item) =>
-          <PortfolioAssetItem
-            key={`${item.contractAddress}-${item.symbol}-${item.chainId}`}
-            assetBalance={getBalance(selectedAccount, item)}
-            token={item}
-            isAccountDetails={true}
-            showSellModal={() => onClickShowSellModal(item)}
-            isSellSupported={checkIsAssetSellSupported(item)}
-            spotPrice={
-              spotPriceRegistry && !isLoadingSpotPrices
-                ? getTokenPriceAmountFromRegistry(spotPriceRegistry, item)
-                  .format()
-                : ''
-            }
-          />
-        )}
-
-        {!assetAutoDiscoveryCompleted &&
-          <PortfolioAssetItemLoadingSkeleton />
-        }
-
-        <Spacer />
-
-        {nonFungibleTokens?.length !== 0 &&
-          <>
-            <Column fullWidth={true} alignItems='flex-start'>
-              <Spacer />
-              <SubviewSectionTitle>
-                {getLocale('braveWalletTopNavNFTS')}
-              </SubviewSectionTitle>
-              <SubDivider />
+      {selectedTab === AccountPageTabs.AccountTransactionsSub && (
+        <>
+          {transactionList.length !== 0 ? (
+            <TransactionsWrapper
+              fullWidth={true}
+            >
+              {transactionList.map((transaction) =>
+                <PortfolioTransactionItem
+                  key={transaction?.id}
+                  transaction={transaction}
+                  displayAccountName={false}
+                  ref={(ref) => handleScrollIntoView(transaction.id, ref)}
+                  isFocused={checkIsTransactionFocused(transaction.id)}
+                />
+              )}
+            </TransactionsWrapper>
+          ) : (
+            <Column
+              alignItems='center'
+              justifyContent='center'
+              fullHeight={true}
+            >
+              <EmptyTransactionsIcon />
+              <Text
+                textColor='text01'
+                textSize='16px'
+                isBold={true}
+              >
+                {getLocale('braveWalletNoTransactionsYet')}
+              </Text>
+              <VerticalSpace space='10px' />
+              <Text
+                textSize='14px'
+                textColor='text03'
+                isBold={false}
+              >
+                {getLocale('braveWalletNoTransactionsYetDescription')}
+              </Text>
             </Column>
-            {nonFungibleTokens?.map((item) =>
-              <PortfolioAssetItem
-                key={
-                  `${item.contractAddress}-
-                   ${item.symbol}-
-                   ${item.chainId}-
-                   ${item.tokenId}
-                  `
-                }
-                assetBalance={getBalance(selectedAccount, item)}
-                token={item}
-                spotPrice={''}
-              />
-            )}
-            <Spacer />
-          </>
-        }
+          )}
+        </>
+      )}
 
-        <Column fullWidth={true} alignItems='flex-start'>
-          <Spacer />
-          <SubviewSectionTitle>
-            {getLocale('braveWalletTransactions')}
-          </SubviewSectionTitle>
-          <SubDivider />
-        </Column>
+      {
+        showAddNftModal && (
+          <AddOrEditNftModal
+            onClose={() => setShowAddNftModal(false)}
+            onHideForm={() => setShowAddNftModal(false)}
+          />
+        )
+      }
 
-        {transactionList.length !== 0 ? (
-          <>
-            {transactionList.map((transaction) =>
-              <PortfolioTransactionItem
-                key={transaction?.id}
-                transaction={transaction}
-                displayAccountName={false}
-                ref={(ref) => handleScrollIntoView(transaction.id, ref)}
-                isFocused={checkIsTransactionFocused(transaction.id)}
-              />
-            )}
-          </>
-        ) : (
-          <TransactionPlaceholderContainer>
-            <TransactionPlaceholderText>
-              {getLocale('braveWalletTransactionPlaceholder')}
-            </TransactionPlaceholderText>
-          </TransactionPlaceholderContainer>
-        )}
-      </ScrollableColumn>
       {showSellModal && selectedSellAsset &&
         <SellAssetModal
           selectedAsset={selectedSellAsset}
@@ -401,7 +486,7 @@ export const Account = () => {
           sellAssetBalance={getBalance(selectedAccount, selectedSellAsset)}
         />
       }
-    </StyledWrapper>
+    </WalletPageWrapper >
   )
 }
 

@@ -7,6 +7,7 @@ import { useHistory } from 'react-router'
 
 // Types
 import {
+  AccountPageTabs,
   BraveWallet,
   DefaultCurrencies,
   WalletRoutes
@@ -131,7 +132,11 @@ export const PortfolioAccountItem = (props: Props) => {
 
   // Methods
   const onSelectAccount = React.useCallback(() => {
-    history.push(`${WalletRoutes.Accounts}/${address}`)
+    history.push(
+      `${WalletRoutes.Accounts //
+      }/${address //
+      }/${AccountPageTabs.AccountAssetsSub}`
+    )
   }, [address])
 
   const onHideAccountMenu = React.useCallback(() => {

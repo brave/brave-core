@@ -120,10 +120,6 @@ const CryptoView = (props: Props) => {
     setShowDefaultWalletBanner(false)
   }, [])
 
-  const goBack = React.useCallback(() => {
-    history.push(WalletRoutes.Accounts)
-  }, [])
-
   const hideVisibleAssetsModal = React.useCallback(
     () => onShowVisibleAssetsModal(false),
     [onShowVisibleAssetsModal]
@@ -246,16 +242,7 @@ const CryptoView = (props: Props) => {
         </Route>
 
         <Route path={WalletRoutes.Account}>
-          <WalletPageWrapper
-            wrapContentInBox
-            cardHeader={
-              <PageTitleHeader title={''} showBackButton onBack={goBack} />
-            }
-          >
-            <StyledWrapper>
-              <Account />
-            </StyledWrapper>
-          </WalletPageWrapper>
+          <Account />
         </Route>
 
         <Route path={WalletRoutes.Accounts}>
