@@ -171,15 +171,13 @@ class ADS_EXPORT Ads {
   // the setting to the neutral state. Returns |UserReactionType| containing the
   // current state.
   virtual mojom::UserReactionType ToggleLikeCategory(
-      const std::string& category,
-      mojom::UserReactionType user_reaction_type) = 0;
+      const base::Value::Dict& value) = 0;
 
   // Called to dislike a category. This is a toggle, so calling it again returns
   // the setting to the neutral state. Returns |UserReactionType| containing the
   // current state.
   virtual mojom::UserReactionType ToggleDislikeCategory(
-      const std::string& category,
-      mojom::UserReactionType user_reaction_type) = 0;
+      const base::Value::Dict& value) = 0;
 
   // Called to save an ad for later viewing. This is a toggle, so calling it
   // again removes the ad from the saved list. Returns |true| if the ad was

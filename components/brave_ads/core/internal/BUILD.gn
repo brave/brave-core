@@ -911,7 +911,6 @@ source_set("internal") {
     "history/category_content_util.cc",
     "history/category_content_util.h",
     "history/category_content_value_util.cc",
-    "history/category_content_value_util.h",
     "history/filters/confirmation_history_filter.cc",
     "history/filters/confirmation_history_filter.h",
     "history/filters/date_range_history_filter.cc",

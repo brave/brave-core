@@ -36,11 +36,9 @@ using ToggleLikeAdCallback =
 using ToggleDislikeAdCallback =
     base::OnceCallback<void(base::Value::Dict ad_content)>;
 using ToggleLikeCategoryCallback =
-    base::OnceCallback<void(const std::string& category,
-                            const mojom::UserReactionType user_reaction_type)>;
+    base::OnceCallback<void(base::Value::Dict category_content)>;
 using ToggleDislikeCategoryCallback =
-    base::OnceCallback<void(const std::string& category,
-                            const mojom::UserReactionType user_reaction_type)>;
+    base::OnceCallback<void(base::Value::Dict category_content)>;
 using ToggleSaveAdCallback =
     base::OnceCallback<void(base::Value::Dict ad_content)>;
 using ToggleMarkAdAsInappropriateCallback =

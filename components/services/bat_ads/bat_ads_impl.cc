@@ -12,6 +12,8 @@
 #include "brave/components/brave_ads/core/ad_content_info.h"
 #include "brave/components/brave_ads/core/ad_content_value_util.h"
 #include "brave/components/brave_ads/core/ads.h"
+#include "brave/components/brave_ads/core/category_content_info.h"
+#include "brave/components/brave_ads/core/category_content_value_util.h"
 #include "brave/components/brave_ads/core/history_filter_types.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/history_item_value_util.h"
@@ -233,22 +235,20 @@ void BatAdsImpl::ToggleDislikeAd(base::Value::Dict value,
   std::move(callback).Run(AdContentToValue(ad_content));
 }
 
-void BatAdsImpl::ToggleLikeCategory(
-    const std::string& category,
-    const brave_ads::mojom::UserReactionType user_reaction_type,
-    ToggleLikeCategoryCallback callback) {
-  const brave_ads::mojom::UserReactionType toggled_user_reaction_type =
-      GetAds()->ToggleLikeCategory(category, user_reaction_type);
-  std::move(callback).Run(category, toggled_user_reaction_type);
+void BatAdsImpl::ToggleLikeCategory(base::Value::Dict value,
+                                    ToggleLikeCategoryCallback callback) {
+  brave_ads::CategoryContentInfo category_content =
+      brave_ads::CategoryContentFromValue(value);
+  category_content.user_reaction_type = GetAds()->ToggleLikeCategory(value);
+  std::move(callback).Run(CategoryContentToValue(category_content));
 }
 
-void BatAdsImpl::ToggleDislikeCategory(
-    const std::string& category,
-    const brave_ads::mojom::UserReactionType user_reaction_type,
-    ToggleDislikeCategoryCallback callback) {
-  const brave_ads::mojom::UserReactionType toggled_user_reaction_type =
-      GetAds()->ToggleDislikeCategory(category, user_reaction_type);
-  std::move(callback).Run(category, toggled_user_reaction_type);
+void BatAdsImpl::ToggleDislikeCategory(base::Value::Dict value,
+                                       ToggleDislikeCategoryCallback callback) {
+  brave_ads::CategoryContentInfo category_content =
+      brave_ads::CategoryContentFromValue(value);
+  category_content.user_reaction_type = GetAds()->ToggleDislikeCategory(value);
+  std::move(callback).Run(CategoryContentToValue(category_content));
 }
 
 void BatAdsImpl::ToggleSaveAd(base::Value::Dict value,

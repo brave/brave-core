@@ -62,11 +62,9 @@ class ClientStateManager final {
       const std::string& advertiser_id);
 
   mojom::UserReactionType ToggleLikeCategory(
-      const std::string& category,
-      mojom::UserReactionType user_reaction_type);
+      const CategoryContentInfo& category_content);
   mojom::UserReactionType ToggleDislikeCategory(
-      const std::string& category,
-      mojom::UserReactionType user_reaction_type);
+      const CategoryContentInfo& category_content);
   mojom::UserReactionType GetUserReactionTypeForSegment(
       const std::string& segment);
 

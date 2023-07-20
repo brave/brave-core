@@ -22,18 +22,6 @@ AdContentInfo& AdContentInfo::operator=(AdContentInfo&& other) noexcept =
 
 AdContentInfo::~AdContentInfo() = default;
 
-mojom::UserReactionType AdContentInfo::ToggleLikeUserReactionType() const {
-  return user_reaction_type == mojom::UserReactionType::kLike
-             ? mojom::UserReactionType::kNeutral
-             : mojom::UserReactionType::kLike;
-}
-
-mojom::UserReactionType AdContentInfo::ToggleDislikeUserReactionType() const {
-  return user_reaction_type == mojom::UserReactionType::kDislike
-             ? mojom::UserReactionType::kNeutral
-             : mojom::UserReactionType::kDislike;
-}
-
 bool operator==(const AdContentInfo& lhs, const AdContentInfo& rhs) {
   const auto tie = [](const AdContentInfo& ad_content) {
     return std::tie(ad_content.type, ad_content.placement_id,

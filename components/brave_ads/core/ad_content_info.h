@@ -27,9 +27,6 @@ struct ADS_EXPORT AdContentInfo final {
 
   ~AdContentInfo();
 
-  mojom::UserReactionType ToggleLikeUserReactionType() const;
-  mojom::UserReactionType ToggleDislikeUserReactionType() const;
-
   AdType type = AdType::kUndefined;
   std::string placement_id;
   std::string creative_instance_id;

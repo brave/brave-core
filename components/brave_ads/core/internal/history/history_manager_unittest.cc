@@ -300,8 +300,7 @@ TEST_F(BraveAdsHistoryManagerTest, LikeCategory) {
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   // Act
-  HistoryManager::GetInstance().LikeCategory(ad.segment,
-                                             mojom::UserReactionType::kNeutral);
+  HistoryManager::GetInstance().LikeCategory(history_item_.category_content);
 
   // Assert
   EXPECT_FALSE(did_dislike_category_);
@@ -317,8 +316,7 @@ TEST_F(BraveAdsHistoryManagerTest, DislikeCategory) {
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   // Act
-  HistoryManager::GetInstance().DislikeCategory(
-      ad.segment, mojom::UserReactionType::kNeutral);
+  HistoryManager::GetInstance().DislikeCategory(history_item_.category_content);
 
   // Assert
   EXPECT_TRUE(did_dislike_category_);
