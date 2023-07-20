@@ -103,8 +103,14 @@ class HorizontalGradientBackground : public views::Background {
         ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors()
             ? IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DARK
             : IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC);
-    canvas->DrawImageInt(*graphic, bounds.right() - graphic->width(),
-                         bounds.y());
+
+    // Scale image to fit with host view's height.
+    const float image_scale = bounds.height() / graphic->height();
+    const int target_graphic_width = graphic->width() * image_scale;
+    const int target_graphic_height = graphic->height() * image_scale;
+    canvas->DrawImageInt(*graphic, 0, 0, graphic->width(), graphic->height(),
+                         bounds.right() - target_graphic_width, bounds.y(),
+                         target_graphic_width, target_graphic_height, true);
   }
 };
 
