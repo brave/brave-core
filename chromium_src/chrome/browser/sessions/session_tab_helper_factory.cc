@@ -26,12 +26,22 @@ class BraveSessionTabHelper : public sessions::SessionTabHelper {
   }
 
   static void Create(content::WebContents* contents, DelegateLookup lookup) {
-    contents->SetUserData(sessions::SessionTabHelper::kUserDataKey,
+    contents->SetUserData(&sessions::SessionTabHelper::kUserDataKey,
                           base::WrapUnique(new BraveSessionTabHelper(
                               contents, std::move(lookup))));
   }
+
+ private:
+  BraveSessionTabHelper(content::WebContents* contents, DelegateLookup lookup)
+      : SessionTabHelper(contents, lookup) {}
 };
 
 }  // namespace brave
 
+#define CreateForWebContents(CONTENTS, LOOKUP) \
+  FromWebContents(CONTENTS) ? return           \
+                            : BraveSessionTabHelper::Create(CONTENTS, LOOKUP)
+
 #include "src/chrome/browser/sessions/session_tab_helper_factory.cc"
+
+#undef CreateForWebContents
