@@ -34,8 +34,10 @@ void AdsService::RegisterProfilePrefs(
 
   registry->RegisterBooleanPref(prefs::kEnabled, false);
 
-  registry->RegisterIntegerPref(prefs::kNotificationAdLastScreenPositionX, 0);
-  registry->RegisterIntegerPref(prefs::kNotificationAdLastScreenPositionY, 0);
+  registry->RegisterDoublePref(
+      prefs::kNotificationAdLastNormalizedDisplayCoordinateX, 0.0);
+  registry->RegisterDoublePref(
+      prefs::kNotificationAdLastNormalizedDisplayCoordinateY, 0.0);
   registry->RegisterBooleanPref(prefs::kNotificationAdDidFallbackToCustom,
                                 false);
 

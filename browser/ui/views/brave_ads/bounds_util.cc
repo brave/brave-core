@@ -53,6 +53,12 @@ void AdjustBoundsToFitWorkArea(const gfx::Rect& work_area, gfx::Rect* bounds) {
 
 }  // namespace
 
+gfx::Rect GetDefaultDisplayScreenWorkArea(gfx::NativeView browser_native_view) {
+  return kUseSameZOrderAsBrowserWindow.Get()
+             ? GetNearestDisplayScreenWorkArea(browser_native_view)
+             : GetPrimaryDisplayScreenWorkArea();
+}
+
 void AdjustBoundsAndSnapToFitWorkAreaForNativeView(views::Widget* widget,
                                                    gfx::Rect* bounds) {
   CHECK(widget);

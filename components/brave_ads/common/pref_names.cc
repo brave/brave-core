@@ -17,13 +17,13 @@ const char kP2AStoragePrefNamePrefix[] = "brave.weekly_storage.";
 const char kShouldShowOnboardingNotification[] =
     "brave.brave_ads.should_show_my_first_ad_notification";
 
-// Stores the last screen position of custom notification ads and whether to
-// fallback from native to custom notification ads if native notifications are
-// disabled
-const char kNotificationAdLastScreenPositionX[] =
-    "brave.brave_ads.ad_notification.last_screen_position_x";
-const char kNotificationAdLastScreenPositionY[] =
-    "brave.brave_ads.ad_notification.last_screen_position_y";
+// Stores the last normalized screen position of custom notification ads and
+// whether to fallback from native to custom notification ads if native
+// notifications are disabled
+const char kNotificationAdLastNormalizedDisplayCoordinateX[] =
+    "brave.brave_ads.ad_notification.last_normalized_display_coordinate_x";
+const char kNotificationAdLastNormalizedDisplayCoordinateY[] =
+    "brave.brave_ads.ad_notification.last_normalized_display_coordinate_y";
 const char kNotificationAdDidFallbackToCustom[] =
     "brave.brave_ads.ad_notification.did_fallback_to_custom";
 
