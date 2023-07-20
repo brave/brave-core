@@ -63,6 +63,7 @@ brave_chrome_java_deps = [
   "//third_party/android_deps:com_google_code_gson_gson_java",
   "//third_party/android_deps:google_play_services_vision_common_java",
   "//third_party/android_deps:google_play_services_vision_java",
+  "//third_party/android_deps:google_android_datatransport_transport_api_java",
   "//third_party/android_deps:org_jetbrains_kotlinx_kotlinx_coroutines_android_java",
   "//third_party/androidx:androidx_lifecycle_lifecycle_livedata_core_java",
   "//third_party/androidx:androidx_lifecycle_lifecycle_livedata_java",

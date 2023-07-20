@@ -41,9 +41,10 @@ android_aar_prebuilt("com_airbnb_android_java") {
 }
 
 android_aar_prebuilt("com_android_billingclient_java") {
-  aar_path = "libs/com_android_billingclient/billing-4.0.0.aar"
+  aar_path = "libs/com_android_billingclient/billing-6.0.1.aar"
   info_path = "libs/com_android_billingclient/com_android_billingclient.info"
   ignore_manifest = true
+deps = ["//third_party/android_deps:google_android_datatransport_transport_api_java"]
 }
 
 android_aar_prebuilt("com_github_bumptech_glide_java") {
