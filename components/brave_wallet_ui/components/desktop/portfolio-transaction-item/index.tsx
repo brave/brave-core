@@ -10,6 +10,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
 import {
+  AccountPageTabs,
   BraveWallet,
   SerializableTransactionInfo,
   WalletRoutes
@@ -392,7 +393,11 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   )
 
   const onSelectAccount = React.useCallback((account: { address: string }) => {
-    history.push(`${WalletRoutes.Accounts}/${account.address}`)
+    history.push(
+      `${WalletRoutes.Accounts //
+      }/${account.address //
+      }/${AccountPageTabs.AccountAssetsSub}`
+    )
   }, [history])
 
   const onAddressClick = React.useCallback((address?: string) => () => {

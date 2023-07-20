@@ -11,7 +11,8 @@ import {
   WalletAccountType,
   WalletState,
   WalletRoutes,
-  BraveWallet
+  BraveWallet,
+  AccountPageTabs
 } from '../../../../constants/types'
 
 // utils
@@ -51,7 +52,11 @@ export const Accounts = () => {
   // methods
   const onSelectAccount = React.useCallback((account: WalletAccountType | undefined) => {
     if (account) {
-      history.push(`${WalletRoutes.Accounts}/${account.address}`)
+      history.push(
+        `${WalletRoutes.Accounts //
+        }/${account.address //
+        }/${AccountPageTabs.AccountAssetsSub}`
+      )
     }
   }, [])
 

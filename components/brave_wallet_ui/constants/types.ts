@@ -753,7 +753,7 @@ export enum WalletRoutes {
 
   // accounts
   Accounts = '/crypto/accounts',
-  Account = '/crypto/accounts/:id',
+  Account = '/crypto/accounts/:accountId/:selectedTab?',
 
   // add account modals
   AddAccountModal = '/crypto/accounts/add-account',
@@ -822,6 +822,12 @@ export enum WalletRoutes {
   MyAssetsHash = '#my-assets',
   AvailableAssetsHash = '#available-assets'
 }
+
+export const AccountPageTabs = {
+  AccountAssetsSub: 'assets',
+  AccountNFTsSub: 'nfts',
+  AccountTransactionsSub: 'transactions',
+} as const
 
 export const WalletOrigin = 'chrome://wallet'
 
@@ -1067,11 +1073,14 @@ export type NavIDTypes =
   | 'my_assets'
   | 'available_assets'
 
+export type AccountPageTabs =
+  typeof AccountPageTabs[keyof typeof AccountPageTabs]
+
 export interface NavOption {
   id: NavIDTypes
   name: string
   icon: string
-  route: WalletRoutes
+  route: WalletRoutes | AccountPageTabs
 }
 
 export enum TokenStandards {

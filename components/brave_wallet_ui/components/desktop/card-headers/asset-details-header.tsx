@@ -48,7 +48,8 @@ import { AssetDetailsMenu } from '../wallet-menus/asset-details-menu'
 import {
   CircleButton,
   ButtonIcon,
-  MenuWrapper
+  MenuWrapper,
+  HorizontalDivider
 } from './shared-card-headers.style'
 import {
   AssetIcon,
@@ -56,8 +57,7 @@ import {
   NetworkDescriptionText,
   PriceText,
   PercentChange,
-  UpDownIcon,
-  HorizontalDivider
+  UpDownIcon
 } from './asset-details-header.style'
 import { Row, Column, HorizontalSpace } from '../../shared/style'
 

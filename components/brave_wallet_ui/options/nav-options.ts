@@ -6,7 +6,8 @@
 // Types
 import {
   NavOption,
-  WalletRoutes
+  WalletRoutes,
+  AccountPageTabs
 } from '../constants/types'
 
 export const BuySendSwapDepositOptions: NavOption[] = [
@@ -162,5 +163,26 @@ export const CreateAccountOptions: NavOption[] = [
     name: 'braveWalletConnectHardwareWallet',
     icon: 'flashdrive',
     route: WalletRoutes.AddHardwareAccountModalStart
+  },
+]
+
+export const AccountDetailsOptions: NavOption[] = [
+  {
+    id: 'assets',
+    name: 'braveWalletAccountsAssets',
+    icon: '',
+    route: AccountPageTabs.AccountAssetsSub
+  },
+  {
+    id: 'nfts',
+    name: 'braveWalletTopNavNFTS',
+    icon: '',
+    route: AccountPageTabs.AccountNFTsSub
+  },
+  {
+    id: 'transactions',
+    name: 'braveWalletTransactions',
+    icon: '',
+    route: AccountPageTabs.AccountTransactionsSub
   },
 ]
