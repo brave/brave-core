@@ -311,6 +311,8 @@ void Account::MaybeResetConfirmationsAndIssuers() {
 
   AdsClientHelper::GetInstance()->SetBooleanPref(
       prefs::kShouldMigrateVerifiedRewardsUser, false);
+
+  MaybeFetchIssuers();
 }
 
 bool Account::ShouldTopUpUnblindedTokens() const {
