@@ -4150,7 +4150,7 @@ extension Strings {
       comment: "The title of the sort option that sorts alphabetically from A to Z. Used in Portfolio/NFT filters and display settings."
     )
     public static let zToASortOption = NSLocalizedString(
-      "wallet.highToLowSortOption",
+      "wallet.zToASortOption",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Z to A",
