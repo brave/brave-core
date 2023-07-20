@@ -1879,6 +1879,9 @@ Are you sure you want to do this?
     <message name="IDS_SWAP" desc="Brave Wallet swap button text">
       Swap
     </message>
+    <message name="IDS_DEPOSIT" desc="Brave Wallet deposit text">
+      Deposit
+    </message>
     <message name="IDS_DEFI_SECURE_STORAGE" desc="Brave Wallet onboarding text">
       Welcome to the new Brave Wallet
     </message>
@@ -1928,7 +1931,10 @@ Are you sure you want to do this?
       Send crypto or transfer from one account to another.
     </message>
     <message name="IDS_SWAP_TEXT" desc="Brave Wallet swap bottomsheet text">
-      Swap tokens and assets
+      Swap tokens and assets.
+    </message>
+    <message name="IDS_DEPOSIT_DESCRIPTION" desc="Brave Wallet deposit description">
+      Deposit crypto to Brave Wallet.
     </message>
     <message name="IDS_SECURE_YOUR_CRYPTO" desc="Brave Wallet onboarding text">
       Secure your crypto with a password

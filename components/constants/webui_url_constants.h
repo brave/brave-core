@@ -42,6 +42,7 @@ extern const char kWalletPageHost[];
 #if BUILDFLAG(IS_ANDROID)
 extern const char kWalletSendPagePath[];
 extern const char kWalletSwapPagePath[];
+extern const char kWalletDepositPagePath[];
 #endif  // BUILDFLAG(IS_ANDROID)
 extern const char kExtensionSettingsURL[];
 extern const char kWalletSettingsURL[];

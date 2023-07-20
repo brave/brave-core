@@ -359,6 +359,37 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
     }
   }
 
+  void VerifyPage(const GURL url,
+                  const std::vector<std::string> ignore_patterns) {
+    content::NavigationController::LoadURLParams params(url);
+    params.transition_type = ui::PageTransitionFromInt(
+        ui::PAGE_TRANSITION_TYPED | ui::PAGE_TRANSITION_FROM_ADDRESS_BAR);
+
+    auto* web_contents = GetActiveWebContents();
+
+    content::ConsoleObserver console_observer(web_contents);
+    console_observer.SetPattern(kConsoleMarker);
+    web_contents->GetController().LoadURLWithParams(params);
+    web_contents->GetOutermostWebContents()->Focus();
+    EXPECT_TRUE(WaitForLoadStop(web_contents));
+    EXPECT_TRUE(web_contents->GetLastCommittedURL() == url)
+        << "Expected URL " << url << " but observed "
+        << web_contents->GetLastCommittedURL();
+
+    auto result = content::EvalJs(
+        web_contents,
+        base::ReplaceStringPlaceholders(kPrintConsoleMarkerScript,
+                                        {kConsoleMarker}, nullptr),
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS, 1);
+    EXPECT_TRUE(result.error.empty())
+        << "Could not execute script: " << result.error;
+
+    EXPECT_TRUE(console_observer.Wait());
+    VerifyConsoleOutputNoErrors(console_observer,
+                                blink::mojom::ConsoleMessageLevel::kWarning,
+                                ignore_patterns);
+  }
+
   base::ScopedTempDir temp_dir_;
   int64_t file_size_;
   absl::optional<std::string> file_digest_;
@@ -375,65 +406,25 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSwapPageAppearing) {
   GURL url = GURL("chrome://wallet/swap");
-  content::NavigationController::LoadURLParams params(url);
-  params.transition_type = ui::PageTransitionFromInt(
-      ui::PAGE_TRANSITION_TYPED | ui::PAGE_TRANSITION_FROM_ADDRESS_BAR);
-
-  auto* web_contents = GetActiveWebContents();
-
-  content::ConsoleObserver console_observer(web_contents);
-  console_observer.SetPattern(kConsoleMarker);
-  web_contents->GetController().LoadURLWithParams(params);
-  web_contents->GetOutermostWebContents()->Focus();
-  EXPECT_TRUE(WaitForLoadStop(web_contents));
-  EXPECT_TRUE(web_contents->GetLastCommittedURL() == url)
-      << "Expected URL " << url << " but observed "
-      << web_contents->GetLastCommittedURL();
-
-  auto result =
-      content::EvalJs(web_contents,
-                      base::ReplaceStringPlaceholders(
-                          kPrintConsoleMarkerScript, {kConsoleMarker}, nullptr),
-                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS, 1);
-  EXPECT_TRUE(result.error.empty())
-      << "Could not execute script: " << result.error;
-
-  EXPECT_TRUE(console_observer.Wait());
-  VerifyConsoleOutputNoErrors(
-      console_observer, blink::mojom::ConsoleMessageLevel::kWarning,
-      {"TypeError: Cannot read properties of undefined (reading 'forEach')",
-       "Error calling jsonRpcService.getERC20TokenBalances",
-       "Error querying balance:", "Error: An internal error has occurred"});
+  const std::vector<std::string> ignore_patterns = {
+      "TypeError: Cannot read properties of undefined (reading 'forEach')",
+      "Error calling jsonRpcService.getERC20TokenBalances",
+      "Error querying balance:", "Error: An internal error has occurred"};
+  VerifyPage(url, ignore_patterns);
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
   GURL url = GURL("chrome://wallet/send");
-  content::NavigationController::LoadURLParams params(url);
-  params.transition_type = ui::PageTransitionFromInt(
-      ui::PAGE_TRANSITION_TYPED | ui::PAGE_TRANSITION_FROM_ADDRESS_BAR);
+  const std::vector<std::string> ignore_patterns = {
+      "TypeError: Cannot read properties of undefined (reading 'forEach')"};
+  VerifyPage(url, ignore_patterns);
+}
 
-  auto* web_contents = GetActiveWebContents();
-
-  content::ConsoleObserver console_observer(web_contents);
-  console_observer.SetPattern(kConsoleMarker);
-  web_contents->GetController().LoadURLWithParams(params);
-  web_contents->GetOutermostWebContents()->Focus();
-  EXPECT_TRUE(WaitForLoadStop(web_contents));
-  EXPECT_TRUE(web_contents->GetLastCommittedURL() == url)
-      << "Expected URL " << url << " but observed "
-      << web_contents->GetLastCommittedURL();
-
-  auto result =
-      content::EvalJs(web_contents,
-                      base::ReplaceStringPlaceholders(
-                          kPrintConsoleMarkerScript, {kConsoleMarker}, nullptr),
-                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS, 1);
-  EXPECT_TRUE(result.error.empty())
-      << "Could not execute script: " << result.error;
-
-  EXPECT_TRUE(console_observer.Wait());
-  VerifyConsoleOutputNoErrors(
-      console_observer, blink::mojom::ConsoleMessageLevel::kWarning,
-      {"TypeError: Cannot read properties of undefined (reading 'forEach')"});
+IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
+                       TestDepositPageAppearing) {
+  GURL url = GURL("chrome://wallet/deposit-funds");
+  const std::vector<std::string> ignore_patterns = {
+      "TypeError: Cannot read properties of undefined (reading 'forEach')"};
+  VerifyPage(url, ignore_patterns);
 }
 }  // namespace brave_wallet

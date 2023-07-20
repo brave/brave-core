@@ -199,7 +199,8 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #if BUILDFLAG(IS_ANDROID)
       (url.is_valid() && url.host_piece() == kWalletPageHost &&
        (url.path() == kWalletSwapPagePath ||
-        url.path() == kWalletSendPagePath)) ||
+        url.path() == kWalletSendPagePath ||
+        url.path() == kWalletDepositPagePath)) ||
 #else
       ((url.host_piece() == kWalletPanelHost ||
         url.host_piece() == kWalletPageHost) &&
