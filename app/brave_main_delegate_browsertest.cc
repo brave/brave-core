@@ -151,6 +151,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &commerce::kRetailCoupons,
     &companion::features::internal::kCompanionEnabledByObservingExpsNavigations,
     &companion::features::internal::kSidePanelCompanion,
+    &companion::features::internal::kSidePanelCompanion2,
     &companion::visual_search::features::kVisualSearchSuggestions,
     &content_settings::features::kUserBypassUI,
     &dips::kFeature,
