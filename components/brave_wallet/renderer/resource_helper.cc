@@ -5,8 +5,9 @@
 
 #include "brave/components/brave_wallet/renderer/resource_helper.h"
 
+#include <vector>
+
 #include "base/base64.h"
-#include "base/memory/ref_counted_memory.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/codec/png_codec.h"
@@ -33,14 +34,14 @@ absl::optional<std::string> LoadImageResourceAsDataUrl(const int id) {
     return absl::nullopt;
   }
 
-  auto encoded = base::MakeRefCounted<base::RefCountedBytes>();
+  std::vector<uint8_t> data;
   if (!gfx::PNGCodec::EncodeBGRASkBitmap(image.AsBitmap(),
                                          /*discard_transparency=*/false,
-                                         &encoded->data())) {
+                                         &data)) {
     return absl::nullopt;
   }
 
-  return "data:image/png;base64," + base::Base64Encode(encoded->data());
+  return "data:image/png;base64," + base::Base64Encode(data);
 }
 
 }  // namespace brave_wallet

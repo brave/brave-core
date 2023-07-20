@@ -193,12 +193,24 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab/")));
 
-  std::string command = "window.ethereum.isMetaMask";
-  EXPECT_TRUE(content::EvalJs(primary_main_frame(), command,
-                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                              ISOLATED_WORLD_ID_TRANSLATE)
-                  .error.find("Cannot read properties of undefined") !=
-              std::string::npos);
+  {
+    std::string command = "window.ethereum.isMetaMask";
+    EXPECT_TRUE(content::EvalJs(primary_main_frame(), command,
+                                content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                ISOLATED_WORLD_ID_TRANSLATE)
+                    .error.find("Cannot read properties of undefined") !=
+                std::string::npos);
+  }
+
+  {
+    std::string command = "window.braveEthereum.isMetaMask";
+    EXPECT_TRUE(content::EvalJs(primary_main_frame(), command,
+                                content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                ISOLATED_WORLD_ID_TRANSLATE)
+                    .error.find("Cannot read properties of undefined") !=
+                std::string::npos);
+  }
+
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
@@ -207,11 +219,24 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
 
   histogram_tester_->ExpectTotalCount("Brave.Wallet.EthProvider.3", 0);
 
-  EXPECT_TRUE(content::EvalJs(primary_main_frame(), command,
-                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                              ISOLATED_WORLD_ID_TRANSLATE)
-                  .error.find("Cannot read properties of undefined") !=
-              std::string::npos);
+  {
+    std::string command = "window.ethereum.isMetaMask";
+    EXPECT_TRUE(content::EvalJs(primary_main_frame(), command,
+                                content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                ISOLATED_WORLD_ID_TRANSLATE)
+                    .error.find("Cannot read properties of undefined") !=
+                std::string::npos);
+  }
+
+  {
+    std::string command = "window.braveEthereum.isMetaMask";
+    EXPECT_TRUE(content::EvalJs(primary_main_frame(), command,
+                                content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                ISOLATED_WORLD_ID_TRANSLATE)
+                    .error.find("Cannot read properties of undefined") !=
+                std::string::npos);
+  }
+
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
 }
 
@@ -229,10 +254,19 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  std::string command = "window.ethereum.isBraveWallet";
-  EXPECT_TRUE(content::EvalJs(primary_main_frame(), command)
-                  .error.find("Cannot read properties of undefined") !=
-              std::string::npos);
+  {
+    std::string command = "window.ethereum.isBraveWallet";
+    EXPECT_TRUE(content::EvalJs(primary_main_frame(), command)
+                    .error.find("Cannot read properties of undefined") !=
+                std::string::npos);
+  }
+
+  {
+    std::string command = "window.braveEthereum.isBraveWallet";
+    EXPECT_EQ(base::Value(true),
+              content::EvalJs(primary_main_frame(), command));
+  }
+
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
 }
 
@@ -249,9 +283,17 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachIfWalletCreated) {
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  constexpr char kEvalIsBraveWallet[] = "window.ethereum.isBraveWallet";
-  EXPECT_TRUE(
-      content::EvalJs(primary_main_frame(), kEvalIsBraveWallet).ExtractBool());
+  {
+    constexpr char kEvalIsBraveWallet[] = "window.ethereum.isBraveWallet";
+    EXPECT_TRUE(content::EvalJs(primary_main_frame(), kEvalIsBraveWallet)
+                    .ExtractBool());
+  }
+
+  {
+    constexpr char kEvalIsBraveWallet[] = "window.braveEthereum.isBraveWallet";
+    EXPECT_TRUE(content::EvalJs(primary_main_frame(), kEvalIsBraveWallet)
+                    .ExtractBool());
+  }
 
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
 }
@@ -269,17 +311,11 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, EIP6369) {
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  constexpr char kEvalIsBraveWallet[] = "window.ethereum.isBraveWallet";
-  EXPECT_TRUE(
-      content::EvalJs(primary_main_frame(), kEvalIsBraveWallet).ExtractBool());
-
   EXPECT_TRUE(
       content::EvalJs(primary_main_frame(), kTestEIP6963).ExtractBool());
 
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
 }
-
-#if BUILDFLAG(ENABLE_EXTENSIONS)
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                        EIP6369_WithoutEthereumInstalled) {
@@ -299,12 +335,13 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
   EXPECT_TRUE(
       content::EvalJs(primary_main_frame(), kEvalIsBraveWallet).ExtractBool());
 
-  std::string command = kTestEIP6963;
-
-  EXPECT_TRUE(content::EvalJs(primary_main_frame(), command).ExtractBool());
+  EXPECT_TRUE(
+      content::EvalJs(primary_main_frame(), kTestEIP6963).ExtractBool());
 
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
 }
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                        DoNotAttachIfMetaMaskInstalled) {
@@ -328,6 +365,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
+  // Check whether window.ethereum is not installed
   {
     std::string command = "window.ethereum.isBraveWallet";
     EXPECT_TRUE(content::EvalJs(primary_main_frame(), command)
@@ -335,6 +373,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                 std::string::npos);
   }
 
+  // Check wheter window.braveEthereum is installed
   {
     std::string command = "window.braveEthereum.isBraveWallet";
     EXPECT_EQ(base::Value(true),

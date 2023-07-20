@@ -152,7 +152,9 @@ void BraveRendererUpdater::UpdateRenderer(
   auto default_ethereum_wallet =
       static_cast<brave_wallet::mojom::DefaultWallet>(
           brave_wallet_ethereum_provider_.GetValue());
-  bool brave_use_native_ethereum_wallet =
+  bool install_window_brave_ethereum_provider =
+      is_wallet_allowed_for_context_ && brave_wallet::IsDappsSupportEnabled();
+  bool install_window_ethereum_provider =
       ((default_ethereum_wallet ==
             brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension &&
         !should_ignore_brave_wallet_for_eth) ||
@@ -181,7 +183,8 @@ void BraveRendererUpdater::UpdateRenderer(
 
   (*renderer_configuration)
       ->SetConfiguration(brave::mojom::DynamicParams::New(
-          brave_use_native_ethereum_wallet,
+          install_window_brave_ethereum_provider,
+          install_window_ethereum_provider,
           allow_overwrite_window_ethereum_provider,
           brave_use_native_solana_wallet,
           allow_overwrite_window_solana_provider, de_amp_enabled));
