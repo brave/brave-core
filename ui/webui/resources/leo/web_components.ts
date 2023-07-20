@@ -7,5 +7,8 @@
 // as <leo-{component}></leo-{component}>.
 import '@brave/leo/web-components/button'
 import { setIconBasePath } from '@brave/leo/web-components/icon'
+import iconsMeta from '@brave/leo/icons/meta'
 
 setIconBasePath('//resources/brave-icons')
+
+window['icons'] = new Set(Object.keys(iconsMeta.icons))

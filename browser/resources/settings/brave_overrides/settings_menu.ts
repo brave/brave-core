@@ -13,18 +13,6 @@ import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.
 import {loadTimeData} from '../i18n_setup.js'
 import 'chrome://resources/brave/leo.bundle.js'
 
-// This maps a Chromium icon name to the leo-icon to replace it with.
-const iconConversions = {
-  'cr:security': 'lock',
-  'cr:search': 'search',
-  'settings:palette': 'appearance',
-  'settings:assignment': 'list-checks',
-  'settings:language': 'product-translate',
-  'settings:build': 'settings',
-  'settings:restore': 'backward',
-  'cr:file-download': 'download'
-}
-
 function createMenuElement(title, href, iconName, pageVisibilitySection) {
   const menuEl = document.createElement('a')
   if (pageVisibilitySection) {
@@ -34,8 +22,8 @@ function createMenuElement(title, href, iconName, pageVisibilitySection) {
   menuEl.setAttribute('role', 'menuitem')
   menuEl.setAttribute('class', 'cr-nav-menu-item')
 
-  const icon = document.createElement('leo-icon')
-  icon.setAttribute('name', iconName)
+  const icon = document.createElement('iron-icon')
+  icon.setAttribute('icon', iconName)
   menuEl.appendChild(icon)
 
   const text = document.createTextNode(title)
@@ -86,6 +74,10 @@ RegisterStyleOverride(
         border-start-end-radius: 0px !important;
         box-sizing: content-box !important;
         overflow: visible !important;
+
+        --iron-icon-width: 24px;
+        --iron-icon-height: 24px;
+        --iron-icon-fill-color: currentColor;
       }
 
       .cr-nav-menu-item:hover {
@@ -93,7 +85,7 @@ RegisterStyleOverride(
       }
 
       .cr-nav-menu-item[selected] {
-        --leo-icon-color: var(--leo-gradient-icons-active);
+        --iron-icon-fill-color: var(--leo-gradient-icons-active);
 
         color: var(--cr-link-color) !important;
         background: transparent !important;
@@ -216,13 +208,6 @@ RegisterStyleOverride(
     </style>
   `
 )
-
-RegisterStyleOverride('iron-icon', html`
- <style>
-    :host-context(.cr-nav-menu-item) svg {
-      fill: url(#selectedGradient);
-    }
- </style>`)
 
 RegisterPolymerTemplateModifications({
   'settings-menu': (templateContent) => {
@@ -388,20 +373,6 @@ RegisterPolymerTemplateModifications({
     const versionEl = document.createElement('span')
     versionEl.setAttribute('class', 'brave-about-item brave-about-menu-version')
     versionEl.textContent = `v ${loadTimeData.getString('braveProductVersion')}`
-
-    for (const icon of templateContent.querySelectorAll('iron-icon')) {
-      const name = icon.getAttribute('icon')
-      const converted = iconConversions[name]
-      if (!icon) {
-        console.error("Couldn't find leo icon for", name)
-        continue
-      }
-
-      const leoIcon = document.createElement('leo-icon')
-      leoIcon.setAttribute('name', converted)
-      icon.insertAdjacentElement('beforebegin', leoIcon)
-      icon.remove()
-    }
 
     parent.appendChild(newAboutEl)
     newAboutEl.appendChild(graphicsEl)
