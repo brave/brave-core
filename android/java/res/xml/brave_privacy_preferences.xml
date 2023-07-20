@@ -58,6 +58,11 @@
             android:title="@string/fingerprint_language_switch"
             android:summary="@string/fingerprint_language_switch_summary"
             android:defaultValue="false" />
+        <org.chromium.components.browser_ui.settings.ChromeBasePreference
+            android:fragment="org.chromium.chrome.browser.shields.ContentFilteringFragment"
+            android:key="content_filtering"
+            android:title="@string/content_filtering_title"
+            android:summary="@string/content_filtering_summary" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="forget_first_party_storage"
             android:title="@string/brave_forget_first_party_storage_switch"

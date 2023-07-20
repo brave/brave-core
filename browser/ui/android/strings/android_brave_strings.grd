@@ -503,6 +503,51 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_UNSTOPPABLE_DOMAINS_TITLE" desc="Title for Unstoppable Domains settings.">
         Unstoppable Domains
       </message>
+      <message name="IDS_CONTENT_FILTERING_TITLE" desc="Title for Content Filtering settings.">
+        Content Filtering
+      </message>
+      <message name="IDS_CONTENT_FILTERING_SUMMARY" desc="Summary for Content Filtering settings.">
+        Enable custom filters that block regional and language-specific trackers and Annoyances
+      </message>
+      <message name="IDS_FILTER_LISTS_TITLE" desc="Title for Filter Lists settings.">
+        Filter Lists
+      </message>
+      <message name="IDS_CUSTOM_FILTER_LISTS" desc="Title for Custom filter lists.">
+        Custom filter lists
+      </message>
+      <message name="IDS_CUSTOM_FILTER_LIST_TITLE" desc="Title for Add Custom filter lists.">
+        Custom filter list
+      </message>
+      <message name="IDS_ADD_CUSTOM_FILTER_LIST" desc="Add custom filter list text.">
+        Add custom filter list
+      </message>
+      <message name="IDS_CUSTOM_FILTER_LIST_URL" desc="Custom filter list url edittext title.">
+        Custom Filter List URL
+      </message>
+      <message name="IDS_ENTER_FILTER_LIST_URL_HERE" desc="Enter filter list url here edittext hint.">
+        Enter filter list URL here
+      </message>
+      <message name="IDS_CUSTOM_FILTER_INVALID_URL" desc="Invalid url error text for custom filter.">
+        Invalid URL
+      </message>
+      <message name="IDS_EDIT_CUSTOM_FILTER_LIST" desc="Edit custom filter list text for menu item.">
+        Edit Custom filter list
+      </message>
+      <message name="IDS_ADD_CUSTOM_FILTER_SUMMARY" desc="Add custom filter summary.">
+        Add additional lists created and maintained by your trusted community.\n\nOnly subscribe to lists from entities you trust. Your browser will periodically check for list updates from the URL you enter, revealing your IP address to their server.
+      </message>
+      <message name="IDS_LAST_UPDATED_CUSTOM_FILTER" desc="Last updated time for custom filter.">
+        Last updated <ph name="TIME">%1$s<ex>1 hours ago</ex></ph>
+      </message>
+      <message name="IDS_DASHED" desc="Dashed when custom filter item last update time is zero." translateable="false">
+        -
+      </message>
+      <message name="IDS_DOWNLOAD_FAILED_CUSTOM_FILTER" desc="Custom filter Download failed.">
+        Download failed
+      </message>
+      <message name="IDS_UPDATE_FAILED_CUSTOM_FILTER" desc="Custom filter Update failed.">
+        <ph name="TIME">%1$s<ex>1 hours ago</ex></ph> Update failed
+      </message>
       <message name="IDS_ASSET_PRICE" desc="Text for asset price.">
         <ph name="ASSET_NAME">%1$s<ex>Ethereum</ex></ph> Price (<ph name="ASSET_SYMBOL">%2$s<ex>ETH</ex></ph>)
       </message>
