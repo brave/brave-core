@@ -33,7 +33,8 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
   JSEthereumProvider(const JSEthereumProvider&) = delete;
   JSEthereumProvider& operator=(const JSEthereumProvider&) = delete;
 
-  static void Install(bool install_ethereum_provider,
+  static void Install(bool install_brave_ethereum_provider,
+                      bool install_ethereum_provider,
                       bool allow_overwrite_window_ethereum_provider,
                       content::RenderFrame* render_frame);
 

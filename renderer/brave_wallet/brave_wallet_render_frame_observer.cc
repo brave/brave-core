@@ -86,10 +86,15 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   auto dynamic_params = get_dynamic_params_callback_.Run();
+  if (!dynamic_params.install_window_brave_ethereum_provider &&
+      !dynamic_params.install_window_ethereum_provider &&
+      !dynamic_params.brave_use_native_solana_wallet) {
+    return;
+  }
 
-  if (dynamic_params.install_window_brave_ethereum_provider &&
-      web_frame->GetDocument().IsDOMFeaturePolicyEnabled(context, "ethereum")) {
+  if (web_frame->GetDocument().IsDOMFeaturePolicyEnabled(context, "ethereum")) {
     JSEthereumProvider::Install(
+        dynamic_params.install_window_brave_ethereum_provider,
         dynamic_params.install_window_ethereum_provider,
         dynamic_params.allow_overwrite_window_ethereum_provider,
         render_frame());

@@ -150,7 +150,8 @@ bool JSEthereumProvider::EnsureConnected() {
 }
 
 // static
-void JSEthereumProvider::Install(bool install_ethereum_provider,
+void JSEthereumProvider::Install(bool install_brave_ethereum_provider,
+                                 bool install_ethereum_provider,
                                  bool allow_overwrite_window_ethereum_provider,
                                  content::RenderFrame* render_frame) {
   v8::Isolate* isolate = blink::MainThreadIsolate();
@@ -198,22 +199,30 @@ void JSEthereumProvider::Install(bool install_ethereum_provider,
 
   // Set window.ethereumProvider
   {
-    SetProviderNonWritable(context, global, ethereum_proxy,
-                           gin::StringToV8(isolate, kBraveEthereum), true);
+    v8::Local<v8::Value> ethereum_value =
+        global->Get(context, gin::StringToV8(isolate, kEthereum))
+            .ToLocalChecked();
+    if (install_ethereum_provider && ethereum_value->IsUndefined()) {
+      if (!allow_overwrite_window_ethereum_provider) {
+        SetProviderNonWritable(context, global, ethereum_proxy,
+                               gin::StringToV8(isolate, kEthereum), true);
+      } else {
+        global
+            ->Set(context, gin::StringToSymbol(isolate, kEthereum),
+                  ethereum_proxy)
+            .Check();
+      }
+    }
   }
 
-  v8::Local<v8::Value> ethereum_value =
-      global->Get(context, gin::StringToV8(isolate, kEthereum))
-          .ToLocalChecked();
-  if (install_ethereum_provider && ethereum_value->IsUndefined()) {
-    if (!allow_overwrite_window_ethereum_provider) {
+  {
+    v8::Local<v8::Value> brave_ethereum_value =
+        global->Get(context, gin::StringToV8(isolate, kBraveEthereum))
+            .ToLocalChecked();
+    if (install_brave_ethereum_provider &&
+        brave_ethereum_value->IsUndefined()) {
       SetProviderNonWritable(context, global, ethereum_proxy,
-                             gin::StringToV8(isolate, kEthereum), true);
-    } else {
-      global
-          ->Set(context, gin::StringToSymbol(isolate, kEthereum),
-                ethereum_proxy)
-          .Check();
+                             gin::StringToV8(isolate, kBraveEthereum), true);
     }
   }
 

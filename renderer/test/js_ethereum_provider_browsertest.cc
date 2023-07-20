@@ -324,9 +324,17 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
           browser()->profile());
   keyring_service->CreateWallet("password", base::DoNothing());
 
+  scoped_refptr<const extensions::Extension> extension(
+      extensions::ExtensionBuilder("MetaMask")
+          .SetID(metamask_extension_id)
+          .Build());
+  extensions::ExtensionSystem::Get(browser()->profile())
+      ->extension_service()
+      ->AddExtension(extension.get());
+
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
-      brave_wallet::mojom::DefaultWallet::None);
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
 
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -468,7 +476,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                        BraveEthereum_NonConfigurable) {
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
-      brave_wallet::mojom::DefaultWallet::None);
+      brave_wallet::mojom::DefaultWallet::BraveWallet);
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   std::string overwrite =

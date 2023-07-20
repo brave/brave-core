@@ -153,7 +153,8 @@ void BraveRendererUpdater::UpdateRenderer(
       static_cast<brave_wallet::mojom::DefaultWallet>(
           brave_wallet_ethereum_provider_.GetValue());
   bool install_window_brave_ethereum_provider =
-      is_wallet_allowed_for_context_ && brave_wallet::IsDappsSupportEnabled();
+      is_wallet_allowed_for_context_ && brave_wallet::IsDappsSupportEnabled() &&
+      default_ethereum_wallet != brave_wallet::mojom::DefaultWallet::None;
   bool install_window_ethereum_provider =
       ((default_ethereum_wallet ==
             brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension &&
