@@ -256,7 +256,7 @@ public class Utils {
             BraveActivity.getBraveActivity().openNewOrSelectExistingTab(webWalletUrl, true);
             TabUtils.bringChromeTabbedActivityToTheTop(activity);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "Error while opening swap tab.", e);
+            Log.e(TAG, "Error while opening wallet tab.", e);
         }
     }
 
