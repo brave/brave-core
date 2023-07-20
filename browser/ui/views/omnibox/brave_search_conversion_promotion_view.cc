@@ -597,10 +597,15 @@ gfx::Size BraveSearchConversionPromotionView::CalculatePreferredSize() const {
   views::View* active_child = (type_ == ConversionType::kButton)
                                   ? button_type_container_
                                   : banner_type_container_;
-  auto size = active_child->GetPreferredSize();
-  if (type_ == ConversionType::kBanner) {
-    size.Enlarge(0, kBannerTypeMargin + kBannerTypeMarginBottom);
+  DCHECK(active_child);
+  if (type_ == ConversionType::kButton) {
+    return active_child->GetPreferredSize();
   }
+
+  // Ask preferred size + margin for banner.
+  auto size = active_child->GetPreferredSize();
+  auto* margin = active_child->GetProperty(views::kMarginsKey);
+  size.Enlarge(0, margin->height());
   return size;
 }
 
