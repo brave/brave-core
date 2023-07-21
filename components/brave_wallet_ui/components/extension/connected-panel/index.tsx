@@ -230,15 +230,13 @@ export const ConnectedPanel = (props: Props) => {
 
   const orb = useAccountOrb(selectedAccount)
 
-  const selectedAccountFiatBalance = React.useMemo(() => {
+  const selectedAccountBalance = React.useMemo(() => {
     if (
       !tokenBalancesRegistry ||
       !networkAsset ||
       !selectedAccount ||
       isLoadingBalances ||
-      isFetchingBalances ||
-      !spotPriceRegistry ||
-      isLoadingSpotPrices
+      isFetchingBalances
     ) {
       return Amount.empty()
     }
@@ -249,15 +247,30 @@ export const ConnectedPanel = (props: Props) => {
       tokenBalancesRegistry
     )
 
-    return new Amount(balance)
-      .divideByDecimals(networkAsset.decimals)
-      .times(getTokenPriceAmountFromRegistry(spotPriceRegistry, networkAsset))
+    return new Amount(balance).divideByDecimals(networkAsset.decimals)
   }, [
+    tokenBalancesRegistry,
     networkAsset,
     selectedAccount,
-    tokenBalancesRegistry,
     isLoadingBalances,
-    isFetchingBalances,
+    isFetchingBalances
+  ])
+
+  const selectedAccountFiatBalance = React.useMemo(() => {
+    if (
+      selectedAccountBalance.isUndefined() ||
+      !networkAsset ||
+      !spotPriceRegistry ||
+      isLoadingSpotPrices
+    ) {
+      return Amount.empty()
+    }
+
+    return selectedAccountBalance
+      .times(getTokenPriceAmountFromRegistry(spotPriceRegistry, networkAsset))
+  }, [
+    selectedAccountBalance,
+    networkAsset,
     spotPriceRegistry,
     isLoadingSpotPrices
   ])
@@ -303,30 +316,16 @@ export const ConnectedPanel = (props: Props) => {
   // computed
   const formattedAssetBalance = React.useMemo(() => {
     if (
-      !networkAsset ||
-      !selectedAccount ||
-      !tokenBalancesRegistry ||
-      isLoadingBalances ||
-      isFetchingBalances
+      selectedAccountBalance.isUndefined() ||
+      !networkAsset
     ) {
       return ''
     }
 
-    const balance = getBalance(
-      selectedAccount,
-      networkAsset,
-      tokenBalancesRegistry
-    )
-
-    return new Amount(balance)
-      .divideByDecimals(networkAsset.decimals)
-      .formatAsAsset(6, networkAsset.symbol)
+    return selectedAccountBalance.formatAsAsset(6, networkAsset.symbol)
   }, [
-    networkAsset,
-    selectedAccount,
-    tokenBalancesRegistry,
-    isLoadingBalances,
-    isFetchingBalances
+    selectedAccountBalance,
+    networkAsset
   ])
 
   // render

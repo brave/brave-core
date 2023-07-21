@@ -163,6 +163,20 @@ const AssetsPanel = (props: Props) => {
     querySubscriptionOptions60s
   )
 
+  const areTokenBalancesLoaded = React.useMemo(() => {
+    return (
+      selectedAccount &&
+      tokenBalancesRegistry &&
+      !isLoadingBalances &&
+      !isFetchingBalances
+    )
+  }, [
+    selectedAccount,
+    tokenBalancesRegistry,
+    isLoadingBalances,
+    isFetchingBalances
+  ])
+
   return (
     <StyledWrapper>
       <AddAssetButton onClick={onAddAsset}>
@@ -178,12 +192,9 @@ const AssetsPanel = (props: Props) => {
           )}
           key={getAssetIdKey(token)}
           assetBalance={
-            selectedAccount &&
-              tokenBalancesRegistry &&
-              !isLoadingBalances &&
-              !isFetchingBalances
-                ? getBalance(selectedAccount, token, tokenBalancesRegistry)
-                : ''
+            areTokenBalancesLoaded
+              ? getBalance(selectedAccount, token, tokenBalancesRegistry)
+              : ''
           }
           token={token}
           spotPrice={
