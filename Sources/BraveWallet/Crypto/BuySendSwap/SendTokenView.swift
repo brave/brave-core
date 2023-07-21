@@ -16,6 +16,7 @@ struct SendTokenView: View {
 
   @State private var isShowingScanner = false
   @State private var isShowingError = false
+  @State private var didAutoShowSelectAccountToken = false
   @State private var isShowingSelectAccountTokenView: Bool = false
 
   @ScaledMetric private var length: CGFloat = 16.0
@@ -292,6 +293,10 @@ struct SendTokenView: View {
       }
     }
     .task {
+      if !didAutoShowSelectAccountToken {
+        isShowingSelectAccountTokenView = true
+        didAutoShowSelectAccountToken = true
+      }
       sendTokenStore.update()
       await sendTokenStore.selectTokenStore.update()
     }
