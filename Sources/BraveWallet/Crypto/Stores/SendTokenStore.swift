@@ -247,7 +247,9 @@ public class SendTokenStore: ObservableObject {
       let allTokens = await self.blockchainRegistry.allTokens(network.chainId, coin: network.coin)
       guard !Task.isCancelled else { return }
       if selectedSendToken == nil {
-        self.selectedSendToken = userAssets.first
+        self.selectedSendToken = userAssets.first(where: { network.isNativeAsset($0) })
+        ?? userAssets.first(where: { $0.symbol.caseInsensitiveCompare("bat") == .orderedSame })
+        ?? userAssets.sorted(by: { $0.name < $1.name }).first
       }
       self.userAssets = userAssets
       self.allTokens = allTokens
