@@ -142,10 +142,8 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
             "URL": "https://cryptography.io",
             "License": "Apache-2.0",
             # Because of the way we install this third-party library, there is
-            # no LICENSE file in its directory. So use an appropriate file from
-            # another dependency.
-            "License File": \
-                "/brave/third_party/rust/either/v1/crate/LICENSE-APACHE",
+            # no LICENSE file in its directory.
+            "License File": "/brave/common/licenses/Apache-2.0",
         },
         os.path.join('brave', 'third_party', 'macholib'): {
             "Name": "macholib",
