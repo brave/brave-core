@@ -104,13 +104,18 @@ export const useSwap = () => {
       return []
     }
 
+    // undefined for SOL indicates that useScopedBalanceUpdater should
+    // scan balances for all possible tokens. Not to be confused with
+    // [] which indicates that the query should be skipped.
     if (selectedNetwork.coin === BraveWallet.CoinType.SOL) {
       return undefined
     }
 
-    return assetsList
-      .filter(token => token.coin === selectedNetwork.coin &&
-        token.chainId === selectedNetwork.chainId)
+    return assetsList.filter(
+      (token) =>
+        token.coin === selectedNetwork.coin &&
+        token.chainId === selectedNetwork.chainId
+    )
   }, [selectedNetwork, assetsList, selectedAccount])
 
   const { data: tokenBalancesRegistry } = useScopedBalanceUpdater(
