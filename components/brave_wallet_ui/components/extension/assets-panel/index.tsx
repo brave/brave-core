@@ -163,19 +163,10 @@ const AssetsPanel = (props: Props) => {
     querySubscriptionOptions60s
   )
 
-  const areTokenBalancesLoaded = React.useMemo(() => {
-    return (
-      selectedAccount &&
-      tokenBalancesRegistry &&
-      !isLoadingBalances &&
-      !isFetchingBalances
-    )
-  }, [
-    selectedAccount,
-    tokenBalancesRegistry,
-    isLoadingBalances,
-    isFetchingBalances
-  ])
+  const areTokenBalancesLoaded = selectedAccount &&
+    tokenBalancesRegistry &&
+    !isLoadingBalances &&
+    !isFetchingBalances
 
   return (
     <StyledWrapper>
