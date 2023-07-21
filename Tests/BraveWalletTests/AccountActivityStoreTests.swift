@@ -111,6 +111,7 @@ class AccountActivityStoreTests: XCTestCase {
   }
   
   func testUpdateEthereumAccount() {
+    let firstTransactionDate = Date(timeIntervalSince1970: 1636399671) // Monday, November 8, 2021 7:27:51 PM
     let account: BraveWallet.AccountInfo = .mockEthAccount
     let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
     let mockEthDecimalBalance: Double = 0.0896
@@ -131,7 +132,11 @@ class AccountActivityStoreTests: XCTestCase {
       mockEthBalanceWei: mockEthBalanceWei,
       mockERC20BalanceWei: mockERC20BalanceWei,
       mockERC721BalanceWei: mockERC721BalanceWei,
-      transactions: [ethSendTxCopy, goerliSwapTxCopy]
+      transactions: [goerliSwapTxCopy, ethSendTxCopy].enumerated().map { (index, tx) in
+        // transactions sorted by created time, make sure they are in-order
+        tx.createdTime = firstTransactionDate.addingTimeInterval(TimeInterval(index * 10))
+        return tx
+      }
     )
     
     let mockAssetManager = TestableWalletUserAssetManager()
@@ -232,6 +237,7 @@ class AccountActivityStoreTests: XCTestCase {
   }
   
   func testUpdateSolanaAccount() {
+    let firstTransactionDate = Date(timeIntervalSince1970: 1636399671) // Monday, November 8, 2021 7:27:51 PM
     let account: BraveWallet.AccountInfo = .mockSolAccount
     let mockLamportBalance: UInt64 = 3876535000 // ~3.8765 SOL
     let mockSolDecimalBalance: Double = 3.8765 // rounded
@@ -253,7 +259,11 @@ class AccountActivityStoreTests: XCTestCase {
     let (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy, ipfsApi) = setupServices(
       mockLamportBalance: mockLamportBalance,
       mockSplTokenBalances: mockSplTokenBalances,
-      transactions: [solSendTxCopy, solTestnetSendTxCopy]
+      transactions: [solTestnetSendTxCopy, solSendTxCopy].enumerated().map { (index, tx) in
+        // transactions sorted by created time, make sure they are in-order
+        tx.createdTime = firstTransactionDate.addingTimeInterval(TimeInterval(index * 10))
+        return tx
+      }
     )
     
     let mockAssetManager = TestableWalletUserAssetManager()

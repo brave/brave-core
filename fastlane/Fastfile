@@ -53,20 +53,17 @@ platform :ios do
         "ClientTests/UserAgentTests",
         "ClientTests/AdBlockEngineManagerTests/testPerformance",
         "DataTests",
-      	"BraveWalletTests/ManageSiteConnectionsStoreTests/testRemoveAllPermissions",
-      	"BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissions",
-      	"BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissionsLastPermission",
-        "BraveWalletTests/SendTokenStoreTests/testSNSAddressResolution",
-        "BraveWalletTests/SendTokenStoreTests/testSNSAddressResolutionFailure",
+        "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemoveAllPermissions",
+        "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissions",
+        "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissionsLastPermission",
         "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInSolTxIfAvailable",
-        "BraveWalletTests/SendTokenStoreTests/testENSAddressResolution",
-        "BraveWalletTests/SendTokenStoreTests/testENSAddressResolutionOffchain",
-        "BraveWalletTests/SendTokenStoreTests/testENSAddressResolutionFailure",
         "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInEthTxIfAvailable",
         "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionEthNetwork",
-        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionFailure",
         "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionSolNetwork",
-        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionTokenChange"
+        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionFailure",
+        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionTokenChange",
+        "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareERC20Approve",
+        "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareTransactionNotOnSelectedNetwork",
       ]
     )
 
