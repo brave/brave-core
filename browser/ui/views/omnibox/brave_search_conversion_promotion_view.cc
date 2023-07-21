@@ -103,8 +103,14 @@ class HorizontalGradientBackground : public views::Background {
         ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors()
             ? IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DARK
             : IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC);
-    canvas->DrawImageInt(*graphic, bounds.right() - graphic->width(),
-                         bounds.y());
+
+    // Scale image to fit with host view's height.
+    const float image_scale = bounds.height() / graphic->height();
+    const int target_graphic_width = graphic->width() * image_scale;
+    const int target_graphic_height = graphic->height() * image_scale;
+    canvas->DrawImageInt(*graphic, 0, 0, graphic->width(), graphic->height(),
+                         bounds.right() - target_graphic_width, bounds.y(),
+                         target_graphic_width, target_graphic_height, true);
   }
 };
 
@@ -149,11 +155,11 @@ class ButtonTypeDismissButton : public views::ImageButton {
   ButtonTypeDismissButton& operator=(const ButtonTypeDismissButton&) = delete;
 
   void GetAccessibleNodeData(ui::AXNodeData* node_data) override {
-    node_data->SetName(brave_l10n::GetLocalizedResourceUTF16String(
-        IDS_ACC_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON));
     // Although this appears visually as a button, expose as a list box option
     // so that it matches the other options within its list box container.
     node_data->role = ax::mojom::Role::kListBoxOption;
+    node_data->SetName(brave_l10n::GetLocalizedResourceUTF16String(
+        IDS_ACC_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON));
   }
 };
 
@@ -271,6 +277,15 @@ void BraveSearchConversionPromotionView::ResetChildrenVisibility() {
 void BraveSearchConversionPromotionView::SetTypeAndInput(
     brave_search_conversion::ConversionType type,
     const std::u16string& input) {
+  // Don't need to update promotion ui if input is same.
+  // Not sure why but upstream calls OmniboxResultView::SetMatch() multiple
+  // times for same match. As this called again after selected,
+  // |selected_| state is cleared if not early returned for same input
+  // condition.
+  if (input_ == input) {
+    return;
+  }
+
   DCHECK_NE(ConversionType::kNone, type);
 
   type_ = type;
@@ -588,10 +603,15 @@ gfx::Size BraveSearchConversionPromotionView::CalculatePreferredSize() const {
   views::View* active_child = (type_ == ConversionType::kButton)
                                   ? button_type_container_
                                   : banner_type_container_;
-  auto size = active_child->GetPreferredSize();
-  if (type_ == ConversionType::kBanner) {
-    size.Enlarge(0, kBannerTypeMargin + kBannerTypeMarginBottom);
+  DCHECK(active_child);
+  if (type_ == ConversionType::kButton) {
+    return active_child->GetPreferredSize();
   }
+
+  // Ask preferred size + margin for banner.
+  auto size = active_child->GetPreferredSize();
+  auto* margin = active_child->GetProperty(views::kMarginsKey);
+  size.Enlarge(0, margin->height());
   return size;
 }
 

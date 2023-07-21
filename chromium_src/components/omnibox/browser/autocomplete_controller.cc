@@ -89,9 +89,9 @@ void MaybeAddCommanderProvider(AutocompleteController::Providers& providers,
       !provider_client_->IsOffTheRecord())                            \
     providers_.push_back(new PromotionProvider(provider_client_.get()));
 
-// This sort should be done in the middle of
-// AutocompleteController::UpdateResult() because result should be updated
-// before notifying at the last of UpdateResult().
+// This sort should be done right after AutocompleteResult::SortAndCull() in
+// the AutocompleteController::SortCullAndAnnotateResult() to make our sorting
+// run last but before notifying.
 #define BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT \
   SortBraveSearchPromotionMatch(&result_);          \
   MaybeShowCommands(&result_, input_);
