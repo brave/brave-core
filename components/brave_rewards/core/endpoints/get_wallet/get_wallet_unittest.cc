@@ -78,6 +78,17 @@ INSTANTIATE_TEST_SUITE_P(
       base::unexpected(Error::kRewardsPaymentIDNotFound)
     },
     GetWalletParamType{
+      "ServerError403",
+      mojom::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_FORBIDDEN,
+        {},
+        {}
+      },
+      base::unexpected(Error::kRequestSignatureVerificationFailure)
+    },
+    GetWalletParamType{
       "ServerOK_not_linked",
       mojom::UrlResponse{
         {},
