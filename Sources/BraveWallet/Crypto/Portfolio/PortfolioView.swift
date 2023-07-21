@@ -106,6 +106,7 @@ struct PortfolioView: View {
     .sheet(isPresented: $isPresentingFiltersDisplaySettings) {
       FiltersDisplaySettingsView(
         filters: portfolioStore.filters,
+        isNFTFilters: false,
         networkStore: networkStore,
         save: { filters in
           portfolioStore.saveFilters(filters)

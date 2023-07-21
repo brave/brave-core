@@ -95,7 +95,7 @@ class AccountActivityStore: ObservableObject {
               NFTAssetViewModel(
                 token: token,
                 network: networkAssets.network,
-                balance: 0
+                balanceForAccounts: [:]
               )
             )
           } else {
@@ -170,7 +170,7 @@ class AccountActivityStore: ObservableObject {
               NFTAssetViewModel(
                 token: token,
                 network: networkAssets.network,
-                balance: Int(totalBalances[token.assetBalanceId] ?? 0),
+                balanceForAccounts: [account.address: Int(totalBalances[token.assetBalanceId] ?? 0)],
                 nftMetadata: allNFTMetadata[token.id]
               )
             )

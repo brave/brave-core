@@ -204,7 +204,7 @@ class AccountActivityStoreTests: XCTestCase {
         }
         XCTAssertEqual(lastUpdatedVisibleNFTs.count, 1)
         XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.token.symbol, BraveWallet.BlockchainToken.mockERC721NFTToken.symbol)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.balance, Int(mockNFTBalance))
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.balanceForAccounts[account.address], Int(mockNFTBalance))
         XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.imageURLString, mockERC721Metadata.imageURLString)
         XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.name, mockERC721Metadata.name)
         XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.description, mockERC721Metadata.description)
@@ -329,7 +329,7 @@ class AccountActivityStoreTests: XCTestCase {
         }
         XCTAssertEqual(lastUpdatedVisibleNFTs.count, 1)
         XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.token.symbol, BraveWallet.BlockchainToken.mockSolanaNFTToken.symbol)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.balance, Int(mockSolanaNFTTokenBalance))
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.balanceForAccounts[account.address], Int(mockSolanaNFTTokenBalance))
         XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.imageURLString, mockSolMetadata.imageURLString)
         XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.name, mockSolMetadata.name)
         XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.description, mockSolMetadata.description)

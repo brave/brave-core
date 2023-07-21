@@ -13,7 +13,7 @@ struct NFTView: View {
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var nftStore: NFTStore
   
-  @State private var isPresentingNetworkFilter: Bool = false
+  @State private var isPresentingFiltersDisplaySettings: Bool = false
   @State private var isPresentingEditUserAssets: Bool = false
   @State private var selectedNFTViewModel: NFTAssetViewModel?
   @State private var isShowingNFTDiscoveryAlert: Bool = false
@@ -66,7 +66,7 @@ struct NFTView: View {
   private let nftGrids = [GridItem(.adaptive(minimum: 120), spacing: 16, alignment: .top)]
   
   @ViewBuilder private func nftLogo(_ nftViewModel: NFTAssetViewModel) -> some View {
-    if let image = nftViewModel.network.nativeTokenLogoImage {
+    if let image = nftViewModel.network.nativeTokenLogoImage, nftStore.filters.isShowingNFTNetworkLogo {
       Image(uiImage: image)
         .resizable()
         .frame(width: 20, height: 20)
@@ -99,29 +99,35 @@ struct NFTView: View {
       .aspectRatio(1.0, contentMode: .fit)
   }
   
-  private var networkFilterButton: some View {
+  private var filtersButton: some View {
     Button(action: {
-      self.isPresentingNetworkFilter = true
+      self.isPresentingFiltersDisplaySettings = true
     }) {
       Image(braveSystemName: "leo.tune")
         .font(.footnote.weight(.medium))
         .foregroundColor(Color(.braveBlurpleTint))
         .clipShape(Rectangle())
     }
-    .sheet(isPresented: $isPresentingNetworkFilter) {
-      NavigationView {
-        NetworkFilterView(
-          networks: nftStore.networkFilters,
-          networkStore: networkStore,
-          saveAction: { selectedNetworks in
-            nftStore.networkFilters = selectedNetworks
-          }
-        )
-      }
-      .navigationViewStyle(.stack)
-      .onDisappear {
-        networkStore.closeNetworkSelectionStore()
-      }
+    .sheet(isPresented: $isPresentingFiltersDisplaySettings) {
+      FiltersDisplaySettingsView(
+        filters: nftStore.filters,
+        isNFTFilters: true,
+        networkStore: networkStore,
+        save: { filters in
+          nftStore.saveFilters(filters)
+        }
+      )
+      .osAvailabilityModifiers({ view in
+        if #available(iOS 16, *) {
+          view
+            .presentationDetents([
+              .fraction(0.6),
+              .large
+            ])
+        } else {
+          view
+        }
+      })
     }
   }
   
@@ -136,7 +142,7 @@ struct NFTView: View {
           .padding(.leading, 5)
       }
       Spacer()
-      networkFilterButton
+      filtersButton
         .padding(.trailing, 10)
       addCustomAssetButton
     }

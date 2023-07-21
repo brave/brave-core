@@ -50,6 +50,8 @@ extension Preferences {
     // MARK: Portfolio & NFT filters
     public static let sortOrderFilter = Option<Int>(key: "wallet.sortOrderFilter", default: SortOrder.valueDesc.rawValue)
     public static let isHidingSmallBalancesFilter = Option<Bool>(key: "wallet.isHidingSmallBalancesFilter", default: false)
+    public static let isHidingUnownedNFTsFilter = Option<Bool>(key: "wallet.isHidingUnownedNFTsFilter", default: false)
+    public static let isShowingNFTNetworkLogoFilter = Option<Bool>(key: "wallet.isShowingNFTNetworkLogoFilter", default: false)
     public static let nonSelectedAccountsFilter = Option<[String]>(key: "wallet.nonSelectedAccountsFilter", default: [])
     public static let nonSelectedNetworksFilter = Option<[String]>(
       key: "wallet.nonSelectedNetworksFilter",

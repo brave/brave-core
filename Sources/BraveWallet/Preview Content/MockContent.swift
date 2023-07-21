@@ -112,7 +112,7 @@ extension BraveWallet.BlockchainToken {
   )
   
   static let mockSolanaNFTToken: BraveWallet.BlockchainToken = .init(
-    contractAddress: "0xaaaaaaaaaa222222222233333333334444444444",
+    contractAddress: "aaaaaaaaaa222222222233333333334444444444",
     name: "SOLNFT",
     logo: "",
     isErc20: false,
