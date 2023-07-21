@@ -15,6 +15,7 @@ export const StyledWrapper = styled.div`
   justify-content: center;
   width: 100%;
   padding: 20px 15px 20px 15px;
+  height: 100%;
   min-height: 320px;
 `
 
@@ -81,6 +82,9 @@ export const AddressButton = styled(WalletButton)`
   outline: none;
   background: none;
   border: none;
+  word-wrap: break-word;
+  word-break: break-all;
+  flex-wrap: wrap;
 `
 
 export const ButtonRow = styled.div`
