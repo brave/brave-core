@@ -45,7 +45,8 @@ bool CookieSettings::IsEphemeralCookieAccessible(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin,
-    net::CookieSettingOverrides overrides) const {
+    net::CookieSettingOverrides overrides,
+    net::CookieInclusionStatus* cookie_inclusion_status) const {
   // Upstream now do single cookie-specific checks in some places to determine
   // whether cookie access should be granted. However, when ephemeral storage is
   // enabled, Brave doesn't care about whether access is being requested for a
@@ -57,7 +58,7 @@ bool CookieSettings::IsEphemeralCookieAccessible(
   }
 
   return IsCookieAccessible(cookie, url, site_for_cookies, top_frame_origin,
-                            overrides);
+                            overrides, cookie_inclusion_status);
 }
 
 net::NetworkDelegate::PrivacySetting
