@@ -223,7 +223,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &media::kLiveCaption,
     &net::features::kNoncedPartitionedCookies,
     &net::features::kPartitionedCookies,
-    &net::features::kSamePartyAttributeEnabled,
     &network::features::kPrivateStateTokens,
     &network_time::kNetworkTimeServiceQuerying,
     &ntp_features::kNtpAlphaBackgroundCollections,
