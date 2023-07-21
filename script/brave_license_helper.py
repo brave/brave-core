@@ -13,9 +13,14 @@ ANDROID_ONLY_PATHS = []
 
 DESKTOP_ONLY_PATHS = []
 
+_REPOSITORY_ROOT = None
+
 
 def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
                     additional_paths):
+    global _REPOSITORY_ROOT  # pylint: disable=global-statement
+    _REPOSITORY_ROOT = root
+
     # Exclude these specific paths from needing a README.chromium file.
     prune_paths.update([
         # Formerly external Brave code which has moved to brave-core
@@ -175,9 +180,24 @@ def CheckBraveMissingLicense(target_os, path, error):
         else:
             if path in ANDROID_ONLY_PATHS:
                 return  # Android failures are not relevant on desktop.
+        if not ContainsFiles(os.path.join(_REPOSITORY_ROOT, path)):
+            return  # Empty directories do not require license.
         print('\nERROR: missing license information in %s\n'
               "If this is code you added, then you'll have to add the required "
               "metadata.\nIf the path that's mentioned isn't something you "
               "added, then you probably just need to remove that obsolete path "
               "from your local checkout.\n" % path)
         raise error
+
+
+def ContainsFiles(path):
+    assert os.path.exists(path), f'{path} not found'
+
+    def reraise(e):
+        raise e
+
+    for _, _, filenames in os.walk(path, onerror=reraise):
+        if filenames:
+            return True
+
+    return False
