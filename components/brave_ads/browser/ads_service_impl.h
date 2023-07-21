@@ -96,6 +96,7 @@ class AdsServiceImpl : public AdsService,
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
+  bool UserHasOptedInToBraveRewards() const;
   bool UserHasOptedInToBraveNewsAds() const;
   bool UserHasOptedInToNewTabPageAds() const;
   bool UserHasOptedInToNotificationAds() const;
