@@ -278,6 +278,10 @@ AdsServiceImpl::~AdsServiceImpl() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+bool AdsServiceImpl::UserHasOptedInToBraveRewards() const {
+  return profile_->GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled);
+}
+
 bool AdsServiceImpl::UserHasOptedInToBraveNewsAds() const {
   return profile_->GetPrefs()->GetBoolean(
              brave_news::prefs::kBraveNewsOptedIn) &&
@@ -317,8 +321,10 @@ void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback(
 }
 
 bool AdsServiceImpl::CanStartBatAdsService() const {
-  return ShouldAlwaysRunService() || UserHasOptedInToNotificationAds() ||
-         UserHasOptedInToBraveNewsAds() || UserHasOptedInToNewTabPageAds();
+  return ShouldAlwaysRunService() || UserHasOptedInToBraveNewsAds() ||
+         (UserHasOptedInToBraveRewards() &&
+          (UserHasOptedInToNotificationAds() ||
+           UserHasOptedInToNewTabPageAds()));
 }
 
 void AdsServiceImpl::MaybeStartBatAdsService() {
