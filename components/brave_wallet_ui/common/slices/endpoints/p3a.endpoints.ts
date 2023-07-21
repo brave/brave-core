@@ -85,12 +85,7 @@ export const p3aEndpoints = ({
             error: `Unable to record active wallet count: ${error}`
           }
         }
-      },
-      invalidatesTags: (res, err, arg) =>
-        err
-          ? ['UNKNOWN_ERROR']
-          : // FIXME(onyb): use ACCOUNT_TAG_IDS.REGISTRY from a common .ts file
-            [{ type: 'AccountInfos', id: 'REGISTRY' }]
+      }
     })
   }
 }
