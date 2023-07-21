@@ -25,7 +25,7 @@ import * as WalletActions from '../../../../common/actions/wallet_actions'
 import { store, walletPageApiProxy } from '../../../store'
 import BraveCoreThemeProvider
   from '../../../../../common/BraveCoreThemeProvider'
-import { FundWalletScreen } from '../fund-wallet'
+import { FundWalletScreen } from '../../fund-wallet/fund-wallet'
 
 // Hooks
 import { LibContext } from '../../../../common/context/lib.context'
