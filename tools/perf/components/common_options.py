@@ -12,8 +12,6 @@ import components.path_util as path_util
 
 with path_util.SysPath(path_util.GetTelemetryDir()):
   with path_util.SysPath(path_util.GetChromiumPerfDir()):
-    print(sys.path)
-    print(path_util.GetChromiumPerfDir())
     from core.perf_benchmark import PerfBenchmark  # pylint: disable=import-error
 
 
