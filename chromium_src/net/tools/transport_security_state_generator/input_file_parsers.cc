@@ -541,9 +541,9 @@ bool ParseCertificatesFile(base::StringPiece certs_input,
                            Pinsets* pinsets,
                            base::Time* timestamp) {
   constexpr base::StringPiece brave_certs = R"brave_certs(
-# Last updated: Mon Jul 17 20:17:20 UTC 2023
+# Last updated: Fri Jul 21 04:35:10 UTC 2023
 PinsListTimestamp
-1689625040
+1689914110
 
 # =====BEGIN BRAVE ROOTS ASC=====
 #From https://www.amazontrust.com/repository/
