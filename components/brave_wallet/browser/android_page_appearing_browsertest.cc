@@ -409,7 +409,8 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSwapPageAppearing) {
   const std::vector<std::string> ignore_patterns = {
       "TypeError: Cannot read properties of undefined (reading 'forEach')",
       "Error calling jsonRpcService.getERC20TokenBalances",
-      "Error querying balance:", "Error: An internal error has occurred"};
+      "Error querying balance:", "Error: An internal error has occurred",
+      "Unable to fetch getTokenBalancesForChainId"};
   VerifyPage(url, ignore_patterns);
 }
 

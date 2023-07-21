@@ -1095,7 +1095,7 @@ export function createWalletApi () {
                         `Error calling jsonRpcService.getERC20TokenBalances:
                         error=${result.errorMessage}
                         arg=`,
-                        arg
+                        JSON.stringify(arg, undefined, 2)
                       )
                     }
                   }
@@ -1132,7 +1132,7 @@ export function createWalletApi () {
                       `Error calling jsonRpcService.getSPLTokenBalances:
                       error=${result.errorMessage}
                       arg=`,
-                      arg
+                      JSON.stringify(arg, undefined, 2)
                     )
                   }
                 }
