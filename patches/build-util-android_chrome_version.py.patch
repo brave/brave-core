@@ -1,8 +1,28 @@
 diff --git a/build/util/android_chrome_version.py b/build/util/android_chrome_version.py
-index f00cd99d2bfa5793d6ed5d96025885ad83af412f..4e49484e6bdb3648739521c6125fbacb8516c33c 100755
+index f00cd99d2bfa5793d6ed5d96025885ad83af412f..41f44538d04232f990d0af59682b92f43fe1fa23 100755
 --- a/build/util/android_chrome_version.py
 +++ b/build/util/android_chrome_version.py
-@@ -199,6 +199,7 @@ def _GetAbisToDigitMask(build_number):
+@@ -48,6 +48,19 @@ For example:
+ import argparse
+ from collections import namedtuple
+ 
++import os.path
++import sys
++
++_BUILD_ANDROID = os.path.join(os.path.dirname(__file__), os.pardir, 'android')
++sys.path.append(_BUILD_ANDROID)
++
++from pylib import constants
++from pylib.constants import host_paths
++_BRAVE_SCRIPT_PATH = os.path.join(host_paths.DIR_SOURCE_ROOT, 'brave',
++                                'script')
++sys.path.append(_BRAVE_SCRIPT_PATH)
++import brave_version_utils
++
+ # Package name version bits.
+ _PACKAGE_NAMES = {
+     'CHROME': 0,
+@@ -199,6 +212,7 @@ def _GetAbisToDigitMask(build_number):
      mapped to version code suffix.
    """
  
@@ -10,7 +30,7 @@ index f00cd99d2bfa5793d6ed5d96025885ad83af412f..4e49484e6bdb3648739521c6125fbacb
    if build_number < 5750:
      return {
          'arm': {
-@@ -327,7 +328,7 @@ def GenerateVersionCodes(version_values, arch, is_next_build):
+@@ -327,7 +341,7 @@ def GenerateVersionCodes(version_values, arch, is_next_build):
    """
  
    base_version_code = int(
