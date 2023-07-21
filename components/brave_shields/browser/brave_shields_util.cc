@@ -693,6 +693,10 @@ bool ShouldUpgradeToHttps(
     const GURL& url,
     https_upgrade_exceptions::HttpsUpgradeExceptionsService*
         https_upgrade_exceptions_service) {
+  // Don't upgrade if we don't have an exceptions service.
+  if (!https_upgrade_exceptions_service) {
+    return false;
+  }
   // Don't upgrade if feature is disabled.
   if (!IsHttpsByDefaultFeatureEnabled()) {
     return false;
@@ -700,7 +704,6 @@ bool ShouldUpgradeToHttps(
   if (!url.SchemeIsHTTPOrHTTPS() && !url.is_empty()) {
     return false;
   }
-  DCHECK(https_upgrade_exceptions_service);
   // Don't upgrade if shields are down.
   if (!GetBraveShieldsEnabled(map, url)) {
     return false;
@@ -712,7 +715,6 @@ bool ShouldUpgradeToHttps(
   }
   // Upgrade for Standard HTTPS upgrade if host is not on the exceptions list.
   if (control_type == ControlType::BLOCK_THIRD_PARTY &&
-      https_upgrade_exceptions_service &&
       https_upgrade_exceptions_service->CanUpgradeToHTTPS(url)) {
     return true;
   }
