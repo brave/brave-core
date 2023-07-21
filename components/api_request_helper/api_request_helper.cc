@@ -140,7 +140,8 @@ APIRequestHelper::Ticket APIRequestHelper::RequestSSE(
     DataReceivedCallback data_received_callback,
     ResultCallback result_callback,
     const base::flat_map<std::string, std::string>& headers,
-    const APIRequestOptions& request_options) {
+    const APIRequestOptions& request_options,
+    ResponseStartedCallback response_started_callback) {
   auto iter = CreateRequestURLLoaderHandler(
       method, url, payload, payload_content_type, request_options, headers,
       std::move(result_callback));
@@ -148,6 +149,8 @@ APIRequestHelper::Ticket APIRequestHelper::RequestSSE(
 
   // Set streaming data callback
   handler->data_received_callback_ = std::move(data_received_callback);
+
+  handler->response_started_callback_ = std::move(response_started_callback);
 
   handler->url_loader_->DownloadAsStream(url_loader_factory_.get(), handler);
   return iter;
@@ -291,8 +294,14 @@ void APIRequestHelper::URLLoaderHandler::RegisterURLLoader(
       [](base::WeakPtr<APIRequestHelper::URLLoaderHandler> handler,
          const GURL& final_url,
          const network::mojom::URLResponseHead& response_head) {
-        if (handler && response_head.mime_type == "text/event-stream") {
-          handler->is_sse_ = true;
+        if (handler) {
+          if (response_head.mime_type == "text/event-stream") {
+            handler->is_sse_ = true;
+          }
+          if (handler->response_started_callback_) {
+            std::move(handler->response_started_callback_)
+                .Run(final_url.spec(), response_head.content_length);
+          }
         }
       };
 

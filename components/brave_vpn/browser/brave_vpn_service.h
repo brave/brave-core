@@ -105,6 +105,12 @@ class BraveVpnService :
 
   using ResponseCallback =
       base::OnceCallback<void(const std::string&, bool success)>;
+  using OnResponseStartedCallback =
+      base::OnceCallback<void(const std::string&, const int64_t)>;
+  using DataReceivedCallback = base::RepeatingCallback<void(
+      data_decoder::DataDecoder::ValueOrError result)>;
+  using DataCompletedCallback =
+      base::OnceCallback<void(api_request_helper::APIRequestResult result)>;
 
   // mojom::vpn::ServiceHandler
   void AddObserver(
@@ -153,6 +159,11 @@ class BraveVpnService :
   void RecordAndroidBackgroundP3A(int64_t session_start_time_ms,
                                   int64_t session_end_time_ms);
 #endif
+  void QueryPrompt(const std::string& url,
+                   const std::string& method,
+                   OnResponseStartedCallback on_response_started_callback,
+                   DataReceivedCallback data_received_callback,
+                   DataCompletedCallback data_completed_callback);
 
  private:
   friend class BraveVPNServiceTest;

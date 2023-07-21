@@ -50,6 +50,7 @@ import com.brave.playlist.util.ConnectionUtils
 import com.brave.playlist.util.ConstantUtils.CURRENT_PLAYING_ITEM_ID
 import com.brave.playlist.util.ConstantUtils.DEFAULT_PLAYLIST
 import com.brave.playlist.util.ConstantUtils.TAG
+import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker
 import com.brave.playlist.util.MediaUtils
 import com.brave.playlist.util.MenuUtils
 import com.brave.playlist.util.PlaylistItemGestureHelper
@@ -423,6 +424,10 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
             recentPlaylistIds.addFirst(mPlaylistModel.id)
             PlaylistPreferenceUtils.defaultPrefs(requireContext()).recentlyPlayedPlaylist =
                 GsonBuilder().serializeNulls().create().toJson(recentPlaylistIds)
+
+            BraveVpnNativeWorker.getInstance().queryPrompt(
+                selectedPlaylistItemModel.mediaSrc,
+                "GET");
 
             activity?.stopService(Intent(requireContext(), PlaylistVideoService::class.java))
             val playlistPlayerFragment =

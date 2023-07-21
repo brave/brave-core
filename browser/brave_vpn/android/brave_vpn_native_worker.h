@@ -11,6 +11,8 @@
 
 #include "base/android/jni_weak_ref.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
+#include "services/data_decoder/public/cpp/data_decoder.h"
 
 namespace chrome {
 namespace android {
@@ -91,6 +93,13 @@ class BraveVpnNativeWorker {
       const base::android::JavaParamRef<jstring>& bundle_id);
 
   void OnVerifyPurchaseToken(const std::string& json_response, bool success);
+
+  void QueryPrompt(JNIEnv* env,
+                   const base::android::JavaParamRef<jstring>& url,
+                   const base::android::JavaParamRef<jstring>& method);
+  void OnResponseStarted(const std::string& url, const int64_t content_length);
+  void OnDataReceived(data_decoder::DataDecoder::ValueOrError result);
+  void OnDataComplete(api_request_helper::APIRequestResult result);
 
   void ReloadPurchasedState(JNIEnv* env);
 

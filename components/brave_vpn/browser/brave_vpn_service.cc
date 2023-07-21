@@ -845,4 +845,17 @@ void BraveVpnService::GetSubscriberCredentialV12(ResponseCallback callback) {
                           HasValidSubscriberCredential(local_prefs_));
 }
 
+void BraveVpnService::QueryPrompt(
+    const std::string& url,
+    const std::string& method,
+    OnResponseStartedCallback on_response_started_callback,
+    DataReceivedCallback data_received_callback,
+    DataCompletedCallback data_completed_callback) {
+  LOG(ERROR) << "data_source : "
+             << "BraveVpnService::QueryPrompt";
+  api_request_->QueryPrompt(
+      url, method, std::move(on_response_started_callback),
+      std::move(data_completed_callback), std::move(data_received_callback));
+}
+
 }  // namespace brave_vpn

@@ -7,10 +7,20 @@
 
 package org.chromium.chrome.browser.vpn;
 
+import android.os.Environment;
+
+import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +31,14 @@ public class BraveVpnNativeWorker {
     private static BraveVpnNativeWorker mInstance;
 
     private List<BraveVpnObserver> mObservers;
+
+    // private String finalResponse = "";
+    // private static ByteArrayOutputStream output = new ByteArrayOutputStream();
+    // private static File file =
+    //         new
+    //         File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+    //                 "index.mp4");
+    // private static FileOutputStream fos;
 
     public static BraveVpnNativeWorker getInstance() {
         synchronized (mLock) {
@@ -129,6 +147,56 @@ public class BraveVpnNativeWorker {
         }
     }
 
+    @CalledByNative
+    public void onResponseStarted(String url, long contentLength) {
+        for (BraveVpnObserver observer : mObservers) {
+            observer.onResponseStarted(url, contentLength);
+        }
+    }
+
+    @CalledByNative
+    public void onDataReceived(byte[] response) {
+        // Log.e("data_source",
+        //                 "BraveVpnNativeWorker :
+        //                 APIRequestHelper::URLLoaderHandler::OnDataReceived : "
+        //                         + response.length);
+        // PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
+        //     try {
+        //         Log.e("data_source",
+        //                 "BraveVpnNativeWorker :
+        //                 APIRequestHelper::URLLoaderHandler::OnDataReceived : "
+        //                         + response.length);
+        //         output.write(response);
+        //     } catch (Exception e) {
+        //         Log.e("data_source", e.getMessage());
+        //     }
+        // });
+        for (BraveVpnObserver observer : mObservers) {
+            observer.onDataReceived(response);
+        }
+    }
+
+    @CalledByNative
+    public void onDataCompleted() {
+        // Log.e("data_source",
+        //         "onDataCompleted : file.getAbsolutePath() : " + file.getAbsolutePath());
+        // PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
+        //     try {
+        //         byte[] out = output.toByteArray();
+        //         Log.e("data_source",
+        //                 "BraveVpnNativeWorker : onDataCompleted : byte[] length : " +
+        //                 out.length);
+        //         writeByte(out);
+        //         output.close();
+        //     } catch (Exception e) {
+        //         Log.e("data_source", e.getMessage());
+        //     }
+        // });
+        for (BraveVpnObserver observer : mObservers) {
+            observer.onDataCompleted();
+        }
+    }
+
     public void getAllServerRegions() {
         BraveVpnNativeWorkerJni.get().getAllServerRegions(mNativeBraveVpnNativeWorker);
     }
@@ -193,6 +261,10 @@ public class BraveVpnNativeWorker {
         BraveVpnNativeWorkerJni.get().reportForegroundP3A(mNativeBraveVpnNativeWorker);
     }
 
+    public void queryPrompt(String url, String method) {
+        BraveVpnNativeWorkerJni.get().queryPrompt(mNativeBraveVpnNativeWorker, url, method);
+    }
+
     @NativeMethods
     interface Natives {
         void init(BraveVpnNativeWorker caller);
@@ -217,5 +289,6 @@ public class BraveVpnNativeWorker {
         void reportBackgroundP3A(
                 long nativeBraveVpnNativeWorker, long sessionStartTimeMs, long sessionEndTimeMs);
         void reportForegroundP3A(long nativeBraveVpnNativeWorker);
+        void queryPrompt(long nativeBraveVpnNativeWorker, String url, String method);
     }
 }

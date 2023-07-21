@@ -254,6 +254,68 @@ void BraveVpnNativeWorker::OnVerifyPurchaseToken(
       base::android::ConvertUTF8ToJavaString(env, json_response), success);
 }
 
+void BraveVpnNativeWorker::QueryPrompt(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& url,
+    const base::android::JavaParamRef<jstring>& method) {
+  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  if (brave_vpn_service) {
+    brave_vpn_service->QueryPrompt(
+        base::android::ConvertJavaStringToUTF8(env, url),
+        base::android::ConvertJavaStringToUTF8(env, method),
+        base::BindOnce(&BraveVpnNativeWorker::OnResponseStarted,
+                       weak_factory_.GetWeakPtr()),
+        base::BindRepeating(&BraveVpnNativeWorker::OnDataReceived,
+                            weak_factory_.GetWeakPtr()),
+        base::BindOnce(&BraveVpnNativeWorker::OnDataComplete,
+                       weak_factory_.GetWeakPtr()));
+  }
+}
+
+void BraveVpnNativeWorker::OnResponseStarted(const std::string& url,
+                                             const int64_t content_length) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveVpnNativeWorker_onResponseStarted(
+      env, weak_java_brave_vpn_native_worker_.get(env),
+      base::android::ConvertUTF8ToJavaString(env, url), content_length);
+}
+
+void BraveVpnNativeWorker::OnDataReceived(
+    data_decoder::DataDecoder::ValueOrError result) {
+  if (!result.has_value()) {
+    LOG(ERROR) << "data_source : "
+               << "result.value() : empty";
+    return;
+  }
+
+  std::vector<uint8_t> vec(result.value().GetString().begin(),
+                           result.value().GetString().end());
+
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveVpnNativeWorker_onDataReceived(
+      env, weak_java_brave_vpn_native_worker_.get(env),
+      base::android::ToJavaByteArray(env, vec));
+}
+
+void BraveVpnNativeWorker::OnDataComplete(
+    api_request_helper::APIRequestResult result) {
+  if (result.Is2XXResponseCode()) {
+    if (!result.headers().empty()) {
+      for (auto entry : result.headers()) {
+        LOG(ERROR) << "data_source : "
+                   << "entry.first : \n"
+                   << entry.first
+                   << "\nOnAPIStreamDataComplete entry.second : \n"
+                   << entry.second;
+      }
+    }
+
+    JNIEnv* env = base::android::AttachCurrentThread();
+    Java_BraveVpnNativeWorker_onDataCompleted(
+        env, weak_java_brave_vpn_native_worker_.get(env));
+  }
+}
+
 jboolean BraveVpnNativeWorker::IsPurchasedUser(JNIEnv* env) {
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {

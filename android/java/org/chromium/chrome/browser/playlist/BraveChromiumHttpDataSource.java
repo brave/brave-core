@@ -30,6 +30,9 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HttpHeaders;
 
+import org.chromium.net.ChromiumNetworkAdapter;
+import org.chromium.net.NetworkTrafficAnnotationTag;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -82,6 +85,22 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
         this.contentTypePredicate = contentTypePredicate;
         this.requestProperties = new RequestProperties();
     }
+
+    NetworkTrafficAnnotationTag annotation =
+            NetworkTrafficAnnotationTag.createComplete("Brave attestation api android",
+                    "semantics {"
+                            + "  sender: 'Brave Android app'"
+                            + "  description: "
+                            + "    'This api gets unique value for payment ID'"
+                            + "  trigger: 'When payment id as captcha scheduled'"
+                            + "  data:"
+                            + "    'payment id'"
+                            + "  destination: Brave grant endpoint"
+                            + "}"
+                            + "policy {"
+                            + "  cookies_allowed: NO"
+                            + "  policy_exception_justification: 'Not implemented.'"
+                            + "}");
 
     /**
      * On platform API levels 19 and 20, okhttp's implementation of {@link InputStream#close} can
@@ -330,7 +349,8 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
     private HttpURLConnection makeConnection(URL url, @DataSpec.HttpMethod int httpMethod,
             @Nullable byte[] httpBody, long position, long length,
             Map<String, String> requestParameters) throws IOException {
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        HttpURLConnection connection =
+                (HttpURLConnection) ChromiumNetworkAdapter.openConnection(url, annotation);
         connection.setConnectTimeout(connectTimeoutMillis);
         connection.setReadTimeout(readTimeoutMillis);
 
@@ -465,4 +485,3 @@ public class BraveChromiumHttpDataSource implements HttpDataSource {
         }
     }
 }
- 

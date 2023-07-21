@@ -18,6 +18,7 @@ import android.net.Uri
 import android.os.Binder
 import android.os.Handler
 import android.os.IBinder
+import android.os.Build
 import android.support.v4.media.session.MediaSessionCompat
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -184,11 +185,23 @@ class PlaylistVideoService : Service(), Player.Listener, SessionAvailabilityList
         super.onDestroy()
     }
 
+    @Suppress("DEPRECATION")
+    private fun getPlaylistItemModels(intent: Intent): ArrayList<PlaylistItemModel>? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableArrayListExtra(
+                PLAYER_ITEMS,
+                PlaylistItemModel::class.java
+            )
+        } else {
+            intent.getParcelableArrayListExtra(PLAYER_ITEMS)
+        }
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.e(TAG, "onStartCommand")
         intent?.let {
             mPlaylistName = it.getStringExtra(PLAYLIST_NAME)
-            mPlaylistItemsModel = it.getParcelableArrayListExtra(PLAYER_ITEMS)
+            mPlaylistItemsModel = getPlaylistItemModels(it)
         }
 
         mPlayerNotificationManager = PlayerNotificationManager.Builder(
@@ -201,14 +214,13 @@ class PlaylistVideoService : Service(), Player.Listener, SessionAvailabilityList
             }
 
             override fun createCurrentContentIntent(player: Player): PendingIntent? {
-//                return PendingIntent.getActivity(
-//                    applicationContext,
-//                    0,
-//                    getMediaItemFromPosition(player.currentMediaItemIndex)
-//                        ?.let { PlaylistUtils.playlistNotificationIntent(applicationContext, it) },
-//                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-//                )
-                return null
+                return PendingIntent.getActivity(
+                    applicationContext,
+                    0,
+                    getMediaItemFromPosition(player.currentMediaItemIndex)
+                        ?.let { PlaylistUtils.playlistNotificationIntent(applicationContext, it) },
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                )
             }
 
             override fun getCurrentContentText(player: Player): CharSequence {

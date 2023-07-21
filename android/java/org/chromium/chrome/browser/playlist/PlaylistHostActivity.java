@@ -27,6 +27,7 @@ import com.brave.playlist.util.PlaylistUtils;
 import com.brave.playlist.view.bottomsheet.MoveOrCopyToPlaylistBottomSheet;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
@@ -36,6 +37,8 @@ import org.chromium.chrome.browser.playlist.kotlin.fragment.PlaylistFragment;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
+import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.Playlist;
@@ -48,11 +51,23 @@ import java.util.List;
 
 public class PlaylistHostActivity extends AsyncInitializationActivity
         implements ConnectionErrorHandler, PlaylistOptionsListener,
-                   PlaylistServiceObserverImplDelegate {
+                   PlaylistServiceObserverImplDelegate, BraveVpnObserver {
     private static final String TAG = "BravePlaylist";
     private PlaylistService mPlaylistService;
     private PlaylistViewModel mPlaylistViewModel;
     private PlaylistServiceObserverImpl mPlaylistServiceObserver;
+
+    @Override
+    public void onResumeWithNative() {
+        super.onResumeWithNative();
+        BraveVpnNativeWorker.getInstance().addObserver(this);
+    }
+
+    @Override
+    public void onPauseWithNative() {
+        BraveVpnNativeWorker.getInstance().removeObserver(this);
+        super.onPauseWithNative();
+    }
 
     @Override
     public void onConnectionError(MojoException e) {
@@ -516,4 +531,21 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
     public boolean shouldStartGpuProcess() {
         return true;
     }
+
+    @Override
+    public void onResponseStarted(String url, long contentLength) {
+        Log.e("data_source",
+                "PlaylistHostActivity : onResponseStarted : " + url
+                        + " Content length : " + contentLength);
+    };
+
+    @Override
+    public void onDataReceived(byte[] response) {
+        Log.e("data_source", "PlaylistHostActivity : OnDataReceived : " + response.length);
+    };
+
+    @Override
+    public void onDataCompleted() {
+        Log.e("data_source", "PlaylistHostActivity : onDataCompleted : file.getAbsolutePath() : ");
+    };
 }
