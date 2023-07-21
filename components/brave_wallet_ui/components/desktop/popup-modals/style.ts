@@ -81,6 +81,7 @@ export const Title = styled.span`
   letter-spacing: 0.02em;
   line-height: 26px;
   color: ${(p) => p.theme.color.text01};
+  margin-right: 16px;
 `
 
 export const CloseButton = styled(WalletButton)`

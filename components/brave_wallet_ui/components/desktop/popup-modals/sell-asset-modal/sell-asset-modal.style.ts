@@ -14,7 +14,9 @@ import { AssetIconProps, AssetIconFactory } from '../../../shared/style'
 export const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   width: 100%;
+  height: 100%;
   padding: 0 24px 24px 24px;
 `
 
@@ -120,10 +122,11 @@ export const ErrorBox = styled.div`
 
 export const ErrorIcon = styled.div`
   -webkit-mask-image: url(${WarningCircleFilled});
-  height: 20px;
-  width: 20px;
+  min-height: 20px;
+  min-width: 20px;
   mask-image: url(${WarningCircleFilled});
   mask-size: contain;
   margin-right: 18px;
-  background: ${(p) => p.theme.color.errorIcon}
+  background: ${(p) => p.theme.color.errorIcon};
+  mask-repeat: no-repeat;
 `

@@ -33,7 +33,11 @@ import {
   ErrorIcon
 } from './sell-asset-modal.style'
 
-import { VerticalSpacer, Row } from '../../../shared/style'
+import {
+  VerticalSpacer,
+  Row,
+  Column
+} from '../../../shared/style'
 
 interface Props {
   selectedAsset: BraveWallet.BlockchainToken
@@ -114,87 +118,102 @@ export const SellAssetModal = (props: Props) => {
       headerPaddingHorizontal={32}
     >
       <StyledWrapper>
-        <InputSection>
-          <Row
-            marginBottom={19}
-            justifyContent='space-between'
-            width='100%'
-          >
+        <Column
+          fullWidth={true}
+        >
+          <InputSection>
             <Row
-              width='unset'
+              marginBottom={19}
+              justifyContent='space-between'
+              width='100%'
             >
+              <Row
+                width='unset'
+              >
+                <Text
+                  textSize='12px'
+                  isBold={false}
+                  textColor='text03'
+                  marginRight={8}
+                >
+                  {getLocale('braveWalletBalance')}
+                </Text>
+                <Text
+                  textSize='12px'
+                  isBold={true}
+                  textColor='text01'
+                >
+                  {formatTokenBalanceWithSymbol(
+                    sellAssetBalance,
+                    selectedAsset.decimals,
+                    selectedAsset.symbol
+                  )}
+                </Text>
+              </Row>
+              <Row
+                width='unset'
+              >
+                <PresetButton
+                  onClick={() => setPresetAmountValue(0.5)}
+                  marginRight={4}
+                >
+                  {getLocale('braveWalletSendHalf')}
+                </PresetButton>
+                <PresetButton
+                  onClick={() => setPresetAmountValue(1)}
+                >
+                  {getLocale('braveWalletSendMax')}
+                </PresetButton>
+              </Row>
+            </Row>
+            <Row
+              marginBottom={16}
+              width='100%'
+              justifyContent='space-between'
+            >
+              <Row
+                width='unset'
+              >
+                <AmountInput
+                  placeholder='0.00'
+                  value={sellAmount}
+                  onChange={handleInputAmountChange}
+                />
+              </Row>
+              <Row
+                width='unset'
+              >
+                <AssetIconWithPlaceholder
+                  asset={selectedAsset}
+                  network={selectedAssetsNetwork}
+                />
+                <Text
+                  textSize='22px'
+                  isBold={true}
+                  textColor='text01'
+                >
+                  {selectedAsset.symbol}
+                </Text>
+              </Row>
+            </Row>
+          </InputSection>
+          {insufficientBalance && !isInvalidAmount &&
+            <ErrorBox>
+              <ErrorIcon />
               <Text
-                textSize='12px'
+                textSize='14px'
                 isBold={false}
-                textColor='text03'
-                marginRight={8}
-              >
-                {getLocale('braveWalletBalance')}
-              </Text>
-              <Text
-                textSize='12px'
-                isBold={true}
                 textColor='text01'
+                textAlign='left'
               >
-                {formatTokenBalanceWithSymbol(sellAssetBalance, selectedAsset.decimals, selectedAsset.symbol)}
+                {
+                  getLocale('braveWalletNotEnoughBalance')
+                    .replace('$1', selectedAsset.symbol)
+                }
               </Text>
-            </Row>
-            <Row
-              width='unset'
-            >
-              <PresetButton
-                onClick={() => setPresetAmountValue(0.5)}
-                marginRight={4}
-              >
-                {getLocale('braveWalletSendHalf')}
-              </PresetButton>
-              <PresetButton
-                onClick={() => setPresetAmountValue(1)}
-              >
-                {getLocale('braveWalletSendMax')}
-              </PresetButton>
-            </Row>
-          </Row>
-          <Row
-            marginBottom={16}
-            width='100%'
-            justifyContent='space-between'
-          >
-            <Row
-              width='unset'
-            >
-              <AmountInput
-                placeholder='0.00'
-                value={sellAmount}
-                onChange={handleInputAmountChange}
-              />
-            </Row>
-            <Row
-              width='unset'
-            >
-              <AssetIconWithPlaceholder asset={selectedAsset} network={selectedAssetsNetwork} />
-              <Text
-                textSize='22px'
-                isBold={true}
-                textColor='text01'
-              >
-                {selectedAsset.symbol}
-              </Text>
-            </Row>
-          </Row>
-        </InputSection>
-        {insufficientBalance && !isInvalidAmount &&
-          <ErrorBox>
-            <ErrorIcon />
-            <Text
-              textSize='14px'
-              isBold={false}
-              textColor='text01'
-            >
-              {getLocale('braveWalletNotEnoughBalance').replace('$1', selectedAsset.symbol)}
-            </Text>
-          </ErrorBox>
-        }
+            </ErrorBox>
+          }
+        </Column>
         <VerticalSpacer space={8} />
         <NavButton
           disabled={isSellButtonDisabled}
