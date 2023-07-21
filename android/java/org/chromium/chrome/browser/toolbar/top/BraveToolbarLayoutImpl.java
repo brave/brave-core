@@ -164,7 +164,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private static final int PLAYLIST_MEDIA_COUNT_LIMIT = 3;
 
     private static final int DAYS_7 = 7;
-    public static boolean mShouldShowPlaylistMenu = false;
+    public static boolean mShouldShowPlaylistMenu;
 
     private PlaylistServiceObserverImpl mPlaylistServiceObserver;
 

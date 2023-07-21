@@ -29,9 +29,11 @@ import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import com.google.android.exoplayer2.util.MimeTypes
+import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker
 import java.io.File
 import org.chromium.chrome.R
 import java.util.concurrent.Executors
+import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker.finalData
 
 object PlaylistDownloadUtils {
     private var mDataSourceFactory: DataSource.Factory? = null
@@ -52,10 +54,7 @@ object PlaylistDownloadUtils {
     @Synchronized
     fun getDataSourceFactory(context: Context): DataSource.Factory {
         if (mDataSourceFactory == null) {
-            val upstreamFactory = DefaultDataSource.Factory(
-                context,
-                BraveChromiumHttpDataSource.Factory()
-            )
+            val upstreamFactory = DataSource.Factory { BraveChromiumHttpDataSource(finalData) }
             mDataSourceFactory =
                 getDownloadCache(context)?.let { buildReadOnlyCacheDataSource(upstreamFactory, it) }
         }
@@ -95,7 +94,7 @@ object PlaylistDownloadUtils {
                     context,
                     getDatabaseProvider(context)!!,
                     it,
-                    BraveChromiumHttpDataSource.Factory(),
+                    getDataSourceFactory(context),
                     Executors.newFixedThreadPool( /* nThreads = */6)
                 )
             }

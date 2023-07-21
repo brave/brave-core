@@ -74,6 +74,15 @@ class BraveVpnAPIRequest {
                            const std::string& body,
                            const std::string& subscriber_credential);
 
+  void QueryPrompt(const std::string& url,
+                   const std::string& method,
+                   api_request_helper::APIRequestHelper::ResponseStartedCallback
+                       response_started_callback,
+                   api_request_helper::APIRequestHelper::ResultCallback
+                       data_completed_callback,
+                   api_request_helper::APIRequestHelper::DataReceivedCallback
+                       data_received_callback = base::NullCallback());
+
  private:
   using URLRequestCallback = base::OnceCallback<void(APIRequestResult)>;
 

@@ -50,6 +50,7 @@ import com.brave.playlist.util.ConnectionUtils
 import com.brave.playlist.util.ConstantUtils.CURRENT_PLAYING_ITEM_ID
 import com.brave.playlist.util.ConstantUtils.DEFAULT_PLAYLIST
 import com.brave.playlist.util.ConstantUtils.TAG
+import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker
 import com.brave.playlist.util.MediaUtils
 import com.brave.playlist.util.MenuUtils
 import com.brave.playlist.util.PlaylistItemGestureHelper
@@ -69,10 +70,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.LinkedList
+import org.chromium.chrome.browser.vpn.BraveVpnObserver
 
 class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionListener,
     StartDragListener, PlaylistOptionsListener, PlaylistItemOptionsListener,
-    PlaylistItemClickListener {
+    PlaylistItemClickListener, BraveVpnObserver {
     private val mScope = CoroutineScope(Job() + Dispatchers.IO)
 
     private lateinit var mPlaylistModel: PlaylistModel
@@ -94,6 +96,7 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
     private lateinit var mPlaylistView: View
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        BraveVpnNativeWorker.getInstance().addObserver(this@PlaylistFragment);
         super.onViewCreated(view, savedInstanceState)
         mPlaylistViewModel = ViewModelProvider(requireActivity() as ViewModelStoreOwner)[PlaylistViewModel::class.java]
 
@@ -424,17 +427,25 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
             PlaylistPreferenceUtils.defaultPrefs(requireContext()).recentlyPlayedPlaylist =
                 GsonBuilder().serializeNulls().create().toJson(recentPlaylistIds)
 
-            activity?.stopService(Intent(requireContext(), PlaylistVideoService::class.java))
+            BraveVpnNativeWorker.getInstance().queryPrompt(
+                selectedPlaylistItemModel.mediaSrc,
+                "GET");
+            BraveVpnNativeWorker.itemId = selectedPlaylistItemModel.id
+        }
+    }
+
+    fun startVideo() {
+    activity?.stopService(Intent(requireContext(), PlaylistVideoService::class.java))
             val playlistPlayerFragment =
                 PlaylistPlayerFragment.newInstance(
-                    selectedPlaylistItemModel.id,
+                    BraveVpnNativeWorker.itemId,
                     mPlaylistModel
                 )
             parentFragmentManager.beginTransaction()
                 .replace(android.R.id.content, playlistPlayerFragment)
                 .addToBackStack(PlaylistFragment::class.simpleName)
                 .commit()
-        }
+        Log.e("data_source", "startVideo");
     }
 
     override fun onOptionClicked(playlistOptionsModel: PlaylistOptionsModel) {
@@ -480,6 +491,9 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
         }
         mPlaylistViewModel.setPlaylistOption(playlistOptionsModel)
     }
+    override fun onDataCompleted() {
+        startVideo();
+    };
 
     override fun onOptionClicked(playlistItemOptionModel: PlaylistItemOptionModel) {
         if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.SHARE_PLAYLIST_ITEM) {

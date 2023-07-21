@@ -283,4 +283,24 @@ void BraveVpnAPIRequest::OnCreateSupportTicket(
   std::move(callback).Run(api_request_result.body(), success);
 }
 
+void BraveVpnAPIRequest::QueryPrompt(
+    const std::string& url,
+    const std::string& method,
+    api_request_helper::APIRequestHelper::ResponseStartedCallback
+        response_started_callback,
+    api_request_helper::APIRequestHelper::ResultCallback
+        data_completed_callback,
+    api_request_helper::APIRequestHelper::DataReceivedCallback
+        data_received_callback) {
+  LOG(ERROR) << "data_source : "
+             << "BraveVpnAPIRequest::QueryPrompt";
+  base::flat_map<std::string, std::string> headers;
+  // headers.emplace("Range", "bytes=0-4000");
+  LOG(ERROR) << "data_source"
+             << "BraveVpnAPIRequest : url : " << url << " method : " << method;
+  api_request_helper_.RequestSSE(method, GURL(url), "", "application/json",
+                                 std::move(data_received_callback),
+                                 std::move(data_completed_callback), headers,
+                                 {}, std::move(response_started_callback));
+}
 }  // namespace brave_vpn

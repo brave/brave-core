@@ -243,22 +243,34 @@ class PlaylistPlayerFragment : Fragment(R.layout.fragment_playlist_player), Play
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            mPlaylistModel = it.getParcelable(PLAYLIST_MODEL)
-            mSelectedPlaylistItemId = it.getString(SELECTED_PLAYLIST_ITEM_ID).toString()
+    @Suppress("DEPRECATION")
+    private fun getPlaylistModel(bundle: Bundle): PlaylistModel? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            bundle.getParcelable(PLAYLIST_MODEL, PlaylistModel::class.java)
+        } else {
+            bundle.getParcelable(PLAYLIST_MODEL)
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            mPlaylistModel = getPlaylistModel(it)
+            mSelectedPlaylistItemId = it.getString(SELECTED_PLAYLIST_ITEM_ID).toString()
+            Log.e("data_source", "PlaylistPlayerFragment onCreate : "+mSelectedPlaylistItemId);
+        }
+    }
+
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onDestroy() {
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         super.onDestroy()
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint("ClickableViewAccessibility", "SourceLockedOrientationActivity")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e("data_source", "PlaylistPlayerFragment onViewCreated");
         mPlaylistViewModel = ViewModelProvider(requireActivity() as ViewModelStoreOwner)[PlaylistViewModel::class.java]
 
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
@@ -782,6 +794,7 @@ class PlaylistPlayerFragment : Fragment(R.layout.fragment_playlist_player), Play
         @JvmStatic
         fun newInstance(selectedPlaylistItemId: String, playlistModel: PlaylistModel) =
             PlaylistPlayerFragment().apply {
+            Log.e("data_source", "PlaylistPlayerFragment.newInstance");
                 arguments = Bundle().apply {
                     putParcelable(PLAYLIST_MODEL, playlistModel)
                     putString(SELECTED_PLAYLIST_ITEM_ID, selectedPlaylistItemId)

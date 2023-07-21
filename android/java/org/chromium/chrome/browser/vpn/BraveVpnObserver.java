@@ -16,4 +16,7 @@ public interface BraveVpnObserver {
             String jsonInvalidateCredentials, boolean isSuccess){};
     default public void onGetSubscriberCredential(String subscriberCredential, boolean isSuccess){};
     default public void onVerifyPurchaseToken(String jsonResponse, boolean isSuccess){};
+    default public void onResponseStarted(String url, long contentLength){};
+    default public void onDataReceived(byte[] response){};
+    default public void onDataCompleted(){};
 }
