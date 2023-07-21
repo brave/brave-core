@@ -560,7 +560,9 @@ export const PortfolioOverview = () => {
           <PortfolioOverviewChart
             hasZeroBalance={fullPortfolioFiatBalance.isZero()}
             portfolioPriceHistory={portfolioPriceHistory}
-            isLoading={isFetchingPortfolioPriceHistory}
+            isLoading={
+              isFetchingPortfolioPriceHistory || !portfolioPriceHistory
+            }
           />
         </ColumnReveal>
       </Column>
