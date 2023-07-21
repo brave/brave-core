@@ -155,6 +155,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/dapps/SignTransactionFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding_fragments/BackupWalletFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding_fragments/CryptoOnboardingFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding_fragments/DownloadComponentProgressFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding_fragments/RecoveryPhraseFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding_fragments/RestoreWalletFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding_fragments/SecurePasswordFragment.java",

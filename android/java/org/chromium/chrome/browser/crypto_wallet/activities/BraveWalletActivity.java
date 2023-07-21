@@ -10,7 +10,6 @@ import static org.chromium.chrome.browser.crypto_wallet.util.Utils.ONBOARDING_FI
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.RESTORE_WALLET_ACTION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.UNLOCK_WALLET_ACTION;
 
-import android.annotation.SuppressLint;
 import android.os.Build;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
@@ -60,10 +58,9 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNextPage {
-    private static final String TAG = "AssetDetailActivity";
+    private static final String TAG = "BWalletBaseActivity";
 
     private Toolbar mToolbar;
 
@@ -82,7 +79,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private boolean mRestartSetupAction;
     private boolean mRestartRestoreAction;
     private DataFilesComponentInstaller mDataFilesComponentInstaller;
-    private TextView mComponentDownloadProgress;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -211,8 +207,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         mModalDialogManager = new ModalDialogManager(
                 new AppModalPresenter(this), ModalDialogManager.ModalDialogType.APP);
 
-        mComponentDownloadProgress = findViewById(R.id.onboarding_component_download_progress);
-
         onInitialLayoutInflationComplete();
     }
 
@@ -325,8 +319,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 addBackupWalletSequence(navigationItems, true);
                 cryptoWalletOnboardingPagerAdapter.replaceWithNavigationItems(
                         navigationItems, cryptoWalletOnboardingViewPager.getCurrentItem() + 1);
-
-                setupDownloadProgress(mDataFilesComponentInstaller);
             }
 
             cryptoWalletOnboardingPagerAdapter.notifyDataSetChanged();
@@ -336,39 +328,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                         cryptoWalletOnboardingViewPager.getCurrentItem() + 1);
             }
         }
-    }
-
-    @SuppressLint("SetTextI18n")
-    /*TODO(AlexeyBarabash): use mDataFilesComponentInstaller ?*/
-    private void setupDownloadProgress(DataFilesComponentInstaller dataFilesComponentInstaller) {
-        dataFilesComponentInstaller.setInfoCallback(new DataFilesComponentInstaller.InfoCallback() {
-            @Override
-            public void onInfo(String info) {
-                // TODO(AlexeyBarabash): this seems to be unused
-            }
-
-            @Override
-            public void onProgress(long downloadedBytes, long totalBytes) {
-                assert totalBytes > 0;
-                assert totalBytes < (long) Integer.MAX_VALUE;
-                assert downloadedBytes < (long) Integer.MAX_VALUE;
-
-                if (totalBytes > 0 && downloadedBytes == totalBytes) {
-                    mComponentDownloadProgress.setText("Downloading Wallet data file * 100%");
-                    mComponentDownloadProgress.setVisibility(View.GONE);
-                    return;
-                }
-                mComponentDownloadProgress.setVisibility(View.VISIBLE);
-                String progressText =
-                        String.format(Locale.ENGLISH, "Downloading Wallet data file * %d%%",
-                                (int) (100 * downloadedBytes / totalBytes));
-                mComponentDownloadProgress.setText(progressText);
-            }
-            @Override
-            public void onDownloadUpdateComplete() {
-                mComponentDownloadProgress.setVisibility(View.GONE);
-            }
-        });
     }
 
     private void setCryptoLayout() {

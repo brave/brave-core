@@ -15,7 +15,6 @@ import org.chromium.chrome.browser.component_updater.BraveComponentUpdater;
  * Class that manages Brave Wallet Data files component installation for Android
  */
 public class DataFilesComponentInstaller implements BraveComponentUpdater.ComponentUpdaterListener {
-    private static final String TAG = "DFCI";
     private static final String WALLET_COMPONENT_ID =
             WalletDataFilesInstaller.getWalletDataFilesComponentId();
     private Object mLock = new Object();
@@ -72,6 +71,12 @@ public class DataFilesComponentInstaller implements BraveComponentUpdater.Compon
                 }
             });
 
+            BraveComponentUpdater.get().addComponentUpdateEventListener(this);
+        }
+    }
+
+    public void registerListener() {
+        synchronized (mLock) {
             BraveComponentUpdater.get().addComponentUpdateEventListener(this);
         }
     }
