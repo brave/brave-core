@@ -22,9 +22,6 @@ extern const char kAIPrompt[];
 extern const char kAIPromptPlaceholder[];
 
 // Llama 2
-extern const char kLlama2Chat13b[];
-extern const char kLlama2Chat13b8k[];
-extern const char kLlama2Chat70b[];
 extern const char kLlama2Bos[];
 extern const char kLlama2Eos[];
 extern const char kLlama2BIns[];

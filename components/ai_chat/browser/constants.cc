@@ -14,9 +14,6 @@ constexpr char kHumanPromptPlaceholder[] = "\nH: ";
 constexpr char kAIPrompt[] = "Assistant:";
 constexpr char kAIPromptPlaceholder[] = "\n\nA: ";
 
-constexpr char kLlama2Chat13b[] = "llama-2-13b-chat";
-constexpr char kLlama2Chat13b8k[] = "llama-2-13b-chat-8k";
-constexpr char kLlama2Chat70b[] = "llama-2-70b-chat";
 constexpr char kLlama2Bos[] = "<s>";
 constexpr char kLlama2Eos[] = "</s>";
 constexpr char kLlama2BIns[] = "[INST]";
@@ -54,14 +51,12 @@ std::string GetAssistantPromptSegment() {
 }
 
 bool UsesLlama2PromptTemplate(const std::string& model) {
-  static std::map<std::string, bool> llama_2_models = {
-      {kLlama2Chat13b, true}, {kLlama2Chat13b8k, true}, {kLlama2Chat70b, true}};
-  auto model_pair = llama_2_models.find(model.c_str());
-  if (model_pair == llama_2_models.end()) {
-    return false;
+  if (model.find("llama-2") != std::string::npos &&
+      model.find("chat") != std::string::npos) {
+    return true;
   }
 
-  return true;
+  return false;
 }
 
 }  // namespace ai_chat
