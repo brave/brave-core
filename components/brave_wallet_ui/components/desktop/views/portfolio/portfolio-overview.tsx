@@ -333,43 +333,53 @@ export const PortfolioOverview = () => {
     defaultFiat
   ])
 
-  const percentageChange = React.useMemo(() => {
+  const change = React.useMemo(() => {
     if (
       portfolioPriceHistory &&
       portfolioPriceHistory.length !== 0 &&
-      !fullPortfolioFiatBalance.isZero()
+      !fullPortfolioFiatBalance.isUndefined()
     ) {
-      const oldestValue =
-        new Amount(portfolioPriceHistory[0].close)
-      const difference =
-        fullPortfolioFiatBalance.minus(oldestValue)
-      return `${difference.div(oldestValue).times(100).format(2)}`
+      const oldestValue = new Amount(portfolioPriceHistory[0].close)
+      return {
+        difference: fullPortfolioFiatBalance.isZero()
+          ? Amount.zero()
+          : fullPortfolioFiatBalance.minus(oldestValue),
+        oldestValue
+      }
     }
-    return '0.00'
+
+    // Case when portfolio change should not be displayed
+    return {
+      difference: Amount.zero(),
+      oldestValue: Amount.empty()
+    }
   }, [
     portfolioPriceHistory,
     fullPortfolioFiatBalance
   ])
 
-  const fiatValueChange = React.useMemo(() => {
-    if (
-      portfolioPriceHistory &&
-      portfolioPriceHistory.length !== 0 &&
-      !fullPortfolioFiatBalance.isZero()
-    ) {
-      const oldestValue =
-        new Amount(portfolioPriceHistory[0].close)
-      return fullPortfolioFiatBalance
-        .minus(oldestValue)
-        .formatAsFiat(defaultFiat, 2)
+  const percentageChange = React.useMemo(() => {
+    const { difference, oldestValue } = change
+    if (oldestValue.isUndefined()) {
+      return ''
     }
-    return new Amount(0).formatAsFiat(defaultFiat)
+
+    return `${difference.div(oldestValue).times(100).format(2)}`
+  }, [change])
+
+  const fiatValueChange = React.useMemo(() => {
+    const { difference, oldestValue } = change
+    if (oldestValue.isUndefined()) {
+      return ''
+    }
+
+    return difference.formatAsFiat(defaultFiat, 2)
   }, [
     defaultFiat,
-    portfolioPriceHistory
+    change
   ])
 
-  const isPortfolioDown = Number(percentageChange) < 0
+  const isPortfolioDown = new Amount(percentageChange).lt(0)
 
   // methods
   const onChangeTimeline = React.useCallback(
@@ -503,7 +513,7 @@ export const PortfolioOverview = () => {
               justifyContent='center'
               width='unset'
             >
-              {formattedFullPortfolioFiatBalance !== '' ? (
+              {fiatValueChange !== '' ? (
                 <>
                   <FiatChange
                     isDown={isPortfolioDown}
