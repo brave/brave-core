@@ -553,6 +553,7 @@ export const PortfolioAsset = (props: Props) => {
               selectedAssetTransactions={selectedAssetTransactions}
               tokenBalancesRegistry={tokenBalancesRegistry}
               accounts={candidateAccounts}
+              spotPriceRegistry={spotPriceRegistry}
             />
           </Column>
         }
