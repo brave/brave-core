@@ -44,7 +44,7 @@ import {
   useGetUserTokensRegistryQuery
 } from '../../../common/slices/api.slice'
 import {
-  selectAllUserAssetsFromQueryResult
+  selectAllVisibleUserAssetsFromQueryResult
 } from '../../../common/slices/entities/blockchain-token.entity'
 import {
   TokenBalancesRegistry
@@ -110,7 +110,7 @@ export const AccountDetailsHeader = (props: Props) => {
   // Queries
   const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
     selectFromResult: result => ({
-      userVisibleTokensInfo: selectAllUserAssetsFromQueryResult(result)
+      userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result)
     })
   })
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()

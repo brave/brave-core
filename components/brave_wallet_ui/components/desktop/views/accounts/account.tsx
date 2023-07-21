@@ -39,7 +39,7 @@ import {
 } from '../../../../utils/pricing-utils'
 import { getPriceIdForToken } from '../../../../utils/api-utils'
 import {
-  selectAllUserAssetsFromQueryResult
+  selectAllVisibleUserAssetsFromQueryResult
 } from '../../../../common/slices/entities/blockchain-token.entity'
 import {
   getAssetIdKey
@@ -144,7 +144,7 @@ export const Account = () => {
   const { data: networkList = [] } = useGetVisibleNetworksQuery()
   const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
     selectFromResult: result => ({
-      userVisibleTokensInfo: selectAllUserAssetsFromQueryResult(result)
+      userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result)
     })
   })
   const { data: unsortedTransactionList = [] } = useGetTransactionsQuery(

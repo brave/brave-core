@@ -47,7 +47,7 @@ import {
   querySubscriptionOptions60s
 } from '../../../../common/slices/constants'
 import {
-  selectAllUserAssetsFromQueryResult
+  selectAllVisibleUserAssetsFromQueryResult
 } from '../../../../common/slices/entities/blockchain-token.entity'
 
 // Styled Components
@@ -398,7 +398,7 @@ export const Send = (props: Props) => {
 
   const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
     selectFromResult: result => ({
-      userVisibleTokensInfo: selectAllUserAssetsFromQueryResult(result)
+      userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result)
     })
   })
 
