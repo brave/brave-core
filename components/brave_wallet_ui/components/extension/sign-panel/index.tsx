@@ -12,7 +12,7 @@ import { useAddressOrb } from '../../../common/hooks/use-orb'
 // Types
 import {
   SerializableSignMessageRequest,
-  WalletAccountType
+  BraveWallet
 } from '../../../constants/types'
 
 // Utils
@@ -58,8 +58,8 @@ import {
   WarningIcon
 } from '../shared-panel-styles'
 
-export interface Props {
-  accounts: WalletAccountType[]
+interface Props {
+  accounts: BraveWallet.AccountInfo[]
   signMessageData: SerializableSignMessageRequest[]
   onCancel: () => void
   showWarning: boolean

@@ -11,7 +11,7 @@ import {
 } from 'react-redux'
 
 // Types
-import { BraveWallet, WalletAccountType, WalletState } from '../../../constants/types'
+import { BraveWallet, WalletState } from '../../../constants/types'
 
 // Options
 import { AllAccountsOption, isAllAccountsOptionFilter } from '../../../options/account-filter-options'
@@ -38,8 +38,18 @@ import {
 import { useAccountOrb } from '../../../common/hooks/use-orb'
 
 interface Props {
-  onSelectAccount: (account: Pick<WalletAccountType, 'accountId' | 'address' | 'name'>) => void
-  selectedAccount?: Pick<WalletAccountType, 'accountId' | 'address' | 'name'>
+  onSelectAccount: (
+    account: Pick<BraveWallet.AccountInfo,
+      | 'accountId'
+      | 'address'
+      | 'name'
+    >
+  ) => void
+  selectedAccount?: Pick<BraveWallet.AccountInfo,
+    | 'accountId'
+    | 'address'
+    | 'name'
+  >
   selectedNetwork?: BraveWallet.NetworkInfo
 }
 
@@ -61,10 +71,13 @@ export const AccountFilterSelector = ({
     setIsOpen(prevIsOpen => !prevIsOpen)
   }, [])
 
-  const onSelectAccountAndClose = React.useCallback((account: WalletAccountType) => {
-    setIsOpen(false)
-    onSelectAccount(account)
-  }, [onSelectAccount])
+  const onSelectAccountAndClose = React.useCallback(
+    (account: BraveWallet.AccountInfo) => {
+      setIsOpen(false)
+      onSelectAccount(account)
+    },
+    [onSelectAccount]
+  )
 
   // Memos
   const selectedAccount =
@@ -78,13 +91,13 @@ export const AccountFilterSelector = ({
   const orb = useAccountOrb(selectedAccount);
 
   // Filters accounts by network if a selectedNetworkFilter is selected
-  const accountsFilteredBySelectedNetworkFilter: WalletAccountType[] = React.useMemo(() => {
+  const accountsFilteredBySelectedNetworkFilter = React.useMemo(() => {
     return selectedNetwork.chainId === AllNetworksOption.chainId
       ? accounts
       : accounts.filter((account) => account.accountId.coin === selectedNetwork.coin)
   }, [accounts, selectedNetwork])
 
-  const accountsList: WalletAccountType[] = React.useMemo(() => {
+  const accountsList: BraveWallet.AccountInfo[] = React.useMemo(() => {
     return [AllAccountsOption, ...accountsFilteredBySelectedNetworkFilter]
   }, [accountsFilteredBySelectedNetworkFilter])
 

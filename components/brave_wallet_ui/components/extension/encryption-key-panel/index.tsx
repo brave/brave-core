@@ -5,7 +5,11 @@
 import * as React from 'react'
 
 // Types
-import { BraveWallet, SerializableDecryptRequest, SerializableGetEncryptionPublicKeyRequest, WalletAccountType } from '../../../constants/types'
+import {
+  BraveWallet,
+  SerializableDecryptRequest,
+  SerializableGetEncryptionPublicKeyRequest
+} from '../../../constants/types'
 
 // Utils
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
@@ -36,7 +40,7 @@ import { useAddressOrb } from '../../../common/hooks/use-orb'
 
 export interface Props {
   panelType: 'request' | 'read'
-  accounts: WalletAccountType[]
+  accounts: BraveWallet.AccountInfo[]
   selectedNetwork?: BraveWallet.NetworkInfo
   encryptionKeyPayload: SerializableGetEncryptionPublicKeyRequest
   eTldPlusOne: string

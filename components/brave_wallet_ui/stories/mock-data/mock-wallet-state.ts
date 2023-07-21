@@ -7,7 +7,7 @@
 import { USDCIconUrl } from './asset-icons'
 
 // types
-import { BraveWallet, WalletAccountType, WalletState } from '../../constants/types'
+import { BraveWallet, WalletState } from '../../constants/types'
 import { AllNetworksOptionDefault } from '../../options/network-filter-options'
 import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
 import { AllAccountsOptionUniqueKey } from '../../options/account-filter-options'
@@ -17,7 +17,7 @@ import { AccountsGroupByOption } from '../../options/group-assets-by-options'
 import { LAMPORTS_PER_SOL } from '../../common/constants/solana'
 import { mockMoonCatNFT, mockErc20TokensList } from './mock-asset-options'
 
-const mockAccount: WalletAccountType = {
+const mockAccount: BraveWallet.AccountInfo = {
   address: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1',
   accountId: {
     coin: 60,
@@ -27,18 +27,10 @@ const mockAccount: WalletAccountType = {
     uniqueKey: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1'
   },
   name: 'Account 1',
-  tokenBalanceRegistry: {
-    '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346',
-    '0xc3f733ca98E0daD0386979Eb96fb1722A1A05E69': '450346'
-  },
-  nativeBalanceRegistry: {
-    [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
-    [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
-  },
   hardware: undefined
 }
 
-const mockAccount2: WalletAccountType = {
+const mockAccount2: BraveWallet.AccountInfo = {
   address: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2',
   accountId: {
     coin: 60,
@@ -48,18 +40,10 @@ const mockAccount2: WalletAccountType = {
     uniqueKey: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2'
   },
   name: 'Account 2',
-  tokenBalanceRegistry: {
-    '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346',
-    '0xc3f733ca98E0daD0386979Eb96fb1722A1A05E69': '450346'
-  },
-  nativeBalanceRegistry: {
-    [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
-    [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
-  },
   hardware: undefined
 }
 
-const mockAccount3: WalletAccountType = {
+const mockAccount3: BraveWallet.AccountInfo = {
   address: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3',
   accountId: {
     coin: 60,
@@ -69,14 +53,6 @@ const mockAccount3: WalletAccountType = {
     uniqueKey: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3'
   },
   name: 'Account 3',
-  tokenBalanceRegistry: {
-    '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346',
-    '0xc3f733ca98E0daD0386979Eb96fb1722A1A05E69': '450346'
-  },
-  nativeBalanceRegistry: {
-    [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
-    [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
-  },
   hardware: undefined
 }
 
@@ -180,7 +156,6 @@ export const mockWalletState: WalletState = {
   gasEstimates: undefined,
   hasIncorrectPassword: false,
   hasInitialized: true,
-  isFetchingPortfolioPriceHistory: false,
   isFilecoinEnabled: false,
   isMetaMaskInstalled: false,
   isSolanaEnabled: false,
@@ -191,7 +166,6 @@ export const mockWalletState: WalletState = {
   isWalletBackedUp: true,
   isWalletCreated: false,
   isWalletLocked: false,
-  portfolioPriceHistory: [],
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
   userVisibleTokensInfo: [
     {

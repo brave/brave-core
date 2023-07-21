@@ -15,7 +15,6 @@ export const defaultCryptocurrency = ({ wallet }: State) => wallet.defaultCurren
 export const defaultFiatCurrency = ({ wallet }: State) => wallet.defaultCurrencies.fiat
 export const hasIncorrectPassword = ({ wallet }: State) => wallet.hasIncorrectPassword
 export const hasInitialized = ({ wallet }: State) => wallet.hasInitialized
-export const isFetchingPortfolioPriceHistory = ({ wallet }: State) => wallet.isFetchingPortfolioPriceHistory
 export const isFilecoinEnabled = ({ wallet }: State) => wallet.isFilecoinEnabled
 export const isLoadingCoinMarketData = ({ wallet }: State) => wallet.isLoadingCoinMarketData
 export const isMetaMaskInstalled = ({ wallet }: State) => wallet.isMetaMaskInstalled
@@ -56,7 +55,6 @@ export const favoriteApps = ({ wallet }: State) => wallet.favoriteApps
 export const fullTokenList = ({ wallet }: State) => wallet.fullTokenList
 export const gasEstimates = ({ wallet }: State) => wallet.gasEstimates
 export const onRampCurrencies = ({ wallet }: State) => wallet.onRampCurrencies
-export const portfolioPriceHistory = ({ wallet }: State) => wallet.portfolioPriceHistory
 export const selectedAssetFilter = ({ wallet }: State) => wallet.selectedAssetFilter
 export const selectedGroupAssetsByItem = ({ wallet }: State) =>
   wallet.selectedGroupAssetsByItem

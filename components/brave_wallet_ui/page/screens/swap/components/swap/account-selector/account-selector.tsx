@@ -28,7 +28,7 @@ import {
 
 // Types
 import {
-  WalletAccountType
+  BraveWallet
 } from '../../../../../../constants/types'
 
 // Components
@@ -47,10 +47,10 @@ import { Text, HorizontalSpacer } from '../../shared-swap.styles'
 
 interface Props {
   disabled?: boolean
-  selectedAccount: WalletAccountType | undefined
+  selectedAccount: BraveWallet.AccountInfo | undefined
   showAccountSelector: boolean
   setShowAccountSelector: (value: boolean) => void
-  onSelectAccount: (account: WalletAccountType) => void
+  onSelectAccount: (account: BraveWallet.AccountInfo) => void
 }
 
 export const AccountSelector = (props: Props) => {
@@ -66,7 +66,7 @@ export const AccountSelector = (props: Props) => {
   const { data: selectedNetwork } = useGetSelectedChainQuery()
 
   // Selectors
-  const accounts: WalletAccountType[] =
+  const accounts: BraveWallet.AccountInfo[] =
     useUnsafeWalletSelector(WalletSelectors.accounts)
 
   // Refs
@@ -74,7 +74,8 @@ export const AccountSelector = (props: Props) => {
 
   // Memos
   const networkAccounts = React.useMemo(() => {
-    return accounts.filter(account => account.coin === selectedNetwork?.coin)
+    return accounts.filter(account =>
+      account.accountId.coin === selectedNetwork?.coin)
   }, [accounts, selectedNetwork])
 
   // Methods
@@ -83,7 +84,7 @@ export const AccountSelector = (props: Props) => {
   }, [showAccountSelector, setShowAccountSelector])
 
   const onClickSelectAccount = React.useCallback(
-    (account: WalletAccountType) => {
+    (account: BraveWallet.AccountInfo) => {
       onSelectAccount(account)
       setShowAccountSelector(false)
     },

@@ -8,8 +8,7 @@ import { getLocale } from '../../common/locale'
 
 // types
 import {
-  BraveWallet,
-  WalletAccountType
+  BraveWallet
 } from '../constants/types'
 
 export function isValidFilAddress (value: string): boolean {
@@ -34,9 +33,13 @@ export function isValidAddress (value: string, length: number): boolean {
 }
 
 export const suggestNewAccountName = (
-  accounts: WalletAccountType[],
+  accounts: BraveWallet.AccountInfo[],
   network: BraveWallet.NetworkInfo
 ) => {
-  const accountTypeLength = accounts.filter((account) => account.accountId.coin === network.coin).length + 1
-  return `${network.symbolName} ${getLocale('braveWalletAccount')} ${accountTypeLength}`
+  const accountTypeLength =
+    accounts.filter((account) => account.accountId.coin === network.coin)
+      .length + 1
+  return `${network.symbolName} ${getLocale(
+    'braveWalletAccount'
+  )} ${accountTypeLength}`
 }

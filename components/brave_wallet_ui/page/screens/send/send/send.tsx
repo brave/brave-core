@@ -30,17 +30,25 @@ import { findAccountByAccountId } from '../../../../utils/account-utils'
 import { getPriceIdForToken } from '../../../../utils/api-utils'
 
 // Hooks
-import { useBalanceUpdater, useSend } from '../../../../common/hooks'
+import { useSend } from '../../../../common/hooks'
+import {
+  useScopedBalanceUpdater
+} from '../../../../common/hooks/use-scoped-balance-updater'
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 import {
+  useGetDefaultFiatCurrencyQuery,
   useGetSelectedAccountIdQuery,
   useSetSelectedAccountMutation,
   useSetNetworkMutation,
-  useGetTokenSpotPricesQuery
+  useGetTokenSpotPricesQuery,
+  useGetUserTokensRegistryQuery
 } from '../../../../common/slices/api.slice'
 import {
   querySubscriptionOptions60s
 } from '../../../../common/slices/constants'
+import {
+  selectAllVisibleUserAssetsFromQueryResult
+} from '../../../../common/slices/entities/blockchain-token.entity'
 
 // Styled Components
 import {
@@ -90,7 +98,6 @@ export const Send = (props: Props) => {
   } = props
 
   // Wallet Selectors
-  const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
 
   // routing
@@ -100,9 +107,6 @@ export const Send = (props: Props) => {
     contractAddress?: string
     tokenId?: string
   }>()
-
-  // Hooks
-  useBalanceUpdater()
 
   const {
     toAddressOrUrl,
@@ -120,11 +124,11 @@ export const Send = (props: Props) => {
     submitSend,
     selectSendAsset,
     searchingForDomain,
-    processAddressOrUrl,
-    sendAssetOptions
+    processAddressOrUrl
   } = useSend(true)
 
   // Queries & Mutations
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const [setSelectedAccount] = useSetSelectedAccountMutation()
   const [setNetwork] = useSetNetworkMutation()
   const { data: selectedAccountId } = useGetSelectedAccountIdQuery()
@@ -161,14 +165,6 @@ export const Send = (props: Props) => {
     [updateToAddressOrUrl]
   )
 
-  const setPresetAmountValue = React.useCallback((percent: number) => {
-    if (!selectedSendAsset || !selectedAccount) {
-      return
-    }
-
-    setSendAmount(getPercentAmount(selectedSendAsset, selectedAccount, percent))
-  }, [setSendAmount, selectedSendAsset, selectedAccount])
-
   const onSelectSendOption = React.useCallback((option: SendOptionTypes) => {
     selectSendAsset(undefined)
     setSelectedSendOption(option)
@@ -196,10 +192,44 @@ export const Send = (props: Props) => {
     setDomainPosition(position ? position + 22 : 0)
   }, [])
 
-  // Memos
+  const {
+    data: tokenBalancesRegistry,
+    isLoading: isLoadingBalances,
+  } = useScopedBalanceUpdater(
+    selectedAccount && selectedSendAsset
+      ? {
+          network: {
+            chainId: selectedSendAsset.chainId,
+            coin: selectedAccount.accountId.coin
+          },
+          accounts: [selectedAccount],
+          tokens: [selectedSendAsset]
+        }
+      : skipToken
+    )
+
+  const setPresetAmountValue = React.useCallback((percent: number) => {
+    if (!selectedSendAsset || !selectedAccount) {
+      return
+    }
+
+    setSendAmount(
+      getPercentAmount(
+        selectedSendAsset,
+        selectedAccount,
+        percent,
+        tokenBalancesRegistry
+      )
+    )
+  }, [setSendAmount, selectedSendAsset, selectedAccount, tokenBalancesRegistry])
+
   const sendAssetBalance = React.useMemo(() => {
-    return getBalance(selectedAccount, selectedSendAsset)
-  }, [selectedAccount, selectedSendAsset])
+    if (!selectedAccount || !selectedSendAsset || !tokenBalancesRegistry) {
+      return ''
+    }
+
+    return getBalance(selectedAccount, selectedSendAsset, tokenBalancesRegistry)
+  }, [selectedAccount, selectedSendAsset, tokenBalancesRegistry])
 
   const accountNameAndBalance = React.useMemo(() => {
     if (!selectedSendAsset || sendAssetBalance === '') {
@@ -246,7 +276,9 @@ export const Send = (props: Props) => {
   const {
     data: spotPriceRegistry
   } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
+    !isLoadingBalances && tokenPriceIds.length && defaultFiatCurrency
+      ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+      : skipToken,
     querySubscriptionOptions60s
   )
 
@@ -265,12 +297,12 @@ export const Send = (props: Props) => {
         .multiplyByDecimals(selectedSendAsset.decimals) // ETH → Wei conversion
         .toHex(),
       token: selectedSendAsset,
-    }).formatAsFiat(defaultCurrencies.fiat)
+    }).formatAsFiat(defaultFiatCurrency)
   }, [
     spotPriceRegistry,
     selectedSendAsset,
     sendAmount,
-    defaultCurrencies.fiat,
+    defaultFiatCurrency,
     sendAssetBalance,
     selectedSendOption
   ])
@@ -364,16 +396,25 @@ export const Send = (props: Props) => {
       showEnsOffchainWarning
   }, [toAddressOrUrl, searchingForDomain, showEnsOffchainWarning])
 
-  const selectedAssetFromParams = React.useMemo(() => {
-    if (!contractAddress) return
+  const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
+    selectFromResult: result => ({
+      userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result)
+    })
+  })
 
-    return sendAssetOptions.find((option) =>
+  const selectedAssetFromParams = React.useMemo(() => {
+    if (!contractAddress || !chainId) return
+
+    return userVisibleTokensInfo.find(token =>
       tokenId
-        ? option.contractAddress.toLowerCase() ===
-        contractAddress.toLowerCase() && option.tokenId === tokenId
-        : option.contractAddress.toLowerCase() === contractAddress.toLowerCase()
+        ? token.chainId === chainId &&
+          token.contractAddress.toLowerCase() ===
+            contractAddress.toLowerCase() &&
+          token.tokenId === tokenId
+        : token.chainId === chainId &&
+          token.contractAddress.toLowerCase() === contractAddress.toLowerCase()
     )
-  }, [sendAssetOptions, contractAddress, tokenId])
+  }, [userVisibleTokensInfo, chainId, contractAddress, tokenId])
 
   const accountFromParams = React.useMemo(() => {
     return accounts.find(

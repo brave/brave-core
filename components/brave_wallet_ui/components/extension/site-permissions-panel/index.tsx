@@ -13,7 +13,7 @@ import { PanelActions } from '../../../panel/actions'
 import { useSelectedAccountQuery } from '../../../common/slices/api.slice.extra'
 
 // Types
-import { WalletAccountType } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -60,7 +60,7 @@ export const SitePermissions = () => {
   }, [])
 
   // memos
-  const accountByCoinType = React.useMemo((): WalletAccountType[] => {
+  const accountByCoinType = React.useMemo((): BraveWallet.AccountInfo[] => {
     return accounts.filter((account) => account.accountId.coin === selectedCoin)
   }, [accounts, selectedCoin])
 

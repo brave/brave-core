@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // Types
-import { WalletAccountType } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Styled Components
 import {
@@ -27,8 +27,8 @@ import { useAccountOrb } from '../../../common/hooks/use-orb'
 export interface Props {
   selected: boolean
   showCircle: boolean
-  account: WalletAccountType
-  onSelectAccount: (account?: WalletAccountType) => void
+  account: BraveWallet.AccountInfo
+  onSelectAccount: (account?: BraveWallet.AccountInfo) => void
 }
 
 export const AccountFilterItem = (props: Props) => {

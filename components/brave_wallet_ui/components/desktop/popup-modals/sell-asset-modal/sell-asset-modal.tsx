@@ -4,9 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
-import { BraveWallet, WalletAccountType } from '../../../../constants/types'
+import { BraveWallet } from '../../../../constants/types'
 
 // Utils
 import { formatTokenBalanceWithSymbol, getPercentAmount } from '../../../../utils/balance-utils'
@@ -15,6 +16,9 @@ import Amount from '../../../../utils/amount'
 
 // Hooks
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
+import {
+  useScopedBalanceUpdater
+} from '../../../../common/hooks/use-scoped-balance-updater'
 
 // Components
 import PopupModal from '../../../desktop/popup-modals'
@@ -45,7 +49,7 @@ interface Props {
   sellAmount: string
   showSellModal: boolean
   sellAssetBalance: string
-  account?: WalletAccountType
+  account?: BraveWallet.AccountInfo
   setSellAmount: (value: string) => void
   openSellAssetLink: () => void
   onClose: () => void
@@ -87,13 +91,30 @@ export const SellAssetModal = (props: Props) => {
     [setSellAmount]
   )
 
+  const {
+    data: tokenBalancesRegistry,
+  } = useScopedBalanceUpdater(
+    account && selectedAsset
+      ? {
+          network: {
+            chainId: selectedAsset.chainId,
+            coin: account.accountId.coin
+          },
+          accounts: [account],
+          tokens: [selectedAsset]
+        }
+      : skipToken
+    )
+
   const setPresetAmountValue = React.useCallback((percent: number) => {
     if (!selectedAsset || !account) {
       return
     }
 
-    setSellAmount(getPercentAmount(selectedAsset, account, percent))
-  }, [setSellAmount, selectedAsset, account])
+    setSellAmount(
+      getPercentAmount(selectedAsset, account, percent, tokenBalancesRegistry)
+    )
+  }, [setSellAmount, selectedAsset, account, tokenBalancesRegistry])
 
   const onCloseSellModal = React.useCallback(() => {
     setSellAmount('')

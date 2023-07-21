@@ -9,7 +9,6 @@ import { useDispatch } from 'react-redux'
 // types
 import {
   BraveWallet,
-  WalletAccountType,
   WalletRoutes,
   AccountPageTabs
 } from '../../../constants/types'
@@ -20,7 +19,6 @@ import useExplorer from '../../../common/hooks/explorer'
 // utils
 import Amount from '../../../utils/amount'
 import { getCid, getNFTTokenStandard, stripERC20TokenImageURL } from '../../../utils/string-utils'
-import { getBalance } from '../../../utils/balance-utils'
 import { reduceAddress } from '../../../utils/reduce-address'
 import {
   CommandMessage,
@@ -45,12 +43,6 @@ import {
   useGetNftMetadataQuery,
   useGetNftPinningStatusQuery
 } from '../../../common/slices/api.slice'
-
-// selectors
-import { //
-  useUnsafeWalletSelector
-} from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
 
 // components
 import { Skeleton } from '../../../components/shared/loading-skeleton/styles'
@@ -99,6 +91,7 @@ import { Row } from '../../../components/shared/style'
 interface Props {
   selectedAsset: BraveWallet.BlockchainToken
   tokenNetwork?: BraveWallet.NetworkInfo
+  ownerAccount?: BraveWallet.AccountInfo
 }
 
 const createSkeletonProps = (width?: string | number, height?: string | number) => {
@@ -110,7 +103,7 @@ const createSkeletonProps = (width?: string | number, height?: string | number) 
 }
 
 export const NftScreen = (props: Props) => {
-  const { selectedAsset, tokenNetwork } = props
+  const { selectedAsset, tokenNetwork, ownerAccount } = props
 
   // state
   const [showTooltip, setShowTooltip] = React.useState<boolean>(false)
@@ -119,9 +112,6 @@ export const NftScreen = (props: Props) => {
   const [ipfsImageUrl, setIpfsImageUrl] = React.useState<string>()
   const [isNftPinnable, setIsNftPinnable] = React.useState<boolean>(true)
   const [nftImageLoading, setNftImageLoading] = React.useState<boolean>(false)
-
-  // redux
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
 
   // queries
   const {
@@ -175,13 +165,6 @@ export const NftScreen = (props: Props) => {
     [selectedAsset.tokenId]
   )
 
-  const ownerAccount = React.useMemo(() => {
-    if (!accounts) return
-    return accounts
-      .filter((account) => account.accountId.coin === selectedAsset.coin)
-      .find(acc => new Amount(getBalance(acc, selectedAsset)).gte('1'))
-  }, [selectedAsset, accounts])
-
   // methods
   const onNftDetailsLoad = React.useCallback(() => {
     setNftIframeLoaded(true)
@@ -211,13 +194,16 @@ export const NftScreen = (props: Props) => {
     )()
   }, [selectedAsset])
 
-  const onClickViewAccount = React.useCallback((account: WalletAccountType) => {
-    history.push(
+  const onClickViewAccount = React.useCallback(
+    (account: BraveWallet.AccountInfo) => {
+      history.push(
       `${WalletRoutes.Accounts //
       }/${account.address //
       }/${AccountPageTabs.AccountAssetsSub}`
     )
-  }, [])
+    },
+    []
+  )
 
   // effects
   React.useEffect(() => {

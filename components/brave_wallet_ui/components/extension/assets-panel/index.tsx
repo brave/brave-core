@@ -17,12 +17,14 @@ import { getAssetIdKey } from '../../../utils/asset-utils'
 import { getPriceIdForToken } from '../../../utils/api-utils'
 import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
 import Amount from '../../../utils/amount'
+import { getBalance } from '../../../utils/balance-utils'
 
 // Styled Components
 import { StyledWrapper, AddAssetButton } from './style'
 
 // RTK
 import {
+  useGetDefaultFiatCurrencyQuery,
   useGetSelectedChainQuery,
   useGetTokenSpotPricesQuery,
   useGetUserTokensRegistryQuery
@@ -41,7 +43,7 @@ import {
 
 import { PortfolioAssetItem } from '../../desktop'
 
-export interface Props {
+interface Props {
   selectedAccount?: BraveWallet.AccountInfo
   onAddAsset: () => void
 }
@@ -56,6 +58,8 @@ const AssetsPanel = (props: Props) => {
       }
     })
   }
+
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
   const { currentData: selectedNetwork } = useGetSelectedChainQuery(undefined)
 
@@ -75,14 +79,14 @@ const AssetsPanel = (props: Props) => {
   })
 
   const {
-    data: balances,
+    data: tokenBalancesRegistry,
     isLoading: isLoadingBalances,
     isFetching: isFetchingBalances
   } = useScopedBalanceUpdater(
     selectedNetwork && selectedAccount
       ? {
           network: selectedNetwork,
-          account: selectedAccount,
+          accounts: [selectedAccount],
           tokens:
             selectedNetwork.coin === BraveWallet.CoinType.SOL
               ? // Use optimised balance scanner for SOL, which doesn't need a
@@ -138,24 +142,31 @@ const AssetsPanel = (props: Props) => {
   )
 
   const tokenPriceIds = React.useMemo(() =>
-    userTokens && balances
+    selectedAccount && userTokens && tokenBalancesRegistry
       ? userTokens
-          .filter(token => new Amount(balances[token.contractAddress]).gt(0))
+          .filter(token => new Amount(
+            getBalance(selectedAccount, token, tokenBalancesRegistry)).gt(0))
           .filter(token => !token.isErc721 && !token.isErc1155 && !token.isNft)
           .map(getPriceIdForToken)
       : [],
-    [userTokens, balances]
+    [userTokens, tokenBalancesRegistry]
   )
 
   const {
     data: spotPriceRegistry,
     isLoading: isLoadingSpotPrices
   } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length && !isLoadingBalances && !isFetchingBalances
-      ? { ids: tokenPriceIds }
-      : skipToken,
+    tokenPriceIds.length &&
+      !isLoadingBalances && !isFetchingBalances && defaultFiatCurrency
+        ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+        : skipToken,
     querySubscriptionOptions60s
   )
+
+  const areTokenBalancesLoaded = selectedAccount &&
+    tokenBalancesRegistry &&
+    !isLoadingBalances &&
+    !isFetchingBalances
 
   return (
     <StyledWrapper>
@@ -172,8 +183,8 @@ const AssetsPanel = (props: Props) => {
           )}
           key={getAssetIdKey(token)}
           assetBalance={
-            balances && !isLoadingBalances && !isFetchingBalances
-              ? balances[token.contractAddress] ?? '0'
+            areTokenBalancesLoaded
+              ? getBalance(selectedAccount, token, tokenBalancesRegistry)
               : ''
           }
           token={token}

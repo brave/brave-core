@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useHistory, useParams } from 'react-router'
 
 // Constants
@@ -13,15 +12,17 @@ import {
 } from '../../../../../../common/constants/magics'
 
 // Selectors
-import { useSafeWalletSelector, useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
+import {
+  useSafeWalletSelector
+} from '../../../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../../../common/selectors'
 
 // Types
 import {
   BraveWallet,
+  SpotPriceRegistry,
   UserAssetInfoType,
-  WalletRoutes,
-  WalletAccountType
+  WalletRoutes
 } from '../../../../../../constants/types'
 import { RenderTokenFunc } from './virtualized-tokens-list'
 
@@ -38,12 +39,11 @@ import { getLocale } from '../../../../../../../common/locale'
 import {
   networkEntityAdapter
 } from '../../../../../../common/slices/entities/network.entity'
-import { getBalance } from '../../../../../../utils/balance-utils'
-import { getPriceIdForToken } from '../../../../../../utils/api-utils'
 import { computeFiatAmount } from '../../../../../../utils/pricing-utils'
 import {
   emptyNetwork
 } from '../../../../../../utils/network-utils'
+import { getBalance } from '../../../../../../utils/balance-utils'
 
 // Components
 import SearchBar from '../../../../../shared/search-bar/index'
@@ -58,11 +58,11 @@ import {
 
 // Queries
 import {
-  useGetTokenSpotPricesQuery
+  useGetDefaultFiatCurrencyQuery
 } from '../../../../../../common/slices/api.slice'
 import {
-  querySubscriptionOptions60s
-} from '../../../../../../common/slices/constants'
+  TokenBalancesRegistry
+} from '../../../../../../common/slices/entities/token-balance.entity'
 
 // Styled Components
 import {
@@ -83,7 +83,7 @@ import {
 interface Props {
   userAssetList: UserAssetInfoType[]
   networks?: BraveWallet.NetworkInfo[]
-  accounts?: WalletAccountType[]
+  accounts?: BraveWallet.AccountInfo[]
   renderToken: RenderTokenFunc
   enableScroll?: boolean
   maxListHeight?: string
@@ -93,6 +93,8 @@ interface Props {
   isPortfolio?: boolean
   isV2?: boolean
   onShowPortfolioSettings?: () => void
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined
+  spotPriceRegistry: SpotPriceRegistry | undefined
 }
 
 export const TokenLists = ({
@@ -106,7 +108,9 @@ export const TokenLists = ({
   hideSmallBalances,
   isPortfolio,
   isV2,
-  onShowPortfolioSettings
+  onShowPortfolioSettings,
+  tokenBalancesRegistry,
+  spotPriceRegistry
 }: Props) => {
   // routing
   const history = useHistory()
@@ -114,8 +118,6 @@ export const TokenLists = ({
 
   // unsafe selectors
   const selectedAssetFilter = useSafeWalletSelector(WalletSelectors.selectedAssetFilter)
-  const defaultCurrencies =
-    useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
 
   // safe selectors
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(WalletSelectors.assetAutoDiscoveryCompleted)
@@ -142,19 +144,7 @@ export const TokenLists = ({
     return userAssetList.filter((asset) => asset.asset.visible)
   }, [userAssetList])
 
-  const tokenPriceIds = React.useMemo(() =>
-    visibleTokens
-      .filter(({ assetBalance }) => new Amount(assetBalance).gt(0))
-      .filter(({ asset }) =>
-        !asset.isErc721 && !asset.isErc1155 && !asset.isNft)
-      .map(token => getPriceIdForToken(token.asset)),
-    [visibleTokens]
-  )
-
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
-    querySubscriptionOptions60s
-  )
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
   const filteredOutSmallBalanceTokens = React.useMemo(() => {
     if (hideSmallBalances) {
@@ -312,13 +302,12 @@ export const TokenLists = ({
     computeFiatAmount,
     getAssetsByNetwork,
     filteredAssetList,
-    defaultCurrencies.fiat,
     spotPriceRegistry
   ])
 
   // Returns a list of assets based on provided coin type
   const getAssetsByCoin = React.useCallback(
-    (account: WalletAccountType) => {
+    (account: BraveWallet.AccountInfo) => {
       return filteredAssetList
         .filter(
           (asset) => asset.asset.coin ===
@@ -330,13 +319,13 @@ export const TokenLists = ({
   // and filters out small balances if hideSmallBalances
   // is enabled.
   const getFilteredOutAssetsByAccount = React.useCallback(
-    (account: WalletAccountType) => {
+    (account: BraveWallet.AccountInfo) => {
       if (hideSmallBalances) {
         return getAssetsByCoin(account).filter(
           (token) =>
             computeFiatAmount({
               spotPriceRegistry,
-              value: getBalance(account, token.asset),
+              value: getBalance(account, token.asset, tokenBalancesRegistry),
               token: token.asset
             }).gt(HIDE_SMALL_BALANCES_FIAT_THRESHOLD)
         )
@@ -346,23 +335,24 @@ export const TokenLists = ({
     }, [
     getAssetsByCoin,
     hideSmallBalances,
-    spotPriceRegistry
+    spotPriceRegistry,
+    tokenBalancesRegistry
   ])
 
   // Returns a new list of assets with the accounts
   // balance for each token.
   const getAccountsAssetBalances = React.useCallback(
-    (account: WalletAccountType) => {
+    (account: BraveWallet.AccountInfo) => {
       return getFilteredOutAssetsByAccount(account)
         .map((asset) => ({
           ...asset,
-          assetBalance: getBalance(account, asset.asset)
+          assetBalance: getBalance(account, asset.asset, tokenBalancesRegistry)
         }))
-    }, [getFilteredOutAssetsByAccount])
+    }, [getFilteredOutAssetsByAccount, tokenBalancesRegistry])
 
   // Returns a sorted assets list for an account.
   const getSortedAssetsByAccount = React.useCallback(
-    (account: WalletAccountType) => {
+    (account: BraveWallet.AccountInfo) => {
       const accountsAssets = getAccountsAssetBalances(account)
       return getSortedFungibleTokensList(accountsAssets)
     }, [
@@ -372,7 +362,7 @@ export const TokenLists = ({
 
   // Returns the full fiat value of provided account
   const getAccountFiatValue = React.useCallback(
-    (account: WalletAccountType) => {
+    (account: BraveWallet.AccountInfo) => {
       // Return an empty string to display a loading
       // skeleton while assets are populated.
       if (filteredAssetList.length === 0) {
@@ -463,7 +453,7 @@ export const TokenLists = ({
             .isUndefined()
             ? ''
             : networksFiatValue
-              .formatAsFiat(defaultCurrencies.fiat)
+              .formatAsFiat(defaultFiatCurrency)
         }
         network={network}
         isDisabled={networksAssets.length === 0}
@@ -487,7 +477,7 @@ export const TokenLists = ({
     renderToken,
     showEmptyState,
     sortedNetworksWithBalances,
-    defaultCurrencies.fiat,
+    defaultFiatCurrency,
     assetAutoDiscoveryCompleted
   ])
 
@@ -532,7 +522,7 @@ export const TokenLists = ({
             .isUndefined()
             ? ''
             : accountsFiatValue
-              .formatAsFiat(defaultCurrencies.fiat)
+              .formatAsFiat(defaultFiatCurrency)
         }
         account={account}
         isDisabled={accountsAssets.length === 0}
@@ -555,7 +545,7 @@ export const TokenLists = ({
     getAccountFiatValue,
     renderToken,
     showEmptyState,
-    defaultCurrencies.fiat,
+    defaultFiatCurrency,
     assetAutoDiscoveryCompleted,
     sortedAccountsWithBalances
   ])

@@ -11,7 +11,6 @@ import useAssetManagement from './assets-management'
 import useHasAccount from './has-account'
 import useIsMounted from './useIsMounted'
 import { useMultiChainBuyAssets } from './use-multi-chain-buy-assets'
-import useBalanceUpdater from './use-balance-updater'
 import { useLib } from './useLib'
 
 export {
@@ -23,6 +22,5 @@ export {
   useLib,
   useSend,
   useTokenInfo,
-  useMultiChainBuyAssets,
-  useBalanceUpdater
+  useMultiChainBuyAssets
 }

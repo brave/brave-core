@@ -148,10 +148,11 @@ export const AssetDetailsHeader = (props: Props) => {
 
   // queries
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length
+    tokenPriceIds.length && defaultFiatCurrency
       ? {
           ids: tokenPriceIds,
-          timeframe: selectedTimeline
+          timeframe: selectedTimeline,
+          toCurrency: defaultFiatCurrency
         }
       : skipToken,
     querySubscriptionOptions60s

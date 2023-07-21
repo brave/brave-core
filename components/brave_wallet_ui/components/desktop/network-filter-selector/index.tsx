@@ -7,7 +7,11 @@ import * as React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 // Types
-import { BraveWallet, SupportedTestNetworks, WalletAccountType, WalletState } from '../../../constants/types'
+import {
+  BraveWallet,
+  SupportedTestNetworks,
+  WalletState
+} from '../../../constants/types'
 import { LOCAL_STORAGE_KEYS } from '../../../common/constants/local-storage-keys'
 
 // Components
@@ -44,7 +48,11 @@ import { skipToken } from '@reduxjs/toolkit/dist/query'
 interface Props {
   networkListSubset?: BraveWallet.NetworkInfo[]
   selectedNetwork?: BraveWallet.NetworkInfo
-  selectedAccount?: Pick<WalletAccountType, 'accountId' | 'address' | 'name'>
+  selectedAccount?: Pick<BraveWallet.AccountInfo,
+    | 'accountId'
+    | 'address'
+    | 'name'
+  >
   isV2?: boolean
   onSelectNetwork?: (network: BraveWallet.NetworkInfo) => void
 }

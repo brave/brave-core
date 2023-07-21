@@ -3,9 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import { mapLimit } from 'async'
 
 // Options
 import { SwapAndSendOptions } from '../../../../options/swap-and-send-options'
@@ -15,6 +14,7 @@ import { gasFeeOptions } from '../../../../options/gas-fee-options'
 import { useJupiter } from './useJupiter'
 import { useZeroEx } from './useZeroEx'
 import { useDebouncedCallback } from './useDebouncedCallback'
+import { useScopedBalanceUpdater } from '../../../../common/hooks/use-scoped-balance-updater'
 
 // Types and constants
 import {
@@ -22,11 +22,9 @@ import {
   GasFeeOption,
   GasEstimate,
   SwapParams,
-  SwapValidationErrorType,
-  RefreshBlockchainStateParams,
-  Registry
+  SwapValidationErrorType
 } from '../constants/types'
-import { BraveWallet, CoinTypes } from '../../../../constants/types'
+import { BraveWallet } from '../../../../constants/types'
 
 // Utils
 import { getLocale } from '$web-common/locale'
@@ -34,17 +32,13 @@ import Amount from '../../../../utils/amount'
 import { getPriceIdForToken } from '../../../../utils/api-utils'
 // FIXME(onyb): move makeNetworkAsset to utils/assets-utils
 import { makeNetworkAsset } from '../../../../options/asset-options'
-import { getEntitiesListFromEntityState } from '../../../../utils/entities.utils'
-import { getBalanceRegistryKey } from '../utils/assets'
 import { getTokenPriceAmountFromRegistry } from '../../../../utils/pricing-utils'
+import { getBalance } from '../../../../utils/balance-utils'
 
 // Queries
 import {
-  useGetAccountInfosRegistryQuery,
   useGetSelectedChainQuery,
   useGetDefaultFiatCurrencyQuery,
-  useLazyGetTokenBalancesForChainIdQuery,
-  useLazyGetAccountTokenCurrentBalanceQuery,
   useGetTokenSpotPricesQuery
 } from '../../../../common/slices/api.slice'
 import {
@@ -55,8 +49,7 @@ import {
   querySubscriptionOptions60s
 } from '../../../../common/slices/constants'
 import {
-  AccountInfoEntity,
-  accountInfoEntityAdaptorInitialState
+  AccountInfoEntity
 } from '../../../../common/slices/entities/account-info.entity'
 
 const hasDecimalsOverflow = (amount: string, asset?: BraveWallet.BlockchainToken) => {
@@ -73,37 +66,14 @@ const hasDecimalsOverflow = (amount: string, asset?: BraveWallet.BlockchainToken
   return decimalPlaces !== null && decimalPlaces > 0
 }
 
-// balancesReducer is used to update the balances registry incrementally
-const balancesReducer = (state: Registry, action: { payload: Registry }): Registry => {
-  return { ...state, ...action.payload }
-}
-
 export const useSwap = () => {
   // Queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
-  const { data: accountInfosRegistry = accountInfoEntityAdaptorInitialState } =
-    useGetAccountInfosRegistryQuery(undefined)
-  const accounts = getEntitiesListFromEntityState(accountInfosRegistry)
   const { data: selectedAccount } = useSelectedAccountQuery()
   const { data: assetsList } = useGetCombinedTokensListQuery()
   // FIXME(onyb): what happens when defaultFiatCurrency is empty
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
-  const [getTokenBalances] = useLazyGetTokenBalancesForChainIdQuery()
   const nativeAsset = useMemo(() => makeNetworkAsset(selectedNetwork), [selectedNetwork])
-  const [getAccountTokenCurrentBalanceLazy] = useLazyGetAccountTokenCurrentBalanceQuery()
-  const getBalance = useCallback(
-    async (
-      accountId: BraveWallet.AccountId,
-      token: BraveWallet.BlockchainToken
-    ) => {
-      return await getAccountTokenCurrentBalanceLazy({
-        coin: accountId.coin,
-        address: accountId.address,
-        token
-      }).unwrap()
-    },
-    [getAccountTokenCurrentBalanceLazy]
-  )
 
   // State
   const [fromToken, setFromToken] = useState<BraveWallet.BlockchainToken | undefined>(undefined)
@@ -124,9 +94,41 @@ export const useSwap = () => {
   const [useDirectRoute, setUseDirectRoute] = useState<boolean>(false)
   const [slippageTolerance, setSlippageTolerance] = useState<string>('0.5')
   const [selectedGasFeeOption, setSelectedGasFeeOption] = useState<GasFeeOption>(gasFeeOptions[1])
-  const [initialized, setInitialized] = useState<boolean>(false)
-  const [tokenBalances, dispatchBalancesUpdate] = useReducer(balancesReducer, {})
-  const [abortController, setAbortController] = useState<AbortController | undefined>(undefined)
+
+  const tokensForBalances = useMemo(() => {
+    if (!selectedNetwork || !selectedAccount || !assetsList) {
+      return []
+    }
+
+    if (selectedNetwork.coin !== selectedAccount.accountId.coin) {
+      return []
+    }
+
+    // undefined for SOL indicates that useScopedBalanceUpdater should
+    // scan balances for all possible tokens. Not to be confused with
+    // [] which indicates that the query should be skipped.
+    if (selectedNetwork.coin === BraveWallet.CoinType.SOL) {
+      return undefined
+    }
+
+    return assetsList.filter(
+      (token) =>
+        token.coin === selectedNetwork.coin &&
+        token.chainId === selectedNetwork.chainId
+    )
+  }, [selectedNetwork, assetsList, selectedAccount])
+
+  const { data: tokenBalancesRegistry } = useScopedBalanceUpdater(
+    selectedNetwork &&
+      selectedAccount &&
+      (tokensForBalances === undefined || tokensForBalances.length > 0)
+      ? {
+          network: selectedNetwork,
+          accounts: [selectedAccount],
+          tokens: tokensForBalances
+        }
+      : skipToken
+  )
 
   const tokenPriceIds = useMemo(
     () =>
@@ -138,10 +140,10 @@ export const useSwap = () => {
     [nativeAsset, fromToken, toToken]
   )
 
-  const {
-    data: spotPriceRegistry
-  } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
+  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+    tokenPriceIds.length && defaultFiatCurrency
+      ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+      : skipToken,
     querySubscriptionOptions60s
   )
 
@@ -216,230 +218,6 @@ export const useSwap = () => {
     },
     [assetsList]
   )
-
-  const getAssetBalanceFactory = useCallback(
-    (accountId: BraveWallet.AccountId, network: BraveWallet.NetworkInfo) =>
-      async (asset: BraveWallet.BlockchainToken) => {
-        const balanceRegistryKey = getBalanceRegistryKey(
-          accountId,
-          asset.chainId,
-          asset.contractAddress
-        )
-
-        try {
-          const result = await getBalance(accountId, asset)
-          return {
-            key: balanceRegistryKey,
-            value: result
-          }
-        } catch (e) {
-          console.log('Error querying balance: error=%s asset=%s', e, JSON.stringify(asset))
-          return {
-            key: balanceRegistryKey,
-            value: ''
-          }
-        }
-      },
-    [getBalance]
-  )
-
-  const refreshBlockchainState = useCallback(
-    async (overrides: Partial<RefreshBlockchainStateParams>) => {
-      if (abortController) {
-        abortController.abort()
-      }
-
-      const overriddenParams: Partial<RefreshBlockchainStateParams> = {
-        network: selectedNetwork,
-        accountId: selectedAccount?.accountId,
-        ...overrides
-      }
-
-      if (!overriddenParams.accountId) {
-        return
-      }
-
-      if (!overriddenParams.network) {
-        return
-      }
-
-      const { network, accountId } = overriddenParams
-      const networkAccountId =
-        accountId.coin !== network.coin
-          ? accounts.find(account => account.accountId.coin === network.coin)?.accountId
-          : accountId
-      if (!networkAccountId) {
-        return
-      }
-
-      // Initialize abort controller in order to kill stale jobs.
-      const controller = new AbortController()
-      setAbortController(controller)
-
-      // Update native asset balance first, since it's the default asset on
-      // first load.
-      const balanceFactory = getAssetBalanceFactory(networkAccountId, network)
-      const nativeAccountBalanceResult = await balanceFactory(makeNetworkAsset(network))
-
-      // The dependency on tokenBalances is intentional. We want to make sure
-      // that previously fetched token balances are not wiped out by the state
-      // update.
-      //
-      // Only set state if there is no abort signal.
-      if (controller.signal.aborted) {
-        setAbortController(undefined)
-        return
-      }
-
-      dispatchBalancesUpdate({
-        payload: {
-          [nativeAccountBalanceResult.key]: nativeAccountBalanceResult.value
-        }
-      })
-
-      const networkTokens = getNetworkAssetsList(network).filter(asset => asset.contractAddress)
-
-      // Try using optimised balance scanner
-      try {
-        let tokenBalancesResult
-        if (network.coin === BraveWallet.CoinType.ETH) {
-          tokenBalancesResult = await getTokenBalances({
-            address: networkAccountId.address,
-            tokens: networkTokens,
-            chainId: network.chainId,
-            coin: CoinTypes.ETH
-          }).unwrap()
-        } else if (network.coin === BraveWallet.CoinType.SOL) {
-          tokenBalancesResult = await getTokenBalances({
-            pubkey: networkAccountId.address,
-            chainId: network.chainId,
-            coin: CoinTypes.SOL
-          }).unwrap()
-        } else {
-          setAbortController(undefined)
-          throw new Error(`Unsupported CoinType: ${network.coin}`)
-        }
-
-        const tokenBalancesWithRegistryKeys = Object.entries(tokenBalancesResult)
-          .map(([key, value]) => [
-            getBalanceRegistryKey(networkAccountId, network.chainId, key),
-            value
-          ])
-          .filter(([_, value]) => new Amount(value).isPositive())
-
-        // Include native asset balance in the payload, since tokenBalances
-        // state will not reflect the payload from the previous call to
-        // setTokenBalances().
-        //
-        // Do NOT spread over old tokenBalances state to keep this function
-        // as "pure" as possible.
-        //
-        // Only set state if there is no abort signal.
-        if (controller.signal.aborted) {
-          setAbortController(undefined)
-          return
-        }
-
-        dispatchBalancesUpdate({
-          payload: Object.fromEntries(tokenBalancesWithRegistryKeys)
-        })
-        setAbortController(undefined)
-        return
-      } catch (e) {
-        console.log('Error calling getTokenBalances(): error=%s', e)
-      }
-
-      // Fallback to fetching individual balances
-      async function drainChunk (chunk: BraveWallet.BlockchainToken[]) {
-        const balances = await mapLimit(chunk, 10, balanceFactory)
-
-        // In the following code block,
-        // we're doing the following transformation:
-        // {key: string, value: string}[] => { [key]: value }
-        //
-        // The balances array can be quite big,
-        // and copying the accumulated object
-        // for each .reduce() pass can result in an overheard.
-        // We're therefore using a mutable accumulator object,
-        // instead of Object.assign() or spread syntax.
-        //
-        // We also return a comma expression,
-        // which evaluates the expression
-        // before the comma and returns the expression after the comma.
-        // This prevents
-        // unnecessary assignments and object copy.
-        //
-        // We also filter out balance results from the array
-        // that could not be fetched.
-        return (
-          balances
-            .filter(item => new Amount(item.value).gt(0))
-            // eslint-disable-next-line no-sequences
-            .reduce(
-              (obj, item) => (
-                // eslint-disable-next-line no-sequences
-                (obj[item.key] = item.value), obj
-              ),
-              {}
-            )
-        )
-      }
-
-      const chunkSize = 10
-      for (let i = 0; i < networkTokens.length; i += chunkSize) {
-        const chunk = networkTokens.slice(i, i + chunkSize)
-        const chunkBalances = await drainChunk(chunk)
-
-        // Only set state if there is no abort signal.
-        if (controller.signal.aborted) {
-          setAbortController(undefined)
-          return
-        }
-
-        dispatchBalancesUpdate({
-          payload: chunkBalances
-        })
-      }
-
-      setAbortController(undefined)
-    },
-    [
-      selectedNetwork,
-      selectedAccount,
-      getNetworkAssetsList,
-      getAssetBalanceFactory,
-      accounts,
-      getTokenBalances,
-      abortController,
-      dispatchBalancesUpdate
-    ]
-  )
-
-  // This function is a debounced variant of refreshBlockchainState.
-  // It prevents unnecessary triggers of the wrapped function
-  // on first load of the app.
-  //
-  // The 0ms wait time seems to do the trick, although it's not clear why.
-  const refreshBlockchainStateDebounced = useDebouncedCallback(
-    async (overrides: Partial<RefreshBlockchainStateParams>) => {
-      await refreshBlockchainState(overrides)
-    },
-    0
-  )
-
-  useEffect(() => {
-    ;(async () => {
-      // Do not trigger refresh functions if assetsList is still not available.
-      if (assetsList.length === 0) {
-        return
-      }
-
-      if (!initialized) {
-        await refreshBlockchainStateDebounced({})
-        setInitialized(true)
-      }
-    })()
-  }, [refreshBlockchainStateDebounced, initialized, assetsList])
 
   const handleJupiterQuoteRefreshInternal = useCallback(
     async (overrides: Partial<SwapParams>) => {
@@ -556,46 +334,33 @@ export const useSwap = () => {
     [selectedNetwork?.coin, handleZeroExQuoteRefresh, handleJupiterQuoteRefresh]
   )
 
-  const getCachedAssetBalance = useCallback(
+  const getAssetBalance = useCallback(
     (token: BraveWallet.BlockchainToken): Amount => {
       if (!selectedAccount) {
         return Amount.zero()
       }
 
-      const balanceRegistryKey = getBalanceRegistryKey(
-        selectedAccount.accountId,
-        token.chainId,
-        token.contractAddress
+      return new Amount(
+        getBalance(selectedAccount, token, tokenBalancesRegistry)
       )
-      return new Amount(tokenBalances[balanceRegistryKey] ?? '0')
     },
-    [tokenBalances, selectedAccount]
+    [tokenBalancesRegistry, selectedAccount]
   )
 
-  const fromAssetBalance = fromToken && getCachedAssetBalance(fromToken)
-  const nativeAssetBalance = nativeAsset && getCachedAssetBalance(nativeAsset)
+  const fromAssetBalance = fromToken && getAssetBalance(fromToken)
+  const nativeAssetBalance = nativeAsset && getAssetBalance(nativeAsset)
 
   const onClickFlipSwapTokens = useCallback(async () => {
     setFromToken(toToken)
     setToToken(fromToken)
     await handleOnSetFromAmount('')
-
-    if (toToken && selectedAccount && selectedNetwork) {
-      const balance = await getAssetBalanceFactory(selectedAccount.accountId, selectedNetwork)(toToken)
-      dispatchBalancesUpdate({
-        payload: {
-          [balance.key]: balance.value
-        }
-      })
-    }
   }, [
     toToken,
     fromToken,
     handleOnSetFromAmount,
     selectedAccount,
-    getAssetBalanceFactory,
-    selectedNetwork,
-    dispatchBalancesUpdate
+    getAssetBalance,
+    selectedNetwork
   ])
 
   // Changing the To asset does the following:
@@ -651,19 +416,8 @@ export const useSwap = () => {
       } else if (selectedNetwork?.coin === BraveWallet.CoinType.ETH) {
         await zeroEx.reset()
       }
-
-      if (selectedAccount && selectedNetwork) {
-        const balance = await getAssetBalanceFactory(selectedAccount.accountId, selectedNetwork)(token)
-        dispatchBalancesUpdate({
-          payload: {
-            [balance.key]: balance.value
-          }
-        })
-      }
     },
     [
-      dispatchBalancesUpdate,
-      getAssetBalanceFactory,
       selectedAccount,
       selectedNetwork,
       zeroEx,
@@ -942,7 +696,7 @@ export const useSwap = () => {
     gasEstimates,
     onSelectFromToken,
     onSelectToToken,
-    getCachedAssetBalance,
+    getCachedAssetBalance: getAssetBalance,
     onSelectQuoteOption,
     setSelectingFromOrTo,
     handleOnSetFromAmount,
@@ -960,7 +714,6 @@ export const useSwap = () => {
     submitButtonText,
     isSubmitButtonDisabled,
     swapValidationError,
-    refreshBlockchainState,
     getNetworkAssetsList,
     spotPrices: spotPriceRegistry
   }

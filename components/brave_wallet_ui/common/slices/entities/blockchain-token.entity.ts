@@ -267,3 +267,11 @@ export const selectCombinedTokensList = createDraftSafeSelector(
     return userTokensList.concat(filteredKnownTokens)
   }
 )
+
+/**
+ * Used to select visible only tokens from useGetUserTokensRegistryQuery
+ */
+export const selectAllVisibleUserAssetsFromQueryResult =
+  createDraftSafeSelector([selectTokensRegistryFromQueryResult], (assets) =>
+    getEntitiesListFromEntityState(assets, assets.visibleTokenIds)
+  )

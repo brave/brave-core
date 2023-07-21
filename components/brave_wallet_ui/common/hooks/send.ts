@@ -57,7 +57,7 @@ export default function useSend (isSendTab?: boolean) {
     findUnstoppableDomainAddress,
     isBase58EncodedSolanaPubkey
   } = useLib()
-  const { sendAssetOptions } = useAssets()
+  const sendAssetOptions = useAssets()
 
   // State
   const [searchingForDomain, setSearchingForDomain] = React.useState<boolean>(false)

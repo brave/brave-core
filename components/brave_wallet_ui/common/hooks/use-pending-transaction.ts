@@ -42,6 +42,7 @@ import {
 } from './use-safe-selector'
 import {
   useGetAccountTokenCurrentBalanceQuery,
+  useGetDefaultFiatCurrencyQuery,
   useGetGasEstimation1559Query,
   useGetNetworkQuery,
   useGetSolanaEstimatedFeeQuery,
@@ -78,6 +79,7 @@ export const usePendingTransactions = () => {
   )
 
   // queries
+  const { data: defaultFiat } = useGetDefaultFiatCurrencyQuery()
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const { pendingTransactions } = usePendingTransactionsQuery({
     address: null,
@@ -124,7 +126,9 @@ export const usePendingTransactions = () => {
   )
 
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    tokenPriceIds ? { ids: tokenPriceIds } : skipToken,
+    tokenPriceIds && defaultFiat
+      ? { ids: tokenPriceIds, toCurrency: defaultFiat }
+      : skipToken,
     querySubscriptionOptions60s
   )
 

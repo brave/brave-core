@@ -12,7 +12,6 @@ import {
   AccountButtonOptionsObjectType,
   AccountModalTypes,
   BraveWallet,
-  WalletAccountType,
   WalletRoutes
 } from '../../../constants/types'
 
@@ -45,8 +44,11 @@ import {
   useGetUserTokensRegistryQuery
 } from '../../../common/slices/api.slice'
 import {
-  selectAllUserAssetsFromQueryResult
+  selectAllVisibleUserAssetsFromQueryResult
 } from '../../../common/slices/entities/blockchain-token.entity'
+import {
+  TokenBalancesRegistry
+} from '../../../common/slices/entities/token-balance.entity'
 import {
   querySubscriptionOptions60s
 } from '../../../common/slices/constants'
@@ -87,14 +89,16 @@ import {
 } from '../../shared/style'
 
 interface Props {
-  account: WalletAccountType
+  account: BraveWallet.AccountInfo
   onClickMenuOption: (option: AccountModalTypes) => void
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined
 }
 
 export const AccountDetailsHeader = (props: Props) => {
   const {
     account,
-    onClickMenuOption
+    onClickMenuOption,
+    tokenBalancesRegistry
   } = props
 
   // routing
@@ -106,7 +110,7 @@ export const AccountDetailsHeader = (props: Props) => {
   // Queries
   const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
     selectFromResult: result => ({
-      userVisibleTokensInfo: selectAllUserAssetsFromQueryResult(result)
+      userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result)
     })
   })
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
@@ -142,7 +146,9 @@ export const AccountDetailsHeader = (props: Props) => {
   )
 
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
+    tokenPriceIds.length && defaultFiatCurrency
+      ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+      : skipToken,
     querySubscriptionOptions60s
   )
 
@@ -165,7 +171,7 @@ export const AccountDetailsHeader = (props: Props) => {
       accountsFungibleTokens
         .map((asset) => {
           const balance =
-            getBalance(account, asset)
+            getBalance(account, asset, tokenBalancesRegistry)
           return computeFiatAmount({
             spotPriceRegistry,
             value: balance,
@@ -184,7 +190,8 @@ export const AccountDetailsHeader = (props: Props) => {
   }, [
     account,
     userVisibleTokensInfo,
-    accountsFungibleTokens
+    accountsFungibleTokens,
+    tokenBalancesRegistry
   ])
 
   const menuOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {

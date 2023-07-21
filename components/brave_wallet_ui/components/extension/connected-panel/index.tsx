@@ -24,10 +24,12 @@ import { makeNetworkAsset } from '../../../options/asset-options'
 import { getPriceIdForToken } from '../../../utils/api-utils'
 import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
 import { WalletSelectors } from '../../../common/selectors'
+import { getBalance } from '../../../utils/balance-utils'
 
 // Hooks
 import { useExplorer } from '../../../common/hooks'
 import {
+  useGetDefaultFiatCurrencyQuery,
   useGetSelectedChainQuery,
   useGetTokenSpotPricesQuery
 } from '../../../common/slices/api.slice'
@@ -40,7 +42,6 @@ import {
   useScopedBalanceUpdater
 } from '../../../common/hooks/use-scoped-balance-updater'
 import {
-  useSafeWalletSelector,
   useUnsafeWalletSelector
 } from '../../../common/hooks/use-safe-selector'
 import { useAccountOrb } from '../../../common/hooks/use-orb'
@@ -89,15 +90,13 @@ export const ConnectedPanel = (props: Props) => {
     navAction
   } = props
 
-  const defaultFiatCurrency = useSafeWalletSelector(
-    WalletSelectors.defaultFiatCurrency
-  )
   const originInfo = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
   const connectedAccounts = useUnsafeWalletSelector(
     WalletSelectors.connectedAccounts
   )
 
   // queries
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const { currentData: selectedNetwork } = useGetSelectedChainQuery(undefined)
   const selectedCoin = selectedNetwork?.coin
   const { data: selectedAccount } = useSelectedAccountQuery()
@@ -108,14 +107,14 @@ export const ConnectedPanel = (props: Props) => {
   )
 
   const {
-    data: balances,
+    data: tokenBalancesRegistry,
     isLoading: isLoadingBalances,
     isFetching: isFetchingBalances
   } = useScopedBalanceUpdater(
     selectedNetwork && selectedAccount && networkAsset
       ? {
           network: selectedNetwork,
-          account: selectedAccount,
+          accounts: [selectedAccount],
           tokens: [networkAsset]
         }
       : skipToken
@@ -132,7 +131,9 @@ export const ConnectedPanel = (props: Props) => {
     data: spotPriceRegistry,
     isLoading: isLoadingSpotPrices
   } = useGetTokenSpotPricesQuery(
-    networkTokenPriceIds.length ? { ids: networkTokenPriceIds } : skipToken,
+    networkTokenPriceIds.length && defaultFiatCurrency
+      ? { ids: networkTokenPriceIds, toCurrency: defaultFiatCurrency }
+      : skipToken,
     querySubscriptionOptions60s
   )
 
@@ -229,26 +230,47 @@ export const ConnectedPanel = (props: Props) => {
 
   const orb = useAccountOrb(selectedAccount)
 
+  const selectedAccountBalance = React.useMemo(() => {
+    if (
+      !tokenBalancesRegistry ||
+      !networkAsset ||
+      !selectedAccount ||
+      isLoadingBalances ||
+      isFetchingBalances
+    ) {
+      return Amount.empty()
+    }
+
+    const balance = getBalance(
+      selectedAccount,
+      networkAsset,
+      tokenBalancesRegistry
+    )
+
+    return new Amount(balance).divideByDecimals(networkAsset.decimals)
+  }, [
+    tokenBalancesRegistry,
+    networkAsset,
+    selectedAccount,
+    isLoadingBalances,
+    isFetchingBalances
+  ])
+
   const selectedAccountFiatBalance = React.useMemo(() => {
     if (
-      !balances ||
+      selectedAccountBalance.isUndefined() ||
       !networkAsset ||
-      isLoadingBalances ||
-      isFetchingBalances ||
       !spotPriceRegistry ||
       isLoadingSpotPrices
     ) {
       return Amount.empty()
     }
 
-    return new Amount(balances[networkAsset.contractAddress] ?? '0')
-      .divideByDecimals(networkAsset.decimals)
+    return selectedAccountBalance
       .times(getTokenPriceAmountFromRegistry(spotPriceRegistry, networkAsset))
   }, [
+    selectedAccountBalance,
     networkAsset,
-    balances,
-    isLoadingBalances,
-    isFetchingBalances,
     spotPriceRegistry,
     isLoadingSpotPrices
   ])
@@ -293,14 +315,18 @@ export const ConnectedPanel = (props: Props) => {
 
   // computed
   const formattedAssetBalance = React.useMemo(() => {
-    if (!networkAsset || !balances || isLoadingBalances || isFetchingBalances) {
+    if (
+      selectedAccountBalance.isUndefined() ||
+      !networkAsset
+    ) {
       return ''
     }
 
-    return new Amount(balances[networkAsset.contractAddress] ?? '')
-      .divideByDecimals(networkAsset.decimals)
-      .formatAsAsset(6, networkAsset.symbol)
-  }, [networkAsset, balances, isLoadingBalances, isFetchingBalances])
+    return selectedAccountBalance.formatAsAsset(6, networkAsset.symbol)
+  }, [
+    selectedAccountBalance,
+    networkAsset
+  ])
 
   // render
   return (

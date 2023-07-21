@@ -6,14 +6,23 @@
 import * as React from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 import {
-  WalletAccountType,
   WalletState,
   WalletRoutes,
   BraveWallet,
   AccountPageTabs
 } from '../../../../constants/types'
+import {
+  querySubscriptionOptions60s
+} from '../../../../common/slices/constants'
+
+// Selectors
+import {
+  useUnsafeWalletSelector
+} from '../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../common/selectors'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -22,6 +31,9 @@ import {
   groupAccountsById,
   sortAccountsByName
 } from '../../../../utils/account-utils'
+import {
+  getPriceIdForToken
+} from '../../../../utils/api-utils'
 
 // Styled Components
 import {
@@ -42,23 +54,39 @@ import {
   AccountsHeader
 } from '../../card-headers/accounts-header'
 
+// Hooks
+import {
+  useBalancesFetcher
+} from '../../../../common/hooks/use-balances-fetcher'
+import {
+  useGetDefaultFiatCurrencyQuery,
+  useGetVisibleNetworksQuery,
+  useGetTokenSpotPricesQuery
+} from '../../../../common/slices/api.slice'
+
 export const Accounts = () => {
   // routing
   const history = useHistory()
 
   // wallet state
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
+  const userVisibleTokensInfo = useUnsafeWalletSelector(
+    WalletSelectors.userVisibleTokensInfo
+  )
 
   // methods
-  const onSelectAccount = React.useCallback((account: WalletAccountType | undefined) => {
-    if (account) {
-      history.push(
-        `${WalletRoutes.Accounts //
-        }/${account.address //
-        }/${AccountPageTabs.AccountAssetsSub}`
-      )
-    }
-  }, [])
+  const onSelectAccount = React.useCallback(
+    (account: BraveWallet.AccountInfo | undefined) => {
+      if (account) {
+        history.push(
+          `${WalletRoutes.Accounts //
+          }/${account.address //
+          }/${AccountPageTabs.AccountAssetsSub}`
+        )
+      }
+    },
+    []
+  )
 
   // memos
   const derivedAccounts = React.useMemo(() => {
@@ -83,6 +111,30 @@ export const Accounts = () => {
     return groupAccountsById(foundLedgerAccounts, 'deviceId')
   }, [accounts])
 
+  const { data: networks } = useGetVisibleNetworksQuery()
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
+
+  const {
+    data: tokenBalancesRegistry
+  } = useBalancesFetcher({
+    accounts,
+    networks
+  })
+
+  const tokenPriceIds = React.useMemo(() =>
+    userVisibleTokensInfo
+      .filter((token) => !token.isErc721 && !token.isErc1155 && !token.isNft)
+      .map(token => getPriceIdForToken(token)),
+    [userVisibleTokensInfo]
+  )
+
+  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+    tokenPriceIds.length && defaultFiatCurrency
+      ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+      : skipToken,
+    querySubscriptionOptions60s
+  )
+
   const trezorKeys = React.useMemo(() => {
     return Object.keys(trezorAccounts)
   }, [trezorAccounts])
@@ -94,10 +146,14 @@ export const Accounts = () => {
       key={key}
     >
       {sortAccountsByName(trezorAccounts[key])
-        .map((account: WalletAccountType) => <AccountListItem
-          key={account.accountId.uniqueKey}
-          onClick={onSelectAccount}
-          account={account} />
+        .map((account: BraveWallet.AccountInfo) =>
+          <AccountListItem
+            key={account.accountId.uniqueKey}
+            onClick={onSelectAccount}
+            account={account}
+            tokenBalancesRegistry={tokenBalancesRegistry}
+            spotPriceRegistry={spotPriceRegistry}
+          />
         )}
     </Column>
     )
@@ -118,10 +174,14 @@ export const Accounts = () => {
       key={key}
     >
       {sortAccountsByName(ledgerAccounts[key])
-        .map((account: WalletAccountType) => <AccountListItem
-          key={account.accountId.uniqueKey}
-          onClick={onSelectAccount}
-          account={account} />
+        .map((account: BraveWallet.AccountInfo) =>
+          <AccountListItem
+            key={account.accountId.uniqueKey}
+            onClick={onSelectAccount}
+            account={account}
+            tokenBalancesRegistry={tokenBalancesRegistry}
+            spotPriceRegistry={spotPriceRegistry}
+          />
         )}
     </Column>
     )
@@ -163,6 +223,8 @@ export const Accounts = () => {
             key={account.accountId.uniqueKey}
             onClick={onSelectAccount}
             account={account}
+            tokenBalancesRegistry={tokenBalancesRegistry}
+            spotPriceRegistry={spotPriceRegistry}
           />
         )}
       </Column>
@@ -187,6 +249,8 @@ export const Accounts = () => {
                 key={account.accountId.uniqueKey}
                 onClick={onSelectAccount}
                 account={account}
+                tokenBalancesRegistry={tokenBalancesRegistry}
+                spotPriceRegistry={spotPriceRegistry}
               />
             )}
           </Column>

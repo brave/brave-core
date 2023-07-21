@@ -12,8 +12,7 @@ import * as WalletActions from '../../common/actions/wallet_actions'
 import {
   BraveWallet,
   NFTMetadataReturnType,
-  UpdateAccountNamePayloadType,
-  WalletState
+  UpdateAccountNamePayloadType
 } from '../../constants/types'
 import {
   CreateWalletPayloadType,
@@ -33,15 +32,10 @@ import {
   translateToNftGateway
 } from '../../common/async/lib'
 import { Store } from '../../common/async/types'
-import { getTokenParam } from '../../utils/api-utils'
 import { getLocale } from '../../../common/locale'
 import { getNetwork } from '../../common/slices/api.slice'
 
 const handler = new AsyncActionHandler()
-
-function getWalletState (store: Store): WalletState {
-  return store.getState().wallet
-}
 
 async function refreshWalletInfo(store: Store) {
   const proxy = getWalletPageApiProxy()
@@ -128,19 +122,8 @@ handler.on(WalletPageActions.walletBackupComplete.type, async (store) => {
 
 handler.on(WalletPageActions.selectAsset.type, async (store: Store, payload: UpdateSelectedAssetType) => {
   store.dispatch(WalletPageActions.updateSelectedAsset(payload.asset))
-  store.dispatch(WalletPageActions.setIsFetchingPriceHistory(true))
-  const assetRatioService = getWalletPageApiProxy().assetRatioService
-  const walletState = getWalletState(store)
-  const defaultFiat = walletState.defaultCurrencies.fiat.toLowerCase()
   if (payload.asset) {
-    const selectedAsset = payload.asset
-    const priceHistory = await assetRatioService.getPriceHistory(getTokenParam(selectedAsset), defaultFiat, payload.timeFrame)
-    store.dispatch(WalletPageActions.updatePriceInfo(
-      {
-        priceHistory: priceHistory,
-        timeFrame: payload.timeFrame
-      }
-    ))
+    store.dispatch(WalletPageActions.selectPriceTimeframe(payload.timeFrame))
 
     if (payload.asset.isErc721 || payload.asset.isNft) {
       store.dispatch(WalletPageActions.getNFTMetadata(payload.asset))
@@ -150,10 +133,7 @@ handler.on(WalletPageActions.selectAsset.type, async (store: Store, payload: Upd
       }
     }
   } else {
-    store.dispatch(WalletPageActions.updatePriceInfo({
-      priceHistory: undefined,
-      timeFrame: payload.timeFrame
-    }))
+    store.dispatch(WalletPageActions.selectPriceTimeframe(payload.timeFrame))
   }
 })
 

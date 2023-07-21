@@ -5,14 +5,9 @@
 
 import {
   BraveWallet,
-  GetBlockchainTokenBalanceReturnInfo,
-  GetPriceHistoryReturnInfo,
-  PortfolioTokenHistoryAndInfo,
-  WalletAccountType,
   WalletState,
   WalletInitializedPayload,
   DefaultCurrencies,
-  GetNativeAssetBalancesPayload,
   SolFeeEstimates,
   SerializableOriginInfo,
   NetworkFilterType,
@@ -39,11 +34,6 @@ import {
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 
 // Utils
-import { mojoTimeDeltaToJSDate } from '../../../common/mojomUtils'
-import Amount from '../../utils/amount'
-import {
-  createTokenBalanceRegistryKey,
-} from '../../utils/account-utils'
 import {
   parseJSONFromLocalStorage,
   makeInitialFilteredOutNetworkKeys
@@ -71,23 +61,16 @@ const defaultState: WalletState = {
   accounts: [],
   userVisibleTokensInfo: [],
   fullTokenList: [],
-  portfolioPriceHistory: [],
-  isFetchingPortfolioPriceHistory: true,
-  selectedPortfolioTimeline: window
-    .localStorage
-    .getItem(
-      LOCAL_STORAGE_KEYS
-        .PORTFOLIO_TIME_LINE_OPTION
+  selectedPortfolioTimeline:
+    window.localStorage.getItem(
+      LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION
     ) !== undefined
-    ? Number(
-      window
-        .localStorage
-        .getItem(
-          LOCAL_STORAGE_KEYS
-            .PORTFOLIO_TIME_LINE_OPTION
+      ? Number(
+          window.localStorage.getItem(
+            LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION
+          )
         )
-    )
-    : BraveWallet.AssetPriceTimeframe.OneDay,
+      : BraveWallet.AssetPriceTimeframe.OneDay,
   addUserAssetError: false,
   defaultEthereumWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
   defaultSolanaWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
@@ -110,8 +93,14 @@ const defaultState: WalletState = {
   },
   isLoadingCoinMarketData: true,
   coinMarketData: [],
-  selectedNetworkFilter: parseJSONFromLocalStorage('PORTFOLIO_NETWORK_FILTER_OPTION', AllNetworksOptionDefault),
-  selectedAssetFilter: window.localStorage.getItem(LOCAL_STORAGE_KEYS.PORTFOLIO_ASSET_FILTER_OPTION) || HighToLowAssetsFilterOption.id,
+  selectedNetworkFilter: parseJSONFromLocalStorage(
+    'PORTFOLIO_NETWORK_FILTER_OPTION',
+    AllNetworksOptionDefault
+  ),
+  selectedAssetFilter:
+    window.localStorage.getItem(
+      LOCAL_STORAGE_KEYS.PORTFOLIO_ASSET_FILTER_OPTION
+    ) || HighToLowAssetsFilterOption.id,
   selectedGroupAssetsByItem:
     window
       .localStorage
@@ -127,59 +116,41 @@ const defaultState: WalletState = {
   assetAutoDiscoveryCompleted: false,
   isNftPinningFeatureEnabled: false,
   isPanelV2FeatureEnabled: false,
-  hidePortfolioGraph: window
-    .localStorage
-    .getItem(
-      LOCAL_STORAGE_KEYS
-        .IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN
+  hidePortfolioGraph:
+    window.localStorage.getItem(
+      LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN
     ) === 'true',
-  hidePortfolioBalances: window
-    .localStorage
-    .getItem(
-      LOCAL_STORAGE_KEYS
-        .HIDE_PORTFOLIO_BALANCES
-    ) === 'true',
-  removedFungibleTokenIds:
-    JSON.parse(
-      localStorage
-        .getItem(
-          LOCAL_STORAGE_KEYS
-            .USER_REMOVED_FUNGIBLE_TOKEN_IDS
-        ) || '[]'),
-  removedNonFungibleTokenIds:
-    JSON.parse(
-      localStorage
-        .getItem(
-          LOCAL_STORAGE_KEYS
-            .USER_REMOVED_NON_FUNGIBLE_TOKEN_IDS
-        ) || '[]'),
-  hidePortfolioNFTsTab: window
-  .localStorage
-  .getItem(
-    LOCAL_STORAGE_KEYS
-      .HIDE_PORTFOLIO_NFTS_TAB
-  ) === 'true',
+  hidePortfolioBalances:
+    window.localStorage.getItem(LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES) ===
+    'true',
+  removedFungibleTokenIds: JSON.parse(
+    localStorage.getItem(LOCAL_STORAGE_KEYS.USER_REMOVED_FUNGIBLE_TOKEN_IDS) ||
+      '[]'
+  ),
+  removedNonFungibleTokenIds: JSON.parse(
+    localStorage.getItem(
+      LOCAL_STORAGE_KEYS.USER_REMOVED_NON_FUNGIBLE_TOKEN_IDS
+    ) || '[]'
+  ),
+  hidePortfolioNFTsTab:
+    window.localStorage.getItem(LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB) ===
+    'true',
   removedNonFungibleTokens: [] as BraveWallet.BlockchainToken[],
-  filteredOutPortfolioNetworkKeys:
-    parseJSONFromLocalStorage(
-      'FILTERED_OUT_PORTFOLIO_NETWORK_KEYS',
-      makeInitialFilteredOutNetworkKeys()
-    ),
-  filteredOutPortfolioAccountAddresses:
-    parseJSONFromLocalStorage(
-      'FILTERED_OUT_PORTFOLIO_ACCOUNT_ADDRESSES',
-      []
-    ),
-  hidePortfolioSmallBalances: window
-    .localStorage
-    .getItem(
-      LOCAL_STORAGE_KEYS
-        .HIDE_PORTFOLIO_SMALL_BALANCES
+  filteredOutPortfolioNetworkKeys: parseJSONFromLocalStorage(
+    'FILTERED_OUT_PORTFOLIO_NETWORK_KEYS',
+    makeInitialFilteredOutNetworkKeys()
+  ),
+  filteredOutPortfolioAccountAddresses: parseJSONFromLocalStorage(
+    'FILTERED_OUT_PORTFOLIO_ACCOUNT_ADDRESSES',
+    []
+  ),
+  hidePortfolioSmallBalances:
+    window.localStorage.getItem(
+      LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_SMALL_BALANCES
     ) === 'true',
-  showNetworkLogoOnNfts: window.localStorage
-    .getItem(
-      LOCAL_STORAGE_KEYS
-        .SHOW_NETWORK_LOGO_ON_NFTS
+  showNetworkLogoOnNfts:
+    window.localStorage.getItem(
+      LOCAL_STORAGE_KEYS.SHOW_NETWORK_LOGO_ON_NFTS
     ) === 'true'
 }
 
@@ -255,44 +226,51 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
     name: 'wallet',
     initialState,
     reducers: {
-      activeOriginChanged (state: WalletState, { payload }: PayloadAction<SerializableOriginInfo>) {
+      activeOriginChanged(
+        state: WalletState,
+        { payload }: PayloadAction<SerializableOriginInfo>
+      ) {
         state.activeOrigin = payload
       },
 
-      addUserAssetError (state: WalletState, { payload }: PayloadAction<boolean>) {
+      addUserAssetError(
+        state: WalletState,
+        { payload }: PayloadAction<boolean>
+      ) {
         state.addUserAssetError = payload
       },
 
-      defaultCurrenciesUpdated (state: WalletState, { payload }: PayloadAction<DefaultCurrencies>) {
+      defaultCurrenciesUpdated(
+        state: WalletState,
+        { payload }: PayloadAction<DefaultCurrencies>
+      ) {
         state.defaultCurrencies = payload
       },
 
-      defaultEthereumWalletUpdated (state: WalletState, { payload }: PayloadAction<BraveWallet.DefaultWallet>) {
+      defaultEthereumWalletUpdated(
+        state: WalletState,
+        { payload }: PayloadAction<BraveWallet.DefaultWallet>
+      ) {
         state.defaultEthereumWallet = payload
       },
 
-      defaultSolanaWalletUpdated (state: WalletState, { payload }: PayloadAction<BraveWallet.DefaultWallet>) {
+      defaultSolanaWalletUpdated(
+        state: WalletState,
+        { payload }: PayloadAction<BraveWallet.DefaultWallet>
+      ) {
         state.defaultSolanaWallet = payload
       },
 
-      hasIncorrectPassword (state: WalletState, { payload }: PayloadAction<boolean>) {
+      hasIncorrectPassword(
+        state: WalletState,
+        { payload }: PayloadAction<boolean>
+      ) {
         state.hasIncorrectPassword = payload
       },
 
       initialized (state: WalletState, { payload }: PayloadAction<WalletInitializedPayload>) {
-
         state.hasInitialized = true
-
-        state.accounts = payload.allAccounts.accounts.map(
-          (info: BraveWallet.AccountInfo): WalletAccountType => {
-            return {
-              ...info,
-              tokenBalanceRegistry: {},
-              nativeBalanceRegistry: {}
-            }
-          }
-        )
-
+        state.accounts = payload.allAccounts.accounts
         state.isWalletCreated = payload.walletInfo.isWalletCreated
         state.isFilecoinEnabled = payload.walletInfo.isFilecoinEnabled
         state.isSolanaEnabled = payload.walletInfo.isSolanaEnabled
@@ -303,70 +281,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isPanelV2FeatureEnabled = payload.walletInfo.isPanelV2FeatureEnabled
       },
 
-      nativeAssetBalancesUpdated: (
+      portfolioTimelineUpdated(
         state: WalletState,
-        { payload }: PayloadAction<GetNativeAssetBalancesPayload>
-      ) => {
-        state.accounts.forEach((account, accountIndex) => {
-          payload.balances[accountIndex].forEach((info, tokenIndex) => {
-            if (info.error === BraveWallet.ProviderError.kSuccess) {
-              state.accounts[accountIndex].nativeBalanceRegistry[info.chainId] =
-                Amount.normalize(info.balance)
-            }
-          })
-        })
-      },
-
-      portfolioPriceHistoryUpdated: (
-        state: WalletState,
-        { payload }: PayloadAction<PortfolioTokenHistoryAndInfo[][]>
-      ) => {
-        const history = payload.map((infoArray) => {
-          return infoArray.map((info) => {
-            if (new Amount(info.balance).isPositive() && info.token.visible) {
-              return info.history.values.map((value) => {
-                return {
-                  date: value.date,
-                  price: new Amount(info.balance)
-                    .divideByDecimals(info.token.decimals)
-                    .times(value.price)
-                    .toNumber()
-                }
-              })
-            } else {
-              return []
-            }
-          })
-        })
-        const jointHistory = [].concat
-          .apply([], [...history])
-          .filter((h: []) => h.length > 1) as GetPriceHistoryReturnInfo[][]
-
-        // Since the Price History API sometimes will return a shorter
-        // array of history, this checks for the shortest array first to
-        // then map and reduce to it length
-        const shortestHistory =
-          jointHistory.length > 0
-            ? jointHistory.reduce((a, b) => (a.length <= b.length ? a : b))
-            : []
-        const sumOfHistory =
-          jointHistory.length > 0
-            ? shortestHistory.map((token, tokenIndex) => {
-                return {
-                  date: mojoTimeDeltaToJSDate(token.date),
-                  close: jointHistory
-                    .map((price) => Number(price[tokenIndex].price) || 0)
-                    .reduce((sum, x) => sum + x, 0)
-                }
-              })
-            : []
-
-        state.portfolioPriceHistory = sumOfHistory
-        state.isFetchingPortfolioPriceHistory = sumOfHistory.length === 0
-      },
-
-      portfolioTimelineUpdated (state: WalletState, { payload }: PayloadAction<BraveWallet.AssetPriceTimeframe>) {
-        state.isFetchingPortfolioPriceHistory = true
+        { payload }: PayloadAction<BraveWallet.AssetPriceTimeframe>
+      ) {
         state.selectedPortfolioTimeline = payload
       },
 
@@ -377,7 +295,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.fullTokenList = payload
       },
 
-      setAssetAutoDiscoveryCompleted (state: WalletState, { payload }: PayloadAction<BraveWallet.BlockchainToken[]>) {
+      setAssetAutoDiscoveryCompleted(
+        state: WalletState,
+        { payload }: PayloadAction<BraveWallet.BlockchainToken[]>
+      ) {
         state.assetAutoDiscoveryCompleted = true
       },
 
@@ -386,24 +307,36 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<GetCoinMarketsResponse>
       ) => {
         state.coinMarketData = payload.success
-          ? payload.values.map(coin => {
-            coin.image = coin.image.replace('https://assets.coingecko.com', ' https://assets.cgproxy.brave.com')
-            return coin
-          })
+          ? payload.values.map((coin) => {
+              coin.image = coin.image.replace(
+                'https://assets.coingecko.com',
+                ' https://assets.cgproxy.brave.com'
+              )
+              return coin
+            })
           : []
         state.isLoadingCoinMarketData = false
       },
 
-      selectCurrency (state: WalletState, { payload }: PayloadAction<BraveWallet.OnRampCurrency>) {
+      selectCurrency(
+        state: WalletState,
+        { payload }: PayloadAction<BraveWallet.OnRampCurrency>
+      ) {
         state.selectedCurrency = payload
       },
 
-      setGasEstimates (state: WalletState, { payload }: PayloadAction<BraveWallet.GasEstimation1559>) {
+      setGasEstimates(
+        state: WalletState,
+        { payload }: PayloadAction<BraveWallet.GasEstimation1559>
+      ) {
         state.hasFeeEstimatesError = false
         state.gasEstimates = payload
       },
 
-      setMetaMaskInstalled (state: WalletState, { payload }: PayloadAction<boolean>) {
+      setMetaMaskInstalled(
+        state: WalletState,
+        { payload }: PayloadAction<boolean>
+      ) {
         state.isMetaMaskInstalled = payload
       },
 
@@ -411,7 +344,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.onRampCurrencies = payload
       },
 
-      setPasswordAttempts (state: WalletState, { payload }: PayloadAction<number>) {
+      setPasswordAttempts(
+        state: WalletState,
+        { payload }: PayloadAction<number>
+      ) {
         state.passwordAttempts = payload
       },
 
@@ -419,102 +355,94 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.selectedAssetFilter = payload
       },
 
-      setSelectedGroupAssetsByItem (
+      setSelectedGroupAssetsByItem(
         state: WalletState,
         { payload }: PayloadAction<string>
       ) {
         state.selectedGroupAssetsByItem = payload
       },
 
-      setHidePortfolioGraph
-        (
-          state: WalletState,
-          { payload }: PayloadAction<boolean>
-        ) {
+      setHidePortfolioGraph(
+        state: WalletState,
+        { payload }: PayloadAction<boolean>
+      ) {
         state.hidePortfolioGraph = payload
       },
 
-      setRemovedFungibleTokenIds
-        (
-          state: WalletState,
-          { payload }: PayloadAction<string[]>
-        ) {
+      setRemovedFungibleTokenIds(
+        state: WalletState,
+        { payload }: PayloadAction<string[]>
+      ) {
         state.removedFungibleTokenIds = payload
       },
 
-      setRemovedNonFungibleTokenIds
-        (
-          state: WalletState,
-          { payload }: PayloadAction<string[]>
-        ) {
+      setRemovedNonFungibleTokenIds(
+        state: WalletState,
+        { payload }: PayloadAction<string[]>
+      ) {
         state.removedNonFungibleTokenIds = payload
       },
 
-      setRemovedNonFungibleTokens (state: WalletState, { payload }: PayloadAction<BraveWallet.BlockchainToken[]>) {
+      setRemovedNonFungibleTokens(
+        state: WalletState,
+        { payload }: PayloadAction<BraveWallet.BlockchainToken[]>
+      ) {
         state.removedNonFungibleTokens = payload
       },
 
-      setFilteredOutPortfolioNetworkKeys
-        (
-          state: WalletState,
-          { payload }: PayloadAction<string[]>
-        ) {
+      setFilteredOutPortfolioNetworkKeys(
+        state: WalletState,
+        { payload }: PayloadAction<string[]>
+      ) {
         state.filteredOutPortfolioNetworkKeys = payload
       },
 
-      setFilteredOutPortfolioAccountAddresses
-        (
-          state: WalletState,
-          { payload }: PayloadAction<string[]>
-        ) {
+      setFilteredOutPortfolioAccountAddresses(
+        state: WalletState,
+        { payload }: PayloadAction<string[]>
+      ) {
         state.filteredOutPortfolioAccountAddresses = payload
       },
 
-      setHidePortfolioSmallBalances
-        (
-          state: WalletState,
-          { payload }: PayloadAction<boolean>
-        ) {
+      setHidePortfolioSmallBalances(
+        state: WalletState,
+        { payload }: PayloadAction<boolean>
+      ) {
         state.hidePortfolioSmallBalances = payload
       },
 
-      setShowNetworkLogoOnNfts
-        (
-          state: WalletState,
-          { payload }: PayloadAction<boolean>
-        ) {
+      setShowNetworkLogoOnNfts(
+        state: WalletState,
+        { payload }: PayloadAction<boolean>
+      ) {
         state.showNetworkLogoOnNfts = payload
       },
 
-      setIsFetchingPortfolioPriceHistory
-        (
-          state: WalletState,
-          { payload }: PayloadAction<boolean>
-        ) {
-        state.isFetchingPortfolioPriceHistory = payload
-      },
-
-      setHidePortfolioBalances
-        (
-          state: WalletState,
-          { payload }: PayloadAction<boolean>
-        ) {
+      setHidePortfolioBalances(
+        state: WalletState,
+        { payload }: PayloadAction<boolean>
+      ) {
         state.hidePortfolioBalances = payload
       },
 
-      setHidePortfolioNFTsTab
-        (
-          state: WalletState,
-          { payload }: PayloadAction<boolean>
-        ) {
+      setHidePortfolioNFTsTab(
+        state: WalletState,
+        { payload }: PayloadAction<boolean>
+      ) {
         state.hidePortfolioNFTsTab = payload
       },
 
-      setSitePermissions (state: WalletState, { payload }: PayloadAction<SitePermissionsPayloadType>) {
+      setSitePermissions(
+        state: WalletState,
+        { payload }: PayloadAction<SitePermissionsPayloadType>
+      ) {
         state.connectedAccounts = payload.accounts
       },
 
-      setSolFeeEstimates (state: WalletState, { payload }: PayloadAction<SolFeeEstimates>) {
+      setSolFeeEstimates(
+        state: WalletState,
+        { payload }: PayloadAction<SolFeeEstimates>
+      ) {
         state.hasFeeEstimatesError = false
         state.solFeeEstimates = payload
       },
@@ -531,26 +459,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<BraveWallet.BlockchainToken[]>
       ) => {
         state.userVisibleTokensInfo = payload
-      },
-
-      tokenBalancesUpdated: (
-        state: WalletState,
-        { payload }: PayloadAction<GetBlockchainTokenBalanceReturnInfo>
-      ) => {
-        const visibleTokens = state.userVisibleTokensInfo.filter(
-          (asset) => asset.contractAddress !== ''
-        )
-
-        state.accounts.forEach((account, accountIndex) => {
-          payload.balances[accountIndex]?.forEach((info, tokenIndex) => {
-            if (info.error === BraveWallet.ProviderError.kSuccess) {
-              const token = visibleTokens[tokenIndex]
-              const registryKey = createTokenBalanceRegistryKey(token)
-              state.accounts[accountIndex].tokenBalanceRegistry[registryKey] =
-                Amount.normalize(info.balance)
-            }
-          })
-        })
       },
 
       refreshAccountInfo: (
@@ -572,15 +480,16 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isWalletLocked = true
       })
 
-      builder.addCase(WalletAsyncActions.setSelectedAccountFilterItem, (state, { payload }) => {
-        state.isFetchingPortfolioPriceHistory = true
-        state.selectedAccountFilter = payload
-      })
+      builder.addCase(
+        WalletAsyncActions.setSelectedAccountFilterItem,
+        (state, { payload }) => {
+          state.selectedAccountFilter = payload
+        }
+      )
 
       builder.addCase(
         WalletAsyncActions.setSelectedNetworkFilter,
         (state, { payload }) => {
-          state.isFetchingPortfolioPriceHistory = true
           state.selectedNetworkFilter = payload
         }
       )

@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { useHistory } from 'react-router'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
 import {
@@ -38,6 +39,7 @@ import {
 
 // Queries
 import {
+  useGetDefaultFiatCurrencyQuery,
   useGetTokenSpotPricesQuery
 } from '../../../common/slices/api.slice'
 import {
@@ -113,8 +115,12 @@ export const PortfolioAccountItem = (props: Props) => {
     [asset]
   )
 
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
+
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    { ids: tokenPriceIds },
+    defaultFiatCurrency
+      ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+      : skipToken,
     querySubscriptionOptions60s
   )
 

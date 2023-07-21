@@ -20,7 +20,6 @@ import {
 import {
   BraveWallet
 } from '../../../../../../constants/types'
-import { RefreshBlockchainStateParams } from '../../../constants/types'
 
 // Components
 import {
@@ -56,9 +55,6 @@ interface Props {
   getNetworkAssetsList: (
     network: BraveWallet.NetworkInfo
   ) => BraveWallet.BlockchainToken[]
-  refreshBlockchainState: (
-    overrides: Partial<RefreshBlockchainStateParams>
-  ) => Promise<void>
 }
 
 export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
@@ -69,8 +65,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       getCachedAssetBalance,
       getNetworkAssetsList,
       disabledToken,
-      selectingFromOrTo,
-      refreshBlockchainState
+      selectingFromOrTo
     } = props
 
     // Queries
@@ -173,7 +168,6 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             onSearchChanged={handleOnSearchChanged}
             searchValue={searchValue}
             networkSelectorDisabled={selectingFromOrTo === 'to'}
-            refreshBlockchainState={refreshBlockchainState}
           />
         </Row>
         <HiddenResponsiveRow maxWidth={570}>

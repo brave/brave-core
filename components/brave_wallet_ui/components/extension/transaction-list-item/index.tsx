@@ -29,10 +29,10 @@ import { SwapExchangeProxy } from '../../../common/constants/registry'
 
 // Hooks
 import {
-  useSafeWalletSelector,
   useUnsafeWalletSelector
 } from '../../../common/hooks/use-safe-selector'
 import {
+  useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
   useGetSolanaEstimatedFeeQuery,
   useGetTokenSpotPricesQuery
@@ -80,12 +80,10 @@ export const TransactionsListItem = ({
   const isSolTx = isSolanaTransaction(transaction)
 
   // redux
-  const defaultFiatCurrency = useSafeWalletSelector(
-    WalletSelectors.defaultFiatCurrency
-  )
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
 
   // queries & query args
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const { data: transactionsNetwork } = useGetNetworkQuery({
     chainId: transaction.chainId,
@@ -108,7 +106,9 @@ export const TransactionsListItem = ({
   const {
     data: spotPriceRegistry = {}
   } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
+    tokenPriceIds.length && defaultFiatCurrency
+      ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+      : skipToken,
     querySubscriptionOptions60s
   )
 

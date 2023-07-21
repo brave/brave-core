@@ -21,7 +21,6 @@ import {
 // Types
 import {
   BraveWallet,
-  WalletAccountType,
   SerializableTransactionInfo,
   WalletRoutes
 } from '../../../../../../constants/types'
@@ -31,8 +30,6 @@ import { getLocale } from '../../../../../../../common/locale'
 import Amount from '../../../../../../utils/amount'
 import { WalletSelectors } from '../../../../../../common/selectors'
 import { getBalance } from '../../../../../../utils/balance-utils'
-import { computeFiatAmount } from '../../../../../../utils/pricing-utils'
-import { getPriceIdForToken } from '../../../../../../utils/api-utils'
 
 // Options
 import {
@@ -61,12 +58,11 @@ import {
 } from '../../../../../../common/hooks/use-multi-chain-sell-assets'
 import {
   useGetNetworkQuery,
-  useGetSelectedChainQuery,
-  useGetTokenSpotPricesQuery
+  useGetSelectedChainQuery
 } from '../../../../../../common/slices/api.slice'
 import {
-  querySubscriptionOptions60s
-} from '../../../../../../common/slices/constants'
+  TokenBalancesRegistry
+} from '../../../../../../common/slices/entities/token-balance.entity'
 
 // Styled Components
 import {
@@ -84,18 +80,22 @@ import {
   HorizontalSpace
 } from '../../../../../shared/style'
 
-export interface Props {
+interface Props {
   selectedAsset: BraveWallet.BlockchainToken | undefined
   fullAssetFiatBalance: Amount
   formattedFullAssetBalance: string
   selectedAssetTransactions: SerializableTransactionInfo[]
+  accounts: BraveWallet.AccountInfo[]
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined
 }
 
 export const AccountsAndTransactionsList = ({
   selectedAsset,
   fullAssetFiatBalance,
   formattedFullAssetBalance,
-  selectedAssetTransactions
+  selectedAssetTransactions,
+  accounts,
+  tokenBalancesRegistry
 }: Props) => {
   // routing
   const { hash } = useLocation()
@@ -104,7 +104,6 @@ export const AccountsAndTransactionsList = ({
   const dispatch = useDispatch()
 
   // unsafe selectors
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
   const hidePortfolioBalances =
     useSafeWalletSelector(WalletSelectors.hidePortfolioBalances)
@@ -113,18 +112,6 @@ export const AccountsAndTransactionsList = ({
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: selectedAssetNetwork } = useGetNetworkQuery(
     selectedAsset ?? skipToken
-  )
-
-  const tokenPriceIds = React.useMemo(() =>
-    selectedAsset
-      ? [getPriceIdForToken(selectedAsset)]
-      : [],
-    [selectedAsset]
-  )
-
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
-    querySubscriptionOptions60s
   )
 
   // hooks
@@ -138,47 +125,9 @@ export const AccountsAndTransactionsList = ({
   } = useMultiChainSellAssets()
 
   // state
-  const [selectedSellAccount, setSelectedSellAccount] = React.useState<WalletAccountType>()
+  const [selectedSellAccount, setSelectedSellAccount] =
+    React.useState<BraveWallet.AccountInfo>()
   const [showSellModal, setShowSellModal] = React.useState<boolean>(false)
-
-  // memos
-  const filteredAccountsByCoinType = React.useMemo(() => {
-    if (!selectedAsset) {
-      return []
-    }
-    return accounts.filter((account) => account.accountId.coin === selectedAsset.coin)
-  }, [accounts, selectedAsset])
-
-  const accountsList = React.useMemo(() => {
-    if (!selectedAsset) {
-      return []
-    }
-    return filteredAccountsByCoinType
-      .filter(
-        (account) =>
-          new Amount(getBalance(account, selectedAsset)).gt(0)
-      )
-      .sort(
-        (a, b) => {
-          const aBalance = computeFiatAmount({
-            spotPriceRegistry,
-            value: getBalance(a, selectedAsset),
-            token: selectedAsset
-          })
-
-          const bBalance = computeFiatAmount({
-            spotPriceRegistry,
-            value: getBalance(b, selectedAsset),
-            token: selectedAsset
-          })
-
-          return bBalance.minus(aBalance).toNumber()
-        })
-  }, [
-    selectedAsset,
-    filteredAccountsByCoinType,
-    spotPriceRegistry
-  ])
 
   const nonRejectedTransactions = React.useMemo(() => {
     return selectedAssetTransactions
@@ -186,10 +135,13 @@ export const AccountsAndTransactionsList = ({
   }, [selectedAssetTransactions])
 
   // Methods
-  const onShowSellModal = React.useCallback((account: WalletAccountType) => {
-    setSelectedSellAccount(account)
-    setShowSellModal(true)
-  }, [])
+  const onShowSellModal = React.useCallback(
+    (account: BraveWallet.AccountInfo) => {
+      setSelectedSellAccount(account)
+      setShowSellModal(true)
+    },
+    []
+  )
 
   const onOpenSellAssetLink = React.useCallback(() => {
     openSellAssetLink({ sellAddress: selectedSellAccount?.address ?? '', sellAsset: selectedAsset })
@@ -228,7 +180,7 @@ export const AccountsAndTransactionsList = ({
           </Row>
           {hash !== WalletRoutes.TransactionsHash &&
             <>
-              {accountsList.length !== 0 ? (
+              {accounts.length !== 0 ? (
                 <>
                   <Row
                     width='100%'
@@ -294,7 +246,7 @@ export const AccountsAndTransactionsList = ({
                   </Row>
                   <VerticalDivider />
                   <VerticalSpacer space={8} />
-                  {accountsList.map((account) =>
+                  {accounts.map(account =>
                     <PortfolioAccountItem
                       asset={selectedAsset}
                       defaultCurrencies={defaultCurrencies}
@@ -302,7 +254,13 @@ export const AccountsAndTransactionsList = ({
                       name={account.name}
                       address={account.address}
                       accountKind={account.accountId.kind}
-                      assetBalance={getBalance(account, selectedAsset)}
+                      assetBalance={
+                        getBalance(
+                          account,
+                          selectedAsset,
+                          tokenBalancesRegistry
+                        )
+                      }
                       selectedNetwork={selectedAssetNetwork || selectedNetwork}
                       showSellModal={() => onShowSellModal(account)}
                       isSellSupported={checkIsAssetSellSupported(selectedAsset)}
@@ -389,7 +347,13 @@ export const AccountsAndTransactionsList = ({
           openSellAssetLink={onOpenSellAssetLink}
           showSellModal={showSellModal}
           account={selectedSellAccount}
-          sellAssetBalance={getBalance(selectedSellAccount, selectedAsset)}
+          sellAssetBalance={
+            getBalance(
+              selectedSellAccount,
+              selectedAsset,
+              tokenBalancesRegistry
+            )
+          }
         />
       }
     </>

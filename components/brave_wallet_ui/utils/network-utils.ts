@@ -97,7 +97,7 @@ const EIP1559_SUPPORTED_ACCOUNT_TYPE_NAMES = [
  * EVM Type-2 transactions. The return value is always false for non-EVM
  * networks.
  *
- * @param {WalletAccountType} account
+ * @param {BraveWallet.AccountInfo} account
  * @param {BraveWallet.NetworkInfo} network
  * @returns {boolean} Returns a boolean result indicating EIP-1559 support.
  */

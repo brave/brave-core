@@ -27,7 +27,6 @@ import {
 import { SolDerivationPaths } from '../../../../../common/hardware/types'
 import {
   BraveWallet,
-  WalletAccountType,
   CreateAccountOptionsType,
   FilecoinNetwork
 } from '../../../../../constants/types'
@@ -54,7 +53,7 @@ import {
 interface Props {
   hardwareWallet: string
   accounts: BraveWallet.HardwareWalletAccount[]
-  preAddedHardwareWalletAccounts: WalletAccountType[]
+  preAddedHardwareWalletAccounts: BraveWallet.AccountInfo[]
   onLoadMore: () => void
   selectedDerivationPaths: string[]
   setSelectedDerivationPaths: (paths: string[]) => void

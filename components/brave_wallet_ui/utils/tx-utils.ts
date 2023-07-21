@@ -10,7 +10,6 @@ import {
   BraveWallet,
   P3ASendTransactionTypes,
   SupportedTestNetworks,
-  WalletAccountType,
   SerializableTransactionInfo,
   TimeDelta,
   SerializableTimeDelta,
@@ -1525,7 +1524,7 @@ export const parseTransactionWithoutPrices = ({
   transactionNetwork,
   tokensList
 }: {
-  accounts: WalletAccountType[]
+  accounts: BraveWallet.AccountInfo[]
   tx: TransactionInfo
   transactionNetwork?: BraveWallet.NetworkInfo
   tokensList: BraveWallet.BlockchainToken[]
@@ -1703,7 +1702,7 @@ export const parseTransactionWithPrices = ({
   gasFee,
   tokensList
 }: {
-  accounts: WalletAccountType[]
+  accounts: BraveWallet.AccountInfo[]
   tx: TransactionInfo
   transactionNetwork?: BraveWallet.NetworkInfo
   tokensList: BraveWallet.BlockchainToken[]

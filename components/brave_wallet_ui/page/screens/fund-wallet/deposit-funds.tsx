@@ -20,7 +20,6 @@ import {
 import {
   BraveWallet,
   UserAssetInfoType,
-  WalletAccountType,
   WalletState
 } from '../../../constants/types'
 
@@ -102,7 +101,8 @@ export const DepositFundsScreen = (props: Props) => {
   const [selectedAsset, setSelectedAsset] = React.useState<
     BraveWallet.BlockchainToken | undefined
   >(undefined)
-  const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType | undefined>()
+  const [selectedAccount, setSelectedAccount] =
+    React.useState<BraveWallet.AccountInfo | undefined>()
   const [searchValue, setSearchValue] = React.useState<string>('')
 
   // queries
@@ -137,7 +137,7 @@ export const DepositFundsScreen = (props: Props) => {
     return assets.map(asset => ({ asset, assetBalance: '1' }))
   }, [selectedNetworkFilter.chainId, fullAssetsList])
 
-  const accountsForSelectedAssetNetwork: WalletAccountType[] = React.useMemo(() => {
+  const accountsForSelectedAssetNetwork = React.useMemo(() => {
     return selectedAssetNetwork
       ? accounts.filter(a => a.accountId.coin === selectedAssetNetwork.coin)
       : []
@@ -147,7 +147,7 @@ export const DepositFundsScreen = (props: Props) => {
     return !!selectedAsset && accountsForSelectedAssetNetwork.length < 1
   }, [selectedAsset, accountsForSelectedAssetNetwork.length])
 
-  const accountListSearchResults: WalletAccountType[] = React.useMemo(() => {
+  const accountListSearchResults = React.useMemo(() => {
     if (accountSearchText === '') {
       return accountsForSelectedAssetNetwork
     }
@@ -214,11 +214,14 @@ export const DepositFundsScreen = (props: Props) => {
     []
   )
 
-  const onSelectAccountFromSearch = React.useCallback((account: WalletAccountType) => () => {
-    closeAccountSearch()
-    setSelectedAccount(account)
-    resetCopyState()
-  }, [closeAccountSearch, resetCopyState])
+  const onSelectAccountFromSearch = React.useCallback(
+    (account: BraveWallet.AccountInfo) => () => {
+      closeAccountSearch()
+      setSelectedAccount(account)
+      resetCopyState()
+    },
+    [closeAccountSearch, resetCopyState]
+  )
 
   const nextStep = React.useCallback(() => {
     if (!isNextStepEnabled || !selectedAssetNetwork) {

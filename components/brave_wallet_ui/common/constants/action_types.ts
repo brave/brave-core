@@ -8,8 +8,7 @@ import {
   SerializableOrigin,
   SerializableTransactionInfo,
   SlippagePresetObjectType,
-  TransactionProviderError,
-  WalletAccountType
+  TransactionProviderError
 } from '../../constants/types'
 
 export type UnlockWalletPayloadType = {
@@ -84,7 +83,7 @@ export type DefaultBaseCryptocurrencyChanged = {
 }
 
 export type SitePermissionsPayloadType = {
-  accounts: WalletAccountType[]
+  accounts: BraveWallet.AccountInfo[]
 }
 
 export type RemoveSitePermissionPayloadType = {

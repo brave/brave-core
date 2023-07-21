@@ -7,7 +7,7 @@ import * as React from 'react'
 
 // Types
 import {
-  WalletAccountType
+  BraveWallet
 } from '../../../../../../constants/types'
 
 // Utils
@@ -24,8 +24,8 @@ import {
 } from '../../shared-swap.styles'
 
 interface Props {
-  onClick: (account: WalletAccountType) => void
-  account: WalletAccountType
+  onClick: (account: BraveWallet.AccountInfo) => void
+  account: BraveWallet.AccountInfo
 }
 
 export const AccountListButton = (props: Props) => {

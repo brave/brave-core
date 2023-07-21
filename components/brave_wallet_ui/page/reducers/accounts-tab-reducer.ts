@@ -4,16 +4,18 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { createReducer, createAction } from 'redux-act'
-import { WalletAccountType, AccountModalTypes, BraveWallet } from '../../constants/types'
+import { AccountModalTypes, BraveWallet } from '../../constants/types'
 
 export interface AccountsTabState {
-  selectedAccount: WalletAccountType | undefined
+  selectedAccount: BraveWallet.AccountInfo | undefined
   showAccountModal: boolean
   accountModalType: AccountModalTypes
-  accountToRemove: {
-    accountId: BraveWallet.AccountId
-    name: string
-  } | undefined
+  accountToRemove:
+                   | {
+        accountId: BraveWallet.AccountId
+        name: string
+      }
+    | undefined
 }
 
 const defaultState: AccountsTabState = {
@@ -24,27 +26,35 @@ const defaultState: AccountsTabState = {
 }
 
 export const AccountsTabActions = {
-  setSelectedAccount: createAction<WalletAccountType | undefined>('setSelectedAccount'),
+  setSelectedAccount: createAction<BraveWallet.AccountInfo | undefined>(
+    'setSelectedAccount'
+  ),
   setShowAccountModal: createAction<boolean>('setShowAccountModal'),
   setAccountModalType: createAction<AccountModalTypes>('setAccountModalType'),
-  setAccountToRemove: createAction<{
-    accountId: BraveWallet.AccountId,
-    name: string
-  } | undefined>('setAccountToRemove')
+  setAccountToRemove: createAction<
+    | {
+        accountId: BraveWallet.AccountId
+        name: string
+      }
+    | undefined
+  >('setAccountToRemove')
 }
 
 export const createAccountsTabReducer = (initialState: AccountsTabState) => {
   const reducer = createReducer<AccountsTabState>({}, initialState)
 
-  reducer.on(AccountsTabActions.setSelectedAccount, (
-    state: AccountsTabState,
-    payload: WalletAccountType | undefined
-  ): AccountsTabState => {
-    return {
-      ...state,
-      selectedAccount: payload
+  reducer.on(
+    AccountsTabActions.setSelectedAccount,
+    (
+      state: AccountsTabState,
+      payload: BraveWallet.AccountInfo | undefined
+    ): AccountsTabState => {
+      return {
+        ...state,
+        selectedAccount: payload
+      }
     }
-  })
+  )
 
   reducer.on(AccountsTabActions.setShowAccountModal, (
     state: AccountsTabState,
