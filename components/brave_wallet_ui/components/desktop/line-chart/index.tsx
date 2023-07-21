@@ -16,6 +16,9 @@ import {
 } from 'recharts'
 
 import {
+  mojoTimeDeltaToJSDate
+} from '../../../../common/mojomUtils'
+import {
   makeSerializableTimeDelta,
   deserializeTimeDelta
 } from '../../../utils/model-serialization-utils'
@@ -79,7 +82,7 @@ function LineChart ({
       : priceData
 
     return priceHistory.map(price => ({
-      date: deserializeTimeDelta(price.date),
+      date: mojoTimeDeltaToJSDate(deserializeTimeDelta(price.date)),
       close: price.close
     }))
   }, [priceData, isDisabled])
