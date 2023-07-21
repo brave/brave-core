@@ -38,8 +38,8 @@ export const useScopedBalanceUpdater = (arg: Arg | typeof skipToken) => {
     }
 
     const nonSolArgs = arg.accounts
-      .flatMap((account) =>
-        account.accountId.coin !== CoinTypes.SOL && arg.tokens
+      .flatMap((account) => account.accountId.coin !== CoinTypes.SOL &&
+        arg.tokens && coinTypesMapping[account.accountId.coin]
           ? [
               {
                 address: account.address,
@@ -50,7 +50,6 @@ export const useScopedBalanceUpdater = (arg: Arg | typeof skipToken) => {
             ]
           : []
       )
-      .filter(({ coin }) => coin !== undefined)
 
     const solArgs = arg.accounts
       .flatMap((account) =>
