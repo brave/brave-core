@@ -11,12 +11,31 @@ cargo_crate("lib") {
 
   # Only for usage from third-party crates. Add the crate to
   # third_party.toml to use it from first-party code.
-  visibility = [ "//third_party/rust/*" ]
+  visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/parking_lot_core/v0_9/crate/build.rs",
+    "//brave/third_party/rust/parking_lot_core/v0_9/crate/src/lib.rs",
+    "//brave/third_party/rust/parking_lot_core/v0_9/crate/src/parking_lot.rs",
+    "//brave/third_party/rust/parking_lot_core/v0_9/crate/src/spinwait.rs",
+    "//brave/third_party/rust/parking_lot_core/v0_9/crate/src/thread_parker/generic.rs",
+    "//brave/third_party/rust/parking_lot_core/v0_9/crate/src/thread_parker/linux.rs",
+    "//brave/third_party/rust/parking_lot_core/v0_9/crate/src/thread_parker/mod.rs",
+    "//brave/third_party/rust/parking_lot_core/v0_9/crate/src/thread_parker/redox.rs",
+    "//brave/third_party/rust/parking_lot_core/v0_9/crate/src/thread_parker/sgx.rs",
+    "//brave/third_party/rust/parking_lot_core/v0_9/crate/src/thread_parker/unix.rs",
+    "//brave/third_party/rust/parking_lot_core/v0_9/crate/src/thread_parker/wasm.rs",
+    "//brave/third_party/rust/parking_lot_core/v0_9/crate/src/thread_parker/wasm_atomic.rs",
+    "//brave/third_party/rust/parking_lot_core/v0_9/crate/src/thread_parker/windows/keyed_event.rs",
+    "//brave/third_party/rust/parking_lot_core/v0_9/crate/src/thread_parker/windows/mod.rs",
+    "//brave/third_party/rust/parking_lot_core/v0_9/crate/src/thread_parker/windows/waitaddress.rs",
+    "//brave/third_party/rust/parking_lot_core/v0_9/crate/src/util.rs",
+    "//brave/third_party/rust/parking_lot_core/v0_9/crate/src/word_lock.rs",
+  ]
+  inputs = []
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.9.7"
   cargo_pkg_authors = "Amanieu d'Antras <amanieu@gmail.com>"

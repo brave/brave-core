@@ -13,10 +13,35 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/num_traits/v0_2/crate/build.rs",
+    "//brave/third_party/rust/num_traits/v0_2/crate/src/bounds.rs",
+    "//brave/third_party/rust/num_traits/v0_2/crate/src/cast.rs",
+    "//brave/third_party/rust/num_traits/v0_2/crate/src/float.rs",
+    "//brave/third_party/rust/num_traits/v0_2/crate/src/identities.rs",
+    "//brave/third_party/rust/num_traits/v0_2/crate/src/int.rs",
+    "//brave/third_party/rust/num_traits/v0_2/crate/src/lib.rs",
+    "//brave/third_party/rust/num_traits/v0_2/crate/src/macros.rs",
+    "//brave/third_party/rust/num_traits/v0_2/crate/src/ops/checked.rs",
+    "//brave/third_party/rust/num_traits/v0_2/crate/src/ops/euclid.rs",
+    "//brave/third_party/rust/num_traits/v0_2/crate/src/ops/inv.rs",
+    "//brave/third_party/rust/num_traits/v0_2/crate/src/ops/mod.rs",
+    "//brave/third_party/rust/num_traits/v0_2/crate/src/ops/mul_add.rs",
+    "//brave/third_party/rust/num_traits/v0_2/crate/src/ops/overflowing.rs",
+    "//brave/third_party/rust/num_traits/v0_2/crate/src/ops/saturating.rs",
+    "//brave/third_party/rust/num_traits/v0_2/crate/src/ops/wrapping.rs",
+    "//brave/third_party/rust/num_traits/v0_2/crate/src/pow.rs",
+    "//brave/third_party/rust/num_traits/v0_2/crate/src/real.rs",
+    "//brave/third_party/rust/num_traits/v0_2/crate/src/sign.rs",
+    "//brave/third_party/rust/num_traits/v0_2/crate/tests/cast.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/num_traits/v0_2/crate/README.md",
+    "//brave/third_party/rust/num_traits/v0_2/crate/RELEASES.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2015"
   cargo_pkg_version = "0.2.15"
   cargo_pkg_authors = "The Rust Project Developers"

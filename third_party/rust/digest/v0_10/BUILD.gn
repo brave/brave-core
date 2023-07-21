@@ -13,10 +13,29 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/digest/v0_10/crate/src/core_api.rs",
+    "//brave/third_party/rust/digest/v0_10/crate/src/core_api/ct_variable.rs",
+    "//brave/third_party/rust/digest/v0_10/crate/src/core_api/rt_variable.rs",
+    "//brave/third_party/rust/digest/v0_10/crate/src/core_api/wrapper.rs",
+    "//brave/third_party/rust/digest/v0_10/crate/src/core_api/xof_reader.rs",
+    "//brave/third_party/rust/digest/v0_10/crate/src/dev.rs",
+    "//brave/third_party/rust/digest/v0_10/crate/src/dev/fixed.rs",
+    "//brave/third_party/rust/digest/v0_10/crate/src/dev/mac.rs",
+    "//brave/third_party/rust/digest/v0_10/crate/src/dev/rng.rs",
+    "//brave/third_party/rust/digest/v0_10/crate/src/dev/variable.rs",
+    "//brave/third_party/rust/digest/v0_10/crate/src/dev/xof.rs",
+    "//brave/third_party/rust/digest/v0_10/crate/src/digest.rs",
+    "//brave/third_party/rust/digest/v0_10/crate/src/lib.rs",
+    "//brave/third_party/rust/digest/v0_10/crate/src/mac.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/digest/v0_10/crate/CHANGELOG.md",
+    "//brave/third_party/rust/digest/v0_10/crate/README.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.10.6"
   cargo_pkg_authors = "RustCrypto Developers"

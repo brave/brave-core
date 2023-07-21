@@ -13,10 +13,20 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/mac/v0_1/crate/src/cfg.rs",
+    "//brave/third_party/rust/mac/v0_1/crate/src/format.rs",
+    "//brave/third_party/rust/mac/v0_1/crate/src/inspect.rs",
+    "//brave/third_party/rust/mac/v0_1/crate/src/lib.rs",
+    "//brave/third_party/rust/mac/v0_1/crate/src/matches.rs",
+    "//brave/third_party/rust/mac/v0_1/crate/src/mem.rs",
+    "//brave/third_party/rust/mac/v0_1/crate/src/syntax_ext.rs",
+    "//brave/third_party/rust/mac/v0_1/crate/src/test.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/mac/v0_1/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2015"
   cargo_pkg_version = "0.1.1"
   cargo_pkg_authors = "Jonathan Reem <jonathan.reem@gmail.com>"

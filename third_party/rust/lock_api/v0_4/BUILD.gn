@@ -13,10 +13,17 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/lock_api/v0_4/crate/build.rs",
+    "//brave/third_party/rust/lock_api/v0_4/crate/src/lib.rs",
+    "//brave/third_party/rust/lock_api/v0_4/crate/src/mutex.rs",
+    "//brave/third_party/rust/lock_api/v0_4/crate/src/remutex.rs",
+    "//brave/third_party/rust/lock_api/v0_4/crate/src/rwlock.rs",
+  ]
+  inputs = []
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.4.9"
   cargo_pkg_authors = "Amanieu d'Antras <amanieu@gmail.com>"

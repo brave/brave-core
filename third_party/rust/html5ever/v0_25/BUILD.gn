@@ -9,10 +9,34 @@ cargo_crate("lib") {
   epoch = "0.25"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/html5ever/v0_25/crate/benches/html5ever.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/build.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/examples/arena.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/examples/noop-tokenize.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/examples/noop-tree-builder.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/examples/print-tree-actions.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/examples/tokenize.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/macros/match_token.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/src/driver.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/src/lib.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/src/macros.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/src/serialize/mod.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/src/tokenizer/char_ref/mod.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/src/tokenizer/interface.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/src/tokenizer/mod.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/src/tokenizer/states.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/src/tree_builder/data.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/src/tree_builder/mod.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/src/tree_builder/rules.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/src/tree_builder/tag_sets.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/src/tree_builder/types.rs",
+    "//brave/third_party/rust/html5ever/v0_25/crate/src/util/str.rs",
+  ]
+  inputs = []
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.25.1"
   cargo_pkg_authors = "The html5ever Project Developers"
@@ -33,7 +57,10 @@ cargo_crate("lib") {
     "//third_party/rust/syn/v1:lib",
   ]
   build_root = "crate/build.rs"
-  build_sources = [ "crate/build.rs" ]
+  build_sources = [
+    "crate/build.rs",
+    "crate/macros/match_token.rs",
+  ]
   build_script_outputs = [ "rules.rs" ]
   cargo_manifest_dir =
       rebase_path("//brave/third_party/rust/html5ever/v0_25/crate")

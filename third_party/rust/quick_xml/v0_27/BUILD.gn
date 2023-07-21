@@ -13,10 +13,42 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/de/escape.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/de/key.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/de/map.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/de/mod.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/de/simple_type.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/de/var.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/encoding.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/errors.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/escapei.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/events/attributes.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/events/mod.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/lib.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/name.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/reader/async_tokio.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/reader/buffered_reader.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/reader/mod.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/reader/ns_reader.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/reader/parser.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/reader/slice_reader.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/se/content.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/se/element.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/se/key.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/se/mod.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/se/simple_type.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/utils.rs",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/src/writer.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/quick_xml/v0_27/crate/LICENSE-MIT.md",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/README.md",
+    "//brave/third_party/rust/quick_xml/v0_27/crate/tests/README.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.27.1"
   cargo_pkg_name = "quick-xml"

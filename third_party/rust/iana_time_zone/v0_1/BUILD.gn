@@ -13,10 +13,29 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/iana_time_zone/v0_1/crate/examples/get_timezone.rs",
+    "//brave/third_party/rust/iana_time_zone/v0_1/crate/examples/stress-test.rs",
+    "//brave/third_party/rust/iana_time_zone/v0_1/crate/src/ffi_utils.rs",
+    "//brave/third_party/rust/iana_time_zone/v0_1/crate/src/lib.rs",
+    "//brave/third_party/rust/iana_time_zone/v0_1/crate/src/platform.rs",
+    "//brave/third_party/rust/iana_time_zone/v0_1/crate/src/tz_android.rs",
+    "//brave/third_party/rust/iana_time_zone/v0_1/crate/src/tz_freebsd.rs",
+    "//brave/third_party/rust/iana_time_zone/v0_1/crate/src/tz_haiku.rs",
+    "//brave/third_party/rust/iana_time_zone/v0_1/crate/src/tz_illumos.rs",
+    "//brave/third_party/rust/iana_time_zone/v0_1/crate/src/tz_linux.rs",
+    "//brave/third_party/rust/iana_time_zone/v0_1/crate/src/tz_macos.rs",
+    "//brave/third_party/rust/iana_time_zone/v0_1/crate/src/tz_netbsd.rs",
+    "//brave/third_party/rust/iana_time_zone/v0_1/crate/src/tz_wasm32.rs",
+    "//brave/third_party/rust/iana_time_zone/v0_1/crate/src/tz_windows.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/iana_time_zone/v0_1/crate/CHANGELOG.md",
+    "//brave/third_party/rust/iana_time_zone/v0_1/crate/README.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.1.54"
   cargo_pkg_authors = "Andrew Straw <strawman@astraw.com>, René Kijewski <rene.kijewski@fu-berlin.de>, Ryan Lopopolo <rjl@hyperbo.la>"

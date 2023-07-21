@@ -13,10 +13,40 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/getrandom/v0_1/crate/benches/mod.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/build.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/bsd_arandom.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/cloudabi.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/dummy.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/error.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/error_impls.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/fuchsia.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/ios.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/lib.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/linux_android.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/macos.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/openbsd.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/rdrand.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/solaris_illumos.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/use_file.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/util.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/util_libc.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/vxworks.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/wasi.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/wasm32_bindgen.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/wasm32_stdweb.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/windows.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/src/windows_uwp.rs",
+    "//brave/third_party/rust/getrandom/v0_1/crate/tests/common.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/getrandom/v0_1/crate/CHANGELOG.md",
+    "//brave/third_party/rust/getrandom/v0_1/crate/README.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.1.16"
   cargo_pkg_authors = "The Rand Project Developers"

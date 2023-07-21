@@ -13,10 +13,36 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/paste/v1/crate/build.rs",
+    "//brave/third_party/rust/paste/v1/crate/src/attr.rs",
+    "//brave/third_party/rust/paste/v1/crate/src/error.rs",
+    "//brave/third_party/rust/paste/v1/crate/src/lib.rs",
+    "//brave/third_party/rust/paste/v1/crate/src/segment.rs",
+    "//brave/third_party/rust/paste/v1/crate/tests/compiletest.rs",
+    "//brave/third_party/rust/paste/v1/crate/tests/test_attr.rs",
+    "//brave/third_party/rust/paste/v1/crate/tests/test_doc.rs",
+    "//brave/third_party/rust/paste/v1/crate/tests/test_expr.rs",
+    "//brave/third_party/rust/paste/v1/crate/tests/test_item.rs",
+    "//brave/third_party/rust/paste/v1/crate/tests/ui/case-warning.rs",
+    "//brave/third_party/rust/paste/v1/crate/tests/ui/env-empty.rs",
+    "//brave/third_party/rust/paste/v1/crate/tests/ui/env-non-string.rs",
+    "//brave/third_party/rust/paste/v1/crate/tests/ui/env-suffix.rs",
+    "//brave/third_party/rust/paste/v1/crate/tests/ui/env-unexpected.rs",
+    "//brave/third_party/rust/paste/v1/crate/tests/ui/invalid-ident.rs",
+    "//brave/third_party/rust/paste/v1/crate/tests/ui/missing-paren-on-env.rs",
+    "//brave/third_party/rust/paste/v1/crate/tests/ui/no-env-var.rs",
+    "//brave/third_party/rust/paste/v1/crate/tests/ui/no-ident-after-colon.rs",
+    "//brave/third_party/rust/paste/v1/crate/tests/ui/unexpected-group.rs",
+    "//brave/third_party/rust/paste/v1/crate/tests/ui/unexpected-modifier.rs",
+    "//brave/third_party/rust/paste/v1/crate/tests/ui/unexpected-punct.rs",
+    "//brave/third_party/rust/paste/v1/crate/tests/ui/unsupported-literal.rs",
+    "//brave/third_party/rust/paste/v1/crate/tests/ui/unsupported-modifier.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/paste/v1/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "1.0.12"
   cargo_pkg_authors = "David Tolnay <dtolnay@gmail.com>"

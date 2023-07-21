@@ -9,10 +9,24 @@ cargo_crate("lib") {
   epoch = "1"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/challenge_bypass_ristretto/v1/crate/benches/benchmarks.rs",
+    "//brave/third_party/rust/challenge_bypass_ristretto/v1/crate/src/dleq.rs",
+    "//brave/third_party/rust/challenge_bypass_ristretto/v1/crate/src/dleq_merlin.rs",
+    "//brave/third_party/rust/challenge_bypass_ristretto/v1/crate/src/errors.rs",
+    "//brave/third_party/rust/challenge_bypass_ristretto/v1/crate/src/lib.rs",
+    "//brave/third_party/rust/challenge_bypass_ristretto/v1/crate/src/macros.rs",
+    "//brave/third_party/rust/challenge_bypass_ristretto/v1/crate/src/oprf.rs",
+    "//brave/third_party/rust/challenge_bypass_ristretto/v1/crate/src/voprf.rs",
+    "//brave/third_party/rust/challenge_bypass_ristretto/v1/crate/tests/e2e.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/challenge_bypass_ristretto/v1/crate/README.md",
+    "//brave/third_party/rust/challenge_bypass_ristretto/v1/crate/docs/PROTOCOL.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "1.0.1"
   cargo_pkg_authors = "eV <ev@7pr.xyz>"

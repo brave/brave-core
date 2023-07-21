@@ -13,10 +13,23 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/proc_macro_hack/v0_5/crate/build.rs",
+    "//brave/third_party/rust/proc_macro_hack/v0_5/crate/src/error.rs",
+    "//brave/third_party/rust/proc_macro_hack/v0_5/crate/src/iter.rs",
+    "//brave/third_party/rust/proc_macro_hack/v0_5/crate/src/lib.rs",
+    "//brave/third_party/rust/proc_macro_hack/v0_5/crate/src/parse.rs",
+    "//brave/third_party/rust/proc_macro_hack/v0_5/crate/src/quote.rs",
+    "//brave/third_party/rust/proc_macro_hack/v0_5/crate/tests/compiletest.rs",
+    "//brave/third_party/rust/proc_macro_hack/v0_5/crate/tests/ui/private.rs",
+    "//brave/third_party/rust/proc_macro_hack/v0_5/crate/tests/ui/unexpected-arg.rs",
+    "//brave/third_party/rust/proc_macro_hack/v0_5/crate/tests/ui/unexpected.rs",
+    "//brave/third_party/rust/proc_macro_hack/v0_5/crate/tests/ui/unknown-arg.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/proc_macro_hack/v0_5/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.5.20+deprecated"
   cargo_pkg_authors = "David Tolnay <dtolnay@gmail.com>"

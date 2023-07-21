@@ -13,10 +13,31 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/tracing_attributes/v0_1/crate/src/attr.rs",
+    "//brave/third_party/rust/tracing_attributes/v0_1/crate/src/expand.rs",
+    "//brave/third_party/rust/tracing_attributes/v0_1/crate/src/lib.rs",
+    "//brave/third_party/rust/tracing_attributes/v0_1/crate/tests/async_fn.rs",
+    "//brave/third_party/rust/tracing_attributes/v0_1/crate/tests/destructuring.rs",
+    "//brave/third_party/rust/tracing_attributes/v0_1/crate/tests/err.rs",
+    "//brave/third_party/rust/tracing_attributes/v0_1/crate/tests/fields.rs",
+    "//brave/third_party/rust/tracing_attributes/v0_1/crate/tests/follows_from.rs",
+    "//brave/third_party/rust/tracing_attributes/v0_1/crate/tests/instrument.rs",
+    "//brave/third_party/rust/tracing_attributes/v0_1/crate/tests/levels.rs",
+    "//brave/third_party/rust/tracing_attributes/v0_1/crate/tests/names.rs",
+    "//brave/third_party/rust/tracing_attributes/v0_1/crate/tests/parents.rs",
+    "//brave/third_party/rust/tracing_attributes/v0_1/crate/tests/ret.rs",
+    "//brave/third_party/rust/tracing_attributes/v0_1/crate/tests/targets.rs",
+    "//brave/third_party/rust/tracing_attributes/v0_1/crate/tests/ui.rs",
+    "//brave/third_party/rust/tracing_attributes/v0_1/crate/tests/ui/async_instrument.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/tracing_attributes/v0_1/crate/CHANGELOG.md",
+    "//brave/third_party/rust/tracing_attributes/v0_1/crate/README.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.1.23"
   cargo_pkg_authors = "Tokio Contributors <team@tokio.rs>, Eliza Weisman <eliza@buoyant.io>, David Barsky <dbarsky@amazon.com>"
