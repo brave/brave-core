@@ -96,7 +96,7 @@ struct AccountActivityView: View {
                 title: nftAsset.token.nftTokenTitle,
                 symbol: nftAsset.token.symbol,
                 networkName: nftAsset.network.chainName,
-                quantity: "\(nftAsset.balance)"
+                quantity: "\(nftAsset.balanceForAccounts[activityStore.account.address] ?? 0)"
               )
             }
           }

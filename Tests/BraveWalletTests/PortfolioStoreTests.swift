@@ -353,6 +353,8 @@ class PortfolioStoreTests: XCTestCase {
       groupBy: store.filters.groupBy,
       sortOrder: .valueAsc,
       isHidingSmallBalances: store.filters.isHidingSmallBalances,
+      isHidingUnownedNFTs: store.filters.isHidingUnownedNFTs,
+      isShowingNFTNetworkLogo: store.filters.isShowingNFTNetworkLogo,
       accounts: store.filters.accounts,
       networks: store.filters.networks
     ))
@@ -398,6 +400,8 @@ class PortfolioStoreTests: XCTestCase {
       groupBy: store.filters.groupBy,
       sortOrder: .valueDesc,
       isHidingSmallBalances: true,
+      isHidingUnownedNFTs: store.filters.isHidingUnownedNFTs,
+      isShowingNFTNetworkLogo: store.filters.isShowingNFTNetworkLogo,
       accounts: store.filters.accounts,
       networks: store.filters.networks
     ))
@@ -450,6 +454,8 @@ class PortfolioStoreTests: XCTestCase {
       groupBy: store.filters.groupBy,
       sortOrder: .valueDesc,
       isHidingSmallBalances: false,
+      isHidingUnownedNFTs: store.filters.isHidingUnownedNFTs,
+      isShowingNFTNetworkLogo: store.filters.isShowingNFTNetworkLogo,
       accounts: store.filters.accounts.map { // deselect ethAccount2
         .init(isSelected: $0.model.address != ethAccount2.address, model: $0.model)
       },
@@ -497,6 +503,8 @@ class PortfolioStoreTests: XCTestCase {
       groupBy: store.filters.groupBy,
       sortOrder: .valueDesc,
       isHidingSmallBalances: false,
+      isHidingUnownedNFTs: store.filters.isHidingUnownedNFTs,
+      isShowingNFTNetworkLogo: store.filters.isShowingNFTNetworkLogo,
       accounts: store.filters.accounts.map { // re-select all accounts
         .init(isSelected: true, model: $0.model)
       },

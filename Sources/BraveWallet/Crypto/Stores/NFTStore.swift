@@ -5,11 +5,13 @@
 
 import Foundation
 import BraveCore
+import Preferences
 
 struct NFTAssetViewModel: Identifiable, Equatable {
   var token: BraveWallet.BlockchainToken
   var network: BraveWallet.NetworkInfo
-  var balance: Int
+  /// Balance for the NFT for each account address. The key is the account address.
+  var balanceForAccounts: [String: Int]
   var nftMetadata: NFTMetadata?
   
   public var id: String {
@@ -24,13 +26,31 @@ struct NFTAssetViewModel: Identifiable, Equatable {
 public class NFTStore: ObservableObject {
   /// The users visible NFTs
   @Published private(set) var userVisibleNFTs: [NFTAssetViewModel] = []
-  /// The network filter in NFT tab
-  @Published var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = [] {
-    didSet {
-      guard !oldValue.isEmpty else { return } // initial assignment to `networkFilters`
-      update()
-    }
+  /// All User Accounts
+  var allAccounts: [BraveWallet.AccountInfo] = []
+  /// All available networks
+  var allNetworks: [BraveWallet.NetworkInfo] = []
+  var filters: Filters {
+    let nonSelectedAccountAddresses = Preferences.Wallet.nonSelectedAccountsFilter.value
+    let nonSelectedNetworkChainIds = Preferences.Wallet.nonSelectedNetworksFilter.value
+    return Filters(
+      accounts: allAccounts.map { account in
+          .init(
+            isSelected: !nonSelectedAccountAddresses.contains(where: { $0 == account.address }),
+            model: account
+          )
+      },
+      networks: allNetworks.map { network in
+          .init(
+            isSelected: !nonSelectedNetworkChainIds.contains(where: { $0 == network.chainId }),
+            model: network
+          )
+      }
+    )
   }
+  /// Flag indicating when we are saving filters. Since we are observing multiple `Preference.Option`s,
+  /// we should avoid calling `update()` in `preferencesDidChange()` unless another view changed.
+  private var isSavingFilters: Bool = false
   @Published var isLoadingDiscoverAssets: Bool = false
   
   public private(set) lazy var userAssetsStore: UserAssetsStore = .init(
@@ -81,19 +101,29 @@ public class NFTStore: ObservableObject {
         update()
       }
     }
+    Preferences.Wallet.showTestNetworks.observe(from: self)
+    Preferences.Wallet.isHidingUnownedNFTsFilter.observe(from: self)
+    Preferences.Wallet.isShowingNFTNetworkLogoFilter.observe(from: self)
+    Preferences.Wallet.nonSelectedNetworksFilter.observe(from: self)
   }
+  
+  /// Cache of NFT balances for each account tokenBalances: [token.contractAddress]
+  private var nftBalancesCache: [String: [String: Int]] = [:]
   
   func update() {
     self.updateTask?.cancel()
     self.updateTask = Task { @MainActor in
-      // setup network filters if not currently setup
-      if self.networkFilters.isEmpty {
-        self.networkFilters = await self.rpcService.allNetworksForSupportedCoins().map {
-          .init(isSelected: !WalletConstants.supportedTestNetworkChainIds.contains($0.chainId), model: $0)
+      self.allAccounts = await keyringService.allAccounts().accounts
+      self.allNetworks = await rpcService.allNetworksForSupportedCoins().filter { network in
+        if !Preferences.Wallet.showTestNetworks.value { // filter out test networks
+          return !WalletConstants.supportedTestNetworkChainIds.contains(where: { $0 == network.chainId })
         }
+        return true
       }
-      let networks: [BraveWallet.NetworkInfo] = self.networkFilters.filter(\.isSelected).map(\.model)
-      let allVisibleUserAssets = assetManager.getAllVisibleAssetsInNetworkAssets(networks: networks)
+      let filters = self.filters
+      let selectedAccounts = filters.accounts.filter(\.isSelected).map(\.model)
+      let selectedNetworks = filters.networks.filter(\.isSelected).map(\.model)
+      let allVisibleUserAssets = assetManager.getAllVisibleAssetsInNetworkAssets(networks: selectedNetworks)
       var updatedUserVisibleNFTs: [NFTAssetViewModel] = []
       for networkAssets in allVisibleUserAssets {
         for token in networkAssets.tokens {
@@ -102,7 +132,7 @@ public class NFTStore: ObservableObject {
               NFTAssetViewModel(
                 token: token,
                 network: networkAssets.network,
-                balance: 0, // no balance shown in NFT tab
+                balanceForAccounts: nftBalancesCache[token.contractAddress] ?? [:],
                 nftMetadata: metadataCache[token.id]
               )
             )
@@ -110,11 +140,32 @@ public class NFTStore: ObservableObject {
         }
       }
       self.userVisibleNFTs = updatedUserVisibleNFTs
+        .optionallyFilterUnownedNFTs(
+          isHidingUnownedNFTs: filters.isHidingUnownedNFTs,
+          selectedAccounts: selectedAccounts
+        )
       
-      // fetch nft metadata for all NFTs
-      // fetch price for every token
       let allTokens = allVisibleUserAssets.flatMap(\.tokens)
       let allNFTs = allTokens.filter { $0.isNft || $0.isErc721 }
+      // if we're not hiding unowned or grouping by account, balance isn't needed
+      if filters.isHidingUnownedNFTs {
+        // fetch balance for all NFTs
+        let allAccounts = filters.accounts.map(\.model)
+        for nft in allNFTs {
+          guard let networkForNFT = allNetworks.first(where: { $0.chainId == nft.chainId }) else {
+            continue
+          }
+          var nftBalances = nftBalancesCache[nft.contractAddress] ?? [:]
+          for account in allAccounts where account.coin == nft.coin {
+            guard let balance = await rpcService.balance(for: nft, in: account, network: networkForNFT) else {
+              continue
+            }
+            nftBalances.merge(with: [account.address: Int(balance)])
+          }
+          nftBalancesCache[nft.contractAddress] = nftBalances
+        }
+      }
+      // fetch nft metadata for all NFTs
       let allMetadata = await rpcService.fetchNFTMetadata(tokens: allNFTs, ipfsApi: ipfsApi)
       for (key, value) in allMetadata { // update cached values
         metadataCache[key] = value
@@ -129,7 +180,7 @@ public class NFTStore: ObservableObject {
               NFTAssetViewModel(
                 token: token,
                 network: networkAssets.network,
-                balance: 0, // no balance shown in NFT tab
+                balanceForAccounts: nftBalancesCache[token.contractAddress] ?? [:],
                 nftMetadata: metadataCache[token.id]
               )
             )
@@ -137,13 +188,19 @@ public class NFTStore: ObservableObject {
         }
       }
       self.userVisibleNFTs = updatedUserVisibleNFTs
+        .optionallyFilterUnownedNFTs(
+          isHidingUnownedNFTs: filters.isHidingUnownedNFTs,
+          selectedAccounts: selectedAccounts
+        )
     }
   }
   
   func updateNFTMetadataCache(for token: BraveWallet.BlockchainToken, metadata: NFTMetadata) {
     metadataCache[token.id] = metadata
-    if let index = userVisibleNFTs.firstIndex(where: { $0.token.id == token.id }), let viewModel = userVisibleNFTs[safe: index] {
-      userVisibleNFTs[index] = NFTAssetViewModel(token: viewModel.token, network: viewModel.network, balance: viewModel.balance, nftMetadata: metadata)
+    if let index = userVisibleNFTs.firstIndex(where: { $0.token.id == token.id }),
+       var updatedViewModel = userVisibleNFTs[safe: index] {
+      updatedViewModel.nftMetadata = metadata
+      userVisibleNFTs[index] = updatedViewModel
     }
   }
   
@@ -223,14 +280,8 @@ extension NFTStore: BraveWalletBraveWalletServiceObserver {
   }
   
   public func onNetworkListChanged() {
-    Task { @MainActor in
-      // A network was added or removed, update our network filters for the change.
-      self.networkFilters = await self.rpcService.allNetworksForSupportedCoins().map { network in
-        let defaultValue = !WalletConstants.supportedTestNetworkChainIds.contains(network.chainId)
-        let existingSelectionValue = self.networkFilters.first(where: { $0.model.chainId == network.chainId})?.isSelected
-        return .init(isSelected: existingSelectionValue ?? defaultValue, model: network)
-      }
-    }
+    // A network was added or removed, `update()` will update `allNetworks`.
+    update()
   }
   
   public func onDiscoverAssetsStarted() {
@@ -243,5 +294,37 @@ extension NFTStore: BraveWalletBraveWalletServiceObserver {
   }
   
   public func onResetWallet() {
+  }
+}
+
+extension NFTStore: PreferencesObserver {
+  func saveFilters(_ filters: Filters) {
+    isSavingFilters = true
+    filters.save()
+    isSavingFilters = false
+    update()
+  }
+  public func preferencesDidChange(for key: String) {
+    guard !isSavingFilters else { return }
+    update()
+  }
+}
+
+private extension Array where Element == NFTAssetViewModel {
+  /// Optionally filters out NFTs not belonging to the given `selectedAccounts`.
+  func optionallyFilterUnownedNFTs(
+    isHidingUnownedNFTs: Bool,
+    selectedAccounts: [BraveWallet.AccountInfo]
+  ) -> [Element] {
+    optionallyFilter(
+      shouldFilter: isHidingUnownedNFTs,
+      isIncluded: { nftAsset in
+        let balancesForSelectedAccounts = nftAsset.balanceForAccounts.filter { balance in
+          selectedAccounts.contains(where: { account in
+            account.address == balance.key
+          })
+        }
+        return balancesForSelectedAccounts.contains(where: { $0.value > 0 })
+      })
   }
 }
