@@ -13,10 +13,22 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/ed25519_dalek/v1/crate/benches/ed25519_benchmarks.rs",
+    "//brave/third_party/rust/ed25519_dalek/v1/crate/src/batch.rs",
+    "//brave/third_party/rust/ed25519_dalek/v1/crate/src/constants.rs",
+    "//brave/third_party/rust/ed25519_dalek/v1/crate/src/errors.rs",
+    "//brave/third_party/rust/ed25519_dalek/v1/crate/src/keypair.rs",
+    "//brave/third_party/rust/ed25519_dalek/v1/crate/src/lib.rs",
+    "//brave/third_party/rust/ed25519_dalek/v1/crate/src/public.rs",
+    "//brave/third_party/rust/ed25519_dalek/v1/crate/src/secret.rs",
+    "//brave/third_party/rust/ed25519_dalek/v1/crate/src/signature.rs",
+    "//brave/third_party/rust/ed25519_dalek/v1/crate/tests/ed25519.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/ed25519_dalek/v1/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "1.0.1"
   cargo_pkg_authors = "isis lovecruft <isis@patternsinthevoid.net>"

@@ -9,10 +9,68 @@ cargo_crate("lib") {
   epoch = "3"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/benches/dalek_benchmarks.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/mod.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/curve_models/mod.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/fiat_u32/field.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/fiat_u32/mod.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/fiat_u64/field.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/fiat_u64/mod.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/mod.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/scalar_mul/mod.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/scalar_mul/pippenger.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/scalar_mul/precomputed_straus.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/scalar_mul/straus.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/scalar_mul/variable_base.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/scalar_mul/vartime_double_base.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/u32/constants.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/u32/field.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/u32/mod.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/u32/scalar.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/u64/constants.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/u64/field.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/u64/mod.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/serial/u64/scalar.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/vector/avx2/constants.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/vector/avx2/edwards.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/vector/avx2/field.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/vector/avx2/mod.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/vector/ifma/constants.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/vector/ifma/edwards.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/vector/ifma/field.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/vector/ifma/mod.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/vector/mod.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/vector/scalar_mul/mod.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/vector/scalar_mul/pippenger.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/vector/scalar_mul/precomputed_straus.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/vector/scalar_mul/straus.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/vector/scalar_mul/variable_base.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/backend/vector/scalar_mul/vartime_double_base.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/constants.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/edwards.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/field.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/lib.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/macros.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/montgomery.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/prelude.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/ristretto.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/scalar.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/traits.rs",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/src/window.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/CHANGELOG.md",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/CODE_OF_CONDUCT.md",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/CONTRIBUTING.md",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/README.md",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/docs/avx2-notes.md",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/docs/ifma-notes.md",
+    "//brave/third_party/rust/curve25519_dalek/v3/crate/docs/parallel-formulas.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2015"
   cargo_pkg_version = "3.2.1"
   cargo_pkg_authors = "Isis Lovecruft <isis@patternsinthevoid.net>, Henry de Valence <hdevalence@hdevalence.ca>"

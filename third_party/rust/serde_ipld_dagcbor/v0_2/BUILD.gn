@@ -13,10 +13,25 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/serde_ipld_dagcbor/v0_2/crate/examples/readme.rs",
+    "//brave/third_party/rust/serde_ipld_dagcbor/v0_2/crate/src/cbor4ii_nonpub.rs",
+    "//brave/third_party/rust/serde_ipld_dagcbor/v0_2/crate/src/de.rs",
+    "//brave/third_party/rust/serde_ipld_dagcbor/v0_2/crate/src/error.rs",
+    "//brave/third_party/rust/serde_ipld_dagcbor/v0_2/crate/src/lib.rs",
+    "//brave/third_party/rust/serde_ipld_dagcbor/v0_2/crate/src/ser.rs",
+    "//brave/third_party/rust/serde_ipld_dagcbor/v0_2/crate/tests/cid.rs",
+    "//brave/third_party/rust/serde_ipld_dagcbor/v0_2/crate/tests/de.rs",
+    "//brave/third_party/rust/serde_ipld_dagcbor/v0_2/crate/tests/enum.rs",
+    "//brave/third_party/rust/serde_ipld_dagcbor/v0_2/crate/tests/ipld.rs",
+    "//brave/third_party/rust/serde_ipld_dagcbor/v0_2/crate/tests/ser.rs",
+    "//brave/third_party/rust/serde_ipld_dagcbor/v0_2/crate/tests/std_types.rs",
+  ]
+  inputs =
+      [ "//brave/third_party/rust/serde_ipld_dagcbor/v0_2/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.2.2"
   cargo_pkg_authors = "Pyfisch <pyfisch@posteo.org>, Steven Fackler <sfackler@gmail.com>, Volker Mische <volker.mische@gmail.com>"

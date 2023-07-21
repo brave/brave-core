@@ -13,10 +13,36 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/bls12_381/v0_7/crate/benches/groups.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/benches/hash_to_curve.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/src/fp.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/src/fp12.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/src/fp2.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/src/fp6.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/src/g1.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/src/g2.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/src/hash_to_curve/chain.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/src/hash_to_curve/expand_msg.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/src/hash_to_curve/map_g1.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/src/hash_to_curve/map_g2.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/src/hash_to_curve/map_scalar.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/src/hash_to_curve/mod.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/src/lib.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/src/notes/design.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/src/notes/serialization.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/src/pairings.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/src/scalar.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/src/tests/mod.rs",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/src/util.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/bls12_381/v0_7/crate/README.md",
+    "//brave/third_party/rust/bls12_381/v0_7/crate/RELEASES.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2021"
   cargo_pkg_version = "0.7.0"
   cargo_pkg_authors =

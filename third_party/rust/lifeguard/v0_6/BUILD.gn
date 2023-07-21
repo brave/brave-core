@@ -9,10 +9,15 @@ cargo_crate("lib") {
   epoch = "0.6"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/lifeguard/v0_6/crate/benches/lib.rs",
+    "//brave/third_party/rust/lifeguard/v0_6/crate/src/lib.rs",
+    "//brave/third_party/rust/lifeguard/v0_6/crate/tests/lib.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/lifeguard/v0_6/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2015"
   cargo_pkg_version = "0.6.1"
   cargo_pkg_authors = "Zack Slayton <zack.slayton@gmail.com>"

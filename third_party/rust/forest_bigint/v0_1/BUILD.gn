@@ -9,10 +9,15 @@ cargo_crate("lib") {
   epoch = "0.1"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/forest_bigint/v0_1/crate/src/bigint_ser.rs",
+    "//brave/third_party/rust/forest_bigint/v0_1/crate/src/biguint_ser.rs",
+    "//brave/third_party/rust/forest_bigint/v0_1/crate/src/lib.rs",
+  ]
+  inputs = []
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.1.2"
   cargo_pkg_authors = "ChainSafe Systems <info@chainsafe.io>"

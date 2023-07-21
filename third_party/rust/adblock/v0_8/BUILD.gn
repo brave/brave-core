@@ -9,10 +9,41 @@ cargo_crate("lib") {
   epoch = "0.8"
   crate_type = "rlib"
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/adblock/v0_8/crate/benches/bench_cosmetic_matching.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/benches/bench_matching.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/benches/bench_redirect_performance.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/benches/bench_regex.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/benches/bench_rules.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/benches/bench_url.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/blocker.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/content_blocking.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/cosmetic_filter_cache.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/data_format/mod.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/data_format/utils.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/data_format/v0.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/engine.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/filters/cosmetic.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/filters/mod.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/filters/network.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/lib.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/lists.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/optimizer.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/regex_manager.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/request.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/resources/mod.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/resources/resource_assembler.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/resources/resource_storage.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/url_parser/mod.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/url_parser/parser.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/url_parser/parser_full.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/url_parser/parser_regex.rs",
+    "//brave/third_party/rust/adblock/v0_8/crate/src/utils.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/adblock/v0_8/crate/README.md" ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2021"
   cargo_pkg_version = "0.8.0"
   cargo_pkg_authors =

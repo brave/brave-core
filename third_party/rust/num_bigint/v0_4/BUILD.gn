@@ -13,10 +13,59 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/num_bigint/v0_4/crate/benches/bigint.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/benches/factorial.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/benches/gcd.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/benches/rng/mod.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/benches/roots.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/benches/shootout-pidigits.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/build.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/bigint.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/bigint/addition.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/bigint/arbitrary.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/bigint/bits.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/bigint/convert.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/bigint/division.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/bigint/multiplication.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/bigint/power.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/bigint/serde.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/bigint/shift.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/bigint/subtraction.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/bigrand.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/biguint.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/biguint/addition.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/biguint/arbitrary.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/biguint/bits.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/biguint/convert.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/biguint/division.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/biguint/iter.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/biguint/monty.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/biguint/multiplication.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/biguint/power.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/biguint/serde.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/biguint/shift.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/biguint/subtraction.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/lib.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/src/macros.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/tests/bigint.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/tests/bigint_bitwise.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/tests/bigint_scalar.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/tests/biguint.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/tests/biguint_scalar.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/tests/consts/mod.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/tests/fuzzed.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/tests/macros/mod.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/tests/modpow.rs",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/tests/roots.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/num_bigint/v0_4/crate/README.md",
+    "//brave/third_party/rust/num_bigint/v0_4/crate/RELEASES.md",
+  ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.4.3"
   cargo_pkg_authors = "The Rust Project Developers"

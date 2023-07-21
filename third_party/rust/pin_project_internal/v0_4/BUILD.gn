@@ -13,10 +13,20 @@ cargo_crate("lib") {
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/pin_project_internal/v0_4/crate/build.rs",
+    "//brave/third_party/rust/pin_project_internal/v0_4/crate/src/lib.rs",
+    "//brave/third_party/rust/pin_project_internal/v0_4/crate/src/pin_project/attribute.rs",
+    "//brave/third_party/rust/pin_project_internal/v0_4/crate/src/pin_project/derive.rs",
+    "//brave/third_party/rust/pin_project_internal/v0_4/crate/src/pin_project/mod.rs",
+    "//brave/third_party/rust/pin_project_internal/v0_4/crate/src/pinned_drop.rs",
+    "//brave/third_party/rust/pin_project_internal/v0_4/crate/src/project.rs",
+    "//brave/third_party/rust/pin_project_internal/v0_4/crate/src/utils.rs",
+  ]
+  inputs = []
 
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
-  sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.4.30"
   cargo_pkg_name = "pin-project-internal"

@@ -15,8 +15,10 @@ rust_static_library("lib") {
     "src/extractor.rs",
     "src/lib.rs",
     "src/lib.rs",
+    "src/nlp.rs",
     "src/scorer.rs",
     "src/statistics.rs",
+    "src/util.rs",
   ]
 
   deps = [
