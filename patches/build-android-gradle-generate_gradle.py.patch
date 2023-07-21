@@ -1,0 +1,28 @@
+diff --git a/build/android/gradle/generate_gradle.py b/build/android/gradle/generate_gradle.py
+index bc05baf9bbf34e5c0a41eef6198932d4f1ba2afd..d0d6fdac1458e096ba5d12746563c57cfdd40899 100755
+--- a/build/android/gradle/generate_gradle.py
++++ b/build/android/gradle/generate_gradle.py
+@@ -46,6 +46,8 @@ _DEFAULT_ANDROID_MANIFEST_PATH = os.path.join(
+     'AndroidManifest.xml')
+ _FILE_DIR = os.path.dirname(__file__)
+ _GENERATED_JAVA_SUBDIR = 'generated_java'
++_INPUT_SRC_JARS = 'input_srcjars'
++_BRAVE_GEN_COMPONENTS = os.path.join('gen', 'brave', 'components')
+ _JNI_LIBS_SUBDIR = 'symlinked-libs'
+ _ARMEABI_SUBDIR = 'armeabi'
+ _GRADLE_BUILD_FILE = 'build.gradle'
+@@ -182,8 +184,12 @@ class _ProjectEntry:
+     return ninja_target.replace(':', os.path.sep)
+ 
+   def GeneratedJavaSubdir(self):
+-    return _RebasePath(
+-        os.path.join('gen', self.GradleSubdir(), _GENERATED_JAVA_SUBDIR))
++    gen_path = os.path.join('gen', self.GradleSubdir(), _GENERATED_JAVA_SUBDIR)
++    if gen_path.startswith(_BRAVE_GEN_COMPONENTS):
++      gen_path_src_jars = os.path.join(gen_path, _INPUT_SRC_JARS)
++      if os.path.exists(_RebasePath(gen_path_src_jars)):
++        gen_path = gen_path_src_jars
++    return _RebasePath(gen_path)
+ 
+   def ProjectName(self):
+     """Returns the Gradle project name."""
