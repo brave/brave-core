@@ -14,19 +14,20 @@
 // were explicit. We use explicit setting to enable 1PES mode, but in this mode
 // we still want to block 3p frames as usual and not fallback to "allow
 // everything" path.
-#define BRAVE_COOKIE_SETTINGS_GET_COOKIES_SETTINGS_INTERNAL               \
-  if (!block && is_third_party_request) {                                 \
-    block = ShouldBlockThirdPartyIfSettingIsExplicit(                     \
-        ShouldBlockThirdPartyCookies(), setting, IsExplicitSetting(info), \
-        first_party_url.SchemeIs(extension_scheme_));                     \
-  }                                                                       \
-  /* Store patterns information to determine if Shields are disabled. */  \
-  if (auto* setting_with_brave_metadata =                                 \
-          GetCurrentCookieSettingWithBraveMetadata()) {                   \
-    setting_with_brave_metadata->primary_pattern_matches_all_hosts =      \
-        info.primary_pattern.MatchesAllHosts();                           \
-    setting_with_brave_metadata->secondary_pattern_matches_all_hosts =    \
-        info.secondary_pattern.MatchesAllHosts();                         \
+#define BRAVE_COOKIE_SETTINGS_GET_COOKIES_SETTINGS_INTERNAL              \
+  if (!block && is_third_party_request) {                                \
+    block = ShouldBlockThirdPartyIfSettingIsExplicit(                    \
+        ShouldBlockThirdPartyCookies(), setting,                         \
+        IsExplicitSetting(setting_info),                                 \
+        first_party_url.SchemeIs(extension_scheme_));                    \
+  }                                                                      \
+  /* Store patterns information to determine if Shields are disabled. */ \
+  if (auto* setting_with_brave_metadata =                                \
+          GetCurrentCookieSettingWithBraveMetadata()) {                  \
+    setting_with_brave_metadata->primary_pattern_matches_all_hosts =     \
+        setting_info.primary_pattern.MatchesAllHosts();                  \
+    setting_with_brave_metadata->secondary_pattern_matches_all_hosts =   \
+        setting_info.secondary_pattern.MatchesAllHosts();                \
   }
 
 #define ShutdownOnUIThread ShutdownOnUIThread_ChromiumImpl
