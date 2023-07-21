@@ -13,6 +13,17 @@ constexpr char kHumanPrompt[] = "Human:";
 constexpr char kHumanPromptPlaceholder[] = "\nH: ";
 constexpr char kAIPrompt[] = "Assistant:";
 constexpr char kAIPromptPlaceholder[] = "\n\nA: ";
+
+constexpr char kLlama2Chat13b[] = "llama-2-13b-chat";
+constexpr char kLlama2Chat13b8k[] = "llama-2-13b-chat-8k";
+constexpr char kLlama2Chat70b[] = "llama-2-70b-chat";
+constexpr char kLlama2Bos[] = "<s>";
+constexpr char kLlama2Eos[] = "</s>";
+constexpr char kLlama2BIns[] = "[INST]";
+constexpr char kLlama2EIns[] = "[/INST]";
+constexpr char kLlama2BSys[] = "<<SYS>>\n";
+constexpr char kLlama2ESys[] = "\n<</SYS>>\n\n";
+
 constexpr char kAIChatCompletionPath[] = "v1/complete";
 
 base::span<const webui::LocalizedString> GetLocalizedStrings() {
@@ -40,6 +51,17 @@ std::string GetHumanPromptSegment() {
 
 std::string GetAssistantPromptSegment() {
   return base::StrCat({"\n\n", kAIPrompt});
+}
+
+bool UsesLlama2PromptTemplate(const std::string& model) {
+  static std::map<std::string, bool> llama_2_models = {
+      {kLlama2Chat13b, true}, {kLlama2Chat13b8k, true}, {kLlama2Chat70b, true}};
+  auto model_pair = llama_2_models.find(model.c_str());
+  if (model_pair == llama_2_models.end()) {
+    return false;
+  }
+
+  return true;
 }
 
 }  // namespace ai_chat

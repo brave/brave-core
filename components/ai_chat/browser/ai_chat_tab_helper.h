@@ -62,7 +62,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // when the page changes.
   void OnConversationActiveChanged(bool is_conversation_active);
   void AddToConversationHistory(const mojom::ConversationTurn& turn);
-  void UpdateOrCreateLastAssistantEntry(const std::string& text);
+  void UpdateOrCreateLastAssistantEntry(std::string text);
   void MakeAPIRequestWithConversationHistoryUpdate(
       const mojom::ConversationTurn& turn);
   bool IsRequestInProgress();
@@ -115,7 +115,19 @@ class AIChatTabHelper : public content::WebContentsObserver,
                         const GURL& icon_url,
                         bool icon_url_changed,
                         const gfx::Image& image) override;
-
+  std::string BuildClaudePrompt(const std::string& question_part,
+                                bool is_suggested_question);
+  std::string BuildLlama2Prompt(const std::string& user_message);
+  std::string BuildLlama2FirstSequence(
+      const std::string& system_message,
+      const std::string& user_message,
+      absl::optional<std::string> assistant_response);
+  std::string BuildLlama2SubsequentSequence(
+      std::string user_message,
+      absl::optional<std::string> assistant_response);
+  std::string BuildLlama2InstructionPrompt(const std::string& instruction);
+  std::string BuildLlama2GenerateQuestionsPrompt(bool is_video,
+                                                 const std::string content);
   mojom::AutoGenerateQuestionsPref GetAutoGeneratePref();
 
   raw_ptr<PrefService> pref_service_;
