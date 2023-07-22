@@ -838,8 +838,7 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
     static const char* const kSwitchNames[] = {
         translate::switches::kBraveTranslateUseGoogleEndpoint,
     };
-    command_line->CopySwitchesFrom(browser_command_line, kSwitchNames,
-                                   std::size(kSwitchNames));
+    command_line->CopySwitchesFrom(browser_command_line, kSwitchNames);
   }
 }
 
