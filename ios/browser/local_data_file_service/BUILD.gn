@@ -6,13 +6,11 @@
 source_set("local_data_file_service") {
   configs += [ "//build/config/compiler:enable_arc" ]
   sources = [
+    "local_data_file_service+private.h",
+    "local_data_file_service.h",
+    "local_data_file_service.mm",
     "local_data_file_service_installer_delegate.h",
     "local_data_file_service_installer_delegate.mm",
-    "local_data_file_service_installer_policy.cc",
-    "local_data_file_service_installer_policy.h",
-    "local_data_file_service_wrapper+private.h",
-    "local_data_file_service_wrapper.h",
-    "local_data_file_service_wrapper.mm",
   ]
   deps = [
     "//base",
@@ -21,6 +19,7 @@ source_set("local_data_file_service") {
     "//brave/components/brave_shields/browser:component_installer",
     "//brave/components/brave_shields/common",
     "//brave/components/url_sanitizer/browser",
+    "//brave/ios/browser/component_updater/",
     "//components/component_updater",
     "//ios/chrome/browser/shared/model/application_context",
     "//net",

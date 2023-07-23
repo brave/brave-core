@@ -11,8 +11,8 @@
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
-#include "brave/ios/browser/api/local_data_file_service/local_data_file_service_installer_delegate.h"
-#include "brave/ios/browser/api/local_data_file_service/local_data_file_service_wrapper+private.h"
+#include "brave/ios/browser/local_data_file_service/local_data_file_service+private.h"
+#include "brave/ios/browser/local_data_file_service/local_data_file_service_installer_delegate.h"
 #import "net/base/mac/url_conversions.h"
 
 using brave::URLSanitizerComponentInstaller;
@@ -21,37 +21,37 @@ using brave_component_updater::LocalDataFilesService;
 using brave_component_updater::LocalDataFilesServiceFactory;
 using local_data_file_service::LocalDataFileServiceDelegate;
 
-// LocalDataFileServiceWrapper
-@interface LocalDataFileServiceWrapper () {
-  std::unique_ptr<LocalDataFileServiceDelegate> _delegate;
-  std::unique_ptr<LocalDataFilesService> _fileService;
+// LocalDataFileService
+@interface LocalDataFileService () {
+  std::unique_ptr<LocalDataFileServiceDelegate> delegate_;
+  std::unique_ptr<LocalDataFilesService> fileService_;
   std::unique_ptr<URLSanitizerComponentInstaller>
-      _urlSanitizerComponentInstaller;
-  std::unique_ptr<URLSanitizerService> _urlSanitizer;
+      urlSanitizerComponentInstaller_;
+  std::unique_ptr<URLSanitizerService> urlSanitizer_;
 }
 @end
 
-@implementation LocalDataFileServiceWrapper
+@implementation LocalDataFileService
 
 - (instancetype)init {
   if ((self = [super init])) {
-    _delegate = std::make_unique<LocalDataFileServiceDelegate>();
-    _fileService = LocalDataFilesServiceFactory(_delegate.get());
-    _urlSanitizer = std::make_unique<brave::URLSanitizerService>();
-    _urlSanitizerComponentInstaller =
-        std::make_unique<URLSanitizerComponentInstaller>(_fileService.get());
-    _urlSanitizerComponentInstaller->AddObserver(_urlSanitizer.get());
+    delegate_ = std::make_unique<LocalDataFileServiceDelegate>();
+    fileService_ = LocalDataFilesServiceFactory(delegate_.get());
+    urlSanitizer_ = std::make_unique<brave::URLSanitizerService>();
+    urlSanitizerComponentInstaller_ =
+        std::make_unique<URLSanitizerComponentInstaller>(fileService_.get());
+    urlSanitizerComponentInstaller_->AddObserver(urlSanitizer_.get());
   }
   return self;
 }
 
 - (void)start {
-  _fileService.get()->Start();
+  fileService_.get()->Start();
 }
 
 - (NSURL*)cleanedURL:(NSURL*)url {
   GURL gurl = net::GURLWithNSURL(url);
-  GURL cleanURL = _urlSanitizer.get()->SanitizeURL(gurl);
+  GURL cleanURL = urlSanitizer_.get()->SanitizeURL(gurl);
   return net::NSURLWithGURL(cleanURL);
 }
 

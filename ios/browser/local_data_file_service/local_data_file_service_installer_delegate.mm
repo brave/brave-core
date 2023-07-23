@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/ios/browser/api/local_data_file_service/local_data_file_service_installer_delegate.h"
-#include "brave/ios/browser/api/local_data_file_service/local_data_file_service_installer_policy.h"
+#include "brave/ios/browser/local_data_file_service/local_data_file_service_installer_delegate.h"
+#include "brave/ios/browser/component_updater/ios_component_installer_policy.h"
 
 #include <sys/qos.h>
 #include <string>
@@ -39,7 +39,7 @@ void LocalDataFileServiceDelegate::Register(
     base::OnceClosure registered_callback,
     BraveComponent::ReadyCallback ready_callback) {
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<LocalDataFilesComponentInstallerPolicy>(
+      std::make_unique<component_updater::IOSComponentInstallerPolicy>(
           component_base64_public_key, component_id, component_name,
           ready_callback));
 

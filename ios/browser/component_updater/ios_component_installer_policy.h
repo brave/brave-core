@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_IOS_BROWSER_API_LOCAL_DATA_FILE_SERVICE_LOCAL_DATA_FILE_SERVICE_INSTALLER_POLICY_H_
-#define BRAVE_IOS_BROWSER_API_LOCAL_DATA_FILE_SERVICE_LOCAL_DATA_FILE_SERVICE_INSTALLER_POLICY_H_
+#ifndef BRAVE_IOS_BROWSER_COMPONENT_UPDATER_IOS_COMPONENT_INSTALLER_POLICY_H_
+#define BRAVE_IOS_BROWSER_COMPONENT_UPDATER_IOS_COMPONENT_INSTALLER_POLICY_H_
 
 #include <string>
 #include <vector>
@@ -15,21 +15,19 @@
 
 using brave_component_updater::BraveComponent;
 
-namespace local_data_file_service {
-class LocalDataFilesComponentInstallerPolicy
+namespace component_updater {
+class IOSComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
-  explicit LocalDataFilesComponentInstallerPolicy(
-      const std::string& component_public_key,
-      const std::string& component_id,
-      const std::string& component_name,
-      BraveComponent::ReadyCallback callback);
-  ~LocalDataFilesComponentInstallerPolicy() override;
+  explicit IOSComponentInstallerPolicy(const std::string& component_public_key,
+                                       const std::string& component_id,
+                                       const std::string& component_name,
+                                       BraveComponent::ReadyCallback callback);
+  ~IOSComponentInstallerPolicy() override;
 
-  LocalDataFilesComponentInstallerPolicy(
-      const LocalDataFilesComponentInstallerPolicy&) = delete;
-  LocalDataFilesComponentInstallerPolicy& operator=(
-      const LocalDataFilesComponentInstallerPolicy&) = delete;
+  IOSComponentInstallerPolicy(const IOSComponentInstallerPolicy&) = delete;
+  IOSComponentInstallerPolicy& operator=(const IOSComponentInstallerPolicy&) =
+      delete;
 
   // component_updater::ComponentInstallerPolicy
   bool SupportsGroupPolicyEnabledComponentUpdates() const override;
@@ -55,6 +53,6 @@ class LocalDataFilesComponentInstallerPolicy
   std::string public_key_;
   BraveComponent::ReadyCallback ready_callback_;
 };
-}  // namespace local_data_file_service
+}  // namespace component_updater
 
-#endif  // BRAVE_IOS_BROWSER_API_LOCAL_DATA_FILE_SERVICE_LOCAL_DATA_FILE_SERVICE_INSTALLER_POLICY_H_
+#endif  // BRAVE_IOS_BROWSER_COMPONENT_UPDATER_IOS_COMPONENT_INSTALLER_POLICY_H_

@@ -32,7 +32,6 @@
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
-#include "brave/ios/browser/api/local_data_file_service/local_data_file_service_wrapper+private.h"
 #include "brave/ios/browser/api/ntp_background_images/ntp_background_images_service_ios+private.h"
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_api+private.h"
@@ -44,6 +43,7 @@
 #include "brave/ios/browser/api/web_image/web_image+private.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "brave/ios/browser/component_updater/component_updater_utils.h"
+#include "brave/ios/browser/local_data_file_service/local_data_file_service+private.h"
 #include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/installer_policies/safety_tips_component_installer.h"
 #include "components/history/core/browser/history_service.h"
@@ -114,7 +114,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) BraveWalletAPI* braveWalletAPI;
 @property(nonatomic) IpfsAPIImpl* ipfsAPI;
 @property(nonatomic) BraveP3AUtils* p3aUtils;
-@property(nonatomic) LocalDataFileServiceWrapper* localDataFileService;
+@property(nonatomic) LocalDataFileService* localDataFileService;
 @property(nonatomic) NTPBackgroundImagesService* backgroundImagesService;
 @end
 
@@ -492,9 +492,9 @@ static bool CustomLogHandler(int severity,
   return _p3aUtils;
 }
 
-- (LocalDataFileServiceWrapper*)localDataFileService {
+- (LocalDataFileService*)localDataFileService {
   if (!_localDataFileService) {
-    _localDataFileService = [[LocalDataFileServiceWrapper alloc] init];
+    _localDataFileService = [[LocalDataFileService alloc] init];
   }
   return _localDataFileService;
 }

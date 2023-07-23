@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/ios/browser/api/local_data_file_service/local_data_file_service_installer_policy.h"
+#include "brave/ios/browser/component_updater/ios_component_installer_policy.h"
 
 #include <sys/qos.h>
 #include <string>
@@ -62,10 +62,10 @@ std::string GetManifestString(base::Value::Dict* manifest,
 }
 }  // namespace
 
-namespace local_data_file_service {
-// LocalDataFilesComponentInstallerPolicy
+namespace component_updater {
+// IOSComponentInstallerPolicy
 
-LocalDataFilesComponentInstallerPolicy::LocalDataFilesComponentInstallerPolicy(
+IOSComponentInstallerPolicy::IOSComponentInstallerPolicy(
     const std::string& component_public_key,
     const std::string& component_id,
     const std::string& component_name,
@@ -77,35 +77,33 @@ LocalDataFilesComponentInstallerPolicy::LocalDataFilesComponentInstallerPolicy(
   base::Base64Decode(component_public_key, &public_key_);
 }
 
-LocalDataFilesComponentInstallerPolicy::
-    ~LocalDataFilesComponentInstallerPolicy() = default;
+IOSComponentInstallerPolicy::~IOSComponentInstallerPolicy() = default;
 
-bool LocalDataFilesComponentInstallerPolicy::
-    SupportsGroupPolicyEnabledComponentUpdates() const {
+bool IOSComponentInstallerPolicy::SupportsGroupPolicyEnabledComponentUpdates()
+    const {
   return true;
 }
 
-bool LocalDataFilesComponentInstallerPolicy::RequiresNetworkEncryption() const {
+bool IOSComponentInstallerPolicy::RequiresNetworkEncryption() const {
   return false;
 }
 
 update_client::CrxInstaller::Result
-LocalDataFilesComponentInstallerPolicy::OnCustomInstall(
+IOSComponentInstallerPolicy::OnCustomInstall(
     const base::Value::Dict& manifest,
     const base::FilePath& install_dir) {
   return update_client::CrxInstaller::Result(0);
 }
 
-void LocalDataFilesComponentInstallerPolicy::OnCustomUninstall() {}
+void IOSComponentInstallerPolicy::OnCustomUninstall() {}
 
-void LocalDataFilesComponentInstallerPolicy::ComponentReady(
-    const base::Version& version,
-    const base::FilePath& path,
-    base::Value::Dict manifest) {
+void IOSComponentInstallerPolicy::ComponentReady(const base::Version& version,
+                                                 const base::FilePath& path,
+                                                 base::Value::Dict manifest) {
   ready_callback_.Run(path, GetManifestString(&manifest, base64_public_key_));
 }
 
-bool LocalDataFilesComponentInstallerPolicy::VerifyInstallation(
+bool IOSComponentInstallerPolicy::VerifyInstallation(
     const base::Value::Dict& manifest,
     const base::FilePath& install_dir) const {
   // The manifest file will generate a random ID if we don't provide one.
@@ -119,23 +117,21 @@ bool LocalDataFilesComponentInstallerPolicy::VerifyInstallation(
       install_dir.Append(FILE_PATH_LITERAL("manifest.json")));
 }
 
-base::FilePath LocalDataFilesComponentInstallerPolicy::GetRelativeInstallDir()
-    const {
+base::FilePath IOSComponentInstallerPolicy::GetRelativeInstallDir() const {
   return base::FilePath::FromUTF8Unsafe(component_id_);
 }
 
-void LocalDataFilesComponentInstallerPolicy::GetHash(
-    std::vector<uint8_t>* hash) const {
+void IOSComponentInstallerPolicy::GetHash(std::vector<uint8_t>* hash) const {
   const std::string public_key_sha256 = crypto::SHA256HashString(public_key_);
   hash->assign(public_key_sha256.begin(), public_key_sha256.end());
 }
 
-std::string LocalDataFilesComponentInstallerPolicy::GetName() const {
+std::string IOSComponentInstallerPolicy::GetName() const {
   return component_name_;
 }
 
 update_client::InstallerAttributes
-LocalDataFilesComponentInstallerPolicy::GetInstallerAttributes() const {
+IOSComponentInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();
 }
-}  // namespace local_data_file_service
+}  // namespace component_updater
