@@ -12,22 +12,18 @@
 #include "net/cookies/site_for_cookies.h"
 #include "services/network/public/mojom/restricted_cookie_manager.mojom.h"
 
-#define RemoveChangeListener                                             \
-  NotUsed() const {}                                                     \
-  base::Time ModifyExpiration(const base::Time& expiry_date,             \
-                              const base::Time& creation_date) const;    \
-  net::CookieOptions MakeOptionsForSet(                                  \
-      mojom::RestrictedCookieManagerRole role, const GURL& url,          \
-      const net::SiteForCookies& site_for_cookies,                       \
-      const net::IsolationInfo& isolation_info,                          \
-      const CookieSettings& cookie_settings,                             \
-      const net::FirstPartySetMetadata& first_party_set_metadata) const; \
-  net::CookieOptions MakeOptionsForGet(                                  \
-      mojom::RestrictedCookieManagerRole role, const GURL& url,          \
-      const net::SiteForCookies& site_for_cookies,                       \
-      const net::IsolationInfo& isolation_info,                          \
-      const CookieSettings& cookie_settings,                             \
-      const net::FirstPartySetMetadata& first_party_set_metadata) const; \
+#define RemoveChangeListener                                          \
+  NotUsed() const {}                                                  \
+  base::Time ModifyExpiration(const base::Time& expiry_date,          \
+                              const base::Time& creation_date) const; \
+  net::CookieOptions MakeOptionsForSet(                               \
+      mojom::RestrictedCookieManagerRole role, const GURL& url,       \
+      const net::SiteForCookies& site_for_cookies,                    \
+      const CookieSettings& cookie_settings) const;                   \
+  net::CookieOptions MakeOptionsForGet(                               \
+      mojom::RestrictedCookieManagerRole role, const GURL& url,       \
+      const net::SiteForCookies& site_for_cookies,                    \
+      const CookieSettings& cookie_settings) const;                   \
   void RemoveChangeListener
 
 #include "src/services/network/restricted_cookie_manager.h"  // IWYU pragma: export
