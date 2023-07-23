@@ -78,7 +78,7 @@ void BraveWebAuthFlow::StartWebAuthFlow(
   web_auth_flow_ = std::make_unique<WebAuthFlow>(
       this, profile_, google_oauth_url,
       interactive ? WebAuthFlow::INTERACTIVE : WebAuthFlow::SILENT,
-      WebAuthFlow::LAUNCH_WEB_AUTH_FLOW, user_gesture);
+      user_gesture);
   web_auth_flow_->Start();
 }
 
