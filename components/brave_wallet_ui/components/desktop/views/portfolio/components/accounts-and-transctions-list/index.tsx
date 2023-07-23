@@ -22,6 +22,7 @@ import {
 import {
   BraveWallet,
   SerializableTransactionInfo,
+  SpotPriceRegistry,
   WalletRoutes
 } from '../../../../../../constants/types'
 
@@ -30,6 +31,7 @@ import { getLocale } from '../../../../../../../common/locale'
 import Amount from '../../../../../../utils/amount'
 import { WalletSelectors } from '../../../../../../common/selectors'
 import { getBalance } from '../../../../../../utils/balance-utils'
+import { computeFiatAmount } from '../../../../../../utils/pricing-utils'
 
 // Options
 import {
@@ -87,6 +89,7 @@ interface Props {
   selectedAssetTransactions: SerializableTransactionInfo[]
   accounts: BraveWallet.AccountInfo[]
   tokenBalancesRegistry: TokenBalancesRegistry | undefined
+  spotPriceRegistry: SpotPriceRegistry | undefined
 }
 
 export const AccountsAndTransactionsList = ({
@@ -95,7 +98,8 @@ export const AccountsAndTransactionsList = ({
   formattedFullAssetBalance,
   selectedAssetTransactions,
   accounts,
-  tokenBalancesRegistry
+  tokenBalancesRegistry,
+  spotPriceRegistry
 }: Props) => {
   // routing
   const { hash } = useLocation()
@@ -128,6 +132,45 @@ export const AccountsAndTransactionsList = ({
   const [selectedSellAccount, setSelectedSellAccount] =
     React.useState<BraveWallet.AccountInfo>()
   const [showSellModal, setShowSellModal] = React.useState<boolean>(false)
+
+  const filteredAccountsByCoinType = React.useMemo(() => {
+    if (!selectedAsset) {
+      return []
+    }
+    return accounts.filter((account) => account.accountId.coin === selectedAsset.coin)
+  }, [accounts, selectedAsset])
+
+  const accountsList = React.useMemo(() => {
+    if (!selectedAsset) {
+      return []
+    }
+    return filteredAccountsByCoinType
+      .filter(
+        (account) =>
+          new Amount(getBalance(account, selectedAsset, tokenBalancesRegistry)).gt(0)
+      )
+      .sort(
+        (a, b) => {
+          const aBalance = computeFiatAmount({
+            spotPriceRegistry,
+            value: getBalance(a, selectedAsset, tokenBalancesRegistry),
+            token: selectedAsset
+          })
+
+          const bBalance = computeFiatAmount({
+            spotPriceRegistry,
+            value: getBalance(b, selectedAsset, tokenBalancesRegistry),
+            token: selectedAsset
+          })
+
+          return bBalance.minus(aBalance).toNumber()
+        })
+  }, [
+    selectedAsset,
+    filteredAccountsByCoinType,
+    spotPriceRegistry,
+    tokenBalancesRegistry
+  ])
 
   const nonRejectedTransactions = React.useMemo(() => {
     return selectedAssetTransactions
@@ -180,7 +223,7 @@ export const AccountsAndTransactionsList = ({
           </Row>
           {hash !== WalletRoutes.TransactionsHash &&
             <>
-              {accounts.length !== 0 ? (
+              {accountsList.length !== 0 ? (
                 <>
                   <Row
                     width='100%'
@@ -246,7 +289,7 @@ export const AccountsAndTransactionsList = ({
                   </Row>
                   <VerticalDivider />
                   <VerticalSpacer space={8} />
-                  {accounts.map(account =>
+                  {accountsList.map(account =>
                     <PortfolioAccountItem
                       asset={selectedAsset}
                       defaultCurrencies={defaultCurrencies}
