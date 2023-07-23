@@ -9,15 +9,11 @@
 #include "net/base/isolation_info.h"
 #include "net/base/request_priority.h"
 #include "net/cookies/cookie_options.h"
-#include "net/first_party_sets/same_party_context.h"
 
-#define NotifyBeforeStartTransactionCallback                  \
-  NotUsed() const {}                                          \
-  CookieOptions CreateCookieOptions(                          \
-      CookieOptions::SameSiteCookieContext same_site_context, \
-      SamePartyContext same_party_context,                    \
-      const IsolationInfo& isolation_info,                    \
-      bool is_in_nontrivial_first_party_set) const;           \
+#define NotifyBeforeStartTransactionCallback                         \
+  NotUsed() const {}                                                 \
+  CookieOptions CreateCookieOptions(                                 \
+      CookieOptions::SameSiteCookieContext same_site_context) const; \
   void NotifyBeforeStartTransactionCallback
 
 #include "src/net/url_request/url_request_http_job.h"  // IWYU pragma: export
