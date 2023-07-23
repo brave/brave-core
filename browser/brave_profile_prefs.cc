@@ -399,9 +399,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(
       password_manager::prefs::kPasswordLeakDetectionEnabled,
       base::Value(false));
-  registry->SetDefaultPrefValue(
-      syncer::prefs::internal::kAutofillWalletImportEnabled,
-      base::Value(false));
+  registry->SetDefaultPrefValue(syncer::prefs::internal::kSyncPayments,
+                                base::Value(false));
 
   // Default search engine version
   registry->RegisterIntegerPref(

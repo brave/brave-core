@@ -25,7 +25,7 @@ class AutofillExperimentsTest : public testing::Test {
  protected:
   void SetUp() override {
     pref_service_.registry()->RegisterBooleanPref(
-        syncer::prefs::internal::kAutofillWalletImportEnabled, true);
+        syncer::prefs::internal::kSyncPayments, true);
     log_manager_ = LogManager::Create(nullptr, base::RepeatingClosure());
   }
 
