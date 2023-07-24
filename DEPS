@@ -40,7 +40,6 @@ deps = {
   "third_party/rust/futures_retry/v0_5/crate": "https://github.com/brave-intl/futures-retry.git@2aaaafbc3d394661534d4dbd14159d164243c20e",
   "third_party/rust/kuchiki/v0_8/crate": "https://github.com/brave/kuchiki.git@589eadca2c1d06ddda2919354590bfe1ace88a43",
   "third_party/rust/adblock/v0_7/crate": "https://github.com/brave/adblock-rust.git@0730a439122677ef9900156e08fa577f09396100",
-  "third_party/rust/adblock/v0_7/crate": "https://github.com/brave/adblock-rust.git@ed216e5302bce5baf9731d1efc919408f614499a",
   "third_party/macholib": {
     "url": "https://github.com/ronaldoussoren/macholib.git@36a6777ccd0891c5d1b44ba885573d7c90740015",
     "condition": "checkout_mac",
