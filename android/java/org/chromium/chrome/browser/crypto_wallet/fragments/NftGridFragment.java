@@ -108,7 +108,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
             mWalletModel = activity.getWalletModel();
             mPortfolioModel = mWalletModel.getCryptoModel().getPortfolioModel();
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onCreate " + e);
+            Log.e(TAG, "onCreate", e);
         }
         mCanRunOnceWhenResumed = true;
     }
@@ -173,8 +173,8 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
 
     private void setUpObservers() {
         if (mWalletModel == null) return;
-        getNetworkModel().mCryptoNetworks.observe(getViewLifecycleOwner(),
-                allNetworkInfos -> { mAllNetworkInfos = allNetworkInfos; });
+        getNetworkModel().mCryptoNetworks.observe(
+                getViewLifecycleOwner(), allNetworkInfos -> mAllNetworkInfos = allNetworkInfos);
         mNetworkSelectionModel = getNetworkModel().openNetworkSelectorModel(
                 TAG, NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, getLifecycle());
         mNetworkSelectionModel.getSelectedNetwork().observe(
@@ -221,10 +221,10 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
                                             R.string.brave_wallet_create_account_description,
                                             networkInfo.symbolName))
                                     .setPositiveButton(R.string.brave_action_yes,
-                                            (dialog, which) -> {
-                                                mWalletModel.createAccountAndSetDefaultNetwork(
-                                                        networkInfo);
-                                            })
+                                            (dialog, which)
+                                                    -> mWalletModel
+                                                               .createAccountAndSetDefaultNetwork(
+                                                                       networkInfo))
                                     .setNegativeButton(
                                             R.string.brave_action_no, (dialog, which) -> {
                                                 getNetworkModel().clearCreateAccountState();
@@ -240,7 +240,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
 
         TextView editVisibleNft = view.findViewById(R.id.edit_visible_nfts);
         mRvNft = view.findViewById(R.id.rv_nft);
-        editVisibleNft.setOnClickListener(v -> { showEditVisibleDialog(); });
+        editVisibleNft.setOnClickListener(v -> showEditVisibleDialog());
     }
 
     private void showNftDiscoveryDialog() {
@@ -250,11 +250,10 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
                 getString(R.string.brave_wallet_enable_nft_autodiscovery_modal_description),
                 new SpanApplier.SpanInfo("<LINK_1>", "</LINK_1>", new UnderlineSpan()),
                 new SpanApplier.SpanInfo("<LINK_2>", "</LINK_2>",
-                        new NoUnderlineClickableSpan(
-                                requireContext(), R.color.brave_link, result -> {
-                                    TabUtils.openUrlInCustomTab(requireContext(),
-                                            WalletConstants.NFT_DISCOVERY_LEARN_MORE_LINK);
-                                })));
+                        new NoUnderlineClickableSpan(requireContext(), R.color.brave_link,
+                                result
+                                -> TabUtils.openUrlInCustomTab(requireContext(),
+                                        WalletConstants.NFT_DISCOVERY_LEARN_MORE_LINK))));
 
         MaterialAlertDialogBuilder nftDiscoveryDialogBuilder = new MaterialAlertDialogBuilder(
                 requireContext(), R.style.BraveWalletAlertDialogTheme);
@@ -286,7 +285,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
 
     private void openNetworkSelection() {
         Intent intent = NetworkSelectorActivity.createIntent(
-                getContext(), NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, TAG);
+                requireContext(), NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, TAG);
         startActivity(intent);
     }
 
@@ -367,19 +366,15 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
                         WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST, true);
 
         bottomSheetDialogFragment.setSelectedNetwork(mNetworkInfo);
-        bottomSheetDialogFragment.setDismissListener(
-                new EditVisibleAssetsBottomSheetDialogFragment.DismissListener() {
-                    @Override
-                    public void onDismiss(boolean isAssetsListChanged) {
-                        if (isAssetsListChanged) {
-                            mPbAssetDiscovery.setVisibility(View.VISIBLE);
-                            updateNftGrid();
-                        }
-                    }
-                });
+        bottomSheetDialogFragment.setDismissListener(isAssetsListChanged -> {
+            if (isAssetsListChanged) {
+                mPbAssetDiscovery.setVisibility(View.VISIBLE);
+                updateNftGrid();
+            }
+        });
 
-        bottomSheetDialogFragment.show(
-                getFragmentManager(), EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
+        bottomSheetDialogFragment.show(getParentFragmentManager(),
+                EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
     }
 
     private NetworkModel getNetworkModel() {
