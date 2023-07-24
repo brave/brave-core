@@ -176,6 +176,17 @@ void MigrateToV29(mojom::DBTransactionInfo* transaction) {
   }
 }
 
+void MigrateToV32(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "UPDATE transactions SET confirmation_type = 'bookmark' WHERE "
+      "confirmation_type == 'saved'";
+  transaction->commands.push_back(std::move(command));
+}
+
 }  // namespace
 
 void Transactions::Save(const TransactionList& transactions,
@@ -304,6 +315,11 @@ void Transactions::Migrate(mojom::DBTransactionInfo* transaction,
 
     case 29: {
       MigrateToV29(transaction);
+      break;
+    }
+
+    case 32: {
+      MigrateToV32(transaction);
       break;
     }
   }
