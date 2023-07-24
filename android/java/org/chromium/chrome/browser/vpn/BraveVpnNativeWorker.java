@@ -33,7 +33,13 @@ public class BraveVpnNativeWorker {
     private List<BraveVpnObserver> mObservers;
 
     // private String finalResponse = "";
-    // private static ByteArrayOutputStream output = new ByteArrayOutputStream();
+    public static ArrayList<byte[]> tempStorage = new ArrayList<byte[]>();
+    public static ByteArrayOutputStream output = new ByteArrayOutputStream();
+    // public static int currentOffset;
+    public static String url;
+    public static long contentLength;
+    public static String itemId = "";
+    public static byte[] finalData;
     // private static File file =
     //         new
     //         File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
@@ -149,6 +155,8 @@ public class BraveVpnNativeWorker {
 
     @CalledByNative
     public void onResponseStarted(String url, long contentLength) {
+        this.url = url;
+        this.contentLength = contentLength;
         for (BraveVpnObserver observer : mObservers) {
             observer.onResponseStarted(url, contentLength);
         }
@@ -156,21 +164,15 @@ public class BraveVpnNativeWorker {
 
     @CalledByNative
     public void onDataReceived(byte[] response) {
-        // Log.e("data_source",
-        //                 "BraveVpnNativeWorker :
-        //                 APIRequestHelper::URLLoaderHandler::OnDataReceived : "
-        //                         + response.length);
-        // PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
-        //     try {
-        //         Log.e("data_source",
-        //                 "BraveVpnNativeWorker :
-        //                 APIRequestHelper::URLLoaderHandler::OnDataReceived : "
-        //                         + response.length);
-        //         output.write(response);
-        //     } catch (Exception e) {
-        //         Log.e("data_source", e.getMessage());
-        //     }
-        // });
+        Log.e("data_source", "onDataReceived : response : " + response.length);
+        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
+            try {
+                output.write(response);
+                // tempStorage.add(response);
+            } catch (Exception e) {
+                Log.e("data_source", e.getMessage());
+            }
+        });
         for (BraveVpnObserver observer : mObservers) {
             observer.onDataReceived(response);
         }
@@ -178,20 +180,15 @@ public class BraveVpnNativeWorker {
 
     @CalledByNative
     public void onDataCompleted() {
-        // Log.e("data_source",
-        //         "onDataCompleted : file.getAbsolutePath() : " + file.getAbsolutePath());
-        // PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
-        //     try {
-        //         byte[] out = output.toByteArray();
-        //         Log.e("data_source",
-        //                 "BraveVpnNativeWorker : onDataCompleted : byte[] length : " +
-        //                 out.length);
-        //         writeByte(out);
-        //         output.close();
-        //     } catch (Exception e) {
-        //         Log.e("data_source", e.getMessage());
-        //     }
-        // });
+        Log.e("data_source", "onDataCompleted : file.getAbsolutePath() : ");
+        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
+            try {
+                finalData = output.toByteArray();
+                output.close();
+            } catch (Exception e) {
+                Log.e("data_source", e.getMessage());
+            }
+        });
         for (BraveVpnObserver observer : mObservers) {
             observer.onDataCompleted();
         }
@@ -262,6 +259,7 @@ public class BraveVpnNativeWorker {
     }
 
     public void queryPrompt(String url, String method) {
+        Log.e("custom", "queryPrompt : ");
         BraveVpnNativeWorkerJni.get().queryPrompt(mNativeBraveVpnNativeWorker, url, method);
     }
 

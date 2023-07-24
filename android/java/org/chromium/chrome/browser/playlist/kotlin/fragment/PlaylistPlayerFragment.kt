@@ -257,6 +257,7 @@ class PlaylistPlayerFragment : Fragment(R.layout.fragment_playlist_player), Play
         arguments?.let {
             mPlaylistModel = getPlaylistModel(it)
             mSelectedPlaylistItemId = it.getString(SELECTED_PLAYLIST_ITEM_ID).toString()
+            Log.e("data_source", "PlaylistPlayerFragment onCreate : "+mSelectedPlaylistItemId);
         }
     }
 
@@ -269,6 +270,7 @@ class PlaylistPlayerFragment : Fragment(R.layout.fragment_playlist_player), Play
     @SuppressLint("ClickableViewAccessibility", "SourceLockedOrientationActivity")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e("data_source", "PlaylistPlayerFragment onViewCreated");
         mPlaylistViewModel = ViewModelProvider(requireActivity() as ViewModelStoreOwner)[PlaylistViewModel::class.java]
 
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
@@ -792,6 +794,7 @@ class PlaylistPlayerFragment : Fragment(R.layout.fragment_playlist_player), Play
         @JvmStatic
         fun newInstance(selectedPlaylistItemId: String, playlistModel: PlaylistModel) =
             PlaylistPlayerFragment().apply {
+            Log.e("data_source", "PlaylistPlayerFragment.newInstance");
                 arguments = Bundle().apply {
                     putParcelable(PLAYLIST_MODEL, playlistModel)
                     putString(SELECTED_PLAYLIST_ITEM_ID, selectedPlaylistItemId)

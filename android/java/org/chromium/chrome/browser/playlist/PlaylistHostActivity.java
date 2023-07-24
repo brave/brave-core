@@ -5,9 +5,16 @@
 
 package org.chromium.chrome.browser.playlist;
 
+import static com.google.android.exoplayer2.util.Assertions.checkNotNull;
+import static com.google.android.exoplayer2.util.Util.castNonNull;
+
+import static java.lang.Math.min;
+
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -25,9 +32,24 @@ import com.brave.playlist.model.PlaylistOptionsModel;
 import com.brave.playlist.util.ConstantUtils;
 import com.brave.playlist.util.PlaylistUtils;
 import com.brave.playlist.view.bottomsheet.MoveOrCopyToPlaylistBottomSheet;
+import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.PlaybackException;
+import com.google.android.exoplayer2.upstream.BaseDataSource;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DataSourceException;
+import com.google.android.exoplayer2.upstream.DataSpec;
+import com.google.android.exoplayer2.upstream.HttpDataSource;
+import com.google.android.exoplayer2.upstream.HttpUtil;
+import com.google.android.exoplayer2.upstream.TransferListener;
+import com.google.android.exoplayer2.util.Util;
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.net.HttpHeaders;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
@@ -46,26 +68,42 @@ import org.chromium.playlist.mojom.PlaylistEvent;
 import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistService;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PlaylistHostActivity extends AsyncInitializationActivity
         implements ConnectionErrorHandler, PlaylistOptionsListener,
-                   PlaylistServiceObserverImplDelegate, BraveVpnObserver {
+                   PlaylistServiceObserverImplDelegate, BraveVpnObserver, HttpDataSource {
     private static final String TAG = "BravePlaylist";
     private PlaylistService mPlaylistService;
     private PlaylistViewModel mPlaylistViewModel;
     private PlaylistServiceObserverImpl mPlaylistServiceObserver;
 
+    private String url;
+    private long contentLength;
+    private final RequestProperties requestProperties = new RequestProperties();
+    private byte[] dataReceived;
+    private long bytesRead;
+    private long bytesToRead;
+    private static ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+    @Nullable
+    private DataSpec dataSpec;
+
     @Override
     public void onResumeWithNative() {
         super.onResumeWithNative();
-        BraveVpnNativeWorker.getInstance().addObserver(this);
+        // BraveVpnNativeWorker.getInstance().addObserver(this);
     }
 
     @Override
     public void onPauseWithNative() {
-        BraveVpnNativeWorker.getInstance().removeObserver(this);
+        // BraveVpnNativeWorker.getInstance().removeObserver(this);
         super.onPauseWithNative();
     }
 
@@ -537,15 +575,144 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
         Log.e("data_source",
                 "PlaylistHostActivity : onResponseStarted : " + url
                         + " Content length : " + contentLength);
+        this.url = url;
+        this.contentLength = contentLength;
     };
 
     @Override
     public void onDataReceived(byte[] response) {
         Log.e("data_source", "PlaylistHostActivity : OnDataReceived : " + response.length);
+        // this.dataReceived = response;
+        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
+            try {
+                output.write(response);
+            } catch (Exception e) {
+                Log.e("data_source", e.getMessage());
+            }
+        });
     };
 
     @Override
     public void onDataCompleted() {
         Log.e("data_source", "PlaylistHostActivity : onDataCompleted : file.getAbsolutePath() : ");
     };
+
+    @Override
+    @Nullable
+    public Uri getUri() {
+        return url == null ? null : Uri.parse(url);
+    }
+
+    @Override
+    public int getResponseCode() {
+        return 200;
+    }
+
+    @Override
+    public Map<String, List<String>> getResponseHeaders() {
+        return ImmutableMap.of();
+    }
+
+    @Override
+    public void setRequestProperty(String name, String value) {
+        checkNotNull(name);
+        checkNotNull(value);
+        requestProperties.set(name, value);
+    }
+
+    @Override
+    public void clearRequestProperty(String name) {
+        checkNotNull(name);
+        requestProperties.remove(name);
+    }
+
+    @Override
+    public void clearAllRequestProperties() {
+        requestProperties.clear();
+    }
+
+    @Override
+    public void addTransferListener(TransferListener transferListener) {}
+
+    @Override
+    public long open(DataSpec dataSpec) throws HttpDataSourceException {
+        this.dataSpec = dataSpec;
+        // BraveVpnNativeWorker.getInstance().queryPrompt(
+        //         dataSpec.uri.toString(),
+        //         dataSpec.getHttpMethodString());
+        bytesRead = 0;
+        bytesToRead = 0;
+        bytesToRead = dataSpec.length != C.LENGTH_UNSET ? dataSpec.length : contentLength;
+        return bytesToRead;
+    }
+
+    @Override
+    public int read(byte[] buffer, int offset, int length) throws HttpDataSourceException {
+        try {
+            return readInternal(buffer, offset, length);
+        } catch (IOException e) {
+            throw HttpDataSourceException.createForIOException(
+                    e, castNonNull(dataSpec), HttpDataSourceException.TYPE_READ);
+        }
+    }
+
+    private int readInternal(byte[] buffer, int offset, int readLength) throws IOException {
+        if (readLength == 0) {
+            return 0;
+        }
+
+        if (bytesToRead != C.LENGTH_UNSET) {
+            long bytesRemaining = bytesToRead - bytesRead;
+            if (bytesRemaining == 0) {
+                return C.RESULT_END_OF_INPUT;
+            }
+            readLength = (int) min(readLength, bytesRemaining);
+        }
+
+        byte[] dataReceived = output.toByteArray();
+        InputStream targetStream = new ByteArrayInputStream(dataReceived);
+        int read = targetStream.read(buffer, offset, min(readLength, dataReceived.length));
+        if (read == -1) {
+            return C.RESULT_END_OF_INPUT;
+        }
+
+        targetStream.close();
+
+        bytesRead += read;
+
+        // return bytes read for offset
+        return read;
+    }
+
+    @Override
+    public void close() throws HttpDataSourceException {
+        // Close streams
+        try {
+            output.close();
+        } catch (Exception e) {
+            Log.e("data_source", e.getMessage());
+        }
+    }
+
+    /**
+     * {@link DataSource.Factory} for {@link PlaylistHostActivity} instances.
+     */
+    public static final class Factory implements HttpDataSource.Factory {
+        /**
+         * Creates an instance.
+         */
+        public Factory() {}
+
+        @Override
+        public PlaylistHostActivity.Factory setDefaultRequestProperties(
+                Map<String, String> defaultRequestProperties) {
+            return this;
+        }
+
+        @Override
+        public PlaylistHostActivity createDataSource() {
+            PlaylistHostActivity dataSource = new PlaylistHostActivity();
+            return dataSource;
+        }
+    }
 }
