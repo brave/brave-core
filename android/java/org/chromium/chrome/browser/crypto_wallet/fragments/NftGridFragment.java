@@ -15,9 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -37,6 +40,7 @@ import org.chromium.chrome.browser.app.domain.PortfolioModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.activities.AddAssetActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity;
@@ -83,6 +87,9 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     private ProgressBar mPbAssetDiscovery;
     private ViewGroup mAddNftsContainer;
     private Button mBtnChangeNetwork;
+    private ImageView mBtnAddNft;
+
+    private ActivityResultLauncher<Intent> mAddAssetActivityResultLauncher;
 
     public static NftGridFragment newInstance() {
         return new NftGridFragment();
@@ -114,14 +121,29 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         mPbAssetDiscovery = view.findViewById(R.id.frag_nft_grid_pb_asset_discovery);
         mAddNftsContainer = view.findViewById(R.id.add_nfts_container);
         mBtnChangeNetwork = view.findViewById(R.id.fragment_nft_grid_btn_change_networks);
-        mBtnChangeNetwork.setOnClickListener(v -> { openNetworkSelection(); });
+        mBtnChangeNetwork.setOnClickListener(v -> openNetworkSelection());
         mBtnChangeNetwork.setOnLongClickListener(v -> {
             if (mNetworkInfo != null) {
                 Toast.makeText(requireContext(), mNetworkInfo.chainName, Toast.LENGTH_SHORT).show();
             }
             return true;
         });
+
+        mBtnAddNft = view.findViewById(R.id.fragment_nft_grid_btn_add_nft);
+        mBtnAddNft.setOnClickListener(v -> {
+            Intent addAssetIntent = AddAssetActivity.getIntent(requireContext(), true);
+            mAddAssetActivityResultLauncher.launch(addAssetIntent);
+        });
         setUpObservers();
+
+        mAddAssetActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(), result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        mPbAssetDiscovery.setVisibility(View.VISIBLE);
+                        updateNftGrid();
+                    }
+                });
+
         return view;
     }
 
