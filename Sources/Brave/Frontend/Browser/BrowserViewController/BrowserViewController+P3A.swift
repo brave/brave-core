@@ -94,8 +94,6 @@ extension BrowserViewController {
       ],
       value: braveVPNDaysInMonthUsedStorage.combinedValue
     )
-    
-    usage.recordReturningUsageMetric()
   }
   
   func recordAccessibilityDisplayZoomEnabledP3A() {

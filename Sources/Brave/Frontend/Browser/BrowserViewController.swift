@@ -538,6 +538,7 @@ public class BrowserViewController: UIViewController {
     recordAccessibilityDisplayZoomEnabledP3A()
     recordAccessibilityDocumentsDirectorySizeP3A()
     recordTimeBasedNumberReaderModeUsedP3A(activated: false)
+    PlaylistP3A.recordHistogram()
     
     // Revised Review Handling
     AppReviewManager.shared.handleAppReview(for: .revisedCrossPlatform, using: self)
