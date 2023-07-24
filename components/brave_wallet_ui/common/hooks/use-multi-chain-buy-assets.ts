@@ -155,13 +155,18 @@ export const useMultiChainBuyAssets = () => {
           : currencyCode
     })
       .then((url) => {
-        chrome.tabs.create({ url }, () => {
-          if (chrome.runtime.lastError) {
-            console.error(
-              'tabs.create failed: ' + chrome.runtime.lastError.message
-            )
-          }
-        })
+        if (chrome.tabs !== undefined) {
+          chrome.tabs.create({ url }, () => {
+            if (chrome.runtime.lastError) {
+              console.error(
+                'tabs.create failed: ' + chrome.runtime.lastError.message
+              )
+            }
+          })
+        } else {
+          // Tabs.create is desktop specific. Using window.open for android.
+          window.open(url, "_blank", 'noopener');
+        }
       })
       .catch((e) => console.error(e))
   }, [

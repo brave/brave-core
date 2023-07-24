@@ -40,7 +40,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
@@ -237,39 +236,27 @@ public class Utils {
     }
 
     public static void openBuySendSwapActivity(@NonNull final Activity activity,
-            @NonNull final BuySendSwapActivity.ActivityType activityType,
-            @Nullable final String chainId) {
-        assert activity != null;
+            @NonNull final BuySendSwapActivity.ActivityType activityType) {
+        String webWalletUrl;
         switch (activityType) {
             case SWAP_V2:
-                try {
-                    BraveActivity.getBraveActivity().openNewOrSelectExistingTab(
-                            BraveActivity.BRAVE_SWAP_URL, true);
-                    TabUtils.bringChromeTabbedActivityToTheTop(activity);
-                } catch (BraveActivity.BraveActivityNotFoundException e) {
-                    Log.e(TAG, "Error while opening swap tab.", e);
-                }
+                webWalletUrl = BraveActivity.BRAVE_SWAP_URL;
                 break;
-
             case SEND:
-                try {
-                    BraveActivity.getBraveActivity().openNewOrSelectExistingTab(
-                            BraveActivity.BRAVE_SEND_URL, true);
-                    TabUtils.bringChromeTabbedActivityToTheTop(activity);
-                } catch (BraveActivity.BraveActivityNotFoundException e) {
-                    Log.e(TAG, "Error while opening send tab.", e);
-                }
+                webWalletUrl = BraveActivity.BRAVE_SEND_URL;
                 break;
             case BUY:
-                Intent buySendSwapActivityIntent = new Intent(activity, BuySendSwapActivity.class);
-                buySendSwapActivityIntent.putExtra(
-                        BuySendSwapActivity.ACTIVITY_TYPE, activityType.getValue());
-                buySendSwapActivityIntent.putExtra(BuySendSwapActivity.ASSET_CHAIN_ID, chainId);
-                activity.startActivity(buySendSwapActivityIntent);
+                webWalletUrl = BraveActivity.BRAVE_BUY_URL;
                 break;
             default:
                 throw new IllegalStateException(
                         String.format("Activity not found for type %s.", activityType));
+        }
+        try {
+            BraveActivity.getBraveActivity().openNewOrSelectExistingTab(webWalletUrl, true);
+            TabUtils.bringChromeTabbedActivityToTheTop(activity);
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "Error while opening wallet tab.", e);
         }
     }
 

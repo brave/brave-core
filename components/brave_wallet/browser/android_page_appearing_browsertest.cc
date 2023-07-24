@@ -428,4 +428,11 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
       "TypeError: Cannot read properties of undefined (reading 'forEach')"};
   VerifyPage(url, ignore_patterns);
 }
+
+IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestBuyPageAppearing) {
+  GURL url = GURL("chrome://wallet/fund-wallet");
+  const std::vector<std::string> ignore_patterns = {
+      "TypeError: Cannot read properties of undefined (reading 'forEach')"};
+  VerifyPage(url, ignore_patterns);
+}
 }  // namespace brave_wallet

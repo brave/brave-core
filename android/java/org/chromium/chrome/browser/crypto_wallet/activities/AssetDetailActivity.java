@@ -290,14 +290,12 @@ public class AssetDetailActivity
         if (!mIsMarketCoin) {
             mBtnSwap.setOnClickListener(v
                     -> Utils.openBuySendSwapActivity(
-                            this, BuySendSwapActivity.ActivityType.SWAP_V2, mChainId));
-            mBtnBuy.setOnClickListener(v
-                    -> Utils.openBuySendSwapActivity(
-                            this, BuySendSwapActivity.ActivityType.BUY, mChainId));
+                            this, BuySendSwapActivity.ActivityType.SWAP_V2));
+            mBtnBuy.setOnClickListener(
+                    v -> Utils.openBuySendSwapActivity(this, BuySendSwapActivity.ActivityType.BUY));
 
             btnSend.setOnClickListener(v
-                    -> Utils.openBuySendSwapActivity(
-                            this, BuySendSwapActivity.ActivityType.SEND, mChainId));
+                    -> Utils.openBuySendSwapActivity(this, BuySendSwapActivity.ActivityType.SEND));
         }
         adjustButtonsVisibilities();
 

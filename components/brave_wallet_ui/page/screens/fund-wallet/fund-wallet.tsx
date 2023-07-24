@@ -75,7 +75,11 @@ function getItemSize (index: number): number {
   return itemSize
 }
 
-export const FundWalletScreen = () => {
+interface Props {
+  isAndroid?: boolean
+}
+
+export const FundWalletScreen = ({ isAndroid }: Props) => {
   // redux
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
@@ -305,6 +309,8 @@ export const FundWalletScreen = () => {
   return (
     <WalletPageWrapper
       wrapContentInBox={true}
+      hideNav={isAndroid}
+      hideHeader={isAndroid}
       cardHeader={
         <PageTitleHeader
           title={
@@ -398,7 +404,7 @@ export const FundWalletScreen = () => {
                 onSubmit={nextStep}
                 disabled={!isNextStepEnabled}
                 isV2={true}
-                minWidth='436px'
+                minWidth='360px'
               />
             </NextButtonRow>
           </>
