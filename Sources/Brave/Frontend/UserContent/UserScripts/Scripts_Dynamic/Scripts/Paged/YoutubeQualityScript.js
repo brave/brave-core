@@ -18,33 +18,35 @@ window.__firefox__.includeOnce("YoutubeQuality", function($) {
   function findPlayer() {
     return document.getElementById('movie_player') || document.querySelector('.html5-video-player');
   }
-  
-  function hasAPIs(player) {
-    if (!player) {
+
+  // Returns false if something failed in the process - we may retry after a small delay
+  function updatePlayerQuality(player, requestedQuality) {
+    if (!player || typeof player.getAvailableQualityLevels === 'undefined') {
       return false;
     }
     
-    return typeof player.getAvailableQualityLevels !== 'undefined';
-  }
-  
-  function updatePlayerQuality(player, requestedQuality) {
     let qualities = player.getAvailableQualityLevels();
     if (qualities && qualities.length > 0 && requestedQuality.length > 0) {
       let quality = qualities.includes(requestedQuality) ? requestedQuality : qualities[0];
       
-      if (player.setPlaybackQuality) {
-        player.setPlaybackQuality(quality);
-      }
-      
       if (player.setPlaybackQualityRange) {
         player.setPlaybackQualityRange(quality);
+        return true;
       }
       
-      // console.log(player.getPlaybackQualityLabel());
+      if (player.setPlaybackQuality) {
+        player.setPlaybackQuality(quality);
+        return true;
+      }
+            
+      return false;
+    } else {
+      // Sometimes the video qualities do not load fast enough.
+      return false;
     }
   }
   
-  var timeout = 0;
+  var ytQualityTimerId = 0;
   var chosenQuality = "";
   
   Object.defineProperty(window.__firefox__, '$<set_youtube_quality>', {
@@ -52,14 +54,22 @@ window.__firefox__.includeOnce("YoutubeQuality", function($) {
     configurable: false,
     writable: false,
     value: $(function(newVideoQuality) {
+      // To not break the site completely, if it fails to upgrade few times we proceed with the default option.
+      var attemptCount = 0;
+      let maxAttempts = 3;
+      
       chosenQuality = newVideoQuality;
       
-      clearInterval(timeout);
-      timeout = setInterval($(() => {
+      clearInterval(ytQualityTimerId);
+      ytQualityTimerId = setInterval($(() => {
         let player = findPlayer();
-        if (player && hasAPIs(player)) {
-          clearInterval(timeout);
-          updatePlayerQuality(player, chosenQuality);
+        if (attemptCount++ > maxAttempts) {
+          clearInterval(ytQualityTimerId);
+          return;
+        }
+        
+        if (updatePlayerQuality(player, chosenQuality)) {
+          clearInterval(ytQualityTimerId);
         }
       }), 500);
     })
