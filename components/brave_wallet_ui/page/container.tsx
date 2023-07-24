@@ -16,16 +16,25 @@ import * as WalletPageActions from './actions/wallet_page_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
 
 // selectors
-import { WalletSelectors } from '../common/selectors'
+import {
+  UISelectors,
+  WalletSelectors
+} from '../common/selectors'
 import { PageSelectors } from './selectors'
 
 // types
 import {
-  WalletRoutes, WalletState
+  WalletOrigin,
+  WalletRoutes,
+  WalletState
 } from '../constants/types'
 
 // hooks
-import { useSafePageSelector, useSafeWalletSelector } from '../common/hooks/use-safe-selector'
+import {
+  useSafePageSelector,
+  useSafeUISelector,
+  useSafeWalletSelector
+} from '../common/hooks/use-safe-selector'
 
 // style
 import 'emptykit.css'
@@ -74,6 +83,9 @@ export const Container = () => {
   // page selectors (safe)
   const setupStillInProgress = useSafePageSelector(PageSelectors.setupStillInProgress)
 
+  // UI Selectors (safe)
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
+
   // state
   const [sessionRoute, setSessionRoute] = React.useState<string | undefined>(undefined)
   const [inputValue, setInputValue] = React.useState<string>('')
@@ -93,10 +105,23 @@ export const Container = () => {
       if (isWalletCreated && isWalletLocked) {
         history.push(WalletRoutes.Unlock)
       }
-    } else {
-      history.push(WalletRoutes.Restore)
+      return
     }
-  }, [walletLocation])
+    if (isPanel) {
+      chrome.tabs.create(
+        { url: `${WalletOrigin}${WalletRoutes.Restore}` },
+        () => {
+          if (chrome.runtime.lastError) {
+            console.error(
+              'tabs.create failed: ' + //
+              chrome.runtime.lastError.message
+            )
+          }
+        })
+      return
+    }
+    history.push(WalletRoutes.Restore)
+  }, [walletLocation, isPanel])
 
   const unlockWallet = React.useCallback(() => {
     dispatch(WalletActions.unlockWallet({ password: inputValue }))
