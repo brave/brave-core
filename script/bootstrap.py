@@ -76,7 +76,7 @@ def update_node_modules(dirname, env=None):
 
 def copy_widevine_signature_generator():
     # pylint: disable=fixme
-    # TODO: Remove this function once github.com/brave/devops/pull/10052 was
+    # TODO: Remove this function once github.com/brave/devops/pull/10145 was
     # deployed.
     script_dir = os.path.join(CHROMIUM_ROOT, 'third_party', 'widevine',
                               'scripts')
@@ -86,7 +86,7 @@ def copy_widevine_signature_generator():
         with open(src) as f:
             code = f.read()
     except FileNotFoundError:
-        # This can mean that brave/devops/pull/10052 was deployed.
+        # This can mean that brave/devops/pull/10145 was deployed.
         pass
     else:
         fixed_code = code.replace("sys.stdin.encoding", "'ascii'")
