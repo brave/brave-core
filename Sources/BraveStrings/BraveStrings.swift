@@ -2576,6 +2576,11 @@ extension Strings {
       NSLocalizedString("vpn.checkboxBlockAds", tableName: "BraveShared", bundle: .module,
         value: "Blocks unwanted network connections",
         comment: "Text for a checkbox to present the user benefits for using Brave VPN")
+    
+    public static let checkboxBlockAdsAlternate =
+      NSLocalizedString("vpn.checkboxBlockAdsAlternate", tableName: "BraveShared", bundle: .module,
+        value: "Block ads & trackers across all apps ",
+        comment: "Text for a checkbox to present the user benefits for using Brave VPN")
 
     public static let checkboxGeoSelector =
       NSLocalizedString("vpn.checkboxGeoSelector", tableName: "BraveShared", bundle: .module,
@@ -2587,6 +2592,11 @@ extension Strings {
         value: "Supports speeds of up to 100 Mbps",
         comment: "Text for a checkbox to present the user benefits for using Brave VPN")
 
+    public static let checkboxFastAlternate =
+      NSLocalizedString("vpn.checkboxFastAlternate", tableName: "BraveShared", bundle: .module,
+        value: "Fast and unlimited up to 100 Mbps",
+        comment: "Text for a checkbox to present the user benefits for using Brave VPN")
+    
     public static let checkboxNoSellout =
       NSLocalizedString("vpn.checkboxNoSellout", tableName: "BraveShared", bundle: .module,
         value: "We never share or sell your info",
@@ -3036,8 +3046,98 @@ extension Strings {
       NSLocalizedString("vpn.vpnRegionSelectorButtonSubTitle", tableName: "BraveShared", bundle: .module,
         value: "Current Setting: %@",
         comment: "Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic")
+
+    public static let autoRenewSoonExpirePopOverTitle =
+      NSLocalizedString("vpn.autoRenewSoonExpireTitle", tableName: "BraveShared", bundle: .module,
+        value: "Oh no! Your Brave VPN subscription is about to expire.",
+        comment: "Pop up title for VPN subscription is about expire")
     
+    public static let autoRenewDiscountPopOverTitle =
+      NSLocalizedString("vpn.autoRenewDiscountPopOverTitle", tableName: "BraveShared", bundle: .module,
+        value: "Auto-renew your Brave VPN Subscription now and get 20% off for 3 months!",
+        comment: "Pop up title for renewing VPN subscription with discount")
+    
+    public static let autoRenewFreeMonthPopOverTitle =
+      NSLocalizedString("vpn.autoRenewFreeMonthPopOverTitle", tableName: "BraveShared", bundle: .module,
+        value: "Auto-renew your Brave VPN Subscription now and get 1 month free!",
+        comment: "Pop up title for renewing VPN subscription with month free")
+    
+    public static let updateBillingSoonExpirePopOverTitle =
+      NSLocalizedString("vpn.updateBillingSoonExpirePopOverTitle", tableName: "BraveShared", bundle: .module,
+        value: "There's a billing issue with your account, which means your Brave VPN subscription is about to expire.",
+        comment: "Pop up title for billing issue for subcription VPN about to expire")
+    
+    public static let updateBillingExpiredPopOverTitle =
+      NSLocalizedString("vpn.updateBillingExpiredPopOverTitle", tableName: "BraveShared", bundle: .module,
+        value: "Update your payment info to stay protected with Brave VPN.",
+        comment: "Pop up title for billing issue for subcription VPN already expired")
+
+    public static let autoRenewSoonExpirePopOverDescription =
+      NSLocalizedString("vpn.autoRenewSoonExpirePopOverDescription", tableName: "BraveShared", bundle: .module,
+        value: "That means you'll lose Brave's extra protections for every app on your phone.",
+        comment: "Pop up description for VPN subscription is about expire")
+    
+    public static let updateBillingSoonExpirePopOverDescription =
+      NSLocalizedString("vpn.updateBillingSoonExpirePopOverDescription", tableName: "BraveShared", bundle: .module,
+        value: "Want to keep protecting every app on your phone? Just update your payment details.",
+        comment: "Pop up description for billing issue of subcription VPN about to expire")
+    
+    public static let updateBillingExpiredPopOverDescription =
+      NSLocalizedString("vpn.updateBillingExpiredPopOverDescription", tableName: "BraveShared", bundle: .module,
+        value: "Don’t worry. We’ll keep VPN active for a few days while you are updating your payment info.",
+        comment: "Pop up description for billing issue of subcription VPN already expired")
+
+    public static let autoReneSoonExpirePopOverSubDescription =
+      NSLocalizedString("vpn.autoReneSoonExpirePopOverSubDescription", tableName: "BraveShared", bundle: .module,
+        value: "Want to stay protected? Just renew before your subscription ends. As a thanks for renewing, we'll even take 20% off for the next 3 months.",
+        comment: "Pop up extra description for billing issue of subcription VPN about to expire")
+    
+    public static let autoRenewActionButtonTitle =
+      NSLocalizedString("vpn.autoRenewActionButtonTitle", tableName: "BraveShared", bundle: .module,
+        value: "Enable Auto-Renew",
+        comment: "Action button title that enables auto renew for subcription")
+    
+    public static let updatePaymentActionButtonTitle =
+      NSLocalizedString("vpn.updatePaymentActionButtonTitle", tableName: "BraveShared", bundle: .module,
+        value: "Update Payment",
+        comment: "Action button title that updates method payment")
+    
+    public static let subscribeVPNActionButtonTitle =
+      NSLocalizedString("vpn.subscribeVPNActionButtonTitle", tableName: "BraveShared", bundle: .module,
+        value: "Subscribe Now",
+        comment: "Action button title that subscribe action for VPN purchase")
+    
+    public static let subscribeVPNDiscountPopOverTitle =
+      NSLocalizedString("vpn.subscribeVPNDiscountPopOverTitle", tableName: "BraveShared", bundle: .module,
+        value: "Give Brave VPN another try and get 20% off for 3 months!",
+        comment: "Pop up title for subscribing VPN with discount")
+    
+    public static let subscribeVPNProtectionPopOverTitle =
+      NSLocalizedString("vpn.subscribeVPNProtectionPopOverTitle", tableName: "BraveShared", bundle: .module,
+        value: "Did you know that Brave VPN protects you outside of Brave Browser?",
+        comment: "Pop up title for subscribing VPN explaning VPN protects user outside the Brave")
+    
+    public static let subscribeVPNAllDevicesPopOverTitle =
+      NSLocalizedString("vpn.subscribeVPNAllDevicesPopOverTitle", tableName: "BraveShared", bundle: .module,
+        value: "Now, use Brave VPN on all your devices for the same price!",
+        comment: "Pop up title the subscription for VPN can be used for all platforms")
+    
+    public static let subscribeVPNProtectionPopOverDescription =
+      NSLocalizedString("vpn.subscribeVPNProtectionPopOverDescription", tableName: "BraveShared", bundle: .module,
+        value: "Brave VPN has always blocked trackers on every app, even outside the Brave browser. Now you can see who tried to track you, with the Brave Privacy Hub.",
+        comment: "Pop up description for subscribing VPN explaning VPN protects user outside the Brave")
+    
+    public static let subscribeVPNAllDevicesPopOverDescription =
+      NSLocalizedString("vpn.subscribeVPNAllDevicesPopOverDescription", tableName: "BraveShared", bundle: .module,
+        value: "That’s right. Your Brave VPN subscription is now good on up to 5 devices. So you can subscribe on iOS and use it on your Mac, Windows and Android devices for free.",
+        comment: "Pop up description the subscription for VPN can be used for all platforms")
+    
+    public static let subscribeVPNPopOverSubDescription =
+      NSLocalizedString("vpn.subscribeVPNPopOverSubDescription", tableName: "BraveShared", bundle: .module,
+        value: "Ready to safeguard every app on your phone? Come back to Brave VPN and get 20% off for the next 3 months.",
+        comment: "Pop up sub description the subscription for VPN can be used for all platforms")
   }
+  
 }
 
 extension Strings {

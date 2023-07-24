@@ -30,7 +30,7 @@ extension Preferences {
       default: false)
     
     /// Whether the link vpn receipt alert has been shown.
-    public static let linkReceiptShown = Option<Bool>(key: "onboarding.link-receipt", default: false)
+    public static let vpnLinkReceiptShown = Option<Bool>(key: "onboarding.link-receipt", default: false)
     
     /// Whether this is a new user who installed the application after onboarding retention updates
     public static let isNewRetentionUser = Option<Bool?>(key: "general.new-retention", default: nil)
