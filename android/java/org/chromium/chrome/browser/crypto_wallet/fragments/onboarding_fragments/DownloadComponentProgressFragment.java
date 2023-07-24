@@ -16,7 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.util.DataFilesComponentInstaller;
+import org.chromium.chrome.browser.component_updater.BraveComponentUpdater;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletDataFilesInstaller;
 
 import java.util.Locale;
 
@@ -26,9 +27,10 @@ import java.util.Locale;
  */
 public class DownloadComponentProgressFragment extends Fragment {
     private static final String TAG = "DWCPF";
-
-    private DataFilesComponentInstaller mDataFilesComponentInstaller;
+    private static final String WALLET_COMPONENT_ID =
+            WalletDataFilesInstaller.getWalletDataFilesComponentId();
     private TextView mComponentDownloadProgress;
+    BraveComponentUpdater.ComponentUpdaterListener mComponentUpdaterListener;
 
     public DownloadComponentProgressFragment() {}
 
@@ -42,44 +44,58 @@ public class DownloadComponentProgressFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mDataFilesComponentInstaller = new DataFilesComponentInstaller();
         mComponentDownloadProgress =
                 view.findViewById(R.id.onboarding_component_download_progress_f);
-        // mComponentDownloadProgress.setText("OMG!!!");
-
         setupDownloadProgress();
     }
 
+    @Override
+    public void onDestroyView() {
+        if (mComponentUpdaterListener != null) {
+            BraveComponentUpdater.get().removeComponentUpdateEventListener(
+                    mComponentUpdaterListener);
+            mComponentUpdaterListener = null;
+        }
+        super.onDestroyView();
+    }
+
     private void setupDownloadProgress() {
-        mDataFilesComponentInstaller.setInfoCallback(
-                new DataFilesComponentInstaller.InfoCallback() {
-                    @Override
-                    public void onInfo(String info) {
-                        // TODO(AlexeyBarabash): this seems to be unused
-                    }
+        BraveComponentUpdater.CrxUpdateItem updateItem = BraveComponentUpdater.get().getUpdateState(
+                WalletDataFilesInstaller.getWalletDataFilesComponentId());
+        showHideProgressByItem(updateItem);
 
-                    @Override
-                    public void onProgress(long downloadedBytes, long totalBytes) {
-                        assert totalBytes > 0;
-                        assert totalBytes < (long) Integer.MAX_VALUE;
-                        assert downloadedBytes < (long) Integer.MAX_VALUE;
+        mComponentUpdaterListener = new BraveComponentUpdater.ComponentUpdaterListener() {
+            @Override
+            public void onComponentUpdateEvent(int event, String id) {
+                if (!WALLET_COMPONENT_ID.equals(id)) {
+                    return;
+                }
+                BraveComponentUpdater.CrxUpdateItem updateItem =
+                        BraveComponentUpdater.get().getUpdateState(
+                                WalletDataFilesInstaller.getWalletDataFilesComponentId());
+                showHideProgressByItem(updateItem);
+            }
+        };
 
-                        if (totalBytes > 0 && downloadedBytes == totalBytes) {
-                            mComponentDownloadProgress.setVisibility(View.GONE);
-                            return;
-                        }
-                        mComponentDownloadProgress.setVisibility(View.VISIBLE);
-                        String progressText = String.format(Locale.ENGLISH,
-                                "Downloading wallet data file \u2022 %d%%",
-                                (int) (100 * downloadedBytes / totalBytes));
-                        mComponentDownloadProgress.setText(progressText);
-                    }
-                    @Override
-                    public void onDownloadUpdateComplete() {
-                        mComponentDownloadProgress.setVisibility(View.GONE);
-                    }
-                });
+        BraveComponentUpdater.get().addComponentUpdateEventListener(mComponentUpdaterListener);
+    }
 
-        mDataFilesComponentInstaller.registerListener();
+    private void showHideProgressByItem(BraveComponentUpdater.CrxUpdateItem updateItem) {
+        assert updateItem.mTotalBytes < (long) Integer.MAX_VALUE;
+        assert updateItem.mDownloadedBytes < (long) Integer.MAX_VALUE;
+
+        if (updateItem.mTotalBytes > 0 && updateItem.mDownloadedBytes == updateItem.mTotalBytes
+                || !updateItem.isInProgress()) {
+            mComponentDownloadProgress.setVisibility(View.GONE);
+            return;
+        }
+
+        updateItem.normalizeZeroProgress();
+
+        mComponentDownloadProgress.setVisibility(View.VISIBLE);
+        String progressText =
+                String.format(Locale.ENGLISH, "Downloading wallet data file \u2022 %d%%",
+                        (int) (100 * updateItem.mDownloadedBytes / updateItem.mTotalBytes));
+        mComponentDownloadProgress.setText(progressText);
     }
 }

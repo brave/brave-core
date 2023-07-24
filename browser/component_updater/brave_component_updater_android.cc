@@ -62,6 +62,7 @@ BraveComponentUpdaterAndroid::GetUpdateState(
     value.Set("id", item.id);
     value.Set("downloaded_bytes", static_cast<double>(item.downloaded_bytes));
     value.Set("total_bytes", static_cast<double>(item.total_bytes));
+    value.Set("state", static_cast<int>(item.state));
 
     if (!base::JSONWriter::Write(value, &json_string)) {
       VLOG(1) << "Writing to JSON string failed. Passing empty result to Java "

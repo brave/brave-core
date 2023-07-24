@@ -98,9 +98,40 @@ public class BraveComponentUpdater {
      * Class describing the progress of component download.
      */
     public class CrxUpdateItem {
+        // From components/update_client/update_client.h
+        public static final int STATUS_NEW = 0;
+        public static final int STATUS_CHECKING = 1;
+        public static final int STATUS_CAN_UPDATE = 2;
+        public static final int STATUS_DOWNLOADING_DIFF = 3;
+        public static final int STATUS_DOWNLOADING = 4;
+        public static final int STATUS_DOWNLOADED = 5;
+        public static final int STATUS_UPDATING_DIFF = 6;
+        public static final int STATUS_UPDATING = 7;
+        public static final int STATUS_UPDATED = 8;
+        public static final int STATUS_UP_TO_DATE = 9;
+        public static final int STATUS_UPDATEERROR = 10;
+        public static final int STATUS_UNINSTALLED = 11;
+        public static final int STATUS_REGISTRATION = 12;
+        public static final int STATUS_RUN = 13;
+        public static final int STATUS_LASTSTATUS = 14;
+
         public String mId;
         public long mDownloadedBytes = -1;
         public long mTotalBytes = -1;
+        public int mState = -1;
+
+        public boolean isInProgress() {
+            return mState == STATUS_DOWNLOADING_DIFF || mState == STATUS_DOWNLOADING
+                    || mState == STATUS_DOWNLOADED || mState == STATUS_UPDATING_DIFF
+                    || mState == STATUS_UPDATING;
+        }
+
+        public void normalizeZeroProgress() {
+            if (mState == STATUS_DOWNLOADING && mTotalBytes == -1 && mDownloadedBytes == -1) {
+                mTotalBytes = 100;
+                mDownloadedBytes = 0;
+            }
+        }
     }
 
     public CrxUpdateItem getUpdateState(String id) {
@@ -113,6 +144,7 @@ public class BraveComponentUpdater {
             crxUpdateItem.mId = result.getString("id");
             crxUpdateItem.mDownloadedBytes = (long) result.getDouble("downloaded_bytes");
             crxUpdateItem.mTotalBytes = (long) result.getDouble("total_bytes");
+            crxUpdateItem.mState = (int) result.getInt("state");
         } catch (JSONException e) {
             Log.e(TAG, "getUpdateState JSONException error " + e);
         } catch (IllegalStateException e) {
