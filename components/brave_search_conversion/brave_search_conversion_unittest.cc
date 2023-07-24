@@ -6,6 +6,8 @@
 #include <memory>
 
 #include "base/feature_list.h"
+#include "base/metrics/field_trial.h"
+#include "base/metrics/field_trial_param_associator.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_search_conversion/types.h"
@@ -15,13 +17,17 @@
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_service.h"
+#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_search_conversion {
 
 class BraveSearchConversionTest : public testing::Test {
  public:
-  BraveSearchConversionTest() : template_url_service_(nullptr, 0) {}
+  BraveSearchConversionTest()
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
+        template_url_service_(nullptr, 0) {}
+
   void SetUp() override {
     RegisterPrefs(pref_service_.registry());
     auto provider_data = TemplateURLDataFromPrepopulatedEngine(
@@ -34,6 +40,21 @@ class BraveSearchConversionTest : public testing::Test {
     provider_data = TemplateURLDataFromPrepopulatedEngine(
         TemplateURLPrepopulateData::brave_bing);
     bing_template_url_ = std::make_unique<TemplateURL>(*provider_data);
+
+    PrepareFieldTrialParamsForBannerTypeA();
+  }
+
+  void PrepareFieldTrialParamsForBannerTypeA() {
+    constexpr char kPromotionTrial[] = "BraveSearchPromotionBannerStudy";
+    constexpr char kBannerTypeParamName[] = "banner_type";
+    constexpr char kBannerTypeExperiements[] = "banner_type_a";
+
+    std::map<std::string, std::string> params;
+    params[kBannerTypeParamName] = "type_A";
+    ASSERT_TRUE(base::AssociateFieldTrialParams(
+        kPromotionTrial, kBannerTypeExperiements, params));
+    base::FieldTrialList::CreateFieldTrial(kPromotionTrial,
+                                           kBannerTypeExperiements);
   }
 
   void ConfigureBingAsDefaultProvider() {
@@ -47,6 +68,7 @@ class BraveSearchConversionTest : public testing::Test {
             : brave_search_template_url_.get());
   }
 
+  content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TemplateURL> brave_search_template_url_;
   std::unique_ptr<TemplateURL> brave_search_tor_template_url_;
   std::unique_ptr<TemplateURL> bing_template_url_;
@@ -86,7 +108,20 @@ TEST_F(BraveSearchConversionTest, ConversionTypeTest) {
 
   feature_list.Reset();
   feature_list.InitAndEnableFeature(features::kOmniboxBanner);
-  EXPECT_EQ(ConversionType::kBanner,
+  EXPECT_EQ(ConversionType::kBannerTypeA,
+            GetConversionType(&pref_service_, &template_url_service_));
+
+  // Check conversion type is set again after 3days passed.
+  SetMaybeLater(&pref_service_);
+  EXPECT_EQ(ConversionType::kNone,
+            GetConversionType(&pref_service_, &template_url_service_));
+
+  task_environment_.AdvanceClock(base::Days(2));
+  EXPECT_EQ(ConversionType::kNone,
+            GetConversionType(&pref_service_, &template_url_service_));
+
+  task_environment_.AdvanceClock(base::Days(1) + base::Milliseconds(1));
+  EXPECT_EQ(ConversionType::kBannerTypeA,
             GetConversionType(&pref_service_, &template_url_service_));
 
   // Set dismissed.

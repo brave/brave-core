@@ -28,7 +28,8 @@ class BraveSearchConversionPromotionView : public views::View {
   METADATA_HEADER(BraveSearchConversionPromotionView);
 
   BraveSearchConversionPromotionView(BraveOmniboxResultView* result_view,
-                                     PrefService* local_state);
+                                     PrefService* local_state,
+                                     PrefService* profile_prefs);
   BraveSearchConversionPromotionView(
       const BraveSearchConversionPromotionView&) = delete;
   BraveSearchConversionPromotionView& operator=(
@@ -53,6 +54,10 @@ class BraveSearchConversionPromotionView : public views::View {
   void UpdateState();
   void OpenMatch();
   void Dismiss();
+  void MaybeLater();
+  int GetBannerTypeTitleStringResourceId();
+  int GetBannerTypeDescStringResourceId();
+  SkColor GetCloseButtonColor() const;
 
   // Gives buttton type background based on selected or hovered state.
   std::unique_ptr<views::Background> GetButtonTypeBackground();
@@ -86,7 +91,8 @@ class BraveSearchConversionPromotionView : public views::View {
   // Keeps track of mouse-enter and mouse-exit events of child Views.
   OmniboxMouseEnterExitHandler mouse_enter_exit_handler_;
 
-  raw_ptr<PrefService> local_state_;
+  raw_ptr<PrefService> local_state_ = nullptr;
+  raw_ptr<PrefService> profile_prefs_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_SEARCH_CONVERSION_PROMOTION_VIEW_H_

@@ -43,7 +43,7 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
     SkColor text_color;
   };
 
-  enum Kind { kOld, kPrimary, kSecondary, kTertiary };
+  enum Kind { kOld, kPrimary, kSecondary, kTertiary, kQuaternary };
 
   explicit MdTextButton(PressedCallback callback = PressedCallback(),
                         const std::u16string& text = std::u16string(),

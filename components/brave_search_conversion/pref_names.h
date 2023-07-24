@@ -12,6 +12,8 @@ namespace brave_search_conversion {
 namespace prefs {
 
 constexpr char kDismissed[] = "brave.brave_search_conversion.dismissed";
+constexpr char kMaybeLaterClickedTime[] =
+    "brave.brave_search_conversion.maybe_later_clicked_time";
 
 constexpr char kP3ABannerShown[] = "brave.brave_search_conversion.banner_shown";
 constexpr char kP3AButtonShown[] = "brave.brave_search_conversion.button_shown";

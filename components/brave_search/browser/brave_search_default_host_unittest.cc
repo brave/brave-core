@@ -5,12 +5,15 @@
 
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 
+#include <map>
 #include <memory>
 #include <string>
 
 #include "base/feature_list.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
+#include "base/metrics/field_trial.h"
+#include "base/metrics/field_trial_param_associator.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
@@ -66,11 +69,25 @@ class BraveSearchDefaultHostTest : public ::testing::Test {
     pref_service_.registry()->RegisterListPref(prefs::kDailyAsked);
     pref_service_.registry()->RegisterIntegerPref(prefs::kTotalAsked, 0);
     brave_search_conversion::RegisterPrefs(pref_service_.registry());
+    PrepareFieldTrialParamsForBannerTypeC();
   }
 
   void TearDown() override {
     pref_service_.ClearPref(prefs::kDailyAsked);
     pref_service_.ClearPref(prefs::kTotalAsked);
+  }
+
+  void PrepareFieldTrialParamsForBannerTypeC() {
+    constexpr char kPromotionTrial[] = "BraveSearchPromotionBannerStudy";
+    constexpr char kBannerTypeParamName[] = "banner_type";
+    constexpr char kBannerTypeExperiements[] = "banner_type_c";
+
+    std::map<std::string, std::string> params;
+    params[kBannerTypeParamName] = "type_C";
+    ASSERT_TRUE(base::AssociateFieldTrialParams(
+        kPromotionTrial, kBannerTypeExperiements, params));
+    base::FieldTrialList::CreateFieldTrial(kPromotionTrial,
+                                           kBannerTypeExperiements);
   }
 
   std::unique_ptr<BraveSearchDefaultHost> GetAPIHost(const std::string& host) {

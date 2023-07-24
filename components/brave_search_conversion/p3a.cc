@@ -20,6 +20,12 @@ namespace {
 const char* GetPromoShownPrefName(ConversionType type) {
   switch (type) {
     case ConversionType::kBanner:
+    // Added below four new types just for preventing NOTREACHED().
+    // Need to handle later with p3a team.
+    case ConversionType::kBannerTypeA:
+    case ConversionType::kBannerTypeB:
+    case ConversionType::kBannerTypeC:
+    case ConversionType::kBannerTypeD:
       return prefs::kP3ABannerShown;
     case ConversionType::kButton:
       return prefs::kP3AButtonShown;
@@ -34,6 +40,12 @@ const char* GetPromoShownPrefName(ConversionType type) {
 const char* GetPromoTriggeredPrefName(ConversionType type) {
   switch (type) {
     case ConversionType::kBanner:
+    // Added below four new types just for preventing NOTREACHED().
+    // Need to handle later with p3a team.
+    case ConversionType::kBannerTypeA:
+    case ConversionType::kBannerTypeB:
+    case ConversionType::kBannerTypeC:
+    case ConversionType::kBannerTypeD:
       return prefs::kP3ABannerTriggered;
     case ConversionType::kButton:
       return prefs::kP3AButtonTriggered;

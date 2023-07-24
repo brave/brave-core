@@ -573,20 +573,41 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_DESC_LABEL_FIRST_PART" desc="The text for finding the first sentence from above. Both should have the same translation.">
           Support independent search with better privacy.
         </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TITLE" desc="The text for the banner type title">
-          Support independent search with better privacy
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_A_TITLE" desc="The text for the banner type title">
+          Time to ditch big tech.
         </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_DESC" desc="The text for the banner type description">
-          Brave search doesn't track you, your queries, or your clicks.
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_A_DESC" desc="The text for the banner type description">
+          Brave doesn't track you, your queries, or your clicks. And it's 100% independent of Big Tech.
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_TITLE" desc="The text for the banner type title">
+          Don't Google it. Can't Bing it. Just Brave it.
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_DESC" desc="The text for the banner type description">
+          Brave doesn't track you, your queries, or your clicks. And it's 100% independent.
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_TITLE" desc="The text for the banner type title">
+          Search and you will find. Privately.
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_DESC" desc="The text for the banner type description">
+          Brave doesn't track you, your queries, or your clicks. And it's 100% independent of Big Tech.
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_D_TITLE" desc="The text for the banner type title">
+          AI-infused search with a unique index.
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_D_DESC" desc="The text for the banner type description">
+          Fully private, 100% independent, and with great AI features.
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_TRY_BUTTON_LABEL" desc="The text for the try button in the promotion match">
           Try Brave Search
         </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON_TOOLTIP" desc="The tooltip text for the dismiss button in a promotion match">
-          Don't show this again
-        </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON_LABEL" desc="The text for the dismiss button in a promotion match">
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_CLOSE_BUTTON_TOOLTIP" desc="The tooltip text for the dismiss button in a promotion match">
           Dismiss
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_MAYBE_LATER_BUTTON_TOOLTIP" desc="The tooltip text for the maybe later button in a promotion match">
+          Maybe later
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_MAYBE_LATER_BUTTON_LABEL" desc="The text for the maybe later button in a promotion match">
+          Maybe later
         </message>
         <message name="IDS_ACC_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON" desc="Announcement when the dismiss button is focused.">
           Dismiss Brave search conversion, press Enter to remove this suggestion

@@ -25,22 +25,29 @@ static_library("brave_search_conversion") {
   ]
 }
 
-source_set("unit_tests") {
-  testonly = true
+# Below content/test:test_support is not allowed to evaluate on ios.
+# Although this test target is not built on ios as brave/test/BUILD.gn
+# is not included, this file is included from other targets on ios.
+# TODO(simonhong): Check whether we could prevent this file including on iOS.
+if (!is_ios) {
+  source_set("unit_tests") {
+    testonly = true
 
-  sources = [
-    "brave_search_conversion_unittest.cc",
-    "p3a_unittest.cc",
-  ]
+    sources = [
+      "brave_search_conversion_unittest.cc",
+      "p3a_unittest.cc",
+    ]
 
-  deps = [
-    ":brave_search_conversion",
-    "//base",
-    "//base/test:test_support",
-    "//brave/components/search_engines",
-    "//components/prefs",
-    "//components/prefs:test_support",
-    "//components/search_engines",
-    "//testing/gtest",
-  ]
+    deps = [
+      ":brave_search_conversion",
+      "//base",
+      "//base/test:test_support",
+      "//brave/components/search_engines",
+      "//components/prefs",
+      "//components/prefs:test_support",
+      "//components/search_engines",
+      "//content/test:test_support",
+      "//testing/gtest",
+    ]
+  }
 }

@@ -32,7 +32,7 @@
 #include "brave/components/omnibox/browser/commander_provider.h"
 #endif
 
-using brave_search_conversion::IsBraveSearchConversionFetureEnabled;
+using brave_search_conversion::IsBraveSearchConversionFeatureEnabled;
 
 namespace {
 // If this input has triggered the commander then only show commander results.
@@ -85,7 +85,7 @@ void MaybeAddCommanderProvider(AutocompleteController::Providers& providers,
 #define BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER         \
   MaybeAddCommanderProvider(providers_, this);                        \
   providers_.push_back(new TopSitesProvider(provider_client_.get())); \
-  if (IsBraveSearchConversionFetureEnabled() &&                       \
+  if (IsBraveSearchConversionFeatureEnabled() &&                      \
       !provider_client_->IsOffTheRecord())                            \
     providers_.push_back(new PromotionProvider(provider_client_.get()));
 
