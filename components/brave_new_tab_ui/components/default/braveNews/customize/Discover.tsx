@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Button from '$web-components/button'
+import Button from '@brave/leo/react/button'
 import TextInput from '$web-components/input'
 import * as React from 'react'
 import { useState } from 'react'
@@ -93,7 +93,7 @@ function SearchResults (props: SearchResultsProps) {
         )}
         {showFetchPermissionButton &&
           <div>
-            <Button scale='tiny' onClick={() => search.setCanFetchUrl(true)} isLoading={search.loading}>
+            <Button size='tiny' kind='plain-faint' onClick={() => search.setCanFetchUrl(true)} isLoading={search.loading}>
               {getLocale('braveNewsDirectSearchButton').replace('$1', search.feedUrlQuery ?? '')}
             </Button>
           </div>

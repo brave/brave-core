@@ -19,7 +19,7 @@ import {
 } from '../../../components/default'
 import braveBackground from './assets/brave-background.png'
 import UploadIcon from './assets/upload-icon'
-import { Toggle } from '../../../components/toggle'
+import Toggle from '@brave/leo/react/toggle'
 
 import { getLocale } from '../../../../common/locale'
 
@@ -146,7 +146,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
               <Toggle
                 onChange={toggleShowBackgroundImage}
                 checked={showBackgroundImage}
-                size='large'
+                size='small'
               />
             </SettingsRow>
             {showBackgroundImage && featureCustomBackgroundEnabled && (

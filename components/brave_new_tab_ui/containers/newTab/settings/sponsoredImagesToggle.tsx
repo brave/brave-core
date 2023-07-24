@@ -8,7 +8,7 @@ import styled from 'styled-components'
 
 // Common components
 import { SettingsText } from '../../../components/default'
-import { Toggle } from '../../../components/toggle'
+import Toggle from '@brave/leo/react/toggle'
 
 // Assets
 import { SponsoredImageInfoIcon } from './icons/sponsoredImageInfo'
@@ -224,7 +224,7 @@ export default function SponsoredImageToggle (
             </InfoIcon>
           }
           <Toggle onChange={onChange} checked={checked} disabled={disabled}
-            size='large' />
+            size='small' />
         </ControlsContainer>
       </ToggleRow>
       {showDescription &&

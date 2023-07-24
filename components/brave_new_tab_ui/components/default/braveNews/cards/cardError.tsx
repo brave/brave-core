@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
-import Button from '$web-components/button'
+import Button from '@brave/leo/react/button'
 import { getLocale } from '../../../../../common/locale'
 import * as Card from '../cardIntro'
 
@@ -65,7 +65,7 @@ export function UnidealMessageCard (props: MessageProps) {
         </Card.Paragraph>
         {!!props.actionLabel && !!props.onActionClick &&
           <Action>
-            <Button isPrimary onClick={props.onActionClick}>
+            <Button onClick={props.onActionClick}>
               {props.actionLabel}
             </Button>
           </Action>
