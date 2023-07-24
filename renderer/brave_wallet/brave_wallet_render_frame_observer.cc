@@ -92,7 +92,14 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
     return;
   }
 
-  if (web_frame->GetDocument().IsDOMFeaturePolicyEnabled(context, "ethereum")) {
+  if (!dynamic_params.install_window_brave_ethereum_provider &&
+      dynamic_params.install_window_ethereum_provider) {
+    NOTREACHED();
+    return;
+  }
+
+  if (dynamic_params.install_window_brave_ethereum_provider &&
+      web_frame->GetDocument().IsDOMFeaturePolicyEnabled(context, "ethereum")) {
     JSEthereumProvider::Install(
         dynamic_params.install_window_brave_ethereum_provider,
         dynamic_params.install_window_ethereum_provider,

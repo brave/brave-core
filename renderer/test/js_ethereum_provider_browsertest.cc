@@ -298,6 +298,37 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachIfWalletCreated) {
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
 }
 
+IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
+                       DoNotAttachIfDefaultWalletNone) {
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(
+          browser()->profile());
+  keyring_service->CreateWallet("password", base::DoNothing());
+
+  brave_wallet::SetDefaultEthereumWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::None);
+
+  const GURL url = https_server_.GetURL("/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  {
+    constexpr char kEvalIsBraveWallet[] = "window.ethereum.isBraveWallet";
+    EXPECT_TRUE(content::EvalJs(primary_main_frame(), kEvalIsBraveWallet)
+                    .error.find("Cannot read properties of undefined") !=
+                std::string::npos);
+  }
+
+  {
+    constexpr char kEvalIsBraveWallet[] = "window.braveEthereum.isBraveWallet";
+    EXPECT_TRUE(content::EvalJs(primary_main_frame(), kEvalIsBraveWallet)
+                    .error.find("Cannot read properties of undefined") !=
+                std::string::npos);
+  }
+
+  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+}
+
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, EIP6369) {
   auto* keyring_service =
       brave_wallet::KeyringServiceFactory::GetServiceForContext(
@@ -318,7 +349,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, EIP6369) {
 }
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
-                       EIP6369_WithoutEthereumInstalled) {
+                       EIP6369_MetaMaskAttached) {
   auto* keyring_service =
       brave_wallet::KeyringServiceFactory::GetServiceForContext(
           browser()->profile());
@@ -474,21 +505,25 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonConfigurable) {
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                        BraveEthereum_NonConfigurable) {
-  brave_wallet::SetDefaultEthereumWallet(
-      browser()->profile()->GetPrefs(),
-      brave_wallet::mojom::DefaultWallet::BraveWallet);
-  const GURL url = https_server_.GetURL("/simple.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  std::string overwrite =
-      R"(try {
-         Object.defineProperty(window, 'braveEthereum', {
-           writable: true,
-         });
-       } catch (e) {}
-       window.braveEthereum = 42;
-       typeof window.braveEthereum === 'object'
-    )";
-  EXPECT_TRUE(content::EvalJs(primary_main_frame(), overwrite).ExtractBool());
+  brave_wallet::mojom::DefaultWallet non_configurable_states[] = {
+      brave_wallet::mojom::DefaultWallet::BraveWallet,
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension};
+  for (const auto& default_wallet : non_configurable_states) {
+    brave_wallet::SetDefaultEthereumWallet(browser()->profile()->GetPrefs(),
+                                           default_wallet);
+    const GURL url = https_server_.GetURL("/simple.html");
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+    std::string overwrite =
+        R"(try {
+           Object.defineProperty(window, 'braveEthereum', {
+             writable: true,
+           });
+         } catch (e) {}
+         window.braveEthereum = 42;
+         typeof window.braveEthereum === 'object'
+      )";
+    EXPECT_TRUE(content::EvalJs(primary_main_frame(), overwrite).ExtractBool());
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, OnlyWriteOwnProperty) {
