@@ -1,5 +1,39 @@
 # Changelog
 
+
+## [1.51](https://github.com/brave/brave-ios/releases/tag/v1.51)
+
+### Web3
+
+- Added network icons to be shown for native assets. ([#7123](https://github.com/brave/brave-ios/issues/7123))
+- Implemented Market tab in Brave Wallet. ([#7202](https://github.com/brave/brave-ios/issues/7202))
+- Implemented NFT tab in Brave Wallet. ([#7173](https://github.com/brave/brave-ios/issues/7173))
+- Updated label for "Reset and clear wallet data" under wallet settings. ([#7337](https://github.com/brave/brave-ios/issues/7337))
+- Fixed Ethereum DApp error response formatting. ([#7392](https://github.com/brave/brave-ios/issues/7392))
+
+### General
+
+- Added VPN region selector in the main menu. ([#7380](https://github.com/brave/brave-ios/issues/7380))
+- Added VPN Protocol options in VPN settings. ([#7255](https://github.com/brave/brave-ios/issues/7255))
+- Implemented built-in find-in-page controls on iOS 16 or higher. ([#7238](https://github.com/brave/brave-ios/issues/7238))
+- Implemented optimizations for popover callout logic. ([#5981](https://github.com/brave/brave-ios/issues/5981))
+- Removed “Blocklists Anti-porn list” from filter lists. ([#7278](https://github.com/brave/brave-ios/issues/7278))
+- Removed “Block Phishing and Malware” toggle from Brave Shields. ([#7373](https://github.com/brave/brave-ios/issues/7373))
+- Moved “Block Popups” toggle to General settings menu. ([#7247](https://github.com/brave/brave-ios/issues/7247))
+- Updated copy for Rewards settings and Rewards Internals. ([#7221](https://github.com/brave/brave-ios/issues/7221))
+- Updated session restore to use Webkit’s session restore. ([#7166](https://github.com/brave/brave-ios/issues/7166))
+- Updated “Sync playlist folders automatically” to be enabled by default in Playlist settings. ([#7293](https://github.com/brave/brave-ios/issues/7293))
+- Improved parsing for headers to be case-insensitive. ([#7394](https://github.com/brave/brave-ios/issues/7394))
+- Resolved blank screen issue when launching browser. ([#6444](https://github.com/brave/brave-ios/issues/6444))
+- Fixed incorrect reporting of connection protocol when visiting HTTP websites. ([#7403](https://github.com/brave/brave-ios/issues/7403))
+- Fixed crash when using long-press while scrolling in Tab View. ([#7397](https://github.com/brave/brave-ios/issues/7397))
+- Fixed tabs from losing their order when being restored or restored as blank screen. ([#7366](https://github.com/brave/brave-ios/issues/7366))
+- Fixed tabs from not restoring properly. ([#7303](https://github.com/brave/brave-ios/issues/7303))
+- Fixed colors being inverted on https://presearch.com in Dark Mode. ([#7229](https://github.com/brave/brave-ios/issues/7229)) 
+- Fixed CSS transitions not being animated. ([#7224](https://github.com/brave/brave-ios/issues/7224))
+- Fixed shields panel showing session restore data with reader mode enabled. ([#7103](https://github.com/brave/brave-ios/issues/7103))
+- Fixed "show more” under recent searches being cut off in some languages. ([#6824](https://github.com/brave/brave-ios/issues/6824))
+
 ## [1.50](https://github.com/brave/brave-ios/releases/tag/v1.50)
 
 ### Web3
