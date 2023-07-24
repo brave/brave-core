@@ -9,6 +9,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "components/prefs/pref_service.h"
 
@@ -34,8 +35,7 @@ const char kToolbarButtonTriggerHistogramName[] =
 const char kTipsSentHistogramName[] = "Brave.Rewards.TipsSent";
 const char kAutoContributionsStateHistogramName[] =
     "Brave.Rewards.AutoContributionsState.3";
-const char kAdsEnabledDurationHistogramName[] =
-    "Brave.Rewards.AdsEnabledDuration";
+const char kAdTypesEnabledHistogramName[] = "Brave.Rewards.AdTypesEnabled";
 const int kTipsSentBuckets[] = {1, 3};
 
 void RecordAutoContributionsState(bool ac_enabled) {
@@ -60,54 +60,25 @@ void RecordNoWalletCreatedForAllMetrics() {
                              2);
 }
 
-void RecordAdsEnabledDuration(PrefService* prefs, bool ads_enabled) {
-  base::Time enabled_timestamp = prefs->GetTime(prefs::kAdsEnabledTimestamp);
-  base::TimeDelta enabled_time_delta =
-      prefs->GetTimeDelta(prefs::kAdsEnabledTimeDelta);
-  AdsEnabledDuration enabled_duration;
-
-  if (enabled_timestamp.is_null()) {
-    // No previous timestamp, so record one of the non-duration states.
-    if (ads_enabled) {
-      // Ads have been enabled.
-      // Remember when so we can measure the duration on later changes.
-      prefs->SetTime(prefs::kAdsEnabledTimestamp, base::Time::Now());
-    }
-  } else {
-    // Previous timestamp available.
-    if (!ads_enabled) {
-      // Ads have been disabled. Record the duration they were on.
-      enabled_time_delta = base::Time::Now() - enabled_timestamp;
-      VLOG(1) << "Rewards disabled after " << enabled_time_delta;
-      // Null the timestamp so we're ready for a fresh measurement.
-      // Store the enabled time delta so we can keep reporting the duration.
-      prefs->SetTime(prefs::kAdsEnabledTimestamp, base::Time());
-      prefs->SetTimeDelta(prefs::kAdsEnabledTimeDelta, enabled_time_delta);
-    }
+void RecordAdTypesEnabled(PrefService* prefs) {
+  if (!prefs->GetBoolean(prefs::kEnabled)) {
+    UMA_HISTOGRAM_EXACT_LINEAR(kAdTypesEnabledHistogramName, INT_MAX - 1, 4);
+    return;
   }
-  // Set the threshold at three units so each bin represents the
-  // nominal value as an order-of-magnitude: more than three days
-  // is a week, more than three weeks is a month, and so on.
-  constexpr int threshold = 3;
-  constexpr int days_per_week = 7;
-  constexpr double days_per_month = 30.44;  // average length
-  if (ads_enabled) {
-    enabled_duration = AdsEnabledDuration::kStillEnabled;
-  } else if (enabled_time_delta.is_zero()) {
-    enabled_duration = AdsEnabledDuration::kNever;
-  } else if (enabled_time_delta < base::Hours(threshold)) {
-    enabled_duration = AdsEnabledDuration::kHours;
-  } else if (enabled_time_delta < base::Days(threshold)) {
-    enabled_duration = AdsEnabledDuration::kDays;
-  } else if (enabled_time_delta < base::Days(threshold * days_per_week)) {
-    enabled_duration = AdsEnabledDuration::kWeeks;
-  } else if (enabled_time_delta < base::Days(threshold * days_per_month)) {
-    enabled_duration = AdsEnabledDuration::kMonths;
-  } else {
-    enabled_duration = AdsEnabledDuration::kQuarters;
+  bool ntp_enabled =
+      prefs->GetBoolean(ntp_background_images::prefs::
+                            kNewTabPageShowSponsoredImagesBackgroundImage);
+  bool notification_enabled =
+      prefs->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds);
+  AdTypesEnabled answer = AdTypesEnabled::kNone;
+  if (ntp_enabled && notification_enabled) {
+    answer = AdTypesEnabled::kAll;
+  } else if (ntp_enabled) {
+    answer = AdTypesEnabled::kNTP;
+  } else if (notification_enabled) {
+    answer = AdTypesEnabled::kNotification;
   }
-
-  UMA_HISTOGRAM_ENUMERATION(kAdsEnabledDurationHistogramName, enabled_duration);
+  UMA_HISTOGRAM_ENUMERATION(kAdTypesEnabledHistogramName, answer);
 }
 
 ConversionMonitor::ConversionMonitor() = default;
