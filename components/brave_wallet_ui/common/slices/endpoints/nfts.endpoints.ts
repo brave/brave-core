@@ -24,7 +24,6 @@ import { cacher } from '../../../utils/query-cache-utils'
 import { blockchainTokenEntityAdaptor } from '../entities/blockchain-token.entity'
 
 // api
-import { apiProxyFetcher } from '../../async/base-query-cache'
 import { getNetwork } from '../api.slice'
 import { translateToNftGateway } from '../../async/lib'
 
@@ -41,25 +40,25 @@ export const nftsEndpoints = ({
       GetBlockchainTokenIdArg
     >({
       queryFn: async (tokenArg, _api, _extraOptions, baseQuery) => {
-        if (!tokenArg.isErc721) {
-          return {
-            error: 'Cannot fetch erc-721 metadata for non erc-721 token'
-          }
-        }
-
-        const { jsonRpcService } = baseQuery(undefined).data
-
-        const result = await jsonRpcService.getERC721Metadata(
-          tokenArg.contractAddress,
-          tokenArg.tokenId,
-          tokenArg.chainId
-        )
-
-        if (result.error || result.errorMessage) {
-          return { error: result.errorMessage }
-        }
-
         try {
+          if (!tokenArg.isErc721) {
+            return {
+              error: 'Cannot fetch erc-721 metadata for non erc-721 token'
+            }
+          }
+
+          const { jsonRpcService } = baseQuery(undefined).data
+
+          const result = await jsonRpcService.getERC721Metadata(
+            tokenArg.contractAddress,
+            tokenArg.tokenId,
+            tokenArg.chainId
+          )
+
+          if (result.error || result.errorMessage) {
+            return { error: result.errorMessage }
+          }
+
           const metadata: ERC721Metadata = JSON.parse(result.response)
           return {
             data: {
@@ -68,22 +67,24 @@ export const nftsEndpoints = ({
             }
           }
         } catch (error) {
+          console.error('Error fetching ERC-721 metadata', error)
           return {
-            error: `error parsing erc721 metadata result: ${result.response}`
+            error: `Error fetching ERC-721 metadata: ${error}`
           }
         }
       },
       providesTags: cacher.cacheByBlockchainTokenArg('ERC721Metadata')
     }),
     getNftDiscoveryEnabledStatus: query<boolean, void>({
-      queryFn: async (_arg, _api, _extraOptions, _baseQuery) => {
+      queryFn: async (_arg, _api, _extraOptions, baseQuery) => {
         try {
-          const { braveWalletService } = apiProxyFetcher()
+          const { braveWalletService } = baseQuery(undefined).data
           const result = await braveWalletService.getNftDiscoveryEnabled()
           return {
             data: result.enabled
           }
         } catch (error) {
+          console.error('Error getting NFT discovery status: ', error)
           return { error: 'Failed to fetch NFT auto-discovery status' }
         }
       },
@@ -93,15 +94,16 @@ export const nftsEndpoints = ({
       boolean, // success
       boolean
     >({
-      queryFn: async (arg, _api, _extraOptions, _baseQuery) => {
+      queryFn: async (arg, _api, _extraOptions, baseQuery) => {
         try {
-          const { braveWalletService } = apiProxyFetcher()
+          const { braveWalletService } = baseQuery(undefined).data
           await braveWalletService.setNftDiscoveryEnabled(arg)
 
           return {
             data: true
           }
         } catch (error) {
+          console.error('Error setting NFT discovery status: ', error)
           return {
             error: 'Failed to set NFT auto-discovery status'
           }
@@ -128,50 +130,48 @@ export const nftsEndpoints = ({
                 )
               : undefined
 
-          if (!result?.error) {
-            const response = result?.response && JSON.parse(result.response)
-            const attributes = Array.isArray(response.attributes)
-              ? response.attributes.map(
-                  (attr: { trait_type: string; value: string }) => ({
-                    traitType: attr.trait_type,
-                    value: attr.value
-                  })
-                )
-              : []
-            const tokenNetwork = await getNetwork(api, arg)
-            const nftMetadata: NFTMetadataReturnType = {
-              metadataUrl: result?.tokenUrl || '',
-              chainName: tokenNetwork?.chainName || '',
-              tokenType:
-                arg.coin === BraveWallet.CoinType.ETH
-                  ? 'ERC721'
-                  : arg.coin === BraveWallet.CoinType.SOL
-                  ? 'SPL'
-                  : '',
-              tokenID: arg.tokenId,
-              imageURL: response.image.startsWith('data:image/')
-                ? response.image
-                : await translateToNftGateway(response.image),
-              imageMimeType: 'image/*',
-              floorFiatPrice: '',
-              floorCryptoPrice: '',
-              contractInformation: {
-                address: arg.contractAddress,
-                name: response.name,
-                description: response.description,
-                website: '',
-                facebook: '',
-                logo: '',
-                twitter: ''
-              },
-              attributes
-            }
+          if(result?.error) throw new Error(result.errorMessage)
 
-            return {
-              data: nftMetadata
-            }
-          } else {
-            throw new Error(result.errorMessage)
+          const response = result?.response && JSON.parse(result.response)
+          const attributes = Array.isArray(response.attributes)
+            ? response.attributes.map(
+                (attr: { trait_type: string; value: string }) => ({
+                  traitType: attr.trait_type,
+                  value: attr.value
+                })
+              )
+            : []
+          const tokenNetwork = await getNetwork(api, arg)
+          const nftMetadata: NFTMetadataReturnType = {
+            metadataUrl: result?.tokenUrl || '',
+            chainName: tokenNetwork?.chainName || '',
+            tokenType:
+              arg.coin === BraveWallet.CoinType.ETH
+                ? 'ERC721'
+                : arg.coin === BraveWallet.CoinType.SOL
+                ? 'SPL'
+                : '',
+            tokenID: arg.tokenId,
+            imageURL: response.image.startsWith('data:image/')
+              ? response.image
+              : await translateToNftGateway(response.image),
+            imageMimeType: 'image/*',
+            floorFiatPrice: '',
+            floorCryptoPrice: '',
+            contractInformation: {
+              address: arg.contractAddress,
+              name: response.name,
+              description: response.description,
+              website: '',
+              facebook: '',
+              logo: '',
+              twitter: ''
+            },
+            attributes
+          }
+
+          return {
+            data: nftMetadata
           }
         } catch (error) {
           const message =
@@ -200,14 +200,14 @@ export const nftsEndpoints = ({
 
           if (result.error) {
             throw new Error(result.error.message)
-          } else {
-            if (result.status?.local) {
-              return {
-                data: result.status.local
-              }
-            } else {
-              throw new Error('Local pinning status is null')
+          }
+
+          if (result.status?.local) {
+            return {
+              data: result.status.local
             }
+          } else {
+            throw new Error('Local pinning status is null')
           }
         } catch (error) {
           const message =
@@ -225,9 +225,9 @@ export const nftsEndpoints = ({
           : [{ type: 'NFTPinningStatus', id: getAssetIdKey(arg) }]
     }),
     getAutopinEnabled: query<boolean, void>({
-      queryFn: async (_arg, _api, _extraOptions, _baseQuery) => {
+      queryFn: async (_arg, _api, _extraOptions, baseQuery) => {
         try {
-          const { braveWalletAutoPinService } = apiProxyFetcher()
+          const { braveWalletAutoPinService } = baseQuery(undefined).data
           const result = await braveWalletAutoPinService.isAutoPinEnabled()
 
           return {

@@ -602,48 +602,6 @@ export function createWalletApi () {
             ? ['UNKNOWN_ERROR']
             : [{ type: 'UserBlockchainTokens', id: TOKEN_TAG_IDS.REGISTRY }]
       }),
-      getERC721Metadata: query<
-        {
-          id: EntityId
-          metadata?: ERC721Metadata
-        },
-        GetBlockchainTokenIdArg
-      >({
-        queryFn: async (tokenArg, api, extraOptions, baseQuery) => {
-          if (!tokenArg.isErc721) {
-            return {
-              error: 'Cannot fetch erc-721 metadata for non erc-721 token'
-            }
-          }
-
-          const { jsonRpcService } = baseQuery(undefined).data
-
-          const result = await jsonRpcService.getERC721Metadata(
-            tokenArg.contractAddress,
-            tokenArg.tokenId,
-            tokenArg.chainId
-          )
-
-          if (result.error || result.errorMessage) {
-            return { error: result.errorMessage }
-          }
-
-          try {
-            const metadata: ERC721Metadata = JSON.parse(result.response)
-            return {
-              data: {
-                id: blockchainTokenEntityAdaptor.selectId(tokenArg),
-                metadata
-              }
-            }
-          } catch (error) {
-            return {
-              error: `error parsing erc721 metadata result: ${result.response}`
-            }
-          }
-        },
-        providesTags: cacher.cacheByBlockchainTokenArg('ERC721Metadata')
-      }),
       addUserToken: mutation<{ id: EntityId }, BraveWallet.BlockchainToken>({
         queryFn: async (tokenArg, { dispatch }, extraOptions, baseQuery) => {
           const {
