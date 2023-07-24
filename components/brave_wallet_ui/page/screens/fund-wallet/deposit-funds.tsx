@@ -179,11 +179,14 @@ export const DepositFundsScreen = (props: Props) => {
   const closeAccountSearch = React.useCallback(() => setShowAccountSearch(false), [])
   const onSearchTextChanged = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => setAccountSearchText(e.target.value), [])
 
-  const onSelectAccountFromSearch = React.useCallback((account: WalletAccountType) => () => {
-    closeAccountSearch()
-    setSelectedAccount(account)
-    resetCopyState()
-  }, [closeAccountSearch, resetCopyState])
+  const onSelectAccountFromSearch = React.useCallback(
+    (account: WalletAccountType) => {
+      closeAccountSearch()
+      setSelectedAccount(account)
+      resetCopyState()
+    },
+    [closeAccountSearch, resetCopyState]
+  )
 
   const nextStep = React.useCallback(() => {
     if (!isNextStepEnabled || !selectedAssetNetwork) {
