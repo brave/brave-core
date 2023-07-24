@@ -9,18 +9,18 @@ import Preferences
 import Growth
 
 public enum FullScreenCalloutType: CaseIterable {
-  case bottomBar, p3a, vpn, rewards, defaultBrowser, blockCookieConsentNotices, linkReceipt
+  case bottomBar, p3a, rewards, defaultBrowser, blockCookieConsentNotices, vpnPromotion, vpnLinkReceipt
 
   /// The number of days passed to show certain type of callout
   var period: Int {
     switch self {
     case .bottomBar: return 0
     case .p3a: return 0
-    case .vpn: return 4
     case .rewards: return 8
     case .defaultBrowser: return 10
     case .blockCookieConsentNotices: return 0
-    case .linkReceipt: return 0
+    case .vpnPromotion: return 4
+    case .vpnLinkReceipt: return 0
     }
   }
 
@@ -31,16 +31,16 @@ public enum FullScreenCalloutType: CaseIterable {
       return Preferences.FullScreenCallout.bottomBarCalloutCompleted
     case .p3a:
       return Preferences.Onboarding.p3aOnboardingShown
-    case .vpn:
-      return Preferences.FullScreenCallout.vpnCalloutCompleted
     case .rewards:
       return Preferences.FullScreenCallout.rewardsCalloutCompleted
     case .defaultBrowser:
       return Preferences.DefaultBrowserIntro.completed
     case .blockCookieConsentNotices:
       return Preferences.FullScreenCallout.blockCookieConsentNoticesCalloutCompleted
-    case .linkReceipt:
-      return Preferences.Onboarding.linkReceiptShown
+    case .vpnPromotion:
+      return Preferences.FullScreenCallout.vpnCalloutCompleted
+    case .vpnLinkReceipt:
+      return Preferences.Onboarding.vpnLinkReceiptShown
     }
   }
 }

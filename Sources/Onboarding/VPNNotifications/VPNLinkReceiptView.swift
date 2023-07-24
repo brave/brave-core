@@ -9,7 +9,7 @@ import BraveShared
 import DesignSystem
 import BraveUI
 
-public struct OnboardingLinkReceiptView: View {
+public struct VPNLinkReceiptView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
   
   public var linkReceiptAction: (() -> Void)?
@@ -64,9 +64,9 @@ public struct OnboardingLinkReceiptView: View {
 }
 
 #if DEBUG
-struct OnboardingLinkReceiptView_Previews: PreviewProvider {
+struct VPNLinkReceiptView_Previews: PreviewProvider {
   static var previews: some View {
-    OnboardingLinkReceiptView()
+    VPNLinkReceiptView()
       .previewLayout(.sizeThatFits)
   }
 }
