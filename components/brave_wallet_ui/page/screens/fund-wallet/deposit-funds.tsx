@@ -215,7 +215,7 @@ export const DepositFundsScreen = (props: Props) => {
   )
 
   const onSelectAccountFromSearch = React.useCallback(
-    (account: BraveWallet.AccountInfo) => () => {
+    (account: BraveWallet.AccountInfo) => {
       closeAccountSearch()
       setSelectedAccount(account)
       resetCopyState()
