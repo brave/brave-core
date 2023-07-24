@@ -19,6 +19,7 @@ struct MediaSettingsView: View {
         }
         .toggleStyle(SwitchToggleStyle(tint: .accentColor))
       }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       
       Section(header: Text(Strings.Settings.youtube)) {
         NavigationLink(destination: QualitySettingsView()) {
@@ -30,9 +31,11 @@ struct MediaSettingsView: View {
           }
         }
       }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .navigationBarTitle(Strings.Settings.mediaRootSetting)
     .navigationBarTitleDisplayMode(.inline)
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
   }
 }
 
@@ -64,14 +67,16 @@ fileprivate struct QualitySettingsView: View {
           qualityOption(preference: .off)
         })
       }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .navigationBarTitle(Strings.Settings.qualitySettings)
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
   }
   
   func qualityOption(preference: YoutubeHighQualityPreference) -> some View {
     HStack {
       Text(preference.displayString)
-        .foregroundColor(.black)
+        .foregroundColor(Color(.braveLabel))
       Spacer()
       if Preferences.General.youtubeHighQuality.value == preference.rawValue {
         Image(systemName: "checkmark")
