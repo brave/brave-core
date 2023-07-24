@@ -61,22 +61,5 @@
             android:textColor="@color/wallet_text_color"
             android:textSize="16sp"
             tools:text="Demo"/>
-
-        <ImageView
-            android:id="@+id/iv_item_network_selector_sublist_icon"
-            android:layout_width="24dp"
-            android:layout_height="match_parent"
-            android:contentDescription="@null"
-            android:padding="6dp"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_down_icon"
-            app:tint="@color/brave_blue_tint_color" />
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/iv_item_sublist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 </LinearLayout>

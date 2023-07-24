@@ -16,6 +16,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
@@ -65,6 +66,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
     private final MediatorLiveData<List<NetworkInfo>> _mPrimaryNetworks;
     private final MediatorLiveData<List<NetworkInfo>> _mSecondaryNetworks;
     private Map<String, NetworkSelectorModel> mNetworkSelectorMap;
+    private MutableLiveData<NetworkLists> _mNetworkLists;
     private OriginInfo mOriginInfo;
     public final LiveData<String[]> mCustomNetworkIds;
     public LiveData<NetworkInfo> mNeedToCreateAccountForNetwork;
@@ -76,6 +78,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
     public final LiveData<NetworkInfo> mDefaultNetwork;
     public final LiveData<List<NetworkInfo>> mPrimaryNetworks;
     public final LiveData<List<NetworkInfo>> mSecondaryNetworks;
+    public LiveData<NetworkLists> mNetworkLists;
     private Origin mOrigin;
 
     public NetworkModel(BraveWalletService braveWalletService, JsonRpcService jsonRpcService,
@@ -109,6 +112,8 @@ public class NetworkModel implements JsonRpcServiceObserver {
         mSecondaryNetworks = _mSecondaryNetworks;
         jsonRpcService.addObserver(this);
         mNetworkSelectorMap = new HashMap<>();
+        _mNetworkLists = new MutableLiveData<>();
+        mNetworkLists = _mNetworkLists;
         _mPairChainAndNetwork.setValue(Pair.create("", Collections.emptyList()));
         _mPairChainAndNetwork.addSource(_mChainId, chainId -> {
             _mPairChainAndNetwork.setValue(
@@ -311,8 +316,30 @@ public class NetworkModel implements JsonRpcServiceObserver {
                 }
             }
 
-            getAllNetworks(mJsonRpcService, mSharedData.getSupportedCryptoCoins(),
-                    allNetworks -> { _mCryptoNetworks.postValue(new ArrayList<>(allNetworks)); });
+            getAllNetworks(mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
+                List<NetworkInfo> cryptoNetworks = new ArrayList<>(allNetworks);
+                _mCryptoNetworks.postValue(cryptoNetworks);
+
+                List<NetworkInfo> primary = new ArrayList<>();
+                List<NetworkInfo> secondary = new ArrayList<>();
+                List<NetworkInfo> test = new ArrayList<>();
+                NetworkLists networkLists =
+                        new NetworkLists(cryptoNetworks, primary, secondary, test);
+                for (NetworkInfo networkInfo : allNetworks) {
+                    if (WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(
+                                networkInfo.chainId)) {
+                        primary.add(networkInfo);
+                    } else if (WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(networkInfo.chainId)) {
+                        test.add(networkInfo);
+                    } else if (!WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(
+                                       networkInfo.chainId)
+                            && !WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(
+                                    networkInfo.chainId)) {
+                        secondary.add(networkInfo);
+                    }
+                }
+                _mNetworkLists.postValue(networkLists);
+            });
         }
     }
 
@@ -455,4 +482,33 @@ public class NetworkModel implements JsonRpcServiceObserver {
 
     @Override
     public void close() {}
+
+    public static class NetworkLists {
+        // Networks from core.
+        public List<NetworkInfo> mCoreNetworks;
+        public List<NetworkInfo> mPrimaryNetworkList;
+        public List<NetworkInfo> mSecondaryNetworkList;
+        public List<NetworkInfo> mTestNetworkList;
+
+        public NetworkLists() {
+            mCoreNetworks = Collections.emptyList();
+            mPrimaryNetworkList = Collections.emptyList();
+            mSecondaryNetworkList = Collections.emptyList();
+            mTestNetworkList = Collections.emptyList();
+        }
+        public NetworkLists(List<NetworkInfo> mCoreNetworks, List<NetworkInfo> mPrimaryNetworkList,
+                List<NetworkInfo> mSecondaryNetworkList, List<NetworkInfo> mTestNetworkList) {
+            this.mCoreNetworks = mCoreNetworks;
+            this.mPrimaryNetworkList = mPrimaryNetworkList;
+            this.mSecondaryNetworkList = mSecondaryNetworkList;
+            this.mTestNetworkList = mTestNetworkList;
+        }
+
+        public NetworkLists(NetworkLists networkLists) {
+            this.mCoreNetworks = new ArrayList<>(networkLists.mCoreNetworks);
+            this.mPrimaryNetworkList = new ArrayList<>(networkLists.mPrimaryNetworkList);
+            this.mSecondaryNetworkList = new ArrayList<>(networkLists.mSecondaryNetworkList);
+            this.mTestNetworkList = new ArrayList<>(networkLists.mTestNetworkList);
+        }
+    }
 }

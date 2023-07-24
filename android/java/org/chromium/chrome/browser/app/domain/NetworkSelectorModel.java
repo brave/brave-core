@@ -32,8 +32,7 @@ public class NetworkSelectorModel {
     private final NetworkModel mNetworkModel;
     private final MutableLiveData<NetworkInfo> _mSelectedNetwork;
     private Mode mMode;
-    public LiveData<List<NetworkInfoPresenter>> mPrimaryNetworks;
-    public LiveData<List<NetworkInfoPresenter>> mSecondaryNetworks;
+    public LiveData<NetworkModel.NetworkLists> mNetworkListsLd;
     private final LiveData<NetworkInfo> mSelectedNetwork;
     private String mSelectedChainId;
 
@@ -61,27 +60,18 @@ public class NetworkSelectorModel {
                 _mSelectedNetwork.postValue(NetworkUtils.getAllNetworkOption(mContext));
             }
         }
-        mPrimaryNetworks = Transformations.map(mNetworkModel.mPrimaryNetworks, networkInfos -> {
-            List<NetworkInfoPresenter> list = new ArrayList<>();
+        mNetworkListsLd = Transformations.map(mNetworkModel.mNetworkLists, networkLists -> {
+            NetworkModel.NetworkLists networkListsCopy =
+                    new NetworkModel.NetworkLists(networkLists);
+            List<NetworkInfo> allNetworkList = new ArrayList<>(networkLists.mCoreNetworks);
             if (mMode == Mode.LOCAL_NETWORK_FILTER) {
-                list.add(0,
-                        new NetworkInfoPresenter(NetworkUtils.getAllNetworkOption(mContext), true,
-                                Collections.emptyList()));
+                NetworkInfo allNetwork = NetworkUtils.getAllNetworkOption(mContext);
+                networkListsCopy.mPrimaryNetworkList.add(0, allNetwork);
+                // Selected local network can be "All networks"
+                allNetworkList.add(0, allNetwork);
             }
-            for (NetworkInfo networkInfo : networkInfos) {
-                list.add(new NetworkInfoPresenter(
-                        networkInfo, true, mNetworkModel.getSubTestNetworks(networkInfo)));
-            }
-            updateLocalNetwork(networkInfos, mSelectedChainId);
-            return list;
-        });
-        mSecondaryNetworks = Transformations.map(mNetworkModel.mSecondaryNetworks, networkInfos -> {
-            List<NetworkInfoPresenter> list = new ArrayList<>();
-            for (NetworkInfo networkInfo : networkInfos) {
-                list.add(new NetworkInfoPresenter(networkInfo, false, Collections.emptyList()));
-            }
-            updateLocalNetwork(networkInfos, mSelectedChainId);
-            return list;
+            updateLocalNetwork(allNetworkList, mSelectedChainId);
+            return networkListsCopy;
         });
     }
 
