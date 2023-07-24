@@ -13,6 +13,7 @@ export const SelectAccountTypeWrapper = styled.div`
   width: 100%;
   padding: 24px;
   min-height: 320px;
+  height: 100%;
 `
 
 export const SelectAccountItemWrapper = styled.div`
