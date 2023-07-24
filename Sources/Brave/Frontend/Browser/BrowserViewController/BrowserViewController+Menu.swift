@@ -202,6 +202,8 @@ extension BrowserViewController {
   private func presentPlaylistController() {
     // Present existing playlist controller
     if let playlistController = PlaylistCarplayManager.shared.playlistController {
+      PlaylistP3A.recordUsage()
+      
       dismiss(animated: true) {
         self.present(playlistController, animated: true)
       }
@@ -212,7 +214,8 @@ extension BrowserViewController {
         guard let self = self else { return }
 
         playlistController.modalPresentationStyle = .fullScreen
-
+        PlaylistP3A.recordUsage()
+        
         self.dismiss(animated: true) {
           self.present(playlistController, animated: true)
         }

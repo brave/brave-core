@@ -45,6 +45,10 @@ public struct P3AFeatureUsage {
     // Record last usage to bucket if there's an associated p3a question
     UmaHistogramRecordLastFeatureUsage(histogram, option: lastUsageOption)
     Logger.module.info("Recorded P3A feature usage histogram: \(histogram)")
+    
+    if firstUsageOption.value != nil {
+      recordReturningUsageMetric()
+    }
   }
   
   /// Updates the usage and records a histogram with that new usage
@@ -97,7 +101,7 @@ public struct P3AFeatureUsage {
   }
   
   /// Records a typical returning usage metric histogram if you've set `returningUserHistogram`
-  public func recordReturningUsageMetric() {
+  private func recordReturningUsageMetric() {
     guard let name = returningUserHistogram else { return }
     let returningUserState = returningUserState
     UmaHistogramEnumeration(name, sample: returningUserState)

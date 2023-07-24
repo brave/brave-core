@@ -267,7 +267,8 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSh
     let openPlaylist = ActivityShortcutManager.shared.createShortcutActivity(type: .openPlayList)
     self.userActivity = openPlaylist
     openPlaylist.becomeCurrent()
-
+    PlaylistP3A.recordUsage()
+    
     present(playlistController, animated: true) {
       if let folderSharingPageUrl = folderSharingPageUrl {
         playlistController.setFolderSharingUrl(folderSharingPageUrl)
@@ -292,6 +293,8 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSh
   }
 
   func addToPlaylist(item: PlaylistInfo, folderUUID: String? = nil, completion: ((_ didAddItem: Bool) -> Void)? = nil) {
+    PlaylistP3A.recordUsage()
+    
     if PlaylistManager.shared.isDiskSpaceEncumbered() {
       let style: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
       let alert = UIAlertController(
