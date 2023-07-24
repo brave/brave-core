@@ -45,7 +45,7 @@ public class DownloadComponentProgressFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mComponentDownloadProgress =
-                view.findViewById(R.id.onboarding_component_download_progress_f);
+                view.findViewById(R.id.download_progress_text_view);
         setupDownloadProgress();
     }
 

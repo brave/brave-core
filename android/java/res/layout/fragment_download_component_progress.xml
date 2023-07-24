@@ -6,7 +6,7 @@
 -->
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/onboarding_component_download_progress_f"
+    android:id="@+id/download_progress_text_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textColor="@color/onboarding_negative_button_color"
