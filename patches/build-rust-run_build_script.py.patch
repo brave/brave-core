@@ -1,5 +1,5 @@
 diff --git a/build/rust/run_build_script.py b/build/rust/run_build_script.py
-index 3f99f3af9b0b68f600c3f32f49e276eb1308fece..7bca6e209b21fe9668abb50f1ad281a8d3d0b28d 100755
+index 3f99f3af9b0b68f600c3f32f49e276eb1308fece..0e30c5367cebf6d63733fd2e7f85f51397c71ce1 100755
 --- a/build/rust/run_build_script.py
 +++ b/build/rust/run_build_script.py
 @@ -101,11 +101,12 @@ def main():
@@ -18,12 +18,3 @@ index 3f99f3af9b0b68f600c3f32f49e276eb1308fece..7bca6e209b21fe9668abb50f1ad281a8
      if len(target_components) == 2:
        env["CARGO_CFG_TARGET_ARCH"] = target_components[0]
        env["CARGO_CFG_TARGET_VENDOR"] = ''
-@@ -122,7 +123,7 @@ def main():
-       env["CARGO_CFG_TARGET_OS"] = target_components[2]
-       env["CARGO_CFG_TARGET_ENV"] = target_components[3]
-     else:
--      print(f'Invalid TARGET {env["TARGET"]}')
-+      print(f'Invalid TARGET {target}')
-       sys.exit(1)
-     if args.features:
-       for f in args.features:
