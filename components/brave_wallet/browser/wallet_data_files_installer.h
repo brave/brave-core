@@ -21,8 +21,7 @@ namespace brave_wallet {
 void RegisterWalletDataFilesComponent(
     component_updater::ComponentUpdateService* cus);
 void RegisterWalletDataFilesComponentOnDemand(
-    component_updater::ComponentUpdateService* cus,
-    base::OnceClosure on_component_completely_installed);
+    component_updater::ComponentUpdateService* cus);
 absl::optional<base::Version> GetLastInstalledWalletVersion();
 void SetLastInstalledWalletVersionForTest(const base::Version& version);
 std::string GetWalletDataFilesComponentId();

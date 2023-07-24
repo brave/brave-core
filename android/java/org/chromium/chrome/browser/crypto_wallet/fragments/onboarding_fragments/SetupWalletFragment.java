@@ -28,6 +28,9 @@ import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletDataFilesInstaller;
 
+/**
+ * Fragment to display progress of Brave Wallet data files component
+ */
 public class SetupWalletFragment extends CryptoOnboardingFragment {
     private static final String TAG = "SetupWalletFragment";
 
@@ -59,14 +62,14 @@ public class SetupWalletFragment extends CryptoOnboardingFragment {
         super.onViewCreated(view, savedInstanceState);
         Button setupCryptoButton = view.findViewById(R.id.btn_setup_crypto);
         setupCryptoButton.setOnClickListener(v -> {
-            WalletDataFilesInstaller.registerWalletDataFilesComponentOnDemand(() -> {});
+            WalletDataFilesInstaller.registerWalletDataFilesComponentOnDemand();
             checkOnBraveActivity(true, false);
             onNextPage.gotoOnboardingPage();
         });
 
         TextView restoreButton = view.findViewById(R.id.btn_restore);
         restoreButton.setOnClickListener(v -> {
-            WalletDataFilesInstaller.registerWalletDataFilesComponentOnDemand(() -> {});
+            WalletDataFilesInstaller.registerWalletDataFilesComponentOnDemand();
             checkOnBraveActivity(false, true);
             onNextPage.gotoRestorePage(true);
         });

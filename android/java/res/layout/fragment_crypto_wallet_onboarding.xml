@@ -18,7 +18,7 @@
         <org.chromium.chrome.browser.custom_layout.NonSwipeableViewPager
             android:id="@+id/crypto_wallet_onboarding_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
         <ImageView
             android:id="@+id/onboarding_back_button"

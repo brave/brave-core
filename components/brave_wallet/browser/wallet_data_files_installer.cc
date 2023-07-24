@@ -143,13 +143,9 @@ void OnSanitizedOffRampTokenLists(data_decoder::JsonSanitizer::Result result) {
 }
 
 void OnSanitizedOnRampCurrenciesLists(
-    base::OnceClosure done_callback,
     data_decoder::JsonSanitizer::Result result) {
   if (!result.has_value()) {
     VLOG(1) << "OnRamp lists JSON validation error:" << result.error();
-    if (done_callback) {
-      std::move(done_callback).Run();
-    }
     return;
   }
 
@@ -157,17 +153,11 @@ void OnSanitizedOnRampCurrenciesLists(
       ParseOnRampCurrencyLists(*result);
   if (!lists) {
     VLOG(1) << "Can't parse on ramp supported sell token lists.";
-    if (done_callback) {
-      std::move(done_callback).Run();
-    }
     return;
   }
 
   BlockchainRegistry::GetInstance()->UpdateOnRampCurrenciesLists(
       std::move(*lists));
-  if (done_callback) {
-    std::move(done_callback).Run();
-  }
 }
 
 void HandleParseTokenList(base::FilePath absolute_install_dir,
@@ -247,8 +237,7 @@ void HandleParseOffRampTokenLists(base::FilePath absolute_install_dir,
 }
 
 void HandleParseOnRampCurrenciesLists(base::FilePath absolute_install_dir,
-                                      const std::string& filename,
-                                      base::OnceClosure done_callback) {
+                                      const std::string& filename) {
   const base::FilePath on_ramp_lists_json_path =
       absolute_install_dir.AppendASCII(filename);
   std::string on_ramp_supported_currencies_lists;
@@ -260,8 +249,7 @@ void HandleParseOnRampCurrenciesLists(base::FilePath absolute_install_dir,
 
   data_decoder::JsonSanitizer::Sanitize(
       std::move(on_ramp_supported_currencies_lists),
-      base::BindOnce(&OnSanitizedOnRampCurrenciesLists,
-                     std::move(done_callback)));
+      base::BindOnce(&OnSanitizedOnRampCurrenciesLists));
 }
 
 void ParseTokenListAndUpdateRegistry(const base::FilePath& install_dir) {
@@ -311,8 +299,7 @@ void ParseDappListsAndUpdateRegistry(const base::FilePath& install_dir) {
   HandleParseDappList(absolute_install_dir, "dapp-lists.json");
 }
 
-void ParseOnRampListsAndUpdateRegistry(const base::FilePath& install_dir,
-                                       base::OnceClosure done_callback) {
+void ParseOnRampListsAndUpdateRegistry(const base::FilePath& install_dir) {
   // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
   // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
   // requires IO so it can only be done in this function.
@@ -327,8 +314,7 @@ void ParseOnRampListsAndUpdateRegistry(const base::FilePath& install_dir,
   HandleParseOffRampTokenLists(absolute_install_dir,
                                "off-ramp-token-lists.json");
   HandleParseOnRampCurrenciesLists(absolute_install_dir,
-                                   "on-ramp-currency-lists.json",
-                                   std::move(done_callback));
+                                   "on-ramp-currency-lists.json");
 }
 
 }  // namespace
@@ -336,13 +322,11 @@ void ParseOnRampListsAndUpdateRegistry(const base::FilePath& install_dir,
 class WalletDataFilesInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
-  WalletDataFilesInstallerPolicy(
-      base::OnceClosure on_component_completely_installed);
+  WalletDataFilesInstallerPolicy();
   ~WalletDataFilesInstallerPolicy() override = default;
 
  private:
   scoped_refptr<base::SequencedTaskRunner> sequenced_task_runner_;
-  base::OnceClosure on_component_completely_installed_;
 
   // The following methods override ComponentInstallerPolicy.
   bool SupportsGroupPolicyEnabledComponentUpdates() const override;
@@ -367,13 +351,10 @@ class WalletDataFilesInstallerPolicy
       const WalletDataFilesInstallerPolicy&) = delete;
 };
 
-WalletDataFilesInstallerPolicy::WalletDataFilesInstallerPolicy(
-    base::OnceClosure on_component_completely_installed) {
+WalletDataFilesInstallerPolicy::WalletDataFilesInstallerPolicy() {
   sequenced_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
       {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  on_component_completely_installed_ =
-      std::move(on_component_completely_installed);
 }
 
 bool WalletDataFilesInstallerPolicy::
@@ -409,8 +390,7 @@ void WalletDataFilesInstallerPolicy::ComponentReady(
       FROM_HERE, base::BindOnce(&ParseDappListsAndUpdateRegistry, path));
 
   sequenced_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&ParseOnRampListsAndUpdateRegistry, path,
-                                std::move(on_component_completely_installed_)));
+      FROM_HERE, base::BindOnce(&ParseOnRampListsAndUpdateRegistry, path));
 }
 
 bool WalletDataFilesInstallerPolicy::VerifyInstallation(
@@ -442,16 +422,15 @@ WalletDataFilesInstallerPolicy::GetInstallerAttributes() const {
 void RegisterWalletDataFilesComponent(
     component_updater::ComponentUpdateService* cus) {
 #if BUILDFLAG(IS_ANDROID)
-  bool should_register_component = brave_wallet::IsNativeWalletEnabled() &&
-                                   IsBraveWalletConfiguredOnAndroid();
+  bool should_register_component =
+      IsNativeWalletEnabled() && IsBraveWalletConfiguredOnAndroid();
 #else
-  bool should_register_component = brave_wallet::IsNativeWalletEnabled();
+  bool should_register_component = IsNativeWalletEnabled();
 #endif
   if (should_register_component) {
     auto installer =
         base::MakeRefCounted<component_updater::ComponentInstaller>(
-            std::make_unique<WalletDataFilesInstallerPolicy>(
-                base::OnceClosure()));
+            std::make_unique<WalletDataFilesInstallerPolicy>());
     installer->Register(
         cus, base::BindOnce([]() {
           brave_component_updater::BraveOnDemandUpdater::GetInstance()
@@ -461,16 +440,14 @@ void RegisterWalletDataFilesComponent(
 }
 
 void RegisterWalletDataFilesComponentOnDemand(
-    component_updater::ComponentUpdateService* cus,
-    base::OnceClosure on_component_completely_installed) {
+    component_updater::ComponentUpdateService* cus) {
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<brave_wallet::WalletDataFilesInstallerPolicy>(
-          std::move(on_component_completely_installed)));
+      std::make_unique<WalletDataFilesInstallerPolicy>());
 
   installer->Register(
       cus, base::BindOnce([]() {
         brave_component_updater::BraveOnDemandUpdater::GetInstance()
-            ->OnDemandUpdate(brave_wallet::kComponentId);
+            ->OnDemandUpdate(kComponentId);
       }));
 }
 

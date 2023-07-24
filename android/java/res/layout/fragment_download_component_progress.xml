@@ -13,4 +13,3 @@
     android:textSize="14sp"
     android:layout_gravity="center_horizontal|bottom"
     android:gravity="center_horizontal"/>
-

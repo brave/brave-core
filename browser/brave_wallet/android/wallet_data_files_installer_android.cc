@@ -20,20 +20,6 @@ namespace chrome {
 namespace android {
 
 namespace {
-void NativeRegisterAndInstallCallback(
-    JNIEnv* env,
-    base::android::ScopedJavaGlobalRef<jobject> java_callback,
-    scoped_refptr<base::SequencedTaskRunner> post_response_runner) {
-  post_response_runner->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          [](JNIEnv* env,
-             base::android::ScopedJavaGlobalRef<jobject> java_callback) {
-            Java_WalletDataFilesInstaller_onRegisterAndInstallDone(
-                env, java_callback);
-          },
-          env, std::move(java_callback)));
-}
 
 bool IsBraveWalletDataFilesComponentRegistered() {
   std::vector<std::string> registered_ids =
@@ -47,24 +33,15 @@ bool IsBraveWalletDataFilesComponentRegistered() {
 
 static void
 JNI_WalletDataFilesInstaller_RegisterWalletDataFilesComponentOnDemand(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& callback) {
+    JNIEnv* env) {
   if (IsBraveWalletDataFilesComponentRegistered()) {
-    // In anyway will be removed
-    Java_WalletDataFilesInstaller_onRegisterAndInstallDone(env, callback);
     return;
   }
 
   component_updater::ComponentUpdateService* cus =
       g_browser_process->component_updater();
 
-  base::android::ScopedJavaGlobalRef<jobject> java_callback;
-  java_callback.Reset(env, callback);
-
-  ::brave_wallet::RegisterWalletDataFilesComponentOnDemand(
-      cus, base::BindOnce(&NativeRegisterAndInstallCallback, env,
-                          std::move(java_callback),
-                          base::SequencedTaskRunner::GetCurrentDefault()));
+  ::brave_wallet::RegisterWalletDataFilesComponentOnDemand(cus);
 }
 
 static base::android::ScopedJavaLocalRef<jstring>

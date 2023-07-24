@@ -17,8 +17,6 @@ import org.chromium.base.annotations.NativeMethods;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-// TODO(AlexeyBarabash): rename to BraveComponentUpdaterBridge?
-
 /**
  * Class for handling progress of component update in Java.
  * Basically this is just bridge to native component updater classes at

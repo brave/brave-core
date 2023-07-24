@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
-import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 
@@ -14,13 +13,8 @@ import org.chromium.base.annotations.NativeMethods;
  */
 @JNINamespace("chrome::android")
 public class WalletDataFilesInstaller {
-    public static void registerWalletDataFilesComponentOnDemand(Runnable onDone) {
-        WalletDataFilesInstallerJni.get().registerWalletDataFilesComponentOnDemand(onDone);
-    }
-
-    @CalledByNative
-    private static void onRegisterAndInstallDone(Runnable onDone) {
-        onDone.run();
+    public static void registerWalletDataFilesComponentOnDemand() {
+        WalletDataFilesInstallerJni.get().registerWalletDataFilesComponentOnDemand();
     }
 
     public static String getWalletDataFilesComponentId() {
@@ -29,7 +23,7 @@ public class WalletDataFilesInstaller {
 
     @NativeMethods
     interface Natives {
-        void registerWalletDataFilesComponentOnDemand(Runnable onDone);
+        void registerWalletDataFilesComponentOnDemand();
         String getWalletDataFilesComponentId();
     }
 }
