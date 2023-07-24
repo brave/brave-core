@@ -109,7 +109,8 @@ import BraveCore
       isEnabled: filterList.isEnabled,
       componentId: filterList.entry.componentId,
       allowCreation: filterList.entry.defaultToggle != filterList.isEnabled || filterList.isEnabled,
-      order: filterList.order
+      order: filterList.order,
+      isAlwaysAggressive: filterList.isAlwaysAggressive
     )
   }
   
@@ -117,20 +118,25 @@ import BraveCore
   /// Otherwise it will create a new setting with the specified properties
   ///
   /// - Warning: Do not call this before we load core data
-  private func upsertSetting(uuid: String, isEnabled: Bool, componentId: String, allowCreation: Bool, order: Int) {
+  private func upsertSetting(
+    uuid: String, isEnabled: Bool, componentId: String,
+    allowCreation: Bool, order: Int, isAlwaysAggressive: Bool
+  ) {
     if allFilterListSettings.contains(where: { $0.uuid == uuid }) {
       updateSetting(
         uuid: uuid,
         componentId: componentId,
         isEnabled: isEnabled,
-        order: order
+        order: order,
+        isAlwaysAggressive: isAlwaysAggressive
       )
     } else if allowCreation {
       create(
         uuid: uuid,
         componentId: componentId,
         isEnabled: isEnabled,
-        order: order
+        order: order,
+        isAlwaysAggressive: isAlwaysAggressive
       )
     }
   }
@@ -150,12 +156,12 @@ import BraveCore
   
   /// Update the filter list settings with the given `componentId` and `isEnabled` status
   /// Will not write unless one of these two values have changed
-  private func updateSetting(uuid: String, componentId: String, isEnabled: Bool, order: Int) {
+  private func updateSetting(uuid: String, componentId: String, isEnabled: Bool, order: Int, isAlwaysAggressive: Bool) {
     guard let index = allFilterListSettings.firstIndex(where: { $0.uuid == uuid }) else {
       return
     }
     
-    guard allFilterListSettings[index].isEnabled != isEnabled || allFilterListSettings[index].componentId != componentId || allFilterListSettings[index].order?.intValue != order else {
+    guard allFilterListSettings[index].isEnabled != isEnabled || allFilterListSettings[index].componentId != componentId || allFilterListSettings[index].order?.intValue != order || allFilterListSettings[index].isAlwaysAggressive != isAlwaysAggressive else {
       // Ensure we stop if this is already in sync in order to avoid an event loop
       // And things hanging for too long.
       // This happens because we care about UI changes but not when our downloads finish
@@ -163,14 +169,18 @@ import BraveCore
     }
       
     allFilterListSettings[index].isEnabled = isEnabled
+    allFilterListSettings[index].isAlwaysAggressive = isAlwaysAggressive
     allFilterListSettings[index].componentId = componentId
     allFilterListSettings[index].order = NSNumber(value: order)
     FilterListSetting.save(inMemory: !persistChanges)
   }
   
   /// Create a filter list setting for the given UUID and enabled status
-  private func create(uuid: String, componentId: String, isEnabled: Bool, order: Int) {
-    let setting = FilterListSetting.create(uuid: uuid, componentId: componentId, isEnabled: isEnabled, order: order, inMemory: !persistChanges)
+  private func create(uuid: String, componentId: String, isEnabled: Bool, order: Int, isAlwaysAggressive: Bool) {
+    let setting = FilterListSetting.create(
+      uuid: uuid, componentId: componentId, isEnabled: isEnabled, order: order, inMemory: !persistChanges,
+      isAlwaysAggressive: isAlwaysAggressive
+    )
     allFilterListSettings.append(setting)
   }
   

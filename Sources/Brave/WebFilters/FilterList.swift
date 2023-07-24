@@ -46,6 +46,10 @@ struct FilterList: Identifiable {
   let entry: AdblockFilterListCatalogEntry
   var isEnabled: Bool = false
   
+  /// Lets us know if this filter list is always aggressive.
+  /// Aggressive filter lists are those that are non regional.
+  var isAlwaysAggressive: Bool { !isRegional }
+  
   init(from entry: AdblockFilterListCatalogEntry, order: Int, isEnabled: Bool) {
     self.entry = entry
     self.order = order

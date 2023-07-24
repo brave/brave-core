@@ -25,19 +25,22 @@ class AdblockRustTests: XCTestCase {
     XCTAssertTrue(engine.shouldBlock(
       requestURL: URL(string: "http://example.com/-advertisement-icon.")!,
       sourceURL: URL(string: "https://example.com")!,
-      resourceType: .xmlhttprequest
+      resourceType: .xmlhttprequest,
+      isAggressive: true
     ))
     
     XCTAssertFalse(engine.shouldBlock(
       requestURL: URL(string: "https://brianbondy.com")!,
       sourceURL: URL(string: "https://example.com")!,
-      resourceType: .xmlhttprequest
+      resourceType: .xmlhttprequest,
+      isAggressive: true
     ))
     
     XCTAssertFalse(engine.shouldBlock(
       requestURL: URL(string: "http://example.com/good-advertisement-icon.")!,
       sourceURL: URL(string: "https://example.com")!,
-      resourceType: .xmlhttprequest
+      resourceType: .xmlhttprequest,
+      isAggressive: true
     ))
   }
 

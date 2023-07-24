@@ -22,8 +22,8 @@ public class CachedAdBlockEngine {
   private var cachedFrameScriptTypes = FifoDict<URL, Set<UserScriptType>>()
   
   private let engine: AdblockEngine
-  private let source: AdBlockEngineManager.Source
   private let serialQueue: DispatchQueue
+  let source: AdBlockEngineManager.Source
   
   init(engine: AdblockEngine, source: AdBlockEngineManager.Source, serialQueue: DispatchQueue) {
     self.engine = engine
@@ -32,10 +32,14 @@ public class CachedAdBlockEngine {
   }
   
   /// Checks the general and regional engines to see if the request should be blocked.
-  func shouldBlock(requestURL: URL, sourceURL: URL, resourceType: AdblockEngine.ResourceType) async -> Bool {
+  func shouldBlock(requestURL: URL, sourceURL: URL, resourceType: AdblockEngine.ResourceType, isAggressiveMode: Bool) async -> Bool {
     return await withCheckedContinuation { continuation in
       serialQueue.async { [weak self] in
-        let shouldBlock = self?.shouldBlock(requestURL: requestURL, sourceURL: sourceURL, resourceType: resourceType) == true
+        let shouldBlock = self?.shouldBlock(
+          requestURL: requestURL, sourceURL: sourceURL, resourceType: resourceType,
+          isAggressiveMode: isAggressiveMode
+        ) == true
+        
         continuation.resume(returning: shouldBlock)
       }
     }
@@ -109,7 +113,7 @@ public class CachedAdBlockEngine {
   }
   
   /// Checks the general and regional engines to see if the request should be blocked
-  private func shouldBlock(requestURL: URL, sourceURL: URL, resourceType: AdblockEngine.ResourceType) -> Bool {
+  private func shouldBlock(requestURL: URL, sourceURL: URL, resourceType: AdblockEngine.ResourceType, isAggressiveMode: Bool) -> Bool {
     let key = [requestURL.absoluteString, sourceURL.absoluteString, resourceType.rawValue].joined(separator: "_")
     
     if let cachedResult = cachedShouldBlockResult.getElement(key) {
@@ -119,7 +123,8 @@ public class CachedAdBlockEngine {
     let shouldBlock = engine.shouldBlock(
       requestURL: requestURL,
       sourceURL: sourceURL,
-      resourceType: resourceType
+      resourceType: resourceType,
+      isAggressive: isAggressiveMode || self.source.isAlwaysAggressive
     )
     
     cachedShouldBlockResult.addElement(shouldBlock, forKey: key)

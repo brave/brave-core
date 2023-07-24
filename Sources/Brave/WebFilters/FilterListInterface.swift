@@ -31,4 +31,8 @@ extension FilterList: FilterListInterface {
   var debugTitle: String {
     return "\(entry.title) \(entry.componentId)"
   }
+  
+  var isRegional: Bool {
+    return !entry.languages.isEmpty
+  }
 }

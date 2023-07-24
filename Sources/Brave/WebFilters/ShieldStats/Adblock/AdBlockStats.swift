@@ -28,12 +28,13 @@ public class AdBlockStats {
   /// Checks the general and regional engines to see if the request should be blocked
   ///
   /// - Warning: This method needs to be synced on `AdBlockStatus.adblockSerialQueue`
-  func shouldBlock(requestURL: URL, sourceURL: URL, resourceType: AdblockEngine.ResourceType) async -> Bool {
+  func shouldBlock(requestURL: URL, sourceURL: URL, resourceType: AdblockEngine.ResourceType, isAggressiveMode: Bool) async -> Bool {
     return await cachedEngines.asyncConcurrentMap({ cachedEngine in
       return await cachedEngine.shouldBlock(
         requestURL: requestURL,
         sourceURL: sourceURL,
-        resourceType: resourceType
+        resourceType: resourceType,
+        isAggressiveMode: isAggressiveMode
       )
     }).contains(where: { $0 })
   }

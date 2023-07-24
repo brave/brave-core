@@ -8,6 +8,7 @@ import Foundation
 import Data
 import Shared
 import Preferences
+import BraveShields
 import os.log
 
 /// A class that aids in the managment of rule lists on the rule store.
@@ -25,13 +26,43 @@ actor ContentBlockerManager {
   }
   
   enum CompileError: Error {
-    case noRuleListReturned(identifier: String)
+    case noRuleListReturned
+    case invalidJSONArray
+  }
+  
+  /// These are the adblocking level that a particular BlocklistType can support
+  enum BlockingMode: CaseIterable {
+    /// This is a general version that is supported on both standard and aggressive mode
+    case general
+    /// This indicates a less aggressive (or general) blocking version of the content blocker.
+    ///
+    /// In this version we will not block 1st party ad content.
+    /// We will apped a rule that specifies that 1st party content should be ignored.
+    case standard
+    /// This indicates a more aggressive blocking version of the content blocker.
+    ///
+    /// In this version we will block 1st party ad content.
+    /// We will not append a rule that specifies that 1st party content should be ignored.
+    case aggressive
   }
   
   public enum GenericBlocklistType: Hashable, CaseIterable {
     case blockAds
     case blockCookies
     case blockTrackers
+    
+    func mode(isAggressiveMode: Bool) -> BlockingMode {
+      switch self {
+      case .blockAds:
+        if isAggressiveMode {
+          return .aggressive
+        } else {
+          return .standard
+        }
+      case .blockCookies, .blockTrackers:
+        return .general
+      }
+    }
     
     var bundledFileName: String {
       switch self {
@@ -49,17 +80,50 @@ actor ContentBlockerManager {
     fileprivate static let filterListURLPrefix = "filter-list-url"
     
     case generic(GenericBlocklistType)
-    case filterList(uuid: String)
+    case filterList(uuid: String, isAlwaysAggressive: Bool)
     case customFilterList(uuid: String)
     
-    var identifier: String {
+    private var identifier: String {
       switch self {
       case .generic(let type):
         return [Self.genericPrifix, type.bundledFileName].joined(separator: "-")
-      case .filterList(let uuid):
+      case .filterList(let uuid, _):
         return [Self.filterListPrefix, uuid].joined(separator: "-")
       case .customFilterList(let uuid):
         return [Self.filterListURLPrefix, uuid].joined(separator: "-")
+      }
+    }
+    
+    func mode(isAggressiveMode: Bool) -> BlockingMode {
+      switch self {
+      case .customFilterList:
+        return .general
+      case .filterList(_, let isAlwaysAggressive):
+        if isAlwaysAggressive || isAggressiveMode {
+          return .aggressive
+        } else {
+          return .standard
+        }
+      case .generic(let genericType):
+        return genericType.mode(isAggressiveMode: isAggressiveMode)
+      }
+    }
+    
+    var allowedModes: [BlockingMode] {
+      var allowedModes: Set<BlockingMode> = []
+      allowedModes.insert(mode(isAggressiveMode: true))
+      allowedModes.insert(mode(isAggressiveMode: false))
+      return BlockingMode.allCases.filter({ allowedModes.contains($0) })
+    }
+    
+    func makeIdentifier(for mode: BlockingMode) -> String {
+      switch mode {
+      case .general:
+        return identifier
+      case .aggressive:
+        return [self.identifier, "aggressive"].joined(separator: "-")
+      case .standard:
+        return [self.identifier, "standard"].joined(separator: "-")
       }
     }
   }
@@ -69,6 +133,9 @@ actor ContentBlockerManager {
   let ruleStore: WKContentRuleListStore
   /// We cached the rule lists so that we can return them quicker if we need to
   private var cachedRuleLists: [String: Result<WKContentRuleList, Error>]
+  /// A list of etld+1s that are always aggressive
+  /// TODO: @JS Replace this with the 1st party ad-block list
+  let alwaysAggressiveETLDs: Set<String> = ["youtube.com"]
   
   init(ruleStore: WKContentRuleListStore = .default()) {
     self.ruleStore = ruleStore
@@ -82,69 +149,145 @@ actor ContentBlockerManager {
     let availableIdentifiers = await ruleStore.availableIdentifiers() ?? []
     
     await availableIdentifiers.asyncConcurrentForEach { identifier in
-      guard !validTypes.contains(where: { $0.identifier == identifier }) else { return }
+      guard !validTypes.contains(where: { type in
+        type.allowedModes.contains(where: { type.makeIdentifier(for: $0) == identifier })
+      }) else { return }
       
       // Only allow certain prefixed identifiers to be removed so as not to remove something apple adds
       let prefixes = [BlocklistType.genericPrifix, BlocklistType.filterListPrefix, BlocklistType.filterListURLPrefix]
       guard prefixes.contains(where: { identifier.hasPrefix($0) }) else { return }
       
       do {
-        try await self.removeRuleList(forIdentifier: identifier)
+        try await self.removeRuleList(forIdentifier: identifier, force: true)
       } catch {
         assertionFailure()
       }
     }
   }
   
-  /// Compile the given resource and store it in cache for the given blocklist type
+  /// Compile the given resource and store it in cache for the given blocklist type using all allowed modes
   func compile(encodedContentRuleList: String, for type: BlocklistType, options: CompileOptions = []) async throws {
+    try await self.compile(encodedContentRuleList: encodedContentRuleList, for: type, modes: type.allowedModes)
+  }
+  
+  /// Compile the given resource and store it in cache for the given blocklist type and specified modes
+  func compile(encodedContentRuleList: String, for type: BlocklistType, options: CompileOptions = [], modes: [BlockingMode]) async throws {
+    guard !modes.isEmpty else { return }
+    let cleanedRuleList: [[String: Any?]]
+    
     do {
-      let cleanedRuleList = try await performOperations(encodedContentRuleList: encodedContentRuleList, options: options)
-      let ruleList = try await ruleStore.compileContentRuleList(forIdentifier: type.identifier, encodedContentRuleList: cleanedRuleList)
-      
-      guard let ruleList = ruleList else {
-        throw CompileError.noRuleListReturned(identifier: type.identifier)
-      }
-      
-      self.cachedRuleLists[type.identifier] = .success(ruleList)
+      cleanedRuleList = try await process(encodedContentRuleList: encodedContentRuleList, with: options)
     } catch {
-      self.cachedRuleLists[type.identifier] = .failure(error)
+      for mode in modes {
+        self.cachedRuleLists[type.makeIdentifier(for: mode)] = .failure(error)
+      }
       throw error
     }
     
-    #if DEBUG
-    ContentBlockerManager.log.debug("Compiled rule list `\(type.identifier)`")
-    #endif
+    var foundError: Error?
+    
+    for mode in modes {
+      let moddedRuleList = self.set(mode: mode, forRuleList: cleanedRuleList)
+      let identifier = type.makeIdentifier(for: mode)
+      
+      do {
+        let ruleList = try await compile(ruleList: moddedRuleList, for: type, mode: mode)
+        self.cachedRuleLists[identifier] = .success(ruleList)
+        Self.log.debug("Compiled content blockers for `\(identifier)`")
+      } catch {
+        self.cachedRuleLists[identifier] = .failure(error)
+        Self.log.debug("Failed to compile content blockers for `\(identifier)`: \(String(describing: error))")
+        foundError = error
+      }
+    }
+    
+    if let error = foundError {
+      throw error
+    }
+  }
+  
+  private func set(mode: BlockingMode, forRuleList ruleList: [[String: Any?]]) -> [[String: Any?]] {
+    guard let lastRule = ruleList.last else { return ruleList }
+    
+    switch mode {
+    case .aggressive:
+      guard isFirstPartyException(jsonObject: lastRule) else { return ruleList }
+      
+      // Remove this rule to make it aggressive
+      var ruleList = ruleList
+      ruleList.removeLast()
+      return ruleList
+      
+    case .standard:
+      guard !isFirstPartyException(jsonObject: lastRule) else { return ruleList }
+      
+      // Add the ignore first party rule to make it standard
+      var ruleList = ruleList
+      ruleList.append([
+        "action": ["type": "ignore-previous-rules"],
+        "trigger": [
+          "url-filter": ".*",
+          "load-type": ["first-party"]
+        ] as [String: Any?]
+      ])
+      return ruleList
+      
+    case .general:
+      // Nothing needs to be done
+      return ruleList
+    }
+  }
+  
+  /// Compile the given resource and store it in cache for the given blocklist type
+  private func compile(ruleList: [[String: Any?]], for type: BlocklistType, mode: BlockingMode) async throws -> WKContentRuleList {
+    let identifier = type.makeIdentifier(for: mode)
+    let modifiedData = try JSONSerialization.data(withJSONObject: ruleList)
+    let cleanedRuleList = String(bytes: modifiedData, encoding: .utf8)
+    let ruleList = try await ruleStore.compileContentRuleList(
+      forIdentifier: identifier, encodedContentRuleList: cleanedRuleList)
+    
+    guard let ruleList = ruleList else {
+      throw CompileError.noRuleListReturned
+    }
+    
+    return ruleList
   }
   
   /// Check if a rule list is compiled for this type
-  func hasRuleList(for type: BlocklistType) async -> Bool {
+  func hasRuleList(for type: BlocklistType, mode: BlockingMode) async -> Bool {
     do {
-      return try await ruleList(for: type) != nil
+      return try await ruleList(for: type, mode: mode) != nil
     } catch {
       return false
     }
   }
   
   /// Remove the rule list for the blocklist type
-  func removeRuleList(for type: BlocklistType) async throws {
-    try await removeRuleList(forIdentifier: type.identifier)
+  func removeRuleLists(for type: BlocklistType, force: Bool = false) async throws {
+    for mode in type.allowedModes {
+      try await removeRuleList(forIdentifier: type.makeIdentifier(for: mode), force: force)
+    }
   }
   
   /// Load a rule list from the rule store and return it. Will use cached results if they exist
-  func ruleList(for type: BlocklistType) async throws -> WKContentRuleList? {
-    if let result = cachedRuleLists[type.identifier] { return try result.get() }
-    return try await loadRuleList(for: type)
+  func ruleList(for type: BlocklistType, mode: BlockingMode) async throws -> WKContentRuleList? {
+    if let result = cachedRuleLists[type.makeIdentifier(for: mode)] {
+      return try result.get()
+    }
+    
+    return try await loadRuleList(for: type, mode: mode)
   }
   
   /// Load a rule list from the rule store and return it. Will not use cached results
-  private func loadRuleList(for type: BlocklistType) async throws -> WKContentRuleList? {
+  private func loadRuleList(for type: BlocklistType, mode: BlockingMode) async throws -> WKContentRuleList? {
+    let identifier = type.makeIdentifier(for: mode)
+    
     do {
-      guard let ruleList = try await ruleStore.contentRuleList(forIdentifier: type.identifier) else {
+      guard let ruleList = try await ruleStore.contentRuleList(forIdentifier: identifier) else {
         return nil
       }
       
-      self.cachedRuleLists[type.identifier] = .success(ruleList)
+      self.cachedRuleLists[identifier] = .success(ruleList)
       return ruleList
     } catch {
       throw error
@@ -155,13 +298,26 @@ actor ContentBlockerManager {
   /// - Warning: This may replace any downloaded versions with the bundled ones in the rulestore
   /// for example, the `adBlock` rule type may replace the `genericContentBlockingBehaviors` downloaded version.
   func compileBundledRuleList(for genericType: GenericBlocklistType) async throws {
+    let type = BlocklistType.generic(genericType)
+    try await compileBundledRuleList(for: genericType, modes: type.allowedModes)
+  }
+  
+  /// Compiles the bundled file for the given generic type
+  /// - Warning: This may replace any downloaded versions with the bundled ones in the rulestore
+  /// for example, the `adBlock` rule type may replace the `genericContentBlockingBehaviors` downloaded version.
+  func compileBundledRuleList(for genericType: GenericBlocklistType, modes: [BlockingMode]) async throws {
+    guard !modes.isEmpty else { return }
     guard let fileURL = Bundle.module.url(forResource: genericType.bundledFileName, withExtension: "json") else {
       assertionFailure("A bundled file shouldn't fail to load")
       return
     }
     
     let encodedContentRuleList = try String(contentsOf: fileURL)
-    try await compile(encodedContentRuleList: encodedContentRuleList, for: .generic(genericType))
+    let type = BlocklistType.generic(genericType)
+    try await compile(
+      encodedContentRuleList: encodedContentRuleList,
+      for: type, modes: modes
+    )
   }
   
   /// Return the valid generic types for the given domain
@@ -183,7 +339,7 @@ actor ContentBlockerManager {
   }
   
   /// Return the enabled blocklist types for the given domain
-  @MainActor func validBlocklistTypes(for domain: Domain) -> Set<BlocklistType> {
+  @MainActor private func validBlocklistTypes(for domain: Domain) -> Set<(BlocklistType)> {
     guard !domain.areAllShieldsOff else { return [] }
     
     // Get the generic types
@@ -197,7 +353,8 @@ actor ContentBlockerManager {
     let filterLists = FilterListStorage.shared.filterLists
     let additionalRuleLists = filterLists.compactMap { filterList -> BlocklistType? in
       guard filterList.isEnabled else { return nil }
-      return .filterList(uuid: filterList.uuid)
+      // Non-regional fitler lists are always aggressive
+      return .filterList(uuid: filterList.uuid, isAlwaysAggressive: filterList.isAlwaysAggressive)
     }
     
     // Get rule lists for custom filter lists
@@ -214,61 +371,95 @@ actor ContentBlockerManager {
   /// It will attempt to return cached results if they exist otherwise it will attempt to load results from the rule store
   public func ruleLists(for domain: Domain) async -> Set<WKContentRuleList> {
     let validBlocklistTypes = await self.validBlocklistTypes(for: domain)
+    let level = await domain.blockAdsAndTrackingLevel
     
     return await Set(validBlocklistTypes.asyncConcurrentCompactMap({ blocklistType -> WKContentRuleList? in
+      let mode = blocklistType.mode(isAggressiveMode: level.isAggressive)
+      
       do {
-        return try await self.ruleList(for: blocklistType)
+        return try await self.ruleList(for: blocklistType, mode: mode)
       } catch {
+        Self.log.error("Missing rule list for `\(blocklistType.makeIdentifier(for: mode))`")
         return nil
       }
     }))
   }
   
   /// Remove the rule list for the given identifier. This will remove them from this local cache and from the rule store.
-  private func removeRuleList(forIdentifier identifier: String) async throws {
+  private func removeRuleList(forIdentifier identifier: String, force: Bool) async throws {
+    guard force || self.cachedRuleLists[identifier] != nil else { return }
     self.cachedRuleLists.removeValue(forKey: identifier)
     try await ruleStore.removeContentRuleList(forIdentifier: identifier)
     Self.log.debug("Removed rule list for `\(identifier)`")
   }
   
-  /// Perform operations of the rule list given by the provided options
-  private func performOperations(encodedContentRuleList: String, options: CompileOptions) async throws -> String {
-    guard !options.isEmpty else { return encodedContentRuleList }
-    
+  private func decode(encodedContentRuleList: String) throws -> [[String: Any?]] {
     guard let blocklistData = encodedContentRuleList.data(using: .utf8) else {
       assertionFailure()
-      return encodedContentRuleList
+      throw CompileError.invalidJSONArray
     }
     
-    guard var jsonArray = try JSONSerialization.jsonObject(with: blocklistData) as? [[String: Any]] else {
-      return encodedContentRuleList
+    guard let jsonArray = try JSONSerialization.jsonObject(with: blocklistData) as? [[String: Any]] else {
+      throw CompileError.invalidJSONArray
     }
+    
+    return jsonArray
+  }
+  
+  /// Perform operations of the rule list given by the provided options
+  func process(encodedContentRuleList: String, with options: CompileOptions) async throws -> [[String: Any?]] {
+    var ruleList = try decode(encodedContentRuleList: encodedContentRuleList)
+    if options.isEmpty { return ruleList }
     
     #if DEBUG
-    let originalCount = jsonArray.count
+    let originalCount = ruleList.count
     ContentBlockerManager.log.debug("Cleanining up \(originalCount) rules")
     #endif
     
     if options.contains(.stripContentBlockers) {
-      jsonArray = await stripCosmeticFilters(jsonArray: jsonArray)
+      ruleList = await stripCosmeticFilters(jsonArray: ruleList)
     }
     
     if options.contains(.punycodeDomains) {
-      jsonArray = await punycodeDomains(jsonArray: jsonArray)
+      ruleList = await punycodeDomains(jsonArray: ruleList)
     }
     
     #if DEBUG
-    let count = originalCount - jsonArray.count
+    let count = originalCount - ruleList.count
     ContentBlockerManager.log.debug("Filtered out \(count) rules")
     #endif
     
-    let modifiedData = try JSONSerialization.data(withJSONObject: jsonArray)
-    return String(bytes: modifiedData, encoding: .utf8) ?? encodedContentRuleList
+    return ruleList
+  }
+  
+  private func encode(ruleList: [[String: Any?]], isAggressive: Bool) throws -> String {
+    let modifiedData = try JSONSerialization.data(withJSONObject: ruleList)
+    
+    guard let result = String(bytes: modifiedData, encoding: .utf8) else {
+      throw CompileError.invalidJSONArray
+    }
+    
+    return result
+  }
+  
+  private func isFirstPartyException(jsonObject: [String: Any?]) -> Bool {
+    guard
+      let actionDictionary = jsonObject["action"] as? [String: Any],
+      let actionType = actionDictionary["type"] as? String, actionType == "ignore-previous-rules",
+      let triggerDictionary = jsonObject["trigger"] as? [String: Any],
+      let urlFilter = triggerDictionary["url-filter"] as? String, urlFilter == ".*",
+      let loadType = triggerDictionary["load-type"] as? [String], loadType == ["first-party"],
+      triggerDictionary["resource-type"] == nil
+    else {
+      return false
+    }
+    
+    return true
   }
   
   /// This will remove cosmetic filters from the provided encoded rule list. These are any rules that have a `selector` in the `action` field.
   /// We do this because our cosmetic filtering is handled via the `SelectorsPoller.js` file and these selectors come from the engine directly.
-  private func stripCosmeticFilters(jsonArray: [[String: Any]]) async -> [[String: Any]] {
+  private func stripCosmeticFilters(jsonArray: [[String: Any?]]) async -> [[String: Any?]] {
     let updatedArray = await jsonArray.asyncConcurrentCompactMap { dictionary in
       guard let actionDictionary = dictionary["action"] as? [String: Any] else {
         return dictionary
@@ -288,7 +479,7 @@ actor ContentBlockerManager {
   /// Convert all domain in the `if-domain` and `unless-domain` fields.
   ///
   /// Sometimes we get non-punycoded domans in our JSON and apple does not allow non-punycoded domains to be passed to the rule store.
-  private func punycodeDomains(jsonArray: [[String: Any]]) async -> [[String: Any]] {
+  private func punycodeDomains(jsonArray: [[String: Any?]]) async -> [[String: Any?]] {
     var jsonArray = jsonArray
     
     await jsonArray.enumerated().asyncConcurrentForEach({ index, dictionary in
@@ -330,6 +521,16 @@ actor ContentBlockerManager {
       }
       
       return domain
+    }
+  }
+}
+
+extension ShieldLevel {
+  var preferredBlockingModes: Set<ContentBlockerManager.BlockingMode> {
+    if isAggressive {
+      return [.aggressive, .general]
+    } else {
+      return [.standard, .general]
     }
   }
 }
