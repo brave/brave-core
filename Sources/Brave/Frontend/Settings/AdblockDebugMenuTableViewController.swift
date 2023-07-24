@@ -62,7 +62,8 @@ class AdblockDebugMenuTableViewController: TableViewController {
         text: "Recompile Content Blockers",
         selection: {
           Task { @MainActor in
-            await AdblockResourceDownloader.shared.reloadBundledOnlyData()
+            let modes = ContentBlockerManager.BlockingMode.allCases
+            await AdblockResourceDownloader.shared.loadCachedAndBundledDataIfNeeded(allowedModes: Set(modes))
             self.showCompiledBlockListAlert()
           }
         }, cellClass: ButtonCell.self)

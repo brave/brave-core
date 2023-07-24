@@ -36,6 +36,33 @@ public final class Domain: NSManagedObject, CRUD {
     return URLComponents(string: url ?? "")
   }
   
+  // TODO: @JS Replace this with the 1st party ad-block list
+  // https://github.com/brave/brave-ios/issues/7611
+  /// A list of etld+1s that are always aggressive
+  private let alwaysAggressiveETLDs: Set<String> = ["youtube.com"]
+  
+  /// Return the shield level for this domain
+  ///
+  /// This only takes into consideration certain domains that are always aggressive.
+  @MainActor public var blockAdsAndTrackingLevel: ShieldLevel {
+    let globalLevel = ShieldPreferences.blockAdsAndTrackingLevel
+    
+    switch globalLevel {
+    case .standard:
+      guard let urlString = self.url else { return globalLevel }
+      guard let url = URL(string: urlString) else { return globalLevel }
+      guard let etldP1 = url.baseDomain else { return globalLevel }
+      
+      if alwaysAggressiveETLDs.contains(etldP1) {
+        return .aggressive
+      } else {
+        return globalLevel
+      }
+    case .disabled, .aggressive:
+      return globalLevel
+    }
+  }
+  
   private static let containsEthereumPermissionsPredicate = NSPredicate(format: "wallet_permittedAccounts != nil && wallet_permittedAccounts != ''")
   private static let containsSolanaPermissionsPredicate = NSPredicate(format: "wallet_solanaPermittedAcccounts != nil && wallet_solanaPermittedAcccounts != ''")
   

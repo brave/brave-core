@@ -35,7 +35,7 @@ class ContentBlockerManagerTests: XCTestCase {
       }
       
       do {
-        try await manager.compile(encodedContentRuleList: encodedContentRuleList, for: .filterList(uuid: filterListUUID))
+        try await manager.compile(encodedContentRuleList: encodedContentRuleList, for: .filterList(uuid: filterListUUID, isAlwaysAggressive: false))
         try await manager.compile(encodedContentRuleList: encodedContentRuleList, for: .customFilterList(uuid: filterListCustomUUID))
       } catch {
         XCTFail(error.localizedDescription)
@@ -45,8 +45,12 @@ class ContentBlockerManagerTests: XCTestCase {
       // Check for loading the cached results
       for generalType in ContentBlockerManager.GenericBlocklistType.allCases {
         do {
-          let cachedType = try await manager.ruleList(for: .generic(generalType))
-          XCTAssertNotNil(cachedType)
+          let blocklistType = ContentBlockerManager.BlocklistType.generic(generalType)
+          
+          for mode in blocklistType.allowedModes {
+            let cachedType = try await manager.ruleList(for: blocklistType, mode: mode)
+            XCTAssertNotNil(cachedType)
+          }
         } catch {
           XCTFail(error.localizedDescription)
         }
@@ -56,8 +60,12 @@ class ContentBlockerManagerTests: XCTestCase {
       // Check for loading the uncached result from the rule store
       for generalType in ContentBlockerManager.GenericBlocklistType.allCases {
         do {
-          let cachedType = try await manager.ruleList(for: .generic(generalType))
-          XCTAssertNotNil(cachedType)
+          let blocklistType = ContentBlockerManager.BlocklistType.generic(generalType)
+          
+          for mode in blocklistType.allowedModes {
+            let cachedType = try await manager.ruleList(for: blocklistType, mode: mode)
+            XCTAssertNotNil(cachedType)
+          }
         } catch {
           XCTFail(error.localizedDescription)
         }
@@ -65,8 +73,8 @@ class ContentBlockerManagerTests: XCTestCase {
       
       // Check removing the filter lists
       do {
-        try await manager.removeRuleList(for: .filterList(uuid: filterListUUID))
-        try await manager.removeRuleList(for: .customFilterList(uuid: filterListCustomUUID))
+        try await manager.removeRuleLists(for: .filterList(uuid: filterListUUID, isAlwaysAggressive: false), force: true)
+        try await manager.removeRuleLists(for: .customFilterList(uuid: filterListCustomUUID), force: true)
       } catch {
         XCTFail(error.localizedDescription)
       }

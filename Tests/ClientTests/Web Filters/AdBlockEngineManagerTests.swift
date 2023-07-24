@@ -16,10 +16,10 @@ class AdBlockEngineManagerTests: XCTestCase {
       .adBlock:
         Bundle.module.url(forResource: "rs-ABPFilterParserData", withExtension: "dat")!,
       // Annoyances
-      .filterList(uuid: "67E792D4-AE03-4D1A-9EDE-80E01C81F9B8"):
+      .filterList(uuid: "67E792D4-AE03-4D1A-9EDE-80E01C81F9B8", isAlwaysAggressive: false):
         Bundle.module.url(forResource: "rs-67E792D4-AE03-4D1A-9EDE-80E01C81F9B8", withExtension: "dat")!,
       // Cookie notice blocking
-      .filterList(uuid: "AC023D22-AE88-4060-A978-4FEEEC4221693"):
+      .filterList(uuid: "AC023D22-AE88-4060-A978-4FEEEC4221693", isAlwaysAggressive: false):
         Bundle.module.url(forResource: "rs-AC023D22-AE88-4060-A978-4FEEEC4221693", withExtension: "dat")!
     ]
     
@@ -28,10 +28,10 @@ class AdBlockEngineManagerTests: XCTestCase {
       .adBlock:
         Bundle.module.url(forResource: "latest", withExtension: "txt")!,
       // Annoyances
-      .filterList(uuid: "67E792D4-AE03-4D1A-9EDE-80E01C81F9B8"):
+      .filterList(uuid: "67E792D4-AE03-4D1A-9EDE-80E01C81F9B8", isAlwaysAggressive: false):
         Bundle.module.url(forResource: "67E792D4-AE03-4D1A-9EDE-80E01C81F9B8-latest", withExtension: "txt")!,
       // Cookie notice blocking
-      .filterList(uuid: "AC023D22-AE88-4060-A978-4FEEEC4221693"):
+      .filterList(uuid: "AC023D22-AE88-4060-A978-4FEEEC4221693", isAlwaysAggressive: false):
         Bundle.module.url(forResource: "AC023D22-AE88-4060-A978-4FEEEC4221693-latest", withExtension: "txt")!
     ]
     
@@ -40,10 +40,10 @@ class AdBlockEngineManagerTests: XCTestCase {
       .adBlock:
         Bundle.module.url(forResource: "resources", withExtension: "json")!,
       // Annoyances
-      .filterList(uuid: "67E792D4-AE03-4D1A-9EDE-80E01C81F9B8"):
+      .filterList(uuid: "67E792D4-AE03-4D1A-9EDE-80E01C81F9B8", isAlwaysAggressive: false):
         Bundle.module.url(forResource: "67E792D4-AE03-4D1A-9EDE-80E01C81F9B8-resources", withExtension: "json")!,
       // Cookie notice blocking
-      .filterList(uuid: "AC023D22-AE88-4060-A978-4FEEEC4221693"):
+      .filterList(uuid: "AC023D22-AE88-4060-A978-4FEEEC4221693", isAlwaysAggressive: false):
         Bundle.module.url(forResource: "AC023D22-AE88-4060-A978-4FEEEC4221693-resources", withExtension: "json")!
     ]
     
@@ -129,14 +129,14 @@ class AdBlockEngineManagerTests: XCTestCase {
         let uuid = UUID().uuidString
         
         await engineManager.add(
-          resource: .init(type: .dat, source: .filterList(uuid: uuid)),
+          resource: .init(type: .dat, source: .filterList(uuid: uuid, isAlwaysAggressive: false)),
           fileURL: sampleAdBlockDatURL,
           version: "1.0",
           relativeOrder: index
         )
         
         await engineManager.add(
-          resource: .init(type: .jsonResources, source: .filterList(uuid: uuid)),
+          resource: .init(type: .jsonResources, source: .filterList(uuid: uuid, isAlwaysAggressive: false)),
           fileURL: sampleResourceURL,
           version: "1.0",
           relativeOrder: index

@@ -9,6 +9,7 @@ import Data
 import BraveCore
 import Shared
 import Preferences
+import BraveShields
 import os.log
 
 /// An object responsible for fetching filer lists resources from multiple sources
@@ -78,7 +79,8 @@ public class FilterListResourceDownloader {
       if let folderURL = await setting.folderURL, FileManager.default.fileExists(atPath: folderURL.path) {
         await self.addEngineResources(
           forFilterListUUID: setting.uuid, downloadedFolderURL: folderURL,
-          relativeOrder: setting.order?.intValue ?? 0
+          relativeOrder: setting.order?.intValue ?? 0,
+          isAlwaysAggressive: setting.isAlwaysAggressive
         )
       }
     }
@@ -202,7 +204,8 @@ public class FilterListResourceDownloader {
         guard FilterListStorage.shared.isEnabled(for: filterList.entry.componentId) else { return }
         
         await self.addEngineResources(
-          forFilterListUUID: filterList.uuid, downloadedFolderURL: folderURL, relativeOrder: filterList.order
+          forFilterListUUID: filterList.uuid, downloadedFolderURL: folderURL, relativeOrder: filterList.order,
+          isAlwaysAggressive: filterList.isAlwaysAggressive
         )
         
         // Save the downloaded folder for later (caching) purposes
@@ -218,11 +221,11 @@ public class FilterListResourceDownloader {
     stopFetching(resource: .filterListContentBlockingBehaviors(uuid: filterList.uuid, componentId: filterList.entry.componentId))
     
     Task {
-      async let removeContentBlockerResource: Void = ContentBlockerManager.shared.removeRuleList(
-        for: .filterList(uuid: filterList.uuid)
+      async let removeContentBlockerResource: Void = ContentBlockerManager.shared.removeRuleLists(
+        for: .filterList(uuid: filterList.uuid, isAlwaysAggressive: filterList.isAlwaysAggressive)
       )
       async let removeAdBlockEngineResource: Void = AdBlockEngineManager.shared.removeResources(
-        for: .filterList(uuid: filterList.uuid)
+        for: .filterList(uuid: filterList.uuid, isAlwaysAggressive: filterList.isAlwaysAggressive)
       )
       _ = try await (removeContentBlockerResource, removeAdBlockEngineResource)
     }
@@ -245,9 +248,7 @@ public class FilterListResourceDownloader {
         for try await result in await self.resourceDownloader.downloadStream(for: resource) {
           switch result {
           case .success(let downloadResult):
-            await handle(
-              downloadResult: downloadResult, for: filterList
-            )
+            await handle(downloadResult: downloadResult, for: filterList)
           case .failure(let error):
             ContentBlockerManager.log.error("Failed to download resource \(resource.cacheFolderName): \(error)")
           }
@@ -264,12 +265,17 @@ public class FilterListResourceDownloader {
     fetchTasks.removeValue(forKey: resource)
   }
   
-  private func handle(downloadResult: ResourceDownloader<BraveS3Resource>.DownloadResult, for filterList: FilterListInterface) async {
-    if !downloadResult.isModified {
-      // if the file is not modified first we need to see if we already have a cached value loaded
-      guard await !ContentBlockerManager.shared.hasRuleList(for: .filterList(uuid: filterList.uuid)) else {
-        // We don't want to recompile something that we alrady have loaded
-        return
+  @MainActor private func handle(downloadResult: ResourceDownloader<BraveS3Resource>.DownloadResult, for filterList: FilterList) async {
+    let blocklistType = ContentBlockerManager.BlocklistType.filterList(uuid: filterList.uuid, isAlwaysAggressive: filterList.isAlwaysAggressive)
+    
+    let modes = await blocklistType.allowedModes.asyncFilter { mode in
+      if downloadResult.isModified { return true }
+        
+      if await ContentBlockerManager.shared.hasRuleList(for: blocklistType, mode: mode) {
+        ContentBlockerManager.log.debug("Rule list already compiled for `\(blocklistType.makeIdentifier(for: mode))`")
+        return false
+      } else {
+        return true
       }
     }
     
@@ -279,28 +285,28 @@ public class FilterListResourceDownloader {
       // We only want to compile cached values if they are not already loaded
       try await ContentBlockerManager.shared.compile(
         encodedContentRuleList: encodedContentRuleList,
-        for: .filterList(uuid: filterList.uuid),
-        options: .all
+        for: blocklistType,
+        options: .all,
+        modes: modes
       )
     } catch {
-      let debugTitle = await filterList.debugTitle
       ContentBlockerManager.log.error(
-        "Failed to compile rule list for \(debugTitle) (`\(downloadResult.fileURL.absoluteString)`): \(error)"
+        "Failed to compile rule list for \(String(describing: blocklistType)): \(error)"
       )
     }
   }
   
   /// Handle the downloaded folder url for the given filter list. The folder URL should point to a `AdblockFilterList` resource
   /// This will also start fetching any additional resources for the given filter list given it is still enabled.
-  private func addEngineResources(forFilterListUUID uuid: String, downloadedFolderURL: URL, relativeOrder: Int) async {
+  private func addEngineResources(forFilterListUUID uuid: String, downloadedFolderURL: URL, relativeOrder: Int, isAlwaysAggressive: Bool) async {
     // Let's add the new ones in
     await AdBlockEngineManager.shared.add(
-      resource: AdBlockEngineManager.Resource(type: .dat, source: .filterList(uuid: uuid)),
+      resource: AdBlockEngineManager.Resource(type: .dat, source: .filterList(uuid: uuid, isAlwaysAggressive: isAlwaysAggressive)),
       fileURL: downloadedFolderURL.appendingPathComponent("rs-\(uuid).dat"),
       version: downloadedFolderURL.lastPathComponent, relativeOrder: relativeOrder
     )
     await AdBlockEngineManager.shared.add(
-      resource: AdBlockEngineManager.Resource(type: .jsonResources, source: .filterList(uuid: uuid)),
+      resource: AdBlockEngineManager.Resource(type: .jsonResources, source: .filterList(uuid: uuid, isAlwaysAggressive: isAlwaysAggressive)),
       fileURL: downloadedFolderURL.appendingPathComponent("resources.json"),
       version: downloadedFolderURL.lastPathComponent,
       relativeOrder: relativeOrder

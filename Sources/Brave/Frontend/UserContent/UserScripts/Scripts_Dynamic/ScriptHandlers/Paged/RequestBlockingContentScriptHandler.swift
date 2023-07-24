@@ -71,7 +71,10 @@ class RequestBlockingContentScriptHandler: TabContentScript {
       Task { @MainActor in
         let domain = Domain.getOrCreate(forUrl: currentTabURL, persistent: !isPrivateBrowsing)
         guard let domainURLString = domain.url else { return }
-        let shouldBlock = await AdBlockStats.shared.shouldBlock(requestURL: requestURL, sourceURL: sourceURL, resourceType: dto.data.resourceType)
+        let shouldBlock = await AdBlockStats.shared.shouldBlock(
+          requestURL: requestURL, sourceURL: sourceURL, resourceType: dto.data.resourceType,
+          isAggressiveMode: domain.blockAdsAndTrackingLevel.isAggressive
+        )
         
         // Ensure we check that the stats we're tracking is still for the same page
         // Some web pages (like youtube) like to rewrite their main frame urls

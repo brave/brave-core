@@ -68,7 +68,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
           guard domain.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true) else { return }
           
           let models = await AdBlockStats.shared.cosmeticFilterModels(forFrameURL: frameURL, domain: domain)
-          let setup = try self.makeSetup(from: models, isAggressive: ShieldPreferences.blockAdsAndTrackingLevel.isAggressive)
+          let setup = try self.makeSetup(from: models, isAggressive: domain.blockAdsAndTrackingLevel.isAggressive)
           let script = try ScriptFactory.shared.makeScript(for: .selectorsPoller(setup))
           
           try await webView.evaluateSafeJavaScriptThrowing(
@@ -95,7 +95,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
         styleSelectors[key] = styleSelectors[key]?.union(Set(values)) ?? Set(values)
       }
       
-      if modelTuple.source.isAlwaysAgressive(given: FilterListStorage.shared.filterLists) {
+      if modelTuple.source.isAlwaysAggressive {
         aggressiveSelectors = aggressiveSelectors.union(modelTuple.model.hideSelectors)
       } else {
         standardSelectors = standardSelectors.union(modelTuple.model.hideSelectors)

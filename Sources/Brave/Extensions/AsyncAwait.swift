@@ -69,6 +69,38 @@ extension Sequence {
       return results
     }
   }
+  
+  func asyncFilter(_ isIncluded: (Element) async throws -> Bool) async rethrows -> [Element] {
+    var results = [Element]()
+    for element in self {
+      if try await isIncluded(element) {
+        results.append(element)
+      }
+    }
+    return results
+  }
+  
+  func asyncConcurrentFilter(_ isIncluded: @escaping (Element) async throws -> Bool) async rethrows -> [Element] {
+    try await withThrowingTaskGroup(of: Element?.self) { group in
+      for element in self {
+        group.addTask {
+          if try await isIncluded(element) {
+            return element
+          } else {
+            return nil
+          }
+        }
+      }
+
+      var results = [Element]()
+      for try await result in group {
+        if let result = result {
+          results.append(result)
+        }
+      }
+      return results
+    }
+  }
 }
 
 extension Task where Failure == Error {

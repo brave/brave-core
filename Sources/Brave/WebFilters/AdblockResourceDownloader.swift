@@ -36,51 +36,54 @@ public actor AdblockResourceDownloader: Sendable {
     self.resourceDownloader = ResourceDownloader(networkManager: networkManager)
   }
   
-  /// Load the cached data and await the results
-  public func loadCachedAndBundledDataIfNeeded() async {
+  /// This will load cached and bundled data for the allowed modes.
+  func loadCachedAndBundledDataIfNeeded(allowedModes: Set<ContentBlockerManager.BlockingMode>) async {
+    guard !allowedModes.isEmpty else { return }
+    await loadCachedDataIfNeeded(allowedModes: allowedModes)
+    await loadBundledDataIfNeeded(allowedModes: allowedModes)
+  }
+  
+  /// This will load bundled data for the given content blocking modes. But only if the files are not already compiled.
+  private func loadBundledDataIfNeeded(allowedModes: Set<ContentBlockerManager.BlockingMode>) async {
     // Compile bundled blocklists but only if we don't have anything already loaded.
     await ContentBlockerManager.GenericBlocklistType.allCases.asyncConcurrentForEach { genericType in
-      let type = ContentBlockerManager.BlocklistType.generic(genericType)
-      
-      // Only compile these rules it if it is not already set
-      guard await !ContentBlockerManager.shared.hasRuleList(for: type) else {
-        ContentBlockerManager.log.debug("Rule list already loaded for `\(type.identifier)`")
-        return
+      let blocklistType = ContentBlockerManager.BlocklistType.generic(genericType)
+      let modes = await blocklistType.allowedModes.asyncFilter { mode in
+        guard allowedModes.contains(mode) else { return false }
+        // Non .blockAds can be recompiled safely because they are never replaced by downloaded files
+        if genericType != .blockAds { return true }
+        
+        // .blockAds is special because it can be replaced by a downloaded file.
+        // Hence we need to first check if it already exists.
+        if await ContentBlockerManager.shared.hasRuleList(for: blocklistType, mode: mode) {
+          ContentBlockerManager.log.debug("Rule list already compiled for `\(blocklistType.makeIdentifier(for: mode))`")
+          return false
+        } else {
+          return true
+        }
       }
       
       do {
-        try await ContentBlockerManager.shared.compileBundledRuleList(for: genericType)
+        try await ContentBlockerManager.shared.compileBundledRuleList(for: genericType, modes: modes)
       } catch {
         assertionFailure("A bundled file should not fail to compile")
       }
-    }
-    
-    // Here we load downloaded resources if we need to
-    await Self.handledResources.asyncConcurrentForEach { resource in
-      await self.loadCachedOrBundledData(for: resource)
     }
   }
   
-  /// This reloads bundled data. This is needed in case the bundled data changed since last app update.
-  /// This is done on the background to speed up launch time. We don't recompile downloadable resources.
-  public func reloadBundledOnlyData() async {
-    // Compile bundled blocklists for non-downloadable types
-    await ContentBlockerManager.GenericBlocklistType.allCases.asyncConcurrentForEach { genericType in
-      let type = ContentBlockerManager.BlocklistType.generic(genericType)
-      
-      if genericType == .blockAds {
-        // This type of rule list may be replaced by a downloaded version.
-        // Only compile it if it is not already set.
-        // All other ones we always re-compile since the bundled versions might have been updated.
-        guard await !ContentBlockerManager.shared.hasRuleList(for: type) else {
-          return
-        }
-      }
-       
+  /// Load the cached data and await the results
+  private func loadCachedDataIfNeeded(allowedModes: Set<ContentBlockerManager.BlockingMode>) async {
+    // Here we load downloaded resources if we need to
+    await Self.handledResources.asyncConcurrentForEach { resource in
       do {
-        try await ContentBlockerManager.shared.compileBundledRuleList(for: genericType)
+        // Check if we have cached results for the given resource
+        if let cachedResult = try resource.cachedResult() {
+          await self.handle(downloadResult: cachedResult, for: resource, allowedModes: allowedModes)
+        }
       } catch {
-        assertionFailure("A bundled file should not fail to compile")
+        ContentBlockerManager.log.error(
+          "Failed to load cached data for resource \(resource.cacheFileName): \(error)"
+        )
       }
     }
   }
@@ -112,7 +115,10 @@ public actor AdblockResourceDownloader: Sendable {
       for try await result in await self.resourceDownloader.downloadStream(for: resource, every: fetchInterval) {
         switch result {
         case .success(let downloadResult):
-          await self.handle(downloadResult: downloadResult, for: resource)
+          await self.handle(
+            downloadResult: downloadResult, for: resource,
+            allowedModes: Set(ContentBlockerManager.BlockingMode.allCases)
+          )
         case .failure(let error):
           Logger.module.error("\(error.localizedDescription)")
         }
@@ -120,39 +126,29 @@ public actor AdblockResourceDownloader: Sendable {
     }
   }
   
-  /// Load cached data for the given resource. Ensures this is done on the MainActor
-  private func loadCachedOrBundledData(for resource: BraveS3Resource) async {
-    do {
-      // Check if we have cached results for the given resource
-      if let cachedResult = try resource.cachedResult() {
-        await handle(downloadResult: cachedResult, for: resource)
-      }
-    } catch {
-      ContentBlockerManager.log.error(
-        "Failed to load cached data for resource \(resource.cacheFileName): \(error)"
-      )
-    }
-  }
-  
   /// Handle the downloaded file url for the given resource
-  private func handle(downloadResult: ResourceDownloader<BraveS3Resource>.DownloadResult, for resource: BraveS3Resource) async {
+  private func handle(downloadResult: ResourceDownloader<BraveS3Resource>.DownloadResult, for resource: BraveS3Resource, allowedModes: Set<ContentBlockerManager.BlockingMode>) async {
     let version = fileVersionDateFormatter.string(from: downloadResult.date)
     
     switch resource {
     case .genericContentBlockingBehaviors:
       let blocklistType = ContentBlockerManager.BlocklistType.generic(.blockAds)
-      
-      if !downloadResult.isModified {
-        // If the file is not modified first we need to see if we already have a cached value loaded
-        // We don't what to bother recompiling this file if we already loaded it
-        guard await !ContentBlockerManager.shared.hasRuleList(for: blocklistType) else {
-          // We don't want to recompile something that we alrady have loaded
-          ContentBlockerManager.log.debug("Cached rule list exists for `\(blocklistType.identifier)`")
-          return
+      let modes = await blocklistType.allowedModes.asyncFilter { mode in
+        guard allowedModes.contains(mode) else { return false }
+        if downloadResult.isModified { return true }
+        
+        // If the file wasn't modified, make sure we have something compiled.
+        // We should, but this can be false during upgrades if the identifier changed for some reason.
+        if await ContentBlockerManager.shared.hasRuleList(for: blocklistType, mode: mode) {
+          ContentBlockerManager.log.debug("Rule list already compiled for `\(blocklistType.makeIdentifier(for: mode))`")
+          return false
+        } else {
+          return true
         }
       }
       
       do {
+        guard !modes.isEmpty else { return }
         guard let encodedContentRuleList = try resource.downloadedString() else {
           assertionFailure("This file was downloaded successfully so it should not be nil")
           return
@@ -161,7 +157,8 @@ public actor AdblockResourceDownloader: Sendable {
         // try to compile
         try await ContentBlockerManager.shared.compile(
           encodedContentRuleList: encodedContentRuleList,
-          for: .generic(.blockAds)
+          for: .generic(.blockAds),
+          modes: modes
         )
       } catch {
         ContentBlockerManager.log.error(
