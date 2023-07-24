@@ -272,10 +272,6 @@ class BraveBrowserTypeImpl(BrowserType):
     assert sys.platform == 'darwin'
     mac_platform = 'arm64' if platform.processor() == 'arm' else 'x64'
     dmg_name = f'Brave-Browser-{self._channel}-{mac_platform}.dmg'
-    url = _GetBraveDownloadUrl(tag, dmg_name)
-    logging.info('Downloading %s', url)
-    f = urlopen(url)
-    data = f.read()
     dmg_path = os.path.join(out_dir, dmg_name)
 
     _DownloadFile(_GetBraveDownloadUrl(tag, dmg_name), dmg_path)
