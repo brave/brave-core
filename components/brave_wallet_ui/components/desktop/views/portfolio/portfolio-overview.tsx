@@ -54,7 +54,7 @@ import { getPriceIdForToken } from '../../../../utils/api-utils'
 import {
   networkEntityAdapter
 } from '../../../../common/slices/entities/network.entity'
-import { networkMatchesAccount } from '../../../../utils/network-utils'
+import { networkSupportsAccount } from '../../../../utils/network-utils'
 
 // Options
 import { PortfolioNavOptions } from '../../../../options/nav-options'
@@ -224,7 +224,7 @@ export const PortfolioOverview = () => {
 
       const amounts = usersFilteredAccounts
         .filter((account) => {
-          return network && networkMatchesAccount(network, account.accountId)
+          return network && networkSupportsAccount(network, account.accountId)
         })
         .map((account) =>
           getBalance(account.accountId, asset, tokenBalancesRegistry)

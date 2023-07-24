@@ -42,7 +42,7 @@ import {
 import { computeFiatAmount } from '../../../../../../utils/pricing-utils'
 import {
   emptyNetwork,
-  networkMatchesAccount
+  networkSupportsAccount
 } from '../../../../../../utils/network-utils'
 import { getBalance } from '../../../../../../utils/balance-utils'
 
@@ -316,7 +316,7 @@ export const TokenLists = ({
             network.chainId === asset.asset.chainId
         )
         return (
-          networkInfo && networkMatchesAccount(networkInfo, account.accountId)
+          networkInfo && networkSupportsAccount(networkInfo, account.accountId)
         )
       })
     },

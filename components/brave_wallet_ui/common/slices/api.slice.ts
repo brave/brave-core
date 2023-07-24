@@ -870,6 +870,7 @@ export function createWalletApi () {
                   await jsonRpcService.getBalance(accountId.address, accountId.coin, token.chainId)
 
                 if (error && errorMessage) {
+                  console.log(`getBalance error: ${errorMessage}`)
                   return {
                     error: errorMessage
                   }
@@ -885,6 +886,7 @@ export function createWalletApi () {
                   await bitcoinWalletService.getBalance(token.chainId, accountId)
 
                 if (errorMessage) {
+                  console.log(`getBalance error: ${errorMessage}`)
                   return {
                     error: errorMessage
                   }
@@ -1334,42 +1336,59 @@ export function createWalletApi () {
           extraOptions,
           baseQuery
         ) => {
-          const { jsonRpcService } = baseQuery(undefined).data // apiProxy
+          try {
+            const { jsonRpcService } = baseQuery(undefined).data // apiProxy
 
-          switch (coin) {
-            case BraveWallet.CoinType.SOL: {
-              const { balance, errorMessage } =
-                await jsonRpcService.getSolanaBalance(address, chainId)
+            switch (coin) {
+              case BraveWallet.CoinType.SOL: {
+                const { balance, errorMessage } = await jsonRpcService.getSolanaBalance(
+                  address,
+                  chainId
+                )
 
-              if (errorMessage) {
+                if (errorMessage) {
+                  console.log(`getBalance error: ${errorMessage}`)
                   return {
                     error: errorMessage
                   }
                 }
 
-              return {
-                data: Amount.normalize(balance.toString())
-              }
-            }
-
-            case BraveWallet.CoinType.FIL:
-            case BraveWallet.CoinType.ETH: {
-              const { balance, errorMessage } =
-                await jsonRpcService.getBalance(address, coin, chainId)
-
-              if (errorMessage) {
                 return {
-                  error: errorMessage
+                  data: Amount.normalize(balance.toString())
                 }
               }
 
-              return {
-                data: Amount.normalize(balance)
+              case BraveWallet.CoinType.FIL:
+              case BraveWallet.CoinType.ETH: {
+                const { balance, errorMessage } = await jsonRpcService.getBalance(
+                  address,
+                  coin,
+                  chainId
+                )
+
+                if (errorMessage) {
+                  console.log(`getBalance error: ${errorMessage}`)
+                  return {
+                    error: errorMessage
+                  }
+                }
+
+                return {
+                  data: Amount.normalize(balance)
+                }
+              }
+
+              default: {
+                assertNotReached(`Unknown coin ${coin}`)
               }
             }
-
-            default: {
-              assertNotReached(`Unknown coin ${coin}`)
+          } catch (error) {
+            console.error(error)
+            return {
+              error: `Unable to fetch balance(
+                ${JSON.stringify({ coin, chainId, address }, undefined, 2)}
+              )
+              error: ${error?.message ?? error}`
             }
           }
         },

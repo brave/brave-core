@@ -31,6 +31,7 @@ import { getLocale } from '../../../../../common/locale'
 import { sortTransactionByDate } from '../../../../utils/tx-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import { filterNetworksForAccount } from '../../../../utils/network-utils'
+import { makeAccountRoute, makeAccountTransactionRoute } from '../../../../utils/routes-utils'
 
 import Amount from '../../../../utils/amount'
 import {
@@ -119,7 +120,6 @@ import {
 
 // Actions
 import { AccountsTabActions } from '../../../../page/reducers/accounts-tab-reducer'
-import { makeAccountRoute, makeAccountTransactionRoute } from '../../../../utils/routes-utils'
 
 export const Account = () => {
   // routing

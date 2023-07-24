@@ -6,7 +6,7 @@
 import { AccountPageTabs, BraveWallet, WalletRoutes } from '../constants/types'
 
 export const makeAccountRoute = (
-  accountInfo: BraveWallet.AccountInfo,
+  accountInfo: Pick<BraveWallet.AccountInfo, 'address' | 'accountId'>,
   tab: AccountPageTabs
 ) => {
   const id = accountInfo.address || accountInfo.accountId.uniqueKey
@@ -17,7 +17,7 @@ export const makeAccountRoute = (
 }
 
 export const makeAccountTransactionRoute = (
-  accountInfo: BraveWallet.AccountInfo,
+  accountInfo: Pick<BraveWallet.AccountInfo, 'address' | 'accountId'>,
   transactionIdHash: string
 ) => {
   const id = accountInfo.address || accountInfo.accountId.uniqueKey

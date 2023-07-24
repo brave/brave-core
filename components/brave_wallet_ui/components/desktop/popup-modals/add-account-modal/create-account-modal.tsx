@@ -49,7 +49,10 @@ import {
 import { WalletSelectors } from '../../../../common/selectors'
 
 // hooks
-import { useSafeWalletSelector, useUnsafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
+import {
+  useSafeWalletSelector,
+  useUnsafeWalletSelector
+} from '../../../../common/hooks/use-safe-selector'
 
 interface Params {
   accountTypeName: string

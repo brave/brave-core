@@ -22,12 +22,14 @@ export type AccountInfoEntity = BraveWallet.AccountInfo
 
 export type AccountInfoEntityAdaptor = EntityAdapter<AccountInfoEntity> & {
   selectIdByAddress: (address: string) => EntityId
-  selectIdByAccountId: (accountId: BraveWallet.AccountId) => EntityId
+  selectIdByAccountId: (
+    accountId: Pick<BraveWallet.AccountId, 'address' | 'uniqueKey'>
+  ) => EntityId
 }
 
 export const accountInfoEntityAdaptor: AccountInfoEntityAdaptor = {
   ...createEntityAdapter<AccountInfoEntity>({
-    selectId: (model: BraveWallet.AccountInfo): EntityId => {
+    selectId: (model: Pick<BraveWallet.AccountInfo, 'accountId'>): EntityId => {
       return entityIdFromAccountId(model.accountId)
     }
   }),

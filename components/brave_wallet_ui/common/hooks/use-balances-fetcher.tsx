@@ -15,7 +15,7 @@ import { BraveWallet, CoinTypes } from '../../constants/types'
 import { WalletSelectors } from '../selectors'
 
 // Utils
-import { networkMatchesAccount } from '../../utils/network-utils'
+import { networkSupportsAccount } from '../../utils/network-utils'
 
 interface Arg {
   networks: BraveWallet.NetworkInfo[]
@@ -38,7 +38,7 @@ export const useBalancesFetcher = (arg: Arg | typeof skipToken) => {
   const args = useMemo(() => arg !== skipToken && arg.accounts && arg.networks
     ? arg.accounts.flatMap(account =>
         arg.networks
-        .filter(network => networkMatchesAccount(network, account.accountId))
+        .filter(network => networkSupportsAccount(network, account.accountId))
         .map(network => ({
           accountId: account.accountId,
           chainId: network.chainId,

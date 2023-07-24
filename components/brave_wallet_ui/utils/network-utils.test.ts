@@ -8,7 +8,7 @@ import {
   filterNetworksForAccount,
   getTokensNetwork,
   getCoinFromTxDataUnion,
-  networkMatchesAccount
+  networkSupportsAccount
 } from './network-utils'
 import { mockBitcoinMainnet, mockBitcoinTestnet, mockEthMainnet, mockNetworks } from '../stories/mock-data/mock-networks'
 import { BraveWallet } from '../constants/types'
@@ -32,25 +32,25 @@ describe('getNetworkInfo', () => {
   })
 })
 
-describe('networkMatchesAccount', () => {
+describe('networkSupportsAccount', () => {
   it('ETH mainnet should match ETH account', () => {
     expect(
-      networkMatchesAccount(mockEthMainnet, mockEthAccount.accountId)
+      networkSupportsAccount(mockEthMainnet, mockEthAccount.accountId)
     ).toBeTruthy()
   })
   it('ETH mainnet should not match BTC account', () => {
     expect(
-      networkMatchesAccount(mockEthMainnet, mockBitcoinAccount.accountId)
+      networkSupportsAccount(mockEthMainnet, mockBitcoinAccount.accountId)
     ).toBeFalsy()
   })
   it('BTC mainnet should match Bitcoin mainnet account', () => {
     expect(
-      networkMatchesAccount(mockBitcoinMainnet, mockBitcoinAccount.accountId)
+      networkSupportsAccount(mockBitcoinMainnet, mockBitcoinAccount.accountId)
     ).toBeTruthy()
   })
   it('BTC testnet should not match Bitcoin mainnet account', () => {
     expect(
-      networkMatchesAccount(mockBitcoinTestnet, mockBitcoinAccount.accountId)
+      networkSupportsAccount(mockBitcoinTestnet, mockBitcoinAccount.accountId)
     ).toBeFalsy()
   })
 })

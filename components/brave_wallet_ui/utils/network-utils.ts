@@ -34,7 +34,7 @@ export const getNetworkInfo = (chainId: string, coin: BraveWallet.CoinType, list
   return emptyNetwork
 }
 
-export const networkMatchesAccount = (
+export const networkSupportsAccount = (
   network: BraveWallet.NetworkInfo,
   accountId: BraveWallet.AccountId
 ) => {
@@ -51,7 +51,7 @@ export const filterNetworksForAccount = (
   if (!networks) {
     return []
   }
-  return networks.filter((network) => networkMatchesAccount(network, accountId))
+  return networks.filter((network) => networkSupportsAccount(network, accountId))
 }
 
 export const getTokensNetwork = (networks: BraveWallet.NetworkInfo[], token: BraveWallet.BlockchainToken): BraveWallet.NetworkInfo => {
