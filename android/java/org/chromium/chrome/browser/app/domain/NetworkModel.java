@@ -16,7 +16,6 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
@@ -44,7 +43,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class NetworkModel implements JsonRpcServiceObserver {
@@ -276,23 +274,23 @@ public class NetworkModel implements JsonRpcServiceObserver {
     }
 
     static void getAllNetworks(JsonRpcService jsonRpcService, List<Integer> supportedCoins,
-            Callbacks.Callback1<Set<NetworkInfo>> callback) {
+            Callbacks.Callback1<List<NetworkInfo>> callback) {
         if (jsonRpcService == null) {
-            callback.call(Collections.emptySet());
+            callback.call(Collections.emptyList());
             return;
         }
 
         NetworkResponsesCollector networkResponsesCollector =
                 new NetworkResponsesCollector(jsonRpcService, supportedCoins);
-        networkResponsesCollector.getNetworks(networkInfoSet -> {
+        networkResponsesCollector.getNetworks(networkInfoList -> {
             if (!AndroidUtils.isDebugBuild()) {
-                networkInfoSet =
-                        networkInfoSet.stream()
+                networkInfoList =
+                        networkInfoList.stream()
                                 .filter(networkInfo
                                         -> !NetworkUtils.Filters.isLocalNetwork(networkInfo))
-                                .collect(Collectors.toSet());
+                                .collect(Collectors.toList());
             }
-            callback.call(networkInfoSet);
+            callback.call(networkInfoList);
         });
     }
 
@@ -316,30 +314,31 @@ public class NetworkModel implements JsonRpcServiceObserver {
                 }
             }
 
-            getAllNetworks(mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
-                List<NetworkInfo> cryptoNetworks = new ArrayList<>(allNetworks);
-                _mCryptoNetworks.postValue(cryptoNetworks);
+            getAllNetworks(
+                    mJsonRpcService, mSharedData.getSupportedCryptoCoins(), cryptoNetworks -> {
+                        _mCryptoNetworks.postValue(cryptoNetworks);
 
-                List<NetworkInfo> primary = new ArrayList<>();
-                List<NetworkInfo> secondary = new ArrayList<>();
-                List<NetworkInfo> test = new ArrayList<>();
-                NetworkLists networkLists =
-                        new NetworkLists(cryptoNetworks, primary, secondary, test);
-                for (NetworkInfo networkInfo : allNetworks) {
-                    if (WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(
-                                networkInfo.chainId)) {
-                        primary.add(networkInfo);
-                    } else if (WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(networkInfo.chainId)) {
-                        test.add(networkInfo);
-                    } else if (!WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(
-                                       networkInfo.chainId)
-                            && !WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(
-                                    networkInfo.chainId)) {
-                        secondary.add(networkInfo);
-                    }
-                }
-                _mNetworkLists.postValue(networkLists);
-            });
+                        List<NetworkInfo> primary = new ArrayList<>();
+                        List<NetworkInfo> secondary = new ArrayList<>();
+                        List<NetworkInfo> test = new ArrayList<>();
+                        NetworkLists networkLists =
+                                new NetworkLists(cryptoNetworks, primary, secondary, test);
+                        for (NetworkInfo networkInfo : cryptoNetworks) {
+                            if (WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(
+                                        networkInfo.chainId)) {
+                                primary.add(networkInfo);
+                            } else if (WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(
+                                               networkInfo.chainId)) {
+                                test.add(networkInfo);
+                            } else if (!WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(
+                                               networkInfo.chainId)
+                                    && !WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(
+                                            networkInfo.chainId)) {
+                                secondary.add(networkInfo);
+                            }
+                        }
+                        _mNetworkLists.postValue(networkLists);
+                    });
         }
     }
 

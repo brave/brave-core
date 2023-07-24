@@ -59,7 +59,7 @@ public class UserAssetModel {
             if (JavaUtils.anyNull(mBraveWalletService, mJsonRpcService, mSelectedNetwork)) return;
             NetworkModel.getAllNetworks(
                     mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
-                        mCryptoNetworks = new ArrayList<>(allNetworks);
+                        mCryptoNetworks = allNetworks;
                         if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                             if (NetworkUtils.isAllNetwork(mSelectedNetwork)) {
                                 fetchAllNetworksAssets(nftsOnly);

@@ -96,7 +96,7 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
                         mJsonRpcService, mKeyringService, mActivityRef, mActivityRef.get()))
                 return;
             NetworkModel.getAllNetworks(mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
-                mAllNetworkInfoList = new ArrayList<>(allNetworks);
+                mAllNetworkInfoList = allNetworks;
                 mKeyringService.getAllAccounts(allAccounts -> {
                     mAllAccountInfoList = Arrays.asList(allAccounts.accounts);
                     var allAccountsArray = allAccounts.accounts;
