@@ -19,8 +19,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.component_updater.BraveComponentUpdater;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletDataFilesInstaller;
 
-import java.util.Locale;
-
 /**
  * A fragment to display progress of BraveWallet component download.
  * Used on all Brave Wallet Onboarding framgents.
@@ -44,8 +42,7 @@ public class DownloadComponentProgressFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mComponentDownloadProgress =
-                view.findViewById(R.id.download_progress_text_view);
+        mComponentDownloadProgress = view.findViewById(R.id.download_progress_text_view);
         setupDownloadProgress();
     }
 
@@ -93,9 +90,11 @@ public class DownloadComponentProgressFragment extends Fragment {
         updateItem.normalizeZeroProgress();
 
         mComponentDownloadProgress.setVisibility(View.VISIBLE);
-        String progressText =
-                String.format(Locale.ENGLISH, "Downloading wallet data file \u2022 %d%%",
-                        (int) (100 * updateItem.mDownloadedBytes / updateItem.mTotalBytes));
+
+        assert updateItem.mTotalBytes != 0;
+        String progressText = String.format(getString(R.string.download_wallet_data_files_progress),
+                (int) (100 * updateItem.mDownloadedBytes / updateItem.mTotalBytes));
+
         mComponentDownloadProgress.setText(progressText);
     }
 }
