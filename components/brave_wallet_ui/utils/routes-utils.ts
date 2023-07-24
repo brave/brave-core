@@ -18,13 +18,13 @@ export const makeAccountRoute = (
 
 export const makeAccountTransactionRoute = (
   accountInfo: Pick<BraveWallet.AccountInfo, 'address' | 'accountId'>,
-  transactionIdHash: string
+  transactionId: string
 ) => {
   const id = accountInfo.address || accountInfo.accountId.uniqueKey
   return (
     WalletRoutes.Account.replace(':accountId', id).replace(
       ':selectedTab?',
       AccountPageTabs.AccountTransactionsSub
-    ) + transactionIdHash
+    ) + '#' + transactionId.replace('#', '')
   )
 }

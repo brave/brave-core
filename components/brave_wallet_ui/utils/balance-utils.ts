@@ -16,6 +16,11 @@ export const formatTokenBalanceWithSymbol = (balance: string, decimals: number, 
     .format(decimalPlace ?? 6, true)} ${symbol}`
 }
 
+export const tokentBalanceAccountKey = (
+  accountId: Pick<BraveWallet.AccountId, 'uniqueKey'>
+) => {
+  return accountId.uniqueKey
+}
 
 export const getPercentAmount = (
   asset: BraveWallet.BlockchainToken,
@@ -44,7 +49,7 @@ export const getBalance = (
   }
 
   const accountBalances =
-    tokenBalancesRegistry[accountId.uniqueKey]
+    tokenBalancesRegistry[tokentBalanceAccountKey(accountId)]
   if (!accountBalances) {
     return '0'
   }

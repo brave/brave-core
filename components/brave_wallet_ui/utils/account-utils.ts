@@ -156,7 +156,7 @@ export function isHardwareAccount(
 
 export const keyringIdForNewAccount = (
   coin: BraveWallet.CoinType,
-  network?: string | undefined
+  chainId?: string | undefined
 ) => {
   if (coin === BraveWallet.CoinType.ETH) {
     return BraveWallet.KeyringId.kDefault
@@ -167,24 +167,24 @@ export const keyringIdForNewAccount = (
   }
 
   if (coin === BraveWallet.CoinType.FIL) {
-    if (network === BraveWallet.FILECOIN_MAINNET) {
+    if (chainId === BraveWallet.FILECOIN_MAINNET) {
       return BraveWallet.KeyringId.kFilecoin
     }
-    if (network === BraveWallet.FILECOIN_TESTNET) {
+    if (chainId === BraveWallet.FILECOIN_TESTNET) {
       return BraveWallet.KeyringId.kFilecoinTestnet
     }
   }
 
   if (coin === BraveWallet.CoinType.BTC) {
-    if (network === BraveWallet.BITCOIN_MAINNET) {
+    if (chainId === BraveWallet.BITCOIN_MAINNET) {
       return BraveWallet.KeyringId.kBitcoin84
     }
-    if (network === BraveWallet.BITCOIN_TESTNET) {
+    if (chainId === BraveWallet.BITCOIN_TESTNET) {
       return BraveWallet.KeyringId.kBitcoin84Testnet
     }
   }
 
-  assertNotReached(`Unknown coin ${coin} and network ${network}`)
+  assertNotReached(`Unknown coin ${coin} and chainId ${chainId}`)
 }
 
 export const getAccountTypeDescription = (coin: BraveWallet.CoinType) => {
