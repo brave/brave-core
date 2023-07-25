@@ -235,12 +235,9 @@ public class BraveRewardsPanel
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 View estimatedTooltipGroup = mPopupView.findViewById(R.id.estimated_tooltip_group);
-                if (mEstimatedToolTip != null && mEstimatedToolTip.isShown()) {
-                    Rect viewRect = new Rect();
-                    mEstimatedToolTip.getGlobalVisibleRect(viewRect);
-                    if (!viewRect.contains((int) event.getRawX(), (int) event.getRawY())) {
-                        estimatedTooltipGroup.setVisibility(View.GONE);
-                    }
+                if (mEstimatedToolTip != null && mEstimatedToolTip.isShown()
+                        && !isWithinViewBounds((int) event.getRawX(), (int) event.getRawY())) {
+                    estimatedTooltipGroup.setVisibility(View.GONE);
                 }
                 if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
                     dismiss();
@@ -290,6 +287,17 @@ public class BraveRewardsPanel
         }
         mBalanceUpdater = new Timer();
         setUpViews();
+    }
+
+    private Boolean isWithinViewBounds(int xPoint, int yPoint) {
+        View estimatedTooltip = mPopupView.findViewById(R.id.estimated_earnings_tooltip);
+        int[] location = new int[2];
+        estimatedTooltip.getLocationOnScreen(location);
+        int x = location[0];
+        int y = location[1];
+        int w = estimatedTooltip.getWidth();
+        int h = estimatedTooltip.getHeight();
+        return !(xPoint < x || xPoint > x + w || yPoint < y || yPoint > y + h);
     }
 
     public void showLikePopDownMenu() {
@@ -422,9 +430,30 @@ public class BraveRewardsPanel
     private void mayBeShowEstimatedToolTip() {
         View estimatedEarningsText = mPopupView.findViewById(R.id.estimated_earnings);
         View estimatedTooltipGroup = mPopupView.findViewById(R.id.estimated_tooltip_group);
-
+        clickManageAds();
+        clickOnCloseButton();
         estimatedEarningsText.setOnClickListener(
                 v -> { estimatedTooltipGroup.setVisibility(View.VISIBLE); });
+    }
+
+    private void clickManageAds() {
+        View manageAds = mPopupView.findViewById(R.id.manage_ads_text);
+        manageAds.setOnClickListener(v -> {
+            if (mBraveActivity != null) {
+                mBraveActivity.openNewOrSelectExistingTab(BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
+                View estimatedTooltipGroup = mPopupView.findViewById(R.id.estimated_tooltip_group);
+                estimatedTooltipGroup.setVisibility(View.GONE);
+                dismiss();
+            }
+        });
+    }
+
+    private void clickOnCloseButton() {
+        View closeButton = mPopupView.findViewById(R.id.manage_ads_close_button);
+        closeButton.setOnClickListener(v -> {
+            View estimatedTooltipGroup = mPopupView.findViewById(R.id.estimated_tooltip_group);
+            estimatedTooltipGroup.setVisibility(View.GONE);
+        });
     }
 
     private void setVisibilityForLoggedOutState() {
@@ -1242,16 +1271,6 @@ public class BraveRewardsPanel
         unverifiedStateLayout.setVisibility(View.VISIBLE);
         TextView unverifiedToggleSubText =
                 unverifiedStateLayout.findViewById(R.id.unverified_toggle_sub_text);
-        SwitchCompat braveRewardsSwitch =
-                unverifiedStateLayout.findViewById(R.id.brave_rewards_switch);
-        braveRewardsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                BraveAdsNativeHelper.nativeSetOptedInToNotificationAds(
-                        Profile.getLastUsedRegularProfile(), isChecked);
-                showUnverifiedLayout();
-            }
-        });
         View rewardsPanelUnverifiedOnSection =
                 unverifiedStateLayout.findViewById(R.id.rewards_panel_unverified_on_section);
         TextView connectAccountButton =
@@ -1300,7 +1319,6 @@ public class BraveRewardsPanel
             }
             unverifiedToggleSubText.setText(mPopupView.getResources().getString(
                     R.string.rewards_panel_unverified_switch_on_sub_text));
-            braveRewardsSwitch.setChecked(true);
             rewardsPanelUnverifiedOnSection.setVisibility(View.VISIBLE);
             TextView rewardsPanelUnverifiedOnSectionText = unverifiedStateLayout.findViewById(
                     R.id.rewards_panel_unverified_on_section_text);
@@ -1338,7 +1356,6 @@ public class BraveRewardsPanel
             }
             unverifiedToggleSubText.setText(mPopupView.getResources().getString(
                     R.string.rewards_panel_unverified_switch_off_sub_text));
-            braveRewardsSwitch.setChecked(false);
             rewardsPanelUnverifiedOnSection.setVisibility(View.GONE);
             rewardsPanelUnverifiedOffSection.setVisibility(View.VISIBLE);
             rewardsPanelUnverifiedCreatorSection.setVisibility(View.GONE);

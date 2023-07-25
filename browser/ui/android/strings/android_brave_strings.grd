@@ -143,7 +143,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
   </translations>
   <release seq="1" allow_pseudo="false">
     <messages fallback_to_english="true">
-
+      <message name="IDS_MANAGE_ADS"  desc="Text for manage ads">
+        Manage ads
+      </message>
       <message name="IDS_ESTIMATED_TOOLTIP_TEXT"  desc="Text for This reflects your estimated earnings range for Brave Ads this month.">
         This reflects your estimated earnings range for Brave Ads this month.
       </message>

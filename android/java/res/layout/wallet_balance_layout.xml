@@ -70,26 +70,59 @@
 
     <TextView
         android:id="@+id/estimated_earnings_tooltip"
-        android:layout_width="207dp"
+        android:layout_width="194dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/p2p_rewards_inside_background"
         android:elevation="39dp"
         android:fontFamily="sans-serif"
-        android:padding="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="32dp"
+        android:paddingEnd="40dp"
         android:textSize="12sp"
         android:text="@string/estimated_tooltip_text"
-        android:textColor="@color/tootltip_verified_creator_text_secondary"
+        android:textColor="@color/terms_of_service_text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/estimated_earnings" />
+
+    <TextView
+        android:id="@+id/manage_ads_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="39dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/manage_ads"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:textColor="@color/rewards_manage_ads_color"
+        android:textSize="12sp"
+        app:drawableRightCompat="@drawable/carat_right"
+        app:layout_constraintBottom_toBottomOf="@id/estimated_earnings_tooltip"
+        app:layout_constraintStart_toStartOf="@id/estimated_earnings_tooltip" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/manage_ads_close_button"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="@null"
+        android:elevation="90dp"
+        app:layout_constraintEnd_toEndOf="@+id/estimated_earnings_tooltip"
+        app:layout_constraintTop_toTopOf="@+id/estimated_earnings_tooltip"
+        app:srcCompat="@drawable/ic_baseline_close_24"
+        app:tint="@color/rewards_estimated_earning_close_color" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/estimated_tooltip_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="estimated_earnings_tooltip_triangle,estimated_earnings_tooltip" />
+        app:constraint_referenced_ids="estimated_earnings_tooltip_triangle,estimated_earnings_tooltip,manage_ads_text,manage_ads_close_button" />
 
 
     <TextView
