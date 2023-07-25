@@ -1,6 +1,12 @@
 # Changelog
 
 
+## [1.51.1](https://github.com/brave/brave-ios/releases/tag/v1.51.1)
+
+- Added standard Adblock mode. ([#7352](https://github.com/brave/brave-ios/issues/7352))
+- Fixed migration crash when user has invalid history URLs. ([#7484](https://github.com/brave/brave-ios/issues/7484))
+- Updated moving shields and privacy settings into SwiftUI. ([#7428](https://github.com/brave/brave-ios/issues/7428))
+
 ## [1.51](https://github.com/brave/brave-ios/releases/tag/v1.51)
 
 ### Web3
