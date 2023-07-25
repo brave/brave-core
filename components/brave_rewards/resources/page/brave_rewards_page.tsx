@@ -108,6 +108,10 @@ function currentTips (list: Rewards.Publisher[]) {
   actions.onCurrentTips(list)
 }
 
+function onIsAutoContributeSupported (isAcSupported: boolean) {
+  actions.onIsAutoContributeSupported(isAcSupported)
+}
+
 function autoContributeProperties (properties: any) {
   actions.onAutoContributeProperties(properties)
 }
@@ -271,6 +275,7 @@ Object.defineProperty(window, 'brave_rewards', {
     contributionAmount,
     recurringTips,
     currentTips,
+    onIsAutoContributeSupported,
     autoContributeProperties,
     adsData,
     adsHistory,

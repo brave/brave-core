@@ -158,8 +158,13 @@ void RewardsClientIOS::ShowNotification(const std::string& type,
                                         ShowNotificationCallback callback) {
   [bridge_ showNotification:type args:args callback:std::move(callback)];
 }
-void RewardsClientIOS::IsBitFlyerRegion(IsBitFlyerRegionCallback callback) {
-  [bridge_ isBitFlyerRegion:std::move(callback)];
+void RewardsClientIOS::GetClientCountryCode(
+    GetClientCountryCodeCallback callback) {
+  [bridge_ getClientCountryCode:std::move(callback)];
+}
+void RewardsClientIOS::IsAutoContributeSupportedForClient(
+    IsAutoContributeSupportedForClientCallback callback) {
+  [bridge_ isAutoContributeSupportedForClient:std::move(callback)];
 }
 void RewardsClientIOS::GetClientInfo(GetClientInfoCallback callback) {
   [bridge_ clientInfo:std::move(callback)];

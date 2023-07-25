@@ -237,7 +237,10 @@ interface RewardsEngineClient {
   ClearState(string name) => ();
 
   [Sync]
-  IsBitFlyerRegion() => (bool value);
+  GetClientCountryCode() => (string country_code);
+
+  [Sync]
+  IsAutoContributeSupportedForClient() => (bool value);
 
   [Sync]
   GetLegacyWallet() => (string wallet);

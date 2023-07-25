@@ -323,7 +323,9 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
     }
   }
 
-  bool IsBitFlyerRegion();
+  std::string GetClientCountryCode();
+
+  bool IsAutoContributeSupportedForClient();
 
   std::string GetLegacyWallet();
 

@@ -41,6 +41,7 @@ export interface State {
   contributionMinVisits: number
   contributionMonthly: number
   currentCountryCode: string
+  isAcSupported: boolean
   enabledContribute: boolean
   externalWallet?: ExternalWallet
   initializing: boolean

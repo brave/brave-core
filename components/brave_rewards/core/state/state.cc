@@ -206,9 +206,8 @@ void State::GetScoreValues(double* a, double* b) {
 }
 
 void State::SetAutoContributeEnabled(bool enabled) {
-  // Auto-contribute is not supported for regions where bitFlyer is the external
-  // wallet provider. If AC is not supported, then always set the pref to false.
-  if (engine_->IsBitFlyerRegion()) {
+  // If AC is not supported, then always set the pref to false.
+  if (!engine_->IsAutoContributeSupportedForClient()) {
     enabled = false;
   }
 
@@ -222,9 +221,8 @@ void State::SetAutoContributeEnabled(bool enabled) {
 }
 
 bool State::GetAutoContributeEnabled() {
-  // Auto-contribute is not supported for regions where bitFlyer is the external
-  // wallet provider. If AC is not supported, then always report AC as disabled.
-  if (engine_->IsBitFlyerRegion()) {
+  // If AC is not supported, then always report AC as disabled.
+  if (!engine_->IsAutoContributeSupportedForClient()) {
     return false;
   }
 

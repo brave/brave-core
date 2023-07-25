@@ -717,9 +717,15 @@ void RewardsEngineImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
 
 // mojom::RewardsEngineClient helpers begin (in the order of appearance in
 // Mojom)
-bool RewardsEngineImpl::IsBitFlyerRegion() {
+std::string RewardsEngineImpl::GetClientCountryCode() {
+  std::string country_code;
+  client_->GetClientCountryCode(&country_code);
+  return country_code;
+}
+
+bool RewardsEngineImpl::IsAutoContributeSupportedForClient() {
   bool value = false;
-  client_->IsBitFlyerRegion(&value);
+  client_->IsAutoContributeSupportedForClient(&value);
   return value;
 }
 

@@ -95,7 +95,7 @@ void DatabaseMigration::Start(uint32_t table_version,
   // order to prevent display of BAP historical information in monthly reports.
   std::string migration_v30 = "";
   std::string migration_v32 = "";
-  if (engine_->IsBitFlyerRegion()) {
+  if (engine_->GetClientCountryCode() == "JP") {
     migration_v30 = migration::v30;
     migration_v32 = migration::v32;
   }

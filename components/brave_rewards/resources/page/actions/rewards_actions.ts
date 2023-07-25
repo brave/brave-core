@@ -33,6 +33,12 @@ export const onRewardsParameters = (properties: Rewards.RewardsParameters) =>
     properties
   })
 
+export const getIsAutoContributeSupported = () => action(types.GET_IS_AUTO_CONTRIBUTE_SUPPORTED)
+
+export const onIsAutoContributeSupported = (isAcSupported: boolean) => action(types.ON_IS_AUTO_CONTRIBUTE_SUPPORTED, {
+  isAcSupported
+})
+
 export const getAutoContributeProperties = () => action(types.GET_AUTO_CONTRIBUTE_PROPERTIES)
 
 export const onAutoContributeProperties = (properties: any) => action(types.ON_AUTO_CONTRIBUTE_PROPERTIES, {

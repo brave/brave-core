@@ -849,6 +849,11 @@ void RewardsServiceImpl::OnEngineInitialized(mojom::Result result) {
   }
 }
 
+void RewardsServiceImpl::IsAutoContributeSupported(
+    base::OnceCallback<void(bool)> callback) {
+  IsAutoContributeSupportedForClient(std::move(callback));
+}
+
 void RewardsServiceImpl::GetAutoContributeProperties(
     GetAutoContributePropertiesCallback callback) {
   if (!Connected()) {
@@ -1536,9 +1541,15 @@ void RewardsServiceImpl::ClearState(const std::string& name,
   std::move(callback).Run();
 }
 
-void RewardsServiceImpl::IsBitFlyerRegion(IsBitFlyerRegionCallback callback) {
-  return std::move(callback).Run(GetExternalWalletType() ==
-                                 internal::constant::kWalletBitflyer);
+void RewardsServiceImpl::GetClientCountryCode(
+    GetClientCountryCodeCallback callback) {
+  std::move(callback).Run(GetCountryCode());
+}
+
+void RewardsServiceImpl::IsAutoContributeSupportedForClient(
+    IsAutoContributeSupportedForClientCallback callback) {
+  const auto country_code = GetCountryCode();
+  std::move(callback).Run(country_code != "JP" && country_code != "IN");
 }
 
 void RewardsServiceImpl::GetPublisherMinVisitTime(
@@ -2256,11 +2267,6 @@ void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
   }
 
   engine_->FetchBalance(std::move(callback));
-}
-
-bool RewardsServiceImpl::IsAutoContributeSupported() const {
-  // Auto-contribute is currently not supported in bitFlyer regions
-  return !IsBitFlyerCountry();
 }
 
 void RewardsServiceImpl::GetLegacyWallet(GetLegacyWalletCallback callback) {

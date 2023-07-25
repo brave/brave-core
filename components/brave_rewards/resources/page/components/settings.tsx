@@ -138,6 +138,7 @@ export function Settings () {
     actions.getCountryCode()
     actions.getRewardsParameters()
     actions.getContributionAmount()
+    actions.getIsAutoContributeSupported()
     actions.getAutoContributeProperties()
     actions.getBalance()
     actions.fetchPromotions()

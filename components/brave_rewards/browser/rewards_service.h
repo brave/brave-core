@@ -241,6 +241,8 @@ class RewardsService : public KeyedService {
       const std::string& publisher_key,
       bool exclude) = 0;
   virtual RewardsNotificationService* GetNotificationService() const = 0;
+  virtual void IsAutoContributeSupported(
+      base::OnceCallback<void(bool)> callback) = 0;
   virtual void GetAutoContributeProperties(
       GetAutoContributePropertiesCallback callback) = 0;
 
@@ -300,8 +302,6 @@ class RewardsService : public KeyedService {
       GetShareURLCallback callback) = 0;
 
   virtual void FetchBalance(FetchBalanceCallback callback) = 0;
-
-  virtual bool IsAutoContributeSupported() const = 0;
 
   virtual void GetExternalWallet(GetExternalWalletCallback callback) = 0;
 

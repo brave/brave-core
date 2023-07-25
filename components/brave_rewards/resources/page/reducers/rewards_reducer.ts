@@ -37,6 +37,15 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state.userType = userTypeFromMojo(action.payload.userType)
       break
     }
+    case types.GET_IS_AUTO_CONTRIBUTE_SUPPORTED: {
+      chrome.send('brave_rewards.isAutoContributeSupported')
+      break
+    }
+    case types.ON_IS_AUTO_CONTRIBUTE_SUPPORTED: {
+      state = { ...state }
+      state.isAcSupported = action.payload.isAcSupported
+      break
+    }
     case types.GET_AUTO_CONTRIBUTE_PROPERTIES: {
       chrome.send('brave_rewards.getAutoContributeProperties')
       break
