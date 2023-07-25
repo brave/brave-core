@@ -588,6 +588,12 @@ class TabTrayController: LoadingViewController {
 
   @objc func togglePrivateModeAction() {
     tabTraySearchController.isActive = false
+    
+    // Mode Change action disabled while drap-drop is active
+    // Added to prevent Diffable Data source crash
+    if tabTrayView.collectionView.hasActiveDrag || tabTrayView.collectionView.hasActiveDrop {
+      return
+    }
 
     // Record the slected index before private mode navigation
     if !privateMode {
