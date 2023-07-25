@@ -102,7 +102,7 @@ import {
   signLedgerSolanaTransaction,
   signTrezorTransaction
 } from '../async/hardware'
-import { tokentBalanceAccountKey } from '../../utils/balance-utils';
+import { getAccountBalancesKey } from '../../utils/balance-utils';
 
 type GetAccountTokenCurrentBalanceArg = {
   accountId: BraveWallet.AccountId
@@ -1072,7 +1072,7 @@ export function createWalletApi () {
                     .map((token) => token.contractAddress)
                   if (contracts.length === 0) {
                     return {
-                      [tokentBalanceAccountKey(arg.accountId)]: {
+                      [getAccountBalancesKey(arg.accountId)]: {
                         [arg.chainId]: baseTokenBalances
                       }
                     }
@@ -1091,7 +1091,7 @@ export function createWalletApi () {
                     )
                     if (result.error === BraveWallet.ProviderError.kSuccess) {
                       return {
-                        [tokentBalanceAccountKey(arg.accountId)]: {
+                        [getAccountBalancesKey(arg.accountId)]: {
                           [arg.chainId]: result.balances.reduce(
                             (acc, { balance, contractAddress }) => {
                               const token = arg.tokens.find(
@@ -1135,7 +1135,7 @@ export function createWalletApi () {
 
                   if (result.error === BraveWallet.ProviderError.kSuccess) {
                     return {
-                      [tokentBalanceAccountKey(arg.accountId)]: {
+                      [getAccountBalancesKey(arg.accountId)]: {
                         [arg.chainId]: result.balances.reduce(
                           (acc, balanceResult) => {
                             if (balanceResult.amount) {
@@ -1191,7 +1191,7 @@ export function createWalletApi () {
                 )
 
                 return {
-                  [tokentBalanceAccountKey(arg.accountId)]: {
+                  [getAccountBalancesKey(arg.accountId)]: {
                     [arg.chainId]: combinedBalancesResult
                       .filter((item) => new Amount(item.value).gt(0))
                       .reduce((obj, item) => {
@@ -1324,7 +1324,7 @@ export function createWalletApi () {
             ? ['TokenBalances', 'UNKNOWN_ERROR']
             : args.map((arg) => ({
                 type: 'TokenBalances',
-                id: `${tokentBalanceAccountKey(arg.accountId)}-${arg.coin}-${
+                id: `${getAccountBalancesKey(arg.accountId)}-${arg.coin}-${
                   arg.chainId
                 }`
               }))
