@@ -40,10 +40,7 @@ deps = {
   "third_party/rust/futures_retry/v0_5/crate": "https://github.com/brave-intl/futures-retry.git@2aaaafbc3d394661534d4dbd14159d164243c20e",
   "third_party/rust/kuchiki/v0_8/crate": "https://github.com/brave/kuchiki.git@589eadca2c1d06ddda2919354590bfe1ace88a43",
   "third_party/rust/adblock/v0_7/crate": "https://github.com/brave/adblock-rust.git@0730a439122677ef9900156e08fa577f09396100",
-  "third_party/macholib": {
-    "url": "https://github.com/ronaldoussoren/macholib.git@36a6777ccd0891c5d1b44ba885573d7c90740015",
-    "condition": "checkout_mac",
-  },
+
 }
 
 recursedeps = [
@@ -68,15 +65,6 @@ hooks = [
     'pattern': '.',
     'condition': 'checkout_mac and download_prebuilt_sparkle',
     'action': ['vpython3', 'build/mac/download_sparkle.py', '1.24.3'],
-  },
-  {
-    'name': 'download_cryptography',
-    'pattern': '.',
-    # We don't include this as a DEP because building it from source is painful.
-    # We pin cryptography to a version >=37.0.2 and <38.0.0 to avoid an
-    # incompatibility with our pyOpenSSL version on Android. See:
-    # https://github.com/pyca/cryptography/issues/7126.
-    'action': ['vpython3', '-m', 'pip', '-q', '--disable-pip-version-check', 'install', '-U', '-t', 'third_party/cryptography', 'cryptography==37.0.4'],
   },
   {
     'name': 'wireguard_nt',
