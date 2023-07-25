@@ -892,14 +892,13 @@ public class BraveNewTabPageLayout
 
     @Override
     public void getFeed(boolean isNewContent) {
-        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
-            if (!isNewContent) {
-                mNtpAdapter.setImageCreditAlpha(1f);
-                mNtpAdapter.setNewsLoading(true);
-            }
-            initBraveNewsController();
-            mBraveNewsController.getFeed(feed -> { runFeed(isNewContent, feed); });
-        });
+        if (!isNewContent) {
+            mNtpAdapter.setImageCreditAlpha(1f);
+            mNtpAdapter.setNewsLoading(true);
+        }
+        initBraveNewsController();
+        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK,
+                () -> { mBraveNewsController.getFeed(feed -> { runFeed(isNewContent, feed); }); });
     }
 
     private void runFeed(boolean isNewContent, Feed feed) {
@@ -909,9 +908,13 @@ public class BraveNewTabPageLayout
         }
 
         mFeedHash = feed.hash;
-        mNtpAdapter.notifyItemRangeRemoved(
-                mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount() + 1,
-                mNewsItemsFeedCard.size());
+        int newsItemsFeedCardSize = mNewsItemsFeedCard.size();
+        new Handler(Looper.getMainLooper()).post(() -> {
+            mNtpAdapter.notifyItemRangeRemoved(
+                    mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount() + 1,
+                    newsItemsFeedCardSize);
+        });
+
         mNewsItemsFeedCard.clear();
         BraveNewsUtils.initCurrentAds();
         SharedPreferencesManager.getInstance().writeString(
@@ -1027,30 +1030,32 @@ public class BraveNewTabPageLayout
     }
 
     private void processFeed(boolean isNewContent) {
-        mNtpAdapter.setNewsLoading(false);
-        if (mNewsItemsFeedCard != null && mNewsItemsFeedCard.size() > 0) {
-            mNtpAdapter.notifyItemRangeChanged(
-                    mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount(),
-                    mNtpAdapter.getItemCount() - mNtpAdapter.getStatsCount()
-                            - mNtpAdapter.getTopSitesCount());
-        }
-
-        if (isNewContent) {
-            mPrevVisibleNewsCardPosition = mPrevVisibleNewsCardPosition - 1;
-            setNewContentChanges(false);
-            RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
-            if (manager instanceof LinearLayoutManager) {
-                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) manager;
-                linearLayoutManager.scrollToPositionWithOffset(
-                        mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount() + 1,
-                        dpToPx(mActivity, 60));
+        new Handler(Looper.getMainLooper()).post(() -> {
+            mNtpAdapter.setNewsLoading(false);
+            if (mNewsItemsFeedCard != null && mNewsItemsFeedCard.size() > 0) {
+                mNtpAdapter.notifyItemRangeChanged(
+                        mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount(),
+                        mNtpAdapter.getItemCount() - mNtpAdapter.getStatsCount()
+                                - mNtpAdapter.getTopSitesCount());
             }
-        }
-        try {
-            BraveActivity.getBraveActivity().setComesFromNewTab(false);
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "processFeed " + e);
-        }
+
+            if (isNewContent) {
+                mPrevVisibleNewsCardPosition = mPrevVisibleNewsCardPosition - 1;
+                setNewContentChanges(false);
+                RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
+                if (manager instanceof LinearLayoutManager) {
+                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) manager;
+                    linearLayoutManager.scrollToPositionWithOffset(
+                            mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount() + 1,
+                            dpToPx(mActivity, 60));
+                }
+            }
+            try {
+                BraveActivity.getBraveActivity().setComesFromNewTab(false);
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
+                Log.e(TAG, "processFeed " + e);
+            }
+        });
     }
 
     private void setNewContentChanges(boolean isNewContent) {
