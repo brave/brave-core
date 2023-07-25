@@ -68,3 +68,5 @@ export const removedFungibleTokenIds = ({ wallet }: State) =>
   wallet.removedFungibleTokenIds
 export const removedNonFungibleTokenIds = ({ wallet }: State) =>
   wallet.removedNonFungibleTokenIds
+export const isRefreshingNetworksAndTokens = ({ wallet }: State) =>
+  wallet.isRefreshingNetworksAndTokens

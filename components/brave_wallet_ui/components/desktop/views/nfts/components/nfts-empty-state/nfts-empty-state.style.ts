@@ -76,3 +76,4 @@ export const DisclaimerText = styled.p`
   color: ${p => p.theme.color.text03};
   margin: 0;
 `
+

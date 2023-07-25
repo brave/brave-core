@@ -63,6 +63,7 @@ import { networkEntityAdapter } from '../../../../../common/slices/entities/netw
 import {
   TokenBalancesRegistry
 } from '../../../../../common/slices/entities/token-balance.entity'
+import { NftGridViewItemSkeleton } from '../../portfolio/components/nft-grid-view/nft-grid-view-item-skeleton'
 
 interface Props {
   networks: BraveWallet.NetworkInfo[]
@@ -85,6 +86,8 @@ export const Nfts = (props: Props) => {
   const isNftPinningFeatureEnabled = useSafeWalletSelector(WalletSelectors.isNftPinningFeatureEnabled)
   const hiddenNfts = useUnsafeWalletSelector(WalletSelectors.removedNonFungibleTokens)
   const selectedGroupAssetsByItem = useSafeWalletSelector(WalletSelectors.selectedGroupAssetsByItem)
+  const assetAutoDiscoveryCompleted = useSafeWalletSelector(WalletSelectors.assetAutoDiscoveryCompleted)
+  const isRefreshingTokens = useSafeWalletSelector(WalletSelectors.isRefreshingNetworksAndTokens)
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
@@ -262,6 +265,7 @@ export const Nfts = (props: Props) => {
                   onSelectAsset={() => onSelectAsset(nft)}
                 />
               ))}
+              {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
             </NftGrid>
           </AssetGroupContainer>
         )}
@@ -292,6 +296,7 @@ export const Nfts = (props: Props) => {
                   onSelectAsset={() => onSelectAsset(nft)}
                 />
               ))}
+              {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
             </NftGrid>
           </AssetGroupContainer>
         )}
@@ -317,8 +322,14 @@ export const Nfts = (props: Props) => {
               onSelectAsset={() => onSelectAsset(nft)}
             />
           ))}
+          {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
         </NftGrid>
   }, [listUiByAccounts, listUiByNetworks, selectedGroupAssetsByItem, renderedList])
+
+  // effects
+  React.useEffect(() => {
+    dispatch(WalletActions.refreshNetworksAndTokens({}))
+  }, [assetAutoDiscoveryCompleted])
 
   return (
     <>
@@ -409,6 +420,7 @@ export const Nfts = (props: Props) => {
         {nftList.length === 0 && hiddenNfts.length === 0 ? (
           isNftAutoDiscoveryEnabled ? (
             <AutoDiscoveryEmptyState
+              isRefreshingTokens={isRefreshingTokens}
               onImportNft={toggleShowAddNftModal}
               onRefresh={onRefresh}
             />

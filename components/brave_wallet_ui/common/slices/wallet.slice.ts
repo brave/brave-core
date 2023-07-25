@@ -144,7 +144,8 @@ const defaultState: WalletState = {
   showNetworkLogoOnNfts:
     window.localStorage.getItem(
       LOCAL_STORAGE_KEYS.SHOW_NETWORK_LOGO_ON_NFTS
-    ) === 'true'
+    ) === 'true',
+  isRefreshingNetworksAndTokens: false
 }
 
 // async actions
@@ -259,7 +260,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.hasIncorrectPassword = payload
       },
 
-      initialized (state: WalletState, { payload }: PayloadAction<WalletInitializedPayload>) {
+      initialized(
+        state: WalletState,
+        { payload }: PayloadAction<WalletInitializedPayload>
+      ) {
         state.hasInitialized = true
         state.accounts = payload.allAccounts.accounts
         state.isWalletCreated = payload.walletInfo.isWalletCreated
@@ -268,8 +272,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isBitcoinEnabled = payload.walletInfo.isBitcoinEnabled
         state.isWalletLocked = payload.walletInfo.isWalletLocked
         state.isWalletBackedUp = payload.walletInfo.isWalletBackedUp
-        state.isNftPinningFeatureEnabled = payload.walletInfo.isNftPinningFeatureEnabled
-        state.isPanelV2FeatureEnabled = payload.walletInfo.isPanelV2FeatureEnabled
+        state.isNftPinningFeatureEnabled =
+          payload.walletInfo.isNftPinningFeatureEnabled
+        state.isPanelV2FeatureEnabled =
+          payload.walletInfo.isPanelV2FeatureEnabled
       },
 
       portfolioTimelineUpdated(
@@ -331,7 +337,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isMetaMaskInstalled = payload
       },
 
-      setOnRampCurrencies (state: WalletState, { payload }: PayloadAction<BraveWallet.OnRampCurrency[]>) {
+      setOnRampCurrencies(
+        state: WalletState,
+        { payload }: PayloadAction<BraveWallet.OnRampCurrency[]>
+      ) {
         state.onRampCurrencies = payload
       },
 
@@ -342,7 +351,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.passwordAttempts = payload
       },
 
-      setSelectedAssetFilterItem(state: WalletState, { payload }: PayloadAction<string>) {
+      setSelectedAssetFilterItem(
+        state: WalletState,
+        { payload }: PayloadAction<string>
+      ) {
         state.selectedAssetFilter = payload
       },
 
@@ -463,6 +475,12 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
           }
         })
       },
+      setIsRefreshingNetworksAndTokens: (
+        state: WalletState,
+        { payload }: PayloadAction<boolean>
+      ) => {
+        state.isRefreshingNetworksAndTokens = payload
+      }
     },
     extraReducers: (builder) => {
       builder.addCase(WalletAsyncActions.locked.type, (state) => {

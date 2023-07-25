@@ -977,5 +977,6 @@ provideStrings({
   braveWalletAutoDiscoveryEmptyStateHeading: 'No NFTs to display',
   braveWalletAutoDiscoveryEmptyStateSubHeading: 'Once an NFT is detected, it\’ll be displayed here.',
   braveWalletAutoDiscoveryEmptyStateFooter: 'Can\’t see your NFTs?',
-  braveWalletAutoDiscoveryEmptyStateActions: '$1Refresh$2 or $3Import Manually$4'
+  braveWalletAutoDiscoveryEmptyStateActions: '$1Refresh$2 or $3Import Manually$4',
+  braveWalletAutoDiscoveryEmptyStateRefresh: 'Refreshing' 
 })

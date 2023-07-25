@@ -1309,7 +1309,9 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletAutoDiscoveryEmptyStateFooter",
      IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_FOOTER},
     {"braveWalletAutoDiscoveryEmptyStateActions",
-     IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_ACTIONS}};
+     IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_ACTIONS},
+    {"braveWalletAutoDiscoveryEmptyStateRefresh",
+     IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_REFRESH}};
 
 // 0x swap constants
 constexpr char kGoerliSwapBaseAPIURL[] = "https://goerli.api.0x.org/";
