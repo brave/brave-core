@@ -85,7 +85,9 @@ void PlaylistTabHelper::RemoveItems(std::vector<mojom::PlaylistItemPtr> items) {
 void PlaylistTabHelper::MoveItems(std::vector<mojom::PlaylistItemPtr> items,
                                   mojom::PlaylistPtr target_playlist) {
   for (const auto& item : items) {
-    DCHECK_EQ(item->parents.size(), 1u);
+    CHECK_EQ(item->parents.size(), 1u)
+        << "In case an item belongs to the multiple parent playlists, this "
+           "method shouldn't be used.";
     service_->MoveItem(/*from=*/item->parents.at(0),
                        /*to=*/*(target_playlist->id), item->id);
   }

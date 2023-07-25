@@ -294,8 +294,9 @@ SkColor GetOmniboxResultBackground(int id, bool dark, bool priv) {
 void AddBravifiedChromeThemeColorMixer(
     ui::ColorProvider* provider,
     const ui::ColorProviderManager::Key& key) {
-  if (key.custom_theme)
+  if (key.custom_theme) {
     return;
+  }
 
   key.color_mode == ui::ColorProviderManager::ColorMode::kDark
       ? AddChromeDarkThemeColorMixer(provider, key)
@@ -391,7 +392,7 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    playlist::AddLightThemeColorMixer(provider, key);
+    playlist::AddThemeColorMixer(provider, leo::Theme::kLight, key);
   }
 #endif
 }
@@ -483,7 +484,7 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    playlist::AddDarkThemeColorMixer(provider, key);
+    playlist::AddThemeColorMixer(provider, leo::Theme::kDark, key);
   }
 #endif
 }

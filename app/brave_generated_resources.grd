@@ -1189,7 +1189,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Playlist name
         </message>
         <message name="IDS_PLAYLIST_MOVE_MEDIA_DIALOG_SELECTED_ITEMS" desc="Shows how many items are about to be moved">
-          <ph name="NUM_ITEMS">$1<ex>4</ex></ph> selected
+          <ph name="NUM_ITEMS">$1<ex>4</ex></ph> items selected
         </message>
       </if>
 
