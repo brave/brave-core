@@ -4,7 +4,7 @@
     "browser-type": "chrome.no-trials",
     "profile": "chrome-typical-win-114",
     "extra-browser-args": [],
-    "extra-benchmark-args": [],
+    "extra-browser-args": ["--disable-features=CalculateNativeWinOcclusion"],
     "save-artifacts": true,
   }],
   "benchmarks": [
