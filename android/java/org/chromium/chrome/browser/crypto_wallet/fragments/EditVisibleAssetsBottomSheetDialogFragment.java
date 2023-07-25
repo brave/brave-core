@@ -40,7 +40,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
@@ -90,7 +89,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     private OnEditVisibleItemClickListener mOnEditVisibleItemClickListener;
     private List<NetworkInfo> mCryptoNetworks;
     private UserAssetModel mUserAssetModel;
-    private boolean isEditVisibleAssetType;
+    private final boolean isEditVisibleAssetType;
     private Spinner mNetworkSp;
     private NetworkSpinnerAdapter mNetworkAdapter;
     private ArrayList<NetworkInfo> mSpinnerNetworks;
@@ -129,15 +128,6 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         Activity activity = getActivity();
         if (activity instanceof BraveWalletBaseActivity) {
             return ((BraveWalletBaseActivity) activity).getBlockchainRegistry();
-        }
-
-        return null;
-    }
-
-    private AssetRatioService getAssetRatioService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletBaseActivity) {
-            return ((BraveWalletBaseActivity) activity).getAssetRatioService();
         }
 
         return null;
@@ -198,6 +188,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     }
 
     @Override
+    @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
@@ -214,18 +205,15 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         keyringService.addObserver(mKeyringServiceObserver);
 
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialogInterface) {
-                BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) dialogInterface;
-                setupFullHeight(bottomSheetDialog);
-            }
+        dialog.setOnShowListener(dialogInterface -> {
+            BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) dialogInterface;
+            setupFullHeight(bottomSheetDialog);
         });
         return dialog;
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog) {
+    public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
         if (mDismissListener != null) {
             mDismissListener.onDismiss(mIsAssetsListChanged);
@@ -237,9 +225,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     }
 
     private void setupFullHeight(BottomSheetDialog bottomSheetDialog) {
-        FrameLayout bottomSheet =
-                (FrameLayout) bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
-        BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
+        FrameLayout bottomSheet = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
+        BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
         ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
 
         int windowHeight = getWindowHeight();
@@ -253,7 +240,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     private int getWindowHeight() {
         // Calculate window height for fullscreen use
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         return displayMetrics.heightPixels;
     }
 
@@ -270,13 +257,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         addCustomAsset.setText(
                 mNftsOnly ? R.string.wallet_add_nft : R.string.wallet_add_custom_asset);
         if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
-            addCustomAsset.setOnClickListener(clickView -> showAddAssetDialog());
-            saveAssets.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View clickView) {
-                    dismiss();
-                }
-            });
+            addCustomAsset.setOnClickListener(clickView -> showAddAssetActivity());
+            saveAssets.setOnClickListener(clickView -> dismiss());
         } else {
             saveAssets.setVisibility(View.GONE);
             addCustomAsset.setVisibility(View.GONE);
@@ -368,14 +350,14 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                 });
     }
 
-    private void showAddAssetDialog() {
+    private void showAddAssetActivity() {
         Intent addAssetIntent = AddAssetActivity.getIntent(requireContext(), mNftsOnly);
         mAddAssetActivityResultLauncher.launch(addAssetIntent);
     }
 
     private void setUpAssetsList(
             View view, List<BlockchainToken> tokens, List<BlockchainToken> userSelectedTokens) {
-        HashSet<String> selectedTokensSymbols = new HashSet<String>();
+        HashSet<String> selectedTokensSymbols = new HashSet<>();
         for (BlockchainToken userSelectedToken : userSelectedTokens) {
             selectedTokensSymbols.add(Utils.tokenToString(userSelectedToken));
         }
@@ -409,7 +391,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         mWalletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
         rvAssets.setAdapter(mWalletCoinAdapter);
         rvAssets.setLayoutManager(new LinearLayoutManager(getActivity()));
-        SearchView searchView = (SearchView) view.findViewById(R.id.searchView);
+        SearchView searchView = view.findViewById(R.id.searchView);
         searchView.setQueryHint(getText(R.string.search_tokens));
         searchView.setIconified(false);
         searchView.clearFocus();
@@ -450,27 +432,23 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
 
     @Override
     public void onTrashIconClick(WalletListItemModel walletListItemModel) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle(R.string.wallet_remove_custom_asset);
         builder.setMessage(String.format(getString(R.string.wallet_remove_custom_asset_desc),
                 walletListItemModel.getBlockchainToken().name,
                 walletListItemModel.getBlockchainToken().symbol));
 
-        builder.setPositiveButton(
-                R.string.wallet_remove_custom_asset_yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        BraveWalletService braveWalletService = getBraveWalletService();
-                        assert braveWalletService != null;
-                        braveWalletService.removeUserAsset(
-                                walletListItemModel.getBlockchainToken(), (success) -> {
-                                    if (success) {
-                                        mWalletCoinAdapter.removeItem(walletListItemModel);
-                                        mIsAssetsListChanged = true;
-                                    }
-                                });
-                    }
-                });
+        builder.setPositiveButton(R.string.wallet_remove_custom_asset_yes, (dialog, id) -> {
+            BraveWalletService braveWalletService = getBraveWalletService();
+            assert braveWalletService != null;
+            braveWalletService.removeUserAsset(
+                    walletListItemModel.getBlockchainToken(), (success) -> {
+                        if (success) {
+                            mWalletCoinAdapter.removeItem(walletListItemModel);
+                            mIsAssetsListChanged = true;
+                        }
+                    });
+        });
         builder.setNegativeButton(R.string.wallet_remove_custom_asset_no, null);
         AlertDialog alert = builder.create();
         alert.show();
@@ -514,7 +492,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                     //    3. It is not user added (i.e. doesn't have a token id)
                     if (thisToken.isErc721 && !isCustom
                             && (thisToken.tokenId == null || thisToken.tokenId.trim().isEmpty())) {
-                        showAddAssetDialog();
+                        showAddAssetActivity();
                         walletListItemModel.setIsUserSelected(
                                 false); // The added token is different from the listed one
                         itemCheckboxConsistency(walletListItemModel, assetCheck, isChecked);
@@ -529,16 +507,14 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                                     if (success) {
                                         walletListItemModel.setIsUserSelected(true);
                                     }
-                                    itemCheckboxConsistency(
-                                            walletListItemModel, assetCheck, isChecked);
+                                    itemCheckboxConsistency(walletListItemModel, assetCheck, true);
                                 });
                             } else {
                                 braveWalletService.removeUserAsset(thisToken, (success) -> {
                                     if (success) {
                                         walletListItemModel.setIsUserSelected(false);
                                     }
-                                    itemCheckboxConsistency(
-                                            walletListItemModel, assetCheck, isChecked);
+                                    itemCheckboxConsistency(walletListItemModel, assetCheck, false);
                                 });
                             }
                         } else {
