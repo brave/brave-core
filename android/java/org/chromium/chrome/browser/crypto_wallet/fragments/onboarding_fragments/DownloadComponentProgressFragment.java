@@ -21,18 +21,15 @@ import org.chromium.chrome.browser.component_updater.BraveComponentUpdater;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletDataFilesInstaller;
 
 /**
- * A fragment to display progress of BraveWallet component download.
- * Used on all Brave Wallet Onboarding framgents.
+ * A fragment to display progress of Brave Wallet data files component
+ * download. Used on all Brave Wallet Onboarding framgents.
  */
 public class DownloadComponentProgressFragment extends Fragment {
-    private static final String TAG = "DWCPF";
+    private static final String TAG = "DCPF";
     private static final String WALLET_COMPONENT_ID =
             WalletDataFilesInstaller.getWalletDataFilesComponentId();
     private TextView mComponentDownloadProgress;
     private BraveComponentUpdater.ComponentUpdaterListener mComponentUpdaterListener;
-    // On fast internet connection download goes very fast, and the text view can be
-    // shown for only ~0.3 sec which doesn't have much sense and looks strange.
-    // Will use the timer and don't display text view for 1 sec.
     private ElapsedRealtimeMillisTimer mGracePeriodNoDisplayTimer;
     private static final long GRACE_NO_DISPLAY_MSEC = 1000;
 
@@ -93,6 +90,10 @@ public class DownloadComponentProgressFragment extends Fragment {
             return;
         }
 
+        // On fast internet connection download goes quickly, and the text view can be
+        // shown for only ~0.3 sec, that doesn't have much sense and may look strange.
+        // We will use the timer and don't display text view for 1 sec so if it
+        // complete in 1 sec - we will not show it at all.
         if (mGracePeriodNoDisplayTimer == null) {
             mGracePeriodNoDisplayTimer = new ElapsedRealtimeMillisTimer();
         }

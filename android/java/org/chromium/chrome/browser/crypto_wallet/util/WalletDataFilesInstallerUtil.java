@@ -9,7 +9,7 @@ import org.chromium.base.annotations.CalledByNative;
 
 /**
  * Class that is used by wallet_data_files_installer.cc to determine, do we need to download
- * Brave Wallet data files component on Android
+ * Brave Wallet data files component on Android at startup
  */
 public class WalletDataFilesInstallerUtil {
     @CalledByNative

@@ -29,7 +29,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletDataFilesInstaller;
 
 /**
- * Fragment to display progress of Brave Wallet data files component
+ * Fragment to setup Brave Wallet
  */
 public class SetupWalletFragment extends CryptoOnboardingFragment {
     private static final String TAG = "SetupWalletFragment";

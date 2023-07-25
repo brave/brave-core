@@ -9,9 +9,6 @@
 
 #include "base/android/jni_android.h"
 #include "brave/build/android/jni_headers/WalletDataFilesInstallerUtil_jni.h"
-#include "build/build_config.h"
-
-static_assert BUILDFLAG(IS_ANDROID);
 
 namespace brave_wallet {
 

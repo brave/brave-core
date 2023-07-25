@@ -107,11 +107,11 @@ public class BraveComponentUpdater {
         public static final int STATUS_UPDATING = 7;
         public static final int STATUS_UPDATED = 8;
         public static final int STATUS_UP_TO_DATE = 9;
-        public static final int STATUS_UPDATEERROR = 10;
+        public static final int STATUS_UPDATE_ERROR = 10;
         public static final int STATUS_UNINSTALLED = 11;
         public static final int STATUS_REGISTRATION = 12;
         public static final int STATUS_RUN = 13;
-        public static final int STATUS_LASTSTATUS = 14;
+        public static final int STATUS_LAST_STATUS = 14;
 
         public String mId;
         public long mDownloadedBytes = -1;

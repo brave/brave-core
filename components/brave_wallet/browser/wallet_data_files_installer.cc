@@ -304,7 +304,6 @@ class WalletDataFilesInstallerPolicy
 
  private:
   scoped_refptr<base::SequencedTaskRunner> sequenced_task_runner_;
-
   // The following methods override ComponentInstallerPolicy.
   bool SupportsGroupPolicyEnabledComponentUpdates() const override;
   bool RequiresNetworkEncryption() const override;
