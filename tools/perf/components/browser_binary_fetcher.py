@@ -82,13 +82,23 @@ def _InstallApk(apk_path: str, browser_type: BrowserType,
   GetProcessOutput([adb, 'uninstall', package])
   GetProcessOutput([adb, 'install', apk_path], check=True)
 
+  # grant the permissions to prevent showing popup
   GetProcessOutput([
       adb, 'shell', 'pm', 'grant', package,
       'android.permission.POST_NOTIFICATIONS'
   ],
                    check=True)
 
-  if browser_type.GetName().startswith('brave'):
+  # stop all the other browsers to avoid an interference.
+  GetProcessOutput([
+      adb, 'shell',
+      ('ps -o NAME -A' +
+       '| grep -e com.brave -e com.chrome -e com.chromium -e android.chrome' +
+       '| xargs -r -n 1 am force-stop')
+  ],
+                   check=True)
+
+  if browser_type.name.startswith('brave'):
     version = 'v' + _GetPackageVersion(package)
     if version != tag.__str__():
       raise RuntimeError(f'Version mismatch: tag {tag}, installed {version}')

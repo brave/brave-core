@@ -3,7 +3,7 @@
     "dashboard-bot-name": "test-agent",
     "browser-type": "brave",
     "profile": "brave-typical-win-v1.55.98",
-    "extra-browser-args": [],
+    "extra-browser-args": ["--disable-features=CalculateNativeWinOcclusion"],
     "extra-benchmark-args": [],
     "save-artifacts": true,
   }],
