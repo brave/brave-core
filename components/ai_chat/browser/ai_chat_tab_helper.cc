@@ -432,8 +432,8 @@ std::string AIChatTabHelper::BuildLlama2Prompt(std::string user_message) {
 std::string AIChatTabHelper::BuildLlama2InstructionPrompt(
     const std::string& instruction) {
   return base::ReplaceStringPlaceholders(
-      R"( $1 $2 $3 )",
-      {ai_chat::kLlama2BIns, instruction, ai_chat::kLlama2EIns}, nullptr);
+      R"($1 $2 $3 )", {ai_chat::kLlama2BIns, instruction, ai_chat::kLlama2EIns},
+      nullptr);
 }
 
 std::string AIChatTabHelper::BuildLlama2GenerateQuestionsPrompt(
