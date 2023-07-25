@@ -98,8 +98,7 @@ export default function PlayerControls ({ videoElement, className }: Props) {
       <div>
         <Control iconName='autoplay-off' onClick={() => {}}></Control>
         <Control iconName='shuffle-on' onClick={() => {}}></Control>
-        {/* TODO(sko) this icon could be changed to sidepanel-open */}
-        <Control iconName='playlist-open-side' onClick={() => {}}></Control>
+        <Control iconName='sidepanel-open' onClick={() => {}}></Control>
         <Control
           iconName='picture-in-picture'
           onClick={() => videoElement?.requestPictureInPicture()}
