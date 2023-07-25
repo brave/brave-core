@@ -412,7 +412,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                 std::string::npos);
   }
 
-  // Check wheter window.braveEthereum is installed
+  // Check whether window.braveEthereum is installed
   {
     std::string command = "window.braveEthereum.isBraveWallet";
     EXPECT_EQ(base::Value(true),

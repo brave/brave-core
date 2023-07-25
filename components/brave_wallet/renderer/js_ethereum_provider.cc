@@ -150,8 +150,7 @@ bool JSEthereumProvider::EnsureConnected() {
 }
 
 // static
-void JSEthereumProvider::Install(bool install_brave_ethereum_provider,
-                                 bool install_ethereum_provider,
+void JSEthereumProvider::Install(bool install_ethereum_provider,
                                  bool allow_overwrite_window_ethereum_provider,
                                  content::RenderFrame* render_frame) {
   v8::Isolate* isolate = blink::MainThreadIsolate();
@@ -161,12 +160,19 @@ void JSEthereumProvider::Install(bool install_brave_ethereum_provider,
   if (context.IsEmpty()) {
     return;
   }
+
   v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
 
-  // Check window.ethereum existence.
+  // Check window.braveEthereum existence.
   v8::Local<v8::Object> global = context->Global();
+  v8::Local<v8::Value> brave_ethereum_value =
+      global->Get(context, gin::StringToV8(isolate, kBraveEthereum))
+          .ToLocalChecked();
+  if (!brave_ethereum_value->IsUndefined()) {
+    return;
+  }
 
   gin::Handle<JSEthereumProvider> provider =
       gin::CreateHandle(isolate, new JSEthereumProvider(render_frame));
@@ -197,6 +203,10 @@ void JSEthereumProvider::Install(bool install_brave_ethereum_provider,
     return;
   }
 
+  // Set window.braveEthereum
+  SetProviderNonWritable(context, global, ethereum_proxy,
+                         gin::StringToV8(isolate, kBraveEthereum), true);
+
   // Set window.ethereumProvider
   {
     v8::Local<v8::Value> ethereum_value =
@@ -212,17 +222,6 @@ void JSEthereumProvider::Install(bool install_brave_ethereum_provider,
                   ethereum_proxy)
             .Check();
       }
-    }
-  }
-
-  {
-    v8::Local<v8::Value> brave_ethereum_value =
-        global->Get(context, gin::StringToV8(isolate, kBraveEthereum))
-            .ToLocalChecked();
-    if (install_brave_ethereum_provider &&
-        brave_ethereum_value->IsUndefined()) {
-      SetProviderNonWritable(context, global, ethereum_proxy,
-                             gin::StringToV8(isolate, kBraveEthereum), true);
     }
   }
 
