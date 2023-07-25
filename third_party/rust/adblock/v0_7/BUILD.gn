@@ -14,7 +14,7 @@ cargo_crate("lib") {
   build_native_rust_unit_tests = false
   sources = [ "crate/src/lib.rs" ]
   edition = "2018"
-  cargo_pkg_version = "0.7.15"
+  cargo_pkg_version = "0.7.16"
   cargo_pkg_authors =
       "Andrius Aucinas <aaucinas@brave.com>, Anton Lazarev <alazarev@brave.com>"
   cargo_pkg_name = "adblock"
