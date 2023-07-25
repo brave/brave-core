@@ -73,10 +73,10 @@ hooks = [
     'name': 'download_cryptography',
     'pattern': '.',
     # We don't include this as a DEP because building it from source is painful.
-    # We pin `cryptography>=37.0.2,<38.0.0` to avoid an incompatibility with our
-    # pyOpenSSL version on Android. See:
+    # We pin cryptography to a version >=37.0.2 and <38.0.0 to avoid an
+    # incompatibility with our pyOpenSSL version on Android. See:
     # https://github.com/pyca/cryptography/issues/7126.
-    'action': ['vpython3', '-m', 'pip', '-q', '--disable-pip-version-check', 'install', '-U', '-t', 'third_party/cryptography', 'cryptography>=37.0.2,<38.0.0'],
+    'action': ['vpython3', '-m', 'pip', '-q', '--disable-pip-version-check', 'install', '-U', '-t', 'third_party/cryptography', 'cryptography==37.0.4'],
   },
   {
     'name': 'wireguard_nt',
