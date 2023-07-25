@@ -361,35 +361,55 @@ std::string AIChatTabHelper::BuildClaudePrompt(const std::string& question_part,
   return prompt;
 }
 
-std::string AIChatTabHelper::BuildLlama2Prompt(
-    const std::string& user_message) {
-  std::string system_message;
-  if (article_text_.empty()) {
-    system_message =
-        l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC);
-  } else if (is_video_) {
-    system_message = base::ReplaceStringPlaceholders(
-        l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_VIDEO),
-        {article_text_}, nullptr);
-  } else {
-    system_message = base::ReplaceStringPlaceholders(
-        l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_ARTICLE),
-        {article_text_}, nullptr);
-  }
+std::string AIChatTabHelper::BuildLlama2Prompt(std::string user_message) {
+  // Always use a generic system message
+  std::string system_message =
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC);
 
   auto conversation_history = GetConversationHistory();
+
+  // Get the raw first user message, which is in the chat history if this is
+  // the first sequence.
+  std::string raw_first_user_message;
+  if (conversation_history.size() > 0) {
+    raw_first_user_message = conversation_history[0].text;
+  } else {
+    raw_first_user_message = user_message;
+  }
+
+  // Build first_user_message, the first complete message sent to the AI model,
+  // which may or may not include injected contents such as article text.
+  std::string first_user_message;
+  if (!article_text_.empty()) {
+    std::string first_message_template;
+    if (is_video_) {
+      first_message_template =
+          l10n_util::GetStringUTF8(IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT_LLAMA2);
+    } else {
+      first_message_template =
+          l10n_util::GetStringUTF8(IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT_LLAMA2);
+    }
+
+    first_user_message = base::ReplaceStringPlaceholders(
+        first_message_template, {article_text_, raw_first_user_message},
+        nullptr);
+  } else {
+    // If there's no article or video context, just use the raw first user
+    // message.
+    first_user_message = raw_first_user_message;
+  }
+
   // If there's no conversation history, then we just send a (partial)
   // first sequence.
   if (conversation_history.size() == 0) {
-    return BuildLlama2FirstSequence(system_message, user_message,
+    return BuildLlama2FirstSequence(system_message, first_user_message,
                                     absl::nullopt);
   }
 
   // Use the first two messages to build the first sequence,
   // which includes the system prompt.
-  std::string prompt =
-      BuildLlama2FirstSequence(system_message, conversation_history[0].text,
-                               conversation_history[1].text);
+  std::string prompt = BuildLlama2FirstSequence(
+      system_message, first_user_message, conversation_history[1].text);
 
   // Loop through the rest of the history two at a time building subsequent
   // sequences.

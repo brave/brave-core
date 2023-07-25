@@ -117,7 +117,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
                         const gfx::Image& image) override;
   std::string BuildClaudePrompt(const std::string& question_part,
                                 bool is_suggested_question);
-  std::string BuildLlama2Prompt(const std::string& user_message);
+  std::string BuildLlama2Prompt(std::string user_message);
   std::string BuildLlama2FirstSequence(
       const std::string& system_message,
       const std::string& user_message,
