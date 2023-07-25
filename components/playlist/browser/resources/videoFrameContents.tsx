@@ -8,10 +8,6 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 
-import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
-import Theme from 'brave-ui/theme/brave-default'
-import DarkTheme from 'brave-ui/theme/brave-dark'
-
 import store from './store'
 
 import Player from './components/player'
@@ -22,14 +18,10 @@ import '@brave/leo/tokens/css/variables.css'
 function initialize () {
   render(
     <Provider store={store}>
-      <BraveCoreThemeProvider
-        dark={DarkTheme}
-        light={Theme}
-      >
-        <Player />
-      </BraveCoreThemeProvider>
+      <Player />
     </Provider>,
-    document.getElementById('root'))
+    document.getElementById('root')
+  )
 }
 
 startReceivingAPIRequest()
