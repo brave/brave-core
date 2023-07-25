@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import org.chromium.base.TimeUtils.ElapsedRealtimeMillisTimer;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.component_updater.BraveComponentUpdater;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletDataFilesInstaller;
@@ -28,7 +29,12 @@ public class DownloadComponentProgressFragment extends Fragment {
     private static final String WALLET_COMPONENT_ID =
             WalletDataFilesInstaller.getWalletDataFilesComponentId();
     private TextView mComponentDownloadProgress;
-    BraveComponentUpdater.ComponentUpdaterListener mComponentUpdaterListener;
+    private BraveComponentUpdater.ComponentUpdaterListener mComponentUpdaterListener;
+    // On fast internet connection download goes very fast, and the text view can be
+    // shown for only ~0.3 sec which doesn't have much sense and looks strange.
+    // Will use the timer and don't display text view for 1 sec.
+    private ElapsedRealtimeMillisTimer mGracePeriodNoDisplayTimer;
+    private static final long GRACE_NO_DISPLAY_MSEC = 1000;
 
     public DownloadComponentProgressFragment() {}
 
@@ -84,6 +90,14 @@ public class DownloadComponentProgressFragment extends Fragment {
         if (updateItem.mTotalBytes > 0 && updateItem.mDownloadedBytes == updateItem.mTotalBytes
                 || !updateItem.isInProgress()) {
             mComponentDownloadProgress.setVisibility(View.GONE);
+            return;
+        }
+
+        if (mGracePeriodNoDisplayTimer == null) {
+            mGracePeriodNoDisplayTimer = new ElapsedRealtimeMillisTimer();
+        }
+
+        if (mGracePeriodNoDisplayTimer.getElapsedMillis() < GRACE_NO_DISPLAY_MSEC) {
             return;
         }
 
