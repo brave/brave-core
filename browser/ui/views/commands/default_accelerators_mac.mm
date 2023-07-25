@@ -50,6 +50,13 @@ bool CanConvertToAcceleratorMapping(NSMenuItem* item) {
 }
 
 AcceleratorMapping ToAcceleratorMapping(NSMenuItem* item) {
+  if (@available(macos 12.0, *)) {
+    // We can't parse keyEquivalent into keycode properly when it's unicode
+    // character. So before starting parsing, disable l10n for a while.
+    // https://github.com/brave/brave-browser/issues/31770
+    item.allowsAutomaticKeyEquivalentLocalization = NO;
+  }
+
   NSString* keyEquivalent = item.keyEquivalent;
   DVLOG(2) << __FUNCTION__ << item.tag << " > "
            << base::SysNSStringToUTF16(keyEquivalent);
@@ -59,7 +66,7 @@ AcceleratorMapping ToAcceleratorMapping(NSMenuItem* item) {
   // https://source.chromium.org/chromium/chromium/src/+/main:ui/events/keycodes/keyboard_codes_win.h;l=63;drc=3e1a26c44c024d97dc9a4c09bbc6a2365398ca2c
   const unsigned short charCode =
       [[keyEquivalent uppercaseString] characterAtIndex:0];
-  const int keyCode = ui::MacKeyCodeForWindowsKeyCode(
+  const int macKeyCode = ui::MacKeyCodeForWindowsKeyCode(
       static_cast<ui::KeyboardCode>(charCode), /*flags=*/0,
       /*us_keyboard_shifted_character=*/nullptr,
       /*keyboard_character=*/nullptr);
@@ -73,7 +80,7 @@ AcceleratorMapping ToAcceleratorMapping(NSMenuItem* item) {
                                      characters:keyEquivalent
                     charactersIgnoringModifiers:keyEquivalent
                                       isARepeat:NO
-                                        keyCode:keyCode];
+                                        keyCode:macKeyCode];
 
   auto modifiers = ui::EventFlagsFromModifiers(item.keyEquivalentModifierMask);
   if (item.keyEquivalentModifierMask & NSEventModifierFlagFunction) {
@@ -88,6 +95,7 @@ AcceleratorMapping ToAcceleratorMapping(NSMenuItem* item) {
     modifiers |= ui::EF_SHIFT_DOWN;
   }
 
+  const auto command_id = static_cast<int>(item.tag);
   // "Close Tab" and "Close Window" item's shortcuts are statically the same.
   // They are dynamically changed based on the context. e.g. has tab or not,
   // is pwa or not. And also the value is hard coded.
@@ -96,15 +104,21 @@ AcceleratorMapping ToAcceleratorMapping(NSMenuItem* item) {
   // the "Close Window" item.
   // TODO(sko) As the shortcut is hard coded in the file above, we might need to
   // forbid to adjust default key for IDC_CLOSE_TAB and IDC_CLOSE_WINDOW.
-  if (static_cast<int>(item.tag) == IDC_CLOSE_WINDOW &&
+  if (command_id == IDC_CLOSE_WINDOW &&
       (modifiers == ui::EF_COMMAND_DOWN &&
        [keyEquivalent isEqualToString:@"w"])) {
     modifiers |= ui::EF_SHIFT_DOWN;
   }
 
+  if (@available(macos 12.0, *)) {
+    // We can't parse keyEquivalent into keycode properly when it's unicode
+    // character. So before starting parsing, disable l10n for a while.
+    item.allowsAutomaticKeyEquivalentLocalization = YES;
+  }
+
   return {.keycode = ui::KeyboardCodeFromNSEvent(keyEvent),
           .modifiers = modifiers,
-          .command_id = static_cast<int>(item.tag)};
+          .command_id = command_id};
 }
 
 AcceleratorMapping ToAcceleratorMapping(const KeyboardShortcutData& data) {
