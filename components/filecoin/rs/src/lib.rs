@@ -8,6 +8,7 @@ pub mod message;
 pub mod signature;
 use crate::signature::transaction_sign;
 
+#[allow(unsafe_op_in_unsafe_fn)]
 #[cxx::bridge(namespace = filecoin)]
 mod ffi {
     extern "Rust" {
