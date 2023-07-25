@@ -3,17 +3,22 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import logging
+# pylint: disable=too-few-public-methods
+
 import os
 import re
-from typing import Tuple, Optional
+from typing import Optional
 
 import components.path_util as path_util
-from components.browser_type import BrowserType, BraveVersion
+from components.browser_type import BraveVersion, BrowserType
+from components.common_options import CommonOptions
+from components.perf_config import RunnerConfig
+from components.perf_profile import GetProfilePath
 from components.perf_test_utils import GetProcessOutput
 
 with path_util.SysPath(path_util.GetTelemetryDir()):
-  from telemetry.internal.backends import android_browser_backend_settings  # pylint: disable=import-error
+  from telemetry.internal.backends import \
+      android_browser_backend_settings  # pylint: disable=import-error
 
 
 class BrowserBinary:
@@ -21,23 +26,23 @@ class BrowserBinary:
   android_package: Optional[str] = None
   telemetry_browser_type: Optional[str] = None
 
-  @classmethod
-  def from_binary(cls, binary_path: str) -> 'BrowserBinary':
-    binary = BrowserBinary()
-    binary.binary_path = binary_path
-    return binary
+  profile_dir: Optional[str] = None
+  field_trial_config: Optional[str] = None
 
-  @classmethod
-  def from_android_package(cls, android_package: str) -> 'BrowserBinary':
-    binary = BrowserBinary()
-    binary.android_package = android_package
-    for b in android_browser_backend_settings.ANDROID_BACKEND_SETTINGS:
-      if b.package == android_package:
-        binary.telemetry_browser_type = b.browser_type
-    if binary.telemetry_browser_type is None:
-      raise RuntimeError('No matching browser-type found')
-
-    return binary
+  def __init__(self, binary_path: Optional[str], android_package: Optional[str],
+               profile_dir: Optional[str], field_trial_config: Optional[str]):
+    self.binary_path = binary_path
+    self.android_package = android_package
+    self.profile_dir = profile_dir
+    self.field_trial_config = field_trial_config
+    if android_package is not None:
+      for b in android_browser_backend_settings.ANDROID_BACKEND_SETTINGS:
+        if b.package == android_package:
+          self.telemetry_browser_type = b.browser_type
+      if self.telemetry_browser_type is None:
+        raise RuntimeError('No matching browser-type found')
+    else:
+      assert binary_path is not None
 
   def __str__(self) -> str:
     if self.binary_path:
@@ -47,24 +52,14 @@ class BrowserBinary:
     return '<empty>'
 
 
-def ParseTarget(target: str) -> Tuple[Optional[BraveVersion], str]:
-  m = re.match(r'^(v\d+\.\d+\.\d+)(?::(.+)|$)', target)
-  if not m:
-    return None, target
-  tag = BraveVersion(m.group(1))
-  location = m.group(2)
-  logging.debug('Parsed tag: %s, location : %s', tag, location)
-  return tag, location
-
-
 def _GetPackageName(apk_path: str) -> str:
   aapt2 = os.path.join(path_util.GetSrcDir(), 'third_party',
                        'android_build_tools', 'aapt2', 'aapt2')
-  assert (apk_path.endswith('.apk'))
+  assert apk_path.endswith('.apk')
   _, aapt2_info = GetProcessOutput([aapt2, 'dump', 'badging', apk_path],
                                    check=True)
   package_match = re.search(r'package: name=\'((?:\w|\.)+)\'', aapt2_info)
-  assert (package_match is not None)
+  assert package_match is not None
   return package_match.group(1)
 
 
@@ -73,13 +68,13 @@ def _GetPackageVersion(package: str) -> str:
       [path_util.GetAdbPath(), 'shell', 'dumpsys', 'package', package],
       check=True)
   version_match = re.search(r'versionName=((?:\w|\.)+)', dump_info)
-  assert (version_match is not None)
+  assert version_match is not None
   return version_match.group(1)
 
 
 def _InstallApk(apk_path: str, browser_type: BrowserType,
                 tag: Optional[BraveVersion]) -> str:
-  assert (apk_path.endswith('.apk'))
+  assert apk_path.endswith('.apk')
   package = _GetPackageName(apk_path)
 
   adb = path_util.GetAdbPath()
@@ -109,31 +104,40 @@ def _PostInstallAndroidSetup(package: str):
                    check=True)
 
 
-def PrepareBinary(out_dir: str, tag: Optional[BraveVersion],
-                  location: Optional[str], browser_type: BrowserType,
-                  target_os: str) -> BrowserBinary:
+def PrepareBinary(binary_dir: str, artifacts_dir: str, config: RunnerConfig,
+                  common_options: CommonOptions) -> BrowserBinary:
+
+  profile_dir = None
+  if config.profile != 'clean':
+    profile_dir = GetProfilePath(config.profile,
+                                 common_options.working_directory)
+
+  field_trial_config = config.browser_type.MakeFieldTrials(
+      config.tag, artifacts_dir, common_options)
+
   binary_location = None
   package = None
-  if location:  # local binary
-    if os.path.exists(location):
-      binary_location = location
-    elif location.startswith('package:') and target_os == 'android':
-      package = location[len('package:'):]
+  is_android = common_options.target_os == 'android'
+  if config.location:  # local binary
+    if os.path.exists(config.location):
+      binary_location = config.location
+    elif config.location.startswith('package:') and is_android:
+      package = config.location[len('package:'):]
     else:
-      raise RuntimeError(f'{location} doesn\'t exist')
+      raise RuntimeError(f'{config.location} doesn\'t exist')
   else:
-    assert (tag is not None)
-    binary_location = browser_type.DownloadBrowserBinary(
-        tag, out_dir, target_os)
+    assert config.tag is not None
+    binary_location = config.browser_type.DownloadBrowserBinary(
+        config.tag, binary_dir, common_options)
 
-  if target_os != 'android':
-    assert (binary_location)
-    return BrowserBinary.from_binary(binary_location)
+  if not is_android:
+    assert binary_location
+    return BrowserBinary(binary_location, None, profile_dir, field_trial_config)
 
   if package is None:
-    assert (binary_location)
-    assert (binary_location.endswith('.apk'))
-    package = _InstallApk(binary_location, browser_type, tag)
+    assert binary_location
+    assert binary_location.endswith('.apk')
+    package = _InstallApk(binary_location, config.browser_type, config.tag)
 
   _PostInstallAndroidSetup(package)
-  return BrowserBinary.from_android_package(package)
+  return BrowserBinary(None, package, profile_dir, field_trial_config)

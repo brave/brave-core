@@ -5,9 +5,11 @@
 
 # pylint: disable=too-few-public-methods
 
-from typing import List, Optional, Dict
+import logging
+import re
 
-from components.browser_binary_fetcher import ParseTarget
+from typing import List, Optional, Dict, Tuple
+
 from components.browser_type import BrowserType, BraveVersion, ParseBrowserType
 
 
@@ -17,7 +19,6 @@ class RunnerConfig:
   location: Optional[str] = None
   label: Optional[str] = None
   profile = 'clean'
-  rebase_profile = True
   extra_browser_args: List[str] = []
   extra_benchmark_args: List[str] = []
   browser_type: BrowserType
@@ -39,6 +40,16 @@ class RunnerConfig:
       if not hasattr(self, key_):
         raise RuntimeError(f'Unexpected {key} in configuration')
       setattr(self, key_, json[key])
+
+
+def ParseTarget(target: str) -> Tuple[Optional[BraveVersion], str]:
+  m = re.match(r'^(v\d+\.\d+\.\d+)(?::(.+)|$)', target)
+  if not m:
+    return None, target
+  tag = BraveVersion(m.group(1))
+  location = m.group(2)
+  logging.debug('Parsed tag: %s, location : %s', tag, location)
+  return tag, location
 
 
 class BenchmarkConfig:

@@ -85,10 +85,3 @@ def SysPath(path, position=None):
       sys.path.pop()
     else:
       sys.path.remove(path)
-
-
-def GetBinaryPath(browser_dir) -> str:
-  if sys.platform == 'win32':
-    return os.path.join(browser_dir, 'brave.exe')
-
-  raise RuntimeError(f'Unsupported platfrom {sys.platform}')
