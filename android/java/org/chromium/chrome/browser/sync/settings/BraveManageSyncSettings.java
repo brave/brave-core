@@ -23,8 +23,6 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
     private Preference mGoogleActivityControls;
     private Preference mSyncEncryption;
 
-    private ChromeBaseCheckBoxPreference mSyncPaymentsIntegration;
-
     @VisibleForTesting
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
@@ -59,6 +57,10 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
 
         findPreference(PREF_ADVANCED_CATEGORY).setVisible(false);
 
-        mSyncPaymentsIntegration.setVisible(false);
+        Preference syncPaymentsIntegration = findPreference(PREF_SYNC_PAYMENTS_INTEGRATION);
+        assert syncPaymentsIntegration != null : "Something has changed in the upstream!";
+        if (syncPaymentsIntegration != null) {
+            syncPaymentsIntegration.setVisible(false);
+        }
     }
 }
