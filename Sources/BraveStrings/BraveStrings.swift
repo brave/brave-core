@@ -892,7 +892,7 @@ extension Strings {
       "settings.highestQualityPlaybackDetail",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Allows desktop-quality resolution",
+      value: "Allows high-quality resolution",
       comment: "Detail text for the navigation link to quality settings view"
     )
     
@@ -1100,8 +1100,8 @@ extension Strings {
   public static let youtubeMediaQuality = NSLocalizedString("YoutubeMediaQuality", tableName: "BraveShared", bundle: .module, value: "Enable High-Quality Youtube Videos", comment: "Setting to enable high quality youtube videos")
   public static let youtubeMediaQualityDetails = NSLocalizedString("YoutubeMediaQualityDetails", tableName: "BraveShared", bundle: .module, value: "Enabling this experimental feature will playback video at the maximum quality available and will use additional data.", comment: "Description of setting to enable high quality youtube videos")
   public static let youtubeMediaQualityOff = NSLocalizedString("YoutubeMediaQualityOff", tableName: "BraveShared", bundle: .module, value: "Off", comment: "Setting that disables highest quality video playback")
-  public static let youtubeMediaQualityWifi = NSLocalizedString("YoutubeMediaQualityWifi", tableName: "BraveShared", bundle: .module, value: "Only while using wi-fi", comment: "Setting that enables high quality playback on wifi only")
-  public static let youtubeMediaQualityOn = NSLocalizedString("YoutubeMediaQualityOn", tableName: "BraveShared", bundle: .module, value: "Always on", comment: "Setting that enables high quality playback always")
+  public static let youtubeMediaQualityWifi = NSLocalizedString("YoutubeMediaQualityWifi", tableName: "BraveShared", bundle: .module, value: "Allow over Wi-Fi", comment: "Setting that enables high quality playback on wifi only")
+  public static let youtubeMediaQualityOn = NSLocalizedString("YoutubeMediaQualityOn", tableName: "BraveShared", bundle: .module, value: "On", comment: "Setting that enables high quality playback always")
   public static let showTabsBar = NSLocalizedString("ShowTabsBar", tableName: "BraveShared", bundle: .module, value: "Tabs Bar", comment: "Setting to show/hide the tabs bar")
   public static let privateBrowsingOnly = NSLocalizedString("PrivateBrowsingOnly", tableName: "BraveShared", bundle: .module, value: "Private Browsing Only", comment: "Setting to keep app in private mode")
   public static let shieldsDefaults = NSLocalizedString("ShieldsDefaults", tableName: "BraveShared", bundle: .module, value: "Brave Shields Global Defaults", comment: "Section title for adbblock, tracking protection, HTTPS-E, and cookies")
