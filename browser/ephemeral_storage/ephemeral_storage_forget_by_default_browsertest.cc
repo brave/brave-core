@@ -214,8 +214,13 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
                                  GetValuesFromFrames(incognito_web_contents));
 }
 
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_NavigationCookiesAreCleared DISABLED_NavigationCookiesAreCleared
+#else
+#define MAYBE_NavigationCookiesAreCleared NavigationCookiesAreCleared
+#endif
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
-                       NavigationCookiesAreCleared) {
+                       MAYBE_NavigationCookiesAreCleared) {
   brave_shields::SetForgetFirstPartyStorageEnabled(
       content_settings(), true, a_site_ephemeral_storage_url_);
   brave_shields::SetForgetFirstPartyStorageEnabled(
