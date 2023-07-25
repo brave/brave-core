@@ -42,9 +42,7 @@ export const nftsEndpoints = ({
       queryFn: async (tokenArg, _api, _extraOptions, baseQuery) => {
         try {
           if (!tokenArg.isErc721) {
-            return {
-              error: 'Cannot fetch erc-721 metadata for non erc-721 token'
-            }
+            throw new Error('Cannot fetch erc-721 metadata for non erc-721 token')
           }
 
           const { jsonRpcService } = baseQuery(undefined).data
@@ -56,7 +54,7 @@ export const nftsEndpoints = ({
           )
 
           if (result.error || result.errorMessage) {
-            return { error: result.errorMessage }
+            throw new Error(result.errorMessage)
           }
 
           const metadata: ERC721Metadata = JSON.parse(result.response)
@@ -206,9 +204,9 @@ export const nftsEndpoints = ({
             return {
               data: result.status.local
             }
-          } else {
-            throw new Error('Local pinning status is null')
           }
+
+          throw new Error('Local pinning status is null')
         } catch (error) {
           const message =
             'Error fetching NFT Pinning status: ' + error?.message ||
