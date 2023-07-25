@@ -23,6 +23,7 @@ extern const char kRewardsInternalsHost[];
 extern const char kWelcomeHost[];
 extern const char kWelcomeJS[];
 extern const char kBraveNewTabJS[];
+extern const char kBraveNewsInternalsHost[];
 extern const char kBraveRewardsPanelURL[];
 extern const char kBraveRewardsPanelHost[];
 extern const char kBraveTipPanelURL[];
