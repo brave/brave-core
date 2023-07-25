@@ -18,6 +18,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
+#include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
@@ -104,7 +105,11 @@ void FeedController::EnsureFeedIsUpdating() {
 
   // Fetch publishers via callback
   publishers_controller_->GetOrFetchPublishers(base::BindOnce(
-      [](FeedController* controller, Publishers publishers) {
+      [](base::WeakPtr<FeedController> controller, Publishers publishers) {
+        if (!controller) {
+          return;
+        }
+
         // Handle no publishers
         if (publishers.empty()) {
           LOG(ERROR) << "Brave News Publisher list was empty";
@@ -115,8 +120,12 @@ void FeedController::EnsureFeedIsUpdating() {
         // Handle all feed items downloaded
         // Fetch https request via callback
         controller->feed_fetcher_.FetchFeed(base::BindOnce(
-            [](FeedController* controller, Publishers publishers,
+            [](base::WeakPtr<FeedController> controller, Publishers publishers,
                FeedItems items, ETags etags) {
+              if (!controller) {
+                return;
+              }
+
               controller->locale_feed_etags_ = std::move(etags);
 
               VLOG(1) << "All feed item fetches done with item count: "
@@ -129,8 +138,12 @@ void FeedController::EnsureFeedIsUpdating() {
 
               // Get history hosts via callback
               auto on_history = base::BindOnce(
-                  [](FeedController* controller, FeedItems items,
+                  [](base::WeakPtr<FeedController> controller, FeedItems items,
                      Publishers publishers, history::QueryResults results) {
+                    if (!controller) {
+                      return;
+                    }
+
                     std::unordered_set<std::string> history_hosts;
                     for (const auto& item : results) {
                       auto host = item.url().host();
@@ -150,7 +163,7 @@ void FeedController::EnsureFeedIsUpdating() {
                     // or errored.
                     controller->NotifyUpdateDone();
                   },
-                  base::Unretained(controller), std::move(items),
+                  controller->weak_ptr_factory_.GetWeakPtr(), std::move(items),
                   std::move(publishers));
               history::QueryOptions options;
               options.max_count = 2000;
@@ -159,9 +172,9 @@ void FeedController::EnsureFeedIsUpdating() {
                   std::u16string(), options, std::move(on_history),
                   &controller->task_tracker_);
             },
-            base::Unretained(controller), std::move(publishers)));
+            controller->weak_ptr_factory_.GetWeakPtr(), std::move(publishers)));
       },
-      base::Unretained(this)));
+      weak_ptr_factory_.GetWeakPtr()));
 }
 
 void FeedController::EnsureFeedIsCached() {

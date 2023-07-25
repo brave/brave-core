@@ -12,6 +12,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
@@ -102,6 +103,8 @@ class FeedController : public PublishersController::Observer {
   // determine when we have available updates.
   base::flat_map<std::string, std::string> locale_feed_etags_;
   bool is_update_in_progress_ = false;
+
+  base::WeakPtrFactory<FeedController> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_news
