@@ -19,7 +19,7 @@ const genGradle = (passthroughArgs, build_dir) => {
         ]
         args.push(... passthroughArgs)
         util.run('python3', args, options)
-        Log.progressFinish('Generating Gradle files')
+        Log.progressFinish('generating Gradle files')
 }
 
 module.exports = genGradle
