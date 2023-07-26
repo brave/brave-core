@@ -106,9 +106,9 @@ void AIChatTabHelper::AddToConversationHistory(const ConversationTurn& turn) {
 
 void AIChatTabHelper::UpdateOrCreateLastAssistantEntry(
     std::string updated_text) {
+  updated_text = base::TrimWhitespaceASCII(updated_text, base::TRIM_LEADING);
   if (chat_history_.empty() ||
       chat_history_.back().character_type != CharacterType::ASSISTANT) {
-    updated_text = base::TrimWhitespaceASCII(updated_text, base::TRIM_LEADING);
     AddToConversationHistory({CharacterType::ASSISTANT,
                               ConversationTurnVisibility::VISIBLE,
                               updated_text});
