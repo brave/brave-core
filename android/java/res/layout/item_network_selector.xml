@@ -42,12 +42,11 @@
 
         <ImageView
             android:id="@+id/iv_item_network_picture"
-            android:layout_width="14dp"
+            android:layout_width="26dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:contentDescription="@null"
-            android:paddingVertical="4dp"
-            app:srcCompat="@drawable/ic_eth_24" />
+            android:paddingVertical="4dp" />
 
         <TextView
             android:id="@+id/tv_item_network_name"

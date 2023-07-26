@@ -59,6 +59,7 @@ public class NetworkSelectorModel {
             }
         }
         mNetworkListsLd = Transformations.map(mNetworkModel.mNetworkLists, networkLists -> {
+            if (networkLists == null) return new NetworkModel.NetworkLists();
             NetworkModel.NetworkLists networkListsCopy =
                     new NetworkModel.NetworkLists(networkLists);
             List<NetworkInfo> allNetworkList = new ArrayList<>(networkLists.mCoreNetworks);
@@ -88,7 +89,7 @@ public class NetworkSelectorModel {
             NetworkInfo networkToBeSetAsSelected, Callbacks.Callback1<Boolean> callback) {
         // Default/Global wallet network does not support "All Networks"
         if (!networkToBeSetAsSelected.chainId.equals(
-                    NetworkUtils.getAllNetworkOption(mContext).chainId)) {
+                NetworkUtils.getAllNetworkOption(mContext).chainId)) {
             boolean hasAccountOfNetworkType =
                     mNetworkModel.hasAccountOfNetworkType(networkToBeSetAsSelected);
             if (!hasAccountOfNetworkType || mMode == Mode.DEFAULT_WALLET_NETWORK) {
