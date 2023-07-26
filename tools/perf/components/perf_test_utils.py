@@ -84,12 +84,14 @@ def GetConfigPath(config_path: str) -> str:
     return config_path
   raise RuntimeError(f'Bad config {config_path}')
 
+
 def DownloadFile(url: str, output: str):
   logging.debug('Downloading %s', url)
   f = urlopen(url)
   data = f.read()
   with open(output, 'wb') as output_file:
     output_file.write(data)
+
 
 def LoadJsonConfig(config: str, working_directory: str) -> dict:
   if config.startswith('https://'):

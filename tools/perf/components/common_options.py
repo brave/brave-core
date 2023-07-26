@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import argparse
-import logging
 import sys
 import tempfile
 
@@ -45,33 +44,34 @@ class CommonOptions:
     parser.add_argument('--local-run', action='store_true')
     parser.add_argument('--compare', action='store_true')
     parser.add_argument('--targets',
-                      required=True,
-                      type=str,
-                      help='Tags/binaries to test')
+                        required=True,
+                        type=str,
+                        help='Tags/binaries to test')
     parser.add_argument('--config', required=True, type=str)
 
   @classmethod
   def from_args(cls, args) -> 'CommonOptions':
     options = CommonOptions()
+    if args.working_directory is None:
+      if options.ci_mode:
+        raise RuntimeError('Set --working-directory for --ci-mode')
+      options.working_directory = tempfile.mkdtemp(prefix='perf-test-')
+    else:
+      options.working_directory = args.working_directory
+
     options.verbose = args.verbose
     options.ci_mode = args.ci_mode
     options.variations_repo_dir = args.variations_repo_dir
-    if args.working_directory is None:
-      if options.ci_mode:
-        raise RuntimeError(f'Set --working-directory for --ci-mode')
-      else:
-        options.working_directory = tempfile.mkdtemp(prefix='perf-test-')
-    else:
-      options.working_directory = args.working_directory
     if args.target_os is not None:
       options.target_os = PerfBenchmark.FixupTargetOS(args.target_os)
 
-    options.do_run_tests = not args.report_only
-    options.do_report = not args.no_report and not args.local_run
     options.report_on_failure = args.report_on_failure
-    options.local_run = args.local_run
+    compare = args.targets == 'compare' or args.compare
+    options.compare = compare
     options.targets = args.targets.split(',')
-    if args.targets == 'compare' or args.compare:
-      options.compare = options.local_run = True
+
+    options.local_run = args.local_run or compare
+    options.do_run_tests = not args.report_only
+    options.do_report = not args.no_report and not args.local_run and not compare
 
     return options

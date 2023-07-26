@@ -38,8 +38,6 @@ def main():
   log_format = '%(asctime)s: %(message)s'
   logging.basicConfig(level=log_level, format=log_format)
 
-
-
   mkdir(options.working_directory)
   json_config = perf_test_utils.LoadJsonConfig(args.config,
                                                options.working_directory)
