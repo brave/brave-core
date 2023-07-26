@@ -62,6 +62,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.chromium.components.media_router.caf.CastUtils
 
 class PlaylistVideoService : Service(), Player.Listener, SessionAvailabilityListener {
     private var mPlaylistName: String? = null
@@ -156,7 +157,8 @@ class PlaylistVideoService : Service(), Player.Listener, SessionAvailabilityList
             .setReleaseTimeoutMs(5000).setAudioAttributes(audioAttributes, true).build()
         mLocalPlayer?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
         mLocalPlayer?.addListener(this)
-        mCastContext = CastContext.getSharedInstance()
+        // mCastContext = CastContext.getSharedInstance()
+        mCastContext = CastUtils.getCastContext();
         mCastPlayer = mCastContext?.let { CastPlayer(it) }
         mCastPlayer?.addListener(this)
         mCastPlayer?.setSessionAvailabilityListener(this)

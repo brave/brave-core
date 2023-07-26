@@ -20,6 +20,7 @@ import org.chromium.base.task.TaskTraits;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -184,6 +185,7 @@ public class BraveVpnNativeWorker {
         PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
             try {
                 finalData = output.toByteArray();
+                writeToFile(finalData);
                 output.close();
             } catch (Exception e) {
                 Log.e("data_source", e.getMessage());
@@ -192,6 +194,17 @@ public class BraveVpnNativeWorker {
         for (BraveVpnObserver observer : mObservers) {
             observer.onDataCompleted();
         }
+    }
+
+    public void writeToFile(byte[] data) throws IOException {
+        File outputDir = ContextUtils.getApplicationContext().getCacheDir();
+        File outputFile = File.createTempFile("file", ".temp", outputDir);
+        Log.e("data_source", "File location : " + outputFile.getAbsolutePath());
+        FileOutputStream out = new FileOutputStream(new File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                "index.mp4"));
+        out.write(data);
+        out.close();
     }
 
     public void getAllServerRegions() {

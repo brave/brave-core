@@ -54,7 +54,8 @@ object PlaylistDownloadUtils {
     @Synchronized
     fun getDataSourceFactory(context: Context): DataSource.Factory {
         if (mDataSourceFactory == null) {
-            val upstreamFactory = DataSource.Factory { BraveChromiumHttpDataSource(finalData) }
+            // val upstreamFactory = DataSource.Factory { BraveChromiumHttpDataSource(finalData) }
+            val upstreamFactory = DataSource.Factory { DefaultHttpDataSource() }
             mDataSourceFactory =
                 getDownloadCache(context)?.let { buildReadOnlyCacheDataSource(upstreamFactory, it) }
         }
