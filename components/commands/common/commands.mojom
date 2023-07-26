@@ -37,6 +37,8 @@ interface CommandsService {
   ResetAccelerators();
 
   AddCommandsListener(pending_remote<CommandsListener> listener);
+
+  GetKeyFromCode(string code) => (string key);
 };
 
 struct CommandsEvent {
