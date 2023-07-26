@@ -403,13 +403,14 @@ std::string AIChatTabHelper::BuildLlama2Prompt(std::string user_message) {
   // first sequence.
   if (conversation_history.size() == 0) {
     return BuildLlama2FirstSequence(system_message, first_user_message,
-                                    absl::nullopt);
+                                    absl::nullopt, absl::nullopt);
   }
 
   // Use the first two messages to build the first sequence,
   // which includes the system prompt.
-  std::string prompt = BuildLlama2FirstSequence(
-      system_message, first_user_message, conversation_history[1].text);
+  std::string prompt =
+      BuildLlama2FirstSequence(system_message, first_user_message,
+                               conversation_history[1].text, absl::nullopt);
 
   // Loop through the rest of the history two at a time building subsequent
   // sequences.
@@ -454,13 +455,16 @@ std::string AIChatTabHelper::BuildLlama2GenerateQuestionsPrompt(
   return BuildLlama2FirstSequence(
       l10n_util::GetStringUTF8(
           IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERATE_QUESTIONS),
-      user_message, absl::nullopt);
+      user_message, absl::nullopt,
+      l10n_util::GetStringUTF8(
+          IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERATE_QUESTIONS_RESPONSE_SEED));
 }
 
 std::string AIChatTabHelper::BuildLlama2FirstSequence(
     const std::string& system_message,
     const std::string& user_message,
-    absl::optional<std::string> assistant_response) {
+    absl::optional<std::string> assistant_response,
+    absl::optional<std::string> assistant_response_seed) {
   // Generates a partial sequence if there is no assistant_response:
 
   // <s> [INST] <<SYS>>
@@ -504,6 +508,10 @@ std::string AIChatTabHelper::BuildLlama2FirstSequence(
   if (!assistant_response) {
     // Prepend just <s> if there's no assistant_response ( it will be completed
     // by the model).
+    if (assistant_response_seed) {
+      return base::StrCat(
+          {ai_chat::kLlama2Bos, instruction_prompt, *assistant_response_seed});
+    }
     return base::StrCat({ai_chat::kLlama2Bos, instruction_prompt});
   }
 

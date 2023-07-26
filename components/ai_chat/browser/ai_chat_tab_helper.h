@@ -121,7 +121,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
   std::string BuildLlama2FirstSequence(
       const std::string& system_message,
       const std::string& user_message,
-      absl::optional<std::string> assistant_response);
+      absl::optional<std::string> assistant_response,
+      absl::optional<std::string> assistant_response_seed);
   std::string BuildLlama2SubsequentSequence(
       std::string user_message,
       absl::optional<std::string> assistant_response);

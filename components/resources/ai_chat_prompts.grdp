@@ -88,4 +88,9 @@ Propose up to 3 very short questions, around 10 words, that a reader may ask abo
 <message name="IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERATE_QUESTIONS" translateable="false">
 Your goal is to answer the user's requests exactly in concise manner.
 </message>
+
+<message name="IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERATE_QUESTIONS_RESPONSE_SEED" translateable="false">
+Sure, here are three intriguing or unusual questions that a reader may ask about the article:
+</message>
+
 </grit-part>
