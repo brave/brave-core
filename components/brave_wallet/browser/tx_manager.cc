@@ -14,7 +14,6 @@
 #include "base/logging.h"
 #include "brave/components/brave_wallet/browser/block_tracker.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
@@ -110,11 +109,8 @@ void TxManager::CheckIfBlockTrackerShouldRun(
       }
     }
     for (const auto& chain_id : new_pending_chain_ids) {
-      const auto& keyring_id = CoinTypeToKeyringId(GetCoinType(), chain_id);
-      CHECK(keyring_id.has_value());
-      bool keyring_created = keyring_service_->IsKeyringCreated(*keyring_id);
       bool running = block_tracker_->IsRunning(chain_id);
-      if (keyring_created && !running) {
+      if (!running) {
         block_tracker_->Start(chain_id,
                               base::Seconds(kBlockTrackerDefaultTimeInSeconds));
       }

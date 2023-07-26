@@ -8,13 +8,11 @@
 #include <map>
 #include <vector>
 
-#include "base/metrics/histogram_macros.h"
+#include "base/containers/contains.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
 #include "base/values.h"
-#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -26,11 +24,12 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
-#include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -170,28 +169,10 @@ namespace {
 bool AccountMatchesCoinAndChain(const mojom::AccountId& account_id,
                                 mojom::CoinType coin,
                                 const std::string& chain_id) {
-  switch (coin) {
-    case mojom::CoinType::ETH: {
-      return account_id.coin == mojom::CoinType::ETH;
-    }
-    case mojom::CoinType::SOL: {
-      return account_id.coin == mojom::CoinType::SOL;
-    }
-    case mojom::CoinType::FIL: {
-      if (account_id.coin != mojom::CoinType::FIL) {
-        return false;
-      }
-      return (chain_id == mojom::kFilecoinTestnet &&
-              account_id.keyring_id == mojom::KeyringId::kFilecoinTestnet) ||
-             (chain_id == mojom::kFilecoinMainnet &&
-              account_id.keyring_id == mojom::KeyringId::kFilecoin);
-    }
-    case mojom::CoinType::BTC: {
-      NOTREACHED();
-      return false;
-    }
-  }
+  return base::Contains(GetSupportedKeyringsForNetwork(coin, chain_id),
+                        account_id.keyring_id);
 }
+
 }  // namespace
 
 BraveWalletService::BraveWalletService(
@@ -357,10 +338,10 @@ std::vector<mojom::BlockchainTokenPtr> BraveWalletService::GetUserAssets(
         if (!token) {
           continue;
         }
-        mojom::BlockchainTokenPtr tokenPtr =
+        mojom::BlockchainTokenPtr token_ptr =
             ValueToBlockchainToken(*token, chain_id.value(), coin.value());
-        if (tokenPtr) {
-          result.push_back(std::move(tokenPtr));
+        if (token_ptr) {
+          result.push_back(std::move(token_ptr));
         }
       }
     }
@@ -392,10 +373,10 @@ std::vector<mojom::BlockchainTokenPtr> BraveWalletService::GetUserAssets(
       continue;
     }
 
-    mojom::BlockchainTokenPtr tokenPtr =
+    mojom::BlockchainTokenPtr token_ptr =
         ValueToBlockchainToken(*token, chain_id, coin);
-    if (tokenPtr) {
-      result.push_back(std::move(tokenPtr));
+    if (token_ptr) {
+      result.push_back(std::move(token_ptr));
     }
   }
 
@@ -849,6 +830,16 @@ BraveWalletService::GetNetworkForSelectedAccountOnActiveOriginSync() {
   // This may happen in tests.
   if (!selected_account) {
     return {};
+  }
+
+  if (selected_account->account_id->coin == mojom::CoinType::BTC) {
+    if (IsBitcoinMainnetKeyring(selected_account->account_id->keyring_id)) {
+      return GetChain(profile_prefs_, mojom::kBitcoinMainnet,
+                      mojom::CoinType::BTC);
+    } else {
+      return GetChain(profile_prefs_, mojom::kBitcoinTestnet,
+                      mojom::CoinType::BTC);
+    }
   }
 
   return json_rpc_service_->GetNetworkSync(selected_account->account_id->coin,
@@ -1317,6 +1308,42 @@ base::Value::Dict BraveWalletService::GetDefaultFilecoinAssets() {
   for (const auto& network_id : network_ids) {
     base::Value::List user_assets_list;
     user_assets_list.Append(fil.Clone());
+    user_assets.Set(network_id, std::move(user_assets_list));
+  }
+
+  return user_assets;
+}
+
+// static
+base::Value::Dict BraveWalletService::GetDefaultBitcoinAssets() {
+  base::Value::Dict user_assets;
+
+  base::Value::Dict btc;
+  btc.Set("address", "");
+  btc.Set("name", "Bitcoin");
+  btc.Set("decimals", 8);
+  btc.Set("is_erc20", false);
+  btc.Set("is_erc721", false);
+  btc.Set("is_erc1155", false);
+  btc.Set("is_spam", false);
+  btc.Set("is_nft", false);
+  btc.Set("visible", true);
+  btc.Set("logo", "btc.png");
+
+  std::vector<std::string> network_ids = GetAllKnownBtcNetworkIds();
+  for (const auto& network_id : network_ids) {
+    base::Value::List user_assets_list;
+    auto asset = btc.Clone();
+    if (network_id == "mainnet") {
+      asset.Set("symbol", "BTC");
+      asset.Set("coingecko_id", "btc");
+    } else if (network_id == "testnet") {
+      asset.Set("symbol", "tBTC");
+      asset.Set("coingecko_id", "btc");
+    } else {
+      NOTREACHED();
+    }
+    user_assets_list.Append(std::move(asset));
     user_assets.Set(network_id, std::move(user_assets_list));
   }
 

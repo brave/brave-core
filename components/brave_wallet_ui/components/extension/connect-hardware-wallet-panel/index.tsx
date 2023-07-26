@@ -96,6 +96,7 @@ export const ConnectHardwareWalletPanel = ({
       : skipToken,
     {
       selectFromResult: (res) => ({
+        // TODO(apaymyshev): fix this when address gets replaced by uniqueKey as a key.
         messageAccount: res.data?.entities[signMessageData[0].address],
       })
     }

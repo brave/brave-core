@@ -134,8 +134,7 @@ export const FilterAccountsSection = (props: Props) => {
             >
               <CreateAccountIcon
                 size='medium'
-                address={account.address}
-                accountKind={account.accountId.kind}
+                account={account}
               />
               <Column
                 alignItems='flex-start'

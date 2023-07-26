@@ -213,9 +213,13 @@ export const Nfts = (props: Props) => {
       return renderedList.filter(
         (nft) =>
           nft.coin === account.accountId.coin &&
-          new Amount(getBalance(account, nft, tokenBalancesRegistry)).gte('1')
+          new Amount(
+            getBalance(account.accountId, nft, tokenBalancesRegistry)
+          ).gte('1')
       )
-    }, [renderedList, tokenBalancesRegistry])
+    },
+    [renderedList, tokenBalancesRegistry]
+  )
 
   // Returns a list of assets based on provided network
   const getAssetsByNetwork = React.useCallback(

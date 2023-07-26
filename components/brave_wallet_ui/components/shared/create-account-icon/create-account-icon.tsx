@@ -12,25 +12,23 @@ import {
   AccountBox,
   AccountIcon
 } from './create-account-icon.style'
-import { useAddressOrb } from '../../../common/hooks/use-orb'
+import { useAccountOrb } from '../../../common/hooks/use-orb'
 
 interface Props {
-  address: string
+  account: BraveWallet.AccountInfo
   size?: 'big' | 'medium' | 'small' | 'tiny'
   marginRight?: number
-  accountKind?: BraveWallet.AccountKind
 }
 
 export const CreateAccountIcon = (props: Props) => {
   const {
-    address,
+    account,
     size,
     marginRight,
-    accountKind
   } = props
 
   // Memos
-  const orb = useAddressOrb(address)
+  const orb = useAccountOrb(account)
 
   return (
     <AccountBox
@@ -38,7 +36,7 @@ export const CreateAccountIcon = (props: Props) => {
       size={size}
       marginRight={marginRight}
     >
-      {accountKind === BraveWallet.AccountKind.kHardware &&
+      {account.accountId.kind === BraveWallet.AccountKind.kHardware &&
         <AccountIcon
           name='flashdrive'
           size={size}

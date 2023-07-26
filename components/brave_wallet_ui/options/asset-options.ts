@@ -7,33 +7,31 @@ import { BraveWallet } from '../constants/types'
 import { AllNetworksOption } from './network-filter-options'
 
 export const getNetworkLogo = (chainId: string, symbol: string): string => {
-  switch (true) {
-    case chainId === BraveWallet.AURORA_MAINNET_CHAIN_ID:
-      return 'chrome://erc-token-images/aurora.png'
-    case chainId === BraveWallet.OPTIMISM_MAINNET_CHAIN_ID:
-      return 'chrome://erc-token-images/op.png'
-    case chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID:
-      return 'chrome://erc-token-images/matic.png'
-    case chainId === BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID:
-      return 'chrome://erc-token-images/bnb.png'
-    case chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID:
-      return 'chrome://erc-token-images/avax.png'
-    case chainId === BraveWallet.FANTOM_MAINNET_CHAIN_ID:
-      return 'chrome://erc-token-images/ftm.png'
-    case chainId === BraveWallet.CELO_MAINNET_CHAIN_ID:
-      return 'chrome://erc-token-images/celo.png'
-    case chainId === BraveWallet.ARBITRUM_MAINNET_CHAIN_ID:
-      return 'chrome://erc-token-images/arb.png'
-    case chainId === AllNetworksOption.chainId:
-      return AllNetworksOption.iconUrls[0]
-    case symbol.toUpperCase() === 'SOL':
-      return 'chrome://erc-token-images/sol.png'
-    case symbol.toUpperCase() === 'FIL':
-      return 'chrome://erc-token-images/fil.png'
-    case symbol.toUpperCase() === 'ETH':
-      return 'chrome://erc-token-images/eth.png'
-    default: return ''
-  }
+  if (chainId === BraveWallet.AURORA_MAINNET_CHAIN_ID)
+    return 'chrome://erc-token-images/aurora.png'
+  if (chainId === BraveWallet.OPTIMISM_MAINNET_CHAIN_ID)
+    return 'chrome://erc-token-images/op.png'
+  if (chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID)
+    return 'chrome://erc-token-images/matic.png'
+  if (chainId === BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID)
+    return 'chrome://erc-token-images/bnb.png'
+  if (chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID)
+    return 'chrome://erc-token-images/avax.png'
+  if (chainId === BraveWallet.FANTOM_MAINNET_CHAIN_ID)
+    return 'chrome://erc-token-images/ftm.png'
+  if (chainId === BraveWallet.CELO_MAINNET_CHAIN_ID)
+    return 'chrome://erc-token-images/celo.png'
+  if (chainId === BraveWallet.ARBITRUM_MAINNET_CHAIN_ID)
+    return 'chrome://erc-token-images/arb.png'
+  if (chainId === AllNetworksOption.chainId)
+    return AllNetworksOption.iconUrls[0]
+
+  if (symbol.toUpperCase() === 'SOL') return 'chrome://erc-token-images/sol.png'
+  if (symbol.toUpperCase() === 'FIL') return 'chrome://erc-token-images/fil.png'
+  if (symbol.toUpperCase() === 'ETH') return 'chrome://erc-token-images/eth.png'
+  if (symbol.toUpperCase() === 'BTC') return 'chrome://erc-token-images/btc.png'
+
+  return ''
 }
 
 export const makeNativeAssetLogo = (symbol: string, chainId: string) => {

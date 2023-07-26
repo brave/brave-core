@@ -48,6 +48,7 @@ import { makeNetworkAsset } from '../../../options/asset-options'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { getAddressLabelFromRegistry } from '../../../utils/account-utils'
 import { openBlockExplorerURL } from '../../../utils/block-explorer-utils'
+import { makeAccountRoute } from '../../../utils/routes-utils'
 
 // Hooks
 import { useExplorer } from '../../../common/hooks'
@@ -186,7 +187,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   const account =
     accountInfosRegistry.entities[
-      accountInfoEntityAdaptor.selectId({ address: transaction.fromAddress })
+      accountInfoEntityAdaptor.selectIdByAddress(transaction.fromAddress)
     ]
 
   // memos & computed from queries
@@ -394,13 +395,9 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     ]
   )
 
-  const onSelectAccount = React.useCallback((account: { address: string }) => {
-    history.push(
-      `${WalletRoutes.Accounts //
-      }/${account.address //
-      }/${AccountPageTabs.AccountAssetsSub}`
-    )
-  }, [history])
+  const onSelectAccount = React.useCallback((account: BraveWallet.AccountInfo) => {
+    history.push(makeAccountRoute(account, AccountPageTabs.AccountAssetsSub))
+  }, [history, account])
 
   const onAddressClick = React.useCallback((address?: string) => () => {
     if (!address) {
@@ -408,7 +405,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     }
 
     const account = accountInfosRegistry.entities[
-      accountInfoEntityAdaptor.selectId({ address })
+      accountInfoEntityAdaptor.selectIdByAddress(address)
     ]
 
     if (account !== undefined) {

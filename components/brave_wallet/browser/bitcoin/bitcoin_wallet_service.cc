@@ -14,13 +14,14 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/sys_byteorder.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_database_synchronizer.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction_database.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -123,8 +124,7 @@ struct SendToContext {
   };
 
   std::string network_id;
-  mojom::KeyringId keyring_id;
-  uint32_t account_index;
+  mojom::AccountIdPtr account_id;
   std::string address_to;
   uint64_t amount = 0;
   uint64_t fee = 0;
@@ -156,11 +156,12 @@ struct SendToContext {
 
 BitcoinWalletService::BitcoinWalletService(
     KeyringService* keyring_service,
+    PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : keyring_service_(keyring_service),
-      bitcoin_rpc_(std::make_unique<BitcoinRpc>(url_loader_factory)) {
+      bitcoin_rpc_(std::make_unique<BitcoinRpc>(prefs, url_loader_factory)) {
   for (auto* network_id : {
-           // TODO(apaymyshev): support mainnet mojom::kBitcoinMainnet,
+           mojom::kBitcoinMainnet,
            mojom::kBitcoinTestnet,
        }) {
     transaction_database_[network_id] =
@@ -172,13 +173,10 @@ BitcoinWalletService::BitcoinWalletService(
 
     for (auto& keyring_id : BitcoinKeyringsForNetwork(network_id)) {
       DCHECK(IsValidBitcoinNetworkKeyringPair(network_id, keyring_id));
-      // TODO(apaymyshev): support many accounts.
       if (auto keyring_info =
               keyring_service_->GetKeyringInfoSync(keyring_id)) {
-        for (size_t account_index = 0;
-             account_index < keyring_info->account_infos.size();
-             ++account_index) {
-          StartDatabaseSynchronizer(network_id, keyring_id, account_index);
+        for (auto& account_info : keyring_info->account_infos) {
+          StartDatabaseSynchronizer(network_id, *account_info->account_id);
         }
       }
     }
@@ -199,47 +197,52 @@ void BitcoinWalletService::Bind(
   receivers_.Add(this, std::move(receiver));
 }
 
-void BitcoinWalletService::GetBitcoinAccountInfo(
-    const std::string& network_id,
-    mojom::KeyringId keyring_id,
-    uint32_t account_index,
-    GetBitcoinAccountInfoCallback callback) {
-  if (!IsValidBitcoinNetworkKeyringPair(network_id, keyring_id)) {
-    NOTREACHED();
-    std::move(callback).Run(nullptr);
+void BitcoinWalletService::GetBalance(const std::string& network_id,
+                                      mojom::AccountIdPtr account_id,
+                                      GetBalanceCallback callback) {
+  auto account_info =
+      GetBitcoinAccountInfoSync(network_id, std::move(account_id));
+  if (!account_info) {
+    std::move(callback).Run("0", "Couldn't get balance");
     return;
   }
 
+  std::move(callback).Run(base::NumberToString(account_info->balance), "");
+}
+
+void BitcoinWalletService::GetBitcoinAccountInfo(
+    const std::string& network_id,
+    mojom::AccountIdPtr account_id,
+    GetBitcoinAccountInfoCallback callback) {
   std::move(callback).Run(
-      GetBitcoinAccountInfoSync(network_id, keyring_id, account_index));
+      GetBitcoinAccountInfoSync(network_id, std::move(account_id)));
 }
 
 mojom::BitcoinAccountInfoPtr BitcoinWalletService::GetBitcoinAccountInfoSync(
     const std::string& network_id,
-    mojom::KeyringId keyring_id,
-    uint32_t account_index) {
-  if (!IsValidBitcoinNetworkKeyringPair(network_id, keyring_id)) {
+    mojom::AccountIdPtr account_id) {
+  if (!IsValidBitcoinNetworkKeyringPair(network_id, account_id->keyring_id)) {
     NOTREACHED();
     return nullptr;
   }
 
-  auto keyring_info = keyring_service_->GetKeyringInfoSync(keyring_id);
-  if (account_index >= keyring_info->account_infos.size()) {
-    return nullptr;
-  }
-
-  const auto& addresses =
-      keyring_service_->GetBitcoinAddresses(keyring_id, account_index);
+  const auto& addresses = keyring_service_->GetBitcoinAddresses(*account_id);
   if (!addresses) {
     NOTREACHED();
     return nullptr;
   }
 
-  auto account_info = mojom::BitcoinAccountInfo::New();
-  account_info->name = keyring_info->account_infos[account_index]->name;
+  auto bitcoin_account_info = mojom::BitcoinAccountInfo::New();
+
+  for (auto& account_info : keyring_service_->GetAllAccountInfos()) {
+    if (account_info->account_id == account_id) {
+      account_info->name = account_info->name;
+      break;
+    }
+  }
 
   for (const auto& address : addresses.value()) {
-    const auto& info = account_info->address_infos.emplace_back(
+    const auto& info = bitcoin_account_info->address_infos.emplace_back(
         mojom::BitcoinAddressInfo::New());
     info->address_string = address.first;
     info->key_id = address.second.Clone();
@@ -250,28 +253,26 @@ mojom::BitcoinAccountInfoPtr BitcoinWalletService::GetBitcoinAccountInfoSync(
       info->utxo_list.push_back(mojom::BitcoinUnspentOutput::New(
           o.outpoint.txid, o.outpoint.index, o.value));
       info->balance += o.value;
-      account_info->balance += o.value;
+      bitcoin_account_info->balance += o.value;
     }
   }
 
-  return account_info;
+  return bitcoin_account_info;
 }
 
 void BitcoinWalletService::SendTo(const std::string& network_id,
-                                  mojom::KeyringId keyring_id,
-                                  uint32_t account_index,
+                                  mojom::AccountIdPtr account_id,
                                   const std::string& address_to,
                                   uint64_t amount,
                                   uint64_t fee,
                                   SendToCallback callback) {
-  if (!IsValidBitcoinNetworkKeyringPair(network_id, keyring_id)) {
+  if (!IsValidBitcoinNetworkKeyringPair(network_id, account_id->keyring_id)) {
     NOTREACHED();
     std::move(callback).Run("", "Invalid (network_id,keyring_id) pair");
     return;
   }
 
-  auto account_addresses =
-      keyring_service_->GetBitcoinAddresses(keyring_id, account_index);
+  auto account_addresses = keyring_service_->GetBitcoinAddresses(*account_id);
   if (!account_addresses || account_addresses->empty()) {
     std::move(callback).Run("", "No bitcoin addresses for account");
     return;
@@ -279,8 +280,7 @@ void BitcoinWalletService::SendTo(const std::string& network_id,
 
   auto context = std::make_unique<SendToContext>();
   context->network_id = network_id;
-  context->keyring_id = keyring_id;
-  context->account_index = account_index;
+  context->account_id = account_id->Clone();
   context->address_to = address_to;
   context->amount = amount;
   context->fee = fee;
@@ -319,7 +319,7 @@ bool BitcoinWalletService::PickInputs(SendToContext& context) {
     }
 
     auto pubkey =
-        keyring_service_->GetBitcoinPubkey(context.keyring_id, *input.key_id);
+        keyring_service_->GetBitcoinPubkey(*context.account_id, *input.key_id);
     if (!pubkey) {
       return false;
     }
@@ -369,8 +369,7 @@ bool BitcoinWalletService::PrepareOutputs(SendToContext& context) {
   }
 
   // TODO(apaymyshev): should always pick new change address.
-  const auto& change_address =
-      GetUnusedChangeAddress(context.keyring_id, context.account_index);
+  const auto& change_address = GetUnusedChangeAddress(*context.account_id);
   if (!change_address) {
     return false;
   }
@@ -469,7 +468,7 @@ bool BitcoinWalletService::FillSignature(SendToContext& context,
   Push32AsLE(kSigHashAll, data);       // 10.
 
   if (auto signature = keyring_service_->SignMessageByBitcoinKeyring(
-          context.keyring_id, *input.key_id, DoubleSHA256Hash(data))) {
+          *context.account_id, *input.key_id, DoubleSHA256Hash(data))) {
     input.signature = std::move(*signature);
   } else {
     return false;
@@ -608,13 +607,12 @@ void BitcoinWalletService::WorkOnSendTo(
 
 void BitcoinWalletService::StartDatabaseSynchronizer(
     const std::string& network_id,
-    mojom::KeyringId keyring_id,
-    uint32_t account_index) {
-  CHECK(IsValidBitcoinNetworkKeyringPair(network_id, keyring_id));
+    const mojom::AccountId& account_id) {
+  CHECK(IsBitcoinAccount(account_id));
+  CHECK(IsValidBitcoinNetworkKeyringPair(network_id, account_id.keyring_id));
   // TODO(apaymyshev): init address history from persistent storage.
 
-  auto addresses =
-      keyring_service_->GetBitcoinAddresses(keyring_id, account_index);
+  auto addresses = keyring_service_->GetBitcoinAddresses(account_id);
   if (!addresses) {
     NOTREACHED();
     return;
@@ -629,12 +627,12 @@ void BitcoinWalletService::StartDatabaseSynchronizer(
 }
 
 absl::optional<std::string> BitcoinWalletService::GetUnusedChangeAddress(
-    mojom::KeyringId keyring_id,
-    uint32_t account_index) {
+    const mojom::AccountId& account_id) {
+  CHECK(IsBitcoinAccount(account_id));
   // TODO(apaymyshev): this always returns first change address. Should return
   // first unused change address.
   return keyring_service_->GetBitcoinAddress(
-      keyring_id, mojom::BitcoinKeyId(account_index, 1, 0));
+      account_id, mojom::BitcoinKeyId(account_id.bitcoin_account_index, 1, 0));
 }
 
 void BitcoinWalletService::AccountsAdded(

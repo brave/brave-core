@@ -14,6 +14,9 @@ import { querySubscriptionOptions60s } from '../slices/constants'
 import { BraveWallet, CoinTypes } from '../../constants/types'
 import { WalletSelectors } from '../selectors'
 
+// Utils
+import { networkSupportsAccount } from '../../utils/network-utils'
+
 interface Arg {
   networks: BraveWallet.NetworkInfo[]
   accounts: BraveWallet.AccountInfo[]
@@ -23,6 +26,7 @@ const coinTypesMapping = {
   [BraveWallet.CoinType.SOL]: CoinTypes.SOL,
   [BraveWallet.CoinType.ETH]: CoinTypes.ETH,
   [BraveWallet.CoinType.FIL]: CoinTypes.FIL,
+  [BraveWallet.CoinType.BTC]: CoinTypes.BTC,
 }
 
 export const useBalancesFetcher = (arg: Arg | typeof skipToken) => {
@@ -34,9 +38,9 @@ export const useBalancesFetcher = (arg: Arg | typeof skipToken) => {
   const args = useMemo(() => arg !== skipToken && arg.accounts && arg.networks
     ? arg.accounts.flatMap(account =>
         arg.networks
-        .filter(network => network.coin === account.accountId.coin)
+        .filter(network => networkSupportsAccount(network, account.accountId))
         .map(network => ({
-          address: account.address,
+          accountId: account.accountId,
           chainId: network.chainId,
           coin: coinTypesMapping[network.coin]
         }))

@@ -104,6 +104,7 @@ class BraveWalletService : public KeyedService,
   static base::Value::Dict GetDefaultEthereumAssets();
   static base::Value::Dict GetDefaultSolanaAssets();
   static base::Value::Dict GetDefaultFilecoinAssets();
+  static base::Value::Dict GetDefaultBitcoinAssets();
 
   // mojom::BraveWalletService:
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletServiceObserver>

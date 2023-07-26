@@ -625,6 +625,7 @@ struct AccountId {
   AccountKind kind;
   // TODO(apaymyshev): should be an index within keyring.
   string address;
+  uint32 bitcoin_account_index;
 
   // Two `AccountIds` equal iff their `unique_key` fields equal. Use this to
   // check AccountIds for equality or to store as string keys. Persist with
@@ -812,9 +813,6 @@ interface KeyringService {
 
   // Adds an account to the keyring.
   AddAccount(CoinType coin, KeyringId keyring_id, string account_name) => (AccountInfo? account_info);
-
-  // Adds bitcoin account.
-  AddBitcoinAccount(string account_name, string network_id, KeyringId keyring_id) => (AccountInfo? account_info);
 
   // Encodes the private key for exporting.
   EncodePrivateKeyForExport(AccountId account_id, string password)
@@ -1070,6 +1068,7 @@ struct NetworkInfo {
   string symbol_name;
   int32 decimals;
   CoinType coin;
+  array<KeyringId> supported_keyrings;
   bool is_eip1559; // only for ETH.
 };
 
@@ -1307,19 +1306,20 @@ struct BitcoinUnspentOutput {
 struct BitcoinAddressInfo {
   BitcoinKeyId key_id;
   string address_string;
-  uint32 balance;
+  uint64 balance;
   array<BitcoinUnspentOutput> utxo_list;
 };
 
 struct BitcoinAccountInfo {
   string name;
   array<BitcoinAddressInfo> address_infos;
-  uint32 balance;
+  uint64 balance;
 };
 
 interface BitcoinWalletService {
-  GetBitcoinAccountInfo(string network_id, KeyringId keyring_id, uint32 account_index) => (BitcoinAccountInfo? account_info);
-  SendTo(string network_id, KeyringId keyring_id, uint32 account_index, string address_to, uint64 amount, uint64 fee) => (string txid, string error);
+  GetBalance(string network_id, AccountId account_id) => (string balance, string error_message);
+  GetBitcoinAccountInfo(string network_id, AccountId account_id) => (BitcoinAccountInfo? account_info);
+  SendTo(string network_id, AccountId account_id, string address_to, uint64 amount, uint64 fee) => (string txid, string error);
 };
 
 enum TransactionStatus {

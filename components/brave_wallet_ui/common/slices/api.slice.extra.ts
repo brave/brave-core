@@ -24,6 +24,7 @@ import {
 
 // entities
 import {
+  accountInfoEntityAdaptor,
   accountInfoEntityAdaptorInitialState
 } from './entities/account-info.entity'
 
@@ -34,8 +35,7 @@ import {
   selectCombinedTokensList
 } from '../slices/entities/blockchain-token.entity'
 import {
-  findAccountFromRegistry,
-  findAccountFromRegistryByAccountId
+  findAccountFromRegistry
 } from '../../utils/account-utils'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
 import { selectPendingTransactions } from './entities/transaction.entity'
@@ -70,7 +70,9 @@ export const useSelectedAccountQuery = () => {
   useGetSelectedAccountIdQuery(isLoadingAccounts ? skipToken : undefined)
 
   const selectedAccount = selectedAccountId
-    ? findAccountFromRegistryByAccountId(selectedAccountId, accountInfosRegistry)
+    ? accountInfosRegistry.entities[
+        accountInfoEntityAdaptor.selectIdByAccountId(selectedAccountId)
+      ]
     : undefined
 
   return {

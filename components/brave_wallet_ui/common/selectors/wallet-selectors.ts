@@ -16,9 +16,10 @@ export const defaultFiatCurrency = ({ wallet }: State) => wallet.defaultCurrenci
 export const hasIncorrectPassword = ({ wallet }: State) => wallet.hasIncorrectPassword
 export const hasInitialized = ({ wallet }: State) => wallet.hasInitialized
 export const isFilecoinEnabled = ({ wallet }: State) => wallet.isFilecoinEnabled
+export const isSolanaEnabled = ({ wallet }: State) => wallet.isSolanaEnabled
+export const isBitcoinEnabled = ({ wallet }: State) => wallet.isBitcoinEnabled
 export const isLoadingCoinMarketData = ({ wallet }: State) => wallet.isLoadingCoinMarketData
 export const isMetaMaskInstalled = ({ wallet }: State) => wallet.isMetaMaskInstalled
-export const isSolanaEnabled = ({ wallet }: State) => wallet.isSolanaEnabled
 export const isWalletBackedUp = ({ wallet }: State) => wallet.isWalletBackedUp
 export const isWalletCreated = ({ wallet }: State) => wallet.isWalletCreated
 export const isWalletLocked = ({ wallet }: State) => wallet.isWalletLocked

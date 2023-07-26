@@ -6,7 +6,11 @@ import { BraveWallet, CreateAccountOptionsType } from '../constants/types'
 import { getLocale } from '../../common/locale'
 import { getNetworkLogo } from './asset-options'
 
-export const CreateAccountOptions = (isFilecoinEnabled: boolean, isSolanaEnabled: boolean): CreateAccountOptionsType[] => {
+export const CreateAccountOptions = (options: {
+  isFilecoinEnabled: boolean
+  isSolanaEnabled: boolean
+  isBitcoinEnabled: boolean
+}): CreateAccountOptionsType[] => {
   let accounts = [
     {
       description: getLocale('braveWalletCreateAccountEthereumDescription'),
@@ -15,7 +19,7 @@ export const CreateAccountOptions = (isFilecoinEnabled: boolean, isSolanaEnabled
       icon: getNetworkLogo(BraveWallet.MAINNET_CHAIN_ID, 'ETH')
     }
   ]
-  if (isSolanaEnabled) {
+  if (options.isSolanaEnabled) {
     accounts.push({
       description: getLocale('braveWalletCreateAccountSolanaDescription'),
       name: 'Solana',
@@ -23,12 +27,20 @@ export const CreateAccountOptions = (isFilecoinEnabled: boolean, isSolanaEnabled
       icon: getNetworkLogo(BraveWallet.SOLANA_MAINNET, 'SOL')
     })
   }
-  if (isFilecoinEnabled) {
+  if (options.isFilecoinEnabled) {
     accounts.push({
       description: getLocale('braveWalletCreateAccountFilecoinDescription'),
       name: 'Filecoin',
       coin: BraveWallet.CoinType.FIL,
       icon: getNetworkLogo(BraveWallet.FILECOIN_MAINNET, 'FIL')
+    })
+  }
+  if (options.isBitcoinEnabled) {
+    accounts.push({
+      description: getLocale('braveWalletCreateAccountBitcoinDescription'),
+      name: 'Bitcoin',
+      coin: BraveWallet.CoinType.BTC,
+      icon: getNetworkLogo(BraveWallet.BITCOIN_MAINNET, 'BTC')
     })
   }
   return accounts

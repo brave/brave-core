@@ -9,7 +9,8 @@ namespace brave_wallet {
 namespace switches {
 
 const char kDevWalletPassword[] = "dev-wallet-password";
-const char kBitcoinRpcHost[] = "bitcoin-rpc-host";
+const char kBitcoinMainnetRpcUrl[] = "bitcoin-mainnet-rpc-url";
+const char kBitcoinTestnetRpcUrl[] = "bitcoin-testnet-rpc-url";
 
 }  // namespace switches
 }  // namespace brave_wallet

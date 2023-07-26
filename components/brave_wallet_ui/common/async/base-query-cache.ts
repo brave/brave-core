@@ -121,7 +121,8 @@ export class BaseQueryCache {
       const { jsonRpcService } = apiProxyFetcher()
 
       // network type flags
-      const { isFilecoinEnabled, isSolanaEnabled } = await this.getWalletInfo()
+      const { isFilecoinEnabled, isSolanaEnabled, isBitcoinEnabled } =
+        await this.getWalletInfo()
 
       // Get all networks
       const filteredSupportedCoinTypes = SupportedCoinTypes.filter((coin) => {
@@ -129,6 +130,7 @@ export class BaseQueryCache {
         return (
           (coin === BraveWallet.CoinType.FIL && isFilecoinEnabled) ||
           (coin === BraveWallet.CoinType.SOL && isSolanaEnabled) ||
+          (coin === BraveWallet.CoinType.BTC && isBitcoinEnabled) ||
           coin === BraveWallet.CoinType.ETH
         )
       })

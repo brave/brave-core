@@ -22,7 +22,6 @@ import {
 } from '../../constants/types'
 import {
   AddAccountPayloadType,
-  AddBitcoinAccountPayloadType
 } from '../../page/constants/action_types'
 
 // Utils
@@ -341,12 +340,6 @@ handler.on(WalletActions.getCoinMarkets.type, async (store: Store, payload: GetC
 handler.on(WalletActions.addAccount.type, async (_store: Store, payload: AddAccountPayloadType) => {
   const { keyringService } = getAPIProxy()
   const result = await keyringService.addAccount(payload.coin, payload.keyringId, payload.accountName)
-  return !!result.accountInfo
-})
-
-handler.on(WalletActions.addBitcoinAccount.type, async (_store: Store, payload: AddBitcoinAccountPayloadType) => {
-  const { keyringService } = getAPIProxy()
-  const result = await keyringService.addBitcoinAccount(payload.accountName, payload.networkId, payload.keyringId)
   return !!result.accountInfo
 })
 

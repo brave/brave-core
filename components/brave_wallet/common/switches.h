@@ -12,8 +12,11 @@ namespace switches {
 // Allows auto unlocking wallet password with command line.
 extern const char kDevWalletPassword[];
 
-// Hostname of bitcoin rpc endpoint.
-extern const char kBitcoinRpcHost[];
+// Bitcoin rpc mainnet endpoint.
+extern const char kBitcoinMainnetRpcUrl[];
+
+// Bitcoin rpc testnet endpoint.
+extern const char kBitcoinTestnetRpcUrl[];
 
 }  // namespace switches
 }  // namespace brave_wallet

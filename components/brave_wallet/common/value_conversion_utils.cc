@@ -11,6 +11,7 @@
 #include "base/uuid.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "net/base/url_util.h"
 
@@ -101,6 +102,9 @@ mojom::NetworkInfoPtr ValueToNetworkInfo(const base::Value& value) {
   } else {
     chain.coin = mojom::CoinType::ETH;
   }
+
+  chain.supported_keyrings =
+      GetSupportedKeyringsForNetwork(chain.coin, chain.chain_id);
 
   const auto* explorerUrlsListValue =
       params_dict->FindList("blockExplorerUrls");

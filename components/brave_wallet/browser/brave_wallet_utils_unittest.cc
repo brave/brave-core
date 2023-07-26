@@ -15,14 +15,15 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/gtest_util.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -485,19 +486,18 @@ TEST(BraveWalletUtilsUnitTest, TransactionReceiptAndValue) {
 }
 
 TEST(BraveWalletUtilsUnitTest, GetAllCustomChainsTest) {
-  for (auto coin :
-       {mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL}) {
+  for (auto coin : kAllCoins) {
+    SCOPED_TRACE(coin);
     TestingPrefServiceSimple prefs;
     prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
     ASSERT_TRUE(GetAllCustomChains(&prefs, coin).empty());
 
     std::vector<base::Value::Dict> values;
-    mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
-    chain1.coin = coin;
+
+    mojom::NetworkInfo chain1 = GetTestNetworkInfo1("chain1", coin);
     values.push_back(NetworkInfoToValue(chain1));
 
-    mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
-    chain2.coin = coin;
+    mojom::NetworkInfo chain2 = GetTestNetworkInfo2("chain2", coin);
     if (coin != mojom::CoinType::ETH) {
       chain2.is_eip1559 = false;
     }
@@ -543,6 +543,11 @@ TEST(BraveWalletUtilsUnitTest, KnownChainExists) {
   EXPECT_TRUE(KnownChainExists(mojom::kSolanaTestnet, mojom::CoinType::SOL));
   EXPECT_TRUE(KnownChainExists(mojom::kSolanaDevnet, mojom::CoinType::SOL));
   EXPECT_TRUE(KnownChainExists(mojom::kLocalhostChainId, mojom::CoinType::SOL));
+
+  EXPECT_TRUE(KnownChainExists(mojom::kBitcoinMainnet, mojom::CoinType::BTC));
+  EXPECT_TRUE(KnownChainExists(mojom::kBitcoinTestnet, mojom::CoinType::BTC));
+
+  EXPECT_TRUE(AllCoinsTested());
 }
 
 TEST(BraveWalletUtilsUnitTest, CustomChainExists) {
@@ -585,6 +590,17 @@ TEST(BraveWalletUtilsUnitTest, CustomChainExists) {
       mojom::CoinType::SOL);
   EXPECT_TRUE(
       CustomChainExists(&prefs, mojom::kSolanaMainnet, mojom::CoinType::SOL));
+
+  EXPECT_FALSE(
+      CustomChainExists(&prefs, mojom::kBitcoinMainnet, mojom::CoinType::BTC));
+  UpdateCustomNetworks(
+      &prefs,
+      NetworkInfoToValue(*GetAllKnownChains(&prefs, mojom::CoinType::BTC)[0]),
+      mojom::CoinType::BTC);
+  EXPECT_TRUE(
+      CustomChainExists(&prefs, mojom::kBitcoinMainnet, mojom::CoinType::BTC));
+
+  EXPECT_TRUE(AllCoinsTested());
 }
 
 TEST(BraveWalletUtilsUnitTest, CustomChainsExist) {
@@ -648,6 +664,8 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   EXPECT_EQ(expected_chains.size(), all_chains.size());
   for (size_t i = 0; i < all_chains.size(); i++) {
     ASSERT_TRUE(all_chains.at(i).Equals(expected_chains.at(i)));
+    EXPECT_THAT(all_chains.at(i)->supported_keyrings,
+                ElementsAreArray({mojom::KeyringId::kDefault}));
   }
 
   // Solana
@@ -664,6 +682,11 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   EXPECT_EQ(sol_chains[2]->chain_id, mojom::kSolanaDevnet);
   EXPECT_EQ(sol_chains[3]->chain_id, mojom::kLocalhostChainId);
 
+  for (auto& sol_chain : sol_chains) {
+    EXPECT_THAT(sol_chain->supported_keyrings,
+                ElementsAreArray({mojom::KeyringId::kSolana}));
+  }
+
   // Filecoin
   auto fil_main_custom = *GetAllKnownChains(&prefs, mojom::CoinType::FIL)[0];
   fil_main_custom.decimals = 123;
@@ -676,6 +699,30 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   EXPECT_EQ(fil_chains[0]->decimals, 123);
   EXPECT_EQ(fil_chains[1]->chain_id, mojom::kFilecoinTestnet);
   EXPECT_EQ(fil_chains[2]->chain_id, mojom::kLocalhostChainId);
+  EXPECT_THAT(fil_chains[0]->supported_keyrings,
+              ElementsAreArray({mojom::KeyringId::kFilecoin}));
+  EXPECT_THAT(fil_chains[1]->supported_keyrings,
+              ElementsAreArray({mojom::KeyringId::kFilecoinTestnet}));
+  EXPECT_THAT(fil_chains[2]->supported_keyrings,
+              ElementsAreArray({mojom::KeyringId::kFilecoinTestnet}));
+
+  // Bitcoin
+  auto btc_main_custom = *GetAllKnownChains(&prefs, mojom::CoinType::BTC)[0];
+  btc_main_custom.decimals = 123;
+  UpdateCustomNetworks(&prefs, NetworkInfoToValue(btc_main_custom),
+                       mojom::CoinType::BTC);
+
+  auto btc_chains = GetAllChains(&prefs, mojom::CoinType::BTC);
+  ASSERT_EQ(btc_chains.size(), 2u);
+  EXPECT_EQ(btc_chains[0]->chain_id, mojom::kBitcoinMainnet);
+  EXPECT_EQ(btc_chains[0]->decimals, 123);
+  EXPECT_EQ(btc_chains[1]->chain_id, mojom::kBitcoinTestnet);
+  EXPECT_THAT(btc_chains[0]->supported_keyrings,
+              ElementsAreArray({mojom::KeyringId::kBitcoin84}));
+  EXPECT_THAT(btc_chains[1]->supported_keyrings,
+              ElementsAreArray({mojom::KeyringId::kBitcoin84Testnet}));
+
+  EXPECT_TRUE(AllCoinsTested());
 }
 
 TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
@@ -728,6 +775,20 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
   EXPECT_EQ(
       GURL("https://test-fil.com"),
       GetNetworkURL(&prefs, mojom::kFilecoinMainnet, mojom::CoinType::FIL));
+
+  EXPECT_EQ(GURL(""), GetNetworkURL(&prefs, mojom::kBitcoinMainnet,
+                                    mojom::CoinType::BTC));
+  auto custom_btc_network =
+      GetKnownChain(&prefs, mojom::kBitcoinMainnet, mojom::CoinType::BTC);
+  custom_btc_network->rpc_endpoints.emplace_back("https://test-btc.com");
+  custom_btc_network->active_rpc_endpoint_index = 1;
+  UpdateCustomNetworks(&prefs, {NetworkInfoToValue(*custom_btc_network)},
+                       mojom::CoinType::BTC);
+  EXPECT_EQ(
+      GURL("https://test-btc.com"),
+      GetNetworkURL(&prefs, mojom::kBitcoinMainnet, mojom::CoinType::BTC));
+
+  EXPECT_TRUE(AllCoinsTested());
 }
 
 TEST(BraveWalletUtilsUnitTest, GetNetworkURLForKnownChains) {
@@ -769,6 +830,13 @@ TEST(BraveWalletUtilsUnitTest, GetFilecoinSubdomainForKnownChainId) {
   }
 }
 
+TEST(BraveWalletUtilsUnitTest, GetBitcoinSubdomainForKnownChainId) {
+  for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::BTC)) {
+    auto subdomain = GetBitcoinSubdomainForKnownChainId(chain->chain_id);
+    ASSERT_FALSE(subdomain.empty());
+  }
+}
+
 TEST(BraveWalletUtilsUnitTest, GetKnownChain) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
@@ -779,7 +847,7 @@ TEST(BraveWalletUtilsUnitTest, GetKnownChain) {
       brave_wallet::mojom::kBinanceSmartChainMainnetChainId,
       brave_wallet::mojom::kAuroraMainnetChainId};
 
-  auto known_chains = brave_wallet::GetAllKnownNetworksForTesting();
+  auto known_chains = GetAllKnownChains(&prefs, mojom::CoinType::ETH);
   ASSERT_FALSE(known_chains.empty());
   for (const auto& chain : known_chains) {
     auto network = GetKnownChain(&prefs, chain->chain_id, mojom::CoinType::ETH);
@@ -852,7 +920,7 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
       brave_wallet::mojom::kSolanaMainnet, "Solana Mainnet Beta",
       {"https://explorer.solana.com/"}, {}, 0,
       {GURL("https://mainnet-beta-solana.brave.com/rpc")}, "SOL", "Solana", 9,
-      brave_wallet::mojom::CoinType::SOL, false);
+      brave_wallet::mojom::CoinType::SOL, {mojom::KeyringId::kSolana}, false);
   EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::SOL));
   EXPECT_EQ(GetChain(&prefs, "0x65", mojom::CoinType::SOL),
             sol_mainnet.Clone());
@@ -862,9 +930,20 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
       brave_wallet::mojom::kFilecoinMainnet, "Filecoin Mainnet",
       {"https://filscan.io/tipset/message-detail"}, {}, 0,
       {GURL("https://api.node.glif.io/rpc/v0")}, "FIL", "Filecoin", 18,
-      brave_wallet::mojom::CoinType::FIL, false);
+      brave_wallet::mojom::CoinType::FIL, {mojom::KeyringId::kFilecoin}, false);
   EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::FIL));
   EXPECT_EQ(GetChain(&prefs, "f", mojom::CoinType::FIL), fil_mainnet.Clone());
+
+  // Bitcoin
+  mojom::NetworkInfo btc_mainnet(mojom::kBitcoinMainnet, "Bitcoin Mainnet",
+                                 {""}, {}, 0, {GURL()}, "BTC", "Bitcoin", 8,
+                                 mojom::CoinType::BTC,
+                                 {mojom::KeyringId::kBitcoin84}, false);
+  EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::BTC));
+  EXPECT_EQ(GetChain(&prefs, "bitcoin_mainnet", mojom::CoinType::BTC),
+            btc_mainnet.Clone());
+
+  EXPECT_TRUE(AllCoinsTested());
 }
 
 TEST(BraveWalletUtilsUnitTest, GetAllKnownEthNetworkIds) {
@@ -875,7 +954,7 @@ TEST(BraveWalletUtilsUnitTest, GetAllKnownEthNetworkIds) {
        "sepolia", "http://localhost:7545/",
        mojom::kFilecoinEthereumMainnetChainId,
        mojom::kFilecoinEthereumTestnetChainId});
-  ASSERT_EQ(GetAllKnownNetworksForTesting().size(),
+  ASSERT_EQ(GetAllKnownChains(nullptr, mojom::CoinType::ETH).size(),
             expected_network_ids.size());
   EXPECT_EQ(GetAllKnownEthNetworkIds(), expected_network_ids);
 }
@@ -992,20 +1071,30 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
   EXPECT_EQ(*asset_list2[0].GetDict().FindBool("visible"), true);
 
   {
-    mojom::NetworkInfo chain_fil = GetTestNetworkInfo1(mojom::kFilecoinMainnet);
-    chain_fil.coin = mojom::CoinType::FIL;
+    mojom::NetworkInfo chain_fil =
+        GetTestNetworkInfo1(mojom::kFilecoinMainnet, mojom::CoinType::FIL);
     AddCustomNetwork(&prefs, chain_fil);
     ASSERT_EQ(1u, GetAllCustomChains(&prefs, mojom::CoinType::FIL).size());
     EXPECT_EQ(chain_fil, *GetAllCustomChains(&prefs, mojom::CoinType::FIL)[0]);
   }
 
   {
-    mojom::NetworkInfo chain_sol = GetTestNetworkInfo1(mojom::kSolanaMainnet);
-    chain_sol.coin = mojom::CoinType::SOL;
+    mojom::NetworkInfo chain_sol =
+        GetTestNetworkInfo1(mojom::kSolanaMainnet, mojom::CoinType::SOL);
     AddCustomNetwork(&prefs, chain_sol);
     ASSERT_EQ(1u, GetAllCustomChains(&prefs, mojom::CoinType::SOL).size());
     EXPECT_EQ(chain_sol, *GetAllCustomChains(&prefs, mojom::CoinType::SOL)[0]);
   }
+
+  {
+    mojom::NetworkInfo chain_btc =
+        GetTestNetworkInfo1(mojom::kBitcoinMainnet, mojom::CoinType::BTC);
+    AddCustomNetwork(&prefs, chain_btc);
+    ASSERT_EQ(1u, GetAllCustomChains(&prefs, mojom::CoinType::BTC).size());
+    EXPECT_EQ(chain_btc, *GetAllCustomChains(&prefs, mojom::CoinType::BTC)[0]);
+  }
+
+  EXPECT_TRUE(AllCoinsTested());
 }
 
 TEST(BraveWalletUtilsUnitTest, CustomNetworkMatchesKnownNetwork) {
@@ -1071,8 +1160,8 @@ TEST(BraveWalletUtilsUnitTest, RemoveCustomNetwork) {
   RemoveCustomNetwork(&prefs, "unknown network", mojom::CoinType::ETH);
 
   {
-    mojom::NetworkInfo chain_fil = GetTestNetworkInfo1(mojom::kFilecoinMainnet);
-    chain_fil.coin = mojom::CoinType::FIL;
+    mojom::NetworkInfo chain_fil =
+        GetTestNetworkInfo1(mojom::kFilecoinMainnet, mojom::CoinType::FIL);
     AddCustomNetwork(&prefs, chain_fil);
     ASSERT_EQ(1u, GetAllCustomChains(&prefs, mojom::CoinType::FIL).size());
     RemoveCustomNetwork(&prefs, mojom::kFilecoinMainnet, mojom::CoinType::FIL);
@@ -1080,13 +1169,24 @@ TEST(BraveWalletUtilsUnitTest, RemoveCustomNetwork) {
   }
 
   {
-    mojom::NetworkInfo chain_sol = GetTestNetworkInfo1(mojom::kSolanaMainnet);
-    chain_sol.coin = mojom::CoinType::SOL;
+    mojom::NetworkInfo chain_sol =
+        GetTestNetworkInfo1(mojom::kSolanaMainnet, mojom::CoinType::SOL);
     AddCustomNetwork(&prefs, chain_sol);
     ASSERT_EQ(1u, GetAllCustomChains(&prefs, mojom::CoinType::SOL).size());
     RemoveCustomNetwork(&prefs, mojom::kSolanaMainnet, mojom::CoinType::SOL);
     ASSERT_EQ(0u, GetAllCustomChains(&prefs, mojom::CoinType::SOL).size());
   }
+
+  {
+    mojom::NetworkInfo chain_btc =
+        GetTestNetworkInfo1(mojom::kBitcoinMainnet, mojom::CoinType::BTC);
+    AddCustomNetwork(&prefs, chain_btc);
+    ASSERT_EQ(1u, GetAllCustomChains(&prefs, mojom::CoinType::BTC).size());
+    RemoveCustomNetwork(&prefs, mojom::kBitcoinMainnet, mojom::CoinType::BTC);
+    ASSERT_EQ(0u, GetAllCustomChains(&prefs, mojom::CoinType::BTC).size());
+  }
+
+  EXPECT_TRUE(AllCoinsTested());
 }
 
 TEST(BraveWalletUtilsUnitTest, HiddenNetworks) {
@@ -1105,9 +1205,13 @@ TEST(BraveWalletUtilsUnitTest, HiddenNetworks) {
               ElementsAreArray<std::string>({mojom::kSolanaDevnet,
                                              mojom::kSolanaTestnet,
                                              mojom::kLocalhostChainId}));
+  // TODO(apaymyshev): fix by
+  // https://github.com/brave/brave-browser/issues/31662
+  EXPECT_THAT(GetHiddenNetworks(&prefs, mojom::CoinType::BTC),
+              ElementsAreArray<std::string>({/*mojom::kBitcoinTestnet*/}));
+  EXPECT_TRUE(AllCoinsTested());
 
-  for (auto coin :
-       {mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL}) {
+  for (auto coin : kAllCoins) {
     for (auto& default_hidden : GetHiddenNetworks(&prefs, coin)) {
       RemoveHiddenNetwork(&prefs, coin, default_hidden);
     }
@@ -1143,35 +1247,13 @@ TEST(BraveWalletUtilsUnitTest, GetPrefKeyForCoinType) {
   EXPECT_EQ(key, kFilecoinPrefKey);
   key = GetPrefKeyForCoinType(mojom::CoinType::SOL);
   EXPECT_EQ(key, kSolanaPrefKey);
+  key = GetPrefKeyForCoinType(mojom::CoinType::BTC);
+  EXPECT_EQ(key, kBitcoinPrefKey);
+
+  EXPECT_TRUE(AllCoinsTested());
 
   EXPECT_DCHECK_DEATH(
       GetPrefKeyForCoinType(static_cast<mojom::CoinType>(2016)));
-}
-
-TEST(BraveWalletUtilsUnitTest, CoinTypeToKeyringId) {
-  auto id = CoinTypeToKeyringId(mojom::CoinType::ETH, absl::nullopt);
-  EXPECT_EQ(id, mojom::kDefaultKeyringId);
-  id = CoinTypeToKeyringId(mojom::CoinType::ETH, "not_used");
-  EXPECT_EQ(id, mojom::kDefaultKeyringId);
-  id = CoinTypeToKeyringId(mojom::CoinType::SOL, absl::nullopt);
-  EXPECT_EQ(id, mojom::kSolanaKeyringId);
-  id = CoinTypeToKeyringId(mojom::CoinType::SOL, "not_used");
-  EXPECT_EQ(id, mojom::kSolanaKeyringId);
-  id = CoinTypeToKeyringId(mojom::CoinType::FIL, absl::nullopt);
-  EXPECT_EQ(id, mojom::kFilecoinKeyringId);
-  id = CoinTypeToKeyringId(mojom::CoinType::FIL, mojom::kFilecoinMainnet);
-  EXPECT_EQ(id, mojom::kFilecoinKeyringId);
-  id = CoinTypeToKeyringId(mojom::CoinType::FIL, mojom::kFilecoinTestnet);
-  EXPECT_EQ(id, mojom::kFilecoinTestnetKeyringId);
-  id = CoinTypeToKeyringId(mojom::CoinType::FIL, mojom::kLocalhostChainId);
-  EXPECT_EQ(id, mojom::kFilecoinTestnetKeyringId);
-
-  EXPECT_DCHECK_DEATH(
-      CoinTypeToKeyringId(static_cast<mojom::CoinType>(2016), absl::nullopt));
-  EXPECT_DCHECK_DEATH(
-      CoinTypeToKeyringId(static_cast<mojom::CoinType>(2016), "not_used"));
-  EXPECT_DCHECK_DEATH(
-      CoinTypeToKeyringId(mojom::CoinType::FIL, "not_supported"));
 }
 
 TEST(BraveWalletUtilsUnitTest, GetAndSetCurrentChainId) {
@@ -1180,13 +1262,22 @@ TEST(BraveWalletUtilsUnitTest, GetAndSetCurrentChainId) {
   const base::flat_map<mojom::CoinType, std::string> default_chain_ids = {
       {mojom::CoinType::ETH, mojom::kMainnetChainId},
       {mojom::CoinType::SOL, mojom::kSolanaMainnet},
-      {mojom::CoinType::FIL, mojom::kFilecoinMainnet}};
+      {mojom::CoinType::FIL, mojom::kFilecoinMainnet},
+  };
   const base::flat_map<mojom::CoinType, std::string> new_default_chain_ids = {
       {mojom::CoinType::ETH, mojom::kGoerliChainId},
       {mojom::CoinType::SOL, mojom::kSolanaTestnet},
-      {mojom::CoinType::FIL, mojom::kFilecoinTestnet}};
-  for (const auto coin_type :
-       {mojom::CoinType::ETH, mojom::CoinType::SOL, mojom::CoinType::FIL}) {
+      {mojom::CoinType::FIL, mojom::kFilecoinTestnet},
+  };
+
+  EXPECT_TRUE(AllCoinsTested());
+
+  for (const auto coin_type : kAllCoins) {
+    // TODO(apaymyshev): make this test working for BTC which has no localhost
+    if (coin_type == mojom::CoinType::BTC) {
+      continue;
+    }
+
     // default value
     EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, absl::nullopt),
               default_chain_ids.at(coin_type));
@@ -1286,69 +1377,6 @@ TEST(BraveWalletUtilsUnitTest, MakeOriginInfo) {
   EXPECT_EQ("", empty_origin_info->e_tld_plus_one);
 }
 
-TEST(BraveWalletUtilsUnitTest, IsFilecoinKeyringId) {
-  EXPECT_TRUE(IsFilecoinKeyringId(mojom::kFilecoinKeyringId));
-  EXPECT_TRUE(IsFilecoinKeyringId(mojom::kFilecoinTestnetKeyringId));
-
-  EXPECT_FALSE(IsFilecoinKeyringId(mojom::kDefaultKeyringId));
-  EXPECT_FALSE(IsFilecoinKeyringId(mojom::kSolanaKeyringId));
-  EXPECT_FALSE(IsFilecoinKeyringId(mojom::kBitcoinKeyring84Id));
-}
-
-TEST(BraveWalletUtilsUnitTest, IsBitcoinKeyring) {
-  EXPECT_TRUE(IsBitcoinKeyring(mojom::kBitcoinKeyring84Id));
-  EXPECT_TRUE(IsBitcoinKeyring(mojom::kBitcoinKeyring84TestId));
-
-  EXPECT_FALSE(IsBitcoinKeyring(mojom::kDefaultKeyringId));
-  EXPECT_FALSE(IsBitcoinKeyring(mojom::kSolanaKeyringId));
-  EXPECT_FALSE(IsBitcoinKeyring(mojom::kFilecoinKeyringId));
-}
-
-TEST(BraveWalletUtilsUnitTest, IsBitcoinNetwork) {
-  EXPECT_TRUE(IsBitcoinNetwork(mojom::kBitcoinMainnet));
-  EXPECT_TRUE(IsBitcoinNetwork(mojom::kBitcoinTestnet));
-
-  EXPECT_FALSE(IsBitcoinNetwork(mojom::kMainnetChainId));
-  EXPECT_FALSE(IsBitcoinNetwork(mojom::kFilecoinMainnet));
-  EXPECT_FALSE(IsBitcoinNetwork(mojom::kSolanaMainnet));
-  EXPECT_FALSE(IsBitcoinNetwork(""));
-  EXPECT_FALSE(IsBitcoinNetwork("abc"));
-}
-
-TEST(BraveWalletUtilsUnitTest, IsValidBitcoinNetworkKeyringPair) {
-  EXPECT_TRUE(IsValidBitcoinNetworkKeyringPair(mojom::kBitcoinMainnet,
-                                               mojom::kBitcoinKeyring84Id));
-  EXPECT_TRUE(IsValidBitcoinNetworkKeyringPair(mojom::kBitcoinTestnet,
-                                               mojom::kBitcoinKeyring84TestId));
-
-  EXPECT_FALSE(IsValidBitcoinNetworkKeyringPair(mojom::kBitcoinTestnet,
-                                                mojom::kBitcoinKeyring84Id));
-  EXPECT_FALSE(IsValidBitcoinNetworkKeyringPair(
-      mojom::kBitcoinMainnet, mojom::kBitcoinKeyring84TestId));
-  EXPECT_FALSE(
-      IsValidBitcoinNetworkKeyringPair("", mojom::kBitcoinKeyring84TestId));
-  EXPECT_FALSE(
-      IsValidBitcoinNetworkKeyringPair("abc", mojom::kBitcoinKeyring84TestId));
-}
-
-TEST(BraveWalletUtilsUnitTest, GetActiveEndpointUrl) {
-  mojom::NetworkInfo chain = GetTestNetworkInfo1();
-  EXPECT_EQ(GURL("https://url1.com"), GetActiveEndpointUrl(chain));
-  chain.active_rpc_endpoint_index = -1;
-  EXPECT_EQ(GURL(), GetActiveEndpointUrl(chain));
-  chain.active_rpc_endpoint_index = 1;
-  EXPECT_EQ(GURL(), GetActiveEndpointUrl(chain));
-
-  chain.active_rpc_endpoint_index = 2;
-  chain.rpc_endpoints.emplace_back("https://brave.com");
-  chain.rpc_endpoints.emplace_back("https://test.com");
-  EXPECT_EQ(GURL("https://test.com"), GetActiveEndpointUrl(chain));
-
-  chain.active_rpc_endpoint_index = 0;
-  chain.rpc_endpoints.clear();
-  EXPECT_EQ(GURL(), GetActiveEndpointUrl(chain));
-}
-
 TEST(BraveWalletUtilsUnitTest, GetUnstoppableDomainsRpcUrl) {
   EXPECT_EQ(AddInfuraProjectId(GURL("https://mainnet-infura.brave.com")),
             GetUnstoppableDomainsRpcUrl(mojom::kMainnetChainId));
@@ -1370,15 +1398,14 @@ TEST(BraveWalletUtilsUnitTest, GetChainIdByNetworkId) {
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
 
-  for (auto coin :
-       {mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL}) {
+  for (auto coin : kAllCoins) {
     ASSERT_TRUE(GetAllCustomChains(&prefs, coin).empty());
     std::vector<base::Value::Dict> values;
-    mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
-    chain1.coin = coin;
+
+    mojom::NetworkInfo chain1 = GetTestNetworkInfo1("chain_id", coin);
     values.push_back(NetworkInfoToValue(chain1));
-    mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
-    chain2.coin = coin;
+
+    mojom::NetworkInfo chain2 = GetTestNetworkInfo2("chain_id", coin);
     if (coin != mojom::CoinType::ETH) {
       chain2.is_eip1559 = false;
     }
@@ -1398,6 +1425,9 @@ TEST(BraveWalletUtilsUnitTest, GetChainIdByNetworkId) {
       if (chain->coin == mojom::CoinType::FIL) {
         nid = GetKnownFilNetworkId(chain->chain_id);
       }
+      if (chain->coin == mojom::CoinType::BTC) {
+        nid = GetKnownBtcNetworkId(chain->chain_id);
+      }
       if (nid.empty()) {
         nid = chain->chain_id;
         // GetNetworkId supports only ETH for custom networks atm.
@@ -1406,105 +1436,15 @@ TEST(BraveWalletUtilsUnitTest, GetChainIdByNetworkId) {
           continue;
         }
       }
-      auto chainId = GetChainIdByNetworkId(&prefs, coin_type, nid);
-      ASSERT_TRUE(chainId.has_value());
-      EXPECT_EQ(chain->chain_id, chainId.value());
+      auto chain_id = GetChainIdByNetworkId(&prefs, coin_type, nid);
+      ASSERT_TRUE(chain_id.has_value());
+      EXPECT_EQ(chain->chain_id, chain_id.value());
     }
     ASSERT_FALSE(GetChainIdByNetworkId(&prefs, coin_type, ""));
   };
 
-  for (auto coin :
-       {mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL}) {
+  for (auto coin : kAllCoins) {
     getChainIdByNetworkIdCheck(coin);
-  }
-}
-
-TEST(BraveWalletUtilsUnitTest, GetSupportedKeyrings) {
-  base::test::ScopedFeatureList disabled_feature_list;
-  disabled_feature_list.InitWithFeatures(
-      {}, {features::kBraveWalletSolanaFeature,
-           features::kBraveWalletFilecoinFeature});
-
-  for (auto enable_solana : {true, false}) {
-    for (auto enable_filecoin : {true, false}) {
-      std::vector<base::test::FeatureRef> enabled_features;
-      if (enable_solana) {
-        enabled_features.emplace_back(features::kBraveWalletSolanaFeature);
-      }
-      if (enable_filecoin) {
-        enabled_features.emplace_back(features::kBraveWalletFilecoinFeature);
-      }
-
-      base::test::ScopedFeatureList feature_list;
-      feature_list.InitWithFeatures(enabled_features, {});
-
-      auto keyrings = GetSupportedKeyrings();
-      size_t last_pos = 0;
-
-      EXPECT_EQ(keyrings[last_pos++], mojom::kDefaultKeyringId);
-
-      if (enable_filecoin) {
-        EXPECT_EQ(keyrings[last_pos++], mojom::kFilecoinKeyringId);
-        EXPECT_EQ(keyrings[last_pos++], mojom::kFilecoinTestnetKeyringId);
-      }
-
-      if (enable_solana) {
-        EXPECT_EQ(keyrings[last_pos++], mojom::kSolanaKeyringId);
-      }
-
-      EXPECT_EQ(last_pos, keyrings.size());
-    }
-  }
-}
-
-TEST(BraveWalletUtilsUnitTest, MakeAccountId) {
-  auto id1 = MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
-                           mojom::AccountKind::kDerived,
-                           "0xA0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");
-  EXPECT_EQ(id1->unique_key,
-            "60_0_0_0xA0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");
-
-  // Same AccountId
-  EXPECT_EQ(id1->unique_key,
-            MakeAccountId(id1->coin, id1->keyring_id, id1->kind, id1->address)
-                ->unique_key);
-
-  // Coin differs.
-  EXPECT_NE(id1->unique_key,
-            MakeAccountId(mojom::CoinType::SOL, id1->keyring_id, id1->kind,
-                          id1->address)
-                ->unique_key);
-
-  // Keyring differs
-  EXPECT_NE(id1->unique_key, MakeAccountId(id1->coin, mojom::KeyringId::kSolana,
-                                           id1->kind, id1->address)
-                                 ->unique_key);
-
-  // Kind differs
-  EXPECT_NE(id1->unique_key,
-            MakeAccountId(id1->coin, id1->keyring_id,
-                          mojom::AccountKind::kImported, id1->address)
-                ->unique_key);
-
-  // Address differs
-  EXPECT_NE(id1->unique_key,
-            MakeAccountId(id1->coin, id1->keyring_id, id1->kind, "0x123")
-                ->unique_key);
-}
-
-TEST(BraveWalletUtilsUnitTest, CoinSupportsDapps) {
-  for (auto i = int32_t(mojom::CoinType::kMinValue);
-       i <= int32_t(mojom::CoinType::kMaxValue); ++i) {
-    mojom::CoinType coin{i};
-    if (!mojom::IsKnownEnumValue(coin)) {
-      continue;
-    }
-
-    if (coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL) {
-      EXPECT_TRUE(CoinSupportsDapps(coin));
-    } else {
-      EXPECT_FALSE(CoinSupportsDapps(coin));
-    }
   }
 }
 

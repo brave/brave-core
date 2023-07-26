@@ -30,9 +30,9 @@ import {
 import { getLocale } from '../../../../../common/locale'
 import { sortTransactionByDate } from '../../../../utils/tx-utils'
 import { getBalance } from '../../../../utils/balance-utils'
-import {
-  getFilecoinKeyringIdFromNetwork
-} from '../../../../utils/network-utils'
+import { filterNetworksForAccount } from '../../../../utils/network-utils'
+import { makeAccountRoute, makeAccountTransactionRoute } from '../../../../utils/routes-utils'
+
 import Amount from '../../../../utils/amount'
 import {
   getTokenPriceAmountFromRegistry
@@ -123,7 +123,7 @@ import { AccountsTabActions } from '../../../../page/reducers/accounts-tab-reduc
 
 export const Account = () => {
   // routing
-  const { accountId, selectedTab } =
+  const { accountId: addressOrUniqueKey, selectedTab } =
     useParams<{ accountId: string, selectedTab?: string }>()
   const { hash: transactionID } = useLocation()
   const history = useHistory()
@@ -134,10 +134,11 @@ export const Account = () => {
   // unsafe selectors
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const selectedAccount = React.useMemo(() => {
-    return accounts.find(({ address }) =>
-      address.toLowerCase() === accountId?.toLowerCase()
+    return accounts.find((account) =>
+      account.accountId.uniqueKey === addressOrUniqueKey ||
+      account.address.toLowerCase() === addressOrUniqueKey?.toLowerCase()
     )
-  }, [accounts, accountId])
+  }, [accounts, addressOrUniqueKey])
 
   // queries
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
@@ -200,18 +201,17 @@ export const Account = () => {
     const coinName = CoinTypesMap[selectedAccount.accountId.coin]
     const localHostCoins = userVisibleTokensInfo.filter((token) => token.chainId === BraveWallet.LOCALHOST_CHAIN_ID)
     const accountsLocalHost = localHostCoins.find((token) => token.symbol.toUpperCase() === coinName)
-    const chainList = networkList.filter((network) => network.coin === selectedAccount.accountId.coin &&
-      (network.coin !== BraveWallet.CoinType.FIL || getFilecoinKeyringIdFromNetwork(network) === selectedAccount.accountId.keyringId)).map((network) => network.chainId) ?? []
+    const chainList = filterNetworksForAccount(
+      networkList,
+      selectedAccount.accountId
+    ).map((network) => network.chainId)
     const list =
       userVisibleTokensInfo.filter((token) => chainList.includes(token?.chainId ?? '') &&
         token.chainId !== BraveWallet.LOCALHOST_CHAIN_ID) ?? []
     if (
       accountsLocalHost &&
       hasLocalHostNetwork &&
-      (
-        selectedAccount.accountId.keyringId !==
-        BraveWallet.KeyringId.kFilecoin
-      )
+      selectedAccount.accountId.keyringId !== BraveWallet.KeyringId.kFilecoin
     ) {
       return [...list, accountsLocalHost]
     }
@@ -232,7 +232,7 @@ export const Account = () => {
     () =>
       accountsTokensList.filter(({ isErc721, isNft }) => isErc721 || isNft)
         .filter(token =>
-          new Amount(getBalance(selectedAccount, token, tokenBalancesRegistry))
+          new Amount(getBalance(selectedAccount?.accountId, token, tokenBalancesRegistry))
             .gt(0)),
     [accountsTokensList, selectedAccount, tokenBalancesRegistry]
   )
@@ -246,7 +246,7 @@ export const Account = () => {
   const tokenPriceIds = React.useMemo(() =>
     fungibleTokens
       .filter(token =>
-        new Amount(getBalance(selectedAccount, token, tokenBalancesRegistry))
+        new Amount(getBalance(selectedAccount?.accountId, token, tokenBalancesRegistry))
           .gt(0))
       .map(getPriceIdForToken),
     [fungibleTokens, selectedAccount, tokenBalancesRegistry]
@@ -263,15 +263,17 @@ export const Account = () => {
   )
 
   const routeOptions = React.useMemo(() => {
+    if (!selectedAccount) return []
     return AccountDetailsOptions.map((option) => {
       return {
         ...option,
-        route: `${WalletRoutes.Accounts //
-          }/${accountId //
-          }/${option.route}` as WalletRoutes
+        route: makeAccountRoute(
+          selectedAccount,
+          option.route as AccountPageTabs
+        ) as WalletRoutes
       }
     })
-  }, [accountId])
+  }, [selectedAccount])
 
   // Methods
   const onRemoveAccount = React.useCallback(() => {
@@ -362,13 +364,11 @@ export const Account = () => {
   }
 
   if (transactionID && !selectedTab) {
-    return <Redirect to={
-      `${WalletRoutes.Accounts //
-      }/${accountId //
-      }/${AccountPageTabs.AccountTransactionsSub //
-      }${transactionID}`
-    }
-    />
+    return (
+      <Redirect
+        to={makeAccountTransactionRoute(selectedAccount, transactionID)}
+      />
+    )
   }
 
   // render
@@ -402,7 +402,7 @@ export const Account = () => {
               key={getAssetIdKey(asset)}
               action={() => onSelectAsset(asset)}
               assetBalance={
-                getBalance(selectedAccount, asset, tokenBalancesRegistry)
+                getBalance(selectedAccount.accountId, asset, tokenBalancesRegistry)
               }
               token={asset}
               isAccountDetails={true}
@@ -509,7 +509,7 @@ export const Account = () => {
           account={selectedAccount}
           sellAssetBalance={
             getBalance(
-              selectedAccount,
+              selectedAccount.accountId,
               selectedSellAsset,
               tokenBalancesRegistry
             )

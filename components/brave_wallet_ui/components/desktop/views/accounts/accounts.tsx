@@ -10,7 +10,6 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 
 import {
   WalletState,
-  WalletRoutes,
   BraveWallet,
   AccountPageTabs
 } from '../../../../constants/types'
@@ -31,6 +30,7 @@ import {
   groupAccountsById,
   sortAccountsByName
 } from '../../../../utils/account-utils'
+import { makeAccountRoute } from '../../../../utils/routes-utils'
 import {
   getPriceIdForToken
 } from '../../../../utils/api-utils'
@@ -78,14 +78,10 @@ export const Accounts = () => {
   const onSelectAccount = React.useCallback(
     (account: BraveWallet.AccountInfo | undefined) => {
       if (account) {
-        history.push(
-          `${WalletRoutes.Accounts //
-          }/${account.address //
-          }/${AccountPageTabs.AccountAssetsSub}`
-        )
+        history.push(makeAccountRoute(account, AccountPageTabs.AccountAssetsSub))
       }
     },
-    []
+    [history]
   )
 
   // memos

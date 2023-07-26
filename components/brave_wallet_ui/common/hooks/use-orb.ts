@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import * as EthereumBlockies from 'ethereum-blockies'
+import * as crypto from 'crypto'
 
 import { BraveWallet } from '../../constants/types'
 
@@ -28,8 +29,13 @@ export const useAccountOrb = (
       return ''
     }
 
+    // Using hash of uniqueKey so similar unique keys don't produce similar colors.
     const seed =
-      accountInfo.address?.toLowerCase() || accountInfo.accountId.uniqueKey
+      accountInfo.address?.toLowerCase() ||
+      crypto
+        .createHash('sha256')
+        .update(accountInfo.accountId.uniqueKey)
+        .digest('hex')
 
     return (
       EthereumBlockies.create({

@@ -242,7 +242,7 @@ export const ConnectedPanel = (props: Props) => {
     }
 
     const balance = getBalance(
-      selectedAccount,
+      selectedAccount.accountId,
       networkAsset,
       tokenBalancesRegistry
     )

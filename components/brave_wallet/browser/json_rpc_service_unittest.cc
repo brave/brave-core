@@ -35,6 +35,7 @@
 #include "brave/components/brave_wallet/browser/sns_resolver_task.h"
 #include "brave/components/brave_wallet/browser/unstoppable_domains_dns_resolve.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -2276,7 +2277,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
   mojom::NetworkInfo chain4("0x444", "chain_name4", {"https://url4.com"},
                             {"https://url4.com"}, 0, {GURL("https://url4.com")},
                             "symbol_name", "symbol", 11, mojom::CoinType::ETH,
-                            false);
+                            {mojom::KeyringId::kDefault}, false);
   bool fourth_callback_is_called = false;
   mojom::ProviderError fourth_expected =
       mojom::ProviderError::kUserRejectedRequest;
@@ -2303,7 +2304,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
   mojom::NetworkInfo chain5("0x444", "chain_name5", {"https://url5.com"},
                             {"https://url5.com"}, 0, {GURL("https://url5.com")},
                             "symbol_name", "symbol", 11, mojom::CoinType::ETH,
-                            false);
+                            {mojom::KeyringId::kDefault}, false);
   bool fifth_callback_is_called = false;
   mojom::ProviderError fifth_expected =
       mojom::ProviderError::kUserRejectedRequest;

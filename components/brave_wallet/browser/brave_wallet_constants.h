@@ -322,6 +322,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_CREATE_ACCOUNT_SOLANA_DESCRIPTION},
     {"braveWalletCreateAccountFilecoinDescription",
      IDS_BRAVE_WALLET_CREATE_ACCOUNT_FILECOIN_DESCRIPTION},
+    {"braveWalletCreateAccountBitcoinDescription",
+     IDS_BRAVE_WALLET_CREATE_ACCOUNT_BITCOIN_DESCRIPTION},
     {"braveWalletFilecoinPrivateKeyProtocol",
      IDS_BRAVE_WALLET_FILECOIN_PRIVATE_KEY_PROTOCOL},
     {"braveWalletAddAccountImport", IDS_BRAVE_WALLET_ADD_ACCOUNT_IMPORT},

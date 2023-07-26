@@ -112,7 +112,12 @@ export const SellAssetModal = (props: Props) => {
     }
 
     setSellAmount(
-      getPercentAmount(selectedAsset, account, percent, tokenBalancesRegistry)
+      getPercentAmount(
+        selectedAsset,
+        account.accountId,
+        percent,
+        tokenBalancesRegistry
+      )
     )
   }, [setSellAmount, selectedAsset, account, tokenBalancesRegistry])
 

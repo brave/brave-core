@@ -230,7 +230,12 @@ export const PortfolioAsset = (props: Props) => {
   // This will scrape all the user's accounts and combine the asset balances for a single asset
   const fullAssetBalance = React.useMemo(() => {
     const amounts = candidateAccounts.map((account: BraveWallet.AccountInfo) =>
-      getBalance(account, selectedAssetFromParams, tokenBalancesRegistry))
+      getBalance(
+        account.accountId,
+        selectedAssetFromParams,
+        tokenBalancesRegistry
+      )
+    )
 
     // If a user has not yet created a FIL or SOL account,
     // we return 0 until they create an account

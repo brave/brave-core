@@ -174,7 +174,7 @@ export const AccountListItem = ({
   const tokensWithBalances = React.useMemo(() => {
     return accountsFungibleTokens
       .filter((token) =>
-        new Amount(getBalance(account, token, tokenBalancesRegistry)).gt(0))
+        new Amount(getBalance(account.accountId, token, tokenBalancesRegistry)).gt(0))
   }, [accountsFungibleTokens, tokenBalancesRegistry, account])
 
   const accountsFiatValue = React.useMemo(() => {
@@ -196,7 +196,7 @@ export const AccountListItem = ({
       accountsFungibleTokens
         .map((asset) => {
           const balance =
-            getBalance(account, asset, tokenBalancesRegistry)
+            getBalance(account.accountId, asset, tokenBalancesRegistry)
           return computeFiatAmount({
             spotPriceRegistry,
             value: balance,
@@ -238,8 +238,7 @@ export const AccountListItem = ({
       <NameAndIcon>
         <CreateAccountIcon
           size='big'
-          address={account.address}
-          accountKind={account.accountId.kind}
+          account={account}
           marginRight={16}
         />
         <AccountAndAddress>
@@ -248,16 +247,16 @@ export const AccountListItem = ({
           >
             {account.name}
           </AccountNameButton>
-          <AddressAndButtonRow>
-            <AccountAddressButton
-              onClick={onSelectAccount}
-            >
-              {reduceAddress(account.address)}
-            </AccountAddressButton>
-            <CopyTooltip text={account.address}>
-              <CopyIcon />
-            </CopyTooltip>
-          </AddressAndButtonRow>
+          {account.address && (
+            <AddressAndButtonRow>
+              <AccountAddressButton onClick={onSelectAccount}>
+                {reduceAddress(account.address)}
+              </AccountAddressButton>
+              <CopyTooltip text={account.address}>
+                <CopyIcon />
+              </CopyTooltip>
+            </AddressAndButtonRow>
+          )}
           <AccountDescription>
             {getAccountTypeDescription(account.accountId.coin)}
           </AccountDescription>

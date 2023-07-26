@@ -13,7 +13,6 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
-#include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
@@ -108,12 +107,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   mojom::AccountInfoPtr AddAccountSync(mojom::CoinType coin,
                                        mojom::KeyringId keyring_id,
                                        const std::string& account_name);
-
-  void AddBitcoinAccount(const std::string& account_name,
-                         const std::string& network_id,
-                         mojom::KeyringId keyring_id,
-                         AddBitcoinAccountCallback callback) override;
-
   void EncodePrivateKeyForExport(
       mojom::AccountIdPtr account_id,
       const std::string& password,
@@ -221,15 +214,15 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   absl::optional<size_t> GetAccountsNumber(mojom::KeyringId keyring_id);
 
   absl::optional<std::vector<std::pair<std::string, mojom::BitcoinKeyIdPtr>>>
-  GetBitcoinAddresses(mojom::KeyringId keyring_id, uint32_t account_index);
+  GetBitcoinAddresses(const mojom::AccountId& account_id);
   absl::optional<std::string> GetBitcoinAddress(
-      mojom::KeyringId keyring_id,
+      const mojom::AccountId& account_id,
       const mojom::BitcoinKeyId& key_id);
   absl::optional<std::vector<uint8_t>> GetBitcoinPubkey(
-      mojom::KeyringId keyring_id,
+      const mojom::AccountId& account_id,
       const mojom::BitcoinKeyId& key_id);
   absl::optional<std::vector<uint8_t>> SignMessageByBitcoinKeyring(
-      mojom::KeyringId keyring_id,
+      const mojom::AccountId& account_id,
       const mojom::BitcoinKeyId& key_id,
       base::span<const uint8_t, 32> message);
 

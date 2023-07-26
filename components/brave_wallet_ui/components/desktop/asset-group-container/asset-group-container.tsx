@@ -211,8 +211,7 @@ export const AssetGroupContainer = (props: Props) => {
           >
             <CreateAccountIcon
               size='small'
-              address={account.address}
-              accountKind={account.accountId.kind}
+              account={account}
               marginRight={16}
             />
             <AccountDescriptionWrapper

@@ -21,10 +21,11 @@ import {
   CreateAccountOptionsType,
   PageState,
   WalletRoutes,
-  WalletState,
-  ImportAccountErrorType
+  ImportAccountErrorType,
+  FilecoinNetwork,
+  FilecoinNetworkTypes,
+  FilecoinNetworkLocaleMapping
 } from '../../../../constants/types'
-import { FilecoinNetworkTypes, FilecoinNetworkLocaleMapping, FilecoinNetwork } from '../../../../common/hardware/types'
 
 // actions
 import { WalletPageActions } from '../../../../page/actions'
@@ -52,6 +53,12 @@ import {
   WarningWrapper
 } from '../account-settings-modal/account-settings-modal.style'
 
+// selectors
+import { WalletSelectors } from '../../../../common/selectors'
+
+// hooks
+import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
+
 interface Params {
   accountTypeName: string
 }
@@ -69,22 +76,26 @@ export const ImportAccountModal = () => {
 
   // routing
   const history = useHistory()
-  // const { pathname: walletLocation } = useLocation()
   const { accountTypeName } = useParams<Params>()
 
   // redux
-  const isSolanaEnabled = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isSolanaEnabled)
-  const isFilecoinEnabled = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isFilecoinEnabled)
+  const isFilecoinEnabled = useSafeWalletSelector(WalletSelectors.isFilecoinEnabled)
+  const isSolanaEnabled = useSafeWalletSelector(WalletSelectors.isSolanaEnabled)
 
   // memos
-  const selectedAccountType: CreateAccountOptionsType | undefined = React.useMemo(() => {
-    if (!accountTypeName) {
-      return undefined
-    }
-    return CreateAccountOptions(isFilecoinEnabled, isSolanaEnabled).find(option => {
-      return option.name.toLowerCase() === accountTypeName.toLowerCase()
+  const createAccountOptions = React.useMemo(() => {
+    return CreateAccountOptions({
+      isFilecoinEnabled,
+      isSolanaEnabled,
+      isBitcoinEnabled: false // No bitcoin imported accounts by now.
     })
-  }, [accountTypeName, isFilecoinEnabled, isSolanaEnabled])
+  }, [isFilecoinEnabled, isSolanaEnabled])
+
+  const selectedAccountType = React.useMemo(() => {
+    return createAccountOptions.find((option) => {
+      return option.name.toLowerCase() === accountTypeName?.toLowerCase()
+    })
+  }, [accountTypeName, createAccountOptions])
 
   // state
   const [accountName, setAccountName] = React.useState<string>('')
@@ -216,6 +227,7 @@ export const ImportAccountModal = () => {
 
       {!selectedAccountType &&
         <SelectAccountType
+          createAccountOptions={createAccountOptions}
           buttonText={getLocale('braveWalletAddAccountImport')}
           onSelectAccountType={onSelectAccountType}
         />

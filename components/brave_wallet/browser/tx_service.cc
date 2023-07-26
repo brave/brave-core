@@ -9,7 +9,6 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_manager.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_tx_manager.h"
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -17,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "components/value_store/value_store_factory_impl.h"
 #include "url/origin.h"

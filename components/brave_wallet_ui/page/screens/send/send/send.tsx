@@ -216,7 +216,7 @@ export const Send = (props: Props) => {
     setSendAmount(
       getPercentAmount(
         selectedSendAsset,
-        selectedAccount,
+        selectedAccount.accountId,
         percent,
         tokenBalancesRegistry
       )
@@ -228,7 +228,11 @@ export const Send = (props: Props) => {
       return ''
     }
 
-    return getBalance(selectedAccount, selectedSendAsset, tokenBalancesRegistry)
+    return getBalance(
+      selectedAccount.accountId,
+      selectedSendAsset,
+      tokenBalancesRegistry
+    )
   }, [selectedAccount, selectedSendAsset, tokenBalancesRegistry])
 
   const accountNameAndBalance = React.useMemo(() => {

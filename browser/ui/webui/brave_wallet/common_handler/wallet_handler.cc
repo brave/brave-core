@@ -10,9 +10,9 @@
 #include <vector>
 
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "chrome/browser/profiles/profile.h"
 
 namespace brave_wallet {
@@ -38,9 +38,8 @@ void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
   DCHECK_EQ(default_keyring->id, mojom::kDefaultKeyringId);
   std::move(callback).Run(mojom::WalletInfo::New(
       default_keyring->is_keyring_created, default_keyring->is_locked,
-      default_keyring->is_backed_up, brave_wallet::IsFilecoinEnabled(),
-      brave_wallet::IsSolanaEnabled(), brave_wallet::IsBitcoinEnabled(),
-      brave_wallet::IsNftPinningEnabled(), brave_wallet::IsPanelV2Enabled()));
+      default_keyring->is_backed_up, IsFilecoinEnabled(), IsSolanaEnabled(),
+      IsBitcoinEnabled(), IsNftPinningEnabled(), IsPanelV2Enabled()));
 }
 
 }  // namespace brave_wallet

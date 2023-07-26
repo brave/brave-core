@@ -145,7 +145,7 @@ const AssetsPanel = (props: Props) => {
     selectedAccount && userTokens && tokenBalancesRegistry
       ? userTokens
           .filter(token => new Amount(
-            getBalance(selectedAccount, token, tokenBalancesRegistry)).gt(0))
+            getBalance(selectedAccount.accountId, token, tokenBalancesRegistry)).gt(0))
           .filter(token => !token.isErc721 && !token.isErc1155 && !token.isNft)
           .map(getPriceIdForToken)
       : [],
@@ -184,7 +184,7 @@ const AssetsPanel = (props: Props) => {
           key={getAssetIdKey(token)}
           assetBalance={
             areTokenBalancesLoaded
-              ? getBalance(selectedAccount, token, tokenBalancesRegistry)
+              ? getBalance(selectedAccount.accountId, token, tokenBalancesRegistry)
               : ''
           }
           token={token}

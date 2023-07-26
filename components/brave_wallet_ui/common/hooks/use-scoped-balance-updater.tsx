@@ -42,7 +42,7 @@ export const useScopedBalanceUpdater = (arg: Arg | typeof skipToken) => {
         arg.tokens && coinTypesMapping[account.accountId.coin]
           ? [
               {
-                address: account.address,
+                accountId: account.accountId,
                 chainId: arg.network.chainId,
                 coin: coinTypesMapping[account.accountId.coin],
                 tokens: arg.tokens
@@ -56,7 +56,7 @@ export const useScopedBalanceUpdater = (arg: Arg | typeof skipToken) => {
         account.accountId.coin === CoinTypes.SOL
           ? [
               {
-                address: account.address,
+                accountId: account.accountId,
                 chainId: arg.network.chainId,
                 coin: CoinTypes.SOL,
                 tokens: arg.tokens

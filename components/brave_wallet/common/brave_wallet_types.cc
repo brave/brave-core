@@ -169,17 +169,4 @@ absl::optional<int256_t> MinSolidityInt(size_t bits) {
   return value;
 }
 
-mojom::AccountIdPtr MakeAccountId(mojom::CoinType coin,
-                                  mojom::KeyringId keyring_id,
-                                  mojom::AccountKind kind,
-                                  const std::string& address) {
-  std::string unique_key =
-      base::JoinString({base::NumberToString(static_cast<int>(coin)),
-                        base::NumberToString(static_cast<int>(keyring_id)),
-                        base::NumberToString(static_cast<int>(kind)), address},
-                       "_");
-  return mojom::AccountId::New(coin, keyring_id, kind, address,
-                               std::move(unique_key));
-}
-
 }  // namespace brave_wallet

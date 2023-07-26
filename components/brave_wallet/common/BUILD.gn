@@ -36,6 +36,8 @@ static_library("common") {
     "brave_wallet_response_helpers.h",
     "brave_wallet_types.cc",
     "brave_wallet_types.h",
+    "common_utils.cc",
+    "common_utils.h",
     "eth_abi_utils.cc",
     "eth_abi_utils.h",
     "eth_address.cc",
@@ -68,7 +70,9 @@ static_library("common") {
   deps = [
     ":common_constants",
     ":generated_json_rpc_requests",
+    ":mojom",
     ":mojom__generator",
+    ":pref_names",
     "//brave/third_party/argon2",
     "//brave/third_party/bitcoin-core",
     "//brave/third_party/ethash",
@@ -92,19 +96,6 @@ source_set("common_constants") {
 
 source_set("pref_names") {
   sources = [ "pref_names.h" ]
-}
-
-source_set("common_utils") {
-  sources = [
-    "common_util.cc",
-    "common_util.h",
-  ]
-
-  deps = [
-    ":pref_names",
-    "//base",
-    "//components/prefs",
-  ]
 }
 
 generated_types("generated_json_rpc_requests") {
@@ -137,6 +128,7 @@ source_set("unit_tests") {
   sources = [
     "bitcoin_utils_unittest.cc",
     "brave_wallet_types_unittest.cc",
+    "common_utils_unittest.cc",
     "eth_abi_utils_unittest.cc",
     "eth_request_helper_unittest.cc",
     "eth_sign_typed_data_helper_unittest.cc",
@@ -167,7 +159,10 @@ source_set("test_support") {
     "test_utils.h",
   ]
 
-  deps = [ "//testing/gmock" ]
+  deps = [
+    ":common",
+    "//testing/gmock",
+  ]
 
   public_deps = [ ":mojom" ]
 }  # source_set("test_support")

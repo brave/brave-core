@@ -24,9 +24,9 @@
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/switches.h"
@@ -384,23 +384,6 @@ class KeyringServiceUnitTest : public testing::Test {
                                           mojom::KeyringId keyring_id,
                                           const std::string& name) {
     return service->AddAccountSync(coin, keyring_id, name);
-  }
-
-  static mojom::AccountInfoPtr AddBitcoinAccount(
-      KeyringService* service,
-      const std::string& account_name,
-      const std::string& network_id,
-      mojom::KeyringId keyring_id) {
-    mojom::AccountInfoPtr result;
-    base::RunLoop run_loop;
-    service->AddBitcoinAccount(
-        account_name, network_id, keyring_id,
-        base::BindLambdaForTesting([&](mojom::AccountInfoPtr account_info) {
-          result = std::move(account_info);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return result;
   }
 
   static void ImportFilecoinAccounts(
@@ -4761,10 +4744,8 @@ TEST_F(KeyringServiceUnitTest, BitcoinReceiveChangeAddresses) {
       service.GetKeyringInfoSync(mojom::kBitcoinKeyring84Id)->account_infos,
       testing::IsEmpty());
 
-  EXPECT_FALSE(service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0));
-
-  AddBitcoinAccount(&service, "Btc Acc", mojom::kBitcoinMainnet,
-                    mojom::kBitcoinKeyring84Id);
+  auto added_account = AddAccount(&service, mojom::CoinType::BTC,
+                                  mojom::kBitcoinKeyring84Id, "Btc Acc");
 
   EXPECT_THAT(
       service.GetKeyringInfoSync(mojom::kBitcoinKeyring84Id)->account_infos,
@@ -4772,27 +4753,22 @@ TEST_F(KeyringServiceUnitTest, BitcoinReceiveChangeAddresses) {
   auto btc_acc = service.GetKeyringInfoSync(mojom::kBitcoinKeyring84Id)
                      ->account_infos[0]
                      ->Clone();
-  EXPECT_EQ(btc_acc->address, "bc1ql5f64jdzjsvgehlpxvdgm9ygp0xta7xpnueh03");
+  EXPECT_EQ(btc_acc, added_account);
+  EXPECT_EQ(btc_acc->address, "");
   EXPECT_EQ(btc_acc->name, "Btc Acc");
   EXPECT_EQ(btc_acc->account_id->kind, mojom::AccountKind::kDerived);
   EXPECT_EQ(btc_acc->account_id->coin, mojom::CoinType::BTC);
   EXPECT_EQ(btc_acc->account_id->keyring_id, mojom::kBitcoinKeyring84Id);
 
-  EXPECT_EQ(
-      service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0)->at(0).first,
-      "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu");
-  EXPECT_EQ(
-      service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0)->at(0).second,
-      mojom::BitcoinKeyId::New(0, 0, 0));
+  EXPECT_EQ(service.GetBitcoinAddresses(*btc_acc->account_id)->at(0).first,
+            "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu");
+  EXPECT_EQ(service.GetBitcoinAddresses(*btc_acc->account_id)->at(0).second,
+            mojom::BitcoinKeyId::New(0, 0, 0));
 
-  EXPECT_EQ(
-      service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0)->at(30).first,
-      "bc1q8c6fshw2dlwun7ekn9qwf37cu2rn755upcp6el");
-  EXPECT_EQ(
-      service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0)->at(30).second,
-      mojom::BitcoinKeyId::New(0, 1, 0));
-
-  EXPECT_FALSE(service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 1));
+  EXPECT_EQ(service.GetBitcoinAddresses(*btc_acc->account_id)->at(30).first,
+            "bc1q8c6fshw2dlwun7ekn9qwf37cu2rn755upcp6el");
+  EXPECT_EQ(service.GetBitcoinAddresses(*btc_acc->account_id)->at(30).second,
+            mojom::BitcoinKeyId::New(0, 1, 0));
 }
 
 TEST_F(KeyringServiceUnitTest, MigrateSelectedAccount) {

@@ -7,21 +7,9 @@ import * as React from 'react'
 
 // utils
 import { getLocale } from '$web-common/locale'
-import { WalletSelectors } from '../../../../../common/selectors'
-
-// options
-import { CreateAccountOptions } from '../../../../../options/create-account-options'
 
 // types
-import {
-  BraveWallet,
-  CreateAccountOptionsType
-} from '../../../../../constants/types'
-
-// hooks
-import {
-  useSafeWalletSelector //
-} from '../../../../../common/hooks/use-safe-selector'
+import { CreateAccountOptionsType } from '../../../../../constants/types'
 
 // components
 import { DividerLine } from '../../../../extension'
@@ -35,28 +23,27 @@ import {
 } from './select-account-type.style'
 
 interface Props {
+  createAccountOptions: CreateAccountOptionsType[]
   onSelectAccountType: (accountType: CreateAccountOptionsType) => () => void
   buttonText: string
 }
 
-export const SelectAccountType = ({ buttonText, onSelectAccountType }: Props) => {
-  // redux
-  const isSolanaEnabled = useSafeWalletSelector(WalletSelectors.isSolanaEnabled)
-  const isFilecoinEnabled = useSafeWalletSelector(
-    WalletSelectors.isFilecoinEnabled
-  )
-
+export const SelectAccountType = ({
+  createAccountOptions,
+  buttonText,
+  onSelectAccountType
+}: Props) => {
   // render
   return (
     <SelectAccountTypeWrapper>
-
-      <SelectAccountTitle>{getLocale('braveWalletCreateAccountTitle')}</SelectAccountTitle>
+      <SelectAccountTitle>
+        {getLocale('braveWalletCreateAccountTitle')}
+      </SelectAccountTitle>
 
       <DividerLine />
 
-      {CreateAccountOptions(isFilecoinEnabled, isSolanaEnabled).map((network) => (
+      {createAccountOptions.map((network, index) => (
         <SelectAccountItemWrapper key={network.coin}>
-
           <AccountTypeItem
             onClickCreate={onSelectAccountType(network)}
             icon={network.icon}
@@ -65,11 +52,9 @@ export const SelectAccountType = ({ buttonText, onSelectAccountType }: Props) =>
             buttonText={buttonText}
           />
 
-          {network.coin !== BraveWallet.CoinType.FIL && <DividerLine />}
-
+          {index + 1 !== createAccountOptions.length && <DividerLine />}
         </SelectAccountItemWrapper>
       ))}
-
     </SelectAccountTypeWrapper>
   )
 }

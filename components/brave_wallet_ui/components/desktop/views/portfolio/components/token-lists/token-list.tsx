@@ -41,7 +41,8 @@ import {
 } from '../../../../../../common/slices/entities/network.entity'
 import { computeFiatAmount } from '../../../../../../utils/pricing-utils'
 import {
-  emptyNetwork
+  emptyNetwork,
+  networkSupportsAccount
 } from '../../../../../../utils/network-utils'
 import { getBalance } from '../../../../../../utils/balance-utils'
 
@@ -308,12 +309,19 @@ export const TokenLists = ({
   // Returns a list of assets based on provided coin type
   const getAssetsByCoin = React.useCallback(
     (account: BraveWallet.AccountInfo) => {
-      return filteredAssetList
-        .filter(
-          (asset) => asset.asset.coin ===
-            account.accountId.coin
+      return filteredAssetList.filter((asset) => {
+        const networkInfo = networks?.find(
+          (network) =>
+            network.coin === asset.asset.coin &&
+            network.chainId === asset.asset.chainId
         )
-    }, [filteredAssetList])
+        return (
+          networkInfo && networkSupportsAccount(networkInfo, account.accountId)
+        )
+      })
+    },
+    [filteredAssetList, networks]
+  )
 
   // Returns a list of assets based on provided account
   // and filters out small balances if hideSmallBalances
@@ -321,13 +329,16 @@ export const TokenLists = ({
   const getFilteredOutAssetsByAccount = React.useCallback(
     (account: BraveWallet.AccountInfo) => {
       if (hideSmallBalances) {
-        return getAssetsByCoin(account).filter(
-          (token) =>
-            computeFiatAmount({
-              spotPriceRegistry,
-              value: getBalance(account, token.asset, tokenBalancesRegistry),
-              token: token.asset
-            }).gt(HIDE_SMALL_BALANCES_FIAT_THRESHOLD)
+        return getAssetsByCoin(account).filter((token) =>
+          computeFiatAmount({
+            spotPriceRegistry,
+            value: getBalance(
+              account.accountId,
+              token.asset,
+              tokenBalancesRegistry
+            ),
+            token: token.asset
+          }).gt(HIDE_SMALL_BALANCES_FIAT_THRESHOLD)
         )
       }
 
@@ -343,11 +354,14 @@ export const TokenLists = ({
   // balance for each token.
   const getAccountsAssetBalances = React.useCallback(
     (account: BraveWallet.AccountInfo) => {
-      return getFilteredOutAssetsByAccount(account)
-        .map((asset) => ({
-          ...asset,
-          assetBalance: getBalance(account, asset.asset, tokenBalancesRegistry)
-        }))
+      return getFilteredOutAssetsByAccount(account).map((asset) => ({
+        ...asset,
+        assetBalance: getBalance(
+          account.accountId,
+          asset.asset,
+          tokenBalancesRegistry
+        )
+      }))
     }, [getFilteredOutAssetsByAccount, tokenBalancesRegistry])
 
   // Returns a sorted assets list for an account.

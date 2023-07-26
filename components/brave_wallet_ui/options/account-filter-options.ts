@@ -15,6 +15,7 @@ export const AllAccountsOption: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kDefault,
     kind: BraveWallet.AccountKind.kDerived,
     address: AllAccountsOptionUniqueKey,
+    bitcoinAccountIndex: 0,
     uniqueKey: AllAccountsOptionUniqueKey
   },
   name: getLocale('braveWalletAccountFilterAllAccounts'),

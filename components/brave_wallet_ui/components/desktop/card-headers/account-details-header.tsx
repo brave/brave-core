@@ -171,7 +171,7 @@ export const AccountDetailsHeader = (props: Props) => {
       accountsFungibleTokens
         .map((asset) => {
           const balance =
-            getBalance(account, asset, tokenBalancesRegistry)
+            getBalance(account.accountId, asset, tokenBalancesRegistry)
           return computeFiatAmount({
             spotPriceRegistry,
             value: balance,
@@ -235,8 +235,7 @@ export const AccountDetailsHeader = (props: Props) => {
             name='arrow-left' />
         </CircleButton>
         <CreateAccountIcon
-          address={account.address}
-          accountKind={account.accountId.kind}
+          account={account}
           size='big'
           marginRight={8}
         />
@@ -249,18 +248,20 @@ export const AccountDetailsHeader = (props: Props) => {
           >
             {account.name}
           </AccountNameText>
-          <Row
-            width='unset'
-            alignItems='center'
-            justifyContent='flex-start'
-          >
-            <AddressText>
-              {reduceAddress(account.address)}
-            </AddressText>
-            <CopyTooltip text={account.address}>
-              <CopyIcon />
-            </CopyTooltip>
-          </Row>
+          {account.address && (
+            <Row
+              width='unset'
+              alignItems='center'
+              justifyContent='flex-start'
+            >
+              <AddressText>
+                {reduceAddress(account.address)}
+              </AddressText>
+              <CopyTooltip text={account.address}>
+                <CopyIcon />
+              </CopyTooltip>
+            </Row>
+          )}
           <AccountsNetworkText>
             {getAccountTypeDescription(account.accountId.coin)}
           </AccountsNetworkText>
