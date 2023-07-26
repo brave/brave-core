@@ -17,6 +17,10 @@ open class WeakList<T: AnyObject>: Sequence {
   private var items = [WeakRef<T>]()
 
   public init() {}
+  
+  public init(_ items: some Collection<T>) {
+    self.items = items.map { WeakRef($0) }
+  }
 
   /**
      * Adds an item to the list.

@@ -2435,9 +2435,9 @@ extension BrowserViewController: SettingsDelegate {
     self.openURLInNewTab(url, isPrivate: forcedPrivate, isPrivileged: false)
   }
 
-  func settingsOpenURLs(_ urls: [URL]) {
+  func settingsOpenURLs(_ urls: [URL], loadImmediately: Bool) {
     let tabIsPrivate = TabType.of(tabManager.selectedTab).isPrivate
-    self.tabManager.addTabsForURLs(urls, zombie: false, isPrivate: tabIsPrivate)
+    self.tabManager.addTabsForURLs(urls, zombie: !loadImmediately, isPrivate: tabIsPrivate)
   }
 }
 

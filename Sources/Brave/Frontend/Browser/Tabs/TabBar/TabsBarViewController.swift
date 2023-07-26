@@ -209,11 +209,12 @@ class TabsBarViewController: UIViewController {
   }
 
   func updateData() {
-    tabList = WeakList<Tab>()
-
-    tabManager?.tabsForCurrentMode.forEach {
-      tabList.insert($0)
+    // Don't waste time/resources updating data when we're in the middle of a restore or bulk delete
+    guard let tabManager = tabManager, !tabManager.isRestoring && !tabManager.isBulkDeleting else {
+      return
     }
+    
+    tabList = WeakList<Tab>(tabManager.tabsForCurrentMode)
 
     overflowIndicators()
     reloadDataAndRestoreSelectedTab()
@@ -441,6 +442,10 @@ extension TabsBarViewController: TabManagerDelegate {
 
   func tabManagerDidRestoreTabs(_ tabManager: TabManager) {
     assert(Thread.current.isMainThread)
+    updateData()
+  }
+  
+  func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?) {
     updateData()
   }
 }
