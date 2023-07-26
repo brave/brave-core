@@ -48,7 +48,7 @@ const defaultSpeedreaderData = {
 }
 
 const extractTextToSpeak = () => {
-    const textTags = ['P', 'DIV', 'MAIN', 'ARTICLE']
+    const textTags = ['P', 'DIV', 'MAIN', 'ARTICLE', 'H1', 'H2', 'H3', 'H4', 'H5', 'STRONG', 'BLOCKQUOTE' ]
 
     const extractParagraphs = (node) => {
         let paragraphs = []
@@ -68,14 +68,32 @@ const extractTextToSpeak = () => {
         return paragraphs
     }
 
-    const paragraphs = extractParagraphs($(contentDivId))
+    const getTextContent = (element) => {
+        if (!element) {
+            return null
+        }
+        const text = element.innerText.replace(/\n|\r +/g, ' ').trim()
+        if (text.length > 0) {
+            return text
+        }
+        return null
+    }
 
     const textToSpeak = []
+    const title = $(metaDataDivId)?.querySelector('.title')
+    const titleText = getTextContent(title)
+    if (titleText) {
+        title.setAttribute('tts-paragraph-index', textToSpeak.length)
+        textToSpeak.push(titleText)
+    }
+
+    const paragraphs = extractParagraphs($(contentDivId))
+
     for (const p of paragraphs) {
-        const text = p.innerText.replace(/\n|\r +/g, ' ').trim()
+        const text = getTextContent(p)
         if (text) {
             p.setAttribute('tts-paragraph-index', textToSpeak.length)
-            textToSpeak.push(p.innerText.replace(/\n|\r +/g, ' '))
+            textToSpeak.push(text)
         }
     }
 
@@ -98,10 +116,6 @@ const highlightText = (ttsParagraphIndex, charIndex, length) => {
         '[tts-paragraph-index="' + ttsParagraphIndex + '"]')
     if (paragraph) {
         paragraph.classList.add('tts-highlighted')
-        const ttsContent = document.createElement('tts-content')
-        ttsContent.append(...paragraph.childNodes)
-        paragraph.append(ttsContent)
-        document.documentElement.style.setProperty('--tts-highlight-progress', (charIndex / paragraph.textContent.length) * 100 + '%')
     }
 }
 
