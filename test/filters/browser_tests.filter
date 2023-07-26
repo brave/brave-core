@@ -875,6 +875,8 @@
 -All/ChromeKeepAliveURLBrowserTest.ReceiveMultipleRedirectsToGoogleAfterPageUnload/POST
 -All/ChromeKeepAliveURLVariationBrowserTest.ReceiveRedirectToGoogleAfterPageUnloadAndStripHeaders/GET
 -All/ChromeKeepAliveURLVariationBrowserTest.ReceiveRedirectToGoogleAfterPageUnloadAndStripHeaders/POST
+-HintsFetcherSearchPageDisabledBrowserTest.HintsFetcherStillFetchesNavigations
+-HintsFetcherSearchPageLimitedURLsBrowserTest.HintsFetcherLimitedResults
 
 # These tests fail because we set kSafeBrowsingExtendedReportingOptInAllowed
 # pref value to false.
