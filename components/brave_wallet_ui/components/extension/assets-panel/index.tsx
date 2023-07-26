@@ -149,7 +149,7 @@ const AssetsPanel = (props: Props) => {
           .filter(token => !token.isErc721 && !token.isErc1155 && !token.isNft)
           .map(getPriceIdForToken)
       : [],
-    [userTokens, tokenBalancesRegistry]
+    [selectedAccount, userTokens, tokenBalancesRegistry]
   )
 
   const {

@@ -822,7 +822,8 @@ export function createWalletApi () {
           extraOptions,
           baseQuery
         ) => {
-          const { jsonRpcService, bitcoinWalletService } = baseQuery(undefined).data // apiProxy
+          const { jsonRpcService, bitcoinWalletService } =
+            baseQuery(undefined).data // apiProxy
 
           // Native asset balances
           if (isNativeAsset(token)) {
@@ -832,7 +833,11 @@ export function createWalletApi () {
               accountId.coin !== BraveWallet.CoinType.SOL
             ) {
               const { balance, error, errorMessage } =
-                await jsonRpcService.getBalance(accountId.address, accountId.coin, token.chainId)
+                await jsonRpcService.getBalance(
+                  accountId.address,
+                  accountId.coin,
+                  token.chainId
+                )
 
               // LOCALHOST will error until a local instance is detected
               // return a '0' balance until it's detected.
@@ -851,7 +856,10 @@ export function createWalletApi () {
             switch (accountId.coin) {
               case BraveWallet.CoinType.SOL: {
                 const { balance, error } =
-                  await jsonRpcService.getSolanaBalance(accountId.address, token.chainId)
+                  await jsonRpcService.getSolanaBalance(
+                    accountId.address,
+                    token.chainId
+                  )
 
                 if (
                   token.chainId === BraveWallet.LOCALHOST_CHAIN_ID &&
@@ -868,7 +876,11 @@ export function createWalletApi () {
               case BraveWallet.CoinType.FIL:
               case BraveWallet.CoinType.ETH: {
                 const { balance, error, errorMessage } =
-                  await jsonRpcService.getBalance(accountId.address, accountId.coin, token.chainId)
+                  await jsonRpcService.getBalance(
+                    accountId.address,
+                    accountId.coin,
+                    token.chainId
+                  )
 
                 if (error && errorMessage) {
                   console.log(`getBalance error: ${errorMessage}`)
@@ -884,7 +896,10 @@ export function createWalletApi () {
 
               case BraveWallet.CoinType.BTC: {
                 const { balance, errorMessage } =
-                  await bitcoinWalletService.getBalance(token.chainId, accountId)
+                  await bitcoinWalletService.getBalance(
+                    token.chainId,
+                    accountId
+                  )
 
                 if (errorMessage) {
                   console.log(`getBalance error: ${errorMessage}`)
@@ -1173,14 +1188,15 @@ export function createWalletApi () {
                   10,
                   async (token: BraveWallet.BlockchainToken) => {
                     const result: string = await dispatch(
-                      walletApi.endpoints.getAccountTokenCurrentBalance
-                        .initiate({
+                      walletApi.endpoints.getAccountTokenCurrentBalance.initiate(
+                        {
                           accountId: arg.accountId,
                           token
                         },
                         {
                           forceRefetch: true
-                        })
+                        }
+                      )
                     ).unwrap()
 
                     return {
@@ -1230,20 +1246,22 @@ export function createWalletApi () {
             }
           }
         },
-        providesTags: (result, err, args) => err
-          ? ['TokenBalancesForChainId', 'UNKNOWN_ERROR']
-          : args.flatMap(({ tokens, accountId, coin, chainId }) => tokens
-              ? tokens.map((token) => ({
-                  type: 'TokenBalancesForChainId',
-                  id: `${accountId.uniqueKey}-${coin}-${chainId}-${token.contractAddress}`
-                }))
-              : [
-                  {
-                    type: 'TokenBalancesForChainId',
-                    id: `${accountId.uniqueKey}-${coin}-${chainId}`
-                  }
-                ]
-            ) || ['TokenBalancesForChainId']
+        providesTags: (result, err, args) =>
+          err
+            ? ['TokenBalancesForChainId', 'UNKNOWN_ERROR']
+            : args.flatMap(({ tokens, accountId, coin, chainId }) =>
+                tokens
+                  ? tokens.map((token) => ({
+                      type: 'TokenBalancesForChainId',
+                      id: `${accountId.uniqueKey}-${coin}-${chainId}-${token.contractAddress}`
+                    }))
+                  : [
+                      {
+                        type: 'TokenBalancesForChainId',
+                        id: `${accountId.uniqueKey}-${coin}-${chainId}`
+                      }
+                    ]
+              ) || ['TokenBalancesForChainId']
       }),
       getTokenBalancesRegistry: query<
         TokenBalancesRegistry,
@@ -1259,38 +1277,37 @@ export function createWalletApi () {
               args,
               10,
               async (arg: GetTokenBalancesRegistryArg) => {
-                const partialRegistry: TokenBalancesRegistry =
-                  await dispatch(
-                    walletApi.endpoints.getTokenBalancesForChainId.initiate(
-                      arg.coin === CoinTypes.SOL
-                        ? [
-                            {
-                              accountId: arg.accountId,
-                              coin: arg.coin,
-                              chainId: arg.chainId
-                            }
-                          ]
-                        : [
-                            {
-                              accountId: arg.accountId,
-                              coin: arg.coin,
-                              chainId: arg.chainId,
-                              tokens: getEntitiesListFromEntityState(
-                                userTokens,
-                                userTokens.idsByChainId[
-                                  networkEntityAdapter.selectId({
-                                    coin: arg.coin,
-                                    chainId: arg.chainId
-                                  })
-                                ]
-                              )
-                            }
-                          ],
-                      {
-                        forceRefetch: true
-                      }
-                    )
-                  ).unwrap()
+                const partialRegistry: TokenBalancesRegistry = await dispatch(
+                  walletApi.endpoints.getTokenBalancesForChainId.initiate(
+                    arg.coin === CoinTypes.SOL
+                      ? [
+                          {
+                            accountId: arg.accountId,
+                            coin: arg.coin,
+                            chainId: arg.chainId
+                          }
+                        ]
+                      : [
+                          {
+                            accountId: arg.accountId,
+                            coin: arg.coin,
+                            chainId: arg.chainId,
+                            tokens: getEntitiesListFromEntityState(
+                              userTokens,
+                              userTokens.idsByChainId[
+                                networkEntityAdapter.selectId({
+                                  coin: arg.coin,
+                                  chainId: arg.chainId
+                                })
+                              ]
+                            )
+                          }
+                        ],
+                    {
+                      forceRefetch: true
+                    }
+                  )
+                ).unwrap()
 
                 return partialRegistry
               }
@@ -1298,9 +1315,7 @@ export function createWalletApi () {
 
             return {
               data: registryArray.reduce((acc, curr) => {
-                for (const [uniqueKey, chainIds] of Object.entries(
-                  curr
-                )) {
+                for (const [uniqueKey, chainIds] of Object.entries(curr)) {
                   if (!acc.hasOwnProperty(uniqueKey)) {
                     acc[uniqueKey] = chainIds
                   } else {
@@ -1328,7 +1343,6 @@ export function createWalletApi () {
                   arg.chainId
                 }`
               }))
-
       }),
       getHardwareAccountDiscoveryBalance: query<
         string,
@@ -1345,10 +1359,8 @@ export function createWalletApi () {
 
             switch (coin) {
               case BraveWallet.CoinType.SOL: {
-                const { balance, errorMessage } = await jsonRpcService.getSolanaBalance(
-                  address,
-                  chainId
-                )
+                const { balance, errorMessage } =
+                  await jsonRpcService.getSolanaBalance(address, chainId)
 
                 if (errorMessage) {
                   console.log(`getBalance error: ${errorMessage}`)
@@ -1364,11 +1376,8 @@ export function createWalletApi () {
 
               case BraveWallet.CoinType.FIL:
               case BraveWallet.CoinType.ETH: {
-                const { balance, errorMessage } = await jsonRpcService.getBalance(
-                  address,
-                  coin,
-                  chainId
-                )
+                const { balance, errorMessage } =
+                  await jsonRpcService.getBalance(address, coin, chainId)
 
                 if (errorMessage) {
                   console.log(`getBalance error: ${errorMessage}`)
@@ -2452,7 +2461,7 @@ export function createWalletApi () {
           }
         },
         invalidatesTags: (res, err, arg) =>
-          err ? [] : [TX_CACHE_TAGS.ID(arg.txMetaId)]
+          err ? [TX_CACHE_TAGS.TXS_LIST] : [TX_CACHE_TAGS.ID(arg.txMetaId)]
       }),
       updateUnapprovedTransactionSpendAllowance: mutation<
         { success: boolean },

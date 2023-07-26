@@ -114,7 +114,7 @@ export const PortfolioAccountItem = (props: Props) => {
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    defaultFiatCurrency
+    defaultFiatCurrency && tokenPriceIds.length
       ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
       : skipToken,
     querySubscriptionOptions60s
