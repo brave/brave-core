@@ -55,6 +55,7 @@ pub unsafe extern "C" fn set_domain_resolver(resolver: DomainResolverCallback) -
 /// Create a new `Engine`, interpreting `data` as a C string and then parsing as
 /// a filter list in ABP syntax.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn engine_create_from_buffer(
     data: *const c_char,
     data_size: size_t,
@@ -71,6 +72,7 @@ pub unsafe extern "C" fn engine_create_from_buffer(
 /// a filter list in ABP syntax. Also populates metadata from the filter list
 /// into `metadata`.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn engine_create_from_buffer_with_metadata(
     data: *const c_char,
     data_size: size_t,
@@ -89,6 +91,7 @@ pub unsafe extern "C" fn engine_create_from_buffer_with_metadata(
 /// Create a new `Engine`, interpreting `rules` as a null-terminated C string
 /// and then parsing as a filter list in ABP syntax.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn engine_create(rules: *const c_char) -> *mut Engine {
     let rules = CStr::from_ptr(rules).to_str().unwrap_or_else(|_| {
         eprintln!("Failed to parse filter list with invalid UTF-8 content");
@@ -101,6 +104,7 @@ pub unsafe extern "C" fn engine_create(rules: *const c_char) -> *mut Engine {
 /// and then parsing as a filter list in ABP syntax. Also populates metadata
 /// from the filter list into `metadata`.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn engine_create_with_metadata(
     rules: *const c_char,
     metadata: *mut *mut FilterListMetadata,
@@ -117,6 +121,7 @@ pub unsafe extern "C" fn engine_create_with_metadata(
 /// Scans the beginning of the list for metadata and returns it without parsing
 /// any other list content.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn read_list_metadata(
     data: *const c_char,
     data_size: size_t,
@@ -144,6 +149,7 @@ fn engine_create_from_str(rules: &str) -> (*mut FilterListMetadata, *mut Engine)
 /// within this engine, rather than being replaced with results just for this
 /// engine.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn engine_match(
     engine: *mut Engine,
     url: *const c_char,
@@ -190,6 +196,7 @@ pub unsafe extern "C" fn engine_match(
 /// Returns any CSP directives that should be added to a subdocument or document
 /// request's response headers.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn engine_get_csp_directives(
     engine: *mut Engine,
     url: *const c_char,
@@ -215,6 +222,7 @@ pub unsafe extern "C" fn engine_get_csp_directives(
 
 /// Adds a tag to the engine for consideration
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn engine_add_tag(engine: *mut Engine, tag: *const c_char) {
     let tag = CStr::from_ptr(tag).to_str().unwrap();
     assert!(!engine.is_null());
@@ -224,6 +232,7 @@ pub unsafe extern "C" fn engine_add_tag(engine: *mut Engine, tag: *const c_char)
 
 /// Checks if a tag exists in the engine
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn engine_tag_exists(engine: *mut Engine, tag: *const c_char) -> bool {
     let tag = CStr::from_ptr(tag).to_str().unwrap();
     assert!(!engine.is_null());
@@ -233,6 +242,7 @@ pub unsafe extern "C" fn engine_tag_exists(engine: *mut Engine, tag: *const c_ch
 
 /// Adds a resource to the engine by name
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn engine_add_resource(
     engine: *mut Engine,
     key: *const c_char,
@@ -255,6 +265,7 @@ pub unsafe extern "C" fn engine_add_resource(
 
 /// Uses a list of `Resource`s from JSON format
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn engine_use_resources(engine: *mut Engine, resources: *const c_char) {
     let resources = CStr::from_ptr(resources).to_str().unwrap();
     let resources: Vec<Resource> = serde_json::from_str(resources).unwrap_or_else(|e| {
@@ -268,6 +279,7 @@ pub unsafe extern "C" fn engine_use_resources(engine: *mut Engine, resources: *c
 
 /// Removes a tag to the engine for consideration
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn engine_remove_tag(engine: *mut Engine, tag: *const c_char) {
     let tag = CStr::from_ptr(tag).to_str().unwrap();
     assert!(!engine.is_null());
@@ -277,6 +289,7 @@ pub unsafe extern "C" fn engine_remove_tag(engine: *mut Engine, tag: *const c_ch
 
 /// Deserializes a previously serialized data file list.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn engine_deserialize(
     engine: *mut Engine,
     data: *const c_char,
@@ -294,6 +307,7 @@ pub unsafe extern "C" fn engine_deserialize(
 
 /// Destroy a `Engine` once you are done with it.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn engine_destroy(engine: *mut Engine) {
     if !engine.is_null() {
         drop(Box::from_raw(engine));
@@ -303,6 +317,7 @@ pub unsafe extern "C" fn engine_destroy(engine: *mut Engine) {
 /// Puts a pointer to the homepage of the `FilterListMetadata` into `homepage`.
 /// Returns `true` if a homepage was returned.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn filter_list_metadata_homepage(
     metadata: *const FilterListMetadata,
     homepage: *mut *mut c_char,
@@ -324,6 +339,7 @@ pub unsafe extern "C" fn filter_list_metadata_homepage(
 /// Puts a pointer to the title of the `FilterListMetadata` into `title`.
 /// Returns `true` if a title was returned.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn filter_list_metadata_title(
     metadata: *const FilterListMetadata,
     title: *mut *mut c_char,
@@ -349,6 +365,7 @@ pub static SUBSCRIPTION_DEFAULT_EXPIRES_HOURS: u16 = 7 * 24;
 /// in hours. Defaults to 168 (i.e. 7 days) if unspecified by the
 /// `FilterListMetadata`.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn filter_list_metadata_expires(metadata: *const FilterListMetadata) -> u16 {
     use adblock::lists::ExpiresInterval;
 
@@ -361,6 +378,7 @@ pub unsafe extern "C" fn filter_list_metadata_expires(metadata: *const FilterLis
 
 /// Destroy a `FilterListMetadata` once you are done with it.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn filter_list_metadata_destroy(metadata: *mut FilterListMetadata) {
     if !metadata.is_null() {
         drop(Box::from_raw(metadata));
@@ -370,6 +388,7 @@ pub unsafe extern "C" fn filter_list_metadata_destroy(metadata: *mut FilterListM
 /// Get EngineDebugInfo from the engine. Should be destoyed later by calling
 /// engine_debug_info_destroy(..).
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn get_engine_debug_info(engine: *mut Engine) -> *mut EngineDebugInfo {
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
@@ -378,6 +397,7 @@ pub unsafe extern "C" fn get_engine_debug_info(engine: *mut Engine) -> *mut Engi
 
 /// Returns the field of EngineDebugInfo structure.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn engine_debug_info_get_attr(
     debug_info: *mut EngineDebugInfo,
     compiled_regex_count: *mut size_t,
@@ -396,6 +416,7 @@ pub unsafe extern "C" fn engine_debug_info_get_attr(
 ///
 /// |index| must be in range [0, regex_data.len() - 1].
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn engine_debug_info_get_regex_entry(
     debug_info: *mut EngineDebugInfo,
     index: size_t,
@@ -420,6 +441,7 @@ pub unsafe extern "C" fn engine_debug_info_get_regex_entry(
 
 /// Destroy a `EngineDebugInfo` once you are done with it.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn engine_debug_info_destroy(debug_info: *mut EngineDebugInfo) {
     if !debug_info.is_null() {
         drop(Box::from_raw(debug_info));
@@ -427,6 +449,7 @@ pub unsafe extern "C" fn engine_debug_info_destroy(debug_info: *mut EngineDebugI
 }
 
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn discard_regex(engine: *mut Engine, regex_id: u64) {
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
@@ -440,6 +463,7 @@ pub unsafe extern "C" fn discard_regex(engine: *mut Engine, regex_id: u64) {
 /// |discard_unused_sec| time in sec after unused regex will be discarded. Zero
 /// means disable discarding completely.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn setup_discard_policy(
     engine: *mut Engine,
     cleanup_interval_sec: u64,
@@ -455,6 +479,7 @@ pub unsafe extern "C" fn setup_discard_policy(
 
 /// Destroy a `*c_char` once you are done with it.
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn c_char_buffer_destroy(s: *mut c_char) {
     if !s.is_null() {
         drop(CString::from_raw(s));
@@ -464,6 +489,7 @@ pub unsafe extern "C" fn c_char_buffer_destroy(s: *mut c_char) {
 /// Returns a set of cosmetic filtering resources specific to the given url, in
 /// JSON format
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn engine_url_cosmetic_resources(
     engine: *mut Engine,
     url: *const c_char,
@@ -483,6 +509,7 @@ pub unsafe extern "C" fn engine_url_cosmetic_resources(
 ///
 /// The leading '.' or '#' character should not be provided
 #[no_mangle]
+#[allow(unsafe_op_in_unsafe_fn)]
 pub unsafe extern "C" fn engine_hidden_class_id_selectors(
     engine: *mut Engine,
     classes: *const *const c_char,
@@ -531,6 +558,7 @@ pub unsafe extern "C" fn engine_hidden_class_id_selectors(
 /// syntax. `truncated` will be set to indicate whether or not some rules had to
 /// be removed to avoid iOS's maximum rule count limit.
 #[cfg(feature = "ios")]
+#[allow(unsafe_op_in_unsafe_fn)]
 #[no_mangle]
 pub unsafe extern "C" fn convert_rules_to_content_blocking(
     rules: *const c_char,

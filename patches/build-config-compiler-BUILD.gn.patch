@@ -1,5 +1,5 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index 23a8da453c3d29ab8efeacbb7da6e01e280afd55..d49010a937145e8b9830a3c34c782509606f453b 100644
+index 23a8da453c3d29ab8efeacbb7da6e01e280afd55..7b3c26faec0d86e539e24e16d48834254d64e6bc 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
 @@ -772,8 +772,12 @@ config("compiler") {
@@ -17,15 +17,7 @@ index 23a8da453c3d29ab8efeacbb7da6e01e280afd55..d49010a937145e8b9830a3c34c782509
  
        if (!is_win) {
          ldflags += [ "-fwhole-program-vtables" ]
-@@ -1005,6 +1009,7 @@ config("compiler") {
-       "-Zpanic_abort_tests",
-     ]
-   }
-+  rustflags -= brave_remove_rustflags
- }
- 
- # The BUILDCONFIG file sets this config on targets by default, which means when
-@@ -1554,6 +1559,87 @@ config("compiler_arm") {
+@@ -1554,6 +1558,87 @@ config("compiler_arm") {
    }
  }
  
@@ -113,7 +105,7 @@ index 23a8da453c3d29ab8efeacbb7da6e01e280afd55..d49010a937145e8b9830a3c34c782509
  # runtime_library -------------------------------------------------------------
  #
  # Sets the runtime library and associated options.
-@@ -1575,6 +1661,10 @@ config("runtime_library") {
+@@ -1575,6 +1660,10 @@ config("runtime_library") {
      configs += [ "//build/config/c++:runtime_library" ]
    }
  
@@ -124,7 +116,7 @@ index 23a8da453c3d29ab8efeacbb7da6e01e280afd55..d49010a937145e8b9830a3c34c782509
    # TODO(crbug.com/830987): Come up with a better name for is POSIX + Fuchsia
    # configuration.
    if (is_posix || is_fuchsia) {
-@@ -1746,6 +1836,11 @@ config("default_warnings") {
+@@ -1746,6 +1835,11 @@ config("default_warnings") {
            # TODO(crbug.com/1412713) Evaluate and possibly enable.
            "-Wno-deprecated-this-capture",
          ]
@@ -136,7 +128,7 @@ index 23a8da453c3d29ab8efeacbb7da6e01e280afd55..d49010a937145e8b9830a3c34c782509
        }
      }
    }
-@@ -1951,7 +2046,7 @@ config("no_chromium_code") {
+@@ -1951,7 +2045,7 @@ config("no_chromium_code") {
  config("noshadowing") {
    # This flag has to be disabled for nacl because the nacl compiler is too
    # strict about shadowing.
@@ -145,7 +137,7 @@ index 23a8da453c3d29ab8efeacbb7da6e01e280afd55..d49010a937145e8b9830a3c34c782509
      cflags = [ "-Wshadow" ]
    }
  }
-@@ -2534,7 +2629,7 @@ config("symbols") {
+@@ -2534,7 +2628,7 @@ config("symbols") {
        if (use_dwarf5) {
          cflags += [ "-gdwarf-5" ]
          rustflags += [ "-Zdwarf-version=5" ]
