@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ACCOUNT_RESOLVER_DELEGATE_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ACCOUNT_RESOLVER_DELEGATE_IMPL_H_
 
+#include <string>
+
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 

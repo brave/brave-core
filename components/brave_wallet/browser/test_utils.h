@@ -7,6 +7,8 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TEST_UTILS_H_
 
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
