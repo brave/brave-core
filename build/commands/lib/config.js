@@ -10,6 +10,7 @@ const fs = require('fs')
 const os = require('os')
 const assert = require('assert')
 const { spawnSync } = require('child_process')
+const dotenv = require('dotenv')
 
 let npmCommand = 'npm'
 if (process.platform === 'win32') {
@@ -57,6 +58,13 @@ const getNPMConfig = (key, default_value = undefined) => {
   if (!NpmConfig) {
     const list = run(npmCommand, ['config', 'list', '--json', '--userconfig=' + path.join(rootDir, '.npmrc')])
     NpmConfig = JSON.parse(list.stdout.toString())
+    // Merge in config from `.env` file
+    dotenv.config({ processEnv: NpmConfig, override: true })
+    for (const [key, value] of Object.entries(NpmConfig)) {
+      if (value === 'true' || value === 'false') {
+        NpmConfig[key] = value === 'true'
+      }
+    }
   }
 
   // NpmConfig has the multiple copy of the same variable: one from .npmrc
