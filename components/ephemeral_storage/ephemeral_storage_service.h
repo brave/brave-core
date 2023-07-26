@@ -72,7 +72,8 @@ class EphemeralStorageService : public KeyedService {
       const content::StoragePartitionConfig& storage_partition_config);
   void TLDEphemeralLifetimeDestroyed(
       const std::string& ephemeral_domain,
-      const content::StoragePartitionConfig& storage_partition_config);
+      const content::StoragePartitionConfig& storage_partition_config,
+      bool shields_disabled_on_one_of_hosts);
 
   void AddObserver(EphemeralStorageServiceObserver* observer);
   void RemoveObserver(EphemeralStorageServiceObserver* observer);
@@ -83,7 +84,8 @@ class EphemeralStorageService : public KeyedService {
   friend permissions::PermissionLifetimeManagerBrowserTest;
 
   void FirstPartyStorageAreaInUse(const std::string& ephemeral_domain);
-  bool FirstPartyStorageAreaNotInUse(const std::string& ephemeral_domain);
+  bool FirstPartyStorageAreaNotInUse(const std::string& ephemeral_domain,
+                                     bool shields_disabled_on_one_of_hosts);
 
   void OnCanEnable1PESForUrl(const GURL& url,
                              base::OnceCallback<void(bool)> on_ready,

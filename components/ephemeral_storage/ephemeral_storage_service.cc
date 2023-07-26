@@ -158,12 +158,13 @@ void EphemeralStorageService::TLDEphemeralLifetimeCreated(
 
 void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
     const std::string& ephemeral_domain,
-    const content::StoragePartitionConfig& storage_partition_config) {
+    const content::StoragePartitionConfig& storage_partition_config,
+    bool shields_disabled_on_one_of_hosts) {
   DVLOG(1) << __func__ << " " << ephemeral_domain << " "
            << storage_partition_config;
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
-  const bool cleanup_first_party_storage_area =
-      FirstPartyStorageAreaNotInUse(ephemeral_domain);
+  const bool cleanup_first_party_storage_area = FirstPartyStorageAreaNotInUse(
+      ephemeral_domain, shields_disabled_on_one_of_hosts);
 
   if (base::FeatureList::IsEnabled(
           net::features::kBraveEphemeralStorageKeepAlive)) {
@@ -208,21 +209,20 @@ void EphemeralStorageService::FirstPartyStorageAreaInUse(
 }
 
 bool EphemeralStorageService::FirstPartyStorageAreaNotInUse(
-    const std::string& ephemeral_domain) {
+    const std::string& ephemeral_domain,
+    bool shields_disabled_on_one_of_hosts) {
   if (!base::FeatureList::IsEnabled(
           net::features::kBraveForgetFirstPartyStorage)) {
     return false;
   }
 
-  const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
-
-  if (host_content_settings_map_->GetContentSetting(
-          url, url, ContentSettingsType::BRAVE_SHIELDS) !=
-      CONTENT_SETTING_ALLOW) {
-    // If Shields are off, do nothing.
+  if (shields_disabled_on_one_of_hosts) {
+    // Don't cleanup first party storage if we saw a website that has shields
+    // disabled.
     return false;
   }
 
+  const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
   if (host_content_settings_map_->GetContentSetting(
           url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE) !=
       CONTENT_SETTING_BLOCK) {
