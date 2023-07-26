@@ -15,6 +15,23 @@
 
 @implementation BraveAppController
 
++ (void)disableKeyEquivalentLoclizationRecursively:(NSMenu*) menu
+    NS_AVAILABLE_MAC(12.0) {
+  // On some keyboard layout with dead keys, shortcuts that contains a dead key
+  // doesn't working at all. we should disable the localization and mirroring.
+  // https://github.com/brave/brave-browser/issues/31871
+
+  for (NSMenuItem* item in [menu itemArray]) {
+    // Setting this to NO will change allowsAutomaticKeyEquivalentMirroring to
+    // NO too.
+    // https://developer.apple.com/documentation/appkit/nsmenuitem/3787554-allowsautomatickeyequivalentloca?language=objc
+    item.allowsAutomaticKeyEquivalentLocalization = NO;
+    if (NSMenu* submenu = [item submenu]) {
+      [BraveAppController disableKeyEquivalentLoclizationRecursively:submenu];
+    }
+  }
+}
+
 - (void)mainMenuCreated {
   [super mainMenuCreated];
 
@@ -25,6 +42,10 @@
   _copyCleanLinkMenuItem = [editMenu itemWithTag:IDC_COPY_CLEAN_LINK];
   DCHECK(_copyCleanLinkMenuItem);
   [[_copyCleanLinkMenuItem menu] setDelegate:self];
+
+  if (@available(macos 12.0, *)) {
+    [BraveAppController disableKeyEquivalentLoclizationRecursively:[NSApp mainMenu]];
+  }
 }
 
 - (void)dealloc {

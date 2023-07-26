@@ -50,25 +50,6 @@ bool CanConvertToAcceleratorMapping(NSMenuItem* item) {
 }
 
 AcceleratorMapping ToAcceleratorMapping(NSMenuItem* item) {
-  bool keyEquivalentLocalizationEnabled = NO;
-  bool keyEquivalentMirroringEnabled = NO;
-
-  if (@available(macos 12.0, *)) {
-    keyEquivalentLocalizationEnabled =
-        item.allowsAutomaticKeyEquivalentLocalization;
-    keyEquivalentMirroringEnabled = item.allowsAutomaticKeyEquivalentMirroring;
-
-    // We can't parse keyEquivalent into keycode properly when it's unicode
-    // character. So before starting parsing, disable l10n for a while.
-    // https://github.com/brave/brave-browser/issues/31770
-    if (keyEquivalentLocalizationEnabled) {
-      // Setting this to NO will change allowsAutomaticKeyEquivalentMirroring to
-      // NO too.
-      // https://developer.apple.com/documentation/appkit/nsmenuitem/3787554-allowsautomatickeyequivalentloca?language=objc
-      item.allowsAutomaticKeyEquivalentLocalization = NO;
-    }
-  }
-
   NSString* keyEquivalent = item.keyEquivalent;
   DVLOG(2) << __FUNCTION__ << item.tag << " > "
            << base::SysNSStringToUTF16(keyEquivalent);
@@ -120,12 +101,6 @@ AcceleratorMapping ToAcceleratorMapping(NSMenuItem* item) {
       (modifiers == ui::EF_COMMAND_DOWN &&
        [keyEquivalent isEqualToString:@"w"])) {
     modifiers |= ui::EF_SHIFT_DOWN;
-  }
-
-  if (@available(macos 12.0, *)) {
-    item.allowsAutomaticKeyEquivalentLocalization =
-        keyEquivalentLocalizationEnabled;
-    item.allowsAutomaticKeyEquivalentMirroring = keyEquivalentMirroringEnabled;
   }
 
   return {.keycode = ui::KeyboardCodeFromNSEvent(keyEvent),
