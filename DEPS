@@ -87,7 +87,7 @@ hooks = [
     # are run with python3, so this environment mirrors the one in which
     # cryptography will be used. Second, we cannot update pip in vpython3 on at
     # least macOS due to permission issues.
-    'action': ['python3', '-m', 'pip', '-q', '--disable-pip-version-check', 'install', '-U', '-t', 'third_party/cryptography', '--only-binary', ':all:', 'cryptography==37.0.4'],
+    'action': ['python3', '-m', 'pip', '-q', '--disable-pip-version-check', 'install', '-U', '-t', 'third_party/cryptography', '--only-binary', 'cryptography', 'cryptography==37.0.4'],
   },
   {
     'name': 'wireguard_nt',
