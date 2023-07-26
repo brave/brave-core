@@ -90,43 +90,16 @@ source_set("browser_tests") {
 }
 
 if (is_win && !skip_signing) {
-  template("sig_file") {
-    assert(defined(invoker.flags), "Need flags in $target_name.")
-    action(target_name) {
-      forward_variables_from(invoker,
-                             [
-                               "sources",
-                               "outputs",
-                               "deps",
-                             ])
-
-      # It would be nice to just invoke the original signature_generator.py
-      # script here. But it uses Python 2 and expects the `cryptography`
-      # library to be installed. So we invoke this Python 3 helper here.
-      script = "signature_generator_python3.py"
-      inputs = [
-        "//brave/script/lib/widevine.py",
-        "//brave/script/lib/util.py",
-        "//brave/script/lib/config.py",
-        "//brave/script/lib/env_util.py",
-      ]
-      args = [
-        rebase_path(sources[0], root_build_dir),
-        rebase_path(outputs[0], root_build_dir),
-        invoker.flags,
-      ]
-    }
-  }
-  sig_file("brave_exe_sig") {
+  widevine_sign_file("brave_exe_sig") {
+    file = "$root_out_dir/presigned_binaries/brave.exe"
+    signature_file = "$root_out_dir/brave.exe.sig"
     flags = "1"
-    sources = [ "$root_out_dir/presigned_binaries/brave.exe" ]
-    outputs = [ "$root_out_dir/brave.exe.sig" ]
     deps = [ "//brave:signed_brave_exe" ]
   }
-  sig_file("chrome_dll_sig") {
+  widevine_sign_file("chrome_dll_sig") {
+    file = "$root_out_dir/presigned_binaries/chrome.dll"
+    signature_file = "$root_out_dir/chrome.dll.sig"
     flags = "0"
-    sources = [ "$root_out_dir/presigned_binaries/chrome.dll" ]
-    outputs = [ "$root_out_dir/chrome.dll.sig" ]
     deps = [ "//brave:signed_chrome_dll" ]
   }
 }
