@@ -56,42 +56,6 @@ const keyTransforms = {
 }
 const getKey = (key: string) => keyTransforms[key] || key
 
-class AcceleratorInfo {
-  codes: string[] = []
-
-  #keyCode?: string
-  #modifiers: string[] = []
-
-  add(e: KeyboardEvent) {
-    if (e.ctrlKey) {
-      this.#modifiers.push(getKey('Control'))
-    }
-    if (e.altKey) {
-      this.#modifiers.push(getKey('Alt'))
-    }
-
-    if (e.shiftKey) {
-      this.#modifiers.push(getKey('Shift'))
-    }
-
-    if (e.metaKey) {
-      this.#modifiers.push(getKey('Meta'))
-    }
-
-    if (!modifiers.includes(e.key)) {
-      this.#keyCode = e.code
-    }
-
-    this.#modifiers = Array.from(new Set(this.#modifiers))
-    this.codes = [...this.#modifiers, this.#keyCode!].filter(c => c)
-  }
-
-  isValid() {
-    // There needs to be one non-modifier key
-    return !!this.#keyCode
-  }
-}
-
 const keyCodeCache: { [code: string]: string } = {}
 const getKeyFromCode = (code: string) => {
   if (modifiers.includes(code)) return code
@@ -120,8 +84,7 @@ export default function ConfigureShortcut(props: {
   onChange: (info: { codes: string; keys: string }) => void
   onCancel?: () => void
 }) {
-  const [, setCurrentKeys] = React.useState<string[]>([])
-  const maxKeys = React.useRef<AcceleratorInfo>(new AcceleratorInfo())
+  const [current, setCurrent] = React.useState<{ codes: string[], isValid: boolean }>({ codes: [], isValid: false })
   const commands = useCommands()
   const acceleratorLookup = React.useMemo(() => {
     return Object.values(commands)
@@ -135,9 +98,9 @@ export default function ConfigureShortcut(props: {
 
       // Enter on it's own is used to accept the current combination, if the
       // current keys are a valid shortcut.
-      if (e.code === "Enter" && !hasModifier && maxKeys.current.isValid()) {
+      if (e.code === "Enter" && !hasModifier && current.isValid) {
         props.onChange({
-          codes: keysToString(maxKeys.current.codes),
+          codes: keysToString(current.codes),
           keys: keysToString([])
         })
         return;
@@ -150,35 +113,42 @@ export default function ConfigureShortcut(props: {
       }
 
       e.preventDefault()
-      setCurrentKeys((keys) => {
-        if (keys.length === 0) {
-          maxKeys.current = new AcceleratorInfo()
-        }
 
-        const newKeys = Array.from(new Set([...keys, e.key]))
-        maxKeys.current.add(e)
-        return newKeys
-      })
+      const modifiers: string[] = []
+      let keyCode: string | undefined
+
+      if (e.ctrlKey) {
+        modifiers.push(getKey('Control'))
+      }
+      if (e.altKey) {
+        modifiers.push(getKey('Alt'))
+      }
+
+      if (e.shiftKey) {
+        modifiers.push(getKey('Shift'))
+      }
+
+      if (e.metaKey) {
+        modifiers.push(getKey('Meta'))
+      }
+
+      if (!modifiers.includes(e.key)) {
+        keyCode = e.code
+      }
+
+      const codes = [...modifiers, keyCode!].filter(c => c)
+      setCurrent({ codes, isValid: !!keyCode })
     }
 
-    const onUp = (e: KeyboardEvent) => {
-      e.preventDefault()
-      setCurrentKeys((keys) => {
-        const newKeys = keys.filter((k) => k !== e.key)
-        return newKeys
-      })
-    }
-    document.addEventListener('keyup', onUp)
     document.addEventListener('keydown', onDown)
     return () => {
-      document.removeEventListener('keyup', onUp)
       document.removeEventListener('keydown', onDown)
     }
-  })
+  }, [current])
 
-  const keys = useKeys(maxKeys.current.codes)
+  const keys = useKeys(current.codes)
 
-  const shortcut = maxKeys.current.codes.join('+');
+  const shortcut = current.codes.join('+');
   const conflict = acceleratorLookup[shortcut]
   // A shortcut cannot be reused if the existing shortcut is unmodifiable.
   const unmodifiable = commands[conflict]?.accelerators.some((a: Accelerator) => a.codes === shortcut && a.unmodifiable)
@@ -213,8 +183,7 @@ export default function ConfigureShortcut(props: {
           size="large"
           kind="plain-faint"
           onClick={() => {
-            setCurrentKeys([])
-            maxKeys.current = new AcceleratorInfo()
+            setCurrent({ codes: [], isValid: false })
             props.onCancel?.()
           }}
         >
@@ -223,10 +192,10 @@ export default function ConfigureShortcut(props: {
         <Button
           size="large"
           kind="filled"
-          isDisabled={!maxKeys.current.isValid() || unmodifiable}
+          isDisabled={!current.isValid || unmodifiable}
           onClick={() => {
             props.onChange({
-              codes: keysToString(maxKeys.current.codes),
+              codes: keysToString(current.codes),
               keys: keysToString([])
             })
           }}
