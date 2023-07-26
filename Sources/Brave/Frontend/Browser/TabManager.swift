@@ -73,6 +73,7 @@ class TabManager: NSObject {
   private var _selectedIndex = -1
   private let navDelegate: TabManagerNavDelegate
   private(set) var isRestoring = false
+  private(set) var isBulkDeleting = false
 
   // A WKWebViewConfiguration used for normal tabs
   lazy fileprivate var configuration: WKWebViewConfiguration = {
@@ -719,6 +720,7 @@ class TabManager: NSObject {
   }
 
   @MainActor func removeTabsWithUndoToast(_ tabs: [Tab]) {
+    isBulkDeleting = true
     tempTabs = tabs
     var tabsCopy = tabs
 
@@ -750,6 +752,7 @@ class TabManager: NSObject {
         })
     }
 
+    isBulkDeleting = false
     delegates.forEach { $0.get()?.tabManagerDidRemoveAllTabs(self, toast: toast) }
   }
 
@@ -790,11 +793,17 @@ class TabManager: NSObject {
   }
 
   @MainActor func removeAll() {
+    isBulkDeleting = true
     removeTabs(self.allTabs)
+    isBulkDeleting = false
+    delegates.forEach { $0.get()?.tabManagerDidRemoveAllTabs(self, toast: nil) }
   }
   
   @MainActor func removeAllForCurrentMode() {
+    isBulkDeleting = true
     removeTabs(tabsForCurrentMode)
+    isBulkDeleting = false
+    delegates.forEach { $0.get()?.tabManagerDidRemoveAllTabs(self, toast: nil) }
   }
 
   func getIndex(_ tab: Tab) -> Int? {

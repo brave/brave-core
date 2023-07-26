@@ -43,7 +43,7 @@ extension Preferences.AutoCloseTabsOption: RepresentableOptionType {
 
 protocol SettingsDelegate: AnyObject {
   func settingsOpenURLInNewTab(_ url: URL)
-  func settingsOpenURLs(_ urls: [URL])
+  func settingsOpenURLs(_ urls: [URL], loadImmediately: Bool)
 }
 
 class SettingsViewController: TableViewController {
@@ -279,7 +279,7 @@ class SettingsViewController: TableViewController {
           let controller = NewsSettingsViewController(dataSource: self.feedDataSource, openURL: { [weak self] url in
             guard let self else { return }
             self.dismiss(animated: true)
-            self.settingsDelegate?.settingsOpenURLs([url])
+            self.settingsDelegate?.settingsOpenURLs([url], loadImmediately: true)
           })
           controller.viewDidDisappear = {
             if Preferences.Review.braveNewsCriteriaPassed.value {
@@ -767,9 +767,18 @@ class SettingsViewController: TableViewController {
             let url = URL(string: "https://raw.githubusercontent.com/brave/qa-resources/master/testlinks.json")!
             let string = try? String(contentsOf: url)
             let urls = JSON(parseJSON: string!)["links"].arrayValue.compactMap { URL(string: $0.stringValue) }
-            self.settingsDelegate?.settingsOpenURLs(urls)
+            self.settingsDelegate?.settingsOpenURLs(urls, loadImmediately: false)
             self.dismiss(animated: true)
           }, cellClass: MultilineButtonCell.self),
+        Row(
+          text: "Create 1000 Tabs",
+          selection: { [unowned self] in
+            let urls = (0..<1000).map { URL(string: "https://search.brave.com/search?q=\($0)")! }
+            self.settingsDelegate?.settingsOpenURLs(urls, loadImmediately: false)
+            self.dismiss(animated: true)
+          },
+          cellClass: ButtonCell.self
+        ),
         Row(
           text: "CRASH!!!",
           selection: { [unowned self] in
