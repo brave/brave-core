@@ -6,7 +6,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import Keys from './Keys'
-import { keysToString, stringToKeys } from '../utils/accelerator'
+import { keysToString } from '../utils/accelerator'
 import { color, font, spacing } from '@brave/leo/tokens/css'
 import Button from '@brave/leo/react/button'
 import Alert from '@brave/leo/react/alert'
@@ -14,6 +14,7 @@ import { useCommands } from '../commands'
 import Dialog from '@brave/leo/react/dialog'
 import { getLocale } from '$web-common/locale'
 import { Accelerator } from 'gen/brave/components/commands/common/commands.mojom.m'
+import { commandsCache } from '../commands'
 
 const StyledDialog = styled(Dialog)`
   --leo-dialog-width: 402px;
@@ -44,7 +45,7 @@ const InUseAlert = styled(Alert)`
   display: block;
 `
 
-const modifiers = ['Control', 'Alt', 'Shift', 'Meta']
+const modifiers = ['Control', 'Alt', 'Shift', 'Meta', 'Command']
 
 // Some keys are rendered differently on different platforms. For example Meta
 // is Meta on Windows & Linux but Command on OSX.
@@ -56,15 +57,9 @@ const keyTransforms = {
 const getKey = (key: string) => keyTransforms[key] || key
 
 class AcceleratorInfo {
-  get codes() {
-    return [...this.#modifiers, this.#key?.code!].filter(k => k)
-  }
+  codes: string[] = []
 
-  get keys() {
-    return [...this.#modifiers, this.#key?.key!].filter(k => k)
-  }
-
-  #key?: { code: string, key: string }
+  #keyCode?: string
   #modifiers: string[] = []
 
   add(e: KeyboardEvent) {
@@ -84,23 +79,44 @@ class AcceleratorInfo {
     }
 
     if (!modifiers.includes(e.key)) {
-      this.#key = {
-        key: e.key,
-        code: e.code
-      }
+      this.#keyCode = e.code
     }
 
     this.#modifiers = Array.from(new Set(this.#modifiers))
+    this.codes = [...this.#modifiers, this.#keyCode!].filter(c => c)
   }
 
   isValid() {
     // There needs to be one non-modifier key
-    return !!this.#key
+    return !!this.#keyCode
   }
 }
 
+const keyCodeCache: { [code: string]: string } = {}
+const getKeyFromCode = (code: string) => {
+  if (modifiers.includes(code)) return code
+  if (keyCodeCache[code]) return keyCodeCache[code]
+
+  return commandsCache.getKeyFromCode(code).then(key => keyCodeCache[code] = key)
+}
+export const useKeys = (codes: string[]) => {
+  const [keys, setKeys] = React.useState<string[]>([])
+  React.useEffect(() => {
+    let cancelled = false
+    const keys = codes.map(getKeyFromCode)
+    Promise.all(keys).then(keys => !cancelled && setKeys(keys))
+
+    // Eagerly render the keys we already know.
+    setKeys(keys.map(key => typeof key === 'string' ? key : ''))
+
+    return () => {
+      cancelled = true
+    }
+  }, [codes])
+  return keys
+}
+
 export default function ConfigureShortcut(props: {
-  value?: string
   onChange: (info: { codes: string; keys: string }) => void
   onCancel?: () => void
 }) {
@@ -122,7 +138,7 @@ export default function ConfigureShortcut(props: {
       if (e.code === "Enter" && !hasModifier && maxKeys.current.isValid()) {
         props.onChange({
           codes: keysToString(maxKeys.current.codes),
-          keys: keysToString(maxKeys.current.keys)
+          keys: keysToString([])
         })
         return;
       }
@@ -160,9 +176,7 @@ export default function ConfigureShortcut(props: {
     }
   })
 
-  const keys = maxKeys.current.keys.length
-    ? maxKeys.current.keys
-    : stringToKeys(props.value ?? '')
+  const keys = useKeys(maxKeys.current.codes)
 
   const shortcut = maxKeys.current.codes.join('+');
   const conflict = acceleratorLookup[shortcut]
@@ -213,7 +227,7 @@ export default function ConfigureShortcut(props: {
           onClick={() => {
             props.onChange({
               codes: keysToString(maxKeys.current.codes),
-              keys: keysToString(maxKeys.current.keys)
+              keys: keysToString([])
             })
           }}
         >
