@@ -31,6 +31,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HttpHeaders;
 
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
+import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.net.ChromiumNetworkAdapter;
 import org.chromium.net.NetworkTrafficAnnotationTag;
 
@@ -45,248 +46,140 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BraveChromiumHttpDataSource implements HttpDataSource {
-    private final RequestProperties requestProperties = new RequestProperties();
-    // private byte[] dataReceived;
-    // private long bytesRead;
-    // private long bytesToRead;
-    // @Nullable
-    // private DataSpec dataSpec;
-
-    // @Override
-    // @Nullable
-    // public Uri getUri() {
-    //     Log.e("custom", "BraveVpnNativeWorker.url : "+ BraveVpnNativeWorker.url);
-    //     return BraveVpnNativeWorker.url == null ? null : Uri.parse(BraveVpnNativeWorker.url);
-    // }
-
-    // @Override
-    // public int getResponseCode() {
-    //     return 200;
-    // }
-
-    // @Override
-    // public Map<String, List<String>> getResponseHeaders() {
-    //     return ImmutableMap.of();
-    // }
-
-    // @Override
-    // public void setRequestProperty(String name, String value) {
-    //     checkNotNull(name);
-    //     checkNotNull(value);
-    //     requestProperties.set(name, value);
-    // }
-
-    // @Override
-    // public void clearRequestProperty(String name) {
-    //     checkNotNull(name);
-    //     requestProperties.remove(name);
-    // }
-
-    // @Override
-    // public void clearAllRequestProperties() {
-    //     requestProperties.clear();
-    // }
-
-    // @Override
-    // public void addTransferListener(TransferListener transferListener) {}
-
-    // @Override
-    // public long open(DataSpec dataSpec) throws HttpDataSourceException {
-    //     this.dataSpec = dataSpec;
-    //     // BraveVpnNativeWorker.getInstance().queryPrompt(
-    //     //         dataSpec.uri.toString(),
-    //     //         dataSpec.getHttpMethodString());
-    //     bytesRead = 0;
-    //     bytesToRead = dataSpec.length != C.LENGTH_UNSET ? dataSpec.length :
-    //     BraveVpnNativeWorker.contentLength; Log.e("custom", "bytesToRead : "+ bytesToRead);
-    //     return bytesToRead ;
-    // }
-
-    // @Override
-    // public int read(byte[] buffer, int offset, int length) throws HttpDataSourceException {
-    //     try {
-    //         return readInternal(buffer, offset, length);
-    //     } catch (IOException e) {
-    //         throw HttpDataSourceException.createForIOException(
-    //                 e, castNonNull(dataSpec), HttpDataSourceException.TYPE_READ);
-    //     }
-    // }
-
-    // private int readInternal(byte[] buffer, int offset, int readLength) throws IOException {
-    //     if (readLength == 0) {
-    //         return 0;
-    //     }
-
-    //     Log.e("custom", "dataReceived : before readLength : "+ readLength);
-    //     if (bytesToRead != C.LENGTH_UNSET) {
-    //         Log.e("custom", "dataReceived : bytesToRead : "+ bytesToRead);
-    //         Log.e("custom", "dataReceived : bytesRead : "+ bytesRead);
-    //         long bytesRemaining = bytesToRead - bytesRead;
-    //         if (bytesRemaining == 0) {
-    //             return C.RESULT_END_OF_INPUT;
-    //         }
-
-    //         Log.e("custom", "dataReceived : bytesRemaining : "+ bytesRemaining);
-    //         readLength = (int) min(200, bytesRemaining);
-    //     }
-
-    //     // byte[] dataReceived = BraveVpnNativeWorker.output.toByteArray();
-    //     byte[] dataReceived = BraveVpnNativeWorker.tempStorage.get(0);
-    //     Log.e("custom", "dataReceived : dataReceived.length : "+ dataReceived.length);
-
-    //     Log.e("custom", "dataReceived : offset : "+ offset);
-    //     Log.e("custom", "dataReceived : after readLength : "+ readLength);
-    //     Log.e("custom", "dataReceived : min(readLength,200) : "+ min(readLength,200));
-
-    //     readLength = min(readLength,200);
-    //     readLength = min(readLength, dataReceived.length);
-    //     InputStream targetStream = new ByteArrayInputStream(dataReceived);
-    //     int read = targetStream.read(buffer, BraveVpnNativeWorker.currentOffset, readLength);
-    //     Log.e("custom", "dataReceived : read.length : "+ read);
-    //     if (read == -1) {
-    //         return C.RESULT_END_OF_INPUT;
-    //     }
-
-    //     targetStream.close();
-    //     if (dataReceived.length > readLength) {
-    //         BraveVpnNativeWorker.currentOffset = BraveVpnNativeWorker.currentOffset + readLength;
-    //     } else {
-    //         BraveVpnNativeWorker.currentOffset = 0;
-    //         BraveVpnNativeWorker.tempStorage.remove(0);
-    //     }
-
-    //     bytesRead += read;
-
-    //     // return bytes read for offset
-    //     return read;
-    // }
-
-    // @Override
-    // public void close() throws HttpDataSourceException {
-    //     // Close streams
-    //     try {
-    //             // BraveVpnNativeWorker.output.close();
-    //         BraveVpnNativeWorker.tempStorage.clear();
-    //         } catch (Exception e) {
-    //             Log.e("data_source", e.getMessage());
-    //         }
-    // }
-
-    // /**
-    //  * {@link DataSource.Factory} for {@link BraveChromiumHttpDataSource} instances.
-    //  */
-    // public static final class Factory implements HttpDataSource.Factory {
-    //     /**
-    //      * Creates an instance.
-    //      */
-    //     public Factory() {}
-
-    //     @Override
-    //     public BraveChromiumHttpDataSource.Factory setDefaultRequestProperties(
-    //             Map<String, String> defaultRequestProperties) {
-    //         return this;
-    //     }
-
-    //     @Override
-    //     public BraveChromiumHttpDataSource createDataSource() {
-    //         BraveChromiumHttpDataSource dataSource =
-    //                 new BraveChromiumHttpDataSource();
-    //         return dataSource;
-    //     }
-    // }
-
-    private byte[] data;
-    private DataSpec dataSpec;
-    private long bytesRead;
+public class BraveChromiumHttpDataSource extends BaseDataSource implements BraveVpnObserver {
+    @Nullable
+    private Uri uri;
+    private int bytesAlreadyRead;
     private boolean opened;
 
-    public BraveChromiumHttpDataSource(byte[] data) {
-        this.data = data;
+    public BraveChromiumHttpDataSource() {
+        super(/* isNetwork= */ true);
     }
 
     @Override
-    public void setRequestProperty(String name, String value) {
-        checkNotNull(name);
-        checkNotNull(value);
-        requestProperties.set(name, value);
-    }
-
-    @Override
-    public void clearRequestProperty(String name) {
-        checkNotNull(name);
-        requestProperties.remove(name);
-    }
-
-    @Override
-    public void clearAllRequestProperties() {
-        requestProperties.clear();
-    }
-
-    @Override
-    public void addTransferListener(TransferListener transferListener) {}
-
-    @Override
-    public long open(DataSpec dataSpec) throws HttpDataSourceException {
-        this.dataSpec = dataSpec;
-        bytesRead = 0;
+    public long open(DataSpec dataSpec) {
+        Log.e("data_source", "open : " + dataSpec.toString());
+        uri = dataSpec.uri;
+        // BraveVpnNativeWorker.getInstance().queryPrompt(
+        //         dataSpec.uri.toString(),
+        //         "GET");
+        transferInitializing(dataSpec);
+        bytesAlreadyRead = 0;
         opened = true;
-        // transferInitializing(dataSpec);
-        Log.e("data_source", "data.length : " + data.length);
-        return data.length;
+        transferStarted(dataSpec);
+        return C.LENGTH_UNSET;
     }
 
     @Override
-    public int read(byte[] buffer, int offset, int readLength) throws HttpDataSourceException {
-        if (!opened) {
-            throw new HttpDataSourceException(
-                    "Data source is not opened.", dataSpec, HttpDataSourceException.TYPE_OPEN);
+    public int read(byte[] buffer, int offset, int readLength) {
+        // if (!opened) {
+        //     throw new HttpDataSourceException(
+        //             "Data source is not opened.", dataSpec, HttpDataSourceException.TYPE_OPEN);
+        // }
+        BraveVpnNativeWorker.readLength = readLength + bytesAlreadyRead;
+        int responseLength;
+        try {
+            responseLength = BraveVpnNativeWorker.responseLength.get();
+        } catch (Exception ex) {
         }
-
-        int remaining = (int) (data.length - bytesRead);
-        if (remaining == 0) {
-            return C.RESULT_END_OF_INPUT; // End of stream reached
+        byte[] data = BraveVpnNativeWorker.getInstance().getLatestData();
+        int byteAvailableToRead = (int) (data.length - bytesAlreadyRead);
+        if (readLength == 0 || byteAvailableToRead == 0) {
+            Log.e("data_source",
+                    "byteAvailableToRead : " + byteAvailableToRead + " : readLength : " + readLength
+                            + " : C.RESULT_NOTHING_READ");
+            return C.RESULT_NOTHING_READ;
         }
-
-        Log.e("data_source", "remaining : " + remaining);
-        Log.e("data_source", "readLength : " + readLength);
-        int bytesReadThisTime = Math.min(remaining, readLength);
-        System.arraycopy(data, (int) bytesRead, buffer, offset, bytesReadThisTime);
-        // removeBytes(data, offset);
-        bytesRead += bytesReadThisTime;
-        Log.e("data_source", "bytesReadThisTime : " + bytesReadThisTime);
-        // bytesTransferred(bytesReadThisTime);
+        int bytesReadThisTime = Math.min(byteAvailableToRead, readLength);
+        System.arraycopy(data, bytesAlreadyRead, buffer, offset, bytesReadThisTime);
+        bytesAlreadyRead += bytesReadThisTime;
+        Log.e("data_source",
+                "offset : " + offset + " : byteAvailableToRead : " + byteAvailableToRead);
+        bytesTransferred(bytesReadThisTime);
         return bytesReadThisTime;
-    }
-
-    void removeBytes(byte[] data, int offset) {
-        for (int i = offset; i < data.length; i++) {
-            data[i - offset] = data[i];
-        }
-        for (int i = data.length - 1; i > data.length - offset + 1; i--) {
-            data[i] = 0;
-        }
     }
 
     @Override
     public Uri getUri() {
-        return dataSpec != null ? dataSpec.uri : null;
+        return uri;
     }
 
     @Override
-    public Map<String, List<String>> getResponseHeaders() {
-        return ImmutableMap.of();
+    public void close() {
+        if (opened) {
+            opened = false;
+            transferEnded();
+        }
+        uri = null;
     }
 
-    @Override
-    public void close() throws HttpDataSourceException {
-        dataSpec = null;
-        opened = false;
-        bytesRead = 0;
-    }
+    // private byte[] data;
 
-    @Override
-    public int getResponseCode() {
-        return 200;
-    }
+    // @Nullable
+    // private Uri uri;
+    // private int readPosition;
+    // private int bytesRemaining;
+    // private boolean opened;
+
+    // /**
+    //  * @param data The data to be read.
+    //  */
+    // public BraveChromiumHttpDataSource(byte[] data) {
+    //     super(/* isNetwork= */ false);
+    //     this.data = data;
+    // }
+
+    // @Override
+    // public long open(DataSpec dataSpec) throws IOException {
+    //     BraveVpnNativeWorker.getInstance().addObserver(this);
+    //     uri = dataSpec.uri;
+    //     transferInitializing(dataSpec);
+    //     readPosition = (int) dataSpec.position;
+    //     bytesRemaining = (int) ((data.length - dataSpec.position));
+    //     opened = true;
+    //     transferStarted(dataSpec);
+    //     return C.LENGTH_UNSET;
+    // }
+
+    // @Override
+    // public int read(byte[] buffer, int offset, int readLength) {
+
+    //     if (readLength == 0 || bytesRemaining == 0)
+    //         return C.RESULT_NOTHING_READ;
+
+    //     readLength = min(readLength, bytesRemaining);
+    //     for (int i = 0; i < readLength; i++) {
+    //         buffer[offset + i] = data[readPosition + i];
+    //     }
+    //     readPosition += readLength;
+    //     bytesRemaining -= readLength;
+    //     bytesTransferred(readLength);
+    //     return readLength;
+    // }
+
+    // @Override
+    // @Nullable
+    // public Uri getUri() {
+    //     return uri;
+    // }
+
+    // @Override
+    // public void close() {
+    //     if (opened) {
+    //         opened = false;
+    //         transferEnded();
+    //     }
+    //     uri = null;
+    // }
+
+    // public void increaseBytesRemaining(int x) {
+    //     bytesRemaining += x;
+
+    // }
+
+    // @Override
+    // public void onDataReceived(byte[] response) {
+    //     bytesRemaining += response.length;
+    //     this.data = BraveVpnNativeWorker.output.toByteArray();
+    // }
 }
