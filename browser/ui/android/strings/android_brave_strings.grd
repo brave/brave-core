@@ -3027,7 +3027,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_DAPPS_CONNECTION_REQUEST_MSG" desc="A message shown to user when a DApp site request to connect with Brave wallet">
     This page wants to interact with Brave Wallet
     </message>
-    <message name="IDS_CONNECTION_ERROR" desc="Always on vpn text">
+    <message name="IDS_VPN_CONNECTION_ERROR" desc="Vpn connection error message">
       Connection error
     </message>
     <message name="IDS_BRAVE_WALLET_NETWORK_SELECTION_ERROR" desc="Network activity toolbar title">
