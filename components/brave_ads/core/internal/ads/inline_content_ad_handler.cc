@@ -65,7 +65,7 @@ void InlineContentAdHandler::MaybeServe(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
   CHECK(UserHasOptedInToBraveNews())
-      << " should only be called if the user has opted-in to Brave News Ads";
+      << "Should only be called if the user has opted-in to Brave News Ads";
 
   serving_.MaybeServeAd(
       dimensions,
@@ -80,10 +80,10 @@ void InlineContentAdHandler::TriggerEvent(
     TriggerAdEventCallback callback) {
   CHECK(mojom::IsKnownEnumValue(event_type));
   CHECK_NE(mojom::InlineContentAdEventType::kServed, event_type)
-      << " should not be called with kServed as this event is handled when "
+      << "Should not be called with kServed as this event is handled when "
          "calling MaybeServe";
   CHECK(UserHasOptedInToBraveNews())
-      << " should only be called if the user has opted-in to Brave News Ads";
+      << "Should only be called if the user has opted-in to Brave News Ads";
 
   event_handler_.FireEvent(
       placement_id, creative_instance_id, event_type,

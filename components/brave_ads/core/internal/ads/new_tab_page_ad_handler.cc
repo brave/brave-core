@@ -64,8 +64,10 @@ NewTabPageAdHandler::NewTabPageAdHandler(
 NewTabPageAdHandler::~NewTabPageAdHandler() = default;
 
 void NewTabPageAdHandler::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
-  CHECK(UserHasOptedInToBravePrivateAds())
-      << " should only be called if the user has opted-in to Brave Private Ads";
+  CHECK(ShouldAlwaysTriggerNewTabPageAdEvents() ||
+        UserHasOptedInToBravePrivateAds())
+      << "Should only be called if the user has joined Brave Rewards or if "
+         "should always trigger new tab page ad events";
 
   serving_.MaybeServeAd(base::BindOnce(&NewTabPageAdHandler::MaybeServeCallback,
                                        weak_factory_.GetWeakPtr(),

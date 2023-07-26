@@ -92,10 +92,10 @@ void NotificationAdHandler::TriggerEvent(
     TriggerAdEventCallback callback) {
   CHECK(mojom::IsKnownEnumValue(event_type));
   CHECK_NE(mojom::NotificationAdEventType::kServed, event_type)
-      << " should not be called with kServed as this event is handled when "
+      << "Should not be called with kServed as this event is handled when "
          "calling TriggerEvent with kViewed";
   CHECK(UserHasOptedInToBravePrivateAds())
-      << " should only be called if user has opted-in to Brave Private Ads";
+      << "Should only be called if user has opted-in to Brave Private Ads";
 
   if (event_type == mojom::NotificationAdEventType::kViewed) {
     return event_handler_.FireEvent(
