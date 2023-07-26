@@ -13,14 +13,6 @@
 
 namespace brave_ads {
 
-void SaveConversionQueueItems(
-    const ConversionQueueItemList& conversion_queue_items) {
-  const database::table::ConversionQueue database_table;
-  database_table.Save(
-      conversion_queue_items,
-      base::BindOnce([](const bool success) { CHECK(success); }));
-}
-
 ConversionQueueItemList BuildConversionQueueItems(
     const ConversionInfo& conversion,
     const size_t count) {
@@ -34,6 +26,14 @@ ConversionQueueItemList BuildConversionQueueItems(
   }
 
   return conversion_queue_items;
+}
+
+void SaveConversionQueueItems(
+    const ConversionQueueItemList& conversion_queue_items) {
+  const database::table::ConversionQueue database_table;
+  database_table.Save(
+      conversion_queue_items,
+      base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
 }  // namespace brave_ads

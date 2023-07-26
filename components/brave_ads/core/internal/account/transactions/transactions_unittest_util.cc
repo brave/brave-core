@@ -11,8 +11,10 @@
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transaction_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
 namespace brave_ads {
@@ -25,13 +27,18 @@ void SaveTransactions(const TransactionList& transactions) {
 
 TransactionInfo BuildTransaction(const double value,
                                  const ConfirmationType& confirmation_type,
-                                 const base::Time reconciled_at) {
+                                 const base::Time reconciled_at,
+                                 const bool should_use_random_uuids) {
   TransactionInfo transaction;
 
-  transaction.id = base::Uuid::GenerateRandomV4().AsLowercaseString();
+  transaction.id = should_use_random_uuids
+                       ? base::Uuid::GenerateRandomV4().AsLowercaseString()
+                       : kTransactionId;
   transaction.created_at = Now();
   transaction.creative_instance_id =
-      base::Uuid::GenerateRandomV4().AsLowercaseString();
+      should_use_random_uuids
+          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
+          : kCreativeInstanceId;
   transaction.value = value;
   transaction.segment = "untargeted";
   transaction.ad_type = AdType::kNotificationAd;
@@ -43,8 +50,10 @@ TransactionInfo BuildTransaction(const double value,
 
 TransactionInfo BuildUnreconciledTransaction(
     const double value,
-    const ConfirmationType& confirmation_type) {
-  return BuildTransaction(value, confirmation_type, /*reconciled_at*/ {});
+    const ConfirmationType& confirmation_type,
+    const bool should_use_random_uuids) {
+  return BuildTransaction(value, confirmation_type, /*reconciled_at*/ {},
+                          should_use_random_uuids);
 }
 
 size_t GetTransactionCount() {

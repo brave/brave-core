@@ -155,7 +155,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
 }
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest,
-       TriggerViewedEventIfBraveRewardsAreDisabled) {
+       TriggerViewedEventForNonRewardsUser) {
   // Arrange
   DisableBraveRewards();
 
@@ -186,7 +186,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
 TEST_F(
     BraveAdsNewTabPageAdIntegrationTest,
-    DoNotTriggerViewedEventIfShouldNotAlwaysTriggerAdEventsAndBraveRewardsAreDisabled) {
+    DoNotTriggerViewedEventIfShouldNotAlwaysTriggerAdEventsAndRewardsAreDisabled) {
   // Arrange
   DisableBraveRewards();
 
@@ -250,7 +250,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
 }
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest,
-       TriggerClickedEventIfBraveRewardsAreDisabled) {
+       TriggerClickedEventForNonRewardsUser) {
   // Arrange
   DisableBraveRewards();
 

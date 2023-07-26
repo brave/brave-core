@@ -18,7 +18,7 @@ class BraveAdsIssuersPermissionRuleTest : public UnitTestBase {
   const IssuersPermissionRule permission_rule_;
 };
 
-TEST_F(BraveAdsIssuersPermissionRuleTest, AllowAd) {
+TEST_F(BraveAdsIssuersPermissionRuleTest, ShouldAllowForRewardsUser) {
   // Arrange
   BuildAndSetIssuers();
 
@@ -28,8 +28,7 @@ TEST_F(BraveAdsIssuersPermissionRuleTest, AllowAd) {
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BraveAdsIssuersPermissionRuleTest,
-       ShouldAllowIfUserHasNotJoinedBraveRewards) {
+TEST_F(BraveAdsIssuersPermissionRuleTest, ShouldAlwaysAllowForNonRewardsUser) {
   // Arrange
   DisableBraveRewards();
 

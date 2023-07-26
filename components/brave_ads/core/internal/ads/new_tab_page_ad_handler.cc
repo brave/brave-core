@@ -89,7 +89,7 @@ void NewTabPageAdHandler::TriggerEvent(
       event_type == mojom::NewTabPageAdEventType::kViewed) {
     // |MaybeServe| will trigger a |kServed| event if the user has joined
     // Brave Rewards; otherwise, we need to trigger a |kServed| event when
-    // triggering a |kViewed| event for non opted-in users.
+    // triggering a |kViewed| event for non-Brave-Rewards users.
     return event_handler_.FireEvent(
         placement_id, creative_instance_id,
         mojom::NewTabPageAdEventType::kServed,
@@ -174,7 +174,7 @@ void NewTabPageAdHandler::OnDidFireNewTabPageAdViewedEvent(
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
-  account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
+  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kViewed);
 }
 
@@ -188,7 +188,7 @@ void NewTabPageAdHandler::OnDidFireNewTabPageAdClickedEvent(
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
-  account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
+  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kClicked);
 }
 

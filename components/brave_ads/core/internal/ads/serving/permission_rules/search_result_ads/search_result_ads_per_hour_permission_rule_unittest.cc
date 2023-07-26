@@ -19,7 +19,7 @@ class BraveAdsSearchResultAdsPerHourPermissionRuleTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
-       AllowAdIfThereAreNoAdEvents) {
+       ShouldAllowIfThereAreNoAdEvents) {
   // Arrange
 
   // Act
@@ -29,7 +29,7 @@ TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
 }
 
 TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
-       AllowAdIfDoesNotExceedCap) {
+       ShouldAllowIfDoesNotExceedCap) {
   // Arrange
 
   // Act
@@ -41,7 +41,7 @@ TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
 }
 
 TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
-       AllowAdIfDoesNotExceedCapAfter1Hour) {
+       ShouldAllowIfDoesNotExceedCapAfter1Hour) {
   // Arrange
   RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed,
                  /*count*/ kMaximumSearchResultAdsPerHour.Get());
@@ -54,7 +54,7 @@ TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
 }
 
 TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
-       DoNotAllowAdIfExceedsCapWithin1Hour) {
+       ShouldNotAllowIfExceedsCapWithin1Hour) {
   // Arrange
   RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed,
                  /*count*/ kMaximumSearchResultAdsPerHour.Get());

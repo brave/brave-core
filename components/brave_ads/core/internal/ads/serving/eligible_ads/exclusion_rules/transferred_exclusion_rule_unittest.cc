@@ -28,7 +28,8 @@ constexpr const char* kCampaignIds[] = {"60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
 
 class BraveAdsTransferredExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BraveAdsTransferredExclusionRuleTest, AllowAdIfThereAreNoAdEvents) {
+TEST_F(BraveAdsTransferredExclusionRuleTest,
+       ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -43,7 +44,7 @@ TEST_F(BraveAdsTransferredExclusionRuleTest, AllowAdIfThereAreNoAdEvents) {
 }
 
 TEST_F(BraveAdsTransferredExclusionRuleTest,
-       AllowAdWithDifferentCampaignIdWithin2Days) {
+       ShouldIncludeWithDifferentCampaignIdWithin2Days) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_transferred_within_time_window"] = "2d";
@@ -80,7 +81,7 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
 }
 
 TEST_F(BraveAdsTransferredExclusionRuleTest,
-       AllowAdWithDifferentCampaignIdWithin2DaysForMultipleTypes) {
+       ShouldIncludeWithDifferentCampaignIdWithin2DaysForMultipleTypes) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_transferred_within_time_window"] = "2d";
@@ -134,7 +135,7 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
 }
 
 TEST_F(BraveAdsTransferredExclusionRuleTest,
-       DoNotAllowAdWithSameCampaignIdWithin2Days) {
+       ShouldExcludeWithSameCampaignIdWithin2Days) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_transferred_within_time_window"] = "2d";
@@ -168,7 +169,7 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
 }
 
 TEST_F(BraveAdsTransferredExclusionRuleTest,
-       AllowAdWithSameCampaignIdWithin0Seconds) {
+       ShouldIncludeWithSameCampaignIdWithin0Seconds) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_transferred_within_time_window"] = "0s";
@@ -202,7 +203,7 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
 }
 
 TEST_F(BraveAdsTransferredExclusionRuleTest,
-       AllowAdWithSameCampaignIdAfter2Days) {
+       ShouldIncludeWithSameCampaignIdAfter2Days) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_transferred_within_time_window"] = "2d";
@@ -236,7 +237,7 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
 }
 
 TEST_F(BraveAdsTransferredExclusionRuleTest,
-       AllowAdWithDifferentCampaignIdAfter2Days) {
+       ShouldIncludeWithDifferentCampaignIdAfter2Days) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_transferred_within_time_window"] = "2d";

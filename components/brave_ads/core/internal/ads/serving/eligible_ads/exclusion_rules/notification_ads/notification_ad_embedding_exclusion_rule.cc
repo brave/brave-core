@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/notification_ads/notification_ad_embedding_exclusion_rule.h"
 
-#include <utility>
-
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"

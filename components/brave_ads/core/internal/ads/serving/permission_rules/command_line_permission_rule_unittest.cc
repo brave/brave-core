@@ -19,7 +19,7 @@ class BraveAdsCommandLinePermissionRuleTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsCommandLinePermissionRuleTest,
-       AllowAdIfDidNotOverrideCommandLineSwitchesForProduction) {
+       ShouldAllowIfDidNotOverrideCommandLineSwitchesForProduction) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
@@ -33,7 +33,7 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
 }
 
 TEST_F(BraveAdsCommandLinePermissionRuleTest,
-       AllowAdIfDidNotOverrideCommandLineSwitchesForStaging) {
+       ShouldAllowIfDidNotOverrideCommandLineSwitchesForStaging) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;
@@ -47,7 +47,7 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
 }
 
 TEST_F(BraveAdsCommandLinePermissionRuleTest,
-       DoNotAllowAdIfDidOverrideCommandLineSwitchesForProduction) {
+       ShouldNotAllowIfDidOverrideCommandLineSwitchesForProduction) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
@@ -61,7 +61,7 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
 }
 
 TEST_F(BraveAdsCommandLinePermissionRuleTest,
-       AllowAdIfDidOverrideCommandLineSwitchesForStaging) {
+       ShouldAllowIfDidOverrideCommandLineSwitchesForStaging) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;

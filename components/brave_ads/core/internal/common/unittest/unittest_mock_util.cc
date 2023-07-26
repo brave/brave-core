@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 
-#include <ostream>
 #include <string>
 #include <utility>
 

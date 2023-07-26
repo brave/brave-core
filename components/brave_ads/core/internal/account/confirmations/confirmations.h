@@ -8,21 +8,22 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/redeem_confirmation_delegate.h"
-#include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_delegate.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/redeem_confirmation/redeem_confirmation_delegate.h"
 
 namespace brave_ads {
 
 namespace privacy {
 class TokenGeneratorInterface;
-struct UnblindedPaymentTokenInfo;
 }  // namespace privacy
 
 struct TransactionInfo;
+struct UserDataInfo;
 
-class Confirmations final : public RedeemConfirmationDelegate {
+class Confirmations final : public ConfirmationQueueDelegate,
+                            public RedeemConfirmationDelegate {
  public:
   explicit Confirmations(privacy::TokenGeneratorInterface* token_generator);
 
@@ -34,54 +35,34 @@ class Confirmations final : public RedeemConfirmationDelegate {
 
   ~Confirmations() override;
 
-  void SetDelegate(ConfirmationsDelegate* delegate) {
+  void SetDelegate(ConfirmationDelegate* delegate) {
     CHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
 
   void Confirm(const TransactionInfo& transaction);
 
-  void ProcessRetryQueue();
-
  private:
-  void ConfirmOptedIn(const TransactionInfo& transaction);
-  void BuildDynamicUserData(const TransactionInfo& transaction);
-  void BuildFixedUserData(const TransactionInfo& transaction,
-                          base::Value::Dict dynamic_opted_in_user_data);
-  void CreateAndRedeemOptedIn(const TransactionInfo& transaction,
-                              base::Value::Dict dynamic_opted_in_user_data,
-                              base::Value::Dict fixed_opted_in_user_data);
-  void RecreateOptedInDynamicUserDataAndRedeem(
-      const ConfirmationInfo& confirmation);
-  void RecreateOptedInDynamicUserDataAndRedeemCallback(
-      const ConfirmationInfo& confirmation,
-      base::Value::Dict dynamic_opted_in_user_data);
+  void ConfirmCallback(const TransactionInfo& transaction,
+                       const UserDataInfo& user_data);
 
-  void ConfirmOptedOut(const TransactionInfo& transaction);
-  void CreateAndRedeemOptedOut(const TransactionInfo& transaction);
-
-  void Redeem(const ConfirmationInfo& confirmation);
-
-  void Retry();
-  void RetryCallback();
-  void StopRetrying();
-
-  // RedeemConfirmationDelegate:
-  void OnDidRedeemOptedInConfirmation(const ConfirmationInfo& confirmation,
-                                      const privacy::UnblindedPaymentTokenInfo&
-                                          unblinded_payment_token) override;
-  void OnDidRedeemOptedOutConfirmation(
+  // ConfirmationQueueDelegate:
+  void OnDidAddConfirmationToQueue(
       const ConfirmationInfo& confirmation) override;
-  void OnFailedToRedeemConfirmation(const ConfirmationInfo& confirmation,
-                                    bool should_retry,
-                                    bool should_backoff) override;
+  void OnWillProcessConfirmationQueue(const ConfirmationInfo& confirmation,
+                                      base::Time process_at) override;
+  void OnDidProcessConfirmationQueue(
+      const ConfirmationInfo& confirmation) override;
+  void OnFailedToProcessConfirmationQueue(
+      const ConfirmationInfo& confirmation) override;
+  void OnDidExhaustConfirmationQueue() override;
 
-  raw_ptr<ConfirmationsDelegate> delegate_ = nullptr;
+  raw_ptr<ConfirmationDelegate> delegate_ = nullptr;
 
   const raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
       nullptr;  // NOT OWNED
 
-  BackoffTimer retry_timer_;
+  ConfirmationQueue queue_;
 
   base::WeakPtrFactory<Confirmations> weak_factory_{this};
 };

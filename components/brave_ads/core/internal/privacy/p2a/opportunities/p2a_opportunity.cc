@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/p2a/opportunities/p2a_opportunity.h"
 
-#include <vector>
-
 #include "brave/components/brave_ads/core/internal/privacy/p2a/opportunities/p2a_opportunity_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/p2a.h"
 

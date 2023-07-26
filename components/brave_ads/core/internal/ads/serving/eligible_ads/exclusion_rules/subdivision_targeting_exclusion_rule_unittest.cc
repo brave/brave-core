@@ -120,7 +120,7 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
 };
 
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
-       DoNotAllowAdIfSubdivisionTargetingIsNotAllowedForGeoTargetWithRegion) {
+       ShouldExcludeIfSubdivisionTargetingIsNotAllowedForGeoTargetWithRegion) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -132,8 +132,9 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
-TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
-       AllowAdIfSubdivisionTargetingIsNotAllowedForGeoTargetWithNoRegion) {
+TEST_P(
+    BraveAdsSubdivisionTargetingExclusionRuleTest,
+    ShouldIncludeIfSubdivisionTargetingIsNotAllowedForGeoTargetWithNoRegion) {
   // Arrange
   SetDefaultBooleanPref(prefs::kShouldAllowSubdivisionTargeting, false);
 
@@ -148,7 +149,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 }
 
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
-       AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetected) {
+       ShouldIncludeIfSubdivisionTargetingIsSupportedAndAutoDetected) {
   // Arrange
   SetDefaultBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
 
@@ -168,7 +169,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 
 TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
-    AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetectedForMultipleGeoTargets) {
+    ShouldIncludeIfSubdivisionTargetingIsSupportedAndAutoDetectedForMultipleGeoTargets) {
   // Arrange
   SetDefaultBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
 
@@ -189,7 +190,7 @@ TEST_P(
 
 TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
-    AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetectedForGeoTargetWithNoRegion) {
+    ShouldIncludeIfSubdivisionTargetingIsSupportedAndAutoDetectedForGeoTargetWithNoRegion) {
   // Arrange
   SetDefaultBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
 
@@ -209,7 +210,7 @@ TEST_P(
 
 TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
-    AllowAdIfSubdivisionTargetingIsSupportedAndSubdivisionWasManuallySelected) {
+    ShouldIncludeIfSubdivisionTargetingIsSupportedAndSubdivisionWasManuallySelected) {
   // Arrange
   SetDefaultBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
 
@@ -232,7 +233,7 @@ TEST_P(
 
 TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
-    AllowAdIfSubdivisionTargetingIsSupportedAndSubdivisionWasManuallySelectedForMultipleGeoTargets) {
+    ShouldIncludeIfSubdivisionTargetingIsSupportedAndSubdivisionWasManuallySelectedForMultipleGeoTargets) {
   // Arrange
   SetDefaultBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
 
@@ -256,7 +257,7 @@ TEST_P(
 
 TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
-    AllowAdIfSubdivisionTargetingIsSupportedAndManuallySelectedForGeoTargetWithNoRegion) {
+    ShouldIncludeIfSubdivisionTargetingIsSupportedAndManuallySelectedForGeoTargetWithNoRegion) {
   // Arrange
   SetDefaultBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
 
@@ -278,7 +279,7 @@ TEST_P(
 }
 
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
-       DoNotAllowAdIfSubdivisionTargetingIsSupportedForUnsupportedGeoTarget) {
+       ShouldExcludeIfSubdivisionTargetingIsSupportedForUnsupportedGeoTarget) {
   // Arrange
   SetDefaultBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
 
@@ -297,7 +298,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 
 TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
-    DoNotAllowAdIfSubdivisionTargetingIsNotSupportedForSubdivisionGeoTarget) {
+    ShouldExcludeIfSubdivisionTargetingIsNotSupportedForSubdivisionGeoTarget) {
   // Arrange
   SetDefaultBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
 
@@ -316,8 +317,9 @@ TEST_P(
   EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
-TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
-       AllowAdIfSubdivisionTargetingIsNotSupportedForNonSubdivisionGeoTarget) {
+TEST_P(
+    BraveAdsSubdivisionTargetingExclusionRuleTest,
+    ShouldIncludeIfSubdivisionTargetingIsNotSupportedForNonSubdivisionGeoTarget) {
   // Arrange
   SetDefaultBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
 
@@ -340,7 +342,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 }
 
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
-       DoNotAllowAdIfSubdivisionTargetingIsDisabledForSubdivisionGeoTarget) {
+       ShouldExcludeIfSubdivisionTargetingIsDisabledForSubdivisionGeoTarget) {
   // Arrange
   SetDefaultBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
 
@@ -360,8 +362,9 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
-TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
-       AllowAdIfSubdivisionTargetingIsDisabledForNonSubdivisionGeoTarget) {
+TEST_P(
+    BraveAdsSubdivisionTargetingExclusionRuleTest,
+    ShouldIncludeIfSubdivisionTargetingIsDisabledForNonSubdivisionGeoTarget) {
   // Arrange
   SetDefaultBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
 

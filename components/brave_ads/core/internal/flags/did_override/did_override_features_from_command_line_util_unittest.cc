@@ -16,7 +16,8 @@
 #include "brave/components/brave_ads/common/notification_ad_feature.h"
 #include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/brave_ads/common/user_attention_feature.h"
-#include "brave/components/brave_ads/core/internal/account/account_feature.h"
+#include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/tokens_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_feature.h"
@@ -62,7 +63,8 @@ struct ParamInfo final {
       base::StrCat({kTextClassificationFeature.name,
                     "<TrialName.GroupName:param/value"})},
      true},
-    {{::switches::kEnableFeatures, kAccountFeature.name}, true},
+    {{::switches::kEnableFeatures, kAccountStatementFeature.name}, true},
+    {{::switches::kEnableFeatures, kAccountTokensFeature.name}, true},
     {{::switches::kEnableFeatures, kAntiTargetingFeature.name}, true},
     {{::switches::kEnableFeatures, kConversionsFeature.name}, true},
     {{::switches::kEnableFeatures, kEligibleAdFeature.name}, true},
@@ -83,7 +85,10 @@ struct ParamInfo final {
     {{variations::switches::kForceFieldTrialParams,
       base::JoinString({"Foo", kUserActivityFeature.name, "Bar"}, ",")},
      true},
-    {{variations::switches::kForceFieldTrialParams, kAccountFeature.name},
+    {{variations::switches::kForceFieldTrialParams,
+      kAccountStatementFeature.name},
+     true},
+    {{variations::switches::kForceFieldTrialParams, kAccountTokensFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams, kAntiTargetingFeature.name},
      true},

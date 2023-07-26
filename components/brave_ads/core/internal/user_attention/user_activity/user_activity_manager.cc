@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 
-#include <string>
-
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"

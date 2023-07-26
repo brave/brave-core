@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/statement/next_payment_date_util.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/account/account_feature.h"
+#include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/reconciled_transactions_util.h"
 
 namespace brave_ads {

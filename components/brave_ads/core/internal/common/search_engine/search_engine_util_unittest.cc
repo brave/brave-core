@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_util.h"
 
-#include <string>
 #include <vector>
 
 #include "base/strings/strcat.h"

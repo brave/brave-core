@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/total_max_exclusion_rule.h"
 
-#include <vector>
-
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -26,7 +24,7 @@ constexpr const char* kCreativeSetIds[] = {
 
 class BraveAdsTotalMaxExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BraveAdsTotalMaxExclusionRuleTest, AllowAdIfThereAreNoAdEvents) {
+TEST_F(BraveAdsTotalMaxExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetIds[0];
@@ -40,7 +38,7 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest, AllowAdIfThereAreNoAdEvents) {
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsTotalMaxExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
+TEST_F(BraveAdsTotalMaxExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetIds[0];
@@ -60,7 +58,7 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
 }
 
 TEST_F(BraveAdsTotalMaxExclusionRuleTest,
-       AllowAdIfDoesNotExceedCapForNoMatchingCreatives) {
+       ShouldIncludeIfDoesNotExceedCapForNoMatchingCreatives) {
   // Arrange
   CreativeAdInfo creative_ad_1;
   creative_ad_1.creative_set_id = kCreativeSetIds[0];
@@ -83,7 +81,7 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest,
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad_1).has_value());
 }
 
-TEST_F(BraveAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsZeroCap) {
+TEST_F(BraveAdsTotalMaxExclusionRuleTest, ShouldExcludeIfExceedsZeroCap) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetIds[0];
@@ -97,7 +95,7 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsZeroCap) {
   EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
+TEST_F(BraveAdsTotalMaxExclusionRuleTest, ShouldExcludeIfExceedsCap) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetIds[0];

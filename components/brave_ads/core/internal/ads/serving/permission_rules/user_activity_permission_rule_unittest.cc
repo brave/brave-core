@@ -41,7 +41,7 @@ class BraveAdsUserActivityPermissionRuleTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsUserActivityPermissionRuleTest,
-       AllowAdIfUserActivityScoreIsEqualToTheThreshold) {
+       ShouldAllowIfUserActivityScoreIsEqualToTheThreshold) {
   // Arrange
 
   // Act

@@ -204,7 +204,7 @@ void NotificationAdHandler::OnDidFireNotificationAdViewedEvent(
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
-  account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
+  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kViewed);
 
   SetNotificationAdServedAtPredictorVariable(base::Time::Now());
@@ -222,7 +222,7 @@ void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
-  account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
+  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kClicked);
 
   epsilon_greedy_bandit_processor_->Process(
@@ -243,7 +243,7 @@ void NotificationAdHandler::OnDidFireNotificationAdDismissedEvent(
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kDismissed);
 
-  account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
+  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kDismissed);
 
   epsilon_greedy_bandit_processor_->Process(

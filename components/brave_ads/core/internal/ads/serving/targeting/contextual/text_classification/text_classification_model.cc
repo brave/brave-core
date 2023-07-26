@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_model.h"
 
-#include <string>
-
 #include "base/check.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_alias.h"

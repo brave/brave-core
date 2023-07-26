@@ -543,8 +543,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidResignActiveEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BraveAdsUserActivityManagerTest,
-       DoNotRecordEventIfBraveRewardsAreDisabled) {
+TEST_F(BraveAdsUserActivityManagerTest, DoNotRecordEventForNonRewardsUser) {
   // Arrange
   DisableBraveRewards();
 

@@ -160,7 +160,7 @@ void SearchResultAd::OnDidFireSearchResultAdViewedEvent(
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
-  account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
+  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kViewed);
 }
 
@@ -174,7 +174,7 @@ void SearchResultAd::OnDidFireSearchResultAdClickedEvent(
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
-  account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
+  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kClicked);
 }
 

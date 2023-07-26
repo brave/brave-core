@@ -19,7 +19,7 @@ class BraveAdsMarkedAsInappropriateExclusionRuleTest : public UnitTestBase {
   const MarkedAsInappropriateExclusionRule exclusion_rule_;
 };
 
-TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, AllowAd) {
+TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, ShouldInclude) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -31,7 +31,7 @@ TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, AllowAd) {
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, DoNotAllowAd) {
+TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, ShouldExclude) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;

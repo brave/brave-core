@@ -15,7 +15,7 @@ namespace brave_ads {
 class BraveAdsDoNotDisturbPermissionRuleTest : public UnitTestBase {};
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
-       AllowAdWhileBrowserIsInactiveBetween6amAnd9pmForAndroid) {
+       ShouldAllowWhileBrowserIsInactiveBetween6amAnd9pmForAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
@@ -63,7 +63,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
 }
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
-       AllowAdWhileBrowserIsActiveForAndroid) {
+       ShouldAllowWhileBrowserIsActiveForAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
@@ -110,7 +110,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
   }
 }
 
-TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForIOS) {
+TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowForIOS) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
@@ -138,7 +138,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForIOS) {
   }
 }
 
-TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForMacOS) {
+TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowForMacOS) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
@@ -166,7 +166,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForMacOS) {
   }
 }
 
-TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForWindows) {
+TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowForWindows) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
@@ -194,7 +194,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForWindows) {
   }
 }
 
-TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForLinux) {
+TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowForLinux) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kLinux);
 

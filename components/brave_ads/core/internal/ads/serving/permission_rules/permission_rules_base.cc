@@ -6,9 +6,9 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_base.h"
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/command_line_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/confirmation_tokens_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/issuers_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_util.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/unblinded_tokens_permission_rule.h"
 
 namespace brave_ads {
 
@@ -23,8 +23,8 @@ bool PermissionRulesBase::HasPermission() {
     return false;
   }
 
-  const UnblindedTokensPermissionRule unblinded_tokens_permission_rule;
-  if (!ShouldAllow(unblinded_tokens_permission_rule)) {
+  const ConfirmationTokensPermissionRule confirmation_tokens_permission_rule;
+  if (!ShouldAllow(confirmation_tokens_permission_rule)) {
     return false;
   }
 

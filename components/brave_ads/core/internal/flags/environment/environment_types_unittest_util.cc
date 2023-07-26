@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_types_unittest_util.h"
 
-#include <ostream>
-
 #include "base/check.h"
 
 namespace brave_ads {

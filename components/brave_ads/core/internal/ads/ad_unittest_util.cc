@@ -53,11 +53,6 @@ AdInfo BuildAd(const AdType& ad_type, const bool should_use_random_uuids) {
           ? base::Uuid::GenerateRandomV4().AsLowercaseString()
           : kCreativeInstanceId;
 
-  ad.creative_instance_id =
-      should_use_random_uuids
-          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
-          : kCreativeInstanceId;
-
   ad.creative_set_id = should_use_random_uuids
                            ? base::Uuid::GenerateRandomV4().AsLowercaseString()
                            : kCreativeSetId;

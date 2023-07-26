@@ -173,7 +173,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
-       TriggerViewedEventsIfBraveRewardsAreDisabled) {
+       TriggerViewedEventsForNonRewardsUser) {
   // Arrange
   DisableBraveRewards();
 
@@ -230,7 +230,7 @@ TEST_F(
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
-       TriggerQueuedViewedEventsIfBraveRewardsAreDisabled) {
+       TriggerQueuedViewedEventsForNonRewardsUser) {
   // Arrange
   DisableBraveRewards();
 
@@ -280,7 +280,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
-       TriggerClickedEventIfBraveRewardsAreDisabled) {
+       TriggerClickedEventForNonRewardsUser) {
   // Arrange
   DisableBraveRewards();
 

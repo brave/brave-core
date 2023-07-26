@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 
-#include <cstdint>
 #include <utility>
 
 #include "base/check.h"
@@ -21,7 +20,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/history/history_constants.h"
-#include "build/build_config.h"  // IWYU pragma: keep
+#include "build/build_config.h"
 
 namespace brave_ads {
 

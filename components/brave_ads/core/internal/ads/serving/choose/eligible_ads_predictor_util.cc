@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/eligible_ads_predictor_util.h"
 
-#include <iterator>
-
 #include "base/ranges/algorithm.h"
 
 namespace brave_ads {

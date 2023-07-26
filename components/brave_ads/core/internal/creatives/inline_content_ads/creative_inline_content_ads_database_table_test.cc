@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 
-#include <vector>
-
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"

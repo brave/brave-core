@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_MOCK_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_MOCK_UTIL_H_
 
-#include <memory>
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/ads_client_mock.h"

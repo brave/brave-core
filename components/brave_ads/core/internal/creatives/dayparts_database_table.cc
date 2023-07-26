@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/dayparts_database_table.h"
 
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/strings/string_util.h"

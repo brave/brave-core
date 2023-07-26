@@ -18,7 +18,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::database::table {
+namespace brave_ads {
 
 class BraveAdsConversionQueueTest : public ConversionQueueDelegate,
                                     public UnitTestBase {
@@ -208,4 +208,4 @@ TEST_F(BraveAdsConversionQueueTest, ProcessMultipleConversionsInQueue) {
   EXPECT_TRUE(did_exhaust_queue_);
 }
 
-}  // namespace brave_ads::database::table
+}  // namespace brave_ads

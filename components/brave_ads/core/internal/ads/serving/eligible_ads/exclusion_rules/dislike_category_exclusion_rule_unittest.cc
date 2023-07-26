@@ -20,7 +20,7 @@ class BraveAdsDislikeCategoryExclusionRuleTest : public UnitTestBase {
   const DislikeCategoryExclusionRule exclusion_rule_;
 };
 
-TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, AllowAd) {
+TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, ShouldInclude) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.segment = kSegment;
@@ -31,7 +31,7 @@ TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, AllowAd) {
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, DoNotAllowAd) {
+TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, ShouldExclude) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.segment = kSegment;

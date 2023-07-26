@@ -17,7 +17,7 @@ namespace brave_ads {
 
 class BraveAdsPerMonthExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BraveAdsPerMonthExclusionRuleTest, AllowAdIfThereAreNoAdEvents) {
+TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -31,7 +31,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest, AllowAdIfThereAreNoAdEvents) {
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsPerMonthExclusionRuleTest, AllowAdIfZero) {
+TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldIncludeIfZero) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -45,7 +45,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest, AllowAdIfZero) {
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsPerMonthExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
+TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -65,7 +65,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
 }
 
 TEST_F(BraveAdsPerMonthExclusionRuleTest,
-       AllowAdIfDoesNotExceedCapAfter1Month) {
+       ShouldIncludeIfDoesNotExceedCapAfter1Month) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -88,7 +88,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest,
 }
 
 TEST_F(BraveAdsPerMonthExclusionRuleTest,
-       DoNotAllowAdIfExceedsCapWithin1Month) {
+       ShouldExcludeIfExceedsCapWithin1Month) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -110,7 +110,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest,
   EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsPerMonthExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
+TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldExcludeIfExceedsCap) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;

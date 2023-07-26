@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/confirmations_issuer_util.h"
 
-#include "brave/components/brave_ads/core/internal/account/issuers/issuer_constants.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_types.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_constants.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"

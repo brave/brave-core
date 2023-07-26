@@ -15,7 +15,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr base::TimeDelta kReminderDelay = base::Milliseconds(100);
+constexpr base::TimeDelta kMaybeShowReminderAfter = base::Milliseconds(100);
 
 void MaybeShowReminder(const HistoryItemInfo& history_item) {
   if (!IsReminderFeatureEnabled()) {
@@ -26,6 +26,7 @@ void MaybeShowReminder(const HistoryItemInfo& history_item) {
     RemindUserTheyDoNotNeedToClickToEarnRewards();
   }
 }
+
 }  // namespace
 
 Reminder::Reminder() {
@@ -39,7 +40,7 @@ Reminder::~Reminder() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void Reminder::OnDidAddHistory(const HistoryItemInfo& history_item) {
-  timer_.Start(FROM_HERE, kReminderDelay,
+  timer_.Start(FROM_HERE, kMaybeShowReminderAfter,
                base::BindOnce(&MaybeShowReminder, history_item));
 }
 

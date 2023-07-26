@@ -20,11 +20,13 @@ void SaveTransactions(const TransactionList& transactions);
 
 TransactionInfo BuildTransaction(double value,
                                  const ConfirmationType& confirmation_type,
-                                 base::Time reconciled_at);
+                                 base::Time reconciled_at,
+                                 bool should_use_random_uuids);
 
 TransactionInfo BuildUnreconciledTransaction(
     double value,
-    const ConfirmationType& confirmation_type);
+    const ConfirmationType& confirmation_type,
+    bool should_use_random_uuids);
 
 size_t GetTransactionCount();
 

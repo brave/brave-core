@@ -16,7 +16,8 @@
 #include "brave/components/brave_ads/common/notification_ad_feature.h"
 #include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/brave_ads/common/user_attention_feature.h"
-#include "brave/components/brave_ads/core/internal/account/account_feature.h"
+#include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/tokens_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_feature.h"
@@ -34,22 +35,16 @@ namespace brave_ads {
 
 namespace {
 
-const base::Feature* const kFeatures[] = {&kAccountFeature,
-                                          &kAntiTargetingFeature,
-                                          &kConversionsFeature,
-                                          &kEligibleAdFeature,
-                                          &kEpsilonGreedyBanditFeatures,
-                                          &kExclusionRulesFeature,
-                                          &kInlineContentAdFeature,
-                                          &kNewTabPageAdFeature,
-                                          &kNotificationAdFeature,
-                                          &kPermissionRulesFeature,
-                                          &kPromotedContentAdFeature,
-                                          &kPurchaseIntentFeature,
-                                          &kSearchResultAdFeature,
-                                          &kTextClassificationFeature,
-                                          &kUserActivityFeature,
-                                          &kUserAttentionFeature};
+const base::Feature* const kFeatures[] = {
+    &kAccountStatementFeature, &kTextClassificationFeature,
+    &kAccountTokensFeature,    &kUserActivityFeature,
+    &kAntiTargetingFeature,    &kConversionsFeature,
+    &kEligibleAdFeature,       &kEpsilonGreedyBanditFeatures,
+    &kExclusionRulesFeature,   &kInlineContentAdFeature,
+    &kNewTabPageAdFeature,     &kNotificationAdFeature,
+    &kPermissionRulesFeature,  &kPromotedContentAdFeature,
+    &kPurchaseIntentFeature,   &kSearchResultAdFeature,
+    &kUserAttentionFeature};
 
 constexpr char kFeaturesSeparators[] = ",:<";
 

@@ -19,7 +19,7 @@ class BraveAdsPromotedContentAdsPerDayPermissionRuleTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
-       AllowAdIfThereAreNoAdEvents) {
+       ShouldAllowIfThereAreNoAdEvents) {
   // Arrange
 
   // Act
@@ -29,7 +29,7 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
 }
 
 TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
-       AllowAdIfDoesNotExceedCap) {
+       ShouldAllowIfDoesNotExceedCap) {
   // Arrange
 
   // Act
@@ -41,7 +41,7 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
 }
 
 TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
-       AllowAdIfDoesNotExceedCapAfter1Day) {
+       ShouldAllowIfDoesNotExceedCapAfter1Day) {
   // Arrange
   RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed,
                  /*count*/ kMaximumPromotedContentAdsPerDay.Get());
@@ -54,7 +54,7 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
 }
 
 TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
-       DoNotAllowAdIfExceedsCapWithin1Day) {
+       ShouldNotAllowIfExceedsCapWithin1Day) {
   // Arrange
   RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed,
                  /*count*/ kMaximumPromotedContentAdsPerDay.Get());

@@ -17,7 +17,7 @@ namespace brave_ads {
 
 class BraveAdsPerWeekExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfThereAreNoAdEvents) {
+TEST_F(BraveAdsPerWeekExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -31,7 +31,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfThereAreNoAdEvents) {
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfZero) {
+TEST_F(BraveAdsPerWeekExclusionRuleTest, ShouldIncludeIfZero) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -45,7 +45,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfZero) {
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
+TEST_F(BraveAdsPerWeekExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -64,7 +64,8 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Week) {
+TEST_F(BraveAdsPerWeekExclusionRuleTest,
+       ShouldIncludeIfDoesNotExceedCapAfter1Week) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -86,7 +87,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Week) {
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsPerWeekExclusionRuleTest, DoNotAllowAdIfExceedsCapWithin1Week) {
+TEST_F(BraveAdsPerWeekExclusionRuleTest, ShouldExcludeIfExceedsCapWithin1Week) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -108,7 +109,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, DoNotAllowAdIfExceedsCapWithin1Week) {
   EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsPerWeekExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
+TEST_F(BraveAdsPerWeekExclusionRuleTest, ShouldExcludeIfExceedsCap) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;

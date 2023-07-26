@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ml/transformation/normalization_transformation.h"
 
-#include <string>
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"

@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 
-#include <algorithm>
-#include <cstdint>
 #include <utility>
 
 #include "base/time/time.h"

@@ -31,7 +31,7 @@ class BraveAdsCatalogPermissionRuleIntegrationTest : public UnitTestBase {
   const CatalogPermissionRule permission_rule_;
 };
 
-TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest, AllowAd) {
+TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest, ShouldAllow) {
   // Arrange
 
   // Act
@@ -41,7 +41,7 @@ TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest, AllowAd) {
 }
 
 TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
-       AllowAdIfCatalogWasLastUpdated23HoursAnd59MinutesAgo) {
+       ShouldAllowIfCatalogWasLastUpdated23HoursAnd59MinutesAgo) {
   // Arrange
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
@@ -52,7 +52,7 @@ TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
 }
 
 TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
-       DoNotAllowAdIfCatalogWasLastUpdated1DayAgo) {
+       ShouldNotAllowIfCatalogWasLastUpdated1DayAgo) {
   // Arrange
   AdvanceClockBy(base::Days(1));
 
@@ -63,7 +63,7 @@ TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
 }
 
 TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
-       DoNotAllowAdIfCatalogDoesNotExist) {
+       ShouldNotAllowIfCatalogDoesNotExist) {
   // Arrange
   SetCatalogVersion(0);
 

@@ -99,7 +99,7 @@ class BraveAdsHistoryManagerTest : public HistoryManagerObserver,
   bool did_mark_ad_as_appropriate_ = false;
 };
 
-TEST_F(BraveAdsHistoryManagerTest, AddNotificationAd) {
+TEST_F(BraveAdsHistoryManagerTest, AddNotificationAdHistory) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
@@ -116,7 +116,7 @@ TEST_F(BraveAdsHistoryManagerTest, AddNotificationAd) {
 }
 
 TEST_F(BraveAdsHistoryManagerTest,
-       DoNotAddNotificationAdIfBraveRewardsAreDisabled) {
+       DoNotAddNotificationAdHistoryForNonRewardsUser) {
   // Arrange
   DisableBraveRewards();
 
@@ -131,7 +131,7 @@ TEST_F(BraveAdsHistoryManagerTest,
   EXPECT_FALSE(did_add_history_);
 }
 
-TEST_F(BraveAdsHistoryManagerTest, AddNewTabPageAd) {
+TEST_F(BraveAdsHistoryManagerTest, AddNewTabPageAdHistory) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
@@ -148,7 +148,7 @@ TEST_F(BraveAdsHistoryManagerTest, AddNewTabPageAd) {
 }
 
 TEST_F(BraveAdsHistoryManagerTest,
-       DoNotAddNewTabPageAdIfBraveRewardsAreDisabled) {
+       DoNotAddNewTabPageAdHistoryForNonRewardsUser) {
   // Arrange
   DisableBraveRewards();
 
@@ -163,7 +163,7 @@ TEST_F(BraveAdsHistoryManagerTest,
   EXPECT_FALSE(did_add_history_);
 }
 
-TEST_F(BraveAdsHistoryManagerTest, AddPromotedContentAd) {
+TEST_F(BraveAdsHistoryManagerTest, AddPromotedContentAdHistory) {
   // Arrange
   const CreativePromotedContentAdInfo creative_ad =
       BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
@@ -180,7 +180,7 @@ TEST_F(BraveAdsHistoryManagerTest, AddPromotedContentAd) {
 }
 
 TEST_F(BraveAdsHistoryManagerTest,
-       DoNotAddPromotedContentAdIfBraveRewardsAreDisabled) {
+       DoNotAddPromotedContentAdHistoryForNonRewardsUser) {
   // Arrange
   DisableBraveRewards();
 
@@ -195,7 +195,7 @@ TEST_F(BraveAdsHistoryManagerTest,
   EXPECT_FALSE(did_add_history_);
 }
 
-TEST_F(BraveAdsHistoryManagerTest, AddInlineContentAd) {
+TEST_F(BraveAdsHistoryManagerTest, AddInlineContentAdHistory) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad =
       BuildCreativeInlineContentAd(/*should_use_random_uuids*/ true);
@@ -212,7 +212,7 @@ TEST_F(BraveAdsHistoryManagerTest, AddInlineContentAd) {
 }
 
 TEST_F(BraveAdsHistoryManagerTest,
-       DoNotAddInlineContentAdIfBraveRewardsAreDisabled) {
+       DoNotAddInlineContentAdHistoryForNonRewardsUser) {
   // Arrange
   DisableBraveRewards();
 
@@ -227,7 +227,7 @@ TEST_F(BraveAdsHistoryManagerTest,
   EXPECT_FALSE(did_add_history_);
 }
 
-TEST_F(BraveAdsHistoryManagerTest, AddSearchResultAd) {
+TEST_F(BraveAdsHistoryManagerTest, AddSearchResultAdHistory) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildSearchResultAd(/*should_use_random_uuids*/ true);
@@ -244,7 +244,7 @@ TEST_F(BraveAdsHistoryManagerTest, AddSearchResultAd) {
 }
 
 TEST_F(BraveAdsHistoryManagerTest,
-       DoNotAddSearchResultAdIfBraveRewardsAreDisabled) {
+       DoNotAddSearchResultAdHistoryForNonRewardsUser) {
   // Arrange
   DisableBraveRewards();
 

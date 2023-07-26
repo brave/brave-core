@@ -10,17 +10,17 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
-#include "brave/components/brave_ads/core/internal/account/account_feature.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/redeem_opted_in_confirmation_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/url_request_builders/create_opted_in_confirmation_url_request_builder_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/url_request_builders/create_opted_in_confirmation_url_request_builder_util.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/url_request_builders/fetch_payment_token_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
+#include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/redeem_confirmation/reward/redeem_reward_confirmation_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/redeem_confirmation/reward/url_request_builders/create_reward_confirmation_url_request_builder_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/redeem_confirmation/reward/url_request_builders/create_reward_confirmation_url_request_builder_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/redeem_confirmation/reward/url_request_builders/fetch_payment_token_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transaction_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
@@ -33,9 +33,9 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
+#include "brave/components/brave_ads/core/internal/privacy/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -157,7 +157,7 @@ TEST_F(BraveAdsAccountTest, GetWallet) {
   EXPECT_EQ(expected_wallet, account_->GetWallet());
 }
 
-TEST_F(BraveAdsAccountTest, GetIssuersIfBraveRewardsAreEnabled) {
+TEST_F(BraveAdsAccountTest, GetIssuersForRewardsUser) {
   // Arrange
   const URLResponseMap url_responses = {
       {BuildIssuersUrlPath(), {{net::HTTP_OK, BuildIssuersUrlResponseBody()}}}};
@@ -171,7 +171,7 @@ TEST_F(BraveAdsAccountTest, GetIssuersIfBraveRewardsAreEnabled) {
   EXPECT_EQ(BuildIssuers(), GetIssuers());
 }
 
-TEST_F(BraveAdsAccountTest, DoNotGetIssuersIfBraveRewardsAreDisabled) {
+TEST_F(BraveAdsAccountTest, DoNotGetIssuersForNonRewardsUser) {
   // Arrange
   DisableBraveRewards();
 
@@ -313,22 +313,22 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateOptedInConfirmationUrlPath(
-           kTransactionId, kCreateOptedInConfirmationCredential),
-       {{net::HTTP_CREATED, BuildCreateOptedInConfirmationUrlResponseBody()}}},
+      {BuildCreateRewardConfirmationUrlPath(
+           kTransactionId, kCreateRewardConfirmationCredential),
+       {{net::HTTP_CREATED, BuildCreateRewardConfirmationUrlResponseBody()}}},
       {BuildFetchPaymentTokenUrlPath(kTransactionId),
        {{net::HTTP_OK, BuildFetchPaymentTokenUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  privacy::SetUnblindedTokens(/*count*/ 1);
+  privacy::SetConfirmationTokens(/*count*/ 1);
 
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
-  account_->Deposit(creative_ad.creative_instance_id, AdType::kNotificationAd,
-                    creative_ad.segment, ConfirmationType::kViewed);
+  account_->Deposit(creative_ad.creative_instance_id, creative_ad.segment,
+                    AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
   EXPECT_TRUE(did_process_deposit_);
@@ -361,10 +361,10 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
   // Arrange
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
-  privacy::SetUnblindedTokens(/*count*/ 1);
+  privacy::SetConfirmationTokens(/*count*/ 1);
 
   // Act
-  account_->Deposit(kCreativeInstanceId, AdType::kNotificationAd, kSegment,
+  account_->Deposit(kCreativeInstanceId, kSegment, AdType::kNotificationAd,
                     ConfirmationType::kClicked);
 
   // Assert
@@ -403,8 +403,8 @@ TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
-  account_->Deposit(kMissingCreativeInstanceId, AdType::kNotificationAd,
-                    kSegment, ConfirmationType::kViewed);
+  account_->Deposit(kMissingCreativeInstanceId, kSegment,
+                    AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
   EXPECT_FALSE(did_process_deposit_);
@@ -427,35 +427,42 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
   AdvanceClockTo(TimeFromString("31 October 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_1 =
-      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed,
+                                   /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 = BuildTransaction(
-      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
-      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed,
+                                   /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 = BuildTransaction(
-      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_4);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_5 =
-      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed,
+                                   /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_5);
 
   const TransactionInfo transaction_6 = BuildTransaction(
-      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_6);
 
   const TransactionInfo transaction_7 =
-      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed,
+                                   /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_7);
 
   SaveTransactions(transactions);
@@ -482,7 +489,7 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
   // Assert
 }
 
-TEST_F(BraveAdsAccountTest, DoNotGetStatementIfBraveRewardsAreDisabled) {
+TEST_F(BraveAdsAccountTest, DoNotGetStatementForNonRewardsUser) {
   // Arrange
   DisableBraveRewards();
 

@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_value_util.h"
 
-#include <ostream>
 #include <string>
 #include <utility>
 

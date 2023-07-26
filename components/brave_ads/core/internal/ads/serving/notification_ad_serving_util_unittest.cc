@@ -119,7 +119,7 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
   // Arrange
   SetServeAdAt(Now());
 
-  AdvanceClockBy(base::Seconds(1));
+  AdvanceClockBy(base::Milliseconds(1));
 
   // Act
 

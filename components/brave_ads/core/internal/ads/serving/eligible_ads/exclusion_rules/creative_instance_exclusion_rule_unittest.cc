@@ -17,7 +17,8 @@ namespace brave_ads {
 
 class BraveAdsCreativeInstanceExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, AllowAdIfThereAreNoAdEvents) {
+TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
+       ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;

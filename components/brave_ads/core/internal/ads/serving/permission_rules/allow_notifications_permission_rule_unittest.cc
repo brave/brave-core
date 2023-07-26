@@ -17,7 +17,7 @@ class BraveAdsAllowNotificationsPermissionRuleTest : public UnitTestBase {
   const AllowNotificationsPermissionRule permission_rule_;
 };
 
-TEST_F(BraveAdsAllowNotificationsPermissionRuleTest, AllowAd) {
+TEST_F(BraveAdsAllowNotificationsPermissionRuleTest, ShouldAllow) {
   // Arrange
   MockCanShowNotificationAds(ads_client_mock_, true);
 
@@ -27,7 +27,7 @@ TEST_F(BraveAdsAllowNotificationsPermissionRuleTest, AllowAd) {
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BraveAdsAllowNotificationsPermissionRuleTest, DoNotAllowAd) {
+TEST_F(BraveAdsAllowNotificationsPermissionRuleTest, ShouldNotAllow) {
   // Arrange
   MockCanShowNotificationAds(ads_client_mock_, false);
 

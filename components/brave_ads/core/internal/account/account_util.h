@@ -6,11 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ACCOUNT_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ACCOUNT_UTIL_H_
 
-#include "base/functional/callback_forward.h"
-
 namespace brave_ads {
-
-using ResetRewardsCallback = base::OnceCallback<void(bool success)>;
 
 bool UserHasJoinedBraveRewards();
 

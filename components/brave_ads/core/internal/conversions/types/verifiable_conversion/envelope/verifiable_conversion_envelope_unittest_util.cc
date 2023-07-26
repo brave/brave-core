@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "brave/components/brave_ads/core/internal/account/user_data/conversion_user_data_constants.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_constants.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_info.h"
 #include "tweetnacl.h"  // NOLINT

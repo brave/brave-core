@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/category_content_value_util.h"
 
-#include <string>
-
 #include "brave/components/brave_ads/core/category_content_info.h"
 
 namespace brave_ads {

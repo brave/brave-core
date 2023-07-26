@@ -21,7 +21,7 @@ class BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest
 };
 
 TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
-       AllowAdIfThereAreNoAdEvents) {
+       ShouldAllowIfThereAreNoAdEvents) {
   // Arrange
 
   // Act
@@ -31,7 +31,7 @@ TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
 }
 
 TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
-       AllowAdIfDoesNotExceedCap) {
+       ShouldAllowIfDoesNotExceedCap) {
   // Arrange
   SetDefaultInt64Pref(prefs::kMaximumNotificationAdsPerHour, 5);
 
@@ -45,7 +45,7 @@ TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
 }
 
 TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
-       DoNotAllowAdIfExceedsCap) {
+       ShouldNotAllowIfExceedsCap) {
   // Arrange
   SetDefaultInt64Pref(prefs::kMaximumNotificationAdsPerHour, 5);
 
