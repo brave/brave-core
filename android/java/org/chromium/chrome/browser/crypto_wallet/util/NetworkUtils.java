@@ -9,6 +9,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.url.mojom.Url;
@@ -75,5 +76,9 @@ public class NetworkUtils {
     public static NetworkInfo findNetwork(List<NetworkInfo> networkInfos, String chainId) {
         if (networkInfos.isEmpty() || TextUtils.isEmpty(chainId)) return null;
         return JavaUtils.find(networkInfos, networkInfo -> networkInfo.chainId.equals(chainId));
+    }
+
+    public static boolean isTestNetwork(String chainId) {
+        return WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(chainId);
     }
 }

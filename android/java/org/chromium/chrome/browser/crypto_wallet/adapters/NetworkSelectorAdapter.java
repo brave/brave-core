@@ -7,8 +7,11 @@ package org.chromium.chrome.browser.crypto_wallet.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +24,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.domain.NetworkModel;
+import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
@@ -34,6 +39,7 @@ public class NetworkSelectorAdapter
     private final ExecutorService mExecutor;
     private final Handler mHandler;
     private final LayoutInflater inflater;
+    private final String mTokensPath;
     private Context mContext;
     private NetworkClickListener networkClickListener;
     private List<NetworkSelectorItem> mNetworkInfos;
@@ -46,6 +52,7 @@ public class NetworkSelectorAdapter
         inflater = (LayoutInflater.from(context));
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
+        mTokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
     }
 
     @Override
@@ -66,6 +73,7 @@ public class NetworkSelectorAdapter
         final NetworkSelectorItem network = mNetworkInfos.get(position);
         holder.tvName.setText(network.getNetworkName());
         AndroidUtils.gone(holder.labelTv);
+        holder.ivNetworkPicture.clearColorFilter();
 
         switch (network.mType) {
             case SECONDARY:
@@ -82,15 +90,29 @@ public class NetworkSelectorAdapter
                                 mNetworkInfos.get(mSelectedParentItemPos).mNetworkInfo);
                     }
                 };
-
                 if (network.isSelected()) {
                     AndroidUtils.show(holder.ivSelected);
                 } else {
                     AndroidUtils.invisible(holder.ivSelected);
                 }
 
-                Utils.setBlockiesBitmapResource(mExecutor, mHandler, holder.ivNetworkPicture,
-                        network.getNetworkName(), false);
+                String logo = Utils.getNetworkIconName(
+                        network.mNetworkInfo.chainId, network.mNetworkInfo.coin);
+                if (!TextUtils.isEmpty(logo)) {
+                    Utils.setBitmapResource(mExecutor, mHandler, mContext,
+                            "file://" + mTokensPath + "/" + logo, Integer.MIN_VALUE,
+                            holder.ivNetworkPicture, null, true);
+                    if (NetworkUtils.isTestNetwork(network.mNetworkInfo.chainId)) {
+                        // Grey style test net image
+                        ColorMatrix matrix = new ColorMatrix();
+                        matrix.setSaturation(0);
+
+                        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+                        holder.ivNetworkPicture.setColorFilter(filter);
+                    }
+                } else {
+                    AndroidUtils.gone(holder.ivNetworkPicture);
+                }
                 holder.ivNetworkPicture.setOnClickListener(listener);
                 holder.tvName.setOnClickListener(listener);
                 break;
