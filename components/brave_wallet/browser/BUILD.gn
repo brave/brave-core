@@ -407,6 +407,7 @@ source_set("test_support") {
 
   public_deps = [
     "//base",
+    "//brave/components/brave_wallet/common:mojom",
     "//components/value_store",
     "//components/value_store:test_support",
   ]

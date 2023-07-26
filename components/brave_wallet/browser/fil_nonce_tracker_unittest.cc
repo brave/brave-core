@@ -67,13 +67,13 @@ class FilNonceTrackerUnitTest : public testing::Test {
   void GetNextNonce(const base::Location& location,
                     FilNonceTracker* tracker,
                     const std::string& chain_id,
-                    const std::string& address,
+                    const mojom::AccountIdPtr& from,
                     bool expected_success,
                     uint64_t expected_nonce) {
     SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
     tracker->GetNextNonce(
-        chain_id, address,
+        chain_id, from,
         base::BindLambdaForTesting([&](bool success, uint256_t nonce) {
           EXPECT_EQ(expected_success, success);
           EXPECT_EQ(expected_nonce, nonce);
@@ -114,23 +114,22 @@ TEST_F(FilNonceTrackerUnitTest, GetNonce) {
   SetTransactionCount(2);
 
   const std::string address("t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy");
-  auto fil_account = account_resolver_delegate->RegisterAccount(
+  auto fil_acc = account_resolver_delegate->RegisterAccount(
       MakeAccountId(mojom::CoinType::FIL, mojom::KeyringId::kFilecoinTestnet,
                     mojom::AccountKind::kDerived,
                     "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy"));
-  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, address,
+  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, fil_acc,
                true, uint64_t(2));
 
   // tx count: 2, confirmed: [2], pending: null
-  FilTxMeta meta;
+  FilTxMeta meta(fil_acc, std::make_unique<FilTransaction>());
   meta.set_id(TxMeta::GenerateMetaID());
   meta.set_chain_id(mojom::kLocalhostChainId);
-  meta.set_from(fil_account);
   meta.set_status(mojom::TransactionStatus::Confirmed);
   meta.tx()->set_nonce(uint64_t(2));
   ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
-  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, address,
+  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, fil_acc,
                true, uint64_t(3));
 
   // tx count: 2, confirmed: [2, 3], pending: null
@@ -139,7 +138,7 @@ TEST_F(FilNonceTrackerUnitTest, GetNonce) {
   meta.tx()->set_nonce(uint64_t(3));
   ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
-  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, address,
+  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, fil_acc,
                true, uint64_t(4));
 
   // tx count: 2, confirmed: [2, 3], pending: [4, 4]
@@ -150,11 +149,11 @@ TEST_F(FilNonceTrackerUnitTest, GetNonce) {
   meta.set_id(TxMeta::GenerateMetaID());
   ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
-  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, address,
+  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, fil_acc,
                true, uint64_t(5));
 
   // tx count: 2, confirmed: null, pending: null (mainnet)
-  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kFilecoinMainnet, address,
+  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kFilecoinMainnet, fil_acc,
                true, uint64_t(2));
 }
 

@@ -28,17 +28,6 @@ EthTxStateManager::EthTxStateManager(
 
 EthTxStateManager::~EthTxStateManager() = default;
 
-std::vector<std::unique_ptr<TxMeta>> EthTxStateManager::GetTransactionsByStatus(
-    const absl::optional<std::string>& chain_id,
-    const absl::optional<mojom::TransactionStatus>& status,
-    const absl::optional<EthAddress>& from) {
-  std::vector<std::unique_ptr<TxMeta>> result;
-  absl::optional<std::string> from_string =
-      from.has_value() ? absl::optional<std::string>(from->ToChecksumAddress())
-                       : absl::nullopt;
-  return TxStateManager::GetTransactionsByStatus(chain_id, status, from_string);
-}
-
 std::unique_ptr<EthTxMeta> EthTxStateManager::GetEthTx(
     const std::string& chain_id,
     const std::string& id) {

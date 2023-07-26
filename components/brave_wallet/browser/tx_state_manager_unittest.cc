@@ -306,7 +306,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
 
   EXPECT_EQ(tx_state_manager_
                 ->GetTransactionsByStatus(
-                    absl::nullopt, mojom::TransactionStatus::Approved, addr1)
+                    absl::nullopt, mojom::TransactionStatus::Approved, acc1)
                 .size(),
             0u);
 
@@ -316,36 +316,36 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
           .size(),
       20u);
   EXPECT_EQ(tx_state_manager_
-                ->GetTransactionsByStatus(absl::nullopt, absl::nullopt, addr1)
+                ->GetTransactionsByStatus(absl::nullopt, absl::nullopt, acc1)
                 .size(),
             5u);
-  EXPECT_EQ(tx_state_manager_
-                ->GetTransactionsByStatus(mojom::kMainnetChainId, absl::nullopt,
-                                          addr1)
-                .size(),
-            2u);
   EXPECT_EQ(
       tx_state_manager_
-          ->GetTransactionsByStatus(mojom::kGoerliChainId, absl::nullopt, addr1)
+          ->GetTransactionsByStatus(mojom::kMainnetChainId, absl::nullopt, acc1)
+          .size(),
+      2u);
+  EXPECT_EQ(
+      tx_state_manager_
+          ->GetTransactionsByStatus(mojom::kGoerliChainId, absl::nullopt, acc1)
           .size(),
       3u);
   EXPECT_EQ(tx_state_manager_
-                ->GetTransactionsByStatus(absl::nullopt, absl::nullopt, addr2)
+                ->GetTransactionsByStatus(absl::nullopt, absl::nullopt, acc2)
                 .size(),
             2u);
-  EXPECT_EQ(tx_state_manager_
-                ->GetTransactionsByStatus(mojom::kMainnetChainId, absl::nullopt,
-                                          addr2)
-                .size(),
-            0u);
   EXPECT_EQ(
       tx_state_manager_
-          ->GetTransactionsByStatus(mojom::kGoerliChainId, absl::nullopt, addr2)
+          ->GetTransactionsByStatus(mojom::kMainnetChainId, absl::nullopt, acc2)
+          .size(),
+      0u);
+  EXPECT_EQ(
+      tx_state_manager_
+          ->GetTransactionsByStatus(mojom::kGoerliChainId, absl::nullopt, acc2)
           .size(),
       2u);
 
   auto confirmed_addr1 = tx_state_manager_->GetTransactionsByStatus(
-      absl::nullopt, mojom::TransactionStatus::Confirmed, addr1);
+      absl::nullopt, mojom::TransactionStatus::Confirmed, acc1);
   EXPECT_EQ(confirmed_addr1.size(), 5u);
   for (const auto& meta : confirmed_addr1) {
     unsigned id;
@@ -354,7 +354,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
   }
 
   auto submitted_addr2 = tx_state_manager_->GetTransactionsByStatus(
-      absl::nullopt, mojom::TransactionStatus::Submitted, addr2);
+      absl::nullopt, mojom::TransactionStatus::Submitted, acc2);
   EXPECT_EQ(submitted_addr2.size(), 2u);
   for (const auto& meta : submitted_addr2) {
     unsigned id;
@@ -384,7 +384,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
 
   // OK: filter by address
   EXPECT_EQ(tx_state_manager_
-                ->GetTransactionsByStatus(absl::nullopt, absl::nullopt, addr1)
+                ->GetTransactionsByStatus(absl::nullopt, absl::nullopt, acc1)
                 .size(),
             6u);
 
@@ -398,7 +398,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
   // OK: filter by chain_id and address
   EXPECT_EQ(
       tx_state_manager_
-          ->GetTransactionsByStatus(custom_chain.chain_id, absl::nullopt, addr1)
+          ->GetTransactionsByStatus(custom_chain.chain_id, absl::nullopt, acc1)
           .size(),
       1u);
 
@@ -414,7 +414,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
   EXPECT_EQ(
       tx_state_manager_
           ->GetTransactionsByStatus(custom_chain.chain_id,
-                                    mojom::TransactionStatus::Submitted, addr1)
+                                    mojom::TransactionStatus::Submitted, acc1)
           .size(),
       1u);
 }

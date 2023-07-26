@@ -23,7 +23,7 @@ NonceTracker::NonceTracker(TxStateManager* tx_state_manager,
 NonceTracker::~NonceTracker() = default;
 
 uint256_t NonceTracker::GetFinalNonce(const std::string& chain_id,
-                                      const std::string& from,
+                                      const mojom::AccountIdPtr& from,
                                       uint256_t network_nonce) {
   auto confirmed_transactions = tx_state_manager_->GetTransactionsByStatus(
       chain_id, mojom::TransactionStatus::Confirmed, from);

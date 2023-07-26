@@ -414,7 +414,7 @@ void EthTxManager::GetNonceForHardwareTransaction(
   if (!meta->tx()->nonce()) {
     auto from = meta->from().Clone();
     nonce_tracker_->GetNextNonce(
-        chain_id, from->address,
+        chain_id, from,
         base::BindOnce(&EthTxManager::OnGetNextNonceForHardware,
                        weak_factory_.GetWeakPtr(), std::move(meta),
                        std::move(callback)));
@@ -544,7 +544,7 @@ void EthTxManager::ApproveTransaction(const std::string& chain_id,
   if (!meta->tx()->nonce()) {
     auto from = meta->from().Clone();
     nonce_tracker_->GetNextNonce(
-        chain_id, from->address,
+        chain_id, from,
         base::BindOnce(&EthTxManager::OnGetNextNonce,
                        weak_factory_.GetWeakPtr(), std::move(meta),
                        std::move(callback)));
@@ -840,24 +840,6 @@ void EthTxManager::MakeERC1155TransferFromData(
 
 void EthTxManager::NotifyUnapprovedTxUpdated(TxMeta* meta) {
   tx_service_->OnUnapprovedTxUpdated(meta->ToTransactionInfo());
-}
-
-void EthTxManager::GetAllTransactionInfo(
-    const absl::optional<std::string>& chain_id,
-    const absl::optional<std::string>& from,
-    GetAllTransactionInfoCallback callback) {
-  if (!from) {
-    TxManager::GetAllTransactionInfo(chain_id, absl::nullopt,
-                                     std::move(callback));
-    return;
-  }
-  auto from_address = EthAddress::FromHex(from.value());
-  if (from_address.IsEmpty()) {
-    std::move(callback).Run(std::vector<mojom::TransactionInfoPtr>());
-    return;
-  }
-  TxManager::GetAllTransactionInfo(chain_id, from_address.ToChecksumAddress(),
-                                   std::move(callback));
 }
 
 void EthTxManager::SetGasPriceAndLimitForUnapprovedTransaction(

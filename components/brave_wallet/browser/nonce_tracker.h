@@ -31,7 +31,7 @@ class NonceTracker {
       base::OnceCallback<void(bool success, uint256_t nonce)>;
 
   virtual void GetNextNonce(const std::string& chain_id,
-                            const std::string& from,
+                            const mojom::AccountIdPtr& from,
                             GetNextNonceCallback callback) = 0;
   virtual uint256_t GetHighestContinuousFrom(
       const std::vector<std::unique_ptr<TxMeta>>& metas,
@@ -41,7 +41,7 @@ class NonceTracker {
 
  protected:
   uint256_t GetFinalNonce(const std::string& chain_id,
-                          const std::string& from,
+                          const mojom::AccountIdPtr& from,
                           uint256_t result);
 
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;

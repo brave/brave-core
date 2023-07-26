@@ -200,10 +200,21 @@ void TxService::GetTransactionInfo(mojom::CoinType coin_type,
 void TxService::GetAllTransactionInfo(
     mojom::CoinType coin_type,
     const absl::optional<std::string>& chain_id,
-    const absl::optional<std::string>& from,
+    const absl::optional<std::string>& from_address,
     GetAllTransactionInfoCallback callback) {
-  GetTxManager(coin_type)->GetAllTransactionInfo(chain_id, from,
-                                                 std::move(callback));
+  absl::optional<mojom::AccountIdPtr> from;
+  if (from_address) {
+    auto resolved = account_resolver_delegate_->ResolveAccountId(
+        nullptr, &from_address.value());
+    if (!resolved) {
+      std::move(callback).Run(std::vector<mojom::TransactionInfoPtr>());
+      return;
+    }
+    from = std::move(resolved);
+  }
+
+  std::move(callback).Run(
+      GetTxManager(coin_type)->GetAllTransactionInfo(chain_id, from));
 }
 
 void TxService::GetPendingTransactionsCount(

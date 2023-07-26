@@ -200,7 +200,16 @@ bool TxStateManager::WipeTxs() {
 std::vector<std::unique_ptr<TxMeta>> TxStateManager::GetTransactionsByStatus(
     const absl::optional<std::string>& chain_id,
     const absl::optional<mojom::TransactionStatus>& status,
-    const absl::optional<std::string>& from) {
+    const mojom::AccountIdPtr& from) {
+  DCHECK(from);
+  return GetTransactionsByStatus(chain_id, status,
+                                 absl::make_optional(from.Clone()));
+}
+
+std::vector<std::unique_ptr<TxMeta>> TxStateManager::GetTransactionsByStatus(
+    const absl::optional<std::string>& chain_id,
+    const absl::optional<mojom::TransactionStatus>& status,
+    const absl::optional<mojom::AccountIdPtr>& from) {
   std::vector<std::unique_ptr<TxMeta>> result;
   if (!delegate_->IsInitialized()) {
     return result;
@@ -219,8 +228,7 @@ std::vector<std::unique_ptr<TxMeta>> TxStateManager::GetTransactionsByStatus(
         continue;
       }
       if (!status.has_value() || meta->status() == *status) {
-        if (from.has_value() &&
-            !base::EqualsCaseInsensitiveASCII(meta->from()->address, *from)) {
+        if (from.has_value() && meta->from() != *from) {
           continue;
         }
         result.push_back(std::move(meta));

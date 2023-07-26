@@ -162,9 +162,9 @@ void FilTxManager::ApproveTransaction(const std::string& chain_id,
     return;
   }
   if (!meta->tx()->nonce()) {
-    auto from = meta->from().Clone();
+    auto from = meta->from()->Clone();
     nonce_tracker_->GetNextNonce(
-        chain_id, from->address,
+        chain_id, from,
         base::BindOnce(&FilTxManager::OnGetNextNonce,
                        weak_factory_.GetWeakPtr(), std::move(meta),
                        std::move(callback)));
@@ -268,24 +268,6 @@ void FilTxManager::OnSendFilecoinTransaction(
       error_message);
 }
 
-void FilTxManager::GetAllTransactionInfo(
-    const absl::optional<std::string>& chain_id,
-    const absl::optional<std::string>& from,
-    GetAllTransactionInfoCallback callback) {
-  if (!from) {
-    TxManager::GetAllTransactionInfo(chain_id, absl::nullopt,
-                                     std::move(callback));
-    return;
-  }
-  auto from_address = FilAddress::FromAddress(from.value());
-  if (from_address.IsEmpty()) {
-    std::move(callback).Run(std::vector<mojom::TransactionInfoPtr>());
-    return;
-  }
-  TxManager::GetAllTransactionInfo(chain_id, from_address.EncodeAsString(),
-                                   std::move(callback));
-}
-
 void FilTxManager::SpeedupOrCancelTransaction(
     const std::string& chain_id,
     const std::string& tx_meta_id,
@@ -314,7 +296,7 @@ void FilTxManager::GetTransactionMessageToSign(
   if (!meta->tx()->nonce()) {
     auto from = meta->from().Clone();
     nonce_tracker_->GetNextNonce(
-        chain_id, from->address,
+        chain_id, from,
         base::BindOnce(&FilTxManager::OnGetNextNonceForHardware,
                        weak_factory_.GetWeakPtr(), std::move(meta),
                        std::move(callback)));

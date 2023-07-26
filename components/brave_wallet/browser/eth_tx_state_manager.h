@@ -38,11 +38,6 @@ class EthTxStateManager : public TxStateManager {
   EthTxStateManager(const EthTxStateManager&) = delete;
   EthTxStateManager operator=(const EthTxStateManager&) = delete;
 
-  std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
-      const absl::optional<std::string>& chain_id,
-      const absl::optional<mojom::TransactionStatus>& status,
-      const absl::optional<EthAddress>& from);
-
   std::unique_ptr<EthTxMeta> GetEthTx(const std::string& chain_id,
                                       const std::string& id);
   std::unique_ptr<EthTxMeta> ValueToEthTxMeta(const base::Value::Dict& value);

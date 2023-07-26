@@ -56,15 +56,6 @@ void BitcoinTxManager::ApproveTransaction(const std::string& chain_id,
   NOTIMPLEMENTED();
 }
 
-void BitcoinTxManager::GetAllTransactionInfo(
-    const absl::optional<std::string>& chain_id,
-    const absl::optional<std::string>& from,
-    GetAllTransactionInfoCallback callback) {
-  // TODO(apaymyshev): implement
-
-  std::move(callback).Run({});
-}
-
 void BitcoinTxManager::SpeedupOrCancelTransaction(
     const std::string& chain_id,
     const std::string& tx_meta_id,

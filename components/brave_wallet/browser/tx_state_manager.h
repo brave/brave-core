@@ -51,7 +51,12 @@ class TxStateManager {
   std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
       const absl::optional<std::string>& chain_id,
       const absl::optional<mojom::TransactionStatus>& status,
-      const absl::optional<std::string>& from);
+      const mojom::AccountIdPtr& from);
+
+  std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
+      const absl::optional<std::string>& chain_id,
+      const absl::optional<mojom::TransactionStatus>& status,
+      const absl::optional<mojom::AccountIdPtr>& from);
 
   class Observer : public base::CheckedObserver {
    public:
