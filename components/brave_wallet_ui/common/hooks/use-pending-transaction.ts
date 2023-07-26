@@ -119,17 +119,17 @@ export const usePendingTransactions = () => {
 
   const tokenPriceIds = React.useMemo(
     () =>
-      txToken && networkAsset
-        ? [getPriceIdForToken(txToken), getPriceIdForToken(networkAsset)]
-        : [],
+      [txToken, networkAsset]
+        .filter((t): t is BraveWallet.BlockchainToken => Boolean(t))
+        .map(getPriceIdForToken),
     [txToken, networkAsset]
   )
 
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    tokenPriceIds && defaultFiat
+    tokenPriceIds.length > 0 && defaultFiat
       ? { ids: tokenPriceIds, toCurrency: defaultFiat }
       : skipToken,
-    querySubscriptionOptions60s
+      querySubscriptionOptions60s
   )
 
   const { data: gasEstimates, isLoading: isLoadingGasEstimates } =
@@ -199,7 +199,6 @@ export const usePendingTransactions = () => {
   }, [
     transactionInfo,
     accounts,
-    solFeeEstimate,
     spotPriceRegistry,
     transactionsNetwork,
     gasFee,

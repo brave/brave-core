@@ -40,7 +40,8 @@ import {
   isSolanaTransaction,
   isSwapTransaction,
   parseTransactionWithPrices,
-  findTransactionToken
+  findTransactionToken,
+  getETHSwapTransactionBuyAndSellTokens
 } from '../../../utils/tx-utils'
 import { getPriceIdForToken } from '../../../utils/api-utils'
 import { toProperCase } from '../../../utils/string-utils'
@@ -139,12 +140,18 @@ const TransactionDetailPanel = (props: Props) => {
   }, [transactionsNetwork])
 
   const txToken = findTransactionToken(transaction, combinedTokensList)
+  const { buyToken, sellToken } = getETHSwapTransactionBuyAndSellTokens({
+    tx: transaction,
+    tokensList: combinedTokensList,
+    nativeAsset: networkAsset
+  })
 
-  const tokenPriceIds = React.useMemo(() =>
-    txToken && networkAsset
-      ? [getPriceIdForToken(txToken), getPriceIdForToken(networkAsset)]
-      : [],
-    [txToken, networkAsset]
+  const tokenPriceIds = React.useMemo(
+    () =>
+      [txToken, networkAsset, buyToken, sellToken]
+        .filter((t): t is BraveWallet.BlockchainToken => Boolean(t))
+        .map(getPriceIdForToken),
+    [txToken, networkAsset, buyToken, sellToken]
   )
 
   const {

@@ -97,6 +97,10 @@ export const pricingEndpoints = ({
           // dedupe ids to prevent duplicate price requests
           const uniqueIds = [...new Set(ids)]
 
+          if (!uniqueIds.length) {
+            throw new Error('no token ids provided for price lookup')
+          }
+
           const chunkedParams = []
           for (let i = 0; i < uniqueIds.length; i += maxBatchSizePrice) {
             chunkedParams.push(uniqueIds.slice(i, i + maxBatchSizePrice))
@@ -132,6 +136,8 @@ export const pricingEndpoints = ({
                   if (success) {
                     return values
                   }
+
+                  console.log('Unable to fetch price using fallback:', param)
 
                   return []
                 }

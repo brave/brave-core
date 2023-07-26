@@ -14,7 +14,8 @@ import {
   getTransactionStatusString,
   isSolanaTransaction,
   parseTransactionWithPrices,
-  findTransactionToken
+  findTransactionToken,
+  getETHSwapTransactionBuyAndSellTokens
 } from '../../../utils/tx-utils'
 import { getPriceIdForToken } from '../../../utils/api-utils'
 import { formatDateAsRelative, serializedTimeDeltaToJSDate } from '../../../utils/datetime-utils'
@@ -96,11 +97,21 @@ export const TransactionsListItem = ({
     return makeNetworkAsset(transactionsNetwork)
   }, [transactionsNetwork])
 
-  const tokenPriceIds = React.useMemo(() =>
-    txToken && networkAsset
-      ? [getPriceIdForToken(txToken), getPriceIdForToken(networkAsset)]
-      : [],
-    [txToken, networkAsset]
+  const {
+    buyToken,
+    sellToken
+  } = getETHSwapTransactionBuyAndSellTokens({
+    tokensList: combinedTokensList,
+    tx: transaction,
+    nativeAsset: networkAsset
+  })
+
+  const tokenPriceIds = React.useMemo(
+    () =>
+      [txToken, networkAsset, buyToken, sellToken]
+        .filter((t): t is BraveWallet.BlockchainToken => Boolean(t))
+        .map(getPriceIdForToken),
+    [txToken, networkAsset, combinedTokensList]
   )
 
   const {
