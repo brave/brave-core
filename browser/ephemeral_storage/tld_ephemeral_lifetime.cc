@@ -8,6 +8,7 @@
 #include <map>
 
 #include "base/no_destructor.h"
+#include "base/ranges/algorithm.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 
 namespace ephemeral_storage {
@@ -43,8 +44,11 @@ TLDEphemeralLifetime::TLDEphemeralLifetime(
 
 TLDEphemeralLifetime::~TLDEphemeralLifetime() {
   if (ephemeral_storage_service_) {
+    const bool shields_disabled_on_one_of_hosts = base::ranges::any_of(
+        shields_state_on_hosts_, [](const auto& v) { return !v.second; });
     ephemeral_storage_service_->TLDEphemeralLifetimeDestroyed(
-        key_.second, storage_partition_config_);
+        key_.second, storage_partition_config_,
+        shields_disabled_on_one_of_hosts);
   }
 
   ActiveTLDStorageAreas().erase(key_);
@@ -79,6 +83,11 @@ TLDEphemeralLifetime* TLDEphemeralLifetime::Get(
   auto it = ActiveTLDStorageAreas().find(key);
   DCHECK(it == ActiveTLDStorageAreas().end() || it->second.get());
   return it != ActiveTLDStorageAreas().end() ? it->second.get() : nullptr;
+}
+
+void TLDEphemeralLifetime::SetShieldsStateOnHost(const std::string& host,
+                                                 bool enabled) {
+  shields_state_on_hosts_[host] = enabled;
 }
 
 }  // namespace ephemeral_storage

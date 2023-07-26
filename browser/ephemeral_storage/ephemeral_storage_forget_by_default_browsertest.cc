@@ -378,6 +378,70 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
   EXPECT_EQ("name=bcom_simple", site_a_tab_values.iframe_2.cookies);
 }
 
+IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
+                       DisabledShieldsDontForgetFirstPartyOnSubdomain) {
+  const GURL sub_a_site_set_cookie_url(
+      "https://sub.a.com/set-cookie?name=sub_acom;path=/"
+      ";SameSite=None;Secure;Max-Age=600");
+  const GURL sub_a_site_ephemeral_storage_with_network_cookies_url =
+      https_server_.GetURL("sub.a.com",
+                           "/ephemeral_storage_with_network_cookies.html");
+  const GURL sub_a_site_ephemeral_storage_url =
+      https_server_.GetURL("sub.a.com", "/ephemeral_storage.html");
+  const GURL a_com_simple_url = https_server_.GetURL("a.com", "/simple.html");
+
+  brave_shields::SetForgetFirstPartyStorageEnabled(content_settings(), true,
+                                                   sub_a_site_set_cookie_url);
+  brave_shields::SetBraveShieldsEnabled(content_settings(), false,
+                                        sub_a_site_set_cookie_url);
+
+  WebContents* sub_site_a_tab_network_cookies =
+      LoadURLInNewTab(sub_a_site_set_cookie_url);
+
+  // Navigate to a.com which includes b.com.
+  ASSERT_TRUE(content::NavigateToURL(
+      sub_site_a_tab_network_cookies,
+      sub_a_site_ephemeral_storage_with_network_cookies_url));
+  http_request_monitor_.Clear();
+
+  // Cookies should be stored in persistent storage for the main frame, 1p frame
+  // and a third party frame.
+  EXPECT_EQ(3u, GetAllCookies().size());
+
+  // Navigate to other website and ensure no a.com/b.com cookies are sent (they
+  // are third-party and ephemeral inside c.com).
+  ASSERT_TRUE(content::NavigateToURL(sub_site_a_tab_network_cookies,
+                                     c_site_ephemeral_storage_url_));
+  EXPECT_FALSE(http_request_monitor_.HasHttpRequestWithCookie(
+      sub_a_site_ephemeral_storage_url, "name=sub_acom"));
+  EXPECT_FALSE(http_request_monitor_.HasHttpRequestWithCookie(
+      a_com_simple_url, "name=acom_simple"));
+  EXPECT_FALSE(http_request_monitor_.HasHttpRequestWithCookie(
+      b_site_ephemeral_storage_url_, "name=bcom_simple"));
+  WaitForCleanupAfterKeepAlive();
+  http_request_monitor_.Clear();
+
+  // sub.a.com, a.com and b.com cookies should be intact.
+  EXPECT_EQ(3u, GetAllCookies().size());
+
+  // Navigate to sub.a.com again and expect sub.a.com, a.com and b.com cookies
+  // are sent with headers.
+  WebContents* sub_site_a_tab =
+      LoadURLInNewTab(sub_a_site_ephemeral_storage_url);
+  EXPECT_TRUE(http_request_monitor_.HasHttpRequestWithCookie(
+      sub_a_site_ephemeral_storage_url, "name=sub_acom"));
+  EXPECT_TRUE(http_request_monitor_.HasHttpRequestWithCookie(
+      a_com_simple_url, "name=acom_simple"));
+  EXPECT_TRUE(http_request_monitor_.HasHttpRequestWithCookie(
+      b_site_ephemeral_storage_url_, "name=bcom_simple"));
+
+  // Make sure cookies are also accessible via JS.
+  ValuesFromFrames site_a_tab_values = GetValuesFromFrames(sub_site_a_tab);
+  EXPECT_EQ("name=sub_acom", site_a_tab_values.main_frame.cookies);
+  EXPECT_EQ("name=bcom_simple", site_a_tab_values.iframe_1.cookies);
+  EXPECT_EQ("name=bcom_simple", site_a_tab_values.iframe_2.cookies);
+}
+
 class EphemeralStorageForgetByDefaultIsDefaultBrowserTest
     : public EphemeralStorageForgetByDefaultBrowserTest {
  public:

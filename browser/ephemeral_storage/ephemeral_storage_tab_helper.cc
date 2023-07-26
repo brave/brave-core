@@ -11,6 +11,8 @@
 
 #include "base/feature_list.h"
 #include "base/hash/md5.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/session_storage_namespace.h"
@@ -52,7 +54,9 @@ std::string StringToSessionStorageId(const std::string& string,
 // https://github.com/brave/brave-browser/wiki/Ephemeral-Storage-Design
 EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
     : WebContentsObserver(web_contents),
-      content::WebContentsUserData<EphemeralStorageTabHelper>(*web_contents) {
+      content::WebContentsUserData<EphemeralStorageTabHelper>(*web_contents),
+      host_content_settings_map_(HostContentSettingsMapFactory::GetForProfile(
+          web_contents->GetBrowserContext())) {
   DCHECK(base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage));
 
   // The URL might not be empty if this is a restored WebContents, for instance.
@@ -61,6 +65,7 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
   const std::string ephemeral_storage_domain =
       net::URLToEphemeralStorageDomain(url);
   CreateEphemeralStorageAreasForDomainAndURL(ephemeral_storage_domain, url);
+  UpdateShieldsState(url);
 }
 
 EphemeralStorageTabHelper::~EphemeralStorageTabHelper() = default;
@@ -86,6 +91,7 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
     // Create new storage areas for new ephemeral storage domain.
     CreateEphemeralStorageAreasForDomainAndURL(new_domain, new_url);
   }
+  UpdateShieldsState(new_url);
 }
 
 void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
@@ -124,6 +130,15 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
 
   tld_ephemeral_lifetime_ = TLDEphemeralLifetime::GetOrCreate(
       browser_context, new_domain, site_instance->GetStoragePartitionConfig());
+}
+
+void EphemeralStorageTabHelper::UpdateShieldsState(const GURL& url) {
+  if (!host_content_settings_map_ || !tld_ephemeral_lifetime_) {
+    return;
+  }
+  const bool shields_state =
+      brave_shields::GetBraveShieldsEnabled(host_content_settings_map_, url);
+  tld_ephemeral_lifetime_->SetShieldsStateOnHost(url.host(), shields_state);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(EphemeralStorageTabHelper);
