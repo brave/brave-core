@@ -6,7 +6,7 @@
 const assert = require('assert')
 const fs = require('fs')
 const path = require('path')
-const Log = require('./logging')
+const Log = require('../logging')
 
 function updateChromeVersion(config) {
   const braveVersionParts = config.braveVersion.split('.')

@@ -8,7 +8,7 @@ const program = require('commander')
 const path = require('path')
 const config = require('../lib/config')
 const util = require('../lib/util')
-const Log = require('../lib/sync/logging')
+const Log = require('../lib/logging')
 const updateChromeVersion = require('../lib/sync/updateChromeVersion')
 const chalk = require('chalk')
 
@@ -30,17 +30,20 @@ function maybeInstallDepotTools(options = config.defaultOptions) {
   options.cwd = config.braveCoreDir
 
   if (!fs.existsSync(config.depotToolsDir)) {
-    Log.progress('Install Depot Tools...')
-    fs.mkdirSync(config.depotToolsDir)
-    util.run(
+    Log.progressScope('install depot_tools', () => {
+      fs.mkdirSync(config.depotToolsDir)
+      util.run(
         'git',
         [
-          '-C', config.depotToolsDir, 'clone',
+          '-C',
+          config.depotToolsDir,
+          'clone',
           'https://chromium.googlesource.com/chromium/tools/depot_tools.git',
           '.'
         ],
-        options)
-    Log.progress('Done Depot Tools...')
+        options
+      )
+    })
   }
 
   const ninjaLogCfgPath = path.join(config.depotToolsDir, 'ninjalog.cfg');
@@ -244,32 +247,28 @@ async function RunCommand() {
     program.delete_unused_deps = true
   }
 
-  Log.progress('Running gclient sync...')
-  const didSyncChromium = syncChromium(program)
-  if (!didSyncChromium || program.delete_unused_deps) {
-    // If no Chromium sync was done, run sync inside `brave` to sync Brave DEPS.
-    syncBrave(program)
-  }
-  Log.progress('...gclient sync done.')
+  Log.progressScope('gclient sync', () => {
+    const didSyncChromium = syncChromium(program)
+    if (!didSyncChromium || program.delete_unused_deps) {
+      // If no Chromium sync was done, run sync inside `brave` to sync Brave DEPS.
+      syncBrave(program)
+    }
+  })
 
   await util.applyPatches()
   updateChromeVersion(config)
 
   if (!program.nohooks) {
-    Log.progress('Running gclient runhooks...')
     // Run hooks for the root .gclient, this will include Chromium and Brave
     // hooks. Don't cache the result, just always rerun this step, because it's
     // pretty quick in a no-op scenario.
-    util.runGClient(['runhooks'])
-    Log.progress('...gclient runhooks done.')
+    Log.progressScope('gclient runhooks', () => {
+      util.runGClient(['runhooks'])
+    })
   }
 }
 
-Log.progress('Brave Browser Sync starting')
 RunCommand()
-.then(() => {
-  Log.progress('Brave Browser Sync complete')
-})
 .catch((err) => {
   Log.error('Brave Browser Sync ERROR:')
   console.error(err)
