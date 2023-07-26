@@ -4,9 +4,11 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import argparse
+import logging
 import sys
+import tempfile
 
-from typing import Optional
+from typing import Optional, List
 
 import components.path_util as path_util
 
@@ -26,13 +28,27 @@ class CommonOptions:
   do_report: bool = False
   report_on_failure: bool = False
   local_run: bool = False
+  compare = False
+  targets: List[str] = []
+  config: str = ''
 
   @classmethod
-  def add_common_parser_args(cls, parser: argparse.ArgumentParser) -> None:
+  def add_parser_args(cls, parser: argparse.ArgumentParser) -> None:
     parser.add_argument('--verbose', action='store_true')
     parser.add_argument('--ci-mode', action='store_true')
     parser.add_argument('--variations-repo-dir', type=str)
-    parser.add_argument('--working-directory', required=True, type=str)
+    parser.add_argument('--working-directory', type=str)
+    parser.add_argument('--target_os', type=str)
+    parser.add_argument('--no-report', action='store_true')
+    parser.add_argument('--report-only', action='store_true')
+    parser.add_argument('--report-on-failure', action='store_true')
+    parser.add_argument('--local-run', action='store_true')
+    parser.add_argument('--compare', action='store_true')
+    parser.add_argument('--targets',
+                      required=True,
+                      type=str,
+                      help='Tags/binaries to test')
+    parser.add_argument('--config', required=True, type=str)
 
   @classmethod
   def from_args(cls, args) -> 'CommonOptions':
@@ -40,7 +56,22 @@ class CommonOptions:
     options.verbose = args.verbose
     options.ci_mode = args.ci_mode
     options.variations_repo_dir = args.variations_repo_dir
-    options.working_directory = args.working_directory
+    if args.working_directory is None:
+      if options.ci_mode:
+        raise RuntimeError(f'Set --working-directory for --ci-mode')
+      else:
+        options.working_directory = tempfile.mkdtemp(prefix='perf-test-')
+    else:
+      options.working_directory = args.working_directory
     if args.target_os is not None:
       options.target_os = PerfBenchmark.FixupTargetOS(args.target_os)
+
+    options.do_run_tests = not args.report_only
+    options.do_report = not args.no_report and not args.local_run
+    options.report_on_failure = args.report_on_failure
+    options.local_run = args.local_run
+    options.targets = args.targets.split(',')
+    if args.targets == 'compare' or args.compare:
+      options.compare = options.local_run = True
+
     return options

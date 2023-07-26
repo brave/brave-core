@@ -15,13 +15,12 @@ import tempfile
 from distutils.dir_util import copy_tree
 from enum import Enum
 from typing import List, Optional, Tuple
-from urllib.request import urlopen
 
 from lib.util import extract_zip
 
 import components.path_util as path_util
 from components.common_options import CommonOptions
-from components.perf_test_utils import GetProcessOutput
+from components.perf_test_utils import DownloadFile, GetProcessOutput
 
 
 def ToChromiumPlatform(target_os: str) -> str:
@@ -86,14 +85,6 @@ class ChromiumVersion(_BaseVersion):
 
   def major(self) -> int:
     return self._version[0]
-
-
-def DownloadFile(url: str, output: str):
-  logging.debug('Downloading %s', url)
-  f = urlopen(url)
-  data = f.read()
-  with open(output, 'wb') as output_file:
-    output_file.write(data)
 
 
 def _GetBraveDownloadUrl(tag: BraveVersion, binary: str) -> str:

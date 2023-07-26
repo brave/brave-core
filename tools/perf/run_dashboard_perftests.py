@@ -28,45 +28,32 @@ import components.perf_test_runner as perf_test_runner
 
 def main():
   parser = argparse.ArgumentParser()
-  perf_test_runner.CommonOptions.add_common_parser_args(parser)
-  parser.add_argument('--targets',
-                      required=True,
-                      type=str,
-                      help='Tags/binaries to test')
-  parser.add_argument('--config', required=True, type=str)
-  parser.add_argument('--target_os', type=str)
-  parser.add_argument('--no-report', action='store_true')
-  parser.add_argument('--report-only', action='store_true')
-  parser.add_argument('--report-on-failure', action='store_true')
-  parser.add_argument('--local-run', action='store_true')
+  perf_test_runner.CommonOptions.add_parser_args(parser)
 
   args = parser.parse_args()
+  options = perf_test_runner.CommonOptions.from_args(args)
 
-  log_level = logging.DEBUG if args.verbose else logging.INFO
+  log_level = logging.DEBUG if options.verbose else logging.INFO
   log_format = '%(asctime)s: %(message)s'
   logging.basicConfig(level=log_level, format=log_format)
 
-  targets = args.targets.split(',')
 
-  common_options = perf_test_runner.CommonOptions.from_args(args)
 
   json_config = perf_test_utils.LoadJsonConfig(args.config,
-                                               common_options.working_directory)
+                                               options.working_directory)
   config = perf_config.PerfConfig(json_config)
 
-  common_options.do_run_tests = not args.report_only
-  common_options.do_report = not args.no_report and not args.local_run
-  common_options.report_on_failure = args.report_on_failure
-  common_options.local_run = args.local_run
+  if options.compare:  # compare mode
+    configurations = config.runners
+  else:
+    if len(config.runners) != 1:
+      raise RuntimeError('Only one configuration should be specified.')
 
-  if len(config.runners) != 1:
-    raise RuntimeError('Only one configuration should be specified.')
-
-  configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
-      targets, config.runners[0])
+    configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
+        options.targets, config.runners[0])
 
   return 0 if perf_test_runner.RunConfigurations(
-      configurations, config.benchmarks, common_options) else 1
+      configurations, config.benchmarks, options) else 1
 
 
 if __name__ == '__main__':
