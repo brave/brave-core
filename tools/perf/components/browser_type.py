@@ -88,7 +88,7 @@ class ChromiumVersion(_BaseVersion):
     return self._version[0]
 
 
-def _DownloadFile(url: str, output: str):
+def DownloadFile(url: str, output: str):
   logging.debug('Downloading %s', url)
   f = urlopen(url)
   data = f.read()
@@ -109,7 +109,7 @@ def _GetChromeDownloadUrl(version: ChromiumVersion,
 
 def _DownloadArchiveAndUnpack(output_directory: str, url: str):
   _, f = tempfile.mkstemp(dir=output_directory)
-  _DownloadFile(url, f)
+  DownloadFile(url, f)
   extract_zip(f, output_directory)
 
 
@@ -119,7 +119,7 @@ def _DownloadWinInstallerAndExtract(out_dir: str, url: str,
   if not os.path.exists(out_dir):
     os.makedirs(out_dir)
   installer_filename = os.path.join(out_dir, os.pardir, 'temp_installer.exe')
-  _DownloadFile(url, installer_filename)
+  DownloadFile(url, installer_filename)
   GetProcessOutput(
       [installer_filename, '--chrome-sxs', '--do-not-launch-chrome'], None,
       True)
@@ -275,7 +275,7 @@ class BraveBrowserTypeImpl(BrowserType):
     dmg_name = f'Brave-Browser-{self._channel}-{mac_platform}.dmg'
     dmg_path = os.path.join(out_dir, dmg_name)
 
-    _DownloadFile(_GetBraveDownloadUrl(tag, dmg_name), dmg_path)
+    DownloadFile(_GetBraveDownloadUrl(tag, dmg_name), dmg_path)
 
     _, output = GetProcessOutput(
         ['hdiutil', 'attach', '-noautoopen', '-nobrowse', dmg_path], check=True)
@@ -301,7 +301,7 @@ class BraveBrowserTypeImpl(BrowserType):
     if target_os == 'android':
       url = _GetBraveDownloadUrl(tag, 'BraveMonoarm64.apk')
       apk_filename = os.path.join(out_dir, os.pardir, 'BraveMonoarm64.apk')
-      _DownloadFile(url, apk_filename)
+      DownloadFile(url, apk_filename)
       return apk_filename
 
     if target_os == 'mac':

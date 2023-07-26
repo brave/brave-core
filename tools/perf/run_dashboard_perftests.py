@@ -48,10 +48,11 @@ def main():
 
   targets = args.targets.split(',')
 
-  json_config = perf_test_utils.LoadJsonConfig(args.config)
-  config = perf_config.PerfConfig(json_config)
-
   common_options = perf_test_runner.CommonOptions.from_args(args)
+
+  json_config = perf_test_utils.LoadJsonConfig(args.config,
+                                               common_options.working_directory)
+  config = perf_config.PerfConfig(json_config)
 
   common_options.do_run_tests = not args.report_only
   common_options.do_report = not args.no_report and not args.local_run
