@@ -7,7 +7,7 @@ edition = "2018"
 
 [dependencies]
 cxx = { version = "1.0", features = [ "alloc", "std" ] }
-feed-rs = { path = "../../../third_party/rust/feed_rs/v1/crate", rev = "f88f21a65f997499962aacb2f746a82382547160" }
+feed-rs = { path = "../../../third_party/rust/feed_rs/v1/crate" }
 log = "0.4.14"
 lazy_static = "1.4.0"
 regex = "1.5.5"
