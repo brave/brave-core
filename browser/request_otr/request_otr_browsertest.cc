@@ -21,6 +21,7 @@
 #include "brave/components/request_otr/browser/request_otr_service.h"
 #include "brave/components/request_otr/common/features.h"
 #include "brave/components/request_otr/common/pref_names.h"
+#include "chrome/browser/engagement/site_engagement_service_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
@@ -34,6 +35,10 @@
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar_manager.h"
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
+#include "components/site_engagement/content/engagement_type.h"
+#include "components/site_engagement/content/site_engagement_helper.h"
+#include "components/site_engagement/content/site_engagement_metrics.h"
+#include "components/site_engagement/content/site_engagement_observer.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/content_paths.h"
@@ -45,6 +50,11 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "url/gurl.h"
 
+using request_otr::features::kBraveRequestOTRTab;
+using site_engagement::EngagementType;
+using site_engagement::SiteEngagementObserver;
+using site_engagement::SiteEngagementService;
+using site_engagement::SiteEngagementServiceFactory;
 using ::testing::_;
 
 namespace {
@@ -76,8 +86,6 @@ std::unique_ptr<net::test_server::HttpResponse> RespondWithCustomHeader(
 }
 
 }  // namespace
-
-using request_otr::features::kBraveRequestOTRTab;
 
 namespace request_otr {
 
@@ -558,6 +566,96 @@ IN_PROC_BROWSER_TEST_F(RequestOTRCustomHeaderBrowserTest,
       "z.com", "/simple.html?test=include-response-header-with-0");
   NavigateTo(url);
   ASSERT_FALSE(IsShowingInterstitial());
+}
+
+class ObserverTester : public SiteEngagementObserver {
+ public:
+  explicit ObserverTester(SiteEngagementService* service)
+      : site_engagement::SiteEngagementObserver(service) {}
+
+  void OnEngagementEvent(content::WebContents* web_contents,
+                         const GURL& url,
+                         double score,
+                         EngagementType type) override {
+    last_updated_type_ = type;
+    last_updated_url_ = url;
+    if (type == type_waiting_) {
+      if (quit_closure_) {
+        std::move(quit_closure_).Run();
+      }
+    }
+  }
+
+  void WaitForEngagementEvent(EngagementType type) {
+    type_waiting_ = type;
+    base::RunLoop run_loop;
+    quit_closure_ = run_loop.QuitClosure();
+    run_loop.Run();
+  }
+
+  EngagementType last_updated_type() { return last_updated_type_; }
+  const GURL& last_updated_url() { return last_updated_url_; }
+
+ private:
+  base::OnceClosure quit_closure_;
+  GURL last_updated_url_;
+  EngagementType last_updated_type_ = EngagementType::kLast;
+  EngagementType type_waiting_ = EngagementType::kLast;
+};
+
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, SiteEngagementNotRecorded) {
+  ASSERT_TRUE(InstallMockExtension());
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAlways);
+
+  SiteEngagementService* service =
+      SiteEngagementServiceFactory::GetForProfile(browser()->profile());
+  ObserverTester tester(service);
+
+  // GURL url = embedded_test_server()->GetURL("z.com", "/simple.html");
+  // NavigateTo(url);
+  // EXPECT_EQ(tester.last_updated_type(), EngagementType::kNavigation);
+  // EXPECT_EQ(tester.last_updated_url(), url);
+
+  GURL sensitive_url =
+      embedded_test_server()->GetURL("sensitive.a.com", "/simple.html");
+  NavigateTo(sensitive_url);
+
+  EXPECT_EQ(tester.last_updated_type(), EngagementType::kLast);
+  // EXPECT_EQ(tester.last_updated_url(), url);
+
+  // SiteEngagementService::Helper* helper =
+  //     SiteEngagementService::Helper::FromWebContents(web_contents());
+  // SetMediaTrackerPauseTimer(helper);
+  // // Load a page in the prerender.
+  // GURL prerender_url =
+  //     embedded_test_server()->GetURL("/media/unified_autoplay.html");
+  // int host_id = prerender_helper()->AddPrerender(prerender_url);
+  // content::test::PrerenderHostObserver host_observer(*web_contents(),
+  // host_id); content::RenderFrameHost* prerendered_frame_host =
+  //     prerender_helper()->GetPrerenderedMainFrameHost(host_id);
+  // // Since the prerendered page couldn't have a user gesture, it runs JS with
+  // // EXECUTE_SCRIPT_NO_USER_GESTURE. Requesting playing video without a user
+  // // gesture results in the promise rejected.
+  // EXPECT_EQ(false, content::EvalJs(
+  //                      prerendered_frame_host, "attemptPlay();",
+  //                      content::EvalJsOptions::EXECUTE_SCRIPT_NO_USER_GESTURE));
+
+  // EXPECT_EQ(tester.last_updated_type(), EngagementType::kNavigation);
+  // EXPECT_EQ(tester.last_updated_url(), url);
+
+  // // Navigate the primary page to the URL.
+  // prerender_helper()->NavigatePrimaryPage(prerender_url);
+  // // The page should be activated from the prerendering.
+  // EXPECT_TRUE(host_observer.was_activated());
+
+  // EXPECT_TRUE(
+  //     content::EvalJs(web_contents()->GetPrimaryMainFrame(),
+  //     "attemptPlay();")
+  //         .ExtractBool());
+
+  // tester.WaitForEngagementEvent(EngagementType::kMediaVisible);
+  // EXPECT_EQ(tester.last_updated_type(), EngagementType::kMediaVisible);
+  // EXPECT_EQ(tester.last_updated_url(), prerender_url);
 }
 
 }  // namespace request_otr

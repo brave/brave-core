@@ -4,30 +4,35 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/media/media_engagement_contents_observer.h"
+
 #include "brave/components/request_otr/browser/request_otr_storage_tab_helper.h"
+#include "chrome/browser/media/media_engagement_service.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 
-#define GetOrCreateSession GetOrCreateSession_ChromiumImpl
+namespace {
 
-#include "src/chrome/browser/media/media_engagement_contents_observer.cc"
-
-#undef GetOrCreateSession
-
-scoped_refptr<MediaEngagementSession>
-MediaEngagementContentsObserver::GetOrCreateSession(
-    content::NavigationHandle* navigation_handle,
-    content::WebContents* opener) const {
+bool BraveShouldRecordEngagement(content::NavigationHandle* navigation_handle) {
   if (content::WebContents* web_contents =
           navigation_handle->GetWebContents()) {
     if (request_otr::RequestOTRStorageTabHelper* tab_storage =
             request_otr::RequestOTRStorageTabHelper::FromWebContents(
                 web_contents)) {
-      if (tab_storage->has_offered_otr()) {
-        return nullptr;
+      if (tab_storage->has_requested_otr()) {
+        return false;
       }
     }
   }
 
-  return GetOrCreateSession_ChromiumImpl(navigation_handle, opener);
+  return true;
 }
+
+}  // namespace
+
+#define ShouldRecordEngagement(origin) \
+  ShouldRecordEngagement(origin) ||    \
+      !BraveShouldRecordEngagement(navigation_handle)
+
+#include "src/chrome/browser/media/media_engagement_contents_observer.cc"
+
+#undef ShouldRecordEngagement
