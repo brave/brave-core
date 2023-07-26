@@ -1,18 +1,9 @@
 #!/usr/bin/env python
-
+#
 # Copyright (c) 2019 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-import argparse
-import os
-import subprocess
-import sys
-
-# Import the entire module to avoid circular dependencies in the functions
-from signing import chromium_config, commands, invoker, model, notarize  # noqa: E402
-from signing_helper import GetBraveSigningConfig
 
 """
 The sign_chrome.py script does notarization of the app, but we don't use it to
@@ -21,14 +12,27 @@ but must perform notarization after those processes are complete. This script
 performs notarizing and stapling of those files.
 """
 
+import argparse
+import os
+import subprocess
+import sys
+
+# Import the entire module to avoid circular dependencies in the functions
+from signing import (  # pylint: disable=import-error,wrong-import-position
+    chromium_config, commands, invoker, notarize)
+from signing_helper import (  # pylint: disable=wrong-import-position
+    GetBraveSigningConfig)
+
+
 # Our CWD is the packaging directory (i.e.
 # src/out/Release/Brave_Browser_CHANNEL_Packaging), the signing directory is
 # relative to that
-packaging_signing_path = os.path.realpath(os.path.dirname(os.path.realpath(__file__)))
+packaging_signing_path = os.path.realpath(
+    os.path.dirname(os.path.realpath(__file__)))
 sys.path.append(packaging_signing_path)
 
-class NotarizationInvoker(invoker.Interface):
 
+class NotarizationInvoker(invoker.Interface):  # pylint: disable=too-few-public-methods
     def __init__(self, args, config):
         self._notarizer = notarize.Invoker(args, config)
 
@@ -136,7 +140,8 @@ def parse_args():
                         required=True)
     parser.add_argument('--pkgdir', help='Packaging directory',
                         required=True)
-    parser.add_argument('-s', '--signed',
+    parser.add_argument('-s',
+                        '--signed',
                         help='Directory with signed DMG and PKG',
                         required=True)
     parser.add_argument('-p', '--pkg', help='Path to the pkg to notarize',
