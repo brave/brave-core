@@ -289,7 +289,11 @@ class NewTabPageViewController: UIViewController {
           guard let self = self else { return }
           if self.parent != nil {
             UIView.performWithoutAnimation {
-              self.collectionView.reloadSections(IndexSet(integer: index))
+              // As of iOS 16.4, reloadSections seems to do some sort of validation of the underlying data
+              // for other sections that aren't being refreshed. This can cause assertions for sections that
+              // may need to reload in the same batch but don't. Since we don't animate this section anyways
+              // we can just switch to `reloadData` here.
+              self.collectionView.reloadData()
             }
           }
           self.collectionView.collectionViewLayout.invalidateLayout()
