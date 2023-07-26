@@ -17,13 +17,14 @@ Example usage:
                                      --config=smoke.json
                                      --target v1.36.23
 """
-import sys
-import logging
 import argparse
+import logging
+import sys
+from os import mkdir
 
-import components.perf_test_utils as perf_test_utils
 import components.perf_config as perf_config
 import components.perf_test_runner as perf_test_runner
+import components.perf_test_utils as perf_test_utils
 
 
 def main():
@@ -39,6 +40,7 @@ def main():
 
 
 
+  mkdir(options.working_directory)
   json_config = perf_test_utils.LoadJsonConfig(args.config,
                                                options.working_directory)
   config = perf_config.PerfConfig(json_config)
