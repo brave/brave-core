@@ -770,6 +770,14 @@
           FEATURE_VALUE_TYPE(blink::features::kFileSystemAccessAPI),           \
       },                                                                       \
       {                                                                        \
+          "brave-web-bluetooth-api",                                           \
+          "Web Bluetooth API",                                                 \
+          "Enables the Web Bluetooth API, giving websites access to "          \
+          "Bluetooth devices",                                                 \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(blink::features::kBraveWebBluetoothAPI),          \
+      },                                                                       \
+      {                                                                        \
           "brave-web-serial-api",                                              \
           "Web Serial API",                                                    \
           "Enables the Web Serial API, allowing websites to request access "   \
