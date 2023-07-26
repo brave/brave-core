@@ -120,6 +120,12 @@ void DatabaseManager::MaybeMigrate(const int from_version,
     return std::move(callback).Run(/*success*/ true);
   }
 
+  if (from_version > to_version) {
+    BLOG(0, "Failed to migrate database from schema version "
+                << from_version << " to schema version " << to_version);
+    return std::move(callback).Run(/*success*/ false);
+  }
+
   BLOG(1, "Migrating database from schema version "
               << from_version << " to schema version " << to_version);
 
