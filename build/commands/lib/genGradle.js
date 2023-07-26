@@ -5,13 +5,13 @@
 
 const config = require('../lib/config')
 const util = require('../lib/util')
-const Log = require('../lib/sync/logging')
+const Log = require('./logging')
 
 let options = config.defaultOptions
 options.continueOnFail = false
 
 const genGradle = (passthroughArgs, build_dir) => {
-        Log.progress('Generating Gradle files')
+        Log.progressStart('Generating Gradle files')
         args = [
             'build/android/gradle/generate_gradle.py',
             '--output-directory', 
@@ -19,6 +19,7 @@ const genGradle = (passthroughArgs, build_dir) => {
         ]
         args.push(... passthroughArgs)
         util.run('python3', args, options)
+        Log.progressFinish('Generating Gradle files')
 }
 
 module.exports = genGradle
