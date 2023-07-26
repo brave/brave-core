@@ -17,6 +17,7 @@
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_node.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
+#include "components/bookmarks/browser/bookmark_uuids.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/undo/bookmark_undo_service.h"
@@ -130,25 +131,23 @@
 }
 
 + (NSString*)rootNodeGuid {
-  return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kRootNodeUuid);
+  return base::SysUTF8ToNSString(bookmarks::kRootNodeUuid);
 }
 
 + (NSString*)bookmarkBarNodeGuid {
-  return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kBookmarkBarNodeUuid);
+  return base::SysUTF8ToNSString(bookmarks::kBookmarkBarNodeUuid);
 }
 
 + (NSString*)otherBookmarksNodeGuid {
-  return base::SysUTF8ToNSString(
-      bookmarks::BookmarkNode::kOtherBookmarksNodeUuid);
+  return base::SysUTF8ToNSString(bookmarks::kOtherBookmarksNodeUuid);
 }
 
 + (NSString*)mobileBookmarksNodeGuid {
-  return base::SysUTF8ToNSString(
-      bookmarks::BookmarkNode::kMobileBookmarksNodeUuid);
+  return base::SysUTF8ToNSString(bookmarks::kMobileBookmarksNodeUuid);
 }
 
 + (NSString*)managedNodeGuid {
-  return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kManagedNodeUuid);
+  return base::SysUTF8ToNSString(bookmarks::kManagedNodeUuid);
 }
 
 - (bool)isPermanentNode {
