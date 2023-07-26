@@ -21,6 +21,7 @@ const l10nDeleteTranslations = require('../lib/l10nDeleteTranslations')
 const createDist = require('../lib/createDist')
 const test = require('../lib/test')
 const gnCheck = require('../lib/gnCheck')
+const genGradle = require('../lib/genGradle')
 const pylint = require('../lib/pylint')
 const perfTests = require('../lib/perfTests')
 
@@ -361,6 +362,12 @@ program
   .command('run_perf_tests <perf_config> <targets>')
   .allowUnknownOption(true)
   .action(perfTests.runPerfTests.bind(null, parsedArgs.unknown))
+
+program
+  .command('gen_gradle')
+  .option('--output-directory <build_dir>', 'build directory (out/Debug, out/Release)')
+  .allowUnknownOption(true)
+  .action(genGradle.bind(null, parsedArgs.unknown))
 
 program
   .parse(process.argv)
