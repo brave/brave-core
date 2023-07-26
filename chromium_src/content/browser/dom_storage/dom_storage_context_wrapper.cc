@@ -5,11 +5,11 @@
 
 // Brave uses opaque origins to access ephemeral localStorage areas. This block
 // allows these origins to be treated as valid ones.
-#define BRAVE_DOM_STORAGE_CONTEXT_WRAPPER_IS_REQUEST_VALID               \
-  if (host_storage_key_did_not_match && storage_key.origin().opaque() && \
-      host->storage_key().origin().GetTupleOrPrecursorTupleIfOpaque() == \
-          storage_key.origin().GetTupleOrPrecursorTupleIfOpaque()) {     \
-    host_storage_key_did_not_match = false;                              \
+#define BRAVE_DOM_STORAGE_CONTEXT_WRAPPER_IS_REQUEST_VALID                 \
+  if (host_storage_key_did_not_match && storage_key.origin().opaque() &&   \
+      host->GetStorageKey().origin().GetTupleOrPrecursorTupleIfOpaque() == \
+          storage_key.origin().GetTupleOrPrecursorTupleIfOpaque()) {       \
+    host_storage_key_did_not_match = false;                                \
   }
 
 #include "src/content/browser/dom_storage/dom_storage_context_wrapper.cc"
