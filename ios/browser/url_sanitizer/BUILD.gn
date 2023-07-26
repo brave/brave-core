@@ -1,0 +1,18 @@
+source_set("brave_wallet") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+  sources = [
+    "url_sanitizer_service_factory.mm",
+    "url_sanitizer_service_factory.h",
+  ]
+  deps = [
+    "//brave/ios/browser/keyed_service",
+    "//brave/components/url_sanitizer/browser",
+    "//components/keyed_service/core",
+    "//components/keyed_service/ios:ios",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/browser_state",
+    "//ios/web/public/thread",
+    "//mojo/public/cpp/bindings",
+    "//services/network/public/cpp",
+  ]
+}

@@ -95,8 +95,6 @@ OBJC_EXPORT
 
 @property(readonly) NTPBackgroundImagesService* backgroundImagesService;
 
-@property(readonly) LocalDataFileService* localDataFileService;
-
 /// Sets up bundle path overrides and initializes ICU from the BraveCore bundle
 /// without setting up a BraveCoreMain instance.
 ///

@@ -19,12 +19,14 @@
 #include "base/path_service.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
+#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_service.h"
+#include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
@@ -43,7 +45,7 @@
 #include "brave/ios/browser/api/web_image/web_image+private.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "brave/ios/browser/component_updater/component_updater_utils.h"
-#include "brave/ios/browser/local_data_file_service/local_data_file_service+private.h"
+#include "brave/ios/browser/local_data_file_service/local_data_file_service_installer_delegate.h"
 #include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/installer_policies/safety_tips_component_installer.h"
 #include "components/history/core/browser/history_service.h"
@@ -96,6 +98,9 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   std::unique_ptr<web::WebMain> _webMain;
   std::unique_ptr<Browser> _browser;
   std::unique_ptr<Browser> _otr_browser;
+  std::unique_ptr<local_data_file_service::LocalDataFileServiceDelegate> fileServiceDelegate_;
+  std::unique_ptr<brave_component_updater::LocalDataFilesService> fileService_;
+  std::unique_ptr<brave::URLSanitizerComponentInstaller> urlSanitizerComponentInstaller_;
   BrowserList* _browserList;
   BrowserList* _otr_browserList;
   ChromeBrowserState* _mainBrowserState;
@@ -114,7 +119,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) BraveWalletAPI* braveWalletAPI;
 @property(nonatomic) IpfsAPIImpl* ipfsAPI;
 @property(nonatomic) BraveP3AUtils* p3aUtils;
-@property(nonatomic) LocalDataFileService* localDataFileService;
 @property(nonatomic) NTPBackgroundImagesService* backgroundImagesService;
 @end
 
@@ -234,6 +238,12 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
         GetApplicationContext()->GetComponentUpdateService();
     DCHECK(cus);
 
+    // Create and start the local data file service and component installer
+    fileServiceDelegate_ = std::make_unique<local_data_file_service::LocalDataFileServiceDelegate>();
+    fileService_ = brave_component_updater::LocalDataFilesServiceFactory(fileServiceDelegate_.get());
+    urlSanitizerComponentInstaller_ = std::make_unique<brave::URLSanitizerComponentInstaller>(fileService_.get());
+    fileService_.get()->Start();
+
     _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
     [self registerComponentsForUpdate:cus];
 
@@ -323,7 +333,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   brave_wallet::RegisterWalletDataFilesComponent(cus);
 
   [self.adblockService registerDefaultShieldsComponent];
-  [self.localDataFileService start];
 }
 
 + (void)setLogHandler:(BraveCoreLogHandler)logHandler {
@@ -490,13 +499,6 @@ static bool CustomLogHandler(int severity,
                   p3aService:_p3a_service];
   }
   return _p3aUtils;
-}
-
-- (LocalDataFileService*)localDataFileService {
-  if (!_localDataFileService) {
-    _localDataFileService = [[LocalDataFileService alloc] init];
-  }
-  return _localDataFileService;
 }
 
 + (bool)initializeICUForTesting {

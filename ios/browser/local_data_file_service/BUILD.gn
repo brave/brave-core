@@ -6,9 +6,6 @@
 source_set("local_data_file_service") {
   configs += [ "//build/config/compiler:enable_arc" ]
   sources = [
-    "local_data_file_service+private.h",
-    "local_data_file_service.h",
-    "local_data_file_service.mm",
     "local_data_file_service_installer_delegate.h",
     "local_data_file_service_installer_delegate.mm",
   ]

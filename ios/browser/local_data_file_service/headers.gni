@@ -4,4 +4,4 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 local_data_file_service_public_headers =
-    [ "//brave/ios/browser/local_data_file_service/local_data_file_service.h" ]
+    [ ]

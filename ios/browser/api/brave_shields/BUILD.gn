@@ -22,6 +22,7 @@ source_set("brave_shields") {
     "//brave/components/brave_shields/adblock:rust_lib",
     "//brave/components/brave_shields/browser:component_installer",
     "//brave/components/brave_shields/common",
+    "//brave/components/url_sanitizer/browser",
     "//components/component_updater",
   ]
 }
