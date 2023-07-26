@@ -24,7 +24,8 @@ class FilTransaction;
 class FilTxMeta : public TxMeta {
  public:
   FilTxMeta();
-  explicit FilTxMeta(std::unique_ptr<FilTransaction> tx);
+  FilTxMeta(const mojom::AccountIdPtr& from,
+            std::unique_ptr<FilTransaction> tx);
   FilTxMeta(const FilTxMeta&) = delete;
   FilTxMeta operator=(const FilTxMeta&) = delete;
   bool operator==(const FilTxMeta&) const;

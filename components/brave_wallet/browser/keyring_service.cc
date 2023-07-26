@@ -721,7 +721,7 @@ void KeyringService::MaybeMigrateSelectedAccountPrefs() {
     return;
   }
 
-  auto all_accounts = GetAllAccountInfos();
+  const auto& all_accounts = GetAllAccountInfos();
   if (all_accounts.empty()) {
     return;
   }
@@ -1020,9 +1020,14 @@ void KeyringService::MaybeCreateDefaultSolanaAccount() {
 
 void KeyringService::CreateWallet(const std::string& password,
                                   CreateWalletCallback callback) {
-  profile_prefs_->SetBoolean(kBraveWalletKeyringEncryptionKeysMigrated, true);
-
   const std::string mnemonic = GenerateMnemonic(16);
+  CreateWallet(mnemonic, password, std::move(callback));
+}
+
+void KeyringService::CreateWallet(const std::string& mnemonic,
+                                  const std::string& password,
+                                  CreateWalletCallback callback) {
+  profile_prefs_->SetBoolean(kBraveWalletKeyringEncryptionKeysMigrated, true);
 
   auto* keyring = CreateKeyring(mojom::kDefaultKeyringId, mnemonic, password);
   if (keyring) {
@@ -1057,6 +1062,7 @@ void KeyringService::CreateWallet(const std::string& password,
     CreateKeyring(mojom::kBitcoinKeyring84TestId, mnemonic, password);
   }
 
+  ResetAllAccountInfosCache();
   std::move(callback).Run(mnemonic);
 }
 
@@ -1176,6 +1182,7 @@ mojom::AccountInfoPtr KeyringService::AddAccountSync(
   SetSelectedAccountInternal(*account);
   NotifyAccountsAdded(*account);
 
+  ResetAllAccountInfosCache();
   NotifyAccountsChanged();
   return account;
 }
@@ -1259,6 +1266,7 @@ void KeyringService::ImportFilecoinAccount(
   // TODO(apaymyshev): ui should select account after importing.
   SetSelectedAccountInternal(*account_info);
 
+  ResetAllAccountInfosCache();
   NotifyAccountsChanged();
   NotifyAccountsAdded(*account_info);
 
@@ -1437,6 +1445,7 @@ bool KeyringService::RemoveImportedAccountInternal(
 
   RemoveImportedAccountForKeyring(profile_prefs_, account_id.address,
                                   account_id.keyring_id);
+  ResetAllAccountInfosCache();
   MaybeFixAccountSelection();
   NotifyAccountsChanged();
   return true;
@@ -1512,6 +1521,7 @@ mojom::AccountInfoPtr KeyringService::ImportAccountForKeyring(
   // TODO(apaymyshev): ui should select account after importing.
   SetSelectedAccountInternal(*account_info);
 
+  ResetAllAccountInfosCache();
   NotifyAccountsChanged();
   NotifyAccountsAdded(*account_info);
   return account_info;
@@ -1608,6 +1618,7 @@ std::vector<mojom::AccountInfoPtr> KeyringService::AddHardwareAccountsSync(
 
   // TODO(apaymyshev): ui should select account after importing.
   SetSelectedAccountInternal(*accounts_added.front());
+  ResetAllAccountInfosCache();
   NotifyAccountsChanged();
   NotifyAccountsAdded(accounts_added);
 
@@ -1635,6 +1646,7 @@ bool KeyringService::RemoveHardwareAccountInternal(
       hardware_keyrings.Remove(id);
     }
 
+    ResetAllAccountInfosCache();
     MaybeFixAccountSelection();
     NotifyAccountsChanged();
     return true;
@@ -1644,17 +1656,18 @@ bool KeyringService::RemoveHardwareAccountInternal(
 }
 
 absl::optional<std::string> KeyringService::SignTransactionByFilecoinKeyring(
+    const mojom::AccountId& account_id,
     FilTransaction* tx) {
   if (!tx) {
     return absl::nullopt;
   }
 
-  mojom::KeyringId keyring_id = GetFilecoinKeyringId(tx->from().network());
-  auto* keyring = GetHDKeyringById(keyring_id);
+  auto* keyring = GetHDKeyringById(account_id.keyring_id);
   if (!keyring) {
     return absl::nullopt;
   }
-  return static_cast<FilecoinKeyring*>(keyring)->SignTransaction(tx);
+  return static_cast<FilecoinKeyring*>(keyring)->SignTransaction(
+      account_id.address, tx);
 }
 
 absl::optional<std::string> KeyringService::GetDiscoveryAddress(
@@ -1667,15 +1680,16 @@ absl::optional<std::string> KeyringService::GetDiscoveryAddress(
   return hd_keyring->GetDiscoveryAddress(index);
 }
 
-void KeyringService::SignTransactionByDefaultKeyring(const std::string& address,
-                                                     EthTransaction* tx,
-                                                     uint256_t chain_id) {
+void KeyringService::SignTransactionByDefaultKeyring(
+    const mojom::AccountId& account_id,
+    EthTransaction* tx,
+    uint256_t chain_id) {
   auto* keyring = GetHDKeyringById(mojom::kDefaultKeyringId);
   if (!keyring) {
     return;
   }
-  static_cast<EthereumKeyring*>(keyring)->SignTransaction(address, tx,
-                                                          chain_id);
+  static_cast<EthereumKeyring*>(keyring)->SignTransaction(account_id.address,
+                                                          tx, chain_id);
 }
 
 KeyringService::SignatureWithError::SignatureWithError() = default;
@@ -1792,6 +1806,7 @@ void KeyringService::AddAccountsWithDefaultName(
       account_infos.push_back(std::move(add_result));
     }
   }
+  ResetAllAccountInfosCache();
   NotifyAccountsChanged();
   NotifyAccountsAdded(account_infos);
 }
@@ -2200,8 +2215,13 @@ void KeyringService::GetAllAccounts(GetAllAccountsCallback callback) {
 }
 
 mojom::AllAccountsInfoPtr KeyringService::GetAllAccountsSync() {
+  std::vector<mojom::AccountInfoPtr> all_accounts;
+  for (const auto& account : GetAllAccountInfos()) {
+    all_accounts.push_back(account.Clone());
+  }
+
   return mojom::AllAccountsInfo::New(
-      GetAllAccountInfos(), GetSelectedWalletAccount(),
+      std::move(all_accounts), GetSelectedWalletAccount(),
       GetSelectedEthereumDappAccount(), GetSelectedSolanaDappAccount());
 }
 
@@ -2264,6 +2284,7 @@ bool KeyringService::SetKeyringDerivedAccountNameInternal(
                             *derived_account, account_id.keyring_id)) {
         derived_account->account_name = name;
         item = derived_account->ToValue();
+        ResetAllAccountInfosCache();
         NotifyAccountsChanged();
         return true;
       }
@@ -2293,6 +2314,7 @@ bool KeyringService::SetHardwareAccountNameInternal(
       continue;
     }
     address_key->Set(kAccountName, name);
+    ResetAllAccountInfosCache();
     NotifyAccountsChanged();
     return true;
   }
@@ -2327,6 +2349,7 @@ bool KeyringService::SetKeyringImportedAccountNameInternal(
       SetPrefForKeyring(profile_prefs_, kImportedAccounts,
                         base::Value(std::move(imported_accounts)),
                         account_id.keyring_id);
+      ResetAllAccountInfosCache();
       NotifyAccountsChanged();
       return true;
     }
@@ -2564,18 +2587,25 @@ KeyringService::SignMessageByBitcoinKeyring(
   return bitcoin_keyring->SignMessage(key_id, message);
 }
 
-std::vector<mojom::AccountInfoPtr> KeyringService::GetAllAccountInfos() {
-  std::vector<mojom::AccountInfoPtr> account_infos;
-  for (const auto& keyring_id : GetSupportedKeyrings()) {
-    for (auto& account_info : GetAccountInfosForKeyring(keyring_id)) {
-      account_infos.push_back(std::move(account_info));
+void KeyringService::ResetAllAccountInfosCache() {
+  account_info_cache_.reset();
+}
+
+const std::vector<mojom::AccountInfoPtr>& KeyringService::GetAllAccountInfos() {
+  if (!account_info_cache_) {
+    account_info_cache_ =
+        std::make_unique<std::vector<mojom::AccountInfoPtr>>();
+    for (const auto& keyring_id : GetSupportedKeyrings()) {
+      for (auto& account_info : GetAccountInfosForKeyring(keyring_id)) {
+        account_info_cache_->push_back(std::move(account_info));
+      }
     }
   }
-  return account_infos;
+  return *account_info_cache_;
 }
 
 mojom::AccountInfoPtr KeyringService::GetSelectedWalletAccount() {
-  auto account_infos = GetAllAccountInfos();
+  const auto& account_infos = GetAllAccountInfos();
   auto unique_key =
       profile_prefs_->GetString(kBraveWalletSelectedWalletAccount);
 
@@ -2619,7 +2649,7 @@ mojom::AccountInfoPtr KeyringService::GetSelectedDappAccount(
 }
 
 void KeyringService::MaybeFixAccountSelection() {
-  const auto account_infos = GetAllAccountInfos();
+  const auto& account_infos = GetAllAccountInfos();
   if (account_infos.empty()) {
     NOTREACHED();
     return;

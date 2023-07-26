@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -103,13 +104,20 @@ TEST_F(FilNonceTrackerUnitTest, GetNonce) {
       GetTestValueStoreFactory(temp_dir);
   std::unique_ptr<TxStorageDelegateImpl> delegate =
       GetTxStorageDelegateForTest(GetPrefs(), factory);
+  auto account_resolver_delegate =
+      std::make_unique<AccountResolverDelegateForTest>();
   WaitForTxStorageDelegateInitialized(delegate.get());
-  FilTxStateManager tx_state_manager(GetPrefs(), delegate.get());
+  FilTxStateManager tx_state_manager(GetPrefs(), delegate.get(),
+                                     account_resolver_delegate.get());
   FilNonceTracker nonce_tracker(&tx_state_manager, &service);
 
   SetTransactionCount(2);
 
   const std::string address("t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy");
+  auto fil_account = account_resolver_delegate->RegisterAccount(
+      MakeAccountId(mojom::CoinType::FIL, mojom::KeyringId::kFilecoinTestnet,
+                    mojom::AccountKind::kDerived,
+                    "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy"));
   GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, address,
                true, uint64_t(2));
 
@@ -117,7 +125,7 @@ TEST_F(FilNonceTrackerUnitTest, GetNonce) {
   FilTxMeta meta;
   meta.set_id(TxMeta::GenerateMetaID());
   meta.set_chain_id(mojom::kLocalhostChainId);
-  meta.set_from(FilAddress::FromAddress(address).EncodeAsString());
+  meta.set_from(fil_account);
   meta.set_status(mojom::TransactionStatus::Confirmed);
   meta.tx()->set_nonce(uint64_t(2));
   ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));

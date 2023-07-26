@@ -31,7 +31,9 @@ class EthTxMeta;
 
 class EthTxStateManager : public TxStateManager {
  public:
-  EthTxStateManager(PrefService* prefs, TxStorageDelegate* delegate);
+  EthTxStateManager(PrefService* prefs,
+                    TxStorageDelegate* delegate,
+                    AccountResolverDelegate* account_resolver_delegate);
   ~EthTxStateManager() override;
   EthTxStateManager(const EthTxStateManager&) = delete;
   EthTxStateManager operator=(const EthTxStateManager&) = delete;

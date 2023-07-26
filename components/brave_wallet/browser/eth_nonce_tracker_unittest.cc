@@ -24,6 +24,7 @@
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -113,21 +114,27 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
       GetTestValueStoreFactory(temp_dir);
   std::unique_ptr<TxStorageDelegateImpl> delegate =
       GetTxStorageDelegateForTest(GetPrefs(), factory);
+  auto account_resolver_delegate =
+      std::make_unique<AccountResolverDelegateForTest>();
   WaitForTxStorageDelegateInitialized(delegate.get());
-  EthTxStateManager tx_state_manager(GetPrefs(), delegate.get());
+  EthTxStateManager tx_state_manager(GetPrefs(), delegate.get(),
+                                     account_resolver_delegate.get());
   EthNonceTracker nonce_tracker(&tx_state_manager, &service);
 
   SetTransactionCount(2);
 
   const std::string address("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
+  auto eth_account_id = account_resolver_delegate->RegisterAccount(
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived, address));
+
   // tx count: 2, confirmed: null, pending: null
   GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, address, true, 2);
 
   // tx count: 2, confirmed: [2], pending: null
-  EthTxMeta meta;
+  EthTxMeta meta(eth_account_id, std::make_unique<EthTransaction>());
   meta.set_id(TxMeta::GenerateMetaID());
   meta.set_chain_id(mojom::kLocalhostChainId);
-  meta.set_from(EthAddress::FromHex(address).ToChecksumAddress());
   meta.set_status(mojom::TransactionStatus::Confirmed);
   meta.tx()->set_nonce(uint256_t(2));
   ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));

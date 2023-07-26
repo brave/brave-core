@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
@@ -136,9 +137,6 @@ constexpr char kPrintConsoleMarkerScript[] = R"(setTimeout(() => {
   console.log("$1");
 }, "10000");)";
 
-constexpr char kMnemonic1[] =
-    "divide cruise upon flag harsh carbon filter merit once advice bright "
-    "drive";
 constexpr char kPasswordBrave[] = "brave";
 
 void BindCosmeticFiltersResourcesOnTaskRunner(
@@ -282,7 +280,7 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
 
     base::RunLoop run_loop;
     keyring_service_->RestoreWallet(
-        kMnemonic1, kPasswordBrave, false,
+        kMnemonicDivideCruise, kPasswordBrave, false,
         base::BindLambdaForTesting([&](bool success) {
           ASSERT_TRUE(success);
           run_loop.Quit();

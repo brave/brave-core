@@ -22,6 +22,9 @@ static_library("browser") {
   sources = [
     "account_discovery_manager.cc",
     "account_discovery_manager.h",
+    "account_resolver_delegate.h",
+    "account_resolver_delegate_impl.cc",
+    "account_resolver_delegate_impl.h",
     "asset_discovery_manager.cc",
     "asset_discovery_manager.h",
     "asset_discovery_task.cc",
@@ -219,7 +222,6 @@ static_library("browser") {
     ":transaction",
     ":utils",
     "//base",
-    "//brave/components/api_request_helper",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_stats/browser",
     "//brave/components/brave_wallet/api",
@@ -251,6 +253,8 @@ static_library("browser") {
     "//ui/base:base",
     "//url",
   ]
+
+  public_deps = [ "//brave/components/api_request_helper" ]
 
   if (enable_ipfs) {
     deps += [ "//brave/components/ipfs" ]

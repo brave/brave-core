@@ -68,7 +68,12 @@ absl::optional<std::string> GetFinalRecipient(
 }  // namespace
 
 EthTxMeta::EthTxMeta() : tx_(std::make_unique<EthTransaction>()) {}
-EthTxMeta::EthTxMeta(std::unique_ptr<EthTransaction> tx) : tx_(std::move(tx)) {}
+EthTxMeta::EthTxMeta(const mojom::AccountIdPtr& from,
+                     std::unique_ptr<EthTransaction> tx)
+    : tx_(std::move(tx)) {
+  DCHECK_EQ(from->coin, mojom::CoinType::ETH);
+  set_from(from.Clone());
+}
 
 EthTxMeta::~EthTxMeta() = default;
 
@@ -130,7 +135,7 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
   }
 
   return mojom::TransactionInfo::New(
-      id_, from_, tx_hash_,
+      id_, from_->address, from_.Clone(), tx_hash_,
       mojom::TxDataUnion::NewEthTxData1559(mojom::TxData1559::New(
           mojom::TxData::New(
               tx_->nonce() ? Uint256ValueToHex(tx_->nonce().value()) : "",

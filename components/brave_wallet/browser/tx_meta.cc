@@ -27,7 +27,7 @@ base::Value::Dict TxMeta::ToValue() const {
 
   dict.Set("id", id_);
   dict.Set("status", static_cast<int>(status_));
-  dict.Set("from", from_);
+  dict.Set("from_account_id", from_->unique_key);
   dict.Set("created_time", base::TimeToValue(created_time_));
   dict.Set("submitted_time", base::TimeToValue(submitted_time_));
   dict.Set("confirmed_time", base::TimeToValue(confirmed_time_));

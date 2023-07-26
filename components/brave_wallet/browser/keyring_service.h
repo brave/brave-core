@@ -91,6 +91,9 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::string& password,
       GetMnemonicForDefaultKeyringCallback callback) override;
   void MaybeCreateDefaultSolanaAccount();
+  void CreateWallet(const std::string& mnemonic,
+                    const std::string& password,
+                    CreateWalletCallback callback);
   void CreateWallet(const std::string& password,
                     CreateWalletCallback callback) override;
   void RestoreWallet(const std::string& mnemonic,
@@ -142,10 +145,11 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   bool IsKeyringCreated(mojom::KeyringId keyring_id) const;
   bool IsHardwareAccount(mojom::KeyringId keyring_id,
                          const std::string& account) const;
-  void SignTransactionByDefaultKeyring(const std::string& address,
+  void SignTransactionByDefaultKeyring(const mojom::AccountId& account_id,
                                        EthTransaction* tx,
                                        uint256_t chain_id);
   absl::optional<std::string> SignTransactionByFilecoinKeyring(
+      const mojom::AccountId& account_id,
       FilTransaction* tx);
   absl::optional<std::string> GetDiscoveryAddress(mojom::KeyringId keyring_id,
                                                   int index);
@@ -226,7 +230,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const mojom::BitcoinKeyId& key_id,
       base::span<const uint8_t, 32> message);
 
-  std::vector<mojom::AccountInfoPtr> GetAllAccountInfos();
+  void ResetAllAccountInfosCache();
+  const std::vector<mojom::AccountInfoPtr>& GetAllAccountInfos();
   mojom::AccountInfoPtr GetSelectedWalletAccount();
   mojom::AccountInfoPtr GetSelectedEthereumDappAccount();
   mojom::AccountInfoPtr GetSelectedSolanaDappAccount();
@@ -367,6 +372,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   bool ValidatePasswordInternal(const std::string& password);
   void MaybeUnlockWithCommandLine();
 
+  std::unique_ptr<std::vector<mojom::AccountInfoPtr>> account_info_cache_;
   std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
   base::flat_map<mojom::KeyringId, std::unique_ptr<HDKeyring>> keyrings_;

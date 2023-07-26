@@ -20,9 +20,11 @@
 
 namespace brave_wallet {
 
-EthTxStateManager::EthTxStateManager(PrefService* prefs,
-                                     TxStorageDelegate* delegate)
-    : TxStateManager(prefs, delegate) {}
+EthTxStateManager::EthTxStateManager(
+    PrefService* prefs,
+    TxStorageDelegate* delegate,
+    AccountResolverDelegate* account_resolver_delegate)
+    : TxStateManager(prefs, delegate, account_resolver_delegate) {}
 
 EthTxStateManager::~EthTxStateManager() = default;
 
@@ -58,7 +60,7 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
     const base::Value::Dict& value) {
   std::unique_ptr<EthTxMeta> meta = std::make_unique<EthTxMeta>();
 
-  if (!TxStateManager::ValueToTxMeta(value, meta.get())) {
+  if (!ValueToBaseTxMeta(value, meta.get())) {
     return nullptr;
   }
 

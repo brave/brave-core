@@ -11,6 +11,7 @@
 
 #include "base/base64.h"
 #include "base/notreached.h"
+#include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/solana_block_tracker.h"
@@ -29,17 +30,22 @@
 
 namespace brave_wallet {
 
-SolanaTxManager::SolanaTxManager(TxService* tx_service,
-                                 JsonRpcService* json_rpc_service,
-                                 KeyringService* keyring_service,
-                                 PrefService* prefs,
-                                 TxStorageDelegate* delegate)
-    : TxManager(std::make_unique<SolanaTxStateManager>(prefs, delegate),
-                std::make_unique<SolanaBlockTracker>(json_rpc_service),
-                tx_service,
-                json_rpc_service,
-                keyring_service,
-                prefs),
+SolanaTxManager::SolanaTxManager(
+    TxService* tx_service,
+    JsonRpcService* json_rpc_service,
+    KeyringService* keyring_service,
+    PrefService* prefs,
+    TxStorageDelegate* delegate,
+    AccountResolverDelegate* account_resolver_delegate)
+    : TxManager(
+          std::make_unique<SolanaTxStateManager>(prefs,
+                                                 delegate,
+                                                 account_resolver_delegate),
+          std::make_unique<SolanaBlockTracker>(json_rpc_service),
+          tx_service,
+          json_rpc_service,
+          keyring_service,
+          prefs),
       weak_ptr_factory_(this) {
   GetSolanaBlockTracker()->AddObserver(this);
 }
@@ -51,18 +57,11 @@ SolanaTxManager::~SolanaTxManager() {
 void SolanaTxManager::AddUnapprovedTransaction(
     const std::string& chain_id,
     mojom::TxDataUnionPtr tx_data_union,
-    const std::string& from,
+    const mojom::AccountIdPtr& from,
     const absl::optional<url::Origin>& origin,
     const absl::optional<std::string>& group_id,
     AddUnapprovedTransactionCallback callback) {
   DCHECK(tx_data_union->is_solana_tx_data());
-
-  if (from.empty()) {
-    std::move(callback).Run(
-        false, "",
-        l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
-    return;
-  }
 
   auto tx = SolanaTransaction::FromSolanaTxData(
       std::move(tx_data_union->get_solana_tx_data()));
@@ -73,9 +72,8 @@ void SolanaTxManager::AddUnapprovedTransaction(
     return;
   }
 
-  SolanaTxMeta meta(std::move(tx));
+  SolanaTxMeta meta(from, std::move(tx));
   meta.set_id(TxMeta::GenerateMetaID());
-  meta.set_from(from);
   meta.set_origin(
       origin.value_or(url::Origin::Create(GURL("chrome://wallet"))));
   meta.set_group_id(group_id);

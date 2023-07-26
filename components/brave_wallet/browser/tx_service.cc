@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_manager.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/eth_tx_manager.h"
@@ -19,6 +20,7 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "components/value_store/value_store_factory_impl.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
 namespace brave_wallet {
@@ -62,21 +64,23 @@ TxService::TxService(JsonRpcService* json_rpc_service,
       context_path.AppendASCII(kWalletBaseDirectory));
   delegate_ = std::make_unique<TxStorageDelegateImpl>(prefs, store_factory_,
                                                       ui_task_runner);
+  account_resolver_delegate_ =
+      std::make_unique<AccountResolverDelegateImpl>(keyring_service);
 
-  tx_manager_map_[mojom::CoinType::ETH] =
-      std::unique_ptr<TxManager>(new EthTxManager(
-          this, json_rpc_service, keyring_service, prefs, delegate_.get()));
-  tx_manager_map_[mojom::CoinType::SOL] =
-      std::unique_ptr<TxManager>(new SolanaTxManager(
-          this, json_rpc_service, keyring_service, prefs, delegate_.get()));
-  tx_manager_map_[mojom::CoinType::FIL] =
-      std::unique_ptr<TxManager>(new FilTxManager(
-          this, json_rpc_service, keyring_service, prefs, delegate_.get()));
+  tx_manager_map_[mojom::CoinType::ETH] = std::unique_ptr<TxManager>(
+      new EthTxManager(this, json_rpc_service, keyring_service, prefs,
+                       delegate_.get(), account_resolver_delegate_.get()));
+  tx_manager_map_[mojom::CoinType::SOL] = std::unique_ptr<TxManager>(
+      new SolanaTxManager(this, json_rpc_service, keyring_service, prefs,
+                          delegate_.get(), account_resolver_delegate_.get()));
+  tx_manager_map_[mojom::CoinType::FIL] = std::unique_ptr<TxManager>(
+      new FilTxManager(this, json_rpc_service, keyring_service, prefs,
+                       delegate_.get(), account_resolver_delegate_.get()));
   if (IsBitcoinEnabled()) {
     CHECK(bitcoin_wallet_service);
     tx_manager_map_[mojom::CoinType::BTC] = std::make_unique<BitcoinTxManager>(
         this, json_rpc_service, bitcoin_wallet_service, keyring_service, prefs,
-        delegate_.get());
+        delegate_.get(), account_resolver_delegate_.get());
   }
 }
 
@@ -149,11 +153,20 @@ void TxService::BindFilTxManagerProxy(
 
 void TxService::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
-    const std::string& from,
+    const std::string& from_address,
     const absl::optional<url::Origin>& origin,
     const absl::optional<std::string>& group_id,
     AddUnapprovedTransactionCallback callback) {
   auto coin_type = GetCoinTypeFromTxDataUnion(*tx_data_union);
+
+  auto from =
+      account_resolver_delegate_->ResolveAccountId(nullptr, &from_address);
+  if (!from) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
+    return;
+  }
 
   GetTxManager(coin_type)->AddUnapprovedTransaction(
       json_rpc_service_->GetChainIdSync(coin_type, origin),

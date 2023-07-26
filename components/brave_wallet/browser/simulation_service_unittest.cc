@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -74,6 +75,11 @@ class SimulationServiceUnitTest : public testing::Test {
   mojom::TransactionInfoPtr GetCannedScanEVMTransactionParams(
       bool eip1559,
       const std::string& chain_id) {
+    auto eth_account =
+        MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                      mojom::AccountKind::kDerived,
+                      "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+
     auto base_tx_data = mojom::TxData::New(
         "0x09", "0x4a817c800", "0x5208",
         "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
@@ -84,15 +90,13 @@ class SimulationServiceUnitTest : public testing::Test {
           std::make_unique<Eip1559Transaction>(
               *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
                   std::move(base_tx_data), "0x3", "0x1E", "0x32", nullptr)));
-      EthTxMeta meta(std::move(tx));
-      meta.set_from("0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+      EthTxMeta meta(eth_account, std::move(tx));
       meta.set_chain_id(chain_id);
       return meta.ToTransactionInfo();
     } else {
       std::unique_ptr<EthTransaction> tx = std::make_unique<EthTransaction>(
           *EthTransaction::FromTxData(std::move(base_tx_data)));
-      EthTxMeta meta(std::move(tx));
-      meta.set_from("0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+      EthTxMeta meta(eth_account, std::move(tx));
       meta.set_chain_id(chain_id);
       return meta.ToTransactionInfo();
     }
@@ -102,6 +106,10 @@ class SimulationServiceUnitTest : public testing::Test {
       absl::optional<std::string> origin,
       const std::string& chain_id) {
     std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+    auto sol_account =
+        MakeAccountId(mojom::CoinType::SOL, mojom::KeyringId::kSolana,
+                      mojom::AccountKind::kDerived, from_account);
+
     std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
     std::string recent_blockhash =
         "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
@@ -125,13 +133,12 @@ class SimulationServiceUnitTest : public testing::Test {
     tx->set_lamports(10000000u);
     tx->set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
 
-    SolanaTxMeta meta(std::move(tx));
+    SolanaTxMeta meta(sol_account, std::move(tx));
     SolanaSignatureStatus status(82, 10, "", "confirmed");
     meta.set_signature_status(status);
 
     meta.set_id("meta_id");
     meta.set_status(mojom::TransactionStatus::Confirmed);
-    meta.set_from("BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
     base::Time::Exploded x{1981, 3, 0, 1, 2};
     base::Time confirmed_time = meta.confirmed_time();
     EXPECT_TRUE(base::Time::FromUTCExploded(x, &confirmed_time));

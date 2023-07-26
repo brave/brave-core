@@ -24,6 +24,7 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "components/prefs/pref_service.h"
@@ -54,7 +55,7 @@ class MockTxStateManagerObserver : public TxStateManager::Observer {
 
 class TxStateManagerUnitTest : public testing::Test {
  public:
-  TxStateManagerUnitTest() {}
+  TxStateManagerUnitTest() = default;
 
  protected:
   void SetUp() override {
@@ -65,9 +66,15 @@ class TxStateManagerUnitTest : public testing::Test {
     // EthTxStateManager to test common methods in TxStateManager.
     factory_ = GetTestValueStoreFactory(temp_dir_);
     delegate_ = GetTxStorageDelegateForTest(&prefs_, factory_);
+    account_resolver_delegate_ =
+        std::make_unique<AccountResolverDelegateForTest>();
     WaitForTxStorageDelegateInitialized(delegate_.get());
-    tx_state_manager_ =
-        std::make_unique<EthTxStateManager>(&prefs_, delegate_.get());
+    tx_state_manager_ = std::make_unique<EthTxStateManager>(
+        &prefs_, delegate_.get(), account_resolver_delegate_.get());
+    eth_account_id_ = account_resolver_delegate_->RegisterAccount(
+        MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                      mojom::AccountKind::kDerived,
+                      "0x2f015c60e0be116b1f0cd534704db9c92118fb6a"));
   }
 
   void UpdateCustomNetworks(PrefService* prefs,
@@ -99,11 +106,13 @@ class TxStateManagerUnitTest : public testing::Test {
   base::ScopedTempDir temp_dir_;
   scoped_refptr<value_store::TestValueStoreFactory> factory_;
   std::unique_ptr<TxStorageDelegateImpl> delegate_;
+  std::unique_ptr<AccountResolverDelegateForTest> account_resolver_delegate_;
+  mojom::AccountIdPtr eth_account_id_;
   std::unique_ptr<TxStateManager> tx_state_manager_;
 };
 
 TEST_F(TxStateManagerUnitTest, TxOperations) {
-  EthTxMeta meta;
+  EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
   meta.set_id("001");
   meta.set_chain_id(mojom::kMainnetChainId);
   EXPECT_FALSE(GetTxs());
@@ -213,14 +222,24 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
 
   std::string addr1 = "0x3535353535353535353535353535353535353535";
   std::string addr2 = "0x2f015c60e0be116b1f0cd534704db9c92118fb6a";
+  std::string addr3 = "0x3333333333333333333333333333333333333333";
+
+  auto acc1 = account_resolver_delegate_->RegisterAccount(
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived, addr1));
+  auto acc2 = account_resolver_delegate_->RegisterAccount(
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived, addr2));
+  auto acc3 = account_resolver_delegate_->RegisterAccount(
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived, addr3));
 
   for (size_t i = 0; i < 20; ++i) {
-    EthTxMeta meta;
-    meta.set_from("0x3333333333333333333333333333333333333333");
+    EthTxMeta meta(acc3, std::make_unique<EthTransaction>());
     meta.set_id(base::NumberToString(i));
     if (i % 2 == 0) {
       if (i % 4 == 0) {
-        meta.set_from(addr1);
+        meta.set_from(acc1);
       }
       if (i % 6 == 0) {
         meta.set_chain_id(mojom::kMainnetChainId);
@@ -230,7 +249,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
       meta.set_status(mojom::TransactionStatus::Confirmed);
     } else {
       if (i % 5 == 0) {
-        meta.set_from(addr2);
+        meta.set_from(acc2);
       }
       if (i % 7 == 0) {
         meta.set_chain_id(mojom::kMainnetChainId);
@@ -350,8 +369,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
   UpdateCustomNetworks(&prefs_, std::move(values), custom_chain.coin);
 
   // Add a transaction on the custom chain
-  EthTxMeta meta;
-  meta.set_from(addr1);
+  EthTxMeta meta(acc1, std::make_unique<EthTransaction>());
   meta.set_id("xyz");
   meta.set_chain_id(custom_chain.chain_id);
   meta.set_status(mojom::TransactionStatus::Submitted);
@@ -404,7 +422,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
 TEST_F(TxStateManagerUnitTest, MultiChainId) {
   prefs_.ClearPref(kBraveWalletTransactions);
 
-  EthTxMeta meta;
+  EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
   meta.set_id("001");
   meta.set_chain_id(mojom::kMainnetChainId);
   ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
@@ -444,9 +462,10 @@ TEST_F(TxStateManagerUnitTest, MultiChainId) {
 
 TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
   for (size_t i = 0; i < 1000; ++i) {
-    EthTxMeta meta;
+    EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
     meta.set_id(base::NumberToString(i));
     meta.set_chain_id(mojom::kMainnetChainId);
+
     if (i % 2 == 0) {
       meta.set_status(mojom::TransactionStatus::Confirmed);
       meta.set_confirmed_time(base::Time::Now());
@@ -458,7 +477,7 @@ TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
   }
 
   EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "0"));
-  EthTxMeta meta1000;
+  EthTxMeta meta1000(eth_account_id_, std::make_unique<EthTransaction>());
   meta1000.set_id("1000");
   meta1000.set_chain_id(mojom::kMainnetChainId);
   meta1000.set_status(mojom::TransactionStatus::Confirmed);
@@ -467,7 +486,7 @@ TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
   EXPECT_FALSE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "0"));
 
   EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "1"));
-  EthTxMeta meta1001;
+  EthTxMeta meta1001(eth_account_id_, std::make_unique<EthTransaction>());
   meta1001.set_id("1001");
   meta1001.set_chain_id(mojom::kMainnetChainId);
   meta1001.set_status(mojom::TransactionStatus::Rejected);
@@ -478,7 +497,7 @@ TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
   // Other status doesn't matter
   EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "2"));
   EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "3"));
-  EthTxMeta meta1002;
+  EthTxMeta meta1002(eth_account_id_, std::make_unique<EthTransaction>());
   meta1002.set_id("1002");
   meta1002.set_chain_id(mojom::kMainnetChainId);
   meta1002.set_status(mojom::TransactionStatus::Submitted);
@@ -488,7 +507,7 @@ TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
   EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "3"));
 
   // Other chain id doesn't matter
-  EthTxMeta meta1003;
+  EthTxMeta meta1003(eth_account_id_, std::make_unique<EthTransaction>());
   meta1003.set_id("1003");
   meta1003.set_chain_id(mojom::kGoerliChainId);
   meta1003.set_status(mojom::TransactionStatus::Confirmed);
@@ -501,7 +520,7 @@ TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
 TEST_F(TxStateManagerUnitTest, Observer) {
   MockTxStateManagerObserver observer(tx_state_manager_.get());
 
-  EthTxMeta meta;
+  EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
   meta.set_id("001");
   // Add
   EXPECT_CALL(observer,

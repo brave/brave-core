@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
 
@@ -43,8 +44,11 @@ mojom::TransactionInfoPtr GetCannedScanEVMTransactionParams(
           : std::make_unique<EthTransaction>(
                 *EthTransaction::FromTxData(std::move(base_tx_data)));
 
-  EthTxMeta meta(std::move(tx));
-  meta.set_from("0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  auto eth_account =
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived,
+                    "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  EthTxMeta meta(eth_account, std::move(tx));
 
   if (origin) {
     meta.set_origin(url::Origin::Create(GURL(*origin)));
@@ -56,6 +60,9 @@ mojom::TransactionInfoPtr GetCannedScanEVMTransactionParams(
 mojom::TransactionInfoPtr GetCannedScanSolanaTransactionParams(
     absl::optional<std::string> origin) {
   std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  auto sol_account =
+      MakeAccountId(mojom::CoinType::SOL, mojom::KeyringId::kSolana,
+                    mojom::AccountKind::kDerived, from_account);
   std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
   std::string recent_blockhash = "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
   uint64_t last_valid_block_height = 3090;
@@ -77,13 +84,12 @@ mojom::TransactionInfoPtr GetCannedScanSolanaTransactionParams(
   tx->set_lamports(10000000u);
   tx->set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
 
-  SolanaTxMeta meta(std::move(tx));
+  SolanaTxMeta meta(sol_account, std::move(tx));
   SolanaSignatureStatus status(82, 10, "", "confirmed");
   meta.set_signature_status(status);
 
   meta.set_id("meta_id");
   meta.set_status(mojom::TransactionStatus::Confirmed);
-  meta.set_from("BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
   base::Time::Exploded x{1981, 3, 0, 1, 2};
   base::Time confirmed_time = meta.confirmed_time();
   EXPECT_TRUE(base::Time::FromUTCExploded(x, &confirmed_time));

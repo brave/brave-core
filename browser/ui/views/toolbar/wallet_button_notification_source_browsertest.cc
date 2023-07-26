@@ -188,8 +188,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
     auto tx_data = brave_wallet::mojom::TxDataUnion::NewFilTxData(
         brave_wallet::mojom::FilTxData::New(
             "" /* nonce */, "10" /* gas_premium */, "10" /* gas_fee_cap */,
-            "100" /* gas_limit */, "" /* max_fee */, to_account, from_account,
-            "11"));
+            "100" /* gas_limit */, "" /* max_fee */, to_account, "11"));
     tx_service()->AddUnapprovedTransaction(
         std::move(tx_data), from_account, absl::nullopt, absl::nullopt,
         base::BindLambdaForTesting([&](bool success, const std::string& id,
@@ -364,8 +363,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
     auto tx_data = brave_wallet::mojom::TxDataUnion::NewFilTxData(
         brave_wallet::mojom::FilTxData::New(
             "" /* nonce */, "10" /* gas_premium */, "10" /* gas_fee_cap */,
-            "100" /* gas_limit */, "" /* max_fee */, to_account, from_account,
-            "11"));
+            "100" /* gas_limit */, "" /* max_fee */, to_account, "11"));
     tx_service()->AddUnapprovedTransaction(
         std::move(tx_data), from_account, absl::nullopt, absl::nullopt,
         base::BindLambdaForTesting([&](bool success, const std::string& id,

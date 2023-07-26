@@ -28,7 +28,8 @@ class BitcoinTxStateManager : public TxStateManager {
  public:
   BitcoinTxStateManager(PrefService* prefs,
                         TxStorageDelegate* delegate,
-                        JsonRpcService* json_rpc_service);
+                        JsonRpcService* json_rpc_service,
+                        AccountResolverDelegate* account_resolver_delegate);
   ~BitcoinTxStateManager() override;
   BitcoinTxStateManager(const BitcoinTxStateManager&) = delete;
   BitcoinTxStateManager operator=(const BitcoinTxStateManager&) = delete;

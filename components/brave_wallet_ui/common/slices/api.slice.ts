@@ -1590,7 +1590,6 @@ export function createWalletApi () {
               gasLimit: payload.gasLimit || '',
               maxFee: payload.maxFee || '0',
               to: payload.to,
-              from: payload.fromAccount.address,
               value: payload.value
             }
 

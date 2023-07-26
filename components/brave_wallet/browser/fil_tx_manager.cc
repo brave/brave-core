@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/notreached.h"
+#include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/fil_block_tracker.h"
 #include "brave/components/brave_wallet/browser/fil_nonce_tracker.h"
@@ -31,15 +32,19 @@ FilTxManager::FilTxManager(TxService* tx_service,
                            JsonRpcService* json_rpc_service,
                            KeyringService* keyring_service,
                            PrefService* prefs,
-                           TxStorageDelegate* delegate)
-    : TxManager(std::make_unique<FilTxStateManager>(prefs, delegate),
+                           TxStorageDelegate* delegate,
+                           AccountResolverDelegate* account_resolver_delegate)
+    : TxManager(std::make_unique<FilTxStateManager>(prefs,
+                                                    delegate,
+                                                    account_resolver_delegate),
                 std::make_unique<FilBlockTracker>(json_rpc_service),
                 tx_service,
                 json_rpc_service,
                 keyring_service,
                 prefs),
       nonce_tracker_(std::make_unique<FilNonceTracker>(GetFilTxStateManager(),
-                                                       json_rpc_service)) {
+                                                       json_rpc_service)),
+      account_resolver_delegate_(account_resolver_delegate) {
   GetFilBlockTracker()->AddObserver(this);
 }
 
@@ -48,7 +53,7 @@ FilTxManager::~FilTxManager() {
 }
 
 void FilTxManager::GetEstimatedGas(const std::string& chain_id,
-                                   const std::string& from,
+                                   const mojom::AccountIdPtr& from,
                                    const absl::optional<url::Origin>& origin,
                                    const absl::optional<std::string>& group_id,
                                    std::unique_ptr<FilTransaction> tx,
@@ -61,16 +66,16 @@ void FilTxManager::GetEstimatedGas(const std::string& chain_id,
   const std::string max_fee = tx->max_fee();
   auto to = tx->to().EncodeAsString();
   json_rpc_service_->GetFilEstimateGas(
-      chain_id, from, to, gas_premium, gas_fee_cap, gas_limit, nonce, max_fee,
-      value,
+      chain_id, from->address, to, gas_premium, gas_fee_cap, gas_limit, nonce,
+      max_fee, value,
       base::BindOnce(&FilTxManager::ContinueAddUnapprovedTransaction,
-                     weak_factory_.GetWeakPtr(), chain_id, from, origin,
+                     weak_factory_.GetWeakPtr(), chain_id, from.Clone(), origin,
                      group_id, std::move(tx), std::move(callback)));
 }
 
 void FilTxManager::ContinueAddUnapprovedTransaction(
     const std::string& chain_id,
-    const std::string& from,
+    const mojom::AccountIdPtr& from,
     const absl::optional<url::Origin>& origin,
     const absl::optional<std::string>& group_id,
     std::unique_ptr<FilTransaction> tx,
@@ -88,9 +93,8 @@ void FilTxManager::ContinueAddUnapprovedTransaction(
   tx->set_gas_premium(gas_premium);
   tx->set_fee_cap(gas_fee_cap);
   tx->set_gas_limit(gas_limit);
-  FilTxMeta meta(std::move(tx));
+  FilTxMeta meta(from, std::move(tx));
   meta.set_id(TxMeta::GenerateMetaID());
-  meta.set_from(FilAddress::FromAddress(from).EncodeAsString());
   meta.set_origin(
       origin.value_or(url::Origin::Create(GURL("chrome://wallet"))));
   meta.set_group_id(group_id);
@@ -109,19 +113,12 @@ void FilTxManager::ContinueAddUnapprovedTransaction(
 void FilTxManager::AddUnapprovedTransaction(
     const std::string& chain_id,
     mojom::TxDataUnionPtr tx_data_union,
-    const std::string& from,
+    const mojom::AccountIdPtr& from,
     const absl::optional<url::Origin>& origin,
     const absl::optional<std::string>& group_id,
     AddUnapprovedTransactionCallback callback) {
   DCHECK(tx_data_union->is_fil_tx_data());
-  if (!FilAddress::IsValidAddress(from)) {
-    std::move(callback).Run(
-        false, "",
-        l10n_util::GetStringUTF8(IDS_WALLET_FIL_SEND_TRANSACTION_FROM_INVALID));
-    return;
-  }
-  auto tx =
-      FilTransaction::FromTxData(std::move(tx_data_union->get_fil_tx_data()));
+  auto tx = FilTransaction::FromTxData(tx_data_union->get_fil_tx_data());
   if (!tx) {
     std::move(callback).Run(
         false, "",
@@ -165,9 +162,9 @@ void FilTxManager::ApproveTransaction(const std::string& chain_id,
     return;
   }
   if (!meta->tx()->nonce()) {
-    auto from = meta->from();
+    auto from = meta->from().Clone();
     nonce_tracker_->GetNextNonce(
-        chain_id, from,
+        chain_id, from->address,
         base::BindOnce(&FilTxManager::OnGetNextNonce,
                        weak_factory_.GetWeakPtr(), std::move(meta),
                        std::move(callback)));
@@ -208,8 +205,8 @@ void FilTxManager::OnGetNextNonce(std::unique_ptr<FilTxMeta> meta,
     return;
   }
 
-  auto signed_tx =
-      keyring_service_->SignTransactionByFilecoinKeyring(meta->tx());
+  auto signed_tx = keyring_service_->SignTransactionByFilecoinKeyring(
+      *meta->from(), meta->tx());
   if (!signed_tx) {
     std::move(callback).Run(
         false,
@@ -315,9 +312,9 @@ void FilTxManager::GetTransactionMessageToSign(
     return;
   }
   if (!meta->tx()->nonce()) {
-    auto from = meta->from();
+    auto from = meta->from().Clone();
     nonce_tracker_->GetNextNonce(
-        chain_id, from,
+        chain_id, from->address,
         base::BindOnce(&FilTxManager::OnGetNextNonceForHardware,
                        weak_factory_.GetWeakPtr(), std::move(meta),
                        std::move(callback)));
@@ -353,7 +350,13 @@ void FilTxManager::OnGetNextNonceForHardware(
     return;
   }
 
-  auto message = meta->tx()->GetMessageToSignJson();
+  auto fil_address = FilAddress::FromAddress(meta->from()->address);
+  if (fil_address.IsEmpty()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  auto message = meta->tx()->GetMessageToSignJson(fil_address);
   if (!message.has_value()) {
     std::move(callback).Run(nullptr);
     return;

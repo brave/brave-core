@@ -8,6 +8,7 @@
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/filecoin/rs/src/lib.rs.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -50,9 +51,6 @@ TEST(FilTransactionUnitTest, Initialization) {
   auto to =
       FilAddress::FromAddress("t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
   first.set_to(to);
-  auto from =
-      FilAddress::FromAddress("t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq");
-  first.set_from(from);
   first.set_value("6");
 
   EXPECT_EQ(first.nonce().value(), 1u);
@@ -61,13 +59,11 @@ TEST(FilTransactionUnitTest, Initialization) {
   EXPECT_EQ(first.gas_limit(), 4u);
   EXPECT_EQ(first.max_fee(), "5");
   EXPECT_EQ(first.to(), to);
-  EXPECT_EQ(first.from(), from);
   EXPECT_EQ(first.value(), "6");
 
   EXPECT_NE(first, empty);
   auto third = FilTransaction::FromTxData(
-      mojom::FilTxData::New("1", "2", "3", "4", "5", to.EncodeAsString(),
-                            from.EncodeAsString(), "6"));
+      mojom::FilTxData::New("1", "2", "3", "4", "5", to.EncodeAsString(), "6"));
   EXPECT_TRUE(third);
   EXPECT_EQ(third->nonce().value(), 1u);
   EXPECT_EQ(third->gas_premium(), "2");
@@ -75,85 +71,86 @@ TEST(FilTransactionUnitTest, Initialization) {
   EXPECT_EQ(third->gas_limit(), 4u);
   EXPECT_EQ(third->max_fee(), "5");
   EXPECT_EQ(third->to(), to);
-  EXPECT_EQ(third->from(), from);
   EXPECT_EQ(third->value(), "6");
   EXPECT_EQ(first, *third);
 }
 
 TEST(FilTransactionUnitTest, FromTxData) {
   // nonce empty
-  auto empty_nonce = FilTransaction::FromTxData(mojom::FilTxData::New(
-      "", "2", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "1"));
+  auto empty_nonce = FilTransaction::FromTxData(
+      mojom::FilTxData::New("", "2", "3", "4", "5",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "1"));
   ASSERT_TRUE(empty_nonce);
   EXPECT_FALSE(empty_nonce->nonce());
 
   // non numeric values
-  EXPECT_FALSE(FilTransaction::FromTxData(mojom::FilTxData::New(
-      "a", "2", "3", "4", "d", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
-  EXPECT_FALSE(FilTransaction::FromTxData(mojom::FilTxData::New(
-      "1", "b", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
-  EXPECT_FALSE(FilTransaction::FromTxData(mojom::FilTxData::New(
-      "1", "2", "c", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
-  EXPECT_FALSE(FilTransaction::FromTxData(mojom::FilTxData::New(
-      "1", "2", "3", "d", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
-  EXPECT_FALSE(FilTransaction::FromTxData(mojom::FilTxData::New(
-      "1", "2", "3", "4", "e", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
+  EXPECT_FALSE(FilTransaction::FromTxData(
+      mojom::FilTxData::New("a", "2", "3", "4", "d",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6")));
+  EXPECT_FALSE(FilTransaction::FromTxData(
+      mojom::FilTxData::New("1", "b", "3", "4", "5",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6")));
+  EXPECT_FALSE(FilTransaction::FromTxData(
+      mojom::FilTxData::New("1", "2", "c", "4", "5",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6")));
+  EXPECT_FALSE(FilTransaction::FromTxData(
+      mojom::FilTxData::New("1", "2", "3", "d", "5",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6")));
+  EXPECT_FALSE(FilTransaction::FromTxData(
+      mojom::FilTxData::New("1", "2", "3", "4", "e",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6")));
 
   // empty values
-  EXPECT_TRUE(FilTransaction::FromTxData(mojom::FilTxData::New(
-      "", "2", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
-  EXPECT_TRUE(FilTransaction::FromTxData(mojom::FilTxData::New(
-      "1", "", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
-  EXPECT_TRUE(FilTransaction::FromTxData(mojom::FilTxData::New(
-      "1", "2", "", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
-  EXPECT_TRUE(FilTransaction::FromTxData(mojom::FilTxData::New(
-      "1", "2", "3", "", "", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
+  EXPECT_TRUE(FilTransaction::FromTxData(
+      mojom::FilTxData::New("", "2", "3", "4", "5",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6")));
+  EXPECT_TRUE(FilTransaction::FromTxData(
+      mojom::FilTxData::New("1", "", "3", "4", "5",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6")));
+  EXPECT_TRUE(FilTransaction::FromTxData(
+      mojom::FilTxData::New("1", "2", "", "4", "5",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6")));
+  EXPECT_TRUE(FilTransaction::FromTxData(
+      mojom::FilTxData::New("1", "2", "3", "", "",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6")));
   EXPECT_FALSE(FilTransaction::FromTxData(
-      mojom::FilTxData::New("1", "2", "3", "4", "5", "", "", "6")));
-  EXPECT_TRUE(FilTransaction::FromTxData(mojom::FilTxData::New(
-      "1", "2", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
+      mojom::FilTxData::New("1", "2", "3", "4", "5", "", "6")));
+  EXPECT_TRUE(FilTransaction::FromTxData(
+      mojom::FilTxData::New("1", "2", "3", "4", "5",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6")));
 
   // invalid address
-  EXPECT_FALSE(FilTransaction::FromTxData(mojom::FilTxData::New(
-      "1", "2", "3", "4", "e", "t1h4n7rp3q", "t1h4n7rp2a", "0x1")));
+  EXPECT_FALSE(FilTransaction::FromTxData(
+      mojom::FilTxData::New("1", "2", "3", "4", "e", "t1h4n7rp3q", "0x1")));
 
   // invalid value
   EXPECT_FALSE(FilTransaction::FromTxData(mojom::FilTxData::New(
       "1", "2", "3", "4", "e", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "0x1")));
-  EXPECT_FALSE(FilTransaction::FromTxData(mojom::FilTxData::New(
-      "1", "2", "3", "4", "e", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "")));
+      "0x1")));
+  EXPECT_FALSE(FilTransaction::FromTxData(
+      mojom::FilTxData::New("1", "2", "3", "4", "e",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "")));
 }
 
 TEST(FilTransactionUnitTest, Serialization) {
-  auto transaction = FilTransaction::FromTxData(mojom::FilTxData::New(
-      "1", "2", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6"));
+  auto transaction = FilTransaction::FromTxData(
+      mojom::FilTxData::New("1", "2", "3", "4", "5",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6"));
   EXPECT_EQ(transaction, FilTransaction::FromValue(transaction->ToValue()));
 
-  auto empty_nonce = FilTransaction::FromTxData(mojom::FilTxData::New(
-      "", "2", "3", "1", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6"));
+  auto empty_nonce = FilTransaction::FromTxData(
+      mojom::FilTxData::New("", "2", "3", "1", "5",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6"));
   EXPECT_EQ(empty_nonce, FilTransaction::FromValue(empty_nonce->ToValue()));
 }
 
 TEST(FilTransactionUnitTest, GetMessageToSignSecp) {
-  auto transaction = FilTransaction::FromTxData(mojom::FilTxData::New(
-      "", "2", "3", "1", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6"));
-  auto message_to_sign = transaction->GetMessageToSignJson();
+  auto from =
+      FilAddress::FromAddress("t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq");
+  auto transaction = FilTransaction::FromTxData(
+      mojom::FilTxData::New("", "2", "3", "1", "5",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6"));
+  auto message_to_sign = transaction->GetMessageToSignJson(from);
   ASSERT_TRUE(message_to_sign);
   CompareJSONs(*message_to_sign,
                R"({
@@ -169,7 +166,7 @@ TEST(FilTransactionUnitTest, GetMessageToSignSecp) {
                  "Version": 0
                })");
   transaction->set_nonce(1);
-  message_to_sign = transaction->GetMessageToSignJson();
+  message_to_sign = transaction->GetMessageToSignJson(from);
   ASSERT_TRUE(message_to_sign);
   CompareJSONs(*message_to_sign,
                R"({
@@ -189,7 +186,7 @@ TEST(FilTransactionUnitTest, GetMessageToSignSecp) {
       DecodePrivateKey("8VcW07ADswS4BV2cxi5rnIadVsyTDDhY1NfDH19T8Uo=");
   std::vector<uint8_t> private_key(private_key_decoded.begin(),
                                    private_key_decoded.end());
-  auto signature = transaction->GetSignedTransaction(private_key);
+  auto signature = transaction->GetSignedTransaction(from, private_key);
   ASSERT_TRUE(signature.has_value());
   auto signature_value = base::JSONReader::Read(*signature);
   EXPECT_TRUE(signature_value);
@@ -217,9 +214,10 @@ TEST(FilTransactionUnitTest, GetMessageToSignBLS) {
   const std::string to_account =
       "t3uylp7xgte6rpiqhpivxohtzs7okpnq44mnckimwf6mgi6yc4o6f3iyd426u6wzloiig3a4"
       "ocyug4ftz64xza";
-  auto transaction = FilTransaction::FromTxData(mojom::FilTxData::New(
-      "1", "2", "3", "1", "5", from_account, to_account, "6"));
-  auto message_to_sign = transaction->GetMessageToSignJson();
+  auto transaction = FilTransaction::FromTxData(
+      mojom::FilTxData::New("1", "2", "3", "1", "5", to_account, "6"));
+  auto message_to_sign =
+      transaction->GetMessageToSignJson(FilAddress::FromAddress(from_account));
   ASSERT_TRUE(message_to_sign);
   std::string expected_message =
       R"({
@@ -244,7 +242,8 @@ TEST(FilTransactionUnitTest, GetMessageToSignBLS) {
 
   std::vector<uint8_t> private_key(private_key_decoded.begin(),
                                    private_key_decoded.end());
-  auto signature = transaction->GetSignedTransaction(private_key);
+  auto signature = transaction->GetSignedTransaction(
+      FilAddress::FromAddress(from_account), private_key);
   ASSERT_TRUE(signature.has_value());
   auto signature_value = base::JSONReader::Read(*signature);
   EXPECT_TRUE(signature_value);
@@ -268,9 +267,9 @@ TEST(FilTransactionUnitTest, GetMessageToSignBLS) {
 }
 
 TEST(FilTransactionUnitTest, ToFilTxData) {
-  auto tx_data = mojom::FilTxData::New(
-      "1", "2", "3", "1", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6");
+  auto tx_data =
+      mojom::FilTxData::New("1", "2", "3", "1", "5",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6");
   auto transaction = FilTransaction::FromTxData(tx_data);
   EXPECT_EQ(transaction->ToFilTxData(), tx_data);
 }
