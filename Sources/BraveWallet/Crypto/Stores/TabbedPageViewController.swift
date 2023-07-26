@@ -108,8 +108,8 @@ class TabbedPageViewController: UIViewController {
 
     if let scrollView = pageViewController.scrollView {
       contentOffsetObservation =
-        scrollView.observe(\.contentOffset) { [unowned self] scrollView, _ in
-          updateTabsBarSelectionIndicator(contentOffset: scrollView.contentOffset)
+        scrollView.observe(\.contentOffset) { [weak self] scrollView, _ in
+          self?.updateTabsBarSelectionIndicator(contentOffset: scrollView.contentOffset)
         }
     }
   }
