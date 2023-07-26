@@ -14,8 +14,8 @@ const genGradle = (passthroughArgs, build_dir) => {
         Log.progressStart('Generating Gradle files')
         args = [
             'build/android/gradle/generate_gradle.py',
-            '--output-directory', 
-            build_dir 
+            '--output-directory',
+            build_dir
         ]
         args.push(... passthroughArgs)
         util.run('python3', args, options)

@@ -11,6 +11,7 @@ _GENERATED_JAVA_SUBDIR = 'generated_java'
 _INPUT_SRC_JARS = 'input_srcjars'
 _BRAVE_GEN_COMPONENTS = os.path.join('gen', 'brave', 'components')
 
+
 @override_utils.override_function(_ProjectEntry)
 def GeneratedJavaSubdir(orig_func, self):
     gen_path = os.path.join('gen', self.GradleSubdir(), _GENERATED_JAVA_SUBDIR)
