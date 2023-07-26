@@ -227,7 +227,7 @@ path = "ahash/v0_7/crate"
 package = "ahash"
 
 [patch.crates-io.aho-corasick_v0_7]
-path = "aho_corasick/v0_7/crate"
+path = "../../../third_party/rust/aho_corasick/v0_7/crate"
 package = "aho-corasick"
 
 [patch.crates-io.android_system_properties_v0_1]
@@ -239,7 +239,7 @@ path = "ansi_term/v0_12/crate"
 package = "ansi_term"
 
 [patch.crates-io.anyhow_v1]
-path = "anyhow/v1/crate"
+path = "../../../third_party/rust/anyhow/v1/crate"
 package = "anyhow"
 
 [patch.crates-io.arrayref_v0_3]
@@ -255,11 +255,11 @@ path = "async_trait/v0_1/crate"
 package = "async-trait"
 
 [patch.crates-io.atty_v0_2]
-path = "atty/v0_2/crate"
+path = "../../../third_party/rust/atty/v0_2/crate"
 package = "atty"
 
 [patch.crates-io.autocfg_v1]
-path = "autocfg/v1/crate"
+path = "../../../third_party/rust/autocfg/v1/crate"
 package = "autocfg"
 
 [patch.crates-io.base-x_v0_2]
@@ -267,7 +267,7 @@ path = "base_x/v0_2/crate"
 package = "base-x"
 
 [patch.crates-io.base64_v0_13]
-path = "base64/v0_13/crate"
+path = "../../../third_party/rust/base64/v0_13/crate"
 package = "base64"
 
 [patch.crates-io.bigdecimal_v0_1]
@@ -279,7 +279,7 @@ path = "bincode/v1/crate"
 package = "bincode"
 
 [patch.crates-io.bitflags_v1]
-path = "bitflags/v1/crate"
+path = "../../../third_party/rust/bitflags/v1/crate"
 package = "bitflags"
 
 [patch.crates-io.bitvec_v1]
@@ -315,15 +315,15 @@ path = "bytes/v0_4/crate"
 package = "bytes"
 
 [patch.crates-io.camino_v1]
-path = "camino/v1/crate"
+path = "../../../third_party/rust/camino/v1/crate"
 package = "camino"
 
 [patch.crates-io.cargo-platform_v0_1]
-path = "cargo_platform/v0_1/crate"
+path = "../../../third_party/rust/cargo_platform/v0_1/crate"
 package = "cargo-platform"
 
 [patch.crates-io.cargo_metadata_v0_14]
-path = "cargo_metadata/v0_14/crate"
+path = "../../../third_party/rust/cargo_metadata/v0_14/crate"
 package = "cargo_metadata"
 
 [patch.crates-io.cbor4ii_v0_2]
@@ -331,7 +331,7 @@ path = "cbor4ii/v0_2/crate"
 package = "cbor4ii"
 
 [patch.crates-io.cfg-if_v1]
-path = "cfg_if/v1/crate"
+path = "../../../third_party/rust/cfg_if/v1/crate"
 package = "cfg-if"
 
 [patch.crates-io.challenge-bypass-ristretto_v1]
@@ -347,15 +347,15 @@ path = "cid/v0_8/crate"
 package = "cid"
 
 [patch.crates-io.clap_lex_v0_3]
-path = "clap_lex/v0_3/crate"
+path = "../../../third_party/rust/clap_lex/v0_3/crate"
 package = "clap_lex"
 
 [patch.crates-io.clap_v4]
-path = "clap/v4/crate"
+path = "../../../third_party/rust/clap/v4/crate"
 package = "clap"
 
 [patch.crates-io.codespan-reporting_v0_11]
-path = "codespan_reporting/v0_11/crate"
+path = "../../../third_party/rust/codespan_reporting/v0_11/crate"
 package = "codespan-reporting"
 
 [patch.crates-io.constant_time_eq_v0_2]
@@ -419,15 +419,15 @@ path = "curve25519_dalek/v3/crate"
 package = "curve25519-dalek"
 
 [patch.crates-io.cxx_v1]
-path = "cxx/v1/crate"
+path = "../../../third_party/rust/cxx/v1/crate"
 package = "cxx"
 
 [patch.crates-io.cxxbridge-cmd_v1]
-path = "cxxbridge_cmd/v1/crate"
+path = "../../../third_party/rust/cxxbridge_cmd/v1/crate"
 package = "cxxbridge-cmd"
 
 [patch.crates-io.cxxbridge-macro_v1]
-path = "cxxbridge_macro/v1/crate"
+path = "../../../third_party/rust/cxxbridge_macro/v1/crate"
 package = "cxxbridge-macro"
 
 [patch.crates-io.data-encoding-macro-internal_v0_1]
@@ -487,11 +487,11 @@ path = "encoding_rs/v0_8/crate"
 package = "encoding_rs"
 
 [patch.crates-io.env_logger_v0_10]
-path = "env_logger/v0_10/crate"
+path = "../../../third_party/rust/env_logger/v0_10/crate"
 package = "env_logger"
 
 [patch.crates-io.fastrand_v1]
-path = "fastrand/v1/crate"
+path = "../../../third_party/rust/fastrand/v1/crate"
 package = "fastrand"
 
 [patch.crates-io.feed-rs_v1]
@@ -603,7 +603,7 @@ path = "getrandom/v0_1/crate"
 package = "getrandom"
 
 [patch.crates-io.getrandom_v0_2]
-path = "getrandom/v0_2/crate"
+path = "../../../third_party/rust/getrandom/v0_2/crate"
 package = "getrandom"
 
 [patch.crates-io.git-version-macro_v0_3]
@@ -619,7 +619,7 @@ path = "group/v0_12/crate"
 package = "group"
 
 [patch.crates-io.hashbrown_v0_11]
-path = "hashbrown/v0_11/crate"
+path = "../../../third_party/rust/hashbrown/v0_11/crate"
 package = "hashbrown"
 
 [patch.crates-io.hashbrown_v0_12]
@@ -627,11 +627,11 @@ path = "hashbrown/v0_12/crate"
 package = "hashbrown"
 
 [patch.crates-io.hex-literal_v0_4]
-path = "hex_literal/v0_4/crate"
+path = "../../../third_party/rust/hex_literal/v0_4/crate"
 package = "hex-literal"
 
 [patch.crates-io.hex_v0_4]
-path = "hex/v0_4/crate"
+path = "../../../third_party/rust/hex/v0_4/crate"
 package = "hex"
 
 [patch.crates-io.hkdf_v0_11]
@@ -679,7 +679,7 @@ path = "idna/v0_3/crate"
 package = "idna"
 
 [patch.crates-io.indexmap_v1]
-path = "indexmap/v1/crate"
+path = "../../../third_party/rust/indexmap/v1/crate"
 package = "indexmap"
 
 [patch.crates-io.iovec_v0_1]
@@ -691,11 +691,11 @@ path = "itertools/v0_10/crate"
 package = "itertools"
 
 [patch.crates-io.itoa_v0_4]
-path = "itoa/v0_4/crate"
+path = "../../../third_party/rust/itoa/v0_4/crate"
 package = "itoa"
 
 [patch.crates-io.itoa_v1]
-path = "itoa/v1/crate"
+path = "../../../third_party/rust/itoa/v1/crate"
 package = "itoa"
 
 [patch.crates-io.keccak_v0_1]
@@ -707,7 +707,7 @@ path = "kuchiki/v0_8/crate"
 package = "kuchiki"
 
 [patch.crates-io.lazy_static_v1]
-path = "lazy_static/v1/crate"
+path = "../../../third_party/rust/lazy_static/v1/crate"
 package = "lazy_static"
 
 [patch.crates-io.lazycell_v1]
@@ -715,7 +715,7 @@ path = "lazycell/v1/crate"
 package = "lazycell"
 
 [patch.crates-io.libc_v0_2]
-path = "libc/v0_2/crate"
+path = "../../../third_party/rust/libc/v0_2/crate"
 package = "libc"
 
 [patch.crates-io.libsecp256k1-core_v0_3]
@@ -739,7 +739,7 @@ path = "lifeguard/v0_6/crate"
 package = "lifeguard"
 
 [patch.crates-io.link-cplusplus_v1]
-path = "link_cplusplus/v1/crate"
+path = "../../../third_party/rust/link_cplusplus/v1/crate"
 package = "link-cplusplus"
 
 [patch.crates-io.lock_api_v0_4]
@@ -747,7 +747,7 @@ path = "lock_api/v0_4/crate"
 package = "lock_api"
 
 [patch.crates-io.log_v0_4]
-path = "log/v0_4/crate"
+path = "../../../third_party/rust/log/v0_4/crate"
 package = "log"
 
 [patch.crates-io.lol_html_v0_3]
@@ -767,11 +767,11 @@ path = "matches/v0_1/crate"
 package = "matches"
 
 [patch.crates-io.memchr_v2]
-path = "memchr/v2/crate"
+path = "../../../third_party/rust/memchr/v2/crate"
 package = "memchr"
 
 [patch.crates-io.memoffset_v0_6]
-path = "memoffset/v0_6/crate"
+path = "../../../third_party/rust/memoffset/v0_6/crate"
 package = "memoffset"
 
 [patch.crates-io.mime_v0_3]
@@ -827,7 +827,7 @@ path = "num_traits/v0_2/crate"
 package = "num-traits"
 
 [patch.crates-io.once_cell_v1]
-path = "once_cell/v1/crate"
+path = "../../../third_party/rust/once_cell/v1/crate"
 package = "once_cell"
 
 [patch.crates-io.opaque-debug_v0_3]
@@ -835,7 +835,7 @@ path = "opaque_debug/v0_3/crate"
 package = "opaque-debug"
 
 [patch.crates-io.os_str_bytes_v6]
-path = "os_str_bytes/v6/crate"
+path = "../../../third_party/rust/os_str_bytes/v6/crate"
 package = "os_str_bytes"
 
 [patch.crates-io.pairing_v0_22]
@@ -907,7 +907,7 @@ path = "ppoprf/v0_2/crate"
 package = "ppoprf"
 
 [patch.crates-io.ppv-lite86_v0_2]
-path = "ppv_lite86/v0_2/crate"
+path = "../../../third_party/rust/ppv_lite86/v0_2/crate"
 package = "ppv-lite86"
 
 [patch.crates-io.precomputed-hash_v0_1]
@@ -931,7 +931,7 @@ path = "proc_macro_hack/v0_5/crate"
 package = "proc-macro-hack"
 
 [patch.crates-io.proc-macro2_v1]
-path = "proc_macro2/v1/crate"
+path = "../../../third_party/rust/proc_macro2/v1/crate"
 package = "proc-macro2"
 
 [patch.crates-io.quick-xml_v0_27]
@@ -939,7 +939,7 @@ path = "quick_xml/v0_27/crate"
 package = "quick-xml"
 
 [patch.crates-io.quote_v1]
-path = "quote/v1/crate"
+path = "../../../third_party/rust/quote/v1/crate"
 package = "quote"
 
 [patch.crates-io.radium_v0_7]
@@ -951,7 +951,7 @@ path = "rand_chacha/v0_2/crate"
 package = "rand_chacha"
 
 [patch.crates-io.rand_chacha_v0_3]
-path = "rand_chacha/v0_3/crate"
+path = "../../../third_party/rust/rand_chacha/v0_3/crate"
 package = "rand_chacha"
 
 [patch.crates-io.rand_core_v0_5]
@@ -959,7 +959,7 @@ path = "rand_core/v0_5/crate"
 package = "rand_core"
 
 [patch.crates-io.rand_core_v0_6]
-path = "rand_core/v0_6/crate"
+path = "../../../third_party/rust/rand_core/v0_6/crate"
 package = "rand_core"
 
 [patch.crates-io.rand_pcg_v0_2]
@@ -967,7 +967,7 @@ path = "rand_pcg/v0_2/crate"
 package = "rand_pcg"
 
 [patch.crates-io.rand_pcg_v0_3]
-path = "rand_pcg/v0_3/crate"
+path = "../../../third_party/rust/rand_pcg/v0_3/crate"
 package = "rand_pcg"
 
 [patch.crates-io.rand_v0_7]
@@ -975,19 +975,19 @@ path = "rand/v0_7/crate"
 package = "rand"
 
 [patch.crates-io.rand_v0_8]
-path = "rand/v0_8/crate"
+path = "../../../third_party/rust/rand/v0_8/crate"
 package = "rand"
 
 [patch.crates-io.regex-syntax_v0_6]
-path = "regex_syntax/v0_6/crate"
+path = "../../../third_party/rust/regex_syntax/v0_6/crate"
 package = "regex-syntax"
 
 [patch.crates-io.regex_v1]
-path = "regex/v1/crate"
+path = "../../../third_party/rust/regex/v1/crate"
 package = "regex"
 
 [patch.crates-io.remove_dir_all_v0_5]
-path = "remove_dir_all/v0_5/crate"
+path = "../../../third_party/rust/remove_dir_all/v0_5/crate"
 package = "remove_dir_all"
 
 [patch.crates-io.ripemd_v0_1]
@@ -1007,27 +1007,27 @@ path = "rmp/v0_8/crate"
 package = "rmp"
 
 [patch.crates-io.rstest_macros_v0_17]
-path = "rstest_macros/v0_17/crate"
+path = "../../../third_party/rust/rstest_macros/v0_17/crate"
 package = "rstest_macros"
 
 [patch.crates-io.rstest_reuse_v0_5]
-path = "rstest_reuse/v0_5/crate"
+path = "../../../third_party/rust/rstest_reuse/v0_5/crate"
 package = "rstest_reuse"
 
 [patch.crates-io.rstest_v0_17]
-path = "rstest/v0_17/crate"
+path = "../../../third_party/rust/rstest/v0_17/crate"
 package = "rstest"
 
 [patch.crates-io.rustc_version_v0_4]
-path = "rustc_version/v0_4/crate"
+path = "../../../third_party/rust/rustc_version/v0_4/crate"
 package = "rustc_version"
 
 [patch.crates-io.rustversion_v1]
-path = "rustversion/v1/crate"
+path = "../../../third_party/rust/rustversion/v1/crate"
 package = "rustversion"
 
 [patch.crates-io.ryu_v1]
-path = "ryu/v1/crate"
+path = "../../../third_party/rust/ryu/v1/crate"
 package = "ryu"
 
 [patch.crates-io.safemem_v0_3]
@@ -1051,7 +1051,7 @@ path = "selectors/v0_23/crate"
 package = "selectors"
 
 [patch.crates-io.semver_v1]
-path = "semver/v1/crate"
+path = "../../../third_party/rust/semver/v1/crate"
 package = "semver"
 
 [patch.crates-io.serde-big-array_v0_3]
@@ -1063,7 +1063,7 @@ path = "serde_bytes/v0_11/crate"
 package = "serde_bytes"
 
 [patch.crates-io.serde_derive_v1]
-path = "serde_derive/v1/crate"
+path = "../../../third_party/rust/serde_derive/v1/crate"
 package = "serde_derive"
 
 [patch.crates-io.serde_ipld_dagcbor_v0_2]
@@ -1071,11 +1071,11 @@ path = "serde_ipld_dagcbor/v0_2/crate"
 package = "serde_ipld_dagcbor"
 
 [patch.crates-io.serde_json_lenient_v0_1]
-path = "serde_json_lenient/v0_1/crate"
+path = "../../../third_party/rust/serde_json_lenient/v0_1/crate"
 package = "serde_json_lenient"
 
 [patch.crates-io.serde_json_v1]
-path = "serde_json/v1/crate"
+path = "../../../third_party/rust/serde_json/v1/crate"
 package = "serde_json"
 
 [patch.crates-io.serde_repr_v0_1]
@@ -1091,7 +1091,7 @@ path = "serde_tuple/v0_5/crate"
 package = "serde_tuple"
 
 [patch.crates-io.serde_v1]
-path = "serde/v1/crate"
+path = "../../../third_party/rust/serde/v1/crate"
 package = "serde"
 
 [patch.crates-io.servo_arc_v0_1]
@@ -1131,7 +1131,7 @@ path = "slab/v0_4/crate"
 package = "slab"
 
 [patch.crates-io.small_ctor_v0_1]
-path = "small_ctor/v0_1/crate"
+path = "../../../third_party/rust/small_ctor/v0_1/crate"
 package = "small_ctor"
 
 [patch.crates-io.smallvec_v1]
@@ -1151,7 +1151,7 @@ path = "star_constellation/v0_2/crate"
 package = "star-constellation"
 
 [patch.crates-io.static_assertions_v1]
-path = "static_assertions/v1/crate"
+path = "../../../third_party/rust/static_assertions/v1/crate"
 package = "static_assertions"
 
 [patch.crates-io.string_cache_codegen_v0_5]
@@ -1171,7 +1171,7 @@ path = "strobe_rs/v0_8/crate"
 package = "strobe-rs"
 
 [patch.crates-io.strsim_v0_10]
-path = "strsim/v0_10/crate"
+path = "../../../third_party/rust/strsim/v0_10/crate"
 package = "strsim"
 
 [patch.crates-io.subtle_v2]
@@ -1179,7 +1179,7 @@ path = "subtle/v2/crate"
 package = "subtle"
 
 [patch.crates-io.syn_v1]
-path = "syn/v1/crate"
+path = "../../../third_party/rust/syn/v1/crate"
 package = "syn"
 
 [patch.crates-io.synstructure_v0_12]
@@ -1191,7 +1191,7 @@ path = "tap/v1/crate"
 package = "tap"
 
 [patch.crates-io.tempfile_v3]
-path = "tempfile/v3/crate"
+path = "../../../third_party/rust/tempfile/v3/crate"
 package = "tempfile"
 
 [patch.crates-io.tendril_v0_4]
@@ -1199,7 +1199,7 @@ path = "tendril/v0_4/crate"
 package = "tendril"
 
 [patch.crates-io.termcolor_v1]
-path = "termcolor/v1/crate"
+path = "../../../third_party/rust/termcolor/v1/crate"
 package = "termcolor"
 
 [patch.crates-io.thin-slice_v0_1]
@@ -1239,7 +1239,7 @@ path = "tinyvec/v1/crate"
 package = "tinyvec"
 
 [patch.crates-io.toml_v0_5]
-path = "toml/v0_5/crate"
+path = "../../../third_party/rust/toml/v0_5/crate"
 package = "toml"
 
 [patch.crates-io.tracing-attributes_v0_1]
@@ -1267,11 +1267,11 @@ path = "unicode_bidi/v0_3/crate"
 package = "unicode-bidi"
 
 [patch.crates-io.unicode-ident_v1]
-path = "unicode_ident/v1/crate"
+path = "../../../third_party/rust/unicode_ident/v1/crate"
 package = "unicode-ident"
 
 [patch.crates-io.unicode-linebreak_v0_1]
-path = "unicode_linebreak/v0_1/crate"
+path = "../../../third_party/rust/unicode_linebreak/v0_1/crate"
 package = "unicode-linebreak"
 
 [patch.crates-io.unicode-normalization_v0_1]
@@ -1279,7 +1279,7 @@ path = "unicode_normalization/v0_1/crate"
 package = "unicode-normalization"
 
 [patch.crates-io.unicode-width_v0_1]
-path = "unicode_width/v0_1/crate"
+path = "../../../third_party/rust/unicode_width/v0_1/crate"
 package = "unicode-width"
 
 [patch.crates-io.unicode-xid_v0_2]
@@ -1315,11 +1315,11 @@ path = "version_check/v0_9/crate"
 package = "version_check"
 
 [patch.crates-io.winapi-util_v0_1]
-path = "winapi_util/v0_1/crate"
+path = "../../../third_party/rust/winapi_util/v0_1/crate"
 package = "winapi-util"
 
 [patch.crates-io.winapi_v0_3]
-path = "winapi/v0_3/crate"
+path = "../../../third_party/rust/winapi/v0_3/crate"
 package = "winapi"
 
 [patch.crates-io.windows-sys_v0_45]
@@ -1343,7 +1343,7 @@ path = "windows_x86_64_msvc/v0_42/crate"
 package = "windows_x86_64_msvc"
 
 [patch.crates-io.wycheproof_v0_4]
-path = "wycheproof/v0_4/crate"
+path = "../../../third_party/rust/wycheproof/v0_4/crate"
 package = "wycheproof"
 
 [patch.crates-io.wyz_v0_5]
