@@ -211,6 +211,8 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
 extension FavoritesSectionProvider: NSFetchedResultsControllerDelegate {
   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     try? frc.performFetch()
-    sectionDidChange?()
+    DispatchQueue.main.async {
+      self.sectionDidChange?()
+    }
   }
 }

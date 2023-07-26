@@ -286,10 +286,13 @@ class NewTabPageViewController: UIViewController {
       provider.registerCells(to: collectionView)
       if let observableProvider = provider as? NTPObservableSectionProvider {
         observableProvider.sectionDidChange = { [weak self] in
-          UIView.performWithoutAnimation {
-            self?.collectionView.reloadSections(IndexSet(integer: index))
+          guard let self = self else { return }
+          if self.parent != nil {
+            UIView.performWithoutAnimation {
+              self.collectionView.reloadSections(IndexSet(integer: index))
+            }
           }
-          self?.collectionView.collectionViewLayout.invalidateLayout()
+          self.collectionView.collectionViewLayout.invalidateLayout()
         }
       }
     }
@@ -656,7 +659,7 @@ class NewTabPageViewController: UIViewController {
     _ oldValue: FeedDataSource.State,
     _ newValue: FeedDataSource.State
   ) {
-    guard let section = layout.braveNewsSection else { return }
+    guard let section = layout.braveNewsSection, parent != nil else { return }
 
     func _completeLoading() {
       UIView.animate(
@@ -712,13 +715,9 @@ class NewTabPageViewController: UIViewController {
         feedOverlayView.loaderView.isHidden = false
         feedOverlayView.loaderView.start()
 
-        if let section = layout.braveNewsSection {
-          let numberOfItems = collectionView.numberOfItems(inSection: section)
-          if numberOfItems > 0 {
-            collectionView.deleteItems(
-              at: (0..<numberOfItems).map({ IndexPath(item: $0, section: section) })
-            )
-          }
+        let numberOfItems = collectionView.numberOfItems(inSection: section)
+        if numberOfItems > 0 {
+          collectionView.reloadSections(IndexSet(integer: section))
         }
       }
     case (.loading, _):

@@ -101,6 +101,8 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
 extension FavoritesOverflowSectionProvider: NSFetchedResultsControllerDelegate {
   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     try? frc.performFetch()
-    sectionDidChange?()
+    DispatchQueue.main.async {
+      self.sectionDidChange?()
+    }
   }
 }
