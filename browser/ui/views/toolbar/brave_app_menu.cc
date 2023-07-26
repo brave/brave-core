@@ -44,7 +44,9 @@ void BraveAppMenu::ExecuteCommand(int command_id, int mouse_event_flags) {
 
 void BraveAppMenu::OnMenuClosed(views::MenuItemView* menu) {
   AppMenu::OnMenuClosed(menu);
-  menu_metrics_->RecordMenuDismiss();
+  if (menu == nullptr) {
+    menu_metrics_->RecordMenuDismiss();
+  }
 }
 
 MenuItemView* BraveAppMenu::AddMenuItem(views::MenuItemView* parent,
