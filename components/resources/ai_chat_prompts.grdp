@@ -72,7 +72,7 @@ This is a video transcript:
 
 <ph name="TRANSCRIPT">$1</ph>
 
-Propose up to 3 very short questions that a reader may ask about this video. Consider intriguing or unusual elements of the content, or structurally important. Separate each suggested question with the character "|". Do not number the questions.
+Propose up to 3 very short questions, around 10 words, that a reader may ask about this video. Consider intriguing or unusual elements of the content, or structurally important. Separate each suggested question with the character "|". Do not number the questions.
 </message>
 
 <message name="IDS_AI_CHAT_LLAMA2_GENERATE_QUESTIONS_ARTICLE" translateable="false">
@@ -82,7 +82,7 @@ This is an article:
 <ph name="ARTICLE">$1</ph>
 &lt;/article&gt;
 
-Propose up to 3 very short questions that a reader may ask about the this article. Consider intriguing or unusual elements of the content, or structurally important. Separate each suggested question with the character "|". Do not number the questions.
+Propose up to 3 very short questions, around 10 words, that a reader may ask about the this article. Consider intriguing or unusual elements of the content, or structurally important. Separate each suggested question with the character "|". Do not number the questions.
 </message>
 
 <message name="IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERATE_QUESTIONS" translateable="false">
