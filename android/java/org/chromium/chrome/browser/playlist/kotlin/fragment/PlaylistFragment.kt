@@ -434,31 +434,32 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
             PlaylistPreferenceUtils.defaultPrefs(requireContext()).recentlyPlayedPlaylist =
                 GsonBuilder().serializeNulls().create().toJson(recentPlaylistIds)
 
-            val hlsParser = activity?.contentResolver?.openInputStream(Uri.parse(selectedPlaylistItemModel.mediaPath))
-            ?.let {
-                HlsPlaylistParser().parse(Uri.parse(selectedPlaylistItemModel.mediaSrc),
-                    it
-                )
-            }
+            // val hlsParser = activity?.contentResolver?.openInputStream(Uri.parse(selectedPlaylistItemModel.mediaPath))
+            // ?.let {
+            //     HlsPlaylistParser().parse(Uri.parse(selectedPlaylistItemModel.mediaSrc),
+            //         it
+            //     )
+            // }
 
-            var hlsParser2: HlsPlaylist?
-            if (hlsParser!=  null && hlsParser is HlsMultivariantPlaylist) {
-                Log.e(TAG, hlsParser.mediaPlaylistUrls.toString())
-                hlsParser2 = HlsPlaylistParser().parse(Uri.parse(hlsParser.variants[0].url.toString()), FileInputStream(File("/data/user/0/com.brave.browser_nightly/cache/file8557139987509947848.temp")))
-                if (hlsParser2 is HlsMediaPlaylist) {
-                    for (segment in hlsParser2.segments) {
-                        Log.e(TAG, UriUtil.resolve(hlsParser2.baseUri.toString(), segment.url))
-                    }
-                    BraveVpnNativeWorker.getInstance().queryPrompt(
-                UriUtil.resolve(hlsParser2.baseUri.toString(), hlsParser2.segments.url),
-                "GET");
-                }
-            }
-
-            // BraveVpnNativeWorker.getInstance().queryPrompt(
-            //     selectedPlaylistItemModel.mediaSrc,
+            // var hlsParser2: HlsPlaylist?
+            // if (hlsParser!=  null && hlsParser is HlsMultivariantPlaylist) {
+            //     Log.e(TAG, hlsParser.mediaPlaylistUrls.toString())
+            //     hlsParser2 = HlsPlaylistParser().parse(Uri.parse(hlsParser.variants[0].url.toString()), FileInputStream(File("/data/user/0/com.brave.browser_nightly/cache/file8557139987509947848.temp")))
+            //     if (hlsParser2 is HlsMediaPlaylist) {
+            //         for (segment in hlsParser2.segments) {
+            //             Log.e(TAG, UriUtil.resolve(hlsParser2.baseUri.toString(), segment.url))
+            //         }
+            //         BraveVpnNativeWorker.getInstance().queryPrompt(
+            //     UriUtil.resolve(hlsParser2.baseUri.toString(), hlsParser2.segments.url),
             //     "GET");
+            //     }
+            // }
+
+            BraveVpnNativeWorker.getInstance().queryPrompt(
+                selectedPlaylistItemModel.mediaSrc,
+                "GET");
             BraveVpnNativeWorker.itemId = selectedPlaylistItemModel.id
+            // startVideo();
         }
     }
 
@@ -519,9 +520,14 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
         }
         mPlaylistViewModel.setPlaylistOption(playlistOptionsModel)
     }
+
     override fun onDataCompleted() {
-        startVideo();
+        // startVideo();
     };
+
+    override fun onResponseStarted(url:String, contentLength:Long) {
+        startVideo();
+    }
 
     override fun onOptionClicked(playlistItemOptionModel: PlaylistItemOptionModel) {
         if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.SHARE_PLAYLIST_ITEM) {

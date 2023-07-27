@@ -37,6 +37,7 @@ import com.brave.playlist.util.PlaylistPreferenceUtils.rememberListPlaybackPosit
 import com.brave.playlist.util.PlaylistPreferenceUtils.setLatestPlaylistItem
 import com.brave.playlist.util.PlaylistUtils
 import com.brave.playlist.util.PlaylistUtils.createNotificationChannel
+import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -58,13 +59,14 @@ import com.google.android.exoplayer2.ui.StyledPlayerControlView
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.gms.cast.framework.CastContext
+import org.chromium.components.media_router.caf.CastUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.chromium.components.media_router.caf.CastUtils
+import org.chromium.chrome.browser.vpn.BraveVpnObserver
 
-class PlaylistVideoService : Service(), Player.Listener, SessionAvailabilityListener {
+class PlaylistVideoService : Service(), Player.Listener, SessionAvailabilityListener, BraveVpnObserver {
     private var mPlaylistName: String? = null
     private var mPlaylistItemsModel: ArrayList<PlaylistItemModel>? = arrayListOf()
     private var mPlayerNotificationManager: PlayerNotificationManager? = null
@@ -132,6 +134,12 @@ class PlaylistVideoService : Service(), Player.Listener, SessionAvailabilityList
     override fun onUnbind(intent: Intent?): Boolean {
         return super.onUnbind(intent)
     }
+
+    // override fun onDataReceived(response:ByteArray) {
+    //     Log.e("data_source", "PlaylistVideoService");
+    //     mCurrentPlayer?.prepare()
+    //     mCurrentPlayer?.playWhenReady = true
+    // }
 
     override fun onCreate() {
         super.onCreate()
@@ -201,6 +209,7 @@ class PlaylistVideoService : Service(), Player.Listener, SessionAvailabilityList
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.e(TAG, "onStartCommand")
+        BraveVpnNativeWorker.getInstance().addObserver(this@PlaylistVideoService);
         intent?.let {
             mPlaylistName = it.getStringExtra(PLAYLIST_NAME)
             mPlaylistItemsModel = getPlaylistItemModels(it)
@@ -312,31 +321,31 @@ class PlaylistVideoService : Service(), Player.Listener, SessionAvailabilityList
 
     override fun onPlayerError(error: PlaybackException) {
         super.onPlayerError(error)
-        when (error.errorCode) {
-            PlaybackException.ERROR_CODE_PARSING_CONTAINER_UNSUPPORTED -> {
-                val currentPlaylistItemModel = getCurrentPlayingItem()
-                val movieMetadata: MediaMetadata =
-                    MediaMetadata.Builder().setTitle(currentPlaylistItemModel?.name)
-                        .setArtist(currentPlaylistItemModel?.author)
-                        .setArtworkUri(Uri.parse(currentPlaylistItemModel?.thumbnailPath)).build()
-                val mediaItem = MediaItem.Builder()
-//                .setUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")
-                    .setUri(Uri.parse(currentPlaylistItemModel?.mediaSrc))
-                    .setMediaMetadata(movieMetadata)
-                    .setMimeType(MimeTypes.APPLICATION_M3U8)
-                    .build()
-                mMediaQueue[mCurrentPlayer?.currentMediaItemIndex ?: 0] = mediaItem
-                mCastMediaQueue[mCurrentPlayer?.currentMediaItemIndex ?: 0] = mediaItem
-                Log.e(TAG, "onPlayerError : setCurrentPlayer")
-                setCurrentPlayer(if (mCastPlayer?.isCastSessionAvailable == true) mCastPlayer else mLocalPlayer)
-            }
+//         when (error.errorCode) {
+//             PlaybackException.ERROR_CODE_PARSING_CONTAINER_UNSUPPORTED -> {
+//                 val currentPlaylistItemModel = getCurrentPlayingItem()
+//                 val movieMetadata: MediaMetadata =
+//                     MediaMetadata.Builder().setTitle(currentPlaylistItemModel?.name)
+//                         .setArtist(currentPlaylistItemModel?.author)
+//                         .setArtworkUri(Uri.parse(currentPlaylistItemModel?.thumbnailPath)).build()
+//                 val mediaItem = MediaItem.Builder()
+// //                .setUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")
+//                     .setUri(Uri.parse(currentPlaylistItemModel?.mediaSrc))
+//                     .setMediaMetadata(movieMetadata)
+//                     .setMimeType(MimeTypes.APPLICATION_M3U8)
+//                     .build()
+//                 mMediaQueue[mCurrentPlayer?.currentMediaItemIndex ?: 0] = mediaItem
+//                 mCastMediaQueue[mCurrentPlayer?.currentMediaItemIndex ?: 0] = mediaItem
+//                 Log.e(TAG, "onPlayerError : setCurrentPlayer")
+//                 setCurrentPlayer(if (mCastPlayer?.isCastSessionAvailable == true) mCastPlayer else mLocalPlayer)
+//             }
 
-            else -> {
-                if (mCurrentPlayer?.hasNextMediaItem() == true) {
-                    mCurrentPlayer?.nextMediaItemIndex?.let { setCurrentItem(it) }
-                }
-            }
-        }
+//             else -> {
+//                 if (mCurrentPlayer?.hasNextMediaItem() == true) {
+//                     mCurrentPlayer?.nextMediaItemIndex?.let { setCurrentItem(it) }
+//                 }
+//             }
+//         }
         Log.e(TAG, "onPlayerError : " + error.message.toString())
     }
 

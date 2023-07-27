@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Semaphore;
 
 @JNINamespace("chrome::android")
 public class BraveVpnNativeWorker {
@@ -31,14 +33,20 @@ public class BraveVpnNativeWorker {
     private static final Object mLock = new Object();
     private static BraveVpnNativeWorker mInstance;
 
+    public static Semaphore mutex;
+
     private List<BraveVpnObserver> mObservers;
 
     // private String finalResponse = "";
     public static ArrayList<byte[]> tempStorage = new ArrayList<byte[]>();
-    public static ByteArrayOutputStream output = new ByteArrayOutputStream();
+    public static ByteArrayOutputStream output;
     // public static int currentOffset;
-    public static String url;
-    public static long contentLength;
+    public static CompletableFuture<Long> contentLength = new CompletableFuture<>();
+    public static CompletableFuture<Integer> responseLength = new CompletableFuture<>();
+    public static int readLength;
+    public static CompletableFuture<String> url = new CompletableFuture<>();
+    // public static String url;
+    // public static long contentLength;
     public static String itemId = "";
     public static byte[] finalData;
     // private static File file =
@@ -54,6 +62,7 @@ public class BraveVpnNativeWorker {
                 mInstance.init();
             }
         }
+        mutex = new Semaphore(1);
         return mInstance;
     }
 
@@ -156,19 +165,35 @@ public class BraveVpnNativeWorker {
 
     @CalledByNative
     public void onResponseStarted(String url, long contentLength) {
-        this.url = url;
-        this.contentLength = contentLength;
+        Log.e("data_source", "onResponseStarted : " + url);
+        if (output != null) {
+            try {
+                output.reset();
+            } catch (Exception e) {
+            }
+        } else {
+            output = new ByteArrayOutputStream();
+        }
+        // this.url = url;
+        // this.contentLength = contentLength;
+        this.url.complete(url);
+        this.contentLength.complete(contentLength);
         for (BraveVpnObserver observer : mObservers) {
             observer.onResponseStarted(url, contentLength);
         }
+        // mutex.release();
+        Log.e("data_source", "release mutex : ");
     }
 
     @CalledByNative
-    public void onDataReceived(byte[] response) {
+    synchronized public void onDataReceived(byte[] response) {
         Log.e("data_source", "onDataReceived : response : " + response.length);
         PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
             try {
                 output.write(response);
+                if (output.toByteArray().length > readLength) {
+                    responseLength.complete(output.toByteArray().length);
+                }
                 // tempStorage.add(response);
             } catch (Exception e) {
                 Log.e("data_source", e.getMessage());
@@ -186,7 +211,7 @@ public class BraveVpnNativeWorker {
             try {
                 finalData = output.toByteArray();
                 writeToFile(finalData);
-                output.close();
+                // output.close();
             } catch (Exception e) {
                 Log.e("data_source", e.getMessage());
             }
@@ -205,6 +230,10 @@ public class BraveVpnNativeWorker {
                 "index.mp4"));
         out.write(data);
         out.close();
+    }
+
+    synchronized public byte[] getLatestData() {
+        return output.toByteArray();
     }
 
     public void getAllServerRegions() {
