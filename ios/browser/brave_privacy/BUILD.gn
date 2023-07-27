@@ -1,6 +1,13 @@
-source_set("url_sanitizer") {
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+source_set("brave_privacy") {
   configs += [ "//build/config/compiler:enable_arc" ]
   sources = [
+    #"brave_privacy_factory_wrappers.h",
+    #"brave_privacy_factory_wrappers.mm",
     "url_sanitizer_service_factory.h",
     "url_sanitizer_service_factory.mm",
   ]
