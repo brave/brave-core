@@ -53,7 +53,6 @@ const HeaderContainer = styled.div`
   padding: ${spacing[16]};
   gap: ${spacing[16]};
   border-bottom: 1px solid ${color.divider.subtle};
-  background: ${color.container.background};
 `
 
 export default function Header ({ playlistId }: HeaderProps) {
