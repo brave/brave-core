@@ -9,6 +9,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // types
 import {
+  SendPageTabHashes,
   WalletRoutes
 } from '../../../../constants/types'
 
@@ -117,10 +118,12 @@ export const PortfolioNftAsset = () => {
     }
 
     history.push(
-      WalletRoutes.SendPage.replace(':chainId?', selectedAssetNetwork.chainId)
+      `${WalletRoutes.SendPage
+        .replace(':chainId?', selectedAssetNetwork.chainId)
         .replace(':accountAddress?', ownerAccount.address)
         .replace(':contractAddress?', selectedAssetFromParams.contractAddress)
-        .replace(':tokenId?', selectedAssetFromParams.tokenId)
+        .replace(':tokenId?', selectedAssetFromParams.tokenId)}${ //
+      SendPageTabHashes.nft}`
     )
   }, [selectedAssetFromParams, ownerAccount, selectedAssetNetwork])
 
