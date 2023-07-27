@@ -143,7 +143,7 @@ include_rules = [
   "-brave/third_party/argon2",
 ]
 
-# Temporary workaround for massive nummber of incorrect test includes
+# Temporary workaround for massive nummber of incorrect test includes.
 specific_include_rules = {
   ".*test.*(\.cc|\.mm|\.h)": [
     "+bat",
