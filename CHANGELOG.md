@@ -1,6 +1,10 @@
 # Changelog
 
 
+## [1.51.2](https://github.com/brave/brave-ios/releases/tag/v1.51.2)
+
+- Fixed ads event reporting for sponsored images on New Tab Page. ([#7566](https://github.com/brave/brave-ios/issues/7566))
+
 ## [1.51.1](https://github.com/brave/brave-ios/releases/tag/v1.51.1)
 
 - Added standard Adblock mode. ([#7352](https://github.com/brave/brave-ios/issues/7352))
