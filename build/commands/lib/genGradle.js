@@ -7,18 +7,22 @@ const config = require('./config')
 const util = require('./util')
 const Log = require('./logging')
 
-let options = config.defaultOptions
-options.continueOnFail = false
-
-const genGradle = (passthroughArgs, build_dir) => {
+const genGradle = (passthroughArgs, buildConfig = config.defaultBuildConfig, options) => {
+  options.target_os = "android"
+  options.continueOnFail = false
+  config.buildConfig = buildConfig
+  config.update(options)
   Log.progressScope('Generating Gradle files', () => {
-    args = [
+    braveArgs = [
       'build/android/gradle/generate_gradle.py',
       '--output-directory',
-      build_dir
+      config.outputDir
     ]
-    args.push(...passthroughArgs)
-    util.run('python3', args, options)
+    
+    const filteredArgs = passthroughArgs.filter(arg => !arg.includes('target_arch'))
+    braveArgs = braveArgs.concat(filteredArgs)
+
+    util.run('python3', braveArgs, config.defaultOptions)
   })
 }
 

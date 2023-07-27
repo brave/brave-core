@@ -365,8 +365,10 @@ program
 
 program
   .command('gen_gradle')
-  .option('--output-directory <build_dir>', 'build directory (out/Debug, out/Release)')
   .allowUnknownOption(true)
+  .option('-C <build_dir>', 'build config (out/Debug, out/Release)')
+  .option('--target_arch <target_arch>', 'target architecture')
+  .arguments('[build_config]')
   .action(genGradle.bind(null, parsedArgs.unknown))
 
 program
