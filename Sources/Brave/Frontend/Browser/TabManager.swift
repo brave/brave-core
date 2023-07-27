@@ -1076,6 +1076,13 @@ class TabManager: NSObject {
   @MainActor func addAndSelectRecentlyClosed(_ recentlyClosed: RecentlyClosed) {
     guard let url = NSURL(idnString: recentlyClosed.url) as? URL ?? URL(string: recentlyClosed.url) else { return }
     
+    // The NTP shold be removed if last recently close opened using empty tab
+    if let currentTab = selectedTab,
+      let currentTabURL = currentTab.url,
+      InternalURL(currentTabURL)?.isAboutHomeURL == true {
+      removeTab(currentTab)
+    }
+    
     let tab = addTab(URLRequest(url: url), isPrivate: false)
     guard let webView = tab.webView else { return }
 

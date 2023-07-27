@@ -4558,7 +4558,14 @@ extension Strings {
         bundle: .module,
         value: "Open",
         comment: "Open Tab action title")
-
+    
+    public static let recentlyClosedReOpenLastActionTitle =
+      NSLocalizedString(
+        "recently.closed.reopen.latest",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Reopen Last Closed Tab",
+        comment: "Re-open Last Tab action title")
   }
 }
 

@@ -293,8 +293,9 @@ extension BrowserViewController: TabManagerDelegate {
     
     var recentlyClosedMenuChildren: [UIAction] = []
 
+    // Recently Closed Actions are only in normal mode
     if !PrivateBrowsingManager.shared.isPrivateBrowsing {
-      let recentlyClosedTab = UIAction(
+      let viewRecentlyClosedTabs = UIAction(
         title: Strings.RecentlyClosed.viewRecentlyClosedTab,
         image: UIImage(braveSystemNamed: "leo.browser.mobile-recent-tabs"),
         handler: UIAction.deferredActionHandler { [weak self] _ in
@@ -315,7 +316,26 @@ extension BrowserViewController: TabManagerDelegate {
           self.present(UIHostingController(rootView: recentlyClosedTabsView), animated: true)
         })
       
-      recentlyClosedMenuChildren.append(recentlyClosedTab)
+      recentlyClosedMenuChildren.append(viewRecentlyClosedTabs)
+      
+      // Fetch last item in Recently Closed
+      if let recentlyClosedTab = RecentlyClosed.all().first {
+        let reopenLastClosedTab = UIAction(
+          title: Strings.RecentlyClosed.recentlyClosedReOpenLastActionTitle,
+          image: UIImage(braveSystemNamed: "leo.browser.mobile-tab-ntp"),
+          handler: UIAction.deferredActionHandler { [weak self] _ in
+            guard let self = self else { return }
+            
+            if PrivateBrowsingManager.shared.isPrivateBrowsing {
+              return
+            }
+            
+            self.tabManager.addAndSelectRecentlyClosed(recentlyClosedTab)
+            RecentlyClosed.remove(with: recentlyClosedTab.url)
+          })
+        
+        recentlyClosedMenuChildren.append(reopenLastClosedTab)
+      }
     }
     
     var closeTabMenuChildren: [UIAction] = []
