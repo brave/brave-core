@@ -5,13 +5,21 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import { useParams } from 'react-router'
+import {
+  useParams,
+  useHistory,
+  useLocation
+} from 'react-router'
 
 // Messages
 import { ENSOffchainLookupMessage, FailedChecksumMessage } from '../send-ui-messages'
 
 // Types
-import { SendOptionTypes, AddressMessageInfo } from '../../../../constants/types'
+import {
+  SendPageTabHashes,
+  AddressMessageInfo,
+  WalletRoutes
+} from '../../../../constants/types'
 
 // Selectors
 import { WalletSelectors } from '../../../../common/selectors'
@@ -79,8 +87,6 @@ import { PageTitleHeader } from '../../../../components/desktop/card-headers/pag
 interface Props {
   onShowSelectTokenModal: () => void
   onHideSelectTokenModal: () => void
-  selectedSendOption: SendOptionTypes
-  setSelectedSendOption: (sendOption: SendOptionTypes) => void
   selectTokenModalRef: React.RefObject<HTMLDivElement>
   showSelectTokenModal: boolean
   isAndroid?: boolean
@@ -89,8 +95,6 @@ interface Props {
 export const Send = (props: Props) => {
   const {
     onShowSelectTokenModal,
-    setSelectedSendOption,
-    selectedSendOption,
     onHideSelectTokenModal,
     selectTokenModalRef,
     showSelectTokenModal,
@@ -107,6 +111,8 @@ export const Send = (props: Props) => {
     contractAddress?: string
     tokenId?: string
   }>()
+  const { hash } = useLocation()
+  const history = useHistory()
 
   const {
     toAddressOrUrl,
@@ -140,6 +146,11 @@ export const Send = (props: Props) => {
   const [domainPosition, setDomainPosition] = React.useState<number>(0)
   const [showChecksumInfoModal, setShowChecksumInfoModal] = React.useState<boolean>(false)
 
+  // Constants
+  const selectedSendOption = hash
+    ? hash as SendPageTabHashes
+    : '#token' as SendPageTabHashes
+
   const selectedAccount = React.useMemo(() => {
     return findAccountByAccountId(accounts, selectedAccountId)
   }, [accounts, selectedAccountId])
@@ -165,10 +176,11 @@ export const Send = (props: Props) => {
     [updateToAddressOrUrl]
   )
 
-  const onSelectSendOption = React.useCallback((option: SendOptionTypes) => {
-    selectSendAsset(undefined)
-    setSelectedSendOption(option)
-  }, [selectedSendAsset])
+  const onSelectSendOption = React.useCallback(
+    (option: SendPageTabHashes) => {
+      selectSendAsset(undefined)
+      history.push(`${WalletRoutes.SendPageStart}${option}`)
+    }, [selectSendAsset])
 
   const onClickReviewOrENSConsent = React.useCallback(() => {
     if (showEnsOffchainWarning) {
@@ -239,7 +251,7 @@ export const Send = (props: Props) => {
     if (!selectedSendAsset || sendAssetBalance === '') {
       return ''
     }
-    if (selectedSendOption === 'nft') {
+    if (selectedSendOption === SendPageTabHashes.nft) {
       return selectedAccount?.name
     }
     return `${selectedAccount?.name}: ${formatTokenBalanceWithSymbol(
@@ -290,7 +302,7 @@ export const Send = (props: Props) => {
     if (
       !selectedSendAsset ||
       sendAssetBalance === '' ||
-      selectedSendOption === 'nft'
+      selectedSendOption === SendPageTabHashes.nft
     ) {
       return ''
     }
@@ -443,10 +455,8 @@ export const Send = (props: Props) => {
       }
     })()
 
-    setSelectedSendOption(tokenId ? 'nft' : 'token')
     selectSendAsset(selectedAssetFromParams)
   }, [
-    setSelectedSendOption,
     selectSendAsset,
     selectedSendAsset,
     chainId,
@@ -478,7 +488,7 @@ export const Send = (props: Props) => {
             minHeight={150}
             hasError={insufficientFundsError}
           >
-            {selectedSendOption === 'token' &&
+            {selectedSendOption === SendPageTabHashes.token &&
               <Column
                 columnHeight='full'
                 columnWidth='full'
@@ -500,7 +510,9 @@ export const Send = (props: Props) => {
                       onClick={onShowSelectTokenModal}
                       token={selectedSendAsset}
                       selectedSendOption={selectedSendOption} />
-                    {selectedSendOption === 'token' && selectedSendAsset &&
+                    {
+                      selectedSendOption === SendPageTabHashes.token &&
+                      selectedSendAsset &&
                       <>
                         <HorizontalDivider
                           height={28}
@@ -513,7 +525,7 @@ export const Send = (props: Props) => {
                       </>
                     }
                   </Row>
-                  {selectedSendOption === 'token' &&
+                  {selectedSendOption === SendPageTabHashes.token &&
                     <AmountInput
                       placeholder='0.0'
                       hasError={insufficientFundsError}
@@ -531,7 +543,7 @@ export const Send = (props: Props) => {
                 </Row>
               </Column>
             }
-            {selectedSendOption === 'nft' &&
+            {selectedSendOption === SendPageTabHashes.nft &&
               <Row
                 rowWidth='full'
                 rowHeight='full'
