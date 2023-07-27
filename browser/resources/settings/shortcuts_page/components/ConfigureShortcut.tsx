@@ -92,6 +92,8 @@ export default function ConfigureShortcut(props: {
       .reduce((prev, next) => ({ ...prev, [next[1]]: next[0] }), {})
   }, [commands])
 
+  const keys = useKeys(current.codes)
+
   React.useEffect(() => {
     const onDown = (e: KeyboardEvent) => {
       const hasModifier = e.ctrlKey || e.metaKey || e.altKey || e.shiftKey
@@ -101,7 +103,7 @@ export default function ConfigureShortcut(props: {
       if (e.code === "Enter" && !hasModifier && current.isValid) {
         props.onChange({
           codes: keysToString(current.codes),
-          keys: keysToString([])
+          keys: keysToString(keys)
         })
         return;
       }
@@ -145,8 +147,6 @@ export default function ConfigureShortcut(props: {
       document.removeEventListener('keydown', onDown)
     }
   }, [current])
-
-  const keys = useKeys(current.codes)
 
   const shortcut = current.codes.join('+');
   const conflict = acceleratorLookup[shortcut]
@@ -196,7 +196,7 @@ export default function ConfigureShortcut(props: {
           onClick={() => {
             props.onChange({
               codes: keysToString(current.codes),
-              keys: keysToString([])
+              keys: keysToString(keys)
             })
           }}
         >
