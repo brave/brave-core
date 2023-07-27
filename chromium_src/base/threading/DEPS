@@ -1,3 +1,4 @@
 include_rules = [
+  # This file is NOT generated and is safe to use without a GN dependency.
   "+brave/browser/widevine/buildflags.h",
 ]
