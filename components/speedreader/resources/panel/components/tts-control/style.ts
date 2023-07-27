@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import { radius } from '@brave/leo/tokens/css'
 
 export const Box = styled.div`
   display: flex;
@@ -43,7 +44,7 @@ export const Voice = styled.div`
     color: var(--color-foreground);
 
     border: 1px solid var(--color-button-border);
-    border-radius: var(--leo-radius-4);
+    border-radius: ${radius.s};
 
     &:focus {
       outline: none;

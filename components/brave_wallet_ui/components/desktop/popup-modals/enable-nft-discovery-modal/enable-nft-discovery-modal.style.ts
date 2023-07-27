@@ -42,7 +42,7 @@ export const Description = styled.p`
 `
 
 export const Link = styled.a`
-  color: ${leo.color.interaction.buttonPrimaryBackground};
+  color: ${leo.color.button.background};
   text-decoration: none;
   font-weight: 600;
 `
@@ -65,7 +65,7 @@ export const ConfirmButton = styled(WalletButton)`
   justify-content: center;
   align-items: center;
   padding: 12px 16px;
-  background-color: ${leo.color.interaction.buttonPrimaryBackground};
+  background-color: ${leo.color.button.background};
   border-radius: 1000px;
   font-family: 'Poppins';
   font-style: normal;

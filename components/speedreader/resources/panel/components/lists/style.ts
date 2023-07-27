@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import { radius } from '@brave/leo/tokens/css'
 
 export const Box = styled.div`
   display: flex;
@@ -28,11 +29,11 @@ const GroupStyles = `
 
   &:first-child {
     border-left-width: 1px;
-    border-radius: var(--leo-radius-8) 0 0 var(--leo-radius-8);
+    border-radius: ${radius.m} 0 0 ${radius.m};
   }
 
   &:last-child {
-    border-radius: 0 var(--leo-radius-8) var(--leo-radius-8) 0;
+    border-radius: 0 ${radius.m} ${radius.m} 0;
   }
 `
 
@@ -60,7 +61,7 @@ export const Button = styled.button<{inGroup?: boolean}>`
   height: 28px;
   padding: 0;
   justify-content: center;
-  border-radius: var(--leo-radius-8);
+  border-radius: ${radius.m};
   border: 0;
   cursor: pointer;
   align-items: center;

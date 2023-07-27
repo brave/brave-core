@@ -41,7 +41,7 @@ export const DropDownButton = styled(WalletButton)`
 
 export const DropDownIcon = styled(Icon)<{ isOpen: boolean }>`
   --leo-icon-size: 20px;
-  color: ${leo.color.iconTint};
+  color: ${leo.color.icon.default};
   transition-duration: 0.3s;
   transform: ${(p) => (p.isOpen ? 'rotate(180deg)' : 'unset')};
 `

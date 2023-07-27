@@ -9,11 +9,13 @@ import * as leo from '@brave/leo/tokens/css'
 
 import { buttonReset } from '../../lib/css_mixins'
 
-export const root = styled.div`
+export const root = styled.div.attrs({
+  'data-theme': 'dark'
+})`
   background: rgba(24, 25, 30, 0.6);
   backdrop-filter: blur(27.5px);
   border-radius: 6px;
-  color: ${leo.color.dark.text.primary};
+  color: ${leo.color.text.primary};
   font-family: Poppins;
   padding: 8px 20px 14px;
 
@@ -86,7 +88,7 @@ export const optInAction = styled.div`
   button {
     ${buttonReset}
     color: ${leo.color.white};
-    background: ${leo.color.interaction.buttonPrimaryBackground};
+    background: ${leo.color.button.background};
     border-radius: 48px;
     padding: 12px 24px;
     font-weight: 600;
@@ -97,13 +99,15 @@ export const optInAction = styled.div`
   }
 `
 
-export const optInLearnMore = styled.div`
+export const optInLearnMore = styled.div.attrs({
+  'data-theme': 'dark'
+})`
   margin-top: 12px;
   margin-bottom: 8px;
   text-align: center;
 
   a {
-    color: ${leo.color.dark.text.interactive};
+    color: ${leo.color.text.interactive};
     font-weight: 600;
     font-size: 13px;
     line-height: 20px;
@@ -151,8 +155,10 @@ export const balance = styled.div`
   }
 `
 
-export const balanceTitle = styled.div`
-  color: ${leo.color.dark.text.disabled};
+export const balanceTitle = styled.div.attrs({
+  'data-theme': 'dark'
+})`
+  color: ${leo.color.text.disabled};
 `
 
 export const balanceSpinner = styled.div`
@@ -211,13 +217,15 @@ export const balanceInfo = styled.div`
   }
 `
 
-export const balanceTooltip = styled.div`
+export const balanceTooltip = styled.div.attrs({
+  'data-theme': 'light'
+})`
   position: relative;
   padding: 16px;
   background: ${leo.color.white};
   box-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
   border-radius: 8px;
-  color: ${leo.color.light.text.primary};
+  color: ${leo.color.text.primary};
   font-size: 12px;
   line-height: 18px;
   font-weight: 400;
@@ -234,9 +242,11 @@ export const balanceTooltip = styled.div`
   }
 `
 
-export const balanceExchange = styled.div`
+export const balanceExchange = styled.div.attrs({
+  'data-theme': 'dark'
+})`
   margin-top: 4px;
-  color: ${leo.color.dark.text.disabled};
+  color: ${leo.color.text.disabled};
   display: flex;
   gap: 6px;
 `
@@ -340,13 +350,15 @@ export const earningsInfo = styled.span`
   }
 `
 
-export const earningsTooltip = styled.div`
+export const earningsTooltip = styled.div.attrs({
+  'data-theme': 'light'
+})`
   position: relative;
   padding: 16px;
   background: ${leo.color.white};
   box-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
   border-radius: 8px;
-  color: ${leo.color.light.text.primary};
+  color: ${leo.color.text.primary};
   font-size: 12px;
   line-height: 18px;
   font-weight: 400;
@@ -363,11 +375,13 @@ export const earningsTooltip = styled.div`
   }
 `
 
-export const manageAds = styled.div`
+export const manageAds = styled.div.attrs({
+  'data-theme': 'light'
+})`
   margin-top: 14px;
 
   a {
-    color: ${leo.color.light.text.interactive};
+    color: ${leo.color.text.interactive};
     font-weight: 600;
     font-size: 12px;
     line-height: 16px;
@@ -377,13 +391,15 @@ export const manageAds = styled.div`
   .icon {
     height: 9px;
     width: auto;
-    color: ${leo.color.light.icon.interactive};
+    color: ${leo.color.icon.interactive};
   }
 `
 
-export const earningsHeaderBorder = styled.div`
+export const earningsHeaderBorder = styled.div.attrs({
+  'data-theme': 'dark'
+})`
   flex: 1 1 auto;
-  border-top: 1px solid ${leo.color.dark.text.disabled};
+  border-top: 1px solid ${leo.color.text.disabled};
   height: 0px;
 `
 
@@ -405,7 +421,9 @@ export const earningsMonth = styled.div`
   border-radius: 4px;
 `
 
-export const hiddenEarnings = styled.div`
+export const hiddenEarnings = styled.div.attrs({
+  'data-theme': 'dark'
+})`
   display: flex;
   align-items: center;
 
@@ -413,13 +431,13 @@ export const hiddenEarnings = styled.div`
   font-weight: 500;
   font-size: 24px;
   line-height: 30px;
-  color: ${leo.color.dark.text.disabled};
+  color: ${leo.color.text.disabled};
 
   a {
     font-weight: 600;
     font-size: 11px;
     line-height: 18px;
-    color: ${leo.color.dark.text.primary};
+    color: ${leo.color.text.primary};
     text-decoration: none;
   }
 `

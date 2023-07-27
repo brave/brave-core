@@ -68,7 +68,7 @@ export const SendButton = styled(WalletButton)`
   align-items: center;
   align-self: flex-end;
   padding: 12px 16px;
-  background: ${leo.color.interaction.buttonPrimaryBackground};
+  background: ${leo.color.button.background};
   border-radius: 1000px;
   color: ${leo.color.white};
   border: none;

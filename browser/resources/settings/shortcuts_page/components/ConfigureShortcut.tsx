@@ -29,19 +29,19 @@ const KeysContainer = styled.div`
   justify-content: center;
   align-items: center;
 
-  gap: ${spacing[8]};
-  margin-top: ${spacing[32]};
+  gap: ${spacing.m};
+  margin-top: ${spacing['3Xl']};
 `
 
 const HintText = styled.div`
   text-align: center;
-  margin: ${spacing[40]};
+  margin: ${spacing['4Xl']};
   color: ${color.text.tertiary};
   font: ${font.primary.default.regular};
 `
 
 const InUseAlert = styled(Alert)`
-  margin-top: ${spacing[24]};
+  margin-top: ${spacing['2Xl']};
   display: block;
 `
 

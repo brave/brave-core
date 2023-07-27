@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
 
@@ -21,27 +22,34 @@ export const icon = styled.div`
   }
 `
 
-export const heading = styled.div`
+export const heading = styled.div.attrs({
+  'data-theme': 'light'
+})`
   margin: 32px auto 0;
   max-width: 339px;
   font-weight: 500;
   font-size: 22px;
   line-height: 32px;
-  color: ${leo.color.light.text.primary};
+  color: ${leo.color.text.primary};
 `
 
-export const text = styled.div`
-  margin: 16px auto 0;
+export const text = styled.div.attrs({
+  'data-theme': 'light'
+})`
+  margin: 16px auto;
   max-width: 339px;
-  color: ${leo.color.light.text.secondary};
+  color: ${leo.color.text.secondary};
   font-weight: 500;
   font-size: 14px;
   line-height: 24px;
 `
 
-export const enable = styled.div`
+export const enable = styled.div.attrs({
+  'data-theme': 'light'
+})`
+
   margin-top: 16px;
-  color: ${leo.color.light.text.secondary};
+  color: ${leo.color.text.secondary};
   font-weight: 500;
   font-size: 14px;
   line-height: 24px;
@@ -58,7 +66,7 @@ export const enable = styled.div`
     margin-top: 16px;
     max-width: 339px;
     color: ${leo.color.white};
-    background: ${leo.color.light.interaction.buttonPrimaryBackground};
+    background: ${leo.color.button.background};
     border-radius: 48px;
     padding: 12px 24px;
     font-weight: 600;
@@ -68,12 +76,14 @@ export const enable = styled.div`
   }
 `
 
-export const learnMore = styled.div`
+export const learnMore = styled.div.attrs({
+  'data-theme': 'light'
+})`
   margin: 20px 0 8px;
   text-align: center;
 
   a {
-    color: ${leo.color.light.text.interactive};
+    color: ${leo.color.text.interactive};
     font-weight: 600;
     font-size: 13px;
     line-height: 20px;

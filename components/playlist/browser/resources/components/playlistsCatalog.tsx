@@ -73,7 +73,7 @@ const PlayLaterCardOverlay = styled.div`
 
 const ColoredPlaylistInfo = styled(PlaylistInfo)<{ hasBackground: boolean }>`
   color: ${({ hasBackground }) =>
-    hasBackground ? color.dark.text.primary : color.text.primary};
+    hasBackground ? color.primitive.gray[1] : color.text.primary};
 `
 
 const PlaylistThumbnailContainer = styled.div<ThumbnailProps>`
@@ -81,7 +81,7 @@ const PlaylistThumbnailContainer = styled.div<ThumbnailProps>`
   ${p =>
     p.isDefaultPlaylist &&
     css`
-      background-color: ${color.interaction.buttonPrimaryBackground};
+      background-color: ${color.button.background};
       color: white;
     `}
 

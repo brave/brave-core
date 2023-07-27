@@ -45,8 +45,7 @@ export const Button = styled(WalletButton) <
   background: none;
   margin-bottom: 4px;
   background-color: transparent;
-  background-color:
-    ${leo.color.interaction.buttonPrimaryBackground};
+  background-color: ${leo.color.button.background};
 `
 
 export const ButtonIcon = styled(Icon)`

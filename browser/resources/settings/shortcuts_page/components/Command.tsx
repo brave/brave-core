@@ -18,9 +18,9 @@ import { getLocale } from '$web-common/locale'
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 200px auto min-content min-content;
-  column-gap: ${spacing[16]};
+  column-gap: ${spacing.xl};
   align-items: center;
-  padding: ${spacing[16]};
+  padding: ${spacing.xl};
   min-height: 68px;
 
   border-top: 1px solid ${color.divider.subtle};

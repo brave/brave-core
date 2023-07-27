@@ -43,7 +43,7 @@ export const Tab = styled.div<{ isActive: boolean}>`
 export const Indicator = styled.div<{ isActive: boolean }>`
   width: 100%;
   height: 4px;
-  background-color: ${p => p.isActive ? leo.color.interaction.buttonPrimaryBackground : 'transparent' };
+  background-color: ${p => p.isActive ? leo.color.button.background : 'transparent' };
   border-radius: 2px 2px 0px 0px;
 `
 

@@ -21,7 +21,7 @@ void AddThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorBravePlaylistCheckedIcon] = {
       leo::GetColor(leo::Color::kColorIconInteractive, theme)};
   mixer[kColorBravePlaylistSelectedBackground] = {
-      leo::GetColor(leo::Color::kColorContainerInteractiveBackground, theme)};
+      leo::GetColor(leo::Color::kColorContainerInteractive, theme)};
   mixer[kColorBravePlaylistListBorder] = {
       leo::GetColor(leo::Color::kColorDividerSubtle, theme)};
   mixer[kColorBravePlaylistMoveDialogDescription] = {
