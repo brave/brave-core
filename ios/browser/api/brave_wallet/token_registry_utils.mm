@@ -11,7 +11,7 @@
 #include "base/version.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
-#include "ios/chrome/browser/paths/paths.h"
+#include "ios/chrome/browser/shared/model/paths/paths.h"
 
 @implementation BraveWalletTokenRegistryUtils
 

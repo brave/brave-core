@@ -1,0 +1,20 @@
+diff --git a/third_party/polymer/v3_0/BUILD.gn b/third_party/polymer/v3_0/BUILD.gn
+index 5d11077706efd09792b2cb30bafd676dc28c2879..3376bc13523fe199949a4b6588f6d8f26cd82525 100644
+--- a/third_party/polymer/v3_0/BUILD.gn
++++ b/third_party/polymer/v3_0/BUILD.gn
+@@ -47,6 +47,7 @@ js_files = [
+ ]
+ 
+ if (is_chromeos_ash) {
++} if (!is_android) {
+   js_files += [
+     "iron-dropdown/iron-dropdown.js",
+     "iron-dropdown/iron-dropdown-scroll-manager.js",
+@@ -179,6 +180,7 @@ ts_library("library") {
+   ]
+ 
+   if (is_chromeos_ash) {
++  } if (!is_android) {
+     definitions += [
+       "components-chromium/iron-dropdown/iron-dropdown.d.ts",
+       "components-chromium/iron-dropdown/iron-dropdown-scroll-manager.d.ts",

@@ -37,7 +37,7 @@ static_library("crypto") {
   ]
 
   if (is_android) {
-    deps += [ "//third_party/android_sdk:cpu_features" ]
+    deps += [ "//third_party/cpu_features:ndk_compat" ]
   }
 }
 

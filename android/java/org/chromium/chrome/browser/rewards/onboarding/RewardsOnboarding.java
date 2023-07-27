@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -55,7 +54,7 @@ public class RewardsOnboarding implements BraveRewardsObserver {
     private ViewGroup mAllSetLayout;
     private ViewGroup mErrorLayout;
 
-    private Button mContinueButton;
+    private TextView mContinueButton;
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 

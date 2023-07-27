@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/notifications/BUILD.gn b/chrome/browser/notifications/BUILD.gn
-index 1beb42142da4e4a470ad6b97cf7432144c3b6b44..1ed85f0ff425056b25dd17e48e2c8d0a878906a9 100644
+index 9f8f270d738559ca91a892988a5c4a39fe3b5778..c4b5dc98f3ce03c797b57694149b86e8ac5268c7 100644
 --- a/chrome/browser/notifications/BUILD.gn
 +++ b/chrome/browser/notifications/BUILD.gn
 @@ -82,6 +82,7 @@ if (is_android) {
@@ -8,5 +8,5 @@ index 1beb42142da4e4a470ad6b97cf7432144c3b6b44..1ed85f0ff425056b25dd17e48e2c8d0a
      ]
 +    deps += [ "//brave/browser/notifications/android:brave_java", ]
  
-     srcjar_deps = [ ":notifications_java_enum_srcjar" ]
-     resources_package = "org.chromium.chrome.browser.notifications"
+     srcjar_deps = [
+       ":jni_headers",

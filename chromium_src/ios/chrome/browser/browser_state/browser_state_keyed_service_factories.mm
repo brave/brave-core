@@ -6,6 +6,7 @@
 #include "ios/chrome/browser/browser_state/browser_state_keyed_service_factories.h"
 
 #include "ios/chrome/browser/autofill/personal_data_manager_factory.h"
+#include "ios/chrome/browser/bookmarks/bookmark_undo_service_factory.h"
 #include "ios/chrome/browser/bookmarks/local_or_syncable_bookmark_model_factory.h"
 #include "ios/chrome/browser/consent_auditor/consent_auditor_factory.h"
 #include "ios/chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -26,7 +27,6 @@
 #include "ios/chrome/browser/sync/session_sync_service_factory.h"
 #include "ios/chrome/browser/sync/sync_service_factory.h"
 #include "ios/chrome/browser/sync/sync_setup_service_factory.h"
-#include "ios/chrome/browser/undo/bookmark_undo_service_factory.h"
 #include "ios/chrome/browser/webdata_services/web_data_service_factory.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)

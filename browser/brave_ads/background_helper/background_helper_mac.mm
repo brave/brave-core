@@ -13,10 +13,11 @@
 #include "base/mac/mac_util.h"
 #include "base/mac/scoped_nsautorelease_pool.h"
 #include "base/mac/scoped_nsobject.h"
+#include "base/memory/raw_ptr.h"
 
 @interface BackgroundHelperDelegateMac : NSObject {
  @private
-  brave_ads::BackgroundHelper* helper_;  // NOT OWNED
+  raw_ptr<brave_ads::BackgroundHelper> helper_;  // NOT OWNED
 }
 
 - (void)appDidBecomeActive:(NSNotification*)notification;

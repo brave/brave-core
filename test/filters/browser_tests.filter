@@ -30,8 +30,10 @@
 #
 # The binder is not instantiated because BraveContentBrowserClient is also not
 # available.
+-All/ActionAndBrowserActionAPITest.TestSetBadgeTextGlobalAndTab/*
 -All/IntentPickerIconBrowserTest.*
 -All/PromotionalTabsEnabledPolicyWelcomeNoFreTest.RunTest/1
+-BackgroundPage/ExtensionPreferenceApiTest.OnChangeSplitWithoutIncognitoAccess/0
 -InteractiveBrowserTestBrowsertest.InstrumentTabsAsTestSteps
 -IntentPickerIconBrowserTest.*
 -LensDesktopNTPSearchEnabledPolicyTest.LensSearchButtonHidden
@@ -240,6 +242,14 @@
 -All/BrowsingDataModelBrowserTest.AttributionReportingAccessReportedCorrectly/*
 -All/BrowsingDataModelBrowserTest.AuctionWinReportedCorrectly/*
 -All/BrowsingDataModelBrowserTest.TopicsAccessReportedCorrectly/*
+-AttestationBrowsingTopicsBrowserTest.AttestedSiteCanGetBrowsingTopics
+-ChromeAttributionBrowserTest.AttestedSiteCanReceiveAttributionReport
+-PrivacySandboxSettingsEventReportingBrowserTest.AutomaticBeaconDestinationEnrolled
+-PrivacySandboxSettingsEventReportingBrowserTest.AutomaticBeaconDestinationNotEnrolled
+-PrivacySandboxSettingsAttestPrivateAggregationInProtectedAudienceBrowserTest.CrossOrigin_Enrolled_Success
+-PrivacySandboxSettingsAttestPrivateAggregationInProtectedAudienceBrowserTest.CrossOrigin_NotEnrolled_Failure
+-PrivacySandboxSettingsEventReportingBrowserTest.ReportEventDestinationEnrolled
+-PrivacySandboxSettingsEventReportingBrowserTest.ReportEventDestinationNotEnrolled
 
 # These tests fail because we intentionally disable direct/raw sockets via
 # policy::policy_prefs::kIsolatedAppsDeveloperModeAllowed. See
@@ -260,6 +270,9 @@
 -InstallIsolatedWebAppFromCommandLineFromUrlBrowserTest.AppFromCommandLineIsInstalled
 -IsolatedWebAppBrowserServiceWorkerPushTest.ServiceWorkerPartitionedWhenWakingUpDueToPushNotification
 -IsolatedWebAppBrowserServiceWorkerTest.ServiceWorkerPartitioned
+-IsolatedWebAppBrowsingDataClearingTest.CacheCleared
+-IsolatedWebAppBrowsingDataClearingTest.CookieCleared
+-IsolatedWebAppDevToolsTest.ErrorPage
 -IsolatedWebAppsDeveloperModeAllowedPolicyTest.MockTcp/0
 -IsolatedWebAppsDeveloperModeAllowedPolicyTest.MockUdp/0
 -IsolatedWebAppErrorPageTest.SetsCorrectMessageForErrorCode
@@ -276,9 +289,23 @@
 
 # These tests fail because the primary account consent level is null instead of
 # signin::ConsentLevel::kSignin
+-PowerBookmarkBubbleViewBrowserTest.InvokeUi_bookmark_details_on_trackable_product
 -TurnSyncOnHelperBrowserTest.PrimaryAccountResetAfterSyncOptInFlowAborted/*
 -TurnSyncOnHelperBrowserTest.UndoSyncRemoveAccount
 -TurnSyncOnHelperBrowserTestWithParam.PrimaryAccountResetAfterSyncOptInFlowAborted/*
+-SupervisedUserBlockModeTest.HistoryVisitRecorded
+-SupervisedUserBlockModeTest.NavigateFromBlockedPageToBlockedPage
+-SupervisedUserBlockModeTest.OpenBlockedURLInNewTab
+-SupervisedUserBlockModeTest.SendAccessRequestOnBlockedURL
+-SupervisedUserBlockModeTest.Unblock
+-SupervisedUserURLFilterPrerenderingTest.OnURLChecked
+-SupervisedUserURLFilterTest.BlockNewTabAfterLoading
+-SupervisedUserURLFilterTest.BlockThenUnblock
+-SupervisedUserURLFilterTest.ClosingBlockedTabDoesNotCrash
+-SupervisedUserURLFilterTest.DontShowInterstitialTwice
+-SupervisedUserURLFilterTest.GoBackOnDontProceed
+-TrustedVaultEncryptionKeysTabHelperBrowserTest.ShouldBindAddRecoveryMethodApiInMainFrame
+-TrustedVaultEncryptionKeysTabHelperBrowserTest.ShouldNotBindEncryptionKeysApiInPrerendering
 
 # These tests fail because BRAVE_COSMETIC_FILTERING has an initial default value
 # of CONTENT_SETTING_DEFAULT which is not allowed as an integer value by
@@ -314,6 +341,7 @@
 -StorageAccessAPIForOriginBrowserTest.*
 -StorageAccessAPIForOriginWithFirstPartySetsBrowserTest.*
 -StorageAccessAPIWithCHIPSBrowserTest.*
+-StorageAccessAPIWith3PCEnabledBrowserTest.AllowedByUserBypass
 
 # These tests fail because they expect the record of a cookie to go to the
 # "Standard" histogram mode, but instead it goes to the "Block3PC" mode.
@@ -326,8 +354,15 @@
 # service to set ANTI_ABUSE setting to BLOCK).
 -ExtensionContentSettingsApiTest.Standard
 
-# This test fails because we block 3p cookies
+# These tests fails because we block 3p cookies
 -RuntimeFeatureStateBrowserTest.ThirdPartyCookieAllowedByUserBypass
+-BackgroundPage/ExtensionPreferenceApiTest.OnChange/0
+-BackgroundPage/ExtensionPreferenceApiTest.OnChangeSplit/0
+-BackgroundPage/ExtensionPreferenceApiTest.Standard/0
+-EventPage/ExtensionPreferenceApiEventPageTest.ThirdPartyCookiesAllowed/0
+
+# These tests fail because we set kPrivacySandboxApisEnabled pref to false.
+-BackgroundPage/ExtensionPreferenceApiTest.PrivacySandboxMigration/0
 
 # These tests fail because of the shields. Didn't investigate in depth, but
 # the tests pass when run with --disable-brave-extension.
@@ -541,9 +576,14 @@
 -SystemNetworkContextManagerWithIpProtectionFlagsEnabledAndCommandLineSettingsEnabled.EnableIpProtectionProxyCommandLineOverridesFeature
 
 # These tests fail because we disable DIPS via dips::kFeature
+-All/DIPSSiteDataAccessDetectorTest.AttributeSameSiteIframesSiteDataAccessTo1P/*
+-All/DIPSSiteDataAccessDetectorTest.AttributeSameSiteNestedIframesSiteDataAccessTo1P/*
+-All/DIPSSiteDataAccessDetectorTest.DiscardFencedFrameCookieClientAccess/*
+-All/DIPSSiteDataAccessDetectorTest.DiscardPrerenderedPageCookieClientAccess/*
 -All/DIPSTabHelperBrowserTest.*/*
 -DIPSBounceDetectorBrowserTest.*
 -DIPSBounceTrackingDevToolsIssueTest.BounceTrackingDevToolsIssue
+-DIPSWebAuthnBrowserTest.WebAuthnAssertion_ConfirmWCOCallback
 -OpenerHeuristicBrowserTest.*
 
 # These tests fail on CI but pass locally
@@ -591,7 +631,8 @@
 -All/ClientSideDetectionServiceBrowserTest.TfLiteClassificationAfterTwoModelUploads/1
 
 # This test crashes because we have kOptimizationHints feature disabled.
--PageInfoBubbleViewAboutThisSiteAllowNonMsbbBrowserTest.AboutThisSiteWithoutOptinAndWithNonMsbbUsers 
+-PageInfoBubbleViewAboutThisSiteAllowNonMsbbBrowserTest.AboutThisSiteWithoutOptinAndWithNonMsbbUsers
+-VisualSearchSuggestionsServiceBrowserTest.VisualSearchSuggestionsServiceEnabled
 
 # These tests fail because we do not show the profile type selection screen in
 # the profile picker.
@@ -644,39 +685,93 @@
 # These tests crash because we disable 
 # enterprise_connectors::kLocalContentAnalysisEnabled feature
 -ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/1
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/10
 -ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/11
 -ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/13
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/14
 -ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/15
 -ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/17
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/18
 -ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/19
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/2
 -ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/21
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/22
 -ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/23
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/26
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/27
 -ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/3
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/30
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/31
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/34
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/35
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/38
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/39
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/42
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/43
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/46
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/47
 -ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/5
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/6
 -ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/7
 -ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/9
 -ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/1
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/10
 -ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/11
 -ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/13
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/14
 -ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/15
 -ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/17
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/18
 -ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/19
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/2
 -ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/21
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/22
 -ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/23
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/26
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/27
 -ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/3
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/30
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/31
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/34
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/35
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/38
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/39
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/42
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/43
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/46
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/47
 -ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/5
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/6
 -ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/7
 -ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/9
 -ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/1
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/10
 -ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/11
 -ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/13
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/14
 -ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/15
 -ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/17
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/18
 -ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/19
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/2
 -ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/21
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/22
 -ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/23
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/26
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/27
 -ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/3
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/30
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/31
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/34
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/35
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/38
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/39
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/42
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/43
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/46
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/47
 -ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/5
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/6
 -ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/7
 -ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/9
 -EnterpriseReportingPrivateGetContextInfoBaseBrowserTest.TestAllProviderNamesSet
@@ -690,6 +785,7 @@
 # These fail because we disable kPartitionedCookies
 -ReadAnythingAppControllerTest.*
 -StorageAccessAPIEnterprisePolicyBrowserTest.PartitionedStorage/*
+-StorageAccessAPIWithNoRequiredTopLevelInteractionBrowserTest.TopLevelUserInteractionNotRequired
 -StorageAccessAPIWithoutImplicitGrantBrowserTest.NestedSameOriginCookieAccess_CrossSiteAncestorChain
 -StorageAccessAPIWithoutImplicitGrantBrowserTest.NestedSameSiteCookieAccess_CrossSiteAncestorChain
 
@@ -740,6 +836,66 @@
 
 # These tests fail because we don't support the search companion.
 -CompanionPage*
+-SidePanelCompanion2BrowserEnabledTest.FeatureEnabled
+
+# These tests fail because they enable the kChromeRefresh2023 feature, which our
+# code is not expecting.
+-All/BrowserFrameColorProviderTest.BrowserFrameTracksIsGrayscale/1
+-All/BrowserFrameColorProviderTest.IncognitoAlwaysDarkMode/1
+-All/BrowserFrameColorProviderTest.IncognitoAlwaysIgnoresIsGrayscale/1
+-All/BrowserFrameColorProviderTest.IncognitoAlwaysIgnoresUserColor/1
+-All/BrowserFrameColorProviderTest.TracksBrowserColorScheme/1
+-All/BrowserFrameColorProviderTest.UserColorProfilePrefTrackedCorrectly/1
+-All/BrowserFrameColorProviderTest.UserColorTracksAutogeneratedThemeColor/1
+-AppMenuBrowserTestRefreshOnly.*
+-BrowserCommandControllerBrowserTestRefreshOnly.*
+-FirstRunIntroPixelTest.InvokeUi_default/CR2023
+-ProfilePickerUIPixelTest.InvokeUi_default/CR2023
+-RealboxHandlerIconTest/BrowserTestWithParam.ActionVectorIcons/0
+-RealboxHandlerIconTest/BrowserTestWithParam.ActionVectorIcons/2
+-RealboxHandlerIconTest/BrowserTestWithParam.AnswerVectorIcons/0
+-RealboxHandlerIconTest/BrowserTestWithParam.AnswerVectorIcons/2
+-RealboxHandlerIconTest/BrowserTestWithParam.MatchVectorIcons/0
+-RealboxHandlerIconTest/BrowserTestWithParam.MatchVectorIcons/2
+-RealboxHandlerIconTest/BrowserTestWithParam.PedalVectorIcons/0
+-RealboxHandlerIconTest/BrowserTestWithParam.PedalVectorIcons/2
+
+# These tests fail because we do not allow most request client hints
+-RedirectUaReductionBrowserTest.NormalRedirectRequest
+-SameOriginUaReductionBrowserTest.IframeRequestUaReduction
+-SameOriginUaReductionBrowserTest.NormalRequest
+-SameOriginUaReductionBrowserTest.UserAgentOverride
+-SameOriginUaReductionBrowserTest.UserAgentOverrideIframeRequest
+-SameOriginUaReductionBrowserTest.UserAgentOverrideSubresourceRequest
+
+# These tests fail because we override VariationsIdsProvider's method
+# GetClientDataHeaders to return nullptr, so the X-Client-Data header that the
+# tests expect to find never gets added.
+-All/ChromeKeepAliveURLBrowserTest.ReceiveMultipleRedirectsToGoogleAfterPageUnload/GET
+-All/ChromeKeepAliveURLBrowserTest.ReceiveMultipleRedirectsToGoogleAfterPageUnload/POST
+-All/ChromeKeepAliveURLVariationBrowserTest.ReceiveRedirectToGoogleAfterPageUnloadAndStripHeaders/GET
+-All/ChromeKeepAliveURLVariationBrowserTest.ReceiveRedirectToGoogleAfterPageUnloadAndStripHeaders/POST
+-HintsFetcherSearchPageDisabledBrowserTest.HintsFetcherStillFetchesNavigations
+-HintsFetcherSearchPageLimitedURLsBrowserTest.HintsFetcherLimitedResults
+
+# These tests fail because we set kSafeBrowsingExtendedReportingOptInAllowed
+# pref value to false.
+-AntiPhishingTelemetryBrowserTestWithThreatTypeAndIsolationSetting/AntiPhishingTelemetryBrowserTest.CheckReportListsInteractions/*
+-AntiPhishingTelemetryBrowserTestWithThreatTypeAndIsolationSetting/AntiPhishingTelemetryBrowserTest.CheckReportListsInteractionsNoExplicitInterstitialDecision/*
+
+# This test crashes because "Trying to register KeyedService Factory:
+# `BreadcrumbManagerService` after the call to the main registration function
+# `ChromeBrowserMainExtraPartsProfiles::...`. This happens because
+# kLogBreadcrumbs feature is disabled by default upstream and the test doesn't
+# enable it.
+-BreadcrumbManagerTabHelperSecurityStateBrowserTest.BrokenAuthentication
+
+# Failure reason is not clear, but the failure occurs while building testing
+# profile. Specifically, when TemplateURLServiceFactory calls SetTestingFactory
+# (which calls ContextShutdown and eventually ChromeTemplateURLServiceClient::
+# Shutdown, which seems to be hanging in trying to reset
+# history_service_observation_).
+-ConsentDialogUiTest.GetConsentDialogBodyTest
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
@@ -1168,11 +1324,6 @@
 -PasswordManagerCredentiallessIframeTest.DisablePasswordManagerOnCredentiallessIframe
 -PasswordManagerInternalsWebUIBrowserTest.*
 -PasswordManagerVotingBrowserTest.VerifyPasswordGenerationUpload
--PDFExtensionAccessibilityTest.PdfAccessibilityContextMenuAction
--PDFExtensionAccessibilityTest.PdfAccessibilitySelection
--PDFExtensionHitTestTest.ContextMenuCoordinates
--PDFExtensionPrintingTest.ContextMenuPrintCommandExtensionMainFrame
--PDFExtensionPrintingTest.ContextMenuPrintCommandPluginFrame
 -PDFExtensionTest.PdfExtensionLoadedWhileOldPdfCloses
 -PDFIFrameNavigationThrottleBrowserTest.*
 -PKIMetadataComponentUpdater/PKIMetadataComponentUpdaterTest.*

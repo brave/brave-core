@@ -211,26 +211,6 @@
       <message name="IDS_SHOW_BRAVE_WALLET" desc="The show Brave Wallet menu item (app menu)">
         Wallet
       </message>
-      <if expr="use_titlecase">
-        <message name="IDS_ADD_NEW_PROFILE" desc="The app menu item to create a new User Profile">
-          Create a New Profile
-        </message>
-      </if>
-      <if expr="not use_titlecase">
-        <message name="IDS_ADD_NEW_PROFILE" desc="The app menu item to create a new User Profile">
-          Create a new profile
-        </message>
-      </if>
-      <if expr="use_titlecase">
-        <message name="IDS_OPEN_GUEST_PROFILE" desc="The app menu item to create a new User Profile">
-          Open Guest Window
-        </message>
-      </if>
-      <if expr="not use_titlecase">
-        <message name="IDS_OPEN_GUEST_PROFILE" desc="The app menu item to create a new User Profile">
-          Open guest window
-        </message>
-      </if>
       <message name="IDS_OPEN_MORE_OTHER_DEVICES_SESSIONS" desc="The history sub-menu item to show sessions from other devices">
         More…
       </message>

@@ -20,6 +20,7 @@ import org.chromium.components.signin.identitymanager.IdentityManager;
 import org.chromium.components.signin.identitymanager.IdentityMutator;
 import org.chromium.components.signin.metrics.SigninAccessPoint;
 import org.chromium.components.signin.metrics.SignoutReason;
+import org.chromium.components.sync.SyncService;
 
 public class BraveSigninManager implements SigninManager {
     private final IdentityManager mIdentityManager;
@@ -99,7 +100,7 @@ public class BraveSigninManager implements SigninManager {
     @CalledByNative
     static SigninManager create(long nativeSigninManagerAndroid,
             AccountTrackerService accountTrackerService, IdentityManager identityManager,
-            IdentityMutator identityMutator) {
+            IdentityMutator identityMutator, SyncService syncService) {
         AccountInfoServiceProvider.init(identityManager, accountTrackerService);
         return new BraveSigninManager(identityManager);
     }

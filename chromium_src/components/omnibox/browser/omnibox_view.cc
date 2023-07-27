@@ -10,9 +10,8 @@
 class BraveOmniboxController : public OmniboxController {
  public:
   BraveOmniboxController(OmniboxView* view,
-                         OmniboxEditModelDelegate* edit_model_delegate,
                          std::unique_ptr<OmniboxClient> client)
-      : OmniboxController(view, edit_model_delegate, std::move(client)) {}
+      : OmniboxController(view, std::move(client)) {}
   BraveOmniboxController(const BraveOmniboxController&) = delete;
   BraveOmniboxController& operator=(const BraveOmniboxController&) = delete;
   ~BraveOmniboxController() override = default;

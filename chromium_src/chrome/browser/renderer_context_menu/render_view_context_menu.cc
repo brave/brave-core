@@ -492,3 +492,10 @@ void BraveRenderViewContextMenu::InitMenu() {
   BuildIPFSMenu();
 #endif
 }
+
+void BraveRenderViewContextMenu::NotifyMenuShown() {
+  auto* cb = BraveGetMenuShownCallback();
+  if (!cb->is_null()) {
+    std::move(*cb).Run(this);
+  }
+}

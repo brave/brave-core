@@ -1,18 +1,9 @@
 #!/usr/bin/env python
-
+#
 # Copyright (c) 2019 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-import argparse
-import os
-import subprocess
-import sys
-
-# Import the entire module to avoid circular dependencies in the functions
-from signing import chromium_config, commands, model, notarize  # noqa: E402
-from signing_helper import GetBraveSigningConfig
 
 """
 The sign_chrome.py script does notarization of the app, but we don't use it to
@@ -21,11 +12,34 @@ but must perform notarization after those processes are complete. This script
 performs notarizing and stapling of those files.
 """
 
+import argparse
+import os
+import subprocess
+import sys
+
+# Import the entire module to avoid circular dependencies in the functions
+from signing import (  # pylint: disable=import-error,wrong-import-position
+    chromium_config, commands, invoker, notarize)
+from signing_helper import (  # pylint: disable=wrong-import-position
+    GetBraveSigningConfig)
+
+
 # Our CWD is the packaging directory (i.e.
 # src/out/Release/Brave_Browser_CHANNEL_Packaging), the signing directory is
 # relative to that
-packaging_signing_path = os.path.realpath(os.path.dirname(os.path.realpath(__file__)))
+packaging_signing_path = os.path.realpath(
+    os.path.dirname(os.path.realpath(__file__)))
 sys.path.append(packaging_signing_path)
+
+
+class NotarizationInvoker(invoker.Interface):  # pylint: disable=too-few-public-methods
+    def __init__(self, args, config):
+        self._notarizer = notarize.Invoker(args, config)
+
+    @property
+    def notarizer(self):
+        return self._notarizer
+
 
 def run_command(args, **kwargs):
     print('Running command: {}'.format(args))
@@ -68,10 +82,10 @@ def create_config(config_args, development, mac_provisioning_profile=None):
         config_class = DevelopmentCodeSignConfig
 
     config_class = GetBraveSigningConfig(config_class, mac_provisioning_profile)
-    return config_class(*config_args)
+    return config_class(**config_args)
 
 
-def NotarizeBraveDmgPkg(paths, config, dmg, pkg, outdir, signed):
+def NotarizeBraveDmgPkg(config, dmg, pkg, outdir, signed):
     """
     Notarize Brave .dmg and .pkg files.
     """
@@ -95,17 +109,19 @@ def main():
 
     args = parse_args()
 
-    if args.mac_provisioning_profile and args.development is not True:
-        config = create_config((args.identity, None, args.notary_user,
-                               args.notary_password, args.notary_asc_provider),
-                               args.development, args.mac_provisioning_profile)
-    else:
-        config = create_config((args.identity, None, args.notary_user,
-                               args.notary_password, args.notary_asc_provider),
-                               args.development)
-    paths = model.Paths(args.pkgdir, args.outdir, None)
+    config_args = {}
+    config_args['identity'] = args.identity
+    config_args['installer_identity'] = None
+    config_args['invoker'] = lambda config: NotarizationInvoker(args, config)
 
-    rc = NotarizeBraveDmgPkg(paths, config, args.dmg, args.pkg, args.outdir, args.signed)
+    if args.mac_provisioning_profile and args.development is not True:
+        config = create_config(config_args, args.development,
+                               args.mac_provisioning_profile)
+    else:
+        config = create_config(config_args, args.development)
+
+    rc = NotarizeBraveDmgPkg(config, args.dmg, args.pkg, args.outdir,
+                             args.signed)
     return rc
 
 
@@ -113,20 +129,6 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Notarize Mac DMG and PKG')
     parser.add_argument(
         '--identity', required=True, help='The identity to sign with.')
-    parser.add_argument(
-        '--notary-user',
-        help='The username used to authenticate to the Apple notary service.')
-    parser.add_argument(
-        '--notary-password',
-        help='The password or password reference (e.g. @keychain, see '
-        '`xcrun altool -h`) used to authenticate to the Apple notary service.')
-    parser.add_argument(
-        '--notary-asc-provider',
-        help='The ASC provider string to be used as the `--asc-provider` '
-        'argument to `xcrun altool`, to be used when --notary-user is '
-        'associated with multiple Apple developer teams. See `xcrun altool -h. '
-        'Run `iTMSTransporter -m provider -account_type itunes_connect -v off '
-        '-u USERNAME -p PASSWORD` to list valid providers.')
     parser.add_argument(
         '--development',
         action='store_true',
@@ -138,11 +140,18 @@ def parse_args():
                         required=True)
     parser.add_argument('--pkgdir', help='Packaging directory',
                         required=True)
-    parser.add_argument('-s', '--signed', help='Directory with signed DMG and PKG',
+    parser.add_argument('-s',
+                        '--signed',
+                        help='Directory with signed DMG and PKG',
                         required=True)
     parser.add_argument('-p', '--pkg', help='Path to the pkg to notarize',
                         required=True)
-    parser.add_argument('--mac_provisioning_profile', help='Provisioning profile(optional)')
+    parser.add_argument('--mac_provisioning_profile',
+                        help='Provisioning profile(optional)')
+
+    # Also, see notarize.py for Invoker and related classes register_arguments
+    # methods.
+    notarize.Invoker.register_arguments(parser)
     return parser.parse_args()
 
 

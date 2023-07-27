@@ -74,9 +74,10 @@ import org.chromium.chrome.browser.qrreader.CameraSource;
 import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
 import org.chromium.chrome.browser.share.qrcode.QRCodeGenerationRequest;
 import org.chromium.chrome.browser.sync.BraveSyncDevices;
-import org.chromium.chrome.browser.sync.SyncService;
+import org.chromium.chrome.browser.sync.SyncServiceFactory;
 import org.chromium.chrome.browser.sync.settings.BraveManageSyncSettings;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
+import org.chromium.components.sync.SyncService;
 import org.chromium.ui.base.DeviceFormFactor;
 
 import java.io.IOException;
@@ -182,7 +183,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        SyncService.get().addSyncStateChangedListener(this);
+        SyncServiceFactory.get().addSyncStateChangedListener(this);
 
         InvalidateCodephrase();
 
@@ -956,7 +957,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             mCameraSourcePreview.release();
         }
 
-        SyncService.get().removeSyncStateChangedListener(this);
+        SyncServiceFactory.get().removeSyncStateChangedListener(this);
 
         if (deviceInfoObserverSet) {
             BraveSyncDevices.get().removeDeviceInfoChangedListener(this);
@@ -1227,7 +1228,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if (isSyncStateChangedObserverPaused()) {
             return;
         }
-        if (SyncService.get().isInitialSyncFeatureSetupComplete() == false) {
+        if (SyncServiceFactory.get().isInitialSyncFeatureSetupComplete() == false) {
             if (mLeaveSyncChainInProgress) {
                 leaveSyncChainComplete();
             } else {
