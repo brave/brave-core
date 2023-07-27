@@ -62,7 +62,7 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
             view = LayoutInflater.from(ContextUtils.getApplicationContext()).inflate(R.layout.brave_rewards_onboarding_item_layout, null);
             TextView titleView = view.findViewById(R.id.title_view);
             titleView.setText(getTitles(context).get(position));
-            TextView textView = view.findViewById(R.id.text_view);
+            TextView textView = view.findViewById(R.id.onboarding_text_view);
             textView.setText(getTexts(context).get(position));
             AppCompatImageView imageView = view.findViewById(R.id.image_view);
             imageView.setImageResource(getImages().get(position));
