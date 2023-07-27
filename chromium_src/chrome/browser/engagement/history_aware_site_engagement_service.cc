@@ -13,12 +13,10 @@
 namespace brave {
 
 bool ShouldHandleSiteEngagementEvent(content::WebContents* web_contents) {
-    LOG(ERROR) << "1";
   if (request_otr::RequestOTRStorageTabHelper* tab_storage =
           request_otr::RequestOTRStorageTabHelper::FromWebContents(
               web_contents)) {
     if (tab_storage->has_requested_otr()) {
-        LOG(ERROR) << "2";
       return false;
     }
   }

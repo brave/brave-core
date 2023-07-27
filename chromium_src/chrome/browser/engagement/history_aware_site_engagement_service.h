@@ -6,17 +6,18 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_ENGAGEMENT_HISTORY_AWARE_SITE_ENGAGEMENT_SERVICE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_ENGAGEMENT_HISTORY_AWARE_SITE_ENGAGEMENT_SERVICE_H_
 
-#define UpdateEngagementScores                                                 \
-  UnusedFunction() {}                                                          \
-                                                                               \
- protected:                                                                    \
-  void HandleMediaPlaying(content::WebContents* web_contents, bool is_hidden); \
-  void HandleNavigation(content::WebContents* web_contents,                    \
-                        ui::PageTransition transition);                        \
-  void HandleUserInput(content::WebContents* web_contents,                     \
-                       EngagementType type);                                   \
-                                                                               \
- private:                                                                      \
+#define UpdateEngagementScores                                                \
+  UnusedFunction() {}                                                         \
+                                                                              \
+ protected:                                                                   \
+  void HandleMediaPlaying(content::WebContents* web_contents, bool is_hidden) \
+      override;                                                               \
+  void HandleNavigation(content::WebContents* web_contents,                   \
+                        ui::PageTransition transition) override;              \
+  void HandleUserInput(content::WebContents* web_contents,                    \
+                       EngagementType type) override;                         \
+                                                                              \
+ private:                                                                     \
   void UpdateEngagementScores
 
 #include "src/chrome/browser/engagement/history_aware_site_engagement_service.h"  // IWYU pragma: export

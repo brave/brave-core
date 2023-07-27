@@ -611,51 +611,17 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, SiteEngagementNotRecorded) {
       SiteEngagementServiceFactory::GetForProfile(browser()->profile());
   ObserverTester tester(service);
 
-  // GURL url = embedded_test_server()->GetURL("z.com", "/simple.html");
-  // NavigateTo(url);
-  // EXPECT_EQ(tester.last_updated_type(), EngagementType::kNavigation);
-  // EXPECT_EQ(tester.last_updated_url(), url);
+  // Navigating to a non-sensitive URL should record the navigation with the
+  // site engagement service.
+  GURL non_sensitive_url =
+      embedded_test_server()->GetURL("z.com", "/simple.html");
+  NavigateTo(non_sensitive_url);
+  EXPECT_EQ(tester.last_updated_type(), EngagementType::kNavigation);
+  EXPECT_EQ(tester.last_updated_url(), non_sensitive_url);
 
-  GURL sensitive_url =
-      embedded_test_server()->GetURL("sensitive.a.com", "/simple.html");
-  NavigateTo(sensitive_url);
-
-  EXPECT_EQ(tester.last_updated_type(), EngagementType::kLast);
-  // EXPECT_EQ(tester.last_updated_url(), url);
-
-  // SiteEngagementService::Helper* helper =
-  //     SiteEngagementService::Helper::FromWebContents(web_contents());
-  // SetMediaTrackerPauseTimer(helper);
-  // // Load a page in the prerender.
-  // GURL prerender_url =
-  //     embedded_test_server()->GetURL("/media/unified_autoplay.html");
-  // int host_id = prerender_helper()->AddPrerender(prerender_url);
-  // content::test::PrerenderHostObserver host_observer(*web_contents(),
-  // host_id); content::RenderFrameHost* prerendered_frame_host =
-  //     prerender_helper()->GetPrerenderedMainFrameHost(host_id);
-  // // Since the prerendered page couldn't have a user gesture, it runs JS with
-  // // EXECUTE_SCRIPT_NO_USER_GESTURE. Requesting playing video without a user
-  // // gesture results in the promise rejected.
-  // EXPECT_EQ(false, content::EvalJs(
-  //                      prerendered_frame_host, "attemptPlay();",
-  //                      content::EvalJsOptions::EXECUTE_SCRIPT_NO_USER_GESTURE));
-
-  // EXPECT_EQ(tester.last_updated_type(), EngagementType::kNavigation);
-  // EXPECT_EQ(tester.last_updated_url(), url);
-
-  // // Navigate the primary page to the URL.
-  // prerender_helper()->NavigatePrimaryPage(prerender_url);
-  // // The page should be activated from the prerendering.
-  // EXPECT_TRUE(host_observer.was_activated());
-
-  // EXPECT_TRUE(
-  //     content::EvalJs(web_contents()->GetPrimaryMainFrame(),
-  //     "attemptPlay();")
-  //         .ExtractBool());
-
-  // tester.WaitForEngagementEvent(EngagementType::kMediaVisible);
-  // EXPECT_EQ(tester.last_updated_type(), EngagementType::kMediaVisible);
-  // EXPECT_EQ(tester.last_updated_url(), prerender_url);
+  // Navigating to a sensitive URL should not record the navigation.
+  NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
+  EXPECT_EQ(tester.last_updated_url(), non_sensitive_url);
 }
 
 }  // namespace request_otr

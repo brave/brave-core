@@ -10,17 +10,27 @@
   UnusedFunction() {}      \
                            \
  protected:                \
-  void HandleMediaPlaying
+  virtual void HandleMediaPlaying
+
+#define HandleNavigation \
+  UnusedFunction2() {}   \
+  virtual void HandleNavigation
+
+#define HandleUserInput \
+  UnusedFunction3() {}  \
+  virtual void HandleUserInput
 
 #define OnEngagementEvent \
-  UnusedFunction2() {}    \
+  UnusedFunction4() {}    \
                           \
  private:                 \
   void OnEngagementEvent
 
 #include "src/components/site_engagement/content/site_engagement_service.h"  // IWYU pragma: export
 
-#undef OnEngagementEvent
 #undef HandleMediaPlaying
+#undef HandleNavigation
+#undef HandleUserInput
+#undef OnEngagementEvent
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SITE_ENGAGEMENT_CONTENT_SITE_ENGAGEMENT_SERVICE_H_
