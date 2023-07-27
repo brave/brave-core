@@ -142,10 +142,11 @@ export const FundWalletScreen = (props: Props) => {
   const closeAccountSearch = React.useCallback(() => setShowAccountSearch(false), [])
   const onSearchTextChanged = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => setAccountSearchText(e.target.value), [])
 
-  const onSelectAccountFromSearch = React.useCallback((account: WalletAccountType) => () => {
-    closeAccountSearch()
-    setSelectedAccount(account)
-  }, [closeAccountSearch])
+  const onSelectAccountFromSearch = React.useCallback(
+    (account: WalletAccountType) => {
+      closeAccountSearch()
+      setSelectedAccount(account)
+    }, [closeAccountSearch])
 
   const nextStep = React.useCallback(() => {
     if (!isNextStepEnabled) {
