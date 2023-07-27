@@ -186,7 +186,7 @@ FilAddress FilAddress::FromFEVMAddress(bool is_mainnet,
     return FilAddress();
   }
   std::vector<uint8_t> payload;
-  base::HexStringToBytes(base::ToLowerASCII(fevm_address.substr(2)), &payload);
+  base::HexStringToBytes(fevm_address.substr(2), &payload);
   std::vector<uint8_t> prefix = {4, 10};
 
   blake2b_state blakeState;
@@ -203,7 +203,7 @@ FilAddress FilAddress::FromFEVMAddress(bool is_mainnet,
   }
 
   std::vector<uint8_t> checksum(4, 0);
-  if (blake2b_final(&blakeState, checksum.data(), 4) != 0) {
+  if (blake2b_final(&blakeState, checksum.data(), checksum.size()) != 0) {
     return FilAddress();
   }
 
@@ -213,8 +213,7 @@ FilAddress FilAddress::FromFEVMAddress(bool is_mainnet,
       base::StringPiece(reinterpret_cast<const char*>(payload.data()),
                         payload.size()),
       base32::Base32EncodePolicy::OMIT_PADDING);
-  return FilAddress::FromAddress((is_mainnet ? "f410f" : "t410f") +
-                                 base::ToLowerASCII(encoded));
+  return FilAddress::FromAddress((is_mainnet ? "f410f" : "t410f") + encoded);
 }
 
 // Creates FilAddress from SECP256K or BLS payload

@@ -27,7 +27,8 @@ import { AccountListItem } from '../account-list-item/account-list-item'
 // Styled Components
 import { ButtonIcon, ArrowIcon, DropDown, SelectorButton } from './account-selector.style'
 import { BraveWallet } from '../../../../../constants/types'
-import { CoinType } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
+
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 interface Props {
   asset: BraveWallet.BlockchainToken | undefined
@@ -77,11 +78,11 @@ export const AccountSelector = (props: Props) => {
       return []
     }
 
-    if (selectedNetwork.coin === BraveWallet.CoinType.FIL) {
-      let filecoinAccounts = accounts.filter((account) =>
+    if (selectedAccountId.coin === BraveWallet.CoinType.FIL) {
+      const filecoinAccounts = accounts.filter((account) =>
         (account.accountId.keyringId === selectedAccountId?.keyringId))
-      let fevmAccounts = accounts.filter((account) =>
-        (account.accountId.coin === CoinType.ETH))
+      const fevmAccounts = accounts.filter((account) =>
+        (account.accountId.coin === BraveWallet.CoinType.ETH))
       return filecoinAccounts.concat(fevmAccounts)
     }
 
@@ -90,17 +91,31 @@ export const AccountSelector = (props: Props) => {
     // https://github.com/brave/brave-browser/issues/29262
     return accounts.filter(
       (account) =>
-        account.accountId.coin === selectedNetwork.coin &&
         account.accountId.keyringId === selectedAccountId.keyringId ||
         (asset?.contractAddress === "" && isFVMAccount(account)))
   }, [accounts, selectedNetwork, selectedAccountId, asset])
 
-  const { data: fvmTranslatedAddresses } = useGetFVMAddressQuery({
-    addresses: accountsByNetwork
-      .filter(account => account.accountId.coin === CoinType.ETH)
-      .map(account => account.accountId.address),
-    isMainNet: selectedNetwork?.chainId === BraveWallet.FILECOIN_MAINNET
-  })
+  const evmAddressesforFVMTranslation = React.useMemo(() =>
+  accountsByNetwork
+    .filter(account => account.accountId.coin === BraveWallet.CoinType.ETH)
+    .map(account => account.accountId.address),
+  [accountsByNetwork])
+
+  const { data: fvmTranslatedAddresses } = useGetFVMAddressQuery(
+    selectedNetwork && selectedNetwork.coin === BraveWallet.CoinType.FIL && evmAddressesforFVMTranslation.length
+    ? {
+        addresses: evmAddressesforFVMTranslation,
+        isMainNet: selectedNetwork.chainId === BraveWallet.FILECOIN_MAINNET
+      }
+    : skipToken
+  )
+
+  const fvmTranslatedAddressesForNetwork = React.useMemo(() => {
+    if (!selectedNetwork || selectedNetwork.coin !== BraveWallet.CoinType.FIL) {
+      return undefined
+    }
+    return fvmTranslatedAddresses
+  }, [ selectedNetwork, fvmTranslatedAddresses, evmAddressesforFVMTranslation])
 
   // Hooks
   useOnClickOutside(
@@ -126,7 +141,7 @@ export const AccountSelector = (props: Props) => {
               isSelected={
                 account.accountId.uniqueKey === selectedAccountId?.uniqueKey
               }
-              accountAlias={fvmTranslatedAddresses?.[account.accountId.address] || ''}
+              accountAlias={fvmTranslatedAddressesForNetwork?.[account.accountId.address]}
             />
           )}
         </DropDown>

@@ -158,10 +158,12 @@ export interface IsEip1559ChangedMutationArg {
   isEip1559: boolean
 }
 
-export interface GetFVMAddressArg {
+interface GetFVMAddressArg {
   isMainNet: boolean
   addresses: string[]
 }
+
+type GetFVMAddressResult = Map<string, {address: string, fvmAddress: string}>
 
 interface GetTransactionsQueryArg {
   /**
@@ -1420,12 +1422,13 @@ export function createWalletApi () {
       //
       // Transactions
       //
-      getFVMAddress: query<Map<string, {address: string, fvmAddress: string | null}>, GetFVMAddressArg>({
+      getFVMAddress: query<GetFVMAddressResult, GetFVMAddressArg>({
         queryFn: async (arg, api, extraOptions, baseQuery) => {
           try {
             const { braveWalletService } = baseQuery(undefined).data
+            const convertResult = (await braveWalletService.convertFEVMToFVMAddress(arg.isMainNet, arg.addresses)).result
             return {
-              data: (await braveWalletService.convertFEVMToFVMAddress(arg.isMainNet, arg.addresses)).result
+              data: convertResult
             }
           } catch(error) {
             return {

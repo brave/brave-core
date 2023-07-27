@@ -378,9 +378,10 @@ export const Send = (props: Props) => {
 
   const addressMessageInformation: AddressMessageInfo | undefined = React.useMemo(() => {
     if (showFilecoinFEVMWarning) {
-      let message = { ... FEVMAddressConvertionMessage }
-      message.placeholder = fevmTranslatedAddresses?.[toAddressOrUrl] || ''
-      return message
+      return {
+        ...FEVMAddressConvertionMessage,
+        placeholder: fevmTranslatedAddresses?.[toAddressOrUrl]
+      }
     }
     if (showEnsOffchainWarning) {
       return ENSOffchainLookupMessage

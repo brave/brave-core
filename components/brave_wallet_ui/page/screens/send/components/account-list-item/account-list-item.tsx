@@ -33,7 +33,7 @@ export const AccountListItem = (props: Props) => {
       <Column horizontalAlign='flex-start' verticalAlign='center'>
         <Text textColor='text03' textSize='12px' isBold={false}>{account.name}</Text>
         <Text textColor='text01' textSize='12px' isBold={false}>{account.address}</Text>
-        {accountAlias &&
+        {(accountAlias && accountAlias !== '') &&
           <Text textColor='text02' textSize='12px' isBold={false}>{accountAlias}</Text>
         }
       </Column>

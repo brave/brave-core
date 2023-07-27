@@ -1901,13 +1901,11 @@ void BraveWalletService::ConvertFEVMToFVMAddress(
     bool is_mainnet,
     const std::vector<std::string>& fevm_addresses,
     ConvertFEVMToFVMAddressCallback callback) {
-  base::flat_map<std::string, absl::optional<std::string>> result;
+  base::flat_map<std::string, std::string> result;
   for (const auto& fevm_address : fevm_addresses) {
     auto address = FilAddress::FromFEVMAddress(is_mainnet, fevm_address);
     DCHECK(result.find(fevm_address) == result.end());
-    if (address.IsEmpty()) {
-      result[fevm_address] = absl::nullopt;
-    } else {
+    if (!address.IsEmpty()) {
       result[fevm_address] = address.EncodeAsString();
     }
   }
