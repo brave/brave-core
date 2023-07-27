@@ -318,14 +318,23 @@ void BraveToolbarView::UpdateBookmarkVisibility() {
 void BraveToolbarView::UpdateHorizontalPadding() {
   DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
 
+  if (!brave_initialized_) {
+    return;
+  }
+
+  // Get ToolbarView's container_view as a parent of location_bar_ because
+  // container_view's type in ToolbarView is internal to toolbar_view.cc.
+  DCHECK(location_bar_ && location_bar_->parent());
+  views::View* container_view = location_bar_->parent();
+
   if (!tabs::utils::ShouldShowVerticalTabs(browser()) ||
       tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser())) {
-    SetBorder(nullptr);
+    container_view->SetBorder(nullptr);
   } else {
     auto [leading, trailing] =
         tabs::utils::GetLeadingTrailingCaptionButtonWidth(
             browser_view_->frame());
-    SetBorder(views::CreateEmptyBorder(
+    container_view->SetBorder(views::CreateEmptyBorder(
         gfx::Insets().set_left(leading).set_right(trailing)));
   }
 }
