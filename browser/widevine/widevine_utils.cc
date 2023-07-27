@@ -9,7 +9,7 @@
 #include "base/path_service.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
-#include "brave/browser/widevine/buildflags.h"
+#include "brave/browser/widevine/static_buildflags.h"
 #include "brave/browser/widevine/constants.h"
 #include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/components/constants/pref_names.h"

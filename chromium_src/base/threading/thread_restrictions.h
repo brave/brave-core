@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_BASE_THREADING_THREAD_RESTRICTIONS_H_
 #define BRAVE_CHROMIUM_SRC_BASE_THREADING_THREAD_RESTRICTIONS_H_
 
-#include "brave/browser/widevine/buildflags.h"
+#include "brave/browser/widevine/static_buildflags.h"
 
 class BraveBrowsingDataRemoverDelegate;
 namespace ipfs {

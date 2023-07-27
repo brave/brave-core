@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_COMPONENT_UPDATER_WIDEVINE_CDM_COMPONENT_INSTALLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_COMPONENT_UPDATER_WIDEVINE_CDM_COMPONENT_INSTALLER_H_
 
-#include "brave/browser/widevine/buildflags.h"
+#include "brave/browser/widevine/static_buildflags.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 #define RegisterWidevineCdmComponent_Prefix \

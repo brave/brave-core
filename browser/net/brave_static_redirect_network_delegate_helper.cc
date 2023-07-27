@@ -13,7 +13,7 @@
 #include "base/strings/string_piece_forward.h"
 #include "brave/browser/net/brave_geolocation_buildflags.h"
 #include "brave/browser/safebrowsing/buildflags.h"
-#include "brave/browser/widevine/buildflags.h"
+#include "brave/browser/widevine/static_buildflags.h"
 #include "brave/components/constants/network_constants.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/net_errors.h"

@@ -6,7 +6,7 @@
 #include "components/update_client/protocol_serializer.h"
 
 #include "base/check.h"
-#include "brave/browser/widevine/buildflags.h"
+#include "brave/browser/widevine/static_buildflags.h"
 #include "brave/components/constants/brave_services_key.h"
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
