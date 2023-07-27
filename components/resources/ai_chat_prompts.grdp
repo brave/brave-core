@@ -72,7 +72,7 @@ This is a video transcript:
 
 <ph name="TRANSCRIPT">$1</ph>
 
-Propose up to 3 very short questions, around 10 words, that a reader may ask about this video. Consider intriguing or unusual elements of the content, or structurally important. Separate each suggested question with the character "|". Do not number the questions.
+Propose up to 3 very short questions, around 10 words, that a reader may ask about this video. Consider intriguing or unusual elements of the content, or structurally important.
 </message>
 
 <message name="IDS_AI_CHAT_LLAMA2_GENERATE_QUESTIONS_ARTICLE" translateable="false">
@@ -90,7 +90,7 @@ Your goal is to answer the user's requests exactly in concise manner.
 </message>
 
 <message name="IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERATE_QUESTIONS_RESPONSE_SEED" translateable="false">
-Sure, here are three intriguing or unusual questions that a reader may ask about the article:
+Sure, here are three intriguing or unusual questions that a reader may ask about the article: &lt;ul&gt; &lt;li&gt;
 </message>
 
 </grit-part>

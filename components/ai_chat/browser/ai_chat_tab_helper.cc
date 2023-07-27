@@ -265,6 +265,7 @@ void AIChatTabHelper::GenerateQuestions() {
   if (UsesLlama2PromptTemplate(ai_chat::features::kAIModelName.Get())) {
     prompt = BuildLlama2GenerateQuestionsPrompt(is_video_, article_text_);
     stop_sequences.push_back(ai_chat::kLlama2Eos);
+    stop_sequences.push_back("</ul>");
   } else {
     prompt = base::StrCat(
         {GetHumanPromptSegment(),
@@ -319,10 +320,47 @@ void AIChatTabHelper::OnAPISuggestedQuestionsResponse(
 
   DVLOG(2) << "Received " << (success ? "success" : "failed")
            << " suggested questions response: " << completion;
-  // Parse questions
-  auto questions = base::SplitString(*completion, "|",
-                                     base::WhitespaceHandling::TRIM_WHITESPACE,
-                                     base::SplitResult::SPLIT_WANT_NONEMPTY);
+
+  std::vector<std::string> questions;
+  if (UsesLlama2PromptTemplate(ai_chat::features::kAIModelName.Get())) {
+    // Llama 2 results look something like this:
+    // Can ChatGPT actually summarize a seven-hour video in under a minute?</li>
+    // <li>What are the limitations of ChatGPT's browsing capabilities, and how
+    // does it affect its ability to provide accurate information?</li> <li>Can
+    // ChatGPT's tonewood research be applied to other areas of scientific
+    // inquiry beyond guitar making?</li>  These questions capture interesting
+    // aspects of the video, such as the AI's ability to summarize long content,
+    // its limitations, and its potential applications beyond the specific use
+    // case presented in the video.
+
+    // Split out the questions using </li>
+    questions = base::SplitStringUsingSubstr(
+        *completion, "</li>", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+
+    // Remove the last entry in questions if it doesn't contain an <li> tag
+    // which means its not an actually a question
+    if (questions.size() > 1) {
+      if (questions.back().find("<li>") == std::string::npos) {
+        questions.pop_back();
+      }
+    }
+
+    // Remove leading <li> from each question
+    for (auto& question : questions) {
+      auto parts = base::SplitStringUsingSubstr(
+          question, "<li>", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+      if (!parts.empty()) {
+        question = parts.back();  // If there's an <li>, parts will contain an
+                                  // empty string and then the question. We take
+                                  // the last element.
+      }
+    }
+  } else {
+    questions = base::SplitString(*completion, "|",
+                                  base::WhitespaceHandling::TRIM_WHITESPACE,
+                                  base::SplitResult::SPLIT_WANT_NONEMPTY);
+  }
+
   suggested_questions_.insert(suggested_questions_.end(), questions.begin(),
                               questions.end());
   // Notify observers
