@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_CONSTANTS_NETWORK_CONSTANTS_H_
 #define BRAVE_COMPONENTS_CONSTANTS_NETWORK_CONSTANTS_H_
 
-#include "brave/browser/widevine/buildflags.h"
+#include "brave/components/widevine/static_buildflags.h"
 
 extern const char kExtensionUpdaterDomain[];
 
