@@ -276,13 +276,13 @@ bool WidevineCdmComponentInstallerPolicy::AddArm64ArchToManifest(
     return false;
   }
 
-  const base::Value::Dict* root_dict = root->GetIfDict();
+  base::Value::Dict* root_dict = root->GetIfDict();
   if (!root_dict) {
     LOG(ERROR) << "Manifest is not a dictionary.";
     return false;
   }
 
-  base::Value* accept_arch = root->FindPath("accept_arch");
+  base::Value* accept_arch = root_dict->FindByDottedPath("accept_arch");
   if (!accept_arch) {
     LOG(ERROR) << "Could not find accept_arch field.";
     return false;
