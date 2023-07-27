@@ -172,12 +172,17 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkLocal) {
   resolver_raw->ResetResolveCalled();
   SetXIpfsPathHeader("/ipfs/bafy");
   test_url = embedded_test_server()->GetURL(
-      "a.com", "/ipfs/bafy1/wiki/empty.html?query#ref");
+      "a.com",
+      "/ipfs/bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/wiki/"
+      "empty.html?query#ref");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
   ASSERT_TRUE(WaitForLoadStop(active_contents()));
   ASSERT_FALSE(resolver_raw->resolve_called());
   resolved_url = helper->GetIPFSResolvedURL();
-  EXPECT_EQ(resolved_url, GURL("ipfs://bafy1/wiki/empty.html?query#ref"));
+  EXPECT_EQ(
+      resolved_url,
+      GURL("ipfs://bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/"
+           "wiki/empty.html?query#ref"));
 }
 
 IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkGateway) {
@@ -303,7 +308,9 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest,
   EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), std::string());
 
   const GURL test_url = embedded_test_server()->GetURL(
-      "a.com", "/ipfs/bafy1/wiki/empty.html?query#ref");
+      "a.com",
+      "/ipfs/bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/wiki/"
+      "empty.html?query#ref");
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
   ASSERT_TRUE(WaitForLoadStop(active_contents()));
@@ -341,7 +348,9 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, GatewayRedirectToIPFS) {
   SetXIpfsPathHeader("/ipns/other");
 
   const GURL test_url = embedded_test_server()->GetURL(
-      "navigate_to.com", "/ipfs/bafy1/wiki/empty.html?query#ref");
+      "navigate_to.com",
+      "/ipfs/bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/wiki/"
+      "empty.html?query#ref");
 
   GURL gateway_url = embedded_test_server()->GetURL("a.com", "/");
   prefs->SetString(kIPFSPublicGatewayAddress, gateway_url.spec());
@@ -352,8 +361,10 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, GatewayRedirectToIPFS) {
 
   // gateway url.
   GURL expected_final_url;
-  ipfs::TranslateIPFSURI(GURL("ipfs://bafy1/wiki/empty.html?query#ref"),
-                         &expected_final_url, gateway_url, false);
+  ipfs::TranslateIPFSURI(
+      GURL("ipfs://bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/"
+           "wiki/empty.html?query#ref"),
+      &expected_final_url, gateway_url, false);
 
   EXPECT_EQ(active_contents()->GetVisibleURL(), expected_final_url);
 }

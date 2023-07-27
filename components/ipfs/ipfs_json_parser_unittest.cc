@@ -279,108 +279,144 @@ TEST_F(IPFSJSONParserTest, GetPeersFromConfigJSONTest) {
 
 TEST_F(IPFSJSONParserTest, PutNewPeerToConfigJSONTest) {
   std::string json = R"({})";
-  std::string new_peer = "QmNewPeer";
+  std::string new_peer = "QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa";
   std::string result = IPFSJSONParser::PutNewPeerToConfigJSON(json, new_peer);
-  EXPECT_EQ(result, "{\"Peering\":{\"Peers\":[{\"ID\":\"QmNewPeer\"}]}}");
+  EXPECT_EQ(result,
+            "{\"Peering\":{\"Peers\":[{\"ID\":"
+            "\"QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa\"}]}}");
 
   json = R"({"Peering":{}})";
   result = IPFSJSONParser::PutNewPeerToConfigJSON(json, new_peer);
-  EXPECT_EQ(result, "{\"Peering\":{\"Peers\":[{\"ID\":\"QmNewPeer\"}]}}");
+  EXPECT_EQ(result,
+            "{\"Peering\":{\"Peers\":[{\"ID\":"
+            "\"QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa\"}]}}");
 
   json = R"({"Peering":{"Peers":null }})";
   result = IPFSJSONParser::PutNewPeerToConfigJSON(json, new_peer);
-  EXPECT_EQ(result, "{\"Peering\":{\"Peers\":[{\"ID\":\"QmNewPeer\"}]}}");
+  EXPECT_EQ(result,
+            "{\"Peering\":{\"Peers\":[{\"ID\":"
+            "\"QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa\"}]}}");
 
   json = R"({"Peering":{"Peers":[]}})";
-  result = IPFSJSONParser::PutNewPeerToConfigJSON(json, new_peer);
-  EXPECT_EQ(result, "{\"Peering\":{\"Peers\":[{\"ID\":\"QmNewPeer\"}]}}");
-
-  json = R"({"Peering":{"Peers":[]}})";
-  result = IPFSJSONParser::PutNewPeerToConfigJSON(json, "");
-  EXPECT_EQ(result, "");
-
-  json = R"({"Peering":{"Peers":[]}})";
-  result = IPFSJSONParser::PutNewPeerToConfigJSON(json, "");
-  EXPECT_EQ(result, "");
-
-  json = R"({"Peering":{"Peers":[{"ID":"QmA"}]}})";
   result = IPFSJSONParser::PutNewPeerToConfigJSON(json, new_peer);
   EXPECT_EQ(result,
-            "{\"Peering\":{\"Peers\":[{\"ID\":\"QmA\"},"
-            "{\"ID\":\"QmNewPeer\"}]}}");
+            "{\"Peering\":{\"Peers\":[{\"ID\":"
+            "\"QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa\"}]}}");
+
+  json = R"({"Peering":{"Peers":[]}})";
+  result = IPFSJSONParser::PutNewPeerToConfigJSON(json, "");
+  EXPECT_EQ(result, "");
+
+  json = R"({"Peering":{"Peers":[]}})";
+  result = IPFSJSONParser::PutNewPeerToConfigJSON(json, "");
+  EXPECT_EQ(result, "");
+
+  json =
+      R"({"Peering":{"Peers":[{"ID":"QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"}]}})";
+  result = IPFSJSONParser::PutNewPeerToConfigJSON(json, new_peer);
+  EXPECT_EQ(result,
+            "{\"Peering\":{\"Peers\":[{\"ID\":"
+            "\"QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR\"},"
+            "{\"ID\":\"QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa\"}]}}");
 
   json = R"({"Peering":{"Peers":null}})";
-  new_peer = "/a/p2p/QmNewPeer";
+  new_peer = "/a/p2p/QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa";
   result = IPFSJSONParser::PutNewPeerToConfigJSON(json, new_peer);
   EXPECT_EQ(result,
             "{\"Peering\":{\"Peers\":[{\"Addrs\":[\"/a\"],"
-            "\"ID\":\"QmNewPeer\"}]}}");
+            "\"ID\":\"QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa\"}]}}");
 
-  json = R"({"Peering":{"Peers":[{"ID":"QmA"}]}})";
-  new_peer = "/a/p2p/QmA";
+  json =
+      R"({"Peering":{"Peers":[{"ID":"QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq"}]}})";
+  new_peer = "/a/p2p/QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq";
   result = IPFSJSONParser::PutNewPeerToConfigJSON(json, new_peer);
   EXPECT_EQ(result,
             "{\"Peering\":{\"Peers\":[{\"Addrs\":[\"/a\"],"
-            "\"ID\":\"QmA\"}]}}");
+            "\"ID\":\"QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq\"}]}}");
 
-  json = R"({"Peering":{"Peers":[{"ID":"QmA","Addrs":["/a","/b"]}]}})";
-  new_peer = "/a/p2p/QmA";
+  json =
+      R"({"Peering":{"Peers":[{"ID":"QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq","Addrs":["/a","/b"]}]}})";
+  new_peer = "/a/p2p/QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq";
   result = IPFSJSONParser::PutNewPeerToConfigJSON(json, new_peer);
-  EXPECT_EQ(result,
-            "{\"Peering\":{\"Peers\":"
-            "[{\"Addrs\":[\"/a\",\"/b\",\"/a\"],\"ID\":\"QmA\"}]}}");
+  EXPECT_EQ(
+      result,
+      "{\"Peering\":{\"Peers\":"
+      "[{\"Addrs\":[\"/a\",\"/b\",\"/"
+      "a\"],\"ID\":\"QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq\"}]}}");
 
-  json = R"({"Peering":{"Peers":[{"ID":"QmA","Addrs":["/a","/b"]}]}})";
-  new_peer = "/c/p2p/QmA";
+  json =
+      R"({"Peering":{"Peers":[{"ID":"QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq","Addrs":["/a","/b"]}]}})";
+  new_peer = "/c/p2p/QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq";
   result = IPFSJSONParser::PutNewPeerToConfigJSON(json, new_peer);
-  EXPECT_EQ(result,
-            "{\"Peering\":{\"Peers\":"
-            "[{\"Addrs\":[\"/a\",\"/b\",\"/c\"],\"ID\":\"QmA\"}]}}");
+  EXPECT_EQ(
+      result,
+      "{\"Peering\":{\"Peers\":"
+      "[{\"Addrs\":[\"/a\",\"/b\",\"/"
+      "c\"],\"ID\":\"QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq\"}]}}");
 
-  json = R"({"Peering":{"Peers":[{"ID":"QmA","Addrs":["/a","/b"]}]}})";
-  new_peer = "/a/p2p/QmB";
+  json =
+      R"({"Peering":{"Peers":[{"ID":"QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq","Addrs":["/a","/b"]}]}})";
+  new_peer = "/a/p2p/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR";
   result = IPFSJSONParser::PutNewPeerToConfigJSON(json, new_peer);
-  EXPECT_EQ(result,
-            "{\"Peering\":{\"Peers\":["
-            "{\"Addrs\":[\"/a\",\"/b\"],\"ID\":\"QmA\"},"
-            "{\"Addrs\":[\"/a\"],\"ID\":\"QmB\"}]}}");
+  EXPECT_EQ(
+      result,
+      "{\"Peering\":{\"Peers\":["
+      "{\"Addrs\":[\"/a\",\"/"
+      "b\"],\"ID\":\"QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq\"},"
+      "{\"Addrs\":[\"/"
+      "a\"],\"ID\":\"QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR\"}]}}");
 }
 
 TEST_F(IPFSJSONParserTest, RemovePeerFromConfigJSONTest) {
   std::string json = R"({})";
-  std::string result =
-      IPFSJSONParser::RemovePeerFromConfigJSON(json, "QmNewPeer", "");
+  std::string result = IPFSJSONParser::RemovePeerFromConfigJSON(
+      json, "QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa", "");
   EXPECT_EQ(result, json);
 
   json = R"({{})";
-  result = IPFSJSONParser::RemovePeerFromConfigJSON(json, "QmNewPeer", "");
+  result = IPFSJSONParser::RemovePeerFromConfigJSON(
+      json, "QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa", "");
   EXPECT_EQ(result, std::string());
 
-  json = R"({"Peering":{"Peers":[{"ID":"QmA","Addrs":["/a","/b"]}]}})";
-  result = IPFSJSONParser::RemovePeerFromConfigJSON(json, "QmNewPeer", "");
+  json =
+      R"({"Peering":{"Peers":[{"ID":"QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq","Addrs":["/a","/b"]}]}})";
+  result = IPFSJSONParser::RemovePeerFromConfigJSON(
+      json, "QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa", "");
   EXPECT_EQ(result, json);
 
-  json = R"({"Peering":{"Peers":[{"ID":"QmA","Addrs":["/a","/b"]}]}})";
-  result = IPFSJSONParser::RemovePeerFromConfigJSON(json, "QmA", "");
+  json =
+      R"({"Peering":{"Peers":[{"ID":"QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq","Addrs":["/a","/b"]}]}})";
+  result = IPFSJSONParser::RemovePeerFromConfigJSON(
+      json, "QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq", "");
   EXPECT_EQ(result, "{\"Peering\":{\"Peers\":[]}}");
 
-  json = R"({"Peering":{"Peers":[{"ID":"QmA","Addrs":["/a","/b"]}]}})";
-  result = IPFSJSONParser::RemovePeerFromConfigJSON(json, "QmA", "/ac");
+  json =
+      R"({"Peering":{"Peers":[{"ID":"QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq","Addrs":["/a","/b"]}]}})";
+  result = IPFSJSONParser::RemovePeerFromConfigJSON(
+      json, "QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq", "/ac");
   EXPECT_EQ(result, json);
 
-  json = R"({"Peering":{"Peers":[{"ID":"QmA"}]}})";
-  result = IPFSJSONParser::RemovePeerFromConfigJSON(json, "QmA", "/ac");
+  json =
+      R"({"Peering":{"Peers":[{"ID":"QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq"}]}})";
+  result = IPFSJSONParser::RemovePeerFromConfigJSON(
+      json, "QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq", "/ac");
   EXPECT_EQ(result, json);
 
-  json = R"({"Peering":{"Peers":[{"ID":"QmA"}]}})";
-  result = IPFSJSONParser::RemovePeerFromConfigJSON(json, "QmA", "");
+  json =
+      R"({"Peering":{"Peers":[{"ID":"QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq"}]}})";
+  result = IPFSJSONParser::RemovePeerFromConfigJSON(
+      json, "QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq", "");
   EXPECT_EQ(result, "{\"Peering\":{\"Peers\":[]}}");
 
-  json = R"({"Peering":{"Peers":[{"ID":"QmA","Addrs":["/a","/b"]}]}})";
-  result = IPFSJSONParser::RemovePeerFromConfigJSON(json, "QmA", "/a");
-  EXPECT_EQ(result,
-            "{\"Peering\":{\"Peers\":"
-            "[{\"Addrs\":[\"/b\"],\"ID\":\"QmA\"}]}}");
+  json =
+      R"({"Peering":{"Peers":[{"ID":"QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq","Addrs":["/a","/b"]}]}})";
+  result = IPFSJSONParser::RemovePeerFromConfigJSON(
+      json, "QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq", "/a");
+  EXPECT_EQ(
+      result,
+      "{\"Peering\":{\"Peers\":"
+      "[{\"Addrs\":[\"/"
+      "b\"],\"ID\":\"QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq\"}]}}");
 }
 
 TEST_F(IPFSJSONParserTest, GetGetPinsResultFromJSONTest) {
@@ -392,11 +428,13 @@ TEST_F(IPFSJSONParserTest, GetGetPinsResultFromJSONTest) {
   }
 
   {
-    std::string json = R"({"Keys":{"QmA" : {"Type" : "Recursive"}}})";
+    std::string json =
+        R"({"Keys":{"QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq" : {"Type" : "Recursive"}}})";
     auto result =
         IPFSJSONParser::GetGetPinsResultFromJSON(base::test::ParseJson(json));
     EXPECT_TRUE(result.has_value());
-    EXPECT_EQ(result->at("QmA"), "Recursive");
+    EXPECT_EQ(result->at("QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq"),
+              "Recursive");
   }
 
   {
@@ -416,12 +454,14 @@ TEST_F(IPFSJSONParserTest, GetGetPinsResultFromJSONTest) {
 
   {
     std::string json =
-        R"({"Keys":{"QmA" :  {"Type" :"Recursive"}, "QmB" :  {"Type" :"Direct"}}})";
+        R"({"Keys":{"QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq" :  {"Type" :"Recursive"}, "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR" :  {"Type" :"Direct"}}})";
     auto result =
         IPFSJSONParser::GetGetPinsResultFromJSON(base::test::ParseJson(json));
     EXPECT_TRUE(result.has_value());
-    EXPECT_EQ(result->at("QmA"), "Recursive");
-    EXPECT_EQ(result->at("QmB"), "Direct");
+    EXPECT_EQ(result->at("QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq"),
+              "Recursive");
+    EXPECT_EQ(result->at("QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"),
+              "Direct");
   }
 }
 
@@ -456,12 +496,13 @@ TEST_F(IPFSJSONParserTest, GetRemovePinsResultFromJSONTest) {
   }
 
   {
-    std::string json = R"({"Pins" : ["QmA", "QmB"]})";
+    std::string json =
+        R"({"Pins" : ["QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq", "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"]})";
     auto result = IPFSJSONParser::GetRemovePinsResultFromJSON(
         base::test::ParseJson(json));
     EXPECT_TRUE(result.has_value());
-    EXPECT_EQ(result->at(0), "QmA");
-    EXPECT_EQ(result->at(1), "QmB");
+    EXPECT_EQ(result->at(0), "QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq");
+    EXPECT_EQ(result->at(1), "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
   }
 }
 
@@ -490,12 +531,15 @@ TEST_F(IPFSJSONParserTest, GetAddPinsResultFromJSONTest) {
   }
 
   {
-    std::string json = R"({"Pins" : ["QmA", "QmB"]})";
+    std::string json =
+        R"({"Pins" : ["QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq", "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"]})";
     auto result =
         IPFSJSONParser::GetAddPinsResultFromJSON(base::test::ParseJson(json));
     EXPECT_TRUE(result.has_value());
-    EXPECT_EQ(result->pins.at(0), "QmA");
-    EXPECT_EQ(result->pins.at(1), "QmB");
+    EXPECT_EQ(result->pins.at(0),
+              "QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq");
+    EXPECT_EQ(result->pins.at(1),
+              "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
     EXPECT_EQ(result->progress, -1);
   }
 
@@ -507,12 +551,15 @@ TEST_F(IPFSJSONParserTest, GetAddPinsResultFromJSONTest) {
   }
 
   {
-    std::string json = R"({"Pins" : ["QmA", "QmB"], "Progress" : 10})";
+    std::string json =
+        R"({"Pins" : ["QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq", "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"], "Progress" : 10})";
     auto result =
         IPFSJSONParser::GetAddPinsResultFromJSON(base::test::ParseJson(json));
     EXPECT_TRUE(result.has_value());
-    EXPECT_EQ(result->pins.at(0), "QmA");
-    EXPECT_EQ(result->pins.at(1), "QmB");
+    EXPECT_EQ(result->pins.at(0),
+              "QmYRpH3myNKG2XeaBmdidec3R5HcF9PYBHUVHfks5ysTpq");
+    EXPECT_EQ(result->pins.at(1),
+              "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
     EXPECT_EQ(result->progress, 10);
   }
 }

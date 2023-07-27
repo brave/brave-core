@@ -13,6 +13,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/filecoin/rs/src/lib.rs.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_ports.h"
@@ -33,11 +34,6 @@ namespace {
 // go-ipfs_v0.9.0_windows-amd64 - valid
 constexpr char kExecutableRegEx[] =
     "go-ipfs_v(\\d+\\.\\d+\\.\\d+)(-rc\\d+)?\\_\\w+-\\w+";
-
-// Valid CID multibase prefix, "code" character
-// from https://github.com/multiformats/multibase/blob/master/multibase.csv
-const char kCIDv1Codes[] = "079fFvVtTbBcChkKzZmMuU";
-const char kCIDv0Prefix[] = "Qm";
 
 // Ipfs codes from multicodec table
 // https://github.com/multiformats/multicodec/blob/master/table.csv
@@ -145,13 +141,7 @@ namespace ipfs {
 bool IsValidCID(const std::string& cid) {
   if (!cid.size())
     return false;
-  if (!std::all_of(cid.begin(), cid.end(), [loc = std::locale{}](char c) {
-        return std::isalnum(c, loc);
-      }))
-    return false;
-  if (std::string(kCIDv1Codes).find(cid.at(0)) != std::string::npos)
-    return true;
-  return base::StartsWith(cid, kCIDv0Prefix);
+  return filecoin::is_valid_cid(cid);
 }
 
 bool IsValidIPNSCID(const std::string& cid) {

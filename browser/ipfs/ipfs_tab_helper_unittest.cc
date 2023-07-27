@@ -124,11 +124,17 @@ TEST_F(IpfsTabHelperUnitTest, CanResolveURLTest) {
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
 
-  ASSERT_TRUE(helper->CanResolveURL(GURL("https://bafyb.ipfs.dweb.link/")));
+  ASSERT_TRUE(
+      helper->CanResolveURL(GURL("https://"
+                                 "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3"
+                                 "oclgtqy55fbzdi.ipfs.dweb.link/")));
   profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
-  ASSERT_FALSE(helper->CanResolveURL(GURL("https://bafyb.ipfs.dweb.link/")));
+  ASSERT_FALSE(
+      helper->CanResolveURL(GURL("https://"
+                                 "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3"
+                                 "oclgtqy55fbzdi.ipfs.dweb.link/")));
 }
 
 TEST_F(IpfsTabHelperUnitTest,
@@ -246,7 +252,9 @@ TEST_F(IpfsTabHelperUnitTest, XIpfsPathHeaderUsed_IfNoDnsLinkRecord_IPFS) {
                                                 chrome::GetChannel());
 
   auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK");
-  headers->AddHeader("x-ipfs-path", "/ipfs/bafy");
+  headers->AddHeader(
+      "x-ipfs-path",
+      "/ipfs/bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi");
 
   ipfs_host_resolver()->SetDNSLinkToRespond("");
   helper->MaybeCheckDNSLinkRecord(headers.get());
@@ -254,7 +262,10 @@ TEST_F(IpfsTabHelperUnitTest, XIpfsPathHeaderUsed_IfNoDnsLinkRecord_IPFS) {
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   GURL resolved_url = helper->GetIPFSResolvedURL();
 
-  EXPECT_EQ(resolved_url.spec(), "ipfs://bafy?query#ref");
+  EXPECT_EQ(
+      resolved_url.spec(),
+      "ipfs://"
+      "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi?query#ref");
 }
 
 TEST_F(IpfsTabHelperUnitTest, XIpfsPathHeaderUsed_IfNoDnsLinkRecord_IPNS) {
@@ -287,24 +298,36 @@ TEST_F(IpfsTabHelperUnitTest, ResolveXIPFSPathUrl) {
     SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
     GURL gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
                                                   chrome::GetChannel());
-    GURL url = helper->ResolveXIPFSPathUrl("/ipfs/bafy");
-    EXPECT_EQ(url, GURL("ipfs://bafy"));
+    GURL url = helper->ResolveXIPFSPathUrl(
+        "/ipfs/bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi");
+    EXPECT_EQ(
+        url,
+        GURL("ipfs://"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi"));
   }
 
   {
     SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
     GURL gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
                                                   chrome::GetChannel());
-    GURL url = helper->ResolveXIPFSPathUrl("/ipfs/bafy");
-    EXPECT_EQ(url, GURL("ipfs://bafy"));
+    GURL url = helper->ResolveXIPFSPathUrl(
+        "/ipfs/bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi");
+    EXPECT_EQ(
+        url,
+        GURL("ipfs://"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi"));
   }
 
   {
     SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_ASK);
     GURL gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
                                                   chrome::GetChannel());
-    GURL url = helper->ResolveXIPFSPathUrl("/ipfs/bafy");
-    EXPECT_EQ(url, GURL("ipfs://bafy"));
+    GURL url = helper->ResolveXIPFSPathUrl(
+        "/ipfs/bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi");
+    EXPECT_EQ(
+        url,
+        GURL("ipfs://"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi"));
   }
 }
 
@@ -321,7 +344,9 @@ TEST_F(IpfsTabHelperUnitTest, GatewayResolving) {
       base::MakeRefCounted<net::HttpResponseHeaders>("HTTP/1.1 " +
                                                      std::to_string(200)));
 
-  response_headers->AddHeader("x-ipfs-path", "/ipfs/bafy");
+  response_headers->AddHeader(
+      "x-ipfs-path",
+      "/ipfs/bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi");
 
   helper->MaybeCheckDNSLinkRecord(response_headers.get());
   ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
@@ -354,62 +379,95 @@ TEST_F(IpfsTabHelperUnitTest, GatewayLikeUrlParsed_AutoRedirectEnabled) {
     ResetRedirectUrl();
 
     SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
-    helper->SetPageURLForTesting(GURL("https://ipfs.io/ipfs/bafy1/?query#ref"));
+    helper->SetPageURLForTesting(
+        GURL("https://ipfs.io/ipfs/"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/"
+             "?query#ref"));
 
     web_contents()->NavigateAndCommit(
-        GURL("https://ipfs.io/ipfs/bafy1/?query#ref"));
+        GURL("https://ipfs.io/ipfs/"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/"
+             "?query#ref"));
 
     EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
-    EXPECT_EQ(redirect_url(), GURL("ipfs://bafy1?query#ref"));
+    EXPECT_EQ(redirect_url(), GURL("ipfs://"
+                                   "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqab"
+                                   "f3oclgtqy55fbzdi?query#ref"));
   }
 
   {
     ResetRedirectUrl();
 
     SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
-    helper->SetPageURLForTesting(GURL("https://bafy1.ipfs.ipfs.io?query#ref"));
+    helper->SetPageURLForTesting(
+        GURL("https://"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi.ipfs."
+             "ipfs.io?query#ref"));
 
     web_contents()->NavigateAndCommit(
-        GURL("https://bafy1.ipfs.ipfs.io?query#ref"));
+        GURL("https://"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi.ipfs."
+             "ipfs.io?query#ref"));
 
     EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
-    EXPECT_EQ(redirect_url(), GURL("ipfs://bafy1/?query#ref"));
+    EXPECT_EQ(redirect_url(), GURL("ipfs://"
+                                   "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqab"
+                                   "f3oclgtqy55fbzdi/?query#ref"));
   }
 
   {
     ResetRedirectUrl();
 
     SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_ASK);
-    helper->SetPageURLForTesting(GURL("https://ipfs.io/ipfs/bafy2/?query#ref"));
+    helper->SetPageURLForTesting(
+        GURL("https://ipfs.io/ipfs/"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/"
+             "?query#ref"));
 
     web_contents()->NavigateAndCommit(
-        GURL("https://ipfs.io/ipfs/bafy2/?query#ref"));
+        GURL("https://ipfs.io/ipfs/"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/"
+             "?query#ref"));
 
     EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
-    EXPECT_EQ(redirect_url(), GURL("ipfs://bafy2?query#ref"));
+    EXPECT_EQ(redirect_url(), GURL("ipfs://"
+                                   "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqab"
+                                   "f3oclgtqy55fbzdi?query#ref"));
   }
 
   {
     ResetRedirectUrl();
 
     SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
-    helper->SetPageURLForTesting(GURL("https://ipfs.io/ipfs/bafy3/?query#ref"));
+    helper->SetPageURLForTesting(
+        GURL("https://ipfs.io/ipfs/"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/"
+             "?query#ref"));
 
     web_contents()->NavigateAndCommit(
-        GURL("https://ipfs.io/ipfs/bafy3/?query#ref"));
+        GURL("https://ipfs.io/ipfs/"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/"
+             "?query#ref"));
 
     EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
-    EXPECT_EQ(redirect_url(), GURL("ipfs://bafy3?query#ref"));
+    EXPECT_EQ(redirect_url(), GURL("ipfs://"
+                                   "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqab"
+                                   "f3oclgtqy55fbzdi?query#ref"));
   }
 
   {
     ResetRedirectUrl();
 
     SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_DISABLED);
-    helper->SetPageURLForTesting(GURL("https://ipfs.io/ipfs/bafy3/?query#ref"));
+    helper->SetPageURLForTesting(
+        GURL("https://ipfs.io/ipfs/"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/"
+             "?query#ref"));
 
     web_contents()->NavigateAndCommit(
-        GURL("https://ipfs.io/ipfs/bafy3/?query#ref"));
+        GURL("https://ipfs.io/ipfs/"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/"
+             "?query#ref"));
 
     EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
     EXPECT_EQ(redirect_url(), GURL());
@@ -428,10 +486,14 @@ TEST_F(IpfsTabHelperUnitTest,
 
     SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
     helper->SetPageURLForTesting(
-        GURL("https://ipfs.io/ipxxs/bafy1/?query#ref"));
+        GURL("https://ipfs.io/ipxxs/"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/"
+             "?query#ref"));
 
     web_contents()->NavigateAndCommit(
-        GURL("https://ipfs.io/ipxxs/bafy1/?query#ref"));
+        GURL("https://ipfs.io/ipxxs/"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/"
+             "?query#ref"));
 
     EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
     EXPECT_EQ(redirect_url(), GURL());
@@ -441,10 +503,51 @@ TEST_F(IpfsTabHelperUnitTest,
     ResetRedirectUrl();
 
     SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
-    helper->SetPageURLForTesting(GURL("https://bafy1.ipxxs.ipfs.io?query#ref"));
+    helper->SetPageURLForTesting(
+        GURL("https://"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi."
+             "ipxxs.ipfs.io?query#ref"));
 
     web_contents()->NavigateAndCommit(
-        GURL("https://bafy1.ipxxs.ipfs.io?query#ref"));
+        GURL("https://"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi."
+             "ipxxs.ipfs.io?query#ref"));
+
+    EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
+    EXPECT_EQ(redirect_url(), GURL());
+  }
+
+  {
+    ResetRedirectUrl();
+
+    SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
+    helper->SetPageURLForTesting(
+        GURL("https://"
+             "bafy."
+             "ipfs.ipfs.io?query#ref"));
+
+    web_contents()->NavigateAndCommit(
+        GURL("https://"
+             "bafy."
+             "ipfs.ipfs.io?query#ref"));
+
+    EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
+    EXPECT_EQ(redirect_url(), GURL());
+  }
+
+  {
+    ResetRedirectUrl();
+
+    SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
+    helper->SetPageURLForTesting(
+        GURL("https://ipfs.io/ipfs/"
+             "bafy/"
+             "?query#ref"));
+
+    web_contents()->NavigateAndCommit(
+        GURL("https://ipfs.io/ipfs/"
+             "bafy/"
+             "?query#ref"));
 
     EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
     EXPECT_EQ(redirect_url(), GURL());
@@ -464,9 +567,13 @@ TEST_F(IpfsTabHelperUnitTest,
     SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
     SetIPFSDefaultGatewayForTest(GURL("https://a.com/"));
 
-    helper->SetPageURLForTesting(GURL("https://a.com/ipfs/bafy"));
+    helper->SetPageURLForTesting(
+        GURL("https://a.com/ipfs/"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi"));
 
-    web_contents()->NavigateAndCommit(GURL("https://a.com/ipfs/bafy"));
+    web_contents()->NavigateAndCommit(
+        GURL("https://a.com/ipfs/"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi"));
 
     EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
     EXPECT_EQ(redirect_url(), GURL());
@@ -482,14 +589,21 @@ TEST_F(IpfsTabHelperUnitTest, GatewayLikeUrlParsed_AutoRedirectDisabled) {
   {
     SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
 
-    helper->SetPageURLForTesting(GURL("https://ipfs.io/ipfs/bafy1/?query#ref"));
+    helper->SetPageURLForTesting(
+        GURL("https://ipfs.io/ipfs/"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/"
+             "?query#ref"));
     web_contents()->NavigateAndCommit(
-        GURL("https://ipfs.io/ipfs/bafy1/?query#ref"));
+        GURL("https://ipfs.io/ipfs/"
+             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/"
+             "?query#ref"));
 
     EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
     EXPECT_EQ(redirect_url(), GURL());
     EXPECT_EQ(ipfs_tab_helper()->ipfs_resolved_url_,
-              GURL("ipfs://bafy1?query#ref"));
+              GURL("ipfs://"
+                   "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi"
+                   "?query#ref"));
   }
 }
 
