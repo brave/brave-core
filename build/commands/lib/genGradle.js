@@ -3,23 +3,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-const config = require('../lib/config')
-const util = require('../lib/util')
+const config = require('./config')
+const util = require('./util')
 const Log = require('./logging')
 
 let options = config.defaultOptions
 options.continueOnFail = false
 
 const genGradle = (passthroughArgs, build_dir) => {
-        Log.progressStart('Generating Gradle files')
-        args = [
-            'build/android/gradle/generate_gradle.py',
-            '--output-directory',
-            build_dir
-        ]
-        args.push(... passthroughArgs)
-        util.run('python3', args, options)
-        Log.progressFinish('generating Gradle files')
+  Log.progressScope('Generating Gradle files', () => {
+    args = [
+      'build/android/gradle/generate_gradle.py',
+      '--output-directory',
+      build_dir
+    ]
+    args.push(...passthroughArgs)
+    util.run('python3', args, options)
+  })
 }
 
 module.exports = genGradle
