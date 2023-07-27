@@ -309,8 +309,12 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
+        // Pass @{code ActivityResultRegistry} reference explicitly to avoid crash
+        // https://github.com/brave/brave-browser/issues/31882
         mAddAssetActivityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(), result -> {
+                new ActivityResultContracts.StartActivityForResult(),
+                ((BraveWalletBaseActivity) requireActivity()).getActivityResultRegistry(),
+                result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent intent = result.getData();
                         if (intent == null) {

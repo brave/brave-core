@@ -43,8 +43,11 @@ public abstract class BraveVpnParentActivity
     abstract void showRestoreMenu(boolean shouldShowRestore);
     abstract void updateProfileView();
 
+    // Pass @{code ActivityResultRegistry} reference explicitly to avoid crash
+    // https://github.com/brave/brave-browser/issues/31882
     ActivityResultLauncher<Intent> intentActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), result -> {
+            new ActivityResultContracts.StartActivityForResult(), getActivityResultRegistry(),
+            result -> {
                 BraveVpnUtils.dismissProgressDialog();
                 if (result.getResultCode() == RESULT_OK) {
                     BraveVpnProfileUtils.getInstance().startVpn(BraveVpnParentActivity.this);

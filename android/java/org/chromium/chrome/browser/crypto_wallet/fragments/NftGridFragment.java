@@ -136,13 +136,17 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         });
         setUpObservers();
 
-        mAddAssetActivityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(), result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        mPbAssetDiscovery.setVisibility(View.VISIBLE);
-                        updateNftGrid();
-                    }
-                });
+        // Pass @{code ActivityResultRegistry} reference explicitly to avoid crash
+        // https://github.com/brave/brave-browser/issues/31882
+        mAddAssetActivityResultLauncher =
+                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                        ((BraveWalletBaseActivity) requireActivity()).getActivityResultRegistry(),
+                        result -> {
+                            if (result.getResultCode() == Activity.RESULT_OK) {
+                                mPbAssetDiscovery.setVisibility(View.VISIBLE);
+                                updateNftGrid();
+                            }
+                        });
 
         return view;
     }
