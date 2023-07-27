@@ -28,9 +28,6 @@ class WidevinePermissionRequest : public permissions::PermissionRequest {
   ~WidevinePermissionRequest() override;
 
   std::u16string GetExplanatoryMessageText() const;
-  void set_dont_ask_widevine_install(bool dont_ask) {
-    dont_ask_widevine_install_ = dont_ask;
-  }
 
  private:
   FRIEND_TEST_ALL_PREFIXES(WidevinePermissionRequestBrowserTest,
@@ -51,8 +48,6 @@ class WidevinePermissionRequest : public permissions::PermissionRequest {
   // It's safe to use this raw |web_contents_| because this request is deleted
   // by PermissionManager that is tied with this |web_contents_|.
   raw_ptr<content::WebContents> web_contents_ = nullptr;
-
-  bool dont_ask_widevine_install_ = false;
 
   // Only can be true on linux.
   // On linux, browser will use another permission request buble after finishing

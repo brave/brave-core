@@ -127,11 +127,6 @@ void RequestWidevinePermission(content::WebContents* web_contents,
                    new WidevinePermissionRequest(web_contents, for_restart));
 }
 
-void DontAskWidevineInstall(content::WebContents* web_contents, bool dont_ask) {
-  Profile* profile = static_cast<Profile*>(web_contents->GetBrowserContext());
-  profile->GetPrefs()->SetBoolean(kAskWidevineInstall, !dont_ask);
-}
-
 void RegisterWidevineProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kWidevineOptedIn, false);

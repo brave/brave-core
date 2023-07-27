@@ -13,6 +13,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
+#include "brave/components/permissions/permission_widevine_utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -65,19 +66,7 @@ DontAskAgainCheckbox::DontAskAgainCheckbox(WidevinePermissionRequest* request)
       request_(request) {}
 
 void DontAskAgainCheckbox::ButtonPressed() {
-  request_->set_dont_ask_widevine_install(GetChecked());
-}
-
-bool HasWidevinePermissionRequest(
-    const std::vector<permissions::PermissionRequest*>& requests) {
-  // When widevine permission is requested, |requests| only includes Widevine
-  // permission because it is not a candidate for grouping.
-  if (requests.size() == 1 &&
-      requests[0]->request_type() == permissions::RequestType::kWidevine) {
-    return true;
-  }
-
-  return false;
+  request_->SetDontAskAgain(GetChecked());
 }
 
 void AddAdditionalWidevineViewControlsIfNeeded(

@@ -92,7 +92,7 @@ class BravePermissionDialogModel {
 
         CheckBox checkbox = customView.findViewById(R.id.checkbox);
         checkbox.setOnCheckedChangeListener(
-                (buttonView, isChecked) -> { braveDelegate.setWidevineDontAsk(isChecked); });
+                (buttonView, isChecked) -> { braveDelegate.setDontAskAgain(isChecked); });
 
         PropertyModel model =
                 new PropertyModel.Builder(ModalDialogProperties.ALL_KEYS)

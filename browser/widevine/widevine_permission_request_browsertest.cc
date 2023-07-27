@@ -12,14 +12,10 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/widevine/constants.h"
+#include "brave/components/permissions/permission_widevine_utils.h"
 #include "build/build_config.h"
-#include "chrome/browser/ssl/cert_verifier_browser_test.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_paths.h"
-#include "chrome/test/base/in_process_browser_test.h"
-#include "chrome/test/base/ui_test_utils.h"
 #include "chrome/test/permissions/permission_request_manager_test_api.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
@@ -36,6 +32,18 @@
 #include "components/component_updater/component_updater_service.h"
 #endif
 
+#if BUILDFLAG(IS_ANDROID)
+#include "chrome/test/base/android/android_browser_test.h"
+#include "chrome/test/base/chrome_test_utils.h"
+#else
+#include "chrome/browser/ssl/cert_verifier_browser_test.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
+#endif
+
 namespace {
 class TestObserver : public permissions::PermissionRequestManager::Observer {
  public:
@@ -48,24 +56,29 @@ class TestObserver : public permissions::PermissionRequestManager::Observer {
 };
 }  // namespace
 
-class WidevinePermissionRequestBrowserTest
-    : public InProcessBrowserTest {
+class WidevinePermissionRequestBrowserTest : public PlatformBrowserTest {
  public:
   void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
+    PlatformBrowserTest::SetUpOnMainThread();
     GetPermissionRequestManager()->AddObserver(&observer);
+#if !BUILDFLAG(IS_ANDROID)
     test_api_ =
         std::make_unique<test::PermissionRequestManagerTestApi>(browser());
     EXPECT_TRUE(test_api_->manager());
+#endif
   }
 
   void TearDownOnMainThread() override {
-    InProcessBrowserTest::TearDownOnMainThread();
+    PlatformBrowserTest::TearDownOnMainThread();
     GetPermissionRequestManager()->RemoveObserver(&observer);
   }
 
   content::WebContents* GetActiveWebContents() {
+#if BUILDFLAG(IS_ANDROID)
+    return chrome_test_utils::GetActiveWebContents(this);
+#else
     return browser()->tab_strip_model()->GetActiveWebContents();
+#endif
   }
 
   permissions::PermissionRequestManager* GetPermissionRequestManager() {
@@ -78,7 +91,9 @@ class WidevinePermissionRequestBrowserTest
   }
 
   TestObserver observer;
+#if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<test::PermissionRequestManagerTestApi> test_api_;
+#endif
 };
 
 IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
@@ -107,7 +122,10 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
 
   // Check permission bubble is not visible when user turns it off.
   observer.bubble_added_ = false;
-  DontAskWidevineInstall(GetActiveWebContents(), true);
+  permissions::DontAskWidevineInstall(
+      static_cast<Profile*>(GetActiveWebContents()->GetBrowserContext())
+          ->GetPrefs(),
+      true);
   EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
                                      GURL("chrome://newtab/")));
   drm_tab_helper->OnWidevineKeySystemAccessRequest();
@@ -116,7 +134,10 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
 
   // Check permission bubble is visible when user turns it on.
   observer.bubble_added_ = false;
-  DontAskWidevineInstall(GetActiveWebContents(), false);
+  permissions::DontAskWidevineInstall(
+      static_cast<Profile*>(GetActiveWebContents()->GetBrowserContext())
+          ->GetPrefs(),
+      false);
   EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
                                      GURL("chrome://newtab/")));
   drm_tab_helper->OnWidevineKeySystemAccessRequest();
@@ -124,6 +145,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
   EXPECT_TRUE(observer.bubble_added_);
 }
 
+#if !BUILDFLAG(IS_ANDROID)
 // Check extra text is added.
 IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, BubbleTest) {
   auto* permission_request_manager =
@@ -146,6 +168,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, BubbleTest) {
   // one for extra label and the other one is do not ask checkbox.
   EXPECT_EQ(3ul, delegate_view->children().size());
 }
+#endif
 
 IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
                        CheckOptedInPrefStateForComponent) {
@@ -194,6 +217,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
 }
 #endif  // OS_LINUX
 
+#if !BUILDFLAG(IS_ANDROID)
 class ScriptTriggerWidevinePermissionRequestBrowserTest
     : public CertVerifierBrowserTest {
  public:
@@ -300,3 +324,4 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(IsPermissionBubbleShown());
 }
+#endif

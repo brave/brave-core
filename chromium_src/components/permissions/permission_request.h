@@ -34,6 +34,9 @@ class PermissionRequest : public PermissionRequest_ChromiumImpl {
   void SetLifetime(absl::optional<base::TimeDelta> lifetime);
   const absl::optional<base::TimeDelta>& GetLifetime() const;
 
+  void SetDontAskAgain(bool dont_ask_again);
+  bool GetDontAskAgain() const;
+
   // We rename upstream's IsDuplicateOf() via a define above and re-declare it
   // here to workaround the fact that the PermissionRequest_ChromiumImpl rename
   // will affect this method's only parameter too, which will break subclasses.
@@ -44,6 +47,8 @@ class PermissionRequest : public PermissionRequest_ChromiumImpl {
 
  private:
   absl::optional<base::TimeDelta> lifetime_;
+
+  bool dont_ask_again_ = false;
 
   base::WeakPtrFactory<PermissionRequest> weak_factory_{this};
 };

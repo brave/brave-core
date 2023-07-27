@@ -1,5 +1,4 @@
 include_rules = [
-  "+brave/browser/widevine",
   "+brave/components/l10n/common",
   "+brave/components/permissions/android/jni_headers",
   "+components/grit",

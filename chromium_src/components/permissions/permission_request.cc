@@ -122,6 +122,14 @@ const absl::optional<base::TimeDelta>& PermissionRequest::GetLifetime() const {
   return lifetime_;
 }
 
+void PermissionRequest::SetDontAskAgain(bool dont_ask_again) {
+  dont_ask_again_ = dont_ask_again;
+}
+
+bool PermissionRequest::GetDontAskAgain() const {
+  return dont_ask_again_;
+}
+
 bool PermissionRequest::IsDuplicateOf(PermissionRequest* other_request) const {
   return PermissionRequest_ChromiumImpl::IsDuplicateOf_ChromiumImpl(
       other_request);

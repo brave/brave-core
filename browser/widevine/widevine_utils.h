@@ -29,7 +29,6 @@ void RequestWidevinePermission(content::WebContents* web_contents,
                                bool for_restart);
 void RegisterWidevineLocalstatePrefs(PrefRegistrySimple* registry);
 void RegisterWidevineLocalstatePrefsForMigration(PrefRegistrySimple* registry);
-void DontAskWidevineInstall(content::WebContents* web_contents, bool dont_ask);
 bool IsWidevineOptedIn();
 void SetWidevineOptedIn(bool opted_in);
 void MigrateWidevinePrefs(Profile* profile);

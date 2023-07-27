@@ -7,12 +7,15 @@
 
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "brave/components/permissions/permission_widevine_utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/permissions/request_type.h"
 #include "components/url_formatter/elide_url.h"
 #include "components/vector_icons/vector_icons.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -71,7 +74,9 @@ void WidevinePermissionRequest::PermissionDecided(ContentSetting result,
     }
     // Permission denied
   } else if (result == ContentSetting::CONTENT_SETTING_BLOCK) {
-    DontAskWidevineInstall(web_contents_, dont_ask_widevine_install_);
+    Profile* profile =
+        static_cast<Profile*>(web_contents_->GetBrowserContext());
+    permissions::DontAskWidevineInstall(profile->GetPrefs(), GetDontAskAgain());
     // Cancelled
   } else {
     DCHECK(result == CONTENT_SETTING_DEFAULT);

@@ -58,7 +58,7 @@
 namespace {
 void MaybeRemoveWidevineSupport(media::GetSupportedKeySystemsCB cb,
                                 media::KeySystemInfos key_systems) {
-#if BUILDFLAG(ENABLE_WIDEVINE) && BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_WIDEVINE)
   auto dynamic_params = BraveRenderThreadObserver::GetDynamicParams();
   if (!dynamic_params.widevine_enabled) {
     key_systems.erase(

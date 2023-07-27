@@ -23,12 +23,13 @@ public class BravePermissionDialogDelegate {
     /** Whether the request is for Widevine. We need a special layout for it. */
     private boolean mIsWidevinePermissionRequest;
 
-    /** Don't ask again checkbox for Widevine reqeusts. */
-    private boolean mWidevineDontAsk;
+    /** Don't ask again checkbox fors reqeusts. */
+    private boolean mDontAskAgain;
 
     public BravePermissionDialogDelegate() {
         mSelectedLifetimeOption = -1;
         mIsWidevinePermissionRequest = false;
+        mDontAskAgain = false;
     }
 
     @CalledByNative
@@ -67,12 +68,12 @@ public class BravePermissionDialogDelegate {
         return mIsWidevinePermissionRequest;
     }
 
-    public void setWidevineDontAsk(boolean checked) {
-        mWidevineDontAsk = checked;
+    public void setDontAskAgain(boolean checked) {
+        mDontAskAgain = checked;
     }
 
     @CalledByNative
-    public boolean getWidevineDontAsk() {
-        return mWidevineDontAsk;
+    public boolean getDontAskAgain() {
+        return mDontAskAgain;
     }
 }
