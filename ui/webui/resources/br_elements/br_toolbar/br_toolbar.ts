@@ -109,7 +109,7 @@ Polymer({
   /** @private */
   onMenuTap_: function() {
     this.dispatchEvent(new CustomEvent(
-      'cr-toolbar-menu-tap', {bubbles: true, composed: true}))
+      'cr-toolbar-menu-click', {bubbles: true, composed: true}))
   },
 
   focusMenuButton() {
