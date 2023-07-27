@@ -14,5 +14,7 @@
   </if>
 
   <include name="IDR_BRAVE_WALLET_STANDARD_JS" file="../../node_modules/@brave/wallet-standard-brave/lib/index.iife.min.js" type="BINDATA" />
+  <include name="IDR_BRAVE_WALLET_PROVIDER_ICON" file="../brave_wallet/resources/brave_wallet_provider_icon.png" type="BINDATA" />
+
 </grit-part>
 

@@ -75,12 +75,6 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
     return;
   }
 
-  auto dynamic_params = get_dynamic_params_callback_.Run();
-  if (!dynamic_params.brave_use_native_solana_wallet &&
-      !dynamic_params.brave_use_native_ethereum_wallet) {
-    return;
-  }
-
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::HandleScope handle_scope(isolate);
   auto* web_frame = render_frame()->GetWebFrame();
@@ -91,9 +85,23 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
   v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
-  if (dynamic_params.brave_use_native_ethereum_wallet &&
+  auto dynamic_params = get_dynamic_params_callback_.Run();
+  if (!dynamic_params.install_window_brave_ethereum_provider &&
+      !dynamic_params.install_window_ethereum_provider &&
+      !dynamic_params.brave_use_native_solana_wallet) {
+    return;
+  }
+
+  if (!dynamic_params.install_window_brave_ethereum_provider &&
+      dynamic_params.install_window_ethereum_provider) {
+    NOTREACHED();
+    return;
+  }
+
+  if (dynamic_params.install_window_brave_ethereum_provider &&
       web_frame->GetDocument().IsDOMFeaturePolicyEnabled(context, "ethereum")) {
     JSEthereumProvider::Install(
+        dynamic_params.install_window_ethereum_provider,
         dynamic_params.allow_overwrite_window_ethereum_provider,
         render_frame());
   }
