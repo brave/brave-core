@@ -175,6 +175,11 @@ std::string KeyCodeToString(ui::KeyboardCode key_code) {
 
 }  // namespace
 
+std::string CodeStringToKeyString(const std::string& code_string) {
+  auto code = DomCodeStringToKeyboardCode(code_string);
+  return KeyCodeToString(code);
+}
+
 std::string ToKeysString(const ui::Accelerator& accelerator) {
   std::vector<std::string> parts = GetModifierNames(accelerator.modifiers());
   parts.push_back(KeyCodeToString(accelerator.key_code()));
