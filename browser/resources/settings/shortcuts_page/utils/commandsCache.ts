@@ -15,8 +15,7 @@ export const api = CommandsService.getRemote()
 
 export class CommandsCache
   extends CachingWrapper<Command>
-  implements CommandsListenerInterface
-{
+  implements CommandsListenerInterface {
   private receiver = new CommandsListenerReceiver(this)
   private controller: CommandsServiceRemote
 
@@ -65,5 +64,9 @@ export class CommandsCache
 
   resetAll() {
     this.controller.resetAccelerators();
+  }
+
+  getKeyFromCode(code: string): Promise<string> {
+    return this.controller.getKeyFromCode(code).then(c => c.key)
   }
 }

@@ -227,6 +227,11 @@ void AcceleratorService::ResetAccelerators() {
   NotifyCommandsChanged(commands);
 }
 
+void AcceleratorService::GetKeyFromCode(const std::string& code,
+                                        GetKeyFromCodeCallback callback) {
+  std::move(callback).Run(CodeStringToKeyString(code));
+}
+
 void AcceleratorService::AddCommandsListener(
     mojo::PendingRemote<mojom::CommandsListener> listener) {
   auto id = mojo_listeners_.Add(std::move(listener));
