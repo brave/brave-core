@@ -20,8 +20,8 @@
 
 #include "base/check.h"
 #include "base/functional/callback.h"
-#include "brave/browser/widevine/static_buildflags.h"
 #include "brave/browser/widevine/widevine_utils.h"
+#include "brave/components/widevine/static_buildflags.h"
 #include "components/component_updater/component_updater_service.h"
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)

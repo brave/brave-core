@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_UPDATE_CLIENT_PERSISTED_DATA_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_UPDATE_CLIENT_PERSISTED_DATA_H_
 
-#include "brave/browser/widevine/static_buildflags.h"
+#include "brave/components/widevine/static_buildflags.h"
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 #define pref_service_ \

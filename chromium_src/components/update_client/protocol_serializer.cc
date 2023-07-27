@@ -6,11 +6,11 @@
 #include "components/update_client/protocol_serializer.h"
 
 #include "base/check.h"
-#include "brave/browser/widevine/static_buildflags.h"
 #include "brave/components/constants/brave_services_key.h"
+#include "brave/components/widevine/static_buildflags.h"
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-#include "brave/browser/widevine/constants.h"
+#include "brave/components/widevine/constants.h"
 #endif
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)

@@ -9,9 +9,9 @@
 #include <vector>
 
 #include "base/containers/contains.h"
-#include "brave/browser/widevine/constants.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/widevine/constants.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/profiles/profile.h"

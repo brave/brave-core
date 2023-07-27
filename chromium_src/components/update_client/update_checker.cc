@@ -6,7 +6,7 @@
 #include "src/components/update_client/update_checker.cc"
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-#include "brave/browser/widevine/constants.h"
+#include "brave/components/widevine/constants.h"
 #endif
 
 namespace update_client {
