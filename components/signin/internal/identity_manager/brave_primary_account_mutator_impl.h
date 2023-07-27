@@ -12,13 +12,10 @@ namespace signin {
 
 class BravePrimaryAccountMutatorImpl : public PrimaryAccountMutatorImpl {
  public:
-  BravePrimaryAccountMutatorImpl(
-      AccountTrackerService* account_tracker,
-      ProfileOAuth2TokenService* token_service,
-      PrimaryAccountManager* primary_account_manager,
-      PrefService* pref_service,
-      SigninClient* signin_client,
-      signin::AccountConsistencyMethod account_consistency);
+  BravePrimaryAccountMutatorImpl(AccountTrackerService* account_tracker,
+                                 PrimaryAccountManager* primary_account_manager,
+                                 PrefService* pref_service,
+                                 SigninClient* signin_client);
   ~BravePrimaryAccountMutatorImpl() override;
 
 #if !BUILDFLAG(IS_CHROMEOS_ASH)

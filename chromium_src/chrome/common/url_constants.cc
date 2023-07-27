@@ -143,6 +143,9 @@ const char kLearnMoreReportingURL[] =
 const char kHighEfficiencyModeLearnMoreUrl[] =
     "https://support.brave.com/hc/en-us/articles/13383683902733";
 
+const char kHighEfficiencyModeTabDiscardingHelpUrl[] =
+    "https://support.brave.com/";
+
 const char kManagedUiLearnMoreUrl[] = "https://support.brave.com/";
 
 const char kInsecureDownloadBlockingLearnMoreUrl[] =

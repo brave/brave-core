@@ -96,7 +96,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @NonNull Function<Tab, Boolean> backButtonShouldCloseTabFn,
             OneshotSupplier<TabReparentingController> tabReparentingControllerSupplier,
             boolean initializeUiWithIncognitoColors, @NonNull BackPressManager backPressManager,
-            @NonNull Supplier<Bundle> savedInstanceStateSupplier) {
+            @Nullable Bundle savedInstanceState) {
         super(activity, onOmniboxFocusChangedListener, shareDelegateSupplier, tabProvider,
                 profileSupplier, bookmarkModelSupplier, tabBookmarkerSupplier,
                 contextualSearchManagerSupplier, tabModelSelectorSupplier, startSurfaceSupplier,
@@ -111,7 +111,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 statusBarColorProvider, ephemeralTabCoordinatorSupplier, intentRequestTracker,
                 controlContainerHeightResource, insetObserverViewSupplier,
                 backButtonShouldCloseTabFn, tabReparentingControllerSupplier,
-                initializeUiWithIncognitoColors, backPressManager, savedInstanceStateSupplier);
+                initializeUiWithIncognitoColors, backPressManager, savedInstanceState);
 
         mActivity = activity;
     }

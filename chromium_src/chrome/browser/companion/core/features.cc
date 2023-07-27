@@ -15,6 +15,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kCompanionEnabledByObservingExpsNavigations,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kSidePanelCompanion, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kSidePanelCompanion2, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace internal

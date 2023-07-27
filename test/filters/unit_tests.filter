@@ -13,6 +13,10 @@
 -All/AppLauncherHandlerTest.HandleClosedWhileUninstallingExtension/OSIntegrationSubManagers_SaveStateToDB
 -All/DiceWebSigninInterceptorWithManagedDisclaimerForSyncPromoTest.*
 -All/ExtensionContextMenuModelWithUserHostControlsAndPermittedSitesTest.PageAccessItemsVisibilityBasedOnSiteSettings/*
+-All/ExtensionContextMenuModelWithUserHostControlsTest.PageAccessItemsVisibilityBasedOnSiteSettings/*
+-All/ExtensionContextMenuModelWithUserHostControlsTest.PageAccessItemsVisibility_PolicyInstalled/*
+-All/ExtensionContextMenuModelWithUserHostControlsTest.TestClickingPageAccessPermissionsPage/*
+-All/HighEfficiencyBubbleViewMemorySavingsImprovementsTest.ShowsCorrectLabelsForDifferentSavings/*
 -All/PriceTrackingViewFeatureFlagTest.PriceTrackingViewCreation/*
 -All/PrintContentAnalysisUtilsTest.*/*
 -ApcScrimManagerImplTest.DisabledScrimCannotBeShown
@@ -25,14 +29,17 @@
 -BatterySaverButtonTest.*
 -BrowserViewTestWithStopLoadingAnimationForHiddenWindow.LoadingAnimationNotRenderedWhenWindowHidden
 -ChromeBrowsingDataRemoverDelegateOriginTrialsTest.PersistentOriginTrialsAreDeleted
+-CookieControlsUserBypassTest.SiteCounts
 -CoreTabHelperWindowUnitTest.SearchWithLens_LensPingEnabled_TriggersLensPing
 -CustomizeChromeFeaturePromoHelperTest.CloseCustomizeChromeFeaturePromoHelper
 -CustomizeChromeFeaturePromoHelperTest.MaybeShowCustomizeChromeFeaturePromoHelper
 -CustomizeChromeFeaturePromoHelperTest.RecordCustomizeChromeFeatureUsage
+-DownloadBubbleRowListViewTest.AddRow
+-DownloadBubbleRowListViewTest.RemoveRow
 -DownloadBubbleRowViewTest.CopyAcceleratorCopiesFile
 -DownloadBubbleRowViewTest.MainButtonPressed
 -DownloadBubbleRowViewTest.UpdateTimeFromCompletedDownload
--ExpsRegistrationSuccessObserverTest.IPHNotShownForChromeUrls
+-DownloadBubbleRowViewTest.OnlyEnabledQuickActionsVisible
 -ExtensionActionViewControllerFeatureUnitTest.*
 -ExtensionActionViewControllerFeatureWithPermittedSitesUnitTest.GetHoverCardStatus
 -ExtensionActionViewControllerGrayscaleTest.*
@@ -41,6 +48,12 @@
 -ExtensionMenuItemViewTest.*
 -ExtensionsSitePermissionsPageViewUnitTest.*
 -ExtensionsToolbarControlsWithPermittedSitesUnitTest.RequestAccessButtonVisibilityOnPermittedSites
+-FirstShowAndReshow/MandatoryReauthBubbleControllerImplMetricsTest.MetricsMandatoryReauthOptInBubbleMetric_NotInteracted/*
+-FirstShowAndReshow/MandatoryReauthBubbleControllerImplMetricsTest.Metrics_MandatoryReauthOptInBubbleMetric_Accepted/*
+-FirstShowAndReshow/MandatoryReauthBubbleControllerImplMetricsTest.Metrics_MandatoryReauthOptInBubbleMetric_Cancelled/*
+-FirstShowAndReshow/MandatoryReauthBubbleControllerImplMetricsTest.Metrics_MandatoryReauthOptInBubbleMetric_Closed/*
+-FirstShowAndReshow/MandatoryReauthBubbleControllerImplMetricsTest.Metrics_MandatoryReauthOptInBubbleMetric_LostFocus/*
+-FirstShowAndReshow/MandatoryReauthBubbleControllerImplMetricsTest.Metrics_MandatoryReauthOptInBubbleMetric_Shown/*
 -HighEfficiencyBubbleViewMemorySavingsImprovementsTest.*
 -HighEfficiencyBubbleViewTest.*
 -HighEfficiencyChipViewDiscardedTabTreatmentDisabledTest.ShouldNotExpandWhenFeatureIsDisabled
@@ -64,6 +77,10 @@
 -SavedTabGroupModelListenerTest.GetTabStripModelWithTabGroupId
 -SaveIbanBubbleControllerImplTest.LocalIbanSavedSuccessfully
 -SidePanelToolbarContainerTest.*
+-TabHelperUnitTest.ClearsExtensionOnUnload
+-TabHelperUnitTest.ReloadRequired_BlockAllExtensions
+-TabHelperUnitTest.ReloadRequired_CustomizeByExtension
+-TabHoverCardPreviewsEnabledPrefTest.DefaultState
 -UserNotesPageHandlerTest.CurrentTabUrlChangedWithNavigation
 -UserNotesPageHandlerTest.CurrentTabUrlChangedWithTabStripModelChanged
 
@@ -131,6 +148,9 @@
 -AutofillContextMenuManagerTest.ExecuteCommand
 -AutofillContextMenuManagerTest.RecordContextMenuIsShownOnField
 -PasswordsPrivateDelegateImplTest.ShowAddShortcutDialog
+-PerformanceHandlerTest.GetCurrentOpenSites
+-PermissionPromptBubbleTwoOriginsViewTest.DescriptionMentionsTwoOriginsAndPermission
+-PermissionPromptBubbleTwoOriginsViewTest.TitleMentionsRequestingOriginAndPermission
 -SavedTabGroupBarUnitTest.*
 
 # MPArch is not supported in Brave, and therefore tests relating to it should
@@ -189,6 +209,11 @@
 -DIPSServiceHistogramTest.*
 -DIPSServiceStateRemovalTest.*
 -GetSitesToClearTest.*
+-StorageAccessGrantPermissionContextAPIDisabledTest.AllowedByCookieSettings
+-StorageAccessGrantPermissionContextAPIDisabledTest.InsecureOriginsDisallowed
+-StorageAccessGrantPermissionContextAPIDisabledTest.PermissionBlocked
+-StorageAccessGrantPermissionContextAPIDisabledTest.PermissionStatusBlocked
+-StorageAccessGrantPermissionContextAPIWithFirstPartySetsTest.ImplicitGrant_AutograntedWithinFPS
 
 # These tests fail a CalledOnValidSequence check when calling
 # TorProfileServiceFactory::IsTorDisabled
@@ -213,6 +238,7 @@
 
 # These tests fail because we disable the media router via
 # prefs::kEnableMediaRouter
+-CastDialogSinkViewTest.ButtonsAccessibleName
 -MediaDialogViewWithRemotePlaybackTest.*
 -MediaRouterActionControllerUnitTest.*
 -MediaRouterEnabledTest.*
@@ -246,7 +272,10 @@
 
 # These tests fail because IdentityManager's primary account has no kSignin
 # consent level
+-SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedAllowed
+-SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedNotAllowed
 -SignoutAllowed/SigninManagerTest.*
+-TestAppMenuModelCR2023.ProfileSyncOnTest
 
 # Failed because we disabled upstream's entire client-side field trials.
 # See ChromeBrowserFieldTrials.
@@ -281,8 +310,14 @@
 
 # These fail because we disable safe browsing enhanced protection.
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/1
+-All/ClientSideDetectionServiceTest.GetNumReportTestESB/2
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/3
+-All/ClientSideDetectionServiceTest.GetNumReportTestESB/6
+-All/ClientSideDetectionServiceTest.GetNumReportTestESB/7
+-All/ClientSideDetectionServiceTest.TestReceivingImageEmbedderUpdatesAfterResubscription/5
+-All/ClientSideDetectionServiceTest.TestReceivingImageEmbedderUpdatesAfterResubscription/7
 -ChromePingManagerFactoryTest.ShouldFetchAccessTokenForReport_Yes
+-NotificationMetricsLoggerTest.PersistentNotificationSize
 
 # These fail because we have journeys/history clusters disabled.
 -HistoryClustersHandlerTest.OpenVisitUrlsInTabGroup
@@ -320,6 +355,18 @@
 # model
 -TestAppMenuModelCR2023.ModelHasIcons
 
+# These tests fail because we set kIsolatedAppsDeveloperModeAllowed to false
+-All/IsolatedWebAppInstallCommandHelperTrustAndSignaturesBundleTest.ErrorsOnBundleError/InstalledBundle
+-All/IsolatedWebAppInstallCommandHelperTrustAndSignaturesBundleTest.SucceedsWhenThereIsNoError/InstalledBundle
+-IsolatedWebAppInstallCommandHelperTrustAndSignaturesTest.DevProxySucceeds
+
+# This test fails because we override Chromium's "what's new" util functionality
+# see brave/chromium_src/chrome/browser/ui/webui/whats_new/whats_new_util.cc
+-WhatsNewUtilTests.ShouldShowForStateUsesChromeVersionForRefresh
+
+# This test fails because we disable page_image_service::kImageService feature.
+-NewTabPageModulesTest.MakeModuleIdNames
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
@@ -338,8 +385,6 @@
 -All/ContentAnalysisPrintPreviewHandlerTest.LocalScanBeforePrinting/*
 -All/EnterpriseProfileWelcomeHandleProceedTest.HandleProceed/*
 -All/ExtensionActionAPIUnitTest.*
--All/ExtensionContextMenuModelWithUserHostControlsTest.PageAccessItemsVisibilityBasedOnSiteSettings/*
--All/ExtensionContextMenuModelWithUserHostControlsTest.TestClickingPageAccessPermissionsPage/*
 -All/IntentPickerBubbleViewLayoutTest.*
 -All/InvalidSearchProviderTest.DoesNotSendSuggestRequests/*
 -All/MultipleRulesetsTest_Unpacked.*

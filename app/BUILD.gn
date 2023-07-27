@@ -94,16 +94,21 @@ source_set("browser_tests") {
       "//chrome/app:command_ids",
       "//chrome/browser",
       "//chrome/browser/companion/core",
+      "//chrome/browser/companion/visual_search/",
       "//chrome/browser/enterprise/connectors/analysis:features",
+      "//chrome/browser/promos:utils",
       "//chrome/browser/ui",
       "//chrome/common:chrome_features",
       "//chrome/common:non_code_constants",
       "//chrome/test",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
+      "//components/aggregation_service",
+      "//components/attribution_reporting",
       "//components/autofill/core/common",
       "//components/commerce/core:feature_list",
       "//components/component_updater",
+      "//components/content_settings/core/common:features",
       "//components/embedder_support",
       "//components/history_clusters/core",
       "//components/language/core/common",
@@ -127,6 +132,10 @@ source_set("browser_tests") {
       "//services/device/public/cpp:device_features",
       "//testing/gtest",
     ]
+
+    if (is_linux || is_win || is_mac) {
+      deps += [ "//components/device_signals/core/common:features" ]
+    }
   }
 }
 
@@ -141,7 +150,7 @@ source_set("unit_tests") {
       "//base/test:test_support",
       "//brave/components/commands/common",
       "//chrome/app:command_ids",
-      "//chrome/browser/ui/views",
+      "//chrome/browser/ui",
       "//testing/gtest",
     ]
   }

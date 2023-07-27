@@ -43,7 +43,7 @@ std::string GetUpdateURLHost() {
 
 BraveMainDelegate::BraveMainDelegate() {
   base::FilePath path;
-  base::PathService::Get(base::DIR_MODULE, &path);
+  base::GetModuleDir(&path);
   base::apple::SetOverrideFrameworkBundlePath(path);
   base::apple::SetOverrideOuterBundlePath(path);
 }

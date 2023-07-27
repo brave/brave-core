@@ -14,7 +14,7 @@
 BraveOmniboxPopupViewViews::~BraveOmniboxPopupViewViews() = default;
 
 gfx::Rect BraveOmniboxPopupViewViews::GetTargetBounds() const {
-  auto bounds = OmniboxPopupViewWebUI::GetTargetBounds();
+  auto bounds = OmniboxPopupViewViews::GetTargetBounds();
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
     return bounds;
   }
@@ -33,5 +33,5 @@ gfx::Rect BraveOmniboxPopupViewViews::GetTargetBounds() const {
   return bounds;
 }
 
-BEGIN_METADATA(BraveOmniboxPopupViewViews, OmniboxPopupViewWebUI)
+BEGIN_METADATA(BraveOmniboxPopupViewViews, OmniboxPopupViewViews)
 END_METADATA

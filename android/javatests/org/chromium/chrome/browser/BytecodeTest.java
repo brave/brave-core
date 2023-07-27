@@ -10,6 +10,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.ActionMode;
@@ -120,6 +121,7 @@ import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListLayout;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListToolbar.SearchDelegate;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
+import org.chromium.components.commerce.core.ShoppingService;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.favicon.LargeIconBridge;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
@@ -787,7 +789,7 @@ public class BytecodeTest {
                 Supplier.class, Supplier.class, int.class, Supplier.class, Supplier.class,
                 AppMenuDelegate.class, StatusBarColorProvider.class, ObservableSupplierImpl.class,
                 IntentRequestTracker.class, int.class, Supplier.class, Function.class,
-                OneshotSupplier.class, boolean.class, BackPressManager.class, Supplier.class));
+                OneshotSupplier.class, boolean.class, BackPressManager.class, Bundle.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
                 "org/chromium/chrome/browser/bookmarks/BraveBookmarkToolbar", Context.class,
                 AttributeSet.class));
@@ -811,7 +813,8 @@ public class BytecodeTest {
                         DragReorderableRecyclerViewAdapter.class, LargeIconBridge.class,
                         boolean.class, boolean.class, ObservableSupplierImpl.class, Profile.class,
                         BookmarkUndoController.class, ModelList.class, BookmarkUiPrefs.class,
-                        Runnable.class, BookmarkImageFetcher.class));
+                        Runnable.class, BookmarkImageFetcher.class, ShoppingService.class,
+                        SnackbarManager.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkBridge",
                 "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge", long.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkModel",

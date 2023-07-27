@@ -25,10 +25,12 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.browser_ui.widget.dragreorder.DragReorderableRecyclerViewAdapter;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListLayout;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
+import org.chromium.components.commerce.core.ShoppingService;
 import org.chromium.components.favicon.LargeIconBridge;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.WindowAndroid;
@@ -58,11 +60,13 @@ class BraveBookmarkManagerMediator
             ObservableSupplierImpl<Boolean> backPressStateSupplier, Profile profile,
             BookmarkUndoController bookmarkUndoController, ModelList modelList,
             BookmarkUiPrefs bookmarkUiPrefs, Runnable hideKeyboardRunnable,
-            BookmarkImageFetcher imageFetcher) {
+            BookmarkImageFetcher bookmarkImageFetcher, ShoppingService shoppingService,
+            SnackbarManager snackbarManager) {
         super(context, bookmarkModel, bookmarkOpener, selectableListLayout, selectionDelegate,
                 recyclerView, dragReorderableRecyclerViewAdapter, largeIconBridge, isDialogUi,
                 isIncognito, backPressStateSupplier, profile, bookmarkUndoController, modelList,
-                bookmarkUiPrefs, hideKeyboardRunnable, imageFetcher);
+                bookmarkUiPrefs, hideKeyboardRunnable, bookmarkImageFetcher, shoppingService,
+                snackbarManager);
     }
 
     public void setWindow(ActivityWindowAndroid window) {

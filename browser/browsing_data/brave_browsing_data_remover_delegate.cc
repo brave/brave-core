@@ -90,7 +90,7 @@ void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(
     ContentSettingsForOneType settings;
     map->GetSettingsForOneType(content_type, &settings);
     for (const ContentSettingPatternSource& setting : settings) {
-      base::Time last_modified = setting.metadata.last_modified;
+      base::Time last_modified = setting.metadata.last_modified();
       if (last_modified >= begin_time &&
           (last_modified < end_time || end_time.is_null())) {
         provider->SetWebsiteSetting(setting.primary_pattern,

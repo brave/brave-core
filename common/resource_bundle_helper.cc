@@ -34,7 +34,7 @@ base::FilePath GetResourcesPakFilePath() {
   return base::mac::PathForFrameworkBundleResource("brave_resources.pak");
 #else
   base::FilePath pak_path;
-  base::PathService::Get(base::DIR_MODULE, &pak_path);
+  base::PathService::Get(base::DIR_ASSETS, &pak_path);
   pak_path = pak_path.AppendASCII("brave_resources.pak");
   return pak_path;
 #endif  // OS_MAC
@@ -53,7 +53,7 @@ base::FilePath GetScaledResourcesPakFilePath(
   return base::mac::PathForFrameworkBundleResource(pak_file);
 #else
   base::FilePath pak_path;
-  base::PathService::Get(base::DIR_MODULE, &pak_path);
+  base::PathService::Get(base::DIR_ASSETS, &pak_path);
   pak_path = pak_path.AppendASCII(pak_file);
   return pak_path;
 #endif  // OS_MAC

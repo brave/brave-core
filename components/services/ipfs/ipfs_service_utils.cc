@@ -108,7 +108,7 @@ std::string GetVersionFromNodeFilename(const std::string& filename) {
       matched_groups.size() < 2) {
     return std::string();
   }
-  return matched_groups[1].as_string();
+  return std::string(matched_groups[1]);
 }
 
 }  // namespace ipfs

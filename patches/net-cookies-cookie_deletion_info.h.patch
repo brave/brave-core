@@ -1,5 +1,5 @@
 diff --git a/net/cookies/cookie_deletion_info.h b/net/cookies/cookie_deletion_info.h
-index 835aa8b7cabddbc1fe6c4435d35f44b777870b23..19e21e215122e445b4cf79b74583b0606a44e012 100644
+index 40f444398ca01435ddd6e873989561d6180e3808..a7f45aa1f082b2f06ce80e3b5a6aa33f6ec165be 100644
 --- a/net/cookies/cookie_deletion_info.h
 +++ b/net/cookies/cookie_deletion_info.h
 @@ -150,6 +150,7 @@ struct NET_EXPORT CookieDeletionInfo {
