@@ -711,6 +711,31 @@ class SolanaProviderTest : public InProcessBrowserTest {
   raw_ptr<TxService> tx_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
 };
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectRequestInProgress) {
+  RestoreWallet();
+  AddAccount("Account 1");
+  SetSelectedAccount(kFirstAccount);
+  GURL url =
+      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  CallSolanaConnect(web_contents());
+  const auto result = EvalJs(web_contents(), R"(
+  (async function() {
+    try {
+      return await window.braveSolana.connect()
+    } catch (err) {
+      return err
+    }
+  })()
+  )");
+  ASSERT_TRUE(result.error.empty());
+  ASSERT_TRUE(result.value.is_dict());
+  EXPECT_EQ(*result.value.GetDict().FindInt("code"),
+            static_cast<int>(mojom::SolanaProviderError::kResourceUnavailable));
+  EXPECT_EQ(*result.value.GetDict().FindString("message"),
+            l10n_util::GetStringUTF8(
+                IDS_WALLET_REQUESTED_RESOURCE_NOT_AVAILABLE_ERROR));
+}
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusAndPermission) {
   RestoreWallet();

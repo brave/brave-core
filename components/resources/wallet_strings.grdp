@@ -13,6 +13,7 @@
   <message name="IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR" desc="The text of response when an RPC method is not supported">This RPC method is not supported.</message>
   <message name="IDS_WALLET_PARSING_ERROR" desc="There was a parsing error">A response parsing error has occurred</message>
   <message name="IDS_WALLET_REQUEST_PROCESSING_ERROR" desc="There was a request processing error">A generic request processing error has occurred</message>
+  <message name="IDS_WALLET_REQUESTED_RESOURCE_NOT_AVAILABLE_ERROR" desc="The text of response when request panel is already open for current dapp">Requested resource not available</message>
   <message name="IDS_WALLET_INVALID_MNEMONIC_ERROR" desc="The text for invalid mnemonic being imported error">The mnemonic being imported is not valid for Brave Wallet</message>
   <message name="IDS_WALLET_ALREADY_IN_PROGRESS_ERROR" desc="The text of the response for wallet_(add|switch)EthereumChain call for existing request">A request is already in progress</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_NO_TX_DATA" desc="The text of the response for eth_sendTransaction">Transaction data is missing</message>

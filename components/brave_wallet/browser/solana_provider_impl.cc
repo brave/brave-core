@@ -767,8 +767,10 @@ void SolanaProviderImpl::OnConnect(
                             "");
   } else if (error == RequestPermissionsError::kRequestInProgress) {
     std::move(callback).Run(
-        mojom::SolanaProviderError::kUserRejectedRequest,
-        l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
+        mojom::SolanaProviderError::kResourceUnavailable,
+        l10n_util::GetStringUTF8(
+            IDS_WALLET_REQUESTED_RESOURCE_NOT_AVAILABLE_ERROR),
+        "");
     delegate_->ShowPanel();
   } else if (error == RequestPermissionsError::kNone) {
     CHECK(allowed_accounts);
