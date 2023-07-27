@@ -586,13 +586,6 @@ class ObserverTester : public SiteEngagementObserver {
     }
   }
 
-  void WaitForEngagementEvent(EngagementType type) {
-    type_waiting_ = type;
-    base::RunLoop run_loop;
-    quit_closure_ = run_loop.QuitClosure();
-    run_loop.Run();
-  }
-
   EngagementType last_updated_type() { return last_updated_type_; }
   const GURL& last_updated_url() { return last_updated_url_; }
 
