@@ -70,10 +70,10 @@ void SearchResultAdHandler::MaybeRetrieveSearchResultAd(
   render_frame_host->GetRemoteInterfaces()->GetInterface(
       document_metadata.BindNewPipeAndPassReceiver());
   CHECK(document_metadata.is_bound());
-  document_metadata.reset_on_disconnect();
 
   blink::mojom::DocumentMetadata* raw_document_metadata =
       document_metadata.get();
+  CHECK(raw_document_metadata);
   raw_document_metadata->GetEntities(
       base::BindOnce(&SearchResultAdHandler::OnRetrieveSearchResultAdEntities,
                      weak_factory_.GetWeakPtr(), std::move(document_metadata),
