@@ -12,6 +12,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import {
   AddAccountNavTypes,
   BraveWallet,
+  SendPageTabHashes,
   SupportedTestNetworks,
   UserAssetInfoType,
   WalletRoutes
@@ -484,10 +485,12 @@ export const PortfolioAsset = (props: Props) => {
     if(!account) return
 
     history.push(
-      WalletRoutes.SendPage.replace(':chainId?', selectedAssetsNetwork.chainId)
+      `${WalletRoutes.SendPage
+        .replace(':chainId?', selectedAssetsNetwork.chainId)
         .replace(':accountAddress?', account.address)
         .replace(':contractAddress?', selectedAsset.contractAddress)
-        .replace(':tokenId?', selectedAsset.tokenId)
+        .replace(':tokenId?', selectedAsset.tokenId)}${ //
+      SendPageTabHashes.nft}`
     )
   }, [selectedAsset, accounts, selectedAssetsNetwork])
 

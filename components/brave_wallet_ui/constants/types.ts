@@ -1012,7 +1012,13 @@ export const P3ASendTransactionTypes = [
   BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
 ]
 
-export type SendOptionTypes = 'token' | 'nft'
+export type SendPageTabHashes =
+  typeof SendPageTabHashes[keyof typeof SendPageTabHashes]
+
+export const SendPageTabHashes = {
+  token: '#token',
+  nft: '#nft'
+} as const
 
 export type NavIDTypes =
   | 'buy'
