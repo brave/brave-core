@@ -33,7 +33,12 @@ class CommonOptions:
 
   @classmethod
   def add_parser_args(cls, parser: argparse.ArgumentParser) -> None:
-    parser.add_argument('--verbose', action='store_true')
+    parser.add_argument('config', type=str, help = 'The path or URL to the config')
+    parser.add_argument('targets',
+                        type=str,
+                        nargs='?',
+                        help='Format: tag1[:<binary_or_apk_filepath1>],..,tagN[:<binary_or_apk_filepathN>]')
+    parser.add_argument('--verbose', action='store_true', help = 'Enable verbose logging')
     parser.add_argument('--ci-mode', action='store_true')
     parser.add_argument('--variations-repo-dir', type=str)
     parser.add_argument('--working-directory', type=str)
@@ -43,11 +48,6 @@ class CommonOptions:
     parser.add_argument('--report-on-failure', action='store_true')
     parser.add_argument('--local-run', action='store_true')
     parser.add_argument('--compare', action='store_true')
-    parser.add_argument('--targets',
-                        required=True,
-                        type=str,
-                        help='Tags/binaries to test')
-    parser.add_argument('--config', required=True, type=str)
 
   @classmethod
   def from_args(cls, args) -> 'CommonOptions':
@@ -66,9 +66,10 @@ class CommonOptions:
       options.target_os = PerfBenchmark.FixupTargetOS(args.target_os)
 
     options.report_on_failure = args.report_on_failure
-    compare = args.targets == 'compare' or args.compare
+    compare = args.targets is None or args.targets == '' or args.compare
     options.compare = compare
-    options.targets = args.targets.split(',')
+    if args.targets is not None:
+      options.targets = args.targets.split(',')
 
     options.local_run = args.local_run or compare
     options.do_run_tests = not args.report_only

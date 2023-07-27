@@ -375,7 +375,7 @@ program
   .action(runFuzzer.bind(null, parsedArgs.unknown))
 
   program
-  .command('run_perf_tests <perf_config> <targets>')
+  .command('run_perf_tests <perf_config> [targets]')
   .allowUnknownOption(true)
   .action(perfTests.runPerfTests.bind(null, parsedArgs.unknown))
 

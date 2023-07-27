@@ -5,22 +5,22 @@
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 r"""A tool run telemetry perftests and report the results to dashboard
 
+Use npm run perf_tests to call this script.
 
 The tool:
-1. Download a proper binary.
-2. Run a subset of telemetry perftests from the provided config.
-3. Report the result to brave-perf-dashboard.appspot.com
+1. Downloads browser binaries.
+2. Runs the set of telemetry perftests from the provided config.
+3. Reports the results to brave-perf-dashboard.appspot.com or store them as
+   local .html files.
+
 The tool is best run on specially prepared hardware/OS to minimize jitter.
 
-Example usage:
- vpython3 run_dashboard_perftests.py --working-directory=e:\work\tmp\perf0\
-                                     --config=smoke.json
-                                     --target v1.36.23
 """
 import argparse
+from codecs import ignore_errors
 import logging
 import sys
-from os import mkdir
+import os
 
 import components.perf_config as perf_config
 import components.perf_test_runner as perf_test_runner
@@ -28,7 +28,22 @@ import components.perf_test_utils as perf_test_utils
 
 
 def main():
-  parser = argparse.ArgumentParser()
+  parser = argparse.ArgumentParser(
+    formatter_class=argparse.RawTextHelpFormatter,
+    description='A tool to run perf tests and report the results',
+    epilog = R'''
+Example usage to compare a few configuration locally:
+npm run perf_tests -- compare\compare_with_on_off_feature.json5 compare
+     --variations-repo-dir=e:\work\brave-variations
+     --local-run
+
+
+Example usage for CI:
+npm run perf_tests -- smoke-brave.json5 v1.58.45
+     --working-directory=e:\work\brave\src\out\100
+     --variations-repo-dir=e:\work\brave-variations
+     --ci-mode
+''')
   perf_test_runner.CommonOptions.add_parser_args(parser)
 
   args = parser.parse_args()
@@ -38,7 +53,8 @@ def main():
   log_format = '%(asctime)s: %(message)s'
   logging.basicConfig(level=log_level, format=log_format)
 
-  mkdir(options.working_directory)
+  if not os.path.exists(options.working_directory):
+    os.mkdir(options.working_directory)
   json_config = perf_test_utils.LoadJsonConfig(args.config,
                                                options.working_directory)
   config = perf_config.PerfConfig(json_config)
