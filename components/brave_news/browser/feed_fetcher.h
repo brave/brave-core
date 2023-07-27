@@ -28,7 +28,7 @@ using UpdateAvailableCallback = base::OnceCallback<void(bool)>;
 
 class FeedFetcher {
  public:
-  explicit FeedFetcher(
+  FeedFetcher(
       PublishersController& publishers_controller,
       ChannelsController& channels_controller,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
