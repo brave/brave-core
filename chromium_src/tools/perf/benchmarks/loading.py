@@ -8,7 +8,7 @@
 @benchmark.Info(emails=['matuchin@brave.com', 'iefremov@brave.com'],
                 component='Blink>Loader',
                 documentation_url='https://bit.ly/loading-benchmarks')
-class LoadingDesktopBrave(LoadingDesktop):
+class LoadingDesktopBrave(_LoadingBase):
   """ A benchmark measuring loading performance of desktop sites. """
   SUPPORTED_PLATFORM_TAGS = [platforms.DESKTOP]
   SUPPORTED_PLATFORMS = [story.expectations.ALL_DESKTOP]
