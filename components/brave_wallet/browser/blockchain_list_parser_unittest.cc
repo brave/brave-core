@@ -491,139 +491,95 @@ TEST(ParseDappListsUnitTest, ParseDappLists) {
 
 TEST(ParseOnRampTokensListMapUnitTest, ParseOnRampTokensListMap) {
   // Invalid JSON is not parsed
-  absl::optional<OnRampTokensListMap> supported_tokens_list_map =
-      ParseOnRampTokensListMap(R"({)");
+  absl::optional<RampTokenListMaps> supported_tokens_list_map =
+      ParseRampTokenListMaps(R"({)");
   ASSERT_FALSE(supported_tokens_list_map);
 
+  // Valid JSON is parsed into supported token list map
   const std::string supported_tokens_list = R"({
-    "ramp": [
-      {
-        "chain_id": "0x1",
-        "coin": 60,
-        "coingecko_id": "",
-        "contract_address": "",
-        "decimals": 18,
-        "is_erc1155": false,
-        "is_erc20": false,
-        "is_erc721": false,
-        "is_nft": false,
-        "logo": "",
-        "name": "Ethereum",
-        "symbol": "ETH",
-        "token_id": "",
-        "visible": true
-      },
-      {
-        "chain_id": "0x38",
-        "coin": 60,
-        "coingecko_id": "",
-        "contract_address": "",
-        "decimals": 18,
-        "is_erc1155": false,
-        "is_erc20": true,
-        "is_erc721": false,
-        "is_nft": false,
-        "logo": "",
-        "name": "BNB",
-        "symbol": "BNB",
-        "token_id": "",
-        "visible": true
-      }
-    ],
-    "sardine": [
-      {
-        "chain_id": "0x1",
-        "coin": 60,
-        "coingecko_id": "",
-        "contract_address": "",
-        "decimals": 18,
-        "is_erc1155": false,
-        "is_erc20": false,
-        "is_erc721": false,
-        "is_nft": false,
-        "logo": "",
-        "name": "Ethereum",
-        "symbol": "ETH",
-        "token_id": "",
-        "visible": true
-      },
-      {
-        "chain_id": "0x1",
-        "coin": 60,
-        "coingecko_id": "",
-        "contract_address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
-        "decimals": 18,
-        "is_erc1155": false,
-        "is_erc20": true,
-        "is_erc721": false,
-        "is_nft": false,
-        "logo": "aave.png",
-        "name": "AAVE",
-        "symbol": "AAVE",
-        "token_id": "",
-        "visible": true
-      }
-    ],
-    "transak": [
-      {
-        "chain_id": "0x1",
-        "coin": 60,
-        "coingecko_id": "",
-        "contract_address": "",
-        "decimals": 18,
-        "is_erc1155": false,
-        "is_erc20": false,
-        "is_erc721": false,
-        "is_nft": false,
-        "logo": "",
-        "name": "Ethereum",
-        "symbol": "ETH",
-        "token_id": "",
-        "visible": true
-      },
-      {
-        "chain_id": "0xa",
-        "coin": 60,
-        "coingecko_id": "",
-        "contract_address": "",
-        "decimals": 18,
-        "is_erc1155": false,
-        "is_erc20": false,
-        "is_erc721": false,
-        "is_nft": false,
-        "logo": "",
-        "name": "Ethereum",
-        "symbol": "ETH",
-        "token_id": "",
-        "visible": true
-      }
-    ],
-    "stripe": [
-      {
-        "chain_id": "0x1",
-        "coin": 60,
-        "coingecko_id": "",
-        "contract_address": "",
-        "decimals": 18,
-        "is_erc1155": false,
-        "is_erc20": false,
-        "is_erc721": false,
-        "is_nft": false,
-        "logo": "",
-        "name": "Ethereum",
-        "symbol": "ETH",
-        "token_id": "",
-        "visible": true
-      }
+    "tokens" : [
+       {
+         "chain_id": "0x1",
+         "coin": 60,
+         "coingecko_id": "",
+         "contract_address": "",
+         "decimals": 18,
+         "is_erc1155": false,
+         "is_erc20": false,
+         "is_erc721": false,
+         "is_nft": false,
+         "logo": "",
+         "name": "Ethereum",
+         "symbol": "ETH",
+         "token_id": "",
+         "visible": true,
+         "on_ramp_providers": ["ramp", "sardine", "transak", "stripe"],
+         "off_ramp_providers": []
+       },
+       {
+         "chain_id": "0x38",
+         "coin": 60,
+         "coingecko_id": "",
+         "contract_address": "",
+         "decimals": 18,
+         "is_erc1155": false,
+         "is_erc20": true,
+         "is_erc721": false,
+         "is_nft": false,
+         "logo": "",
+         "name": "BNB",
+         "symbol": "BNB",
+         "token_id": "",
+         "visible": true,
+         "on_ramp_providers": ["ramp"],
+         "off_ramp_providers": []
+       },
+       {
+         "chain_id": "0x1",
+         "coin": 60,
+         "coingecko_id": "",
+         "contract_address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+         "decimals": 18,
+         "is_erc1155": false,
+         "is_erc20": true,
+         "is_erc721": false,
+         "is_nft": false,
+         "logo": "aave.png",
+         "name": "AAVE",
+         "symbol": "AAVE",
+         "token_id": "",
+         "visible": true,
+         "on_ramp_providers": ["sardine"],
+         "off_ramp_providers": []
+       },
+       {
+         "chain_id": "0xa",
+         "coin": 60,
+         "coingecko_id": "",
+         "contract_address": "",
+         "decimals": 18,
+         "is_erc1155": false,
+         "is_erc20": false,
+         "is_erc721": false,
+         "is_nft": false,
+         "logo": "",
+         "name": "Ethereum",
+         "symbol": "ETH",
+         "token_id": "",
+         "visible": true,
+         "on_ramp_providers": ["transak"],
+         "off_ramp_providers": []
+       }
     ]
   })";
 
-  supported_tokens_list_map = ParseOnRampTokensListMap(supported_tokens_list);
+  supported_tokens_list_map = ParseRampTokenListMaps(supported_tokens_list);
   ASSERT_TRUE(supported_tokens_list_map);
-  EXPECT_EQ((*supported_tokens_list_map).size(), 4UL);
+  EXPECT_EQ((*supported_tokens_list_map).first.size(), 4UL);
 
-  auto it = supported_tokens_list_map->find(mojom::OnRampProvider::kRamp);
-  ASSERT_NE(it, supported_tokens_list_map->end());
+  auto it =
+      (*supported_tokens_list_map).first.find(mojom::OnRampProvider::kRamp);
+  ASSERT_NE(it, (*supported_tokens_list_map).first.end());
   EXPECT_EQ(it->second.size(), 2UL);
   EXPECT_EQ(it->second[0]->contract_address, "");
   EXPECT_EQ(it->second[0]->name, "Ethereum");
@@ -654,8 +610,8 @@ TEST(ParseOnRampTokensListMapUnitTest, ParseOnRampTokensListMap) {
   EXPECT_EQ(it->second[1]->chain_id, "0x38");
   EXPECT_EQ(it->second[1]->coin, mojom::CoinType::ETH);
 
-  it = supported_tokens_list_map->find(mojom::OnRampProvider::kSardine);
-  ASSERT_NE(it, supported_tokens_list_map->end());
+  it = (*supported_tokens_list_map).first.find(mojom::OnRampProvider::kSardine);
+  ASSERT_NE(it, (*supported_tokens_list_map).first.end());
   EXPECT_EQ(it->second.size(), 2UL);
   EXPECT_EQ(it->second[0]->contract_address, "");
   EXPECT_EQ(it->second[0]->name, "Ethereum");
@@ -687,8 +643,8 @@ TEST(ParseOnRampTokensListMapUnitTest, ParseOnRampTokensListMap) {
   EXPECT_EQ(it->second[1]->chain_id, "0x1");
   EXPECT_EQ(it->second[1]->coin, mojom::CoinType::ETH);
 
-  it = supported_tokens_list_map->find(mojom::OnRampProvider::kTransak);
-  ASSERT_NE(it, supported_tokens_list_map->end());
+  it = (*supported_tokens_list_map).first.find(mojom::OnRampProvider::kTransak);
+  ASSERT_NE(it, (*supported_tokens_list_map).first.end());
   EXPECT_EQ(it->second.size(), 2UL);
   EXPECT_EQ(it->second[0]->contract_address, "");
   EXPECT_EQ(it->second[0]->name, "Ethereum");
@@ -721,13 +677,8 @@ TEST(ParseOnRampTokensListMapUnitTest, ParseOnRampTokensListMap) {
 }
 
 TEST(ParseOffRampTokensListMapUnitTest, ParseOffRampTokensListMap) {
-  // Invalid JSON is not parsed
-  absl::optional<OffRampTokensListMap> supported_tokens_list_map =
-      ParseOffRampTokensListMap(R"({)");
-  ASSERT_FALSE(supported_tokens_list_map);
-
   const std::string supported_tokens_list = R"({
-    "ramp": [
+    "tokens": [
       {
         "chain_id": "0x1",
         "coin": 60,
@@ -742,20 +693,21 @@ TEST(ParseOffRampTokensListMapUnitTest, ParseOffRampTokensListMap) {
         "name": "Basic Attention Token",
         "symbol": "BAT",
         "token_id": "",
-        "visible": true
+        "visible": true,
+        "on_ramp_providers": ["ramp", "sardine", "transak", "stripe"],
+        "off_ramp_providers": ["ramp"]
       }
-    ],
-    "sardine": [],
-    "transak": [],
-    "stripe": []
+    ]
   })";
 
-  supported_tokens_list_map = ParseOffRampTokensListMap(supported_tokens_list);
+  absl::optional<RampTokenListMaps> supported_tokens_list_map =
+      ParseRampTokenListMaps(supported_tokens_list);
   ASSERT_TRUE(supported_tokens_list_map);
-  EXPECT_EQ((*supported_tokens_list_map).size(), 1UL);
+  EXPECT_EQ((*supported_tokens_list_map).second.size(), 1UL);
 
-  auto it = supported_tokens_list_map->find(mojom::OffRampProvider::kRamp);
-  ASSERT_NE(it, supported_tokens_list_map->end());
+  auto it =
+      (*supported_tokens_list_map).second.find(mojom::OffRampProvider::kRamp);
+  ASSERT_NE(it, (*supported_tokens_list_map).second.end());
   EXPECT_EQ(it->second[0]->contract_address,
             "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
   EXPECT_EQ(it->second[0]->name, "Basic Attention Token");

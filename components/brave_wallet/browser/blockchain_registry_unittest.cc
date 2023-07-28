@@ -83,131 +83,8 @@ const char solana_token_list_json[] = R"(
     }
   })";
 
-const char on_ramp_token_lists_json[] = R"({
-    "ramp": [
-      {
-        "chain_id": "0x1",
-        "coin": 60,
-        "coingecko_id": "",
-        "contract_address": "",
-        "decimals": 18,
-        "is_erc1155": false,
-        "is_erc20": false,
-        "is_erc721": false,
-        "is_nft": false,
-        "logo": "",
-        "name": "Ethereum",
-        "symbol": "ETH",
-        "token_id": "",
-        "visible": true
-      },
-      {
-        "chain_id": "0x89",
-        "coin": 60,
-        "coingecko_id": "",
-        "contract_address": "",
-        "decimals": 18,
-        "is_erc1155": false,
-        "is_erc20": false,
-        "is_erc721": false,
-        "is_nft": false,
-        "logo": "",
-        "name": "Polygon",
-        "symbol": "MATIC",
-        "token_id": "",
-        "visible": true
-      }
-    ],
-    "sardine": [
-      {
-        "chain_id": "0x1",
-        "coin": 60,
-        "coingecko_id": "",
-        "contract_address": "",
-        "decimals": 18,
-        "is_erc1155": false,
-        "is_erc20": false,
-        "is_erc721": false,
-        "is_nft": false,
-        "logo": "",
-        "name": "Ethereum",
-        "symbol": "ETH",
-        "token_id": "",
-        "visible": true
-      },
-      {
-        "chain_id": "0x1",
-        "coin": 60,
-        "coingecko_id": "",
-        "contract_address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
-        "decimals": 18,
-        "is_erc1155": false,
-        "is_erc20": true,
-        "is_erc721": false,
-        "is_nft": false,
-        "logo": "aave.png",
-        "name": "AAVE",
-        "symbol": "AAVE",
-        "token_id": "",
-        "visible": true
-      }
-    ],
-    "transak": [
-      {
-        "chain_id": "0x1",
-        "coin": 60,
-        "coingecko_id": "",
-        "contract_address": "",
-        "decimals": 18,
-        "is_erc1155": false,
-        "is_erc20": false,
-        "is_erc721": false,
-        "is_nft": false,
-        "logo": "",
-        "name": "Ethereum",
-        "symbol": "ETH",
-        "token_id": "",
-        "visible": true
-      },
-      {
-        "chain_id": "0xa",
-        "coin": 60,
-        "coingecko_id": "",
-        "contract_address": "",
-        "decimals": 18,
-        "is_erc1155": false,
-        "is_erc20": false,
-        "is_erc721": false,
-        "is_nft": false,
-        "logo": "",
-        "name": "Ethereum",
-        "symbol": "ETH",
-        "token_id": "",
-        "visible": true
-      }
-    ],
-    "stripe": [
-      {
-        "chain_id": "0x1",
-        "coin": 60,
-        "coingecko_id": "",
-        "contract_address": "",
-        "decimals": 18,
-        "is_erc1155": false,
-        "is_erc20": false,
-        "is_erc721": false,
-        "is_nft": false,
-        "logo": "",
-        "name": "Ethereum",
-        "symbol": "ETH",
-        "token_id": "",
-        "visible": true
-      }
-    ]
-  })";
-
-const char off_ramp_token_lists_json[] = R"({
-  "ramp": [
+const char ramp_token_lists_json[] = R"({
+  "tokens": [
     {
       "chain_id": "0x1",
       "coin": 60,
@@ -222,7 +99,9 @@ const char off_ramp_token_lists_json[] = R"({
       "name": "Ethereum",
       "symbol": "ETH",
       "token_id": "",
-      "visible": true
+      "visible": true,
+      "on_ramp_providers": ["ramp", "sardine", "transak", "stripe"],
+      "off_ramp_providers": ["ramp"]
     },
     {
       "chain_id": "0x89",
@@ -238,7 +117,45 @@ const char off_ramp_token_lists_json[] = R"({
       "name": "Polygon",
       "symbol": "MATIC",
       "token_id": "",
-      "visible": true
+      "visible": true,
+      "on_ramp_providers": ["ramp"],
+      "off_ramp_providers": ["ramp"]
+    },
+    {
+      "chain_id": "0xa",
+      "coin": 60,
+      "coingecko_id": "",
+      "contract_address": "",
+      "decimals": 18,
+      "is_erc1155": false,
+      "is_erc20": false,
+      "is_erc721": false,
+      "is_nft": false,
+      "logo": "",
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "token_id": "",
+      "visible": true,
+      "on_ramp_providers": ["transak"],
+      "off_ramp_providers": []
+    },
+    {
+      "chain_id": "0x1",
+      "coin": 60,
+      "coingecko_id": "",
+      "contract_address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+      "decimals": 18,
+      "is_erc1155": false,
+      "is_erc20": true,
+      "is_erc721": false,
+      "is_nft": false,
+      "logo": "aave.png",
+      "name": "AAVE",
+      "symbol": "AAVE",
+      "token_id": "",
+      "visible": true,
+      "on_ramp_providers": ["sardine"],
+      "off_ramp_providers": []
     },
     {
       "chain_id": "0x65",
@@ -254,12 +171,11 @@ const char off_ramp_token_lists_json[] = R"({
       "name": "Solana",
       "symbol": "SOL",
       "token_id": "",
-      "visible": true
+      "visible": true,
+      "on_ramp_providers": [],
+      "off_ramp_providers": ["ramp"]
     }
-  ],
-  "sardine": [],
-  "transak": [],
-  "stripe": []
+  ]
 })";
 
 const char on_ramp_currency_lists_json[] = R"({
@@ -742,10 +658,10 @@ TEST(BlockchainRegistryUnitTest, GetBuyTokens) {
           }));
   run_loop->Run();
 
-  absl::optional<OnRampTokensListMap> on_ramp_token_lists =
-      ParseOnRampTokensListMap(on_ramp_token_lists_json);
-  ASSERT_TRUE(on_ramp_token_lists);
-  registry->UpdateOnRampTokenLists(std::move(*on_ramp_token_lists));
+  absl::optional<RampTokenListMaps> ramp_token_lists =
+      ParseRampTokenListMaps(ramp_token_lists_json);
+  ASSERT_TRUE(ramp_token_lists);
+  registry->UpdateOnRampTokenLists(std::move(*ramp_token_lists).first);
 
   // Get Ramp buy tokens
   run_loop = std::make_unique<base::RunLoop>();
@@ -775,10 +691,10 @@ TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
 
-  absl::optional<OnRampTokensListMap> on_ramp_token_lists =
-      ParseOnRampTokensListMap(on_ramp_token_lists_json);
-  ASSERT_TRUE(on_ramp_token_lists);
-  registry->UpdateOnRampTokenLists(std::move(*on_ramp_token_lists));
+  absl::optional<RampTokenListMaps> ramp_token_lists =
+      ParseRampTokenListMaps(ramp_token_lists_json);
+  ASSERT_TRUE(ramp_token_lists);
+  registry->UpdateOnRampTokenLists(std::move(*ramp_token_lists).first);
 
   // Ethereum mainnet tokens are present
   auto run_loop = std::make_unique<base::RunLoop>();
@@ -837,10 +753,10 @@ TEST(BlockchainRegistryUnitTest, GetSellTokens) {
           }));
   run_loop->Run();
 
-  absl::optional<OffRampTokensListMap> off_ramp_token_lists =
-      ParseOffRampTokensListMap(off_ramp_token_lists_json);
-  ASSERT_TRUE(off_ramp_token_lists);
-  registry->UpdateOffRampTokenLists(std::move(*off_ramp_token_lists));
+  absl::optional<RampTokenListMaps> ramp_token_lists =
+      ParseRampTokenListMaps(ramp_token_lists_json);
+  ASSERT_TRUE(ramp_token_lists);
+  registry->UpdateOffRampTokenLists(std::move(*ramp_token_lists).second);
 
   // Get Ramp sell tokens
   run_loop = std::make_unique<base::RunLoop>();

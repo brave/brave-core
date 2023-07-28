@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BLOCKCHAIN_LIST_PARSER_H_
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/containers/flat_map.h"
@@ -25,13 +26,12 @@ using OnRampTokensListMap =
 using OffRampTokensListMap =
     base::flat_map<mojom::OffRampProvider,
                    std::vector<mojom::BlockchainTokenPtr>>;
+using RampTokenListMaps = std::pair<OnRampTokensListMap, OffRampTokensListMap>;
 
 bool ParseTokenList(const std::string& json,
                     TokenListMap* token_list,
                     mojom::CoinType coin);
-absl::optional<OnRampTokensListMap> ParseOnRampTokensListMap(
-    const std::string& json);
-absl::optional<OffRampTokensListMap> ParseOffRampTokensListMap(
+absl::optional<RampTokenListMaps> ParseRampTokenListMaps(
     const std::string& json);
 absl::optional<std::vector<mojom::OnRampCurrency>> ParseOnRampCurrencyLists(
     const std::string& json);

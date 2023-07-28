@@ -16,6 +16,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
@@ -269,6 +270,50 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
   } else if (provider == mojom::OnRampProvider::kStripe) {
     GetStripeBuyURL(std::move(callback), address, currency_code, amount,
                     chain_id, symbol);
+  } else if (provider == mojom::OnRampProvider::kCoinbase) {
+    GURL coinbase_url = GURL(kCoinbaseURL);
+    coinbase_url =
+        net::AppendQueryParameter(coinbase_url, "appId", kCoinbaseAppId);
+    coinbase_url =
+        net::AppendQueryParameter(coinbase_url, "defaultExperience", "buy");
+    coinbase_url =
+        net::AppendQueryParameter(coinbase_url, "presetFiatAmount", amount);
+
+    // Construct the destinationWallets JSON
+    base::Value::List destinationWallets;
+    base::Value::Dict wallet;
+    wallet.Set("address", address);
+
+    // Restrict to ETH or SOL chains based on the address
+    base::Value::List blockchains;
+    if (EthAddress::IsValidAddress(address)) {
+      // Supported networks list
+      // https://docs.cloud.coinbase.com/pay-sdk/docs/faq#which-blockchains-and-cryptocurrencies-do-you-support
+      blockchains.Append("ethereum");
+      blockchains.Append("arbitrum");
+      blockchains.Append("optimism");
+      blockchains.Append("polygon");
+      blockchains.Append("avalanche-c-chain");
+      blockchains.Append("celo");
+    } else {
+      // Assume it's a valid SOL address
+      blockchains.Append("solana");
+    }
+    wallet.Set("blockchains", std::move(blockchains));
+    base::Value::List assets;
+    assets.Append(symbol);
+    wallet.Set("assets", std::move(assets));
+    destinationWallets.Append(std::move(wallet));
+
+    // Convert the JSON to a string and URL-encode it
+    std::string destinationWalletsStr;
+    base::JSONWriter::Write(destinationWallets, &destinationWalletsStr);
+
+    // Append the destinationWallets parameter
+    coinbase_url = net::AppendQueryParameter(coinbase_url, "destinationWallets",
+                                             destinationWalletsStr);
+
+    std::move(callback).Run(std::move(coinbase_url.spec()), absl::nullopt);
   } else {
     std::move(callback).Run(url, "UNSUPPORTED_ONRAMP_PROVIDER");
   }

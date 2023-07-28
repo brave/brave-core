@@ -148,34 +148,50 @@ void AddDappListToMap(
   (*dapp_lists)[key] = std::move(dapp_list);
 }
 
-template <typename RampProvider>
-void AddTokenListToMap(
-    RampProvider provider,
-    const std::vector<blockchain_lists::Token>& token_list_from_component,
-    base::flat_map<RampProvider, std::vector<mojom::BlockchainTokenPtr>>*
-        supported_tokens_list_map) {
-  std::vector<mojom::BlockchainTokenPtr> token_list;
+void AddTokenToMaps(const blockchain_lists::Token& token,
+                    OnRampTokensListMap* on_ramp_map,
+                    OffRampTokensListMap* off_ramp_map) {
+  auto blockchain_token = mojom::BlockchainToken::New();
+  blockchain_token->contract_address = token.contract_address;
+  blockchain_token->name = token.name;
+  blockchain_token->logo = token.logo;
+  blockchain_token->is_erc20 = token.is_erc20;
+  blockchain_token->is_erc721 = token.is_erc721;
+  blockchain_token->is_erc1155 = token.is_erc1155;
+  blockchain_token->is_nft = token.is_nft;
+  blockchain_token->symbol = token.symbol;
+  blockchain_token->decimals = token.decimals;
+  blockchain_token->visible = token.visible;
+  blockchain_token->token_id = token.token_id;
+  blockchain_token->coingecko_id = token.coingecko_id;
+  blockchain_token->chain_id = token.chain_id;
+  blockchain_token->coin = static_cast<mojom::CoinType>(token.coin);
 
-  for (const auto& token : token_list_from_component) {
-    auto blockchain_token = mojom::BlockchainToken::New();
-    blockchain_token->contract_address = token.contract_address;
-    blockchain_token->name = token.name;
-    blockchain_token->logo = token.logo;
-    blockchain_token->is_erc20 = token.is_erc20;
-    blockchain_token->is_erc721 = token.is_erc721;
-    blockchain_token->is_erc1155 = token.is_erc1155;
-    blockchain_token->is_nft = token.is_nft;
-    blockchain_token->symbol = token.symbol;
-    blockchain_token->decimals = token.decimals;
-    blockchain_token->visible = token.visible;
-    blockchain_token->token_id = token.token_id;
-    blockchain_token->coingecko_id = token.coingecko_id;
-    blockchain_token->chain_id = token.chain_id;
-    blockchain_token->coin = static_cast<mojom::CoinType>(token.coin);
-    token_list.push_back(std::move(blockchain_token));
+  for (const auto& provider_str : token.on_ramp_providers) {
+    mojom::OnRampProvider provider;
+    if (provider_str == "ramp") {
+      provider = mojom::OnRampProvider::kRamp;
+    } else if (provider_str == "sardine") {
+      provider = mojom::OnRampProvider::kSardine;
+    } else if (provider_str == "transak") {
+      provider = mojom::OnRampProvider::kTransak;
+    } else if (provider_str == "stripe") {
+      provider = mojom::OnRampProvider::kStripe;
+    } else {
+      continue;
+    }
+    (*on_ramp_map)[provider].push_back(blockchain_token->Clone());
   }
 
-  (*supported_tokens_list_map)[provider] = std::move(token_list);
+  for (const auto& provider_str : token.off_ramp_providers) {
+    mojom::OffRampProvider provider;
+    if (provider_str == "ramp") {
+      provider = mojom::OffRampProvider::kRamp;
+    } else {
+      continue;
+    }
+    (*off_ramp_map)[provider].push_back(blockchain_token->Clone());
+  }
 }
 
 }  // namespace
@@ -285,96 +301,82 @@ bool ParseTokenList(const std::string& json,
   return true;
 }
 
-absl::optional<OnRampTokensListMap> ParseOnRampTokensListMap(
+absl::optional<RampTokenListMaps> ParseRampTokenListMaps(
     const std::string& json) {
   // {
-  //   "ramp": [
-  //     {
-  //       "chain_id": "0x1",
-  //       "coin": 60,
-  //       "coingecko_id": "",
-  //       "contract_address": "",
-  //       "decimals": 18,
-  //       "is_erc1155": false,
-  //       "is_erc20": false,
-  //       "is_erc721": false,
-  //       "is_nft": false,
-  //       "logo": "",
-  //       "name": "Ethereum",
-  //       "symbol": "ETH",
-  //       "token_id": "",
-  //       "visible": true
-  //     },
-  //     {
-  //       "chain_id": "0x38",
-  //       "coin": 60,
-  //       "coingecko_id": "",
-  //       "contract_address": "",
-  //       "decimals": 18,
-  //       "is_erc1155": false,
-  //       "is_erc20": true,
-  //       "is_erc721": false,
-  //       "is_nft": false,
-  //       "logo": "",
-  //       "name": "BNB",
-  //       "symbol": "BNB",
-  //       "token_id": "",
-  //       "visible": true
-  //     }
-  //   ],
-  //   "sardine": [
-  //     {
-  //       "chain_id": "0x1",
-  //       "coin": 60,
-  //       "coingecko_id": "",
-  //       "contract_address": "",
-  //       "decimals": 18,
-  //       "is_erc1155": false,
-  //       "is_erc20": false,
-  //       "is_erc721": false,
-  //       "is_nft": false,
-  //       "logo": "",
-  //       "name": "Ethereum",
-  //       "symbol": "ETH",
-  //       "token_id": "",
-  //       "visible": true
-  //     }
-  //   ],
-  //   "transak": [
-  //     {
-  //       "chain_id": "0x1",
-  //       "coin": 60,
-  //       "coingecko_id": "",
-  //       "contract_address": "",
-  //       "decimals": 18,
-  //       "is_erc1155": false,
-  //       "is_erc20": false,
-  //       "is_erc721": false,
-  //       "is_nft": false,
-  //       "logo": "",
-  //       "name": "Ethereum",
-  //       "symbol": "ETH",
-  //       "token_id": "",
-  //       "visible": true
-  //     }
-  //   ],
-  //   "stripe": [
-  //     {
-  //       "chain_id": "0x1",
-  //       "coin": 60,
-  //       "coingecko_id": "",
-  //       "contract_address": "",
-  //       "decimals": 18,
-  //       "is_erc1155": false,
-  //       "is_erc20": false,
-  //       "is_erc721": false,
-  //       "is_nft": false,
-  //       "logo": "",
-  //       "name": "Ethereum",
-  //       "symbol": "ETH",
-  //       "token_id": "",
-  //       "visible": true
-  //     }
+  //   "tokens" : [
+  //      {
+  //        "chain_id": "0x1",
+  //        "coin": 60,
+  //        "coingecko_id": "",
+  //        "contract_address": "",
+  //        "decimals": 18,
+  //        "is_erc1155": false,
+  //        "is_erc20": false,
+  //        "is_erc721": false,
+  //        "is_nft": false,
+  //        "logo": "",
+  //        "name": "Ethereum",
+  //        "symbol": "ETH",
+  //        "token_id": "",
+  //        "visible": true,
+  //        "on_ramp_providers": ["ramp", "sardine", "transak", "stripe"],
+  //        "off_ramp_providers": []
+  //      },
+  //      {
+  //        "chain_id": "0x38",
+  //        "coin": 60,
+  //        "coingecko_id": "",
+  //        "contract_address": "",
+  //        "decimals": 18,
+  //        "is_erc1155": false,
+  //        "is_erc20": true,
+  //        "is_erc721": false,
+  //        "is_nft": false,
+  //        "logo": "",
+  //        "name": "BNB",
+  //        "symbol": "BNB",
+  //        "token_id": "",
+  //        "visible": true,
+  //        "on_ramp_providers": ["ramp"],
+  //        "off_ramp_providers": []
+  //      },
+  //      {
+  //        "chain_id": "0x1",
+  //        "coin": 60,
+  //        "coingecko_id": "",
+  //        "contract_address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+  //        "decimals": 18,
+  //        "is_erc1155": false,
+  //        "is_erc20": true,
+  //        "is_erc721": false,
+  //        "is_nft": false,
+  //        "logo": "aave.png",
+  //        "name": "AAVE",
+  //        "symbol": "AAVE",
+  //        "token_id": "",
+  //        "visible": true,
+  //        "on_ramp_providers": ["sardine"],
+  //        "off_ramp_providers": []
+  //      },
+  //      {
+  //        "chain_id": "0xa",
+  //        "coin": 60,
+  //        "coingecko_id": "",
+  //        "contract_address": "",
+  //        "decimals": 18,
+  //        "is_erc1155": false,
+  //        "is_erc20": false,
+  //        "is_erc721": false,
+  //        "is_nft": false,
+  //        "logo": "",
+  //        "name": "Ethereum",
+  //        "symbol": "ETH",
+  //        "token_id": "",
+  //        "visible": true,
+  //        "on_ramp_providers": ["transak"],
+  //        "off_ramp_providers": []
+  //      }
   //   ]
   // }
 
@@ -387,73 +389,22 @@ absl::optional<OnRampTokensListMap> ParseOnRampTokensListMap(
     return absl::nullopt;
   }
 
-  const auto supported_tokens_list =
-      blockchain_lists::TokenListMap::FromValue(records_v->GetDict());
-  if (!supported_tokens_list) {
-    return absl::nullopt;
-  }
-
   OnRampTokensListMap on_ramp_supported_tokens_lists;
-  AddTokenListToMap(mojom::OnRampProvider::kRamp, (*supported_tokens_list).ramp,
-                    &on_ramp_supported_tokens_lists);
-  AddTokenListToMap(mojom::OnRampProvider::kSardine,
-                    (*supported_tokens_list).sardine,
-                    &on_ramp_supported_tokens_lists);
-  AddTokenListToMap(mojom::OnRampProvider::kTransak,
-                    (*supported_tokens_list).transak,
-                    &on_ramp_supported_tokens_lists);
-  AddTokenListToMap(mojom::OnRampProvider::kStripe,
-                    (*supported_tokens_list).stripe,
-                    &on_ramp_supported_tokens_lists);
-  return on_ramp_supported_tokens_lists;
-}
+  OffRampTokensListMap off_ramp_supported_tokens_lists;
 
-absl::optional<OffRampTokensListMap> ParseOffRampTokensListMap(
-    const std::string& json) {
-  // {
-  //   "ramp": [
-  //     {
-  //       "chain_id": "0x1",
-  //       "coin": 60,
-  //       "coingecko_id": "",
-  //       "contract_address": "",
-  //       "decimals": 18,
-  //       "is_erc1155": false,
-  //       "is_erc20": false,
-  //       "is_erc721": false,
-  //       "is_nft": false,
-  //       "logo": "",
-  //       "name": "Ethereum",
-  //       "symbol": "ETH",
-  //       "token_id": "",
-  //       "visible": true
-  //     },
-  //   ],
-  //   "sardine": [ ],
-  //   "transak": [ ],
-  //   "stripe" : [ ]
-  // }
-
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-
-  if (!records_v || !records_v->is_dict()) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+  const auto tokens_list =
+      blockchain_lists::OnRampTokenLists::FromValue(records_v->GetDict());
+  if (!tokens_list) {
     return absl::nullopt;
   }
 
-  const auto supported_tokens_list =
-      blockchain_lists::TokenListMap::FromValue(records_v->GetDict());
-  if (!supported_tokens_list) {
-    return absl::nullopt;
+  for (const auto& token : (*tokens_list).tokens) {
+    AddTokenToMaps(token, &on_ramp_supported_tokens_lists,
+                   &off_ramp_supported_tokens_lists);
   }
 
-  OffRampTokensListMap on_ramp_supported_tokens_lists;
-  AddTokenListToMap(mojom::OffRampProvider::kRamp,
-                    (*supported_tokens_list).ramp,
-                    &on_ramp_supported_tokens_lists);
-  return on_ramp_supported_tokens_lists;
+  return RampTokenListMaps{std::move(on_ramp_supported_tokens_lists),
+                           std::move(off_ramp_supported_tokens_lists)};
 }
 
 absl::optional<std::vector<mojom::OnRampCurrency>> ParseOnRampCurrencyLists(

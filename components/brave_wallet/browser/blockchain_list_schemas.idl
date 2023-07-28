@@ -138,13 +138,16 @@ namespace blockchain_lists {
 
     // e.g. true
     boolean visible;
+
+    // e.g. ["stripe", "coinbase"]
+    DOMString[] on_ramp_providers;
+
+    // e.g. ["ramp"]
+    DOMString[] off_ramp_providers;
   };
 
-  dictionary TokenListMap {
-    Token[] ramp;
-    Token[] sardine;
-    Token[] transak;
-    Token[] stripe;
+  dictionary OnRampTokenLists {
+    Token[] tokens;
   };
 
   dictionary OnRampCurrency {

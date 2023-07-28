@@ -551,4 +551,30 @@ TEST_F(AssetRatioServiceUnitTest, GetStripeBuyURL) {
                   "INTERNAL_SERVICE_ERROR");
 }
 
+TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Coinbase) {
+  // Eth address
+  TestGetBuyUrlV1(
+      mojom::OnRampProvider::kCoinbase, mojom::kMainnetChainId,
+      "0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961", "USDC", "1", "USD",
+      "https://pay.coinbase.com/"
+      "?appId=8072ff71-8469-4fef-9404-7c905e2359c9&defaultExperience=buy&"
+      "presetFiatAmount=1&destinationWallets=%5B%7B%22address%22%3A%"
+      "220xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961%22%2C%22assets%22%3A%5B%"
+      "22USDC%22%5D%2C%22blockchains%22%3A%5B%22ethereum%22%2C%22arbitrum%22%"
+      "2C%22optimism%22%2C%22polygon%22%2C%22avalanche-c-chain%22%2C%22celo%22%"
+      "5D%7D%5D",
+      absl::nullopt);
+
+  // Sol address
+  TestGetBuyUrlV1(
+      mojom::OnRampProvider::kCoinbase, mojom::kMainnetChainId,
+      "FBG2vwk2tGKHbEWHSxf7rJGDuZ2eHaaNQ8u6c7xGt9Yv", "SOL", "1", "USD",
+      "https://pay.coinbase.com/"
+      "?appId=8072ff71-8469-4fef-9404-7c905e2359c9&defaultExperience=buy&"
+      "presetFiatAmount=1&destinationWallets=%5B%7B%22address%22%3A%"
+      "22FBG2vwk2tGKHbEWHSxf7rJGDuZ2eHaaNQ8u6c7xGt9Yv%22%2C%22assets%22%3A%5B%"
+      "22SOL%22%5D%2C%22blockchains%22%3A%5B%22solana%22%5D%7D%5D",
+      absl::nullopt);
+}
+
 }  // namespace brave_wallet

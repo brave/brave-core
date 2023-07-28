@@ -106,35 +106,32 @@ void OnSanitizedDappLists(data_decoder::JsonSanitizer::Result result) {
   BlockchainRegistry::GetInstance()->UpdateDappList(std::move(*lists));
 }
 
-void OnSanitizedOnRampTokenLists(data_decoder::JsonSanitizer::Result result) {
+void OnSanitizedRampTokenLists(data_decoder::JsonSanitizer::Result result) {
   if (!result.has_value()) {
-    VLOG(1) << "OnRamp lists JSON validation error:" << result.error();
+    VLOG(1) << "Ramp lists JSON validation error:" << result.error();
     return;
   }
 
-  absl::optional<OnRampTokensListMap> lists = ParseOnRampTokensListMap(*result);
-  if (!lists) {
-    VLOG(1) << "Can't parse on ramp supported buy token lists.";
+  auto parsedRampTokensListMaps = ParseRampTokenListMaps(*result);
+
+  if (!parsedRampTokensListMaps) {
+    VLOG(1) << "Can't parse on/off ramp token lists.";
     return;
   }
 
-  BlockchainRegistry::GetInstance()->UpdateOnRampTokenLists(std::move(*lists));
-}
-
-void OnSanitizedOffRampTokenLists(data_decoder::JsonSanitizer::Result result) {
-  if (!result.has_value()) {
-    VLOG(1) << "OnRamp lists JSON validation error:" << result.error();
-    return;
+  if (parsedRampTokensListMaps->first.empty()) {
+    VLOG(1) << "On ramp supported token lists is empty.";
+  } else {
+    BlockchainRegistry::GetInstance()->UpdateOnRampTokenLists(
+        std::move(parsedRampTokensListMaps->first));
   }
 
-  absl::optional<OffRampTokensListMap> lists =
-      ParseOffRampTokensListMap(*result);
-  if (!lists) {
-    VLOG(1) << "Can't parse on ramp supported sell token lists.";
-    return;
+  if (parsedRampTokensListMaps->second.empty()) {
+    VLOG(1) << "Off ramp supported sell token lists is empty.";
+  } else {
+    BlockchainRegistry::GetInstance()->UpdateOffRampTokenLists(
+        std::move(parsedRampTokensListMaps->second));
   }
-
-  BlockchainRegistry::GetInstance()->UpdateOffRampTokenLists(std::move(*lists));
 }
 
 void OnSanitizedOnRampCurrenciesLists(
@@ -199,36 +196,20 @@ void HandleParseDappList(base::FilePath absolute_install_dir,
                                         base::BindOnce(&OnSanitizedDappLists));
 }
 
-void HandleParseOnRampTokenLists(base::FilePath absolute_install_dir,
-                                 const std::string& filename) {
-  const base::FilePath on_ramp_lists_json_path =
+void HandleParseRampTokenLists(base::FilePath absolute_install_dir,
+                               const std::string& filename) {
+  const base::FilePath ramp_lists_json_path =
       absolute_install_dir.AppendASCII(filename);
-  std::string on_ramp_supported_buy_token_lists;
-  if (!base::ReadFileToString(on_ramp_lists_json_path,
-                              &on_ramp_supported_buy_token_lists)) {
-    LOG(ERROR) << "Can't read on ramp lists file: " << filename;
+  std::string ramp_supported_token_lists;
+  if (!base::ReadFileToString(ramp_lists_json_path,
+                              &ramp_supported_token_lists)) {
+    LOG(ERROR) << "Can't read ramp lists file: " << filename;
     return;
   }
 
   data_decoder::JsonSanitizer::Sanitize(
-      std::move(on_ramp_supported_buy_token_lists),
-      base::BindOnce(&OnSanitizedOnRampTokenLists));
-}
-
-void HandleParseOffRampTokenLists(base::FilePath absolute_install_dir,
-                                  const std::string& filename) {
-  const base::FilePath on_ramp_lists_json_path =
-      absolute_install_dir.AppendASCII(filename);
-  std::string on_ramp_supported_sell_token_lists;
-  if (!base::ReadFileToString(on_ramp_lists_json_path,
-                              &on_ramp_supported_sell_token_lists)) {
-    LOG(ERROR) << "Can't read on ramp lists file: " << filename;
-    return;
-  }
-
-  data_decoder::JsonSanitizer::Sanitize(
-      std::move(on_ramp_supported_sell_token_lists),
-      base::BindOnce(&OnSanitizedOffRampTokenLists));
+      std::move(ramp_supported_token_lists),
+      base::BindOnce(&OnSanitizedRampTokenLists));
 }
 
 void HandleParseOnRampCurrenciesLists(base::FilePath absolute_install_dir,
@@ -305,9 +286,7 @@ void ParseOnRampListsAndUpdateRegistry(const base::FilePath& install_dir) {
     LOG(ERROR) << "Failed to get absolute install path.";
   }
 
-  HandleParseOnRampTokenLists(absolute_install_dir, "on-ramp-token-lists.json");
-  HandleParseOffRampTokenLists(absolute_install_dir,
-                               "off-ramp-token-lists.json");
+  HandleParseRampTokenLists(absolute_install_dir, "ramp-tokens-lists.json");
   HandleParseOnRampCurrenciesLists(absolute_install_dir,
                                    "on-ramp-currency-lists.json");
 }
