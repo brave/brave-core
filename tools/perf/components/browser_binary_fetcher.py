@@ -136,6 +136,7 @@ def PrepareBinary(binary_dir: str, artifacts_dir: str, config: RunnerConfig,
       DownloadArchiveAndUnpack(binary_dir, config.location)
       binary_location = os.path.join(
         binary_dir, config.browser_type.GetBinaryPath(common_options.target_os))
+      assert os.path.exists(binary_location)
     elif config.location.startswith('package:') and is_android:
       package = config.location[len('package:'):]
     else:
