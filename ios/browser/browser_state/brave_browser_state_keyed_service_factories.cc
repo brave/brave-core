@@ -5,7 +5,6 @@
 
 #include "brave/ios/browser/browser_state/brave_browser_state_keyed_service_factories.h"
 
-#include "brave/ios/browser/brave_privacy/url_sanitizer_service_factory.h"
 #include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
@@ -17,7 +16,6 @@
 namespace brave {
 
 void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
-  brave_privacy::URLSanitizerServiceFactory::GetInstance();
   brave_wallet::AssetRatioServiceFactory::GetInstance();
   brave_wallet::BraveWalletServiceFactory::GetInstance();
   brave_wallet::JsonRpcServiceFactory::GetInstance();

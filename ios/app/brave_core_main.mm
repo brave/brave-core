@@ -41,8 +41,9 @@
 #include "brave/ios/browser/api/password/brave_password_api+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
+#include "brave/ios/browser/api/url_sanitizer/url_sanitizer_service+private.h"
 #include "brave/ios/browser/api/web_image/web_image+private.h"
-#include "brave/ios/browser/brave_privacy/url_sanitizer_service_factory.h"
+#include "brave/ios/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "brave/ios/browser/component_updater/component_updater_utils.h"
 #include "components/component_updater/component_updater_paths.h"
@@ -97,7 +98,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   std::unique_ptr<web::WebMain> _webMain;
   std::unique_ptr<Browser> _browser;
   std::unique_ptr<Browser> _otr_browser;
-  brave::URLSanitizerService* urlSanitizer_;
   BrowserList* _browserList;
   BrowserList* _otr_browserList;
   ChromeBrowserState* _mainBrowserState;
@@ -117,6 +117,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) IpfsAPIImpl* ipfsAPI;
 @property(nonatomic) BraveP3AUtils* p3aUtils;
 @property(nonatomic) NTPBackgroundImagesService* backgroundImagesService;
+@property(nonatomic) URLSanitizerService* urlSanitizerService;
 @end
 
 @implementation BraveCoreMain
@@ -236,9 +237,10 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     DCHECK(cus);
 
     // Create and start the local data file service and component installer
-    urlSanitizer_ =
+    brave::URLSanitizerService* urlSanitizer =
         brave_privacy::URLSanitizerServiceFactory::GetServiceForState(
             _mainBrowserState);
+    _urlSanitizerService = [[URLSanitizerService alloc] initWithURLSanitizerService:urlSanitizer];
 
     _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
     [self registerComponentsForUpdate:cus];

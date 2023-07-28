@@ -11,7 +11,7 @@
 
 #include "brave/ios/browser/local_data_file_service/local_data_file_service_installer_delegate.h"
 
-BraveBrowserProcess& BraveBrowserProcess::getInstance() {
+BraveBrowserProcess& BraveBrowserProcess::GetInstance() {
   static BraveBrowserProcess instance;  // Guaranteed to be initialized once.
   return instance;
 }

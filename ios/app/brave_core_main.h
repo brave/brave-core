@@ -25,6 +25,7 @@
 @class WebImageDownloader;
 @class NTPBackgroundImagesService;
 @class LocalDataFileService;
+@class URLSanitizerService;
 @protocol IpfsAPI;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -62,6 +63,8 @@ OBJC_EXPORT
 @property(nonatomic, readonly) BraveTabGeneratorAPI* tabGeneratorAPI;
 
 @property(nonatomic, readonly) WebImageDownloader* webImageDownloader;
+
+@property(nonatomic, readonly) URLSanitizerService* urlSanitizerService;
 
 /// Sets the global log handler for Chromium & BraveCore logs.
 ///

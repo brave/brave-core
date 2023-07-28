@@ -9,12 +9,12 @@
 #import <Foundation/Foundation.h>
 #include "keyed_service_factory_wrapper.h"  // NOLINT
 
-@protocol BravePrivacyURLSanitizerService;
+@class URLSanitizerService;
 
 OBJC_EXPORT
-NS_SWIFT_NAME(BravePrivacy.URLSanitizerServiceFactory)
-@interface BravePrivacyURLSanitizerServiceFactory
-    : KeyedServiceFactoryWrapper <id <BravePrivacyURLSanitizerService>>
+NS_SWIFT_NAME(URLSanitizer.URLSanitizerServiceFactory)
+@interface URLSanitizerURLSanitizerServiceFactory
+    : KeyedServiceFactoryWrapper <id <URLSanitizerService>>
 @end
 
 #endif  // BRAVE_IOS_BROWSER_BRAVE_PRIVACY_BRAVE_PRIVACY_FACTORY_WRAPPERS_H_

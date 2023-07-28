@@ -1,0 +1,11 @@
+source_set("url_sanitizer") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+  sources = [
+    "url_sanitizer_service.h",
+    "url_sanitizer_service.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/url_sanitizer/browser",
+  ]
+}
