@@ -13,20 +13,6 @@ import org.chromium.chrome.browser.flags.CachedFeatureFlags;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 
 public class BraveTabUiFeatureUtilities {
-    private static final String TAB_GROUP_AUTO_CREATION_PREFERENCE =
-            "Chrome.Flags.FieldTrialParamCached.TabGridLayoutAndroid:enable_tab_group_auto_creation";
-
-    @SuppressLint("VisibleForTests")
-    public static void maybeOverrideEnableTabGroupAutoCreationPreference(Context context) {
-        if (TabUiFeatureUtilities.isTabGroupsAndroidEnabled(context)) {
-            // Override it to make "Open in new tab" menu option in the context menu available if
-            // applicable.
-            SharedPreferencesManager.getInstance().writeBoolean(
-                    TAB_GROUP_AUTO_CREATION_PREFERENCE, isBraveTabGroupsEnabled());
-            CachedFeatureFlags.resetFlagsForTesting();
-        }
-    }
-
     public static boolean isBraveTabGroupsEnabled() {
         return SharedPreferencesManager.getInstance().readBoolean(
                 BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, true);
