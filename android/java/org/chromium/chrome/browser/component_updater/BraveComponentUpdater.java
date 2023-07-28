@@ -69,11 +69,11 @@ public class BraveComponentUpdater {
      */
     public interface ComponentUpdaterListener {
         // Invoked when component update info has changed.
-        public void onComponentUpdateEvent(int event, String id);
+        void onComponentUpdateEvent(int event, String id);
     }
 
     private final List<ComponentUpdaterListener> mComponentUpdaterListeners =
-            new CopyOnWriteArrayList<ComponentUpdaterListener>();
+            new CopyOnWriteArrayList<>();
 
     public void addComponentUpdateEventListener(ComponentUpdaterListener listener) {
         ThreadUtils.assertOnUiThread();
@@ -95,7 +95,7 @@ public class BraveComponentUpdater {
     /**
      * Class describing the progress of component download.
      */
-    public class CrxUpdateItem {
+    public static class CrxUpdateItem {
         // From components/update_client/update_client.h
         public static final int STATUS_NEW = 0;
         public static final int STATUS_CHECKING = 1;
@@ -142,11 +142,11 @@ public class BraveComponentUpdater {
             crxUpdateItem.mId = result.getString("id");
             crxUpdateItem.mDownloadedBytes = (long) result.getDouble("downloaded_bytes");
             crxUpdateItem.mTotalBytes = (long) result.getDouble("total_bytes");
-            crxUpdateItem.mState = (int) result.getInt("state");
+            crxUpdateItem.mState = result.getInt("state");
         } catch (JSONException e) {
-            Log.e(TAG, "getUpdateState JSONException error " + e);
+            Log.e(TAG, "getUpdateState JSONException error ", e);
         } catch (IllegalStateException e) {
-            Log.e(TAG, "getUpdateState IllegalStateException error " + e);
+            Log.e(TAG, "getUpdateState IllegalStateException error ", e);
         }
 
         return crxUpdateItem;

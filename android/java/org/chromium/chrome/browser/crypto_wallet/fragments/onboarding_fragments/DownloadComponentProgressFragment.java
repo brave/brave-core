@@ -25,15 +25,12 @@ import org.chromium.chrome.browser.crypto_wallet.util.WalletDataFilesInstaller;
  * download. Used on all Brave Wallet Onboarding fragments.
  */
 public class DownloadComponentProgressFragment extends Fragment {
-    private static final String TAG = "DCPF";
     private static final String WALLET_COMPONENT_ID =
             WalletDataFilesInstaller.getWalletDataFilesComponentId();
     private TextView mComponentDownloadProgress;
     private BraveComponentUpdater.ComponentUpdaterListener mComponentUpdaterListener;
     private ElapsedRealtimeMillisTimer mGracePeriodNoDisplayTimer;
     private static final long GRACE_NO_DISPLAY_MSEC = 1000;
-
-    public DownloadComponentProgressFragment() {}
 
     @Override
     public View onCreateView(
@@ -64,17 +61,14 @@ public class DownloadComponentProgressFragment extends Fragment {
                 WalletDataFilesInstaller.getWalletDataFilesComponentId());
         showHideProgressByItem(updateItem);
 
-        mComponentUpdaterListener = new BraveComponentUpdater.ComponentUpdaterListener() {
-            @Override
-            public void onComponentUpdateEvent(int event, String id) {
-                if (!WALLET_COMPONENT_ID.equals(id)) {
-                    return;
-                }
-                BraveComponentUpdater.CrxUpdateItem updateItem =
-                        BraveComponentUpdater.get().getUpdateState(
-                                WalletDataFilesInstaller.getWalletDataFilesComponentId());
-                showHideProgressByItem(updateItem);
+        mComponentUpdaterListener = (event, id) -> {
+            if (!WALLET_COMPONENT_ID.equals(id)) {
+                return;
             }
+            BraveComponentUpdater.CrxUpdateItem crxUpdateItem =
+                    BraveComponentUpdater.get().getUpdateState(
+                            WalletDataFilesInstaller.getWalletDataFilesComponentId());
+            showHideProgressByItem(crxUpdateItem);
         };
 
         BraveComponentUpdater.get().addComponentUpdateEventListener(mComponentUpdaterListener);
