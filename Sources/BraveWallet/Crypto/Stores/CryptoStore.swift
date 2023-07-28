@@ -103,6 +103,7 @@ public class CryptoStore: ObservableObject {
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private let ipfsApi: IpfsAPI
   private let userAssetManager: WalletUserAssetManager
+  private var isUpdatingUserAssets: Bool = false
   
   public init(
     keyringService: BraveWalletKeyringService,
@@ -561,11 +562,19 @@ extension CryptoStore: BraveWalletKeyringServiceObserver {
     }
   }
   public func keyringRestored(_ keyringId: BraveWallet.KeyringId) {
-    // if a keyring is restored, we want to reset user assets local storage
-    // and migrate with for new keyring
+    // This observer method will only get called when user restore a wallet
+    // from the lock screen
+    // We will need to
+    // 1. reset wallet user asset migration flag
+    // 2. wipe user assets local storage
+    // 3. migrate user assets with new keyring
+    guard !isUpdatingUserAssets else { return }
+    isUpdatingUserAssets = true
+    Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.reset()
     WalletUserAssetGroup.removeAllGroup() { [weak self] in
       self?.userAssetManager.migrateUserAssets(completion: {
         self?.updateAssets()
+        self?.isUpdatingUserAssets = false
       })
     }
   }
