@@ -234,7 +234,7 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
         region_view_(region_view) {
     // We're going to use flex layout for children of this class. Other children
     // from base classes should be handled out of flex layout.
-    for (auto* child : children()) {
+    for (views::View* child : children()) {
       child->SetProperty(views::kViewIgnoredByLayoutKey, true);
     }
 

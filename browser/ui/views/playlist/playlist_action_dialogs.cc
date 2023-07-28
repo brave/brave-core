@@ -100,8 +100,8 @@ class TiledItemsView : public views::BoxLayoutView {
       // prerequisite.
       //  * Download the thumbnail from network
       //  * Sanitize the image
-      auto* row = i < kMaxTileCount / 2 ? container->children().front()
-                                        : container->children().back();
+      views::View* row = i < kMaxTileCount / 2 ? container->children().front()
+                                               : container->children().back();
 
       auto* thumbnail =
           row->AddChildView(std::make_unique<ThumbnailView>(gfx::Image()));

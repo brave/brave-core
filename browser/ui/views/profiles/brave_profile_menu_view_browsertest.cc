@@ -74,10 +74,10 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
     EXPECT_EQ(1u,
               menu->identity_info_container_->children()[0]->children().size());
     // Title container should have 1 child - title, which is the profile name.
-    const auto* title_container_view =
+    const views::View* title_container_view =
         menu->identity_info_container_->children()[1];
     EXPECT_EQ(1u, title_container_view->children().size());
-    const auto* title_view = title_container_view->children()[0];
+    const views::View* title_view = title_container_view->children()[0];
     EXPECT_EQ(GetProfileName(),
               static_cast<const views::Label*>(title_view)->GetText());
   }
