@@ -89,7 +89,7 @@ public class NetworkSelectorModel {
             NetworkInfo networkToBeSetAsSelected, Callbacks.Callback1<Boolean> callback) {
         // Default/Global wallet network does not support "All Networks"
         if (!networkToBeSetAsSelected.chainId.equals(
-                NetworkUtils.getAllNetworkOption(mContext).chainId)) {
+                    NetworkUtils.getAllNetworkOption(mContext).chainId)) {
             boolean hasAccountOfNetworkType =
                     mNetworkModel.hasAccountOfNetworkType(networkToBeSetAsSelected);
             if (!hasAccountOfNetworkType || mMode == Mode.DEFAULT_WALLET_NETWORK) {

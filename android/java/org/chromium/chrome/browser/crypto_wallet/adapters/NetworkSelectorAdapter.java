@@ -28,8 +28,8 @@ import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.ui.base.ViewUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -110,6 +110,14 @@ public class NetworkSelectorAdapter
                         ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
                         holder.ivNetworkPicture.setColorFilter(filter);
                     }
+                } else if (!NetworkUtils.isAllNetwork(network.mNetworkInfo)) {
+                    // Resize for blockies
+                    ViewGroup.LayoutParams params = holder.ivNetworkPicture.getLayoutParams();
+                    int blockieSize = ViewUtils.dpToPx(mContext, 24);
+                    params.height = blockieSize;
+                    params.width = blockieSize;
+                    Utils.setBlockiesBitmapResource(mExecutor, mHandler, holder.ivNetworkPicture,
+                            network.getNetworkName(), false);
                 } else {
                     AndroidUtils.gone(holder.ivNetworkPicture);
                 }
@@ -138,12 +146,10 @@ public class NetworkSelectorAdapter
         mNetworkInfos.add(new NetworkSelectorItem(
                 mContext.getString(R.string.brave_wallet_network_filter_primary), "", null,
                 Type.LABEL));
-        List<NetworkSelectorItem> primaryItems = new ArrayList<>();
         for (NetworkInfo networkInfo : networkLists.mPrimaryNetworkList) {
-            primaryItems.add(new NetworkSelectorItem(
+            mNetworkInfos.add(new NetworkSelectorItem(
                     networkInfo.chainName, networkInfo.symbolName, networkInfo, Type.PRIMARY));
         }
-        mNetworkInfos.addAll(primaryItems);
 
         // Secondary
         mNetworkInfos.add(new NetworkSelectorItem(
