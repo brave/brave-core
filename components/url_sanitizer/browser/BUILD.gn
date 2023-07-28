@@ -10,6 +10,7 @@ source_set("browser") {
     "url_sanitizer_service.cc",
     "url_sanitizer_service.h",
   ]
+  public_deps = [ "//brave/components/url_sanitizer/common/mojom" ]
   deps = [
     "//base",
     "//brave/components/brave_component_updater/browser",

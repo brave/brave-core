@@ -37,6 +37,7 @@ brave_chrome_java_deps = [
   "//brave/components/misc_metrics/common:mojom_java",
   "//brave/components/playlist/common/mojom:mojom_java",
   "//brave/components/safe_browsing/android:brave_safe_browsing_java",
+  "//brave/components/url_sanitizer/common/mojom:mojom_java",
   "//brave/components/variations/android:java",
   "//brave/third_party/android_deps:com_airbnb_android_java",
   "//brave/third_party/android_deps:com_android_billingclient_java",

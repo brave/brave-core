@@ -21,4 +21,5 @@
     <item type="id" name="menu_item_enter_anim_id" />
     <item type="id" name="menu_item_original_background" />
     <item type="id" name="menu_item_background_drawable_position" />
+    <item type="id" name="contextmenu_copy_clean_link" />
 </resources>
