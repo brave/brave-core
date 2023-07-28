@@ -312,6 +312,6 @@ void WidevineCdmComponentInstallerPolicy::ResetForNextUpdate() {
   installed_.Reset();
 }
 
-#endif  // !BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-
 }  // namespace component_updater
+
+#endif  // !BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
