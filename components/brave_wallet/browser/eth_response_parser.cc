@@ -110,8 +110,15 @@ bool ParseEthGetFeeHistory(const base::Value& json_value,
 
   *oldest_block = fee_item_value->oldest_block;
 
-  if (fee_item_value->reward) {
-    for (const auto& reward_list_value : *fee_item_value->reward) {
+  // Reward can be missing or null, if reward percentiles param is not
+  // specified.
+  if (fee_item_value->reward && !fee_item_value->reward->is_none()) {
+    const auto* reward_list_values = fee_item_value->reward->GetIfList();
+    if (!reward_list_values) {
+      return false;
+    }
+
+    for (const auto& reward_list_value : *reward_list_values) {
       const auto* reward_list = reward_list_value.GetIfList();
       if (!reward_list) {
         return false;
