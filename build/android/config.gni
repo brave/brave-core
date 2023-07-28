@@ -24,6 +24,7 @@ brave_chrome_java_deps = [
   "//brave/browser/notifications/android:brave_java",
   "//brave/browser/notifications/android:java",
   "//brave/browser/safe_browsing/android/java/src/org/chromium/chrome/browser/safe_browsing/settings:java",
+  "//brave/browser/tab_group:java",
   "//brave/browser/ui/android/logo:java",
   "//brave/browser/ui/android/omnibox:java",
   "//brave/browser/ui/android/theme:java",
