@@ -85,6 +85,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType {
   
   public func migrateUserAssets(for coin: BraveWallet.CoinType? = nil, completion: (() -> Void)? = nil) {
     guard !Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.value else {
+      completion?()
       return
     }
     Task { @MainActor in
