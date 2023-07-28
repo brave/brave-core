@@ -31,9 +31,6 @@
 /* The label text in the Button Toast for switching to a fresh New Tab. */
 "ContextMenuButtonToastNewTabOpenedLabelText" = "Відкрито нову вкладку";
 
-/* The title for the button that lets you copy the url from the location bar. */
-"CopyAddressTitle" = "Копіювати адресу";
-
 /* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
 "DownloadCancelledToastLabelText" = "Завантаження скасовано";
 
@@ -72,12 +69,6 @@
 
 /* OK button */
 "OKString" = "ОК";
-
-/* The title for the button that lets you paste and go to a URL */
-"PasteAndGoTitle" = "Вставити та перейти";
-
-/* The title for the button that lets you paste into the location bar */
-"PasteTitle" = "Вставити";
 
 /* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
 "ReaderModeAvailableVoiceOverAnnouncement" = "Увімкнено режим читання";

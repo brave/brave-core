@@ -1,0 +1,57 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "了解方式";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "試用看看吧！";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "帶我前往我的播放清單";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "讓我們立即查看您的播放清單。";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "已加入 %@ 的內容";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "做得很好";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "關閉";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "晚點再說";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "關閉";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "Brave Playlist 簡介";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "根據您喜愛的內容建立播放清單。節省行動數據。享有不受廣告干擾的播放體驗。";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "子母畫面。背景播放。從鎖定畫面控制。還有更多功能……";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "保持流暢：在瀏覽時新增影片，稍後觀看。";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "將影片新增至 Brave 播放清單。隨時播放，即使處於離線狀態也沒問題。";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "在播放清單中的播放體驗更好";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "只要輕觸按鈕即可將影片新增至播放清單。";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "建立包含您喜歡的內容的播放清單。從任何頁面加入媒體。\n可隨時播放，即使處於離線狀態也沒問題！";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "輕觸 %@ 以新增您的第一個項目";
+
+/* Will be shown next to an icon inside of some other text. i.e. \"Tap 'Add to Playlist' to add your first item\" */
+"userActionPromptFill" = "新增至播放清單";
+

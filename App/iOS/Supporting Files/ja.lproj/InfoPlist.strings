@@ -19,6 +19,9 @@
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "写真を保存することができます。";
 
+/* Privacy - Speech Recognition Usage Description */
+"NSSpeechRecognitionUsageDescription" = "この権限はAppleの高度な音声認識を有効にするために使用されます。許可されない場合はデバイス上の音声認識が使用され、検索は完全に非公開になります。Braveがお客様の音声検索を保存・共有することはありません。";
+
 /* (No Comment) */
 "OPML File" = "OPMLファイル";
 

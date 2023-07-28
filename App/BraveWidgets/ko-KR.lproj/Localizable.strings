@@ -14,7 +14,7 @@
 "widgets.favoritesWidgetTitle" = "즐겨찾기";
 
 /* Title for history menu item */
-"widgets.HistortMenuItem" = "기록";
+"widgets.HistoryMenuItem" = "기록";
 
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "나중에 다시 시도";

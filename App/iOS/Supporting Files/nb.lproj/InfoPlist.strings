@@ -19,6 +19,9 @@
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Dette lar deg lagre bilder.";
 
+/* Privacy - Speech Recognition Usage Description */
+"NSSpeechRecognitionUsageDescription" = "Denne tillatelsen brukes til å aktivere Apples avanserte funksjon for talegjenkjenning. Hvis du ikke gir denne tillatelsen, brukes «på enheten»-gjenkjenning, og søkene dine forblir helt private. Brave verken lagrer eller deler talesøkene dine.";
+
 /* (No Comment) */
 "OPML File" = "OPML-fil";
 

@@ -14,7 +14,7 @@
 "widgets.favoritesWidgetTitle" = "Kegemaran";
 
 /* Title for history menu item */
-"widgets.HistortMenuItem" = "Sejarah";
+"widgets.HistoryMenuItem" = "Sejarah";
 
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "Cuba lagi kemudian";

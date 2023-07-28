@@ -151,6 +151,9 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "書籤資訊";
 
+/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 10 bookmarks */
+"BookmarkMultipleCount" = "%d 書籤";
+
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "書籤";
 
@@ -162,6 +165,9 @@
 
 /* Action to import bookmarks from a file. */
 "bookmarksImportAction" = "匯入書籤";
+
+/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 1 bookmark) */
+"BookmarkSingleCount" = "%d 書籤";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "書籤";
@@ -562,14 +568,32 @@
 /* Button title for Auto Add in header */
 "customSearchEngine.autoAddTitle" = "自動新增";
 
+/* A title explaining that an error shown while adding custom search engine */
+"customSearchEngine.customSearchEngineAddErrorTitle" = "新增自訂搜尋引擎時出現錯誤";
+
 /* The warning description shown to user when custom search engine will be deleted while it is default search engine. */
 "customSearchEngine.deleteEngineAlertDescription" = "刪除預設的自訂搜尋引擎，會自動切換預設引擎。";
 
 /* The alert title shown to user when custom search engine will be deleted while it is default search engine. The parameter will be replace with name of the search engine. */
 "customSearchEngine.deleteEngineAlertTitle" = "確定要刪除 %@ 嗎？";
 
+/* The warning description shown to user when custom search engine already exists. */
+"customSearchEngine.engineAlertExistsAlertDescription" = "已存在名稱相同的搜尋引擎。";
+
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+"customSearchEngine.insecureSearchTemplateURLErrorDescription" = "不安全的自訂搜尋範本";
+
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+"customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "不安全的自訂建議範本";
+
 /* Navigation Bar title */
 "customSearchEngine.navigationTitle" = "新增搜尋引擎";
+
+/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.searchTemplateTitle" = "搜尋範本：";
+
+/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.suggestionTemplateTitle" = "建議範本：";
 
 /* The message that asks the user to Add the search provider explaining where the search engine will appear */
 "customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "新搜尋引擎會顯示於快速搜尋列。";
@@ -968,7 +992,7 @@
 "login.loginInfoDetailsWebsiteFieldTitle" = "網站";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.loginInfoSetPasscodeAlertDescription" = "若要設定同步鏈或查看密碼，您必須先在裝置上設定密碼。";
+"login.loginInfoSetPasscodeAlertDescription" = "若要查看密碼，您必須先在裝置上設定密碼。";
 
 /* The title displayed in alert when a user needs to set passcode */
 "login.loginInfoSetPasscodeAlertTitle" = "設定密碼";
@@ -987,6 +1011,9 @@
 
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "篩選";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.syncSetPasscodeAlertDescription" = "若要設定同步鏈或查看密碼，您必須先在裝置上設定密碼。";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "上次修改的時間：%@";
@@ -2593,6 +2620,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "允許 Brave 自動關閉最近未檢視的分頁。";
 
+/* Label for the navigation link to quality settings view */
+"settings.highestQualityPlayback" = "最高品質播放";
+
+/* Detail text for the navigation link to quality settings view */
+"settings.highestQualityPlaybackDetail" = "允許高品質解析率";
+
+/* Header for the general settings section */
+"settings.media.general" = "一般";
+
+/* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
+"settings.media.rootSetting" = "媒體";
+
+/* Title for the quality settings view */
+"settings.qualitySettings" = "品質設定";
+
+/* Header for the Youtube settings section */
+"settings.youtube" = "YouTube";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "無法載入頁面。";
 
@@ -3073,6 +3118,9 @@
 /* Accessibility label for the Add Tab button in the Tab Tray. */
 "TabToolbarAddTabButtonAccessibilityLabel" = "新增分頁";
 
+/* Accessibility Label for the tab toolbar Add to Playlist button */
+"tabToolbarAddToPlaylistButtonAccessibilityLabel" = "新增至播放清單";
+
 /* Accessibility label for the Back button in the tab toolbar. */
 "TabToolbarBackButtonAccessibilityLabel" = "後退";
 
@@ -3085,8 +3133,7 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "選單";
 
-/* Accessibility Label for the tab toolbar Add to Playlist button
-   Accessibility Label for the tab toolbar Playlist button */
+/* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "播放清單";
 
 /* Accessibility label for the Reader View button */
@@ -3106,6 +3153,9 @@
 
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "停止";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"tabToolbarVoiceSearchButtonAccessibilityLabel" = "語音搜尋";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */
 "TabToolbarWarningImageAccessibilityLabel" = "連線不安全";
@@ -3296,6 +3346,21 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "推廣內容";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "在 AppStore 為 Brave 評分";
+
+/* Title for long press action that will hide Brave Rate Card */
+"today.rateBraveCardHideActionTitle" = "隱藏";
+
+/* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
+"today.rateBraveCardRateActionTitle" = "為 Brave 評分";
+
+/* Subtitle shown on the Rate Brave Card */
+"today.rateBraveCardSubtitle" = "請將您的想法告訴我們！";
+
+/* Title shown on the Rate Brave Card */
+"today.rateBraveCardTitle" = "喜歡 Brave 嗎？";
+
 /* No comment provided by engineer. */
 "today.refresh" = "重新整理";
 
@@ -3338,6 +3403,9 @@
 /* Sync Alert */
 "UnableToConnectTitle" = "無法連線";
 
+/* No comment provided by engineer. */
+"UnlockButtonTitle" = "解鎖";
+
 /* Error message if list of Payment Instruments doesn't include BAT */
 "unsupportedInstrumentMessage" = "不支援的付款方式";
 
@@ -3371,6 +3439,39 @@
 /* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
 "ViewOn" = "瀏覽於 %@";
 
+/* Explanation for warning alert why the microphone access required. */
+"voice.search.microphone.description.required" = "請在 iOS 系統設定中允許「麥克風存取權限」，以讓 Brave 使用匿名語音搜尋。";
+
+/* Title for warning alert microphone access is required. */
+"voice.search.microphone.title.required" = "需要麥克風存取權限";
+
+/* Disclaimer for screen to search using voice. */
+"voice.search.screen.disclaimer" = "Brave 不會儲存或分享您的語音搜尋。";
+
+/* Title for screen to search using voice. */
+"voice.search.screenn.title" = "語音搜尋";
+
+/* The button text that starts the subscription action */
+"vpn.activateSubscriptionAction" = "啟用";
+
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "想要保持受保護嗎？只需在訂閱結束前續訂。為了感謝您的續訂，我們還會在接下來的 3 個月提供 20% 的折扣。";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "啟用自動續訂";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "立即自動續訂您的 Brave VPN，享受接下來 3 個月的 20% 折扣！";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "立即自動續訂您的 Brave VPN 並獲得 1 個月免費！";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "這意味著您將失去 Brave 在您的手機上每個應用程式的額外保護。";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "糟了！ 您的 Brave VPN 訂閱即將到期。";
+
 /* Button text to buy Brave VPN */
 "vpn.buyButton" = "購買";
 
@@ -3381,10 +3482,16 @@
 "vpn.checkboxBlockAds" = "封鎖不需要的網路連線";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxEncryption" = "使用 IKEv2 安全加密 VPN 通道";
+"vpn.checkboxBlockAdsAlternate" = "攔截所有應用程式中的廣告和追蹤器";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxEncryption" = "使用安全加密 VPN 通道";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxFast" = "最高可支援 100 Mbps 的速度";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxFastAlternate" = "快速且不限流量，最高 100 Mbps";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxGeoSelector" = "選擇您的地理/國家/地區位置";
@@ -3470,11 +3577,14 @@
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "App Store 錯誤";
 
-/* No comment provided by engineer. */
-"vpn.freeTrial" = "所有方案均包含 7 天免費試用期！";
+/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
+"vpn.freeTrialDetail" = "所有方案都包含 %@！";
 
-/* Disclaimer about free trial */
-"vpn.freeTrialDisclaimer" = "免費試用 7 天，7 天後將依方案價格計費。";
+/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
+"vpn.freeTrialPeriod" = "免費的 7 天試用期";
+
+/* The button text that starts the trial action */
+"vpn.freeTrialPeriodAction" = "免費試用 7 天";
 
 /* Disclaimer about in app subscription */
 "vpn.iapDisclaimer" = "所有訂閱都會自動續約，但可在續約前取消。";
@@ -3623,6 +3733,42 @@
 /* Whether the VPN plan has expired */
 "vpn.settingsVPNExpired" = "過期";
 
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "立即訂閱";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "沒錯。您的 Brave VPN 訂閱現在最多可在 5 台裝置上使用。因此您可以在 iOS 上訂閱並在 Mac、Windows 和 Android 裝置上免費使用。";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "現在，以相同的價格在您的所有裝置上使用 Brave VPN！";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "再次使用 Brave VPN，即可享受 3 個月的 20% 折扣！";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "準備為您手機上的每個應用程式提供防護了嗎？ 重回 Brave VPN 並獲得接下來 3 個月的 20% 折扣。";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPN 總是阻擋每個應用程式的追蹤器，甚至在 Brave 瀏覽器之外也是如此。您現在可以透過 Brave Privacy Hub 查看誰試圖跟蹤您。";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "您知道 Brave VPN 在 Brave 瀏覽器外也可以保護您嗎？";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "別擔心。我們會在您更新付款資訊時的幾天，讓 VPN 保持啟用。";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "更新您的付款資訊以維持 Brave VPN 的保護。";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "想要繼續保護您手機上的每個應用程式嗎？ 只需更新您的付款詳細資料即可。";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "您的帳戶有付款問題，這表示您的 Brave VPN 訂閱即將到期。";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "更新付款資訊";
+
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationBody" = "即使在背景運作，Brave 也會繼續為您提供防護。";
 
@@ -3739,4 +3885,22 @@
 
 /* History tableview section header */
 "Yesterday" = "昨天";
+
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "啟用高畫質 YouTube 影片";
+
+/* Description of setting to enable high quality youtube videos */
+"YoutubeMediaQualityDetails" = "啟用此實驗性功能將以可用的最高畫質播放影片，並將使用額外的數據流量。";
+
+/* Setting that disables highest quality video playback */
+"YoutubeMediaQualityOff" = "關閉";
+
+/* Setting that enables high quality playback always */
+"YoutubeMediaQualityOn" = "開啟";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "Youtube 播放品質";
+
+/* Setting that enables high quality playback on wifi only */
+"YoutubeMediaQualityWifi" = "允許透過 Wi-Fi";
 

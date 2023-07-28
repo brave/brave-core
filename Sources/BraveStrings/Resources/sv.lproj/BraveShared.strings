@@ -151,6 +151,9 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "Bokmärkesinformation";
 
+/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 10 bookmarks */
+"BookmarkMultipleCount" = "%d bokmärken";
+
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "Bokmärken";
 
@@ -162,6 +165,9 @@
 
 /* Action to import bookmarks from a file. */
 "bookmarksImportAction" = "Importera bokmärken";
+
+/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 1 bookmark) */
+"BookmarkSingleCount" = "%d bokmärke";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "Bokmärken";
@@ -562,14 +568,32 @@
 /* Button title for Auto Add in header */
 "customSearchEngine.autoAddTitle" = "Auto lägg till";
 
+/* A title explaining that an error shown while adding custom search engine */
+"customSearchEngine.customSearchEngineAddErrorTitle" = "Fel vid tillägg av anpassad sökmotor";
+
 /* The warning description shown to user when custom search engine will be deleted while it is default search engine. */
 "customSearchEngine.deleteEngineAlertDescription" = "Om du tar bort en anpassad sökmotor medan den är standard växlas standardsökmotorn automatiskt.";
 
 /* The alert title shown to user when custom search engine will be deleted while it is default search engine. The parameter will be replace with name of the search engine. */
 "customSearchEngine.deleteEngineAlertTitle" = "Är du säker på att du vill ta bort %@?";
 
+/* The warning description shown to user when custom search engine already exists. */
+"customSearchEngine.engineAlertExistsAlertDescription" = "Det finns redan en sökmotor med samma namn.";
+
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+"customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Osäker anpassad sökmall för";
+
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+"customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "Osäker anpassad förslagsmall för";
+
 /* Navigation Bar title */
 "customSearchEngine.navigationTitle" = "Lägg till sökmotor";
+
+/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.searchTemplateTitle" = "Sökmall:";
+
+/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.suggestionTemplateTitle" = "Förslagsmall:";
 
 /* The message that asks the user to Add the search provider explaining where the search engine will appear */
 "customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "Den nya sökmotorn visas i snabbsökfältet.";
@@ -968,7 +992,7 @@
 "login.loginInfoDetailsWebsiteFieldTitle" = "Webbplats";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.loginInfoSetPasscodeAlertDescription" = "Om du vill konfigurera synkroniseringskedjan eller visa inställningarna måste du först ange en lösenkod på enheten.";
+"login.loginInfoSetPasscodeAlertDescription" = "För att se lösenorden måste du först ställa in en lösenkod på din enhet.";
 
 /* The title displayed in alert when a user needs to set passcode */
 "login.loginInfoSetPasscodeAlertTitle" = "Ställ in lösenkod";
@@ -987,6 +1011,9 @@
 
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "Filtrera";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.syncSetPasscodeAlertDescription" = "Om du vill konfigurera synkroniseringskedjan eller visa inställningarna måste du först ange en lösenkod på enheten.";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Senast ändrad %@";
@@ -2593,6 +2620,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "Tillåt att Brave automatiskt stänger flikar som inte nyligen har visats.";
 
+/* Label for the navigation link to quality settings view */
+"settings.highestQualityPlayback" = "Uppspelning av högsta kvalitet";
+
+/* Detail text for the navigation link to quality settings view */
+"settings.highestQualityPlaybackDetail" = "Tillåter upplösning av hög kvalitet";
+
+/* Header for the general settings section */
+"settings.media.general" = "Allmänt";
+
+/* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
+"settings.media.rootSetting" = "Media";
+
+/* Title for the quality settings view */
+"settings.qualitySettings" = "Kvalitetsinställningar";
+
+/* Header for the Youtube settings section */
+"settings.youtube" = "YouTube";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Kunde inte ladda sidan.";
 
@@ -3073,6 +3118,9 @@
 /* Accessibility label for the Add Tab button in the Tab Tray. */
 "TabToolbarAddTabButtonAccessibilityLabel" = "Lägg till flik";
 
+/* Accessibility Label for the tab toolbar Add to Playlist button */
+"tabToolbarAddToPlaylistButtonAccessibilityLabel" = "Lägg till i spellista";
+
 /* Accessibility label for the Back button in the tab toolbar. */
 "TabToolbarBackButtonAccessibilityLabel" = "Tillbaka";
 
@@ -3085,8 +3133,7 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Meny";
 
-/* Accessibility Label for the tab toolbar Add to Playlist button
-   Accessibility Label for the tab toolbar Playlist button */
+/* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Spellista";
 
 /* Accessibility label for the Reader View button */
@@ -3106,6 +3153,9 @@
 
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Stoppa";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"tabToolbarVoiceSearchButtonAccessibilityLabel" = "Röstsökning";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */
 "TabToolbarWarningImageAccessibilityLabel" = "Osäker anslutning";
@@ -3296,6 +3346,21 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Marknadsfört";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Betygsätt Brave i AppStore";
+
+/* Title for long press action that will hide Brave Rate Card */
+"today.rateBraveCardHideActionTitle" = "Dölj";
+
+/* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
+"today.rateBraveCardRateActionTitle" = "Betygsätt Brave";
+
+/* Subtitle shown on the Rate Brave Card */
+"today.rateBraveCardSubtitle" = "Berätta vad du tycker!";
+
+/* Title shown on the Rate Brave Card */
+"today.rateBraveCardTitle" = "Gillar du Brave?";
+
 /* No comment provided by engineer. */
 "today.refresh" = "Uppdatera";
 
@@ -3338,6 +3403,9 @@
 /* Sync Alert */
 "UnableToConnectTitle" = "Det gick inte att ansluta";
 
+/* No comment provided by engineer. */
+"UnlockButtonTitle" = "Lås upp";
+
 /* Error message if list of Payment Instruments doesn't include BAT */
 "unsupportedInstrumentMessage" = "Betalningsinstrumentet stöds inte";
 
@@ -3371,6 +3439,39 @@
 /* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
 "ViewOn" = "Visa på %@";
 
+/* Explanation for warning alert why the microphone access required. */
+"voice.search.microphone.description.required" = "Tillåt mikrofonåtkomst i iOS-systeminställningarna så att Brave kan använda anonym röstsökning.";
+
+/* Title for warning alert microphone access is required. */
+"voice.search.microphone.title.required" = "Mikrofonåtkomst krävs";
+
+/* Disclaimer for screen to search using voice. */
+"voice.search.screen.disclaimer" = "Brave lagrar eller delar inte dina röstsökningar.";
+
+/* Title for screen to search using voice. */
+"voice.search.screenn.title" = "Röstsökning";
+
+/* The button text that starts the subscription action */
+"vpn.activateSubscriptionAction" = "aktivera";
+
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "Vill du fortsätta vara skyddad? Förnya innan prenumerationen går ut. Som tack för förnyelsen får du 20% rabatt under de kommande 3 månaderna.";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "Aktivera automatisk förnyelse";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "Förnya din Brave VPN-prenumeration automatiskt nu och få 20% rabatt i 3 månader!";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "Förnya din Brave VPN-prenumeration automatiskt nu och få 1 månad gratis!";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "Det betyder att du förlorar Braves extra skydd för alla appar på din mobil.";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "Åh nej! Din Brave VPN-prenumeration håller på att gå ut.";
+
 /* Button text to buy Brave VPN */
 "vpn.buyButton" = "Köp";
 
@@ -3381,10 +3482,16 @@
 "vpn.checkboxBlockAds" = "Blockerar oönskade nätverksanaslutningar";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxEncryption" = "Använder IKEv2 säker krypterad VPN-tunnel";
+"vpn.checkboxBlockAdsAlternate" = "Blockera annonser och spårare i alla appar";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxEncryption" = "Använder säkert krypterade VPN-tunnlar";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxFast" = "Stöder hastigheter på upp till 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxFastAlternate" = "Snabb och obegränsad upp till 100 Mbps";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxGeoSelector" = "Välj din geografiska plats/land";
@@ -3470,11 +3577,14 @@
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "Fel i App Store";
 
-/* No comment provided by engineer. */
-"vpn.freeTrial" = "Alla abonnemang inkluderar en gratis provperiod i 7 dagar!";
+/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
+"vpn.freeTrialDetail" = "Alla planer inkluderar en %@!";
 
-/* Disclaimer about free trial */
-"vpn.freeTrialDisclaimer" = "Prova gratis i 7 dagar. Efter 7 dagar kommer du debiteras för abonnemangspriset.";
+/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
+"vpn.freeTrialPeriod" = "gratis provperiod i 7 dagar";
+
+/* The button text that starts the trial action */
+"vpn.freeTrialPeriodAction" = "prova gratis i 7 dagar";
 
 /* Disclaimer about in app subscription */
 "vpn.iapDisclaimer" = "Alla prenumerationer förnyas automatiskt men kan avbrytas innan förnyelse.";
@@ -3623,6 +3733,42 @@
 /* Whether the VPN plan has expired */
 "vpn.settingsVPNExpired" = "Utgången";
 
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "Prenumerera nu";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Helt rätt. Din Brave VPN-prenumeration kan nu användas på upp till 5 enheter. Så du kan prenumerera på iOS och använda den på dina Mac-, Windows- och Android-enheter utan kostnad.";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "Nu kan du använda Brave VPN på alla dina enheter för samma pris!";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "Prova Brave VPN igen och få 20% rabatt i tre månader!";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "Är du redo att skydda alla appar på telefonen? Kom tillbaka till Brave VPN och få 20% rabatt under de kommande 3 månaderna.";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPN har alltid blockerat spårare i alla appar, även utanför Brave-webbläsaren. Nu kan du se vem som försökte spåra dig med Brave Privacy Hub.";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Visste du att Brave VPN skyddar dig utanför Brave-webbläsaren?";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "Var inte orolig. Vi håller VPN aktivt i några dagar medan du uppdaterar dina betalningsuppgifter.";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "Uppdatera dina betalningsuppgifter för att förbli skyddad med Brave VPN.";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "Vill du fortsätta skydda alla appar på din telefon? Uppdatera bara dina betalningsuppgifter.";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "Det finns ett faktureringsproblem med ditt konto, vilket innebär att din Brave VPN-prenumeration håller på att gå ut.";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "Uppdatera betalning";
+
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationBody" = "Till och med i bakgrunden kommer Brave att skydda dig.";
 
@@ -3739,4 +3885,22 @@
 
 /* History tableview section header */
 "Yesterday" = "Igår";
+
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Aktivera Youtube-videor med hög kvalitet";
+
+/* Description of setting to enable high quality youtube videos */
+"YoutubeMediaQualityDetails" = "Om du aktiverar den här experimentella funktionen spelas video upp med maximal tillgänglig kvalitet och ytterligare data används.";
+
+/* Setting that disables highest quality video playback */
+"YoutubeMediaQualityOff" = "Av";
+
+/* Setting that enables high quality playback always */
+"YoutubeMediaQualityOn" = "På";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "Youtube-uppspelningskvalitet";
+
+/* Setting that enables high quality playback on wifi only */
+"YoutubeMediaQualityWifi" = "Tillåt över Wi-Fi";
 

@@ -14,7 +14,7 @@
 "widgets.favoritesWidgetTitle" = "Избранное";
 
 /* Title for history menu item */
-"widgets.HistortMenuItem" = "История";
+"widgets.HistoryMenuItem" = "История";
 
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "Повторите попытку позже";

@@ -19,6 +19,9 @@
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Bu, fotoğrafları kaydetmenizi sağlar.";
 
+/* Privacy - Speech Recognition Usage Description */
+"NSSpeechRecognitionUsageDescription" = "Bu izin, Apple Gelişmiş Konuşma Tanıma'yı etkinleştirmek için kullanılır. İzin verilmezse, \"cihazdaki\" tanıma kullanılır ve aramalar tamamen gizli yapılır. Brave, sesli aramalarınızı depolamaz veya paylaşmaz.";
+
 /* (No Comment) */
 "OPML File" = "OPML Dosyası";
 

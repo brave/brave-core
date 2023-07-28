@@ -14,7 +14,7 @@
 "widgets.favoritesWidgetTitle" = "收藏夹";
 
 /* Title for history menu item */
-"widgets.HistortMenuItem" = "历史记录";
+"widgets.HistoryMenuItem" = "历史记录";
 
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "稍后重试";
