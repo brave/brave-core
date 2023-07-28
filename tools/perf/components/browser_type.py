@@ -392,6 +392,11 @@ class ChromeOfficialBrowserTypeImpl(ChromeBrowserTypeImpl):
 
 
 class ChromeTestingBrowserTypeImpl(ChromeBrowserTypeImpl):
+  def GetBinaryPath(self, target_os: str) -> str:
+    chrome_platform = ToChromiumPlatform(target_os)
+    return os.path.join(f'chrome-{chrome_platform}',
+                        super().GetBinaryPath(target_os))
+
   def DownloadBrowserBinary(self, tag: BraveVersion, out_dir: str,
                             common_options: CommonOptions) -> str:
     chrome_platform = ToChromiumPlatform(common_options.target_os)
@@ -400,8 +405,7 @@ class ChromeTestingBrowserTypeImpl(ChromeBrowserTypeImpl):
 
     DownloadArchiveAndUnpack(out_dir, url)
     _FixUpUnpackedBrowser(out_dir)
-    return os.path.join(out_dir, f'chrome-{chrome_platform}',
-                        self.GetBinaryPath(common_options.target_os))
+    return os.path.join(out_dir, self.GetBinaryPath(common_options.target_os))
 
 
 def ParseFieldTrialMode(
