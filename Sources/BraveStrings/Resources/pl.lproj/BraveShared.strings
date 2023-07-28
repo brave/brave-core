@@ -151,6 +151,9 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "Informacje o zakładkach";
 
+/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 10 bookmarks */
+"BookmarkMultipleCount" = "Zakładek: %d";
+
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "Zakładki";
 
@@ -162,6 +165,9 @@
 
 /* Action to import bookmarks from a file. */
 "bookmarksImportAction" = "Importuj zakładki";
+
+/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 1 bookmark) */
+"BookmarkSingleCount" = "%d zakładka";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "Zakładki";
@@ -562,14 +568,32 @@
 /* Button title for Auto Add in header */
 "customSearchEngine.autoAddTitle" = "Automatyczne dodawanie";
 
+/* A title explaining that an error shown while adding custom search engine */
+"customSearchEngine.customSearchEngineAddErrorTitle" = "Błąd podczas dodawania niestandardowego silnika wyszukiwania";
+
 /* The warning description shown to user when custom search engine will be deleted while it is default search engine. */
 "customSearchEngine.deleteEngineAlertDescription" = "Usunięcie niestandardowego aparatu wyszukiwania, kiedy jest ustawiony na domyślny, spowoduje automatyczną zmianę domyślnego aparatu.";
 
 /* The alert title shown to user when custom search engine will be deleted while it is default search engine. The parameter will be replace with name of the search engine. */
 "customSearchEngine.deleteEngineAlertTitle" = "Czy na pewno chcesz usunąć %@?";
 
+/* The warning description shown to user when custom search engine already exists. */
+"customSearchEngine.engineAlertExistsAlertDescription" = "Silnik wyszukiwania o tej nazwie już istnieje.";
+
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+"customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Niezabezpieczony szablon wyszukiwania niestandardowego dla";
+
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+"customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "Niezabezpieczony szablon sugestii niestandardowych dla";
+
 /* Navigation Bar title */
 "customSearchEngine.navigationTitle" = "Dodaj wyszukiwarkę";
+
+/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.searchTemplateTitle" = "Szablon wyszukiwania:";
+
+/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.suggestionTemplateTitle" = "Szablon sugestii:";
 
 /* The message that asks the user to Add the search provider explaining where the search engine will appear */
 "customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "Na pasku szybkiego wyszukiwania pojawi się nowa wyszukiwarka.";
@@ -968,7 +992,7 @@
 "login.loginInfoDetailsWebsiteFieldTitle" = "Strona";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.loginInfoSetPasscodeAlertDescription" = "Aby skonfigurować łańcuch synchronizacji lub zobaczyć ustawienia, najpierw należy ustawić kod dostępu na swoim urządzeniu.";
+"login.loginInfoSetPasscodeAlertDescription" = "Aby zobaczyć hasła, musisz najpierw ustawić kod dostępu na urządzeniu.";
 
 /* The title displayed in alert when a user needs to set passcode */
 "login.loginInfoSetPasscodeAlertTitle" = "Ustaw kod dostępu";
@@ -987,6 +1011,9 @@
 
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "Filtruj";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.syncSetPasscodeAlertDescription" = "Aby skonfigurować łańcuch synchronizacji lub zobaczyć ustawienia, najpierw należy ustawić kod dostępu na swoim urządzeniu.";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Ostatnio zmodyfikowano %@";
@@ -2593,6 +2620,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "Zezwól Brave na automatyczne zamykanie kart, które nie były ostatnio przeglądane.";
 
+/* Label for the navigation link to quality settings view */
+"settings.highestQualityPlayback" = "Najwyższa jakość odtwarzania";
+
+/* Detail text for the navigation link to quality settings view */
+"settings.highestQualityPlaybackDetail" = "Zezwól na rozdzielczość wysokiej jakości";
+
+/* Header for the general settings section */
+"settings.media.general" = "Ogólne";
+
+/* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
+"settings.media.rootSetting" = "Multimedia";
+
+/* Title for the quality settings view */
+"settings.qualitySettings" = "Ustawienia jakości";
+
+/* Header for the Youtube settings section */
+"settings.youtube" = "YouTube";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Nie można załadować strony.";
 
@@ -3073,6 +3118,9 @@
 /* Accessibility label for the Add Tab button in the Tab Tray. */
 "TabToolbarAddTabButtonAccessibilityLabel" = "Dodaj kartę";
 
+/* Accessibility Label for the tab toolbar Add to Playlist button */
+"tabToolbarAddToPlaylistButtonAccessibilityLabel" = "Dodaj do listy odtwarzania";
+
 /* Accessibility label for the Back button in the tab toolbar. */
 "TabToolbarBackButtonAccessibilityLabel" = "Wstecz";
 
@@ -3085,8 +3133,7 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Menu";
 
-/* Accessibility Label for the tab toolbar Add to Playlist button
-   Accessibility Label for the tab toolbar Playlist button */
+/* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Lista odtwarzania";
 
 /* Accessibility label for the Reader View button */
@@ -3106,6 +3153,9 @@
 
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Zatrzymaj";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"tabToolbarVoiceSearchButtonAccessibilityLabel" = "Wyszukiwanie głosowe";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */
 "TabToolbarWarningImageAccessibilityLabel" = "Niezabezpieczone połączenie";
@@ -3296,6 +3346,21 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Promowane";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Oceń Brave w App Store";
+
+/* Title for long press action that will hide Brave Rate Card */
+"today.rateBraveCardHideActionTitle" = "Ukryj";
+
+/* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
+"today.rateBraveCardRateActionTitle" = "Oceń Brave";
+
+/* Subtitle shown on the Rate Brave Card */
+"today.rateBraveCardSubtitle" = "Powiedz nam, co myślisz!";
+
+/* Title shown on the Rate Brave Card */
+"today.rateBraveCardTitle" = "Podoba Ci się Brave?";
+
 /* No comment provided by engineer. */
 "today.refresh" = "Odśwież";
 
@@ -3338,6 +3403,9 @@
 /* Sync Alert */
 "UnableToConnectTitle" = "Nie można połączyć";
 
+/* No comment provided by engineer. */
+"UnlockButtonTitle" = "Odblokuj";
+
 /* Error message if list of Payment Instruments doesn't include BAT */
 "unsupportedInstrumentMessage" = "Nieobsługiwane instrumenty płatnicze";
 
@@ -3371,6 +3439,39 @@
 /* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
 "ViewOn" = "Wyświetl w %@";
 
+/* Explanation for warning alert why the microphone access required. */
+"voice.search.microphone.description.required" = "Zezwól Brave na dostęp do mikrofonu w ustawieniach systemu iOS, żeby korzystać z anonimowego wyszukiwania głosowego.";
+
+/* Title for warning alert microphone access is required. */
+"voice.search.microphone.title.required" = "Wymagany dostęp do mikrofonu";
+
+/* Disclaimer for screen to search using voice. */
+"voice.search.screen.disclaimer" = "Brave nie przechowuje ani nie udostępnia Twoich wyszukiwań głosowych.";
+
+/* Title for screen to search using voice. */
+"voice.search.screenn.title" = "Wyszukiwanie głosowe";
+
+/* The button text that starts the subscription action */
+"vpn.activateSubscriptionAction" = "aktywuj";
+
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "Chcesz zachować ochronę? Wystarczy, że odnowisz subskrypcję przed jej zakończeniem. W ramach podziękowania za odnowienie oferujemy 20% zniżkę za kolejne 3 miesiące.";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "Włącz automatyczne odnawianie";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "Automatycznie odnów subskrypcję VPN Brave już teraz i uzyskaj 20% zniżki na 3 miesiące!";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "Automatycznie odnów subskrypcję VPN Brave już teraz i otrzymaj miesiąc za darmo!";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "Oznacza to, że utracisz dodatkową ochronę Brave każdej aplikacji na telefonie.";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "O nie! Okres Twojej subskrypcji VPN Brave zaraz się skończy.";
+
 /* Button text to buy Brave VPN */
 "vpn.buyButton" = "Kup";
 
@@ -3381,10 +3482,16 @@
 "vpn.checkboxBlockAds" = "Blokuje niechciane połączenia internetowe";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxEncryption" = "Korzysta z zaszyfrowanego tunelu VPN z bezpieczeństwem protokołu IKEv2";
+"vpn.checkboxBlockAdsAlternate" = "Blokuj reklamy i pliki śledzące we wszystkich aplikacjach";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxEncryption" = "Korzysta z szyfrowanych tuneli VPN";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxFast" = "Obsługuje prędkości do 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxFastAlternate" = "Szybka łączność bez limitów, do 100 Mbps";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxGeoSelector" = "Wybierz swoją geolokalizację/lokalizację";
@@ -3470,11 +3577,14 @@
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "Błąd App Store";
 
-/* No comment provided by engineer. */
-"vpn.freeTrial" = "Wszystkie plany zawierają bezpłatny 7-dniowy okres próbny!";
+/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
+"vpn.freeTrialDetail" = "Wszystkie plany zawierają %@!";
 
-/* Disclaimer about free trial */
-"vpn.freeTrialDisclaimer" = "Wypróbuj bezpłatnie przez 7 dni. Po 7 dniach naliczona zostanie opłata za plan.";
+/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
+"vpn.freeTrialPeriod" = "7-dniowy okres próbny";
+
+/* The button text that starts the trial action */
+"vpn.freeTrialPeriodAction" = "wypróbuj przez 7 dni za darmo";
 
 /* Disclaimer about in app subscription */
 "vpn.iapDisclaimer" = "Wszystkie subskrypcje są odnawiane automatycznie, ale można je anulować przed odnowieniem.";
@@ -3623,6 +3733,42 @@
 /* Whether the VPN plan has expired */
 "vpn.settingsVPNExpired" = "Wygasł";
 
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "Subskrybuj teraz";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Dokładnie. Twoja subskrypcja VPN Brave jest teraz dostępna na 5 urządzeniach. Możesz subskrybować na urządzeniu z systemem iOS i używać jej na systemach macOS, Windows i Android za darmo.";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "Od teraz korzystaj z VPN Brave na wszystkich urządzeniach w tej samej cenie!";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "Daj jeszcze jedną szansę VPN Brave i uzyskaj 20% zniżki przez 3 miesiące!";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "Czy chcesz chronić wszystkie aplikacje na telefonie? Zacznij ponownie korzystać z VPN Brave i uzyskaj 20% zniżkę przez 3 miesiące.";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Brave zawsze blokuje pliki śledzące w każdej aplikacji – nawet poza przeglądarką Brave. Od teraz możesz sprawdzić, kto usiłował Cię śledzić dzięki Centrum prywatności Brave.";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Czy wiesz, że VPN Brave chroni Cię również poza przeglądarką Brave?";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "Nie martw się. Usługa VPN będzie nadal aktywna przez kilka dni, aż zaktualizujesz swoje informacje dotyczące płatności.";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "Zaktualizuj informacje dotyczące płatności, żeby zachować ochronę VPN Brave.";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "Czy chcesz chronić każdą aplikację na telefonie? Wystarczy, że zaktualizujesz dane dotyczące płatności.";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "Wystąpił problem z płatnością dotyczącą Twojego konta. Twoja subskrypcja VPN Brave niedługo się zakończy.";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "Zaktualizuj dane dotyczące płatności";
+
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationBody" = "Nawet w tle Brave będzie Cię chronić.";
 
@@ -3739,4 +3885,22 @@
 
 /* History tableview section header */
 "Yesterday" = "Wczoraj";
+
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Włącz odtwarzanie filmów Youtube w wysokiej jakości";
+
+/* Description of setting to enable high quality youtube videos */
+"YoutubeMediaQualityDetails" = "Włączenie tej eksperymentalnej funkcji spowoduje odtwarzanie filmów w najwyższej dostępnej jakości. Będzie ona wykorzystywać większość ilość danych.";
+
+/* Setting that disables highest quality video playback */
+"YoutubeMediaQualityOff" = "Wył.";
+
+/* Setting that enables high quality playback always */
+"YoutubeMediaQualityOn" = "Wł.";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "Jakość odtwarzania w YouTube";
+
+/* Setting that enables high quality playback on wifi only */
+"YoutubeMediaQualityWifi" = "Zezwól na odtwarzanie przez Wi-Fi";
 

@@ -100,8 +100,11 @@
 /* The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen. */
 "wallet.advancedSettingsTransaction" = "고급 설정";
 
-/* The title of the option to filter by all networks, displayed in a view to filter assets between 'All Networks' or a specific Crypto network. */
-"wallet.allNetworksTitle" = "모든 네트워크";
+/* The label of badge beside the filter option that allows users to select which accounts to filter assets by, when all accounts are selected. Used in Portfolio/NFT filters and display settings. */
+"wallet.allAccountsLabel" = "모든 계정";
+
+/* The label of badge beside the filter option that allows users to select which networks to filter assets by, when all networks are selected. Used in Portfolio/NFT filters and display settings. */
+"wallet.allNetworksLabel" = "모든 네트워크";
 
 /* A title displayed above two numbers (the amount and transaction fee) showing the user the breakdown of the amount transferred and transaction fee for any Solana transaction. The \"+\" is a literal plus as the label below will show such as \"0.004 SOL + 0.00064 SOL\" */
 "wallet.amountAndFee" = "금액 + 수수료";
@@ -123,6 +126,9 @@
 
 /* The title which is displayed above a list of assets/tokens */
 "wallet.assetsTitle" = "자산";
+
+/* The title of the sort option that sorts alphabetically from A to Z. Used in Portfolio/NFT filters and display settings. */
+"wallet.aToZSortOption" = "알파벳순";
 
 /* The description of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. This will displayed right below `auroraBridgeAlertTitle`. */
 "wallet.auroraBridgeAlertDescription" = "Rainbow Bridge는 자산을 여러 네트워크에 걸쳐 브리징하여 보유한 암호화폐를 다른 네트워크 및 DApp 생태계에서도 사용할 수 있게 해주는 독립적 서비스입니다. 자산을 다른 네트워크로 브리징하면 다소 위험이 따릅니다.";
@@ -508,6 +514,9 @@
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
 "wallet.delete" = "삭제";
 
+/* The title of a button that Deselects all visible options. */
+"wallet.deselectAllButtonTitle" = "모두 선택 취소";
+
 /* A button title which when pressed displays a new screen with additional details/information */
 "wallet.detailsButtonTitle" = "세부정보";
 
@@ -673,6 +682,9 @@
 /* A title of a button which will a new view to display the error. */
 "wallet.failedTransactionViewErrorButtonTitle" = "오류 보기";
 
+/* The title of the modal for filtering Portfolio and NFT views. */
+"wallet.filtersAndDisplaySettings" = "필터 및 디스플레이 설정";
+
 /* A title above a text field for inputting the gas amount limit */
 "wallet.gasAmountLimit" = "가스비 수량 한도";
 
@@ -709,11 +721,44 @@
 /* A title of the view shown over a dapps website that requests the users public encryption key. */
 "wallet.getEncryptionPublicKeyRequestTitle" = "공개 암호화 키 요청";
 
+/* The title of the sort option that groups assets by each account. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByAccountsOptionTitle" = "계정";
+
+/* The description label of the sort option that groups assets by the selected filter value, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByDescription" = "자산 그룹화 기준";
+
+/* The title of the sort option that groups assets by each network. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByNetworksOptionTitle" = "네트워크";
+
+/* The title of the sort option that does not group assets. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByNoneOptionTitle" = "없음";
+
+/* The label of the sort option that groups assets by the selected filter value. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByTitle" = "그룹화 기준";
+
 /* The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel. */
 "wallet.helpCenter" = "도움말 센터";
 
 /* A button title that will redact a private key on the screen */
 "wallet.hidePrivateKeyButtonTitle" = "비공개 키 숨기기";
+
+/* The description label of the filter option that hides assets if their fiat value is below $1, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideSmallBalancesDescription" = "가치가 $1 미만인 자산";
+
+/* The label of the filter option that hides assets if their fiat value is below $1. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideSmallBalancesTitle" = "소액 숨기기";
+
+/* The description label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideUnownedNFTsDescription" = "잔액이 없는 NFT 숨기기";
+
+/* The label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideUnownedNFTsTitle" = "미소유 숨기기";
+
+/* The title of a button that updates the filter to hide tokens with zero balances. */
+"wallet.hideZeroBalances" = "무잔액 숨기기";
+
+/* The title of the sort option that sorts highest value to lowest value. Used in Portfolio/NFT filters and display settings. */
+"wallet.highToLowSortOption" = "높은순";
 
 /* A title above a text field that is used to enter a password */
 "wallet.importAccountOriginPasswordTitle" = "원래 비밀번호";
@@ -778,6 +823,9 @@
 /* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.lock" = "잠금";
 
+/* The title of the sort option that sorts lowest value to highest value. Used in Portfolio/NFT filters and display settings. */
+"wallet.lowToHighSortOption" = "낮은순";
+
 /* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in manage site connections screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account\" or \"2 accounts\") */
 "wallet.manageSiteConnectionsAccount" = "%1$lld개의 %2$@";
 
@@ -821,7 +869,7 @@
 "wallet.module" = "Brave 월렛";
 
 /* The title displayed on the view to filter by a network / all networks. */
-"wallet.networkFilterTitle" = "네트워크 필터 선택";
+"wallet.networkFilterTitle" = "네트워크 선택";
 
 /* The footer beneath the networks title in settings screen. */
 "wallet.networkFooter" = "월렛 네트워크 맞춤 설정";
@@ -835,11 +883,17 @@
 /* A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support token purchasing. */
 "wallet.networkNotSupportedForBuyToken" = "선택한 네트워크에 구매가 지원되지 않음";
 
+/* The title of the section for primary networks in the network selection view. */
+"wallet.networkSelectionPrimaryNetworks" = "주사용 네트워크";
+
 /* The title of the section for secondary networks in the network selection view. */
 "wallet.networkSelectionSecondaryNetworks" = "보조 네트워크";
 
 /* A VoiceOver label that will be read out when a user focuses on the show test networks button in the network selection view. \"%@\" will be replaced with the network name such as \"Solana\" or \"Ethereum\" */
 "wallet.networkSelectionTestnetAccessibilityLabel" = "%@ 테스트 네트워크 보기";
+
+/* The title of the section for test networks in the network selection view. */
+"wallet.networkSelectionTestNetworks" = "테스트 네트워크";
 
 /* The title of the to select a network from the available networks */
 "wallet.networkSelectionTitle" = "네트워크 선택";
@@ -1063,6 +1117,9 @@
 /* A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network */
 "wallet.saveButtonTitle" = "저장";
 
+/* The title of the label of the button to save all changes. Used in Portfolio/NFT filters and display settings. */
+"wallet.saveChangesButtonTitle" = "변경사항 저장";
+
 /* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
 "wallet.scanQRCodeAccessibilityLabel" = "QR 코드 스캔";
 
@@ -1078,14 +1135,35 @@
 /* A title above a list of crypto accounts that are imported */
 "wallet.secondaryCryptoAccountsTitle" = "보조 계정";
 
+/* The description label of the filter option that allows users to select which accounts to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectAccountsDescription" = "필터링할 계정 선택";
+
+/* The label of the filter option that allows users to select which accounts to filter assets by. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectAccountsTitle" = "계정 선택";
+
 /* The title of the account selection screen. Will show above a list of accounts the user may pick from */
 "wallet.selectAccountTitle" = "계정 선택";
+
+/* The title of a button that Selects all visible options. */
+"wallet.selectAllButtonTitle" = "모두 선택";
 
 /* The accessibility label for the selected account picker */
 "wallet.selectedAccount" = "선택한 계정";
 
 /* The accessibility label for the ethereum network picker */
 "wallet.selectedNetwork" = "선택한 네트워크";
+
+/* The description label of the filter option that allows users to select which networks to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectNetworksDescription" = "필터링할 네트워크 선택";
+
+/* The label of the filter option that allows users to select which networks to filter assets by. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectNetworksTitle" = "네트워크 선택";
+
+/* The description of the view that lets the user select a token & account at the same time in the Send crypto view when there are no available tokens. */
+"wallet.selectTokenToSendNoTokens" = "가능한 토큰 없음";
+
+/* The title of the view that lets the user select a token & account at the same time in the Send crypto view. */
+"wallet.selectTokenToSendTitle" = "보낼 토큰 선택";
 
 /* As in sending cryptocurrency to another account */
 "wallet.send" = "보내기";
@@ -1192,11 +1270,20 @@
 /* The title displayed on the 'setup crypto' onboarding screen */
 "wallet.setupCryptoTitle" = "새로운 Brave 월렛에 오신 것을 환영합니다";
 
+/* The description label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
+"wallet.showNFTNetworkLogoDescription" = "NFT상에 네트워크 로고 표시";
+
+/* The label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
+"wallet.showNFTNetworkLogoTitle" = "네트워크 로고";
+
 /* A button title that will make a private key visible on the screen */
 "wallet.showPrivateKeyButtonTitle" = "비공개 키 표시";
 
 /* A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings */
 "wallet.showTestNetworksTitle" = "테스트 네트워크 표시";
+
+/* The title of a button that updates the filter to show tokens with zero balances. */
+"wallet.showZeroBalances" = "무잔액 표시";
 
 /* The title of the button used to sign a message request on the signature request view. */
 "wallet.sign" = "서명";
@@ -1389,6 +1476,12 @@
 
 /* The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaWithdrawNonceAccountInstructionName" = "논스 계정 철회";
+
+/* The description label of the sort option that sorts assets by their fiat value, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.sortAssetsDescription" = "법정화폐 가치 또는 이름순 정렬";
+
+/* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
+"wallet.sortAssetsTitle" = "자산 정렬";
 
 /* A description explains submitted transaction has been sent to the netwokr and awaits confirmation. */
 "wallet.submittedTransactionDescription" = "트랜잭션이 네트워크로 전송되어 확인을 기다리고 있습니다.";
@@ -1660,7 +1753,7 @@
 /* The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen. */
 "wallet.walletPanelUnlockWallet" = "월렛 잠금 해제";
 
-/* The value shown when selecting the default wallet as none / no wallet in wallet settings. */
+/* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets. */
 "wallet.walletTypeNone" = "없음";
 
 /* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
@@ -1737,4 +1830,7 @@
 
 /* Title of the wrong IPFS gateway alert */
 "wallet.wrongGatewayAlertTitle" = "게이트웨이 설정 실패";
+
+/* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
+"wallet.zToASortOption" = "알파벳 역순";
 

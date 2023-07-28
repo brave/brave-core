@@ -151,6 +151,9 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "Info Markah";
 
+/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 10 bookmarks */
+"BookmarkMultipleCount" = "%d markah";
+
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "Markah";
 
@@ -162,6 +165,9 @@
 
 /* Action to import bookmarks from a file. */
 "bookmarksImportAction" = "Impor Markah Buku";
+
+/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 1 bookmark) */
+"BookmarkSingleCount" = "%d bookmark";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "Markah";
@@ -562,14 +568,32 @@
 /* Button title for Auto Add in header */
 "customSearchEngine.autoAddTitle" = "Tambahkan Secara Otomatis";
 
+/* A title explaining that an error shown while adding custom search engine */
+"customSearchEngine.customSearchEngineAddErrorTitle" = "Eror Menambah Mesin Pencari Kustom";
+
 /* The warning description shown to user when custom search engine will be deleted while it is default search engine. */
 "customSearchEngine.deleteEngineAlertDescription" = "Menghapus mesin pencarian khusus sementara menjadi bawaan akan mengalihkan mesin pencarian secara otomatis.";
 
 /* The alert title shown to user when custom search engine will be deleted while it is default search engine. The parameter will be replace with name of the search engine. */
 "customSearchEngine.deleteEngineAlertTitle" = "Anda yakin ingin menghapus %@?";
 
+/* The warning description shown to user when custom search engine already exists. */
+"customSearchEngine.engineAlertExistsAlertDescription" = "Ada mesin pencari yang bernama sama.";
+
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+"customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Templat Pencari Kustom Non Aman untuk";
+
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+"customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "Templat Saran Kustom Non Aman untuk";
+
 /* Navigation Bar title */
 "customSearchEngine.navigationTitle" = "Tambahkan Mesin Pencari";
+
+/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.searchTemplateTitle" = "Cari Templat:";
+
+/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.suggestionTemplateTitle" = "Saran Templat:";
 
 /* The message that asks the user to Add the search provider explaining where the search engine will appear */
 "customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "Mesin pencari yang baru akan muncul pada bilah pencarian cepat.";
@@ -968,7 +992,7 @@
 "login.loginInfoDetailsWebsiteFieldTitle" = "Situs Web";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.loginInfoSetPasscodeAlertDescription" = "Untuk menyiapkan rantai sinkronisasi atau melihat pengaturan, Anda pertama-tama harus menetapkan kode pas pada perangkat Anda.";
+"login.loginInfoSetPasscodeAlertDescription" = "Untuk melihat kata sandi, Anda harus terlebih dahulu mengatur kode masuk ke perangkat Anda.";
 
 /* The title displayed in alert when a user needs to set passcode */
 "login.loginInfoSetPasscodeAlertTitle" = "Atur Kode Masuk";
@@ -987,6 +1011,9 @@
 
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "Filter";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.syncSetPasscodeAlertDescription" = "Untuk menyiapkan rantai sinkronisasi atau melihat pengaturan, Anda pertama-tama harus menetapkan kode pas pada perangkat Anda.";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Terakhir dimodifikasi %@";
@@ -2593,6 +2620,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "Izinkan Brave untuk secara otomatis menutup tab yang belum ditonton baru-baru ini.";
 
+/* Label for the navigation link to quality settings view */
+"settings.highestQualityPlayback" = "Kualitas Tayang Tertinggi";
+
+/* Detail text for the navigation link to quality settings view */
+"settings.highestQualityPlaybackDetail" = "Izinkan resolusi kualitas tinggi";
+
+/* Header for the general settings section */
+"settings.media.general" = "Umum";
+
+/* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
+"settings.media.rootSetting" = "Media";
+
+/* Title for the quality settings view */
+"settings.qualitySettings" = "Pengaturan Kualitas";
+
+/* Header for the Youtube settings section */
+"settings.youtube" = "YouTube";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Tidak dapat memuat halaman.";
 
@@ -3073,6 +3118,9 @@
 /* Accessibility label for the Add Tab button in the Tab Tray. */
 "TabToolbarAddTabButtonAccessibilityLabel" = "Tambah Tab";
 
+/* Accessibility Label for the tab toolbar Add to Playlist button */
+"tabToolbarAddToPlaylistButtonAccessibilityLabel" = "Tambahkan ke Daftar Putar";
+
 /* Accessibility label for the Back button in the tab toolbar. */
 "TabToolbarBackButtonAccessibilityLabel" = "Kembali";
 
@@ -3085,8 +3133,7 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Menu";
 
-/* Accessibility Label for the tab toolbar Add to Playlist button
-   Accessibility Label for the tab toolbar Playlist button */
+/* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Daftar Putar";
 
 /* Accessibility label for the Reader View button */
@@ -3106,6 +3153,9 @@
 
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Berhenti";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"tabToolbarVoiceSearchButtonAccessibilityLabel" = "Pencarian Suara";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */
 "TabToolbarWarningImageAccessibilityLabel" = "Koneksi tidak aman";
@@ -3296,6 +3346,21 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Dipromosikan";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Beri Nilai Brave di AppStore";
+
+/* Title for long press action that will hide Brave Rate Card */
+"today.rateBraveCardHideActionTitle" = "Sembunyikan";
+
+/* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
+"today.rateBraveCardRateActionTitle" = "Beri Rating pada Brave";
+
+/* Subtitle shown on the Rate Brave Card */
+"today.rateBraveCardSubtitle" = "Beri tahu kami pendapat Anda!";
+
+/* Title shown on the Rate Brave Card */
+"today.rateBraveCardTitle" = "Suka Brave?";
+
 /* No comment provided by engineer. */
 "today.refresh" = "Perbarui";
 
@@ -3338,6 +3403,9 @@
 /* Sync Alert */
 "UnableToConnectTitle" = "Tidak dapat Tersambung";
 
+/* No comment provided by engineer. */
+"UnlockButtonTitle" = "Buka Kunci";
+
 /* Error message if list of Payment Instruments doesn't include BAT */
 "unsupportedInstrumentMessage" = "Instrumen pembayaran tidak didukung";
 
@@ -3371,6 +3439,39 @@
 /* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
 "ViewOn" = "Lihat di %@";
 
+/* Explanation for warning alert why the microphone access required. */
+"voice.search.microphone.description.required" = "Harap izinkan Akses Mikrofon di Pengaturan Sistem iOS agar Brave bisa menggunakan pencarian suara anonim.";
+
+/* Title for warning alert microphone access is required. */
+"voice.search.microphone.title.required" = "Diperlukan Akses Mikrofon";
+
+/* Disclaimer for screen to search using voice. */
+"voice.search.screen.disclaimer" = "Brave tidak menyimpan atau membagikan pencarian suara Anda.";
+
+/* Title for screen to search using voice. */
+"voice.search.screenn.title" = "Pencarian Suara";
+
+/* The button text that starts the subscription action */
+"vpn.activateSubscriptionAction" = "aktifkan";
+
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "Ingin tetap terlindungi? Perbarui saja sebelum langganan Anda berakhir. Sebagai tanda terima kasih telah memperbarui, kami bahkan memberi potongan 20% untuk 3 bulan ke depan.";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "Aktifkan Pembaruan Otomatis";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "Perbarui otomatis Langganan VPN Brave Anda sekarang dan dapatkan potongan  20% selama 3 bulan!";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "Perbarui otomatis Langganan VPN Brave Anda sekarang dan dapatkan 1 bulan gratis!";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "ini berarti Anda akan kehilangan perlindungan ekstra dari Brave untuk semua app di ponsel Anda.";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "Oh tidak! Langganan VPN Brave Anda sebentar lagi berakhir.";
+
 /* Button text to buy Brave VPN */
 "vpn.buyButton" = "Beli";
 
@@ -3381,10 +3482,16 @@
 "vpn.checkboxBlockAds" = "Memblokir koneksi jaringan yang tak diinginkan";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxEncryption" = "Menggunakan saluran VPN terenkripsi yang aman dengan IKEv2";
+"vpn.checkboxBlockAdsAlternate" = "Blokir iklan dan pelacak di semua app";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxEncryption" = "Menggunakan saluran VPN terenkripsi";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxFast" = "Mendukung kecepatan hingga 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxFastAlternate" = "Cepat dan tak terbatas hinggan 100Mbps";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxGeoSelector" = "Pilih lokasi geo/negara Anda";
@@ -3470,11 +3577,14 @@
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "Kesalahan Apple Store";
 
-/* No comment provided by engineer. */
-"vpn.freeTrial" = "Uji coba gratis selama 7 hari termasuk dalam semua paket!";
+/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
+"vpn.freeTrialDetail" = "Semua paket termasuk %@!";
 
-/* Disclaimer about free trial */
-"vpn.freeTrialDisclaimer" = "Cobalah gratis selama 7 hari. Setelah 7 hari, Anda akan dikenai biaya paket.";
+/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
+"vpn.freeTrialPeriod" = "uji coba gratis 7 hari";
+
+/* The button text that starts the trial action */
+"vpn.freeTrialPeriodAction" = "uji coba gratis selama 7 hari";
 
 /* Disclaimer about in app subscription */
 "vpn.iapDisclaimer" = "Semua paket berlangganan diperbarui secara otomatis namun dapat dibatalkan sebelum diperbarui.";
@@ -3623,6 +3733,42 @@
 /* Whether the VPN plan has expired */
 "vpn.settingsVPNExpired" = "Telah Kedaluwarsa";
 
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "Berlangganan Sekarang";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Tepat sekali. Langganan Brave VPN Anda kini bisa digunakan hingga 5 perangkat. Jadi, Anda bisa berlangganan di iOS dan menggunakannya di perangkat Mac, Windows, dan Android secara gratis.";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "Kini, gunakan VPN Brave di semua perangkat milik Anda dengan harga yang sama!";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "Coba lagi VPN Brave dan dapatkan potongan 20% selama 3 bulan!";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "Siap untuk melindungi setiap app dalam ponsel Anda? Kembalilah ke VPN Brave dan dapatkan potongan 20% selama 3 bulan ke depan.";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Brave selalu memblokir pelacak di setiap app, yang bahkan di luar peramban Brave. Kini Anda dapat melihat siapa yang ingin melacak Anda, dengan Hub Kerahasiaan Brave.";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Apakah Anda tahu bahwa VPN Brave melindungi Anda di luar Peramban Brave?";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "Jangan khawatir. Kami terus mengaktifkan VPN selama beberapa hari sambil menunggu Anda memperbarui info pembayaran.";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "Perbarui info pembayaran  Anda agar tetap terlindungi dengan VPN Brave.";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "Ingin tetap melindungi semua app dalam ponsel Anda? Perbaruilah detail pembayaran Anda.";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "Ada masalah penagihan dengan akun Anda, yang artinya langganan VPN Brave Anda sebentar lagi berakhir.";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "Perbarui Pembayaran";
+
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationBody" = "Bahkan di belakang layar, Brave akan tetap melindungi Anda.";
 
@@ -3739,4 +3885,22 @@
 
 /* History tableview section header */
 "Yesterday" = "Kemarin";
+
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Aktifkan Video-Video Youtube Kualitas Tinggi";
+
+/* Description of setting to enable high quality youtube videos */
+"YoutubeMediaQualityDetails" = "Mengaktifkan fitur eksperimen ini akan menayangkan video pada kualitas maksimum yang tersedia serta akan menggunakan data tambahan.";
+
+/* Setting that disables highest quality video playback */
+"YoutubeMediaQualityOff" = "Matikan";
+
+/* Setting that enables high quality playback always */
+"YoutubeMediaQualityOn" = "Hidupkan";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "Kualitas Tayang Youtube";
+
+/* Setting that enables high quality playback on wifi only */
+"YoutubeMediaQualityWifi" = "Izinkan lewat Wi-Fi";
 

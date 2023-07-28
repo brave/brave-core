@@ -151,6 +151,9 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "ブックマーク情報";
 
+/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 10 bookmarks */
+"BookmarkMultipleCount" = "ブックマーク%d件";
+
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "ブックマーク";
 
@@ -162,6 +165,9 @@
 
 /* Action to import bookmarks from a file. */
 "bookmarksImportAction" = "ブックマークをインポート";
+
+/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 1 bookmark) */
+"BookmarkSingleCount" = "ブックマーク%d件";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "ブックマーク";
@@ -562,14 +568,32 @@
 /* Button title for Auto Add in header */
 "customSearchEngine.autoAddTitle" = "自動で追加する";
 
+/* A title explaining that an error shown while adding custom search engine */
+"customSearchEngine.customSearchEngineAddErrorTitle" = "カスタム検索エンジンの追加中にエラーが発生しました";
+
 /* The warning description shown to user when custom search engine will be deleted while it is default search engine. */
 "customSearchEngine.deleteEngineAlertDescription" = "カスタム検索エンジンをデフォルトにしたまま削除すると、デフォルトのエンジンは自動的に変更されます。";
 
 /* The alert title shown to user when custom search engine will be deleted while it is default search engine. The parameter will be replace with name of the search engine. */
 "customSearchEngine.deleteEngineAlertTitle" = "%@を削除しますか？";
 
+/* The warning description shown to user when custom search engine already exists. */
+"customSearchEngine.engineAlertExistsAlertDescription" = "同じ名前の検索エンジンが既に存在します。";
+
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+"customSearchEngine.insecureSearchTemplateURLErrorDescription" = "カスタム検索テンプレートが安全ではありません:";
+
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+"customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "カスタム検索候補テンプレートが安全ではありません:";
+
 /* Navigation Bar title */
 "customSearchEngine.navigationTitle" = "検索エンジンを追加する";
+
+/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.searchTemplateTitle" = "検索テンプレート";
+
+/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.suggestionTemplateTitle" = "検索候補テンプレート:";
 
 /* The message that asks the user to Add the search provider explaining where the search engine will appear */
 "customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "新しい検索エンジンはクイック検索バーに表示されます。";
@@ -968,7 +992,7 @@
 "login.loginInfoDetailsWebsiteFieldTitle" = "ウェブサイト";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.loginInfoSetPasscodeAlertDescription" = "シンクチェーンの設定や設定を見るには、まず端末にパスコードを設定する必要があります。";
+"login.loginInfoSetPasscodeAlertDescription" = "パスワードを見るには、まずあなたのデバイスにパスコードが設定されている必要があります。";
 
 /* The title displayed in alert when a user needs to set passcode */
 "login.loginInfoSetPasscodeAlertTitle" = "パスコードを設定する";
@@ -987,6 +1011,9 @@
 
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "フィルター";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.syncSetPasscodeAlertDescription" = "シンクチェーンの設定や設定を見るには、まず端末にパスコードを設定する必要があります。";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "最終変更 %@";
@@ -2593,6 +2620,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "しばらく見ていないタブをBraveが自動で閉じることを許可します。";
 
+/* Label for the navigation link to quality settings view */
+"settings.highestQualityPlayback" = "高品質再生";
+
+/* Detail text for the navigation link to quality settings view */
+"settings.highestQualityPlaybackDetail" = "高解像度設定を許可";
+
+/* Header for the general settings section */
+"settings.media.general" = "一般";
+
+/* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
+"settings.media.rootSetting" = "メディア";
+
+/* Title for the quality settings view */
+"settings.qualitySettings" = "品質設定";
+
+/* Header for the Youtube settings section */
+"settings.youtube" = "YouTube";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "ページを読み込めませんでした。";
 
@@ -3073,6 +3118,9 @@
 /* Accessibility label for the Add Tab button in the Tab Tray. */
 "TabToolbarAddTabButtonAccessibilityLabel" = "タブを追加";
 
+/* Accessibility Label for the tab toolbar Add to Playlist button */
+"tabToolbarAddToPlaylistButtonAccessibilityLabel" = "プレイリストに追加";
+
 /* Accessibility label for the Back button in the tab toolbar. */
 "TabToolbarBackButtonAccessibilityLabel" = "戻る";
 
@@ -3085,8 +3133,7 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "メニュー";
 
-/* Accessibility Label for the tab toolbar Add to Playlist button
-   Accessibility Label for the tab toolbar Playlist button */
+/* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Playlist";
 
 /* Accessibility label for the Reader View button */
@@ -3106,6 +3153,9 @@
 
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "停止";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"tabToolbarVoiceSearchButtonAccessibilityLabel" = "音声検索";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */
 "TabToolbarWarningImageAccessibilityLabel" = "保護されていない接続";
@@ -3296,6 +3346,21 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "プロモーション";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "App StoreでBraveを評価";
+
+/* Title for long press action that will hide Brave Rate Card */
+"today.rateBraveCardHideActionTitle" = "隠す";
+
+/* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
+"today.rateBraveCardRateActionTitle" = "Braveを評価する";
+
+/* Subtitle shown on the Rate Brave Card */
+"today.rateBraveCardSubtitle" = "ご意見をお聞かせください！";
+
+/* Title shown on the Rate Brave Card */
+"today.rateBraveCardTitle" = "Braveをリンクしますか？";
+
 /* No comment provided by engineer. */
 "today.refresh" = "更新";
 
@@ -3338,6 +3403,9 @@
 /* Sync Alert */
 "UnableToConnectTitle" = "接続できません";
 
+/* No comment provided by engineer. */
+"UnlockButtonTitle" = "ロック解除";
+
 /* Error message if list of Payment Instruments doesn't include BAT */
 "unsupportedInstrumentMessage" = "サポートされていない決済手段";
 
@@ -3371,6 +3439,39 @@
 /* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
 "ViewOn" = "View on %@";
 
+/* Explanation for warning alert why the microphone access required. */
+"voice.search.microphone.description.required" = "Braveで匿名音声検索を使用するには、iOSのシステム設定でマイクへのアクセスを許可してください。";
+
+/* Title for warning alert microphone access is required. */
+"voice.search.microphone.title.required" = "マイクへのアクセスが必要です";
+
+/* Disclaimer for screen to search using voice. */
+"voice.search.screen.disclaimer" = "Braveが音声検索結果を保存または共有することはありません。";
+
+/* Title for screen to search using voice. */
+"voice.search.screenn.title" = "音声検索";
+
+/* The button text that starts the subscription action */
+"vpn.activateSubscriptionAction" = "有効にする";
+
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "引き続き保護を利用する場合は、サブスクリプション終了前に情報を更新してください。更新の場合、次の3か月を20%でご利用いただけます。";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "自動更新を有効にする";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "Brave VPNのサブスクリプションを今すぐ自動更新すると、次の3か月を20%オフでご利用いただけます。";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "Brave VPNのサブスクリプションを自動更新して、1か月の無料特典を獲得しましょう！";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "モバイル端末上のすべてのアプリに対するBraveの特別な保護が失われます。";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "Brave VPNサブスクリプションの終了日が近付いています。";
+
 /* Button text to buy Brave VPN */
 "vpn.buyButton" = "購入する";
 
@@ -3381,10 +3482,16 @@
 "vpn.checkboxBlockAds" = "不要な通信をブロック";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxEncryption" = "IKEv2セキュア暗号化VPNトンネルを使用";
+"vpn.checkboxBlockAdsAlternate" = "すべてのアプリで広告とトラッカーをブロック";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxEncryption" = "セキュアな暗号化VPNトンネルを使用";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxFast" = "最大100Mbpsの速度をサポート";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxFastAlternate" = "最大 100 Mbps の速度が無制限";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxGeoSelector" = "あなたの位置/国を選択する";
@@ -3470,11 +3577,14 @@
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "App Storeとの接続時にエラーが発生しました";
 
-/* No comment provided by engineer. */
-"vpn.freeTrial" = "全てのプランに7日間の無料体験期間が含まれます。";
+/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
+"vpn.freeTrialDetail" = "すべてのプランに%@が含まれています。";
 
-/* Disclaimer about free trial */
-"vpn.freeTrialDisclaimer" = "7日間無料でお試しください。7日目以降はプラン料金が発生します。";
+/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
+"vpn.freeTrialPeriod" = "7日間の無料トライアル";
+
+/* The button text that starts the trial action */
+"vpn.freeTrialPeriodAction" = "7日間無料でお試し";
 
 /* Disclaimer about in app subscription */
 "vpn.iapDisclaimer" = "すべての定期購読は自動更新ですが、更新前に解約することができます。";
@@ -3623,6 +3733,42 @@
 /* Whether the VPN plan has expired */
 "vpn.settingsVPNExpired" = "期限切れ";
 
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "今すぐ申し込む";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Brave VPNサブスクリプションは最大5台のデバイスでご利用いただけます。iOS、Mac、Windows、さらにはAndroidまで、お好きなデバイスでのご利用をお楽しみください。";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "追加料金なしで、複数のデバイスでBrave VPNをご利用いただけるようになりました。";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "Brave VPNのサブスクリプションを更新いただくと、今なら3か月間20%オフ。";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "端末上のすべてのアプリを保護しませんか？Brave VPNは今後3か月間20%オフでご利用いただけます。";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPNは常に、Braveブラウザ以外でもすべてのアプリでトラッカーをブロックしてきました。Braveプライバシーハブでこれらのトラッカーの詳細を確認できます。";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Brave VPNはBraveブラウザ以外でも有効です";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "心配はいりません。お支払い情報を更新いただくまでの間、数日間にわたりVPNを引き続きご利用いただけます。";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "お支払い情報を更新いただき、Brave VPNで引き続きデータを安全に保護しましょう。";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "モバイル端末上のすべてのアプリを保護しませんか？お支払い情報を更新するだけで引き続きご利用いただけます。";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "お客様のアカウントでお支払いの問題が発生しています。Brave VPNのサブスクリプションはまもなく期限切れとなります。";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "お支払い情報を更新";
+
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationBody" = "バックグラウンドでもBraveはあなたを保護します";
 
@@ -3739,4 +3885,22 @@
 
 /* History tableview section header */
 "Yesterday" = "昨日";
+
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "YouTube動画の高画質再生を有効にする";
+
+/* Description of setting to enable high quality youtube videos */
+"YoutubeMediaQualityDetails" = "この機能は試験運用中です。有効にすると、利用可能な最大画質で動画を再生します。追加のデータ量を使用しますのでご了承ください。";
+
+/* Setting that disables highest quality video playback */
+"YoutubeMediaQualityOff" = "オフ";
+
+/* Setting that enables high quality playback always */
+"YoutubeMediaQualityOn" = "オン";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "YouTube再生品質";
+
+/* Setting that enables high quality playback on wifi only */
+"YoutubeMediaQualityWifi" = "Wi-Fi経由で許可";
 

@@ -14,7 +14,7 @@
 "widgets.favoritesWidgetTitle" = "我的最愛";
 
 /* Title for history menu item */
-"widgets.HistortMenuItem" = "歷史記錄";
+"widgets.HistoryMenuItem" = "歷史記錄";
 
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "請稍後再試";

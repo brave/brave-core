@@ -31,9 +31,6 @@
 /* The label text in the Button Toast for switching to a fresh New Tab. */
 "ContextMenuButtonToastNewTabOpenedLabelText" = "Ny flik öppnad";
 
-/* The title for the button that lets you copy the url from the location bar. */
-"CopyAddressTitle" = "Kopiera adress";
-
 /* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
 "DownloadCancelledToastLabelText" = "Nedladdning avbruten";
 
@@ -72,12 +69,6 @@
 
 /* OK button */
 "OKString" = "OK";
-
-/* The title for the button that lets you paste and go to a URL */
-"PasteAndGoTitle" = "Klistra in och öppna";
-
-/* The title for the button that lets you paste into the location bar */
-"PasteTitle" = "Klistra in";
 
 /* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
 "ReaderModeAvailableVoiceOverAnnouncement" = "Läsläge tillgängligt";

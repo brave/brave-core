@@ -14,7 +14,7 @@
 "widgets.favoritesWidgetTitle" = "お気に入り";
 
 /* Title for history menu item */
-"widgets.HistortMenuItem" = "履歴";
+"widgets.HistoryMenuItem" = "履歴";
 
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "後でもう一度お試しください";

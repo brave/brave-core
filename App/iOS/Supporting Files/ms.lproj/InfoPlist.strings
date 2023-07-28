@@ -19,6 +19,9 @@
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Ini membolehkan anda menyimpan foto.";
 
+/* Privacy - Speech Recognition Usage Description */
+"NSSpeechRecognitionUsageDescription" = "Kebenaran ini digunakan untuk mendayakan Pengecaman Pertuturan Lanjutan Apple. Jika tidak dibenarkan, pengecaman 'pada peranti' akan digunakan dan carian akan berciri peribadi sepenuhnya. Brave tidak menyimpan atau mengongsikan carian suara anda.";
+
 /* (No Comment) */
 "OPML File" = "Fail OPML";
 

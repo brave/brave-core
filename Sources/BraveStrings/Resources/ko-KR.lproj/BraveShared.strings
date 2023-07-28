@@ -151,6 +151,9 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "북마크 정보";
 
+/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 10 bookmarks */
+"BookmarkMultipleCount" = "북마크 %d개";
+
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "북마크";
 
@@ -162,6 +165,9 @@
 
 /* Action to import bookmarks from a file. */
 "bookmarksImportAction" = "북마크 가져오기";
+
+/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 1 bookmark) */
+"BookmarkSingleCount" = "북마크 %d개";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "북마크";
@@ -562,14 +568,32 @@
 /* Button title for Auto Add in header */
 "customSearchEngine.autoAddTitle" = "자동 추가";
 
+/* A title explaining that an error shown while adding custom search engine */
+"customSearchEngine.customSearchEngineAddErrorTitle" = "맞춤 검색 엔진 추가 중 오류";
+
 /* The warning description shown to user when custom search engine will be deleted while it is default search engine. */
 "customSearchEngine.deleteEngineAlertDescription" = "현재 기본 상태인 맞춤 검색 엔진을 삭제하면 기본 엔진으로 자동 전환됩니다.";
 
 /* The alert title shown to user when custom search engine will be deleted while it is default search engine. The parameter will be replace with name of the search engine. */
 "customSearchEngine.deleteEngineAlertTitle" = "%@을(를) 삭제하시겠습니까?";
 
+/* The warning description shown to user when custom search engine already exists. */
+"customSearchEngine.engineAlertExistsAlertDescription" = "동일한 이름의 검색 엔진이 이미 존재합니다.";
+
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+"customSearchEngine.insecureSearchTemplateURLErrorDescription" = "비보안 맞춤 검색 템플릿 -";
+
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+"customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "비보안 맞춤 추천 템플릿 -";
+
 /* Navigation Bar title */
 "customSearchEngine.navigationTitle" = "검색 엔진 추가";
+
+/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.searchTemplateTitle" = "검색 템플릿:";
+
+/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.suggestionTemplateTitle" = "추천 템플릿:";
 
 /* The message that asks the user to Add the search provider explaining where the search engine will appear */
 "customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "빠른 검색 바에 새로운 검색 엔진이 표시됩니다.";
@@ -968,7 +992,7 @@
 "login.loginInfoDetailsWebsiteFieldTitle" = "웹사이트";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.loginInfoSetPasscodeAlertDescription" = "동기화 체인을 설정하거나 기존 설정을 확인하려면 먼저 기기에서 패스코드를 설정해야 합니다.";
+"login.loginInfoSetPasscodeAlertDescription" = "비밀번호를 보려면 먼저 기기에서 패스코드를 설정해야 합니다.";
 
 /* The title displayed in alert when a user needs to set passcode */
 "login.loginInfoSetPasscodeAlertTitle" = "패스코드 설정";
@@ -987,6 +1011,9 @@
 
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "필터";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.syncSetPasscodeAlertDescription" = "동기화 체인을 설정하거나 기존 설정을 확인하려면 먼저 기기에서 패스코드를 설정해야 합니다.";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "최종 수정 %@";
@@ -2593,6 +2620,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "최근에 본 적이 없는 탭을 Brave가 자동으로 닫을 수 있도록 허용합니다.";
 
+/* Label for the navigation link to quality settings view */
+"settings.highestQualityPlayback" = "최고 품질 재생";
+
+/* Detail text for the navigation link to quality settings view */
+"settings.highestQualityPlaybackDetail" = "고품질 해상도 허용";
+
+/* Header for the general settings section */
+"settings.media.general" = "일반";
+
+/* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
+"settings.media.rootSetting" = "미디어";
+
+/* Title for the quality settings view */
+"settings.qualitySettings" = "품질 설정";
+
+/* Header for the Youtube settings section */
+"settings.youtube" = "YouTube";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "페이지를 로드할 수 없습니다.";
 
@@ -3073,6 +3118,9 @@
 /* Accessibility label for the Add Tab button in the Tab Tray. */
 "TabToolbarAddTabButtonAccessibilityLabel" = "탭 추가";
 
+/* Accessibility Label for the tab toolbar Add to Playlist button */
+"tabToolbarAddToPlaylistButtonAccessibilityLabel" = "재생목록에 추가";
+
 /* Accessibility label for the Back button in the tab toolbar. */
 "TabToolbarBackButtonAccessibilityLabel" = "뒤로";
 
@@ -3085,8 +3133,7 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "메뉴";
 
-/* Accessibility Label for the tab toolbar Add to Playlist button
-   Accessibility Label for the tab toolbar Playlist button */
+/* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "재생목록";
 
 /* Accessibility label for the Reader View button */
@@ -3106,6 +3153,9 @@
 
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "중지";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"tabToolbarVoiceSearchButtonAccessibilityLabel" = "음성 검색";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */
 "TabToolbarWarningImageAccessibilityLabel" = "비보안 연결";
@@ -3296,6 +3346,21 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "프로모션";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "AppStore에서 Brave 평가하기";
+
+/* Title for long press action that will hide Brave Rate Card */
+"today.rateBraveCardHideActionTitle" = "숨기기";
+
+/* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
+"today.rateBraveCardRateActionTitle" = "Brave 평가하기";
+
+/* Subtitle shown on the Rate Brave Card */
+"today.rateBraveCardSubtitle" = "어떻게 생각하시는지 알려주세요!";
+
+/* Title shown on the Rate Brave Card */
+"today.rateBraveCardTitle" = "Brave가 마음에 드십니까?";
+
 /* No comment provided by engineer. */
 "today.refresh" = "새로고침";
 
@@ -3338,6 +3403,9 @@
 /* Sync Alert */
 "UnableToConnectTitle" = "연결할 수 없음";
 
+/* No comment provided by engineer. */
+"UnlockButtonTitle" = "잠금 해제";
+
 /* Error message if list of Payment Instruments doesn't include BAT */
 "unsupportedInstrumentMessage" = "지원되지 않는 결제 수단";
 
@@ -3371,6 +3439,39 @@
 /* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
 "ViewOn" = "%@에서 보기";
 
+/* Explanation for warning alert why the microphone access required. */
+"voice.search.microphone.description.required" = "Brave가 익명 음성 검색을 사용할 수 있도록 iOS 시스템 설정에서 마이크 액세스를 허용해주세요.";
+
+/* Title for warning alert microphone access is required. */
+"voice.search.microphone.title.required" = "마이크 액세스 필요";
+
+/* Disclaimer for screen to search using voice. */
+"voice.search.screen.disclaimer" = "Brave는 음성 검색 내역을 저장하거나 공유하지 않습니다.";
+
+/* Title for screen to search using voice. */
+"voice.search.screenn.title" = "음성 검색";
+
+/* The button text that starts the subscription action */
+"vpn.activateSubscriptionAction" = "활성화";
+
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "계속 보호받으셔야죠? 구독 종료 전에 갱신하시면 됩니다. 갱신하시면 감사의 의미로 3개월간 20% 할인해드리겠습니다.";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "자동 갱신 활성화";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "지금 Brave VPN 구독을 자동 갱신하고 3개월간 20% 할인받으세요!";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "지금 Brave VPN 구독을 자동 갱신하고 1개월을 무료로 받으세요!";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "Brave가 스마트폰의 모든 앱을 추가로 보호해드렸는데, 앞으로 그러지 못하게 됩니다.";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "앗! Brave VPN 구독이 곧 만료됩니다.";
+
 /* Button text to buy Brave VPN */
 "vpn.buyButton" = "구매";
 
@@ -3381,10 +3482,16 @@
 "vpn.checkboxBlockAds" = "원치 않는 네트워크 연결 차단";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxEncryption" = "IKEv2 보안 암호화 VPN 터널 사용";
+"vpn.checkboxBlockAdsAlternate" = "모든 앱에서 광고 및 트래커 차단 ";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxEncryption" = "보안 암호화 VPN 터널 사용";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxFast" = "최대 100Mbps의 속도 지원";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxFastAlternate" = "최대 100Mbps의 빠른 속도 무제한";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxGeoSelector" = "지역/국가 위치 선택";
@@ -3470,11 +3577,14 @@
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "App Store 오류";
 
-/* No comment provided by engineer. */
-"vpn.freeTrial" = "모든 플랜을 7일간 무료로 체험해볼 수 있습니다!";
+/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
+"vpn.freeTrialDetail" = "모든 플랜에 %@ 포함!";
 
-/* Disclaimer about free trial */
-"vpn.freeTrialDisclaimer" = "7일간 무료로 체험하세요. 7일이 지나면 플랜의 가격이 청구됩니다.";
+/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
+"vpn.freeTrialPeriod" = "7일 무료 평가판";
+
+/* The button text that starts the trial action */
+"vpn.freeTrialPeriodAction" = "7일 무료 이용";
 
 /* Disclaimer about in app subscription */
 "vpn.iapDisclaimer" = "모든 구독은 자동 갱신되지만, 갱신 전 취소할 수 있습니다.";
@@ -3623,6 +3733,42 @@
 /* Whether the VPN plan has expired */
 "vpn.settingsVPNExpired" = "만료됨";
 
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "지금 구독";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "맞습니다. 최대 5대의 기기에서 Brave VPN 구독을 이용하실 수 있습니다. 예를 들어 iOS에서 구독하시면 Mac, Windows, Android 기기에서도 무료로 사용 가능합니다.";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "이제 모든 기기에서 Brave VPN을 동일한 가격에 이용하실 수 있습니다!";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "Brave VPN을 더 이용하시고 3개월간 20% 할인받으세요!";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "스마트폰의 모든 앱을 안전하게 보호하고 싶지 않으신가요? Brave VPN을 다시 이용하시면 3개월간 20% 할인해드리겠습니다.";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPN는 Brave 브라우저가 아닌 다른 모든 앱에서도 항상 트래커를 차단합니다. Brave 프라이버시 허브에서는 어떤 것이 고객님을 추적하려다가 차단되었는지 확인하실 수 있습니다.";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Brave VPN은 Brave 브라우저 외부에서도 보호해드린다는 것을 알고 계셨나요?";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "괜찮습니다. 결제 정보를 업데이트하실 때까지 며칠간 VPN을 활성 상태로 유지해드리겠습니다.";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "결제 정보를 업데이트하고 계속 Brave VPN의 보호를 받으세요.";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "스마트폰의 모든 앱에서 계속 보호받고 싶으신가요? 결제 세부정보를 업데이트하시면 됩니다.";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "계정에 결제 문제가 있어 Brave VPN 구독이 곧 만료됩니다.";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "결제 업데이트";
+
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationBody" = "Brave는 백그라운드에서도 계속 사용자를 보호해줍니다.";
 
@@ -3739,4 +3885,22 @@
 
 /* History tableview section header */
 "Yesterday" = "어제";
+
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "고품질 YouTube 동영상 활성화";
+
+/* Description of setting to enable high quality youtube videos */
+"YoutubeMediaQualityDetails" = "이 실험 기능을 활성화하면 동영상을 가능한 최대 품질로 재생하고 더 많은 데이터를 사용합니다.";
+
+/* Setting that disables highest quality video playback */
+"YoutubeMediaQualityOff" = "끔";
+
+/* Setting that enables high quality playback always */
+"YoutubeMediaQualityOn" = "켬";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "YouTube 재생 품질";
+
+/* Setting that enables high quality playback on wifi only */
+"YoutubeMediaQualityWifi" = "Wi-Fi 연결 시 허용";
 

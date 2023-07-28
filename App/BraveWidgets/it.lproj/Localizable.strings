@@ -14,7 +14,7 @@
 "widgets.favoritesWidgetTitle" = "Preferiti";
 
 /* Title for history menu item */
-"widgets.HistortMenuItem" = "Cronologia";
+"widgets.HistoryMenuItem" = "Cronologia";
 
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "Riprova più tardi";
