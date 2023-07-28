@@ -490,10 +490,7 @@ static bool CustomLogHandler(int severity,
 }
 
 + (bool)initializeICUForTesting {
-  base::FilePath path;
-  base::GetModuleDir(&path);
-  base::apple::SetOverrideFrameworkBundlePath(path);
-  base::apple::SetOverrideOuterBundlePath(path);
+  base::apple::SetOverrideFrameworkBundle([NSBundle bundleForClass:self]);
   return base::i18n::InitializeICU();
 }
 
