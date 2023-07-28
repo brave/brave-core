@@ -7,12 +7,10 @@ import * as React from 'react'
 import { render } from 'react-dom'
 
 import Dropdown from '@brave/leo/react/dropdown'
-import {
-  BraveNewsController
-} from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
 import styled from 'styled-components'
 import FeedPage from './FeedPage'
 import SignalsPage from './SignalsPage'
+import InspectContext from './context'
 
 const Container = styled.div`
   display: flex;
@@ -29,7 +27,6 @@ const Grid = styled.div`
   gap: 8px;
 `
 
-export const api = BraveNewsController.getRemote();
 const pages = ['feed', 'signals'] as const;
 type Pages = (typeof pages)[number]
 
@@ -37,16 +34,18 @@ function App() {
   const [page, setPage] = React.useState<Pages>('signals')
 
   return (
-    <Grid>
-      <Dropdown value={page} onChange={e => setPage(e.detail.value)}>
-        <span slot="label">Page</span>
-        {pages.map(p => <leo-option key={p}>{p}</leo-option>)}
-      </Dropdown>
-      <Container>
-        {page === 'feed' && <FeedPage />}
-        {page === 'signals' && <SignalsPage />}
-      </Container>
-    </Grid>
+    <InspectContext>
+      <Grid>
+        <Dropdown value={page} onChange={e => setPage(e.detail.value)}>
+          <span slot="label">Page</span>
+          {pages.map(p => <leo-option key={p}>{p}</leo-option>)}
+        </Dropdown>
+        <Container>
+          {page === 'feed' && <FeedPage />}
+          {page === 'signals' && <SignalsPage />}
+        </Container>
+      </Grid>
+    </InspectContext>
   )
 }
 
