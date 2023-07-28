@@ -14,7 +14,7 @@ constexpr int kBookmarkBarInstructionsPadding = 6;
 
 BookmarkBarInstructionsView* GetInstructionView(
     views::View* bookmark_bar_view) {
-  for (auto* child : bookmark_bar_view->children()) {
+  for (views::View* child : bookmark_bar_view->children()) {
     if (child->GetID() == BRAVE_VIEW_ID_BOOKMARK_IMPORT_INSTRUCTION_VIEW)
       return static_cast<BookmarkBarInstructionsView*>(child);
   }
