@@ -35,6 +35,7 @@ bool IsTrialDisabledInBrave(base::StringPiece trial_name) {
       "SignedExchangeSubresourcePrefetch",
       "SubresourceWebBundles",
       "TrustTokens",
+      "WebEnvironmentIntegrity",
   };
   // clang-format on
 
@@ -61,6 +62,7 @@ bool IsTrialDisabledInBrave(OriginTrialFeature feature) {
           OriginTrialFeature::kParakeet,
           OriginTrialFeature::kPrivacySandboxAdsAPIs,
           OriginTrialFeature::kPrivateStateTokens,
+          OriginTrialFeature::kWebEnvironmentIntegrity,
       };
   // clang-format on
 
