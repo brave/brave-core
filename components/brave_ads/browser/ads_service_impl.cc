@@ -202,13 +202,18 @@ mojom::DBCommandResponseInfoPtr RunDBTransactionOnFileTaskRunner(
   return command_response;
 }
 
-void RegisterResourceComponentsForLocale(const std::string& locale) {
-  g_brave_browser_process->resource_component()->RegisterComponentsForLocale(
-      locale);
+void RegisterResourceComponentsForDefaultCountryCode() {
+  const std::string& locale = brave_l10n::GetDefaultLocaleString();
+  const std::string country_code = brave_l10n::GetISOCountryCode(locale);
+  g_brave_browser_process->resource_component()
+      ->RegisterComponentForCountryCode(country_code);
 }
 
-void RegisterResourceComponentsForDefaultLocale() {
-  RegisterResourceComponentsForLocale(brave_l10n::GetDefaultLocaleString());
+void RegisterResourceComponentsForDefaultLanguageCode() {
+  const std::string& locale = brave_l10n::GetDefaultLocaleString();
+  const std::string language_code = brave_l10n::GetISOLanguageCode(locale);
+  g_brave_browser_process->resource_component()
+      ->RegisterComponentForLanguageCode(language_code);
 }
 
 void OnUrlLoaderResponseStartedCallback(
@@ -280,6 +285,17 @@ AdsServiceImpl::~AdsServiceImpl() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+bool AdsServiceImpl::IsBatAdsServiceBound() const {
+  return bat_ads_service_.is_bound();
+}
+
+void AdsServiceImpl::RegisterResourceComponentsForDefaultLocale() const {
+  RegisterResourceComponentsForDefaultCountryCode();
+  if (UserHasOptedInToBravePrivateAds()) {
+    RegisterResourceComponentsForDefaultLanguageCode();
+  }
+}
+
 bool AdsServiceImpl::UserHasOptedInToBravePrivateAds() const {
   return IsEnabled();
 }
@@ -317,7 +333,7 @@ bool AdsServiceImpl::CanStartBatAdsService() const {
 void AdsServiceImpl::MaybeStartBatAdsService() {
   CancelRestartBatAdsService();
 
-  if (bat_ads_service_.is_bound() || !CanStartBatAdsService()) {
+  if (IsBatAdsServiceBound() || !CanStartBatAdsService()) {
     if (!IsSupportedRegion()) {
       VLOG(6) << brave_l10n::GetDefaultISOCountryCodeString()
               << " region does not support ads";
@@ -330,14 +346,14 @@ void AdsServiceImpl::MaybeStartBatAdsService() {
 }
 
 void AdsServiceImpl::StartBatAdsService() {
-  CHECK(!bat_ads_service_.is_bound());
+  CHECK(!IsBatAdsServiceBound());
 
   bat_ads_service_ = bat_ads_service_factory_->Launch();
 
   bat_ads_service_.set_disconnect_handler(base::BindOnce(
       &AdsServiceImpl::RestartBatAdsServiceAfterDelay, AsWeakPtr()));
 
-  CHECK(bat_ads_service_.is_bound());
+  CHECK(IsBatAdsServiceBound());
 
   if (!bat_ads_client_notifier_.is_bound()) {
     bat_ads_client_notifier_receiver_ =
@@ -375,7 +391,7 @@ void AdsServiceImpl::CancelRestartBatAdsService() {
 
 bool AdsServiceImpl::ShouldProceedInitialization(
     size_t current_start_number) const {
-  return bat_ads_service_.is_bound() &&
+  return IsBatAdsServiceBound() &&
          service_starts_count_ == current_start_number;
 }
 
@@ -623,6 +639,12 @@ void AdsServiceImpl::InitializePrefChangeRegistrar() {
 void AdsServiceImpl::OnEnabledPrefChanged() {
   if (!CanStartBatAdsService()) {
     return Shutdown();
+  }
+
+  // Register language resource components if the user has just opted-in to
+  // Brave Private Ads and Bat Ads Service was already started
+  if (IsBatAdsServiceBound() && UserHasOptedInToBravePrivateAds()) {
+    RegisterResourceComponentsForDefaultLanguageCode();
   }
 
   MaybeStartBatAdsService();
