@@ -249,6 +249,15 @@ class BraveRewardsGetDeclaredCountryFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsIsGrandfatheredUserFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.isGrandfatheredUser", UNKNOWN)
+
+ protected:
+  ~BraveRewardsIsGrandfatheredUserFunction() override;
+  ResponseAction Run() override;
+};
+
 class BraveRewardsGetUserTypeFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getUserType", UNKNOWN)

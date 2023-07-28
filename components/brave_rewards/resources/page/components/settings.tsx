@@ -126,6 +126,7 @@ export function Settings () {
   }
 
   React.useEffect(() => {
+    actions.getIsGrandfatheredUser()
     actions.getUserType()
     actions.getIsUnsupportedRegion()
     const date = new Date()

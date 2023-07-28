@@ -154,6 +154,7 @@ declare namespace NewTab {
 
   export interface RewardsWidgetState {
     rewardsEnabled: boolean
+    isGrandfatheredUser: boolean
     userType: string
     isUnsupportedRegion: boolean
     declaredCountry: string

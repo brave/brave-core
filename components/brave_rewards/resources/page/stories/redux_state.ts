@@ -160,6 +160,7 @@ export const reduxState: Rewards.ApplicationState = {
     },
     initializing: false,
     showOnboarding: false,
+    isGrandfatheredUser: false,
     userType: 'unconnected'
   }
 }

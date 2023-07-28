@@ -53,6 +53,10 @@ function initialize () {
     document.getElementById('root'))
 }
 
+function onIsGrandfatheredUser (isGrandfatheredUser: boolean) {
+  actions.onIsGrandfatheredUser(isGrandfatheredUser)
+}
+
 function userType (userType: number) {
   actions.onUserType(userType)
 }
@@ -253,6 +257,7 @@ function onIsUnsupportedRegion (isUnsupportedRegion: boolean) {
 Object.defineProperty(window, 'brave_rewards', {
   configurable: true,
   value: {
+    onIsGrandfatheredUser,
     userType,
     rewardsParameters,
     promotions,

@@ -30,6 +30,7 @@ export type AddressesType = 'BTC' | 'ETH' | 'BAT' | 'LTC'
 export type Address = { address: string, qr: string | null }
 
 export interface State {
+  isGrandfatheredUser: boolean
   userType: UserType
   adsData: AdsData
   adsHistory: AdsHistory[]

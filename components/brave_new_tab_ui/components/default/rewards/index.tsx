@@ -42,6 +42,7 @@ export function RewardsContextAdapter (props: { children: React.ReactNode }) {
 
 export interface RewardsProps {
   rewardsEnabled: boolean
+  isGrandfatheredUser: boolean
   userType: string
   isUnsupportedRegion: boolean
   declaredCountry: string
@@ -130,6 +131,7 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
   return (
     <RewardsCard
       rewardsEnabled={props.rewardsEnabled}
+      isGrandfatheredUser={props.isGrandfatheredUser}
       userType={userTypeFromString(props.userType)}
       vbatDeadline={props.parameters.vbatDeadline}
       isUnsupportedRegion={props.isUnsupportedRegion}
