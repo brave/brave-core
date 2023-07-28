@@ -46,7 +46,58 @@ function parseInteger(string) {
   return parseInt(string, 10)
 }
 
-const parsedArgs = program.parseOptions(process.argv)
+// Wrapper for an action to pass unknown arguments via first paramenter.
+function passUnknownArgs(action) {
+  function wrapper(...args) {
+    // Get arguments starting from a first arg-like.
+    let argv = process.argv.slice(2)
+    const firstArgIndex = argv.findIndex((arg) => arg.startsWith('-'))
+    argv = firstArgIndex != -1 ? argv.slice(firstArgIndex) : []
+
+    let passthroughArgs = []
+    for (let argIdx = 0; argIdx < argv.length; ++argIdx) {
+      const arg = argv[argIdx]
+      let knownOption = false
+
+      for (const option of this.options) {
+        // Match short (-a) and long (--arg) known arguments, optionally ending
+        // with '='.
+        const matchOptions = [option.short, option.long]
+          .filter((opt) => opt)
+          .join('|')
+        const match = arg.match(`^(${matchOptions})(=|$)`)
+        if (!match) {
+          continue
+        }
+
+        knownOption = true
+        // If the option doesn't end with '=', then we might need to skip the
+        // next argument, because it could be an option value.
+        if (match[2] === '') {
+          if (option.required) {
+            // Skip next argument as it's required and should be there (this is
+            // asserted by Commander).
+            ++argIdx
+          } else if (option.optional) {
+            const nextArg = argv[argIdx + 1]
+            // Ignore next argument if it doesn't start with '-' or it's '-'.
+            if (nextArg != null && (nextArg[0] !== '-' || nextArg === '-')) {
+              ++argIdx
+            }
+          }
+        }
+        break
+      }
+
+      if (!knownOption) {
+        passthroughArgs.push(arg)
+      }
+    }
+
+    action(passthroughArgs, ...args)
+  }
+  return wrapper
+}
 
 program
   .version(process.env.npm_package_version)
@@ -98,7 +149,7 @@ program
 
 program
   .command('build')
-  .option('-C <build_dir>', 'build config (out/Debug, out/Release')
+  .option('-C <build_dir>', 'build directory (Debug, Release or absolute path)')
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
   .option('--target_android_base <target_android_base>', 'target Android SDK level for apk or aab  (classic, modern, mono)', 'classic')
@@ -157,7 +208,7 @@ program
 
 program
   .command('create_dist')
-  .option('-C <build_dir>', 'build config (out/Debug, out/Release')
+  .option('-C <build_dir>', 'build directory (Debug, Release or absolute path)')
   .option('--mac_signing_identifier <id>', 'The identifier to use for signing')
   .option('--mac_installer_signing_identifier <id>', 'The identifier to use for signing the installer')
   .option('--mac_signing_keychain <keychain>', 'The identifier to use for signing', 'login')
@@ -218,7 +269,7 @@ program
 program
   .command('start')
   .allowUnknownOption(true)
-  .option('-C <build_dir>', 'build config (out/Debug, out/Release')
+  .option('-C <build_dir>', 'build directory (Debug, Release or absolute path)')
   .option('--v [log_level]', 'set log level to [log_level]', parseInteger, '0')
   .option('--vmodule [modules]', 'verbose log from specific modules')
   .option('--user_data_dir_name [base_name]', 'set user data directory base name to [base_name]')
@@ -241,7 +292,7 @@ program
   .option('--single_process', 'use a single process')
   .option('--output_path [pathname]', 'use the Brave binary located at [pathname]')
   .arguments('[build_config]')
-  .action(start.bind(null, parsedArgs.unknown))
+  .action(passUnknownArgs(start))
 
 program
   .command('pull_l10n')
@@ -290,7 +341,7 @@ program
 program
   .command('test <suite>')
   .allowUnknownOption(true)
-  .option('-C <build_dir>', 'build config (out/Debug, out/Release')
+  .option('-C <build_dir>', 'build directory (Debug, Release or absolute path)')
   .option('--v [log_level]', 'set log level to [log_level]', parseInteger, '0')
   .option('--vmodule [modules]', 'verbose log from specific modules')
   .option('--filter <filter>', 'set test filter')
@@ -307,7 +358,7 @@ program
   .option('--use_goma [arg]', 'whether to use Goma for building', JSON.parse)
   .option('--goma_offline', 'use offline mode for goma')
   .arguments('[build_config]')
-  .action(test.bind(null, parsedArgs.unknown))
+  .action(passUnknownArgs(test))
 
 program
   .command('lint')
@@ -355,12 +406,12 @@ program
 program
   .command('run_fuzzer <suite>')
   .allowUnknownOption(true)
-  .action(runFuzzer.bind(null, parsedArgs.unknown))
+  .action(passUnknownArgs(runFuzzer))
 
-  program
+program
   .command('run_perf_tests <perf_config> <targets>')
   .allowUnknownOption(true)
-  .action(perfTests.runPerfTests.bind(null, parsedArgs.unknown))
+  .action(passUnknownArgs(perfTests.runPerfTests))
 
 program
   .parse(process.argv)
