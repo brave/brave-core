@@ -879,6 +879,12 @@ extension BrowserViewController: WKUIDelegate {
 
     return newTab.webView
   }
+  
+  public func webViewDidClose(_ webView: WKWebView) {
+    guard let tab = tabManager[webView] else { return }
+    tabManager.addTabToRecentlyClosed(tab)
+    tabManager.removeTab(tab)
+  }
 
   fileprivate func shouldDisplayJSAlertForWebView(_ webView: WKWebView) -> Bool {
     // Only display a JS Alert if we are selected and there isn't anything being shown
