@@ -18,16 +18,13 @@
 #include "base/observer_list_types.h"
 #include "base/sequence_checker.h"
 #include "base/values.h"
-#include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 
 using brave_component_updater::DATFileDataBuffer;
-
-namespace adblock {
-class Engine;
-}  // namespace adblock
 
 class AdBlockServiceTest;
 class BraveAdBlockTPNetworkDelegateHelperTest;
@@ -39,9 +36,6 @@ namespace brave_shields {
 // Service managing an adblock engine.
 class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
  public:
-  using GetDATFileDataResult =
-      brave_component_updater::LoadDATFileDataResult<adblock::Engine>;
-
   explicit AdBlockEngine(bool is_default_engine);
   AdBlockEngine(const AdBlockEngine&) = delete;
   AdBlockEngine& operator=(const AdBlockEngine&) = delete;
@@ -49,15 +43,13 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
 
   bool IsDefaultEngine() { return is_default_engine_; }
 
-  void ShouldStartRequest(const GURL& url,
-                          blink::mojom::ResourceType resource_type,
-                          const std::string& tab_host,
-                          bool aggressive_blocking,
-                          bool* did_match_rule,
-                          bool* did_match_exception,
-                          bool* did_match_important,
-                          std::string* mock_data_url,
-                          std::string* rewritten_url);
+  adblock::BlockerResult ShouldStartRequest(
+      const GURL& url,
+      blink::mojom::ResourceType resource_type,
+      const std::string& tab_host,
+      bool previously_matched_rule,
+      bool previously_matched_exception,
+      bool previously_matched_important);
   absl::optional<std::string> GetCspDirectives(
       const GURL& url,
       blink::mojom::ResourceType resource_type,
@@ -90,7 +82,7 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
 
  protected:
   void AddKnownTagsToAdBlockInstance();
-  void UpdateAdBlockClient(std::unique_ptr<adblock::Engine> ad_block_client,
+  void UpdateAdBlockClient(rust::Box<adblock::Engine> ad_block_client,
                            const std::string& resources_json);
   void OnListSourceLoaded(const DATFileDataBuffer& filters,
                           const std::string& resources_json);
@@ -98,7 +90,7 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   void OnDATLoaded(const DATFileDataBuffer& dat_buf,
                    const std::string& resources_json);
 
-  std::unique_ptr<adblock::Engine> ad_block_client_
+  rust::Box<adblock::Engine> ad_block_client_
       GUARDED_BY_CONTEXT(sequence_checker_);
 
  private:

@@ -14,6 +14,7 @@
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_default_resource_provider.h"
@@ -24,7 +25,6 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
-#include "brave/components/brave_shields/common/adblock_domain_resolver.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -142,19 +142,17 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
   }
 }
 
-void AdBlockService::ShouldStartRequest(
+adblock::BlockerResult AdBlockService::ShouldStartRequest(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host,
     bool aggressive_blocking,
-    bool* did_match_rule,
-    bool* did_match_exception,
-    bool* did_match_important,
-    std::string* mock_data_url,
-    std::string* rewritten_url) {
+    bool previously_matched_rule,
+    bool previously_matched_exception,
+    bool previously_matched_important) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
 
-  GURL request_url;
+  adblock::BlockerResult fp_result = {};
 
   if (aggressive_blocking ||
       base::FeatureList::IsEnabled(
@@ -162,22 +160,31 @@ void AdBlockService::ShouldStartRequest(
       !SameDomainOrHost(
           url, url::Origin::CreateFromNormalizedTuple("https", tab_host, 80),
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
-    request_url =
-        rewritten_url && !rewritten_url->empty() ? GURL(*rewritten_url) : url;
-    default_engine_->ShouldStartRequest(
-        request_url, resource_type, tab_host, aggressive_blocking,
-        did_match_rule, did_match_exception, did_match_important, mock_data_url,
-        rewritten_url);
-    if (did_match_important && *did_match_important) {
-      return;
+    fp_result = default_engine_->ShouldStartRequest(
+        url, resource_type, tab_host, previously_matched_rule,
+        previously_matched_exception, previously_matched_important);
+    if (fp_result.important) {
+      return fp_result;
     }
   }
 
-  request_url =
-      rewritten_url && !rewritten_url->empty() ? GURL(*rewritten_url) : url;
-  additional_filters_engine_->ShouldStartRequest(
-      request_url, resource_type, tab_host, aggressive_blocking, did_match_rule,
-      did_match_exception, did_match_important, mock_data_url, rewritten_url);
+  GURL request_url = fp_result.rewritten_url.has_value
+                         ? GURL(std::string(fp_result.rewritten_url.value))
+                         : url;
+  auto result = additional_filters_engine_->ShouldStartRequest(
+      request_url, resource_type, tab_host, previously_matched_rule,
+      previously_matched_exception, previously_matched_important);
+
+  result.matched |= fp_result.matched;
+  result.has_exception |= fp_result.has_exception;
+  result.important |= fp_result.important;
+  if (!result.redirect.has_value && fp_result.redirect.has_value) {
+    result.redirect = fp_result.redirect;
+  }
+  if (!result.rewritten_url.has_value && fp_result.rewritten_url.has_value) {
+    result.rewritten_url = fp_result.rewritten_url;
+  }
+  return result;
 }
 
 absl::optional<std::string> AdBlockService::GetCspDirectives(
@@ -296,14 +303,14 @@ AdBlockService::AdBlockService(
               new AdBlockEngine(false /* is_default */),
               base::OnTaskRunnerDeleter(GetTaskRunner()))) {
   // Initializes adblock-rust's domain resolution implementation
-  adblock::SetDomainResolver(AdBlockServiceDomainResolver);
+  adblock::set_domain_resolver();
 
   if (base::FeatureList::IsEnabled(
           features::kAdblockOverrideRegexDiscardPolicy)) {
     adblock::RegexManagerDiscardPolicy policy;
-    policy.cleanup_interval_sec =
+    policy.cleanup_interval_secs =
         features::kAdblockOverrideRegexDiscardPolicyCleanupIntervalSec.Get();
-    policy.discard_unused_sec =
+    policy.discard_unused_secs =
         features::kAdblockOverrideRegexDiscardPolicyDiscardUnusedSec.Get();
     SetupDiscardPolicy(policy);
   }

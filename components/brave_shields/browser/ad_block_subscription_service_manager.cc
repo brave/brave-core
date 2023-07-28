@@ -18,7 +18,7 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/adblock_rust_ffi/src/wrapper.h"
+#include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
@@ -30,6 +30,8 @@
 #include "net/base/filename_util.h"
 
 namespace brave_shields {
+
+constexpr uint16_t kSubscriptionDefaultExpiresHours = 7 * 24;
 
 base::TimeDelta* g_testing_subscription_retry_interval = nullptr;
 
@@ -65,7 +67,7 @@ bool ParseOptionalStringField(const base::Value* value,
 
 bool ParseExpiresWithFallback(const base::Value* value, uint16_t* field) {
   if (value == nullptr) {
-    *field = adblock::kSubscriptionDefaultExpiresHours;
+    *field = kSubscriptionDefaultExpiresHours;
     return true;
   } else if (!value->is_int()) {
     return false;
@@ -359,17 +361,21 @@ void AdBlockSubscriptionServiceManager::OnListMetadata(
 
   // Title can only be set once - only set it if an existing title does not
   // exist
-  if (!info->title && metadata.title) {
-    info->title = absl::make_optional(*metadata.title);
+  if (!info->title && metadata.title.has_value) {
+    info->title = absl::make_optional(std::string(metadata.title.value));
   }
 
-  if (metadata.homepage) {
-    info->homepage = absl::make_optional(*metadata.homepage);
+  if (metadata.homepage.has_value) {
+    info->homepage = absl::make_optional(std::string(metadata.homepage.value));
   } else {
     info->homepage = absl::nullopt;
   }
 
-  info->expires = metadata.expires;
+  if (metadata.expires_hours.has_value) {
+    info->expires = metadata.expires_hours.value;
+  } else {
+    info->expires = kSubscriptionDefaultExpiresHours;
+  }
 
   UpdateSubscriptionPrefs(sub_url, *info);
 

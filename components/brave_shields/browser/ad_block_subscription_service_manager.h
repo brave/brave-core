@@ -18,7 +18,7 @@
 #include "base/sequence_checker.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/adblock_rust_ffi/src/wrapper.h"
+#include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 #include "components/component_updater/timer_update_scheduler.h"
 #include "components/prefs/pref_service.h"
@@ -26,10 +26,6 @@
 #include "url/gurl.h"
 
 class PrefService;
-
-namespace adblock {
-extern const uint16_t kSubscriptionDefaultExpiresHours;
-}  // namespace adblock
 
 namespace base {
 template <typename StructType>
@@ -45,6 +41,8 @@ class AdBlockSubscriptionFiltersProvider;
 class AdBlockServiceTest;
 
 namespace brave_shields {
+
+extern const uint16_t kSubscriptionDefaultExpiresHours;
 
 struct SubscriptionInfo {
   SubscriptionInfo();
@@ -68,7 +66,7 @@ struct SubscriptionInfo {
 
   absl::optional<std::string> homepage;
   absl::optional<std::string> title;
-  uint16_t expires = adblock::kSubscriptionDefaultExpiresHours;
+  uint16_t expires = kSubscriptionDefaultExpiresHours;
 
   static void RegisterJSONConverter(
       base::JSONValueConverter<SubscriptionInfo>*);
