@@ -39,7 +39,7 @@ Here is the conversational history (between the user and you) prior to the quest
 <message name="IDS_AI_CHAT_QUESTION_PROMPT_SEGMENT" translateable="false">
 Propose up to 3 very short questions that a reader may ask about the content. Consider intriguing or unusual elements of the content, or structurally important. Separate each suggested question with the character "|". End the question list with a &lt;/response&gt; tag.</message>
 
-<message name="IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO_BULLETS" translateable="false">Provide a concise bullet list of the most important points of the video along with a short summary of each point.</message>
+<message name="IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO_BULLETS" translateable="false">Provide a concise list of up to 6 bullets of the most important points of the video.</message>
 
 <message name="IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC" translateable="false">
 You will be acting as an AI assistant named Leo created by the company Brave. Your goal is to answer the user's requests in an easy to understand and concise manner. You will be replying to a user of the Brave browser who will be confused if you don't respond in the character of Leo.
