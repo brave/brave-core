@@ -28,6 +28,7 @@
     E_CPONLY(kColorBraveDownloadToolbarButtonActive)
 
 #define BRAVE_SEARCH_CONVERSION_COLOR_IDS                             \
+    E_CPONLY(kColorSearchConversionCloseButton)                       \
     E_CPONLY(kColorSearchConversionBannerTypeBackgroundBorder)        \
     E_CPONLY(kColorSearchConversionBannerTypeBackgroundBorderHovered) \
     E_CPONLY(kColorSearchConversionBannerTypeBackgroundGradientFrom)  \

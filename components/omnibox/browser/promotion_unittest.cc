@@ -7,6 +7,8 @@
 #include <memory>
 
 #include "base/memory/scoped_refptr.h"
+#include "base/metrics/field_trial.h"
+#include "base/metrics/field_trial_param_associator.h"
 #include "base/ranges/algorithm.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_search_conversion/features.h"
@@ -86,6 +88,21 @@ class OmniboxPromotionTest : public testing::Test {
 
     scoped_default_locale_ =
         std::make_unique<brave_l10n::test::ScopedDefaultLocale>("en_US");
+
+    PrepareFieldTrialParamsForBannerTypeB();
+  }
+
+  void PrepareFieldTrialParamsForBannerTypeB() {
+    constexpr char kPromotionTrial[] = "BraveSearchPromotionBannerStudy";
+    constexpr char kBannerTypeParamName[] = "banner_type";
+    constexpr char kBannerTypeExperiements[] = "banner_type_b";
+
+    std::map<std::string, std::string> params;
+    params[kBannerTypeParamName] = "type_B";
+    ASSERT_TRUE(base::AssociateFieldTrialParams(
+        kPromotionTrial, kBannerTypeExperiements, params));
+    base::FieldTrialList::CreateFieldTrial(kPromotionTrial,
+                                           kBannerTypeExperiements);
   }
 
   void CreateController(bool incognito) {
@@ -242,7 +259,7 @@ TEST_F(OmniboxPromotionTest, AutocompleteResultTest) {
   // Make 3rd match as banner type promotion and check that promotion is
   // reordered at last.
   matches[2].destination_url = GetPromoURL(input.text());
-  SetConversionTypeToMatch(ConversionType::kBanner, &matches[2]);
+  SetConversionTypeToMatch(ConversionType::kBannerTypeA, &matches[2]);
   result.AppendMatches(matches);
   SortBraveSearchPromotionMatch(&result);
   EXPECT_TRUE(IsBraveSearchPromotionMatch(*result.match_at(3)));
@@ -250,7 +267,7 @@ TEST_F(OmniboxPromotionTest, AutocompleteResultTest) {
   result.Reset();
   matches = CreateTestMatches();
   matches[2].destination_url = GetPromoURL(input.text());
-  SetConversionTypeToMatch(ConversionType::kBanner, &matches[2]);
+  SetConversionTypeToMatch(ConversionType::kBannerTypeA, &matches[2]);
   result.AppendMatches(matches);
   // Make first match is not search query with default provider.
   result.begin()->type = AutocompleteMatchType::NAVSUGGEST;

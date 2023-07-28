@@ -24,9 +24,12 @@ ConversionType GetConversionType(PrefService* prefs,
                                  TemplateURLService* service);
 void RegisterPrefs(PrefRegistrySimple* registry);
 void SetDismissed(PrefService* prefs);
+void SetMaybeLater(PrefService* prefs);
 GURL GetPromoURL(const std::u16string& search_term);
 GURL GetPromoURL(const std::string& search_term);
-bool IsBraveSearchConversionFetureEnabled();
+
+// True when omnibox conversion features are enabled.
+bool IsBraveSearchConversionFeatureEnabled();
 
 }  // namespace brave_search_conversion
 

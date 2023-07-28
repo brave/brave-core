@@ -312,6 +312,8 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
       PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x49, 0x50, 0x57),
                                     SkColorSetRGB(0xFF, 0xFF, 0xFF))};
   mixer[kColorMenuItemSubText] = {SkColorSetRGB(0x86, 0x8E, 0x96)};
+  mixer[kColorSearchConversionCloseButton] = {
+      leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight)};
   mixer[kColorSearchConversionBannerTypeDescText] = {
       SkColorSetRGB(0x2E, 0x30, 0x39)};
   mixer[kColorSearchConversionBannerTypeBackgroundBorder] = {
@@ -321,7 +323,7 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSearchConversionBannerTypeBackgroundGradientFrom] = {
       SkColorSetARGB(104, 0xFF, 0xFF, 0xFF)};
   mixer[kColorSearchConversionBannerTypeBackgroundGradientTo] = {
-      SkColorSetARGB(104, 0xEF, 0xEF, 0xFB)};
+      SkColorSetRGB(0xEF, 0xEF, 0xFB)};
   mixer[kColorSearchConversionButtonTypeInputAppend] = {
       SkColorSetRGB(0x58, 0x5C, 0x6D)};
   mixer[kColorSearchConversionButtonTypeBackgroundNormal] = {
@@ -411,6 +413,8 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
       PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x49, 0x50, 0x57),
                                     SkColorSetRGB(0xFF, 0xFF, 0xFF))};
   mixer[kColorMenuItemSubText] = {SkColorSetRGB(0x84, 0x88, 0x9C)};
+  mixer[kColorSearchConversionCloseButton] = {
+      leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark)};
   mixer[kColorSearchConversionBannerTypeDescText] = {
       SkColorSetRGB(0xE2, 0xE3, 0xE7)};
   mixer[kColorSearchConversionBannerTypeBackgroundBorder] = {

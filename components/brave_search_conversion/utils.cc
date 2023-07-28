@@ -9,8 +9,10 @@
 
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/time/time.h"
 #include "brave/components/brave_search_conversion/constants.h"
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
@@ -23,6 +25,32 @@
 #include "url/gurl.h"
 
 namespace brave_search_conversion {
+
+namespace {
+
+ConversionType GetConversionTypeFromBannerTypeParam(const std::string& param) {
+  if (param == "type_A") {
+    return ConversionType::kBannerTypeA;
+  }
+
+  if (param == "type_B") {
+    return ConversionType::kBannerTypeB;
+  }
+
+  if (param == "type_C") {
+    return ConversionType::kBannerTypeC;
+  }
+
+  if (param == "type_D") {
+    return ConversionType::kBannerTypeD;
+  }
+
+  LOG(ERROR) << __func__
+             << " : Got invalid conversion type from griffin: " << param;
+  return ConversionType::kNone;
+}
+
+}  // namespace
 
 bool IsNTPPromotionEnabled(PrefService* prefs, TemplateURLService* service) {
   DCHECK(prefs);
@@ -61,21 +89,40 @@ ConversionType GetConversionType(PrefService* prefs,
     return ConversionType::kNone;
   }
 
-  if (base::FeatureList::IsEnabled(features::kOmniboxButton))
+  if (base::FeatureList::IsEnabled(features::kOmniboxButton)) {
     return ConversionType::kButton;
+  }
 
-  if (base::FeatureList::IsEnabled(features::kOmniboxBanner))
-    return ConversionType::kBanner;
+  if (base::FeatureList::IsEnabled(features::kOmniboxBanner)) {
+    // Give conversion type after 3d passed since maybe later clicked time.
+    auto clicked_time = prefs->GetTime(prefs::kMaybeLaterClickedTime);
+    if (!clicked_time.is_null() &&
+        clicked_time + base::Days(3) > base::Time::Now()) {
+      return ConversionType::kNone;
+    }
+
+    // Fetch banner type from griffin.
+    constexpr char kPromotionTrial[] = "BraveSearchPromotionBannerStudy";
+    constexpr char kBannerTypeParamName[] = "banner_type";
+    const std::string banner_type =
+        base::GetFieldTrialParamValue(kPromotionTrial, kBannerTypeParamName);
+    return GetConversionTypeFromBannerTypeParam(banner_type);
+  }
 
   return ConversionType::kNone;
 }
 
 void RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kDismissed, false);
+  registry->RegisterTimePref(prefs::kMaybeLaterClickedTime, base::Time());
 }
 
 void SetDismissed(PrefService* prefs) {
   prefs->SetBoolean(prefs::kDismissed, true);
+}
+
+void SetMaybeLater(PrefService* prefs) {
+  prefs->SetTime(prefs::kMaybeLaterClickedTime, base::Time::Now());
 }
 
 GURL GetPromoURL(const std::u16string& search_term) {
@@ -89,7 +136,7 @@ GURL GetPromoURL(const std::string& search_term) {
   return GURL(promo_url);
 }
 
-bool IsBraveSearchConversionFetureEnabled() {
+bool IsBraveSearchConversionFeatureEnabled() {
   return base::FeatureList::IsEnabled(features::kOmniboxButton) ||
          base::FeatureList::IsEnabled(features::kOmniboxBanner);
 }

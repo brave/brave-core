@@ -27,7 +27,7 @@ class BraveOmniboxResultView : public OmniboxResultView {
   void OnSelectionStateChanged() override;
 
   void OpenMatch();
-  void Dismiss();
+  void RefreshOmniboxResult();
 
  private:
   void ResetChildrenVisibility();
