@@ -1359,6 +1359,12 @@ Are you sure you want to do this?
       <message name="IDS_SYNC_CAMERA_PERMISSION_WAS_NOT_GRANTED_TOAST" desc="Popup message displayed when user did not granted camera permission when joining the sync chain by scanning QR code">
         Camera permission was not granted
       </message>
+      <message name="IDS_PASSWORD_SYNC_TYPE_SET_SCREEN_LOCK" desc="Text prompting user to set up screen lock on their device in order to change Sync passwords type">
+        To enable passwords sync, first set a screen lock on your device
+      </message>
+      <message name="IDS_ENABLING_PASSWORD_SYNC_AUTH_MESSAGE" desc="Description shown when we ask for auth while enabling passwords sync">
+        Unlock to enable passwords sync
+      </message>
       <message name="IDS_BRAVE_PRIVACY_NOTICE_URL" desc="URL for the Brave privacy notice" translateable="false">
         https://brave.com/privacy_android
       </message>

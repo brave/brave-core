@@ -174,6 +174,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings"));
         Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper")); // presubmit: ignore-long-line
+        Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings"));
@@ -892,6 +894,14 @@ public class BytecodeTest {
                         "mGoogleActivityControls"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/sync/settings/ManageSyncSettings", "mSyncEncryption"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/sync/settings/ManageSyncSettings", "mSyncEverything"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper", // presubmit: ignore-long-line
+                "mCallback"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper", // presubmit: ignore-long-line
+                "mFragmentManager"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator",
                         "mMediator"));
