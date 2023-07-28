@@ -16,11 +16,10 @@ from distutils.dir_util import copy_tree
 from enum import Enum
 from typing import List, Optional, Tuple
 
-from lib.util import extract_zip
-
 import components.path_util as path_util
 from components.common_options import CommonOptions
-from components.perf_test_utils import DownloadFile, GetProcessOutput
+from components.perf_test_utils import (DownloadArchiveAndUnpack, DownloadFile,
+                                        GetProcessOutput)
 
 
 def ToChromiumPlatform(target_os: str) -> str:
@@ -96,12 +95,6 @@ def _GetChromeDownloadUrl(version: ChromiumVersion,
                           chrome_platform: str) -> str:
   return ('https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/' +
           f'{str(version)}/{chrome_platform}/chrome-{chrome_platform}.zip')
-
-
-def _DownloadArchiveAndUnpack(output_directory: str, url: str):
-  _, f = tempfile.mkstemp(dir=output_directory)
-  DownloadFile(url, f)
-  extract_zip(f, output_directory)
 
 
 def _DownloadWinInstallerAndExtract(out_dir: str, url: str,
@@ -223,7 +216,7 @@ class BrowserType:
                                    'production', common_options.ci_mode)
 
   def GetBinaryPath(self, target_os: str) -> str:
-    if sys.platform == 'win32':
+    if target_os == 'windows':
       return os.path.join(self.name + '.exe')
 
     if target_os == 'mac':
@@ -298,7 +291,7 @@ class BraveBrowserTypeImpl(BrowserType):
     if target_os == 'mac':
       self._DownloadDmgAndExtract(tag, out_dir)
     else:
-      _DownloadArchiveAndUnpack(out_dir,
+      DownloadArchiveAndUnpack(out_dir,
                                 self._GetZipDownloadUrl(tag, target_os))
 
     return os.path.join(out_dir, self.GetBinaryPath(target_os))
@@ -405,7 +398,7 @@ class ChromeTestingBrowserTypeImpl(ChromeBrowserTypeImpl):
     version = tag.to_chromium_version(common_options.ci_mode)
     url = _GetChromeDownloadUrl(version, chrome_platform)
 
-    _DownloadArchiveAndUnpack(out_dir, url)
+    DownloadArchiveAndUnpack(out_dir, url)
     _FixUpUnpackedBrowser(out_dir)
     return os.path.join(out_dir, f'chrome-{chrome_platform}',
                         self.GetBinaryPath(common_options.target_os))

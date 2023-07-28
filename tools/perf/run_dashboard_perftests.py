@@ -53,6 +53,7 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
   log_format = '%(asctime)s: %(message)s'
   logging.basicConfig(level=log_level, format=log_format)
 
+  logging.info('Use working directory %s', options.working_directory)
   if not os.path.exists(options.working_directory):
     os.mkdir(options.working_directory)
   json_config = perf_test_utils.LoadJsonConfig(args.config,

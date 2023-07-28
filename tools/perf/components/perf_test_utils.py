@@ -10,6 +10,8 @@ from threading import Timer
 from typing import List, Optional, Tuple
 from urllib.request import urlopen
 
+from lib.util import extract_zip
+
 import components.path_util as path_util
 
 with path_util.SysPath(path_util.GetPyJson5Dir()):
@@ -92,6 +94,10 @@ def DownloadFile(url: str, output: str):
   with open(output, 'wb') as output_file:
     output_file.write(data)
 
+def DownloadArchiveAndUnpack(output_directory: str, url: str):
+  _, f = tempfile.mkstemp(dir=output_directory)
+  DownloadFile(url, f)
+  extract_zip(f, output_directory)
 
 def LoadJsonConfig(config: str, working_directory: str) -> dict:
   if config.startswith('https://'):
