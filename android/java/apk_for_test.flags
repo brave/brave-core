@@ -793,3 +793,12 @@
 -keep class org.chromium.chrome.browser.externalnav.BraveExternalNavigationHandler {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.tasks.tab_groups.TabGroupModelFilter {
+    *** mIsResetting;
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tasks.tab_groups.BraveTabGroupModelFilter {
+    public <init>(...);
+}

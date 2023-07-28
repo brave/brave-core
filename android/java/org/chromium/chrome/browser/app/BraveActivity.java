@@ -1894,14 +1894,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         String getSafeBrowsingApiKey();
     }
 
-    @Override
-    public void initializeCompositor() {
-        super.initializeCompositor();
-
-        BraveTabUiFeatureUtilities.maybeOverrideEnableTabGroupAutoCreationPreference(
-                ContextUtils.getApplicationContext());
-    }
-
     private void InitBraveWalletService() {
         if (mBraveWalletService != null) {
             return;

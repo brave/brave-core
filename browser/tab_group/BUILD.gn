@@ -1,0 +1,22 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/android/features/tab_ui/brave_tab_management_java_sources.gni")
+import("//build/config/android/config.gni")
+import("//build/config/android/rules.gni")
+import("//chrome/browser/buildflags.gni")
+
+android_library("java") {
+  sources = [ "java/src/org/chromium/chrome/browser/tasks/tab_groups/BraveTabGroupModelFilter.java" ]
+
+  deps = [
+    "//base:base_java",
+    "//chrome/browser/preferences:java",
+    "//chrome/browser/tab:java",
+    "//chrome/browser/tab_group:java",
+    "//chrome/browser/tabmodel:java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+  ]
+}
