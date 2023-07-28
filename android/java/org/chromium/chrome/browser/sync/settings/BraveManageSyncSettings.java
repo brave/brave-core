@@ -12,6 +12,8 @@ import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.device_reauth.DeviceAuthRequester;
+import org.chromium.chrome.browser.device_reauth.ReauthenticatorBridge;
 import org.chromium.components.browser_ui.settings.brave_tricks.checkbox_to_switch.ChromeBaseCheckBoxPreference;
 
 /**
@@ -24,6 +26,11 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
     private Preference mSyncEncryption;
 
     private ChromeBaseCheckBoxPreference mSyncPaymentsIntegration;
+
+    @Nullable
+    private ReauthenticatorBridge mReauthenticatorBridge;
+
+    private ChromeBaseCheckBoxPreference mPrefSyncPasswords;
 
     @VisibleForTesting
     @Override
@@ -60,5 +67,29 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
         findPreference(PREF_ADVANCED_CATEGORY).setVisible(false);
 
         mSyncPaymentsIntegration.setVisible(false);
+
+        mReauthenticatorBridge = ReauthenticatorBridge.create(
+                DeviceAuthRequester.PAYMENT_METHODS_REAUTH_IN_SETTINGS);
+        mPrefSyncPasswords = findPreference(PREF_SYNC_PASSWORDS);
+
+        Preference.OnPreferenceChangeListener origListner =
+                mPrefSyncPasswords.getOnPreferenceChangeListener();
+
+        mPrefSyncPasswords.setOnPreferenceChangeListener((Preference preference,
+                                                                 Object newValue) -> {
+            if ((Boolean) newValue == false) {
+                return origListner.onPreferenceChange(preference, newValue);
+            } else {
+                mReauthenticatorBridge.reauthenticate(success -> {
+                    if (success) {
+                        origListner.onPreferenceChange(preference, true); // <- not really worked
+
+                        mPrefSyncPasswords.setChecked(true);
+                    }
+                }, /*useLastValidAuth=*/false);
+
+                return false;
+            }
+        });
     }
 }
