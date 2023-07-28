@@ -22,7 +22,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.WalletDataFilesInstaller;
 
 /**
  * A fragment to display progress of Brave Wallet data files component
- * download. Used on all Brave Wallet Onboarding framgents.
+ * download. Used on all Brave Wallet Onboarding fragments.
  */
 public class DownloadComponentProgressFragment extends Fragment {
     private static final String TAG = "DCPF";
