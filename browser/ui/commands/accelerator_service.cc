@@ -296,6 +296,7 @@ void AcceleratorService::NotifyCommandsChanged(
     const std::vector<int>& modified_ids) {
   Accelerators changed;
   auto event = mojom::CommandsEvent::New();
+  const auto& unmodifiable = unmodifiable_;
 
   for (const auto& command_id : modified_ids) {
     const auto& changed_command = accelerators_[command_id];
@@ -305,7 +306,19 @@ void AcceleratorService::NotifyCommandsChanged(
         it == default_accelerators_.end() ? std::vector<ui::Accelerator>()
                                           : it->second,
         unmodifiable_);
-    changed[command_id] = changed_command;
+
+    // Oh dear...
+    // TODO(fallaciousreasoning): Clean this up & decide if this is actually
+    // what I should be doing Theory: When we add shortcuts for unmodifiable
+    // commands on macOS we're screwing things up, because those shortcuts are
+    // managed by OSX itself. Solution: Don't notify the shortcut listener about
+    // unmodifiable accelerators?
+    base::ranges::copy_if(changed_command,
+                          std::back_inserter(changed[command_id]),
+                          [unmodifiable](const ui::Accelerator& accelerator) {
+                            return !unmodifiable.contains(accelerator);
+                          });
+    // changed[command_id] = changed_command;
   }
 
   for (const auto& listener : mojo_listeners_) {
