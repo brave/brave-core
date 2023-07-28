@@ -17,6 +17,7 @@ import PlaylistsCatalog from '../components/playlistsCatalog'
 import Player from '../components/player'
 import { handlePlayerMessage } from '../playerApiSink'
 import { types } from '../constants/playlist_types'
+import ContextualMenuAnchorButton from '../components/contextualMenu'
 
 export default {
   title: 'Playlist/Components',
@@ -57,4 +58,29 @@ export const VideoPlayer = () => {
     data: mockData.at(0)?.items.at(0)
   })
   return <Player />
+}
+
+export const SampleContextualMenu = () => {
+  return (
+    <div style={{ float: 'right' }}>
+      <ContextualMenuAnchorButton
+        items={[
+          {
+            name: 'test',
+            iconName: 'trash',
+            onClick: () => {
+              window.alert('test')
+            }
+          },
+          {
+            name: 'looooooooooooooooooooong text this is really long',
+            iconName: 'cloud-off',
+            onClick: () => {
+              window.alert('looooooong text')
+            }
+          }
+        ]}
+      />
+    </div>
+  )
 }

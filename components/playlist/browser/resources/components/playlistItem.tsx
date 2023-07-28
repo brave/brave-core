@@ -9,6 +9,7 @@ import styled, { css } from 'styled-components'
 import { color, font } from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 import DefaultThumbnailIcon from '../assets/playlist-thumbnail-icon.svg'
+import ContextualMenuAnchorButton from './contextualMenu'
 
 interface Props {
   id: string
@@ -43,6 +44,7 @@ const PlaylistItemContainer = styled.li`
 `
 
 const ItemInfoContainer = styled.div`
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -87,8 +89,15 @@ export default function PlaylistItem ({
 
   React.useEffect(() => scrollToThisIfNeeded(), [])
 
+  const [hovered, setHovered] = React.useState(false)
+  const [showingMenu, setShowingMenu] = React.useState(false)
+
   return (
-    <PlaylistItemContainer onClick={() => onClick(id)}>
+    <PlaylistItemContainer
+      onClick={() => onClick(id)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={e => setHovered(false)}
+    >
       <a ref={anchorElem} href={`#${id}`} />
       {thumbnailUrl ? (
         <StyledThumbnail src={thumbnailUrl} />
@@ -105,6 +114,25 @@ export default function PlaylistItem ({
           </ItemDetailsContainer>
         }
       </ItemInfoContainer>
+      {(hovered || showingMenu) && (
+        <ContextualMenuAnchorButton
+          items={[
+            { name: 'Move', iconName: 'folder-exchange', onClick: () => {} },
+            {
+              name: 'Remove offline data',
+              iconName: 'cloud-off',
+              onClick: () => {}
+            },
+            {
+              name: 'Remove from playlist',
+              iconName: 'trash',
+              onClick: () => {}
+            }
+          ]}
+          onShowMenu={() => setShowingMenu(true)}
+          onDismissMenu={() => setShowingMenu(false)}
+        />
+      )}
     </PlaylistItemContainer>
   )
 }

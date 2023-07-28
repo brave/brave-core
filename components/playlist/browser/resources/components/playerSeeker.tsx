@@ -200,7 +200,7 @@ export default function PlayerSeeker ({ videoElement }: Props) {
 
   React.useEffect(() => {
     if (!videoElement) {
-      console.error(`Video element doesn't exist`)
+      // Can be null on start up.
       return
     }
 
@@ -223,12 +223,10 @@ export default function PlayerSeeker ({ videoElement }: Props) {
   React.useEffect(() => {
     const progressElem = progressElementRef.current
     if (!progressElem) {
-      console.error(`Progress element doesn't exist`)
       return
     }
 
     if (!videoElement) {
-      console.error(`Video element doesn't exist`)
       return
     }
 
