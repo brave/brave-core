@@ -69,9 +69,9 @@ import org.chromium.chrome.browser.omnibox.SearchEngineLogoUtils;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
+import org.chromium.chrome.browser.omnibox.styles.OmniboxImageSupplier;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteControllerProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
-import org.chromium.chrome.browser.omnibox.suggestions.FaviconFetcher;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
@@ -602,7 +602,7 @@ public class BytecodeTest {
                 TabModelSelector.class, ToolbarManager.class, View.class, AppMenuDelegate.class,
                 OneshotSupplier.class, OneshotSupplier.class, ObservableSupplier.class,
                 WebFeedSnackbarController.FeedLauncher.class, ModalDialogManager.class,
-                SnackbarManager.class, OneshotSupplier.class));
+                SnackbarManager.class, OneshotSupplier.class, Supplier.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/tabmodel/ChromeTabCreator",
                 "org/chromium/chrome/browser/tabmodel/BraveTabCreator", Activity.class,
                 WindowAndroid.class, Supplier.class, boolean.class, OverviewNTPCreator.class,
@@ -634,7 +634,8 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl",
                 Context.class, ActivityTabProvider.class, MultiWindowModeStateDispatcher.class,
                 TabModelSelector.class, ToolbarManager.class, View.class, OneshotSupplier.class,
-                OneshotSupplier.class, ObservableSupplier.class, OneshotSupplier.class));
+                OneshotSupplier.class, ObservableSupplier.class, OneshotSupplier.class,
+                Supplier.class));
         Assert.assertTrue(
                 constructorsMatch("org/chromium/chrome/browser/settings/SettingsLauncherImpl",
                         "org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl"));
@@ -668,12 +669,12 @@ public class BytecodeTest {
                 ActivityLifecycleDispatcher.class, TabModelSelector.class, boolean.class,
                 NewTabPageUma.class, boolean.class, NativePageHost.class, Tab.class, String.class,
                 BottomSheetController.class, Supplier.class, WindowAndroid.class, Supplier.class,
-                SettingsLauncher.class, HomeSurfaceTracker.class));
+                SettingsLauncher.class, HomeSurfaceTracker.class, ObservableSupplier.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
                 "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor",
-                Context.class, SuggestionHost.class, UrlBarDelegate.class, FaviconFetcher.class,
-                Supplier.class, Supplier.class));
+                Context.class, SuggestionHost.class, UrlBarDelegate.class,
+                OmniboxImageSupplier.class, Supplier.class, Supplier.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                 "org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator",
