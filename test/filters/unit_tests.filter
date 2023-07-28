@@ -367,6 +367,10 @@
 # This test fails because we disable page_image_service::kImageService feature.
 -NewTabPageModulesTest.MakeModuleIdNames
 
+# These tests fail because we disable
+# optimization_guide::features::kOptimizationGuideFetchingForSRP
+-ChromeHintsManagerFetchingTest.HintsFetched_*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*

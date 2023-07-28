@@ -237,6 +237,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &optimization_guide::features::kRemoteOptimizationGuideFetching,
     &optimization_guide::features::
         kRemoteOptimizationGuideFetchingAnonymousDataConsent,
+    &optimization_guide::features::kOptimizationGuideFetchingForSRP,
     &page_image_service::kImageService,
     &page_image_service::kImageServiceSuggestPoweredImages,
 #if !BUILDFLAG(IS_ANDROID)
