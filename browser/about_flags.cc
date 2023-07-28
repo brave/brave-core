@@ -261,6 +261,12 @@
       "the bottom of the New Tab Page, after a short delay.",              \
       kOsDesktop,                                                          \
       FEATURE_VALUE_TYPE(brave_news::features::kBraveNewsCardPeekFeature), \
+  },{                                                                      \
+      "brave-news-feed-update",                                            \
+      "Brave News Feed Update",                                            \
+      "Use the updated Brave News feed",                                   \
+      kOsDesktop,                                                          \
+      FEATURE_VALUE_TYPE(brave_news::features::kBraveNewsFeedUpdate),      \
   })
 
 #define BRAVE_FEDERATED_FEATURE_ENTRIES                                        \

@@ -36,6 +36,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/tip_panel_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
@@ -48,6 +49,7 @@
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter_ui.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui.h"
+#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/commands/common/features.h"
@@ -149,6 +151,10 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kBraveTipPanelHost &&
              brave_rewards::IsSupportedForProfile(profile)) {
     return new brave_rewards::TipPanelUI(web_ui);
+  } else if (base::FeatureList::IsEnabled(
+                 brave_news::features::kBraveNewsFeedUpdate) &&
+             host == kBraveNewsInternalsHost) {
+    return new BraveNewsInternalsUI(web_ui, url.host());
 #endif  // !BUILDFLAG(IS_ANDROID)
 #if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWelcomeHost && !profile->IsGuestSession()) {
@@ -204,6 +210,9 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
         url.path() == kWalletSendPagePath || url.path() == kWalletBuyPagePath ||
         url.path() == kWalletDepositPagePath)) ||
 #else
+      (base::FeatureList::IsEnabled(
+           brave_news::features::kBraveNewsFeedUpdate) &&
+       url.host_piece() == kBraveNewsInternalsHost) ||
       ((url.host_piece() == kWalletPanelHost ||
         url.host_piece() == kWalletPageHost) &&
        brave_wallet::IsAllowedForContext(profile)) ||

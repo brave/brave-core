@@ -25,6 +25,7 @@ const char kBraveRewardsPanelHost[] = "rewards-panel.top-chrome";
 const char kBraveTipPanelURL[] = "chrome://tip-panel.top-chrome";
 const char kBraveTipPanelHost[] = "tip-panel.top-chrome";
 const char kBraveNewTabJS[] = "brave_new_tab.js";
+const char kBraveNewsInternalsHost[] = "news-internals";
 const char kBraveUIRewardsURL[] = "chrome://rewards/";
 const char kBraveUIAdblockURL[] = "chrome://adblock/";
 const char kBraveUIWebcompatReporterURL[] = "chrome://webcompat/";
