@@ -159,6 +159,7 @@ export interface IsEip1559ChangedMutationArg {
 }
 
 interface GetFVMAddressArg {
+  coin: BraveWallet.CoinType | undefined
   isMainNet: boolean
   addresses: string[]
 }
@@ -1424,6 +1425,9 @@ export function createWalletApi () {
       //
       getFVMAddress: query<GetFVMAddressResult, GetFVMAddressArg>({
         queryFn: async (arg, api, extraOptions, baseQuery) => {
+          if (arg.coin !== BraveWallet.CoinType.FIL) {
+            return { data: undefined }
+          }
           try {
             const { braveWalletService } = baseQuery(undefined).data
             const convertResult = (await braveWalletService.convertFEVMToFVMAddress(arg.isMainNet, arg.addresses)).result
@@ -1432,7 +1436,7 @@ export function createWalletApi () {
             }
           } catch(error) {
             return {
-              error: `Unable to set default fiat currency to `
+              error: `Unable to getFVMAddress`
             }
           }
         }

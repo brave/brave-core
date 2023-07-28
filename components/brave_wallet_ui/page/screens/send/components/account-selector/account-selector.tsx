@@ -102,20 +102,14 @@ export const AccountSelector = (props: Props) => {
   [accountsByNetwork])
 
   const { data: fvmTranslatedAddresses } = useGetFVMAddressQuery(
-    selectedNetwork && selectedNetwork.coin === BraveWallet.CoinType.FIL && evmAddressesforFVMTranslation.length
+    selectedNetwork && evmAddressesforFVMTranslation.length
     ? {
+        coin: selectedNetwork.coin,
         addresses: evmAddressesforFVMTranslation,
         isMainNet: selectedNetwork.chainId === BraveWallet.FILECOIN_MAINNET
       }
     : skipToken
   )
-
-  const fvmTranslatedAddressesForNetwork = React.useMemo(() => {
-    if (!selectedNetwork || selectedNetwork.coin !== BraveWallet.CoinType.FIL) {
-      return undefined
-    }
-    return fvmTranslatedAddresses
-  }, [ selectedNetwork, fvmTranslatedAddresses, evmAddressesforFVMTranslation])
 
   // Hooks
   useOnClickOutside(
@@ -141,7 +135,7 @@ export const AccountSelector = (props: Props) => {
               isSelected={
                 account.accountId.uniqueKey === selectedAccountId?.uniqueKey
               }
-              accountAlias={fvmTranslatedAddressesForNetwork?.[account.accountId.address]}
+              accountAlias={fvmTranslatedAddresses?.[account.accountId.address]}
             />
           )}
         </DropDown>

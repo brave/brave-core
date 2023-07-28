@@ -69,6 +69,7 @@ export default function useSend (isSendTab?: boolean) {
   const [selectedSendAsset, setSelectedSendAsset] = React.useState<BraveWallet.BlockchainToken | undefined>(undefined)
   const [showFilecoinFEVMWarning, setShowFilecoinFEVMWarning] = React.useState<boolean>(false)
   const { data: fevmTranslatedAddresses } = useGetFVMAddressQuery({
+    coin: selectedSendAsset?.coin,
     addresses: [toAddressOrUrl],
     isMainNet: selectedSendAsset?.chainId === BraveWallet.FILECOIN_MAINNET})
 
