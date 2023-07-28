@@ -113,7 +113,6 @@ void OnSanitizedRampTokenLists(data_decoder::JsonSanitizer::Result result) {
   }
 
   auto parsedRampTokensListMaps = ParseRampTokenListMaps(*result);
-
   if (!parsedRampTokensListMaps) {
     VLOG(1) << "Can't parse on/off ramp token lists.";
     return;
@@ -286,7 +285,7 @@ void ParseOnRampListsAndUpdateRegistry(const base::FilePath& install_dir) {
     LOG(ERROR) << "Failed to get absolute install path.";
   }
 
-  HandleParseRampTokenLists(absolute_install_dir, "ramp-tokens-lists.json");
+  HandleParseRampTokenLists(absolute_install_dir, "ramp-tokens.json");
   HandleParseOnRampCurrenciesLists(absolute_install_dir,
                                    "on-ramp-currency-lists.json");
 }
