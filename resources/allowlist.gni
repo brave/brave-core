@@ -1,0 +1,29 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Allowlist file used by brave resources, created after merging chrome allowlist
+# and brave resources.
+brave_allowlist_file = "${root_gen_dir}/brave_resources_allowlist.txt"
+
+template("brave_allowlist") {
+  action(target_name) {
+    forward_variables_from(invoker,
+                           [
+                             "repack_allowlist",
+                             "brave_allowlist",
+                             "deps",
+                             "outputs",
+                           ])
+    script = "//brave//resources/brave_allowlist.py"
+    args = [
+      "--repack_allowlist",
+      rebase_path(repack_allowlist, root_build_dir),
+      "--brave_allowlist",
+      rebase_path(brave_allowlist, root_build_dir),
+      "--output",
+      rebase_path(outputs[0], root_build_dir),
+    ]
+  }
+}

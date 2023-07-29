@@ -18,7 +18,6 @@ source_set("status_tray") {
     "//brave/components/brave_vpn/common/win",
     "//brave/components/brave_vpn/common/wireguard/win",
     "//brave/components/resources:strings_grit",
-    "//chrome:packed_resources",
     "//ui/base",
     "//ui/native_theme",
     "//ui/native_theme:native_theme_browser",
