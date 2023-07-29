@@ -22,7 +22,6 @@
 #include "base/task/single_thread_task_executor.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/brave_vpn_tray_command_ids.h"
-#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/brave_vpn_tray_strings_en.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/resources/resource.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/icon_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/status_icon.h"
@@ -59,17 +58,19 @@ void OpenURLInBrowser(const char* url) {
 }
 
 std::u16string GetVpnStatusLabel(bool active) {
-  std::u16string label = brave::kBraveVpnStatusItemName;
-  label += (active ? brave::kBraveVpnActiveText : brave::kBraveVpnInactiveText);
-  return label;
+  return l10n_util::GetStringUTF16(
+      active ? IDS_BRAVE_VPN_WIREGUARD_TRAY_STATUS_ITEM_ACTIVE
+             : IDS_BRAVE_VPN_WIREGUARD_TRAY_STATUS_ITEM_INACTIVE);
 }
 
 std::u16string GetStatusIconTooltip(bool connected, bool error) {
   if (error) {
-    return brave::kBraveVpnIconTooltipError;
+    return l10n_util::GetStringUTF16(
+        IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_ERROR);
   }
-  return connected ? brave::kBraveVpnIconTooltipConnected
-                   : brave::kBraveVpnIconTooltip;
+  return l10n_util::GetStringUTF16(
+      connected ? IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_CONNECTED
+                : IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_DISCONNECTED);
 }
 
 gfx::ImageSkia GetStatusTrayIcon(bool connected, bool error) {
@@ -151,17 +152,24 @@ void StatusTrayRunner::OnMenuWillShow(ui::SimpleMenuModel* source) {
   source->SetEnabledAt(0, false);
   if (connected) {
     source->AddItem(IDC_BRAVE_VPN_TRAY_DISCONNECT_VPN_ITEM,
-                    brave::kBraveVpnDisconnectItemName);
+                    l10n_util::GetStringUTF16(
+                        IDS_BRAVE_VPN_WIREGUARD_TRAY_DISCONNECT_ITEM));
   } else {
-    source->AddItem(IDC_BRAVE_VPN_TRAY_CONNECT_VPN_ITEM,
-                    brave::kBraveVpnConnectItemName);
+    source->AddItem(
+        IDC_BRAVE_VPN_TRAY_CONNECT_VPN_ITEM,
+        l10n_util::GetStringUTF16(IDS_BRAVE_VPN_WIREGUARD_TRAY_CONNECT_ITEM));
   }
   source->AddSeparator(ui::NORMAL_SEPARATOR);
   source->AddItem(IDC_BRAVE_VPN_TRAY_MANAGE_ACCOUNT_ITEM,
-                  brave::kBraveVpnManageAccountItemName);
-  source->AddItem(IDC_BRAVE_VPN_TRAY_ABOUT_ITEM, brave::kBraveVpnAboutItemName);
+                  l10n_util::GetStringUTF16(
+                      IDS_BRAVE_VPN_WIREGUARD_TRAY_MANAGE_ACCOUNT_ITEM));
+  source->AddItem(
+      IDC_BRAVE_VPN_TRAY_ABOUT_ITEM,
+      l10n_util::GetStringUTF16(IDS_BRAVE_VPN_WIREGUARD_TRAY_ABOUT_ITEM));
   source->AddSeparator(ui::NORMAL_SEPARATOR);
-  source->AddItem(IDC_BRAVE_VPN_TRAY_EXIT_ICON, brave::kBraveVpnRemoveItemName);
+  source->AddItem(
+      IDC_BRAVE_VPN_TRAY_EXIT_ICON,
+      l10n_util::GetStringUTF16(IDS_BRAVE_VPN_WIREGUARD_TRAY_REMOVE_ICON_ITEM));
 }
 
 void StatusTrayRunner::OnConnected(bool success) {
