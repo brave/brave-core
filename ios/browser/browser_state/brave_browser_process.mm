@@ -35,6 +35,7 @@ BraveBrowserProcess::local_data_files_service() {
     local_data_files_service_ =
         brave_component_updater::LocalDataFilesServiceFactory(
             brave_component_updater_delegate());
+    local_data_files_service_.get()->Start();
   }
   return local_data_files_service_.get();
 }

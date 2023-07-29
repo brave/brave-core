@@ -7,5 +7,7 @@ source_set("url_sanitizer") {
   deps = [
     "//base",
     "//brave/components/url_sanitizer/browser",
+    "//net",
+    "//url",
   ]
 }

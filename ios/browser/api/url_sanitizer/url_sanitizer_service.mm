@@ -4,7 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
+
+#include <string>
 #include "brave/ios/browser/api/url_sanitizer/url_sanitizer_service+private.h"
+#import "net/base/mac/url_conversions.h"
+#include "url/gurl.h"
 
 @interface URLSanitizerService () {
   brave::URLSanitizerService* urlSanitizer_;
@@ -24,7 +28,9 @@
 }
 
 - (NSURL*)sanitizedURL:(NSURL*)url {
-  return url;
+  GURL gurl = net::GURLWithNSURL(url);
+  GURL cleanURL = urlSanitizer_->SanitizeURL(gurl);
+  return net::NSURLWithGURL(cleanURL);
 }
 
 @end
