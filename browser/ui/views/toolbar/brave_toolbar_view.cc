@@ -177,7 +177,6 @@ void BraveToolbarView::Init() {
         base::BindRepeating(&BraveToolbarView::UpdateHorizontalPadding,
                             base::Unretained(this)));
 #endif  // BUILDFLAG(IS_LINUX)
-    UpdateHorizontalPadding();
   }
 
   const auto callback = [](Browser* browser, int command,
@@ -227,6 +226,7 @@ void BraveToolbarView::Init() {
 #endif
 
   brave_initialized_ = true;
+  UpdateHorizontalPadding();
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
