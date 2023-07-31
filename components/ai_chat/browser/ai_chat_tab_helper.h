@@ -18,6 +18,7 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "services/data_decoder/public/cpp/data_decoder.h"
 
 class PrefService;
 
@@ -130,6 +131,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   std::string BuildLlama2GenerateQuestionsPrompt(bool is_video,
                                                  const std::string content);
   mojom::AutoGenerateQuestionsPref GetAutoGeneratePref();
+  data_decoder::DataDecoder* GetDataDecoder();
 
   raw_ptr<PrefService> pref_service_;
   std::unique_ptr<AIChatAPI> ai_chat_api_ = nullptr;
@@ -149,6 +151,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // Store the unique ID for each navigation so that
   // we can ignore API responses for previous navigations.
   int64_t current_navigation_id_;
+  std::unique_ptr<data_decoder::DataDecoder> data_decoder_;
 
   base::WeakPtrFactory<AIChatTabHelper> weak_ptr_factory_{this};
   WEB_CONTENTS_USER_DATA_KEY_DECL();

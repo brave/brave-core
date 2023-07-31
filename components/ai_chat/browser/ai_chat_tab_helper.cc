@@ -786,6 +786,14 @@ void AIChatTabHelper::WebContentsDestroyed() {
       ->RemoveObserver(this);
 }
 
+data_decoder::DataDecoder* AIChatTabHelper::GetDataDecoder() {
+  if (!data_decoder_) {
+    VLOG(1) << "Creating DataDecoder for APIRequestHelper";
+    data_decoder_ = std::make_unique<data_decoder::DataDecoder>();
+  }
+  return data_decoder_.get();
+}
+
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);
 
 }  // namespace ai_chat
