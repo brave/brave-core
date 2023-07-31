@@ -96,6 +96,7 @@ enum SolanaProviderError {
 
   kUserRejectedRequest = ProviderError.kUserRejectedRequest,
   kUnauthorized = ProviderError.kUnauthorized,
+  kResourceUnavailable = ProviderError.kResourceUnavailable,
 
   // Pre-defined error codes specified in
   // https://www.jsonrpc.org/specification#error_object
