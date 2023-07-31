@@ -5,10 +5,10 @@
 
 import * as React from 'react'
 
-import { getLocale } from '$web-common/locale'
-import styles from './style.module.scss'
-import Icon from '@brave/leo/react/icon'
 import classnames from 'classnames'
+import { getLocale } from '$web-common/locale'
+import Icon from '@brave/leo/react/icon'
+import styles from './style.module.scss'
 
 interface InputBoxProps {
   onInputChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
@@ -20,7 +20,7 @@ interface InputBoxProps {
   onHandleAgreeClick: Function
 }
 
-const MAX_INPUT_CHAR = 340000 * 0.80
+const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.80
 
 function InputBox (props: InputBoxProps) {
