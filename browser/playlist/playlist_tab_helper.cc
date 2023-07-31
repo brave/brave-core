@@ -202,20 +202,19 @@ void PlaylistTabHelper::UpdateSavedItemFromCurrentContents() {
   // perf improvement? We'll see this really matters.
 
   bool should_notify = false;
-  base::ranges::for_each(service_->GetAllPlaylistItems(),
-                         [this, &should_notify](const auto& item) {
-                           const auto& current_url =
-                               web_contents()->GetVisibleURL();
-                           if (item->page_source != current_url) {
-                             return;
-                           }
+  base::ranges::for_each(
+      service_->GetAllPlaylistItems(),
+      [this, &should_notify](const auto& item) {
+        const auto& current_url = web_contents()->GetVisibleURL();
+        if (item->page_source != current_url) {
+          return;
+        }
 
-                           DVLOG(2) << __FUNCTION__ << " "
-                                    << item->page_source.spec() << " "
-                                    << item->media_source.spec();
-                           saved_items_.push_back(item->Clone());
-                           should_notify = true;
-                         });
+        DVLOG(2) << __FUNCTION__ << " " << item->page_source.spec() << " "
+                 << item->media_source.spec();
+        saved_items_.push_back(item->Clone());
+        should_notify = true;
+      });
 
   if (!should_notify) {
     return;
@@ -250,9 +249,21 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
 
   DVLOG(2) << __FUNCTION__ << " item count : " << items.size();
 
-  found_items_.insert(found_items_.end(),
-                      std::make_move_iterator(items.begin()),
-                      std::make_move_iterator(items.end()));
+  base::flat_map<std::string, mojom::PlaylistItemPtr*> already_found_items;
+  for (auto& item : found_items_) {
+    already_found_items.insert({item->media_source.spec(), &item});
+  }
+
+  for (auto& new_item : items) {
+    const auto media_source = new_item->media_source.spec();
+    if (base::Contains(already_found_items, media_source)) {
+      DVLOG(2) << "The media source with url (" << media_source
+               << ") already exists so update the data";
+      (*already_found_items.at(media_source)) = std::move(new_item);
+    } else {
+      found_items_.push_back(std::move(new_item));
+    }
+  }
 
   for (auto& observer : observers_) {
     observer.OnFoundItemsChanged(found_items_);
