@@ -32,23 +32,23 @@ constexpr bool IsBuiltinTrackedInPageGraph(const char* name) {
 static_assert(false, "BUILTIN macro is expected to be defined");
 #endif
 #undef BUILTIN
-#define BUILTIN(name)                                                       \
-  V8_WARN_UNUSED_RESULT static Object Builtin_Impl_##name(                  \
-      BuiltinArguments args, Isolate* isolate);                             \
-                                                                            \
-  V8_WARN_UNUSED_RESULT Address Builtin_##name(                             \
-      int args_length, Address* args_object, Isolate* isolate) {            \
-    DCHECK(isolate->context().is_null() || isolate->context().IsContext()); \
-    BuiltinArguments args(args_length, args_object);                        \
-    Object result = Builtin_Impl_##name(args, isolate);                     \
-    if (V8_UNLIKELY(IsBuiltinTrackedInPageGraph(#name)) &&                  \
-        V8_UNLIKELY(isolate->page_graph_delegate())) {                      \
-      ReportBuiltinCallAndResponse(isolate, #name, args, result);           \
-    }                                                                       \
-    return BUILTIN_CONVERT_RESULT(result);                                  \
-  }                                                                         \
-                                                                            \
-  V8_WARN_UNUSED_RESULT static Object Builtin_Impl_##name(                  \
+#define BUILTIN(name)                                                      \
+  V8_WARN_UNUSED_RESULT static Object Builtin_Impl_##name(                 \
+      BuiltinArguments args, Isolate* isolate);                            \
+                                                                           \
+  V8_WARN_UNUSED_RESULT Address Builtin_##name(                            \
+      int args_length, Address* args_object, Isolate* isolate) {           \
+    DCHECK(isolate->context().is_null() || IsContext(isolate->context())); \
+    BuiltinArguments args(args_length, args_object);                       \
+    Object result = Builtin_Impl_##name(args, isolate);                    \
+    if (V8_UNLIKELY(IsBuiltinTrackedInPageGraph(#name)) &&                 \
+        V8_UNLIKELY(isolate->page_graph_delegate())) {                     \
+      ReportBuiltinCallAndResponse(isolate, #name, args, result);          \
+    }                                                                      \
+    return BUILTIN_CONVERT_RESULT(result);                                 \
+  }                                                                        \
+                                                                           \
+  V8_WARN_UNUSED_RESULT static Object Builtin_Impl_##name(                 \
       BuiltinArguments args, Isolate* isolate)
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH_WEBAPI_PROBES)
