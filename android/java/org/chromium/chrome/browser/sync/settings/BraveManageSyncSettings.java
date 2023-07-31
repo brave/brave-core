@@ -71,59 +71,48 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
 
         mSyncPaymentsIntegration.setVisible(false);
 
-        // Below
         mReauthenticatorBridge = ReauthenticatorBridge.create(
                 DeviceAuthRequester.PAYMENT_METHODS_REAUTH_IN_SETTINGS);
         mPrefSyncPasswords = findPreference(PREF_SYNC_PASSWORDS);
 
-        Preference.OnPreferenceChangeListener origSyncPasswordsListner =
-                mPrefSyncPasswords.getOnPreferenceChangeListener();
-
-        mPrefSyncPasswords.setOnPreferenceChangeListener((Preference preference,
-                                                                 Object newValue) -> {
-            if ((Boolean) newValue) {
-                if (mReauthenticatorBridge.canUseAuthenticationWithBiometricOrScreenLock()) {
-                    mReauthenticatorBridge.reauthenticate(success -> {
-                        if (success) {
-                            // We need both lines below
-                            origSyncPasswordsListner.onPreferenceChange(preference, true);
-                            mPrefSyncPasswords.setChecked(true);
-                        }
-                    }, /*useLastValidAuth=*/false);
-                } else {
-                    showScreenLockToast();
-                }
-                return false;
-            } else {
-                return origSyncPasswordsListner.onPreferenceChange(preference, newValue);
-            }
-        });
-
-        Preference.OnPreferenceChangeListener origSyncAllListner =
-                mSyncEverything.getOnPreferenceChangeListener();
-
-        mSyncEverything.setOnPreferenceChangeListener((Preference preference, Object newValue) -> {
-            if ((Boolean) newValue) {
-                if (mReauthenticatorBridge.canUseAuthenticationWithBiometricOrScreenLock()) {
-                    mReauthenticatorBridge.reauthenticate(success -> {
-                        if (success) {
-                            origSyncAllListner.onPreferenceChange(preference, true);
-                            mSyncEverything.setChecked(true);
-                        }
-                    }, /*useLastValidAuth=*/false);
-                } else {
-                    showScreenLockToast();
-                }
-                return false;
-            } else {
-                return origSyncAllListner.onPreferenceChange(preference, newValue);
-            }
-        });
+        overrideWithAuthConfirmationSyncPasswords();
+        overrideWithAuthConfirmationSyncEverything();
     }
 
-    public void showScreenLockToast() {
+    private void showScreenLockToast() {
         Toast.makeText(ContextUtils.getApplicationContext(),
                      R.string.password_sync_type_set_screen_lock, Toast.LENGTH_LONG)
                 .show();
+    }
+
+    private void overrideWithAuthConfirmationSyncPasswords() {
+        overrideWithAuthConfirmation(mPrefSyncPasswords);
+    }
+
+    private void overrideWithAuthConfirmationSyncEverything() {
+        overrideWithAuthConfirmation(mSyncEverything);
+    }
+
+    private void overrideWithAuthConfirmation(ChromeSwitchPreference control) {
+        Preference.OnPreferenceChangeListener origSyncListner =
+                control.getOnPreferenceChangeListener();
+
+        control.setOnPreferenceChangeListener((Preference preference, Object newValue) -> {
+            if ((Boolean) newValue) {
+                if (mReauthenticatorBridge.canUseAuthenticationWithBiometricOrScreenLock()) {
+                    mReauthenticatorBridge.reauthenticate(success -> {
+                        if (success) {
+                            origSyncListner.onPreferenceChange(preference, true);
+                            control.setChecked(true);
+                        }
+                    }, /*useLastValidAuth=*/false);
+                } else {
+                    showScreenLockToast();
+                }
+                return false;
+            } else {
+                return origSyncListner.onPreferenceChange(preference, newValue);
+            }
+        });
     }
 }
