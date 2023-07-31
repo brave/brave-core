@@ -15,7 +15,7 @@ import { useUnsafeWalletSelector } from '../../../../../common/hooks/use-safe-se
 import { WalletActions } from '../../../../../common/actions/'
 
 // Types
-import { BraveWallet, WalletAccountType, CoinTypesMap, SendOptionTypes } from '../../../../../constants/types'
+import { BraveWallet, WalletAccountType, CoinTypesMap, SendPageTabHashes } from '../../../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../../../common/locale'
@@ -54,7 +54,7 @@ import { Wrapper, Modal, ScrollContainer, AccountSection } from './select-tokenm
 
 interface Props {
   onClose: () => void
-  selectedSendOption: SendOptionTypes
+  selectedSendOption: SendPageTabHashes
   selectSendAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
 }
 
@@ -119,7 +119,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     }, [getTokenListByAccount])
 
     const getTokensBySelectedSendOption = React.useCallback((account: WalletAccountType) => {
-      if (selectedSendOption === 'nft') {
+      if (selectedSendOption === SendPageTabHashes.nft) {
         return getTokenListWithBalances(account).filter(token =>
           token.isErc721 || token.isNft || token.isErc1155)
       }
@@ -218,7 +218,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     }, [accounts, getTokensBySearchValue])
 
     const modalTitle = React.useMemo(() => {
-      if (selectedSendOption === 'nft') {
+      if (selectedSendOption === SendPageTabHashes.nft) {
         return getLocale('braveWalletSendTabSelectNFTTitle')
       }
       return getLocale('braveWalletSendTabSelectTokenTitle')
@@ -245,7 +245,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             >
               {account.name}
             </Text>
-            {selectedSendOption === 'token' &&
+            {selectedSendOption === SendPageTabHashes.token &&
               <Text
                 textColor='text03'
                 textSize='14px'
@@ -297,7 +297,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             <NetworkFilterWithSearch
               searchValue={searchValue}
               searchPlaceholder={
-                selectedSendOption === 'token'
+                selectedSendOption === SendPageTabHashes.token
                   ? getLocale('braveWalletSearchTokens')
                   : getLocale('braveWalletSearchNFTs')
               }

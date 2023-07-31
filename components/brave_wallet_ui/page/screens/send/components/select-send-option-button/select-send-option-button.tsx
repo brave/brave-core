@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // Types
-import { SendOptionTypes } from '../../../../../constants/types'
+import { SendPageTabHashes } from '../../../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../../../common/locale'
@@ -15,8 +15,8 @@ import { getLocale } from '../../../../../../common/locale'
 import { ButtonsContainer, Button } from './select-send-option-button.style'
 
 interface Props {
-  selectedSendOption: SendOptionTypes
-  onClick: (sendOption: SendOptionTypes) => void
+  selectedSendOption: SendPageTabHashes
+  onClick: (sendOption: SendPageTabHashes) => void
 }
 
 export const SelectSendOptionButton = (props: Props) => {
@@ -25,15 +25,15 @@ export const SelectSendOptionButton = (props: Props) => {
   return (
     <ButtonsContainer>
       <Button
-        isSelected={selectedSendOption === 'token'}
-        onClick={() => onClick('token')}
+        isSelected={selectedSendOption === SendPageTabHashes.token}
+        onClick={() => onClick('#token')}
         buttonAlign='left'
       >
         {getLocale('braveWalletSendToken')}
       </Button>
       <Button
-        isSelected={selectedSendOption === 'nft'}
-        onClick={() => onClick('nft')}
+        isSelected={selectedSendOption === SendPageTabHashes.nft}
+        onClick={() => onClick('#nft')}
         buttonAlign='right'
       >
         {getLocale('braveWalletSendNFT')}
