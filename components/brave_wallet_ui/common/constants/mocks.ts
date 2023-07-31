@@ -27,7 +27,8 @@ export const getMockedTransactionInfo =
     return {
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
       id: '1',
-      fromAddress: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
+      fromAddress: mockEthAccountInfo.address,
+      fromAccountId: mockEthAccountInfo.accountId,
       txHash: '',
       txDataUnion: {
         ethTxData1559: {
@@ -416,6 +417,7 @@ export const mockSolDappSignAndSendTransactionRequest: SerializableTransactionIn
   chainId: '0x67',
   id: 'e1eae32d-5bc2-40ac-85e5-2a4a5fbe8a5f',
   fromAddress: mockSolanaAccount.address,
+  fromAccountId: mockSolanaAccount.accountId,
   txHash: '',
   txDataUnion: {
     ethTxData: undefined,

@@ -140,7 +140,6 @@ public class SendModel {
 
         final FilTxData filTxData = new FilTxData();
         filTxData.to = toAddress;
-        filTxData.from = fromAddress;
         try {
             filTxData.value = Utils.multiplyByDecimals(amount, token.decimals).toString();
         } catch (ParseException parseException) {

@@ -111,6 +111,47 @@ class TxStateManagerUnitTest : public testing::Test {
   std::unique_ptr<TxStateManager> tx_state_manager_;
 };
 
+TEST_F(TxStateManagerUnitTest, ConvertFromAddress) {
+  // Setup transaction.
+  EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
+  meta.set_id("001");
+  meta.set_chain_id(mojom::kMainnetChainId);
+  EXPECT_FALSE(GetTxs());
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
+  EXPECT_TRUE(GetTxs());
+
+  auto txs = GetTxs();
+  ASSERT_TRUE(txs);
+  const base::Value::Dict* value =
+      txs->GetDict().FindDictByDottedPath("ethereum.mainnet.001");
+  ASSERT_TRUE(value);
+
+  // Transaction is stored with account id.
+  EXPECT_FALSE(value->FindString("from"));
+  EXPECT_EQ(*value->FindString("from_account_id"), eth_account_id_->unique_key);
+  auto meta_from_value = tx_state_manager_->ValueToTxMeta(*value);
+  ASSERT_TRUE(meta_from_value);
+  EXPECT_EQ(eth_account_id_,
+            static_cast<EthTxMeta*>(meta_from_value.get())->from());
+
+  // Make a transaction clone.
+  auto legacy_value = value->Clone();
+
+  // Can't convert to meta if has neither from_account_id nor from fields.
+  legacy_value.Remove("from_account_id");
+  EXPECT_FALSE(tx_state_manager_->ValueToTxMeta(legacy_value));
+
+  // Can't convert to meta if has unknown address.
+  legacy_value.Set("from", "0x3535353535353535353535353535353535353535");
+  EXPECT_FALSE(tx_state_manager_->ValueToTxMeta(legacy_value));
+
+  // Convert to meta if has a known address.
+  legacy_value.Set("from", eth_account_id_->address);
+  EXPECT_TRUE(tx_state_manager_->ValueToTxMeta(legacy_value));
+  EXPECT_EQ(eth_account_id_,
+            tx_state_manager_->ValueToTxMeta(legacy_value)->from());
+}
+
 TEST_F(TxStateManagerUnitTest, TxOperations) {
   EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
   meta.set_id("001");

@@ -75,6 +75,7 @@ class TxStateManager {
   raw_ptr<PrefService> prefs_ = nullptr;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(TxStateManagerUnitTest, ConvertFromAddress);
   FRIEND_TEST_ALL_PREFIXES(TxStateManagerUnitTest, TxOperations);
   FRIEND_TEST_ALL_PREFIXES(EthTxManagerUnitTest, Reset);
 

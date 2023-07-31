@@ -11,6 +11,7 @@ import {
   AppsListType,
   BraveWallet,
   PanelTypes,
+  SerializableTransactionInfo,
   UIState,
   WalletState
 } from '../constants/types'
@@ -76,11 +77,27 @@ export default {
   }
 }
 
-const transactionDummyData = [
+const mockEthAccountId = (
+  address: string
+): { fromAddress: string; fromAccountId: BraveWallet.AccountId } => {
+  return {
+    fromAddress: address,
+    fromAccountId: {
+      coin: BraveWallet.CoinType.ETH,
+      keyringId: BraveWallet.KeyringId.kDefault,
+      kind: BraveWallet.AccountKind.kDerived,
+      address: address,
+      bitcoinAccountIndex: 0,
+      uniqueKey: `${address}_id`
+    }
+  }
+}
+
+const transactionDummyData: SerializableTransactionInfo[][] = [
   [
     {
       chainId: '',
-      fromAddress: 'ETHEREUM ACCOUNT 1',
+      ...mockEthAccountId('0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf5AAAA'),
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
         ethTxData1559: {
@@ -117,7 +134,7 @@ const transactionDummyData = [
     },
     {
       chainId: '',
-      fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+      ...mockEthAccountId('0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14'),
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
         ethTxData1559: {
@@ -154,7 +171,7 @@ const transactionDummyData = [
     },
     {
       chainId: '',
-      fromAddress: '0x7843981e0b96135073b26043ea24c950d4ec385b',
+      ...mockEthAccountId('0x7843981e0b96135073b26043ea24c950d4ec385b'),
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
         ethTxData1559: {
@@ -191,7 +208,7 @@ const transactionDummyData = [
     },
     {
       chainId: '',
-      fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+      ...mockEthAccountId('0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14'),
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
         ethTxData1559: {
@@ -228,7 +245,7 @@ const transactionDummyData = [
     },
     {
       chainId: '',
-      fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+      ...mockEthAccountId('0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14'),
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
         ethTxData1559: {
@@ -267,7 +284,7 @@ const transactionDummyData = [
   [
     {
       chainId: '',
-      fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
+      ...mockEthAccountId('0x73A29A1da97149722eB09c526E4eAd698895bDCf'),
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
         ethTxData1559: {
@@ -304,7 +321,7 @@ const transactionDummyData = [
     },
     {
       chainId: '',
-      fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
+      ...mockEthAccountId('0x73A29A1da97149722eB09c526E4eAd698895bDCf'),
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
         ethTxData1559: {
