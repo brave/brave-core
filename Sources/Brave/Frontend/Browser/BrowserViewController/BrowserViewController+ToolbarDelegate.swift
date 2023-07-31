@@ -16,6 +16,7 @@ import os.log
 import BraveWallet
 import Preferences
 import CertificateUtilities
+import AVFoundation
 
 // MARK: - TopToolbarDelegate
 
@@ -539,6 +540,9 @@ extension BrowserViewController: TopToolbarDelegate {
         guard let self else { return }
         
         if finalizedRecognition.status {
+          // Feedback indicating recognition is finalized
+          AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+          UIImpactFeedbackGenerator(style: .medium).bzzt()
           stopVoiceSearch(searchQuery: finalizedRecognition.searchQuery)
         }
       }

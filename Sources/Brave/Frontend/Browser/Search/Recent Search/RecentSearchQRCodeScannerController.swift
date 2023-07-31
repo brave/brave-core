@@ -47,6 +47,10 @@ class RecentSearchQRCodeScannerController: UIViewController {
 
     scannerView.cameraView.scanCallback = { [weak self] string in
       guard let self = self, !string.isEmpty, !self.didScan else { return }
+      // Feedback indicating code scan is finalized
+      AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+      UIImpactFeedbackGenerator(style: .medium).bzzt()
+      
       self.didScan = true
       self.onDidScan(string)
       self.dismiss(animated: true, completion: nil)
