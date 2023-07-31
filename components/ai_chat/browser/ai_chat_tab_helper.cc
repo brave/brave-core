@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/containers/contains.h"
+#include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/ranges/algorithm.h"
@@ -34,8 +35,8 @@ using ai_chat::mojom::ConversationTurn;
 using ai_chat::mojom::ConversationTurnVisibility;
 
 namespace {
-static const char* kAllowedSchemes[] = {url::kHttpsScheme, url::kHttpScheme,
-                                        url::kFileScheme, url::kDataScheme};
+auto kAllowedSchemes = base::MakeFixedFlatSet<base::StringPiece>(
+    {url::kHttpsScheme, url::kHttpScheme, url::kFileScheme, url::kDataScheme});
 }  // namespace
 
 namespace ai_chat {
