@@ -145,8 +145,6 @@ public class BraveComponentUpdater {
             crxUpdateItem.mState = result.getInt("state");
         } catch (JSONException e) {
             Log.e(TAG, "getUpdateState JSONException error ", e);
-        } catch (IllegalStateException e) {
-            Log.e(TAG, "getUpdateState IllegalStateException error ", e);
         }
 
         return crxUpdateItem;
