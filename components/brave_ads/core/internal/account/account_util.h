@@ -18,8 +18,6 @@ bool UserHasOptedInToBraveNewsAds();
 bool UserHasOptedInToNewTabPageAds();
 bool UserHasOptedInToNotificationAds();
 
-void ResetRewards(ResetRewardsCallback callback);
-
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ACCOUNT_UTIL_H_

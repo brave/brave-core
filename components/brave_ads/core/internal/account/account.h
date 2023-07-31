@@ -116,7 +116,6 @@ class Account final : public AdsClientNotifierObserver,
 
   void NotifyDidInitializeWallet(const WalletInfo& wallet) const;
   void NotifyFailedToInitializeWallet() const;
-  void NotifyWalletDidChange(const WalletInfo& wallet) const;
 
   void NotifyDidProcessDeposit(const TransactionInfo& transaction) const;
   void NotifyFailedToProcessDeposit(

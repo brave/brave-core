@@ -22,9 +22,6 @@ class AccountObserver : public base::CheckedObserver {
   // Invoked when the |wallet| did initialize.
   virtual void OnDidInitializeWallet(const WalletInfo& wallet) {}
 
-  // Invoked when the |wallet| has changed.
-  virtual void OnWalletDidChange(const WalletInfo& wallet) {}
-
   // Invoked if the wallet is invalid.
   virtual void OnFailedToInitializeWallet() {}
 
