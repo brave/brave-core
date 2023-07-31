@@ -91,6 +91,40 @@ base::flat_set<std::unique_ptr<URLSanitizerService::MatchItem>> ParseFromJson(
   return matchers;
 }
 
+// FIXME: merge with
+// browser/net/brave_site_hacks_network_delegate_helper.cc::StripQueryParameter()
+// Remove tracking query parameters from a GURL, leaving all
+// other parts untouched.
+std::string StripParameters(const std::string& query,
+                            const base::flat_set<std::string>& trackers) {
+  // We are using custom query string parsing code here. See
+  // https://github.com/brave/brave-core/pull/13726#discussion_r897712350
+  // for more information on why this approach was selected.
+  //
+  // Split query string by ampersands, remove tracking parameters,
+  // then join the remaining query parameters, untouched, back into
+  // a single query string.
+  const std::vector<std::string> input_kv_strings =
+      SplitString(query, "&", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+  std::vector<std::string> output_kv_strings;
+  int disallowed_count = 0;
+  for (const std::string& kv_string : input_kv_strings) {
+    const std::vector<std::string> pieces = SplitString(
+        kv_string, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+    const std::string& key = pieces.empty() ? std::string() : pieces[0];
+    if (pieces.size() >= 2 && trackers.count(key) == 1) {
+      ++disallowed_count;
+    } else {
+      output_kv_strings.push_back(kv_string);
+    }
+  }
+  if (disallowed_count > 0) {
+    return base::JoinString(output_kv_strings, "&");
+  } else {
+    return query;
+  }
+}
+
 }  // namespace
 
 URLSanitizerService::URLSanitizerService() = default;
@@ -142,39 +176,17 @@ void URLSanitizerService::OnRulesReady(const std::string& json_content) {
   Initialize(json_content);
 }
 
-// FIXME: merge with
-// browser/net/brave_site_hacks_network_delegate_helper.cc::StripQueryParameter()
-// Remove tracking query parameters from a GURL, leaving all
-// other parts untouched.
 std::string URLSanitizerService::StripQueryParameter(
     const std::string& query,
     const base::flat_set<std::string>& trackers) {
-  // We are using custom query string parsing code here. See
-  // https://github.com/brave/brave-core/pull/13726#discussion_r897712350
-  // for more information on why this approach was selected.
-  //
-  // Split query string by ampersands, remove tracking parameters,
-  // then join the remaining query parameters, untouched, back into
-  // a single query string.
-  const std::vector<std::string> input_kv_strings =
-      SplitString(query, "&", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-  std::vector<std::string> output_kv_strings;
-  int disallowed_count = 0;
-  for (const std::string& kv_string : input_kv_strings) {
-    const std::vector<std::string> pieces = SplitString(
-        kv_string, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-    const std::string& key = pieces.empty() ? std::string() : pieces[0];
-    if (pieces.size() >= 2 && trackers.count(key) == 1) {
-      ++disallowed_count;
-    } else {
-      output_kv_strings.push_back(kv_string);
-    }
+  const std::vector<std::string> input_queries =
+      SplitString(query, "?", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+  std::vector<std::string> output_query_strings;
+  for (const std::string& query_string : input_queries) {
+    auto sanitized_query = StripParameters(query_string, trackers);
+    output_query_strings.push_back(sanitized_query);
   }
-  if (disallowed_count > 0) {
-    return base::JoinString(output_kv_strings, "&");
-  } else {
-    return query;
-  }
+  return base::JoinString(output_query_strings, "?");
 }
 
 }  // namespace brave

@@ -110,6 +110,32 @@ TEST_F(URLSanitizerServiceUnitTest, ClearURLS) {
       GURL("https://dev-pages.bravesoftware.com/clean-urls/"
            "?brave_testing3=keep&&;b&d&e=&f=g&=end"));
 
+  EXPECT_EQ(
+      SanitizeURL(GURL(
+          "https://dev-pages.bravesoftware.com/clean-urls/"
+          "?brave_testing1=foo&brave_testing2=bar&brave_testing3=keep&&;b&d&"
+          "utm_content=removethis&e=&f=g&=end?utm_content=removethis")),
+      GURL("https://dev-pages.bravesoftware.com/clean-urls/"
+           "?brave_testing3=keep&&;b&d&e=&f=g&=end?"));
+
+  EXPECT_EQ(
+      SanitizeURL(GURL(
+          "https://dev-pages.bravesoftware.com/clean-urls/"
+          "?brave_testing1=foo&brave_testing2=bar&brave_testing3=keep&&;b&d&"
+          "utm_content=removethis&e=&f=g&=end?utm_content=removethis&"
+          "utm_content=removethis")),
+      GURL("https://dev-pages.bravesoftware.com/clean-urls/"
+           "?brave_testing3=keep&&;b&d&e=&f=g&=end?"));
+
+  EXPECT_EQ(
+      SanitizeURL(GURL(
+          "https://dev-pages.bravesoftware.com/clean-urls/"
+          "?brave_testing1=foo&brave_testing2=bar&brave_testing3=keep&&;b&d&"
+          "utm_content=removethis&e=&f=g&=end?utm_content=removethis"
+          "&keep=this")),
+      GURL("https://dev-pages.bravesoftware.com/clean-urls/"
+           "?brave_testing3=keep&&;b&d&e=&f=g&=end?keep=this"));
+
   WaitInitialization(R"([
     { "include": [ "*://*/*"], "params": ["query"] }
   ])");
