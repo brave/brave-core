@@ -187,7 +187,8 @@ public class TokenUtils {
             // and fill them if they are empty.
             for (BlockchainToken tokenFromAll : tokens) {
                 if (tokenFromAll.logo.isEmpty()) {
-                    tokenFromAll.logo = Utils.getNetworkIconName(tokenFromAll.chainId);
+                    tokenFromAll.logo =
+                            Utils.getNetworkIconName(tokenFromAll.chainId, tokenFromAll.coin);
                 }
             }
             Arrays.sort(tokens, blockchainTokenComparatorPerGasOrBatType);

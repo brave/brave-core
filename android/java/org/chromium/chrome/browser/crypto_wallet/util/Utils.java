@@ -676,6 +676,20 @@ public class Utils {
         return true;
     }
 
+    /**
+     * Set the image either on {@code ImageView} or {@code TextView} based on given values. Try to
+     * set @{code iconId} icon first otherwise create icon from token directory. Draw icon with
+     * caret if @{code iconPath} is invalid.
+     * @param executor to run tasks in background
+     * @param handler to run tasks on UI
+     * @param context to access resources
+     * @param iconPath to icon in token directory
+     * @param iconId of a image in resources. Set icon if {@code iconPath} is null. Pass @{code
+     *         Integer.MIN_VALUE} to avoid setting any default icon.
+     * @param iconImg to set image if not null
+     * @param textView to set image if not null
+     * @param drawCaratDown true to draw a down caret before icon
+     */
     public static void setBitmapResource(ExecutorService executor, Handler handler, Context context,
             String iconPath, int iconId, ImageView iconImg, TextView textView,
             boolean drawCaratDown) {
@@ -731,7 +745,7 @@ public class Utils {
                     });
                 } else {
                     handler.post(() -> {
-                        if (iconImg != null) {
+                        if (iconImg != null && iconId != Integer.MIN_VALUE) {
                             iconImg.setImageResource(iconId);
                         }
                     });
@@ -983,10 +997,12 @@ public class Utils {
     }
 
     @NonNull
-    public static String getNetworkIconName(String chainId) {
+    public static String getNetworkIconName(String chainId, @CoinType.EnumType int coin) {
         String logo;
         switch (chainId) {
             case BraveWalletConstants.MAINNET_CHAIN_ID:
+            case BraveWalletConstants.GOERLI_CHAIN_ID:
+            case BraveWalletConstants.SEPOLIA_CHAIN_ID:
                 logo = "eth.png";
                 break;
             case BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID:
@@ -1025,14 +1041,29 @@ public class Utils {
                 logo = "fil.png";
                 break;
             default:
-                logo = "eth.png";
+                logo = "";
+        }
+        // Local host chain is not unique per network
+        if (logo.isEmpty() && chainId.equals(BraveWalletConstants.LOCALHOST_CHAIN_ID)) {
+            switch (coin) {
+                case CoinType.SOL:
+                    logo = "sol.png";
+                    break;
+                case CoinType.ETH:
+                    logo = "eth.png";
+                    break;
+                case CoinType.FIL:
+                    logo = "fil.png";
+                    break;
+                default: // Do nothing
+            }
         }
         return logo;
     }
 
     @NonNull
     public static String getNetworkIconName(NetworkInfo network) {
-        return Utils.getNetworkIconName(network.chainId);
+        return Utils.getNetworkIconName(network.chainId, network.coin);
     }
 
     // Replace USDC and DAI contract addresses for Goerli network

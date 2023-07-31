@@ -22,7 +22,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -59,7 +58,7 @@ public class UserAssetModel {
             if (JavaUtils.anyNull(mBraveWalletService, mJsonRpcService, mSelectedNetwork)) return;
             NetworkModel.getAllNetworks(
                     mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
-                        mCryptoNetworks = new ArrayList<>(allNetworks);
+                        mCryptoNetworks = allNetworks;
                         if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                             if (NetworkUtils.isAllNetwork(mSelectedNetwork)) {
                                 fetchAllNetworksAssets(nftsOnly);

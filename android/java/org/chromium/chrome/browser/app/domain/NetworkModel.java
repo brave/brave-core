@@ -24,7 +24,6 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
@@ -43,7 +42,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class NetworkModel implements JsonRpcServiceObserver {
@@ -65,7 +63,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
     private final MediatorLiveData<List<NetworkInfo>> _mPrimaryNetworks;
     private final MediatorLiveData<List<NetworkInfo>> _mSecondaryNetworks;
     private Map<String, NetworkSelectorModel> mNetworkSelectorMap;
-    private OriginInfo mOriginInfo;
+    private final MutableLiveData<NetworkLists> _mNetworkLists;
     public final LiveData<String[]> mCustomNetworkIds;
     public LiveData<NetworkInfo> mNeedToCreateAccountForNetwork;
     public final LiveData<Triple<String, NetworkInfo, List<NetworkInfo>>> mChainNetworkAllNetwork;
@@ -76,6 +74,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
     public final LiveData<NetworkInfo> mDefaultNetwork;
     public final LiveData<List<NetworkInfo>> mPrimaryNetworks;
     public final LiveData<List<NetworkInfo>> mSecondaryNetworks;
+    public final LiveData<NetworkLists> mNetworkLists;
     private Origin mOrigin;
 
     public NetworkModel(BraveWalletService braveWalletService, JsonRpcService jsonRpcService,
@@ -109,6 +108,8 @@ public class NetworkModel implements JsonRpcServiceObserver {
         mSecondaryNetworks = _mSecondaryNetworks;
         jsonRpcService.addObserver(this);
         mNetworkSelectorMap = new HashMap<>();
+        _mNetworkLists = new MutableLiveData<>();
+        mNetworkLists = _mNetworkLists;
         _mPairChainAndNetwork.setValue(Pair.create("", Collections.emptyList()));
         _mPairChainAndNetwork.addSource(_mChainId, chainId -> {
             _mPairChainAndNetwork.setValue(
@@ -271,23 +272,23 @@ public class NetworkModel implements JsonRpcServiceObserver {
     }
 
     static void getAllNetworks(JsonRpcService jsonRpcService, List<Integer> supportedCoins,
-            Callbacks.Callback1<Set<NetworkInfo>> callback) {
+            Callbacks.Callback1<List<NetworkInfo>> callback) {
         if (jsonRpcService == null) {
-            callback.call(Collections.emptySet());
+            callback.call(Collections.emptyList());
             return;
         }
 
         NetworkResponsesCollector networkResponsesCollector =
                 new NetworkResponsesCollector(jsonRpcService, supportedCoins);
-        networkResponsesCollector.getNetworks(networkInfoSet -> {
+        networkResponsesCollector.getNetworks(networkInfoList -> {
             if (!AndroidUtils.isDebugBuild()) {
-                networkInfoSet =
-                        networkInfoSet.stream()
+                networkInfoList =
+                        networkInfoList.stream()
                                 .filter(networkInfo
                                         -> !NetworkUtils.Filters.isLocalNetwork(networkInfo))
-                                .collect(Collectors.toSet());
+                                .collect(Collectors.toList());
             }
-            callback.call(networkInfoSet);
+            callback.call(networkInfoList);
         });
     }
 
@@ -311,8 +312,28 @@ public class NetworkModel implements JsonRpcServiceObserver {
                 }
             }
 
-            getAllNetworks(mJsonRpcService, mSharedData.getSupportedCryptoCoins(),
-                    allNetworks -> { _mCryptoNetworks.postValue(new ArrayList<>(allNetworks)); });
+            getAllNetworks(
+                    mJsonRpcService, mSharedData.getSupportedCryptoCoins(), cryptoNetworks -> {
+                        _mCryptoNetworks.postValue(cryptoNetworks);
+
+                        List<NetworkInfo> primary = new ArrayList<>();
+                        List<NetworkInfo> secondary = new ArrayList<>();
+                        List<NetworkInfo> test = new ArrayList<>();
+                        NetworkLists networkLists =
+                                new NetworkLists(cryptoNetworks, primary, secondary, test);
+                        for (NetworkInfo networkInfo : cryptoNetworks) {
+                            if (WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(
+                                        networkInfo.chainId)) {
+                                primary.add(networkInfo);
+                            } else if (WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(
+                                               networkInfo.chainId)) {
+                                test.add(networkInfo);
+                            } else {
+                                secondary.add(networkInfo);
+                            }
+                        }
+                        _mNetworkLists.postValue(networkLists);
+                    });
         }
     }
 
@@ -391,21 +412,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
         mOrigin = origin;
     }
 
-    List<NetworkInfo> getSubTestNetworks(NetworkInfo networkInfo) {
-        List<NetworkInfo> cryptoNws = _mCryptoNetworks.getValue();
-        if (cryptoNws == null || cryptoNws.size() == 0
-                || !WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(networkInfo.chainId))
-            return Collections.emptyList();
-        List<NetworkInfo> list = new ArrayList<>();
-        for (NetworkInfo info : cryptoNws) {
-            if (WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(info.chainId)
-                    && networkInfo.coin == info.coin && !isCustomChain(info.chainId)) {
-                list.add(info);
-            }
-        }
-        return list;
-    }
-
     private boolean isCustomChain(String netWorkChainId) {
         String[] customNetworkChains = JavaUtils.safeVal(_mCustomNetworkIds.getValue());
         for (String chain : customNetworkChains) {
@@ -455,4 +461,33 @@ public class NetworkModel implements JsonRpcServiceObserver {
 
     @Override
     public void close() {}
+
+    public static class NetworkLists {
+        // Networks from core.
+        public List<NetworkInfo> mCoreNetworks;
+        public List<NetworkInfo> mPrimaryNetworkList;
+        public List<NetworkInfo> mSecondaryNetworkList;
+        public List<NetworkInfo> mTestNetworkList;
+
+        public NetworkLists() {
+            mCoreNetworks = Collections.emptyList();
+            mPrimaryNetworkList = Collections.emptyList();
+            mSecondaryNetworkList = Collections.emptyList();
+            mTestNetworkList = Collections.emptyList();
+        }
+        public NetworkLists(List<NetworkInfo> mCoreNetworks, List<NetworkInfo> mPrimaryNetworkList,
+                List<NetworkInfo> mSecondaryNetworkList, List<NetworkInfo> mTestNetworkList) {
+            this.mCoreNetworks = mCoreNetworks;
+            this.mPrimaryNetworkList = mPrimaryNetworkList;
+            this.mSecondaryNetworkList = mSecondaryNetworkList;
+            this.mTestNetworkList = mTestNetworkList;
+        }
+
+        public NetworkLists(NetworkLists networkLists) {
+            this.mCoreNetworks = new ArrayList<>(networkLists.mCoreNetworks);
+            this.mPrimaryNetworkList = new ArrayList<>(networkLists.mPrimaryNetworkList);
+            this.mSecondaryNetworkList = new ArrayList<>(networkLists.mSecondaryNetworkList);
+            this.mTestNetworkList = new ArrayList<>(networkLists.mTestNetworkList);
+        }
+    }
 }
