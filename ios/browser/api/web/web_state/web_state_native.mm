@@ -291,7 +291,8 @@ void NativeWebState::SetURL(const GURL& url) {
     navigation_manager->AddPendingItem(
         url, web::Referrer(), ui::PAGE_TRANSITION_TYPED,
         web::NavigationInitiationType::BROWSER_INITIATED,
-        /*is_post_navigation=*/false, web::HttpsUpgradeType::kNone);
+        /*is_post_navigation=*/false, /*is_error_navigation*/ false,
+        web::HttpsUpgradeType::kNone);
 
     navigation_manager->CommitPendingItem();
     static_cast<web::WebStateImpl*>(web_state_)->OnPageLoaded(url, true);
