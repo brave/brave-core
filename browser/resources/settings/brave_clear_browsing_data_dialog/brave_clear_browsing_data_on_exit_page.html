@@ -28,6 +28,14 @@
                       sub-label="[[counters.cookies]]"
                       no-set-pref>
   </settings-checkbox>
+  <settings-checkbox id="leoResetOnExitCheckbox"
+                      class="cache-checkbox"
+                      pref="{{prefs.browser.clear_data.brave_leo_on_exit}}"
+                      label="$i18n{leoClearHistoryData}"
+                      sub-label="$i18n{leoClearHistoryDataSubLabel}"
+                      hidden="[[isLeoAssistantNotAllowed_]]"
+                      no-set-pref>
+  </settings-checkbox>
   <settings-checkbox id="cacheCheckboxOnExit"
                       class="cache-checkbox"
                       pref="{{prefs.browser.clear_data.cache_on_exit}}"

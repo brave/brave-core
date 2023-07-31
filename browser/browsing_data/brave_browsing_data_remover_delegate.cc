@@ -70,6 +70,11 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
     brave_news::BraveNewsControllerFactory::GetForContext(profile_)
         ->ClearHistory();
   }
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY) {
+    ClearAiChatHistory(delete_begin, delete_end);
+  }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 }
 
 void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(
@@ -100,6 +105,13 @@ void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(
     }
   }
 }
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+void BraveBrowsingDataRemoverDelegate::ClearAiChatHistory(base::Time begin_time,
+                                                          base::Time end_time) {
+  // Handler for the Brave Leo History clearing
+}
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_IPFS)
 void BraveBrowsingDataRemoverDelegate::WaitForIPFSRepoGC(

@@ -160,6 +160,8 @@ class BraveClearDataOnExitTest
                             true);
     prefService->SetBoolean(browsing_data::prefs::kDeleteSiteSettingsOnExit,
                             true);
+    prefService->SetBoolean(browsing_data::prefs::kDeleteBraveLeoHistoryOnExit,
+                            true);
   }
 
   uint64_t GetRemoveMaskAll() {
@@ -169,6 +171,7 @@ class BraveClearDataOnExitTest
            chrome_browsing_data_remover::DATA_TYPE_SITE_DATA |
            chrome_browsing_data_remover::DATA_TYPE_PASSWORDS |
            chrome_browsing_data_remover::DATA_TYPE_FORM_DATA |
+           chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY |
            chrome_browsing_data_remover::DATA_TYPE_CONTENT_SETTINGS;
   }
 

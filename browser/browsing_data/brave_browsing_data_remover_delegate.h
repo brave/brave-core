@@ -49,6 +49,9 @@ class BraveBrowsingDataRemoverDelegate
                           override;
 
   void ClearShieldsSettings(base::Time begin_time, base::Time end_time);
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  void ClearAiChatHistory(base::Time begin_time, base::Time end_time);
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)  
 #if BUILDFLAG(ENABLE_IPFS)
   void ClearIPFSCache();
   void WaitForIPFSRepoGC(base::Process process);
