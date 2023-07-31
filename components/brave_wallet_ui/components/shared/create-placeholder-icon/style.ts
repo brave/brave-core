@@ -28,7 +28,9 @@ export const IconWrapper = styled.div<{
     p.isPlaceholder
       ? p.size === 'big'
         ? '40px'
-        : '24px'
+        : p.size === 'tiny'
+          ? '16px'
+          : '24px'
       : 'auto'
   };
   border-radius: ${(p) => p.isPlaceholder ? '100%' : '0px'};
@@ -41,7 +43,13 @@ export const PlaceholderText = styled.span<{
   size: 'big' | 'medium' | 'small' | 'tiny'
 }>`
   font-family: Poppins;
-  font-size: ${(p) => p.size === 'big' ? '16px' : '12px'};
+  font-size: ${(p) =>
+    p.size === 'big'
+      ? '16px'
+      : p.size === 'tiny'
+        ? '10px'
+        : '12px'
+  };
   font-weight: 600;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.palette.white};
