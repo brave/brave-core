@@ -131,7 +131,8 @@ public class SendTokenStore: ObservableObject {
     walletService: walletService,
     assetRatioService: assetRatioService,
     ipfsApi: ipfsApi,
-    userAssetManager: assetManager
+    userAssetManager: assetManager,
+    query: prefilledToken?.symbol
   )
 
   private let keyringService: BraveWalletKeyringService
