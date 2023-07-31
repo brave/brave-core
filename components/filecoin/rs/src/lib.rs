@@ -35,9 +35,5 @@ fn bls_private_key_to_public_key(private_key: &[u8]) -> [u8; 48] {
 }
 
 pub fn is_valid_cid(cid_str: &str) -> bool {
-  let _cid = cid::Cid::from_str(cid_str);
-  if let Ok(_cid) = _cid {
-    return true;
-  }
-  return false;
+  return cid::Cid::from_str(cid_str).is_ok();
 }
