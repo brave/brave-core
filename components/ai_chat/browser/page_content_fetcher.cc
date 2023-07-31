@@ -78,8 +78,9 @@ class PageContentFetcher {
 
   void SendResultAndDeleteSelf(FetchPageContentCallback callback,
                                std::string content = "",
-                               bool is_video = false) {
-    std::move(callback).Run(content, is_video);
+                               bool is_video = false,
+                               bool parse_xml = false) {
+    std::move(callback).Run(content, is_video, parse_xml);
     delete this;
   }
 
@@ -93,13 +94,15 @@ class PageContentFetcher {
     DVLOG(1) << "OnTabContentResult: " << data.get();
     const bool is_video = base::Contains(kVideoPageContentTypes, data->type);
     DVLOG(1) << "Is video? " << is_video;
+
+    bool parse_xml = false;
     // Handle text mode response
     if (!is_video) {
       DCHECK(data->content->is_content());
       auto content = data->content->get_content();
       DVLOG(1) << __func__ << ": Got content with char length of "
                << content.length();
-      SendResultAndDeleteSelf(std::move(callback), content, false);
+      SendResultAndDeleteSelf(std::move(callback), content, false, parse_xml);
       return;
     }
     // If it's video, we expect content url
@@ -108,9 +111,14 @@ class PageContentFetcher {
     if (content_url.is_empty() || !content_url.is_valid() ||
         !content_url.SchemeIs(url::kHttpsScheme)) {
       VLOG(1) << "Invalid content_url";
-      SendResultAndDeleteSelf(std::move(callback), "", true);
+      SendResultAndDeleteSelf(std::move(callback), "", true, parse_xml);
       return;
     }
+
+    if (data->type == ai_chat::mojom::PageContentType::VideoTranscriptYouTube) {
+      parse_xml = true;
+    }
+
     DVLOG(1) << "Making video transcript fetch to " << content_url.spec();
     // Handle transcript url result - fetch content.
     auto request = std::make_unique<network::ResourceRequest>();
@@ -125,9 +133,10 @@ class PageContentFetcher {
                network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
     loader->SetAllowHttpErrorResults(true);
     auto* loader_ptr = loader.get();
-    auto on_response = base::BindOnce(
-        &PageContentFetcher::OnTranscriptFetchResponse,
-        weak_ptr_factory_.GetWeakPtr(), std::move(callback), std::move(loader));
+    auto on_response =
+        base::BindOnce(&PageContentFetcher::OnTranscriptFetchResponse,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                       std::move(loader), parse_xml);
     loader_ptr->DownloadToString(url_loader_factory_.get(),
                                  std::move(on_response), 2 * 1024 * 1024);
   }
@@ -135,6 +144,7 @@ class PageContentFetcher {
   void OnTranscriptFetchResponse(
       FetchPageContentCallback callback,
       std::unique_ptr<network::SimpleURLLoader> loader,
+      bool parse_xml,
       std::unique_ptr<std::string> response_body) {
     auto response_code = -1;
     base::flat_map<std::string, std::string> headers;
@@ -155,7 +165,9 @@ class PageContentFetcher {
     DVLOG(2) << "Got video text: " << transcript_content;
     VLOG(1) << __func__ << " Number of chars in video transcript xml = "
             << transcript_content.length() << "\n";
-    SendResultAndDeleteSelf(std::move(callback), transcript_content, true);
+
+    SendResultAndDeleteSelf(std::move(callback), transcript_content, true,
+                            parse_xml);
   }
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
@@ -176,7 +188,7 @@ void FetchPageContent(content::WebContents* web_contents,
     LOG(ERROR)
         << "Content extraction request submitted for a WebContents without "
            "a primary main frame";
-    std::move(callback).Run("", false);
+    std::move(callback).Run("", false, false);
     return;
   }
 

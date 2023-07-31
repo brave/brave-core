@@ -92,7 +92,11 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void CleanUp();
   void OnTabContentRetrieved(int64_t for_navigation_id,
                              std::string contents_text,
-                             bool is_video = false);
+                             bool is_video = false,
+                             bool parse_xml = false);
+  void ContinueOnTabContentRetrieved(int64_t for_navigation_id,
+                                     std::string parsed_contents_text,
+                                     bool is_video = false);
   void OnAPIStreamDataReceived(int64_t for_navigation_id,
                                data_decoder::DataDecoder::ValueOrError result);
   void OnAPIStreamDataComplete(int64_t for_navigation_id,
@@ -130,6 +134,11 @@ class AIChatTabHelper : public content::WebContentsObserver,
   std::string BuildLlama2InstructionPrompt(const std::string& instruction);
   std::string BuildLlama2GenerateQuestionsPrompt(bool is_video,
                                                  const std::string content);
+  void OnYoutubeTranscriptXMLParsed(
+      int64_t for_navigation_id,
+      bool is_video,
+      base::expected<base::Value, std::string> result);
+
   mojom::AutoGenerateQuestionsPref GetAutoGeneratePref();
   data_decoder::DataDecoder* GetDataDecoder();
 

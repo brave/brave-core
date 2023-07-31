@@ -29,6 +29,7 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/storage_partition.h"
+#include "services/data_decoder/public/cpp/safe_xml_parser.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using ai_chat::mojom::CharacterType;
@@ -182,7 +183,8 @@ void AIChatTabHelper::MaybeGenerateQuestions() {
 
 void AIChatTabHelper::OnTabContentRetrieved(int64_t for_navigation_id,
                                             std::string contents_text,
-                                            bool is_video) {
+                                            bool is_video,
+                                            bool parse_xml) {
   if (for_navigation_id != current_navigation_id_) {
     VLOG(1) << __func__ << " for a different navigation. Ignoring.";
     return;
@@ -193,6 +195,25 @@ void AIChatTabHelper::OnTabContentRetrieved(int64_t for_navigation_id,
     VLOG(1) << __func__ << ": No data";
     return;
   }
+
+  // Parse XML
+  if (parse_xml) {
+    GetDataDecoder()->ParseXml(
+        contents_text,
+        data_decoder::mojom::XmlParser::WhitespaceBehavior::
+            kPreserveSignificant,
+        base::BindOnce(&AIChatTabHelper::OnYoutubeTranscriptXMLParsed,
+                       weak_ptr_factory_.GetWeakPtr(), for_navigation_id,
+                       is_video));
+    return;
+  }
+
+  ContinueOnTabContentRetrieved(for_navigation_id, contents_text, is_video);
+}
+
+void AIChatTabHelper::ContinueOnTabContentRetrieved(int64_t for_navigation_id,
+                                                    std::string contents_text,
+                                                    bool is_video) {
   is_video_ = is_video;
   article_text_ = contents_text;
 
@@ -750,6 +771,60 @@ void AIChatTabHelper::OnFaviconUpdated(
   for (Observer& obs : observers_) {
     obs.OnFaviconImageDataChanged();
   }
+}
+
+void AIChatTabHelper::OnYoutubeTranscriptXMLParsed(
+    int64_t for_navigation_id,
+    bool is_video,
+    base::expected<base::Value, std::string> result) {
+  // Example Youtube transcript XML:
+  //
+  // <?xml version="1.0" encoding="utf-8"?>
+  // <transcript>
+  //   <text start="0" dur="5.1">Dear Fellow Scholars, this is Two Minute Papers
+  //   with Dr. Károly Zsolnai-Fehér.</text> <text start="5.1"
+  //   dur="5.28">ChatGPT has just been supercharged with  browsing support, I
+  //   tried it myself too,  </text> <text start="10.38" dur="7.38">and I think
+  //   this changes everything. Well, almost  everything, as you will see in a
+  //   moment. And this  </text>
+  // </transcript>
+
+  if (!data_decoder::IsXmlElementNamed(result.value(), "transcript")) {
+    return;
+  }
+
+  std::string transcript_text;
+  const base::Value::List* children =
+      data_decoder::GetXmlElementChildren(result.value());
+  if (!children) {
+    return;
+  }
+
+  for (const auto& child : *children) {
+    if (!data_decoder::IsXmlElementNamed(child, "text")) {
+      continue;
+    }
+
+    std::string text;
+    if (!data_decoder::GetXmlElementText(child, &text)) {
+      continue;
+    }
+
+    if (!transcript_text.empty()) {
+      // Add a space as a separator betwen texts.
+      transcript_text += " ";
+    }
+
+    // Remove the two NBSP at the end of each text
+    base::ReplaceFirstSubstringAfterOffset(&text, 0, "  ", "");
+
+    transcript_text += text;
+  }
+
+  // Remove the newlines are scattered throughout.
+  base::RemoveChars(transcript_text, "\n", &transcript_text);
+
+  ContinueOnTabContentRetrieved(for_navigation_id, transcript_text, is_video);
 }
 
 mojom::AutoGenerateQuestionsPref AIChatTabHelper::GetAutoGeneratePref() {
