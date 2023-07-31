@@ -419,6 +419,15 @@ const char dapp_lists_json[] = R"({
     }
   })";
 
+const char coingecko_ids_map_json[] = R"({
+  "0xa": {
+    "0x7f5c764cbc14f9669b88837ca1490cca17c31607": "usd-coin"
+  },
+  "0x65": {
+    "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v": "usd-coin"
+  }
+})";
+
 std::vector<std::string> GetChainIds(
     const std::vector<mojom::NetworkInfoPtr>& networks) {
   std::vector<std::string> result;
@@ -927,6 +936,73 @@ TEST(BlockchainRegistryUnitTest, GetEthTokenListMap) {
     EXPECT_EQ(token_list_map.size(), 1UL);
     EXPECT_EQ(token_list_map[mojom::kMainnetChainId].size(), 2UL);
   }
+}
+
+TEST(BlockchainRegistryUnitTest, GetCoingeckoId) {
+  base::test::TaskEnvironment task_environment;
+  auto* registry = BlockchainRegistry::GetInstance();
+  absl::optional<CoingeckoIdsMap> coingecko_ids_map =
+      ParseCoingeckoIdsMap(coingecko_ids_map_json);
+  ASSERT_TRUE(coingecko_ids_map);
+  registry->UpdateCoingeckoIdsMap(std::move(*coingecko_ids_map));
+
+  // Chain: ✅
+  // Contract: ✅
+  // Result: ✅
+  EXPECT_EQ(
+      registry->GetCoingeckoId(mojom::kOptimismMainnetChainId,
+                               "0x7f5c764cbc14f9669b88837ca1490cca17c31607"),
+      "usd-coin");
+
+  // Chain: ✅
+  // Contract: ❌
+  // Result: ❌
+  EXPECT_EQ(
+      registry->GetCoingeckoId(mojom::kOptimismMainnetChainId, "0xdeadbeef"),
+      "");
+
+  // Chain: ❌
+  // Contract: ✅
+  // Result: ❌
+  EXPECT_EQ(registry->GetCoingeckoId(
+                "0xdeadbeef", "0x7f5c764cbc14f9669b88837ca1490cca17c31607"),
+            "");
+
+  // Chain: ❌
+  // Contract: ❌
+  // Result: ❌
+  EXPECT_EQ(registry->GetCoingeckoId("0xdeadbeef", "0xcafebabe"), "");
+
+  // Chain: ✅ (wrong case)
+  // Contract: ✅
+  // Result: ✅
+  EXPECT_EQ(registry->GetCoingeckoId(
+                "0xA", "0x7f5c764cbc14f9669b88837ca1490cca17c31607"),
+            "usd-coin");
+
+  // Chain: ✅
+  // Contract: ✅ (mixed case EIP-55)
+  // Result: ✅
+  EXPECT_EQ(
+      registry->GetCoingeckoId(mojom::kOptimismMainnetChainId,
+                               "0x7F5c764cBc14f9669B88837ca1490cCa17c31607"),
+      "usd-coin");
+
+  // Chain: ✅
+  // Contract: ✅ (mixed case Solana)
+  // Result: ✅
+  EXPECT_EQ(
+      registry->GetCoingeckoId(mojom::kSolanaMainnet,
+                               "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"),
+      "usd-coin");
+
+  // Chain: ✅
+  // Contract: ❌ (wrong case Solana)
+  // Result: ❌
+  EXPECT_EQ(
+      registry->GetCoingeckoId(mojom::kSolanaMainnet,
+                               "epjfwdd5aufqssqem2qn1xzybapc8g4weggkzwytdt1v"),
+      "");
 }
 
 }  // namespace brave_wallet

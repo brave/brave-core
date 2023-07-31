@@ -776,6 +776,31 @@ export function createWalletApi () {
               : ['UNKNOWN_ERROR']
         }
       ),
+      getCoingeckoId: query<
+        string,
+        Pick<BraveWallet.BlockchainToken, 'chainId' | 'contractAddress'>
+      >({
+        queryFn: async (
+          { chainId, contractAddress },
+          api,
+          extraOptions,
+          baseQuery
+        ) => {
+          const { blockchainRegistry } = baseQuery(undefined).data
+          const { coingeckoId } = await blockchainRegistry.getCoingeckoId(
+            chainId,
+            contractAddress
+          )
+
+          return {
+            data: coingeckoId
+          }
+        },
+        providesTags: (res, err, { chainId, contractAddress }) =>
+          err
+            ? ['CoingeckoId', 'UNKNOWN_ERROR']
+            : [{ type: 'CoingeckoId', id: `${chainId}-${contractAddress}` }]
+      }),
       //
       // Token balances
       //
@@ -2823,6 +2848,7 @@ export const {
   useGetAccountTokenCurrentBalanceQuery,
   useGetHardwareAccountDiscoveryBalanceQuery,
   useGetAddressByteCodeQuery,
+  useGetCoingeckoIdQuery,
   useGetCombinedTokenBalanceForAllAccountsQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetERC721MetadataQuery,

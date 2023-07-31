@@ -785,6 +785,10 @@ interface BlockchainRegistry {
 
   // Returns lists of top dapps
   GetTopDapps(string chain_id, CoinType coin) => (array<Dapp> dapps);
+
+  // Returns the Coincecko ID for a given chain id and contract address
+  GetCoingeckoId(string chain_id, string contract_address)
+    => (string coingecko_id);
 };
 
 // Implements the HD wallet, Ledger & Trezor integration, account management,

@@ -155,6 +155,39 @@ void OnSanitizedOnRampCurrenciesLists(
       std::move(*lists));
 }
 
+void OnSanitizedCoingeckoIdsMap(data_decoder::JsonSanitizer::Result result) {
+  if (!result.has_value()) {
+    VLOG(1) << "CoingeckoIdsMap JSON validation error:" << result.error();
+    return;
+  }
+
+  absl::optional<CoingeckoIdsMap> coingecko_ids_map =
+      ParseCoingeckoIdsMap(*result);
+  if (!coingecko_ids_map) {
+    VLOG(1) << "Can't parse coingecko-ids.json";
+    return;
+  }
+
+  BlockchainRegistry::GetInstance()->UpdateCoingeckoIdsMap(
+      std::move(*coingecko_ids_map));
+}
+
+void HandleParseCoingeckoIdsMap(base::FilePath absolute_install_dir,
+                                const std::string& filename) {
+  const base::FilePath coingecko_ids_map_json_path =
+      absolute_install_dir.AppendASCII(filename);
+  std::string coingecko_ids_map_json;
+  if (!base::ReadFileToString(coingecko_ids_map_json_path,
+                              &coingecko_ids_map_json)) {
+    VLOG(1) << "Can't read coingecko ids map file: " << filename;
+    return;
+  }
+
+  data_decoder::JsonSanitizer::Sanitize(
+      std::move(coingecko_ids_map_json),
+      base::BindOnce(&OnSanitizedCoingeckoIdsMap));
+}
+
 void HandleParseTokenList(base::FilePath absolute_install_dir,
                           const std::string& filename,
                           mojom::CoinType coin_type) {
@@ -229,6 +262,20 @@ void HandleParseOnRampCurrenciesLists(base::FilePath absolute_install_dir,
   data_decoder::JsonSanitizer::Sanitize(
       std::move(on_ramp_supported_currencies_lists),
       base::BindOnce(&OnSanitizedOnRampCurrenciesLists));
+}
+
+void ParseCoingeckoIdsMapAndUpdateRegistry(const base::FilePath& install_dir) {
+  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
+  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
+  // requires IO so it can only be done in this function.
+  const base::FilePath absolute_install_dir =
+      base::MakeAbsoluteFilePath(install_dir);
+
+  if (absolute_install_dir.empty()) {
+    LOG(ERROR) << "Failed to get absolute install path.";
+  }
+
+  HandleParseCoingeckoIdsMap(absolute_install_dir, "coingecko-ids.json");
 }
 
 void ParseTokenListAndUpdateRegistry(const base::FilePath& install_dir) {
@@ -356,6 +403,10 @@ void WalletDataFilesInstallerPolicy::ComponentReady(
     const base::FilePath& path,
     base::Value::Dict manifest) {
   last_installed_wallet_version = version;
+
+  sequenced_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&ParseCoingeckoIdsMapAndUpdateRegistry, path));
+
   sequenced_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&ParseTokenListAndUpdateRegistry, path));
 

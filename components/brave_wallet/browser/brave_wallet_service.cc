@@ -1649,6 +1649,13 @@ void BraveWalletService::AddSuggestTokenRequest(
     request->token = std::move(token);
   }
 
+  if (request->token->coingecko_id.empty()) {
+    const auto& coingecko_id =
+        BlockchainRegistry::GetInstance()->GetCoingeckoId(
+            request->token->chain_id, request->token->contract_address);
+    request->token->coingecko_id = coingecko_id;
+  }
+
   add_suggest_token_requests_[addr] = std::move(request);
   add_suggest_token_callbacks_[addr] = std::move(callback);
   add_suggest_token_ids_[addr] = std::move(id);
