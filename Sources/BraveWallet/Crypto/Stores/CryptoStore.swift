@@ -104,6 +104,7 @@ public class CryptoStore: ObservableObject {
   private let ipfsApi: IpfsAPI
   private let userAssetManager: WalletUserAssetManager
   private var isUpdatingUserAssets: Bool = false
+  private var autoDiscoveredAssets: [BraveWallet.BlockchainToken] = []
   
   public init(
     keyringService: BraveWalletKeyringService,
@@ -179,7 +180,11 @@ public class CryptoStore: ObservableObject {
     self.rpcService.add(self)
     self.walletService.add(self)
     
-    userAssetManager.migrateUserAssets { [weak self] in
+    Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.observe(from: self)
+    
+    isUpdatingUserAssets = true
+    userAssetManager.migrateUserAssets() { [weak self] in
+      self?.isUpdatingUserAssets = false
       self?.updateAssets()
     }
   }
@@ -650,14 +655,34 @@ extension CryptoStore: BraveWalletBraveWalletServiceObserver {
   }
   
   public func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
-    for asset in discoveredAssets where userAssetManager.getUserAsset(asset) == nil {
-      userAssetManager.addUserAsset(asset, completion: nil)
-    }
-    if !discoveredAssets.isEmpty {
-      updateAssets()
+    // Failsafe incase two CryptoStore's are initialized (see brave-ios #7804) and asset
+    // migration is slow. Makes sure auto-discovered assets during asset migration to
+    // CoreData are added after.
+    if !isUpdatingUserAssets {
+      for asset in discoveredAssets {
+        userAssetManager.addUserAsset(asset, completion: nil)
+      }
+      if !discoveredAssets.isEmpty {
+        updateAssets()
+      }
+    } else {
+      autoDiscoveredAssets.append(contentsOf: discoveredAssets)
     }
   }
   
   public func onResetWallet() {
+  }
+}
+
+extension CryptoStore: PreferencesObserver {
+  public func preferencesDidChange(for key: String) {
+    // we are only observing `Preferences.Wallet.migrateCoreToWalletUserAssetCompleted`
+    if Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.value, !autoDiscoveredAssets.isEmpty {
+      for asset in autoDiscoveredAssets {
+        userAssetManager.addUserAsset(asset, completion: nil)
+      }
+      autoDiscoveredAssets.removeAll()
+      updateAssets()
+    }
   }
 }
