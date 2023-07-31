@@ -11,24 +11,21 @@ import org.chromium.mojo.bindings.Callbacks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 public class NetworkResponsesCollector {
-    private JsonRpcService mJsonRpcService;
-    private List<Integer> coinTypes;
-    private HashSet<NetworkInfo> mNetworks;
+    private final JsonRpcService mJsonRpcService;
+    private final List<Integer> coinTypes;
+    private final List<NetworkInfo> mNetworks;
 
     public NetworkResponsesCollector(JsonRpcService jsonRpcService, List<Integer> coinTypes) {
         assert jsonRpcService != null;
         mJsonRpcService = jsonRpcService;
         this.coinTypes = coinTypes;
-        mNetworks = new LinkedHashSet<>();
+        mNetworks = new ArrayList<>();
     }
 
-    public void getNetworks(Callbacks.Callback1<Set<NetworkInfo>> runWhenDone) {
+    public void getNetworks(Callbacks.Callback1<List<NetworkInfo>> runWhenDone) {
         AsyncUtils.MultiResponseHandler networkInfosMultiResponse =
                 new AsyncUtils.MultiResponseHandler(coinTypes.size());
         ArrayList<AsyncUtils.GetNetworkResponseContext> accountsPermissionsContexts =

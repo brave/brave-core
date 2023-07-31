@@ -148,7 +148,7 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
             }
             NetworkModel.getAllNetworks(
                     mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
-                        mAllNetworkInfos = new ArrayList<>(allNetworks);
+                        mAllNetworkInfos = allNetworks;
                         if (selectedNetwork.chainId.equals(
                                     NetworkUtils.getAllNetworkOption(mContext).chainId)) {
                             mKeyringService.getAllAccounts(allAccounts -> {

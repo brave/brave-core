@@ -127,11 +127,9 @@ public class NetworkSelectorActivity
         networkSelectorAdapter = new NetworkSelectorAdapter(this, new ArrayList<>());
         mRVNetworkSelector.setAdapter(networkSelectorAdapter);
         networkSelectorAdapter.setOnNetworkItemSelected(this);
-        mNetworkSelectorModel.mPrimaryNetworks.observe(this, primaryNetworkInfos -> {
-            networkSelectorAdapter.addPrimaryNetwork(primaryNetworkInfos);
-        });
-        mNetworkSelectorModel.mSecondaryNetworks.observe(this, secondaryNetworkInfos -> {
-            networkSelectorAdapter.addSecondaryNetwork(secondaryNetworkInfos);
+        mNetworkSelectorModel.mNetworkListsLd.observe(this, networkLists -> {
+            if (networkLists == null) return;
+            networkSelectorAdapter.addNetworks(networkLists);
         });
         setSelectedNetworkObserver();
     }
