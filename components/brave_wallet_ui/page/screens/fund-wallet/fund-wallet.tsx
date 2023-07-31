@@ -251,6 +251,16 @@ export const FundWalletScreen = (props: Props) => {
     }
   }, [showBuyOptions, showAccountSearch, closeAccountSearch])
 
+  React.useEffect(() => {
+    if (showBuyOptions && !selectedAsset) {
+      onShowBuyOptions(false)
+    }
+  }, [
+    onShowBuyOptions,
+    selectedAsset,
+    showBuyOptions
+  ])
+
   // render
   return (
     <>
