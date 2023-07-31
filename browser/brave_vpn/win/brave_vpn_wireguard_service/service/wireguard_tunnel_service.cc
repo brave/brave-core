@@ -254,7 +254,7 @@ bool CreateAndRunBraveWireguardService(const std::wstring& encoded_config) {
   ScopedScHandle service(::CreateService(
       scm.Get(), GetBraveVpnWireguardTunnelServiceName().c_str(),
       GetBraveVpnWireguardTunnelServiceName().c_str(), SERVICE_ALL_ACCESS,
-      SERVICE_WIN32_OWN_PROCESS, SERVICE_DEMAND_START, SERVICE_ERROR_NORMAL,
+      SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL,
       service_cmd.GetCommandLineString().c_str(), NULL, NULL, L"Nsi\0TcpIp\0",
       NULL, NULL));
   if (!service.IsValid()) {
@@ -293,7 +293,7 @@ bool CreateAndRunBraveWireguardService(const std::wstring& encoded_config) {
   // a desktop nitification popup with established connection information which
   // will be shown on each time.
   brave_vpn::RunTrayProcessAsUser();
-  return DeleteService(service.Get()) != 0;
+  return true;
 }
 
 int RunWireguardTunnelService(const base::FilePath& config_file_path) {
