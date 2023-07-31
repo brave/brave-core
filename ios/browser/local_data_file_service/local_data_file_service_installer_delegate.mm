@@ -33,15 +33,13 @@ LocalDataFileServiceDelegate::LocalDataFileServiceDelegate()
 LocalDataFileServiceDelegate::~LocalDataFileServiceDelegate() = default;
 
 void LocalDataFileServiceDelegate::Register(
-    const std::string& component_id,
     const std::string& component_name,
     const std::string& component_base64_public_key,
     base::OnceClosure registered_callback,
     BraveComponent::ReadyCallback ready_callback) {
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<component_updater::IOSComponentInstallerPolicy>(
-          component_base64_public_key, component_id, component_name,
-          ready_callback));
+          component_base64_public_key, component_name, ready_callback));
 
   installer->Register(GetApplicationContext()->GetComponentUpdateService(),
                       std::move(registered_callback));

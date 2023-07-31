@@ -32,8 +32,7 @@ class LocalDataFileServiceDelegate final : public BraveComponent::Delegate {
   ~LocalDataFileServiceDelegate() override;
 
   // brave_component_updater::BraveComponent::Delegate implementation
-  void Register(const std::string& component_id,
-                const std::string& component_name,
+  void Register(const std::string& component_name,
                 const std::string& component_base64_public_key,
                 base::OnceClosure registered_callback,
                 BraveComponent::ReadyCallback ready_callback) override;

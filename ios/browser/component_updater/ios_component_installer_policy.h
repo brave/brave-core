@@ -20,7 +20,6 @@ class IOSComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
   explicit IOSComponentInstallerPolicy(const std::string& component_public_key,
-                                       const std::string& component_id,
                                        const std::string& component_name,
                                        BraveComponent::ReadyCallback callback);
   ~IOSComponentInstallerPolicy() override;
@@ -47,7 +46,6 @@ class IOSComponentInstallerPolicy
   update_client::InstallerAttributes GetInstallerAttributes() const override;
 
  private:
-  const std::string component_id_;
   const std::string component_name_;
   const std::string base64_public_key_;
   std::string public_key_;

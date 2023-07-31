@@ -20,6 +20,7 @@
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/crx_file/id_util.h"
 
 using brave_component_updater::BraveComponent;
 
@@ -67,11 +68,9 @@ namespace component_updater {
 
 IOSComponentInstallerPolicy::IOSComponentInstallerPolicy(
     const std::string& component_public_key,
-    const std::string& component_id,
     const std::string& component_name,
     BraveComponent::ReadyCallback callback)
-    : component_id_(component_id),
-      component_name_(component_name),
+    : component_name_(component_name),
       base64_public_key_(component_public_key),
       ready_callback_(callback) {
   base::Base64Decode(component_public_key, &public_key_);
@@ -118,7 +117,11 @@ bool IOSComponentInstallerPolicy::VerifyInstallation(
 }
 
 base::FilePath IOSComponentInstallerPolicy::GetRelativeInstallDir() const {
-  return base::FilePath::FromUTF8Unsafe(component_id_);
+  // Get the extension ID from the public key
+  std::string extension_id = crx_file::id_util::GenerateId(public_key_);
+  return base::FilePath(
+      // Convert to wstring or string depending on OS
+      base::FilePath::StringType(extension_id.begin(), extension_id.end()));
 }
 
 void IOSComponentInstallerPolicy::GetHash(std::vector<uint8_t>* hash) const {

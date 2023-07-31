@@ -13,6 +13,7 @@ source_set("component_updater") {
   deps = [
     "//base",
     "//components/component_updater",
+    "//components/crx_file",
     "//ios/chrome/browser/shared/model/application_context",
   ]
 }
