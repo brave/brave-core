@@ -275,7 +275,7 @@ class SettingsViewController: TableViewController {
     section.rows.append(
       Row(
         text: Strings.BraveNews.braveNews,
-        selection: {
+        selection: { [unowned self] in
           let controller = NewsSettingsViewController(dataSource: self.feedDataSource, openURL: { [weak self] url in
             guard let self else { return }
             self.dismiss(animated: true)

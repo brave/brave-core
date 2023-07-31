@@ -68,6 +68,10 @@ public class WalletUserAssetManager: WalletUserAssetManagerType {
   }
   
   public func addUserAsset(_ asset: BraveWallet.BlockchainToken, completion: (() -> Void)?) {
+    guard WalletUserAsset.getUserAsset(asset: asset) == nil else {
+      completion?()
+      return
+    }
     WalletUserAsset.addUserAsset(asset: asset, completion: completion)
   }
   
