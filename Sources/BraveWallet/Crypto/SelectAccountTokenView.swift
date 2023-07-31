@@ -48,6 +48,10 @@ struct SelectAccountTokenView: View {
       }
     }
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .searchable(
+      text: $store.query,
+      placement: .navigationBarDrawer(displayMode: .always)
+    )
     .toolbar {
       ToolbarItemGroup(placement: .cancellationAction) {
         Button(action: { presentationMode.dismiss() }) {

@@ -43,6 +43,7 @@ class SelectAccountTokenStore: ObservableObject {
   @Published var isLoadingPrices = false
   @Published var isHidingZeroBalances = true
   @Published var accountSections: [AccountSection] = []
+  @Published var query: String
   
   var filteredAccountSections: [AccountSection] {
     let networks = networkFilters.filter(\.isSelected).map(\.model)
@@ -57,6 +58,11 @@ class SelectAccountTokenStore: ObservableObject {
         tokenBalances: accountSection.tokenBalances
           .filter { tokenBalance in
             guard networks.contains(where: { $0.chainId == tokenBalance.network.chainId }) else {
+              return false
+            }
+            if !query.isEmpty, // only if we have a search query
+               case let normalizedQuery = query.lowercased(),
+               !(tokenBalance.token.symbol.lowercased().contains(normalizedQuery) || tokenBalance.token.name.lowercased().contains(normalizedQuery)) {
               return false
             }
             if isHidingZeroBalances {
@@ -114,7 +120,8 @@ class SelectAccountTokenStore: ObservableObject {
     walletService: BraveWalletBraveWalletService,
     assetRatioService: BraveWalletAssetRatioService,
     ipfsApi: IpfsAPI,
-    userAssetManager: WalletUserAssetManagerType
+    userAssetManager: WalletUserAssetManagerType,
+    query: String? = nil
   ) {
     self.didSelect = didSelect
     self.keyringService = keyringService
@@ -123,6 +130,7 @@ class SelectAccountTokenStore: ObservableObject {
     self.assetRatioService = assetRatioService
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
+    self.query = query ?? ""
     walletService.add(self)
   }
   
@@ -131,6 +139,7 @@ class SelectAccountTokenStore: ObservableObject {
     networkFilters = allNetworks.map {
       .init(isSelected: true, model: $0)
     }
+    query = ""
   }
   
   @MainActor func update() async {
