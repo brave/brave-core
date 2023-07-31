@@ -13,6 +13,11 @@ use crate::cache::CacheNode;
 use crate::models::*;
 use crate::{HTTPClient, StorageClient};
 
+#[cfg(feature = "wasm")]
+const VERSION: &str = git_version!();
+#[cfg(not(feature = "wasm"))]
+const VERSION: &str = "unknown";
+
 pub struct SDK<U> {
     pub client: U,
     pub environment: Environment,
@@ -69,6 +74,7 @@ where
         event!(
             Level::INFO,
             environment = %self.environment,
+            version = VERSION,
             "skus sdk initialized",
         );
     }
