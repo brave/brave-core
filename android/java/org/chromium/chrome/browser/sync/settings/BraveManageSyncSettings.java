@@ -11,10 +11,13 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.device_reauth.DeviceAuthRequester;
 import org.chromium.chrome.browser.device_reauth.ReauthenticatorBridge;
+import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.brave_tricks.checkbox_to_switch.ChromeBaseCheckBoxPreference;
+import org.chromium.ui.widget.Toast;
 
 /**
  * See org.brave.bytecode.BraveManageSyncSettingsClassAdapter
@@ -29,8 +32,8 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
 
     @Nullable
     private ReauthenticatorBridge mReauthenticatorBridge;
-
-    private ChromeBaseCheckBoxPreference mPrefSyncPasswords;
+    private ChromeSwitchPreference mPrefSyncPasswords;
+    private ChromeSwitchPreference mSyncEverything;
 
     @VisibleForTesting
     @Override
@@ -68,28 +71,59 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
 
         mSyncPaymentsIntegration.setVisible(false);
 
+        // Below
         mReauthenticatorBridge = ReauthenticatorBridge.create(
                 DeviceAuthRequester.PAYMENT_METHODS_REAUTH_IN_SETTINGS);
         mPrefSyncPasswords = findPreference(PREF_SYNC_PASSWORDS);
 
-        Preference.OnPreferenceChangeListener origListner =
+        Preference.OnPreferenceChangeListener origSyncPasswordsListner =
                 mPrefSyncPasswords.getOnPreferenceChangeListener();
 
         mPrefSyncPasswords.setOnPreferenceChangeListener((Preference preference,
                                                                  Object newValue) -> {
-            if ((Boolean) newValue == false) {
-                return origListner.onPreferenceChange(preference, newValue);
-            } else {
-                mReauthenticatorBridge.reauthenticate(success -> {
-                    if (success) {
-                        origListner.onPreferenceChange(preference, true); // <- not really worked
-
-                        mPrefSyncPasswords.setChecked(true);
-                    }
-                }, /*useLastValidAuth=*/false);
-
+            if ((Boolean) newValue) {
+                if (mReauthenticatorBridge.canUseAuthenticationWithBiometricOrScreenLock()) {
+                    mReauthenticatorBridge.reauthenticate(success -> {
+                        if (success) {
+                            // We need both lines below
+                            origSyncPasswordsListner.onPreferenceChange(preference, true);
+                            mPrefSyncPasswords.setChecked(true);
+                        }
+                    }, /*useLastValidAuth=*/false);
+                } else {
+                    showScreenLockToast();
+                }
                 return false;
+            } else {
+                return origSyncPasswordsListner.onPreferenceChange(preference, newValue);
             }
         });
+
+        Preference.OnPreferenceChangeListener origSyncAllListner =
+                mSyncEverything.getOnPreferenceChangeListener();
+
+        mSyncEverything.setOnPreferenceChangeListener((Preference preference, Object newValue) -> {
+            if ((Boolean) newValue) {
+                if (mReauthenticatorBridge.canUseAuthenticationWithBiometricOrScreenLock()) {
+                    mReauthenticatorBridge.reauthenticate(success -> {
+                        if (success) {
+                            origSyncAllListner.onPreferenceChange(preference, true);
+                            mSyncEverything.setChecked(true);
+                        }
+                    }, /*useLastValidAuth=*/false);
+                } else {
+                    showScreenLockToast();
+                }
+                return false;
+            } else {
+                return origSyncAllListner.onPreferenceChange(preference, newValue);
+            }
+        });
+    }
+
+    public void showScreenLockToast() {
+        Toast.makeText(ContextUtils.getApplicationContext(),
+                     R.string.password_sync_type_set_screen_lock, Toast.LENGTH_LONG)
+                .show();
     }
 }
