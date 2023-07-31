@@ -1250,6 +1250,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_NFT_PINNING_BANNER_LEARN_MORE},
     {"braveWalletNftPinningInspectHeading",
      IDS_BRAVE_WALLET_NFT_PINNING_INSPECT_HEADING},
+    {"braveWalletNftPinningInspectHeadingPlural",
+     IDS_BRAVE_WALLET_NFT_PINNING_INSPECT_HEADING_PLURAL},
     {"braveWalletNftPinningUnableToPin",
      IDS_BRAVE_WALLET_NFT_PINNING_UNABLE_TO_PIN},
     {"braveWalletNftPinningNodeRunningStatus",

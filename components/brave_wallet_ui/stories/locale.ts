@@ -935,8 +935,8 @@ provideStrings({
   braveWalletTransactionHasFeeEstimatesError: 'Unable to fetch fee estimates',
 
   // NFT Pinning
-  braveWalletNftPinningWhyNotAvailable: 'Why not available?',
-  braveWalletNftPinningTooltip: 'Some of NFT data are stored in centralized server such as AWS, Google Cloud, etc. In this case, it is not available to pin your NFT data to IPFS network.',
+  braveWalletNftPinningWhyNotAvailable: 'Why aren\'t some NFTs eligible?',
+  braveWalletNftPinningTooltip: 'Some NFT data is stored on centralized servers like AWS, Google Cloud, etc. In this case, it\’s not possible to pin your NFT data to the IPFS network.',
   braveWalletNftPinningBenefitsHeading: 'By enabling IPFS in Brave, your NFTs will be pinned automatically. It\'s the best way to securely back up your NFTs.',
   braveWalletNftPinningPinNftsButton: 'Get started with IPFS',
   braveWalletNftPinningBackButton: 'Back',
@@ -949,7 +949,8 @@ provideStrings({
   braveWalletNftPinningBannerUploading: 'NFTs are being pinned to your local IPFS node.',
   braveWalletNftPinningBannerSuccess: '$1 supported NFTs are pinned to your local IPFS node.',
   braveWalletNftPinningBannerLearnMore: 'Learn more',
-  braveWalletNftPinningInspectHeading: '$1 out of $2 are available!',
+  braveWalletNftPinningInspectHeading: '$1 NFT is eligible',
+  braveWalletNftPinningInspectHeadingPlural: '$1 NFTs are eligible',
   braveWalletNftPinningUnableToPin: 'Unable to pin',
   braveWalletNftPinningNodeRunningStatus: 'You\’re running an IPFS node',
   braveWalletNftPinningNodeNotRunningStatus: 'Local IPFS node is not running',
