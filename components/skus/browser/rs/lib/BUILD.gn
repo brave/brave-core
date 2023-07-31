@@ -30,7 +30,6 @@ rust_static_library("rust_lib") {
     "//brave/third_party/rust/chrono/v0_4:lib",
     "//brave/third_party/rust/data_encoding/v2:lib",
     "//brave/third_party/rust/futures_retry/v0_5:lib",
-    "//brave/third_party/rust/git_version/v0_3:lib",
     "//brave/third_party/rust/hmac/v0_10:lib",
     "//brave/third_party/rust/http/v0_1:lib",
     "//brave/third_party/rust/rand/v0_7:lib",

@@ -28,7 +28,6 @@ futures-retry = "0.5.0"
 urlencoding = "1.1.1"
 hmac = "0.10"
 base64 = "0.9.3"
-git-version = "0.3.5"
 
 [dev-dependencies]
 isahc = "1.7"
