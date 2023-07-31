@@ -184,6 +184,7 @@ class BrowserType:
 
     if field_trials_mode != FieldTrialsMode.TESTING_FIELD_TRIALS:
       self.extra_browser_args.append('--disable-field-trial-config')
+    if field_trials_mode == FieldTrialsMode.NO_TRIALS:
       self.extra_benchmark_args.append('--compatibility-mode=no-field-trials')
 
   @property
