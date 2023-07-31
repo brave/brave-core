@@ -102,10 +102,15 @@ renderer/brave_wallet/ @brave/crypto-wallets-core @brave/crypto-wallets-ios
 components/brave_referrals/browser/brave_referrals_service* @simonhong
 
 # Brave Sync
+browser/android/brave_sync_worker.* @brave/sync-reviewers
+browser/sync/ @brave/sync-reviewers
+browser/ui/webui/settings/brave_sync_handler.* @brave/sync-reviewers
 components/brave_sync/ @brave/sync-reviewers
 components/sync/service/ @brave/sync-reviewers
+components/sync_device_info/ @brave/sync-reviewers
 chromium_src/components/sync/ @brave/sync-reviewers
-chromium_src/components/sync_device_info/device_info_sync_bridge.cc @brave/sync-reviewers
+chromium_src/components/sync_device_info/ @brave/sync-reviewers
+ios/browser/api/sync/brave_sync_worker.* @brave/sync-reviewers
 
 # Speedreader
 browser/speedreader/ @iefremov
