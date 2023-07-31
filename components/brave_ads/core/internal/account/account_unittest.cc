@@ -68,10 +68,6 @@ class BraveAdsAccountTest : public AccountObserver, public UnitTestBase {
     failed_to_initialize_wallet_ = true;
   }
 
-  void OnWalletDidChange(const WalletInfo& /*wallet*/) override {
-    wallet_did_change_ = true;
-  }
-
   void OnDidProcessDeposit(const TransactionInfo& transaction) override {
     did_process_deposit_ = true;
     transaction_ = transaction;
@@ -94,7 +90,6 @@ class BraveAdsAccountTest : public AccountObserver, public UnitTestBase {
 
   bool wallet_did_initialize_ = false;
   bool failed_to_initialize_wallet_ = false;
-  bool wallet_did_change_ = false;
 
   TransactionInfo transaction_;
   bool did_process_deposit_ = false;
@@ -112,7 +107,6 @@ TEST_F(BraveAdsAccountTest, SetWallet) {
   // Assert
   EXPECT_TRUE(wallet_did_initialize_);
   EXPECT_FALSE(failed_to_initialize_wallet_);
-  EXPECT_FALSE(wallet_did_change_);
 }
 
 TEST_F(BraveAdsAccountTest, SetWalletWithEmptyPaymentId) {
@@ -124,7 +118,6 @@ TEST_F(BraveAdsAccountTest, SetWalletWithEmptyPaymentId) {
   // Assert
   EXPECT_FALSE(wallet_did_initialize_);
   EXPECT_TRUE(failed_to_initialize_wallet_);
-  EXPECT_FALSE(wallet_did_change_);
 }
 
 TEST_F(BraveAdsAccountTest, SetWalletWithInvalidRecoverySeed) {
@@ -136,7 +129,6 @@ TEST_F(BraveAdsAccountTest, SetWalletWithInvalidRecoverySeed) {
   // Assert
   EXPECT_FALSE(wallet_did_initialize_);
   EXPECT_TRUE(failed_to_initialize_wallet_);
-  EXPECT_FALSE(wallet_did_change_);
 }
 
 TEST_F(BraveAdsAccountTest, SetWalletWithEmptyRecoverySeed) {
@@ -148,21 +140,6 @@ TEST_F(BraveAdsAccountTest, SetWalletWithEmptyRecoverySeed) {
   // Assert
   EXPECT_FALSE(wallet_did_initialize_);
   EXPECT_TRUE(failed_to_initialize_wallet_);
-  EXPECT_FALSE(wallet_did_change_);
-}
-
-TEST_F(BraveAdsAccountTest, ChangeWallet) {
-  // Arrange
-  account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
-
-  // Act
-  account_->SetWallet(/*payment_id*/ "c1bf0a09-cac8-48eb-8c21-7ca6d995b0a3",
-                      kWalletRecoverySeed);
-
-  // Assert
-  EXPECT_TRUE(wallet_did_initialize_);
-  EXPECT_FALSE(failed_to_initialize_wallet_);
-  EXPECT_TRUE(wallet_did_change_);
 }
 
 TEST_F(BraveAdsAccountTest, GetWallet) {
