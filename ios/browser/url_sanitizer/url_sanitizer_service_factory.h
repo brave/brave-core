@@ -23,7 +23,7 @@ class BrowserState;
 class KeyedService;
 class ChromeBrowserState;
 
-namespace brave_privacy {
+namespace brave {
 
 class URLSanitizerServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
@@ -46,6 +46,6 @@ class URLSanitizerServiceFactory : public BrowserStateKeyedServiceFactory {
       web::BrowserState* context) const override;
 };
 
-}  // namespace brave_privacy
+}  // namespace brave
 
 #endif  // BRAVE_IOS_BROWSER_URL_SANITIZER_URL_SANITIZER_SERVICE_FACTORY_H_

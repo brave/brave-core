@@ -238,7 +238,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
     // Create and start the local data file service and component installer
     brave::URLSanitizerService* urlSanitizer =
-        brave_privacy::URLSanitizerServiceFactory::GetServiceForState(
+        brave::URLSanitizerServiceFactory::GetServiceForState(
             _mainBrowserState);
     _urlSanitizerService =
         [[URLSanitizerService alloc] initWithURLSanitizerService:urlSanitizer];

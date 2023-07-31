@@ -18,7 +18,7 @@
 #include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
 #include "brave/ios/browser/browser_state/brave_browser_process.h"
 
-namespace brave_privacy {
+namespace brave {
 
 // static
 brave::URLSanitizerService* URLSanitizerServiceFactory::GetServiceForState(
@@ -60,4 +60,4 @@ web::BrowserState* URLSanitizerServiceFactory::GetBrowserStateToUse(
   return GetBrowserStateRedirectedInIncognito(context);
 }
 
-}  // namespace brave_privacy
+}  // namespace brave
