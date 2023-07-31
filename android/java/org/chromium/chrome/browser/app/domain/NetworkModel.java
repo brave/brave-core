@@ -24,7 +24,6 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
@@ -64,8 +63,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
     private final MediatorLiveData<List<NetworkInfo>> _mPrimaryNetworks;
     private final MediatorLiveData<List<NetworkInfo>> _mSecondaryNetworks;
     private Map<String, NetworkSelectorModel> mNetworkSelectorMap;
-    private MutableLiveData<NetworkLists> _mNetworkLists;
-    private OriginInfo mOriginInfo;
+    private final MutableLiveData<NetworkLists> _mNetworkLists;
     public final LiveData<String[]> mCustomNetworkIds;
     public LiveData<NetworkInfo> mNeedToCreateAccountForNetwork;
     public final LiveData<Triple<String, NetworkInfo, List<NetworkInfo>>> mChainNetworkAllNetwork;
@@ -76,7 +74,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
     public final LiveData<NetworkInfo> mDefaultNetwork;
     public final LiveData<List<NetworkInfo>> mPrimaryNetworks;
     public final LiveData<List<NetworkInfo>> mSecondaryNetworks;
-    public LiveData<NetworkLists> mNetworkLists;
+    public final LiveData<NetworkLists> mNetworkLists;
     private Origin mOrigin;
 
     public NetworkModel(BraveWalletService braveWalletService, JsonRpcService jsonRpcService,
@@ -330,10 +328,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
                             } else if (WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(
                                                networkInfo.chainId)) {
                                 test.add(networkInfo);
-                            } else if (!WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(
-                                               networkInfo.chainId)
-                                    && !WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(
-                                            networkInfo.chainId)) {
+                            } else {
                                 secondary.add(networkInfo);
                             }
                         }
@@ -415,21 +410,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
 
     void setOrigin(Origin origin) {
         mOrigin = origin;
-    }
-
-    List<NetworkInfo> getSubTestNetworks(NetworkInfo networkInfo) {
-        List<NetworkInfo> cryptoNws = _mCryptoNetworks.getValue();
-        if (cryptoNws == null || cryptoNws.size() == 0
-                || !WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(networkInfo.chainId))
-            return Collections.emptyList();
-        List<NetworkInfo> list = new ArrayList<>();
-        for (NetworkInfo info : cryptoNws) {
-            if (WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(info.chainId)
-                    && networkInfo.coin == info.coin && !isCustomChain(info.chainId)) {
-                list.add(info);
-            }
-        }
-        return list;
     }
 
     private boolean isCustomChain(String netWorkChainId) {
