@@ -70,7 +70,8 @@ class BraveVerticalTabStyle : public BraveGM2TabStyle {
   bool ShouldShowVerticalTabs() const;
   bool IsInGroupAndNotActive() const;
   SkColor GetTargetTabBackgroundColor(
-      TabStyle::TabSelectionState selection_state) const override;
+      TabStyle::TabSelectionState selection_state,
+      bool hovered) const override;
 };
 
 BraveVerticalTabStyle::BraveVerticalTabStyle(Tab* tab) : BraveGM2TabStyle(tab) {
@@ -179,9 +180,11 @@ void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
 }
 
 SkColor BraveVerticalTabStyle::GetTargetTabBackgroundColor(
-    TabStyle::TabSelectionState selection_state) const {
+    TabStyle::TabSelectionState selection_state,
+    bool hovered) const {
   if (!ShouldShowVerticalTabs()) {
-    return BraveGM2TabStyle::GetTargetTabBackgroundColor(selection_state);
+    return BraveGM2TabStyle::GetTargetTabBackgroundColor(selection_state,
+                                                         hovered);
   }
 
   const ui::ColorProvider* cp = tab()->GetColorProvider();
