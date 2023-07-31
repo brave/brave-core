@@ -510,6 +510,29 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
   EXPECT_EQ(oldest_block, "0xd6b1b0");
   EXPECT_EQ(reward, std::vector<std::vector<std::string>>());
 
+  // null reward is OK which is treated the same as missing reward
+  json = R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result": {
+          "baseFeePerGas": [],
+          "gasUsedRatio": [],
+          "oldestBlock": "0xd6b1b0",
+          "reward": null
+        }
+      })";
+  base_fee_per_gas.clear();
+  gas_used_ratio.clear();
+  oldest_block.clear();
+  reward.clear();
+  EXPECT_TRUE(ParseEthGetFeeHistory(ParseJson(json), &base_fee_per_gas,
+                                    &gas_used_ratio, &oldest_block, &reward));
+  EXPECT_EQ(base_fee_per_gas, std::vector<std::string>());
+  EXPECT_EQ(gas_used_ratio, std::vector<double>());
+  EXPECT_EQ(oldest_block, "0xd6b1b0");
+  EXPECT_EQ(reward, std::vector<std::vector<std::string>>());
+
   // Unexpected input
   EXPECT_FALSE(ParseEthGetFeeHistory(base::Value(), &base_fee_per_gas,
                                      &gas_used_ratio, &oldest_block, &reward));
