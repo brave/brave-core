@@ -77,17 +77,20 @@ absl::optional<FilTransaction> FilTransaction::FromTxData(
     tx.nonce_ = nonce;
   }
 
-  auto address = FilAddress::FromAddress(tx_data->to);
-  if (address.IsEmpty()) {
-    return absl::nullopt;
-  }
-  tx.to_ = address;
-
   auto from = FilAddress::FromAddress(tx_data->from);
   if (from.IsEmpty()) {
     return absl::nullopt;
   }
   tx.from_ = from;
+
+  auto address = FilAddress::FromAddress(tx_data->to);
+  if (address.IsEmpty()) {
+    address = FilAddress::FromFEVMAddress(from.IsMainNet(), tx_data->to);
+    if (address.IsEmpty()) {
+      return absl::nullopt;
+    }
+  }
+  tx.to_ = address;
 
   if (tx_data->value.empty() || !IsNumericString(tx_data->value)) {
     return absl::nullopt;

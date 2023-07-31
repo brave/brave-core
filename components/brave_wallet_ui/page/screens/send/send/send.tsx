@@ -13,7 +13,7 @@ import {
 import { useDispatch } from 'react-redux'
 
 // Messages
-import { ENSOffchainLookupMessage, FailedChecksumMessage } from '../send-ui-messages'
+import { ENSOffchainLookupMessage, FEVMAddressConvertionMessage, FailedChecksumMessage } from '../send-ui-messages'
 
 // Types
 import {
@@ -117,6 +117,8 @@ export const Send = (props: Props) => {
     enableEnsOffchainLookup,
     showEnsOffchainWarning,
     setShowEnsOffchainWarning,
+    showFilecoinFEVMWarning,
+    fevmTranslatedAddresses,
     addressError,
     addressWarning,
     sendAmount,
@@ -349,6 +351,12 @@ export const Send = (props: Props) => {
   }, [searchingForDomain, addressError])
 
   const addressMessageInformation: AddressMessageInfo | undefined = React.useMemo(() => {
+    if (showFilecoinFEVMWarning) {
+      return {
+        ...FEVMAddressConvertionMessage,
+        placeholder: fevmTranslatedAddresses?.[toAddressOrUrl]
+      }
+    }
     if (showEnsOffchainWarning) {
       return ENSOffchainLookupMessage
     }
@@ -359,7 +367,8 @@ export const Send = (props: Props) => {
       return { ...FailedChecksumMessage, type: 'warning' }
     }
     return undefined
-  }, [showEnsOffchainWarning, addressError, addressWarning])
+  }, [toAddressOrUrl, showFilecoinFEVMWarning, fevmTranslatedAddresses,
+      showEnsOffchainWarning, addressError, addressWarning])
 
   const showResolvedDomain = React.useMemo(() => {
     return (addressError === undefined ||
@@ -540,7 +549,7 @@ export const Send = (props: Props) => {
                 spellCheck={false}
                 disabled={!selectedSendAsset}
               />
-              <AccountSelector disabled={!selectedSendAsset} onSelectAddress={updateToAddressOrUrl} />
+              <AccountSelector asset={selectedSendAsset} disabled={!selectedSendAsset} onSelectAddress={updateToAddressOrUrl} />
             </InputRow>
             {showResolvedDomain &&
               <CopyAddress address={toAddress} />

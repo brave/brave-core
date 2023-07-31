@@ -16,6 +16,7 @@ import CaratDownIcon from '../../assets/carat-down-icon.svg'
 // Hooks
 import { useOnClickOutside } from '../../../../../common/hooks/useOnClickOutside'
 import {
+  useGetFVMAddressQuery,
   useGetSelectedChainQuery //
 } from '../../../../../common/slices/api.slice'
 
@@ -25,7 +26,11 @@ import { AccountListItem } from '../account-list-item/account-list-item'
 // Styled Components
 import { ButtonIcon, ArrowIcon, DropDown, SelectorButton } from './account-selector.style'
 
+import { skipToken } from '@reduxjs/toolkit/query/react'
+import { BraveWallet } from '../../../../../constants/types'
+
 interface Props {
+  asset: BraveWallet.BlockchainToken | undefined,
   onSelectAddress: (value: string) => void
   disabled: boolean
 }
@@ -33,7 +38,7 @@ interface Props {
 const ACCOUNT_SELECTOR_BUTTON_ID = 'account-selector-button-id'
 
 export const AccountSelector = (props: Props) => {
-  const { onSelectAddress, disabled } = props
+  const { asset, onSelectAddress, disabled } = props
 
   // Selectors
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
@@ -58,17 +63,52 @@ export const AccountSelector = (props: Props) => {
     onSelectAddress(address)
   }, [onSelectAddress])
 
+  const isFVMAccount = React.useCallback(
+    (account) =>
+      (selectedNetwork?.chainId === BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID &&
+        account.accountId.keyringId === BraveWallet.KeyringId.kFilecoin) ||
+      (selectedNetwork?.chainId === BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID &&
+        account.accountId.keyringId === BraveWallet.KeyringId.kFilecoinTestnet),
+    [selectedNetwork]);
+
   // Memos
   const accountsByNetwork = React.useMemo(() => {
     if (!selectedNetwork || !selectedAccount) {
       return []
     }
+
+    if (selectedAccount.accountId.coin === BraveWallet.CoinType.FIL) {
+      const filecoinAccounts = accounts.filter((account) =>
+        (account.accountId.keyringId === selectedAccount?.accountId.keyringId))
+      const fevmAccounts = accounts.filter((account) =>
+        (account.accountId.coin === BraveWallet.CoinType.ETH))
+      return filecoinAccounts.concat(fevmAccounts)
+    }
+
+    // TODO(apaymyshev): for bitcoin should allow sending to my account, but
+    // from different keyring (i.e. segwit -> taproot)
+    // https://github.com/brave/brave-browser/issues/29262
     return accounts.filter(
       (account) =>
-        account.accountId.coin === selectedNetwork.coin &&
-        account.accountId.keyringId === selectedAccount.accountId.keyringId
-    )
-  }, [accounts, selectedNetwork, selectedAccount])
+        account.accountId.keyringId === selectedAccount?.accountId.keyringId ||
+        (asset?.contractAddress === "" && isFVMAccount(account)))
+  }, [accounts, selectedNetwork, selectedAccount, asset])
+
+  const evmAddressesforFVMTranslation = React.useMemo(() =>
+  accountsByNetwork
+    .filter(account => account.accountId.coin === BraveWallet.CoinType.ETH)
+    .map(account => account.accountId.address),
+  [accountsByNetwork])
+
+  const { data: fvmTranslatedAddresses } = useGetFVMAddressQuery(
+    selectedNetwork && evmAddressesforFVMTranslation.length
+    ? {
+        coin: selectedNetwork.coin,
+        addresses: evmAddressesforFVMTranslation,
+        isMainNet: selectedNetwork.chainId === BraveWallet.FILECOIN_MAINNET
+      }
+    : skipToken
+  )
 
   // Hooks
   useOnClickOutside(
@@ -92,6 +132,7 @@ export const AccountSelector = (props: Props) => {
               onClick={handleOnSelectAccount}
               address={account.address}
               name={account.name}
+              accountAlias={fvmTranslatedAddresses?.[account.accountId.address]}
             />
           )}
         </DropDown>

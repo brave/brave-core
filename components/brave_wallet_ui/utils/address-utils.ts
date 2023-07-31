@@ -21,7 +21,7 @@ export function isValidFilAddress (value: string): boolean {
   return (value.length === 41 || value.length === 86 || value.length === 44)
 }
 
-export function isValidAddress (value: string, length: number): boolean {
+export function isValidAddress (value: string, length: number = 20): boolean {
   if (!value.match(/^0x[0-9A-Fa-f]*$/)) {
     return false
   }

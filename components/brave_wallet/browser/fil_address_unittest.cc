@@ -339,4 +339,20 @@ TEST(FilAddressUnitTest, FromBytes) {
   }
 }
 
+TEST(FilAddressUnitTest, ConvertFEVMtoFVM) {
+  EXPECT_EQ("f410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y",
+            FilAddress::FromFEVMAddress(
+                true, "0x8C60a3A9530dDD22F44C0B9c219E55E693335b51")
+                .EncodeAsString());
+
+  EXPECT_EQ("t410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y",
+            FilAddress::FromFEVMAddress(
+                false, "0x8C60a3A9530dDD22F44C0B9c219E55E693335b51")
+                .EncodeAsString());
+
+  EXPECT_TRUE(FilAddress::FromFEVMAddress(
+                  false, "8C60a3A9530dDD22F44C0B9c219E55E693335b51")
+                  .IsEmpty());
+}
+
 }  // namespace brave_wallet
