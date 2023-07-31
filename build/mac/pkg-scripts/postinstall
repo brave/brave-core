@@ -33,8 +33,9 @@ fi
 
 appNameNoDash=$(echo $appName | sed "s/-/ /g")
 installationAppPath="$installationPath/${appNameNoDash}.app"
-userDataDir="$HOME/Library/Application Support/BraveSoftware/${appName}"
-promoCodePath="$userDataDir/promoCode"
+userDataDir="$HOME/Library/Application Support/BraveSoftware"
+appDataDir="$userDataDir/${appName}"
+promoCodePath="$appDataDir/promoCode"
 
 # pkg runs this script as root so we need to get current username
 userName="$USER"
@@ -54,11 +55,10 @@ sudo chgrp -R admin "$installationAppPath"
 # handle promoCode specific logic (if promoCode was found)
 if [ "$promoCode" != "" ]; then
   echo "Writing to user data directory at: $promoCodePath"
-  mkdir -p "$userDataDir"
+  mkdir -p "$appDataDir"
   echo "$promoCode" > "$promoCodePath"
   # fix permissions
-  sudo chown "$userName" "$userDataDir"
-  sudo chown "$userName" "$promoCodePath"
+  sudo chown -R "$userName" "$userDataDir"
 fi
 
 exit 0
