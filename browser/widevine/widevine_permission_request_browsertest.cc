@@ -16,7 +16,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_paths.h"
-#include "chrome/test/permissions/permission_request_manager_test_api.h"
+#include "components/permissions/permission_request_manager.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -42,6 +42,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "chrome/test/permissions/permission_request_manager_test_api.h"
 #endif
 
 namespace {
@@ -54,6 +55,19 @@ class TestObserver : public permissions::PermissionRequestManager::Observer {
   bool bubble_added_ = false;
   int added_count_ = 0;
 };
+
+void NavigateAndWaitForLoad(content::WebContents* web_contents, GURL url) {
+#if BUILDFLAG(IS_ANDROID)
+  content::NavigationController::LoadURLParams params(url);
+  params.transition_type = ui::PageTransitionFromInt(
+      ui::PAGE_TRANSITION_TYPED | ui::PAGE_TRANSITION_FROM_ADDRESS_BAR);
+  web_contents->GetController().LoadURLWithParams(params);
+  EXPECT_TRUE(WaitForLoadStop(web_contents));
+#else
+  EXPECT_TRUE(content::NavigateToURL(web_contents, url));
+#endif
+}
+
 }  // namespace
 
 class WidevinePermissionRequestBrowserTest : public PlatformBrowserTest {
@@ -114,8 +128,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
 
   // Check permission is requested again after new navigation.
   observer.bubble_added_ = false;
-  EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
-                                     GURL("chrome://newtab/")));
+  NavigateAndWaitForLoad(GetActiveWebContents(), GURL("chrome://newtab/"));
   drm_tab_helper->OnWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(observer.bubble_added_);
@@ -126,8 +139,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
       static_cast<Profile*>(GetActiveWebContents()->GetBrowserContext())
           ->GetPrefs(),
       true);
-  EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
-                                     GURL("chrome://newtab/")));
+  NavigateAndWaitForLoad(GetActiveWebContents(), GURL("chrome://newtab/"));
   drm_tab_helper->OnWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_FALSE(observer.bubble_added_);
@@ -138,8 +150,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
       static_cast<Profile*>(GetActiveWebContents()->GetBrowserContext())
           ->GetPrefs(),
       false);
-  EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
-                                     GURL("chrome://newtab/")));
+  NavigateAndWaitForLoad(GetActiveWebContents(), GURL("chrome://newtab/"));
   drm_tab_helper->OnWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(observer.bubble_added_);
