@@ -37,10 +37,6 @@ export const root = styled.div`
     }
   }
 
-  .rewards-payment-amount {
-    font-weight: 600;
-  }
-
   .rewards-payment-completed {
     background: #E7FDEA;
     padding: 9px 15px;
