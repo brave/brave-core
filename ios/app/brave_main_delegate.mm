@@ -26,6 +26,13 @@
 #error "This file requires ARC support."
 #endif
 
+// Dummy class used to locate the containing NSBundle
+@interface BundleLookupClass : NSObject
+@end
+
+@implementation BundleLookupClass
+@end
+
 namespace {
 
 std::string GetUpdateURLHost() {
@@ -42,10 +49,8 @@ std::string GetUpdateURLHost() {
 }  // namespace
 
 BraveMainDelegate::BraveMainDelegate() {
-  base::FilePath path;
-  base::GetModuleDir(&path);
-  base::apple::SetOverrideFrameworkBundlePath(path);
-  base::apple::SetOverrideOuterBundlePath(path);
+  base::apple::SetOverrideFrameworkBundle(
+      [NSBundle bundleForClass:[BundleLookupClass class]]);
 }
 
 BraveMainDelegate::~BraveMainDelegate() {}
