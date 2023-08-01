@@ -8,6 +8,8 @@
 #include <utility>
 
 #include "base/check_op.h"
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
@@ -18,6 +20,18 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_migration.h"
 
 namespace brave_ads {
+
+namespace {
+
+// TODO(https://github.com/brave/brave-browser/issues/32066): Remove brave ads
+// migration failure dumps
+void DoDumpWithoutCrashing(const int from_version, const int to_version) {
+  SCOPED_CRASH_KEY_NUMBER("FromVersion", "value", from_version);
+  SCOPED_CRASH_KEY_NUMBER("ToVersion", "value", to_version);
+  base::debug::DumpWithoutCrashing();
+}
+
+}  // namespace
 
 DatabaseManager::DatabaseManager() = default;
 
@@ -143,6 +157,8 @@ void DatabaseManager::MigrateFromVersionCallback(const int from_version,
   const int to_version = database::kVersion;
 
   if (!success) {
+    DoDumpWithoutCrashing(from_version, to_version);
+
     BLOG(1, "Failed to migrate database from schema version "
                 << from_version << " to schema version " << to_version);
     NotifyFailedToMigrateDatabase(from_version, to_version);
