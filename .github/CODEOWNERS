@@ -14,6 +14,9 @@ package*.json @brave/js-deps-reviewers
 **/Cargo.* @brave/rust-deps-reviewers
 third_party/rust @bridiver
 
+# Rust code
+**/*.rs @brave/rust-reviewers
+
 # Third-party binaries
 **/*.aar @bridiver
 **/*.jar @bridiver
