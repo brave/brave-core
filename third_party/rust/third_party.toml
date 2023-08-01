@@ -50,10 +50,14 @@ cxxbridge-cmd = "1"
 lazy_static = "1"
 memoffset = { version = "0.6", features = [ "unstable_const" ] }
 proc-macro2 = "1"
+qr_code = "2"
 quote = "1"
 serde = "1"
 static_assertions = "1"
 syn = {version = "1", features = ["full"]}
+read-fonts = "0.5"
+font-types = "0.3"
+skrifa = "0.4"
 
 # speedreader-ffi
 libc = "0.2.107"
