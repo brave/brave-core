@@ -99,7 +99,6 @@ template("ios_objc_mojom_wrappers") {
       public_deps = []
     }
     sources = generate_wrappers_output
-    configs += [ "//build/config/compiler:enable_arc" ]
     public_configs = [ ":$type_headers_target_name" ]
     public_deps += [
       ":$generate_wrappers_target",

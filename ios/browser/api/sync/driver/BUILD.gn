@@ -7,8 +7,6 @@ import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
 source_set("driver") {
-  configs += [ "//build/config/compiler:enable_arc" ]
-
   sources = [
     "brave_sync_profile_service+private.h",
     "brave_sync_profile_service.h",

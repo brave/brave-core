@@ -4,8 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 source_set("session_restore") {
-  configs += [ "//build/config/compiler:enable_arc" ]
-
   sources = [
     "synthesized_session_restore.h",
     "synthesized_session_restore.mm",
