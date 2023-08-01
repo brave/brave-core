@@ -85,7 +85,7 @@ export default function Header ({ playlistId }: HeaderProps) {
                 iconName: 'list-bullet-default',
                 onClick: () => {}
               },
-              { name: 'Share', iconName: 'share', onClick: () => {} },
+              { name: 'Share', iconName: 'share-macos', onClick: () => {} },
               {
                 name: 'Keep for offline playing',
                 iconName: 'cloud-download',
