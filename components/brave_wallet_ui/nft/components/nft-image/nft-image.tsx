@@ -30,7 +30,7 @@ export const NftImage = (props: Props) => {
   return (
     <>
       <ImageWrapper>
-        <Image src={imageUrl} onLoad={onImageLoaded} />
+        <Image src={imageUrl} onLoad={onImageLoaded} loading='lazy' />
       </ImageWrapper>
     </>
   )

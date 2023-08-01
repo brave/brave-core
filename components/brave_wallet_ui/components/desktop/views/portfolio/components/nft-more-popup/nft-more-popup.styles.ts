@@ -13,17 +13,18 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${(p) => p.theme.color.background02};
   border-radius: 8px;
-  box-shadow: 0px 4px 13px -2px rgba(0, 0, 0, 0.1);
   position: absolute;
   top: 42px;
   right: 12px;
   z-index: 3;
-  width: 127px;
-  border: 1px solid ${leo.color.divider.subtle};
   border-radius: 8px;
   overflow: hidden;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid ${leo.color.divider.subtle};
+  background-color: ${leo.color.container.background};
+  box-shadow: 0px 4px 16px -2px rgba(0, 0, 0, 0.08);
 `
 
 export const PopupButton = styled(WalletButton)`
@@ -39,18 +40,14 @@ export const PopupButton = styled(WalletButton)`
   padding: 9px 8px;
   margin: 0px;
   background-color: transparent;
-  &:hover {
-    background-color: ${(p) => p.theme.color.divider01};
-  }
 `
 
 export const PopupButtonText = styled.span`
   flex: 1;
-  font-family: Poppins;
-  font-size: 13px;
+  font-size: 14px;
+  font-style: normal;
   font-weight: 400;
-  letter-spacing: 0.01em;
-  line-height: 24px;
+  line-height: 24px; 
   color: ${leo.color.text.primary};
   white-space: nowrap;
   text-overflow: ellipsis;
