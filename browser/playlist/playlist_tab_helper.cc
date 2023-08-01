@@ -12,6 +12,7 @@
 #include "brave/browser/playlist/playlist_tab_helper_observer.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
 #include "chrome/grit/generated_resources.h"
 #include "content/public/browser/navigation_handle.h"
@@ -106,9 +107,11 @@ std::u16string PlaylistTabHelper::GetSavedFolderName() {
     return kPlaceholderName;
   }
 
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (parent_id == kDefaultPlaylistID) {
     return l10n_util::GetStringUTF16(IDS_PLAYLIST_DEFAULT_PLAYLIST_NAME);
   }
+#endif
 
   return base::UTF8ToUTF16(service_->GetPlaylist(parent_id)->name);
 }
