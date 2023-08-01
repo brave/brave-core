@@ -9,7 +9,6 @@
 /components/brave_new_tab_ui/data/LICENSE
 /components/brave_webtorrent/extension/out/
 /components/brave_rewards/resources/extension/brave_rewards/out/
-/components/third_party/adblock/LICENSE
 /components/third_party/local_data/LICENSE
 /dist/
 /out/
@@ -24,7 +23,6 @@ patches/**/*.patchinfo
 /third_party/bitcoin-core/src
 /third_party/playlist_component/src
 /third_party/rapidjson/src
-/third_party/rust/adblock/v0_7/crate
 /third_party/rust/challenge_bypass_ristretto/v1/crate
 /third_party/rust/kuchiki/v0_8/crate
 /third_party/rust/futures_retry/v0_5/crate
