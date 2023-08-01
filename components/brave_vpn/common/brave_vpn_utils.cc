@@ -41,6 +41,7 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(prefs::kBraveVPNSubscriberCredential);
   registry->RegisterBooleanPref(prefs::kBraveVPNLocalStateMigrated, false);
   registry->RegisterTimePref(prefs::kBraveVPNSessionExpiredDate, {});
+  registry->RegisterBooleanPref(prefs::kBraveVPNWireguardEnabled, true);
 }
 
 }  // namespace
