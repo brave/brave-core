@@ -10,7 +10,7 @@ import '../brave_appearance_page/brave_theme.js'
 import '../brave_appearance_page/toolbar.js'
 import '../brave_appearance_page/bookmark_bar.js'
 
-import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
+import {html, RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 
 import {loadTimeData} from '../i18n_setup.js'
@@ -24,9 +24,12 @@ RegisterPolymerTemplateModifications({
     if (!theme) {
       console.error(`[Brave Settings Overrides] Couldn't find #themeRow`)
     } else {
-      const useDefaultButtonTemplate = templateContent.querySelector('template[is=dom-if][if="[[prefs.extensions.theme.id.value]]"]')
+      const useDefaultButtonTemplate = templateContent.querySelector(
+        'template[is=dom-if][if="[[prefs.extensions.theme.id.value]]"]')
       if (!useDefaultButtonTemplate) {
-        console.error('[Brave Settings Overrides] Appearance Page cannot find use default theme button template')
+        console.error(
+          '[Brave Settings Overrides] Appearance Page cannot find use default' +
+          ' theme button template')
       } else {
         useDefaultButtonTemplate.setAttribute("restamp", "true")
       }
@@ -38,7 +41,7 @@ RegisterPolymerTemplateModifications({
           </settings-brave-appearance-theme>
         `)
     }
-    const r = Router.getInstance().routes_
+
     // Super-referral
     // W/o super referral, we don't need to themes link option with themes sub
     // page.
@@ -48,8 +51,10 @@ RegisterPolymerTemplateModifications({
     )
     if (hasSuperReferral) {
       // Routes
+      const r = Router.getInstance().routes_
       if (!r.APPEARANCE) {
-        console.error('[Brave Settings Overrides] Routes: could not find APPEARANCE page')
+        console.error(
+          '[Brave Settings Overrides] Routes: could not find APPEARANCE page')
         return
       } else {
         r.THEMES = r.APPEARANCE.createChild('/themes');
@@ -60,9 +65,11 @@ RegisterPolymerTemplateModifications({
       }
     }
     // Toolbar prefs
-    const bookmarkBarToggle = templateContent.querySelector('[pref="{{prefs.bookmark_bar.show_on_all_tabs}}"]')
+    const bookmarkBarToggle = templateContent.querySelector(
+      '[pref="{{prefs.bookmark_bar.show_on_all_tabs}}"]')
     if (!bookmarkBarToggle) {
-      console.error(`[Brave Settings Overrides] Couldn't find bookmark bar toggle`)
+      console.error(
+        `[Brave Settings Overrides] Couldn't find bookmark bar toggle`)
     } else {
       bookmarkBarToggle.insertAdjacentHTML(
         'beforebegin',
@@ -131,7 +138,8 @@ RegisterPolymerTemplateModifications({
     }
 
     // <if expr="is_macosx">
-    const confirmToQuit = templateContent.querySelector('[pref="{{prefs.browser.confirm_to_quit}}"]')
+    const confirmToQuit = templateContent.querySelector(
+      '[pref="{{prefs.browser.confirm_to_quit}}"]')
     if (!confirmToQuit) {
       console.error(`[Brave Settings Overrides] Couldn't find confirm to quit`)
     } else {
@@ -140,23 +148,24 @@ RegisterPolymerTemplateModifications({
     // </if>
 
     // Super referral themes prefs
-    const pages = templateContent.getElementById('pages')
-    if (!pages) {
-      console.error(`[Brave Settings Overrides] Couldn't find appearance_page #pages`)
-    } else {
-      pages.insertAdjacentHTML(
-        'beforeend',
-        getTrustedHTML`
-          <template is="dom-if" route-path="/themes">
-            <settings-subpage
-              associated-control="[[$$('#themes-subpage-trigger')]]"
-              page-title="themes"
-            >
-              <settings-brave-appearance-super-referral prefs="{{prefs}}">
-              </settings-brave-appearance-super-referral>
-            </settings-subpage>
-          </template>
-        `)
+    if (hasSuperReferral) {
+      const pages = templateContent.getElementById('pages')
+      if (!pages) {
+        console.error(
+          `[Brave Settings Overrides] Couldn't find appearance_page #pages`)
+      } else {
+        pages.appendChild(
+          html`
+            <template is="dom-if" route-path="/themes">
+              <settings-subpage
+                associated-control="[[$$('#themes-subpage-trigger')]]"
+                page-title="${loadTimeData.getString('themes')}">
+                <settings-brave-appearance-super-referral prefs="{{prefs}}">
+                </settings-brave-appearance-super-referral>
+              </settings-subpage>
+            </template>
+          `)
+      }
     }
   },
 })
