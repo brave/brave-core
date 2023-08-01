@@ -11,7 +11,7 @@ export const ScrollContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
+  overflow-y: auto;
 `
 
 export const SelectAssetWrapper = styled.div`
