@@ -25,6 +25,7 @@ class FilTransaction {
   bool operator!=(const FilTransaction&) const;
 
   static absl::optional<FilTransaction> FromTxData(
+      bool is_mainnet,
       const mojom::FilTxDataPtr& tx_data);
 
   // https://github.com/filecoin-project/lotus/blob/master/chain/types/message.go

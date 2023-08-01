@@ -167,6 +167,7 @@ TEST(FilecoinKeyring, SignTransaction) {
   EXPECT_FALSE(keyring.SignTransaction(address, nullptr));
 
   auto transaction = FilTransaction::FromTxData(
+      false,
       mojom::FilTxData::New("1", "2", "3", "4", "5",
                             "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6"));
   EXPECT_FALSE(keyring.SignTransaction(address, &transaction.value()));

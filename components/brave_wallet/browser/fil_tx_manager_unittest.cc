@@ -258,7 +258,7 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactions) {
   auto tx_data = mojom::FilTxData::New("" /* nonce */, "" /* gas_premium */,
                                        "" /* gas_fee_cap */, "" /* gas_limit */,
                                        "" /* max_fee */, to_account, "11");
-  auto tx = FilTransaction::FromTxData(tx_data.Clone());
+  auto tx = FilTransaction::FromTxData(false, tx_data.Clone());
 
   std::string meta_id1;
   AddUnapprovedTransaction(mojom::kLocalhostChainId, tx_data.Clone(),
@@ -331,7 +331,7 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactionError) {
   auto tx_data = mojom::FilTxData::New("" /* nonce */, "" /* gas_premium */,
                                        "" /* gas_fee_cap */, "" /* gas_limit */,
                                        "" /* max_fee */, to_account, "11");
-  auto tx = FilTransaction::FromTxData(tx_data.Clone());
+  auto tx = FilTransaction::FromTxData(false, tx_data.Clone());
 
   std::string meta_id1;
   AddUnapprovedTransaction(mojom::kLocalhostChainId, tx_data.Clone(),
@@ -383,7 +383,7 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactionConfirmed) {
   auto tx_data = mojom::FilTxData::New("" /* nonce */, "" /* gas_premium */,
                                        "" /* gas_fee_cap */, "" /* gas_limit */,
                                        "" /* max_fee */, to_account, "11");
-  auto tx = FilTransaction::FromTxData(tx_data.Clone());
+  auto tx = FilTransaction::FromTxData(false, tx_data.Clone());
 
   std::string meta_id1;
   AddUnapprovedTransaction(mojom::kLocalhostChainId, tx_data.Clone(),

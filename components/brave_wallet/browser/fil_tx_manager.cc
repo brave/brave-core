@@ -118,7 +118,9 @@ void FilTxManager::AddUnapprovedTransaction(
     const absl::optional<std::string>& group_id,
     AddUnapprovedTransactionCallback callback) {
   DCHECK(tx_data_union->is_fil_tx_data());
-  auto tx = FilTransaction::FromTxData(tx_data_union->get_fil_tx_data());
+  const bool is_mainnet = chain_id == mojom::kFilecoinMainnet;
+  auto tx =
+      FilTransaction::FromTxData(is_mainnet, tx_data_union->get_fil_tx_data());
   if (!tx) {
     std::move(callback).Run(
         false, "",

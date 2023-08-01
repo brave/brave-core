@@ -67,6 +67,7 @@ bool FilTransaction::operator!=(const FilTransaction& other) const {
 
 // static
 absl::optional<FilTransaction> FilTransaction::FromTxData(
+    bool is_mainnet,
     const mojom::FilTxDataPtr& tx_data) {
   FilTransaction tx;
   uint64_t nonce = 0;
@@ -76,7 +77,7 @@ absl::optional<FilTransaction> FilTransaction::FromTxData(
 
   auto address = FilAddress::FromAddress(tx_data->to);
   if (address.IsEmpty()) {
-    address = FilAddress::FromFEVMAddress(from.IsMainNet(), tx_data->to);
+    address = FilAddress::FromFEVMAddress(is_mainnet, tx_data->to);
     if (address.IsEmpty()) {
       return absl::nullopt;
     }

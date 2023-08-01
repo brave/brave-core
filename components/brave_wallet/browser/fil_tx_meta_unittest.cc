@@ -14,10 +14,11 @@
 namespace brave_wallet {
 
 TEST(FilTxMeta, ToTransactionInfo) {
-  std::unique_ptr<FilTransaction> tx = std::make_unique<FilTransaction>(
-      *FilTransaction::FromTxData(mojom::FilTxData::New(
-          "1", "2", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-          "6")));
+  std::unique_ptr<FilTransaction> tx =
+      std::make_unique<FilTransaction>(*FilTransaction::FromTxData(
+          false, mojom::FilTxData::New(
+                     "1", "2", "3", "4", "5",
+                     "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6")));
 
   auto fil_account_id =
       MakeAccountId(mojom::CoinType::FIL, mojom::KeyringId::kFilecoin,
@@ -66,6 +67,7 @@ TEST(FilTxMeta, ToValue) {
                     "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq");
 
   auto transaction = FilTransaction::FromTxData(
+      false,
       mojom::FilTxData::New("1", "2", "3", "4", "5",
                             "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6"));
   std::unique_ptr<FilTransaction> tx =

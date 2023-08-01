@@ -3291,6 +3291,7 @@ TEST_F(KeyringServiceUnitTest, SignTransactionByFilecoinKeyring) {
   SetNetwork(mojom::kFilecoinTestnet, mojom::CoinType::FIL);
 
   auto transaction = FilTransaction::FromTxData(
+      false,
       mojom::FilTxData::New("1", "2", "3", "4", "5",
                             "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6"));
 
