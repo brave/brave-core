@@ -8,6 +8,8 @@
 # import("//build/config/chrome_build.gni") in compiler.gni
 import("//brave/app/entitlements.gni")
 import("//brave/brave_repack_locales.gni")
+import(
+    "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service/allowlist.gni")
 import("//brave/browser/extensions/resources.gni")
 import("//brave/browser/resources/bookmarks/sources.gni")
 import("//brave/browser/resources/extensions/sources.gni")
@@ -24,5 +26,4 @@ import("//brave/components/sync_device_info/sources.gni")
 import("//brave/components/update_client/sources.gni")
 import("//brave/installer/linux/sources.gni")
 import("//brave/net/sources.gni")
-import("//brave/resources/allowlist.gni")
 import("//brave/third_party/blink/renderer/includes.gni")

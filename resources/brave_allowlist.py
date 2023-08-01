@@ -9,6 +9,8 @@ import sys
 import os
 
 
+# Merges 2 allowlists (repack_allowlist + brave_allowlist = output file) to
+# a new file that contains both resources. Filters duplicated resources ids.
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--repack_allowlist',

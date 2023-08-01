@@ -19,22 +19,6 @@ copy("brave_vpn_wireguard_binaries") {
   outputs = [ "$root_out_dir/{{source_file_part}}" ]
 }
 
-# Brave VPN Wireguard service allowlist file contains resource ids from
-# brave_vpn_wireguard_service.exe.
-wireguard_resource_allowlist = "$root_gen_dir/wireguard_resources_allowlist.txt"
-
-# Merge chrome_resource_allowlist and wireguard resources allowlist to keep
-# wireguard resources in pak files.
-brave_allowlist("wireguard_allowlist") {
-  repack_allowlist = "$root_gen_dir/chrome/chrome_resource_allowlist.txt"
-  deps = [
-    ":wireguard_service",
-    "//chrome:resource_allowlist",
-  ]
-  outputs = [ brave_allowlist_file ]
-  brave_allowlist = wireguard_resource_allowlist
-}
-
 group("wireguard_service") {
   deps = []
   if (enable_resource_allowlist_generation) {
