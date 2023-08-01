@@ -454,6 +454,12 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
   VLOG(2) << __func__
           << ": Checking purchased state as we doesn't have valid skus or "
              "subscriber credentials";
+
+  RequestCredentialSummary(domain);
+}
+
+void BraveVpnService::RequestCredentialSummary(const std::string& domain) {
+  // As we request new credential, clear cached value.
   ClearSubscriberCredential(local_prefs_);
 
   EnsureMojoConnected();
@@ -597,7 +603,28 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
 #if BUILDFLAG(IS_ANDROID)
     SetPurchasedState(GetCurrentEnvironment(), PurchasedState::NOT_PURCHASED);
 #else
-    auto message_id = (subscriber_credential == kTokenNoLongerValid)
+    const bool token_no_longer_valid =
+        subscriber_credential == kTokenNoLongerValid;
+
+    // If current skus-credential is from retried, don't retry to get newer
+    // skus-credential again.
+    if (token_no_longer_valid && !IsRetriedSkusCredential(local_prefs_)) {
+      VLOG(2) << __func__
+              << " : Re-trying to fetch subscriber-credential by fetching "
+                 "newer skus-credential.";
+      RequestCredentialSummary(skus::GetDomain("vpn", GetCurrentEnvironment()));
+      SetSkusCredentialFetchingRetried(local_prefs_, true);
+      return;
+    }
+
+    // If we got same error with another skus-credential, give up as we can't
+    // issue another skus-credential. It's limited resource.
+    if (token_no_longer_valid && IsRetriedSkusCredential(local_prefs_)) {
+      VLOG(2) << __func__
+              << " : Got TokenNoLongerValid again with retried skus credential";
+    }
+
+    auto message_id = token_no_longer_valid
                           ? IDS_BRAVE_VPN_PURCHASE_TOKEN_NOT_VALID
                           : IDS_BRAVE_VPN_PURCHASE_CREDENTIALS_FETCH_FAILED;
     SetPurchasedState(GetCurrentEnvironment(), PurchasedState::FAILED,
@@ -605,6 +632,9 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
 #endif
     return;
   }
+
+  // Clear retrying flags as we got valid subscriber-credential.
+  SetSkusCredentialFetchingRetried(local_prefs_, false);
 
   // Previously cached skus credential is cleared and fetched subscriber
   // credential is cached.

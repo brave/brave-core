@@ -189,6 +189,7 @@ class BraveVpnService :
   void SetCurrentEnvironment(const std::string& env);
   void EnsureMojoConnected();
   void OnMojoConnectionError();
+  void RequestCredentialSummary(const std::string& domain);
   void OnCredentialSummary(const std::string& domain,
                            const std::string& summary_string);
   void OnPrepareCredentialsPresentation(

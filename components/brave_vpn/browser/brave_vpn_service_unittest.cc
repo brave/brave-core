@@ -849,12 +849,22 @@ TEST_F(BraveVPNServiceTest, CheckInitialPurchasedStateTest) {
   EXPECT_EQ(PurchasedState::LOADING, GetPurchasedInfoSync());
 }
 
-TEST_F(BraveVPNServiceTest, SubscribedCredentials) {
+TEST_F(BraveVPNServiceTest, SubscribedCredentialsWithTokenNoLongerValid) {
   std::string env = skus::GetDefaultEnvironment();
-  SetPurchasedState(env, PurchasedState::PURCHASED);
-  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedInfoSync());
-  OnGetSubscriberCredentialV12("Token No Longer Valid", false);
+
+  SetPurchasedState(env, PurchasedState::LOADING);
+  OnGetSubscriberCredentialV12(kTokenNoLongerValid, false);
+  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedInfoSync());
+  EXPECT_TRUE(IsRetriedSkusCredential(&local_pref_service_));
+
+  // Retrying only once.
+  OnGetSubscriberCredentialV12(kTokenNoLongerValid, false);
   EXPECT_EQ(PurchasedState::FAILED, GetPurchasedInfoSync());
+  EXPECT_TRUE(IsRetriedSkusCredential(&local_pref_service_));
+
+  // Check retrying flag is cleared when we got valid subs-credential.
+  OnGetSubscriberCredentialV12("valid-subs-credentials", true);
+  EXPECT_FALSE(IsRetriedSkusCredential(&local_pref_service_));
 }
 
 // Test connection check is asked only when purchased state.
