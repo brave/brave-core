@@ -963,6 +963,15 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
 
       <!-- Brave VPN -->
       <if expr="enable_brave_vpn">
+        <message name="IDS_SETTINGS_VPN_PAGE_TITLE" desc="Title of the vpn settings page">
+          Brave VPN
+        </message>
+        <message name="IDS_SETTINGS_VPN_PAGE_USE_WIREGUARD_TITLE" desc="Title of the Wireguard option on the vpn settings page">
+          Use WireGuard for Brave VPN
+        </message>
+        <message name="IDS_SETTINGS_VPN_PAGE_USE_WIREGUARD_LABEL_DESCRIPTION" desc="Description of the Wireguard option on the vpn settings page">
+          Use Wireguard protocol for Brave VPN, browser restart required.
+        </message>
         <message name="IDS_SETTINGS_SHOW_VPN_BUTTON" desc="The label for showing vpn button in the toolbar">
           Show VPN button
         </message>

@@ -187,6 +187,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     {"showBraveVPNButton", IDS_SETTINGS_SHOW_VPN_BUTTON},
     {"showBraveVPNButtonSubLabel", IDS_SETTINGS_SHOW_VPN_BUTTON_SUB_LABEL},
+    {"vpnPageTitle", IDS_SETTINGS_VPN_PAGE_TITLE},
+    {"useWireguardLabel", IDS_SETTINGS_VPN_PAGE_USE_WIREGUARD_TITLE},
+    {"useWireguardLabelDescription",
+     IDS_SETTINGS_VPN_PAGE_USE_WIREGUARD_LABEL_DESCRIPTION},
 #endif
   // Search settings
 #if BUILDFLAG(ENABLE_EXTENSIONS)
