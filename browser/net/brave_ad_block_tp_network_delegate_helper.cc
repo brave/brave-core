@@ -207,9 +207,9 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
 
   ctx->mock_data_url = std::string(adblock_result.redirect.value);
 
-  previous_result.did_match_rule = adblock_result.matched;
-  previous_result.did_match_important = adblock_result.important;
-  previous_result.did_match_exception = adblock_result.has_exception;
+  previous_result.did_match_rule |= adblock_result.matched;
+  previous_result.did_match_important |= adblock_result.important;
+  previous_result.did_match_exception |= adblock_result.has_exception;
 
   if (previous_result.did_match_important ||
       (previous_result.did_match_rule &&
