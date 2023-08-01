@@ -27,7 +27,9 @@ CommanderProvider::CommanderProvider(AutocompleteProviderClient* client,
     AddListener(listener);
   }
 
-  observation_.Observe(client_->GetCommanderDelegate());
+  if (auto* delegate = client_->GetCommanderDelegate()) {
+    observation_.Observe(client_->GetCommanderDelegate());
+  }
 }
 
 CommanderProvider::~CommanderProvider() = default;
@@ -40,7 +42,10 @@ void CommanderProvider::Start(const AutocompleteInput& input,
 
   matches_.clear();
   last_input_ = input.text();
-  client_->GetCommanderDelegate()->UpdateText();
+
+  if (auto* delegate = client_->GetCommanderDelegate()) {
+    delegate->UpdateText();
+  }
 }
 
 void CommanderProvider::Stop(bool clear_cached_results,
@@ -50,7 +55,11 @@ void CommanderProvider::Stop(bool clear_cached_results,
 }
 
 void CommanderProvider::OnCommanderUpdated() {
+  // This is called the CommanderFrontEndDelegate::Observer, so a delegate must
+  // always exist at this point.
   auto* delegate = client_->GetCommanderDelegate();
+  CHECK(delegate);
+
   matches_.clear();
 
   if (!last_input_.starts_with(commander::kCommandPrefix.data())) {

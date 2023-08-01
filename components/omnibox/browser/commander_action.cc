@@ -14,8 +14,10 @@ CommanderAction::CommanderAction(uint32_t command_index, uint32_t result_set_id)
 CommanderAction::~CommanderAction() = default;
 
 void CommanderAction::Execute(ExecutionContext& context) const {
-  context.client_->GetCommanderDelegate()->SelectCommand(command_index_,
-                                                         result_set_id_);
+  // If we've generated and executed a command, our delegate must exist.
+  auto* delegate = context.client_->GetCommanderDelegate();
+  CHECK(delegate);
+  delegate->SelectCommand(command_index_, result_set_id_);
 }
 
 }  // namespace commander

@@ -40,8 +40,11 @@ ReadingListModel* GetReadingListModel(Browser* browser) {
 
 void ToggleCommander(Browser* browser) {
 #if BUILDFLAG(ENABLE_COMMANDER)
-  commander::CommanderServiceFactory::GetForBrowserContext(browser->profile())
-      ->Toggle();
+  if (auto* commander_service =
+          commander::CommanderServiceFactory::GetForBrowserContext(
+              browser->profile())) {
+    commander_service->Toggle();
+  }
 #endif
 }
 

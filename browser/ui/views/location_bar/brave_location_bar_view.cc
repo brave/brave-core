@@ -217,7 +217,11 @@ ui::ImageModel BraveLocationBarView::GetLocationIcon(
 void BraveLocationBarView::OnOmniboxBlurred() {
 #if BUILDFLAG(ENABLE_COMMANDER)
   if (base::FeatureList::IsEnabled(features::kBraveCommander)) {
-    commander::CommanderServiceFactory::GetForBrowserContext(profile_)->Hide();
+    if (auto* commander_service =
+            commander::CommanderServiceFactory::GetForBrowserContext(
+                profile_)) {
+      commander_service->Hide();
+    }
   }
 #endif
   LocationBarView::OnOmniboxBlurred();
