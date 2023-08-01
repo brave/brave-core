@@ -79,7 +79,7 @@ export const localeStrings = {
   adsPerHour5: 'Max 5 per hour',
   adsPerHour10: 'Max 10 per hour',
   adsTitle: 'Manage Brave Ads',
-  adsCurrentEarnings: 'Estimated earnings this month',
+  adsCurrentEarnings: 'Earnings so far this month',
   adsPaymentDate: 'Next earnings payout date',
   adsTotalReceivedLabel: 'Total ads received this month',
   openAdsHistory: '30-day Ads History',

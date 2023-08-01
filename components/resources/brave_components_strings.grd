@@ -467,7 +467,7 @@
       </message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC" desc="">An automatic way to support sites and content creators. Set a monthly contribution and browse normally. <ph name="BEGIN_LINK">$1</ph>Verified sites and creators<ph name="END_LINK">$2</ph> you visit will receive contributions from you each month based on the amount of time you spend on their content.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS" desc="">Estimated earnings this month</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS" desc="">Earnings so far this month</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PAYMENT_DATE" desc="">Next earnings payout date</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TOTAL_RECEIVED" desc="">Total ads received this month</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_REGION" desc="">Sorry! Ads are not yet available in your region.</message>
