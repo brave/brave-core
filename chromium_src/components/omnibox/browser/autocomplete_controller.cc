@@ -42,7 +42,7 @@ void MaybeShowCommands(AutocompleteResult* result,
                        const AutocompleteInput& input) {
 #if BUILDFLAG(ENABLE_COMMANDER)
   // If this input isn't a command, return and don't do any work.
-  if (!commander::CommanderEnabled() ||
+  if (!base::FeatureList::IsEnabled(features::kBraveCommander) ||
       !base::StartsWith(input.text(), commander::kCommandPrefix)) {
     return;
   }
@@ -70,7 +70,7 @@ void MaybeShowCommands(AutocompleteResult* result,
 void MaybeAddCommanderProvider(AutocompleteController::Providers& providers,
                                AutocompleteController* controller) {
 #if BUILDFLAG(ENABLE_COMMANDER)
-  if (commander::CommanderEnabled()) {
+  if (base::FeatureList::IsEnabled(features::kBraveCommander)) {
     providers.push_back(base::MakeRefCounted<commander::CommanderProvider>(
         controller->autocomplete_provider_client(), controller));
   }

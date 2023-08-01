@@ -42,7 +42,7 @@ COMMAND_IDS
 base::span<const int> GetCommands() {
   #if BUILDFLAG(ENABLE_COMMANDER)
   DCHECK(base::FeatureList::IsEnabled(features::kBraveCommands) ||
-         commander::CommanderEnabled())
+         base::FeatureList::IsEnabled(::features::kBraveCommander))
   #else
   DCHECK(base::FeatureList::IsEnabled(features::kBraveCommands))
   #endif
@@ -53,7 +53,7 @@ base::span<const int> GetCommands() {
 std::string GetCommandName(int command_id) {
   #if BUILDFLAG(ENABLE_COMMANDER)
   DCHECK(base::FeatureList::IsEnabled(features::kBraveCommands) ||
-         commander::CommanderEnabled())
+         base::FeatureList::IsEnabled(::features::kBraveCommander))
   #else
   DCHECK(base::FeatureList::IsEnabled(features::kBraveCommands))
   #endif

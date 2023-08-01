@@ -43,7 +43,7 @@ void BraveAdjustTextForCopy(GURL* url) {
 
 bool OmniboxEditModel::CanPasteAndGo(const std::u16string& text) const {
 #if BUILDFLAG(ENABLE_COMMANDER)
-  if (commander::CommanderEnabled() &&
+  if (base::FeatureList::IsEnabled(features::kBraveCommander) &&
       base::StartsWith(text, commander::kCommandPrefix)) {
     return false;
   }
