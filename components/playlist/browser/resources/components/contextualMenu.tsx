@@ -37,13 +37,13 @@ function ContextualMenuItem ({
   name,
   iconName,
   onClick,
-  onDismiss
-}: MenuItemProps & { onDismiss: () => void }) {
+  onClickOutside
+}: MenuItemProps & { onClickOutside: () => void }) {
   return (
     <StyledRow
       onClick={() => {
         onClick()
-        onDismiss()
+        onClickOutside()
       }}
     >
       <span>{name}</span>
@@ -71,24 +71,28 @@ const StyledContextualMenu = styled.div`
 
 function ContextualMenu ({
   items,
-  onDismiss
-}: MenuProps & { onDismiss: () => void }) {
+  onClickOutside
+}: MenuProps & { onClickOutside: () => void }) {
   React.useEffect(() => {
-    document.addEventListener('click', onDismiss)
+    document.addEventListener('click', onClickOutside)
     // Playlist has an <iframe> that holds video player. When it's clicked,
     // we should dismiss the menu but 'click' event won't be notified. Instead
     // of it, uses 'blur' event while it could have a little side effect.
-    window.addEventListener('blur', onDismiss)
+    window.addEventListener('blur', onClickOutside)
     return () => {
-      document.removeEventListener('click', onDismiss)
-      window.removeEventListener('blur', onDismiss)
+      document.removeEventListener('click', onClickOutside)
+      window.removeEventListener('blur', onClickOutside)
     }
-  }, [onDismiss])
+  }, [onClickOutside])
 
   return (
     <StyledContextualMenu>
       {items.map(item => (
-        <ContextualMenuItem {...item} key={item.name} onDismiss={onDismiss} />
+        <ContextualMenuItem
+          {...item}
+          key={item.name}
+          onClickOutside={onClickOutside}
+        />
       ))}
     </StyledContextualMenu>
   )
@@ -123,7 +127,7 @@ export default function ContextualMenuAnchorButton ({
       {showingMenu && (
         <ContextualMenu
           items={items}
-          onDismiss={() => {
+          onClickOutside={() => {
             setShowingMenu(false)
             if (onDismissMenu) onDismissMenu()
           }}
