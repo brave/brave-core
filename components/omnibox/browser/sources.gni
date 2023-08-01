@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/commander/common/buildflags/buildflags.gni")
+
 brave_components_omnibox_browser_sources = [
   "//brave/components/omnibox/browser/brave_bookmark_provider.cc",
   "//brave/components/omnibox/browser/brave_bookmark_provider.h",
@@ -38,7 +40,7 @@ brave_components_omnibox_browser_deps = [
   "//url",
 ]
 
-if (!is_android && !is_ios) {
+if (enable_commander) {
   brave_components_omnibox_browser_sources += [
     "//brave/components/omnibox/browser/commander_action.cc",
     "//brave/components/omnibox/browser/commander_action.h",

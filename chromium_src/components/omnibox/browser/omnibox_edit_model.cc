@@ -6,10 +6,11 @@
 #include "components/omnibox/browser/omnibox_edit_model.h"
 
 #include "base/memory/raw_ptr.h"
+#include "brave/components/commander/common/buildflags/buildflags.h"
 #include "components/omnibox/browser/omnibox_controller.h"
 #include "url/gurl.h"
 
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+#if BUILDFLAG(ENABLE_COMMANDER)
 #include "brave/components/commander/common/constants.h"
 #include "brave/components/commander/common/features.h"
 #endif
@@ -41,7 +42,7 @@ void BraveAdjustTextForCopy(GURL* url) {
 #undef BRAVE_ADJUST_TEXT_FOR_COPY
 
 bool OmniboxEditModel::CanPasteAndGo(const std::u16string& text) const {
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+#if BUILDFLAG(ENABLE_COMMANDER)
   if (commander::CommanderEnabled() &&
       base::StartsWith(text, commander::kCommandPrefix)) {
     return false;
