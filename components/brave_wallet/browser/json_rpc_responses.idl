@@ -20,7 +20,7 @@ namespace json_rpc_responses {
     DOMString[] baseFeePerGas;
     DOMString[] gasUsedRatio;
     DOMString oldestBlock;
-    any[]? reward;
+    any? reward;
   };
 
   dictionary TransactionReceipt {
