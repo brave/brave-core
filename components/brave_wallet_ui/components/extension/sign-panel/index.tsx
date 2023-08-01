@@ -108,6 +108,9 @@ export const SignPanel = (props: Props) => {
   const [selectedQueueData, setSelectedQueueData] = React.useState<BraveWallet.SignMessageRequest>(signMessageData[0])
   const [renderUnicode, setRenderUnicode] = React.useState<boolean>(true)
 
+  const ethStandardSignData = selectedQueueData.signData.ethStandardSignData
+  const ethSignTypedData = selectedQueueData.signData.ethSignTypedData
+
   // memos
   const orb = useAddressOrb(selectedQueueData.address)
 
@@ -213,15 +216,16 @@ export const SignPanel = (props: Props) => {
             <PanelTab
               isSelected={true}
               text={
-                selectedQueueData.isEip712
+                ethSignTypedData
                   ? getLocale('braveWalletSignTransactionEIP712MessageTitle')
                   : getLocale('braveWalletSignTransactionMessageTitle')
               }
             />
           </TabRow>
 
-          {(hasUnicode(selectedQueueData.message) ||
-              (selectedQueueData.isEip712 && hasUnicode(selectedQueueData.domain))) &&
+          {(hasUnicode(selectedQueueData.signData.ethStandardSignData?.message ?? '') ||
+            hasUnicode(ethSignTypedData?.message ?? '') ||
+            hasUnicode(ethSignTypedData?.domain ?? '')) &&
             <WarningBox warningType='warning'>
               <WarningTitleRow>
                 <WarningIcon color={'warningIcon'} />
@@ -243,15 +247,15 @@ export const SignPanel = (props: Props) => {
             </WarningBox>
           }
 
-          {selectedQueueData.isEip712 && (
+          {ethSignTypedData && (
             <MessageBox height='180px'>
               <MessageHeader>
                 {getLocale('braveWalletSignTransactionEIP712MessageDomain')}:
               </MessageHeader>
               <MessageText>
-                {!renderUnicode && hasUnicode(selectedQueueData.domain)
-                  ? unicodeEscape(selectedQueueData.domain)
-                  : selectedQueueData.domain
+                {!renderUnicode && hasUnicode(ethSignTypedData.domain)
+                  ? unicodeEscape(ethSignTypedData.domain)
+                  : ethSignTypedData.domain
                 }
               </MessageText>
 
@@ -259,20 +263,20 @@ export const SignPanel = (props: Props) => {
                 {getLocale('braveWalletSignTransactionMessageTitle')}:
               </MessageHeader>
               <MessageText>
-                {!renderUnicode && hasUnicode(selectedQueueData.message)
-                  ? unicodeEscape(selectedQueueData.message)
-                  : selectedQueueData.message
+                {!renderUnicode && hasUnicode(ethSignTypedData.message)
+                  ? unicodeEscape(ethSignTypedData.message)
+                  : ethSignTypedData.message
                 }
               </MessageText>
             </MessageBox>
           )}
 
-          {!selectedQueueData.isEip712 && (
+          {ethStandardSignData && (
             <MessageBox>
               <MessageText>
-                {!renderUnicode && hasUnicode(selectedQueueData.message)
-                  ? unicodeEscape(selectedQueueData.message)
-                  : selectedQueueData.message
+                {!renderUnicode && hasUnicode(ethStandardSignData.message)
+                  ? unicodeEscape(ethStandardSignData.message)
+                  : ethStandardSignData.message
                 }
               </MessageText>
             </MessageBox>

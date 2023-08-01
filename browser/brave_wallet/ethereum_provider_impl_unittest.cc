@@ -694,7 +694,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
         base::BindLambdaForTesting(
             [&](std::vector<mojom::SignMessageRequestPtr> requests) {
               for (const auto& request : requests) {
-                SCOPED_TRACE(request->message);
+                ASSERT_TRUE(request->sign_data->is_eth_standard_sign_data());
+                SCOPED_TRACE(
+                    request->sign_data->get_eth_standard_sign_data()->message);
                 EXPECT_EQ(request->chain_id,
                           json_rpc_service_->GetChainIdSync(
                               mojom::CoinType::ETH, GetOrigin()));
@@ -1926,16 +1928,22 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
 
   EXPECT_EQ(GetSignMessageQueueSize(), 3u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id1);
-  EXPECT_EQ(GetSignMessageQueueFront()->message, message1_in_queue);
+  EXPECT_EQ(GetSignMessageQueueFront()
+                ->sign_data->get_eth_standard_sign_data()
+                ->message,
+            message1_in_queue);
   {
     auto queue = GetPendingSignMessageRequests();
     ASSERT_EQ(queue.size(), 3u);
     EXPECT_EQ(queue[0]->id, id1);
-    EXPECT_EQ(queue[0]->message, message1_in_queue);
+    EXPECT_EQ(queue[0]->sign_data->get_eth_standard_sign_data()->message,
+              message1_in_queue);
     EXPECT_EQ(queue[1]->id, id2);
-    EXPECT_EQ(queue[1]->message, message2_in_queue);
+    EXPECT_EQ(queue[1]->sign_data->get_eth_standard_sign_data()->message,
+              message2_in_queue);
     EXPECT_EQ(queue[2]->id, id3);
-    EXPECT_EQ(queue[2]->message, message3_in_queue);
+    EXPECT_EQ(queue[2]->sign_data->get_eth_standard_sign_data()->message,
+              message3_in_queue);
   }
 
   // wrong order
@@ -1943,26 +1951,37 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
                                                            absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 3u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id1);
-  EXPECT_EQ(GetSignMessageQueueFront()->message, message1_in_queue);
+  EXPECT_EQ(GetSignMessageQueueFront()
+                ->sign_data->get_eth_standard_sign_data()
+                ->message,
+            message1_in_queue);
 
   brave_wallet_service_->NotifySignMessageRequestProcessed(true, id3, nullptr,
                                                            absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 3u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id1);
-  EXPECT_EQ(GetSignMessageQueueFront()->message, message1_in_queue);
+  EXPECT_EQ(GetSignMessageQueueFront()
+                ->sign_data->get_eth_standard_sign_data()
+                ->message,
+            message1_in_queue);
 
   brave_wallet_service_->NotifySignMessageRequestProcessed(true, id1, nullptr,
                                                            absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 2u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id2);
-  EXPECT_EQ(GetSignMessageQueueFront()->message, message2_in_queue);
+  EXPECT_EQ(GetSignMessageQueueFront()
+                ->sign_data->get_eth_standard_sign_data()
+                ->message,
+            message2_in_queue);
   {
     auto queue = GetPendingSignMessageRequests();
     ASSERT_EQ(queue.size(), 2u);
     EXPECT_EQ(queue[0]->id, id2);
-    EXPECT_EQ(queue[0]->message, message2_in_queue);
+    EXPECT_EQ(queue[0]->sign_data->get_eth_standard_sign_data()->message,
+              message2_in_queue);
     EXPECT_EQ(queue[1]->id, id3);
-    EXPECT_EQ(queue[1]->message, message3_in_queue);
+    EXPECT_EQ(queue[1]->sign_data->get_eth_standard_sign_data()->message,
+              message3_in_queue);
   }
 
   // old id
@@ -1970,18 +1989,25 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
                                                            absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 2u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id2);
-  EXPECT_EQ(GetSignMessageQueueFront()->message, message2_in_queue);
+  EXPECT_EQ(GetSignMessageQueueFront()
+                ->sign_data->get_eth_standard_sign_data()
+                ->message,
+            message2_in_queue);
 
   brave_wallet_service_->NotifySignMessageRequestProcessed(true, id2, nullptr,
                                                            absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 1u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id3);
-  EXPECT_EQ(GetSignMessageQueueFront()->message, message3_in_queue);
+  EXPECT_EQ(GetSignMessageQueueFront()
+                ->sign_data->get_eth_standard_sign_data()
+                ->message,
+            message3_in_queue);
   {
     auto queue = GetPendingSignMessageRequests();
     ASSERT_EQ(queue.size(), 1u);
     EXPECT_EQ(queue[0]->id, id3);
-    EXPECT_EQ(queue[0]->message, message3_in_queue);
+    EXPECT_EQ(queue[0]->sign_data->get_eth_standard_sign_data()->message,
+              message3_in_queue);
   }
 
   brave_wallet_service_->NotifySignMessageRequestProcessed(true, id3, nullptr,

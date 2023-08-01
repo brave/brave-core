@@ -523,15 +523,20 @@ export const _SignData = () => {
   const signMessageDataPayload = [{
     id: 0,
     address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
-    message: 'To avoid digital cat burglars, sign below to authenticate with CryptoKitties.',
-    domain: '',
     originInfo: mockOriginInfo,
     coin: BraveWallet.CoinType.ETH,
     chainId: BraveWallet.MAINNET_CHAIN_ID,
-    isEip712: true,
-    domainHash: '',
-    primaryHash: '',
-    messageBytes: undefined
+    signData: {
+      ethStandardSignData: undefined,
+      ethSignTypedData: {
+        message: 'To avoid digital cat burglars, sign below to authenticate with CryptoKitties.',
+        domain: '',
+        domainHash: undefined,
+        primaryHash: undefined
+      },
+      ethSiweData: undefined,
+      solanaSignData: undefined
+    }
   }]
 
   return (

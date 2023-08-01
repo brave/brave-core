@@ -48,12 +48,15 @@ const defaultState: PanelState = {
     originInfo: defaultOriginInfo,
     id: -1,
     address: '',
-    domain: '',
-    message: '',
-    isEip712: false,
-    domainHash: '',
-    primaryHash: '',
-    messageBytes: undefined,
+    signData:
+      {
+      ethStandardSignData: {
+        message: ''
+      },
+      ethSignTypedData: undefined,
+      ethSiweData: undefined,
+      solanaSignData: undefined
+    },
     coin: BraveWallet.CoinType.ETH,
     chainId: ''
   }],
