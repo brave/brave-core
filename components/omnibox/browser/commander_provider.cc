@@ -8,14 +8,9 @@
 #include <string>
 #include <utility>
 
-#include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
-#include "base/strings/utf_string_conversions.h"
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
-#include "brave/components/commander/browser/commander_item_model.h"
 #include "brave/components/commander/common/constants.h"
 #include "brave/components/omnibox/browser/commander_action.h"
 #include "components/omnibox/browser/autocomplete_match.h"
