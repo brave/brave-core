@@ -50,6 +50,8 @@ class PlaylistTabHelper
 
   base::WeakPtr<PlaylistTabHelper> GetWeakPtr();
 
+  std::u16string GetSavedFolderName();
+
   // content::WebContentsObserver:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;

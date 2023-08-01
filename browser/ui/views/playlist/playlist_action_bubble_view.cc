@@ -74,7 +74,8 @@ class DefaultThumbnailBackground : public views::Background {
 // ConfirmBubble
 //  * Shows when items were added to the current page.
 //  * Contains actions to manipulate items.
-class ConfirmBubble : public PlaylistActionBubbleView {
+class ConfirmBubble : public PlaylistActionBubbleView,
+                      public playlist::PlaylistTabHelperObserver {
  public:
   METADATA_HEADER(ConfirmBubble);
 
@@ -82,6 +83,15 @@ class ConfirmBubble : public PlaylistActionBubbleView {
                 PlaylistActionIconView* anchor,
                 playlist::PlaylistTabHelper* playlist_tab_helper);
   ~ConfirmBubble() override = default;
+
+  // PlaylistTabHelperObserver:
+  void PlaylistTabHelperWillBeDestroyed() override;
+  void OnSavedItemsChanged(
+      const std::vector<playlist::mojom::PlaylistItemPtr>& items) override;
+  void OnFoundItemsChanged(
+      const std::vector<playlist::mojom::PlaylistItemPtr>& items) override {}
+  void OnAddedItemFromTabHelper(
+      const std::vector<playlist::mojom::PlaylistItemPtr>& items) override {}
 
  private:
   class Row : public views::LabelButton {
@@ -99,6 +109,12 @@ class ConfirmBubble : public PlaylistActionBubbleView {
   void ChangeFolder();
   void RemoveFromPlaylist();
   void MoreMediaInContents();
+
+  raw_ptr<Row> added_folder_row_ = nullptr;
+
+  base::ScopedObservation<playlist::PlaylistTabHelper,
+                          playlist::PlaylistTabHelperObserver>
+      playlist_tab_helper_observation_{this};
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -186,8 +202,9 @@ ConfirmBubble::ConfirmBubble(Browser* browser,
           views::BoxLayout::CrossAxisAlignment::kStretch);
 
   constexpr int kIconSize = 16;
-  AddChildView(std::make_unique<Row>(
-      l10n_util::GetStringUTF16(IDS_PLAYLIST_ADDED_TO_PLAY_LATER),
+  added_folder_row_ = AddChildView(std::make_unique<Row>(
+      l10n_util::GetStringFUTF16(IDS_PLAYLIST_ADDED_TO_PLAYLIST_FOLDER,
+                                 playlist_tab_helper_->GetSavedFolderName()),
       ui::ImageModel::FromVectorIcon(kLeoCheckCircleFilledIcon,
                                      kColorBravePlaylistAddedIcon, kIconSize)));
   AddChildView(std::make_unique<views::Separator>());
@@ -219,6 +236,19 @@ ConfirmBubble::ConfirmBubble(Browser* browser,
         base::BindRepeating(&ConfirmBubble::MoreMediaInContents,
                             base::Unretained(this))));
   }
+
+  playlist_tab_helper_observation_.Observe(playlist_tab_helper_);
+}
+
+void ConfirmBubble::PlaylistTabHelperWillBeDestroyed() {
+  playlist_tab_helper_observation_.Reset();
+}
+
+void ConfirmBubble::OnSavedItemsChanged(
+    const std::vector<playlist::mojom::PlaylistItemPtr>& items) {
+  added_folder_row_->SetText(
+      l10n_util::GetStringFUTF16(IDS_PLAYLIST_ADDED_TO_PLAYLIST_FOLDER,
+                                 playlist_tab_helper_->GetSavedFolderName()));
 }
 
 void ConfirmBubble::OpenInPlaylist() {

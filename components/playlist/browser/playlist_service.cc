@@ -46,8 +46,9 @@ std::vector<base::FilePath> GetOrphanedPaths(
   std::vector<base::FilePath> orphaned_paths;
   base::FileEnumerator dirs(base_dir, false, base::FileEnumerator::DIRECTORIES);
   for (base::FilePath name = dirs.Next(); !name.empty(); name = dirs.Next()) {
-    if (ids.find(name.BaseName().AsUTF8Unsafe()) == ids.end())
+    if (ids.find(name.BaseName().AsUTF8Unsafe()) == ids.end()) {
       orphaned_paths.push_back(name);
+    }
   }
   return orphaned_paths;
 }
@@ -99,8 +100,9 @@ void PlaylistService::AddMediaFilesFromContentsToPlaylist(
     content::WebContents* contents,
     bool cache) {
   DCHECK(contents);
-  if (!contents->GetPrimaryMainFrame())
+  if (!contents->GetPrimaryMainFrame()) {
     return;
+  }
 
   VLOG(2) << __func__
           << " download media from WebContents to playlist: " << playlist_id;
@@ -193,8 +195,9 @@ bool PlaylistService::RemoveItemFromPlaylist(const PlaylistId& playlist_id,
         target_playlist->items,
         [&item_id](const auto& item) { return item->id == *item_id; });
     // Consider this as success since the item is already removed.
-    if (it == target_playlist->items.end())
+    if (it == target_playlist->items.end()) {
       return true;
+    }
 
     target_playlist->items.erase(it, it + 1);
     playlists_update->Set(target_playlist_id,
@@ -248,8 +251,9 @@ void PlaylistService::ReorderItemFromPlaylist(const std::string& playlist_id,
   DCHECK(it != target_playlist->items.end());
 
   auto old_position = std::distance(target_playlist->items.begin(), it);
-  if (old_position == position)
+  if (old_position == position) {
     return;
+  }
 
   if (old_position < position) {
     std::rotate(it, it + 1, target_playlist->items.begin() + position + 1);
@@ -432,19 +436,7 @@ void PlaylistService::GetAllPlaylists(GetAllPlaylistsCallback callback) {
 
 void PlaylistService::GetPlaylist(const std::string& id,
                                   GetPlaylistCallback callback) {
-  const auto& playlists = prefs_->GetDict(kPlaylistsPref);
-  if (!playlists.contains(id)) {
-    LOG(ERROR) << __func__ << " playlist with id<" << id << "> not found";
-    std::move(callback).Run({});
-    return;
-  }
-  auto* playlist_dict = playlists.FindDict(id);
-  DCHECK(playlist_dict);
-
-  const auto& items_dict = prefs_->GetDict(kPlaylistItemsPref);
-  std::move(callback).Run(ConvertValueToPlaylist(*playlist_dict, items_dict));
-
-  playlist_p3a_.ReportNewUsage();
+  std::move(callback).Run(GetPlaylist(id));
 }
 
 void PlaylistService::GetAllPlaylistItems(
@@ -476,6 +468,22 @@ mojom::PlaylistItemPtr PlaylistService::GetPlaylistItem(const std::string& id) {
   return ConvertValueToPlaylistItem(*item_value);
 }
 
+mojom::PlaylistPtr PlaylistService::GetPlaylist(const std::string& id) {
+  const auto& playlists = prefs_->GetDict(kPlaylistsPref);
+  if (!playlists.contains(id)) {
+    LOG(ERROR) << __func__ << " playlist with id<" << id << "> not found";
+    return {};
+  }
+
+  playlist_p3a_.ReportNewUsage();
+
+  auto* playlist_dict = playlists.FindDict(id);
+  DCHECK(playlist_dict);
+
+  const auto& items_dict = prefs_->GetDict(kPlaylistItemsPref);
+  return ConvertValueToPlaylist(*playlist_dict, items_dict);
+}
+
 bool PlaylistService::HasPlaylistItem(const std::string& id) const {
   return prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
 }
@@ -502,8 +510,9 @@ void PlaylistService::AddMediaFilesFromActiveTabToPlaylist(
   DCHECK(delegate_);
 
   auto* contents = delegate_->GetActiveWebContents();
-  if (!contents)
+  if (!contents) {
     return;
+  }
 
   AddMediaFilesFromContentsToPlaylist(
       playlist_id, contents,
@@ -686,8 +695,9 @@ void PlaylistService::OnThumbnailDownloaded(const std::string& id,
 }
 
 void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
-  if (playlist_id == kDefaultPlaylistID)
+  if (playlist_id == kDefaultPlaylistID) {
     return;
+  }
 
   DCHECK(!playlist_id.empty());
 
@@ -932,8 +942,9 @@ void PlaylistService::RecoverLocalDataForItemImpl(
 void PlaylistService::RemoveLocalDataForItemImpl(
     const mojom::PlaylistItemPtr& item) {
   DCHECK(item);
-  if (!item->cached)
+  if (!item->cached) {
     return;
+  }
 
   base::FilePath media_path;
   CHECK(net::FileURLToFilePath(item->media_path, &media_path));
@@ -1070,8 +1081,9 @@ void PlaylistService::CleanUpMalformedPlaylistItems() {
     return;
   }
 
-  for (const auto* pref_key : {kPlaylistsPref, kPlaylistItemsPref})
+  for (const auto* pref_key : {kPlaylistsPref, kPlaylistItemsPref}) {
     prefs_->ClearPref(pref_key);
+  }
 }
 
 void PlaylistService::CleanUpOrphanedPlaylistItemDirs() {
