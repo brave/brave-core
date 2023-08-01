@@ -72,10 +72,11 @@ TEST_F(IpfsUtilsUnitTest, CIDValidation) {
       ipfs::IsValidCID("QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
   ASSERT_TRUE(
       ipfs::IsValidCID("zb2rhe5P4gXftAwvA4eXQ5HJwsER2owDyS9sKaQRRVQPn93bA"));
+  ASSERT_TRUE(ipfs::IsValidCID(
+      "k51qzi5uqu5dlvj2baxnqndepeb86cbk3ng7n3i46uzyxzyqj2xjonzllnv0v8"));
   ASSERT_TRUE(ipfs::IsValidCID("bafkqaaa"));
-  ASSERT_TRUE(ipfs::IsValidCID("k51qzi5uqu5dgutdk6i1ynyzg"));
-  ASSERT_TRUE(ipfs::IsValidCID("7testtesttest"));
 
+  ASSERT_FALSE(ipfs::IsValidCID("7testtesttest"));
   ASSERT_FALSE(
       ipfs::IsValidCID("zb2rhe5P4gXftAwvA4eXQ5HJwsER2owDyS9sKaQRRVQPn=3bA"));
   ASSERT_FALSE(ipfs::IsValidCID("brantly.eth"));
@@ -85,6 +86,9 @@ TEST_F(IpfsUtilsUnitTest, CIDValidation) {
       "ba-ybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"));
   ASSERT_FALSE(ipfs::IsValidCID(
       "ba%ybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"));
+  ASSERT_FALSE(ipfs::IsValidCID(
+      "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyav"));
+  ASSERT_FALSE(ipfs::IsValidCID("QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLy"));
 }
 
 TEST_F(IpfsUtilsUnitTest, HasIPFSPath) {
@@ -700,8 +704,9 @@ TEST_F(IpfsUtilsUnitTest, IsValidCIDOrDomain) {
   ASSERT_TRUE(ipfs::IsValidCIDOrDomain(
       "zb2rhe5P4gXftAwvA4eXQ5HJwsER2owDyS9sKaQRRVQPn93bA"));
   ASSERT_TRUE(ipfs::IsValidCIDOrDomain("bafkqaaa"));
-  ASSERT_TRUE(ipfs::IsValidCIDOrDomain("k51qzi5uqu5dgutdk6i1ynyzg"));
-  ASSERT_TRUE(ipfs::IsValidCIDOrDomain("7testtesttest"));
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain(
+      "k51qzi5uqu5dlvj2baxnqndepeb86cbk3ng7n3i46uzyxzyqj2xjonzllnv0v8"));
+  ASSERT_FALSE(ipfs::IsValidCIDOrDomain("7testtesttest"));
 
   ASSERT_FALSE(ipfs::IsValidCIDOrDomain(
       "zb2rhe5P4gXftAwvA4eXQ5HJwsER2owDyS9sKaQRRVQPn=3bA"));
