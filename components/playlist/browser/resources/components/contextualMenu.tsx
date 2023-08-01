@@ -65,7 +65,7 @@ const StyledContextualMenu = styled.div`
 
   padding: 8px 16px;
   border-radius: 8px;
-  border: 1px solid var(--leo-color-gray-20);
+  border: 1px solid ${color.gray[20]};
   background: ${color.white};
 `
 
