@@ -132,6 +132,7 @@ class PlaylistService : public KeyedService,
   // Synchronous versions of mojom::PlaylistService implementations
   std::vector<mojom::PlaylistItemPtr> GetAllPlaylistItems();
   mojom::PlaylistItemPtr GetPlaylistItem(const std::string& id);
+  mojom::PlaylistPtr GetPlaylist(const std::string& id);
 
   // mojom::PlaylistService:
   // TODO(sko) Make getters without callbacks and simplify codes in
