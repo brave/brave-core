@@ -13,6 +13,6 @@ namespace chrome_browsing_data_remover {
 #if BUILDFLAG(ENABLE_AI_CHAT)
 constexpr DataType DATA_TYPE_BRAVE_LEO_HISTORY = DATA_TYPE_EMBEDDER_BEGIN << 13;
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-}
+}  // namespace chrome_browsing_data_remover
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_BROWSING_DATA_CHROME_BROWSING_DATA_REMOVER_CONSTANTS_H_

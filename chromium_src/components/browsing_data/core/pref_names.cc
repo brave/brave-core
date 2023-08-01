@@ -24,7 +24,7 @@ const char kDeleteHostedAppsDataOnExit[] =
     "browser.clear_data.hosted_apps_data_on_exit";
 const char kDeleteSiteSettingsOnExit[] =
     "browser.clear_data.site_settings_on_exit";
-#if BUILDFLAG(ENABLE_AI_CHAT)    
+#if BUILDFLAG(ENABLE_AI_CHAT)
 const char kDeleteBraveLeoHistory[] = "browser.clear_data.brave_leo";
 const char kDeleteBraveLeoHistoryOnExit[] =
     "browser.clear_data.brave_leo_on_exit";
