@@ -7,13 +7,11 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 
 export const root = styled.div`
-  height: 100%;
-  width: 100%;
   background-color: ${leo.color.white};
   border-radius: 4px;
   font-family: var(--brave-font-heading);
   text-align: center;
-  padding: 44px 128px;
+  padding: 44px;
 `
 
 export const icon = styled.div`
@@ -24,9 +22,7 @@ export const icon = styled.div`
 `
 
 export const heading = styled.div`
-  margin-top: 32px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 32px auto 0;
   max-width: 339px;
   font-weight: 500;
   font-size: 22px;
@@ -35,9 +31,7 @@ export const heading = styled.div`
 `
 
 export const text = styled.div`
-  margin-top: 16px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 16px auto 0;
   max-width: 339px;
   color: ${leo.color.light.text.secondary};
   font-weight: 500;
@@ -46,9 +40,22 @@ export const text = styled.div`
 `
 
 export const enable = styled.div`
-  margin-top: 32px;
+  margin-top: 16px;
+  color: ${leo.color.light.text.secondary};
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  font-style: italic;
+
+  .icon {
+    height: 19px;
+    width: auto;
+    vertical-align: middle;
+    margin-bottom: 3px;
+  }
 
   button {
+    margin-top: 16px;
     max-width: 339px;
     color: ${leo.color.white};
     background: ${leo.color.light.interaction.buttonPrimaryBackground};
@@ -62,8 +69,7 @@ export const enable = styled.div`
 `
 
 export const learnMore = styled.div`
-  margin-top: 20px;
-  margin-bottom: 8px;
+  margin: 20px 0 8px;
   text-align: center;
 
   a {

@@ -200,7 +200,7 @@ export function Settings () {
 
     return (
       <style.onboarding>
-        <SettingsOptInForm onEnable={onEnable} />
+        <SettingsOptInForm onEnable={isAndroid ? undefined : onEnable} />
       </style.onboarding>
     )
   }
@@ -237,15 +237,7 @@ export function Settings () {
     }
 
     if (rewardsData.showOnboarding) {
-      // On Android a native modal is displayed when this page is accessed and
-      // the user has not opted-in to Rewards. For backward-compatibility with
-      // the previous Android-specific settings page, display the page content
-      // underneath the modal. Note that this behavior will need to change when
-      // Android is updated to force the user through onboarding before
-      // displaying content.
-      if (!isAndroid) {
-        return renderOnboarding()
-      }
+      return renderOnboarding()
     }
 
     return (

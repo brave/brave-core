@@ -21,6 +21,7 @@ export const localeStrings = {
   onboardingSelectCountry: 'Select',
   onboardingHowDoesBraveRewardsWork: 'How does Brave Rewards work?',
   onboardingStartUsingRewards: 'Start using Brave Rewards',
+  onboardingStartUsingRewardsTextOnly: 'Press the $1 BAT icon in the URL bar to start.',
   onboardingTerms: 'By proceeding, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
   rewardsLearnMore: 'Learn more',
 

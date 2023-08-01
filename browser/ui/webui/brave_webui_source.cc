@@ -518,6 +518,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "onboardingEarnHeader", IDS_BRAVE_REWARDS_ONBOARDING_EARN_HEADER },
         { "onboardingEarnText", IDS_BRAVE_REWARDS_ONBOARDING_EARN_TEXT },
         { "onboardingStartUsingRewards", IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS },  // NOLINT
+        { "onboardingStartUsingRewardsTextOnly", IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS_TEXT_ONLY },  // NOLINT
         { "onboardingTerms", IDS_BRAVE_REWARDS_ONBOARDING_TERMS },
         { "oneTimeDonation", IDS_BRAVE_UI_ONE_TIME_DONATION },
         { "openAdsHistory", IDS_BRAVE_UI_OPEN_ADS_HISTORY },
