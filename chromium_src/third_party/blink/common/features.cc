@@ -44,6 +44,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kSpeculationRulesPrefetchFuture, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesPrefetchProxy, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTextFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kWebEnvironmentIntegrity, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 // Allow certain client hints in request header.
