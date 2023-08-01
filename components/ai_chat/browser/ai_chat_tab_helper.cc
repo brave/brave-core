@@ -35,7 +35,7 @@ using ai_chat::mojom::ConversationTurn;
 using ai_chat::mojom::ConversationTurnVisibility;
 
 namespace {
-auto kAllowedSchemes = base::MakeFixedFlatSet<base::StringPiece>(
+static const auto kAllowedSchemes = base::MakeFixedFlatSet<base::StringPiece>(
     {url::kHttpsScheme, url::kHttpScheme, url::kFileScheme, url::kDataScheme});
 }  // namespace
 
