@@ -756,7 +756,6 @@ brave_java_resources = [
   "java/res/layout/activity_brave_vpn_support.xml",
   "java/res/layout/activity_brave_wallet.xml",
   "java/res/layout/activity_brave_wallet_dapps.xml",
-  "java/res/layout/activity_buy_send_swap.xml",
   "java/res/layout/activity_network_selector.xml",
   "java/res/layout/activity_nft_detail.xml",
   "java/res/layout/activity_onboarding.xml",
