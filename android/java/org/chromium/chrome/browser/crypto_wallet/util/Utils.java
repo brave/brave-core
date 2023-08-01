@@ -50,6 +50,7 @@ import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.chromium.chrome.browser.crypto_wallet.web_ui.WebUiActivityType;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,7 +84,6 @@ import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.app.domain.PortfolioModel;
 import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
-import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
@@ -236,10 +236,10 @@ public class Utils {
     }
 
     public static void openBuySendSwapActivity(@NonNull final Activity activity,
-            @NonNull final BuySendSwapActivity.ActivityType activityType) {
+            @NonNull final WebUiActivityType webUiActivityType) {
         String webWalletUrl;
-        switch (activityType) {
-            case SWAP_V2:
+        switch (webUiActivityType) {
+            case SWAP:
                 webWalletUrl = BraveActivity.BRAVE_SWAP_URL;
                 break;
             case SEND:
@@ -250,7 +250,7 @@ public class Utils {
                 break;
             default:
                 throw new IllegalStateException(
-                        String.format("Activity not found for type %s.", activityType));
+                        String.format("Activity not found for type %s.", webUiActivityType));
         }
         try {
             BraveActivity.getBraveActivity().openNewOrSelectExistingTab(webWalletUrl, true);
