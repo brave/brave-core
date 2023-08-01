@@ -273,6 +273,7 @@ void ParseCoingeckoIdsMapAndUpdateRegistry(const base::FilePath& install_dir) {
 
   if (absolute_install_dir.empty()) {
     LOG(ERROR) << "Failed to get absolute install path.";
+    return;
   }
 
   HandleParseCoingeckoIdsMap(absolute_install_dir, "coingecko-ids.json");
@@ -287,6 +288,7 @@ void ParseTokenListAndUpdateRegistry(const base::FilePath& install_dir) {
 
   if (absolute_install_dir.empty()) {
     LOG(ERROR) << "Failed to get absolute install path.";
+    return;
   }
 
   HandleParseTokenList(absolute_install_dir, "contract-map.json",
@@ -306,6 +308,7 @@ void ParseChainListAndUpdateRegistry(const base::FilePath& install_dir) {
 
   if (absolute_install_dir.empty()) {
     LOG(ERROR) << "Failed to get absolute install path.";
+    return;
   }
 
   HandleParseChainList(absolute_install_dir, "chainlist.json");
@@ -320,6 +323,7 @@ void ParseDappListsAndUpdateRegistry(const base::FilePath& install_dir) {
 
   if (absolute_install_dir.empty()) {
     LOG(ERROR) << "Failed to get absolute install path.";
+    return;
   }
 
   HandleParseDappList(absolute_install_dir, "dapp-lists.json");
@@ -334,6 +338,7 @@ void ParseOnRampListsAndUpdateRegistry(const base::FilePath& install_dir) {
 
   if (absolute_install_dir.empty()) {
     LOG(ERROR) << "Failed to get absolute install path.";
+    return;
   }
 
   HandleParseRampTokenLists(absolute_install_dir, "ramp-tokens.json");
