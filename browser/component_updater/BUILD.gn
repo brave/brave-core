@@ -20,4 +20,12 @@ source_set("component_updater") {
     "//components/update_client",
     "//crypto",
   ]
+
+  if (is_android) {
+    sources += [
+      "brave_component_updater_android.cc",
+      "brave_component_updater_android.h",
+    ]
+    deps += [ "//brave/build/android:jni_headers" ]
+  }
 }

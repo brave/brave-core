@@ -58,20 +58,22 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Main Brave Wallet activity
+ */
 public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNextPage {
-    private static final String TAG = "AssetDetailActivity";
+    private static final String TAG = "BWalletBaseActivity";
 
     private Toolbar mToolbar;
 
     private View mCryptoLayout;
     private View mCryptoOnboardingLayout;
-    private View cryptoOnboardingLayout;
     private ImageView mPendingTxNotification;
     private ImageView mBuySendSwapButton;
-    private ViewPager cryptoWalletOnboardingViewPager;
+    private ViewPager mCryptoWalletOnboardingViewPager;
     private CryptoFragmentPageAdapter mCryptoFragmentPageAdapter;
     private ModalDialogManager mModalDialogManager;
-    private CryptoWalletOnboardingPagerAdapter cryptoWalletOnboardingPagerAdapter;
+    private CryptoWalletOnboardingPagerAdapter mCryptoWalletOnboardingPagerAdapter;
     private boolean mShowBiometricPrompt;
     private boolean mIsFromDapps;
     private WalletModel mWalletModel;
@@ -167,23 +169,23 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         });
         mCryptoLayout = findViewById(R.id.crypto_layout);
         mCryptoOnboardingLayout = findViewById(R.id.crypto_onboarding_layout);
-        cryptoWalletOnboardingViewPager = findViewById(R.id.crypto_wallet_onboarding_viewpager);
-        cryptoWalletOnboardingPagerAdapter =
+        mCryptoWalletOnboardingViewPager = findViewById(R.id.crypto_wallet_onboarding_viewpager);
+        mCryptoWalletOnboardingPagerAdapter =
                 new CryptoWalletOnboardingPagerAdapter(getSupportFragmentManager());
-        cryptoWalletOnboardingViewPager.setAdapter(cryptoWalletOnboardingPagerAdapter);
-        cryptoWalletOnboardingViewPager.setOffscreenPageLimit(
-                cryptoWalletOnboardingPagerAdapter.getCount() - 1);
+        mCryptoWalletOnboardingViewPager.setAdapter(mCryptoWalletOnboardingPagerAdapter);
+        mCryptoWalletOnboardingViewPager.setOffscreenPageLimit(
+                mCryptoWalletOnboardingPagerAdapter.getCount() - 1);
 
         ImageView onboardingBackButton = findViewById(R.id.onboarding_back_button);
         onboardingBackButton.setVisibility(View.GONE);
         onboardingBackButton.setOnClickListener(v -> {
-            if (cryptoWalletOnboardingViewPager != null) {
-                cryptoWalletOnboardingViewPager.setCurrentItem(
-                        cryptoWalletOnboardingViewPager.getCurrentItem() - 1);
+            if (mCryptoWalletOnboardingViewPager != null) {
+                mCryptoWalletOnboardingViewPager.setCurrentItem(
+                        mCryptoWalletOnboardingViewPager.getCurrentItem() - 1);
             }
         });
 
-        cryptoWalletOnboardingViewPager.addOnPageChangeListener(
+        mCryptoWalletOnboardingViewPager.addOnPageChangeListener(
                 new ViewPager.OnPageChangeListener() {
                     @Override
                     public void onPageScrolled(
@@ -268,9 +270,9 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                             restoreWalletFragment));
         }
 
-        if (cryptoWalletOnboardingPagerAdapter != null) {
-            cryptoWalletOnboardingPagerAdapter.setNavigationItems(navigationItems);
-            cryptoWalletOnboardingPagerAdapter.notifyDataSetChanged();
+        if (mCryptoWalletOnboardingPagerAdapter != null) {
+            mCryptoWalletOnboardingPagerAdapter.setNavigationItems(navigationItems);
+            mCryptoWalletOnboardingPagerAdapter.notifyDataSetChanged();
         }
         addRemoveSecureFlag(true);
     }
@@ -292,17 +294,18 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
 
     private void replaceNavigationFragments(int type, boolean doNavigate, boolean isOnboarding) {
         mShowBiometricPrompt = true;
-        if (cryptoWalletOnboardingViewPager != null && cryptoWalletOnboardingPagerAdapter != null) {
+        if (mCryptoWalletOnboardingViewPager != null
+                && mCryptoWalletOnboardingPagerAdapter != null) {
             if (type == RESTORE_WALLET_ACTION) {
                 mShowBiometricPrompt = false;
                 RestoreWalletFragment restoreWalletFragment =
                         RestoreWalletFragment.newInstance(isOnboarding);
                 restoreWalletFragment.setOnNextPageListener(this);
-                cryptoWalletOnboardingPagerAdapter.replaceWithNavigationItem(
+                mCryptoWalletOnboardingPagerAdapter.replaceWithNavigationItem(
                         new NavigationItem(
                                 getResources().getString(R.string.restore_crypto_account),
                                 restoreWalletFragment),
-                        cryptoWalletOnboardingViewPager.getCurrentItem() + 1);
+                        mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
             } else if (type == ONBOARDING_ACTION) {
                 List<NavigationItem> navigationItems = new ArrayList<>();
                 SecurePasswordFragment securePasswordFragment = new SecurePasswordFragment();
@@ -311,15 +314,15 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                         new NavigationItem(getResources().getString(R.string.secure_your_crypto),
                                 securePasswordFragment));
                 addBackupWalletSequence(navigationItems, true);
-                cryptoWalletOnboardingPagerAdapter.replaceWithNavigationItems(
-                        navigationItems, cryptoWalletOnboardingViewPager.getCurrentItem() + 1);
+                mCryptoWalletOnboardingPagerAdapter.replaceWithNavigationItems(
+                        navigationItems, mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
             }
 
-            cryptoWalletOnboardingPagerAdapter.notifyDataSetChanged();
+            mCryptoWalletOnboardingPagerAdapter.notifyDataSetChanged();
 
             if (doNavigate) {
-                cryptoWalletOnboardingViewPager.setCurrentItem(
-                        cryptoWalletOnboardingViewPager.getCurrentItem() + 1);
+                mCryptoWalletOnboardingViewPager.setCurrentItem(
+                        mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
             }
         }
     }
@@ -340,7 +343,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
 
         if (mBuySendSwapButton != null) mBuySendSwapButton.setVisibility(View.VISIBLE);
 
-        if (mKeyringService != null)
+        if (mKeyringService != null) {
             mKeyringService.isWalletBackedUp(backed_up -> {
                 if (!backed_up) {
                     showWalletBackupBanner();
@@ -348,6 +351,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                     findViewById(R.id.wallet_backup_banner).setVisibility(View.GONE);
                 }
             });
+        }
     }
 
     private void addBackupWalletSequence(
@@ -379,10 +383,11 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         List<NavigationItem> navigationItems = new ArrayList<>();
         addBackupWalletSequence(navigationItems, false);
 
-        if (cryptoWalletOnboardingPagerAdapter != null && cryptoWalletOnboardingViewPager != null) {
-            cryptoWalletOnboardingPagerAdapter.setNavigationItems(navigationItems);
-            cryptoWalletOnboardingPagerAdapter.notifyDataSetChanged();
-            cryptoWalletOnboardingViewPager.setCurrentItem(0);
+        if (mCryptoWalletOnboardingPagerAdapter != null
+                && mCryptoWalletOnboardingViewPager != null) {
+            mCryptoWalletOnboardingPagerAdapter.setNavigationItems(navigationItems);
+            mCryptoWalletOnboardingPagerAdapter.notifyDataSetChanged();
+            mCryptoWalletOnboardingViewPager.setCurrentItem(0);
         }
     }
 
@@ -437,9 +442,9 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
             }
             setCryptoLayout();
         } else {
-            if (cryptoWalletOnboardingViewPager != null) {
-                cryptoWalletOnboardingViewPager.setCurrentItem(
-                        cryptoWalletOnboardingViewPager.getCurrentItem() + 1);
+            if (mCryptoWalletOnboardingViewPager != null) {
+                mCryptoWalletOnboardingViewPager.setCurrentItem(
+                        mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
             }
         }
     }

@@ -28,7 +28,6 @@
             android:padding="16dp"
             android:layout_gravity="start|top"
             android:contentDescription="@null"/>
-
     </FrameLayout>
 
 </androidx.core.widget.NestedScrollView>

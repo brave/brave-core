@@ -29,6 +29,10 @@
 #include "services/data_decoder/public/cpp/json_sanitizer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/components/brave_wallet/browser/wallet_data_files_installer_android_util.h"
+#endif
+
 namespace brave_wallet {
 
 namespace {
@@ -393,7 +397,13 @@ WalletDataFilesInstallerPolicy::GetInstallerAttributes() const {
 
 void RegisterWalletDataFilesComponent(
     component_updater::ComponentUpdateService* cus) {
-  if (brave_wallet::IsNativeWalletEnabled()) {
+#if BUILDFLAG(IS_ANDROID)
+  bool should_register_component =
+      IsNativeWalletEnabled() && IsBraveWalletConfiguredOnAndroid();
+#else
+  bool should_register_component = IsNativeWalletEnabled();
+#endif
+  if (should_register_component) {
     auto installer =
         base::MakeRefCounted<component_updater::ComponentInstaller>(
             std::make_unique<WalletDataFilesInstallerPolicy>());
@@ -405,12 +415,28 @@ void RegisterWalletDataFilesComponent(
   }
 }
 
+void RegisterWalletDataFilesComponentOnDemand(
+    component_updater::ComponentUpdateService* cus) {
+  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
+      std::make_unique<WalletDataFilesInstallerPolicy>());
+
+  installer->Register(
+      cus, base::BindOnce([]() {
+        brave_component_updater::BraveOnDemandUpdater::GetInstance()
+            ->OnDemandUpdate(kComponentId);
+      }));
+}
+
 absl::optional<base::Version> GetLastInstalledWalletVersion() {
   return last_installed_wallet_version;
 }
 
 void SetLastInstalledWalletVersionForTest(const base::Version& version) {
   last_installed_wallet_version = version;
+}
+
+std::string GetWalletDataFilesComponentId() {
+  return kComponentId;
 }
 
 }  // namespace brave_wallet

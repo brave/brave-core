@@ -26,6 +26,11 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletDataFilesInstaller;
+
+/**
+ * Fragment to setup Brave Wallet
+ */
 public class SetupWalletFragment extends CryptoOnboardingFragment {
     private static final String TAG = "SetupWalletFragment";
 
@@ -75,6 +80,7 @@ public class SetupWalletFragment extends CryptoOnboardingFragment {
             mRestartSetupAction = false;
             mRestartRestoreAction = false;
         });
+        WalletDataFilesInstaller.registerWalletDataFilesComponentOnDemand();
     }
 
     // We need to remove that check and restart once
