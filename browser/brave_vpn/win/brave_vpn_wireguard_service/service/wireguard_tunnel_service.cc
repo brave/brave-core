@@ -22,6 +22,7 @@
 #include "base/win/sid.h"
 #include "base/win/windows_types.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/process_utils.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/tunnel_utils.h"
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
@@ -186,6 +187,7 @@ namespace wireguard {
 // Creates and launches a new Wireguard Windows service using passed config.
 // Before to start a new service it checks and removes existing if exists.
 bool LaunchWireguardService(const std::wstring& config) {
+  IncrementWireguardTunnelUsageFlag();
   if (!RemoveExistingWireguardService()) {
     VLOG(1) << "Failed to remove existing brave wireguard service";
     return false;
@@ -320,6 +322,7 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
     }
 
     if (tunnel_proc(config_file_path.value().c_str())) {
+      ResetWireguardTunnelUsageFlag();
       return S_OK;
     }
     VLOG(1) << "Failed to activate tunnel service:"
@@ -346,11 +349,13 @@ bool WireguardGenerateKeypair(std::string* public_key,
   if (!generate_proc) {
     VLOG(1) << __func__ << ": WireGuardGenerateKeypair not found error: "
             << tunnel_lib.GetError()->ToString();
+    IncrementWireguardTunnelUsageFlag();
     return false;
   }
   if (generate_proc(public_key_bytes.data(), private_key_bytes.data())) {
     VLOG(1) << __func__ << "Unable to generate keys, error:"
             << tunnel_lib.GetError()->ToString();
+    IncrementWireguardTunnelUsageFlag();
     return false;
   }
 

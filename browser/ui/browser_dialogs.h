@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_BROWSER_DIALOGS_H_
 
 #include "base/functional/callback_forward.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 
 class Browser;
@@ -30,6 +31,9 @@ void ShowTextRecognitionDialog(content::WebContents* web_contents,
                                const SkBitmap& image);
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+void ShowBraveVpnIKEv2FallbackDialog();
+#endif
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_DIALOGS_H_

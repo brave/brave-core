@@ -239,8 +239,14 @@
     <message name="IDS_BRAVE_VPN_DNS_SETTINGS_NOTIFICATION_DIALOG_TITLE" desc="A title of text shown to user when he enabled Brave VPN without DoH and we override settings">
       Brave VPN on Windows
     </message>
+    <message name="IDS_BRAVE_VPN_FALLBACK_DIALOG_TITLE" desc="A title of text shown to user when Brave VPN Wireguard is asking for fallback to IKEv2">
+      Brave VPN on Windows
+    </message>
   </if>
   <message name="IDS_BRAVE_VPN_DNS_SETTINGS_NOTIFICATION_DIALOG_LEARN_MORE_TEXT" desc="A text shown to user when he enabled Brave VPN without DoH and we override settings to visit help center">
+    Learn more.
+  </message>
+  <message name="IDS_BRAVE_VPN_FALLBACK_DIALOG_LEARN_MORE_TEXT" desc="A text shown to user when Brave VPN Wireguard is asking for fallback to IKEv2">
     Learn more.
   </message>
 
@@ -257,6 +263,20 @@ However, we noticed this helper service is not running - and we don't want to le
 
 <ph name="LEARN_MORE">$1<ex>Learn more.</ex></ph>
   </message>
+  <message name="IDS_BRAVE_VPN_FALLBACK_DIALOG_TEXT" desc="A text shown to user when Brave VPN Wireguard is asking for fallback to IKEv2">
+Looks like there are some issues with the WireGuard connection. Want to enable IKEv2 fallback for a reliable VPN? Simply restart your browser.
+
+Need help with compatibility or configuration? Reach out to our friendly support team.
+You can always revert back to WireGuard on brave://flags/#brave-vpn-wireguard.
+
+Let's get you connected!
+
+<ph name="LEARN_MORE">$1<ex>Learn more.</ex></ph>
+  </message>
+
+  <message name="IDS_BRAVE_VPN_FALLBACK_DIALOG_CHECKBOX_TEXT" desc="A text shown to user on dialog's checkbpox when Brave VPN Wireguard is asking for fallback to IKEv2">
+    Do not warn me about this anymore.
+  </message>
 
   <message name="IDS_BRAVE_VPN_DNS_SETTINGS_NOTIFICATION_DIALOG_CHECKBOX_TEXT" desc="A text shown to user on dialog's checkbpox when he enabled Brave VPN and we override settings">
     Do not warn me about this anymore.
@@ -264,6 +284,15 @@ However, we noticed this helper service is not running - and we don't want to le
   <message name="IDS_BRAVE_VPN_DNS_SETTINGS_NOTIFICATION_DIALOG_OK_TEXT" desc="A text shown to user on dialog's ok button when he enabled Brave VPN and we override settings">
     Ok
   </message>
+
+  <message name="IDS_BRAVE_VPN_FALLBACK_DIALOG_OK_TEXT" desc="A text shown to user on dialog's ok button when Brave VPN Wireguard is asking for fallback to IKEv2">
+    Restart browser
+  </message>
+
+  <message name="IDS_BRAVE_VPN_FALLBACK_DIALOG_CANCEL_TEXT" desc="A text shown to user on dialog's cancel button when Brave VPN Wireguard is asking for fallback to IKEv2">
+    Cancel
+  </message>
+
   <message name="IDS_BRAVE_VPN_DNS_POLICY_CHECKBOX" desc="A text shown to user on dialog's checkbpox when he enabled Brave VPN with disabled DoH by policies">
     Do not warn me about this anymore.
   </message>
