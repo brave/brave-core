@@ -73,6 +73,8 @@ class SidebarContainerView
 
   BraveSidePanel* side_panel() { return side_panel_; }
 
+  bool IsFullscreenForCurrentEntry() const;
+
   // Sidebar overrides:
   void SetSidebarShowOption(
       sidebar::SidebarService::ShowSidebarOption show_option) override;

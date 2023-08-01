@@ -317,6 +317,8 @@ source_set("ui") {
       "views/side_panel/brave_side_panel.h",
       "views/side_panel/brave_side_panel_resize_widget.cc",
       "views/side_panel/brave_side_panel_resize_widget.h",
+      "views/side_panel/playlist/playlist_contents_wrapper.cc",
+      "views/side_panel/playlist/playlist_contents_wrapper.h",
       "views/side_panel/playlist/playlist_side_panel_coordinator.cc",
       "views/side_panel/playlist/playlist_side_panel_coordinator.h",
       "views/side_panel/playlist/playlist_side_panel_web_view.cc",

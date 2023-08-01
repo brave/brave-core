@@ -31,7 +31,7 @@ export default function VideoFrame ({ playing }: Props) {
           ? 'chrome-untrusted://playlist-player'
           : 'iframe.html?id=playlist-components--video-player'
       }
-      allow='autoplay'
+      allow='autoplay; fullscreen;'
       scrolling='no'
       sandbox='allow-scripts allow-same-origin'
       playing={playing}

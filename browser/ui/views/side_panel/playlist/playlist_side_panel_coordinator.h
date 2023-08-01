@@ -10,8 +10,9 @@
 #include <string>
 
 #include "base/scoped_observation.h"
+#include "brave/browser/ui/views/side_panel/playlist/playlist_contents_wrapper.h"
+#include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_web_view.h"
 #include "chrome/browser/ui/browser_user_data.h"
-#include "chrome/browser/ui/views/bubble/bubble_contents_wrapper.h"
 #include "ui/views/view.h"
 #include "ui/views/view_observer.h"
 
@@ -41,6 +42,10 @@ class PlaylistSidePanelCoordinator
   void ActivatePanel();
   void LoadPlaylist(const std::string& playlist_id, const std::string& item_id);
 
+  base::WeakPtr<PlaylistSidePanelWebView> side_panel_web_view() {
+    return side_panel_web_view_;
+  }
+
   // views::ViewObserver:
   void OnViewIsDeleting(views::View* view) override;
 
@@ -53,8 +58,9 @@ class PlaylistSidePanelCoordinator
 
   raw_ptr<Browser> browser_ = nullptr;
 
-  std::unique_ptr<BubbleContentsWrapperT<playlist::PlaylistUI>>
-      contents_wrapper_;
+  std::unique_ptr<PlaylistContentsWrapper> contents_wrapper_;
+
+  base::WeakPtr<PlaylistSidePanelWebView> side_panel_web_view_;
 
   base::ScopedObservation<views::View, views::ViewObserver> view_observation_{
       this};

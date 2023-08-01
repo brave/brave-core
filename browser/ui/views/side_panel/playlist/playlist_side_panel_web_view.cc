@@ -15,3 +15,7 @@ PlaylistSidePanelWebView::PlaylistSidePanelWebView(
           contents_wrapper) {}
 
 PlaylistSidePanelWebView::~PlaylistSidePanelWebView() = default;
+
+base::WeakPtr<PlaylistSidePanelWebView> PlaylistSidePanelWebView::GetWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
