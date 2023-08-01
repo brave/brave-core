@@ -29,5 +29,4 @@ source_set("mac") {
     "NetworkExtension.framework",
     "Foundation.framework",
   ]
-  configs += [ "//build/config/compiler:enable_arc" ]
 }

@@ -11,8 +11,6 @@ source_set("svg") {
     "-Wno-unreachable-code-aggressive",
   ]
 
-  configs += [ "//build/config/compiler:enable_arc" ]
-
   sources = [
     "svg_image.h",
     "svg_image.mm",

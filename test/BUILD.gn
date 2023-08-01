@@ -975,10 +975,6 @@ test("brave_browser_tests") {
     ]
   }
 
-  if (is_apple) {
-    configs += [ "//build/config/compiler:enable_arc" ]
-  }
-
   if (use_aura) {
     deps += [ "//ui/aura:test_support" ]
   }

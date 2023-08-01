@@ -9,7 +9,6 @@ config("external") {
 }
 
 source_set("keyed_service") {
-  configs += [ "//build/config/compiler:enable_arc" ]
   sources = [
     "keyed_service_factory_wrapper+private.h",
     "keyed_service_factory_wrapper.h",

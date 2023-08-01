@@ -4,8 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 source_set("url") {
-  configs += [ "//build/config/compiler:enable_arc" ]
-
   sources = [
     "url_formatter.h",
     "url_formatter.mm",

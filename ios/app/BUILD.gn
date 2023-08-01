@@ -11,7 +11,6 @@ source_set("app") {
   configs += [
     "//brave/ios/browser/api/brave_wallet:mojom_header_config",
     "//brave/ios/browser/api/skus:mojom_header_config",
-    "//build/config/compiler:enable_arc",
   ]
 
   sources = [

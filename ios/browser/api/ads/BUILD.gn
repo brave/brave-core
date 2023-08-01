@@ -12,10 +12,7 @@ config("external_config") {
 }
 
 source_set("ads") {
-  configs += [
-    ":external_config",
-    "//build/config/compiler:enable_arc",
-  ]
+  configs += [ ":external_config" ]
 
   sources = [
     "ads_client_bridge.h",

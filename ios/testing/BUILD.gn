@@ -7,7 +7,6 @@ import("//build/config/ios/rules.gni")
 import("//testing/test.gni")
 
 ios_xctest_test("brave_core_ios_tests") {
-  configs += [ "//build/config/compiler:enable_arc" ]
   sources = [
     "dictionary_transform_test.mm",
     "main.mm",

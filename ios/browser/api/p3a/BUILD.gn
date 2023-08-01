@@ -4,7 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 source_set("p3a") {
-  configs += [ "//build/config/compiler:enable_arc" ]
   sources = [
     "brave_histograms_controller+private.h",
     "brave_histograms_controller.h",
