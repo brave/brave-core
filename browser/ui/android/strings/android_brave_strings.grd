@@ -2064,30 +2064,6 @@ Are you sure you want to do this?
     <message name="IDS_MAINNET" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Ethereum Mainnet
     </message>
-    <message name="IDS_FROM" desc="Brave Wallet buy-send-swap section text">
-      From
-    </message>
-    <message name="IDS_BUY_WALLET" desc="Brave Wallet buy-send-swap section text for Buy">
-      Buy
-    </message>
-    <message name="IDS_PERCENTAGE_25" desc="Brave Wallet buy-send-swap section text">
-      25%
-    </message>
-    <message name="IDS_PERCENTAGE_50" desc="Brave Wallet buy-send-swap section text">
-      50%
-    </message>
-    <message name="IDS_PERCENTAGE_75" desc="Brave Wallet buy-send-swap section text">
-      75%
-    </message>
-    <message name="IDS_TO_ESTIMATE" desc="Brave Wallet buy-send-swap section text">
-      To (estimate)
-    </message>
-    <message name="IDS_TO_ADDRESS" desc="Brave Wallet buy-send-swap section text. Send To address">
-      To
-    </message>
-    <message name="IDS_TO_ADDRESS_EDIT" desc="Brave Wallet buy-send-swap section for address(hint)">
-      Address or URL
-    </message>
     <message name="IDS_ADDRESS_MISSING_CHECKSUM_WARNING" desc="Brave Wallet send address missing checksum warning text">
       Missing checksum information
     </message>
@@ -2172,9 +2148,6 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_SEARCH_TOKENS" desc="Brave wallet search tokens control hint">
       Search tokens
-    </message>
-    <message name="IDS_CRYPTO_WALLET_BALANCE" desc="Brave crypto wallet balance">
-      Balance:
     </message>
     <message name="IDS_WALLET_BUY_MAINNET_BUTTON_TEXT" desc="Buy button on main net text">
       Select Purchase Method
@@ -2616,12 +2589,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_BLOCK_THIRD_PARTY_PRIVATE_TITLE" desc="Text used to explain the block third-party cookies in Private option in settings">
       Block third-party cookies in Private
     </message>
-    <message name="IDS_CRYPTO_WALLET_ERROR_INSUFFICIENT_BALANCE" desc="Error on crypto wallets">
-      Insufficient balance
-    </message>
-    <message name="IDS_CRYPTO_WALLET_ERROR_WRONG_NUMBER_FORMAT" desc="Error on crypto wallets">
-      Unrecognized number format
-    </message>
     <message name="IDS_PRIVATE_KEY" desc="Wallet account private key text">
       Private Key
     </message>
@@ -2781,14 +2748,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_FAILED_TO_IMPORT_ACCOUNT" desc="Brave wallet msg that appears when we couldn't import an account">
       Failed to import account, please try again.
     </message>
-    <message name="IDS_WALLET_DEX_AGGREGATOR" desc="Brave wallet msg about using 0x for swap">
-      Brave uses <ph name="DEX_PROVIDER">%1$s<ex>0x</ex></ph> as a DEX aggregator.
-    </message>
     <message name="IDS_WALLET_POWERED_BY_COIN_GECKO" desc="Disclaimer on assets details page for GoinGecko contract agreement">
       Price data powered by CoinGecko
-    </message>
-    <message name="IDS_WALLET_SWAP_FEES_NOTICE" desc="Swap fees notice">
-      Quote includes a 0.875% Brave fee.
     </message>
     <message name="IDS_WALLET_ADD_CUSTOM_ASSET" desc="Add custom asset clickable name">
       Add custom asset
@@ -3650,21 +3611,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_TEST" desc="Network filter title for test networks">
       Test Networks
-    </message>
-    <message name="IDS_WALLET_DOMAIN_NOT_REGISTERED_ERROR_TEXT" desc="ENS/SNS/UD domain not registered text">
-      Domain <ph name="DOMAIN">%1$s</ph> is not registered
-    </message>
-    <message name="IDS_BRAVE_WALLET_ENS_OFF_CHAIN_LOOKUP_LEARN_MORE" desc="'Learn more' part of description shown when requesting to do an ENS off chain lookup.">
-      Learn more
-    </message>
-    <message name="IDS_BRAVE_WALLET_ENS_OFF_CHAIN_LOOKUP_DESCRIPTION" desc="Message description shown when requesting to do an ENS off chain lookup.">
-      It looks like you've entered an ENS address. We'll need to use a third-party resolver to resolve this request, which may be able to see your IP address and domain. <ph name="LEARN_MORE">%1$s</ph>.
-    </message>
-    <message name="IDS_BRAVE_WALLET_ENS_OFF_CHAIN_BUTTON" desc="ENS off chain lookup button text.">
-      Use ENS offchain domain
-    </message>
-    <message name="IDS_BRAVE_WALLET_SEARCHING_FOR_DOMAIN" desc="Searching for wallet domain progress message.">
-      Searching for domain...
     </message>
     <message name="IDS_BRAVE_WALLET_NFTS" desc="NFTs as title">
       NFTs
