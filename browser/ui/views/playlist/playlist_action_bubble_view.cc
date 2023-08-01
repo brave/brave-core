@@ -85,7 +85,7 @@ class ConfirmBubble : public PlaylistActionBubbleView,
   ~ConfirmBubble() override = default;
 
   // PlaylistTabHelperObserver:
-  void PlaylistTabHelperWillBeDestroyed() override {}
+  void PlaylistTabHelperWillBeDestroyed() override;
   void OnSavedItemsChanged(
       const std::vector<playlist::mojom::PlaylistItemPtr>& items) override;
   void OnFoundItemsChanged(
@@ -238,6 +238,10 @@ ConfirmBubble::ConfirmBubble(Browser* browser,
   }
 
   playlist_tab_helper_observation_.Observe(playlist_tab_helper_);
+}
+
+void ConfirmBubble::PlaylistTabHelperWillBeDestroyed() {
+  playlist_tab_helper_observation_.Reset();
 }
 
 void ConfirmBubble::OnSavedItemsChanged(

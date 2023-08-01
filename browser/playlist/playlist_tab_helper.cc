@@ -86,10 +86,15 @@ base::WeakPtr<PlaylistTabHelper> PlaylistTabHelper::GetWeakPtr() {
 }
 
 std::u16string PlaylistTabHelper::GetSavedFolderName() {
+  // Use saved folder's name when all saved items belong to the single same
+  // parent folder. Otherwise, returns placeholder name, which is the feature
+  // name.
+
   CHECK(saved_items_.size()) << "Caller should check if there are saved items";
+  constexpr auto* kPlaceholderName = u"Playlist";
   if (const auto& parents = saved_items_.front()->parents;
       parents.empty() || parents.size() >= 2) {
-    return u"Playlist";
+    return kPlaceholderName;
   }
 
   const auto parent_id = saved_items_.front()->parents.front();
@@ -98,7 +103,7 @@ std::u16string PlaylistTabHelper::GetSavedFolderName() {
                     return item->parents.empty() || item->parents.size() >= 2 ||
                            parent_id != item->parents.front();
                   })) {
-    return u"Playlist";
+    return kPlaceholderName;
   }
 
   if (parent_id == kDefaultPlaylistID) {
