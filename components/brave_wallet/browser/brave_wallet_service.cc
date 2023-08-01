@@ -627,7 +627,24 @@ bool BraveWalletService::SetAssetSpamStatus(mojom::BlockchainTokenPtr token,
   auto it = FindAsset(user_assets_list, *address, token->token_id,
                       ShouldCheckTokenId(token));
   if (it == user_assets_list->end()) {
-    return false;
+    // If the asset is not in the user's asset list, we automatically add it and
+    // set the spam status.
+    token->is_spam = is_spam;
+    bool visible = !is_spam;
+    token->visible = visible;
+
+    bool success = AddUserAsset(token.Clone());
+    if (!success) {
+      return false;
+    }
+
+    // AddUserAsset ignores the visible value of the token and always sets
+    // visible=true, so we have to manually set this if visible=false
+    if (!visible) {
+      return SetUserAssetVisible(std::move(token), visible);
+    }
+
+    return true;
   }
 
   it->GetDict().Set("is_spam", is_spam);

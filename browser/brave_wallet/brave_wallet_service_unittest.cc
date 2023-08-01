@@ -1348,6 +1348,20 @@ TEST_F(BraveWalletServiceUnitTest, SetAssetSpamStatus) {
   tokenWithInvalidChain->chain_id = "invalid_chain_id";
   SetAssetSpamStatus(tokenWithInvalidChain.Clone(), true, &success);
   EXPECT_FALSE(success);  // Should fail because of invalid chain_id
+
+  // Set the spam_status of a token not in user assets list
+  LOG(ERROR) << "BEFORE RELEVANT TEST";
+  mojom::BlockchainTokenPtr token2 = GetToken1();
+  token2->chain_id = mojom::kOptimismMainnetChainId;
+  GetUserAssets(token2->chain_id, mojom::CoinType::ETH, &tokens);
+  size_t original_optimism_user_asset_list = tokens.size();
+  SetAssetSpamStatus(token2.Clone(), true, &success);
+  EXPECT_TRUE(success);
+  GetUserAssets(token2->chain_id, mojom::CoinType::ETH, &tokens);
+  EXPECT_EQ(tokens.size(), original_optimism_user_asset_list + 1u);
+  EXPECT_EQ(tokens[1]->contract_address, token2->contract_address);
+  EXPECT_EQ(tokens[1]->is_spam, true);
+  EXPECT_EQ(tokens[1]->visible, false);
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetChecksumAddress) {
