@@ -7,6 +7,9 @@ group("android_deps") {
     ":com_android_installreferrer_java",
     ":com_brave_playlist_java",
     ":com_github_bumptech_glide_java",
+    ":com_google_android_datatransport_transport_api_java",
+    ":com_google_android_datatransport_transport_backend_cct_java",
+    ":com_google_android_datatransport_transport_runtime_java",
     ":com_google_android_exoplayer_exoplayer_common_java",
     ":com_google_android_exoplayer_exoplayer_core_java",
     ":com_google_android_exoplayer_exoplayer_database_java",
@@ -17,6 +20,8 @@ group("android_deps") {
     ":com_google_android_exoplayer_extension_cast_java",
     ":com_google_android_exoplayer_extension_mediasession_java",
     ":com_google_android_play_integrity_java",
+    ":com_google_firebase_firebase_encoders_java",
+    ":com_google_firebase_firebase_encoders_proto_java",
     ":com_wireguard_android_java",
     ":google_play_services_safetynet_java",
   ]
@@ -44,7 +49,71 @@ android_aar_prebuilt("com_android_billingclient_java") {
   aar_path = "libs/com_android_billingclient/billing-6.0.1.aar"
   info_path = "libs/com_android_billingclient/com_android_billingclient.info"
   ignore_manifest = true
-deps = ["//third_party/android_deps:google_android_datatransport_transport_api_java"]
+  deps = [
+    ":com_google_android_datatransport_transport_api_java",
+    ":com_google_android_datatransport_transport_backend_cct_java",
+    ":com_google_android_datatransport_transport_runtime_java",
+  ]
+}
+
+android_aar_prebuilt("com_google_android_datatransport_transport_api_java") {
+  aar_path = "libs/com_google_android_datatransport_transport_api/transport-api-3.0.0.aar"
+  info_path = "libs/com_google_android_datatransport_transport_api/com_google_android_datatransport_transport_api.info"
+  deps = [ "//third_party/androidx:androidx_annotation_annotation_java" ]
+}
+
+android_aar_prebuilt(
+    "com_google_android_datatransport_transport_runtime_java") {
+  aar_path = "libs/com_google_android_datatransport_transport_runtime/transport-runtime-3.1.9.aar"
+  info_path = "libs/com_google_android_datatransport_transport_runtime/com_google_android_datatransport_transport_runtime.info"
+  deps = [
+    ":com_google_android_datatransport_transport_api_java",
+    ":com_google_firebase_firebase_encoders_java",
+    ":com_google_firebase_firebase_encoders_proto_java",
+    "//third_party/android_deps:javax_inject_javax_inject_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+  ]
+}
+
+android_aar_prebuilt(
+    "com_google_android_datatransport_transport_backend_cct_java") {
+  aar_path = "libs/com_google_android_datatransport_transport_backend_cct/transport-backend-cct-3.1.9.aar"
+  info_path = "libs/com_google_android_datatransport_transport_backend_cct/com_google_android_datatransport_transport_backend_cct.info"
+  deps = [
+    ":com_google_android_datatransport_transport_api_java",
+    ":com_google_android_datatransport_transport_runtime_java",
+    ":com_google_firebase_firebase_encoders_java",
+    ":com_google_firebase_firebase_encoders_proto_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+  ]
+}
+
+java_prebuilt("com_google_firebase_firebase_encoders_java") {
+  jar_path =
+      "libs/com_google_firebase_firebase_encoders/firebase-encoders-17.0.0.jar"
+  output_name = "com_google_firebase_firebase_encoders"
+  supports_android = true
+  enable_bytecode_checks = false
+
+  deps = [ "//third_party/androidx:androidx_annotation_annotation_java" ]
+
+  # https://crbug.com/1412551
+  requires_android = true
+}
+
+java_prebuilt("com_google_firebase_firebase_encoders_proto_java") {
+  jar_path = "libs/com_google_firebase_firebase_encoders_proto/firebase-encoders-proto-16.0.0.jar"
+  output_name = "com_google_firebase_firebase_encoders_proto"
+  supports_android = true
+  enable_bytecode_checks = false
+
+  deps = [
+    ":com_google_firebase_firebase_encoders_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+  ]
+
+  # https://crbug.com/1412551
+  requires_android = true
 }
 
 android_aar_prebuilt("com_github_bumptech_glide_java") {
