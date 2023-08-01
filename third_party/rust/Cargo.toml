@@ -28,7 +28,6 @@ futures = "0.3"
 futures-retry = "0.5"
 fvm_ipld_encoding = "0.3"
 fvm_shared = "3"
-git-version = "0.3"
 hex = "0.4"
 hex-literal = "0.4"
 hmac = "0.10"
@@ -613,14 +612,6 @@ package = "getrandom"
 [patch.crates-io.getrandom_v0_2]
 path = "../../../third_party/rust/getrandom/v0_2/crate"
 package = "getrandom"
-
-[patch.crates-io.git-version-macro_v0_3]
-path = "git_version_macro/v0_3/crate"
-package = "git-version-macro"
-
-[patch.crates-io.git-version_v0_3]
-path = "git_version/v0_3/crate"
-package = "git-version"
 
 [patch.crates-io.group_v0_12]
 path = "group/v0_12/crate"

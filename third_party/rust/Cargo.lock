@@ -314,7 +314,6 @@ dependencies = [
  "futures-retry",
  "fvm_ipld_encoding",
  "fvm_shared",
- "git-version",
  "hex",
  "hex-literal",
  "hmac 0.10.1",
@@ -940,24 +939,6 @@ dependencies = [
  "cfg-if",
  "libc",
  "wasi 0.11.0+wasi-snapshot-preview1",
-]
-
-[[package]]
-name = "git-version"
-version = "0.3.5"
-dependencies = [
- "git-version-macro",
- "proc-macro-hack",
-]
-
-[[package]]
-name = "git-version-macro"
-version = "0.3.5"
-dependencies = [
- "proc-macro-hack",
- "proc-macro2",
- "quote",
- "syn 1.0.99",
 ]
 
 [[package]]
