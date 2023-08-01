@@ -314,18 +314,22 @@ public class AssetDetailActivity
         chartES.setColors(new int[] {getResources().getColor(R.color.wallet_asset_graph_color)});
         chartES.drawLine(0, assetPrice);
         chartES.setNoDrawText(true);
-        chartES.setOnTouchListener((v, event) -> {
-            v.getParent().requestDisallowInterceptTouchEvent(true);
-            SmoothLineChartEquallySpaced chartES = (SmoothLineChartEquallySpaced) v;
-            if (event.getAction() == MotionEvent.ACTION_MOVE
-                    || event.getAction() == MotionEvent.ACTION_DOWN) {
-                chartES.drawLine(event.getRawX(), assetPrice);
-            } else if (event.getAction() == MotionEvent.ACTION_UP
-                    || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                chartES.drawLine(-1, null);
-            }
+        chartES.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            @SuppressLint("ClickableViewAccessibility")
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                SmoothLineChartEquallySpaced chartES = (SmoothLineChartEquallySpaced) v;
+                if (event.getAction() == MotionEvent.ACTION_MOVE
+                        || event.getAction() == MotionEvent.ACTION_DOWN) {
+                    chartES.drawLine(event.getRawX(), assetPrice);
+                } else if (event.getAction() == MotionEvent.ACTION_UP
+                        || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    chartES.drawLine(-1, null);
+                }
 
-            return true;
+                return true;
+            }
         });
 
         onInitialLayoutInflationComplete();
