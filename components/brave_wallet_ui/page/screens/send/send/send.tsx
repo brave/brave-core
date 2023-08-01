@@ -12,7 +12,7 @@ import {
 } from 'react-router'
 
 // Messages
-import { ENSOffchainLookupMessage, FailedChecksumMessage } from '../send-ui-messages'
+import { ENSOffchainLookupMessage, FEVMAddressConvertionMessage, FailedChecksumMessage } from '../send-ui-messages'
 
 // Types
 import {
@@ -120,6 +120,8 @@ export const Send = (props: Props) => {
     enableEnsOffchainLookup,
     showEnsOffchainWarning,
     setShowEnsOffchainWarning,
+    showFilecoinFEVMWarning,
+    fevmTranslatedAddresses,
     addressError,
     addressWarning,
     sendAmount,
@@ -387,6 +389,12 @@ export const Send = (props: Props) => {
   }, [searchingForDomain, addressError])
 
   const addressMessageInformation: AddressMessageInfo | undefined = React.useMemo(() => {
+    if (showFilecoinFEVMWarning) {
+      return {
+        ...FEVMAddressConvertionMessage,
+        placeholder: fevmTranslatedAddresses?.[toAddressOrUrl]
+      }
+    }
     if (showEnsOffchainWarning) {
       return ENSOffchainLookupMessage
     }
@@ -397,7 +405,8 @@ export const Send = (props: Props) => {
       return { ...FailedChecksumMessage, type: 'warning' }
     }
     return undefined
-  }, [showEnsOffchainWarning, addressError, addressWarning])
+  }, [toAddressOrUrl, showFilecoinFEVMWarning, fevmTranslatedAddresses,
+      showEnsOffchainWarning, addressError, addressWarning])
 
   const showResolvedDomain = React.useMemo(() => {
     return (addressError === undefined ||

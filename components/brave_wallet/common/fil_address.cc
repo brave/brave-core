@@ -9,6 +9,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/third_party/argon2/src/src/blake2/blake2.h"
 #include "components/base32/base32.h"
 
@@ -178,6 +179,43 @@ FilAddress FilAddress::FromUncompressedPublicKey(
   return FromPayload(*payload, protocol, network);
 }
 
+// static
+FilAddress FilAddress::FromFEVMAddress(bool is_mainnet,
+                                       const std::string& fevm_address) {
+  if (!EthAddress::IsValidAddress(fevm_address)) {
+    return FilAddress();
+  }
+  std::vector<uint8_t> payload;
+  base::HexStringToBytes(fevm_address.substr(2), &payload);
+  std::vector<uint8_t> prefix = {4, 10};
+
+  blake2b_state blakeState;
+  if (blake2b_init(&blakeState, 4) != 0) {
+    return FilAddress();
+  }
+
+  if (blake2b_update(&blakeState, prefix.data(), prefix.size()) != 0) {
+    return FilAddress();
+  }
+
+  if (blake2b_update(&blakeState, payload.data(), payload.size()) != 0) {
+    return FilAddress();
+  }
+
+  std::vector<uint8_t> checksum(4, 0);
+  if (blake2b_final(&blakeState, checksum.data(), checksum.size()) != 0) {
+    return FilAddress();
+  }
+
+  payload.insert(payload.end(), checksum.begin(), checksum.end());
+
+  std::string encoded = base32::Base32Encode(
+      base::StringPiece(reinterpret_cast<const char*>(payload.data()),
+                        payload.size()),
+      base32::Base32EncodePolicy::OMIT_PADDING);
+  return FilAddress::FromAddress((is_mainnet ? "f410f" : "t410f") + encoded);
+}
+
 // Creates FilAddress from SECP256K or BLS payload
 // with specified protocol and network.
 // https://spec.filecoin.io/appendix/address/#section-appendix.address.string
@@ -274,6 +312,10 @@ std::vector<uint8_t> FilAddress::GetBytes() const {
   result.push_back(static_cast<uint8_t>(protocol_));
   result.insert(result.end(), bytes_.begin(), bytes_.end());
   return result;
+}
+
+bool FilAddress::IsMainNet() const {
+  return network_ == mojom::kFilecoinMainnet;
 }
 
 }  // namespace brave_wallet

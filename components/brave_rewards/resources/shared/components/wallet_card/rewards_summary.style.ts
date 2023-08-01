@@ -98,6 +98,10 @@ export const dataTable = styled.div`
     }
   }
 
+  tr:last-child {
+    border-bottom: none;
+  }
+
   td.exchange {
     text-align: right;
     font-size: 10px;

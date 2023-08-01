@@ -15,6 +15,7 @@
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -28,6 +29,8 @@
 #if BUILDFLAG(IS_WIN)
 #include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_factory_win.h"
 #include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service_win.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_factory_win.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_service_win.h"
 #endif
 
 namespace brave_vpn {
@@ -60,9 +63,13 @@ BraveVpnServiceFactory::BraveVpnServiceFactory()
           "BraveVpnService",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(skus::SkusServiceFactory::GetInstance());
-
 #if BUILDFLAG(IS_WIN)
-  DependsOn(brave_vpn::BraveVpnDnsObserverFactory::GetInstance());
+  if (base::FeatureList::IsEnabled(
+          brave_vpn::features::kBraveVPNUseWireguardService)) {
+    DependsOn(brave_vpn::BraveVpnWireguardObserverFactory::GetInstance());
+  } else {
+    DependsOn(brave_vpn::BraveVpnDnsObserverFactory::GetInstance());
+  }
 #endif
 }
 
@@ -97,11 +104,22 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
       shared_url_loader_factory, local_state,
       user_prefs::UserPrefs::Get(context), callback);
 #if BUILDFLAG(IS_WIN)
-  auto* dns_observer_service =
-      brave_vpn::BraveVpnDnsObserverFactory::GetInstance()
-          ->GetServiceForContext(context);
-  if (dns_observer_service)
-    dns_observer_service->Observe(vpn_service);
+  if (base::FeatureList::IsEnabled(
+          brave_vpn::features::kBraveVPNUseWireguardService)) {
+    auto* observer_service =
+        brave_vpn::BraveVpnWireguardObserverFactory::GetInstance()
+            ->GetServiceForContext(context);
+    if (observer_service) {
+      observer_service->Observe(vpn_service);
+    }
+  } else {
+    auto* observer_service =
+        brave_vpn::BraveVpnDnsObserverFactory::GetInstance()
+            ->GetServiceForContext(context);
+    if (observer_service) {
+      observer_service->Observe(vpn_service);
+    }
+  }
 #endif
   return vpn_service;
 }

@@ -4,7 +4,7 @@ version = 3
 
 [[package]]
 name = "adblock"
-version = "0.7.16"
+version = "0.7.17"
 dependencies = [
  "base64",
  "bitflags",
@@ -308,6 +308,7 @@ dependencies = [
  "env_logger",
  "feed-rs",
  "flate2",
+ "font-types",
  "forest_bigint",
  "futures",
  "futures-retry",
@@ -333,9 +334,11 @@ dependencies = [
  "num-bigint 0.4.3",
  "once_cell",
  "proc-macro2",
+ "qr_code",
  "quote",
  "rand 0.8.5",
  "rand_pcg 0.3.1",
+ "read-fonts",
  "regex",
  "rstest",
  "rstest_reuse",
@@ -346,6 +349,7 @@ dependencies = [
  "serde_json",
  "serde_json_lenient",
  "sha2 0.9.9",
+ "skrifa",
  "small_ctor",
  "star-constellation",
  "static_assertions",
@@ -739,6 +743,10 @@ dependencies = [
 [[package]]
 name = "fnv"
 version = "1.0.7"
+
+[[package]]
+name = "font-types"
+version = "0.3.0"
 
 [[package]]
 name = "forest_bigint"
@@ -1567,6 +1575,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "qr_code"
+version = "2.0.0"
+
+[[package]]
 name = "quick-xml"
 version = "0.27.1"
 dependencies = [
@@ -1657,6 +1669,13 @@ name = "rand_pcg"
 version = "0.3.1"
 dependencies = [
  "rand_core 0.6.4",
+]
+
+[[package]]
+name = "read-fonts"
+version = "0.5.0"
+dependencies = [
+ "font-types",
 ]
 
 [[package]]
@@ -1966,6 +1985,13 @@ version = "1.6.4"
 [[package]]
 name = "siphasher"
 version = "0.3.10"
+
+[[package]]
+name = "skrifa"
+version = "0.4.0"
+dependencies = [
+ "read-fonts",
+]
 
 [[package]]
 name = "slab"

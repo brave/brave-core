@@ -9,15 +9,19 @@
   display: flex;
 }
 
-.textbox {
+.textareaBox {
+  width: 100%;
+  font: var(--leo-font-secondary-default-regular);
+  color: var(--leo-color-text-primary);
+}
+
+.textarea {
   width: 100%;
   padding: 10px 16px;
   resize: none;
   background-color: transparent;
   border: 0;
-  border-radius: inherit;
-  font: var(--leo-font-secondary-default-regular);
-  color: var(--leo-color-text-primary);
+
 
   &:focus {
     outline: none;
@@ -34,9 +38,14 @@
   padding: 14px;
   color: var(--leo-color-icon-default);
   cursor: pointer;
+
+  &:disabled {
+    color: var(--leo-color-icon-disabled);
+    cursor: not-allowed;
+  }
 }
 
-.buttonPrimary {
+.buttonAgree {
   background-color: var(--leo-color-interaction-button-primary-background);
   color: white;
   border-radius: 30px;
@@ -56,4 +65,22 @@
   background-color: var(--leo-color-systemfeedback-info-background);
   margin-bottom: 12px;
   border-radius: 8px;
+}
+
+.counterText {
+  font: var(--leo-font-primary-small-regular);
+  color: var(--leo-color-systemfeedback-warning-icon);
+  padding: 3px 16px;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.2s linear, opacity 0.2s linear;
+}
+
+.counterTextVisible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.counterTextError {
+  color: var(--leo-color-systemfeedback-error-icon);
 }

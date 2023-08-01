@@ -96,6 +96,7 @@ enum SolanaProviderError {
 
   kUserRejectedRequest = ProviderError.kUserRejectedRequest,
   kUnauthorized = ProviderError.kUnauthorized,
+  kResourceUnavailable = ProviderError.kResourceUnavailable,
 
   // Pre-defined error codes specified in
   // https://www.jsonrpc.org/specification#error_object
@@ -1798,6 +1799,9 @@ interface BraveWalletService {
 
   // Used for UI to trigger the allowance discovery
   DiscoverEthAllowances() => (array<AllowanceInfo> allowances);
+
+  // Converts a set of ETH addresses to FIL delegated addresses
+  ConvertFEVMToFVMAddress(bool is_mainnet, array<string> fevm_addresses) => (map<string, string> result);
 };
 
 // For reporting wallet related P3A metrics.

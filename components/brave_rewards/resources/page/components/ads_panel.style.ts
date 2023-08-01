@@ -71,10 +71,6 @@ export const paymentStatus = styled.div`
       vertical-align: middle;
     }
   }
-
-  .rewards-payment-check-status {
-    display: block;
-  }
 `
 
 export const earnings = styled.span`

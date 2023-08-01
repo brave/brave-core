@@ -4,17 +4,22 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 interface Props {
   playing: boolean
 }
 
-const StyledVideoFrame = styled.iframe`
+const StyledVideoFrame = styled.iframe<Props>`
   width: 100vw;
   // 16:9 aspect ratio for video and fixed height for the controls area
   height: calc(56vw + 160px);
   border: none;
+  ${({ playing }) =>
+    !playing &&
+    css`
+      display: none;
+    `}
 `
 
 export default function VideoFrame ({ playing }: Props) {
@@ -25,7 +30,7 @@ export default function VideoFrame ({ playing }: Props) {
       allow='autoplay'
       scrolling='no'
       sandbox='allow-scripts allow-same-origin'
-      data-playing={playing}
+      playing={playing}
     />
   )
 }

@@ -70,8 +70,6 @@ void Account::RemoveObserver(AccountObserver* observer) {
 
 void Account::SetWallet(const std::string& payment_id,
                         const std::string& recovery_seed) {
-  const absl::optional<WalletInfo> last_wallet_copy = wallet_;
-
   const absl::optional<WalletInfo>& wallet =
       ToWallet(payment_id, recovery_seed);
   if (!wallet) {
@@ -84,12 +82,6 @@ void Account::SetWallet(const std::string& payment_id,
   }
 
   wallet_ = wallet;
-
-  if (last_wallet_copy && wallet != last_wallet_copy) {
-    BLOG(1, "Wallet was changed");
-    NotifyWalletDidChange(*wallet);
-    return Reset();
-  }
 
   BLOG(1, "Successfully initialized wallet");
   NotifyDidInitializeWallet(*wallet);
@@ -284,23 +276,6 @@ void Account::MaybeProcessUnclearedTransactions() const {
   }
 }
 
-void Account::Reset() const {
-  ResetRewards(
-      base::BindOnce(&Account::ResetCallback, weak_factory_.GetWeakPtr()));
-}
-
-void Account::ResetCallback(const bool success) const {
-  if (!success) {
-    return BLOG(0, "Failed to reset rewards state");
-  }
-
-  BLOG(3, "Successfully reset rewards state");
-
-  NotifyStatementOfAccountsDidChange();
-
-  MaybeTopUpUnblindedTokens();
-}
-
 void Account::MaybeResetConfirmationsAndIssuers() {
   if (!ShouldResetIssuersAndConfirmations()) {
     return;
@@ -336,12 +311,6 @@ void Account::NotifyDidInitializeWallet(const WalletInfo& wallet) const {
 void Account::NotifyFailedToInitializeWallet() const {
   for (AccountObserver& observer : observers_) {
     observer.OnFailedToInitializeWallet();
-  }
-}
-
-void Account::NotifyWalletDidChange(const WalletInfo& wallet) const {
-  for (AccountObserver& observer : observers_) {
-    observer.OnWalletDidChange(wallet);
   }
 }
 
@@ -383,6 +352,8 @@ void Account::OnNotifyPrefDidChange(const std::string& path) {
 void Account::OnNotifyRewardsWalletDidUpdate(const std::string& payment_id,
                                              const std::string& recovery_seed) {
   SetWallet(payment_id, recovery_seed);
+
+  MaybeTopUpUnblindedTokens();
 }
 
 void Account::OnNotifyDidSolveAdaptiveCaptcha() {

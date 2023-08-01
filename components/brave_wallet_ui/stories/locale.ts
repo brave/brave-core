@@ -112,6 +112,8 @@ provideStrings({
   braveWalletEnsOffChainLookupTitle: 'Brave supports using off-chain gateways to resolve .eth domains.',
   braveWalletEnsOffChainLookupDescription: 'It looks like you\'ve entered an ENS address. We\'ll need to use a third-party resolver to resolve this request, which may be able to see your IP address and domain.',
   braveWalletEnsOffChainButton: 'Use ENS domain',
+  braveWalletFEVMAddressTranslationTitle: 'ETH address will be converted to the Filecoin address.',
+  braveWalletFEVMAddressTranslationDescription: 'It looks like you\'ve entered an ENS address. We\'ll need to use a third-party resolver to resolve this request, which may be able to see your IP address and domain.',
 
   // Send Tab
   braveWalletSendToken: 'Send token',

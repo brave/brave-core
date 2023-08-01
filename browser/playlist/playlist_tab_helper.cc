@@ -7,12 +7,16 @@
 
 #include <utility>
 
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/playlist/playlist_tab_helper_observer.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
+#include "chrome/grit/generated_resources.h"
 #include "content/public/browser/navigation_handle.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace playlist {
 
@@ -80,6 +84,36 @@ void PlaylistTabHelper::RemoveItems(std::vector<mojom::PlaylistItemPtr> items) {
 
 base::WeakPtr<PlaylistTabHelper> PlaylistTabHelper::GetWeakPtr() {
   return weak_ptr_factory_.GetWeakPtr();
+}
+
+std::u16string PlaylistTabHelper::GetSavedFolderName() {
+  // Use saved folder's name when all saved items belong to the single same
+  // parent folder. Otherwise, returns placeholder name, which is the feature
+  // name.
+
+  CHECK(saved_items_.size()) << "Caller should check if there are saved items";
+  constexpr auto* kPlaceholderName = u"Playlist";
+  if (const auto& parents = saved_items_.front()->parents;
+      parents.empty() || parents.size() >= 2) {
+    return kPlaceholderName;
+  }
+
+  const auto parent_id = saved_items_.front()->parents.front();
+  if (std::any_of(saved_items_.begin() + 1, saved_items_.end(),
+                  [&parent_id](const auto& item) {
+                    return item->parents.empty() || item->parents.size() >= 2 ||
+                           parent_id != item->parents.front();
+                  })) {
+    return kPlaceholderName;
+  }
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  if (parent_id == kDefaultPlaylistID) {
+    return l10n_util::GetStringUTF16(IDS_PLAYLIST_DEFAULT_PLAYLIST_NAME);
+  }
+#endif
+
+  return base::UTF8ToUTF16(service_->GetPlaylist(parent_id)->name);
 }
 
 void PlaylistTabHelper::DidFinishNavigation(
@@ -202,20 +236,19 @@ void PlaylistTabHelper::UpdateSavedItemFromCurrentContents() {
   // perf improvement? We'll see this really matters.
 
   bool should_notify = false;
-  base::ranges::for_each(service_->GetAllPlaylistItems(),
-                         [this, &should_notify](const auto& item) {
-                           const auto& current_url =
-                               web_contents()->GetVisibleURL();
-                           if (item->page_source != current_url) {
-                             return;
-                           }
+  base::ranges::for_each(
+      service_->GetAllPlaylistItems(),
+      [this, &should_notify](const auto& item) {
+        const auto& current_url = web_contents()->GetVisibleURL();
+        if (item->page_source != current_url) {
+          return;
+        }
 
-                           DVLOG(2) << __FUNCTION__ << " "
-                                    << item->page_source.spec() << " "
-                                    << item->media_source.spec();
-                           saved_items_.push_back(item->Clone());
-                           should_notify = true;
-                         });
+        DVLOG(2) << __FUNCTION__ << " " << item->page_source.spec() << " "
+                 << item->media_source.spec();
+        saved_items_.push_back(item->Clone());
+        should_notify = true;
+      });
 
   if (!should_notify) {
     return;
@@ -250,9 +283,21 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
 
   DVLOG(2) << __FUNCTION__ << " item count : " << items.size();
 
-  found_items_.insert(found_items_.end(),
-                      std::make_move_iterator(items.begin()),
-                      std::make_move_iterator(items.end()));
+  base::flat_map<std::string, mojom::PlaylistItemPtr*> already_found_items;
+  for (auto& item : found_items_) {
+    already_found_items.insert({item->media_source.spec(), &item});
+  }
+
+  for (auto& new_item : items) {
+    const auto media_source = new_item->media_source.spec();
+    if (base::Contains(already_found_items, media_source)) {
+      DVLOG(2) << "The media source with url (" << media_source
+               << ") already exists so update the data";
+      (*already_found_items.at(media_source)) = std::move(new_item);
+    } else {
+      found_items_.push_back(std::move(new_item));
+    }
+  }
 
   for (auto& observer : observers_) {
     observer.OnFoundItemsChanged(found_items_);

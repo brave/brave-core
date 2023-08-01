@@ -1076,7 +1076,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules(
       "||cname-cloak-endpoint.tracking.com^\n"
-      "@@||a.com/logo-unblock.png|");
+      "@@a.com*/logo.png?unblock^");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL tab_url = embedded_test_server()->GetURL("a.com", kAdBlockTestPage);
   GURL direct_resource_url =
@@ -1086,6 +1086,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   GURL safe_resource_url = embedded_test_server()->GetURL("a.com", "/logo.png");
   GURL bad_resource_url = embedded_test_server()->GetURL(
       "cname-cloak-endpoint.tracking.com", "/logo.png");
+  GURL excepted_resource_url =
+      embedded_test_server()->GetURL("a.com", "/logo.png?unblock");
 
   auto inner_resolver = std::make_unique<net::MockHostResolver>();
 
@@ -1152,6 +1154,17 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                             bad_resource_url.spec().c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 3ULL);
   ASSERT_EQ(4ULL, inner_resolver->num_resolve());
+
+  // The original URL only matches an exception.
+  // The CNAME'd URL only matches a blocking rule.
+  // The resolver should be queried for this request, and the resource should
+  // not be blocked.
+  ASSERT_EQ(true, EvalJs(contents, base::StringPrintf(
+                                       "setExpectations(0, 1, 2, 2);"
+                                       "xhr('%s')",
+                                       excepted_resource_url.spec().c_str())));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 3ULL);
+  ASSERT_EQ(5ULL, inner_resolver->num_resolve());
 }
 
 class CnameUncloakingFlagDisabledTest : public AdBlockServiceTest {

@@ -198,6 +198,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #if BUILDFLAG(IS_MAC)
     &features::kUseChromiumUpdater,
 #endif
+    &features::kWebEnvironmentIntegrity,
     &features::kWebOTP,
     &history::kOrganicRepeatableQueries,
     &history::kSyncSegmentsData,

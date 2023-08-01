@@ -79,7 +79,7 @@ export const localeStrings = {
   adsPerHour5: 'Max 5 per hour',
   adsPerHour10: 'Max 10 per hour',
   adsTitle: 'Manage Brave Ads',
-  adsCurrentEarnings: 'Estimated earnings this month',
+  adsCurrentEarnings: 'Earnings so far this month',
   adsPaymentDate: 'Next earnings payout date',
   adsTotalReceivedLabel: 'Total ads received this month',
   openAdsHistory: '30-day Ads History',
@@ -100,5 +100,10 @@ export const localeStrings = {
   rewardsVBATNoticeText1: 'On $1, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.',
   rewardsVBATNoticeTitle2: 'You still have time to contribute your vBAT to your favorite creators',
   rewardsVBATNoticeText2: 'On $1, we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region ($2) to withdraw your earnings. Until then, you can still contribute to your favorite creators.',
-  rewardsConnectAccount: 'Connect account'
+  rewardsConnectAccount: 'Connect account',
+
+  rewardsPaymentCompleted: 'The payout for $1 rewards has completed.',
+  rewardsPaymentPending: 'The payout for $1 rewards will begin processing by $2',
+  rewardsPaymentProcessing: 'The payout for $1 rewards is in progress.',
+  rewardsPaymentSupport: 'Support'
 }

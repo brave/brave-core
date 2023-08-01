@@ -225,7 +225,7 @@ if (is_mac) {
 '''
 
 [dependencies.adblock]
-version = "0.7.9"
+version = "0.7.17"
 default-features = false
 features = ["full-regex-handling", "debug-info", "css-validation"]
 gn-variables-lib = '''

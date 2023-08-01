@@ -245,6 +245,11 @@ class BraveWalletService : public KeyedService,
                              const absl::optional<std::string>& cursor,
                              GetSimpleHashSpamNFTsCallback callback) override;
 
+  void ConvertFEVMToFVMAddress(
+      bool is_mainnet,
+      const std::vector<std::string>& fevm_addresses,
+      ConvertFEVMToFVMAddressCallback callback) override;
+
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
 

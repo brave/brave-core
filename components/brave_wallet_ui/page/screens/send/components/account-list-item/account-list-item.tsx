@@ -18,10 +18,11 @@ interface Props {
   account: BraveWallet.AccountInfo
   onClick: (account: BraveWallet.AccountInfo) => void
   isSelected: boolean
+  accountAlias: string | undefined
 }
 
 export const AccountListItem = (props: Props) => {
-  const { onClick, account, isSelected } = props
+  const { onClick, account, isSelected, accountAlias } = props
 
   // hooks
   const orb = useAccountOrb(account)
@@ -32,6 +33,9 @@ export const AccountListItem = (props: Props) => {
       <Column horizontalAlign='flex-start' verticalAlign='center'>
         <Text textColor='text03' textSize='12px' isBold={false}>{account.name}</Text>
         <Text textColor='text01' textSize='12px' isBold={false}>{account.address}</Text>
+        {(accountAlias && accountAlias !== '') &&
+          <Text textColor='text02' textSize='12px' isBold={false}>{accountAlias}</Text>
+        }
       </Column>
     </Button>
   )

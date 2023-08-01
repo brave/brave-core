@@ -138,6 +138,7 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"rewardsPaymentCompleted", IDS_REWARDS_PAYMENT_COMPLETED},
     {"rewardsPaymentPending", IDS_REWARDS_PAYMENT_PENDING},
     {"rewardsPaymentProcessing", IDS_REWARDS_PAYMENT_PROCESSING},
+    {"rewardsPaymentSupport", IDS_REWARDS_PAYMENT_SUPPORT},
     {"rewardsSettings", IDS_REWARDS_PANEL_REWARDS_SETTINGS},
     {"rewardsVBATNoticeText1", IDS_REWARDS_VBAT_NOTICE_TEXT1},
     {"rewardsVBATNoticeText2", IDS_REWARDS_VBAT_NOTICE_TEXT2},

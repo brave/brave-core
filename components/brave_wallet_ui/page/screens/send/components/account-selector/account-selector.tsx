@@ -16,6 +16,7 @@ import CaratDownIcon from '../../assets/carat-down-icon.svg'
 // Hooks
 import { useOnClickOutside } from '../../../../../common/hooks/useOnClickOutside'
 import {
+  useGetFVMAddressQuery,
   useGetSelectedAccountIdQuery,
   useGetSelectedChainQuery //
 } from '../../../../../common/slices/api.slice'
@@ -26,6 +27,8 @@ import { AccountListItem } from '../account-list-item/account-list-item'
 // Styled Components
 import { ButtonIcon, ArrowIcon, DropDown, SelectorButton } from './account-selector.style'
 import { BraveWallet } from '../../../../../constants/types'
+
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 interface Props {
   asset: BraveWallet.BlockchainToken | undefined
@@ -75,15 +78,38 @@ export const AccountSelector = (props: Props) => {
       return []
     }
 
+    if (selectedAccountId.coin === BraveWallet.CoinType.FIL) {
+      const filecoinAccounts = accounts.filter((account) =>
+        (account.accountId.keyringId === selectedAccountId?.keyringId))
+      const fevmAccounts = accounts.filter((account) =>
+        (account.accountId.coin === BraveWallet.CoinType.ETH))
+      return filecoinAccounts.concat(fevmAccounts)
+    }
+
     // TODO(apaymyshev): for bitcoin should allow sending to my account, but
     // from different keyring (i.e. segwit -> taproot)
     // https://github.com/brave/brave-browser/issues/29262
     return accounts.filter(
       (account) =>
-        account.accountId.coin === selectedNetwork.coin &&
         account.accountId.keyringId === selectedAccountId.keyringId ||
         (asset?.contractAddress === "" && isFVMAccount(account)))
   }, [accounts, selectedNetwork, selectedAccountId, asset])
+
+  const evmAddressesforFVMTranslation = React.useMemo(() =>
+  accountsByNetwork
+    .filter(account => account.accountId.coin === BraveWallet.CoinType.ETH)
+    .map(account => account.accountId.address),
+  [accountsByNetwork])
+
+  const { data: fvmTranslatedAddresses } = useGetFVMAddressQuery(
+    selectedNetwork && evmAddressesforFVMTranslation.length
+    ? {
+        coin: selectedNetwork.coin,
+        addresses: evmAddressesforFVMTranslation,
+        isMainNet: selectedNetwork.chainId === BraveWallet.FILECOIN_MAINNET
+      }
+    : skipToken
+  )
 
   // Hooks
   useOnClickOutside(
@@ -109,6 +135,7 @@ export const AccountSelector = (props: Props) => {
               isSelected={
                 account.accountId.uniqueKey === selectedAccountId?.uniqueKey
               }
+              accountAlias={fvmTranslatedAddresses?.[account.accountId.address]}
             />
           )}
         </DropDown>

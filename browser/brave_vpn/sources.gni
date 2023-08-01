@@ -21,6 +21,10 @@ if (enable_brave_vpn) {
       "//brave/browser/brave_vpn/dns/brave_vpn_dns_observer_factory_win.h",
       "//brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service_win.cc",
       "//brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service_win.h",
+      "//brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_factory_win.cc",
+      "//brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_factory_win.h",
+      "//brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_service_win.cc",
+      "//brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_service_win.h",
     ]
 
     brave_browser_brave_vpn_deps += [
@@ -28,8 +32,10 @@ if (enable_brave_vpn) {
       "//brave/browser:browser_process",
       "//brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper:common",
       "//brave/components/brave_vpn/common/win",
+      "//brave/components/brave_vpn/common/wireguard/win",
       "//chrome/common:constants",
       "//net",
+      "//third_party/abseil-cpp:absl",
     ]
   }
   brave_browser_brave_vpn_deps += [

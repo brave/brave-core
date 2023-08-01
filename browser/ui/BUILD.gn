@@ -359,6 +359,8 @@ source_set("ui") {
         sources += [
           "views/brave_vpn/brave_vpn_dns_settings_notificiation_dialog_view.cc",
           "views/brave_vpn/brave_vpn_dns_settings_notificiation_dialog_view.h",
+          "views/brave_vpn/brave_vpn_fallback_dialog_view.cc",
+          "views/brave_vpn/brave_vpn_fallback_dialog_view.h",
           "webui/settings/brave_settings_secure_dns_handler.cc",
           "webui/settings/brave_settings_secure_dns_handler.h",
         ]

@@ -5,15 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 
-#include <utility>
-
-#include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
-#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -44,21 +38,6 @@ bool UserHasOptedInToNotificationAds() {
   return UserHasJoinedBraveRewards() &&
          AdsClientHelper::GetInstance()->GetBooleanPref(
              prefs::kOptedInToNotificationAds);
-}
-
-void ResetRewards(ResetRewardsCallback callback) {
-  RemoveAllTransactions(base::BindOnce(
-      [](ResetRewardsCallback callback, const bool success) {
-        if (!success) {
-          BLOG(0, "Failed to remove transactions");
-          return std::move(callback).Run(/*success*/ false);
-        }
-
-        ResetConfirmations();
-
-        std::move(callback).Run(/*success*/ true);
-      },
-      std::move(callback)));
 }
 
 }  // namespace brave_ads
