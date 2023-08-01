@@ -33,7 +33,9 @@ impl From<&skus::errors::InternalError> for ffi::SkusResult {
             skus::errors::InternalError::OrderLocationMismatch => {
                 ffi::SkusResult::OrderLocationMismatch
             }
-            skus::errors::InternalError::OrderMisconfiguration => ffi::SkusResult::OrderMisconfiguration,
+            skus::errors::InternalError::OrderMisconfiguration => {
+                ffi::SkusResult::OrderMisconfiguration
+            }
             skus::errors::InternalError::ItemCredentialsMissing => {
                 ffi::SkusResult::ItemCredentialsMissing
             }
@@ -110,7 +112,9 @@ impl From<ffi::SkusResult> for skus::errors::InternalError {
             ffi::SkusResult::OrderLocationMismatch => {
                 skus::errors::InternalError::OrderLocationMismatch
             }
-            ffi::SkusResult::OrderMisconfiguration => skus::errors::InternalError::OrderMisconfiguration,
+            ffi::SkusResult::OrderMisconfiguration => {
+                skus::errors::InternalError::OrderMisconfiguration
+            }
             ffi::SkusResult::ItemCredentialsMissing => {
                 skus::errors::InternalError::ItemCredentialsMissing
             }
