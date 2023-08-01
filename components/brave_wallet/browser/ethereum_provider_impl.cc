@@ -638,10 +638,18 @@ void EthereumProviderImpl::SignMessageInternal(
     bool is_eip712,
     RequestCallback callback,
     base::Value id) {
+  mojom::SignDataUnionPtr sign_data = nullptr;
+  if (is_eip712) {
+    sign_data =
+        mojom::SignDataUnion::NewEthSignTypedData(mojom::EthSignTypedData::New(
+            message, domain, domain_hash, primary_hash));
+  } else {
+    sign_data = mojom::SignDataUnion::NewEthStandardSignData(
+        mojom::EthStandardSignData::New(message));
+  }
   auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), -1, account_id.Clone(), domain,
-      message, is_eip712, domain_hash, primary_hash, absl::nullopt,
-      mojom::CoinType::ETH,
+      MakeOriginInfo(delegate_->GetOrigin()), -1, account_id.Clone(),
+      std::move(sign_data), mojom::CoinType::ETH,
       json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH,
                                         delegate_->GetOrigin()));
 

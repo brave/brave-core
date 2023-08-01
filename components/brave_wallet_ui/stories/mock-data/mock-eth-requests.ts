@@ -12,14 +12,17 @@ export const mockSignMessageRequest = {
   originInfo: mockOriginInfo,
   id: -1,
   accountId: mockEthAccount.accountId,
-  message: '',
-  isEip712: false,
-  domainHash: '',
-  domain: '',
-  primaryHash: '',
+  signData:
+    {
+    ethStandardSignData: {
+      message: ''
+    },
+    ethSignTypedData: undefined,
+    ethSiweData: undefined,
+    solanaSignData: undefined
+  },
   coin: BraveWallet.CoinType.ETH,
-  chainId: BraveWallet.MAINNET_CHAIN_ID,
-  messageBytes: undefined
+  chainId: BraveWallet.MAINNET_CHAIN_ID
 }
 
 export const mockAddChainRequest = {
