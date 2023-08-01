@@ -7,6 +7,7 @@ use bls_signatures::Serialize;
 pub mod message;
 pub mod signature;
 use crate::signature::transaction_sign;
+use std::str::FromStr;
 
 #[allow(unsafe_op_in_unsafe_fn)]
 #[cxx::bridge(namespace = filecoin)]
@@ -14,6 +15,7 @@ mod ffi {
     extern "Rust" {
         fn bls_private_key_to_public_key(private_key: &[u8]) -> [u8; 48];
         fn transaction_sign(is_mainnet: bool, transaction: &str, private_key: &[u8]) -> String;
+        fn is_valid_cid(cid: &str) -> bool;
     }
 }
 
@@ -30,4 +32,8 @@ fn bls_private_key_to_public_key(private_key: &[u8]) -> [u8; 48] {
             .expect("preallocated");
     }
     return public_key;
+}
+
+pub fn is_valid_cid(cid_str: &str) -> bool {
+  return cid::Cid::from_str(cid_str).is_ok();
 }
