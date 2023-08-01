@@ -394,8 +394,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
             List<NetworkInfo> networkInfos, WebUiActivityType type) {
         List<NetworkInfo> networkInfosFiltered = new ArrayList<>();
         for (NetworkInfo networkInfo : networkInfos) {
-            if (type == WebUiActivityType.BUY
-                    && Utils.allowBuy(networkInfo.chainId)) {
+            if (type == WebUiActivityType.BUY && Utils.allowBuy(networkInfo.chainId)) {
                 networkInfosFiltered.add(networkInfo);
             }
         }

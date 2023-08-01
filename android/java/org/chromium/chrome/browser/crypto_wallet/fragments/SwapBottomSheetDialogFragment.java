@@ -91,8 +91,8 @@ public class SwapBottomSheetDialogFragment
         return view;
     }
 
-    private void setDefaultNetwork(@NonNull final Callback callback,
-            @Nullable final WebUiActivityType webUiActivityType) {
+    private void setDefaultNetwork(
+            @NonNull final Callback callback, @Nullable final WebUiActivityType webUiActivityType) {
         if (!JavaUtils.anyNull(mWalletModel, mNetworkInfo)) {
             // TODO(apaymyshev): buy/send/swap should be decoupled from panel selected network.
             mWalletModel.getNetworkModel().setDefaultNetwork(

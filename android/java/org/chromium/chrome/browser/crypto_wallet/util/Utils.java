@@ -50,7 +50,6 @@ import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import org.chromium.chrome.browser.crypto_wallet.web_ui.WebUiActivityType;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -88,6 +87,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
+import org.chromium.chrome.browser.crypto_wallet.web_ui.WebUiActivityType;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.mojo.bindings.Callbacks;
@@ -235,8 +235,8 @@ public class Utils {
         if (focusedView != null) imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
     }
 
-    public static void openBuySendSwapActivity(@NonNull final Activity activity,
-            @NonNull final WebUiActivityType webUiActivityType) {
+    public static void openBuySendSwapActivity(
+            @NonNull final Activity activity, @NonNull final WebUiActivityType webUiActivityType) {
         String webWalletUrl;
         switch (webUiActivityType) {
             case SWAP:

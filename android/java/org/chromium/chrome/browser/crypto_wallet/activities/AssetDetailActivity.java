@@ -183,11 +183,11 @@ public class AssetDetailActivity
             DisplayMetrics displayMetrics =
                     ContextUtils.getApplicationContext().getResources().getDisplayMetrics();
             final int sizePx = dpToPx(displayMetrics, ASSET_LOGO_SIZE_DP);
-            ImageLoader.downloadImage(mAssetLogo, Glide.with(this), true,
-                    0, new CustomTarget<>(sizePx, sizePx) {
+            ImageLoader.downloadImage(
+                    mAssetLogo, Glide.with(this), true, 0, new CustomTarget<>(sizePx, sizePx) {
                         @Override
                         public void onResourceReady(@NonNull Drawable resource,
-                                                    @Nullable Transition<? super Drawable> transition) {
+                                @Nullable Transition<? super Drawable> transition) {
                             assetTitleText.setCompoundDrawablesRelativeWithIntrinsicBounds(
                                     resource, null, null, null);
                         }
@@ -220,9 +220,11 @@ public class AssetDetailActivity
             mBtnSwap.setVisibility(View.GONE);
             mBtnBridgeToAurora = findViewById(R.id.btn_aurora_bridge);
             mBtnBridgeToAurora.setVisibility(View.VISIBLE);
-            SpannableString rainBowLearnMore = Utils.createSpanForSurroundedPhrase(
-                    this, R.string.brave_wallet_rainbow_bridge_learn_more, (v) -> TabUtils.openLinkWithFocus(
-                            this, WalletConstants.URL_RAINBOW_BRIDGE_OVERVIEW));
+            SpannableString rainBowLearnMore = Utils.createSpanForSurroundedPhrase(this,
+                    R.string.brave_wallet_rainbow_bridge_learn_more,
+                    (v)
+                            -> TabUtils.openLinkWithFocus(
+                                    this, WalletConstants.URL_RAINBOW_BRIDGE_OVERVIEW));
             rainBowLearnMore.setSpan(
                     new BulletSpan(
                             15, getResources().getColor(R.color.brave_wallet_day_night_text_color)),
@@ -286,14 +288,13 @@ public class AssetDetailActivity
             });
         }
         if (!mIsMarketCoin) {
-            mBtnSwap.setOnClickListener(v
-                    -> Utils.openBuySendSwapActivity(
-                            this, WebUiActivityType.SWAP));
+            mBtnSwap.setOnClickListener(
+                    v -> Utils.openBuySendSwapActivity(this, WebUiActivityType.SWAP));
             mBtnBuy.setOnClickListener(
                     v -> Utils.openBuySendSwapActivity(this, WebUiActivityType.BUY));
 
-            btnSend.setOnClickListener(v
-                    -> Utils.openBuySendSwapActivity(this, WebUiActivityType.SEND));
+            btnSend.setOnClickListener(
+                    v -> Utils.openBuySendSwapActivity(this, WebUiActivityType.SEND));
         }
         adjustButtonsVisibilities();
 
@@ -436,8 +437,7 @@ public class AssetDetailActivity
         }
 
         TokenUtils.getExactUserAsset(getBraveWalletService(), mAssetNetwork, mAssetNetwork.coin,
-                mAssetSymbol, mAssetName, mAssetId, mContractAddress, mAssetDecimals,
-                token -> {
+                mAssetSymbol, mAssetName, mAssetId, mContractAddress, mAssetDecimals, token -> {
                     assert token != null;
                     mAsset = token;
                     callback.run();
