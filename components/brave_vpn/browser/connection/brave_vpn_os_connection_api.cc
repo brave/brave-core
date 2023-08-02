@@ -37,7 +37,7 @@ std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
     PrefService* local_prefs,
     version_info::Channel channel) {
 #if BUILDFLAG(IS_WIN)
-  if (base::FeatureList::IsEnabled(features::kBraveVPNUseWireguardService)) {
+  if (IsBraveVPNWireguardEnabled(local_prefs)) {
     return CreateBraveVPNWireguardConnectionAPI(url_loader_factory, local_prefs,
                                                 channel);
   }

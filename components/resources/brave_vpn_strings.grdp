@@ -267,7 +267,7 @@ However, we noticed this helper service is not running - and we don't want to le
 Looks like there are some issues with the WireGuard connection. Want to enable IKEv2 fallback for a reliable VPN? Simply restart your browser.
 
 Need help with compatibility or configuration? Reach out to our friendly support team.
-You can always revert back to WireGuard on brave://flags/#brave-vpn-wireguard.
+You can always revert back to WireGuard on brave://settings/system.
 
 Let's get you connected!
 
