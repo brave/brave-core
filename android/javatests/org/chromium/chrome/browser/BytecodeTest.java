@@ -171,6 +171,8 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/password_manager/settings/"
+                + "PasswordAccessReauthenticationHelper"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter"));
         Assert.assertTrue(classExists(
@@ -873,6 +875,12 @@ public class BytecodeTest {
                         "mSyncPaymentsIntegration"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/sync/settings/ManageSyncSettings", "mSyncEverything"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/password_manager/settings/"
+                        + "PasswordAccessReauthenticationHelper",
+                "mCallback"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/password_manager/settings/"
+                        + "PasswordAccessReauthenticationHelper",
+                "mFragmentManager"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator",
                         "mMediator"));

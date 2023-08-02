@@ -9,12 +9,13 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.device_reauth.DeviceAuthRequester;
-import org.chromium.chrome.browser.device_reauth.ReauthenticatorBridge;
+import org.chromium.chrome.browser.password_manager.settings.ReauthenticationManager;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.brave_tricks.checkbox_to_switch.ChromeBaseCheckBoxPreference;
 import org.chromium.ui.widget.Toast;
@@ -23,6 +24,8 @@ import org.chromium.ui.widget.Toast;
  * See org.brave.bytecode.BraveManageSyncSettingsClassAdapter
  */
 public class BraveManageSyncSettings extends ManageSyncSettings {
+    private static final String TAG = "BMSS";
+
     private static final String PREF_ADVANCED_CATEGORY = "advanced_category";
 
     private Preference mGoogleActivityControls;
@@ -30,10 +33,10 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
 
     private ChromeBaseCheckBoxPreference mSyncPaymentsIntegration;
 
-    @Nullable
-    private ReauthenticatorBridge mReauthenticatorBridge;
     private ChromeSwitchPreference mPrefSyncPasswords;
     private ChromeSwitchPreference mSyncEverything;
+
+    BravePasswordAccessReauthenticationHelper mReauthenticationHelper;
 
     @VisibleForTesting
     @Override
@@ -64,6 +67,8 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
             syncAutofill.setTitle(R.string.brave_sync_autofill);
         }
 
+        assert mSyncEverything != null : "Something has changed in the upstream!";
+
         getPreferenceScreen().removePreference(mGoogleActivityControls);
         getPreferenceScreen().removePreference(mSyncEncryption);
 
@@ -71,9 +76,8 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
 
         mSyncPaymentsIntegration.setVisible(false);
 
-        mReauthenticatorBridge = ReauthenticatorBridge.create(
-                DeviceAuthRequester.PAYMENT_METHODS_REAUTH_IN_SETTINGS);
         mPrefSyncPasswords = findPreference(PREF_SYNC_PASSWORDS);
+        assert mPrefSyncPasswords != null : "Something has changed in the upstream!";
 
         overrideWithAuthConfirmationSyncPasswords();
         overrideWithAuthConfirmationSyncEverything();
@@ -99,20 +103,46 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
 
         control.setOnPreferenceChangeListener((Preference preference, Object newValue) -> {
             if ((Boolean) newValue) {
-                if (mReauthenticatorBridge.canUseAuthenticationWithBiometricOrScreenLock()) {
-                    mReauthenticatorBridge.reauthenticate(success -> {
-                        if (success) {
-                            origSyncListner.onPreferenceChange(preference, true);
-                            control.setChecked(true);
-                        }
-                    }, /*useLastValidAuth=*/false);
-                } else {
+                if (!ReauthenticationManager.isScreenLockSetUp(
+                            ContextUtils.getApplicationContext())) {
                     showScreenLockToast();
+                } else {
+                    try {
+                        FragmentManager fragmentManager = this.getParentFragmentManager();
+
+                        if (mReauthenticationHelper == null) {
+                            mReauthenticationHelper = new BravePasswordAccessReauthenticationHelper(
+                                    ContextUtils.getApplicationContext(), fragmentManager);
+                        }
+
+                        mReauthenticationHelper.reauthenticateWithDescription(
+                                R.string.enabling_password_sync_auth_message, success -> {
+                                    if (success) {
+                                        origSyncListner.onPreferenceChange(preference, true);
+                                        control.setChecked(true);
+                                    }
+                                });
+                    } catch (java.lang.IllegalStateException ex) {
+                        Log.e(TAG, "BraveManageSyncSettings.OnPreferenceChange ex=", ex);
+                    }
                 }
                 return false;
             } else {
                 return origSyncListner.onPreferenceChange(preference, newValue);
             }
         });
+    }
+
+    // See CredentialEditCoordinator.onResumeFragment
+    public void onResumeFragment() {
+        if (mReauthenticationHelper != null) {
+            mReauthenticationHelper.onReauthenticationMaybeHappened();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        onResumeFragment();
     }
 }
