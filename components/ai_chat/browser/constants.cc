@@ -13,6 +13,14 @@ constexpr char kHumanPrompt[] = "Human:";
 constexpr char kHumanPromptPlaceholder[] = "\nH: ";
 constexpr char kAIPrompt[] = "Assistant:";
 constexpr char kAIPromptPlaceholder[] = "\n\nA: ";
+
+constexpr char kLlama2Bos[] = "<s>";
+constexpr char kLlama2Eos[] = "</s>";
+constexpr char kLlama2BIns[] = "[INST]";
+constexpr char kLlama2EIns[] = "[/INST]";
+constexpr char kLlama2BSys[] = "<<SYS>>\n";
+constexpr char kLlama2ESys[] = "\n<</SYS>>\n\n";
+
 constexpr char kAIChatCompletionPath[] = "v1/complete";
 
 base::span<const webui::LocalizedString> GetLocalizedStrings() {
@@ -40,6 +48,15 @@ std::string GetHumanPromptSegment() {
 
 std::string GetAssistantPromptSegment() {
   return base::StrCat({"\n\n", kAIPrompt});
+}
+
+bool UsesLlama2PromptTemplate(const std::string& model) {
+  if (model.find("llama-2") != std::string::npos &&
+      model.find("chat") != std::string::npos) {
+    return true;
+  }
+
+  return false;
 }
 
 }  // namespace ai_chat

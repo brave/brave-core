@@ -124,13 +124,16 @@ void AIChatAPI::QueryPrompt(
         data_completed_callback,
     api_request_helper::APIRequestHelper::DataReceivedCallback
         data_received_callback) {
-  // All queries must have the "Human" and "AI" prompt markers. We do not
-  // prepend / append them here since callers may want to put them in
-  // custom positions.
-  DCHECK(base::MatchPattern(prompt,
-                            base::StrCat({"*", ai_chat::kHumanPrompt, "*"})));
-  DCHECK(
-      base::MatchPattern(prompt, base::StrCat({"*", ai_chat::kAIPrompt, "*"})));
+  if (!ai_chat::UsesLlama2PromptTemplate(
+          ai_chat::features::kAIModelName.Get())) {
+    // All queries must have the "Human" and "AI" prompt markers. We do not
+    // prepend / append them here since callers may want to put them in
+    // custom positions.
+    DCHECK(base::MatchPattern(prompt,
+                              base::StrCat({"*", ai_chat::kHumanPrompt, "*"})));
+    DCHECK(base::MatchPattern(prompt,
+                              base::StrCat({"*", ai_chat::kAIPrompt, "*"})));
+  }
 
   const GURL api_base_url = GetEndpointBaseUrl();
 

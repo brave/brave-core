@@ -17,6 +17,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/ai_chat/browser/constants.h"
 #include "brave/components/ai_chat/browser/page_content_fetcher.h"
+#include "brave/components/ai_chat/common/features.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/common/pref_names.h"
 #include "components/favicon/content/content_favicon_driver.h"
@@ -104,7 +105,8 @@ void AIChatTabHelper::AddToConversationHistory(const ConversationTurn& turn) {
 }
 
 void AIChatTabHelper::UpdateOrCreateLastAssistantEntry(
-    const std::string& updated_text) {
+    std::string updated_text) {
+  updated_text = base::TrimWhitespaceASCII(updated_text, base::TRIM_LEADING);
   if (chat_history_.empty() ||
       chat_history_.back().character_type != CharacterType::ASSISTANT) {
     AddToConversationHistory({CharacterType::ASSISTANT,
@@ -258,21 +260,30 @@ void AIChatTabHelper::GenerateQuestions() {
   has_generated_questions_ = true;
   OnSuggestedQuestionsChanged();
 
-  std::string prompt = base::StrCat(
-      {GetHumanPromptSegment(),
-       base::ReplaceStringPlaceholders(
-           l10n_util::GetStringUTF8(is_video_
-                                        ? IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT
-                                        : IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT),
-           {article_text_}, nullptr),
-       "\n\n", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PROMPT_SEGMENT),
-       GetAssistantPromptSegment(), " <response>"});
+  std::string prompt;
+  std::vector<std::string> stop_sequences;
+  if (UsesLlama2PromptTemplate(ai_chat::features::kAIModelName.Get())) {
+    prompt = BuildLlama2GenerateQuestionsPrompt(is_video_, article_text_);
+    stop_sequences.push_back(ai_chat::kLlama2Eos);
+    stop_sequences.push_back("</ul>");
+  } else {
+    prompt = base::StrCat(
+        {GetHumanPromptSegment(),
+         base::ReplaceStringPlaceholders(
+             l10n_util::GetStringUTF8(is_video_
+                                          ? IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT
+                                          : IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT),
+             {article_text_}, nullptr),
+         "\n\n", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PROMPT_SEGMENT),
+         GetAssistantPromptSegment(), " <response>"});
+    stop_sequences.push_back("</response>");
+  }
   // Make API request for questions.
   // Do not call SetRequestInProgress, this progress
   // does not need to be shown to the UI.
   auto navigation_id_for_query = current_navigation_id_;
   ai_chat_api_->QueryPrompt(
-      prompt, {"</response>"},
+      prompt, stop_sequences,
       base::BindOnce(&AIChatTabHelper::OnAPISuggestedQuestionsResponse,
                      weak_ptr_factory_.GetWeakPtr(),
                      std::move(navigation_id_for_query)));
@@ -309,10 +320,47 @@ void AIChatTabHelper::OnAPISuggestedQuestionsResponse(
 
   DVLOG(2) << "Received " << (success ? "success" : "failed")
            << " suggested questions response: " << completion;
-  // Parse questions
-  auto questions = base::SplitString(*completion, "|",
-                                     base::WhitespaceHandling::TRIM_WHITESPACE,
-                                     base::SplitResult::SPLIT_WANT_NONEMPTY);
+
+  std::vector<std::string> questions;
+  if (UsesLlama2PromptTemplate(ai_chat::features::kAIModelName.Get())) {
+    // Llama 2 results look something like this:
+    // Can ChatGPT actually summarize a seven-hour video in under a minute?</li>
+    // <li>What are the limitations of ChatGPT's browsing capabilities, and how
+    // does it affect its ability to provide accurate information?</li> <li>Can
+    // ChatGPT's tonewood research be applied to other areas of scientific
+    // inquiry beyond guitar making?</li>  These questions capture interesting
+    // aspects of the video, such as the AI's ability to summarize long content,
+    // its limitations, and its potential applications beyond the specific use
+    // case presented in the video.
+
+    // Split out the questions using </li>
+    questions = base::SplitStringUsingSubstr(
+        *completion, "</li>", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+
+    // Remove the last entry in questions if it doesn't contain an <li> tag
+    // which means its not an actually a question
+    if (questions.size() > 1) {
+      if (questions.back().find("<li>") == std::string::npos) {
+        questions.pop_back();
+      }
+    }
+
+    // Remove leading <li> from each question
+    for (auto& question : questions) {
+      auto parts = base::SplitStringUsingSubstr(
+          question, "<li>", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+      if (!parts.empty()) {
+        question = parts.back();  // If there's an <li>, parts will contain an
+                                  // empty string and then the question. We take
+                                  // the last element.
+      }
+    }
+  } else {
+    questions = base::SplitString(*completion, "|",
+                                  base::WhitespaceHandling::TRIM_WHITESPACE,
+                                  base::SplitResult::SPLIT_WANT_NONEMPTY);
+  }
+
   suggested_questions_.insert(suggested_questions_.end(), questions.begin(),
                               questions.end());
   // Notify observers
@@ -320,36 +368,8 @@ void AIChatTabHelper::OnAPISuggestedQuestionsResponse(
   DVLOG(2) << "Got questions:" << base::JoinString(suggested_questions_, "\n");
 }
 
-void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
-    const ConversationTurn& turn) {
-  // This function should not be presented in the UI if the user has not
-  // opted-in yet.
-  DCHECK(HasUserOptedIn());
-  DCHECK(is_conversation_active_);
-
-  DCHECK(turn.character_type == CharacterType::HUMAN);
-
-  bool is_suggested_question = false;
-
-  // If it's a suggested question, remove it
-  auto found_question_iter =
-      base::ranges::find(suggested_questions_, turn.text);
-  if (found_question_iter != suggested_questions_.end()) {
-    is_suggested_question = true;
-    suggested_questions_.erase(found_question_iter);
-    OnSuggestedQuestionsChanged();
-  }
-
-  std::string question_part;
-  // TODO(petemill): Tokenize the summary question so that we
-  // don't have to do this weird substitution.
-  if (turn.text == "Summarize this video") {
-    question_part =
-        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO);
-  } else {
-    question_part = turn.text;
-  }
-
+std::string AIChatTabHelper::BuildClaudePrompt(const std::string& question_part,
+                                               bool is_suggested_question) {
   auto prompt_segment_article =
       article_text_.empty()
           ? ""
@@ -375,6 +395,226 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
            l10n_util::GetStringUTF8(IDS_AI_CHAT_ASSISTANT_PROMPT_SEGMENT),
            {prompt_segment_history, question_part}, nullptr),
        GetAssistantPromptSegment(), " <response>\n"});
+
+  return prompt;
+}
+
+std::string AIChatTabHelper::BuildLlama2Prompt(std::string user_message) {
+  // Always use a generic system message
+  std::string system_message =
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC);
+
+  auto conversation_history = GetConversationHistory();
+
+  // Get the raw first user message, which is in the chat history if this is
+  // the first sequence.
+  std::string raw_first_user_message;
+  if (conversation_history.size() > 0) {
+    raw_first_user_message = conversation_history[0].text;
+  } else {
+    raw_first_user_message = user_message;
+  }
+
+  // Build first_user_message, the first complete message sent to the AI model,
+  // which may or may not include injected contents such as article text.
+  std::string first_user_message;
+  if (!article_text_.empty()) {
+    std::string first_message_template;
+    if (is_video_) {
+      first_message_template =
+          l10n_util::GetStringUTF8(IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT_LLAMA2);
+    } else {
+      first_message_template =
+          l10n_util::GetStringUTF8(IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT_LLAMA2);
+    }
+
+    first_user_message = base::ReplaceStringPlaceholders(
+        first_message_template, {article_text_, raw_first_user_message},
+        nullptr);
+  } else {
+    // If there's no article or video context, just use the raw first user
+    // message.
+    first_user_message = raw_first_user_message;
+  }
+
+  // If there's no conversation history, then we just send a (partial)
+  // first sequence.
+  if (conversation_history.size() == 0) {
+    return BuildLlama2FirstSequence(system_message, first_user_message,
+                                    absl::nullopt, absl::nullopt);
+  }
+
+  // Use the first two messages to build the first sequence,
+  // which includes the system prompt.
+  std::string prompt =
+      BuildLlama2FirstSequence(system_message, first_user_message,
+                               conversation_history[1].text, absl::nullopt);
+
+  // Loop through the rest of the history two at a time building subsequent
+  // sequences.
+  for (size_t i = 2; i + 1 < conversation_history.size(); i += 2) {
+    const std::string& prev_user_message = conversation_history[i].text;
+    const std::string& assistant_message = conversation_history[i + 1].text;
+    prompt +=
+        BuildLlama2SubsequentSequence(prev_user_message, assistant_message);
+  }
+
+  // Build the final subsequent exchange using the current turn.
+  prompt += BuildLlama2SubsequentSequence(user_message, absl::nullopt);
+
+  // Trimming recommended by Meta
+  // https://huggingface.co/meta-llama/Llama-2-13b-chat#intended-use
+  prompt = base::TrimWhitespaceASCII(prompt, base::TRIM_ALL);
+  return prompt;
+}
+
+std::string AIChatTabHelper::BuildLlama2InstructionPrompt(
+    const std::string& instruction) {
+  return base::ReplaceStringPlaceholders(
+      R"($1 $2 $3 )", {ai_chat::kLlama2BIns, instruction, ai_chat::kLlama2EIns},
+      nullptr);
+}
+
+std::string AIChatTabHelper::BuildLlama2GenerateQuestionsPrompt(
+    bool is_video,
+    const std::string content) {
+  std::string content_template;
+  if (is_video) {
+    content_template =
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_GENERATE_QUESTIONS_VIDEO);
+  } else {
+    content_template =
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_GENERATE_QUESTIONS_ARTICLE);
+  }
+
+  const std::string& user_message =
+      base::ReplaceStringPlaceholders(content_template, {content}, nullptr);
+
+  return BuildLlama2FirstSequence(
+      l10n_util::GetStringUTF8(
+          IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERATE_QUESTIONS),
+      user_message, absl::nullopt,
+      l10n_util::GetStringUTF8(
+          IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERATE_QUESTIONS_RESPONSE_SEED));
+}
+
+std::string AIChatTabHelper::BuildLlama2FirstSequence(
+    const std::string& system_message,
+    const std::string& user_message,
+    absl::optional<std::string> assistant_response,
+    absl::optional<std::string> assistant_response_seed) {
+  // Generates a partial sequence if there is no assistant_response:
+
+  // <s> [INST] <<SYS>>
+  // You will be acting as an assistant named Leo created by the company Brave.
+  // Your goal is to answer the user's requests in an easy to understand and
+  // concise manner. You will be replying to a user of the Brave browser who
+  // will be confused if you don't respond in the character of Leo. Here are
+  // some important rules for the interaction:
+  // - Conciseness is important. Your responses should not exceed 6 sentences.
+  // - Always respond in a neutral tone.
+  // - Always stay in character, as Leo, an AI from Brave.
+  // <</SYS>>
+  //
+  // How's it going? [/INST]
+
+  // Or, if there is an assistant_response:
+
+  // <s> [INST] <<SYS>>
+  // You will be acting as an assistant named Leo created by the company Brave.
+  // Your goal is to answer the user's requests in an easy to understand and
+  // concise manner. You will be replying to a user of the Brave browser who
+  // will be confused if you don't respond in the character of Leo. Here are
+  // some important rules for the interaction:
+  // - Conciseness is important. Your responses should not exceed 6 sentences.
+  // - Always respond in a neutral tone.
+  // - Always stay in character, as Leo, an AI from Brave.
+  // <</SYS>>
+  //
+  // How's it going? [/INST] Hey there! I'm Leo, your AI assistant here to help
+  // you out. I'm here to answer any questions you have, so feel free to ask me
+  // anything! What's up?</s>
+
+  // Create the system prompt through the first user message.
+  std::string system_prompt =
+      base::StrCat({ai_chat::kLlama2BSys, system_message, ai_chat::kLlama2ESys,
+                    user_message});
+
+  // Wrap in [INST] [/INST] tags.
+  std::string instruction_prompt = BuildLlama2InstructionPrompt(system_prompt);
+
+  if (!assistant_response) {
+    // Prepend just <s> if there's no assistant_response ( it will be completed
+    // by the model).
+    if (assistant_response_seed) {
+      return base::StrCat(
+          {ai_chat::kLlama2Bos, instruction_prompt, *assistant_response_seed});
+    }
+    return base::StrCat({ai_chat::kLlama2Bos, instruction_prompt});
+  }
+
+  // Add assistant response and wrap in <s> </s> tags.
+  return base::StrCat({ai_chat::kLlama2Bos, instruction_prompt,
+                       *assistant_response, ai_chat::kLlama2Eos});
+}
+
+std::string AIChatTabHelper::BuildLlama2SubsequentSequence(
+    std::string user_message,
+    absl::optional<std::string> assistant_response) {
+  // Builds a prompt segment that looks like this:
+  // <s> [INST] Give me the first few numbers in the fibonacci sequence [/INST]
+
+  // or, if there's an assistant_response:
+
+  // <s> [INST] Give me the first few numbers in the fibonacci sequence [/INST]
+  // Hey there! Sure thing! The first few numbers in the Fibonacci sequence are:
+  // 1, 1, 2, 3, 5, 8, 13, and so on. </s>
+
+  user_message = BuildLlama2InstructionPrompt(user_message);
+  if (!assistant_response) {
+    return base::StrCat({ai_chat::kLlama2Bos, user_message});
+  }
+
+  return base::StrCat({ai_chat::kLlama2Bos, user_message, *assistant_response,
+                       ai_chat::kLlama2Eos});
+}
+
+void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
+    const ConversationTurn& turn) {
+  // This function should not be presented in the UI if the user has not
+  // opted-in yet.
+  DCHECK(HasUserOptedIn());
+  DCHECK(is_conversation_active_);
+
+  DCHECK(turn.character_type == CharacterType::HUMAN);
+
+  bool is_suggested_question = false;
+
+  // If it's a suggested question, remove it
+  auto found_question_iter =
+      base::ranges::find(suggested_questions_, turn.text);
+  if (found_question_iter != suggested_questions_.end()) {
+    is_suggested_question = true;
+    suggested_questions_.erase(found_question_iter);
+    OnSuggestedQuestionsChanged();
+  }
+
+  // TODO(petemill): Tokenize the summary question so that we
+  // don't have to do this weird substitution.
+  std::string question_part;
+  if (turn.text == "Summarize this video") {
+    question_part =
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO_BULLETS);
+  } else {
+    question_part = turn.text;
+  }
+
+  std::string prompt;
+  if (UsesLlama2PromptTemplate(ai_chat::features::kAIModelName.Get())) {
+    prompt = BuildLlama2Prompt(question_part);
+  } else {
+    prompt = BuildClaudePrompt(question_part, is_suggested_question);
+  }
 
   if (turn.visibility != ConversationTurnVisibility::HIDDEN) {
     AddToConversationHistory(turn);
@@ -436,9 +676,12 @@ void AIChatTabHelper::OnAPIStreamDataComplete(
     if (result.value_body().is_dict()) {
       if (const std::string* completion =
               result.value_body().GetDict().FindString("completion")) {
+        // Trimming necessary for Llama 2 which prepends responses with a " ".
+        const std::string& trimmed =
+            std::string(base::TrimWhitespaceASCII(*completion, base::TRIM_ALL));
         AddToConversationHistory(
             ConversationTurn{CharacterType::ASSISTANT,
-                             ConversationTurnVisibility::VISIBLE, *completion});
+                             ConversationTurnVisibility::VISIBLE, trimmed});
       }
     }
   }
