@@ -9,7 +9,7 @@ import { mockAccount } from '../common/constants/mocks'
 
 import {
   isHardwareAccount,
-  findAccountFromRegistry,
+  findAccountByAddress,
   getAccountTypeDescription
 } from './account-utils'
 
@@ -72,7 +72,7 @@ describe('Account Utils', () => {
     it.each(mockHardwareAccounts)(
       'should return true if accounts have deviceId and address matches',
       (account) => {
-        expect(isHardwareAccount(account)).toBe(true)
+        expect(isHardwareAccount(account.accountId)).toBe(true)
       }
     )
   })
@@ -81,7 +81,7 @@ describe('Account Utils', () => {
       'should return true if accounts have deviceId and address matches',
       (account) => {
         expect(
-          findAccountFromRegistry(account.address, mockAccountsRegistry)
+          findAccountByAddress(account.address, mockAccountsRegistry)
         ).toBe(account)
       }
     )

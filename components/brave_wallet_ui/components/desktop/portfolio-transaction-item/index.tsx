@@ -41,12 +41,15 @@ import {
 } from '../../../utils/tx-utils'
 import { findTokenBySymbol } from '../../../utils/asset-utils'
 import {
-  accountInfoEntityAdaptor,
   accountInfoEntityAdaptorInitialState
 } from '../../../common/slices/entities/account-info.entity'
 import { makeNetworkAsset } from '../../../options/asset-options'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
-import { getAddressLabelFromRegistry } from '../../../utils/account-utils'
+import {
+  getAddressLabel,
+  getAccountLabel,
+  findAccountByAddress
+} from '../../../utils/account-utils'
 import { openBlockExplorerURL } from '../../../utils/block-explorer-utils'
 import { makeAccountRoute } from '../../../utils/routes-utils'
 
@@ -61,9 +64,10 @@ import {
   walletApi
 } from '../../../common/slices/api.slice'
 import {
+  useAccountQuery,
   useGetCombinedTokensListQuery
 } from '../../../common/slices/api.slice.extra'
-import { useAddressOrb } from '../../../common/hooks/use-orb'
+import { useAccountOrb, useAddressOrb } from '../../../common/hooks/use-orb'
 
 // Styled Components
 import {
@@ -185,10 +189,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     isLoading: isLoadingAccountInfos
   } = useGetAccountInfosRegistryQuery(undefined)
 
-  const account =
-    accountInfosRegistry.entities[
-      accountInfoEntityAdaptor.selectIdByAddress(transaction.fromAddress)
-    ]
+  const { account } = useAccountQuery(transaction.fromAccountId)
 
   // memos & computed from queries
   const txToken = findTransactionToken(
@@ -196,17 +197,17 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     combinedTokensList
   )
 
-  const recipientLabel = getAddressLabelFromRegistry(
+  const recipientLabel = getAddressLabel(
     recipient,
     accountInfosRegistry
   )
 
-  const senderLabel = getAddressLabelFromRegistry(
-    transaction.fromAddress,
+  const senderLabel = getAccountLabel(
+    transaction.fromAccountId,
     accountInfosRegistry
   )
 
-  const approvalTargetLabel = getAddressLabelFromRegistry(
+  const approvalTargetLabel = getAddressLabel(
     approvalTarget,
     accountInfosRegistry
   )
@@ -231,6 +232,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       tx: transaction,
       sellToken,
       token: txToken,
+      txAccount: account,
       txNetwork
     })
     return normalized.format(6)
@@ -343,7 +345,6 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       dispatch(
         walletApi.endpoints.retryTransaction.initiate({
           coinType: txCoinType,
-          fromAddress: transaction.fromAddress,
           chainId: transaction.chainId,
           transactionId: transaction.id
         })
@@ -351,7 +352,6 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     },
     [
       txCoinType,
-      transaction.fromAddress,
       transaction.chainId,
       transaction.id
     ]
@@ -362,7 +362,6 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       dispatch(
         walletApi.endpoints.speedupTransaction.initiate({
           coinType: txCoinType,
-          fromAddress: transaction.fromAddress,
           chainId: transaction.chainId,
           transactionId: transaction.id
         })
@@ -370,7 +369,6 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     },
     [
       txCoinType,
-      transaction.fromAddress,
       transaction.chainId,
       transaction.id
     ]
@@ -381,7 +379,6 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       dispatch(
         walletApi.endpoints.cancelTransaction.initiate({
           coinType: txCoinType,
-          fromAddress: transaction.fromAddress,
           chainId: transaction.chainId,
           transactionId: transaction.id
         })
@@ -389,25 +386,24 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     },
     [
       txCoinType,
-      transaction.fromAddress,
       transaction.chainId,
       transaction.id
     ]
   )
 
-  const onSelectAccount = React.useCallback((account: BraveWallet.AccountInfo) => {
+  const onSelectAccount = React.useCallback((account?: BraveWallet.AccountInfo) => {
+    if (!account)
+      return
+
     history.push(makeAccountRoute(account, AccountPageTabs.AccountAssetsSub))
-  }, [history, account])
+  }, [history])
 
   const onAddressClick = React.useCallback((address?: string) => () => {
     if (!address) {
       return
     }
 
-    const account = accountInfosRegistry.entities[
-      accountInfoEntityAdaptor.selectIdByAddress(address)
-    ]
-
+    const account = findAccountByAddress(address, accountInfosRegistry)
     if (account !== undefined) {
       onSelectAccount(account)
       return
@@ -469,7 +465,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   )
 
   // memos
-  const fromOrb = useAddressOrb(transaction.fromAddress)
+  const fromOrb = useAccountOrb(account)
   const toOrb = useAddressOrb(recipient)
 
   const transactionIntentDescription = React.useMemo(() => {
@@ -486,12 +482,12 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                 ? getLocale('braveWalletTransactionApproveUnlimited')
                 : normalizedTransferredValue}{' '}
               <AddressOrAsset
-                onClick={onAssetClick(txSymbol, txToken?.contractAddress)}
+                onClick={() => onAssetClick(txSymbol, txToken?.contractAddress)}
               >
                 {txSymbol}
               </AddressOrAsset>{' '}
               -{' '}
-              <AddressOrAsset onClick={onAddressClick(approvalTarget)}>
+              <AddressOrAsset onClick={() => onAddressClick(approvalTarget)}>
                 {approvalTargetLabel}
               </AddressOrAsset>
             </DetailTextDark>
@@ -505,7 +501,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             <DetailTextDark>
               {sellAmount?.format(6)}{' '}
               <AddressOrAsset
-                onClick={onAssetClick(
+                onClick={() => onAssetClick(
                   sellToken?.symbol,
                   sellToken?.contractAddress
                 )}
@@ -517,7 +513,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             <DetailTextDark>
               {buyAmount?.format(6)}{' '}
               <AddressOrAsset
-                onClick={onAssetClick(
+                onClick={() => onAssetClick(
                   buyToken?.symbol,
                   buyToken?.contractAddress
                 )}
@@ -536,14 +532,14 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             <DetailTextDark>
               {normalizedTransferredValue}{' '}
               <AddressOrAsset
-                onClick={onAssetClick(txSymbol, txToken?.contractAddress)}
+                onClick={() => onAssetClick(txSymbol, txToken?.contractAddress)}
               >
                 {txSymbol}
               </AddressOrAsset>
             </DetailTextDark>
             <ArrowIcon />
             <DetailTextDark>
-              <AddressOrAsset onClick={onAddressClick(recipient)}>
+              <AddressOrAsset onClick={() => onAddressClick(recipient)}>
                 {recipientLabel}
               </AddressOrAsset>
             </DetailTextDark>
@@ -561,13 +557,13 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
         return (
           <DetailRow>
             <DetailTextDark>
-              <AddressOrAsset onClick={onAddressClick(transaction.fromAddress)}>
+              <AddressOrAsset onClick={() => onSelectAccount(account)}>
                 {senderLabel}
               </AddressOrAsset>
             </DetailTextDark>
             <ArrowIcon />
             <DetailTextDark>
-              <AddressOrAsset onClick={onAddressClick(recipient)}>
+              <AddressOrAsset onClick={() => onAddressClick(recipient)}>
                 {recipientLabel}
               </AddressOrAsset>
             </DetailTextDark>
@@ -610,7 +606,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             ).toLocaleUpperCase()}{' '}
           </strong>
           <AddressOrAsset
-            onClick={onAssetClick(txSymbol, txToken?.contractAddress)}
+            onClick={() => onAssetClick(txSymbol, txToken?.contractAddress)}
           >
             {txSymbol}
           </AddressOrAsset>
@@ -629,7 +625,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
             transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
           }
-          onClick={onAssetClick(txSymbol, txToken?.contractAddress)}
+          onClick={() => onAssetClick(txSymbol, txToken?.contractAddress)}
         >
           {txSymbol}
           {
@@ -789,7 +785,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
               ].includes(transaction.txStatus) && (
                 <>
                   <TransactionPopupItem
-                    onClick={onClickViewOnBlockExplorer(
+                    onClick={() => onClickViewOnBlockExplorer(
                       'tx',
                       transaction.txHash
                     )}

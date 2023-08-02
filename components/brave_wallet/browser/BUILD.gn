@@ -403,10 +403,12 @@ source_set("test_support") {
   deps = [
     ":browser",
     "//testing/gmock",
+    "//testing/gtest",
   ]
 
   public_deps = [
     "//base",
+    "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//components/value_store",
     "//components/value_store:test_support",

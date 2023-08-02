@@ -44,32 +44,11 @@ const defaultState: PanelState = {
       isEip1559: true
     }
   },
-  signMessageData: [{
-    originInfo: defaultOriginInfo,
-    id: -1,
-    address: '',
-    domain: '',
-    message: '',
-    isEip712: false,
-    domainHash: '',
-    primaryHash: '',
-    messageBytes: undefined,
-    coin: BraveWallet.CoinType.ETH,
-    chainId: ''
-  }],
+  signMessageData: [],
   signAllTransactionsRequests: [],
   signTransactionRequests: [],
-  getEncryptionPublicKeyRequest: {
-    requestId: '',
-    originInfo: defaultOriginInfo,
-    address: ''
-  },
-  decryptRequest: {
-    requestId: '',
-    originInfo: defaultOriginInfo,
-    address: '',
-    unsafeMessage: ''
-  },
+  getEncryptionPublicKeyRequest: undefined,
+  decryptRequest: undefined,
   switchChainRequest: {
     requestId: '',
     originInfo: defaultOriginInfo,

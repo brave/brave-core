@@ -15,6 +15,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -279,12 +280,16 @@ void EthereumProviderImpl::OnGetNetworkAndDefaultKeyringInfo(
     return;
   }
   tx_data_1559->base_data->sign_only = sign_only;
+  const auto account_id = FindAccountByAddress(from);
+  if (!account_id) {
+    return RejectInvalidParams(std::move(id), std::move(callback));
+  }
 
   const auto allowed_accounts = GetAllowedAccounts(false);
   if (!allowed_accounts) {
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
-  if (!CheckAccountAllowed(from, *allowed_accounts)) {
+  if (!CheckAccountAllowed(account_id, *allowed_accounts)) {
     return RejectAccountNotAuthed(std::move(id), std::move(callback));
   }
 
@@ -293,15 +298,15 @@ void EthereumProviderImpl::OnGetNetworkAndDefaultKeyringInfo(
     // Set chain_id to current chain_id.
     tx_data_1559->chain_id = chain->chain_id;
     tx_service_->AddUnapprovedTransaction(
-        mojom::TxDataUnion::NewEthTxData1559(std::move(tx_data_1559)), from,
-        origin, absl::nullopt,
+        mojom::TxDataUnion::NewEthTxData1559(std::move(tx_data_1559)),
+        account_id.Clone(), origin, absl::nullopt,
         base::BindOnce(&EthereumProviderImpl::OnAddUnapprovedTransactionAdapter,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        std::move(id)));
   } else {
     tx_service_->AddUnapprovedTransaction(
         mojom::TxDataUnion::NewEthTxData(std::move(tx_data_1559->base_data)),
-        from, origin, absl::nullopt,
+        account_id.Clone(), origin, absl::nullopt,
         base::BindOnce(&EthereumProviderImpl::OnAddUnapprovedTransactionAdapter,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        std::move(id)));
@@ -355,6 +360,11 @@ void EthereumProviderImpl::SignMessage(const std::string& address,
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
 
+  auto account_id = FindAccountByAddress(address);
+  if (!account_id) {
+    return RejectAccountNotAuthed(std::move(id), std::move(callback));
+  }
+
   std::vector<uint8_t> message_bytes;
   if (!PrefixedHexStringToBytes(message, &message_bytes)) {
     return RejectInvalidParams(std::move(id), std::move(callback));
@@ -365,9 +375,9 @@ void EthereumProviderImpl::SignMessage(const std::string& address,
     message_str = ToHex(message_str);
   }
 
-  SignMessageInternal(EthAddress::FromHex(address).ToChecksumAddress(), "",
-                      message_str, std::move(message_bytes), absl::nullopt,
-                      absl::nullopt, false, std::move(callback), std::move(id));
+  SignMessageInternal(account_id, "", message_str, std::move(message_bytes),
+                      absl::nullopt, absl::nullopt, false, std::move(callback),
+                      std::move(id));
 }
 
 void EthereumProviderImpl::RecoverAddress(const std::string& message,
@@ -496,17 +506,21 @@ void EthereumProviderImpl::GetEncryptionPublicKey(const std::string& address,
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
 
+  auto account_id = FindAccountByAddress(address);
+  if (!account_id) {
+    return RejectInvalidParams(std::move(id), std::move(callback));
+  }
   const auto allowed_accounts = GetAllowedAccounts(false);
   if (!allowed_accounts) {
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
-  if (!CheckAccountAllowed(address, *allowed_accounts)) {
+  if (!CheckAccountAllowed(account_id, *allowed_accounts)) {
     return RejectAccountNotAuthed(std::move(id), std::move(callback));
   }
 
   // Only show bubble when there is no immediate error
   brave_wallet_service_->AddGetPublicKeyRequest(
-      address, delegate_->GetOrigin(), std::move(callback), std::move(id));
+      account_id, delegate_->GetOrigin(), std::move(callback), std::move(id));
   delegate_->ShowPanel();
 }
 
@@ -516,21 +530,21 @@ void EthereumProviderImpl::Decrypt(
     const url::Origin& origin,
     RequestCallback callback,
     base::Value id) {
-  if (!EthAddress::IsValidAddress(address)) {
+  auto account_id = FindAccountByAddress(address);
+  if (!account_id) {
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
-
   data_decoder::JsonSanitizer::Sanitize(
       untrusted_encrypted_data_json,
       base::BindOnce(&EthereumProviderImpl::ContinueDecryptWithSanitizedJson,
                      weak_factory_.GetWeakPtr(), std::move(callback),
-                     std::move(id), address, origin));
+                     std::move(id), account_id->Clone(), origin));
 }
 
 void EthereumProviderImpl::ContinueDecryptWithSanitizedJson(
     RequestCallback callback,
     base::Value id,
-    const std::string& address,
+    const mojom::AccountIdPtr& account_id,
     const url::Origin& origin,
     data_decoder::JsonSanitizer::Result result) {
   if (!result.has_value()) {
@@ -555,14 +569,14 @@ void EthereumProviderImpl::ContinueDecryptWithSanitizedJson(
   if (!allowed_accounts) {
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
-  if (!CheckAccountAllowed(address, *allowed_accounts)) {
+  if (!CheckAccountAllowed(account_id, *allowed_accounts)) {
     return RejectAccountNotAuthed(std::move(id), std::move(callback));
   }
 
   absl::optional<std::vector<uint8_t>> unsafe_message_bytes =
       keyring_service_
           ->DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
-              version, nonce, ephemeral_public_key, ciphertext, address);
+              account_id, version, nonce, ephemeral_public_key, ciphertext);
   if (!unsafe_message_bytes.has_value()) {
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
@@ -575,7 +589,7 @@ void EthereumProviderImpl::ContinueDecryptWithSanitizedJson(
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
 
-  brave_wallet_service_->AddDecryptRequest(origin, address, unsafe_message,
+  brave_wallet_service_->AddDecryptRequest(account_id, origin, unsafe_message,
                                            std::move(callback), std::move(id));
   delegate_->ShowPanel();
 }
@@ -595,6 +609,12 @@ void EthereumProviderImpl::SignTypedMessage(
       primary_hash.empty()) {
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
+
+  auto account_id = FindAccountByAddress(address);
+  if (!account_id) {
+    return RejectInvalidParams(std::move(id), std::move(callback));
+  }
+
   auto chain_id = domain.FindDouble("chainId");
   if (chain_id) {
     const std::string chain_id_hex =
@@ -624,17 +644,17 @@ void EthereumProviderImpl::SignTypedMessage(
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
 
-  SignMessageInternal(
-      EthAddress::FromHex(address).ToChecksumAddress(), domain_string, message,
-      std::move(*message_to_sign), base::HexEncode(domain_hash),
-      base::HexEncode(primary_hash), true, std::move(callback), std::move(id));
+  SignMessageInternal(account_id, domain_string, message,
+                      std::move(*message_to_sign), base::HexEncode(domain_hash),
+                      base::HexEncode(primary_hash), true, std::move(callback),
+                      std::move(id));
 }
 
 void EthereumProviderImpl::SignMessageInternal(
-    const std::string& address,
+    const mojom::AccountIdPtr& account_id,
     const std::string& domain,
     const std::string& message,
-    std::vector<uint8_t>&& message_to_sign,
+    std::vector<uint8_t> message_to_sign,
     const absl::optional<std::string>& domain_hash,
     const absl::optional<std::string>& primary_hash,
     bool is_eip712,
@@ -644,13 +664,14 @@ void EthereumProviderImpl::SignMessageInternal(
   if (!allowed_accounts) {
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
-  if (!CheckAccountAllowed(address, *allowed_accounts)) {
+  if (!CheckAccountAllowed(account_id, *allowed_accounts)) {
     return RejectAccountNotAuthed(std::move(id), std::move(callback));
   }
 
   auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), -1, address, domain, message,
-      is_eip712, domain_hash, primary_hash, absl::nullopt, mojom::CoinType::ETH,
+      MakeOriginInfo(delegate_->GetOrigin()), -1, account_id.Clone(), domain,
+      message, is_eip712, domain_hash, primary_hash, absl::nullopt,
+      mojom::CoinType::ETH,
       json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH,
                                         delegate_->GetOrigin()));
 
@@ -658,16 +679,16 @@ void EthereumProviderImpl::SignMessageInternal(
       std::move(request),
       base::BindOnce(&EthereumProviderImpl::OnSignMessageRequestProcessed,
                      weak_factory_.GetWeakPtr(), std::move(callback),
-                     std::move(id), address, std::move(message_to_sign),
-                     is_eip712));
+                     std::move(id), account_id.Clone(),
+                     std::move(message_to_sign), is_eip712));
   delegate_->ShowPanel();
 }
 
 void EthereumProviderImpl::OnSignMessageRequestProcessed(
     RequestCallback callback,
     base::Value id,
-    const std::string& address,
-    std::vector<uint8_t>&& message,
+    const mojom::AccountIdPtr& account_id,
+    std::vector<uint8_t> message,
     bool is_eip712,
     bool approved,
     mojom::ByteArrayStringUnionPtr signature,
@@ -692,9 +713,9 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
   }
 
   base::Value formed_response;
-  if (!keyring_service_->IsHardwareAccount(mojom::kDefaultKeyringId, address)) {
+  if (account_id->kind != mojom::AccountKind::kHardware) {
     auto signature_with_err = keyring_service_->SignMessageByDefaultKeyring(
-        address, message, is_eip712);
+        account_id, message, is_eip712);
     if (!signature_with_err.signature) {
       formed_response =
           GetProviderErrorDictionary(mojom::ProviderError::kInternalError,
@@ -719,10 +740,11 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
 }
 
 bool EthereumProviderImpl::CheckAccountAllowed(
-    const std::string& account,
+    const mojom::AccountIdPtr& account_id,
     const std::vector<std::string>& allowed_accounts) {
   for (const auto& allowed_account : allowed_accounts) {
-    if (base::EqualsCaseInsensitiveASCII(account, allowed_account)) {
+    if (base::EqualsCaseInsensitiveASCII(account_id->address,
+                                         allowed_account)) {
       return true;
     }
   }
@@ -1259,6 +1281,18 @@ void EthereumProviderImpl::GetChainId(GetChainIdCallback callback) {
     json_rpc_service_->GetChainIdForOrigin(
         mojom::CoinType::ETH, delegate_->GetOrigin(), std::move(callback));
   }
+}
+
+mojom::AccountIdPtr EthereumProviderImpl::FindAccountByAddress(
+    const std::string& address) {
+  AccountResolverDelegateImpl resolver(keyring_service_);
+
+  auto account_id = resolver.ResolveAccountId(nullptr, &address);
+  if (!account_id || account_id->coin != mojom::CoinType::ETH) {
+    return nullptr;
+  }
+
+  return account_id;
 }
 
 void EthereumProviderImpl::Init(

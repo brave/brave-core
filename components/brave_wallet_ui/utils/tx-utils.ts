@@ -40,7 +40,10 @@ import { getCoinFromTxDataUnion, TxDataPresence } from './network-utils'
 import { toProperCase } from './string-utils'
 import { computeFiatAmount, getTokenPriceAmountFromRegistry } from './pricing-utils'
 import { makeNetworkAsset } from '../options/asset-options'
-import { getAddressLabel } from './account-utils'
+import {
+  getAccountLabel,
+  getAddressLabel
+} from './account-utils'
 import { makeSerializableTimeDelta } from './model-serialization-utils'
 import { weiToEther } from './web3-utils'
 
@@ -93,7 +96,6 @@ export interface ParsedTransaction
   nonce: string
   createdTime: SerializableTimeDelta
   status: BraveWallet.TransactionStatus
-  sender: string
   senderLabel: string
   recipient: string
   recipientLabel: string
@@ -548,22 +550,22 @@ export function getTransactionBaseValue (tx: TransactionInfo) {
   return tx.txDataUnion.ethTxData1559?.baseData.value || ''
 }
 
-export function getTransactionTransferredValue ({
-  tx,
-  txNetwork,
-  token,
-  sellToken
-}: {
+interface GetTransactionTransferredValueArgs {
   tx: TransactionInfo
   token?: BraveWallet.BlockchainToken
   sellToken?: BraveWallet.BlockchainToken
-  txNetwork?: BraveWallet.NetworkInfo
-}): {
+  txAccount: BraveWallet.AccountInfo | undefined
+  txNetwork: BraveWallet.NetworkInfo | undefined
+}
+
+export function getTransactionTransferredValue (args: GetTransactionTransferredValueArgs): {
   wei: Amount
   normalized: Amount
 } {
-  // Can't compute value with network decimals if no network was provided
-  if (!txNetwork) {
+  const {tx, txAccount, txNetwork, token, sellToken} = args
+
+  // Can't compute value with network decimals if no network or no account was provided
+  if (!txAccount || !txNetwork) {
     return {
       normalized: Amount.empty(),
       wei: Amount.empty()
@@ -613,7 +615,7 @@ export function getTransactionTransferredValue ({
   if (isSolanaDappTransaction(tx)) {
     const lamportsMovedFromInstructions = getLamportsMovedFromInstructions(
       getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData) || [],
-      tx.fromAddress
+      tx.fromAddressOpt ?? ''
     )
 
     const transferredValue = new Amount(getTransactionBaseValue(tx))
@@ -648,7 +650,7 @@ export function getTransactionTransferredValue ({
 }
 
 export function getFormattedTransactionTransferredValue (
-  args: Parameters<typeof getTransactionTransferredValue>[0]
+  args: GetTransactionTransferredValueArgs
 ): {
   normalizedTransferredValue: string
   normalizedTransferredValueExact: string
@@ -660,31 +662,6 @@ export function getFormattedTransactionTransferredValue (
     normalizedTransferredValueExact: normalized.format(),
     weiTransferredValue: wei.value?.toString() || ''
   }
-}
-
-export const findTransactionAccount = <T extends { address: string }>(
-  accounts: T[],
-  transaction: { fromAddress: string }
-): T | undefined => {
-  return accounts.find(
-    (account) =>
-      account.address.toLowerCase() === transaction.fromAddress.toLowerCase()
-  )
-}
-
-export const findTransactionAccountFromRegistry = <
-  T extends { address: string }
->(
-  registry: EntityState<T>,
-  transaction: { fromAddress: string }
-): T | undefined => {
-  const id = registry.ids.find(
-    (accountId) =>
-      accountId.toString().toLowerCase() ===
-      transaction.fromAddress.toLowerCase()
-  )
-
-  return id ? registry.entities[id] : undefined
 }
 
 export function getTransactionGasLimit (transaction: TransactionInfo) {
@@ -934,7 +911,7 @@ export const isSendingToKnownTokenContractAddress = (
 export const transactionHasSameAddressError = (
   tx: TransactionInfo
 ): boolean => {
-  const { txArgs, txType, fromAddress: from } = tx
+  const { txArgs, txType, fromAddressOpt: from = ''} = tx
 
   // transfer(address recipient, uint256 amount) → bool
   if (txType === BraveWallet.TransactionType.ERC20Transfer) {
@@ -1014,7 +991,7 @@ export const accountHasInsufficientFundsForTransaction = ({
   if (isSolanaDappTransaction(tx)) {
     const lamportsMovedFromInstructions = getLamportsMovedFromInstructions(
       getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData) || [],
-      tx.fromAddress
+      tx.fromAddressOpt || ''
     )
 
     const transferredValue = new Amount(getTransactionBaseValue(tx))
@@ -1521,18 +1498,19 @@ export const getTransactionFiatValues = ({
 export const parseTransactionWithoutPrices = ({
   accounts,
   tx,
+  transactionAccount,
   transactionNetwork,
   tokensList
 }: {
-  accounts: BraveWallet.AccountInfo[]
+  accounts: EntityState<BraveWallet.AccountInfo>
   tx: TransactionInfo
-  transactionNetwork?: BraveWallet.NetworkInfo
+  transactionAccount: BraveWallet.AccountInfo
+  transactionNetwork: BraveWallet.NetworkInfo
   tokensList: BraveWallet.BlockchainToken[]
 }): ParsedTransactionWithoutFiatValues => {
   const to = getTransactionToAddress(tx)
   const token = findTransactionToken(tx, tokensList)
   const nativeAsset = makeNetworkAsset(transactionNetwork)
-  const account = findTransactionAccount(accounts, tx)
 
   const {
     buyToken,
@@ -1553,6 +1531,7 @@ export const parseTransactionWithoutPrices = ({
     weiTransferredValue
   } = getFormattedTransactionTransferredValue({
     tx,
+    txAccount: transactionAccount,
     txNetwork: transactionNetwork,
     token,
     sellToken
@@ -1641,7 +1620,7 @@ export const parseTransactionWithoutPrices = ({
   })
 
   return {
-    accountAddress: account?.address || '',
+    accountAddress: transactionAccount.address || '',
     approvalTarget,
     approvalTargetLabel,
     buyToken,
@@ -1681,8 +1660,7 @@ export const parseTransactionWithoutPrices = ({
     sellAmount,
     sellAmountWei,
     sellToken,
-    sender: tx.fromAddress,
-    senderLabel: getAddressLabel(tx.fromAddress, accounts),
+    senderLabel: getAccountLabel(tx.fromAccountId, accounts),
     status: tx.txStatus,
     symbol,
     token,
@@ -1697,14 +1675,16 @@ export const parseTransactionWithoutPrices = ({
 export const parseTransactionWithPrices = ({
   accounts,
   tx,
+  transactionAccount,
   transactionNetwork,
   spotPriceRegistry,
   gasFee,
   tokensList
 }: {
-  accounts: BraveWallet.AccountInfo[]
+  accounts: EntityState<BraveWallet.AccountInfo>
   tx: TransactionInfo
-  transactionNetwork?: BraveWallet.NetworkInfo
+  transactionAccount: BraveWallet.AccountInfo
+  transactionNetwork: BraveWallet.NetworkInfo
   tokensList: BraveWallet.BlockchainToken[]
   spotPriceRegistry: SpotPriceRegistry
   gasFee: string
@@ -1727,6 +1707,7 @@ export const parseTransactionWithPrices = ({
     ...txBase
   } = parseTransactionWithoutPrices({
     accounts,
+    transactionAccount,
     transactionNetwork,
     tx,
     tokensList

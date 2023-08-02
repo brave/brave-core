@@ -44,7 +44,7 @@ export const getMockedTransactionInfo =
     return {
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
       id: '1',
-      fromAddress: mockEthAccountInfo.address,
+      fromAddressOpt: mockEthAccountInfo.address,
       fromAccountId: mockEthAccountInfo.accountId,
       txHash: '',
       txDataUnion: {
@@ -224,14 +224,14 @@ export const mockNftPinningStatus: NftsPinningStatusType = {
 
 export const mockAccount: BraveWallet.AccountInfo = {
   name: 'mockAccountName',
-  address: 'mockAddress',
+  address: '0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0',
   accountId: {
     coin: BraveWallet.CoinType.ETH,
     keyringId: BraveWallet.KeyringId.kDefault,
     kind: BraveWallet.AccountKind.kDerived,
-    address: 'mockAddress',
+    address: '0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0',
     bitcoinAccountIndex: 0,
-    uniqueKey: 'mockId'
+    uniqueKey: 'unique_key_0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0'
   },
   hardware: undefined
 }
@@ -239,14 +239,14 @@ export const mockAccount: BraveWallet.AccountInfo = {
 export const mockEthAccountInfo: BraveWallet.AccountInfo = {
   hardware: undefined,
   name: 'mockEthAccountName',
-  address: 'mockEthAddress',
+  address: '0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db',
   accountId: {
     coin: BraveWallet.CoinType.ETH,
     keyringId: BraveWallet.KeyringId.kDefault,
     kind: BraveWallet.AccountKind.kDerived,
-    address: 'mockEthAddress',
+    address: '0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db',
     bitcoinAccountIndex: 0,
-    uniqueKey: 'mockEthAddress',
+    uniqueKey: 'unique_key_0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db',
   },
 }
 
@@ -381,6 +381,7 @@ export const mockSolDappSignTransactionRequest: BraveWallet.SignTransactionReque
     eTldPlusOne: 'csb.app'
   },
   id: 0,
+  fromAccountId: mockSolanaAccount.accountId,
   fromAddress: mockSolanaAccount.address,
   txData: {
     ethTxData: undefined,
@@ -440,7 +441,7 @@ export const mockSolDappSignTransactionRequest: BraveWallet.SignTransactionReque
 export const mockSolDappSignAndSendTransactionRequest: SerializableTransactionInfo = {
   chainId: '0x67',
   id: 'e1eae32d-5bc2-40ac-85e5-2a4a5fbe8a5f',
-  fromAddress: mockSolanaAccount.address,
+  fromAddressOpt: mockSolanaAccount.address,
   fromAccountId: mockSolanaAccount.accountId,
   txHash: '',
   txDataUnion: {
@@ -533,6 +534,7 @@ export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransacti
     eTldPlusOne: 'csb.app'
   },
   id: 3,
+  fromAccountId: mockSolanaAccount.accountId,
   fromAddress: mockSolanaAccount.address,
   txDatas: [
     {

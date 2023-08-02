@@ -20,7 +20,6 @@ import {
 import { getPriceIdForToken } from '../../../utils/api-utils'
 import { formatDateAsRelative, serializedTimeDeltaToJSDate } from '../../../utils/datetime-utils'
 import { reduceAddress } from '../../../utils/reduce-address'
-import { WalletSelectors } from '../../../common/selectors'
 import Amount from '../../../utils/amount'
 import { makeNetworkAsset } from '../../../options/asset-options'
 
@@ -30,21 +29,20 @@ import { SwapExchangeProxy } from '../../../common/constants/registry'
 
 // Hooks
 import {
-  useUnsafeWalletSelector
-} from '../../../common/hooks/use-safe-selector'
-import {
+  useGetAccountInfosRegistryQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
   useGetSolanaEstimatedFeeQuery,
   useGetTokenSpotPricesQuery
 } from '../../../common/slices/api.slice'
 import {
+  useAccountQuery,
   useGetCombinedTokensListQuery
 } from '../../../common/slices/api.slice.extra'
 import {
   querySubscriptionOptions60s
 } from '../../../common/slices/constants'
-import { useAddressOrb } from '../../../common/hooks/use-orb'
+import { useAccountOrb, useAddressOrb } from '../../../common/hooks/use-orb'
 
 // Components
 import { TransactionIntentDescription } from './transaction-intent-description'
@@ -80,9 +78,6 @@ export const TransactionsListItem = ({
   const txCoinType = getCoinFromTxDataUnion(transaction.txDataUnion)
   const isSolTx = isSolanaTransaction(transaction)
 
-  // redux
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
-
   // queries & query args
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
@@ -90,6 +85,10 @@ export const TransactionsListItem = ({
     chainId: transaction.chainId,
     coin: txCoinType
   })
+  const { data: accounts } = useGetAccountInfosRegistryQuery()
+  const { account: transactionAccount } = useAccountQuery(
+    transaction.fromAccountId
+  )
 
   const txToken = findTransactionToken(transaction, combinedTokensList)
 
@@ -141,26 +140,29 @@ export const TransactionsListItem = ({
   const gasFee = isSolTx ? solEstimatedFee : getTransactionGasFee(transaction)
 
   const transactionDetails = React.useMemo(() => {
-    return spotPriceRegistry
-      ? parseTransactionWithPrices({
+    if (!transactionsNetwork || !transactionAccount || !accounts)
+      return undefined
+
+    return parseTransactionWithPrices({
         tx: transaction,
         accounts,
         gasFee,
         spotPriceRegistry,
+        transactionAccount,
         transactionNetwork: transactionsNetwork,
         tokensList: combinedTokensList
       })
-      : undefined
   }, [
     accounts,
     gasFee,
     spotPriceRegistry,
     transaction,
+    transactionAccount,
     transactionsNetwork,
     combinedTokensList
   ])
 
-  const fromOrb = useAddressOrb(transaction.fromAddress)
+  const fromOrb = useAccountOrb(transactionAccount)
   const toOrb = useAddressOrb(transactionDetails?.recipient)
 
   const transactionIntentLocale = React.useMemo((): React.ReactNode => {
@@ -206,7 +208,8 @@ export const TransactionsListItem = ({
     }
 
     // default or when: [ETHSend, ERC20Transfer, ERC721TransferFrom, ERC721SafeTransferFrom].includes(transaction.txType)
-    let from = `${reduceAddress(transaction.fromAddress)} `
+    // TODO(apaymyshev): need description for bitcoin transaction.
+    let from = `${reduceAddress(transaction.fromAddressOpt ?? '')} `
     let to = reduceAddress(transactionDetails.recipient)
     const wrapFromText =
       transaction.txType === ERC20Approve ||

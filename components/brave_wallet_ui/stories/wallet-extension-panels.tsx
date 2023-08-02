@@ -51,7 +51,8 @@ import {
 } from '../components/extension/transaction-detail-panel/index'
 import { AssetsPanel } from '../components/extension/assets-panel/index'
 import {
-  EncryptionKeyPanel //
+  DecryptRequestPanel,
+  ProvidePubKeyPanel //
 } from '../components/extension/encryption-key-panel/index'
 
 import { AppList } from '../components/shared/app-list/index'
@@ -98,9 +99,9 @@ export default {
 
 const mockEthAccountId = (
   address: string
-): { fromAddress: string; fromAccountId: BraveWallet.AccountId } => {
+): { fromAddressOpt: string; fromAccountId: BraveWallet.AccountId } => {
   return {
-    fromAddress: address,
+    fromAddressOpt: address,
     fromAccountId: {
       coin: BraveWallet.CoinType.ETH,
       keyringId: BraveWallet.KeyringId.kDefault,
@@ -520,9 +521,9 @@ export const _SignData = () => {
     alert('Canceled Signing Data')
   }
 
-  const signMessageDataPayload = [{
+  const signMessageDataPayload: BraveWallet.SignMessageRequest[] = [{
     id: 0,
-    address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
+    accountId: mockEthAccountId('0x3f29A1da97149722eB09c526E4eAd698895b426').fromAccountId,
     message: 'To avoid digital cat burglars, sign below to authenticate with CryptoKitties.',
     domain: '',
     originInfo: mockOriginInfo,
@@ -538,7 +539,6 @@ export const _SignData = () => {
     <StyledExtensionWrapperLonger>
       <SignPanel
         signMessageData={signMessageDataPayload}
-        accounts={mockAccounts}
         onCancel={onCancel}
         showWarning={true}
       />
@@ -561,14 +561,10 @@ export const _ProvideEncryptionKey = () => {
 
   return (
     <StyledExtensionWrapperLonger>
-      <EncryptionKeyPanel
-        panelType='request'
-        decryptPayload={mockDecryptRequest}
-        encryptionKeyPayload={mockEncryptionKeyRequest}
-        accounts={mockAccounts}
-        selectedNetwork={mockNetworks[0]}
+      <ProvidePubKeyPanel
+        payload={mockEncryptionKeyRequest}
         onCancel={onCancel}
-        onProvideOrAllow={onProvide}
+        onProvide={onProvide}
       />
     </StyledExtensionWrapperLonger>
   )
@@ -589,14 +585,10 @@ export const _ReadEncryptedMessage = () => {
 
   return (
     <StyledExtensionWrapperLonger>
-      <EncryptionKeyPanel
-        panelType='read'
-        encryptionKeyPayload={mockEncryptionKeyRequest}
-        decryptPayload={mockDecryptRequest}
-        accounts={mockAccounts}
-        selectedNetwork={mockNetworks[0]}
+      <DecryptRequestPanel
+        payload={mockDecryptRequest}
         onCancel={onCancel}
-        onProvideOrAllow={onAllow}
+        onAllow={onAllow}
       />
     </StyledExtensionWrapperLonger>
   )
@@ -782,11 +774,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         {selectedPanel === 'activity' && (
                           <TransactionsPanel
                             selectedNetwork={mockNetworks[0]}
-                            selectedAccountCoinType={
-                              mockedTransactionAccounts[0].accountId.coin
-                            }
-                            selectedAccountAddress={
-                              mockedTransactionAccounts[0].address
+                            selectedAccount={
+                              mockedTransactionAccounts[0].accountId
                             }
                           />
                         )}
@@ -926,10 +915,7 @@ export const _RecentTransaction = () => {
           <ScrollContainer>
             <TransactionsPanel
               selectedNetwork={mockNetworks[0]}
-              selectedAccountAddress={mockedTransactionAccounts[0].address}
-              selectedAccountCoinType={
-                mockedTransactionAccounts[0].accountId.coin
-              }
+              selectedAccount={mockedTransactionAccounts[0].accountId}
             />
           </ScrollContainer>
         </Panel>

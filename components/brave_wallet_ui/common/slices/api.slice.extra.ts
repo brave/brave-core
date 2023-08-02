@@ -35,29 +35,27 @@ import {
   selectCombinedTokensList
 } from '../slices/entities/blockchain-token.entity'
 import {
-  findAccountFromRegistry
+  findAccountByAccountId
 } from '../../utils/account-utils'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
 import { selectPendingTransactions } from './entities/transaction.entity'
 
 export const useAccountQuery = (
-  address: string | typeof skipToken,
+  accountId: BraveWallet.AccountId | undefined | typeof skipToken,
   opts?: { skip?: boolean }
 ) => {
-  return useGetAccountInfosRegistryQuery(
-    address === skipToken ? skipToken : undefined,
-    {
-      skip: address === skipToken || opts?.skip,
-      selectFromResult: (res) => ({
-        isLoading: res.isLoading,
-        error: res.error,
-        account:
-          res.data && address !== skipToken
-            ? findAccountFromRegistry(address, res.data)
-            : undefined
-      })
-    }
-  )
+  const skip = accountId === undefined || accountId === skipToken || opts?.skip
+  return useGetAccountInfosRegistryQuery(skip ? skipToken : undefined, {
+    skip: skip,
+    selectFromResult: (res) => ({
+      isLoading: res.isLoading,
+      error: res.error,
+      account:
+        res.data && !skip
+          ? findAccountByAccountId(accountId, res.data)
+          : undefined
+    })
+  })
 }
 
 export const useSelectedAccountQuery = () => {
@@ -132,7 +130,7 @@ export const useTransactionQuery = (
     txID === skipToken
       ? skipToken
       : {
-          address: null,
+          accountId: null,
           chainId: null,
           coinType: null
         },

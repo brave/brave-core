@@ -465,6 +465,16 @@ class SolanaProviderTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
+  mojom::AccountIdPtr FirstSolAccountId() {
+    auto is_sol = [](auto& acc) {
+      return acc->account_id->coin == mojom::CoinType::SOL;
+    };
+    return base::ranges::find_if(
+               keyring_service_->GetAllAccountsSync()->accounts, is_sol)
+        ->get()
+        ->account_id.Clone();
+  }
+
   void LockWallet() {
     keyring_service_->Lock();
     // Needed so KeyringServiceObserver::Locked handler can be hit
@@ -478,15 +488,13 @@ class SolanaProviderTest : public InProcessBrowserTest {
   }
 
   void SetSelectedAccount(const std::string& address) {
-    base::RunLoop run_loop;
-    keyring_service_->SetSelectedAccount(
-        MakeAccountId(mojom::CoinType::SOL, mojom::kSolanaKeyringId,
-                      mojom::AccountKind::kDerived, address),
-        base::BindLambdaForTesting([&run_loop](bool success) {
-          EXPECT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    SetSelectedAccount(MakeAccountId(mojom::CoinType::SOL,
+                                     mojom::kSolanaKeyringId,
+                                     mojom::AccountKind::kDerived, address));
+  }
+
+  void SetSelectedAccount(const mojom::AccountIdPtr& account_id) {
+    EXPECT_TRUE(keyring_service_->SetSelectedAccountSync(account_id->Clone()));
   }
 
   void UserGrantPermission(bool granted,
@@ -506,7 +514,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
     std::vector<mojom::TransactionInfoPtr> transaction_infos;
     base::RunLoop run_loop;
     tx_service_->GetAllTransactionInfo(
-        mojom::CoinType::SOL, mojom::kLocalhostChainId, kFirstAccount,
+        mojom::CoinType::SOL, mojom::kLocalhostChainId, FirstSolAccountId(),
         base::BindLambdaForTesting(
             [&](std::vector<mojom::TransactionInfoPtr> v) {
               transaction_infos = std::move(v);
@@ -983,7 +991,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, GetPublicKey) {
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   RestoreWallet();
   AddAccount("Account 1");
-  SetSelectedAccount(kFirstAccount);
+  SetSelectedAccount(FirstSolAccountId());
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -998,7 +1006,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
 
   auto infos = GetAllTransactionInfo();
   EXPECT_EQ(1UL, infos.size());
-  EXPECT_EQ(kFirstAccount, infos[0]->from_address);
+  EXPECT_EQ(FirstSolAccountId(), infos[0]->from_account_id);
+  EXPECT_EQ(kFirstAccount, infos[0]->from_address_opt);
   EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[0]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[0]->tx_type);
@@ -1009,7 +1018,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
 
   infos = GetAllTransactionInfo();
   EXPECT_EQ(1UL, infos.size());
-  EXPECT_EQ(kFirstAccount, infos[0]->from_address);
+  EXPECT_EQ(FirstSolAccountId(), infos[0]->from_account_id);
+  EXPECT_EQ(kFirstAccount, infos[0]->from_address_opt);
   EXPECT_EQ(mojom::TransactionStatus::Rejected, infos[0]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[0]->tx_type);
@@ -1035,7 +1045,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
     }
   }
   const std::string tx2_id = infos[tx2_index]->id;
-  EXPECT_EQ(kFirstAccount, infos[tx2_index]->from_address);
+  EXPECT_EQ(FirstSolAccountId(), infos[tx2_index]->from_account_id);
+  EXPECT_EQ(kFirstAccount, infos[tx2_index]->from_address_opt);
   EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[tx2_index]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[tx2_index]->tx_type);
@@ -1046,7 +1057,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
 
   infos = GetAllTransactionInfo();
   EXPECT_EQ(2UL, infos.size());
-  EXPECT_EQ(kFirstAccount, infos[tx2_index]->from_address);
+  EXPECT_EQ(FirstSolAccountId(), infos[tx2_index]->from_account_id);
+  EXPECT_EQ(kFirstAccount, infos[tx2_index]->from_address_opt);
   EXPECT_EQ(mojom::TransactionStatus::Submitted, infos[tx2_index]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[tx2_index]->tx_type);
@@ -1077,7 +1089,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
     }
   }
   const std::string tx3_id = infos[tx3_index]->id;
-  EXPECT_EQ(kFirstAccount, infos[tx3_index]->from_address);
+  EXPECT_EQ(FirstSolAccountId(), infos[tx3_index]->from_account_id);
+  EXPECT_EQ(kFirstAccount, infos[tx3_index]->from_address_opt);
   EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[tx3_index]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[tx3_index]->tx_type);
@@ -1089,7 +1102,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   infos = GetAllTransactionInfo();
   EXPECT_EQ(3UL, infos.size());
   EXPECT_EQ(tx3_id, infos[tx3_index]->id);
-  EXPECT_EQ(kFirstAccount, infos[tx3_index]->from_address);
+  EXPECT_EQ(FirstSolAccountId(), infos[tx3_index]->from_account_id);
+  EXPECT_EQ(kFirstAccount, infos[tx3_index]->from_address_opt);
   EXPECT_EQ(mojom::TransactionStatus::Submitted, infos[tx3_index]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[tx3_index]->tx_type);

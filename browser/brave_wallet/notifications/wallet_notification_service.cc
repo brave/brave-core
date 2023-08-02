@@ -98,7 +98,9 @@ void WalletNotificationService::DisplayUserNotification(
 void WalletNotificationService::OnTransactionStatusChanged(
     mojom::TransactionInfoPtr tx_info) {
   if (ShouldDisplayUserNotification(tx_info->tx_status)) {
-    DisplayUserNotification(tx_info->tx_status, tx_info->from_address,
+    // TODO(apaymyshev): handle address for bitcoin notificaion
+    DisplayUserNotification(tx_info->tx_status,
+                            tx_info->from_address_opt.value_or(""),
                             tx_info->id);
   }
 }

@@ -15,10 +15,9 @@ import { PanelActions } from '../../panel/actions'
 // utils
 import Amount from '../../utils/amount'
 import { getPriceIdForToken } from '../../utils/api-utils'
-import { findAccountName, isHardwareAccount } from '../../utils/account-utils'
+import { isHardwareAccount } from '../../utils/account-utils'
 import { getLocale } from '../../../common/locale'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
-import { reduceAddress } from '../../utils/reduce-address'
 import { UISelectors, WalletSelectors } from '../selectors'
 import {
   accountHasInsufficientFundsForGas,
@@ -34,13 +33,13 @@ import { makeNetworkAsset } from '../../options/asset-options'
 // Custom Hooks
 import useTokenInfo from './token'
 import { useLib } from './useLib'
-import { useAddressOrb } from './use-orb'
+import { useAccountOrb, useAddressOrb } from './use-orb'
 import {
   useSafeUISelector,
   useSafeWalletSelector,
-  useUnsafeWalletSelector
 } from './use-safe-selector'
 import {
+  useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetGasEstimation1559Query,
@@ -50,9 +49,9 @@ import {
   walletApi
 } from '../slices/api.slice'
 import {
-  useAccountQuery,
   usePendingTransactionsQuery,
-  useGetCombinedTokensListQuery
+  useGetCombinedTokensListQuery,
+  useAccountQuery
 } from '../slices/api.slice.extra'
 import {
   defaultQuerySubscriptionOptions,
@@ -70,7 +69,6 @@ import { MAX_UINT256 } from '../constants/magics'
 export const usePendingTransactions = () => {
   // redux
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>()
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const selectedPendingTransactionId = useSafeUISelector(
     UISelectors.selectedPendingTransactionId
   )
@@ -82,10 +80,11 @@ export const usePendingTransactions = () => {
   const { data: defaultFiat } = useGetDefaultFiatCurrencyQuery()
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const { pendingTransactions } = usePendingTransactionsQuery({
-    address: null,
+    accountId: null,
     chainId: null,
     coinType: null
   })
+  const { data: accounts } = useGetAccountInfosRegistryQuery()
 
   const transactionInfo = React.useMemo(() => {
     if (!pendingTransactions.length) {
@@ -156,9 +155,7 @@ export const usePendingTransactions = () => {
     defaultQuerySubscriptionOptions
   )
 
-  const { account: txAccount } = useAccountQuery(
-    transactionInfo?.fromAddress || skipToken
-  )
+  const { account: txAccount } = useAccountQuery(transactionInfo?.fromAccountId)
 
   // custom hooks
   const { getBlockchainTokenInfo, getERC20Allowance } = useLib()
@@ -186,20 +183,30 @@ export const usePendingTransactions = () => {
   }, [transactionInfo, txCoinType, solFeeEstimate])
 
   const transactionDetails = React.useMemo(() => {
-    return transactionInfo && spotPriceRegistry
-      ? parseTransactionWithPrices({
+    if (
+      !transactionInfo ||
+      !spotPriceRegistry ||
+      !txAccount ||
+      !transactionsNetwork ||
+      !accounts
+    ) {
+      return undefined
+    }
+
+    return parseTransactionWithPrices({
           tx: transactionInfo,
           accounts,
           gasFee,
           spotPriceRegistry,
           tokensList: combinedTokensList,
+          transactionAccount: txAccount,
           transactionNetwork: transactionsNetwork
         })
-      : undefined
   }, [
     transactionInfo,
     accounts,
     spotPriceRegistry,
+    txAccount,
     transactionsNetwork,
     gasFee,
     combinedTokensList
@@ -271,7 +278,8 @@ export const usePendingTransactions = () => {
     sellTokenBalance,
     transactionDetails?.sellAmountWei,
     transactionInfo,
-    transferTokenBalance
+    transferTokenBalance,
+    txAccount
   ])
 
   const insufficientFundsForGasError = React.useMemo(() => {
@@ -391,15 +399,15 @@ export const usePendingTransactions = () => {
   }, [transactionInfo])
 
   const onConfirm = React.useCallback(async () => {
-    if (!transactionInfo || !txAccount) {
+    if (!transactionInfo) {
       return
     }
 
-    if (isHardwareAccount(txAccount)) {
+    if (isHardwareAccount(transactionInfo.fromAccountId)) {
       dispatch(
         walletApi.endpoints.approveHardwareTransaction.initiate({
           chainId: transactionInfo.chainId,
-          fromAddress: transactionInfo.fromAddress,
+          fromAccountId: transactionInfo.fromAccountId,
           id: transactionInfo.id,
           txDataUnion: transactionInfo.txDataUnion,
           txType: transactionInfo.txType
@@ -432,13 +440,13 @@ export const usePendingTransactions = () => {
         })
       )
     }
-  }, [transactionInfo, txAccount])
+  }, [transactionInfo])
 
   // List of all transactions that belong to the same group as the selected
   // pending transaction.
   const groupTransactions = React.useMemo(
     () =>
-      transactionInfo?.groupId && transactionInfo?.fromAddress
+      transactionInfo?.groupId
         ? sortTransactionByDate(
             pendingTransactions.filter(
               (txn) => txn.groupId === transactionInfo.groupId
@@ -467,12 +475,8 @@ export const usePendingTransactions = () => {
     [transactionInfo, unconfirmedGroupTransactionIds])
 
   // memos
-  const fromOrb = useAddressOrb(transactionInfo?.fromAddress)
+  const fromOrb = useAccountOrb(txAccount)
   const toOrb = useAddressOrb(transactionDetails?.recipient, { scale: 10 })
-
-  const fromAccountName = React.useMemo(() => {
-    return findAccountName(accounts, transactionInfo?.fromAddress ?? '') ?? reduceAddress(transactionInfo?.fromAddress ?? '')
-  }, [accounts, transactionInfo?.fromAddress])
 
   const transactionTitle = React.useMemo(
     (): string =>
@@ -566,9 +570,13 @@ export const usePendingTransactions = () => {
       return
     }
 
+    if (!txAccount){
+      return
+    }
+
     getERC20Allowance(
       transactionDetails.recipient,
-      transactionInfo.fromAddress,
+      txAccount.address,
       transactionDetails.approvalTarget,
       transactionDetails.chainId,
     )
@@ -583,7 +591,7 @@ export const usePendingTransactions = () => {
     }
   }, [
     transactionInfo?.txType,
-    transactionInfo?.fromAddress,
+    txAccount,
     transactionDetails,
     getERC20Allowance
   ])
@@ -602,8 +610,8 @@ export const usePendingTransactions = () => {
     currentTokenAllowance,
     isCurrentAllowanceUnlimited,
     foundTokenInfoByContractAddress,
-    fromAccountName,
-    fromAddress: transactionInfo?.fromAddress ?? '',
+    fromAccountName: txAccount?.name,
+    fromAddress: txAccount?.address,
     fromOrb,
     isConfirmButtonDisabled,
     isERC20Approve,

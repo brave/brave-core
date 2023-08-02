@@ -70,7 +70,7 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
   mojom::TransactionInfoPtr ti = meta.ToTransactionInfo();
   EXPECT_EQ(ti->id, meta.id());
   EXPECT_EQ(ti->tx_status, meta.status());
-  EXPECT_EQ(ti->from_address, meta.from()->address);
+  EXPECT_EQ(ti->from_address_opt, from_account);
   EXPECT_EQ(ti->from_account_id, meta.from());
   EXPECT_EQ(ti->tx_hash, meta.tx_hash());
   EXPECT_EQ(

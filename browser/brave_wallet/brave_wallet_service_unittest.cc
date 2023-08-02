@@ -26,6 +26,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -313,11 +314,11 @@ class BraveWalletServiceUnitTest : public testing::Test {
         JsonRpcServiceFactory::GetServiceForContext(profile_.get());
     json_rpc_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
-    tx_service = TxServiceFactory::GetServiceForContext(profile_.get());
+    tx_service_ = TxServiceFactory::GetServiceForContext(profile_.get());
     service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
-        json_rpc_service_, tx_service, GetPrefs(), local_state_->Get());
+        json_rpc_service_, tx_service_, GetPrefs(), local_state_->Get());
     observer_ = std::make_unique<TestBraveWalletServiceObserver>();
     service_->AddObserver(observer_->GetReceiver());
 
@@ -415,6 +416,11 @@ class BraveWalletServiceUnitTest : public testing::Test {
   TestingPrefServiceSimple* GetLocalState() { return local_state_->Get(); }
   BlockchainRegistry* GetRegistry() {
     return BlockchainRegistry::GetInstance();
+  }
+
+  void SetupWallet() {
+    keyring_service_->CreateWallet(kMnemonicDivideCruise, kTestWalletPassword,
+                                   base::DoNothing());
   }
 
   void SetInterceptors(std::map<GURL, std::string> responses) {
@@ -799,6 +805,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  AccountUtils GetAccountUtils() { return AccountUtils(keyring_service_); }
+
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<ScopedTestingLocalState> local_state_;
   std::unique_ptr<TestingProfile> profile_;
@@ -806,7 +814,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
   std::unique_ptr<BraveWalletService> service_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_;
-  raw_ptr<TxService> tx_service;
+  raw_ptr<TxService> tx_service_;
   std::unique_ptr<TestBraveWalletServiceObserver> observer_;
   base::test::ScopedFeatureList scoped_feature_list_;
 
@@ -2386,15 +2394,18 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
+  SetupWallet();
+
   mojom::OriginInfoPtr origin_info =
       MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
   std::string expected_signature = std::string("0xSiGnEd");
-  std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
+  // That should be hw account per test name.
+  auto account_id = GetAccountUtils().EnsureEthAccount(0)->account_id.Clone();
   std::string domain = "{}";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 1, address, domain, message, false, absl::nullopt,
-      absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
+      origin_info.Clone(), 1, account_id.Clone(), domain, message, false,
+      absl::nullopt, absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
       mojom::kMainnetChainId);
   bool callback_is_called = false;
   service_->AddSignMessageRequest(
@@ -2421,8 +2432,8 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   callback_is_called = false;
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 2, address, domain, message, false, absl::nullopt,
-      absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
+      origin_info.Clone(), 2, account_id.Clone(), domain, message, false,
+      absl::nullopt, absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
       mojom::kMainnetChainId);
   service_->AddSignMessageRequest(
       std::move(request2),
@@ -2445,15 +2456,17 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, SignMessage) {
+  SetupWallet();
+
   mojom::OriginInfoPtr origin_info =
       MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
   std::string expected_signature = std::string("0xSiGnEd");
-  std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
+  auto account_id = GetAccountUtils().EnsureEthAccount(0)->account_id.Clone();
   std::string domain = "{}";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 1, address, domain, message, false, absl::nullopt,
-      absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
+      origin_info.Clone(), 1, account_id.Clone(), domain, message, false,
+      absl::nullopt, absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
       mojom::kMainnetChainId);
   bool callback_is_called = false;
   service_->AddSignMessageRequest(
@@ -2475,8 +2488,8 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
   callback_is_called = false;
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 2, address, domain, message, false, absl::nullopt,
-      absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
+      origin_info.Clone(), 2, account_id.Clone(), domain, message, false,
+      absl::nullopt, absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
       mojom::kMainnetChainId);
   service_->AddSignMessageRequest(
       std::move(request2),
@@ -2675,6 +2688,8 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAsset) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, Reset) {
+  SetupWallet();
+
   SetDefaultBaseCurrency("CAD");
   SetDefaultBaseCryptocurrency("ETH");
   mojom::BlockchainTokenPtr token1 = GetToken1();
@@ -2686,12 +2701,12 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   EXPECT_TRUE(GetPrefs()->HasPrefPath(kDefaultBaseCryptocurrency));
   mojom::OriginInfoPtr origin_info =
       MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
-  std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
+  auto account_id = GetAccountUtils().EnsureEthAccount(0)->account_id.Clone();
   std::string domain = "{}";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 1, address, domain, message, false, absl::nullopt,
-      absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
+      origin_info.Clone(), 1, account_id.Clone(), domain, message, false,
+      absl::nullopt, absl::nullopt, absl::nullopt, mojom::CoinType::ETH,
       mojom::kMainnetChainId);
   service_->AddSignMessageRequest(
       std::move(request1),
