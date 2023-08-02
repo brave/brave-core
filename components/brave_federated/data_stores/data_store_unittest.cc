@@ -55,7 +55,7 @@ class DataStoreTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
-  DataStore* data_store_;
+  raw_ptr<DataStore> data_store_;
 };
 
 void DataStoreTest::SetUp() {
