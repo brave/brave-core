@@ -7,7 +7,11 @@
 import { USDCIconUrl } from './asset-icons'
 
 // types
-import { BraveWallet, WalletState } from '../../constants/types'
+import {
+  BraveWallet,
+  CoinType,
+  WalletState
+} from '../../constants/types'
 import { AllNetworksOptionDefault } from '../../options/network-filter-options'
 import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
 import { AllAccountsOptionUniqueKey } from '../../options/account-filter-options'
@@ -179,7 +183,7 @@ export const mockWalletState: WalletState = {
       symbol: 'ETH',
       tokenId: '',
       visible: true,
-      coin: BraveWallet.CoinType.ETH,
+      coin: CoinType.ETH,
       chainId: BraveWallet.MAINNET_CHAIN_ID
     },
     {
@@ -196,7 +200,7 @@ export const mockWalletState: WalletState = {
       symbol: 'USDC',
       tokenId: '',
       visible: true,
-      coin: BraveWallet.CoinType.ETH,
+      coin: CoinType.ETH,
       chainId: BraveWallet.MAINNET_CHAIN_ID
     },
     {
@@ -213,7 +217,7 @@ export const mockWalletState: WalletState = {
       symbol: 'ETH',
       tokenId: '',
       visible: true,
-      coin: BraveWallet.CoinType.ETH,
+      coin: CoinType.ETH,
       chainId: BraveWallet.GOERLI_CHAIN_ID
     },
     {
@@ -230,7 +234,7 @@ export const mockWalletState: WalletState = {
       symbol: 'USDC',
       tokenId: '',
       visible: true,
-      coin: BraveWallet.CoinType.ETH,
+      coin: CoinType.ETH,
       chainId: BraveWallet.GOERLI_CHAIN_ID
     },
     mockMoonCatNFT

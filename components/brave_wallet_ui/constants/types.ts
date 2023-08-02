@@ -5,12 +5,22 @@
 
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import {
+  CoinType,
+  OriginInfo
+} from 'gen/brave/components/brave_wallet/common/base.mojom.m.js'
+import { SignMessageRequest } from 'gen/brave/components/brave_wallet/common/sign_message_request.mojom.m.js'
 import { HardwareWalletResponseCodeType } from '../common/hardware/types'
 import { NftsPinningStatusType } from '../page/constants/action_types'
 
 // Re-export BraveWallet for use in other modules, to avoid hard-coding the
 // path of generated mojom files.
-export { BraveWallet }
+export {
+  BraveWallet,
+  CoinType,
+  OriginInfo,
+  SignMessageRequest
+}
 export { Url } from 'gen/url/mojom/url.mojom.m.js'
 export { Origin } from 'gen/url/mojom/origin.mojom.m.js'
 export { TimeDelta }
@@ -235,7 +245,7 @@ export interface WalletState {
   addUserAssetError: boolean
   defaultEthereumWallet: BraveWallet.DefaultWallet
   defaultSolanaWallet: BraveWallet.DefaultWallet
-  activeOrigin: BraveWallet.OriginInfo
+  activeOrigin: OriginInfo
   solFeeEstimates?: SolFeeEstimates
   hasFeeEstimatesError?: boolean
   gasEstimates?: BraveWallet.GasEstimation1559
@@ -269,13 +279,13 @@ export interface WalletState {
 
 export interface PanelState {
   hasInitialized: boolean
-  connectToSiteOrigin: BraveWallet.OriginInfo
+  connectToSiteOrigin: OriginInfo
   selectedPanel: PanelTypes
   lastSelectedPanel?: PanelTypes
   panelTitle: string
   connectingAccounts: string[]
   addChainRequest: BraveWallet.AddChainRequest
-  signMessageData: BraveWallet.SignMessageRequest[]
+  signMessageData: SignMessageRequest[]
   signTransactionRequests: BraveWallet.SignTransactionRequest[]
   signAllTransactionsRequests: BraveWallet.SignAllTransactionsRequest[]
   getEncryptionPublicKeyRequest: BraveWallet.GetEncryptionPublicKeyRequest
@@ -744,7 +754,7 @@ export type BlockExplorerUrlTypes =
 export interface CreateAccountOptionsType {
   name: string
   description: string
-  coin: BraveWallet.CoinType
+  coin: CoinType
   icon: string
 }
 
@@ -787,10 +797,10 @@ export interface TransactionProviderErrorRegistry {
 }
 
 export const SupportedCoinTypes = [
-  BraveWallet.CoinType.SOL,
-  BraveWallet.CoinType.ETH,
-  BraveWallet.CoinType.FIL,
-  BraveWallet.CoinType.BTC
+  CoinType.SOL,
+  CoinType.ETH,
+  CoinType.FIL,
+  CoinType.BTC
 ]
 
 export const SupportedOnRampNetworks = [
@@ -831,7 +841,7 @@ export const SupportedTestNetworks = [
 ]
 
 /**
- * Should match BraveWallet.CoinType defined with "as const" to allow for use
+ * Should match CoinType defined with "as const" to allow for use
  * as a type-guard.
  */
 export const CoinTypes = {
@@ -843,13 +853,11 @@ export const CoinTypes = {
   MAX_VALUE: 501,
 } as const;
 
-export type CoinType = typeof CoinTypes[keyof typeof CoinTypes]
-
 export enum CoinTypesMap {
-  ETH = BraveWallet.CoinType.ETH,
-  FIL = BraveWallet.CoinType.FIL,
-  SOL = BraveWallet.CoinType.SOL,
-  BTC = BraveWallet.CoinType.BTC
+  ETH = CoinType.ETH,
+  FIL = CoinType.FIL,
+  SOL = CoinType.SOL,
+  BTC = CoinType.BTC
 }
 
 export type BuyOption = {
@@ -858,11 +866,6 @@ export type BuyOption = {
   name: string
   description: string
   actionText: string
-}
-
-export type OriginInfo = {
-  origin: string
-  eTldPlusOne: string
 }
 
 export type AssetFilterOptionIds =
@@ -1019,7 +1022,7 @@ export type AlertType = 'danger' | 'warning' | 'info' | 'success'
 
 export type NetworkFilterType = {
   chainId: string
-  coin: BraveWallet.CoinType
+  coin: CoinType
 }
 
 export type SortingOrder = 'ascending' | 'descending'

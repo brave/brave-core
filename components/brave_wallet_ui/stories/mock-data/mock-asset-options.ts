@@ -2,7 +2,10 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { BraveWallet } from '../../constants/types'
+import {
+  BraveWallet,
+  CoinType
+} from '../../constants/types'
 import {
   ALGOIconUrl,
   BATIconUrl,
@@ -27,7 +30,7 @@ export const mockEthToken = {
   tokenId: '',
   coingeckoId: '',
   chainId: '0x1',
-  coin: BraveWallet.CoinType.ETH
+  coin: CoinType.ETH
 } as BraveWallet.BlockchainToken
 
 export const mockBasicAttentionToken = {
@@ -44,7 +47,7 @@ export const mockBasicAttentionToken = {
   visible: true,
   tokenId: '',
   coingeckoId: '',
-  coin: BraveWallet.CoinType.ETH,
+  coin: CoinType.ETH,
   chainId: '0x1'
 }
 
@@ -62,7 +65,7 @@ export const mockBinanceCoinErc20Token = {
   visible: true,
   tokenId: '',
   coingeckoId: '',
-  coin: BraveWallet.CoinType.ETH,
+  coin: CoinType.ETH,
   chainId: '0x1'
 }
 
@@ -80,7 +83,7 @@ export const mockBitcoinErc20Token = {
   visible: true,
   tokenId: '',
   coingeckoId: '',
-  coin: BraveWallet.CoinType.ETH,
+  coin: CoinType.ETH,
   chainId: '0x1'
 }
 
@@ -98,7 +101,7 @@ export const mockAlgorandErc20Token = {
   visible: true,
   tokenId: '',
   coingeckoId: '',
-  coin: BraveWallet.CoinType.ETH,
+  coin: CoinType.ETH,
   chainId: '0x1'
 }
 
@@ -116,7 +119,7 @@ export const mockZrxErc20Token = {
   visible: true,
   tokenId: '',
   coingeckoId: '',
-  coin: BraveWallet.CoinType.ETH,
+  coin: CoinType.ETH,
   chainId: '0x1'
 }
 
@@ -134,7 +137,7 @@ export const mockDaiToken = {
   symbol: 'DAI',
   tokenId: '',
   visible: true,
-  coin: BraveWallet.CoinType.ETH,
+  coin: CoinType.ETH,
   chainId: BraveWallet.MAINNET_CHAIN_ID
 }
 
@@ -152,7 +155,7 @@ export const mockUSDCoin = {
   symbol: 'USDC',
   tokenId: '',
   visible: true,
-  coin: BraveWallet.CoinType.ETH,
+  coin: CoinType.ETH,
   chainId: BraveWallet.MAINNET_CHAIN_ID
 }
 
@@ -170,7 +173,7 @@ export const mockMoonCatNFT = {
   visible: true,
   tokenId: '0x42a5',
   coingeckoId: '',
-  coin: BraveWallet.CoinType.ETH,
+  coin: CoinType.ETH,
   chainId: '0x1'
 }
 
@@ -209,7 +212,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     visible: true,
     tokenId: '',
     coingeckoId: '',
-    coin: BraveWallet.CoinType.ETH,
+    coin: CoinType.ETH,
     chainId: '0x1'
   },
   {
@@ -226,7 +229,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     visible: true,
     tokenId: '',
     coingeckoId: '',
-    coin: BraveWallet.CoinType.ETH,
+    coin: CoinType.ETH,
     chainId: '0x5'
   },
   {
@@ -243,7 +246,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     visible: true,
     tokenId: '',
     coingeckoId: '',
-    coin: BraveWallet.CoinType.ETH,
+    coin: CoinType.ETH,
     chainId: '0x1'
   },
   {
@@ -260,7 +263,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     visible: true,
     tokenId: '',
     coingeckoId: '',
-    coin: BraveWallet.CoinType.ETH,
+    coin: CoinType.ETH,
     chainId: '0x1'
   },
   {
@@ -277,7 +280,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     visible: true,
     tokenId: '',
     coingeckoId: '',
-    coin: BraveWallet.CoinType.ETH,
+    coin: CoinType.ETH,
     chainId: '0x1'
   },
   mockMoonCatNFT,

@@ -14,6 +14,7 @@ import type { WalletPanelApiProxy } from '../../panel/wallet_panel_api_proxy'
 // constants
 import {
   BraveWallet,
+  CoinType,
   SupportedCoinTypes,
   SupportedTestNetworks,
   SupportedOnRampNetworks,
@@ -131,10 +132,10 @@ export class BaseQueryCache {
       const filteredSupportedCoinTypes = SupportedCoinTypes.filter((coin) => {
         // FIL and SOL networks, unless enabled by brave://flags
         return (
-          (coin === BraveWallet.CoinType.FIL && isFilecoinEnabled) ||
-          (coin === BraveWallet.CoinType.SOL && isSolanaEnabled) ||
-          (coin === BraveWallet.CoinType.BTC && isBitcoinEnabled) ||
-          coin === BraveWallet.CoinType.ETH
+          (coin === CoinType.FIL && isFilecoinEnabled) ||
+          (coin === CoinType.SOL && isSolanaEnabled) ||
+          (coin === CoinType.BTC && isBitcoinEnabled) ||
+          coin === CoinType.ETH
         )
       })
 
@@ -150,7 +151,7 @@ export class BaseQueryCache {
       const networkLists: BraveWallet.NetworkInfo[][] = await mapLimit(
         filteredSupportedCoinTypes,
         10,
-        async (coin: BraveWallet.CoinType) => {
+        async (coin: CoinType) => {
           const { networks } = await jsonRpcService.getAllNetworks(coin)
 
           // hidden networks for coin
@@ -251,10 +252,10 @@ export class BaseQueryCache {
       const networksRegistry = await this.getNetworksRegistry()
 
       const tokenIdsByChainId: Record<string, string[]> = {}
-      const tokenIdsByCoinType: Record<BraveWallet.CoinType, string[]> = {}
+      const tokenIdsByCoinType: Record<CoinType, string[]> = {}
       const visibleTokenIds: string[] = []
       const visibleTokenIdsByChainId: Record<string, string[]> = {}
-      const visibleTokenIdsByCoinType: Record<BraveWallet.CoinType, string[]> =
+      const visibleTokenIdsByCoinType: Record<CoinType, string[]> =
         {}
 
       const userTokenListsForNetworks = await mapLimit(

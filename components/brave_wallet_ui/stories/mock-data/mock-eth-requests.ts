@@ -4,7 +4,10 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { mockNetwork } from '../../common/constants/mocks'
-import { BraveWallet } from '../../constants/types'
+import {
+  BraveWallet,
+  CoinType
+} from '../../constants/types'
 import { mockOriginInfo } from './mock-origin-info'
 
 export const mockSignMessageRequest = {
@@ -20,7 +23,7 @@ export const mockSignMessageRequest = {
     ethSiweData: undefined,
     solanaSignData: undefined
   },
-  coin: BraveWallet.CoinType.ETH,
+  coin: CoinType.ETH,
   chainId: BraveWallet.MAINNET_CHAIN_ID
 }
 

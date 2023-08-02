@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // Constants
-import { BraveWallet } from '../../constants/types'
+import { BraveWallet, CoinType } from '../../constants/types'
 
 // Utils
 import { WalletSelectors } from '../selectors'
@@ -23,7 +23,7 @@ export function useHasAccount () {
   // memos
   const hasSolAccount = React.useMemo((): boolean => {
     return accounts.some(
-      (account) => account.accountId.coin === BraveWallet.CoinType.SOL
+      (account) => account.accountId.coin === CoinType.SOL
     )
   }, [accounts])
   const hasFilAccount = React.useMemo((): boolean => {
@@ -33,7 +33,7 @@ export function useHasAccount () {
         : BraveWallet.KeyringId.kFilecoinTestnet
     return accounts.some(
       (account) =>
-        account.accountId.coin === BraveWallet.CoinType.FIL &&
+        account.accountId.coin === CoinType.FIL &&
         account.accountId.keyringId === keyringForCurrentNetwork
     )
   }, [accounts, selectedNetwork])
@@ -45,8 +45,8 @@ export function useHasAccount () {
     }
 
     switch (selectedNetwork?.coin) {
-      case BraveWallet.CoinType.SOL: return !hasSolAccount
-      case BraveWallet.CoinType.FIL: return !hasFilAccount
+      case CoinType.SOL: return !hasSolAccount
+      case CoinType.FIL: return !hasFilAccount
       default: return false
     }
   }, [hasSolAccount, hasFilAccount, selectedNetwork])

@@ -11,7 +11,10 @@ import {
   networkSupportsAccount
 } from './network-utils'
 import { mockBitcoinMainnet, mockBitcoinTestnet, mockEthMainnet, mockNetworks } from '../stories/mock-data/mock-networks'
-import { BraveWallet } from '../constants/types'
+import {
+  BraveWallet,
+  CoinType
+} from '../constants/types'
 import { mockNewAssetOptions } from '../stories/mock-data/mock-asset-options'
 import { mockBitcoinAccount, mockEthAccount } from '../stories/mock-data/mock-wallet-accounts'
 
@@ -27,7 +30,7 @@ describe('getNetworkInfo', () => {
 
   it('should return network object with default values if network with chainId is not found', () => {
     const chainId = 'fakeChainId'
-    const coin = BraveWallet.CoinType.ETH
+    const coin = CoinType.ETH
     expect(getNetworkInfo(chainId, coin, mockNetworks)).toEqual(emptyNetwork)
   })
 })
@@ -59,7 +62,7 @@ describe('filterNetworksForAccount', () => {
   it('CoinType ETH, should return all ETH networks', () => {
     expect(
       filterNetworksForAccount(mockNetworks, mockEthAccount.accountId)
-    ).toEqual(mockNetworks.filter((n) => n.coin === BraveWallet.CoinType.ETH))
+    ).toEqual(mockNetworks.filter((n) => n.coin === CoinType.ETH))
   })
   it('CoinType BTC, should return Bitcoin mainnet', () => {
     expect(
@@ -84,7 +87,7 @@ describe('getCoinFromTxDataUnion', () => {
       ethTxData: undefined,
       ethTxData1559: undefined,
       solanaTxData: undefined
-    })).toEqual(BraveWallet.CoinType.FIL)
+    })).toEqual(CoinType.FIL)
   })
   it('Ethereum transaction', () => {
     expect(getCoinFromTxDataUnion({
@@ -92,7 +95,7 @@ describe('getCoinFromTxDataUnion', () => {
       ethTxData: {} as BraveWallet.TxData,
       ethTxData1559: undefined,
       solanaTxData: undefined
-    })).toEqual(BraveWallet.CoinType.ETH)
+    })).toEqual(CoinType.ETH)
   })
   it('Ethereum1559 transaction', () => {
     expect(getCoinFromTxDataUnion({
@@ -100,7 +103,7 @@ describe('getCoinFromTxDataUnion', () => {
       ethTxData: undefined,
       ethTxData1559: {} as BraveWallet.TxData1559,
       solanaTxData: undefined
-    })).toEqual(BraveWallet.CoinType.ETH)
+    })).toEqual(CoinType.ETH)
   })
   it('Solana transaction', () => {
     expect(getCoinFromTxDataUnion({
@@ -108,6 +111,6 @@ describe('getCoinFromTxDataUnion', () => {
       ethTxData: undefined,
       ethTxData1559: undefined,
       solanaTxData: {} as BraveWallet.SolanaTxData
-    })).toEqual(BraveWallet.CoinType.SOL)
+    })).toEqual(CoinType.SOL)
   })
 })

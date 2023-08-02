@@ -9,7 +9,10 @@ import * as React from 'react'
 import { useExplorer } from '../../../../../common/hooks/explorer'
 
 // Types
-import { BraveWallet } from '../../../../../constants/types'
+import {
+  BraveWallet,
+  CoinType
+} from '../../../../../constants/types'
 
 // Assets
 import InfoIcon from '../../../../../assets/svg-icons/info-icon.svg'
@@ -76,7 +79,7 @@ export const NFTInfoTooltip = (props: Props) => {
               {reduceAddress(token.contractAddress)}
             </AddressLink>
           </Column>
-          {token.coin !== BraveWallet.CoinType.SOL &&
+          {token.coin !== CoinType.SOL &&
             <Column marginBottom={18} columnWidth='full' horizontalAlign='flex-start'>
               <Text
                 textAlign='left'

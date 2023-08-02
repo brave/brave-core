@@ -7,6 +7,7 @@
 import { mockAccount, mockFilecoinAccount, mockSolanaAccount } from '../../common/constants/mocks'
 import {
   BraveWallet,
+  CoinType,
   SerializableTransactionInfo
 } from '../../constants/types'
 import { deserializeTransaction } from '../../utils/model-serialization-utils'
@@ -203,7 +204,7 @@ export const createMockTransactionInfo = (arg: {
   isERC20Approve?: boolean
   isERC721Send?: boolean
   isSwap?: boolean,
-  coinType: BraveWallet.CoinType
+  coinType: CoinType
   chainId: string
   tokenId?: string
 }): BraveWallet.TransactionInfo => {
@@ -255,12 +256,12 @@ export const createMockTransactionInfo = (arg: {
     }
   }
 
-  const txBase = coinType === BraveWallet.CoinType.FIL
+  const txBase = coinType === CoinType.FIL
     ? mockFilSendTransaction
     : deserializeTransaction(
-      coinType === BraveWallet.CoinType.ETH
+      coinType === CoinType.ETH
         ? mockTransactionInfo
-        : coinType === BraveWallet.CoinType.SOL
+        : coinType === CoinType.SOL
           ? mockSolanaTransactionInfo
           : mockTransactionInfo
     )

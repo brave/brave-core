@@ -6,7 +6,7 @@
 import EthereumLedgerBridgeKeyring from './eth_ledger_bridge_keyring'
 import { MockLedgerTransport } from './ledger_bridge_keyring.test'
 import { LedgerDerivationPaths, GetAccountsHardwareOperationResult, SignHardwareOperationResult } from '../types'
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, CoinType } from '../../../constants/types'
 import { LedgerCommand, LedgerError, UnlockResponse } from './ledger-messages'
 import {
   EthGetAccountResponsePayload,
@@ -91,7 +91,7 @@ test('getAccounts ledger live derivation path success', async () => {
         name: 'Ledger',
         hardwareVendor: 'Ledger',
         deviceId: 'd80c9bf910f144738ef983724bc04bd6bd3f17c5c83ed57bedee1b1b9278e811',
-        coin: BraveWallet.CoinType.ETH,
+        coin: CoinType.ETH,
         keyringId: BraveWallet.KeyringId.kDefault
       },
       {
@@ -100,7 +100,7 @@ test('getAccounts ledger live derivation path success', async () => {
         name: 'Ledger',
         hardwareVendor: 'Ledger',
         deviceId: 'd80c9bf910f144738ef983724bc04bd6bd3f17c5c83ed57bedee1b1b9278e811',
-        coin: BraveWallet.CoinType.ETH,
+        coin: CoinType.ETH,
         keyringId: BraveWallet.KeyringId.kDefault
       }
     ]
@@ -134,7 +134,7 @@ test('getAccounts legacy derivation path success', async () => {
         name: 'Ledger',
         hardwareVendor: 'Ledger',
         deviceId: 'd80c9bf910f144738ef983724bc04bd6bd3f17c5c83ed57bedee1b1b9278e811',
-        coin: BraveWallet.CoinType.ETH,
+        coin: CoinType.ETH,
         keyringId: BraveWallet.KeyringId.kDefault
       },
       {
@@ -143,7 +143,7 @@ test('getAccounts legacy derivation path success', async () => {
         name: 'Ledger',
         hardwareVendor: 'Ledger',
         deviceId: 'd80c9bf910f144738ef983724bc04bd6bd3f17c5c83ed57bedee1b1b9278e811',
-        coin: BraveWallet.CoinType.ETH,
+        coin: CoinType.ETH,
         keyringId: BraveWallet.KeyringId.kDefault
       }
     ]
@@ -178,7 +178,7 @@ test('getAccounts deprecated derivation path success', async () => {
         name: 'Ledger',
         hardwareVendor: 'Ledger',
         deviceId: 'd80c9bf910f144738ef983724bc04bd6bd3f17c5c83ed57bedee1b1b9278e811',
-        coin: BraveWallet.CoinType.ETH,
+        coin: CoinType.ETH,
         keyringId: BraveWallet.KeyringId.kDefault
       },
       {
@@ -187,7 +187,7 @@ test('getAccounts deprecated derivation path success', async () => {
         name: 'Ledger',
         hardwareVendor: 'Ledger',
         deviceId: 'd80c9bf910f144738ef983724bc04bd6bd3f17c5c83ed57bedee1b1b9278e811',
-        coin: BraveWallet.CoinType.ETH,
+        coin: CoinType.ETH,
         keyringId: BraveWallet.KeyringId.kDefault
       }
     ]

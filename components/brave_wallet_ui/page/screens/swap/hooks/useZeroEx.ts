@@ -7,7 +7,10 @@ import { useCallback, useMemo, useState } from 'react'
 
 // Types / constants
 import { QuoteOption, SwapParams, SwapFee } from '../constants/types'
-import { BraveWallet } from '../../../../constants/types'
+import {
+  BraveWallet,
+  CoinType
+} from '../../../../constants/types'
 
 import { MAX_UINT256, NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../constants/magics'
 
@@ -53,7 +56,7 @@ export function useZeroEx (params: SwapParams) {
   // FIXME(josheleonard): convert to slices
   const getBraveFeeForAsset = useCallback(
     async (token: BraveWallet.BlockchainToken) => {
-      if (token.coin !== BraveWallet.CoinType.ETH) {
+      if (token.coin !== CoinType.ETH) {
         throw Error('Unsupported coin type')
       }
 
@@ -92,7 +95,7 @@ export function useZeroEx (params: SwapParams) {
       }
 
       // Perform data validation and early-exit
-      if (selectedNetwork?.coin !== BraveWallet.CoinType.ETH) {
+      if (selectedNetwork?.coin !== CoinType.ETH) {
         return
       }
       if (!overriddenParams.fromToken || !overriddenParams.toToken) {
@@ -230,7 +233,7 @@ export function useZeroEx (params: SwapParams) {
       }
 
       // Perform data validation and early-exit
-      if (selectedNetwork?.coin !== BraveWallet.CoinType.ETH) {
+      if (selectedNetwork?.coin !== CoinType.ETH) {
         return
       }
       if (!selectedAccount) {

@@ -18,7 +18,7 @@ import { createMockStore } from '../../utils/test-utils'
 import {
   createMockTransactionInfo
 } from '../../stories/mock-data/mock-transaction-info'
-import { BraveWallet } from '../../constants/types'
+import { BraveWallet, CoinType } from '../../constants/types'
 import { mockAccounts } from '../../stories/mock-data/mock-wallet-accounts'
 import {
   mockBasicAttentionToken,
@@ -36,7 +36,7 @@ function renderHookOptionsWithCustomStore (store: any) {
 
 const mockSolanaSendTokenTx = createMockTransactionInfo({
   chainId: BraveWallet.SOLANA_MAINNET,
-  coinType: BraveWallet.CoinType.SOL,
+  coinType: CoinType.SOL,
   fromAddress: mockSolanaAccountInfo.address,
   toAddress: 'sSolanaAccount2',
   sendApproveOrSellAssetContractAddress:
@@ -46,7 +46,7 @@ const mockSolanaSendTokenTx = createMockTransactionInfo({
 
 const mockFilSendTx = createMockTransactionInfo({
   chainId: BraveWallet.FILECOIN_MAINNET,
-  coinType: BraveWallet.CoinType.FIL,
+  coinType: CoinType.FIL,
   fromAddress: mockFilecoinAccountInfo.address,
   toAddress: mockAccounts[1].address,
   sendApproveOrSellAssetContractAddress: '',
@@ -56,7 +56,7 @@ const mockFilSendTx = createMockTransactionInfo({
 
 const mockAvaxErc20SendTx = createMockTransactionInfo({
   chainId: BraveWallet.AVALANCHE_MAINNET_CHAIN_ID,
-  coinType: BraveWallet.CoinType.ETH,
+  coinType: CoinType.ETH,
   fromAddress: mockEthAccountInfo.address,
   toAddress: mockAccounts[1].address,
   sendApproveOrSellAssetContractAddress: mockBitcoinErc20Token.contractAddress,
@@ -66,7 +66,7 @@ const mockAvaxErc20SendTx = createMockTransactionInfo({
 
 const mockEthErc20SendTx = createMockTransactionInfo({
   chainId: BraveWallet.MAINNET_CHAIN_ID,
-  coinType: BraveWallet.CoinType.ETH,
+  coinType: CoinType.ETH,
   fromAddress: mockEthAccountInfo.address,
   toAddress: mockAccounts[1].address,
   sendApproveOrSellAssetContractAddress: mockBasicAttentionToken.contractAddress,
@@ -88,7 +88,7 @@ describe('api slice: useGetTransactionsQuery', () => {
       () =>
         useGetTransactionsQuery({
           address: mockEthErc20SendTx.fromAddress,
-          coinType: BraveWallet.CoinType.ETH,
+          coinType: CoinType.ETH,
           chainId: null
         }),
       renderHookOptionsWithCustomStore(store)

@@ -1,0 +1,68 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_wallet.mojom;
+
+import "brave/components/brave_wallet/common/base.mojom";
+import "url/mojom/origin.mojom";
+import "url/mojom/url.mojom";
+
+// https://eips.ethereum.org/EIPS/eip-191
+struct EthStandardSignData {
+  // message for display
+  string message;
+};
+
+// https://eips.ethereum.org/EIPS/eip-712
+struct EthSignTypedData {
+  // message for display
+  string message;
+  string domain;
+  // These fields are for hardware eip712 signing
+  string? domain_hash;
+  string? primary_hash;
+};
+
+// https://eips.ethereum.org/EIPS/eip-4361
+struct SIWEMessage {
+  url.mojom.Origin origin;
+  string address;
+  string? statement;
+  url.mojom.Url uri;
+  uint32 version;
+  string chain_id;
+  string nonce;
+  // These ISO 8601 format strings are only used for displaying, no need to
+  // convert it to base::Time
+  string issued_at;
+  string? expiration_time;
+  string? not_before;
+  string? request_id;
+  array<url.mojom.Url>? resources;
+};
+
+struct SolanaSignData {
+  // message for display
+  string message;
+  // This will be passed for Solana, in hardware keyring case, it will be used
+  // to sign.
+  array<uint8>? message_bytes;
+};
+
+union SignDataUnion {
+  EthStandardSignData eth_standard_sign_data;
+  EthSignTypedData eth_sign_typed_data;
+  SIWEMessage eth_siwe_data;
+  SolanaSignData solana_sign_data;
+};
+
+struct SignMessageRequest {
+  OriginInfo origin_info;
+  int32 id;
+  string address;
+  SignDataUnion sign_data;
+  CoinType coin;
+  string chain_id;
+};

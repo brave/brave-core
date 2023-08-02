@@ -5,7 +5,7 @@
 
  import { LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { TextDecoder, TextEncoder } from 'util'
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, CoinType } from '../../../constants/types'
 import { SignHardwareOperationResult } from '../types'
 import { FilGetAccountResponse, FilLotusMessage, FilSignedLotusMessage, FilSignTransactionResponse } from './fil-ledger-messages'
 import FilecoinLedgerBridgeKeyring from './fil_ledger_bridge_keyring'
@@ -92,7 +92,7 @@ test('Extracting accounts from device MAIN', async () => {
     .toEqual({
       payload: [{
         address: '0',
-        coin: BraveWallet.CoinType.FIL,
+        coin: CoinType.FIL,
         derivationPath: 'm/44\'/461\'/0\'/0/0',
         deviceId: 'device1',
         hardwareVendor: 'Ledger',
@@ -113,7 +113,7 @@ test('Extracting accounts from device TEST', async () => {
     .toEqual({
       payload: [{
         address: '0',
-        coin: BraveWallet.CoinType.FIL,
+        coin: CoinType.FIL,
         derivationPath: 'm/44\'/1\'/0\'/0/0',
         deviceId: 'device1',
         hardwareVendor: 'Ledger',

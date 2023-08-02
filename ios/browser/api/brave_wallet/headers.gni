@@ -3,7 +3,11 @@ brave_wallet_public_headers = [
   "//brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios.h",
   "//brave/ios/browser/api/brave_wallet/brave_wallet_solana_utils.h",
   "//brave/ios/browser/api/brave_wallet/token_registry_utils.h",
+  "$root_gen_dir/brave/ios/browser/api/brave_wallet/base.mojom.objc.h",
   "$root_gen_dir/brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc.h",
+  "$root_gen_dir/brave/ios/browser/api/brave_wallet/sign_message_request.mojom.objc.h",
 ]
-brave_wallet_public_deps =
-    [ "//brave/ios/browser/api/brave_wallet:wallet_mojom_wrappers" ]
+brave_wallet_public_deps = [
+  "//brave/ios/browser/api/brave_wallet:deps_mojom_wrappers",
+  "//brave/ios/browser/api/brave_wallet:wallet_mojom_wrappers",
+]

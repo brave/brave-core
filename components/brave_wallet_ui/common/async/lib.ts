@@ -10,6 +10,7 @@ import {
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import {
   BraveWallet,
+  CoinType,
   GetBlockchainTokenInfoReturnInfo,
   SendEthTransactionParams,
   SendFilTransactionParams,
@@ -600,10 +601,10 @@ export function getEthTxManagerProxy () {
 
 export async function getNFTMetadata (token: BraveWallet.BlockchainToken) {
   const { jsonRpcService } = getAPIProxy()
-  if (token.coin === BraveWallet.CoinType.ETH) {
+  if (token.coin === CoinType.ETH) {
     return await jsonRpcService.getERC721Metadata(
       token.contractAddress, token.tokenId, token.chainId)
-  } else if (token.coin === BraveWallet.CoinType.SOL) {
+  } else if (token.coin === CoinType.SOL) {
     return await jsonRpcService.getSolTokenMetadata(
       token.chainId, token.contractAddress)
   }

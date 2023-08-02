@@ -8,7 +8,10 @@ import * as React from 'react'
 
 import styled from 'styled-components'
 import { useState } from 'react'
-import { BraveWallet } from '../../../constants/types'
+import {
+  BraveWallet,
+  CoinType
+} from '../../../constants/types'
 import {
   LoadingSkeleton //
 } from '../../../components/shared/loading-skeleton/index'
@@ -69,7 +72,7 @@ interface CreateAccountSectionProps {
 const CreateAccountSection = (props: CreateAccountSectionProps) => {
   const createBtcAccount = async () => {
     const {accountInfo} = await getAPIProxy().keyringService.addAccount(
-      BraveWallet.CoinType.BTC,
+      CoinType.BTC,
       BraveWallet.KeyringId.kBitcoin84Testnet,
       'BTC Account'
     )

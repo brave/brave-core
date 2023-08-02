@@ -9,13 +9,13 @@ import {
   EntityAdapter,
   EntityId
 } from '@reduxjs/toolkit'
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, CoinType } from '../../../constants/types'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 
 export type NetworkEntityAdaptor = EntityAdapter<BraveWallet.NetworkInfo> & {
   selectId: (network: {
     chainId: string
-    coin: BraveWallet.CoinType
+    coin: CoinType
   }) => EntityId
 }
 
@@ -31,8 +31,8 @@ export type NetworksRegistry = ReturnType<
   (typeof networkEntityAdapter)['getInitialState']
 > & {
   hiddenIds: string[]
-  hiddenIdsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
-  idsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
+  hiddenIdsByCoinType: Record<CoinType, EntityId[]>
+  idsByCoinType: Record<CoinType, EntityId[]>
   mainnetIds: string[]
   onRampIds: string[]
   offRampIds: string[]

@@ -53,7 +53,8 @@ import { serializedTimeDeltaToJSDate } from '../../../utils/datetime-utils'
 
 // Constants
 import {
-  BraveWallet
+  BraveWallet,
+  CoinType
 } from '../../../constants/types'
 
 // Styled Components
@@ -169,7 +170,7 @@ export const TransactionDetailPanel = (props: Props) => {
       return ''
     }
 
-    return txCoinType === BraveWallet.CoinType.SOL
+    return txCoinType === CoinType.SOL
       ? solFeeEstimate ?? ''
       : getTransactionGasFee(transaction)
   }, [transaction, txCoinType, solFeeEstimate])

@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { assert } from 'chrome://resources/js/assert_ts.js'
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, CoinType } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import { LedgerEthereumKeyring } from '../interfaces'
 import {
@@ -36,8 +36,8 @@ export default class EthereumLedgerBridgeKeyring extends LedgerBridgeKeyring imp
     super(onAuthorized)
   }
 
-  coin = (): BraveWallet.CoinType => {
-    return BraveWallet.CoinType.ETH
+  coin = (): CoinType => {
+    return CoinType.ETH
   }
 
   keyringId = (): BraveWallet.KeyringId => {

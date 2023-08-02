@@ -7,6 +7,7 @@
 
 #include "base/strings/strcat.h"
 #include "brave/components/brave_wallet/browser/siwe_message_parser.h"
+#include "brave/components/brave_wallet/common/sign_message_request.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 #include "url/origin.h"

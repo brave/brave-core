@@ -7,7 +7,10 @@ import { useCallback, useMemo, useState } from 'react'
 
 // Types
 import { QuoteOption, SwapParams, SwapFee } from '../constants/types'
-import { BraveWallet } from '../../../../constants/types'
+import {
+  BraveWallet,
+  CoinType
+} from '../../../../constants/types'
 
 // Constants
 import { WRAPPED_SOL_CONTRACT_ADDRESS } from '../constants/magics'
@@ -60,7 +63,7 @@ export function useJupiter (params: SwapParams) {
   // FIXME(josheleonard): convert to slices
   const getBraveFeeForAsset = useCallback(
     async (token: BraveWallet.BlockchainToken) => {
-      if (token.coin !== BraveWallet.CoinType.SOL) {
+      if (token.coin !== CoinType.SOL) {
         throw Error('Unsupported coin type')
       }
 
@@ -103,7 +106,7 @@ export function useJupiter (params: SwapParams) {
       }
 
       // Perform data validation and early-exit
-      if (selectedNetwork?.coin !== BraveWallet.CoinType.SOL) {
+      if (selectedNetwork?.coin !== CoinType.SOL) {
         return
       }
       if (!overriddenParams.fromToken || !overriddenParams.toToken) {
@@ -198,7 +201,7 @@ export function useJupiter (params: SwapParams) {
       if (!quote || quote?.routes.length === 0) {
         return
       }
-      if (selectedNetwork?.coin !== BraveWallet.CoinType.SOL) {
+      if (selectedNetwork?.coin !== CoinType.SOL) {
         return
       }
       if (!params.toToken) {

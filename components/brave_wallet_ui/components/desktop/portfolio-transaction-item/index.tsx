@@ -12,6 +12,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import {
   AccountPageTabs,
   BraveWallet,
+  CoinType,
   SerializableTransactionInfo,
   WalletRoutes
 } from '../../../constants/types'
@@ -144,7 +145,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   // queries
   const { data: solFeeEstimates } = useGetSolanaEstimatedFeeQuery(
-    txCoinType === BraveWallet.CoinType.SOL &&
+    txCoinType === CoinType.SOL &&
       transaction.chainId &&
       transaction.id
       ? {

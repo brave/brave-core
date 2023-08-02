@@ -14,7 +14,7 @@ import {
 import Amount from '../../utils/amount'
 
 // Types
-import { BraveWallet } from '../../constants/types'
+import { BraveWallet, CoinType } from '../../constants/types'
 
 // Hooks
 import { useLib } from './useLib'
@@ -84,7 +84,7 @@ export const useMultiChainSellAssets = () => {
         chainId: sellAsset.chainId,
         address: sellAddress,
         amount:
-          sellAsset.coin === BraveWallet.CoinType.SOL
+          sellAsset.coin === CoinType.SOL
             ? new Amount(sellAmount)
                 .multiplyByDecimals(sellAsset?.decimals ?? 18)
                 .toNumber()

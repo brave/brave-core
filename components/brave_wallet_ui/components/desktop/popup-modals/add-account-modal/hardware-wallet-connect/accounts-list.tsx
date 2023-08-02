@@ -27,6 +27,7 @@ import {
 import { SolDerivationPaths } from '../../../../../common/hardware/types'
 import {
   BraveWallet,
+  CoinType,
   FilecoinNetwork
 } from '../../../../../constants/types'
 import { getLocale } from '../../../../../../common/locale'
@@ -61,7 +62,7 @@ interface Props {
   onAddAccounts: () => void
   filecoinNetwork: FilecoinNetwork
   onChangeFilecoinNetwork: (network: FilecoinNetwork) => void
-  coin: BraveWallet.CoinType
+  coin: CoinType
 }
 
 export const HardwareWalletAccountsList = ({
@@ -87,9 +88,9 @@ export const HardwareWalletAccountsList = ({
   >([])
   const [isLoadingMore, setIsLoadingMore] = React.useState<boolean>(false)
   const [selectedNetworkId, setSelectedNetworkId] = React.useState<EntityId>(
-    coin === BraveWallet.CoinType.ETH
+    coin === CoinType.ETH
       ? BraveWallet.MAINNET_CHAIN_ID
-      : coin === BraveWallet.CoinType.SOL
+      : coin === CoinType.SOL
       ? BraveWallet.SOLANA_MAINNET
       : BraveWallet.FILECOIN_MAINNET
   )
@@ -153,7 +154,7 @@ export const HardwareWalletAccountsList = ({
   const onSelectNetwork = React.useCallback(
     (n: BraveWallet.NetworkInfo): void => {
       setSelectedNetworkId(networkEntityAdapter.selectId(n))
-      if (coin === BraveWallet.CoinType.FIL) {
+      if (coin === CoinType.FIL) {
         onChangeFilecoinNetwork(n.chainId as FilecoinNetwork)
       }
     },
@@ -190,7 +191,7 @@ export const HardwareWalletAccountsList = ({
             selectedNetwork={networksRegistry?.entities[selectedNetworkId]}
             onSelectNetwork={onSelectNetwork}
           />
-          {coin === BraveWallet.CoinType.ETH ? (
+          {coin === CoinType.ETH ? (
             <Select value={selectedDerivationScheme} onChange={setSelectedDerivationScheme}>
               {Object.keys(ethDerivationPathsEnum).map((path, index) => {
                 const pathValue = ethDerivationPathsEnum[path]
@@ -203,7 +204,7 @@ export const HardwareWalletAccountsList = ({
               })}
             </Select>
           ) : null}
-          {coin === BraveWallet.CoinType.SOL ? (
+          {coin === CoinType.SOL ? (
             <Select value={selectedDerivationScheme} onChange={setSelectedDerivationScheme}>
               {Object.keys(solDerivationPathsEnum).map((path, index) => {
                 const pathLocale = solDerivationPathsEnum[path]

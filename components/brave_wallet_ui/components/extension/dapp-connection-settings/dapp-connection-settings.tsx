@@ -33,6 +33,7 @@ import {
 // Types
 import {
   BraveWallet,
+  CoinType,
   WalletOrigin
 } from '../../../constants/types'
 
@@ -173,7 +174,7 @@ export const DAppConnectionSettings = () => {
     if (!selectedAccount || isPermissionDenied) {
       return false
     }
-    if (selectedCoin === BraveWallet.CoinType.SOL) {
+    if (selectedCoin === CoinType.SOL) {
       return isSolanaConnected
     }
     return connectedAccounts
@@ -252,7 +253,7 @@ export const DAppConnectionSettings = () => {
 
     if (
       selectedAccount?.address &&
-      selectedCoin === BraveWallet.CoinType.SOL
+      selectedCoin === CoinType.SOL
     ) {
       (async () => {
         const { panelHandler } = getWalletPanelApiProxy()

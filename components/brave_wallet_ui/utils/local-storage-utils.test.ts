@@ -4,7 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {
-  BraveWallet
+  BraveWallet,
+  CoinType
 } from '../constants/types'
 import {
   parseJSONFromLocalStorage,
@@ -24,67 +25,67 @@ const mockInitialFilteredOutNetworkKeys = [
   networkEntityAdapter.selectId(
     {
       chainId: BraveWallet.GOERLI_CHAIN_ID,
-      coin: BraveWallet.CoinType.ETH
+      coin: CoinType.ETH
     }
   ).toString(),
   networkEntityAdapter.selectId(
     {
       chainId: BraveWallet.SEPOLIA_CHAIN_ID,
-      coin: BraveWallet.CoinType.ETH
+      coin: CoinType.ETH
     }
   ).toString(),
   networkEntityAdapter.selectId(
     {
       chainId: BraveWallet.SOLANA_DEVNET,
-      coin: BraveWallet.CoinType.SOL
+      coin: CoinType.SOL
     }
   ).toString(),
   networkEntityAdapter.selectId(
     {
       chainId: BraveWallet.SOLANA_TESTNET,
-      coin: BraveWallet.CoinType.SOL
+      coin: CoinType.SOL
     }
   ).toString(),
   networkEntityAdapter.selectId(
     {
       chainId: BraveWallet.FILECOIN_TESTNET,
-      coin: BraveWallet.CoinType.FIL
+      coin: CoinType.FIL
     }
   ).toString(),
   networkEntityAdapter.selectId(
     {
       chainId: BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID,
-      coin: BraveWallet.CoinType.ETH
+      coin: CoinType.ETH
     }
   ).toString(),
   networkEntityAdapter.selectId(
     {
       chainId: BraveWallet.BITCOIN_TESTNET,
-      coin: BraveWallet.CoinType.BTC
+      coin: CoinType.BTC
     }
   ).toString(),
   networkEntityAdapter.selectId(
     {
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
-      coin: BraveWallet.CoinType.SOL
+      coin: CoinType.SOL
     }
   ).toString(),
   networkEntityAdapter.selectId(
     {
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
-      coin: BraveWallet.CoinType.ETH
+      coin: CoinType.ETH
     }
   ).toString(),
   networkEntityAdapter.selectId(
     {
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
-      coin: BraveWallet.CoinType.FIL
+      coin: CoinType.FIL
     }
   ).toString(),
   networkEntityAdapter.selectId(
     {
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
-      coin: BraveWallet.CoinType.BTC
+      coin: CoinType.BTC
     }
   ).toString()
 ]

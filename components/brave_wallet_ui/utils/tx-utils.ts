@@ -8,14 +8,16 @@ import { EntityState } from '@reduxjs/toolkit'
 // types
 import {
   BraveWallet,
+  CoinType,
+  OriginInfo,
   P3ASendTransactionTypes,
-  SupportedTestNetworks,
-  SerializableTransactionInfo,
-  TimeDelta,
   SerializableTimeDelta,
+  SerializableTransactionInfo,
+  SpotPriceRegistry,
   SortingOrder,
-  TransactionInfo,
-  SpotPriceRegistry
+  SupportedTestNetworks,
+  TimeDelta,
+  TransactionInfo
 } from '../constants/types'
 import { SolanaTransactionTypes } from '../common/constants/solana'
 import {
@@ -105,7 +107,7 @@ export interface ParsedTransaction
   isSwap?: boolean
   intent: string
   chainId: string
-  originInfo?: BraveWallet.OriginInfo | undefined
+  originInfo?: OriginInfo | undefined
 
   // Value
   value: string
@@ -118,7 +120,7 @@ export interface ParsedTransaction
   isSolanaDappTransaction: boolean
   isSolanaSPLTransaction: boolean
   isFilecoinTransaction: boolean
-  coinType: BraveWallet.CoinType
+  coinType: CoinType
 
   // Tokens
   token?: BraveWallet.BlockchainToken
@@ -228,11 +230,11 @@ export function shouldReportTransactionP3A({
   txInfo: Pick<
     BraveWallet.TransactionInfo | SerializableTransactionInfo,
     'txType' | 'chainId'
-  > & { coinType: BraveWallet.CoinType }
+  > & { coinType: CoinType }
 }) {
   if (
     P3ASendTransactionTypes.includes(txInfo.txType) ||
-    (txInfo.coinType === BraveWallet.CoinType.FIL &&
+    (txInfo.coinType === CoinType.FIL &&
       txInfo.txType === BraveWallet.TransactionType.Other)
   ) {
     const countTestNetworks = loadTimeData.getBoolean(
@@ -824,9 +826,9 @@ export function getTransactionDecimals ({
   }
 
   switch (getCoinFromTxDataUnion(tx.txDataUnion)) {
-    case BraveWallet.CoinType.SOL: return 9
-    case BraveWallet.CoinType.ETH: return 18
-    case BraveWallet.CoinType.FIL: return 18
+    case CoinType.SOL: return 9
+    case CoinType.ETH: return 18
+    case CoinType.FIL: return 18
     default: return 18
   }
 }

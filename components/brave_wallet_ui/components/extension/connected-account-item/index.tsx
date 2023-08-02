@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux'
 import { WalletActions } from '../../../common/actions'
 
 // Types
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, CoinType } from '../../../constants/types'
 
 // Hooks
 import {
@@ -69,7 +69,7 @@ export const ConnectedAccountItem = (props: Props) => {
     )  }, [connectedAccounts, account])
 
   const buttonText = React.useMemo((): string => {
-    if (selectedCoin === BraveWallet.CoinType.SOL) {
+    if (selectedCoin === CoinType.SOL) {
       return hasPermission
         ? getLocale('braveWalletSitePermissionsRevoke')
         : getLocale('braveWalletSitePermissionsTrust')
@@ -84,14 +84,14 @@ export const ConnectedAccountItem = (props: Props) => {
   // methods
   const onClickConnect = React.useCallback(() => {
     dispatch(WalletActions.addSitePermission({ accountId: account.accountId }))
-    if (selectedCoin !== BraveWallet.CoinType.SOL) {
+    if (selectedCoin !== CoinType.SOL) {
       setSelectedAccount(account.accountId)
     }
   }, [account, selectedCoin])
 
   const onClickDisconnect = React.useCallback(() => {
     dispatch(WalletActions.removeSitePermission({ accountId: account.accountId }))
-    if (connectedAccounts.length !== 0 && selectedCoin !== BraveWallet.CoinType.SOL) {
+    if (connectedAccounts.length !== 0 && selectedCoin !== CoinType.SOL) {
       setSelectedAccount(account.accountId)
     }
   }, [connectedAccounts, account, selectedCoin])
@@ -101,7 +101,7 @@ export const ConnectedAccountItem = (props: Props) => {
   }, [account])
 
   const onClickConnectDisconnectOrSwitch = React.useCallback(() => {
-    if (selectedCoin === BraveWallet.CoinType.SOL) {
+    if (selectedCoin === CoinType.SOL) {
       return hasPermission
         ? onClickDisconnect()
         : onClickConnect()

@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/sign_message_request.mojom-forward.h"
 
 namespace brave_wallet {
 

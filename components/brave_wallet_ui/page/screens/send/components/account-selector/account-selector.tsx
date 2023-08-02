@@ -26,7 +26,10 @@ import { AccountListItem } from '../account-list-item/account-list-item'
 
 // Styled Components
 import { ButtonIcon, ArrowIcon, DropDown, SelectorButton } from './account-selector.style'
-import { BraveWallet } from '../../../../../constants/types'
+import {
+  BraveWallet,
+  CoinType
+} from '../../../../../constants/types'
 
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
@@ -78,11 +81,11 @@ export const AccountSelector = (props: Props) => {
       return []
     }
 
-    if (selectedAccountId.coin === BraveWallet.CoinType.FIL) {
+    if (selectedAccountId.coin === CoinType.FIL) {
       const filecoinAccounts = accounts.filter((account) =>
         (account.accountId.keyringId === selectedAccountId?.keyringId))
       const fevmAccounts = accounts.filter((account) =>
-        (account.accountId.coin === BraveWallet.CoinType.ETH))
+        (account.accountId.coin === CoinType.ETH))
       return filecoinAccounts.concat(fevmAccounts)
     }
 
@@ -97,7 +100,7 @@ export const AccountSelector = (props: Props) => {
 
   const evmAddressesforFVMTranslation = React.useMemo(() =>
   accountsByNetwork
-    .filter(account => account.accountId.coin === BraveWallet.CoinType.ETH)
+    .filter(account => account.accountId.coin === CoinType.ETH)
     .map(account => account.accountId.address),
   [accountsByNetwork])
 

@@ -4,7 +4,13 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { mockBasicAttentionToken, mockEthToken } from '../../../stories/mock-data/mock-asset-options'
-import { BraveWallet, GetBlockchainTokenInfoReturnInfo, GetChecksumEthAddressReturnInfo, GetEthAddrReturnInfo } from '../../../constants/types'
+import {
+  BraveWallet,
+  CoinType,
+  GetBlockchainTokenInfoReturnInfo,
+  GetChecksumEthAddressReturnInfo,
+  GetEthAddrReturnInfo
+} from '../../../constants/types'
 import { HardwareWalletConnectOpts } from '../../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
 let mockedAllowance = '1000000000000000000' // 1 unit
@@ -102,7 +108,7 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
 
   return new Promise((resolve) => {
     resolve(Array.from({ length: opts.stopIndex - opts.startIndex }, (_, i) => ({
-      coin: BraveWallet.CoinType.ETH,
+      coin: CoinType.ETH,
       keyringId: BraveWallet.KeyringId.kDefault,
       address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
       derivationPath: makeDerivationPath(i + opts.startIndex),

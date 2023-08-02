@@ -8,8 +8,11 @@ import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
 import {
   BraveWallet,
-  WalletPanelState,
+  CoinType,
+  OriginInfo,
   PanelState,
+  SignMessageRequest,
+  WalletPanelState,
   WalletRoutes
 } from '../../constants/types'
 import {
@@ -292,7 +295,7 @@ function toByteArrayStringUnion<D extends keyof BraveWallet.ByteArrayStringUnion
   return Object.assign({}, unionItem) as BraveWallet.ByteArrayStringUnion
 }
 
-handler.on(PanelActions.signMessageHardware.type, async (store, messageData: BraveWallet.SignMessageRequest) => {
+handler.on(PanelActions.signMessageHardware.type, async (store, messageData: SignMessageRequest) => {
   const apiProxy = getWalletPanelApiProxy()
   const hardwareAccount = await findHardwareAccountInfo(messageData.address)
   if (!hardwareAccount || !hardwareAccount.hardware) {
@@ -330,7 +333,7 @@ handler.on(PanelActions.signMessageHardware.type, async (store, messageData: Bra
   let signature: BraveWallet.ByteArrayStringUnion | undefined
   if (signed.success) {
     signature =
-      hardwareAccount.accountId.coin === BraveWallet.CoinType.SOL
+      hardwareAccount.accountId.coin === CoinType.SOL
         ? toByteArrayStringUnion({ bytes: [...(signed.payload as Buffer)] })
         : toByteArrayStringUnion({ str: signed.payload as string })
   }
@@ -391,7 +394,7 @@ handler.on(PanelActions.signTransactionHardware.type, async (store, messageData:
   let signature: BraveWallet.ByteArrayStringUnion | undefined
   if (signed.success) {
     signature =
-      hardwareAccount.accountId.coin === BraveWallet.CoinType.SOL
+      hardwareAccount.accountId.coin === CoinType.SOL
         ? toByteArrayStringUnion({ bytes: [...(signed.payload as Buffer)] })
         : toByteArrayStringUnion({ str: signed.payload as string })
   }
@@ -459,7 +462,7 @@ handler.on(PanelActions.signAllTransactionsHardware.type, async (store, messageD
       break
     }
     const signature: BraveWallet.ByteArrayStringUnion =
-      hardwareAccount.accountId.coin === BraveWallet.CoinType.SOL
+      hardwareAccount.accountId.coin === CoinType.SOL
         ? toByteArrayStringUnion({ bytes: [...(signed.payload as Buffer)] })
         : toByteArrayStringUnion({ str: signed.payload as string })
     payload.signatures?.push(signature)
@@ -556,7 +559,7 @@ handler.on(WalletActions.initialize.type, async (store) => {
     const accounts = url.searchParams.getAll('addr') || []
     const originSpec = url.searchParams.get('origin-spec') || ''
     const eTldPlusOne = url.searchParams.get('etld-plus-one') || ''
-    const originInfo: BraveWallet.OriginInfo = {
+    const originInfo: OriginInfo = {
       originSpec: originSpec,
       eTldPlusOne: eTldPlusOne
     }

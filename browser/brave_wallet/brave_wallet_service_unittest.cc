@@ -29,6 +29,7 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/sign_message_request.mojom.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "build/build_config.h"

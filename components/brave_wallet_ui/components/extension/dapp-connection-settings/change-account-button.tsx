@@ -44,7 +44,8 @@ import {
 
 // Types
 import {
-  BraveWallet
+  BraveWallet,
+  CoinType
 } from '../../../constants/types'
 
 // Styled Components
@@ -96,11 +97,11 @@ export const ChangeAccountButton = (props: Props) => {
 
   const buttonText = React.useMemo((): string => {
     const connectText =
-      selectedCoin === BraveWallet.CoinType.SOL
+      selectedCoin === CoinType.SOL
         ? getLocale('braveWalletSitePermissionsTrust')
         : getLocale('braveWalletAddAccountConnect')
     const disconnectText =
-      selectedCoin === BraveWallet.CoinType.SOL
+      selectedCoin === CoinType.SOL
         ? getLocale('braveWalletSitePermissionsRevoke')
         : getLocale('braveWalletSitePermissionsDisconnect')
     return hasPermission
@@ -123,7 +124,7 @@ export const ChangeAccountButton = (props: Props) => {
       WalletActions
         .addSitePermission({ accountId: account.accountId })
     )
-    if (selectedCoin !== BraveWallet.CoinType.SOL) {
+    if (selectedCoin !== CoinType.SOL) {
       setSelectedAccount(account.accountId)
     }
   }, [account.accountId, selectedCoin])
@@ -135,7 +136,7 @@ export const ChangeAccountButton = (props: Props) => {
     )
     if (
       connectedAccounts.length !== 0 &&
-      selectedCoin !== BraveWallet.CoinType.SOL
+      selectedCoin !== CoinType.SOL
     ) {
       setSelectedAccount(account.accountId)
     }

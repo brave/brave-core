@@ -7,6 +7,7 @@ import * as React from 'react'
 // Types
 import {
   BraveWallet,
+  CoinType,
   OrderTypes,
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
@@ -294,7 +295,7 @@ function SwapInputComponent (props: Props) {
 
   const placeholderText = React.useMemo((): string => {
     return componentType === 'toAddress'
-      ? selectedNetwork?.coin === BraveWallet.CoinType.ETH
+      ? selectedNetwork?.coin === CoinType.ETH
         ? getLocale('braveWalletSendPlaceholder')
         : getLocale('braveWalletSendNoURLPlaceholder')
       : '0'

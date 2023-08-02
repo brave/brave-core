@@ -3,7 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { BraveWallet } from '../constants/types'
+import {
+  BraveWallet,
+  CoinType
+} from '../constants/types'
 
 import { mockAccount } from '../common/constants/mocks'
 
@@ -90,19 +93,19 @@ describe('Account Utils', () => {
 
 describe('Test getAccountTypeDescription', () => {
   test('CoinType ETH Address Description', () => {
-    expect(getAccountTypeDescription(BraveWallet.CoinType.ETH))
+    expect(getAccountTypeDescription(CoinType.ETH))
       .toEqual('braveWalletETHAccountDescrption')
   })
   test('CoinType SOL Address Description', () => {
-    expect(getAccountTypeDescription(BraveWallet.CoinType.SOL))
+    expect(getAccountTypeDescription(CoinType.SOL))
       .toEqual('braveWalletSOLAccountDescrption')
   })
   test('CoinType FIL Address Description', () => {
-    expect(getAccountTypeDescription(BraveWallet.CoinType.FIL))
+    expect(getAccountTypeDescription(CoinType.FIL))
       .toEqual('braveWalletFILAccountDescrption')
   })
   test('CoinType BTC Address Description', () => {
-    expect(getAccountTypeDescription(BraveWallet.CoinType.BTC))
+    expect(getAccountTypeDescription(CoinType.BTC))
       .toEqual('braveWalletBTCAccountDescrption')
   })
 })

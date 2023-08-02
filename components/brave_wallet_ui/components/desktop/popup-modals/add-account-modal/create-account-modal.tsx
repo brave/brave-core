@@ -20,6 +20,7 @@ import {
   BitcoinNetworkLocaleMapping,
   BitcoinNetworkTypes,
   BraveWallet,
+  CoinType,
   CreateAccountOptionsType,
   FilecoinNetwork,
   FilecoinNetworkLocaleMapping,
@@ -102,9 +103,9 @@ export const CreateAccountModal = () => {
       return
     }
     const network =
-      (selectedAccountType.coin === BraveWallet.CoinType.FIL &&
+      (selectedAccountType.coin === CoinType.FIL &&
         filecoinNetwork) ||
-      (selectedAccountType.coin === BraveWallet.CoinType.BTC &&
+      (selectedAccountType.coin === CoinType.BTC &&
         bitcoinNetwork) ||
       undefined
 
@@ -183,7 +184,7 @@ export const CreateAccountModal = () => {
       <DividerLine />
       {selectedAccountType &&
         <StyledWrapper>
-          {selectedAccountType?.coin === BraveWallet.CoinType.FIL &&
+          {selectedAccountType?.coin === CoinType.FIL &&
             <SelectWrapper>
               <Select value={filecoinNetwork} onChange={onChangeFilecoinNetwork}>
                 {FilecoinNetworkTypes.map((network) => {
@@ -196,7 +197,7 @@ export const CreateAccountModal = () => {
               </Select>
             </SelectWrapper>
           }
-          {selectedAccountType?.coin === BraveWallet.CoinType.BTC &&
+          {selectedAccountType?.coin === CoinType.BTC &&
             <SelectWrapper>
               <Select value={bitcoinNetwork} onChange={onChangeBitcoinNetwork}>
                 {BitcoinNetworkTypes.map((network) => {

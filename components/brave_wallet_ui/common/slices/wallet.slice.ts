@@ -5,13 +5,14 @@
 
 import {
   BraveWallet,
-  WalletState,
-  WalletInitializedPayload,
   DefaultCurrencies,
-  SolFeeEstimates,
   NetworkFilterType,
+  OriginInfo,
   RefreshOpts,
-  UpdateAccountNamePayloadType
+  SolFeeEstimates,
+  UpdateAccountNamePayloadType,
+  WalletState,
+  WalletInitializedPayload
 } from '../../constants/types'
 import {
   AddSitePermissionPayloadType,
@@ -230,7 +231,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
     reducers: {
       activeOriginChanged(
         state: WalletState,
-        { payload }: PayloadAction<BraveWallet.OriginInfo>
+        { payload }: PayloadAction<OriginInfo>
       ) {
         state.activeOrigin = payload
       },

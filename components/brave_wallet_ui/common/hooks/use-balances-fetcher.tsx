@@ -11,7 +11,11 @@ import { useGetTokenBalancesRegistryQuery } from '../slices/api.slice'
 import { querySubscriptionOptions60s } from '../slices/constants'
 
 // Types / constants
-import { BraveWallet, CoinTypes } from '../../constants/types'
+import {
+  BraveWallet,
+  CoinType,
+  CoinTypes
+} from '../../constants/types'
 import { WalletSelectors } from '../selectors'
 
 // Utils
@@ -23,10 +27,10 @@ interface Arg {
 }
 
 const coinTypesMapping = {
-  [BraveWallet.CoinType.SOL]: CoinTypes.SOL,
-  [BraveWallet.CoinType.ETH]: CoinTypes.ETH,
-  [BraveWallet.CoinType.FIL]: CoinTypes.FIL,
-  [BraveWallet.CoinType.BTC]: CoinTypes.BTC,
+  [CoinType.SOL]: CoinTypes.SOL,
+  [CoinType.ETH]: CoinTypes.ETH,
+  [CoinType.FIL]: CoinTypes.FIL,
+  [CoinType.BTC]: CoinTypes.BTC,
 }
 
 export const useBalancesFetcher = (arg: Arg | typeof skipToken) => {

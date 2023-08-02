@@ -12,9 +12,10 @@ import { PanelActions } from '../../../panel/actions'
 
 // Types
 import {
-  WalletRoutes,
   BraveWallet,
-  DAppConnectedPermissionsOption
+  DAppConnectedPermissionsOption,
+  OriginInfo,
+  WalletRoutes
 } from '../../../constants/types'
 
 // Options
@@ -83,7 +84,7 @@ const onClickAddAccount = () => {
 }
 
 interface Props {
-  originInfo: BraveWallet.OriginInfo
+  originInfo: OriginInfo
   accountsToConnect: BraveWallet.AccountInfo[]
 }
 

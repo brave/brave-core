@@ -4,9 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {
+  BraveWallet,
+  CoinType,
   SupportedTestNetworks,
-  SupportedCoinTypes,
-  BraveWallet
+  SupportedCoinTypes
 } from '../constants/types'
 import {
   networkEntityAdapter
@@ -45,7 +46,7 @@ export const makeInitialFilteredOutNetworkKeys = () => {
         return networkEntityAdapter.selectId(
           {
             chainId: chainId,
-            coin: BraveWallet.CoinType.SOL
+            coin: CoinType.SOL
           }
         ).toString()
       }
@@ -53,14 +54,14 @@ export const makeInitialFilteredOutNetworkKeys = () => {
         return networkEntityAdapter.selectId(
           {
             chainId: chainId,
-            coin: BraveWallet.CoinType.FIL
+            coin: CoinType.FIL
           }
         ).toString()
       }
       return networkEntityAdapter.selectId(
         {
           chainId: chainId,
-          coin: BraveWallet.CoinType.ETH
+          coin: CoinType.ETH
         }
       ).toString()
     })

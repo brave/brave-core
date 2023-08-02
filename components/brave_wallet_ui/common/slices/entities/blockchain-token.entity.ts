@@ -6,7 +6,7 @@
 import { createDraftSafeSelector, createEntityAdapter, EntityAdapter, EntityId } from '@reduxjs/toolkit'
 
 // types
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, CoinType } from '../../../constants/types'
 
 // utils
 import { getAssetIdKey, GetBlockchainTokenIdArg } from '../../../utils/asset-utils'
@@ -22,10 +22,10 @@ export const blockchainTokenEntityAdaptor: BlockchainTokenEntityAdaptor = create
 })
 export type BlockchainTokenEntityAdaptorState = ReturnType<BlockchainTokenEntityAdaptor['getInitialState']> & {
   idsByChainId: Record<EntityId, EntityId[]>
-  idsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
+  idsByCoinType: Record<CoinType, EntityId[]>
   visibleTokenIds: string[]
   visibleTokenIdsByChainId: Record<string, string[]>
-  visibleTokenIdsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
+  visibleTokenIdsByCoinType: Record<CoinType, EntityId[]>
 }
 
 export const blockchainTokenEntityAdaptorInitialState: BlockchainTokenEntityAdaptorState = {
@@ -59,7 +59,7 @@ export const combineTokenRegistries = (
     ).concat(userTokensRegistry.visibleTokenIdsByChainId[key])
   })
 
-  const idsByCoinType: Record<BraveWallet.CoinType, EntityId[]> = {
+  const idsByCoinType: Record<CoinType, EntityId[]> = {
     ...tokensRegistry.idsByCoinType
   }
   Object.keys(userTokensRegistry.idsByCoinType).forEach((key) => {

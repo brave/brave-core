@@ -8,6 +8,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 
 import {
   BraveWallet,
+  CoinType,
   WalletRoutes
 } from '../../../constants/types'
 
@@ -89,7 +90,7 @@ export const AssetsPanel = (props: Props) => {
           network: selectedNetwork,
           accounts: [selectedAccount],
           tokens:
-            selectedNetwork.coin === BraveWallet.CoinType.SOL
+            selectedNetwork.coin === CoinType.SOL
               ? // Use optimised balance scanner for SOL, which doesn't need a
                 // reference tokens list.
                 undefined

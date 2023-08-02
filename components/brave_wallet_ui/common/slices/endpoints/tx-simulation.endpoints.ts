@@ -6,6 +6,7 @@
 // types
 import {
   BraveWallet,
+  CoinType,
   CoinTypes,
   SerializableTransactionInfo
 } from '../../../constants/types'
@@ -52,7 +53,7 @@ export const transactionSimulationEndpoints = ({
     getEVMTransactionSimulation: query<
       BraveWallet.EVMSimulationResponse,
       Pick<SerializableTransactionInfo, 'chainId' | 'id'> & {
-        coinType: BraveWallet.CoinType
+        coinType: CoinType
       }
     >({
       queryFn: async (txArg, { dispatch }, extraOptions, baseQuery) => {
@@ -66,7 +67,7 @@ export const transactionSimulationEndpoints = ({
           const api = baseQuery(undefined).data
           const { simulationService, txService } = api
 
-          if (txArg.coinType !== BraveWallet.CoinType.ETH) {
+          if (txArg.coinType !== CoinType.ETH) {
             throw new Error(
               `Invalid transaction argument cointype for EVM simulation: ${
                 txArg.coinType //

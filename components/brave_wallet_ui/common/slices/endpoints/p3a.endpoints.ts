@@ -6,6 +6,7 @@
 // Types
 import {
   BraveWallet,
+  CoinType,
   SupportedCoinTypes,
   SupportedTestNetworks
 } from '../../../constants/types'
@@ -34,7 +35,7 @@ export const p3aEndpoints = ({
           const { accounts } = await cache.getAllAccounts()
 
           const activeWalletCount: {
-            [coin: BraveWallet.CoinType]: number
+            [coin: CoinType]: number
           } = {}
 
           const countTestNetworks = loadTimeData.getBoolean(

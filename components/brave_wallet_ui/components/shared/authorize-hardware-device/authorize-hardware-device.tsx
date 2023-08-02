@@ -6,10 +6,10 @@
 import * as React from 'react'
 import { StyledIFrame } from './style'
 import { LEDGER_BRIDGE_URL } from '../../../common/hardware/ledgerjs/ledger-messages'
-import { BraveWallet } from '../../../constants/types'
+import { CoinType } from '../../../constants/types'
 
 export interface Props {
-  coinType: BraveWallet.CoinType
+  coinType: CoinType
 }
 
 export const AuthorizeHardwareDeviceIFrame = (props: Props) => {

@@ -7,7 +7,7 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // types
-import { BraveWallet } from '../../../constants/types'
+import { CoinType } from '../../../constants/types'
 
 // components
 import CreateNetworkIcon from '../create-network-icon'
@@ -21,7 +21,7 @@ import { useGetNetworkQuery } from '../../../common/slices/api.slice'
 interface Props extends NftIconProps {
   size?: string | number
   chainId?: string
-  coinType?: BraveWallet.CoinType
+  coinType?: CoinType
   disabled?: boolean
   hideNetworkIcon?: boolean
 }

@@ -6,6 +6,7 @@
 // types
 import {
   BraveWallet,
+  CoinType,
   SerializableSolanaTxData,
   WalletAccountTypeName
 } from '../constants/types'
@@ -20,12 +21,12 @@ export const emptyNetwork: BraveWallet.NetworkInfo = {
   symbol: '',
   symbolName: '',
   decimals: 0,
-  coin: BraveWallet.CoinType.ETH,
+  coin: CoinType.ETH,
   supportedKeyrings: [],
   isEip1559: true
 }
 
-export const getNetworkInfo = (chainId: string, coin: BraveWallet.CoinType, list: BraveWallet.NetworkInfo[]) => {
+export const getNetworkInfo = (chainId: string, coin: CoinType, list: BraveWallet.NetworkInfo[]) => {
   for (let it of list) {
     if (it.chainId === chainId && it.coin === coin) {
       return it
@@ -76,11 +77,11 @@ export type TxDataPresence = {
   filTxData?: Partial<BraveWallet.TxDataUnion['filTxData']> | undefined
 }
 
-export const getCoinFromTxDataUnion = <T extends TxDataPresence> (txDataUnion: T): BraveWallet.CoinType => {
-  if (txDataUnion.filTxData) { return BraveWallet.CoinType.FIL }
-  if (txDataUnion.solanaTxData) { return BraveWallet.CoinType.SOL }
+export const getCoinFromTxDataUnion = <T extends TxDataPresence> (txDataUnion: T): CoinType => {
+  if (txDataUnion.filTxData) { return CoinType.FIL }
+  if (txDataUnion.solanaTxData) { return CoinType.SOL }
   // TODO(apaymyshev): bitcoin support
-  return BraveWallet.CoinType.ETH
+  return CoinType.ETH
 }
 
 const EIP1559_SUPPORTED_ACCOUNT_TYPE_NAMES = [

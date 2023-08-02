@@ -1,0 +1,20 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+
+module brave_wallet.mojom;
+
+// https://github.com/satoshilabs/slips/blob/master/slip-0044.md
+enum CoinType {
+  BTC = 0,
+  ETH = 60,
+  FIL = 461,
+  SOL = 501
+};
+
+struct OriginInfo {
+  string origin_spec;
+  string e_tld_plus_one;
+};

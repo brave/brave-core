@@ -9,6 +9,7 @@ import { getLocale } from '../../common/locale'
 // types
 import {
   BraveWallet,
+  CoinType,
   WalletAccountTypeName
 } from '../constants/types'
 
@@ -158,18 +159,18 @@ export function isHardwareAccount(
 }
 
 export const keyringIdForNewAccount = (
-  coin: BraveWallet.CoinType,
+  coin: CoinType,
   chainId?: string | undefined
 ) => {
-  if (coin === BraveWallet.CoinType.ETH) {
+  if (coin === CoinType.ETH) {
     return BraveWallet.KeyringId.kDefault
   }
 
-  if (coin === BraveWallet.CoinType.SOL) {
+  if (coin === CoinType.SOL) {
     return BraveWallet.KeyringId.kSolana
   }
 
-  if (coin === BraveWallet.CoinType.FIL) {
+  if (coin === CoinType.FIL) {
     if (chainId === BraveWallet.FILECOIN_MAINNET) {
       return BraveWallet.KeyringId.kFilecoin
     }
@@ -178,7 +179,7 @@ export const keyringIdForNewAccount = (
     }
   }
 
-  if (coin === BraveWallet.CoinType.BTC) {
+  if (coin === CoinType.BTC) {
     if (chainId === BraveWallet.BITCOIN_MAINNET) {
       return BraveWallet.KeyringId.kBitcoin84
     }
@@ -190,15 +191,15 @@ export const keyringIdForNewAccount = (
   assertNotReached(`Unknown coin ${coin} and chainId ${chainId}`)
 }
 
-export const getAccountTypeDescription = (coin: BraveWallet.CoinType) => {
+export const getAccountTypeDescription = (coin: CoinType) => {
   switch (coin) {
-    case BraveWallet.CoinType.ETH:
+    case CoinType.ETH:
       return getLocale('braveWalletETHAccountDescrption')
-    case BraveWallet.CoinType.SOL:
+    case CoinType.SOL:
       return getLocale('braveWalletSOLAccountDescrption')
-    case BraveWallet.CoinType.FIL:
+    case CoinType.FIL:
       return getLocale('braveWalletFILAccountDescrption')
-    case BraveWallet.CoinType.BTC:
+    case CoinType.BTC:
       return getLocale('braveWalletBTCAccountDescrption')
     default:
       assertNotReached(`Unknown coin ${coin}`)

@@ -18,7 +18,7 @@ import {
 
 // Types
 import {
-  BraveWallet,
+  CoinType,
   WalletRoutes
 } from '../../../constants/types'
 
@@ -92,7 +92,7 @@ export const DefaultPanelMenu = (props: Props) => {
       return
     }
 
-    const route = selectedNetwork.coin === BraveWallet.CoinType.ETH
+    const route = selectedNetwork.coin === CoinType.ETH
       ? 'ethereum'
       : 'solana'
 
@@ -204,7 +204,7 @@ export const DefaultPanelMenu = (props: Props) => {
 
       {
         selectedNetwork &&
-        selectedNetwork.coin !== BraveWallet.CoinType.FIL &&
+        selectedNetwork.coin !== CoinType.FIL &&
         <PopupButton onClick={onClickConnectedSites}>
           <ButtonIcon name='link-normal' />
           <PopupButtonText>

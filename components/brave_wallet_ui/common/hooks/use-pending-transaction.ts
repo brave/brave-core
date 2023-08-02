@@ -60,7 +60,7 @@ import {
 } from '../slices/constants'
 
 // Constants
-import { BraveWallet } from '../../constants/types'
+import { BraveWallet, CoinType } from '../../constants/types'
 import {
   UpdateUnapprovedTransactionGasFieldsType,
   UpdateUnapprovedTransactionNonceType
@@ -134,7 +134,7 @@ export const usePendingTransactions = () => {
 
   const { data: gasEstimates, isLoading: isLoadingGasEstimates } =
     useGetGasEstimation1559Query(
-      transactionInfo && txCoinType !== BraveWallet.CoinType.SOL
+      transactionInfo && txCoinType !== CoinType.SOL
         ? transactionInfo.chainId
         : skipToken,
       defaultQuerySubscriptionOptions
@@ -143,9 +143,9 @@ export const usePendingTransactions = () => {
   const {
     data: solFeeEstimate,
     isLoading: isLoadingSolFeeEstimates = txCoinType ===
-      BraveWallet.CoinType.SOL
+      CoinType.SOL
   } = useGetSolanaEstimatedFeeQuery(
-    txCoinType === BraveWallet.CoinType.SOL &&
+    txCoinType === CoinType.SOL &&
       transactionInfo?.chainId &&
       transactionInfo?.id
       ? {
@@ -180,7 +180,7 @@ export const usePendingTransactions = () => {
       return ''
     }
 
-    return txCoinType === BraveWallet.CoinType.SOL
+    return txCoinType === CoinType.SOL
       ? solFeeEstimate ?? ''
       : getTransactionGasFee(transactionInfo)
   }, [transactionInfo, txCoinType, solFeeEstimate])
@@ -485,7 +485,7 @@ export const usePendingTransactions = () => {
 
   const isLoadingGasFee = React.useMemo(() => {
     // SOL
-    if (txCoinType === BraveWallet.CoinType.SOL) {
+    if (txCoinType === CoinType.SOL) {
       return isLoadingSolFeeEstimates
     }
 

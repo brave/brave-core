@@ -11,7 +11,11 @@ import { useGetTokenBalancesForChainIdQuery } from '../slices/api.slice'
 import { defaultQuerySubscriptionOptions } from '../slices/constants'
 
 // Types / constants
-import { BraveWallet, CoinTypes } from '../../constants/types'
+import {
+  BraveWallet,
+  CoinType,
+  CoinTypes
+} from '../../constants/types'
 import { WalletSelectors } from '../selectors'
 
 interface Arg {
@@ -21,9 +25,9 @@ interface Arg {
 }
 
 const coinTypesMapping = {
-  [BraveWallet.CoinType.SOL]: CoinTypes.SOL,
-  [BraveWallet.CoinType.ETH]: CoinTypes.ETH,
-  [BraveWallet.CoinType.FIL]: CoinTypes.FIL
+  [CoinType.SOL]: CoinTypes.SOL,
+  [CoinType.ETH]: CoinTypes.ETH,
+  [CoinType.FIL]: CoinTypes.FIL
 }
 
 export const useScopedBalanceUpdater = (arg: Arg | typeof skipToken) => {

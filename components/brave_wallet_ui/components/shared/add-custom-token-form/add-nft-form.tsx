@@ -8,7 +8,10 @@ import { useDispatch } from 'react-redux'
 import Button from '@brave/leo/react/button'
 
 // utils
-import { BraveWallet } from '../../../constants/types'
+import {
+  BraveWallet,
+  CoinType
+} from '../../../constants/types'
 import Amount from '../../../utils/amount'
 import { getLocale } from '$web-common/locale'
 import { WalletActions } from '../../../common/actions'
@@ -193,8 +196,8 @@ export const AddNftForm = (props: Props) => {
       const newToken: BraveWallet.BlockchainToken = {
         contractAddress: tokenContractAddress,
         decimals: 0,
-        isErc20: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !tokenID,
-        isErc721: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !!tokenID,
+        isErc20: customAssetsNetwork.coin !== CoinType.SOL && !tokenID,
+        isErc721: customAssetsNetwork.coin !== CoinType.SOL && !!tokenID,
         isErc1155: false,
         isNft: true,
         isSpam: false,
@@ -238,9 +241,9 @@ export const AddNftForm = (props: Props) => {
   const tokenSymbolError = tokenSymbol === ''
   const tokenContractAddressError =
     tokenContractAddress === '' ||
-    (customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL &&
+    (customAssetsNetwork?.coin !== CoinType.SOL &&
       !tokenContractAddress.toLowerCase().startsWith('0x')) ||
-    (customAssetsNetwork?.coin === BraveWallet.CoinType.ETH && tokenID === '')
+    (customAssetsNetwork?.coin === CoinType.ETH && tokenID === '')
 
   const buttonDisabled = tokenNameError ||
     tokenSymbolError ||
@@ -297,7 +300,7 @@ export const AddNftForm = (props: Props) => {
       >
         <FullWidthFormColumn>
           <InputLabel>
-            {customAssetsNetwork?.coin === BraveWallet.CoinType.SOL
+            {customAssetsNetwork?.coin === CoinType.SOL
               ? getLocale('braveWalletTokenMintAddress')
               : getLocale('braveWalletWatchListTokenAddress')
             }
@@ -341,7 +344,7 @@ export const AddNftForm = (props: Props) => {
           />
         </FullWidthFormColumn>
         <FullWidthFormColumn>
-          {customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL &&
+          {customAssetsNetwork?.coin !== CoinType.SOL &&
             <>
               <InputLabel>
                 {getLocale('braveWalletWatchListTokenId')}

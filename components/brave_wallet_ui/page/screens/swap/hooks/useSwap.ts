@@ -24,7 +24,10 @@ import {
   SwapParams,
   SwapValidationErrorType
 } from '../constants/types'
-import { BraveWallet } from '../../../../constants/types'
+import {
+  BraveWallet,
+  CoinType
+} from '../../../../constants/types'
 
 // Utils
 import { getLocale } from '$web-common/locale'
@@ -107,7 +110,7 @@ export const useSwap = () => {
     // undefined for SOL indicates that useScopedBalanceUpdater should
     // scan balances for all possible tokens. Not to be confused with
     // [] which indicates that the query should be skipped.
-    if (selectedNetwork.coin === BraveWallet.CoinType.SOL) {
+    if (selectedNetwork.coin === CoinType.SOL) {
       return undefined
     }
 
@@ -177,7 +180,7 @@ export const useSwap = () => {
   })
 
   const quoteOptions: QuoteOption[] = useMemo(() => {
-    if (selectedNetwork?.coin === BraveWallet.CoinType.SOL) {
+    if (selectedNetwork?.coin === CoinType.SOL) {
       return jupiter.quoteOptions
     }
 
@@ -187,13 +190,13 @@ export const useSwap = () => {
   const onSelectQuoteOption = useCallback(
     (index: number) => {
       const option = quoteOptions[index]
-      if (selectedNetwork?.coin === BraveWallet.CoinType.SOL) {
+      if (selectedNetwork?.coin === CoinType.SOL) {
         if (jupiter.quote && jupiter.quote.routes.length > index && toToken) {
           const route = jupiter.quote.routes[index]
           jupiter.setSelectedRoute(route)
           setToAmount(option.toAmount.format(6))
         }
-      } else if (selectedNetwork?.coin === BraveWallet.CoinType.ETH) {
+      } else if (selectedNetwork?.coin === CoinType.ETH) {
         if (zeroEx.quote && toToken) {
           setToAmount(option.toAmount.format(6))
         }
@@ -293,7 +296,7 @@ export const useSwap = () => {
         setToAmount('')
       }
 
-      if (selectedNetwork?.coin === BraveWallet.CoinType.SOL) {
+      if (selectedNetwork?.coin === CoinType.SOL) {
         await handleJupiterQuoteRefresh({
           fromAmount: value,
           toAmount: ''
@@ -319,7 +322,7 @@ export const useSwap = () => {
         setFromAmount('')
       }
 
-      if (selectedNetwork?.coin === BraveWallet.CoinType.SOL) {
+      if (selectedNetwork?.coin === CoinType.SOL) {
         await handleJupiterQuoteRefresh({
           fromAmount: '',
           toAmount: value
@@ -376,13 +379,13 @@ export const useSwap = () => {
       setSelectingFromOrTo(undefined)
       setToAmount('')
 
-      if (selectedNetwork?.coin === BraveWallet.CoinType.SOL) {
+      if (selectedNetwork?.coin === CoinType.SOL) {
         await jupiter.reset()
         await handleJupiterQuoteRefreshInternal({
           toToken: token,
           toAmount: ''
         })
-      } else if (selectedNetwork?.coin === BraveWallet.CoinType.ETH) {
+      } else if (selectedNetwork?.coin === CoinType.ETH) {
         await zeroEx.reset()
         await handleZeroExQuoteRefreshInternal({
           toToken: token,
@@ -411,9 +414,9 @@ export const useSwap = () => {
       setFromAmount('')
       setToAmount('')
 
-      if (selectedNetwork?.coin === BraveWallet.CoinType.SOL) {
+      if (selectedNetwork?.coin === CoinType.SOL) {
         await jupiter.reset()
-      } else if (selectedNetwork?.coin === BraveWallet.CoinType.ETH) {
+      } else if (selectedNetwork?.coin === CoinType.ETH) {
         await zeroEx.reset()
       }
     },
@@ -461,13 +464,13 @@ export const useSwap = () => {
   }, [])
 
   const feesWrapped = useMemo(() => {
-    if (selectedNetwork?.coin === BraveWallet.CoinType.ETH) {
+    if (selectedNetwork?.coin === CoinType.ETH) {
       if (zeroEx.networkFee.isUndefined()) {
         return Amount.zero()
       } else {
         return zeroEx.networkFee
       }
-    } else if (selectedNetwork?.coin === BraveWallet.CoinType.SOL) {
+    } else if (selectedNetwork?.coin === CoinType.SOL) {
       if (jupiter.networkFee.isUndefined()) {
         return Amount.zero()
       } else {
@@ -520,7 +523,7 @@ export const useSwap = () => {
     }
 
     // 0x specific validations
-    if (selectedNetwork?.coin === BraveWallet.CoinType.ETH) {
+    if (selectedNetwork?.coin === CoinType.ETH) {
       if (fromToken.contractAddress && !zeroEx.hasAllowance) {
         return 'insufficientAllowance'
       }
@@ -537,7 +540,7 @@ export const useSwap = () => {
     }
 
     // Jupiter specific validations
-    if (selectedNetwork?.coin === BraveWallet.CoinType.SOL) {
+    if (selectedNetwork?.coin === CoinType.SOL) {
       if (jupiter.error?.isInsufficientLiquidity || jupiter.quote?.routes?.length === 0) {
         return 'insufficientLiquidity'
       }
@@ -564,7 +567,7 @@ export const useSwap = () => {
   ])
 
   const onSubmit = useCallback(async () => {
-    if (selectedNetwork?.coin === BraveWallet.CoinType.ETH) {
+    if (selectedNetwork?.coin === CoinType.ETH) {
       if (zeroEx.hasAllowance) {
         await zeroEx.exchange({}, async function () {
           setFromAmount('')
@@ -573,7 +576,7 @@ export const useSwap = () => {
       } else {
         await zeroEx.approve()
       }
-    } else if (selectedNetwork?.coin === BraveWallet.CoinType.SOL) {
+    } else if (selectedNetwork?.coin === CoinType.SOL) {
       await jupiter.exchange(async function () {
         setFromAmount('')
         setToAmount('')
@@ -598,7 +601,7 @@ export const useSwap = () => {
       return getLocale('braveSwapInsufficientBalance').replace('$1', selectedNetwork?.symbol || '')
     }
 
-    if (selectedNetwork?.coin === BraveWallet.CoinType.ETH) {
+    if (selectedNetwork?.coin === CoinType.ETH) {
       if (swapValidationError === 'insufficientAllowance') {
         return getLocale('braveSwapApproveToken').replace('$1', fromToken.symbol)
       }
@@ -619,10 +622,10 @@ export const useSwap = () => {
       jupiter.loading ||
       // If 0x swap quote is empty, there's nothing to create the swap
       // transaction with, so Swap button must be disabled.
-      (selectedNetwork?.coin === BraveWallet.CoinType.ETH && zeroEx.quote === undefined) ||
+      (selectedNetwork?.coin === CoinType.ETH && zeroEx.quote === undefined) ||
       // If Jupiter quote is empty, there's nothing to create the swap
       // transaction with, so Swap button must be disabled.
-      (selectedNetwork?.coin === BraveWallet.CoinType.SOL && jupiter.quote === undefined) ||
+      (selectedNetwork?.coin === CoinType.SOL && jupiter.quote === undefined) ||
       // FROM/TO assets may be undefined during initialization of the swap
       // assets list.
       fromToken === undefined ||
@@ -642,9 +645,9 @@ export const useSwap = () => {
       // Unless the validation error is insufficientAllowance, in which case
       // the transaction is an ERC20Approve, Swap button must be disabled.
       (swapValidationError &&
-        selectedNetwork?.coin === BraveWallet.CoinType.ETH &&
+        selectedNetwork?.coin === CoinType.ETH &&
         swapValidationError !== 'insufficientAllowance') ||
-      (swapValidationError && selectedNetwork?.coin === BraveWallet.CoinType.SOL)
+      (swapValidationError && selectedNetwork?.coin === CoinType.SOL)
     )
   }, [
     zeroEx.loading,
@@ -663,7 +666,7 @@ export const useSwap = () => {
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      if (selectedNetwork?.coin === BraveWallet.CoinType.SOL) {
+      if (selectedNetwork?.coin === CoinType.SOL) {
         await handleJupiterQuoteRefresh({})
       } else {
         await handleZeroExQuoteRefresh({})

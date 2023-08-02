@@ -2,7 +2,10 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { BraveWallet } from '../../constants/types'
+import {
+  BraveWallet,
+  CoinType
+} from '../../constants/types'
 import {
   BTCIconUrl,
   ETHIconUrl,
@@ -14,7 +17,7 @@ export const mockEthMainnet: BraveWallet.NetworkInfo = {
   blockExplorerUrls: ['https://etherscan.io', 'https://etherchain.org'],
   chainId: BraveWallet.MAINNET_CHAIN_ID,
   chainName: 'Ethereum Mainnet',
-  coin: BraveWallet.CoinType.ETH,
+  coin: CoinType.ETH,
   supportedKeyrings: [BraveWallet.KeyringId.kDefault],
   decimals: 18,
   iconUrls: [ETHIconUrl],
@@ -29,7 +32,7 @@ export const mockGoerli: BraveWallet.NetworkInfo = {
   blockExplorerUrls: ['https://goerli.etherscan.io'],
   chainId: BraveWallet.GOERLI_CHAIN_ID,
   chainName: 'Goerli Test Network',
-  coin: BraveWallet.CoinType.ETH,
+  coin: CoinType.ETH,
   supportedKeyrings: [BraveWallet.KeyringId.kDefault],
   decimals: 18,
   iconUrls: [ETHIconUrl],
@@ -79,7 +82,7 @@ export const mockFilecoinMainnetNetwork: BraveWallet.NetworkInfo = {
   symbolName: 'Filecoin',
   decimals: 18,
   iconUrls: [],
-  coin: BraveWallet.CoinType.FIL,
+  coin: CoinType.FIL,
   supportedKeyrings: [BraveWallet.KeyringId.kFilecoin],
   isEip1559: false
 }
@@ -94,7 +97,7 @@ export const mockFilecoinTestnetNetwork: BraveWallet.NetworkInfo = {
   symbolName: 'Filecoin',
   decimals: 18,
   iconUrls: [],
-  coin: BraveWallet.CoinType.FIL,
+  coin: CoinType.FIL,
   supportedKeyrings: [BraveWallet.KeyringId.kFilecoinTestnet],
   isEip1559: false
 }
@@ -104,7 +107,7 @@ export const mockSolanaMainnetNetwork: BraveWallet.NetworkInfo = {
   blockExplorerUrls: ['https://explorer.solana.com'],
   chainId: '0x65',
   chainName: 'Solana Mainnet Beta',
-  coin: BraveWallet.CoinType.SOL,
+  coin: CoinType.SOL,
   supportedKeyrings: [BraveWallet.KeyringId.kSolana],
   decimals: 9,
   iconUrls: [SOLIconUrl],
@@ -124,7 +127,7 @@ export const mockSolanaTestnetNetwork: BraveWallet.NetworkInfo = {
   symbolName: 'Solana',
   decimals: 9,
   iconUrls: [],
-  coin: BraveWallet.CoinType.SOL,
+  coin: CoinType.SOL,
   supportedKeyrings: [BraveWallet.KeyringId.kSolana],
   isEip1559: false
 }
@@ -134,7 +137,7 @@ export const mockBitcoinMainnet: BraveWallet.NetworkInfo = {
   blockExplorerUrls: ['https://bitcoin.explorer'],
   chainId: 'bitcoin_mainnet',
   chainName: 'Bitcoin Mainnnet',
-  coin: BraveWallet.CoinType.BTC,
+  coin: CoinType.BTC,
   supportedKeyrings: [BraveWallet.KeyringId.kBitcoin84],
   decimals: 8,
   iconUrls: [BTCIconUrl],
@@ -149,7 +152,7 @@ export const mockBitcoinTestnet: BraveWallet.NetworkInfo = {
   blockExplorerUrls: ['https://bitcoin.explorer'],
   chainId: 'bitcoin_testnet',
   chainName: 'Bitcoin Testnet',
-  coin: BraveWallet.CoinType.BTC,
+  coin: CoinType.BTC,
   supportedKeyrings: [BraveWallet.KeyringId.kBitcoin84Testnet],
   decimals: 8,
   iconUrls: [BTCIconUrl],

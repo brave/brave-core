@@ -7,7 +7,7 @@ import * as React from 'react'
 import { useDispatch } from 'react-redux'
 
 // Types
-import { BraveWallet } from '../../../constants/types'
+import { CoinType } from '../../../constants/types'
 
 // actions
 import { WalletActions } from '../../../common/actions'
@@ -59,7 +59,7 @@ export const WalletSettingsMenu = (props: Props) => {
       return
     }
 
-    const route = selectedNetwork.coin === BraveWallet.CoinType.ETH
+    const route = selectedNetwork.coin === CoinType.ETH
       ? 'ethereum'
       : 'solana'
 
@@ -130,7 +130,7 @@ export const WalletSettingsMenu = (props: Props) => {
 
       {
         selectedNetwork &&
-        selectedNetwork.coin !== BraveWallet.CoinType.FIL &&
+        selectedNetwork.coin !== CoinType.FIL &&
         <PopupButton onClick={onClickConnectedSites}>
           <ButtonIcon name='link-normal' />
           <PopupButtonText>

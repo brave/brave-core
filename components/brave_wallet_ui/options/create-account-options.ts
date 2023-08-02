@@ -2,7 +2,11 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { BraveWallet, CreateAccountOptionsType } from '../constants/types'
+import {
+  BraveWallet,
+  CoinType,
+  CreateAccountOptionsType
+} from '../constants/types'
 import { getLocale } from '../../common/locale'
 import { getNetworkLogo } from './asset-options'
 
@@ -15,7 +19,7 @@ export const CreateAccountOptions = (options: {
     {
       description: getLocale('braveWalletCreateAccountEthereumDescription'),
       name: 'Ethereum',
-      coin: BraveWallet.CoinType.ETH,
+      coin: CoinType.ETH,
       icon: getNetworkLogo(BraveWallet.MAINNET_CHAIN_ID, 'ETH')
     }
   ]
@@ -23,7 +27,7 @@ export const CreateAccountOptions = (options: {
     accounts.push({
       description: getLocale('braveWalletCreateAccountSolanaDescription'),
       name: 'Solana',
-      coin: BraveWallet.CoinType.SOL,
+      coin: CoinType.SOL,
       icon: getNetworkLogo(BraveWallet.SOLANA_MAINNET, 'SOL')
     })
   }
@@ -31,7 +35,7 @@ export const CreateAccountOptions = (options: {
     accounts.push({
       description: getLocale('braveWalletCreateAccountFilecoinDescription'),
       name: 'Filecoin',
-      coin: BraveWallet.CoinType.FIL,
+      coin: CoinType.FIL,
       icon: getNetworkLogo(BraveWallet.FILECOIN_MAINNET, 'FIL')
     })
   }
@@ -39,7 +43,7 @@ export const CreateAccountOptions = (options: {
     accounts.push({
       description: getLocale('braveWalletCreateAccountBitcoinDescription'),
       name: 'Bitcoin',
-      coin: BraveWallet.CoinType.BTC,
+      coin: CoinType.BTC,
       icon: getNetworkLogo(BraveWallet.BITCOIN_MAINNET, 'BTC')
     })
   }

@@ -30,6 +30,7 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/sign_message_request.mojom.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/permissions/brave_permission_manager.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"

@@ -5,6 +5,7 @@
 
 import {
   BraveWallet,
+  CoinType,
   SerializableTransactionInfo,
   SlippagePresetObjectType,
   TransactionProviderError
@@ -111,7 +112,7 @@ export type SetTransactionProviderErrorType = {
 export interface RetryTransactionPayload {
   chainId: string
   transactionId: string
-  coinType: BraveWallet.CoinType
+  coinType: CoinType
   fromAddress: string
 }
 

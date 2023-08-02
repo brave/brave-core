@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IMPL_HELPER_H_
 
 #include "base/functional/callback.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
+#include "brave/components/brave_wallet/common/base.mojom-forward.h"
 #include "build/build_config.h"
 
 namespace content {

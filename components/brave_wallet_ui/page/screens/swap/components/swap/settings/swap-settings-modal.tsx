@@ -12,7 +12,7 @@ import {
 
 // Types
 import {
-  BraveWallet,
+  CoinType,
   GasEstimate,
   GasFeeOption
 } from '../../../../../../constants/types'
@@ -193,7 +193,7 @@ export const SwapSettingsModal = (props: Props) => {
           </HiddenResponsiveRow>
 
           {/* Ethereum Only Settings */}
-          {selectedNetwork?.coin === BraveWallet.CoinType.ETH && (
+          {selectedNetwork?.coin === CoinType.ETH && (
             <>
               {/* Exchanges disabled until supported */}
               {/* <ExpandSection
@@ -227,7 +227,7 @@ export const SwapSettingsModal = (props: Props) => {
           )}
 
           {/* Solana Only Settings */}
-          {selectedNetwork?.coin === BraveWallet.CoinType.SOL && (
+          {selectedNetwork?.coin === CoinType.SOL && (
             <>
               {/* Direct Route Toggle is disabled until supported */}
               {/* <ToggleSection

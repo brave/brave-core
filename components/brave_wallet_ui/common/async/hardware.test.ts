@@ -8,6 +8,7 @@ global.TextEncoder = TextEncoder
 import { EthereumSignedTx } from '../hardware/trezor/trezor-connect-types'
 import {
   BraveWallet,
+  CoinType,
   GetNonceForHardwareTransactionReturnInfo,
   GetTransactionMessageToSignReturnInfo,
   ProcessHardwareSignatureReturnInfo
@@ -138,7 +139,7 @@ const getMockedProxyServices = (
       }
     },
     txService: {
-      getTransactionMessageToSign: (coinType: BraveWallet.CoinType, chainId: string, id: string): GetTransactionMessageToSignReturnInfo | undefined => {
+      getTransactionMessageToSign: (coinType: CoinType, chainId: string, id: string): GetTransactionMessageToSignReturnInfo | undefined => {
         expect(id).toStrictEqual(expectedId)
         expect(chainId).toStrictEqual(expectedChainId)
         return messageToSign
@@ -188,7 +189,7 @@ const signEthTransactionWithLedger = (vrs?: SignatureVRS, signatureResponse?: bo
   const signed = signatureResponse ? { status: signatureResponse } : undefined
   const apiProxy = getMockedProxyServices(txInfo.chainId, txInfo.id, { nonce: '0x1' }, messageToSign,
     signed)
-  return signLedgerEthereumTransaction(apiProxy as unknown as WalletApiProxy, expectedPath, txInfo, BraveWallet.CoinType.ETH, mockedKeyring as unknown as LedgerBridgeKeyring)
+  return signLedgerEthereumTransaction(apiProxy as unknown as WalletApiProxy, expectedPath, txInfo, CoinType.ETH, mockedKeyring as unknown as LedgerBridgeKeyring)
 }
 
 const signSolTransactionWithLedger = (expectedSignature: Buffer, signatureResponse?: boolean): Promise<SignHardwareTransactionType> => {
@@ -212,7 +213,7 @@ const signSolTransactionWithLedger = (expectedSignature: Buffer, signatureRespon
     apiProxy as unknown as WalletApiProxy,
     expectedPath,
     txInfo,
-    BraveWallet.CoinType.SOL,
+    CoinType.SOL,
     mockedKeyring as unknown as SolanaLedgerKeyring
   )
 }
@@ -226,7 +227,7 @@ const signFilTransactionWithLedger = (expectedSignature: SignedLotusMessage, sig
   const signed = signatureResponse ? { status: signatureResponse } : undefined
   const apiProxy = getMockedProxyServices(txInfo.chainId, txInfo.id, { nonce: 1 }, messageToSign,
     signed, JSON.stringify(expectedSignature))
-  return signLedgerFilecoinTransaction(apiProxy as unknown as WalletApiProxy, txInfo, BraveWallet.CoinType.FIL, mockedKeyring as unknown as FilecoinLedgerKeyring)
+  return signLedgerFilecoinTransaction(apiProxy as unknown as WalletApiProxy, txInfo, CoinType.FIL, mockedKeyring as unknown as FilecoinLedgerKeyring)
 }
 
 const hardwareTransactionErrorResponse = (errorId: string, code: string = ''): SignHardwareTransactionType => {
@@ -246,14 +247,14 @@ const signTransactionWithTrezor = (signed: Success<EthereumSignedTx> | Unsuccess
 
 test('Test sign raw Eth Ledger transaction', () => {
   const mockedKeyring = getMockedLedgerEthKeyring('', '')
-  return expect(signRawTransactionWithHardwareKeyring(mockedKeyring.type(), BraveWallet.CoinType.ETH)).resolves.toStrictEqual(hardwareTransactionErrorResponse('braveWalletHardwareOperationUnsupportedError'))
+  return expect(signRawTransactionWithHardwareKeyring(mockedKeyring.type(), CoinType.ETH)).resolves.toStrictEqual(hardwareTransactionErrorResponse('braveWalletHardwareOperationUnsupportedError'))
 })
 
 test('Test sign Ledger transaction, approved, no message to sign', () => {
   const txInfo = getMockedTransactionInfo()
   const apiProxy = getMockedProxyServices(txInfo.chainId, txInfo.id, { nonce: '0x1' })
   return expect(signLedgerEthereumTransaction(apiProxy as unknown as WalletApiProxy,
-    'path', txInfo, BraveWallet.CoinType.ETH)).resolves.toStrictEqual(hardwareTransactionErrorResponse('braveWalletNoMessageToSignError'))
+    'path', txInfo, CoinType.ETH)).resolves.toStrictEqual(hardwareTransactionErrorResponse('braveWalletNoMessageToSignError'))
 })
 
 test('Test sign Ledger transaction, approved, device error', () => {

@@ -10,7 +10,7 @@ import styled from 'styled-components'
 import { useGetSelectedChainQuery } from '../../../common/slices/api.slice'
 
 // Types
-import { BraveWallet } from '../../../constants/types'
+import { CoinType } from '../../../constants/types'
 
 // Hooks
 import { useSwap } from './hooks/useSwap'
@@ -194,10 +194,10 @@ export const Swap = () => {
             onInputChange={handleOnSetToAmount}
             hasInputError={swapValidationError === 'toAmountDecimalsOverflow'}
             isLoading={isFetchingQuote}
-            disabled={selectedNetwork?.coin === BraveWallet.CoinType.SOL}
+            disabled={selectedNetwork?.coin === CoinType.SOL}
           />
           {
-            selectedNetwork?.coin === BraveWallet.CoinType.SOL &&
+            selectedNetwork?.coin === CoinType.SOL &&
             quoteOptions.length > 0 &&
             (
               <QuoteOptions

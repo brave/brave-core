@@ -9,6 +9,7 @@ import { useHistory } from 'react-router'
 // types
 import {
   BraveWallet,
+  CoinType,
   WalletRoutes
 } from '../../../constants/types'
 
@@ -67,7 +68,7 @@ import { SearchAndFiltersRow } from './transaction-screen.styles'
 interface Params {
   address?: string | null
   chainId?: string | null
-  chainCoinType?: BraveWallet.CoinType | null
+  chainCoinType?: CoinType | null
 }
 
 const txListItemSkeletonProps: LoadingSkeletonStyleProps = {
@@ -94,7 +95,7 @@ export const TransactionsScreen: React.FC = () => {
       address: searchParams.get('address'),
       chainId: searchParams.get('chainId'),
       chainCoinType:
-        Number(searchParams.get('chainCoinType')) || BraveWallet.CoinType.ETH
+        Number(searchParams.get('chainCoinType')) || CoinType.ETH
     }
   }, [history.location.search])
 

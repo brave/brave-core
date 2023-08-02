@@ -9,7 +9,11 @@ import {
   TrezorDerivationPaths,
   SolDerivationPaths
 } from '../../../../../common/hardware/types'
-import { BraveWallet, FilecoinNetwork } from '../../../../../constants/types'
+import {
+  BraveWallet,
+  CoinType,
+  FilecoinNetwork
+} from '../../../../../constants/types'
 import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
 export { SolDerivationPaths } from '../../../../../common/hardware/types'
 
@@ -43,7 +47,7 @@ export interface HardwareWalletConnectOpts {
   stopIndex: number
   scheme?: HardwareDerivationScheme
   network?: FilecoinNetwork
-  coin: BraveWallet.CoinType
+  coin: CoinType
   onAuthorized: () => void
 }
 

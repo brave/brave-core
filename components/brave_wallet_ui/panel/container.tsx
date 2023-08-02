@@ -60,6 +60,7 @@ import * as WalletActions from '../common/actions/wallet_actions'
 import {
   AppsListType,
   BraveWallet,
+  CoinType,
   PanelTypes,
 } from '../constants/types'
 
@@ -137,7 +138,7 @@ function Container () {
           // Passed ETH here since AllowAddChangeNetworkPanel
           // is only used for EVM networks
           // and switchChainRequest doesn't return coinType.
-          coin: BraveWallet.CoinType.ETH
+          coin: CoinType.ETH
         }
       : skipToken
   )

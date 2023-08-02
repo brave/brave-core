@@ -7,7 +7,10 @@ import { EntityId, EntityState } from '@reduxjs/toolkit'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
 import { blockchainTokenEntityAdaptor } from '../common/slices/entities/blockchain-token.entity'
 import { GetBlockchainTokenIdArg } from './asset-utils'
-import { BraveWallet } from '../constants/types'
+import {
+  BraveWallet,
+  CoinType
+} from '../constants/types'
 
 /**
  * Default tags used by the cacher helpers
@@ -274,7 +277,7 @@ export const TX_CACHE_TAGS = {
   }),
   IDS: (txIds: Array<BraveWallet.TransactionInfo['id']>) =>
     txIds.map((id) => TX_CACHE_TAGS.ID(id)),
-  FOR_COIN_TYPE: (coinType: BraveWallet.CoinType) =>
+  FOR_COIN_TYPE: (coinType: CoinType) =>
     ({
       type: 'Transactions',
       id: `coinType: ${coinType}`
@@ -299,7 +302,7 @@ export const TX_CACHE_TAGS = {
     fromAddress
   }: {
     chainId: string | null
-    coin: BraveWallet.CoinType | null
+    coin: CoinType | null
     fromAddress: string | null
   }) =>
     [

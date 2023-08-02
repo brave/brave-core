@@ -23,7 +23,12 @@ import { TrezorErrorsCodes } from '../hardware/trezor/trezor-messages'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 import EthereumLedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
-import { BraveWallet, SerializableTransactionInfo } from '../../constants/types'
+import {
+  BraveWallet,
+  CoinType,
+  SignMessageRequest,
+  SerializableTransactionInfo
+} from '../../constants/types'
 import { LedgerEthereumKeyring, LedgerFilecoinKeyring, LedgerSolanaKeyring } from '../hardware/interfaces'
 import { EthereumSignedTx } from '../hardware/trezor/trezor-connect-types'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
@@ -108,7 +113,7 @@ export async function signLedgerEthereumTransaction (
   apiProxy: WalletApiProxy,
   path: string,
   txInfo: Pick<SerializableTransactionInfo, 'id' | 'chainId'>,
-  coin: BraveWallet.CoinType,
+  coin: CoinType,
   deviceKeyring: LedgerEthereumKeyring = getLedgerEthereumHardwareKeyring()): Promise<SignHardwareOperationResult> {
   const nonce =
     await apiProxy.ethTxManagerProxy.getNonceForHardwareTransaction(
@@ -142,7 +147,7 @@ export async function signLedgerEthereumTransaction (
 export async function signLedgerFilecoinTransaction (
   apiProxy: WalletApiProxy,
   txInfo: Pick<SerializableTransactionInfo, 'id' | 'chainId'>,
-  coin: BraveWallet.CoinType,
+  coin: CoinType,
   deviceKeyring: LedgerFilecoinKeyring = getLedgerFilecoinHardwareKeyring()): Promise<SignHardwareOperationResult> {
   const data = await apiProxy.txService.getTransactionMessageToSign(
     coin, txInfo.chainId, txInfo.id)
@@ -173,7 +178,7 @@ export async function signLedgerSolanaTransaction (
   apiProxy: WalletApiProxy,
   path: string,
   txInfo: Pick<SerializableTransactionInfo, 'id' | 'chainId'>,
-  coin: BraveWallet.CoinType,
+  coin: CoinType,
   deviceKeyring: LedgerSolanaKeyring = getLedgerSolanaHardwareKeyring()): Promise<SignHardwareOperationResult> {
     const data = await apiProxy.txService.getTransactionMessageToSign(
       coin, txInfo.chainId, txInfo.id)
@@ -202,7 +207,7 @@ export async function signLedgerSolanaTransaction (
     return { success: result.status }
 }
 
-export async function signMessageWithHardwareKeyring (vendor: HardwareVendor, path: string, messageData: Omit<BraveWallet.SignMessageRequest, 'originInfo'>): Promise<SignHardwareOperationResult> {
+export async function signMessageWithHardwareKeyring (vendor: HardwareVendor, path: string, messageData: Omit<SignMessageRequest, 'originInfo'>): Promise<SignHardwareOperationResult> {
   const deviceKeyring = getHardwareKeyring(vendor, messageData.coin)
   const signTypedData = messageData.signData.ethSignTypedData
   const standardSignData = messageData.signData.ethStandardSignData
@@ -237,7 +242,7 @@ export async function signMessageWithHardwareKeyring (vendor: HardwareVendor, pa
   return { success: false, error: getLocale('braveWalletUnknownKeyringError') }
 }
 
-export async function signRawTransactionWithHardwareKeyring (vendor: HardwareVendor, path: string, message: BraveWallet.ByteArrayStringUnion, coin: BraveWallet.CoinType, onAuthorized?: () => void): Promise<SignHardwareOperationResult> {
+export async function signRawTransactionWithHardwareKeyring (vendor: HardwareVendor, path: string, message: BraveWallet.ByteArrayStringUnion, coin: CoinType, onAuthorized?: () => void): Promise<SignHardwareOperationResult> {
   const deviceKeyring = getHardwareKeyring(vendor, coin, onAuthorized)
 
   if (deviceKeyring instanceof SolanaLedgerBridgeKeyring && message.bytes) {
@@ -249,7 +254,7 @@ export async function signRawTransactionWithHardwareKeyring (vendor: HardwareVen
   return { success: false, error: getLocale('braveWalletUnknownKeyringError') }
 }
 
-export async function cancelHardwareOperation (vendor: HardwareVendor, coin: BraveWallet.CoinType) {
+export async function cancelHardwareOperation (vendor: HardwareVendor, coin: CoinType) {
   const deviceKeyring = getHardwareKeyring(vendor, coin)
   if (deviceKeyring instanceof EthereumLedgerBridgeKeyring || deviceKeyring instanceof TrezorBridgeKeyring || deviceKeyring instanceof SolanaLedgerBridgeKeyring) {
     return deviceKeyring.cancelOperation()

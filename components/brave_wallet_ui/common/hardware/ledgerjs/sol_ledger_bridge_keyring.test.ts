@@ -5,7 +5,7 @@
 
 import SolanaLedgerBridgeKeyring from './sol_ledger_bridge_keyring'
 import { MockLedgerTransport } from './ledger_bridge_keyring.test'
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, CoinType } from '../../../constants/types'
 import { GetAccountsHardwareOperationResult, SignHardwareOperationResult, SolDerivationPaths } from '../types'
 import { LedgerCommand, LedgerError, UnlockResponse } from './ledger-messages'
 import {
@@ -92,7 +92,7 @@ test('getAccounts success', async () => {
         name: 'Ledger',
         hardwareVendor: 'Ledger',
         deviceId: '0d09bdd791abfcf562035fc99c7293400125339df1e8194b4ea8c2bd69327caa',
-        coin: BraveWallet.CoinType.SOL,
+        coin: CoinType.SOL,
         keyringId: BraveWallet.KeyringId.kSolana
       },
       {
@@ -102,7 +102,7 @@ test('getAccounts success', async () => {
         name: 'Ledger',
         hardwareVendor: 'Ledger',
         deviceId: '0d09bdd791abfcf562035fc99c7293400125339df1e8194b4ea8c2bd69327caa',
-        coin: BraveWallet.CoinType.SOL,
+        coin: CoinType.SOL,
         keyringId: BraveWallet.KeyringId.kSolana
       }
     ]

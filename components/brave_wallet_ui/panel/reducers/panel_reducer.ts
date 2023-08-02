@@ -6,8 +6,11 @@
 import { createReducer } from 'redux-act'
 import {
   BraveWallet,
+  CoinType,
+  OriginInfo,
   PanelState,
-  PanelTypes
+  PanelTypes,
+  SignMessageRequest
 } from '../../constants/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import {
@@ -16,7 +19,7 @@ import {
 import { PanelTitles } from '../../options/panel-titles'
 import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
-const defaultOriginInfo: BraveWallet.OriginInfo = {
+const defaultOriginInfo: OriginInfo = {
   originSpec: '',
   eTldPlusOne: ''
 }
@@ -39,7 +42,7 @@ const defaultState: PanelState = {
       symbol: 'ETH',
       symbolName: 'Ethereum',
       decimals: 18,
-      coin: BraveWallet.CoinType.ETH,
+      coin: CoinType.ETH,
       supportedKeyrings: [BraveWallet.KeyringId.kDefault],
       isEip1559: true
     }
@@ -57,7 +60,7 @@ const defaultState: PanelState = {
       ethSiweData: undefined,
       solanaSignData: undefined
     },
-    coin: BraveWallet.CoinType.ETH,
+    coin: CoinType.ETH,
     chainId: ''
   }],
   signAllTransactionsRequests: [],
@@ -147,7 +150,7 @@ export const createPanelReducer = (initialState: PanelState) => {
     }
   })
 
-  reducer.on(PanelActions.signMessage.type, (state, payload: BraveWallet.SignMessageRequest[]) => {
+  reducer.on(PanelActions.signMessage.type, (state, payload: SignMessageRequest[]) => {
     return {
       ...state,
       signMessageData: payload

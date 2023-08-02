@@ -31,6 +31,7 @@ import { AccountButtonOptions } from '../../../../options/account-list-button-op
 // types
 import {
   BraveWallet,
+  CoinType
 } from '../../../../constants/types'
 
 // components
@@ -252,7 +253,7 @@ export const AccountSettingsModal = () => {
             </WarningWrapper>
             {privateKey
               ? <>
-                {selectedAccount?.accountId.coin === BraveWallet.CoinType.FIL &&
+                {selectedAccount?.accountId.coin === CoinType.FIL &&
                   <WarningWrapper>
                     <WarningText>
                       {filPrivateKeyFormatDescriptionTextParts.beforeTag}

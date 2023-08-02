@@ -58,4 +58,14 @@ ios_objc_mojom_wrappers("wallet_mojom_wrappers") {
     "PageHandlerFactory",
     "PanelHandlerFactory",
   ]
+  deps = [ ":deps_mojom_wrappers" ]
+}
+
+ios_objc_mojom_wrappers("deps_mojom_wrappers") {
+  mojom_target = "//brave/components/brave_wallet/common:mojom"
+  generate_namespace = false
+  sources = [
+    "//brave/components/brave_wallet/common/base.mojom",
+    "//brave/components/brave_wallet/common/sign_message_request.mojom",
+  ]
 }

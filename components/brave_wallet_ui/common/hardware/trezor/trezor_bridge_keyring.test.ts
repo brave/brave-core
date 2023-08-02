@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, CoinType } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import {
   kTrezorBridgeUrl,
@@ -327,7 +327,7 @@ test('Extract accounts from unlocked device returned success', () => {
             'deviceId': '5454545',
             'hardwareVendor': 'Trezor',
             'name': 'Trezor',
-            'coin': BraveWallet.CoinType.ETH,
+            'coin': CoinType.ETH,
             'keyringId': BraveWallet.KeyringId.kDefault
           },
           {
@@ -336,7 +336,7 @@ test('Extract accounts from unlocked device returned success', () => {
             'deviceId': '5454545',
             'hardwareVendor': 'Trezor',
             'name': 'Trezor',
-            'coin': BraveWallet.CoinType.ETH,
+            'coin': CoinType.ETH,
             'keyringId': BraveWallet.KeyringId.kDefault
           }],
           success: true
@@ -369,7 +369,7 @@ test('Extracting accounts from unlocked device returned success without zero ind
         'deviceId': '5454545',
         'hardwareVendor': 'Trezor',
         'name': 'Trezor',
-        'coin': BraveWallet.CoinType.ETH,
+        'coin': CoinType.ETH,
         'keyringId': BraveWallet.KeyringId.kDefault
       }],
       success: true

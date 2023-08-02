@@ -10,7 +10,7 @@ import { createStore, combineReducers } from 'redux'
 import { createWalletReducer } from '../../slices/wallet.slice'
 
 // types
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, CoinType } from '../../../constants/types'
 import { WalletActions } from '../../actions'
 import type WalletApiProxy from '../../wallet_api_proxy'
 
@@ -82,9 +82,9 @@ type TokenBalanceRegistry = Record<
 >
 
 export interface WalletApiDataOverrides {
-  selectedCoin?: BraveWallet.CoinType
+  selectedCoin?: CoinType
   selectedAccountId?: BraveWallet.AccountId
-  chainIdsForCoins?: Record<BraveWallet.CoinType, string>
+  chainIdsForCoins?: Record<CoinType, string>
   networks?: BraveWallet.NetworkInfo[]
   defaultBaseCurrency?: string
   transactionInfos?: BraveWallet.TransactionInfo[]
@@ -109,16 +109,16 @@ export class MockedWalletApiProxy {
 
   selectedNetwork: BraveWallet.NetworkInfo = mockEthMainnet
 
-  chainIdsForCoins: Record<BraveWallet.CoinType, string> = {
-    [BraveWallet.CoinType.ETH]: BraveWallet.MAINNET_CHAIN_ID,
-    [BraveWallet.CoinType.SOL]: BraveWallet.SOLANA_MAINNET,
-    [BraveWallet.CoinType.FIL]: BraveWallet.FILECOIN_MAINNET
+  chainIdsForCoins: Record<CoinType, string> = {
+    [CoinType.ETH]: BraveWallet.MAINNET_CHAIN_ID,
+    [CoinType.SOL]: BraveWallet.SOLANA_MAINNET,
+    [CoinType.FIL]: BraveWallet.FILECOIN_MAINNET
   }
 
-  chainsForCoins: Record<BraveWallet.CoinType, BraveWallet.NetworkInfo> = {
-    [BraveWallet.CoinType.ETH]: mockEthMainnet,
-    [BraveWallet.CoinType.SOL]: mockSolanaMainnetNetwork,
-    [BraveWallet.CoinType.FIL]: mockFilecoinMainnetNetwork
+  chainsForCoins: Record<CoinType, BraveWallet.NetworkInfo> = {
+    [CoinType.ETH]: mockEthMainnet,
+    [CoinType.SOL]: mockSolanaMainnetNetwork,
+    [CoinType.FIL]: mockFilecoinMainnetNetwork
   }
 
   networks: BraveWallet.NetworkInfo[] = mockNetworks
@@ -235,7 +235,7 @@ export class MockedWalletApiProxy {
   braveWalletService: Partial<
     InstanceType<typeof BraveWallet.BraveWalletServiceInterface>
   > = {
-    getUserAssets: async (chainId: string, coin: BraveWallet.CoinType) => {
+    getUserAssets: async (chainId: string, coin: CoinType) => {
       return {
         tokens: this.userAssets.filter(
           (t) => t.chainId === chainId && t.coin === coin
@@ -382,7 +382,7 @@ export class MockedWalletApiProxy {
   jsonRpcService: Partial<
     InstanceType<typeof BraveWallet.JsonRpcServiceInterface>
   > = {
-    getAllNetworks: async (coin: BraveWallet.CoinType) => {
+    getAllNetworks: async (coin: CoinType) => {
       return { networks: this.networks.filter((n) => n.coin === coin) }
     },
     getHiddenNetworks: async () => {
@@ -433,7 +433,7 @@ export class MockedWalletApiProxy {
         balance:
           this.nativeBalanceRegistry[address][
             blockchainTokenEntityAdaptor.selectId({
-              coin: BraveWallet.CoinType.ETH,
+              coin: CoinType.ETH,
               chainId,
               contractAddress: contract,
               isErc721: false,
@@ -455,7 +455,7 @@ export class MockedWalletApiProxy {
         balance:
           this.nativeBalanceRegistry[accountAddress][
             blockchainTokenEntityAdaptor.selectId({
-              coin: BraveWallet.CoinType.ETH,
+              coin: CoinType.ETH,
               chainId,
               contractAddress: contractAddress,
               isErc721: true,
@@ -477,7 +477,7 @@ export class MockedWalletApiProxy {
         balance:
           this.nativeBalanceRegistry[accountAddress][
             blockchainTokenEntityAdaptor.selectId({
-              coin: BraveWallet.CoinType.ETH,
+              coin: CoinType.ETH,
               chainId,
               contractAddress: contractAddress,
               isErc721: true,
@@ -498,7 +498,7 @@ export class MockedWalletApiProxy {
         amount:
           this.nativeBalanceRegistry[walletAddress][
             blockchainTokenEntityAdaptor.selectId({
-              coin: BraveWallet.CoinType.ETH,
+              coin: CoinType.ETH,
               chainId,
               contractAddress: tokenMintAddress,
               isErc721: false,

@@ -17,6 +17,7 @@ import {
 // Types
 import {
   BraveWallet,
+  CoinType,
   SupportedTestNetworks
 } from '../../../constants/types'
 import {
@@ -43,8 +44,8 @@ import {
 
 
 const DAppSupportedCoinTypes = [
-  BraveWallet.CoinType.SOL,
-  BraveWallet.CoinType.ETH
+  CoinType.SOL,
+  CoinType.ETH
 ]
 
 const DAppSupportedPrimaryChains = [

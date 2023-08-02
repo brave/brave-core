@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // Types
-import { BraveWallet } from '../../../../constants/types'
+import { OriginInfo } from '../../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
@@ -38,7 +38,7 @@ import { HorizontalSpace, Column, Row } from '../../../shared/style'
 import { useAddressOrb } from '../../../../common/hooks/use-orb'
 
 interface Props {
-  originInfo: BraveWallet.OriginInfo
+  originInfo: OriginInfo
   isReadyToConnect: boolean
   onBack: () => void
   address?: string

@@ -15,7 +15,7 @@ import { UISelectors } from '../../../common/selectors'
 import { PanelActions } from '../../../panel/actions'
 
 // types
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, CoinType } from '../../../constants/types'
 import { HardwareWalletResponseCodeType } from '../../../common/hardware/types'
 
 // hooks
@@ -55,11 +55,11 @@ export interface Props {
   onClickInstructions: () => void
 }
 
-function getAppName (coinType: BraveWallet.CoinType): string {
+function getAppName (coinType: CoinType): string {
   switch (coinType) {
-    case BraveWallet.CoinType.SOL:
+    case CoinType.SOL:
       return 'Solana'
-    case BraveWallet.CoinType.FIL:
+    case CoinType.FIL:
       return 'Filecoin'
     default:
       return 'Ethereum'

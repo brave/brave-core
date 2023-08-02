@@ -8,7 +8,11 @@ import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
-import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
+import {
+  BraveWallet,
+  CoinType,
+  SerializableTransactionInfo
+} from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -35,7 +39,7 @@ import {
 export interface Props {
   selectedNetwork: BraveWallet.NetworkInfo | undefined
   selectedAccountAddress: string | undefined
-  selectedAccountCoinType: BraveWallet.CoinType | undefined
+  selectedAccountCoinType: CoinType | undefined
 }
 
 export const TransactionsPanel = ({

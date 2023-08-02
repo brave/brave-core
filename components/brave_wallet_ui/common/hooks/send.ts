@@ -7,6 +7,7 @@ import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import {
   BraveWallet,
+  CoinType,
   GetEthAddrReturnInfo,
   GetUnstoppableDomainsWalletAddrReturnInfo,
   IsBase58EncodedSolanaPubkeyReturnInfo,
@@ -189,7 +190,7 @@ export function useSend (isSendTab?: boolean) {
     }
 
     if (selectedAccount && selectedSendAsset && 
-      selectedAccount.accountId.coin === BraveWallet.CoinType.ETH &&
+      selectedAccount.accountId.coin === CoinType.ETH &&
       (selectedSendAsset.chainId === BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID ||
         selectedSendAsset.chainId === BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID) &&
       isValidFilAddress(addressOrUrl)) {
@@ -339,11 +340,11 @@ export function useSend (isSendTab?: boolean) {
 
     setShowFilecoinFEVMWarning(false)
 
-    if (selectedAccount.accountId.coin === BraveWallet.CoinType.ETH) {
+    if (selectedAccount.accountId.coin === CoinType.ETH) {
       processEthereumAddress(addressOrUrl)
-    } else if (selectedAccount.accountId.coin === BraveWallet.CoinType.FIL) {
+    } else if (selectedAccount.accountId.coin === CoinType.FIL) {
       processFilecoinAddress(addressOrUrl)
-    } else if (selectedAccount.accountId.coin === BraveWallet.CoinType.SOL) {
+    } else if (selectedAccount.accountId.coin === CoinType.SOL) {
       processSolanaAddress(addressOrUrl)
     }
   }, [
@@ -422,7 +423,7 @@ export function useSend (isSendTab?: boolean) {
       )
 
     if (
-      selectedAccount.accountId.coin === BraveWallet.CoinType.SOL &&
+      selectedAccount.accountId.coin === CoinType.SOL &&
       selectedSendAsset.contractAddress !== '' &&
       !selectedSendAsset.isErc20 &&
       !selectedSendAsset.isErc721
@@ -444,7 +445,7 @@ export function useSend (isSendTab?: boolean) {
       return
     }
 
-    if (selectedAccount.accountId.coin === BraveWallet.CoinType.FIL) {
+    if (selectedAccount.accountId.coin === CoinType.FIL) {
       dispatch(
         walletApi.endpoints.sendTransaction.initiate({
           network: selectedNetwork,
@@ -467,7 +468,7 @@ export function useSend (isSendTab?: boolean) {
       return
     }
 
-    if (selectedAccount.accountId.coin === BraveWallet.CoinType.ETH &&
+    if (selectedAccount.accountId.coin === CoinType.ETH &&
       (selectedSendAsset.chainId === BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID ||
         selectedSendAsset.chainId === BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID) &&
       isValidFilAddress(toAddress)) {
@@ -494,7 +495,7 @@ export function useSend (isSendTab?: boolean) {
         fromAccount,
         to: toAddress,
         value:
-          selectedAccount.accountId.coin === BraveWallet.CoinType.FIL
+          selectedAccount.accountId.coin === CoinType.FIL
             ? new Amount(sendAmount)
                 .multiplyByDecimals(selectedSendAsset.decimals)
                 .toString()
