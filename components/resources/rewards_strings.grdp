@@ -397,6 +397,9 @@
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS" desc="">
     Start using Rewards
   </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS_TEXT_ONLY" desc="">
+    Press the <ph name="BAT_ICON">$1</ph> BAT icon in the URL bar to start.
+  </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_TERMS" desc="">
     By proceeding, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.
   </message>
