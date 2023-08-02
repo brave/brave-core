@@ -291,6 +291,10 @@ var package = Package(
       dependencies: ["BraveShared", "Preferences"]
     ),
     .testTarget(
+      name: "BraveVPNTests",
+      dependencies: ["BraveVPN", "BraveShared", "GuardianConnect"]
+    ),
+    .testTarget(
       name: "BraveWalletTests",
       dependencies: [
         "BraveWallet",

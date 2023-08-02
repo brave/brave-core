@@ -17,8 +17,19 @@ import SafariServices
 // MARK: - Callouts
 
 extension BrowserViewController {
-  
-  // Priority: P3A - Bottom Bar - VPN - Default Browser - Rewards - Cookie Notification - Link Receipt
+  /*
+   Check FullScreenCalloutType to make alterations to priority of pop-over variation
+   
+   Priority:
+   - P3A
+   - VPN Update Billing
+   - Bottom Bar
+   - VPN Promotion
+   - Default Browser
+   - Rewards
+   - Cookie Notification
+   - VPN Link Receipt
+  */
   func presentFullScreenCallouts() {
     for type in FullScreenCalloutType.allCases {
       presentScreenCallout(for: type)
@@ -34,6 +45,8 @@ extension BrowserViewController {
     switch type {
     case .p3a:
       presentP3AScreenCallout()
+    case .vpnUpdateBilling:
+      presentVPNUpdateBillingCallout(skipSafeGuards: skipSafeGuards)
     case .bottomBar:
       presentBottomBarCallout(skipSafeGuards: skipSafeGuards)
     case .defaultBrowser:
@@ -244,11 +257,24 @@ extension BrowserViewController {
     present(popup, animated: false)
   }
   
-  private func presentVPNChurnPromoCallout(for type: VPNChurnPromoType) {
+  private func presentVPNUpdateBillingCallout(skipSafeGuards: Bool = false) {
+    if !skipSafeGuards {
+      // TODO: Condition
+      return
+    }
+    
+    presentVPNChurnPromoCallout(for: .updateBillingExpired) {
+      // TODO: Action
+    }
+  }
+  
+  // MARK: Helper Methods for Presentation
+
+  private func presentVPNChurnPromoCallout(for type: VPNChurnPromoType, completion: @escaping () -> Void) {
     var vpnChurnPromoView = VPNChurnPromoView(churnPromoType: type)
    
     vpnChurnPromoView.renewAction = {
-      // TODO: Action
+      completion()
     }
     
     let popup = PopupViewController(rootView: vpnChurnPromoView, isDismissable: true)

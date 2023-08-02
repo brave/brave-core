@@ -49,8 +49,8 @@ extension Preferences {
       key: "fullScreenCallout.full-screen-bottom-bar-callout-completed",
       default: false)
     
-    /// Whether the vpn callout is shown.
-    public static let vpnCalloutCompleted = Option<Bool>(
+    /// Whether the vpn promotion callout is shown.
+    public static let vpnPromotionCalloutCompleted = Option<Bool>(
       key: "fullScreenCallout.full-screen-vpn-callout-completed",
       default: false)
     
@@ -67,6 +67,11 @@ extension Preferences {
     /// Whether the omnibox callout is shown.
     public static let omniboxCalloutCompleted = Option<Bool>(
       key: "fullScreenCallout.full-screen-omnibox-callout-completed",
+      default: false)
+    
+    /// Whether the vpn promotion callout is shown.
+    public static let vpnUpdateBillingCalloutCompleted = Option<Bool>(
+      key: "fullScreenCallout.full-screen-vpn-billing-callout-completed",
       default: false)
   }
 }
