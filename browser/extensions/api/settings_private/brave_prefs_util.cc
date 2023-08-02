@@ -221,10 +221,12 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[browsing_data::prefs::kDeleteHostedAppsDataOnExit] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+#if BUILDFLAG(ENABLE_AI_CHAT)
   (*s_brave_allowlist)[browsing_data::prefs::kDeleteBraveLeoHistory] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[browsing_data::prefs::kDeleteBraveLeoHistoryOnExit] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
   (*s_brave_allowlist)[kAlwaysShowBookmarkBarOnNTP] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kMRUCyclingEnabled] =
