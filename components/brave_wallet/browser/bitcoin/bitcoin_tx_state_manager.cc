@@ -9,6 +9,7 @@
 
 #include "base/notreached.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
@@ -24,12 +25,15 @@ BitcoinTxStateManager::BitcoinTxStateManager(
 
 BitcoinTxStateManager::~BitcoinTxStateManager() = default;
 
+// TODO(apaymyshev): test that
 std::string BitcoinTxStateManager::GetTxPrefPathPrefix(
     const absl::optional<std::string>& chain_id) {
-  // TODO(apaymyshev): implement
-  NOTIMPLEMENTED();
-
-  return "";
+  if (chain_id.has_value()) {
+    return base::StrCat(
+        {kBitcoinPrefKey, ".",
+         GetNetworkId(prefs_, mojom::CoinType::BTC, *chain_id)});
+  }
+  return kBitcoinPrefKey;
 }
 
 mojom::CoinType BitcoinTxStateManager::GetCoinType() const {
