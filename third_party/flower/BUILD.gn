@@ -1,7 +1,15 @@
 static_library("flower") {
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [ "//build/config/compiler:no_chromium_code" ]
+
   include_dirs = [ "src/brave/flwr" ]
+  sources = [
+    "src/brave/flwr/serde.cc",
+    "src/brave/flwr/serde.h",
+  ]
   public_deps = [
-    "//brave/third_party/flower/src/brave/flwr:brave_flwr",
     "//brave/third_party/flower/src/proto/flwr/proto:transport_proto",
+    "//third_party/abseil-cpp:absl",
+    "//third_party/protobuf:protobuf_lite",
   ]
 }
