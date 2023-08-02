@@ -142,7 +142,7 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
   }
 
   canRemoveNetwork_(item) {
-    if (this.checkIsDefaultNetwork) return false
+    if (this.checkIsDefaultNetwork(item.chainId)) return false
 
     return this.knownNetworks.indexOf(item.chainId) == -1
   }
