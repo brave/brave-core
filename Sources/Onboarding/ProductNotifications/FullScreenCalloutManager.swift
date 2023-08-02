@@ -9,17 +9,31 @@ import Preferences
 import Growth
 
 public enum FullScreenCalloutType: CaseIterable {
-  case bottomBar, p3a, rewards, defaultBrowser, blockCookieConsentNotices, vpnPromotion, vpnLinkReceipt
+  /*
+   The order will effect the priority
+   
+   Priority:
+   - P3A
+   - VPN Update Billing
+   - Bottom Bar
+   - VPN Promotion
+   - Default Browser
+   - Rewards
+   - Cookie Notification
+   - VPN Link Receipt
+  */
+  case p3a, vpnUpdateBilling, bottomBar, vpnPromotion, defaultBrowser, rewards, blockCookieConsentNotices, vpnLinkReceipt
 
   /// The number of days passed to show certain type of callout
   var period: Int {
     switch self {
-    case .bottomBar: return 0
     case .p3a: return 0
-    case .rewards: return 8
-    case .defaultBrowser: return 10
-    case .blockCookieConsentNotices: return 0
+    case .vpnUpdateBilling: return 0
+    case .bottomBar: return 0
     case .vpnPromotion: return 4
+    case .defaultBrowser: return 10
+    case .rewards: return 8
+    case .blockCookieConsentNotices: return 0
     case .vpnLinkReceipt: return 0
     }
   }
@@ -27,18 +41,20 @@ public enum FullScreenCalloutType: CaseIterable {
   /// The preference value stored for complete state
   public var preferenceValue: Preferences.Option<Bool> {
     switch self {
-    case .bottomBar:
-      return Preferences.FullScreenCallout.bottomBarCalloutCompleted
     case .p3a:
       return Preferences.Onboarding.p3aOnboardingShown
-    case .rewards:
-      return Preferences.FullScreenCallout.rewardsCalloutCompleted
+    case .vpnUpdateBilling:
+      return Preferences.FullScreenCallout.vpnUpdateBillingCalloutCompleted
+    case .bottomBar:
+      return Preferences.FullScreenCallout.bottomBarCalloutCompleted
+    case .vpnPromotion:
+      return Preferences.FullScreenCallout.vpnPromotionCalloutCompleted
     case .defaultBrowser:
       return Preferences.DefaultBrowserIntro.completed
+    case .rewards:
+      return Preferences.FullScreenCallout.rewardsCalloutCompleted
     case .blockCookieConsentNotices:
       return Preferences.FullScreenCallout.blockCookieConsentNoticesCalloutCompleted
-    case .vpnPromotion:
-      return Preferences.FullScreenCallout.vpnCalloutCompleted
     case .vpnLinkReceipt:
       return Preferences.Onboarding.vpnLinkReceiptShown
     }

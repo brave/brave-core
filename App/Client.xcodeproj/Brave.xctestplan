@@ -116,6 +116,13 @@
         "identifier" : "PrivateCDNTests",
         "name" : "PrivateCDNTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "BraveVPNTests",
+        "name" : "BraveVPNTests"
+      }
     }
   ],
   "version" : 1
