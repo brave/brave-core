@@ -92,11 +92,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void CleanUp();
   void OnTabContentRetrieved(int64_t for_navigation_id,
                              std::string contents_text,
-                             bool is_video = false,
-                             bool parse_xml = false);
-  void ContinueOnTabContentRetrieved(int64_t for_navigation_id,
-                                     std::string parsed_contents_text,
-                                     bool is_video = false);
+                             bool is_video = false);
   void OnAPIStreamDataReceived(int64_t for_navigation_id,
                                data_decoder::DataDecoder::ValueOrError result);
   void OnAPIStreamDataComplete(int64_t for_navigation_id,
@@ -134,13 +130,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   std::string BuildLlama2InstructionPrompt(const std::string& instruction);
   std::string BuildLlama2GenerateQuestionsPrompt(bool is_video,
                                                  const std::string content);
-  void OnYoutubeTranscriptXMLParsed(
-      int64_t for_navigation_id,
-      bool is_video,
-      base::expected<base::Value, std::string> result);
-
   mojom::AutoGenerateQuestionsPref GetAutoGeneratePref();
-  data_decoder::DataDecoder* GetDataDecoder();
 
   raw_ptr<PrefService> pref_service_;
   std::unique_ptr<AIChatAPI> ai_chat_api_ = nullptr;
@@ -160,7 +150,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // Store the unique ID for each navigation so that
   // we can ignore API responses for previous navigations.
   int64_t current_navigation_id_;
-  std::unique_ptr<data_decoder::DataDecoder> data_decoder_;
 
   base::WeakPtrFactory<AIChatTabHelper> weak_ptr_factory_{this};
   WEB_CONTENTS_USER_DATA_KEY_DECL();
