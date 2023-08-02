@@ -60,8 +60,7 @@ TEST(BraveFederatedLearningFlowerHelperTest, ParseFitTaskListFromResponseBody) {
       fit_task_instruction_response.SerializeAsString();
 
   // Act
-  absl::optional<TaskList> task_list_maybe =
-      ParseTaskListFromResponseBody(response_string);
+  auto task_list_maybe = ParseTaskListFromResponseBody(response_string);
 
   // Assert
   TaskList task_list = task_list_maybe.value();
@@ -114,8 +113,7 @@ TEST(BraveFederatedLearningFlowerHelperTest,
       eval_task_instruction_response.SerializeAsString();
 
   // Act
-  absl::optional<TaskList> task_list_maybe =
-      ParseTaskListFromResponseBody(response_string);
+  auto task_list_maybe = ParseTaskListFromResponseBody(response_string);
 
   // Assert
   TaskList task_list = task_list_maybe.value();
@@ -167,8 +165,7 @@ TEST(BraveFederatedLearningFlowerHelperTest,
       eval_task_instruction_response.SerializeAsString();
 
   // Act
-  absl::optional<TaskList> task_list =
-      ParseTaskListFromResponseBody(response_string);
+  auto task_list = ParseTaskListFromResponseBody(response_string);
 
   // Assert
   EXPECT_TRUE(!task_list.has_value());
@@ -197,8 +194,7 @@ TEST(BraveFederatedLearningFlowerHelperTest,
       eval_task_instruction_response.SerializeAsString();
 
   // Act
-  absl::optional<TaskList> task_list =
-      ParseTaskListFromResponseBody(response_string);
+  auto task_list = ParseTaskListFromResponseBody(response_string);
 
   // Assert
   EXPECT_TRUE(!task_list.has_value());
