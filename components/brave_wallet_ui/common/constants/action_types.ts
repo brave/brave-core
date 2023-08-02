@@ -5,7 +5,6 @@
 
 import {
   BraveWallet,
-  SerializableOrigin,
   SerializableTransactionInfo,
   SlippagePresetObjectType,
   TransactionProviderError
@@ -83,17 +82,15 @@ export type DefaultBaseCryptocurrencyChanged = {
 }
 
 export type SitePermissionsPayloadType = {
-  accounts: BraveWallet.AccountInfo[]
+  accounts: BraveWallet.AccountId[]
 }
 
 export type RemoveSitePermissionPayloadType = {
   accountId: BraveWallet.AccountId
-  origin: SerializableOrigin
 }
 
 export type AddSitePermissionPayloadType = {
   accountId: BraveWallet.AccountId
-  origin: SerializableOrigin
 }
 
 export type GetCoinMarketPayload = {

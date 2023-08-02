@@ -5,11 +5,7 @@
 import * as React from 'react'
 
 // Types
-import {
-  BraveWallet,
-  SerializableDecryptRequest,
-  SerializableGetEncryptionPublicKeyRequest
-} from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
@@ -42,9 +38,8 @@ export interface Props {
   panelType: 'request' | 'read'
   accounts: BraveWallet.AccountInfo[]
   selectedNetwork?: BraveWallet.NetworkInfo
-  encryptionKeyPayload: SerializableGetEncryptionPublicKeyRequest
-  eTldPlusOne: string
-  decryptPayload: SerializableDecryptRequest
+  encryptionKeyPayload: BraveWallet.GetEncryptionPublicKeyRequest
+  decryptPayload: BraveWallet.DecryptRequest
   onProvideOrAllow: () => void
   onCancel: () => void
 }
@@ -55,13 +50,13 @@ function EncryptionKeyPanel (props: Props) {
     accounts,
     selectedNetwork,
     encryptionKeyPayload,
-    eTldPlusOne,
     decryptPayload,
     onProvideOrAllow,
     onCancel
   } = props
   const [isDecrypted, setIsDecrypted] = React.useState<boolean>(false)
   const payloadAddress = panelType === 'request' ? encryptionKeyPayload.address : decryptPayload.address
+  const originInfo = panelType === 'request' ? encryptionKeyPayload.originInfo : decryptPayload.originInfo
 
   const foundAccountName = React.useMemo(() => {
     return accounts.find((account) => account.address.toLowerCase() === payloadAddress.toLowerCase())?.name
@@ -73,7 +68,7 @@ function EncryptionKeyPanel (props: Props) {
     setIsDecrypted(true)
   }
 
-  const descriptionString = getLocale('braveWalletProvideEncryptionKeyDescription').replace('$url', encryptionKeyPayload.originInfo.originSpec)
+  const descriptionString = getLocale('braveWalletProvideEncryptionKeyDescription').replace('$url', originInfo.originSpec)
   const { duringTag, afterTag } = splitStringForTag(descriptionString)
 
   return (
@@ -86,9 +81,8 @@ function EncryptionKeyPanel (props: Props) {
       {panelType === 'read' &&
         <URLText>
           <CreateSiteOrigin
-            originSpec={encryptionKeyPayload.originInfo.originSpec}
-            // TODO(apaymyshev): why originSpec is coming from payload, but eTldPlusOne from props?
-            eTldPlusOne={eTldPlusOne}
+            originSpec={originInfo.originSpec}
+            eTldPlusOne={originInfo.eTldPlusOne}
           />
         </URLText>
       }
@@ -118,7 +112,7 @@ function EncryptionKeyPanel (props: Props) {
               ? <>
                 <CreateSiteOrigin
                   originSpec={duringTag ?? ''}
-                  eTldPlusOne={eTldPlusOne}
+                  eTldPlusOne={originInfo.eTldPlusOne}
                 />
                 {afterTag}
               </>

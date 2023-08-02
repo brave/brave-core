@@ -27,17 +27,20 @@ export const mockAddChainRequest = {
 }
 
 export const mockGetEncryptionPublicKeyRequest = {
+  requestId: '',
   originInfo: mockOriginInfo,
   address: ''
 }
 
 export const mockDecryptRequest = {
+  requestId: '',
   originInfo: mockOriginInfo,
   address: '',
   unsafeMessage: ''
 }
 
 export const mockSwitchChainRequest = {
+  requestId: '',
   originInfo: mockOriginInfo,
   chainId: ''
 }

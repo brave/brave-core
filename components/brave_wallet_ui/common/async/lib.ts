@@ -38,9 +38,6 @@ import { AllNetworksOption, AllNetworksOptionDefault } from '../../options/netwo
 import { AllAccountsOptionUniqueKey, applySelectedAccountFilter } from '../../options/account-filter-options'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
-import {
-  deserializeOrigin,
-} from '../../utils/model-serialization-utils'
 import { WalletPageActions } from '../../page/actions'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 import { IPFS_PROTOCOL, isIpfs, stripERC20TokenImageURL } from '../../utils/string-utils'
@@ -481,29 +478,12 @@ export function refreshSitePermissions () {
     const apiProxy = getAPIProxy()
     const { braveWalletService } = apiProxy
 
-    const { wallet: { accounts, activeOrigin } } = getState()
+    const { wallet: { accounts } } = getState()
 
     // Get a list of accounts with permissions of the active origin
-    const getAllPermissions = await mapLimit(
-      accounts,
-      10,
-      async (account: BraveWallet.AccountInfo) => {
-        const result = await braveWalletService.hasPermission(
-          account.accountId,
-          deserializeOrigin(activeOrigin.origin)
-        )
-        if (result.success && result.hasPermission) {
-          return account
-        }
+    const { accountsWithPermission } =
+      await braveWalletService.hasPermission(accounts.map((acc) => acc.accountId))
 
-        return undefined
-      }
-    )
-
-    const accountsWithPermission: BraveWallet.AccountInfo[] =
-      getAllPermissions.filter(
-        (account): account is BraveWallet.AccountInfo => account !== undefined
-      )
     dispatch(WalletActions.setSitePermissions({ accounts: accountsWithPermission }))
   }
 }

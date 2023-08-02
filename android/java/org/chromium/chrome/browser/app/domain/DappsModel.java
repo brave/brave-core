@@ -26,7 +26,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.system.Pair;
-import org.chromium.url.internal.mojom.Origin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -150,12 +149,12 @@ public class DappsModel implements KeyringServiceObserver {
         _mProcessNextDAppsRequest.postValue(null);
     }
 
-    public void processPublicEncryptionKey(boolean isApproved, Origin origin) {
+    public void processPublicEncryptionKey(String requestId, boolean isApproved) {
         synchronized (mLock) {
             if (mBraveWalletService == null) {
                 return;
             }
-            mBraveWalletService.notifyGetPublicKeyRequestProcessed(isApproved, origin);
+            mBraveWalletService.notifyGetPublicKeyRequestProcessed(requestId, isApproved);
             mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
                 if (requests != null && requests.length > 0) {
                     _mProcessNextDAppsRequest.postValue(BraveWalletDAppsActivity.ActivityType
@@ -168,12 +167,12 @@ public class DappsModel implements KeyringServiceObserver {
         }
     }
 
-    public void processDecryptRequest(boolean isApproved, Origin origin) {
+    public void processDecryptRequest(String requestId, boolean isApproved) {
         synchronized (mLock) {
             if (mBraveWalletService == null) {
                 return;
             }
-            mBraveWalletService.notifyDecryptRequestProcessed(isApproved, origin);
+            mBraveWalletService.notifyDecryptRequestProcessed(requestId, isApproved);
             mBraveWalletService.getPendingDecryptRequests(requests -> {
                 if (requests != null && requests.length > 0) {
                     _mProcessNextDAppsRequest.postValue(

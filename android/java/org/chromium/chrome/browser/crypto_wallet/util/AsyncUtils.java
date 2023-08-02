@@ -12,7 +12,6 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
@@ -191,23 +190,6 @@ public class AsyncUtils {
         public void call(Boolean success, AssetPrice[] prices) {
             this.success = success;
             this.prices = prices;
-            super.fireResponseCompleteCallback();
-        }
-    }
-
-    public static class GetHasEthereumPermissionResponseContext
-            extends SingleResponseBaseContext implements BraveWalletService.HasPermission_Response {
-        public Boolean success;
-        public Boolean hasPermission;
-
-        public GetHasEthereumPermissionResponseContext(Runnable responseCompleteCallback) {
-            super(responseCompleteCallback);
-        }
-
-        @Override
-        public void call(Boolean success, Boolean hasPermission) {
-            this.success = success;
-            this.hasPermission = hasPermission;
             super.fireResponseCompleteCallback();
         }
     }

@@ -533,7 +533,6 @@ export const _ProvideEncryptionKey = () => {
         selectedNetwork={mockNetworks[0]}
         onCancel={onCancel}
         onProvideOrAllow={onProvide}
-        eTldPlusOne={originInfo.eTldPlusOne}
       />
     </StyledExtensionWrapperLonger>
   )
@@ -562,7 +561,6 @@ export const _ReadEncryptedMessage = () => {
         selectedNetwork={mockNetworks[0]}
         onCancel={onCancel}
         onProvideOrAllow={onAllow}
-        eTldPlusOne={originInfo.eTldPlusOne}
       />
     </StyledExtensionWrapperLonger>
   )

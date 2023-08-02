@@ -1075,7 +1075,6 @@ struct NetworkInfo {
 };
 
 struct OriginInfo {
-  url.mojom.Origin origin;
   string origin_spec;
   string e_tld_plus_one;
 };
@@ -1086,19 +1085,22 @@ struct AddChainRequest {
 };
 
 struct SwitchChainRequest {
+  string request_id;
   OriginInfo origin_info;
   string chain_id;
 };
 
 struct GetEncryptionPublicKeyRequest {
+  string request_id;
   OriginInfo origin_info;
   string address;
 };
 
 struct DecryptRequest {
+  string request_id;
   OriginInfo origin_info;
   string address;
-  string? unsafe_message;
+  string unsafe_message;
 };
 
 struct OptionalMaxRetries {
@@ -1138,14 +1140,13 @@ enum ResolveMethod {
 interface JsonRpcService {
   // Checks the chain ID for an ethereum chain that should be added
   AddChain(NetworkInfo chain) => (string chain_id, ProviderError error, string error_message);
-  AddEthereumChainForOrigin(NetworkInfo chain, url.mojom.Origin origin) => (string chain_id, ProviderError error, string error_message);
   AddEthereumChainRequestCompleted(string chain_id, bool approved);
   RemoveChain(string chain_id, CoinType coin) => (bool success);
   GetPendingAddChainRequests() => (array<AddChainRequest> requests);
 
   // This is used for UI notifying native when the user approves or
   // rejects SwitchChainRequest
-  NotifySwitchChainRequestProcessed(bool approved, url.mojom.Origin origin);
+  NotifySwitchChainRequestProcessed(string request_id, bool approved);
   GetPendingSwitchChainRequests() => (array<SwitchChainRequest> requests);
 
   SetNetwork(string chain_id, CoinType coin, url.mojom.Origin? origin)
@@ -1708,29 +1709,23 @@ interface BraveWalletService {
   GetNetworkForSelectedAccountOnActiveOrigin() => (NetworkInfo? network);
   SetNetworkForSelectedAccountOnActiveOrigin(string chain_id) => (bool success);
 
-  // TODO(apaymyshev): it seems these three permisisons methods should imply and
-  // use current active origin.
-  // Adds the permission of coin type for the account
-  AddPermission(AccountId account_id, url.mojom.Origin origin)
+  // Adds the permission for the account on active origin.
+  AddPermission(AccountId account_id)
     => (bool success);
 
-  // Checks if the permission of coin is allowed for the origin on the account
-  HasPermission(AccountId account_id, url.mojom.Origin origin)
-    => (bool success, bool has_permission);
+  // Filters accounts with permissions on active origin.
+  HasPermission(array<AccountId> accounts)
+    => (bool success, array<AccountId> accounts_with_permission);
 
-  // Resets the permission of coin for the account
-  ResetPermission(AccountId account_id, url.mojom.Origin origin)
+  // Resets the permission of coin for the account on active origin.
+  ResetPermission(AccountId account_id)
     => (bool success);
 
-  // Check if permission is denied for the origin
-  IsPermissionDenied(CoinType coin, url.mojom.Origin origin) => (bool denied);
+  // Check if permission is denied for the active origin.
+  IsPermissionDenied(CoinType coin) => (bool denied);
 
   // Obtains the active origin info.
   GetActiveOrigin() => (OriginInfo origin_info);
-
-  // Obtains the active origin info with eTLD+1
-  GeteTLDPlusOneFromOrigin(url.mojom.Origin origin)
-    => (OriginInfo origin_info);
 
   // Gets all websites with a permission of coin
   GetWebSitesWithPermission(CoinType coin) => (array<string> web_sites);
@@ -1763,13 +1758,12 @@ interface BraveWalletService {
 
   // This is used for UI notifying native when the user approves or
   // rejects getting the public key for an origin
-  NotifyGetPublicKeyRequestProcessed(bool approved, url.mojom.Origin origin);
+  NotifyGetPublicKeyRequestProcessed(string request_id, bool approved);
   GetPendingGetEncryptionPublicKeyRequests() => (array<GetEncryptionPublicKeyRequest> requests);
 
   // This is used for UI notifying native when the user approves or
   // rejects decrypting data for an origin
-  NotifyDecryptRequestProcessed(bool approved, url.mojom.Origin origin);
-
+  NotifyDecryptRequestProcessed(string request_id, bool approved);
   GetPendingDecryptRequests() => (array<DecryptRequest> requests);
 
   IsBase58EncodedSolanaPubkey(string key) => (bool result);

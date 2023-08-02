@@ -6,11 +6,13 @@
 #include <iostream>
 #include <iterator>
 #include <memory>
+#include <set>
 #include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -1365,16 +1367,24 @@ TEST(BraveWalletUtilsUnitTest, eTLDPlusOne) {
 TEST(BraveWalletUtilsUnitTest, MakeOriginInfo) {
   auto origin_info =
       MakeOriginInfo(url::Origin::Create(GURL("https://blog.brave.com:443")));
-  EXPECT_EQ(url::Origin::Create(GURL("https://blog.brave.com")),
-            origin_info->origin);
   EXPECT_EQ("https://blog.brave.com", origin_info->origin_spec);
   EXPECT_EQ("brave.com", origin_info->e_tld_plus_one);
 
   url::Origin empty_origin;
   auto empty_origin_info = MakeOriginInfo(empty_origin);
-  EXPECT_NE(url::Origin(), empty_origin_info->origin);
   EXPECT_EQ("null", empty_origin_info->origin_spec);
   EXPECT_EQ("", empty_origin_info->e_tld_plus_one);
+}
+
+TEST(BraveWalletUtilsUnitTest, GenerateRandomHexString) {
+  std::set<std::string> strings;
+  for (int i = 0; i < 1000; ++i) {
+    auto random_string = GenerateRandomHexString();
+    EXPECT_EQ(64u, random_string.size());
+    EXPECT_TRUE(base::ranges::all_of(random_string, base::IsHexDigit<char>));
+    EXPECT_FALSE(base::Contains(strings, random_string));
+    strings.insert(random_string);
+  }
 }
 
 TEST(BraveWalletUtilsUnitTest, GetUnstoppableDomainsRpcUrl) {

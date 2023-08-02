@@ -10,9 +10,7 @@ import {
   BraveWallet,
   WalletPanelState,
   PanelState,
-  WalletRoutes,
-  SerializableSignMessageRequest,
-  SerializableSwitchChainRequest
+  WalletRoutes
 } from '../../constants/types'
 import {
   ConnectWithSitePayloadType,
@@ -41,13 +39,6 @@ import { getLocale } from '../../../common/locale'
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
 import { isRemoteImageURL } from '../../utils/string-utils'
 import { HardwareVendor } from 'components/brave_wallet_ui/common/api/hardware_keyrings'
-import {
-  deserializeOrigin,
-  makeSerializableDecryptRequest,
-  makeSerializableGetEncryptionPublicKeyRequest,
-  makeSerializableSignMessageRequest,
-  makeSerializableSwitchChainRequest
-} from '../../utils/model-serialization-utils'
 
 const handler = new AsyncActionHandler()
 
@@ -236,7 +227,7 @@ handler.on(PanelActions.addEthereumChainRequestCompleted.type, async (store: any
   apiProxy.panelHandler.closeUI()
 })
 
-handler.on(PanelActions.switchEthereumChain.type, async (store: Store, request: SerializableSwitchChainRequest) => {
+handler.on(PanelActions.switchEthereumChain.type, async (store: Store, request: BraveWallet.SwitchChainRequest) => {
   // We need to get current network list first because switch chain doesn't
   // require permission connect first.
   await refreshWalletInfo(store)
@@ -260,12 +251,10 @@ handler.on(PanelActions.decrypt.type, async (store: Store) => {
 handler.on(PanelActions.switchEthereumChainProcessed.type, async (store: Store, payload: SwitchEthereumChainProcessedPayload) => {
   const apiProxy = getWalletPanelApiProxy()
   const jsonRpcService = apiProxy.jsonRpcService
-  jsonRpcService.notifySwitchChainRequestProcessed(payload.approved, deserializeOrigin(payload.origin))
+  jsonRpcService.notifySwitchChainRequestProcessed(payload.requestId, payload.approved)
   const switchChainRequest = await getPendingSwitchChainRequest()
   if (switchChainRequest) {
-    store.dispatch(PanelActions.switchEthereumChain(
-      makeSerializableSwitchChainRequest(switchChainRequest)
-    ))
+    store.dispatch(PanelActions.switchEthereumChain(switchChainRequest))
     return
   }
   apiProxy.panelHandler.closeUI()
@@ -274,12 +263,10 @@ handler.on(PanelActions.switchEthereumChainProcessed.type, async (store: Store, 
 handler.on(PanelActions.getEncryptionPublicKeyProcessed.type, async (store: Store, payload: GetEncryptionPublicKeyProcessedPayload) => {
   const apiProxy = getWalletPanelApiProxy()
   const braveWalletService = apiProxy.braveWalletService
-  braveWalletService.notifyGetPublicKeyRequestProcessed(payload.approved, deserializeOrigin(payload.origin))
+  braveWalletService.notifyGetPublicKeyRequestProcessed(payload.requestId, payload.approved)
   const getEncryptionPublicKeyRequest = await getPendingGetEncryptionPublicKeyRequest()
   if (getEncryptionPublicKeyRequest) {
-    store.dispatch(PanelActions.getEncryptionPublicKey(
-      makeSerializableGetEncryptionPublicKeyRequest(getEncryptionPublicKeyRequest)
-    ))
+    store.dispatch(PanelActions.getEncryptionPublicKey(getEncryptionPublicKeyRequest))
     return
   }
   apiProxy.panelHandler.closeUI()
@@ -288,12 +275,10 @@ handler.on(PanelActions.getEncryptionPublicKeyProcessed.type, async (store: Stor
 handler.on(PanelActions.decryptProcessed.type, async (store: Store, payload: DecryptProcessedPayload) => {
   const apiProxy = getWalletPanelApiProxy()
   const braveWalletService = apiProxy.braveWalletService
-  braveWalletService.notifyDecryptRequestProcessed(payload.approved, deserializeOrigin(payload.origin))
+  braveWalletService.notifyDecryptRequestProcessed(payload.requestId, payload.approved)
   const decryptRequest = await getPendingDecryptRequest()
   if (decryptRequest) {
-    store.dispatch(PanelActions.decrypt(
-      makeSerializableDecryptRequest(decryptRequest)
-    ))
+    store.dispatch(PanelActions.decrypt(decryptRequest))
     return
   }
   apiProxy.panelHandler.closeUI()
@@ -311,9 +296,7 @@ handler.on(PanelActions.signMessageProcessed.type, async (store: Store, payload:
   braveWalletService.notifySignMessageRequestProcessed(payload.approved, payload.id, null, null)
   const signMessageRequests = await getPendingSignMessageRequests()
   if (signMessageRequests) {
-    store.dispatch(PanelActions.signMessage(
-      signMessageRequests.map(makeSerializableSignMessageRequest)
-    ))
+    store.dispatch(PanelActions.signMessage(signMessageRequests))
     return
   }
   apiProxy.panelHandler.closeUI()
@@ -325,7 +308,7 @@ function toByteArrayStringUnion<D extends keyof BraveWallet.ByteArrayStringUnion
   return Object.assign({}, unionItem) as BraveWallet.ByteArrayStringUnion
 }
 
-handler.on(PanelActions.signMessageHardware.type, async (store, messageData: SerializableSignMessageRequest) => {
+handler.on(PanelActions.signMessageHardware.type, async (store, messageData: BraveWallet.SignMessageRequest) => {
   const apiProxy = getWalletPanelApiProxy()
   const hardwareAccount = await findHardwareAccountInfo(messageData.address)
   if (!hardwareAccount || !hardwareAccount.hardware) {
@@ -334,9 +317,7 @@ handler.on(PanelActions.signMessageHardware.type, async (store, messageData: Ser
       null, getLocale('braveWalletHardwareAccountNotFound'))
     const signMessageRequests = await getPendingSignMessageRequests()
     if (signMessageRequests) {
-      store.dispatch(PanelActions.signMessage(
-        signMessageRequests.map(makeSerializableSignMessageRequest)
-      ))
+      store.dispatch(PanelActions.signMessage(signMessageRequests))
       return
     }
     apiProxy.panelHandler.closeUI()
@@ -384,9 +365,7 @@ handler.on(PanelActions.signMessageHardwareProcessed.type, async (store, payload
   braveWalletService.notifySignMessageRequestProcessed(payload.approved, payload.id, payload.signature || null, payload.error || null)
   const signMessageRequests = await getPendingSignMessageRequests()
   if (signMessageRequests) {
-    store.dispatch(PanelActions.signMessage(
-      signMessageRequests.map(makeSerializableSignMessageRequest)
-    ))
+    store.dispatch(PanelActions.signMessage(signMessageRequests))
     return
   }
   apiProxy.panelHandler.closeUI()
@@ -609,18 +588,9 @@ handler.on(WalletActions.initialize.type, async (store) => {
   const url = new URL(window.location.href)
   if (url.hash === '#connectWithSite') {
     const accounts = url.searchParams.getAll('addr') || []
-    const originScheme = url.searchParams.get('origin-scheme') || ''
-    const originHost = url.searchParams.get('origin-host') || ''
-    const originPort = Number(url.searchParams.get('origin-port') || 0)
     const originSpec = url.searchParams.get('origin-spec') || ''
     const eTldPlusOne = url.searchParams.get('etld-plus-one') || ''
     const originInfo: BraveWallet.OriginInfo = {
-      origin: {
-        scheme: originScheme,
-        host: originHost,
-        port: originPort,
-        nonceIfOpaque: undefined
-      },
       originSpec: originSpec,
       eTldPlusOne: eTldPlusOne
     }
@@ -652,16 +622,12 @@ handler.on(WalletActions.initialize.type, async (store) => {
 
     const signMessageRequests = await getPendingSignMessageRequests()
     if (signMessageRequests) {
-      store.dispatch(PanelActions.signMessage(
-        signMessageRequests.map(makeSerializableSignMessageRequest)
-      ))
+      store.dispatch(PanelActions.signMessage(signMessageRequests))
       return
     }
     const switchChainRequest = await getPendingSwitchChainRequest()
     if (switchChainRequest) {
-      store.dispatch(PanelActions.switchEthereumChain(
-        makeSerializableSwitchChainRequest(switchChainRequest)
-      ))
+      store.dispatch(PanelActions.switchEthereumChain(switchChainRequest))
       return
     }
     const addSuggestTokenRequest = await getPendingAddSuggestTokenRequest()
@@ -671,16 +637,12 @@ handler.on(WalletActions.initialize.type, async (store) => {
     }
     const getEncryptionPublicKeyRequest = await getPendingGetEncryptionPublicKeyRequest()
     if (getEncryptionPublicKeyRequest) {
-      store.dispatch(PanelActions.getEncryptionPublicKey(
-        makeSerializableGetEncryptionPublicKeyRequest(getEncryptionPublicKeyRequest)
-      ))
+      store.dispatch(PanelActions.getEncryptionPublicKey(getEncryptionPublicKeyRequest))
       return
     }
     const decryptRequest = await getPendingDecryptRequest()
     if (decryptRequest) {
-      store.dispatch(PanelActions.decrypt(
-        makeSerializableDecryptRequest(decryptRequest)
-      ))
+      store.dispatch(PanelActions.decrypt(decryptRequest))
       return
     }
   }

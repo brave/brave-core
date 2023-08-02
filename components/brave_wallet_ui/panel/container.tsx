@@ -205,11 +205,11 @@ function Container () {
   }
 
   const onApproveChangeNetwork = () => {
-    dispatch(WalletPanelActions.switchEthereumChainProcessed({ approved: true, origin: switchChainRequest.originInfo.origin }))
+    dispatch(WalletPanelActions.switchEthereumChainProcessed({ requestId: switchChainRequest.requestId, approved: true }))
   }
 
   const onCancelChangeNetwork = () => {
-    dispatch(WalletPanelActions.switchEthereumChainProcessed({ approved: false, origin: switchChainRequest.originInfo.origin }))
+    dispatch(WalletPanelActions.switchEthereumChainProcessed({ requestId: switchChainRequest.requestId, approved: false }))
   }
 
   const onCancelConnectHardwareWallet = (account: BraveWallet.AccountInfo) => {
@@ -282,19 +282,29 @@ function Container () {
   }
 
   const onProvideEncryptionKey = () => {
-    dispatch(WalletPanelActions.getEncryptionPublicKeyProcessed({ approved: true, origin: getEncryptionPublicKeyRequest.originInfo.origin }))
+    dispatch(WalletPanelActions.getEncryptionPublicKeyProcessed({ requestId: getEncryptionPublicKeyRequest.requestId, approved: true }))
   }
 
   const onCancelProvideEncryptionKey = () => {
-    dispatch(WalletPanelActions.getEncryptionPublicKeyProcessed({ approved: false, origin: getEncryptionPublicKeyRequest.originInfo.origin }))
+    dispatch(WalletPanelActions.getEncryptionPublicKeyProcessed({ requestId: getEncryptionPublicKeyRequest.requestId, approved: false }))
   }
 
   const onAllowReadingEncryptedMessage = () => {
-    dispatch(WalletPanelActions.decryptProcessed({ approved: true, origin: decryptRequest.originInfo.origin }))
+    dispatch(
+      WalletPanelActions.decryptProcessed({
+        requestId: decryptRequest.requestId,
+        approved: false
+      })
+    )
   }
 
   const onCancelAllowReadingEncryptedMessage = () => {
-    dispatch(WalletPanelActions.decryptProcessed({ approved: false, origin: decryptRequest.originInfo.origin }))
+    dispatch(
+      WalletPanelActions.decryptProcessed({
+        requestId: decryptRequest.requestId,
+        approved: false
+      })
+    )
   }
 
   const onBack = React.useCallback(() => {
@@ -484,7 +494,6 @@ function Container () {
             decryptPayload={decryptRequest}
             accounts={accounts}
             selectedNetwork={selectedNetwork}
-            eTldPlusOne={activeOrigin.eTldPlusOne}
             onCancel={
               selectedPanel === 'provideEncryptionKey'
                 ? onCancelProvideEncryptionKey

@@ -15,6 +15,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
@@ -103,6 +104,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
     provider_.reset();
     web_contents_.reset();
     profile_.SetPermissionControllerDelegate(nullptr);
+    BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(nullptr);
   }
 
   void SetUp() override {
@@ -110,6 +112,8 @@ class SolanaProviderImplUnitTest : public testing::Test {
         TestingBrowserProcess::GetGlobal());
     web_contents_ =
         content::TestWebContents::Create(browser_context(), nullptr);
+    BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(
+        web_contents_.get());
     brave_wallet::BraveWalletTabHelper::CreateForWebContents(
         web_contents_.get());
     brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);
@@ -261,12 +265,10 @@ class SolanaProviderImplUnitTest : public testing::Test {
     return success;
   }
 
-  void AddSolanaPermission(const url::Origin& origin,
-                           const mojom::AccountIdPtr& account_id) {
+  void AddSolanaPermission(const mojom::AccountIdPtr& account_id) {
     base::RunLoop run_loop;
     brave_wallet_service_->AddPermission(
-        account_id.Clone(), origin,
-        base::BindLambdaForTesting([&](bool success) {
+        account_id.Clone(), base::BindLambdaForTesting([&](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();
         }));
@@ -511,7 +513,7 @@ TEST_F(SolanaProviderImplUnitTest, Connect) {
 
   GURL url("https://brave.com");
   Navigate(url);
-  AddSolanaPermission(GetOrigin(), added_account->account_id);
+  AddSolanaPermission(added_account->account_id);
   account = Connect(absl::nullopt, &error, &error_message);
   EXPECT_EQ(account, added_account->address);
   EXPECT_EQ(error, mojom::SolanaProviderError::kSuccess);
@@ -602,7 +604,7 @@ TEST_F(SolanaProviderImplUnitTest, EagerlyConnect) {
   EXPECT_FALSE(IsConnected());
   UnlockWallet();
 
-  AddSolanaPermission(GetOrigin(), added_account->account_id);
+  AddSolanaPermission(added_account->account_id);
   // Request will be rejected when wallet is locked (has permission)
   LockWallet();
   account = Connect(dict.Clone(), &error, &error_message);
@@ -673,7 +675,7 @@ TEST_F(SolanaProviderImplUnitTest, Disconnect) {
   SetSelectedAccount(added_account->account_id);
 
   Navigate(GURL("https://brave.com"));
-  AddSolanaPermission(GetOrigin(), added_account->account_id);
+  AddSolanaPermission(added_account->account_id);
   std::string account = Connect(absl::nullopt, nullptr, nullptr);
   ASSERT_TRUE(!account.empty());
   ASSERT_TRUE(IsConnected());
@@ -700,7 +702,7 @@ TEST_F(SolanaProviderImplUnitTest,
 
   // Connect the account.
   Navigate(GURL("https://brave.com"));
-  AddSolanaPermission(GetOrigin(), added_hw_account->account_id);
+  AddSolanaPermission(added_hw_account->account_id);
   std::string account = Connect(absl::nullopt, nullptr, nullptr);
   ASSERT_TRUE(!account.empty());
   ASSERT_TRUE(IsConnected());
@@ -729,7 +731,7 @@ TEST_F(SolanaProviderImplUnitTest, AccountChangedEvent) {
 
   // connect the account
   Navigate(GURL("https://brave.com"));
-  AddSolanaPermission(GetOrigin(), added_account->account_id);
+  AddSolanaPermission(added_account->account_id);
   std::string account = Connect(absl::nullopt, nullptr, nullptr);
   ASSERT_TRUE(!account.empty());
   ASSERT_TRUE(IsConnected());
@@ -821,7 +823,7 @@ TEST_F(SolanaProviderImplUnitTest, SignMessage) {
   EXPECT_EQ(error, mojom::SolanaProviderError::kUnauthorized);
   EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
 
-  AddSolanaPermission(GetOrigin(), added_account->account_id);
+  AddSolanaPermission(added_account->account_id);
   Connect(absl::nullopt, &error, &error_message);
   ASSERT_TRUE(IsConnected());
 
@@ -862,7 +864,7 @@ TEST_F(SolanaProviderImplUnitTest, SignMessage_Hardware) {
   SetSelectedAccount(added_hw_account->account_id);
   Navigate(GURL("https://brave.com"));
 
-  AddSolanaPermission(GetOrigin(), added_hw_account->account_id);
+  AddSolanaPermission(added_hw_account->account_id);
   Connect(absl::nullopt, &error, &error_message);
   ASSERT_TRUE(IsConnected());
 
@@ -951,7 +953,7 @@ TEST_F(SolanaProviderImplUnitTest, SignTransactionAPIs) {
       l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   EXPECT_EQ(signed_txs, std::vector<std::vector<uint8_t>>());
 
-  AddSolanaPermission(GetOrigin(), added_account->account_id);
+  AddSolanaPermission(added_account->account_id);
   Connect(absl::nullopt, nullptr, nullptr);
   ASSERT_TRUE(IsConnected());
 
@@ -975,7 +977,7 @@ TEST_F(SolanaProviderImplUnitTest, SignTransactionAPIs_Hardware) {
   auto added_hw_account = AddHardwareAccount(kHardwareAccountAddr);
   SetSelectedAccount(added_hw_account->account_id);
   Navigate(GURL("https://brave.com"));
-  AddSolanaPermission(GetOrigin(), added_hw_account->account_id);
+  AddSolanaPermission(added_hw_account->account_id);
   Connect(absl::nullopt, nullptr, nullptr);
   ASSERT_TRUE(IsConnected());
 

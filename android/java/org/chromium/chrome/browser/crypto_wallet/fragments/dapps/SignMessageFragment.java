@@ -32,7 +32,6 @@ import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.SignMessagePagerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.url.GURL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,9 +123,7 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
             }
             if (mCurrentSignMessageRequest.originInfo != null
                     && URLUtil.isValidUrl(mCurrentSignMessageRequest.originInfo.originSpec)) {
-                mWebSite.setText(
-                        Utils.geteTLD(new GURL(mCurrentSignMessageRequest.originInfo.originSpec),
-                                mCurrentSignMessageRequest.originInfo.eTldPlusOne));
+                mWebSite.setText(Utils.geteTldSpanned(mCurrentSignMessageRequest.originInfo));
             }
             updateAccount(mCurrentSignMessageRequest.address);
             updateNetwork(mCurrentSignMessageRequest.chainId);

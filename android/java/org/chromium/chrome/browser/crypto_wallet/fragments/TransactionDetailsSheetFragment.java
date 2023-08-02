@@ -38,7 +38,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransaction;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
-import org.chromium.url.GURL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,8 +129,7 @@ public class TransactionDetailsSheetFragment extends WalletBottomSheetDialogFrag
         if (mTxInfo.originInfo != null && URLUtil.isValidUrl(mTxInfo.originInfo.originSpec)) {
             TextView domain = view.findViewById(R.id.domain);
             domain.setVisibility(View.VISIBLE);
-            domain.setText(Utils.geteTLD(
-                    new GURL(mTxInfo.originInfo.originSpec), mTxInfo.originInfo.eTldPlusOne));
+            domain.setText(Utils.geteTldSpanned(mTxInfo.originInfo));
         }
 
         if (mParsedTx.getType() == TransactionType.ERC20_APPROVE) {

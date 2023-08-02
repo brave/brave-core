@@ -1745,8 +1745,13 @@ std::string eTLDPlusOne(const url::Origin& origin) {
 }
 
 mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin) {
-  return mojom::OriginInfo::New(origin, origin.Serialize(),
-                                eTLDPlusOne(origin));
+  return mojom::OriginInfo::New(origin.Serialize(), eTLDPlusOne(origin));
+}
+
+std::string GenerateRandomHexString() {
+  std::vector<uint8_t> bytes(32);
+  crypto::RandBytes(bytes);
+  return base::HexEncode(bytes);
 }
 
 // Returns a string used for web3_clientVersion in the form of

@@ -8,12 +8,10 @@
 #include <string>
 #include <vector>
 
-#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
-#include "brave/components/brave_wallet/common/fil_address.h"
 
 namespace brave_wallet {
 

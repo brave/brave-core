@@ -183,6 +183,9 @@ std::string eTLDPlusOne(const url::Origin& origin);
 
 mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin);
 
+// Hex string of random 32 bytes.
+std::string GenerateRandomHexString();
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_

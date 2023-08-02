@@ -5,21 +5,12 @@
 
 import {
   BraveWallet,
-  ObjWithOriginInfo,
-  SerializableDecryptRequest,
-  SerializableGetEncryptionPublicKeyRequest,
-  SerializableOrigin,
-  SerializableOriginInfo,
-  SerializableSignMessageRequest,
   SerializableSolanaTxData,
   SerializableSolanaTxDataSendOptions,
-  SerializableSwitchChainRequest,
   SerializableTimeDelta,
   SerializableTransactionInfo,
   SerializableTxDataUnion,
-  SerializableUnguessableToken,
-  TimeDelta,
-  WithSerializableOriginInfo
+  TimeDelta
 } from '../constants/types'
 
 export function makeSerializableTimeDelta (td: TimeDelta | SerializableTimeDelta): SerializableTimeDelta {
@@ -31,62 +22,6 @@ export function makeSerializableTimeDelta (td: TimeDelta | SerializableTimeDelta
 export function deserializeTimeDelta (td: SerializableTimeDelta): TimeDelta {
   return {
     microseconds: BigInt(td.microseconds)
-  }
-}
-
-export function makeSerializableUnguessableToken (
-  token:
-    | BraveWallet.OriginInfo['origin']['nonceIfOpaque']
-    | SerializableUnguessableToken
-): SerializableUnguessableToken | undefined {
-  if (!token) {
-    return undefined
-  }
-
-  return {
-    high: token.high.toString(),
-    low: token.low.toString()
-  }
-}
-
-export function deserializableUnguessableToken (token?: SerializableUnguessableToken): BraveWallet.OriginInfo['origin']['nonceIfOpaque'] {
-  if (!token) {
-    return undefined
-  }
-
-  return {
-    high: BigInt(token.high),
-    low: BigInt(token.low)
-  }
-}
-
-type OriginInfo = BraveWallet.OriginInfo | SerializableOriginInfo
-
-export function makeSerializableOriginInfo <
-  T extends OriginInfo | undefined
-> (originInfo: T): T extends OriginInfo ? SerializableOriginInfo : undefined {
-  return (originInfo ? {
-    ...originInfo,
-    origin: {
-      ...originInfo?.origin,
-      nonceIfOpaque: makeSerializableUnguessableToken(originInfo?.origin.nonceIfOpaque)
-    }
-  } : undefined) as T extends OriginInfo ? SerializableOriginInfo : undefined
-}
-
-export function deserializeOrigin (origin: SerializableOrigin): BraveWallet.OriginInfo['origin'] {
-  return {
-    ...origin,
-    nonceIfOpaque: deserializableUnguessableToken(origin.nonceIfOpaque)
-  }
-}
-
-export function deserializeOriginInfo(
-  originInfo: SerializableOriginInfo
-): BraveWallet.OriginInfo {
-  return {
-    ...originInfo,
-    origin: deserializeOrigin(originInfo.origin)
   }
 }
 
@@ -150,7 +85,6 @@ export function deserializeSolanaTxData(
 export function makeSerializableTransaction (tx: BraveWallet.TransactionInfo): SerializableTransactionInfo {
   return {
     ...tx,
-    originInfo: makeSerializableOriginInfo(tx.originInfo),
     txDataUnion: tx.txDataUnion.solanaTxData
       ? { solanaTxData: makeSerializableSolanaTxData(tx.txDataUnion.solanaTxData) }
       : tx.txDataUnion as SerializableTxDataUnion,
@@ -169,35 +103,9 @@ export function deserializeTransaction(
 
   return {
     ...tx,
-    originInfo: tx.originInfo
-      ? deserializeOriginInfo(tx.originInfo)
-      : tx.originInfo,
     txDataUnion: txDataUnion as BraveWallet.TxDataUnion,
     confirmedTime: deserializeTimeDelta(tx.confirmedTime),
     createdTime: deserializeTimeDelta(tx.createdTime),
     submittedTime: deserializeTimeDelta(tx.submittedTime)
   }
-}
-
-export const makeOriginInfoPropSerializable = <T extends ObjWithOriginInfo>(req: T): WithSerializableOriginInfo<T> => {
-  return {
-    ...req,
-    originInfo: makeSerializableOriginInfo(req.originInfo)
-  }
-}
-
-export const makeSerializableSignMessageRequest = (req: BraveWallet.SignMessageRequest): SerializableSignMessageRequest => {
-  return makeOriginInfoPropSerializable(req)
-}
-
-export const makeSerializableGetEncryptionPublicKeyRequest = (req: BraveWallet.GetEncryptionPublicKeyRequest): SerializableGetEncryptionPublicKeyRequest => {
-  return makeOriginInfoPropSerializable(req)
-}
-
-export const makeSerializableDecryptRequest = (req: BraveWallet.DecryptRequest): SerializableDecryptRequest => {
-  return makeOriginInfoPropSerializable(req)
-}
-
-export const makeSerializableSwitchChainRequest = (req: BraveWallet.SwitchChainRequest): SerializableSwitchChainRequest => {
-  return makeOriginInfoPropSerializable(req)
 }

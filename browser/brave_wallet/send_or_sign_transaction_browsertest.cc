@@ -288,19 +288,9 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     mojom::NetworkInfo chain = GetTestNetworkInfo1(chain_id);
     chain.rpc_endpoints =
         std::vector<GURL>({https_server_for_rpc()->base_url()});
-    base::RunLoop run_loop;
-    mojom::ProviderError error_out;
-    json_rpc_service_->AddEthereumChainForOrigin(
-        chain.Clone(), origin,
-        base::BindLambdaForTesting(
-            [&run_loop, &error_out](const std::string& chain_id,
-                                    mojom::ProviderError error,
-                                    const std::string& error_message) {
-              error_out = error;
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-    if (error_out != mojom::ProviderError::kSuccess) {
+    auto error_message =
+        json_rpc_service_->AddEthereumChainForOrigin(chain.Clone(), origin);
+    if (!error_message.empty()) {
       return;
     }
 
@@ -349,12 +339,10 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
               expected_address);
   }
 
-  void AddEthereumPermission(const url::Origin& origin,
-                             const mojom::AccountIdPtr& account_id) {
+  void AddEthereumPermission(const mojom::AccountIdPtr& account_id) {
     base::RunLoop run_loop;
     brave_wallet_service_->AddPermission(
-        account_id.Clone(), origin,
-        base::BindLambdaForTesting([&](bool success) {
+        account_id.Clone(), base::BindLambdaForTesting([&](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();
         }));
@@ -876,7 +864,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, SelectedAddress) {
             base::ToLowerASCII(default_account()->address));
 
   // But it does update the selectedAddress if the account is allowed
-  AddEthereumPermission(url::Origin::Create(url), added_account->account_id);
+  AddEthereumPermission(added_account->account_id);
   // Wait for KeyringService::GetSelectedAccount called by
   // BraveWalletProviderDelegateImpl::GetAllowedAccounts
   base::RunLoop().RunUntilIdle();

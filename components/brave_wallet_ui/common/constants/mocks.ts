@@ -59,12 +59,6 @@ export const getMockedTransactionInfo =
       submittedTime: { microseconds: 0 },
       confirmedTime: { microseconds: 0 },
       originInfo: {
-        origin: {
-          scheme: 'https',
-          host: 'brave.com',
-          port: 443,
-          nonceIfOpaque: undefined
-        },
         originSpec: 'https://brave.com',
         eTldPlusOne: 'brave.com'
       },
@@ -346,12 +340,6 @@ export const mockAppsList: AppsListType[] = [
 
 export const mockSolDappSignTransactionRequest: BraveWallet.SignTransactionRequest = {
   'originInfo': {
-    'origin': {
-      'scheme': 'https',
-      'host': 'f40y4d.csb.app',
-      'port': 443,
-      'nonceIfOpaque': undefined
-    },
     'originSpec': 'https://f40y4d.csb.app',
     'eTldPlusOne': 'csb.app'
   },
@@ -494,12 +482,6 @@ export const mockSolDappSignAndSendTransactionRequest: SerializableTransactionIn
   submittedTime: { microseconds: 0 },
   confirmedTime: { microseconds: 0 },
   originInfo: {
-    origin: {
-      scheme: 'https',
-      host: 'f40y4d.csb.app',
-      port: 443,
-      nonceIfOpaque: undefined
-    },
     originSpec: 'https://f40y4d.csb.app',
     eTldPlusOne: 'csb.app'
   },
@@ -509,12 +491,6 @@ export const mockSolDappSignAndSendTransactionRequest: SerializableTransactionIn
 
 export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransactionsRequest = {
   'originInfo': {
-    'origin': {
-      'scheme': 'https',
-      'host': 'f40y4d.csb.app',
-      'port': 443,
-      'nonceIfOpaque': undefined
-    },
     'originSpec': 'https://f40y4d.csb.app',
     'eTldPlusOne': 'csb.app'
   },

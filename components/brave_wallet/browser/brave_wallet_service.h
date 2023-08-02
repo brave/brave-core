@@ -46,6 +46,8 @@ class KeyringService;
 class JsonRpcService;
 class TxService;
 class EthAllowanceManager;
+struct PendingDecryptRequest;
+struct PendingGetEncryptPublicKeyRequest;
 
 class BraveWalletService : public KeyedService,
                            public mojom::BraveWalletService,
@@ -167,16 +169,12 @@ class BraveWalletService : public KeyedService,
       const std::string& chain_id,
       SetNetworkForSelectedAccountOnActiveOriginCallback callback) override;
   void AddPermission(mojom::AccountIdPtr account_id,
-                     const url::Origin& origin,
                      AddPermissionCallback callback) override;
-  void HasPermission(mojom::AccountIdPtr account_id,
-                     const url::Origin& origin,
+  void HasPermission(std::vector<mojom::AccountIdPtr> accounts,
                      HasPermissionCallback callback) override;
   void ResetPermission(mojom::AccountIdPtr account_id,
-                       const url::Origin& origin,
                        ResetPermissionCallback callback) override;
   void IsPermissionDenied(mojom::CoinType coin,
-                          const url::Origin& origin,
                           IsPermissionDeniedCallback callback) override;
   void GetWebSitesWithPermission(
       mojom::CoinType coin,
@@ -186,8 +184,6 @@ class BraveWalletService : public KeyedService,
                               ResetWebSitePermissionCallback callback) override;
   void GetActiveOrigin(GetActiveOriginCallback callback) override;
   mojom::OriginInfoPtr GetActiveOriginSync();
-  void GeteTLDPlusOneFromOrigin(const url::Origin& origin,
-                                GetActiveOriginCallback callback) override;
   void GetPendingSignMessageRequests(
       GetPendingSignMessageRequestsCallback callback) override;
   void GetPendingSignTransactionRequests(
@@ -218,10 +214,10 @@ class BraveWalletService : public KeyedService,
   void NotifyAddSuggestTokenRequestsProcessed(
       bool approved,
       const std::vector<std::string>& contract_addresses) override;
-  void NotifyGetPublicKeyRequestProcessed(bool approved,
-                                          const url::Origin& origin) override;
-  void NotifyDecryptRequestProcessed(bool approved,
-                                     const url::Origin& origin) override;
+  void NotifyGetPublicKeyRequestProcessed(const std::string& request_id,
+                                          bool approved) override;
+  void NotifyDecryptRequestProcessed(const std::string& request_id,
+                                     bool approved) override;
 
   void IsBase58EncodedSolanaPubkey(
       const std::string& key,
@@ -273,7 +269,9 @@ class BraveWalletService : public KeyedService,
                               const url::Origin& origin,
                               mojom::EthereumProvider::RequestCallback callback,
                               base::Value id);
-  void AddDecryptRequest(mojom::DecryptRequestPtr request,
+  void AddDecryptRequest(const url::Origin& origin,
+                         const std::string& address,
+                         std::string unsafe_message,
                          mojom::EthereumProvider::RequestCallback callback,
                          base::Value id);
   void AddSignTransactionRequest(mojom::SignTransactionRequestPtr request,
@@ -310,6 +308,10 @@ class BraveWalletService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, ImportFromMetaMask);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, Reset);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetUserAssetAddress);
+
+  bool HasPendingDecryptRequestForOrigin(const url::Origin& origin) const;
+  bool HasPendingGetEncryptionPublicKeyRequestForOrigin(
+      const url::Origin& origin) const;
 
   void OnDefaultEthereumWalletChanged();
   void OnDefaultSolanaWalletChanged();
@@ -374,15 +376,9 @@ class BraveWalletService : public KeyedService,
   base::flat_map<std::string, base::Value> add_suggest_token_ids_;
   base::flat_map<std::string, mojom::AddSuggestTokenRequestPtr>
       add_suggest_token_requests_;
-  base::flat_map<url::Origin, std::string>
-      add_get_encryption_public_key_requests_;
-  base::flat_map<url::Origin, mojom::EthereumProvider::RequestCallback>
-      add_get_encryption_public_key_callbacks_;
-  base::flat_map<url::Origin, base::Value> get_encryption_public_key_ids_;
-  base::flat_map<url::Origin, mojom::DecryptRequestPtr> decrypt_requests_;
-  base::flat_map<url::Origin, mojom::EthereumProvider::RequestCallback>
-      decrypt_callbacks_;
-  base::flat_map<url::Origin, base::Value> decrypt_ids_;
+  base::flat_map<std::string, PendingGetEncryptPublicKeyRequest>
+      pending_get_encryption_public_key_requests_;
+  base::flat_map<std::string, PendingDecryptRequest> pending_decrypt_requests_;
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
   mojo::RemoteSet<mojom::BraveWalletServiceTokenObserver> token_observers_;
   std::unique_ptr<BraveWalletServiceDelegate> delegate_;

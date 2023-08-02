@@ -7,12 +7,7 @@ import { createReducer } from 'redux-act'
 import {
   BraveWallet,
   PanelState,
-  PanelTypes,
-  SerializableAddSuggestTokenRequest,
-  SerializableDecryptRequest,
-  SerializableGetEncryptionPublicKeyRequest,
-  SerializableOriginInfo,
-  SerializableSignMessageRequest
+  PanelTypes
 } from '../../constants/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import {
@@ -21,13 +16,7 @@ import {
 import { PanelTitles } from '../../options/panel-titles'
 import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
-const defaultOriginInfo: SerializableOriginInfo = {
-  origin: {
-    scheme: '',
-    host: '',
-    port: 0,
-    nonceIfOpaque: undefined
-  },
+const defaultOriginInfo: BraveWallet.OriginInfo = {
   originSpec: '',
   eTldPlusOne: ''
 }
@@ -71,15 +60,18 @@ const defaultState: PanelState = {
   signAllTransactionsRequests: [],
   signTransactionRequests: [],
   getEncryptionPublicKeyRequest: {
+    requestId: '',
     originInfo: defaultOriginInfo,
     address: ''
   },
   decryptRequest: {
+    requestId: '',
     originInfo: defaultOriginInfo,
     address: '',
     unsafeMessage: ''
   },
   switchChainRequest: {
+    requestId: '',
     originInfo: defaultOriginInfo,
     chainId: ''
   },
@@ -139,21 +131,21 @@ export const createPanelReducer = (initialState: PanelState) => {
     }
   })
 
-  reducer.on(PanelActions.getEncryptionPublicKey.type, (state: any, request: SerializableGetEncryptionPublicKeyRequest) => {
+  reducer.on(PanelActions.getEncryptionPublicKey.type, (state: any, request: BraveWallet.GetEncryptionPublicKeyRequest) => {
     return {
       ...state,
       getEncryptionPublicKeyRequest: request
     }
   })
 
-  reducer.on(PanelActions.decrypt.type, (state: any, request: SerializableDecryptRequest) => {
+  reducer.on(PanelActions.decrypt.type, (state: any, request: BraveWallet.DecryptRequest) => {
     return {
       ...state,
       decryptRequest: request
     }
   })
 
-  reducer.on(PanelActions.signMessage.type, (state, payload: SerializableSignMessageRequest[]) => {
+  reducer.on(PanelActions.signMessage.type, (state, payload: BraveWallet.SignMessageRequest[]) => {
     return {
       ...state,
       signMessageData: payload
@@ -181,7 +173,7 @@ export const createPanelReducer = (initialState: PanelState) => {
     }
   })
 
-  reducer.on(PanelActions.addSuggestToken.type, (state: PanelState, payload: SerializableAddSuggestTokenRequest): PanelState => {
+  reducer.on(PanelActions.addSuggestToken.type, (state: PanelState, payload: BraveWallet.AddSuggestTokenRequest): PanelState => {
     return {
       ...state,
       suggestedTokenRequest: payload

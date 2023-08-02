@@ -70,6 +70,7 @@ import org.chromium.brave_wallet.mojom.CoinMarket;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
@@ -92,7 +93,6 @@ import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 import org.chromium.ui.widget.Toast;
-import org.chromium.url.GURL;
 
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -1405,27 +1405,10 @@ public class Utils {
         }
     }
 
-    public static String geteTLDHTMLFormatted(String etldPlusOne) {
-        GURL url = getCurentTabUrl();
-
-        return Utils.geteTLDHTMLFormatted(url, etldPlusOne);
-    }
-
-    public static Spanned geteTLD(String etldPlusOne) {
-        GURL url = getCurentTabUrl();
-
-        return Utils.geteTLD(url, etldPlusOne);
-    }
-
-    public static Spanned geteTLD(GURL url, String etldPlusOne) {
-        String formattedeTLD = geteTLDHTMLFormatted(url, etldPlusOne);
-        return AndroidUtils.formatHTML(formattedeTLD);
-    }
-
-    private static String geteTLDHTMLFormatted(GURL url, String etldPlusOne) {
+    public static String geteTldHtmlString(OriginInfo originInfo) {
         StringBuilder builder = new StringBuilder();
-        builder.append(url.getScheme()).append("://").append(url.getHost());
-        int index = builder.indexOf(etldPlusOne);
+        builder.append(originInfo.originSpec);
+        int index = builder.lastIndexOf(originInfo.eTldPlusOne);
         if (index > 0 && index < builder.length()) {
             builder.insert(index, "<b>");
             builder.insert(builder.length(), "</b>");
@@ -1433,12 +1416,8 @@ public class Utils {
         return builder.toString();
     }
 
-    public static GURL getCurentTabUrl() {
-        ChromeTabbedActivity activity = BraveActivity.getChromeTabbedActivity();
-        if (activity != null && activity.getActivityTab() != null) {
-            return activity.getActivityTab().getUrl().getOrigin();
-        }
-        return GURL.emptyGURL();
+    public static Spanned geteTldSpanned(OriginInfo originInfo) {
+        return AndroidUtils.formatHTML(geteTldHtmlString(originInfo));
     }
 
     @NonNull

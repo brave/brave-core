@@ -236,11 +236,11 @@ export interface WalletState {
   addUserAssetError: boolean
   defaultEthereumWallet: BraveWallet.DefaultWallet
   defaultSolanaWallet: BraveWallet.DefaultWallet
-  activeOrigin: SerializableOriginInfo
+  activeOrigin: BraveWallet.OriginInfo
   solFeeEstimates?: SolFeeEstimates
   hasFeeEstimatesError?: boolean
   gasEstimates?: BraveWallet.GasEstimation1559
-  connectedAccounts: BraveWallet.AccountInfo[]
+  connectedAccounts: BraveWallet.AccountId[]
   isMetaMaskInstalled: boolean
   defaultCurrencies: DefaultCurrencies
   isLoadingCoinMarketData: boolean
@@ -269,20 +269,20 @@ export interface WalletState {
 
 export interface PanelState {
   hasInitialized: boolean
-  connectToSiteOrigin: SerializableOriginInfo
+  connectToSiteOrigin: BraveWallet.OriginInfo
   selectedPanel: PanelTypes
   lastSelectedPanel?: PanelTypes
   panelTitle: string
   connectingAccounts: string[]
-  addChainRequest: SerializableAddChainRequest
-  signMessageData: SerializableSignMessageRequest[]
+  addChainRequest: BraveWallet.AddChainRequest
+  signMessageData: BraveWallet.SignMessageRequest[]
   signTransactionRequests: BraveWallet.SignTransactionRequest[]
   signAllTransactionsRequests: BraveWallet.SignAllTransactionsRequest[]
-  getEncryptionPublicKeyRequest: SerializableGetEncryptionPublicKeyRequest
-  decryptRequest: SerializableDecryptRequest
-  switchChainRequest: SerializableSwitchChainRequest
+  getEncryptionPublicKeyRequest: BraveWallet.GetEncryptionPublicKeyRequest
+  decryptRequest: BraveWallet.DecryptRequest
+  switchChainRequest: BraveWallet.SwitchChainRequest
   hardwareWalletCode?: HardwareWalletResponseCodeType
-  suggestedTokenRequest?: SerializableAddSuggestTokenRequest
+  suggestedTokenRequest?: BraveWallet.AddSuggestTokenRequest
   selectedTransactionId?: string
 }
 
@@ -437,14 +437,6 @@ export interface SendETHFilForwardTransactionParams extends BaseTransactionParam
  */
 export type SerializableTimeDelta = Record<keyof TimeDelta, number>
 
-type UnguessableToken = Exclude<BraveWallet.OriginInfo['origin']['nonceIfOpaque'], undefined>
-
-/**
- * Used to properly store `UnguessableToken`s in redux store,
- * since bigints are not serializable by default
- */
-export type SerializableUnguessableToken = Record<keyof UnguessableToken, string>
-
 export type Defined<T> = Exclude<T, undefined>
 
 export type SerializableSolanaTxDataMaxRetries = {
@@ -470,28 +462,6 @@ export type SerializableSolanaTxData = Omit<
   sendOptions: SerializableSolanaTxDataSendOptions
 }
 
-export type SerializableOrigin = Omit<
-  BraveWallet.OriginInfo['origin'],
-  | 'nonceIfOpaque'
-> & {
-  nonceIfOpaque: SerializableUnguessableToken | undefined
-}
-
-export type SerializableOriginInfo = Omit<
-  BraveWallet.OriginInfo,
-  | 'origin'
-> & {
-  origin: SerializableOrigin
-}
-
-export type ObjWithOriginInfo<T = {}> = T & {
-  originInfo: BraveWallet.OriginInfo
-}
-
-export type WithSerializableOriginInfo<T extends ObjWithOriginInfo = ObjWithOriginInfo> = Omit<T, 'originInfo'> & {
-  originInfo: SerializableOriginInfo
-}
-
 export type SerializableTxDataUnion = {
   solanaTxData?: SerializableSolanaTxData
   ethTxData?: BraveWallet.TxData
@@ -508,32 +478,16 @@ export type SerializableTransactionInfo = Omit<
   | 'confirmedTime'
   | 'createdTime'
   | 'submittedTime'
-  | 'txDataUnion'
-  | 'originInfo'> & {
+  | 'txDataUnion'> & {
   confirmedTime: SerializableTimeDelta
   createdTime: SerializableTimeDelta
   submittedTime: SerializableTimeDelta
   txDataUnion: SerializableTxDataUnion
-  originInfo: SerializableOriginInfo | undefined
 }
 
 export type TransactionInfo =
   | BraveWallet.TransactionInfo
   | SerializableTransactionInfo
-
-export type SerializableAddSuggestTokenRequest = Omit<BraveWallet.AddSuggestTokenRequest, 'origin'> & {
-  origin: SerializableOriginInfo
-}
-
-export type SerializableSignMessageRequest = WithSerializableOriginInfo<BraveWallet.SignMessageRequest>
-
-export type SerializableAddChainRequest = WithSerializableOriginInfo<BraveWallet.AddChainRequest>
-
-export type SerializableGetEncryptionPublicKeyRequest = WithSerializableOriginInfo<BraveWallet.GetEncryptionPublicKeyRequest>
-
-export type SerializableDecryptRequest = WithSerializableOriginInfo<BraveWallet.DecryptRequest>
-
-export type SerializableSwitchChainRequest = WithSerializableOriginInfo<BraveWallet.SwitchChainRequest>
 
 export type GetEthAddrReturnInfo = BraveWallet.JsonRpcService_EnsGetEthAddr_ResponseParams
 export type GetSolAddrReturnInfo = BraveWallet.JsonRpcService_SnsGetSolAddr_ResponseParams

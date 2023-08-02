@@ -33,6 +33,7 @@ import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.NetworkModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoWalletOnboardingPagerAdapter;
@@ -132,10 +133,10 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         }
 
         try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            mWalletModel = activity.getWalletModel();
-            // Set origin to null, to use default network in domain layer.
-            mWalletModel.setOriginInfo(null);
+            mWalletModel = BraveActivity.getBraveActivity().getWalletModel();
+
+            // Update network model to use default network.
+            getNetworkModel().updateMode(NetworkModel.Mode.WALLET_MODE);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "triggerLayoutInflation " + e);
         }
@@ -144,8 +145,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
             NetworkInfo ethNetwork = null;
             // Always show buy send swap with ETH
             if (mWalletModel != null) {
-                ethNetwork = mWalletModel.getNetworkModel().getNetwork(
-                        BraveWalletConstants.MAINNET_CHAIN_ID);
+                ethNetwork = getNetworkModel().getNetwork(BraveWalletConstants.MAINNET_CHAIN_ID);
             }
             SwapBottomSheetDialogFragment swapBottomSheetDialogFragment =
                     SwapBottomSheetDialogFragment.newInstance();
@@ -471,5 +471,9 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     @Override
     public void backedUp() {
         findViewById(R.id.wallet_backup_banner).setVisibility(View.GONE);
+    }
+
+    private NetworkModel getNetworkModel() {
+        return mWalletModel.getNetworkModel();
     }
 }

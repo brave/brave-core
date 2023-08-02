@@ -12,7 +12,6 @@ import { PanelActions } from '../../../panel/actions'
 
 // Types
 import {
-  SerializableOriginInfo,
   WalletRoutes,
   BraveWallet,
   DAppConnectedPermissionsOption
@@ -84,7 +83,7 @@ const onClickAddAccount = () => {
 }
 
 interface Props {
-  originInfo: SerializableOriginInfo
+  originInfo: BraveWallet.OriginInfo
   accountsToConnect: BraveWallet.AccountInfo[]
 }
 
