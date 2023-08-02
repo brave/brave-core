@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { useSelector } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
+import { useParams } from 'react-router'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -80,6 +81,9 @@ interface Props {
 }
 
 export const FundWalletScreen = ({ isAndroid }: Props) => {
+  // routing
+  const { tokenId } = useParams<{ tokenId?: string }>()
+
   // redux
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
@@ -117,7 +121,7 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
   const [selectedAccount, setSelectedAccount] =
     React.useState<BraveWallet.AccountInfo | undefined>()
   const [showBuyOptions, setShowBuyOptions] = React.useState<boolean>(false)
-  const [searchValue, setSearchValue] = React.useState<string>('')
+  const [searchValue, setSearchValue] = React.useState<string>(tokenId ?? '')
 
   // memos & computed
   const isNextStepEnabled = !!selectedAsset
@@ -304,6 +308,13 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
       closeAccountSearch()
     }
   }, [showBuyOptions, showAccountSearch, closeAccountSearch])
+
+  React.useEffect(() => {
+    // reset search field on list update
+    if (allBuyAssetOptions && !tokenId) {
+      setSearchValue('')
+    }
+  }, [allBuyAssetOptions, tokenId])
 
   // render
   return (

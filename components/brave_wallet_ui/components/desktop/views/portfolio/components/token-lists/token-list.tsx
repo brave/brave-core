@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory, useParams } from 'react-router'
+import { useHistory } from 'react-router'
 
 // Constants
 import {
@@ -115,7 +115,6 @@ export const TokenLists = ({
 }: Props) => {
   // routing
   const history = useHistory()
-  const { tokenId } = useParams<{ tokenId?: string }>()
 
   // unsafe selectors
   const selectedAssetFilter = useSafeWalletSelector(WalletSelectors.selectedAssetFilter)
@@ -126,7 +125,7 @@ export const TokenLists = ({
     useSafeWalletSelector(WalletSelectors.selectedGroupAssetsByItem)
 
   // state
-  const [searchValue, setSearchValue] = React.useState<string>(tokenId ?? '')
+  const [searchValue, setSearchValue] = React.useState<string>('')
   const [showSearchBar, setShowSearchBar] = React.useState<boolean>(false)
 
   // methods
@@ -608,14 +607,6 @@ export const TokenLists = ({
     getSortedFungibleTokensList,
     noNetworks
   ])
-
-  // effects
-  React.useEffect(() => {
-    // reset search field on list update
-    if (userAssetList && !tokenId) {
-      setSearchValue('')
-    }
-  }, [userAssetList, tokenId])
 
   // render
   return (

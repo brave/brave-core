@@ -756,7 +756,7 @@ export enum WalletRoutes {
   SendPage = '/send/' +
   ':chainId?/' +
   ':accountAddress?/' +
-  ':contractAddress?/' +
+  ':contractAddressOrSymbol?/' +
   ':tokenId?',
 
   // dev bitcoin screen

@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
+import Icon from '@brave/leo/react/icon'
 import { AssetIconProps, AssetIconFactory, WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div<{isPanel?: boolean}>`
@@ -100,4 +102,28 @@ export const NetworkDescriptionText = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text03};
+`
+
+export const AssetMenuWrapper = styled.div`
+  position: relative;
+`
+
+export const AssetMenuButton = styled(WalletButton)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  pointer-events: auto;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+`
+
+export const AssetMenuButtonIcon = styled(Icon).attrs({
+  name: 'more-vertical'
+})`
+  --leo-icon-size: 24px;
+  color: ${leo.color.icon.default};
 `

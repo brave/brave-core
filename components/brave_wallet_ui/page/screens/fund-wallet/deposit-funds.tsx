@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { useSelector } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
+import { useParams } from 'react-router'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -86,6 +87,9 @@ interface Props {
 export const DepositFundsScreen = (props: Props) => {
   const { showDepositAddress, onShowDepositAddress } = props
 
+  // routing
+  const { tokenId } = useParams<{ tokenId?: string }>()
+
   // redux
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
@@ -103,7 +107,7 @@ export const DepositFundsScreen = (props: Props) => {
   >(undefined)
   const [selectedAccount, setSelectedAccount] =
     React.useState<BraveWallet.AccountInfo | undefined>()
-  const [searchValue, setSearchValue] = React.useState<string>('')
+  const [searchValue, setSearchValue] = React.useState<string>(tokenId ?? '')
 
   // queries
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
@@ -310,6 +314,13 @@ export const DepositFundsScreen = (props: Props) => {
       }
     }
   }, [showDepositAddress, showAccountSearch, isCopied, closeAccountSearch, resetCopyState])
+
+  React.useEffect(() => {
+    // reset search field on list update
+    if (fullAssetsList && !tokenId) {
+      setSearchValue('')
+    }
+  }, [fullAssetsList, tokenId])
 
   // render
   return (

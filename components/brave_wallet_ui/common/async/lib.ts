@@ -15,8 +15,7 @@ import {
   SendFilTransactionParams,
   SendSolTransactionParams,
   SolanaSerializedTransactionParams,
-  SupportedOnRampNetworks,
-  SupportedOffRampNetworks
+  SupportedOnRampNetworks
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 
@@ -351,52 +350,6 @@ export const getAllBuyAssets = async (): Promise<{
       ...sortedSardineOptions,
       ...sortedTransakOptions,
       ...sortedStripeOptions
-    ])
-  }
-
-  return results
-}
-
-export const getAllSellAssets = async (): Promise<{
-  rampAssetOptions: BraveWallet.BlockchainToken[]
-  allAssetOptions: BraveWallet.BlockchainToken[]
-}> => {
-  const { blockchainRegistry } = getAPIProxy()
-  const { kRamp } = BraveWallet.OffRampProvider
-
-  const rampAssets = await mapLimit(
-    SupportedOffRampNetworks,
-    10,
-    async (chainId: string) =>
-      await blockchainRegistry.getSellTokens(kRamp, chainId)
-  )
-
-  // add token logos
-  const rampAssetOptions: BraveWallet.BlockchainToken[] = await mapLimit(
-    rampAssets.flatMap((p) => p.tokens),
-    10,
-    async (token: BraveWallet.BlockchainToken) => await addLogoToToken(token)
-  )
-
-  // separate native assets from tokens
-  const {
-    tokens: rampTokenOptions,
-    nativeAssets: rampNativeAssetOptions
-  } = getNativeTokensFromList(rampAssetOptions)
-
-  // separate BAT from other tokens
-  const {
-    bat: rampBatTokens,
-    nonBat: rampNonBatTokens
-  } = getBatTokensFromList(rampTokenOptions)
-
-  // moves Gas coins and BAT to front of list
-  const sortedRampOptions = [...rampNativeAssetOptions, ...rampBatTokens, ...rampNonBatTokens]
-
-  const results = {
-    rampAssetOptions: sortedRampOptions,
-    allAssetOptions: getUniqueAssets([
-      ...sortedRampOptions
     ])
   }
 

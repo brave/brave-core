@@ -120,8 +120,6 @@ export const AccountsAndTransactionsList = ({
 
   // hooks
   const {
-    allSellAssetOptions,
-    getAllSellAssetOptions,
     checkIsAssetSellSupported,
     sellAmount,
     setSellAmount,
@@ -203,13 +201,6 @@ export const AccountsAndTransactionsList = ({
           !hidePortfolioBalances
         ))
   }, [hidePortfolioBalances])
-
-  // Effects
-  React.useEffect(() => {
-    if (allSellAssetOptions.length === 0) {
-      getAllSellAssetOptions()
-    }
-  }, [allSellAssetOptions.length, getAllSellAssetOptions])
 
   return (
     <>

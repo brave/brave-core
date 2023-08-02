@@ -105,10 +105,15 @@ export const Send = (props: Props) => {
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
 
   // routing
-  const { chainId, accountAddress, contractAddress, tokenId } = useParams<{
+  const {
+    chainId,
+    accountAddress,
+    contractAddressOrSymbol,
+    tokenId
+  } = useParams<{
     chainId?: string
     accountAddress?: string
-    contractAddress?: string
+    contractAddressOrSymbol?: string
     tokenId?: string
   }>()
   const { hash } = useLocation()
@@ -428,18 +433,31 @@ export const Send = (props: Props) => {
   })
 
   const selectedAssetFromParams = React.useMemo(() => {
-    if (!contractAddress || !chainId) return
+    if (!contractAddressOrSymbol || !chainId) return
 
     return userVisibleTokensInfo.find(token =>
       tokenId
         ? token.chainId === chainId &&
+        token.contractAddress.toLowerCase() ===
+        contractAddressOrSymbol.toLowerCase() &&
+        token.tokenId === tokenId
+        : (
           token.contractAddress.toLowerCase() ===
-            contractAddress.toLowerCase() &&
-          token.tokenId === tokenId
-        : token.chainId === chainId &&
-          token.contractAddress.toLowerCase() === contractAddress.toLowerCase()
+          contractAddressOrSymbol.toLowerCase() &&
+          token.chainId === chainId) ||
+        (
+          token.symbol.toLowerCase() ===
+          contractAddressOrSymbol.toLowerCase() &&
+          token.chainId === chainId &&
+          token.contractAddress === ''
+        )
     )
-  }, [userVisibleTokensInfo, chainId, contractAddress, tokenId])
+  }, [
+    userVisibleTokensInfo,
+    chainId,
+    contractAddressOrSymbol,
+    tokenId
+  ])
 
   const accountFromParams = React.useMemo(() => {
     return accounts.find(

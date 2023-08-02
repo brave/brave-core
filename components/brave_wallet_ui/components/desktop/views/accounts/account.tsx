@@ -75,9 +75,6 @@ import {
   PortfolioAssetItem
 } from '../../portfolio-asset-item/index'
 import {
-  SellAssetModal
-} from '../../popup-modals/sell-asset-modal/sell-asset-modal'
-import {
   AccountDetailsHeader
 } from '../../card-headers/account-details-header'
 import {
@@ -113,7 +110,6 @@ import {
 import {
   querySubscriptionOptions60s
 } from '../../../../common/slices/constants'
-import { useMultiChainSellAssets } from '../../../../common/hooks/use-multi-chain-sell-assets'
 import {
   useBalancesFetcher
 } from '../../../../common/hooks/use-balances-fetcher'
@@ -163,23 +159,10 @@ export const Account = () => {
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(WalletSelectors.assetAutoDiscoveryCompleted)
 
   // state
-  const [showSellModal, setShowSellModal] = React.useState<boolean>(false)
   const [showAddNftModal, setShowAddNftModal] = React.useState<boolean>(false)
 
   // custom hooks
   const scrollIntoView = useScrollIntoView()
-
-  const {
-    allSellAssetOptions,
-    getAllSellAssetOptions,
-    selectedSellAsset,
-    setSelectedSellAsset,
-    sellAmount,
-    setSellAmount,
-    selectedSellAssetNetwork,
-    openSellAssetLink,
-    checkIsAssetSellSupported
-  } = useMultiChainSellAssets()
 
   // memos
   const transactionList = React.useMemo(() => {
@@ -314,17 +297,6 @@ export const Account = () => {
     }
   }, [checkIsTransactionFocused, scrollIntoView])
 
-  const onClickShowSellModal = React.useCallback((token: BraveWallet.BlockchainToken) => {
-    setShowSellModal(true)
-    setSelectedSellAsset(token)
-  }, [setSelectedSellAsset, setShowSellModal])
-
-  const onOpenSellAssetLink = React.useCallback(() => {
-    if (selectedAccount?.address) {
-      openSellAssetLink({ sellAddress: selectedAccount.address, sellAsset: selectedSellAsset })
-    }
-  }, [selectedSellAsset, selectedAccount?.address, openSellAssetLink])
-
   const onSelectAsset = React.useCallback(
     (asset: BraveWallet.BlockchainToken) => {
       if (asset.contractAddress === '') {
@@ -350,13 +322,6 @@ export const Account = () => {
         }/${asset.contractAddress}`
       )
     }, [])
-
-  // Effects
-  React.useEffect(() => {
-    if (allSellAssetOptions.length === 0) {
-      getAllSellAssetOptions()
-    }
-  }, [allSellAssetOptions.length, getAllSellAssetOptions])
 
   // redirect (asset not found)
   if (!selectedAccount) {
@@ -401,13 +366,11 @@ export const Account = () => {
             <PortfolioAssetItem
               key={getAssetIdKey(asset)}
               action={() => onSelectAsset(asset)}
+              account={selectedAccount}
               assetBalance={
                 getBalance(selectedAccount.accountId, asset, tokenBalancesRegistry)
               }
               token={asset}
-              isAccountDetails={true}
-              showSellModal={() => onClickShowSellModal(asset)}
-              isSellSupported={checkIsAssetSellSupported(asset)}
               spotPrice={
                 spotPriceRegistry && !isLoadingSpotPrices
                   ? getTokenPriceAmountFromRegistry(spotPriceRegistry, asset)
@@ -495,26 +458,6 @@ export const Account = () => {
             onHideForm={() => setShowAddNftModal(false)}
           />
         )
-      }
-
-      {showSellModal && selectedSellAsset &&
-        <SellAssetModal
-          selectedAsset={selectedSellAsset}
-          selectedAssetsNetwork={selectedSellAssetNetwork}
-          onClose={() => setShowSellModal(false)}
-          sellAmount={sellAmount}
-          setSellAmount={setSellAmount}
-          openSellAssetLink={onOpenSellAssetLink}
-          showSellModal={showSellModal}
-          account={selectedAccount}
-          sellAssetBalance={
-            getBalance(
-              selectedAccount.accountId,
-              selectedSellAsset,
-              tokenBalancesRegistry
-            )
-         }
-        />
       }
     </WalletPageWrapper >
   )
