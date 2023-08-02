@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import(
+    "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service/allowlist.gni")
 import("//brave/build/config.gni")
 import("//build/toolchain/gcc_toolchain.gni")
 import("//build/util/process_version.gni")
@@ -20,21 +22,16 @@ copy("brave_vpn_wireguard_binaries") {
 }
 
 group("wireguard_service") {
-  deps = []
+  deps = [ ":brave_vpn_wireguard_service" ]
   if (enable_resource_allowlist_generation) {
     deps += [ ":wireguard_resource_allowlist" ]
-  } else {
-    deps += [
-      ":brave_vpn_wireguard_service",
-      "//chrome:packed_resources",
-    ]
   }
 }
 
 generate_resource_allowlist("wireguard_resource_allowlist") {
   deps = [ ":brave_vpn_wireguard_service" ]
   inputs = [ "$root_out_dir/brave_vpn_wireguard_service.exe.pdb" ]
-  output = wireguard_resource_allowlist
+  output = wireguard_resource_allowlist_file
 }
 
 executable("brave_vpn_wireguard_service") {
