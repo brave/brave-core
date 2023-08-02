@@ -203,9 +203,13 @@ class SpeechRecognizer: ObservableObject {
     }
   }
   
-  nonisolated private func clearSearch() {
+  nonisolated func clearSearch() {
     Task { @MainActor in
+      transcript = " "
+      transcriptedIcon = "leo.microphone"
       finalizedRecognition = (false, "")
+      animationType = .pulse(scale: 1)
+      isSilent = true
     }
   }
   
