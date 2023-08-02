@@ -367,86 +367,7 @@ Config.prototype.buildArgs = function () {
     enable_updater: this.isOfficialBuild(),
     enable_update_notifications: this.isOfficialBuild(),
     brave_ai_chat_endpoint: this.brave_ai_chat_endpoint,
-
-    legacy_service_name_prefix: "brave",
-
-    UpdaterLegacyLibGUID: "6FF4F468-0B5A-4878-ACEB-86263DAAD877",
-    GoogleUpdate3WebUserClassGUID: "2F78AECB-0A7F-4474-89D5-C325293DE960",
-    GoogleUpdate3WebSystemClassGUID: "00B16F95-319A-4F01-AC81-CE69B8F4E387",
-    GoogleUpdate3WebServiceClassGUID: "3A9D7221-2278-41DD-930B-C2356B7D3725",
-    PolicyStatusUserClassGUID: "02FA9A9C-3856-48A8-A62B-F898C64E45C5",
-    PolicyStatusSystemClassGUID: "598BBE98-5919-4392-B62A-50D7115F10A3",
-    ProcessLauncherClassGUID: "4C3BA8F3-1264-4BDB-BB2D-CA44734AD00D",
-
-    IAppVersionWebGUID: "35A4470F-5EEC-4715-A2DC-6AA9F8E21183",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    IAppVersionWebUserGUID: "B1FC3654-D8D0-466C-A048-A9DCB7ADB1F3",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    IAppVersionWebSystemGUID: "69F71AD3-C3AE-45C1-A39B-35E013BB162A",
-
-    ICurrentStateGUID: "E6836CFF-5949-44BC-B6BE-9C8C48DD8D97",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    ICurrentStateUserGUID: "AEA2D927-1846-45D3-BA0A-AEC6B13A663D",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    ICurrentStateSystemGUID: "DC2BD9D2-0933-4775-B13B-2EFBD927BD23",
-
-    IGoogleUpdate3WebGUID: "C9190589-ECEC-43F8-8AEC-62496BB87B26",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    IGoogleUpdate3WebUserGUID: "D9D17688-1005-4BA6-9A49-E7BB21383A95",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    IGoogleUpdate3WebSystemGUID: "542FDCA9-D22F-458C-823A-35C268A7D7D4",
-
-    IAppBundleWebGUID: "852A0F87-D117-4B7C-ABA9-2F76D91BCB9D",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    IAppBundleWebUserGUID: "BDC213E1-5D1B-4573-B271-F4FEF558BCB8",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    IAppBundleWebSystemGUID: "AFDC61C3-CF90-4111-BB47-CFB493F39650",
-
-    IAppWebGUID: "FB43AAD0-DDBA-4D01-A3E0-FAB100E7926B",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    IAppWebUserGUID: "0C1FE5B1-C4D8-433D-942F-85C2F1D6BAC1",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    IAppWebSystemGUID: "A503E901-FA2B-4CCF-A127-C3ED8E1007B3",
-
-    IAppCommandWebGUID: "19F4616B-B7DD-4B3F-8084-C81C5C77AAA4",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    IAppCommandWebUserGUID: "2060892B-2104-4D2D-84BE-0D8519ABA2A3",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    IAppCommandWebSystemGUID: "236890BC-E89C-4540-8B37-BA2DE9239D90",
-
-    IPolicyStatusGUID: "10DB7BD5-BD0B-4886-9705-174203FE0ADA",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    IPolicyStatusUserGUID: "6A158B68-78AD-4269-A589-1AFE9442B029",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    IPolicyStatusSystemGUID: "F5AD0205-0CBC-470F-96BC-8986DCBF4591",
-
-    IPolicyStatus2GUID: "EFF9CA12-4CD3-474B-B881-CDE1D92F1996",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    IPolicyStatus2UserGUID: "20643077-D0AC-4C46-97E6-31C364B726AB",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    IPolicyStatus2SystemGUID: "047DE128-B634-4C05-A18E-756AA4C8C409",
-
-    IPolicyStatus3GUID: "C974F2DD-CFB8-4466-8E6D-96ED901DAACA",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    IPolicyStatus3UserGUID: "A3335B17-1DEE-45DB-A2DF-357942F04DE7",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    IPolicyStatus3SystemGUID: "F7F9F3E7-4EAF-41B4-901F-250B8EBA8D6C",
-
-    IPolicyStatusValueGUID: "931E73FD-D487-4458-AA08-1FF41413377B",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    IPolicyStatusValueUserGUID: "63107867-A897-46C3-AC56-89A07C0A2044",
-    // Randomly generated because it's unclear where upstream's value comes from.
-    IPolicyStatusValueSystemGUID: "2592AA42-E23E-43C8-829A-46ECE27A5AA3",
-
-    IProcessLauncherGUID: "70E5ECF5-2CA7-4019-9B23-916789A13C2C",
-
-    IProcessLauncher2GUID: "D5627FC9-E2F0-484B-89A4-5DACFE7FAAD3",
-
     ...this.extraGnArgs,
-  }
-
-  if (this.getTargetOS() === 'win') {
-    args.legacy_google_update_appid = "{B131C935-9BE6-41DA-9599-1F776BEB8019}"
   }
 
   if (!this.isBraveReleaseBuild()) {
@@ -479,9 +400,8 @@ Config.prototype.buildArgs = function () {
     }
   }
 
-  if (process.platform === 'win32' && this.build_omaha) {
-    args.build_omaha = this.build_omaha
-    args.tag_ap = this.tag_ap
+  if (this.getTargetOS() === 'win') {
+    Object.assign(args, this.buildUpdaterArgsWin());
   }
 
   if ((process.platform === 'win32' || process.platform === 'darwin') && this.build_delta_installer) {
@@ -721,6 +641,91 @@ Config.prototype.buildArgs = function () {
     delete args.brave_ai_chat_endpoint
   }
 
+  return args
+}
+
+Config.prototype.buildUpdaterArgsWin = function () {
+  let args = {
+    legacy_service_name_prefix: "brave",
+
+    UpdaterLegacyLibGUID: "6FF4F468-0B5A-4878-ACEB-86263DAAD877",
+    GoogleUpdate3WebUserClassGUID: "2F78AECB-0A7F-4474-89D5-C325293DE960",
+    GoogleUpdate3WebSystemClassGUID: "00B16F95-319A-4F01-AC81-CE69B8F4E387",
+    GoogleUpdate3WebServiceClassGUID: "3A9D7221-2278-41DD-930B-C2356B7D3725",
+    PolicyStatusUserClassGUID: "02FA9A9C-3856-48A8-A62B-F898C64E45C5",
+    PolicyStatusSystemClassGUID: "598BBE98-5919-4392-B62A-50D7115F10A3",
+    ProcessLauncherClassGUID: "4C3BA8F3-1264-4BDB-BB2D-CA44734AD00D",
+
+    IAppVersionWebGUID: "35A4470F-5EEC-4715-A2DC-6AA9F8E21183",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    IAppVersionWebUserGUID: "B1FC3654-D8D0-466C-A048-A9DCB7ADB1F3",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    IAppVersionWebSystemGUID: "69F71AD3-C3AE-45C1-A39B-35E013BB162A",
+
+    ICurrentStateGUID: "E6836CFF-5949-44BC-B6BE-9C8C48DD8D97",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    ICurrentStateUserGUID: "AEA2D927-1846-45D3-BA0A-AEC6B13A663D",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    ICurrentStateSystemGUID: "DC2BD9D2-0933-4775-B13B-2EFBD927BD23",
+
+    IGoogleUpdate3WebGUID: "C9190589-ECEC-43F8-8AEC-62496BB87B26",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    IGoogleUpdate3WebUserGUID: "D9D17688-1005-4BA6-9A49-E7BB21383A95",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    IGoogleUpdate3WebSystemGUID: "542FDCA9-D22F-458C-823A-35C268A7D7D4",
+
+    IAppBundleWebGUID: "852A0F87-D117-4B7C-ABA9-2F76D91BCB9D",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    IAppBundleWebUserGUID: "BDC213E1-5D1B-4573-B271-F4FEF558BCB8",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    IAppBundleWebSystemGUID: "AFDC61C3-CF90-4111-BB47-CFB493F39650",
+
+    IAppWebGUID: "FB43AAD0-DDBA-4D01-A3E0-FAB100E7926B",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    IAppWebUserGUID: "0C1FE5B1-C4D8-433D-942F-85C2F1D6BAC1",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    IAppWebSystemGUID: "A503E901-FA2B-4CCF-A127-C3ED8E1007B3",
+
+    IAppCommandWebGUID: "19F4616B-B7DD-4B3F-8084-C81C5C77AAA4",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    IAppCommandWebUserGUID: "2060892B-2104-4D2D-84BE-0D8519ABA2A3",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    IAppCommandWebSystemGUID: "236890BC-E89C-4540-8B37-BA2DE9239D90",
+
+    IPolicyStatusGUID: "10DB7BD5-BD0B-4886-9705-174203FE0ADA",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    IPolicyStatusUserGUID: "6A158B68-78AD-4269-A589-1AFE9442B029",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    IPolicyStatusSystemGUID: "F5AD0205-0CBC-470F-96BC-8986DCBF4591",
+
+    IPolicyStatus2GUID: "EFF9CA12-4CD3-474B-B881-CDE1D92F1996",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    IPolicyStatus2UserGUID: "20643077-D0AC-4C46-97E6-31C364B726AB",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    IPolicyStatus2SystemGUID: "047DE128-B634-4C05-A18E-756AA4C8C409",
+
+    IPolicyStatus3GUID: "C974F2DD-CFB8-4466-8E6D-96ED901DAACA",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    IPolicyStatus3UserGUID: "A3335B17-1DEE-45DB-A2DF-357942F04DE7",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    IPolicyStatus3SystemGUID: "F7F9F3E7-4EAF-41B4-901F-250B8EBA8D6C",
+
+    IPolicyStatusValueGUID: "931E73FD-D487-4458-AA08-1FF41413377B",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    IPolicyStatusValueUserGUID: "63107867-A897-46C3-AC56-89A07C0A2044",
+    // Randomly generated because it's unclear where upstream's value comes from.
+    IPolicyStatusValueSystemGUID: "2592AA42-E23E-43C8-829A-46ECE27A5AA3",
+
+    IProcessLauncherGUID: "70E5ECF5-2CA7-4019-9B23-916789A13C2C",
+
+    IProcessLauncher2GUID: "D5627FC9-E2F0-484B-89A4-5DACFE7FAAD3",
+
+    legacy_google_update_appid: "{B131C935-9BE6-41DA-9599-1F776BEB8019}",
+  }
+  if (this.build_omaha) {
+    args.build_omaha = this.build_omaha
+    args.tag_ap = this.tag_ap
+  }
   return args
 }
 
