@@ -1,19 +1,12 @@
 diff --git a/chrome/updater/branding.gni b/chrome/updater/branding.gni
-index ab7574451171a5a4fb496946b2656df8f49e4081..da651164abf3778d62b81d49f41cdcd32cde3ca7 100644
+index ab7574451171a5a4fb496946b2656df8f49e4081..c830c2b14af630896db0b3077c16909a67de36e2 100644
 --- a/chrome/updater/branding.gni
 +++ b/chrome/updater/branding.gni
-@@ -3,7 +3,7 @@
- # found in the LICENSE file.
- 
- import("//build/config/chrome_build.gni")
--
-+declare_args() {
- if (is_chrome_branded) {
-   browser_name = "Chrome"
-   browser_product_name = "Google Chrome"
-@@ -180,3 +180,4 @@ if (is_chrome_branded) {
- # Chrome and Chromium share the same endpoints for now.
- update_check_url = "https://update.googleapis.com/service/update2/json"
- device_management_server_url = "https://m.google.com/devicemanagement/data/api"
-+}
-\ No newline at end of file
+@@ -90,6 +90,7 @@ if (is_chrome_branded) {
+   } else {
+     legacy_google_update_appid = "{430FD4D0-B729-4F61-AA34-91526481799D}"
+   }
++} else if (is_win) { import("//brave/updater/branding.gni")
+ } else {
+   browser_name = "Chromium"
+   browser_product_name = "Chromium"
