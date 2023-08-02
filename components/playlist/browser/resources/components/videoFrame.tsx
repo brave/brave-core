@@ -26,7 +26,11 @@ export default function VideoFrame ({ playing }: Props) {
   return (
     <StyledVideoFrame
       id='player'
-      src='chrome-untrusted://playlist-player'
+      src={
+        location.protocol === 'chrome-untrusted:'
+          ? 'chrome-untrusted://playlist-player'
+          : 'iframe.html?id=playlist-components--video-player'
+      }
       allow='autoplay'
       scrolling='no'
       sandbox='allow-scripts allow-same-origin'

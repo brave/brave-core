@@ -13,6 +13,7 @@ import { color, font, spacing } from '@brave/leo/tokens/css'
 
 import PlaylistInfo from './playlistInfo'
 import { usePlaylist } from '../reducers/states'
+import ContextualMenuAnchorButton from './contextualMenu'
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -55,6 +56,10 @@ const HeaderContainer = styled.div`
   border-bottom: 1px solid ${color.divider.subtle};
 `
 
+const StyledPlaylistInfo = styled(PlaylistInfo)`
+  flex-grow: 1;
+`
+
 export default function Header ({ playlistId }: HeaderProps) {
   const playlist = usePlaylist(playlistId)
   return (
@@ -64,13 +69,35 @@ export default function Header ({ playlistId }: HeaderProps) {
           <StyledLink to='/'>
             <ColoredIcon name='arrow-left' color={color.icon.default} />
           </StyledLink>
-          <PlaylistInfo
+          <StyledPlaylistInfo
             isDefaultPlaylist={playlist.id === 'default'}
             itemCount={playlist.items.length}
             playlistName={playlist.name}
             totalDuration={0}
             nameColor={color.text.primary}
             detailColor={color.text.secondary}
+          />
+          <ContextualMenuAnchorButton
+            items={[
+              { name: 'Rename', iconName: 'edit-box', onClick: () => {} },
+              {
+                name: 'Edit',
+                iconName: 'list-bullet-default',
+                onClick: () => {}
+              },
+              { name: 'Share', iconName: 'share-macos', onClick: () => {} },
+              {
+                name: 'Keep for offline playing',
+                iconName: 'cloud-download',
+                onClick: () => {}
+              },
+              {
+                name: 'Remove played contents',
+                iconName: 'list-checks',
+                onClick: () => {}
+              },
+              { name: 'Delete playlist', iconName: 'trash', onClick: () => {} }
+            ]}
           />
         </>
       ) : (
