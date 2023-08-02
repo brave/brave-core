@@ -48,8 +48,8 @@ public class NetworkModel implements JsonRpcServiceObserver {
     private BraveWalletService mBraveWalletService;
     private JsonRpcService mJsonRpcService;
     private final Object mLock = new Object();
+    private Mode mMode = Mode.WALLET_MODE;
 
-    private final MediatorLiveData<Mode> _mMode;
     private final MediatorLiveData<String> _mChainId;
     private final MediatorLiveData<List<NetworkInfo>> _mDefaultCoinCryptoNetworks;
     private final MutableLiveData<List<NetworkInfo>> _mCryptoNetworks;
@@ -66,7 +66,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
     private final MediatorLiveData<List<NetworkInfo>> _mSecondaryNetworks;
     private Map<String, NetworkSelectorModel> mNetworkSelectorMap;
 
-    public final LiveData<Mode> mMode;
     public final LiveData<String> mChainId;
     private final MutableLiveData<NetworkLists> _mNetworkLists;
     public final LiveData<String[]> mCustomNetworkIds;
@@ -88,9 +87,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
         mCryptoActions = cryptoSharedActions;
         mContext = context;
 
-        _mMode = new MediatorLiveData<>();
-        _mMode.setValue(Mode.WALLET_MODE);
-        mMode = _mMode;
         _mChainId = new MediatorLiveData<>();
         _mChainId.setValue(BraveWalletConstants.MAINNET_CHAIN_ID);
         mChainId = _mChainId;
@@ -136,7 +132,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
                 }
             }
         });
-        _mChainId.addSource(mMode, mode -> { updateChainId(); });
         _mChainId.addSource(mSharedData.getCoinTypeLd(), coinType -> { updateChainId(); });
         _mDefaultCoinCryptoNetworks.addSource(mSharedData.getCoinTypeLd(), coinType -> {
             getAllNetworks(mJsonRpcService, Collections.singletonList(coinType), networkInfoSet -> {
@@ -192,15 +187,14 @@ public class NetworkModel implements JsonRpcServiceObserver {
     private void updateChainId() {
         @CoinType.EnumType
         int coin = mSharedData.getCoinTypeLd().getValue();
-        Mode mode = mMode.getValue();
 
-        if (mode == Mode.WALLET_MODE) {
+        if (mMode == Mode.WALLET_MODE) {
             mJsonRpcService.getNetwork(coin, null, networkInfo -> {
                 if (networkInfo != null) {
                     _mChainId.postValue(networkInfo.chainId);
                 }
             });
-        } else if (mode == Mode.PANEL_MODE) {
+        } else if (mMode == Mode.PANEL_MODE) {
             mBraveWalletService.getNetworkForSelectedAccountOnActiveOrigin(networkInfo -> {
                 if (networkInfo != null) {
                     _mChainId.postValue(networkInfo.chainId);
@@ -471,7 +465,8 @@ public class NetworkModel implements JsonRpcServiceObserver {
     public void close() {}
 
     public void updateMode(Mode mode) {
-        _mMode.postValue(mode);
+        mMode = mode;
+        updateChainId();
     }
 
     public enum Mode { PANEL_MODE, WALLET_MODE }

@@ -292,7 +292,7 @@ public class BraveWalletPanel implements DialogInterface {
                 mBtnConnectedStatus.setVisibility(View.GONE);
                 mCvSolConnectionStatus.setVisibility(View.GONE);
             } else {
-                isSolanaConnected(mSelectedAccount);
+                updateSolanaConnected(mSelectedAccount);
             }
         } else if (CoinType.ETH == mSelectedAccount.accountId.coin) {
             Iterator<AccountInfo> it = mAccountsWithPermissions.iterator();
@@ -310,20 +310,20 @@ public class BraveWalletPanel implements DialogInterface {
         }
     }
 
-    private void isSolanaConnected(AccountInfo selectedAccount) {
+    private void updateSolanaConnected(AccountInfo selectedAccount) {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             if (activity.getActivityTab() != null) {
                 BraveWalletProviderDelegateImplHelper.IsSolanaConnected(
                         activity.getActivityTab().getWebContents(), selectedAccount.address,
-                        isConnected -> { isConnectedState(isConnected); });
+                        isConnected -> { onIsSolanaConnected(isConnected); });
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "isSolanaConnected " + e);
+            Log.e(TAG, "updateSolanaConnected " + e);
         }
     }
 
-    private void isConnectedState(Boolean isConnected) {
+    private void onIsSolanaConnected(Boolean isConnected) {
         @StringRes
         int connected = R.string.dapp_wallet_panel_connectivity_status_connected;
         @StringRes
