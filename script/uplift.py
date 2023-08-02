@@ -7,6 +7,7 @@ from __future__ import print_function
 from builtins import str
 from builtins import object
 import argparse
+import os
 import re
 import sys
 import json
@@ -47,7 +48,7 @@ class PrConfig(object):
                 self.channels_to_process.append(channel)
             validate_channel(args.start_from)
             # read github token FIRST from CLI, then from .npmrc
-            self.github_token = get_env_var('GITHUB_TOKEN')
+            self.github_token = os.environ.get('GITHUB_TOKEN')
             # if `--owners` is not provided, fall back to user owning token
             self.parsed_owners = parse_user_logins(self.github_token,
                                                    args.owners,

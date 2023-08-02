@@ -73,7 +73,7 @@ def main():
         exit(1)
 
     # BRAVE_REPO is defined in lib/helpers.py
-    repo = GitHub(get_env_var('GITHUB_TOKEN')).repos(BRAVE_REPO)
+    repo = GitHub(os.environ.get('GITHUB_TOKEN')).repos(BRAVE_REPO)
     release = get_release(repo, tag, allow_published_release_updates=True)
 
     logging.debug(

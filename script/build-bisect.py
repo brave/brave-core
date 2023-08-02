@@ -291,7 +291,7 @@ def test_version(args, attempt, tag):
 
 
 def get_github_token():
-    github_token = get_env_var('GITHUB_TOKEN')
+    github_token = os.environ.get('GITHUB_TOKEN')
     return github_token
 
 
