@@ -100,12 +100,14 @@ URLSanitizerService::~URLSanitizerService() = default;
 URLSanitizerService::MatchItem::MatchItem() = default;
 URLSanitizerService::MatchItem::~MatchItem() = default;
 
+#if BUILDFLAG(IS_ANDROID)
 mojo::PendingRemote<url_sanitizer::mojom::UrlSanitizerService>
 URLSanitizerService::MakeRemote() {
   mojo::PendingRemote<url_sanitizer::mojom::UrlSanitizerService> remote;
   receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
   return remote;
 }
+#endif  // # BUILDFLAG(IS_ANDROID)
 
 void URLSanitizerService::SanitizeURL(const std::string& url,
                                       SanitizeURLCallback callback) {

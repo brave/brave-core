@@ -20,8 +20,11 @@
 #include "brave/components/url_sanitizer/common/mojom/url_sanitizer.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "extensions/common/url_pattern_set.h"
-#include "mojo/public/cpp/bindings/receiver_set.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(IS_ANDROID)
+#include "mojo/public/cpp/bindings/receiver_set.h"
+#endif  // # BUILDFLAG(IS_ANDROID)
 
 namespace brave {
 
@@ -34,9 +37,9 @@ class URLSanitizerService : public KeyedService,
 
 #if BUILDFLAG(IS_ANDROID)
   mojo::PendingRemote<url_sanitizer::mojom::UrlSanitizerService> MakeRemote();
+#endif  // # BUILDFLAG(IS_ANDROID)
   void SanitizeURL(const std::string& url,
                    SanitizeURLCallback callback) override;
-#endif  // # BUILDFLAG(IS_ANDROID)
 
   struct MatchItem {
     MatchItem();
@@ -70,7 +73,9 @@ class URLSanitizerService : public KeyedService,
  private:
   base::flat_set<std::unique_ptr<URLSanitizerService::MatchItem>> matchers_;
   base::OnceClosure initialization_callback_for_testing_;
+#if BUILDFLAG(IS_ANDROID)
   mojo::ReceiverSet<url_sanitizer::mojom::UrlSanitizerService> receivers_;
+#endif  // # BUILDFLAG(IS_ANDROID)
   base::WeakPtrFactory<URLSanitizerService> weak_factory_{this};
 };
 
