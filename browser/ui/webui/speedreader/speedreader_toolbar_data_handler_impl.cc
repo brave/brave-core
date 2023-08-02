@@ -53,6 +53,12 @@ SpeedreaderToolbarDataHandlerImpl::SpeedreaderToolbarDataHandlerImpl(
       receiver_(this, std::move(receiver)),
       events_(std::move(events)),
       browser_tab_strip_tracker_(this, this) {
+  if (!browser_ || !browser_->tab_strip_model() ||
+      !browser_->tab_strip_model()->GetActiveWebContents()) {
+    // We're initializing this handler while browser is shutting down. Do
+    // nothing because we're going to die soon.
+    return;
+  }
   browser_tab_strip_tracker_.Init();
   active_tab_helper_ = speedreader::SpeedreaderTabHelper::FromWebContents(
       browser->tab_strip_model()->GetActiveWebContents());
