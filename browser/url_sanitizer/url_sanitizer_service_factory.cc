@@ -31,6 +31,7 @@ URLSanitizerService* URLSanitizerServiceFactory::GetForBrowserContext(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
+#if BUILDFLAG(IS_ANDROID)
 // static
 mojo::PendingRemote<url_sanitizer::mojom::UrlSanitizerService>
 URLSanitizerServiceFactory::GetForContext(content::BrowserContext* context) {
@@ -38,6 +39,7 @@ URLSanitizerServiceFactory::GetForContext(content::BrowserContext* context) {
              GetInstance()->GetServiceForBrowserContext(context, true))
       ->MakeRemote();
 }
+#endif  // # BUILDFLAG(IS_ANDROID)
 
 URLSanitizerServiceFactory::URLSanitizerServiceFactory()
     : BrowserContextKeyedServiceFactory(

@@ -17,11 +17,14 @@
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_piece.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
-#include "brave/components/url_sanitizer/common/mojom/url_sanitizer.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "extensions/common/url_pattern_set.h"
-#include "mojo/public/cpp/bindings/receiver_set.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/components/url_sanitizer/common/mojom/url_sanitizer.mojom.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
+#endif  // # BUILDFLAG(IS_ANDROID)
 
 namespace brave {
 
@@ -70,7 +73,9 @@ class URLSanitizerService : public KeyedService,
  private:
   base::flat_set<std::unique_ptr<URLSanitizerService::MatchItem>> matchers_;
   base::OnceClosure initialization_callback_for_testing_;
+#if BUILDFLAG(IS_ANDROID)
   mojo::ReceiverSet<url_sanitizer::mojom::UrlSanitizerService> receivers_;
+#endif  // # BUILDFLAG(IS_ANDROID)
   base::WeakPtrFactory<URLSanitizerService> weak_factory_{this};
 };
 

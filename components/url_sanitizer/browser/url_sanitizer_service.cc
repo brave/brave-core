@@ -100,6 +100,7 @@ URLSanitizerService::~URLSanitizerService() = default;
 URLSanitizerService::MatchItem::MatchItem() = default;
 URLSanitizerService::MatchItem::~MatchItem() = default;
 
+#if BUILDFLAG(IS_ANDROID)
 mojo::PendingRemote<url_sanitizer::mojom::UrlSanitizerService>
 URLSanitizerService::MakeRemote() {
   mojo::PendingRemote<url_sanitizer::mojom::UrlSanitizerService> remote;
@@ -112,6 +113,7 @@ void URLSanitizerService::SanitizeURL(const std::string& url,
   const auto& sanitized_url = SanitizeURL(GURL(url));
   std::move(callback).Run(sanitized_url.spec());
 }
+#endif  // # BUILDFLAG(IS_ANDROID)
 
 URLSanitizerService::MatchItem::MatchItem(extensions::URLPatternSet in,
                                           extensions::URLPatternSet ex,
