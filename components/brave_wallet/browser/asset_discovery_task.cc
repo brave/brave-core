@@ -242,7 +242,8 @@ void AssetDiscoveryTask::MergeDiscoveredERC20s(
         seen_contract_addresses[chain_id].insert(contract_address);
         auto token = std::move(
             chain_id_to_contract_address_to_token[chain_id][contract_address]);
-        if (token && BraveWalletService::AddUserAsset(token.Clone(), prefs_)) {
+        if (token &&
+            BraveWalletService::AddUserAsset(token.Clone(), true, prefs_)) {
           discovered_tokens.push_back(std::move(token));
         }
       }
@@ -357,7 +358,7 @@ void AssetDiscoveryTask::OnGetSolanaTokenRegistry(
   std::vector<mojom::BlockchainTokenPtr> discovered_tokens;
   for (const auto& token : sol_token_registry) {
     if (discovered_mint_addresses.contains(token->contract_address)) {
-      if (!BraveWalletService::AddUserAsset(token.Clone(), prefs_)) {
+      if (!BraveWalletService::AddUserAsset(token.Clone(), true, prefs_)) {
         continue;
       }
       discovered_tokens.push_back(token.Clone());
@@ -418,7 +419,7 @@ void AssetDiscoveryTask::MergeDiscoveredNFTs(
       seen_nft.insert(nft.Clone());
 
       // Add the NFT to the user's assets
-      if (BraveWalletService::AddUserAsset(nft.Clone(), prefs_)) {
+      if (BraveWalletService::AddUserAsset(nft.Clone(), true, prefs_)) {
         discovered_nfts.push_back(nft.Clone());
       }
     }

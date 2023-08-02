@@ -96,6 +96,7 @@ class BraveWalletService : public KeyedService,
   static void MigrateUserAssetsAddIsSpam(PrefService* profile_prefs);
 
   static bool AddUserAsset(mojom::BlockchainTokenPtr token,
+                           bool visible,
                            PrefService* profile_prefs);
   static std::vector<mojom::BlockchainTokenPtr> GetUserAssets(
       const std::string& chain_id,
@@ -337,7 +338,7 @@ class BraveWalletService : public KeyedService,
       ImportInfo info,
       ImportError error);
 
-  bool AddUserAsset(mojom::BlockchainTokenPtr token);
+  bool AddUserAsset(mojom::BlockchainTokenPtr token, bool visible = true);
   bool RemoveUserAsset(mojom::BlockchainTokenPtr token);
   bool SetUserAssetVisible(mojom::BlockchainTokenPtr token, bool visible);
   bool SetAssetSpamStatus(mojom::BlockchainTokenPtr token, bool is_spam);
