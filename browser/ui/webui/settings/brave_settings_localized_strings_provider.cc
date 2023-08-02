@@ -356,8 +356,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveHelpTipsClosingLastTab", IDS_SETTINGS_CLOSING_LAST_TAB_OPTION_LABEL},
     {"braveDisableClickableMuteIndicators",
      IDS_SETTINGS_DISABLE_CLICKABLE_MUTE_INDICATORS},
-  // Leo Assistant Page
-#if BUILDFLAG(ENABLE_AI_CHAT)
+
+    // Leo Assistant Page
     {"leoAssistant", IDS_SETTINGS_LEO_ASSISTANT},
     {"braveLeoAssistantShowIconOnToolbarLabel",
      IDS_SETTINGS_LEO_ASSISTANT_SHOW_ICON_ON_TOOLBAR_LABEL},
@@ -365,7 +365,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_LEO_ASSISTANT_SHOW_SUGGESTED_PROMPTS_LABEL},
     {"braveLeoAssistantResetAndClearDataLabel",
      IDS_SETTINGS_LEO_ASSISTANT_RESET_AND_CLEAR_DATA_LABEL},
-#endif
+
     // New Tab Page
     {"braveNewTab", IDS_SETTINGS_NEW_TAB},
     {"braveNewTabBraveRewards", IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS},
