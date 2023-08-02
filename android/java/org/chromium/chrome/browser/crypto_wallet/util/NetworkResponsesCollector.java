@@ -11,6 +11,7 @@ import org.chromium.mojo.bindings.Callbacks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class NetworkResponsesCollector {
@@ -49,6 +50,7 @@ public class NetworkResponsesCollector {
 
                 mNetworks.addAll(Arrays.asList(getNetworkResponseContext.networkInfos));
             }
+            Collections.sort(mNetworks, NetworkUtils.sSortNetworkByPriority);
             runWhenDone.call(mNetworks);
         });
     }
