@@ -9,6 +9,8 @@
 #include <string>
 #include <utility>
 
+#include "base/containers/contains.h"
+#include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/ranges/algorithm.h"
@@ -32,6 +34,11 @@
 using ai_chat::mojom::CharacterType;
 using ai_chat::mojom::ConversationTurn;
 using ai_chat::mojom::ConversationTurnVisibility;
+
+namespace {
+static const auto kAllowedSchemes = base::MakeFixedFlatSet<base::StringPiece>(
+    {url::kHttpsScheme, url::kHttpScheme, url::kFileScheme, url::kDataScheme});
+}  // namespace
 
 namespace ai_chat {
 
@@ -131,6 +138,12 @@ void AIChatTabHelper::RemoveObserver(Observer* observer) {
 }
 
 void AIChatTabHelper::MaybeGeneratePageText() {
+  const GURL url = web_contents()->GetLastCommittedURL();
+
+  if (!base::Contains(kAllowedSchemes, url.scheme())) {
+    return;
+  }
+
   // Make sure user is opted in since this may make a network request
   // for more page content (e.g. video transcript).
   // Perf: make sure we're not doing this when the feature
