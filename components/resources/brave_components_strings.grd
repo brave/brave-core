@@ -454,10 +454,10 @@
         New tab page ads
       </message>
       <message name="IDS_BRAVE_REWARDS_NOTIFICATION_AD_COUNT_LABEL" desc="">
-        Push notifications
+        Notification ads
       </message>
       <message name="IDS_BRAVE_REWARDS_NEWS_AD_COUNT_LABEL" desc="">
-        Brave News
+        Brave News ads
       </message>
       <message name="IDS_BRAVE_REWARDS_NEWS_AD_INFO" desc="">
         Brave News contains ads that cannot be independently disabled.
