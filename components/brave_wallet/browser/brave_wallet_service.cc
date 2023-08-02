@@ -386,6 +386,7 @@ std::vector<mojom::BlockchainTokenPtr> BraveWalletService::GetUserAssets(
 
 // static
 bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
+                                      bool visible,
                                       PrefService* profile_prefs) {
   absl::optional<std::string> address = GetUserAssetAddress(
       token->contract_address, token->coin, token->chain_id);
@@ -437,7 +438,7 @@ bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
   value.Set("is_nft", token->is_nft);
   value.Set("is_spam", token->is_spam);
   value.Set("decimals", token->decimals);
-  value.Set("visible", true);
+  value.Set("visible", visible);
   value.Set("token_id", token->token_id);
   value.Set("coingecko_id", token->coingecko_id);
 
@@ -459,10 +460,11 @@ void BraveWalletService::GetAllUserAssets(GetUserAssetsCallback callback) {
   std::move(callback).Run(std::move(result));
 }
 
-bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token) {
+bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
+                                      bool visible) {
   mojom::BlockchainTokenPtr clone = token.Clone();
-  bool result =
-      BraveWalletService::AddUserAsset(std::move(token), profile_prefs_);
+  bool result = BraveWalletService::AddUserAsset(std::move(token), visible,
+                                                 profile_prefs_);
 
   if (result) {
     for (const auto& observer : token_observers_) {
@@ -630,21 +632,8 @@ bool BraveWalletService::SetAssetSpamStatus(mojom::BlockchainTokenPtr token,
     // If the asset is not in the user's asset list, we automatically add it and
     // set the spam status.
     token->is_spam = is_spam;
-    bool visible = !is_spam;
-    token->visible = visible;
-
-    bool success = AddUserAsset(token.Clone());
-    if (!success) {
-      return false;
-    }
-
-    // AddUserAsset ignores the visible value of the token and always sets
-    // visible=true, so we have to manually set this if visible=false
-    if (!visible) {
-      return SetUserAssetVisible(std::move(token), visible);
-    }
-
-    return true;
+    token->visible = !is_spam;
+    return AddUserAsset(token.Clone(), token->visible);
   }
 
   it->GetDict().Set("is_spam", is_spam);
