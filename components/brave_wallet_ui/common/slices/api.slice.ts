@@ -102,6 +102,8 @@ import {
   signTrezorTransaction
 } from '../async/hardware'
 import { getAccountBalancesKey } from '../../utils/balance-utils';
+import { onRampEndpoints } from './endpoints/on-ramp.endpoints';
+import { offRampEndpoints } from './endpoints/off-ramp.endpoints';
 
 type GetAccountTokenCurrentBalanceArg = {
   accountId: BraveWallet.AccountId
@@ -2798,6 +2800,10 @@ export function createWalletApi () {
     .injectEndpoints({ endpoints: pricingEndpoints })
     // nfts endpoints
     .injectEndpoints({ endpoints: nftsEndpoints })
+    // onRamp endpoints
+    .injectEndpoints({ endpoints: onRampEndpoints })
+    // offRamp endpoints
+    .injectEndpoints({ endpoints: offRampEndpoints })
 }
 
 export type WalletApi = ReturnType<typeof createWalletApi>
@@ -2900,7 +2906,9 @@ export const {
   useUpdateUnapprovedTransactionNonceMutation,
   useUpdateUnapprovedTransactionSpendAllowanceMutation,
   useUpdateUserAssetVisibleMutation,
-  useUpdateUserTokenMutation
+  useUpdateUserTokenMutation,
+  useGetOnRampAssetsQuery,
+  useGetOffRampAssetsQuery
 } = walletApi
 
 // Derived Data Queries

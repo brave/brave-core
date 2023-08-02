@@ -457,6 +457,11 @@ export const PortfolioOverview = () => {
               ? getBalance(account?.accountId, item.asset, tokenBalancesRegistry)
               : item.assetBalance
           }
+          account={
+            selectedGroupAssetsByItem ===
+              AccountsGroupByOption.id
+              ? account
+              : undefined}
           token={item.asset}
           hideBalances={hidePortfolioBalances}
           spotPrice={

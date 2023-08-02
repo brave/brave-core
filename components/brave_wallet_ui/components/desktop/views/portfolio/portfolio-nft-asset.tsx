@@ -121,7 +121,10 @@ export const PortfolioNftAsset = () => {
       `${WalletRoutes.SendPage
         .replace(':chainId?', selectedAssetNetwork.chainId)
         .replace(':accountAddress?', ownerAccount.address)
-        .replace(':contractAddress?', selectedAssetFromParams.contractAddress)
+        .replace(
+          ':contractAddressOrSymbol?',
+          selectedAssetFromParams.contractAddress
+        )
         .replace(':tokenId?', selectedAssetFromParams.tokenId)}${ //
       SendPageTabHashes.nft}`
     )
