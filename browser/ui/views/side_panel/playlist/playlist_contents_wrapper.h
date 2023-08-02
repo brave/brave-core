@@ -43,6 +43,10 @@ class PlaylistContentsWrapper
   content::FullscreenState GetFullscreenState(
       const content::WebContents* web_contents) const override;
 
+  content::PictureInPictureResult EnterPictureInPicture(
+      content::WebContents* web_contents) override;
+  void ExitPictureInPicture() override;
+
   // FullscreenObserver:
   void OnFullscreenStateChanged() override;
 

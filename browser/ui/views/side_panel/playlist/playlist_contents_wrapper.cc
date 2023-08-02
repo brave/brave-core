@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/side_panel/playlist/playlist_contents_wrapper.h"
 
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
+#include "chrome/browser/picture_in_picture/picture_in_picture_window_manager.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_within_tab_helper.h"
@@ -116,6 +117,16 @@ content::FullscreenState PlaylistContentsWrapper::GetFullscreenState(
   }
 
   return {};
+}
+
+content::PictureInPictureResult PlaylistContentsWrapper::EnterPictureInPicture(
+    content::WebContents* web_contents) {
+  return PictureInPictureWindowManager::GetInstance()
+      ->EnterVideoPictureInPicture(web_contents);
+}
+
+void PlaylistContentsWrapper::ExitPictureInPicture() {
+  PictureInPictureWindowManager::GetInstance()->ExitPictureInPicture();
 }
 
 bool PlaylistContentsWrapper::IsFullscreenForPlaylist() const {
