@@ -1,15 +1,13 @@
 diff --git a/chrome/android/javatests/AndroidManifest.xml b/chrome/android/javatests/AndroidManifest.xml
-index 6d9b460af540aa098764c33ed09cf206cd438603..f8bfda66ddf841ddc826fa667d2ea91a7dfd9dfc 100644
+index 6d9b460af540aa098764c33ed09cf206cd438603..707ff413b01aeb4d89a594821fdfa79ecac26f75 100644
 --- a/chrome/android/javatests/AndroidManifest.xml
 +++ b/chrome/android/javatests/AndroidManifest.xml
-@@ -39,10 +39,6 @@
- 
- {% block extra_application_attributes %}
- {{ super() }}
--## Test listing breaks because of scoped storage in Android 10 - see
--## https://developer.android.com/training/data-storage#scoped-storage and
--## https://developer.android.com/training/data-storage/compatibility.
+@@ -42,7 +42,7 @@
+ ## Test listing breaks because of scoped storage in Android 10 - see
+ ## https://developer.android.com/training/data-storage#scoped-storage and
+ ## https://developer.android.com/training/data-storage/compatibility.
 -android:requestLegacyExternalStorage="true"
++## android:requestLegacyExternalStorage="true"
  {% endblock %}
  
  {% block extra_root_definitions %}
