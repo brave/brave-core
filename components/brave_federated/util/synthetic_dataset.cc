@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_federated/util/synthetic_dataset.h"
 
+#include <math.h>
 #include <algorithm>
-#include <cmath>
 #include <random>
 #include <utility>
 
