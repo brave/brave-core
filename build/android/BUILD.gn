@@ -236,7 +236,6 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/settings/developer/BraveQAPreferences.java",
     "//brave/android/java/org/chromium/chrome/browser/shields/CookieListOptInServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/shields/FilterListServiceFactory.java",
-    "//brave/android/java/org/chromium/chrome/browser/shields/UrlSanitizerServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
     "//brave/android/java/org/chromium/chrome/browser/speedreader/BraveSpeedReaderUtils.java",
     "//brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
