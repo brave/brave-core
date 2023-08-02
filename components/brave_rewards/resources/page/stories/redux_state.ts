@@ -11,6 +11,7 @@ export const reduxState: Rewards.ApplicationState = {
   rewardsData: {
     ...defaultState(),
 
+    isAcSupported: true,
     enabledContribute: true,
     contributionMinTime: 8,
     contributionMinVisits: 1,
@@ -160,6 +161,7 @@ export const reduxState: Rewards.ApplicationState = {
     },
     initializing: false,
     showOnboarding: false,
+    isGrandfatheredUser: false,
     userType: 'unconnected'
   }
 }

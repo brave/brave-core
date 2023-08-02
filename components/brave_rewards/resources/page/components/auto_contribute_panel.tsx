@@ -38,6 +38,7 @@ export function AutoContributePanel () {
     contributionMinVisits: state.contributionMinVisits,
     contributionMonthly: state.contributionMonthly,
     parameters: state.parameters,
+    isAcSupported: state.isAcSupported,
     enabledContribute: state.enabledContribute,
     reconcileStamp: state.reconcileStamp,
     autoContributeList: state.autoContributeList,
@@ -369,8 +370,8 @@ export function AutoContributePanel () {
     )
   }
 
-  // Don't show AC panel for users in bitflyer-enabled regions.
-  if (data.externalWalletProviderList.includes('bitflyer')) {
+  // Don't show AC panel if AC is not supported.
+  if (!data.isAcSupported) {
     return null
   }
 

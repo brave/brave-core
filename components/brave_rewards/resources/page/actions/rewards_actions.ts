@@ -16,6 +16,11 @@ export const onSettingSave = (key: string, value: any, persist: boolean = true) 
   persist
 })
 
+export const getIsGrandfatheredUser = () => action(types.GET_IS_GRANDFATHERED_USER)
+
+export const onIsGrandfatheredUser = (isGrandfatheredUser: boolean) =>
+    action(types.ON_IS_GRANDFATHERED_USER, {isGrandfatheredUser})
+
 export const onUserType =
   (userType: number) => action(types.ON_USER_TYPE, { userType })
 
@@ -27,6 +32,12 @@ export const onRewardsParameters = (properties: Rewards.RewardsParameters) =>
   action(types.ON_REWARDS_PARAMETERS, {
     properties
   })
+
+export const getIsAutoContributeSupported = () => action(types.GET_IS_AUTO_CONTRIBUTE_SUPPORTED)
+
+export const onIsAutoContributeSupported = (isAcSupported: boolean) => action(types.ON_IS_AUTO_CONTRIBUTE_SUPPORTED, {
+  isAcSupported
+})
 
 export const getAutoContributeProperties = () => action(types.GET_AUTO_CONTRIBUTE_PROPERTIES)
 

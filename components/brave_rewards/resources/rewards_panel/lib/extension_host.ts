@@ -337,6 +337,9 @@ export function createHost (): Host {
       apiAdapter.getRewardsEnabled().then((rewardsEnabled) => {
         stateManager.update({ rewardsEnabled })
       }),
+      apiAdapter.isGrandfatheredUser().then((isGrandfatheredUser) => {
+        stateManager.update({ isGrandfatheredUser })
+      }),
       apiAdapter.getUserType().then((userType) => {
         stateManager.update({ userType })
       }),

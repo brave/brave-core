@@ -30,6 +30,7 @@ export type AddressesType = 'BTC' | 'ETH' | 'BAT' | 'LTC'
 export type Address = { address: string, qr: string | null }
 
 export interface State {
+  isGrandfatheredUser: boolean
   userType: UserType
   adsData: AdsData
   adsHistory: AdsHistory[]
@@ -40,6 +41,7 @@ export interface State {
   contributionMinVisits: number
   contributionMonthly: number
   currentCountryCode: string
+  isAcSupported: boolean
   enabledContribute: boolean
   externalWallet?: ExternalWallet
   initializing: boolean
@@ -251,7 +253,7 @@ export interface ContributionSaved {
   type: RewardsType
 }
 
-export type WalletType = 'uphold' | 'bitflyer' | 'gemini'
+export type WalletType = 'uphold' | 'bitflyer' | 'gemini' | 'zebpay'
 
 export interface ExternalWallet {
   address: string

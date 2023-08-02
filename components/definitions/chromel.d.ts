@@ -85,6 +85,7 @@ declare namespace chrome.braveRewards {
   const getAvailableCountries: (callback: (countries: string[]) => void) => void
   const getDefaultCountry: (callback: (defaultCountry: string) => void) => void
   const getDeclaredCountry: (callback: (country: string) => void) => void
+  const isGrandfatheredUser: (callback: (isGrandfatheredUser: boolean) => void) => void
   const getUserType: (callback: (userType: string) => void) => void
   const getPublishersVisitedCount: (callback: (count: number) => void) => void
   const getRewardsParameters: (callback: (properties: RewardsExtension.RewardsParameters) => void) => {}

@@ -193,6 +193,7 @@ class PageWallet extends React.Component<Props, State> {
       case 'bitflyer': return 'bitflyer'
       case 'gemini': return 'gemini'
       case 'uphold': return 'uphold'
+      case 'zebpay': return 'zebpay'
       default: return null
     }
   }
@@ -508,6 +509,7 @@ class PageWallet extends React.Component<Props, State> {
       ui,
       externalWallet,
       parameters,
+      isGrandfatheredUser,
       userType
     } = this.props.rewardsData
     const { modalReset, modalConnect } = ui
@@ -537,6 +539,7 @@ class PageWallet extends React.Component<Props, State> {
           userType !== 'unconnected' &&
             <WalletCard
               balance={balance}
+              isGrandfatheredUser={isGrandfatheredUser}
               externalWallet={externalWalletInfo}
               providerPayoutStatus={'off'}
               minEarningsThisMonth={adsData.adsMinEarningsThisMonth || 0}

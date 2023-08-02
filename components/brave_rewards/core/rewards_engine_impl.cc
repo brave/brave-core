@@ -35,7 +35,8 @@ RewardsEngineImpl::RewardsEngineImpl(
       recovery_(*this),
       bitflyer_(*this),
       gemini_(*this),
-      uphold_(*this) {
+      uphold_(*this),
+      zebpay_(*this) {
   DCHECK(base::ThreadPoolInstance::Get());
   set_client_for_logging(client_.get());
 }
@@ -592,6 +593,10 @@ void RewardsEngineImpl::GetExternalWallet(const std::string& wallet_type,
       return uphold()->GetWallet(std::move(callback));
     }
 
+    if (wallet_type == constant::kWalletZebPay) {
+      return zebpay()->GetWallet(std::move(callback));
+    }
+
     NOTREACHED() << "Unknown external wallet type!";
     std::move(callback).Run(
         base::unexpected(mojom::GetExternalWalletError::kUnexpected));
@@ -614,6 +619,10 @@ void RewardsEngineImpl::ConnectExternalWallet(
 
         if (wallet_type == constant::kWalletUphold) {
           return uphold()->ConnectWallet(args, std::move(callback));
+        }
+
+        if (wallet_type == constant::kWalletZebPay) {
+          return zebpay()->ConnectWallet(args, std::move(callback));
         }
 
         NOTREACHED() << "Unknown external wallet type!";
@@ -708,9 +717,15 @@ void RewardsEngineImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
 
 // mojom::RewardsEngineClient helpers begin (in the order of appearance in
 // Mojom)
-bool RewardsEngineImpl::IsBitFlyerRegion() {
+std::string RewardsEngineImpl::GetClientCountryCode() {
+  std::string country_code;
+  client_->GetClientCountryCode(&country_code);
+  return country_code;
+}
+
+bool RewardsEngineImpl::IsAutoContributeSupportedForClient() {
   bool value = false;
-  client_->IsBitFlyerRegion(&value);
+  client_->IsAutoContributeSupportedForClient(&value);
   return value;
 }
 

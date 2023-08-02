@@ -104,9 +104,11 @@ class RewardsDOMHandler
  private:
   void RestartBrowser(const base::Value::List& args);
   void IsInitialized(const base::Value::List& args);
+  void IsGrandfatheredUser(const base::Value::List& args);
   void GetUserType(const base::Value::List& args);
   void OnGetUserType(brave_rewards::mojom::UserType user_type);
   void GetRewardsParameters(const base::Value::List& args);
+  void IsAutoContributeSupported(const base::Value::List& args);
   void GetAutoContributeProperties(const base::Value::List& args);
   void FetchPromotions(const base::Value::List& args);
   void ClaimPromotion(const base::Value::List& args);
@@ -141,6 +143,7 @@ class RewardsDOMHandler
   void OnToggleFlaggedAd(base::Value::Dict dict);
   void SaveAdsSetting(const base::Value::List& args);
   void OnGetContributionAmount(double amount);
+  void OnIsAutoContributeSupported(bool is_ac_supported);
   void OnGetAutoContributeProperties(
       brave_rewards::mojom::AutoContributePropertiesPtr properties);
   void OnGetReconcileStamp(uint64_t reconcile_stamp);
@@ -324,12 +327,20 @@ void RewardsDOMHandler::RegisterMessages() {
       base::BindRepeating(&RewardsDOMHandler::IsInitialized,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
+      "brave_rewards.isGrandfatheredUser",
+      base::BindRepeating(&RewardsDOMHandler::IsGrandfatheredUser,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "brave_rewards.getUserType",
       base::BindRepeating(&RewardsDOMHandler::GetUserType,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getRewardsParameters",
       base::BindRepeating(&RewardsDOMHandler::GetRewardsParameters,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards.isAutoContributeSupported",
+      base::BindRepeating(&RewardsDOMHandler::IsAutoContributeSupported,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getAutoContributeProperties",
@@ -597,6 +608,16 @@ void RewardsDOMHandler::IsInitialized(const base::Value::List& args) {
   }
 }
 
+void RewardsDOMHandler::IsGrandfatheredUser(const base::Value::List&) {
+  if (!rewards_service_) {
+    return;
+  }
+
+  AllowJavascript();
+  CallJavascriptFunction("brave_rewards.onIsGrandfatheredUser",
+                         base::Value(rewards_service_->IsGrandfatheredUser()));
+}
+
 void RewardsDOMHandler::GetUserType(const base::Value::List&) {
   if (!IsJavascriptAllowed() || !rewards_service_) {
     return;
@@ -708,6 +729,18 @@ void RewardsDOMHandler::OnRewardsInitialized(
   CallJavascriptFunction("brave_rewards.initialized");
 }
 
+void RewardsDOMHandler::IsAutoContributeSupported(const base::Value::List&) {
+  if (!rewards_service_) {
+    return;
+  }
+
+  AllowJavascript();
+
+  rewards_service_->IsAutoContributeSupported(
+      base::BindOnce(&RewardsDOMHandler::OnIsAutoContributeSupported,
+                     weak_factory_.GetWeakPtr()));
+}
+
 void RewardsDOMHandler::GetAutoContributeProperties(
     const base::Value::List& args) {
   if (!rewards_service_)
@@ -740,6 +773,13 @@ void RewardsDOMHandler::OnExternalWalletTypeUpdated(
     auto wallet = std::move(result).value_or(nullptr);
     CallJavascriptFunction("brave_rewards.externalWalletLogin",
                            base::Value(wallet ? wallet->login_url : ""));
+  }
+}
+
+void RewardsDOMHandler::OnIsAutoContributeSupported(bool is_ac_supported) {
+  if (IsJavascriptAllowed()) {
+    CallJavascriptFunction("brave_rewards.onIsAutoContributeSupported",
+                           base::Value(is_ac_supported));
   }
 }
 

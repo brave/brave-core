@@ -139,7 +139,10 @@ class TestRewardsEngineClient : public mojom::RewardsEngineClient {
   void ClearState(const std::string& name,
                   ClearStateCallback callback) override;
 
-  void IsBitFlyerRegion(IsBitFlyerRegionCallback callback) override;
+  void GetClientCountryCode(GetClientCountryCodeCallback callback) override;
+
+  void IsAutoContributeSupportedForClient(
+      IsAutoContributeSupportedForClientCallback callback) override;
 
   void GetLegacyWallet(GetLegacyWalletCallback callback) override;
 
@@ -181,8 +184,6 @@ class TestRewardsEngineClient : public mojom::RewardsEngineClient {
 
   // Test environment setup methods:
 
-  void SetIsBitFlyerRegionForTesting(bool is_bitflyer_region);
-
   void AddNetworkResultForTesting(const std::string& url,
                                   mojom::UrlMethod method,
                                   mojom::UrlResponsePtr response);
@@ -195,7 +196,6 @@ class TestRewardsEngineClient : public mojom::RewardsEngineClient {
  private:
   RewardsDatabase engine_database_;
   base::Value::Dict state_store_;
-  bool is_bitflyer_region_{false};
   std::list<TestNetworkResult> network_results_;
   LogCallback log_callback_;
 };

@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <functional>
 #include <limits>
+#include <set>
 #include <string>
 #include <utility>
 #include <vector>
@@ -45,7 +46,6 @@
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/service_sandbox_type.h"
-#include "brave/components/brave_rewards/browser/static_values.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -94,6 +94,9 @@ constexpr char pref_prefix[] = "brave.rewards";
 constexpr base::TimeDelta kP3AMonthlyReportingPeriod = base::Days(30);
 constexpr base::TimeDelta kP3ATipReportDelay = base::Seconds(30);
 constexpr base::TimeDelta kP3ADailyReportInterval = base::Days(1);
+const std::set<std::string> kBitflyerCountries = {
+    "JP"  // ID: 19024
+};
 
 std::string URLMethodToRequestType(mojom::UrlMethod method) {
   switch (method) {
@@ -554,6 +557,15 @@ void RewardsServiceImpl::CreateRewardsWallet(
   StartEngineProcessIfNecessary();
 }
 
+bool RewardsServiceImpl::IsGrandfatheredUser() const {
+  base::Version version(profile_->GetPrefs()->GetString(prefs::kUserVersion));
+  if (!version.IsValid()) {
+    version = base::Version({1});
+  }
+
+  return version.CompareTo(base::Version({2, 5})) < 0;
+}
+
 void RewardsServiceImpl::GetUserType(
     base::OnceCallback<void(mojom::UserType)> callback) {
   using mojom::UserType;
@@ -578,13 +590,8 @@ void RewardsServiceImpl::GetUserType(
     }
 
     auto* prefs = self->profile_->GetPrefs();
-    base::Version version(prefs->GetString(prefs::kUserVersion));
-    if (!version.IsValid()) {
-      version = base::Version({1});
-    }
-
     if (!prefs->GetBoolean(prefs::kParametersVBatExpired) &&
-        version.CompareTo(base::Version({2, 5})) < 0) {
+        self->IsGrandfatheredUser()) {
       std::move(callback).Run(UserType::kLegacyUnconnected);
       return;
     }
@@ -840,6 +847,11 @@ void RewardsServiceImpl::OnEngineInitialized(mojom::Result result) {
   for (auto& observer : observers_) {
     observer.OnRewardsInitialized(this);
   }
+}
+
+void RewardsServiceImpl::IsAutoContributeSupported(
+    base::OnceCallback<void(bool)> callback) {
+  IsAutoContributeSupportedForClient(std::move(callback));
 }
 
 void RewardsServiceImpl::GetAutoContributeProperties(
@@ -1263,13 +1275,19 @@ std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
     return providers;
   }
 
-  providers.push_back(internal::constant::kWalletUphold);
+  if (GetCountryCode() == "IN") {
+    providers.push_back(internal::constant::kWalletZebPay);
+    return providers;
+  }
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
   if (base::FeatureList::IsEnabled(features::kGeminiFeature)) {
     providers.push_back(internal::constant::kWalletGemini);
   }
 #endif
+
+  providers.push_back(internal::constant::kWalletUphold);
+
   return providers;
 }
 
@@ -1523,9 +1541,15 @@ void RewardsServiceImpl::ClearState(const std::string& name,
   std::move(callback).Run();
 }
 
-void RewardsServiceImpl::IsBitFlyerRegion(IsBitFlyerRegionCallback callback) {
-  return std::move(callback).Run(GetExternalWalletType() ==
-                                 internal::constant::kWalletBitflyer);
+void RewardsServiceImpl::GetClientCountryCode(
+    GetClientCountryCodeCallback callback) {
+  std::move(callback).Run(GetCountryCode());
+}
+
+void RewardsServiceImpl::IsAutoContributeSupportedForClient(
+    IsAutoContributeSupportedForClientCallback callback) {
+  const auto country_code = GetCountryCode();
+  std::move(callback).Run(country_code != "JP" && country_code != "IN");
 }
 
 void RewardsServiceImpl::GetPublisherMinVisitTime(
@@ -2243,11 +2267,6 @@ void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
   }
 
   engine_->FetchBalance(std::move(callback));
-}
-
-bool RewardsServiceImpl::IsAutoContributeSupported() const {
-  // Auto-contribute is currently not supported in bitFlyer regions
-  return !IsBitFlyerCountry();
 }
 
 void RewardsServiceImpl::GetLegacyWallet(GetLegacyWalletCallback callback) {

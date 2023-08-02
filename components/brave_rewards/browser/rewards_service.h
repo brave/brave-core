@@ -139,6 +139,9 @@ class RewardsService : public KeyedService {
   // Returns the country code associated with the user's Rewards profile.
   virtual std::string GetCountryCode() const = 0;
 
+  // Returns if the user is grandfathered.
+  virtual bool IsGrandfatheredUser() const = 0;
+
   // Returns the Rewards user type for the current profile.
   virtual void GetUserType(
       base::OnceCallback<void(mojom::UserType)> callback) = 0;
@@ -238,6 +241,8 @@ class RewardsService : public KeyedService {
       const std::string& publisher_key,
       bool exclude) = 0;
   virtual RewardsNotificationService* GetNotificationService() const = 0;
+  virtual void IsAutoContributeSupported(
+      base::OnceCallback<void(bool)> callback) = 0;
   virtual void GetAutoContributeProperties(
       GetAutoContributePropertiesCallback callback) = 0;
 
@@ -297,8 +302,6 @@ class RewardsService : public KeyedService {
       GetShareURLCallback callback) = 0;
 
   virtual void FetchBalance(FetchBalanceCallback callback) = 0;
-
-  virtual bool IsAutoContributeSupported() const = 0;
 
   virtual void GetExternalWallet(GetExternalWalletCallback callback) = 0;
 

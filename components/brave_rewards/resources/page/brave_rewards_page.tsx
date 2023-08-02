@@ -53,6 +53,10 @@ function initialize () {
     document.getElementById('root'))
 }
 
+function onIsGrandfatheredUser (isGrandfatheredUser: boolean) {
+  actions.onIsGrandfatheredUser(isGrandfatheredUser)
+}
+
 function userType (userType: number) {
   actions.onUserType(userType)
 }
@@ -102,6 +106,10 @@ function recurringTips (list: Rewards.Publisher[]) {
 
 function currentTips (list: Rewards.Publisher[]) {
   actions.onCurrentTips(list)
+}
+
+function onIsAutoContributeSupported (isAcSupported: boolean) {
+  actions.onIsAutoContributeSupported(isAcSupported)
 }
 
 function autoContributeProperties (properties: any) {
@@ -253,6 +261,7 @@ function onIsUnsupportedRegion (isUnsupportedRegion: boolean) {
 Object.defineProperty(window, 'brave_rewards', {
   configurable: true,
   value: {
+    onIsGrandfatheredUser,
     userType,
     rewardsParameters,
     promotions,
@@ -266,6 +275,7 @@ Object.defineProperty(window, 'brave_rewards', {
     contributionAmount,
     recurringTips,
     currentTips,
+    onIsAutoContributeSupported,
     autoContributeProperties,
     adsData,
     adsHistory,

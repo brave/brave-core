@@ -29,6 +29,7 @@
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
+#include "brave/components/brave_rewards/core/zebpay/zebpay.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 
@@ -322,7 +323,9 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
     }
   }
 
-  bool IsBitFlyerRegion();
+  std::string GetClientCountryCode();
+
+  bool IsAutoContributeSupportedForClient();
 
   std::string GetLegacyWallet();
 
@@ -375,6 +378,8 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   uphold::Uphold* uphold() { return &uphold_; }
 
+  zebpay::ZebPay* zebpay() { return &zebpay_; }
+
   bool IsShuttingDown() const;
 
   // This method is virtualised for test-only purposes.
@@ -423,6 +428,7 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   bitflyer::Bitflyer bitflyer_;
   gemini::Gemini gemini_;
   uphold::Uphold uphold_;
+  zebpay::ZebPay zebpay_;
 
   std::map<uint32_t, mojom::VisitData> current_pages_;
   uint64_t last_tab_active_time_ = 0;

@@ -97,7 +97,9 @@ class RewardsClientIOS : public brave_rewards::mojom::RewardsEngineClient {
   void ShowNotification(const std::string& type,
                         const std::vector<std::string>& args,
                         ShowNotificationCallback callback) override;
-  void IsBitFlyerRegion(IsBitFlyerRegionCallback callback) override;
+  void GetClientCountryCode(GetClientCountryCodeCallback callback) override;
+  void IsAutoContributeSupportedForClient(
+      IsAutoContributeSupportedForClientCallback callback) override;
   void GetClientInfo(GetClientInfoCallback callback) override;
   void UnblindedTokensReady() override;
   void ReconcileStampReset() override;

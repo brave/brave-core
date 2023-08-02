@@ -121,9 +121,12 @@ NS_ASSUME_NONNULL_BEGIN
           callback:
               (brave_rewards::mojom::RewardsEngineClient::ClearStateCallback)
                   callback;
-- (void)isBitFlyerRegion:
-    (brave_rewards::mojom::RewardsEngineClient::IsBitFlyerRegionCallback)
+- (void)getClientCountryCode:
+    (brave_rewards::mojom::RewardsEngineClient::GetClientCountryCodeCallback)
         callback;
+- (void)isAutoContributeSupportedForClient:
+    (brave_rewards::mojom::RewardsEngineClient::
+         IsAutoContributeSupportedForClientCallback)callback;
 - (void)legacyWallet:
     (brave_rewards::mojom::RewardsEngineClient::GetLegacyWalletCallback)
         callback;

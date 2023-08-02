@@ -19,6 +19,15 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.isInitialized')
       break
     }
+    case types.GET_IS_GRANDFATHERED_USER: {
+      chrome.send('brave_rewards.isGrandfatheredUser')
+      break
+    }
+    case types.ON_IS_GRANDFATHERED_USER: {
+      state = { ...state }
+      state.isGrandfatheredUser = action.payload.isGrandfatheredUser
+      break
+    }
     case types.GET_USER_TYPE: {
       chrome.send('brave_rewards.getUserType')
       break
@@ -26,6 +35,15 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.ON_USER_TYPE: {
       state = { ...state }
       state.userType = userTypeFromMojo(action.payload.userType)
+      break
+    }
+    case types.GET_IS_AUTO_CONTRIBUTE_SUPPORTED: {
+      chrome.send('brave_rewards.isAutoContributeSupported')
+      break
+    }
+    case types.ON_IS_AUTO_CONTRIBUTE_SUPPORTED: {
+      state = { ...state }
+      state.isAcSupported = action.payload.isAcSupported
       break
     }
     case types.GET_AUTO_CONTRIBUTE_PROPERTIES: {

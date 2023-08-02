@@ -730,6 +730,7 @@
       <message name="IDS_BRAVE_UI_PROCESSOR_BITFLYER" desc="">bitFlyer</message>
       <message name="IDS_BRAVE_UI_PROCESSOR_GEMINI" desc="">Gemini</message>
       <message name="IDS_BRAVE_UI_PROCESSOR_UPHOLD" desc="">Uphold</message>
+      <message name="IDS_BRAVE_UI_PROCESSOR_ZEBPAY" desc="">ZebPay</message>
       <message name="IDS_BRAVE_UI_RECURRING" desc="">Recurring</message>
       <message name="IDS_BRAVE_UI_RECURRING_DONATIONS" desc="">Monthly Contributions</message>
       <message name="IDS_BRAVE_UI_RELAUNCH" desc="">Relaunch</message>

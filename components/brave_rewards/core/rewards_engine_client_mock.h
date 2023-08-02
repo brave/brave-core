@@ -101,7 +101,10 @@ class MockRewardsEngineClient : public mojom::RewardsEngineClient {
 
   MOCK_METHOD2(ClearState, void(const std::string&, ClearStateCallback));
 
-  MOCK_METHOD1(IsBitFlyerRegion, void(IsBitFlyerRegionCallback));
+  MOCK_METHOD1(GetClientCountryCode, void(GetClientCountryCodeCallback));
+
+  MOCK_METHOD1(IsAutoContributeSupportedForClient,
+               void(IsAutoContributeSupportedForClientCallback));
 
   MOCK_METHOD3(OnContributeUnverifiedPublishers,
                void(mojom::Result, const std::string&, const std::string&));

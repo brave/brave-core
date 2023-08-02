@@ -1172,10 +1172,16 @@ static const auto kOneDay =
   std::move(callback).Run();
 }
 
-- (void)isBitFlyerRegion:
-    (brave_rewards::mojom::RewardsEngineClient::IsBitFlyerRegionCallback)
+- (void)getClientCountryCode:
+    (brave_rewards::mojom::RewardsEngineClient::GetClientCountryCodeCallback)
         callback {
-  std::move(callback).Run(false);
+  std::move(callback).Run("");
+}
+
+- (void)isAutoContributeSupportedForClient:
+    (brave_rewards::mojom::RewardsEngineClient::
+         IsAutoContributeSupportedForClientCallback)callback {
+  std::move(callback).Run(true);
 }
 
 #pragma mark - Notifications

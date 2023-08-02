@@ -834,6 +834,23 @@
         ]
       },
       {
+        "name": "isGrandfatheredUser",
+        "type": "function",
+        "description": "Returns if the user is grandfathered",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "isGrandfatheredUser",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "getUserType",
         "type": "function",
         "description": "Returns the Rewards user type for the current user",
@@ -1197,23 +1214,6 @@
             "parameters": [
               {
                 "name": "enabled",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "isAutoContributeSupported",
-        "type": "function",
-        "description": "Determines whether the current profile supports auto-contribute",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "type",
                 "type": "boolean"
               }
             ]

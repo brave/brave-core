@@ -211,6 +211,14 @@ export function getRewardsEnabled () {
   })
 }
 
+export function isGrandfatheredUser () {
+  return new Promise<boolean>((resolve) => {
+    chrome.braveRewards.isGrandfatheredUser((isGrandfatheredUser) => {
+      resolve(isGrandfatheredUser)
+    })
+  })
+}
+
 export function getUserType () {
   return new Promise<UserType>((resolve) => {
     chrome.braveRewards.getUserType((userType) => {

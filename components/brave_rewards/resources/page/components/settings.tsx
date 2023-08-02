@@ -126,6 +126,7 @@ export function Settings () {
   }
 
   React.useEffect(() => {
+    actions.getIsGrandfatheredUser()
     actions.getUserType()
     actions.getIsUnsupportedRegion()
     const date = new Date()
@@ -137,6 +138,7 @@ export function Settings () {
     actions.getCountryCode()
     actions.getRewardsParameters()
     actions.getContributionAmount()
+    actions.getIsAutoContributeSupported()
     actions.getAutoContributeProperties()
     actions.getBalance()
     actions.fetchPromotions()

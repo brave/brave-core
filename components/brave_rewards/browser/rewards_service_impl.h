@@ -118,6 +118,8 @@ class RewardsServiceImpl : public RewardsService,
   void CreateRewardsWallet(const std::string& country,
                            CreateRewardsWalletCallback callback) override;
 
+  bool IsGrandfatheredUser() const override;
+
   void GetUserType(base::OnceCallback<void(mojom::UserType)> callback) override;
 
   std::string GetCountryCode() const override;
@@ -198,6 +200,9 @@ class RewardsServiceImpl : public RewardsService,
 
   mojom::RewardsEngineOptionsPtr HandleFlags(const RewardsFlags& flags);
 
+  void IsAutoContributeSupported(
+      base::OnceCallback<void(bool)> callback) override;
+
   void GetAutoContributeProperties(
       GetAutoContributePropertiesCallback callback) override;
 
@@ -260,8 +265,6 @@ class RewardsServiceImpl : public RewardsService,
              OnTipCallback callback) override;
 
   void SetPublisherMinVisitTime(int duration_in_seconds) const override;
-
-  bool IsAutoContributeSupported() const override;
 
   void FetchBalance(FetchBalanceCallback callback) override;
 
@@ -480,7 +483,10 @@ class RewardsServiceImpl : public RewardsService,
   void ClearState(const std::string& name,
                   ClearStateCallback callback) override;
 
-  void IsBitFlyerRegion(IsBitFlyerRegionCallback callback) override;
+  void GetClientCountryCode(GetClientCountryCodeCallback callback) override;
+
+  void IsAutoContributeSupportedForClient(
+      IsAutoContributeSupportedForClientCallback callback) override;
 
   void PublisherListNormalized(
       std::vector<mojom::PublisherInfoPtr> list) override;

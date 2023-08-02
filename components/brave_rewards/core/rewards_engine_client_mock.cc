@@ -121,9 +121,12 @@ MockRewardsEngineClient::MockRewardsEngineClient() {
       .WillByDefault(
           [](const std::string&, auto callback) { std::move(callback).Run(); });
 
-  ON_CALL(*this, IsBitFlyerRegion(_)).WillByDefault([](auto callback) {
-    std::move(callback).Run(false);
+  ON_CALL(*this, GetClientCountryCode(_)).WillByDefault([](auto callback) {
+    std::move(callback).Run("");
   });
+
+  ON_CALL(*this, IsAutoContributeSupportedForClient(_))
+      .WillByDefault([](auto callback) { std::move(callback).Run(false); });
 
   ON_CALL(*this, GetLegacyWallet(_)).WillByDefault([](auto callback) {
     std::move(callback).Run("");

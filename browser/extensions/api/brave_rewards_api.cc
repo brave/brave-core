@@ -755,6 +755,17 @@ BraveRewardsGetDeclaredCountryFunction::Run() {
   return RespondNow(WithArguments(std::move(country)));
 }
 
+BraveRewardsIsGrandfatheredUserFunction::
+    ~BraveRewardsIsGrandfatheredUserFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsIsGrandfatheredUserFunction::Run() {
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  return RespondNow(WithArguments(
+      rewards_service ? rewards_service->IsGrandfatheredUser() : false));
+}
+
 BraveRewardsGetUserTypeFunction::~BraveRewardsGetUserTypeFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsGetUserTypeFunction::Run() {
@@ -1157,22 +1168,6 @@ BraveRewardsGetInlineTippingPlatformEnabledFunction::Run() {
 void BraveRewardsGetInlineTippingPlatformEnabledFunction::OnInlineTipSetting(
     bool value) {
   Respond(WithArguments(value));
-}
-
-BraveRewardsIsAutoContributeSupportedFunction::
-    ~BraveRewardsIsAutoContributeSupportedFunction() = default;
-
-ExtensionFunction::ResponseAction
-BraveRewardsIsAutoContributeSupportedFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not initialized"));
-  }
-
-  return RespondNow(
-      WithArguments(rewards_service->IsAutoContributeSupported()));
 }
 
 BraveRewardsFetchBalanceFunction::~BraveRewardsFetchBalanceFunction() = default;

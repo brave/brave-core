@@ -19,6 +19,8 @@
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom-test-utils.h"
+#include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal {
@@ -266,9 +268,16 @@ void TestRewardsEngineClient::ClearState(const std::string& name,
   std::move(callback).Run();
 }
 
-void TestRewardsEngineClient::IsBitFlyerRegion(
-    IsBitFlyerRegionCallback callback) {
-  std::move(callback).Run(is_bitflyer_region_);
+void TestRewardsEngineClient::GetClientCountryCode(
+    GetClientCountryCodeCallback callback) {
+  GetStringState(state::kDeclaredGeo, std::move(callback));
+}
+
+void TestRewardsEngineClient::IsAutoContributeSupportedForClient(
+    IsAutoContributeSupportedForClientCallback callback) {
+  const auto country_code =
+      mojom::RewardsEngineClientAsyncWaiter(this).GetClientCountryCode();
+  std::move(callback).Run(country_code != "JP" && country_code != "IN");
 }
 
 void TestRewardsEngineClient::GetLegacyWallet(
@@ -336,11 +345,6 @@ void TestRewardsEngineClient::EncryptString(const std::string& value,
 void TestRewardsEngineClient::DecryptString(const std::string& value,
                                             DecryptStringCallback callback) {
   std::move(callback).Run(FakeEncryption::DecryptString(value));
-}
-
-void TestRewardsEngineClient::SetIsBitFlyerRegionForTesting(
-    bool is_bitflyer_region) {
-  is_bitflyer_region_ = is_bitflyer_region;
 }
 
 void TestRewardsEngineClient::AddNetworkResultForTesting(

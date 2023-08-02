@@ -29,6 +29,9 @@ const getWalletName = (walletKey: string) => {
     case 'gemini': {
       return getLocale('processorGemini')
     }
+    case 'zebpay': {
+      return getLocale('processorZebPay')
+    }
   }
 
   return 'Missing wallet'
