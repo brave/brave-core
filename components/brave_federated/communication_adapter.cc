@@ -64,8 +64,9 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
         policy {
           cookies_allowed: NO
           setting:
-            "This experimental feature is only enabled in Nightly builds and"
-            "can be disabled via the 'brave://flags/#brave-federated' "
+            "This experimental feature is off by default. It can be enabled
+            "by turning on the #brave-federated experimental flag found at "
+            "'brave://flags/#brave-federated'.  "
           policy_exception_justification:
             "Not implemented."
         }
@@ -131,15 +132,14 @@ void CommunicationAdapter::OnGetTasks(
   int response_code = headers->response_code();
   if (response_code == net::HTTP_OK &&
       headers->HasHeaderValue("Content-Type", "application/protobuf")) {
-    absl::optional<TaskList> task_list =
-        ParseTaskListFromResponseBody(*response_body);
+    auto task_list = ParseTaskListFromResponseBody(*response_body);
 
     request_task_backoff_entry_->InformOfRequest(task_list.has_value());
     base::TimeDelta request_task_delay_in_seconds =
         request_task_backoff_entry_->GetTimeUntilRelease();
     if (!task_list.has_value()) {
-      VLOG(2) << "FL: No tasks received from FL service, retrying in "
-              << request_task_delay_in_seconds;
+      VLOG(2) << "FL: ParseTaskList failed. Reason: " << task_list.error()
+              << ". Retrying in " << request_task_delay_in_seconds;
       return std::move(callback).Run({}, request_task_delay_in_seconds);
     }
 
