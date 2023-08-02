@@ -14,11 +14,11 @@ from lib.config import SOURCE_ROOT
 
 KNOWN_MISSING = [
     # Emailed author (henrik@schack.dk) on 2019-11-05.
-    os.path.join('components', 'third_party',
-                 'adblock', 'lists', 'adblock_dk'),
+    os.path.join('components', 'third_party', 'adblock_lists', 'lists',
+                 'adblock_dk'),
     # https://github.com/gfmaster/adblock-korea-contrib/issues/47
-    os.path.join('components', 'third_party', 'adblock',
-                 'lists', 'adblock_korea_contrib'),
+    os.path.join('components', 'third_party', 'adblock_lists', 'lists',
+                 'adblock_korea_contrib'),
 ]
 
 
@@ -198,7 +198,7 @@ def main():
     third_party_dir = os.path.join(components_dir, 'third_party')
 
     # Brave Ad Block component
-    adblock_dir = os.path.join(third_party_dir, 'adblock')
+    adblock_dir = os.path.join(third_party_dir, 'adblock_lists')
     adblock_lists_dir = os.path.join(adblock_dir, 'lists')
     adblock_preamble = 'These licenses do not apply to any of the code ' \
         'shipped with the Brave Browser, but may apply to lists downloaded ' \
@@ -209,7 +209,7 @@ def main():
     if write_license_file(adblock_dir, external_component_license_file(
             adblock_preamble, adblock_components)):
         print(f'- {len(adblock_components)} sub-components added in ' \
-              'adblock/LICENSE')
+              'adblock_lists/LICENSE')
 
     # Brave Local Data component
     local_data_dir = os.path.join(third_party_dir, 'local_data')
