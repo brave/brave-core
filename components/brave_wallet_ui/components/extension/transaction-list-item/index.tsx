@@ -86,7 +86,7 @@ export const TransactionsListItem = ({
   )
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
 
-  // queries
+  // queries & query args
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const { data: transactionsNetwork } = useGetNetworkQuery({
     chainId: transaction.chainId,
@@ -117,7 +117,7 @@ export const TransactionsListItem = ({
   )
 
   const {
-    data: spotPriceRegistry
+    data: spotPriceRegistry = {}
   } = useGetTokenSpotPricesQuery(
     tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
     querySubscriptionOptions60s
