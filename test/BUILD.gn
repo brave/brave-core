@@ -1118,6 +1118,7 @@ test("brave_browser_tests") {
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
       "//brave/browser/sharing_hub:browser_tests",
+      "//brave/browser/ui/geolocation:browser_tests",
       "//brave/browser/ui/whats_new:browser_test",
       "//chrome/browser/apps/app_service:app_service",
       "//chrome/browser/apps/app_service:constants",

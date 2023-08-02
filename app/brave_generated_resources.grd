@@ -544,6 +544,28 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_FOOTNOTE_TEXT_SETTING_PART" desc="This is used for replacing SETTING_TEXT from above FOOTNOTE_TEXT.">
           this setting
         </message>
+        <!-- Geolocation accuracy helper dialog -->
+        <message name="IDS_GEOLOCATION_ACCURACY_HELPER_DLG_HEADER_LABEL" desc="The text for header part in the dialog">
+          Geolocation with Brave
+        </message>
+        <message name="IDS_GEOLOCATION_ACCURACY_HELPER_DLG_CONTENTS_LABEL" desc="The text for content part in the dialog">
+          The Brave browser is attempting to access your location. You may not get accurate results unless you enable your operating system's <ph name="PART_ONE">$1<ex>Location services</ex></ph> setting and also enable <ph name="PART_TWO">$2<ex>Let apps access your location</ex></ph>.
+        </message>
+        <message name="IDS_GEOLOCATION_ACCURACY_HELPER_DLG_CONTENTS_PART_ONE_LABEL" desc="The text for content part one in the dialog">
+          Location services
+        </message>
+        <message name="IDS_GEOLOCATION_ACCURACY_HELPER_DLG_CONTENTS_PART_TWO_LABEL" desc="The text for content part two in the dialog">
+          Let apps access your location
+        </message>
+        <message name="IDS_GEOLOCATION_ACCURACY_HELPER_DLG_CONTENTS_SECOND_LABEL" desc="The text for content part in the dialog">
+          With those enabled, your location results should be much more accurate. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
+        </message>
+        <message name="IDS_GEOLOCATION_ACCURACY_HELPER_DLG_LEARN_MORE_LABEL_PART" desc="The text for learn more link in the dialog">
+          Learn more
+        </message>
+        <message name="IDS_GEOLOCATION_ACCURACY_HELPER_DLG_DONT_SHOW_AGAIN_LABEL" desc="The text for don't show again checkbox in the dialog">
+          Don't show this again
+        </message>
         <!-- Closing confirm dialog -->
         <message name="IDS_WINDOW_CLOSING_CONFIRM_DLG_OK_BUTTON_LABEL" desc="The text for ok button in the dialog">
           Close all

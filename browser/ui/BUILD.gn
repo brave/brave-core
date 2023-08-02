@@ -97,6 +97,9 @@ source_set("ui") {
       "content_settings/brave_autoplay_content_setting_bubble_model.h",
       "content_settings/brave_content_setting_image_models.cc",
       "content_settings/brave_content_setting_image_models.h",
+      "geolocation/geolocation_accuracy_tab_helper.cc",
+      "geolocation/geolocation_accuracy_tab_helper.h",
+      "geolocation/pref_names.h",
       "omnibox/brave_omnibox_client_impl.cc",
       "omnibox/brave_omnibox_client_impl.h",
       "page_action/brave_page_action_icon_type.h",
@@ -306,6 +309,8 @@ source_set("ui") {
       "views/frame/brave_opaque_browser_frame_view.h",
       "views/frame/brave_window_frame_graphic.cc",
       "views/frame/brave_window_frame_graphic.h",
+      "views/geolocation_accuracy_helper_dialog_view.cc",
+      "views/geolocation_accuracy_helper_dialog_view.h",
       "views/omnibox/brave_omnibox_popup_view_views.cc",
       "views/omnibox/brave_omnibox_popup_view_views.h",
       "views/omnibox/brave_omnibox_result_view.cc",
@@ -424,6 +429,13 @@ source_set("ui") {
       "views/profiles/brave_incognito_menu_view.h",
       "views/profiles/brave_profile_menu_view.cc",
       "views/profiles/brave_profile_menu_view.h",
+    ]
+  }
+
+  if (is_win) {
+    sources += [
+      "geolocation/geolocation_accuracy_utils_win.cc",
+      "geolocation/geolocation_accuracy_utils_win.h",
     ]
   }
 
@@ -552,6 +564,7 @@ source_set("ui") {
     "//components/strings:components_strings",
     "//components/tab_groups",
     "//components/update_client",
+    "//components/user_prefs",
     "//content/public/browser",
     "//content/public/common",
     "//mojo/public/cpp/bindings",

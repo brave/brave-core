@@ -109,6 +109,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/search_engines/search_engine_provider_util.h"
+#include "brave/browser/ui/geolocation/pref_names.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
 #endif
@@ -439,6 +440,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 base::Value(true));
   registry->RegisterBooleanPref(kEnableWindowClosingConfirm, true);
   registry->RegisterBooleanPref(kEnableClosingLastTab, true);
+  registry->RegisterBooleanPref(kShowGeolocationAccuracyHelperDialog, true);
 
   brave_tabs::RegisterBraveProfilePrefs(registry);
 #endif
