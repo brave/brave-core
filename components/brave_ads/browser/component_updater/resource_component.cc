@@ -14,7 +14,6 @@
 #include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_ads/browser/component_updater/component_util.h"
-#include "brave/components/l10n/common/locale_util.h"
 
 namespace brave_ads {
 
@@ -63,33 +62,6 @@ void ResourceComponent::RemoveObserver(ResourceComponentObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void ResourceComponent::RegisterComponentsForLocale(const std::string& locale) {
-  RegisterComponentForCountryCode(brave_l10n::GetISOCountryCode(locale));
-  RegisterComponentForLanguageCode(brave_l10n::GetISOLanguageCode(locale));
-}
-
-void ResourceComponent::NotifyDidUpdateResourceComponent(
-    const std::string& manifest_version,
-    const std::string& id) {
-  for (auto& observer : observers_) {
-    observer.OnDidUpdateResourceComponent(manifest_version, id);
-  }
-}
-
-absl::optional<base::FilePath> ResourceComponent::GetPath(const std::string& id,
-                                                          const int version) {
-  const std::string index = GetResourceKey(id, version);
-  const auto iter = resources_.find(index);
-  if (iter == resources_.cend()) {
-    return absl::nullopt;
-  }
-
-  const ResourceInfo resource = iter->second;
-  return resource.path;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
 void ResourceComponent::RegisterComponentForCountryCode(
     const std::string& country_code) {
   CHECK(!country_code.empty());
@@ -125,6 +97,28 @@ void ResourceComponent::RegisterComponentForLanguageCode(
 
   Register(component_name, component->id.data(), component->public_key.data());
 }
+
+void ResourceComponent::NotifyDidUpdateResourceComponent(
+    const std::string& manifest_version,
+    const std::string& id) {
+  for (auto& observer : observers_) {
+    observer.OnDidUpdateResourceComponent(manifest_version, id);
+  }
+}
+
+absl::optional<base::FilePath> ResourceComponent::GetPath(const std::string& id,
+                                                          const int version) {
+  const std::string index = GetResourceKey(id, version);
+  const auto iter = resources_.find(index);
+  if (iter == resources_.cend()) {
+    return absl::nullopt;
+  }
+
+  const auto& [_, resource] = *iter;
+  return resource.path;
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 std::string LoadFile(const base::FilePath& path) {
   std::string json;
