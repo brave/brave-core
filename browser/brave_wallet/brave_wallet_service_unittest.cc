@@ -1350,7 +1350,6 @@ TEST_F(BraveWalletServiceUnitTest, SetAssetSpamStatus) {
   EXPECT_FALSE(success);  // Should fail because of invalid chain_id
 
   // Set the spam_status of a token not in user assets list
-  LOG(ERROR) << "BEFORE RELEVANT TEST";
   mojom::BlockchainTokenPtr token2 = GetToken1();
   token2->chain_id = mojom::kOptimismMainnetChainId;
   GetUserAssets(token2->chain_id, mojom::CoinType::ETH, &tokens);
