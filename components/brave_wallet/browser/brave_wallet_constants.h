@@ -33,7 +33,7 @@ constexpr int32_t kAssetDiscoveryMinutesPerRequest = 1;
 
 constexpr char kWalletBaseDirectory[] = "BraveWallet";
 constexpr char kImageSourceHost[] = "erc-token-images";
-constexpr char kRampBaseUrl[] = "https://buy.ramp.network";
+constexpr char kRampBaseUrl[] = "https://app.ramp.network";
 constexpr char kOffRampEnabledFlows[] = "ONRAMP,OFFRAMP";
 constexpr char kOffRampDefaultFlow[] = "OFFRAMP";
 constexpr char kRampID[] = "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf";

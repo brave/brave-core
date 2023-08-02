@@ -157,7 +157,7 @@ class AssetRatioServiceUnitTest : public testing::Test {
 TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Ramp) {
   TestGetBuyUrlV1(mojom::OnRampProvider::kRamp, mojom::kMainnetChainId,
                   "0xdeadbeef", "USDC", "55000000", "USD",
-                  "https://buy.ramp.network/"
+                  "https://app.ramp.network/"
                   "?userAddress=0xdeadbeef&swapAsset=USDC&fiatValue=55000000"
                   "&fiatCurrency=USD&hostApiKey="
                   "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf",
@@ -193,7 +193,7 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Sardine) {
 TEST_F(AssetRatioServiceUnitTest, GetSellUrl) {
   TestGetSellUrl(mojom::OffRampProvider::kRamp, mojom::kMainnetChainId,
                  "0xdeadbeef", "ETH_BAT", "250", "USD",
-                 "https://buy.ramp.network/"
+                 "https://app.ramp.network/"
                  "?userAddress=0xdeadbeef&enabledFlows=ONRAMP%2COFFRAMP"
                  "&defaultFlow=OFFRAMP&swapAsset=ETH_BAT&offrampAsset=ETH_BAT"
                  "&swapAmount=250"
