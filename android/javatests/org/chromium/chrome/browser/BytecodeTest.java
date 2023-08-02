@@ -44,8 +44,6 @@ import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
-import org.chromium.chrome.browser.contextmenu.ContextMenuItemDelegate;
-import org.chromium.chrome.browser.contextmenu.ContextMenuNativeDelegate;
 import org.chromium.chrome.browser.feed.FeedActionDelegate;
 import org.chromium.chrome.browser.feed.FeedSurfaceCoordinator;
 import org.chromium.chrome.browser.feed.SnapScrollHelper;
@@ -124,9 +122,7 @@ import org.chromium.components.browser_ui.widget.selectable_list.SelectableListL
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListToolbar.SearchDelegate;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
 import org.chromium.components.commerce.core.ShoppingService;
-import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
-import org.chromium.components.externalauth.ExternalAuthUtils;
 import org.chromium.components.favicon.LargeIconBridge;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.permissions.PermissionDialogController;
@@ -350,10 +346,6 @@ public class BytecodeTest {
                 classExists("org/chromium/components/external_intents/ExternalNavigationHandler"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/externalnav/BraveExternalNavigationHandler"));
-        Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/contextmenu/BraveChromeContextMenuPopulator"));
     }
 
     @Test
@@ -515,9 +507,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/preferences/ChromePreferenceKeyChecker",
                         "getInstance", false, null));
-        Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator",
-                        "onItemSelected", true, boolean.class, int.class));
     }
 
     @Test
@@ -843,11 +832,6 @@ public class BytecodeTest {
                 "org/chromium/components/external_intents/ExternalNavigationHandler",
                 "org/chromium/chrome/browser/externalnav/BraveExternalNavigationHandler",
                 ExternalNavigationDelegate.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator",
-                "org/chromium/chrome/browser/contextmenu/BraveChromeContextMenuPopulator",
-                ContextMenuItemDelegate.class, Supplier.class, int.class, ExternalAuthUtils.class,
-                Context.class, ContextMenuParams.class, ContextMenuNativeDelegate.class));
     }
 
     @Test

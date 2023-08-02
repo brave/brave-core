@@ -551,17 +551,6 @@
     public <init>(...);
 }
 
-
--keep class org.chromium.chrome.browser.contextmenu.ChromeContextMenuPopulator {
-    *** onItemSelected(...);
-    public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.contextmenu.BraveChromeContextMenuPopulator {
-    public <init>(...);
-}
-
-
 -keep class org.chromium.chrome.browser.omnibox.LocationBarCoordinator {
     *** mLocationBarMediator;
     public <init>(...);
