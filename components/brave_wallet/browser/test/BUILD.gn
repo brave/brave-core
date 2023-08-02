@@ -10,6 +10,7 @@ import("//testing/test.gni")
 source_set("brave_wallet_unit_tests") {
   testonly = true
   sources = [
+    "//brave/components/brave_wallet/browser/account_resolver_delegate_impl_unittest.cc",
     "//brave/components/brave_wallet/browser/asset_ratio_response_parser_unittest.cc",
     "//brave/components/brave_wallet/browser/asset_ratio_service_unittest.cc",
     "//brave/components/brave_wallet/browser/bitcoin/bitcoin_keyring_unittest.cc",

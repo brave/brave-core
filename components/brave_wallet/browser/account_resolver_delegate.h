@@ -12,10 +12,12 @@
 
 namespace brave_wallet {
 
+// Wrapper around KeyringService for searching and validating accounts.
 class AccountResolverDelegate {
  public:
   virtual ~AccountResolverDelegate() = default;
 
+  // Searches for an existing account by persisted unique_key or address.
   virtual mojom::AccountIdPtr ResolveAccountId(
       const std::string* from_account_id,
       const std::string* from_address) = 0;

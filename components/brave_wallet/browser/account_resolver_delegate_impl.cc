@@ -17,11 +17,12 @@ mojom::AccountIdPtr AccountResolverDelegateImpl::ResolveAccountId(
   const auto& accounts = keyring_service_->GetAllAccountInfos();
   if (from_account_id) {
     for (auto& account : accounts) {
+      DCHECK(!account->account_id->unique_key.empty());
       if (account->account_id->unique_key == *from_account_id) {
         return account->account_id->Clone();
       }
     }
-  } else if (from_address) {
+  } else if (from_address && !from_address->empty()) {
     for (auto& account : accounts) {
       if (base::EqualsCaseInsensitiveASCII(account->address, *from_address)) {
         return account->account_id->Clone();

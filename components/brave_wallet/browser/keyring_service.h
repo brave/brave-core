@@ -230,7 +230,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const mojom::BitcoinKeyId& key_id,
       base::span<const uint8_t, 32> message);
 
-  void ResetAllAccountInfosCache();
   const std::vector<mojom::AccountInfoPtr>& GetAllAccountInfos();
   mojom::AccountInfoPtr GetSelectedWalletAccount();
   mojom::AccountInfoPtr GetSelectedEthereumDappAccount();
@@ -295,6 +294,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   friend class AssetDiscoveryManagerUnitTest;
   friend class SolanaTransactionUnitTest;
 
+  void ResetAllAccountInfosCache();
   mojom::AccountInfoPtr AddAccountForKeyring(mojom::KeyringId keyring_id,
                                              const std::string& account_name);
   bool RemoveImportedAccountInternal(const mojom::AccountId& account_id);

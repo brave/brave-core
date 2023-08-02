@@ -1177,13 +1177,12 @@ mojom::AccountInfoPtr KeyringService::AddAccountSync(
   if (!account) {
     return nullptr;
   }
+  NotifyAccountsChanged();
 
   // TODO(apaymyshev): ui should select account after creating account.
   SetSelectedAccountInternal(*account);
   NotifyAccountsAdded(*account);
 
-  ResetAllAccountInfosCache();
-  NotifyAccountsChanged();
   return account;
 }
 
@@ -1260,14 +1259,13 @@ void KeyringService::ImportFilecoinAccount(
 
   AddImportedAccountForKeyring(profile_prefs_, imported_account_info,
                                filecoin_keyring_id);
+  NotifyAccountsChanged();
 
   auto account_info = MakeAccountInfoForImportedAccount(imported_account_info,
                                                         filecoin_keyring_id);
   // TODO(apaymyshev): ui should select account after importing.
   SetSelectedAccountInternal(*account_info);
 
-  ResetAllAccountInfosCache();
-  NotifyAccountsChanged();
   NotifyAccountsAdded(*account_info);
 
   std::move(callback).Run(std::move(account_info));
@@ -1445,9 +1443,8 @@ bool KeyringService::RemoveImportedAccountInternal(
 
   RemoveImportedAccountForKeyring(profile_prefs_, account_id.address,
                                   account_id.keyring_id);
-  ResetAllAccountInfosCache();
-  MaybeFixAccountSelection();
   NotifyAccountsChanged();
+  MaybeFixAccountSelection();
   return true;
 }
 
@@ -1514,6 +1511,7 @@ mojom::AccountInfoPtr KeyringService::ImportAccountForKeyring(
                                             encrypted_private_key);
   AddImportedAccountForKeyring(profile_prefs_, imported_account_info,
                                keyring_id);
+  NotifyAccountsChanged();
 
   auto account_info =
       MakeAccountInfoForImportedAccount(imported_account_info, keyring_id);
@@ -1521,8 +1519,6 @@ mojom::AccountInfoPtr KeyringService::ImportAccountForKeyring(
   // TODO(apaymyshev): ui should select account after importing.
   SetSelectedAccountInternal(*account_info);
 
-  ResetAllAccountInfosCache();
-  NotifyAccountsChanged();
   NotifyAccountsAdded(*account_info);
   return account_info;
 }
@@ -1615,11 +1611,10 @@ std::vector<mojom::AccountInfoPtr> KeyringService::AddHardwareAccountsSync(
 
     accounts_added.push_back(std::move(account_info));
   }
+  NotifyAccountsChanged();
 
   // TODO(apaymyshev): ui should select account after importing.
   SetSelectedAccountInternal(*accounts_added.front());
-  ResetAllAccountInfosCache();
-  NotifyAccountsChanged();
   NotifyAccountsAdded(accounts_added);
 
   return accounts_added;
@@ -1645,10 +1640,9 @@ bool KeyringService::RemoveHardwareAccountInternal(
     if (account_metas->empty()) {
       hardware_keyrings.Remove(id);
     }
-
-    ResetAllAccountInfosCache();
-    MaybeFixAccountSelection();
     NotifyAccountsChanged();
+
+    MaybeFixAccountSelection();
     return true;
   }
 
@@ -1806,7 +1800,6 @@ void KeyringService::AddAccountsWithDefaultName(
       account_infos.push_back(std::move(add_result));
     }
   }
-  ResetAllAccountInfosCache();
   NotifyAccountsChanged();
   NotifyAccountsAdded(account_infos);
 }
@@ -2284,7 +2277,6 @@ bool KeyringService::SetKeyringDerivedAccountNameInternal(
                             *derived_account, account_id.keyring_id)) {
         derived_account->account_name = name;
         item = derived_account->ToValue();
-        ResetAllAccountInfosCache();
         NotifyAccountsChanged();
         return true;
       }
@@ -2314,7 +2306,6 @@ bool KeyringService::SetHardwareAccountNameInternal(
       continue;
     }
     address_key->Set(kAccountName, name);
-    ResetAllAccountInfosCache();
     NotifyAccountsChanged();
     return true;
   }
@@ -2349,7 +2340,6 @@ bool KeyringService::SetKeyringImportedAccountNameInternal(
       SetPrefForKeyring(profile_prefs_, kImportedAccounts,
                         base::Value(std::move(imported_accounts)),
                         account_id.keyring_id);
-      ResetAllAccountInfosCache();
       NotifyAccountsChanged();
       return true;
     }
@@ -2358,6 +2348,7 @@ bool KeyringService::SetKeyringImportedAccountNameInternal(
 }
 
 void KeyringService::NotifyAccountsChanged() {
+  ResetAllAccountInfosCache();
   for (const auto& observer : observers_) {
     observer->AccountsChanged();
   }
