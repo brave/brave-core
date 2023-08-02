@@ -30,6 +30,7 @@ enum GetTransactionStatusUpholdError {
 enum GetWalletError {
   kFailedToCreateRequest,
   kInvalidRequest,                      // HTTP 400
+  kRequestSignatureVerificationFailure, // HTTP 403
   kRewardsPaymentIDNotFound,            // HTTP 404
   kUnexpectedStatusCode,                // HTTP xxx
   kFailedToParseBody

@@ -8,6 +8,7 @@
 
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "brave/components/brave_rewards/common/mojom/rewards_endpoints.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
@@ -16,7 +17,7 @@
 #include "brave/components/brave_rewards/core/endpoints/result_for.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// GET /v3/wallet/{payment_id}
+// GET /v4/wallets/{payment_id}
 //
 // clang-format off
 // Response body:
@@ -58,8 +59,12 @@ class GetWallet final : public RequestBuilder,
   ~GetWallet() override;
 
  private:
+  std::string Path() const;
+
   absl::optional<std::string> Url() const override;
   mojom::UrlMethod Method() const override;
+  absl::optional<std::vector<std::string>> Headers(
+      const std::string& content) const override;
 };
 
 }  // namespace endpoints
