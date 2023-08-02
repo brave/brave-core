@@ -3,10 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#define _USE_MATH_DEFINES
+
 #include "brave/components/brave_federated/util/synthetic_dataset.h"
 
+#include <math.h>
 #include <algorithm>
-#include <cmath>
 #include <random>
 #include <utility>
 
