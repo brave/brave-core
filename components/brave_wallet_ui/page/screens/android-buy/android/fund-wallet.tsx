@@ -43,12 +43,12 @@ export function AndroidFundWalletApp() {
         <BraveCoreThemeProvider dark={walletDarkTheme} light={walletLightTheme}>
           <ApiProxyContext.Provider value={walletPageApiProxy}>
             <LibContext.Provider value={Lib}>
-                  <FundWalletScreen isAndroid={true} />
+              <FundWalletScreen isAndroid={true} />
             </LibContext.Provider>
           </ApiProxyContext.Provider>
         </BraveCoreThemeProvider>
       </BrowserRouter>
-  </Provider>  
+    </Provider>
   )
 }
 
