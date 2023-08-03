@@ -88,7 +88,6 @@ import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate;
 import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment.PlaylistWarningDialogListener;
-import org.chromium.chrome.browser.playlist.kotlin.PlaylistDownloadUtils;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -1694,7 +1693,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             playlistItem.mediaSource.url, playlistItem.thumbnailPath.url,
                             playlistItem.author, playlistItem.duration,
                             playlistItem.lastPlayedPosition, playlistItem.cached, false, 0);
-                    PlaylistDownloadUtils.startDownloadRequest(getContext(), playlistItemModel);
+                    // PlaylistDownloadUtils.startDownloadRequest(getContext(), playlistItemModel);
                 });
             }
         }

@@ -20,6 +20,7 @@
 #include "brave/components/playlist/browser/playlist_download_request_manager.h"
 #include "brave/components/playlist/browser/playlist_media_file_download_manager.h"
 #include "brave/components/playlist/browser/playlist_p3a.h"
+#include "brave/components/playlist/browser/playlist_streaming.h"
 #include "brave/components/playlist/browser/playlist_thumbnail_downloader.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -210,11 +211,17 @@ class PlaylistService : public KeyedService,
   // it could be notified much later than callback from each operation.
   void AddObserver(
       mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) override;
+  void AddObserverForStreaming(
+      mojo::PendingRemote<mojom::PlaylistStreamingObserver> observer) override;
 
   void OnMediaUpdatedFromContents(content::WebContents* contents);
 
   bool HasPlaylistItem(const std::string& id) const;
 
+  void QueryPrompt(const std::string& url, const std::string& method) override;
+  void OnResponseStarted(const std::string& url, const int64_t content_length);
+  void OnDataReceived(data_decoder::DataDecoder::ValueOrError result);
+  void OnDataComplete(api_request_helper::APIRequestResult result);
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
   friend class ::PlaylistBrowserTest;
@@ -373,10 +380,13 @@ class PlaylistService : public KeyedService,
   const base::FilePath base_dir_;
 
   mojo::RemoteSet<mojom::PlaylistServiceObserver> observers_;
+  mojo::RemoteSet<mojom::PlaylistStreamingObserver> streaming_observers_;
 
   std::unique_ptr<PlaylistMediaFileDownloadManager>
       media_file_download_manager_;
   std::unique_ptr<PlaylistThumbnailDownloader> thumbnail_downloader_;
+
+  std::unique_ptr<PlaylistStreaming> playlist_streaming_;
 
   std::unique_ptr<PlaylistDownloadRequestManager> download_request_manager_;
 

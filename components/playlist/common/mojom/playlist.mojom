@@ -132,7 +132,10 @@ interface PlaylistService {
   // Removes all stored data and resets preferences to default values.
   ResetAll();
 
+  QueryPrompt(string url,string method);
+
   AddObserver(pending_remote<PlaylistServiceObserver> observer);
+  AddObserverForStreaming(pending_remote<PlaylistStreamingObserver> observer);
 };
 
 // WebUI will delegate some UIs to native UI via this interface. While
@@ -178,4 +181,10 @@ interface PlaylistServiceObserver {
 // browser process.
 interface PlaylistMediaHandler {
   OnMediaUpdatedFromRenderFrame();
+};
+
+interface PlaylistStreamingObserver {
+  OnResponseStarted(string url, int64 content_length);
+  OnDataReceived(array<uint8> data_received);
+  OnDataCompleted();
 };

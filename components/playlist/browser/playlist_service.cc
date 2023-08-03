@@ -70,6 +70,7 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
       std::make_unique<PlaylistThumbnailDownloader>(context, this);
   download_request_manager_ =
       std::make_unique<PlaylistDownloadRequestManager>(context, manager);
+  playlist_streaming_ = std::make_unique<PlaylistStreaming>(context);
 
   enabled_pref_.Init(kPlaylistEnabledPref, prefs_.get(),
                      base::BindRepeating(&PlaylistService::OnEnabledPrefChanged,
@@ -88,11 +89,13 @@ PlaylistService::~PlaylistService() = default;
 
 void PlaylistService::Shutdown() {
   observers_.Clear();
+  streaming_observers_.Clear();
   download_request_manager_.reset();
   media_file_download_manager_.reset();
   thumbnail_downloader_.reset();
   download_request_manager_.reset();
   task_runner_.reset();
+  playlist_streaming_.reset();
 #if BUILDFLAG(IS_ANDROID)
   receivers_.Clear();
 #endif  // BUILDFLAG(IS_ANDROID)
@@ -1146,6 +1149,11 @@ void PlaylistService::AddObserver(
   observers_.Add(std::move(observer));
 }
 
+void PlaylistService::AddObserverForStreaming(
+    mojo::PendingRemote<mojom::PlaylistStreamingObserver> observer) {
+  streaming_observers_.Add(std::move(observer));
+}
+
 void PlaylistService::OnMediaUpdatedFromContents(
     content::WebContents* contents) {
   if (!*enabled_pref_) {
@@ -1307,6 +1315,70 @@ base::SequencedTaskRunner* PlaylistService::GetTaskRunner() {
          base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
   }
   return task_runner_.get();
+}
+
+void PlaylistService::QueryPrompt(const std::string& url,
+                                  const std::string& method) {
+  playlist_streaming_->QueryPrompt(
+      url, method,
+      base::BindOnce(&PlaylistService::OnResponseStarted,
+                     weak_factory_.GetWeakPtr()),
+      base::BindRepeating(&PlaylistService::OnDataReceived,
+                          weak_factory_.GetWeakPtr()),
+      base::BindOnce(&PlaylistService::OnDataComplete,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void PlaylistService::OnResponseStarted(const std::string& url,
+                                        const int64_t content_length) {
+  for (auto& observer : streaming_observers_) {
+    observer->OnResponseStarted(url, content_length);
+  }
+}
+
+void PlaylistService::OnDataReceived(
+    data_decoder::DataDecoder::ValueOrError result) {
+  if (!result.has_value()) {
+    LOG(ERROR) << "data_source : "
+               << "PlaylistService::OnDataReceived : empty";
+    return;
+  }
+
+  std::vector<uint8_t> data_received(result.value().GetString().begin(),
+                                     result.value().GetString().end());
+
+  for (auto& observer : streaming_observers_) {
+    observer->OnDataReceived(data_received);
+  }
+
+  // JNIEnv* env = base::android::AttachCurrentThread();
+  // Java_BraveVpnNativeWorker_onDataReceived(
+  //     env, weak_java_brave_vpn_native_worker_.get(env),
+  //     base::android::ToJavaByteArray(env, vec));
+}
+
+void PlaylistService::OnDataComplete(
+    api_request_helper::APIRequestResult result) {
+  if (result.Is2XXResponseCode()) {
+    if (!result.headers().empty()) {
+      for (auto entry : result.headers()) {
+        LOG(ERROR) << "data_source : "
+                   << "PlaylistService::OnDataComplete : "
+                   << "entry.first : \n"
+                   << entry.first
+                   << "\nOnAPIStreamDataComplete entry.second : \n"
+                   << entry.second;
+      }
+    }
+
+    for (auto& observer : streaming_observers_) {
+      observer->OnDataCompleted();
+    }
+
+    // JNIEnv* env = base::android::AttachCurrentThread();
+    // Java_BraveVpnNativeWorker_onDataCompleted(
+    //     env, weak_java_brave_vpn_native_worker_.get(env));
+  }
 }
 
 }  // namespace playlist

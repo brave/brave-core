@@ -2,7 +2,12 @@
 # To regenerate, use "update_android_aar_prebuilts = true" and run "gn gen".
 
 aidl = []
-assets = []
+assets = [
+  "assets/dk-memoji-dark.m3u8",
+  "assets/dk-memoji-dark_1.m3u8",
+  "assets/test.m3u8",
+  "assets/test2.m3u8"
+]
 has_classes_jar = true
 has_native_libraries = false
 has_proguard_flags = true
