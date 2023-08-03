@@ -100,6 +100,15 @@ void GetErrorCodeMessage(base::Value formed_response,
   }
 }
 
+const char kValidSIWEMessage[] =
+    "example.com wants you to sign in with your Ethereum account:\n"
+    "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2\n\n\n"
+    "URI: https://example.com/login\n"
+    "Version: 1\n"
+    "Chain ID: 1\n"
+    "Nonce: 32891756\n"
+    "Issued At: 2021-09-30T16:25:24Z)";
+
 void ValidateErrorCode(EthereumProviderImpl* provider,
                        const std::string& payload,
                        mojom::ProviderError expected) {
@@ -1646,62 +1655,91 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsLocked) {
 TEST_F(EthereumProviderImplUnitTest, SignMessage) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+  for (const auto& message : {
+           std::string("0x1234"),
+           ToHex(kValidSIWEMessage),
+       }) {
+    SCOPED_TRACE(message);
+    std::string signature;
+    mojom::ProviderError error = mojom::ProviderError::kUnknown;
+    std::string error_message;
+    SignMessage(absl::nullopt, "1234", message, &signature, &error,
+                &error_message);
+    EXPECT_TRUE(signature.empty());
+    EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
+    EXPECT_EQ(error_message,
+              l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+    SignMessage(absl::nullopt, "0x12345678", message, &signature, &error,
+                &error_message);
+    EXPECT_TRUE(signature.empty());
+    EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
+    EXPECT_EQ(error_message,
+              l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+    SignMessage(absl::nullopt, GetAccountUtils().EthUnkownAccount()->address,
+                message, &signature, &error, &error_message);
+    EXPECT_TRUE(signature.empty());
+    EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
+    EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+
+    // No permission
+    SignMessage(absl::nullopt, account_0->address, message, &signature, &error,
+                &error_message);
+    EXPECT_TRUE(signature.empty());
+    EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
+    EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+    GURL url("https://brave.com");
+    Navigate(url);
+    AddEthereumPermission(account_0->account_id);
+    SignMessage(true, account_0->address, message, &signature, &error,
+                &error_message);
+
+    EXPECT_FALSE(signature.empty());
+    EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+    EXPECT_TRUE(error_message.empty());
+
+    // User reject request
+    SignMessage(false, account_0->address, message, &signature, &error,
+                &error_message);
+    EXPECT_TRUE(signature.empty());
+    EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
+    EXPECT_EQ(error_message,
+              l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+
+    Lock();
+
+    // nullopt for the first param here because we don't AddSignMessageRequest
+    // whent here are no accounts returned.
+    SignMessage(absl::nullopt, account_0->address, message, &signature, &error,
+                &error_message);
+    EXPECT_TRUE(signature.empty());
+    EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
+    EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+
+    Unlock();
+    ResetEthereumPermission(account_0->account_id);
+  }
+}
+
+TEST_F(EthereumProviderImplUnitTest, SigninWithEthereumError) {
+  CreateWallet();
+  auto account_0 = GetAccountUtils().EnsureEthAccount(0);
   std::string signature;
   mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
-  SignMessage(absl::nullopt, "1234", "0x1234", &signature, &error,
-              &error_message);
-  EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
-  EXPECT_EQ(error_message,
-            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-
-  SignMessage(absl::nullopt, "0x12345678", "0x1234", &signature, &error,
-              &error_message);
-  EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
-  EXPECT_EQ(error_message,
-            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-
-  SignMessage(absl::nullopt, GetAccountUtils().EthUnkownAccount()->address,
-              "0x1234", &signature, &error, &error_message);
-  EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
-  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
-
-  // No permission
-  SignMessage(absl::nullopt, account_0->address, "0x1234", &signature, &error,
-              &error_message);
-  EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
-  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
-  GURL url("https://brave.com");
-  Navigate(url);
+  SetNetwork(mojom::kGoerliChainId, absl::nullopt);
+  Navigate(GURL("https://brave.com"));
   AddEthereumPermission(account_0->account_id);
-  SignMessage(true, account_0->address, "0x1234", &signature, &error,
-              &error_message);
 
-  EXPECT_FALSE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kSuccess);
-  EXPECT_TRUE(error_message.empty());
+  SignMessage(true, account_0->address, ToHex(kValidSIWEMessage), &signature,
+              &error, &error_message);
 
-  // User reject request
-  SignMessage(false, account_0->address, "0x1234", &signature, &error,
-              &error_message);
   EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
+  EXPECT_EQ(error, mojom::ProviderError::kInternalError);
   EXPECT_EQ(error_message,
-            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
-
-  keyring_service()->Lock();
-
-  // nullopt for the first param here because we don't AddSignMessageRequest
-  // whent here are no accounts returned.
-  SignMessage(absl::nullopt, account_0->address, "0x1234", &signature, &error,
-              &error_message);
-  EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
-  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+            l10n_util::GetStringFUTF8(
+                IDS_BRAVE_WALLET_SIGN_MESSAGE_CHAIN_ID_MISMATCH, u"1"));
 }
 
 TEST_F(EthereumProviderImplUnitTest, RecoverAddress) {
@@ -1813,10 +1851,9 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
                    domain.Clone(), &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kInternalError);
-  EXPECT_EQ(error_message,
-            l10n_util::GetStringFUTF8(
-                IDS_BRAVE_WALLET_SIGN_TYPED_MESSAGE_CHAIN_ID_MISMATCH,
-                base::ASCIIToUTF16(chain_id)));
+  EXPECT_EQ(error_message, l10n_util::GetStringFUTF8(
+                               IDS_BRAVE_WALLET_SIGN_MESSAGE_CHAIN_ID_MISMATCH,
+                               base::ASCIIToUTF16(chain_id)));
   domain.Set("chainId", 1);
 
   SignTypedMessage(absl::nullopt, address_0, "{...}", domain_hash, primary_hash,
