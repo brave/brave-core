@@ -5,7 +5,7 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import {RegisterPolymerTemplateModifications, RegisterPolymerComponentReplacement} from 'chrome://resources/brave/polymer_overriding.js'
+import {html, RegisterPolymerTemplateModifications, RegisterPolymerComponentReplacement} from 'chrome://resources/brave/polymer_overriding.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 import {BraveSettingsPrivacyPageElement} from '../brave_privacy_page/brave_privacy_page.js'
 import {loadTimeData} from '../i18n_setup.js'
@@ -14,11 +14,12 @@ function InsertGoogleSignInSubpage (
   templateContent: DocumentFragment,
   pages: Element)
 {
-  pages.insertAdjacentHTML(
-    'beforeend',
-    getTrustedHTML`
+  pages.appendChild(
+    html`
       <template is="dom-if" route-path="/content/googleSignIn" no-search>
-        <settings-subpage>
+        <settings-subpage
+          associated-control="[[$$('#googleSignIn')]]"
+          page-title="${loadTimeData.getString('siteSettingsGoogleSignIn')}">
           <div id="page-title" class="content-settings-header secondary"></div>
           <settings-category-default-radio-group
               id="googleSignInDefault"
@@ -87,11 +88,12 @@ function InsertLocalhostAccessSubpage (
   templateContent: DocumentFragment,
   pages: Element)
 {
-  pages.insertAdjacentHTML(
-    'beforeend',
-    getTrustedHTML`
+  pages.appendChild(
+    html`
         <template is="dom-if" route-path="/content/localhostAccess" no-search>
-        <settings-subpage>
+        <settings-subpage
+          associated-control="[[$$('#localhostAccess')]]"
+          page-title="${loadTimeData.getString('siteSettingsLocalhostAccess')}">
           <div id="page-title" class="content-settings-header secondary"></div>
           <settings-category-default-radio-group
               id="localhostAccessDefault"
@@ -162,11 +164,12 @@ function InsertAutoplaySubpage (
   templateContent: DocumentFragment,
   pages: Element)
 {
-  pages.insertAdjacentHTML(
-    'beforeend',
-    getTrustedHTML`
+  pages.appendChild(
+    html`
       <template is="dom-if" route-path="/content/autoplay" no-search>
-        <settings-subpage>
+        <settings-subpage
+          associated-control="[[$$('#autoplay')]]"
+          page-title="${loadTimeData.getString('siteSettingsAutoplay')}">
           <div id="page-title" class="content-settings-header secondary"></div>
           <settings-category-default-radio-group
               id="autoplayDefault"
@@ -232,11 +235,12 @@ function InsertEthereumSubpage (
   templateContent: DocumentFragment,
   pages: Element)
 {
-  pages.insertAdjacentHTML(
-    'beforeend',
-    getTrustedHTML`
+  pages.appendChild(
+    html`
       <template is="dom-if" route-path="/content/ethereum" no-search>
-        <settings-subpage>
+        <settings-subpage
+          associated-control="[[$$('#ethereum')]]"
+          page-title="${loadTimeData.getString('siteSettingsEthereum')}">
           <div id="page-title" class="content-settings-header secondary"></div>
           <settings-category-default-radio-group
               id="ethereumDefault"
@@ -303,11 +307,12 @@ function InsertSolanaSubpage (
   templateContent: DocumentFragment,
   pages: Element)
 {
-  pages.insertAdjacentHTML(
-    'beforeend',
-    getTrustedHTML`
+  pages.appendChild(
+    html`
       <template is="dom-if" route-path="/content/solana" no-search>
-        <settings-subpage>
+        <settings-subpage
+          associated-control="[[$$('#solana')]]"
+          page-title="${loadTimeData.getString('siteSettingsSolana')}">
           <div id="page-title" class="content-settings-header secondary"></div>
           <settings-category-default-radio-group
               id="solanaDefault"
@@ -374,11 +379,12 @@ function InsertShieldsSubpage (
   templateContent: DocumentFragment,
   pages: Element)
 {
-  pages.insertAdjacentHTML(
-    'beforeend',
-    getTrustedHTML`
+  pages.appendChild(
+    html`
       <template is="dom-if" route-path="/content/braveShields" no-search>
-        <settings-subpage>
+        <settings-subpage
+          associated-control="[[$$('#braveShields')]]"
+          page-title="${loadTimeData.getString('siteSettingsShieldsStatus')}">
           <category-setting-exceptions
             id="shieldsExceptions"
             category="[[contentSettingsTypesEnum_.BRAVE_SHIELDS]]">
@@ -422,7 +428,9 @@ function InsertCookiesSubpage (
     'beforeend',
     getTrustedHTML`
       <template is="dom-if" route-path="/cookies/detail" no-search>
-        <settings-subpage page-title="[[pageTitle]]">
+        <settings-subpage
+          associated-control="[[$$('#cookiesLink')]]"
+          page-title="[[pageTitle]]">
           <cr-button slot="subpage-title-extra" id="remove-all-button"
             on-click="onRemoveAllCookiesFromSite_">
           </cr-button>
