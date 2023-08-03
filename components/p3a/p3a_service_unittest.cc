@@ -36,6 +36,7 @@ constexpr size_t kUploadIntervalSeconds = 60;
 constexpr char kP2APrefix[] = "Brave.P2A";
 constexpr char kTestCreativeMetric1[] = "creativeInstanceId.abc.views";
 constexpr char kTestCreativeMetric2[] = "creativeInstanceId.abc.clicks";
+constexpr char kTestExpressMetric[] = "Brave.Core.UsageDaily";
 constexpr char kTestExampleMetric[] = "Brave.Core.TestMetric";
 
 constexpr char kTestP3AJsonHost[] = "https://p3a-json.brave.com";
@@ -105,7 +106,8 @@ class P3AServiceTest : public testing::Test {
           result.push_back(std::string(histogram_name));
           p2a_i++;
         }
-      } else if (p3a_i < p3a_count) {
+      } else if (p3a_i < p3a_count &&
+                 base::StartsWith(histogram_name, "Brave.Core")) {
         result.push_back(std::string(histogram_name));
         p3a_i++;
       }
@@ -209,7 +211,7 @@ TEST_F(P3AServiceTest, UpdateLogsAndSendTypical) {
 TEST_F(P3AServiceTest, UpdateLogsAndSendExpress) {
   SetUpP3AService();
   std::vector<std::string> test_histograms({
-      std::string(*p3a::kCollectedExpressHistograms.begin()),
+      std::string(kTestExpressMetric),
       std::string(kTestCreativeMetric1),
       std::string(kTestCreativeMetric2),
   });

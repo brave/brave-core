@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/ai_chat/browser/ai_chat_api.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
@@ -30,6 +31,8 @@ class AXTree;
 }  // namespace ui
 
 namespace ai_chat {
+
+class AIChatMetrics;
 
 // Provides context to an AI Chat conversation in the form of the Tab's content
 class AIChatTabHelper : public content::WebContentsObserver,
@@ -80,7 +83,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
 
-  explicit AIChatTabHelper(content::WebContents* web_contents);
+  AIChatTabHelper(content::WebContents* web_contents,
+                  AIChatMetrics* ai_chat_metrics);
 
   bool HasUserOptedIn();
   void OnUserOptedIn();
@@ -149,6 +153,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // Store the unique ID for each navigation so that
   // we can ignore API responses for previous navigations.
   int64_t current_navigation_id_;
+
+  raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
   base::WeakPtrFactory<AIChatTabHelper> weak_ptr_factory_{this};
   WEB_CONTENTS_USER_DATA_KEY_DECL();

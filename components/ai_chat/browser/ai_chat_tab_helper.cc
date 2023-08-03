@@ -17,6 +17,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "brave/components/ai_chat/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/browser/constants.h"
 #include "brave/components/ai_chat/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/common/features.h"
@@ -42,11 +43,13 @@ static const auto kAllowedSchemes = base::MakeFixedFlatSet<base::StringPiece>(
 
 namespace ai_chat {
 
-AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents)
+AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
+                                 AIChatMetrics* ai_chat_metrics)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<AIChatTabHelper>(*web_contents),
       pref_service_(
-          user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())) {
+          user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())),
+      ai_chat_metrics_(ai_chat_metrics) {
   DCHECK(pref_service_);
   pref_change_registrar_.Init(pref_service_);
   pref_change_registrar_.Add(
@@ -85,6 +88,9 @@ bool AIChatTabHelper::HasUserOptedIn() {
 
 void AIChatTabHelper::OnUserOptedIn() {
   MaybeGeneratePageText();
+  if (ai_chat_metrics_ != nullptr && HasUserOptedIn()) {
+    ai_chat_metrics_->RecordEnabled();
+  }
 }
 
 void AIChatTabHelper::OnPermissionChangedAutoGenerateQuestions() {
@@ -108,6 +114,15 @@ void AIChatTabHelper::AddToConversationHistory(const ConversationTurn& turn) {
 
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
+  }
+
+  if (ai_chat_metrics_ != nullptr) {
+    if (chat_history_.size() == 1) {
+      ai_chat_metrics_->RecordNewChat();
+    }
+    if (turn.character_type == CharacterType::HUMAN) {
+      ai_chat_metrics_->RecordNewPrompt();
+    }
   }
 }
 
