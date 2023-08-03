@@ -102,6 +102,7 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
                 control.getOnPreferenceChangeListener();
 
         control.setOnPreferenceChangeListener((Preference preference, Object newValue) -> {
+            assert newValue instanceof Boolean;
             if ((Boolean) newValue) {
                 if (!ReauthenticationManager.isScreenLockSetUp(
                             ContextUtils.getApplicationContext())) {
