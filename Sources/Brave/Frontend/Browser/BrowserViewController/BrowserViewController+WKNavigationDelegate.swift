@@ -400,7 +400,13 @@ extension BrowserViewController: WKNavigationDelegate {
         // Load rule lists
         let ruleLists = await ContentBlockerManager.shared.ruleLists(for: domainForShields)
         tab?.contentBlocker.set(ruleLists: ruleLists)
-        
+      }
+      
+      let documentTargetURL: URL? = navigationAction.request.mainDocumentURL ??
+                                    navigationAction.targetFrame?.request.mainDocumentURL ??
+                                    url   // Should be the same as the sourceFrame URL
+      if let documentTargetURL = documentTargetURL {
+        let domainForShields = Domain.getOrCreate(forUrl: documentTargetURL, persistent: !isPrivateBrowsing)
         let isScriptsEnabled = !domainForShields.isShieldExpected(.NoScript, considerAllShieldsOption: true)
         preferences.allowsContentJavaScript = isScriptsEnabled
       }
