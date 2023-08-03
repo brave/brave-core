@@ -43,7 +43,9 @@ struct AccountSelectionRootView: View {
         ForEach(allAccounts) { account in
           AccountListRowView(
             account: account,
-            isSelected: selectedAccounts.contains(account)
+            isSelected: selectedAccounts.contains(where: { selectedAccount in
+              selectedAccount.accountId == account.accountId
+            })
           ) {
             selectAccount(account)
           }
