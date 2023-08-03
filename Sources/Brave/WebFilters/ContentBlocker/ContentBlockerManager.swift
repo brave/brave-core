@@ -80,15 +80,15 @@ actor ContentBlockerManager {
     fileprivate static let filterListURLPrefix = "filter-list-url"
     
     case generic(GenericBlocklistType)
-    case filterList(uuid: String, isAlwaysAggressive: Bool)
+    case filterList(componentId: String, isAlwaysAggressive: Bool)
     case customFilterList(uuid: String)
     
     private var identifier: String {
       switch self {
       case .generic(let type):
         return [Self.genericPrifix, type.bundledFileName].joined(separator: "-")
-      case .filterList(let uuid, _):
-        return [Self.filterListPrefix, uuid].joined(separator: "-")
+      case .filterList(let componentId, _):
+        return [Self.filterListPrefix, componentId].joined(separator: "-")
       case .customFilterList(let uuid):
         return [Self.filterListURLPrefix, uuid].joined(separator: "-")
       }
@@ -263,7 +263,7 @@ actor ContentBlockerManager {
   }
   
   /// Remove the rule list for the blocklist type
-  func removeRuleLists(for type: BlocklistType, force: Bool = false) async throws {
+  public func removeRuleLists(for type: BlocklistType, force: Bool = false) async throws {
     for mode in type.allowedModes {
       try await removeRuleList(forIdentifier: type.makeIdentifier(for: mode), force: force)
     }
@@ -296,7 +296,7 @@ actor ContentBlockerManager {
   
   /// Compiles the bundled file for the given generic type
   /// - Warning: This may replace any downloaded versions with the bundled ones in the rulestore
-  /// for example, the `adBlock` rule type may replace the `genericContentBlockingBehaviors` downloaded version.
+  /// for example, the `adBlock` rule type may replace the `adBlockRules` downloaded version.
   func compileBundledRuleList(for genericType: GenericBlocklistType) async throws {
     let type = BlocklistType.generic(genericType)
     try await compileBundledRuleList(for: genericType, modes: type.allowedModes)
@@ -353,8 +353,7 @@ actor ContentBlockerManager {
     let filterLists = FilterListStorage.shared.filterLists
     let additionalRuleLists = filterLists.compactMap { filterList -> BlocklistType? in
       guard filterList.isEnabled else { return nil }
-      // Non-regional fitler lists are always aggressive
-      return .filterList(uuid: filterList.uuid, isAlwaysAggressive: filterList.isAlwaysAggressive)
+      return .filterList(componentId: filterList.entry.componentId, isAlwaysAggressive: filterList.isAlwaysAggressive)
     }
     
     // Get rule lists for custom filter lists

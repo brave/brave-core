@@ -173,14 +173,22 @@ public class CachedAdBlockEngine {
   }
   
   /// Create an engine from the given resources
-  static func createEngine(from resources: [AdBlockEngineManager.ResourceWithVersion], source: AdBlockEngineManager.Source) async -> (engine: CachedAdBlockEngine, compileResults: [AdBlockEngineManager.ResourceWithVersion: Result<Void, Error>]) {
-    return await withCheckedContinuation { continuation in
+  static func createEngine(
+    from resources: [AdBlockEngineManager.ResourceWithVersion],
+    source: AdBlockEngineManager.Source,
+    scripletResourcesURL: URL?
+  ) async throws -> (engine: CachedAdBlockEngine, compileResults: [AdBlockEngineManager.ResourceWithVersion: Result<Void, Error>]) {
+    return try await withCheckedThrowingContinuation { continuation in
       let serialQueue = DispatchQueue(label: "com.brave.WrappedAdBlockEngine.\(UUID().uuidString)")
       
       serialQueue.async {
-        let results = AdblockEngine.createEngine(from: resources)
-        let cachedEngine = CachedAdBlockEngine(engine: results.engine, source: source, serialQueue: serialQueue)
-        continuation.resume(returning: (cachedEngine, results.compileResults))
+        do {
+          let results = try AdblockEngine.createEngine(from: resources, scripletResourcesURL: scripletResourcesURL)
+          let cachedEngine = CachedAdBlockEngine(engine: results.engine, source: source, serialQueue: serialQueue)
+          continuation.resume(returning: (cachedEngine, results.compileResults))
+        } catch {
+          continuation.resume(throwing: error)
+        }
       }
     }
   }
