@@ -30,6 +30,7 @@ export const body = styled.div`
   border-radius: 0 0 8px 8px;
   overflow: hidden;
   padding-top: 6px;
+  padding-bottom: 6px;
 
   .brave-theme-dark & {
     background: rgb(23, 23, 31, 0.62);
@@ -38,7 +39,7 @@ export const body = styled.div`
 `
 
 export const dataTable = styled.div`
-  padding: 0 16px 16px;
+  padding: 0 16px;
 
   table {
     width: 100%;
