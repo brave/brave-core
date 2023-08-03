@@ -11,26 +11,27 @@ import org.chromium.mojo.bindings.Callbacks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class NetworkResponsesCollector {
     private final JsonRpcService mJsonRpcService;
-    private final List<Integer> coinTypes;
+    private final List<Integer> mCoinTypes;
     private final List<NetworkInfo> mNetworks;
 
     public NetworkResponsesCollector(JsonRpcService jsonRpcService, List<Integer> coinTypes) {
         assert jsonRpcService != null;
         mJsonRpcService = jsonRpcService;
-        this.coinTypes = coinTypes;
+        mCoinTypes = coinTypes;
         mNetworks = new ArrayList<>();
     }
 
     public void getNetworks(Callbacks.Callback1<List<NetworkInfo>> runWhenDone) {
         AsyncUtils.MultiResponseHandler networkInfosMultiResponse =
-                new AsyncUtils.MultiResponseHandler(coinTypes.size());
+                new AsyncUtils.MultiResponseHandler(mCoinTypes.size());
         ArrayList<AsyncUtils.GetNetworkResponseContext> accountsPermissionsContexts =
                 new ArrayList<>();
-        for (int coin : coinTypes) {
+        for (int coin : mCoinTypes) {
             AsyncUtils.GetNetworkResponseContext networksContext =
                     new AsyncUtils.GetNetworkResponseContext(
                             networkInfosMultiResponse.singleResponseComplete);
@@ -49,6 +50,7 @@ public class NetworkResponsesCollector {
 
                 mNetworks.addAll(Arrays.asList(getNetworkResponseContext.networkInfos));
             }
+            Collections.sort(mNetworks, NetworkUtils.sSortNetworkByPriority);
             runWhenDone.call(mNetworks);
         });
     }

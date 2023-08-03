@@ -9,16 +9,38 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.url.mojom.Url;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class NetworkUtils {
     private static NetworkInfo sAllNetworksOption;
+
+    public static Comparator<NetworkInfo> sSortNetworkByPriority = (c1, c2) -> {
+        return Integer.compare(getCoinRank(c1.coin), getCoinRank(c2.coin));
+    };
+
+    // Solana first
+    private static int getCoinRank(@CoinType.EnumType int coin) {
+        switch (coin) {
+            case CoinType.SOL:
+                return 0;
+            case CoinType.ETH:
+                return 1;
+            case CoinType.FIL:
+                return 2;
+            case CoinType.BTC:
+                return 3;
+            default:
+                return Integer.MAX_VALUE;
+        }
+    }
 
     public static class Filters {
         public static boolean isSameNetwork(NetworkInfo network, String chainId, int coin) {
