@@ -21,9 +21,9 @@ import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
-import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.web_ui.WebUiActivityType;
 import org.chromium.chrome.browser.util.TabUtils;
 
 public class SwapBottomSheetDialogFragment
@@ -91,14 +91,14 @@ public class SwapBottomSheetDialogFragment
         return view;
     }
 
-    private void setDefaultNetwork(@NonNull final Callback callback,
-            @Nullable final BuySendSwapActivity.ActivityType activityType) {
+    private void setDefaultNetwork(
+            @NonNull final Callback callback, @Nullable final WebUiActivityType webUiActivityType) {
         if (!JavaUtils.anyNull(mWalletModel, mNetworkInfo)) {
             // TODO(apaymyshev): buy/send/swap should be decoupled from panel selected network.
             mWalletModel.getNetworkModel().setDefaultNetwork(
-                    mNetworkInfo, isSelected -> callback.run(activityType));
+                    mNetworkInfo, isSelected -> callback.run(webUiActivityType));
         } else {
-            callback.run(activityType);
+            callback.run(webUiActivityType);
         }
     }
 
@@ -107,14 +107,14 @@ public class SwapBottomSheetDialogFragment
         if (view == mDepositLayout) {
             setDefaultNetwork(activityType -> openDepositWebUi(), null);
         } else {
-            BuySendSwapActivity.ActivityType activityType = BuySendSwapActivity.ActivityType.BUY;
+            WebUiActivityType webUiActivityType = WebUiActivityType.BUY;
             if (view == mSendLayout) {
-                activityType = BuySendSwapActivity.ActivityType.SEND;
+                webUiActivityType = WebUiActivityType.SEND;
             } else if (view == mSwapLayout) {
-                activityType = BuySendSwapActivity.ActivityType.SWAP_V2;
+                webUiActivityType = WebUiActivityType.SWAP;
             }
 
-            setDefaultNetwork(this::openBssAndDismiss, activityType);
+            setDefaultNetwork(this::openBssAndDismiss, webUiActivityType);
         }
     }
 
@@ -129,8 +129,8 @@ public class SwapBottomSheetDialogFragment
     }
 
     // Open buy send swap (BSS)
-    private void openBssAndDismiss(BuySendSwapActivity.ActivityType activityType) {
-        Utils.openBuySendSwapActivity(getActivity(), activityType);
+    private void openBssAndDismiss(WebUiActivityType webUiActivityType) {
+        Utils.openBuySendSwapActivity(requireActivity(), webUiActivityType);
         dismiss();
     }
 
@@ -141,8 +141,8 @@ public class SwapBottomSheetDialogFragment
     private interface Callback {
         /**
          * Runs an action with a given activity type.
-         * @param activityType given activity type. May be null.
+         * @param webUiActivityType given activity type. May be null.
          */
-        void run(@Nullable final BuySendSwapActivity.ActivityType activityType);
+        void run(@Nullable final WebUiActivityType webUiActivityType);
     }
 }

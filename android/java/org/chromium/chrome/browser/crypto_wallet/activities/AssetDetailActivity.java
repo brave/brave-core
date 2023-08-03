@@ -40,7 +40,6 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
@@ -66,6 +65,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpac
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
+import org.chromium.chrome.browser.crypto_wallet.web_ui.WebUiActivityType;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
@@ -80,7 +80,6 @@ import java.util.concurrent.Executors;
 
 public class AssetDetailActivity
         extends BraveWalletBaseActivity implements OnWalletListItemClick, ApprovedTxObserver {
-    private static final String TAG = "AssetDetailActivity";
     private static final int ASSET_LOGO_SIZE_DP = 23;
 
     private SmoothLineChartEquallySpaced chartES;
@@ -183,8 +182,8 @@ public class AssetDetailActivity
             DisplayMetrics displayMetrics =
                     ContextUtils.getApplicationContext().getResources().getDisplayMetrics();
             final int sizePx = dpToPx(displayMetrics, ASSET_LOGO_SIZE_DP);
-            ImageLoader.downloadImage(mAssetLogo, Glide.with(this), true,
-                    0, new CustomTarget<Drawable>(sizePx, sizePx) {
+            ImageLoader.downloadImage(
+                    mAssetLogo, Glide.with(this), true, 0, new CustomTarget<>(sizePx, sizePx) {
                         @Override
                         public void onResourceReady(@NonNull Drawable resource,
                                 @Nullable Transition<? super Drawable> transition) {
@@ -220,11 +219,11 @@ public class AssetDetailActivity
             mBtnSwap.setVisibility(View.GONE);
             mBtnBridgeToAurora = findViewById(R.id.btn_aurora_bridge);
             mBtnBridgeToAurora.setVisibility(View.VISIBLE);
-            SpannableString rainBowLearnMore = Utils.createSpanForSurroundedPhrase(
-                    this, R.string.brave_wallet_rainbow_bridge_learn_more, (v) -> {
-                        TabUtils.openLinkWithFocus(
-                                this, WalletConstants.URL_RAINBOW_BRIDGE_OVERVIEW);
-                    });
+            SpannableString rainBowLearnMore = Utils.createSpanForSurroundedPhrase(this,
+                    R.string.brave_wallet_rainbow_bridge_learn_more,
+                    (v)
+                            -> TabUtils.openLinkWithFocus(
+                                    this, WalletConstants.URL_RAINBOW_BRIDGE_OVERVIEW));
             rainBowLearnMore.setSpan(
                     new BulletSpan(
                             15, getResources().getColor(R.color.brave_wallet_day_night_text_color)),
@@ -277,7 +276,7 @@ public class AssetDetailActivity
             message.setText(getString(R.string.brave_wallet_aurora_modal_description,
                     getString(R.string.brave_wallet_rainbow_bridge)));
             btnOpenRainBow.setOnClickListener(
-                    v -> { TabUtils.openLinkWithFocus(this, WalletConstants.URL_RAINBOW_AURORA); });
+                    v -> TabUtils.openLinkWithFocus(this, WalletConstants.URL_RAINBOW_AURORA));
 
             mBtnBridgeToAurora.setOnClickListener(v -> {
                 if (mShouldShowDialog) {
@@ -288,14 +287,13 @@ public class AssetDetailActivity
             });
         }
         if (!mIsMarketCoin) {
-            mBtnSwap.setOnClickListener(v
-                    -> Utils.openBuySendSwapActivity(
-                            this, BuySendSwapActivity.ActivityType.SWAP_V2));
+            mBtnSwap.setOnClickListener(
+                    v -> Utils.openBuySendSwapActivity(this, WebUiActivityType.SWAP));
             mBtnBuy.setOnClickListener(
-                    v -> Utils.openBuySendSwapActivity(this, BuySendSwapActivity.ActivityType.BUY));
+                    v -> Utils.openBuySendSwapActivity(this, WebUiActivityType.BUY));
 
-            btnSend.setOnClickListener(v
-                    -> Utils.openBuySendSwapActivity(this, BuySendSwapActivity.ActivityType.SEND));
+            btnSend.setOnClickListener(
+                    v -> Utils.openBuySendSwapActivity(this, WebUiActivityType.SEND));
         }
         adjustButtonsVisibilities();
 
@@ -392,10 +390,7 @@ public class AssetDetailActivity
                                                     allNetworks, thisAssetItemModel, assetPrices,
                                                     fullTokenList, nativeAssetsBalances,
                                                     blockchainTokensBalances, mAssetNetwork,
-                                                    walletListItemModelList -> {
-                                                        showTransactionList(
-                                                                walletListItemModelList);
-                                                    });
+                                                    this::showTransactionList);
 
                                             double assetPrice = Utils.getOrDefault(assetPrices,
                                                     mAsset.symbol.toLowerCase(Locale.ENGLISH),
@@ -445,14 +440,10 @@ public class AssetDetailActivity
         }
 
         TokenUtils.getExactUserAsset(getBraveWalletService(), mAssetNetwork, mAssetNetwork.coin,
-                mAssetSymbol, mAssetName, mAssetId, mContractAddress, mAssetDecimals,
-                new Callback<BlockchainToken>() {
-                    @Override
-                    public void onResult(BlockchainToken token) {
-                        assert token != null;
-                        mAsset = token;
-                        callback.run();
-                    }
+                mAssetSymbol, mAssetName, mAssetId, mContractAddress, mAssetDecimals, token -> {
+                    assert token != null;
+                    mAsset = token;
+                    callback.run();
                 });
     }
 
@@ -462,7 +453,7 @@ public class AssetDetailActivity
         mNativeInitialized = true;
         getPriceHistory(mAssetSymbol, "usd", AssetPriceTimeframe.ONE_DAY);
         getPrice(mAssetSymbol, "btc", AssetPriceTimeframe.LIVE);
-        getBlockchainToken(() -> setUpAccountList());
+        getBlockchainToken(this::setUpAccountList);
     }
 
     @Override

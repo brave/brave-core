@@ -24,7 +24,6 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
@@ -32,6 +31,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.NetworkResponsesCollector;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
+import org.chromium.chrome.browser.crypto_wallet.web_ui.WebUiActivityType;
 import org.chromium.chrome.browser.util.Triple;
 import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.mojo.system.MojoException;
@@ -391,11 +391,10 @@ public class NetworkModel implements JsonRpcServiceObserver {
     }
 
     public List<NetworkInfo> stripNoBuyNetworks(
-            List<NetworkInfo> networkInfos, BuySendSwapActivity.ActivityType type) {
+            List<NetworkInfo> networkInfos, WebUiActivityType type) {
         List<NetworkInfo> networkInfosFiltered = new ArrayList<>();
         for (NetworkInfo networkInfo : networkInfos) {
-            if (type == BuySendSwapActivity.ActivityType.BUY
-                    && Utils.allowBuy(networkInfo.chainId)) {
+            if (type == WebUiActivityType.BUY && Utils.allowBuy(networkInfo.chainId)) {
                 networkInfosFiltered.add(networkInfo);
             }
         }

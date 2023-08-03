@@ -83,11 +83,11 @@ import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.app.domain.PortfolioModel;
 import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
-import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
+import org.chromium.chrome.browser.crypto_wallet.web_ui.WebUiActivityType;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.mojo.bindings.Callbacks;
@@ -235,11 +235,11 @@ public class Utils {
         if (focusedView != null) imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
     }
 
-    public static void openBuySendSwapActivity(@NonNull final Activity activity,
-            @NonNull final BuySendSwapActivity.ActivityType activityType) {
+    public static void openBuySendSwapActivity(
+            @NonNull final Activity activity, @NonNull final WebUiActivityType webUiActivityType) {
         String webWalletUrl;
-        switch (activityType) {
-            case SWAP_V2:
+        switch (webUiActivityType) {
+            case SWAP:
                 webWalletUrl = BraveActivity.BRAVE_SWAP_URL;
                 break;
             case SEND:
@@ -250,7 +250,7 @@ public class Utils {
                 break;
             default:
                 throw new IllegalStateException(
-                        String.format("Activity not found for type %s.", activityType));
+                        String.format("Activity not found for type %s.", webUiActivityType));
         }
         try {
             BraveActivity.getBraveActivity().openNewOrSelectExistingTab(webWalletUrl, true);
