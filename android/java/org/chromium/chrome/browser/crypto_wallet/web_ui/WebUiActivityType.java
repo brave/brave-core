@@ -9,15 +9,8 @@ import android.app.Activity;
 
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Type of WebUi Activity.
  * @see Utils#openBuySendSwapActivity(Activity, WebUiActivityType).
  */
-public enum WebUiActivityType {
-    BUY,
-    SEND,
-    SWAP
-}
+public enum WebUiActivityType { BUY, SEND, SWAP }
