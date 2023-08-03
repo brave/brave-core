@@ -1,26 +1,16 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index e8f26ff23d5a4235b04a41492c5dbedd88ec7c03..8b2bfc2eda383fc0f07aff84361ebd96046cc19c 100644
+index e8f26ff23d5a4235b04a41492c5dbedd88ec7c03..b79a24ac865b276a5213e8544cbcd002b5ff8319 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -251,6 +251,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
- 
-   registry->RegisterIntegerPref(prefs::kIosSyncSegmentsNewTabPageDisplayCount,
-                                 0);
-+<<<<<<< ours
- 
-   // Pref used to store the latest Most Visited Sites to detect changes
-   // to the top Most Visited Sites.
-@@ -260,6 +261,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -260,6 +260,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    // since a freshness signal of the Most Visited Sites.
    registry->RegisterIntegerPref(
        prefs::kIosMagicStackSegmentationMVTImpressionsSinceFreshness, -1);
-+=======
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
-+>>>>>>> theirs
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -429,6 +433,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -429,6 +430,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
    ntp_snippets::prefs::RegisterProfilePrefsForMigrationApril2023(registry);
  
    registry->RegisterBooleanPref(kDeprecatedReadingListHasUnseenEntries, false);
@@ -28,7 +18,7 @@ index e8f26ff23d5a4235b04a41492c5dbedd88ec7c03..8b2bfc2eda383fc0f07aff84361ebd96
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -503,4 +508,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
+@@ -503,4 +505,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
  
    // Added 04/2023.
    ntp_snippets::prefs::MigrateObsoleteProfilePrefsApril2023(prefs);
