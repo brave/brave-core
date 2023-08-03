@@ -84,6 +84,8 @@ absl::optional<mojom::OnRampProvider> ParseProvider(
     return mojom::OnRampProvider::kTransak;
   } else if (provider_str == "stripe") {
     return mojom::OnRampProvider::kStripe;
+  } else if (provider_str == "coinbase") {
+    return mojom::OnRampProvider::kCoinbase;
   }
 
   return absl::nullopt;
@@ -169,19 +171,10 @@ void AddTokenToMaps(const blockchain_lists::Token& token,
   blockchain_token->coin = static_cast<mojom::CoinType>(token.coin);
 
   for (const auto& provider_str : token.on_ramp_providers) {
-    mojom::OnRampProvider provider;
-    if (provider_str == "ramp") {
-      provider = mojom::OnRampProvider::kRamp;
-    } else if (provider_str == "sardine") {
-      provider = mojom::OnRampProvider::kSardine;
-    } else if (provider_str == "transak") {
-      provider = mojom::OnRampProvider::kTransak;
-    } else if (provider_str == "stripe") {
-      provider = mojom::OnRampProvider::kStripe;
-    } else {
-      continue;
+    auto provider_opt = ParseProvider(provider_str);
+    if (provider_opt.has_value()) {
+      (*on_ramp_map)[*provider_opt].push_back(blockchain_token->Clone());
     }
-    (*on_ramp_map)[provider].push_back(blockchain_token->Clone());
   }
 
   for (const auto& provider_str : token.off_ramp_providers) {
@@ -410,6 +403,7 @@ absl::optional<RampTokenListMaps> ParseRampTokenListMaps(
 
 absl::optional<std::vector<mojom::OnRampCurrency>> ParseOnRampCurrencyLists(
     const std::string& json) {
+
   absl::optional<base::Value> records_v =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
