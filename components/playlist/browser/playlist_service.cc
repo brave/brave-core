@@ -85,6 +85,7 @@ PlaylistService::~PlaylistService() = default;
 
 void PlaylistService::Shutdown() {
   observers_.Clear();
+  streaming_observers_.Clear();
   download_request_manager_.reset();
   media_file_download_manager_.reset();
   thumbnail_downloader_.reset();
@@ -1000,6 +1001,11 @@ void PlaylistService::AddObserver(
   observers_.Add(std::move(observer));
 }
 
+void PlaylistService::AddObserverForStreaming(
+    mojo::PendingRemote<mojom::PlaylistStreamingObserver> observer) {
+  streaming_observers_.Add(std::move(observer));
+}
+
 void PlaylistService::OnMediaUpdatedFromContents(
     content::WebContents* contents) {
   if (download_request_manager_->background_contents() != contents) {
@@ -1163,6 +1169,9 @@ void PlaylistService::OnResponseStarted(const std::string& url,
                                         const int64_t content_length) {
   LOG(ERROR) << "data_source : "
              << "PlaylistService OnResponseStarted : ";
+  for (auto& observer : streaming_observers_) {
+    observer->OnResponseStarted(url, content_length);
+  }
 }
 
 void PlaylistService::OnDataReceived(
@@ -1173,11 +1182,15 @@ void PlaylistService::OnDataReceived(
     return;
   }
 
-  std::vector<uint8_t> vec(result.value().GetString().begin(),
-                           result.value().GetString().end());
+  std::vector<uint8_t> data_received(result.value().GetString().begin(),
+                                     result.value().GetString().end());
 
   LOG(ERROR) << "data_source : "
              << "PlaylistService OnDataReceived : ";
+
+  for (auto& observer : streaming_observers_) {
+    observer->OnDataReceived(data_received);
+  }
 
   // JNIEnv* env = base::android::AttachCurrentThread();
   // Java_BraveVpnNativeWorker_onDataReceived(
@@ -1197,6 +1210,10 @@ void PlaylistService::OnDataComplete(
                    << "\nOnAPIStreamDataComplete entry.second : \n"
                    << entry.second;
       }
+    }
+
+    for (auto& observer : streaming_observers_) {
+      observer->OnDataCompleted();
     }
 
     // JNIEnv* env = base::android::AttachCurrentThread();

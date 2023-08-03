@@ -124,6 +124,7 @@ interface PlaylistService {
   QueryPrompt(string url,string method);
 
   AddObserver(pending_remote<PlaylistServiceObserver> observer);
+  AddObserverForStreaming(pending_remote<PlaylistStreamingObserver> observer);
 };
 
 // UI-side handler for response from the service.
@@ -146,6 +147,12 @@ interface PlaylistServiceObserver {
   OnMediaFilesUpdated(
       url.mojom.Url page_url,
       array<PlaylistItem> items);
+};
+
+interface PlaylistStreamingObserver {
+  OnResponseStarted(string url, int64 content_length);
+  OnDataReceived(array<uint8> data_received);
+  OnDataCompleted();
 };
 
 interface PlaylistRenderFrameBrowserClient {
