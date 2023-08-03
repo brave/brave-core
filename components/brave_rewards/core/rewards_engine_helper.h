@@ -13,7 +13,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
-#include "brave/components/brave_rewards/core/rewards_engine_context.h"
 
 namespace brave_rewards::internal {
 
@@ -44,13 +43,16 @@ class RewardsLogStream {
   std::ostringstream stream_;
 };
 
-class RewardsEngineHelper : public base::SupportsUserData::Data {
- protected:
-  explicit RewardsEngineHelper(RewardsEngineContext& context);
-  ~RewardsEngineHelper() override;
+class RewardsEngineContext;
 
+class RewardsEngineHelper {
+ public:
   RewardsEngineHelper(const RewardsEngineHelper&) = delete;
   RewardsEngineHelper& operator=(const RewardsEngineHelper&) = delete;
+
+ protected:
+  explicit RewardsEngineHelper(RewardsEngineContext& context);
+  ~RewardsEngineHelper();
 
   RewardsEngineContext& context() { return context_.get(); }
   const RewardsEngineContext& context() const { return context_.get(); }
@@ -59,11 +61,6 @@ class RewardsEngineHelper : public base::SupportsUserData::Data {
 
   RewardsLogStream Log(base::Location location);
   RewardsLogStream LogError(base::Location location);
-
-  template <typename T>
-  T& GetHelper() {
-    return context().GetHelper<T>();
-  }
 
  private:
   const raw_ref<RewardsEngineContext> context_;

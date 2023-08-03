@@ -21,7 +21,8 @@ namespace brave_rewards::internal {
 // Automatically updates the publisher prefix list store on regular intervals.
 class PublisherPrefixListUpdater : public RewardsEngineHelper {
  public:
-  ~PublisherPrefixListUpdater() override;
+  explicit PublisherPrefixListUpdater(RewardsEngineContext& context);
+  ~PublisherPrefixListUpdater();
 
   // Starts the auto updater
   void StartAutoUpdate(base::RepeatingCallback<void()> callback);
@@ -30,12 +31,6 @@ class PublisherPrefixListUpdater : public RewardsEngineHelper {
   void StopAutoUpdate();
 
  private:
-  friend RewardsEngineContext;
-
-  inline static const char kUserDataKey[] = "publisher-prefix-list-updater";
-
-  explicit PublisherPrefixListUpdater(RewardsEngineContext& context);
-
   void StartFetchTimer(const base::Location& posted_from,
                        base::TimeDelta delay);
 

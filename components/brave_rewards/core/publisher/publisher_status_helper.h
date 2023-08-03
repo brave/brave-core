@@ -17,7 +17,8 @@ namespace brave_rewards::internal {
 
 class PublisherStatusHelper : public RewardsEngineHelper {
  public:
-  ~PublisherStatusHelper() override;
+  explicit PublisherStatusHelper(RewardsEngineContext& context);
+  ~PublisherStatusHelper();
 
   using RefreshStatusCallback =
       base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>;
@@ -27,13 +28,7 @@ class PublisherStatusHelper : public RewardsEngineHelper {
                      RefreshStatusCallback callback);
 
  private:
-  friend RewardsEngineContext;
-
-  inline static const char kUserDataKey[] = "publisher-status-helper";
-
   struct RefreshTaskInfo;
-
-  explicit PublisherStatusHelper(RewardsEngineContext& context);
 
   void RefreshNext(RefreshTaskInfo task_info);
 

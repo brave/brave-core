@@ -7,8 +7,6 @@
 
 #include <utility>
 
-#include "brave/components/brave_rewards/core/publisher/publisher_prefix_list_updater.h"
-#include "brave/components/brave_rewards/core/publisher/server_publisher_fetcher.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {

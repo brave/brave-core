@@ -22,7 +22,8 @@ namespace brave_rewards::internal {
 // server publisher info record is expired.
 class ServerPublisherFetcher : public RewardsEngineHelper {
  public:
-  ~ServerPublisherFetcher() override;
+  explicit ServerPublisherFetcher(RewardsEngineContext& context);
+  ~ServerPublisherFetcher();
 
   // Returns a value indicating whether a server info record with the specified
   // last update time is expired.
@@ -37,12 +38,6 @@ class ServerPublisherFetcher : public RewardsEngineHelper {
   void PurgeExpiredRecords();
 
  private:
-  friend RewardsEngineContext;
-
-  inline static const char kUserDataKey[] = "server-publisher-fetcher";
-
-  explicit ServerPublisherFetcher(RewardsEngineContext& context);
-
   void OnFetchCompleted(const std::string& publisher_key,
                         mojom::Result result,
                         mojom::ServerPublisherInfoPtr info);

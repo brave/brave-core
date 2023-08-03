@@ -76,7 +76,8 @@ void PublisherStatusHelper::RefreshNext(RefreshTaskInfo task_info) {
         mojom::ServerPublisherInfo server_info;
         server_info.status = key_value.second.status;
         server_info.updated_at = key_value.second.updated_at;
-        return GetHelper<ServerPublisherFetcher>().IsExpired(server_info);
+        return context().GetHelper<ServerPublisherFetcher>().IsExpired(
+            server_info);
       });
 
   // If no more expired elements are found, update the status values in the list
@@ -108,7 +109,7 @@ void PublisherStatusHelper::OnPrefixListSearchResult(RefreshTaskInfo task_info,
   }
 
   // Fetch current publisher info.
-  GetHelper<ServerPublisherFetcher>().Fetch(
+  context().GetHelper<ServerPublisherFetcher>().Fetch(
       task_info.current->first,
       base::BindOnce(&PublisherStatusHelper::OnDatabaseRead,
                      weak_factory_.GetWeakPtr(), std::move(task_info)));
