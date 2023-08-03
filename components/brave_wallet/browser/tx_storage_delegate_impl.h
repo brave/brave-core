@@ -30,7 +30,7 @@ class TxStorageDelegateImpl final : public TxStorageDelegate {
       PrefService* prefs,
       scoped_refptr<value_store::ValueStoreFactory> store_factory,
       scoped_refptr<base::SequencedTaskRunner> ui_task_runner);
-  ~TxStorageDelegateImpl();
+  ~TxStorageDelegateImpl() override;
   TxStorageDelegateImpl(const TxStorageDelegateImpl&) = delete;
   TxStorageDelegateImpl& operator=(const TxStorageDelegateImpl&) = delete;
 

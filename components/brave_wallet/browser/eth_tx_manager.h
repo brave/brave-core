@@ -38,7 +38,8 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                JsonRpcService* json_rpc_service,
                KeyringService* keyring_service,
                PrefService* prefs,
-               TxStorageDelegate* delegate);
+               TxStorageDelegate* delegate,
+               AccountResolverDelegate* account_resolver_delegate);
   ~EthTxManager() override;
   EthTxManager(const EthTxManager&) = delete;
   EthTxManager operator=(const EthTxManager&) = delete;
@@ -46,16 +47,13 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
   // TxManager
   void AddUnapprovedTransaction(const std::string& chain_id,
                                 mojom::TxDataUnionPtr tx_data_union,
-                                const std::string& from,
+                                const mojom::AccountIdPtr& from,
                                 const absl::optional<url::Origin>& origin,
-                                const absl::optional<std::string>& groupId,
+                                const absl::optional<std::string>& group_id,
                                 AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(const std::string& chain_id,
                           const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
-  void GetAllTransactionInfo(const absl::optional<std::string>& chain_id,
-                             const absl::optional<std::string>& from,
-                             GetAllTransactionInfoCallback) override;
 
   void SpeedupOrCancelTransaction(
       const std::string& chain_id,
@@ -176,15 +174,15 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
 
   void AddUnapprovedTransaction(const std::string& chain_id,
                                 mojom::TxDataPtr tx_data,
-                                const std::string& from,
+                                const mojom::AccountIdPtr& from,
                                 const url::Origin& origin,
-                                const absl::optional<std::string>& groupId,
+                                const absl::optional<std::string>& group_id,
                                 AddUnapprovedTransactionCallback);
   void AddUnapproved1559Transaction(const std::string& chain_id,
                                     mojom::TxData1559Ptr tx_data,
-                                    const std::string& from,
+                                    const mojom::AccountIdPtr& from,
                                     const url::Origin& origin,
-                                    const absl::optional<std::string>& groupId,
+                                    const absl::optional<std::string>& group_id,
                                     AddUnapprovedTransactionCallback);
 
   void NotifyUnapprovedTxUpdated(TxMeta* meta);
@@ -209,7 +207,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                             mojom::ProviderError error,
                             const std::string& error_message);
   void OnGetGasPrice(const std::string& chain_id,
-                     const std::string& from,
+                     const mojom::AccountIdPtr& from,
                      const url::Origin& origin,
                      const std::string& to,
                      const std::string& value,
@@ -224,7 +222,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                      const std::string& error_message);
   void ContinueAddUnapprovedTransaction(
       const std::string& chain_id,
-      const std::string& from,
+      const mojom::AccountIdPtr& from,
       const absl::optional<url::Origin>& origin,
       const absl::optional<std::string>& group_id,
       std::unique_ptr<EthTransaction> tx,
@@ -244,7 +242,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       const std::string& error_message);
   void OnGetGasOracleForUnapprovedTransaction(
       const std::string& chain_id,
-      const std::string& from,
+      const mojom::AccountIdPtr& from,
       const url::Origin& origin,
       const std::string& to,
       const std::string& value,
@@ -260,7 +258,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
 
   void ContinueSpeedupOrCancelTransaction(
       const std::string& chain_id,
-      const std::string& from,
+      const mojom::AccountIdPtr& from,
       const absl::optional<url::Origin>& origin,
       const absl::optional<std::string>& group_id,
       const std::string& gas_limit,
@@ -271,7 +269,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       const std::string& error_message);
   void ContinueSpeedupOrCancel1559Transaction(
       const std::string& chain_id,
-      const std::string& from,
+      const mojom::AccountIdPtr& from,
       const absl::optional<url::Origin>& origin,
       const absl::optional<std::string>& group_id,
       const std::string& gas_limit,
@@ -309,8 +307,9 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
 
   std::unique_ptr<EthNonceTracker> nonce_tracker_;
   std::unique_ptr<EthPendingTxTracker> pending_tx_tracker_;
+  raw_ptr<AccountResolverDelegate> account_resolver_delegate_ = nullptr;
 
-  base::WeakPtrFactory<EthTxManager> weak_factory_;
+  base::WeakPtrFactory<EthTxManager> weak_factory_{this};
 };
 
 }  // namespace brave_wallet

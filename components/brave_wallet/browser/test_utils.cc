@@ -50,4 +50,28 @@ std::unique_ptr<TxStorageDelegateImpl> GetTxStorageDelegateForTest(
       prefs, store_factory, base::SequencedTaskRunner::GetCurrentDefault());
 }
 
+AccountResolverDelegateForTest::AccountResolverDelegateForTest() = default;
+AccountResolverDelegateForTest::~AccountResolverDelegateForTest() = default;
+
+mojom::AccountIdPtr AccountResolverDelegateForTest::RegisterAccount(
+    mojom::AccountIdPtr account_id) {
+  accounts_.push_back(account_id->Clone());
+  return account_id;
+}
+
+mojom::AccountIdPtr AccountResolverDelegateForTest::ResolveAccountId(
+    const std::string* from_account_id,
+    const std::string* from_address) {
+  for (auto& acc : accounts_) {
+    if (from_account_id && acc->unique_key == *from_account_id) {
+      return acc->Clone();
+    }
+    if (from_address && acc->address == *from_address) {
+      return acc->Clone();
+    }
+  }
+
+  return nullptr;
+}
+
 }  // namespace brave_wallet

@@ -7,8 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TEST_UTILS_H_
 
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "base/memory/scoped_refptr.h"
+#include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/value_store/test_value_store_factory.h"
 #include "components/value_store/value_store_frontend.h"
 
@@ -20,8 +24,29 @@ class ScopedTempDir;
 
 namespace brave_wallet {
 
+constexpr char kMnemonicDivideCruise[] =
+    "divide cruise upon flag harsh carbon filter merit once advice bright "
+    "drive";
+
+class AccountResolverDelegateForTest;
 class TxStorageDelegate;
 class TxStorageDelegateImpl;
+
+class AccountResolverDelegateForTest : public AccountResolverDelegate {
+ public:
+  AccountResolverDelegateForTest();
+  ~AccountResolverDelegateForTest() override;
+
+  mojom::AccountIdPtr RegisterAccount(mojom::AccountIdPtr account_id);
+
+ protected:
+  mojom::AccountIdPtr ResolveAccountId(
+      const std::string* from_account_id,
+      const std::string* from_address) override;
+
+ private:
+  std::vector<mojom::AccountIdPtr> accounts_;
+};
 
 void WaitForTxStorageDelegateInitialized(TxStorageDelegate* delegate);
 

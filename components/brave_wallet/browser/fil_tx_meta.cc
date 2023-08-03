@@ -16,7 +16,12 @@
 namespace brave_wallet {
 
 FilTxMeta::FilTxMeta() : tx_(std::make_unique<FilTransaction>()) {}
-FilTxMeta::FilTxMeta(std::unique_ptr<FilTransaction> tx) : tx_(std::move(tx)) {}
+FilTxMeta::FilTxMeta(const mojom::AccountIdPtr& from,
+                     std::unique_ptr<FilTransaction> tx)
+    : tx_(std::move(tx)) {
+  DCHECK_EQ(from->coin, mojom::CoinType::FIL);
+  set_from(std::move(from));
+}
 
 FilTxMeta::~FilTxMeta() = default;
 
@@ -32,7 +37,7 @@ base::Value::Dict FilTxMeta::ToValue() const {
 
 mojom::TransactionInfoPtr FilTxMeta::ToTransactionInfo() const {
   return mojom::TransactionInfo::New(
-      id_, from_, tx_hash_,
+      id_, from_->address, from_.Clone(), tx_hash_,
       mojom::TxDataUnion::NewFilTxData(tx_->ToFilTxData()), status_,
       mojom::TransactionType::Other, std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */,

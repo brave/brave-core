@@ -31,15 +31,12 @@ class EthTxMeta;
 
 class EthTxStateManager : public TxStateManager {
  public:
-  EthTxStateManager(PrefService* prefs, TxStorageDelegate* delegate);
+  EthTxStateManager(PrefService* prefs,
+                    TxStorageDelegate* delegate,
+                    AccountResolverDelegate* account_resolver_delegate);
   ~EthTxStateManager() override;
   EthTxStateManager(const EthTxStateManager&) = delete;
   EthTxStateManager operator=(const EthTxStateManager&) = delete;
-
-  std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
-      const absl::optional<std::string>& chain_id,
-      const absl::optional<mojom::TransactionStatus>& status,
-      const absl::optional<EthAddress>& from);
 
   std::unique_ptr<EthTxMeta> GetEthTx(const std::string& chain_id,
                                       const std::string& id);

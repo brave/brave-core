@@ -21,12 +21,12 @@ FilNonceTracker::FilNonceTracker(TxStateManager* tx_state_manager,
 FilNonceTracker::~FilNonceTracker() = default;
 
 void FilNonceTracker::GetNextNonce(const std::string& chain_id,
-                                   const std::string& from,
+                                   const mojom::AccountIdPtr& from,
                                    GetNextNonceCallback callback) {
   json_rpc_service_->GetFilTransactionCount(
-      chain_id, from,
+      chain_id, from->address,
       base::BindOnce(&FilNonceTracker::OnGetNetworkNonce,
-                     weak_factory_.GetWeakPtr(), chain_id, from,
+                     weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
                      std::move(callback)));
 }
 
@@ -60,7 +60,7 @@ uint256_t FilNonceTracker::GetHighestContinuousFrom(
 }
 
 void FilNonceTracker::OnGetNetworkNonce(const std::string& chain_id,
-                                        const std::string& from,
+                                        const mojom::AccountIdPtr& from,
                                         GetNextNonceCallback callback,
                                         uint256_t network_nonce,
                                         mojom::FilecoinProviderError error,

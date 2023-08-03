@@ -40,7 +40,6 @@ FilTransaction::FilTransaction(absl::optional<uint64_t> nonce,
                                int64_t gas_limit,
                                const std::string& max_fee,
                                const FilAddress& to,
-                               const FilAddress& from,
                                const std::string& value)
     : nonce_(nonce),
       gas_premium_(gas_premium),
@@ -48,7 +47,6 @@ FilTransaction::FilTransaction(absl::optional<uint64_t> nonce,
       gas_limit_(gas_limit),
       max_fee_(max_fee),
       to_(to),
-      from_(from),
       value_(value) {}
 
 FilTransaction::~FilTransaction() = default;
@@ -56,8 +54,7 @@ FilTransaction::~FilTransaction() = default;
 bool FilTransaction::IsEqual(const FilTransaction& tx) const {
   return nonce_ == tx.nonce_ && gas_premium_ == tx.gas_premium_ &&
          gas_fee_cap_ == tx.gas_fee_cap_ && gas_limit_ == tx.gas_limit_ &&
-         max_fee_ == tx.max_fee_ && to_ == tx.to_ && from_ == tx.from_ &&
-         value_ == tx.value_;
+         max_fee_ == tx.max_fee_ && to_ == tx.to_ && value_ == tx.value_;
 }
 
 bool FilTransaction::operator==(const FilTransaction& other) const {
@@ -70,6 +67,7 @@ bool FilTransaction::operator!=(const FilTransaction& other) const {
 
 // static
 absl::optional<FilTransaction> FilTransaction::FromTxData(
+    bool is_mainnet,
     const mojom::FilTxDataPtr& tx_data) {
   FilTransaction tx;
   uint64_t nonce = 0;
@@ -77,15 +75,9 @@ absl::optional<FilTransaction> FilTransaction::FromTxData(
     tx.nonce_ = nonce;
   }
 
-  auto from = FilAddress::FromAddress(tx_data->from);
-  if (from.IsEmpty()) {
-    return absl::nullopt;
-  }
-  tx.from_ = from;
-
   auto address = FilAddress::FromAddress(tx_data->to);
   if (address.IsEmpty()) {
-    address = FilAddress::FromFEVMAddress(from.IsMainNet(), tx_data->to);
+    address = FilAddress::FromFEVMAddress(is_mainnet, tx_data->to);
     if (address.IsEmpty()) {
       return absl::nullopt;
     }
@@ -131,7 +123,6 @@ base::Value::Dict FilTransaction::ToValue() const {
   dict.Set("MaxFee", max_fee_);
   dict.Set("GasLimit", base::NumberToString(gas_limit_));
   dict.Set("To", to_.EncodeAsString());
-  dict.Set("From", from_.EncodeAsString());
   dict.Set("Value", value_);
   return dict;
 }
@@ -176,12 +167,6 @@ absl::optional<FilTransaction> FilTransaction::FromValue(
     return absl::nullopt;
   }
 
-  const std::string* from = value.FindString("From");
-  if (!from) {
-    return absl::nullopt;
-  }
-  tx.from_ = FilAddress::FromAddress(*from);
-
   const std::string* to = value.FindString("To");
   if (!to) {
     return absl::nullopt;
@@ -196,7 +181,9 @@ absl::optional<FilTransaction> FilTransaction::FromValue(
   return tx;
 }
 
-base::Value FilTransaction::GetMessageToSign() const {
+base::Value FilTransaction::GetMessageToSign(const FilAddress& from) const {
+  DCHECK(!from.IsEmpty());
+
   auto value = ToValue();
   value.Remove("MaxFee");
   if (to_.protocol() == mojom::FilecoinAddressProtocol::DELEGATED) {
@@ -205,6 +192,7 @@ base::Value FilTransaction::GetMessageToSign() const {
   } else {
     value.Set("Method", "0");
   }
+  value.Set("From", from.EncodeAsString());
   value.Set("Version", 0);
   value.Set("Params", "");
   const std::string* nonce_value = value.FindString("Nonce");
@@ -216,9 +204,10 @@ base::Value FilTransaction::GetMessageToSign() const {
   return base::Value(std::move(value));
 }
 
-absl::optional<std::string> FilTransaction::GetMessageToSignJson() const {
+absl::optional<std::string> FilTransaction::GetMessageToSignJson(
+    const FilAddress& from) const {
   std::string json;
-  if (!base::JSONWriter::Write(GetMessageToSign(), &json)) {
+  if (!base::JSONWriter::Write(GetMessageToSign(from), &json)) {
     return absl::nullopt;
   }
 
@@ -266,16 +255,19 @@ absl::optional<base::Value> FilTransaction::DeserializeSignedTx(
 
 // https://spec.filecoin.io/algorithms/crypto/signatures/#section-algorithms.crypto.signatures
 absl::optional<std::string> FilTransaction::GetSignedTransaction(
+    const FilAddress& from,
     const std::vector<uint8_t>& private_key) const {
-  auto message = GetMessageToSign();
-  auto message_json = GetMessageToSignJson();
+  DCHECK(!from.IsEmpty());
+
+  auto message = GetMessageToSign(from);
+  auto message_json = GetMessageToSignJson(from);
   if (!message_json) {
     return absl::nullopt;
   }
   base::Value::Dict signature;
   {
     std::string data(filecoin::transaction_sign(
-        from_.network() == mojom::kFilecoinMainnet, *message_json,
+        from.network() == mojom::kFilecoinMainnet, *message_json,
         rust::Slice<const uint8_t>{private_key.data(), private_key.size()}));
     if (data.empty()) {
       return absl::nullopt;
@@ -284,7 +276,7 @@ absl::optional<std::string> FilTransaction::GetSignedTransaction(
   }
   // Set signature type based on protocol.
   // https://spec.filecoin.io/algorithms/crypto/signatures/#section-algorithms.crypto.signatures.signature-types
-  auto sig_type = from().protocol() == mojom::FilecoinAddressProtocol::SECP256K1
+  auto sig_type = from.protocol() == mojom::FilecoinAddressProtocol::SECP256K1
                       ? SigType::ECDSASigType
                       : SigType::BLSSigType;
   signature.Set("Type", sig_type);
@@ -299,10 +291,10 @@ absl::optional<std::string> FilTransaction::GetSignedTransaction(
 }
 
 mojom::FilTxDataPtr FilTransaction::ToFilTxData() const {
-  return mojom::FilTxData::New(
-      nonce() ? base::NumberToString(*nonce()) : "", gas_premium(),
-      gas_fee_cap(), base::NumberToString(gas_limit()), max_fee(),
-      to().EncodeAsString(), from().EncodeAsString(), value());
+  return mojom::FilTxData::New(nonce() ? base::NumberToString(*nonce()) : "",
+                               gas_premium(), gas_fee_cap(),
+                               base::NumberToString(gas_limit()), max_fee(),
+                               to().EncodeAsString(), value());
 }
 
 }  // namespace brave_wallet

@@ -143,6 +143,7 @@ android_only_test_deps = [
   ":test_support",
   "//android_webview/common",
   "//brave/browser/partnercustomizations:delegate_public_impl_java",
+  "//brave/components/brave_wallet/browser:test_support",
   "//brave/components/cosmetic_filters/browser:browser",
   "//chrome:chrome_android_core",
   "//chrome/android:app_hooks_java",

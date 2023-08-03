@@ -25,6 +25,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -154,9 +155,6 @@ constexpr char get_block_response[] =
 constexpr char get_block_response_wrong[] =
     R"({"jsonrpc":"2.0","id":1,"result_wrong":""})";
 
-constexpr char kMnemonic1[] =
-    "divide cruise upon flag harsh carbon filter merit once advice bright "
-    "drive";
 constexpr char kPasswordBrave[] = "brave";
 
 using AllowancesMap = std::map<std::string, mojom::AllowanceInfoPtr>;
@@ -297,8 +295,8 @@ class EthAllowanceManagerUnitTest : public testing::Test {
         contract_addresses.push_back(tkn->contract_address);
       }
     }
-    keyring_service_->RestoreWallet(kMnemonic1, kPasswordBrave, false,
-                                    base::DoNothing());
+    keyring_service_->RestoreWallet(kMnemonicDivideCruise, kPasswordBrave,
+                                    false, base::DoNothing());
     for (int i = 0; i < (eth_account_count - 1); i++) {
       AddEthAccount("additonal eth account");
     }

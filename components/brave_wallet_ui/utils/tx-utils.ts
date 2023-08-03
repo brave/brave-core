@@ -265,14 +265,6 @@ export const isFilecoinTransaction = (tx?: {
   return tx?.txDataUnion.filTxData !== undefined
 }
 
-export const isFilecoinTestnetTx = (tx: {
-  txDataUnion: TxDataPresence
-}): boolean => {
-  return tx.txDataUnion?.filTxData?.from?.startsWith(
-    BraveWallet.FILECOIN_TESTNET
-  ) || false
-}
-
 export const getToAddressesFromSolanaTransaction = (
   tx: SolanaTransactionInfo
 ) => {

@@ -13,6 +13,8 @@ namespace brave_wallet {
 
 class TxStorageDelegate {
  public:
+  virtual ~TxStorageDelegate() = default;
+
   virtual bool IsInitialized() const = 0;
   virtual const base::Value::Dict& GetTxs() const = 0;
   virtual base::Value::Dict& GetTxs() = 0;

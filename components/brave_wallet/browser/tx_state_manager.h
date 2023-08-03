@@ -26,12 +26,15 @@ class Value;
 
 namespace brave_wallet {
 
+class AccountResolverDelegate;
 class TxMeta;
 class TxStorageDelegate;
 
 class TxStateManager {
  public:
-  TxStateManager(PrefService* prefs, TxStorageDelegate* delegate);
+  TxStateManager(PrefService* prefs,
+                 TxStorageDelegate* delegate,
+                 AccountResolverDelegate* account_resolver_delegate);
   virtual ~TxStateManager();
   TxStateManager(const TxStateManager&) = delete;
 
@@ -48,7 +51,12 @@ class TxStateManager {
   std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
       const absl::optional<std::string>& chain_id,
       const absl::optional<mojom::TransactionStatus>& status,
-      const absl::optional<std::string>& from);
+      const mojom::AccountIdPtr& from);
+
+  std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
+      const absl::optional<std::string>& chain_id,
+      const absl::optional<mojom::TransactionStatus>& status,
+      const absl::optional<mojom::AccountIdPtr>& from);
 
   class Observer : public base::CheckedObserver {
    public:
@@ -62,11 +70,12 @@ class TxStateManager {
 
  protected:
   // For derived classes to call to fill TxMeta properties.
-  static bool ValueToTxMeta(const base::Value::Dict& value, TxMeta* tx_meta);
+  bool ValueToBaseTxMeta(const base::Value::Dict& value, TxMeta* tx_meta);
 
   raw_ptr<PrefService> prefs_ = nullptr;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(TxStateManagerUnitTest, ConvertFromAddress);
   FRIEND_TEST_ALL_PREFIXES(TxStateManagerUnitTest, TxOperations);
   FRIEND_TEST_ALL_PREFIXES(EthTxManagerUnitTest, Reset);
 
@@ -92,6 +101,7 @@ class TxStateManager {
       const absl::optional<std::string>& chain_id) = 0;
 
   raw_ptr<TxStorageDelegate> delegate_ = nullptr;
+  raw_ptr<AccountResolverDelegate> account_resolver_delegate_ = nullptr;
   base::ObserverList<Observer> observers_;
   base::WeakPtrFactory<TxStateManager> weak_factory_;
 };

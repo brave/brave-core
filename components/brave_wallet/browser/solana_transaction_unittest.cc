@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -33,9 +34,6 @@ namespace brave_wallet {
 
 namespace {
 
-constexpr char kMnemonic[] =
-    "divide cruise upon flag harsh carbon filter merit once advice bright "
-    "drive";
 constexpr char kFromAccount[] = "3JjmwHtdYkPAqnvNY67aqumBCQUSzjjk3As4igo1oQ3X";
 constexpr char kToAccount[] = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
 constexpr char kTestAccount[] = "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw";
@@ -112,7 +110,8 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeature(
       brave_wallet::features::kBraveWalletSolanaFeature);
-  ASSERT_TRUE(RestoreWallet(keyring_service(), kMnemonic, "brave", false));
+  ASSERT_TRUE(
+      RestoreWallet(keyring_service(), kMnemonicDivideCruise, "brave", false));
 
   ASSERT_TRUE(AddAccount(keyring_service(), "Account 1"));
   auto from_account = AddAccount(keyring_service(), "Account 2");
@@ -784,7 +783,8 @@ TEST_F(SolanaTransactionUnitTest, GetSerializedMessage) {
 }
 
 TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
-  ASSERT_TRUE(RestoreWallet(keyring_service(), kMnemonic, "brave", false));
+  ASSERT_TRUE(
+      RestoreWallet(keyring_service(), kMnemonicDivideCruise, "brave", false));
 
   ASSERT_TRUE(AddAccount(keyring_service(), "Account 1"));
   auto from_account = AddAccount(keyring_service(), "Account 2");

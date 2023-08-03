@@ -26,7 +26,9 @@ class SolanaTxMeta;
 
 class SolanaTxStateManager : public TxStateManager {
  public:
-  SolanaTxStateManager(PrefService* prefs, TxStorageDelegate* delegate);
+  SolanaTxStateManager(PrefService* prefs,
+                       TxStorageDelegate* delegate,
+                       AccountResolverDelegate* account_resolver_delegate);
   ~SolanaTxStateManager() override;
   SolanaTxStateManager(const SolanaTxStateManager&) = delete;
   SolanaTxStateManager operator=(const SolanaTxStateManager&) = delete;

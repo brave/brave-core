@@ -97,10 +97,6 @@ void GetErrorCodeMessage(base::Value formed_response,
   }
 }
 
-const char kMnemonic1[] =
-    "divide cruise upon flag harsh carbon filter merit once advice bright "
-    "drive";
-
 void ValidateErrorCode(EthereumProviderImpl* provider,
                        const std::string& payload,
                        mojom::ProviderError expected) {
@@ -2604,7 +2600,7 @@ TEST_F(EthereumProviderImplUnitTest, AddSuggestToken) {
 }
 
 TEST_F(EthereumProviderImplUnitTest, GetEncryptionPublicKey) {
-  RestoreWallet(kMnemonic1, "brave", false);
+  RestoreWallet(kMnemonicDivideCruise, "brave", false);
   CreateBraveWalletTabHelper();
   GURL url("https://brave.com");
   Navigate(url);
@@ -2651,7 +2647,7 @@ TEST_F(EthereumProviderImplUnitTest, GetEncryptionPublicKey) {
 }
 
 TEST_F(EthereumProviderImplUnitTest, Decrypt) {
-  RestoreWallet(kMnemonic1, "brave", false);
+  RestoreWallet(kMnemonicDivideCruise, "brave", false);
   CreateBraveWalletTabHelper();
   GURL url("https://brave.com");
   Navigate(url);

@@ -17,6 +17,7 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -114,8 +115,11 @@ EthTxManager::EthTxManager(TxService* tx_service,
                            JsonRpcService* json_rpc_service,
                            KeyringService* keyring_service,
                            PrefService* prefs,
-                           TxStorageDelegate* delegate)
-    : TxManager(std::make_unique<EthTxStateManager>(prefs, delegate),
+                           TxStorageDelegate* delegate,
+                           AccountResolverDelegate* account_resolver_delegate)
+    : TxManager(std::make_unique<EthTxStateManager>(prefs,
+                                                    delegate,
+                                                    account_resolver_delegate),
                 std::make_unique<EthBlockTracker>(json_rpc_service),
                 tx_service,
                 json_rpc_service,
@@ -127,7 +131,7 @@ EthTxManager::EthTxManager(TxService* tx_service,
           std::make_unique<EthPendingTxTracker>(GetEthTxStateManager(),
                                                 json_rpc_service,
                                                 nonce_tracker_.get())),
-      weak_factory_(this) {
+      account_resolver_delegate_(account_resolver_delegate) {
   GetEthBlockTracker()->AddObserver(this);
 }
 
@@ -138,7 +142,7 @@ EthTxManager::~EthTxManager() {
 void EthTxManager::AddUnapprovedTransaction(
     const std::string& chain_id,
     mojom::TxDataUnionPtr tx_data_union,
-    const std::string& from,
+    const mojom::AccountIdPtr& from,
     const absl::optional<url::Origin>& origin,
     const absl::optional<std::string>& group_id,
     AddUnapprovedTransactionCallback callback) {
@@ -160,16 +164,10 @@ void EthTxManager::AddUnapprovedTransaction(
 void EthTxManager::AddUnapprovedTransaction(
     const std::string& chain_id,
     mojom::TxDataPtr tx_data,
-    const std::string& from,
+    const mojom::AccountIdPtr& from,
     const url::Origin& origin,
     const absl::optional<std::string>& group_id,
     AddUnapprovedTransactionCallback callback) {
-  if (from.empty()) {
-    std::move(callback).Run(
-        false, "",
-        l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
-    return;
-  }
   std::string error;
   if (!EthTxManager::ValidateTxData(tx_data, &error)) {
     std::move(callback).Run(false, "", error);
@@ -194,16 +192,17 @@ void EthTxManager::AddUnapprovedTransaction(
     json_rpc_service_->GetGasPrice(
         chain_id,
         base::BindOnce(&EthTxManager::OnGetGasPrice, weak_factory_.GetWeakPtr(),
-                       chain_id, from, origin, tx_data->to, tx_data->value,
-                       data, gas_limit, group_id, std::move(tx_ptr),
-                       std::move(callback), tx_data->sign_only));
+                       chain_id, from.Clone(), origin, tx_data->to,
+                       tx_data->value, data, gas_limit, group_id,
+                       std::move(tx_ptr), std::move(callback),
+                       tx_data->sign_only));
   } else if (!tx_ptr->gas_limit()) {
     json_rpc_service_->GetEstimateGas(
-        chain_id, from, tx_data->to, "" /* gas */, "" /* gas_price */,
+        chain_id, from->address, tx_data->to, "" /* gas */, "" /* gas_price */,
         tx_data->value, data,
         base::BindOnce(&EthTxManager::ContinueAddUnapprovedTransaction,
-                       weak_factory_.GetWeakPtr(), chain_id, from, origin,
-                       group_id, std::move(tx_ptr), std::move(callback),
+                       weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
+                       origin, group_id, std::move(tx_ptr), std::move(callback),
                        tx_data->sign_only));
   } else {
     ContinueAddUnapprovedTransaction(chain_id, from, origin, group_id,
@@ -214,7 +213,7 @@ void EthTxManager::AddUnapprovedTransaction(
 }
 
 void EthTxManager::OnGetGasPrice(const std::string& chain_id,
-                                 const std::string& from,
+                                 const mojom::AccountIdPtr& from,
                                  const url::Origin& origin,
                                  const std::string& to,
                                  const std::string& value,
@@ -240,10 +239,11 @@ void EthTxManager::OnGetGasPrice(const std::string& chain_id,
 
   if (!tx->gas_limit()) {
     json_rpc_service_->GetEstimateGas(
-        chain_id, from, to, "" /* gas */, "" /* gas_price */, value, data,
+        chain_id, from->address, to, "" /* gas */, "" /* gas_price */, value,
+        data,
         base::BindOnce(&EthTxManager::ContinueAddUnapprovedTransaction,
-                       weak_factory_.GetWeakPtr(), chain_id, from, origin,
-                       group_id, std::move(tx), std::move(callback),
+                       weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
+                       origin, group_id, std::move(tx), std::move(callback),
                        sign_only));
   } else {
     ContinueAddUnapprovedTransaction(
@@ -254,7 +254,7 @@ void EthTxManager::OnGetGasPrice(const std::string& chain_id,
 
 void EthTxManager::ContinueAddUnapprovedTransaction(
     const std::string& chain_id,
-    const std::string& from,
+    const mojom::AccountIdPtr& from,
     const absl::optional<url::Origin>& origin,
     const absl::optional<std::string>& group_id,
     std::unique_ptr<EthTransaction> tx,
@@ -289,9 +289,8 @@ void EthTxManager::ContinueAddUnapprovedTransaction(
   }
   tx->set_gas_limit(gas_limit);
 
-  EthTxMeta meta(std::move(tx));
+  EthTxMeta meta(from, std::move(tx));
   meta.set_id(TxMeta::GenerateMetaID());
-  meta.set_from(EthAddress::FromHex(from).ToChecksumAddress());
   meta.set_origin(origin);
   meta.set_group_id(group_id);
   meta.set_created_time(base::Time::Now());
@@ -309,16 +308,10 @@ void EthTxManager::ContinueAddUnapprovedTransaction(
 void EthTxManager::AddUnapproved1559Transaction(
     const std::string& chain_id,
     mojom::TxData1559Ptr tx_data,
-    const std::string& from,
+    const mojom::AccountIdPtr& from,
     const url::Origin& origin,
     const absl::optional<std::string>& group_id,
     AddUnapprovedTransactionCallback callback) {
-  if (from.empty()) {
-    std::move(callback).Run(
-        false, "",
-        l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
-    return;
-  }
   std::string error;
   if (!EthTxManager::ValidateTxData1559(tx_data, &error)) {
     std::move(callback).Run(false, "", error);
@@ -345,17 +338,17 @@ void EthTxManager::AddUnapproved1559Transaction(
     GetGasEstimation1559(
         chain_id,
         base::BindOnce(&EthTxManager::OnGetGasOracleForUnapprovedTransaction,
-                       weak_factory_.GetWeakPtr(), chain_id, from, origin,
-                       tx_data->base_data->to, tx_data->base_data->value, data,
-                       gas_limit, group_id, std::move(tx_ptr),
-                       std::move(callback), sign_only));
+                       weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
+                       origin, tx_data->base_data->to,
+                       tx_data->base_data->value, data, gas_limit, group_id,
+                       std::move(tx_ptr), std::move(callback), sign_only));
   } else if (gas_limit.empty()) {
     json_rpc_service_->GetEstimateGas(
-        chain_id, from, tx_data->base_data->to, "" /* gas */,
+        chain_id, from->address, tx_data->base_data->to, "" /* gas */,
         "" /* gas_price */, tx_data->base_data->value, data,
         base::BindOnce(&EthTxManager::ContinueAddUnapprovedTransaction,
-                       weak_factory_.GetWeakPtr(), chain_id, from, origin,
-                       group_id, std::move(tx_ptr), std::move(callback),
+                       weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
+                       origin, group_id, std::move(tx_ptr), std::move(callback),
                        sign_only));
   } else {
     ContinueAddUnapprovedTransaction(chain_id, from, origin, group_id,
@@ -367,7 +360,7 @@ void EthTxManager::AddUnapproved1559Transaction(
 
 void EthTxManager::OnGetGasOracleForUnapprovedTransaction(
     const std::string& chain_id,
-    const std::string& from,
+    const mojom::AccountIdPtr& from,
     const url::Origin& origin,
     const std::string& to,
     const std::string& value,
@@ -394,10 +387,11 @@ void EthTxManager::OnGetGasOracleForUnapprovedTransaction(
 
   if (gas_limit.empty()) {
     json_rpc_service_->GetEstimateGas(
-        chain_id, from, to, "" /* gas */, "" /* gas_price */, value, data,
+        chain_id, from->address, to, "" /* gas */, "" /* gas_price */, value,
+        data,
         base::BindOnce(&EthTxManager::ContinueAddUnapprovedTransaction,
-                       weak_factory_.GetWeakPtr(), chain_id, from, origin,
-                       group_id, std::move(tx), std::move(callback),
+                       weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
+                       origin, group_id, std::move(tx), std::move(callback),
                        sign_only));
   } else {
     ContinueAddUnapprovedTransaction(
@@ -418,7 +412,7 @@ void EthTxManager::GetNonceForHardwareTransaction(
     return;
   }
   if (!meta->tx()->nonce()) {
-    auto from = meta->from();
+    auto from = meta->from().Clone();
     nonce_tracker_->GetNextNonce(
         chain_id, from,
         base::BindOnce(&EthTxManager::OnGetNextNonceForHardware,
@@ -548,7 +542,7 @@ void EthTxManager::ApproveTransaction(const std::string& chain_id,
   }
 
   if (!meta->tx()->nonce()) {
-    auto from = meta->from();
+    auto from = meta->from().Clone();
     nonce_tracker_->GetNextNonce(
         chain_id, from,
         base::BindOnce(&EthTxManager::OnGetNextNonce,
@@ -589,7 +583,7 @@ void EthTxManager::OnGetNextNonce(std::unique_ptr<EthTxMeta> meta,
 
   meta->tx()->set_nonce(nonce);
   DCHECK(!keyring_service_->IsLocked(mojom::kDefaultKeyringId));
-  keyring_service_->SignTransactionByDefaultKeyring(meta->from(), meta->tx(),
+  keyring_service_->SignTransactionByDefaultKeyring(*meta->from(), meta->tx(),
                                                     chain_id);
   meta->set_status(mojom::TransactionStatus::Approved);
   if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
@@ -848,24 +842,6 @@ void EthTxManager::NotifyUnapprovedTxUpdated(TxMeta* meta) {
   tx_service_->OnUnapprovedTxUpdated(meta->ToTransactionInfo());
 }
 
-void EthTxManager::GetAllTransactionInfo(
-    const absl::optional<std::string>& chain_id,
-    const absl::optional<std::string>& from,
-    GetAllTransactionInfoCallback callback) {
-  if (!from) {
-    TxManager::GetAllTransactionInfo(chain_id, absl::nullopt,
-                                     std::move(callback));
-    return;
-  }
-  auto from_address = EthAddress::FromHex(from.value());
-  if (from_address.IsEmpty()) {
-    std::move(callback).Run(std::vector<mojom::TransactionInfoPtr>());
-    return;
-  }
-  TxManager::GetAllTransactionInfo(chain_id, from_address.ToChecksumAddress(),
-                                   std::move(callback));
-}
-
 void EthTxManager::SetGasPriceAndLimitForUnapprovedTransaction(
     const std::string& chain_id,
     const std::string& tx_meta_id,
@@ -1040,7 +1016,7 @@ void EthTxManager::SpeedupOrCancelTransaction(
     auto tx = std::make_unique<Eip1559Transaction>(
         *static_cast<Eip1559Transaction*>(meta->tx()));
     if (cancel) {
-      tx->set_to(EthAddress::FromHex(meta->from()));
+      tx->set_to(EthAddress::FromHex(meta->from()->address));
       tx->set_value(0);
       tx->set_data(std::vector<uint8_t>());
     }
@@ -1049,13 +1025,13 @@ void EthTxManager::SpeedupOrCancelTransaction(
         meta->chain_id(),
         base::BindOnce(&EthTxManager::ContinueSpeedupOrCancel1559Transaction,
                        weak_factory_.GetWeakPtr(), meta->chain_id(),
-                       meta->from(), meta->origin(), meta->group_id(),
+                       meta->from().Clone(), meta->origin(), meta->group_id(),
                        Uint256ValueToHex(meta->tx()->gas_limit()),
                        std::move(tx), std::move(callback)));
   } else {
     auto tx = std::make_unique<EthTransaction>(*meta->tx());
     if (cancel) {
-      tx->set_to(EthAddress::FromHex(meta->from()));
+      tx->set_to(EthAddress::FromHex(meta->from()->address));
       tx->set_value(0);
       tx->set_data(std::vector<uint8_t>());
     }
@@ -1072,7 +1048,7 @@ void EthTxManager::SpeedupOrCancelTransaction(
         meta->chain_id(),
         base::BindOnce(&EthTxManager::ContinueSpeedupOrCancelTransaction,
                        weak_factory_.GetWeakPtr(), meta->chain_id(),
-                       meta->from(), meta->origin(), meta->group_id(),
+                       meta->from().Clone(), meta->origin(), meta->group_id(),
                        Uint256ValueToHex(meta->tx()->gas_limit()),
                        std::move(tx), std::move(callback)));
   }
@@ -1080,7 +1056,7 @@ void EthTxManager::SpeedupOrCancelTransaction(
 
 void EthTxManager::ContinueSpeedupOrCancelTransaction(
     const std::string& chain_id,
-    const std::string& from,
+    const mojom::AccountIdPtr& from,
     const absl::optional<url::Origin>& origin,
     const absl::optional<std::string>& group_id,
     const std::string& gas_limit,
@@ -1122,7 +1098,7 @@ void EthTxManager::ContinueSpeedupOrCancelTransaction(
 
 void EthTxManager::ContinueSpeedupOrCancel1559Transaction(
     const std::string& chain_id,
-    const std::string& from,
+    const mojom::AccountIdPtr& from,
     const absl::optional<url::Origin>& origin,
     const absl::optional<std::string>& group_id,
     const std::string& gas_limit,

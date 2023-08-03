@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Types
-import { mockAccount, mockSolanaAccount } from '../../common/constants/mocks'
+import { mockAccount, mockFilecoinAccount, mockSolanaAccount } from '../../common/constants/mocks'
 import {
   BraveWallet,
   SerializableTransactionInfo
@@ -17,7 +17,8 @@ import { mockOriginInfo } from './mock-origin-info'
 
 export const mockTransactionInfo: SerializableTransactionInfo = {
   chainId: '0x0',
-  fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+  fromAddress: mockAccount.address,
+  fromAccountId: mockAccount.accountId,
   id: '465a4d6646-kjlwf665',
   txArgs: ['0x0d8775f648430679a709e98d2b0cb6250d2887ef', '0x15ddf09c97b0000'],
   txDataUnion: {
@@ -56,6 +57,7 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
 export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
   chainId: '0x0',
   fromAddress: mockSolanaAccount.address,
+  fromAccountId: mockSolanaAccount.accountId,
   id: 'sol-tx',
   txArgs: [],
   txDataUnion: {
@@ -103,7 +105,8 @@ export const mockFilSendTransaction: FileCoinTransactionInfo = {
   chainId: BraveWallet.FILECOIN_MAINNET,
   confirmedTime: { microseconds: BigInt(new Date().getUTCMilliseconds()) },
   createdTime: { microseconds: BigInt(new Date().getUTCMilliseconds()) },
-  fromAddress: mockAccount.address,
+  fromAddress: mockFilecoinAccount.address,
+  fromAccountId: mockFilecoinAccount.accountId,
   groupId: undefined,
   id: 'fil-send-tx',
   originInfo: undefined,
@@ -111,8 +114,7 @@ export const mockFilSendTransaction: FileCoinTransactionInfo = {
   txArgs: [],
   txDataUnion: {
     filTxData: {
-      from: mockAccount.address,
-      to: mockAccount.address,
+      to: mockFilecoinAccount.address,
       value: '1000',
       nonce: '1',
       gasFeeCap: '100',

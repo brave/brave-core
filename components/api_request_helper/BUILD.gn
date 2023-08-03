@@ -12,9 +12,9 @@ static_library("api_request_helper") {
     "api_request_helper.h",
   ]
 
-  deps = [
+  public_deps = [
     "//base",
-    "//net",
+    "//net/traffic_annotation",
     "//services/data_decoder/public/cpp",
     "//services/network/public/cpp",
     "//url",
@@ -29,11 +29,8 @@ source_set("api_request_helper_unit_tests") {
     ":api_request_helper",
     "//base/test:test_support",
     "//net/traffic_annotation:test_support",
-    "//net/traffic_annotation:traffic_annotation",
-    "//services/data_decoder/public/cpp",
     "//services/data_decoder/public/cpp:test_support",
     "//services/network:test_support",
-    "//services/network/public/cpp",
     "//testing/gtest:gtest",
   ]
 }

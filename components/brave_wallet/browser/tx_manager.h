@@ -43,8 +43,6 @@ class TxManager : public TxStateManager::Observer,
   using RejectTransactionCallback = mojom::TxService::RejectTransactionCallback;
   using GetTransactionInfoCallback =
       mojom::TxService::GetTransactionInfoCallback;
-  using GetAllTransactionInfoCallback =
-      mojom::TxService::GetAllTransactionInfoCallback;
   using SpeedupOrCancelTransactionCallback =
       mojom::TxService::SpeedupOrCancelTransactionCallback;
   using RetryTransactionCallback = mojom::TxService::RetryTransactionCallback;
@@ -54,7 +52,7 @@ class TxManager : public TxStateManager::Observer,
   virtual void AddUnapprovedTransaction(
       const std::string& chain_id,
       mojom::TxDataUnionPtr tx_data_union,
-      const std::string& from,
+      const mojom::AccountIdPtr& from,
       const absl::optional<url::Origin>& origin,
       const absl::optional<std::string>& group_id,
       AddUnapprovedTransactionCallback) = 0;
@@ -67,10 +65,9 @@ class TxManager : public TxStateManager::Observer,
   virtual void GetTransactionInfo(const std::string& chain_id,
                                   const std::string& tx_meta_id,
                                   GetTransactionInfoCallback);
-  virtual void GetAllTransactionInfo(
+  std::vector<mojom::TransactionInfoPtr> GetAllTransactionInfo(
       const absl::optional<std::string>& chain_id,
-      const absl::optional<std::string>& from,
-      GetAllTransactionInfoCallback);
+      const absl::optional<mojom::AccountIdPtr>& from);
 
   virtual void SpeedupOrCancelTransaction(
       const std::string& chain_id,

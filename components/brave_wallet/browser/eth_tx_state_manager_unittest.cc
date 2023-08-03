@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -42,8 +43,10 @@ class EthTxStateManagerUnitTest : public testing::Test {
     RegisterProfilePrefsForMigration(prefs_.registry());
     factory_ = GetTestValueStoreFactory(temp_dir_);
     delegate_ = GetTxStorageDelegateForTest(GetPrefs(), factory_);
-    eth_tx_state_manager_ =
-        std::make_unique<EthTxStateManager>(GetPrefs(), delegate_.get());
+    account_resolver_delegate_ =
+        std::make_unique<AccountResolverDelegateForTest>();
+    eth_tx_state_manager_ = std::make_unique<EthTxStateManager>(
+        GetPrefs(), delegate_.get(), account_resolver_delegate_.get());
   }
 
   PrefService* GetPrefs() { return &prefs_; }
@@ -53,23 +56,26 @@ class EthTxStateManagerUnitTest : public testing::Test {
   scoped_refptr<value_store::TestValueStoreFactory> factory_;
   std::unique_ptr<value_store::ValueStoreFrontend> storage_;
   std::unique_ptr<TxStorageDelegateImpl> delegate_;
+  std::unique_ptr<AccountResolverDelegateForTest> account_resolver_delegate_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   std::unique_ptr<EthTxStateManager> eth_tx_state_manager_;
 };
 
 TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
+  auto eth_account_id = account_resolver_delegate_->RegisterAccount(
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived,
+                    "0x2f015c60e0be116b1f0cd534704db9c92118fb6a"));
+
   // type 0
   std::unique_ptr<EthTransaction> tx = std::make_unique<EthTransaction>(
       *EthTransaction::FromTxData(mojom::TxData::New(
           "0x09", "0x4a817c800", "0x5208",
           "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
           std::vector<uint8_t>(), false, absl::nullopt)));
-  EthTxMeta meta(std::move(tx));
+  EthTxMeta meta(eth_account_id, std::move(tx));
   meta.set_id(TxMeta::GenerateMetaID());
   meta.set_status(mojom::TransactionStatus::Submitted);
-  meta.set_from(
-      EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a")
-          .ToChecksumAddress());
   meta.set_created_time(base::Time::Now());
   meta.set_submitted_time(base::Time::Now());
   meta.set_confirmed_time(base::Time::Now());
@@ -93,9 +99,10 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   meta.set_chain_id(mojom::kMainnetChainId);
 
   base::Value::Dict meta_value = meta.ToValue();
-  const std::string* from = meta_value.FindString("from");
-  ASSERT_TRUE(from);
-  EXPECT_EQ(*from, "0x2F015C60E0be116B1f0CD534704Db9c92118FB6A");
+  EXPECT_FALSE(meta_value.FindString("from"));
+  const std::string* from_account_id = meta_value.FindString("from_account_id");
+  ASSERT_TRUE(from_account_id);
+  EXPECT_EQ(*from_account_id, eth_account_id->unique_key);
   auto meta_from_value = eth_tx_state_manager_->ValueToEthTxMeta(meta_value);
   ASSERT_NE(meta_from_value, nullptr);
   EXPECT_EQ(meta_from_value->id(), meta.id());
@@ -131,7 +138,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   item_a.storage_keys.push_back(storage_key_0);
   access_list->push_back(item_a);
 
-  EthTxMeta meta1(std::move(tx1));
+  EthTxMeta meta1(eth_account_id, std::move(tx1));
   base::Value::Dict value1 = meta1.ToValue();
   auto meta_from_value1 = eth_tx_state_manager_->ValueToEthTxMeta(value1);
   ASSERT_NE(meta_from_value1, nullptr);
@@ -157,7 +164,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
                   "0xb2d05e00" /* Hex of 3 * 1e9 */,
                   "0xb68a0aa00" /* Hex of 49 * 1e9 */,
                   "0xad8075b7a" /* Hex of 46574033786 */))));
-  EthTxMeta meta2(std::move(tx2));
+  EthTxMeta meta2(eth_account_id, std::move(tx2));
   base::Value::Dict value2 = meta2.ToValue();
   auto meta_from_value2 = eth_tx_state_manager_->ValueToEthTxMeta(value2);
   ASSERT_NE(meta_from_value2, nullptr);
@@ -172,7 +179,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
           "0x09", "0x4a817c800", "0x5208",
           "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
           std::vector<uint8_t>(), false, absl::nullopt)));
-  EthTxMeta meta3(std::move(tx3));
+  EthTxMeta meta3(eth_account_id, std::move(tx3));
   meta3.set_sign_only(true);
   base::Value::Dict meta_value3 = meta3.ToValue();
   auto meta_from_value3 = eth_tx_state_manager_->ValueToEthTxMeta(meta_value3);

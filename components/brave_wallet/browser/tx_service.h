@@ -33,6 +33,7 @@ class ValueStoreFactory;
 
 namespace brave_wallet {
 
+class AccountResolverDelegate;
 class JsonRpcService;
 class BitcoinWalletService;
 class KeyringService;
@@ -253,6 +254,7 @@ class TxService : public KeyedService,
 
   scoped_refptr<value_store::ValueStoreFactory> store_factory_;
   std::unique_ptr<TxStorageDelegateImpl> delegate_;
+  std::unique_ptr<AccountResolverDelegate> account_resolver_delegate_;
 
   base::WeakPtrFactory<TxService> weak_factory_;
 };

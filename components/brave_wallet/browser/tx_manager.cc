@@ -59,16 +59,10 @@ void TxManager::GetTransactionInfo(const std::string& chain_id,
   std::move(callback).Run(meta->ToTransactionInfo());
 }
 
-void TxManager::GetAllTransactionInfo(
+std::vector<mojom::TransactionInfoPtr> TxManager::GetAllTransactionInfo(
     const absl::optional<std::string>& chain_id,
-    const absl::optional<std::string>& from,
-    GetAllTransactionInfoCallback callback) {
-  if (from.has_value() && from->empty()) {
-    std::move(callback).Run(std::vector<mojom::TransactionInfoPtr>());
-    return;
-  }
-
-  std::vector<std::unique_ptr<TxMeta>> metas =
+    const absl::optional<mojom::AccountIdPtr>& from) {
+  auto metas =
       tx_state_manager_->GetTransactionsByStatus(chain_id, absl::nullopt, from);
 
   // Convert vector of TxMeta to vector of TransactionInfo
@@ -78,7 +72,7 @@ void TxManager::GetAllTransactionInfo(
       [](const std::unique_ptr<TxMeta>& m) -> mojom::TransactionInfoPtr {
         return m->ToTransactionInfo();
       });
-  std::move(callback).Run(std::move(tis));
+  return tis;
 }
 
 void TxManager::RejectTransaction(const std::string& chain_id,

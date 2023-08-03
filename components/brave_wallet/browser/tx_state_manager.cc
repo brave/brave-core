@@ -8,7 +8,9 @@
 #include <utility>
 
 #include "base/json/values_util.h"
+#include "base/strings/string_util.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -29,9 +31,8 @@ constexpr size_t kMaxRejectedTxNum = 500;
 
 }  // namespace
 
-// static
-bool TxStateManager::ValueToTxMeta(const base::Value::Dict& value,
-                                   TxMeta* meta) {
+bool TxStateManager::ValueToBaseTxMeta(const base::Value::Dict& value,
+                                       TxMeta* meta) {
   const std::string* id = value.FindString("id");
   if (!id) {
     return false;
@@ -43,11 +44,14 @@ bool TxStateManager::ValueToTxMeta(const base::Value::Dict& value,
     return false;
   }
   meta->set_status(static_cast<mojom::TransactionStatus>(*status));
-  const std::string* from = value.FindString("from");
-  if (!from) {
+  const std::string* from_account_id = value.FindString("from_account_id");
+  const std::string* from_address = value.FindString("from");
+  auto account_id = account_resolver_delegate_->ResolveAccountId(
+      from_account_id, from_address);
+  if (!account_id) {
     return false;
   }
-  meta->set_from(*from);
+  meta->set_from(std::move(account_id));
 
   const base::Value* created_time = value.Find("created_time");
   if (!created_time) {
@@ -109,14 +113,22 @@ bool TxStateManager::ValueToTxMeta(const base::Value::Dict& value,
   return true;
 }
 
-TxStateManager::TxStateManager(PrefService* prefs, TxStorageDelegate* delegate)
-    : prefs_(prefs), delegate_(delegate), weak_factory_(this) {
+TxStateManager::TxStateManager(
+    PrefService* prefs,
+    TxStorageDelegate* delegate,
+    AccountResolverDelegate* account_resolver_delegate)
+    : prefs_(prefs),
+      delegate_(delegate),
+      account_resolver_delegate_(account_resolver_delegate),
+      weak_factory_(this) {
   DCHECK(delegate);
 }
 
 TxStateManager::~TxStateManager() = default;
 
 bool TxStateManager::AddOrUpdateTx(const TxMeta& meta) {
+  DCHECK(meta.from());
+
   if (!delegate_->IsInitialized()) {
     return false;
   }
@@ -188,7 +200,16 @@ bool TxStateManager::WipeTxs() {
 std::vector<std::unique_ptr<TxMeta>> TxStateManager::GetTransactionsByStatus(
     const absl::optional<std::string>& chain_id,
     const absl::optional<mojom::TransactionStatus>& status,
-    const absl::optional<std::string>& from) {
+    const mojom::AccountIdPtr& from) {
+  DCHECK(from);
+  return GetTransactionsByStatus(chain_id, status,
+                                 absl::make_optional(from.Clone()));
+}
+
+std::vector<std::unique_ptr<TxMeta>> TxStateManager::GetTransactionsByStatus(
+    const absl::optional<std::string>& chain_id,
+    const absl::optional<mojom::TransactionStatus>& status,
+    const absl::optional<mojom::AccountIdPtr>& from) {
   std::vector<std::unique_ptr<TxMeta>> result;
   if (!delegate_->IsInitialized()) {
     return result;

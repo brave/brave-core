@@ -27,7 +27,9 @@ class FilTxMeta;
 
 class FilTxStateManager : public TxStateManager {
  public:
-  FilTxStateManager(PrefService* prefs, TxStorageDelegate* delegate);
+  FilTxStateManager(PrefService* prefs,
+                    TxStorageDelegate* delegate,
+                    AccountResolverDelegate* account_resolver_delegate);
   ~FilTxStateManager() override;
   FilTxStateManager(const FilTxStateManager&) = delete;
   FilTxStateManager operator=(const FilTxStateManager&) = delete;
