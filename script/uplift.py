@@ -138,7 +138,7 @@ def parse_args():
                         help='comma seperated list of GitHub logins to mark as assignee',
                         default=None)
     parser.add_argument('--uplift-to',
-                        help='starting at nightly (master), which channels to uplift to. Comma separated list. ex: beta,release',
+                        help='which channels to uplift to. Comma separated list. ex: beta,release',
                         default='beta')
     parser.add_argument('--uplift-using-pr',
                         help='link to already existing pull request (number) to use as a reference for uplifting',
