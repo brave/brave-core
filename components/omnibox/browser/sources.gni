@@ -34,6 +34,7 @@ brave_components_omnibox_browser_sources = [
 brave_components_omnibox_browser_deps = [
   "//base",
   "//brave/components/brave_search_conversion",
+  "//brave/components/commander/common/buildflags",
   "//brave/components/constants",
   "//brave/components/vector_icons",
   "//components/prefs",
