@@ -100,6 +100,21 @@ URLSanitizerService::~URLSanitizerService() = default;
 URLSanitizerService::MatchItem::MatchItem() = default;
 URLSanitizerService::MatchItem::~MatchItem() = default;
 
+#if BUILDFLAG(IS_ANDROID)
+mojo::PendingRemote<url_sanitizer::mojom::UrlSanitizerService>
+URLSanitizerService::MakeRemote() {
+  mojo::PendingRemote<url_sanitizer::mojom::UrlSanitizerService> remote;
+  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
+  return remote;
+}
+#endif  // # BUILDFLAG(IS_ANDROID)
+
+void URLSanitizerService::SanitizeURL(const std::string& url,
+                                      SanitizeURLCallback callback) {
+  const auto& sanitized_url = SanitizeURL(GURL(url));
+  std::move(callback).Run(sanitized_url.spec());
+}
+
 URLSanitizerService::MatchItem::MatchItem(extensions::URLPatternSet in,
                                           extensions::URLPatternSet ex,
                                           base::flat_set<std::string> prm)
@@ -120,8 +135,9 @@ void URLSanitizerService::UpdateMatchers(
 }
 
 GURL URLSanitizerService::SanitizeURL(const GURL& initial_url) {
-  if (matchers_.empty() || !initial_url.SchemeIsHTTPOrHTTPS())
+  if (matchers_.empty() || !initial_url.SchemeIsHTTPOrHTTPS()) {
     return initial_url;
+  }
   GURL url = initial_url;
   for (const auto& it : matchers_) {
     if (!it->include.MatchesURL(url) || it->exclude.MatchesURL(url))
