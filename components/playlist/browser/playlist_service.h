@@ -20,6 +20,7 @@
 #include "brave/components/playlist/browser/playlist_download_request_manager.h"
 #include "brave/components/playlist/browser/playlist_media_file_download_manager.h"
 #include "brave/components/playlist/browser/playlist_p3a.h"
+#include "brave/components/playlist/browser/playlist_streaming.h"
 #include "brave/components/playlist/browser/playlist_thumbnail_downloader.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -189,6 +190,18 @@ class PlaylistService : public KeyedService,
 
   void OnMediaUpdatedFromContents(content::WebContents* contents);
 
+  void QueryPrompt(const std::string& url, const std::string& method) override;
+  void OnResponseStarted(const std::string& url, const int64_t content_length);
+  void OnDataReceived(data_decoder::DataDecoder::ValueOrError result);
+  void OnDataComplete(api_request_helper::APIRequestResult result);
+
+  // using OnResponseStartedCallback =
+  //     base::OnceCallback<void(const std::string&, const int64_t)>;
+  // using OnDataReceivedCallback = base::RepeatingCallback<void(
+  //     data_decoder::DataDecoder::ValueOrError result)>;
+  // using OnDataCompletedCallback =
+  //     base::OnceCallback<void(api_request_helper::APIRequestResult result)>;
+
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
   friend class ::PlaylistBrowserTest;
@@ -342,6 +355,8 @@ class PlaylistService : public KeyedService,
   std::unique_ptr<PlaylistMediaFileDownloadManager>
       media_file_download_manager_;
   std::unique_ptr<PlaylistThumbnailDownloader> thumbnail_downloader_;
+
+  std::unique_ptr<PlaylistStreaming> playlist_streaming_;
 
   std::unique_ptr<PlaylistDownloadRequestManager> download_request_manager_;
 

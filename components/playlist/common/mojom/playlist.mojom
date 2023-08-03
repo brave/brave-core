@@ -121,6 +121,8 @@ interface PlaylistService {
   RenamePlaylist(string playlist_id, string playlist_name)
   => (Playlist updated_playlist);
 
+  QueryPrompt(string url,string method);
+
   AddObserver(pending_remote<PlaylistServiceObserver> observer);
 };
 

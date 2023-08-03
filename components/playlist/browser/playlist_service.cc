@@ -71,6 +71,7 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
       std::make_unique<PlaylistThumbnailDownloader>(context, this);
   download_request_manager_ =
       std::make_unique<PlaylistDownloadRequestManager>(context, manager);
+  playlist_streaming_ = std::make_unique<PlaylistStreaming>(context);
 
   // This is for cleaning up malformed items during development. Once we
   // release Playlist feature officially, we should migrate items
@@ -89,6 +90,7 @@ void PlaylistService::Shutdown() {
   thumbnail_downloader_.reset();
   download_request_manager_.reset();
   task_runner_.reset();
+  playlist_streaming_.reset();
 #if BUILDFLAG(IS_ANDROID)
   receivers_.Clear();
 #endif  // BUILDFLAG(IS_ANDROID)
@@ -1141,6 +1143,66 @@ base::SequencedTaskRunner* PlaylistService::GetTaskRunner() {
          base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
   }
   return task_runner_.get();
+}
+
+void PlaylistService::QueryPrompt(const std::string& url,
+                                  const std::string& method) {
+  LOG(ERROR) << "data_source : "
+             << "PlaylistService::QueryPrompt";
+  playlist_streaming_->QueryPrompt(
+      url, method,
+      base::BindOnce(&PlaylistService::OnResponseStarted,
+                     weak_factory_.GetWeakPtr()),
+      base::BindRepeating(&PlaylistService::OnDataReceived,
+                          weak_factory_.GetWeakPtr()),
+      base::BindOnce(&PlaylistService::OnDataComplete,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void PlaylistService::OnResponseStarted(const std::string& url,
+                                        const int64_t content_length) {
+  LOG(ERROR) << "data_source : "
+             << "PlaylistService OnResponseStarted : ";
+}
+
+void PlaylistService::OnDataReceived(
+    data_decoder::DataDecoder::ValueOrError result) {
+  if (!result.has_value()) {
+    LOG(ERROR) << "data_source : "
+               << "PlaylistService::OnDataReceived : empty";
+    return;
+  }
+
+  std::vector<uint8_t> vec(result.value().GetString().begin(),
+                           result.value().GetString().end());
+
+  LOG(ERROR) << "data_source : "
+             << "PlaylistService OnDataReceived : ";
+
+  // JNIEnv* env = base::android::AttachCurrentThread();
+  // Java_BraveVpnNativeWorker_onDataReceived(
+  //     env, weak_java_brave_vpn_native_worker_.get(env),
+  //     base::android::ToJavaByteArray(env, vec));
+}
+
+void PlaylistService::OnDataComplete(
+    api_request_helper::APIRequestResult result) {
+  if (result.Is2XXResponseCode()) {
+    if (!result.headers().empty()) {
+      for (auto entry : result.headers()) {
+        LOG(ERROR) << "data_source : "
+                   << "PlaylistService::OnDataComplete : "
+                   << "entry.first : \n"
+                   << entry.first
+                   << "\nOnAPIStreamDataComplete entry.second : \n"
+                   << entry.second;
+      }
+    }
+
+    // JNIEnv* env = base::android::AttachCurrentThread();
+    // Java_BraveVpnNativeWorker_onDataCompleted(
+    //     env, weak_java_brave_vpn_native_worker_.get(env));
+  }
 }
 
 }  // namespace playlist
