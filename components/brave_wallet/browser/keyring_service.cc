@@ -1103,6 +1103,8 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
     RestoreKeyring(mojom::kBitcoinKeyring84TestId, mnemonic, password, false);
   }
 
+  ResetAllAccountInfosCache();
+
   account_discovery_manager_ =
       std::make_unique<AccountDiscoveryManager>(json_rpc_service_, this);
   account_discovery_manager_->StartDiscovery();
@@ -2583,7 +2585,7 @@ void KeyringService::ResetAllAccountInfosCache() {
 }
 
 const std::vector<mojom::AccountInfoPtr>& KeyringService::GetAllAccountInfos() {
-  if (!account_info_cache_) {
+  if (!account_info_cache_ || account_info_cache_->empty()) {
     account_info_cache_ =
         std::make_unique<std::vector<mojom::AccountInfoPtr>>();
     for (const auto& keyring_id : GetSupportedKeyrings()) {
