@@ -14,6 +14,7 @@
 #include "base/scoped_observation.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_federated/config_utils.h"
 #include "brave/components/brave_federated/eligibility_service_observer.h"
 #include "brave/components/brave_federated/task/model.h"
@@ -54,7 +55,7 @@ class LearningService : public EligibilityObserver {
 
   void HandleTasksOrReconnect(TaskList tasks, base::TimeDelta reconnect);
 
-  void OnTaskResultComputed(absl::optional<TaskResult> result);
+  void OnTaskResultComputed(base::expected<TaskResult, std::string> result);
   void OnUploadTaskResults(TaskResultResponse response);
 
   scoped_refptr<network::SharedURLLoaderFactory>

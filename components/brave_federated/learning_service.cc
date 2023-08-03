@@ -20,14 +20,13 @@
 #include "brave/components/brave_federated/util/synthetic_dataset.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/resource/resource_bundle.h"
 
 namespace brave_federated {
 
 namespace {
 
-absl::optional<TaskResult> LoadDatasetAndRunTask(
+base::expected<TaskResult, std::string> LoadDatasetAndRunTask(
     std::unique_ptr<FederatedTaskHandler> task_runner) {
   auto synthetic_dataset = std::make_unique<SyntheticDataset>(500);
   SyntheticDataset test_dataset = synthetic_dataset->SeparateTestData(50);
@@ -184,9 +183,10 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks,
                      weak_factory_.GetWeakPtr()));
 }
 
-void LearningService::OnTaskResultComputed(absl::optional<TaskResult> result) {
+void LearningService::OnTaskResultComputed(
+    base::expected<TaskResult, std::string> result) {
   if (!result.has_value()) {
-    VLOG(1) << "FL: Task result computation failed";
+    VLOG(1) << result.error();
     return;
   }
 
