@@ -10,7 +10,7 @@ class ResourceDownloaderTests: XCTestCase {
   func testSuccessfulResourceDownload() throws {
     // Given
     let expectation = XCTestExpectation(description: "Test downloading resources")
-    let resource = BraveS3Resource.genericContentBlockingBehaviors
+    let resource = BraveS3Resource.adBlockRules
     let firstDownloader = ResourceDownloader<BraveS3Resource>(networkManager: NetworkManager.makeNetworkManager(
       for: [resource], statusCode: 200, etag: "123"
     ))
@@ -54,7 +54,7 @@ class ResourceDownloaderTests: XCTestCase {
   func testFailedResourceDownload() throws {
     // Given
     let expectation = XCTestExpectation(description: "Test downloading resource")
-    let resource = BraveS3Resource.genericContentBlockingBehaviors
+    let resource = BraveS3Resource.adBlockRules
     let downloader = ResourceDownloader<BraveS3Resource>(networkManager: NetworkManager.makeNetworkManager(
       for: [resource], statusCode: 404
     ))

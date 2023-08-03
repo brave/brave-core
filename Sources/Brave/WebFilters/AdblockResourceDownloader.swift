@@ -14,20 +14,11 @@ public actor AdblockResourceDownloader: Sendable {
   
   /// All the different resources this downloader handles
   static let handledResources: [BraveS3Resource] = [
-    .genericContentBlockingBehaviors, .debounceRules
+    .adBlockRules, .debounceRules
   ]
   
   /// A list of old resources that need to be deleted so as not to take up the user's disk space
   private static let deprecatedResources: [BraveS3Resource] = [.deprecatedGeneralCosmeticFilters]
-  
-  /// A formatter that is used to format a version number
-  private let fileVersionDateFormatter: DateFormatter = {
-    let dateFormatter = DateFormatter()
-    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-    dateFormatter.dateFormat = "yyyy.MM.dd.HH.mm.ss"
-    dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-    return dateFormatter
-  }()
   
   /// The resource downloader that will be used to download all our resoruces
   private let resourceDownloader: ResourceDownloader<BraveS3Resource>
@@ -128,10 +119,8 @@ public actor AdblockResourceDownloader: Sendable {
   
   /// Handle the downloaded file url for the given resource
   private func handle(downloadResult: ResourceDownloader<BraveS3Resource>.DownloadResult, for resource: BraveS3Resource, allowedModes: Set<ContentBlockerManager.BlockingMode>) async {
-    let version = fileVersionDateFormatter.string(from: downloadResult.date)
-    
     switch resource {
-    case .genericContentBlockingBehaviors:
+    case .adBlockRules:
       let blocklistType = ContentBlockerManager.BlocklistType.generic(.blockAds)
       let modes = await blocklistType.allowedModes.asyncFilter { mode in
         guard allowedModes.contains(mode) else { return false }
@@ -146,18 +135,22 @@ public actor AdblockResourceDownloader: Sendable {
           return true
         }
       }
+
+      // No modes are needed to be compiled
+      guard !modes.isEmpty else { return }
       
       do {
-        guard !modes.isEmpty else { return }
-        guard let encodedContentRuleList = try resource.downloadedString() else {
+        guard let filterSet = try resource.downloadedString() else {
           assertionFailure("This file was downloaded successfully so it should not be nil")
           return
         }
         
+        var wasTruncated: Bool = false
+        let encodedContentRuleList = AdblockEngine.contentBlockerRules(fromFilterSet: filterSet, truncated: &wasTruncated)
+        
         // try to compile
         try await ContentBlockerManager.shared.compile(
-          encodedContentRuleList: encodedContentRuleList,
-          for: .generic(.blockAds),
+          encodedContentRuleList: encodedContentRuleList, for: blocklistType,
           modes: modes
         )
       } catch {
@@ -183,7 +176,7 @@ public actor AdblockResourceDownloader: Sendable {
         ContentBlockerManager.log.error("Failed to setup debounce rules: \(error.localizedDescription)")
       }
       
-    default:
+    case .deprecatedGeneralCosmeticFilters:
       assertionFailure("Should not be handling this resource type")
     }
   }

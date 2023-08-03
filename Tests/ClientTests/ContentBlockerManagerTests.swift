@@ -35,7 +35,7 @@ class ContentBlockerManagerTests: XCTestCase {
       }
       
       do {
-        try await manager.compile(encodedContentRuleList: encodedContentRuleList, for: .filterList(uuid: filterListUUID, isAlwaysAggressive: false))
+        try await manager.compile(encodedContentRuleList: encodedContentRuleList, for: .filterList(componentId: filterListUUID, isAlwaysAggressive: false))
         try await manager.compile(encodedContentRuleList: encodedContentRuleList, for: .customFilterList(uuid: filterListCustomUUID))
       } catch {
         XCTFail(error.localizedDescription)
@@ -73,8 +73,8 @@ class ContentBlockerManagerTests: XCTestCase {
       
       // Check removing the filter lists
       do {
-        try await manager.removeRuleLists(for: .filterList(uuid: filterListUUID, isAlwaysAggressive: false), force: true)
-        try await manager.removeRuleLists(for: .customFilterList(uuid: filterListCustomUUID), force: true)
+        try await manager.removeRuleLists(for: .filterList(componentId: filterListUUID, isAlwaysAggressive: false))
+        try await manager.removeRuleLists(for: .customFilterList(uuid: filterListCustomUUID))
       } catch {
         XCTFail(error.localizedDescription)
       }

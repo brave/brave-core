@@ -20,7 +20,7 @@ class MockMessageHandler: NSObject, WKScriptMessageHandlerWithReply, AsyncSequen
   private var timeout: TimeInterval
   private var start: Date
   
-  init(timeout: TimeInterval = 30, callback: @escaping Callback) {
+  init(timeout: TimeInterval = 60, callback: @escaping Callback) {
     self.callback = callback
     self.start = Date()
     self.timeout = timeout

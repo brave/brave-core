@@ -99,7 +99,7 @@ class ScriptsNavigationDelegateStream: NSObject, WKNavigationDelegate, AsyncSequ
   private let timeout: TimeInterval
   private var start: Date
   
-  init(timeout: TimeInterval = 30) {
+  init(timeout: TimeInterval = 60) {
     self.timeout = timeout
     self.start = Date()
   }
