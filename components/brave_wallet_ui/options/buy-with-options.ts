@@ -11,6 +11,7 @@ import SardineIconLight from '../assets/svg-icons/sardine-logo-light.svg'
 import SardineIconDark from '../assets/svg-icons/sardine-logo-dark.svg'
 import TransakIcon from '../assets/svg-icons/transak-logo.svg'
 import StripeIcon from '../assets/svg-icons/stripe-logo.svg'
+import CoinbaseIcon from '../assets/svg-icons/coinbase-logo.svg'
 import { isStripeSupported } from '../utils/asset-utils'
 
 function getBuyOptions (): BuyOption[] {
@@ -36,7 +37,15 @@ function getBuyOptions (): BuyOption[] {
       : SardineIconLight,
     name: getLocale('braveWalletBuySardineName'),
     description: getLocale('braveWalletBuySardineDescription')
-  }]
+  },
+  {
+    id: BraveWallet.OnRampProvider.kCoinbase,
+    actionText: getLocale('braveWalletBuyWithCoinbase'),
+    icon: CoinbaseIcon,
+    name: getLocale('braveWalletBuyCoinbaseName'),
+    description: getLocale('braveWalletBuyCoinbaseDescription')
+  }
+]
 
   if(isStripeSupported()) {
     buyOptions.push({
