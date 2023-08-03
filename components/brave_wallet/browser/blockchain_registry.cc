@@ -279,25 +279,17 @@ void BlockchainRegistry::GetTopDapps(const std::string& chain_id,
   std::move(callback).Run(std::move(dapps_copy));
 }
 
-std::string BlockchainRegistry::GetCoingeckoId(
+absl::optional<std::string> BlockchainRegistry::GetCoingeckoId(
     const std::string& chain_id,
     const std::string& contract_address) {
   const auto& chain_id_lower = base::ToLowerASCII(chain_id);
-  if (!coingecko_ids_map_.contains(chain_id_lower)) {
-    return "";
+  const auto& contract_address_lower = base::ToLowerASCII(contract_address);
+
+  if (!coingecko_ids_map_.contains({chain_id_lower, contract_address_lower})) {
+    return absl::nullopt;
   }
 
-  if (coingecko_ids_map_[chain_id_lower].contains(contract_address)) {
-    return coingecko_ids_map_[chain_id_lower][contract_address];
-  }
-
-  if (coingecko_ids_map_[chain_id_lower].contains(
-          base::ToLowerASCII(contract_address))) {
-    return coingecko_ids_map_[chain_id_lower]
-                             [base::ToLowerASCII(contract_address)];
-  }
-
-  return "";
+  return coingecko_ids_map_[{chain_id_lower, contract_address_lower}];
 }
 
 void BlockchainRegistry::GetCoingeckoId(const std::string& chain_id,

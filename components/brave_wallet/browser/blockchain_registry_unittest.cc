@@ -959,19 +959,20 @@ TEST(BlockchainRegistryUnitTest, GetCoingeckoId) {
   // Result: ❌
   EXPECT_EQ(
       registry->GetCoingeckoId(mojom::kOptimismMainnetChainId, "0xdeadbeef"),
-      "");
+      absl::nullopt);
 
   // Chain: ❌
   // Contract: ✅
   // Result: ❌
   EXPECT_EQ(registry->GetCoingeckoId(
                 "0xdeadbeef", "0x7f5c764cbc14f9669b88837ca1490cca17c31607"),
-            "");
+            absl::nullopt);
 
   // Chain: ❌
   // Contract: ❌
   // Result: ❌
-  EXPECT_EQ(registry->GetCoingeckoId("0xdeadbeef", "0xcafebabe"), "");
+  EXPECT_EQ(registry->GetCoingeckoId("0xdeadbeef", "0xcafebabe"),
+            absl::nullopt);
 
   // Chain: ✅ (wrong case)
   // Contract: ✅
@@ -997,12 +998,12 @@ TEST(BlockchainRegistryUnitTest, GetCoingeckoId) {
       "usd-coin");
 
   // Chain: ✅
-  // Contract: ❌ (wrong case Solana)
-  // Result: ❌
+  // Contract: ✅ (wrong case Solana)
+  // Result: ✅
   EXPECT_EQ(
       registry->GetCoingeckoId(mojom::kSolanaMainnet,
                                "epjfwdd5aufqssqem2qn1xzybapc8g4weggkzwytdt1v"),
-      "");
+      "usd-coin");
 }
 
 }  // namespace brave_wallet

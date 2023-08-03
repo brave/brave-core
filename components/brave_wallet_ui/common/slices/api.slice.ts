@@ -777,7 +777,7 @@ export function createWalletApi () {
         }
       ),
       getCoingeckoId: query<
-        string,
+        string | undefined,
         Pick<BraveWallet.BlockchainToken, 'chainId' | 'contractAddress'>
       >({
         queryFn: async (
@@ -793,7 +793,7 @@ export function createWalletApi () {
           )
 
           return {
-            data: coingeckoId
+            data: coingeckoId ?? undefined
           }
         },
         providesTags: (res, err, { chainId, contractAddress }) =>

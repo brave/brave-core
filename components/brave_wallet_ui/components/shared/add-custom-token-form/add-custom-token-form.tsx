@@ -206,7 +206,6 @@ export const AddCustomTokenForm = (props: Props) => {
     }
     onHideForm()
   }, [
-    matchedCoingeckoId,
     tokenContractAddress,
     foundTokenInfoByContractAddress,
     customAssetsNetwork,

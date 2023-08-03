@@ -793,32 +793,23 @@ TEST(BlockchainListParseUnitTest, ParseCoingeckoIdsMap) {
 
   ASSERT_TRUE(coingecko_ids_map);
 
-  ASSERT_TRUE(coingecko_ids_map->contains("0x1"));
-  ASSERT_TRUE((*coingecko_ids_map)["0x1"].contains(
-      "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
-  EXPECT_EQ(
-      (*coingecko_ids_map)["0x1"]["0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"],
-      "0chain");
+  EXPECT_EQ((*coingecko_ids_map)[std::pair(
+                "0x1", "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78")],
+            "0chain");
 
-  ASSERT_TRUE((*coingecko_ids_map)["0x1"].contains(
-      "0xe41d2489571d322189246dafa5ebde1f4699f498"));
-  EXPECT_EQ(
-      (*coingecko_ids_map)["0x1"]["0xe41d2489571d322189246dafa5ebde1f4699f498"],
-      "0x");
+  EXPECT_EQ((*coingecko_ids_map)[std::pair(
+                "0x1", "0xe41d2489571d322189246dafa5ebde1f4699f498")],
+            "0x");
 
-  ASSERT_TRUE((*coingecko_ids_map)["0x1"].contains(
-      "0x5a3e6a77ba2f983ec0d371ea3b475f8bc0811ad5"));
-  EXPECT_EQ(
-      (*coingecko_ids_map)["0x1"]["0x5a3e6a77ba2f983ec0d371ea3b475f8bc0811ad5"],
-      "0x0-ai-ai-smart-contract");
+  EXPECT_EQ((*coingecko_ids_map)[std::pair(
+                "0x1", "0x5a3e6a77ba2f983ec0d371ea3b475f8bc0811ad5")],
+            "0x0-ai-ai-smart-contract");
 
-  ASSERT_TRUE((*coingecko_ids_map)["0x1"].contains(
-      "0xfcdb9e987f9159dab2f507007d5e3d10c510aa70"));
-  EXPECT_EQ(
-      (*coingecko_ids_map)["0x1"]["0xfcdb9e987f9159dab2f507007d5e3d10c510aa70"],
-      "0x1-tools-ai-multi-tool");
+  EXPECT_EQ((*coingecko_ids_map)[std::pair(
+                "0x1", "0xfcdb9e987f9159dab2f507007d5e3d10c510aa70")],
+            "0x1-tools-ai-multi-tool");
 
-  EXPECT_FALSE(coingecko_ids_map->contains("0x2"));
+  EXPECT_FALSE(coingecko_ids_map->contains({"0x2", "0xdeadbeef"}));
 }
 
 }  // namespace brave_wallet

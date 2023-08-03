@@ -16,7 +16,7 @@
 namespace brave_wallet {
 
 using CoingeckoIdsMap =
-    base::flat_map<std::string, base::flat_map<std::string, std::string>>;
+    base::flat_map<std::pair<std::string, std::string>, std::string>;
 
 using TokenListMap =
     base::flat_map<std::string, std::vector<mojom::BlockchainTokenPtr>>;

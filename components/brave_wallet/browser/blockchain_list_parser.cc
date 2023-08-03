@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_schemas.h"
 
+#include <map>
 #include <tuple>
 #include <utility>
 
@@ -716,13 +717,9 @@ absl::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json) {
     return absl::nullopt;
   }
 
-  CoingeckoIdsMap coingecko_ids_map;
+  std::map<std::pair<std::string, std::string>, std::string> coingecko_ids_map;
   for (const auto chain_id_record : *chain_ids) {
-    const auto& chain_id = chain_id_record.first;
-
-    if (!coingecko_ids_map.contains(chain_id)) {
-      coingecko_ids_map[chain_id] = {};
-    }
+    const auto& chain_id = base::ToLowerASCII(chain_id_record.first);
 
     const auto* contract_addresses = chain_id_record.second.GetIfDict();
     if (!contract_addresses) {
@@ -730,17 +727,18 @@ absl::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json) {
     }
 
     for (const auto contract_address_record : *contract_addresses) {
-      const auto& contract_address = contract_address_record.first;
+      const auto& contract_address =
+          base::ToLowerASCII(contract_address_record.first);
       const auto* coingecko_id = contract_address_record.second.GetIfString();
       if (!coingecko_id) {
         return absl::nullopt;
       }
 
-      coingecko_ids_map[chain_id][contract_address] = *coingecko_id;
+      coingecko_ids_map[{chain_id, contract_address}] = *coingecko_id;
     }
   }
 
-  return coingecko_ids_map;
+  return CoingeckoIdsMap(coingecko_ids_map.begin(), coingecko_ids_map.end());
 }
 
 }  // namespace brave_wallet

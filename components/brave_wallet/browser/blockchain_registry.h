@@ -47,8 +47,9 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
                                               mojom::CoinType coin,
                                               const std::string& address);
   std::vector<mojom::NetworkInfoPtr> GetPrepopulatedNetworks();
-  std::string GetCoingeckoId(const std::string& chain_id,
-                             const std::string& contract_address);
+  absl::optional<std::string> GetCoingeckoId(
+      const std::string& chain_id,
+      const std::string& contract_address);
 
   // BlockchainRegistry interface methods
   void GetTokenByAddress(const std::string& chain_id,
