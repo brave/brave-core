@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { useSelector } from 'react-redux'
-import { RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps, Redirect } from 'react-router-dom'
 
 import VideoFrame from './videoFrame'
 import PlaylistItem from './playlistItem'
@@ -26,6 +26,12 @@ export default function PlaylistPlayer ({
     applicationState =>
       !!applicationState.playlistData?.lastPlayerState?.playing
   )
+
+  if (!playlist) {
+    // After deleting a playlist from header, this could happen. In this case,
+    // redirect to the index page.
+    return <Redirect to='/' />
+  }
 
   return (
     <>

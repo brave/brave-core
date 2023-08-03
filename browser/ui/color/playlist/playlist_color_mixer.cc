@@ -28,6 +28,10 @@ void AddThemeColorMixer(ui::ColorProvider* provider,
       leo::GetColor(leo::Color::kColorTextSecondary, theme)};
   mixer[kColorBravePlaylistMoveDialogCreatePlaylistAndMoveTitle] = {
       leo::GetColor(leo::Color::kColorTextPrimary, theme)};
+  mixer[kColorBravePlaylistNewPlaylistDialogNameLabel] = {
+      leo::GetColor(leo::Color::kColorTextPrimary, theme)};
+  mixer[kColorBravePlaylistNewPlaylistDialogItemsLabel] = {
+      leo::GetColor(leo::Color::kColorTextSecondary, theme)};
 }
 
 }  // namespace playlist

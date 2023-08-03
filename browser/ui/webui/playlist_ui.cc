@@ -10,6 +10,7 @@
 #include "base/feature_list.h"
 #include "base/strings/strcat.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/browser/ui/playlist/playlist_dialogs.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
@@ -72,8 +73,9 @@ class UntrustedPlayerUI : public ui::UntrustedWebUIController {
 bool PlaylistUI::ShouldBlockPlaylistWebUI(
     content::BrowserContext* browser_context,
     const GURL& url) {
-  if (url.host_piece() != kPlaylistHost)
+  if (url.host_piece() != kPlaylistHost) {
     return false;
+  }
 
   return !PlaylistServiceFactory::IsPlaylistEnabled(browser_context);
 }
@@ -116,8 +118,9 @@ PlaylistUI::~PlaylistUI() = default;
 void PlaylistUI::BindInterface(
     mojo::PendingReceiver<playlist::mojom::PageHandlerFactory>
         pending_receiver) {
-  if (page_handler_factory_receiver_.is_bound())
+  if (page_handler_factory_receiver_.is_bound()) {
     page_handler_factory_receiver_.reset();
+  }
 
   page_handler_factory_receiver_.Bind(std::move(pending_receiver));
 }
@@ -125,17 +128,28 @@ void PlaylistUI::BindInterface(
 void PlaylistUI::CreatePageHandler(
     mojo::PendingRemote<playlist::mojom::PlaylistServiceObserver>
         service_observer,
-    mojo::PendingReceiver<playlist::mojom::PlaylistService> pending_service) {
+    mojo::PendingReceiver<playlist::mojom::PlaylistService> pending_service,
+    mojo::PendingReceiver<playlist::mojom::PlaylistNativeUI> native_ui) {
   DCHECK(service_observer.is_valid());
 
   auto* service = playlist::PlaylistServiceFactory::GetForBrowserContext(
       Profile::FromWebUI(web_ui()));
+  native_ui_receivers_.Add(this, std::move(native_ui));
   service_receivers_.Add(service, std::move(pending_service));
   service->AddObserver(std::move(service_observer));
 
   // When WebUI calls this, mark that the page can be shown on sidebar.
-  if (embedder_)
+  if (embedder_) {
     embedder_->ShowUI();
+  }
+}
+
+void PlaylistUI::ShowCreatePlaylistUI() {
+  playlist::ShowCreatePlaylistDialog(web_ui()->GetWebContents());
+}
+
+void PlaylistUI::ShowRemovePlaylistUI(const std::string& playlist_id) {
+  playlist::ShowRemovePlaylistDialog(web_ui()->GetWebContents(), playlist_id);
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(PlaylistUI)

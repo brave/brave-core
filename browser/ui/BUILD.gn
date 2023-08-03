@@ -309,26 +309,12 @@ source_set("ui") {
       "views/omnibox/brave_search_conversion_promotion_view.h",
       "views/page_action/brave_page_action_icon_container_view.cc",
       "views/page_action/brave_page_action_icon_container_view.h",
-      "views/playlist/playlist_action_bubble_view.cc",
-      "views/playlist/playlist_action_bubble_view.h",
-      "views/playlist/playlist_action_dialogs.cc",
-      "views/playlist/playlist_action_dialogs.h",
-      "views/playlist/selectable_list_view.cc",
-      "views/playlist/selectable_list_view.h",
-      "views/playlist/thumbnail_view.cc",
-      "views/playlist/thumbnail_view.h",
       "views/rounded_separator.cc",
       "views/rounded_separator.h",
       "views/side_panel/brave_side_panel.cc",
       "views/side_panel/brave_side_panel.h",
       "views/side_panel/brave_side_panel_resize_widget.cc",
       "views/side_panel/brave_side_panel_resize_widget.h",
-      "views/side_panel/playlist/playlist_contents_wrapper.cc",
-      "views/side_panel/playlist/playlist_contents_wrapper.h",
-      "views/side_panel/playlist/playlist_side_panel_coordinator.cc",
-      "views/side_panel/playlist/playlist_side_panel_coordinator.h",
-      "views/side_panel/playlist/playlist_side_panel_web_view.cc",
-      "views/side_panel/playlist/playlist_side_panel_web_view.h",
       "views/tabs/brave_browser_tab_strip_controller.cc",
       "views/tabs/brave_browser_tab_strip_controller.h",
       "views/tabs/brave_compound_tab_container.cc",
@@ -392,13 +378,6 @@ source_set("ui") {
       sources += [
         "views/update_recommended_message_box_mac.h",
         "views/update_recommended_message_box_mac.mm",
-      ]
-    }
-
-    if (enable_playlist_webui) {
-      sources += [
-        "views/playlist/playlist_action_icon_view.cc",
-        "views/playlist/playlist_action_icon_view.h",
       ]
     }
 
@@ -1026,6 +1005,24 @@ source_set("ui") {
 
   if (enable_playlist_webui) {
     sources += [
+      "playlist/playlist_dialogs.cc",
+      "playlist/playlist_dialogs.h",
+      "views/playlist/playlist_action_bubble_view.cc",
+      "views/playlist/playlist_action_bubble_view.h",
+      "views/playlist/playlist_action_dialogs.cc",
+      "views/playlist/playlist_action_dialogs.h",
+      "views/playlist/playlist_action_icon_view.cc",
+      "views/playlist/playlist_action_icon_view.h",
+      "views/playlist/selectable_list_view.cc",
+      "views/playlist/selectable_list_view.h",
+      "views/playlist/thumbnail_view.cc",
+      "views/playlist/thumbnail_view.h",
+      "views/side_panel/playlist/playlist_contents_wrapper.cc",
+      "views/side_panel/playlist/playlist_contents_wrapper.h",
+      "views/side_panel/playlist/playlist_side_panel_coordinator.cc",
+      "views/side_panel/playlist/playlist_side_panel_coordinator.h",
+      "views/side_panel/playlist/playlist_side_panel_web_view.cc",
+      "views/side_panel/playlist/playlist_side_panel_web_view.h",
       "webui/playlist_ui.cc",
       "webui/playlist_ui.h",
     ]

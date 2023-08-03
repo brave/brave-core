@@ -108,7 +108,9 @@
     E_CPONLY(kColorBravePlaylistSelectedBackground)                   \
     E_CPONLY(kColorBravePlaylistListBorder)                           \
     E_CPONLY(kColorBravePlaylistMoveDialogDescription)                \
-    E_CPONLY(kColorBravePlaylistMoveDialogCreatePlaylistAndMoveTitle)
+    E_CPONLY(kColorBravePlaylistMoveDialogCreatePlaylistAndMoveTitle) \
+    E_CPONLY(kColorBravePlaylistNewPlaylistDialogNameLabel)           \
+    E_CPONLY(kColorBravePlaylistNewPlaylistDialogItemsLabel)
 
 #define BRAVE_COLOR_IDS               \
     BRAVE_COMMON_COLOR_IDS            \

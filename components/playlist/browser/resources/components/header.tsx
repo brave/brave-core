@@ -14,6 +14,7 @@ import { color, font, spacing } from '@brave/leo/tokens/css'
 import PlaylistInfo from './playlistInfo'
 import { usePlaylist } from '../reducers/states'
 import ContextualMenuAnchorButton from './contextualMenu'
+import { getPlaylistAPI } from '../api/api'
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -38,6 +39,7 @@ const ColoredIcon = styled(Icon)<{ color: string }>`
 `
 
 const ProductNameContainer = styled.div`
+  flex-grow: 1;
   display: flex;
   gap: 4px;
   font: ${font.primary.heading.h4};
@@ -60,8 +62,68 @@ const StyledPlaylistInfo = styled(PlaylistInfo)`
   flex-grow: 1;
 `
 
+const LeoButtonContainer = styled.button`
+  display: contents;
+`
+
+function NewPlaylistButton () {
+  return (
+    <LeoButtonContainer
+      onClick={() => {
+        getPlaylistAPI().showCreatePlaylistUI()
+      }}
+    >
+      <ColoredIcon name='plus-add' color={color.icon.default} />
+    </LeoButtonContainer>
+  )
+}
+
+function SettingButton () {
+  return (
+    <LeoButtonContainer onClick={() => {}}>
+      <ColoredIcon name='settings' color={color.icon.default} />
+    </LeoButtonContainer>
+  )
+}
+
 export default function Header ({ playlistId }: HeaderProps) {
   const playlist = usePlaylist(playlistId)
+
+  const contextualMenuItems = playlist && [
+    {
+      name: 'Edit',
+      iconName: 'list-bullet-default',
+      onClick: () => {}
+    },
+    { name: 'Share', iconName: 'share-macos', onClick: () => {} },
+    {
+      name: 'Keep for offline playing',
+      iconName: 'cloud-download',
+      onClick: () => {}
+    },
+    {
+      name: 'Remove played contents',
+      iconName: 'list-checks',
+      onClick: () => {}
+    }
+  ]
+
+  const isDefaultPlaylist = playlist?.id === 'default'
+  if (contextualMenuItems && !isDefaultPlaylist) {
+    contextualMenuItems.unshift({
+      name: 'Rename',
+      iconName: 'edit-box',
+      onClick: () => {}
+    })
+    contextualMenuItems.push({
+      name: 'Delete playlist',
+      iconName: 'trash',
+      onClick: () => {
+        getPlaylistAPI().showRemovePlaylistUI(playlistId!)
+      }
+    })
+  }
+
   return (
     <HeaderContainer>
       {playlist ? (
@@ -70,35 +132,16 @@ export default function Header ({ playlistId }: HeaderProps) {
             <ColoredIcon name='arrow-left' color={color.icon.default} />
           </StyledLink>
           <StyledPlaylistInfo
-            isDefaultPlaylist={playlist.id === 'default'}
+            isDefaultPlaylist={isDefaultPlaylist}
             itemCount={playlist.items.length}
             playlistName={playlist.name}
             totalDuration={0}
             nameColor={color.text.primary}
             detailColor={color.text.secondary}
           />
-          <ContextualMenuAnchorButton
-            items={[
-              { name: 'Rename', iconName: 'edit-box', onClick: () => {} },
-              {
-                name: 'Edit',
-                iconName: 'list-bullet-default',
-                onClick: () => {}
-              },
-              { name: 'Share', iconName: 'share-macos', onClick: () => {} },
-              {
-                name: 'Keep for offline playing',
-                iconName: 'cloud-download',
-                onClick: () => {}
-              },
-              {
-                name: 'Remove played contents',
-                iconName: 'list-checks',
-                onClick: () => {}
-              },
-              { name: 'Delete playlist', iconName: 'trash', onClick: () => {} }
-            ]}
-          />
+          {contextualMenuItems && (
+            <ContextualMenuAnchorButton items={contextualMenuItems} />
+          )}
         </>
       ) : (
         <>
@@ -107,6 +150,8 @@ export default function Header ({ playlistId }: HeaderProps) {
             <ColoredSpan color={color.text.secondary}>Brave</ColoredSpan>
             <ColoredSpan color={color.text.primary}>Playlist</ColoredSpan>
           </ProductNameContainer>
+          <NewPlaylistButton />
+          <SettingButton />
         </>
       )}
     </HeaderContainer>

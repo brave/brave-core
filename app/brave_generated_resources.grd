@@ -1191,8 +1191,28 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_PLAYLIST_MOVE_MEDIA_DIALOG_SELECTED_ITEMS" desc="Shows how many items are about to be moved">
           <ph name="NUM_ITEMS">$1<ex>4</ex></ph> items selected
         </message>
-      </if>
-
+        <message name="IDS_PLAYLIST_REMOVE_PLAYLIST_DIALOG_TITLE" desc="Window title for a dialog to remove playlist">
+          Delete playlist
+        </message>
+        <message name="IDS_PLAYLIST_REMOVE_PLAYLIST_DIALOG_DESCRIPTION" desc="Warning message for a dialog to remove playlist">
+          Are you sure you want to delete this playlist and all its contents? This action cannot be undone.
+        </message>
+        <message name="IDS_PLAYLIST_REMOVE_PLAYLIST_DIALOG_OK" desc="A label for 'OK' button for a dialog to remove playlist" >
+          Delete
+        </message>
+        <message name="IDS_PLAYLIST_NEW_PLAYLIST_DIALOG_TITLE" desc="Window title for a dialog to create a new Playlist folder" >
+          New playlist
+        </message>
+        <message name="IDS_PLAYLIST_NEW_PLAYLIST_DIALOG_NAME_TEXTFIELD" desc="A lable for a textfield to specify a name for a new Paylist folder" >
+         Playlist name
+        </message>
+        <message name="IDS_PLAYLIST_NEW_PLAYLIST_DIALOG_SELECTABLE_ITEMS" desc="A lable for a list of items from the default Playlist folder">
+          Add from your Play later folder
+        </message>
+        <message name="IDS_PLAYLIST_NEW_PLAYLIST_DIALOG_OK" desc="A label for 'OK' button for a dialog to create a new playlist">
+          Create
+        </message>
+      </if> <!-- enable_playlist_webui -->
       <!--Add new items to the appropriate sections above -->
     </messages>
   </release>

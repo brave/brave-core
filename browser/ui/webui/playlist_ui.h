@@ -25,7 +25,8 @@ class GURL;
 namespace playlist {
 
 class PlaylistUI : public ui::UntrustedWebUIController,
-                   public playlist::mojom::PageHandlerFactory {
+                   public playlist::mojom::PageHandlerFactory,
+                   public playlist::mojom::PlaylistNativeUI {
  public:
   static bool ShouldBlockPlaylistWebUI(content::BrowserContext* browser_context,
                                        const GURL& url);
@@ -49,12 +50,19 @@ class PlaylistUI : public ui::UntrustedWebUIController,
   void CreatePageHandler(
       mojo::PendingRemote<playlist::mojom::PlaylistServiceObserver>
           service_observer,
-      mojo::PendingReceiver<playlist::mojom::PlaylistService> service) override;
+      mojo::PendingReceiver<playlist::mojom::PlaylistService> service,
+      mojo::PendingReceiver<playlist::mojom::PlaylistNativeUI> native_ui)
+      override;
+
+  // playlist::mojom::NativeUI:
+  void ShowCreatePlaylistUI() override;
+  void ShowRemovePlaylistUI(const std::string& playlist_id) override;
 
  private:
   base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;
 
   mojo::ReceiverSet<playlist::mojom::PlaylistService> service_receivers_;
+  mojo::ReceiverSet<playlist::mojom::PlaylistNativeUI> native_ui_receivers_;
 
   mojo::Receiver<playlist::mojom::PageHandlerFactory>
       page_handler_factory_receiver_{this};
