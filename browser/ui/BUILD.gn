@@ -576,6 +576,7 @@ source_set("ui") {
     ]
     if (is_win) {
       deps += [
+        "//brave/components/brave_vpn/common/win",
         "//brave/components/brave_vpn/common/wireguard",
         "//brave/components/brave_vpn/common/wireguard/win",
       ]
