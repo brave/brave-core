@@ -91,8 +91,8 @@ export const localeStrings = {
   connectAccountNoProviders: 'To start earning BAT, you need to connect a custodial account to Brave Rewards. Unfortunately, there\'s no custodian available in your region, so earning isn\'t available at this time. However, you\'ll still be automatically supporting creators by using Rewards.',
   learnMore: 'Learn more',
   newTabAdCountLabel: 'New tab page ads',
-  notificationAdCountLabel: 'Push notifications',
-  newsAdCountLabel: 'Brave News',
+  notificationAdCountLabel: 'Notification ads',
+  newsAdCountLabel: 'Brave News ads',
   newsAdInfo: 'Brave News contains ads that cannot be independently disabled.',
   newsAdInfoDisabled: 'Brave News is currently disabled.',
 
