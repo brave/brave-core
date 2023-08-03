@@ -11,10 +11,10 @@ import org.objectweb.asm.ClassVisitor;
  * Adapter, used to make some fields from upstream's PasswordAccessReauthenticationHelper be public
  */
 public class BravePasswordAccessReauthenticationHelperClassAdapter extends BraveClassVisitor {
-    static String sHelperClassName = "org/chromium/chrome/browser/password_manager/settings/"
-            + "PasswordAccessReauthenticationHelper";
-    static String sBraveHelperClassName = "org/chromium/chrome/browser/sync/settings/"
-            + "BravePasswordAccessReauthenticationHelper";
+    static String sHelperClassName =
+            "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper"; // presubmit: ignore-long-line
+    static String sBraveHelperClassName =
+            "org/chromium/chrome/browser/sync/settings/BravePasswordAccessReauthenticationHelper";
 
     BravePasswordAccessReauthenticationHelperClassAdapter(ClassVisitor visitor) {
         super(visitor);
