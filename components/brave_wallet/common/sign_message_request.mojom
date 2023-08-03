@@ -32,7 +32,7 @@ struct SIWEMessage {
   string? statement;
   url.mojom.Url uri;
   uint32 version;
-  string chain_id;
+  uint64 chain_id;
   string nonce;
   // These ISO 8601 format strings are only used for displaying, no need to
   // convert it to base::Time

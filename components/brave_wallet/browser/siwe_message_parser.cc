@@ -255,13 +255,18 @@ mojom::SIWEMessagePtr SIWEMessageParser::Parse(const std::string& message) {
         }
         state_ = State::kChainId;
         break;
-      case State::kChainId:
+      case State::kChainId: {
+        std::string chain_id_str;
         if (!FillStringField(&tokenizer, token, kChainIdToken, true,
-                             result->chain_id)) {
+                             chain_id_str)) {
+          return {};
+        }
+        if (!base::StringToUint64(chain_id_str, &result->chain_id)) {
           return {};
         }
         state_ = State::kNonce;
         break;
+      }
       case State::kNonce:
         if (!FillStringField(&tokenizer, token, kNonceToken, true,
                              result->nonce)) {

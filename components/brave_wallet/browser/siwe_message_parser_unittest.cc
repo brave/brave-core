@@ -148,7 +148,7 @@ TEST_F(SIWEMessageParserTest, Start) {
     EXPECT_FALSE(result->statement);
     EXPECT_EQ(result->uri, GURL(kExampleUri));
     EXPECT_EQ(result->version, 1u);
-    EXPECT_EQ(result->chain_id, "5");
+    EXPECT_EQ(result->chain_id, 5u);
     EXPECT_EQ(result->nonce, kExampleNonce);
     EXPECT_EQ(result->issued_at, kExampleISO8601Time);
     EXPECT_FALSE(result->expiration_time);
@@ -205,7 +205,7 @@ TEST_F(SIWEMessageParserTest, StatementError) {
     EXPECT_EQ(result->address, kExampleAddress);
     EXPECT_EQ(result->uri, GURL(kExampleUri));
     EXPECT_EQ(result->version, 1u);
-    EXPECT_EQ(result->chain_id, "5");
+    EXPECT_EQ(result->chain_id, 5u);
     EXPECT_EQ(result->nonce, kExampleNonce);
     EXPECT_EQ(result->issued_at, kExampleISO8601Time);
     EXPECT_FALSE(result->expiration_time);
@@ -306,6 +306,22 @@ TEST_F(SIWEMessageParserTest, VersionError) {
   }
 }
 
+TEST_F(SIWEMessageParserTest, ChainIdError) {
+  for (const auto& invalid_case : {
+           base::StrCat({chain_id_token(), "abc123", "\n"}),
+           base::StrCat({chain_id_token(), "0x1234", "\n"}),
+           base::StrCat({chain_id_token(), "-1234", "\n"}),
+           // std::numeric_limits<uint64_t>::max() + 1
+           base::StrCat({chain_id_token(), "18446744073709551616", "\n"}),
+       }) {
+    const std::string message =
+        base::StrCat({valid_version_prefix(), invalid_case});
+    SCOPED_TRACE(testing::Message() << "\"" << message << "\"");
+    EXPECT_FALSE(parser_.Parse(message));
+    EXPECT_EQ(parser_.state(), State::kChainId);
+  }
+}
+
 TEST_F(SIWEMessageParserTest, NonceError) {
   for (const auto& invalid_case : {
            base::StrCat({nonce_token(), "3289", "\n"}),  // less than 8 chars
@@ -359,7 +375,7 @@ TEST_F(SIWEMessageParserTest, OptionalStringFields) {
     EXPECT_FALSE(result->statement);
     EXPECT_EQ(result->uri, GURL(kExampleUri));
     EXPECT_EQ(result->version, 1u);
-    EXPECT_EQ(result->chain_id, "5");
+    EXPECT_EQ(result->chain_id, 5u);
     EXPECT_EQ(result->nonce, kExampleNonce);
     EXPECT_EQ(result->issued_at, kExampleISO8601Time);
     EXPECT_FALSE(result->resources);
@@ -405,7 +421,7 @@ TEST_F(SIWEMessageParserTest, OptionalResources) {
   EXPECT_FALSE(result->statement);
   EXPECT_EQ(result->uri, GURL(kExampleUri));
   EXPECT_EQ(result->version, 1u);
-  EXPECT_EQ(result->chain_id, "5");
+  EXPECT_EQ(result->chain_id, 5u);
   EXPECT_EQ(result->nonce, kExampleNonce);
   EXPECT_EQ(result->issued_at, kExampleISO8601Time);
   EXPECT_FALSE(result->expiration_time);

@@ -207,12 +207,8 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                                          const std::string& tx_meta_id,
                                          const std::string& error_message);
   void SignMessageInternal(const std::string& address,
-                           const std::string& domain,
-                           const std::string& message,
+                           mojom::SignDataUnionPtr sign_data,
                            std::vector<uint8_t>&& message_to_sign,
-                           const absl::optional<std::string>& domain_hash,
-                           const absl::optional<std::string>& primary_hash,
-                           bool is_eip712,
                            RequestCallback callback,
                            base::Value id);
   bool CheckAccountAllowed(const std::string& account,
