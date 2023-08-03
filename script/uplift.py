@@ -54,29 +54,35 @@ class PrConfig(object):
                     if sys.platform.startswith('win'):
                         npm_cmd = 'npm.cmd'
                     result = execute(
-                        [npm_cmd, 'config', 'get', 'BRAVE_GITHUB_TOKEN']).strip()
+                        [npm_cmd, 'config', 'get',
+                         'BRAVE_GITHUB_TOKEN']).strip()
                     if result == 'undefined':
-                        raise Exception(
-                            '`BRAVE_GITHUB_TOKEN` value not found!')
+                        raise Exception('`BRAVE_GITHUB_TOKEN` value not found!')
                     self.github_token = result
                 except Exception:
-                    print('[ERROR] no valid GitHub token was found either in npmrc or ' +
-                          'via environment variables (BRAVE_GITHUB_TOKEN)')
+                    print(
+                        '[ERROR] no valid GitHub token was found either in npmrc or '
+                        + 'via environment variables (BRAVE_GITHUB_TOKEN)')
                     return 1
             # if `--owners` is not provided, fall back to user owning token
-            self.parsed_owners = parse_user_logins(
-                self.github_token, args.owners, verbose=self.is_verbose)
+            self.parsed_owners = parse_user_logins(self.github_token,
+                                                   args.owners,
+                                                   verbose=self.is_verbose)
             if len(self.parsed_owners) == 0:
                 self.parsed_owners = [
-                    get_authenticated_user_login(self.github_token)]
-            self.labels = parse_labels(self.github_token, BRAVE_CORE_REPO,
-                                       args.labels, verbose=self.is_verbose)
+                    get_authenticated_user_login(self.github_token)
+                ]
+            self.labels = parse_labels(self.github_token,
+                                       BRAVE_CORE_REPO,
+                                       args.labels,
+                                       verbose=self.is_verbose)
             if self.is_verbose:
                 print('[INFO] config: ' + str(vars(self)))
             return 0
         except Exception as e:
             print(
-                '[ERROR] error returned from GitHub API while initializing config: ' + str(e))
+                '[ERROR] error returned from GitHub API while initializing config: '
+                + str(e))
             return 1
 
 
@@ -132,30 +138,47 @@ def validate_channel(channel):
 def parse_args():
     parser = argparse.ArgumentParser(
         description='create PRs for all branches given branch against master')
-    parser.add_argument('-g', '--gpgsign',
-                        help='GPG sign GitHub commit', action='store_true')
-    parser.add_argument('--owners',
-                        help='comma seperated list of GitHub logins to mark as assignee',
-                        default=None)
-    parser.add_argument('--uplift-to',
-                        help='which channels to uplift to. Comma separated list. ex: beta,release',
-                        default='beta')
-    parser.add_argument('--uplift-using-pr',
-                        help='link to already existing pull request (number) to use as a reference for uplifting',
-                        required=True)
-    parser.add_argument('--start-from',
-                        help='instead of starting from nightly (default), start from beta/release',
-                        default='beta')
-    parser.add_argument('-v', '--verbose', action='store_true',
+    parser.add_argument('-g',
+                        '--gpgsign',
+                        help='GPG sign GitHub commit',
+                        action='store_true')
+    parser.add_argument(
+        '--owners',
+        help='comma seperated list of GitHub logins to mark as assignee',
+        default=None)
+    parser.add_argument(
+        '--uplift-to',
+        help=
+        'which channels to uplift to. Comma separated list. ex: beta,release',
+        default='beta')
+    parser.add_argument(
+        '--uplift-using-pr',
+        help=
+        'link to already existing pull request (number) to use as a reference for uplifting',
+        required=True)
+    parser.add_argument(
+        '--start-from',
+        help=
+        'instead of starting from nightly (default), start from beta/release',
+        default='beta')
+    parser.add_argument('-v',
+                        '--verbose',
+                        action='store_true',
                         help='prints the output of the GitHub API calls')
-    parser.add_argument('-n', '--dry-run', action='store_true',
-                        help='don\'t actually create pull requests; just show a call would be made')
-    parser.add_argument('--labels',
-                        help='comma seperated list of labels to apply to each pull request',
-                        default=None)
-    parser.add_argument('--title',
-                        help='title to use (instead of inferring one from the first commit)',
-                        default=None)
+    parser.add_argument(
+        '-n',
+        '--dry-run',
+        action='store_true',
+        help=
+        'don\'t actually create pull requests; just show a call would be made')
+    parser.add_argument(
+        '--labels',
+        help='comma seperated list of labels to apply to each pull request',
+        default=None)
+    parser.add_argument(
+        '--title',
+        help='title to use (instead of inferring one from the first commit)',
+        default=None)
 
     return parser.parse_args()
 
@@ -226,8 +249,9 @@ def main():
             issues_fixed = parse_issues_fixed(response['body'])
 
         except Exception as e:
-            print('[ERROR] Error parsing or error returned from API when looking up pull request "' +
-                  str(args.uplift_using_pr) + '":\n' + str(e))
+            print(
+                '[ERROR] Error parsing or error returned from API when looking up pull request "'
+                + str(args.uplift_using_pr) + '":\n' + str(e))
             return 1
 
         # set starting point AHEAD of the PR provided
@@ -235,14 +259,16 @@ def main():
 
         # if PR was already merged, use the SHA it was PRed against
         if merged_at != 'None' and len(merged_at) > 0:
-            print('pr was already merged at ' + merged_at + '; using "' + top_level_sha +
-                  '" instead of "' + top_level_base + '"')
+            print('pr was already merged at ' + merged_at + '; using "' +
+                  top_level_sha + '" instead of "' + top_level_base + '"')
             top_level_base = top_level_sha
         else:
-            print('[WARNING] Pull request ' + str(pr_number) + ' has not been merged yet.')
+            print('[WARNING] Pull request ' + str(pr_number) +
+                  ' has not been merged yet.')
 
-        execute(['git', 'fetch', 'origin', 'pull/' +
-                args.uplift_using_pr + '/head'])
+        execute([
+            'git', 'fetch', 'origin', 'pull/' + args.uplift_using_pr + '/head'
+        ])
         # create local branch which matches the contents of the PR
         with scoped_cwd(BRAVE_CORE_ROOT):
             # check if branch exists already
@@ -253,26 +279,27 @@ def main():
                 branch_sha = ''
             if len(branch_sha) > 0:
                 # branch exists; reset it
-                print('branch "' + local_branch + '" exists; resetting to origin/' + head['ref'] +
-                      ' (' + head_sha + ')')
+                print('branch "' + local_branch +
+                      '" exists; resetting to origin/' + head['ref'] + ' (' +
+                      head_sha + ')')
                 execute(['git', 'checkout', local_branch])
                 execute(['git', 'reset', '--hard', head_sha])
             else:
                 # create the branch
-                print('creating branch "' + local_branch +
-                      '" using origin/' + head['ref'] + ' (' + head_sha + ')')
+                print('creating branch "' + local_branch + '" using origin/' +
+                      head['ref'] + ' (' + head_sha + ')')
                 execute(['git', 'checkout', '-b', local_branch, head_sha])
 
     # If title isn't set already, generate one from first commit
     local_branch = get_local_branch_name(BRAVE_CORE_ROOT)
     if not config.title and not args.uplift_using_pr:
-        config.title = get_title_from_first_commit(
-            BRAVE_CORE_ROOT, top_level_base)
+        config.title = get_title_from_first_commit(BRAVE_CORE_ROOT,
+                                                   top_level_base)
 
     # Create a branch for each channel
     print('\nCreating branches...')
-    fancy_print('NOTE: Commits are being detected by diffing "' +
-                local_branch + '" against "' + top_level_base + '"')
+    fancy_print('NOTE: Commits are being detected by diffing "' + local_branch +
+                '" against "' + top_level_base + '"')
     local_branches = {}
     branch = ''
     try:
@@ -281,26 +308,25 @@ def main():
                                    remote_branches[channel], local_branch, args)
             local_branches[channel] = branch
     except Exception as e:
-        print('[ERROR] cherry-pick failed for branch "' +
-              branch + '". Please resolve manually:\n' + str(e))
+        print('[ERROR] cherry-pick failed for branch "' + branch +
+              '". Please resolve manually:\n' + str(e))
         return 1
 
     print('\nPushing local branches to remote...')
-    push_branches_to_remote(BRAVE_CORE_ROOT, config.branches_to_push,
-                            dryrun=config.is_dryrun, token=config.github_token)
+    push_branches_to_remote(BRAVE_CORE_ROOT,
+                            config.branches_to_push,
+                            dryrun=config.is_dryrun,
+                            token=config.github_token)
 
     try:
         print('\nCreating the pull requests...')
         for channel in config.channels_to_process:
-            submit_pr(
-                channel,
-                top_level_base,
-                remote_branches[channel],
-                local_branches[channel],
-                issues_fixed)
+            submit_pr(channel, top_level_base, remote_branches[channel],
+                      local_branches[channel], issues_fixed)
         print('\nDone!')
     except Exception as e:
-        print('\n[ERROR] Unhandled error while creating pull request; ' + str(e))
+        print('\n[ERROR] Unhandled error while creating pull request; ' +
+              str(e))
         return 1
 
     return 0
@@ -341,8 +367,10 @@ def create_branch(channel, top_level_base, remote_base, local_branch, args):
 
     with scoped_cwd(BRAVE_CORE_ROOT):
         # get SHA for all commits (in order)
-        sha_list = execute(['git', 'log', compare_from + '..HEAD',
-                           '--pretty=format:%h', '--reverse'])
+        sha_list = execute([
+            'git', 'log', compare_from + '..HEAD', '--pretty=format:%h',
+            '--reverse'
+        ])
         sha_list = sha_list.split('\n')
         if len(sha_list) == 0:
             raise Exception('No changes detected!')
@@ -362,8 +390,8 @@ def create_branch(channel, top_level_base, remote_base, local_branch, args):
                 execute(['git', 'reset', '--hard', 'origin/' + remote_base])
             else:
                 # create the branch
-                print('(' + channel + ') creating "' +
-                      channel_branch + '" from ' + remote_base)
+                print('(' + channel + ') creating "' + channel_branch +
+                      '" from ' + remote_base)
                 execute(['git', 'checkout', remote_base])
                 execute(['git', 'pull', 'origin', remote_base])
                 execute(['git', 'checkout', '-b', channel_branch])
@@ -403,17 +431,16 @@ def create_branch(channel, top_level_base, remote_base, local_branch, args):
 def get_milestone_for_branch(channel_branch):
     global config
     if not config.milestones:
-        config.milestones = get_milestones(
-            config.github_token, BRAVE_CORE_REPO)
+        config.milestones = get_milestones(config.github_token, BRAVE_CORE_REPO)
     for milestone in config.milestones:
-        if (milestone['title'].startswith(channel_branch + ' - ') or
-           milestone['title'].startswith('Android ' + channel_branch + ' - ')):
+        if (milestone['title'].startswith(channel_branch + ' - ')
+                or milestone['title'].startswith('Android ' + channel_branch +
+                                                 ' - ')):
             return milestone['number']
     return None
 
 
-def submit_pr(channel, top_level_base, remote_base,
-              local_branch, issues_fixed):
+def submit_pr(channel, top_level_base, remote_base, local_branch, issues_fixed):
     global config
 
     milestone_number = get_milestone_for_branch(remote_base)
@@ -452,21 +479,35 @@ def submit_pr(channel, top_level_base, remote_base,
         pr_body += '- [ ] The associated issue milestone is set to the smallest version ' \
                     'that the changes is landed on.'
 
-    number = create_pull_request(config.github_token, BRAVE_CORE_REPO, pr_title, pr_body,
-                                    branch_src=local_branch, branch_dst=pr_dst,
-                                    open_in_browser=True, verbose=config.is_verbose, dryrun=config.is_dryrun)
+    number = create_pull_request(config.github_token,
+                                 BRAVE_CORE_REPO,
+                                 pr_title,
+                                 pr_body,
+                                 branch_src=local_branch,
+                                 branch_dst=pr_dst,
+                                 open_in_browser=True,
+                                 verbose=config.is_verbose,
+                                 dryrun=config.is_dryrun)
 
     # store the original PR number so that it can be referenced in uplifts
     if is_nightly(channel) or local_branch.startswith(top_level_base):
         config.master_pr_number = number
 
     # assign milestone / reviewer(s) / owner(s)
-    add_reviewers_to_pull_request(config.github_token, BRAVE_CORE_REPO, number,
-                                    team_reviewers=config.team_reviewers,
-                                    verbose=config.is_verbose, dryrun=config.is_dryrun)
-    set_issue_details(config.github_token, BRAVE_CORE_REPO, number, milestone_number,
-                        config.parsed_owners, config.labels,
-                        verbose=config.is_verbose, dryrun=config.is_dryrun)
+    add_reviewers_to_pull_request(config.github_token,
+                                  BRAVE_CORE_REPO,
+                                  number,
+                                  team_reviewers=config.team_reviewers,
+                                  verbose=config.is_verbose,
+                                  dryrun=config.is_dryrun)
+    set_issue_details(config.github_token,
+                      BRAVE_CORE_REPO,
+                      number,
+                      milestone_number,
+                      config.parsed_owners,
+                      config.labels,
+                      verbose=config.is_verbose,
+                      dryrun=config.is_dryrun)
     return 0
 
 
