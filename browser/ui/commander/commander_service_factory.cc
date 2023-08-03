@@ -36,7 +36,7 @@ CommanderServiceFactory::CommanderServiceFactory()
           ProfileSelections::Builder()
               .WithRegular(ProfileSelection::kOwnInstance)
               .WithGuest(ProfileSelection::kOwnInstance)
-              .WithSystem(ProfileSelection::kOwnInstance)
+              .WithSystem(ProfileSelection::kNone)
               .Build()) {}
 CommanderServiceFactory::~CommanderServiceFactory() = default;
 
