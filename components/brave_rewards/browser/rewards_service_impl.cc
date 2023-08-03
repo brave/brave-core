@@ -52,6 +52,7 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_database.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
@@ -326,6 +327,8 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
     greaselion_service_->AddObserver(this);
   }
 #endif
+
+  p3a::RecordAdTypesEnabled(profile_->GetPrefs());
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
@@ -369,9 +372,6 @@ void RewardsServiceImpl::Init(
 
   CheckPreferences();
   InitPrefChangeRegistrar();
-  p3a::RecordAdsEnabledDuration(
-      profile_->GetPrefs(), profile_->GetPrefs()->GetBoolean(
-                                brave_ads::prefs::kOptedInToNotificationAds));
 }
 
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
@@ -382,6 +382,11 @@ void RewardsServiceImpl::InitPrefChangeRegistrar() {
                           base::Unretained(this)));
   profile_pref_change_registrar_.Add(
       brave_ads::prefs::kOptedInToNotificationAds,
+      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
+                          base::Unretained(this)));
+  profile_pref_change_registrar_.Add(
+      ntp_background_images::prefs::
+          kNewTabPageShowSponsoredImagesBackgroundImage,
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
                           base::Unretained(this)));
 }
@@ -396,11 +401,10 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
     RecordBackendP3AStats();
   }
 
-  if (key == prefs::kAutoContributeEnabled ||
+  if (key == ntp_background_images::prefs::
+                 kNewTabPageShowSponsoredImagesBackgroundImage ||
       key == brave_ads::prefs::kOptedInToNotificationAds) {
-    p3a::RecordAdsEnabledDuration(
-        profile_->GetPrefs(), profile_->GetPrefs()->GetBoolean(
-                                  brave_ads::prefs::kOptedInToNotificationAds));
+    p3a::RecordAdTypesEnabled(profile_->GetPrefs());
   }
 
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -543,6 +547,7 @@ void RewardsServiceImpl::CreateRewardsWallet(
       }
 
       self->conversion_monitor_.RecordRewardsEnable();
+      p3a::RecordAdTypesEnabled(prefs);
 
       std::move(callback).Run(CreateRewardsWalletResult::kSuccess);
     };
@@ -1400,6 +1405,8 @@ void RewardsServiceImpl::OnStopEngineForCompleteReset(
   diagnostic_log_->Delete(base::BindOnce(
       &RewardsServiceImpl::OnDiagnosticLogDeletedForCompleteReset, AsWeakPtr(),
       std::move(callback)));
+
+  p3a::RecordAdTypesEnabled(profile_->GetPrefs());
 }
 
 void RewardsServiceImpl::OnDiagnosticLogDeletedForCompleteReset(

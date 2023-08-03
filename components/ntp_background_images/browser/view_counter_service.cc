@@ -126,9 +126,8 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
         brave_ads::mojom::NewTabPageAdEventType::kViewed,
         /*intentional*/ base::DoNothing());
 
-    if (ntp_p3a_helper_ &&
-        !prefs_->GetBoolean(brave_rewards::prefs::kEnabled)) {
-      // Should only report to P3A if ads are disabled, as required by spec.
+    if (ntp_p3a_helper_) {
+      // Should only report to P3A if rewards is disabled, as required by spec.
       ntp_p3a_helper_->RecordView(creative_instance_id);
     }
   }
@@ -334,7 +333,7 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
       brave_ads::mojom::NewTabPageAdEventType::kClicked,
       /*intentional*/ base::DoNothing());
 
-  if (ntp_p3a_helper_ && !prefs_->GetBoolean(brave_rewards::prefs::kEnabled)) {
+  if (ntp_p3a_helper_) {
     // Should only report to P3A if ads are disabled, as required by spec.
     ntp_p3a_helper_->RecordClickAndMaybeLand(creative_instance_id);
   }

@@ -45,7 +45,7 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Playlist.FirstTimeOffset",
     "Brave.Playlist.NewUserReturning",
     "Brave.Playlist.UsageDaysInWeek",
-    "Brave.Rewards.AdsEnabledDuration",
+    "Brave.Rewards.AdTypesEnabled",
     "Brave.Rewards.AutoContributionsState.3",
     "Brave.Rewards.EnabledSource",
     "Brave.Rewards.InlineTipTrigger",
