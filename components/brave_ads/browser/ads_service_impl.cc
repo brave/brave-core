@@ -269,10 +269,6 @@ AdsServiceImpl::AdsServiceImpl(
   g_brave_browser_process->resource_component()->AddObserver(this);
 
   rewards_service_->AddObserver(this);
-
-  if (ShouldAlwaysRunService()) {
-    RegisterResourceComponentsForDefaultLocale();
-  }
 }
 
 AdsServiceImpl::~AdsServiceImpl() {
@@ -503,9 +499,7 @@ void AdsServiceImpl::InitializeBatAdsCallback(const bool success) {
 
   is_bat_ads_initialized_ = true;
 
-  if (!ShouldAlwaysRunService()) {
-    RegisterResourceComponentsForDefaultLocale();
-  }
+  RegisterResourceComponentsForDefaultLocale();
 
   BackgroundHelper::GetInstance()->AddObserver(this);
 
