@@ -14,14 +14,19 @@ import {BaseMixin} from '../base_mixin.js'
 import {loadTimeData} from "../i18n_setup.js"
 import {getTemplate} from './brave_vpn_page.html.js'
 import {RelaunchMixin, RelaunchMixinInterface, RestartType} from '../relaunch_mixin.js'
-
+import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
+import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
 /**
  * 'settings-brave-vpn-page' is the settings page containing
  * brave's vpn features.
  */
 const SettingsBraveVpnPageElementBase =
-  PrefsMixin(BaseMixin(RelaunchMixin(PolymerElement))) as {
-    new(): PolymerElement & PrefsMixinInterface & RelaunchMixinInterface
+  PrefsMixin(BaseMixin(I18nMixin(WebUiListenerMixin(RelaunchMixin(PolymerElement))))) as {
+    new(): PolymerElement &
+           PrefsMixinInterface &
+           RelaunchMixinInterface &
+           WebUiListenerMixinInterface &
+           I18nMixinInterface
   }
 
 export class SettingsBraveVpnPageElement
@@ -40,18 +45,41 @@ export class SettingsBraveVpnPageElement
       prefs: {
         type: Object,
         notify: true,
-      }
+      },
+      toggleWireguardSubLabel_: String,
+      shouldShowRestart_: Boolean,
     }
   }
 
-  private initialProtocolValue_: boolean;
+  private initialProtocolValue_: Boolean;
+  private toggleWireguardSubLabel_: String;
+  private braveVpnConnected_: Boolean = false;
+  private shouldShowRestart_: Boolean = false;
 
   override ready() {
     super.ready();
-    this.initialProtocolValue_ =
-      this.getPref('brave.brave_vpn.wireguard_enabled').value
+    this.initialProtocolValue_ = this.getCurrentPrefValue()
+    this.updateState()
+    this.addWebUiListener('brave-vpn-state-change', (connected: boolean) => {
+      console.log('connected:', connected)
+      this.braveVpnConnected_ = connected
+      if (this.braveVpnConnected_) {
+        this.setPrefValue('brave.brave_vpn.wireguard_enabled', this.initialProtocolValue_)
+      }
+      this.updateState()
+    })
   }
-
+  private getCurrentPrefValue(): boolean {
+    return this.getPref('brave.brave_vpn.wireguard_enabled').value
+  }
+  private updateState() {
+    this.toggleWireguardSubLabel_ =
+      this.braveVpnConnected_ ? this.i18n('sublabelVpnConnected') : this.i18n('sublabelVpnDisconnected')
+    this.shouldShowRestart_ =
+        (this.initialProtocolValue_ !== this.getCurrentPrefValue()) &&
+        !this.braveVpnConnected_;
+    console.log('update state')
+  }
   private showVpnPage_(): boolean {
     return loadTimeData.getBoolean('isBraveVPNEnabled')
   }
@@ -60,10 +88,6 @@ export class SettingsBraveVpnPageElement
     // Prevent event from bubbling up to the toggle button.
     e.stopPropagation();
     this.performRestart(RestartType.RESTART);
-  }
-
-  private shouldShowRestart_(enabled: boolean): boolean {
-    return this.initialProtocolValue_ !== enabled;
   }
 }
 

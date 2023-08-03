@@ -13,9 +13,11 @@
 
     <settings-toggle-button id="toggleWireguardButton"
         pref="{{prefs.brave.brave_vpn.wireguard_enabled}}"
-        label="$i18n{useWireguardLabel}">
-      <template is="dom-if" if="[[shouldShowRestart_(
-          prefs.brave.brave_vpn.wireguard_enabled.value)]]">
+        label="$i18n{useWireguardLabel}"
+        sub-label="[[toggleWireguardSubLabel_]]"
+        disabled="[[braveVpnConnected_]]"
+        on-change="updateState">
+      <template is="dom-if" if="[[shouldShowRestart_]]">
         <cr-button on-click="onRestartClick_" slot="more-actions">
           $i18n{restart}
         </cr-button>
