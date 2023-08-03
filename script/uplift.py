@@ -24,7 +24,7 @@ from lib.github import (GitHub, get_authenticated_user_login, parse_user_logins,
 
 class PrConfig(object):
     channel_names = channels()
-    channels_to_process = channels()
+    channels_to_process = []
     is_verbose = False
     is_dryrun = False
     branches_to_push = []
@@ -42,7 +42,9 @@ class PrConfig(object):
             self.is_dryrun = args.dry_run
             self.title = args.title
             # validate channel names
-            validate_channel(args.uplift_to)
+            for channel in args.uplift_to.split(","):
+                validate_channel(channel)
+                self.channels_to_process.append(channel)
             validate_channel(args.start_from)
             # read github token FIRST from CLI, then from .npmrc
             self.github_token = get_env_var('GITHUB_TOKEN')
@@ -136,7 +138,7 @@ def parse_args():
                         help='comma seperated list of GitHub logins to mark as assignee',
                         default=None)
     parser.add_argument('--uplift-to',
-                        help='starting at nightly (master), how far back to uplift the changes',
+                        help='starting at nightly (master), which channels to uplift to. Comma separated list. ex: beta,release',
                         default='beta')
     parser.add_argument('--uplift-using-pr',
                         help='link to already existing pull request (number) to use as a reference for uplifting',
@@ -205,13 +207,6 @@ def main():
     # also, find the branch which should be used for diffs (for cherry-picking)
     if not is_nightly(args.start_from):
         top_level_base = remote_branches[args.start_from]
-        try:
-            start_index = config.channel_names.index(args.start_from)
-            config.channels_to_process = config.channel_names[start_index:]
-        except Exception:
-            print('[ERROR] specified `start-from` value "' +
-                  args.start_from + '" not found in channel list')
-            return 1
 
     # optionally (instead of having a local branch), allow uplifting a specific PR
     # this pulls down the pr locally (in a special branch)
@@ -237,11 +232,6 @@ def main():
 
         # set starting point AHEAD of the PR provided
         config.master_pr_number = pr_number
-        if top_level_base == 'master':
-            config.channels_to_process = config.channel_names[1:]
-        elif len(config.channels_to_process) == 0:
-            branch_index = remote_branches.index(top_level_base)
-            config.channels_to_process = config.channel_names[branch_index:]
 
         # if PR was already merged, use the SHA it was PRed against
         if merged_at != 'None' and len(merged_at) > 0:
@@ -290,8 +280,6 @@ def main():
             branch = create_branch(channel, top_level_base,
                                    remote_branches[channel], local_branch, args)
             local_branches[channel] = branch
-            if channel == args.uplift_to:
-                break
     except Exception as e:
         print('[ERROR] cherry-pick failed for branch "' +
               branch + '". Please resolve manually:\n' + str(e))
@@ -310,8 +298,6 @@ def main():
                 remote_branches[channel],
                 local_branches[channel],
                 issues_fixed)
-            if channel == args.uplift_to:
-                break
         print('\nDone!')
     except Exception as e:
         print('\n[ERROR] Unhandled error while creating pull request; ' + str(e))
