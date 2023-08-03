@@ -87,13 +87,12 @@ v8::MaybeLocal<v8::Value> CallMethodOfObject(
 }
 
 v8::MaybeLocal<v8::Value> ExecuteScript(blink::WebLocalFrame* web_frame,
-                                        const std::string& script,
-                                        const std::string& name) {
+                                        const std::string& script) {
   if (web_frame->IsProvisional()) {
     return v8::MaybeLocal<v8::Value>();
   }
 
-  return brave::LoadScriptWithSafeBuiltins(web_frame, script, name);
+  return brave::LoadScriptWithSafeBuiltins(web_frame, script);
 }
 
 void SetProviderNonWritable(v8::Local<v8::Context> context,

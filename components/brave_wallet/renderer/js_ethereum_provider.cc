@@ -41,7 +41,6 @@ constexpr char kBraveEthereum[] = "braveEthereum";
 constexpr char kEthereum[] = "ethereum";
 constexpr char kEmit[] = "emit";
 constexpr char kIsBraveWallet[] = "isBraveWallet";
-constexpr char kEthereumProviderScript[] = "ethereum_provider.js";
 constexpr char kEthereumProxyHandlerScript[] = R"((function() {
   const handler = {
     get: (target, property, receiver) => {
@@ -61,7 +60,6 @@ constexpr char kEthereumProxyHandlerScript[] = R"((function() {
   };
   return handler;
 })())";
-constexpr char kEthereumProxyScript[] = "ethereum_proxy.js";
 constexpr char kIsMetaMask[] = "isMetaMask";
 constexpr char kMetaMask[] = "_metamask";
 constexpr char kIsUnlocked[] = "isUnlocked";
@@ -192,8 +190,8 @@ void JSEthereumProvider::Install(bool install_ethereum_provider,
   // JSEthereumProvider" error.
   blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
   v8::Local<v8::Proxy> ethereum_proxy;
-  auto ethereum_proxy_handler_val = ExecuteScript(
-      web_frame, kEthereumProxyHandlerScript, kEthereumProxyScript);
+  auto ethereum_proxy_handler_val =
+      ExecuteScript(web_frame, kEthereumProxyHandlerScript);
   v8::Local<v8::Object> ethereum_proxy_handler_obj =
       ethereum_proxy_handler_val.ToLocalChecked()
           ->ToObject(context)
@@ -240,10 +238,10 @@ void JSEthereumProvider::Install(bool install_ethereum_provider,
   SetOwnPropertyWritable(context, provider_object,
                          gin::StringToV8(isolate, kIsMetaMask), true);
 
-  ExecuteScript(web_frame,
-                LoadDataResource(
-                    IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS),
-                kEthereumProviderScript);
+  ExecuteScript(
+      web_frame,
+      LoadDataResource(
+          IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS));
 
   provider->BindRequestProviderListener();
   provider->AnnounceProvider();
