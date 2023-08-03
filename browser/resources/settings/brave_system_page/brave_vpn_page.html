@@ -16,7 +16,7 @@
         label="$i18n{useWireguardLabel}"
         sub-label="[[toggleWireguardSubLabel_]]"
         disabled="[[braveVpnConnected_]]"
-        on-change="updateState">
+        on-change="onChange_">
       <template is="dom-if" if="[[shouldShowRestart_]]">
         <cr-button on-click="onRestartClick_" slot="more-actions">
           $i18n{restart}

@@ -21,6 +21,7 @@ std::wstring GetBraveVpnWireguardServiceDisplayName();
 base::FilePath GetBraveVPNWireguardServiceInstallationPath(
     const base::FilePath& target_path,
     const base::Version& version);
+base::FilePath GetBraveVPNWireguardServiceExecutablePath();
 }  // namespace brave_vpn
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_SERVICE_DETAILS_H_

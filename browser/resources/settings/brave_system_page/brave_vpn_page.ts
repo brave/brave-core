@@ -15,13 +15,15 @@ import {loadTimeData} from "../i18n_setup.js"
 import {getTemplate} from './brave_vpn_page.html.js'
 import {RelaunchMixin, RelaunchMixinInterface, RestartType} from '../relaunch_mixin.js'
 import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
+import {BraveVPNBrowserProxy, BraveVPNBrowserProxyImpl} from './brave_vpn_browser_proxy.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
 /**
  * 'settings-brave-vpn-page' is the settings page containing
  * brave's vpn features.
  */
 const SettingsBraveVpnPageElementBase =
-  PrefsMixin(BaseMixin(I18nMixin(WebUiListenerMixin(RelaunchMixin(PolymerElement))))) as {
+  PrefsMixin(BaseMixin(I18nMixin(WebUiListenerMixin(RelaunchMixin(
+    PolymerElement))))) as {
     new(): PolymerElement &
            PrefsMixinInterface &
            RelaunchMixinInterface &
@@ -56,32 +58,64 @@ export class SettingsBraveVpnPageElement
   private braveVpnConnected_: Boolean = false;
   private shouldShowRestart_: Boolean = false;
 
+  private vpnBrowserProxy_: BraveVPNBrowserProxy =
+    BraveVPNBrowserProxyImpl.getInstance();
+
   override ready() {
     super.ready();
     this.initialProtocolValue_ = this.getCurrentPrefValue()
     this.updateState()
     this.addWebUiListener('brave-vpn-state-change', (connected: boolean) => {
-      console.log('connected:', connected)
       this.braveVpnConnected_ = connected
       if (this.braveVpnConnected_) {
-        this.setPrefValue('brave.brave_vpn.wireguard_enabled', this.initialProtocolValue_)
+        this.resetToInitialValue()
       }
       this.updateState()
     })
   }
+
   private getCurrentPrefValue(): boolean {
     return this.getPref('brave.brave_vpn.wireguard_enabled').value
   }
+
   private updateState() {
-    this.toggleWireguardSubLabel_ =
-      this.braveVpnConnected_ ? this.i18n('sublabelVpnConnected') : this.i18n('sublabelVpnDisconnected')
+    this.toggleWireguardSubLabel_ = this.braveVpnConnected_ ?
+      this.i18n('sublabelVpnConnected') : this.i18n('sublabelVpnDisconnected')
     this.shouldShowRestart_ =
         (this.initialProtocolValue_ !== this.getCurrentPrefValue()) &&
         !this.braveVpnConnected_;
-    console.log('update state')
   }
+
+  private resetToInitialValue() {
+    this.setPrefValue('brave.brave_vpn.wireguard_enabled',
+      this.initialProtocolValue_)
+  }
+
   private showVpnPage_(): boolean {
     return loadTimeData.getBoolean('isBraveVPNEnabled')
+  }
+
+  private isWireguardServiceRegistered(success: boolean) {
+    if (success)
+      return;
+    // Try to register it.
+    this.vpnBrowserProxy_.registerWireguardService().then(
+        (success: boolean) => {
+      if (!success) {
+        this.resetToInitialValue()
+        this.updateState()
+        return;
+      }
+    })
+  }
+
+  private onChange_() {
+    this.updateState();
+    if (!this.getCurrentPrefValue())
+      return
+    // If user enabled Wireguard service we have to check if it was registered.
+    this.vpnBrowserProxy_.isWireguardServiceRegistered().then(
+      this.isWireguardServiceRegistered.bind(this))
   }
 
   private onRestartClick_(e: Event) {

@@ -10,7 +10,6 @@
 
 #include "base/command_line.h"
 #include "base/files/file_path.h"
-#include "base/path_service.h"
 #include "base/process/launch.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
@@ -44,7 +43,6 @@
 #include "chrome/browser/ui/tabs/tab_utils.h"
 #include "chrome/common/pref_names.h"
 #include "components/tab_groups/tab_group_visual_data.h"
-#include "components/version_info/version_info.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/clipboard/clipboard_buffer.h"
@@ -93,13 +91,7 @@ namespace brave {
 namespace {
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
 void LaunchBraveVpnWireguardInInteractiveMode() {
-  base::FilePath exe_dir;
-  base::PathService::Get(base::DIR_EXE, &exe_dir);
-  auto executable_path =
-      version_info::IsOfficialBuild()
-          ? brave_vpn::GetBraveVPNWireguardServiceInstallationPath(
-                exe_dir, version_info::GetVersion())
-          : exe_dir.Append(brave_vpn::kBraveVpnWireguardServiceExecutable);
+  auto executable_path = brave_vpn::GetBraveVPNWireguardServiceExecutablePath();
   base::CommandLine interactive_cmd(executable_path);
   interactive_cmd.AppendSwitch(
       brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName);

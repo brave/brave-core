@@ -1,14 +1,38 @@
 /* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/settings/brave_vpn/brave_vpn_handler.h"
 
 #include <memory>
 
+#include "base/command_line.h"
+#include "base/files/file_path.h"
+#include "base/path_service.h"
+#include "base/process/launch.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#include "brave/components/brave_vpn/common/win/utils.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
+#include "components/version_info/version_info.h"
+
+namespace {
+
+constexpr char kBraveVpnServiceInstall[] = "install";
+
+bool ElevatedRegisterBraveVPNService() {
+  auto executable_path = brave_vpn::GetBraveVPNWireguardServiceExecutablePath();
+  base::CommandLine cmd(executable_path);
+  cmd.AppendSwitch(kBraveVpnServiceInstall);
+  base::LaunchOptions options = base::LaunchOptions();
+  options.wait = true;
+  options.elevated = true;
+  return base::LaunchProcess(cmd, options).IsValid();
+}
+
+}  // namespace
 
 BraveVpnHandler::BraveVpnHandler(Profile* profile) : profile_(profile) {
   auto* service = brave_vpn::BraveVpnServiceFactory::GetForProfile(profile);
@@ -24,10 +48,39 @@ void BraveVpnHandler::RegisterMessages() {
       "registerWireguardService",
       base::BindRepeating(&BraveVpnHandler::HandleRegisterWireguardService,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "isWireguardServiceRegistered",
+      base::BindRepeating(&BraveVpnHandler::HandleIsWireguardServiceRegistered,
+                          base::Unretained(this)));
 }
 
 void BraveVpnHandler::HandleRegisterWireguardService(
-    const base::Value::List& args) {}
+    const base::Value::List& args) {
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+       base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
+      base::BindOnce(&ElevatedRegisterBraveVPNService),
+      base::BindOnce(&BraveVpnHandler::OnWireguardServiceRegistered,
+                     weak_factory_.GetWeakPtr(), args[0].GetString()));
+}
+
+void BraveVpnHandler::OnWireguardServiceRegistered(
+    const std::string& callback_id,
+    bool success) {
+  AllowJavascript();
+  ResolveJavascriptCallback(callback_id, base::Value(success));
+}
+
+void BraveVpnHandler::HandleIsWireguardServiceRegistered(
+    const base::Value::List& args) {
+  AllowJavascript();
+
+  auto status = brave_vpn::GetWindowsServiceStatus(
+      brave_vpn::GetBraveVpnWireguardServiceName());
+
+  ResolveJavascriptCallback(args[0], base::Value(status.has_value()));
+}
 
 void BraveVpnHandler::OnConnectionStateChanged(
     brave_vpn::mojom::ConnectionState state) {

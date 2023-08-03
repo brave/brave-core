@@ -46,7 +46,11 @@ namespace wireguard {
 bool IsBraveVPNWireguardTunnelServiceRunning() {
   auto status =
       GetWindowsServiceStatus(GetBraveVpnWireguardTunnelServiceName());
-  return status == SERVICE_RUNNING || status == SERVICE_START_PENDING;
+  if (!status.has_value()) {
+    return false;
+  }
+  return status.value() == SERVICE_RUNNING ||
+         status.value() == SERVICE_START_PENDING;
 }
 
 absl::optional<std::string> CreateWireguardConfig(
