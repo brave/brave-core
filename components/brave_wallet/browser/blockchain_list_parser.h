@@ -19,10 +19,22 @@ using TokenListMap =
 using ChainList = std::vector<mojom::NetworkInfoPtr>;
 using DappListMap =
     base::flat_map<std::string, std::vector<brave_wallet::mojom::DappPtr>>;
+using OnRampTokensListMap =
+    base::flat_map<mojom::OnRampProvider,
+                   std::vector<mojom::BlockchainTokenPtr>>;
+using OffRampTokensListMap =
+    base::flat_map<mojom::OffRampProvider,
+                   std::vector<mojom::BlockchainTokenPtr>>;
 
 bool ParseTokenList(const std::string& json,
                     TokenListMap* token_list,
                     mojom::CoinType coin);
+absl::optional<OnRampTokensListMap> ParseOnRampTokensListMap(
+    const std::string& json);
+absl::optional<OffRampTokensListMap> ParseOffRampTokensListMap(
+    const std::string& json);
+absl::optional<std::vector<mojom::OnRampCurrency>> ParseOnRampCurrencyLists(
+    const std::string& json);
 std::string GetTokenListKey(mojom::CoinType coin, const std::string& chain_id);
 bool ParseChainList(const std::string& json, ChainList* chain_list);
 absl::optional<DappListMap> ParseDappLists(const std::string& json);

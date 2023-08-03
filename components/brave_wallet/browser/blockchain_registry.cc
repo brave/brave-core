@@ -57,6 +57,21 @@ void BlockchainRegistry::UpdateDappList(DappListMap dapp_lists) {
   dapp_lists_ = std::move(dapp_lists);
 }
 
+void BlockchainRegistry::UpdateOnRampTokenLists(
+    OnRampTokensListMap on_ramp_lists) {
+  on_ramp_token_lists_ = std::move(on_ramp_lists);
+}
+
+void BlockchainRegistry::UpdateOffRampTokenLists(
+    OffRampTokensListMap on_ramp_lists) {
+  off_ramp_token_lists_ = std::move(on_ramp_lists);
+}
+
+void BlockchainRegistry::UpdateOnRampCurrenciesLists(
+    std::vector<mojom::OnRampCurrency> on_ramp_currencies_list) {
+  on_ramp_currencies_list_ = std::move(on_ramp_currencies_list);
+}
+
 void BlockchainRegistry::GetTokenByAddress(const std::string& chain_id,
                                            mojom::CoinType coin,
                                            const std::string& address,
@@ -129,20 +144,14 @@ std::vector<mojom::BlockchainTokenPtr> BlockchainRegistry::GetBuyTokens(
                                                      providers.end());
 
   for (const auto& provider : provider_set) {
-    const std::vector<mojom::BlockchainToken>* buy_tokens = nullptr;
-    if (provider == mojom::OnRampProvider::kRamp) {
-      buy_tokens = &GetRampBuyTokens();
-    } else if (provider == mojom::OnRampProvider::kSardine) {
-      buy_tokens = &GetSardineBuyTokens();
-    } else if (provider == mojom::OnRampProvider::kTransak) {
-      buy_tokens = &GetTransakBuyTokens();
-    } else {
+    if (!on_ramp_token_lists_.contains(provider)) {
       continue;
     }
-
-    for (const auto& token : *buy_tokens) {
-      if (token.chain_id == chain_id) {
-        blockchain_buy_tokens.push_back(mojom::BlockchainToken::New(token));
+    const std::vector<mojom::BlockchainTokenPtr>& buy_tokens =
+        on_ramp_token_lists_[provider];
+    for (const auto& token : buy_tokens) {
+      if (token->chain_id == chain_id) {
+        blockchain_buy_tokens.push_back(token.Clone());
       }
     }
   }
@@ -194,34 +203,36 @@ void BlockchainRegistry::GetSellTokens(mojom::OffRampProvider provider,
                                        const std::string& chain_id,
                                        GetSellTokensCallback callback) {
   std::vector<mojom::BlockchainTokenPtr> blockchain_sell_tokens;
-  const std::vector<mojom::BlockchainToken>* sell_tokens = nullptr;
-  if (provider == mojom::OffRampProvider::kRamp) {
-    sell_tokens = &GetRampSellTokens();
-  }
 
-  if (sell_tokens == nullptr) {
+  auto sell_tokens_itr = off_ramp_token_lists_.find(provider);
+
+  // Check if the provider is found in the map
+  if (sell_tokens_itr == off_ramp_token_lists_.end()) {
     std::move(callback).Run(std::move(blockchain_sell_tokens));
     return;
   }
 
-  for (const auto& token : *sell_tokens) {
-    if (token.chain_id != chain_id) {
+  // Now we have a vector of BlockchainTokens for the provider
+  auto& sell_tokens = sell_tokens_itr->second;
+
+  // Filter out tokens that do not belong to the specified chain_id
+  for (const auto& token : sell_tokens) {
+    if (token->chain_id != chain_id) {
       continue;
     }
 
-    blockchain_sell_tokens.push_back(mojom::BlockchainToken::New(token));
+    blockchain_sell_tokens.push_back(mojom::BlockchainToken::New(*token));
   }
+
   std::move(callback).Run(std::move(blockchain_sell_tokens));
 }
 
 void BlockchainRegistry::GetOnRampCurrencies(
     GetOnRampCurrenciesCallback callback) {
   std::vector<mojom::OnRampCurrencyPtr> currencies;
-  const std::vector<mojom::OnRampCurrency>* onRampCurrencies =
-      &GetOnRampCurrenciesList();
 
-  for (const auto& currency : *onRampCurrencies) {
-    currencies.push_back(mojom::OnRampCurrency::New(currency));
+  for (const auto& currency : on_ramp_currencies_list_) {
+    currencies.push_back(currency.Clone());
   }
   std::move(callback).Run(std::move(currencies));
 }
