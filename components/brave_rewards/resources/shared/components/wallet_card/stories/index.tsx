@@ -58,6 +58,7 @@ export function Wallet () {
       <WithThemeVariables>
         <div style={{ width: '375px' }}>
           <WalletCard
+            userType={'connected'}
             balance={optional(0)}
             isGrandfatheredUser={false}
             externalWallet={externalWallet && null}

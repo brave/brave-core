@@ -272,12 +272,15 @@ export function AdsPanel () {
     return (
       <>
         <style.paymentStatus>
-          <PaymentStatusView
-            minEarnings={adsData.adsMinEarningsLastMonth}
-            maxEarnings={adsData.adsMaxEarningsLastMonth}
-            nextPaymentDate={adsData.adsNextPaymentDate}
-            providerPayoutStatus={providerPayoutStatus}
-          />
+          {
+            data.userType === 'connected' &&
+              <PaymentStatusView
+                minEarnings={adsData.adsMinEarningsLastMonth}
+                maxEarnings={adsData.adsMaxEarningsLastMonth}
+                nextPaymentDate={adsData.adsNextPaymentDate}
+                providerPayoutStatus={providerPayoutStatus}
+              />
+          }
         </style.paymentStatus>
         <PanelItem label={getString('adsCurrentEarnings')}>
           {renderEarnings()}
