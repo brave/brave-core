@@ -80,7 +80,8 @@ TEST(BraveFederatedLearningModelTest, Train) {
   Model model(model_spec);
 
   // Act
-  PerformanceReport train_report = model.Train(test_data);
+  auto train_result = model.Train(test_data);
+  PerformanceReport train_report = train_result.value();
 
   // Assert
   EXPECT_EQ(train_report.dataset_size, test_data.size());
@@ -101,16 +102,10 @@ TEST(BraveFederatedLearningModelTest, TrainOnEmptyDataset) {
   Model model(model_spec);
 
   // Act
-  Weights initial_weights = model.GetWeights();
-  float initial_bias = model.GetBias();
-  PerformanceReport train_report = model.Train(test_data);
+  auto train_result = model.Train(test_data);
 
   // Assert
-  EXPECT_EQ(train_report.dataset_size, test_data.size());
-  EXPECT_THAT(train_report.parameters.at(0), ElementsAreArray(initial_weights));
-  EXPECT_EQ(train_report.parameters.at(1).at(0), initial_bias);
-  EXPECT_EQ(train_report.accuracy, 0.0);
-  EXPECT_EQ(train_report.loss, 0.0);
+  EXPECT_TRUE(!train_result.has_value());
 }
 
 TEST(BraveFederatedLearningModelTest, Evaluate) {
@@ -130,7 +125,8 @@ TEST(BraveFederatedLearningModelTest, Evaluate) {
   Model model(model_spec);
 
   // Act
-  PerformanceReport evaluate_report = model.Evaluate(test_data);
+  auto result = model.Evaluate(test_data);
+  PerformanceReport evaluate_report = result.value();
 
   // Assert
   EXPECT_EQ(evaluate_report.dataset_size, test_data.size());
@@ -149,13 +145,10 @@ TEST(BraveFederatedLearningModelTest, EvaluateWithEmptyDataset) {
   Model model(model_spec);
 
   // Act
-  PerformanceReport evaluate_report = model.Evaluate(test_data);
+  auto evaluate_result = model.Evaluate(test_data);
 
   // Assert
-  EXPECT_EQ(evaluate_report.dataset_size, 0U);
-  EXPECT_EQ(evaluate_report.parameters.size(), 0U);
-  EXPECT_EQ(evaluate_report.accuracy, 0.0);
-  EXPECT_EQ(evaluate_report.loss, 0.0);
+  EXPECT_TRUE(!evaluate_result.has_value());
 }
 
 TEST(BraveFederatedLearningModelTest, Predict) {
@@ -175,7 +168,8 @@ TEST(BraveFederatedLearningModelTest, Predict) {
   Model model(model_spec);
 
   // Act
-  std::vector<float> predictions = model.Predict(test_features);
+  auto results = model.Predict(test_features);
+  std::vector<float> predictions = results.value();
 
   // Assert
   EXPECT_EQ(predictions.size(), test_features.size());
@@ -193,10 +187,10 @@ TEST(BraveFederatedLearningModelTest, PredictWithEmptyDataset) {
   Model model(model_spec);
 
   // Act
-  std::vector<float> predictions = model.Predict(test_data);
+  auto result = model.Predict(test_data);
 
   // Assert
-  EXPECT_EQ(predictions.size(), 0U);
+  EXPECT_TRUE(!result.has_value());
 }
 
 }  // namespace brave_federated

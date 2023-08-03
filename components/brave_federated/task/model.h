@@ -11,6 +11,8 @@
 #include <string>
 #include <vector>
 
+#include "base/time/time.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_federated/api/config.h"
 #include "brave/components/brave_federated/util/linear_algebra_util.h"
 
@@ -41,9 +43,12 @@ class Model {
   explicit Model(const api::config::ModelSpec& model_spec);
   ~Model();
 
-  std::vector<float> Predict(const DataSet& dataset);
-  PerformanceReport Train(const DataSet& train_dataset);
-  PerformanceReport Evaluate(const DataSet& test_dataset);
+  base::expected<std::vector<float>, std::string> Predict(
+      const DataSet& dataset);
+  base::expected<PerformanceReport, std::string> Train(
+      const DataSet& train_dataset);
+  base::expected<PerformanceReport, std::string> Evaluate(
+      const DataSet& test_dataset);
 
   Weights GetWeights() const;
   void SetWeights(const Weights& new_weights);
@@ -55,6 +60,8 @@ class Model {
   size_t GetBatchSize() const;
 
  private:
+  base::ThreadTicks GetThreadTicksIfSupported() const;
+
   const int num_iterations_;
   const int batch_size_;
   const float learning_rate_;

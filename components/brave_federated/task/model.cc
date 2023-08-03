@@ -12,6 +12,7 @@
 #include "base/check_op.h"
 #include "base/rand_util.h"
 #include "base/time/time.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_federated/task/model_util.h"
 
 namespace brave_federated {
@@ -74,14 +75,25 @@ size_t Model::GetBatchSize() const {
   return batch_size_;
 }
 
-std::vector<float> Model::Predict(const DataSet& dataset) {
+base::ThreadTicks Model::GetThreadTicksIfSupported() const {
+  if (base::ThreadTicks::IsSupported()) {
+    return base::ThreadTicks::Now();
+  }
+
+  return base::ThreadTicks();
+}
+
+base::expected<std::vector<float>, std::string> Model::Predict(
+    const DataSet& dataset) {
   if (dataset.empty()) {
-    return std::vector<float>();
+    return base::unexpected("FL: Predict input is empty");
   }
 
   std::vector<float> prediction(dataset.size(), 0.0);
   for (size_t i = 0; i < dataset.size(); i++) {
-    CHECK_EQ(dataset.at(i).size(), weights_.size());
+    if (dataset.at(i).size() != weights_.size()) {
+      return base::unexpected("FL: Predict input size mismatch in dataset");
+    }
 
     float z = 0.0;
     for (size_t j = 0; j < dataset.at(i).size(); j++) {
@@ -95,19 +107,20 @@ std::vector<float> Model::Predict(const DataSet& dataset) {
   return prediction;
 }
 
-PerformanceReport Model::Train(const DataSet& train_dataset) {
+base::expected<PerformanceReport, std::string> Model::Train(
+    const DataSet& train_dataset) {
   if (train_dataset.empty()) {
-    std::vector<Weights> reported_model;
-    reported_model.push_back(weights_);
-    reported_model.push_back({bias_});
-    return PerformanceReport(0, 0.0, 0.0, reported_model, {});
+    return base::unexpected("FL: Training data empty");
   }
-  CHECK_LE(GetBatchSize(), train_dataset.size());
+
+  if (train_dataset.size() < GetBatchSize()) {
+    return base::unexpected("FL: Batch size > training dataset size");
+  }
 
   auto data_prep_duration = base::TimeDelta();
   auto training_duration = base::TimeDelta();
 
-  auto data_start_thread_ticks = base::ThreadTicks::Now();
+  auto data_start_thread_ticks = GetThreadTicksIfSupported();
 
   int features = train_dataset.at(0).size() - 1;
   std::vector<float> data_indices(train_dataset.size());
@@ -121,16 +134,16 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
   float training_loss = 0.0;
 
   data_prep_duration +=
-      base::TimeDelta(base::ThreadTicks::Now() - data_start_thread_ticks);
+      base::TimeDelta(GetThreadTicksIfSupported() - data_start_thread_ticks);
 
   for (int iteration = 0; iteration < num_iterations_; iteration++) {
-    data_start_thread_ticks = base::ThreadTicks::Now();
+    data_start_thread_ticks = GetThreadTicksIfSupported();
     base::RandomShuffle(data_indices.begin(), data_indices.end());
 
     DataSet x(batch_size_, std::vector<float>(features));
     std::vector<float> y(batch_size_);
 
-    auto execution_start_thread_ticks = base::ThreadTicks::Now();
+    auto execution_start_thread_ticks = GetThreadTicksIfSupported();
     for (int i = 0; i < batch_size_; i++) {
       std::vector<float> point = train_dataset.at(data_indices.at(i));
       y.at(i) = point.back();
@@ -141,9 +154,15 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
     p_w = weights_;
     float p_b = bias_;
 
-    std::vector<float> pred = Predict(x);
+    auto pred = Predict(x);
+    if (!pred.has_value()) {
+      std::string error_message = "FL: Train predict failed in iteration " +
+                                  std::to_string(iteration) + " of " +
+                                  std::to_string(num_iterations_);
+      return base::unexpected(error_message);
+    }
 
-    err = LinearAlgebraUtil::SubtractVector(y, pred);
+    err = LinearAlgebraUtil::SubtractVector(y, pred.value());
 
     d_w = LinearAlgebraUtil::MultiplyMatrixVector(
         LinearAlgebraUtil::TransposeMatrix(x), err);
@@ -157,12 +176,20 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
     bias_ = p_b - learning_rate_ * d_b;
 
     if (iteration % 250 == 0) {
-      training_loss = ComputeNegativeLogLikelihood(y, Predict(x));
+      auto loss_pred = Predict(x);
+      if (!loss_pred.has_value()) {
+        std::string error_message =
+            "FL: Train loss predict failed in iteration " +
+            std::to_string(iteration) + " of " +
+            std::to_string(num_iterations_);
+        return base::unexpected(error_message);
+      }
+      training_loss = ComputeNegativeLogLikelihood(y, loss_pred.value());
     }
 
     data_prep_duration +=
         base::TimeDelta(execution_start_thread_ticks - data_start_thread_ticks);
-    training_duration += base::TimeDelta(base::ThreadTicks::Now() -
+    training_duration += base::TimeDelta(GetThreadTicksIfSupported() -
                                          execution_start_thread_ticks);
   }
 
@@ -181,12 +208,13 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
   );
 }
 
-PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
+base::expected<PerformanceReport, std::string> Model::Evaluate(
+    const DataSet& test_dataset) {
   if (test_dataset.empty()) {
-    return PerformanceReport(0, 0.0, 0.0, {}, {});
+    return base::unexpected("FL: Test data empty");
   }
 
-  auto data_start_ts = base::ThreadTicks::Now();
+  auto data_start_ts = GetThreadTicksIfSupported();
 
   int num_features = test_dataset.at(0).size();
   DataSet features(test_dataset.size(), std::vector<float>(num_features));
@@ -199,9 +227,14 @@ PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
     features.at(i) = point;
   }
 
-  auto exec_start_ts = base::ThreadTicks::Now();
+  auto exec_start_ts = GetThreadTicksIfSupported();
 
-  std::vector<float> predicted_value = Predict(features);
+  auto predicted = Predict(features);
+  if (!predicted.has_value()) {
+    return base::unexpected("FL: Evaluate predict failed");
+  }
+
+  std::vector<float> predicted_value = predicted.value();
   int total_correct = 0;
   for (size_t i = 0; i < test_dataset.size(); i++) {
     if (predicted_value.at(i) >= threshold_) {
@@ -215,12 +248,17 @@ PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
     }
   }
   float accuracy = total_correct / test_dataset.size();
+
+  auto loss_predicted = Predict(features);
+  if (!loss_predicted.has_value()) {
+    return base::unexpected("FL: Evaluate loss predict failed");
+  }
   float test_loss =
-      ComputeNegativeLogLikelihood(ground_truth, Predict(features));
+      ComputeNegativeLogLikelihood(ground_truth, loss_predicted.value());
 
   auto data_prep_duration = base::TimeDelta(exec_start_ts - data_start_ts);
   auto evaluation_duration =
-      base::TimeDelta(base::ThreadTicks::Now() - exec_start_ts);
+      base::TimeDelta(GetThreadTicksIfSupported() - exec_start_ts);
 
   std::map<std::string, double> metrics = {
       {"data_prep_duration_in_seconds", data_prep_duration.InSecondsF()},

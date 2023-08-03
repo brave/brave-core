@@ -12,9 +12,9 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "brave/components/brave_federated/util/linear_algebra_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_federated {
 
@@ -30,7 +30,7 @@ class FederatedTaskHandler final {
   FederatedTaskHandler(const Task& task, std::unique_ptr<Model> model);
   ~FederatedTaskHandler();
 
-  absl::optional<TaskResult> Run();
+  base::expected<TaskResult, std::string> Run();
 
   void SetTrainingData(const DataSet& training_data);
   void SetTestData(const DataSet& test_data);
