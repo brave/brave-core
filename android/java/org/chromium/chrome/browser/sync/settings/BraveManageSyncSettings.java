@@ -36,7 +36,7 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
     private ChromeSwitchPreference mPrefSyncPasswords;
     private ChromeSwitchPreference mSyncEverything;
 
-    BravePasswordAccessReauthenticationHelper mReauthenticationHelper;
+    private BravePasswordAccessReauthenticationHelper mReauthenticationHelper;
 
     @VisibleForTesting
     @Override
