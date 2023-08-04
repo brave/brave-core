@@ -101,9 +101,10 @@ import {
   signLedgerSolanaTransaction,
   signTrezorTransaction
 } from '../async/hardware'
-import { getAccountBalancesKey } from '../../utils/balance-utils';
-import { onRampEndpoints } from './endpoints/on-ramp.endpoints';
-import { offRampEndpoints } from './endpoints/off-ramp.endpoints';
+import { getAccountBalancesKey } from '../../utils/balance-utils'
+import { onRampEndpoints } from './endpoints/on-ramp.endpoints'
+import { offRampEndpoints } from './endpoints/off-ramp.endpoints'
+import { coingeckoEndpoints } from './endpoints/coingecko-endpoints'
 
 type GetAccountTokenCurrentBalanceArg = {
   accountId: BraveWallet.AccountId
@@ -776,31 +777,6 @@ export function createWalletApi () {
               : ['UNKNOWN_ERROR']
         }
       ),
-      getCoingeckoId: query<
-        string | undefined,
-        Pick<BraveWallet.BlockchainToken, 'chainId' | 'contractAddress'>
-      >({
-        queryFn: async (
-          { chainId, contractAddress },
-          api,
-          extraOptions,
-          baseQuery
-        ) => {
-          const { blockchainRegistry } = baseQuery(undefined).data
-          const { coingeckoId } = await blockchainRegistry.getCoingeckoId(
-            chainId,
-            contractAddress
-          )
-
-          return {
-            data: coingeckoId ?? undefined
-          }
-        },
-        providesTags: (res, err, { chainId, contractAddress }) =>
-          err
-            ? ['CoingeckoId', 'UNKNOWN_ERROR']
-            : [{ type: 'CoingeckoId', id: `${chainId}-${contractAddress}` }]
-      }),
       //
       // Token balances
       //
@@ -2828,6 +2804,8 @@ export function createWalletApi () {
     .injectEndpoints({ endpoints: onRampEndpoints })
     // offRamp endpoints
     .injectEndpoints({ endpoints: offRampEndpoints })
+    // coingecko endpoints
+    .injectEndpoints({ endpoints: coingeckoEndpoints })
 }
 
 export type WalletApi = ReturnType<typeof createWalletApi>
