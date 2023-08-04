@@ -85,7 +85,8 @@
   </settings-toggle-button>
   <div class="settings-row" id="manageV2ExtensionsRow" hidden="[[!isExtensionsManifestV2FeatureEnabled_]]">
     <cr-link-row icon-class=" icon-external" label="$i18n{manageExtensionsV2Label}"
-      sub-label="$i18n{manageExtensionsV2SubLabel}" on-click="openManageV2ExtensionPage_">
+      sub-label="$i18n{manageExtensionsV2SubLabel}" on-click="openManageV2ExtensionPage_"
+      id="manageV2Extensions">
     </cr-link-row>
   </div>
   <div class="settings-row" id="manageExtensionsRow">
@@ -116,7 +117,9 @@
 </div>
 <settings-animated-pages id="extensions-v2-subpage" section="extensions">
   <template is="dom-if" route-path="/extensions/v2">
-    <settings-subpage page-title="$i18n{manageExtensionsV2Label}">
+    <settings-subpage
+      associated-control="[[$$('#manageV2Extensions')]]"
+      page-title="$i18n{manageExtensionsV2Label}">
       <brave-extensions-v2-subpage prefs="{{prefs}}"></brave-extensions-v2-subpage>
     </settings-subpage>
   </template>
