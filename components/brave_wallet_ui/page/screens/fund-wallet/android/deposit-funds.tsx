@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
 
 import { initLocale } from 'brave-ui'
 
@@ -51,30 +52,32 @@ export function AndroidDepositApp() {
 
   return (
     <Provider store={store}>
-      <BraveCoreThemeProvider dark={walletDarkTheme} light={walletLightTheme}>
-        <ApiProxyContext.Provider value={walletPageApiProxy}>
-          <LibContext.Provider value={Lib}>
-            <WalletPageWrapper
-              wrapContentInBox={true}
-              hideNav={true}
-              hideHeader={true}
-              cardWidth={456}
-              cardHeader={
-                <PageTitleHeader
-                  title={getLocale('braveWalletDepositCryptoButton')}
-                  showBackButton={showDepositAddress}
-                  onBack={handleDepositScreenBack}
+      <BrowserRouter>
+        <BraveCoreThemeProvider dark={walletDarkTheme} light={walletLightTheme}>
+          <ApiProxyContext.Provider value={walletPageApiProxy}>
+            <LibContext.Provider value={Lib}>
+              <WalletPageWrapper
+                wrapContentInBox={true}
+                hideNav={true}
+                hideHeader={true}
+                cardWidth={456}
+                cardHeader={
+                  <PageTitleHeader
+                    title={getLocale('braveWalletDepositCryptoButton')}
+                    showBackButton={showDepositAddress}
+                    onBack={handleDepositScreenBack}
+                  />
+                }
+              >
+                <DepositFundsScreen
+                  showDepositAddress={showDepositAddress}
+                  onShowDepositAddress={setShowDepositAddress}
                 />
-              }
-            >
-              <DepositFundsScreen
-                showDepositAddress={showDepositAddress}
-                onShowDepositAddress={setShowDepositAddress}
-              />
-            </WalletPageWrapper>
-          </LibContext.Provider>
-        </ApiProxyContext.Provider>
-      </BraveCoreThemeProvider>
+              </WalletPageWrapper>
+            </LibContext.Provider>
+          </ApiProxyContext.Provider>
+        </BraveCoreThemeProvider>
+      </BrowserRouter>
     </Provider>
   )
 }
