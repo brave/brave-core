@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+  <path
+      android:pathData="M48,0L48,0A48,48 0,0 1,96 48L96,48A48,48 0,0 1,48 96L48,96A48,48 0,0 1,0 48L0,48A48,48 0,0 1,48 0z">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:startX="47.63"
+          android:startY="-15.63"
+          android:endX="48.613"
+          android:endY="152.939"
+          android:type="linear">
+        <item android:offset="0" android:color="#002A2ADE"/>
+        <item android:offset="1" android:color="#3F2A2ADE"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+  <path
+      android:pathData="M38.24,33.2L64.24,33.2A2.8,2.8 0,0 1,67.04 36L67.04,70A2.8,2.8 0,0 1,64.24 72.8L38.24,72.8A2.8,2.8 0,0 1,35.44 70L35.44,36A2.8,2.8 0,0 1,38.24 33.2z"
+      android:strokeWidth="1.6"
+      android:fillColor="#00000000"
+      android:strokeColor="#7C91FF"/>
+  <path
+      android:pathData="M31.76,23.84L57.76,23.84A2.8,2.8 0,0 1,60.56 26.64L60.56,62.64A2.8,2.8 0,0 1,57.76 65.44L31.76,65.44A2.8,2.8 0,0 1,28.96 62.64L28.96,26.64A2.8,2.8 0,0 1,31.76 23.84z"
+      android:strokeWidth="1.6"
+      android:fillColor="#00000000"
+      android:strokeColor="#7C91FF"/>
+  <path
+      android:pathData="M38.08,32.971C36.666,32.971 35.52,34.117 35.52,35.531V38.091H66.88V35.531C66.88,34.117 65.734,32.971 64.32,32.971H38.08Z"
+      android:fillColor="#7C91FF"
+      android:fillType="evenOdd"/>
+  <path
+      android:pathData="M29.12,26.56C29.12,25.146 30.266,24 31.68,24H57.92C59.334,24 60.48,25.146 60.48,26.56V29.12H29.12V26.56ZM32.96,25.28H31.68C31.51,25.28 31.347,25.347 31.228,25.468C31.107,25.587 31.04,25.75 31.04,25.92V27.2C31.04,27.37 31.107,27.533 31.228,27.653C31.347,27.773 31.51,27.84 31.68,27.84H32.96C33.13,27.84 33.293,27.773 33.412,27.653C33.533,27.533 33.6,27.37 33.6,27.2V25.92C33.6,25.75 33.533,25.587 33.412,25.468C33.293,25.347 33.13,25.28 32.96,25.28Z"
+      android:fillColor="#7C91FF"
+      android:fillType="evenOdd"/>
+</vector>
+
