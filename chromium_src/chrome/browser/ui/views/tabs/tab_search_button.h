@@ -6,12 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SEARCH_BUTTON_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SEARCH_BUTTON_H_
 
-#include "chrome/browser/ui/views/tabs/new_tab_button.h"
+#include "chrome/browser/ui/views/tabs/tab_strip_control_button.h"
 
 #define GetCornerRadius              \
   GetCornerRadius_Unused();          \
   friend class BraveTabSearchButton; \
-  virtual int GetCornerRadius
+  int GetCornerRadius
 
 #include "src/chrome/browser/ui/views/tabs/tab_search_button.h"  // IWYU pragma: export
 
