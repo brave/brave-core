@@ -242,8 +242,16 @@ void AcceleratorService::AddCommandsListener(
 }
 
 void AcceleratorService::AddObserver(Observer* observer) {
+  Accelerators changed;
   observers_.AddObserver(observer);
-  observer->OnAcceleratorsChanged(accelerators_);
+  const auto& unmodifiable = unmodifiable_;
+  for (const auto& [command_id, accelerators] : accelerators_) {
+    base::ranges::copy_if(accelerators, std::back_inserter(changed[command_id]),
+                          [unmodifiable](const ui::Accelerator& accelerator) {
+                            return !unmodifiable.contains(accelerator);
+                          });
+  }
+  observer->OnAcceleratorsChanged(changed);
 }
 
 void AcceleratorService::RemoveObserver(Observer* observer) {
