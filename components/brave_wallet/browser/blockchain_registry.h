@@ -33,6 +33,7 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   mojo::PendingRemote<mojom::BlockchainRegistry> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BlockchainRegistry> receiver);
 
+  void UpdateCoingeckoIdsMap(CoingeckoIdsMap coingecko_ids_map);
   void UpdateTokenList(TokenListMap tokens);
   void UpdateTokenList(const std::string key,
                        std::vector<mojom::BlockchainTokenPtr> list);
@@ -46,6 +47,9 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
                                               mojom::CoinType coin,
                                               const std::string& address);
   std::vector<mojom::NetworkInfoPtr> GetPrepopulatedNetworks();
+  absl::optional<std::string> GetCoingeckoId(
+      const std::string& chain_id,
+      const std::string& contract_address);
 
   // BlockchainRegistry interface methods
   void GetTokenByAddress(const std::string& chain_id,
@@ -76,11 +80,15 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   void GetTopDapps(const std::string& chain_id,
                    mojom::CoinType coin,
                    GetTopDappsCallback callback) override;
+  void GetCoingeckoId(const std::string& chain_id,
+                      const std::string& contract_address,
+                      GetCoingeckoIdCallback callback) override;
 
  protected:
   std::vector<mojom::BlockchainTokenPtr>* GetTokenListFromChainId(
       const std::string& chain_id);
 
+  CoingeckoIdsMap coingecko_ids_map_;
   TokenListMap token_list_map_;
   ChainList chain_list_;
   DappListMap dapp_lists_;

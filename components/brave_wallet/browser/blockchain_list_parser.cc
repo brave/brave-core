@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_schemas.h"
 
+#include <map>
 #include <tuple>
 #include <utility>
 
@@ -686,6 +687,58 @@ absl::optional<DappListMap> ParseDappLists(const std::string& json) {
       dapp_lists_from_component->fantom, &dapp_lists);
 
   return dapp_lists;
+}
+
+absl::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json) {
+  // {
+  //   "0x1": {
+  //     "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78": "0chain",
+  //     "0xe41d2489571d322189246dafa5ebde1f4699f498": "0x",
+  //     "0x5a3e6a77ba2f983ec0d371ea3b475f8bc0811ad5":
+  //     "0x0-ai-ai-smart-contract",
+  //     "0xfcdb9e987f9159dab2f507007d5e3d10c510aa70":
+  //     "0x1-tools-ai-multi-tool",
+  //     "0x37268c4f56ebb13dfae9c16d57d17579312d0ee1":
+  //     "0xauto-io-contract-auto-deployer"
+  //   }
+  // }
+
+  absl::optional<base::Value> records_v =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
+
+  if (!records_v || !records_v->is_dict()) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return absl::nullopt;
+  }
+
+  const base::Value::Dict* chain_ids = records_v->GetIfDict();
+  if (!chain_ids) {
+    return absl::nullopt;
+  }
+
+  std::map<std::pair<std::string, std::string>, std::string> coingecko_ids_map;
+  for (const auto chain_id_record : *chain_ids) {
+    const auto& chain_id = base::ToLowerASCII(chain_id_record.first);
+
+    const auto* contract_addresses = chain_id_record.second.GetIfDict();
+    if (!contract_addresses) {
+      return absl::nullopt;
+    }
+
+    for (const auto contract_address_record : *contract_addresses) {
+      const auto& contract_address =
+          base::ToLowerASCII(contract_address_record.first);
+      const auto* coingecko_id = contract_address_record.second.GetIfString();
+      if (!coingecko_id) {
+        return absl::nullopt;
+      }
+
+      coingecko_ids_map[{chain_id, contract_address}] = *coingecko_id;
+    }
+  }
+
+  return CoingeckoIdsMap(coingecko_ids_map.begin(), coingecko_ids_map.end());
 }
 
 }  // namespace brave_wallet

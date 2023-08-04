@@ -15,6 +15,9 @@
 
 namespace brave_wallet {
 
+using CoingeckoIdsMap =
+    base::flat_map<std::pair<std::string, std::string>, std::string>;
+
 using TokenListMap =
     base::flat_map<std::string, std::vector<mojom::BlockchainTokenPtr>>;
 using ChainList = std::vector<mojom::NetworkInfoPtr>;
@@ -38,7 +41,7 @@ absl::optional<std::vector<mojom::OnRampCurrency>> ParseOnRampCurrencyLists(
 std::string GetTokenListKey(mojom::CoinType coin, const std::string& chain_id);
 bool ParseChainList(const std::string& json, ChainList* chain_list);
 absl::optional<DappListMap> ParseDappLists(const std::string& json);
-
+absl::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json);
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BLOCKCHAIN_LIST_PARSER_H_

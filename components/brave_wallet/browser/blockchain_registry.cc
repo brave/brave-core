@@ -39,6 +39,11 @@ void BlockchainRegistry::Bind(
   receivers_.Add(this, std::move(receiver));
 }
 
+void BlockchainRegistry::UpdateCoingeckoIdsMap(
+    CoingeckoIdsMap coingecko_ids_map) {
+  coingecko_ids_map_ = std::move(coingecko_ids_map);
+}
+
 void BlockchainRegistry::UpdateTokenList(TokenListMap token_list_map) {
   token_list_map_ = std::move(token_list_map);
 }
@@ -272,6 +277,25 @@ void BlockchainRegistry::GetTopDapps(const std::string& chain_id,
                    return current_token.Clone();
                  });
   std::move(callback).Run(std::move(dapps_copy));
+}
+
+absl::optional<std::string> BlockchainRegistry::GetCoingeckoId(
+    const std::string& chain_id,
+    const std::string& contract_address) {
+  const auto& chain_id_lower = base::ToLowerASCII(chain_id);
+  const auto& contract_address_lower = base::ToLowerASCII(contract_address);
+
+  if (!coingecko_ids_map_.contains({chain_id_lower, contract_address_lower})) {
+    return absl::nullopt;
+  }
+
+  return coingecko_ids_map_[{chain_id_lower, contract_address_lower}];
+}
+
+void BlockchainRegistry::GetCoingeckoId(const std::string& chain_id,
+                                        const std::string& contract_address,
+                                        GetCoingeckoIdCallback callback) {
+  std::move(callback).Run(GetCoingeckoId(chain_id, contract_address));
 }
 
 }  // namespace brave_wallet

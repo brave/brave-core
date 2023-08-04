@@ -15,7 +15,7 @@ using testing::ElementsAreArray;
 
 namespace brave_wallet {
 
-TEST(ParseTokenListUnitTest, ParseTokenList) {
+TEST(BlockchainListParseUnitTest, ParseTokenList) {
   std::string json(R"(
     {
      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d": {
@@ -165,7 +165,7 @@ TEST(ParseTokenListUnitTest, GetTokenListKey) {
             "solana.0x65");
 }
 
-TEST(ParseChainListUnitTest, ParseChainList) {
+TEST(BlockchainListParseUnitTest, ParseChainList) {
   const std::string chain_list = R"(
   [
     {
@@ -270,7 +270,7 @@ TEST(ParseChainListUnitTest, ParseChainList) {
   EXPECT_FALSE(chain2->is_eip1559);
 }
 
-TEST(ParseDappListsUnitTest, ParseDappLists) {
+TEST(BlockchainListParseUnitTest, ParseDappLists) {
   const std::string dapp_list = R"({
     "solana": {
       "success": true,
@@ -489,7 +489,7 @@ TEST(ParseDappListsUnitTest, ParseDappLists) {
   EXPECT_EQ(poly_dapp_list.size(), 0u);
 }
 
-TEST(ParseOnRampTokensListMapUnitTest, ParseOnRampTokensListMap) {
+TEST(BlockchainListParseUnitTest, ParseOnRampTokensListMap) {
   // Invalid JSON is not parsed
   absl::optional<RampTokenListMaps> supported_tokens_list_map =
       ParseRampTokenListMaps(R"({)");
@@ -676,7 +676,7 @@ TEST(ParseOnRampTokensListMapUnitTest, ParseOnRampTokensListMap) {
   EXPECT_EQ(it->second[1]->coin, mojom::CoinType::ETH);
 }
 
-TEST(ParseOffRampTokensListMapUnitTest, ParseOffRampTokensListMap) {
+TEST(BlockchainListParseUnitTest, ParseOffRampTokensListMap) {
   const std::string supported_tokens_list = R"({
     "tokens": [
       {
@@ -776,6 +776,40 @@ TEST(ParseOnRampCurrencyListTest, ParseOnRampCurrencyLists) {
             mojom::OnRampProvider::kTransak);
   EXPECT_EQ((*supported_currencies_lists)[1].providers[2],
             mojom::OnRampProvider::kStripe);
+}
+
+TEST(BlockchainListParseUnitTest, ParseCoingeckoIdsMap) {
+  const std::string json = R"({
+    "0x1": {
+      "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78": "0chain",
+      "0xe41d2489571d322189246dafa5ebde1f4699f498": "0x",
+      "0x5a3e6a77ba2f983ec0d371ea3b475f8bc0811ad5": "0x0-ai-ai-smart-contract",
+      "0xfcdb9e987f9159dab2f507007d5e3d10c510aa70": "0x1-tools-ai-multi-tool"
+    }
+  })";
+
+  absl::optional<CoingeckoIdsMap> coingecko_ids_map =
+      ParseCoingeckoIdsMap(json);
+
+  ASSERT_TRUE(coingecko_ids_map);
+
+  EXPECT_EQ((*coingecko_ids_map)[std::pair(
+                "0x1", "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78")],
+            "0chain");
+
+  EXPECT_EQ((*coingecko_ids_map)[std::pair(
+                "0x1", "0xe41d2489571d322189246dafa5ebde1f4699f498")],
+            "0x");
+
+  EXPECT_EQ((*coingecko_ids_map)[std::pair(
+                "0x1", "0x5a3e6a77ba2f983ec0d371ea3b475f8bc0811ad5")],
+            "0x0-ai-ai-smart-contract");
+
+  EXPECT_EQ((*coingecko_ids_map)[std::pair(
+                "0x1", "0xfcdb9e987f9159dab2f507007d5e3d10c510aa70")],
+            "0x1-tools-ai-multi-tool");
+
+  EXPECT_FALSE(coingecko_ids_map->contains({"0x2", "0xdeadbeef"}));
 }
 
 }  // namespace brave_wallet

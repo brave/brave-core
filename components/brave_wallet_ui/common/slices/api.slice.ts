@@ -101,9 +101,10 @@ import {
   signLedgerSolanaTransaction,
   signTrezorTransaction
 } from '../async/hardware'
-import { getAccountBalancesKey } from '../../utils/balance-utils';
-import { onRampEndpoints } from './endpoints/on-ramp.endpoints';
-import { offRampEndpoints } from './endpoints/off-ramp.endpoints';
+import { getAccountBalancesKey } from '../../utils/balance-utils'
+import { onRampEndpoints } from './endpoints/on-ramp.endpoints'
+import { offRampEndpoints } from './endpoints/off-ramp.endpoints'
+import { coingeckoEndpoints } from './endpoints/coingecko-endpoints'
 
 type GetAccountTokenCurrentBalanceArg = {
   accountId: BraveWallet.AccountId
@@ -2803,6 +2804,8 @@ export function createWalletApi () {
     .injectEndpoints({ endpoints: onRampEndpoints })
     // offRamp endpoints
     .injectEndpoints({ endpoints: offRampEndpoints })
+    // coingecko endpoints
+    .injectEndpoints({ endpoints: coingeckoEndpoints })
 }
 
 export type WalletApi = ReturnType<typeof createWalletApi>
@@ -2823,6 +2826,7 @@ export const {
   useGetAccountTokenCurrentBalanceQuery,
   useGetHardwareAccountDiscoveryBalanceQuery,
   useGetAddressByteCodeQuery,
+  useGetCoingeckoIdQuery,
   useGetCombinedTokenBalanceForAllAccountsQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetERC721MetadataQuery,
