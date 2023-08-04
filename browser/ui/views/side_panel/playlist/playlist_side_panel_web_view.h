@@ -21,6 +21,11 @@ class PlaylistSidePanelWebView : public SidePanelWebUIView {
   PlaylistSidePanelWebView(const PlaylistSidePanelWebView&) = delete;
   PlaylistSidePanelWebView& operator=(const PlaylistSidePanelWebView&) = delete;
   ~PlaylistSidePanelWebView() override;
+
+  base::WeakPtr<PlaylistSidePanelWebView> GetWeakPtr();
+
+ private:
+  base::WeakPtrFactory<PlaylistSidePanelWebView> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_PLAYLIST_PLAYLIST_SIDE_PANEL_WEB_VIEW_H_

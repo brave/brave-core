@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 
 #include <algorithm>
+#include <limits>
 
 #include "ui/views/view.h"
 
@@ -47,7 +48,15 @@ void BraveContentsLayoutManager::Layout(views::View* contents_container) {
   const gfx::Rect bounds(sidebar_x, 0, proposed_sidebar_width, contents_height);
   sidebar_container_view_->SetBoundsRect(host_->GetMirroredRect(bounds));
 
+#if BUILDFLAG(IS_MAC)
+  // On Mac, we shouldn't set empty rect for web view. That could cause crash
+  // from StatusBubbleViews. As StatusBubbleViews width is one third of the
+  // base view, sets 3 here so that StatusBubbleViews can have at least 1 width.
+  gfx::Size container_size(contents_width > 0 ? contents_width : 3,
+                           contents_height);
+#else
   gfx::Size container_size(contents_width, contents_height);
+#endif
   gfx::Rect new_devtools_bounds;
   gfx::Rect new_contents_bounds;
 
@@ -79,6 +88,11 @@ int BraveContentsLayoutManager::CalculateTargetSideBarWidth() const {
   int proposed_sidebar_width =
       sidebar_container_view_->GetPreferredSize().width();
   const int contents_width = host_->width();
+
+  if (proposed_sidebar_width == std::numeric_limits<int>::max()) {
+    // Takes up the entire space for fullscreen.
+    return contents_width;
+  }
 
   // Guarantee 20% width for contents at least.
   if ((contents_width - proposed_sidebar_width) <= contents_width * 0.2) {

@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 
 #include <algorithm>
+#include <limits>
 #include <utility>
 
 #include "base/auto_reset.h"
@@ -20,6 +21,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
+#include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
@@ -28,6 +30,7 @@
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_within_tab_helper.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
@@ -40,7 +43,9 @@
 #include "ui/events/types/event_type.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/views/border.h"
+#include "ui/views/controls/webview/webview.h"
 #include "ui/views/event_monitor.h"
+#include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 
@@ -157,6 +162,36 @@ bool SidebarContainerView::IsSidebarVisible() const {
   return sidebar_control_view_ && sidebar_control_view_->GetVisible();
 }
 
+bool SidebarContainerView::IsFullscreenForCurrentEntry() const {
+  // For now, we only supports fullscreen from playlist.
+  if (side_panel_coordinator_->GetCurrentEntryId() !=
+      SidePanelEntryId::kPlaylist) {
+    return false;
+  }
+
+  // TODO(sko) Do we have a more general way to get WebContents of the active
+  // entry?
+  auto web_view = PlaylistSidePanelCoordinator::FromBrowser(browser_)
+                      ->side_panel_web_view();
+  if (!web_view) {
+    return false;
+  }
+
+  auto* contents = web_view->web_contents();
+  if (!contents) {
+    return false;
+  }
+
+  if (auto* fullscreen_tab_helper =
+          FullscreenWithinTabHelper::FromWebContents(contents);
+      fullscreen_tab_helper &&
+      fullscreen_tab_helper->is_fullscreen_within_tab()) {
+    return true;
+  }
+
+  return false;
+}
+
 void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
   DVLOG(2) << __func__;
 
@@ -243,8 +278,9 @@ void SidebarContainerView::AddChildViews() {
 }
 
 void SidebarContainerView::Layout() {
-  if (!initialized_)
+  if (!initialized_) {
     return View::Layout();
+  }
 
   const int control_view_preferred_width =
       sidebar_control_view_->GetPreferredSize().width();
@@ -266,8 +302,13 @@ void SidebarContainerView::Layout() {
 
 gfx::Size SidebarContainerView::CalculatePreferredSize() const {
   if (!initialized_ || !sidebar_control_view_->GetVisible() ||
-      IsFullscreenByTab())
+      IsFullscreenByTab()) {
     return View::CalculatePreferredSize();
+  }
+
+  if (IsFullscreenForCurrentEntry()) {
+    return {std::numeric_limits<int>::max(), 0};
+  }
 
   auto start_width = animation_start_width_;
   auto end_width = animation_end_width_;
@@ -332,8 +373,9 @@ void SidebarContainerView::OnMouseExited(const ui::MouseEvent& event) {
 
   // When context menu is shown, this view can get this exited callback.
   // In that case, ignore this callback because mouse is still in this view.
-  if (IsMouseHovered())
+  if (IsMouseHovered()) {
     return;
+  }
 
   if (ShouldForceShowSidebar()) {
     StartBrowserWindowEventMonitoring();
@@ -649,8 +691,9 @@ void SidebarContainerView::UpdateToolbarButtonVisibility() {
 }
 
 void SidebarContainerView::StartBrowserWindowEventMonitoring() {
-  if (browser_window_event_monitor_)
+  if (browser_window_event_monitor_) {
     return;
+  }
 
   DVLOG(1) << __func__;
   browser_window_event_monitor_ = views::EventMonitor::CreateWindowMonitor(
