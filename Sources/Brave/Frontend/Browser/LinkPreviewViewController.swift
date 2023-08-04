@@ -45,7 +45,7 @@ class LinkPreviewViewController: UIViewController {
     }
 
     // Add rule lists for this page
-    let domain = Domain.getOrCreate(forUrl: url, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+    let domain = Domain.getOrCreate(forUrl: url, persistent: !currentTab.isPrivate)
     
     Task(priority: .userInitiated) {
       let ruleLists = await ContentBlockerManager.shared.ruleLists(for: domain)

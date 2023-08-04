@@ -333,7 +333,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
   }
   
   private func submitSeachTemplateQuery(isBraveSearchPromotion: Bool) {
-    if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+    if !dataSource.tabType.isPrivate {
       RecentSearch.addItem(type: .text, text: dataSource.searchQuery, websiteUrl: nil)
     }
     searchDelegate?.searchViewController(
@@ -359,7 +359,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       return
     }
 
-    if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+    if !dataSource.tabType.isPrivate {
       RecentSearch.addItem(type: .website, text: localSearchQuery, websiteUrl: url.absoluteString)
     }
     searchDelegate?.searchViewController(self, didSelectURL: url)
@@ -381,7 +381,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     case .searchSuggestions:
       if !isBraveSearchPrompt(for: indexPath) {
         // Assume that only the default search engine can provide search suggestions.
-        let engine = dataSource.searchEngines?.defaultEngine()
+        let engine = dataSource.searchEngines?.defaultEngine(forType: dataSource.tabType == .private ? .privateMode : .standard)
         let suggestion = dataSource.suggestions[indexPath.row]
 
         var url = URIFixup.getURL(suggestion)
@@ -390,7 +390,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
         }
 
         if let url = url {
-          if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+          if !dataSource.tabType.isPrivate {
             RecentSearch.addItem(type: .website, text: suggestion, websiteUrl: url.absoluteString)
           }
           searchDelegate?.searchViewController(self, didSelectURL: url)
@@ -441,7 +441,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     case .quickBar: return nil
     case .searchSuggestionsOptIn: return nil
     case .searchSuggestions:
-      if let defaultSearchEngine = dataSource.searchEngines?.defaultEngine() {
+      if let defaultSearchEngine = dataSource.searchEngines?.defaultEngine(forType: dataSource.tabType == .private ? .privateMode : .standard) {
         if defaultSearchEngine.shortName.contains(Strings.searchSuggestionSectionTitleNoSearchFormat) || defaultSearchEngine.shortName.lowercased().contains("search") {
           return defaultSearchEngine.displayName
         }
@@ -622,7 +622,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
         cell.imageView?.contentMode = .scaleAspectFit
         cell.imageView?.layer.borderColor = SearchViewControllerUX.iconBorderColor.cgColor
         cell.imageView?.layer.borderWidth = SearchViewControllerUX.iconBorderWidth
-        cell.imageView?.loadFavicon(for: site.tileURL)
+        cell.imageView?.loadFavicon(for: site.tileURL, isPrivateBrowsing: dataSource.tabType.isPrivate)
         cell.backgroundColor = .secondaryBraveBackground
       }
         

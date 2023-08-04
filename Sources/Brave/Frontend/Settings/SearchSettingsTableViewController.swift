@@ -59,6 +59,7 @@ class SearchSettingsTableViewController: UITableViewController {
   private var searchEngines: SearchEngines
   private let profile: Profile
   private var showDeletion = false
+  private var privateBrowsingManager: PrivateBrowsingManager
 
   private func searchPickerEngines(type: DefaultEngineType) -> [OpenSearchEngine] {
     let isPrivate = type == .privateMode
@@ -84,8 +85,9 @@ class SearchSettingsTableViewController: UITableViewController {
 
   // MARK: Lifecycle
 
-  init(profile: Profile) {
+  init(profile: Profile, privateBrowsingManager: PrivateBrowsingManager) {
     self.profile = profile
+    self.privateBrowsingManager = privateBrowsingManager
     self.searchEngines = profile.searchEngines
     super.init(nibName: nil, bundle: nil)
   }
@@ -283,10 +285,10 @@ class SearchSettingsTableViewController: UITableViewController {
     } else if indexPath.section == Section.current.rawValue && indexPath.item == CurrentEngineType.private.rawValue {
       navigationController?.pushViewController(configureSearchEnginePicker(.privateMode), animated: true)
     } else if indexPath.section == Section.current.rawValue && indexPath.item == CurrentEngineType.quick.rawValue {
-      let quickSearchEnginesViewController = SearchQuickEnginesViewController(profile: profile)
+      let quickSearchEnginesViewController = SearchQuickEnginesViewController(profile: profile, isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing)
       navigationController?.pushViewController(quickSearchEnginesViewController, animated: true)
     } else if indexPath.section == Section.customSearch.rawValue && indexPath.item == customSearchEngines.count {
-      let customEngineViewController = SearchCustomEngineViewController(profile: profile)
+      let customEngineViewController = SearchCustomEngineViewController(profile: profile, privateBrowsingManager: privateBrowsingManager)
       navigationController?.pushViewController(customEngineViewController, animated: true)
     }
 

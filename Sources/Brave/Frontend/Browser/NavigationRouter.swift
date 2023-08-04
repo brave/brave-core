@@ -21,10 +21,10 @@ public enum NavigationPath: Equatable {
   case text(String)
   case widgetShortcutURL(WidgetShortcut)
 
-  public init?(url: URL) {
+  public init?(url: URL, isPrivateBrowsing: Bool) {
     let urlString = url.absoluteString
     if url.scheme == "http" || url.scheme == "https" || url.isIPFSScheme {
-      self = .url(webURL: url, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+      self = .url(webURL: url, isPrivate: isPrivateBrowsing)
       return
     }
 
@@ -48,7 +48,7 @@ public enum NavigationPath: Equatable {
     } else if urlString.starts(with: "\(scheme)://open-url") {
       let urlText = components.valueForQuery("url")
       let url = URIFixup.getURL(urlText ?? "") ?? urlText?.asURL
-      let forcedPrivate = Preferences.Privacy.privateBrowsingOnly.value || PrivateBrowsingManager.shared.isPrivateBrowsing
+      let forcedPrivate = Preferences.Privacy.privateBrowsingOnly.value || isPrivateBrowsing
       let isPrivate = Bool(components.valueForQuery("private") ?? "") ?? forcedPrivate
       self = .url(webURL: url, isPrivate: isPrivate)
     } else if urlString.starts(with: "\(scheme)://open-text") {
@@ -95,7 +95,7 @@ public enum NavigationPath: Equatable {
   private static func handleText(text: String, with bvc: BrowserViewController) {
     bvc.openBlankNewTab(
       attemptLocationFieldFocus: true,
-      isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing,
+      isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing,
       searchFor: text)
   }
 
@@ -106,10 +106,10 @@ public enum NavigationPath: Equatable {
       if let url = bvc.tabManager.selectedTab?.url, InternalURL(url)?.isAboutHomeURL == true {
         bvc.focusURLBar()
       } else {
-        bvc.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+        bvc.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing)
       }
     case .newTab:
-      bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+      bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing)
     case .newPrivateTab:
       bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
     case .bookmarks:

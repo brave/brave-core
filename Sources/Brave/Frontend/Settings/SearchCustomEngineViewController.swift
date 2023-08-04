@@ -41,6 +41,7 @@ class SearchCustomEngineViewController: UIViewController {
   // MARK: Properties
 
   private var profile: Profile
+  private var privateBrowsingManager: PrivateBrowsingManager
 
   private var urlText: String?
 
@@ -84,8 +85,9 @@ class SearchCustomEngineViewController: UIViewController {
 
   // MARK: Lifecycle
 
-  init(profile: Profile) {
+  init(profile: Profile, privateBrowsingManager: PrivateBrowsingManager) {
     self.profile = profile
+    self.privateBrowsingManager = privateBrowsingManager
 
     super.init(nibName: nil, bundle: nil)
   }
@@ -170,7 +172,7 @@ class SearchCustomEngineViewController: UIViewController {
 
   // MARK: Actions
 
-  @objc func checkAddEngineType(_ nav: UINavigationController?) {
+  @objc func checkAddEngineType() {
     if isAutoAddEnabled {
       addOpenSearchEngine()
     } else {
@@ -392,7 +394,7 @@ extension SearchCustomEngineViewController {
     faviconTask?.cancel()
     faviconTask = Task { @MainActor in
       do {
-        let icon = try await FaviconFetcher.loadIcon(url: url, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+        let icon = try await FaviconFetcher.loadIcon(url: url, persistent: !privateBrowsingManager.isPrivateBrowsing)
         self.faviconImage = icon.image ?? Favicon.defaultImage
       } catch {
         self.faviconImage = Favicon.defaultImage
@@ -474,7 +476,7 @@ extension SearchCustomEngineViewController {
 
     faviconTask?.cancel()
     faviconTask = Task { @MainActor in
-      let favicon = try? await FaviconFetcher.loadIcon(url: hostUrl, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+      let favicon = try? await FaviconFetcher.loadIcon(url: hostUrl, persistent: !privateBrowsingManager.isPrivateBrowsing)
       if let image = favicon?.image {
         engineImage = image
       }

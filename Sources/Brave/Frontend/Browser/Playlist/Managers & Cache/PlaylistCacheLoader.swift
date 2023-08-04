@@ -554,8 +554,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
         tab.currentPageData = PageData(mainFrameURL: mainDocumentURL)
       }
       
-      let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
-      let domainForMainFrame = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: !isPrivateBrowsing)
+      let domainForMainFrame = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: false)
       
       if let requestURL = navigationAction.request.url,
          let targetFrame = navigationAction.targetFrame {

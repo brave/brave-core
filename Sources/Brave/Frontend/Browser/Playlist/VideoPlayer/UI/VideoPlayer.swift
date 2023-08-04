@@ -574,7 +574,7 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     staticImageView.contentMode = .scaleAspectFit
   }
 
-  func setVideoInfo(videoDomain: String, videoTitle: String?) {
+  func setVideoInfo(videoDomain: String, videoTitle: String?, isPrivateBrowsing: Bool) {
     var displayTitle = videoTitle ?? ""
 
     if displayTitle.isEmpty {
@@ -596,7 +596,7 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     }
 
     infoView.titleLabel.text = displayTitle
-    infoView.updateFavIcon(domain: videoDomain)
+    infoView.updateFavIcon(domain: videoDomain, isPrivateBrowsing: isPrivateBrowsing)
   }
 
   func resetVideoInfo() {

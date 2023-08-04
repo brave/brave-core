@@ -13,6 +13,7 @@ struct PrivacyReportsView: View {
   
   let lastVPNAlerts: [BraveVPNAlert]?
   
+  private(set) var isPrivateBrowsing: Bool
   var onDismiss: (() -> Void)?
   var openPrivacyReportsUrl: (() -> Void)?
   
@@ -97,7 +98,7 @@ struct PrivacyReportsView: View {
             Divider()
           }
           
-          PrivacyHubAllTimeSection(onDismiss: dismissView)
+          PrivacyHubAllTimeSection(isPrivateBrowsing: isPrivateBrowsing, onDismiss: dismissView)
           
           VStack {
             Text(Strings.PrivacyHub.privacyReportsDisclaimer)
@@ -142,9 +143,9 @@ struct PrivacyReports_Previews: PreviewProvider {
   static var previews: some View {
     
     Group {
-      PrivacyReportsView(lastVPNAlerts: nil)
+      PrivacyReportsView(lastVPNAlerts: nil, isPrivateBrowsing: false)
       
-      PrivacyReportsView(lastVPNAlerts: nil)
+      PrivacyReportsView(lastVPNAlerts: nil, isPrivateBrowsing: false)
         .preferredColorScheme(.dark)
     }
   }

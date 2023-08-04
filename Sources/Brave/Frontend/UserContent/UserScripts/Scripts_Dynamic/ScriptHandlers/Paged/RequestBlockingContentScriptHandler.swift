@@ -66,7 +66,7 @@ class RequestBlockingContentScriptHandler: TabContentScript {
       // we use `NSURL(idnString: String)` to parse them
       guard let requestURL = NSURL(idnString: dto.data.resourceURL) as URL? else { return }
       guard let sourceURL = NSURL(idnString: dto.data.sourceURL) as URL? else { return }
-      let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+      let isPrivateBrowsing = tab.isPrivate
       
       Task { @MainActor in
         let domain = Domain.getOrCreate(forUrl: currentTabURL, persistent: !isPrivateBrowsing)
@@ -90,7 +90,7 @@ class RequestBlockingContentScriptHandler: TabContentScript {
         if shouldBlock, Preferences.PrivacyReports.captureShieldsData.value,
            let domainURL = URL(string: domainURLString),
            let blockedResourceHost = requestURL.baseDomain,
-           !PrivateBrowsingManager.shared.isPrivateBrowsing {
+           !isPrivateBrowsing {
           PrivacyReportsManager.pendingBlockedRequests.append((blockedResourceHost, domainURL, Date()))
         }
 

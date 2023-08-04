@@ -167,7 +167,7 @@ extension BrowserViewController: TabManagerDelegate {
     topToolbar.leaveOverlayMode(didCancel: true)
     updateTabsBarVisibility()
 
-    if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+    if !privateBrowsingManager.isPrivateBrowsing {
       rewards.reportTabClosed(tabId: Int(tab.rewardsId))
     }
   }
@@ -200,7 +200,7 @@ extension BrowserViewController: TabManagerDelegate {
   }
 
   func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?) {
-    guard let toast = toast, !PrivateBrowsingManager.shared.isPrivateBrowsing else {
+    guard let toast = toast, !privateBrowsingManager.isPrivateBrowsing else {
       return
     }
     show(toast: toast, afterWaiting: ButtonToastUX.toastDelay)
@@ -216,7 +216,7 @@ extension BrowserViewController: TabManagerDelegate {
     var newTabMenuChildren: [UIAction] = []
     var addTabMenuChildren: [UIAction] = []
 
-    if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+    if !privateBrowsingManager.isPrivateBrowsing {
       let openNewPrivateTab = UIAction(
         title: Strings.Hotkey.newPrivateTabTitle,
         image: UIImage(systemName: "plus.square.fill.on.square.fill"),
@@ -232,10 +232,10 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     let openNewTab = UIAction(
-      title: PrivateBrowsingManager.shared.isPrivateBrowsing ? Strings.Hotkey.newPrivateTabTitle : Strings.Hotkey.newTabTitle,
-      image: PrivateBrowsingManager.shared.isPrivateBrowsing ? UIImage(systemName: "plus.square.fill.on.square.fill") : UIImage(systemName: "plus.square.on.square"),
+      title: privateBrowsingManager.isPrivateBrowsing ? Strings.Hotkey.newPrivateTabTitle : Strings.Hotkey.newTabTitle,
+      image: privateBrowsingManager.isPrivateBrowsing ? UIImage(systemName: "plus.square.fill.on.square.fill") : UIImage(systemName: "plus.square.on.square"),
       handler: UIAction.deferredActionHandler { [unowned self] _ in
-        self.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+        self.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: privateBrowsingManager.isPrivateBrowsing)
       })
 
     if (UIDevice.current.userInterfaceIdiom == .pad && tabsBar.view.isHidden) || (UIDevice.current.userInterfaceIdiom == .phone && toolbar == nil) {
@@ -264,7 +264,7 @@ extension BrowserViewController: TabManagerDelegate {
         image: UIImage(systemName: "book"),
         handler: UIAction.deferredActionHandler { [unowned self] _ in
           let mode = BookmarkEditMode.addFolderUsingTabs(title: Strings.savedTabsFolderTitle, tabList: tabManager.tabsForCurrentMode)
-          let addBookMarkController = AddEditBookmarkTableViewController(bookmarkManager: bookmarkManager, mode: mode)
+          let addBookMarkController = AddEditBookmarkTableViewController(bookmarkManager: bookmarkManager, mode: mode, isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing)
 
           presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
         })
@@ -294,14 +294,14 @@ extension BrowserViewController: TabManagerDelegate {
     var recentlyClosedMenuChildren: [UIAction] = []
 
     // Recently Closed Actions are only in normal mode
-    if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+    if !privateBrowsingManager.isPrivateBrowsing {
       let viewRecentlyClosedTabs = UIAction(
         title: Strings.RecentlyClosed.viewRecentlyClosedTab,
         image: UIImage(braveSystemNamed: "leo.browser.mobile-recent-tabs"),
         handler: UIAction.deferredActionHandler { [weak self] _ in
           guard let self = self else { return }
           
-          if PrivateBrowsingManager.shared.isPrivateBrowsing {
+          if privateBrowsingManager.isPrivateBrowsing {
             return
           }
                   
@@ -326,7 +326,7 @@ extension BrowserViewController: TabManagerDelegate {
           handler: UIAction.deferredActionHandler { [weak self] _ in
             guard let self = self else { return }
             
-            if PrivateBrowsingManager.shared.isPrivateBrowsing {
+            if privateBrowsingManager.isPrivateBrowsing {
               return
             }
             
@@ -369,7 +369,7 @@ extension BrowserViewController: TabManagerDelegate {
           let cancelAction = UIAlertAction(title: Strings.CancelString, style: .cancel)
           let closedTabsTitle = String(format: Strings.closeAllTabsTitle, tabManager.tabsForCurrentMode.count)
           let closeAllAction = UIAlertAction(title: closedTabsTitle, style: .destructive) { _ in
-            if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+            if !privateBrowsingManager.isPrivateBrowsing {
               // Add the tab information to recently closed before removing
               tabManager.addAllTabsToRecentlyClosed()
             }

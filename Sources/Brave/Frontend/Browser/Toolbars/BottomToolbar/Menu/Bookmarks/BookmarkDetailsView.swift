@@ -52,7 +52,7 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
 
   // MARK: - Initialization
 
-  convenience init(title: String?, url: String?) {
+  convenience init(title: String?, url: String?, isPrivateBrowsing: Bool) {
     self.init(frame: .zero)
 
     backgroundColor = .secondaryBraveGroupedBackground
@@ -76,7 +76,7 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
     if url?.isBookmarklet == true {
       url = url?.removingPercentEncoding
     } else if let url = url, let favUrl = URL(string: url) {
-      faviconImageView.loadFavicon(siteURL: favUrl)
+      faviconImageView.loadFavicon(siteURL: favUrl, isPrivateBrowsing: isPrivateBrowsing)
     }
 
     titleTextField.text = title ?? Strings.newBookmarkDefaultName

@@ -53,7 +53,7 @@ class SearchSuggestionDataSource {
   // In that case, we count it as if there are no quick suggestions to show
   // Unless Default Search Engine is different than Quick Search Engine
   var hasQuickSearchEngines: Bool {
-    let isDefaultEngineQuickEngine = searchEngines?.defaultEngine().engineID == quickSearchEngines.first?.engineID
+    let isDefaultEngineQuickEngine = searchEngines?.defaultEngine(forType: tabType == .private ? .privateMode : .standard).engineID == quickSearchEngines.first?.engineID
 
     if quickSearchEngines.count == 1 {
       return !isDefaultEngineQuickEngine
@@ -82,7 +82,7 @@ class SearchSuggestionDataSource {
   
   var braveSearchPromotionAvailable: Bool {
     guard Preferences.Review.launchCount.value > 1,
-          searchEngines?.defaultEngine().shortName != OpenSearchEngine.EngineNames.brave,
+          searchEngines?.defaultEngine(forType: tabType == .private ? .privateMode : .standard).shortName != OpenSearchEngine.EngineNames.brave,
           let braveSearchPromotionLaunchDate = Preferences.BraveSearch.braveSearchPromotionLaunchDate.value,
           Preferences.BraveSearch.braveSearchPromotionCompletionState.value != BraveSearchPromotionState.dismissed.rawValue,
           Preferences.BraveSearch.braveSearchPromotionCompletionState.value != BraveSearchPromotionState.maybeLaterSameSession.rawValue else {
@@ -167,7 +167,7 @@ class SearchSuggestionDataSource {
     // Show the default search engine first.
     if !tabType.isPrivate,
        let userAgent = SearchViewController.userAgent,
-       let engines = searchEngines?.defaultEngine() {
+       let engines = searchEngines?.defaultEngine(forType: tabType == .private ? .privateMode : .standard) {
       suggestClient = SearchSuggestClient(searchEngine: engines, userAgent: userAgent)
     }
   }

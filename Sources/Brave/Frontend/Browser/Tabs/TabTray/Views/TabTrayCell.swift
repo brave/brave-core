@@ -77,7 +77,7 @@ class TabCell: UICollectionViewCell {
     if let displayFavicon = tab.displayFavicon {
       favicon.image = displayFavicon.image ?? Favicon.defaultImage
     } else if let url = tab.url, !url.isLocal, !InternalURL.isValid(url: url) {
-      favicon.loadFavicon(for: url)
+      favicon.loadFavicon(for: url, isPrivateBrowsing: tab.isPrivate)
     } else {
       favicon.image = Favicon.defaultImage
     }

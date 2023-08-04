@@ -21,6 +21,8 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
   var sectionDidChange: (() -> Void)?
   var action: (Favorite, BookmarksAction) -> Void
   var legacyLongPressAction: (UIAlertController) -> Void
+  
+  private let isPrivateBrowsing: Bool
 
   var hasMoreThanOneFavouriteItems: Bool {
     frc.fetchedObjects?.count ?? 0 > 0
@@ -30,10 +32,12 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
 
   init(
     action: @escaping (Favorite, BookmarksAction) -> Void,
-    legacyLongPressAction: @escaping (UIAlertController) -> Void
+    legacyLongPressAction: @escaping (UIAlertController) -> Void,
+    isPrivateBrowsing: Bool
   ) {
     self.action = action
     self.legacyLongPressAction = legacyLongPressAction
+    self.isPrivateBrowsing = isPrivateBrowsing
 
     frc = Favorite.frc()
     super.init()
@@ -110,7 +114,7 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     cell.imageView.cancelLoading()
 
     if let url = fav.url?.asURL {
-      cell.imageView.loadFavicon(siteURL: url)
+      cell.imageView.loadFavicon(siteURL: url, isPrivateBrowsing: isPrivateBrowsing)
     }
     cell.accessibilityLabel = cell.textLabel.text
   }
@@ -174,7 +178,7 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
         })
 
       var urlChildren: [UIAction] = [openInNewTab]
-      if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+      if !self.isPrivateBrowsing {
         let openInNewPrivateTab = UIAction(
           title: Strings.openNewPrivateTabButtonTitle,
           handler: UIAction.deferredActionHandler { _ in

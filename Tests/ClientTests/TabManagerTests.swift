@@ -5,6 +5,7 @@
 @testable import Brave
 @testable import Data
 import Shared
+import Preferences
 import Storage
 import UIKit
 import WebKit
@@ -107,19 +108,28 @@ open class MockTabManagerDelegate: TabManagerDelegate {
   let didAdd = MethodSpy(functionName: "tabManager(_:didAddTab:)")
 
   var manager: TabManager!
+  private let privateBrowsingManager = PrivateBrowsingManager()
 
   override func setUp() {
     super.setUp()
 
     DataController.shared.initializeOnce()
     let profile = MockProfile()
-    manager = TabManager(prefs: profile.prefs, rewards: nil, tabGeneratorAPI: nil)
-    PrivateBrowsingManager.shared.isPrivateBrowsing = false
+    manager = TabManager(windowId: UUID(), prefs: profile.prefs, rewards: nil, tabGeneratorAPI: nil, privateBrowsingManager: privateBrowsingManager)
+    privateBrowsingManager.isPrivateBrowsing = false
   }
 
   override func tearDown() {
-    PrivateBrowsingManager.shared.isPrivateBrowsing = false
+    privateBrowsingManager.isPrivateBrowsing = false
     super.tearDown()
+  }
+  
+  private func setPersistentPrivateMode(_ isPersistent: Bool) {
+    Preferences.Privacy.persistentPrivateBrowsing.value = isPersistent
+    
+    if isPersistent {
+      Preferences.Privacy.privateBrowsingOnly.value = false
+    }
   }
 
   // BRAVE TODO: We no longer "store tabs", happens async from CoreData, so this test has to reflect CD instead
@@ -210,7 +220,39 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     delegate.verify("Not all delegate methods were called")
   }
 
-  func testDeletePrivateTabsOnExit() {
+  func testDeletePrivateTabsPersistenceOnExit() {
+    setPersistentPrivateMode(true)
+    
+    // create one private and one normal tab
+    let tab = manager.addTab(isPrivate: false)
+    manager.selectTab(tab)
+    manager.selectTab(manager.addTab(isPrivate: true))
+
+    XCTAssertEqual(TabType.of(manager.selectedTab).isPrivate, true, "The selected tab should be the private tab")
+    XCTAssertEqual(manager.tabs(withType: .private).count, 1, "There should only be one private tab")
+
+    manager.selectTab(tab)
+    XCTAssertEqual(manager.tabs(withType: .private).count, 1, "If the normal tab is selected the private tab should NOT be deleted")
+    XCTAssertEqual(manager.tabs(withType: .regular).count, 1, "The regular tab should stil be around")
+
+    manager.selectTab(manager.addTab(isPrivate: true))
+    XCTAssertEqual(manager.tabs(withType: .private).count, 2, "There should be two private tabs")
+    manager.willSwitchTabMode(leavingPBM: true)
+    XCTAssertEqual(manager.tabs(withType: .private).count, 2, "After willSwitchTabMode there should be 2 private tabs")
+
+    manager.selectTab(manager.addTab(isPrivate: true))
+    manager.selectTab(manager.addTab(isPrivate: true))
+    XCTAssertEqual(manager.tabs(withType: .private).count, 4, "Private tabs should not be deleted when another one is added")
+    manager.selectTab(manager.addTab(isPrivate: false))
+    XCTAssertEqual(manager.tabs(withType: .private).count, 4, "But once we add a normal tab we've switched out of private mode. Private tabs should be be persistent")
+    XCTAssertEqual(manager.tabs(withType: .regular).count, 2, "The original normal tab and the new one should both still exist")
+    
+    setPersistentPrivateMode(false)
+  }
+  
+  func testDeletePrivateTabsOnNonPersistenceExit() {
+    setPersistentPrivateMode(false)
+    
     // create one private and one normal tab
     let tab = manager.addTab(isPrivate: false)
     manager.selectTab(tab)
@@ -236,7 +278,27 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     XCTAssertEqual(manager.tabs(withType: .regular).count, 2, "The original normal tab and the new one should both still exist")
   }
 
-  func testTogglePBMDelete() {
+  func testTogglePBMDeletePersistent() {
+    setPersistentPrivateMode(true)
+    
+    let tab = manager.addTab(isPrivate: false)
+    manager.selectTab(tab)
+    manager.selectTab(manager.addTab(isPrivate: false))
+    manager.selectTab(manager.addTab(isPrivate: true))
+
+    manager.willSwitchTabMode(leavingPBM: false)
+    XCTAssertEqual(manager.tabs(withType: .private).count, 1, "There should be 1 private tab")
+    manager.willSwitchTabMode(leavingPBM: true)
+    XCTAssertEqual(manager.tabs(withType: .private).count, 1, "There should be 1 private tab")
+    manager.removeTab(tab)
+    XCTAssertEqual(manager.tabs(withType: .regular).count, 1, "There should be 1 normal tab")
+    
+    setPersistentPrivateMode(false)
+  }
+  
+  func testTogglePBMDeleteNonPersistent() {
+    setPersistentPrivateMode(false)
+    
     let tab = manager.addTab(isPrivate: false)
     manager.selectTab(tab)
     manager.selectTab(manager.addTab(isPrivate: false))
@@ -327,7 +389,52 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     delegate.verify("Not all delegate methods were called")
   }
 
-  func testDelegatesCalledWhenRemovingPrivateTabs() {
+  func testDelegatesCalledWhenRemovingPrivateTabsPersistence() {
+    setPersistentPrivateMode(true)
+    
+    //setup
+    let delegate = MockTabManagerDelegate()
+
+    // create one private and one normal tab
+    let tab = manager.addTab(isPrivate: false)
+    let newTab = manager.addTab(isPrivate: false)
+    manager.selectTab(tab)
+    manager.selectTab(manager.addTab(isPrivate: true))
+    manager.addDelegate(delegate)
+
+    // Double check a few things
+    XCTAssertEqual(TabType.of(manager.selectedTab).isPrivate, true, "The selected tab should be the private tab")
+    XCTAssertEqual(manager.tabs(withType: .private).count, 1, "There should only be one private tab")
+
+    // switch to normal mode. Which should not delete the private tabs
+    manager.willSwitchTabMode(leavingPBM: true)
+
+    //make sure tabs are NOT cleared properly and indexes are reset
+    XCTAssertEqual(manager.tabs(withType: .private).count, 1, "Private tab should not have been deleted")
+    XCTAssertNotEqual(manager.selectedIndex, -1, "The selected index should have been reset")
+
+    // didSelect should still be called when switching between a tab
+    let didSelect = MethodSpy(functionName: "tabManager(_:didSelectedTabChange:previous:)") { tabs in
+      XCTAssertNotNil(tabs[1], "there should be a previous tab")
+      let next = tabs[0]!
+      XCTAssertFalse(next.isPrivate)
+    }
+
+    // make sure delegate method is actually called
+    delegate.expect([didSelect])
+
+    // select the new tab to trigger the delegate methods
+    manager.selectTab(newTab)
+
+    // check
+    delegate.verify("Not all delegate methods were called")
+    
+    setPersistentPrivateMode(false)
+  }
+  
+  func testDelegatesCalledWhenRemovingPrivateTabsNonPersistence() {
+    setPersistentPrivateMode(false)
+    
     //setup
     let delegate = MockTabManagerDelegate()
 

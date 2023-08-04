@@ -105,7 +105,7 @@ extension TabTrayController {
       UIKeyCommand(title: Strings.Hotkey.openNewTabFromTabTrayKeyCodeTitle, action: #selector(didOpenNewTabKeyCommand), input: "t", modifierFlags: .command)
     ]
     
-    if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+    if !tabManager.privateBrowsingManager.isPrivateBrowsing {
       navigationCommands += [
         UIKeyCommand(title: Strings.Hotkey.recentlyClosedTabTitle, action: #selector(reopenRecentlyClosedTabCommand), input: "t", modifierFlags: [.command, .shift])
       ]

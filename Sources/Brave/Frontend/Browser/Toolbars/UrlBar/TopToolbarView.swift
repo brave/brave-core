@@ -70,6 +70,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   
   private var cancellables: Set<AnyCancellable> = []
   private var privateModeCancellable: AnyCancellable?
+  private let privateBrowsingManager: PrivateBrowsingManager
   
   private(set) var displayTabTraySwipeGestureRecognizer: UISwipeGestureRecognizer?
 
@@ -119,7 +120,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   
   private var locationTextField: AutocompleteTextField?
 
-  lazy var locationView = TabLocationView(voiceSearchSupported: isVoiceSearchAvailable).then {
+  lazy var locationView = TabLocationView(voiceSearchSupported: isVoiceSearchAvailable, privateBrowsingManager: privateBrowsingManager).then {
     $0.translatesAutoresizingMaskIntoConstraints = false
     $0.readerModeState = ReaderModeState.unavailable
     $0.delegate = self
@@ -245,8 +246,9 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
   // MARK: Lifecycle
   
-  init(voiceSearchSupported: Bool) {
+  init(voiceSearchSupported: Bool, privateBrowsingManager: PrivateBrowsingManager) {
     isVoiceSearchAvailable = voiceSearchSupported
+    self.privateBrowsingManager = privateBrowsingManager
     
     super.init(frame: .zero)
     
@@ -293,7 +295,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     // Make sure we hide any views that shouldn't be showing in non-overlay mode.
     updateViewsForOverlayModeAndToolbarChanges()
 
-    privateModeCancellable = PrivateBrowsingManager.shared
+    privateModeCancellable = privateBrowsingManager
       .$isPrivateBrowsing
       .removeDuplicates()
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
@@ -303,7 +305,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     Preferences.General.nightModeEnabled.objectWillChange
       .receive(on: RunLoop.main)
       .sink { [weak self] _ in
-        self?.updateColors(PrivateBrowsingManager.shared.isPrivateBrowsing)
+        self?.updateColors(privateBrowsingManager.isPrivateBrowsing)
       }
       .store(in: &cancellables)
     
@@ -652,7 +654,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     var shieldIcon = "brave.logo"
     let shieldsOffIcon = "brave.logo.greyscale"
     if let currentURL = currentURL {
-      let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+      let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
       let domain = Domain.getOrCreate(forUrl: currentURL, persistent: !isPrivateBrowsing)
       if domain.areAllShieldsOff {
         shieldIcon = shieldsOffIcon

@@ -94,11 +94,13 @@ class FavoritesViewController: UIViewController {
     $0.contentView.backgroundColor = UIColor.braveBackground.withAlphaComponent(0.5)
   }
   private var hasPasteboardURL = false
+  private var isPrivateBrowsing: Bool
 
   init(tabType: TabType, action: @escaping (Favorite, BookmarksAction) -> Void, recentSearchAction: @escaping (RecentSearch?, Bool) -> Void) {
     self.tabType = tabType
     self.action = action
     self.recentSearchAction = recentSearchAction
+    self.isPrivateBrowsing = tabType.isPrivate
     collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 
     super.init(nibName: nil, bundle: nil)
@@ -352,7 +354,7 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
           })
 
         var urlChildren: [UIAction] = [openInNewTab]
-        if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+        if !self.isPrivateBrowsing {
           let openInNewPrivateTab = UIAction(
             title: Strings.openNewPrivateTabButtonTitle,
             handler: UIAction.deferredActionHandler { _ in
@@ -668,7 +670,7 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
 
       cell.textLabel.text = favorite.displayTitle ?? favorite.url
       if let url = favorite.url?.asURL {
-        cell.imageView.loadFavicon(siteURL: url)
+        cell.imageView.loadFavicon(siteURL: url, isPrivateBrowsing: self.isPrivateBrowsing)
       }
       cell.accessibilityLabel = cell.textLabel.text
 

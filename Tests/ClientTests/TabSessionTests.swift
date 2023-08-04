@@ -77,6 +77,7 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
 @MainActor class TabSessionTests: XCTestCase {
   private var tabManager: TabManager!
   private let maxTimeout = 60.0
+  private let privateBrowsingManager = PrivateBrowsingManager()
 
   override class func setUp() {
     super.setUp()
@@ -89,7 +90,7 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
     DataController.shared.initializeOnce()
     tabManager = { () -> TabManager in
       let profile = BrowserProfile(localName: "profile")
-      return TabManager(prefs: profile.prefs, rewards: nil, tabGeneratorAPI: nil)
+      return TabManager(windowId: UUID(), prefs: profile.prefs, rewards: nil, tabGeneratorAPI: nil, privateBrowsingManager: privateBrowsingManager)
     }()
   }
 

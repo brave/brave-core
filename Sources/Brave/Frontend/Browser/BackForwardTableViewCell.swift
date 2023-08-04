@@ -43,6 +43,8 @@ class BackForwardTableViewCell: UITableViewCell {
     label.textColor = BackForwardViewCellUX.textColor
     return label
   }()
+  
+  var isPrivateBrowsing: Bool = false
 
   var connectingForwards = true {
     didSet {
@@ -70,7 +72,7 @@ class BackForwardTableViewCell: UITableViewCell {
           faviconView.backgroundColor = .white
           faviconView.image = Favicon.defaultImage
         } else {
-          faviconView.loadFavicon(for: s.tileURL)
+          faviconView.loadFavicon(for: s.tileURL, isPrivateBrowsing: isPrivateBrowsing)
         }
         var title = s.title
         if title.isEmpty {

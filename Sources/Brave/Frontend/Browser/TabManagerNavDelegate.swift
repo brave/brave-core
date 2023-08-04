@@ -68,7 +68,7 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
   }
 
   private func defaultAllowPolicy() -> WKNavigationActionPolicy {
-    let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+    let isPrivateBrowsing = tabManager?.privateBrowsingManager.isPrivateBrowsing == true
     if isPrivateBrowsing || !Preferences.General.followUniversalLinks.value {
       // Stop Brave from opening universal links by using the private enum value
       // `_WKNavigationActionPolicyAllowWithoutTryingAppLink` which is defined here:

@@ -85,7 +85,7 @@ class TabTrayController: LoadingViewController {
   private(set) var privateMode: Bool = false {
     didSet {
       // Should be set immediately before other logic executes
-      PrivateBrowsingManager.shared.isPrivateBrowsing = privateMode
+      tabManager.privateBrowsingManager.isPrivateBrowsing = privateMode
       applySnapshot()
 
       privateModeButton.isSelected = privateMode
@@ -176,7 +176,7 @@ class TabTrayController: LoadingViewController {
     overlayDetails: EmptyOverlayStateDetails(title: Strings.noSearchResultsfound))
 
   override var preferredStatusBarStyle: UIStatusBarStyle {
-    if PrivateBrowsingManager.shared.isPrivateBrowsing {
+    if tabManager.privateBrowsingManager.isPrivateBrowsing {
       return .lightContent
     }
     
@@ -298,7 +298,7 @@ class TabTrayController: LoadingViewController {
       UIBarButtonItem(customView: doneButton),
     ]
     
-    privateModeCancellable = PrivateBrowsingManager.shared
+    privateModeCancellable = tabManager.privateBrowsingManager
       .$isPrivateBrowsing
       .removeDuplicates()
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
@@ -418,7 +418,7 @@ class TabTrayController: LoadingViewController {
   }
   
   override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
-    guard !PrivateBrowsingManager.shared.isPrivateBrowsing, let recentlyClosedTab = RecentlyClosed.all().first else {
+    guard !tabManager.privateBrowsingManager.isPrivateBrowsing, let recentlyClosedTab = RecentlyClosed.all().first else {
       return
     }
     
@@ -568,7 +568,7 @@ class TabTrayController: LoadingViewController {
   }
   
   @objc private func tappedButton(_ gestureRecognizer: UIGestureRecognizer) {
-    if PrivateBrowsingManager.shared.isPrivateBrowsing {
+    if tabManager.privateBrowsingManager.isPrivateBrowsing {
       return
     }
     
@@ -609,10 +609,21 @@ class TabTrayController: LoadingViewController {
       tabTypeSelector.selectedSegmentIndex = 0
       tabTypeSelector.sendActions(for: UIControl.Event.valueChanged)
       
-      tabTrayView.showPrivateModeInfo()
-      // New private tab is created immediately to reflect changes on NTP.
-      // If user drags the modal down or dismisses it, a new private tab will be ready.
-      tabManager.addTabAndSelect(isPrivate: true)
+      if !Preferences.Privacy.persistentPrivateBrowsing.value || tabManager.tabsForCurrentMode.isEmpty {
+        tabTrayView.showPrivateModeInfo()
+        // New private tab is created immediately to reflect changes on NTP.
+        // If user drags the modal down or dismisses it, a new private tab will be ready.
+        tabManager.addTabAndSelect(isPrivate: true)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+      } else {
+        if tabManager.tabsForCurrentMode.isEmpty {
+          tabManager.addTabAndSelect(isPrivate: true)
+        }
+        
+        tabTrayView.hidePrivateModeInfo()
+        tabTrayView.collectionView.reloadData()
+        navigationController?.setNavigationBarHidden(false, animated: false)
+      }
     } else {
       tabTrayView.hidePrivateModeInfo()
       
@@ -620,11 +631,10 @@ class TabTrayController: LoadingViewController {
       // Reloding the collection view in order to mark the selecte the tab
       tabManager.selectTab(tabManager.tabsForCurrentMode[safe: tabManager.normalTabSelectedIndex])
       tabTrayView.collectionView.reloadData()
+      navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
-    navigationController?.setNavigationBarHidden(privateMode, animated: false)
     tabTypeSelector.isHidden = privateMode
-
   }
 
   func remove(tab: Tab) {

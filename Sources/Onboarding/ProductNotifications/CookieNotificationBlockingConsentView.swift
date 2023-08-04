@@ -148,8 +148,6 @@ public struct CookieNotificationBlockingConsentView: View {
   }
 }
 
-
-
 #if DEBUG
 struct CookieNotificationBlockingConsentView_Previews: PreviewProvider {
   static var previews: some View {

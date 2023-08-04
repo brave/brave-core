@@ -315,7 +315,7 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.searchEngines,
           selection: { [unowned self] in
-            let viewController = SearchSettingsTableViewController(profile: self.profile)
+            let viewController = SearchSettingsTableViewController(profile: self.profile, privateBrowsingManager: tabManager.privateBrowsingManager)
             self.navigationController?.pushViewController(viewController, animated: true)
           }, image: UIImage(braveSystemNamed: "leo.search"), accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
         Row(
@@ -514,7 +514,7 @@ class SettingsViewController: TableViewController {
     ))
 
     // We do NOT persistently save page-zoom settings in Private Browsing
-    if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+    if !tabManager.privateBrowsingManager.isPrivateBrowsing {
       display.rows.append(
         Row(text: Strings.PageZoom.settingsMenuTitle,
             selection: { [weak self] in

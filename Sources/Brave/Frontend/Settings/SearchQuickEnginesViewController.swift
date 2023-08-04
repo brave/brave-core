@@ -28,11 +28,13 @@ class SearchQuickEnginesViewController: UITableViewController {
 
   private var searchEngines: SearchEngines
   private let profile: Profile
+  private let isPrivateBrowsing: Bool
 
   // MARK: Lifecycle
 
-  init(profile: Profile) {
+  init(profile: Profile, isPrivateBrowsing: Bool) {
     self.profile = profile
+    self.isPrivateBrowsing = isPrivateBrowsing
     self.searchEngines = profile.searchEngines
     super.init(nibName: nil, bundle: nil)
   }
@@ -142,7 +144,7 @@ extension SearchQuickEnginesViewController {
     if toggle.isOn {
       searchEngines.enableEngine(engine)
     } else {
-      searchEngines.disableEngine(engine)
+      searchEngines.disableEngine(engine, type: isPrivateBrowsing ? .privateMode : .standard)
     }
   }
 }

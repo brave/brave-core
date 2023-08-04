@@ -45,7 +45,7 @@ class BrowserNavigationHelper {
     let vc = BookmarksViewController(
       folder: bvc.bookmarkManager.lastVisitedFolder(),
       bookmarkManager: bvc.bookmarkManager,
-      isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
+      isPrivateBrowsing: bvc.privateBrowsingManager.isPrivateBrowsing)
     vc.toolbarUrlActionsDelegate = bvc
 
     open(vc, doneButton: DoneButton(style: .done, position: .right))
@@ -58,7 +58,7 @@ class BrowserNavigationHelper {
   func openHistory() {
     guard let bvc = bvc else { return }
     let vc = HistoryViewController(
-      isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing,
+      isPrivateBrowsing: bvc.privateBrowsingManager.isPrivateBrowsing,
       historyAPI: bvc.braveCore.historyAPI,
       tabManager: bvc.tabManager)
     vc.toolbarUrlActionsDelegate = bvc

@@ -48,6 +48,8 @@ class PlaylistListViewController: UIViewController {
 
   weak var delegate: PlaylistViewControllerDelegate?
   private let playerView: VideoView
+  let isPrivateBrowsing: Bool
+  
   private var observers = Set<AnyCancellable>()
   private var folderObserver: AnyCancellable?
   private var sharedFolderLoadingTask: Task<Void, Error>?
@@ -72,8 +74,9 @@ class PlaylistListViewController: UIViewController {
     $0.allowsSelectionDuringEditing = true
   }
 
-  init(playerView: VideoView) {
+  init(playerView: VideoView, isPrivateBrowsing: Bool) {
     self.playerView = playerView
+    self.isPrivateBrowsing = isPrivateBrowsing
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -638,7 +641,7 @@ extension PlaylistListViewController {
     activityIndicator.isHidden = false
 
     let selectedCell = tableView.cellForRow(at: indexPath) as? PlaylistCell
-    playerView.setVideoInfo(videoDomain: item.pageSrc, videoTitle: item.pageTitle)
+    playerView.setVideoInfo(videoDomain: item.pageSrc, videoTitle: item.pageTitle, isPrivateBrowsing: isPrivateBrowsing)
     PlaylistMediaStreamer.setNowPlayingMediaArtwork(image: selectedCell?.iconView.image)
     completion?(item)
   }
@@ -753,7 +756,7 @@ extension PlaylistListViewController {
 
             if let url = URL(string: item.pageSrc) {
               self.dismiss(animated: true, completion: nil)
-              let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+              let isPrivateBrowsing = self.isPrivateBrowsing
               self.delegate?.openURLInNewTab(
                 url,
                 isPrivate: isPrivateBrowsing,
@@ -826,7 +829,7 @@ extension PlaylistListViewController {
       let pageURL = URL(string: currentItem.pageSrc) {
 
       self.dismiss(animated: true) {
-        let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+        let isPrivateBrowsing = self.isPrivateBrowsing
         browser.tabManager.addTabAndSelect(
           URLRequest(url: pageURL),
           isPrivate: isPrivateBrowsing)

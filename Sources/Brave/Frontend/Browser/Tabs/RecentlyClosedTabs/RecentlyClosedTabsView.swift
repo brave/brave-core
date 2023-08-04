@@ -57,7 +57,7 @@ struct RecentlyClosedTabsView: View {
             onRecentlyClosedSelected?(recentlyClosed)
           }) {
             HStack {
-              FaviconImage(url: recentlyClosed.url)  
+              FaviconImage(url: recentlyClosed.url, isPrivateBrowsing: tabManager?.privateBrowsingManager.isPrivateBrowsing == true)
               VStack(alignment: .leading) {
                 Text(recentlyClosed.title ?? "")
                   .font(.footnote.weight(.semibold))

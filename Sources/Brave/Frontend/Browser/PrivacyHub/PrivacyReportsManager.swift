@@ -19,9 +19,7 @@ public struct PrivacyReportsManager {
   /// Instead a periodic timer is run and all requests gathered during this timeframe are saved in one database transaction.
   public static var pendingBlockedRequests: [(host: String, domain: URL, date: Date)] = []
   
-  public static func processBlockedRequests() {
-    if PrivateBrowsingManager.shared.isPrivateBrowsing { return }
-    
+  private static func processBlockedRequests() {
     let itemsToSave = pendingBlockedRequests
     pendingBlockedRequests.removeAll()
     
@@ -35,13 +33,15 @@ public struct PrivacyReportsManager {
   private static var saveBlockedResourcesTimer: Timer?
   private static var vpnAlertsTimer: Timer?
 
-  public static func scheduleProcessingBlockedRequests() {
+  public static func scheduleProcessingBlockedRequests(isPrivateBrowsing: Bool) {
     saveBlockedResourcesTimer?.invalidate()
     
     let timeInterval = AppConstants.buildChannel.isPublic ? 60.0 : 10.0
 
     saveBlockedResourcesTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { _ in
-      processBlockedRequests()
+      if !isPrivateBrowsing {
+        processBlockedRequests()
+      }
     }
   }
   
@@ -80,9 +80,9 @@ public struct PrivacyReportsManager {
 
   // MARK: - View
   /// Fetches required data to present the privacy reports view and returns the view.
-  static func prepareView() -> PrivacyReportsView {
+  static func prepareView(isPrivateBrowsing: Bool) -> PrivacyReportsView {
     let last = BraveVPNAlert.last(3)
-    let view = PrivacyReportsView(lastVPNAlerts: last)
+    let view = PrivacyReportsView(lastVPNAlerts: last, isPrivateBrowsing: isPrivateBrowsing)
     
     Preferences.PrivacyReports.ntpOnboardingCompleted.value = true
 

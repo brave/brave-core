@@ -16,7 +16,7 @@ struct FaviconUX {
 
 /// Displays a large favicon given some favorite
 class LargeFaviconView: UIView {
-  func loadFavicon(siteURL: URL, monogramFallbackCharacter: Character? = nil) {
+  func loadFavicon(siteURL: URL, isPrivateBrowsing: Bool, monogramFallbackCharacter: Character? = nil) {
     faviconTask?.cancel()
     if let favicon = FaviconFetcher.getIconFromCache(for: siteURL) {
       faviconTask = nil
@@ -34,7 +34,7 @@ class LargeFaviconView: UIView {
     }
     
     faviconTask = Task { @MainActor in
-      let isPersistent = !PrivateBrowsingManager.shared.isPrivateBrowsing
+      let isPersistent = !isPrivateBrowsing
       do {
         let favicon = try await FaviconFetcher.loadIcon(url: siteURL,
                                                         kind: .largeIcon,

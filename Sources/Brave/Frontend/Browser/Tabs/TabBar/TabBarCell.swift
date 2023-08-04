@@ -39,7 +39,23 @@ class TabBarCell: UICollectionViewCell {
     }
   }
   weak var tab: Tab?
-  weak var tabManager: TabManager?
+  weak var tabManager: TabManager? {
+    didSet {
+      privateModeCancellable = tabManager?.privateBrowsingManager
+        .$isPrivateBrowsing
+        .removeDuplicates()
+        .sink(receiveValue: { [weak self] isPrivateBrowsing in
+          self?.updateColors(isPrivateBrowsing)
+        })
+      
+      Preferences.General.nightModeEnabled.objectWillChange
+        .receive(on: RunLoop.main)
+        .sink { [weak self] _ in
+          self?.updateColors(self?.tabManager?.privateBrowsingManager.isPrivateBrowsing == true)
+        }
+        .store(in: &cancellables)
+    }
+  }
 
   var closeTabCallback: ((Tab) -> Void)?
   private var cancellables: Set<AnyCancellable> = []
@@ -62,19 +78,6 @@ class TabBarCell: UICollectionViewCell {
     updateFont()
     
     isSelected = false
-    privateModeCancellable = PrivateBrowsingManager.shared
-      .$isPrivateBrowsing
-      .removeDuplicates()
-      .sink(receiveValue: { [weak self] isPrivateBrowsing in
-        self?.updateColors(isPrivateBrowsing)
-      })
-    
-    Preferences.General.nightModeEnabled.objectWillChange
-      .receive(on: RunLoop.main)
-      .sink { [weak self] _ in
-        self?.updateColors(PrivateBrowsingManager.shared.isPrivateBrowsing)
-      }
-      .store(in: &cancellables)
   }
 
   private var privateModeCancellable: AnyCancellable?

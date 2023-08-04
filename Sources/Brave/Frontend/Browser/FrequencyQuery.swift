@@ -79,7 +79,7 @@ class FrequencyQuery {
     var tabList = [Site]()
         
     for tab in tabs {
-      if PrivateBrowsingManager.shared.isPrivateBrowsing {
+      if tab.isPrivate {
         if let url = tab.url, url.isWebPage(), !(InternalURL(url)?.isAboutHomeURL ?? false) {
           if let selectedTabID = tabManager.selectedTab?.id, selectedTabID == tab.id {
             continue

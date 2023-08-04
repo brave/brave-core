@@ -129,7 +129,7 @@ public class ActivityShortcutManager: NSObject {
   private func handleActivityDetails(type: ActivityType, using bvc: BrowserViewController) {
     switch type {
     case .newTab:
-      bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing, isExternal: true)
+      bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing, isExternal: true)
       bvc.popToBVC()
     case .newPrivateTab:
       bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true, isExternal: true)
@@ -137,7 +137,7 @@ public class ActivityShortcutManager: NSObject {
     case .clearBrowsingHistory:
       bvc.clearHistoryAndOpenNewTab()
     case .enableBraveVPN:
-      bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing, isExternal: true)
+      bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing, isExternal: true)
       bvc.popToBVC()
 
       switch BraveVPN.vpnState {
@@ -216,8 +216,7 @@ public class ActivityShortcutManager: NSObject {
   // MARK: Intent Donation Methods
 
   public func donateCustomIntent(for type: IntentType, with urlString: String) {
-    guard !PrivateBrowsingManager.shared.isPrivateBrowsing,
-          !urlString.isEmpty,
+    guard !urlString.isEmpty,
           URL(string: urlString) != nil else {
       return
     }

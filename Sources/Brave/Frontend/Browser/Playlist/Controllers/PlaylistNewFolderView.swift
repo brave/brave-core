@@ -41,7 +41,7 @@ class PlaylistFolderImageLoader: ObservableObject {
   func load(domainUrl: URL) {
     faviconTask?.cancel()
     faviconTask = Task { @MainActor in
-      let favicon = try await FaviconFetcher.loadIcon(url: domainUrl, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+      let favicon = try await FaviconFetcher.loadIcon(url: domainUrl, persistent: true)
       self.image = favicon.image
     }
   }

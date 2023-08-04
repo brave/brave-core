@@ -77,9 +77,7 @@ public class SearchEngines {
   }
 
   /// If no engine type is specified this method returns search engine for regular browsing.
-  func defaultEngine(forType type: DefaultEngineType? = nil) -> OpenSearchEngine {
-    let engineType = type ?? (PrivateBrowsingManager.shared.isPrivateBrowsing ? .privateMode : .standard)
-
+  func defaultEngine(forType engineType: DefaultEngineType) -> OpenSearchEngine {
     if let name = engineType.option.value,
       let defaultEngine = orderedEngines.first(where: { $0.engineID == name || $0.shortName == name }) {
       return defaultEngine
@@ -141,7 +139,7 @@ public class SearchEngines {
     }
   }
 
-  func isEngineDefault(_ engine: OpenSearchEngine, type: DefaultEngineType? = nil) -> Bool {
+  func isEngineDefault(_ engine: OpenSearchEngine, type: DefaultEngineType) -> Bool {
     return defaultEngine(forType: type).shortName == engine.shortName
   }
 
@@ -192,8 +190,8 @@ public class SearchEngines {
     disabledEngineNames.removeValue(forKey: engine.shortName)
   }
 
-  func disableEngine(_ engine: OpenSearchEngine) {
-    if isEngineDefault(engine) {
+  func disableEngine(_ engine: OpenSearchEngine, type: DefaultEngineType) {
+    if isEngineDefault(engine, type: type) {
       // Can't disable default engine.
       return
     }
@@ -232,8 +230,8 @@ public class SearchEngines {
     }
   }
 
-  func queryForSearchURL(_ url: URL?) -> String? {
-    return defaultEngine().queryForSearchURL(url)
+  func queryForSearchURL(_ url: URL?, forType engineType: DefaultEngineType) -> String? {
+    return defaultEngine(forType: engineType).queryForSearchURL(url)
   }
 
   fileprivate func getDisabledEngineNames() -> [String: Bool] {
