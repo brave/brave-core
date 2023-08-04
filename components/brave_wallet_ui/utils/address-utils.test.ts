@@ -59,13 +59,19 @@ describe('Address Utils', () => {
   })
 
   describe('isValidEVMAddress', () => {
-    it.each(validAdresses)('should return true if address is valid', (address: string, isValid: boolean) => {
-      expect(isValid).toBe(isValidEVMAddress(address))
-    })
+    it.each(validAdresses)(
+      'should return true if address is valid',
+      (address: string, isValid: boolean) => {
+        expect(isValid).toBe(isValidEVMAddress(address))
+      }
+    )
 
-    it.each(invalidAddresses)('should return false if address is invalid', (address: string, isValid: boolean) => {
-      expect(isValid).toBe(isValidEVMAddress(address))
-    })
+    it.each(invalidAddresses)(
+      'should return false if address is invalid',
+      (address: string, isValid: boolean) => {
+        expect(isValid).toBe(isValidEVMAddress(address))
+      }
+    )
 
     it('should return false if address length is invalid', () => {
       expect(isValidEVMAddress('0xdeadbeef')).toBe(false)
@@ -78,7 +84,9 @@ describe('Address Utils', () => {
     })
 
     it('should return false if address contains invalid characters', () => {
-      expect(isValidEVMAddress('0xdeadbeefdeadbeefdeadbeefdeadbeefdeadzzzz')).toBe(false)
+      expect(
+        isValidEVMAddress('0xdeadbeefdeadbeefdeadbeefdeadbeefdeadzzzz')
+      ).toBe(false)
     })
   })
 
@@ -88,12 +96,16 @@ describe('Address Utils', () => {
     })
 
     it('should return false if address length is invalid', () => {
-      expect(isValidSolanaAddress(validSolanaAddress.substring(0, 31))).toBe(false)
+      expect(
+        isValidSolanaAddress(validSolanaAddress.substring(0, 31))
+      ).toBe(false)
       expect(isValidSolanaAddress(validSolanaAddress + "4")).toBe(false)
     })
 
     it('should return false if address contains invalid characters', () => {
-      expect(isValidSolanaAddress(validSolanaAddress.substring(0, 31) + '0')).toBe(false)
+      expect(
+        isValidSolanaAddress(validSolanaAddress.substring(0, 31) + '0')
+      ).toBe(false)
     })
   })
 })
