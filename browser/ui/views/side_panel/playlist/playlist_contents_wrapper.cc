@@ -79,7 +79,7 @@ void PlaylistContentsWrapper::ExitFullscreenModeForTab(
     OnExitFullscreen();
   } else {
     widget->SetFullscreen(false);
-    // Other clean-ups will be done OnExtiFullscreen() when it's triggered by
+    // Other clean-ups will be done OnExitFullscreen() when it's triggered by
     // fullscreen controller.
   }
 }
