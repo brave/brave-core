@@ -82,6 +82,28 @@ void PlaylistTabHelper::RemoveItems(std::vector<mojom::PlaylistItemPtr> items) {
   }
 }
 
+void PlaylistTabHelper::MoveItems(std::vector<mojom::PlaylistItemPtr> items,
+                                  mojom::PlaylistPtr target_playlist) {
+  for (const auto& item : items) {
+    CHECK_EQ(item->parents.size(), 1u)
+        << "In case an item belongs to the multiple parent playlists, this "
+           "method shouldn't be used.";
+    service_->MoveItem(/*from=*/item->parents.at(0),
+                       /*to=*/*(target_playlist->id), item->id);
+  }
+}
+
+void PlaylistTabHelper::MoveItemsToNewPlaylist(
+    std::vector<mojom::PlaylistItemPtr> items,
+    const std::string& new_playlist_name) {
+  auto new_playlist = playlist::mojom::Playlist::New();
+  new_playlist->name = new_playlist_name;
+  service_->CreatePlaylist(
+      std::move(new_playlist),
+      base::BindOnce(&PlaylistTabHelper::MoveItems,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(items)));
+}
+
 base::WeakPtr<PlaylistTabHelper> PlaylistTabHelper::GetWeakPtr() {
   return weak_ptr_factory_.GetWeakPtr();
 }
@@ -321,6 +343,10 @@ std::vector<mojom::PlaylistItemPtr> PlaylistTabHelper::GetUnsavedItems() const {
     }
   }
   return unsaved_items;
+}
+
+std::vector<mojom::PlaylistPtr> PlaylistTabHelper::GetAllPlaylists() const {
+  return service_->GetAllPlaylists();
 }
 
 void PlaylistTabHelper::OnAddedItems(

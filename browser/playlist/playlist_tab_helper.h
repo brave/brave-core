@@ -40,6 +40,8 @@ class PlaylistTabHelper
 
   std::vector<mojom::PlaylistItemPtr> GetUnsavedItems() const;
 
+  std::vector<mojom::PlaylistPtr> GetAllPlaylists() const;
+
   void AddObserver(PlaylistTabHelperObserver* observer);
   void RemoveObserver(PlaylistTabHelperObserver* observer);
 
@@ -47,6 +49,11 @@ class PlaylistTabHelper
 
   void AddItems(std::vector<mojom::PlaylistItemPtr> items);
   void RemoveItems(std::vector<mojom::PlaylistItemPtr> items);
+
+  void MoveItems(std::vector<mojom::PlaylistItemPtr> items,
+                 mojom::PlaylistPtr target_playlist);
+  void MoveItemsToNewPlaylist(std::vector<mojom::PlaylistItemPtr> items,
+                              const std::string& new_playlist_name);
 
   base::WeakPtr<PlaylistTabHelper> GetWeakPtr();
 

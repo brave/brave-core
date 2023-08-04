@@ -421,17 +421,7 @@ void PlaylistService::FindMediaFilesFromContents(
 }
 
 void PlaylistService::GetAllPlaylists(GetAllPlaylistsCallback callback) {
-  std::vector<mojom::PlaylistPtr> playlists;
-  const auto& items_dict = prefs_->GetDict(kPlaylistItemsPref);
-  for (const auto [id, playlist_value] : prefs_->GetDict(kPlaylistsPref)) {
-    DCHECK(playlist_value.is_dict());
-    playlists.push_back(
-        ConvertValueToPlaylist(playlist_value.GetDict(), items_dict));
-  }
-
-  std::move(callback).Run(std::move(playlists));
-
-  playlist_p3a_.ReportNewUsage();
+  std::move(callback).Run(GetAllPlaylists());
 }
 
 void PlaylistService::GetPlaylist(const std::string& id,
@@ -474,7 +464,6 @@ mojom::PlaylistPtr PlaylistService::GetPlaylist(const std::string& id) {
     LOG(ERROR) << __func__ << " playlist with id<" << id << "> not found";
     return {};
   }
-
   playlist_p3a_.ReportNewUsage();
 
   auto* playlist_dict = playlists.FindDict(id);
@@ -482,6 +471,20 @@ mojom::PlaylistPtr PlaylistService::GetPlaylist(const std::string& id) {
 
   const auto& items_dict = prefs_->GetDict(kPlaylistItemsPref);
   return ConvertValueToPlaylist(*playlist_dict, items_dict);
+}
+
+std::vector<mojom::PlaylistPtr> PlaylistService::GetAllPlaylists() {
+  std::vector<mojom::PlaylistPtr> playlists;
+  const auto& items_dict = prefs_->GetDict(kPlaylistItemsPref);
+  for (const auto [id, playlist_value] : prefs_->GetDict(kPlaylistsPref)) {
+    DCHECK(playlist_value.is_dict());
+    playlists.push_back(
+        ConvertValueToPlaylist(playlist_value.GetDict(), items_dict));
+  }
+
+  playlist_p3a_.ReportNewUsage();
+
+  return playlists;
 }
 
 bool PlaylistService::HasPlaylistItem(const std::string& id) const {

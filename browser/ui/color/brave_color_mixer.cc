@@ -25,6 +25,7 @@
 #include "ui/native_theme/native_theme.h"
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+#include "brave/browser/ui/color/playlist/playlist_color_mixer.h"
 #include "brave/components/playlist/common/features.h"
 #endif
 
@@ -293,8 +294,9 @@ SkColor GetOmniboxResultBackground(int id, bool dark, bool priv) {
 void AddBravifiedChromeThemeColorMixer(
     ui::ColorProvider* provider,
     const ui::ColorProviderManager::Key& key) {
-  if (key.custom_theme)
+  if (key.custom_theme) {
     return;
+  }
 
   key.color_mode == ui::ColorProviderManager::ColorMode::kDark
       ? AddChromeDarkThemeColorMixer(provider, key)
@@ -390,14 +392,7 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    mixer[kColorBravePlaylistAddedIcon] = {leo::GetColor(
-        leo::Color::kColorSystemfeedbackSuccessIcon, leo::Theme::kLight)};
-    mixer[kColorBravePlaylistCheckedIcon] = {
-        leo::GetColor(leo::Color::kColorIconInteractive, leo::Theme::kLight)};
-    mixer[kColorBravePlaylistSelectedBackground] = {leo::GetColor(
-        leo::Color::kColorContainerInteractiveBackground, leo::Theme::kLight)};
-    mixer[kColorBravePlaylistListBorder] = {
-        leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight)};
+    playlist::AddThemeColorMixer(provider, leo::Theme::kLight, key);
   }
 #endif
 }
@@ -489,14 +484,7 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    mixer[kColorBravePlaylistAddedIcon] = {leo::GetColor(
-        leo::Color::kColorSystemfeedbackSuccessIcon, leo::Theme::kDark)};
-    mixer[kColorBravePlaylistCheckedIcon] = {
-        leo::GetColor(leo::Color::kColorIconInteractive, leo::Theme::kDark)};
-    mixer[kColorBravePlaylistSelectedBackground] = {leo::GetColor(
-        leo::Color::kColorContainerInteractiveBackground, leo::Theme::kDark)};
-    mixer[kColorBravePlaylistListBorder] = {
-        leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)};
+    playlist::AddThemeColorMixer(provider, leo::Theme::kDark, key);
   }
 #endif
 }
