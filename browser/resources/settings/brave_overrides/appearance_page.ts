@@ -63,7 +63,26 @@ RegisterPolymerTemplateModifications({
           theme.remove()
         }
       }
+      // Subpage
+      const pages = templateContent.getElementById('pages')
+      if (!pages) {
+        console.error(
+          `[Brave Settings Overrides] Couldn't find appearance_page #pages`)
+      } else {
+        pages.appendChild(
+          html`
+            <template is="dom-if" route-path="/themes">
+              <settings-subpage
+                associated-control="[[$$('#themes-subpage-trigger')]]"
+                page-title="${loadTimeData.getString('themes')}">
+                <settings-brave-appearance-super-referral prefs="{{prefs}}">
+                </settings-brave-appearance-super-referral>
+              </settings-subpage>
+            </template>
+          `)
+      }
     }
+
     // Toolbar prefs
     const bookmarkBarToggle = templateContent.querySelector(
       '[pref="{{prefs.bookmark_bar.show_on_all_tabs}}"]')
@@ -88,52 +107,38 @@ RegisterPolymerTemplateModifications({
       // settings-brave-appearance-bookmark-bar
       bookmarkBarToggle.remove()
     }
-    const zoomLevel = templateContent.getElementById('zoomLevel')
-    if (!zoomLevel || !zoomLevel.parentNode) {
-      console.error(`[Brave Settings Overrides] Couldn't find zoomLevel`)
+
+    // Speedreader and MRU
+    const fontsRow =
+      templateContent.getElementById('customize-fonts-subpage-trigger')
+    if (!fontsRow || !fontsRow.parentNode) {
+      console.error(`[Brave Settings Overrides] Couldn't find fonts row by id`)
     } else {
-      zoomLevel.parentNode.insertAdjacentHTML(
-        'afterend',
-        getTrustedHTML`
-          <settings-toggle-button
-            class="hr"
-            id="mru-cycling"
-            pref="{{prefs.brave.mru_cycling_enabled}}"
-          </settings-toggle-button>
-        `)
-      const mruCyclingToggle = templateContent.getElementById('mru-cycling')
-      if (!mruCyclingToggle) {
-        console.error(
-          '[Brave Settings Overrides] Couldn\'t find MRU cycling toggle')
-      } else {
-        mruCyclingToggle.setAttribute(
-            'label', loadTimeData.getString('mruCyclingSettingLabel'))
-      }
       const isSpeedreaderEnabled =
         loadTimeData.getBoolean('isSpeedreaderFeatureEnabled')
       if (isSpeedreaderEnabled) {
-        zoomLevel.parentNode.insertAdjacentHTML(
-          'afterend',
-          getTrustedHTML`
+        fontsRow.parentNode.appendChild(
+          html`
             <settings-toggle-button
               class="hr"
               id="speedreader"
               pref="{{prefs.brave.speedreader.enabled}}"
+              label="${loadTimeData.getString('speedreaderSettingLabel')}"
+              sub-label=
+                "${loadTimeData.getString('speedreaderSettingSubLabel')}"
+              learn-more-url=
+                "${loadTimeData.getString('speedreaderLearnMoreURL')}"
             </settings-toggle-button>
           `)
-        const speedreaderToggle = templateContent.getElementById('speedreader')
-        if (!speedreaderToggle) {
-          console.error(
-            '[Brave Settings Overrides] Couldn\'t find Speedreader toggle')
-        } else {
-          speedreaderToggle.setAttribute(
-              'label', loadTimeData.getString('speedreaderSettingLabel'))
-          speedreaderToggle.setAttribute(
-              'sub-label', loadTimeData.getString('speedreaderSettingSubLabel'))
-          speedreaderToggle.setAttribute(
-              'learn-more-url',
-              loadTimeData.getString('speedreaderLearnMoreURL'))
-        }
+        fontsRow.parentNode.appendChild(
+        html`
+          <settings-toggle-button
+            class="hr"
+            id="mru-cycling"
+            pref="{{prefs.brave.mru_cycling_enabled}}"
+            label="${loadTimeData.getString('mruCyclingSettingLabel')}"
+          </settings-toggle-button>
+        `)
       }
     }
 
@@ -146,26 +151,5 @@ RegisterPolymerTemplateModifications({
       confirmToQuit.remove()
     }
     // </if>
-
-    // Super referral themes prefs
-    if (hasSuperReferral) {
-      const pages = templateContent.getElementById('pages')
-      if (!pages) {
-        console.error(
-          `[Brave Settings Overrides] Couldn't find appearance_page #pages`)
-      } else {
-        pages.appendChild(
-          html`
-            <template is="dom-if" route-path="/themes">
-              <settings-subpage
-                associated-control="[[$$('#themes-subpage-trigger')]]"
-                page-title="${loadTimeData.getString('themes')}">
-                <settings-brave-appearance-super-referral prefs="{{prefs}}">
-                </settings-brave-appearance-super-referral>
-              </settings-subpage>
-            </template>
-          `)
-      }
-    }
   },
 })
