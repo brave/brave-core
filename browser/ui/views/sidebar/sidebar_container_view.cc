@@ -163,25 +163,14 @@ bool SidebarContainerView::IsSidebarVisible() const {
 }
 
 bool SidebarContainerView::IsFullscreenForCurrentEntry() const {
-  auto* side_panel_registry =
-      SidePanelCoordinator::GetGlobalSidePanelRegistry(browser_);
-  if (!side_panel_registry) {
-    return false;
-  }
-
-  auto active_entry = side_panel_registry->active_entry();
-  if (!active_entry) {
-    return false;
-  }
-
   // For now, we only supports fullscreen from playlist.
+  if (side_panel_coordinator_->GetCurrentEntryId() !=
+      SidePanelEntryId::kPlaylist) {
+    return false;
+  }
+
   // TODO(sko) Do we have a more general way to get WebContents of the active
   // entry?
-  if ((*active_entry)->key() !=
-      SidePanelEntryKey(SidePanelEntryId::kPlaylist)) {
-    return false;
-  }
-
   auto web_view = PlaylistSidePanelCoordinator::FromBrowser(browser_)
                       ->side_panel_web_view();
   if (!web_view) {
