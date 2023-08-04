@@ -221,11 +221,11 @@ extension BrowserViewController {
       didDismiss()
     }
 
-    borderView.didClickBorderedArea = {
+    borderView.didClickBorderedArea = { [weak popover] in
       maskShape.removeFromSuperlayer()
       borderView.removeFromSuperview()
         
-      popover.dismissPopover() {
+      popover?.dismissPopover() {
         didClickBorderedArea()
       }
     }

@@ -223,7 +223,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSh
         DispatchQueue.main.async {
           let model = OnboardingPlaylistModel()
           let popover = PopoverController(content: OnboardingPlaylistView(model: model))
-          popover.previewForOrigin = .init(view: self.topToolbar.locationView.playlistButton, action: { popover in
+          popover.previewForOrigin = .init(view: self.topToolbar.locationView.playlistButton, action: { [weak tab] popover in
             guard let item = tab?.playlistItem else {
               popover.dismissPopover()
               return
@@ -236,8 +236,8 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSh
           })
           popover.present(from: self.topToolbar.locationView.playlistButton, on: self)
 
-          model.onboardingCompleted = {
-            popover.dismissPopover()
+          model.onboardingCompleted = { [weak tab, weak popover] in
+            popover?.dismissPopover()
             self.openPlaylist(tab: tab, item: tab?.playlistItem)
           }
         }
