@@ -386,6 +386,10 @@ const util = {
       const androidComponentsStylesResDest = path.join(config.srcDir, 'components', 'browser_ui', 'styles', 'android', 'java', 'res')
       const androidSafeBrowsingResSource = path.join(config.braveCoreDir, 'browser', 'safe_browsing', 'android', 'java', 'res')
       const androidSafeBrowsingResDest = path.join(config.srcDir, 'chrome', 'browser', 'safe_browsing', 'android', 'java', 'res')
+      const androidDownloadInternalResSource = path.join(config.braveCoreDir, 'browser', 'download', 'internal', 'android', 'java', 'res')
+      const androidDownloadInternalResDest = path.join(config.srcDir, 'chrome', 'browser', 'download', 'internal', 'android', 'java', 'res')
+      const androidFeaturesTabUiResSource = path.join(config.braveCoreDir, 'android', 'features', 'tab_ui', 'java', 'res')
+      const androidFeaturesTabUiDest = path.join(config.srcDir, 'chrome', 'android', 'features', 'tab_ui', 'java', 'res')
 
       // Mapping for copying Brave's Android resource into chromium folder.
       const copyAndroidResourceMapping = {
@@ -399,7 +403,9 @@ const util = {
         [androidToolbarResSource]: [androidToolbarResDest],
         [androidComponentsWidgetResSource]: [androidComponentsWidgetResDest],
         [androidComponentsStylesResSource]: [androidComponentsStylesResDest],
-        [androidSafeBrowsingResSource]: [androidSafeBrowsingResDest]
+        [androidSafeBrowsingResSource]: [androidSafeBrowsingResDest],
+        [androidDownloadInternalResSource]: [androidDownloadInternalResDest],
+        [androidFeaturesTabUiResSource]: [androidFeaturesTabUiDest]
       }
 
       console.log('copy Android app icons and app resources')
