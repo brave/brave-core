@@ -17,10 +17,4 @@ COMPONENT_EXPORT(COMMANDER_COMMON) BASE_DECLARE_FEATURE(kBraveCommander);
 
 }  // namespace features
 
-namespace commander {
-
-COMPONENT_EXPORT(COMMANDER_COMMON) bool CommanderEnabled();
-
-}  // namespace commander
-
 #endif  // BRAVE_COMPONENTS_COMMANDER_COMMON_FEATURES_H_
