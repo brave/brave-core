@@ -21,6 +21,7 @@ import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesResponseListener;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
@@ -128,9 +129,8 @@ public class InAppPurchaseWrapper {
         });
     }
 
-    // TODO change this function to async function
-    public List<Purchase> queryPurchases() {
-        return mBillingClient.queryPurchases(SUBS).getPurchasesList();
+    public void queryPurchases(PurchasesResponseListener purchasesResponseListener) {
+        mBillingClient.queryPurchasesAsync(SUBS, purchasesResponseListener);
     }
 
     public void purchase(Activity activity, SkuDetails skuDetails) {

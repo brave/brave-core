@@ -11,11 +11,18 @@ import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Pair;
 
+import androidx.annotation.NonNull;
+
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesResponseListener;
+
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.ui.widget.Toast;
 
+import java.util.List;
 import java.util.TimeZone;
 
 public class BraveVpnApiResponseUtils {
@@ -35,8 +42,13 @@ public class BraveVpnApiResponseUtils {
     public static void handleOnGetSubscriberCredential(Activity activity, boolean isSuccess) {
         if (isSuccess) {
             if (!BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
-                InAppPurchaseWrapper.getInstance().processPurchases(
-                        activity, InAppPurchaseWrapper.getInstance().queryPurchases());
+                InAppPurchaseWrapper.getInstance().queryPurchases(new PurchasesResponseListener() {
+                    @Override
+                    public void onQueryPurchasesResponse(@NonNull BillingResult billingResult,
+                            @NonNull List<Purchase> purchases) {
+                        InAppPurchaseWrapper.getInstance().processPurchases(activity, purchases);
+                    }
+                });
             }
             BraveVpnNativeWorker.getInstance().getTimezonesForRegions();
         } else {

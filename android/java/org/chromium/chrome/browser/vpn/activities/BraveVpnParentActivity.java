@@ -12,8 +12,11 @@ import android.util.Pair;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 
+import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesResponseListener;
 import com.wireguard.android.backend.GoBackend;
 import com.wireguard.crypto.KeyPair;
 
@@ -84,22 +87,28 @@ public abstract class BraveVpnParentActivity
     }
 
     protected void verifySubscription() {
-        mBraveVpnPrefModel = new BraveVpnPrefModel();
-        List<Purchase> purchases = InAppPurchaseWrapper.getInstance().queryPurchases();
-        if (purchases != null && purchases.size() == 1) {
-            Purchase purchase = purchases.get(0);
-            mBraveVpnPrefModel.setPurchaseToken(purchase.getPurchaseToken());
-            mBraveVpnPrefModel.setProductId(purchase.getSkus().get(0).toString());
-            BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
-                    mBraveVpnPrefModel.getPurchaseToken(), mBraveVpnPrefModel.getProductId(),
-                    BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
-        } else {
-            if (!mIsVerification) {
-                BraveVpnApiResponseUtils.queryPurchaseFailed(BraveVpnParentActivity.this);
-            } else {
-                BraveVpnUtils.dismissProgressDialog();
+        InAppPurchaseWrapper.getInstance().queryPurchases(new PurchasesResponseListener() {
+            @Override
+            public void onQueryPurchasesResponse(
+                    @NonNull BillingResult billingResult, @NonNull List<Purchase> purchases) {
+                mBraveVpnPrefModel = new BraveVpnPrefModel();
+                if (purchases != null && purchases.size() == 1) {
+                    Purchase purchase = purchases.get(0);
+                    mBraveVpnPrefModel.setPurchaseToken(purchase.getPurchaseToken());
+                    mBraveVpnPrefModel.setProductId(purchase.getSkus().get(0).toString());
+                    BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
+                            mBraveVpnPrefModel.getPurchaseToken(),
+                            mBraveVpnPrefModel.getProductId(),
+                            BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
+                } else {
+                    if (!mIsVerification) {
+                        BraveVpnApiResponseUtils.queryPurchaseFailed(BraveVpnParentActivity.this);
+                    } else {
+                        BraveVpnUtils.dismissProgressDialog();
+                    }
+                }
             }
-        }
+        });
     }
 
     @Override
