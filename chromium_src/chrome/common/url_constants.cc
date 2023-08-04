@@ -113,6 +113,12 @@ const char kDownloadScanningLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018192491-How-do-I-fix-file-download-errors-";
 
+// Note: This is the same as the above URL. This is done to decouple the URLs,
+// in case the support page is split apart into separate pages in the future.
+const char kDownloadBlockedLearnMoreURL[] =
+    "https://support.brave.com/hc/en-us/articles/"
+    "360018192491-How-do-I-fix-file-download-errors-";
+
 const char kExtensionControlledSettingLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018185651-How-do-I-stop-extensions-from-changing-my-settings-";
