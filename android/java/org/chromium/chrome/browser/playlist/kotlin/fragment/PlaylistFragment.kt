@@ -455,11 +455,11 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
             //     }
             // }
 
-            BraveVpnNativeWorker.getInstance().queryPrompt(
-                selectedPlaylistItemModel.mediaSrc,
-                "GET");
+            // BraveVpnNativeWorker.getInstance().queryPrompt(
+            //     selectedPlaylistItemModel.mediaSrc,
+            //     "GET");
             BraveVpnNativeWorker.itemId = selectedPlaylistItemModel.id
-            // startVideo();
+            startVideo();
         }
     }
 
