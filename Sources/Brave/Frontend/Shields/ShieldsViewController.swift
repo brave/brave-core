@@ -62,7 +62,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
   private func updateToggleStatus() {
     var domain: Domain?
     if let url = url {
-      let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+      let isPrivateBrowsing = tab.isPrivate
       domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing)
     }
 
@@ -104,7 +104,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     let isOn = allOff ? !on : on
     Domain.setBraveShield(
       forUrl: url, shield: shield, isOn: isOn,
-      isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
+      isPrivateBrowsing: tab.isPrivate)
   }
 
   private func updateGlobalShieldState(_ on: Bool, animated: Bool = false) {
@@ -229,7 +229,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     super.viewDidLoad()
 
     if let url = url {
-      shieldsView.simpleShieldView.faviconImageView.loadFavicon(for: url)
+      shieldsView.simpleShieldView.faviconImageView.loadFavicon(for: url, isPrivateBrowsing: tab.isPrivate)
     } else {
       shieldsView.simpleShieldView.faviconImageView.isHidden = true
     }
@@ -309,7 +309,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
 
   @objc private func tappedShareShieldsButton() {
     let globalShieldsActivityController =
-      ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController()
+    ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController(isPrivateBrowsing: tab.isPrivate)
     globalShieldsActivityController.popoverPresentationController?.sourceView = view
 
     present(globalShieldsActivityController, animated: true, completion: nil)

@@ -74,7 +74,7 @@ public class Migration {
   
   // Migrate from TabMO to SessionTab and SessionWindow
   public static func migrateTabStateToWebkitState(diskImageStore: DiskImageStore?) {
-    let isPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing
+    let isPrivate = false // Private tabs at the time of writing this code was never persistent, so it wouldn't "restore".
 
     if Preferences.Migration.tabMigrationToInteractionStateCompleted.value {
       SessionWindow.createIfNeeded(index: 0, isPrivate: isPrivate, isSelected: true)

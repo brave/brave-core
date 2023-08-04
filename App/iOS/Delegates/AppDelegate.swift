@@ -32,56 +32,23 @@ import Preferences
 import BraveShields
 import PrivateCDN
 
-extension AppDelegate {
-  // A model that is passed used in every scene
-  struct SceneInfoModel {
-    let profile: Profile
-    let diskImageStore: DiskImageStore?
-    let migration: Migration?
-    let rewards: Brave.BraveRewards
-  }
-}
-
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
   private let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "app-delegate")
   
   var window: UIWindow?
-  lazy var braveCore: BraveCoreMain = {
-    var switches: [BraveCoreSwitch] = []
-    if !AppConstants.buildChannel.isPublic {
-      // Check prefs for additional switches
-      let activeSwitches = Set(Preferences.BraveCore.activeSwitches.value)
-      let switchValues = Preferences.BraveCore.switchValues.value
-      for activeSwitch in activeSwitches {
-        let key = BraveCoreSwitchKey(rawValue: activeSwitch)
-        if key.isValueless {
-          switches.append(.init(key: key))
-        } else if let value = switchValues[activeSwitch], !value.isEmpty {
-          switches.append(.init(key: key, value: value))
-        }
-      }
-    }
-    switches.append(.init(key: .rewardsFlags, value: BraveRewards.Configuration.current().flags))
-    return BraveCoreMain(userAgent: UserAgent.mobile, additionalSwitches: switches)
-  }()
-  
-  var migration: Migration?
-
   private weak var application: UIApplication?
-  var launchOptions: [AnyHashable: Any]?
-
   let appVersion = Bundle.main.infoDictionaryString(forKey: "CFBundleShortVersionString")
-
   var receivedURLs: [URL]?
-
-  /// Object used to handle server pings
-  private(set) lazy var dau = DAU(braveCoreStats: braveCore.braveStats)
-
-  private var cancellables: Set<AnyCancellable> = []
-  private var sceneInfo: SceneInfoModel?
   
-  override init() {
+  private var cancellables: Set<AnyCancellable> = []
+
+  @discardableResult
+  func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    // Hold references to willFinishLaunching parameters for delayed app launch
+    self.application = application
+    
+    // Application Constants must be initialized first
     #if MOZ_CHANNEL_RELEASE
     AppConstants.buildChannel = .release
     #elseif MOZ_CHANNEL_BETA
@@ -93,62 +60,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     #elseif MOZ_CHANNEL_DEBUG
     AppConstants.buildChannel = .debug
     #endif
-    super.init()
-  }
-
-  @discardableResult
-  func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    // Hold references to willFinishLaunching parameters for delayed app launch
-    self.application = application
-    self.launchOptions = launchOptions
-
-    // Brave Core Initialization
-    BraveCoreMain.setLogHandler { severity, file, line, messageStartIndex, message in
-      let message = String(message.dropFirst(messageStartIndex).dropLast())
-        .trimmingCharacters(in: .whitespacesAndNewlines)
-      if message.isEmpty {
-        // Nothing to print
-        return true
-      }
-      
-      if severity == .fatal {
-        let filename = URL(fileURLWithPath: file).lastPathComponent
-#if DEBUG
-        // Prints a special runtime warning instead of crashing.
-        os_log(
-          .fault,
-          dso: os_rw.dso,
-          log: os_rw.log(category: "BraveCore"),
-          "[%@:%ld] > %@", filename, line, message
-        )
-        return true
-#else
-        fatalError("Fatal BraveCore Error at \(filename):\(line).\n\(message)")
-#endif
-      }
-
-      let level: OSLogType = {
-        switch severity {
-        case .fatal: return .fault
-        case .error: return .error
-        // No `.warning` level exists for OSLogType. os_Log.warning is an alias for `.error`.
-        case .warning: return .error
-        case .info: return .info
-        default: return .debug
-        }
-      }()
-      
-      let braveCoreLogger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "brave-core")
-      if AppConstants.buildChannel.isPublic {
-        braveCoreLogger.log(level: level, "\(message, privacy: .private)")
-      } else {
-        braveCoreLogger.log(level: level, "\(message, privacy: .public)")
-      }
-      
-      return true
-    }
-
-    migration = Migration(braveCore: braveCore)
+    
+    AppState.shared.state = .launching(options: launchOptions ?? [:], active: false)
 
     // Passcode checking, must happen on immediate launch
     if !DataController.shared.storeExists() {
@@ -157,14 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       // upon reinstall.
       KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(nil)
     }
-
-    return startApplication(application, withLaunchOptions: launchOptions)
-  }
-
-  @discardableResult
-  fileprivate func startApplication(_ application: UIApplication, withLaunchOptions launchOptions: [AnyHashable: Any]?) -> Bool {
-    log.info("startApplication begin")
-
+    
     // Set the Safari UA for browsing.
     setUserAgent()
     
@@ -184,41 +90,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     SDImageCodersManager.shared.addCoder(PrivateCDNImageCoder())
     SDImageCodersManager.shared.addCoder(SDImageSVGNativeCoder.shared)
-
-    // Setup Profile
-    let profile = BrowserProfile(localName: "profile")
-
-    // Setup DiskImageStore for Screenshots
-    let diskImageStore = { () -> DiskImageStore? in
-      do {
-        return try DiskImageStore(
-          files: profile.files,
-          namespace: "TabManagerScreenshots",
-          quality: UIConstants.screenshotQuality)
-      } catch {
-        log.error("Failed to create an image store for files: \(profile.files.rootPath) and namespace: \"TabManagerScreenshots\": \(error.localizedDescription)")
-        assertionFailure()
-      }
-      return nil
-    }()
-    
-    // Setup ads
-    let rewardsConfiguration = BraveRewards.Configuration.current()
-    Migration.migrateAdsConfirmations(for: rewardsConfiguration)
-
-    // Setup Scene Info
-    sceneInfo = SceneInfoModel(
-      profile: profile,
-      diskImageStore: diskImageStore,
-      migration: migration,
-      rewards: BraveRewards(configuration: rewardsConfiguration))
-
-    // Perform migrations
-    let profilePrefix = profile.prefs.getBranchPrefix()
-    migration?.launchMigrations(keyPrefix: profilePrefix, profile: profile)
-
-    // Setup Custom WKWebView Scheme Handlers
-    setupCustomSchemeHandlers(profile)
 
     // Temporary fix for Bug 1390871 - NSInvalidArgumentException: -[WKContentView menuHelperFindInPage]: unrecognized selector
     if let clazz = NSClassFromString("WKCont" + "ent" + "View"), let swizzledMethod = class_getInstanceMethod(TabWebViewMenuHelper.self, #selector(TabWebViewMenuHelper.swizzledMenuHelperFindInPage)) {
@@ -240,15 +111,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     SystemUtils.onFirstRun()
-
-    // Schedule Brave Core Priority Tasks
-    braveCore.scheduleLowPriorityStartupTasks()
-
-    log.info("startApplication end")
     return true
   }
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    AppState.shared.state = .launching(options: launchOptions ?? [:], active: true)
+    
     // IAPs can trigger on the app as soon as it launches,
     // for example when a previous transaction was not finished and is in pending state.
     SKPaymentQueue.default().add(BraveVPN.iapObserver)
@@ -316,12 +184,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // There was a bug that when you skipped onboarding, default search engine preference
     // was not set.
     if Preferences.Search.defaultEngineName.value == nil {
-      sceneInfo?.profile.searchEngines.searchEngineSetup()
+      AppState.shared.profile.searchEngines.searchEngineSetup()
     }
 
     // Migration of Yahoo Search Engines
     if !Preferences.Search.yahooEngineMigrationCompleted.value {
-      sceneInfo?.profile.searchEngines.migrateDefaultYahooSearchEngines()
+      AppState.shared.profile.searchEngines.migrateDefaultYahooSearchEngines()
     }
 
     if isFirstLaunch {
@@ -359,7 +227,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     if let weekOfInstall = Preferences.DAU.weekOfInstallation.value ??
         Preferences.DAU.installationDate.value?.mondayOfCurrentWeekFormatted,
        AppConstants.buildChannel != .debug {
-      braveCore.initializeP3AService(
+      AppState.shared.braveCore.initializeP3AService(
         forChannel: AppConstants.buildChannel.serverChannelParam,
         weekOfInstall: weekOfInstall
       )
@@ -367,6 +235,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     Task(priority: .low) {
       await self.cleanUpLargeTemporaryDirectory()
+    }
+    
+    Task(priority: .high) {
+      // Start preparing the ad-block services right away
+      // So it's ready a lot faster
+      await LaunchHelper.shared.prepareAdBlockServices(
+        adBlockService: AppState.shared.braveCore.adblockService
+      )
+    }
+    
+    // Setup Playlist
+    // This restores the playlist incomplete downloads. So if a download was started
+    // and interrupted on application death, we restart it on next launch.
+    Task(priority: .low) { @MainActor in
+      PlaylistManager.shared.setupPlaylistFolder()
+      PlaylistManager.shared.restoreSession()
     }
     
     return shouldPerformAdditionalDelegateHandling
@@ -383,13 +267,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 #endif
   
   func applicationWillTerminate(_ application: UIApplication) {
-    // We have only five seconds here, so let's hope this doesn't take too long.
-    sceneInfo?.profile.shutdown()
-
+    AppState.shared.profile.shutdown()
+    
     SKPaymentQueue.default().remove(BraveVPN.iapObserver)
 
     // Clean up BraveCore
-    braveCore.syncAPI.removeAllObservers()
+    AppState.shared.braveCore.syncAPI.removeAllObservers()
 
     log.debug("Cleanly Terminated the Application")
   }
@@ -399,45 +282,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       return presentedViewController.supportedInterfaceOrientations
     } else {
       return window?.rootViewController?.supportedInterfaceOrientations ?? .portraitUpsideDown
-    }
-  }
-
-  func syncOnDidEnterBackground(application: UIApplication) {
-    // BRAVE TODO: Decide whether or not we want to use this for our own sync down the road
-
-    var taskId = UIBackgroundTaskIdentifier(rawValue: 0)
-    taskId = application.beginBackgroundTask {
-      print("Running out of background time, but we have a profile shutdown pending.")
-      self.shutdownProfileWhenNotActive(application)
-      application.endBackgroundTask(taskId)
-    }
-
-    sceneInfo?.profile.shutdown()
-    application.endBackgroundTask(taskId)
-  }
-
-  fileprivate func shutdownProfileWhenNotActive(_ application: UIApplication) {
-    // Only shutdown the profile if we are not in the foreground
-    guard application.applicationState != .active else {
-      return
-    }
-
-    sceneInfo?.profile.shutdown()
-  }
-
-  func setupCustomSchemeHandlers(_ profile: Profile) {
-    let responders: [(String, InternalSchemeResponse)] = [
-      (AboutHomeHandler.path, AboutHomeHandler()),
-      (AboutLicenseHandler.path, AboutLicenseHandler()),
-      (SessionRestoreHandler.path, SessionRestoreHandler()),
-      (ErrorPageHandler.path, ErrorPageHandler()),
-      (ReaderModeHandler.path, ReaderModeHandler(profile: profile)),
-      (IPFSSchemeHandler.path, IPFSSchemeHandler()),
-      (Web3DomainHandler.path, Web3DomainHandler())
-    ]
-
-    responders.forEach { (path, responder) in
-      InternalSchemeHandler.responders[path] = responder
     }
   }
 
@@ -454,10 +298,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // Record the user agent for use by search suggestion clients.
     SearchViewController.userAgent = userAgent
-  }
-
-  func sceneInfo(for sceneSession: UISceneSession) -> SceneInfoModel? {
-    return sceneInfo
   }
   
   /// Dumps the temporary directory if the total size of the directory exceeds a size threshold (in bytes)
@@ -494,7 +334,6 @@ extension AppDelegate: MFMailComposeViewControllerDelegate {
   func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
     // Dismiss the view controller and start the app up
     controller.dismiss(animated: true, completion: nil)
-    startApplication(application!, withLaunchOptions: self.launchOptions)
   }
 }
 
@@ -517,5 +356,11 @@ extension AppDelegate {
     // Called when the user discards a scene session.
     // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
     // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+    
+    sceneSessions.forEach { session in
+      if let windowIdString = session.scene?.userActivity?.userInfo?["WindowID"] as? String, let windowId = UUID(uuidString: windowIdString) {
+        SessionWindow.delete(windowId: windowId)
+      }
+    }
   }
 }

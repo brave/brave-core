@@ -417,7 +417,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
           cell.imageView?.clearMonogramFavicon()
 
           if let urlString = item.url, let url = URL(string: urlString) {
-            cell.imageView?.loadFavicon(for: url) { [weak cell] favicon in
+            cell.imageView?.loadFavicon(for: url, isPrivateBrowsing: isPrivateBrowsing) { [weak cell] favicon in
               if favicon?.isMonogramImage == true, let icon = item.bookmarkNode.icon {
                 cell?.imageView?.image = icon
               }
@@ -614,7 +614,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
 
       var newTabActionMenu: [UIAction] = [openInNewTabAction]
 
-      if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+      if !isPrivateBrowsing {
         newTabActionMenu.append(newPrivateTabAction)
       }
 
@@ -701,7 +701,7 @@ extension BookmarksViewController {
     }
 
     if let mode = mode {
-      let vc = AddEditBookmarkTableViewController(bookmarkManager: bookmarkManager, mode: mode)
+      let vc = AddEditBookmarkTableViewController(bookmarkManager: bookmarkManager, mode: mode, isPrivateBrowsing: isPrivateBrowsing)
       self.navigationController?.pushViewController(vc, animated: true)
     }
   }

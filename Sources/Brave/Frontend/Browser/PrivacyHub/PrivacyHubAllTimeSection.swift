@@ -21,6 +21,7 @@ extension PrivacyReportsView {
     @State private var mostFrequentTrackerLoading = true
     @State private var riskiestWebsiteLoading = true
     
+    private(set) var isPrivateBrowsing: Bool
     private(set) var onDismiss: () -> Void
     
     private func allTimeItemView(trackerOrWebsite: CountableEntity?, countableLabel: String, header: String) -> some View {
@@ -87,7 +88,7 @@ extension PrivacyReportsView {
         }
         
         NavigationLink(
-          destination: PrivacyReportAllTimeListsView(onDismiss: onDismiss)
+          destination: PrivacyReportAllTimeListsView(isPrivateBrowsing: isPrivateBrowsing, onDismiss: onDismiss)
         ) {
           HStack {
             Text(Strings.PrivacyHub.allTimeListsButtonText)
@@ -122,7 +123,7 @@ extension PrivacyReportsView {
 #if DEBUG
 struct PrivacyHubAllTimeSection_Previews: PreviewProvider {
   static var previews: some View {
-    PrivacyReportsView.PrivacyHubAllTimeSection(onDismiss: {})
+    PrivacyReportsView.PrivacyHubAllTimeSection(isPrivateBrowsing: false, onDismiss: {})
   }
 }
 #endif

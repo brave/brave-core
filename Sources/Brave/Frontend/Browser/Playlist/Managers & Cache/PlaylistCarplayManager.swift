@@ -24,10 +24,11 @@ public class PlaylistCarplayManager: NSObject {
   private var carplaySessionConfiguration: CPSessionConfiguration?
   let onCarplayUIChangedToRoot = PassthroughSubject<Void, Never>()
 
-  public var browserController: BrowserViewController?
+  public weak var browserController: BrowserViewController?
 
   var currentlyPlayingItemIndex = -1
   var currentPlaylistItem: PlaylistInfo?
+  var isPlaylistControllerPresented = false
 
   // When Picture-In-Picture is enabled, we need to store a reference to the controller to keep it alive, otherwise if it deallocates, the system automatically kills Picture-In-Picture.
   var playlistController: PlaylistViewController? {
@@ -72,23 +73,13 @@ public class PlaylistCarplayManager: NSObject {
     // Setup Playlist Download Resume Session
     PlaylistManager.shared.restoreSession()
 
-    // REFACTOR to support multiple windows.
-    // OR find a way to get WebKit to load `Youtube` and other sites WITHOUT having to be in the view hierarchy..
-    var currentWindow = browserController?.view.window
-
-    // BrowserController can actually be null when CarPlay is launched by the system
-    // The only such window that will be available is the actual CarPlay window
-    // So that's the window we need to use
-    // This does NOT break Multi-Window because we don't actually have multiple windows running
-    // when there is no browser controller. There is only a single CarPlay window.
-    if currentWindow == nil {
-      currentWindow =
-        UIApplication.shared.connectedScenes
-        .filter({ $0.activationState == .foregroundActive })
-        .compactMap({ $0 as? UIWindowScene })
-        .first?.windows
-        .filter({ $0.isKeyWindow }).first
-    }
+    // REFACTOR to find a way to get WebKit to load `Youtube` and other sites WITHOUT having to be in the view hierarchy..
+    let currentWindow =
+      UIApplication.shared.connectedScenes
+      .filter({ $0.activationState == .foregroundActive })
+      .compactMap({ $0 as? UIWindowScene })
+      .first?.windows
+      .filter({ $0.isKeyWindow }).first
 
     // If there is no media player, create one,
     // pass it to the car-play controller
@@ -125,7 +116,8 @@ public class PlaylistCarplayManager: NSObject {
         profile: browserController?.profile,
         mediaPlayer: mediaPlayer,
         initialItem: initialItem,
-        initialItemPlaybackOffset: initialItemPlaybackOffset)
+        initialItemPlaybackOffset: initialItemPlaybackOffset,
+        isPrivateBrowsing: browserController?.privateBrowsingManager.isPrivateBrowsing == true)
     self.mediaPlayer = mediaPlayer
     return playlistController
   }

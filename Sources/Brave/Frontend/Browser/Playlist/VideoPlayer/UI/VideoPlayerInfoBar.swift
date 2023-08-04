@@ -108,14 +108,14 @@ class VideoPlayerInfoBar: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  func updateFavIcon(domain: String) {
+  func updateFavIcon(domain: String, isPrivateBrowsing: Bool) {
     favIconImageView.cancelFaviconLoad()
     favIconImageView.clearMonogramFavicon()
     favIconImageView.contentMode = .scaleAspectFit
     favIconImageView.image = Favicon.defaultImage
 
     if let url = URL(string: domain) {
-      favIconImageView.loadFavicon(for: url)
+      favIconImageView.loadFavicon(for: url, isPrivateBrowsing: isPrivateBrowsing)
     }
   }
 

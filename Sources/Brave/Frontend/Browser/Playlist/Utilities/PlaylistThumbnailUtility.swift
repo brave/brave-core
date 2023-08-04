@@ -150,7 +150,7 @@ public class PlaylistThumbnailRenderer {
     
     favIconGenerator = Task { @MainActor in
       do {
-        let favicon = try await FaviconFetcher.loadIcon(url: url, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+        let favicon = try await FaviconFetcher.loadIcon(url: url, persistent: true)
         await SDImageCache.shared.store(favicon.image, forKey: url.absoluteString)
         completion(favicon.image)
       } catch {

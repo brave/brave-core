@@ -49,7 +49,7 @@ extension BrowserViewController {
       tabManager.addTab(
         PrivilegedRequest(url: url) as URLRequest,
         afterTab: self.tabManager.selectedTab,
-        isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+        isPrivate: privateBrowsingManager.isPrivateBrowsing)
     }
   }
 
@@ -105,7 +105,7 @@ extension BrowserViewController {
   }
 
   private func showPrivacyReportsOnboardingIfNeeded() {
-    if Preferences.PrivacyReports.ntpOnboardingCompleted.value || PrivateBrowsingManager.shared.isPrivateBrowsing {
+    if Preferences.PrivacyReports.ntpOnboardingCompleted.value || privateBrowsingManager.isPrivateBrowsing {
       return
     }
 

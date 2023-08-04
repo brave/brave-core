@@ -107,7 +107,7 @@ class NewTabPageViewController: UIViewController {
 
   private var background: NewTabPageBackground
   private let backgroundView = NewTabPageBackgroundView()
-  private let backgroundButtonsView = NewTabPageBackgroundButtonsView()
+  private let backgroundButtonsView: NewTabPageBackgroundButtonsView
   /// A gradient to display over background images to ensure visibility of
   /// the NTP contents and sponsored logo
   ///
@@ -129,17 +129,21 @@ class NewTabPageViewController: UIViewController {
 
   private let notifications: NewTabPageNotifications
   private var cancellables: Set<AnyCancellable> = []
+  private let privateBrowsingManager: PrivateBrowsingManager
 
   init(
     tab: Tab,
     profile: Profile,
     dataSource: NTPDataSource,
     feedDataSource: FeedDataSource,
-    rewards: BraveRewards
+    rewards: BraveRewards,
+    privateBrowsingManager: PrivateBrowsingManager
   ) {
     self.tab = tab
     self.rewards = rewards
     self.feedDataSource = feedDataSource
+    self.privateBrowsingManager = privateBrowsingManager
+    self.backgroundButtonsView = NewTabPageBackgroundButtonsView(privateBrowsingManager: privateBrowsingManager)
     background = NewTabPageBackground(dataSource: dataSource)
     notifications = NewTabPageNotifications(rewards: rewards)
     collectionView = NewTabCollectionView(frame: .zero, collectionViewLayout: layout)
@@ -149,12 +153,12 @@ class NewTabPageViewController: UIViewController {
     Preferences.NewTabPage.showNewTabFavourites.observe(from: self)
     
     sections = [
-      StatsSectionProvider(openPrivacyHubPressed: { [weak self] in
-        if PrivateBrowsingManager.shared.isPrivateBrowsing {
+      StatsSectionProvider(isPrivateBrowsing: tab.isPrivate, openPrivacyHubPressed: { [weak self] in
+        if self?.privateBrowsingManager.isPrivateBrowsing == true {
           return
         }
         
-        let host = UIHostingController(rootView: PrivacyReportsManager.prepareView())
+        let host = UIHostingController(rootView: PrivacyReportsManager.prepareView(isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing))
         host.rootView.onDismiss = { [weak self] in
           DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             guard let self = self else { return }
@@ -183,7 +187,7 @@ class NewTabPageViewController: UIViewController {
         self?.handleFavoriteAction(favorite: bookmark, action: action)
       }, legacyLongPressAction: { [weak self] alertController in
         self?.present(alertController, animated: true)
-      }),
+      }, isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing),
       FavoritesOverflowSectionProvider(action: { [weak self] in
         self?.delegate?.focusURLBar()
       }),
@@ -194,7 +198,7 @@ class NewTabPageViewController: UIViewController {
       sections.insert(NTPDefaultBrowserCalloutProvider(), at: 0)
     }
 
-    if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+    if !privateBrowsingManager.isPrivateBrowsing {
       sections.append(
         BraveNewsSectionProvider(
           dataSource: feedDataSource,
@@ -467,7 +471,7 @@ class NewTabPageViewController: UIViewController {
   }
 
   private func presentNotification() {
-    if PrivateBrowsingManager.shared.isPrivateBrowsing || notificationShowing {
+    if privateBrowsingManager.isPrivateBrowsing || notificationShowing {
       return
     }
 
@@ -882,7 +886,7 @@ extension NewTabPageViewController: PreferencesObserver {
 // MARK: - UIScrollViewDelegate
 extension NewTabPageViewController {
   var isBraveNewsVisible: Bool {
-    return !PrivateBrowsingManager.shared.isPrivateBrowsing && (Preferences.BraveNews.isEnabled.value || Preferences.BraveNews.isShowingOptIn.value)
+    return !privateBrowsingManager.isPrivateBrowsing && (Preferences.BraveNews.isEnabled.value || Preferences.BraveNews.isShowingOptIn.value)
   }
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {

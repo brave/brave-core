@@ -25,7 +25,7 @@ extension BrowserViewController {
       self.topToolbar.locationView.rewardsButton.isHidden = true
       return
     }
-    self.topToolbar.locationView.rewardsButton.isHidden = Preferences.Rewards.hideRewardsIcon.value || PrivateBrowsingManager.shared.isPrivateBrowsing
+    self.topToolbar.locationView.rewardsButton.isHidden = Preferences.Rewards.hideRewardsIcon.value || privateBrowsingManager.isPrivateBrowsing
     self.topToolbar.locationView.rewardsButton.iconState = Preferences.Rewards.rewardsToggledOnce.value ? (rewards.isEnabled || rewards.isCreatingWallet ? .enabled : .disabled) : .initial
   }
 
@@ -119,7 +119,7 @@ extension BrowserViewController {
       tabManager.selectTab(tab)
     } else {
       let request = URLRequest(url: url)
-      let isPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing
+      let isPrivate = privateBrowsingManager.isPrivateBrowsing
       tabManager.addTabAndSelect(request, isPrivate: isPrivate)
     }
   }
@@ -185,7 +185,7 @@ extension BrowserViewController {
 extension Tab {
   func reportPageLoad(to rewards: BraveRewards, redirectionURLs urls: [URL]) {
     guard let webView = webView, let url = webView.url else { return }
-    if url.isLocal || PrivateBrowsingManager.shared.isPrivateBrowsing { return }
+    if url.isLocal || self.isPrivate { return }
 
     var htmlBlob: String?
     var classifierText: String?

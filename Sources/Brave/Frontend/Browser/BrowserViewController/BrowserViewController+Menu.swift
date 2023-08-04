@@ -31,7 +31,8 @@ extension BrowserViewController {
         }, displayAlert: { [unowned menuController] alert in
           menuController.present(alert, animated: true)
         }, openURL: { [weak self] url in
-          self?.openURLInNewTab(url, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing,
+          guard let self = self else { return }
+          self.openURLInNewTab(url, isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
                                isPrivileged: false)
         })
       
@@ -69,7 +70,7 @@ extension BrowserViewController {
           self.present(alert, animated: true)
         }, openURL: { [unowned self] url in
           self.openURLInNewTab(url,
-                               isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing,
+                               isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
                                isPrivileged: false)
         }
       )
@@ -89,7 +90,7 @@ extension BrowserViewController {
       }
 
       // Add Brave Talk and News options only in normal browsing
-      if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+      if !privateBrowsingManager.isPrivateBrowsing {
         // Show Brave News if it is first launch and after first launch If the new is enabled
         if Preferences.General.isFirstLaunch.value || (!Preferences.General.isFirstLaunch.value && Preferences.BraveNews.isEnabled.value) {
           MenuItemFactory.button(for: .news) { [weak self] in
@@ -124,13 +125,13 @@ extension BrowserViewController {
         let vc = BookmarksViewController(
           folder: bookmarkManager.lastVisitedFolder(),
           bookmarkManager: bookmarkManager,
-          isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
+          isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing)
         vc.toolbarUrlActionsDelegate = self
         menuController.presentInnerMenu(vc)
       }
       MenuItemFactory.button(for: .history) { [unowned self, unowned menuController] in
         let vc = HistoryViewController(
-          isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing,
+          isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing,
           historyAPI: self.braveCore.historyAPI,
           tabManager: self.tabManager)
         vc.toolbarUrlActionsDelegate = self
@@ -154,7 +155,7 @@ extension BrowserViewController {
         }
       }
       MenuItemFactory.button(for: .settings) { [unowned self, unowned menuController] in
-        let isPrivateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
+        let isPrivateMode = privateBrowsingManager.isPrivateBrowsing
         let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: isPrivateMode)
         let walletService = BraveWallet.ServiceFactory.get(privateMode: isPrivateMode)
         let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode)
@@ -200,11 +201,23 @@ extension BrowserViewController {
   }
 
   private func presentPlaylistController() {
+    if PlaylistCarplayManager.shared.isPlaylistControllerPresented {
+      let alert = UIAlertController(title: Strings.PlayList.playlistAlreadyShowingTitle,
+                                    message: Strings.PlayList.playlistAlreadyShowingBody,
+                                    preferredStyle: .alert)
+      alert.addAction(UIAlertAction(title: Strings.OKString, style: .default))
+      dismiss(animated: true) {
+        self.present(alert, animated: true)
+      }
+      return
+    }
+    
     // Present existing playlist controller
     if let playlistController = PlaylistCarplayManager.shared.playlistController {
       PlaylistP3A.recordUsage()
       
       dismiss(animated: true) {
+        PlaylistCarplayManager.shared.isPlaylistControllerPresented = true
         self.present(playlistController, animated: true)
       }
     } else {
@@ -217,6 +230,7 @@ extension BrowserViewController {
         PlaylistP3A.recordUsage()
         
         self.dismiss(animated: true) {
+          PlaylistCarplayManager.shared.isPlaylistControllerPresented = true
           self.present(playlistController, animated: true)
         }
       }

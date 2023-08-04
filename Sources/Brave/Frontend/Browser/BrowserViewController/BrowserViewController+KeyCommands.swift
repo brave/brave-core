@@ -43,7 +43,7 @@ extension BrowserViewController {
   }
 
   @objc private func newTabKeyCommand() {
-    openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+    openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: privateBrowsingManager.isPrivateBrowsing)
   }
 
   @objc private func newPrivateTabKeyCommand() {
@@ -211,7 +211,7 @@ extension BrowserViewController {
       UIKeyCommand(title: Strings.Hotkey.newPrivateTabTitle, action: #selector(newPrivateTabKeyCommand), input: "n", modifierFlags: [.command, .shift]),
     ]
     
-    if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+    if !privateBrowsingManager.isPrivateBrowsing {
       navigationCommands += [
         UIKeyCommand(title: Strings.Hotkey.recentlyClosedTabTitle, action: #selector(reopenRecentlyClosedTabCommand), input: "t", modifierFlags: [.command, .shift])
       ]

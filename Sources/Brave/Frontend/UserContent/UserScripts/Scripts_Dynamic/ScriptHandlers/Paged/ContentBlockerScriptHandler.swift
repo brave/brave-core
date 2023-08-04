@@ -65,7 +65,7 @@ extension ContentBlockerHelper: TabContentScript {
       let dto = try JSONDecoder().decode(ContentBlockerDTO.self, from: data)
     
       Task { @MainActor in
-        let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+        let isPrivateBrowsing = self.tab?.isPrivate == true
         let domain = Domain.getOrCreate(forUrl: currentTabURL, persistent: !isPrivateBrowsing)
         if domain.areAllShieldsOff {
           // if domain is "all_off", can just skip
@@ -110,7 +110,7 @@ extension ContentBlockerHelper: TabContentScript {
         if blockedType == .ad, Preferences.PrivacyReports.captureShieldsData.value,
            let domainURL = URL(string: domainURLString),
            let blockedResourceHost = requestURL.baseDomain,
-           !PrivateBrowsingManager.shared.isPrivateBrowsing {
+           tab?.isPrivate != true {
           PrivacyReportsManager.pendingBlockedRequests.append((blockedResourceHost, domainURL, Date()))
         }
         

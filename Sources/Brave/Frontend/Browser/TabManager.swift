@@ -92,6 +92,9 @@ class TabManager: NSObject {
   private let syncedTabsQueue = DispatchQueue(label: "synced-tabs-queue")
   private var syncTabsTask: DispatchWorkItem?
   private var metricsHeartbeat: Timer?
+  public let privateBrowsingManager: PrivateBrowsingManager
+  
+  let windowId: UUID
   
   /// The property returning only existing tab is NTP for current mode
   var isBrowserEmptyForCurrentMode: Bool {
@@ -106,13 +109,15 @@ class TabManager: NSObject {
     }
   }
 
-  init(prefs: Prefs, rewards: BraveRewards?, tabGeneratorAPI: BraveTabGeneratorAPI?) {
+  init(windowId: UUID, prefs: Prefs, rewards: BraveRewards?, tabGeneratorAPI: BraveTabGeneratorAPI?, privateBrowsingManager: PrivateBrowsingManager) {
     assert(Thread.isMainThread)
 
+    self.windowId = windowId
     self.prefs = prefs
     self.navDelegate = TabManagerNavDelegate()
     self.rewards = rewards
     self.tabGeneratorAPI = tabGeneratorAPI
+    self.privateBrowsingManager = privateBrowsingManager
     self.tabEventHandlers = TabEventHandlers.create(with: prefs)
     super.init()
 
@@ -192,7 +197,7 @@ class TabManager: NSObject {
 
   // What the users sees displayed based on current private browsing mode
   var tabsForCurrentMode: [Tab] {
-    let tabType: TabType = PrivateBrowsingManager.shared.isPrivateBrowsing ? .private : .regular
+    let tabType: TabType = privateBrowsingManager.isPrivateBrowsing ? .private : .regular
     return tabs(withType: tabType)
   }
 
@@ -207,7 +212,7 @@ class TabManager: NSObject {
 
   func tabsForCurrentMode(for query: String? = nil) -> [Tab] {
     if let query = query {
-      let tabType: TabType = PrivateBrowsingManager.shared.isPrivateBrowsing ? .private : .regular
+      let tabType: TabType = privateBrowsingManager.isPrivateBrowsing ? .private : .regular
       return tabs(withType: tabType, query: query)
     } else {
       return tabsForCurrentMode
@@ -299,11 +304,11 @@ class TabManager: NSObject {
       return
     }
     // Convert the global mode to private if opening private tab from normal tab/ history/bookmark.
-    if selectedTab?.isPrivate == false && tab?.isPrivate == true {
-      PrivateBrowsingManager.shared.isPrivateBrowsing = true
+    if selectedTab?.isPrivate != true && tab?.isPrivate == true {
+      privateBrowsingManager.isPrivateBrowsing = true
     }
     // Make sure to wipe the private tabs if the user has the pref turned on
-    if !TabType.of(tab).isPrivate {
+    if !TabType.of(tab).isPrivate && (Preferences.Privacy.privateBrowsingOnly.value || !Preferences.Privacy.persistentPrivateBrowsing.value) {
       removeAllPrivateTabs()
     }
 
@@ -356,7 +361,7 @@ class TabManager: NSObject {
 
     guard let newSelectedTab = tab, let previousTab = previous, let newTabUrl = newSelectedTab.url, let previousTabUrl = previousTab.url else { return }
 
-    if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+    if !privateBrowsingManager.isPrivateBrowsing {
       if previousTab.displayFavicon == nil {
         adsRewardsLog.warning("No favicon found in \(previousTab) to report to rewards panel")
       }
@@ -378,7 +383,9 @@ class TabManager: NSObject {
   // we only want to remove all private tabs when leaving PBM and not when entering.
   func willSwitchTabMode(leavingPBM: Bool) {
     if leavingPBM {
-      removeAllPrivateTabs()
+      if Preferences.Privacy.privateBrowsingOnly.value || !Preferences.Privacy.persistentPrivateBrowsing.value {
+        removeAllPrivateTabs()
+      }
     }
   }
 
@@ -495,7 +502,7 @@ class TabManager: NSObject {
   }
 
   private func saveTabOrder() {
-    if PrivateBrowsingManager.shared.isPrivateBrowsing { return }
+    if Preferences.Privacy.privateBrowsingOnly.value || (privateBrowsingManager.isPrivateBrowsing && !Preferences.Privacy.persistentPrivateBrowsing.value) { return }
     let allTabIds = allTabs.compactMap { $0.id }
     SessionTab.saveTabOrder(tabIds: allTabIds)
   }
@@ -504,10 +511,14 @@ class TabManager: NSObject {
     assert(Thread.isMainThread)
 
     let isPrivate = tab.type == .private
-    if !isPrivate {
-      SessionTab.createIfNeeded(tabId: tab.id,
+    let isPersistentTab = !isPrivate || (isPrivate && !Preferences.Privacy.privateBrowsingOnly.value && Preferences.Privacy.persistentPrivateBrowsing.value)
+    
+    if isPersistentTab {
+      SessionTab.createIfNeeded(windowId: windowId,
+                                tabId: tab.id,
                                 title: Strings.newTab,
-                                tabURL: request?.url ?? TabManager.ntpInteralURL)
+                                tabURL: request?.url ?? TabManager.ntpInteralURL,
+                                isPrivate: isPrivate)
     }
     
     delegates.forEach { $0.get()?.tabManager(self, willAddTab: tab) }
@@ -539,7 +550,7 @@ class TabManager: NSObject {
     }
 
     // Ignore on restore.
-    if flushToDisk && !zombie && !isPrivate {
+    if flushToDisk && !zombie && isPersistentTab {
       saveTab(tab, saveOrder: true)
     }
     
@@ -554,11 +565,13 @@ class TabManager: NSObject {
         tab.webStateDebounceTimer?.invalidate()
         
         if state == .complete || state == .loaded || state == .pushstate || state == .popstate || state == .replacestate {
-          // Saving Tab Private Mode - not supported yet.
-          if !tab.isPrivate {
-            self.preserveScreenshots()
-            self.saveTab(tab)
+          
+          if Preferences.Privacy.privateBrowsingOnly.value || (tab.isPrivate && !Preferences.Privacy.persistentPrivateBrowsing.value) {
+            return
           }
+          
+          self.preserveScreenshots()
+          self.saveTab(tab)
         }
       }
     }
@@ -579,8 +592,10 @@ class TabManager: NSObject {
   }
   
   func saveAllTabs() {
-    if PrivateBrowsingManager.shared.isPrivateBrowsing { return }
-    SessionTab.updateAll(tabs: tabs(withType: .regular).compactMap({
+    if Preferences.Privacy.privateBrowsingOnly.value || (privateBrowsingManager.isPrivateBrowsing && !Preferences.Privacy.persistentPrivateBrowsing.value) { return }
+    
+    let tabs = Preferences.Privacy.persistentPrivateBrowsing.value ? allTabs : tabs(withType: .regular)
+    SessionTab.updateAll(tabs: tabs.compactMap({
       if let sessionData = $0.webView?.sessionData {
         return ($0.id, sessionData, $0.title, $0.url ?? TabManager.ntpInteralURL)
       }
@@ -589,7 +604,7 @@ class TabManager: NSObject {
   }
 
   func saveTab(_ tab: Tab, saveOrder: Bool = false) {
-    if PrivateBrowsingManager.shared.isPrivateBrowsing { return }
+    if Preferences.Privacy.privateBrowsingOnly.value || (tab.isPrivate && !Preferences.Privacy.persistentPrivateBrowsing.value) { return }
     SessionTab.update(tabId: tab.id, interactionState: tab.webView?.sessionData ?? Data(), title: tab.title, url: tab.url ?? TabManager.ntpInteralURL)
     if saveOrder {
       saveTabOrder()
@@ -615,7 +630,6 @@ class TabManager: NSObject {
         // reaches zero and destroys all its data.
 
         BraveWebView.removeNonPersistentStore()
-        configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
       }
     }
 
@@ -911,6 +925,7 @@ class TabManager: NSObject {
       savedTabs = SessionTab.all()
     }
 
+    savedTabs = savedTabs.filter({ $0.sessionWindow?.windowId == windowId })
     if savedTabs.isEmpty { return nil }
 
     var tabToSelect: Tab?
@@ -925,20 +940,19 @@ class TabManager: NSObject {
                        flushToDisk: false,
                        zombie: true,
                        id: savedTab.tabId,
-                       isPrivate: false)
-      
-      let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+                       isPrivate: savedTab.isPrivate)
       
       tab.lastTitle = savedTab.title
       tab.favicon = FaviconFetcher.getIconFromCache(for: tabURL) ?? Favicon.default
       tab.setScreenshot(savedTab.screenshot)
       
       Task { @MainActor in
-        tab.favicon = try await FaviconFetcher.loadIcon(url: tabURL, kind: .smallIcon, persistent: !isPrivateBrowsing)
+        tab.favicon = try await FaviconFetcher.loadIcon(url: tabURL, kind: .smallIcon, persistent: !tab.isPrivate)
         tab.setScreenshot(savedTab.screenshot)
       }
 
-      if savedTab.isSelected {
+      // Do not select the private tab since we always restore to regular mode!
+      if savedTab.isSelected && !savedTab.isPrivate {
         tabToSelect = tab
       }
     }
@@ -1161,8 +1175,11 @@ extension TabManager: WKNavigationDelegate {
         return
       }
 
-      // Saving Tab Private Mode - not supported yet.
-      if let tab = tabForWebView(webView), !tab.isPrivate {
+      if let tab = tabForWebView(webView) {
+        if Preferences.Privacy.privateBrowsingOnly.value || (tab.isPrivate && !Preferences.Privacy.persistentPrivateBrowsing.value) {
+          return
+        }
+        
         preserveScreenshots()
         saveTab(tab)
       }

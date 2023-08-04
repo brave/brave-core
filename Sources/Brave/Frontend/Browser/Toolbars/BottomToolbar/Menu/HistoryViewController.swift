@@ -240,10 +240,10 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
 
       let domain = Domain.getOrCreate(
         forUrl: historyItem.url,
-        persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+        persistent: !isPrivateBrowsing)
 
       if domain.url?.asURL != nil {
-        cell.imageView?.loadFavicon(for: historyItem.url)
+        cell.imageView?.loadFavicon(for: historyItem.url, isPrivateBrowsing: isPrivateBrowsing)
       } else {
         cell.imageView?.clearMonogramFavicon()
         cell.imageView?.image = Favicon.defaultImage
@@ -340,7 +340,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
 
       var newTabActionMenu: [UIAction] = [openInNewTabAction]
 
-      if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+      if !isPrivateBrowsing {
         newTabActionMenu.append(newPrivateTabAction)
       }
 

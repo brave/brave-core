@@ -13,6 +13,7 @@ import Preferences
 private struct ZoomView: View {
   @ScaledMetric private var buttonWidth = 44.0
   
+  var isPrivateBrowsing: Bool
   var minValue: Double
   var maxValue: Double
   @Binding var value: Double
@@ -62,12 +63,12 @@ private struct ZoomView: View {
     Button(action: onReset) {
       Text(NSNumber(value: value), formatter: PageZoomView.percentFormatter)
         .font(.system(.footnote).weight(.medium))
-        .foregroundColor((value == (PrivateBrowsingManager.shared.isPrivateBrowsing ? 1.0 : Preferences.General.defaultPageZoomLevel.value)) ? .accentColor : Color(UIColor.braveLabel))
+        .foregroundColor((value == (isPrivateBrowsing ? 1.0 : Preferences.General.defaultPageZoomLevel.value)) ? .accentColor : Color(UIColor.braveLabel))
         .padding()
         .contentShape(Rectangle())
     }
     .fixedSize(horizontal: true, vertical: false)
-    .disabled(value == (PrivateBrowsingManager.shared.isPrivateBrowsing ? 1.0 : Preferences.General.defaultPageZoomLevel.value))
+    .disabled(value == (isPrivateBrowsing ? 1.0 : Preferences.General.defaultPageZoomLevel.value))
   }
 }
 
@@ -75,6 +76,7 @@ struct PageZoomView: View {
   @Environment(\.managedObjectContext) private var context
   
   private var webView: WKWebView?
+  private let isPrivateBrowsing: Bool
   @State private var minValue = 0.5
   @State private var maxValue = 3.0
   @State private var currentValue: Double
@@ -97,11 +99,12 @@ struct PageZoomView: View {
   
   var dismiss: (() -> Void)?
   
-  init(webView: WKWebView?) {
+  init(webView: WKWebView?, isPrivateBrowsing: Bool) {
     self.webView = webView
+    self.isPrivateBrowsing = isPrivateBrowsing
     
     // Private Browsing on Safari iOS always defaults to 100%, and isn't persistently saved.
-    if PrivateBrowsingManager.shared.isPrivateBrowsing {
+    if isPrivateBrowsing {
       _currentValue = State(initialValue: 1.0)
       return
     }
@@ -126,6 +129,7 @@ struct PageZoomView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
         
         ZoomView(
+          isPrivateBrowsing: isPrivateBrowsing,
           minValue: minValue,
           maxValue: maxValue,
           value: $currentValue,
@@ -156,7 +160,7 @@ struct PageZoomView: View {
     webView.setValue(currentValue, forKey: PageZoomView.propertyName)
     
     // Do NOT store the changes in the Domain
-    if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+    if !isPrivateBrowsing {
       let domain = Domain.getPersistedDomain(for: url)?.then {
         $0.zoom_level = currentValue == $0.zoom_level?.doubleValue ? nil : NSNumber(value: currentValue)
       }
@@ -188,7 +192,7 @@ struct PageZoomView: View {
 #if DEBUG
 struct PageZoomView_Previews: PreviewProvider {
   static var previews: some View {
-    PageZoomView(webView: nil)
+    PageZoomView(webView: nil, isPrivateBrowsing: false)
       .previewLayout(PreviewLayout.sizeThatFits)
   }
 }

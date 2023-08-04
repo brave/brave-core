@@ -23,12 +23,13 @@ final class ShieldsActivityItemSourceProvider {
 
   static let shared = ShieldsActivityItemSourceProvider()
 
-  func setupGlobalShieldsActivityController() -> UIActivityViewController {
+  func setupGlobalShieldsActivityController(isPrivateBrowsing: Bool) -> UIActivityViewController {
     let backgroundImage = UIImage(named: "share-activity-background", in: .module, compatibleWith: nil)!
 
     let statsView = UIView(frame: CGRect(size: backgroundImage.size)).then {
       let backgroundImageView = UIImageView(image: backgroundImage)
       let statsInfoView = BraveShieldStatsView()
+      statsInfoView.isPrivateBrowsing = isPrivateBrowsing
 
       $0.addSubview(backgroundImageView)
       $0.addSubview(statsInfoView)

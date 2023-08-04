@@ -251,7 +251,7 @@ class TabLocationView: UIView {
 
   private var isVoiceSearchAvailable: Bool
 
-  init(voiceSearchSupported: Bool) {
+  init(voiceSearchSupported: Bool, privateBrowsingManager: PrivateBrowsingManager) {
     isVoiceSearchAvailable = voiceSearchSupported
     
     super.init(frame: .zero)
@@ -306,7 +306,7 @@ class TabLocationView: UIView {
     dragInteraction.allowsSimultaneousRecognitionDuringLift = true
     self.addInteraction(dragInteraction)
     
-    privateModeCancellable = PrivateBrowsingManager.shared.$isPrivateBrowsing
+    privateModeCancellable = privateBrowsingManager.$isPrivateBrowsing
       .removeDuplicates()
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
         self?.updateColors(isPrivateBrowsing)

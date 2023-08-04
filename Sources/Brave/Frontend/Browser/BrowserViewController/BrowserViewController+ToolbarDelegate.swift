@@ -260,7 +260,8 @@ extension BrowserViewController: TopToolbarDelegate {
     if let url = searchURL, InternalURL.isValid(url: url) {
       searchURL = url
     }
-    if let query = profile.searchEngines.queryForSearchURL(searchURL as URL?) {
+    if let query = profile.searchEngines.queryForSearchURL(searchURL as URL?,
+                                                           forType: privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard) {
       return (query, true)
     } else {
       return (topToolbar?.absoluteString, false)
@@ -304,7 +305,7 @@ extension BrowserViewController: TopToolbarDelegate {
         // We couldn't build a URL, so pass it on to the search engine.
         submitSearchText(text, isBraveSearchPromotion: isBraveSearchPromotion)
         
-        if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+        if !privateBrowsingManager.isPrivateBrowsing {
           RecentSearch.addItem(type: .text, text: text, websiteUrl: nil)
         }
       }
@@ -313,7 +314,7 @@ extension BrowserViewController: TopToolbarDelegate {
   
   @discardableResult
   func handleIPFSSchemeURL(_ url: URL, visitType: VisitType) -> Bool {
-    guard !PrivateBrowsingManager.shared.isPrivateBrowsing else {
+    guard !privateBrowsingManager.isPrivateBrowsing else {
       topToolbar.leaveOverlayMode()
       if let errorPageHelper = tabManager.selectedTab?.getContentScript(name: ErrorPageHelper.scriptName) as? ErrorPageHelper, let webView = tabManager.selectedTab?.webView {
         errorPageHelper.loadPage(IPFSErrorPageHandler.privateModeError, forUrl: url, inWebView: webView)
@@ -386,7 +387,7 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func submitSearchText(_ text: String, isBraveSearchPromotion: Bool = false) {
-    var engine = profile.searchEngines.defaultEngine()
+    var engine = profile.searchEngines.defaultEngine(forType: privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard)
     
     if isBraveSearchPromotion {
       let braveSearchEngine = profile.searchEngines.orderedEngines.first {
@@ -448,12 +449,21 @@ extension BrowserViewController: TopToolbarDelegate {
     
     let shields = ShieldsViewController(tab: selectedTab)
     shields.shieldsSettingsChanged = { [unowned self] _, shield in
-      // Update the shields status immediately
-      self.topToolbar.refreshShieldsStatus()
-
-      // Reload this tab. This will also trigger an update of the brave icon in `TabLocationView` if
-      // the setting changed is the global `.AllOff` shield
-      self.tabManager.selectedTab?.reload()
+      let currentDomain = self.tabManager.selectedTab?.url?.baseDomain
+      let browsers = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).compactMap({ $0.browserViewController })
+      
+      browsers.forEach { browser in
+        // Update the shields status immediately
+        browser.topToolbar.refreshShieldsStatus()
+        
+        // Reload the tabs. This will also trigger an update of the brave icon in `TabLocationView` if
+        // the setting changed is the global `.AllOff` shield
+        browser.tabManager.allTabs.forEach {
+          if $0.url?.baseDomain == currentDomain {
+            $0.reload()
+          }
+        }
+      }
       
       // Record P3A shield changes
       DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -790,7 +800,7 @@ extension BrowserViewController: TopToolbarDelegate {
 
     let mode = BookmarkEditMode.addBookmark(title: selectedTab.displayTitle, url: bookmarkUrl.absoluteString)
 
-    let addBookMarkController = AddEditBookmarkTableViewController(bookmarkManager: bookmarkManager, mode: mode)
+    let addBookMarkController = AddEditBookmarkTableViewController(bookmarkManager: bookmarkManager, mode: mode, isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing)
     presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
   }
 
@@ -881,7 +891,7 @@ extension BrowserViewController: ToolbarDelegate {
   }
 
   func tabToolbarDidPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-    self.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+    self.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: privateBrowsingManager.isPrivateBrowsing)
   }
 
   func tabToolbarDidLongPressForward(_ tabToolbar: ToolbarProtocol, button: UIButton) {

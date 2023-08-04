@@ -249,7 +249,7 @@ extension BrowserViewController {
     
     var linkReceiptView = VPNLinkReceiptView()
     linkReceiptView.linkReceiptAction = {
-      self.openURLInNewTab(.brave.braveVPNLinkReceiptProd, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing, isPrivileged: false)
+      self.openURLInNewTab(.brave.braveVPNLinkReceiptProd, isPrivate: self.privateBrowsingManager.isPrivateBrowsing, isPrivileged: false)
     }
     let popup = PopupViewController(rootView: linkReceiptView, isDismissable: true)
     

@@ -306,7 +306,7 @@ extension BraveRewards {
       case staging
     }
 
-    var storageURL: URL
+    public var storageURL: URL
     public var environment: Environment
     public var adsBuildChannel: BraveAds.BuildChannelInfo = .init()
     public var isDebug: Bool?

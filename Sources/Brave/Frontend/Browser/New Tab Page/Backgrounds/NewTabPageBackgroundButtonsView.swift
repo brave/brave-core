@@ -77,9 +77,12 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
   }
   private var safeAreaInsetsConstraint: Constraint?
   private let collectionViewSafeAreaLayoutGuide = UILayoutGuide()
+  private let privateBrowsingManager: PrivateBrowsingManager
 
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  init(privateBrowsingManager: PrivateBrowsingManager) {
+    self.privateBrowsingManager = privateBrowsingManager
+    
+    super.init(frame: .zero)
 
     Preferences.BraveNews.isEnabled.observe(from: self)
 
@@ -106,7 +109,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     let isLandscape = frame.width > frame.height
 
     let braveNewsVisible =
-      !PrivateBrowsingManager.shared.isPrivateBrowsing && (Preferences.BraveNews.isEnabled.value || Preferences.BraveNews.isShowingOptIn.value)
+      !privateBrowsingManager.isPrivateBrowsing && (Preferences.BraveNews.isEnabled.value || Preferences.BraveNews.isShowingOptIn.value)
 
     imageCreditButton.snp.remakeConstraints {
       $0.leading.equalTo(collectionViewSafeAreaLayoutGuide).inset(16)

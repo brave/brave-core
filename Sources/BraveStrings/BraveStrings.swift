@@ -141,6 +141,10 @@ extension Strings {
       bundle: .module,
       value: "An unknown error occurred while opening the Downloads folder in the Files app.",
       comment: "Error description when there is an error while navigating to Files App")
+  public static let openInNewWindowTitle = NSLocalizedString("OpenInNewWindowTitle", tableName: "BraveShared", bundle: .module, value: "Open in New Window", comment: "Context menu item for opening a link in a new window")
+  public static let openInNewPrivateWindowTitle = NSLocalizedString("OpenInNewPrivateWindowTitle", tableName: "BraveShared", bundle: .module, value: "Open in New Private Window", comment: "Context menu item for opening a link in a new private browsing window")
+  public static let newWindowTitle = NSLocalizedString("NewWindowTitle", tableName: "BraveShared", bundle: .module, value: "New Window", comment: "Context menu item for opening a new window")
+  public static let newPrivateWindowTitle = NSLocalizedString("NewPrivateWindowTitle", tableName: "BraveShared", bundle: .module, value: "New Private Window", comment: "Context menu item for opening a new private browsing window")
 }
 
 // MARK:-  DefaultBrowserIntroCalloutViewController.swift
@@ -1104,6 +1108,9 @@ extension Strings {
   public static let youtubeMediaQualityOn = NSLocalizedString("YoutubeMediaQualityOn", tableName: "BraveShared", bundle: .module, value: "On", comment: "Setting that enables high quality playback always")
   public static let showTabsBar = NSLocalizedString("ShowTabsBar", tableName: "BraveShared", bundle: .module, value: "Tabs Bar", comment: "Setting to show/hide the tabs bar")
   public static let privateBrowsingOnly = NSLocalizedString("PrivateBrowsingOnly", tableName: "BraveShared", bundle: .module, value: "Private Browsing Only", comment: "Setting to keep app in private mode")
+  public static let persistentPrivateBrowsingAlertTitle = NSLocalizedString("PersistentPrivateBrowsingAlertTitle", tableName: "BraveShared", bundle: .module, value: "Restore Private Tabs", comment: "Persistent private browsing alert title to existing users")
+  public static let persistentPrivateBrowsingAlertMessage = NSLocalizedString("PersistentPrivateBrowsingAlertMessage", tableName: "BraveShared", bundle: .module, value: "Allows Brave to restore private browsing tabs, even if you close / re-open the app", comment: "Persistent private browsing alert message to existing users")
+  public static let persistentPrivateBrowsing = NSLocalizedString("PersistentPrivateBrowsing", tableName: "BraveShared", bundle: .module, value: "Persistent Private Browsing", comment: "Setting to allow the app to restore private browsing tabs")
   public static let shieldsDefaults = NSLocalizedString("ShieldsDefaults", tableName: "BraveShared", bundle: .module, value: "Brave Shields Global Defaults", comment: "Section title for adbblock, tracking protection, HTTPS-E, and cookies")
   public static let shieldsDefaultsFooter = NSLocalizedString("ShieldsDefaultsFooter", tableName: "BraveShared", bundle: .module, value: "These are the default Shields settings for new sites. Changing these won't affect your existing per-site settings.", comment: "Section footer for global shields defaults")
   public static let HTTPSEverywhere = NSLocalizedString("HTTPSEverywhere", tableName: "BraveShared", bundle: .module, value: "Upgrade Connections to HTTPS", comment: "")
@@ -1901,6 +1908,16 @@ extension Strings {
       NSLocalizedString("playlist.deleteForOfflineButtonTitle", tableName: "BraveShared", bundle: .module,
         value: "Delete Offline Cache",
         comment: "The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline)")
+    
+    public static let playlistAlreadyShowingTitle =
+      NSLocalizedString("playlist.playlistAlreadyShowingTitle", tableName: "BraveShared", bundle: .module,
+        value: "Sorry",
+        comment: "Playlist alert title when playlist is already showing on a different window")
+    
+    public static let playlistAlreadyShowingBody =
+      NSLocalizedString("playlist.playlistAlreadyShowingBody", tableName: "BraveShared", bundle: .module,
+        value: "Playlist is already active on another window",
+        comment: "Playlist alert message when playlist is already showing on a different window")
   }
 
   public struct PlaylistFolders {

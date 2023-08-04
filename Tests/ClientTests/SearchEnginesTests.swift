@@ -26,8 +26,6 @@ class SearchEnginesTests: XCTestCase {
     Preferences.Search.defaultEngineName.reset()
     Preferences.Search.defaultPrivateEngineName.reset()
     Preferences.Search.yahooEngineMigrationCompleted.reset()
-
-    PrivateBrowsingManager.shared.isPrivateBrowsing = false
   }
 
   func testIncludesExpectedEngines() {
@@ -45,7 +43,7 @@ class SearchEnginesTests: XCTestCase {
     // If this is our first run, Google should be first for the en locale.
     let profile = MockProfile()
     let engines = SearchEngines(files: profile.files, locale: Locale(identifier: "pl_PL"))
-    XCTAssertEqual(engines.defaultEngine().shortName, DefaultSearchEngineName)
+    XCTAssertEqual(engines.defaultEngine(forType: .standard).shortName, DefaultSearchEngineName)
     // The default is `DefaultSearchEngineName` for both regular and private browsing.
     // Different search engine options might apply to certain regions.
     // Default locale for running tests should be en_US.
@@ -74,20 +72,20 @@ class SearchEnginesTests: XCTestCase {
     let engineSet = engines.orderedEngines
 
     engines.updateDefaultEngine((engineSet?[0])!.shortName, forType: .standard)
-    XCTAssertTrue(engines.isEngineDefault((engineSet?[0])!))
-    XCTAssertFalse(engines.isEngineDefault((engineSet?[1])!))
+    XCTAssertTrue(engines.isEngineDefault((engineSet?[0])!, type: .standard))
+    XCTAssertFalse(engines.isEngineDefault((engineSet?[1])!, type: .standard))
     // The first ordered engine is the default.
     XCTAssertEqual(engines.orderedEngines[0].shortName, engineSet?[0].shortName)
 
     engines.updateDefaultEngine((engineSet?[1])!.shortName, forType: .standard)
-    XCTAssertFalse(engines.isEngineDefault((engineSet?[0])!))
-    XCTAssertTrue(engines.isEngineDefault((engineSet?[1])!))
+    XCTAssertFalse(engines.isEngineDefault((engineSet?[0])!, type: .standard))
+    XCTAssertTrue(engines.isEngineDefault((engineSet?[1])!, type: .standard))
     // The first ordered engine is the default.
     XCTAssertEqual(engines.orderedEngines[0].shortName, engineSet?[1].shortName)
 
     let engines2 = SearchEngines(files: profile.files)
     // The default engine should have been persisted.
-    XCTAssertTrue(engines2.isEngineDefault((engineSet?[1])!))
+    XCTAssertTrue(engines2.isEngineDefault((engineSet?[1])!, type: .standard))
     // The first ordered engine is the default.
     XCTAssertEqual(engines.orderedEngines[0].shortName, engineSet?[1].shortName)
   }
@@ -136,7 +134,7 @@ class SearchEnginesTests: XCTestCase {
 
     // You can't disable the default engine.
     engines.updateDefaultEngine((engineSet?[1])!.shortName, forType: .standard)
-    engines.disableEngine((engineSet?[1])!)
+    engines.disableEngine((engineSet?[1])!, type: .standard)
     XCTAssertTrue(engines.isEngineEnabled((engineSet?[1])!))
 
     // The default engine is included in the quick search engines.
@@ -147,7 +145,7 @@ class SearchEnginesTests: XCTestCase {
     XCTAssertTrue(engines.isEngineEnabled((engineSet?[0])!))
     XCTAssertEqual(1, engines.quickSearchEngines.filter { engine in engine.shortName == engineSet?[0].shortName }.count)
 
-    engines.disableEngine((engineSet?[0])!)
+    engines.disableEngine((engineSet?[0])!, type: .standard)
     XCTAssertFalse(engines.isEngineEnabled((engineSet?[0])!))
     XCTAssertEqual(0, engines.quickSearchEngines.filter { engine in engine.shortName == engineSet?[0].shortName }.count)
 
@@ -161,7 +159,7 @@ class SearchEnginesTests: XCTestCase {
 
     // The enabling should be persisted.
     engines.enableEngine((engineSet?[2])!)
-    engines.disableEngine((engineSet?[1])!)
+    engines.disableEngine((engineSet?[1])!, type: .standard)
     engines.enableEngine((engineSet?[0])!)
 
     let engines2 = SearchEngines(files: profile.files)
@@ -232,7 +230,7 @@ class SearchEnginesTests: XCTestCase {
 
     engines.migrateDefaultYahooSearchEngines()
 
-    XCTAssertTrue(engines.defaultEngine().shortName == "Yahoo")
+    XCTAssertTrue(engines.defaultEngine(forType: .standard).shortName == "Yahoo")
     XCTAssertTrue(engines.defaultEngine(forType: .privateMode).shortName == "Yahoo")
 
     // Testing Both standard and private mode Yahoo JAPAN SE
@@ -242,7 +240,7 @@ class SearchEnginesTests: XCTestCase {
 
     engines.migrateDefaultYahooSearchEngines()
 
-    XCTAssertTrue(engines.defaultEngine().shortName == "Yahoo! JAPAN")
+    XCTAssertTrue(engines.defaultEngine(forType: .standard).shortName == "Yahoo! JAPAN")
     XCTAssertTrue(engines.defaultEngine(forType: .privateMode).shortName == "Yahoo! JAPAN")
 
     engines.updateDefaultEngine("Google", forType: .standard)

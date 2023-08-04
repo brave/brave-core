@@ -61,32 +61,35 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSh
     guard let tab = tab else { return }
 
     if tab === tabManager.selectedTab {
-      openInPlayListActivity(info: state == .existingItem ? item : nil)
-      addToPlayListActivity(info: state == .newItem ? item : nil, itemDetected: state == .newItem)
-
       tab.playlistItemState = state
       tab.playlistItem = item
 
       let shouldShowPlaylistURLBarButton = tab.url?.isPlaylistSupportedSiteURL == true && Preferences.Playlist.enablePlaylistURLBarButton.value
 
-      switch state {
-      case .none:
-        topToolbar.updatePlaylistButtonState(.none)
-        topToolbar.menuButton.removeBadge(.playlist, animated: true)
-        toolbar?.menuButton.removeBadge(.playlist, animated: true)
-      case .newItem:
-        topToolbar.updatePlaylistButtonState(shouldShowPlaylistURLBarButton ? .addToPlaylist : .none)
-        if Preferences.Playlist.enablePlaylistMenuBadge.value {
-          topToolbar.menuButton.addBadge(.playlist, animated: true)
-          toolbar?.menuButton.addBadge(.playlist, animated: true)
-        } else {
-          topToolbar.menuButton.removeBadge(.playlist, animated: true)
-          toolbar?.menuButton.removeBadge(.playlist, animated: true)
+      let browsers = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).compactMap({ $0.browserViewController })
+      browsers.forEach { browser in
+        browser.openInPlayListActivity(info: state == .existingItem ? item : nil)
+        browser.addToPlayListActivity(info: state == .newItem ? item : nil, itemDetected: state == .newItem)
+        
+        switch state {
+        case .none:
+          browser.topToolbar.updatePlaylistButtonState(.none)
+          browser.topToolbar.menuButton.removeBadge(.playlist, animated: true)
+          browser.toolbar?.menuButton.removeBadge(.playlist, animated: true)
+        case .newItem:
+          browser.topToolbar.updatePlaylistButtonState(shouldShowPlaylistURLBarButton ? .addToPlaylist : .none)
+          if Preferences.Playlist.enablePlaylistMenuBadge.value {
+            browser.topToolbar.menuButton.addBadge(.playlist, animated: true)
+            browser.toolbar?.menuButton.addBadge(.playlist, animated: true)
+          } else {
+            browser.topToolbar.menuButton.removeBadge(.playlist, animated: true)
+            browser.toolbar?.menuButton.removeBadge(.playlist, animated: true)
+          }
+        case .existingItem:
+          browser.topToolbar.updatePlaylistButtonState(shouldShowPlaylistURLBarButton ? .addedToPlaylist(item) : .none)
+          browser.topToolbar.menuButton.removeBadge(.playlist, animated: true)
+          browser.toolbar?.menuButton.removeBadge(.playlist, animated: true)
         }
-      case .existingItem:
-        topToolbar.updatePlaylistButtonState(shouldShowPlaylistURLBarButton ? .addedToPlaylist(item) : .none)
-        topToolbar.menuButton.removeBadge(.playlist, animated: true)
-        toolbar?.menuButton.removeBadge(.playlist, animated: true)
       }
     }
   }

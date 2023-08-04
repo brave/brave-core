@@ -12,8 +12,18 @@ import UIKit
 class PlaylistDetailViewController: UIViewController, UIGestureRecognizerDelegate {
 
   private var playerView: VideoView?
+  private let isPrivateBrowsing: Bool
   weak var delegate: PlaylistViewControllerDelegate?
-
+  
+  init(isPrivateBrowsing: Bool) {
+    self.isPrivateBrowsing = isPrivateBrowsing
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -147,11 +157,10 @@ extension PlaylistDetailViewController {
 
             if let url = URL(string: item.pageSrc) {
               self.dismiss(animated: true, completion: nil)
-
-              let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+              
               self.delegate?.openURLInNewTab(
                 url,
-                isPrivate: isPrivateBrowsing,
+                isPrivate: self.isPrivateBrowsing,
                 isPrivileged: false)
             }
           }))

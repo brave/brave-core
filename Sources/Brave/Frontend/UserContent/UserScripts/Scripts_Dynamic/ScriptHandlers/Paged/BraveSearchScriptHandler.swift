@@ -98,7 +98,7 @@ class BraveSearchScriptHandler: TabContentScript {
   }
 
   private func handleCanSetBraveSearchAsDefault(replyHandler: (Any?, String?) -> Void) {
-    if PrivateBrowsingManager.shared.isPrivateBrowsing {
+    if tab?.isPrivate == true {
       Logger.module.debug("Private mode detected, skipping setting Brave Search as a default")
       replyHandler(false, nil)
       return

@@ -429,14 +429,9 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
       var openInNewPrivateTab: UIAction {
         .init(title: Strings.openNewPrivateTabButtonTitle, image: UIImage(braveSystemNamed: "leo.product.private-window"), handler: mapDeferredHandler(openInNewPrivateTabHandler))
       }
-      let openActions: [UIAction] = [
-        openInNewTab,
-        // Brave News is only available in normal tabs, so this isn't technically required
-        // but good to be on the safe side
-        !PrivateBrowsingManager.shared.isPrivateBrowsing ? openInNewPrivateTab : nil,
-      ].compactMap { $0 }
+
       let children: [UIMenu] = [
-        UIMenu(title: "", options: [.displayInline], children: openActions)
+        UIMenu(title: "", options: [.displayInline], children: [openInNewTab, openInNewPrivateTab])
       ]
       return UIMenu(title: ad.targetURL, children: children)
     }
@@ -486,19 +481,12 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
         .init(title: String(format: Strings.BraveNews.enablePublisherContent, item.source.name), image: UIImage(braveSystemNamed: "leo.eye.on"), handler: mapDeferredHandler(toggleSourceHandler))
       }
 
-      let openActions: [UIAction] = [
-        openInNewTab,
-        // Brave News is only available in normal tabs, so this isn't technically required
-        // but good to be on the safe side
-        !PrivateBrowsingManager.shared.isPrivateBrowsing ? openInNewPrivateTab : nil,
-      ].compactMap({ $0 })
-
       let manageActions = [
         self.dataSource.isSourceHidden(item.source) ? enableSource : disableSource
       ]
 
       var children: [UIMenu] = [
-        UIMenu(title: "", options: [.displayInline], children: openActions)
+        UIMenu(title: "", options: [.displayInline], children: [openInNewTab, openInNewPrivateTab])
       ]
       if context.item.content.contentType != .sponsor {
         children.append(UIMenu(title: "", options: [.displayInline], children: manageActions))

@@ -18,6 +18,7 @@ struct PrivacyReportAllTimeListsView: View {
   @State private var trackersLoading = true
   @State private var websitesLoading = true
   
+  private(set) var isPrivateBrowsing: Bool
   private(set) var onDismiss: () -> Void
   
   enum Page: String, CaseIterable, Identifiable {
@@ -126,7 +127,7 @@ struct PrivacyReportAllTimeListsView: View {
       Section {
         ForEach(websites) { item in
           HStack {
-            FaviconImage(url: item.faviconUrl)
+            FaviconImage(url: item.faviconUrl, isPrivateBrowsing: isPrivateBrowsing)
             Text(item.domain)
             Spacer()
             Text("\(item.count)")
@@ -199,8 +200,8 @@ struct PrivacyReportAllTimeListsView: View {
 struct PrivacyReportAllTimeListsView_Previews: PreviewProvider {
   static var previews: some View {
     Group {
-      PrivacyReportAllTimeListsView(onDismiss: {})
-      PrivacyReportAllTimeListsView(onDismiss: {})
+      PrivacyReportAllTimeListsView(isPrivateBrowsing: false, onDismiss: {})
+      PrivacyReportAllTimeListsView(isPrivateBrowsing: false, onDismiss: {})
         .preferredColorScheme(.dark)
     }
   }

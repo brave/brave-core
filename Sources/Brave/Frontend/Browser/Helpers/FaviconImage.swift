@@ -14,10 +14,10 @@ private class FaviconHelper: ObservableObject {
   @Published var image: UIImage?
   private var faviconTask: Task<Void, Error>?
 
-  func load(url: URL) {
+  func load(url: URL, isPrivateBrowsing: Bool) {
     faviconTask?.cancel()
     faviconTask = Task { @MainActor in
-      let favicon = try await FaviconFetcher.loadIcon(url: url, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+      let favicon = try await FaviconFetcher.loadIcon(url: url, persistent: !isPrivateBrowsing)
       self.image = favicon.image
     }
   }
@@ -25,9 +25,12 @@ private class FaviconHelper: ObservableObject {
 
 struct FaviconImage: View {
   let url: URL?
+  private let isPrivateBrowsing: Bool
   @StateObject private var faviconLoader = FaviconHelper()
   
-  init(url: String?) {
+  init(url: String?, isPrivateBrowsing: Bool) {
+    self.isPrivateBrowsing = isPrivateBrowsing
+    
     if let url = url {
       self.url = URL(string: url)
     } else {
@@ -43,7 +46,7 @@ struct FaviconImage: View {
       .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
       .onAppear {
         if let url = url {
-          faviconLoader.load(url: url)
+          faviconLoader.load(url: url, isPrivateBrowsing: isPrivateBrowsing)
         }
       }
   }

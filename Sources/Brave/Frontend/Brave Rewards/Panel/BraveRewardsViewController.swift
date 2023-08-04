@@ -34,7 +34,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
       } else {
         if let url = tab.url {
           rewardsView.publisherView.faviconImageView.contentMode = .scaleAspectFit
-          rewardsView.publisherView.faviconImageView.loadFavicon(for: url)
+          rewardsView.publisherView.faviconImageView.loadFavicon(for: url, isPrivateBrowsing: tab.isPrivate)
         } else {
           rewardsView.publisherView.faviconImageView.isHidden = true
         }

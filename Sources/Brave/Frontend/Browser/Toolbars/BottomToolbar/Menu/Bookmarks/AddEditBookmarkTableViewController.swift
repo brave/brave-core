@@ -49,11 +49,11 @@ class AddEditBookmarkTableViewController: UITableViewController {
   private lazy var bookmarkDetailsView: BookmarkFormFieldsProtocol = {
     switch mode {
     case .addBookmark(let title, let url):
-      return BookmarkDetailsView(title: title, url: url)
+      return BookmarkDetailsView(title: title, url: url, isPrivateBrowsing: isPrivateBrowsing)
     case .addFolder(let title), .addFolderUsingTabs(title: let title, _):
       return FolderDetailsViewTableViewCell(title: title, viewHeight: UX.cellHeight)
     case .editBookmark(let bookmark), .editFavorite(let bookmark):
-      return BookmarkDetailsView(title: bookmark.title, url: bookmark.url)
+      return BookmarkDetailsView(title: bookmark.title, url: bookmark.url, isPrivateBrowsing: isPrivateBrowsing)
     case .editFolder(let folder):
       return FolderDetailsViewTableViewCell(title: folder.title, viewHeight: UX.cellHeight)
     }
@@ -150,10 +150,12 @@ class AddEditBookmarkTableViewController: UITableViewController {
   private var saveLocation: BookmarkSaveLocation
   private var rootFolderName: String
   private var rootFolderId: Int = 0  // MobileBookmarks Folder Id
+  private var isPrivateBrowsing: Bool
 
-  init(bookmarkManager: BookmarkManager, mode: BookmarkEditMode) {
+  init(bookmarkManager: BookmarkManager, mode: BookmarkEditMode, isPrivateBrowsing: Bool) {
     self.bookmarkManager = bookmarkManager
     self.mode = mode
+    self.isPrivateBrowsing = isPrivateBrowsing
 
     saveLocation = mode.initialSaveLocation
     presentationMode = .currentSelection
@@ -371,7 +373,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
     isLoading = true
 
     for tab in tabs {
-      if PrivateBrowsingManager.shared.isPrivateBrowsing {
+      if tab.isPrivate {
         if let url = tab.url, url.isWebPage(), !(InternalURL(url)?.isAboutHomeURL ?? false) {
           bookmarkManager.add(url: url, title: tab.title, parentFolder: parentFolder)
         }
@@ -437,7 +439,9 @@ class AddEditBookmarkTableViewController: UITableViewController {
   }
 
   private func showNewFolderVC() {
-    let vc = AddEditBookmarkTableViewController(bookmarkManager: bookmarkManager, mode: .addFolder(title: Strings.newFolderDefaultName))
+    let vc = AddEditBookmarkTableViewController(bookmarkManager: bookmarkManager,
+                                                mode: .addFolder(title: Strings.newFolderDefaultName),
+                                                isPrivateBrowsing: isPrivateBrowsing)
     navigationController?.pushViewController(vc, animated: true)
   }
 

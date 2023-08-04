@@ -74,7 +74,6 @@ class Tab: NSObject {
   
   private(set) var type: TabType = .regular
   
-  
   var redirectURLs = [URL]()
 
   var isPrivate: Bool {
@@ -555,7 +554,7 @@ class Tab: NSObject {
   /// In private browsing the URL is in memory but this is not the case for normal mode
   /// For Normal  Mode Tab information is fetched using Tab ID from
   var fetchedURL: URL? {
-    if PrivateBrowsingManager.shared.isPrivateBrowsing {
+    if isPrivate {
       if let url = url, url.isWebPage() {
         return url
       }

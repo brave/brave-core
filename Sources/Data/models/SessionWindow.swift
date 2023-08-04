@@ -64,6 +64,11 @@ extension SessionWindow {
     return Self.from(windowId: windowId, in: DataController.viewContext)
   }
   
+  public static func from(windowId: UUID, in context: NSManagedObjectContext) -> SessionWindow? {
+    let predicate = NSPredicate(format: "\(#keyPath(SessionWindow.windowId)) == %@", windowId.uuidString)
+    return first(where: predicate, context: context)
+  }
+  
   public static func createIfNeeded(index: Int32, isPrivate: Bool, isSelected: Bool) {
     DataController.performOnMainContext { context in
       if SessionWindow.getActiveWindow(context: context) != nil {
@@ -80,11 +85,34 @@ extension SessionWindow {
     }
   }
   
+  public static func createWindow(isPrivate: Bool, isSelected: Bool, uuid: UUID) {
+    DataController.performOnMainContext { context in
+      if let sessionWindow = SessionWindow.from(windowId: uuid, in: context) {
+        Self.all().forEach {
+          $0.isSelected = false
+        }
+        
+        sessionWindow.isSelected = isSelected
+        return
+      }
+      
+      let count = SessionWindow.count(context: context) ?? 0
+      let window = SessionWindow(context: context, index: Int32(count), isPrivate: isPrivate, isSelected: isSelected)
+      window.windowId = uuid
+      
+      do {
+        try context.save()
+      } catch {
+        Logger.module.error("performTask save error: \(error.localizedDescription, privacy: .public)")
+      }
+    }
+  }
+  
   /// Marks the specified window as selected
   /// Since only one window can be active at a time, all other windows are marked as deselected
   public static func setSelected(windowId: UUID) {
     DataController.perform { context in
-      guard let window = Self.from(windowId: windowId) else { return }
+      guard let window = Self.from(windowId: windowId, in: context) else { return }
 
       let predicate = NSPredicate(format: "isSelected == true")
       all(where: predicate, context: context)?.forEach {
@@ -94,16 +122,34 @@ extension SessionWindow {
       window.isSelected = true
     }
   }
+  
+  public static func all() -> [SessionWindow] {
+    let sortDescriptors = [NSSortDescriptor(key: #keyPath(SessionWindow.index), ascending: true)]
+    return all(sortDescriptors: sortDescriptors) ?? []
+  }
+  
+  public static func delete(windowId: UUID) {
+    DataController.perform { context in
+      guard let sessionWindow = SessionWindow.from(windowId: windowId, in: context) else {
+        return
+      }
+      
+      sessionWindow.sessionTabs?.forEach {
+        $0.delete(context: .existing(context))
+      }
+      
+      sessionWindow.sessionTabGroups?.forEach {
+        $0.delete(context: .existing(context))
+      }
+      
+      sessionWindow.delete(context: .existing(context))
+    }
+  }
 }
 
 // MARK: - Private
 
 extension SessionWindow {
-  private static func from(windowId: UUID, in context: NSManagedObjectContext) -> SessionWindow? {
-    let predicate = NSPredicate(format: "\(#keyPath(SessionWindow.windowId)) == %@", windowId.uuidString)
-    return first(where: predicate, context: context)
-  }
-  
   private static func entity(_ context: NSManagedObjectContext) -> NSEntityDescription? {
     return NSEntityDescription.entity(forEntityName: "SessionWindow", in: context)
   }

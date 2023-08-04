@@ -212,7 +212,7 @@ extension LoginListViewController {
         $0.layer.cornerCurve = .continuous
         $0.layer.masksToBounds = true
         if let signOnRealmURL = URL(string: loginInfo.signOnRealm) {
-          $0.loadFavicon(for: signOnRealmURL)
+          $0.loadFavicon(for: signOnRealmURL, isPrivateBrowsing: false)
         }
       }
       

@@ -123,7 +123,7 @@ class BraveTalkScriptHandler: TabContentScript {
   }
 
   private func handleBraveRequestAdsEnabled(_ replyHandler: @escaping (Any?, String?) -> Void) {
-    guard let rewards = rewards, !PrivateBrowsingManager.shared.isPrivateBrowsing else {
+    guard let rewards = rewards, tab?.isPrivate != true else {
       replyHandler(false, nil)
       return
     }

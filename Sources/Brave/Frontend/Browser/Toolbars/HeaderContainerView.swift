@@ -32,8 +32,8 @@ class HeaderContainerView: UIView {
   
   private var cancellables: Set<AnyCancellable> = []
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  init(privateBrowsingManager: PrivateBrowsingManager) {
+    super.init(frame: .zero)
     
     addSubview(contentView)
     contentView.addSubview(expandedBarStackView)
@@ -51,7 +51,7 @@ class HeaderContainerView: UIView {
       $0.edges.equalToSuperview()
     }
     
-    PrivateBrowsingManager.shared
+    privateBrowsingManager
       .$isPrivateBrowsing
       .removeDuplicates()
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
@@ -62,7 +62,7 @@ class HeaderContainerView: UIView {
     Preferences.General.nightModeEnabled.objectWillChange
       .receive(on: RunLoop.main)
       .sink { [weak self] _ in
-        self?.updateColors(PrivateBrowsingManager.shared.isPrivateBrowsing)
+        self?.updateColors(privateBrowsingManager.isPrivateBrowsing)
       }
       .store(in: &cancellables)
   }

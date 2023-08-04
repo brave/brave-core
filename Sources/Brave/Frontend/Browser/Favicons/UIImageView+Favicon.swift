@@ -28,7 +28,7 @@ extension UIImageView {
   /// Load the favicon from a site URL directly into a `UIImageView`. If no
   /// favicon is found, a monogram will be used where the letter is determined
   /// based on the site URL.
-  func loadFavicon(for siteURL: URL, monogramFallbackCharacter: Character? = nil, completion: ((Favicon?) -> Void)? = nil) {
+  func loadFavicon(for siteURL: URL, isPrivateBrowsing: Bool, monogramFallbackCharacter: Character? = nil, completion: ((Favicon?) -> Void)? = nil) {
     cancelFaviconLoad()
     
     if let icon = FaviconFetcher.getIconFromCache(for: siteURL) {
@@ -39,7 +39,7 @@ extension UIImageView {
     self.image = Favicon.defaultImage
     faviconTask = Task { @MainActor in
       do {
-        let favicon = try await FaviconFetcher.loadIcon(url: siteURL, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+        let favicon = try await FaviconFetcher.loadIcon(url: siteURL, persistent: !isPrivateBrowsing)
         self.image = favicon.image ?? Favicon.defaultImage
         completion?(favicon)
       } catch {

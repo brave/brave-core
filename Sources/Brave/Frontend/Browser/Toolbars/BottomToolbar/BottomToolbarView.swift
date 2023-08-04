@@ -26,10 +26,12 @@ class BottomToolbarView: UIView, ToolbarProtocol {
   private let contentView = UIStackView()
   private var cancellables: Set<AnyCancellable> = []
   let line = UIView.separatorLine
+  private let privateBrowsingManager: PrivateBrowsingManager
 
-  fileprivate override init(frame: CGRect) {
+  init(privateBrowsingManager: PrivateBrowsingManager) {
+    self.privateBrowsingManager = privateBrowsingManager
     actionButtons = [backButton, forwardButton, addTabButton, searchButton, tabsButton, menuButton]
-    super.init(frame: frame)
+    super.init(frame: .zero)
     setupAccessibility()
 
     backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
@@ -48,7 +50,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
       $0.leading.trailing.equalToSuperview()
     }
 
-    privateModeCancellable = PrivateBrowsingManager.shared
+    privateModeCancellable = privateBrowsingManager
       .$isPrivateBrowsing
       .removeDuplicates()
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
@@ -58,7 +60,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     Preferences.General.nightModeEnabled.objectWillChange
       .receive(on: RunLoop.main)
       .sink { [weak self] _ in
-        self?.updateColors(PrivateBrowsingManager.shared.isPrivateBrowsing)
+        self?.updateColors(privateBrowsingManager.isPrivateBrowsing)
       }
       .store(in: &cancellables)
     

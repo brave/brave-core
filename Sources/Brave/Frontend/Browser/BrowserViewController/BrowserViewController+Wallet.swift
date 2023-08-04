@@ -80,7 +80,7 @@ extension BrowserViewController {
   /// Initializes a new WalletStore for displaying the wallet, setting up an observer to notify
   /// when the pending request is updated so we can update the wallet url bar button.
   func newWalletStore() -> WalletStore? {
-    let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
+    let privateMode = privateBrowsingManager.isPrivateBrowsing
     guard let walletStore = WalletStore.from(ipfsApi: braveCore.ipfsAPI, privateMode: privateMode) else {
       Logger.module.error("Failed to load wallet. One or more services were unavailable")
       return nil
@@ -135,7 +135,7 @@ extension BrowserViewController: BraveWalletDelegate {
     } else {
       _ = tabManager.addTabAndSelect(
         URLRequest(url: destinationURL),
-        isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing
+        isPrivate: privateBrowsingManager.isPrivateBrowsing
       )
     }
   }
@@ -194,7 +194,7 @@ extension Tab: BraveWalletProviderDelegate {
         return
       }
       
-      let isPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing
+      let isPrivate = self.isPrivate
       
       // Check if eth permissions already exist for this origin and if they don't, ensure the user allows
       // ethereum/solana provider access
@@ -338,7 +338,7 @@ extension Tab: BraveWalletProviderDelegate {
   }
   
   func showAccountCreation(_ coin: BraveWallet.CoinType) {
-    let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
+    let privateMode = self.isPrivate
     guard let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: privateMode) else {
       return
     }

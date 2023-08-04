@@ -216,6 +216,7 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
       return extracted.absoluteString
     }()
 
+    cell.isPrivateBrowsing = tabManager.privateBrowsingManager.isPrivateBrowsing
     cell.isCurrentTab = listData[indexPath.item] == self.currentItem
     cell.connectingBackwards = indexPath.item != listData.count - 1
     cell.connectingForwards = indexPath.item != 0

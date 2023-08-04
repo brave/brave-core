@@ -89,13 +89,14 @@
 		<string>ShortcutsConfigurationIntent</string>
 		<string>StatsConfigurationIntent</string>
 		<string>com.brave.ios.browsing</string>
+		<string>com.brave.ios.browser-scene</string>
 	</array>
 	<key>SERVICES_KEY</key>
 	<string>$(BRAVE_SERVICES_KEY)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
-		<false/>
+		<true/>
 		<key>UISceneConfigurations</key>
 		<dict>
 			<key>CPTemplateApplicationSceneSessionRoleApplication</key>
