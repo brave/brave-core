@@ -32,11 +32,11 @@ const char kEnabledSourceHistogramName[] = "Brave.Rewards.EnabledSource";
 const char kInlineTipTriggerHistogramName[] = "Brave.Rewards.InlineTipTrigger";
 const char kToolbarButtonTriggerHistogramName[] =
     "Brave.Rewards.ToolbarButtonTrigger";
-const char kTipsSentHistogramName[] = "Brave.Rewards.TipsSent";
+const char kTipsSentHistogramName[] = "Brave.Rewards.TipsSent.2";
 const char kAutoContributionsStateHistogramName[] =
     "Brave.Rewards.AutoContributionsState.3";
 const char kAdTypesEnabledHistogramName[] = "Brave.Rewards.AdTypesEnabled";
-const int kTipsSentBuckets[] = {1, 3};
+const int kTipsSentBuckets[] = {0, 1, 3};
 
 void RecordAutoContributionsState(bool ac_enabled) {
   UMA_HISTOGRAM_EXACT_LINEAR(kAutoContributionsStateHistogramName, ac_enabled,
@@ -45,10 +45,6 @@ void RecordAutoContributionsState(bool ac_enabled) {
 
 void RecordTipsSent(size_t tip_count) {
   DCHECK_GE(tip_count, 0u);
-
-  if (tip_count == 0) {
-    return;
-  }
 
   p3a_utils::RecordToHistogramBucket(kTipsSentHistogramName, kTipsSentBuckets,
                                      tip_count);
