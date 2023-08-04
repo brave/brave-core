@@ -7,13 +7,19 @@ import {
 } from '../../../constants/types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
+// Utils
+import {
+  isValidEVMAddress,
+  isValidSolanaAddress
+} from '../../../utils/address-utils'
+
 export const coingeckoEndpoints = ({
   mutation,
   query
 }: WalletApiEndpointBuilderParams) => {
   return {
     getCoingeckoId: query<
-      string | undefined,
+      string | null,
       Pick<BraveWallet.BlockchainToken, 'chainId' | 'contractAddress'>
     >({
       queryFn: async (
@@ -22,27 +28,35 @@ export const coingeckoEndpoints = ({
         extraOptions,
         baseQuery
       ) => {
-        // Ignore invalid EVM and Solana addresses.
-        //
-        // EVM => 0x + 40 hex characters
-        // Solana => 32-44 base58 characters
-        if (
-          !/0x[a-fA-F0-9]{40}/.test(contractAddress) &&
-          !/[1-9A-HJ-NP-Za-km-z]{32,44}/.test(contractAddress)
-        ) {
-          return {
-            data: undefined
+
+        try {
+          // Ignore invalid EVM and Solana addresses.
+          //
+          // EVM => 0x + 40 hex characters
+          // Solana => 32-44 base58 characters
+          if (
+            !isValidEVMAddress(contractAddress) &&
+            !isValidSolanaAddress(contractAddress)
+          ) {
+            return {
+              data: null
+            }
           }
-        }
 
-        const { blockchainRegistry } = baseQuery(undefined).data
-        const { coingeckoId } = await blockchainRegistry.getCoingeckoId(
-          chainId,
-          contractAddress
-        )
+          const { blockchainRegistry } = baseQuery(undefined).data
+          const { coingeckoId } = await blockchainRegistry.getCoingeckoId(
+            chainId,
+            contractAddress
+          )
 
-        return {
-          data: coingeckoId ?? undefined
+          return {
+            data: coingeckoId
+          }
+        } catch (err) {
+          console.error(err)
+          return {
+            error: 'Unable to query coingeckoId'
+          }
         }
       },
       providesTags: (res, err, { chainId, contractAddress }) =>

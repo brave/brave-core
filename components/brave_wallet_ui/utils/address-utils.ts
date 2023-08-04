@@ -20,6 +20,9 @@ export function isValidFilAddress (value: string): boolean {
   return (value.length === 41 || value.length === 86 || value.length === 44)
 }
 
+/**
+ * @deprecated Use isValidEVMAddress instead
+ */
 export function isValidAddress (value: string, length: number = 20): boolean {
   if (!value.match(/^0x[0-9A-Fa-f]*$/)) {
     return false
@@ -30,6 +33,14 @@ export function isValidAddress (value: string, length: number = 20): boolean {
   }
 
   return true
+}
+
+export function isValidEVMAddress (value: string): boolean {
+  return /^0x[a-fA-F0-9]{40}$/.test(value)
+}
+
+export function isValidSolanaAddress (value: string): boolean {
+  return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(value)
 }
 
 export const suggestNewAccountName = (

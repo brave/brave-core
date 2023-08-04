@@ -115,7 +115,7 @@ export const AddCustomTokenForm = (props: Props) => {
   } = useAssetManagement()
 
   const { data: matchedCoingeckoId } = useGetCoingeckoIdQuery(
-    customAssetsNetwork && tokenContractAddress
+    customAssetsNetwork
       ? {
           chainId: customAssetsNetwork.chainId,
           contractAddress: tokenContractAddress
