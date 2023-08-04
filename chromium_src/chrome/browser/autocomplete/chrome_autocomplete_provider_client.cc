@@ -4,8 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "src/chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc"
+#include "brave/components/commander/common/buildflags/buildflags.h"
 
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+#if BUILDFLAG(ENABLE_COMMANDER)
 #include "brave/browser/ui/commander/commander_service_factory.h"
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
 

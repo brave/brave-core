@@ -14,13 +14,11 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/commander/commander_service_factory.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/location_bar/brave_news_location_view.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
-#include "brave/components/commander/browser/commander_frontend_delegate.h"
-#include "brave/components/commander/common/features.h"
+#include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/profiles/profile.h"
@@ -54,6 +52,12 @@
 #include "brave/browser/ui/views/location_bar/ipfs_location_view.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_COMMANDER)
+#include "brave/browser/ui/commander/commander_service_factory.h"
+#include "brave/components/commander/browser/commander_frontend_delegate.h"
+#include "brave/components/commander/common/features.h"
 #endif
 
 namespace {
@@ -206,9 +210,15 @@ ui::ImageModel BraveLocationBarView::GetLocationIcon(
 }
 
 void BraveLocationBarView::OnOmniboxBlurred() {
-  if (commander::CommanderEnabled()) {
-    commander::CommanderServiceFactory::GetForBrowserContext(profile_)->Hide();
+#if BUILDFLAG(ENABLE_COMMANDER)
+  if (base::FeatureList::IsEnabled(features::kBraveCommander)) {
+    if (auto* commander_service =
+            commander::CommanderServiceFactory::GetForBrowserContext(
+                profile_)) {
+      commander_service->Hide();
+    }
   }
+#endif
   LocationBarView::OnOmniboxBlurred();
 }
 

@@ -10,6 +10,7 @@
 #include "brave/components/commander/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
+#include "chrome/browser/profiles/profile_selections.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "content/public/browser/browser_context.h"
@@ -34,6 +35,8 @@ CommanderServiceFactory::CommanderServiceFactory()
           "CommanderService",
           ProfileSelections::Builder()
               .WithRegular(ProfileSelection::kOwnInstance)
+              .WithGuest(ProfileSelection::kOwnInstance)
+              .WithSystem(ProfileSelection::kNone)
               .Build()) {}
 CommanderServiceFactory::~CommanderServiceFactory() = default;
 

@@ -31,11 +31,10 @@
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
-#include "brave/browser/ui/commander/commander_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/commander/common/features.h"
+#include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
@@ -82,6 +81,11 @@
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_COMMANDER)
+#include "brave/browser/ui/commander/commander_service_factory.h"
+#include "brave/components/commander/common/features.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -141,6 +145,9 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
     commands::AcceleratorServiceFactory::GetInstance();
   }
+#endif
+
+#if BUILDFLAG(ENABLE_COMMANDER)
   if (base::FeatureList::IsEnabled(features::kBraveCommander)) {
     commander::CommanderServiceFactory::GetInstance();
   }
