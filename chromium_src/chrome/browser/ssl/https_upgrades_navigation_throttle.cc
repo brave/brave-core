@@ -67,8 +67,7 @@ HttpsUpgradesNavigationThrottle::MaybeCreateThrottleFor(
   security_interstitials::https_only_mode::HttpInterstitialState
       interstitial_state;
   interstitial_state.enabled_by_pref =
-      (base::FeatureList::IsEnabled(features::kHttpsFirstModeV2) && prefs &&
-       prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled)) ||
+      (prefs && prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled)) ||
       (map && brave_shields::ShouldForceHttps(map, request_url));
 
   StatefulSSLHostStateDelegate* state =
