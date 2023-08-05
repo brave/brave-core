@@ -41,7 +41,7 @@ std::vector<gfx::Rect> CalculateVerticalTabBounds(
     bool is_floating_mode);
 
 std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
-    const std::vector<dangling_raw_ptr<TabSlotView>>& views,
+    const std::vector<TabSlotView*>& views,
     TabStrip* tab_strip);
 
 void UpdateInsertionIndexForVerticalTabs(

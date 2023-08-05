@@ -20,7 +20,7 @@
 namespace {
 
 int GetXCoordinateAdjustmentForMultiSelectedTabs(
-    const std::vector<dangling_raw_ptr<TabSlotView>>& dragged_views,
+    const std::vector<TabSlotView*>& dragged_views,
     int source_view_index) {
   if (dragged_views.at(source_view_index)->GetTabSlotViewType() ==
           TabSlotView::ViewType::kTabGroupHeader ||
@@ -44,20 +44,19 @@ TabDragController::TabDragController() = default;
 
 TabDragController::~TabDragController() = default;
 
-void TabDragController::Init(
-    TabDragContext* source_context,
-    TabSlotView* source_view,
-    const std::vector<dangling_raw_ptr<TabSlotView>>& dragging_views,
-    const gfx::Point& mouse_offset,
-    int source_view_offset,
-    ui::ListSelectionModel initial_selection_model,
-    ui::mojom::DragEventSource event_source) {
+void TabDragController::Init(TabDragContext* source_context,
+                             TabSlotView* source_view,
+                             const std::vector<TabSlotView*>& dragging_views,
+                             const gfx::Point& mouse_offset,
+                             int source_view_offset,
+                             ui::ListSelectionModel initial_selection_model,
+                             ui::mojom::DragEventSource event_source) {
   TabDragControllerChromium::Init(source_context, source_view, dragging_views,
                                   mouse_offset, source_view_offset,
                                   initial_selection_model, event_source);
 
   if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
-    if (base::ranges::any_of(dragging_views, [](TabSlotView* slot_view) {
+    if (base::ranges::any_of(dragging_views, [](auto* slot_view) {
           // We don't allow sharable pinned tabs to be detached.
           return slot_view->GetTabSlotViewType() ==
                      TabSlotView::ViewType::kTab &&
@@ -254,7 +253,7 @@ void TabDragController::DetachAndAttachToNewContext(
   // Relayout tabs with expanded bounds.
   attached_context_->ForceLayout();
 
-  std::vector<dangling_raw_ptr<TabSlotView>> views(drag_data_.size());
+  std::vector<TabSlotView*> views(drag_data_.size());
   for (size_t i = 0; i < drag_data_.size(); ++i) {
     views[i] = drag_data_[i].attached_view;
   }

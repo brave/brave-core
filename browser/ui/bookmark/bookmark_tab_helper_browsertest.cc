@@ -44,7 +44,7 @@ void AddBookmarkNode(Profile* profile) {
   bookmarks::BookmarkModel* bookmark_model =
       BookmarkModelFactory::GetForBrowserContext(profile);
 
-  std::vector<dangling_raw_ptr<const bookmarks::BookmarkNode>> nodes;
+  std::vector<const bookmarks::BookmarkNode*> nodes;
   bookmark_model->GetNodesByURL(url, &nodes);
   EXPECT_EQ(0UL, nodes.size());
 

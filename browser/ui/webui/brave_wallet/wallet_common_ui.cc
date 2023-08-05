@@ -47,7 +47,7 @@ bool IsBraveWalletOrigin(const url::Origin& origin) {
 content::WebContents* GetWebContentsFromTabId(Browser** browser,
                                               int32_t tab_id) {
 #if !BUILDFLAG(IS_ANDROID)
-  for (Browser* target_browser : *BrowserList::GetInstance()) {
+  for (auto* target_browser : *BrowserList::GetInstance()) {
     TabStripModel* tab_strip_model = target_browser->tab_strip_model();
     for (int index = 0; index < tab_strip_model->count(); ++index) {
       content::WebContents* contents = tab_strip_model->GetWebContentsAt(index);

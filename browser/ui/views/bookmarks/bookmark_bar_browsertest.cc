@@ -32,7 +32,7 @@ class BookmarkBarTest : public InProcessBrowserTest {
   BookmarkBarView* bookmark_bar() { return browser_view()->bookmark_bar(); }
 
   BookmarkBarInstructionsView* GetInstructionView() {
-    for (views::View* child : bookmark_bar()->children()) {
+    for (auto* child : bookmark_bar()->children()) {
       if (child->GetID() == BRAVE_VIEW_ID_BOOKMARK_IMPORT_INSTRUCTION_VIEW)
         return static_cast<BookmarkBarInstructionsView*>(child);
     }

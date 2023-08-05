@@ -378,7 +378,7 @@ void BraveTabStrip::Layout() {
     // Chromium implementation limits the height of tab strip, which we don't
     // want.
     auto bounds = GetLocalBounds();
-    for (views::View* view : children()) {
+    for (auto* view : children()) {
       if (view->bounds() != bounds)
         view->SetBoundsRect(GetLocalBounds());
       else if (view == &tab_container_.get())
