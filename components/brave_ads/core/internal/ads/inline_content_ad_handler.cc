@@ -63,9 +63,6 @@ InlineContentAdHandler::~InlineContentAdHandler() = default;
 void InlineContentAdHandler::MaybeServe(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
-  CHECK(UserHasOptedInToBraveNewsAds())
-      << "Should only be called if the user has opted-in to Brave News Ads";
-
   serving_.MaybeServeAd(
       dimensions,
       base::BindOnce(&InlineContentAdHandler::MaybeServeCallback,
@@ -81,8 +78,6 @@ void InlineContentAdHandler::TriggerEvent(
   CHECK_NE(mojom::InlineContentAdEventType::kServed, event_type)
       << "Should not be called with kServed as this event is handled when "
          "calling MaybeServe";
-  CHECK(UserHasOptedInToBraveNewsAds())
-      << "Should only be called if the user has opted-in to Brave News Ads";
 
   event_handler_.FireEvent(
       placement_id, creative_instance_id, event_type,
