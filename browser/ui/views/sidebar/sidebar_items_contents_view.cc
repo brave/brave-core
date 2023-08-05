@@ -325,7 +325,7 @@ void SidebarItemsContentsView::ShowItemAddedFeedbackBubble(
   prefs->SetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount,
                     current_count + 1);
   CHECK_LT(item_added_index, children().size());
-  views::View* lastly_added_view = children()[item_added_index];
+  auto* lastly_added_view = children()[item_added_index];
   ShowItemAddedFeedbackBubble(lastly_added_view);
 }
 
@@ -367,7 +367,7 @@ void SidebarItemsContentsView::SetImageForItem(const sidebar::SidebarItem& item,
 }
 
 void SidebarItemsContentsView::ClearDragIndicator() {
-  for (views::View* view : children()) {
+  for (auto* view : children()) {
     static_cast<SidebarItemView*>(view)->ClearHorizontalBorder();
   }
 }

@@ -23,10 +23,10 @@ IN_PROC_BROWSER_TEST_F(BraveNonClientHitTestHelperBrowserTest, Toolbar) {
   auto* toolbar = browser_view->toolbar();
   ASSERT_EQ(1u, toolbar->children().size());
   // Container view that has all toolbar elements as children
-  views::View* toolbar_container = toolbar->children()[0];
+  auto* toolbar_container = toolbar->children()[0];
   auto* frame_view = browser_view->frame()->GetFrameView();
 
-  for (views::View* view : toolbar_container->GetChildrenInZOrder()) {
+  for (auto* view : toolbar_container->GetChildrenInZOrder()) {
     // When a point is on a child view, hit test result will be HTCLIENT (see
     // BraveToolbarView::ViewHierarchyChanged where we set children that way).
     // To test the ability to drag by the toolbar hide the children.
@@ -50,7 +50,7 @@ IN_PROC_BROWSER_TEST_F(BraveNonClientHitTestHelperBrowserTest, Toolbar) {
   // toolbar as a sanity check.
   toolbar->SetVisible(true);
   toolbar_container->SetVisible(true);
-  for (views::View* view : toolbar_container->GetChildrenInZOrder()) {
+  for (auto* view : toolbar_container->GetChildrenInZOrder()) {
     view->SetVisible(true);
   }
 

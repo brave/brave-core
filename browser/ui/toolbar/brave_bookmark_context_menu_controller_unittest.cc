@@ -64,8 +64,7 @@ TEST_F(BraveBookmarkContextMenuControllerTest,
   BookmarkContextMenuController controller(
       nullptr, nullptr, nullptr, profile_.get(),
       BookmarkLaunchLocation::kSidePanelContextMenu,
-      model_->bookmark_bar_node(),
-      std::vector<dangling_raw_ptr<const BookmarkNode>>());
+      model_->bookmark_bar_node(), std::vector<const BookmarkNode*>());
 
   // Show apps command is not present by default.
   sync_preferences::TestingPrefServiceSyncable* prefs =
@@ -103,7 +102,7 @@ TEST_F(BraveBookmarkContextMenuControllerTest, AddBraveBookmarksSubmenu) {
   BraveBookmarkContextMenuController controller(
       nullptr, nullptr, nullptr, profile_.get(),
       BookmarkLaunchLocation::kSidePanelFolder, model_->bookmark_bar_node(),
-      std::vector<dangling_raw_ptr<const BookmarkNode>>());
+      std::vector<const BookmarkNode*>());
   EXPECT_FALSE(controller.menu_model()
                    ->GetIndexOfCommandId(IDC_BOOKMARK_BAR_ALWAYS_SHOW)
                    .has_value());

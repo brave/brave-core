@@ -20,8 +20,7 @@ class BraveBookmarkContextMenu : public BookmarkContextMenu {
       Profile* profile,
       BookmarkLaunchLocation opened_from,
       const bookmarks::BookmarkNode* parent,
-      const std::vector<dangling_raw_ptr<const bookmarks::BookmarkNode>>&
-          selection,
+      const std::vector<const bookmarks::BookmarkNode*>& selection,
       bool close_on_remove);
 
   BraveBookmarkContextMenu(const BraveBookmarkContextMenu&) = delete;

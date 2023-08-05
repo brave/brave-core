@@ -102,7 +102,7 @@ void AddTextNodesToVector(const ui::AXNode* node,
     return;
   }
 
-  for (const ui::AXNode* child : node->children()) {
+  for (const auto* child : node->children()) {
     AddTextNodesToVector(child, strings);
   }
 }
