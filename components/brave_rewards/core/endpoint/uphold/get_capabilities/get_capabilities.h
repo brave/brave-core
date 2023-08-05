@@ -180,7 +180,8 @@ class GetCapabilities {
   explicit GetCapabilities(RewardsEngineImpl& engine);
   ~GetCapabilities();
 
-  void Request(const std::string& token, GetCapabilitiesCallback callback);
+  void Request(const std::string& token,
+               GetCapabilitiesCallback callback) const;
 
  private:
   struct Capability {
@@ -191,12 +192,12 @@ class GetCapabilities {
   using CapabilityMap = std::map<std::string, Capability>;
 
   void OnRequest(GetCapabilitiesCallback callback,
-                 mojom::UrlResponsePtr response);
+                 mojom::UrlResponsePtr response) const;
 
   std::pair<mojom::Result, CapabilityMap> ProcessResponse(
-      const mojom::UrlResponse& response);
+      const mojom::UrlResponse& response) const;
 
-  CapabilityMap ParseBody(const std::string& body);
+  CapabilityMap ParseBody(const std::string& body) const;
 
   const raw_ref<RewardsEngineImpl> engine_;
 };

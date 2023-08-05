@@ -29,18 +29,18 @@ class UpholdCard {
   ~UpholdCard();
 
   void CreateBATCardIfNecessary(const std::string& access_token,
-                                CreateCardCallback);
+                                CreateCardCallback) const;
 
  private:
   void OnGetBATCardId(CreateCardCallback,
                       const std::string& access_token,
                       mojom::Result,
-                      std::string&& id);
+                      std::string&& id) const;
 
   void OnCreateBATCard(CreateCardCallback,
                        const std::string& access_token,
                        mojom::Result,
-                       std::string&& id);
+                       std::string&& id) const;
 
   void OnUpdateBATCardSettings(CreateCardCallback,
                                std::string&& id,

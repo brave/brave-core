@@ -19,11 +19,11 @@ PatchCard::PatchCard(RewardsEngineImpl& engine) : engine_(engine) {}
 
 PatchCard::~PatchCard() = default;
 
-std::string PatchCard::GetUrl(const std::string& address) {
+std::string PatchCard::GetUrl(const std::string& address) const {
   return GetServerUrl("/v0/me/cards/" + address);
 }
 
-std::string PatchCard::GeneratePayload() {
+std::string PatchCard::GeneratePayload() const {
   base::Value::Dict settings;
   settings.Set("position", 1);
   settings.Set("starred", true);
@@ -36,7 +36,7 @@ std::string PatchCard::GeneratePayload() {
   return json;
 }
 
-mojom::Result PatchCard::CheckStatusCode(int status_code) {
+mojom::Result PatchCard::CheckStatusCode(int status_code) const {
   if (status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Unauthorized access");
     return mojom::Result::EXPIRED_TOKEN;
@@ -52,7 +52,7 @@ mojom::Result PatchCard::CheckStatusCode(int status_code) {
 
 void PatchCard::Request(const std::string& token,
                         const std::string& address,
-                        PatchCardCallback callback) {
+                        PatchCardCallback callback) const {
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(address);
   request->content = GeneratePayload();
@@ -66,7 +66,7 @@ void PatchCard::Request(const std::string& token,
 }
 
 void PatchCard::OnRequest(PatchCardCallback callback,
-                          mojom::UrlResponsePtr response) {
+                          mojom::UrlResponsePtr response) const {
   DCHECK(response);
   LogUrlResponse(__func__, *response);
   std::move(callback).Run(CheckStatusCode(response->status_code));

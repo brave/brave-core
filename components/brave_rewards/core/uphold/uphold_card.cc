@@ -17,7 +17,7 @@ UpholdCard::UpholdCard(RewardsEngineImpl& engine) : uphold_server_(engine) {}
 UpholdCard::~UpholdCard() = default;
 
 void UpholdCard::CreateBATCardIfNecessary(const std::string& access_token,
-                                          CreateCardCallback callback) {
+                                          CreateCardCallback callback) const {
   uphold_server_.get_cards().Request(
       access_token,
       base::BindOnce(&UpholdCard::OnGetBATCardId, base::Unretained(this),
@@ -27,7 +27,7 @@ void UpholdCard::CreateBATCardIfNecessary(const std::string& access_token,
 void UpholdCard::OnGetBATCardId(CreateCardCallback callback,
                                 const std::string& access_token,
                                 mojom::Result result,
-                                std::string&& id) {
+                                std::string&& id) const {
   if (result == mojom::Result::EXPIRED_TOKEN) {
     return std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, "");
   }
@@ -47,7 +47,7 @@ void UpholdCard::OnGetBATCardId(CreateCardCallback callback,
 void UpholdCard::OnCreateBATCard(CreateCardCallback callback,
                                  const std::string& access_token,
                                  mojom::Result result,
-                                 std::string&& id) {
+                                 std::string&& id) const {
   if (result == mojom::Result::EXPIRED_TOKEN) {
     return std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, "");
   }

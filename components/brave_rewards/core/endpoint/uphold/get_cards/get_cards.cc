@@ -20,11 +20,11 @@ GetCards::GetCards(RewardsEngineImpl& engine) : engine_(engine) {}
 
 GetCards::~GetCards() = default;
 
-std::string GetCards::GetUrl() {
+std::string GetCards::GetUrl() const {
   return GetServerUrl("/v0/me/cards?q=currency:BAT");
 }
 
-mojom::Result GetCards::CheckStatusCode(int status_code) {
+mojom::Result GetCards::CheckStatusCode(int status_code) const {
   if (status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Unauthorized access");
     return mojom::Result::EXPIRED_TOKEN;
@@ -38,7 +38,8 @@ mojom::Result GetCards::CheckStatusCode(int status_code) {
   return mojom::Result::OK;
 }
 
-mojom::Result GetCards::ParseBody(const std::string& body, std::string* id) {
+mojom::Result GetCards::ParseBody(const std::string& body,
+                                  std::string* id) const {
   DCHECK(id);
 
   absl::optional<base::Value> value = base::JSONReader::Read(body);
@@ -70,7 +71,8 @@ mojom::Result GetCards::ParseBody(const std::string& body, std::string* id) {
   return mojom::Result::FAILED;
 }
 
-void GetCards::Request(const std::string& token, GetCardsCallback callback) {
+void GetCards::Request(const std::string& token,
+                       GetCardsCallback callback) const {
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->headers = RequestAuthorization(token);
@@ -81,7 +83,7 @@ void GetCards::Request(const std::string& token, GetCardsCallback callback) {
 }
 
 void GetCards::OnRequest(GetCardsCallback callback,
-                         mojom::UrlResponsePtr response) {
+                         mojom::UrlResponsePtr response) const {
   DCHECK(response);
   LogUrlResponse(__func__, *response);
 
