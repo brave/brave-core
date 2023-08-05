@@ -39,13 +39,9 @@ brave_common_web_compile_inputs = [
   "//brave/tsconfig.json",
   "//brave/tsconfig-webpack.json",
 
-  # modifying npm dependencies warrants a re-build of all webpack
+  # modifying npm dependencies or scripts warrants a re-build of all webpack
   # and typescript builds
   "//brave/package.json",
-
-  # brave-ui changes (perhaps a manual local link which wouldn't affect
-  # //brave/package.json)
-  "//brave/node_modules/brave-ui/package.json",
 ]
 
 # Runs a frontend compiler for the specified entry point(s) and outputs a GRD file

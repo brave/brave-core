@@ -57,15 +57,13 @@ module.exports = async ({ config, mode }) => {
     },
     {
       test: /\.(ts|tsx)$/,
-      loader: require.resolve('ts-loader'),
-      exclude: /node_modules\/(?!brave-ui)/,
+      loader: 'ts-loader',
       options: {
         // TODO(petemill): point to the tsconfig in gen/[target] that
         // is made during build-time, or generate a new one. For both those
         // options, use a cli arg or environment variable to obtain the correct
         // build target.
         configFile: path.resolve(__dirname, '..', 'tsconfig-storybook.json'),
-        allowTsInNodeModules: true,
         getCustomTransformers: path.join(__dirname, '../components/webpack/webpack-ts-transformers.js'),
       }
     }
@@ -82,7 +80,7 @@ module.exports = async ({ config, mode }) => {
       'described-resolve', [
         {
           name: 'brave-ui',
-          alias: path.resolve(__dirname, '../node_modules/brave-ui/src'),
+          alias: path.resolve(__dirname, '../node_modules/@brave/brave-ui'),
         },
         {
           // Force same styled-components module for brave-core and brave-ui
