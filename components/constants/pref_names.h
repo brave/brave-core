@@ -8,6 +8,7 @@
 
 #include "build/build_config.h"
 
+extern const char kBraveAutofillPrivateWindows[];
 extern const char kManagedBraveShieldsEnabledForUrls[];
 extern const char kManagedBraveShieldsDisabledForUrls[];
 extern const char kAdsBlocked[];

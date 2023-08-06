@@ -150,6 +150,14 @@
     </message>
   </if>
 
+  <!-- Settings / Autofill -->
+  <message name="IDS_SETTINGS_BRAVE_AUTOFILL_PRIVATE_WINDOWS_LABEL" desc="The label to enable autofill in private profiles">
+    Make auto-fill available in private windows
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_AUTOFILL_PRIVATE_WINDOWS_DESC" desc="The description for the label to enable autofill in private profiles">
+    Saved information can be auto-filled in private windows
+  </message>
+
   <!-- Settings / New tab page -->
   <message name="IDS_SETTINGS_NEW_TAB" desc="The text label for the New Tab settings page">
     New Tab Page

@@ -1107,6 +1107,7 @@ test("brave_browser_tests") {
 
   if (!is_android) {
     sources += [
+      "//brave/browser/brave_autofill_browsertest.cc",
       "//brave/browser/brave_resources_browsertest.cc",
       "//brave/browser/misc_metrics/vertical_tab_metrics_browsertest.cc",
       "//brave/browser/ssl/certificate_transparency_browsertest.cc",
@@ -1119,6 +1120,8 @@ test("brave_browser_tests") {
       "//brave/browser/ui/whats_new:browser_test",
       "//chrome/browser/apps/app_service:app_service",
       "//chrome/browser/apps/app_service:constants",
+      "//components/autofill/content/browser",
+      "//components/autofill/core/browser",
     ]
   }
 
