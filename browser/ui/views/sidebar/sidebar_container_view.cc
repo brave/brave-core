@@ -282,21 +282,19 @@ void SidebarContainerView::Layout() {
     return View::Layout();
   }
 
-  const int control_view_preferred_width =
-      sidebar_control_view_->GetPreferredSize().width();
+  // As control view uses its own layer, we should set its size exactly.
+  // Otherwise, it's rendered even parent rect width is zero.
+  int control_view_width =
+      std::min(sidebar_control_view_->GetPreferredSize().width(), width());
 
-  int control_view_x = 0;
-  int side_panel_x = control_view_x + control_view_preferred_width;
-  if (!sidebar_on_left_) {
-    control_view_x = width() - control_view_preferred_width;
-    side_panel_x = 0;
-  }
-
-  sidebar_control_view_->SetBounds(control_view_x, 0,
-                                   control_view_preferred_width, height());
+  const int control_view_x =
+      sidebar_on_left_ ? 0 : width() - control_view_width;
+  const int side_panel_x = sidebar_on_left_ ? control_view_width : 0;
+  sidebar_control_view_->SetBounds(control_view_x, 0, control_view_width,
+                                   height());
   if (side_panel_->GetVisible()) {
-    side_panel_->SetBounds(side_panel_x, 0,
-                           width() - control_view_preferred_width, height());
+    side_panel_->SetBounds(side_panel_x, 0, width() - control_view_width,
+                           height());
   }
 }
 
