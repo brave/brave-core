@@ -287,6 +287,11 @@ void SidebarContainerView::Layout() {
   int control_view_width =
       std::min(sidebar_control_view_->GetPreferredSize().width(), width());
 
+  // Control view should not be shown in panel-initiated fullscreen.
+  if (IsFullscreenForCurrentEntry()) {
+    control_view_width = 0;
+  }
+
   const int control_view_x =
       sidebar_on_left_ ? 0 : width() - control_view_width;
   const int side_panel_x = sidebar_on_left_ ? control_view_width : 0;
