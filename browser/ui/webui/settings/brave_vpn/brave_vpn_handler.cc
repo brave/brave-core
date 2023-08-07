@@ -15,17 +15,16 @@
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 #include "components/version_info/version_info.h"
 
 namespace {
 
-constexpr char kBraveVpnServiceInstall[] = "install";
-
 bool ElevatedRegisterBraveVPNService() {
   auto executable_path = brave_vpn::GetBraveVPNWireguardServiceExecutablePath();
   base::CommandLine cmd(executable_path);
-  cmd.AppendSwitch(kBraveVpnServiceInstall);
+  cmd.AppendSwitch(brave_vpn::kBraveVpnWireguardServiceInstallSwitchName);
   base::LaunchOptions options = base::LaunchOptions();
   options.wait = true;
   options.elevated = true;

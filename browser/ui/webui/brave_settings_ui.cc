@@ -109,7 +109,8 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
   web_ui->AddMessageHandler(std::make_unique<PinShortcutHandler>());
 #endif
 #if BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
-  web_ui->AddMessageHandler(std::make_unique<BraveVpnHandler>(Profile::FromWebUI(web_ui)));
+  web_ui->AddMessageHandler(
+      std::make_unique<BraveVpnHandler>(Profile::FromWebUI(web_ui)));
 #endif
 }
 
