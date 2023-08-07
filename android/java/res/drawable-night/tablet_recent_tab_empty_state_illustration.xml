@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+  <path
+      android:pathData="M48,0L48,0A48,48 0,0 1,96 48L96,48A48,48 0,0 1,48 96L48,96A48,48 0,0 1,0 48L0,48A48,48 0,0 1,48 0z">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:startX="47.63"
+          android:startY="-15.63"
+          android:endX="48.613"
+          android:endY="152.939"
+          android:type="linear">
+        <item android:offset="0" android:color="#002A2ADE"/>
+        <item android:offset="1" android:color="#3F2A2ADE"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+  <path
+      android:pathData="M26.264,26.233L56.264,26.233A2.8,2.8 0,0 1,59.064 29.033L59.064,50.033A2.8,2.8 0,0 1,56.264 52.833L26.264,52.833A2.8,2.8 0,0 1,23.464 50.033L23.464,29.033A2.8,2.8 0,0 1,26.264 26.233z"
+      android:strokeWidth="1.6"
+      android:fillColor="#00000000"
+      android:strokeColor="#7C91FF"/>
+  <path
+      android:pathData="M59.5,60.528H32.879C31.775,60.528 30.879,59.632 30.879,58.528V37.528C30.879,36.423 31.775,35.528 32.879,35.528H62.879C63.984,35.528 64.879,36.423 64.879,37.528V46.23"
+      android:strokeWidth="1.6"
+      android:fillColor="#00000000"
+      android:strokeColor="#7C91FF"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M71.736,67V67.231C71.736,68.335 70.841,69.231 69.736,69.231H39.736C38.632,69.231 37.736,68.335 37.736,67.231V46.231C37.736,45.126 38.632,44.231 39.736,44.231H69.736C70.841,44.231 71.736,45.126 71.736,46.231V49.5"
+      android:strokeWidth="1.6"
+      android:fillColor="#00000000"
+      android:strokeColor="#7C91FF"/>
+  <path
+      android:pathData="M65.503,50.627V52.575C65.503,53.127 65.951,53.575 66.503,53.575H68.349"
+      android:strokeWidth="1.5"
+      android:fillColor="#00000000"
+      android:strokeColor="#7C91FF"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M75.514,61.907L73.029,59.422C72.654,59.047 72.443,58.538 72.443,58.008V53.206"
+      android:strokeWidth="1.5"
+      android:fillColor="#00000000"
+      android:strokeColor="#7C91FF"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M64,58.571C64,63.305 67.838,67.143 72.571,67.143C77.305,67.143 81.143,63.305 81.143,58.571C81.143,53.838 77.305,50 72.571,50C69.895,50 67.505,51.227 65.933,53.149"
+      android:strokeWidth="1.5"
+      android:fillColor="#00000000"
+      android:strokeColor="#7C91FF"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M39.297,43.648C38.131,43.648 37.187,44.593 37.187,45.758V47.868H72V45.758C72,44.593 71.056,43.648 69.89,43.648H39.297Z"
+      android:fillColor="#7C91FF"
+      android:fillType="evenOdd"/>
+  <path
+      android:pathData="M26.11,26.769C24.944,26.769 24,27.713 24,28.879V30.989H58.813V28.879C58.813,27.713 57.869,26.769 56.703,26.769H26.11Z"
+      android:fillColor="#7C91FF"
+      android:fillType="evenOdd"/>
+  <path
+      android:pathData="M30.593,37.319C30.593,36.153 31.538,35.209 32.703,35.209H63.297C64.462,35.209 65.407,36.153 65.407,37.319V39.429H30.593V37.319ZM33.758,35.91H32.703C32.563,35.91 32.429,35.965 32.33,36.064C32.231,36.163 32.176,36.297 32.176,36.437V37.492C32.176,37.632 32.231,37.766 32.33,37.865C32.429,37.964 32.563,38.019 32.703,38.019H33.758C33.898,38.019 34.033,37.964 34.131,37.865C34.23,37.766 34.286,37.632 34.286,37.492V36.437C34.286,36.297 34.23,36.163 34.131,36.064C34.033,35.965 33.898,35.91 33.758,35.91Z"
+      android:fillColor="#7C91FF"
+      android:fillType="evenOdd"/>
+</vector>
