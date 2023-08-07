@@ -73,7 +73,7 @@ def main():
         exit(1)
 
     # BRAVE_REPO is defined in lib/helpers.py
-    repo = GitHub(get_env_var('GITHUB_TOKEN')).repos(BRAVE_REPO)
+    repo = GitHub(os.environ.get('GITHUB_TOKEN')).repos(BRAVE_REPO)
     release = get_release(repo, tag, allow_published_release_updates=True)
 
     logging.debug(
@@ -119,7 +119,7 @@ def debug_requests_off():
 def parse_args():
     desc = "Parse Brave Browser changelog and add markdown to release notes for tag" \
         "\n\nRequires the following ENVIRONMENT VARIABLES be set:" \
-        "\n\nBRAVE_GITHUB_TOKEN: Github token to update draft release if not published yet. "
+        "\n\nGITHUB_TOKEN: Github token to update draft release if not published yet. "
 
     parser = argparse.ArgumentParser(
         description=desc, formatter_class=RawTextHelpFormatter)
