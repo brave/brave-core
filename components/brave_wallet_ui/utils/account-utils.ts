@@ -91,6 +91,9 @@ export const findAccountName = <
   accounts: T[],
   address: string
 ) => {
+  if (!address) {
+    return undefined
+  }
   return accounts.find(
     (account) => account.address.toLowerCase() === address.toLowerCase()
   )?.name
