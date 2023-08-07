@@ -7,6 +7,7 @@
 #import <UIKit/UIKit.h>
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/ad_content_value_util.h"
+#include "brave/components/brave_news/common/pref_names.h"
 
 #import "ads_client_bridge.h"
 #import "ads_client_ios.h"
@@ -92,6 +93,10 @@ static NSString* const kSubdivisionTargetingAutoDetectedSubdivisionPrefKey =
     base::SysUTF8ToNSString(
         brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision);
 static NSString* const kAdsResourceMetadataPrefKey = @"BATAdsResourceMetadata";
+static NSString* const kBraveNewsOptedInPrefKey =
+    base::SysUTF8ToNSString(brave_news::prefs::kBraveNewsOptedIn);
+static NSString* const kNewTabPageShowTodayPrefKey =
+    base::SysUTF8ToNSString(brave_news::prefs::kNewTabPageShowToday);
 
 namespace {
 
@@ -357,6 +362,8 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)setEnabled:(BOOL)enabled {
   self.prefs[kEnabledPrefKey] = @(enabled);
+  self.prefs[kBraveNewsOptedInPrefKey] = @(enabled);
+  self.prefs[kNewTabPageShowTodayPrefKey] = @(enabled);
   [self savePref:kEnabledPrefKey];
 }
 
@@ -456,6 +463,16 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
         self.prefs[kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey];
     [self.prefs removeObjectForKey:
                     kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey];
+  }
+
+  if ([self.prefs objectForKey:kEnabledPrefKey]) {
+    if (![self.prefs objectForKey:kBraveNewsOptedInPrefKey]) {
+      self.prefs[kBraveNewsOptedInPrefKey] = self.prefs[kEnabledPrefKey];
+    }
+
+    if (![self.prefs objectForKey:kNewTabPageShowTodayPrefKey]) {
+      self.prefs[kNewTabPageShowTodayPrefKey] = self.prefs[kEnabledPrefKey];
+    }
   }
 
   [self savePrefs];
