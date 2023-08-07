@@ -641,6 +641,7 @@ TEST(SimulationResponseParserUnitTest, ParseEVMBuyERC1155TokenWithETH) {
             "rawInfo": {
               "kind": "ERC1155_TRANSFER",
               "data": {
+                "name": "Corgi",
                 "amount": {
                   "after": "1",
                   "before": "0"
@@ -709,6 +710,7 @@ TEST(SimulationResponseParserUnitTest, ParseEVMBuyERC1155TokenWithETH) {
   ASSERT_TRUE(state_change_1->raw_info->data->is_erc1155_transfer_data());
   const auto& state_change_1_raw_info =
       state_change_1->raw_info->data->get_erc1155_transfer_data();
+  EXPECT_EQ(state_change_1_raw_info->name, "Corgi");
   EXPECT_EQ(state_change_1_raw_info->amount->before, "0");
   EXPECT_EQ(state_change_1_raw_info->amount->after, "1");
   EXPECT_EQ(state_change_1_raw_info->contract->kind, "ACCOUNT");
@@ -722,6 +724,96 @@ TEST(SimulationResponseParserUnitTest, ParseEVMBuyERC1155TokenWithETH) {
             "1679331222");
   EXPECT_EQ(state_change_1_raw_info->asset_price->dollar_value_per_token,
             "232.43");
+}
+
+// Example from https://docs.blowfish.xyz/reference/scan-transaction-evm
+TEST(SimulationResponseParserUnitTest, ParseEVMERC1155Transfer) {
+  std::string json(R"(
+    {
+      "action": "NONE",
+      "simulationResults": {
+        "error": null,
+        "gas": {
+          "gasLimit": null
+        },
+        "expectedStateChanges": [
+          {
+            "humanReadableDiff": "Receive Corgi",
+            "rawInfo": {
+              "kind": "ERC1155_TRANSFER",
+              "data": {
+                "amount": {
+                  "after": "1",
+                  "before": "0"
+                },
+                "contract": {
+                  "address": "0x51e613727fdd2e0b91b51c3e5427e9440a7957e4",
+                  "kind": "ACCOUNT"
+                },
+                "metadata": {
+                  "rawImageUrl": "https://example.com/13014975.png"
+                },
+                "tokenId": "13014975",
+                "assetPrice": {
+                  "source": "Simplehash",
+                  "updatedAt": "1679331222",
+                  "dollarValuePerToken": "232.43"
+                },
+                "name": %s
+              }
+            }
+          }
+        ]
+      },
+      "warnings": []
+    }
+  )");
+
+  auto json_with_token_name = base::StringPrintf(json.c_str(), "\"Corgi\"");
+
+  auto simulation_response =
+      evm::ParseSimulationResponse(ParseJson(json_with_token_name));
+  ASSERT_TRUE(simulation_response);
+
+  EXPECT_EQ(simulation_response->action, "NONE");
+  EXPECT_EQ(simulation_response->warnings.size(), 0u);
+  EXPECT_FALSE(simulation_response->simulation_results->error);
+  ASSERT_EQ(
+      simulation_response->simulation_results->expected_state_changes.size(),
+      1u);
+
+  const auto& state_change =
+      simulation_response->simulation_results->expected_state_changes.at(0);
+  EXPECT_EQ(state_change->human_readable_diff, "Receive Corgi");
+  EXPECT_EQ(state_change->raw_info->kind, "ERC1155_TRANSFER");
+  ASSERT_TRUE(state_change->raw_info->data->is_erc1155_transfer_data());
+  const auto& state_change_raw_info =
+      state_change->raw_info->data->get_erc1155_transfer_data();
+  EXPECT_EQ(state_change_raw_info->amount->before, "0");
+  EXPECT_EQ(state_change_raw_info->amount->after, "1");
+  EXPECT_EQ(state_change_raw_info->name, "Corgi");
+  EXPECT_EQ(state_change_raw_info->contract->kind, "ACCOUNT");
+  EXPECT_EQ(state_change_raw_info->contract->address,
+            "0x51e613727fdd2e0b91b51c3e5427e9440a7957e4");
+  EXPECT_EQ(state_change_raw_info->metadata->raw_image_url,
+            "https://example.com/13014975.png");
+  EXPECT_EQ(state_change_raw_info->token_id, "13014975");
+  EXPECT_EQ(state_change_raw_info->asset_price->source, "Simplehash");
+  EXPECT_EQ(state_change_raw_info->asset_price->last_updated_at, "1679331222");
+  EXPECT_EQ(state_change_raw_info->asset_price->dollar_value_per_token,
+            "232.43");
+
+  json_with_token_name = base::StringPrintf(json.c_str(), "null");
+  EXPECT_FALSE(evm::ParseSimulationResponse(ParseJson(json_with_token_name)));
+
+  json_with_token_name = base::StringPrintf(json.c_str(), "[]");
+  EXPECT_FALSE(evm::ParseSimulationResponse(ParseJson(json_with_token_name)));
+
+  json_with_token_name = base::StringPrintf(json.c_str(), "{}");
+  EXPECT_FALSE(evm::ParseSimulationResponse(ParseJson(json_with_token_name)));
+
+  json_with_token_name = base::StringPrintf(json.c_str(), "false");
+  EXPECT_FALSE(evm::ParseSimulationResponse(ParseJson(json_with_token_name)));
 }
 
 // Example from https://docs.blowfish.xyz/reference/scan-transaction-evm
