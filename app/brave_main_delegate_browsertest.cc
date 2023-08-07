@@ -274,6 +274,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
     &blink::features::kPrefetchPrivacyChanges,
     &blink::features::kReducedReferrerGranularity,
     &blink::features::kReduceUserAgentMinorVersion,
+    &blink::features::kUACHOverrideBlank,
 #if BUILDFLAG(IS_WIN)
     &features::kWinrtGeolocationImplementation,
 #endif
