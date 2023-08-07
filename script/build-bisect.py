@@ -37,8 +37,7 @@ def parse_args():
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='extra logging')
     parser.add_argument('--real-profile', action='store_true',
-                        help='if true, use your real profile (instead of a fresh one). \
-                              can\'t be combined with `--use-profile`.')
+                        help='if true, use your real profile (instead of a fresh one). can\'t be combined with `--use-profile`.')
     parser.add_argument('--use-profile',
                         help='url of a zipped profile to unzip/use for each install',
                         default=None)
@@ -189,8 +188,8 @@ def install(download_dir, path):
                 break
 
         if volume is None:
-            raise Exception('[ERROR] did not find "/Volumes/Brave" sub-string in mount list!\n \
-                             Full response from "hdiutil":\n' + result)
+            raise Exception(
+                '[ERROR] did not find "/Volumes/Brave" sub-string in mount list!\nFull response from "hdiutil":\n' + result)
 
         print('-> mounted as "' + volume + '"')
 
@@ -291,15 +290,8 @@ def test_version(args, attempt, tag):
 
 
 def get_github_token():
-    github_token = get_env_var('GITHUB_TOKEN')
-    if len(github_token) == 0:
-        result = execute(
-            ['npm', 'config', 'get', 'BRAVE_GITHUB_TOKEN']).strip()
-        if result == 'undefined':
-            raise Exception('`BRAVE_GITHUB_TOKEN` value not found!')
-        return result
-    else:
-        return github_token
+    github_token = os.environ.get('GITHUB_TOKEN')
+    return github_token
 
 
 def get_nearest_index(version, index_to_get, default):

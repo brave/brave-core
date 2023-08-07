@@ -38,7 +38,7 @@ def get_github_tags(branch):
 
     next_request = ""
     headers = {'Accept': 'application/vnd.github+json',
-               'Authorization': 'token ' + os.environ.get('BRAVE_GITHUB_TOKEN')
+               'Authorization': 'token ' + os.environ.get('GITHUB_TOKEN')
                }
     tag_url = GITHUB_URL + "/repos/brave/brave-core/tags" + '?page=1&per_page=100'
 
