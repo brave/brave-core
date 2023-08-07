@@ -1,6 +1,7 @@
-// Copyright 2016 the V8 project authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2016 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_CHROMIUM_SRC_V8_SRC_BUILTINS_BUILTINS_UTILS_H_
 #define BRAVE_CHROMIUM_SRC_V8_SRC_BUILTINS_BUILTINS_UTILS_H_
