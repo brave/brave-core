@@ -148,6 +148,7 @@ public class BraveWalletResetPreference
         Intent intent =
                 new Intent(BraveActivity.getChromeTabbedActivity(), ChromeTabbedActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setAction(Intent.ACTION_VIEW);
         BraveActivity.getChromeTabbedActivity().startActivity(intent);
     }
 }

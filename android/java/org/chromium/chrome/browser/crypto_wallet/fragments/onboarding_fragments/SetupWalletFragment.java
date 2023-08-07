@@ -96,6 +96,7 @@ public class SetupWalletFragment extends CryptoOnboardingFragment {
             intent.putExtra(Utils.RESTART_WALLET_ACTIVITY_SETUP, setupAction);
             intent.putExtra(Utils.RESTART_WALLET_ACTIVITY_RESTORE, restoreAction);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            intent.setAction(Intent.ACTION_VIEW);
             startActivity(intent);
             getActivity().finish();
         }

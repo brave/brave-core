@@ -1347,6 +1347,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     && OnboardingPrefManager.getInstance().getUrlFocusCount() == 1
                     && !mBraveSearchEngineDefaultRegions.contains(countryCode)) {
                 Intent searchActivityIntent = new Intent(context, SearchActivity.class);
+                searchActivityIntent.setAction(Intent.ACTION_VIEW);
                 context.startActivity(searchActivityIntent);
             }
 
