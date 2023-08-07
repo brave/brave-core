@@ -175,7 +175,7 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
                     accounts={accounts}
                     pubkey={value}
                     lookupTableIndex={
-                      accountMetas[i].addrTableLookupIndex?.val
+                      accountMetas[i]?.addrTableLookupIndex?.val
                     }
                   />
                 </InstructionParamBox>
