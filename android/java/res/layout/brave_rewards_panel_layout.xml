@@ -24,20 +24,12 @@
                         layout="@layout/brave_rewards_panel_notification_layout" />
 
                     <include
-                        android:id="@+id/brave_rewards_onboarding_modal_id"
-                        layout="@layout/brave_rewards_onboarding_modal"/>
-
-                    <include
                         android:id="@+id/brave_rewards_vbat_expire_notice_modal_id"
                         layout="@layout/rewards_panel_vbat_expire_notice"/>
 
                     <include
                         android:id="@+id/rewards_response_modal_id"
                         layout="@layout/rewards_response_modal" />
-
-                    <include
-                        android:id="@+id/brave_rewards_onboarding_layout_id"
-                        layout="@layout/brave_rewards_onboarding_layout"/>
 
                     <FrameLayout
                         android:id="@+id/panel_shadow"

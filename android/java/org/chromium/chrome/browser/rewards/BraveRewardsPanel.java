@@ -69,7 +69,6 @@ import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rewards.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.rewards.BraveRewardsObserver;
-import org.chromium.chrome.browser.rewards.BraveRewardsOnboardingPagerAdapter;
 import org.chromium.chrome.browser.rewards.BraveRewardsUserWalletActivity;
 import org.chromium.chrome.browser.rewards.model.RewardsBalance;
 import org.chromium.chrome.browser.rewards.model.RewardsExternalWallet;
@@ -156,8 +155,6 @@ public class BraveRewardsPanel
         TURN_ON_ADS;
     }
 
-    private boolean shouldShowOnboardingForConnectAccount;
-
     private final View mAnchorView;
     private final PopupWindow mPopupWindow;
     private ViewGroup mPopupView;
@@ -198,14 +195,10 @@ public class BraveRewardsPanel
     private boolean mClaimInProcess;
     private boolean notificationShown;
 
-    private View mBraveRewardsOnboardingModalView;
     private View mRewardsResponseModal;
     private View mConnectAccountModal;
     private View mRewardsVbatExpireNoticeModal;
 
-    private BraveRewardsOnboardingPagerAdapter mBraveRewardsOnboardingPagerAdapter;
-    private HeightWrappingViewPager mBraveRewardsViewPager;
-    private View mBraveRewardsOnboardingView;
     private ViewGroup mBraveRewardsUnverifiedView;
 
     private View mWalletBalanceProgress;
@@ -319,10 +312,6 @@ public class BraveRewardsPanel
         mPopupWindow.setWidth((int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95)));
 
         mBravePanelShadow = mPopupView.findViewById(R.id.panel_shadow);
-        mBraveRewardsOnboardingView =
-                mPopupView.findViewById(R.id.brave_rewards_onboarding_layout_id);
-        mBraveRewardsOnboardingModalView =
-                mPopupView.findViewById(R.id.brave_rewards_onboarding_modal_id);
         mNotificationLayout =
                 mPopupView.findViewById(R.id.brave_rewards_panel_notification_layout_id);
         mNotificationPermissionLayout =
@@ -1042,10 +1031,7 @@ public class BraveRewardsPanel
 
     @Override
     public void OnRewardsParameters() {
-        if (shouldShowOnboardingForConnectAccount) {
-            shouldShowOnboardingForConnectAccount = false;
-            showBraveRewardsOnboarding(true);
-        } else if (mExternalWallet != null) {
+        if (mExternalWallet != null) {
             if (mBraveRewardsNativeWorker.getVbatDeadline() > 0) {
                 mBraveRewardsNativeWorker.getUserType();
             }
@@ -1115,64 +1101,8 @@ public class BraveRewardsPanel
         }
     };
 
-    View.OnClickListener braveRewardsOnboardingClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            int viewId = view.getId();
-            if (viewId == R.id.btn_start_quick_tour) {
-                if (mBraveRewardsViewPager != null
-                        && mBraveRewardsViewPager.getCurrentItem() == 0) {
-                    mBraveRewardsViewPager.setCurrentItem(
-                            mBraveRewardsViewPager.getCurrentItem() + 1);
-                }
-            }
-
-            if (viewId == R.id.btn_next) {
-                if (mBraveRewardsViewPager != null && mBraveRewardsOnboardingPagerAdapter != null) {
-                    if (mBraveRewardsViewPager.getCurrentItem()
-                                    == mBraveRewardsOnboardingPagerAdapter.getCount() - 2
-                            && mBraveRewardsNativeWorker.canConnectAccount()) {
-                        if (mBraveRewardsOnboardingView != null) {
-                            mBraveRewardsOnboardingView.setVisibility(View.GONE);
-                        }
-                        showConnectAccountModal();
-                    } else if (mBraveRewardsViewPager.getCurrentItem()
-                            == mBraveRewardsOnboardingPagerAdapter.getCount() - 1) {
-                        if (mBraveRewardsOnboardingView != null) {
-                            mBraveRewardsOnboardingView.setVisibility(View.GONE);
-
-                            if (mPopupView != null && mBraveRewardsNativeWorker.IsSupported()
-                                    && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
-                                    && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                                            Profile.getLastUsedRegularProfile())) {
-                                showOnBoarding();
-                            } else {
-                                // fetchRewardsData();
-                                mBraveRewardsNativeWorker.GetExternalWallet();
-                                panelShadow(false);
-                            }
-                        }
-                    } else {
-                        mBraveRewardsViewPager.setCurrentItem(
-                                mBraveRewardsViewPager.getCurrentItem() + 1);
-                    }
-                }
-            }
-
-            if (viewId == R.id.btn_skip && mBraveRewardsOnboardingView != null) {
-                mBraveRewardsViewPager.setCurrentItem(
-                        mBraveRewardsOnboardingPagerAdapter.getCount() - 1);
-            }
-
-            if (viewId == R.id.btn_go_back && mBraveRewardsViewPager != null) {
-                mBraveRewardsViewPager.setCurrentItem(mBraveRewardsViewPager.getCurrentItem() - 1);
-            }
-        }
-    };
-
     private void newInstallViewChanges() {
         showUnverifiedLayout();
-        checkForRewardsOnboarding();
         String rewardsCountryCode = UserPrefs.get(Profile.getLastUsedRegularProfile())
                                             .getString(BravePref.DECLARED_GEO);
 
@@ -1345,95 +1275,6 @@ public class BraveRewardsPanel
         }
     }
 
-    // Onboarding changes
-    private void checkForRewardsOnboarding() {
-        if (mPopupView != null && mBraveRewardsNativeWorker.IsSupported()
-                && (BraveRewardsHelper.shouldShowBraveRewardsOnboardingOnce()
-                        || BraveRewardsHelper.shouldShowDeclareGeoModal())) {
-            if (BraveRewardsHelper.shouldShowBraveRewardsOnboardingOnce()) {
-                showBraveRewardsOnboarding(false);
-                BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(false);
-            } else if (BraveRewardsHelper.shouldShowDeclareGeoModal()) {
-                mBraveRewardsNativeWorker.getAvailableCountries();
-                BraveRewardsHelper.setShowDeclareGeoModal(false);
-            }
-        }
-    }
-
-    private void showBraveRewardsOnboarding(boolean shouldShowMoreOption) {
-        if (mBraveRewardsOnboardingView == null) {
-            return;
-        }
-
-        panelShadow(true);
-
-        mBraveRewardsOnboardingView.setVisibility(View.VISIBLE);
-        final Button btnNext = mBraveRewardsOnboardingView.findViewById(R.id.btn_next);
-        btnNext.setOnClickListener(braveRewardsOnboardingClickListener);
-        mBraveRewardsOnboardingView.findViewById(R.id.btn_go_back)
-                .setOnClickListener(braveRewardsOnboardingClickListener);
-        mBraveRewardsOnboardingView.findViewById(R.id.btn_skip)
-                .setOnClickListener(braveRewardsOnboardingClickListener);
-        mBraveRewardsOnboardingView.findViewById(R.id.btn_start_quick_tour)
-                .setOnClickListener(braveRewardsOnboardingClickListener);
-
-        mBraveRewardsViewPager =
-                mBraveRewardsOnboardingView.findViewById(R.id.brave_rewards_view_pager);
-        mBraveRewardsViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(
-                    int position, float positionOffset, int positionOffsetPixels) {
-                if (positionOffset == 0 && positionOffsetPixels == 0 && position == 0) {
-                    mBraveRewardsOnboardingView.findViewById(R.id.onboarding_first_screen_layout)
-                            .setVisibility(View.VISIBLE);
-                    mBraveRewardsOnboardingView.findViewById(R.id.onboarding_action_layout)
-                            .setVisibility(View.GONE);
-                } else {
-                    mBraveRewardsOnboardingView.findViewById(R.id.onboarding_action_layout)
-                            .setVisibility(View.VISIBLE);
-                    mBraveRewardsOnboardingView.findViewById(R.id.onboarding_first_screen_layout)
-                            .setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if (mBraveRewardsOnboardingPagerAdapter != null
-                        && position == mBraveRewardsOnboardingPagerAdapter.getCount() - 1) {
-                    btnNext.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                    btnNext.setText(mActivity.getResources().getString(R.string.done));
-                } else {
-                    btnNext.setText(mActivity.getResources().getString(R.string.continue_text));
-                    btnNext.setCompoundDrawablesWithIntrinsicBounds(
-                            0, 0, R.drawable.ic_arrow_circle_right, 0);
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {}
-        });
-        mBraveRewardsOnboardingPagerAdapter = new BraveRewardsOnboardingPagerAdapter();
-        mBraveRewardsOnboardingPagerAdapter.setOnboardingType(shouldShowMoreOption);
-        mBraveRewardsViewPager.setAdapter(mBraveRewardsOnboardingPagerAdapter);
-        TabLayout braveRewardsTabLayout =
-                mBraveRewardsOnboardingView.findViewById(R.id.brave_rewards_tab_layout);
-        braveRewardsTabLayout.setupWithViewPager(mBraveRewardsViewPager, true);
-        AppCompatImageView modalCloseButton = mBraveRewardsOnboardingView.findViewById(
-                R.id.brave_rewards_onboarding_layout_modal_close);
-        modalCloseButton.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBraveRewardsOnboardingView.setVisibility(View.GONE);
-                panelShadow(false);
-                mBraveRewardsNativeWorker.GetExternalWallet();
-            }
-        }));
-        mBraveRewardsOnboardingView.findViewById(R.id.onboarding_first_screen_layout)
-                .setVisibility(View.VISIBLE);
-        mBraveRewardsOnboardingView.findViewById(R.id.onboarding_action_layout)
-                .setVisibility(View.GONE);
-    }
-
     private void panelShadow(boolean isEnable) {
         if (isEnable) {
             if (mBravePanelShadow != null) {
@@ -1546,9 +1387,6 @@ public class BraveRewardsPanel
         dismissBtn.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mBraveRewardsOnboardingView != null) {
-                    mBraveRewardsOnboardingView.setVisibility(View.GONE);
-                }
                 mConnectAccountModal.setVisibility(View.GONE);
                 panelShadow(false);
                 mBraveRewardsNativeWorker.GetExternalWallet();
@@ -1559,9 +1397,6 @@ public class BraveRewardsPanel
         closeBtn.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mBraveRewardsOnboardingView != null) {
-                    mBraveRewardsOnboardingView.setVisibility(View.GONE);
-                }
                 mConnectAccountModal.setVisibility(View.GONE);
                 panelShadow(false);
                 mBraveRewardsNativeWorker.GetExternalWallet();

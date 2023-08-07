@@ -309,7 +309,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/rate/RateUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/rewards/BraveRewardsNativeWorker.java",
   "../../brave/android/java/org/chromium/chrome/browser/rewards/BraveRewardsObserver.java",
-  "../../brave/android/java/org/chromium/chrome/browser/rewards/BraveRewardsOnboardingPagerAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/rewards/BraveRewardsPanel.java",
   "../../brave/android/java/org/chromium/chrome/browser/rewards/BraveRewardsUserWalletActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/rewards/adaptive_captcha/AdaptiveCaptchaHelper.java",

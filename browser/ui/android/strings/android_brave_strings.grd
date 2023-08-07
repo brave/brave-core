@@ -1714,53 +1714,8 @@ Are you sure you want to do this?
       <message name="IDS_TAKE_QUICK_TOUR" desc="Brave rewards quick tour text">
         Let’s take a quick tour
       </message>
-      <message name="IDS_WELCOME_TO_BRAVE_REWARDS" desc="Brave rewards onboarding title">
-        Welcome to Brave Rewards!
-      </message>
-      <message name="IDS_WELCOME_TO_BRAVE_REWARDS_TEXT" desc="Brave rewards onboarding title">
-        Brave Private Ads reward you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.
-      </message>
-      <message name="IDS_WHERE_DO_ADS_SHOW_UP" desc="Brave rewards onboarding title">
-        Where do ads show up?
-      </message>
-      <message name="IDS_WHERE_DO_ADS_SHOW_UP_TEXT" desc="Brave rewards onboarding title">
-        Brave Private Ads appear as notifications on your screen. You control how often you see these ads.
-      </message>
-      <message name="IDS_GIVING_BACK_MADE_EFFORTLESS" desc="Brave rewards onboarding title">
-        Giving back made effortless
-      </message>
-      <message name="IDS_GIVING_BACK_MADE_EFFORTLESS_TEXT" desc="Brave rewards onboarding title">
-        Creators receive your token contributions automatically based on your engagement levels that we measure as ‘Attention’.
-      </message>
-      <message name="IDS_SAY_THANK_YOU_WITH_TIPS" desc="Brave rewards onboarding title">
-        Say thank you with contributions
-      </message>
-      <message name="IDS_SAY_THANK_YOU_WITH_TIPS_TEXT" desc="Brave rewards onboarding title">
-        Tipping is a way to personally encourage and support content or creators that you love. Get tippin'!
-      </message>
-      <message name="IDS_BASIC_SETTINGS" desc="Brave rewards onboarding title">
-        Lastly, let’s get you set up
-      </message>
-      <message name="IDS_YOU_CAN_CHANGE_THIS_LATER" desc="Brave rewards onboarding text">
-        You can change this later.
-      </message>
-      <message name="IDS_SLIDER" desc="Text for slider">
-        Slider
-      </message>
-      <message name="IDS_HOW_OFTEN_DO_YOU_SEE_ADS" desc="Brave rewards onboarding text">
-        How often do you want to see ads?
-      </message>
-      <message name="IDS_MORE_PRIVATE_ADS" desc="Brave rewards onboarding text">
-        More private ads, more rewards.
-      </message>
-      <message name="IDS_ADS_PER_HOUR" desc="Brave rewards onboarding text">
-        <ph name="ADS_PER_HOUR">%1$s</ph> Ads per hour
-      </message>
       <message name="IDS_YOU_ARE_DONE" desc="Brave rewards onboarding title">
         Woohoo, you’re all set!
-      </message>
-      <message name="IDS_YOU_ARE_DONE_TEXT" desc="Brave rewards onboarding title">
-        By using Brave Rewards, you are protecting your privacy and helping make the web a better place for everyone. And that’s awesome!
       </message>
       <message name="IDS_GO_BACK" desc="Brave rewards onboarding button text">
         Go Back
