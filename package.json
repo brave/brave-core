@@ -304,6 +304,7 @@
     "commander": "2.20.3",
     "css-loader": "3.6.0",
     "csstype": "2.6.21",
+    "dotenv": "16.3.1",
     "emptykit.css": "1.0.1",
     "enhanced-resolve": "5.8.3",
     "enzyme": "3.11.0",
