@@ -92,6 +92,8 @@ TEST(UserAgentUtilsTest, UserAgentFromCommandLine) {
   feature_list.InitWithFeatures(
       {blink::features::kAllowCertainClientHints},
       {blink::features::kClampPlatformVersionClientHint});
+  ASSERT_TRUE(
+      base::FeatureList::IsEnabled(blink::features::kUACHOverrideBlank));
   const auto brave_metadata = GetUserAgentMetadata(nullptr);
   const blink::UserAgentMetadata empty_metadata;
 

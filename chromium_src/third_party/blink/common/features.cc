@@ -15,6 +15,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kMixedContentAutoupgrade, base::FEATURE_ENABLED_BY_DEFAULT},
     {kPrefetchPrivacyChanges, base::FEATURE_ENABLED_BY_DEFAULT},
     {kReducedReferrerGranularity, base::FEATURE_ENABLED_BY_DEFAULT},
+    {kUACHOverrideBlank, base::FEATURE_ENABLED_BY_DEFAULT},
 
     {kAdInterestGroupAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kAllowURNsInIframes, base::FEATURE_DISABLED_BY_DEFAULT},
