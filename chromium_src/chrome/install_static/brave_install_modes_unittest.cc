@@ -82,13 +82,13 @@ TEST(InstallModes, VerifyModes) {
     // The ProgID prefix must not be empty, must be no greater than 11
     // characters long, must contain no punctuation, and may not start with a
     // digit (https://msdn.microsoft.com/library/windows/desktop/dd542719.aspx).
-    ASSERT_THAT(mode.prog_id_prefix, StrNe(L""));
-    ASSERT_THAT(lstrlen(mode.prog_id_prefix), Le(11));
-    ASSERT_THAT(mode.prog_id_prefix, Not(ContainsIllegalProgIdChar()));
-    ASSERT_THAT(*mode.prog_id_prefix, ResultOf(iswdigit, Eq(0)));
+    ASSERT_THAT(mode.browser_prog_id_prefix, StrNe(L""));
+    ASSERT_THAT(lstrlen(mode.browser_prog_id_prefix), Le(11));
+    ASSERT_THAT(mode.browser_prog_id_prefix, Not(ContainsIllegalProgIdChar()));
+    ASSERT_THAT(*mode.browser_prog_id_prefix, ResultOf(iswdigit, Eq(0)));
 
     // The ProgID description must not be empty.
-    ASSERT_THAT(mode.prog_id_description, StrNe(L""));
+    ASSERT_THAT(mode.browser_prog_id_description, StrNe(L""));
 
     // Every mode must have an Active Setup GUID.
     ASSERT_THAT(mode.active_setup_guid, StrNe(L""));
