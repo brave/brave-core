@@ -57,6 +57,9 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/vpn_utils.h"
+#if BUILDFLAG(IS_WIN)
+#include "brave/browser/ui/webui/settings/brave_vpn/brave_vpn_handler.h"
+#endif
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -104,6 +107,9 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
 #endif
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
   web_ui->AddMessageHandler(std::make_unique<PinShortcutHandler>());
+#endif
+#if BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
+  web_ui->AddMessageHandler(std::make_unique<BraveVpnHandler>(Profile::FromWebUI(web_ui)));
 #endif
 }
 
