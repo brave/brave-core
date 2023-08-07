@@ -28,6 +28,7 @@
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
+#include "brave/browser/reduce_language/reduce_language_service_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
@@ -186,6 +187,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   request_otr::RequestOTRServiceFactory::GetInstance();
 #endif
 
+  reduce_language::ReduceLanguageServiceFactory::GetInstance();
   BraveSyncAlertsServiceFactory::GetInstance();
 
 #if !BUILDFLAG(IS_ANDROID)

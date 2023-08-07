@@ -23,6 +23,10 @@ namespace content_settings {
 class CookieSettings;
 }
 
+namespace reduce_language {
+class ReduceLanguageService;
+}
+
 class GURL;
 class HostContentSettingsMap;
 class PrefService;
@@ -79,9 +83,11 @@ bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
 
 bool IsReduceLanguageEnabledForProfile(PrefService* pref_service);
 
-bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
-                            const GURL& url,
-                            PrefService* pref_service);
+bool ShouldDoReduceLanguage(
+    HostContentSettingsMap* map,
+    const GURL& url,
+    PrefService* pref_service,
+    reduce_language::ReduceLanguageService* reduce_language_service);
 
 DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
                                          const GURL& url);

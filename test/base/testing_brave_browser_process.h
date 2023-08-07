@@ -54,6 +54,8 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   request_otr::RequestOTRComponentInstallerPolicy*
   request_otr_component_installer() override;
 #endif
+  reduce_language::ReduceLanguageComponentInstallerPolicy*
+  reduce_language_component_installer() override;
   brave::URLSanitizerComponentInstaller* URLSanitizerComponentInstaller()
       override;
   brave_shields::HTTPSEverywhereService* https_everywhere_service() override;

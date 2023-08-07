@@ -1,0 +1,9 @@
+[
+  {
+    "exclude": [
+      "http://www.ulta.com/*",
+      "http://aeroplan.rewardops.com/*",
+      "http://login.live.com/*"
+    ]
+  }
+]

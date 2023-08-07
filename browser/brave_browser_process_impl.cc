@@ -44,6 +44,7 @@
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_service.h"
+#include "brave/components/reduce_language/browser/reduce_language_component_installer.h"
 #include "brave/services/network/public/cpp/system_request_handler.h"
 #include "build/build_config.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
@@ -335,6 +336,20 @@ BraveBrowserProcessImpl::request_otr_component_installer() {
   return request_otr_component_installer_.get();
 }
 #endif
+
+reduce_language::ReduceLanguageComponentInstallerPolicy*
+BraveBrowserProcessImpl::reduce_language_component_installer() {
+  if (!base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveReduceLanguage)) {
+    return nullptr;
+  }
+  if (!reduce_language_component_installer_) {
+    reduce_language_component_installer_ = std::make_unique<
+        reduce_language::ReduceLanguageComponentInstallerPolicy>(
+        local_data_files_service());
+  }
+  return reduce_language_component_installer_.get();
+}
 
 brave::URLSanitizerComponentInstaller*
 BraveBrowserProcessImpl::URLSanitizerComponentInstaller() {
