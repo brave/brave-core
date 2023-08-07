@@ -565,8 +565,10 @@ export function createWalletApi () {
               }, {})
             }
           } catch (error) {
+            const msg = `Unable to fetch prices`
+            console.error(`${msg}: ${error}`)
             return {
-              error: `Unable to fetch prices`
+              error: msg
             }
           }
         },

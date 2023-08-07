@@ -107,7 +107,7 @@ const TransactionDetailPanel = (props: Props) => {
     UISelectors.transactionProviderErrorRegistry
   )
 
-  // queries
+  // queries & query args
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const { transaction } = useTransactionQuery(transactionId || skipToken)
   const txCoinType = transaction
@@ -136,17 +136,6 @@ const TransactionDetailPanel = (props: Props) => {
       : skipToken
   )
 
-  // memos
-  const gasFee = React.useMemo(() => {
-    if (!transaction) {
-      return ''
-    }
-
-    return txCoinType === BraveWallet.CoinType.SOL
-      ? solFeeEstimate ?? ''
-      : getTransactionGasFee(transaction)
-  }, [transaction, txCoinType, solFeeEstimate])
-
   const networkAsset = React.useMemo(() => {
     return makeNetworkAsset(transactionsNetwork)
   }, [transactionsNetwork])
@@ -167,11 +156,22 @@ const TransactionDetailPanel = (props: Props) => {
   )
 
   const {
-    data: spotPriceRegistry
+    data: spotPriceRegistry = {}
   } = useGetTokenSpotPricesQuery(
     tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
     querySubscriptionOptions60s
   )
+
+  // memos
+  const gasFee = React.useMemo(() => {
+    if (!transaction) {
+      return ''
+    }
+
+    return txCoinType === BraveWallet.CoinType.SOL
+      ? solFeeEstimate ?? ''
+      : getTransactionGasFee(transaction)
+  }, [transaction, txCoinType, solFeeEstimate])
 
   const transactionDetails = React.useMemo(() => {
     if (!transaction || !spotPriceRegistry) {
