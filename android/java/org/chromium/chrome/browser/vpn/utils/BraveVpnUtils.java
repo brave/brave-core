@@ -76,23 +76,27 @@ public class BraveVpnUtils {
     public static void openBraveVpnPlansActivity(Activity activity) {
         Intent braveVpnPlanIntent = new Intent(activity, BraveVpnPlansActivity.class);
         braveVpnPlanIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        braveVpnPlanIntent.setAction(Intent.ACTION_VIEW);
         activity.startActivity(braveVpnPlanIntent);
     }
 
     public static void openBraveVpnProfileActivity(Context context) {
         Intent braveVpnProfileIntent = new Intent(context, BraveVpnProfileActivity.class);
         braveVpnProfileIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        braveVpnProfileIntent.setAction(Intent.ACTION_VIEW);
         context.startActivity(braveVpnProfileIntent);
     }
 
     public static void openBraveVpnSupportActivity(Context context) {
         Intent braveVpnSupportIntent = new Intent(context, BraveVpnSupportActivity.class);
         braveVpnSupportIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        braveVpnSupportIntent.setAction(Intent.ACTION_VIEW);
         context.startActivity(braveVpnSupportIntent);
     }
 
     public static void openSplitTunnelActivity(Context context) {
         Intent braveVpnSupportIntent = new Intent(context, SplitTunnelActivity.class);
+        braveVpnSupportIntent.setAction(Intent.ACTION_VIEW);
         context.startActivity(braveVpnSupportIntent);
     }
 

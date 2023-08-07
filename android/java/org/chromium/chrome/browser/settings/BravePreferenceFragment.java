@@ -39,6 +39,7 @@ public class BravePreferenceFragment extends PreferenceFragmentCompat {
         if (item.getItemId() == R.id.close_menu_id) {
             Intent intent = new Intent(getActivity(), ChromeTabbedActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            intent.setAction(Intent.ACTION_VIEW);
             startActivity(intent);
         }
         return false;

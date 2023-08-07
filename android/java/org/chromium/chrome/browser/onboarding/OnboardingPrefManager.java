@@ -217,6 +217,7 @@ public class OnboardingPrefManager {
 
     public void showOnboarding(Context context) {
         Intent intent = new Intent(context, OnboardingActivity.class);
+        intent.setAction(Intent.ACTION_VIEW);
         context.startActivity(intent);
     }
 
