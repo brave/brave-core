@@ -6,6 +6,8 @@
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 
 #include "brave/browser/ipfs/ipfs_host_resolver.h"
+#include "brave/browser/ui/views/infobars/brave_confirm_infobar.h"
+#include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "build/build_config.h"
@@ -13,6 +15,8 @@
 #include "chrome/common/channel_info.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/infobars/content/content_infobar_manager.h"
+#include "components/infobars/core/infobar.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -646,3 +650,203 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest,
   ASSERT_TRUE(WaitForLoadStop(active_contents()));
   EXPECT_EQ(active_contents()->GetVisibleURL(), expected_final_url);
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSPromoInfobar) {
+  ASSERT_TRUE(
+      ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
+  ipfs::IPFSTabHelper* helper =
+      ipfs::IPFSTabHelper::FromWebContents(active_contents());
+  ASSERT_TRUE(helper);
+  auto* prefs =
+      user_prefs::UserPrefs::Get(active_contents()->GetBrowserContext());
+
+  prefs->SetBoolean(kIPFSAutoRedirectToConfiguredGateway, false);
+  prefs->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
+  GURL gateway_url = embedded_test_server()->GetURL("a.com", "/");
+  prefs->SetString(kIPFSPublicGatewayAddress, gateway_url.spec());
+
+  const GURL test_url = embedded_test_server()->GetURL(
+      "navigate_to.com", base::StringPrintf("/ipfs/%s/wiki/"
+                                            "empty.html?query#ref",
+                                            kCid1));
+  // gateway url.
+  GURL expected_final_url;
+  ipfs::TranslateIPFSURI(GURL(base::StringPrintf("ipfs://%s/"
+                                                 "wiki/empty.html?query#ref",
+                                                 kCid1)),
+                         &expected_final_url, gateway_url, false);
+
+  auto find_infobar =
+      [](infobars::ContentInfoBarManager* content_infobar_manager)
+      -> infobars::InfoBar* {
+    for (size_t i = 0; i < content_infobar_manager->infobar_count(); i++) {
+      auto* infobar = content_infobar_manager->infobar_at(i);
+      if (infobar->delegate()->GetIdentifier() ==
+          BraveConfirmInfoBarDelegate::BRAVE_IPFS_INFOBAR_DELEGATE) {
+        return infobar;
+      }
+    }
+    return nullptr;
+  };
+
+  // Press cancel
+  {
+    ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+        browser(), test_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+    ASSERT_TRUE(WaitForLoadStop(active_contents()));
+
+    // Get last shown infobar
+    auto* infobar = find_infobar(
+        infobars::ContentInfoBarManager::FromWebContents(active_contents()));
+    ASSERT_TRUE(infobar);
+    static_cast<BraveConfirmInfoBar*>(infobar)->GetDelegate()->Cancel();
+    ASSERT_FALSE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
+    ASSERT_TRUE(WaitForLoadStop(active_contents()));
+    EXPECT_EQ(active_contents()->GetVisibleURL(), test_url);
+    ASSERT_FALSE(prefs->GetBoolean(kShowIPFSPromoInfobar));
+  }
+
+  // Try to show infobar second time - it shouldn't be shown
+  {
+    ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+        browser(), test_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+    ASSERT_TRUE(WaitForLoadStop(active_contents()));
+
+    // Get last shown infobar
+    auto* infobar = find_infobar(
+        infobars::ContentInfoBarManager::FromWebContents(active_contents()));
+    ASSERT_FALSE(infobar);
+  }
+
+  // Reset infobar state
+  prefs->SetBoolean(kShowIPFSPromoInfobar, true);
+
+  // Test that infobar shows several times if extra button is pressed
+  for (int i = 0; i < 2; i++) {
+    {
+      ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+          browser(), test_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+          ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+      ASSERT_TRUE(WaitForLoadStop(active_contents()));
+
+      // Get last shown infobar
+      auto* infobar = find_infobar(
+          infobars::ContentInfoBarManager::FromWebContents(active_contents()));
+      ASSERT_TRUE(infobar);
+      static_cast<BraveConfirmInfoBar*>(infobar)
+          ->GetDelegate()
+          ->ExtraButtonPressed();
+
+      ASSERT_FALSE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
+      ASSERT_TRUE(WaitForLoadStop(active_contents()));
+      EXPECT_EQ(active_contents()->GetVisibleURL(), expected_final_url);
+      ASSERT_TRUE(prefs->GetBoolean(kShowIPFSPromoInfobar));
+    }
+  }
+
+  // Test accept button, which enables the feature
+  {
+    ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+        browser(), test_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+    ASSERT_TRUE(WaitForLoadStop(active_contents()));
+
+    // Get last shown infobar
+    auto* infobar = find_infobar(
+        infobars::ContentInfoBarManager::FromWebContents(active_contents()));
+    ASSERT_TRUE(infobar);
+    static_cast<BraveConfirmInfoBar*>(infobar)->GetDelegate()->Accept();
+
+    ASSERT_TRUE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
+    ASSERT_TRUE(WaitForLoadStop(active_contents()));
+    EXPECT_EQ(active_contents()->GetVisibleURL(), expected_final_url);
+    ASSERT_FALSE(prefs->GetBoolean(kShowIPFSPromoInfobar));
+  }
+
+  // Infobar shouldn't be shown after that
+  {
+    ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+        browser(), test_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+    ASSERT_TRUE(WaitForLoadStop(active_contents()));
+
+    // Get last shown infobar
+    auto* infobar = find_infobar(
+        infobars::ContentInfoBarManager::FromWebContents(active_contents()));
+    ASSERT_FALSE(infobar);
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSPromoInfobar_NowShown) {
+  ASSERT_TRUE(
+      ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
+  ipfs::IPFSTabHelper* helper =
+      ipfs::IPFSTabHelper::FromWebContents(active_contents());
+  ASSERT_TRUE(helper);
+  auto* prefs =
+      user_prefs::UserPrefs::Get(active_contents()->GetBrowserContext());
+
+  prefs->SetBoolean(kIPFSAutoRedirectToConfiguredGateway, false);
+  prefs->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
+  GURL gateway_url = embedded_test_server()->GetURL("a.com", "/");
+  prefs->SetString(kIPFSPublicGatewayAddress, gateway_url.spec());
+
+  const GURL test_url_1 = embedded_test_server()->GetURL(
+      "navigate_to.com", base::StringPrintf("/ipfs/%s/wiki/"
+                                            "empty.html?query#ref",
+                                            kCid1));
+  const GURL test_url_2 =
+      embedded_test_server()->GetURL("navigate_to.com", "/abc");
+
+  auto find_infobar =
+      [](infobars::ContentInfoBarManager* content_infobar_manager)
+      -> infobars::InfoBar* {
+    for (size_t i = 0; i < content_infobar_manager->infobar_count(); i++) {
+      auto* infobar = content_infobar_manager->infobar_at(i);
+      if (infobar->delegate()->GetIdentifier() ==
+          BraveConfirmInfoBarDelegate::BRAVE_IPFS_INFOBAR_DELEGATE) {
+        return infobar;
+      }
+    }
+    return nullptr;
+  };
+
+  // Infobar shouldn't be shown after that
+  {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url_2));
+    ASSERT_TRUE(WaitForLoadStop(active_contents()));
+
+    // Get last shown infobar
+    auto* infobar = find_infobar(
+        infobars::ContentInfoBarManager::FromWebContents(active_contents()));
+    ASSERT_FALSE(infobar);
+  }
+
+  {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url_1));
+    ASSERT_TRUE(WaitForLoadStop(active_contents()));
+
+    // Get last shown infobar
+    auto* infobar = find_infobar(
+        infobars::ContentInfoBarManager::FromWebContents(active_contents()));
+    ASSERT_TRUE(infobar);
+  }
+
+  {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url_2));
+    ASSERT_TRUE(WaitForLoadStop(active_contents()));
+
+    // Get last shown infobar
+    auto* infobar = find_infobar(
+        infobars::ContentInfoBarManager::FromWebContents(active_contents()));
+    ASSERT_FALSE(infobar);
+  }
+}
+#endif  // !BUILDFLAG(IS_ANDROID)

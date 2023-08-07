@@ -8,6 +8,18 @@
 BraveConfirmInfoBarDelegate::BraveConfirmInfoBarDelegate() = default;
 BraveConfirmInfoBarDelegate::~BraveConfirmInfoBarDelegate() = default;
 
+int BraveConfirmInfoBarDelegate::GetButtons() const {
+  return BUTTON_OK | BUTTON_CANCEL | BUTTON_EXTRA;
+}
+
+std::vector<int> BraveConfirmInfoBarDelegate::GetButtonsOrder() const {
+  return {BUTTON_OK | BUTTON_EXTRA | BUTTON_CANCEL};
+}
+
+bool BraveConfirmInfoBarDelegate::IsProminent(int id) const {
+  return id == BUTTON_OK;
+}
+
 bool BraveConfirmInfoBarDelegate::HasCheckbox() const {
   return false;
 }

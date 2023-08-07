@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_STARTUP_BRAVE_OBSOLETE_SYSTEM_INFOBAR_DELEGATE_H_
 
 #include <string>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
@@ -38,6 +39,7 @@ class BraveObsoleteSystemInfoBarDelegate : public BraveConfirmInfoBarDelegate {
   GURL GetLinkURL() const override;
   std::u16string GetMessageText() const override;
   int GetButtons() const override;
+  std::vector<int> GetButtonsOrder() const override;
   bool ShouldExpire(const NavigationDetails& details) const override;
 
   void OnConfirmDialogClosing(bool suppress);
