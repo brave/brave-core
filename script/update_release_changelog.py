@@ -119,7 +119,7 @@ def debug_requests_off():
 def parse_args():
     desc = "Parse Brave Browser changelog and add markdown to release notes for tag" \
         "\n\nRequires the following ENVIRONMENT VARIABLES be set:" \
-        "\n\nBRAVE_GITHUB_TOKEN: Github token to update draft release if not published yet. "
+        "\n\nGITHUB_TOKEN: Github token to update draft release if not published yet. "
 
     parser = argparse.ArgumentParser(
         description=desc, formatter_class=RawTextHelpFormatter)

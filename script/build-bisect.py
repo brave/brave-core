@@ -292,14 +292,7 @@ def test_version(args, attempt, tag):
 
 def get_github_token():
     github_token = get_env_var('GITHUB_TOKEN')
-    if len(github_token) == 0:
-        result = execute(
-            ['npm', 'config', 'get', 'BRAVE_GITHUB_TOKEN']).strip()
-        if result == 'undefined':
-            raise Exception('`BRAVE_GITHUB_TOKEN` value not found!')
-        return result
-    else:
-        return github_token
+    return github_token
 
 
 def get_nearest_index(version, index_to_get, default):
