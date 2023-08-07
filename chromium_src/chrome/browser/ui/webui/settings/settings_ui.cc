@@ -14,11 +14,8 @@
 
 #if BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/webui/settings/brave_settings_secure_dns_handler.h"
-#include "brave/browser/ui/webui/settings/brave_vpn/brave_vpn_handler.h"
-#include "chrome/browser/ui/webui/settings/safety_hub_handler.h"
 
 #define SecureDnsHandler BraveSecureDnsHandler
-#define SafetyHubHandler SafetyHubHandler>(profile));AddSettingsPageUIHandler(std::make_unique<BraveVpnHandler
 #endif
 #define SiteSettingsHandler BraveSiteSettingsHandler
 #define ImportDataHandler BraveImportDataHandler
@@ -29,8 +26,3 @@
 #undef ImportDataHandler
 #undef SearchEnginesHandler
 #undef SiteSettingsHandler
-
-#if BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
-#undef SafetyHubHandler
-#undef SecureDnsHandler
-#endif
