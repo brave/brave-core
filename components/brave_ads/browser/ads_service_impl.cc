@@ -1859,7 +1859,7 @@ void AdsServiceImpl::OnDidUpdateResourceComponent(
   }
 }
 
-void AdsServiceImpl::OnRewardsWalletUpdated() {
+void AdsServiceImpl::OnRewardsWalletCreated() {
   GetRewardsWallet();
 }
 

@@ -244,7 +244,7 @@ class RewardsDOMHandler
 
   void OnExternalWalletDisconnected() override;
 
-  void OnRewardsWalletUpdated() override;
+  void OnRewardsWalletCreated() override;
 
   void OnUnblindedTokensReady(
       brave_rewards::RewardsService* rewards_service) override;
@@ -1739,7 +1739,7 @@ void RewardsDOMHandler::OnExternalWalletDisconnected() {
   CallJavascriptFunction("brave_rewards.onExternalWalletDisconnected");
 }
 
-void RewardsDOMHandler::OnRewardsWalletUpdated() {
+void RewardsDOMHandler::OnRewardsWalletCreated() {
   if (!IsJavascriptAllowed()) {
     return;
   }

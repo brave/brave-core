@@ -54,7 +54,7 @@ class WalletUpdatedWaiter : public RewardsServiceObserver {
 
   ~WalletUpdatedWaiter() override { rewards_service_->RemoveObserver(this); }
 
-  void OnRewardsWalletUpdated() override { run_loop_.Quit(); }
+  void OnRewardsWalletCreated() override { run_loop_.Quit(); }
 
   void Wait() { run_loop_.Run(); }
 

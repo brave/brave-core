@@ -393,7 +393,7 @@ class AdsServiceImpl : public AdsService,
                                     const std::string& id) override;
 
   // RewardsServiceObserver:
-  void OnRewardsWalletUpdated() override;
+  void OnRewardsWalletCreated() override;
   void OnExternalWalletConnected() override;
   void OnCompleteReset(bool success) override;
 

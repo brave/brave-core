@@ -38,11 +38,11 @@ void ExtensionRewardsServiceObserver::OnRewardsInitialized(
   event_router->BroadcastEvent(std::move(event));
 }
 
-void ExtensionRewardsServiceObserver::OnRewardsWalletUpdated() {
+void ExtensionRewardsServiceObserver::OnRewardsWalletCreated() {
   if (auto* event_router = extensions::EventRouter::Get(profile_)) {
     event_router->BroadcastEvent(std::make_unique<extensions::Event>(
         extensions::events::BRAVE_START,
-        extensions::api::brave_rewards::OnRewardsWalletUpdated::kEventName,
+        extensions::api::brave_rewards::OnRewardsWalletCreated::kEventName,
         base::Value::List()));
   }
 }

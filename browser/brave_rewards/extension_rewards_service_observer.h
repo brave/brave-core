@@ -35,7 +35,7 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver {
   // RewardsServiceObserver:
   void OnRewardsInitialized(RewardsService* rewards_service) override;
 
-  void OnRewardsWalletUpdated() override;
+  void OnRewardsWalletCreated() override;
 
   void OnPublisherListNormalized(
       RewardsService* rewards_service,
