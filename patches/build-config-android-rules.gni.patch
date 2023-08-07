@@ -1,5 +1,5 @@
 diff --git a/build/config/android/rules.gni b/build/config/android/rules.gni
-index d12617a3c7a3a5b8216b8b7f471d7818ada7f809..de7302a1cef6f6dabeebdd8881540db929d72fe0 100644
+index d12617a3c7a3a5b8216b8b7f471d7818ada7f809..2cc9e84f2324dd0692b9ac2dc7de3378f4511fb1 100644
 --- a/build/config/android/rules.gni
 +++ b/build/config/android/rules.gni
 @@ -432,6 +432,7 @@ if (enable_java_templates && is_android) {
@@ -18,3 +18,11 @@ index d12617a3c7a3a5b8216b8b7f471d7818ada7f809..de7302a1cef6f6dabeebdd8881540db9
      action_with_pydeps(target_name) {
        forward_variables_from(invoker, TESTONLY_AND_VISIBILITY + [ "deps" ])
        inputs = [ invoker.input ]
+@@ -5112,6 +5114,7 @@ if (enable_java_templates && is_android) {
+     if (_enable_language_splits) {
+       _split_dimensions += [ "language" ]
+     }
++    _split_dimensions += [ "abi" ]
+ 
+     _keystore_path = android_keystore_path
+     _keystore_password = android_keystore_password
