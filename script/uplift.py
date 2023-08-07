@@ -47,7 +47,6 @@ class PrConfig(object):
                 validate_channel(channel)
                 self.channels_to_process.append(channel)
             validate_channel(args.start_from)
-            # read github token FIRST from CLI, then from .npmrc
             self.github_token = os.environ.get('GITHUB_TOKEN')
             # if `--owners` is not provided, fall back to user owning token
             self.parsed_owners = parse_user_logins(self.github_token,
