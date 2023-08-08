@@ -33,12 +33,12 @@
             android:minHeight="@dimen/min_touch_target_size"
             app:primaryText="@string/auto_save_on" />
 
-        <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
+        <!-- <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
             android:id="@+id/auto_save_off_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="@dimen/min_touch_target_size"
-            app:primaryText="@string/auto_save_off" />
+            app:primaryText="@string/auto_save_off" /> -->
 
         <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
             android:id="@+id/auto_save_wifi_radio_button"

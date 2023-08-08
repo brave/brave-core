@@ -3748,9 +3748,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_AUTO_SAVE_ON" desc="Auto save media for offline options title">
       Auto-Save ON
     </message>
-    <message name="IDS_AUTO_SAVE_OFF" desc="Auto save media for offline options title">
+    <!-- <message name="IDS_AUTO_SAVE_OFF" desc="Auto save media for offline options title">
       Auto-Save OFF
-    </message>
+    </message> -->
     <message name="IDS_AUTO_SAVE_WIFI" desc="Auto save media for offline options title">
       Auto-Save only when connected to Wi-Fi
     </message>

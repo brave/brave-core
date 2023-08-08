@@ -49,9 +49,10 @@ public class RadioButtonGroupPlaylistAutoSavePreference
 
         mButtons.set(0,
                 (RadioButtonWithDescription) holder.findViewById(R.id.auto_save_on_radio_button));
+        // mButtons.set(1,
+        //         (RadioButtonWithDescription)
+        //         holder.findViewById(R.id.auto_save_off_radio_button));
         mButtons.set(1,
-                (RadioButtonWithDescription) holder.findViewById(R.id.auto_save_off_radio_button));
-        mButtons.set(2,
                 (RadioButtonWithDescription) holder.findViewById(R.id.auto_save_wifi_radio_button));
 
         mSettingRadioButton = mButtons.get(mSetting);
