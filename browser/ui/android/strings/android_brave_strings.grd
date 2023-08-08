@@ -2300,7 +2300,7 @@ Are you sure you want to do this?
       Supports speeds of up to 100 Mbps
     </message>
     <message name="IDS_USE_WIREGUARD" desc="Brave VPN plan text">
-      Uses Wireguard secure encrypted VPN tunnel
+      Uses WireGuard secure encrypted VPN tunnel
     </message>
     <message name="IDS_NEVER_SHARE_INFO" desc="Brave VPN plan text">
       We never share or sell your info
