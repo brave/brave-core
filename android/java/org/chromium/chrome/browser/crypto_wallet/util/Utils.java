@@ -58,6 +58,7 @@ import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
@@ -844,6 +845,21 @@ public class Utils {
         });
     }
 
+    public static void setBlockiesBitmapResourceFromAccount(ExecutorService executor,
+            Handler handler, ImageView iconImg, AccountInfo accountInfo, boolean makeLowerCase) {
+        // TODO(apaymyshev): need to hash uniqueKey string for bitcoin accounts(same as for desktop)
+        String source =
+                accountInfo.address != null ? accountInfo.address : accountInfo.accountId.uniqueKey;
+        executor.execute(() -> {
+            final Bitmap bitmap = Blockies.createIcon(source, makeLowerCase, true);
+            handler.post(() -> {
+                if (iconImg != null) {
+                    iconImg.setImageBitmap(bitmap);
+                }
+            });
+        });
+    }
+
     public static void setBlockiesBackground(ExecutorService executor, Handler handler, View view,
             String source, boolean makeLowerCase) {
         executor.execute(() -> {
@@ -1075,11 +1091,23 @@ public class Utils {
         return tokens;
     }
 
-    public static AccountInfo findAccount(AccountInfo[] accounts, String address) {
-        for (AccountInfo acc : accounts)
+    public static AccountInfo findAccountByAddress(AccountInfo[] accounts, String address) {
+        for (AccountInfo acc : accounts) {
             if (acc.address.toLowerCase(Locale.getDefault())
-                            .equals(address.toLowerCase(Locale.getDefault())))
+                            .equals(address.toLowerCase(Locale.getDefault()))) {
                 return acc;
+            }
+        }
+
+        return null;
+    }
+
+    public static AccountInfo findAccount(AccountInfo[] accounts, AccountId accountId) {
+        for (AccountInfo acc : accounts) {
+            if (WalletUtils.accountIdsEqual(acc.accountId, accountId)) {
+                return acc;
+            }
+        }
 
         return null;
     }
@@ -1092,11 +1120,11 @@ public class Utils {
     }
 
     public static void openTransaction(TransactionInfo txInfo, AppCompatActivity activity,
-            String accountName, int coinType, NetworkInfo networkInfo) {
+            int coinType, NetworkInfo networkInfo) {
         assert txInfo != null;
         if (txInfo.txStatus == TransactionStatus.UNAPPROVED) {
             if (activity instanceof ApprovedTxObserver) {
-                showApproveDialog(txInfo, accountName, activity, ((ApprovedTxObserver) activity));
+                showApproveDialog(txInfo, activity, ((ApprovedTxObserver) activity));
                 return;
             }
             throw new RuntimeException("Activity must implement ApprovedTxObserver");
@@ -1137,15 +1165,6 @@ public class Utils {
             }
         }
         TabUtils.openUrlInCustomTab(activity, blockExplorerUrl);
-    }
-
-    public static void openTransaction(TransactionInfo txInfo, AppCompatActivity activity,
-            AccountInfo[] accountInfos, int coinType, NetworkInfo networkInfo) {
-        assert txInfo != null;
-        AccountInfo account = findAccount(accountInfos, txInfo.fromAddress);
-        openTransaction(txInfo, activity,
-                account != null ? account.name : stripAccountAddress(txInfo.fromAddress), coinType,
-                networkInfo);
     }
 
     public static void setUpTransactionList(BraveWalletBaseActivity activity,
@@ -1208,18 +1227,25 @@ public class Utils {
                 if (perTxSolanaFee.get(txInfo.id) != null) {
                     solanaEstimatedTxFee = perTxSolanaFee.get(txInfo.id);
                 }
+                AccountInfo txAccountInfo = Utils.findAccount(accounts, txInfo.fromAccountId);
+                if (txAccountInfo == null) {
+                    continue;
+                }
+
                 var txNetwork = JavaUtils.safeVal(
                         NetworkUtils.findNetwork(allNetworks, txInfo.chainId), selectedNetwork);
                 ParsedTransaction parsedTx = ParsedTransaction.parseTransaction(txInfo, txNetwork,
                         accounts, assetPrices, solanaEstimatedTxFee, fullTokenList,
                         nativeAssetsBalances, blockchainTokensBalances);
-                WalletListItemModel itemModel =
-                        makeWalletItem((Context) activity, txInfo, txNetwork, parsedTx, accounts);
+                WalletListItemModel itemModel = makeWalletItem(
+                        (Context) activity, txInfo, txNetwork, parsedTx, txAccountInfo);
                 // Filter by token. Account is already filtered in the accounts array.
                 if (!walletListItemModel.isAccount()
                         && !walletListItemModel.getBlockchainToken().symbol.equals(
-                                parsedTx.getSymbol()))
+                                parsedTx.getSymbol())) {
                     continue;
+                }
+
                 walletListItemModelList.add(itemModel);
             }
         }
@@ -1227,20 +1253,22 @@ public class Utils {
     }
 
     public static WalletListItemModel makeWalletItem(Context context, TransactionInfo txInfo,
-            NetworkInfo selectedNetwork, ParsedTransaction parsedTx,
-            AccountInfo[] accountInfoArray) {
+            NetworkInfo selectedNetwork, ParsedTransaction parsedTx, AccountInfo txAccountInfo) {
+        assert (txInfo != null);
+        assert (txAccountInfo != null);
         Pair<String, String> itemTitles = parsedTx.makeTxListItemTitles(context);
         WalletListItemModel itemModel =
                 new WalletListItemModel(Utils.getCoinIcon(selectedNetwork.coin), itemTitles.first,
                         itemTitles.second, "", null, null);
         updateWalletCoinTransactionStatus(itemModel, context, txInfo);
 
-        itemModel.setAccountInfo(findAccount(accountInfoArray, txInfo.fromAddress));
+        itemModel.setAccountInfo(txAccountInfo);
         itemModel.setChainSymbol(selectedNetwork.symbol);
         itemModel.setChainDecimals(selectedNetwork.decimals);
         itemModel.setTotalGas(parsedTx.getGasFee());
         itemModel.setTotalGasFiat(parsedTx.getGasFeeFiat());
-        itemModel.setAddressesForBitmap(txInfo.fromAddress, parsedTx.getRecipient());
+        // TODO(apaymyshev): handle from address for bitcoin.
+        itemModel.setAddressesForBitmap(txInfo.fromAddressOpt, parsedTx.getRecipient());
         itemModel.setTransactionInfo(txInfo);
         itemModel.setParsedTx(parsedTx);
         itemModel.setAssetNetwork(selectedNetwork);
@@ -1254,10 +1282,10 @@ public class Utils {
         updateWalletCoinTransactionStatus(item, context, txInfo);
     }
 
-    private static void showApproveDialog(TransactionInfo txInfo, String accountName,
-            AppCompatActivity activity, ApprovedTxObserver approvedTxObserver) {
+    private static void showApproveDialog(TransactionInfo txInfo, AppCompatActivity activity,
+            ApprovedTxObserver approvedTxObserver) {
         ApproveTxBottomSheetDialogFragment approveTxBottomSheetDialogFragment =
-                ApproveTxBottomSheetDialogFragment.newInstance(txInfo, accountName);
+                ApproveTxBottomSheetDialogFragment.newInstance(txInfo);
         approveTxBottomSheetDialogFragment.setApprovedTxObserver(approvedTxObserver);
         approveTxBottomSheetDialogFragment.show(activity.getSupportFragmentManager(),
                 ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);

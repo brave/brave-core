@@ -481,6 +481,7 @@ export const getETHSwapTransactionBuyAndSellTokens = ({
   }
 }
 
+// TODO(apaymyshev): Move this to backend. Now it is copy-pasted between all three ui platforms.
 export function getLamportsMovedFromInstructions (
   instructions: TypedSolanaInstructionWithParams[],
   fromAddress: string

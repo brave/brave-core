@@ -122,22 +122,24 @@ public class ParsedTransaction extends ParsedTransactionFees {
      * same.
      */
     private static String checkForSameAddressError(String from, String to) {
+        if (from == null || to == null) {
+            return null;
+        }
         return to.toLowerCase(Locale.getDefault()).equals(from.toLowerCase(Locale.getDefault()))
                 ? "braveWalletSameAddressError"
                 : null;
     }
 
-    public static ParsedTransaction parseTransaction(TransactionInfo txInfo,
-            NetworkInfo selectedNetwork, AccountInfo[] accounts,
-            HashMap<String, Double> assetPrices, long solFeeEstimatesFee,
+    public static ParsedTransaction parseTransaction(TransactionInfo txInfo, NetworkInfo txNetwork,
+            AccountInfo[] accounts, HashMap<String, Double> assetPrices, long solFeeEstimatesFee,
             BlockchainToken[] fullTokenList, HashMap<String, Double> nativeAssetsBalances,
             HashMap<String, HashMap<String, Double>> blockchainTokensBalances) {
-        BlockchainToken nativeAsset = Utils.makeNetworkAsset(selectedNetwork);
+        BlockchainToken nativeAsset = Utils.makeNetworkAsset(txNetwork);
         Double networkSpotPrice = Utils.getOrDefault(
-                assetPrices, selectedNetwork.symbol.toLowerCase(Locale.getDefault()), 0.0d);
+                assetPrices, txNetwork.symbol.toLowerCase(Locale.getDefault()), 0.0d);
 
         final ParsedTransactionFees feeDetails = ParsedTransactionFees.parseTransactionFees(
-                txInfo, selectedNetwork, networkSpotPrice, solFeeEstimatesFee);
+                txInfo, txNetwork, networkSpotPrice, solFeeEstimatesFee);
         TxDataUnion txDataUnion = txInfo.txDataUnion;
         TxData1559 txData = txDataUnion.which() == TxDataUnion.Tag.EthTxData1559
                 ? txDataUnion.getEthTxData1559()
@@ -168,7 +170,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
                                      : txData.baseData.to;
 
         final String nonce = txData != null ? txData.baseData.nonce : "";
-        AccountInfo account = Utils.findAccount(accounts, txInfo.fromAddress);
+        AccountInfo account = Utils.findAccount(accounts, txInfo.fromAccountId);
 
         final String accountAddressLower =
                 account != null ? account.address.toLowerCase(Locale.getDefault()) : "";
@@ -192,8 +194,8 @@ public class ParsedTransaction extends ParsedTransactionFees {
         parsedTransaction.token = token;
         parsedTransaction.createdTime = txInfo.createdTime;
         parsedTransaction.status = txInfo.txStatus;
-        parsedTransaction.sender = txInfo.fromAddress;
-        parsedTransaction.senderLabel = getAddressLabel(accounts, txInfo.fromAddress);
+        parsedTransaction.sender = txInfo.fromAddressOpt != null ? txInfo.fromAddressOpt : "";
+        parsedTransaction.senderLabel = account != null ? account.name : "";
         parsedTransaction.isSolanaDappTransaction =
                 WalletConstants.SOLANA_DAPPS_TRANSACTION_TYPES.contains(txInfo.txType);
         parsedTransaction.marketPrice = networkSpotPrice;
@@ -212,6 +214,8 @@ public class ParsedTransaction extends ParsedTransactionFees {
                 parsedTransaction.symbol = "";
                 return parsedTransaction;
             }
+            assert (txInfo.fromAddressOpt != null);
+            assert (txInfo.fromAddressOpt.equals(account.address));
             BigDecimal lamportTransferredAmount = new BigDecimal(value);
             for (SolanaInstruction solanaInstruction : solTxData.instructions) {
                 SolanaInstructionPresenter presenter =
@@ -237,11 +241,11 @@ public class ParsedTransaction extends ParsedTransactionFees {
                     String noncePubKey =
                             presenter.getAccountPerParamKey(WalletConstants.SOL_DAPP_NONCE_ACCOUNT);
                     String toPubKey = presenter.toPubKey();
-                    if (noncePubKey != null && noncePubKey.equals(txInfo.fromAddress)) {
+                    if (noncePubKey != null && noncePubKey.equals(txInfo.fromAddressOpt)) {
                         lamportTransferredAmount =
                                 lamportTransferredAmount.add(new BigDecimal(lamport));
                     } else if (!TextUtils.isEmpty(toPubKey)
-                            && toPubKey.equals(txInfo.fromAddress)) {
+                            && toPubKey.equals(txInfo.fromAddressOpt)) {
                         lamportTransferredAmount =
                                 lamportTransferredAmount.subtract(new BigDecimal(lamport));
                     }
@@ -255,7 +259,8 @@ public class ParsedTransaction extends ParsedTransactionFees {
                     if (TextUtils.isEmpty(to)) {
                         to = newAccountPubKey;
                     }
-                    if (!TextUtils.isEmpty(fromPubKey) && fromPubKey.equals(txInfo.fromAddress)) {
+                    if (!TextUtils.isEmpty(fromPubKey)
+                            && fromPubKey.equals(txInfo.fromAddressOpt)) {
                         lamportTransferredAmount =
                                 lamportTransferredAmount.add(new BigDecimal(lamport));
                     }
@@ -322,7 +327,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
             parsedTransaction.contractAddressError =
                     checkForContractAddressError(fullTokenList, address);
             parsedTransaction.sameAddressError =
-                    checkForSameAddressError(address, txInfo.fromAddress);
+                    checkForSameAddressError(address, txInfo.fromAddressOpt);
         } else if ((txInfo.txType == TransactionType.ERC721_TRANSFER_FROM
                            || txInfo.txType == TransactionType.ERC721_SAFE_TRANSFER_FROM)
                 && txInfo.txArgs.length > 2) {
@@ -375,7 +380,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
             parsedTransaction.insufficientFundsForGasError = insufficientNativeFunds;
             parsedTransaction.insufficientFundsError = false;
             parsedTransaction.sameAddressError =
-                    checkForSameAddressError(address, txInfo.fromAddress);
+                    checkForSameAddressError(address, txInfo.fromAddressOpt);
         } else if (txInfo.txType == TransactionType.SOLANA_SPL_TOKEN_TRANSFER
                 || txInfo.txType
                         == TransactionType
@@ -404,7 +409,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
             parsedTransaction.contractAddressError = checkForContractAddressError(
                     fullTokenList, solTxData != null ? solTxData.toWalletAddress : "");
             parsedTransaction.sameAddressError = checkForSameAddressError(
-                    solTxData != null ? solTxData.toWalletAddress : "", txInfo.fromAddress);
+                    solTxData != null ? solTxData.toWalletAddress : "", txInfo.fromAddressOpt);
         } else if (txInfo.txType == TransactionType.ETH_SWAP && txInfo.txArgs.length > 2) {
             final String fillPath = txInfo.txArgs[0];
             final String sellAmountArg = txInfo.txArgs[1];
@@ -464,15 +469,15 @@ public class ParsedTransaction extends ParsedTransactionFees {
         } else {
             // The rest cases falls through to default
             final double price = Utils.getOrDefault(
-                    assetPrices, selectedNetwork.symbol.toLowerCase(Locale.getDefault()), 0.0d);
+                    assetPrices, txNetwork.symbol.toLowerCase(Locale.getDefault()), 0.0d);
             for (String k : assetPrices.keySet()) {
                 String v = String.valueOf(assetPrices.get(k));
             }
             double sendAmount = 0;
             if (txInfo.txType == TransactionType.SOLANA_SYSTEM_TRANSFER) {
-                sendAmount = Utils.fromWei(value, selectedNetwork.decimals);
+                sendAmount = Utils.fromWei(value, txNetwork.decimals);
             } else {
-                sendAmount = Utils.fromHexWei(value, selectedNetwork.decimals);
+                sendAmount = Utils.fromHexWei(value, txNetwork.decimals);
             }
 
             final double sendAmountFiat = sendAmount * price;
@@ -485,8 +490,8 @@ public class ParsedTransaction extends ParsedTransactionFees {
             parsedTransaction.fiatTotal = totalAmountFiat;
             parsedTransaction.nativeCurrencyTotal = sendAmountFiat / networkSpotPrice;
             parsedTransaction.value = sendAmount;
-            parsedTransaction.symbol = selectedNetwork.symbol;
-            parsedTransaction.decimals = selectedNetwork.decimals;
+            parsedTransaction.symbol = txNetwork.symbol;
+            parsedTransaction.decimals = txNetwork.decimals;
             parsedTransaction.insufficientFundsError =
                     parsedTransaction.value + parsedTransaction.getGasFee() > accountNativeBalance;
             parsedTransaction.insufficientFundsForGasError =
@@ -499,7 +504,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
     }
 
     private static String getAddressLabel(AccountInfo[] accounts, String address) {
-        final AccountInfo account = Utils.findAccount(accounts, address);
+        final AccountInfo account = Utils.findAccountByAddress(accounts, address);
         return account != null ? account.name : Utils.stripAccountAddress(address);
     }
 

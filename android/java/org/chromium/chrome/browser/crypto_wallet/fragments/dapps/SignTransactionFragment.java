@@ -27,6 +27,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -171,9 +172,9 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
             return;
         }
         int size = 0;
-        String fromAddress = null;
+        AccountId fromAccountId = null;
         @CoinType.EnumType
-        int coin = CoinType.ETH;
+        int coin = CoinType.SOL;
         String chainId = null;
         OriginInfo originInfo = null;
         switch (mActivityType) {
@@ -185,7 +186,7 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
                 size = mSignTransactionRequests.size();
                 mTxDatas = Arrays.asList(TransactionUtils.safeSolData(mSignTransactionRequest));
                 coin = mSignTransactionRequest.coin;
-                fromAddress = mSignTransactionRequest.fromAddress;
+                fromAccountId = mSignTransactionRequest.fromAccountId;
                 originInfo = mSignTransactionRequest.originInfo;
                 chainId = mSignTransactionRequest.chainId;
                 break;
@@ -197,7 +198,7 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
                 size = mSignAllTransactionRequests.size();
                 mTxDatas = TransactionUtils.safeSolData(mSignAllTransactionsRequest);
                 coin = mSignAllTransactionsRequest.coin;
-                fromAddress = mSignAllTransactionsRequest.fromAddress;
+                fromAccountId = mSignAllTransactionsRequest.fromAccountId;
                 originInfo = mSignAllTransactionsRequest.originInfo;
                 chainId = mSignAllTransactionsRequest.chainId;
                 break;
@@ -215,7 +216,7 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
         mTvTxCounter.setText(
                 getString(R.string.brave_wallet_queue_of, (mTxRequestNumber + 1), size));
         updateActionState(mTxRequestNumber == 0);
-        updateAccount(fromAddress);
+        updateAccount(fromAccountId);
         updateNetwork(coin, chainId);
         if (originInfo != null && URLUtil.isValidUrl(originInfo.originSpec)) {
             mWebSite.setVisibility(View.VISIBLE);
@@ -341,17 +342,23 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
         }
     }
 
-    private void updateAccount(String fromAddress) {
-        if (fromAddress == null) return;
+    private void updateAccount(AccountId fromAccountId) {
+        if (fromAccountId == null) {
+            return;
+        }
+        assert (fromAccountId.coin == CoinType.SOL);
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.getWalletModel().getKeyringModel().getAccounts(accountInfos -> {
-                if (fromAddress == null) return;
-                AccountInfo accountInfo = Utils.findAccount(accountInfos, fromAddress);
-                String accountText =
-                        (accountInfo != null ? accountInfo.name + "\n" : "") + fromAddress;
-                Utils.setBlockiesBitmapResource(
-                        mExecutor, mHandler, mAccountImage, fromAddress, true);
+                AccountInfo accountInfo = Utils.findAccount(accountInfos, fromAccountId);
+                if (accountInfo == null) {
+                    return;
+                }
+                assert (accountInfo.address != null);
+
+                Utils.setBlockiesBitmapResourceFromAccount(
+                        mExecutor, mHandler, mAccountImage, accountInfo, true);
+                String accountText = accountInfo.name + "\n" + accountInfo.address;
                 mAccountName.setText(accountText);
             });
         } catch (BraveActivity.BraveActivityNotFoundException e) {

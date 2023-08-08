@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/test_utils.h"
 
+#include <utility>
+
 #include "base/files/scoped_temp_dir.h"
 #include "base/notreached.h"
 #include "base/run_loop.h"

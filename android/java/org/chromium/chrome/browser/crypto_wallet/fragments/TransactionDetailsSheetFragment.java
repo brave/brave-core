@@ -109,8 +109,8 @@ public class TransactionDetailsSheetFragment extends WalletBottomSheetDialogFrag
         super.onViewCreated(view, savedInstanceState);
         if (JavaUtils.anyNull(mWalletModel)) return;
         ImageView icon = view.findViewById(R.id.account_picture);
-        Utils.setBlockiesBitmapResource(
-                mExecutor, mHandler, icon, mWalletListItemModel.getAccountInfo().address, true);
+        Utils.setBlockiesBitmapResourceFromAccount(
+                mExecutor, mHandler, icon, mWalletListItemModel.getAccountInfo(), true);
         updateTxHeaderDetails(view);
         updateTxDetails(view);
     }
@@ -123,8 +123,8 @@ public class TransactionDetailsSheetFragment extends WalletBottomSheetDialogFrag
         TextView amountFiat = view.findViewById(R.id.amount_fiat);
         TextView amountAsset = view.findViewById(R.id.amount_asset);
 
-        Utils.setBlockiesBitmapResource(
-                mExecutor, mHandler, icon, mWalletListItemModel.getAccountInfo().address, true);
+        Utils.setBlockiesBitmapResourceFromAccount(
+                mExecutor, mHandler, icon, mWalletListItemModel.getAccountInfo(), true);
 
         if (mTxInfo.originInfo != null && URLUtil.isValidUrl(mTxInfo.originInfo.originSpec)) {
             TextView domain = view.findViewById(R.id.domain);
