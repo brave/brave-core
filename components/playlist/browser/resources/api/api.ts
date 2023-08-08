@@ -8,7 +8,8 @@ import {
   Playlist,
   PlaylistEvent,
   PlaylistServiceObserverCallbackRouter,
-  PlaylistServiceRemote
+  PlaylistServiceRemote,
+  PlaylistNativeUIRemote
 } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
@@ -20,12 +21,14 @@ let apiInstance: API
 class API {
   #pageCallbackRouter = new PlaylistServiceObserverCallbackRouter()
   #pageHandler = new PlaylistServiceRemote()
+  #nativeUI = new PlaylistNativeUIRemote()
 
   constructor () {
     const factory = PageHandlerFactory.getRemote()
     factory.createPageHandler(
       this.#pageCallbackRouter.$.bindNewPipeAndPassRemote(),
-      this.#pageHandler.$.bindNewPipeAndPassReceiver()
+      this.#pageHandler.$.bindNewPipeAndPassReceiver(),
+      this.#nativeUI.$.bindNewPipeAndPassReceiver()
     )
   }
 
@@ -79,6 +82,14 @@ class API {
 
   removeLocalData (playlistItemId: string) {
     this.#pageHandler.removeLocalDataForItem(playlistItemId)
+  }
+
+  showCreatePlaylistUI () {
+    this.#nativeUI.showCreatePlaylistUI()
+  }
+
+  showRemovePlaylistUI (playlistId: string) {
+    this.#nativeUI.showRemovePlaylistUI(playlistId)
   }
 }
 

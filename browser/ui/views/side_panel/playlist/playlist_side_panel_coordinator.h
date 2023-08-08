@@ -27,6 +27,23 @@ class PlaylistSidePanelCoordinator
     : public BrowserUserData<PlaylistSidePanelCoordinator>,
       public views::ViewObserver {
  public:
+  class Proxy : public content::WebContentsUserData<Proxy> {
+   public:
+    ~Proxy() override;
+
+    base::WeakPtr<PlaylistSidePanelCoordinator> GetCoordinator();
+
+   private:
+    friend WebContentsUserData;
+
+    Proxy(content::WebContents* web_contents,
+          base::WeakPtr<PlaylistSidePanelCoordinator> coordinator);
+
+    base::WeakPtr<PlaylistSidePanelCoordinator> coordinator_;
+
+    WEB_CONTENTS_USER_DATA_KEY_DECL();
+  };
+
   explicit PlaylistSidePanelCoordinator(Browser* browser);
   PlaylistSidePanelCoordinator(const PlaylistSidePanelCoordinator&) = delete;
   PlaylistSidePanelCoordinator& operator=(const PlaylistSidePanelCoordinator&) =
@@ -46,6 +63,8 @@ class PlaylistSidePanelCoordinator
     return side_panel_web_view_;
   }
 
+  BrowserView* GetBrowserView();
+
   // views::ViewObserver:
   void OnViewIsDeleting(views::View* view) override;
 
@@ -64,6 +83,8 @@ class PlaylistSidePanelCoordinator
 
   base::ScopedObservation<views::View, views::ViewObserver> view_observation_{
       this};
+
+  base::WeakPtrFactory<PlaylistSidePanelCoordinator> weak_ptr_factory_{this};
 
   BROWSER_USER_DATA_KEY_DECL();
 };

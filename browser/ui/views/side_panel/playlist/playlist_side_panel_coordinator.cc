@@ -26,6 +26,20 @@
 #include "ui/base/models/image_model.h"
 #include "ui/views/vector_icons.h"
 
+PlaylistSidePanelCoordinator::Proxy::Proxy(
+    content::WebContents* web_contents,
+    base::WeakPtr<PlaylistSidePanelCoordinator> coordinator)
+    : WebContentsUserData(*web_contents), coordinator_(coordinator) {}
+
+PlaylistSidePanelCoordinator::Proxy::~Proxy() = default;
+
+base::WeakPtr<PlaylistSidePanelCoordinator>
+PlaylistSidePanelCoordinator::Proxy::GetCoordinator() {
+  return coordinator_;
+}
+
+WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistSidePanelCoordinator::Proxy);
+
 PlaylistSidePanelCoordinator::PlaylistSidePanelCoordinator(Browser* browser)
     : BrowserUserData<PlaylistSidePanelCoordinator>(*browser),
       browser_(browser) {}
@@ -73,6 +87,9 @@ std::unique_ptr<views::View> PlaylistSidePanelCoordinator::CreateWebView() {
         /*esc_closes_ui=*/false,
         static_cast<BrowserView*>(GetBrowser().window()), this);
     contents_wrapper_->ReloadWebContents();
+
+    Proxy::CreateForWebContents(contents_wrapper_->web_contents(),
+                                weak_ptr_factory_.GetWeakPtr());
   }
 
   auto web_view = std::make_unique<PlaylistSidePanelWebView>(
@@ -89,6 +106,10 @@ std::unique_ptr<views::View> PlaylistSidePanelCoordinator::CreateWebView() {
   view_observation_.Observe(web_view.get());
 
   return web_view;
+}
+
+BrowserView* PlaylistSidePanelCoordinator::GetBrowserView() {
+  return static_cast<BrowserView*>(GetBrowser().window());
 }
 
 void PlaylistSidePanelCoordinator::OnViewIsDeleting(views::View* view) {

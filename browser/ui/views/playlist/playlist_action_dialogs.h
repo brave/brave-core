@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_PLAYLIST_PLAYLIST_ACTION_DIALOGS_H_
 
 #include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -25,6 +26,7 @@ class BoxLayoutView;
 
 namespace playlist {
 class PlaylistTabHelper;
+class PlaylistService;
 }  // namespace playlist
 
 // Base class for playlist action dialogs. Responsible for creating widget
@@ -53,14 +55,29 @@ class PlaylistActionDialog : public views::DialogDelegateView {
   PlaylistActionDialog();
 };
 
-class PlaylistNewPlaylistDialog : public PlaylistActionDialog {
+class PlaylistNewPlaylistDialog : public PlaylistActionDialog,
+                                  public views::TextfieldController {
  public:
   METADATA_HEADER(PlaylistNewPlaylistDialog);
 
   using PassKey = base::PassKey<PlaylistActionDialog>;
 
-  explicit PlaylistNewPlaylistDialog(PassKey);
+  PlaylistNewPlaylistDialog(PassKey, playlist::PlaylistService* service);
   ~PlaylistNewPlaylistDialog() override = default;
+  // PlaylistActionDialog:
+  views::View* GetInitiallyFocusedView() override;
+
+  // views::TextfieldController:
+  void ContentsChanged(views::Textfield* sender,
+                       const std::u16string& new_contents) override;
+
+ private:
+  void CreatePlaylist();
+
+  raw_ptr<playlist::PlaylistService> service_ = nullptr;
+
+  raw_ptr<views::Textfield> name_textfield_ = nullptr;
+  raw_ptr<SelectableItemsView> items_list_view_ = nullptr;
 };
 
 class PlaylistMoveDialog : public PlaylistActionDialog,
@@ -128,8 +145,16 @@ class PlaylistRemovePlaylistConfirmDialog : public PlaylistActionDialog {
 
   using PassKey = base::PassKey<PlaylistActionDialog>;
 
-  explicit PlaylistRemovePlaylistConfirmDialog(PassKey);
+  PlaylistRemovePlaylistConfirmDialog(PassKey,
+                                      playlist::PlaylistService* service,
+                                      const std::string& playlist_id);
   ~PlaylistRemovePlaylistConfirmDialog() override = default;
+
+ private:
+  void RemovePlaylist();
+
+  raw_ptr<playlist::PlaylistService> service_ = nullptr;
+  const std::string playlist_id_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PLAYLIST_PLAYLIST_ACTION_DIALOGS_H_

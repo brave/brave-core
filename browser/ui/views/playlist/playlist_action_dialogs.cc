@@ -8,9 +8,12 @@
 #include <string>
 #include <utility>
 
+#include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/playlist/playlist_tab_helper.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/playlist/thumbnail_view.h"
+#include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
+#include "brave/components/playlist/browser/playlist_service.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/button/label_button.h"
@@ -18,6 +21,29 @@
 #include "ui/views/layout/fill_layout.h"
 
 namespace {
+
+BrowserView* FindBrowserViewFromSidebarContents(
+    content::WebContents* contents) {
+  auto* proxy = PlaylistSidePanelCoordinator::Proxy::FromWebContents(contents);
+  if (!proxy) {
+    return nullptr;
+  }
+
+  auto coordinator = proxy->GetCoordinator();
+  if (!coordinator) {
+    return nullptr;
+  }
+
+  return coordinator->GetBrowserView();
+}
+
+bool CanMoveItem(const playlist::mojom::PlaylistItemPtr& item) {
+  CHECK(item);
+
+  // Technically, an item can have multiple parent Playlists, we only supports
+  // this operation for items that have single parent Playlist.
+  return item->parents.size() == 1u;
+}
 
 // This class takes PlaylistItems and show tiled thumbnail and the count of
 // them. When only one item is passed, shows the title of it instead.
@@ -93,6 +119,28 @@ END_METADATA
 
 }  // namespace
 
+namespace playlist {
+
+void ShowCreatePlaylistDialog(content::WebContents* contents) {
+  DVLOG(2) << __FUNCTION__;
+  PlaylistActionDialog::Show<PlaylistNewPlaylistDialog>(
+      FindBrowserViewFromSidebarContents(contents),
+      playlist::PlaylistServiceFactory::GetForBrowserContext(
+          contents->GetBrowserContext()));
+}
+
+void ShowRemovePlaylistDialog(content::WebContents* contents,
+                              const std::string& playlist_id) {
+  DVLOG(2) << __FUNCTION__;
+  PlaylistActionDialog::Show<PlaylistRemovePlaylistConfirmDialog>(
+      FindBrowserViewFromSidebarContents(contents),
+      playlist::PlaylistServiceFactory::GetForBrowserContext(
+          contents->GetBrowserContext()),
+      playlist_id);
+}
+
+}  // namespace playlist
+
 ////////////////////////////////////////////////////////////////////////////////
 // PlaylistActionDialog
 //
@@ -107,8 +155,124 @@ END_METADATA
 ////////////////////////////////////////////////////////////////////////////////
 // PlaylistNewPlaylistDialog
 //
-PlaylistNewPlaylistDialog::PlaylistNewPlaylistDialog(PassKey) {
-  NOTIMPLEMENTED();
+PlaylistNewPlaylistDialog::PlaylistNewPlaylistDialog(
+    PassKey,
+    playlist::PlaylistService* service)
+    : service_(service) {
+  const auto kSpacing = 24;
+  SetBorder(views::CreateEmptyBorder(gfx::Insets(kSpacing)));
+  SetLayoutManager(std::make_unique<views::BoxLayout>(
+                       views::BoxLayout::Orientation::kVertical, gfx::Insets(),
+                       /* between_child_spacing=*/kSpacing))
+      ->set_cross_axis_alignment(
+          views::BoxLayout::CrossAxisAlignment::kStretch);
+  SetTitle(l10n_util::GetStringUTF16(IDS_PLAYLIST_NEW_PLAYLIST_DIALOG_TITLE));
+  SetButtonLabel(
+      ui::DIALOG_BUTTON_OK,
+      l10n_util::GetStringUTF16(IDS_PLAYLIST_NEW_PLAYLIST_DIALOG_OK));
+  SetButtonEnabled(ui::DIALOG_BUTTON_OK, false);
+
+  auto create_container = [](views::View* parent, int container_label_string_id,
+                             int container_label_color_id,
+                             int container_label_font_size) {
+    auto* container =
+        parent->AddChildView(std::make_unique<views::BoxLayoutView>());
+    container->SetOrientation(views::BoxLayout::Orientation::kVertical);
+    container->SetCrossAxisAlignment(
+        views::BoxLayout::CrossAxisAlignment::kStretch);
+    auto* container_label =
+        container->AddChildView(std::make_unique<views::Label>(
+            l10n_util::GetStringUTF16(container_label_string_id)));
+    container_label->SetHorizontalAlignment(
+        gfx::HorizontalAlignment::ALIGN_LEFT);
+    container_label->SetFontList(
+        container_label->font_list().DeriveWithSizeDelta(
+            container_label->font_list().GetFontSize() -
+            container_label_font_size));
+    container_label->SetEnabledColorId(container_label_color_id);
+    return container;
+  };
+
+  auto* name_field_container = AddChildView(
+      create_container(this, IDS_PLAYLIST_NEW_PLAYLIST_DIALOG_NAME_TEXTFIELD,
+                       kColorBravePlaylistNewPlaylistDialogNameLabel,
+                       /* container_label_font_size=*/13));
+  name_textfield_ =
+      name_field_container->AddChildView(std::make_unique<views::Textfield>());
+  name_textfield_->SetPreferredSize(gfx::Size(464, 39));
+  name_textfield_->set_controller(this);
+
+  auto default_playlist = service_->GetPlaylist(playlist::kDefaultPlaylistID);
+  std::vector<playlist::mojom::PlaylistItemPtr> movable_items;
+  for (const auto& item : default_playlist->items) {
+    if (CanMoveItem(item)) {
+      movable_items.push_back(item.Clone());
+    }
+  }
+
+  if (movable_items.size()) {
+    auto* items_list_view_container = AddChildView(create_container(
+        this, IDS_PLAYLIST_NEW_PLAYLIST_DIALOG_SELECTABLE_ITEMS,
+        kColorBravePlaylistNewPlaylistDialogItemsLabel,
+        /* container_label_font_size=*/14));
+
+    auto* scroll_view = items_list_view_container->AddChildView(
+        std::make_unique<views::ScrollView>());
+    scroll_view->ClipHeightTo(/*min_height=*/0, /*max_height=*/224);
+    scroll_view->SetDrawOverflowIndicator(false);
+    scroll_view->SetBorder(views::CreateThemedRoundedRectBorder(
+        /*thickness=*/1,
+        /*corner_radius=*/4.f, kColorBravePlaylistListBorder));
+
+    items_list_view_ =
+        scroll_view->SetContents(std::make_unique<SelectableItemsView>(
+            default_playlist->items, base::DoNothing()));
+  }
+
+  // It's okay to bind Unretained(this) as this callback is invoked by the base
+  // class.
+  SetAcceptCallback(base::BindOnce(&PlaylistNewPlaylistDialog::CreatePlaylist,
+                                   base::Unretained(this)));
+}
+
+views::View* PlaylistNewPlaylistDialog::GetInitiallyFocusedView() {
+  return name_textfield_;
+}
+
+void PlaylistNewPlaylistDialog::ContentsChanged(
+    views::Textfield* sender,
+    const std::u16string& new_contents) {
+  if (new_contents.size() == IsDialogButtonEnabled(ui::DIALOG_BUTTON_OK)) {
+    return;
+  }
+
+  SetButtonEnabled(ui::DIALOG_BUTTON_OK, new_contents.size());
+  DialogModelChanged();
+}
+
+void PlaylistNewPlaylistDialog::CreatePlaylist() {
+  DCHECK(!name_textfield_->GetText().empty());
+
+  auto new_playlist = playlist::mojom::Playlist::New();
+  new_playlist->name = base::UTF16ToUTF8(name_textfield_->GetText());
+  if (items_list_view_ && items_list_view_->HasSelected()) {
+    auto on_create_playlist = base::BindOnce(
+        [](base::WeakPtr<playlist::PlaylistService> service,
+           std::vector<playlist::mojom::PlaylistItemPtr> items_to_move,
+           playlist::mojom::PlaylistPtr created_playlist) {
+          CHECK(service);
+          CHECK(created_playlist && created_playlist->id.has_value());
+          for (const auto& item : items_to_move) {
+            service->MoveItem(playlist::kDefaultPlaylistID,
+                              created_playlist->id.value(), item->id);
+          }
+        },
+        service_->GetWeakPtr(), items_list_view_->GetSelected());
+    service_->CreatePlaylist(std::move(new_playlist),
+                             std::move(on_create_playlist));
+  } else {
+    service_->CreatePlaylist(std::move(new_playlist), base::DoNothing());
+  }
 }
 
 BEGIN_METADATA(PlaylistNewPlaylistDialog, PlaylistActionDialog)
@@ -120,10 +284,7 @@ END_METADATA
 // static
 bool PlaylistMoveDialog::CanMoveItems(
     const std::vector<playlist::mojom::PlaylistItemPtr>& items) {
-  // Technically, an item can have multiple parent Playlists, we only supports
-  // this operation for items that have single parent Playlist.
-  return base::ranges::all_of(
-      items, [](const auto& item) { return item->parents.size() == 1u; });
+  return base::ranges::all_of(items, &CanMoveItem);
 }
 
 void PlaylistMoveDialog::ContentsChanged(views::Textfield* sender,
@@ -342,8 +503,44 @@ END_METADATA
 // PlaylistRemovePlaylistConfirmDialog
 //
 PlaylistRemovePlaylistConfirmDialog::PlaylistRemovePlaylistConfirmDialog(
-    PassKey) {
-  NOTIMPLEMENTED();
+    PassKey,
+    playlist::PlaylistService* service,
+    const std::string& playlist_id)
+    : service_(service), playlist_id_(playlist_id) {
+  SetBorder(views::CreateEmptyBorder(gfx::Insets(24)));
+  SetLayoutManager(std::make_unique<views::FillLayout>());
+  SetTitle(
+      l10n_util::GetStringUTF16(IDS_PLAYLIST_REMOVE_PLAYLIST_DIALOG_TITLE));
+  SetButtonLabel(
+      ui::DIALOG_BUTTON_OK,
+      l10n_util::GetStringUTF16(IDS_PLAYLIST_REMOVE_PLAYLIST_DIALOG_OK));
+
+  auto* description =
+      AddChildView(std::make_unique<views::Label>(l10n_util::GetStringUTF16(
+          IDS_PLAYLIST_REMOVE_PLAYLIST_DIALOG_DESCRIPTION)));
+  constexpr auto kDescriptionMaxWidth = 312;
+  description->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
+
+  if (description->GetPreferredSize().width() > kDescriptionMaxWidth) {
+    description->SetMaximumWidthSingleLine(kDescriptionMaxWidth);
+    description->SetMultiLine(true);
+    // As views::Label::CalculatePreferred() size depends on the current width
+    // of it, sets default size so that we can get proper size. If line breaking
+    // makes the preferred size smaller than kDescriptionMaxWidth,
+    // the description will be resized based on that by the non client frame
+    // view.
+    description->SetSize({kDescriptionMaxWidth, 0});
+  }
+
+  // It's okay to bind Unretained(this) as this callback is invoked by
+  // the base class.
+  SetAcceptCallback(
+      base::BindOnce(&PlaylistRemovePlaylistConfirmDialog::RemovePlaylist,
+                     base::Unretained(this)));
+}
+
+void PlaylistRemovePlaylistConfirmDialog::RemovePlaylist() {
+  service_->RemovePlaylist(playlist_id_);
 }
 
 BEGIN_METADATA(PlaylistRemovePlaylistConfirmDialog, PlaylistActionDialog)
