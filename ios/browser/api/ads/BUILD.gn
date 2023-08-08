@@ -36,6 +36,7 @@ source_set("ads") {
     "//brave/components/brave_ads/common",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_federated/public/interfaces",
+    "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/common",
     "//brave/ios/browser/api/common",
   ]
