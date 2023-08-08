@@ -175,16 +175,11 @@ class BraveShieldStatsView: SpringButton {
   
   var isPrivateBrowsing: Bool = false {
     didSet {
-      if oldValue == isPrivateBrowsing {
+      if backgroundView.superview != nil {
         return
       }
 
-      if isPrivateBrowsing {
-        backgroundView.removeFromSuperview()
-        topStackView.arrangedSubviews.forEach {
-          $0.removeFromSuperview()
-        }
-      } else if Preferences.NewTabPage.showNewTabPrivacyHub.value {
+      if !isPrivateBrowsing && Preferences.NewTabPage.showNewTabPrivacyHub.value {
         backgroundView.backgroundColor = .init(white: 0, alpha: 0.25)
         backgroundView.layer.cornerRadius = 12
         backgroundView.layer.cornerCurve = .continuous
