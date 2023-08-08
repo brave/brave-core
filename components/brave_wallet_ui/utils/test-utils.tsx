@@ -47,6 +47,12 @@ import {
   BraveRewardsProxyOverrides,
   getMockedBraveRewardsProxy
 } from '../common/async/__mocks__/brave_rewards_api_proxy'
+import {
+  makeBraveWalletServiceObserver,
+  makeJsonRpcServiceObserver,
+  makeKeyringServiceObserver,
+  makeTxServiceObserver
+} from '../common/wallet_api_proxy_observers'
 
 export interface RootStateOverrides {
   accountTabStateOverride?: Partial<AccountsTabState>
@@ -107,10 +113,10 @@ export const createMockStore = (
   })
 
   const proxy = getMockedAPIProxy()
-  proxy?.addJsonRpcServiceObserver?.(store)
-  proxy?.addKeyringServiceObserver?.(store)
-  proxy?.addTxServiceObserver?.(store)
-  proxy?.addBraveWalletServiceObserver?.(store)
+  proxy?.addJsonRpcServiceObserver?.(makeJsonRpcServiceObserver(store))
+  proxy?.addKeyringServiceObserver?.(makeKeyringServiceObserver(store))
+  proxy?.addTxServiceObserver?.(makeTxServiceObserver(store))
+  proxy?.addBraveWalletServiceObserver?.(makeBraveWalletServiceObserver(store))
   store.dispatch(WalletActions.initialize({}))
 
   return store

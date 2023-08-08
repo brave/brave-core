@@ -10,8 +10,7 @@ import {
 } from '@reduxjs/toolkit'
 
 import { BraveWallet } from '../../../constants/types'
-import { RootStoreState } from '../../../page/store'
-import { walletApi } from '../api.slice'
+import { walletApi, WalletApiSliceStateFromRoot } from '../api.slice'
 import {
   EntityByIdFromRegistryResultSelectorFactory,
   makeSelectEntityByIdFromRegistryQuery
@@ -49,7 +48,7 @@ export const {
   selectEntities: selectAccountInfoEntities,
   selectIds: selectAccountInfoIds,
   selectTotal: selectTotalAccountInfos
-} = accountInfoEntityAdaptor.getSelectors((state: RootStoreState) => {
+} = accountInfoEntityAdaptor.getSelectors((state: WalletApiSliceStateFromRoot) => {
   return (
     walletApi.endpoints.getAccountInfosRegistry.select()(state)?.data ??
     accountInfoEntityAdaptor.getInitialState()

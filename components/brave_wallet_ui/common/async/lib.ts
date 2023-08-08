@@ -665,6 +665,8 @@ export const translateToNftGateway = async (url: string | undefined) => {
     .translateToNFTGatewayURL(testUrl || '')).translatedUrl || trimmedUrl
 }
 
+// TODO(apaymyshev): This function should not exist. Backend should be
+// responsible in providing correct logo.
 export const addLogoToToken = async (token: BraveWallet.BlockchainToken) => {
   const newLogo = token.logo?.startsWith('ipfs://')
     ? (await translateToNftGateway(token.logo))
