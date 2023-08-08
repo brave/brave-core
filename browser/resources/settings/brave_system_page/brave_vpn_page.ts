@@ -65,13 +65,16 @@ export class SettingsBraveVpnPageElement
     super.ready();
     this.initialProtocolValue_ = this.getCurrentPrefValue()
     this.updateState()
-    this.addWebUiListener('brave-vpn-state-change', (connected: boolean) => {
-      this.braveVpnConnected_ = connected
-      if (this.braveVpnConnected_) {
-        this.resetToInitialValue()
-      }
-      this.updateState()
-    })
+    this.addWebUiListener('brave-vpn-state-change', this.onVpnStateChange.bind(this))
+    this.vpnBrowserProxy_.isBraveVpnConnected().then(this.onVpnStateChange.bind(this))
+  }
+
+  private onVpnStateChange(connected: boolean) {
+    this.braveVpnConnected_ = connected
+    if (this.braveVpnConnected_) {
+      this.resetToInitialValue()
+    }
+    this.updateState()
   }
 
   private getCurrentPrefValue(): boolean {
