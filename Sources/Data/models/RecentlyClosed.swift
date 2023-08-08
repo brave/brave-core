@@ -12,10 +12,10 @@ public struct SavedRecentlyClosed {
   public let url: String
   public let title: String
   public let dateAdded: Date
-  public let interactionState: Data
+  public let interactionState: Data?
   public let index: Int32
 
-  public init(url: URL, title: String, dateAdded: Date = .now, interactionState: Data, order: Int32) {
+  public init(url: URL, title: String, dateAdded: Date = .now, interactionState: Data?, order: Int32) {
     self.url = url.absoluteString
     self.title = title
     self.dateAdded = dateAdded
