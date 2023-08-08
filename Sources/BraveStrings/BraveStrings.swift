@@ -1918,6 +1918,16 @@ extension Strings {
       NSLocalizedString("playlist.playlistAlreadyShowingBody", tableName: "BraveShared", bundle: .module,
         value: "Playlist is already active on another window",
         comment: "Playlist alert message when playlist is already showing on a different window")
+    
+    public static let folderItemCountSingular =
+      NSLocalizedString("playlist.foldersCountSingular", tableName: "BraveShared", bundle: .module,
+        value: "%d item",
+        comment: "Title for when there's a single item inside of a folder")
+    
+    public static let folderItemCountPlural =
+      NSLocalizedString("playlist.folderItemCountPlural", tableName: "BraveShared", bundle: .module,
+        value: "%d items",
+        comment: "Number of items in the playlsit folder. Example: '10 items'")
   }
 
   public struct PlaylistFolders {
