@@ -305,7 +305,7 @@ export function createHost (): Host {
     })
 
     // Update user settings and other data after rewards has been enabled.
-    chrome.braveRewards.onRewardsWalletUpdated.addListener(() => {
+    chrome.braveRewards.onRewardsWalletCreated.addListener(() => {
       loadPanelData().catch(console.error)
     })
 

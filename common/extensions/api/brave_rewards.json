@@ -57,9 +57,9 @@
         ]
       },
       {
-        "name": "onRewardsWalletUpdated",
+        "name": "onRewardsWalletCreated",
         "type": "function",
-        "description": "Called when the user's Rewards wallet has been updated",
+        "description": "Called when the user's Rewards wallet has been created",
         "parameters": []
       },
       {

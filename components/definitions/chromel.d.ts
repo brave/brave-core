@@ -77,7 +77,7 @@ declare namespace chrome.braveRewards {
     geoCountry: string
   }
 
-  const onRewardsWalletUpdated: {
+  const onRewardsWalletCreated: {
     addListener: (callback: () => void) => void
   }
 

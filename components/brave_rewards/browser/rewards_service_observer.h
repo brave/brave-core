@@ -26,7 +26,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
 
   // Called when the user's Rewards wallet information has been created or
   // updated.
-  virtual void OnRewardsWalletUpdated() {}
+  virtual void OnRewardsWalletCreated() {}
 
   virtual void OnFetchPromotions(RewardsService* rewards_service,
                                  const mojom::Result result,

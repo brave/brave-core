@@ -543,7 +543,7 @@ void RewardsServiceImpl::CreateRewardsWallet(
 
       // Notify observers that the Rewards wallet has been created.
       for (auto& observer : self->observers_) {
-        observer.OnRewardsWalletUpdated();
+        observer.OnRewardsWalletCreated();
       }
 
       self->conversion_monitor_.RecordRewardsEnable();

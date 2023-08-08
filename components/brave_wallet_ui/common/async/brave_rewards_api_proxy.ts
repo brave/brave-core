@@ -114,8 +114,8 @@ export class BraveRewardsProxy {
 
   onReconcileComplete = chrome.braveRewards.onReconcileComplete.addListener
 
-  onRewardsWalletUpdated =
-    chrome.braveRewards.onRewardsWalletUpdated.addListener
+  onRewardsWalletCreated =
+    chrome.braveRewards.onRewardsWalletCreated.addListener
 
   onUnblindedTokensReady =
     chrome.braveRewards.onUnblindedTokensReady.addListener
