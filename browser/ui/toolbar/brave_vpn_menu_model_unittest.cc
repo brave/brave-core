@@ -45,9 +45,7 @@ class BraveVPNMenuModelUnitTest : public testing::Test {
 
 #if BUILDFLAG(IS_WIN)
 TEST_F(BraveVPNMenuModelUnitTest, TrayIconEnabled) {
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeature(
-      brave_vpn::features::kBraveVPNUseWireguardService);
+  local_state()->SetBoolean(brave_vpn::prefs::kBraveVPNWireguardEnabled, true);
 
   BraveVPNMenuModel menu_model(nullptr, prefs());
 
@@ -99,9 +97,7 @@ TEST_F(BraveVPNMenuModelUnitTest, TrayIconEnabled) {
   }
 }
 TEST_F(BraveVPNMenuModelUnitTest, TrayIconDisabled) {
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(
-      brave_vpn::features::kBraveVPNUseWireguardService);
+  local_state()->SetBoolean(brave_vpn::prefs::kBraveVPNWireguardEnabled, false);
 
   BraveVPNMenuModel menu_model(nullptr, prefs());
 
