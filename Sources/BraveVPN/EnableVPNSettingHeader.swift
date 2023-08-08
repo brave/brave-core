@@ -48,6 +48,7 @@ public class EnableVPNSettingHeader: UIView {
     }()
 
     $0.setTitle(title, for: .normal)
+    $0.contentEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
     $0.backgroundColor = .braveBlurpleTint
     $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
     $0.setTitleColor(.white, for: .normal)
