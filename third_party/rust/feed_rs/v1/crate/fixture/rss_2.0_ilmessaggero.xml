@@ -1,0 +1,33 @@
+<rss version="2.0">
+    <channel>
+        <title>ilmessaggero.it - mondo</title>
+        <link>https://www.ilmessaggero.it</link>
+        <description>Le news della sezione mondo</description>
+        <copyright>Copyright 2022 Il Messaggero S.P.A. ï¿½ FOR PERSONAL USE ONLY </copyright>
+        <language>IT-it</language>
+        <managingEditor>redazioneweb@ilmessaggero.it (per segnalazioni sul contenuto del servizio)</managingEditor>
+        <webMaster>webmaster@ilmessaggero.it (per segnalazioni di malfunzioni)</webMaster>
+        <lastBuildDate>Wed, 16 Nov 2022 05:33:59 +0100</lastBuildDate>
+        <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+        <generator>Il Messaggero</generator>
+        <image>
+            <url>https://www.ilmessaggero.it/img/msgr_logo_rss.png</url>
+            <title>Il Messaggero</title>
+            <link>https://www.ilmessaggero.it</link>
+        </image>
+        <item>
+            <title>
+                <![CDATA[ Missili Polonia, cosa è successo? Tensione Nato-Russia, Mosca: non siamo stati noi ]]>
+            </title>
+            <link>https://www.ilmessaggero.it/mondo/missili_polonia_cosa_e_successo_davvero-7054869.html</link>
+            <linkmobile>https://m.ilmessaggero.it/mondo/missili_polonia_cosa_e_successo_davvero-7054869.html</linkmobile>
+            <description>
+                <![CDATA[ Non sono ancora le 16 di ieri pomeriggio quando un?esplosione in un impianto di essiccazione di cereali a Przewodów, nel distretto di Hrubieszów, in territorio polacco, al limite... ]]>
+            </description>
+            <pubDate>mer, 16 nov 2022 00:38:15 +0100</pubDate>
+            <guid>https://www.ilmessaggero.it/mondo/missili_polonia_cosa_e_successo_davvero-7054869.html</guid>
+            <category>Mondo</category>
+            <enclosure url="https://www.ilmessaggero.it/photos/MED/48/69/7054869_16003922_missili_polonia_1_.jpg" type="image/jpeg"/>
+        </item>
+    </channel>
+</rss>

@@ -17,10 +17,7 @@ static_library("browser") {
     "skus_utils.h",
   ]
 
-  public_deps = [
-    "rs/cxx",
-    "rs/cxx:shim",
-  ]
+  public_deps = [ "rs/cxx:rust_lib" ]
 
   deps = [
     "//base",

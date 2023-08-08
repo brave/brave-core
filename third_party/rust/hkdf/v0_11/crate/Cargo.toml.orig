@@ -1,0 +1,34 @@
+[package]
+name = "hkdf"
+version = "0.11.0"
+authors = ["vladikoff", "warner", "RustCrypto Developers"]
+license = "MIT/Apache-2.0"
+homepage = "https://github.com/RustCrypto/KDFs/"
+repository = "https://github.com/RustCrypto/KDFs/"
+description = "HMAC-based Extract-and-Expand Key Derivation Function (HKDF)"
+keywords = [ "HKDF", "Crypto" ]
+readme = "README.md"
+edition = "2018"
+
+[features]
+std = []
+
+[lib]
+name = "hkdf"
+path = "src/hkdf.rs"
+
+[dependencies]
+digest = "0.9"
+hmac = "0.11"
+
+[dev-dependencies]
+blobby = "0.3"
+crypto-tests = "0.5.*"
+hex = "0.4"
+sha-1 = "0.9"
+sha2 = "0.9"
+bencher = "0.1"
+
+[[bench]]
+name = "hkdf"
+harness = false

@@ -1,0 +1,7 @@
+Name: lifeguard
+URL: https://crates.io/crates/lifeguard
+Description: An object pool manager in Rust.
+Version: 0.6.1
+Security Critical: yes
+License: MIT
+Revision: 92e5ab46cc089df84eddd40149f92ef13a4b5c58

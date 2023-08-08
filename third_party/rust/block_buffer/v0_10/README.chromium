@@ -1,0 +1,7 @@
+Name: block-buffer
+URL: https://crates.io/crates/block-buffer
+Description: Buffer type for block processing of data
+Version: 0.10.4
+Security Critical: yes
+License: Apache 2.0
+Revision: 6d35952d3d3b124bc1049ad6fb406b42b1ce4bfe

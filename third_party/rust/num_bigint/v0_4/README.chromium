@@ -1,0 +1,7 @@
+Name: num-bigint
+URL: https://crates.io/crates/num-bigint
+Description: Big integer implementation for Rust
+Version: 0.4.3
+Security Critical: no
+License: Apache 2.0
+Revision: e77ffacafef7e8fa2c2b990489b7aa30dceaed64

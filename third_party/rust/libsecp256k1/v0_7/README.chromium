@@ -1,0 +1,7 @@
+Name: libsecp256k1
+URL: https://crates.io/crates/libsecp256k1
+Description: Pure Rust secp256k1 implementation.
+Version: 0.7.1
+Security Critical: no
+License: Apache 2.0
+Revision: b981fc9fbdd6f2af99f5885f919f92470affc769

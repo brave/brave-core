@@ -9,6 +9,7 @@ use feed_rs::parser;
 use lazy_static::lazy_static;
 use regex::Regex;
 
+#[allow(unsafe_op_in_unsafe_fn)]
 #[cxx::bridge(namespace = brave_news)]
 mod ffi {
     pub struct FeedItem {

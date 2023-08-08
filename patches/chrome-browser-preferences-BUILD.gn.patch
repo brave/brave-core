@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/preferences/BUILD.gn b/chrome/browser/preferences/BUILD.gn
-index c3038943a893b96cd82290b81ac60fc468464ec9..e8798dae4a192c4eeaacad36c0cc97c71ef0b290 100644
+index e0257b2da7ce00206e541cbe3e6092b3861fa775..d039e0c52fcb39ef0d7e8b15c57eeb66036d28ed 100644
 --- a/chrome/browser/preferences/BUILD.gn
 +++ b/chrome/browser/preferences/BUILD.gn
-@@ -26,6 +26,7 @@ android_library("java") {
+@@ -29,6 +29,7 @@ android_library("java") {
+     ":java_pref_names_srcjar",
+     ":jni_headers",
    ]
-   annotation_processor_deps = [ "//base/android/jni_generator:jni_processor" ]
-   srcjar_deps = [ ":java_pref_names_srcjar" ]
 +  sources += brave_browser_preferences_java_sources
  }
  

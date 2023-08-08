@@ -192,7 +192,7 @@ test("brave_unit_tests") {
     "//brave/browser/web_discovery:unit_tests",
     "//brave/chromium_src/components/privacy_sandbox:unit_tests",
     "//brave/chromium_src/net/base:unit_tests",
-    "//brave/components/adblock_rust_ffi",
+    "//brave/components/adblock_rust_ffi:rust_lib",
     "//brave/components/api_request_helper:api_request_helper_unit_tests",
     "//brave/components/brave_adaptive_captcha/test:brave_adaptive_captcha_unit_tests",
     "//brave/components/brave_ads/browser:test_support",
@@ -839,7 +839,7 @@ test("brave_browser_tests") {
     "//brave/browser/ui/views/tabs:browser_tests",
     "//brave/browser/web_discovery:browser_tests",
     "//brave/common",
-    "//brave/components/adblock_rust_ffi",
+    "//brave/components/adblock_rust_ffi:rust_lib",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/browser:test_support",
     "//brave/components/brave_ads/common",
@@ -957,6 +957,10 @@ test("brave_browser_tests") {
       "//chrome/browser/ui/test/test_browser_dialog_mac.h",
       "//chrome/browser/ui/test/test_browser_dialog_mac.mm",
     ]
+  }
+
+  if (is_apple) {
+    configs += [ "//build/config/compiler:enable_arc" ]
   }
 
   if (use_aura) {
@@ -1175,14 +1179,11 @@ if (is_android) {
     ]
   }
 
-  chrome_public_common_apk_or_module_tmpl("brave_public_test_apk") {
-    testonly = true
-    target_type = "instrumentation_test_apk"
+  chrome_public_test_apk_tmpl("brave_public_test_apk") {
     apk_name = "BravePublicTest"
     android_manifest = brave_public_test_apk_manifest
     android_manifest_dep = ":brave_public_test_apk_manifest"
     manifest_package = brave_public_test_manifest_package
-    shared_libraries = [ "//chrome/android:libchromefortest" ]
     if (!is_java_debug) {
       proguard_enabled = true
       proguard_configs = [
@@ -1240,6 +1241,7 @@ if (is_android) {
       "//components/browser_ui/settings/android:java",
       "//components/browser_ui/site_settings/android:java",
       "//components/browser_ui/widget/android:java",
+      "//components/commerce/core/android:core_java",
       "//components/embedder_support/android:browser_context_java",
       "//components/external_intents/android:java",
       "//components/favicon/android:java",

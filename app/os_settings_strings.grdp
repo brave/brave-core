@@ -904,9 +904,6 @@
   <message name="IDS_SETTINGS_GOOGLE_DRIVE" translateable="false" desc="Label for the settings link that takes the user to the page where they can manage their Google Drive settings.">
     Google Drive
   </message>
-  <message name="IDS_SETTINGS_GOOGLE_DRIVE_ENABLED" translateable="false" desc="Label indicating that Google Drive is enabled in Settings: Files: Google Drive.">
-    Enabled
-  </message>
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_DISABLED" translateable="false" desc="Label indicating that Google Drive is disabled in Settings: Files: Google Drive.">
     Disabled
   </message>
@@ -917,7 +914,7 @@
     Connect account
   </message>
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_SIGNED_IN_AS" translateable="false" desc="Label indicating account signed in with Google Drive in Settings: Files: Google Drive.">
-    Signed in as: <ph name="BEGIN_BOLD">&lt;strong&gt;</ph><ph name="DRIVE_ACCOUNT_EMAIL">$1<ex>john@google.com</ex></ph><ph name="END_BOLD">&lt;/strong&gt;</ph>
+    Signed in as <ph name="BEGIN_BOLD">&lt;strong&gt;</ph><ph name="DRIVE_ACCOUNT_EMAIL">$1<ex>john@google.com</ex></ph><ph name="END_BOLD">&lt;/strong&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_DISCONNECTED_FROM" translateable="false" desc="Label indicating account that Google Drive would sign in as in Settings: Files: Google Drive.">
     Disconnected from <ph name="BEGIN_BOLD">&lt;strong&gt;</ph><ph name="DRIVE_ACCOUNT_EMAIL">$1<ex>john@google.com</ex></ph><ph name="END_BOLD">&lt;/strong&gt;</ph>
@@ -957,6 +954,9 @@
   </message>
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_TURN_OFF_BODY_TEXT" translateable="false" desc="Body text for the confirmation dialog that spawns when attempting to turn off bulk pinning in Settings: Files: Google Drive.">
     New Google Drive files will no longer be synced automatically, but files that are already synced will remain available.
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_CLEAR_DISABLED_TOOLTIP" translateable="false" desc="Tooltip text that shows when hovering over the clear offline storage button in the Settings: Files: Google Drive.">
+    Can’t clean up storage while files are automatically syncing.
   </message>
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_BULK_PINNING_NOT_ENOUGH_SPACE_TITLE_TEXT" translateable="false" desc="Title text for the confirmation dialog that spawns when attempting to turn on bulk pinning but the user doesn't have enough free space in Settings: Files: Google Drive.">
     Low disk space
@@ -1010,6 +1010,24 @@
     Share mounted successfully.
   </message>
   <!-- TODO(b/254586358): Finalise Office files strings -->
+  <message name="IDS_SETTINGS_ONE_DRIVE_LABEL" translateable="false" desc="Label for the Settings link that takes the user to the OneDrive account settings.">
+    OneDrive
+  </message>
+  <message name="IDS_SETTINGS_ONE_DRIVE_SIGNED_IN_AS" translateable="false" desc="Label indicating, in the Files Settings subpage, the email address with which the user is currently signed in in OneDrive">
+    Signed in as <ph name="BEGIN_BOLD">&lt;strong&gt;</ph><ph name="DRIVE_ACCOUNT_EMAIL">$1<ex>john@google.com</ex></ph><ph name="END_BOLD">&lt;/strong&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_ONE_DRIVE_DISCONNECTED" translateable="false" desc="Label indicating, in the Files Settings subpage, that the user is currently not signed in in OneDrive">
+    Disconnected
+  </message>
+  <message name="IDS_SETTINGS_ONE_DRIVE_CONNECT" translateable="false" desc="Action to connect OneDrive in Settings: Files: OneDrive.">
+    Connect account
+  </message>
+  <message name="IDS_SETTINGS_ONE_DRIVE_DISCONNECT" translateable="false" desc="Action to disconnect from OneDrive in Settings: Files: OneDrive.">
+    Disconnect
+  </message>
+  <message name="IDS_SETTINGS_OPEN_ONE_DRIVE_FOLDER" translateable="false" desc="Label for the Settings link in the OneDrive subpage to open the OneDrive folder">
+    Open OneDrive folder
+  </message>
   <message name="IDS_SETTINGS_OFFICE_LABEL" translateable="false" desc="Label for the Settings link that takes the user to the Microsoft 365 files settings.">
     Microsoft 365
   </message>
@@ -1087,49 +1105,70 @@
     Turn light screens dark, and dark screens light. Press Search + Ctrl + H to turn color inversion on and off.
   </message>
   <message name="IDS_SETTINGS_COLOR_FILTERING_LABEL" desc="Label for a checkbox which enables color filtering settings.">
-    Color filters
+    Color correction
   </message>
   <message name="IDS_SETTINGS_COLOR_FILTERING_DESCRIPTION" desc="Description for a checkbox which enables color filtering settings.">
-    Adjust how colors appear on your screen
+    Adjust how colors display on your screen
   </message>
-  <message name="IDS_SETTINGS_GREYSCALE_LABEL" desc="Label for slider which controls greyscale UI filter.">
-    Greyscale
-  </message>
-  <message name="IDS_SETTINGS_SEPIA_LABEL" desc="Label for slider which controls sepia UI filter.">
-    Sepia
-  </message>
-  <message name="IDS_SETTINGS_SATURATION_LABEL" desc="Label for slider which controls saturation filter UI.">
-    Saturation
-  </message>
-  <message name="IDS_SETTINGS_HUE_ROTATION_LABEL" desc="Label for slider which controls hue rotation filter UI.">
-    Hue rotation
+  <message name="IDS_SETTINGS_GREYSCALE_LABEL" desc="Label for slider which controls grayscale UI filter.">
+    Grayscale
   </message>
   <message name="IDS_SETTINGS_PROTANOMALY_FILTER" desc="Label for a setting drop-down menu option for a color filter that helps profiles with protanomaly.">
-    Red-green filter (red weak, protanomaly)
+    Red-green, red weak (Protanomaly)
   </message>
   <message name="IDS_SETTINGS_TRITANOMALY_FILTER" desc="Label for a setting drop-down menu option for a color filter that helps profiles with tritanomaly.">
-    Blue-yellow filter (tritanomaly)
+    Blue-yellow (Tritanomaly)
   </message>
   <message name="IDS_SETTINGS_DEUTERANOMALY_FILTER" desc="Label for a setting drop-down menu option for a color filter that helps profiles with deuteranomaly.">
-    Red-green filter (green weak, deuteranomaly)
+    Red-green, green weak (Deuteranomaly)
   </message>
   <message name="IDS_SETTINGS_COLOR_VISION_DEFICIENCY_TYPE_LABEL" desc="Label for a drop-down menu option that provides color vision correction filters">
-    Filter type
+    Filter
   </message>
   <message name="IDS_SETTINGS_COLOR_VISION_FILTER_INTENSITY_LABEL" desc="Label for a slider that allows profiles to control the intensity of the color vision correction filter">
     Intensity
   </message>
   <message name="IDS_SETTINGS_COLOR_FILTER_MINIMUM_LABEL" desc="Label for the side of the color filter slider control that causes the least visual change.">
-    Less
+    0
   </message>
   <message name="IDS_SETTINGS_COLOR_FILTER_MAXIMUM_LABEL" desc="Label for the side of the color filter slider control that causes the most visual change.">
-    More
+    100
+  </message>
+  <message name="IDS_SETTINGS_COLOR_FILTERING_PREVIEW_INSTRUCTIONS" desc="The insructions for users to preview the effects of color filtering by looking at how some color swatches change as the filter settings change">
+    Adjust the color correction settings to make sure colors are distinct
+  </message>
+  <message name="IDS_SETTINGS_COLOR_FILTERING_PREVIEW_COLOR_RED" desc="The label for a swatch of red color which is shown for users to preview the effects of color filtering">
+    Red
+  </message>
+  <message name="IDS_SETTINGS_COLOR_FILTERING_PREVIEW_COLOR_ORANGE" desc="The label for a swatch of orange color which is shown for users to preview the effects of color filtering">
+    Orange
+  </message>
+  <message name="IDS_SETTINGS_COLOR_FILTERING_PREVIEW_COLOR_YELLOW" desc="The label for a swatch of yellow color which is shown for users to preview the effects of color filtering">
+    Yellow
+  </message>
+    <message name="IDS_SETTINGS_COLOR_FILTERING_PREVIEW_COLOR_GREEN" desc="The label for a swatch of green color which is shown for users to preview the effects of color filtering">
+    Green
+  </message>
+    <message name="IDS_SETTINGS_COLOR_FILTERING_PREVIEW_COLOR_CYAN" desc="The label for a swatch of cyan color which is shown for users to preview the effects of color filtering">
+    Cyan
+  </message>
+    <message name="IDS_SETTINGS_COLOR_FILTERING_PREVIEW_COLOR_BLUE" desc="The label for a swatch of blue color which is shown for users to preview the effects of color filtering">
+    Blue
+  </message>
+  <message name="IDS_SETTINGS_COLOR_FILTERING_PREVIEW_COLOR_PURPLE" desc="The label for a swatch of purple color which is shown for users to preview the effects of color filtering">
+    Purple
+  </message>
+  <message name="IDS_SETTINGS_COLOR_FILTERING_PREVIEW_COLOR_GRAY" desc="The label for a swatch of gray color which is shown for users to preview the effects of color filtering">
+    Gray
   </message>
   <message name="IDS_SETTINGS_STICKY_KEYS_LABEL" desc="Label for checkbox which enables sticky keys, with an explanation of the term 'sticky keys'.">
     Sticky keys
   </message>
   <message name="IDS_SETTINGS_STICKY_KEYS_DESCRIPTION" desc="Label for checkbox which enables sticky keys, with an explanation of the term 'sticky keys'.">
     Press one key at a time for keyboard shortcuts instead of holding keys down at the same time
+  </message>
+  <message name="IDS_SETTINGS_STICKY_KEYS_DISABLED_BY_CHROMEVOX_TOOLTIP" desc="Tooltip text which explains that the Sticky keys feature cannot be enabled when ChromeVox is on. Shown next to the disabled Sticky keys toggle when ChromeVox has been enabled.">
+    Sticky keys is not available when ChromeVox is on
   </message>
   <message name="IDS_SETTINGS_CHROMEVOX_LABEL" desc="Label for checkbox which enables ChromeVox, with a description of what ChromeVox is.">
     ChromeVox
@@ -1262,6 +1301,15 @@
   </message>
   <message name="IDS_SETTINGS_CHROMEVOX_BRAILLE_TABLE_8_DOT" desc="In the ChromeVox settings subpage, the label for the braille table type list item for 8-dot braille. A braille table describes how text gets converted from a unicode encoding into a pattern of dots. This varies based on locale and contraction. See http://en.wikipedia.org/wiki/Braille for more.">
     8-dot
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_BRAILLE_TABLE_NAME_WITH_GRADE" desc="In the ChromeVox settings subpage, how to present the name of a braille table to the user. For example, a locale could be 'English (United States)' and a grade could be '2'. Together they would be 'English (United States), Grade 2'. A braille table describes how text gets converted from Unicode text into a pattern of braille dots. This varies based on locale and contraction. See http://en.wikipedia.org/wiki/Braille for a more in-depth discussion.">
+    <ph name="locale">$1</ph>, Grade <ph name="grade">$2</ph>
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_BRAILLE_TABLE_NAME_WITH_VARIANT" desc="In the ChromeVox settings subpage, how to present the name of a braille table to the user. For example, a locale could be 'English' and a variant could be 'UEB' (for 'Unified English Braille'). Together they would be 'English (UEB)'. A braille table describes how text gets converted from Unicode text into a pattern of braille dots. See http://en.wikipedia.org/wiki/Braille for a more in-depth discussion.">
+    <ph name="locale">$1</ph> (<ph name="variant">$2</ph>)
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_BRAILLE_TABLE_NAME_WITH_VARIANT_AND_GRADE" desc="In the ChromeVox settings subpage, how to present the name of a braille table to the user. For example, a locale could be 'English', variant could be 'UEB' (for 'Unified English Braille') and a grade could be '2'. Together they would be 'English (UEB), Grade 2'. A braille table describes how text gets converted from Unicode text into a pattern of braille dots. See http://en.wikipedia.org/wiki/Braille for a more in-depth discussion.">
+    <ph name="locale">$1</ph> (<ph name="variant">$2</ph>), Grade <ph name="grade">$3</ph>
   </message>
   <message name="IDS_SETTINGS_CHROMEVOX_BRAILLE_WORD_WRAP" desc="In the ChromeVox settings subpage, the label for the toggle that enables wrapping of words if a whole line doesn't fit on a braille display. When this option is enabled, an effort is made to keep the characters of words together on the display. Otherwise, as many characters as possible are put on each braille display line, possible splitting words between lines.">
     Enable word wrap
@@ -1531,6 +1579,9 @@ Use Ctrl + Alt + Brightness down to zoom out.
   </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY_FOCUS_HIGHLIGHT_DESCRIPTION_SUBTEXT" desc="In the settings tab, the subtext next to the checkbox to highlight the focused object to make it easier to see.">
     Item is highlighted when you move focus. Press tab or select an item to change focus.
+  </message>
+    <message name="IDS_SETTINGS_FOCUS_HIGHLIGHT_DISABLED_BY_CHROMEVOX_TOOLTIP" desc="Tooltip text which explains that the 'Highlight the item with keyboard focus' feature cannot be enabled when ChromeVox is on. Shown next to the disabled 'Highlight the item with keyboard focus' toggle when ChromeVox has been enabled.">
+    Highlight the item with keyboard focus is not available when ChromeVox is on
   </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_TITLE" desc="In the settings tab, the text next to the checkbox to enable an option to hold a key and click to speak any on-screen text out loud.">
     Select-to-speak
@@ -2535,6 +2586,12 @@ Press an assigned switch or key to remove assignment.
     Loading apps...
   </message>
 
+  <!-- Graphics tablet page (OS settings)-->
+  <!-- TODO(b/286930911): Translate string for peripherals customization launch. -->
+  <message name="IDS_SETTINGS_GRAPHICS_TABLET_TITLE" translateable="false" desc="Title of Graphics tablet settings page">
+    Graphics tablet
+  </message>
+
   <!-- Bluetooth page (OS settings) -->
   <message name="IDS_SETTINGS_BLUETOOTH_CONNECTED" desc="In Bluetooth device list, this label is shown below a device which is already connected.">
     Connected
@@ -2780,6 +2837,12 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_AUDIO_INPUT_DEVICE_TITLE" desc="In Device Settings, the title of the device row under the input section in audio settings subpage.">
     Microphone
   </message>
+  <message name="IDS_SETTINGS_AUDIO_INPUT_ALLOW_AGC_TITLE" desc="In Device Settings, the title of the allowance of AGC toggle under the input section in audio settings subpage." translateable="false">
+    Allow apps to automatically adjust mic volume
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_INPUT_ALLOW_AGC_DESCRIPTION" desc="In Device Settings, the description of the allowance of AGC toggle under the input section in audio settings subpage." translateable="false">
+    Some apps can automatically adjust mic volume(gain control) to optimize(audio).
+  </message>
   <message name="IDS_SETTINGS_AUDIO_INPUT_GAIN_TITLE" desc="In Device Settings, the title of the slider under the input section in audio settings subpage. This slider controls the microphone's gain setting.">
     Volume
   </message>
@@ -2839,6 +2902,18 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_AUDIO_OUTPUT_MUTE_BUTTON_ARIA_LABEL_MUTED" desc="In Device Settings, the aria label for the output mute button muted.">
     Volume is off. Turn on volume.
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_DEVICE_SOUNDS_CHARGING_SOUNDS_LABEL" desc="Label for checkbox which enables charging sounds.">
+    Charging sounds
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_DEVICE_SOUNDS_LOW_BATTERY_SOUND_LABEL" desc="Label for checkbox which enables the low battery sound.">
+    Low battery sound
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_DEVICE_SOUNDS_STARTUP_SOUND_LABEL" desc="Label for checkbox which enables the device startup sound.">
+    Device startup sound
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_DEVICE_SOUNDS_TITLE" desc="In Device Settings, the title of the device sounds section of the audio settings subpage.">
+    Device sounds
   </message>
 
   <!-- Device pointer page (OS settings) -->
@@ -2932,6 +3007,25 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_LEARN_MORE_LABEL" translateable="false" desc="In Device Settings, the learn more label for the cr toggle button.">
     Learn more
   </message>
+  <message name="IDS_SETTINGS_TOUCHPAD_SIMULATE_RIGHT_CLICK_LABEL" translateable="false" desc="In Device Settings, the text next to the dropdown for setting the behavior of simulating a right click using a keyboard and touchpad.">
+    Use touchpad and keyboard to right-click
+  </message>
+  <message name="IDS_SETTINGS_TOUCHPAD_SIMULATE_RIGHT_CLICK_OPTION_OFF" translateable="false" desc="In the touchpad settings subpage, the dropdown list item for the Off option.">
+    Off
+  </message>
+  <message name="IDS_SETTINGS_TOUCHPAD_SIMULATE_RIGHT_CLICK_OPTION_SEARCH" translateable="false" desc="In the touchpad settings subpage, the dropdown list item for the Search + Click option.">
+    search + click
+  </message>
+  <message name="IDS_SETTINGS_TOUCHPAD_SIMULATE_RIGHT_CLICK_OPTION_ALT" translateable="false" desc="In the touchpad settings subpage, the dropdown list item for the Alt + Click option.">
+    alt + click
+  </message>
+  <!-- TODO(b/286937607): Finalize and translate these strings -->
+  <message name="IDS_SETTINGS_MODIFIER_KEYS_LABEL" translateable="false" desc="In the remap keyboard keys settings subpage, the label for the section that contains all of the modifier keys (Ctrl, Alt, etc).">
+    Modifier keys
+  </message>
+  <message name="IDS_SETTINGS_OTHER_KEYS_LABEL" translateable="false" desc="In the remap keyboard keys settings subpage, the label for the section that contains all of the non-modifier keys (Backspace, Home, etc).">
+    Other keys
+  </message>
 
   <!-- Printing Page (OS Settings)-->
   <message name="IDS_SETTINGS_PRINT_AND_SCAN" desc="Title of the printing and scanning page and navigation item to get there.">
@@ -3023,6 +3117,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_SAVED_PRINTERS_COUNT_NONE" desc="In CUPS printing settings subpage, this message will be read aloud to the user to inform them they have no printers previously saved.">
     You have no saved printers.
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_CUPS_NO_SAVED_PRINTERS" desc="In CUPS printing settings subpage, the text shown when a user has no printers saved to their profile.">
+    No saved printers
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_HELP_SECTION_TITLE" desc="In CUPS printing settings subpage, this title helps users when their local printer is not shown on the page." translateable="false">
     Don't see your printers below?
@@ -3689,6 +3786,18 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_NETWORK_SECTION_PASSPOINT_REMOVAL_INFORMATION" desc="Settings &gt; Network &gt; Wi-Fi &gt; Network details: Information on the Passpoint subscription displayed in the network removal dialog.">
     Your Passpoint provider will be removed from this device only. To make changes to your subscription, contact the subscription provider.
   </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_SECTION_PASSPOINT_GO_TO_SUBSCRIPTION_TITLE" desc="Settings &gt; Network &gt; Wi-Fi &gt; Network details: Title of the Passpoint removal dialog that leads the user to the subscription page.">
+    Remove this network in Passpoint subscription page?
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_SECTION_PASSPOINT_GO_TO_SUBSCRIPTION_INFORMATION" desc="Settings &gt; Network &gt; Wi-Fi &gt; Network details: Information displayed in the Passpoint removal dialog that leads the user to the subscription page.">
+    To forget this subscription and its associated networks, go to the Passpoint subscription page to remove the subscription.
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_SECTION_PASSPOINT_GO_TO_SUBSCRIPTION_BUTTON" desc="Settings &gt; Network &gt; Wi-Fi &gt; Network details: Label of the button that leads the user to the subscription page.">
+    Go to subscription
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_SECTION_PASSPOINT_GO_TO_SUBSCRIPTION_BUTTON_A11Y_LABEL" desc="Settings &gt; Network &gt; Wi-Fi &gt; Network details: Accessibility label for the button that leads the user to the subscription page.">
+    Go to subscription page
+  </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_SECTION_PROXY" desc="Settings &gt; Internet &gt; Network details: Proxy section label.">
     Proxy
   </message>
@@ -3865,6 +3974,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_INTERNET_PASSPOINT_SYSTEM_CA" desc="Text displayed when the subscription relies on system CA certificates for server authentication.">
     System CAs
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_PASSPOINT_ASSOCIATED_WIFI_NETWORKS" desc="Label for the list of Wi-Fi networks connected using the Passpoint subscription.">
+    Associated Wi-Fi networks
   </message>
   <message name="IDS_SETTINGS_INTERNET_PASSPOINT_DOMAINS" desc="Label for the list of domains included in the Passpoint subscription.">
     Domains
@@ -4540,6 +4652,12 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_BATTERY_STATUS_SHORT" desc="In Device Settings &gt; Power, the battery status when the time left cannot be shown.">
     <ph name="percentage">$1<ex>56</ex></ph>%
+  </message>
+  <message name="IDS_SETTINGS_POWER_BATTERY_SAVER_LABEL" desc="In Device Settings &gt; Power, label for toggling battery saver mode" translateable="false">
+    Battery Saver
+  </message>
+  <message name="IDS_SETTINGS_POWER_BATTERY_SAVER_SUBTEXT" desc="In Device Settings &gt; Power, description of the behavior of battery saver mode" translateable="false">
+    Enable Energy saver to extend battery life by turning off background functions such as[...]
   </message>
 
   <!-- Reset Page (OS settings)-->

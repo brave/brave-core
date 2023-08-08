@@ -53,6 +53,7 @@ class BraveSidePanel : public views::View,
 
   // views::ResizeAreaDelegate:
   void OnResize(int resize_amount, bool done_resizing) override;
+  void AddHeaderView(std::unique_ptr<views::View> view);
 
   // views::View:
   void ChildVisibilityChanged(View* child) override;

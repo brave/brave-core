@@ -335,12 +335,6 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SHOW_BRAVE_WALLET:
       brave::ShowBraveWallet(&*browser_);
       break;
-    case IDC_ADD_NEW_PROFILE:
-      brave::AddNewProfile();
-      break;
-    case IDC_OPEN_GUEST_PROFILE:
-      brave::OpenGuestProfile();
-      break;
     case IDC_SPEEDREADER_ICON_ONCLICK:
       brave::MaybeDistillAndShowSpeedreaderBubble(&*browser_);
       break;

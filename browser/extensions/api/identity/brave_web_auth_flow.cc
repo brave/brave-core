@@ -41,7 +41,8 @@ void BraveWebAuthFlow::StartWebAuthFlow(
     CompleteFunctionWithResultCallback complete_with_result_callback,
     const std::string& oauth2_client_id,
     ExtensionTokenKey token_key,
-    bool interactive) {
+    bool interactive,
+    bool user_gesture) {
   profile_ = profile;
   complete_with_error_callback_ = std::move(complete_with_error_callback);
   complete_with_result_callback_ = std::move(complete_with_result_callback);
@@ -77,7 +78,7 @@ void BraveWebAuthFlow::StartWebAuthFlow(
   web_auth_flow_ = std::make_unique<WebAuthFlow>(
       this, profile_, google_oauth_url,
       interactive ? WebAuthFlow::INTERACTIVE : WebAuthFlow::SILENT,
-      WebAuthFlow::LAUNCH_WEB_AUTH_FLOW);
+      WebAuthFlow::LAUNCH_WEB_AUTH_FLOW, user_gesture);
   web_auth_flow_->Start();
 }
 

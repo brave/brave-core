@@ -172,7 +172,7 @@
   <message name="IDS_IDC_TAKE_SCREENSHOT">
     Take screenshot
   </message>
-  <message name="IDS_IDC_TRANSLATE_PAGE">
+  <message name="IDS_IDC_SHOW_TRANSLATE">
     Translate page
   </message>
   <message name="IDS_IDC_ROUTE_MEDIA">

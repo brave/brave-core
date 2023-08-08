@@ -1,0 +1,13 @@
+diff --git a/build/rust/cargo_crate.gni b/build/rust/cargo_crate.gni
+index ca7475db78595e5854730d1a68bbdbf2af365df0..2f838a02f399e6f8113d21c82a88b800ea6161a8 100644
+--- a/build/rust/cargo_crate.gni
++++ b/build/rust/cargo_crate.gni
+@@ -190,7 +190,7 @@ template("cargo_crate") {
+                                  "rustenv",
+                                  "dev_deps",
+                                ])
+-    forward_variables_from(invoker, TESTONLY_AND_VISIBILITY)
++    forward_variables_from(invoker, [ "testonly" ])
+ 
+     rustc_metadata = _rustc_metadata
+ 

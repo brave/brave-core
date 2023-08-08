@@ -3,7 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#import <Foundation/Foundation.h>
+
 #import "brave/browser/brave_app_controller_mac.h"
+
+#import <Foundation/Foundation.h>
+#import <objc/runtime.h>
 
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_features.h"
@@ -13,6 +18,16 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
 
+#if !defined(__has_feature) || !__has_feature(objc_arc)
+#error "This file requires ARC support."
+#endif
+
+@interface BraveAppController () {
+  NSMenuItem* _copyMenuItem;
+  NSMenuItem* _copyCleanLinkMenuItem;
+}
+@end
+
 @implementation BraveAppController
 
 - (void)mainMenuCreated {
@@ -21,6 +36,7 @@
   NSMenu* editMenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
   _copyMenuItem = [editMenu itemWithTag:IDC_CONTENT_CONTEXT_COPY];
   DCHECK(_copyMenuItem);
+
   [[_copyMenuItem menu] setDelegate:self];
   _copyCleanLinkMenuItem = [editMenu itemWithTag:IDC_COPY_CLEAN_LINK];
   DCHECK(_copyCleanLinkMenuItem);
@@ -30,7 +46,6 @@
 - (void)dealloc {
   [[_copyMenuItem menu] setDelegate:nil];
   [[_copyCleanLinkMenuItem menu] setDelegate:nil];
-  [super dealloc];
 }
 
 - (Browser*)getBrowser {

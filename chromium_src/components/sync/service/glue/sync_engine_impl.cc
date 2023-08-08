@@ -5,6 +5,8 @@
 
 #include "src/components/sync/service/glue/sync_engine_impl.cc"
 
+#include "base/task/bind_post_task.h"
+
 namespace syncer {
 
 void SyncEngineImpl::PermanentlyDeleteAccount(
@@ -13,7 +15,7 @@ void SyncEngineImpl::PermanentlyDeleteAccount(
   sync_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&SyncEngineBackend::PermanentlyDeleteAccount, backend_,
-                     BindToCurrentSequence(std::move(callback))));
+                     base::BindPostTaskToCurrentDefault(std::move(callback))));
 }
 
 }  // namespace syncer

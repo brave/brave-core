@@ -6,6 +6,7 @@
 #include "chrome/browser/ui/webui/help/version_updater_mac.h"
 
 #include "base/mac/foundation_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/strings/escape.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/strings/utf_string_conversions.h"
@@ -25,7 +26,7 @@
 // updates. It will be created and managed by VersionUpdaterMac.
 @interface KeystoneObserver : NSObject {
  @private
-  VersionUpdaterMac* versionUpdater_;  // Weak.
+  raw_ptr<VersionUpdaterMac> versionUpdater_;  // Weak.
 }
 
 // Initialize an observer with an updater. The updater owns this object.

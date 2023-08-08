@@ -25,7 +25,7 @@
         android:textColor="@color/rewards_panel_text_color"/>
 
       <TextView
-        android:id="@+id/text_view"
+        android:id="@+id/onboarding_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

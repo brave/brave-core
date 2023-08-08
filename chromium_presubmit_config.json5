@@ -59,6 +59,8 @@
     "\\.storybook/",
     "components/brave_wallet/resources/solana_web3_script\\.js",
     "ios/browser/api/ledger/legacy_database/core_data_models/",
+    "third_party/rust/",
+    "tools/crates/",
     "win_build_output/",
   ],
 

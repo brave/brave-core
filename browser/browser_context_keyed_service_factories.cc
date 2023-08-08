@@ -59,6 +59,8 @@
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/components/commands/common/features.h"
 #else
+#include "brave/browser/brave_shields/cookie_list_opt_in_service_factory.h"
+#include "brave/browser/brave_shields/filter_list_service_factory.h"
 #include "brave/browser/ntp_background/android/ntp_background_images_bridge.h"
 #endif
 
@@ -122,6 +124,8 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if !BUILDFLAG(IS_ANDROID)
   BookmarkPrefsServiceFactory::GetInstance();
 #else
+  brave_shields::CookieListOptInServiceFactory::GetInstance();
+  brave_shields::FilterListServiceFactory::GetInstance();
   ntp_background_images::NTPBackgroundImagesBridgeFactory::GetInstance();
 #endif
 

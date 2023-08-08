@@ -238,8 +238,6 @@ void BraveSyncWorker::SetEncryptionPassphrase(syncer::SyncService* service) {
       !sync_user_settings->IsUsingExplicitPassphrase() &&
       !sync_user_settings->IsTrustedVaultKeyRequired()) {
     sync_user_settings->SetEncryptionPassphrase(this->passphrase_);
-    ProfileMetrics::LogProfileSyncInfo(
-        ProfileMetrics::SYNC_CREATED_NEW_PASSPHRASE);
   }
 }
 
@@ -250,10 +248,11 @@ void BraveSyncWorker::SetDecryptionPassphrase(syncer::SyncService* service) {
   syncer::SyncUserSettings* sync_user_settings = service->GetUserSettings();
   DCHECK(sync_user_settings->IsPassphraseRequired());
 
-  if (sync_user_settings->SetDecryptionPassphrase(this->passphrase_)) {
-    ProfileMetrics::LogProfileSyncInfo(
-        ProfileMetrics::SYNC_ENTERED_EXISTING_PASSPHRASE);
-  }
+  bool set_decryption_result =
+      sync_user_settings->SetDecryptionPassphrase(this->passphrase_);
+  DCHECK(set_decryption_result);
+  VLOG_IF(3, !set_decryption_result)
+      << "[BraveSync] " << __func__ << " SetDecryptionPassphrase failed";
 }
 
 void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {

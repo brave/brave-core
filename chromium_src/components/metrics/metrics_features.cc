@@ -11,7 +11,6 @@ namespace metrics::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kStructuredMetrics, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kSubprocessMetricsProviderLeaky, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace metrics::features

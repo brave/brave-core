@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 6f3722cd64029848c1737ced63889cf7cb41c5aa..be7f48b3d844db1eef8419ee31635a5372dbac0b 100644
+index 6f3722cd64029848c1737ced63889cf7cb41c5aa..b6cc02b81f52a5b27c04cd8b5fa7fdd0a9c8e0c6 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -58,15 +58,7 @@ index 6f3722cd64029848c1737ced63889cf7cb41c5aa..be7f48b3d844db1eef8419ee31635a53
  
      {% block extra_uses_permissions %}
      {% endblock %}
-@@ -181,6 +194,7 @@ by a child template that "extends" this file.
-     <!-- Set android:largeHeap to "true" to allow more than the default
-          Java heap limit (32Mb on Nexus S, 48Mb on Xoom). -->
-       <application android:name="{% block application_name %}org.chromium.chrome.browser.base.SplitChromeApplication{% endblock %}"
-+        android:requestLegacyExternalStorage="true"
-         android:icon="@drawable/ic_launcher"
-         android:roundIcon="@drawable/ic_launcher_round"
-         android:label="{% block application_label %}@string/app_name{% endblock %}"
-@@ -349,6 +363,7 @@ by a child template that "extends" this file.
+@@ -349,6 +362,7 @@ by a child template that "extends" this file.
              <intent-filter>
                  <action android:name="com.sec.android.airview.HOVER" />
              </intent-filter>
@@ -74,7 +66,7 @@ index 6f3722cd64029848c1737ced63889cf7cb41c5aa..be7f48b3d844db1eef8419ee31635a53
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -1202,6 +1217,7 @@ by a child template that "extends" this file.
+@@ -1202,6 +1216,7 @@ by a child template that "extends" this file.
          <property android:name="android.adservices.AD_SERVICES_CONFIG"
              android:resource="@xml/ad_services_config" />
  

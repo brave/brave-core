@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<rss version="0.91">
+    <channel>
+        <title>WriteTheWeb</title>
+        <link>http://writetheweb.com</link>
+        <description>News for web users that write back</description>
+        <language>en-us</language>
+        <copyright>Copyright 2000, WriteTheWeb team.</copyright>
+        <managingEditor>editor@writetheweb.com</managingEditor>
+        <webMaster>webmaster@writetheweb.com</webMaster>
+        <image>
+            <title>WriteTheWeb</title>
+            <url>http://writetheweb.com/images/mynetscape88.gif</url>
+            <link>http://writetheweb.com</link>
+            <width>88</width>
+            <height>31</height>
+            <description>News for web users that write back</description>
+        </image>
+        <item>
+            <title>Giving the world a pluggable Gnutella</title>
+            <link>http://writetheweb.com/read.php?item=24</link>
+            <description>WorldOS is a framework on which to build programs that work like Freenet or Gnutella -allowing
+                distributed applications using peer-to-peer routing.
+            </description>
+        </item>
+        <item>
+            <title>Syndication discussions hot up</title>
+            <link>http://writetheweb.com/read.php?item=23</link>
+            <description>After a period of dormancy, the Syndication mailing list has become active again, with
+                contributions from leaders in traditional media and Web syndication.
+            </description>
+        </item>
+    </channel>
+</rss>

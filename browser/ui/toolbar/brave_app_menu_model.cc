@@ -49,8 +49,7 @@ class SidebarMenuModel : public ui::SimpleMenuModel,
                          public ui::SimpleMenuModel::Delegate {
  public:
   explicit SidebarMenuModel(Browser* browser)
-      : SimpleMenuModel(nullptr), browser_(browser) {
-    set_delegate(this);
+      : SimpleMenuModel(this), browser_(browser) {
     Build(browser_);
   }
 

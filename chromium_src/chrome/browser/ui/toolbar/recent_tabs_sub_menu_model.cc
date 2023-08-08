@@ -55,9 +55,7 @@ void BraveRecentTabsSubMenuModel::ExecuteCommand(int command_id,
     DCHECK(item.tab_id.is_valid() && item.url.is_valid());
 
     if (item.session_tag == kBraveStubSessionTag) {
-      NavigateParams params(
-          GetSingletonTabNavigateParams(browser_, GURL(kBraveSyncedTabsUrl)));
-      ShowSingletonTabOverwritingNTP(browser_, &params);
+      ShowSingletonTabOverwritingNTP(browser_, GURL(kBraveSyncedTabsUrl));
       return;
     }
   }

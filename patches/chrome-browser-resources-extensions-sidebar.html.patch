@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/extensions/sidebar.html b/chrome/browser/resources/extensions/sidebar.html
-index 6b42a470b48dd52d4103076e6cd8b1a0677063ea..a34f43c50bb52776e1a108a187c849f08f8456cc 100644
+index 2c382510c9613dac74e0b137989533967ed1e8e8..805339dd6f617233f7c49f7fa939bf2bb4c7f28f 100644
 --- a/chrome/browser/resources/extensions/sidebar.html
 +++ b/chrome/browser/resources/extensions/sidebar.html
 @@ -77,6 +77,7 @@

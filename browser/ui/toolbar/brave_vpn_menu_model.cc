@@ -15,8 +15,7 @@
 #include "components/prefs/pref_service.h"
 
 BraveVPNMenuModel::BraveVPNMenuModel(Browser* browser)
-    : SimpleMenuModel(nullptr), browser_(browser) {
-  set_delegate(this);
+    : SimpleMenuModel(this), browser_(browser) {
   Build();
 }
 

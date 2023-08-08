@@ -1,12 +1,6 @@
 use_relative_paths = True
 
-gclient_gn_args_file = 'build/config/gclient_args.gni'
-gclient_gn_args = [
-  'brave_rust_version'
-]
-
 vars = {
-  'brave_rust_version': Str('1.69.0'),
   'download_prebuilt_sparkle': True,
 }
 
@@ -41,7 +35,12 @@ deps = {
       'dep_type': 'cipd',
   },
   "third_party/playlist_component/src": "https://github.com/brave/playlist-component.git@5434730bf7342f1ba5c057f1640882bb38604a85",
-  "third_party/constellation/crate": "https://github.com/brave/constellation.git@b6b8396abd98cc87a187e051c32a291c9faa43f7",
+  "third_party/rust/star_constellation/v0_2/crate": "https://github.com/brave/constellation.git@b6b8396abd98cc87a187e051c32a291c9faa43f7",
+  "third_party/rust/challenge_bypass_ristretto/v1/crate": "https://github.com/brave-intl/challenge-bypass-ristretto.git@a1da4641734adc8312215b38a8221962d2c8e045",
+  "third_party/rust/futures_retry/v0_5/crate": "https://github.com/brave-intl/futures-retry.git@2aaaafbc3d394661534d4dbd14159d164243c20e",
+  "third_party/rust/kuchiki/v0_8/crate": "https://github.com/brave/kuchiki.git@589eadca2c1d06ddda2919354590bfe1ace88a43",
+  "third_party/rust/adblock/v0_7/crate": "https://github.com/brave/adblock-rust.git@ed216e5302bce5baf9731d1efc919408f614499a",
+
 }
 
 recursedeps = [
@@ -80,19 +79,6 @@ hooks = [
     'action': ['vpython3', 'build/win/download_brave_vpn_wireguard_binaries.py', 'v0.5.3', 'brave-vpn-wireguard-tunnel-dlls'],
   },
   {
-    'name': 'download_rust_deps',
-    'pattern': '.',
-    'action': [
-      'vpython3', 'script/download_rust_deps.py',
-      '--rust_version={brave_rust_version}',
-      '--checkout_android={checkout_android}',
-      '--checkout_ios={checkout_ios}',
-      '--checkout_linux={checkout_linux}',
-      '--checkout_mac={checkout_mac}',
-      '--checkout_win={checkout_win}',
-    ]
-  },
-  {
     # Install Web Discovery Project dependencies for Windows, Linux, and macOS
     'name': 'web_discovery_project_npm_deps',
     'pattern': '.',
@@ -116,7 +102,7 @@ hooks = [
 ]
 
 include_rules = [
-  # Everybody can use some things.
+  #Everybody can use some things.
   "+brave_base",
   "+crypto",
   "+net",

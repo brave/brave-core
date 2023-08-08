@@ -1,0 +1,33 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "lock_api"
+  epoch = "0.4"
+  crate_type = "rlib"
+
+  # Only for usage from third-party crates. Add the crate to
+  # third_party.toml to use it from first-party code.
+  visibility = [ "//brave/third_party/rust/*" ]
+  crate_root = "crate/src/lib.rs"
+
+  # Unit tests skipped. Generate with --with-tests to include them.
+  build_native_rust_unit_tests = false
+  sources = [ "crate/src/lib.rs" ]
+  edition = "2018"
+  cargo_pkg_version = "0.4.9"
+  cargo_pkg_authors = "Amanieu d'Antras <amanieu@gmail.com>"
+  cargo_pkg_name = "lock_api"
+  cargo_pkg_description = "Wrappers to create fully-featured Mutex and RwLock types. Compatible with no_std."
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [ "//brave/third_party/rust/scopeguard/v1:lib" ]
+  build_deps = [ "//third_party/rust/autocfg/v1:buildrs_support" ]
+  build_root = "crate/build.rs"
+  build_sources = [ "crate/build.rs" ]
+}

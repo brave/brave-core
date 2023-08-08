@@ -115,6 +115,7 @@ class NavigationDelegate : public web::NavigationManagerDelegate {
 
   void RemoveWebView() override;
   web::NavigationItemImpl* GetPendingItem() override;
+  GURL GetCurrentURL() const override;
 
  private:
   web::WebState* web_state_;
@@ -179,6 +180,10 @@ void NavigationDelegate::GoToBackForwardListItem(
 
 void NavigationDelegate::RemoveWebView() {
   // Not needed on iOS
+}
+
+GURL NavigationDelegate::GetCurrentURL() const {
+  return GURL();
 }
 
 #pragma mark NativeWebState
