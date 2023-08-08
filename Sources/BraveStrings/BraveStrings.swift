@@ -2883,6 +2883,11 @@ extension Strings {
       NSLocalizedString("vpn.contactFormIssue", tableName: "BraveShared", bundle: .module,
         value: "Issue",
         comment: "Specific issue field for customer support contact form.")
+    
+    public static let contactFormIssueDescription =
+      NSLocalizedString("vpn.contactFormIssueDescription", tableName: "BraveShared", bundle: .module,
+        value: "Please choose the cetagory that describes the issue.",
+        comment: "Description used for specific issue field for customer support contact form.")
 
     public static let contactFormFooterSharedWithGuardian =
       NSLocalizedString("vpn.contactFormFooterSharedWithGuardian", tableName: "BraveShared", bundle: .module,

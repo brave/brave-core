@@ -207,59 +207,29 @@ class BraveVPNContactFormViewController: TableViewController {
               }
             })), cellClass: MultilineSubtitleCell.self)
 
-    var section = Section(rows: [
+    let section = Section(rows: [
       hostnameRow, tunnelProtocolRow, subscriptionTypeRow, receiptRow,
       appVersionRow, timezoneRow, networkTypeRow, carrierRow, errorLogs
     ])
-
-    // MARK: Issue
-    var issueRow =
-      Row(
-        text: Strings.VPN.contactFormIssue, detailText: IssueType.other.displayString,
-        accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
-
-    let optionChanged = {
-      [weak self]
-      (vc: OptionSelectionViewController<IssueType>, option: IssueType) -> Void in
-      self?.dataSource.reloadCell(row: issueRow, section: section, displayText: option.displayString)
-      self?.contactForm.issue = option.displayString ?? IssueType.other.displayString
-    }
-
-    issueRow.selection = { [weak self] in
-      let optionsVC =
-        OptionSelectionViewController<IssueType>(
-          options: IssueType.allCases,
-          optionChanged: optionChanged)
-
-      self?.navigationController?.pushViewController(optionsVC, animated: true)
-    }
-
-    section.rows.append(issueRow)
 
     let sendButton = Row(
       text: Strings.VPN.contactFormSendButton,
       selection: { [weak self] in
         guard let self = self else { return }
-        if !MFMailComposeViewController.canSendMail() {
-          Logger.module.error("Can't send email on this device")
-          let alert = UIAlertController(
-            title: Strings.genericErrorTitle,
-            message: Strings.VPN.contactFormEmailNotConfiguredBody,
-            preferredStyle: .alert)
-          let okAction = UIAlertAction(title: Strings.OKString, style: .default)
-          alert.addAction(okAction)
-          self.present(alert, animated: true)
-          return
-        }
+          let optionChanged = { [weak self] (vc: OptionSelectionViewController<IssueType>, option: IssueType) -> Void in
+            self?.contactForm.issue = option.displayString
+            self?.createEmailOutline()
+          }
+        
+          let optionsVC =
+            OptionSelectionViewController<IssueType>(
+              headerText: Strings.VPN.contactFormIssue,
+              footerText: Strings.VPN.contactFormIssueDescription,
+              options: IssueType.allCases,
+              optionChanged: optionChanged)
 
-        let mail = MFMailComposeViewController().then {
-          $0.mailComposeDelegate = self
-          $0.setToRecipients([self.supportEmail])
-        }
-
-        mail.setSubject(Strings.VPN.contactFormTitle)
-        mail.setMessageBody(self.composeEmailBody(with: self.contactForm), isHTML: false)
-        self.present(mail, animated: true)
+          self.navigationController?.pushViewController(optionsVC, animated: true)
+  
       }, cellClass: CenteredButtonCell.self)
 
     let footerText =
@@ -267,6 +237,34 @@ class BraveVPNContactFormViewController: TableViewController {
     let buttonSection = Section(rows: [sendButton], footer: .title(footerText))
 
     dataSource.sections = [section, buttonSection]
+  }
+  
+  private func createEmailOutline() {
+    if !MFMailComposeViewController.canSendMail() {
+      Logger.module.error("Can't send email on this device")
+      let alert = UIAlertController(
+        title: Strings.genericErrorTitle,
+        message: Strings.VPN.contactFormEmailNotConfiguredBody,
+        preferredStyle: .alert)
+      let okAction = UIAlertAction(title: Strings.OKString, style: .default)
+      alert.addAction(okAction)
+      present(alert, animated: true)
+      return
+    }
+
+    let mail = MFMailComposeViewController().then {
+      $0.mailComposeDelegate = self
+      $0.setToRecipients([self.supportEmail])
+    }
+
+    var formTitle = Strings.VPN.contactFormTitle
+    if let issue = contactForm.issue {
+      formTitle += " + \(issue)"
+    }
+    
+    mail.setSubject(formTitle)
+    mail.setMessageBody(self.composeEmailBody(with: self.contactForm), isHTML: false)
+    present(mail, animated: true)
   }
 
   private var getNetworkType: String {
@@ -291,10 +289,18 @@ class BraveVPNContactFormViewController: TableViewController {
   }
 
   private func composeEmailBody(with contactForm: ContactForm) -> String {
-    var body = "\n\n"
+    var body = "\n"
 
     body.append(contentsOf: "#### \(Strings.VPN.contactFormDoNotEditText) ####\n\n")
 
+    body.append(Strings.VPN.contactFormPlatform)
+    body.append("\n\(UIDevice.current.systemName)\n\n")
+
+    if let issue = contactForm.issue {
+      body.append(Strings.VPN.contactFormIssue)
+      body.append("\n\(issue)\n\n")
+    }
+    
     if let hostname = contactForm.hostname {
       body.append(Strings.VPN.contactFormHostname)
       body.append("\n\(hostname)\n\n")
@@ -314,10 +320,7 @@ class BraveVPNContactFormViewController: TableViewController {
       body.append(Strings.VPN.contactFormAppVersion)
       body.append("\n\(appVersion)\n\n")
     }
-      
-    body.append(Strings.VPN.contactFormPlatform)
-    body.append("\n\(UIDevice.current.systemName)\n\n")
-
+    
     if let timezone = contactForm.timezone {
       body.append(Strings.VPN.contactFormTimezone)
       body.append("\n\(timezone)\n\n")
@@ -344,11 +347,6 @@ class BraveVPNContactFormViewController: TableViewController {
       }
 
       body.append("\n")
-    }
-
-    if let issue = contactForm.issue {
-      body.append(Strings.VPN.contactFormIssue)
-      body.append("\n\(issue)\n\n")
     }
 
     if let receipt = contactForm.receipt {
