@@ -100,7 +100,7 @@ const char ramp_token_lists_json[] = R"({
       "symbol": "ETH",
       "token_id": "",
       "visible": true,
-      "on_ramp_providers": ["ramp", "sardine", "transak", "stripe"],
+      "on_ramp_providers": ["ramp", "sardine", "transak", "stripe", "coinbase"],
       "off_ramp_providers": ["ramp"]
     },
     {
@@ -691,6 +691,18 @@ TEST(BlockchainRegistryUnitTest, GetBuyTokens) {
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_NE(token_list.size(), 0UL);
             EXPECT_EQ(token_list[0]->name, "Polygon");
+            run_loop->Quit();
+          }));
+  run_loop->Run();
+
+  // Coinbase
+  run_loop = std::make_unique<base::RunLoop>();
+  registry->GetBuyTokens(
+      mojom::OnRampProvider::kCoinbase, mojom::kMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_NE(token_list.size(), 0UL);
+            EXPECT_EQ(token_list[0]->name, "Ethereum");
             run_loop->Quit();
           }));
   run_loop->Run();
