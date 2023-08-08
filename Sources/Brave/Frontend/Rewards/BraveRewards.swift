@@ -132,6 +132,7 @@ public class BraveRewards: NSObject {
         }
         self.reportLastAdsUsageP3A()
         if !newValue {
+          self.ads.isEnabled = newValue
           self.proposeAdsShutdown()
         } else {
           self.fetchWalletAndInitializeAds(toggleAds: true)
