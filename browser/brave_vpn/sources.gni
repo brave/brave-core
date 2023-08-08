@@ -34,6 +34,7 @@ if (enable_brave_vpn) {
       "//brave/components/brave_vpn/common/win",
       "//brave/components/brave_vpn/common/wireguard/win",
       "//chrome/common:constants",
+      "//components/prefs",
       "//net",
       "//third_party/abseil-cpp:absl",
     ]

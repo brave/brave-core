@@ -15,7 +15,6 @@
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
-#include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -64,8 +63,7 @@ BraveVpnServiceFactory::BraveVpnServiceFactory()
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(skus::SkusServiceFactory::GetInstance());
 #if BUILDFLAG(IS_WIN)
-  if (base::FeatureList::IsEnabled(
-          brave_vpn::features::kBraveVPNUseWireguardService)) {
+  if (brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
     DependsOn(brave_vpn::BraveVpnWireguardObserverFactory::GetInstance());
   } else {
     DependsOn(brave_vpn::BraveVpnDnsObserverFactory::GetInstance());
@@ -104,8 +102,7 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
       shared_url_loader_factory, local_state,
       user_prefs::UserPrefs::Get(context), callback);
 #if BUILDFLAG(IS_WIN)
-  if (base::FeatureList::IsEnabled(
-          brave_vpn::features::kBraveVPNUseWireguardService)) {
+  if (brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
     auto* observer_service =
         brave_vpn::BraveVpnWireguardObserverFactory::GetInstance()
             ->GetServiceForContext(context);
