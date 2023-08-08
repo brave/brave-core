@@ -1006,7 +1006,7 @@ public class BraveRewardsPanel
                     }));
         } else {
             DecimalFormat df = new DecimalFormat("#.###");
-            df.setRoundingMode(RoundingMode.FLOOR);
+            df.setRoundingMode(RoundingMode.CEILING);
             df.setMinimumFractionDigits(3);
             TextView estimatedRange = mPopupView.findViewById(R.id.estimated_range);
             String minValue = df.format(minEarningsThisMonth);
@@ -1052,7 +1052,7 @@ public class BraveRewardsPanel
                     }
 
                     DecimalFormat df = new DecimalFormat("#.###");
-                    df.setRoundingMode(RoundingMode.FLOOR);
+                    df.setRoundingMode(RoundingMode.CEILING);
                     df.setMinimumFractionDigits(3);
                     TextView batBalanceText = mPopupView.findViewById(R.id.bat_balance_text);
                     batBalanceText.setText(df.format(walletBalance));
