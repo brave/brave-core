@@ -102,10 +102,6 @@ void DisableWidevineCdm() {
     return;
 
   SetWidevineOptedIn(false);
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
-  g_browser_process->component_updater()->UnregisterComponent(
-      kWidevineComponentId);
-#endif
 }
 
 int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart) {

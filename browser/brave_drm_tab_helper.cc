@@ -28,10 +28,11 @@
 using component_updater::ComponentUpdateService;
 
 namespace {
+#if !BUILDFLAG(IS_ANDROID)
 bool IsAlreadyRegistered(ComponentUpdateService* cus) {
   return base::Contains(cus->GetComponentIDs(), kWidevineComponentId);
 }
-#if !BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_ANDROID)
+#if !BUILDFLAG(IS_LINUX)
 content::WebContents* GetActiveWebContents() {
   if (Browser* browser = chrome::FindLastActive())
     return browser->tab_strip_model()->GetActiveWebContents();
@@ -43,17 +44,19 @@ void ReloadIfActive(content::WebContents* web_contents) {
     web_contents->GetController().Reload(content::ReloadType::NORMAL, false);
 }
 #endif
-
+#endif
 }  // namespace
 
 BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)
     : WebContentsObserver(contents),
       content::WebContentsUserData<BraveDrmTabHelper>(*contents),
       brave_drm_receivers_(contents, this) {
+#if !BUILDFLAG(IS_ANDROID)
   auto* updater = g_browser_process->component_updater();
   // We don't need to observe if widevine is already registered.
   if (!IsAlreadyRegistered(updater))
     observer_.Observe(updater);
+#endif
 }
 
 BraveDrmTabHelper::~BraveDrmTabHelper() = default;
