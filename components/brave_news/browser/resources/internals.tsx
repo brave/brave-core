@@ -6,19 +6,10 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 
-import Dropdown from '@brave/leo/react/dropdown'
 import styled from 'styled-components'
-import FeedPage from './FeedPage'
-import SignalsPage from './SignalsPage'
 import InspectContext from './context'
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: var(--leo-spacing-8);
-  max-width: 800px;
-  margin: 0 auto;
-`
+import PageInfo from './PageInfo'
+import CurrentPage from './CurrentPage'
 
 const Grid = styled.div`
   display: grid;
@@ -27,23 +18,14 @@ const Grid = styled.div`
   gap: 8px;
 `
 
-const pages = ['feed', 'signals'] as const;
-type Pages = (typeof pages)[number]
 
 function App() {
-  const [page, setPage] = React.useState<Pages>('signals')
-
   return (
     <InspectContext>
       <Grid>
-        <Dropdown value={page} onChange={e => setPage(e.detail.value)}>
-          <span slot="label">Page</span>
-          {pages.map(p => <leo-option key={p}>{p}</leo-option>)}
-        </Dropdown>
-        <Container>
-          {page === 'feed' && <FeedPage />}
-          {page === 'signals' && <SignalsPage />}
-        </Container>
+        <PageInfo />
+        <CurrentPage />
+        <div />
       </Grid>
     </InspectContext>
   )
