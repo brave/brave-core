@@ -75,4 +75,8 @@ public class NetworkUtils {
         if (networkInfos.isEmpty() || TextUtils.isEmpty(chainId)) return null;
         return JavaUtils.find(networkInfos, networkInfo -> networkInfo.chainId.equals(chainId));
     }
+
+    public static boolean isTestNetwork(String chainId) {
+        return WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(chainId);
+    }
 }

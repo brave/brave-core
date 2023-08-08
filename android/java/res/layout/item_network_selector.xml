@@ -42,12 +42,11 @@
 
         <ImageView
             android:id="@+id/iv_item_network_picture"
-            android:layout_width="14dp"
+            android:layout_width="26dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:contentDescription="@null"
-            android:paddingVertical="4dp"
-            app:srcCompat="@drawable/ic_eth_24" />
+            android:paddingVertical="4dp" />
 
         <TextView
             android:id="@+id/tv_item_network_name"
@@ -61,22 +60,5 @@
             android:textColor="@color/wallet_text_color"
             android:textSize="16sp"
             tools:text="Demo"/>
-
-        <ImageView
-            android:id="@+id/iv_item_network_selector_sublist_icon"
-            android:layout_width="24dp"
-            android:layout_height="match_parent"
-            android:contentDescription="@null"
-            android:padding="6dp"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_down_icon"
-            app:tint="@color/brave_blue_tint_color" />
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/iv_item_sublist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 </LinearLayout>
