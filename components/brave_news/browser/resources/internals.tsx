@@ -9,6 +9,8 @@ import { render } from 'react-dom'
 import styled from 'styled-components'
 import InspectContext, { useInspectContext } from './context'
 import PageInfo from './PageInfo'
+import FeedPage from './FeedPage'
+import SignalsPage from './SignalsPage'
 
 const Grid = styled.div`
   display: grid;
@@ -26,7 +28,7 @@ const Container = styled.div`
 `
 
 function App() {
-  const { page } = useInspectContext()
+  const { page, publishers, channels } = useInspectContext()
 
   return (
     <Grid>
@@ -35,7 +37,11 @@ function App() {
         {page === 'feed' && <FeedPage />}
         {page === 'signals' && <SignalsPage />}
       </Container>
-      <div />
+      <div>
+        Publishers: {Object.keys(publishers).length}
+        <br />
+        Channels: {Object.keys(channels).length}
+      </div>
     </Grid>
   )
 }
