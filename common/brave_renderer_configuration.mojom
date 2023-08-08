@@ -17,6 +17,8 @@ struct DynamicParams {
 
 // Configures the renderer.
 interface BraveRendererConfiguration {
+  // Configures the renderer with settings that won't change.
+  SetInitialConfiguration(bool is_tor_process);
   // Update renderer configuration with settings that can change.
   SetConfiguration(DynamicParams params);
 };

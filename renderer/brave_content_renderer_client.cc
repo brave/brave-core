@@ -18,6 +18,7 @@
 #include "brave/components/skus/renderer/skus_render_frame_observer.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/renderer/brave_render_thread_observer.h"
+#include "brave/renderer/brave_url_loader_throttle_provider_impl.h"
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/renderer/chrome_render_thread_observer.h"
@@ -186,4 +187,21 @@ void BraveContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
           script_url);
   ChromeContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
       v8_context, service_worker_version_id, service_worker_scope, script_url);
+}
+
+std::unique_ptr<blink::URLLoaderThrottleProvider>
+BraveContentRendererClient::CreateURLLoaderThrottleProvider(
+    blink::URLLoaderThrottleProviderType provider_type) {
+  // BraveRenderThreadObserver::SetInitialConfiguration hasn't been called
+  // when we are about to create throttle so we pass readcallback in
+  // so throttles can get correct config when needed. Also
+  // BraveContentRendererClient will outlive ThrottleProvider
+  return std::make_unique<BraveURLLoaderThrottleProviderImpl>(
+      browser_interface_broker_.get(), provider_type, this,
+      base::BindRepeating(&BraveContentRendererClient::ReadIsTor,
+                          base::Unretained(this)));
+}
+
+bool BraveContentRendererClient::ReadIsTor() const {
+  return brave_observer_->is_tor_process();
 }
