@@ -256,5 +256,6 @@ export const mockWalletState: WalletState = {
   filteredOutPortfolioAccountAddresses: [],
   hidePortfolioSmallBalances: false,
   selectedGroupAssetsByItem: AccountsGroupByOption.id,
-  showNetworkLogoOnNfts: false
+  showNetworkLogoOnNfts: false,
+  isRefreshingNetworksAndTokens: false
 }
