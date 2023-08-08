@@ -3,12 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import * as React from 'react'
+import { useSelector } from 'react-redux'
+
 import {
   Playlist,
   PlaylistItem
 } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
-import { useSelector } from 'react-redux'
+import { getItemDurationInSeconds } from '../utils/timeFormatter'
 
 // For security reason, we're embedding player to an <iframe>. And these two
 // states are mutually exclusive.
@@ -36,3 +39,13 @@ export const usePlaylist = (id?: string) =>
   useSelector<ApplicationState, Playlist | undefined>(applicationState =>
     applicationState.playlistData?.lists.find(e => e.id === id)
   )
+
+export const useTotalDuration = (playlist?: Playlist) => {
+  return React.useMemo(() => {
+    // TODO(sko) Duration value could be missing. Only Youtube could work.
+    //  * We need to update duration when Playlist player plays a video
+    return playlist?.items?.reduce((sum, item) => {
+      return sum + getItemDurationInSeconds(item)
+    }, 0)
+  }, [playlist])
+}

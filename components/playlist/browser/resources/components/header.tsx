@@ -13,7 +13,7 @@ import { color, font, spacing } from '@brave/leo/tokens/css'
 import Button from '@brave/leo/react/button'
 
 import PlaylistInfo from './playlistInfo'
-import { usePlaylist } from '../reducers/states'
+import { usePlaylist, useTotalDuration } from '../reducers/states'
 import ContextualMenuAnchorButton from './contextualMenu'
 import { getPlaylistAPI } from '../api/api'
 
@@ -88,8 +88,7 @@ export default function Header ({ playlistId }: HeaderProps) {
   const playlist = usePlaylist(playlistId)
 
   const contextualMenuItems = playlist
-    ? []
-    : [
+    ? [
         {
           name: 'Edit',
           iconName: 'list-bullet-default',
@@ -107,6 +106,7 @@ export default function Header ({ playlistId }: HeaderProps) {
           onClick: () => {}
         }
       ]
+    : []
 
   const isDefaultPlaylist = playlist?.id === 'default'
   if (contextualMenuItems && !isDefaultPlaylist) {
@@ -124,6 +124,8 @@ export default function Header ({ playlistId }: HeaderProps) {
     })
   }
 
+  const totalDuration = useTotalDuration(playlist)
+
   return (
     <HeaderContainer>
       {playlist ? (
@@ -135,7 +137,7 @@ export default function Header ({ playlistId }: HeaderProps) {
             isDefaultPlaylist={isDefaultPlaylist}
             itemCount={playlist.items.length}
             playlistName={playlist.name}
-            totalDuration={0}
+            totalDuration={totalDuration}
             nameColor={color.text.primary}
             detailColor={color.text.secondary}
           />
