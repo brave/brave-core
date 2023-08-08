@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom'
 
 import Icon from '@brave/leo/react/icon'
 import { color, font, spacing } from '@brave/leo/tokens/css'
+import Button from '@brave/leo/react/button'
 
 import PlaylistInfo from './playlistInfo'
 import { usePlaylist } from '../reducers/states'
@@ -62,51 +63,50 @@ const StyledPlaylistInfo = styled(PlaylistInfo)`
   flex-grow: 1;
 `
 
-const LeoButtonContainer = styled.button`
-  display: contents;
-`
-
 function NewPlaylistButton () {
   return (
-    <LeoButtonContainer
+    <Button
+      kind='plain-faint'
       onClick={() => {
         getPlaylistAPI().showCreatePlaylistUI()
       }}
     >
       <ColoredIcon name='plus-add' color={color.icon.default} />
-    </LeoButtonContainer>
+    </Button>
   )
 }
 
 function SettingButton () {
   return (
-    <LeoButtonContainer onClick={() => {}}>
+    <Button kind='plain-faint' onClick={() => {}}>
       <ColoredIcon name='settings' color={color.icon.default} />
-    </LeoButtonContainer>
+    </Button>
   )
 }
 
 export default function Header ({ playlistId }: HeaderProps) {
   const playlist = usePlaylist(playlistId)
 
-  const contextualMenuItems = playlist && [
-    {
-      name: 'Edit',
-      iconName: 'list-bullet-default',
-      onClick: () => {}
-    },
-    { name: 'Share', iconName: 'share-macos', onClick: () => {} },
-    {
-      name: 'Keep for offline playing',
-      iconName: 'cloud-download',
-      onClick: () => {}
-    },
-    {
-      name: 'Remove played contents',
-      iconName: 'list-checks',
-      onClick: () => {}
-    }
-  ]
+  const contextualMenuItems = playlist
+    ? []
+    : [
+        {
+          name: 'Edit',
+          iconName: 'list-bullet-default',
+          onClick: () => {}
+        },
+        { name: 'Share', iconName: 'share-macos', onClick: () => {} },
+        {
+          name: 'Keep for offline playing',
+          iconName: 'cloud-download',
+          onClick: () => {}
+        },
+        {
+          name: 'Remove played contents',
+          iconName: 'list-checks',
+          onClick: () => {}
+        }
+      ]
 
   const isDefaultPlaylist = playlist?.id === 'default'
   if (contextualMenuItems && !isDefaultPlaylist) {
@@ -139,9 +139,7 @@ export default function Header ({ playlistId }: HeaderProps) {
             nameColor={color.text.primary}
             detailColor={color.text.secondary}
           />
-          {contextualMenuItems && (
-            <ContextualMenuAnchorButton items={contextualMenuItems} />
-          )}
+          <ContextualMenuAnchorButton items={contextualMenuItems} />
         </>
       ) : (
         <>
