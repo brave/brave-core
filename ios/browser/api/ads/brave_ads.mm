@@ -170,6 +170,12 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       [self migratePrefs];
     }
 
+    // TODO(https://github.com/brave/brave-browser/issues/32112): Remove the
+    // code that permanently enables Brave Today preferences when the issue is
+    // resolved.
+    self.prefs[kBraveNewsOptedInPrefKey] = @(true);
+    self.prefs[kNewTabPageShowTodayPrefKey] = @(true);
+
     [self setupNetworkMonitoring];
 
     if (self.adsResourceMetadata == nil) {
@@ -249,7 +255,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)initializeWithSysInfo:(BraveAdsSysInfo*)sysInfo
              buildChannelInfo:(BraveAdsBuildChannelInfo*)buildChannelInfo
-                   walletInfo:(BraveAdsWalletInfo*)walletInfo
+                   walletInfo:(nullable BraveAdsWalletInfo*)walletInfo
                    completion:(void (^)(bool))completion {
   if ([self isAdsServiceRunning]) {
     completion(false);
@@ -267,7 +273,11 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                                  : brave_ads::mojom::BuildChannelInfo::New();
   ads->SetBuildChannel(std::move(cppBuildChannelInfo));
   ads->SetFlags(brave_ads::BuildFlags());
-  ads->Initialize(walletInfo.cppObjPtr, base::BindOnce(^(const bool success) {
+
+  auto cppWalletInfo =
+      walletInfo ? walletInfo.cppObjPtr : brave_ads::mojom::WalletInfoPtr();
+  ads->Initialize(std::move(cppWalletInfo),
+                  base::BindOnce(^(const bool success) {
                     [self periodicallyCheckForAdsResourceUpdates];
                     [self registerAdsResources];
                     if (success && self->adsClientNotifier != nil) {
@@ -362,8 +372,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)setEnabled:(BOOL)enabled {
   self.prefs[kEnabledPrefKey] = @(enabled);
-  self.prefs[kBraveNewsOptedInPrefKey] = @(enabled);
-  self.prefs[kNewTabPageShowTodayPrefKey] = @(enabled);
   [self savePref:kEnabledPrefKey];
 }
 
@@ -463,16 +471,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
         self.prefs[kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey];
     [self.prefs removeObjectForKey:
                     kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey];
-  }
-
-  if ([self.prefs objectForKey:kEnabledPrefKey]) {
-    if (![self.prefs objectForKey:kBraveNewsOptedInPrefKey]) {
-      self.prefs[kBraveNewsOptedInPrefKey] = self.prefs[kEnabledPrefKey];
-    }
-
-    if (![self.prefs objectForKey:kNewTabPageShowTodayPrefKey]) {
-      self.prefs[kNewTabPageShowTodayPrefKey] = self.prefs[kEnabledPrefKey];
-    }
   }
 
   [self savePrefs];
