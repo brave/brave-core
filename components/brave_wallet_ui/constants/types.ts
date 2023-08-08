@@ -264,7 +264,8 @@ export interface WalletState {
   filteredOutPortfolioNetworkKeys: string[]
   filteredOutPortfolioAccountAddresses: string[]
   hidePortfolioSmallBalances: boolean
-  showNetworkLogoOnNfts: boolean
+  showNetworkLogoOnNfts: boolean,
+  isRefreshingNetworksAndTokens: boolean
 }
 
 export interface PanelState {

@@ -75,5 +75,6 @@ export const {
   setFilteredOutPortfolioNetworkKeys,
   setFilteredOutPortfolioAccountAddresses,
   setHidePortfolioSmallBalances,
-  setShowNetworkLogoOnNfts
+  setShowNetworkLogoOnNfts,
+  setIsRefreshingNetworksAndTokens
 } = WalletActions

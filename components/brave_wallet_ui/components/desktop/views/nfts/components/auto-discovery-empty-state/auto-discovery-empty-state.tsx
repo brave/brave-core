@@ -12,38 +12,51 @@ import {
   ActionButton,
   Description,
   Heading,
+  LoadingRing,
+  RefreshText,
   StyledWrapper
 } from './auto-discovery-empty-state.styles'
-import { Row } from '../../../../../shared/style'
+import { Row, VerticalSpace } from '../../../../../shared/style'
 
 
 interface Props {
+  isRefreshingTokens: boolean
   onImportNft: () => void
   onRefresh: () => void
 }
 
-export const AutoDiscoveryEmptyState = ({ onImportNft, onRefresh }: Props) => {
+export const AutoDiscoveryEmptyState = ({ isRefreshingTokens, onImportNft, onRefresh }: Props) => {
   const { duringTag: refreshBtnText, afterTag } = splitStringForTag(getLocale('braveWalletAutoDiscoveryEmptyStateActions'))
   const { beforeTag: or, duringTag: importText } = splitStringForTag(afterTag || '', 3)
 
   return (
     <StyledWrapper>
-      <Heading>
-        {getLocale('braveWalletAutoDiscoveryEmptyStateHeading')}
-      </Heading>
-      <Description>
-        {getLocale('braveWalletAutoDiscoveryEmptyStateSubHeading')}
-      </Description>
-      <Row margin="48px 0 8px 0" marginBottom={8}>
-        <Description>
-          {getLocale('braveWalletAutoDiscoveryEmptyStateFooter')}
-        </Description>
-      </Row>
-      <Description>
-        <ActionButton onClick={onRefresh}>{refreshBtnText}</ActionButton>
-        {or}
-        <ActionButton onClick={onImportNft}>{importText}</ActionButton>
-      </Description>
+      {isRefreshingTokens ? (
+        <>
+          <LoadingRing />
+          <VerticalSpace space='16px' />
+          <RefreshText>{getLocale('braveWalletAutoDiscoveryEmptyStateRefresh')}...</RefreshText>
+        </>
+      ) : (
+        <>
+          <Heading>
+            {getLocale('braveWalletAutoDiscoveryEmptyStateHeading')}
+          </Heading>
+          <Description>
+            {getLocale('braveWalletAutoDiscoveryEmptyStateSubHeading')}
+          </Description>
+          <Row margin='48px 0 8px 0' marginBottom={8}>
+            <Description>
+              {getLocale('braveWalletAutoDiscoveryEmptyStateFooter')}
+            </Description>
+          </Row>
+          <Description>
+            <ActionButton onClick={onRefresh}>{refreshBtnText}</ActionButton>
+            {or}
+            <ActionButton onClick={onImportNft}>{importText}</ActionButton>
+          </Description>
+        </>
+      )}
     </StyledWrapper>
   )
 }

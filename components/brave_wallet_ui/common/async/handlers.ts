@@ -99,11 +99,13 @@ handler.on(
   async (store: Store, payload: RefreshOpts
 ) => {
   // refresh networks registry & selected network
-  await store.dispatch(
-    walletApi.endpoints.refreshNetworkInfo.initiate()
-  ).unwrap()
+  store.dispatch(WalletActions.setIsRefreshingNetworksAndTokens(true))
+  await store
+    .dispatch(walletApi.endpoints.refreshNetworkInfo.initiate())
+    .unwrap()
   await store.dispatch(refreshVisibleTokenInfo())
   await store.dispatch(refreshPortfolioFilterOptions())
+  store.dispatch(WalletActions.setIsRefreshingNetworksAndTokens(false))
 })
 
 handler.on(

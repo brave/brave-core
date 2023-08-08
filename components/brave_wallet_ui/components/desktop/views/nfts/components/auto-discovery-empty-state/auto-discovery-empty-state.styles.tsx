@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
+import Ring from '@brave/leo/react/progressRing'
 
 import { WalletButton } from '../../../../../shared/style'
 
@@ -47,4 +48,18 @@ export const ActionButton = styled(WalletButton)`
   color: ${leo.color.interaction.buttonPrimaryBackground};
   border: none;
   cursor: pointer;
+`
+
+export const LoadingRing = styled(Ring)`
+  --leo-progressring-size: 24px;
+`
+
+export const RefreshText = styled.div`
+  color: ${leo.color.text.secondary};
+  text-align: center;
+  font-family: Poppins;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
 `
