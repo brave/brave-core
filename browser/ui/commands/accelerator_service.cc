@@ -278,12 +278,17 @@ std::vector<int> AcceleratorService::AssignAccelerator(
     int command_id,
     const ui::Accelerator& accelerator) {
   std::vector<int> modified_commands = {command_id};
+  auto& system_managed = system_managed_;
 
   // Find any other commands with this accelerator and remove it from them.
   for (auto& [other_command_id, accelerators] : accelerators_) {
-    if (base::EraseIf(accelerators, [&accelerator](const auto& other) {
-          return ToCodesString(accelerator) == ToCodesString(other);
-        })) {
+    if (base::EraseIf(
+            accelerators, [&accelerator, &system_managed](const auto& other) {
+              // Note: We don't erase system managed commands, as the system can
+              // register the same accelerator for multiple commands.
+              return !base::Contains(system_managed, other) &&
+                     ToCodesString(accelerator) == ToCodesString(other);
+            })) {
       pref_manager_.RemoveAccelerator(other_command_id, accelerator);
       modified_commands.push_back(other_command_id);
     }
