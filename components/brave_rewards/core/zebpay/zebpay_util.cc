@@ -47,13 +47,7 @@ std::string GetLoginUrl(const std::string& state) {
                                 "&response_type=code"
                                 "&scope="
                                 "openid "
-                                "profile "
-                                "trade:create "
-                                "trade:read "
-                                "wallet:address:create "
-                                "wallet:address:read "
-                                "wallet:transactions:read "
-                                "wallet:transactions:send"
+                                "profile"
                                 "&state=%s",
                                 zebpay::GetClientId().c_str(), state.c_str()),
              false);
