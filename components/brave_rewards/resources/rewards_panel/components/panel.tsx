@@ -114,6 +114,7 @@ export function Panel () {
     return (
       <>
         <WalletCard
+          userType={userType}
           balance={balance}
           externalWallet={externalWallet}
           providerPayoutStatus={providerPayoutStatus}

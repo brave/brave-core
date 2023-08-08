@@ -140,12 +140,15 @@ export function RewardsCard (props: Props) {
             </style.needsBrowserUpdateContentBody>
           </style.needsBrowserUpdateView>
           <style.pendingRewards>
-            <PaymentStatusView
-              minEarnings={props.minEarningsLastMonth}
-              maxEarnings={props.maxEarningsLastMonth}
-              nextPaymentDate={props.nextPaymentDate}
-              providerPayoutStatus={props.providerPayoutStatus}
-            />
+          {
+            props.userType === 'connected' &&
+              <PaymentStatusView
+                minEarnings={props.minEarningsLastMonth}
+                maxEarnings={props.maxEarningsLastMonth}
+                nextPaymentDate={props.nextPaymentDate}
+                providerPayoutStatus={props.providerPayoutStatus}
+              />
+          }
           </style.pendingRewards>
         </style.balance>
       )
@@ -179,12 +182,15 @@ export function RewardsCard (props: Props) {
               </>
         }
         <style.pendingRewards>
-          <PaymentStatusView
-            minEarnings={props.minEarningsLastMonth}
-            maxEarnings={props.maxEarningsLastMonth}
-            nextPaymentDate={props.nextPaymentDate}
-            providerPayoutStatus={props.providerPayoutStatus}
-          />
+        {
+          props.userType === 'connected' &&
+            <PaymentStatusView
+              minEarnings={props.minEarningsLastMonth}
+              maxEarnings={props.maxEarningsLastMonth}
+              nextPaymentDate={props.nextPaymentDate}
+              providerPayoutStatus={props.providerPayoutStatus}
+            />
+        }
         </style.pendingRewards>
       </style.balance>
     )
