@@ -125,9 +125,11 @@ BraveVpnAPIRequest* BraveVPNOSConnectionAPI::GetAPIRequest() {
 
   return api_request_.get();
 }
+
 void BraveVPNOSConnectionAPI::ResetHostname() {
   hostname_.reset();
 }
+
 void BraveVPNOSConnectionAPI::ResetConnectionState() {
   // Don't use UpdateAndNotifyConnectionStateChange() to update connection state
   // and set state directly because we have a logic to ignore disconnected state

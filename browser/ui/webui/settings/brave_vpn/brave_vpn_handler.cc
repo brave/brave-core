@@ -51,6 +51,10 @@ void BraveVpnHandler::RegisterMessages() {
       "isWireguardServiceRegistered",
       base::BindRepeating(&BraveVpnHandler::HandleIsWireguardServiceRegistered,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "isBraveVpnConnected",
+      base::BindRepeating(&BraveVpnHandler::HandleIsBraveVpnConnected,
+                          base::Unretained(this)));
 }
 
 void BraveVpnHandler::HandleRegisterWireguardService(
@@ -79,6 +83,14 @@ void BraveVpnHandler::HandleIsWireguardServiceRegistered(
       brave_vpn::GetBraveVpnWireguardServiceName());
 
   ResolveJavascriptCallback(args[0], base::Value(status.has_value()));
+}
+
+void BraveVpnHandler::HandleIsBraveVpnConnected(const base::Value::List& args) {
+  AllowJavascript();
+
+  auto* service = brave_vpn::BraveVpnServiceFactory::GetForProfile(profile_);
+  ResolveJavascriptCallback(args[0],
+                            base::Value(service && service->IsConnected()));
 }
 
 void BraveVpnHandler::OnConnectionStateChanged(
