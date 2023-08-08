@@ -82,7 +82,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private SearchAccelerator mSearchAccelerator;
     private BottomToolbarNewTabButton mNewTabButton;
     private View mBottomContainerTopShadow;
-
+    private boolean mBookmarkButtonFilled;
     private ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
     private LocationBarModel mLocationBarModel;
 
@@ -317,6 +317,11 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         if (mBrowsingModeCoordinator != null) {
             ((BrowsingModeBottomToolbarCoordinator) mBrowsingModeCoordinator)
                     .updateBookmarkButton(isBookmarked, editingAllowed);
+            if (mBookmarkButtonFilled != isBookmarked) {
+                // We need to update cached image with new bookmark button state.
+                mScrollingBottomView.triggerBitmapCapture(false);
+                mBookmarkButtonFilled = isBookmarked;
+            }
         }
     }
 

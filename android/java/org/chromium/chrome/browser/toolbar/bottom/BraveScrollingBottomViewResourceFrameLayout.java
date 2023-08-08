@@ -152,10 +152,12 @@ public class BraveScrollingBottomViewResourceFrameLayout
         }
     }
 
-    private void triggerBitmapCapture(boolean dropCachedBitmap) {
-        if (dropCachedBitmap) {
-            getResourceAdapter().dropCachedBitmap();
+    public void triggerBitmapCapture(boolean dropCachedBitmap) {
+        synchronized (mCallbackController) {
+            if (dropCachedBitmap) {
+                getResourceAdapter().dropCachedBitmap();
+            }
+            getResourceAdapter().triggerBitmapCapture();
         }
-        getResourceAdapter().triggerBitmapCapture();
     }
 }
