@@ -124,10 +124,11 @@ void PlaylistMediaFileDownloader::NotifyFail(const std::string& id) {
 
 void PlaylistMediaFileDownloader::NotifySucceed(
     const std::string& id,
-    const std::string& media_file_path) {
+    const std::string& media_file_path,
+    int64_t received_bytes) {
   DCHECK(!id.empty());
   DCHECK(!media_file_path.empty());
-  delegate_->OnMediaFileReady(id, media_file_path);
+  delegate_->OnMediaFileReady(id, media_file_path, received_bytes);
   ResetDownloadStatus();
 }
 
@@ -193,7 +194,7 @@ void PlaylistMediaFileDownloader::DownloadMediaFileForPlaylistItem(
 
   if (item->cached) {
     DVLOG(2) << __func__ << ": media file is already downloaded";
-    NotifySucceed(current_item_->id, current_item_->media_path.spec());
+    NotifySucceed(current_item_->id, current_item_->media_path.spec(), {});
     return;
   }
 
@@ -257,7 +258,7 @@ void PlaylistMediaFileDownloader::OnDownloadUpdated(
                << download::DownloadInterruptReasonToString(
                       item->GetLastReason());
     ScheduleToDetachCachedFile(item);
-    OnMediaFileDownloaded({}, {});
+    OnMediaFileDownloaded({}, {}, {});
     return;
   }
 
@@ -275,19 +276,22 @@ void PlaylistMediaFileDownloader::OnDownloadUpdated(
     std::string mime_type;
     header->GetMimeType(&mime_type);
     DVLOG(2) << "mime_type from response header: " << mime_type;
-    OnMediaFileDownloaded(mime_type, destination_path_);
+    OnMediaFileDownloaded(mime_type, destination_path_,
+                          item->GetReceivedBytes());
     return;
   }
 }
 
 void PlaylistMediaFileDownloader::OnRenameFile(const base::FilePath& new_path,
+                                               int64_t received_bytes,
                                                bool result) {
   if (result) {
-    NotifySucceed(current_item_->id, new_path.AsUTF8Unsafe());
+    NotifySucceed(current_item_->id, new_path.AsUTF8Unsafe(), received_bytes);
   } else {
     DLOG(WARNING)
         << "Failed to rename file with extension, but shouldn't be fatal error";
-    NotifySucceed(current_item_->id, destination_path_.AsUTF8Unsafe());
+    NotifySucceed(current_item_->id, destination_path_.AsUTF8Unsafe(),
+                  received_bytes);
   }
 }
 
@@ -312,7 +316,8 @@ void PlaylistMediaFileDownloader::DownloadMediaFile(const GURL& url) {
 
 void PlaylistMediaFileDownloader::OnMediaFileDownloaded(
     const std::string& mime_type,
-    base::FilePath path) {
+    base::FilePath path,
+    int64_t received_bytes) {
   DVLOG(2) << __func__ << ": downloaded media file at " << path;
 
   DCHECK(current_item_);
@@ -338,14 +343,15 @@ void PlaylistMediaFileDownloader::OnMediaFileDownloaded(
       delegate_->GetTaskRunner()->PostTaskAndReplyWithResult(
           FROM_HERE, base::BindOnce(&base::Move, path, new_path),
           base::BindOnce(&PlaylistMediaFileDownloader::OnRenameFile,
-                         weak_factory_.GetWeakPtr(), new_path));
+                         weak_factory_.GetWeakPtr(), new_path, received_bytes));
       return;
     }
 
     DLOG(WARNING) << "We can't find out what extension the file should have.";
   }
 
-  NotifySucceed(current_item_->id, destination_path_.AsUTF8Unsafe());
+  NotifySucceed(current_item_->id, destination_path_.AsUTF8Unsafe(),
+                received_bytes);
 }
 
 void PlaylistMediaFileDownloader::RequestCancelCurrentPlaylistGeneration() {

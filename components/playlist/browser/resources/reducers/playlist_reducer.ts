@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { PlaylistData } from 'components/playlist/browser/resources/reducers/states'
 import { Reducer } from 'redux'
 
 import { types } from '../constants/playlist_types'
+import { CachingProgress, PlaylistData } from './states'
 
 import { Playlist } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
@@ -17,7 +17,12 @@ const playlistReducer: Reducer<PlaylistData | undefined> = (
   action
 ) => {
   if (state === undefined) {
-    state = { lists: [], currentList: undefined, lastPlayerState: undefined }
+    state = {
+      lists: [],
+      currentList: undefined,
+      lastPlayerState: undefined,
+      cachingProgress: undefined
+    }
   }
 
   switch (action.type) {
@@ -52,6 +57,21 @@ const playlistReducer: Reducer<PlaylistData | undefined> = (
 
     case types.PLAYLIST_PLAYER_STATE_CHANGED:
       state = { ...state, lastPlayerState: action.payload }
+      break
+
+    case types.PLAYLIST_CACHING_PROGRESS_CHANGED:
+      const cachingProgress = action.payload as CachingProgress
+      const newCachingProgress = new Map<string, CachingProgress>(
+        state.cachingProgress
+      )
+
+      if (cachingProgress.percentComplete === 100) {
+        newCachingProgress.delete(cachingProgress.id)
+      } else {
+        newCachingProgress.set(cachingProgress.id, cachingProgress)
+      }
+
+      state = { ...state, cachingProgress: newCachingProgress }
       break
   }
   return state

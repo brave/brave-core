@@ -48,10 +48,6 @@ class API {
     this.#pageHandler.removePlaylist(playlistId)
   }
 
-  addEventListener (listener: PlaylistEventListener) {
-    this.#pageCallbackRouter.onEvent.addListener(listener)
-  }
-
   addMediaFilesFromPageToPlaylist (playlistId: string, url: string) {
     let mojoUrl = new Url()
     mojoUrl.url = url
@@ -90,6 +86,23 @@ class API {
 
   showRemovePlaylistUI (playlistId: string) {
     this.#nativeUI.showRemovePlaylistUI(playlistId)
+  }
+
+  // Events --------------------------------------------------------------------
+  addEventListener (listener: PlaylistEventListener) {
+    this.#pageCallbackRouter.onEvent.addListener(listener)
+  }
+
+  addMediaCachingProgressListener (
+    listener: (
+      id: string,
+      totalBytes: bigint,
+      receivedBytes: bigint,
+      percentComplete: number,
+      timeRemaining: string
+    ) => void
+  ) {
+    this.#pageCallbackRouter.onMediaFileDownloadProgressed.addListener(listener)
   }
 }
 

@@ -12,7 +12,7 @@ import Icon from '@brave/leo/react/icon'
 import { color, font, spacing } from '@brave/leo/tokens/css'
 
 import PlaylistInfo from './playlistInfo'
-import { usePlaylist, useTotalDuration } from '../reducers/states'
+import { usePlaylist, useTotalDuration, useTotalSize } from '../reducers/states'
 import ContextualMenuAnchorButton from './contextualMenu'
 import { getPlaylistAPI } from '../api/api'
 import { getLocalizedString } from '../utils/l10n'
@@ -134,6 +134,7 @@ export default function Header ({ playlistId }: HeaderProps) {
   }
 
   const totalDuration = useTotalDuration(playlist)
+  const totalSize = useTotalSize(playlist)
 
   return (
     <HeaderContainer>
@@ -147,6 +148,7 @@ export default function Header ({ playlistId }: HeaderProps) {
             itemCount={playlist.items.length}
             playlistName={playlist.name}
             totalDuration={totalDuration}
+            totalSize={totalSize}
             nameColor={color.text.primary}
             detailColor={color.text.secondary}
           />

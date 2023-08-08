@@ -12,6 +12,7 @@ import {
 } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
 import { getItemDurationInSeconds } from '../utils/timeFormatter'
+import { getFormattedTotalBytes } from '../utils/bytesFormatter'
 
 // For security reason, we're embedding player to an <iframe>. And these two
 // states are mutually exclusive.
@@ -23,11 +24,21 @@ export interface ApplicationState {
   playerState: PlayerState | undefined
 }
 
+export interface CachingProgress {
+  id: string
+  totalBytes: bigint
+  receivedBytes: bigint
+  percentComplete: number
+  timeRemaining: string
+}
+
 export interface PlaylistData {
   lists: Playlist[]
   currentList: Playlist | undefined
   // TODO(sko) Investigate if it's possible to remove this and use ApplicationState.playerState.
   lastPlayerState: PlayerState | undefined
+
+  cachingProgress: Map<string, CachingProgress> | undefined
 }
 
 export interface PlayerState {
@@ -47,5 +58,11 @@ export const useTotalDuration = (playlist?: Playlist) => {
     return playlist?.items?.reduce((sum, item) => {
       return sum + getItemDurationInSeconds(item)
     }, 0)
+  }, [playlist])
+}
+
+export function useTotalSize (playlist?: Playlist) {
+  return React.useMemo(() => {
+    return playlist?.items ? getFormattedTotalBytes(playlist.items) : ''
   }, [playlist])
 }

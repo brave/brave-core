@@ -5,9 +5,11 @@
 
 import * as React from 'react'
 import styled, { css } from 'styled-components'
+import { useSelector } from 'react-redux'
 
 import { color, font } from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
+
 import DefaultThumbnailIcon from '../assets/playlist-thumbnail-icon.svg'
 import ContextualMenuAnchorButton from './contextualMenu'
 import { PlaylistItem as PlaylistItemMojo } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
@@ -16,10 +18,11 @@ import {
   microSecondsToSeconds
 } from '../utils/timeFormatter'
 import { getLocalizedString } from '../utils/l10n'
+import { formatBytes } from '../utils/bytesFormatter'
+import { ApplicationState, CachingProgress } from '../reducers/states'
 
 interface Props {
   item: PlaylistItemMojo
-
   onClick: (id: string) => void
 }
 
@@ -55,7 +58,7 @@ const ItemInfoContainer = styled.div`
 
 const PlaylistItemName = styled.span`
   color: ${color.text.primary};
-  font: ${font.primary.xSmall.regular};
+  font: ${font.primary.default.semibold};
   cursor: default;
 `
 
@@ -65,6 +68,47 @@ const ItemDetailsContainer = styled.div`
   gap: 8px;
   align-self: stretch;
   color: ${color.text.tertiary};
+  font: ${font.primary.small.regular};
+`
+
+const CachedIcon = styled(Icon)`
+  --leo-icon-size: 16px;
+`
+
+const ProgressCircle = styled.div<{ progress: number }>`
+  --leo-icon-size: 12px;
+
+  width: 16px;
+  height: 16px;
+  position: relative;
+  background: conic-gradient(
+    ${color.icon.default} 0%,
+    ${color.icon.default} ${p => p.progress + '%'},
+    ${color.primary[20]} ${p => p.progress + '%'},
+    ${color.primary[20]} 100%
+  );
+  clip-path: circle();
+
+  &:before {
+    background-color: ${color.container.background};
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    clip-path: circle(6px);
+  }
+
+  & > leo-icon {
+    position: absolute;
+    width: var(--leo-icon-size);
+    height: var(--leo-icon-size);
+    top: calc((100% - var(--leo-icon-size)) / 2);
+    left: calc((100% - var(--leo-icon-size)) / 2);
+  }
+`
+
+const ColoredSpan = styled.span<{ color: any }>`
+  color: ${p => p.color};
 `
 
 export default function PlaylistItem ({
@@ -72,6 +116,7 @@ export default function PlaylistItem ({
     id,
     name,
     cached,
+    mediaFileBytes,
     duration,
     thumbnailPath: { url: thumbnailUrl }
   },
@@ -98,6 +143,11 @@ export default function PlaylistItem ({
   const [hovered, setHovered] = React.useState(false)
   const [showingMenu, setShowingMenu] = React.useState(false)
 
+  const cachingProgress = useSelector<
+    ApplicationState,
+    CachingProgress | undefined
+  >(applicationState => applicationState.playlistData?.cachingProgress?.get(id))
+
   return (
     <PlaylistItemContainer
       onClick={() => !showingMenu && onClick(id)}
@@ -119,8 +169,23 @@ export default function PlaylistItem ({
                 {formatTimeInSeconds(microSecondsToSeconds(+duration), 'colon')}
               </span>
             )}
-            {cached && <Icon name='check-circle-outline' />}
-            {<span>350 MB</span> && false /* TODO(sko) not ready yet */}
+            {cached ? (
+              <>
+                <CachedIcon name='check-circle-outline' />
+                {mediaFileBytes && <span>{formatBytes(mediaFileBytes)}</span>}
+              </>
+            ) : (
+              cachingProgress && (
+                <>
+                  <ProgressCircle progress={cachingProgress.percentComplete}>
+                    <Icon name='arrow-down' />
+                  </ProgressCircle>
+                  <ColoredSpan color={color.text.interactive}>
+                    {formatBytes(cachingProgress.receivedBytes)}
+                  </ColoredSpan>
+                </>
+              )
+            )}
           </ItemDetailsContainer>
         }
       </ItemInfoContainer>
