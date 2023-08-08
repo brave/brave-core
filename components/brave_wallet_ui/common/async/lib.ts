@@ -686,10 +686,13 @@ export const extractIpfsUrl = async (url: string | undefined) => {
 export const translateToNftGateway = async (url: string | undefined) => {
   const { braveWalletIpfsService } = getAPIProxy()
   const trimmedUrl = url ? url.trim() : ''
-  const testUrl =
-    isIpfs(trimmedUrl) ? trimmedUrl : await extractIpfsUrl(trimmedUrl)
-  return (await braveWalletIpfsService
-    .translateToNFTGatewayURL(testUrl || '')).translatedUrl || trimmedUrl
+  const testUrl = isIpfs(trimmedUrl)
+    ? trimmedUrl
+    : await extractIpfsUrl(trimmedUrl)
+  return (
+    (await braveWalletIpfsService.translateToNFTGatewayURL(testUrl || ''))
+      .translatedUrl || trimmedUrl
+  )
 }
 
 // TODO(apaymyshev): This function should not exist. Backend should be

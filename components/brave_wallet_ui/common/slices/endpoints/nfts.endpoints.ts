@@ -25,7 +25,13 @@ import { blockchainTokenEntityAdaptor } from '../entities/blockchain-token.entit
 
 // api
 import { getNetwork } from '../api.slice'
-import { translateToNftGateway } from '../../async/lib'
+
+export interface CommonNftMetadata {
+  attributes?: any[]
+  description?: string
+  image?: string
+  name?: string
+}
 
 export const nftsEndpoints = ({
   query,
@@ -42,7 +48,9 @@ export const nftsEndpoints = ({
       queryFn: async (tokenArg, _api, _extraOptions, baseQuery) => {
         try {
           if (!tokenArg.isErc721) {
-            throw new Error('Cannot fetch erc-721 metadata for non erc-721 token')
+            throw new Error(
+              'Cannot fetch erc-721 metadata for non erc-721 token'
+            )
           }
 
           const { jsonRpcService } = baseQuery(undefined).data
@@ -112,7 +120,7 @@ export const nftsEndpoints = ({
     getNftMetadata: query<NFTMetadataReturnType, BraveWallet.BlockchainToken>({
       queryFn: async (arg, _api, _extraOptions, baseQuery) => {
         try {
-          const { data: api } = baseQuery(undefined)
+          const { data: api, cache } = baseQuery(undefined)
           const { jsonRpcService } = api
           const result =
             arg.coin === BraveWallet.CoinType.ETH
@@ -128,11 +136,18 @@ export const nftsEndpoints = ({
                 )
               : undefined
 
-          if(result?.error) throw new Error(result.errorMessage)
+          if (result?.error) throw new Error(result.errorMessage)
 
-          const response = result?.response && JSON.parse(result.response)
-          const attributes = Array.isArray(response.attributes)
-            ? response.attributes.map(
+          const response = result?.response
+            ? (JSON.parse(result.response) as CommonNftMetadata)
+            : undefined
+
+          const imageURL = response?.image?.startsWith('data:image/')
+            ? response.image
+            : await cache.getIpfsGatewayTranslatedNftUrl(response?.image || '')
+
+          const attributes = Array.isArray(response?.attributes)
+            ? response?.attributes.map(
                 (attr: { trait_type: string; value: string }) => ({
                   traitType: attr.trait_type,
                   value: attr.value
@@ -150,16 +165,14 @@ export const nftsEndpoints = ({
                 ? 'SPL'
                 : '',
             tokenID: arg.tokenId,
-            imageURL: response.image.startsWith('data:image/')
-              ? response.image
-              : await translateToNftGateway(response.image),
+            imageURL: imageURL || undefined,
             imageMimeType: 'image/*',
             floorFiatPrice: '',
             floorCryptoPrice: '',
             contractInformation: {
               address: arg.contractAddress,
-              name: response.name,
-              description: response.description,
+              name: response?.name || '???',
+              description: response?.description || '???',
               website: '',
               facebook: '',
               logo: '',
@@ -242,6 +255,43 @@ export const nftsEndpoints = ({
         }
       },
       providesTags: ['AutoPinEnabled']
+    }),
+    getIPFSUrlFromGatewayLikeUrl: query<string | null, string>({
+      queryFn: async (urlArg, store, extraOptions, baseQuery) => {
+        try {
+          const { cache } = baseQuery(undefined)
+          const ipfsUrl = await cache.getExtractedIPFSUrlFromGatewayLikeUrl(
+            urlArg
+          )
+          return {
+            data: ipfsUrl || null
+          }
+        } catch (error) {
+          const message = 'Failed to get IPFS URL from gateway-like URL'
+          console.log(`${message}: %s`, urlArg.trim(), error)
+          console.error(error)
+          return { error: message }
+        }
+      }
+    }),
+    getIpfsGatewayTranslatedNftUrl: query<string | null, string>({
+      queryFn: async (urlArg, store, extraOptions, baseQuery) => {
+        try {
+          const { cache } = baseQuery(undefined)
+          const translatedUrl = await cache.getIpfsGatewayTranslatedNftUrl(
+            urlArg || ''
+          )
+
+          return {
+            data: translatedUrl || urlArg.trim()
+          }
+        } catch (error) {
+          const message = 'Failed to translate NFT IPFS gateway URL'
+          console.log(`${message}: %s`, urlArg.trim(), error)
+          console.error(error)
+          return { error: message }
+        }
+      }
     })
   }
 }

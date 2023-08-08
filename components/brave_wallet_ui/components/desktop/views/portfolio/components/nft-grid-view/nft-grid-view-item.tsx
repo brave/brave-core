@@ -5,12 +5,16 @@
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
 
 // hooks
 import { useAssetManagement } from '../../../../../../common/hooks'
+import {
+  useGetIpfsGatewayTranslatedNftUrlQuery //
+} from '../../../../../../common/slices/api.slice'
 
 // actions
 import { WalletActions } from '../../../../../../common/actions'
@@ -38,7 +42,6 @@ import {
   DIVForClickableArea,
   NFTSymbol
 } from './style'
-import { translateToNftGateway } from '../../../../../../common/async/lib'
 
 interface Props {
   token: BraveWallet.BlockchainToken
@@ -48,6 +51,7 @@ interface Props {
 
 export const NFTGridViewItem = (props: Props) => {
   const { token, isHidden, onSelectAsset } = props
+  const tokenImageURL = stripERC20TokenImageURL(token.logo)
 
   // redux
   const showNetworkLogoOnNfts = useSafeWalletSelector(WalletSelectors.showNetworkLogoOnNfts)
@@ -55,6 +59,11 @@ export const NFTGridViewItem = (props: Props) => {
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
+
+  // queries
+  const { data: remoteImage } = useGetIpfsGatewayTranslatedNftUrlQuery(
+    tokenImageURL || skipToken
+  )
 
   // hooks
   const dispatch = useDispatch()
@@ -86,17 +95,6 @@ export const NFTGridViewItem = (props: Props) => {
     addOrRemoveTokenInLocalStorage(token, 'add')
     dispatch(WalletActions.refreshNetworksAndTokens({}))
   }, [token, addOrRemoveTokenInLocalStorage])
-
-  const [remoteImage, setRemoteImage] = React.useState<string>()
-  React.useEffect(() => {
-    let ignore = false
-    const tokenImageURL = stripERC20TokenImageURL(token.logo)
-    translateToNftGateway(tokenImageURL).then(
-      (v) => {if (!ignore) setRemoteImage(v)})
-    return () => {
-      ignore = true
-    }
-  }, [token.logo])
 
   return (
     <>
