@@ -52,6 +52,8 @@ public struct WalletConstants {
   
   /// The url to learn more about NFT Discovery
   public static let nftDiscoveryURL = URL(string: "https://github.com/brave/brave-browser/wiki/NFT-Discovery")!
+  
+  public static let braveWalletTermsOfUse = URL(string: "https://brave.com/terms-of-use/")!
 
   /// The currently supported test networks.
   static let supportedTestNetworkChainIds = [

@@ -103,6 +103,9 @@ extension Preferences {
    
     /// Used to track whether to migrate user assets stored in BraveCore to CoreData
     static let migrateCoreToWalletUserAssetCompleted = Option<Bool>(key: "wallet.core-to-wallet-user-asset", default: false)
+    
+    /// Used to track whether to show user wallet onboarding completed screen after user has created or restore a wallet
+    public static let isOnboardingCompleted = Option<Bool>(key: "wallet.show-wallet-is-onboarding-completed", default: false)
   }
 }
 

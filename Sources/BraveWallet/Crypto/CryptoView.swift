@@ -9,6 +9,7 @@ import SwiftUI
 import BraveCore
 import Introspect
 import BraveUI
+import Preferences
 
 public struct CryptoView: View {
   var walletStore: WalletStore
@@ -19,6 +20,8 @@ public struct CryptoView: View {
   var openWalletURLAction: ((URL) -> Void)?
   
   var appRatingRequestAction: (() -> Void)?
+  
+  @ObservedObject var isOnboardingCompleted = Preferences.Wallet.isOnboardingCompleted
 
   public init(
     walletStore: WalletStore,
@@ -234,14 +237,28 @@ public struct CryptoView: View {
         .transition(.move(edge: .bottom))
         .zIndex(1)  // Needed or the dismiss animation messes up
       case .onboarding:
-        UIKitNavigationView {
-          SetupCryptoView(keyringStore: keyringStore)
-            .toolbar {
-              dismissButtonToolbarContents
-            }
+        if isOnboardingCompleted.value {
+          UIKitNavigationView {
+            OnboardingCompletedView(keyringStore: keyringStore)
+          }
+          .transition(.move(edge: .bottom))
+          .zIndex(2)  // Needed or the dismiss animation messes up
+        } else {
+          UIKitNavigationView {
+            SetupCryptoView(keyringStore: keyringStore)
+              .toolbar {
+                ToolbarItemGroup(placement: .destructiveAction) {
+                  Button(action: {
+                    dismissAction()
+                  }) {
+                    Text(Strings.CancelString)
+                  }
+                }
+              }
+          }
+          .transition(.move(edge: .bottom))
+          .zIndex(3)  // Needed or the dismiss animation messes up
         }
-        .transition(.move(edge: .bottom))
-        .zIndex(2)  // Needed or the dismiss animation messes up
       }
     }
     .animation(.default, value: visibleScreen)  // Animate unlock dismiss (required for some reason)

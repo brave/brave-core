@@ -544,7 +544,7 @@ struct NetworkRadioButton: View {
   var onTapped: () -> Void
   
   var body: some View {
-    Image(uiImage: UIImage(braveSystemNamed: checked ? "leo.check.circle-outline" : "leo.radio.unchecked")!)
+    Image(braveSystemName: checked ? "leo.check.circle-outline" : "leo.radio.unchecked")
       .renderingMode(.template)
       .foregroundColor(Color(checked ? .braveBlurpleTint : .braveDisabled))
       .font(.title3)
