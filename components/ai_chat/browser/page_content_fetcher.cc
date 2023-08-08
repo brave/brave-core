@@ -153,6 +153,7 @@ class PageContentFetcher {
     // </transcript>
 
     if (!data_decoder::IsXmlElementNamed(result.value(), "transcript")) {
+      VLOG(1) << "Could not find transcript element.";
       return;
     }
 
