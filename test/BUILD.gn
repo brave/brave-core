@@ -416,7 +416,6 @@ test("brave_unit_tests") {
       "//brave/browser/ui/bookmark",
       "//brave/browser/ui/bookmark:unittest",
       "//brave/browser/ui/color:unit_tests",
-      "//brave/browser/ui/commander:unit_tests",
       "//brave/browser/ui/commands:unit_tests",
       "//brave/browser/ui/toolbar:brave_app_menu_unit_test",
       "//brave/browser/ui/views/download/bubble:unit_tests",
@@ -432,6 +431,11 @@ test("brave_unit_tests") {
       "//components/favicon/content",
     ]
   }
+
+  if (enable_commander) {
+    deps += [ "//brave/browser/ui/commander:unit_tests" ]
+  }
+
   if (enable_captive_portal_detection) {
     deps += [ "//brave/components/captive_portal/content:unit_tests" ]
   }
@@ -1105,11 +1109,14 @@ test("brave_browser_tests") {
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
       "//brave/browser/sharing_hub:browser_tests",
-      "//brave/browser/ui/commander:browser_tests",
       "//brave/browser/ui/whats_new:browser_test",
       "//chrome/browser/apps/app_service:app_service",
       "//chrome/browser/apps/app_service:constants",
     ]
+  }
+
+  if (enable_commander) {
+    deps += [ "//brave/browser/ui/commander:browser_tests" ]
   }
 
   if (enable_request_otr) {

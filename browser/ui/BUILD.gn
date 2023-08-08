@@ -9,6 +9,7 @@ import("//brave/build/config.gni")
 import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
+import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
@@ -90,15 +91,6 @@ source_set("ui") {
       "browser_commands.cc",
       "browser_commands.h",
       "browser_dialogs.h",
-      "commander/brave_simple_command_source.cc",
-      "commander/brave_simple_command_source.h",
-      "commander/commander_service.cc",
-      "commander/commander_service.h",
-      "commander/commander_service_factory.cc",
-      "commander/commander_service_factory.h",
-      "commander/commander_service_factory.h",
-      "commander/ranker.cc",
-      "commander/ranker.h",
       "content_settings/brave_autoplay_blocked_image_model.cc",
       "content_settings/brave_autoplay_blocked_image_model.h",
       "content_settings/brave_autoplay_content_setting_bubble_model.cc",
@@ -199,8 +191,6 @@ source_set("ui") {
       "whats_new/whats_new_util.h",
     ]
 
-    deps += [ "//chrome/browser/ui/commander:fuzzy_finder" ]
-
     if (enable_request_otr) {
       deps += [
         "//brave/components/request_otr/common",
@@ -252,6 +242,25 @@ source_set("ui") {
         "webui/settings/brave_tor_snowflake_extension_handler.h",
       ]
     }
+  }
+
+  if (enable_commander) {
+    sources += [
+      "commander/brave_simple_command_source.cc",
+      "commander/brave_simple_command_source.h",
+      "commander/commander_service.cc",
+      "commander/commander_service.h",
+      "commander/commander_service_factory.cc",
+      "commander/commander_service_factory.h",
+      "commander/commander_service_factory.h",
+      "commander/ranker.cc",
+      "commander/ranker.h",
+    ]
+
+    deps += [
+      "//brave/components/commander/browser",
+      "//chrome/browser/ui/commander:fuzzy_finder",
+    ]
   }
 
   if (toolkit_views) {
@@ -607,7 +616,6 @@ source_set("ui") {
       "//brave/app/theme:brave_theme_resources",
       "//brave/app/theme:brave_unscaled_resources",
       "//brave/components/brave_webtorrent:static_resources",
-      "//brave/components/commander/browser",
       "//brave/components/webcompat_reporter/browser",
       "//brave/components/webcompat_reporter/ui:generated_resources",
     ]

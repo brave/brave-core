@@ -5,8 +5,6 @@
 
 #include "brave/components/commander/common/constants.h"
 
-#include "base/strings/string_piece.h"
-
 namespace commander {
 
 const base::StringPiece16 kCommandPrefix(u":>");
