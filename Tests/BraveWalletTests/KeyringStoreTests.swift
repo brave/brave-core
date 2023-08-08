@@ -116,26 +116,26 @@ class KeyringStoreTests: XCTestCase {
       rpcService: rpcService
     )
     
-    let invalidPassword1 = ""
-    var isStrongPassword = await store.isStrongPassword(invalidPassword1)
-    XCTAssertFalse(isStrongPassword)
+    let emptyPassword1 = ""
+    var passwordStatus = await store.validatePassword(emptyPassword1)
+    XCTAssertEqual(passwordStatus, .none)
     
     let invalidPassword2 = "1234"
-    isStrongPassword = await store.isStrongPassword(invalidPassword2)
-    XCTAssertFalse(isStrongPassword)
+    passwordStatus = await store.validatePassword(invalidPassword2)
+    XCTAssertEqual(passwordStatus, .invalid)
     
-    let validPassword = "12345678"
-    isStrongPassword = await store.isStrongPassword(validPassword)
-    XCTAssertTrue(isStrongPassword)
+    let validWeakPassword = "12345678"
+    passwordStatus = await store.validatePassword(validWeakPassword)
+    XCTAssertEqual(passwordStatus, .weak)
     
     let uuid = UUID().uuidString
     // first 30 characters of uuid
-    let validPassword2 = String(uuid[uuid.startIndex..<uuid.index(uuid.startIndex, offsetBy: 30)])
-    isStrongPassword = await store.isStrongPassword(validPassword2)
-    XCTAssertTrue(isStrongPassword)
+    let validMediumPassword = String(uuid[uuid.startIndex..<uuid.index(uuid.startIndex, offsetBy: 15)])
+    passwordStatus = await store.validatePassword(validMediumPassword)
+    XCTAssertEqual(passwordStatus, .medium)
     
     let strongPassword = "LDKH66BJbLsHQPEAK@4_zak*"
-    isStrongPassword = await store.isStrongPassword(strongPassword)
-    XCTAssertTrue(isStrongPassword)
+    passwordStatus = await store.validatePassword(strongPassword)
+    XCTAssertEqual(passwordStatus, .strong)
   }
 }

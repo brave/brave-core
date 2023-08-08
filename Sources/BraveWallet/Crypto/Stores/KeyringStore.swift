@@ -44,7 +44,7 @@ struct AutoLockInterval: Identifiable, Hashable {
   private static let formatter = MeasurementFormatter().then {
     $0.locale = Locale.current
     $0.unitOptions = .providedUnit
-    $0.unitStyle = .long
+    $0.unitStyle = .medium
   }
 }
 
@@ -59,6 +59,54 @@ struct RecoveryWord: Hashable, Identifiable {
 
   var id: String {
     "\(index)-\(value)"
+  }
+}
+
+/// Validate if password is weak/medium/strong
+enum PasswordStatus: Equatable {
+  case none // empty
+  case invalid // less than 8
+  case weak // between 8 to 12
+  case medium // more than 12
+  case strong // more than 16
+  
+  var description: String {
+    switch self {
+    case .none:
+      return ""
+    case .invalid, .weak:
+      return Strings.Wallet.passwordStatusWeak
+    case .medium:
+      return Strings.Wallet.passwordStatusMedium
+    case .strong:
+      return Strings.Wallet.passwordStatusStrong
+    }
+  }
+  
+  var tintColor: Color {
+    switch self {
+    case .none:
+      return Color.clear
+    case .invalid, .weak:
+      return Color(uiColor: WalletV2Design.passwordWeakRed)
+    case .medium:
+      return Color(uiColor: WalletV2Design.passwordMediumYellow)
+    case .strong:
+      return Color(uiColor: WalletV2Design.passwordStrongGreen)
+    }
+  }
+  
+  var percentage: CGFloat {
+    switch self {
+    case .none:
+      return 0
+    case .invalid, .weak:
+      return 1 / 3
+    case .medium:
+      return 2 / 3
+    case .strong:
+      return 1
+    }
   }
 }
 
@@ -112,6 +160,8 @@ public class KeyringStore: ObservableObject {
   
   /// A list of default account with all support coin types
   @Published var defaultAccounts: [BraveWallet.AccountInfo] = []
+  
+  var passwordToSaveInBiometric: String?
   
   /// The origin of the active tab (if applicable). Used for fetching/selecting network for the DApp origin.
   public var origin: URLOrigin?
@@ -273,13 +323,23 @@ public class KeyringStore: ObservableObject {
     keyringService.validatePassword(password, completion: completion)
   }
 
-  func isStrongPassword(_ password: String, completion: @escaping (Bool) -> Void) {
-    completion(password.count >= 8)
+  func validatePassword(_ password: String, completion: @escaping (PasswordStatus) -> Void) {
+    if password.count >= 16 {
+      completion(.strong)
+    } else if password.count >= 12 {
+      completion(.medium)
+    } else if password.isEmpty {
+      completion(.none)
+    } else if password.count >= 8 {
+      completion(.weak)
+    } else {
+      completion(.invalid)
+    }
   }
   
-  @MainActor func isStrongPassword(_ password: String) async -> Bool {
+  @MainActor func validatePassword(_ password: String) async -> PasswordStatus {
     await withCheckedContinuation { continuation in
-      isStrongPassword(password) { isStrong in
+      validatePassword(password) { isStrong in
         continuation.resume(returning: isStrong)
       }
     }
@@ -289,6 +349,9 @@ public class KeyringStore: ObservableObject {
     isCreatingWallet = true
     keyringService.createWallet(password) { [weak self] mnemonic in
       self?.updateKeyringInfo()
+      if !mnemonic.isEmpty {
+        self?.passwordToSaveInBiometric = password
+      }
       completion?(mnemonic)
     }
   }
@@ -317,6 +380,7 @@ public class KeyringStore: ObservableObject {
       guard let self = self else { return }
       if isMnemonicValid {
         // Restoring from wallet means you already have your phrase backed up
+        self.passwordToSaveInBiometric = password
         self.notifyWalletBackupComplete()
         self.updateKeyringInfo()
         self.resetKeychainStoredPassword()

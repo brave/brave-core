@@ -112,7 +112,7 @@ struct BackupWalletView: View {
         ),
         destination: {
           BackupRecoveryPhraseView(
-            recoveryWords: recoveryWords,
+            password: password,
             keyringStore: keyringStore
           )
         },

@@ -7,213 +7,142 @@ import Foundation
 import SwiftUI
 import DesignSystem
 import Strings
+import Preferences
 
 struct VerifyRecoveryPhraseView: View {
   @ObservedObject var keyringStore: KeyringStore
 
-  @State private var recoveryWords: [RecoveryWord]
-  @State private var randomizedWords: [RecoveryWord]
-  @State private var selectedWords: [RecoveryWord] = []
+  @State private var input: String = ""
+  @State private var isShowingError = false
+  @State private var activeCheckIndex: Int = 0
+  @State private var isShowingSkipWarning: Bool = false
 
   @Environment(\.modalPresentationMode) @Binding private var modalPresentationMode
+  @FocusState private var isFieldFocused: Bool
+  
+  private var recoveryWords: [RecoveryWord]
+  private let targetedRecoveryWordIndexes: [Int]
+  private let password: String
   
   init(
+    keyringStore: KeyringStore,
     recoveryWords: [RecoveryWord],
-    keyringStore: KeyringStore
+    targetedRecoveryWordIndexes: [Int],
+    password: String
   ) {
-    self.recoveryWords = recoveryWords
-    self.randomizedWords = recoveryWords.shuffled()
     self.keyringStore = keyringStore
+    self.recoveryWords = recoveryWords
+    self.targetedRecoveryWordIndexes = targetedRecoveryWordIndexes
+    self.password = password
   }
-
-  private var wordsSelectedInCorrectOrder: Bool {
-    recoveryWords == selectedWords
-  }
-
-  private func tappedWord(_ word: RecoveryWord) {
-    withAnimation(.default) {
-      selectedWords.append(word)
-    }
-  }
-
-  private func tappedVerify() {
-    guard wordsSelectedInCorrectOrder else { return }
-    keyringStore.notifyWalletBackupComplete()
-    if keyringStore.isOnboardingVisible {
-      keyringStore.markOnboardingCompleted()
-    } else {
-      modalPresentationMode = false
-    }
-  }
-
+  
   var body: some View {
-    ScrollView(.vertical) {
-      VStack(spacing: 16) {
-        Group {
+    ScrollView {
+      VStack {
+        HStack(spacing: 16) {
           Text(Strings.Wallet.verifyRecoveryPhraseTitle)
-            .font(.headline)
-          Text(Strings.Wallet.verifyRecoveryPhraseSubtitle)
-            .font(.subheadline)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .font(.title.weight(.medium))
+            .foregroundColor(Color(uiColor: WalletV2Design.textPrimary))
+            .fixedSize(horizontal: false, vertical: true)
+          RecoveryPhrasePager(activeIndex: $activeCheckIndex)
         }
+        Text(LocalizedStringKey(String.localizedStringWithFormat(Strings.Wallet.verifyRecoveryPhraseSubTitle, targetedRecoveryWordIndexes[activeCheckIndex] + 1)))
+          .font(.subheadline)
+          .foregroundColor(Color(uiColor: WalletV2Design.textPrimary))
         .fixedSize(horizontal: false, vertical: true)
-        .multilineTextAlignment(.center)
-        SelectedWordsBox(recoveryWords: recoveryWords, selectedWords: $selectedWords)
-        RecoveryPhraseGrid(data: randomizedWords, id: \.id) { word in
-          let selected = selectedWords.contains(word)
-          Button(action: {
-            tappedWord(word)
-          }) {
-            Text(verbatim: word.value)
-              .customPrivacySensitive()
-              .font(.footnote.bold())
-              .foregroundColor(.primary)
-              .fixedSize(horizontal: false, vertical: true)
-              .padding(8)
-              .frame(maxWidth: .infinity)
+        .padding(.bottom, 40)
+        VStack(alignment: .leading) {
+          TextField("", text: $input)
+            .font(.body)
+            .autocorrectionDisabled()
+            .autocapitalization(.none)
+            .focused($isFieldFocused)
+          Divider()
+        }
+        if isShowingError {
+          HStack(spacing: 12) {
+            Image(braveSystemName: "leo.warning.circle-filled")
+              .renderingMode(.template)
+              .foregroundColor(Color(.braveLighterOrange))
+            Text(Strings.Wallet.verifyRecoveryPhraseError)
+              .multilineTextAlignment(.leading)
+              .font(.callout)
+            Spacer()
           }
+          .padding(12)
           .background(
-            Color(.braveDisabled)
-              .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
+            Color(.braveErrorBackground)
+              .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
           )
-          .opacity(selected ? 0.0 : 1.0)
-          .background(
-            Group {
-              if selected {
-                RoundedRectangle(cornerRadius: 4, style: .continuous)
-                  .inset(by: 1)
-                  .stroke(Color.black.opacity(0.1))
-              } else {
-                Color.clear
+        }
+        Button {
+          let targetIndex = targetedRecoveryWordIndexes[activeCheckIndex]
+          if input == recoveryWords[safe: targetIndex]?.value {
+            isShowingError = false
+            if activeCheckIndex == targetedRecoveryWordIndexes.count - 1 { // finished all checks
+              if keyringStore.isOnboardingVisible {
+                // check if biometric is available
+                keyringStore.notifyWalletBackupComplete()
+                Preferences.Wallet.isOnboardingCompleted.value = true
+              } else { // coming from BackUpWalletView
+                keyringStore.notifyWalletBackupComplete()
               }
+            } else {
+              // next check
+              activeCheckIndex += 1
+              input = ""
             }
-          )
+          } else {
+            isShowingError = true
+          }
+        } label: {
+          Text(Strings.Wallet.continueButtonTitle)
+            .frame(maxWidth: .infinity)
         }
-        .padding()
-        Button(action: tappedVerify) {
-          Text(Strings.Wallet.verifyButtonTitle)
-        }
-        .buttonStyle(BraveFilledButtonStyle(size: .normal))
-        .disabled(!wordsSelectedInCorrectOrder)
-        .animation(.linear(duration: 0.15), value: wordsSelectedInCorrectOrder)
+        .buttonStyle(BraveFilledButtonStyle(size: .large))
+        .padding(.top, 86)
         if keyringStore.isOnboardingVisible {
           Button(action: {
-            keyringStore.markOnboardingCompleted()
+            isShowingSkipWarning = true
           }) {
             Text(Strings.Wallet.skipButtonTitle)
               .font(Font.subheadline.weight(.medium))
               .foregroundColor(Color(.braveLabel))
           }
+          .padding(.top, 16)
         }
       }
-      .padding()
     }
+    .padding(.horizontal, 20)
+    .padding(.bottom, 20)
     .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
-    .navigationTitle(Strings.Wallet.cryptoTitle)
-    .navigationBarTitleDisplayMode(.inline)
-    .alertOnScreenshot {
-      Alert(
-        title: Text(Strings.Wallet.screenshotDetectedTitle),
-        message: Text(Strings.Wallet.recoveryPhraseScreenshotDetectedMessage),
-        dismissButton: .cancel(Text(Strings.OKString))
-      )
-    }
-  }
-}
-
-private struct SelectedWordsBox: View {
-  var recoveryWords: [RecoveryWord]
-  @Binding var selectedWords: [RecoveryWord]
-  @Environment(\.pixelLength) private var pixelLength
-
-  enum WordEntry: Hashable, Identifiable {
-    case word(String, index: Int, isCorrect: Bool)
-    case placeholder(atIndex: Int)
-
-    func hash(into hasher: inout Hasher) {
-      switch self {
-      case .word(let word, let index, _):
-        hasher.combine(word)
-        hasher.combine(index)
-      case .placeholder(let index): hasher.combine(index)
-      }
-    }
-
-    var id: String {
-      switch self {
-      case .word(let word, let index, _):
-        return "\(word)-\(index)"
-      case .placeholder(let index):
-        return "placeholder-\(index)"
-      }
-    }
-  }
-
-  private var entries: [WordEntry] {
-    var words: [WordEntry] =
-      selectedWords
-      .enumerated()
-      .map({ .word($0.element.value, index: $0.offset, isCorrect: recoveryWords[$0.offset] == $0.element) })
-    if words.count < 12 {
-      words.append(contentsOf: (words.count..<12).map { .placeholder(atIndex: $0) })
-    }
-    return words
-  }
-
-  private func tappedWord(atIndex index: Int) {
-    guard index < selectedWords.count else { return }
-    withAnimation(.default) {
-      _ = selectedWords.remove(at: index)
-    }
-  }
-
-  private func view(for entry: WordEntry) -> some View {
-    let clipShape = RoundedRectangle(cornerRadius: 4, style: .continuous)
-    return Group {
-      switch entry {
-      case .placeholder:
-        Text(verbatim: "Word")
-          .padding(8)
-          .frame(maxWidth: .infinity)
-          .hidden()
-      case .word(let word, let index, let isCorrect):
-        Button(action: { tappedWord(atIndex: index) }) {
-          Text(verbatim: "\(index + 1). \(word)")
-            .customPrivacySensitive()
-            .padding(8)
-            .frame(maxWidth: .infinity)
-            .fixedSize(horizontal: false, vertical: true)
-            .foregroundColor(isCorrect ? .primary : .red)
-            .overlay(
-              clipShape
-                .stroke(Color.black.opacity(0.1), lineWidth: pixelLength * 2)
-            )
-            .clipShape(clipShape)
-        }
-        .accessibilityValue(isCorrect ? "1" : "0")
-        .background(Color(.braveDisabled).clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous)))
-      }
-    }
-    .font(.footnote.bold())
-  }
-
-  var body: some View {
-    RecoveryPhraseGrid(data: entries, id: \.id) { word in
-      view(for: word)
-    }
-    .padding(8)
     .background(
-      Color.gray
-        .clipShape(
-          RoundedRectangle(cornerRadius: 8, style: .continuous)
-            .inset(by: pixelLength / 2)
-            .stroke(lineWidth: pixelLength / 2)
-        )
+      WalletPromptView(
+        isPresented: $isShowingSkipWarning,
+        primaryButton: WalletPromptButton(title: Strings.Wallet.editTransactionErrorCTA, action: { _ in
+          isShowingSkipWarning = false
+        }),
+        secondaryButton: WalletPromptButton(title: Strings.Wallet.backupSkipButtonTitle, action: { _ in
+          isShowingSkipWarning = false
+          Preferences.Wallet.isOnboardingCompleted.value = true
+        }),
+        showCloseButton: false,
+        content: {
+          VStack(alignment: .leading, spacing: 20) {
+            Text(Strings.Wallet.backupSkipPromptTitle)
+              .font(.subheadline.weight(.medium))
+              .foregroundColor(.primary)
+            Text(Strings.Wallet.backupSkipPromptSubTitle)
+              .font(.subheadline)
+              .foregroundColor(.secondary)
+          }
+          .multilineTextAlignment(.leading)
+          .padding(.vertical, 20)
+        })
     )
-    .navigationTitle(Strings.Wallet.cryptoTitle)
-    .navigationBarTitleDisplayMode(.inline)
-    .introspectViewController { vc in
-      vc.navigationItem.backButtonDisplayMode = .minimal
+    .transparentNavigationBar(backButtonDisplayMode: .generic)
+    .onAppear {
+      isFieldFocused = true
     }
   }
 }
@@ -223,12 +152,14 @@ struct VerifyRecoveryPhraseView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
       VerifyRecoveryPhraseView(
+        keyringStore: .previewStore,
         recoveryWords: [
           .init(value: "First", index: 0),
           .init(value: "Second", index: 1),
           .init(value: "Third", index: 2)
         ],
-        keyringStore: .previewStore
+        targetedRecoveryWordIndexes: [0, 1, 2],
+        password: ""
       )
     }
     .previewLayout(.sizeThatFits)

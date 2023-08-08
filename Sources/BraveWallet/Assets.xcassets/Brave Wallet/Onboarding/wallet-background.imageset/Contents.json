@@ -1,7 +1,6 @@
 {
   "images" : [
     {
-      "filename" : "brave-wallet-setup.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,12 +11,11 @@
           "value" : "dark"
         }
       ],
-      "filename" : "brave-wallet-setup-dark.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "brave-wallet-setup@2x.png",
+      "filename" : "background landing@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -28,12 +26,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "brave-wallet-setup-dark@2x.png",
+      "filename" : "background-landing-dark@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "brave-wallet-setup@3x.png",
+      "filename" : "background landing@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     },
@@ -44,7 +42,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "brave-wallet-setup-dark@3x.png",
+      "filename" : "background-landing-dark@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

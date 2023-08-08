@@ -9,13 +9,14 @@ import SwiftUI
 /// The `.privacySensitive()` doesn't work in sheets because the
 /// `redactedReasons` doesn't get passed through the environment in sheets.
 private struct CustomPrivacySensitiveModifier: ViewModifier {
+  var isDisclosed: Bool
   
   @State private var isBackgrounded: Bool = false
   @State private var isCaptured: Bool = false
   
   func body(content: Content) -> some View {
     Group {
-      if isBackgrounded || isCaptured {
+      if isBackgrounded || isCaptured || !isDisclosed {
         content
           .opacity(0)
           .overlay(alignment: .center) {
@@ -50,7 +51,7 @@ private struct CustomPrivacySensitiveModifier: ViewModifier {
 extension View {
   /// Redacts the given view if the app is backgrounded, or the system is actively
   /// recording, mirroring, or using AirPlay to stream the contents of the screen.
-  public func customPrivacySensitive() -> some View {
-    modifier(CustomPrivacySensitiveModifier())
+  public func customPrivacySensitive(isDisclosed: Bool = true) -> some View {
+    modifier(CustomPrivacySensitiveModifier(isDisclosed: isDisclosed))
   }
 }

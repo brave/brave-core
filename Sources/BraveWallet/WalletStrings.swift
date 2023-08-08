@@ -201,8 +201,15 @@ extension Strings {
       "wallet.copyToPasteboard",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Copy",
+      value: "Tap to copy",
       comment: "A button title that when tapped will copy some data to the users clipboard"
+    )
+    public static let copiedToPasteboard = NSLocalizedString(
+      "wallet.copiedToPasteboard",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Copied",
+      comment: "A button title that user has clicked to copy some data to the users clipboard"
     )
     public static let pasteFromPasteboard = NSLocalizedString(
       "wallet.pasteFromPasteboard",
@@ -320,15 +327,29 @@ extension Strings {
       "wallet.passwordPlaceholder",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Password",
+      value: "Enter password",
       comment: "A placeholder string that will be used on password text fields"
+    )
+    public static let newPasswordPlaceholder = NSLocalizedString(
+      "wallet.newPasswordPlaceholder",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Enter new password",
+      comment: "A placeholder string that will be used on password text fields to create a new wallet"
     )
     public static let repeatedPasswordPlaceholder = NSLocalizedString(
       "wallet.repeatedPasswordPlaceholder",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Verify password",
+      value: "Re-enter password",
       comment: "A placeholder string that will be used on repeat password text fields"
+    )
+    public static let repeatedPasswordMatch = NSLocalizedString(
+      "wallet.repeatedPasswordMatch",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Match!",
+      comment: "A label will be displayed when the repeat password field input is matched with the password field."
     )
     public static let importAccountSectionTitle = NSLocalizedString(
       "wallet.importAccountSectionTitle",
@@ -484,27 +505,6 @@ extension Strings {
       value: "Info",
       comment: "A title above additional information about an asset"
     )
-    public static let verifyRecoveryPhraseTitle = NSLocalizedString(
-      "wallet.verifyRecoveryPhraseTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Verify recovery phrase",
-      comment: "The title of the verify recovery phrase screen"
-    )
-    public static let verifyRecoveryPhraseSubtitle = NSLocalizedString(
-      "wallet.verifyRecoveryPhraseSubtitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Select the words in your recovery phrase in their correct order.",
-      comment: "The subtitle of the verify recovery phrase screen"
-    )
-    public static let verifyButtonTitle = NSLocalizedString(
-      "wallet.verifyButtonTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Verify",
-      comment: "The button title to verify if the user has put all recovery words in the right order"
-    )
     public static let skipButtonTitle = NSLocalizedString(
       "wallet.skipButtonTitle",
       tableName: "BraveWallet",
@@ -547,6 +547,13 @@ extension Strings {
       value: "Continue",
       comment: "A button title when a user will continue to the next step of something"
     )
+    public static let viewRecoveryPhraseButtonTitle = NSLocalizedString(
+      "wallet.viewRecoveryPhraseButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "View my recovery phrase",
+      comment: "A button title when a user will tap to reveal the recovery phrases."
+    )
     public static let backupWalletBackButtonTitle = NSLocalizedString(
       "wallet.backupWalletBackButtonTitle",
       tableName: "BraveWallet",
@@ -558,15 +565,50 @@ extension Strings {
       "wallet.setupCryptoTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Welcome to the new Brave Wallet",
+      value: "Browser native.\nSelf-custody.\nAnd multi-chain.",
       comment: "The title displayed on the 'setup crypto' onboarding screen"
     )
     public static let setupCryptoSubtitle = NSLocalizedString(
       "wallet.setupCryptoSubtitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Hold crypto assets in your custody and track portfolio performance. All right from the Brave privacy browser.",
+      value: "Take control of your crypto and NFTs. Brave Wallet supports Ethereum, EVM chains, Solana and more.",
       comment: "The subtitle displayed on the 'setup crypto' onboarding screen"
+    )
+    public static let setupCryptoCreateNewTitle = NSLocalizedString(
+      "wallet.setupCryptoCreateNewTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Need a new wallet?",
+      comment: "The title displayed in the section for user that need to create a brand new wallet"
+    )
+    public static let setupCryptoCreateNewSubTitle = NSLocalizedString(
+      "wallet.setupCryptoCreateNewSubTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Get started with Brave Wallet within minutes.",
+      comment: "The subtitle displayed in the section for user that need to create a brand new wallet"
+    )
+    public static let setupCryptoRestoreTitle = NSLocalizedString(
+      "wallet.setupCryptoRestoreTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Already have a wallet?",
+      comment: "The title displayed in the section for user that need to restore an existed wallet"
+    )
+    public static let setupCryptoRestoreSubTitle = NSLocalizedString(
+      "wallet.setupCryptoRestoreSubTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Import your existing wallet.",
+      comment: "The subtitle displayed in the section for user that need to restore an existed wallet"
+    )
+    public static let setupCryptoDisclaimer = NSLocalizedString(
+      "wallet.setupCryptoDisclaimer",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "©2023 Brave Software Inc. Brave and the Brave logo are registered trademarks of Brave. Other product names and logos may be trademarks of their respective companies. All rights reserved.",
+      comment: "The disclaimer text at the bottom of the first step of onboarding flow."
     )
     public static let setupCryptoButtonTitle = NSLocalizedString(
       "wallet.setupCryptoButtonTitle",
@@ -582,40 +624,47 @@ extension Strings {
       value: "Welcome",
       comment: "The title that will be displayed when long-pressing the back button in the navigation bar. As in the first step of an onboarding process is to welcome a user."
     )
+    public static let legalTitle = NSLocalizedString(
+      "wallet.legalTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Before We Begin",
+      comment: "The title of the screen for user to understand the responsibility and the terms of use before setting up a wallet."
+    )
+    public static let legalDescription = NSLocalizedString(
+      "wallet.legalDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "We require that you acknowledge the items below",
+      comment: "The description of the screen for user to understand the responsibility and the terms of use before setting up a wallet."
+    )
+    public static let legalUserResponsibility = NSLocalizedString(
+      "wallet.legalUserResponsibility",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "I understand this is a self-custody wallet, and that I alone am responsible for any associated funds, assets, or accounts, and for taking appropriate action to secure, protect and backup my wallet. I understand that Brave cannot access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.",
+      comment: "The responsibility explained in screen for users to check indicates they understand before setting up a wallet."
+    )
+    public static let legalTermOfUse = NSLocalizedString(
+      "wallet.legalTermOfUse",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "I have read and agree to the [Terms of Use](%@)",
+      comment: "For users to check indicates they have read and agree to the Terms of Use before setting up a wallet."
+    )
     public static let backupRecoveryPhraseTitle = NSLocalizedString(
       "wallet.backupRecoveryPhraseTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Your recovery phrase",
+      value: "Save Recovery Phrase",
       comment: "The title of the backup recovery phrase screen"
     )
     public static let backupRecoveryPhraseSubtitle = NSLocalizedString(
       "wallet.backupRecoveryPhraseSubtitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Write down or copy these words in the exact order shown below, and save them somewhere safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.",
+      value: "Your recovery phrase is the key to access your wallet in case you forget your password or lose your device.\n\nKeep it in a secure place that is not accessible to others and avoid sharing it with anyone.",
       comment: "The subtitle of the backup recovery phrase screen"
-    )
-    public static let backupRecoveryPhraseDisclaimer = NSLocalizedString(
-      "wallet.backupRecoveryPhraseDisclaimer",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "I have backed up my phrase somewhere safe.",
-      comment: "The disclaimer next to a toggle that the user must acknowledge before proceeding"
-    )
-    public static let backupRecoveryPhraseWarningPartOne = NSLocalizedString(
-      "wallet.backupRecoveryPhraseWarningPartOne",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "WARNING:",
-      comment: "The first part of the warning displayed on the backup recovery phrase page. As in to pay attention to the following text"
-    )
-    public static let backupRecoveryPhraseWarningPartTwo = NSLocalizedString(
-      "wallet.backupRecoveryPhraseWarningPartTwo",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Never share your recovery phrase. Anyone with this phrase can take your assets forever.",
-      comment: "The second part of the warning displayed on the backup recovery phrase page."
     )
     public static let backupRecoveryPhraseBackButtonTitle = NSLocalizedString(
       "wallet.backupRecoveryPhraseBackButtonTitle",
@@ -623,6 +672,70 @@ extension Strings {
       bundle: .module,
       value: "Recovery Phrase",
       comment: "The title that will be displayed when long-pressing the back button in the navigation bar. As in the a list of words to recovery your account on another device/wallet"
+    )
+    public static let backupSkipButtonTitle = NSLocalizedString(
+      "wallet.backupSkipButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "I'll back up later",
+      comment: "The title of the button that user will tap to skip the verifying recovery phrases step."
+    )
+    public static let backupSkipPromptTitle = NSLocalizedString(
+      "wallet.backupSkipPromptTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "You can skip this step now, but you still need to back up your recovery phrase to ensure account security.",
+      comment: "The title on the pop up when user decides to skip backup recovery phrases."
+    )
+    public static let backupSkipPromptSubTitle = NSLocalizedString(
+      "wallet.backupSkipPromptSubTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "To keep your account secure, make sure to back up your recovery phrase.",
+      comment: "The sub-title on the pop up when user decides to skip backup recovery phrases."
+    )
+    public static let verifyRecoveryPhraseTitle = NSLocalizedString(
+      "wallet.verifyRecoveryPhraseTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Let's Check",
+      comment: "The title of the screen that user will verify his/her recovery phrase."
+    )
+    public static let verifyRecoveryPhraseSubTitle = NSLocalizedString(
+      "wallet.verifyRecoveryPhraseSubTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Enter word in **position %d** from your recovery phrase.",
+      comment: "The sub-title of the screen that user will verify his/her recovery phrase."
+    )
+    
+    public static let verifyRecoveryPhraseError = NSLocalizedString(
+      "wallet.verifyRecoveryPhraseError",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Recovery phrase doesn't match.",
+      comment: "The error message when input phrase does not match the correct one."
+    )
+    public static let onboardingCompletedTitle = NSLocalizedString(
+      "wallet.onbordingCompletedTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "You're all set!",
+      comment: "The title of the last step of creating a new wallet."
+    )
+    public static let onboardingCompletedSubTitle = NSLocalizedString(
+      "wallet.onbordingCompletedSubTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Your Brave Wallet is ready to use.",
+      comment: "The subtitle of the last step of creating a new wallet."
+    )
+    public static let onboardingCompletedButtonTitle = NSLocalizedString(
+      "wallet.onbordingCompletedTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Go to my portfolio",
+      comment: "The title of the button in the last step for user to create a new wallet. This will direct users to the wallet portfolio screen."
     )
     public static let restoreWalletBackButtonTitle = NSLocalizedString(
       "wallet.restoreWalletBackButtonTitle",
@@ -656,29 +769,36 @@ extension Strings {
       "wallet.restoreWalletTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Restore Crypto Account",
+      value: "Import an Existing Wallet",
       comment: "The title on the restore wallet screen."
     )
     public static let restoreWalletSubtitle = NSLocalizedString(
       "wallet.restoreWalletSubtitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Enter your recovery phrase to restore your Brave wallet crypto account.",
+      value: "You can paste your entire recovery phrase into any field.",
       comment: "The subtitle on the restore wallet screen."
     )
     public static let restoreWalletPhrasePlaceholder = NSLocalizedString(
       "wallet.restoreWalletPhrasePlaceholder",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Enter your recovery phrase",
-      comment: "The placeholder on the mneomic/recovery phrase text field"
+      value: "Word #%d",
+      comment: "The placeholder on the mneomic/recovery phrase text field of each grid."
     )
     public static let restoreWalletImportFromLegacyBraveWallet = NSLocalizedString(
       "wallet.restoreWalletImportFromLegacyBraveWallet",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Import from legacy Brave crypto wallets?",
-      comment: "A toggle label to ask the user if their 24-word phrase is a legacy Brave crypto wallet"
+      value: "I have a 24-word recovery phrase",
+      comment: "A button title when 12 recovery-word grids are displayed for users to restore regular wallet. Users can click this button to display the 24 recovery-word grids to restore legacy wallet."
+    )
+    public static let restoreWalletImportFromRegularBraveWallet = NSLocalizedString(
+      "wallet.restoreWalletImportFromRegularBraveWallet",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "I have a 12-word recovery phrase",
+      comment: "A button title when 24 recovery-word grids are displayed for users to restore legacy wallet. Users can click this button to display the 12 recovery-word grids to restore regular wallet."
     )
     public static let restoreWalletShowRecoveryPhrase = NSLocalizedString(
       "wallet.restoreWalletShowRecoveryPhrase",
@@ -705,8 +825,36 @@ extension Strings {
       "wallet.createWalletTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Secure your crypto assets with a password",
+      value: "Create a Password",
       comment: "The title of the create wallet screen"
+    )
+    public static let createWalletSubTitle = NSLocalizedString(
+      "wallet.createWalletSubTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "You'll use this password to access your wallet.",
+      comment: "The sub-title of the create wallet screen"
+    )
+    public static let passwordStatusWeak = NSLocalizedString(
+      "wallet.passwordStatusWeak",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Weak",
+      comment: "A label will be displayed beside input password when it is considered as a weak password"
+    )
+    public static let passwordStatusMedium = NSLocalizedString(
+      "wallet.passwordStatusMedium",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Medium",
+      comment: "A label will be displayed beside input password when it is considered as a medium password"
+    )
+    public static let passwordStatusStrong = NSLocalizedString(
+      "wallet.passwordStatusStrong",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Strong",
+      comment: "A label will be displayed beside input password when it is considered as a strong password"
     )
     public static let biometricsSetupErrorTitle = NSLocalizedString(
       "wallet.biometricsSetupErrorTitle",
@@ -915,15 +1063,36 @@ extension Strings {
       "wallet.biometricsSetupTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Unlock Brave Wallet with your Face ID, Touch ID, or password.",
-      comment: "The title shown when a user is asked if they would like to setup biometric unlock"
+      value: "Unlock Brave Wallet with %@",
+      comment: "The title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device."
+    )
+    public static let biometricsSetupSubTitle = NSLocalizedString(
+      "wallet.biometricsSetupTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Would you like to use %@ to unlock Brave Wallet?",
+      comment: "The sub-title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device."
     )
     public static let biometricsSetupEnableButtonTitle = NSLocalizedString(
       "wallet.biometricsSetupEnableButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Enable",
-      comment: "The button title that enables the biometric unlock feature"
+      value: "Use %@",
+      comment: "The button title that enables the biometric unlock feature. %@` will be replaced with the biometric type name of the current device."
+    )
+    public static let biometricsSetupFaceId = NSLocalizedString(
+      "wallet.biometricsSetupFaceId",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Face ID",
+      comment: "Type of biometrics. This will be used in Biometric setup screen."
+    )
+    public static let biometricsSetupTouchId = NSLocalizedString(
+      "wallet.biometricsSetupTouchId",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Touch ID",
+      comment: "Type of biometrics. This will be used in Biometric setup screen."
     )
     public static let copyAddressButtonTitle = NSLocalizedString(
       "wallet.copyAddressButtonTitle",

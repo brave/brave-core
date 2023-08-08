@@ -135,6 +135,8 @@ public class SettingsStore: ObservableObject {
     Preferences.Wallet.isShowingNFTNetworkLogoFilter.reset()
     Preferences.Wallet.nonSelectedAccountsFilter.reset()
     Preferences.Wallet.nonSelectedNetworksFilter.reset()
+    // onboarding
+    Preferences.Wallet.isOnboardingCompleted.reset()
     
     WalletUserAssetGroup.removeAllGroup()
   }
