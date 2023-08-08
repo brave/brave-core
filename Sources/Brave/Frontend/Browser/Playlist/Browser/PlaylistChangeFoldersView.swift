@@ -48,7 +48,7 @@ struct PlaylistChangeFoldersView: View {
                 VStack(alignment: .leading) {
                   Text(folder.title ?? "")
                     .foregroundColor(Color(.braveLabel))
-                  Text("\(folder.playlistItems?.count ?? 0) items")
+                  Text(folderCountLabel(folder.playlistItems?.count ?? 0))
                     .foregroundColor(Color(.secondaryBraveLabel))
                     .font(.subheadline)
                 }
@@ -102,6 +102,10 @@ struct PlaylistChangeFoldersView: View {
         }
       }
     }
+  
+  private func folderCountLabel(_ count: Int) -> String {
+    String.localizedStringWithFormat(count == 1 ? Strings.PlayList.folderItemCountSingular : Strings.PlayList.folderItemCountPlural, count)
+  }
 }
 
 private struct CreateFolderView: View {
