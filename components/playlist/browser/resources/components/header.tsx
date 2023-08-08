@@ -10,7 +10,6 @@ import { Link } from 'react-router-dom'
 
 import Icon from '@brave/leo/react/icon'
 import { color, font, spacing } from '@brave/leo/tokens/css'
-import Button from '@brave/leo/react/button'
 
 import PlaylistInfo from './playlistInfo'
 import { usePlaylist } from '../reducers/states'
@@ -57,30 +56,35 @@ const HeaderContainer = styled.div`
   padding: ${spacing[16]};
   gap: ${spacing[16]};
   border-bottom: 1px solid ${color.divider.subtle};
+  background-color: ${color.container.background};
 `
 
 const StyledPlaylistInfo = styled(PlaylistInfo)`
   flex-grow: 1;
 `
 
+const LeoButtonContainer = styled.button`
+  display: contents;
+  cursor: pointer;
+`
+
 function NewPlaylistButton () {
   return (
-    <Button
-      kind='plain-faint'
+    <LeoButtonContainer
       onClick={() => {
         getPlaylistAPI().showCreatePlaylistUI()
       }}
     >
       <ColoredIcon name='plus-add' color={color.icon.default} />
-    </Button>
+    </LeoButtonContainer>
   )
 }
 
 function SettingButton () {
   return (
-    <Button kind='plain-faint' onClick={() => {}}>
+    <LeoButtonContainer onClick={() => {}}>
       <ColoredIcon name='settings' color={color.icon.default} />
-    </Button>
+    </LeoButtonContainer>
   )
 }
 
