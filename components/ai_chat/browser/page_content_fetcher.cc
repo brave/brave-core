@@ -179,14 +179,9 @@ class PageContentFetcher {
         transcript_text += " ";
       }
 
-      // Remove the two NBSP at the end of each text
-      base::ReplaceFirstSubstringAfterOffset(&text, 0, "  ", "");
-
       transcript_text += text;
     }
 
-    // Remove the newlines are scattered throughout.
-    base::RemoveChars(transcript_text, "\n", &transcript_text);
     SendResultAndDeleteSelf(std::move(callback), transcript_text, true);
   }
 
