@@ -7,9 +7,8 @@ import * as React from 'react'
 import { render } from 'react-dom'
 
 import styled from 'styled-components'
-import InspectContext from './context'
+import InspectContext, { useInspectContext } from './context'
 import PageInfo from './PageInfo'
-import CurrentPage from './CurrentPage'
 
 const Grid = styled.div`
   display: grid;
@@ -18,17 +17,29 @@ const Grid = styled.div`
   gap: 8px;
 `
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-8);
+  max-width: 800px;
+  margin: 0 auto;
+`
 
 function App() {
+  const { page } = useInspectContext()
+
   return (
-    <InspectContext>
-      <Grid>
-        <PageInfo />
-        <CurrentPage />
-        <div />
-      </Grid>
-    </InspectContext>
+    <Grid>
+      <PageInfo />
+      <Container>
+        {page === 'feed' && <FeedPage />}
+        {page === 'signals' && <SignalsPage />}
+      </Container>
+      <div />
+    </Grid>
   )
 }
 
-render(<App />, document.getElementById('root'))
+render(<InspectContext>
+  <App />
+</InspectContext>, document.getElementById('root'))
