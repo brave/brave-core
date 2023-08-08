@@ -21,6 +21,14 @@ import uiReducer from '../common/slices/ui.slice'
 
 // utils
 import { setApiProxyFetcher } from '../common/async/base-query-cache'
+import {
+  makeBraveWalletAutoPinServiceObserver,
+  makeBraveWalletPinServiceObserver,
+  makeBraveWalletServiceObserver,
+  makeJsonRpcServiceObserver,
+  makeKeyringServiceObserver,
+  makeTxServiceObserver
+} from '../common/wallet_api_proxy_observers'
 
 export const store = configureStore({
   reducer: {
@@ -43,12 +51,12 @@ export type WalletPageRootStore = typeof store
 export type RootStoreState = ReturnType<typeof store.getState>
 
 const proxy = getWalletPageApiProxy()
-proxy.addJsonRpcServiceObserver(store)
-proxy.addKeyringServiceObserver(store)
-proxy.addTxServiceObserver(store)
-proxy.addBraveWalletServiceObserver(store)
-proxy.addBraveWalletPinServiceObserver(store)
-proxy.addBraveWalletAutoPinServiceObserver(store)
+proxy.addJsonRpcServiceObserver(makeJsonRpcServiceObserver(store))
+proxy.addKeyringServiceObserver(makeKeyringServiceObserver(store))
+proxy.addTxServiceObserver(makeTxServiceObserver(store))
+proxy.addBraveWalletServiceObserver(makeBraveWalletServiceObserver(store))
+proxy.addBraveWalletPinServiceObserver(makeBraveWalletPinServiceObserver(store))
+proxy.addBraveWalletAutoPinServiceObserver(makeBraveWalletAutoPinServiceObserver(store))
 
 setApiProxyFetcher(getWalletPageApiProxy)
 
