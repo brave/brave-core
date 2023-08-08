@@ -966,13 +966,13 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_SETTINGS_VPN_PAGE_TITLE" desc="Title of the vpn settings page">
           Brave VPN
         </message>
-        <message name="IDS_SETTINGS_VPN_PAGE_USE_WIREGUARD_TITLE" desc="Title of the Wireguard option on the vpn settings page">
-          Use Wireguard protocol in Brave VPN
+        <message name="IDS_SETTINGS_VPN_PAGE_USE_WIREGUARD_TITLE" desc="Title of the WireGuard option on the vpn settings page">
+          Use WireGuard protocol in Brave VPN
         </message>
-        <message name="IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_CONNECTED" desc="Title of the Wireguard sub label on the vpn settings page when brave vpn connected">
+        <message name="IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_CONNECTED" desc="Title of the WireGuard sub label on the vpn settings page when brave vpn connected">
           This setting cannot be changed while Brave VPN is connected.
         </message>
-        <message name="IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_DISCONNECTED" desc="Title of the Wireguard sub label on the vpn settings page when brave vpn connected">
+        <message name="IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_DISCONNECTED" desc="Title of the WireGuard sub label on the vpn settings page when brave vpn connected">
           Requires browser restart.
         </message>        
         <message name="IDS_SETTINGS_SHOW_VPN_BUTTON" desc="The label for showing vpn button in the toolbar">
