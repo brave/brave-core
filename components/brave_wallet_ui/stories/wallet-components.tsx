@@ -261,6 +261,7 @@ export const _AutoDiscoveryEmptyState = () => {
     <AutoDiscoveryEmptyState
       onImportNft={() => console.log('Import NFT')}
       onRefresh={() => console.log('Import NFT')}
+      isRefreshingTokens={false}
     />
   )
 }
