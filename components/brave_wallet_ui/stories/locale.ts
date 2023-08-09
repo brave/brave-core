@@ -567,6 +567,14 @@ provideStrings({
   braveWalletSitePermissionsTrust: 'Trust',
   braveWalletSitePermissionsRevoke: 'Revoke',
 
+  // DApp Connection Panel
+  braveWalletChangeNetwork: 'Change network',
+  braveWalletChangeAccount: 'Change account',
+  braveWalletActive: 'Active',
+  braveWalletNotConnected: 'Not connected',
+  braveWalletConnectedAccounts: 'Connected accounts',
+  braveWalletAvailableAccounts: 'Available accounts',
+
   // Transaction Detail Box
   braveWalletTransactionDetailBoxFunction: 'FUNCTION TYPE',
   braveWalletTransactionDetailBoxHex: 'HEX DATA',

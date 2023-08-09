@@ -23,7 +23,7 @@ import { useNetworkOrb } from '../../../common/hooks/use-orb'
 interface Props {
   network?: BraveWallet.NetworkInfo
   marginRight?: number
-  size?: 'big' | 'small'
+  size?: 'huge' | 'big' | 'small' | 'tiny'
 }
 
 export const CreateNetworkIcon = ({

@@ -30,10 +30,16 @@ export const Placeholder = styled.div<{ orb: string }>`
 `
 
 interface IconProps extends AssetIconProps {
-  size?: 'big' | 'small'
+  size?: 'huge' | 'big' | 'small' | 'tiny'
 }
 
 export const NetworkIcon = AssetIconFactory<IconProps>(props => ({
-  width: props.size === 'big' ? '24px' : '15px',
+  width: props.size === 'huge'
+    ? '32px'
+    : props.size === 'big'
+      ? '24px'
+      : props.size === 'tiny'
+        ? '12px'
+        : '15px',
   height: 'auto'
 }))
