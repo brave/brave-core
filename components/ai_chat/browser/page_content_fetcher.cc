@@ -18,6 +18,8 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_request_headers.h"
+#include "services/data_decoder/public/cpp/data_decoder.h"
+#include "services/data_decoder/public/cpp/safe_xml_parser.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
@@ -125,16 +127,68 @@ class PageContentFetcher {
                network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
     loader->SetAllowHttpErrorResults(true);
     auto* loader_ptr = loader.get();
-    auto on_response = base::BindOnce(
-        &PageContentFetcher::OnTranscriptFetchResponse,
-        weak_ptr_factory_.GetWeakPtr(), std::move(callback), std::move(loader));
+    bool is_youtube =
+        data->type == ai_chat::mojom::PageContentType::VideoTranscriptYouTube;
+    auto on_response =
+        base::BindOnce(&PageContentFetcher::OnTranscriptFetchResponse,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                       std::move(loader), is_youtube);
     loader_ptr->DownloadToString(url_loader_factory_.get(),
                                  std::move(on_response), 2 * 1024 * 1024);
+  }
+
+  void OnYoutubeTranscriptXMLParsed(
+      FetchPageContentCallback callback,
+      base::expected<base::Value, std::string> result) {
+    // Example Youtube transcript XML:
+    //
+    // <?xml version="1.0" encoding="utf-8"?>
+    // <transcript>
+    //   <text start="0" dur="5.1">Dear Fellow Scholars, this is Two Minute
+    //   Papers with Dr. Károly Zsolnai-Fehér.</text> <text start="5.1"
+    //   dur="5.28">ChatGPT has just been supercharged with  browsing support, I
+    //   tried it myself too,  </text> <text start="10.38" dur="7.38">and I
+    //   think this changes everything. Well, almost  everything, as you will
+    //   see in a moment. And this  </text>
+    // </transcript>
+
+    if (!data_decoder::IsXmlElementNamed(result.value(), "transcript")) {
+      VLOG(1) << "Could not find transcript element.";
+      return;
+    }
+
+    std::string transcript_text;
+    const base::Value::List* children =
+        data_decoder::GetXmlElementChildren(result.value());
+    if (!children) {
+      return;
+    }
+
+    for (const auto& child : *children) {
+      if (!data_decoder::IsXmlElementNamed(child, "text")) {
+        continue;
+      }
+
+      std::string text;
+      if (!data_decoder::GetXmlElementText(child, &text)) {
+        continue;
+      }
+
+      if (!transcript_text.empty()) {
+        // Add a space as a separator betwen texts.
+        transcript_text += " ";
+      }
+
+      transcript_text += text;
+    }
+
+    SendResultAndDeleteSelf(std::move(callback), transcript_text, true);
   }
 
   void OnTranscriptFetchResponse(
       FetchPageContentCallback callback,
       std::unique_ptr<network::SimpleURLLoader> loader,
+      bool is_youtube,
       std::unique_ptr<std::string> response_body) {
     auto response_code = -1;
     base::flat_map<std::string, std::string> headers;
@@ -144,7 +198,7 @@ class PageContentFetcher {
         response_code = headers_list->response_code();
       }
     }
-    // instance->url_loaders_.erase(iter);
+
     // Validate if we get a feed
     bool is_ok = (loader->NetError() == net::OK && response_body);
     std::string transcript_content = is_ok ? *response_body : "";
@@ -155,6 +209,16 @@ class PageContentFetcher {
     DVLOG(2) << "Got video text: " << transcript_content;
     VLOG(1) << __func__ << " Number of chars in video transcript xml = "
             << transcript_content.length() << "\n";
+    if (is_youtube) {
+      data_decoder::DataDecoder::ParseXmlIsolated(
+          transcript_content,
+          data_decoder::mojom::XmlParser::WhitespaceBehavior::
+              kPreserveSignificant,
+          base::BindOnce(&PageContentFetcher::OnYoutubeTranscriptXMLParsed,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+      return;
+    }
+
     SendResultAndDeleteSelf(std::move(callback), transcript_content, true);
   }
 
