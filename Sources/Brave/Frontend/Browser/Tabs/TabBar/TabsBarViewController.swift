@@ -507,4 +507,9 @@ extension TabsBarViewController: TabManagerDelegate {
   func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?) {
     updateData()
   }
+  
+  func tabManagerDidAddTabs(_ tabManager: TabManager) {
+    assert(Thread.current.isMainThread)
+    updateData()
+  }
 }
