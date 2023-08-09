@@ -337,8 +337,8 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownEthNetworks() {
       GetNeonEVMMainnet(),
       GetGoerliTestNetwork(),
       GetSepoliaTestNetwork(),
-      GetEthLocalhost(),
-      GetFilecoinEthereumTestnet()
+      GetFilecoinEthereumTestnet(),
+      GetEthLocalhost()
       // clang-format on
   });
   return *networks.get();

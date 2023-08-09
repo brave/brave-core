@@ -955,7 +955,7 @@ TEST(BraveWalletUtilsUnitTest, GetAllKnownEthNetworkIds) {
        mojom::kBinanceSmartChainMainnetChainId, mojom::kOptimismMainnetChainId,
        mojom::kAvalancheMainnetChainId, mojom::kFilecoinEthereumMainnetChainId,
        mojom::kNeonEVMMainnetChainId, "goerli", "sepolia",
-       "http://localhost:7545/", mojom::kFilecoinEthereumTestnetChainId});
+       mojom::kFilecoinEthereumTestnetChainId, "http://localhost:7545/"});
   ASSERT_EQ(GetAllKnownChains(nullptr, mojom::CoinType::ETH).size(),
             expected_network_ids.size());
   EXPECT_EQ(GetAllKnownEthNetworkIds(), expected_network_ids);
