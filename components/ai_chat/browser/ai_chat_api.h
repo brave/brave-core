@@ -32,6 +32,10 @@ class AIChatAPI {
                        data_completed_callback,
                    api_request_helper::APIRequestHelper::DataReceivedCallback
                        data_received_callback = base::NullCallback());
+  // Clears all in-progress requests
+  // TODO(nullhook): Keep track of in-progress requests and cancel them
+  // individually. This would be useful to keep some in-progress requests alive.
+  void ClearAllQueries();
 
  private:
   api_request_helper::APIRequestHelper api_request_helper_;

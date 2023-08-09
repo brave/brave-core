@@ -185,6 +185,10 @@ void APIRequestHelper::Cancel(const Ticket& ticket) {
   url_loaders_.erase(ticket);
 }
 
+void APIRequestHelper::CancelAll() {
+  url_loaders_.clear();
+}
+
 APIRequestHelper::Ticket APIRequestHelper::CreateURLLoaderHandler(
     const std::string& method,
     const GURL& url,

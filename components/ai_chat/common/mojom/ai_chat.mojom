@@ -53,6 +53,8 @@ interface PageHandler {
   GetFaviconImageData() => (array<uint8>? favicon_image_data);
   OpenBraveLeoSettings();
   OpenBraveLeoWiki();
+  DisconnectPageContents();
+  ClearConversationHistory();
 };
 
 interface ChatUIPage {

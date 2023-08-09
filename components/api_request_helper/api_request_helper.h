@@ -212,6 +212,7 @@ class APIRequestHelper {
                   const APIRequestOptions& request_options = {});
 
   void Cancel(const Ticket& ticket);
+  void CancelAll();
 
  private:
   APIRequestHelper(const APIRequestHelper&) = delete;

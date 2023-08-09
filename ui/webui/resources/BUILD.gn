@@ -327,6 +327,8 @@ leo_icons = [
   "window-tab-new.svg",
   "window.svg",
   "windows-open.svg",
+  "erase.svg",
+  "plug-connected-x.svg",
 ]
 
 if (enable_brave_vpn_panel) {

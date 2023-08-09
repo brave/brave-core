@@ -63,6 +63,8 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void GetSiteInfo(GetSiteInfoCallback callback) override;
   void OpenBraveLeoSettings() override;
   void OpenBraveLeoWiki() override;
+  void DisconnectPageContents() override;
+  void ClearConversationHistory() override;
 
   // content::WebContentsObserver:
   void OnVisibilityChanged(content::Visibility visibility) override;

@@ -173,3 +173,7 @@ void AIChatAPI::QueryPrompt(
                                 headers, {});
   }
 }
+
+void AIChatAPI::ClearAllQueries() {
+  api_request_helper_.CancelAll();
+}
