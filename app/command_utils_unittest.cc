@@ -17,7 +17,7 @@
 // add the missing command to |commands::GetCommands| in command_utils.h.
 TEST(CommandUtilsUnitTest, AllAcceleratedCommandsShouldBeAvailable) {
   base::flat_set<int> excluded_commands = {
-      IDC_RUN_SCREEN_AI_VISUAL_ANNOTATIONS};
+      IDC_CONTENT_CONTEXT_RUN_LAYOUT_EXTRACTION};
 
   base::test::ScopedFeatureList features;
   features.InitAndEnableFeature(commands::features::kBraveCommands);
