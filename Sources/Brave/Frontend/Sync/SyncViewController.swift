@@ -7,10 +7,8 @@ import Data
 import LocalAuthentication
 import Combine
 
-class SyncViewController: UIViewController {
+class SyncViewController: AuthenticationController {
 
-  let windowProtection: WindowProtection?
-  private let requiresAuthentication: Bool
   private let isModallyPresented: Bool
   private var localAuthObservers = Set<AnyCancellable>()
 
@@ -20,11 +18,8 @@ class SyncViewController: UIViewController {
        requiresAuthentication: Bool = false,
        isAuthenticationCancellable: Bool = true,
        isModallyPresented: Bool = false) {
-    self.windowProtection = windowProtection
-    self.requiresAuthentication = requiresAuthentication
     self.isModallyPresented = isModallyPresented
-
-    super.init(nibName: nil, bundle: nil)
+    super.init(windowProtection: windowProtection, requiresAuthentication: requiresAuthentication)
     
     windowProtection?.isCancellable = isAuthenticationCancellable
     
@@ -67,48 +62,11 @@ class SyncViewController: UIViewController {
     code()
   }
   
-  /// A method to ask biometric authentication to user
-  /// - Parameter completion: block returning authentication status
-  func askForAuthentication(completion: ((Bool, LAError.Code?) -> Void)? = nil) {
-    guard let windowProtection = windowProtection else {
-      completion?(false, nil)
-      return
-    }
-
-    if !windowProtection.isPassCodeAvailable {
-      showSetPasscodeError() {
-        completion?(false, LAError.passcodeNotSet)
-      }
-    } else {
-      windowProtection.presentAuthenticationForViewController(
-        determineLockWithPasscode: false) { status, error in
-          completion?(status, error)
-      }
-    }
-  }
-  
   private func dismissSyncController() {
     if isModallyPresented {
       self.dismiss(animated: true)
     } else {
       self.navigationController?.popViewController(animated: true)
     }
-  }
-  
-  /// An alert presenter for passcode error to warn user to setup passcode to use feature
-  /// - Parameter completion: block after Ok button is pressed
-  private func showSetPasscodeError(completion: @escaping (() -> Void)) {
-    let alert = UIAlertController(
-      title: Strings.Sync.syncSetPasscodeAlertTitle,
-      message: Strings.Sync.syncSetPasscodeAlertDescription,
-      preferredStyle: .alert)
-
-    alert.addAction(
-      UIAlertAction(title: Strings.OKString, style: .default, handler: { _ in
-          completion()
-      })
-    )
-    
-    present(alert, animated: true, completion: nil)
   }
 }

@@ -123,6 +123,7 @@ extension Preferences {
   
   final public class Privacy {
     static let lockWithPasscode = Option<Bool>(key: "privacy.lock-with-passcode", default: false)
+    static let privateBrowsingLock = Option<Bool>(key: "privacy.private-browsing-lock", default: false)
     /// Forces all private tabs
     public static let privateBrowsingOnly = Option<Bool>(key: "privacy.private-only", default: false)
     /// Whether or not private browsing tabs can be session restored (persistent private browsing)

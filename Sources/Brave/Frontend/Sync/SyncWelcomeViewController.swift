@@ -21,7 +21,7 @@ class SyncWelcomeViewController: SyncViewController {
   
   private var overlayView: UIView?
 
-  private var isLoading: Bool = false {
+  override var isLoading: Bool {
     didSet {
       overlayView?.removeFromSuperview()
 

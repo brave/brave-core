@@ -589,7 +589,16 @@ class SettingsViewController: TableViewController {
     return Section(
       header: .title(Strings.security),
       rows: [
-        .boolRow(title: Strings.browserLock, detailText: Strings.browserLockDescription, option: Preferences.Privacy.lockWithPasscode, image: UIImage(braveSystemNamed: "leo.biometric.login")),
+        .boolRow(
+          title: Strings.Privacy.browserLock,
+          detailText: Strings.Privacy.browserLockDescription,
+          option: Preferences.Privacy.lockWithPasscode,
+          image: UIImage(braveSystemNamed: "leo.biometric.login")),
+        .boolRow(
+          title: Strings.Privacy.privateBrowsingLock,
+          detailText: Strings.Privacy.privateBrowsingLockDescription,
+          option: Preferences.Privacy.privateBrowsingLock,
+          image: UIImage(braveSystemNamed: "leo.lock")),
         Row(
           text: Strings.Login.loginListNavigationTitle,
           selection: { [unowned self] in

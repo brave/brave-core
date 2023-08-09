@@ -130,29 +130,3 @@ public class SiteTableViewController: LoadingViewController, UITableViewDelegate
     true
   }
 }
-
-public class LoadingViewController: UIViewController {
-
-  let spinner = UIActivityIndicatorView().then {
-    $0.snp.makeConstraints { make in
-      make.size.equalTo(24)
-    }
-    $0.hidesWhenStopped = true
-    $0.isHidden = true
-  }
-
-  var isLoading: Bool = false {
-    didSet {
-      if isLoading {
-        view.addSubview(spinner)
-        spinner.snp.makeConstraints {
-          $0.center.equalTo(view.snp.center)
-        }
-        spinner.startAnimating()
-      } else {
-        spinner.stopAnimating()
-        spinner.removeFromSuperview()
-      }
-    }
-  }
-}
