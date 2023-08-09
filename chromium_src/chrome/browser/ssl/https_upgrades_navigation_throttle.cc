@@ -80,7 +80,7 @@ HttpsUpgradesNavigationThrottle::MaybeCreateThrottleFor(
       HttpsFirstModeServiceFactory::GetForProfile(profile);
   if (hfm_service) {
     // Can be null in some cases, e.g. when using Ash sign-in profile.
-    hfm_service->MaybeEnableHttpsFirstModeForUrl(profile, handle->GetURL());
+    hfm_service->MaybeEnableHttpsFirstModeForUrl(handle->GetURL());
   }
   // StatefulSSLHostStateDelegate can be null during tests.
   if (state && state->IsHttpsEnforcedForHost(handle->GetURL().host(),
@@ -105,5 +105,5 @@ HttpsUpgradesNavigationThrottle::MaybeCreateThrottleFor(
   HttpsOnlyModeTabHelper::CreateForWebContents(handle->GetWebContents());
 
   return std::make_unique<HttpsUpgradesNavigationThrottle>(
-      handle, std::move(blocking_page_factory), interstitial_state);
+      handle, profile, std::move(blocking_page_factory), interstitial_state);
 }
