@@ -10,14 +10,19 @@ import {
   useOnClickOutside
 } from '../../../common/hooks/useOnClickOutside'
 
+// Components
 import {
   DefaultPanelMenu
 } from '../wallet-menus/default-panel-menu'
+import {
+  DAppConnectionSettings
+} from '../../extension/dapp-connection-settings/dapp-connection-settings'
 
 // Styled Components
 import {
   Button,
-  ButtonIcon
+  ButtonIcon,
+  LeftRightContainer
 } from './shared-panel-headers.style'
 import {
   HeaderTitle,
@@ -63,32 +68,43 @@ export const DefaultPanelHeader = (props: Props) => {
       padding='18px 16px'
       justifyContent='space-between'
     >
-      <Button
-        onClick={onClickExpand}
+      <LeftRightContainer
+        width='unset'
+        justifyContent='flex-start'
       >
-        <ButtonIcon name='expand' />
-      </Button>
+        <Button
+          onClick={onClickExpand}
+        >
+          <ButtonIcon name='expand' />
+        </Button>
+      </LeftRightContainer>
       <HeaderTitle
         isPanel={true}
       >
         {title}
       </HeaderTitle>
-      <MenuWrapper
-        ref={settingsMenuRef}
+      <LeftRightContainer
+        width='unset'
+        justifyContent='flex-end'
       >
-        <Button
-          onClick={
-            () => setShowSettingsMenu(prev => !prev)
-          }
+        <DAppConnectionSettings />
+        <MenuWrapper
+          ref={settingsMenuRef}
         >
-          <ButtonIcon
-            name='more-horizontal'
-          />
-        </Button>
-        {showSettingsMenu &&
-          <DefaultPanelMenu />
-        }
-      </MenuWrapper>
+          <Button
+            onClick={
+              () => setShowSettingsMenu(prev => !prev)
+            }
+          >
+            <ButtonIcon
+              name='more-horizontal'
+            />
+          </Button>
+          {showSettingsMenu &&
+            <DefaultPanelMenu />
+          }
+        </MenuWrapper>
+      </LeftRightContainer>
     </Row>
   )
 }
