@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+OBJC_EXPORT
 @interface URLSanitizerService : NSObject
 - (instancetype)init NS_UNAVAILABLE;
 

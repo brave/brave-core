@@ -28,6 +28,7 @@
 }
 
 - (NSURL*)sanitizedURL:(NSURL*)url {
+  DCHECK(urlSanitizer_);
   GURL gurl = net::GURLWithNSURL(url);
   GURL cleanURL = urlSanitizer_->SanitizeURL(gurl);
   return net::NSURLWithGURL(cleanURL);

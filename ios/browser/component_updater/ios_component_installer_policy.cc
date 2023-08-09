@@ -125,6 +125,7 @@ base::FilePath IOSComponentInstallerPolicy::GetRelativeInstallDir() const {
 }
 
 void IOSComponentInstallerPolicy::GetHash(std::vector<uint8_t>* hash) const {
+  DCHECK(hash);
   const std::string public_key_sha256 = crypto::SHA256HashString(public_key_);
   hash->assign(public_key_sha256.begin(), public_key_sha256.end());
 }
