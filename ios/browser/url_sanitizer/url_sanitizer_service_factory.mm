@@ -10,13 +10,13 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
 
+#include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
+#include "brave/ios/browser/application_context/brave_application_context_impl.h"
+#include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 #include "ios/web/public/browser_state.h"
-
-#include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
-#include "brave/ios/browser/browser_state/brave_browser_process.h"
 
 namespace brave {
 
@@ -43,11 +43,11 @@ URLSanitizerServiceFactory::~URLSanitizerServiceFactory() = default;
 std::unique_ptr<KeyedService>
 URLSanitizerServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
-  std::unique_ptr<brave::URLSanitizerService> service(
-      new brave::URLSanitizerService());
-  BraveBrowserProcess& browserProcess = BraveBrowserProcess::GetInstance();
-  browserProcess.url_sanitizer_component_installer()->AddObserver(
-      service.get());
+  std::unique_ptr<brave::URLSanitizerService> service =
+      std::make_unique<brave::URLSanitizerService>();
+  BraveApplicationContextImpl* braveContext =
+      static_cast<BraveApplicationContextImpl*>(GetApplicationContext());
+  braveContext->url_sanitizer_component_installer()->AddObserver(service.get());
   return service;
 }
 

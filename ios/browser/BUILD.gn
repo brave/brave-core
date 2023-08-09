@@ -41,6 +41,7 @@ source_set("browser") {
     "//base",
     "//brave/browser/sync",
     "//brave/chromium_src/ios/chrome/browser/shared/model/prefs",
+    "//brave/ios/browser/application_context",
     "//brave/ios/browser/browser_state",
     "//components/flags_ui",
     "//components/metrics",

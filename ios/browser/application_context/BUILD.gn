@@ -1,0 +1,17 @@
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+source_set("application_context") {
+  sources = [
+    "brave_application_context_impl.h",
+    "brave_application_context_impl.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/https_upgrade_exceptions/browser",
+    "//brave/ios/browser/component_updater",
+    "//brave/ios/browser/local_data_file_service",
+    "//ios/chrome/browser/application_context",
+  ]
+}

@@ -8,8 +8,6 @@ import("//ios/build/config.gni")
 
 source_set("browser_state") {
   sources = [
-    "brave_browser_process.h",
-    "brave_browser_process.mm",
     "brave_browser_state_keyed_service_factories.cc",
     "brave_browser_state_keyed_service_factories.h",
   ]
