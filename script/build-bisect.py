@@ -36,8 +36,12 @@ def parse_args():
                         default=None)
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='extra logging')
-    parser.add_argument('--real-profile', action='store_true',
-                        help='if true, use your real profile (instead of a fresh one). can\'t be combined with `--use-profile`.')
+    parser.add_argument(
+        '--real-profile',
+        action='store_true',
+        help=
+        'if true, use your real profile (instead of a fresh one). can\'t be combined with `--use-profile`.'
+    )
     parser.add_argument('--use-profile',
                         help='url of a zipped profile to unzip/use for each install',
                         default=None)
@@ -189,7 +193,8 @@ def install(download_dir, path):
 
         if volume is None:
             raise Exception(
-                '[ERROR] did not find "/Volumes/Brave" sub-string in mount list!\nFull response from "hdiutil":\n' + result)
+                '[ERROR] did not find "/Volumes/Brave" sub-string in mount list!\nFull response from "hdiutil":\n'
+                + result)
 
         print('-> mounted as "' + volume + '"')
 

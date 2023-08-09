@@ -46,8 +46,10 @@ def get_releases_by_tag(repo, tag_name, include_drafts=False):
     GITHUB_URL = 'https://api.github.com'
 
     next_request = ""
-    headers = {'Accept': 'application/vnd.github+json',
-               'Authorization': 'token ' + os.environ.get('GITHUB_TOKEN')}
+    headers = {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': 'token ' + os.environ.get('GITHUB_TOKEN')
+    }
     release_url = GITHUB_URL + "/repos/" + \
         BRAVE_REPO + "/releases?page=1&per_page=100"
     r = call_github_api(release_url, headers=headers)
