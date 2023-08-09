@@ -132,6 +132,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[prefs::kSyncedDefaultPrivateSearchProviderGUID] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
 
+  // autofill prefs
+  (*s_brave_allowlist)[kBraveAutofillPrivateWindows] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+
   // appearance prefs
   (*s_brave_allowlist)[kShowBookmarksButton] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;

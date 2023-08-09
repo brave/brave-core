@@ -27,8 +27,9 @@ namespace brave {
 
 const std::vector<const char*>& GetBravePersistentPrefNames() {
   static base::NoDestructor<std::vector<const char*>> brave_allowlist({
+    kBraveAutofillPrivateWindows,
 #if !BUILDFLAG(IS_ANDROID)
-    prefs::kSidePanelHorizontalAlignment, kTabMuteIndicatorNotClickable,
+        prefs::kSidePanelHorizontalAlignment, kTabMuteIndicatorNotClickable,
         brave_tabs::kVerticalTabsExpandedWidth,
         brave_tabs::kVerticalTabsEnabled, brave_tabs::kVerticalTabsCollapsed,
         brave_tabs::kVerticalTabsFloatingEnabled,
