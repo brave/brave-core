@@ -11,7 +11,9 @@ import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.brave_wallet.mojom.OnRampProvider;
 import org.chromium.mojo.bindings.Callbacks;
+import org.chromium.mojo.bindings.Callbacks.Callback1;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -178,9 +180,13 @@ public class TokenUtils {
                     tokenType, allTokens -> { callback.call(allTokens); });
     }
 
+    private static final int[] SUPPORTED_RAMP_PROVIDERS = {
+            OnRampProvider.RAMP, OnRampProvider.SARDINE, OnRampProvider.TRANSAK};
+
     public static void getBuyTokensFiltered(BlockchainRegistry blockchainRegistry,
-            NetworkInfo selectedNetwork, TokenType tokenType, int[] rampProviders,
+            NetworkInfo selectedNetwork, TokenType tokenType,
             Callbacks.Callback1<BlockchainToken[]> callback) {
+        int[] rampProviders = SUPPORTED_RAMP_PROVIDERS;
         blockchainRegistry.getProvidersBuyTokens(rampProviders, selectedNetwork.chainId, tokens -> {
             // blockchainRegistry.getProvidersBuyTokens returns a full list of tokens that are
             // allowed to buy by given rampProviders. We just need to check on native assets logo
@@ -194,6 +200,18 @@ public class TokenUtils {
             Arrays.sort(tokens, blockchainTokenComparatorPerGasOrBatType);
             callback.call(removeDuplicates(tokens));
         });
+    }
+
+    public static void isBuySupported(BlockchainRegistry blockchainRegistry,
+            NetworkInfo selectedNetwork, String assetSymbol, String contractAddress, String chainId,
+            Callback1<Boolean> callback) {
+        getBuyTokensFiltered(
+                blockchainRegistry, selectedNetwork, TokenUtils.TokenType.ALL, tokens -> {
+                    callback.call(JavaUtils.includes(tokens,
+                            iToken
+                            -> AssetUtils.Filters.isSameToken(
+                                    iToken, assetSymbol, contractAddress, chainId)));
+                });
     }
 
     public static void isCustomToken(BlockchainRegistry blockchainRegistry,
