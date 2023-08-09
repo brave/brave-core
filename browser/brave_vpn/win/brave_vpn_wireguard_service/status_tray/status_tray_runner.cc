@@ -221,6 +221,9 @@ void StatusTrayRunner::OnStorageUpdated() {
   if (!wireguard::IsVPNTrayIconEnabled()) {
     SignalExit();
   }
+  if (!wireguard::IsWireguardActive()) {
+    SignalExit();
+  }
 }
 
 void StatusTrayRunner::SubscribeForStorageUpdates() {
@@ -236,7 +239,8 @@ void StatusTrayRunner::SubscribeForStorageUpdates() {
 
 HRESULT StatusTrayRunner::Run() {
   if (!wireguard::GetLastUsedConfigPath().has_value() ||
-      StatusTray::IconWindowExists() || !wireguard::IsVPNTrayIconEnabled()) {
+      StatusTray::IconWindowExists() || !wireguard::IsVPNTrayIconEnabled() ||
+      !wireguard::IsWireguardActive()) {
     return S_OK;
   }
 

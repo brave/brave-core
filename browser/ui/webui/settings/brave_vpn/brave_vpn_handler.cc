@@ -14,9 +14,14 @@
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
+#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
+#include "chrome/browser/browser_process.h"
+#include "components/prefs/pref_service.h"
 #include "components/version_info/version_info.h"
 
 namespace {
@@ -38,6 +43,11 @@ BraveVpnHandler::BraveVpnHandler(Profile* profile) : profile_(profile) {
   if (service) {
     Observe(service);
   }
+  pref_change_registrar_.Init(g_browser_process->local_state());
+  pref_change_registrar_.Add(
+      brave_vpn::prefs::kBraveVPNWireguardEnabled,
+      base::BindRepeating(&BraveVpnHandler::OnProtocolChanged,
+                          base::Unretained(this)));
 }
 
 BraveVpnHandler::~BraveVpnHandler() = default;
@@ -55,6 +65,12 @@ void BraveVpnHandler::RegisterMessages() {
       "isBraveVpnConnected",
       base::BindRepeating(&BraveVpnHandler::HandleIsBraveVpnConnected,
                           base::Unretained(this)));
+}
+
+void BraveVpnHandler::OnProtocolChanged() {
+  auto enabled =
+      brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state());
+  brave_vpn::wireguard::SetWireguardActive(enabled);
 }
 
 void BraveVpnHandler::HandleRegisterWireguardService(
