@@ -25,6 +25,7 @@
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/tor_launcher_factory.h"
@@ -33,8 +34,10 @@
 #include "brave/components/tor/tor_utils.h"
 #include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/password_manager/chrome_password_manager_client.h"
 #include "chrome/browser/prefs/incognito_mode_prefs.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/autofill/chrome_autofill_client.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/common/chrome_paths.h"
@@ -42,6 +45,9 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/autofill/content/browser/content_autofill_driver.h"
+#include "components/autofill/content/browser/content_autofill_driver_factory.h"
+#include "components/autofill/core/browser/browser_autofill_manager.h"
 #include "components/policy/core/common/policy_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/ssl_host_state_delegate.h"
@@ -52,6 +58,29 @@
 #include "url/gurl.h"
 
 namespace {
+
+void TestAutofillInWindow(content::WebContents* active_contents,
+                          const GURL& fake_url,
+                          bool enabled) {
+  // Logins.
+  autofill::ChromeAutofillClient* autofill_client =
+      autofill::ChromeAutofillClient::FromWebContentsForTesting(
+          active_contents);
+  EXPECT_EQ(autofill_client->IsAutocompleteEnabled(), enabled);
+  // Passwords.
+  ChromePasswordManagerClient* client =
+      ChromePasswordManagerClient::FromWebContents(active_contents);
+  EXPECT_EQ(client->IsFillingEnabled(fake_url), enabled);
+  // Other info.
+  autofill::ContentAutofillDriver* cross_driver =
+      autofill::ContentAutofillDriverFactory::FromWebContents(active_contents)
+          ->DriverForFrame(active_contents->GetPrimaryMainFrame());
+  ASSERT_TRUE(cross_driver);
+  EXPECT_EQ(static_cast<autofill::BrowserAutofillManager*>(
+                cross_driver->autofill_manager())
+                ->IsAutofillEnabled(),
+            enabled);
+}
 
 struct MockTorLauncherObserver : public TorLauncherObserver {
  public:
@@ -246,7 +275,6 @@ class BraveTorTestWithCustomProfile : public BraveTorTest {
  private:
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
-
     if (GetTestPreCount() > 0) {
       base::ScopedAllowBlockingForTesting allow_blocking;
 
@@ -392,6 +420,27 @@ IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, Incognito) {
   EXPECT_TRUE(is_element_enabled("useBridges"));
   EXPECT_TRUE(is_element_enabled("autoOnionLocation"));
   EXPECT_TRUE(is_element_enabled("torSnowflake"));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, Autofill) {
+  GURL fake_url("http://brave.com/");
+  // Disable autofill in private windows.
+  browser()->profile()->GetPrefs()->SetBoolean(kBraveAutofillPrivateWindows,
+                                               false);
+  auto* tor_profile = OpenTorWindow();
+  EXPECT_NE(nullptr, tor_profile);
+  EXPECT_TRUE(tor_profile->IsTor());
+  Browser* tor_browser = chrome::FindBrowserWithProfile(tor_profile);
+  content::WebContents* web_contents =
+      tor_browser->tab_strip_model()->GetActiveWebContents();
+  TestAutofillInWindow(web_contents, fake_url, false);
+
+  // Enable autofill in private windows.
+  browser()->profile()->GetPrefs()->SetBoolean(kBraveAutofillPrivateWindows,
+                                               true);
+  web_contents->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(content::WaitForLoadStop(web_contents));
+  TestAutofillInWindow(web_contents, fake_url, true);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTorTest, PRE_ResetBridges) {

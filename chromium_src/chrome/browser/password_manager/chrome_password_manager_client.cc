@@ -9,7 +9,7 @@
 #define IsGuestSession                                                   \
   IsGuestSession() ||                                                    \
       (!profile->GetPrefs()->GetBoolean(kBraveAutofillPrivateWindows) && \
-       IsOffTheRecord()) ||                                              \
+       (IsOffTheRecord() || profile->IsTor())) ||                        \
       profile->IsGuestSession
 #include "src/chrome/browser/password_manager/chrome_password_manager_client.cc"
 #undef IsGuestSession

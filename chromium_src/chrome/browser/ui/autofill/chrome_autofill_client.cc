@@ -6,10 +6,28 @@
 #include "chrome/browser/ui/autofill/chrome_autofill_client.h"
 #include "base/memory/ptr_util.h"
 #include "brave/components/constants/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/autofill/payments/webauthn_dialog_controller_impl.h"
 #include "chrome/browser/ui/page_info/page_info_dialog.h"
 
 namespace autofill {
+
+namespace {
+bool IsPrivateProfile(content::WebContents* web_contents) {
+  if (!web_contents) {
+    return false;
+  }
+  auto* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  if (!profile) {
+    return false;
+  }
+  return (profile_metrics::GetBrowserProfileType(profile) ==
+          profile_metrics::BrowserProfileType::kIncognito) ||
+         profile->IsTor();
+}
+
+}  // namespace
 
 class BraveChromeAutofillClient : public ChromeAutofillClient {
  public:
@@ -17,7 +35,7 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
 
   bool IsAutocompleteEnabled() const override {
     auto enabled = ChromeAutofillClient::IsAutocompleteEnabled();
-    if (GetProfileType() != profile_metrics::BrowserProfileType::kIncognito) {
+    if (!IsPrivateProfile(web_contents())) {
       return enabled;
     }
     enabled = enabled && GetPrefs()->GetBoolean(kBraveAutofillPrivateWindows);

@@ -17,7 +17,9 @@ class BraveBrowserAutofillManager : public BrowserAutofillManager {
   bool IsAutofillEnabled() const override {
     auto enabled = BrowserAutofillManager::IsAutofillEnabled();
     if (client()->GetProfileType() !=
-        profile_metrics::BrowserProfileType::kIncognito) {
+            profile_metrics::BrowserProfileType::kIncognito &&
+        client()->GetProfileType() !=
+            profile_metrics::BrowserProfileType::kOtherOffTheRecordProfile) {
       return enabled;
     }
     enabled = enabled &&
