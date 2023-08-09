@@ -10,6 +10,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
+#include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -187,6 +188,8 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   // Added 10/2022
   local_state->ClearPref(kDefaultBrowserPromptEnabled);
 #endif
+
+  brave_search_conversion::p3a::MigrateObsoleteLocalStatePrefs(local_state);
 
   // END_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
 }

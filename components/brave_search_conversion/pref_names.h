@@ -15,19 +15,24 @@ constexpr char kDismissed[] = "brave.brave_search_conversion.dismissed";
 constexpr char kMaybeLaterClickedTime[] =
     "brave.brave_search_conversion.maybe_later_clicked_time";
 
-constexpr char kP3ABannerShown[] = "brave.brave_search_conversion.banner_shown";
-constexpr char kP3AButtonShown[] = "brave.brave_search_conversion.button_shown";
-constexpr char kP3ANTPShown[] = "brave.brave_search_conversion.ntp_shown";
-
-constexpr char kP3ABannerTriggered[] =
-    "brave.brave_search_conversion.banner_triggered";
-constexpr char kP3AButtonTriggered[] =
-    "brave.brave_search_conversion.button_triggered";
-constexpr char kP3ANTPTriggered[] =
-    "brave.brave_search_conversion.ntp_triggered";
+constexpr char kP3AActionStatuses[] =
+    "brave.brave_search_conversion.action_statuses";
 
 constexpr char kP3ADefaultEngineChanged[] =
     "brave.brave_search_conversion.default_changed";
+
+constexpr char kP3ABannerShown[] =
+    "brave.brave_search_conversion.banner_shown";  // DEPRECATED
+constexpr char kP3ABannerTriggered[] =
+    "brave.brave_search_conversion.banner_triggered";  // DEPRECATED
+constexpr char kP3AButtonShown[] =
+    "brave.brave_search_conversion.button_shown";  // DEPRECATED
+constexpr char kP3ANTPShown[] =
+    "brave.brave_search_conversion.ntp_shown";  // DEPRECATED
+constexpr char kP3AButtonTriggered[] =
+    "brave.brave_search_conversion.button_triggered";  // DEPRECATED
+constexpr char kP3ANTPTriggered[] =
+    "brave.brave_search_conversion.ntp_triggered";  // DEPRECATED
 
 }  // namespace prefs
 }  // namespace brave_search_conversion
