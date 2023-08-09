@@ -29,6 +29,7 @@
             app:layout_scrollFlags="scroll|enterAlways|snap" />
 
         <include layout="@layout/wallet_backup_banner"/>
+
         <org.chromium.chrome.browser.custom_layout.NonSwipeableViewPager
             android:id="@+id/navigation_view_pager"
             android:layout_width="match_parent"
@@ -36,6 +37,14 @@
             android:layout_weight="1"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+        <ImageView
+            android:id="@+id/bottom_container_top_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_shadow_height"
+            android:src="@drawable/modern_toolbar_shadow"
+            android:scaleType="fitXY"
+            android:scaleY="-1"
+            tools:ignore="ContentDescription" />
 
         <org.chromium.chrome.browser.custom_layout.BottomNavigationViewWithIndicator
             android:id="@+id/wallet_bottom_navigation"
