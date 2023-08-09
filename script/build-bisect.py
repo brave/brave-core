@@ -203,7 +203,7 @@ def install(download_dir, path):
 
         # in case volumes are already mounted, remove trailing " 1" or " 2" (etc)
         binary_name = volume.replace("/Volumes/", "")
-        binary_name = re.sub("^\\d+\\s|\\s\\d+\\s|\\s\\d+$", "",
+        binary_name = re.sub(r"^(?:\d+\s|\s\d+\s|\s\d+)$", "",
                              binary_name) + '.app'
         volume_path = os.path.join(volume, binary_name)
 
