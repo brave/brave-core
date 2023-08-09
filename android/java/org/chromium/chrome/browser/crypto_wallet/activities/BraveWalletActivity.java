@@ -10,7 +10,6 @@ import static org.chromium.chrome.browser.crypto_wallet.util.Utils.ONBOARDING_FI
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.RESTORE_WALLET_ACTION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.UNLOCK_WALLET_ACTION;
 
-import android.os.Build;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -125,12 +124,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         setSupportActionBar(mToolbar);
 
         mBuySendSwapButton = findViewById(R.id.buy_send_swap_button);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            // For Android 7 and above use vector images for send/swap button.
-            // For Android 5 and 6 it is a bitmap specified in activity_brave_wallet.xml.
-            mBuySendSwapButton.setImageResource(R.drawable.ic_swap_icon);
-            mBuySendSwapButton.setBackgroundResource(R.drawable.ic_swap_bg);
-        }
 
         try {
             mWalletModel = BraveActivity.getBraveActivity().getWalletModel();
@@ -138,7 +131,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
             // Update network model to use default network.
             getNetworkModel().updateMode(NetworkModel.Mode.WALLET_MODE);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "triggerLayoutInflation " + e);
+            Log.e(TAG, "triggerLayoutInflation", e);
         }
 
         mBuySendSwapButton.setOnClickListener(v -> {
@@ -155,12 +148,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         });
 
         mPendingTxNotification = findViewById(R.id.pending_tx_notification);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            // For Android 7 and above use vector images for send/swap button.
-            // For Android 5 and 6 it is a bitmap specified in activity_brave_wallet.xml.
-            mPendingTxNotification.setImageResource(R.drawable.ic_pending_tx_notification_icon);
-            mPendingTxNotification.setBackgroundResource(R.drawable.ic_pending_tx_notification_bg);
-        }
 
         mPendingTxNotification.setOnClickListener(v -> {
             PortfolioFragment portfolioFragment =
@@ -394,19 +381,9 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private void showWalletBackupBanner() {
         final ViewGroup backupTopBannerLayout = (ViewGroup) findViewById(R.id.wallet_backup_banner);
         backupTopBannerLayout.setVisibility(View.VISIBLE);
-        backupTopBannerLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                backupBannerOnClick();
-            }
-        });
+        backupTopBannerLayout.setOnClickListener(view -> backupBannerOnClick());
         ImageView bannerClose = backupTopBannerLayout.findViewById(R.id.backup_banner_close);
-        bannerClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                backupTopBannerLayout.setVisibility(View.GONE);
-            }
-        });
+        bannerClose.setOnClickListener(view -> backupTopBannerLayout.setVisibility(View.GONE));
     }
 
     public void setPendingTxNotificationVisibility(int visibility) {

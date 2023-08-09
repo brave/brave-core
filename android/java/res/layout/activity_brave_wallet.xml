@@ -68,7 +68,8 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:contentDescription="@null"
-            app:srcCompat="@drawable/pending_tx_placeholder"
+            android:src="@drawable/ic_pending_tx_notification_icon"
+            android:background="@drawable/ic_pending_tx_notification_bg"
             android:elevation="10dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
@@ -80,16 +81,12 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:contentDescription="@null"
-            app:srcCompat="@drawable/buy_send_swap"
+            android:src="@drawable/ic_swap_icon"
+            android:background="@drawable/ic_swap_bg"
             android:elevation="10dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:scaleType="center"
             android:visibility="gone"/>
-        <!-- On Android 5 and 6 crash happens when vectored image contains gradient.
-            So here raster image is specified by default, but for Android 7 and above
-            vector image is used, see BraveWalletActivity.triggerLayoutInflation()
-            for buy_send_swap_button.
-        -->
     </LinearLayout>
 </FrameLayout>
