@@ -161,6 +161,10 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                            EthSubscribeLogsFiltered);
   friend class EthereumProviderImplUnitTest;
 
+  mojom::AccountIdPtr FindAuthenticatedAccountByAddress(
+      const std::string& address,
+      base::Value& id,
+      mojom::EthereumProvider::RequestCallback& callback);
   mojom::AccountIdPtr FindAccountByAddress(const std::string& address);
 
   // mojom::EthereumProvider:

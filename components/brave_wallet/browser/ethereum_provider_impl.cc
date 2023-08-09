@@ -280,17 +280,10 @@ void EthereumProviderImpl::OnGetNetworkAndDefaultKeyringInfo(
     return;
   }
   tx_data_1559->base_data->sign_only = sign_only;
-  const auto account_id = FindAccountByAddress(from);
-  if (!account_id) {
-    return RejectInvalidParams(std::move(id), std::move(callback));
-  }
 
-  const auto allowed_accounts = GetAllowedAccounts(false);
-  if (!allowed_accounts) {
-    return RejectInvalidParams(std::move(id), std::move(callback));
-  }
-  if (!CheckAccountAllowed(account_id, *allowed_accounts)) {
-    return RejectAccountNotAuthed(std::move(id), std::move(callback));
+  const auto account_id = FindAuthenticatedAccountByAddress(from, id, callback);
+  if (!account_id) {
+    return;
   }
 
   if (ShouldCreate1559Tx(tx_data_1559.Clone(), chain->is_eip1559,
@@ -356,13 +349,14 @@ void EthereumProviderImpl::SignMessage(const std::string& address,
                                        const std::string& message,
                                        RequestCallback callback,
                                        base::Value id) {
-  if (!EthAddress::IsValidAddress(address) || !IsValidHexString(message)) {
+  if (!IsValidHexString(message)) {
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
 
-  auto account_id = FindAccountByAddress(address);
+  const auto account_id =
+      FindAuthenticatedAccountByAddress(address, id, callback);
   if (!account_id) {
-    return RejectAccountNotAuthed(std::move(id), std::move(callback));
+    return;
   }
 
   std::vector<uint8_t> message_bytes;
@@ -502,20 +496,10 @@ bool EthereumProviderImpl::UnsubscribeLogObserver(
 void EthereumProviderImpl::GetEncryptionPublicKey(const std::string& address,
                                                   RequestCallback callback,
                                                   base::Value id) {
-  if (!EthAddress::IsValidAddress(address)) {
-    return RejectInvalidParams(std::move(id), std::move(callback));
-  }
-
-  auto account_id = FindAccountByAddress(address);
+  const auto account_id =
+      FindAuthenticatedAccountByAddress(address, id, callback);
   if (!account_id) {
-    return RejectInvalidParams(std::move(id), std::move(callback));
-  }
-  const auto allowed_accounts = GetAllowedAccounts(false);
-  if (!allowed_accounts) {
-    return RejectInvalidParams(std::move(id), std::move(callback));
-  }
-  if (!CheckAccountAllowed(account_id, *allowed_accounts)) {
-    return RejectAccountNotAuthed(std::move(id), std::move(callback));
+    return;
   }
 
   // Only show bubble when there is no immediate error
@@ -530,10 +514,12 @@ void EthereumProviderImpl::Decrypt(
     const url::Origin& origin,
     RequestCallback callback,
     base::Value id) {
-  auto account_id = FindAccountByAddress(address);
+  const auto account_id =
+      FindAuthenticatedAccountByAddress(address, id, callback);
   if (!account_id) {
-    return RejectInvalidParams(std::move(id), std::move(callback));
+    return;
   }
+
   data_decoder::JsonSanitizer::Sanitize(
       untrusted_encrypted_data_json,
       base::BindOnce(&EthereumProviderImpl::ContinueDecryptWithSanitizedJson,
@@ -563,14 +549,6 @@ void EthereumProviderImpl::ContinueDecryptWithSanitizedJson(
                        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
                        std::move(callback), std::move(id));
     return;
-  }
-
-  const auto allowed_accounts = GetAllowedAccounts(false);
-  if (!allowed_accounts) {
-    return RejectInvalidParams(std::move(id), std::move(callback));
-  }
-  if (!CheckAccountAllowed(account_id, *allowed_accounts)) {
-    return RejectAccountNotAuthed(std::move(id), std::move(callback));
   }
 
   absl::optional<std::vector<uint8_t>> unsafe_message_bytes =
@@ -604,14 +582,8 @@ void EthereumProviderImpl::SignTypedMessage(
     base::Value id) {
   bool reject = false;
   std::string domain_string;
-  if (!base::JSONWriter::Write(domain, &domain_string) ||
-      !EthAddress::IsValidAddress(address) || domain_hash.empty() ||
+  if (!base::JSONWriter::Write(domain, &domain_string) || domain_hash.empty() ||
       primary_hash.empty()) {
-    return RejectInvalidParams(std::move(id), std::move(callback));
-  }
-
-  auto account_id = FindAccountByAddress(address);
-  if (!account_id) {
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
 
@@ -633,6 +605,12 @@ void EthereumProviderImpl::SignTypedMessage(
                               "", false);
       return;
     }
+  }
+
+  const auto account_id =
+      FindAuthenticatedAccountByAddress(address, id, callback);
+  if (!account_id) {
+    return;
   }
 
   if (domain_hash.empty() || primary_hash.empty()) {
@@ -660,14 +638,6 @@ void EthereumProviderImpl::SignMessageInternal(
     bool is_eip712,
     RequestCallback callback,
     base::Value id) {
-  const auto allowed_accounts = GetAllowedAccounts(false);
-  if (!allowed_accounts) {
-    return RejectInvalidParams(std::move(id), std::move(callback));
-  }
-  if (!CheckAccountAllowed(account_id, *allowed_accounts)) {
-    return RejectAccountNotAuthed(std::move(id), std::move(callback));
-  }
-
   auto request = mojom::SignMessageRequest::New(
       MakeOriginInfo(delegate_->GetOrigin()), -1, account_id.Clone(), domain,
       message, is_eip712, domain_hash, primary_hash, absl::nullopt,
@@ -1281,6 +1251,31 @@ void EthereumProviderImpl::GetChainId(GetChainIdCallback callback) {
     json_rpc_service_->GetChainIdForOrigin(
         mojom::CoinType::ETH, delegate_->GetOrigin(), std::move(callback));
   }
+}
+
+mojom::AccountIdPtr EthereumProviderImpl::FindAuthenticatedAccountByAddress(
+    const std::string& address,
+    base::Value& id,
+    mojom::EthereumProvider::RequestCallback& callback) {
+  if (!EthAddress::IsValidAddress(address)) {
+    RejectInvalidParams(std::move(id), std::move(callback));
+    return nullptr;
+  }
+  auto account_id = FindAccountByAddress(address);
+  if (!account_id) {
+    RejectAccountNotAuthed(std::move(id), std::move(callback));
+    return nullptr;
+  }
+  const auto allowed_accounts = GetAllowedAccounts(false);
+  if (!allowed_accounts) {
+    RejectInvalidParams(std::move(id), std::move(callback));
+    return nullptr;
+  }
+  if (!CheckAccountAllowed(account_id, *allowed_accounts)) {
+    RejectAccountNotAuthed(std::move(id), std::move(callback));
+    return nullptr;
+  }
+  return account_id;
 }
 
 mojom::AccountIdPtr EthereumProviderImpl::FindAccountByAddress(
