@@ -1022,13 +1022,11 @@ public class BraveRewardsPanel
 
     @Override
     public void onGetUserType(int userType) {
-        switch (userType) {
-            case UserType.LEGACY_UNCONNECTED:
-                showVbatExpireNotice();
-                break;
-            case UserType.UNCONNECTED:
-                newInstallViewChanges();
-                break;
+        if (UserType.LEGACY_UNCONNECTED == userType
+                && mBraveRewardsNativeWorker.getVbatDeadline() > System.currentTimeMillis()) {
+            showVbatExpireNotice();
+        } else if (UserType.UNCONNECTED == userType) {
+            newInstallViewChanges();
         }
     }
 
