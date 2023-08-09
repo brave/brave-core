@@ -26,11 +26,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CryptoFragmentPageAdapter extends FragmentStatePagerAdapter {
-    private static final int PORTFOLIO_FRAGMENT_POSITION = 0;
-    private static final int NFT_GRID_FRAGMENT_POSITION = 1;
-    private static final int TRANSACTIONS_ACTIVITY_FRAGMENT_POSITION = 2;
-    private static final int ACCOUNTS_FRAGMENT_POSITION = 3;
-    private static final int MARKET_FRAGMENT_POSITION = 4;
+    public static final int PORTFOLIO_FRAGMENT_POSITION = 0;
+    public static final int NFT_GRID_FRAGMENT_POSITION = 1;
+    public static final int TRANSACTIONS_ACTIVITY_FRAGMENT_POSITION = 2;
+    public static final int ACCOUNTS_FRAGMENT_POSITION = 3;
+    public static final int MARKET_FRAGMENT_POSITION = 4;
 
     private final List<String> mTitles;
 

@@ -5,6 +5,11 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import static org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter.ACCOUNTS_FRAGMENT_POSITION;
+import static org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter.MARKET_FRAGMENT_POSITION;
+import static org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter.NFT_GRID_FRAGMENT_POSITION;
+import static org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter.PORTFOLIO_FRAGMENT_POSITION;
+import static org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter.TRANSACTIONS_ACTIVITY_FRAGMENT_POSITION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.ONBOARDING_ACTION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.ONBOARDING_FIRST_PAGE_ACTION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.RESTORE_WALLET_ACTION;
@@ -21,8 +26,6 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
-
-import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.base.ActivityState;
 import org.chromium.base.ApplicationStatus;
@@ -48,6 +51,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.custom_layout.BottomNavigationViewWithIndicator;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.components.browser_ui.modaldialog.AppModalPresenter;
@@ -74,6 +78,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private CryptoFragmentPageAdapter mCryptoFragmentPageAdapter;
     private ModalDialogManager mModalDialogManager;
     private CryptoWalletOnboardingPagerAdapter mCryptoWalletOnboardingPagerAdapter;
+    private BottomNavigationViewWithIndicator mBottomNavigationView;
     private boolean mShowBiometricPrompt;
     private boolean mIsFromDapps;
     private WalletModel mWalletModel;
@@ -124,6 +129,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         setSupportActionBar(mToolbar);
 
         mBuySendSwapButton = findViewById(R.id.buy_send_swap_button);
+        mBottomNavigationView = findViewById(R.id.wallet_bottom_navigation);
 
         try {
             mWalletModel = BraveActivity.getBraveActivity().getWalletModel();
@@ -325,8 +331,22 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 new CryptoFragmentPageAdapter(getSupportFragmentManager(), this);
         viewPager.setAdapter(mCryptoFragmentPageAdapter);
         viewPager.setOffscreenPageLimit(mCryptoFragmentPageAdapter.getCount() - 1);
-        TabLayout tabLayout = findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+
+        mBottomNavigationView.setOnItemSelectedListener(menuItem -> {
+            final int menuItemId = menuItem.getItemId();
+            if (menuItemId == R.id.action_wallet_portfolio) {
+                viewPager.setCurrentItem(PORTFOLIO_FRAGMENT_POSITION, true);
+            } else if (menuItemId == R.id.action_wallet_nfts) {
+                viewPager.setCurrentItem(NFT_GRID_FRAGMENT_POSITION, true);
+            } else if (menuItemId == R.id.action_wallet_activity) {
+                viewPager.setCurrentItem(TRANSACTIONS_ACTIVITY_FRAGMENT_POSITION, true);
+            } else if (menuItemId == R.id.action_wallet_accounts) {
+                viewPager.setCurrentItem(ACCOUNTS_FRAGMENT_POSITION, true);
+            } else if (menuItemId == R.id.action_wallet_market) {
+                viewPager.setCurrentItem(MARKET_FRAGMENT_POSITION, true);
+            }
+            return true;
+        });
 
         if (mBuySendSwapButton != null) mBuySendSwapButton.setVisibility(View.VISIBLE);
 

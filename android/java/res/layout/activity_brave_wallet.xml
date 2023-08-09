@@ -18,15 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <com.google.android.material.appbar.AppBarLayout
-          android:id="@+id/app_bar"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:theme="@style/BraveWalletToolbar"
-          app:elevation="10dp">
-
-          <androidx.appcompat.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -35,20 +27,7 @@
             app:titleTextColor="@color/wallet_text_color"
             app:collapseIcon="@drawable/ic_baseline_arrow_back_24"
             app:layout_scrollFlags="scroll|enterAlways|snap" />
-        </com.google.android.material.appbar.AppBarLayout>
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabIndicator="@drawable/tab_gradient_separator"
-            app:tabIndicatorHeight="@dimen/brave_wallet_tab_indicator_height"
-            app:tabIndicatorColor="@null"
-            android:background="@color/wallet_toolbar_bg_color"
-            app:tabTextAppearance="@style/BraveWalletTabsTextAppearance"
-            app:tabGravity="fill"
-            app:tabSelectedTextColor="@color/tab_color"
-            app:tabTextColor="@color/wallet_text_color" />
         <include layout="@layout/wallet_backup_banner"/>
         <org.chromium.chrome.browser.custom_layout.NonSwipeableViewPager
             android:id="@+id/navigation_view_pager"
@@ -56,16 +35,57 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+        <org.chromium.chrome.browser.custom_layout.BottomNavigationViewWithIndicator
+            android:id="@+id/wallet_bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@color/wallet_toolbar_bg_color"
+            app:menu="@menu/wallet_bottom_navigation_items"
+            app:itemIconTint="@color/wallet_bottom_navigation_color"
+            app:itemHorizontalTranslationEnabled="false"
+            app:labelVisibilityMode="labeled" />
     </LinearLayout>
 
-    <include android:id="@+id/crypto_onboarding_layout"
-        layout="@layout/fragment_crypto_wallet_onboarding"/>
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/crypto_onboarding_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:background="@color/wallet_bg"
+        android:fadeScrollbars="false"
+        android:fillViewport="true">
+
+        <FrameLayout
+            android:id="@+id/crypto_wallet_onboarding_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <org.chromium.chrome.browser.custom_layout.NonSwipeableViewPager
+                android:id="@+id/crypto_wallet_onboarding_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <ImageView
+                android:id="@+id/onboarding_back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_baseline_arrow_back_24"
+                android:padding="16dp"
+                android:layout_gravity="start|top"
+                android:contentDescription="@null"/>
+        </FrameLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:id="@+id/fab_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
+        android:layout_marginBottom="?actionBarSize"
         android:orientation="vertical">
 
         <ImageView
