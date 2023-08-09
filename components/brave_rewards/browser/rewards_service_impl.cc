@@ -814,6 +814,9 @@ void RewardsServiceImpl::RestorePublishers() {
 }
 
 void RewardsServiceImpl::Shutdown() {
+  engine_.reset();
+  receiver_.reset();
+
   RemoveObserver(notification_service_.get());
 
   if (extension_observer_) {
@@ -828,10 +831,8 @@ void RewardsServiceImpl::Shutdown() {
     }
   }
 
-  receiver_.reset();
   url_loaders_.clear();
 
-  engine_.reset();
   RewardsService::Shutdown();
 }
 

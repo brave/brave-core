@@ -115,7 +115,6 @@ base::Value WalletProviderRegionsToValue(
 
 base::flat_map<std::string, mojom::RegionsPtr> ValueToWalletProviderRegions(
     const base::Value& value) {
-  DCHECK(value.is_dict());
   if (!value.is_dict()) {
     BLOG(0, "Failed to parse JSON!");
     return {};

@@ -275,27 +275,32 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   template <typename T>
   T GetState(const std::string& name) {
-    T value;
+    bool ok = false;
+    T value{};
 
     if constexpr (std::is_same_v<T, bool>) {
-      client_->GetBooleanState(name, &value);
+      ok = client_->GetBooleanState(name, &value);
     } else if constexpr (std::is_same_v<T, int32_t>) {
-      client_->GetIntegerState(name, &value);
+      ok = client_->GetIntegerState(name, &value);
     } else if constexpr (std::is_same_v<T, double>) {
-      client_->GetDoubleState(name, &value);
+      ok = client_->GetDoubleState(name, &value);
     } else if constexpr (std::is_same_v<T, std::string>) {
-      client_->GetStringState(name, &value);
+      ok = client_->GetStringState(name, &value);
     } else if constexpr (std::is_same_v<T, int64_t>) {
-      client_->GetInt64State(name, &value);
+      ok = client_->GetInt64State(name, &value);
     } else if constexpr (std::is_same_v<T, uint64_t>) {
-      client_->GetUint64State(name, &value);
+      ok = client_->GetUint64State(name, &value);
     } else if constexpr (std::is_same_v<T, base::Value>) {
-      client_->GetValueState(name, &value);
+      ok = client_->GetValueState(name, &value);
     } else if constexpr (std::is_same_v<T, base::Time>) {
-      client_->GetTimeState(name, &value);
+      ok = client_->GetTimeState(name, &value);
     } else {
       static_assert(base::AlwaysFalse<T>, "Unsupported type!");
     }
+
+    // Occasionally during shutdown the engine can fail to read preferences from
+    // the client, likely due to the complexities of sync mojo calls.
+    DUMP_WILL_BE_CHECK(ok) << "Unable to read state from Rewards engine client";
 
     return value;
   }
