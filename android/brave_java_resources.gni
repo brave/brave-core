@@ -5,13 +5,12 @@
 
 # See 'chrome/android/chrome_java_resources.gni' on how to generate this list
 brave_java_resources = [
-  "java/res/color/wallet_bottom_navigation_color.xml",
-  "java/res/drawable/bottom_navigation_gradient_separator.xml",
   "java/res/anim/slide_in_bottom.xml",
   "java/res/anim/slide_in_top.xml",
   "java/res/anim/slide_out_bottom.xml",
   "java/res/anim/slide_out_top.xml",
   "java/res/color/crypto_wallet_radiobutton_color_selector.xml",
+  "java/res/color/wallet_bottom_navigation_color.xml",
   "java/res/drawable-hdpi/brave_ads_launch_graphic.png",
   "java/res/drawable-hdpi/brave_sync_btn_laptop.png",
   "java/res/drawable-hdpi/btn_bat.png",
@@ -359,6 +358,7 @@ brave_java_resources = [
   "java/res/drawable/blue_rounded_button.xml",
   "java/res/drawable/blue_rounded_notification_bg.xml",
   "java/res/drawable/bookmark_menu_bg.xml",
+  "java/res/drawable/bottom_navigation_gradient_separator.xml",
   "java/res/drawable/bottomsheet_rewards_background.xml",
   "java/res/drawable/bottomsheet_rewards_tipping_success_background.xml",
   "java/res/drawable/bottomsheet_top_bar.xml",
