@@ -97,6 +97,8 @@ void GetCallback(GetConversionsCallback callback,
                                    /*conversion_queue_items*/ {});
   }
 
+  CHECK(command_response->result);
+
   CreativeSetConversionList creative_set_conversions;
 
   for (const auto& record : command_response->result->get_records()) {

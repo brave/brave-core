@@ -88,6 +88,8 @@ void GetForCreativeInstanceIdCallback(
                                    /*deposit*/ absl::nullopt);
   }
 
+  CHECK(command_response->result);
+
   if (command_response->result->get_records().empty()) {
     return std::move(callback).Run(/*success*/ true, /*deposit*/ absl::nullopt);
   }

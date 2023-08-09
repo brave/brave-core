@@ -92,6 +92,7 @@ CreativeAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
 CreativeAdMap GroupCreativeAdsFromResponse(
     mojom::DBCommandResponseInfoPtr command_response) {
   CHECK(command_response);
+  CHECK(command_response->result);
 
   CreativeAdMap creative_ads;
 

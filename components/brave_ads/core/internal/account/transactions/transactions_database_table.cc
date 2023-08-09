@@ -102,6 +102,8 @@ void GetCallback(GetTransactionsCallback callback,
     return std::move(callback).Run(/*success*/ false, /*transactions*/ {});
   }
 
+  CHECK(command_response->result);
+
   TransactionList transactions;
 
   for (const auto& record : command_response->result->get_records()) {
