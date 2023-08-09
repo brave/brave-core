@@ -19,7 +19,7 @@ protocol TabTrayDelegate: AnyObject {
   func tabOrderChanged()
 }
 
-class TabTrayController: LoadingViewController {
+class TabTrayController: AuthenticationController {
 
   typealias DataSource = UICollectionViewDiffableDataSource<TabTraySection, Tab>
   typealias Snapshot = NSDiffableDataSourceSnapshot<TabTraySection, Tab>
@@ -47,7 +47,6 @@ class TabTrayController: LoadingViewController {
   let tabManager: TabManager
   let braveCore: BraveCoreMain
   
-  private let windowProtection: WindowProtection?
   private var openTabsSessionServiceListener: OpenTabsSessionStateListener?
   private var syncServicStateListener: AnyObject?
 
@@ -99,6 +98,7 @@ class TabTrayController: LoadingViewController {
   var tabTrayMode: TabTrayMode = .local
   private var privateModeCancellable: AnyCancellable?
   private var initialScrollCompleted = false
+  private var localAuthObservers = Set<AnyCancellable>()
   
   // MARK: User Interface Elements
   
@@ -188,9 +188,8 @@ class TabTrayController: LoadingViewController {
   init(tabManager: TabManager, braveCore: BraveCoreMain, windowProtection: WindowProtection?) {
     self.tabManager = tabManager
     self.braveCore = braveCore
-    self.windowProtection = windowProtection
     
-    super.init(nibName: nil, bundle: nil)
+    super.init(windowProtection: windowProtection, isCancellable: true, unlockScreentitle: "Private Browsing is Locked")
 
     if !UIAccessibility.isReduceMotionEnabled {
       transitioningDelegate = self
@@ -304,6 +303,19 @@ class TabTrayController: LoadingViewController {
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
         self?.updateColors(isPrivateBrowsing)
       })
+    
+    windowProtection?.cancelPressed
+      .sink { [weak self] _ in
+        self?.navigationController?.popViewController(animated: true)
+    }.store(in: &localAuthObservers)
+    
+    windowProtection?.finalizedAuthentication
+      .sink { [weak self] success in
+        if success {
+          self?.toggleModeChanger()
+        }
+        self?.navigationController?.popViewController(animated: true)
+    }.store(in: &localAuthObservers)
   
     reloadOpenTabsSession()
     
@@ -587,6 +599,14 @@ class TabTrayController: LoadingViewController {
   }
 
   @objc func togglePrivateModeAction() {
+    if !privateMode, Preferences.Privacy.privateBrowsingLock.value {
+      askForAuthentication(viewType: .tabTray)
+    } else {
+      toggleModeChanger()
+    }
+  }
+  
+  func toggleModeChanger() {
     tabTraySearchController.isActive = false
     
     // Mode Change action disabled while drap-drop is active

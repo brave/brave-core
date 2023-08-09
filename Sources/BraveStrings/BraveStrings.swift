@@ -1040,8 +1040,6 @@ extension Strings {
   public static let confirm = NSLocalizedString("Confirm", tableName: "BraveShared", bundle: .module, value: "Confirm", comment: "")
   public static let privacy = NSLocalizedString("Privacy", tableName: "BraveShared", bundle: .module, value: "Privacy", comment: "Settings privacy section title")
   public static let security = NSLocalizedString("Security", tableName: "BraveShared", bundle: .module, value: "Security", comment: "Settings security section title")
-  public static let browserLock = NSLocalizedString("BrowserLock", tableName: "BraveShared", bundle: .module, value: "Browser Lock", comment: "Setting to enable the browser lock privacy feature")
-  public static let browserLockDescription = NSLocalizedString("BrowserLockDescription", tableName: "BraveShared", bundle: .module, value: "Unlock Brave with Touch ID, Face ID or system passcode.", comment: "")
   public static let saveLogins = NSLocalizedString("SaveLogins", tableName: "BraveShared", bundle: .module, value: "Save Logins", comment: "Setting to enable the built-in password manager")
   public static let showBookmarkButtonInTopToolbar = NSLocalizedString("ShowBookmarkButtonInTopToolbar", tableName: "BraveShared", bundle: .module, value: "Show Bookmarks Shortcut", comment: "Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks.")
   public static let alwaysRequestDesktopSite = NSLocalizedString("AlwaysRequestDesktopSite", tableName: "BraveShared", bundle: .module, value: "Always Request Desktop Site", comment: "Setting to always request the desktop version of a website.")
@@ -3288,7 +3286,7 @@ extension Strings {
         "login.syncSetPasscodeAlertDescription",
         tableName: "BraveShared",
         bundle: .module,
-        value: "To setup sync chain or see settings, you must first set a passcode on your device..",
+        value: "To setup sync chain or see settings, you must first set a passcode on your device.",
         comment: "The message displayed in alert when a user needs to set a passcode")
   }
 }
@@ -3327,6 +3325,38 @@ extension Strings {
         "history.historySearchBarTitle", tableName: "BraveShared", bundle: .module,
         value: "Search History",
         comment: "Title displayed for placeholder inside Search Bar in History")
+  }
+}
+
+extension Strings {
+  public struct Privacy {
+    public static let browserLock =
+      NSLocalizedString(
+        "BrowserLock", tableName: "BraveShared", bundle: .module,
+        value: "Browser Lock",
+        comment: "Title for setting to enable the browser lock privacy feature")
+    public static let browserLockDescription =
+      NSLocalizedString(
+        "BrowserLockDescription", tableName: "BraveShared", bundle: .module,
+        value: "Unlock Brave with Touch ID, Face ID or system passcode.",
+        comment: "Description for setting to enable the browser lock privacy feature")
+    public static let privateBrowsingLock =
+      NSLocalizedString(
+        "privacy.private.browsing.lock.title", tableName: "BraveShared", bundle: .module,
+        value: "Private Browsing Lock",
+        comment: "Title for setting to enable the private browsing lock privacy feature")
+    public static let privateBrowsingLockDescription =
+      NSLocalizedString(
+        "privacy.private.browsing.lock.description", tableName: "BraveShared", bundle: .module,
+        value: "Require Passcode to Unlock Private Browsing",
+        comment: "Description for setting to enable the browser lock privacy feature")
+    public static let tabTraySetPasscodeAlertDescription =
+      NSLocalizedString(
+        "privacy.tab.tray.passcode.alert",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "To switch private browsing mode, you must first set a passcode on your device.",
+        comment: "The message displayed in alert when a user needs to set a passcode")
   }
 }
 
