@@ -209,7 +209,7 @@ export const TransactionsListItem = ({
 
     // default or when: [ETHSend, ERC20Transfer, ERC721TransferFrom, ERC721SafeTransferFrom].includes(transaction.txType)
     // TODO(apaymyshev): need description for bitcoin transaction.
-    let from = `${reduceAddress(transaction.fromAddressOpt ?? '')} `
+    let from = `${reduceAddress(transaction.fromAddress ?? '')} `
     let to = reduceAddress(transactionDetails.recipient)
     const wrapFromText =
       transaction.txType === ERC20Approve ||

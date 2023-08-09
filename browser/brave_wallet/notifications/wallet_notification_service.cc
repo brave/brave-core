@@ -100,8 +100,7 @@ void WalletNotificationService::OnTransactionStatusChanged(
   if (ShouldDisplayUserNotification(tx_info->tx_status)) {
     // TODO(apaymyshev): handle address for bitcoin notificaion
     DisplayUserNotification(tx_info->tx_status,
-                            tx_info->from_address_opt.value_or(""),
-                            tx_info->id);
+                            tx_info->from_address.value_or(""), tx_info->id);
   }
 }
 

@@ -1103,7 +1103,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransaction) {
       GetAllTransactionInfo(account_0->account_id, chain_id);
   ASSERT_EQ(infos.size(), 1UL);
   EXPECT_EQ(infos[0]->from_account_id, account_0->account_id);
-  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(*infos[0]->from_address_opt,
+  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(*infos[0]->from_address,
                                                account_0->address));
   EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Unapproved);
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);
@@ -1129,7 +1129,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransaction) {
   infos = GetAllTransactionInfo(account_0->account_id, chain_id);
   ASSERT_EQ(infos.size(), 1UL);
   EXPECT_EQ(infos[0]->from_account_id, account_0->account_id);
-  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(*infos[0]->from_address_opt,
+  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(*infos[0]->from_address,
                                                account_0->address));
   EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Submitted);
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);
@@ -1262,7 +1262,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559Transaction) {
       GetAllTransactionInfo(account_0->account_id, chain_id);
   ASSERT_EQ(infos.size(), 1UL);
   EXPECT_EQ(infos[0]->from_account_id, account_0->account_id);
-  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(*infos[0]->from_address_opt,
+  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(*infos[0]->from_address,
                                                account_0->address));
   EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Unapproved);
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);
@@ -1285,7 +1285,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559Transaction) {
   infos = GetAllTransactionInfo(account_0->account_id, chain_id);
   ASSERT_EQ(infos.size(), 1UL);
   EXPECT_EQ(infos[0]->from_account_id, account_0->account_id);
-  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(*infos[0]->from_address_opt,
+  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(*infos[0]->from_address,
                                                account_0->address));
   EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Submitted);
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);

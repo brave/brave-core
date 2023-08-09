@@ -99,9 +99,9 @@ export default {
 
 const mockEthAccountId = (
   address: string
-): { fromAddressOpt: string; fromAccountId: BraveWallet.AccountId } => {
+): { fromAddress: string; fromAccountId: BraveWallet.AccountId } => {
   return {
-    fromAddressOpt: address,
+    fromAddress: address,
     fromAccountId: {
       coin: BraveWallet.CoinType.ETH,
       keyringId: BraveWallet.KeyringId.kDefault,

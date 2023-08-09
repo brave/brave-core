@@ -42,12 +42,12 @@ namespace evm {
 
 absl::optional<std::string> EncodeScanTransactionParams(
     const mojom::TransactionInfoPtr& tx_info) {
-  if (!tx_info || !tx_info->from_address_opt) {
+  if (!tx_info || !tx_info->from_address) {
     return absl::nullopt;
   }
 
   base::Value::Dict tx_object;
-  tx_object.Set("from", *tx_info->from_address_opt);
+  tx_object.Set("from", *tx_info->from_address);
 
   if (tx_info->tx_data_union->is_eth_tx_data_1559()) {
     const auto& tx_data = tx_info->tx_data_union->get_eth_tx_data_1559();
@@ -93,7 +93,7 @@ absl::optional<std::string> EncodeScanTransactionParams(
   base::Value::Dict params;
   params.Set("txObject", std::move(tx_object));
   params.Set("metadata", GetMetadata(tx_info->origin_info));
-  params.Set("userAccount", *tx_info->from_address_opt);
+  params.Set("userAccount", *tx_info->from_address);
 
   return GetJSON(base::Value(std::move(params)));
 }
@@ -188,7 +188,7 @@ absl::optional<std::string> EncodeScanTransactionParams(
     params.Set("userAccount", sign_all_transactions_request->from_address);
   } else if (request->is_transaction_info()) {
     const auto& tx_info = request->get_transaction_info();
-    if (!tx_info->from_address_opt) {
+    if (!tx_info->from_address) {
       return absl::nullopt;
     }
     auto serialized_tx =
@@ -202,7 +202,7 @@ absl::optional<std::string> EncodeScanTransactionParams(
     params.Set("transactions", std::move(transactions));
 
     params.Set("metadata", GetMetadata(tx_info->origin_info));
-    params.Set("userAccount", *tx_info->from_address_opt);
+    params.Set("userAccount", *tx_info->from_address);
   } else {
     return absl::nullopt;
   }

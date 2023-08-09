@@ -1268,7 +1268,7 @@ public class Utils {
         itemModel.setTotalGas(parsedTx.getGasFee());
         itemModel.setTotalGasFiat(parsedTx.getGasFeeFiat());
         // TODO(apaymyshev): handle from address for bitcoin.
-        itemModel.setAddressesForBitmap(txInfo.fromAddressOpt, parsedTx.getRecipient());
+        itemModel.setAddressesForBitmap(txInfo.fromAddress, parsedTx.getRecipient());
         itemModel.setTransactionInfo(txInfo);
         itemModel.setParsedTx(parsedTx);
         itemModel.setAssetNetwork(selectedNetwork);

@@ -22,7 +22,7 @@ import { mockOriginInfo } from './mock-origin-info'
 
 export const mockTransactionInfo: SerializableTransactionInfo = {
   fromAccountId: mockAccount.accountId,
-  fromAddressOpt: mockAccount.address,
+  fromAddress: mockAccount.address,
   chainId: BraveWallet.GOERLI_CHAIN_ID,
   id: '465a4d6646-kjlwf665',
   txArgs: ['0x0d8775f648430679a709e98d2b0cb6250d2887ef', '0x15ddf09c97b0000'],
@@ -61,7 +61,7 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
 
 export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
   chainId: BraveWallet.SOLANA_MAINNET,
-  fromAddressOpt: mockSolanaAccount.address,
+  fromAddress: mockSolanaAccount.address,
   fromAccountId: mockSolanaAccount.accountId,
   id: 'sol-tx',
   txArgs: [],
@@ -110,7 +110,7 @@ export const mockFilSendTransaction: FileCoinTransactionInfo = {
   chainId: BraveWallet.FILECOIN_MAINNET,
   confirmedTime: { microseconds: BigInt(new Date().getUTCMilliseconds()) },
   createdTime: { microseconds: BigInt(new Date().getUTCMilliseconds()) },
-  fromAddressOpt: mockFilecoinAccount.address,
+  fromAddress: mockFilecoinAccount.address,
   fromAccountId: mockFilecoinAccount.accountId,
   groupId: undefined,
   id: 'fil-send-tx',

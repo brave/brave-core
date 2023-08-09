@@ -560,8 +560,8 @@ void SolanaProviderImpl::OnTransactionStatusChanged(
   auto callback = std::move(sign_and_send_tx_callbacks_[tx_meta_id]);
   base::Value::Dict result;
   if (tx_status == mojom::TransactionStatus::Submitted) {
-    CHECK(tx_info->from_address_opt);
-    result.Set(kPublicKey, *tx_info->from_address_opt);
+    CHECK(tx_info->from_address);
+    result.Set(kPublicKey, *tx_info->from_address);
     result.Set(kSignature, tx_info->tx_hash);
     std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
                             std::move(result));

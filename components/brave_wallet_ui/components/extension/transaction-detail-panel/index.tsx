@@ -342,7 +342,7 @@ export const TransactionDetailPanel = (props: Props) => {
       <FromToRow>
         <Tooltip
           // TODO(apaymyshev): handle bitcoin transaction
-          text={transaction.fromAddressOpt ?? ''}
+          text={transaction.fromAddress ?? ''}
           isAddress={true}
           position={'left'}
         >

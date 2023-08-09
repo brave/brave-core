@@ -41,7 +41,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
 
   mojom::TransactionInfoPtr ti = meta.ToTransactionInfo();
   EXPECT_EQ(ti->id, meta.id());
-  EXPECT_EQ(ti->from_address_opt, from_address);
+  EXPECT_EQ(ti->from_address, from_address);
   EXPECT_EQ(ti->from_account_id, meta.from());
   EXPECT_EQ(ti->tx_hash, meta.tx_hash());
   EXPECT_EQ(ti->tx_status, meta.status());
@@ -90,7 +90,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
   EthTxMeta meta1(eth_account_id, std::move(tx1));
   mojom::TransactionInfoPtr ti1 = meta1.ToTransactionInfo();
   EXPECT_EQ(ti1->id, meta1.id());
-  EXPECT_EQ(ti1->from_address_opt, from_address);
+  EXPECT_EQ(ti1->from_address, from_address);
   EXPECT_EQ(ti1->from_account_id, meta1.from());
   EXPECT_EQ(ti1->tx_hash, meta1.tx_hash());
   EXPECT_EQ(ti1->tx_status, meta1.status());
@@ -136,7 +136,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
   EthTxMeta meta2(eth_account_id, std::move(tx2));
   mojom::TransactionInfoPtr ti2 = meta2.ToTransactionInfo();
   EXPECT_EQ(ti2->id, meta2.id());
-  EXPECT_EQ(ti2->from_address_opt, from_address);
+  EXPECT_EQ(ti2->from_address, from_address);
   EXPECT_EQ(ti2->from_account_id, meta2.from());
   EXPECT_EQ(ti2->tx_hash, meta2.tx_hash());
   EXPECT_EQ(ti2->tx_status, meta2.status());

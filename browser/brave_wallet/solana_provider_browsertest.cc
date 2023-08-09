@@ -1007,7 +1007,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   auto infos = GetAllTransactionInfo();
   EXPECT_EQ(1UL, infos.size());
   EXPECT_EQ(FirstSolAccountId(), infos[0]->from_account_id);
-  EXPECT_EQ(kFirstAccount, infos[0]->from_address_opt);
+  EXPECT_EQ(kFirstAccount, infos[0]->from_address);
   EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[0]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[0]->tx_type);
@@ -1019,7 +1019,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   infos = GetAllTransactionInfo();
   EXPECT_EQ(1UL, infos.size());
   EXPECT_EQ(FirstSolAccountId(), infos[0]->from_account_id);
-  EXPECT_EQ(kFirstAccount, infos[0]->from_address_opt);
+  EXPECT_EQ(kFirstAccount, infos[0]->from_address);
   EXPECT_EQ(mojom::TransactionStatus::Rejected, infos[0]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[0]->tx_type);
@@ -1046,7 +1046,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   }
   const std::string tx2_id = infos[tx2_index]->id;
   EXPECT_EQ(FirstSolAccountId(), infos[tx2_index]->from_account_id);
-  EXPECT_EQ(kFirstAccount, infos[tx2_index]->from_address_opt);
+  EXPECT_EQ(kFirstAccount, infos[tx2_index]->from_address);
   EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[tx2_index]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[tx2_index]->tx_type);
@@ -1058,7 +1058,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   infos = GetAllTransactionInfo();
   EXPECT_EQ(2UL, infos.size());
   EXPECT_EQ(FirstSolAccountId(), infos[tx2_index]->from_account_id);
-  EXPECT_EQ(kFirstAccount, infos[tx2_index]->from_address_opt);
+  EXPECT_EQ(kFirstAccount, infos[tx2_index]->from_address);
   EXPECT_EQ(mojom::TransactionStatus::Submitted, infos[tx2_index]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[tx2_index]->tx_type);
@@ -1090,7 +1090,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   }
   const std::string tx3_id = infos[tx3_index]->id;
   EXPECT_EQ(FirstSolAccountId(), infos[tx3_index]->from_account_id);
-  EXPECT_EQ(kFirstAccount, infos[tx3_index]->from_address_opt);
+  EXPECT_EQ(kFirstAccount, infos[tx3_index]->from_address);
   EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[tx3_index]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[tx3_index]->tx_type);
@@ -1103,7 +1103,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   EXPECT_EQ(3UL, infos.size());
   EXPECT_EQ(tx3_id, infos[tx3_index]->id);
   EXPECT_EQ(FirstSolAccountId(), infos[tx3_index]->from_account_id);
-  EXPECT_EQ(kFirstAccount, infos[tx3_index]->from_address_opt);
+  EXPECT_EQ(kFirstAccount, infos[tx3_index]->from_address);
   EXPECT_EQ(mojom::TransactionStatus::Submitted, infos[tx3_index]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[tx3_index]->tx_type);
