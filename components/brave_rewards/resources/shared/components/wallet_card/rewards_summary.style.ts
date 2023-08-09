@@ -57,6 +57,7 @@ export const dataTable = styled.div`
     font-size: 14px;
     line-height: 18px;
     padding: 10px 0;
+    vertical-align: baseline;
   }
 
   td.amount {
