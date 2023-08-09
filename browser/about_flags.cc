@@ -94,8 +94,8 @@
 #define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES                                  \
   EXPAND_FEATURE_ENTRIES({                                                   \
       kBraveVPNWireguardFeatureInternalName,                                 \
-      "Enable experimental Wireguard Brave VPN service",                     \
-      "Experimental Wireguard VPN support. Not implemented yet",             \
+      "Enable experimental WireGuard Brave VPN service",                     \
+      "Experimental WireGuard VPN support. Not implemented yet",             \
       kOsWin,                                                                \
       FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNUseWireguardService), \
   })
