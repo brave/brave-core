@@ -5,6 +5,7 @@
 
 # See 'chrome/android/chrome_java_resources.gni' on how to generate this list
 brave_java_resources = [
+  "java/res/drawable/bottom_navigation_gradient_separator.xml",
   "java/res/anim/slide_in_bottom.xml",
   "java/res/anim/slide_in_top.xml",
   "java/res/anim/slide_out_bottom.xml",
