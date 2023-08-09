@@ -13,6 +13,7 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service_observer.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
+#include "components/prefs/pref_change_registrar.h"
 
 class BraveVpnHandler : public settings::SettingsPageUIHandler,
                         public brave_vpn::BraveVPNServiceObserver {
@@ -33,11 +34,13 @@ class BraveVpnHandler : public settings::SettingsPageUIHandler,
   // brave_vpn::BraveVPNServiceObserver
   void OnConnectionStateChanged(
       brave_vpn::mojom::ConnectionState state) override;
+  void OnProtocolChanged();
 
   // SettingsPageUIHandler implementation.
   void OnJavascriptAllowed() override;
   void OnJavascriptDisallowed() override;
 
+  PrefChangeRegistrar pref_change_registrar_;
   const raw_ptr<Profile, DanglingUntriaged> profile_;
   base::WeakPtrFactory<BraveVpnHandler> weak_factory_{this};
 };
