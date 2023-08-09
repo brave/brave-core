@@ -79,7 +79,7 @@ export const AccountSelector = (props: Props) => {
 
     if (selectedAccount.accountId.coin === BraveWallet.CoinType.FIL) {
       const filecoinAccounts = accounts.filter((account) =>
-        (account.accountId.keyringId === selectedAccount?.accountId.keyringId))
+        (account.accountId.keyringId === selectedAccount.accountId.keyringId))
       const fevmAccounts = accounts.filter((account) =>
         (account.accountId.coin === BraveWallet.CoinType.ETH))
       return filecoinAccounts.concat(fevmAccounts)
@@ -90,7 +90,7 @@ export const AccountSelector = (props: Props) => {
     // https://github.com/brave/brave-browser/issues/29262
     return accounts.filter(
       (account) =>
-        account.accountId.keyringId === selectedAccount?.accountId.keyringId ||
+        account.accountId.keyringId === selectedAccount.accountId.keyringId ||
         (asset?.contractAddress === "" && isFVMAccount(account)))
   }, [accounts, selectedNetwork, selectedAccount, asset])
 

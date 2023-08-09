@@ -28,8 +28,6 @@ import { useLib } from './useLib'
 import { useAssets } from './assets'
 
 import { useGetFVMAddressQuery, useGetSelectedChainQuery, walletApi } from '../slices/api.slice'
-// import { useUnsafeWalletSelector } from './use-safe-selector'
-// import { useSelectedAccountQuery } from '../slices/api.slice.extra'
 
 // constants
 import {
