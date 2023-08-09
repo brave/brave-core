@@ -44,7 +44,7 @@ var packageConfig = function (key, sourceDir = braveCoreDir) {
   }
 
   // packages.config should include version string.
-  let obj = Object.assign({}, packages.config, { version: packages.version || "0.0.0" })
+  let obj = Object.assign({}, packages.config, { version: packages.version })
   for (var i = 0, len = key.length; i < len; i++) {
     if (!obj) {
       return obj
