@@ -156,6 +156,7 @@ struct Discover {
 
 struct Cluster {
   string type;
+  string id;
   array<ArticleElements> articles;
 };
 

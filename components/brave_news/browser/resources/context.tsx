@@ -42,7 +42,7 @@ export const useInspectContext = () => {
 export default function InspectContext(props: React.PropsWithChildren<{}>) {
   const { result: publishers } = usePromise(() => api.getPublishers().then(p => p.publishers as { [key: string]: Publisher }), [])
   const { result: channels } = usePromise(() => api.getChannels().then(c => c.channels as { [key: string]: Channel }), [])
-  const { result: feed } = usePromise(() => api.getFeedV2().then(r => r.feed as FeedV2), [])
+  const { result: feed } = usePromise(() => api.getFeedV2().then(r => r.feed ), [])
   const [page, setPage] = React.useState<Page>('feed')
   const [locale, setLocale] = React.useState<string>('en_US')
 

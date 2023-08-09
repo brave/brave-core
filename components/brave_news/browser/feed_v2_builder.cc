@@ -27,7 +27,6 @@ FeedV2Builder::FeedV2Builder(
     ChannelsController& channels_controller,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : fetcher_(publishers_controller, channels_controller, url_loader_factory) {
-
 }
 
 FeedV2Builder::~FeedV2Builder() = default;
