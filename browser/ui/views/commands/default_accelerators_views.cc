@@ -21,7 +21,7 @@ namespace commands {
 std::pair<Accelerators, base::flat_set<ui::Accelerator>>
 GetDefaultAccelerators() {
   Accelerators defaults;
-  base::flat_set<ui::Accelerator> unmodifiable;
+  base::flat_set<ui::Accelerator> system_commands;
 
   auto add_to_accelerators = [&defaults](const AcceleratorMapping& mapping) {
     defaults[mapping.command_id].push_back(
@@ -30,16 +30,16 @@ GetDefaultAccelerators() {
 
   base::ranges::for_each(GetAcceleratorList(), add_to_accelerators);
 #if BUILDFLAG(IS_MAC)
-  // TODO(sko) These accelerators should be flagged as unmodifiable unless we
+  // TODO(sko) These accelerators should be flagged as system_commands unless we
   // can modify the OS settings. See the comment in default_accelerator_mac.h
   base::ranges::for_each(GetGlobalAccelerators(), add_to_accelerators);
   base::ranges::for_each(GetGlobalAccelerators(),
-                         [&unmodifiable](const AcceleratorMapping& mapping) {
-                           unmodifiable.insert(ui::Accelerator(
+                         [&system_commands](const AcceleratorMapping& mapping) {
+                           system_commands.insert(ui::Accelerator(
                                mapping.keycode, mapping.modifiers));
                          });
 #endif  // BUILDFLAG(IS_MAC)
-  return std::tie(defaults, unmodifiable);
+  return std::tie(defaults, system_commands);
 }
 
 }  // namespace commands
