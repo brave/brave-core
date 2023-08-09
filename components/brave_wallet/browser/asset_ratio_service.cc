@@ -186,7 +186,7 @@ GURL AssetRatioService::GetPriceURL(
   std::string to = VectorToCommaSeparatedList(to_assets);
   std::string spec = base::StringPrintf(
       "%s/v2/relative/provider/coingecko/%s/%s/%s",
-      base_url_for_test_.is_empty() ? kAssetRatioBaseURL
+      base_url_for_test_.is_empty() ? GetAssetRatioBaseURL().c_str()
                                     : base_url_for_test_.spec().c_str(),
       from.c_str(), to.c_str(), TimeFrameKeyToString(timeframe).c_str());
   return GURL(spec);
@@ -199,7 +199,7 @@ GURL AssetRatioService::GetPriceHistoryURL(
     brave_wallet::mojom::AssetPriceTimeframe timeframe) {
   std::string spec = base::StringPrintf(
       "%s/v2/history/coingecko/%s/%s/%s",
-      base_url_for_test_.is_empty() ? kAssetRatioBaseURL
+      base_url_for_test_.is_empty() ? GetAssetRatioBaseURL().c_str()
                                     : base_url_for_test_.spec().c_str(),
       asset.c_str(), vs_asset.c_str(), TimeFrameKeyToString(timeframe).c_str());
   return GURL(spec);
@@ -417,7 +417,7 @@ void AssetRatioService::GetStripeBuyURL(
 
   GURL url = GURL(base::StringPrintf("%s/v2/stripe/onramp_sessions",
                                      base_url_for_test_.is_empty()
-                                         ? kAssetRatioBaseURL
+                                         ? GetAssetRatioBaseURL().c_str()
                                          : base_url_for_test_.spec().c_str()));
 
   auto internal_callback =
@@ -500,7 +500,7 @@ GURL AssetRatioService::GetTokenInfoURL(const std::string& contract_address) {
   std::string spec = base::StringPrintf(
       "%s/v3/etherscan/"
       "passthrough?module=token&action=tokeninfo&contractaddress=%s",
-      base_url_for_test_.is_empty() ? kAssetRatioBaseURL
+      base_url_for_test_.is_empty() ? GetAssetRatioBaseURL().c_str()
                                     : base_url_for_test_.spec().c_str(),
       contract_address.c_str());
   return GURL(spec);
@@ -534,7 +534,7 @@ GURL AssetRatioService::GetCoinMarketsURL(const std::string& vs_asset,
                                           const uint8_t limit) {
   GURL url = GURL(base::StringPrintf("%s/v2/market/provider/coingecko",
                                      base_url_for_test_.is_empty()
-                                         ? kAssetRatioBaseURL
+                                         ? GetAssetRatioBaseURL().c_str()
                                          : base_url_for_test_.spec().c_str()));
   url = net::AppendQueryParameter(url, "vsCurrency", vs_asset);
   url = net::AppendQueryParameter(url, "limit", std::to_string(limit));
