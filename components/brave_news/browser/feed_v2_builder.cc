@@ -17,6 +17,7 @@
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_news {
@@ -32,7 +33,7 @@ FeedV2Builder::FeedV2Builder(
 FeedV2Builder::~FeedV2Builder() = default;
 
 void FeedV2Builder::Build(BuildFeedCallback callback) {
-  if (articles_.size()) {
+  if (raw_feed_items_.size()) {
     BuildFeedFromArticles(std::move(callback));
     return;
   }
@@ -40,13 +41,7 @@ void FeedV2Builder::Build(BuildFeedCallback callback) {
   fetcher_.FetchFeed(base::BindOnce(
       [](FeedV2Builder* builder, BuildFeedCallback callback, FeedItems items,
          ETags tags) {
-        std::vector<mojom::ArticlePtr> articles;
-        for (const auto& item : items) {
-          if (item->is_article()) {
-            articles.push_back(std::move(item->get_article()));
-          }
-        }
-        builder->articles_ = std::move(articles);
+        builder->raw_feed_items_ = std::move(items);
         builder->BuildFeedFromArticles(std::move(callback));
       },
       // Unretained is safe here because the FeedFetcher is owned by this and
@@ -55,10 +50,24 @@ void FeedV2Builder::Build(BuildFeedCallback callback) {
 }
 
 void FeedV2Builder::BuildFeedFromArticles(BuildFeedCallback callback) {
-  std::vector<mojom::ArticlePtr> articles;
-  base::ranges::transform(articles_, std::back_inserter(articles),
-                          [](const auto& article) { return article->Clone(); });
-  std::move(callback).Run(std::move(articles));
+  auto feed = mojom::FeedV2::New();
+
+  // TODO(fallaciousreasoning): Actually build the feed, rather than just adding
+  // everything.
+  for (const auto& item : raw_feed_items_) {
+    if (item.is_null()) {
+      continue;
+    }
+    if (item->is_article()) {
+      feed->items.push_back(
+          mojom::FeedItemV2::NewArticle(item->get_article()->Clone()));
+    }
+    if (item->is_promoted_article()) {
+      feed->items.push_back(
+          mojom::FeedItemV2::NewAdvert(item->get_promoted_article()->Clone()));
+    }
+  }
+  std::move(callback).Run(std::move(feed));
 }
 
 }  // namespace brave_news

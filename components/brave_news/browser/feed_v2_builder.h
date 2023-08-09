@@ -2,17 +2,17 @@
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_V2_BUILDER_H_
 
 #include <vector>
-#include "base/functional/callback_forward.h"
+
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+
 namespace brave_news {
 
-using BuildFeedCallback =
-    base::OnceCallback<void(std::vector<mojom::ArticlePtr>)>;
+using BuildFeedCallback = mojom::BraveNewsController::GetFeedV2Callback;
 
 class FeedV2Builder {
  public:
@@ -31,7 +31,7 @@ class FeedV2Builder {
 
   FeedFetcher fetcher_;
 
-  std::vector<mojom::ArticlePtr> articles_{};
+  FeedItems raw_feed_items_{};
 };
 
 }  // namespace brave_news

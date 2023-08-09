@@ -20,6 +20,7 @@
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/feed_controller.h"
+#include "brave/components/brave_news/browser/feed_v2_builder.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
@@ -88,6 +89,7 @@ class BraveNewsController : public KeyedService,
   // mojom::BraveNewsController
   void GetLocale(GetLocaleCallback callback) override;
   void GetFeed(GetFeedCallback callback) override;
+  void GetFeedV2(GetFeedV2Callback callback) override;
   void GetPublishers(GetPublishersCallback callback) override;
   void AddPublishersListener(
       mojo::PendingRemote<mojom::PublishersListener> listener) override;
@@ -154,6 +156,7 @@ class BraveNewsController : public KeyedService,
   PublishersController publishers_controller_;
   ChannelsController channels_controller_;
   FeedController feed_controller_;
+  FeedV2Builder feed_v2_builder_;
   SuggestionsController suggestions_controller_;
 
   PrefChangeRegistrar pref_change_registrar_;
