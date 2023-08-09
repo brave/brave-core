@@ -233,6 +233,14 @@ void RegisterProfilePrefsForMigration(
   // Added 07/2023
   registry->RegisterBooleanPref(kBraveWalletTransactionsFromPrefsToDBMigrated,
                                 false);
+
+  // Added 08/2023
+  registry->RegisterBooleanPref(kBraveWalletCustomNetworksCeloMainnetMigrated,
+                                false);
+
+  // Added 08/2023
+  registry->RegisterBooleanPref(kBraveWalletCustomNetworksFantomMainnetMigrated,
+                                false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -290,6 +298,14 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 07/23 to have is_spam set false for existing tokens.
   BraveWalletService::MigrateUserAssetsAddIsSpam(prefs);
+
+  // Added 08/09 to add Celo as a custom network if selected for the default
+  // or custom origins.
+  BraveWalletService::MigrateCeloMainnetAsCustomNetwork(prefs);
+
+  // Added 08/09 to add Fantom as a custom network if selected for the default
+  // or custom origins.
+  BraveWalletService::MigrateFantomMainnetAsCustomNetwork(prefs);
 
   JsonRpcService::MigrateMultichainNetworks(prefs);
 
