@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/autocomplete_controller.cc b/components/omnibox/browser/autocomplete_controller.cc
-index a72ecee4cdf90c48db340c284879b0f34cb923a9..7e2608ddedf3bc4859fa3c82930157fbcfbe29dd 100644
+index 0352c0916353be8c708bad47520e7652eb1526af..69dbcd088c2b1d408f70f7bef47cf582bb5dc0fa 100644
 --- a/components/omnibox/browser/autocomplete_controller.cc
 +++ b/components/omnibox/browser/autocomplete_controller.cc
 @@ -850,6 +850,7 @@ void AutocompleteController::InitializeAsyncProviders(int provider_types) {
