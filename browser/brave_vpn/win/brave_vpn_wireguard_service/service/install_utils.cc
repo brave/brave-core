@@ -11,6 +11,7 @@
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/path_service.h"
+#include "base/win/registry.h"
 #include "base/win/windows_types.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_tunnel_service.h"
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
@@ -32,6 +33,18 @@ bool RemoveWireguardConfigDirectory(const base::FilePath& last_used_config) {
   }
 
   return base::DeletePathRecursively(wireguard_config_folder);
+}
+
+void LaunchOnStartup(const base::CommandLine& command_line) {
+  base::win::RegKey key(HKEY_LOCAL_MACHINE,
+                        L"Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+                        KEY_WRITE);
+  if (!key.Valid()) {
+    VLOG(1) << "Failed to write wireguard service to startup";
+    return;
+  }
+  key.WriteValue(brave_vpn::GetBraveVpnWireguardServiceName().c_str(),
+                 command_line.GetCommandLineString().c_str());
 }
 }  // namespace
 
@@ -82,8 +95,14 @@ bool InstallBraveWireguardService() {
   install_service_work_item.set_best_effort(true);
   install_service_work_item.set_rollback_enabled(false);
   if (install_service_work_item.Do()) {
-    return brave_vpn::ConfigureBraveWireguardService(
+    auto success = brave_vpn::ConfigureBraveWireguardService(
         brave_vpn::GetBraveVpnWireguardServiceName());
+    if (success) {
+      service_cmd.AppendSwitch(
+          brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName);
+      LaunchOnStartup(service_cmd);
+    }
+    return success;
   }
   return false;
 }
