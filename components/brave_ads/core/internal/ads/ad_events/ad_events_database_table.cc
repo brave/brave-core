@@ -96,6 +96,8 @@ void GetCallback(GetAdEventsCallback callback,
     return std::move(callback).Run(/*success*/ false, /*ad_events*/ {});
   }
 
+  CHECK(command_response->result);
+
   AdEventList ad_events;
   for (const auto& record : command_response->result->get_records()) {
     const AdEventInfo ad_event = GetFromRecord(&*record);

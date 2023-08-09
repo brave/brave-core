@@ -132,6 +132,8 @@ void GetCallback(GetConversionQueueCallback callback,
                                    /*conversions_queue_items*/ {});
   }
 
+  CHECK(command_response->result);
+
   ConversionQueueItemList conversion_queue_items;
 
   for (const auto& record : command_response->result->get_records()) {
@@ -154,6 +156,8 @@ void GetForCreativeInstanceIdCallback(
     return std::move(callback).Run(/*success*/ false, creative_instance_id,
                                    /*conversion_queue_items*/ {});
   }
+
+  CHECK(command_response->result);
 
   ConversionQueueItemList conversion_queue_items;
 

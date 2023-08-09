@@ -147,6 +147,7 @@ CreativeNewTabPageAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
 CreativeNewTabPageAdMap GroupCreativeAdsFromResponse(
     mojom::DBCommandResponseInfoPtr command_response) {
   CHECK(command_response);
+  CHECK(command_response->result);
 
   CreativeNewTabPageAdMap creative_ads;
 

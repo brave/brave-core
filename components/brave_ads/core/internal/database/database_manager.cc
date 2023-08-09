@@ -75,13 +75,13 @@ void DatabaseManager::CreateOrOpenCallback(
     mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||
       command_response->status !=
-          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK ||
-      !command_response->result) {
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to open or create database");
     NotifyFailedToCreateOrOpenDatabase();
     return std::move(callback).Run(/*success*/ false);
   }
 
+  CHECK(command_response->result);
   CHECK(command_response->result->get_value()->which() ==
         mojom::DBValue::Tag::kIntValue);
   const int from_version =
