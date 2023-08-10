@@ -8,16 +8,33 @@
 #include "base/metrics/field_trial_params.h"
 #include "base/time/time.h"
 
-namespace brave_federated {
-namespace features {
+namespace brave_federated::features {
 
 namespace {
 
 const char kFeatureName[] = "BraveFederated";
 
+const char kFieldTrialParameterFederatedLearningUpdateCycleInSeconds[] =
+    "federated_learning_update_cycle_in_seconds";
+const int kDefaultFederatedLearningUpdateCycleInSeconds = 300;
+
+const char kFieldTrialParameterFederatedLearningTaskEndpoint[] =
+    "federated_learning_task_endpoint";
+const char kDefaultFederatedLearningTaskEndpoint[] =
+    "https://fl.brave.com/api/v0/fleet/pull-task-ins";
+
+const char kFieldTrialParameterFederatedLearningResultsEndpoint[] =
+    "federated_learning_results_endpoint";
+const char kDefaultFederatedLearningResultsEndpoint[] =
+    "https://fl.brave.com/api/v0/fleet/push-task-res";
+
 const char kFieldTrialParameterOperationalPatternsEnabled[] =
     "operational_patterns_enabled";
 const bool kDefaultOperationalPatternsEnabled = false;
+
+const char kFieldTrialParameterInitFederatedServiceWaitTimeInSeconds[] =
+    "init_federated_service_wait_time_in_seconds";
+const uint32_t kDefaultInitFederatedServiceWaitTimeInSeconds = 30;
 
 const char kFieldTrialParameterCollectionIDLifetimeInSeconds[] =
     "collection_id_lifetime_in_seconds";
@@ -43,6 +60,11 @@ const char kFieldTrialParameterMockCollectionRequests[] =
     "mock_collection_requests";
 const bool kDefaultMockCollectionRequests = false;
 
+const char kFieldTrialParameterAdTimingLocalDataCollectionEnabled[] =
+    "ad_timing_local_data_collection_enabled";
+
+const bool kDefaultAdTimingLocalDataCollectionEnabled = false;
+
 }  // namespace
 
 BASE_FEATURE(kFederatedLearning,
@@ -51,6 +73,40 @@ BASE_FEATURE(kFederatedLearning,
 
 bool IsFederatedLearningEnabled() {
   return base::FeatureList::IsEnabled(kFederatedLearning);
+}
+
+int GetFederatedLearningUpdateCycleInSeconds() {
+  return GetFieldTrialParamByFeatureAsInt(
+      kFederatedLearning,
+      kFieldTrialParameterFederatedLearningUpdateCycleInSeconds,
+      kDefaultFederatedLearningUpdateCycleInSeconds);
+}
+
+std::string GetFederatedLearningTaskEndpoint() {
+  const std::string task_endpoint = GetFieldTrialParamValueByFeature(
+      kFederatedLearning, kFieldTrialParameterFederatedLearningTaskEndpoint);
+
+  if (task_endpoint.empty()) {
+    return kDefaultFederatedLearningTaskEndpoint;
+  }
+  return task_endpoint;
+}
+
+std::string GetFederatedLearningResultsEndpoint() {
+  const std::string results_endpoint = GetFieldTrialParamValueByFeature(
+      kFederatedLearning, kFieldTrialParameterFederatedLearningResultsEndpoint);
+
+  if (results_endpoint.empty()) {
+    return kDefaultFederatedLearningResultsEndpoint;
+  }
+  return results_endpoint;
+}
+
+uint32_t GetInitFederatedServiceWaitTimeInSeconds() {
+  return GetFieldTrialParamByFeatureAsInt(
+      kFederatedLearning,
+      kFieldTrialParameterInitFederatedServiceWaitTimeInSeconds,
+      kDefaultInitFederatedServiceWaitTimeInSeconds);
 }
 
 bool IsOperationalPatternsEnabled() {
@@ -89,5 +145,11 @@ bool MockCollectionRequests() {
       kDefaultMockCollectionRequests);
 }
 
-}  // namespace features
-}  // namespace brave_federated
+bool IsAdTimingLocalDataCollectionEnabled() {
+  return GetFieldTrialParamByFeatureAsBool(
+      kFederatedLearning,
+      kFieldTrialParameterAdTimingLocalDataCollectionEnabled,
+      kDefaultAdTimingLocalDataCollectionEnabled);
+}
+
+}  // namespace brave_federated::features

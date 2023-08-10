@@ -12,7 +12,7 @@
 #include "base/time/time.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests -filter=BraveFederatedLearningFeaturesTest*
+// npm run test -- brave_unit_tests --filter=BraveFederatedLearningFeaturesTest*
 
 namespace brave_federated {
 

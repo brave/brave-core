@@ -1,0 +1,12 @@
+import("//third_party/grpc/grpc_library.gni")
+import("//third_party/protobuf/proto_library.gni")
+
+grpc_library("transport_proto") {
+  sources = [
+    "driver.proto",
+    "fleet.proto",
+    "node.proto",
+    "task.proto",
+    "transport.proto",
+  ]
+}

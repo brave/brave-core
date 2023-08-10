@@ -6,15 +6,21 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_FEATURES_H_
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_FEATURES_H_
 
+#include <string>
+
 #include "base/feature_list.h"
 
-namespace brave_federated {
-
-namespace features {
+namespace brave_federated::features {
 
 BASE_DECLARE_FEATURE(kFederatedLearning);
 
 bool IsFederatedLearningEnabled();
+
+// Federated Learning
+int GetFederatedLearningUpdateCycleInSeconds();
+std::string GetFederatedLearningTaskEndpoint();
+std::string GetFederatedLearningResultsEndpoint();
+uint32_t GetInitFederatedServiceWaitTimeInSeconds();
 
 // Operational Patterns
 bool IsOperationalPatternsEnabled();
@@ -24,8 +30,9 @@ int GetCollectionTimerIntervalInSeconds();
 int GetMockTaskDurationInSeconds();
 bool MockCollectionRequests();
 
-}  // namespace features
+// Ad Timing Local Data Collection
+bool IsAdTimingLocalDataCollectionEnabled();
 
-}  // namespace brave_federated
+}  // namespace brave_federated::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_FEATURES_H_

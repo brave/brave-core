@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "brave/components/brave_federated/brave_federated_service.h"
 #include "brave/components/brave_federated/data_store_service.h"
+#include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_federated/notification_ad_task_constants.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
@@ -71,13 +72,16 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
       brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetInstance()
           ->GetForProfile(profile);
   brave_federated::AsyncDataStore* notification_ad_async_data_store = nullptr;
-  auto* federated_service =
-      brave_federated::BraveFederatedServiceFactory::GetForBrowserContext(
-          profile);
-  if (federated_service) {
-    notification_ad_async_data_store =
-        federated_service->GetDataStoreService()->GetDataStore(
-            brave_federated::kNotificationAdTaskName);
+
+  if (brave_federated::features::IsAdTimingLocalDataCollectionEnabled()) {
+    auto* federated_service =
+        brave_federated::BraveFederatedServiceFactory::GetForBrowserContext(
+            profile);
+    if (federated_service) {
+      notification_ad_async_data_store =
+          federated_service->GetDataStoreService()->GetDataStore(
+              brave_federated::kNotificationAdTaskName);
+    }
   }
 
   auto* history_service = HistoryServiceFactory::GetInstance()->GetForProfile(

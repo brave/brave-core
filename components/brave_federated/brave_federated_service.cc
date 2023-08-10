@@ -9,11 +9,10 @@
 #include <utility>
 
 #include "base/logging.h"
-#include "base/path_service.h"
 #include "brave/components/brave_federated/data_store_service.h"
-#include "brave/components/brave_federated/data_stores/data_store.h"
 #include "brave/components/brave_federated/eligibility_service.h"
 #include "brave/components/brave_federated/features.h"
+#include "brave/components/brave_federated/learning_service.h"
 #include "brave/components/brave_federated/operational_patterns.h"
 #include "brave/components/p3a/pref_names.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -42,14 +41,14 @@ void BraveFederatedService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 }
 
 DataStoreService* BraveFederatedService::GetDataStoreService() const {
-  DCHECK(data_store_service_);
+  CHECK(data_store_service_);
   return data_store_service_.get();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void BraveFederatedService::Init() {
-  VLOG(1) << "Initialising federated service";
+  VLOG(1) << "FL: Initialising federated service";
 
   local_state_change_registrar_.Init(local_state_);
   local_state_change_registrar_.Add(
@@ -64,6 +63,8 @@ void BraveFederatedService::Init() {
 
   eligibility_service_ = std::make_unique<EligibilityService>();
 
+  learning_service_ = std::make_unique<LearningService>(
+      eligibility_service_.get(), url_loader_factory_);
   operational_patterns_ =
       std::make_unique<OperationalPatterns>(prefs_, url_loader_factory_);
 
@@ -98,14 +99,14 @@ void BraveFederatedService::MaybeStartOrStopOperationalPatterns() {
 }
 
 void BraveFederatedService::MaybeStartOperationalPatterns() {
-  DCHECK(operational_patterns_);
+  CHECK(operational_patterns_);
   if (!operational_patterns_->IsRunning() && ShouldStartOperationalPatterns()) {
     operational_patterns_->Start();
   }
 }
 
 void BraveFederatedService::MaybeStopOperationalPatterns() {
-  DCHECK(operational_patterns_);
+  CHECK(operational_patterns_);
   if (operational_patterns_->IsRunning() && !ShouldStartOperationalPatterns()) {
     operational_patterns_->Stop();
   }
