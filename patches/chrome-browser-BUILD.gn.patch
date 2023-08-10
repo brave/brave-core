@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 93184ddac697404d22156015e039b710813ce3a5..dd2e17dd93f0d5072e7b27ec82e00c72b73a00be 100644
+index 01194da83fe3f14c5f84671a186ed01fdbd2dc1e..ac4383ed0b985fa3e538d78b55420467e56d1259 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2559,6 +2559,7 @@ static_library("browser") {
+@@ -2563,6 +2563,7 @@ static_library("browser") {
        "metrics/family_link_user_metrics_provider.h",
      ]
    }
