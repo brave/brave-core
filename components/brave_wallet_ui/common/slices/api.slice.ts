@@ -645,7 +645,7 @@ export function createWalletApi () {
             ).unwrap()
 
             if (metadata?.image) {
-              tokenArg.logo = metadata?.image || tokenArg.logo
+              tokenArg.logo = metadata?.image || metadata?.image_url || tokenArg.logo
             }
           }
 

@@ -30,6 +30,7 @@ export interface CommonNftMetadata {
   attributes?: any[]
   description?: string
   image?: string
+  image_url?: string
   name?: string
 }
 
@@ -142,9 +143,10 @@ export const nftsEndpoints = ({
             ? (JSON.parse(result.response) as CommonNftMetadata)
             : undefined
 
-          const imageURL = response?.image?.startsWith('data:image/')
-            ? response.image
-            : await cache.getIpfsGatewayTranslatedNftUrl(response?.image || '')
+          const responseImageUrl = response?.image || response?.image_url
+          const imageURL = responseImageUrl?.startsWith('data:image/')
+            ? responseImageUrl
+            : await cache.getIpfsGatewayTranslatedNftUrl(responseImageUrl || '')
 
           const attributes = Array.isArray(response?.attributes)
             ? response?.attributes.map(
