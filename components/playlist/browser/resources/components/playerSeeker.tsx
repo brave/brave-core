@@ -8,6 +8,8 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { color, font } from '@brave/leo/tokens/css'
 
+import { formatTimeInSeconds } from '../utils/timeFormatter'
+
 interface Props {
   videoElement: HTMLVideoElement | null
 }
@@ -65,17 +67,6 @@ const StyledProgress = styled.progress.attrs(
     border-radius: calc(var(--progress-bar-height) * 2);
   }
 `
-
-function formatTime (time: number) {
-  const stringFormat = (t: number) => String(t).padStart(2, '0')
-  const hours = stringFormat(Math.floor(time / 3600))
-  const minutes = stringFormat(Math.floor((time % 3600) / 60))
-  const seconds = stringFormat(Math.floor(time % 60))
-
-  const parts = [minutes, seconds]
-  if (hours !== '00') parts.unshift(hours)
-  return parts.join(':')
-}
 
 class DragController {
   constructor (
@@ -252,8 +243,8 @@ export default function PlayerSeeker ({ videoElement }: Props) {
         ref={progressElementRef}
       />
       <TimeContainer>
-        <span>{formatTime(currentTime)}</span>
-        <span>{formatTime(duration)}</span>
+        <span>{formatTimeInSeconds(currentTime, 'colon')}</span>
+        <span>{formatTimeInSeconds(duration, 'colon')}</span>
       </TimeContainer>
     </SeekerContainer>
   )

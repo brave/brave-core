@@ -10,12 +10,14 @@ import { color, font } from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 import DefaultThumbnailIcon from '../assets/playlist-thumbnail-icon.svg'
 import ContextualMenuAnchorButton from './contextualMenu'
+import { PlaylistItem as PlaylistItemMojo } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
+import {
+  formatTimeInSeconds,
+  microSecondsToSeconds
+} from '../utils/timeFormatter'
 
 interface Props {
-  id: string
-  name: string
-  thumbnailUrl: string
-  cached: boolean
+  item: PlaylistItemMojo
 
   onClick: (id: string) => void
 }
@@ -65,10 +67,13 @@ const ItemDetailsContainer = styled.div`
 `
 
 export default function PlaylistItem ({
-  id,
-  name,
-  thumbnailUrl,
-  cached,
+  item: {
+    id,
+    name,
+    cached,
+    duration,
+    thumbnailPath: { url: thumbnailUrl }
+  },
   onClick
 }: Props) {
   const anchorElem = React.useRef<HTMLAnchorElement>(null)
@@ -108,7 +113,11 @@ export default function PlaylistItem ({
         <PlaylistItemName>{name}</PlaylistItemName>
         {
           <ItemDetailsContainer>
-            {<span>duration</span> && false /* TODO(sko) not ready yet */}
+            {duration && (
+              <span>
+                {formatTimeInSeconds(microSecondsToSeconds(+duration), 'colon')}
+              </span>
+            )}
             {cached && <Icon name='check-circle-outline' />}
             {<span>350 MB</span> && false /* TODO(sko) not ready yet */}
           </ItemDetailsContainer>

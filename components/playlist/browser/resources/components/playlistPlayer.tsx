@@ -39,10 +39,7 @@ export default function PlaylistPlayer ({
       {playlist?.items.map(item => (
         <PlaylistItem
           key={item.id}
-          id={item.id}
-          name={item.name}
-          cached={item.cached}
-          thumbnailUrl={item.thumbnailPath.url}
+          item={item}
           onClick={() =>
             postMessageToPlayer({
               actionType: types.PLAYLIST_ITEM_SELECTED,

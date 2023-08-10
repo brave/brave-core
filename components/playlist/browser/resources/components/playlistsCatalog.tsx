@@ -15,7 +15,7 @@ import { Playlist } from 'gen/brave/components/playlist/common/mojom/playlist.mo
 import PlayLaterCardOverlayImage from '../assets/playlater-card-overlay.svg'
 import PlaylistInfo from './playlistInfo'
 import { useSelector } from 'react-redux'
-import { ApplicationState } from '../reducers/states'
+import { ApplicationState, useTotalDuration } from '../reducers/states'
 
 interface ThumbnailProps {
   isDefaultPlaylist: boolean
@@ -126,15 +126,7 @@ function PlaylistCard ({ playlist }: { playlist: Playlist }) {
   }, [playlist])
   const hasBackground = isDefaultPlaylist || !!thumbnailUrl
 
-  const totalDuration = React.useMemo(() => {
-    // TODO(sko) Duration value is not correct now.
-    //  * We need to update duration when Playlist player plays a video
-    //  * Check if duration is converted well. the duration value is formatted
-    //    as string based on base::Time.
-    return playlist.items?.reduce((sum, item) => {
-      return sum + parseInt(item.duration)
-    }, 0)
-  }, [playlist])
+  const totalDuration = useTotalDuration(playlist)
 
   return (
     <StyledLink to={`/playlist/${playlist.id}`}>
