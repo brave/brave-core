@@ -148,18 +148,6 @@ public class Migration {
                                                                    pageIndex: UInt(currentPage),
                                                                    isPrivateBrowsing: isPrivate)
         
-        var screenshot = Data()
-        if let imageStore = diskImageStore, let screenshotUUID = oldTab.screenshotUUID {
-          do {
-            let image = try imageStore.getSynchronously(screenshotUUID)
-            if let data = image.jpegData(compressionQuality: CGFloat(UIConstants.screenshotQuality)) {
-              screenshot = data
-            }
-          } catch {
-            Logger.module.error("Failed to migrate screenshot for Tab: \(error)")
-          }
-        }
-        
         // Create SessionTab and associate it with a SessionWindow
         // Tabs currently do not have groups, so sessionTabGroup is nil by default
         _ = SessionTab(context: context,
@@ -170,7 +158,7 @@ public class Migration {
                        isPrivate: isPrivate,
                        isSelected: oldTab.isSelected,
                        lastUpdated: oldTab.lastUpdate ?? .now,
-                       screenshotData: screenshot,
+                       screenshotData: Data(),  // Do not migrate screenshot data
                        title: tabTitle,
                        url: url,
                        tabId: tabId)
