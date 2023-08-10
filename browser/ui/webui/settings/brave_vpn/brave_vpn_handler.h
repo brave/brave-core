@@ -19,7 +19,6 @@ class BraveVpnHandler : public settings::SettingsPageUIHandler,
                         public brave_vpn::BraveVPNServiceObserver {
  public:
   explicit BraveVpnHandler(Profile* profile);
-
   ~BraveVpnHandler() override;
 
  private:
