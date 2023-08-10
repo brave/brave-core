@@ -74,7 +74,7 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     self.name = try container.decode(String.self, forKey: .name)
-    let src = try container.decode(String.self, forKey: .src)
+    let src = try container.decodeIfPresent(String.self, forKey: .src) ?? ""
     self.pageSrc = try container.decode(String.self, forKey: .pageSrc)
     self.pageTitle = try container.decode(String.self, forKey: .pageTitle)
     self.mimeType = try container.decodeIfPresent(String.self, forKey: .mimeType) ?? ""
