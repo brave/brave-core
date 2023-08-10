@@ -202,11 +202,6 @@ extension BrowserViewController: TopToolbarDelegate {
     }
   }
 
-  func topToolbarDidLongPressReaderMode(_ topToolbar: TopToolbarView) -> Bool {
-    // Maybe we want to add something here down the road
-    return false
-  }
-
   func topToolbarDidPressPlaylistButton(_ urlBar: TopToolbarView) {
     guard let tab = tabManager.selectedTab, let playlistItem = tab.playlistItem else { return }
     let state = urlBar.locationView.playlistButton.buttonState
@@ -266,10 +261,6 @@ extension BrowserViewController: TopToolbarDelegate {
     } else {
       return (topToolbar?.absoluteString, false)
     }
-  }
-
-  func topToolbarDidLongPressLocation(_ topToolbar: TopToolbarView) {
-    // The actions are carried to menu actions for Top ToolBar Location View
   }
 
   func topToolbarDidPressScrollToTop(_ topToolbar: TopToolbarView) {
@@ -530,10 +521,6 @@ extension BrowserViewController: TopToolbarDelegate {
 
   func topToolbarDidTapBraveRewardsButton(_ topToolbar: TopToolbarView) {
     showBraveRewardsPanel()
-  }
-
-  func topToolbarDidLongPressBraveRewardsButton(_ topToolbar: TopToolbarView) {
-    showRewardsDebugSettings()
   }
 
   func topToolbarDidTapMenuButton(_ topToolbar: TopToolbarView) {
@@ -926,9 +913,26 @@ extension BrowserViewController: ToolbarDelegate {
 
 extension BrowserViewController: UIContextMenuInteractionDelegate {
   public func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
-    let configuration =  UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [unowned self] _ in
-      var actionMenu: [UIMenu] = []
+    
+    let configuration = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [unowned self] _ in
+      var actionMenus: [UIMenu?] = []
       var pasteMenuChildren: [UIAction] = []
+      
+      let tab = tabManager.selectedTab
+      var reloadMenu: UIMenu?
+      
+      if let url = tab?.url, url.isWebPage() {
+        let reloadTitle = tab?.isDesktopSite == true ? Strings.appMenuViewMobileSiteTitleString : Strings.appMenuViewDesktopSiteTitleString
+        let reloadIcon = tab?.isDesktopSite == true ? "leo.smartphone" : "leo.monitor"
+        let reloadAction = UIAction(
+          title: reloadTitle,
+          image: UIImage(braveSystemNamed: reloadIcon),
+          handler: UIAction.deferredActionHandler { [weak tab] _ in
+            tab?.switchUserAgent()
+          })
+        
+        reloadMenu = UIMenu(options: .displayInline, children: [reloadAction])
+      }
       
       let pasteGoAction = UIAction(
         identifier: .pasteAndGo,
@@ -942,7 +946,6 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
         identifier: .paste,
         handler: UIAction.deferredActionHandler { _ in
           if let pasteboardContents = UIPasteboard.general.string {
-            // Enter overlay mode and make the search controller appear.
             self.topToolbar.enterOverlayMode(pasteboardContents, pasted: true, search: true)
           }
         })
@@ -962,23 +965,20 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
           }
         })
 
-      let copyMenu = UIMenu(title: "", options: .displayInline, children: [copyAction])
+      let copyMenu = UIMenu(options: .displayInline, children: [copyAction])
       
       if UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs {
-        let pasteMenu = UIMenu(title: "", options: .displayInline, children: pasteMenuChildren)
-        
-        actionMenu = [pasteMenu, copyMenu]
-        
-        if #unavailable(iOS 16.0), isUsingBottomBar {
-          actionMenu.reverse()
-        }
+        let pasteMenu = UIMenu(options: .displayInline, children: pasteMenuChildren)
+        actionMenus.append(contentsOf: [pasteMenu, copyMenu])
       } else {
-        actionMenu = [copyMenu]
+        actionMenus.append(copyMenu)
       }
-
-      return UIMenu(title: "", identifier: nil, children: actionMenu)
-    }
       
+      actionMenus.append(reloadMenu)
+      
+      return UIMenu(children: actionMenus.compactMap { $0 })
+    }
+    
     if #available(iOS 16.0, *) {
       configuration.preferredMenuElementOrder = .priority
     }

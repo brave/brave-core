@@ -29,14 +29,6 @@ extension BrowserViewController {
     self.topToolbar.locationView.rewardsButton.iconState = Preferences.Rewards.rewardsToggledOnce.value ? (rewards.isEnabled || rewards.isCreatingWallet ? .enabled : .disabled) : .initial
   }
 
-  func showRewardsDebugSettings() {
-    if AppConstants.buildChannel.isPublic { return }
-
-    let settings = RewardsDebugSettingsViewController(rewards: rewards)
-    let container = UINavigationController(rootViewController: settings)
-    present(container, animated: true)
-  }
-
   func showBraveRewardsPanel() {
     if !Preferences.FullScreenCallout.rewardsCalloutCompleted.value,
       Preferences.Onboarding.isNewRetentionUser.value == true,

@@ -12,23 +12,17 @@ import DesignSystem
 
 protocol TabLocationViewDelegate {
   func tabLocationViewDidTapLocation(_ tabLocationView: TabLocationView)
-  func tabLocationViewDidLongPressLocation(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapReaderMode(_ tabLocationView: TabLocationView)
   func tabLocationViewDidBeginDragInteraction(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapPlaylist(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapPlaylistMenuAction(_ tabLocationView: TabLocationView, action: PlaylistURLBarButton.MenuAction)
   func tabLocationViewDidTapLockImageView(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapReload(_ tabLocationView: TabLocationView)
-  func tabLocationViewDidLongPressReload(_ tabLocationView: TabLocationView, from button: UIButton)
   func tabLocationViewDidTapStop(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapVoiceSearch(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapShieldsButton(_ urlBar: TabLocationView)
   func tabLocationViewDidTapRewardsButton(_ urlBar: TabLocationView)
-  func tabLocationViewDidLongPressRewardsButton(_ urlBar: TabLocationView)
   func tabLocationViewDidTapWalletButton(_ urlBar: TabLocationView)
-  
-  /// - returns: whether the long-press was handled by the delegate; i.e. return `false` when the conditions for even starting handling long-press were not satisfied
-  @discardableResult func tabLocationViewDidLongPressReaderMode(_ tabLocationView: TabLocationView) -> Bool
 }
 
 private struct TabLocationViewUX {
@@ -41,8 +35,6 @@ private struct TabLocationViewUX {
 
 class TabLocationView: UIView {
   var delegate: TabLocationViewDelegate?
-  var longPressRecognizer: UILongPressGestureRecognizer!
-  var tapRecognizer: UITapGestureRecognizer!
   var contentView: UIStackView!
   private var tabObservers: TabObservers!
   private var privateModeCancellable: AnyCancellable?
@@ -169,13 +161,11 @@ class TabLocationView: UIView {
   private(set) lazy var readerModeButton: ReaderModeButton = {
     let readerModeButton = ReaderModeButton(frame: .zero)
     readerModeButton.addTarget(self, action: #selector(didTapReaderModeButton), for: .touchUpInside)
-    readerModeButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(didLongPressReaderModeButton)))
     readerModeButton.isAccessibilityElement = true
     readerModeButton.isHidden = true
     readerModeButton.imageView?.contentMode = .scaleAspectFit
     readerModeButton.accessibilityLabel = Strings.tabToolbarReaderViewButtonAccessibilityLabel
     readerModeButton.accessibilityIdentifier = "TabLocationView.readerModeButton"
-    readerModeButton.accessibilityCustomActions = [UIAccessibilityCustomAction(name: Strings.tabToolbarReaderViewButtonTitle, target: self, selector: #selector(didLongPressReaderModeCustomAction))]
     readerModeButton.unselectedTintColor = .braveLabel
     readerModeButton.selectedTintColor = .braveBlurpleTint
     return readerModeButton
@@ -202,8 +192,6 @@ class TabLocationView: UIView {
     $0.accessibilityLabel = Strings.tabToolbarReloadButtonAccessibilityLabel
     $0.setImage(UIImage(braveSystemNamed: "leo.browser.refresh", compatibleWith: nil), for: .normal)
     $0.tintColor = .braveLabel
-    let longPressGestureStopReloadButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressStopReloadButton(_:)))
-    $0.addGestureRecognizer(longPressGestureStopReloadButton)
     $0.addTarget(self, action: #selector(didTapStopReloadButton), for: .touchUpInside)
   }
   
@@ -231,8 +219,6 @@ class TabLocationView: UIView {
   lazy var rewardsButton: RewardsButton = {
     let button = RewardsButton()
     button.addTarget(self, action: #selector(didTapBraveRewardsButton), for: .touchUpInside)
-    let longPressGestureRewardsButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressRewardsButton(_:)))
-    button.addGestureRecognizer(longPressGestureRewardsButton)
     return button
   }()
 
@@ -260,14 +246,7 @@ class TabLocationView: UIView {
 
     tabObservers = registerFor(.didChangeContentBlocking, .didGainFocus, queue: .main)
 
-    longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressLocationBar))
-    longPressRecognizer.delegate = self
-
-    tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapLocationBar))
-    tapRecognizer.delegate = self
-
-    addGestureRecognizer(longPressRecognizer)
-    addGestureRecognizer(tapRecognizer)
+    addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapLocationBar)))
     
     var optionSubviews: [UIView] = [readerModeButton, walletButton, playlistButton]
     if isVoiceSearchAvailable {
@@ -387,36 +366,6 @@ class TabLocationView: UIView {
     reloadButton.isHidden = url == nil
     voiceSearchButton.isHidden = (url != nil) || !isVoiceSearchAvailable
   }
-
-  // MARK: Long Press Actions
-
-  @objc func didLongPressReaderModeButton(_ recognizer: UILongPressGestureRecognizer) {
-    if recognizer.state == .began {
-      delegate?.tabLocationViewDidLongPressReaderMode(self)
-    }
-  }
-  
-  @objc func didLongPressLocationBar(_ recognizer: UITapGestureRecognizer) {
-    if recognizer.state == .began {
-      delegate?.tabLocationViewDidLongPressLocation(self)
-    }
-  }
-  
-  @objc func didLongPressStopReloadButton(_ recognizer: UILongPressGestureRecognizer) {
-    if recognizer.state == .began && !loading {
-      delegate?.tabLocationViewDidLongPressReload(self, from: reloadButton)
-    }
-  }
-  
-  @objc func didLongPressReaderModeCustomAction() -> Bool {
-    return delegate?.tabLocationViewDidLongPressReaderMode(self) ?? false
-  }
-  
-  @objc func didLongPressRewardsButton(_ gesture: UILongPressGestureRecognizer) {
-    if gesture.state == .began {
-      delegate?.tabLocationViewDidLongPressRewardsButton(self)
-    }
-  }
   
   // MARK: Tap Actions
   
@@ -460,27 +409,6 @@ class TabLocationView: UIView {
   
   @objc func didTapWalletButton() {
     delegate?.tabLocationViewDidTapWalletButton(self)
-  }
-}
-
-// MARK: - UIGestureRecognizerDelegate
-
-extension TabLocationView: UIGestureRecognizerDelegate {
-  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-    // When long pressing a button make sure the textfield's long press gesture is not triggered
-    return !(otherGestureRecognizer.view is UIButton)
-  }
-
-  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-    // If the longPressRecognizer is active, fail the tap recognizer to avoid conflicts.
-    return gestureRecognizer == longPressRecognizer && otherGestureRecognizer == tapRecognizer
-  }
-
-  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-    if gestureRecognizer == tapRecognizer && touch.view == tabOptionsStackView {
-      return false
-    }
-    return true
   }
 }
 

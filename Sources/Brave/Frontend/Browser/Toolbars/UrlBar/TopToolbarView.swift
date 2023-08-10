@@ -15,13 +15,10 @@ import BraveCore
 protocol TopToolbarDelegate: AnyObject {
   func topToolbarDidPressTabs(_ topToolbar: TopToolbarView)
   func topToolbarDidPressReaderMode(_ topToolbar: TopToolbarView)
-  // Returns whether the long-press was handled by the delegate; i.e. return `false` when the conditions for even starting handling long-press were not satisfied
-  func topToolbarDidLongPressReaderMode(_ topToolbar: TopToolbarView) -> Bool
   func topToolbarDidPressPlaylistButton(_ urlBar: TopToolbarView)
   func topToolbarDidPressPlaylistMenuAction(_ urlBar: TopToolbarView, action: PlaylistURLBarButton.MenuAction)
   func topToolbarDidEnterOverlayMode(_ topToolbar: TopToolbarView)
   func topToolbarDidLeaveOverlayMode(_ topToolbar: TopToolbarView)
-  func topToolbarDidLongPressLocation(_ topToolbar: TopToolbarView)
   func topToolbarDidPressScrollToTop(_ topToolbar: TopToolbarView)
   func topToolbar(_ topToolbar: TopToolbarView, didEnterText text: String)
   func topToolbar(_ topToolbar: TopToolbarView, didSubmitText text: String)
@@ -31,9 +28,7 @@ protocol TopToolbarDelegate: AnyObject {
   func topToolbarDidTapBookmarkButton(_ topToolbar: TopToolbarView)
   func topToolbarDidTapBraveShieldsButton(_ topToolbar: TopToolbarView)
   func topToolbarDidTapBraveRewardsButton(_ topToolbar: TopToolbarView)
-  func topToolbarDidLongPressBraveRewardsButton(_ topToolbar: TopToolbarView)
   func topToolbarDidTapMenuButton(_ topToolbar: TopToolbarView)
-  func topToolbarDidLongPressReloadButton(_ urlBar: TopToolbarView, from button: UIButton)
   func topToolbarDidPressVoiceSearchButton(_ urlBar: TopToolbarView)
   func topToolbarDidPressStop(_ urlBar: TopToolbarView)
   func topToolbarDidPressReload(_ urlBar: TopToolbarView)
@@ -725,14 +720,6 @@ extension TopToolbarView: TabLocationViewDelegate {
     delegate?.topToolbarDidTapBraveRewardsButton(self)
   }
 
-  func tabLocationViewDidLongPressRewardsButton(_ urlBar: TabLocationView) {
-    delegate?.topToolbarDidLongPressBraveRewardsButton(self)
-  }
-
-  func tabLocationViewDidLongPressReaderMode(_ tabLocationView: TabLocationView) -> Bool {
-    return delegate?.topToolbarDidLongPressReaderMode(self) ?? false
-  }
-
   func tabLocationViewDidTapLocation(_ tabLocationView: TabLocationView) {
     guard let (locationText, isSearchQuery) = delegate?.topToolbarDisplayTextForURL(locationView.url as URL?) else { return }
     
@@ -745,10 +732,6 @@ extension TopToolbarView: TabLocationViewDelegate {
     enterOverlayMode(overlayText, pasted: false, search: isSearchQuery)
   }
 
-  func tabLocationViewDidLongPressLocation(_ tabLocationView: TabLocationView) {
-    delegate?.topToolbarDidLongPressLocation(self)
-  }
-
   func tabLocationViewDidTapLockImageView(_ tabLocationView: TabLocationView) {
     delegate?.topToolbarDidPressLockImageView(self)
   }
@@ -759,10 +742,6 @@ extension TopToolbarView: TabLocationViewDelegate {
 
   func tabLocationViewDidTapStop(_ tabLocationView: TabLocationView) {
     delegate?.topToolbarDidPressStop(self)
-  }
-
-  func tabLocationViewDidLongPressReload(_ tabLocationView: TabLocationView, from button: UIButton) {
-    delegate?.topToolbarDidLongPressReloadButton(self, from: button)
   }
   
   func tabLocationViewDidTapVoiceSearch(_ tabLocationView: TabLocationView) {
