@@ -2292,8 +2292,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringWindowScriptlet) {
   UpdateAdBlockInstanceWithRules(
       "b.com##+js(hjt)",
       "[{"
-      "\"name\": \"hijacktest\","
-      "\"aliases\": [\"hjt\"],"
+      "\"name\": \"hijacktest.js\","
+      "\"aliases\": [\"hjt.js\"],"
       "\"kind\": {\"mime\": \"application/javascript\"},"
       "\"content\": \"" +
           scriptlet_base64 + "\"}]");
@@ -2336,7 +2336,7 @@ IN_PROC_BROWSER_TEST_F(ScriptletDebugLogsFlagEnabledTest, CanDebugSetToTrue) {
   UpdateAdBlockInstanceWithRules(
       "b.com##+js(debuggable)",
       "[{"
-      "\"name\": \"debuggable\","
+      "\"name\": \"debuggable.js\","
       "\"aliases\": [],"
       "\"kind\": {\"mime\": \"application/javascript\"},"
       "\"content\": \"" +
@@ -2371,8 +2371,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CheckForDeAmpPref) {
   UpdateAdBlockInstanceWithRules(
       "b.*##+js(deamp)",
       "[{"
-      "\"name\": \"deamp\","
-      "\"aliases\": [\"deamp\"],"
+      "\"name\": \"deamp.js\","
+      "\"aliases\": [\"deamp.js\"],"
       "\"kind\": {\"mime\": \"application/javascript\"},"
       "\"content\": \"" +
           scriptlet_base64 + "\"}]");
@@ -2409,8 +2409,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringIframeScriptlet) {
   UpdateAdBlockInstanceWithRules(
       "b.com##+js(hjt)",
       "[{"
-      "\"name\": \"hijacktest\","
-      "\"aliases\": [\"hjt\"],"
+      "\"name\": \"hijacktest.js\","
+      "\"aliases\": [\"hjt.js\"],"
       "\"kind\": {\"mime\": \"application/javascript\"},"
       "\"content\": \"" +
           scriptlet_base64 + "\"}]");
