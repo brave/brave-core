@@ -4,20 +4,18 @@ version = 3
 
 [[package]]
 name = "adblock"
-version = "0.7.17"
+version = "0.8.0"
 dependencies = [
  "base64",
  "bitflags",
  "cssparser 0.28.1",
- "flate2",
  "idna 0.2.3",
  "itertools",
  "memchr",
  "once_cell",
  "percent-encoding",
  "regex",
- "rmp-serde 0.13.7",
- "rmp-serde 0.15.5",
+ "rmp-serde",
  "seahash",
  "selectors 0.23.0",
  "serde",
@@ -1721,15 +1719,6 @@ dependencies = [
  "byteorder",
  "num-traits",
  "paste",
-]
-
-[[package]]
-name = "rmp-serde"
-version = "0.13.7"
-dependencies = [
- "byteorder",
- "rmp",
- "serde",
 ]
 
 [[package]]
