@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 
+#include "base/command_line.h"
 #include "base/containers/contains.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
@@ -91,6 +92,17 @@ const std::vector<std::string>& GetEthSupportedNftInterfaces() {
   });
 
   return *interfaces;
+}
+
+const std::string GetAssetRatioBaseURL() {
+  std::string ratios_url =
+      base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kAssetRatioDevUrl);
+  if (ratios_url.empty()) {
+    ratios_url = "https://ratios.wallet.brave.com";
+  }
+
+  return ratios_url;
 }
 
 }  // namespace brave_wallet

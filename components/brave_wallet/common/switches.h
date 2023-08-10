@@ -18,6 +18,9 @@ extern const char kBitcoinMainnetRpcUrl[];
 // Bitcoin rpc testnet endpoint.
 extern const char kBitcoinTestnetRpcUrl[];
 
+// Ratios service dev URL
+extern const char kAssetRatioDevUrl[];
+
 }  // namespace switches
 }  // namespace brave_wallet
 

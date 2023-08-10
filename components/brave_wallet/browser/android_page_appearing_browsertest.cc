@@ -303,7 +303,7 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
         [&](const network::ResourceRequest& request) {
           if (!request.request_body || !request.request_body->elements() ||
               request.request_body->elements()->empty()) {
-            const GURL ratios_url(kAssetRatioBaseURL);
+            const GURL ratios_url(GetAssetRatioBaseURL());
             if (request.url.host() == ratios_url.host()) {
               url_loader_factory_.AddResponse(request.url.spec(), kGetRatios);
             }
