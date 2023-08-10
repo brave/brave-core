@@ -44,6 +44,7 @@
 
         <LinearLayout
             app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+            android:id="@+id/bottom_view_container"
             android:layout_gravity="bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,11 +69,12 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_gravity="top"
+            app:layout_anchor="@id/bottom_view_container"
+            app:layout_anchorGravity="top|end"
             android:id="@+id/fab_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="?actionBarSize"
             android:orientation="vertical">
 
             <ImageView
