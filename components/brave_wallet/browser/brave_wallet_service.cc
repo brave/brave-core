@@ -1253,6 +1253,21 @@ void BraveWalletService::MigrateUserAssetsAddIsSpam(PrefService* prefs) {
 bool ShouldMigrateRemovedPreloadedNetwork(PrefService* prefs,
                                           mojom::CoinType coin,
                                           const std::string& chain_id) {
+  const auto* custom_networks = prefs->GetDict(kBraveWalletCustomNetworks)
+                                    .FindList(GetPrefKeyForCoinType(coin));
+  if (custom_networks) {
+    for (const auto& network_value : *custom_networks) {
+      const auto* chain_id_each = network_value.GetDict().FindString("chainId");
+      if (!chain_id_each) {
+        continue;
+      }
+
+      if (base::ToLowerASCII(*chain_id_each) == chain_id) {
+        return false;
+      }
+    }
+  }
+
   const auto& selected_networks =
       prefs->GetDict(kBraveWalletSelectedNetworksPerOrigin);
 
