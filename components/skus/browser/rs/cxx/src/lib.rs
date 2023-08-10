@@ -364,6 +364,7 @@ impl CppSDK {
     }
 }
 
+#[allow(improper_ctypes_definitions)]
 #[repr(transparent)]
 pub struct RefreshOrderCallback(
     pub  extern "C" fn(
@@ -420,6 +421,7 @@ async fn fetch_order_credentials_task(
     }
 }
 
+#[allow(improper_ctypes_definitions)]
 #[repr(transparent)]
 pub struct PrepareCredentialsPresentationCallback(
     pub  extern "C" fn(
@@ -450,6 +452,7 @@ async fn prepare_credentials_presentation_task(
     }
 }
 
+#[allow(improper_ctypes_definitions)]
 #[repr(transparent)]
 pub struct CredentialSummaryCallback(
     pub  extern "C" fn(
