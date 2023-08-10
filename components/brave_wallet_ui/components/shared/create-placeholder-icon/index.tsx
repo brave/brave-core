@@ -2,8 +2,10 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { background } from 'ethereum-blockies'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 // Constants
 import { BraveWallet } from '../../../constants/types'
@@ -17,12 +19,16 @@ import {
   isIpfs
 } from '../../../utils/string-utils'
 
+// Hooks
+import {
+  useGetIpfsGatewayTranslatedNftUrlQuery //
+} from '../../../common/slices/api.slice'
+
 // Styled components
 import { IconWrapper, PlaceholderText } from './style'
 
 // Options
 import { makeNativeAssetLogo } from '../../../options/asset-options'
-import { translateToNftGateway } from '../../../common/async/lib'
 
 interface Config {
   size: 'big' | 'medium' | 'small' | 'tiny'
@@ -44,33 +50,42 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
 
   return function (props: Props) {
     const { asset, network } = props
+    const nativeAssetLogo = network
+      ? makeNativeAssetLogo(network.symbol, network.chainId)
+      : null
 
-    if (!asset || !network) {
-      return null
-    }
+    const isNativeAsset =
+      asset &&
+      network &&
+      asset.symbol.toLowerCase() === network.symbol.toLowerCase()
 
-    const nativeAssetLogo = makeNativeAssetLogo(network.symbol, network.chainId)
+    const tokenImageURL = stripERC20TokenImageURL(asset?.logo || '')
+    const isRemoteURL = isRemoteImageURL(tokenImageURL)
+    const isStorybook = asset?.logo.startsWith(
+      'static/media/components/brave_wallet_ui/'
+      )
 
-    const isNativeAsset = React.useMemo(() =>
-      asset.symbol.toLowerCase() === network.symbol.toLowerCase(),
-      [network.symbol, asset.symbol]
+    const isNonFungibleToken = asset?.isNft || asset?.isErc721
+
+    // queries
+    const { data: ipfsUrl } = useGetIpfsGatewayTranslatedNftUrlQuery(
+      tokenImageURL || skipToken
     )
 
-    const isNonFungibleToken = React.useMemo(() => asset.isNft || asset.isErc721, [asset.isNft, asset.isErc721])
-
-    const tokenImageURL = stripERC20TokenImageURL(asset.logo)
-    const isRemoteURL = isRemoteImageURL(tokenImageURL)
-    const isStorybook = asset.logo.startsWith('static/media/components/brave_wallet_ui/')
-
+    // memos + computed
     const isValidIcon = React.useMemo(() => {
-      if (isRemoteURL || isDataURL(asset.logo)) {
-        return tokenImageURL?.includes('data:image/') || isIpfs(tokenImageURL) || isNonFungibleToken ? true : isValidIconExtension(new URL(asset.logo).pathname)
+      if (isRemoteURL || isDataURL(asset?.logo)) {
+        return tokenImageURL?.includes('data:image/') ||
+          isIpfs(tokenImageURL) ||
+          isNonFungibleToken
+          ? true
+          : isValidIconExtension(new URL(asset?.logo || '').pathname)
       }
       if (isStorybook) {
         return true
       }
       return false
-    }, [isRemoteURL, tokenImageURL, asset.logo, isStorybook])
+    }, [isRemoteURL, tokenImageURL, asset?.logo, isStorybook])
 
     const needsPlaceholder = isNativeAsset
       ? (tokenImageURL === '' || !isValidIcon) && nativeAssetLogo === ''
@@ -78,21 +93,13 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
 
     const bg = React.useMemo(() => {
       if (needsPlaceholder) {
-        return background({ seed: asset.contractAddress ? asset.contractAddress.toLowerCase() : asset.name })
+        return background({
+          seed: asset?.contractAddress
+            ? asset?.contractAddress.toLowerCase()
+            : asset?.name
+        })
       }
-    }, [needsPlaceholder, asset.contractAddress, asset.name])
-
-    const [ipfsUrl, setIpfsUrl] = React.useState<string>()
-
-    // memos
-    React.useEffect(() => {
-      let ignore = false
-      translateToNftGateway(tokenImageURL).then(
-        (v) => { if (!ignore) setIpfsUrl(v) })
-      return () => {
-        ignore = true
-      }
-    }, [tokenImageURL])
+    }, [needsPlaceholder, asset?.contractAddress, asset?.name])
 
     const remoteImage = React.useMemo(() => {
       if (isRemoteURL) {
@@ -100,6 +107,11 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
       }
       return ''
     }, [isRemoteURL, tokenImageURL, ipfsUrl])
+
+    // render
+    if (!asset || !network) {
+      return null
+    }
 
     if (needsPlaceholder) {
       return (
@@ -110,7 +122,9 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
           marginLeft={marginLeft ?? 0}
           marginRight={marginRight ?? 0}
         >
-          <PlaceholderText size={size}>{asset.symbol.charAt(0)}</PlaceholderText>
+          <PlaceholderText size={size}>
+            {asset.symbol.charAt(0)}
+          </PlaceholderText>
         </IconWrapper>
       )
     }
@@ -126,7 +140,9 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
           icon={
             isNativeAsset && nativeAssetLogo
               ? nativeAssetLogo
-              : isRemoteURL ? remoteImage : asset.logo
+              : isRemoteURL
+              ? remoteImage
+              : asset.logo
           }
         />
       </IconWrapper>

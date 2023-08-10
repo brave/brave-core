@@ -42,6 +42,7 @@ import getAPIProxy from './bridge'
 import { addChainIdToToken, getAssetIdKey } from '../../utils/asset-utils'
 import { addLogoToToken } from './lib'
 import { makeNetworkAsset } from '../../options/asset-options'
+import { isIpfs } from '../../utils/string-utils'
 
 /**
  * A function to return the ref to either the main api proxy, or a mocked proxy
@@ -71,6 +72,8 @@ export class BaseQueryCache {
   private _allAccountsInfo?: BraveWallet.AllAccountsInfo
   private _accountsRegistry?: AccountInfoEntityState
   private _userTokensRegistry?: BlockchainTokenEntityAdaptorState
+  private _nftImageIpfsGateWayUrlRegistry: Record<string, string | null> = {}
+  private _extractedIPFSUrlRegistry: Record<string, string | undefined> = {}
 
   getWalletInfo = async () => {
     if (!this._walletInfo) {
@@ -308,6 +311,46 @@ export class BaseQueryCache {
 
   clearUserTokensRegistry = () => {
     this._userTokensRegistry = undefined
+  }
+
+  /** Extracts ipfs:// url from gateway-like url */
+  getExtractedIPFSUrlFromGatewayLikeUrl = async (urlArg: string) => {
+    const trimmedURL = urlArg ? urlArg.trim() : ''
+    if (!this._extractedIPFSUrlRegistry[trimmedURL]) {
+      if (isIpfs(trimmedURL)) {
+        this._extractedIPFSUrlRegistry[trimmedURL] = trimmedURL
+      } else {
+        const api = apiProxyFetcher()
+        const { ipfsUrl } =
+          await api.braveWalletIpfsService.extractIPFSUrlFromGatewayLikeUrl(
+            trimmedURL
+          )
+        this._extractedIPFSUrlRegistry[trimmedURL] = ipfsUrl || undefined
+      }
+    }
+
+    return this._extractedIPFSUrlRegistry[trimmedURL]
+  }
+
+  /** Translates ipfs:// url or gateway-like url to the NFT gateway url */
+  getIpfsGatewayTranslatedNftUrl = async (urlArg: string) => {
+    const trimmedURL = urlArg.trim()
+
+    if (!this._nftImageIpfsGateWayUrlRegistry[trimmedURL]) {
+      const { braveWalletIpfsService } = apiProxyFetcher()
+
+      const testUrl = isIpfs(trimmedURL)
+        ? trimmedURL
+        : await this.getExtractedIPFSUrlFromGatewayLikeUrl(trimmedURL)
+
+      const { translatedUrl } =
+        await braveWalletIpfsService.translateToNFTGatewayURL(testUrl || '')
+
+      this._nftImageIpfsGateWayUrlRegistry[trimmedURL] =
+        translatedUrl || trimmedURL
+    }
+
+    return this._nftImageIpfsGateWayUrlRegistry[trimmedURL]
   }
 }
 
