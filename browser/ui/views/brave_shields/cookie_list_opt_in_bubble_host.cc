@@ -96,9 +96,11 @@ class BubbleManager : public WebUIBubbleManagerT<CookieListOptInUI> {
 
   // WebUIBubbleManagerT<CookieListOptInUI>:
   base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
-      const absl::optional<gfx::Rect>& anchor) override {
+      const absl::optional<gfx::Rect>& anchor,
+      views::BubbleBorder::Arrow arrow) override {
     auto dialog_view =
-        WebUIBubbleManagerT<CookieListOptInUI>::CreateWebUIBubbleDialog(anchor);
+        WebUIBubbleManagerT<CookieListOptInUI>::CreateWebUIBubbleDialog(anchor,
+                                                                        arrow);
     DCHECK(dialog_view);
     dialog_view->set_close_on_deactivate(false);
     return dialog_view;
