@@ -7,6 +7,7 @@
 #import <UIKit/UIKit.h>
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/ad_content_value_util.h"
+#include "brave/components/brave_news/common/pref_names.h"
 
 #import "ads_client_bridge.h"
 #import "ads_client_ios.h"
@@ -92,6 +93,10 @@ static NSString* const kSubdivisionTargetingAutoDetectedSubdivisionPrefKey =
     base::SysUTF8ToNSString(
         brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision);
 static NSString* const kAdsResourceMetadataPrefKey = @"BATAdsResourceMetadata";
+static NSString* const kBraveNewsOptedInPrefKey =
+    base::SysUTF8ToNSString(brave_news::prefs::kBraveNewsOptedIn);
+static NSString* const kNewTabPageShowTodayPrefKey =
+    base::SysUTF8ToNSString(brave_news::prefs::kNewTabPageShowToday);
 
 namespace {
 
@@ -164,6 +169,12 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     } else {
       [self migratePrefs];
     }
+
+    // TODO(https://github.com/brave/brave-browser/issues/32112): Remove the
+    // code that permanently enables Brave Today preferences when the issue is
+    // resolved.
+    self.prefs[kBraveNewsOptedInPrefKey] = @(true);
+    self.prefs[kNewTabPageShowTodayPrefKey] = @(true);
 
     [self setupNetworkMonitoring];
 
@@ -244,7 +255,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)initializeWithSysInfo:(BraveAdsSysInfo*)sysInfo
              buildChannelInfo:(BraveAdsBuildChannelInfo*)buildChannelInfo
-                   walletInfo:(BraveAdsWalletInfo*)walletInfo
+                   walletInfo:(nullable BraveAdsWalletInfo*)walletInfo
                    completion:(void (^)(bool))completion {
   if ([self isAdsServiceRunning]) {
     completion(false);
@@ -262,7 +273,11 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                                  : brave_ads::mojom::BuildChannelInfo::New();
   ads->SetBuildChannel(std::move(cppBuildChannelInfo));
   ads->SetFlags(brave_ads::BuildFlags());
-  ads->Initialize(walletInfo.cppObjPtr, base::BindOnce(^(const bool success) {
+
+  auto cppWalletInfo =
+      walletInfo ? walletInfo.cppObjPtr : brave_ads::mojom::WalletInfoPtr();
+  ads->Initialize(std::move(cppWalletInfo),
+                  base::BindOnce(^(const bool success) {
                     [self periodicallyCheckForAdsResourceUpdates];
                     [self registerAdsResources];
                     if (success && self->adsClientNotifier != nil) {
