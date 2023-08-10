@@ -1,0 +1,47 @@
+diff --git a/base/android/java/src/org/chromium/base/library_loader/LibraryLoader.java b/base/android/java/src/org/chromium/base/library_loader/LibraryLoader.java
+index 5d5815f666bf949305de859859fcea47700eec7b..a692e382124ab46e964ed9b09d146b59bffbcb58 100644
+--- a/base/android/java/src/org/chromium/base/library_loader/LibraryLoader.java
++++ b/base/android/java/src/org/chromium/base/library_loader/LibraryLoader.java
+@@ -16,6 +16,7 @@ import androidx.annotation.IntDef;
+ import androidx.annotation.VisibleForTesting;
+ 
+ import org.chromium.base.BaseSwitches;
++import org.chromium.base.BundleUtils;
+ import org.chromium.base.CommandLine;
+ import org.chromium.base.ContextUtils;
+ import org.chromium.base.Log;
+@@ -739,11 +740,34 @@ public class LibraryLoader {
+         getMediator().recordLinkerHistogramsAfterLibraryLoad();
+     }
+ 
++    String getSplitNameByCurrentAbi() {
++        assert Build.SUPPORTED_ABIS.length > 0;
++        String currentAbi = Build.SUPPORTED_ABIS[0];
++        switch(currentAbi) {
++            case "arm64-v8a":
++                return "config.arm64_v8a";
++            case "armeabi-v7a":
++                return "config.armeabi_v7a";
++            case "x86_64":
++                return "config.x86_64";
++            case "x86":
++                return "config.x86";
++            default:
++                assert false;
++                return "config.arm64_v8a";
++        }
++    }
++
+     @GuardedBy("mLock")
+     @SuppressLint({"UnsafeDynamicallyLoadedCode"})
+     private void loadWithSystemLinkerAlreadyLocked(ApplicationInfo appInfo, boolean inZygote) {
+         setEnvForNative();
+         preloadAlreadyLocked(appInfo.packageName, inZygote);
++        String splitName = getSplitNameByCurrentAbi();
++        for (String library : NativeLibraries.LIBRARIES) {
++            System.load(BundleUtils.getNativeLibraryPath(library, splitName));
++        }
++        if (Build.SUPPORTED_ABIS.length > 0) return;
+         for (String library : NativeLibraries.LIBRARIES) {
+             System.loadLibrary(library);
+         }
