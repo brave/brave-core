@@ -1212,6 +1212,27 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_PLAYLIST_NEW_PLAYLIST_DIALOG_OK" desc="A label for 'OK' button for a dialog to create a new playlist">
           Create
         </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_EDIT" desc="Context menu item on Playlist to entering editing mode">
+          Edit
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_SHARE" desc="Context menu item on Playlist to share it">
+          Share
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_KEEP_FOR_OFFLINE_PLAYING" desc="Context menu item on Playlist to cache all items">
+          Keep for offline playing
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_REMOVE_PLAYED_CONTENTS" desc="Context menu item on Playlist to clear cache for played contents">
+          Remove played contents
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_MOVE" desc="Context menu item on Playlist item to move it to another folder">
+          Move
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_REMOVE_OFFLINE_DATA" desc="Context menu item on Playlist item to clear cache for the item">
+          Remove offline data
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_REMOVE_FROM_PLAYLIST" desc="Context menu item on Playlist item to remove it from the folder">
+          Remove from playlist
+        </message>
       </if> <!-- enable_playlist_webui -->
       <!--Add new items to the appropriate sections above -->
     </messages>
