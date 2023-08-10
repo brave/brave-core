@@ -2116,6 +2116,7 @@ struct BlowfishERC1155TransferData {
   BlowfishEVMAmount amount;
   BlowfishEVMContract contract;
   BlowfishEVMMetadata metadata;
+  string name;
   string? token_id;
   BlowfishPrice? asset_price;
 };

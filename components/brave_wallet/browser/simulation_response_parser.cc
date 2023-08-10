@@ -233,6 +233,7 @@ mojom::BlowfishEVMStateChangeRawInfoPtr ParseStateChangeRawInfo(
         mojom::BlowfishEVMMetadata::New(data_value->metadata.raw_image_url);
     data->token_id = ParseNullableString(data_value->token_id);
     data->asset_price = ParsePrice(data_value->asset_price);
+    data->name = data_value->name;
 
     raw_info->data =
         mojom::BlowfishEVMStateChangeRawInfoDataUnion::NewErc1155TransferData(

@@ -125,6 +125,7 @@ namespace simulation_responses {
     EVMAmount amount;
     EVMContract contract;
     NFTMetadata metadata;
+    DOMString name;
 
     // nullable field of type DOMString
     any tokenId;
