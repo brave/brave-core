@@ -1,7 +1,7 @@
-/* Copyright (c) 2023 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
 
@@ -11,7 +11,7 @@
 #include "url/gurl.h"
 
 @interface URLSanitizerService () {
-  brave::URLSanitizerService* urlSanitizer_;
+  brave::URLSanitizerService* urlSanitizer_;  // NOT OWNED
 }
 
 @end
@@ -27,7 +27,7 @@
   return self;
 }
 
-- (NSURL*)sanitizedURL:(NSURL*)url {
+- (nullable NSURL*)sanitizedURL:(NSURL*)url {
   DCHECK(urlSanitizer_);
   GURL gurl = net::GURLWithNSURL(url);
   GURL cleanURL = urlSanitizer_->SanitizeURL(gurl);

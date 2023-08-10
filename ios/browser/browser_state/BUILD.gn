@@ -18,7 +18,7 @@ source_set("browser_state") {
     "//brave/ios/browser/brave_wallet",
     "//brave/ios/browser/component_updater",
     "//brave/ios/browser/favicon",
-    "//brave/ios/browser/local_data_file_service",
     "//brave/ios/browser/skus",
+    "//brave/ios/browser/url_sanitizer",
   ]
 }

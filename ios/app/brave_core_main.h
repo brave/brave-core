@@ -24,7 +24,6 @@
 @class BraveTabGeneratorAPI;
 @class WebImageDownloader;
 @class NTPBackgroundImagesService;
-@class LocalDataFileService;
 @class URLSanitizerService;
 @protocol IpfsAPI;
 
