@@ -538,7 +538,11 @@ class Tab: NSObject {
   }
 
   var displayFavicon: Favicon? {
-    if let url = url, InternalURL(url)?.isAboutHomeURL == true { return nil }
+    if let url = url, InternalURL(url)?.isAboutHomeURL == true {
+      return Favicon(image: UIImage(sharedNamed: "brave.logo"),
+                     isMonogramImage: false,
+                     backgroundColor: .clear)
+    }
     return favicon
   }
 
