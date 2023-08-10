@@ -30,6 +30,7 @@ class BraveVpnHandler : public settings::SettingsPageUIHandler,
   void OnWireguardServiceRegistered(const std::string& callback_id,
                                     bool success);
   void HandleIsBraveVpnConnected(const base::Value::List& args);
+
   // brave_vpn::BraveVPNServiceObserver
   void OnConnectionStateChanged(
       brave_vpn::mojom::ConnectionState state) override;
