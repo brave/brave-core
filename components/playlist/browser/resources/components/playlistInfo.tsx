@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { font } from '@brave/leo/tokens/css'
 import styled, { css } from 'styled-components'
-import { DelimType, formatTimeInSeconds } from '../utils/timeFormatter'
+import { formatTimeInSeconds } from '../utils/timeFormatter'
 
 interface Props {
   isDefaultPlaylist: boolean
@@ -25,7 +25,7 @@ export const PlaylistInfoContainer = styled.div`
   grid-template-rows: repeat(2, auto);
   grid-template-columns: repeat(3, auto);
   column-gap: 8px;
-  justify-content: left;
+  justify-content: start;
 `
 
 export const PlaylistName = styled.div<{ color?: string }>`
@@ -67,7 +67,7 @@ export default function PlaylistInfo ({
       <PlaylistDetail color={detailColor}>{itemCount} items</PlaylistDetail>
       {!!totalDuration && (
         <PlaylistDetail color={detailColor}>
-          {formatTimeInSeconds(totalDuration, DelimType.CHARACTER)}
+          {formatTimeInSeconds(totalDuration, 'space')}
         </PlaylistDetail>
       )}
       {

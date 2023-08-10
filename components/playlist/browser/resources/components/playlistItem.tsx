@@ -12,9 +12,8 @@ import DefaultThumbnailIcon from '../assets/playlist-thumbnail-icon.svg'
 import ContextualMenuAnchorButton from './contextualMenu'
 import { PlaylistItem as PlaylistItemMojo } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 import {
-  DelimType,
   formatTimeInSeconds,
-  toSeconds
+  microSecondsToSeconds
 } from '../utils/timeFormatter'
 
 interface Props {
@@ -116,7 +115,7 @@ export default function PlaylistItem ({
           <ItemDetailsContainer>
             {duration && (
               <span>
-                {formatTimeInSeconds(toSeconds(+duration), DelimType.COLON)}
+                {formatTimeInSeconds(microSecondsToSeconds(+duration), 'colon')}
               </span>
             )}
             {cached && <Icon name='check-circle-outline' />}

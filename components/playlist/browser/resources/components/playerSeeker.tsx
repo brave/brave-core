@@ -8,7 +8,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { color, font } from '@brave/leo/tokens/css'
 
-import { DelimType, formatTimeInSeconds } from '../utils/timeFormatter'
+import { formatTimeInSeconds } from '../utils/timeFormatter'
 
 interface Props {
   videoElement: HTMLVideoElement | null
@@ -243,8 +243,8 @@ export default function PlayerSeeker ({ videoElement }: Props) {
         ref={progressElementRef}
       />
       <TimeContainer>
-        <span>{formatTimeInSeconds(currentTime, DelimType.COLON)}</span>
-        <span>{formatTimeInSeconds(duration, DelimType.COLON)}</span>
+        <span>{formatTimeInSeconds(currentTime, 'colon')}</span>
+        <span>{formatTimeInSeconds(duration, 'colon')}</span>
       </TimeContainer>
     </SeekerContainer>
   )
