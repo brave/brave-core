@@ -253,15 +253,23 @@
               brave_wallet::features::kBraveWalletDappsSupportFeature),       \
       })
 
-#define BRAVE_NEWS_FEATURE_ENTRIES                                         \
-  EXPAND_FEATURE_ENTRIES({                                                 \
-      "brave-news-peek",                                                   \
-      "Brave News prompts on New Tab Page",                                \
-      "Prompt Brave News via the top featured article peeking up from "    \
-      "the bottom of the New Tab Page, after a short delay.",              \
-      kOsDesktop,                                                          \
-      FEATURE_VALUE_TYPE(brave_news::features::kBraveNewsCardPeekFeature), \
-  })
+#define BRAVE_NEWS_FEATURE_ENTRIES                                             \
+  EXPAND_FEATURE_ENTRIES(                                                      \
+      {                                                                        \
+          "brave-news-peek",                                                   \
+          "Brave News prompts on New Tab Page",                                \
+          "Prompt Brave News via the top featured article peeking up from "    \
+          "the bottom of the New Tab Page, after a short delay.",              \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(brave_news::features::kBraveNewsCardPeekFeature), \
+      },                                                                       \
+      {                                                                        \
+          "brave-news-feed-update",                                            \
+          "Brave News Feed Update",                                            \
+          "Use the updated Brave News feed",                                   \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(brave_news::features::kBraveNewsFeedUpdate),      \
+      })
 
 #define BRAVE_FEDERATED_FEATURE_ENTRIES                                        \
   EXPAND_FEATURE_ENTRIES({                                                     \

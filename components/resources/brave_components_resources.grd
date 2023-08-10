@@ -82,6 +82,7 @@
 
       <part file="../brave_perf_predictor/resources/brave_perf_predictor_resources.grdp" />
       <part file="../playlist/browser/resources/playlist_resources.grdp" />
+      <part file="../brave_news/browser/resources/news_resources.grdp" />
       <part file="../skus/browser/resources/skus_internals_resources.grdp" />
       <if expr="not is_android">
         <part file="brave_blank_page_resources.grdp" />

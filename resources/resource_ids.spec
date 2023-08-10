@@ -234,5 +234,9 @@
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-skus_internals/skus_internals.grd": {
     "META": {"sizes": {"includes": [100]}},
     "includes": [63550],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_news_internals/brave_news_internals.grd": {
+    "META": {"sizes": {"includes": [100]}},
+    "includes": [63650],
   }
 }
