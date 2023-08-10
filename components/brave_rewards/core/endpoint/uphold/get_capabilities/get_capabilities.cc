@@ -24,7 +24,7 @@ GetCapabilities::GetCapabilities(RewardsEngineImpl& engine) : engine_(engine) {}
 GetCapabilities::~GetCapabilities() = default;
 
 void GetCapabilities::Request(const std::string& token,
-                              GetCapabilitiesCallback callback) {
+                              GetCapabilitiesCallback callback) const {
   auto request = mojom::UrlRequest::New();
   request->url = GetServerUrl("/v0/me/capabilities");
   request->headers = RequestAuthorization(token);
@@ -34,7 +34,7 @@ void GetCapabilities::Request(const std::string& token,
 }
 
 void GetCapabilities::OnRequest(GetCapabilitiesCallback callback,
-                                mojom::UrlResponsePtr response) {
+                                mojom::UrlResponsePtr response) const {
   DCHECK(response);
   LogUrlResponse(__func__, *response);
 
@@ -53,7 +53,7 @@ void GetCapabilities::OnRequest(GetCapabilitiesCallback callback,
 }
 
 std::pair<mojom::Result, GetCapabilities::CapabilityMap>
-GetCapabilities::ProcessResponse(const mojom::UrlResponse& response) {
+GetCapabilities::ProcessResponse(const mojom::UrlResponse& response) const {
   const auto status_code = response.status_code;
 
   if (status_code == net::HTTP_UNAUTHORIZED) {
@@ -72,7 +72,7 @@ GetCapabilities::ProcessResponse(const mojom::UrlResponse& response) {
 }
 
 GetCapabilities::CapabilityMap GetCapabilities::ParseBody(
-    const std::string& body) {
+    const std::string& body) const {
   const auto value = base::JSONReader::Read(body);
   if (!value || !value->is_list()) {
     BLOG(0, "Invalid body format!");

@@ -545,6 +545,8 @@ static_library("engine") {
     "wallet_provider/uphold/get_uphold_wallet.h",
     "wallet_provider/uphold/uphold_transfer.cc",
     "wallet_provider/uphold/uphold_transfer.h",
+    "wallet_provider/wallet_provider.cc",
+    "wallet_provider/wallet_provider.h",
     "wallet_provider/zebpay/connect_zebpay_wallet.cc",
     "wallet_provider/zebpay/connect_zebpay_wallet.h",
     "wallet_provider/zebpay/get_zebpay_wallet.cc",

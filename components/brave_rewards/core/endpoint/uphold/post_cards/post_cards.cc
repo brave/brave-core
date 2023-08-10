@@ -20,11 +20,11 @@ PostCards::PostCards(RewardsEngineImpl& engine) : engine_(engine) {}
 
 PostCards::~PostCards() = default;
 
-std::string PostCards::GetUrl() {
+std::string PostCards::GetUrl() const {
   return GetServerUrl("/v0/me/cards");
 }
 
-std::string PostCards::GeneratePayload() {
+std::string PostCards::GeneratePayload() const {
   base::Value::Dict payload;
   payload.Set("label", internal::uphold::kCardName);
   payload.Set("currency", "BAT");
@@ -34,7 +34,7 @@ std::string PostCards::GeneratePayload() {
   return json;
 }
 
-mojom::Result PostCards::CheckStatusCode(int status_code) {
+mojom::Result PostCards::CheckStatusCode(int status_code) const {
   if (status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Unauthorized access");
     return mojom::Result::EXPIRED_TOKEN;
@@ -48,7 +48,8 @@ mojom::Result PostCards::CheckStatusCode(int status_code) {
   return mojom::Result::OK;
 }
 
-mojom::Result PostCards::ParseBody(const std::string& body, std::string* id) {
+mojom::Result PostCards::ParseBody(const std::string& body,
+                                   std::string* id) const {
   DCHECK(id);
 
   absl::optional<base::Value> value = base::JSONReader::Read(body);
@@ -69,7 +70,8 @@ mojom::Result PostCards::ParseBody(const std::string& body, std::string* id) {
   return mojom::Result::OK;
 }
 
-void PostCards::Request(const std::string& token, PostCardsCallback callback) {
+void PostCards::Request(const std::string& token,
+                        PostCardsCallback callback) const {
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload();
@@ -83,7 +85,7 @@ void PostCards::Request(const std::string& token, PostCardsCallback callback) {
 }
 
 void PostCards::OnRequest(PostCardsCallback callback,
-                          mojom::UrlResponsePtr response) {
+                          mojom::UrlResponsePtr response) const {
   DCHECK(response);
   LogUrlResponse(__func__, *response, true);
 

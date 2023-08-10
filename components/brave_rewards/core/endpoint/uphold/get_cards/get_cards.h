@@ -85,16 +85,16 @@ class GetCards {
   explicit GetCards(RewardsEngineImpl& engine);
   ~GetCards();
 
-  void Request(const std::string& token, GetCardsCallback);
+  void Request(const std::string& token, GetCardsCallback) const;
 
  private:
-  std::string GetUrl();
+  std::string GetUrl() const;
 
-  mojom::Result CheckStatusCode(int status_code);
+  mojom::Result CheckStatusCode(int status_code) const;
 
-  mojom::Result ParseBody(const std::string& body, std::string* id);
+  mojom::Result ParseBody(const std::string& body, std::string* id) const;
 
-  void OnRequest(GetCardsCallback, mojom::UrlResponsePtr);
+  void OnRequest(GetCardsCallback, mojom::UrlResponsePtr) const;
 
   const raw_ref<RewardsEngineImpl> engine_;
 };
