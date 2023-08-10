@@ -329,8 +329,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
 
         ViewPager2 viewPager = findViewById(R.id.navigation_view_pager);
         viewPager.setUserInputEnabled(false);
-        mCryptoFragmentPageAdapter =
-                new CryptoFragmentPageAdapter(this);
+        mCryptoFragmentPageAdapter = new CryptoFragmentPageAdapter(this);
         viewPager.setAdapter(mCryptoFragmentPageAdapter);
         viewPager.setOffscreenPageLimit(mCryptoFragmentPageAdapter.getItemCount() - 1);
 

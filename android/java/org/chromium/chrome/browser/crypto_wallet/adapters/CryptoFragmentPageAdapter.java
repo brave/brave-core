@@ -5,14 +5,11 @@
 
 package org.chromium.chrome.browser.crypto_wallet.adapters;
 
-import android.content.Context;
 import android.content.res.Resources;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import org.chromium.chrome.R;
