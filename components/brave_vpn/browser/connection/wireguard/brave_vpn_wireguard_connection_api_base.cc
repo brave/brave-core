@@ -28,6 +28,7 @@ BraveVPNWireguardConnectionAPIBase::~BraveVPNWireguardConnectionAPIBase() {
 void BraveVPNWireguardConnectionAPIBase::SetSelectedRegion(
     const std::string& name) {
   GetRegionDataManager().SetSelectedRegion(name);
+  ResetConnectionInfo();
 }
 
 void BraveVPNWireguardConnectionAPIBase::OnWireguardKeypairGenerated(

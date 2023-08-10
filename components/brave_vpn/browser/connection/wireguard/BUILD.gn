@@ -24,3 +24,17 @@ source_set("wireguard") {
     "//services/network/public/cpp",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "brave_vpn_wireguard_connection_api_unittest.cc" ]
+
+  deps = [
+    ":wireguard",
+    "//brave/components/brave_vpn/common",
+    "//components/sync_preferences:test_support",
+    "//content/test:test_support",
+    "//services/network:test_support",
+    "//testing/gtest",
+  ]
+}
