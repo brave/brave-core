@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.fragments.AccountsFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.MarketFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.NftGridFragment;
@@ -23,6 +24,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Fragment adapter for the main sections of Brave Wallet displayed by {@link BraveWalletActivity}.
+ */
 public class CryptoFragmentPageAdapter extends FragmentStateAdapter {
     public static final int PORTFOLIO_FRAGMENT_POSITION = 0;
     public static final int NFT_GRID_FRAGMENT_POSITION = 1;
