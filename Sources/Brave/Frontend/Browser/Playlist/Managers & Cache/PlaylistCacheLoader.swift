@@ -450,6 +450,21 @@ class PlaylistWebLoader: UIView {
         cancelRequest()
         return
       }
+      
+      if item.isInvisible {
+        timeout?.cancel()
+        timeout = DispatchWorkItem(block: { [weak self] in
+          guard let self = self else { return }
+          self.webLoader?.handler?(nil)
+          self.webLoader?.tab.webView?.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
+          self.webLoader = nil
+        })
+          
+        if let timeout = timeout {
+          DispatchQueue.main.asyncAfter(deadline: .now() + PlaylistWebLoader.pageLoadTimeout, execute: timeout)
+        }
+        return
+      }
 
       // For now, we ignore base64 video mime-types loaded via the `data:` scheme.
       if item.duration <= 0.0 && !item.detected || item.src.isEmpty || item.src.hasPrefix("data:") || item.src.hasPrefix("blob:") {
@@ -652,36 +667,46 @@ extension PlaylistWebLoader: WKNavigationDelegate {
     return .allow
   }
 
-  public func webView(_ webView: WKWebView, respondTo challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+  nonisolated func webView(_ webView: WKWebView, respondTo challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+    // If this is a certificate challenge, see if the certificate has previously been
+    // accepted by the user.
     let origin = "\(challenge.protectionSpace.host):\(challenge.protectionSpace.port)"
     if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
        let trust = challenge.protectionSpace.serverTrust,
        let cert = (SecTrustCopyCertificateChain(trust) as? [SecCertificate])?.first,
-       certStore?.containsCertificate(cert, forOrigin: origin) == true {
+        await certStore?.containsCertificate(cert, forOrigin: origin) == true {
       return (.useCredential, URLCredential(trust: trust))
     }
     
-    if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
-       let serverTrust = challenge.protectionSpace.serverTrust {
-      let host = challenge.protectionSpace.host
-      let port = challenge.protectionSpace.port
-      
-      let result = BraveCertificateUtility.verifyTrust(serverTrust,
-                                                       host: host,
-                                                       port: port)
-      
-      if result == 0 {
-        return (.useCredential, URLCredential(trust: serverTrust))
+    // Certificate Pinning
+    if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
+      if let serverTrust = challenge.protectionSpace.serverTrust {
+        let host = challenge.protectionSpace.host
+        let port = challenge.protectionSpace.port
+        
+        let result = BraveCertificateUtility.verifyTrust(serverTrust,
+                                                         host: host,
+                                                         port: port)
+        let certificateChain = SecTrustCopyCertificateChain(serverTrust) as? [SecCertificate] ?? []
+        
+        // Cert is valid and should be pinned
+        if result == 0 {
+          return (.useCredential, URLCredential(trust: serverTrust))
+        }
+        
+        // Cert is valid and should not be pinned
+        // Let the system handle it and we'll show an error if the system cannot validate it
+        if result == Int32.min {
+          return (.performDefaultHandling, nil)
+        }
+        
+        return (.cancelAuthenticationChallenge, nil)
       }
-      
-      if result == Int32.min {
-        return (.performDefaultHandling, nil)
-      }
-      
-      return (.cancelAuthenticationChallenge, nil)
     }
 
-    guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic || challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest || challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM else {
+    guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic ||
+            challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest ||
+            challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM else {
       return (.performDefaultHandling, nil)
     }
 

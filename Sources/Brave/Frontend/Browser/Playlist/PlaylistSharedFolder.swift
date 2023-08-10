@@ -8,6 +8,7 @@ import UIKit
 import Data
 import CoreData
 import CodableHelpers
+import OSLog
 
 struct PlaylistSharedFolderModel: Decodable {
   let version: String
@@ -200,8 +201,12 @@ struct PlaylistSharedFolderNetwork {
       }
       
       var result = [PlaylistInfo]()
-      for try await value in group {
-        result.append(value)
+      while let task = await group.nextResult() {
+        do {
+          try result.append(task.get())
+        } catch {
+          Logger.module.error("Error fetching media item info: \(error)")
+        }
       }
       return result
     }
