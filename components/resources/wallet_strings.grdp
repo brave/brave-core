@@ -582,7 +582,7 @@
   <message name="IDS_BRAVE_WALLET_BUY_SARDINE_DESCRIPTION" desc="Sardine description in buy options list">Easiest, fastest and cheapest way to buy crypto with card and bank transfers.</message>
   <message name="IDS_BRAVE_WALLET_BUY_TRANSAK_DESCRIPTION" desc="Transak description in buy options list">Instant buy with your bank account. Lower fees.</message>
   <message name="IDS_BRAVE_WALLET_BUY_STRIPE_DESCRIPTION" desc="Stripe description in buy options list">Buy Crypto with Stripe at crypto.link.</message>
-  <message name="IDS_BRAVE_WALLET_BUY_COINBASE_DESCRIPTION" desc="Coinbase Pay description in buy options list">Buy crypto with Visa or Mastercard.</message>
+  <message name="IDS_BRAVE_WALLET_BUY_COINBASE_DESCRIPTION" desc="Coinbase Pay description in buy options list">Buy with the most trusted name in crypto.</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_ALL" desc="Network Filter Selector All Networks">All Networks</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_LOW_TO_HIGH" desc="Asset Filter Selector Low to High">Low to High</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_HIGH_TO_LOW" desc="Asset Filter Selector High to Low">High to Low</message>
