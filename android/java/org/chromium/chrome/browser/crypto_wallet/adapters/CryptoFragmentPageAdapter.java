@@ -11,8 +11,9 @@ import android.content.res.Resources;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.fragments.AccountsFragment;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CryptoFragmentPageAdapter extends FragmentStatePagerAdapter {
+public class CryptoFragmentPageAdapter extends FragmentStateAdapter {
     public static final int PORTFOLIO_FRAGMENT_POSITION = 0;
     public static final int NFT_GRID_FRAGMENT_POSITION = 1;
     public static final int TRANSACTIONS_ACTIVITY_FRAGMENT_POSITION = 2;
@@ -36,18 +37,22 @@ public class CryptoFragmentPageAdapter extends FragmentStatePagerAdapter {
 
     private PortfolioFragment mCurrentPortfolioFragment;
 
-    public CryptoFragmentPageAdapter(FragmentManager fm, Context context) {
-        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        Resources resources = context.getResources();
+    public CryptoFragmentPageAdapter(FragmentActivity fm) {
+        super(fm);
+        Resources resources = fm.getResources();
         mTitles = new ArrayList<>(Arrays.asList(resources.getString(R.string.portfolio),
                 resources.getString(R.string.brave_wallet_nfts),
                 resources.getString(R.string.brave_wallet_activity),
                 resources.getString(R.string.accounts), resources.getString(R.string.market)));
     }
 
+    public PortfolioFragment getCurrentPortfolioFragment() {
+        return mCurrentPortfolioFragment;
+    }
+
     @NonNull
     @Override
-    public Fragment getItem(int position) {
+    public Fragment createFragment(int position) {
         switch (position) {
             case PORTFOLIO_FRAGMENT_POSITION:
                 mCurrentPortfolioFragment = PortfolioFragment.newInstance();
@@ -67,17 +72,7 @@ public class CryptoFragmentPageAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return mTitles.size();
-    }
-
-    @Nullable
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return mTitles.get(position);
-    }
-
-    public PortfolioFragment getCurrentPortfolioFragment() {
-        return mCurrentPortfolioFragment;
     }
 }

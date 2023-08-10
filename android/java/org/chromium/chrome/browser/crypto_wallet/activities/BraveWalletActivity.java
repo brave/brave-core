@@ -26,6 +26,7 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import org.chromium.base.ActivityState;
 import org.chromium.base.ApplicationStatus;
@@ -326,11 +327,12 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         mCryptoOnboardingLayout.setVisibility(View.GONE);
         mCryptoLayout.setVisibility(View.VISIBLE);
 
-        ViewPager viewPager = findViewById(R.id.navigation_view_pager);
+        ViewPager2 viewPager = findViewById(R.id.navigation_view_pager);
+        viewPager.setUserInputEnabled(false);
         mCryptoFragmentPageAdapter =
-                new CryptoFragmentPageAdapter(getSupportFragmentManager(), this);
+                new CryptoFragmentPageAdapter(this);
         viewPager.setAdapter(mCryptoFragmentPageAdapter);
-        viewPager.setOffscreenPageLimit(mCryptoFragmentPageAdapter.getCount() - 1);
+        viewPager.setOffscreenPageLimit(mCryptoFragmentPageAdapter.getItemCount() - 1);
 
         mBottomNavigationView.setOnItemSelectedListener(menuItem -> {
             final int menuItemId = menuItem.getItemId();
