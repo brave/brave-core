@@ -366,6 +366,8 @@ source_set("ui") {
           "views/brave_vpn/brave_vpn_fallback_dialog_view.h",
           "webui/settings/brave_settings_secure_dns_handler.cc",
           "webui/settings/brave_settings_secure_dns_handler.h",
+          "webui/settings/brave_vpn/brave_vpn_handler.cc",
+          "webui/settings/brave_vpn/brave_vpn_handler.h",
         ]
       }
     }
@@ -574,6 +576,7 @@ source_set("ui") {
     ]
     if (is_win) {
       deps += [
+        "//brave/components/brave_vpn/common/win",
         "//brave/components/brave_vpn/common/wireguard",
         "//brave/components/brave_vpn/common/wireguard/win",
       ]

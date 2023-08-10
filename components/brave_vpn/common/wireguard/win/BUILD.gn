@@ -33,6 +33,7 @@ source_set("win") {
     "//brave/components/brave_vpn/common/win",
     "//brave/components/brave_vpn/common/wireguard",
     "//chrome/install_static:install_static_util",
+    "//components/version_info",
     "//third_party/abseil-cpp:absl",
   ]
 }

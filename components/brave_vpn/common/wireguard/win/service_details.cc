@@ -8,10 +8,12 @@
 #include <guiddef.h>
 
 #include "base/containers/cxx20_erase.h"
+#include "base/path_service.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "build/build_config.h"
 #include "chrome/install_static/install_util.h"
+#include "components/version_info/version_info.h"
 
 namespace brave_vpn {
 
@@ -111,4 +113,14 @@ base::FilePath GetBraveVPNWireguardServiceInstallationPath(
       .Append(brave_vpn::kBraveVpnWireguardServiceSubFolder)
       .Append(brave_vpn::kBraveVpnWireguardServiceExecutable);
 }
+
+base::FilePath GetBraveVPNWireguardServiceExecutablePath() {
+  base::FilePath exe_dir;
+  base::PathService::Get(base::DIR_EXE, &exe_dir);
+  return version_info::IsOfficialBuild()
+             ? brave_vpn::GetBraveVPNWireguardServiceInstallationPath(
+                   exe_dir, version_info::GetVersion())
+             : exe_dir.Append(brave_vpn::kBraveVpnWireguardServiceExecutable);
+}
+
 }  // namespace brave_vpn

@@ -141,11 +141,8 @@ void BraveVpnFallbackDialogView::OnClosing() {
 }
 
 void BraveVpnFallbackDialogView::OnAccept() {
-  flags_ui::PrefServiceFlagsStorage flags_storage(
-      g_browser_process->local_state());
-
-  about_flags::SetFeatureEntryEnabled(
-      &flags_storage, kBraveVPNWireguardFeatureInternalName, false);
+  g_browser_process->local_state()->SetBoolean(prefs::kBraveVPNWireguardEnabled,
+                                               false);
   chrome::AttemptRestart();
 }
 

@@ -7,9 +7,11 @@
 
 #include "base/feature_list.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "components/prefs/pref_service.h"
@@ -34,8 +36,7 @@ void BraveVPNMenuModel::Build() {
                           ? IDS_BRAVE_VPN_HIDE_VPN_BUTTON_MENU_ITEM
                           : IDS_BRAVE_VPN_SHOW_VPN_BUTTON_MENU_ITEM);
 #if BUILDFLAG(IS_WIN)
-  if (base::FeatureList::IsEnabled(
-          brave_vpn::features::kBraveVPNUseWireguardService)) {
+  if (brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
     AddItemWithStringId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON,
                         IsTrayIconEnabled()
                             ? IDS_BRAVE_VPN_HIDE_VPN_TRAY_ICON_MENU_ITEM
