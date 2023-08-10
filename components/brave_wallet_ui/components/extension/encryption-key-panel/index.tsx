@@ -99,7 +99,7 @@ interface DecryptRequestPanelProps {
 }
 
 export function DecryptRequestPanel(props: DecryptRequestPanelProps) {
-  const { payload, onAllow: onProvideOrAllow, onCancel } = props
+  const { payload, onAllow, onCancel } = props
   const [isDecrypted, setIsDecrypted] = React.useState<boolean>(false)
 
   const { account } = useAccountQuery(payload.accountId)
@@ -149,7 +149,7 @@ export function DecryptRequestPanel(props: DecryptRequestPanelProps) {
         <NavButton
           buttonType='primary'
           text={getLocale('braveWalletReadEncryptedMessageButton')}
-          onSubmit={() => onProvideOrAllow(payload.requestId)}
+          onSubmit={() => onAllow(payload.requestId)}
         />
       </ButtonRow>
     </StyledWrapper>

@@ -145,17 +145,6 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
         });
     }
 
-    public String getAccountNameForTransaction(TransactionInfo transactionInfo) {
-        for (Map.Entry<String, TransactionInfo[]> entry : mTxInfos.entrySet()) {
-            for (TransactionInfo info : entry.getValue()) {
-                if (info.id.equals(transactionInfo.id)) {
-                    return entry.getKey();
-                }
-            }
-        }
-        return null;
-    }
-
     public void updateTxInfosMap(TransactionInfo transactionInfo) {
         if (transactionInfo.txType != TransactionStatus.UNAPPROVED) {
             for (Map.Entry<String, TransactionInfo[]> entry : mTxInfos.entrySet()) {

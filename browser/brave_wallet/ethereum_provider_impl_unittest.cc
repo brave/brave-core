@@ -75,6 +75,9 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
+using testing::ElementsAre;
+using testing::IsEmpty;
+
 namespace brave_wallet {
 
 namespace {
@@ -1063,6 +1066,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransaction) {
   std::string tx_hash;
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+
   GURL url("https://brave.com");
   Navigate(url);
   AddEthereumPermission(account_0->account_id);
@@ -1103,8 +1107,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransaction) {
       GetAllTransactionInfo(account_0->account_id, chain_id);
   ASSERT_EQ(infos.size(), 1UL);
   EXPECT_EQ(infos[0]->from_account_id, account_0->account_id);
-  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(*infos[0]->from_address,
-                                               account_0->address));
+  EXPECT_EQ(*infos[0]->from_address, account_0->address);
   EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Unapproved);
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);
   EXPECT_EQ(infos[0]->chain_id, chain_id);
@@ -1129,8 +1132,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransaction) {
   infos = GetAllTransactionInfo(account_0->account_id, chain_id);
   ASSERT_EQ(infos.size(), 1UL);
   EXPECT_EQ(infos[0]->from_account_id, account_0->account_id);
-  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(*infos[0]->from_address,
-                                               account_0->address));
+  EXPECT_EQ(*infos[0]->from_address, account_0->address);
   EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Submitted);
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);
 }
@@ -1142,6 +1144,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransactionError) {
   bool callback_called = false;
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+
   GURL url("https://brave.com");
   Navigate(url);
   AddEthereumPermission(account_0->account_id);
@@ -1262,8 +1265,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559Transaction) {
       GetAllTransactionInfo(account_0->account_id, chain_id);
   ASSERT_EQ(infos.size(), 1UL);
   EXPECT_EQ(infos[0]->from_account_id, account_0->account_id);
-  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(*infos[0]->from_address,
-                                               account_0->address));
+  EXPECT_EQ(*infos[0]->from_address, account_0->address);
   EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Unapproved);
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);
   EXPECT_EQ(infos[0]->chain_id, chain_id);
@@ -1285,8 +1287,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559Transaction) {
   infos = GetAllTransactionInfo(account_0->account_id, chain_id);
   ASSERT_EQ(infos.size(), 1UL);
   EXPECT_EQ(infos[0]->from_account_id, account_0->account_id);
-  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(*infos[0]->from_address,
-                                               account_0->address));
+  EXPECT_EQ(*infos[0]->from_address, account_0->address);
   EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Submitted);
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);
   EXPECT_EQ(infos[0]->chain_id, chain_id);
@@ -1369,6 +1370,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionError) {
   bool callback_called = false;
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+
   GURL url("https://brave.com");
   Navigate(url);
   AddEthereumPermission(account_0->account_id);
@@ -1450,12 +1452,13 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionNotNewSetup) {
       base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+  auto address_0 = base::ToLowerASCII(account_0->address);
+
   GURL url("https://brave.com");
   Navigate(url);
   AddEthereumPermission(account_0->account_id);
   base::RunLoop run_loop;
-  EXPECT_EQ(RequestEthereumPermissions(),
-            std::vector<std::string>{base::ToLowerASCII(account_0->address)});
+  EXPECT_THAT(RequestEthereumPermissions(), ElementsAre(address_0));
   // Make sure even with a delay the new setup callback is not called.
   browser_task_environment_.RunUntilIdle();
   EXPECT_FALSE(new_setup_callback_called);
@@ -1468,6 +1471,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoPermission) {
   bool permission_callback_called = false;
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+
   provider()->RequestEthereumPermissions(
       base::BindLambdaForTesting(
           [&](base::Value id, base::Value formed_response, const bool reject,
@@ -1536,41 +1540,34 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsWithAccounts) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
   auto account_1 = GetAccountUtils().EnsureEthAccount(1);
-  // This is needed to get selected after creation.
   auto account_2 = GetAccountUtils().EnsureEthAccount(2);
 
-  auto address_0_lower = base::ToLowerASCII(account_0->address);
-  auto address_1_lower = base::ToLowerASCII(account_1->address);
+  auto address_0 = base::ToLowerASCII(account_0->address);
+  auto address_1 = base::ToLowerASCII(account_1->address);
 
   GURL url("https://brave.com");
   Navigate(url);
 
   // Allowing 1 account should return that account for allowed accounts
   AddEthereumPermission(account_0->account_id);
-  EXPECT_EQ(RequestEthereumPermissions(),
-            std::vector<std::string>{address_0_lower});
+  EXPECT_THAT(RequestEthereumPermissions(), ElementsAre(address_0));
 
   // Multiple accounts can be returned
   AddEthereumPermission(account_1->account_id);
-  EXPECT_EQ(RequestEthereumPermissions(),
-            (std::vector<std::string>{address_0_lower, address_1_lower}));
+  EXPECT_THAT(RequestEthereumPermissions(), ElementsAre(address_0, address_1));
 
   // Resetting permissions should return the remaining allowed account
   ResetEthereumPermission(account_1->account_id);
-  EXPECT_EQ(RequestEthereumPermissions(),
-            std::vector<std::string>{address_0_lower});
+  EXPECT_THAT(RequestEthereumPermissions(), ElementsAre(address_0));
 
   // Selected account should filter the accounts returned
   AddEthereumPermission(account_1->account_id);
   SetSelectedAccount(account_0->account_id);
-  EXPECT_EQ(RequestEthereumPermissions(),
-            std::vector<std::string>{address_0_lower});
+  EXPECT_THAT(RequestEthereumPermissions(), ElementsAre(address_0));
   SetSelectedAccount(account_1->account_id);
-  EXPECT_EQ(RequestEthereumPermissions(),
-            std::vector<std::string>{address_1_lower});
+  EXPECT_THAT(RequestEthereumPermissions(), ElementsAre(address_1));
   SetSelectedAccount(account_2->account_id);
-  EXPECT_EQ(RequestEthereumPermissions(),
-            (std::vector<std::string>{address_0_lower, address_1_lower}));
+  EXPECT_THAT(RequestEthereumPermissions(), ElementsAre(address_0, address_1));
 
   // CONTENT_SETTING_BLOCK will rule out previous granted permission.
   host_content_settings_map()->SetContentSettingDefaultScope(
@@ -1596,25 +1593,23 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsWithAccounts) {
   // again.
   host_content_settings_map()->SetContentSettingDefaultScope(
       url, url, ContentSettingsType::BRAVE_ETHEREUM, CONTENT_SETTING_DEFAULT);
-  EXPECT_EQ(RequestEthereumPermissions(),
-            (std::vector<std::string>{address_0_lower, address_1_lower}));
+  EXPECT_THAT(RequestEthereumPermissions(), ElementsAre(address_0, address_1));
 }
 
 TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsLocked) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+  auto address_0 = base::ToLowerASCII(account_0->address);
+
   GURL url("https://brave.com");
   Navigate(url);
-
-  auto address_0_lower = base::ToLowerASCII(account_0->address);
 
   // Allowing 1 account should return that account for allowed accounts
   AddEthereumPermission(account_0->account_id);
   Lock();
   // Allowed accounts are empty when locked
-  EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>());
-  EXPECT_EQ(GetAllowedAccounts(true),
-            std::vector<std::string>{address_0_lower});
+  EXPECT_THAT(GetAllowedAccounts(false), IsEmpty());
+  EXPECT_THAT(GetAllowedAccounts(true), ElementsAre(address_0));
   std::vector<std::string> allowed_accounts;
   base::RunLoop run_loop;
   provider()->RequestEthereumPermissions(
@@ -1637,14 +1632,13 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsLocked) {
 
   EXPECT_TRUE(keyring_service()->HasPendingUnlockRequest());
   // Allowed accounts are still empty when locked
-  EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>());
-  EXPECT_EQ(GetAllowedAccounts(true),
-            std::vector<std::string>{address_0_lower});
+  EXPECT_THAT(GetAllowedAccounts(false), IsEmpty());
+  EXPECT_THAT(GetAllowedAccounts(true), ElementsAre(address_0));
   Unlock();
   run_loop.Run();
 
   EXPECT_FALSE(keyring_service()->HasPendingUnlockRequest());
-  EXPECT_EQ(allowed_accounts, std::vector<std::string>{address_0_lower});
+  EXPECT_THAT(allowed_accounts, ElementsAre(address_0));
 }
 
 TEST_F(EthereumProviderImplUnitTest, SignMessage) {
@@ -2014,15 +2008,14 @@ TEST_F(EthereumProviderImplUnitTest, AccountsChangedEvent) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
   auto account_1 = GetAccountUtils().EnsureEthAccount(1);
-  auto address_0_lower = base::ToLowerASCII(account_0->address);
+  auto address_0 = base::ToLowerASCII(account_0->address);
 
   GURL url("https://brave.com");
   Navigate(url);
   EXPECT_FALSE(observer_->AccountsChangedFired());
   AddEthereumPermission(account_0->account_id);
   EXPECT_TRUE(observer_->AccountsChangedFired());
-  EXPECT_EQ(std::vector<std::string>{address_0_lower},
-            observer_->GetLowercaseAccounts());
+  EXPECT_THAT(observer_->GetLowercaseAccounts(), ElementsAre(address_0));
   observer_->Reset();
 
   // Locking the account fires an event change with no accounts
@@ -2034,8 +2027,7 @@ TEST_F(EthereumProviderImplUnitTest, AccountsChangedEvent) {
   // Unlocking also fires an event wit the same account list as before
   Unlock();
   EXPECT_TRUE(observer_->AccountsChangedFired());
-  EXPECT_EQ(std::vector<std::string>{address_0_lower},
-            observer_->GetLowercaseAccounts());
+  EXPECT_THAT(observer_->GetLowercaseAccounts(), ElementsAre(address_0));
   observer_->Reset();
 
   // Does not fire for a different origin that has no permissions
@@ -2316,8 +2308,8 @@ TEST_F(EthereumProviderImplUnitTest, AccountsChangedEventSelectedAccount) {
   auto account_1 = GetAccountUtils().EnsureEthAccount(1);
   auto account_2 = GetAccountUtils().EnsureEthAccount(2);
 
-  auto address_0_lower = base::ToLowerASCII(account_0->address);
-  auto address_1_lower = base::ToLowerASCII(account_1->address);
+  auto address_0 = base::ToLowerASCII(account_0->address);
+  auto address_1 = base::ToLowerASCII(account_1->address);
 
   GURL url("https://brave.com");
   Navigate(url);
@@ -2332,36 +2324,33 @@ TEST_F(EthereumProviderImplUnitTest, AccountsChangedEventSelectedAccount) {
   // BraveWalletProviderDelegateImpl::GetAllowedAccounts
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer_->AccountsChangedFired());
-  EXPECT_EQ((std::vector<std::string>{address_0_lower, address_1_lower}),
-            observer_->GetLowercaseAccounts());
+  EXPECT_THAT(observer_->GetLowercaseAccounts(),
+              ElementsAre(address_0, address_1));
   observer_->Reset();
 
   // Changing the selected account only returns that account
   SetSelectedAccount(account_0->account_id);
   EXPECT_TRUE(observer_->AccountsChangedFired());
-  EXPECT_EQ((std::vector<std::string>{address_0_lower}),
-            observer_->GetLowercaseAccounts());
+  EXPECT_THAT(observer_->GetLowercaseAccounts(), ElementsAre(address_0));
   observer_->Reset();
 
   // Changing to a different allowed account only returns that account
   SetSelectedAccount(account_1->account_id);
   EXPECT_TRUE(observer_->AccountsChangedFired());
-  EXPECT_EQ((std::vector<std::string>{address_1_lower}),
-            observer_->GetLowercaseAccounts());
+  EXPECT_THAT(observer_->GetLowercaseAccounts(), ElementsAre(address_1));
   observer_->Reset();
 
   // Changing gto a not allowed account returns all allowed accounts
   SetSelectedAccount(account_2->account_id);
   EXPECT_TRUE(observer_->AccountsChangedFired());
-  EXPECT_EQ((std::vector<std::string>{address_0_lower, address_1_lower}),
-            observer_->GetLowercaseAccounts());
+  EXPECT_THAT(observer_->GetLowercaseAccounts(),
+              ElementsAre(address_0, address_1));
   observer_->Reset();
 
   // Resetting with multiple accounts works
   ResetEthereumPermission(account_1->account_id);
   EXPECT_TRUE(observer_->AccountsChangedFired());
-  EXPECT_EQ((std::vector<std::string>{address_0_lower}),
-            observer_->GetLowercaseAccounts());
+  EXPECT_THAT(observer_->GetLowercaseAccounts(), ElementsAre(address_0));
   observer_->Reset();
 }
 
@@ -2374,70 +2363,55 @@ TEST_F(EthereumProviderImplUnitTest, GetAllowedAccounts) {
   GURL url("https://brave.com");
   Navigate(url);
 
-  auto address_0_lower = base::ToLowerASCII(account_0->address);
-  auto address_1_lower = base::ToLowerASCII(account_1->address);
+  auto address_0 = base::ToLowerASCII(account_0->address);
+  auto address_1 = base::ToLowerASCII(account_1->address);
 
   // When nothing is allowed, empty array should be returned
-  EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>());
-  EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>());
+  EXPECT_THAT(GetAllowedAccounts(false), IsEmpty());
+  EXPECT_THAT(GetAllowedAccounts(true), IsEmpty());
 
   // Allowing 1 account should return that account for allowed accounts
   AddEthereumPermission(account_0->account_id);
-  EXPECT_EQ(GetAllowedAccounts(false),
-            std::vector<std::string>{address_0_lower});
-  EXPECT_EQ(GetAllowedAccounts(true),
-            std::vector<std::string>{address_0_lower});
+  EXPECT_THAT(GetAllowedAccounts(false), ElementsAre(address_0));
+  EXPECT_THAT(GetAllowedAccounts(true), ElementsAre(address_0));
 
   // Multiple accounts can be returned
   AddEthereumPermission(account_1->account_id);
-  EXPECT_EQ(GetAllowedAccounts(false),
-            (std::vector<std::string>{address_0_lower, address_1_lower}));
-  EXPECT_EQ(GetAllowedAccounts(true),
-            (std::vector<std::string>{address_0_lower, address_1_lower}));
+  EXPECT_THAT(GetAllowedAccounts(false), ElementsAre(address_0, address_1));
+  EXPECT_THAT(GetAllowedAccounts(true), ElementsAre(address_0, address_1));
 
   // Resetting permissions should return the remaining allowed account
   ResetEthereumPermission(account_1->account_id);
-  EXPECT_EQ(GetAllowedAccounts(false),
-            std::vector<std::string>{address_0_lower});
-  EXPECT_EQ(GetAllowedAccounts(true),
-            std::vector<std::string>{address_0_lower});
+  EXPECT_THAT(GetAllowedAccounts(false), ElementsAre(address_0));
+  EXPECT_THAT(GetAllowedAccounts(true), ElementsAre(address_0));
 
   // Locking the keyring does not return any accounts
   Lock();
-  EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>());
-  EXPECT_EQ(GetAllowedAccounts(true),
-            std::vector<std::string>{address_0_lower});
+  EXPECT_THAT(GetAllowedAccounts(false), IsEmpty());
+  EXPECT_THAT(GetAllowedAccounts(true), ElementsAre(address_0));
 
   // Unlocking restores the accounts that were previously allowed
   Unlock();
-  EXPECT_EQ(GetAllowedAccounts(false),
-            std::vector<std::string>{address_0_lower});
-  EXPECT_EQ(GetAllowedAccounts(true),
-            std::vector<std::string>{address_0_lower});
+  EXPECT_THAT(GetAllowedAccounts(false), ElementsAre(address_0));
+  EXPECT_THAT(GetAllowedAccounts(true), ElementsAre(address_0));
 
   // Selected account should filter the accounts returned
   AddEthereumPermission(account_1->account_id);
   SetSelectedAccount(account_0->account_id);
-  EXPECT_EQ(GetAllowedAccounts(false),
-            std::vector<std::string>{address_0_lower});
-  EXPECT_EQ(GetAllowedAccounts(true),
-            std::vector<std::string>{address_0_lower});
+  EXPECT_THAT(GetAllowedAccounts(false), ElementsAre(address_0));
+  EXPECT_THAT(GetAllowedAccounts(true), ElementsAre(address_0));
   SetSelectedAccount(account_1->account_id);
-  EXPECT_EQ(GetAllowedAccounts(false),
-            std::vector<std::string>{address_1_lower});
-  EXPECT_EQ(GetAllowedAccounts(true),
-            std::vector<std::string>{address_1_lower});
+  EXPECT_THAT(GetAllowedAccounts(false), ElementsAre(address_1));
+  EXPECT_THAT(GetAllowedAccounts(true), ElementsAre(address_1));
   SetSelectedAccount(account_2->account_id);
-  EXPECT_EQ(GetAllowedAccounts(false),
-            (std::vector<std::string>{address_0_lower, address_1_lower}));
-  EXPECT_EQ(GetAllowedAccounts(true),
-            (std::vector<std::string>{address_0_lower, address_1_lower}));
+  EXPECT_THAT(GetAllowedAccounts(false), ElementsAre(address_0, address_1));
+  EXPECT_THAT(GetAllowedAccounts(true), ElementsAre(address_0, address_1));
 
   // Resetting all accounts should return an empty array again
   ResetEthereumPermission(account_0->account_id);
   ResetEthereumPermission(account_1->account_id);
-  EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>());
-  EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>());
+  EXPECT_THAT(GetAllowedAccounts(false), IsEmpty());
+  EXPECT_THAT(GetAllowedAccounts(true), IsEmpty());
 }
 
 TEST_F(EthereumProviderImplUnitTest, SignMessageHardware) {
@@ -2787,7 +2761,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthCoinbase) {
 
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
-  auto address_0_lower = base::ToLowerASCII(account_0->address);
+  auto address_0 = base::ToLowerASCII(account_0->address);
 
   GURL url("https://brave.com");
   Navigate(url);
@@ -2840,7 +2814,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthCoinbase) {
   response = CommonRequestOrSendAsync(request_payload.value());
   EXPECT_FALSE(keyring_service()->HasPendingUnlockRequest());
   EXPECT_EQ(response.first, false);
-  EXPECT_EQ(response.second, base::Value(address_0_lower));
+  EXPECT_EQ(response.second, base::Value(address_0));
 }
 
 TEST_F(EthereumProviderImplUnitTest, ProviderResponseFormat) {
@@ -2904,7 +2878,7 @@ TEST_F(EthereumProviderImplUnitTest, ProviderResponseFormat) {
 
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
-  auto address_0_lower = base::ToLowerASCII(account_0->address);
+  auto address_0 = base::ToLowerASCII(account_0->address);
 
   GURL url("https://brave.com");
   Navigate(url);
@@ -2914,7 +2888,7 @@ TEST_F(EthereumProviderImplUnitTest, ProviderResponseFormat) {
   response = Enable();
   EXPECT_FALSE(response.first);
   base::Value::List expected_list;
-  expected_list.Append(base::Value(address_0_lower));
+  expected_list.Append(base::Value(address_0));
   EXPECT_EQ(response.second, base::Value(std::move(expected_list)));
 }
 

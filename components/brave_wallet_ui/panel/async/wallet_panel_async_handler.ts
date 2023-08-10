@@ -387,8 +387,8 @@ handler.on(PanelActions.signTransactionHardware.type, async (store, messageData:
   const info = messageData.account.hardware
   assert(info)
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
   const signed = await signRawTransactionWithHardwareKeyring(
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     info.vendor as HardwareVendor,
     info.path,
     messageData.request.rawMessage,
@@ -459,10 +459,17 @@ handler.on(PanelActions.signAllTransactionsHardware.type, async (store, messageD
   // Send serialized requests to hardware keyring to sign.
   const payload: SignAllTransactionsProcessedPayload = { approved: true, id: messageData.request.id, signatures: [] }
   for (const rawMessage of messageData.request.rawMessages) {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    const signed = await signRawTransactionWithHardwareKeyring(info.vendor as HardwareVendor, info.path, rawMessage, coin, () => {
-      store.dispatch(PanelActions.signAllTransactions([messageData.request]))
-    })
+    const signed = await signRawTransactionWithHardwareKeyring(
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+      info.vendor as HardwareVendor,
+      info.path,
+      rawMessage,
+      coin,
+      () => {
+        store.dispatch(PanelActions.signAllTransactions([messageData.request]))
+      }
+    )
+
     if (!signed.success) {
       if (signed.code && signed.code === 'unauthorized') {
         await store.dispatch(PanelActions.setHardwareWalletInteractionError(signed.code))

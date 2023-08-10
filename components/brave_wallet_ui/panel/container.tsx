@@ -307,7 +307,7 @@ function Container () {
     dispatch(
       WalletPanelActions.decryptProcessed({
         requestId,
-        approved: false
+        approved: true
       })
     )
   }

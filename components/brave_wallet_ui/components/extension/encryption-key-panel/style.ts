@@ -17,6 +17,7 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  padding: 15px 0px 0px 0px;
   background-color: ${(p) => p.theme.color.background01};
 `
 

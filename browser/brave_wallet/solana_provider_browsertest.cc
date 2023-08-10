@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -463,17 +464,12 @@ class SolanaProviderTest : public InProcessBrowserTest {
           run_loop.Quit();
         }));
     run_loop.Run();
+
+    EXPECT_EQ(kFirstAccount, GetAccountUtils().EnsureSolAccount(0)->address);
+    EXPECT_EQ(kSecondAccount, GetAccountUtils().EnsureSolAccount(1)->address);
   }
 
-  mojom::AccountIdPtr FirstSolAccountId() {
-    auto is_sol = [](auto& acc) {
-      return acc->account_id->coin == mojom::CoinType::SOL;
-    };
-    return base::ranges::find_if(
-               keyring_service_->GetAllAccountsSync()->accounts, is_sol)
-        ->get()
-        ->account_id.Clone();
-  }
+  AccountUtils GetAccountUtils() { return AccountUtils(keyring_service_); }
 
   void LockWallet() {
     keyring_service_->Lock();
@@ -487,34 +483,29 @@ class SolanaProviderTest : public InProcessBrowserTest {
                                             mojom::kSolanaKeyringId, name);
   }
 
-  void SetSelectedAccount(const std::string& address) {
-    SetSelectedAccount(MakeAccountId(mojom::CoinType::SOL,
-                                     mojom::kSolanaKeyringId,
-                                     mojom::AccountKind::kDerived, address));
-  }
-
   void SetSelectedAccount(const mojom::AccountIdPtr& account_id) {
     EXPECT_TRUE(keyring_service_->SetSelectedAccountSync(account_id->Clone()));
   }
 
   void UserGrantPermission(bool granted,
-                           const std::string& account = kFirstAccount) {
+                           const mojom::AccountInfoPtr& account_info) {
     if (granted) {
       permissions::BraveWalletPermissionContext::AcceptOrCancel(
-          std::vector<std::string>{account},
+          std::vector<std::string>{account_info->address},
           mojom::PermissionLifetimeOption::kForever, web_contents());
     } else {
       permissions::BraveWalletPermissionContext::Cancel(web_contents());
     }
     ASSERT_EQ(EvalJs(web_contents(), "getConnectedAccount()").ExtractString(),
-              granted ? account : "");
+              granted ? account_info->address : "");
   }
 
-  std::vector<mojom::TransactionInfoPtr> GetAllTransactionInfo() {
+  std::vector<mojom::TransactionInfoPtr> GetAllTransactionInfo(
+      const mojom::AccountIdPtr& account_id) {
     std::vector<mojom::TransactionInfoPtr> transaction_infos;
     base::RunLoop run_loop;
     tx_service_->GetAllTransactionInfo(
-        mojom::CoinType::SOL, mojom::kLocalhostChainId, FirstSolAccountId(),
+        mojom::CoinType::SOL, mojom::kLocalhostChainId, account_id.Clone(),
         base::BindLambdaForTesting(
             [&](std::vector<mojom::TransactionInfoPtr> v) {
               transaction_infos = std::move(v);
@@ -719,10 +710,12 @@ class SolanaProviderTest : public InProcessBrowserTest {
   raw_ptr<TxService> tx_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
 };
+
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectRequestInProgress) {
   RestoreWallet();
-  AddAccount("Account 1");
-  SetSelectedAccount(kFirstAccount);
+  auto account_0 = GetAccountUtils().EnsureSolAccount(0);
+  SetSelectedAccount(account_0->account_id);
+
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -747,8 +740,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectRequestInProgress) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusAndPermission) {
   RestoreWallet();
-  AddAccount("Account 1");
-  SetSelectedAccount(kFirstAccount);
+  auto account_0 = GetAccountUtils().EnsureSolAccount(0);
+  SetSelectedAccount(account_0->account_id);
+
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -756,7 +750,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusAndPermission) {
 
   ASSERT_FALSE(IsSolanaConnected(web_contents()));
   CallSolanaConnect(web_contents());
-  UserGrantPermission(true);
+  UserGrantPermission(true, account_0);
   EXPECT_TRUE(IsSolanaConnected(web_contents()));
 
   // Removing solana permission will disconnect and emit event.
@@ -767,7 +761,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusAndPermission) {
 
   // Connect it again for following test cases
   CallSolanaConnect(web_contents());
-  UserGrantPermission(true);
+  UserGrantPermission(true, account_0);
   ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
   // disconnect() will set connected status to false.
@@ -785,7 +779,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusAndPermission) {
       ContentSettingsType::BRAVE_SOLANA);
   // connect for a.test
   CallSolanaConnect(web_contents());
-  UserGrantPermission(true);
+  UserGrantPermission(true, account_0);
   ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
   ASSERT_TRUE(AddTabAtIndex(
@@ -795,19 +789,19 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusAndPermission) {
   RegisterSolDisconnect();
   // connect for b.test
   CallSolanaConnect(web_contents());
-  UserGrantPermission(true);
+  UserGrantPermission(true, account_0);
   ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
   // Removing solana permission for a.test only
   host_content_settings_map()->ClearSettingsForOneTypeWithPredicate(
       ContentSettingsType::BRAVE_SOLANA, base::Time(), base::Time::Max(),
       base::BindLambdaForTesting(
-          [&url](const ContentSettingsPattern& primary_pattern,
-                 const ContentSettingsPattern& secondary_pattern) {
+          [&url, &account_0](const ContentSettingsPattern& primary_pattern,
+                             const ContentSettingsPattern& secondary_pattern) {
             url::Origin new_origin;
             if (GetSubRequestOrigin(permissions::RequestType::kBraveSolana,
-                                    url::Origin::Create(url), kFirstAccount,
-                                    &new_origin) &&
+                                    url::Origin::Create(url),
+                                    account_0->address, &new_origin) &&
                 primary_pattern.Matches(new_origin.GetURL())) {
               return true;
             }
@@ -826,15 +820,16 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusAndPermission) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusWithDocumentChanged) {
   RestoreWallet();
-  AddAccount("Account 1");
-  SetSelectedAccount(kFirstAccount);
+  auto account_0 = GetAccountUtils().EnsureSolAccount(0);
+  SetSelectedAccount(account_0->account_id);
+
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   ASSERT_FALSE(IsSolanaConnected(web_contents()));
   CallSolanaConnect(web_contents());
-  UserGrantPermission(true);
+  UserGrantPermission(true, account_0);
   EXPECT_TRUE(IsSolanaConnected(web_contents()));
 
   // Reload will clear connected status.
@@ -853,8 +848,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusWithDocumentChanged) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInIframes) {
   RestoreWallet();
-  AddAccount("Account 1");
-  SetSelectedAccount(kFirstAccount);
+  auto account_0 = GetAccountUtils().EnsureSolAccount(0);
+  SetSelectedAccount(account_0->account_id);
+
   GURL url = https_server_for_files()->GetURL("a.test",
                                               "/iframe_solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -865,7 +861,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInIframes) {
 
   CallSolanaConnect(ChildFrameAt(main_frame, 0), true);
   permissions::BraveWalletPermissionContext::AcceptOrCancel(
-      std::vector<std::string>{kFirstAccount},
+      std::vector<std::string>{account_0->address},
       mojom::PermissionLifetimeOption::kForever, web_contents());
   // First iframe is now connected.
   EXPECT_TRUE(IsSolanaConnected(ChildFrameAt(main_frame, 0)));
@@ -897,15 +893,16 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInIframes) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInMultiFrames) {
   RestoreWallet();
-  AddAccount("Account 1");
-  SetSelectedAccount(kFirstAccount);
+  auto account_0 = GetAccountUtils().EnsureSolAccount(0);
+  SetSelectedAccount(account_0->account_id);
+
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   ASSERT_FALSE(IsSolanaConnected(web_contents()));
   CallSolanaConnect(web_contents());
-  UserGrantPermission(true);
+  UserGrantPermission(true, account_0);
   // First tab is now connected.
   EXPECT_TRUE(IsSolanaConnected(web_contents()));
   // Add same url at second tab
@@ -929,14 +926,15 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInMultiFrames) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
   RestoreWallet();
-  AddAccount("Account 1");
-  SetSelectedAccount(kFirstAccount);
+  auto account_0 = GetAccountUtils().EnsureSolAccount(0);
+  SetSelectedAccount(account_0->account_id);
+
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   CallSolanaConnect(web_contents());
-  UserGrantPermission(true);
+  UserGrantPermission(true, account_0);
   ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
   size_t request_index = 0;
@@ -962,8 +960,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, GetPublicKey) {
   RestoreWallet();
-  AddAccount("Account 1");
-  SetSelectedAccount(kFirstAccount);
+  auto account_0 = GetAccountUtils().EnsureSolAccount(0);
+  SetSelectedAccount(account_0->account_id);
+
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -976,38 +975,40 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, GetPublicKey) {
   EXPECT_EQ(EvalJs(web_contents(), get_public_key_script).ExtractString(), "");
 
   CallSolanaConnect(web_contents());
-  UserGrantPermission(true);
+  UserGrantPermission(true, account_0);
   ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
   EXPECT_EQ(EvalJs(web_contents(), get_public_key_script).ExtractString(),
-            kFirstAccount);
+            account_0->address);
 
   LockWallet();
   // Publickey is still accessible when wallet is locked
   EXPECT_EQ(EvalJs(web_contents(), get_public_key_script).ExtractString(),
-            kFirstAccount);
+            account_0->address);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   RestoreWallet();
-  AddAccount("Account 1");
-  SetSelectedAccount(FirstSolAccountId());
+  auto account_0 = GetAccountUtils().EnsureSolAccount(0);
+  auto account_1 = GetAccountUtils().EnsureSolAccount(1);
+  SetSelectedAccount(account_0->account_id);
+
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   CallSolanaConnect(web_contents());
-  UserGrantPermission(true);
+  UserGrantPermission(true, account_0);
   ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
   CallSolanaSignAndSendTransaction(kUnsignedTxArrayStr);
   observer()->WaitForNewUnapprovedTx();
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
 
-  auto infos = GetAllTransactionInfo();
+  auto infos = GetAllTransactionInfo(account_0->account_id);
   EXPECT_EQ(1UL, infos.size());
-  EXPECT_EQ(FirstSolAccountId(), infos[0]->from_account_id);
-  EXPECT_EQ(kFirstAccount, infos[0]->from_address);
+  EXPECT_EQ(account_0->account_id, infos[0]->from_account_id);
+  EXPECT_EQ(account_0->address, infos[0]->from_address);
   EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[0]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[0]->tx_type);
@@ -1016,10 +1017,10 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   const std::string tx1_id = infos[0]->id;
   RejectTransaction(tx1_id);
 
-  infos = GetAllTransactionInfo();
+  infos = GetAllTransactionInfo(account_0->account_id);
   EXPECT_EQ(1UL, infos.size());
-  EXPECT_EQ(FirstSolAccountId(), infos[0]->from_account_id);
-  EXPECT_EQ(kFirstAccount, infos[0]->from_address);
+  EXPECT_EQ(account_0->account_id, infos[0]->from_account_id);
+  EXPECT_EQ(account_0->address, infos[0]->from_address);
   EXPECT_EQ(mojom::TransactionStatus::Rejected, infos[0]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[0]->tx_type);
@@ -1035,7 +1036,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   observer()->WaitForNewUnapprovedTx();
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
 
-  infos = GetAllTransactionInfo();
+  infos = GetAllTransactionInfo(account_0->account_id);
   EXPECT_EQ(2UL, infos.size());
   size_t tx2_index = 0;
   for (size_t i = 0; i < infos.size(); i++) {
@@ -1045,8 +1046,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
     }
   }
   const std::string tx2_id = infos[tx2_index]->id;
-  EXPECT_EQ(FirstSolAccountId(), infos[tx2_index]->from_account_id);
-  EXPECT_EQ(kFirstAccount, infos[tx2_index]->from_address);
+  EXPECT_EQ(account_0->account_id, infos[tx2_index]->from_account_id);
+  EXPECT_EQ(account_0->address, infos[tx2_index]->from_address);
   EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[tx2_index]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[tx2_index]->tx_type);
@@ -1055,10 +1056,10 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
 
   ApproveTransaction(infos[tx2_index]->id);
 
-  infos = GetAllTransactionInfo();
+  infos = GetAllTransactionInfo(account_0->account_id);
   EXPECT_EQ(2UL, infos.size());
-  EXPECT_EQ(FirstSolAccountId(), infos[tx2_index]->from_account_id);
-  EXPECT_EQ(kFirstAccount, infos[tx2_index]->from_address);
+  EXPECT_EQ(account_0->account_id, infos[tx2_index]->from_account_id);
+  EXPECT_EQ(account_0->address, infos[tx2_index]->from_address);
   EXPECT_EQ(mojom::TransactionStatus::Submitted, infos[tx2_index]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[tx2_index]->tx_type);
@@ -1073,13 +1074,13 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   EXPECT_EQ(GetSignAndSendTransactionResult(), kEncodedSignature);
 
   CallSolanaSignAndSendTransaction(kUnsignedTxArrayStr2, send_options,
-                                   kSecondAccount,
+                                   account_1->address,
                                    kSecondAccountSignatureArray);
   observer()->WaitForNewUnapprovedTx();
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
 
   // Test transaction.signatures.
-  infos = GetAllTransactionInfo();
+  infos = GetAllTransactionInfo(account_0->account_id);
   EXPECT_EQ(3UL, infos.size());
   size_t tx3_index = 0;
   for (size_t i = 0; i < infos.size(); i++) {
@@ -1089,8 +1090,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
     }
   }
   const std::string tx3_id = infos[tx3_index]->id;
-  EXPECT_EQ(FirstSolAccountId(), infos[tx3_index]->from_account_id);
-  EXPECT_EQ(kFirstAccount, infos[tx3_index]->from_address);
+  EXPECT_EQ(account_0->account_id, infos[tx3_index]->from_account_id);
+  EXPECT_EQ(account_0->address, infos[tx3_index]->from_address);
   EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[tx3_index]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[tx3_index]->tx_type);
@@ -1099,11 +1100,11 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
 
   ApproveTransaction(tx3_id);
 
-  infos = GetAllTransactionInfo();
+  infos = GetAllTransactionInfo(account_0->account_id);
   EXPECT_EQ(3UL, infos.size());
   EXPECT_EQ(tx3_id, infos[tx3_index]->id);
-  EXPECT_EQ(FirstSolAccountId(), infos[tx3_index]->from_account_id);
-  EXPECT_EQ(kFirstAccount, infos[tx3_index]->from_address);
+  EXPECT_EQ(account_0->account_id, infos[tx3_index]->from_account_id);
+  EXPECT_EQ(account_0->address, infos[tx3_index]->from_address);
   EXPECT_EQ(mojom::TransactionStatus::Submitted, infos[tx3_index]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[tx3_index]->tx_type);
@@ -1113,11 +1114,11 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
 
   std::vector<mojom::SignaturePubkeyPairPtr> signatures;
   signatures.push_back(
-      mojom::SignaturePubkeyPair::New(absl::nullopt, kFirstAccount));
+      mojom::SignaturePubkeyPair::New(absl::nullopt, account_0->address));
   signatures.push_back(mojom::SignaturePubkeyPair::New(
       std::vector<uint8_t>(std::begin(kSecondAccountSignature),
                            std::end(kSecondAccountSignature)),
-      kSecondAccount));
+      account_1->address));
 
   EXPECT_EQ(infos[tx3_index]
                 ->tx_data_union->get_solana_tx_data()
@@ -1134,7 +1135,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   observer()->WaitForNewUnapprovedTx();
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
 
-  infos = GetAllTransactionInfo();
+  infos = GetAllTransactionInfo(account_0->account_id);
   EXPECT_EQ(4UL, infos.size());
   size_t tx4_index = 0;
   for (size_t i = 0; i < infos.size(); i++) {
@@ -1153,88 +1154,92 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, AccountChangedEventAndReload) {
   RestoreWallet();
-  AddAccount("Account 1");
-  AddAccount("Account 2");
-  SetSelectedAccount(kFirstAccount);
+  auto account_0 = GetAccountUtils().EnsureSolAccount(0);
+  auto account_1 = GetAccountUtils().EnsureSolAccount(1);
+  SetSelectedAccount(account_0->account_id);
+
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   // connect account 1
   CallSolanaConnect(web_contents());
-  UserGrantPermission(true);
+  UserGrantPermission(true, account_0);
 
   RegisterSolAccountChanged();
   // switch to disconnected account 2
-  SetSelectedAccount(kSecondAccount);
+  SetSelectedAccount(account_1->account_id);
   WaitForResultReady();
   EXPECT_EQ(GetAccountChangedResult(), "");
   // switch to connected account 1
-  SetSelectedAccount(kFirstAccount);
+  SetSelectedAccount(account_0->account_id);
   WaitForResultReady();
-  EXPECT_EQ(GetAccountChangedResult(), kFirstAccount);
+  EXPECT_EQ(GetAccountChangedResult(), account_0->address);
 
   ReloadAndWaitForLoadStop(browser());
 
   RegisterSolAccountChanged();
   // switch to disconnected account 2
-  SetSelectedAccount(kSecondAccount);
+  SetSelectedAccount(account_1->account_id);
   WaitForResultReady();
   EXPECT_EQ(GetAccountChangedResult(), "");
   // switch to disconnected account 1
-  SetSelectedAccount(kFirstAccount);
+  SetSelectedAccount(account_0->account_id);
   WaitForResultReady();
   EXPECT_EQ(GetAccountChangedResult(), "");
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectWithNonSelectedAccount) {
   RestoreWallet();
-  AddAccount("Account 1");
-  AddAccount("Account 2");
-  SetSelectedAccount(kFirstAccount);
+  auto account_0 = GetAccountUtils().EnsureSolAccount(0);
+  auto account_1 = GetAccountUtils().EnsureSolAccount(1);
+  SetSelectedAccount(account_0->account_id);
+
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   CallSolanaConnect(web_contents());
-  UserGrantPermission(false, kSecondAccount);
+  UserGrantPermission(false, account_1);
   auto selected_account = keyring_service_->GetSelectedSolanaDappAccount();
   ASSERT_TRUE(selected_account);
   // Reject connect request won't set selected account
-  EXPECT_EQ(selected_account->address, kFirstAccount);
+  EXPECT_EQ(selected_account, account_0);
   EXPECT_FALSE(IsSolanaConnected(web_contents()));
 
   CallSolanaConnect(web_contents());
-  UserGrantPermission(true, kSecondAccount);
+  UserGrantPermission(true, account_1);
   selected_account = keyring_service_->GetSelectedSolanaDappAccount();
   ASSERT_TRUE(selected_account);
   // Connect successfuly will set selected acount automatically
-  EXPECT_EQ(selected_account->address, kSecondAccount);
+  EXPECT_EQ(selected_account, account_1);
   EXPECT_TRUE(IsSolanaConnected(web_contents()));
 
   // Disconnect account 2 which has permission and select account 1 to test
   // permitted account filtering.
   CallSolanaDisconnect(web_contents());
   ASSERT_FALSE(IsSolanaConnected(web_contents()));
-  SetSelectedAccount(kFirstAccount);
+  SetSelectedAccount(account_0->account_id);
 
   // If permitted account 2 isn't filtered and we reject account 1,
   // RequestPermissions callback will contain account 2 in allowed accounts
   CallSolanaConnect(web_contents());
-  UserGrantPermission(false, kFirstAccount);
+  UserGrantPermission(false, account_0);
   EXPECT_FALSE(IsSolanaConnected(web_contents()));
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
   RestoreWallet();
-  AddAccount("Account 1");
-  SetSelectedAccount(kFirstAccount);
+  auto account_0 = GetAccountUtils().EnsureSolAccount(0);
+  auto account_1 = GetAccountUtils().EnsureSolAccount(1);
+  SetSelectedAccount(account_0->account_id);
+
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   CallSolanaConnect(web_contents());
-  UserGrantPermission(true);
+  UserGrantPermission(true, account_0);
   ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
   size_t request_index = 0;
@@ -1256,7 +1261,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
   WaitForResultReady();
   EXPECT_EQ(GetSignTransactionResult(), kSignedTxArrayStr);
 
-  CallSolanaSignTransaction(kUnsignedTxArrayStr2, kSecondAccount,
+  CallSolanaSignTransaction(kUnsignedTxArrayStr2, account_1->address,
                             kSecondAccountSignatureArray);
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   // user approved request
@@ -1267,7 +1272,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
 
   // Test the case where the transaction is already signed by the fee-payer,
   // and ask for the connected wallet account to co-sign the transaction.
-  CallSolanaSignTransaction(kUnsignedTxArrayStr3, kSecondAccount,
+  CallSolanaSignTransaction(kUnsignedTxArrayStr3, account_1->address,
                             kSecondAccountSignatureArray2);
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   // user approved request
@@ -1295,14 +1300,16 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
   RestoreWallet();
-  AddAccount("Account 1");
-  SetSelectedAccount(kFirstAccount);
+  auto account_0 = GetAccountUtils().EnsureSolAccount(0);
+  auto account_1 = GetAccountUtils().EnsureSolAccount(1);
+  SetSelectedAccount(account_0->account_id);
+
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   CallSolanaConnect(web_contents());
-  UserGrantPermission(true);
+  UserGrantPermission(true, account_0);
   ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
   size_t request_index = 0;
@@ -1325,7 +1332,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
   EXPECT_EQ(GetSignAllTransactionsResult(), "success");
 
   CallSolanaSignAllTransactions(kUnsignedTxArrayStr2, kSignedTxArrayStr2,
-                                kSecondAccount, kSecondAccountSignatureArray);
+                                account_1->address,
+                                kSecondAccountSignatureArray);
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   // user approved request
   brave_wallet_service_->NotifySignAllTransactionsRequestProcessed(
@@ -1353,8 +1361,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
   RestoreWallet();
-  AddAccount("Account 1");
-  SetSelectedAccount(kFirstAccount);
+  auto account_0 = GetAccountUtils().EnsureSolAccount(0);
+  SetSelectedAccount(account_0->account_id);
+
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -1363,10 +1372,10 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
   CallSolanaRequest(R"({method: "connect"})");
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   permissions::BraveWalletPermissionContext::AcceptOrCancel(
-      std::vector<std::string>{kFirstAccount},
+      std::vector<std::string>{account_0->address},
       mojom::PermissionLifetimeOption::kForever, web_contents());
   WaitForResultReady();
-  EXPECT_EQ(GetRequestResult(), kFirstAccount);
+  EXPECT_EQ(GetRequestResult(), account_0->address);
   ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
   // disconnect
@@ -1381,7 +1390,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
           ->IsShowingBubble());
   WaitForResultReady();
-  EXPECT_EQ(GetRequestResult(), kFirstAccount);
+  EXPECT_EQ(GetRequestResult(), account_0->address);
   ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
   // signMessage
@@ -1414,7 +1423,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
                                        send_options.c_str()));
   observer()->WaitForNewUnapprovedTx();
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
-  auto infos = GetAllTransactionInfo();
+  auto infos = GetAllTransactionInfo(account_0->account_id);
   ASSERT_EQ(infos.size(), 1u);
   ASSERT_TRUE(infos[0]->tx_data_union->is_solana_tx_data());
   EXPECT_EQ(infos[0]->tx_data_union->get_solana_tx_data()->send_options,
@@ -1440,8 +1449,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, NoCrashOnShortLivedIframes) {
   RestoreWallet();
-  AddAccount("Account 1");
-  SetSelectedAccount(kFirstAccount);
+  auto account_0 = GetAccountUtils().EnsureSolAccount(0);
+  SetSelectedAccount(account_0->account_id);
+
   GURL url =
       https_server_for_files()->GetURL("a.test", "/short_lived_iframes.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));

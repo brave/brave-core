@@ -104,10 +104,6 @@ export const findAccountByAccountId = (
   return accounts.entities[entityIdFromAccountId(accountId)]
 }
 
-export function isHardwareAccount(account: BraveWallet.AccountId) {
-  return account.kind === BraveWallet.AccountKind.kHardware
-}
-
 export const getAddressLabel = (
   address: string,
   accounts: EntityState<BraveWallet.AccountInfo>
@@ -127,6 +123,10 @@ export const getAccountLabel = (
     findAccountByAccountId(accountId, accounts)?.name ??
     reduceAddress(accountId.address)
   )
+}
+
+export function isHardwareAccount(account: BraveWallet.AccountId) {
+  return account.kind === BraveWallet.AccountKind.kHardware
 }
 
 export const keyringIdForNewAccount = (
