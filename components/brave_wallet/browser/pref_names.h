@@ -69,10 +69,6 @@ extern const char kBraveWalletSolanaTransactionsV0SupportMigrated[];
 // Added 07/2023 to migrate transactions from prefs to DB.
 extern const char kBraveWalletTransactionsFromPrefsToDBMigrated[];
 
-// Added 08/09 to migrate Celo mainnet, previously a preloaded network,
-// to a custom network.
-extern const char kBraveWalletCustomNetworksCeloMainnetMigrated[];
-
 // Added 08/09 to migrate Fantom mainnet, previously a preloaded network,
 // to a custom network.
 extern const char kBraveWalletCustomNetworksFantomMainnetMigrated[];

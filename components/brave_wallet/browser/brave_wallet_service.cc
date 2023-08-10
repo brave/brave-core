@@ -1276,32 +1276,6 @@ bool ShouldMigrateRemovedPreloadedNetwork(PrefService* prefs,
   return GetCurrentChainId(prefs, coin, absl::nullopt) == chain_id;
 }
 
-void BraveWalletService::MigrateCeloMainnetAsCustomNetwork(PrefService* prefs) {
-  if (prefs->GetBoolean(kBraveWalletCustomNetworksCeloMainnetMigrated)) {
-    return;
-  }
-
-  if (ShouldMigrateRemovedPreloadedNetwork(prefs, mojom::CoinType::ETH,
-                                           mojom::kCeloMainnetChainId)) {
-    AddCustomNetwork(
-        prefs, {mojom::kCeloMainnetChainId,
-                "Celo Mainnet",
-                {"https://explorer.celo.org"},
-                {},
-                0,
-                {GURL("https://forno.celo.org")},
-                "CELO",
-                "CELO",
-                18,
-                mojom::CoinType::ETH,
-                GetSupportedKeyringsForNetwork(mojom::CoinType::ETH,
-                                               mojom::kCeloMainnetChainId),
-                false});
-  }
-
-  prefs->SetBoolean(kBraveWalletCustomNetworksCeloMainnetMigrated, true);
-}
-
 void BraveWalletService::MigrateFantomMainnetAsCustomNetwork(
     PrefService* prefs) {
   if (prefs->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated)) {

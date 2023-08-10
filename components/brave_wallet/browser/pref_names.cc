@@ -84,8 +84,6 @@ const char kBraveWalletSolanaTransactionsV0SupportMigrated[] =
     "brave.wallet.solana_transactions.v0_support_migrated";
 const char kBraveWalletTransactionsFromPrefsToDBMigrated[] =
     "brave.wallet.transactions.from_prefs_to_db_migrated";
-const char kBraveWalletCustomNetworksCeloMainnetMigrated[] =
-    "brave.wallet.custom_networks.celo_mainnet_migrated";
 const char kBraveWalletCustomNetworksFantomMainnetMigrated[] =
     "brave.wallet.custom_networks.fantom_mainnet_migrated";
 
