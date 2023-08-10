@@ -511,9 +511,6 @@ IN_PROC_BROWSER_TEST_P(BlobUrlBrowserTest, ReplaceStateToAddAuthorityToBlob) {
   EXPECT_FALSE(
       base::MatchPattern(new_contents->GetVisibleURL().spec(), "*spoof*"));
 
-  // The currently implemented behavior is that the URL gets rewritten to
-  // about:blank#blocked. The content of the page stays the same.
-  EXPECT_EQ(content::kBlockedURL, new_contents->GetVisibleURL().spec());
   EXPECT_EQ(
       origin.Serialize() + " potato",
       EvalJs(new_contents, "self.origin + ' ' + document.body.innerText;"));
@@ -522,5 +519,5 @@ IN_PROC_BROWSER_TEST_P(BlobUrlBrowserTest, ReplaceStateToAddAuthorityToBlob) {
   // This seems unfortunate -- can we fix it?
   std::string window_location =
       EvalJs(new_contents, "window.location.href;").ExtractString();
-  EXPECT_TRUE(base::MatchPattern(window_location, "*spoof*"));
+  EXPECT_FALSE(base::MatchPattern(window_location, "*spoof*"));
 }
