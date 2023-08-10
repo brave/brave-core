@@ -15,7 +15,6 @@ import org.chromium.chrome.browser.tab.state.CriticalPersistedTabData;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelFilter;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
-import org.chromium.components.browser_ui.site_settings.SingleWebsiteSettings;
 
 /**
  * Brave's super class for {@link TabGroupModelFilter}

@@ -121,8 +121,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class BraveNewTabPageLayout
         extends NewTabPageLayout implements ConnectionErrorHandler, OnBraveNtpListener {
