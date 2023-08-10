@@ -14,8 +14,9 @@ import { OverallPinningStatus, useNftPin } from '../../../common/hooks/nft-pin'
 import { getLocale } from '../../../../common/locale'
 
 // selectors
-import { useSafePageSelector } from '../../../common/hooks/use-safe-selector'
+import { useSafePageSelector, useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import { PageSelectors } from '../../../page/selectors'
+import { UISelectors } from '../../../common/selectors'
 
 // components
 import { Row } from '../../shared/style'
@@ -41,6 +42,7 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
   // redux
   const { pinnableNftsCount, pinnedNftsCount, pinningStatusSummary: status } = useNftPin()
   const isAutoPinEnabled = useSafePageSelector(PageSelectors.isAutoPinEnabled)
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // memos
   const bannerStatus: BannerStatus = React.useMemo(() => {
@@ -58,8 +60,12 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
 
   // methods
   const onLearnMore = React.useCallback(() => {
-    history.push(WalletRoutes.LocalIpfsNode)
-  }, [])
+    if (isPanel) {
+      chrome.tabs.create({ url: `brave://wallet${WalletRoutes.LocalIpfsNode}` })
+    } else {
+      history.push(WalletRoutes.LocalIpfsNode)
+    }
+  }, [isPanel])
 
   return (
     <StyledWrapper status={bannerStatus}>
