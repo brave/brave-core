@@ -22,6 +22,7 @@ group("brave_providers") {
     "//ios/chrome/browser/providers/keyboard:chromium_keyboard",
     "//ios/chrome/browser/providers/lens:chromium_lens",
     "//ios/chrome/browser/providers/mailto_handler:chromium_mailto_handler",
+    "//ios/chrome/browser/providers/material:chromium_material_branding",
     "//ios/chrome/browser/providers/mini_map:chromium_mini_map",
     "//ios/chrome/browser/providers/modals:chromium_modals",
     "//ios/chrome/browser/providers/omaha:chromium_omaha",
