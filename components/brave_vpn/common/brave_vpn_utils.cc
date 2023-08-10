@@ -49,6 +49,11 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 }  // namespace
 
 #if BUILDFLAG(IS_WIN)
+bool IsBraveVPNWireguardEnabled(PrefService* local_state) {
+  DCHECK(IsBraveVPNFeatureEnabled());
+  return local_state->GetBoolean(prefs::kBraveVPNWireguardEnabled);
+}
+
 void MigrateWireguardFeatureFlag(PrefService* local_prefs) {
   if (!base::FeatureList::IsEnabled(features::kBraveVPNUseWireguardService)) {
     return;
@@ -119,15 +124,6 @@ bool IsBraveVPNFeatureEnabled() {
 
 bool IsBraveVPNEnabled(PrefService* prefs) {
   return !IsBraveVPNDisabledByPolicy(prefs) && IsBraveVPNFeatureEnabled();
-}
-
-bool IsBraveVPNWireguardEnabled(PrefService* local_state) {
-  DCHECK(IsBraveVPNFeatureEnabled());
-#if BUILDFLAG(IS_WIN)
-  return local_state->GetBoolean(prefs::kBraveVPNWireguardEnabled);
-#else
-  return false;
-#endif
 }
 
 std::string GetBraveVPNEntryName(version_info::Channel channel) {

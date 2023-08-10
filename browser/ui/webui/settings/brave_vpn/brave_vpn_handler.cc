@@ -40,9 +40,9 @@ bool ElevatedRegisterBraveVPNService() {
 
 BraveVpnHandler::BraveVpnHandler(Profile* profile) : profile_(profile) {
   auto* service = brave_vpn::BraveVpnServiceFactory::GetForProfile(profile);
-  if (service) {
-    Observe(service);
-  }
+  CHECK(service);
+  Observe(service);
+
   pref_change_registrar_.Init(g_browser_process->local_state());
   pref_change_registrar_.Add(
       brave_vpn::prefs::kBraveVPNWireguardEnabled,
