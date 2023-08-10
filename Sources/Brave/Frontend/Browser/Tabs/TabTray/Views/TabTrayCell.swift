@@ -56,7 +56,7 @@ class TabCell: UICollectionViewCell {
     }
 
     titleLabel.text = tab.displayTitle
-    favicon.image = Favicon.defaultImage
+    favicon.image = tab.displayFavicon?.image ?? Favicon.defaultImage
 
     if !tab.displayTitle.isEmpty {
       accessibilityLabel = tab.displayTitle
