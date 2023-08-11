@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index b49033acd217fda9cdc7e2a28ad63e56015abcd0..4adc5d5a84a2f3fad4075ed33e21805ec6e7b3dc 100644
+index 298dfaabe9ce9c383c2e3b00590ce23e6904d2a7..2d352320951fbd6cd7f2f23b6fa3a33cc6bd0455 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -48,7 +48,7 @@ index b49033acd217fda9cdc7e2a28ad63e56015abcd0..4adc5d5a84a2f3fad4075ed33e21805e
      <uses-permission-sdk-23 android:name="android.permission.USE_BIOMETRIC"/>
      <uses-permission-sdk-23 android:name="android.permission.USE_FINGERPRINT"/>
      <uses-permission android:name="android.permission.VIBRATE"/>
-@@ -138,7 +149,9 @@ by a child template that "extends" this file.
+@@ -136,7 +147,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
@@ -58,7 +58,7 @@ index b49033acd217fda9cdc7e2a28ad63e56015abcd0..4adc5d5a84a2f3fad4075ed33e21805e
  
      {% block extra_uses_permissions %}
      {% endblock %}
-@@ -200,7 +213,7 @@ by a child template that "extends" this file.
+@@ -198,7 +211,7 @@ by a child template that "extends" this file.
          android:networkSecurityConfig="@xml/network_security_config"
          android:allowAudioPlaybackCapture="false"
          android:appComponentFactory="org.chromium.chrome.browser.base.SplitCompatAppComponentFactory"
@@ -67,7 +67,7 @@ index b49033acd217fda9cdc7e2a28ad63e56015abcd0..4adc5d5a84a2f3fad4075ed33e21805e
          {% block extra_application_attributes %}{% endblock %}>
  
          {% if channel in ['canary', 'dev', 'default'] %}
-@@ -349,6 +362,7 @@ by a child template that "extends" this file.
+@@ -347,6 +360,7 @@ by a child template that "extends" this file.
              <intent-filter>
                  <action android:name="com.sec.android.airview.HOVER" />
              </intent-filter>
@@ -75,7 +75,7 @@ index b49033acd217fda9cdc7e2a28ad63e56015abcd0..4adc5d5a84a2f3fad4075ed33e21805e
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -1231,6 +1245,7 @@ by a child template that "extends" this file.
+@@ -1218,6 +1232,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  

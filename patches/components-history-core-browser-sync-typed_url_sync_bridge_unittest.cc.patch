@@ -1,8 +1,8 @@
 diff --git a/components/history/core/browser/sync/typed_url_sync_bridge_unittest.cc b/components/history/core/browser/sync/typed_url_sync_bridge_unittest.cc
-index f6af2402541425a9f53b2b6eade70216177d1582..04b100ab9e9c2db0657489e1129f176af52a47e1 100644
+index b396a2de48c821dcee672403709a179021cbe601..c223995a7a7920c8794fae293e32defb463070be 100644
 --- a/components/history/core/browser/sync/typed_url_sync_bridge_unittest.cc
 +++ b/components/history/core/browser/sync/typed_url_sync_bridge_unittest.cc
-@@ -346,6 +346,7 @@ class TypedURLSyncBridgeTest : public testing::Test {
+@@ -347,6 +347,7 @@ class TypedURLSyncBridgeTest : public testing::Test {
      typed_url_sync_bridge_->Init();
      typed_url_sync_bridge_->history_backend_observation_.Reset();
      fake_history_backend_->SetTypedURLSyncBridgeForTest(std::move(bridge));
@@ -10,7 +10,7 @@ index f6af2402541425a9f53b2b6eade70216177d1582..04b100ab9e9c2db0657489e1129f176a
    }
  
    void TearDown() override { fake_history_backend_->Closing(); }
-@@ -553,6 +554,7 @@ class TypedURLSyncBridgeTest : public testing::Test {
+@@ -554,6 +555,7 @@ class TypedURLSyncBridgeTest : public testing::Test {
    scoped_refptr<TestHistoryBackendForSync> fake_history_backend_;
    raw_ptr<TypedURLSyncBridge> typed_url_sync_bridge_ = nullptr;
    NiceMock<MockModelTypeChangeProcessor> mock_processor_;

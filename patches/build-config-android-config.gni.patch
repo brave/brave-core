@@ -1,8 +1,8 @@
 diff --git a/build/config/android/config.gni b/build/config/android/config.gni
-index 2be952726980fea7dbe8d8626f12d5a55e1eedb5..0dc3235a1dc66cc1fd00bb85d3d69e7a8a305909 100644
+index 0a4ea11f8436ae4bac9c202b81bf24ba959636e9..320c6d0633b113b784d6a51a63a37db01458fd98 100644
 --- a/build/config/android/config.gni
 +++ b/build/config/android/config.gni
-@@ -21,6 +21,7 @@ declare_args() {
+@@ -22,6 +22,7 @@ declare_args() {
  # toolchain, this GNI file may be read and processed from within Chrome OS
  # toolchains. Checking |is_android| here would therefore be too restrictive.
  if (is_android || is_chromeos) {

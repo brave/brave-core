@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 26f733f234738ee11d61ad37cd9ea0c77f6a8a88..47cd03e764866f130db819fc29db290f99816e40 100644
+index 1fa0cd98c343546757fbbf08468e43eb786c250f..38744f944c6b95e1cb5fd04ef9e42724f20cea61 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 @@ -299,6 +299,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -10,7 +10,7 @@ index 26f733f234738ee11d61ad37cd9ea0c77f6a8a88..47cd03e764866f130db819fc29db290f
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -477,6 +478,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -479,6 +480,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
    // Register pref used to detect addresses in web page
    registry->RegisterBooleanPref(prefs::kDetectAddressesEnabled, true);
    registry->RegisterBooleanPref(prefs::kDetectAddressesAccepted, false);
@@ -18,7 +18,7 @@ index 26f733f234738ee11d61ad37cd9ea0c77f6a8a88..47cd03e764866f130db819fc29db290f
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -565,4 +567,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
+@@ -567,4 +569,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
    invalidation::InvalidatorRegistrarWithMemory::ClearDeprecatedPrefs(prefs);
    invalidation::PerUserTopicSubscriptionManager::ClearDeprecatedPrefs(prefs);
    invalidation::FCMInvalidationService::ClearDeprecatedPrefs(prefs);

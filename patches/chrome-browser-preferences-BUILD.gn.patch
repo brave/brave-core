@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/preferences/BUILD.gn b/chrome/browser/preferences/BUILD.gn
-index e0257b2da7ce00206e541cbe3e6092b3861fa775..d039e0c52fcb39ef0d7e8b15c57eeb66036d28ed 100644
+index d15a889535f7c1679dad73cf382c62f2d6250af3..224e69136cfeef8235e963717bcd90b539eec645 100644
 --- a/chrome/browser/preferences/BUILD.gn
 +++ b/chrome/browser/preferences/BUILD.gn
 @@ -29,6 +29,7 @@ android_library("java") {

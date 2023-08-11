@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/router.ts b/chrome/browser/resources/settings/router.ts
-index f8b2a426544a1b985fe2e00735fdd8e66458d3ab..bf1178d021516caad6d36cdd6c968eacb23f311e 100644
+index 18d787f7f1a13b7a903021598c442a5147f19cc1..38d83dde5ee1f7b8f783f34994aaf61fc91400fb 100644
 --- a/chrome/browser/resources/settings/router.ts
 +++ b/chrome/browser/resources/settings/router.ts
-@@ -105,6 +105,7 @@ export interface SettingsRoutes {
+@@ -101,6 +101,7 @@ export interface SettingsRoutes {
    SYNC_ADVANCED: Route;
    SYSTEM: Route;
    TRIGGERED_RESET_DIALOG: Route;

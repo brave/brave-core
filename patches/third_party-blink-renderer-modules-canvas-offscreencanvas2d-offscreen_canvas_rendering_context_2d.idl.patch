@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
-index 3b3fd1c1f3ecab0b81346f72bbce02f7613fce79..765ff35fa6fab37c8e94053e087e264808f3c665 100644
+index c49bdf3cc50d1ed293aa375605c84baa4968fb5e..050b469544d85041d43f016bc69dab25737cb590 100644
 --- a/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
 @@ -68,10 +68,10 @@
