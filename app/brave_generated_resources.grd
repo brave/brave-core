@@ -1212,7 +1212,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_PLAYLIST_NEW_PLAYLIST_DIALOG_OK" desc="A label for 'OK' button for a dialog to create a new playlist">
           Create
         </message>
-        <message name="IDS_PLAYLIST_CONTEXT_MENU_EDIT" desc="Context menu item on Playlist to entering editing mode">
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_EDIT" desc="Context menu item on Playlist to enter editing mode">
           Edit
         </message>
         <message name="IDS_PLAYLIST_CONTEXT_MENU_SHARE" desc="Context menu item on Playlist to share it">
