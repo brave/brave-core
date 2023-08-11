@@ -17,7 +17,6 @@ rust_static_library("lib") {
 
   deps = [
     "src/readability:lib",
-    "//brave/third_party/rust/flate2/v1:lib",
     "//brave/third_party/rust/html5ever/v0_25:lib",
     "//brave/third_party/rust/kuchiki/v0_8:lib",
     "//brave/third_party/rust/lifeguard/v0_6:lib",

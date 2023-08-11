@@ -6,15 +6,15 @@
 use std::collections::HashSet;
 use std::str::Utf8Error;
 
-use adblock::engine::Engine as InnerEngine;
+use adblock::Engine as InnerEngine;
 use adblock::lists::FilterSet;
 use adblock::resources::{MimeType, Resource, ResourceType};
 use adblock::url_parser::ResolvesDomain;
 use cxx::{let_cxx_string, CxxString, CxxVector};
 
 use crate::ffi::{
-    resolve_domain_position, BlockerDebugInfo, BlockerResult, BoxEngineResult,
-    ContentBlockingRulesResult, FilterListMetadata, RegexManagerDiscardPolicy, UnitResult,
+    resolve_domain_position, BlockerResult, BoxEngineResult, ContentBlockingRulesResult,
+    FilterListMetadata, RegexDebugInfo, RegexManagerDiscardPolicy, UnitResult,
     VecStringResult,
 };
 use crate::result::InternalError;
@@ -140,12 +140,14 @@ impl Engine {
         // The following strings are guaranteed to be
         // UTF-8, so unwrapping directly should be okay.
         self.engine
-            .check_network_urls_with_hostnames_subset(
-                url.to_str().unwrap(),
-                hostname.to_str().unwrap(),
-                source_hostname.to_str().unwrap(),
-                request_type.to_str().unwrap(),
-                Some(third_party_request),
+            .check_network_request_subset(
+                &adblock::request::Request::preparsed(
+                    url.to_str().unwrap(),
+                    hostname.to_str().unwrap(),
+                    source_hostname.to_str().unwrap(),
+                    request_type.to_str().unwrap(),
+                    third_party_request,
+                ),
                 previously_matched_rule,
                 force_check_exceptions,
             )
@@ -163,12 +165,14 @@ impl Engine {
         // The following strings are also UTF-8.
         self.engine
             .get_csp_directives(
-                url.to_str().unwrap(),
-                hostname.to_str().unwrap(),
-                source_hostname.to_str().unwrap(),
-                request_type.to_str().unwrap(),
-                Some(third_party_request),
-            )
+                    &adblock::request::Request::preparsed(
+                        url.to_str().unwrap(),
+                        hostname.to_str().unwrap(),
+                        source_hostname.to_str().unwrap(),
+                        request_type.to_str().unwrap(),
+                        third_party_request,
+                    ),
+                )
             .unwrap_or_default()
     }
 
@@ -188,6 +192,9 @@ impl Engine {
                 aliases: vec![],
                 kind: ResourceType::Mime(MimeType::from(content_type.to_str()?)),
                 content: data.to_string(),
+                dependencies: vec![],
+                /// user-added resources require full permissions
+                permission: adblock::resources::PermissionMask::from_bits(0b11111111),
             };
             Ok(self.engine.add_resource(resource)?)
         }()
@@ -200,7 +207,7 @@ impl Engine {
             .ok()
             .and_then(|resources_json| serde_json::from_str::<Vec<Resource>>(resources_json).ok())
             .and_then(|resources| {
-                self.engine.use_resources(&resources);
+                self.engine.use_resources(resources);
                 Some(())
             })
             .is_some()
@@ -227,8 +234,8 @@ impl Engine {
         .into()
     }
 
-    pub fn get_debug_info(&self) -> BlockerDebugInfo {
-        self.engine.get_debug_info().blocker_debug_info.into()
+    pub fn get_regex_debug_info(&self) -> RegexDebugInfo {
+        self.engine.get_regex_debug_info().into()
     }
 
     pub fn discard_regex(&mut self, regex_id: u64) {

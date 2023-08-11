@@ -4,20 +4,18 @@ version = 3
 
 [[package]]
 name = "adblock"
-version = "0.7.17"
+version = "0.8.0"
 dependencies = [
  "base64",
  "bitflags",
  "cssparser 0.28.1",
- "flate2",
  "idna 0.2.3",
  "itertools",
  "memchr",
  "once_cell",
  "percent-encoding",
  "regex",
- "rmp-serde 0.13.7",
- "rmp-serde 0.15.5",
+ "rmp-serde",
  "seahash",
  "selectors 0.23.0",
  "serde",
@@ -307,7 +305,6 @@ dependencies = [
  "ed25519-dalek-bip32",
  "env_logger",
  "feed-rs",
- "flate2",
  "font-types",
  "forest_bigint",
  "futures",
@@ -730,14 +727,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 1.0.99",
-]
-
-[[package]]
-name = "flate2"
-version = "1.0.25"
-dependencies = [
- "crc32fast",
- "miniz_oxide",
 ]
 
 [[package]]
@@ -1721,15 +1710,6 @@ dependencies = [
  "byteorder",
  "num-traits",
  "paste",
-]
-
-[[package]]
-name = "rmp-serde"
-version = "0.13.7"
-dependencies = [
- "byteorder",
- "rmp",
- "serde",
 ]
 
 [[package]]
