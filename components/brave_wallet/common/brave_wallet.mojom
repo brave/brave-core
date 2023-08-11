@@ -1039,6 +1039,7 @@ const string kCeloMainnetChainId = "0xa4ec";
 const string kOptimismMainnetChainId = "0xa";
 const string kAuroraMainnetChainId = "0x4e454152";
 const string kArbitrumMainnetChainId = "0xa4b1";
+const string kNeonEVMMainnetChainId = "0xe9ac0d6";
 const string kFilecoinEthereumMainnetChainId = "0x13a";  // Filecoin eth mainnet
 const string kFilecoinEthereumTestnetChainId = "0x4cb2f";  // Filecoin eth calibration
 const string kSolanaMainnet = "0x65";

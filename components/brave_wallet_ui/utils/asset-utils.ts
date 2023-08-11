@@ -109,7 +109,8 @@ export const getNativeTokensFromList = (tokenList: BraveWallet.BlockchainToken[]
       t.symbol.toLowerCase() === 'sol' && t.chainId === BraveWallet.SOLANA_MAINNET ||
       t.symbol.toLowerCase() === 'fil' && t.chainId === BraveWallet.FILECOIN_MAINNET ||
       t.symbol.toLowerCase() === 'avax' && t.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID ||
-      t.symbol.toLowerCase() === 'avaxc' && t.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID
+      t.symbol.toLowerCase() === 'avaxc' && t.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID ||
+      t.symbol.toLowerCase() === 'neon' && t.chainId === BraveWallet.NEON_EVM_MAINNET_CHAIN_ID
     ) {
       acc.nativeAssets.push(t)
       return acc

@@ -163,26 +163,6 @@ const mojom::NetworkInfo* GetAvalancheMainnet() {
   return network_info.get();
 }
 
-const mojom::NetworkInfo* GetFantomOperaMainnet() {
-  const auto coin = mojom::CoinType::ETH;
-  const auto* chain_id = mojom::kFantomMainnetChainId;
-
-  static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {chain_id,
-       "Fantom Opera",
-       {"https://ftmscan.com"},
-       {},
-       0,
-       {GURL("https://rpc.ftm.tools")},
-       "FTM",
-       "Fantom",
-       18,
-       coin,
-       GetSupportedKeyringsForNetwork(coin, chain_id),
-       true});
-  return network_info.get();
-}
-
 const mojom::NetworkInfo* GetOptimismMainnet() {
   const auto coin = mojom::CoinType::ETH;
   const auto* chain_id = mojom::kOptimismMainnetChainId;
@@ -216,6 +196,26 @@ const mojom::NetworkInfo* GetAuroraMainnet() {
        {},
        "ETH",
        "Ether",
+       18,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
+       false});
+  return network_info.get();
+}
+
+const mojom::NetworkInfo* GetNeonEVMMainnet() {
+  const auto coin = mojom::CoinType::ETH;
+  const auto* chain_id = mojom::kNeonEVMMainnetChainId;
+
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {chain_id,
+       "Neon EVM",
+       {"https://neonscan.org"},
+       {},
+       0,
+       {GURL("https://neon-proxy-mainnet.solana.p2p.org")},
+       "NEON",
+       "Neon",
        18,
        coin,
        GetSupportedKeyringsForNetwork(coin, chain_id),
@@ -331,14 +331,14 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownEthNetworks() {
       GetAuroraMainnet(),
       GetPolygonMainnet(),
       GetBscMainnet(),
-      GetAvalancheMainnet(),
-      GetFantomOperaMainnet(),
       GetOptimismMainnet(),
+      GetAvalancheMainnet(),
+      GetFilecoinEthereumMainnet(),
+      GetNeonEVMMainnet(),
       GetGoerliTestNetwork(),
       GetSepoliaTestNetwork(),
-      GetEthLocalhost(),
-      GetFilecoinEthereumMainnet(),
-      GetFilecoinEthereumTestnet()
+      GetFilecoinEthereumTestnet(),
+      GetEthLocalhost()
       // clang-format on
   });
   return *networks.get();

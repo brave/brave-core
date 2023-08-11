@@ -2191,6 +2191,112 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetsAddIsERC1155) {
       GetPrefs()->GetBoolean(kBraveWalletUserAssetsAddIsERC1155Migrated));
 }
 
+TEST_F(BraveWalletServiceUnitTest, MigrateFantomMainnetAsCustomNetwork) {
+  // CASE 1: Fantom is the selected network of some origin
+  ASSERT_FALSE(
+      GetPrefs()->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated));
+
+  auto selected_networks = base::JSONReader::Read(R"({
+    "ethereum": {
+      "https://app.uniswap.org": "0xfa"
+    }
+  })");
+  GetPrefs()->Set(kBraveWalletSelectedNetworksPerOrigin, *selected_networks);
+
+  EXPECT_FALSE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+
+  BraveWalletService::MigrateFantomMainnetAsCustomNetwork(GetPrefs());
+
+  // OK: Fantom should be added to custom networks
+  EXPECT_TRUE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+
+  EXPECT_TRUE(
+      GetPrefs()->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated));
+
+  // CASE 2: Fantom is the default ETH network
+  GetPrefs()->SetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated,
+                         false);
+  GetPrefs()->ClearPref(kBraveWalletCustomNetworks);
+  GetPrefs()->ClearPref(kBraveWalletSelectedNetworksPerOrigin);
+
+  auto default_networks = base::JSONReader::Read(R"({
+    "ethereum": "0xfa"
+  })");
+  GetPrefs()->Set(kBraveWalletSelectedNetworks, *default_networks);
+
+  EXPECT_FALSE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+
+  BraveWalletService::MigrateFantomMainnetAsCustomNetwork(GetPrefs());
+
+  // OK: Fantom should be added to custom networks
+  EXPECT_TRUE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+
+  // OK: default ETH network should be retained as Fantom
+  EXPECT_EQ(
+      *GetPrefs()->GetDict(kBraveWalletSelectedNetworks).FindString("ethereum"),
+      "0xfa");
+
+  EXPECT_TRUE(
+      GetPrefs()->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated));
+
+  // CASE 3: Fantom neither default ETH network nor selected for any origin
+  GetPrefs()->SetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated,
+                         false);
+  GetPrefs()->ClearPref(kBraveWalletCustomNetworks);
+  GetPrefs()->ClearPref(kBraveWalletSelectedNetworksPerOrigin);
+
+  default_networks = base::JSONReader::Read(R"({
+    "ethereum": "0xa"
+  })");
+  GetPrefs()->Set(kBraveWalletSelectedNetworks, *default_networks);
+
+  selected_networks = base::JSONReader::Read(R"({
+    "ethereum": {
+      "https://app.uniswap.org": "0x1"
+    }
+  })");
+  GetPrefs()->Set(kBraveWalletSelectedNetworksPerOrigin, *selected_networks);
+
+  EXPECT_FALSE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+
+  BraveWalletService::MigrateFantomMainnetAsCustomNetwork(GetPrefs());
+
+  // KO: Fantom should NOT be added to custom networks
+  EXPECT_FALSE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+
+  // KO: Default ETH network does not change
+  EXPECT_EQ(
+      *GetPrefs()->GetDict(kBraveWalletSelectedNetworks).FindString("ethereum"),
+      "0xa");
+
+  EXPECT_TRUE(
+      GetPrefs()->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated));
+
+  // CASE 4: Fantom is already added to custom networks
+  GetPrefs()->SetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated,
+                         false);
+  GetPrefs()->ClearPref(kBraveWalletCustomNetworks);
+  GetPrefs()->ClearPref(kBraveWalletSelectedNetworksPerOrigin);
+
+  // Add Fantom to custom networks
+  mojom::NetworkInfo fantom = GetTestNetworkInfo1("0xfa");
+  AddCustomNetwork(GetPrefs(), fantom);
+  EXPECT_TRUE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+
+  BraveWalletService::MigrateFantomMainnetAsCustomNetwork(GetPrefs());
+
+  // KO: Fantom should NOT be added to custom networks again
+  ASSERT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletCustomNetworks));
+  auto* custom_networks =
+      GetPrefs()->GetDict(kBraveWalletCustomNetworks).FindList("ethereum");
+  ASSERT_TRUE(custom_networks);
+  ASSERT_EQ(custom_networks->size(), 1u);
+  EXPECT_EQ(*(*custom_networks)[0].GetDict().FindString("chainId"), "0xfa");
+
+  EXPECT_TRUE(
+      GetPrefs()->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated));
+}
+
 TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
   const char* new_password = "brave1234!";
   bool success;
