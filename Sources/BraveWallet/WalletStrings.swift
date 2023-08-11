@@ -4344,14 +4344,14 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Hide Small Balances",
-      comment: "The label of the filter option that hides assets if their fiat value is below $1. Used in Portfolio/NFT filters and display settings."
+      comment: "The label of the filter option that hides assets if their fiat value is below $0.05. Used in Portfolio/NFT filters and display settings."
     )
     public static let hideSmallBalancesDescription = NSLocalizedString(
       "wallet.hideSmallBalancesDescription",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Assets with value less than $1",
-      comment: "The description label of the filter option that hides assets if their fiat value is below $1, shown below the title. Used in Portfolio/NFT filters and display settings."
+      value: "Assets with value less than $0.05",
+      comment: "The description label of the filter option that hides assets if their fiat value is below $0.05, shown below the title. Used in Portfolio/NFT filters and display settings."
     )
     public static let hideUnownedNFTsTitle = NSLocalizedString(
       "wallet.hideUnownedNFTsTitle",
@@ -4464,6 +4464,20 @@ extension Strings {
       bundle: .module,
       value: "Networks",
       comment: "The title of the sort option that groups assets by each network. Used in Portfolio/NFT filters and display settings."
+    )
+    public static let portfolioEmptyStateTitle = NSLocalizedString(
+      "wallet.portfolioEmptyStateTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "No available assets",
+      comment: "The title of the empty state in Portfolio when no assets are shown."
+    )
+    public static let portfolioEmptyStateDescription = NSLocalizedString(
+      "wallet.portfolioEmptyStateDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Deposit or purchase tokens to get started. If you don't see tokens from an imported account, check the filters and display settings. Unknown tokens may need to be added as custom assets.",
+      comment: "The title of the empty state in Portfolio when no assets are shown."
     )
   }
 }

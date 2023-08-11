@@ -74,8 +74,8 @@ struct AccountActivityView: View {
                 title: asset.token.name,
                 symbol: asset.token.symbol,
                 networkName: asset.network.chainName,
-                amount: activityStore.currencyFormatter.string(from: NSNumber(value: (Double(asset.price) ?? 0) * asset.decimalBalance)) ?? "",
-                quantity: String(format: "%.04f", asset.decimalBalance)
+                amount: asset.fiatAmount(currencyFormatter: activityStore.currencyFormatter),
+                quantity: asset.quantity
               )
             }
           }

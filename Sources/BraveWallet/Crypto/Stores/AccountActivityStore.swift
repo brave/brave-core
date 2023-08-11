@@ -79,11 +79,6 @@ class AccountActivityStore: ObservableObject {
       let networksForAccountCoin = await rpcService.allNetworks(coin)
         .filter { $0.chainId != BraveWallet.LocalhostChainId } // localhost not supported
       
-      struct NetworkAssets: Equatable {
-        let network: BraveWallet.NetworkInfo
-        let tokens: [BraveWallet.BlockchainToken]
-        let sortOrder: Int
-      }
       let allVisibleUserAssets = assetManager.getAllVisibleAssetsInNetworkAssets(networks: networksForAccountCoin)
       let allTokens = await blockchainRegistry.allTokens(in: networksForAccountCoin).flatMap(\.tokens)
       var updatedUserVisibleAssets: [AssetViewModel] = []
@@ -101,11 +96,12 @@ class AccountActivityStore: ObservableObject {
           } else {
             updatedUserVisibleAssets.append(
               AssetViewModel(
+                groupType: .none,
                 token: token,
                 network: networkAssets.network,
-                decimalBalance: 0,
                 price: "",
-                history: []
+                history: [],
+                balanceForAccounts: [:]
               )
             )
           }
@@ -177,11 +173,12 @@ class AccountActivityStore: ObservableObject {
           } else {
             updatedUserVisibleAssets.append(
               AssetViewModel(
+                groupType: .none,
                 token: token,
                 network: networkAssets.network,
-                decimalBalance: totalBalances[token.assetBalanceId] ?? 0,
                 price: prices[token.assetRatioId.lowercased()] ?? "",
-                history: []
+                history: [],
+                balanceForAccounts: [account.address: totalBalances[token.assetBalanceId] ?? 0]
               )
             )
           }

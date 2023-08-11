@@ -77,11 +77,10 @@ struct PortfolioView: View {
   
   private var editUserAssetsButton: some View {
     Button(action: { isPresentingEditUserAssets = true }) {
-      Text(Strings.Wallet.editVisibleAssetsButtonTitle)
-        .multilineTextAlignment(.center)
-        .font(.footnote.weight(.semibold))
-        .foregroundColor(Color(.bravePrimary))
-        .frame(maxWidth: .infinity)
+      Image(braveSystemName: "leo.list.settings")
+        .font(.footnote.weight(.medium))
+        .foregroundColor(Color(.braveBlurpleTint))
+        .clipShape(Rectangle())
     }
     .sheet(isPresented: $isPresentingEditUserAssets) {
       EditUserAssetsView(
@@ -116,7 +115,7 @@ struct PortfolioView: View {
         if #available(iOS 16, *) {
           view
             .presentationDetents([
-              .fraction(0.6),
+              .fraction(0.7),
               .large
             ])
         } else {
@@ -133,45 +132,9 @@ struct PortfolioView: View {
           listHeader
           .padding(.horizontal, tableInset)  // inset grouped layout margins workaround
           .resetListHeaderStyle()
-      ) {
-      }
-      Section(content: {
-        Group {
-          ForEach(portfolioStore.userVisibleAssets) { asset in
-            Button(action: {
-              selectedToken = asset.token
-            }) {
-              PortfolioAssetView(
-                image: AssetIconView(
-                  token: asset.token,
-                  network: asset.network,
-                  shouldShowNetworkIcon: true
-                ),
-                title: asset.token.name,
-                symbol: asset.token.symbol,
-                networkName: asset.network.chainName,
-                amount: portfolioStore.currencyFormatter.string(from: NSNumber(value: (Double(asset.price) ?? 0) * asset.decimalBalance)) ?? "",
-                quantity: String(format: "%.04f", asset.decimalBalance)
-              )
-            }
-          }
-          editUserAssetsButton
-        }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      }, header: {
-        HStack {
-          Text(Strings.Wallet.assetsTitle)
-          if portfolioStore.isLoadingDiscoverAssets {
-            ProgressView()
-              .padding(.leading, 5)
-          }
-          Spacer()
-          filtersButton
-        }
-        .textCase(nil)
-        .padding(.horizontal, -8)
-        .frame(maxWidth: .infinity, alignment: .leading)
-      })
+      ) { }
+
+      assetSections
     }
     .background(
       NavigationLink(
@@ -195,7 +158,7 @@ struct PortfolioView: View {
           EmptyView()
         })
     )
-    .animation(.default, value: portfolioStore.userVisibleAssets)
+    .animation(.default, value: portfolioStore.assetGroups)
     .listStyle(InsetGroupedListStyle())
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .introspectTableView { tableView in
@@ -211,6 +174,173 @@ struct PortfolioView: View {
       selector: TargetViewSelector.ancestorOrSiblingContaining
     ) { (collectionView: UICollectionView) in
       self.collectionViewRef = .init(collectionView)
+    }
+  }
+  
+  /// Header for the assets section(s) containing the title, edit user assets and filter buttons
+  private var assetSectionsHeader: some View {
+    HStack {
+      Text(Strings.Wallet.assetsTitle)
+      if portfolioStore.isLoadingDiscoverAssets {
+        ProgressView()
+          .padding(.leading, 5)
+      }
+      Spacer()
+      editUserAssetsButton
+        .padding(.trailing, 10)
+      filtersButton
+    }
+    .textCase(nil)
+    .padding(.horizontal, -8)
+    .frame(maxWidth: .infinity, alignment: .leading)
+  }
+  
+  private var emptyAssetsState: some View {
+    VStack(spacing: 10) {
+      Image("portfolio-empty", bundle: .module)
+        .aspectRatio(contentMode: .fit)
+      Text(Strings.Wallet.portfolioEmptyStateTitle)
+        .font(.headline)
+        .foregroundColor(Color(WalletV2Design.textPrimary))
+      Text(Strings.Wallet.portfolioEmptyStateDescription)
+        .font(.footnote)
+        .foregroundColor(Color(WalletV2Design.textSecondary))
+    }
+    .multilineTextAlignment(.center)
+    .padding(.vertical)
+  }
+  
+  /// Grouped / Ungrouped asset `Section`s for the List
+  @ViewBuilder private var assetSections: some View {
+    if portfolioStore.isShowingAssetsLoadingState || portfolioStore.isShowingAssetsEmptyState {
+      Section(content: {
+        Group {
+          if portfolioStore.isShowingAssetsLoadingState {
+            SkeletonLoadingAssetView()
+          } else { // isShowingAssetsEmptyState
+            emptyAssetsState
+          }
+        }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      }, header: {
+        assetSectionsHeader
+      })
+    } else {
+      ForEach(portfolioStore.assetGroups) { group in
+        Section(
+          content: {
+            if group.groupType == .none {
+              ungroupedAssets(group)
+                .listRowBackground(Color(.secondaryBraveGroupedBackground))
+            } else {
+              groupedAssetsSection(for: group)
+                .listRowBackground(Color(.secondaryBraveGroupedBackground))
+            }
+          },
+          header: {
+            if group == portfolioStore.assetGroups.first {
+              assetSectionsHeader
+            }
+          }
+        )
+      }
+    }
+  }
+  
+  /// Builds the list of assets without any grouping or expandable / collapse behaviour.
+  @ViewBuilder private func ungroupedAssets(_ group: AssetGroupViewModel) -> some View {
+    ForEach(group.assets) { asset in
+      Button(action: {
+        selectedToken = asset.token
+      }) {
+        PortfolioAssetView(
+          image: AssetIconView(
+            token: asset.token,
+            network: asset.network,
+            shouldShowNetworkIcon: true
+          ),
+          title: asset.token.name,
+          symbol: asset.token.symbol,
+          networkName: asset.network.chainName,
+          amount: asset.fiatAmount(currencyFormatter: portfolioStore.currencyFormatter),
+          quantity: asset.quantity
+        )
+      }
+    }
+  }
+  
+  @State var groupToggleState: [AssetGroupViewModel.ID: Bool] = [:]
+  
+  /// Builds the expandable/collapseable (expanded by default) section content for a given group.
+  @ViewBuilder private func groupedAssetsSection(for group: AssetGroupViewModel) -> some View {
+    WalletDisclosureGroup(
+      isExpanded: Binding(
+        get: { groupToggleState[group.id, default: true] },
+        set: { isExpanded in
+          groupToggleState[group.id] = isExpanded
+        }
+      ),
+      content: {
+        ForEach(group.assets) { asset in
+          Button(action: {
+            selectedToken = asset.token
+          }) {
+            PortfolioAssetView(
+              image: AssetIconView(
+                token: asset.token,
+                network: asset.network,
+                shouldShowNetworkIcon: true
+              ),
+              title: asset.token.name,
+              symbol: asset.token.symbol,
+              networkName: asset.network.chainName,
+              amount: asset.fiatAmount(currencyFormatter: portfolioStore.currencyFormatter),
+              quantity: asset.quantity
+            )
+          }
+        }
+      },
+      label: {
+        if case let .account(account) = group.groupType {
+          AddressView(address: account.address) {
+            groupHeader(for: group)
+          }
+        } else {
+          groupHeader(for: group)
+        }
+      }
+    )
+  }
+  
+  /// Builds the in-section header for an AssetGroupViewModel that is shown in expanded and non-expanded state. Not used for ungrouped assets.
+  private func groupHeader(for group: AssetGroupViewModel) -> some View {
+    VStack(spacing: 0) {
+      HStack {
+        if case let .network(networkInfo) = group.groupType {
+          NetworkIcon(network: networkInfo, length: 32)
+        } else if case let .account(accountInfo) = group.groupType {
+          Blockie(address: accountInfo.address, shape: .rectangle)
+            .frame(width: 32, height: 32)
+            .clipShape(RoundedRectangle(cornerRadius: 4))
+        }
+        VStack(alignment: .leading) {
+          Text(group.title)
+            .font(.callout.weight(.semibold))
+            .foregroundColor(Color(WalletV2Design.textPrimary))
+          if let description = group.description {
+            Text(description)
+              .font(.footnote)
+              .foregroundColor(Color(WalletV2Design.textSecondary))
+          }
+        }
+        .multilineTextAlignment(.leading)
+        Spacer()
+        Text(portfolioStore.currencyFormatter.string(from: NSNumber(value: group.totalFiatValue)) ?? "")
+          .font(.callout.weight(.semibold))
+          .foregroundColor(Color(WalletV2Design.textPrimary))
+          .multilineTextAlignment(.trailing)
+      }
+      .padding(.vertical, 4)
     }
   }
 }
