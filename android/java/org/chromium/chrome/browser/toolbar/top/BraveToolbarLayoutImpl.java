@@ -941,12 +941,18 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void maybeShowCookieConsentTooltip() {
-        if (SharedPreferencesManager.getInstance().readBoolean(
-                    BravePreferenceKeys.SHOULD_SHOW_COOKIE_CONSENT_NOTICE, true)
-                && SharedPreferencesManager.getInstance().readInt(
-                           BravePreferenceKeys.LOADED_SITE_COUNT, 0)
-                        > 5) {
-            showCookieConsentTooltip();
+        if (mFilterListAndroidHandler != null) {
+            mFilterListAndroidHandler.isFilterListEnabled(
+                    FilterListConstants.COOKIE_LIST_UUID, isEnabled -> {
+                        if (isEnabled
+                                && SharedPreferencesManager.getInstance().readBoolean(
+                                        BravePreferenceKeys.SHOULD_SHOW_COOKIE_CONSENT_NOTICE, true)
+                                && SharedPreferencesManager.getInstance().readInt(
+                                           BravePreferenceKeys.LOADED_SITE_COUNT, 0)
+                                        > 5) {
+                            showCookieConsentTooltip();
+                        }
+                    });
         }
     }
 
