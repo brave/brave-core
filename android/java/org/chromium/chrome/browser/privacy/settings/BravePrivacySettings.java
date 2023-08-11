@@ -389,14 +389,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             }
         }
 
-        if (mCookieListOptInPageAndroidHandler != null) {
-            mCookieListOptInPageAndroidHandler.shouldShowDialog(shouldShowDialog -> {
-                if (!shouldShowDialog) {
-                    removePreferenceIfPresent(PREF_BLOCK_COOKIE_CONSENT_NOTICES);
-                }
-            });
-        }
-
         updateBravePreferences();
     }
 
