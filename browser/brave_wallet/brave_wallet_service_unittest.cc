@@ -2203,18 +2203,12 @@ TEST_F(BraveWalletServiceUnitTest, MigrateFantomMainnetAsCustomNetwork) {
   })");
   GetPrefs()->Set(kBraveWalletSelectedNetworksPerOrigin, *selected_networks);
 
-  EXPECT_FALSE(
-      GetPrefs()->GetDict(kBraveWalletCustomNetworks).FindList("ethereum"));
+  EXPECT_FALSE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
 
   BraveWalletService::MigrateFantomMainnetAsCustomNetwork(GetPrefs());
 
   // OK: Fantom should be added to custom networks
-  ASSERT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletCustomNetworks));
-  auto* custom_networks =
-      GetPrefs()->GetDict(kBraveWalletCustomNetworks).FindList("ethereum");
-  ASSERT_TRUE(custom_networks);
-  ASSERT_EQ(custom_networks->size(), 1u);
-  EXPECT_EQ(*(*custom_networks)[0].GetDict().FindString("chainId"), "0xfa");
+  EXPECT_TRUE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
 
   EXPECT_TRUE(
       GetPrefs()->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated));
@@ -2230,15 +2224,12 @@ TEST_F(BraveWalletServiceUnitTest, MigrateFantomMainnetAsCustomNetwork) {
   })");
   GetPrefs()->Set(kBraveWalletSelectedNetworks, *default_networks);
 
+  EXPECT_FALSE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+
   BraveWalletService::MigrateFantomMainnetAsCustomNetwork(GetPrefs());
 
   // OK: Fantom should be added to custom networks
-  ASSERT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletCustomNetworks));
-  custom_networks =
-      GetPrefs()->GetDict(kBraveWalletCustomNetworks).FindList("ethereum");
-  ASSERT_TRUE(custom_networks);
-  ASSERT_EQ(custom_networks->size(), 1u);
-  EXPECT_EQ(*(*custom_networks)[0].GetDict().FindString("chainId"), "0xfa");
+  EXPECT_TRUE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
 
   // OK: default ETH network should be retained as Fantom
   EXPECT_EQ(
@@ -2266,10 +2257,12 @@ TEST_F(BraveWalletServiceUnitTest, MigrateFantomMainnetAsCustomNetwork) {
   })");
   GetPrefs()->Set(kBraveWalletSelectedNetworksPerOrigin, *selected_networks);
 
+  EXPECT_FALSE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+
   BraveWalletService::MigrateFantomMainnetAsCustomNetwork(GetPrefs());
 
   // KO: Fantom should NOT be added to custom networks
-  EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletCustomNetworks));
+  EXPECT_FALSE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
 
   // KO: Default ETH network does not change
   EXPECT_EQ(
@@ -2288,18 +2281,13 @@ TEST_F(BraveWalletServiceUnitTest, MigrateFantomMainnetAsCustomNetwork) {
   // Add Fantom to custom networks
   mojom::NetworkInfo fantom = GetTestNetworkInfo1("0xfa");
   AddCustomNetwork(GetPrefs(), fantom);
-  ASSERT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletCustomNetworks));
-  custom_networks =
-      GetPrefs()->GetDict(kBraveWalletCustomNetworks).FindList("ethereum");
-  ASSERT_TRUE(custom_networks);
-  ASSERT_EQ(custom_networks->size(), 1u);
-  EXPECT_EQ(*(*custom_networks)[0].GetDict().FindString("chainId"), "0xfa");
+  EXPECT_TRUE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
 
   BraveWalletService::MigrateFantomMainnetAsCustomNetwork(GetPrefs());
 
   // KO: Fantom should NOT be added to custom networks again
   ASSERT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletCustomNetworks));
-  custom_networks =
+  auto* custom_networks =
       GetPrefs()->GetDict(kBraveWalletCustomNetworks).FindList("ethereum");
   ASSERT_TRUE(custom_networks);
   ASSERT_EQ(custom_networks->size(), 1u);
