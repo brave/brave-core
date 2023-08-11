@@ -69,11 +69,12 @@ class TestingBraveComponentUpdaterDelegate : public BraveComponent::Delegate {
     return base::SingleThreadTaskRunner::GetCurrentDefault();
   }
 
-  const std::string locale() const override { return "en"; }
+  const std::string& locale() const override { return locale_; }
   PrefService* local_state() override { return local_state_; }
 
  private:
   raw_ptr<PrefService> local_state_ = nullptr;
+  const std::string locale_ = "en";
 };
 
 }  // namespace

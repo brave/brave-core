@@ -9,6 +9,10 @@ static_library("browser") {
   sources = [
     "brave_component.cc",
     "brave_component.h",
+    "brave_component_installer.cc",
+    "brave_component_installer.h",
+    "brave_component_updater_delegate.cc",
+    "brave_component_updater_delegate.h",
     "brave_on_demand_updater.cc",
     "brave_on_demand_updater.h",
     "dat_file_util.cc",
@@ -25,5 +29,9 @@ static_library("browser") {
   deps = [
     "//base",
     "//components/component_updater:component_updater",
+    "//components/crx_file",
+    "//components/prefs",
+    "//components/update_client",
+    "//crypto",
   ]
 }
