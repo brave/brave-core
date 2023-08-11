@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/core/common/random_util.h"
-#include "brave/components/brave_rewards/core/endpoints/post_connect/uphold/post_connect_uphold.h"
+#include "brave/components/brave_rewards/core/endpoints/brave/post_connect_uphold.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"

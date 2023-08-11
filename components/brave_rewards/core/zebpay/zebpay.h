@@ -11,7 +11,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
-#include "brave/components/brave_rewards/core/endpoints/zebpay/get_balance/get_balance_zebpay.h"
+#include "brave/components/brave_rewards/core/endpoints/zebpay/get_balance_zebpay.h"
 #include "brave/components/brave_rewards/core/wallet_provider/wallet_provider.h"
 
 namespace brave_rewards::internal {

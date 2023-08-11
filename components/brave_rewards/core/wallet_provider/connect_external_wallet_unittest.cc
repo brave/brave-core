@@ -10,7 +10,7 @@
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/database/database_mock.h"
-#include "brave/components/brave_rewards/core/endpoints/post_connect/post_connect.h"
+#include "brave/components/brave_rewards/core/endpoints/common/post_connect.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "brave/components/brave_rewards/core/test/test_rewards_engine_client.h"

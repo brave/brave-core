@@ -11,7 +11,7 @@
 
 #include "base/memory/raw_ref.h"
 #include "base/timer/timer.h"
-#include "brave/components/brave_rewards/core/endpoints/get_parameters/get_parameters.h"
+#include "brave/components/brave_rewards/core/endpoints/brave/get_parameters.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {

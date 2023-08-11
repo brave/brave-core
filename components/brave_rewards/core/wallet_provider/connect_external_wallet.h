@@ -12,8 +12,8 @@
 #include "base/memory/raw_ref.h"
 #include "base/timer/timer.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_rewards/core/endpoints/get_wallet/get_wallet.h"
-#include "brave/components/brave_rewards/core/endpoints/post_connect/post_connect.h"
+#include "brave/components/brave_rewards/core/endpoints/brave/get_wallet.h"
+#include "brave/components/brave_rewards/core/endpoints/common/post_connect.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
