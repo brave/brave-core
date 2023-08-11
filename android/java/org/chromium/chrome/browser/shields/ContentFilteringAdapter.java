@@ -20,15 +20,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.brave_shields.mojom.SubscriptionInfo;
 import org.chromium.chrome.R;
+import org.chromium.mojo_base.mojom.Value;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static int TYPE_CUSTOM_FILTER_HEADER = 1;
+    private static int TYPE_FILTER_HEADER = 1;
     private static int TYPE_CUSTOM_FILTER_LIST = 2;
+    private static int TYPE_FILTER_LIST = 3;
+
+    private static final int ONE_ITEM_SPACE = 1;
+    private static final int TWO_ITEMS_SPACE = 2;
+    private static final int THREE_ITEMS_SPACE = 3;
 
     private BraveContentFilteringListener mBraveContentFileringListener;
     private ArrayList<SubscriptionInfo> mCustomFilterLists;
+    private Value mFilterLists[];
     private Context mContext;
     private boolean mIsEdit;
 
@@ -40,16 +48,22 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof CustomFilterHeaderViewHolder) {
-            CustomFilterHeaderViewHolder customFilterHeaderViewHolder =
-                    (CustomFilterHeaderViewHolder) holder;
-            customFilterHeaderViewHolder.titleText.setText(R.string.custom_filter_lists);
-            customFilterHeaderViewHolder.summaryText.setVisibility(View.GONE);
+        if (holder instanceof FilterListHeaderViewHolder) {
+            FilterListHeaderViewHolder filterListHeaderViewHolder =
+                    (FilterListHeaderViewHolder) holder;
+            if (holder.getAdapterPosition() == 0) {
+                filterListHeaderViewHolder.titleText.setText(R.string.custom_filter_lists);
+                filterListHeaderViewHolder.summaryText.setVisibility(View.GONE);
+            } else {
+                filterListHeaderViewHolder.titleText.setText(R.string.filter_lists);
+                filterListHeaderViewHolder.summaryText.setText(R.string.filter_lists_summary);
+                filterListHeaderViewHolder.summaryText.setVisibility(View.VISIBLE);
+            }
         } else if (holder instanceof CustomFilterListViewHolder) {
             CustomFilterListViewHolder customFilterListViewHolder =
                     (CustomFilterListViewHolder) holder;
 
-            if (holder.getAdapterPosition() == mCustomFilterLists.size() + 1) {
+            if (holder.getAdapterPosition() == mCustomFilterLists.size() + ONE_ITEM_SPACE) {
                 customFilterListViewHolder.titleText.setText(R.string.add_custom_filter_list);
                 customFilterListViewHolder.lastUpdateText.setVisibility(View.GONE);
                 customFilterListViewHolder.toggleSwitch.setVisibility(View.GONE);
@@ -59,7 +73,7 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             } else {
                 SubscriptionInfo customFilter =
-                        mCustomFilterLists.get(holder.getAdapterPosition() - 1);
+                        mCustomFilterLists.get(holder.getAdapterPosition() - ONE_ITEM_SPACE);
                 String url = customFilter.subscriptionUrl.url;
                 if (customFilter.title != null && customFilter.title.length() > 0) {
                     customFilterListViewHolder.titleText.setText(customFilter.title);
@@ -118,15 +132,11 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
                 customFilterListViewHolder.urlText.setText(url);
                 customFilterListViewHolder.toggleSwitch.setChecked(customFilter.enabled);
 
-                customFilterListViewHolder.toggleSwitch.setOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                customFilter.enabled = !customFilter.enabled;
-                                mBraveContentFileringListener.onCustomFilterToggle(
-                                        holder.getAdapterPosition() - 1, customFilter.enabled);
-                            }
-                        });
+                customFilterListViewHolder.toggleSwitch.setOnClickListener(view -> {
+                    customFilter.enabled = !customFilter.enabled;
+                    mBraveContentFileringListener.onCustomFilterToggle(
+                            holder.getAdapterPosition() - ONE_ITEM_SPACE, customFilter.enabled);
+                });
 
                 if (mIsEdit) {
                     customFilterListViewHolder.deleteImageView.setVisibility(View.VISIBLE);
@@ -139,7 +149,7 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
                 customFilterListViewHolder.deleteImageView.setOnClickListener(view -> {
                     if (mIsEdit) {
                         mBraveContentFileringListener.onCustomFilterDelete(
-                                holder.getAdapterPosition() - 1);
+                                holder.getAdapterPosition() - ONE_ITEM_SPACE);
                     }
                 });
                 customFilterListViewHolder.urlText.setVisibility(View.VISIBLE);
@@ -147,60 +157,96 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
 
             customFilterListViewHolder.itemView.setOnClickListener(view -> {
-                if (holder.getAdapterPosition() == mCustomFilterLists.size() + 1) {
+                if (holder.getAdapterPosition() == mCustomFilterLists.size() + ONE_ITEM_SPACE) {
                     mBraveContentFileringListener.onAddCustomFiltering();
                 }
             });
+        } else if (holder instanceof FilterListViewHolder) {
+            FilterListViewHolder filterListViewHolder = (FilterListViewHolder) holder;
+            int filterPosition = position - mCustomFilterLists.size() - THREE_ITEMS_SPACE;
+            if (filterPosition < mFilterLists.length) {
+                Map<String, Value> storage =
+                        mFilterLists[filterPosition].getDictionaryValue().storage;
+                String title = storage.get("title").getStringValue();
+                String description = storage.get("desc").getStringValue();
+                boolean isEnabled = storage.get("enabled").getBoolValue();
+                String uuid = storage.get("uuid").getStringValue();
+                filterListViewHolder.titleText.setText(title);
+                filterListViewHolder.descriptionText.setText(description);
+                filterListViewHolder.toggleSwitch.setChecked(isEnabled);
+
+                filterListViewHolder.toggleSwitch.setOnClickListener(view -> {
+                    storage.get("enabled").setBoolValue(!isEnabled);
+                    mBraveContentFileringListener.onDefaultFilterToggle(uuid, !isEnabled);
+                });
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return mCustomFilterLists.size() + 2;
+        int count = mCustomFilterLists.size() + THREE_ITEMS_SPACE;
+        if (mFilterLists != null) {
+            count += mFilterLists.length;
+        }
+        return count;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        if (viewType == TYPE_CUSTOM_FILTER_HEADER) {
+
+        if (viewType == TYPE_FILTER_HEADER) {
             view = LayoutInflater.from(parent.getContext())
                            .inflate(R.layout.item_filter_title, parent, false);
-            return new CustomFilterHeaderViewHolder(view);
-        } else {
+            return new FilterListHeaderViewHolder(view);
+        } else if (viewType == TYPE_CUSTOM_FILTER_LIST) {
             view = LayoutInflater.from(parent.getContext())
                            .inflate(R.layout.item_custom_filter, parent, false);
             return new CustomFilterListViewHolder(view);
+        } else {
+            view = LayoutInflater.from(parent.getContext())
+                           .inflate(R.layout.item_filter_list, parent, false);
+            return new FilterListViewHolder(view);
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
-            return TYPE_CUSTOM_FILTER_HEADER;
-        } else {
+        if (position == 0 || position == mCustomFilterLists.size() + TWO_ITEMS_SPACE) {
+            return TYPE_FILTER_HEADER;
+        } else if (position > 0 && position <= mCustomFilterLists.size() + ONE_ITEM_SPACE) {
             return TYPE_CUSTOM_FILTER_LIST;
+        } else {
+            return TYPE_FILTER_LIST;
         }
     }
 
     public void setEditable(boolean isEdit) {
         mIsEdit = isEdit;
-        notifyItemRangeChanged(1, mCustomFilterLists.size());
+        notifyItemRangeChanged(ONE_ITEM_SPACE, mCustomFilterLists.size());
     }
 
     public void setCustomFilterLists(ArrayList<SubscriptionInfo> customFilterLists) {
         if (mCustomFilterLists != null && mCustomFilterLists.size() > 0) {
-            notifyItemRangeRemoved(1, mCustomFilterLists.size());
+            notifyItemRangeRemoved(ONE_ITEM_SPACE, mCustomFilterLists.size());
         }
         mCustomFilterLists = customFilterLists;
-        notifyItemRangeInserted(1, mCustomFilterLists.size());
+        notifyItemRangeInserted(ONE_ITEM_SPACE, mCustomFilterLists.size());
     }
 
-    public static class CustomFilterHeaderViewHolder extends RecyclerView.ViewHolder {
+    public void setFilterLists(Value filterLists[]) {
+        mFilterLists = filterLists;
+        notifyItemRangeInserted(
+                mCustomFilterLists.size() + TWO_ITEMS_SPACE, mFilterLists.length + ONE_ITEM_SPACE);
+    }
+
+    public static class FilterListHeaderViewHolder extends RecyclerView.ViewHolder {
         TextView titleText;
         TextView summaryText;
 
-        CustomFilterHeaderViewHolder(View itemView) {
+        FilterListHeaderViewHolder(View itemView) {
             super(itemView);
             this.titleText = (TextView) itemView.findViewById(R.id.title_text);
             this.summaryText = (TextView) itemView.findViewById(R.id.summary_text);
@@ -225,6 +271,19 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
             this.arrowImageView = (ImageView) itemView.findViewById(R.id.iv_arrow);
             this.toggleSwitch = (SwitchCompat) itemView.findViewById(R.id.toggle_switch);
             this.divider = itemView.findViewById(R.id.divider);
+        }
+    }
+
+    public static class FilterListViewHolder extends RecyclerView.ViewHolder {
+        TextView titleText;
+        TextView descriptionText;
+        SwitchCompat toggleSwitch;
+
+        FilterListViewHolder(View itemView) {
+            super(itemView);
+            this.titleText = (TextView) itemView.findViewById(R.id.title_text);
+            this.descriptionText = (TextView) itemView.findViewById(R.id.description_text);
+            this.toggleSwitch = (SwitchCompat) itemView.findViewById(R.id.toggle_switch);
         }
     }
 }
