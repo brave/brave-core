@@ -759,6 +759,7 @@ brave_java_resources = [
   "java/res/layout/activity_playlist_host.xml",
   "java/res/layout/activity_select_purchase_method.xml",
   "java/res/layout/activity_split_tunnel.xml",
+  "java/res/layout/activity_test_video.xml",
   "java/res/layout/activity_tipping_banner_mobile.xml",
   "java/res/layout/activity_welcome_onboarding.xml",
   "java/res/layout/application_item_layout.xml",

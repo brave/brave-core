@@ -59,8 +59,6 @@ import org.chromium.chrome.browser.playlist.kotlin.fragment.PlaylistFragment;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
-import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.Playlist;
@@ -78,34 +76,11 @@ import java.util.Map;
 
 public class PlaylistHostActivity extends AsyncInitializationActivity
         implements ConnectionErrorHandler, PlaylistOptionsListener,
-                   PlaylistServiceObserverImplDelegate, BraveVpnObserver, HttpDataSource {
+                   PlaylistServiceObserverImplDelegate {
     private static final String TAG = "BravePlaylist";
     public static PlaylistService mPlaylistService;
     private PlaylistViewModel mPlaylistViewModel;
     private PlaylistServiceObserverImpl mPlaylistServiceObserver;
-
-    private String url;
-    private long contentLength;
-    private final RequestProperties requestProperties = new RequestProperties();
-    private byte[] dataReceived;
-    private long bytesRead;
-    private long bytesToRead;
-    private static ByteArrayOutputStream output = new ByteArrayOutputStream();
-
-    @Nullable
-    private DataSpec dataSpec;
-
-    @Override
-    public void onResumeWithNative() {
-        super.onResumeWithNative();
-        // BraveVpnNativeWorker.getInstance().addObserver(this);
-    }
-
-    @Override
-    public void onPauseWithNative() {
-        // BraveVpnNativeWorker.getInstance().removeObserver(this);
-        super.onPauseWithNative();
-    }
 
     @Override
     public void onConnectionError(MojoException e) {
@@ -572,151 +547,5 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
     @Override
     public boolean shouldStartGpuProcess() {
         return true;
-    }
-
-    @Override
-    public void onResponseStarted(String url, long contentLength) {
-        Log.e("data_source",
-                "PlaylistHostActivity : onResponseStarted : " + url
-                        + " Content length : " + contentLength);
-        this.url = url;
-        this.contentLength = contentLength;
-    };
-
-    @Override
-    public void onDataReceived(byte[] response) {
-        Log.e("data_source", "PlaylistHostActivity : OnDataReceived : " + response.length);
-        // this.dataReceived = response;
-        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
-            try {
-                output.write(response);
-            } catch (Exception e) {
-                Log.e("data_source", e.getMessage());
-            }
-        });
-    };
-
-    @Override
-    public void onDataCompleted() {
-        Log.e("data_source", "PlaylistHostActivity : onDataCompleted : file.getAbsolutePath() : ");
-    };
-
-    @Override
-    @Nullable
-    public Uri getUri() {
-        return url == null ? null : Uri.parse(url);
-    }
-
-    @Override
-    public int getResponseCode() {
-        return 200;
-    }
-
-    @Override
-    public Map<String, List<String>> getResponseHeaders() {
-        return ImmutableMap.of();
-    }
-
-    @Override
-    public void setRequestProperty(String name, String value) {
-        checkNotNull(name);
-        checkNotNull(value);
-        requestProperties.set(name, value);
-    }
-
-    @Override
-    public void clearRequestProperty(String name) {
-        checkNotNull(name);
-        requestProperties.remove(name);
-    }
-
-    @Override
-    public void clearAllRequestProperties() {
-        requestProperties.clear();
-    }
-
-    @Override
-    public void addTransferListener(TransferListener transferListener) {}
-
-    @Override
-    public long open(DataSpec dataSpec) throws HttpDataSourceException {
-        this.dataSpec = dataSpec;
-        // BraveVpnNativeWorker.getInstance().queryPrompt(
-        //         dataSpec.uri.toString(),
-        //         dataSpec.getHttpMethodString());
-        bytesRead = 0;
-        bytesToRead = 0;
-        bytesToRead = dataSpec.length != C.LENGTH_UNSET ? dataSpec.length : contentLength;
-        return bytesToRead;
-    }
-
-    @Override
-    public int read(byte[] buffer, int offset, int length) throws HttpDataSourceException {
-        try {
-            return readInternal(buffer, offset, length);
-        } catch (IOException e) {
-            throw HttpDataSourceException.createForIOException(
-                    e, castNonNull(dataSpec), HttpDataSourceException.TYPE_READ);
-        }
-    }
-
-    private int readInternal(byte[] buffer, int offset, int readLength) throws IOException {
-        if (readLength == 0) {
-            return 0;
-        }
-
-        if (bytesToRead != C.LENGTH_UNSET) {
-            long bytesRemaining = bytesToRead - bytesRead;
-            if (bytesRemaining == 0) {
-                return C.RESULT_END_OF_INPUT;
-            }
-            readLength = (int) min(readLength, bytesRemaining);
-        }
-
-        byte[] dataReceived = output.toByteArray();
-        InputStream targetStream = new ByteArrayInputStream(dataReceived);
-        int read = targetStream.read(buffer, offset, min(readLength, dataReceived.length));
-        if (read == -1) {
-            return C.RESULT_END_OF_INPUT;
-        }
-
-        targetStream.close();
-
-        bytesRead += read;
-
-        // return bytes read for offset
-        return read;
-    }
-
-    @Override
-    public void close() throws HttpDataSourceException {
-        // Close streams
-        try {
-            output.close();
-        } catch (Exception e) {
-            Log.e("data_source", e.getMessage());
-        }
-    }
-
-    /**
-     * {@link DataSource.Factory} for {@link PlaylistHostActivity} instances.
-     */
-    public static final class Factory implements HttpDataSource.Factory {
-        /**
-         * Creates an instance.
-         */
-        public Factory() {}
-
-        @Override
-        public PlaylistHostActivity.Factory setDefaultRequestProperties(
-                Map<String, String> defaultRequestProperties) {
-            return this;
-        }
-
-        @Override
-        public PlaylistHostActivity createDataSource() {
-            PlaylistHostActivity dataSource = new PlaylistHostActivity();
-            return dataSource;
-        }
     }
 }

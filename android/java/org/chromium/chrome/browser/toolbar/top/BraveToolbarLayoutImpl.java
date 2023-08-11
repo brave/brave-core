@@ -96,6 +96,7 @@ import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate;
 import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment.PlaylistWarningDialogListener;
 import org.chromium.chrome.browser.playlist.kotlin.PlaylistDownloadUtils;
+import org.chromium.chrome.browser.playlist.kotlin.TestVideoActivity;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
@@ -725,35 +726,37 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void addMediaToPlaylist(PlaylistItem[] items) {
-        if (mPlaylistService == null) {
-            return;
-        }
-        mPlaylistService.getPlaylist(ConstantUtils.DEFAULT_PLAYLIST, defaultPlaylist -> {
-            Set<String> pageSources = new HashSet<String>();
-            for (PlaylistItem defaultPlaylistItem : defaultPlaylist.items) {
-                pageSources.add(defaultPlaylistItem.pageSource.url);
-            }
-            List<PlaylistItem> playlistItems = new ArrayList();
-            for (PlaylistItem playlistItem : items) {
-                // Check for duplicates in default playlist
-                if (!pageSources.contains(playlistItem.pageSource.url)) {
-                    playlistItems.add(playlistItem);
-                }
-            }
-            if (playlistItems.size() > 0) {
-                mPlaylistService.addMediaFiles(playlistItems.toArray(new PlaylistItem[0]),
-                        ConstantUtils.DEFAULT_PLAYLIST, shouldCacheMediaFilesForPlaylist(),
-                        addedItems -> {});
-                int mediaCount = SharedPreferencesManager.getInstance().readInt(
-                        PlaylistPreferenceUtils.ADD_MEDIA_COUNT);
-                if (mediaCount < PLAYLIST_MEDIA_COUNT_LIMIT) {
-                    SharedPreferencesManager.getInstance().writeInt(
-                            PlaylistPreferenceUtils.ADD_MEDIA_COUNT, mediaCount + 1);
-                }
-            } else {
-                showAlreadyAddedToPlaylistSnackBar();
-            }
-        });
+        // if (mPlaylistService == null) {
+        //     return;
+        // }
+        // mPlaylistService.getPlaylist(ConstantUtils.DEFAULT_PLAYLIST, defaultPlaylist -> {
+        //     Set<String> pageSources = new HashSet<String>();
+        //     for (PlaylistItem defaultPlaylistItem : defaultPlaylist.items) {
+        //         pageSources.add(defaultPlaylistItem.pageSource.url);
+        //     }
+        //     List<PlaylistItem> playlistItems = new ArrayList();
+        //     for (PlaylistItem playlistItem : items) {
+        //         // Check for duplicates in default playlist
+        //         if (!pageSources.contains(playlistItem.pageSource.url)) {
+        //             playlistItems.add(playlistItem);
+        //         }
+        //     }
+        //     if (playlistItems.size() > 0) {
+        //         mPlaylistService.addMediaFiles(playlistItems.toArray(new PlaylistItem[0]),
+        //                 ConstantUtils.DEFAULT_PLAYLIST, shouldCacheMediaFilesForPlaylist(),
+        //                 addedItems -> {});
+        //         int mediaCount = SharedPreferencesManager.getInstance().readInt(
+        //                 PlaylistPreferenceUtils.ADD_MEDIA_COUNT);
+        //         if (mediaCount < PLAYLIST_MEDIA_COUNT_LIMIT) {
+        //             SharedPreferencesManager.getInstance().writeInt(
+        //                     PlaylistPreferenceUtils.ADD_MEDIA_COUNT, mediaCount + 1);
+        //         }
+        //     } else {
+        //         showAlreadyAddedToPlaylistSnackBar();
+        //     }
+        // });
+        Intent searchActivityIntent = new Intent(getContext(), TestVideoActivity.class);
+        getContext().startActivity(searchActivityIntent);
     }
 
     public void addMediaToPlaylist() {

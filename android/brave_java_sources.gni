@@ -19,6 +19,7 @@ brave_kotlin_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/PlaylistDownloadService.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/PlaylistDownloadUtils.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/PlaylistVideoService.kt",
+  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/TestVideoActivity.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/fragment/PlaylistFragment.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/fragment/PlaylistPlayerFragment.kt",
 ]

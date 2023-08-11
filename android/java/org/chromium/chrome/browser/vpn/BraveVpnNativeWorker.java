@@ -22,6 +22,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -49,6 +51,8 @@ public class BraveVpnNativeWorker {
     // public static long contentLength;
     public static String itemId = "";
     public static byte[] finalData;
+    public static PipedInputStream pipedInputStream;
+    private PipedOutputStream pipedOutputStream;
     // private static File file =
     //         new
     //         File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
@@ -166,18 +170,24 @@ public class BraveVpnNativeWorker {
     @CalledByNative
     public void onResponseStarted(String url, long contentLength) {
         Log.e("data_source", "onResponseStarted : " + url);
-        if (output != null) {
-            try {
-                output.reset();
-            } catch (Exception e) {
-            }
-        } else {
-            output = new ByteArrayOutputStream();
+        // if (output != null) {
+        //     try {
+        //         output.reset();
+        //     } catch (Exception e) {
+        //     }
+        // } else {
+        //     output = new ByteArrayOutputStream();
+        // }
+        try {
+            pipedInputStream = new PipedInputStream();
+            pipedOutputStream = new PipedOutputStream(pipedInputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         // this.url = url;
         // this.contentLength = contentLength;
-        this.url.complete(url);
-        this.contentLength.complete(contentLength);
+        // this.url.complete(url);
+        // this.contentLength.complete(contentLength);
         for (BraveVpnObserver observer : mObservers) {
             observer.onResponseStarted(url, contentLength);
         }
@@ -189,14 +199,19 @@ public class BraveVpnNativeWorker {
     synchronized public void onDataReceived(byte[] response) {
         Log.e("data_source", "onDataReceived : response : " + response.length);
         PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
+            // try {
+            //     output.write(response);
+            //     if (output.toByteArray().length > readLength) {
+            //         responseLength.complete(output.toByteArray().length);
+            //     }
+            //     // tempStorage.add(response);
+            // } catch (Exception e) {
+            //     Log.e("data_source", e.getMessage());
+            // }
             try {
-                output.write(response);
-                if (output.toByteArray().length > readLength) {
-                    responseLength.complete(output.toByteArray().length);
-                }
-                // tempStorage.add(response);
-            } catch (Exception e) {
-                Log.e("data_source", e.getMessage());
+                pipedOutputStream.write(response);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
         for (BraveVpnObserver observer : mObservers) {
@@ -209,8 +224,8 @@ public class BraveVpnNativeWorker {
         Log.e("data_source", "onDataCompleted : file.getAbsolutePath() : ");
         PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
             try {
-                finalData = output.toByteArray();
-                writeToFile(finalData);
+                // finalData = output.toByteArray();
+                // writeToFile(finalData);
                 // output.close();
             } catch (Exception e) {
                 Log.e("data_source", e.getMessage());

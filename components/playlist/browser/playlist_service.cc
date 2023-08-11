@@ -1153,8 +1153,6 @@ base::SequencedTaskRunner* PlaylistService::GetTaskRunner() {
 
 void PlaylistService::QueryPrompt(const std::string& url,
                                   const std::string& method) {
-  LOG(ERROR) << "data_source : "
-             << "PlaylistService::QueryPrompt";
   playlist_streaming_->QueryPrompt(
       url, method,
       base::BindOnce(&PlaylistService::OnResponseStarted,
@@ -1167,8 +1165,6 @@ void PlaylistService::QueryPrompt(const std::string& url,
 
 void PlaylistService::OnResponseStarted(const std::string& url,
                                         const int64_t content_length) {
-  LOG(ERROR) << "data_source : "
-             << "PlaylistService OnResponseStarted : ";
   for (auto& observer : streaming_observers_) {
     observer->OnResponseStarted(url, content_length);
   }
@@ -1184,9 +1180,6 @@ void PlaylistService::OnDataReceived(
 
   std::vector<uint8_t> data_received(result.value().GetString().begin(),
                                      result.value().GetString().end());
-
-  LOG(ERROR) << "data_source : "
-             << "PlaylistService OnDataReceived : ";
 
   for (auto& observer : streaming_observers_) {
     observer->OnDataReceived(data_received);

@@ -34,6 +34,7 @@ import com.google.android.exoplayer2.upstream.ByteArrayDataSource
 import java.io.File
 import org.chromium.chrome.R
 import java.util.concurrent.Executors
+import com.google.android.exoplayer2.upstream.FileDataSource
 
 object PlaylistDownloadUtils {
     private var mDataSourceFactory: DataSource.Factory? = null
@@ -55,7 +56,7 @@ object PlaylistDownloadUtils {
     fun getDataSourceFactory(context: Context): DataSource.Factory {
         if (mDataSourceFactory == null) {
             // val upstreamFactory = DataSource.Factory { BraveChromiumHttpDataSource(BraveVpnNativeWorker.output.toByteArray()) }
-            val upstreamFactory = DataSource.Factory { BraveChromiumHttpDataSource() }
+            val upstreamFactory = FileDataSource.Factory()
             mDataSourceFactory =
                 getDownloadCache(context)?.let { buildReadOnlyCacheDataSource(upstreamFactory, it) }
         }
