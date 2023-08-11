@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_BITFLYER_BITFLYER_TRANSFER_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_BITFLYER_BITFLYER_TRANSFER_H_
 
-#include "brave/components/brave_rewards/core/endpoints/bitflyer/post_commit_transaction/post_commit_transaction_bitflyer.h"
+#include "brave/components/brave_rewards/core/endpoints/bitflyer/post_commit_transaction_bitflyer.h"
 #include "brave/components/brave_rewards/core/wallet_provider/transfer.h"
 
 namespace brave_rewards::internal::bitflyer {

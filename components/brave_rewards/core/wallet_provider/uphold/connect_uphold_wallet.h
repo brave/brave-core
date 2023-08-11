@@ -10,7 +10,7 @@
 
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/uphold_server.h"
-#include "brave/components/brave_rewards/core/endpoints/uphold/post_oauth/post_oauth_uphold.h"
+#include "brave/components/brave_rewards/core/endpoints/uphold/post_oauth_uphold.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_capabilities.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_card.h"
