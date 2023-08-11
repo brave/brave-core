@@ -158,6 +158,16 @@
     <color name="shield_rounded_button_color">#C2C4CF</color>
     <color name="shield_thank_you_icon_color">#212529</color>
 
+    <color name="filter_title_color">#1C1E26</color>
+    <color name="filter_summary_color">#666D89</color>
+    <color name="filter_divider_color">#E8E9EE</color>
+    <color name="add_custom_filter_text_input_stroke_color">#E8E9EE</color>
+    <color name="add_custom_filter_text_input_hint_color">#1C1E26</color>
+    <color name="add_custom_filter_edit_text_hint_color">#666D89</color>
+    <color name="add_custom_filter_summary_color">#666D89</color>
+    <color name="add_custom_filter_error_text_color">#FF4B6A</color>
+    <color name="add_custom_filter_tint_color">#666D89</color>
+
     <color name="brave_stats_ads_color">#FF7654</color>
     <color name="brave_stats_data_saved_color">#737ADE</color>
     <color name="brave_state_time_count_color">#FFFFFF</color>
