@@ -15,6 +15,7 @@ import PlaylistInfo from './playlistInfo'
 import { usePlaylist, useTotalDuration } from '../reducers/states'
 import ContextualMenuAnchorButton from './contextualMenu'
 import { getPlaylistAPI } from '../api/api'
+import { getLocalizedString } from '../utils/l10n'
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -94,18 +95,22 @@ export default function Header ({ playlistId }: HeaderProps) {
   const contextualMenuItems = playlist
     ? [
         {
-          name: 'Edit',
+          name: getLocalizedString('bravePlaylistContextMenuEdit'),
           iconName: 'list-bullet-default',
           onClick: () => {}
         },
         { name: 'Share', iconName: 'share-macos', onClick: () => {} },
         {
-          name: 'Keep for offline playing',
+          name: getLocalizedString(
+            'bravePlaylistContextMenuKeepForOfflinePlaying'
+          ),
           iconName: 'cloud-download',
           onClick: () => {}
         },
         {
-          name: 'Remove played contents',
+          name: getLocalizedString(
+            'bravePlaylistContextMenuRemovePlayedContents'
+          ),
           iconName: 'list-checks',
           onClick: () => {}
         }

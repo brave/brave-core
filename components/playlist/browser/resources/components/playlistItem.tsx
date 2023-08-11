@@ -15,6 +15,7 @@ import {
   formatTimeInSeconds,
   microSecondsToSeconds
 } from '../utils/timeFormatter'
+import { getLocalizedString } from '../utils/l10n'
 
 interface Props {
   item: PlaylistItemMojo
@@ -99,7 +100,7 @@ export default function PlaylistItem ({
 
   return (
     <PlaylistItemContainer
-      onClick={() => onClick(id)}
+      onClick={() => !showingMenu && onClick(id)}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={e => setHovered(false)}
     >
@@ -126,14 +127,22 @@ export default function PlaylistItem ({
       {(hovered || showingMenu) && (
         <ContextualMenuAnchorButton
           items={[
-            { name: 'Move', iconName: 'folder-exchange', onClick: () => {} },
             {
-              name: 'Remove offline data',
+              name: getLocalizedString('bravePlaylistContextMenuMove'),
+              iconName: 'folder-exchange',
+              onClick: () => {}
+            },
+            {
+              name: getLocalizedString(
+                'bravePlaylistContextMenuRemoveOfflineData'
+              ),
               iconName: 'cloud-off',
               onClick: () => {}
             },
             {
-              name: 'Remove from playlist',
+              name: getLocalizedString(
+                'bravePlaylistContextMenuRemoveFromPlaylist'
+              ),
               iconName: 'trash',
               onClick: () => {}
             }

@@ -41,7 +41,8 @@ function ContextualMenuItem ({
 }: MenuItemProps & { onClickOutside: () => void }) {
   return (
     <StyledRow
-      onClick={() => {
+      onClick={e => {
+        e.stopPropagation()
         onClick()
         onClickOutside()
       }}
@@ -117,7 +118,8 @@ export default function ContextualMenuAnchorButton ({
   return (
     <StyledAnchorButton>
       <StyledLeoButtonContainer
-        onClick={() => {
+        onClick={e => {
+          e.stopPropagation()
           setShowingMenu(true)
           if (onShowMenu) onShowMenu()
         }}

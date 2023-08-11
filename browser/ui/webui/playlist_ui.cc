@@ -19,15 +19,39 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/bindings_policy.h"
 #include "content/public/common/url_constants.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/base/webui/web_ui_util.h"
 #include "url/gurl.h"
 
 namespace playlist {
+
+void AddLocalizedStrings(content::WebUIDataSource* source) {
+  static constexpr webui::LocalizedString kLocalizedStrings[] = {
+      {"braveDefaultPlaylistName", IDS_PLAYLIST_DEFAULT_PLAYLIST_NAME},
+      {"bravePlaylistContextMenuEdit", IDS_PLAYLIST_CONTEXT_MENU_EDIT},
+      {"bravePlaylistContextMenuShare", IDS_PLAYLIST_CONTEXT_MENU_SHARE},
+      {"bravePlaylistContextMenuKeepForOfflinePlaying",
+       IDS_PLAYLIST_CONTEXT_MENU_KEEP_FOR_OFFLINE_PLAYING},
+      {"bravePlaylistContextMenuRemovePlayedContents",
+       IDS_PLAYLIST_CONTEXT_MENU_REMOVE_PLAYED_CONTENTS},
+      {"bravePlaylistContextMenuMove", IDS_PLAYLIST_CONTEXT_MENU_MOVE},
+      {"bravePlaylistContextMenuRemoveOfflineData",
+       IDS_PLAYLIST_CONTEXT_MENU_REMOVE_OFFLINE_DATA},
+      {"bravePlaylistContextMenuRemoveFromPlaylist",
+       IDS_PLAYLIST_CONTEXT_MENU_REMOVE_FROM_PLAYLIST},
+  };
+
+  for (const auto& [name, id] : kLocalizedStrings) {
+    source->AddString(name, l10n_util::GetStringUTF16(id));
+  }
+}
 
 namespace {
 
@@ -88,6 +112,8 @@ PlaylistUI::PlaylistUI(content::WebUI* web_ui, const std::string& name)
   auto* source =
       CreateAndAddWebUIDataSource(web_ui, name, kPlaylistGenerated,
                                   kPlaylistGeneratedSize, IDR_PLAYLIST_HTML);
+
+  AddLocalizedStrings(source);
 
   // Allow to load untrusted resources.
   source->OverrideContentSecurityPolicy(
