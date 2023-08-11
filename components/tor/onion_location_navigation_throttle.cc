@@ -37,9 +37,6 @@ bool GetOnionLocation(const net::HttpResponseHeaders* headers,
 
 }  // namespace
 
-bool OnionLocationNavigationThrottle::
-    block_onion_requests_outside_tor_for_testing_ = true;
-
 // static
 std::unique_ptr<OnionLocationNavigationThrottle>
 OnionLocationNavigationThrottle::MaybeCreateThrottleFor(
@@ -115,9 +112,7 @@ OnionLocationNavigationThrottle::WillStartRequest() {
         OnionLocationTabHelper::SetOnionLocation(
             navigation_handle()->GetWebContents(), url);
       }
-      return block_onion_requests_outside_tor_for_testing_
-                 ? content::NavigationThrottle::BLOCK_REQUEST
-                 : content::NavigationThrottle::PROCEED;
+      return content::NavigationThrottle::BLOCK_REQUEST;
     } else {
       OnionLocationTabHelper::SetOnionLocation(
           navigation_handle()->GetWebContents(), GURL());
