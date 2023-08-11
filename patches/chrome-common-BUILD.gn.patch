@@ -1,8 +1,8 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 02843c8fd37a25326f9f5e8edfeba8e72ad4eae5..41bcfe313dc58906f0946a08b9e31dc1d4cc535d 100644
+index c3ec18003787c0ea08eb6ecf741e485ef7ffbfb3..033f9e51e253303b5ef82679addb4bec5fd1808b 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
-@@ -98,6 +98,7 @@ source_set("channel_info") {
+@@ -97,6 +97,7 @@ source_set("channel_info") {
    } else if (is_fuchsia) {
      sources += [ "channel_info_fuchsia.cc" ]
    }
@@ -10,7 +10,7 @@ index 02843c8fd37a25326f9f5e8edfeba8e72ad4eae5..41bcfe313dc58906f0946a08b9e31dc1
  }
  
  source_set("ini_parser") {
-@@ -289,6 +290,7 @@ static_library("common_lib") {
+@@ -272,6 +273,7 @@ static_library("common_lib") {
    if (enable_ppapi) {
      public_deps += [ "//ppapi/shared_impl" ]
    }
@@ -18,7 +18,7 @@ index 02843c8fd37a25326f9f5e8edfeba8e72ad4eae5..41bcfe313dc58906f0946a08b9e31dc1
  
    if (enable_extensions) {
      sources += [
-@@ -557,6 +559,7 @@ static_library("non_code_constants") {
+@@ -540,6 +542,7 @@ static_library("non_code_constants") {
      "//printing/buildflags",
      "//ui/base:buildflags",
    ]

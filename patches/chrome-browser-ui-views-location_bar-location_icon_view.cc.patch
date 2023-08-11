@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_icon_view.cc b/chrome/browser/ui/views/location_bar/location_icon_view.cc
-index f049ff08788fe6170dfd2ed3720e8d54ff58bb11..c14161f95ae338e9bea26f75111dfe760853e3a4 100644
+index 0c4e36949a5f6251fa25f1a4c5a2e66a5a26ee58..5b5c7c81a70cff2ef883123e123555ab1bdd2f51 100644
 --- a/chrome/browser/ui/views/location_bar/location_icon_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_icon_view.cc
-@@ -186,6 +186,7 @@ bool LocationIconView::GetShowText() const {
+@@ -166,6 +166,7 @@ bool LocationIconView::GetShowText() const {
    const auto* location_bar_model = delegate_->GetLocationBarModel();
    const GURL& url = location_bar_model->GetURL();
    if (url.SchemeIs(content::kChromeUIScheme) ||

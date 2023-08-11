@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index dcb4afbdf7074315a67f04e0a279aa01ba4c25c4..ef122d547f7703c791318407a9279f389293531c 100644
+index 3fe2cfc56bb5b6fb1007be87e7f30ac791b12f85..b2f89bacb86acfeca04612c1932285e0e1f8d8b6 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
 @@ -343,6 +343,22 @@ enum class ContentSettingsType : int32_t {
