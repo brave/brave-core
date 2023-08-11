@@ -295,7 +295,7 @@ export const DAppConnectionSettings = () => {
   return (
     <>
       <SettingsButton
-        onClick={() => setShowSettings(prev => !prev)}
+        onMouseDown={() => setShowSettings(prev => !prev)}
       >
         <ConnectedIcon
           name={
