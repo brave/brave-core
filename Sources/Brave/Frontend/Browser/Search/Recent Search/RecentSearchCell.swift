@@ -23,11 +23,12 @@ class RecentSearchCell: UICollectionViewCell, CollectionViewReusable {
     $0.lineBreakMode = .byTruncatingMiddle
   }
 
-  private let openButton = UIButton().then {
+  private let openButton = BraveButton(type: .system).then {
     $0.setImage(UIImage(named: "recent-search-arrow", in: .module, compatibleWith: nil)!, for: .normal)
     $0.imageView?.contentMode = .scaleAspectFit
     $0.setContentHuggingPriority(.required, for: .horizontal)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+    $0.hitTestSlop = UIEdgeInsets(equalInset: -25.0)
   }
 
   override init(frame: CGRect) {
