@@ -70,7 +70,7 @@
 		        	android:layout_width="match_parent"
 		        	android:layout_height="wrap_content"
 		        	android:paddingHorizontal="30dp"
-		        	android:text="@string/no_thanks"
+		        	android:text="@string/stop_blocking"
 		        	android:textAlignment="center"
 		        	android:textColor="@color/cookie_consent_action_color"
 		        	android:textSize="14sp" />
