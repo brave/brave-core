@@ -5,8 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_in_to_notification_ads_diagnostic_entry.h"
 
-#include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_conversions_util.h"
 
 namespace brave_ads {
@@ -24,9 +23,7 @@ std::string OptedInToNotificationAdsDiagnosticEntry::GetName() const {
 }
 
 std::string OptedInToNotificationAdsDiagnosticEntry::GetValue() const {
-  const bool is_opted_in = AdsClientHelper::GetInstance()->GetBooleanPref(
-      prefs::kOptedInToNotificationAds);
-  return BoolToString(is_opted_in);
+  return BoolToString(UserHasOptedInToNotificationAds());
 }
 
 }  // namespace brave_ads
