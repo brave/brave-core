@@ -60,7 +60,7 @@ wycheproof = "0.4"
 
 [dependencies.adblock]
 default-features = false
-version = "0.7"
+version = "0.8"
 features = ["full-regex-handling", "debug-info", "css-validation"]
 gn-variables-lib = "if (is_ios) {\n    features += [\n      \"content-blocking\",\n      \"serde_json\",\n    ]\n    deps += [ \"//third_party/rust/serde_json/v1:lib\" ]\n  } else {\n    features += [\n      \"object-pooling\",\n      \"lifeguard\",\n      \"unsync-regex-caching\",\n    ]\n    deps += [ \"//brave/third_party/rust/lifeguard/v0_6:lib\" ]\n  }\n"
 
