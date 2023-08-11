@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 1944adea64d4cd10e6d70f69f3ad193b524669e0..9d21d29b3b9d342ca603efb38d7983b893da7f62 100644
+index 0f55529411dbcd020cdabd13d2917955b622b7fa..dd43095f0a5bc9b105cda9e31b7fa2b96e1a4dcf 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
 @@ -1626,6 +1626,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
@@ -11,10 +11,10 @@ index 1944adea64d4cd10e6d70f69f3ad193b524669e0..9d21d29b3b9d342ca603efb38d7983b8
  #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
    screen_ai::RegisterLocalStatePrefs(registry);
  #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
-@@ -2036,6 +2038,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
- #if BUILDFLAG(IS_CHROMEOS_ASH)
-   registry->RegisterBooleanPref(kClearUserDataDir1Pref, false);
+@@ -2037,6 +2039,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  #endif
+ 
+   registry->RegisterBooleanPref(prefs::kBlockTruncatedCookies, true);
 +  brave::RegisterProfilePrefs(registry);
  }
  

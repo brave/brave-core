@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/extensions/extension_management.cc b/chrome/browser/extensions/extension_management.cc
-index 632f7a2b4101faa596992d6c2154aabd305dcf46..61d8fe87c9e81d600c3d1517006c193271990f68 100644
+index cc2802dfaea85ecc71aa3f387cb1b96364baca93..24768c9b75789167dc6f463e0068aeae7962196b 100644
 --- a/chrome/browser/extensions/extension_management.cc
 +++ b/chrome/browser/extensions/extension_management.cc
-@@ -938,6 +938,7 @@ KeyedService* ExtensionManagementFactory::BuildServiceInstanceFor(
+@@ -939,6 +939,7 @@ ExtensionManagementFactory::BuildServiceInstanceForBrowserContext(
      content::BrowserContext* context) const {
    TRACE_EVENT0("browser,startup",
                 "ExtensionManagementFactory::BuildServiceInstanceFor");
 +  BRAVE_EXTENSION_MANAGEMENT_FACTORY_BUILD_SERVICE_INSTANCE_FOR
-   return new ExtensionManagement(Profile::FromBrowserContext(context));
+   return std::make_unique<ExtensionManagement>(
+       Profile::FromBrowserContext(context));
  }
- 

@@ -1,12 +1,12 @@
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-index 6e6f24e479cce61b5f189faed40601e8f3e82ef9..96b0c277a9a89d28a7862104f9c2b0bb803dfc0e 100644
+index 87ffd0b51817838306f1d0d0eb8a7d3c04022b41..2e16b046c826823d9f548cbc8087c6635308962e 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
-@@ -4396,6 +4396,7 @@ if (is_android) {
+@@ -4406,6 +4406,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/task/ThreadPoolTaskExecutor.java",
        "android/java/src/org/chromium/base/task/UiThreadTaskExecutor.java",
      ]
 +    sources += brave_java_base_sources
  
-     if (!is_cronet_build) {
-       sources += [ "android/java/src/org/chromium/base/IntentUtils.java" ]
+     if (use_clang_profiling) {
+       sources += [

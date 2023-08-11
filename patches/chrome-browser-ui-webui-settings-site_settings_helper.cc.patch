@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 0fa6df3882ca180c0ecfa89f8294b48f1adde711..57c4a4541449cc261607fadfaa9f7494a7b2da0c 100644
+index 9bc1f5089a76bb2a6ce0559c9074ca0995bc64f1..478e1c6194fb994f206191d375493b164d5334a0 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -199,6 +199,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
-     {ContentSettingsType::ALL_SCREEN_CAPTURE, nullptr},
+@@ -198,6 +198,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
      {ContentSettingsType::COOKIE_CONTROLS_METADATA, nullptr},
      {ContentSettingsType::TPCD_SUPPORT, nullptr},
+     {ContentSettingsType::TPCD_METADATA_GRANTS, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  };
  
  static_assert(std::size(kContentSettingsTypeGroupNames) ==
-@@ -491,6 +492,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -461,6 +462,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(base::StringPiece name) {

@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc b/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
-index 3209a9a3c8e195dc60f2a4920e78751bd781c312..8589b281f6077e814804260b53f91282a23cd188 100644
+index 3aafe10b2775be27c190e7529491e30c572502e1..bae8be7d1953a5421ea2a7e3cf0e23c11c9fa55d 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
-@@ -411,6 +411,7 @@ void BookmarkBubbleView::ShowBubble(
-       dialog_model_builder.Build(), anchor_view,
-       views::BubbleBorder::TOP_RIGHT);
+@@ -495,6 +495,7 @@ void BookmarkBubbleView::ShowBubble(
+   auto bubble = std::make_unique<views::BubbleDialogModelHost>(
+       std::move(dialog_model), anchor_view, views::BubbleBorder::TOP_RIGHT);
    bookmark_bubble_ = bubble.get();
 +  BRAVE_BOOKMARK_BUBBLE_VIEW
    if (highlighted_button)

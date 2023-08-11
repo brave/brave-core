@@ -1,5 +1,5 @@
 diff --git a/components/strings/BUILD.gn b/components/strings/BUILD.gn
-index cece9b840483a8e8fae0ce57112226dd657e4132..8d8c7cad42d480a240df4df777ed3f40406b212f 100644
+index 5ba77bfb9ff1d4a110802df37fbf11185088c837..0b5309e1ba4068543b8a81f7f12dad1403cc1ce5 100644
 --- a/components/strings/BUILD.gn
 +++ b/components/strings/BUILD.gn
 @@ -50,6 +50,7 @@ grit("components_strings") {
@@ -10,12 +10,12 @@ index cece9b840483a8e8fae0ce57112226dd657e4132..8d8c7cad42d480a240df4df777ed3f40
  }
  
  if (is_android) {
-@@ -62,7 +63,7 @@ if (is_android) {
- }
- 
- grit("components_chromium_strings") {
--  source = "../components_chromium_strings.grd"
-+  source = "../components_${branding_path_component}_strings.grd"
+@@ -65,7 +66,7 @@ grit("components_chromium_strings") {
+   source = "../components_${branding_path_product}_strings.grd"
    outputs = [ "grit/components_chromium_strings.h" ]
    foreach(locale, all_chrome_locales) {
-     outputs += [ "components_chromium_strings_$locale.pak" ]
+-    outputs += [ "components_${branding_path_product}_strings_$locale.pak" ]
++    outputs += [ "components_${branding_path_component}_strings_$locale.pak" ]
+   }
+ }
+ 
