@@ -132,6 +132,17 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
             "URL": "https://github.com/brave/Sparkle",
             "License": "MIT",
         },
+        os.path.join('brave', 'third_party', 'cryptography'): {
+            "Name": "cryptography",
+            "URL": "https://cryptography.io",
+            "License": "Apache-2.0",
+            "License File": "/brave/common/licenses/Apache-2.0",
+        },
+        os.path.join('brave', 'third_party', 'macholib'): {
+            "Name": "macholib",
+            "URL": "https://github.com/ronaldoussoren/macholib",
+            "License": "MIT",
+        },
     })
 
     # Don't recurse into these directories looking for third-party code.
