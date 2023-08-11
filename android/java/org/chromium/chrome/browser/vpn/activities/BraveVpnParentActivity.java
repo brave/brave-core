@@ -53,7 +53,7 @@ public abstract class BraveVpnParentActivity
         mProfileSupplier = new OneshotSupplierImpl<>();
     }
 
-    ActivityResultLauncher<Intent> intentActivityResultLauncher = registerForActivityResult(
+    ActivityResultLauncher<Intent> mIntentActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), getActivityResultRegistry(),
             result -> {
                 BraveVpnUtils.dismissProgressDialog();
@@ -203,7 +203,7 @@ public abstract class BraveVpnParentActivity
 
                     Intent intent = GoBackend.VpnService.prepare(BraveVpnParentActivity.this);
                     if (intent != null) {
-                        intentActivityResultLauncher.launch(intent);
+                        mIntentActivityResultLauncher.launch(intent);
                         return;
                     }
                     BraveVpnUtils.dismissProgressDialog();

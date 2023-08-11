@@ -56,7 +56,7 @@ public class BraveVpnUtils {
     public static boolean mIsServerLocationChanged;
     public static boolean mUpdateProfileAfterSplitTunnel;
     public static String selectedServerRegion;
-    private static ProgressDialog mProgressDialog;
+    private static ProgressDialog sProgressDialog;
 
     public static boolean isBraveVpnFeatureEnable() {
         if ((ContextUtils.getApplicationContext().getPackageName().equals(
@@ -101,12 +101,12 @@ public class BraveVpnUtils {
     }
 
     public static void showProgressDialog(Activity activity, String message) {
-        mProgressDialog = ProgressDialog.show(activity, "", message, true);
+        sProgressDialog = ProgressDialog.show(activity, "", message, true);
     }
 
     public static void dismissProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
+        if (sProgressDialog != null && sProgressDialog.isShowing()) {
+            sProgressDialog.dismiss();
         }
     }
 
