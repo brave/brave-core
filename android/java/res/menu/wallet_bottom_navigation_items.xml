@@ -17,7 +17,7 @@
     <item android:id="@+id/action_wallet_accounts"
         android:title="@string/accounts"
         android:icon="@drawable/ic_accounts" />
-    <item android:id="@+id/action_wallet_market"
-        android:title="@string/market"
+    <item android:id="@+id/action_wallet_explore"
+        android:title="@string/explore"
         android:icon="@drawable/ic_explore" />
 </menu>

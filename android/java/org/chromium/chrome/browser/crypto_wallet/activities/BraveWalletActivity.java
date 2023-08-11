@@ -341,7 +341,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 viewPager.setCurrentItem(TRANSACTIONS_ACTIVITY_FRAGMENT_POSITION, true);
             } else if (menuItemId == R.id.action_wallet_accounts) {
                 viewPager.setCurrentItem(ACCOUNTS_FRAGMENT_POSITION, true);
-            } else if (menuItemId == R.id.action_wallet_market) {
+            } else if (menuItemId == R.id.action_wallet_explore) {
                 viewPager.setCurrentItem(MARKET_FRAGMENT_POSITION, true);
             }
             return true;
