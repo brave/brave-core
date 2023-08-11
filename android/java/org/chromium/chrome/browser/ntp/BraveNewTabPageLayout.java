@@ -198,7 +198,7 @@ public class BraveNewTabPageLayout
         mContext = context;
         mProfile = Profile.getLastUsedRegularProfile();
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
-        mNTPBackgroundImagesBridge.setNewTabPageListener(newTabPageListener);
+        mNTPBackgroundImagesBridge.setNewTabPageListener(mNewTabPageListener);
         mDatabaseHelper = DatabaseHelper.getInstance();
     }
 
@@ -336,7 +336,7 @@ public class BraveNewTabPageLayout
 
         // Double tap on the settings bar to scroll back up
         mNewsSettingsBar.setOnTouchListener(new OnTouchListener() {
-            private GestureDetector gestureDetector =
+            private GestureDetector mGestureDetector =
                     new GestureDetector(mActivity, new GestureDetector.SimpleOnGestureListener() {
                         @Override
                         public boolean onDoubleTap(MotionEvent e) {
@@ -347,7 +347,7 @@ public class BraveNewTabPageLayout
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                gestureDetector.onTouchEvent(event);
+                mGestureDetector.onTouchEvent(event);
                 return true;
             }
         });
@@ -1155,7 +1155,7 @@ public class BraveNewTabPageLayout
             public void onGlobalLayout() {
                 mWorkerTask =
                         new FetchWallpaperWorkerTask(ntpImage, mBgImageView.getMeasuredWidth(),
-                                mBgImageView.getMeasuredHeight(), wallpaperRetrievedCallback);
+                                mBgImageView.getMeasuredHeight(), mWallpaperRetrievedCallback);
                 mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
                 mBgImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -1172,7 +1172,7 @@ public class BraveNewTabPageLayout
                             BraveNewsPreferencesV2.PREF_SHOW_OPTIN, true)
                         && !BravePrefServiceBridge.getInstance().getShowNews())) {
             NTPUtil.showNonDisruptiveBanner(
-                    (BraveActivity) mActivity, this, brOption, mSponsoredTab, newTabPageListener);
+                    (BraveActivity) mActivity, this, brOption, mSponsoredTab, mNewTabPageListener);
         }
     }
 
@@ -1199,7 +1199,7 @@ public class BraveNewTabPageLayout
         if (shouldShowSuperReferral()) mNTPBackgroundImagesBridge.getTopSites();
     }
 
-    private NewTabPageListener newTabPageListener = new NewTabPageListener() {
+    private NewTabPageListener mNewTabPageListener = new NewTabPageListener() {
         @Override
         public void updateInteractableFlag(boolean isBottomSheet) {
             mIsFromBottomSheet = isBottomSheet;
@@ -1232,7 +1232,6 @@ public class BraveNewTabPageLayout
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
-
     };
 
     private NTPBackgroundImagesBridge.NTPBackgroundImageServiceObserver mNTPBackgroundImageServiceObserver = new NTPBackgroundImagesBridge.NTPBackgroundImageServiceObserver() {
@@ -1247,26 +1246,26 @@ public class BraveNewTabPageLayout
         }
     };
 
-    private FetchWallpaperWorkerTask.WallpaperRetrievedCallback
-            wallpaperRetrievedCallback = new FetchWallpaperWorkerTask.WallpaperRetrievedCallback() {
-        @Override
-        public void bgWallpaperRetrieved(Bitmap bgWallpaper) {
-            if (mBgImageView != null) {
-                mBgImageView.setImageBitmap(bgWallpaper);
-            }
-        }
-
-        @Override
-        public void logoRetrieved(Wallpaper wallpaper, Bitmap logoWallpaper) {
-            if (!NTPUtil.isReferralEnabled()) {
-                mWallpaper = wallpaper;
-                mSponsoredLogo = logoWallpaper;
-                if (mNtpAdapter != null) {
-                    mNtpAdapter.setSponsoredLogo(mWallpaper, logoWallpaper);
+    private FetchWallpaperWorkerTask.WallpaperRetrievedCallback mWallpaperRetrievedCallback =
+            new FetchWallpaperWorkerTask.WallpaperRetrievedCallback() {
+                @Override
+                public void bgWallpaperRetrieved(Bitmap bgWallpaper) {
+                    if (mBgImageView != null) {
+                        mBgImageView.setImageBitmap(bgWallpaper);
+                    }
                 }
-            }
-        }
-    };
+
+                @Override
+                public void logoRetrieved(Wallpaper wallpaper, Bitmap logoWallpaper) {
+                    if (!NTPUtil.isReferralEnabled()) {
+                        mWallpaper = wallpaper;
+                        mSponsoredLogo = logoWallpaper;
+                        if (mNtpAdapter != null) {
+                            mNtpAdapter.setSponsoredLogo(mWallpaper, logoWallpaper);
+                        }
+                    }
+                }
+            };
 
     private void loadTopSites(List<TopSiteTable> topSites) {
         mSuperReferralSitesLayout = new LinearLayout(mActivity);

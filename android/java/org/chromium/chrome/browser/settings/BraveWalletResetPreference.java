@@ -40,7 +40,7 @@ import org.chromium.ui.KeyboardVisibilityDelegate;
  */
 public class BraveWalletResetPreference
         extends Preference implements Preference.OnPreferenceClickListener {
-    private String TAG = "BraveWalletResetPreference";
+    private static final String TAG = "BraveWalletResetPref";
 
     private int mPrefAccentColor;
     private final String mConfirmationPhrase;
