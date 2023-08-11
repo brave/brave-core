@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_HTML_EVENT_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_HTML_EVENT_UNITTEST_UTIL_H_
 
-#include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_info.h"
+namespace brave_ads::ml::pipeline {
 
-namespace brave_ads {
+struct TextEmbeddingInfo;
 
-ml::pipeline::TextEmbeddingInfo BuildTextEmbeddingForTesting();
+TextEmbeddingInfo BuildTextEmbeddingForTesting();
 
-}  // namespace brave_ads
+}  // namespace brave_ads::ml::pipeline
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_HTML_EVENT_UNITTEST_UTIL_H_

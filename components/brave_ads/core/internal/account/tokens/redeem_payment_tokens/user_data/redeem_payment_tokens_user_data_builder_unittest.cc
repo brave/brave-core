@@ -9,7 +9,6 @@
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/payment_tokens/payment_tokens_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -20,7 +19,6 @@ class BraveAdsRedeemPaymentTokensUserDataBuilderTest : public UnitTestBase {};
 
 TEST_F(BraveAdsRedeemPaymentTokensUserDataBuilderTest, BuildUserData) {
   // Arrange
-  MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
   // Act
   BuildRedeemPaymentTokensUserData(

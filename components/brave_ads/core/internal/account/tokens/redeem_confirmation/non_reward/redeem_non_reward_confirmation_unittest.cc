@@ -8,14 +8,15 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/redeem_confirmation/non_reward/redeem_non_reward_confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/redeem_confirmation/non_reward/url_request_builders/create_non_reward_confirmation_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/redeem_confirmation/redeem_confirmation_delegate_mock.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/net/http/http_status_code.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -41,11 +42,12 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest, Redeem) {
   // Arrange
   const URLResponseMap url_responses = {
       {BuildCreateNonRewardConfirmationUrlPath(kTransactionId),
-       {{net::kHttpImATeapot, /*response_body*/ "418 I'm a teapot"}}}};
+       {{net::kHttpImATeapot,
+         BuildCreateNonRewardConfirmationUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.1, ConfirmationType::kViewed,
+      /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
   const absl::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction, /*user_data*/ {});
@@ -74,7 +76,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.1, ConfirmationType::kViewed,
+      /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
   const absl::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction, /*user_data*/ {});
@@ -104,7 +106,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.1, ConfirmationType::kViewed,
+      /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
   const absl::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction, /*user_data*/ {});
@@ -134,7 +136,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.1, ConfirmationType::kViewed,
+      /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
   const absl::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction, /*user_data*/ {});
@@ -164,7 +166,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest, RetryRedeeming) {
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.1, ConfirmationType::kViewed,
+      /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
   const absl::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction, /*user_data*/ {});

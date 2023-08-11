@@ -7,11 +7,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_build_channel_types.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -29,20 +26,19 @@ constexpr char kExpectedContent[] =
 }  // namespace
 
 class BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest
-    : public UnitTestBase {};
+    : public UnitTestBase {
+ protected:
+  void SetUp() override {
+    UnitTestBase::SetUp();
 
-TEST_F(BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest,
-       BuildUrlForNonRewardsUser) {
+    DisableBraveRewardsForTesting();
+  }
+};
+
+TEST_F(BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest, BuildUrl) {
   // Arrange
-  DisableBraveRewardsForTesting();
-
-  MockBuildChannel(BuildChannelType::kRelease);
-
-  GlobalState::GetInstance()->Flags().environment_type =
-      mojom::EnvironmentType::kStaging;
-
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.1, ConfirmationType::kViewed,
+      /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
   const absl::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction, /*user_data*/ {});

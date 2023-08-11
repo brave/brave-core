@@ -15,7 +15,7 @@ namespace brave_ads {
 class BraveAdsDoNotDisturbPermissionRuleTest : public UnitTestBase {};
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
-       ShouldAllowWhileBrowserIsInactiveBetween6amAnd9pmForAndroid) {
+       ShouldAllowWhileBrowserIsInactiveBetween6amAnd9pmOnAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
@@ -63,7 +63,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
 }
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
-       ShouldAllowWhileBrowserIsActiveForAndroid) {
+       ShouldAllowWhileBrowserIsActiveOnAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
@@ -110,7 +110,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
   }
 }
 
-TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowForIOS) {
+TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnIOS) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
@@ -138,7 +138,35 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowForIOS) {
   }
 }
 
-TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowForMacOS) {
+TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnMacOS) {
+  // Arrange
+  MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);
+
+  NotifyBrowserDidBecomeActive();
+  NotifyBrowserDidEnterForeground();
+
+  AdvanceClockToMidnight(/*is_local*/ true);
+
+  // Act
+  {
+    // Verify 00:00 AM
+
+    // Assert
+    const DoNotDisturbPermissionRule permission_rule;
+    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
+  }
+
+  {
+    // Verify 12:00 PM
+    AdvanceClockBy(base::Hours(12));
+
+    // Assert
+    const DoNotDisturbPermissionRule permission_rule;
+    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
+  }
+}
+
+TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnWindows) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
@@ -166,35 +194,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowForMacOS) {
   }
 }
 
-TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowForWindows) {
-  // Arrange
-  MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
-
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterForeground();
-
-  AdvanceClockToMidnight(/*is_local*/ true);
-
-  // Act
-  {
-    // Verify 00:00 AM
-
-    // Assert
-    const DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
-  }
-
-  {
-    // Verify 12:00 PM
-    AdvanceClockBy(base::Hours(12));
-
-    // Assert
-    const DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
-  }
-}
-
-TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowForLinux) {
+TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnLinux) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kLinux);
 

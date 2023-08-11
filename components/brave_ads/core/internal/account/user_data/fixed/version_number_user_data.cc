@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/version_number_user_data.h"
 
-#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 
 namespace brave_ads {
 

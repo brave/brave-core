@@ -16,6 +16,8 @@ namespace brave_ads {
 
 class ConfirmationType;
 
+size_t GetTransactionCountForTesting();
+
 void SaveTransactionsForTesting(const TransactionList& transactions);
 
 TransactionInfo BuildTransactionForTesting(
@@ -23,13 +25,10 @@ TransactionInfo BuildTransactionForTesting(
     const ConfirmationType& confirmation_type,
     base::Time reconciled_at,
     bool should_use_random_uuids);
-
 TransactionInfo BuildUnreconciledTransactionForTesting(
     double value,
     const ConfirmationType& confirmation_type,
     bool should_use_random_uuids);
-
-size_t GetTransactionCountForTesting();
 
 }  // namespace brave_ads
 

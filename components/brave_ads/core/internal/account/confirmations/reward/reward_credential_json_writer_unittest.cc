@@ -5,26 +5,48 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_credential_json_writer.h"
 
+#include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/user_data_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/privacy/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
+#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsRewardCredentialJsonWriterTest : public UnitTestBase {};
+using ::testing::NiceMock;
+
+class BraveAdsRewardCredentialJsonWriterTest : public UnitTestBase {
+ protected:
+  NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
+};
 
 TEST_F(BraveAdsRewardCredentialJsonWriterTest, WriteRewardCredential) {
   // Arrange
+  privacy::MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+
+  privacy::SetConfirmationTokensForTesting(/*count*/ 1);
+
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ false);
+  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+      &token_generator_mock_, transaction, /*user_data*/ {});
+  ASSERT_TRUE(confirmation);
 
   // Act
 
   // Assert
   EXPECT_EQ(
-      R"~({"signature":"PblFP7WI3ZC3aAX73A9UvBdqnvl87Wx8nnz9DIbhNjxbFamMZGbwn5Hi+FXsSXg2GZ671rCwQ6Xpwe61JjeW9Q==","t":"IXDCnZnVEJ0orkbZfr2ut2NQPQ0ofdervKBmQ2hyjcClGCjA3/ExbBumO0ua5cxwo//nN0uKQ60kknru8hRXxw=="})~",
+      R"({"signature":"XsaQ/XqKiWfeTCjFDhkyldsx0086qu6tjgJDCKo+f7kA0eA+mdf3Ae+BjPcDDQ8JfVbVQkI5ub394qdTmE2bRw==","t":"PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgCw=="})",
       json::writer::WriteRewardCredential(
-          BuildRewardForTesting(),
+          BuildRewardForTesting(*confirmation),
           /*payload*/ "definition: the weight of a payload"));
 }
 

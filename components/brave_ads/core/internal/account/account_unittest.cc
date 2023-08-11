@@ -26,7 +26,6 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -36,6 +35,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/tokens/payment_tokens/payment_tokens_unittest_util.h"
 
+#include <string>
+#include <vector>
+
 #include "base/check_op.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
@@ -13,6 +16,30 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/payment_tokens/payment_tokens.h"
 
 namespace brave_ads::privacy {
+
+namespace {
+
+PaymentTokenInfo BuildPaymentTokenForTesting(
+    const std::string& payment_token_base64) {
+  PaymentTokenInfo payment_token;
+
+  payment_token.transaction_id = "0d9de7ce-b3f9-4158-8726-23d52b9457c6";
+
+  payment_token.unblinded_token = cbr::UnblindedToken(payment_token_base64);
+  CHECK(payment_token.unblinded_token.has_value());
+
+  payment_token.public_key =
+      cbr::PublicKey("RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
+  CHECK(payment_token.public_key.has_value());
+
+  payment_token.confirmation_type = ConfirmationType::kViewed;
+
+  payment_token.ad_type = AdType::kNotificationAd;
+
+  return payment_token;
+}
+
+}  // namespace
 
 PaymentTokens& GetPaymentTokensForTesting() {
   return ConfirmationStateManager::GetInstance().GetPaymentTokens();
@@ -40,38 +67,11 @@ PaymentTokenInfo BuildPaymentTokenForTesting(
   return payment_token;
 }
 
-PaymentTokenList BuildPaymentTokensForTesting(
-    const std::vector<std::string>& payment_tokens_base64) {
-  PaymentTokenList payment_tokens;
-
-  for (const auto& payment_token_base64 : payment_tokens_base64) {
-    const PaymentTokenInfo payment_token =
-        BuildPaymentTokenForTesting(payment_token_base64);
-
-    payment_tokens.push_back(payment_token);
-  }
-
-  return payment_tokens;
-}
-
-PaymentTokenInfo BuildPaymentTokenForTesting(
-    const std::string& payment_token_base64) {
-  PaymentTokenInfo payment_token;
-
-  payment_token.transaction_id = "0d9de7ce-b3f9-4158-8726-23d52b9457c6";
-
-  payment_token.unblinded_token = cbr::UnblindedToken(payment_token_base64);
-  CHECK(payment_token.unblinded_token.has_value());
-
-  payment_token.public_key =
-      cbr::PublicKey("RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
-  CHECK(payment_token.public_key.has_value());
-
-  payment_token.confirmation_type = ConfirmationType::kViewed;
-
-  payment_token.ad_type = AdType::kNotificationAd;
-
-  return payment_token;
+PaymentTokenInfo BuildPaymentTokenForTesting() {
+  const PaymentTokenList payment_tokens =
+      BuildPaymentTokensForTesting(/*count*/ 1);
+  CHECK(!payment_tokens.empty());
+  return payment_tokens.front();
 }
 
 PaymentTokenList BuildPaymentTokensForTesting(const int count) {
@@ -103,13 +103,6 @@ PaymentTokenList BuildPaymentTokensForTesting(const int count) {
   }
 
   return payment_tokens;
-}
-
-PaymentTokenInfo BuildPaymentTokenForTesting() {
-  const PaymentTokenList payment_tokens =
-      BuildPaymentTokensForTesting(/*count*/ 1);
-  CHECK(!payment_tokens.empty());
-  return payment_tokens.front();
 }
 
 }  // namespace brave_ads::privacy

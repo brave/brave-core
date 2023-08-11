@@ -12,12 +12,12 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

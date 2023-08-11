@@ -13,9 +13,8 @@ namespace brave_ads::privacy::cbr {
 class BlindedToken;
 
 BlindedToken GetBlindedTokenForTesting();
-std::vector<BlindedToken> GetBlindedTokensForTesting();
-
 BlindedToken GetInvalidBlindedTokenForTesting();
+std::vector<BlindedToken> GetBlindedTokensForTesting();
 std::vector<BlindedToken> GetInvalidBlindedTokensForTesting();
 
 }  // namespace brave_ads::privacy::cbr

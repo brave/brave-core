@@ -49,6 +49,7 @@ TEST_F(BraveAdsPaymentTokenValueUtilTest, ToValue) {
   EXPECT_EQ(base::test::ParseJsonList(kJson),
             PaymentTokensToValue(BuildPaymentTokensForTesting(/*count*/ 2)));
 }
+
 TEST_F(BraveAdsPaymentTokenValueUtilTest, ToEmptyValue) {
   // Arrange
 

@@ -6,8 +6,8 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/dynamic/system_timestamp_user_data.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 
 namespace brave_ads {
 

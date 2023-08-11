@@ -9,13 +9,13 @@
 
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource_constants.h"
 #include "brave/components/brave_ads/core/internal/resources/country_components.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 

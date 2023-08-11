@@ -12,8 +12,6 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/payment_tokens/payment_tokens_unittest_util.h"
 #include "url/gurl.h"
 
@@ -32,11 +30,6 @@ class BraveAdsRedeemPaymentTokensUrlRequestBuilderTest : public UnitTestBase {};
 
 TEST_F(BraveAdsRedeemPaymentTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange
-  MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
-
-  GlobalState::GetInstance()->Flags().environment_type =
-      mojom::EnvironmentType::kStaging;
-
   const privacy::PaymentTokenList payment_tokens =
       privacy::BuildPaymentTokensForTesting(/*count*/ 7);
 

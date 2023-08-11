@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/resources/country_components_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 

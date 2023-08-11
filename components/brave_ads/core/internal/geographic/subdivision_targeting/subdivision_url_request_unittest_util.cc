@@ -10,10 +10,11 @@
 namespace brave_ads {
 
 std::string BuildSubdivisionUrlResponseBodyForTesting(
-    const std::string& country,
-    const std::string& region) {
+    const std::string& country_code,
+    const std::string& subdivision_code) {
   return base::ReplaceStringPlaceholders(R"({"country":"$1", "region":"$2"})",
-                                         {country, region}, nullptr);
+                                         {country_code, subdivision_code},
+                                         nullptr);
 }
 
 }  // namespace brave_ads

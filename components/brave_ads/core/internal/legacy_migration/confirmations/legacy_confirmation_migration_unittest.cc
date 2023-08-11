@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
-#include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -30,10 +30,12 @@ TEST_F(BraveAdsLegacyConfirmationMigrationTest, Migrate) {
   CopyFileFromTestPathToTempPath(kConfirmationStateFilename);
 
   // Act
-  Migrate(/*should_migrate*/ true);
+  Migrate(base::BindOnce([](const bool success) {
+    ASSERT_TRUE(success);
 
-  // Assert
-  EXPECT_TRUE(HasMigrated());
+    // Assert
+    EXPECT_TRUE(HasMigrated());
+  }));
 }
 
 TEST_F(BraveAdsLegacyConfirmationMigrationTest, InvalidState) {
@@ -42,10 +44,10 @@ TEST_F(BraveAdsLegacyConfirmationMigrationTest, InvalidState) {
                                  kConfirmationStateFilename);
 
   // Act
-  Migrate(/*should_migrate*/ false);
-
-  // Assert
-  EXPECT_FALSE(HasMigrated());
+  Migrate(base::BindOnce([](const bool success) {
+    // Assert
+    EXPECT_FALSE(success);
+  }));
 }
 
 }  // namespace brave_ads::confirmations

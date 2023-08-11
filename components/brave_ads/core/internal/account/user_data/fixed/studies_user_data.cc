@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/components/brave_ads/core/internal/account/account_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/studies/studies_util.h"
 
 namespace brave_ads {

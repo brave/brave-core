@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/user_activity_permission_rule.h"
 
-#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_scoring_util.h"
 
 namespace brave_ads {

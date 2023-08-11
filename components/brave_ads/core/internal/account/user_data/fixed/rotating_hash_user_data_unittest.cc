@@ -8,10 +8,10 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
-#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -29,9 +29,7 @@ class BraveAdsRotatingHashUserDataTest : public UnitTestBase {
 TEST_F(BraveAdsRotatingHashUserDataTest,
        BuildRotatingHashUserDataForRewardsUser) {
   // Arrange
-  auto& sys_info = GlobalState::GetInstance()->SysInfo();
-  sys_info.device_id =
-      "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
+  MockDeviceId();
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed,
@@ -51,9 +49,7 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
   // Arrange
   DisableBraveRewardsForTesting();
 
-  auto& sys_info = GlobalState::GetInstance()->SysInfo();
-  sys_info.device_id =
-      "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
+  MockDeviceId();
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed,

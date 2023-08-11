@@ -10,7 +10,6 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_build_channel_types.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_unittest_util.h"
@@ -41,17 +40,12 @@ class BraveAdsCreateRewardConfirmationUrlRequestBuilderTest
 TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
        BuildUrlForLargeAnonmityCountry) {
   // Arrange
-  MockBuildChannel(BuildChannelType::kRelease);
-
-  GlobalState::GetInstance()->Flags().environment_type =
-      mojom::EnvironmentType::kStaging;
-
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   privacy::SetConfirmationTokensForTesting(/*count*/ 1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.1, ConfirmationType::kViewed,
+      /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
   const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data*/ {});
@@ -78,17 +72,12 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   // Arrange
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_AS"};
 
-  MockBuildChannel(BuildChannelType::kRelease);
-
-  GlobalState::GetInstance()->Flags().environment_type =
-      mojom::EnvironmentType::kStaging;
-
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   privacy::SetConfirmationTokensForTesting(/*count*/ 1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.1, ConfirmationType::kViewed,
+      /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
   const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data*/ {});
@@ -115,17 +104,12 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   // Arrange
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 
-  MockBuildChannel(BuildChannelType::kRelease);
-
-  GlobalState::GetInstance()->Flags().environment_type =
-      mojom::EnvironmentType::kStaging;
-
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   privacy::SetConfirmationTokensForTesting(/*count*/ 1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.1, ConfirmationType::kViewed,
+      /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
   const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data*/ {});
@@ -152,15 +136,12 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   // Arrange
   MockBuildChannel(BuildChannelType::kNightly);
 
-  GlobalState::GetInstance()->Flags().environment_type =
-      mojom::EnvironmentType::kStaging;
-
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   privacy::SetConfirmationTokensForTesting(/*count*/ 1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.1, ConfirmationType::kViewed,
+      /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
   const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data*/ {});
@@ -189,15 +170,12 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kNightly);
 
-  GlobalState::GetInstance()->Flags().environment_type =
-      mojom::EnvironmentType::kStaging;
-
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   privacy::SetConfirmationTokensForTesting(/*count*/ 1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.1, ConfirmationType::kViewed,
+      /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
   const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data*/ {});
@@ -226,15 +204,12 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kNightly);
 
-  GlobalState::GetInstance()->Flags().environment_type =
-      mojom::EnvironmentType::kStaging;
-
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   privacy::SetConfirmationTokensForTesting(/*count*/ 1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.1, ConfirmationType::kViewed,
+      /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
   const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data*/ {});

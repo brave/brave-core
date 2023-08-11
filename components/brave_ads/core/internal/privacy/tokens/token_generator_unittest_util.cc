@@ -139,6 +139,13 @@ const std::vector<std::string>& GetTokensForTesting() {
 
 }  // namespace
 
+void MockTokenGenerator(const TokenGeneratorMock& mock, const size_t count) {
+  CHECK_GT(count, 0U);
+
+  ON_CALL(mock, Generate(count))
+      .WillByDefault(Return(BuildTokensForTesting(count)));
+}
+
 std::vector<cbr::Token> BuildTokensForTesting(const size_t count) {
   CHECK_GT(count, 0U);
 
@@ -155,13 +162,6 @@ std::vector<cbr::Token> BuildTokensForTesting(const size_t count) {
   }
 
   return tokens;
-}
-
-void MockTokenGenerator(const TokenGeneratorMock& mock, const size_t count) {
-  CHECK_GT(count, 0U);
-
-  ON_CALL(mock, Generate(count))
-      .WillByDefault(Return(BuildTokensForTesting(count)));
 }
 
 }  // namespace brave_ads::privacy

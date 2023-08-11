@@ -12,7 +12,6 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
-#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/payload/confirmation_payload_json_writer.h"
@@ -27,6 +26,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/confirmation_tokens/confirmation_token_info.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/confirmation_tokens/confirmation_tokens_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_interface.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 
 namespace brave_ads {
 

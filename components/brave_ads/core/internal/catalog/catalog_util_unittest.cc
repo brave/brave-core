@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/catalog_permission_rule_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -18,10 +19,7 @@ class BraveAdsCatalogUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsCatalogUtilTest, ResetCatalog) {
   // Arrange
-  SetCatalogId(kCatalogId);
-  SetCatalogVersion(1);
-  SetCatalogPing(base::Hours(2));
-  SetCatalogLastUpdated(Now());
+  ForceCatalogPermissionRuleForTesting();
 
   // Act
   ResetCatalog();

@@ -16,9 +16,7 @@ using ::testing::Eq;
 namespace brave_ads::privacy::p2a {
 
 namespace {
-
 constexpr char kEventsAsJson[] = R"(["event_1","event_2"])";
-
 }  // namespace
 
 class BraveAdsP2ATest : public UnitTestBase {};

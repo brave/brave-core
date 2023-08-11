@@ -6,15 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_AD_EVENT_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_AD_EVENT_UNITTEST_UTIL_H_
 
-#include "base/functional/callback.h"
+#include <cstddef>
 
 namespace base {
 class Time;
 }  // namespace base
 
 namespace brave_ads {
-
-using ResultAdEventsCallback = base::OnceCallback<void(bool success)>;
 
 class AdType;
 class ConfirmationType;
@@ -37,8 +35,6 @@ void FireAdEventsForTesting(const AdEventInfo& ad_event, size_t count);
 
 size_t GetAdEventCountForTesting(const AdType& ad_type,
                                  const ConfirmationType& confirmation_type);
-
-void ResetAdEventsForTesting(ResultAdEventsCallback callback);
 
 }  // namespace brave_ads
 

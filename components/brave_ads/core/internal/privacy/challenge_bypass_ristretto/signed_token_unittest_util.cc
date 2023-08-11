@@ -14,12 +14,12 @@ SignedToken GetSignedTokenForTesting() {
   return SignedToken(kSignedTokenBase64);
 }
 
-std::vector<SignedToken> GetSignedTokensForTesting() {
-  return {GetSignedTokenForTesting()};
-}
-
 SignedToken GetInvalidSignedTokenForTesting() {
   return SignedToken(kInvalidBase64);
+}
+
+std::vector<SignedToken> GetSignedTokensForTesting() {
+  return {GetSignedTokenForTesting()};
 }
 
 std::vector<SignedToken> GetInvalidSignedTokensForTesting() {

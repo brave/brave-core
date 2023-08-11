@@ -7,9 +7,9 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/rotating_hash_user_data_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {

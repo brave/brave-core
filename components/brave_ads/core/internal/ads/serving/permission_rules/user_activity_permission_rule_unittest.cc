@@ -8,8 +8,8 @@
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_feature.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 

@@ -9,12 +9,12 @@
 #include <utility>
 
 #include "base/files/file.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversion_resource_constants.h"
 #include "brave/components/brave_ads/core/internal/resources/country_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

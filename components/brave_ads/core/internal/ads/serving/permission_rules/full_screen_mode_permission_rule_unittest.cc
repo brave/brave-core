@@ -31,7 +31,7 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAllow) {
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAlwaysAllowForAndroid) {
+TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAlwaysAllowOnAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
@@ -43,7 +43,7 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAlwaysAllowForAndroid) {
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAlwaysAllowForIOS) {
+TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAlwaysAllowOnIOS) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 

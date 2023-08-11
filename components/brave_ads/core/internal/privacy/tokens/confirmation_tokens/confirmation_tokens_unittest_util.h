@@ -6,32 +6,18 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_TOKENS_CONFIRMATION_TOKENS_CONFIRMATION_TOKENS_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_TOKENS_CONFIRMATION_TOKENS_CONFIRMATION_TOKENS_UNITTEST_UTIL_H_
 
-#include <string>
-#include <vector>
-
 #include "brave/components/brave_ads/core/internal/privacy/tokens/confirmation_tokens/confirmation_token_info.h"
 
-namespace brave_ads {
-
-struct WalletInfo;
-
-namespace privacy {
+namespace brave_ads::privacy {
 
 class ConfirmationTokens;
 
 ConfirmationTokens& GetConfirmationTokensForTesting();
 ConfirmationTokenList SetConfirmationTokensForTesting(int count);
 
-ConfirmationTokenList BuildConfirmationTokensForTesting(
-    const std::vector<std::string>& unblinded_tokens_base64,
-    const WalletInfo& wallet);
-ConfirmationTokenInfo BuildConfirmationTokenForTesting(
-    const std::string& unblinded_token_base64,
-    const WalletInfo& wallet);
-ConfirmationTokenList BuildConfirmationTokensForTesting(int count);
 ConfirmationTokenInfo BuildConfirmationTokenForTesting();
+ConfirmationTokenList BuildConfirmationTokensForTesting(int count);
 
-}  // namespace privacy
-}  // namespace brave_ads
+}  // namespace brave_ads::privacy
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_TOKENS_CONFIRMATION_TOKENS_CONFIRMATION_TOKENS_UNITTEST_UTIL_H_

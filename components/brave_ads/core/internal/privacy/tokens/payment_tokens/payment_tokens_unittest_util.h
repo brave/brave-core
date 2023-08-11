@@ -6,9 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_TOKENS_PAYMENT_TOKENS_PAYMENT_TOKENS_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_TOKENS_PAYMENT_TOKENS_PAYMENT_TOKENS_UNITTEST_UTIL_H_
 
-#include <string>
-#include <vector>
-
 #include "brave/components/brave_ads/core/internal/privacy/tokens/payment_tokens/payment_token_info.h"
 
 namespace brave_ads {
@@ -25,12 +22,8 @@ PaymentTokenList SetPaymentTokensForTesting(int count);
 PaymentTokenInfo BuildPaymentTokenForTesting(
     const ConfirmationType& confirmation_type,
     const AdType& ad_type);
-PaymentTokenList BuildPaymentTokensForTesting(
-    const std::vector<std::string>& payment_tokens_base64);
-PaymentTokenInfo BuildPaymentTokenForTesting(
-    const std::string& payment_token_base64);
-PaymentTokenList BuildPaymentTokensForTesting(int count);
 PaymentTokenInfo BuildPaymentTokenForTesting();
+PaymentTokenList BuildPaymentTokensForTesting(int count);
 
 }  // namespace privacy
 }  // namespace brave_ads

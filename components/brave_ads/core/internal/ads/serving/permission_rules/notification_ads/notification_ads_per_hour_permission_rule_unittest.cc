@@ -6,11 +6,10 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/notification_ads/notification_ads_per_hour_permission_rule.h"
 
 #include "brave/components/brave_ads/common/notification_ad_feature.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -38,7 +37,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 
   const int ads_per_hour = kDefaultNotificationAdsPerHour.Get();
 
-  SetDefaultInt64Pref(prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
+  SetMaximumNotificationAdsPerHourForTesting(ads_per_hour);
 
   // Act
   RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
@@ -55,7 +54,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 
   const int ads_per_hour = kDefaultNotificationAdsPerHour.Get();
 
-  SetDefaultInt64Pref(prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
+  SetMaximumNotificationAdsPerHourForTesting(ads_per_hour);
 
   // Act
   RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
@@ -70,7 +69,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
   // Arrange
   const int ads_per_hour = kDefaultNotificationAdsPerHour.Get();
 
-  SetDefaultInt64Pref(prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
+  SetMaximumNotificationAdsPerHourForTesting(ads_per_hour);
 
   // Act
   RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
@@ -85,7 +84,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
   // Arrange
   const int ads_per_hour = kDefaultNotificationAdsPerHour.Get();
 
-  SetDefaultInt64Pref(prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
+  SetMaximumNotificationAdsPerHourForTesting(ads_per_hour);
 
   RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
                            /*count*/ ads_per_hour);
@@ -102,7 +101,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
   // Arrange
   const int ads_per_hour = kDefaultNotificationAdsPerHour.Get();
 
-  SetDefaultInt64Pref(prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
+  SetMaximumNotificationAdsPerHourForTesting(ads_per_hour);
 
   RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
                            /*count*/ ads_per_hour);

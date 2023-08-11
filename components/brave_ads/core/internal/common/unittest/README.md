@@ -117,6 +117,7 @@ You can add one or more responses per request, which will be returned in the giv
 
 | mock  | type  | default  | example  |
 |---|---|---|---|
+| Device id  |  |  | `MockDeviceId();`  |
 | Build channel  | `kRelease`, `kBeta` or `kNightly`  | `kRelease`  | `MockBuildChannel(BuildChannelType::kRelease);`  |
 | Platform  | `kWindows`, `kMacOS`, `kLinux`, `kAndroid` or `kIOS`  | `kWindows`  | `MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);`  |
 | Is network connection available  | boolean  | `true`  | `MockIsNetworkConnectionAvailable(ads_client_mock_, false);`  |

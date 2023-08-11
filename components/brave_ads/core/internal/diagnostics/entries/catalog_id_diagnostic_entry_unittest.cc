@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/catalog_id_diagnostic_entry.h"
 
+#include "brave/components/brave_ads/core/internal/catalog/catalog_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
@@ -17,7 +18,7 @@ class BraveAdsCatalogIdDiagnosticEntryTest : public UnitTestBase {};
 
 TEST_F(BraveAdsCatalogIdDiagnosticEntryTest, CatalogId) {
   // Arrange
-  SetCatalogId("da5dd0e8-71e9-4607-a45b-13e28b607a81");
+  SetCatalogId(kCatalogId);
 
   // Act
   const CatalogIdDiagnosticEntry diagnostic_entry;
@@ -25,8 +26,7 @@ TEST_F(BraveAdsCatalogIdDiagnosticEntryTest, CatalogId) {
   // Assert
   EXPECT_EQ(DiagnosticEntryType::kCatalogId, diagnostic_entry.GetType());
   EXPECT_EQ("Catalog ID", diagnostic_entry.GetName());
-  EXPECT_EQ("da5dd0e8-71e9-4607-a45b-13e28b607a81",
-            diagnostic_entry.GetValue());
+  EXPECT_EQ(kCatalogId, diagnostic_entry.GetValue());
 }
 
 TEST_F(BraveAdsCatalogIdDiagnosticEntryTest, EmptyCatalogId) {

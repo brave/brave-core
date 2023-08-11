@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_handler_util.h"
 
-#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
@@ -32,7 +31,7 @@ bool ShouldServeAtRegularIntervals() {
          (BrowserManager::GetInstance().IsBrowserInForeground() ||
           AdsClientHelper::GetInstance()
               ->CanShowNotificationAdsWhileBrowserIsBackgrounded()) &&
-         GetMaximumNotificationAdsPerHourSetting() > 0;
+         GetMaximumNotificationAdsPerHour() > 0;
 }
 
 void ShowNotificationAd(const NotificationAdInfo& ad) {

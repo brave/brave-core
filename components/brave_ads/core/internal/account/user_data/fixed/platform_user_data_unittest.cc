@@ -6,22 +6,14 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/platform_user_data.h"
 
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsPlatformUserDataTest : public UnitTestBase {
- protected:
-  void SetUp() override {
-    UnitTestBase::SetUp();
-
-    MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
-  }
-};
+class BraveAdsPlatformUserDataTest : public UnitTestBase {};
 
 TEST_F(BraveAdsPlatformUserDataTest, BuildPlatformUserDataForRewardsUser) {
   // Arrange

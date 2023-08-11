@@ -18,6 +18,15 @@ namespace brave_ads {
 
 struct CreativeSetConversionInfo;
 
+CreativeSetConversionInfo BuildCreativeSetConversionForTesting(
+    const std::string& creative_set_id,
+    const std::string& url_pattern,
+    base::TimeDelta observation_window);
+void BuildAndSaveCreativeSetConversionForTesting(
+    const std::string& creative_set_id,
+    const std::string& url_pattern,
+    base::TimeDelta observation_window);
+
 CreativeSetConversionInfo BuildVerifiableCreativeSetConversionForTesting(
     const std::string& creative_set_id,
     const std::string& url_pattern,
@@ -28,15 +37,6 @@ void BuildAndSaveVerifiableCreativeSetConversionForTesting(
     const std::string& url_pattern,
     base::TimeDelta observation_window,
     const absl::optional<std::string>& verifiable_advertiser_public_key_base64);
-
-CreativeSetConversionInfo BuildCreativeSetConversionForTesting(
-    const std::string& creative_set_id,
-    const std::string& url_pattern,
-    base::TimeDelta observation_window);
-void BuildAndSaveCreativeSetConversionForTesting(
-    const std::string& creative_set_id,
-    const std::string& url_pattern,
-    base::TimeDelta observation_window);
 
 }  // namespace brave_ads
 

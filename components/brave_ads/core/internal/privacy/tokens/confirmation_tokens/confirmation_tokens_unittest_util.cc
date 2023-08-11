@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
 
+#include <string>
+#include <vector>
+
 #include "base/check_op.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
@@ -17,33 +20,7 @@
 
 namespace brave_ads::privacy {
 
-ConfirmationTokens& GetConfirmationTokensForTesting() {
-  return ConfirmationStateManager::GetInstance().GetConfirmationTokens();
-}
-
-ConfirmationTokenList SetConfirmationTokensForTesting(const int count) {
-  CHECK_GT(count, 0);
-
-  ConfirmationTokenList confirmation_tokens =
-      BuildConfirmationTokensForTesting(count);
-  GetConfirmationTokensForTesting().SetTokens(confirmation_tokens);
-  return confirmation_tokens;
-}
-
-ConfirmationTokenList BuildConfirmationTokensForTesting(
-    const std::vector<std::string>& unblinded_tokens_base64,
-    const WalletInfo& wallet) {
-  ConfirmationTokenList confirmation_tokens;
-
-  for (const auto& unblinded_token_base64 : unblinded_tokens_base64) {
-    const ConfirmationTokenInfo confirmation_token =
-        BuildConfirmationTokenForTesting(unblinded_token_base64, wallet);
-
-    confirmation_tokens.push_back(confirmation_token);
-  }
-
-  return confirmation_tokens;
-}
+namespace {
 
 ConfirmationTokenInfo BuildConfirmationTokenForTesting(
     const std::string& unblinded_token_base64,
@@ -64,6 +41,28 @@ ConfirmationTokenInfo BuildConfirmationTokenForTesting(
   CHECK(IsValid(confirmation_token));
 
   return confirmation_token;
+}
+
+}  // namespace
+
+ConfirmationTokens& GetConfirmationTokensForTesting() {
+  return ConfirmationStateManager::GetInstance().GetConfirmationTokens();
+}
+
+ConfirmationTokenList SetConfirmationTokensForTesting(const int count) {
+  CHECK_GT(count, 0);
+
+  ConfirmationTokenList confirmation_tokens =
+      BuildConfirmationTokensForTesting(count);
+  GetConfirmationTokensForTesting().SetTokens(confirmation_tokens);
+  return confirmation_tokens;
+}
+
+ConfirmationTokenInfo BuildConfirmationTokenForTesting() {
+  const ConfirmationTokenList confirmation_tokens =
+      BuildConfirmationTokensForTesting(/*count*/ 1);
+  CHECK(!confirmation_tokens.empty());
+  return confirmation_tokens.front();
 }
 
 ConfirmationTokenList BuildConfirmationTokensForTesting(const int count) {
@@ -97,13 +96,6 @@ ConfirmationTokenList BuildConfirmationTokensForTesting(const int count) {
   }
 
   return confirmation_tokens;
-}
-
-ConfirmationTokenInfo BuildConfirmationTokenForTesting() {
-  const ConfirmationTokenList confirmation_tokens =
-      BuildConfirmationTokensForTesting(/*count*/ 1);
-  CHECK(!confirmation_tokens.empty());
-  return confirmation_tokens.front();
 }
 
 }  // namespace brave_ads::privacy

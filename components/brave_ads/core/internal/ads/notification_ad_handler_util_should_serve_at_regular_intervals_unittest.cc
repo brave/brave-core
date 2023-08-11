@@ -11,6 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -89,8 +90,7 @@ class BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest
     MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
         ads_client_mock_, param.can_show_while_browser_is_backgrounded);
 
-    SetDefaultInt64Pref(prefs::kMaximumNotificationAdsPerHour,
-                        param.ads_per_hour);
+    SetMaximumNotificationAdsPerHourForTesting(param.ads_per_hour);
   }
 };
 

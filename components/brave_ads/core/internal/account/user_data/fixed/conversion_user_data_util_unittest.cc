@@ -52,7 +52,7 @@ TEST_F(BraveAdsConversionUserDataUtilTest, BuildVerifiableConversionUserData) {
   ASSERT_TRUE(base::JSONWriter::Write(*user_data, &json));
 
   const std::string pattern =
-      R"~({"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":"(.{64})","epk":"(.{44})","nonce":"(.{32})"}})~";
+      R"({"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}})";
   EXPECT_TRUE(RE2::FullMatch(json, pattern));
 }
 

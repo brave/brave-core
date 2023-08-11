@@ -6,9 +6,9 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/locale_user_data.h"
 
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -20,7 +20,6 @@ class BraveAdsLocaleUserDataTest : public UnitTestBase {};
 TEST_F(BraveAdsLocaleUserDataTest,
        BuildLocaleUserDataForReleaseBuildChannelAndRewardsUser) {
   // Arrange
-  MockBuildChannel(BuildChannelType::kRelease);
 
   // Act
 
@@ -33,8 +32,6 @@ TEST_F(BraveAdsLocaleUserDataTest,
        DoNotBuildLocaleUserDataForReleaseBuildChannelForNonRewardsUser) {
   // Arrange
   DisableBraveRewardsForTesting();
-
-  MockBuildChannel(BuildChannelType::kRelease);
 
   // Act
 
@@ -59,8 +56,6 @@ TEST_F(BraveAdsLocaleUserDataTest,
   // Arrange
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_MC"};
 
-  MockBuildChannel(BuildChannelType::kRelease);
-
   // Act
   const base::Value::Dict user_data = BuildLocaleUserData();
 
@@ -72,8 +67,6 @@ TEST_F(BraveAdsLocaleUserDataTest,
        BuildLocaleUserDataForCountryNotInAnonymitySetButShouldClassifyAsOther) {
   // Arrange
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_CX"};
-
-  MockBuildChannel(BuildChannelType::kRelease);
 
   // Act
 

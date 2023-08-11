@@ -9,53 +9,11 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_constants.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_info.h"
 #include "tweetnacl.h"  // NOLINT
 
 namespace brave_ads {
-
-absl::optional<VerifiableConversionEnvelopeInfo>
-MaybeBuildVerifiableConversionEnvelopeForTesting(
-    const base::Value::Dict& user_data) {
-  const auto* const dict = user_data.FindDict(kVerifiableConversionEnvelopeKey);
-  if (!dict) {
-    return absl::nullopt;
-  }
-
-  VerifiableConversionEnvelopeInfo verifiable_conversion_envelope;
-
-  const std::string* const algorithm =
-      dict->FindString(kVerifiableConversionEnvelopeAlgorithmKey);
-  if (algorithm) {
-    verifiable_conversion_envelope.algorithm = *algorithm;
-  }
-
-  const std::string* const ciphertext =
-      dict->FindString(kVerifiableConversionEnvelopeCipherTextKey);
-  if (ciphertext) {
-    verifiable_conversion_envelope.ciphertext = *ciphertext;
-  }
-
-  const std::string* const ephemeral_public_key =
-      dict->FindString(kVerifiableConversionEnvelopeEphemeralPublicKeyKey);
-  if (ephemeral_public_key) {
-    verifiable_conversion_envelope.ephemeral_public_key = *ephemeral_public_key;
-  }
-
-  const std::string* const nonce =
-      dict->FindString(kVerifiableConversionEnvelopeNonceKey);
-  if (nonce) {
-    verifiable_conversion_envelope.nonce = *nonce;
-  }
-
-  if (!verifiable_conversion_envelope.IsValid()) {
-    return absl::nullopt;
-  }
-
-  return verifiable_conversion_envelope;
-}
 
 absl::optional<std::string> OpenVerifiableConversionEnvelopeForTesting(
     const VerifiableConversionEnvelopeInfo& verifiable_conversion_envelope,

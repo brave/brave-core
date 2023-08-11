@@ -8,7 +8,6 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_unittest_util.h"
@@ -27,15 +26,12 @@ class BraveAdsFetchPaymentTokenUrlRequestBuilderTest : public UnitTestBase {
 
 TEST_F(BraveAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   // Arrange
-  GlobalState::GetInstance()->Flags().environment_type =
-      mojom::EnvironmentType::kStaging;
-
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   privacy::SetConfirmationTokensForTesting(/*count*/ 1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.1, ConfirmationType::kViewed,
+      /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
   const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data*/ {});

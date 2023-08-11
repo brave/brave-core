@@ -17,6 +17,8 @@ class GURL;
 
 namespace brave_ads {
 
+void MockDeviceId();
+
 void MockBuildChannel(BuildChannelType type);
 
 void MockPlatformHelper(const PlatformHelperMock& mock, PlatformType type);

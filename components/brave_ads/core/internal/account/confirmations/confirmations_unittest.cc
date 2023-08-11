@@ -10,11 +10,11 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -43,7 +43,7 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForRewardsUser) {
   privacy::SetConfirmationTokensForTesting(/*count*/ 1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.1, ConfirmationType::kViewed,
+      /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ true);
 
   // Act
@@ -57,10 +57,8 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForNonRewardsUser) {
   // Arrange
   DisableBraveRewardsForTesting();
 
-  privacy::SetConfirmationTokensForTesting(/*count*/ 1);
-
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.1, ConfirmationType::kViewed,
+      /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ true);
 
   // Act

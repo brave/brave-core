@@ -19,6 +19,22 @@
 
 namespace brave_ads {
 
+size_t GetTransactionCountForTesting() {
+  size_t count = 0;
+
+  GetTransactionsForDateRange(
+      DistantPast(), DistantFuture(),
+      base::BindOnce(
+          [](size_t* count, const bool success,
+             const TransactionList& transactions) mutable {
+            CHECK(success);
+            *count = transactions.size();
+          },
+          &count));
+
+  return count;
+}
+
 void SaveTransactionsForTesting(const TransactionList& transactions) {
   database::table::Transactions database_table;
   database_table.Save(
@@ -55,22 +71,6 @@ TransactionInfo BuildUnreconciledTransactionForTesting(
     const bool should_use_random_uuids) {
   return BuildTransactionForTesting(
       value, confirmation_type, /*reconciled_at*/ {}, should_use_random_uuids);
-}
-
-size_t GetTransactionCountForTesting() {
-  size_t count = 0;
-
-  GetTransactionsForDateRange(
-      DistantPast(), DistantFuture(),
-      base::BindOnce(
-          [](size_t* count, const bool success,
-             const TransactionList& transactions) mutable {
-            CHECK(success);
-            *count = transactions.size();
-          },
-          &count));
-
-  return count;
 }
 
 }  // namespace brave_ads

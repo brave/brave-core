@@ -7,7 +7,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
-#include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -15,9 +15,7 @@
 namespace brave_ads::client {
 
 namespace {
-
 constexpr char kClientIssue23794Filename[] = "client_issue_23794.json";
-
 }  // namespace
 
 class BraveAdsLegacyClientMigrationIssue23794Test : public UnitTestBase {
@@ -33,7 +31,12 @@ TEST_F(BraveAdsLegacyClientMigrationIssue23794Test, Migrate) {
                                  kClientStateFilename);
 
   // Act
-  Migrate(/*should_migrate*/ true);
+  Migrate(base::BindOnce([](const bool success) {
+    ASSERT_TRUE(success);
+
+    // Assert
+    EXPECT_TRUE(HasMigrated());
+  }));
 
   // Assert
   EXPECT_TRUE(HasMigrated());

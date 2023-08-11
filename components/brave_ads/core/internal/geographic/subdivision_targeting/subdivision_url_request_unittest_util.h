@@ -11,8 +11,8 @@
 namespace brave_ads {
 
 std::string BuildSubdivisionUrlResponseBodyForTesting(
-    const std::string& country,
-    const std::string& region);
+    const std::string& country_code,
+    const std::string& subdivision_code);
 
 }  // namespace brave_ads
 

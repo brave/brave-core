@@ -8,6 +8,7 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
@@ -36,9 +37,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
 
 TEST_F(BraveAdsRotatingHashUserDataUtilTest, BuildRotatingHash) {
   // Arrange
-  auto& sys_info = GlobalState::GetInstance()->SysInfo();
-  sys_info.device_id =
-      "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
+  MockDeviceId();
 
   AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local*/ false));
 
@@ -58,9 +57,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest, BuildRotatingHash) {
 TEST_F(BraveAdsRotatingHashUserDataUtilTest,
        BuildRotatingHashIfWithinSameHour) {
   // Arrange
-  auto& sys_info = GlobalState::GetInstance()->SysInfo();
-  sys_info.device_id =
-      "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
+  MockDeviceId();
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed,
@@ -86,9 +83,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
 TEST_F(BraveAdsRotatingHashUserDataUtilTest,
        BuildRotatingHashForDifferentHours) {
   // Arrange
-  auto& sys_info = GlobalState::GetInstance()->SysInfo();
-  sys_info.device_id =
-      "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
+  MockDeviceId();
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed,
@@ -114,9 +109,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
 TEST_F(BraveAdsRotatingHashUserDataUtilTest,
        BuildRotatingHashForSameHourButDifferentDay) {
   // Arrange
-  auto& sys_info = GlobalState::GetInstance()->SysInfo();
-  sys_info.device_id =
-      "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
+  MockDeviceId();
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed,

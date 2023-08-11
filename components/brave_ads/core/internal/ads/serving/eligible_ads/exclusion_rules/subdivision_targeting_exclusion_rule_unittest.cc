@@ -289,8 +289,8 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
-  creative_ad.geo_targets = {
-      BuildSubdivisionForTesting(/*country*/ "US", /*region*/ "XX")};
+  creative_ad.geo_targets = {BuildSubdivisionForTesting(
+      /*country_code*/ "US", /*subdivision_code*/ "XX")};
 
   // Assert
   EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
@@ -308,8 +308,8 @@ TEST_P(
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
-  creative_ad.geo_targets = {
-      BuildSubdivisionForTesting(/*country*/ "GB", /*region*/ "DEV")};
+  creative_ad.geo_targets = {BuildSubdivisionForTesting(
+      /*country_code*/ "GB", /*subdivision_code*/ "DEV")};
 
   // Act
 
@@ -325,8 +325,9 @@ TEST_P(
 
   const URLResponseMap url_responses = {
       {BuildSubdivisionUrlPath(),
-       {{net::HTTP_OK, BuildSubdivisionUrlResponseBodyForTesting(
-                           /*country*/ "XX", /*region*/ "NO REGION")}}}};
+       {{net::HTTP_OK,
+         BuildSubdivisionUrlResponseBodyForTesting(
+             /*country_code*/ "XX", /*subdivision_code*/ "NO REGION")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   NotifyDidInitializeAds();

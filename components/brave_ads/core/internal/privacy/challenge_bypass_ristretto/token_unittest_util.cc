@@ -14,12 +14,12 @@ Token GetTokenForTesting() {
   return Token(kTokenBase64);
 }
 
-std::vector<Token> GetTokensForTesting() {
-  return {GetTokenForTesting()};
-}
-
 Token GetInvalidTokenForTesting() {
   return Token(kInvalidBase64);
+}
+
+std::vector<Token> GetTokensForTesting() {
+  return {GetTokenForTesting()};
 }
 
 std::vector<Token> GetInvalidTokensForTesting() {

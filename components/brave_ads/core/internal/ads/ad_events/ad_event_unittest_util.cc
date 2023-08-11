@@ -6,20 +6,17 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "base/uuid.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
-#include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/instance_id_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
@@ -82,29 +79,6 @@ size_t GetAdEventCountForTesting(const AdType& ad_type,
   const std::vector<base::Time> ad_events =
       GetAdEventHistory(ad_type, confirmation_type);
   return ad_events.size();
-}
-
-void ResetAdEventsForTesting(ResultAdEventsCallback callback) {
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
-  database::DeleteTable(&*transaction, "ad_events");
-
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(
-          [](ResultAdEventsCallback callback,
-             mojom::DBCommandResponseInfoPtr command_response) {
-            if (!command_response ||
-                command_response->status !=
-                    mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-              return std::move(callback).Run(/*success*/ false);
-            }
-
-            RebuildAdEventHistoryFromDatabase();
-
-            std::move(callback).Run(/*success*/ true);
-          },
-          std::move(callback)));
 }
 
 }  // namespace brave_ads

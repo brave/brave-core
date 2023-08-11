@@ -132,7 +132,7 @@ void NotificationAdServing::GetForUserModelCallback(
 }
 
 void NotificationAdServing::UpdateMaximumAdsPerHour() {
-  const int ads_per_hour = GetMaximumNotificationAdsPerHourSetting();
+  const int ads_per_hour = GetMaximumNotificationAdsPerHour();
   BLOG(1, "Maximum notification ads per hour changed to " << ads_per_hour);
 
   if (!ShouldServeAdsAtRegularIntervals()) {
@@ -151,7 +151,7 @@ void NotificationAdServing::MaybeServeAdAtNextRegularInterval() {
     return;
   }
 
-  const int ads_per_hour = GetMaximumNotificationAdsPerHourSetting();
+  const int ads_per_hour = GetMaximumNotificationAdsPerHour();
   if (ads_per_hour == 0) {
     return;
   }

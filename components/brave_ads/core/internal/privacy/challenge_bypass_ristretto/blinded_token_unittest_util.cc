@@ -14,12 +14,12 @@ BlindedToken GetBlindedTokenForTesting() {
   return BlindedToken(kBlindedTokenBase64);
 }
 
-std::vector<BlindedToken> GetBlindedTokensForTesting() {
-  return {GetBlindedTokenForTesting()};
-}
-
 BlindedToken GetInvalidBlindedTokenForTesting() {
   return BlindedToken(kInvalidBase64);
+}
+
+std::vector<BlindedToken> GetBlindedTokensForTesting() {
+  return {GetBlindedTokenForTesting()};
 }
 
 std::vector<BlindedToken> GetInvalidBlindedTokensForTesting() {

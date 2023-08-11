@@ -13,9 +13,8 @@ namespace brave_ads::privacy::cbr {
 class SignedToken;
 
 SignedToken GetSignedTokenForTesting();
-std::vector<SignedToken> GetSignedTokensForTesting();
-
 SignedToken GetInvalidSignedTokenForTesting();
+std::vector<SignedToken> GetSignedTokensForTesting();
 std::vector<SignedToken> GetInvalidSignedTokensForTesting();
 
 }  // namespace brave_ads::privacy::cbr

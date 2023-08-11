@@ -170,11 +170,11 @@ TEST(BraveAdsEligibleAdsPredictorUtilTest, ComputeVoteRegistry) {
   TextEmbeddingHtmlEventList text_embeddings;
 
   const TextEmbeddingHtmlEventInfo text_embedding_event_1 =
-      BuildTextEmbeddingHtmlEvent(BuildTextEmbeddingForTesting());
+      BuildTextEmbeddingHtmlEvent(ml::pipeline::BuildTextEmbeddingForTesting());
   text_embeddings.push_back(text_embedding_event_1);
 
   const TextEmbeddingHtmlEventInfo text_embedding_event_2 =
-      BuildTextEmbeddingHtmlEvent(BuildTextEmbeddingForTesting());
+      BuildTextEmbeddingHtmlEvent(ml::pipeline::BuildTextEmbeddingForTesting());
   text_embeddings.push_back(text_embedding_event_2);
 
   // Act
@@ -214,7 +214,7 @@ TEST(BraveAdsEligibleAdsPredictorUtilTest,
   TextEmbeddingHtmlEventList text_embeddings;
 
   const TextEmbeddingHtmlEventInfo text_embedding_event_1 =
-      BuildTextEmbeddingHtmlEvent(BuildTextEmbeddingForTesting());
+      BuildTextEmbeddingHtmlEvent(ml::pipeline::BuildTextEmbeddingForTesting());
   text_embeddings.push_back(text_embedding_event_1);
 
   // Act

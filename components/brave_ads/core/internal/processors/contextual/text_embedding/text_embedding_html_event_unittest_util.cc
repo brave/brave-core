@@ -8,11 +8,13 @@
 #include "base/base64.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_info.h"
 
-namespace brave_ads {
+namespace brave_ads::ml::pipeline {
 
 ml::pipeline::TextEmbeddingInfo BuildTextEmbeddingForTesting() {
-  ml::pipeline::TextEmbeddingInfo text_embedding;
+  TextEmbeddingInfo text_embedding;
+
   text_embedding.text = "The quick brown fox jumps over the lazy dog";
   text_embedding.hashed_text_base64 =
       base::Base64Encode(crypto::Sha256(text_embedding.text));
@@ -22,4 +24,4 @@ ml::pipeline::TextEmbeddingInfo BuildTextEmbeddingForTesting() {
   return text_embedding;
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::ml::pipeline

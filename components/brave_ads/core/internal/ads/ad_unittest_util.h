@@ -11,12 +11,6 @@ namespace brave_ads {
 class AdType;
 struct AdInfo;
 
-void DisableBraveRewardsForTesting();
-
-void DisableBraveNewsAdsForTesting();
-void DisableNewTabPageAdsForTesting();
-void DisableNotificationAdsForTesting();
-
 AdInfo BuildAdForTesting(const AdType& ad_type, bool should_use_random_uuids);
 
 }  // namespace brave_ads
