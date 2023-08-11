@@ -107,11 +107,6 @@ default-features = false
 version = "0.10"
 features = ["color", "regex"]
 
-[dependencies.flate2]
-default-features = false
-version = "1"
-features = ["rust_backend"]
-
 [dependencies.html5ever]
 version = "0.25"
 build-script-outputs = ["rules.rs"]
@@ -512,10 +507,6 @@ package = "ff"
 [patch.crates-io.ff_v0_13]
 path = "ff/v0_13/crate"
 package = "ff"
-
-[patch.crates-io.flate2_v1]
-path = "flate2/v1/crate"
-package = "flate2"
 
 [patch.crates-io.fnv_v1]
 path = "fnv/v1/crate"
@@ -1000,10 +991,6 @@ package = "remove_dir_all"
 [patch.crates-io.ripemd_v0_1]
 path = "ripemd/v0_1/crate"
 package = "ripemd"
-
-[patch.crates-io.rmp-serde_v0_13]
-path = "rmp_serde/v0_13/crate"
-package = "rmp-serde"
 
 [patch.crates-io.rmp-serde_v0_15]
 path = "rmp_serde/v0_15/crate"

@@ -305,7 +305,6 @@ dependencies = [
  "ed25519-dalek-bip32",
  "env_logger",
  "feed-rs",
- "flate2",
  "font-types",
  "forest_bigint",
  "futures",
@@ -728,14 +727,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 1.0.99",
-]
-
-[[package]]
-name = "flate2"
-version = "1.0.25"
-dependencies = [
- "crc32fast",
- "miniz_oxide",
 ]
 
 [[package]]
