@@ -140,6 +140,14 @@ export interface IsEip1559ChangedMutationArg {
   isEip1559: boolean
 }
 
+interface GetFVMAddressArg {
+  coin: BraveWallet.CoinType | undefined
+  isMainNet: boolean
+  addresses: string[]
+}
+
+type GetFVMAddressResult = Map<string, {address: string, fvmAddress: string}>
+
 interface GetTransactionsQueryArg {
   /**
    * will fetch for all account addresses if null
@@ -1294,6 +1302,24 @@ export function createWalletApi () {
       //
       // Transactions
       //
+      getFVMAddress: query<GetFVMAddressResult, GetFVMAddressArg>({
+        queryFn: async (arg, api, extraOptions, baseQuery) => {
+          if (arg.coin !== BraveWallet.CoinType.FIL) {
+            return { data: undefined }
+          }
+          try {
+            const { braveWalletService } = baseQuery(undefined).data
+            const convertResult = (await braveWalletService.convertFEVMToFVMAddress(arg.isMainNet, arg.addresses)).result
+            return {
+              data: convertResult
+            }
+          } catch(error) {
+            return {
+              error: `Unable to getFVMAddress`
+            }
+          }
+        }
+      }),
       invalidateTransactionsCache: mutation<boolean, void>({
         queryFn: () => {
           return { data: true }
@@ -2750,6 +2776,7 @@ export const {
   useGetERC721MetadataQuery,
   useGetEVMTransactionSimulationQuery,
   useGetExternalRewardsWalletQuery,
+  useGetFVMAddressQuery,
   useGetGasEstimation1559Query,
   useGetIsTxSimulationEnabledQuery,
   useGetNetworksRegistryQuery,

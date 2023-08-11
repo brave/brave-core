@@ -8,10 +8,6 @@ cargo_crate("lib") {
   crate_name = "multihash"
   epoch = "0.16"
   crate_type = "rlib"
-
-  # Only for usage from third-party crates. Add the crate to
-  # third_party.toml to use it from first-party code.
-  visibility = [ "//third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
 
   # Unit tests skipped. Generate with --with-tests to include them.
@@ -34,17 +30,35 @@ cargo_crate("lib") {
     "//brave/third_party/rust/unsigned_varint/v0_7:lib",
     "//third_party/rust/serde/v1:lib",
   ]
+  aliased_deps = {
+    ripemd_rs = "//brave/third_party/rust/ripemd/v0_1:lib__rlib"
+    sha_2 = "//brave/third_party/rust/sha2/v0_10:lib__rlib"
+    sha_3 = "//brave/third_party/rust/sha3/v0_10:lib__rlib"
+  }
   features = [
     "alloc",
     "blake2b",
     "blake2b_simd",
     "derive",
+    "digest",
     "multihash-derive",
     "multihash-impl",
+    "ripemd",
+    "ripemd-rs",
     "serde",
     "serde-big-array",
     "serde-codec",
+    "sha-2",
+    "sha-3",
+    "sha2",
+    "sha3",
     "std",
+  ]
+  deps += [
+    "//brave/third_party/rust/digest/v0_10:lib",
+    "//brave/third_party/rust/ripemd/v0_1:lib",
+    "//brave/third_party/rust/sha2/v0_10:lib",
+    "//brave/third_party/rust/sha3/v0_10:lib",
   ]
   cargo_manifest_dir =
       rebase_path("//brave/third_party/rust/multihash/v0_16/crate")

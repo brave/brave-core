@@ -2637,4 +2637,40 @@ TEST_F(BraveWalletServiceUnitTest, GetBalanceScannerSupportedChains) {
       }));
 }
 
+TEST_F(BraveWalletServiceUnitTest, ConvertFEVMToFVMAddress) {
+  {
+    bool callback_is_called;
+
+    service_->ConvertFEVMToFVMAddress(
+        true, {"0xf563fc08AFD59e2260b7d2d4481215c745Fa7573", "", "123"},
+        base::BindLambdaForTesting(
+            [&](const base::flat_map<std::string, std::string>& result) {
+              EXPECT_EQ(
+                  result.find("0xf563fc08AFD59e2260b7d2d4481215c745Fa7573")
+                      ->second,
+                  "f410f6vr7ycfp2wpceyfx2lkeqeqvy5c7u5ltn7oripq");
+              EXPECT_EQ(result.size(), 1u);
+              callback_is_called = true;
+            }));
+    ASSERT_TRUE(callback_is_called);
+  }
+
+  {
+    bool callback_is_called;
+
+    service_->ConvertFEVMToFVMAddress(
+        false, {"0xf563fc08AFD59e2260b7d2d4481215c745Fa7573", "", "123"},
+        base::BindLambdaForTesting(
+            [&](const base::flat_map<std::string, std::string>& result) {
+              EXPECT_EQ(
+                  result.find("0xf563fc08AFD59e2260b7d2d4481215c745Fa7573")
+                      ->second,
+                  "t410f6vr7ycfp2wpceyfx2lkeqeqvy5c7u5ltn7oripq");
+              EXPECT_EQ(result.size(), 1u);
+              callback_is_called = true;
+            }));
+    ASSERT_TRUE(callback_is_called);
+  }
+}
+
 }  // namespace brave_wallet

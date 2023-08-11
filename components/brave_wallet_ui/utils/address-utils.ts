@@ -17,11 +17,11 @@ export function isValidFilAddress (value: string): boolean {
     !value.startsWith(BraveWallet.FILECOIN_TESTNET)) {
     return false
   }
-  // secp256k have 41 address length and BLS keys have 86
-  return (value.length === 41 || value.length === 86)
+  // secp256k have 41 address length and BLS keys have 86 and FEVM f410 keys have 44
+  return (value.length === 41 || value.length === 86 || value.length === 44)
 }
 
-export function isValidAddress (value: string, length: number): boolean {
+export function isValidAddress (value: string, length: number = 20): boolean {
   if (!value.match(/^0x[0-9A-Fa-f]*$/)) {
     return false
   }

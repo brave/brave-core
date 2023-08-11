@@ -18,10 +18,11 @@ interface Props {
   onClick: (address: string) => void
   address: string
   name: string
+  accountAlias: string | undefined
 }
 
 export const AccountListItem = (props: Props) => {
-  const { onClick, address, name } = props
+  const { onClick, address, name, accountAlias } = props
 
   // Selectors
   const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
@@ -41,6 +42,9 @@ export const AccountListItem = (props: Props) => {
       <Column horizontalAlign='flex-start' verticalAlign='center'>
         <Text textColor='text03' textSize='12px' isBold={false}>{name}</Text>
         <Text textColor='text01' textSize='12px' isBold={false}>{address}</Text>
+        {(accountAlias && accountAlias !== '') &&
+          <Text textColor='text02' textSize='12px' isBold={false}>{accountAlias}</Text>
+        }
       </Column>
     </Button>
 

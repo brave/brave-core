@@ -582,7 +582,7 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignature) {
   EXPECT_EQ(tx_meta->from(), from_account);
   EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
   auto signed_message =
-      GetSignedMessage(*tx_meta->tx()->GetMessageToSign(), "data");
+      GetSignedMessage(*tx_meta->tx()->GetMessageToSignJson(), "data");
   SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
                  "Filecoin.MpoolPush",
                  R"({
@@ -649,7 +649,7 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignatureError) {
   EXPECT_EQ(tx_meta->from(), from_account);
   EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
   auto signed_message =
-      GetSignedMessage(*tx_meta->tx()->GetMessageToSign(), "data");
+      GetSignedMessage(*tx_meta->tx()->GetMessageToSignJson(), "data");
   base::RunLoop run_loop;
   fil_tx_manager()->ProcessFilHardwareSignature(
       mojom::kLocalhostChainId, "fake", signed_message,

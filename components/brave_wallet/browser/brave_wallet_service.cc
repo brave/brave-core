@@ -26,6 +26,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
+#include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -1691,6 +1692,21 @@ void BraveWalletService::GetBalanceScannerSupportedChains(
   }
 
   std::move(callback).Run(chain_ids);
+}
+
+void BraveWalletService::ConvertFEVMToFVMAddress(
+    bool is_mainnet,
+    const std::vector<std::string>& fevm_addresses,
+    ConvertFEVMToFVMAddressCallback callback) {
+  base::flat_map<std::string, std::string> result;
+  for (const auto& fevm_address : fevm_addresses) {
+    auto address = FilAddress::FromFEVMAddress(is_mainnet, fevm_address);
+    DCHECK(result.find(fevm_address) == result.end());
+    if (!address.IsEmpty()) {
+      result[fevm_address] = address.EncodeAsString();
+    }
+  }
+  std::move(callback).Run(std::move(result));
 }
 
 void BraveWalletService::CancelAllSuggestedTokenCallbacks() {
