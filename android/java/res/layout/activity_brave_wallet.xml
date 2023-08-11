@@ -16,26 +16,30 @@
         android:id="@+id/crypto_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/wallet_toolbar_bg_color"
-            android:translationZ="10dp"
-            app:titleTextColor="@color/wallet_text_color"
-            app:collapseIcon="@drawable/ic_baseline_arrow_back_24"
-            app:layout_scrollFlags="scroll|enterAlways|snap" />
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/wallet_toolbar_bg_color"
+                android:translationZ="10dp"
+                app:collapseIcon="@drawable/ic_baseline_arrow_back_24"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:titleTextColor="@color/wallet_text_color" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <LinearLayout
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-            <include layout="@layout/wallet_backup_banner"/>
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <include layout="@layout/wallet_backup_banner" />
+
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/navigation_view_pager"
                 android:layout_width="match_parent"
@@ -43,63 +47,65 @@
         </LinearLayout>
 
         <LinearLayout
-            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
             android:id="@+id/bottom_view_container"
-            android:layout_gravity="bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior">
+
             <ImageView
                 android:id="@+id/bottom_container_top_shadow"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_shadow_height"
-                android:src="@drawable/modern_toolbar_shadow"
                 android:scaleType="fitXY"
                 android:scaleY="-1"
+                android:src="@drawable/modern_toolbar_shadow"
                 tools:ignore="ContentDescription" />
+
             <org.chromium.chrome.browser.custom_layout.BottomNavigationViewWithIndicator
                 android:id="@+id/wallet_bottom_navigation"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 android:background="@color/wallet_toolbar_bg_color"
-                app:menu="@menu/wallet_bottom_navigation_items"
-                app:itemIconTint="@color/wallet_bottom_navigation_color"
                 app:itemHorizontalTranslationEnabled="false"
-                app:labelVisibilityMode="labeled" />
+                app:itemIconTint="@color/wallet_bottom_navigation_color"
+                app:labelVisibilityMode="labeled"
+                app:menu="@menu/wallet_bottom_navigation_items" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_gravity="top"
-            app:layout_anchor="@id/bottom_view_container"
-            app:layout_anchorGravity="top|end"
             android:id="@+id/fab_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_gravity="top"
+            android:orientation="vertical"
+            app:layout_anchor="@id/bottom_view_container"
+            app:layout_anchorGravity="top|end">
 
             <ImageView
                 android:id="@+id/pending_tx_notification"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_pending_tx_notification_icon"
-                android:background="@drawable/ic_pending_tx_notification_bg"
-                android:elevation="10dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:scaleType="fitCenter" />
+                android:background="@drawable/ic_pending_tx_notification_bg"
+                android:contentDescription="@null"
+                android:elevation="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_pending_tx_notification_icon" />
 
             <ImageView
                 android:id="@+id/buy_send_swap_button"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_swap_icon"
-                android:background="@drawable/ic_swap_bg"
-                android:elevation="10dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:scaleType="center" />
+                android:background="@drawable/ic_swap_bg"
+                android:contentDescription="@null"
+                android:elevation="10dp"
+                android:scaleType="center"
+                android:src="@drawable/ic_swap_icon" />
         </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -107,10 +113,10 @@
         android:id="@+id/crypto_onboarding_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"
         android:background="@color/wallet_bg"
         android:fadeScrollbars="false"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:scrollbars="vertical">
 
         <FrameLayout
             android:id="@+id/crypto_wallet_onboarding_layout"
@@ -121,16 +127,16 @@
             <org.chromium.chrome.browser.custom_layout.NonSwipeableViewPager
                 android:id="@+id/crypto_wallet_onboarding_viewpager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
             <ImageView
                 android:id="@+id/onboarding_back_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_baseline_arrow_back_24"
-                android:padding="16dp"
                 android:layout_gravity="start|top"
-                android:contentDescription="@null"/>
+                android:contentDescription="@null"
+                android:padding="16dp"
+                app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
         </FrameLayout>
 
     </androidx.core.widget.NestedScrollView>
