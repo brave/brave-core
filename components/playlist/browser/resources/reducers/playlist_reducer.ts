@@ -50,7 +50,7 @@ const playlistReducer: Reducer<PlaylistData | undefined> = (
       state = { ...state, currentList, lists: [...playlists] }
       break
 
-    case types.PLAYLIST_SELECTED:
+    case types.SELECTED_PLAYLIST_UPDATED:
       const playlist = action.payload
       state = { ...state, currentList: playlist }
       break

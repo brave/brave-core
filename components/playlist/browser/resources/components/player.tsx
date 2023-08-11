@@ -7,9 +7,12 @@ import * as React from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
-import { ApplicationState } from 'components/playlist/browser/resources/reducers/states'
 import { PlaylistItem } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
+import {
+  ApplicationState,
+  PlayerState
+} from 'components/playlist/browser/resources/reducers/states'
 import { getAllActions } from '../api/getAllActions'
 import PlayerControls from './playerControls'
 import { color, font } from '@brave/leo/tokens/css'
@@ -42,12 +45,23 @@ const StyledPlayerControls = styled(PlayerControls)`
   padding-top: 8px;
 `
 
-export default function Player () {
-  const currentItem = useSelector<ApplicationState, PlaylistItem | undefined>(
-    applicationState => applicationState.playerState?.currentItem
+// Route changes of PlayerState to parent frame.
+function useStateRouter () {
+  const playerState = useSelector<ApplicationState, PlayerState | undefined>(
+    applicationState => applicationState.playerState
   )
+  React.useEffect(() => {
+    // Note that we are checking this condition as per SonarCloud.
+    if (location.protocol.startsWith('chrome-untrusted:')) {
+      window.parent.postMessage(playerState, 'chrome-untrusted://playlist')
+    }
+  }, [playerState])
+}
 
-  const playing = useSelector<ApplicationState, PlaylistItem | undefined>(
+export default function Player () {
+  useStateRouter()
+
+  const currentItem = useSelector<ApplicationState, PlaylistItem | undefined>(
     applicationState => applicationState.playerState?.currentItem
   )
 
@@ -55,18 +69,13 @@ export default function Player () {
     React.useState<HTMLVideoElement | null>(null)
 
   React.useEffect(() => {
-    // Route changes in props to parent frame.
-    // Note that we are checking this condition as per SonarCloud.
-    if (location.protocol.startsWith('chrome-untrusted:')) {
-      window.parent.postMessage(
-        {
-          currentItem,
-          playing
-        },
-        'chrome-untrusted://playlist'
-      )
+    if (videoElement && !videoElement.paused && !currentItem) {
+      // This could happen when the current item was deleted. In this case,
+      // we should pause the video first. Otherwise, video will keep playing
+      // even we clear the src attribute.
+      videoElement.pause()
     }
-  }, [playing])
+  }, [currentItem, videoElement])
 
   return (
     <PlayerContainer>
@@ -75,8 +84,15 @@ export default function Player () {
         autoPlay
         onPlay={() => getAllActions().playerStartedPlayingItem(currentItem)}
         onPause={() => getAllActions().playerStoppedPlayingItem(currentItem)}
-        onEnded={() => getAllActions().playerStoppedPlayingItem(currentItem)}
-        src={currentItem?.mediaPath.url}
+        onEnded={() => {
+          getAllActions().playerStoppedPlayingItem(currentItem)
+          getAllActions().playNextItem() // In case the current item is the last one, nothing will happen
+        }}
+        src={
+          videoElement?.src === currentItem?.mediaSource.url
+            ? currentItem?.mediaSource.url // We were already playing the item with the original source url instead of cached file
+            : currentItem?.mediaPath.url
+        }
       />
       <ControlsContainer>
         <StyledTitle>{currentItem?.name}</StyledTitle>

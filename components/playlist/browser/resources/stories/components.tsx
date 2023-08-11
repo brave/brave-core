@@ -55,7 +55,8 @@ export const Catalog = () => {
 export const VideoPlayer = () => {
   handlePlayerMessage({
     actionType: types.PLAYLIST_ITEM_SELECTED,
-    data: mockData.at(0)?.items.at(0)
+    currentList: mockData.at(0)!,
+    currentItem: mockData.at(0)!.items.at(0)!
   })
   return <Player />
 }
