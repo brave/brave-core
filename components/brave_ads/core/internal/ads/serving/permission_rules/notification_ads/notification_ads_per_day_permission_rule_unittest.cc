@@ -31,8 +31,8 @@ TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
 TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
        ShouldAllowIfDoesNotExceedCap) {
   // Arrange
-  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumNotificationAdsPerDay.Get() - 1);
+  RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
+                           /*count*/ kMaximumNotificationAdsPerDay.Get() - 1);
 
   // Act
 
@@ -43,8 +43,8 @@ TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
 TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
        ShouldAllowIfDoesNotExceedCapAfter1Day) {
   // Arrange
-  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumNotificationAdsPerDay.Get());
+  RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
+                           /*count*/ kMaximumNotificationAdsPerDay.Get());
 
   // Act
   AdvanceClockBy(base::Days(1));
@@ -56,8 +56,8 @@ TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
 TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
        ShouldNotAllowIfExceedsCapWithin1Day) {
   // Arrange
-  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumNotificationAdsPerDay.Get());
+  RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
+                           /*count*/ kMaximumNotificationAdsPerDay.Get());
 
   // Act
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));

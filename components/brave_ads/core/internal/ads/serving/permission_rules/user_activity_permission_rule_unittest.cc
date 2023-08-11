@@ -57,7 +57,7 @@ TEST_F(BraveAdsUserActivityPermissionRuleTest,
 TEST_F(BraveAdsUserActivityPermissionRuleTest,
        ShouldAllowIfUserHasNotJoinedBraveRewards) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   // Act
 

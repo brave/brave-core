@@ -19,17 +19,18 @@ namespace privacy {
 
 class PaymentTokens;
 
-PaymentTokens& GetPaymentTokens();
+PaymentTokens& GetPaymentTokensForTesting();
+PaymentTokenList SetPaymentTokensForTesting(int count);
 
-PaymentTokenList SetPaymentTokens(int count);
-
-PaymentTokenInfo BuildPaymentToken(const ConfirmationType& confirmation_type,
-                                   const AdType& ad_type);
-PaymentTokenList BuildPaymentTokens(
+PaymentTokenInfo BuildPaymentTokenForTesting(
+    const ConfirmationType& confirmation_type,
+    const AdType& ad_type);
+PaymentTokenList BuildPaymentTokensForTesting(
     const std::vector<std::string>& payment_tokens_base64);
-PaymentTokenInfo BuildPaymentToken(const std::string& payment_token_base64);
-PaymentTokenList BuildPaymentTokens(int count);
-PaymentTokenInfo BuildPaymentToken();
+PaymentTokenInfo BuildPaymentTokenForTesting(
+    const std::string& payment_token_base64);
+PaymentTokenList BuildPaymentTokensForTesting(int count);
+PaymentTokenInfo BuildPaymentTokenForTesting();
 
 }  // namespace privacy
 }  // namespace brave_ads

@@ -23,7 +23,7 @@ namespace {
 
 HistoryItemInfo BuildAndAddHistoryItem() {
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   return AddHistory(ad, ConfirmationType::kViewed, ad.title, ad.body);

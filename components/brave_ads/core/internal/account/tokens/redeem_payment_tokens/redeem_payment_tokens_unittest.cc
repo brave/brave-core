@@ -47,12 +47,12 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokens) {
   const URLResponseMap url_responses = {
       {BuildRedeemPaymentTokensUrlPath(
            /*payment_id*/ kWalletPaymentId),
-       {{net::HTTP_OK, BuildRedeemPaymentTokensUrlResponseBody()}}}};
+       {{net::HTTP_OK, BuildRedeemPaymentTokensUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   SetDefaultTimePref(prefs::kNextTokenRedemptionAt, Now());
 
-  privacy::SetPaymentTokens(/*count*/ 1);
+  privacy::SetPaymentTokensForTesting(/*count*/ 1);
 
   // Act
   EXPECT_CALL(redeem_payment_tokens_delegate_mock_, OnDidRedeemPaymentTokens);
@@ -86,14 +86,14 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokensMultipleTimes) {
   const URLResponseMap url_responses = {
       {BuildRedeemPaymentTokensUrlPath(
            /*payment_id*/ kWalletPaymentId),
-       {{net::HTTP_OK, BuildRedeemPaymentTokensUrlResponseBody()},
-        {net::HTTP_OK, BuildRedeemPaymentTokensUrlResponseBody()}}}};
+       {{net::HTTP_OK, BuildRedeemPaymentTokensUrlResponseBodyForTesting()},
+        {net::HTTP_OK, BuildRedeemPaymentTokensUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   SetDefaultTimePref(prefs::kNextTokenRedemptionAt, Now());
 
   const privacy::PaymentTokenList payment_tokens =
-      privacy::SetPaymentTokens(/*count*/ 1);
+      privacy::SetPaymentTokensForTesting(/*count*/ 1);
 
   // Act
   EXPECT_CALL(redeem_payment_tokens_delegate_mock_, OnDidRedeemPaymentTokens)
@@ -120,7 +120,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokensMultipleTimes) {
 
   FastForwardClockToNextPendingTask();
 
-  privacy::GetPaymentTokens().SetTokens(payment_tokens);
+  privacy::GetPaymentTokensForTesting().SetTokens(payment_tokens);
 
   FastForwardClockToNextPendingTask();
 
@@ -133,12 +133,12 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, ScheduleNextTokenRedemption) {
   const URLResponseMap url_responses = {
       {BuildRedeemPaymentTokensUrlPath(
            /*payment_id*/ kWalletPaymentId),
-       {{net::HTTP_OK, BuildRedeemPaymentTokensUrlResponseBody()}}}};
+       {{net::HTTP_OK, BuildRedeemPaymentTokensUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   SetDefaultTimePref(prefs::kNextTokenRedemptionAt, Now());
 
-  privacy::SetPaymentTokens(/*count*/ 1);
+  privacy::SetPaymentTokensForTesting(/*count*/ 1);
 
   // Act
   EXPECT_CALL(redeem_payment_tokens_delegate_mock_, OnDidRedeemPaymentTokens);
@@ -208,12 +208,12 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, Retry) {
            /*payment_id*/ kWalletPaymentId),
        {{net::HTTP_NOT_FOUND,
          /*response_body*/ net::GetHttpReasonPhrase(net::HTTP_NOT_FOUND)},
-        {net::HTTP_OK, BuildRedeemPaymentTokensUrlResponseBody()}}}};
+        {net::HTTP_OK, BuildRedeemPaymentTokensUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   SetDefaultTimePref(prefs::kNextTokenRedemptionAt, Now());
 
-  privacy::SetPaymentTokens(/*count*/ 1);
+  privacy::SetPaymentTokensForTesting(/*count*/ 1);
 
   // Act
   const InSequence seq;

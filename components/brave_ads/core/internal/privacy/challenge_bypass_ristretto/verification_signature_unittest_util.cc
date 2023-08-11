@@ -10,11 +10,11 @@
 
 namespace brave_ads::privacy::cbr {
 
-VerificationSignature GetVerificationSignature() {
+VerificationSignature GetVerificationSignatureForTesting() {
   return VerificationSignature(kVerificationSignatureBase64);
 }
 
-VerificationSignature GetInvalidVerificationSignature() {
+VerificationSignature GetInvalidVerificationSignatureForTesting() {
   return VerificationSignature(kInvalidBase64);
 }
 

@@ -10,11 +10,11 @@
 
 namespace brave_ads::privacy::cbr {
 
-TokenPreimage GetTokenPreimage() {
+TokenPreimage GetTokenPreimageForTesting() {
   return TokenPreimage(kTokenPreimageBase64);
 }
 
-TokenPreimage GetInvalidTokenPreimage() {
+TokenPreimage GetInvalidTokenPreimageForTesting() {
   return TokenPreimage(kInvalidBase64);
 }
 

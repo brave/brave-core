@@ -94,8 +94,8 @@ TEST_F(
     BraveAdsConversionResourceTest,
     LoadResourceWhenLocaleDidChangeIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableNotificationAds();
-  DisableBraveNewsAds();
+  DisableNotificationAdsForTesting();
+  DisableBraveNewsAdsForTesting();
 
   // Act
   NotifyLocaleDidChange(/*locale*/ "en_GB");
@@ -132,8 +132,8 @@ TEST_F(
     BraveAdsConversionResourceTest,
     LoadResourceWhenDidUpdateResourceComponentIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableNotificationAds();
-  DisableBraveNewsAds();
+  DisableNotificationAdsForTesting();
+  DisableBraveNewsAdsForTesting();
 
   // Act
   LoadResource(kCountryComponentId);

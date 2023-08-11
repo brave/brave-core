@@ -102,12 +102,12 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
           EXPECT_TRUE(success);
           ASSERT_TRUE(
               NotificationAdManager::GetInstance().Exists(ad.placement_id));
-          EXPECT_EQ(1U, GetAdEventCount(AdType::kNotificationAd,
-                                        ConfirmationType::kServed));
-          EXPECT_EQ(1U, GetAdEventCount(AdType::kNotificationAd,
-                                        ConfirmationType::kViewed));
-          EXPECT_EQ(1U, GetHistoryItemCount());
-          EXPECT_EQ(1U, GetTransactionCount());
+          EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNotificationAd,
+                                                  ConfirmationType::kServed));
+          EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNotificationAd,
+                                                  ConfirmationType::kViewed));
+          EXPECT_EQ(1U, GetHistoryItemCountForTesting());
+          EXPECT_EQ(1U, GetTransactionCountForTesting());
         });
 
         EXPECT_CALL(ads_client_mock_, AddTrainingSample).Times(0);
@@ -135,10 +135,10 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
         EXPECT_CALL(callback, Run).WillOnce([](const bool success) {
           // Assert
           EXPECT_TRUE(success);
-          EXPECT_EQ(1U, GetAdEventCount(AdType::kNotificationAd,
-                                        ConfirmationType::kClicked));
-          EXPECT_EQ(1U, GetHistoryItemCount());
-          EXPECT_EQ(1U, GetTransactionCount());
+          EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNotificationAd,
+                                                  ConfirmationType::kClicked));
+          EXPECT_EQ(1U, GetHistoryItemCountForTesting());
+          EXPECT_EQ(1U, GetTransactionCountForTesting());
         });
 
         EXPECT_CALL(ads_client_mock_, AddTrainingSample);
@@ -167,10 +167,11 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
           EXPECT_TRUE(success);
           EXPECT_FALSE(
               NotificationAdManager::GetInstance().Exists(ad.placement_id));
-          EXPECT_EQ(1U, GetAdEventCount(AdType::kNotificationAd,
-                                        ConfirmationType::kDismissed));
-          EXPECT_EQ(1U, GetHistoryItemCount());
-          EXPECT_EQ(1U, GetTransactionCount());
+          EXPECT_EQ(1U,
+                    GetAdEventCountForTesting(AdType::kNotificationAd,
+                                              ConfirmationType::kDismissed));
+          EXPECT_EQ(1U, GetHistoryItemCountForTesting());
+          EXPECT_EQ(1U, GetTransactionCountForTesting());
         });
 
         EXPECT_CALL(ads_client_mock_, AddTrainingSample);
@@ -199,8 +200,8 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerTimedOutEvent) {
           EXPECT_TRUE(success);
           EXPECT_FALSE(
               NotificationAdManager::GetInstance().Exists(ad.placement_id));
-          EXPECT_EQ(0U, GetHistoryItemCount());
-          EXPECT_EQ(0U, GetTransactionCount());
+          EXPECT_EQ(0U, GetHistoryItemCountForTesting());
+          EXPECT_EQ(0U, GetTransactionCountForTesting());
         });
 
         EXPECT_CALL(ads_client_mock_, AddTrainingSample);

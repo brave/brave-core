@@ -35,7 +35,7 @@ namespace {
 
 void AddHistoryItem() {
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   HistoryManager::GetInstance().Add(BuildNotificationAd(creative_ad),
                                     ConfirmationType::kViewed);
 }

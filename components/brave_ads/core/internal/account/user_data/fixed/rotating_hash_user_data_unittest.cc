@@ -33,7 +33,7 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
   sys_info.device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
-  const TransactionInfo transaction = BuildUnreconciledTransaction(
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
@@ -49,13 +49,13 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
 TEST_F(BraveAdsRotatingHashUserDataTest,
        DoNotBuildRotatingHashUserDataForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   auto& sys_info = GlobalState::GetInstance()->SysInfo();
   sys_info.device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
-  const TransactionInfo transaction = BuildUnreconciledTransaction(
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
@@ -68,7 +68,7 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
 TEST_F(BraveAdsRotatingHashUserDataTest,
        DoNotBuildRotatingHashUserDataIfMissingDeviceId) {
   // Arrange
-  const TransactionInfo transaction = BuildUnreconciledTransaction(
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 

@@ -24,7 +24,7 @@ TEST_F(BraveAdsRewardCredentialJsonWriterTest, WriteRewardCredential) {
   EXPECT_EQ(
       R"~({"signature":"PblFP7WI3ZC3aAX73A9UvBdqnvl87Wx8nnz9DIbhNjxbFamMZGbwn5Hi+FXsSXg2GZ671rCwQ6Xpwe61JjeW9Q==","t":"IXDCnZnVEJ0orkbZfr2ut2NQPQ0ofdervKBmQ2hyjcClGCjA3/ExbBumO0ua5cxwo//nN0uKQ60kknru8hRXxw=="})~",
       json::writer::WriteRewardCredential(
-          BuildReward(),
+          BuildRewardForTesting(),
           /*payload*/ "definition: the weight of a payload"));
 }
 

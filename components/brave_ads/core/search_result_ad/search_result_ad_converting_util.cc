@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/search_result_ad/search_result_ad_converting_util.h"
 
 #include <iterator>
-#include <string>
 #include <utility>
 
 #include "base/containers/contains.h"

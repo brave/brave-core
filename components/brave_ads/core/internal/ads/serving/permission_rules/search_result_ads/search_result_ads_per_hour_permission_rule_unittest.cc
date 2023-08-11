@@ -33,8 +33,8 @@ TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
   // Arrange
 
   // Act
-  RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumSearchResultAdsPerHour.Get() - 1);
+  RecordAdEventsForTesting(AdType::kSearchResultAd, ConfirmationType::kServed,
+                           /*count*/ kMaximumSearchResultAdsPerHour.Get() - 1);
 
   // Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
@@ -43,8 +43,8 @@ TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
 TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
        ShouldAllowIfDoesNotExceedCapAfter1Hour) {
   // Arrange
-  RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumSearchResultAdsPerHour.Get());
+  RecordAdEventsForTesting(AdType::kSearchResultAd, ConfirmationType::kServed,
+                           /*count*/ kMaximumSearchResultAdsPerHour.Get());
 
   // Act
   AdvanceClockBy(base::Hours(1));
@@ -56,8 +56,8 @@ TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
 TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
        ShouldNotAllowIfExceedsCapWithin1Hour) {
   // Arrange
-  RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumSearchResultAdsPerHour.Get());
+  RecordAdEventsForTesting(AdType::kSearchResultAd, ConfirmationType::kServed,
+                           /*count*/ kMaximumSearchResultAdsPerHour.Get());
 
   // Act
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));

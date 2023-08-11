@@ -10,7 +10,7 @@
 namespace brave_ads {
 
 void ForceIssuersPermissionRuleForTesting() {
-  BuildAndSetIssuers();
+  BuildAndSetIssuersForTesting();
 }
 
 }  // namespace brave_ads

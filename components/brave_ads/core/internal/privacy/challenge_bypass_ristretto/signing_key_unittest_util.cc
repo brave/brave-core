@@ -10,11 +10,11 @@
 
 namespace brave_ads::privacy::cbr {
 
-SigningKey GetSigningKey() {
+SigningKey GetSigningKeyForTesting() {
   return SigningKey(kSigningKeyBase64);
 }
 
-SigningKey GetInvalidSigningKey() {
+SigningKey GetInvalidSigningKeyForTesting() {
   return SigningKey(kInvalidBase64);
 }
 

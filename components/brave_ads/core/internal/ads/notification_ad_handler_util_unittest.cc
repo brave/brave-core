@@ -23,7 +23,7 @@ namespace {
 
 void BuildAndShowNotificationAd() {
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
   ShowNotificationAd(ad);
 }
@@ -64,7 +64,7 @@ TEST_F(BraveAdsNotificationAdUtilTest, ShouldServe) {
 TEST_F(BraveAdsNotificationAdUtilTest,
        ShouldNotServeIfOptedOutOfNotificationAds) {
   // Arrange
-  DisableNotificationAds();
+  DisableNotificationAdsForTesting();
 
   // Act
 

@@ -34,7 +34,8 @@ class BraveAdsSubdivisionTargetingTest : public UnitTestBase {
                              const std::string& region) {
     const URLResponseMap url_responses = {
         {BuildSubdivisionUrlPath(),
-         {{net::HTTP_OK, BuildSubdivisionUrlResponseBody(country, region)}}}};
+         {{net::HTTP_OK,
+           BuildSubdivisionUrlResponseBodyForTesting(country, region)}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 
@@ -44,8 +45,8 @@ class BraveAdsSubdivisionTargetingTest : public UnitTestBase {
 TEST_F(BraveAdsSubdivisionTargetingTest,
        AllowAndFetchWhenOptingInToNotificationAds) {
   // Arrange
-  DisableBraveNewsAds();
-  DisableNotificationAds();
+  DisableBraveNewsAdsForTesting();
+  DisableNotificationAdsForTesting();
 
   MockHttpOkUrlResponse(/*country*/ "US", /*region*/ "CA");
 
@@ -63,8 +64,8 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 TEST_F(BraveAdsSubdivisionTargetingTest,
        AllowAndFetchWhenOptingInToBraveNewsAds) {
   // Arrange
-  DisableBraveNewsAds();
-  DisableNotificationAds();
+  DisableBraveNewsAdsForTesting();
+  DisableNotificationAdsForTesting();
 
   MockHttpOkUrlResponse(/*country*/ "US", /*region*/ "CA");
 
@@ -84,7 +85,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 TEST_F(BraveAdsSubdivisionTargetingTest,
        DoNotFetchWhenOptingOutOfNotificationAds) {
   // Arrange
-  DisableBraveNewsAds();
+  DisableBraveNewsAdsForTesting();
 
   MockHttpOkUrlResponse(/*country*/ "US", /*region*/ "CA");
 
@@ -101,7 +102,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 TEST_F(BraveAdsSubdivisionTargetingTest,
        DoNotFetchWhenOptingOutOfBraveNewsAds) {
   // Arrange
-  DisableNotificationAds();
+  DisableNotificationAdsForTesting();
 
   MockHttpOkUrlResponse(/*country*/ "US", /*region*/ "CA");
 
@@ -254,7 +255,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
        {{net::HTTP_INTERNAL_SERVER_ERROR,
          /*response_body*/ net::GetHttpReasonPhrase(
              net::HTTP_INTERNAL_SERVER_ERROR)},
-        {net::HTTP_OK, BuildSubdivisionUrlResponseBody(
+        {net::HTTP_OK, BuildSubdivisionUrlResponseBodyForTesting(
                            /*country*/ "US", /*region*/ "CA")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -280,7 +281,7 @@ TEST_P(BraveAdsSubdivisionTargetingRetryOnInvalidUrlResponseBodyTest,
   const URLResponseMap url_responses = {
       {BuildSubdivisionUrlPath(),
        {{net::HTTP_OK, /*response_body*/ GetParam()},
-        {net::HTTP_OK, BuildSubdivisionUrlResponseBody(
+        {net::HTTP_OK, BuildSubdivisionUrlResponseBodyForTesting(
                            /*country*/ "US", /*region*/ "CA")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 

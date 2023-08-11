@@ -39,7 +39,7 @@ TEST_F(BraveAdsCatalogUserDataTest, BuildCatalogUserDataForRewardsUser) {
 TEST_F(BraveAdsCatalogUserDataTest,
        DoNotBuildCatalogUserDataForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   // Act
 

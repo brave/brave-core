@@ -75,13 +75,13 @@ void SearchResultAd::TriggerEvent(
 }
 
 // static
-void SearchResultAd::DeferTriggeringOfAdViewedEventForTesting() {
+void SearchResultAd::DeferTriggeringOfAdViewedEvent() {
   CHECK(!g_defer_triggering_of_ad_viewed_event_for_testing);
   g_defer_triggering_of_ad_viewed_event_for_testing = true;
 }
 
 // static
-void SearchResultAd::TriggerDeferredAdViewedEventForTesting() {
+void SearchResultAd::TriggerDeferredAdViewedEvent() {
   CHECK(g_defer_triggering_of_ad_viewed_event_for_testing);
   CHECK(g_deferred_search_result_ad_for_testing);
   g_defer_triggering_of_ad_viewed_event_for_testing = false;

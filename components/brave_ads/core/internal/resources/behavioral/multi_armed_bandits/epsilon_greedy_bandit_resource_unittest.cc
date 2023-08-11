@@ -66,7 +66,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
 TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
        LoadResourceIfOptedOutOfNotificationAdsAndOptedInToBraveNewsAds) {
   // Arrange
-  DisableNotificationAds();
+  DisableNotificationAdsForTesting();
 
   // Act
   LoadResource("catalog.json");
@@ -78,7 +78,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
 TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
        LoadResourceIfOptedInToNotificationAdsAndOptedOutOfBraveNewsAds) {
   // Arrange
-  DisableBraveNewsAds();
+  DisableBraveNewsAdsForTesting();
 
   // Act
   LoadResource("catalog.json");
@@ -100,8 +100,8 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest, LoadResourceIfEmptyCatalog) {
 TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
        DoNotLoadResourceIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableNotificationAds();
-  DisableBraveNewsAds();
+  DisableNotificationAdsForTesting();
+  DisableBraveNewsAdsForTesting();
 
   // Act
   LoadResource("catalog.json");
@@ -116,8 +116,8 @@ TEST_F(
   // Arrange
   LoadResource("catalog.json");
 
-  DisableNotificationAds();
-  DisableBraveNewsAds();
+  DisableNotificationAdsForTesting();
+  DisableBraveNewsAdsForTesting();
 
   // Act
   NotifyPrefDidChange(prefs::kOptedInToNotificationAds);

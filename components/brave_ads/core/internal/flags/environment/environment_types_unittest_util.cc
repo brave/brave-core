@@ -16,7 +16,7 @@ constexpr char kStagingEnvironment[] = "Staging";
 
 }  // namespace
 
-std::string EnvironmentTypeEnumToString(
+std::string EnvironmentTypeEnumToStringForTesting(
     const mojom::EnvironmentType environment_type) {
   CHECK(mojom::IsKnownEnumValue(environment_type));
 

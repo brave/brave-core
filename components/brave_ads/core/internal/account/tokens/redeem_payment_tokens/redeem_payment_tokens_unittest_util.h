@@ -10,7 +10,7 @@
 
 namespace brave_ads {
 
-std::string BuildRedeemPaymentTokensUrlResponseBody();
+std::string BuildRedeemPaymentTokensUrlResponseBodyForTesting();
 
 }  // namespace brave_ads
 

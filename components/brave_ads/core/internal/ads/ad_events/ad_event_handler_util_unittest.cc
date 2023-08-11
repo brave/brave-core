@@ -19,8 +19,8 @@ namespace brave_ads {
 
 TEST(BraveAdsAdEventHandlerUtilTest, HasFiredAdEvent) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEvent(ad, ConfirmationType::kServed,
@@ -35,8 +35,8 @@ TEST(BraveAdsAdEventHandlerUtilTest, HasFiredAdEvent) {
 
 TEST(BraveAdsAdEventHandlerUtilTest, HasNotFiredAdEvent) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event =

@@ -33,8 +33,9 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
   // Arrange
 
   // Act
-  RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumPromotedContentAdsPerDay.Get() - 1);
+  RecordAdEventsForTesting(
+      AdType::kPromotedContentAd, ConfirmationType::kServed,
+      /*count*/ kMaximumPromotedContentAdsPerDay.Get() - 1);
 
   // Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
@@ -43,8 +44,9 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
 TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
        ShouldAllowIfDoesNotExceedCapAfter1Day) {
   // Arrange
-  RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumPromotedContentAdsPerDay.Get());
+  RecordAdEventsForTesting(AdType::kPromotedContentAd,
+                           ConfirmationType::kServed,
+                           /*count*/ kMaximumPromotedContentAdsPerDay.Get());
 
   // Act
   AdvanceClockBy(base::Days(1));
@@ -56,8 +58,9 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
 TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
        ShouldNotAllowIfExceedsCapWithin1Day) {
   // Arrange
-  RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumPromotedContentAdsPerDay.Get());
+  RecordAdEventsForTesting(AdType::kPromotedContentAd,
+                           ConfirmationType::kServed,
+                           /*count*/ kMaximumPromotedContentAdsPerDay.Get());
 
   // Act
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));

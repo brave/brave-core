@@ -15,13 +15,13 @@
 
 namespace brave_ads {
 
-RewardInfo BuildReward() {
+RewardInfo BuildRewardForTesting() {
   RewardInfo reward;
 
-  reward.token = privacy::cbr::GetToken();
-  reward.blinded_token = privacy::cbr::GetBlindedToken();
-  reward.unblinded_token = privacy::cbr::GetUnblindedToken();
-  reward.public_key = privacy::cbr::GetPublicKey();
+  reward.token = privacy::cbr::GetTokenForTesting();
+  reward.blinded_token = privacy::cbr::GetBlindedTokenForTesting();
+  reward.unblinded_token = privacy::cbr::GetUnblindedTokenForTesting();
+  reward.public_key = privacy::cbr::GetPublicKeyForTesting();
   reward.signature = "signature";
   reward.credential_base64url = "credential";
 

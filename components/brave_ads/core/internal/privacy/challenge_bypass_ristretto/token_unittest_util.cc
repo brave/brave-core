@@ -10,20 +10,20 @@
 
 namespace brave_ads::privacy::cbr {
 
-Token GetToken() {
+Token GetTokenForTesting() {
   return Token(kTokenBase64);
 }
 
-std::vector<Token> GetTokens() {
-  return {GetToken()};
+std::vector<Token> GetTokensForTesting() {
+  return {GetTokenForTesting()};
 }
 
-Token GetInvalidToken() {
+Token GetInvalidTokenForTesting() {
   return Token(kInvalidBase64);
 }
 
-std::vector<Token> GetInvalidTokens() {
-  return {GetInvalidToken()};
+std::vector<Token> GetInvalidTokensForTesting() {
+  return {GetInvalidTokenForTesting()};
 }
 
 }  // namespace brave_ads::privacy::cbr

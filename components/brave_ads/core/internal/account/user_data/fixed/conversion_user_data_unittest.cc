@@ -27,14 +27,15 @@ class BraveAdsConversionUserDataBuilderTest : public UnitTestBase {};
 TEST_F(BraveAdsConversionUserDataBuilderTest,
        BuildConversionUserDataForRewardsUser) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
-  const ConversionInfo conversion = BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
+  const ConversionInfo conversion =
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt);
   const ConversionQueueItemList conversion_queue_items =
-      BuildConversionQueueItems(conversion, /*count*/ 1);
-  SaveConversionQueueItems(conversion_queue_items);
+      BuildConversionQueueItemsForTesting(conversion, /*count*/ 1);
+  SaveConversionQueueItemsForTesting(conversion_queue_items);
 
   // Act
   BuildConversionUserData(
@@ -50,15 +51,16 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
 TEST_F(BraveAdsConversionUserDataBuilderTest,
        BuildVerifiableConversionUserDataForRewardsUser) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
   const ConversionInfo conversion = BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at*/ Now()),
+      BuildAdEvent(ad, ConfirmationType::kClicked,
+                   /*created_at*/ Now()),
       VerifiableConversionInfo{kVerifiableConversionId,
                                kVerifiableConversionAdvertiserPublicKey});
   const ConversionQueueItemList conversion_queue_items =
-      BuildConversionQueueItems(conversion, /*count*/ 1);
-  SaveConversionQueueItems(conversion_queue_items);
+      BuildConversionQueueItemsForTesting(conversion, /*count*/ 1);
+  SaveConversionQueueItemsForTesting(conversion_queue_items);
 
   // Act
   BuildConversionUserData(
@@ -77,16 +79,17 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
 TEST_F(BraveAdsConversionUserDataBuilderTest,
        BuildConversionUserDataForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
-  const ConversionInfo conversion = BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
+  const ConversionInfo conversion =
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt);
   const ConversionQueueItemList conversion_queue_items =
-      BuildConversionQueueItems(conversion, /*count*/ 1);
-  SaveConversionQueueItems(conversion_queue_items);
+      BuildConversionQueueItemsForTesting(conversion, /*count*/ 1);
+  SaveConversionQueueItemsForTesting(conversion_queue_items);
 
   // Act
   BuildConversionUserData(
@@ -102,17 +105,18 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
 TEST_F(BraveAdsConversionUserDataBuilderTest,
        BuildVerifiableConversionUserDataForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
   const ConversionInfo conversion = BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at*/ Now()),
+      BuildAdEvent(ad, ConfirmationType::kClicked,
+                   /*created_at*/ Now()),
       VerifiableConversionInfo{kVerifiableConversionId,
                                kVerifiableConversionAdvertiserPublicKey});
   const ConversionQueueItemList conversion_queue_items =
-      BuildConversionQueueItems(conversion, /*count*/ 1);
-  SaveConversionQueueItems(conversion_queue_items);
+      BuildConversionQueueItemsForTesting(conversion, /*count*/ 1);
+  SaveConversionQueueItemsForTesting(conversion_queue_items);
 
   // Act
   BuildConversionUserData(
@@ -131,15 +135,16 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
 TEST_F(BraveAdsConversionUserDataBuilderTest,
        DoNotBuildConversionForMissingCreativeInstanceId) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
   const ConversionInfo conversion = BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
+      BuildAdEvent(ad, ConfirmationType::kViewed,
+                   /*created_at*/ Now()),
       VerifiableConversionInfo{kVerifiableConversionId,
                                kVerifiableConversionAdvertiserPublicKey});
   const ConversionQueueItemList conversion_queue_items =
-      BuildConversionQueueItems(conversion, /*count*/ 1);
-  SaveConversionQueueItems(conversion_queue_items);
+      BuildConversionQueueItemsForTesting(conversion, /*count*/ 1);
+  SaveConversionQueueItemsForTesting(conversion_queue_items);
 
   // Act
   BuildConversionUserData(kMissingCreativeInstanceId,

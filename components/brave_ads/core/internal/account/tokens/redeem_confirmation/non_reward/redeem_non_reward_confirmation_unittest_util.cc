@@ -7,7 +7,7 @@
 
 namespace brave_ads {
 
-std::string BuildCreateNonRewardConfirmationUrlResponseBody() {
+std::string BuildCreateNonRewardConfirmationUrlResponseBodyForTesting() {
   return R"({
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",

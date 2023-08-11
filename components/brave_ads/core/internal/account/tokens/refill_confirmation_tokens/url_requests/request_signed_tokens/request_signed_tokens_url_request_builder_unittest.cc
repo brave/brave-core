@@ -25,7 +25,7 @@ TEST_F(BraveAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrl) {
       mojom::EnvironmentType::kStaging;
 
   const std::vector<privacy::cbr::Token> tokens =
-      privacy::BuildTokens(/*count*/ 3);
+      privacy::BuildTokensForTesting(/*count*/ 3);
   const std::vector<privacy::cbr::BlindedToken> blinded_tokens =
       privacy::cbr::BlindTokens(tokens);
 

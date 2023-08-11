@@ -16,7 +16,8 @@ class BraveAdsRedeemRewardConfirmationUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsRedeemRewardConfirmationUtilTest, AddPaymentToken) {
   // Arrange
-  const privacy::PaymentTokenInfo payment_token = privacy::BuildPaymentToken();
+  const privacy::PaymentTokenInfo payment_token =
+      privacy::BuildPaymentTokenForTesting();
 
   // Act
   const auto result = MaybeAddPaymentToken(payment_token);
@@ -28,7 +29,8 @@ TEST_F(BraveAdsRedeemRewardConfirmationUtilTest, AddPaymentToken) {
 TEST_F(BraveAdsRedeemRewardConfirmationUtilTest,
        DoNotAddDuplicatePaymentToken) {
   // Arrange
-  const privacy::PaymentTokenInfo payment_token = privacy::BuildPaymentToken();
+  const privacy::PaymentTokenInfo payment_token =
+      privacy::BuildPaymentTokenForTesting();
 
   {
     const auto result = MaybeAddPaymentToken(payment_token);

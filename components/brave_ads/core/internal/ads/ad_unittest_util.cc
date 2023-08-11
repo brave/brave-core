@@ -18,16 +18,16 @@
 
 namespace brave_ads {
 
-void DisableBraveRewards() {
+void DisableBraveRewardsForTesting() {
   SetDefaultBooleanPref(brave_rewards::prefs::kEnabled, false);
 }
 
-void DisableBraveNewsAds() {
+void DisableBraveNewsAdsForTesting() {
   SetDefaultBooleanPref(brave_news::prefs::kBraveNewsOptedIn, false);
   SetDefaultBooleanPref(brave_news::prefs::kNewTabPageShowToday, false);
 }
 
-void DisableNewTabPageAds() {
+void DisableNewTabPageAdsForTesting() {
   SetDefaultBooleanPref(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage, false);
   SetDefaultBooleanPref(ntp_background_images::prefs::
@@ -35,11 +35,12 @@ void DisableNewTabPageAds() {
                         false);
 }
 
-void DisableNotificationAds() {
+void DisableNotificationAdsForTesting() {
   SetDefaultBooleanPref(prefs::kOptedInToNotificationAds, false);
 }
 
-AdInfo BuildAd(const AdType& ad_type, const bool should_use_random_uuids) {
+AdInfo BuildAdForTesting(const AdType& ad_type,
+                         const bool should_use_random_uuids) {
   AdInfo ad;
 
   ad.type = ad_type;

@@ -10,7 +10,7 @@
 
 namespace brave_ads {
 
-std::string BuildCreateNonRewardConfirmationUrlResponseBody();
+std::string BuildCreateNonRewardConfirmationUrlResponseBodyForTesting();
 
 }  // namespace brave_ads
 

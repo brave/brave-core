@@ -12,11 +12,11 @@ namespace brave_ads {
 
 struct ConversionInfo;
 
-ConversionQueueItemList BuildConversionQueueItems(
+ConversionQueueItemList BuildConversionQueueItemsForTesting(
     const ConversionInfo& conversion,
     size_t count);
 
-void SaveConversionQueueItems(
+void SaveConversionQueueItemsForTesting(
     const ConversionQueueItemList& conversion_queue_items);
 
 }  // namespace brave_ads

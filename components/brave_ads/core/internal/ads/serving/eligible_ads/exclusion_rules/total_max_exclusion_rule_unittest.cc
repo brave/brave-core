@@ -45,7 +45,7 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
   creative_ad.total_max = 2;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = BuildAdEvent(
+  const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
   ad_events.push_back(ad_event);
 
@@ -68,7 +68,7 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest,
   creative_ad_2.creative_set_id = kCreativeSetIds[1];
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = BuildAdEvent(
+  const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad_2, AdType::kNotificationAd, ConfirmationType::kServed, Now());
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
@@ -102,7 +102,7 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest, ShouldExcludeIfExceedsCap) {
   creative_ad.total_max = 2;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = BuildAdEvent(
+  const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);

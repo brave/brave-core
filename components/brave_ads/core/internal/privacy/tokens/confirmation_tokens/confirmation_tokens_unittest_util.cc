@@ -17,26 +17,27 @@
 
 namespace brave_ads::privacy {
 
-ConfirmationTokens& GetConfirmationTokens() {
+ConfirmationTokens& GetConfirmationTokensForTesting() {
   return ConfirmationStateManager::GetInstance().GetConfirmationTokens();
 }
 
-ConfirmationTokenList SetConfirmationTokens(const int count) {
+ConfirmationTokenList SetConfirmationTokensForTesting(const int count) {
   CHECK_GT(count, 0);
 
-  ConfirmationTokenList confirmation_tokens = BuildConfirmationTokens(count);
-  GetConfirmationTokens().SetTokens(confirmation_tokens);
+  ConfirmationTokenList confirmation_tokens =
+      BuildConfirmationTokensForTesting(count);
+  GetConfirmationTokensForTesting().SetTokens(confirmation_tokens);
   return confirmation_tokens;
 }
 
-ConfirmationTokenList BuildConfirmationTokens(
+ConfirmationTokenList BuildConfirmationTokensForTesting(
     const std::vector<std::string>& unblinded_tokens_base64,
     const WalletInfo& wallet) {
   ConfirmationTokenList confirmation_tokens;
 
   for (const auto& unblinded_token_base64 : unblinded_tokens_base64) {
     const ConfirmationTokenInfo confirmation_token =
-        BuildConfirmationToken(unblinded_token_base64, wallet);
+        BuildConfirmationTokenForTesting(unblinded_token_base64, wallet);
 
     confirmation_tokens.push_back(confirmation_token);
   }
@@ -44,7 +45,7 @@ ConfirmationTokenList BuildConfirmationTokens(
   return confirmation_tokens;
 }
 
-ConfirmationTokenInfo BuildConfirmationToken(
+ConfirmationTokenInfo BuildConfirmationTokenForTesting(
     const std::string& unblinded_token_base64,
     const WalletInfo& wallet) {
   ConfirmationTokenInfo confirmation_token;
@@ -65,7 +66,7 @@ ConfirmationTokenInfo BuildConfirmationToken(
   return confirmation_token;
 }
 
-ConfirmationTokenList BuildConfirmationTokens(const int count) {
+ConfirmationTokenList BuildConfirmationTokensForTesting(const int count) {
   CHECK_GT(count, 0);
 
   const WalletInfo wallet = GetWalletForTesting();
@@ -90,7 +91,7 @@ ConfirmationTokenList BuildConfirmationTokens(const int count) {
     const std::string& unblinded_token_base64 =
         unblinded_tokens_base64.at(i % modulo);
     const ConfirmationTokenInfo confirmation_token =
-        BuildConfirmationToken(unblinded_token_base64, wallet);
+        BuildConfirmationTokenForTesting(unblinded_token_base64, wallet);
 
     confirmation_tokens.push_back(confirmation_token);
   }
@@ -98,9 +99,9 @@ ConfirmationTokenList BuildConfirmationTokens(const int count) {
   return confirmation_tokens;
 }
 
-ConfirmationTokenInfo BuildConfirmationToken() {
+ConfirmationTokenInfo BuildConfirmationTokenForTesting() {
   const ConfirmationTokenList confirmation_tokens =
-      BuildConfirmationTokens(/*count*/ 1);
+      BuildConfirmationTokensForTesting(/*count*/ 1);
   CHECK(!confirmation_tokens.empty());
   return confirmation_tokens.front();
 }

@@ -10,8 +10,8 @@
 
 namespace brave_ads {
 
-std::string BuildSubdivision(const std::string& country,
-                             const std::string& region);
+std::string BuildSubdivisionForTesting(const std::string& country,
+                                       const std::string& region);
 
 }  // namespace brave_ads
 

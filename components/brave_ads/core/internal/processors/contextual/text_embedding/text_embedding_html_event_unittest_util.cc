@@ -11,7 +11,7 @@
 
 namespace brave_ads {
 
-ml::pipeline::TextEmbeddingInfo BuildTextEmbedding() {
+ml::pipeline::TextEmbeddingInfo BuildTextEmbeddingForTesting() {
   ml::pipeline::TextEmbeddingInfo text_embedding;
   text_embedding.text = "The quick brown fox jumps over the lazy dog";
   text_embedding.hashed_text_base64 =

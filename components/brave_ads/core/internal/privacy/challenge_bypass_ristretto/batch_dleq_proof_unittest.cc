@@ -66,8 +66,9 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToInitializeWithInvalidBase64) {
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToInitializeWithInvalidBlindedTokens) {
   // Arrange
-  const BatchDLEQProof batch_dleq_proof(GetInvalidBlindedTokens(),
-                                        GetSignedTokens(), GetSigningKey());
+  const BatchDLEQProof batch_dleq_proof(GetInvalidBlindedTokensForTesting(),
+                                        GetSignedTokensForTesting(),
+                                        GetSigningKeyForTesting());
 
   // Act
 
@@ -77,8 +78,9 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToInitializeWithInvalidBlindedTokens) {
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToInitializeWithInvalidSignedTokens) {
   // Arrange
-  const BatchDLEQProof batch_dleq_proof(
-      GetBlindedTokens(), GetInvalidSignedTokens(), GetSigningKey());
+  const BatchDLEQProof batch_dleq_proof(GetBlindedTokensForTesting(),
+                                        GetInvalidSignedTokensForTesting(),
+                                        GetSigningKeyForTesting());
 
   // Act
 
@@ -88,8 +90,9 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToInitializeWithInvalidSignedTokens) {
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToInitializeWithInvalidSigningKey) {
   // Arrange
-  const BatchDLEQProof batch_dleq_proof(GetBlindedTokens(), GetSignedTokens(),
-                                        GetInvalidSigningKey());
+  const BatchDLEQProof batch_dleq_proof(GetBlindedTokensForTesting(),
+                                        GetSignedTokensForTesting(),
+                                        GetInvalidSigningKeyForTesting());
 
   // Act
 
@@ -156,8 +159,9 @@ TEST_F(BraveAdsBatchDLEQProofTest, Verify) {
   // Act
 
   // Assert
-  EXPECT_TRUE(batch_dleq_proof.Verify(GetBlindedTokens(), GetSignedTokens(),
-                                      GetPublicKey()));
+  EXPECT_TRUE(batch_dleq_proof.Verify(GetBlindedTokensForTesting(),
+                                      GetSignedTokensForTesting(),
+                                      GetPublicKeyForTesting()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyWhenUninitialized) {
@@ -167,8 +171,9 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyWhenUninitialized) {
   // Act
 
   // Assert
-  EXPECT_FALSE(batch_dleq_proof.Verify(GetBlindedTokens(), GetSignedTokens(),
-                                       GetPublicKey()));
+  EXPECT_FALSE(batch_dleq_proof.Verify(GetBlindedTokensForTesting(),
+                                       GetSignedTokensForTesting(),
+                                       GetPublicKeyForTesting()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyWithInvalidBlindedTokens) {
@@ -178,8 +183,9 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyWithInvalidBlindedTokens) {
   // Act
 
   // Assert
-  EXPECT_FALSE(batch_dleq_proof.Verify(GetInvalidBlindedTokens(),
-                                       GetSignedTokens(), GetPublicKey()));
+  EXPECT_FALSE(batch_dleq_proof.Verify(GetInvalidBlindedTokensForTesting(),
+                                       GetSignedTokensForTesting(),
+                                       GetPublicKeyForTesting()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyWithInvalidSignedTokens) {
@@ -189,8 +195,9 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyWithInvalidSignedTokens) {
   // Act
 
   // Assert
-  EXPECT_FALSE(batch_dleq_proof.Verify(
-      GetBlindedTokens(), GetInvalidSignedTokens(), GetPublicKey()));
+  EXPECT_FALSE(batch_dleq_proof.Verify(GetBlindedTokensForTesting(),
+                                       GetInvalidSignedTokensForTesting(),
+                                       GetPublicKeyForTesting()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyWithMismatchingPublicKey) {
@@ -200,8 +207,9 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyWithMismatchingPublicKey) {
   // Act
 
   // Assert
-  EXPECT_FALSE(batch_dleq_proof.Verify(GetBlindedTokens(), GetSignedTokens(),
-                                       GetMismatchingPublicKey()));
+  EXPECT_FALSE(batch_dleq_proof.Verify(GetBlindedTokensForTesting(),
+                                       GetSignedTokensForTesting(),
+                                       GetMismatchingPublicKeyForTesting()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyWithInvalidPublicKey) {
@@ -211,8 +219,9 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyWithInvalidPublicKey) {
   // Act
 
   // Assert
-  EXPECT_FALSE(batch_dleq_proof.Verify(GetBlindedTokens(), GetSignedTokens(),
-                                       GetInvalidPublicKey()));
+  EXPECT_FALSE(batch_dleq_proof.Verify(GetBlindedTokensForTesting(),
+                                       GetSignedTokensForTesting(),
+                                       GetInvalidPublicKeyForTesting()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, VerifyAndUnblind) {
@@ -222,9 +231,10 @@ TEST_F(BraveAdsBatchDLEQProofTest, VerifyAndUnblind) {
   // Act
 
   // Assert
-  EXPECT_EQ(GetUnblindedTokens(), batch_dleq_proof.VerifyAndUnblind(
-                                      GetTokens(), GetBlindedTokens(),
-                                      GetSignedTokens(), GetPublicKey()));
+  EXPECT_EQ(GetUnblindedTokensForTesting(),
+            batch_dleq_proof.VerifyAndUnblind(
+                GetTokensForTesting(), GetBlindedTokensForTesting(),
+                GetSignedTokensForTesting(), GetPublicKeyForTesting()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyAndUnblindWhenUninitialized) {
@@ -235,7 +245,8 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyAndUnblindWhenUninitialized) {
 
   // Assert
   ASSERT_FALSE(batch_dleq_proof.VerifyAndUnblind(
-      GetTokens(), GetBlindedTokens(), GetSignedTokens(), GetPublicKey()));
+      GetTokensForTesting(), GetBlindedTokensForTesting(),
+      GetSignedTokensForTesting(), GetPublicKeyForTesting()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithInvalidTokens) {
@@ -245,9 +256,9 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithInvalidTokens) {
   // Act
 
   // Assert
-  EXPECT_FALSE(
-      batch_dleq_proof.VerifyAndUnblind(GetInvalidTokens(), GetBlindedTokens(),
-                                        GetSignedTokens(), GetPublicKey()));
+  EXPECT_FALSE(batch_dleq_proof.VerifyAndUnblind(
+      GetInvalidTokensForTesting(), GetBlindedTokensForTesting(),
+      GetSignedTokensForTesting(), GetPublicKeyForTesting()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest,
@@ -258,9 +269,9 @@ TEST_F(BraveAdsBatchDLEQProofTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(
-      batch_dleq_proof.VerifyAndUnblind(GetTokens(), GetInvalidBlindedTokens(),
-                                        GetSignedTokens(), GetPublicKey()));
+  EXPECT_FALSE(batch_dleq_proof.VerifyAndUnblind(
+      GetTokensForTesting(), GetInvalidBlindedTokensForTesting(),
+      GetSignedTokensForTesting(), GetPublicKeyForTesting()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest,
@@ -272,8 +283,8 @@ TEST_F(BraveAdsBatchDLEQProofTest,
 
   // Assert
   EXPECT_FALSE(batch_dleq_proof.VerifyAndUnblind(
-      GetTokens(), GetBlindedTokens(), GetInvalidSignedTokens(),
-      GetPublicKey()));
+      GetTokensForTesting(), GetBlindedTokensForTesting(),
+      GetInvalidSignedTokensForTesting(), GetPublicKeyForTesting()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest,
@@ -285,8 +296,8 @@ TEST_F(BraveAdsBatchDLEQProofTest,
 
   // Assert
   EXPECT_FALSE(batch_dleq_proof.VerifyAndUnblind(
-      GetTokens(), GetBlindedTokens(), GetSignedTokens(),
-      GetMismatchingPublicKey()));
+      GetTokensForTesting(), GetBlindedTokensForTesting(),
+      GetSignedTokensForTesting(), GetMismatchingPublicKeyForTesting()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithInvalidPublicKey) {
@@ -297,8 +308,8 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithInvalidPublicKey) {
 
   // Assert
   EXPECT_FALSE(batch_dleq_proof.VerifyAndUnblind(
-      GetTokens(), GetBlindedTokens(), GetSignedTokens(),
-      GetInvalidPublicKey()));
+      GetTokensForTesting(), GetBlindedTokensForTesting(),
+      GetSignedTokensForTesting(), GetInvalidPublicKeyForTesting()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, IsEqual) {

@@ -43,7 +43,7 @@ TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForRewardsUser) {
 
 TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   const scoped_refptr<base::FieldTrial> field_trial_1 =
       base::FieldTrialList::CreateFieldTrial("BraveAds.FooStudy", "GroupA");

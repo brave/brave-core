@@ -13,12 +13,13 @@
 
 namespace brave_ads {
 
-void ResetEligibleAds(const AdType& type) {
+void ResetEligibleAdsForTesting(const AdType& type) {
   ClientStateManager::GetInstance().ResetAllSeenAdsForType(type);
 
   ClientStateManager::GetInstance().ResetAllSeenAdvertisersForType(type);
 
-  ResetAdEvents(base::BindOnce([](const bool success) { CHECK(success); }));
+  ResetAdEventsForTesting(
+      base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
 }  // namespace brave_ads

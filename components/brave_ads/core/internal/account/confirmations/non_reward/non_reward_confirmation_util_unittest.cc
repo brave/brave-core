@@ -21,11 +21,11 @@ class BraveAdsNonRewardConfirmationUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
-  const TransactionInfo transaction =
-      BuildUnreconciledTransaction(/*value*/ 0.1, ConfirmationType::kViewed,
-                                   /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.1, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ true);
 
   // Act
   const absl::optional<ConfirmationInfo> confirmation =

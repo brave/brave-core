@@ -26,7 +26,7 @@ TEST_F(BraveAdsRewardConfirmationPayloaUtilTest,
   EXPECT_EQ(
       base::test::ParseJsonDict(
           R"~({"blindedPaymentTokens":["mNRViqFD8ZPpjRZi4Xwj1UEsU1j9qPNc4R/BoiWsVi0="],"publicKey":"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g="})~"),
-      BuildRewardConfirmationPayload(BuildReward()));
+      BuildRewardConfirmationPayload(BuildRewardForTesting()));
 }
 
 }  // namespace brave_ads

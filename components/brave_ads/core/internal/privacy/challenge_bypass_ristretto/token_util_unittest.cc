@@ -15,7 +15,7 @@ namespace brave_ads::privacy::cbr {
 
 TEST(BraveAdsTokenUtilTest, TokensToRawTokens) {
   // Arrange
-  const std::vector<Token> tokens = GetTokens();
+  const std::vector<Token> tokens = GetTokensForTesting();
 
   // Act
   const std::vector<challenge_bypass_ristretto::Token> raw_tokens =

@@ -18,15 +18,15 @@ class BraveAdsIssuersUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsIssuersUtilTest, HasIssuersChanged) {
   // Arrange
-  BuildAndSetIssuers();
+  BuildAndSetIssuersForTesting();
 
   // Act
-  const IssuersInfo issuers =
-      BuildIssuers(3'600'000,
-                   {{"Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=", 0.0},
-                    {"TFQCiRJocOh0A8+qHQvdu3V/lDpGsZHJOnZzqny6rFg=", 0.0}},
-                   {{"PmXS59VTEVIPZckOqGdpjisDidUbhLGbhAhN5tmfhhs=", 0.1},
-                    {"Bgk5gT+b96iSr3nD5nuTM/yGQ5klrIe6VC6DDdM6sFs=", 0.0}});
+  const IssuersInfo issuers = BuildIssuersForTesting(
+      3'600'000,
+      {{"Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=", 0.0},
+       {"TFQCiRJocOh0A8+qHQvdu3V/lDpGsZHJOnZzqny6rFg=", 0.0}},
+      {{"PmXS59VTEVIPZckOqGdpjisDidUbhLGbhAhN5tmfhhs=", 0.1},
+       {"Bgk5gT+b96iSr3nD5nuTM/yGQ5klrIe6VC6DDdM6sFs=", 0.0}});
 
   // Assert
   EXPECT_TRUE(HasIssuersChanged(issuers));
@@ -37,12 +37,12 @@ TEST_F(BraveAdsIssuersUtilTest, HasIssuersChangedOnInitialFetch) {
   ads_client_mock_.ClearPref(prefs::kIssuers);
 
   // Act
-  const IssuersInfo issuers =
-      BuildIssuers(3'600'000,
-                   {{"Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=", 0.0},
-                    {"TFQCiRJocOh0A8+qHQvdu3V/lDpGsZHJOnZzqny6rFg=", 0.0}},
-                   {{"PmXS59VTEVIPZckOqGdpjisDidUbhLGbhAhN5tmfhhs=", 0.1},
-                    {"Bgk5gT+b96iSr3nD5nuTM/yGQ5klrIe6VC6DDdM6sFs=", 0.0}});
+  const IssuersInfo issuers = BuildIssuersForTesting(
+      3'600'000,
+      {{"Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=", 0.0},
+       {"TFQCiRJocOh0A8+qHQvdu3V/lDpGsZHJOnZzqny6rFg=", 0.0}},
+      {{"PmXS59VTEVIPZckOqGdpjisDidUbhLGbhAhN5tmfhhs=", 0.1},
+       {"Bgk5gT+b96iSr3nD5nuTM/yGQ5klrIe6VC6DDdM6sFs=", 0.0}});
 
   // Assert
   EXPECT_TRUE(HasIssuersChanged(issuers));
@@ -50,15 +50,15 @@ TEST_F(BraveAdsIssuersUtilTest, HasIssuersChangedOnInitialFetch) {
 
 TEST_F(BraveAdsIssuersUtilTest, HasIssuersNotChanged) {
   // Arrange
-  BuildAndSetIssuers();
+  BuildAndSetIssuersForTesting();
 
   // Act
-  const IssuersInfo issuers =
-      BuildIssuers(7'200'000,
-                   {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
-                    {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
-                   {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-                    {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
+  const IssuersInfo issuers = BuildIssuersForTesting(
+      7'200'000,
+      {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
+       {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
+      {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
+       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
   // Assert
   EXPECT_FALSE(HasIssuersChanged(issuers));
@@ -66,7 +66,7 @@ TEST_F(BraveAdsIssuersUtilTest, HasIssuersNotChanged) {
 
 TEST_F(BraveAdsIssuersUtilTest, IssuerDoesExistForConfirmationsType) {
   // Arrange
-  BuildAndSetIssuers();
+  BuildAndSetIssuersForTesting();
 
   // Act
 
@@ -76,10 +76,10 @@ TEST_F(BraveAdsIssuersUtilTest, IssuerDoesExistForConfirmationsType) {
 
 TEST_F(BraveAdsIssuersUtilTest, IssuerDoesNotExistForConfirmationsType) {
   // Arrange
-  const IssuersInfo issuers =
-      BuildIssuers(7'200'000, {},
-                   {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-                    {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
+  const IssuersInfo issuers = BuildIssuersForTesting(
+      7'200'000, {},
+      {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
+       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
   SetIssuers(issuers);
 
@@ -91,7 +91,7 @@ TEST_F(BraveAdsIssuersUtilTest, IssuerDoesNotExistForConfirmationsType) {
 
 TEST_F(BraveAdsIssuersUtilTest, IssuerDoesExistForPaymentsType) {
   // Arrange
-  BuildAndSetIssuers();
+  BuildAndSetIssuersForTesting();
 
   // Act
 
@@ -101,11 +101,11 @@ TEST_F(BraveAdsIssuersUtilTest, IssuerDoesExistForPaymentsType) {
 
 TEST_F(BraveAdsIssuersUtilTest, IssuerDoesNotExistForPaymentsType) {
   // Arrange
-  const IssuersInfo issuers =
-      BuildIssuers(7'200'000,
-                   {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
-                    {"cKo0rk1iS8Obgyni0X3RRoydDIGHsivTkfX/TM1Xl24=", 0.0}},
-                   {});
+  const IssuersInfo issuers = BuildIssuersForTesting(
+      7'200'000,
+      {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
+       {"cKo0rk1iS8Obgyni0X3RRoydDIGHsivTkfX/TM1Xl24=", 0.0}},
+      {});
 
   SetIssuers(issuers);
 
@@ -117,7 +117,7 @@ TEST_F(BraveAdsIssuersUtilTest, IssuerDoesNotExistForPaymentsType) {
 
 TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesExistForConfirmationsType) {
   // Arrange
-  BuildAndSetIssuers();
+  BuildAndSetIssuersForTesting();
 
   // Act
   const bool does_exist = PublicKeyExistsForIssuerType(
@@ -130,7 +130,7 @@ TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesExistForConfirmationsType) {
 
 TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesNotExistForConfirmationsType) {
   // Arrange
-  BuildAndSetIssuers();
+  BuildAndSetIssuersForTesting();
 
   // Act
   const bool does_exist = PublicKeyExistsForIssuerType(
@@ -143,7 +143,7 @@ TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesNotExistForConfirmationsType) {
 
 TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesExistForPaymentsType) {
   // Arrange
-  BuildAndSetIssuers();
+  BuildAndSetIssuersForTesting();
 
   // Act
   const bool does_exist = PublicKeyExistsForIssuerType(
@@ -156,7 +156,7 @@ TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesExistForPaymentsType) {
 
 TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesNotExistForPaymentsType) {
   // Arrange
-  BuildAndSetIssuers();
+  BuildAndSetIssuersForTesting();
 
   // Act
   const bool does_exist = PublicKeyExistsForIssuerType(
@@ -169,12 +169,12 @@ TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesNotExistForPaymentsType) {
 
 TEST_F(BraveAdsIssuersUtilTest, GetIssuersForType) {
   // Arrange
-  const IssuersInfo issuers =
-      BuildIssuers(7'200'000,
-                   {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
-                    {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
-                   {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-                    {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
+  const IssuersInfo issuers = BuildIssuersForTesting(
+      7'200'000,
+      {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
+       {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
+      {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
+       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
   // Act
 
@@ -190,11 +190,11 @@ TEST_F(BraveAdsIssuersUtilTest, GetIssuersForType) {
 
 TEST_F(BraveAdsIssuersUtilTest, DoNotGetIssuersForMissingType) {
   // Arrange
-  const IssuersInfo issuers =
-      BuildIssuers(7'200'000,
-                   {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
-                    {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
-                   {});
+  const IssuersInfo issuers = BuildIssuersForTesting(
+      7'200'000,
+      {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
+       {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
+      {});
 
   // Act
 
@@ -204,17 +204,17 @@ TEST_F(BraveAdsIssuersUtilTest, DoNotGetIssuersForMissingType) {
 
 TEST_F(BraveAdsIssuersUtilTest, IsIssuersValid) {
   // Arrange
-  const IssuersInfo issuers =
-      BuildIssuers(7'200'000,
-                   {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
-                    {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
-                   {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-                    {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1},
-                    {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
-                    {"wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=", 0.1},
-                    {"ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=", 0.1},
-                    {"JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=", 0.1},
-                    {"hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=", 0.1}});
+  const IssuersInfo issuers = BuildIssuersForTesting(
+      7'200'000,
+      {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
+       {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
+      {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
+       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1},
+       {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
+       {"wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=", 0.1},
+       {"ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=", 0.1},
+       {"JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=", 0.1},
+       {"hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=", 0.1}});
 
   // Act
 
@@ -224,19 +224,19 @@ TEST_F(BraveAdsIssuersUtilTest, IsIssuersValid) {
 
 TEST_F(BraveAdsIssuersUtilTest, IsIssuersInvalid) {
   // Arrange
-  const IssuersInfo issuers =
-      BuildIssuers(7'200'000,
-                   {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
-                    {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
-                   {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-                    {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1},
-                    {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
-                    {"wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=", 0.1},
-                    {"ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=", 0.1},
-                    {"JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=", 0.1},
-                    {"hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=", 0.1},
-                    {"+iyhYDv7W6cuFAD1tzsJIEQKEStTX9B/Tt62tqt+tG0=", 0.1},
-                    {"oMx8hW6w8w/AUGoJMAMbrdeV1FoqrRkoR3BVa+5lDDk=", 0.1}});
+  const IssuersInfo issuers = BuildIssuersForTesting(
+      7'200'000,
+      {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
+       {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
+      {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
+       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1},
+       {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
+       {"wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=", 0.1},
+       {"ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=", 0.1},
+       {"JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=", 0.1},
+       {"hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=", 0.1},
+       {"+iyhYDv7W6cuFAD1tzsJIEQKEStTX9B/Tt62tqt+tG0=", 0.1},
+       {"oMx8hW6w8w/AUGoJMAMbrdeV1FoqrRkoR3BVa+5lDDk=", 0.1}});
 
   // Act
   const bool is_valid = IsIssuersValid(issuers);

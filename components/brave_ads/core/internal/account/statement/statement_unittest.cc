@@ -24,17 +24,17 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsThisMonth) {
 
   TransactionList transactions;
 
-  const TransactionInfo transaction_1 = BuildTransaction(
+  const TransactionInfo transaction_1 = BuildTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo transaction_2 =
-      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed,
-                                   /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction_2 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_2);
 
-  SaveTransactions(transactions);
+  SaveTransactionsForTesting(transactions);
 
   // Act
   BuildStatement(base::BindOnce([](mojom::StatementInfoPtr statement) {
@@ -64,51 +64,51 @@ TEST_F(BraveAdsStatementTest,
 
   AdvanceClockTo(TimeFromString("31 October 2020", /*is_local*/ true));
 
-  const TransactionInfo transaction_1 =
-      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed,
-                                   /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction_1 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo transaction_2 = BuildTransaction(
+  const TransactionInfo transaction_2 = BuildTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
 
-  const TransactionInfo transaction_3 =
-      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed,
-                                   /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction_3 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_3);
 
-  const TransactionInfo transaction_4 = BuildTransaction(
+  const TransactionInfo transaction_4 = BuildTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_4);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
-  const TransactionInfo transaction_5 =
-      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed,
-                                   /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction_5 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_5);
 
-  const TransactionInfo transaction_6 = BuildTransaction(
+  const TransactionInfo transaction_6 = BuildTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_6);
 
-  const TransactionInfo transaction_7 =
-      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kClicked,
-                                   /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction_7 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.0, ConfirmationType::kClicked,
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_7);
 
-  const TransactionInfo transaction_8 =
-      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed,
-                                   /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction_8 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_8);
 
-  SaveTransactions(transactions);
+  SaveTransactionsForTesting(transactions);
 
   // Act
   BuildStatement(base::BindOnce([](mojom::StatementInfoPtr statement) {
@@ -138,39 +138,39 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
 
   AdvanceClockTo(TimeFromString("31 December 2020", /*is_local*/ true));
 
-  const TransactionInfo transaction_1 =
-      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed,
-                                   /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction_1 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo transaction_2 = BuildTransaction(
+  const TransactionInfo transaction_2 = BuildTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("1 January 2021", /*is_local*/ true));
 
-  const TransactionInfo transaction_3 =
-      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed,
-                                   /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction_3 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_3);
 
-  const TransactionInfo transaction_4 = BuildTransaction(
+  const TransactionInfo transaction_4 = BuildTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_4);
 
-  const TransactionInfo transaction_5 =
-      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kClicked,
-                                   /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction_5 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.0, ConfirmationType::kClicked,
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_5);
 
-  const TransactionInfo transaction_6 =
-      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed,
-                                   /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction_6 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_6);
 
-  SaveTransactions(transactions);
+  SaveTransactionsForTesting(transactions);
 
   // Act
   BuildStatement(base::BindOnce([](mojom::StatementInfoPtr statement) {
@@ -223,12 +223,12 @@ TEST_F(BraveAdsStatementTest, GetWithFilteredTransactions) {
   AdvanceClockTo(TimeFromString("12 October 2020", /*is_local*/ true));
   TransactionList transactions;
 
-  const TransactionInfo transaction_1 = BuildTransaction(
+  const TransactionInfo transaction_1 = BuildTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_1);
 
-  TransactionInfo transaction_2 = BuildTransaction(
+  TransactionInfo transaction_2 = BuildTransactionForTesting(
       /*value*/ 0.02, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ true);
   transaction_2.ad_type = AdType::kNewTabPageAd;
@@ -236,18 +236,18 @@ TEST_F(BraveAdsStatementTest, GetWithFilteredTransactions) {
 
   AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
 
-  const TransactionInfo transaction_3 = BuildTransaction(
+  const TransactionInfo transaction_3 = BuildTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_3);
 
-  TransactionInfo transaction_4 =
-      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed,
-                                   /*should_use_random_uuids*/ true);
+  TransactionInfo transaction_4 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ true);
   transaction_4.ad_type = AdType::kNewTabPageAd;
   transactions.push_back(transaction_4);
 
-  SaveTransactions(transactions);
+  SaveTransactionsForTesting(transactions);
 
   // Act
   BuildStatement(base::BindOnce([](mojom::StatementInfoPtr statement) {

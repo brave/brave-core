@@ -10,8 +10,8 @@ namespace brave_ads::privacy::cbr {
 
 class VerificationSignature;
 
-VerificationSignature GetVerificationSignature();
-VerificationSignature GetInvalidVerificationSignature();
+VerificationSignature GetVerificationSignatureForTesting();
+VerificationSignature GetInvalidVerificationSignatureForTesting();
 
 }  // namespace brave_ads::privacy::cbr
 

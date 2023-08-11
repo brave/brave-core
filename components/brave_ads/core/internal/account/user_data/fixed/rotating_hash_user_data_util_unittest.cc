@@ -22,7 +22,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
   // Arrange
   AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local*/ false));
 
-  const TransactionInfo transaction = BuildUnreconciledTransaction(
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
@@ -42,7 +42,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest, BuildRotatingHash) {
 
   AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local*/ false));
 
-  const TransactionInfo transaction = BuildUnreconciledTransaction(
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
@@ -62,7 +62,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
   sys_info.device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
-  const TransactionInfo transaction = BuildUnreconciledTransaction(
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
@@ -90,7 +90,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
   sys_info.device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
-  const TransactionInfo transaction = BuildUnreconciledTransaction(
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
@@ -118,7 +118,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
   sys_info.device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
-  const TransactionInfo transaction = BuildUnreconciledTransaction(
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 

@@ -17,7 +17,8 @@
 namespace brave_ads {
 
 absl::optional<VerifiableConversionEnvelopeInfo>
-MaybeBuildVerifiableConversionEnvelope(const base::Value::Dict& user_data) {
+MaybeBuildVerifiableConversionEnvelopeForTesting(
+    const base::Value::Dict& user_data) {
   const auto* const dict = user_data.FindDict(kVerifiableConversionEnvelopeKey);
   if (!dict) {
     return absl::nullopt;
@@ -56,7 +57,7 @@ MaybeBuildVerifiableConversionEnvelope(const base::Value::Dict& user_data) {
   return verifiable_conversion_envelope;
 }
 
-absl::optional<std::string> OpenVerifiableConversionEnvelope(
+absl::optional<std::string> OpenVerifiableConversionEnvelopeForTesting(
     const VerifiableConversionEnvelopeInfo& verifiable_conversion_envelope,
     const std::string& advertiser_secret_key_base64) {
   CHECK(!advertiser_secret_key_base64.empty());

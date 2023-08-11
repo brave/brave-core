@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_ads/core/flags_util.h"
+
 #include <string>
 #include <vector>
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/flags_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/command_line_switch_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
@@ -91,8 +92,8 @@ TEST_P(BraveAdsFlagsUtilTest, BuildFlags) {
 std::string TestParamToString(
     const ::testing::TestParamInfo<ParamInfo>& test_param) {
   // Environment
-  const std::string environment_type =
-      EnvironmentTypeEnumToString(test_param.param.expected_environment_type);
+  const std::string environment_type = EnvironmentTypeEnumToStringForTesting(
+      test_param.param.expected_environment_type);
 
   // When
   std::vector<std::string> flags;

@@ -10,13 +10,13 @@
 
 namespace brave_ads::privacy::cbr {
 
-UnblindedToken GetUnblindedToken() {
+UnblindedToken GetUnblindedTokenForTesting() {
   return UnblindedToken(kUnblindedTokenBase64);
 }
 
-std::vector<UnblindedToken> GetUnblindedTokens() {
+std::vector<UnblindedToken> GetUnblindedTokensForTesting() {
   std::vector<UnblindedToken> unblinded_tokens;
-  const UnblindedToken unblinded_token = GetUnblindedToken();
+  const UnblindedToken unblinded_token = GetUnblindedTokenForTesting();
   unblinded_tokens.push_back(unblinded_token);
   return unblinded_tokens;
 }

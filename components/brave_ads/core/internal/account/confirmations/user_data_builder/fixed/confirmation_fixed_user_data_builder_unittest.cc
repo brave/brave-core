@@ -48,20 +48,21 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, Build) {
   AdvanceClockTo(
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
 
-  TransactionInfo transaction =
-      BuildUnreconciledTransaction(/*value*/ 0.1, ConfirmationType::kViewed,
-                                   /*should_use_random_uuids*/ true);
+  TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.1, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ true);
   transaction.creative_instance_id = kCreativeInstanceId;
 
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
   const ConversionInfo conversion = BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
+      BuildAdEvent(ad, ConfirmationType::kViewed,
+                   /*created_at*/ Now()),
       VerifiableConversionInfo{kVerifiableConversionId,
                                kVerifiableConversionAdvertiserPublicKey});
   const ConversionQueueItemList conversion_queue_items =
-      BuildConversionQueueItems(conversion, /*count*/ 1);
-  SaveConversionQueueItems(conversion_queue_items);
+      BuildConversionQueueItemsForTesting(conversion, /*count*/ 1);
+  SaveConversionQueueItemsForTesting(conversion_queue_items);
 
   // Act
 
@@ -91,19 +92,20 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildForDefaultConversion) {
   AdvanceClockTo(
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
 
-  TransactionInfo transaction = BuildUnreconciledTransaction(
+  TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.0, ConfirmationType::kConversion,
       /*should_use_random_uuids*/ true);
   transaction.creative_instance_id = kCreativeInstanceId;
 
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
-  const ConversionInfo conversion = BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ false);
+  const ConversionInfo conversion =
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt);
   const ConversionQueueItemList conversion_queue_items =
-      BuildConversionQueueItems(conversion, /*count*/ 1);
-  SaveConversionQueueItems(conversion_queue_items);
+      BuildConversionQueueItemsForTesting(conversion, /*count*/ 1);
+  SaveConversionQueueItemsForTesting(conversion_queue_items);
 
   // Act
 
@@ -133,20 +135,21 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildForVerifiableConversion) {
   AdvanceClockTo(
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
 
-  TransactionInfo transaction = BuildUnreconciledTransaction(
+  TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.0, ConfirmationType::kConversion,
       /*should_use_random_uuids*/ true);
   transaction.creative_instance_id = kCreativeInstanceId;
 
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ false);
   const ConversionInfo conversion = BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
+      BuildAdEvent(ad, ConfirmationType::kViewed,
+                   /*created_at*/ Now()),
       VerifiableConversionInfo{kVerifiableConversionId,
                                kVerifiableConversionAdvertiserPublicKey});
   const ConversionQueueItemList conversion_queue_items =
-      BuildConversionQueueItems(conversion, /*count*/ 1);
-  SaveConversionQueueItems(conversion_queue_items);
+      BuildConversionQueueItemsForTesting(conversion, /*count*/ 1);
+  SaveConversionQueueItemsForTesting(conversion_queue_items);
 
   // Act
 

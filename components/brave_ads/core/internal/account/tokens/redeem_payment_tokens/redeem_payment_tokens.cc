@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/redeem_payment_tokens/redeem_payment_tokens.h"
 
-#include <cstdint>
 #include <utility>
 
 #include "base/functional/bind.h"

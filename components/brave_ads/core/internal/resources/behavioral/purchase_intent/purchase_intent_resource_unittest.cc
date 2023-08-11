@@ -98,8 +98,8 @@ TEST_F(
     BraveAdsPurchaseIntentResourceTest,
     DoNotLoadResourceWhenLocaleDidChangeIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableNotificationAds();
-  DisableBraveNewsAds();
+  DisableNotificationAdsForTesting();
+  DisableBraveNewsAdsForTesting();
 
   LoadResource(kCountryComponentId);
 
@@ -141,8 +141,8 @@ TEST_F(
     BraveAdsPurchaseIntentResourceTest,
     DoNotLoadResourceWhenOptedInToNotificationAdsPrefDidChangeIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableNotificationAds();
-  DisableBraveNewsAds();
+  DisableNotificationAdsForTesting();
+  DisableBraveNewsAdsForTesting();
 
   LoadResource(kCountryComponentId);
 
@@ -194,8 +194,8 @@ TEST_F(
     BraveAdsPurchaseIntentResourceTest,
     DoNotLoadResourceWhenDidUpdateResourceComponentIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableNotificationAds();
-  DisableBraveNewsAds();
+  DisableNotificationAdsForTesting();
+  DisableBraveNewsAdsForTesting();
 
   // Act
   LoadResource(kCountryComponentId);

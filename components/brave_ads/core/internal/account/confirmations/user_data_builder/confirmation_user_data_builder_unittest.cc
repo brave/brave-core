@@ -53,7 +53,7 @@ class BraveAdsConfirmationUserDataBuilderTest : public UnitTestBase {
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest, BuildRewardConfirmation) {
   // Arrange
-  const TransactionInfo transaction = BuildTransaction(
+  const TransactionInfo transaction = BuildTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ false);
 
@@ -77,16 +77,17 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest, BuildRewardConfirmation) {
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
        BuildConversionRewardConfirmation) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
-  const ConversionInfo conversion = BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ false);
+  const ConversionInfo conversion =
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt);
   const ConversionQueueItemList conversion_queue_items =
-      BuildConversionQueueItems(conversion, /*count*/ 1);
-  SaveConversionQueueItems(conversion_queue_items);
+      BuildConversionQueueItemsForTesting(conversion, /*count*/ 1);
+  SaveConversionQueueItemsForTesting(conversion_queue_items);
 
-  const TransactionInfo transaction = BuildTransaction(
+  const TransactionInfo transaction = BuildTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kConversion, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ false);
 
@@ -110,17 +111,18 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
        BuildVerifiableConversionRewardConfirmation) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ false);
   const ConversionInfo conversion = BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at*/ Now()),
+      BuildAdEvent(ad, ConfirmationType::kClicked,
+                   /*created_at*/ Now()),
       VerifiableConversionInfo{kVerifiableConversionId,
                                kVerifiableConversionAdvertiserPublicKey});
   const ConversionQueueItemList conversion_queue_items =
-      BuildConversionQueueItems(conversion, /*count*/ 1);
-  SaveConversionQueueItems(conversion_queue_items);
+      BuildConversionQueueItemsForTesting(conversion, /*count*/ 1);
+  SaveConversionQueueItemsForTesting(conversion_queue_items);
 
-  const TransactionInfo transaction = BuildTransaction(
+  const TransactionInfo transaction = BuildTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kConversion, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ false);
 
@@ -143,9 +145,9 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest, BuildNonRewardConfirmation) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
-  const TransactionInfo transaction = BuildTransaction(
+  const TransactionInfo transaction = BuildTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ false);
 
@@ -161,18 +163,19 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest, BuildNonRewardConfirmation) {
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
        BuildConversionNonRewardConfirmation) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
-  const ConversionInfo conversion = BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ false);
+  const ConversionInfo conversion =
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt);
   const ConversionQueueItemList conversion_queue_items =
-      BuildConversionQueueItems(conversion, /*count*/ 1);
-  SaveConversionQueueItems(conversion_queue_items);
+      BuildConversionQueueItemsForTesting(conversion, /*count*/ 1);
+  SaveConversionQueueItemsForTesting(conversion_queue_items);
 
-  const TransactionInfo transaction = BuildTransaction(
+  const TransactionInfo transaction = BuildTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kConversion, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ false);
 
@@ -191,19 +194,20 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
        BuildVerifiableConversionNonRewardConfirmation) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ false);
   const ConversionInfo conversion = BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at*/ Now()),
+      BuildAdEvent(ad, ConfirmationType::kClicked,
+                   /*created_at*/ Now()),
       VerifiableConversionInfo{kVerifiableConversionId,
                                kVerifiableConversionAdvertiserPublicKey});
   const ConversionQueueItemList conversion_queue_items =
-      BuildConversionQueueItems(conversion, /*count*/ 1);
-  SaveConversionQueueItems(conversion_queue_items);
+      BuildConversionQueueItemsForTesting(conversion, /*count*/ 1);
+  SaveConversionQueueItemsForTesting(conversion_queue_items);
 
-  const TransactionInfo transaction = BuildTransaction(
+  const TransactionInfo transaction = BuildTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kConversion, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ false);
 

@@ -14,8 +14,8 @@
 
 namespace brave_ads::privacy::cbr {
 
-VerificationKey GetVerificationKey() {
-  const UnblindedToken unblinded_token = GetUnblindedToken();
+VerificationKey GetVerificationKeyForTesting() {
+  const UnblindedToken unblinded_token = GetUnblindedTokenForTesting();
   const absl::optional<VerificationKey> verification_key =
       unblinded_token.DeriveVerificationKey();
   CHECK(verification_key);

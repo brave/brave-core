@@ -10,7 +10,7 @@
 namespace brave_ads {
 
 void ForceConfirmationTokensPermissionRuleForTesting() {
-  privacy::SetConfirmationTokens(/*count*/ 50);
+  privacy::SetConfirmationTokensForTesting(/*count*/ 50);
 }
 
 }  // namespace brave_ads

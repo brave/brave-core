@@ -16,7 +16,7 @@ namespace cbr {
 class Token;
 }  // namespace cbr
 
-std::vector<cbr::Token> BuildTokens(size_t count);
+std::vector<cbr::Token> BuildTokensForTesting(size_t count);
 
 void MockTokenGenerator(const TokenGeneratorMock& mock, size_t count);
 

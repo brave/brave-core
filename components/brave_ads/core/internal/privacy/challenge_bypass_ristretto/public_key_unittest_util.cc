@@ -10,15 +10,15 @@
 
 namespace brave_ads::privacy::cbr {
 
-PublicKey GetPublicKey() {
+PublicKey GetPublicKeyForTesting() {
   return PublicKey(kPublicKeyBase64);
 }
 
-PublicKey GetMismatchingPublicKey() {
+PublicKey GetMismatchingPublicKeyForTesting() {
   return {};
 }
 
-PublicKey GetInvalidPublicKey() {
+PublicKey GetInvalidPublicKeyForTesting() {
   return PublicKey(kInvalidBase64);
 }
 

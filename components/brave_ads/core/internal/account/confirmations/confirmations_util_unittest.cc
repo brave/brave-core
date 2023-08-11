@@ -45,12 +45,12 @@ TEST_F(BraveAdsConfirmationsUtilTest, ResetRewardConfirmations) {
   // Arrange
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
-  privacy::SetConfirmationTokens(/*count*/ 2);
-  privacy::SetPaymentTokens(/*count*/ 1);
+  privacy::SetConfirmationTokensForTesting(/*count*/ 2);
+  privacy::SetPaymentTokensForTesting(/*count*/ 1);
 
-  const TransactionInfo transaction =
-      BuildUnreconciledTransaction(/*value*/ 0.1, ConfirmationType::kViewed,
-                                   /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.1, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ true);
 
   const absl::optional<ConfirmationInfo> confirmation =
       BuildRewardConfirmation(&token_generator_mock_, transaction,
@@ -73,11 +73,11 @@ TEST_F(BraveAdsConfirmationsUtilTest, ResetRewardConfirmations) {
 
 TEST_F(BraveAdsConfirmationsUtilTest, ResetNonRewardConfirmations) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
-  const TransactionInfo transaction =
-      BuildUnreconciledTransaction(/*value*/ 0.1, ConfirmationType::kViewed,
-                                   /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.1, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ true);
 
   const absl::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction,

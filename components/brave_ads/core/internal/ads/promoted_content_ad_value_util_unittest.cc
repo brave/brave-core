@@ -34,7 +34,8 @@ TEST_F(BraveAdsPromotedContentAdValueUtilTest, FromValue) {
 
   // Assert
   const CreativePromotedContentAdInfo creative_ad =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ false);
+      BuildCreativePromotedContentAdForTesting(
+          /*should_use_random_uuids*/ false);
   const PromotedContentAdInfo expected_ad =
       BuildPromotedContentAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, PromotedContentAdFromValue(dict));
@@ -43,7 +44,8 @@ TEST_F(BraveAdsPromotedContentAdValueUtilTest, FromValue) {
 TEST_F(BraveAdsPromotedContentAdValueUtilTest, ToValue) {
   // Arrange
   const CreativePromotedContentAdInfo creative_ad =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ false);
+      BuildCreativePromotedContentAdForTesting(
+          /*should_use_random_uuids*/ false);
   const PromotedContentAdInfo ad =
       BuildPromotedContentAd(creative_ad, kPlacementId);
 

@@ -32,7 +32,7 @@ TEST_F(BraveAdsLocaleUserDataTest,
 TEST_F(BraveAdsLocaleUserDataTest,
        DoNotBuildLocaleUserDataForReleaseBuildChannelForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   MockBuildChannel(BuildChannelType::kRelease);
 

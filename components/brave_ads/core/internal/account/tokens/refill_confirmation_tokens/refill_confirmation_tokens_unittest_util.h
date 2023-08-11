@@ -10,8 +10,8 @@
 
 namespace brave_ads {
 
-std::string BuildRequestSignedTokensUrlResponseBody();
-std::string BuildGetSignedTokensUrlResponseBody();
+std::string BuildRequestSignedTokensUrlResponseBodyForTesting();
+std::string BuildGetSignedTokensUrlResponseBodyForTesting();
 
 }  // namespace brave_ads
 

@@ -19,19 +19,17 @@ namespace privacy {
 
 class ConfirmationTokens;
 
-ConfirmationTokens& GetConfirmationTokens();
+ConfirmationTokens& GetConfirmationTokensForTesting();
+ConfirmationTokenList SetConfirmationTokensForTesting(int count);
 
-ConfirmationTokenList SetConfirmationTokens(int count);
-
-ConfirmationTokenList BuildConfirmationTokens(
+ConfirmationTokenList BuildConfirmationTokensForTesting(
     const std::vector<std::string>& unblinded_tokens_base64,
     const WalletInfo& wallet);
-ConfirmationTokenInfo BuildConfirmationToken(
+ConfirmationTokenInfo BuildConfirmationTokenForTesting(
     const std::string& unblinded_token_base64,
     const WalletInfo& wallet);
-
-ConfirmationTokenList BuildConfirmationTokens(int count);
-ConfirmationTokenInfo BuildConfirmationToken();
+ConfirmationTokenList BuildConfirmationTokensForTesting(int count);
+ConfirmationTokenInfo BuildConfirmationTokenForTesting();
 
 }  // namespace privacy
 }  // namespace brave_ads

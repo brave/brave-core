@@ -213,7 +213,7 @@ TEST_F(BraveAdsUnblindedTokenTest, GetTokenPreimage) {
   // Act
 
   // Assert
-  EXPECT_EQ(GetTokenPreimage(), unblinded_token.GetTokenPreimage());
+  EXPECT_EQ(GetTokenPreimageForTesting(), unblinded_token.GetTokenPreimage());
 }
 
 TEST_F(BraveAdsUnblindedTokenTest, FailToGetTokenPreimageWhenUninitialized) {

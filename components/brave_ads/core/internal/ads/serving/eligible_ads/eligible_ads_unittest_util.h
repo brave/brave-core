@@ -10,7 +10,7 @@ namespace brave_ads {
 
 class AdType;
 
-void ResetEligibleAds(const AdType& type);
+void ResetEligibleAdsForTesting(const AdType& type);
 
 }  // namespace brave_ads
 

@@ -99,7 +99,7 @@ TEST_F(BraveAdsTextClassificationResourceTest,
 TEST_F(BraveAdsTextClassificationResourceTest,
        DoNotLoadResourceWhenLocaleDidChangeIfOptedOutOfNotificationAds) {
   // Arrange
-  DisableNotificationAds();
+  DisableNotificationAdsForTesting();
 
   LoadResource(kLanguageComponentId);
 
@@ -141,7 +141,7 @@ TEST_F(
     BraveAdsTextClassificationResourceTest,
     DoNotLoadResourceWhenOptedInToNotificationAdsPrefDidChangeIfOptedOutOfNotificationAds) {
   // Arrange
-  DisableNotificationAds();
+  DisableNotificationAdsForTesting();
 
   LoadResource(kLanguageComponentId);
 
@@ -193,7 +193,7 @@ TEST_F(
     BraveAdsTextClassificationResourceTest,
     DoNotLoadResourceWhenDidUpdateResourceComponentIfOptedOutOfNotificationAds) {
   // Arrange
-  DisableNotificationAds();
+  DisableNotificationAdsForTesting();
 
   // Act
   LoadResource(kLanguageComponentId);

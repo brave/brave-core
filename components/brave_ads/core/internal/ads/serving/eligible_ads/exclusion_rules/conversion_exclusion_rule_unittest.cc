@@ -49,9 +49,9 @@ TEST_F(BraveAdsConversionExclusionRuleTest, ShouldExcludeIfAlreadyConverted) {
   creative_ad.creative_set_id = kCreativeSetIds[0];
 
   AdEventList ad_events;
-  const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad, AdType::kNotificationAd,
-                   ConfirmationType::kConversion, /*created_at*/ Now());
+  const AdEventInfo ad_event = BuildAdEventForTesting(
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kConversion,
+      /*created_at*/ Now());
   ad_events.push_back(ad_event);
 
   const ConversionExclusionRule exclusion_rule(ad_events);
@@ -80,9 +80,9 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
   creative_ad.creative_set_id = kCreativeSetIds[0];
 
   AdEventList ad_events;
-  const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad, AdType::kNotificationAd,
-                   ConfirmationType::kConversion, /*created_at*/ Now());
+  const AdEventInfo ad_event = BuildAdEventForTesting(
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kConversion,
+      /*created_at*/ Now());
   ad_events.push_back(ad_event);
 
   const ConversionExclusionRule exclusion_rule(ad_events);
@@ -103,9 +103,9 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
   creative_ad_2.creative_set_id = kCreativeSetIds[1];
 
   AdEventList ad_events;
-  const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad_2, AdType::kNotificationAd,
-                   ConfirmationType::kConversion, /*created_at*/ Now());
+  const AdEventInfo ad_event = BuildAdEventForTesting(
+      creative_ad_2, AdType::kNotificationAd, ConfirmationType::kConversion,
+      /*created_at*/ Now());
   ad_events.push_back(ad_event);
 
   const ConversionExclusionRule exclusion_rule(ad_events);

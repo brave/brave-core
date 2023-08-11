@@ -36,7 +36,7 @@ TEST_F(BraveAdsPlatformUserDataTest, BuildPlatformUserDataForRewardsUser) {
 TEST_F(BraveAdsPlatformUserDataTest,
        DoNotBuildPlatformUserDataForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   // Act
 

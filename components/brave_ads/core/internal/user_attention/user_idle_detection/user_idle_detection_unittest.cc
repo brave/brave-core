@@ -28,7 +28,7 @@ TEST_F(BraveAdsUserIdleDetectionTest, RewardsUserDidBecomeActive) {
 
 TEST_F(BraveAdsUserIdleDetectionTest, NonRewardsUserDidBecomeActive) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   const UserIdleDetection user_idle_detection;
   EXPECT_CALL(ads_client_mock_, Log).Times(0);
@@ -56,7 +56,7 @@ TEST_F(BraveAdsUserIdleDetectionTest,
 TEST_F(BraveAdsUserIdleDetectionTest,
        NonRewardsUserDidBecomeActiveWhileScreenWasLocked) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   const UserIdleDetection user_idle_detection;
   EXPECT_CALL(ads_client_mock_, Log).Times(0);
@@ -81,7 +81,7 @@ TEST_F(BraveAdsUserIdleDetectionTest, RewardsUserDidBecomeIdle) {
 
 TEST_F(BraveAdsUserIdleDetectionTest, NonRewardsUserDidBecomeIdle) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   const UserIdleDetection user_idle_detection;
   EXPECT_CALL(ads_client_mock_, Log).Times(0);

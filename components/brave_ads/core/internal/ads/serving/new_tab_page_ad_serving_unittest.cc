@@ -60,7 +60,7 @@ class BraveAdsNewTabPageAdServingTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    ForceNewTabPageAdServingVersion(1);
+    ForceNewTabPageAdServingVersionForTesting(1);
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
     anti_targeting_resource_ = std::make_unique<AntiTargetingResource>();
@@ -78,7 +78,7 @@ class BraveAdsNewTabPageAdServingTest : public UnitTestBase {
 
 TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdForUnsupportedVersion) {
   // Arrange
-  ForceNewTabPageAdServingVersion(0);
+  ForceNewTabPageAdServingVersionForTesting(0);
 
   // Act
   serving_->MaybeServeAd(base::BindOnce(
@@ -98,7 +98,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, ServeAd) {
   ForcePermissionRulesForTesting();
 
   const CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act
@@ -120,7 +120,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
   ForcePermissionRulesForTesting();
 
   CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad.wallpapers.clear();
   database::SaveCreativeNewTabPageAds({creative_ad});
 
@@ -158,7 +158,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act

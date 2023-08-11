@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+
 #include "base/test/task_environment.h"
 #include "brave/components/brave_ads/core/internal/ads_client_mock.h"
 #include "testing/gmock/include/gmock/gmock.h"

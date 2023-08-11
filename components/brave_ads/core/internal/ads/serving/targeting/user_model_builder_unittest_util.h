@@ -13,7 +13,7 @@ namespace brave_ads {
 
 struct UserModelInfo;
 
-UserModelInfo BuildUserModel(
+UserModelInfo BuildUserModelForTesting(
     const SegmentList& interest_segments,
     const SegmentList& latent_interest_segments,
     const SegmentList& purchase_intent_segments,

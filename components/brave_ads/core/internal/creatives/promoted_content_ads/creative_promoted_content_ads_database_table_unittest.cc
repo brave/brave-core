@@ -39,7 +39,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
        SaveCreativePromotedContentAds) {
   // Arrange
   const CreativePromotedContentAdList creative_ads =
-      BuildCreativePromotedContentAds(/*count*/ 2);
+      BuildCreativePromotedContentAdsForTesting(/*count*/ 2);
 
   // Act
   database::SaveCreativePromotedContentAds(creative_ads);
@@ -61,7 +61,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
   database_table_.SetBatchSize(2);
 
   const CreativePromotedContentAdList creative_ads =
-      BuildCreativePromotedContentAds(/*count*/ 3);
+      BuildCreativePromotedContentAdsForTesting(/*count*/ 3);
 
   // Act
   database::SaveCreativePromotedContentAds(creative_ads);
@@ -83,7 +83,8 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
   CreativePromotedContentAdList creative_ads;
 
   const CreativePromotedContentAdInfo creative_ad =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativePromotedContentAdForTesting(
+          /*should_use_random_uuids*/ true);
   creative_ads.push_back(creative_ad);
 
   database::SaveCreativePromotedContentAds(creative_ads);
@@ -107,17 +108,20 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest, GetForSegments) {
   CreativePromotedContentAdList creative_ads;
 
   CreativePromotedContentAdInfo creative_ad_1 =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativePromotedContentAdForTesting(
+          /*should_use_random_uuids*/ true);
   creative_ad_1.segment = "food & drink";
   creative_ads.push_back(creative_ad_1);
 
   CreativePromotedContentAdInfo creative_ad_2 =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativePromotedContentAdForTesting(
+          /*should_use_random_uuids*/ true);
   creative_ad_2.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_2);
 
   CreativePromotedContentAdInfo creative_ad_3 =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativePromotedContentAdForTesting(
+          /*should_use_random_uuids*/ true);
   creative_ad_3.segment = "food & drink";
   creative_ads.push_back(creative_ad_3);
 
@@ -147,11 +151,13 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
   CreativePromotedContentAdList creative_ads;
 
   const CreativePromotedContentAdInfo creative_ad_1 =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativePromotedContentAdForTesting(
+          /*should_use_random_uuids*/ true);
   creative_ads.push_back(creative_ad_1);
 
   const CreativePromotedContentAdInfo creative_ad_2 =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativePromotedContentAdForTesting(
+          /*should_use_random_uuids*/ true);
   creative_ads.push_back(creative_ad_2);
 
   database::SaveCreativePromotedContentAds(creative_ads);
@@ -175,7 +181,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
        GetCreativePromotedContentAdsForNonExistentCreativeInstanceId) {
   // Arrange
   const CreativePromotedContentAdList creative_ads =
-      BuildCreativePromotedContentAds(/*count*/ 1);
+      BuildCreativePromotedContentAdsForTesting(/*count*/ 1);
 
   database::SaveCreativePromotedContentAds(creative_ads);
 
@@ -194,7 +200,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
        GetCreativePromotedContentAdsForEmptySegments) {
   // Arrange
   const CreativePromotedContentAdList creative_ads =
-      BuildCreativePromotedContentAds(/*count*/ 1);
+      BuildCreativePromotedContentAdsForTesting(/*count*/ 1);
 
   database::SaveCreativePromotedContentAds(creative_ads);
 
@@ -214,7 +220,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
        GetCreativePromotedContentAdsForNonExistentSegment) {
   // Arrange
   const CreativePromotedContentAdList creative_ads =
-      BuildCreativePromotedContentAds(/*count*/ 1);
+      BuildCreativePromotedContentAdsForTesting(/*count*/ 1);
 
   database::SaveCreativePromotedContentAds(creative_ads);
 
@@ -236,17 +242,20 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
   CreativePromotedContentAdList creative_ads;
 
   CreativePromotedContentAdInfo creative_ad_1 =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativePromotedContentAdForTesting(
+          /*should_use_random_uuids*/ true);
   creative_ad_1.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_1);
 
   CreativePromotedContentAdInfo creative_ad_2 =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativePromotedContentAdForTesting(
+          /*should_use_random_uuids*/ true);
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
   CreativePromotedContentAdInfo creative_ad_3 =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativePromotedContentAdForTesting(
+          /*should_use_random_uuids*/ true);
   creative_ad_3.segment = "automobiles";
   creative_ads.push_back(creative_ad_3);
 
@@ -276,13 +285,15 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
   CreativePromotedContentAdList creative_ads;
 
   CreativePromotedContentAdInfo creative_ad_1 =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativePromotedContentAdForTesting(
+          /*should_use_random_uuids*/ true);
   creative_ad_1.start_at = DistantPast();
   creative_ad_1.end_at = Now();
   creative_ads.push_back(creative_ad_1);
 
   CreativePromotedContentAdInfo creative_ad_2 =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativePromotedContentAdForTesting(
+          /*should_use_random_uuids*/ true);
   creative_ad_2.start_at = DistantPast();
   creative_ad_2.end_at = DistantFuture();
   creative_ads.push_back(creative_ad_2);
@@ -311,12 +322,14 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
   CreativePromotedContentAdList creative_ads;
 
   CreativePromotedContentAdInfo creative_ad_1 =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativePromotedContentAdForTesting(
+          /*should_use_random_uuids*/ true);
   creative_ad_1.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_1);
 
   CreativePromotedContentAdInfo creative_ad_2 =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativePromotedContentAdForTesting(
+          /*should_use_random_uuids*/ true);
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 

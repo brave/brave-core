@@ -40,11 +40,12 @@ class BraveAdsIssuersUrlRequestTest : public UnitTestBase {
 TEST_F(BraveAdsIssuersUrlRequestTest, FetchIssuers) {
   // Arrange
   const URLResponseMap url_responses = {
-      {BuildIssuersUrlPath(), {{net::HTTP_OK, BuildIssuersUrlResponseBody()}}}};
+      {BuildIssuersUrlPath(),
+       {{net::HTTP_OK, BuildIssuersUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   EXPECT_CALL(issuers_url_request_delegate_mock_,
-              OnDidFetchIssuers(BuildIssuers()));
+              OnDidFetchIssuers(BuildIssuersForTesting()));
   EXPECT_CALL(issuers_url_request_delegate_mock_, OnFailedToFetchIssuers)
       .Times(0);
   EXPECT_CALL(issuers_url_request_delegate_mock_, OnWillRetryFetchingIssuers)
@@ -85,7 +86,7 @@ TEST_F(BraveAdsIssuersUrlRequestTest, RetryFetchingIssuersIfNonHttpOkResponse) {
        {{net::HTTP_INTERNAL_SERVER_ERROR,
          /*response_body*/ net::GetHttpReasonPhrase(
              net::HTTP_INTERNAL_SERVER_ERROR)},
-        {net::HTTP_OK, BuildIssuersUrlResponseBody()}}}};
+        {net::HTTP_OK, BuildIssuersUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   EXPECT_CALL(issuers_url_request_delegate_mock_, OnDidFetchIssuers);

@@ -51,24 +51,24 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
 
   AdvanceClockTo(TimeFromString("31 October 2020", /*is_local*/ true));
 
-  const TransactionInfo transaction_1 =
-      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed,
-                                   /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction_1 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_1);
 
   AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
 
-  const TransactionInfo transaction_2 =
-      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kDismissed,
-                                   /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction_2 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.0, ConfirmationType::kDismissed,
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_2);
 
-  const TransactionInfo transaction_3 =
-      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kClicked,
-                                   /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction_3 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.0, ConfirmationType::kClicked,
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_3);
 
-  SaveTransactions(transactions);
+  SaveTransactionsForTesting(transactions);
 
   // Act
   TransactionList expected_transactions = {transaction_2, transaction_3};
@@ -90,17 +90,17 @@ TEST_F(BraveAdsTransactionsTest, RemoveAll) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo transaction_1 =
-      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed,
-                                   /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction_1 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo transaction_2 =
-      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kDismissed,
-                                   /*should_use_random_uuids*/ true);
+  const TransactionInfo transaction_2 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.0, ConfirmationType::kDismissed,
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_2);
 
-  SaveTransactions(transactions);
+  SaveTransactionsForTesting(transactions);
 
   // Act
   RemoveAllTransactions(

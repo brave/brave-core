@@ -34,7 +34,7 @@ TEST_F(BraveAdsSystemTimestampUserDataTest,
 TEST_F(BraveAdsSystemTimestampUserDataTest,
        BuildSystemTimestampUserDataForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   // Act
 

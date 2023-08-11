@@ -19,16 +19,17 @@
 
 namespace brave_ads {
 
-void SaveTransactions(const TransactionList& transactions) {
+void SaveTransactionsForTesting(const TransactionList& transactions) {
   database::table::Transactions database_table;
   database_table.Save(
       transactions, base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
-TransactionInfo BuildTransaction(const double value,
-                                 const ConfirmationType& confirmation_type,
-                                 const base::Time reconciled_at,
-                                 const bool should_use_random_uuids) {
+TransactionInfo BuildTransactionForTesting(
+    const double value,
+    const ConfirmationType& confirmation_type,
+    const base::Time reconciled_at,
+    const bool should_use_random_uuids) {
   TransactionInfo transaction;
 
   transaction.id = should_use_random_uuids
@@ -48,15 +49,15 @@ TransactionInfo BuildTransaction(const double value,
   return transaction;
 }
 
-TransactionInfo BuildUnreconciledTransaction(
+TransactionInfo BuildUnreconciledTransactionForTesting(
     const double value,
     const ConfirmationType& confirmation_type,
     const bool should_use_random_uuids) {
-  return BuildTransaction(value, confirmation_type, /*reconciled_at*/ {},
-                          should_use_random_uuids);
+  return BuildTransactionForTesting(
+      value, confirmation_type, /*reconciled_at*/ {}, should_use_random_uuids);
 }
 
-size_t GetTransactionCount() {
+size_t GetTransactionCountForTesting() {
   size_t count = 0;
 
   GetTransactionsForDateRange(

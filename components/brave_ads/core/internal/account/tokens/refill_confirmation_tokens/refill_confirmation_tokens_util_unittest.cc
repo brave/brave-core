@@ -19,7 +19,7 @@ TEST_F(BraveAdsRefillConfirmationTokensUtilTest,
        ShouldRefillConfirmationTokens) {
   // Arrange
   const int count = kMinConfirmationTokens.Get() - 1;
-  privacy::SetConfirmationTokens(count);
+  privacy::SetConfirmationTokensForTesting(count);
 
   // Act
 
@@ -31,7 +31,7 @@ TEST_F(BraveAdsRefillConfirmationTokensUtilTest,
        ShouldNotRefillConfirmationTokens) {
   // Arrange
   const int count = kMinConfirmationTokens.Get();
-  privacy::SetConfirmationTokens(count);
+  privacy::SetConfirmationTokensForTesting(count);
 
   // Act
 
@@ -42,7 +42,7 @@ TEST_F(BraveAdsRefillConfirmationTokensUtilTest,
 TEST_F(BraveAdsRefillConfirmationTokensUtilTest,
        CalculateAmountOfConfirmationTokensToRefill) {
   // Arrange
-  privacy::SetConfirmationTokens(/*count*/ 10);
+  privacy::SetConfirmationTokensForTesting(/*count*/ 10);
 
   // Act
 

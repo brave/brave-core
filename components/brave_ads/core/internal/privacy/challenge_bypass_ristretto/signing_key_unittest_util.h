@@ -10,8 +10,8 @@ namespace brave_ads::privacy::cbr {
 
 class SigningKey;
 
-SigningKey GetSigningKey();
-SigningKey GetInvalidSigningKey();
+SigningKey GetSigningKeyForTesting();
+SigningKey GetInvalidSigningKeyForTesting();
 
 }  // namespace brave_ads::privacy::cbr
 

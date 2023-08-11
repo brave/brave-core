@@ -76,7 +76,7 @@ class BraveAdsConversionsTest : public ConversionsObserver,
     for (const auto& confirmation_type : confirmation_types) {
       const AdEventInfo ad_event =
           BuildAdEvent(ad, confirmation_type, /*created_at*/ Now());
-      FireAdEvent(ad_event);
+      FireAdEventForTesting(ad_event);
 
       AdvanceClockBy(base::Milliseconds(1));
     }
@@ -106,13 +106,14 @@ class BraveAdsConversionsTest : public ConversionsObserver,
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedInlineContentAdIfBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableBraveNewsAds();
+  DisableBraveNewsAdsForTesting();
 
-  const AdInfo ad =
-      BuildAd(AdType::kInlineContentAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kInlineContentAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
@@ -127,11 +128,12 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        ConvertViewedInlineContentAdIfBraveNewsAdsAreEnabled) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kInlineContentAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kInlineContentAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
@@ -141,22 +143,24 @@ TEST_F(BraveAdsConversionsTest,
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertClickedInlineContentAdIfBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableBraveNewsAds();
+  DisableBraveNewsAdsForTesting();
 
-  const AdInfo ad =
-      BuildAd(AdType::kInlineContentAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kInlineContentAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
@@ -172,11 +176,12 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        ConvertClickedInlineContentAdIfBraveNewsAdsAreEnabled) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kInlineContentAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kInlineContentAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
@@ -187,22 +192,24 @@ TEST_F(BraveAdsConversionsTest,
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kClicked,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedNewTabPageAdIfNewTabPageAdsAreDisabled) {
   // Arrange
-  DisableNewTabPageAds();
+  DisableNewTabPageAdsForTesting();
 
-  const AdInfo ad =
-      BuildAd(AdType::kNewTabPageAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNewTabPageAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
@@ -217,11 +224,12 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        ConvertViewedNewTabPageAdIfNewTabPageAdsAreEnabled) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNewTabPageAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNewTabPageAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
@@ -231,22 +239,24 @@ TEST_F(BraveAdsConversionsTest,
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertClickedNewTabPageAdIfNewTabPageAdsAreDisabled) {
   // Arrange
-  DisableNewTabPageAds();
+  DisableNewTabPageAdsForTesting();
 
-  const AdInfo ad =
-      BuildAd(AdType::kNewTabPageAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNewTabPageAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
@@ -262,11 +272,12 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        ConvertClickedNewTabPageAdIfNewTabPageAdsAreEnabled) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNewTabPageAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNewTabPageAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
@@ -277,22 +288,24 @@ TEST_F(BraveAdsConversionsTest,
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kClicked,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedNotificationAdIfOptedOutOfNotificationAds) {
   // Arrange
-  DisableNotificationAds();
+  DisableNotificationAdsForTesting();
 
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
@@ -307,11 +320,12 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        ConvertViewedNotificationAdIfOptedInToNotificationAds) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
@@ -321,22 +335,24 @@ TEST_F(BraveAdsConversionsTest,
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertClickedNotificationAdIfOptedOutOfNotificationAds) {
   // Arrange
-  DisableNotificationAds();
+  DisableNotificationAdsForTesting();
 
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
@@ -352,11 +368,12 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        ConvertClickedNotificationAdIfOptedInToNotificationAds) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
@@ -367,22 +384,24 @@ TEST_F(BraveAdsConversionsTest,
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kClicked,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedPromotedContentAdIfBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableBraveNewsAds();
+  DisableBraveNewsAdsForTesting();
 
-  const AdInfo ad =
-      BuildAd(AdType::kPromotedContentAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kPromotedContentAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
@@ -397,11 +416,12 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        ConvertViewedPromotedContentAdIfBraveNewsAdsAreEnabled) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kPromotedContentAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kPromotedContentAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
@@ -411,22 +431,24 @@ TEST_F(BraveAdsConversionsTest,
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertClickedPromotedContentAdIfBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableBraveNewsAds();
+  DisableBraveNewsAdsForTesting();
 
-  const AdInfo ad =
-      BuildAd(AdType::kPromotedContentAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kPromotedContentAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
@@ -442,11 +464,12 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        ConvertClickedPromotedContentAdIfBraveNewsAdsAreEnabled) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kPromotedContentAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kPromotedContentAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
@@ -457,23 +480,25 @@ TEST_F(BraveAdsConversionsTest,
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kClicked,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfAdsAreDisabled) {
   // Arrange
-  DisableBraveNewsAds();
-  DisableNotificationAds();
-  DisableNewTabPageAds();
+  DisableBraveNewsAdsForTesting();
+  DisableNotificationAdsForTesting();
+  DisableNewTabPageAdsForTesting();
 
-  const AdInfo ad =
-      BuildAd(AdType::kSearchResultAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kSearchResultAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
@@ -483,19 +508,21 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfAdsAreDisabled) {
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfAdsAreEnabled) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kSearchResultAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kSearchResultAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
@@ -505,23 +532,25 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfAdsAreEnabled) {
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdIfAdsAreDisabled) {
   // Arrange
-  DisableBraveNewsAds();
-  DisableNotificationAds();
-  DisableNewTabPageAds();
+  DisableBraveNewsAdsForTesting();
+  DisableNotificationAdsForTesting();
+  DisableNewTabPageAdsForTesting();
 
-  const AdInfo ad =
-      BuildAd(AdType::kSearchResultAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kSearchResultAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
@@ -532,19 +561,21 @@ TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdIfAdsAreDisabled) {
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kClicked,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdIfAdsAreEnabled) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kSearchResultAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kSearchResultAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
@@ -555,32 +586,34 @@ TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdIfAdsAreEnabled) {
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kClicked,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
 TEST_F(BraveAdsConversionsTest, MultipleAdConversions) {
   // Arrange
-  const AdInfo ad_1 =
-      BuildAd(AdType::kInlineContentAd, /*should_use_random_uuids*/ true);
-  BuildAndSaveCreativeSetConversion(ad_1.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  const AdInfo ad_1 = BuildAdForTesting(AdType::kInlineContentAd,
+                                        /*should_use_random_uuids*/ true);
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad_1.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
   FireAdEventsAdvancingTheClockAfterEach(
       ad_1, {ConfirmationType::kServed, ConfirmationType::kViewed});
 
-  const AdInfo ad_2 =
-      BuildAd(AdType::kSearchResultAd, /*should_use_random_uuids*/ true);
-  BuildAndSaveCreativeSetConversion(ad_2.creative_set_id,
-                                    kAnotherMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  const AdInfo ad_2 = BuildAdForTesting(AdType::kSearchResultAd,
+                                        /*should_use_random_uuids*/ true);
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad_2.creative_set_id, kAnotherMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
   FireAdEventsAdvancingTheClockAfterEach(
       ad_2, {ConfirmationType::kServed, ConfirmationType::kViewed,
              ConfirmationType::kClicked});
 
-  const AdInfo ad_3 =
-      BuildAd(AdType::kNewTabPageAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad_3 = BuildAdForTesting(AdType::kNewTabPageAd,
+                                        /*should_use_random_uuids*/ true);
   FireAdEventsAdvancingTheClockAfterEach(
       ad_3, {ConfirmationType::kServed, ConfirmationType::kViewed,
              ConfirmationType::kClicked});
@@ -590,12 +623,14 @@ TEST_F(BraveAdsConversionsTest, MultipleAdConversions) {
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad_1, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad_2, ConfirmationType::kClicked, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad_1, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad_2, ConfirmationType::kClicked,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
 
   EXPECT_TRUE(
       ContainersEq(expected_actioned_conversions, actioned_conversions_));
@@ -603,11 +638,12 @@ TEST_F(BraveAdsConversionsTest, MultipleAdConversions) {
 
 TEST_F(BraveAdsConversionsTest, ConvertViewedAdAfterTheSameAdWasDismissed) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
@@ -618,19 +654,21 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedAdAfterTheSameAdWasDismissed) {
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
 TEST_F(BraveAdsConversionsTest, DoNotConvertAdsIfTheRedirectChainIsEmpty) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kDismissed, ConfirmationType::kServed,
@@ -648,11 +686,12 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertAdsIfTheRedirectChainIsEmpty) {
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertAdsIfTheRedirectChainContainsAnUnsupportedUrl) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kDismissed, ConfirmationType::kServed,
@@ -669,11 +708,12 @@ TEST_F(BraveAdsConversionsTest,
 
 TEST_F(BraveAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kDismissed, ConfirmationType::kServed,
@@ -691,8 +731,8 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertAdIfThereIsNoMatchingCreativeSetConversion) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
@@ -708,10 +748,11 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertAdIfAnotherAdHasConvertedWithinTheSameCreativeSet) {
   // Arrange
-  const AdInfo ad_1 =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
-  BuildAndSaveCreativeSetConversion(ad_1.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  const AdInfo ad_1 = BuildAdForTesting(AdType::kNotificationAd,
+                                        /*should_use_random_uuids*/ true);
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad_1.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
   FireAdEventsAdvancingTheClockAfterEach(
       ad_1, {ConfirmationType::kServed, ConfirmationType::kViewed,
              ConfirmationType::kDismissed});
@@ -729,19 +770,21 @@ TEST_F(BraveAdsConversionsTest,
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad_1, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad_1, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
 TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfUrlPatternDoesNotMatch) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kNonMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kNonMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   FireAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
@@ -757,15 +800,16 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfUrlPatternDoesNotMatch) {
 TEST_F(BraveAdsConversionsTest,
        ConvertAdIfCreativeSetConversionIsOnTheCuspOfExpiring) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now());
-  FireAdEvent(ad_event);
+  FireAdEventForTesting(ad_event);
 
   AdvanceClockBy(base::Days(3) - base::Milliseconds(1));
 
@@ -774,24 +818,26 @@ TEST_F(BraveAdsConversionsTest,
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertAdIfTheCreativeSetConversionHasExpired) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveCreativeSetConversion(ad.creative_set_id, kMatchingUrlPattern,
-                                    /*observation_window*/ base::Days(3));
+  BuildAndSaveCreativeSetConversionForTesting(
+      ad.creative_set_id, kMatchingUrlPattern,
+      /*observation_window*/ base::Days(3));
 
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now());
-  FireAdEvent(ad_event);
+  FireAdEventForTesting(ad_event);
 
   AdvanceClockBy(base::Days(3));
 
@@ -807,10 +853,10 @@ TEST_F(BraveAdsConversionsTest,
   // Arrange
   LoadConversionResource();
 
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveVerifiableCreativeSetConversion(
+  BuildAndSaveVerifiableCreativeSetConversionForTesting(
       ad.creative_set_id, kMatchingUrlPattern,
       /*observation_window*/ base::Days(3),
       kEmptyVerifiableConversionAdvertiserPublicKey);
@@ -824,9 +870,10 @@ TEST_F(BraveAdsConversionsTest,
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
@@ -836,10 +883,10 @@ TEST_F(
   // Arrange
   LoadConversionResource();
 
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveVerifiableCreativeSetConversion(
+  BuildAndSaveVerifiableCreativeSetConversionForTesting(
       ad.creative_set_id,
       /*url_pattern*/ "https://www.baz.com/*",
       /*observation_window*/ base::Days(3),
@@ -857,9 +904,10 @@ TEST_F(
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
@@ -868,10 +916,10 @@ TEST_F(BraveAdsConversionsTest,
   // Arrange
   LoadConversionResource();
 
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveVerifiableCreativeSetConversion(
+  BuildAndSaveVerifiableCreativeSetConversionForTesting(
       ad.creative_set_id, kMatchingUrlPattern,
       /*observation_window*/ base::Days(3),
       kVerifiableConversionAdvertiserPublicKey);
@@ -885,9 +933,10 @@ TEST_F(BraveAdsConversionsTest,
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
@@ -895,10 +944,10 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
   // Arrange
   LoadConversionResource();
 
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveVerifiableCreativeSetConversion(
+  BuildAndSaveVerifiableCreativeSetConversionForTesting(
       ad.creative_set_id, kMatchingUrlPattern,
       /*observation_window*/ base::Days(3),
       kVerifiableConversionAdvertiserPublicKey);
@@ -913,7 +962,8 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
   // Assert
   ConversionList expected_actioned_conversions;
   expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
+      BuildAdEvent(ad, ConfirmationType::kViewed,
+                   /*created_at*/ Now()),
       VerifiableConversionInfo{/*id*/ "xyzzy",
                                kVerifiableConversionAdvertiserPublicKey}));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
@@ -924,10 +974,10 @@ TEST_F(BraveAdsConversionsTest,
   // Arrange
   LoadConversionResource();
 
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveVerifiableCreativeSetConversion(
+  BuildAndSaveVerifiableCreativeSetConversionForTesting(
       ad.creative_set_id, kMatchingUrlPattern,
       /*observation_window*/ base::Days(3),
       kVerifiableConversionAdvertiserPublicKey);
@@ -941,9 +991,10 @@ TEST_F(BraveAdsConversionsTest,
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
@@ -951,10 +1002,10 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableHtmlConversionIdExists) {
   // Arrange
   LoadConversionResource();
 
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveVerifiableCreativeSetConversion(
+  BuildAndSaveVerifiableCreativeSetConversionForTesting(
       ad.creative_set_id, kMatchingUrlPattern,
       /*observation_window*/ base::Days(3),
       kVerifiableConversionAdvertiserPublicKey);
@@ -969,7 +1020,8 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableHtmlConversionIdExists) {
   // Assert
   ConversionList expected_actioned_conversions;
   expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
+      BuildAdEvent(ad, ConfirmationType::kViewed,
+                   /*created_at*/ Now()),
       VerifiableConversionInfo{/*id*/ "waldo",
                                kVerifiableConversionAdvertiserPublicKey}));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
@@ -981,10 +1033,10 @@ TEST_F(
   // Arrange
   LoadConversionResource();
 
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveVerifiableCreativeSetConversion(
+  BuildAndSaveVerifiableCreativeSetConversionForTesting(
       ad.creative_set_id, kAnotherMatchingUrlPattern,
       /*observation_window*/ base::Days(3),
       kVerifiableConversionAdvertiserPublicKey);
@@ -998,9 +1050,10 @@ TEST_F(
 
   // Assert
   ConversionList expected_actioned_conversions;
-  expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt));
+  expected_actioned_conversions.push_back(
+      BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
+                                   /*created_at*/ Now()),
+                      /*verifiable_conversion*/ absl::nullopt));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);
 }
 
@@ -1009,10 +1062,10 @@ TEST_F(BraveAdsConversionsTest,
   // Arrange
   LoadConversionResource();
 
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
-  BuildAndSaveVerifiableCreativeSetConversion(
+  BuildAndSaveVerifiableCreativeSetConversionForTesting(
       ad.creative_set_id, kAnotherMatchingUrlPattern,
       /*observation_window*/ base::Days(3),
       kVerifiableConversionAdvertiserPublicKey);
@@ -1028,7 +1081,8 @@ TEST_F(BraveAdsConversionsTest,
   // Assert
   ConversionList expected_actioned_conversions;
   expected_actioned_conversions.push_back(BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
+      BuildAdEvent(ad, ConfirmationType::kViewed,
+                   /*created_at*/ Now()),
       VerifiableConversionInfo{/*id*/ "fred",
                                kVerifiableConversionAdvertiserPublicKey}));
   EXPECT_EQ(expected_actioned_conversions, actioned_conversions_);

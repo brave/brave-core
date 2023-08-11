@@ -90,8 +90,8 @@ class BraveAdsConversionQueueTest : public ConversionQueueDelegate,
 
 TEST_F(BraveAdsConversionQueueTest, AddConversionToQueue) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ false);
 
   const ConversionInfo conversion = BuildConversion(
       BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
@@ -116,8 +116,8 @@ TEST_F(BraveAdsConversionQueueTest, AddConversionToQueue) {
 
 TEST_F(BraveAdsConversionQueueTest, ProcessSingleConversionInQueue) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ false);
 
   const ConversionInfo conversion = BuildConversion(
       BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
@@ -149,8 +149,8 @@ TEST_F(BraveAdsConversionQueueTest, ProcessMultipleConversionsInQueue) {
   AdvanceClockTo(
       TimeFromString("November 18 2023 19:00:00.000", /*is_local*/ true));
 
-  const AdInfo ad_1 =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad_1 = BuildAdForTesting(AdType::kNotificationAd,
+                                        /*should_use_random_uuids*/ true);
   const ConversionInfo conversion_1 = BuildConversion(
       BuildAdEvent(ad_1, ConfirmationType::kViewed, /*created_at*/ Now()),
       /*verifiable_conversion*/ absl::nullopt);
@@ -168,8 +168,8 @@ TEST_F(BraveAdsConversionQueueTest, ProcessMultipleConversionsInQueue) {
     ResetDelegate();
   }
 
-  const AdInfo ad_2 =
-      BuildAd(AdType::kSearchResultAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad_2 = BuildAdForTesting(AdType::kSearchResultAd,
+                                        /*should_use_random_uuids*/ true);
   const ConversionInfo conversion_2 = BuildConversion(
       BuildAdEvent(ad_2, ConfirmationType::kViewed, /*created_at*/ Now()),
       /*verifiable_conversion*/ absl::nullopt);

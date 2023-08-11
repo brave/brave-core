@@ -31,7 +31,7 @@ class BraveAdsNotificationAdServingTest : public NotificationAdServingDelegate,
 
     NotifyDidInitializeAds();
 
-    ForceNotificationAdServingVersion(1);
+    ForceNotificationAdServingVersionForTesting(1);
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
     anti_targeting_resource_ = std::make_unique<AntiTargetingResource>();
@@ -64,7 +64,7 @@ class BraveAdsNotificationAdServingTest : public NotificationAdServingDelegate,
 
 TEST_F(BraveAdsNotificationAdServingTest, DoNotServeAdForUnsupportedVersion) {
   // Arrange
-  ForceNotificationAdServingVersion(0);
+  ForceNotificationAdServingVersionForTesting(0);
 
   // Act
   serving_->MaybeServeAd();
@@ -80,7 +80,7 @@ TEST_F(BraveAdsNotificationAdServingTest, ServeAd) {
   ForcePermissionRulesForTesting();
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
@@ -110,7 +110,7 @@ TEST_F(BraveAdsNotificationAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act

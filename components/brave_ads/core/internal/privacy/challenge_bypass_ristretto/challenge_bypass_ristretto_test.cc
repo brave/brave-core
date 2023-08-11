@@ -38,7 +38,6 @@ TEST(BraveAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
   Token token;
   EXPECT_TRUE(token.has_value());
 
-  // Client blinds the token.
   const absl::optional<BlindedToken> blinded_token = token.Blind();
   EXPECT_TRUE(blinded_token);
 

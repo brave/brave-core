@@ -38,7 +38,7 @@ TEST_F(BraveAdsRedeemPaymentTokensUrlRequestBuilderTest, BuildUrl) {
       mojom::EnvironmentType::kStaging;
 
   const privacy::PaymentTokenList payment_tokens =
-      privacy::BuildPaymentTokens(/*count*/ 7);
+      privacy::BuildPaymentTokensForTesting(/*count*/ 7);
 
   // Act
   BuildRedeemPaymentTokensUserData(

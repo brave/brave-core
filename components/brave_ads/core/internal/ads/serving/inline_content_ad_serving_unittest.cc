@@ -61,7 +61,7 @@ class BraveAdsInlineContentAdServingTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    ForceInlineContentAdServingVersion(1);
+    ForceInlineContentAdServingVersionForTesting(1);
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
     anti_targeting_resource_ = std::make_unique<AntiTargetingResource>();
@@ -79,7 +79,7 @@ class BraveAdsInlineContentAdServingTest : public UnitTestBase {
 
 TEST_F(BraveAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
   // Arrange
-  ForceInlineContentAdServingVersion(0);
+  ForceInlineContentAdServingVersionForTesting(0);
 
   // Act
   serving_->MaybeServeAd(
@@ -102,7 +102,7 @@ TEST_F(BraveAdsInlineContentAdServingTest, ServeAd) {
   ForcePermissionRulesForTesting();
 
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act
@@ -128,7 +128,7 @@ TEST_F(BraveAdsInlineContentAdServingTest,
   ForcePermissionRulesForTesting();
 
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act
@@ -153,7 +153,7 @@ TEST_F(BraveAdsInlineContentAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act

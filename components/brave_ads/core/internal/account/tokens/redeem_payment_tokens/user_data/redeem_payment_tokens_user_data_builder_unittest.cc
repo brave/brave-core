@@ -24,7 +24,7 @@ TEST_F(BraveAdsRedeemPaymentTokensUserDataBuilderTest, BuildUserData) {
 
   // Act
   BuildRedeemPaymentTokensUserData(
-      privacy::BuildPaymentTokens(/*count*/ 2),
+      privacy::BuildPaymentTokensForTesting(/*count*/ 2),
       base::BindOnce([](base::Value::Dict user_data) {
         EXPECT_EQ(
             base::test::ParseJsonDict(

@@ -19,7 +19,8 @@ class BraveAdsPromotedContentAdInfoTest : public UnitTestBase {};
 TEST_F(BraveAdsPromotedContentAdInfoTest, IsValid) {
   // Arrange
   const CreativePromotedContentAdInfo creative_ad =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativePromotedContentAdForTesting(
+          /*should_use_random_uuids*/ true);
   const PromotedContentAdInfo ad = BuildPromotedContentAd(creative_ad);
 
   // Act

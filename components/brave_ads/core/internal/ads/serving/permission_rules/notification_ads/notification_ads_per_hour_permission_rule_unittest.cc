@@ -41,8 +41,8 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
   SetDefaultInt64Pref(prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
 
   // Act
-  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
-                 /*count*/ ads_per_hour);
+  RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
+                           /*count*/ ads_per_hour);
 
   // Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
@@ -58,8 +58,8 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
   SetDefaultInt64Pref(prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
 
   // Act
-  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
-                 /*count*/ ads_per_hour);
+  RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
+                           /*count*/ ads_per_hour);
 
   // Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
@@ -73,8 +73,8 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
   SetDefaultInt64Pref(prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
 
   // Act
-  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
-                 /*count*/ ads_per_hour - 1);
+  RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
+                           /*count*/ ads_per_hour - 1);
 
   // Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
@@ -87,8 +87,8 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 
   SetDefaultInt64Pref(prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
 
-  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
-                 /*count*/ ads_per_hour);
+  RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
+                           /*count*/ ads_per_hour);
 
   // Act
   AdvanceClockBy(base::Hours(1));
@@ -104,8 +104,8 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 
   SetDefaultInt64Pref(prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
 
-  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
-                 /*count*/ ads_per_hour);
+  RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
+                           /*count*/ ads_per_hour);
 
   // Act
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));

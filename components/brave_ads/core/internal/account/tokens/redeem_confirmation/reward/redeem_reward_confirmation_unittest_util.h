@@ -10,8 +10,8 @@
 
 namespace brave_ads {
 
-std::string BuildCreateRewardConfirmationUrlResponseBody();
-std::string BuildFetchPaymentTokenUrlResponseBody();
+std::string BuildCreateRewardConfirmationUrlResponseBodyForTesting();
+std::string BuildFetchPaymentTokenUrlResponseBodyForTesting();
 
 }  // namespace brave_ads
 

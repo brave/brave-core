@@ -21,24 +21,24 @@ class ConfirmationType;
 struct AdEventInfo;
 struct CreativeAdInfo;
 
-AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
-                         const AdType& ad_type,
-                         const ConfirmationType& confirmation_type,
-                         base::Time created_at);
+AdEventInfo BuildAdEventForTesting(const CreativeAdInfo& creative_ad,
+                                   const AdType& ad_type,
+                                   const ConfirmationType& confirmation_type,
+                                   base::Time created_at);
 
-void RecordAdEvent(const AdType& type,
-                   const ConfirmationType& confirmation_type);
-void RecordAdEvents(const AdType& type,
-                    const ConfirmationType& confirmation_type,
-                    int count);
+void RecordAdEventForTesting(const AdType& type,
+                             const ConfirmationType& confirmation_type);
+void RecordAdEventsForTesting(const AdType& type,
+                              const ConfirmationType& confirmation_type,
+                              int count);
 
-void FireAdEvent(const AdEventInfo& ad_event);
-void FireAdEvents(const AdEventInfo& ad_event, size_t count);
+void FireAdEventForTesting(const AdEventInfo& ad_event);
+void FireAdEventsForTesting(const AdEventInfo& ad_event, size_t count);
 
-size_t GetAdEventCount(const AdType& ad_type,
-                       const ConfirmationType& confirmation_type);
+size_t GetAdEventCountForTesting(const AdType& ad_type,
+                                 const ConfirmationType& confirmation_type);
 
-void ResetAdEvents(ResultAdEventsCallback callback);
+void ResetAdEventsForTesting(ResultAdEventsCallback callback);
 
 }  // namespace brave_ads
 

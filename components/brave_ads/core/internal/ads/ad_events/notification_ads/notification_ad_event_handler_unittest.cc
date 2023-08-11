@@ -27,7 +27,7 @@ namespace {
 
 NotificationAdInfo BuildAndSaveAd() {
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   NotificationAdInfo ad = BuildNotificationAd(creative_ad);
   NotificationAdManager::GetInstance().Add(ad);
   return ad;
@@ -118,8 +118,8 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireServedEvent) {
   EXPECT_FALSE(did_fire_timed_out_ad_event_);
   EXPECT_FALSE(did_fail_to_fire_ad_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_EQ(
-      1U, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNotificationAd,
+                                          ConfirmationType::kServed));
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireViewedEvent) {
@@ -138,8 +138,8 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireViewedEvent) {
   EXPECT_FALSE(did_fire_timed_out_ad_event_);
   EXPECT_FALSE(did_fail_to_fire_ad_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_EQ(
-      1U, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNotificationAd,
+                                          ConfirmationType::kViewed));
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireClickedEvent) {
@@ -158,8 +158,8 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireClickedEvent) {
   EXPECT_FALSE(did_fire_timed_out_ad_event_);
   EXPECT_FALSE(did_fail_to_fire_ad_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_EQ(
-      1U, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kClicked));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNotificationAd,
+                                          ConfirmationType::kClicked));
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
@@ -178,8 +178,8 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
   EXPECT_FALSE(did_fire_timed_out_ad_event_);
   EXPECT_FALSE(did_fail_to_fire_ad_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_EQ(1U, GetAdEventCount(AdType::kNotificationAd,
-                                ConfirmationType::kDismissed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNotificationAd,
+                                          ConfirmationType::kDismissed));
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
@@ -216,10 +216,10 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest,
   EXPECT_FALSE(did_fire_timed_out_ad_event_);
   EXPECT_TRUE(did_fail_to_fire_ad_event_);
   EXPECT_FALSE(ad_.IsValid());
-  EXPECT_EQ(
-      0U, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kServed));
-  EXPECT_EQ(
-      0U, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kViewed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kNotificationAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kNotificationAd,
+                                          ConfirmationType::kViewed));
 }
 
 }  // namespace brave_ads

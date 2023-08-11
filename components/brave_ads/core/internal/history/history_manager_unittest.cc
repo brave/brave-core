@@ -102,7 +102,7 @@ class BraveAdsHistoryManagerTest : public HistoryManagerObserver,
 TEST_F(BraveAdsHistoryManagerTest, AddNotificationAdHistory) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   // Act
@@ -118,10 +118,10 @@ TEST_F(BraveAdsHistoryManagerTest, AddNotificationAdHistory) {
 TEST_F(BraveAdsHistoryManagerTest,
        DoNotAddNotificationAdHistoryForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   // Act
@@ -134,7 +134,7 @@ TEST_F(BraveAdsHistoryManagerTest,
 TEST_F(BraveAdsHistoryManagerTest, AddNewTabPageAdHistory) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
 
   // Act
@@ -150,10 +150,10 @@ TEST_F(BraveAdsHistoryManagerTest, AddNewTabPageAdHistory) {
 TEST_F(BraveAdsHistoryManagerTest,
        DoNotAddNewTabPageAdHistoryForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   const CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
 
   // Act
@@ -166,7 +166,8 @@ TEST_F(BraveAdsHistoryManagerTest,
 TEST_F(BraveAdsHistoryManagerTest, AddPromotedContentAdHistory) {
   // Arrange
   const CreativePromotedContentAdInfo creative_ad =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativePromotedContentAdForTesting(
+          /*should_use_random_uuids*/ true);
   const PromotedContentAdInfo ad = BuildPromotedContentAd(creative_ad);
 
   // Act
@@ -182,10 +183,11 @@ TEST_F(BraveAdsHistoryManagerTest, AddPromotedContentAdHistory) {
 TEST_F(BraveAdsHistoryManagerTest,
        DoNotAddPromotedContentAdHistoryForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   const CreativePromotedContentAdInfo creative_ad =
-      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativePromotedContentAdForTesting(
+          /*should_use_random_uuids*/ true);
   const PromotedContentAdInfo ad = BuildPromotedContentAd(creative_ad);
 
   // Act
@@ -198,7 +200,7 @@ TEST_F(BraveAdsHistoryManagerTest,
 TEST_F(BraveAdsHistoryManagerTest, AddInlineContentAdHistory) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
   const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);
 
   // Act
@@ -214,10 +216,10 @@ TEST_F(BraveAdsHistoryManagerTest, AddInlineContentAdHistory) {
 TEST_F(BraveAdsHistoryManagerTest,
        DoNotAddInlineContentAdHistoryForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
   const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);
 
   // Act
@@ -230,7 +232,7 @@ TEST_F(BraveAdsHistoryManagerTest,
 TEST_F(BraveAdsHistoryManagerTest, AddSearchResultAdHistory) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAd(/*should_use_random_uuids*/ true);
+      BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true);
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   // Act
@@ -246,10 +248,10 @@ TEST_F(BraveAdsHistoryManagerTest, AddSearchResultAdHistory) {
 TEST_F(BraveAdsHistoryManagerTest,
        DoNotAddSearchResultAdHistoryForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAd(/*should_use_random_uuids*/ true);
+      BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true);
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   // Act
@@ -262,7 +264,7 @@ TEST_F(BraveAdsHistoryManagerTest,
 TEST_F(BraveAdsHistoryManagerTest, LikeAd) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
@@ -278,7 +280,7 @@ TEST_F(BraveAdsHistoryManagerTest, LikeAd) {
 TEST_F(BraveAdsHistoryManagerTest, DislikeAd) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
@@ -294,7 +296,7 @@ TEST_F(BraveAdsHistoryManagerTest, DislikeAd) {
 TEST_F(BraveAdsHistoryManagerTest, LikeCategory) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
@@ -310,7 +312,7 @@ TEST_F(BraveAdsHistoryManagerTest, LikeCategory) {
 TEST_F(BraveAdsHistoryManagerTest, DislikeCategory) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
@@ -326,7 +328,7 @@ TEST_F(BraveAdsHistoryManagerTest, DislikeCategory) {
 TEST_F(BraveAdsHistoryManagerTest, SaveAd) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
@@ -342,7 +344,7 @@ TEST_F(BraveAdsHistoryManagerTest, SaveAd) {
 TEST_F(BraveAdsHistoryManagerTest, UnsaveAd) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
@@ -359,7 +361,7 @@ TEST_F(BraveAdsHistoryManagerTest, UnsaveAd) {
 TEST_F(BraveAdsHistoryManagerTest, MarkAdAsInappropriate) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
@@ -376,7 +378,7 @@ TEST_F(BraveAdsHistoryManagerTest, MarkAdAsInappropriate) {
 TEST_F(BraveAdsHistoryManagerTest, MarkAdAsAppropriate) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);

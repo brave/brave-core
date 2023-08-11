@@ -10,7 +10,7 @@ namespace brave_ads {
 
 struct RewardInfo;
 
-RewardInfo BuildReward();
+RewardInfo BuildRewardForTesting();
 
 }  // namespace brave_ads
 

@@ -25,7 +25,7 @@ TEST_F(BraveAdsAccountUtilTest, UserHasJoinedBraveRewards) {
 
 TEST_F(BraveAdsAccountUtilTest, ShouldNotRewardUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   // Act
 
@@ -44,7 +44,7 @@ TEST_F(BraveAdsAccountUtilTest, UserHasOptedInToNotificationAds) {
 
 TEST_F(BraveAdsAccountUtilTest, UserHasNotOptedInToNotificationAds) {
   // Arrange
-  DisableNotificationAds();
+  DisableNotificationAdsForTesting();
 
   // Act
 
@@ -63,7 +63,7 @@ TEST_F(BraveAdsAccountUtilTest, UserHasOptedInToBraveNewsAds) {
 
 TEST_F(BraveAdsAccountUtilTest, UserHasNotOptedInToBraveNews) {
   // Arrange
-  DisableBraveNewsAds();
+  DisableBraveNewsAdsForTesting();
 
   // Act
 
@@ -82,7 +82,7 @@ TEST_F(BraveAdsAccountUtilTest, UserHasOptedInToNewTabPageAds) {
 
 TEST_F(BraveAdsAccountUtilTest, UserHasNotOptedInToNewTabPageAds) {
   // Arrange
-  DisableNewTabPageAds();
+  DisableNewTabPageAdsForTesting();
 
   // Act
 

@@ -81,7 +81,7 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
   }
 
   static std::string BuildSubdivisionForTestParam() {
-    return BuildSubdivision(GetParam().country, GetParam().region);
+    return BuildSubdivisionForTesting(GetParam().country, GetParam().region);
   }
 
   static std::string BuildOtherSubdivisionForTestParam() {
@@ -102,14 +102,14 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
       }
     }
 
-    return BuildSubdivision(GetParam().country, region);
+    return BuildSubdivisionForTesting(GetParam().country, region);
   }
 
   void MockUrlResponseForTestParam() {
     const URLResponseMap url_responses = {
         {BuildSubdivisionUrlPath(),
-         {{net::HTTP_OK, BuildSubdivisionUrlResponseBody(GetParam().country,
-                                                         GetParam().region)}}}};
+         {{net::HTTP_OK, BuildSubdivisionUrlResponseBodyForTesting(
+                             GetParam().country, GetParam().region)}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 
@@ -290,7 +290,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {
-      BuildSubdivision(/*country*/ "US", /*region*/ "XX")};
+      BuildSubdivisionForTesting(/*country*/ "US", /*region*/ "XX")};
 
   // Assert
   EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
@@ -309,7 +309,7 @@ TEST_P(
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {
-      BuildSubdivision(/*country*/ "GB", /*region*/ "DEV")};
+      BuildSubdivisionForTesting(/*country*/ "GB", /*region*/ "DEV")};
 
   // Act
 
@@ -325,7 +325,7 @@ TEST_P(
 
   const URLResponseMap url_responses = {
       {BuildSubdivisionUrlPath(),
-       {{net::HTTP_OK, BuildSubdivisionUrlResponseBody(
+       {{net::HTTP_OK, BuildSubdivisionUrlResponseBodyForTesting(
                            /*country*/ "XX", /*region*/ "NO REGION")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 

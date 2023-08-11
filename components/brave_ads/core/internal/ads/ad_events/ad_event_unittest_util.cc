@@ -26,10 +26,10 @@
 
 namespace brave_ads {
 
-AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
-                         const AdType& ad_type,
-                         const ConfirmationType& confirmation_type,
-                         const base::Time created_at) {
+AdEventInfo BuildAdEventForTesting(const CreativeAdInfo& creative_ad,
+                                   const AdType& ad_type,
+                                   const ConfirmationType& confirmation_type,
+                                   const base::Time created_at) {
   AdEventInfo ad_event;
 
   ad_event.type = ad_type;
@@ -45,14 +45,14 @@ AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
   return ad_event;
 }
 
-void RecordAdEvent(const AdType& type,
-                   const ConfirmationType& confirmation_type) {
-  RecordAdEvents(type, confirmation_type, /*count*/ 1);
+void RecordAdEventForTesting(const AdType& type,
+                             const ConfirmationType& confirmation_type) {
+  RecordAdEventsForTesting(type, confirmation_type, /*count*/ 1);
 }
 
-void RecordAdEvents(const AdType& type,
-                    const ConfirmationType& confirmation_type,
-                    const int count) {
+void RecordAdEventsForTesting(const AdType& type,
+                              const ConfirmationType& confirmation_type,
+                              const int count) {
   CHECK_GT(count, 0);
 
   const std::string& id = GetInstanceId();
@@ -66,25 +66,25 @@ void RecordAdEvents(const AdType& type,
   }
 }
 
-void FireAdEvent(const AdEventInfo& ad_event) {
+void FireAdEventForTesting(const AdEventInfo& ad_event) {
   LogAdEvent(ad_event,
              base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
-void FireAdEvents(const AdEventInfo& ad_event, const size_t count) {
+void FireAdEventsForTesting(const AdEventInfo& ad_event, const size_t count) {
   for (size_t i = 0; i < count; i++) {
-    FireAdEvent(ad_event);
+    FireAdEventForTesting(ad_event);
   }
 }
 
-size_t GetAdEventCount(const AdType& ad_type,
-                       const ConfirmationType& confirmation_type) {
+size_t GetAdEventCountForTesting(const AdType& ad_type,
+                                 const ConfirmationType& confirmation_type) {
   const std::vector<base::Time> ad_events =
       GetAdEventHistory(ad_type, confirmation_type);
   return ad_events.size();
 }
 
-void ResetAdEvents(ResultAdEventsCallback callback) {
+void ResetAdEventsForTesting(ResultAdEventsCallback callback) {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
   database::DeleteTable(&*transaction, "ad_events");

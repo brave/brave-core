@@ -13,23 +13,26 @@
 
 namespace brave_ads {
 
-CreativeInlineContentAdList BuildCreativeInlineContentAds(const int count) {
+CreativeInlineContentAdList BuildCreativeInlineContentAdsForTesting(
+    const int count) {
   CHECK_GT(count, 0);
 
   CreativeInlineContentAdList creative_ads;
 
   for (int i = 0; i < count; i++) {
     const CreativeInlineContentAdInfo creative_ad =
-        BuildCreativeInlineContentAd(/*should_use_random_uuids*/ true);
+        BuildCreativeInlineContentAdForTesting(
+            /*should_use_random_uuids*/ true);
     creative_ads.push_back(creative_ad);
   }
 
   return creative_ads;
 }
 
-CreativeInlineContentAdInfo BuildCreativeInlineContentAd(
+CreativeInlineContentAdInfo BuildCreativeInlineContentAdForTesting(
     const bool should_use_random_uuids) {
-  const CreativeAdInfo creative_ad = BuildCreativeAd(should_use_random_uuids);
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAdForTesting(should_use_random_uuids);
   CreativeInlineContentAdInfo creative_inline_content_ad(creative_ad);
 
   creative_inline_content_ad.title = "Test Ad Title";

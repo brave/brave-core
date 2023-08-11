@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-void ForceNotificationAdServingVersion(int version);
+void ForceNotificationAdServingVersionForTesting(int version);
 
 }  // namespace brave_ads
 

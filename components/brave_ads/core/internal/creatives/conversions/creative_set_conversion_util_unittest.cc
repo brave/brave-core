@@ -24,8 +24,8 @@ class BraveAdsCreativeSetConversionUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsCreativeSetConversionUtilTest,
        FilterConvertedAndNonMatchingCreativeSetConversions) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event =
@@ -35,27 +35,31 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   CreativeSetConversionList creative_set_conversions;
 
   const CreativeSetConversionInfo creative_set_conversion_1 =
-      BuildCreativeSetConversion(kCreativeSetId,
-                                 /*url_pattern*/ "https://foo.com/*",
-                                 /*observation_window*/ base::Days(3));
+      BuildCreativeSetConversionForTesting(
+          kCreativeSetId,
+          /*url_pattern*/ "https://foo.com/*",
+          /*observation_window*/ base::Days(3));
   creative_set_conversions.push_back(creative_set_conversion_1);
 
   const CreativeSetConversionInfo creative_set_conversion_2 =
-      BuildCreativeSetConversion(ad_event.creative_set_id,
-                                 /*url_pattern*/ "https://www.qux.com/",
-                                 /*observation_window*/ base::Days(7));
+      BuildCreativeSetConversionForTesting(
+          ad_event.creative_set_id,
+          /*url_pattern*/ "https://www.qux.com/",
+          /*observation_window*/ base::Days(7));
   creative_set_conversions.push_back(creative_set_conversion_2);
 
   const CreativeSetConversionInfo creative_set_conversion_3 =
-      BuildCreativeSetConversion(kCreativeSetId,
-                                 /*url_pattern*/ "https://bar.com/foo",
-                                 /*observation_window*/ base::Days(30));
+      BuildCreativeSetConversionForTesting(
+          kCreativeSetId,
+          /*url_pattern*/ "https://bar.com/foo",
+          /*observation_window*/ base::Days(30));
   creative_set_conversions.push_back(creative_set_conversion_3);
 
   const CreativeSetConversionInfo creative_set_conversion_4 =
-      BuildCreativeSetConversion(kCreativeSetId,
-                                 /*url_pattern*/ "https://baz.com/",
-                                 /*observation_window*/ base::Days(1));
+      BuildCreativeSetConversionForTesting(
+          kCreativeSetId,
+          /*url_pattern*/ "https://baz.com/",
+          /*observation_window*/ base::Days(1));
   creative_set_conversions.push_back(creative_set_conversion_4);
 
   const std::vector<GURL> redirect_chain = {
@@ -79,21 +83,21 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   CreativeSetConversionList creative_set_conversions;
 
   const CreativeSetConversionInfo creative_set_conversion_1 =
-      BuildCreativeSetConversion(
+      BuildCreativeSetConversionForTesting(
           kCreativeSetId,
           /*url_pattern*/ "https://foo.com/*",
           /*observation_window*/ base::Days(3));  // Bucket #1
   creative_set_conversions.push_back(creative_set_conversion_1);
 
   const CreativeSetConversionInfo creative_set_conversion_2 =
-      BuildCreativeSetConversion(
+      BuildCreativeSetConversionForTesting(
           /*creative_set_id*/ "4e83a23c-1194-40f8-8fdc-2f38d7ed75c8",
           /*url_pattern*/ "https://www.qux.com/",
           /*observation_window*/ base::Days(7));  // Bucket #2
   creative_set_conversions.push_back(creative_set_conversion_2);
 
   const CreativeSetConversionInfo creative_set_conversion_3 =
-      BuildCreativeSetConversion(
+      BuildCreativeSetConversionForTesting(
           kCreativeSetId,
           /*url_pattern*/ "https://baz.com/",
           /*observation_window*/ base::Days(30));  // Bucket #1
@@ -127,8 +131,8 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 TEST_F(BraveAdsCreativeSetConversionUtilTest,
        FindNonExpiredCreativeSetConversion) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ false);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kConversion, /*created_at*/ Now());
 
@@ -137,7 +141,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   CreativeSetConversionList creative_set_conversions;
 
   const CreativeSetConversionInfo creative_set_conversion_1 =
-      BuildVerifiableCreativeSetConversion(
+      BuildVerifiableCreativeSetConversionForTesting(
           kCreativeSetId,
           /*url_pattern*/ "https://foo.com/*",
           /*observation_window*/ base::Days(7),
@@ -145,7 +149,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   creative_set_conversions.push_back(creative_set_conversion_1);
 
   const CreativeSetConversionInfo creative_set_conversion_2 =
-      BuildCreativeSetConversion(
+      BuildCreativeSetConversionForTesting(
           /*creative_set_id*/ "4e83a23c-1194-40f8-8fdc-2f38d7ed75c8",
           /*url_pattern*/ "https://www.qux.com/",
           /*observation_window*/ base::Days(3));
@@ -161,8 +165,8 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 TEST_F(BraveAdsCreativeSetConversionUtilTest,
        DoNotFindNonExpiredCreativeSetConversion) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ false);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kConversion, /*created_at*/ Now());
 
@@ -171,7 +175,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   CreativeSetConversionList creative_set_conversions;
 
   const CreativeSetConversionInfo creative_set_conversion =
-      BuildVerifiableCreativeSetConversion(
+      BuildVerifiableCreativeSetConversionForTesting(
           kCreativeSetId,
           /*url_pattern*/ "https://foo.com/*",
           /*observation_window*/ base::Days(7),

@@ -26,20 +26,24 @@ TEST(BraveAdsSummaryUserDataUtilTest, BuildBuckets) {
   // Arrange
   privacy::PaymentTokenList payment_tokens;
 
-  const privacy::PaymentTokenInfo payment_token_1 = privacy::BuildPaymentToken(
-      ConfirmationType::kViewed, AdType::kNotificationAd);
+  const privacy::PaymentTokenInfo payment_token_1 =
+      privacy::BuildPaymentTokenForTesting(ConfirmationType::kViewed,
+                                           AdType::kNotificationAd);
   payment_tokens.push_back(payment_token_1);
 
-  const privacy::PaymentTokenInfo payment_token_2 = privacy::BuildPaymentToken(
-      ConfirmationType::kViewed, AdType::kNotificationAd);
+  const privacy::PaymentTokenInfo payment_token_2 =
+      privacy::BuildPaymentTokenForTesting(ConfirmationType::kViewed,
+                                           AdType::kNotificationAd);
   payment_tokens.push_back(payment_token_2);
 
-  const privacy::PaymentTokenInfo payment_token_3 = privacy::BuildPaymentToken(
-      ConfirmationType::kClicked, AdType::kNotificationAd);
+  const privacy::PaymentTokenInfo payment_token_3 =
+      privacy::BuildPaymentTokenForTesting(ConfirmationType::kClicked,
+                                           AdType::kNotificationAd);
   payment_tokens.push_back(payment_token_3);
 
-  const privacy::PaymentTokenInfo payment_token_4 = privacy::BuildPaymentToken(
-      ConfirmationType::kViewed, AdType::kInlineContentAd);
+  const privacy::PaymentTokenInfo payment_token_4 =
+      privacy::BuildPaymentTokenForTesting(ConfirmationType::kViewed,
+                                           AdType::kInlineContentAd);
   payment_tokens.push_back(payment_token_4);
 
   // Act

@@ -37,7 +37,7 @@ TEST_F(BraveAdsBuildChannelUserDataTest,
 TEST_F(BraveAdsBuildChannelUserDataTest,
        DoNotBuildBuildChannelUserDataForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   // Act
 

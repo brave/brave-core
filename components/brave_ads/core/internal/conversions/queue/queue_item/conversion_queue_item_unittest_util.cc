@@ -13,7 +13,7 @@
 
 namespace brave_ads {
 
-ConversionQueueItemList BuildConversionQueueItems(
+ConversionQueueItemList BuildConversionQueueItemsForTesting(
     const ConversionInfo& conversion,
     const size_t count) {
   ConversionQueueItemList conversion_queue_items;
@@ -28,7 +28,7 @@ ConversionQueueItemList BuildConversionQueueItems(
   return conversion_queue_items;
 }
 
-void SaveConversionQueueItems(
+void SaveConversionQueueItemsForTesting(
     const ConversionQueueItemList& conversion_queue_items) {
   const database::table::ConversionQueue database_table;
   database_table.Save(

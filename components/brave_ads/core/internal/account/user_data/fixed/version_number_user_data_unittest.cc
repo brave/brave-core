@@ -35,7 +35,7 @@ TEST_F(BraveAdsVersionNumberUserDataTest,
 TEST_F(BraveAdsVersionNumberUserDataTest,
        BuildVersionNumberUserDataForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   // Act
 

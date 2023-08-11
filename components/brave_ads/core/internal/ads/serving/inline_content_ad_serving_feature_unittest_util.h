@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-void ForceInlineContentAdServingVersion(int version);
+void ForceInlineContentAdServingVersionForTesting(int version);
 
 }  // namespace brave_ads
 

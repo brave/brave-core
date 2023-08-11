@@ -12,11 +12,11 @@ namespace brave_ads::privacy::cbr {
 
 class Token;
 
-Token GetToken();
-std::vector<Token> GetTokens();
+Token GetTokenForTesting();
+std::vector<Token> GetTokensForTesting();
 
-Token GetInvalidToken();
-std::vector<Token> GetInvalidTokens();
+Token GetInvalidTokenForTesting();
+std::vector<Token> GetInvalidTokensForTesting();
 
 }  // namespace brave_ads::privacy::cbr
 

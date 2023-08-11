@@ -109,7 +109,7 @@ TEST(BraveAdsSampleAdsTest,
   CreativeAdPredictorMap<CreativeNotificationAdInfo> creative_ad_predictors;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_1.segment = "foo-bar";
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_1;
@@ -118,7 +118,7 @@ TEST(BraveAdsSampleAdsTest,
   creative_ad_predictors[creative_ad_1.creative_instance_id] = ad_predictor_1;
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_2.segment = "foo-bar";
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_2;
@@ -127,7 +127,7 @@ TEST(BraveAdsSampleAdsTest,
   creative_ad_predictors[creative_ad_2.creative_instance_id] = ad_predictor_2;
 
   CreativeNotificationAdInfo creative_ad_3 =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_3.segment = "foo-bar";
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_3;
@@ -148,7 +148,7 @@ TEST(BraveAdsSampleAdsTest, ProbabilisticallySampleAdFromPredictors) {
   CreativeAdPredictorMap<CreativeNotificationAdInfo> creative_ad_predictors;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_1.segment = "foo-bar";
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_1;
@@ -157,7 +157,7 @@ TEST(BraveAdsSampleAdsTest, ProbabilisticallySampleAdFromPredictors) {
   creative_ad_predictors[creative_ad_1.creative_instance_id] = ad_predictor_1;
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_2.segment = "foo-bar";
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_2;

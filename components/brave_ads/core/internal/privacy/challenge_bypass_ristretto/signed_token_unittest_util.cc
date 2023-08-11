@@ -10,20 +10,20 @@
 
 namespace brave_ads::privacy::cbr {
 
-SignedToken GetSignedToken() {
+SignedToken GetSignedTokenForTesting() {
   return SignedToken(kSignedTokenBase64);
 }
 
-std::vector<SignedToken> GetSignedTokens() {
-  return {GetSignedToken()};
+std::vector<SignedToken> GetSignedTokensForTesting() {
+  return {GetSignedTokenForTesting()};
 }
 
-SignedToken GetInvalidSignedToken() {
+SignedToken GetInvalidSignedTokenForTesting() {
   return SignedToken(kInvalidBase64);
 }
 
-std::vector<SignedToken> GetInvalidSignedTokens() {
-  return {GetInvalidSignedToken()};
+std::vector<SignedToken> GetInvalidSignedTokensForTesting() {
+  return {GetInvalidSignedTokenForTesting()};
 }
 
 }  // namespace brave_ads::privacy::cbr

@@ -14,23 +14,25 @@
 
 namespace brave_ads::privacy {
 
-PaymentTokens& GetPaymentTokens() {
+PaymentTokens& GetPaymentTokensForTesting() {
   return ConfirmationStateManager::GetInstance().GetPaymentTokens();
 }
 
-PaymentTokenList SetPaymentTokens(const int count) {
+PaymentTokenList SetPaymentTokensForTesting(const int count) {
   CHECK_GT(count, 0);
 
-  PaymentTokenList payment_tokens = BuildPaymentTokens(count);
-  GetPaymentTokens().SetTokens(payment_tokens);
+  PaymentTokenList payment_tokens = BuildPaymentTokensForTesting(count);
+  GetPaymentTokensForTesting().SetTokens(payment_tokens);
   return payment_tokens;
 }
 
-PaymentTokenInfo BuildPaymentToken(const ConfirmationType& confirmation_type,
-                                   const AdType& ad_type) {
+PaymentTokenInfo BuildPaymentTokenForTesting(
+    const ConfirmationType& confirmation_type,
+    const AdType& ad_type) {
   const std::string payment_token_base64 =
       R"(PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY)";
-  PaymentTokenInfo payment_token = BuildPaymentToken(payment_token_base64);
+  PaymentTokenInfo payment_token =
+      BuildPaymentTokenForTesting(payment_token_base64);
 
   payment_token.confirmation_type = confirmation_type;
   payment_token.ad_type = ad_type;
@@ -38,13 +40,13 @@ PaymentTokenInfo BuildPaymentToken(const ConfirmationType& confirmation_type,
   return payment_token;
 }
 
-PaymentTokenList BuildPaymentTokens(
+PaymentTokenList BuildPaymentTokensForTesting(
     const std::vector<std::string>& payment_tokens_base64) {
   PaymentTokenList payment_tokens;
 
   for (const auto& payment_token_base64 : payment_tokens_base64) {
     const PaymentTokenInfo payment_token =
-        BuildPaymentToken(payment_token_base64);
+        BuildPaymentTokenForTesting(payment_token_base64);
 
     payment_tokens.push_back(payment_token);
   }
@@ -52,7 +54,8 @@ PaymentTokenList BuildPaymentTokens(
   return payment_tokens;
 }
 
-PaymentTokenInfo BuildPaymentToken(const std::string& payment_token_base64) {
+PaymentTokenInfo BuildPaymentTokenForTesting(
+    const std::string& payment_token_base64) {
   PaymentTokenInfo payment_token;
 
   payment_token.transaction_id = "0d9de7ce-b3f9-4158-8726-23d52b9457c6";
@@ -71,7 +74,7 @@ PaymentTokenInfo BuildPaymentToken(const std::string& payment_token_base64) {
   return payment_token;
 }
 
-PaymentTokenList BuildPaymentTokens(const int count) {
+PaymentTokenList BuildPaymentTokensForTesting(const int count) {
   CHECK_GT(count, 0);
 
   const std::vector<std::string> payment_tokens_base64 = {
@@ -94,7 +97,7 @@ PaymentTokenList BuildPaymentTokens(const int count) {
     const std::string& payment_token_base64 =
         payment_tokens_base64.at(i % modulo);
     const PaymentTokenInfo payment_token =
-        BuildPaymentToken(payment_token_base64);
+        BuildPaymentTokenForTesting(payment_token_base64);
 
     payment_tokens.push_back(payment_token);
   }
@@ -102,8 +105,9 @@ PaymentTokenList BuildPaymentTokens(const int count) {
   return payment_tokens;
 }
 
-PaymentTokenInfo BuildPaymentToken() {
-  const PaymentTokenList payment_tokens = BuildPaymentTokens(/*count*/ 1);
+PaymentTokenInfo BuildPaymentTokenForTesting() {
+  const PaymentTokenList payment_tokens =
+      BuildPaymentTokensForTesting(/*count*/ 1);
   CHECK(!payment_tokens.empty());
   return payment_tokens.front();
 }
