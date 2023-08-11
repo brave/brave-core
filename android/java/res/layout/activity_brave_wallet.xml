@@ -87,8 +87,7 @@
                 android:elevation="10dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:scaleType="fitCenter"
-                android:visibility="visible"/>
+                android:scaleType="fitCenter" />
 
             <ImageView
                 android:id="@+id/buy_send_swap_button"
@@ -100,8 +99,7 @@
                 android:elevation="10dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:scaleType="center"
-                android:visibility="gone"/>
+                android:scaleType="center" />
         </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

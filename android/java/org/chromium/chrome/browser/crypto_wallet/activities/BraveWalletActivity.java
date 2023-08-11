@@ -240,8 +240,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         List<NavigationItem> navigationItems = new ArrayList<>();
         mShowBiometricPrompt = true;
         mCryptoLayout.setVisibility(View.GONE);
-        mPendingTxNotification.setVisibility(View.GONE);
-        mBuySendSwapButton.setVisibility(View.GONE);
         mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
         if (type == ONBOARDING_FIRST_PAGE_ACTION) {
             SetupWalletFragment setupWalletFragment =
@@ -349,8 +347,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
             return true;
         });
 
-        if (mBuySendSwapButton != null) mBuySendSwapButton.setVisibility(View.VISIBLE);
-
         if (mKeyringService != null) {
             mKeyringService.isWalletBackedUp(backed_up -> {
                 if (!backed_up) {
@@ -385,8 +381,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         addRemoveSecureFlag(true);
         mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
         mCryptoLayout.setVisibility(View.GONE);
-        mPendingTxNotification.setVisibility(View.GONE);
-        mBuySendSwapButton.setVisibility(View.GONE);
 
         List<NavigationItem> navigationItems = new ArrayList<>();
         addBackupWalletSequence(navigationItems, false);
@@ -407,8 +401,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         bannerClose.setOnClickListener(view -> backupTopBannerLayout.setVisibility(View.GONE));
     }
 
-    public void setPendingTxNotificationVisibility(int visibility) {
-        mPendingTxNotification.setVisibility(visibility);
+    public void showPendingTxNotification(final boolean show) {
+        mPendingTxNotification.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
