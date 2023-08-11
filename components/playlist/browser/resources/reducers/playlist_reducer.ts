@@ -21,7 +21,7 @@ const playlistReducer: Reducer<PlaylistData | undefined> = (
       lists: [],
       currentList: undefined,
       lastPlayerState: undefined,
-      cachingProgress: undefined
+      cachingProgress: new Map()
     }
   }
 

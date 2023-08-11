@@ -6,7 +6,7 @@
 import { PlaylistItem } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
 // Note that we hardly expect files to be bigger than 1TB. Generally, 4k 1 hour long
-// video is 30GB more ore less. So it's unlikely for the |bytes| to exceed
+// video is 30GB more or less. So it's unlikely for the |bytes| to exceed
 // the number range. Roughly we can represents more than 10000 videos in that
 // size with number type.
 // * Number.MAX_SAFE_INTEGER == 9007199254740991

@@ -67,7 +67,7 @@ export default function PlaylistInfo ({
         {isDefaultPlaylist ? 'Play Later' : playlistName}{' '}
       </PlaylistName>
       <PlaylistDetail color={detailColor}>{itemCount} items</PlaylistDetail>
-      {!!totalDuration && (
+      {totalDuration !== undefined && (
         <PlaylistDetail color={detailColor}>
           {formatTimeInSeconds(totalDuration, 'space')}
         </PlaylistDetail>

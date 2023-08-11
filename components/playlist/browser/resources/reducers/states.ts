@@ -38,7 +38,7 @@ export interface PlaylistData {
   // TODO(sko) Investigate if it's possible to remove this and use ApplicationState.playerState.
   lastPlayerState: PlayerState | undefined
 
-  cachingProgress: Map<string, CachingProgress> | undefined
+  cachingProgress: Map<string, CachingProgress>
 }
 
 export interface PlayerState {
@@ -63,6 +63,6 @@ export const useTotalDuration = (playlist?: Playlist) => {
 
 export function useTotalSize (playlist?: Playlist) {
   return React.useMemo(() => {
-    return playlist?.items ? getFormattedTotalBytes(playlist.items) : ''
+    return getFormattedTotalBytes(playlist?.items ?? [])
   }, [playlist])
 }
