@@ -6,10 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SITE_ENGAGEMENT_CONTENT_SITE_ENGAGEMENT_SERVICE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SITE_ENGAGEMENT_CONTENT_SITE_ENGAGEMENT_SERVICE_H_
 
-#define HandleMediaPlaying \
-  UnusedFunction() {}      \
-                           \
- protected:                \
+#define HandleMediaPlaying                                           \
+  UnusedFunction() {}                                                \
+                                                                     \
+  friend class ::site_engagement::HistoryAwareSiteEngagementService; \
   virtual void HandleMediaPlaying
 
 #define HandleNavigation \
@@ -20,17 +20,14 @@
   UnusedFunction3() {}  \
   virtual void HandleUserInput
 
-#define OnEngagementEvent \
-  UnusedFunction4() {}    \
-                          \
- private:                 \
-  void OnEngagementEvent
+namespace site_engagement {
+class HistoryAwareSiteEngagementService;
+}
 
 #include "src/components/site_engagement/content/site_engagement_service.h"  // IWYU pragma: export
 
 #undef HandleMediaPlaying
 #undef HandleNavigation
 #undef HandleUserInput
-#undef OnEngagementEvent
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SITE_ENGAGEMENT_CONTENT_SITE_ENGAGEMENT_SERVICE_H_
