@@ -109,6 +109,8 @@ class BraveVPNOSConnectionAPI
   FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            IgnoreDisconnectedStateWhileConnecting);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, HostnamesTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNWireguardConnectionAPIUnitTest,
+                           SetSelectedRegion);
 
   void SetConnectionStateForTesting(mojom::ConnectionState state);
 
