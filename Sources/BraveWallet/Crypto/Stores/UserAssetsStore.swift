@@ -206,11 +206,12 @@ public class UserAssetsStore: ObservableObject {
     return (allUserAssets + allBlockchainTokens).flatMap { networkAssets in
       networkAssets.tokens.map { token in
         AssetViewModel(
+          groupType: .none,
           token: token,
           network: networkAssets.network,
-          decimalBalance: 0,
           price: "",
-          history: []
+          history: [],
+          balanceForAccounts: [:]
         )
       }
     }

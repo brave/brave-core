@@ -61,7 +61,7 @@ struct Filters {
   var networks: [Selectable<BraveWallet.NetworkInfo>]
   
   init(
-    groupBy: GroupBy = .none,
+    groupBy: GroupBy = GroupBy(rawValue: Preferences.Wallet.groupByFilter.value) ?? .none,
     sortOrder: SortOrder = SortOrder(rawValue: Preferences.Wallet.sortOrderFilter.value) ?? .valueDesc,
     isHidingSmallBalances: Bool = Preferences.Wallet.isHidingSmallBalancesFilter.value,
     isHidingUnownedNFTs: Bool = Preferences.Wallet.isHidingUnownedNFTsFilter.value,
@@ -79,6 +79,7 @@ struct Filters {
   }
   
   func save() {
+    Preferences.Wallet.groupByFilter.value = groupBy.rawValue
     Preferences.Wallet.sortOrderFilter.value = sortOrder.rawValue
     Preferences.Wallet.isHidingSmallBalancesFilter.value = isHidingSmallBalances
     Preferences.Wallet.isShowingNFTNetworkLogoFilter.value = isShowingNFTNetworkLogo
@@ -162,12 +163,6 @@ struct FiltersDisplaySettingsView: View {
     NavigationView {
       ScrollView {
         LazyVStack(spacing: 0) {
-          /*
-           Unavailable until Portfolio supports grouping.
-           groupByRow
-            .padding(.vertical, rowPadding)
-           */
-
           if isNFTFilters {
             showNFTNetworkLogo
               .padding(.vertical, rowPadding)
@@ -175,6 +170,9 @@ struct FiltersDisplaySettingsView: View {
             hideUnownedNFTs
               .padding(.vertical, rowPadding)
           } else { // Portfolio filters
+            groupByRow
+              .padding(.vertical, rowPadding)
+            
             sortAssets
               .padding(.vertical, rowPadding)
             

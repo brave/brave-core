@@ -185,12 +185,12 @@ class AccountActivityStoreTests: XCTestCase {
         
         XCTAssertEqual(lastUpdatedVisibleAssets[0].token.symbol, BraveWallet.NetworkInfo.mockMainnet.nativeToken.symbol)
         XCTAssertEqual(lastUpdatedVisibleAssets[0].network, BraveWallet.NetworkInfo.mockMainnet)
-        XCTAssertEqual(lastUpdatedVisibleAssets[0].decimalBalance, mockEthDecimalBalance)
+        XCTAssertEqual(lastUpdatedVisibleAssets[0].totalBalance, mockEthDecimalBalance)
         XCTAssertEqual(lastUpdatedVisibleAssets[0].price, self.mockAssetPrices[safe: 0]?.price ?? "")
 
         XCTAssertEqual(lastUpdatedVisibleAssets[1].token.symbol, BraveWallet.BlockchainToken.mockUSDCToken.symbol)
         XCTAssertEqual(lastUpdatedVisibleAssets[1].network, BraveWallet.NetworkInfo.mockMainnet)
-        XCTAssertEqual(lastUpdatedVisibleAssets[1].decimalBalance, mockERC20DecimalBalance)
+        XCTAssertEqual(lastUpdatedVisibleAssets[1].totalBalance, mockERC20DecimalBalance)
         XCTAssertEqual(lastUpdatedVisibleAssets[1].price, self.mockAssetPrices[safe: 1]?.price ?? "")
       }
       .store(in: &cancellables)
@@ -315,12 +315,12 @@ class AccountActivityStoreTests: XCTestCase {
         
         XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.token.symbol, BraveWallet.NetworkInfo.mockSolana.nativeToken.symbol)
         XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.network, BraveWallet.NetworkInfo.mockSolana)
-        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.decimalBalance, mockSolDecimalBalance)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.totalBalance, mockSolDecimalBalance)
         XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.price, self.mockAssetPrices[safe: 2]?.price ?? "")
 
         XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.token.symbol, BraveWallet.BlockchainToken.mockSpdToken.symbol)
         XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.network, BraveWallet.NetworkInfo.mockSolana)
-        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.decimalBalance, mockSpdTokenBalance)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.totalBalance, mockSpdTokenBalance)
         XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.price, self.mockAssetPrices[safe: 3]?.price ?? "")
       }
       .store(in: &cancellables)

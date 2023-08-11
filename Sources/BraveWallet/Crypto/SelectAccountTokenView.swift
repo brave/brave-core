@@ -120,7 +120,10 @@ struct SelectAccountTokenView: View {
                 // displaying when `isHidingZeroBalances`.
                 // Show an asset with shimmer over all content
                 // until we know which assets have >0 balance.
-                loadingAssetView
+                SkeletonLoadingAssetView(
+                  assetLogoLength: assetLogoLength,
+                  maxAssetLogoLength: maxAssetLogoLength
+                )
               } else {
                 EmptyView()
               }
@@ -208,32 +211,6 @@ struct SelectAccountTokenView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
   }
-  
-  // `SelectAccountTokenAssetView` with shimmering mock content.
-  private var loadingAssetView: some View {
-    SelectAccountTokenAssetView(
-      image: {
-        Circle()
-          .aspectRatio(contentMode: .fit)
-          .foregroundColor(Color(.secondaryBraveLabel))
-          .frame(
-            width: min(assetLogoLength, maxAssetLogoLength),
-            height: min(assetLogoLength, maxAssetLogoLength)
-          )
-          .accessibilityHidden(true)
-      },
-      title: "Ethereum",
-      symbol: "ETH",
-      networkName: "Ethereum Mainnet",
-      quantity: "0.0",
-      isLoadingBalance: false,
-      price: "$0.00",
-      isLoadingPrice: false
-    )
-    .accessibilityHidden(true)
-    .redacted(reason: .placeholder)
-    .shimmer(true)
-  }
 }
 
 struct SelectAccountTokenAssetView<ImageView: View>: View {
@@ -277,5 +254,36 @@ struct SelectAccountTokenAssetView<ImageView: View>: View {
       }
     )
     .accessibilityLabel("\(title), \(quantity) \(symbol), \(price)")
+  }
+}
+
+struct SkeletonLoadingAssetView: View {
+  
+  @ScaledMetric var assetLogoLength: CGFloat = 40
+  var maxAssetLogoLength: CGFloat = 80
+  
+  var body: some View {
+    SelectAccountTokenAssetView(
+      image: {
+        Circle()
+          .aspectRatio(contentMode: .fit)
+          .foregroundColor(Color(.secondaryBraveLabel))
+          .frame(
+            width: min(assetLogoLength, maxAssetLogoLength),
+            height: min(assetLogoLength, maxAssetLogoLength)
+          )
+          .accessibilityHidden(true)
+      },
+      title: "Ethereum",
+      symbol: "ETH",
+      networkName: "Ethereum Mainnet",
+      quantity: "0.0",
+      isLoadingBalance: false,
+      price: "$0.00",
+      isLoadingPrice: false
+    )
+    .accessibilityHidden(true)
+    .redacted(reason: .placeholder)
+    .shimmer(true)
   }
 }

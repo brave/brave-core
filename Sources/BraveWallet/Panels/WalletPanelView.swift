@@ -456,9 +456,9 @@ struct WalletPanelView: View {
               $0.token.symbol == networkStore.selectedChainForOrigin.symbol
               && $0.token.chainId == networkStore.selectedChainIdForOrigin
             })
-            Text(String(format: "%.04f %@", nativeAsset?.decimalBalance ?? 0.0, networkStore.selectedChainForOrigin.symbol))
+            Text(String(format: "%.04f %@", nativeAsset?.totalBalance ?? 0.0, networkStore.selectedChainForOrigin.symbol))
               .font(.title2.weight(.bold))
-            Text(currencyFormatter.string(from: NSNumber(value: (Double(nativeAsset?.price ?? "") ?? 0) * (nativeAsset?.decimalBalance ?? 0.0))) ?? "")
+            Text(currencyFormatter.string(from: NSNumber(value: (Double(nativeAsset?.price ?? "") ?? 0) * (nativeAsset?.totalBalance ?? 0.0))) ?? "")
               .font(.callout)
           }
           .padding(.vertical)
