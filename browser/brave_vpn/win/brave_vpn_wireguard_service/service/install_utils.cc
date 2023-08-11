@@ -25,6 +25,10 @@
 namespace brave_vpn {
 
 namespace {
+
+constexpr wchar_t kAutoRunKeyPath[] =
+    L"Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+
 bool RemoveWireguardConfigDirectory(const base::FilePath& last_used_config) {
   auto wireguard_config_folder = last_used_config.DirName();
   if (wireguard_config_folder.empty() ||
@@ -35,16 +39,23 @@ bool RemoveWireguardConfigDirectory(const base::FilePath& last_used_config) {
   return base::DeletePathRecursively(wireguard_config_folder);
 }
 
-void LaunchOnStartup(const base::CommandLine& command_line) {
-  base::win::RegKey key(HKEY_LOCAL_MACHINE,
-                        L"Software\\Microsoft\\Windows\\CurrentVersion\\Run",
-                        KEY_WRITE);
+void AddToStartup(const std::wstring& value,
+                  const base::CommandLine& command_line) {
+  base::win::RegKey key(HKEY_LOCAL_MACHINE, kAutoRunKeyPath, KEY_WRITE);
   if (!key.Valid()) {
     VLOG(1) << "Failed to write wireguard service to startup";
     return;
   }
-  key.WriteValue(brave_vpn::GetBraveVpnWireguardServiceName().c_str(),
-                 command_line.GetCommandLineString().c_str());
+  key.WriteValue(value.c_str(), command_line.GetCommandLineString().c_str());
+}
+
+void RemoveFromStartup(const std::wstring& value) {
+  base::win::RegKey key(HKEY_LOCAL_MACHINE, kAutoRunKeyPath, KEY_WRITE);
+  if (!key.Valid()) {
+    VLOG(1) << "Failed to write wireguard service to startup";
+    return;
+  }
+  key.DeleteValue(value.c_str());
 }
 }  // namespace
 
@@ -100,7 +111,8 @@ bool InstallBraveWireguardService() {
     if (success) {
       service_cmd.AppendSwitch(
           brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName);
-      LaunchOnStartup(service_cmd);
+      AddToStartup(brave_vpn::GetBraveVpnWireguardServiceName().c_str(),
+                   service_cmd);
     }
     return success;
   }
@@ -116,7 +128,7 @@ bool UninstallBraveWireguardService() {
     LOG(WARNING) << "Failed to delete config directory"
                  << last_used_config.value().DirName();
   }
-
+  RemoveFromStartup(brave_vpn::GetBraveVpnWireguardServiceName().c_str());
   if (!installer::InstallServiceWorkItem::DeleteService(
           brave_vpn::GetBraveVpnWireguardServiceName(),
           brave_vpn::wireguard::
