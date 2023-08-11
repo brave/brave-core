@@ -60,12 +60,8 @@ void NativePopupMenu::AddMenuItemAt(size_t menu_index) {
   MENUITEMINFO mii = {
       .cbSize = sizeof(mii),
       .fMask = MIIM_FTYPE | MIIM_ID | MIIM_DATA | MIIM_STRING | MIIM_STATE,
+      .fType = MFT_STRING,
   };
-  if (!model_->HasIcons()) {
-    mii.fType = MFT_STRING;
-  } else {
-    mii.fType = MFT_OWNERDRAW;
-  }
 
   std::unique_ptr<ItemData> item_data = std::make_unique<ItemData>();
   item_data->label = model_->GetLabelAt(menu_index);
