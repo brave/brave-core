@@ -1,13 +1,12 @@
 diff --git a/front_end/panels/application/ApplicationPanelSidebar.ts b/front_end/panels/application/ApplicationPanelSidebar.ts
-index 6d2b584f4779e6bc10de5558ca0f46fa80b2abaa..218e6f0f2044d189bf13c32e1a5979bc79d3cdef 100644
+index 6d2b584f4779e6bc10de5558ca0f46fa80b2abaa..c4b297b812d066059f0b42e6d99a07da8ef0188b 100644
 --- a/front_end/panels/application/ApplicationPanelSidebar.ts
 +++ b/front_end/panels/application/ApplicationPanelSidebar.ts
-@@ -357,7 +357,7 @@ export class ApplicationPanelSidebar extends UI.Widget.VBox implements SDK.Targe
-     storageTreeElement.appendChild(this.cookieListTreeElement);
+@@ -468,6 +468,7 @@ export class ApplicationPanelSidebar extends UI.Widget.VBox implements SDK.Targe
+     // Work-around for crbug.com/1152713: Something is wrong with custom scrollbars and size containment.
+     // @ts-ignore
+     this.contentElement.style.contain = 'layout style';
++    [this.trustTokensTreeElement, this.interestGroupTreeElement, this.sharedStorageListTreeElement].forEach(e => storageTreeElement.removeChild(e)); [this.backgroundFetchTreeElement, this.backgroundSyncTreeElement, this.periodicBackgroundSyncTreeElement, this.reportingApiTreeElement].forEach(e => backgroundServiceTreeElement.removeChild(e));
+   }
  
-     this.trustTokensTreeElement = new TrustTokensTreeElement(panel);
--    storageTreeElement.appendChild(this.trustTokensTreeElement);
-+    // storageTreeElement.appendChild(this.trustTokensTreeElement);
- 
-     this.interestGroupTreeElement = new InterestGroupTreeElement(panel);
-     storageTreeElement.appendChild(this.interestGroupTreeElement);
+   private addSidebarSection(title: string): UI.TreeOutline.TreeElement {
