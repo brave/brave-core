@@ -187,7 +187,6 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -741,7 +740,7 @@ public abstract class BraveActivity extends ChromeActivity
             List<Integer> dataTypes = Arrays.asList(
                     BrowsingDataType.HISTORY, BrowsingDataType.COOKIES, BrowsingDataType.CACHE);
 
-            int[] dataTypesArray = CollectionUtil.integerListToIntArray(new ArrayList<>(dataTypes));
+            int[] dataTypesArray = CollectionUtil.integerCollectionToIntArray(dataTypes);
 
             // has onBrowsingDataCleared() as an @Override callback from implementing
             // BrowsingDataBridge.OnClearBrowsingDataListener
