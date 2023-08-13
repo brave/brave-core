@@ -28,26 +28,22 @@ constexpr char kUIAdContentKey[] = "adContent";
 constexpr char kUICategoryContentKey[] = "categoryContent";
 
 base::Value::Dict HistoryItemToValue(const HistoryItemInfo& history_item) {
-  base::Value::Dict dict;
-
-  dict.Set(kCreatedAtKey, base::TimeToValue(history_item.created_at));
-
-  dict.Set(kAdContentKey, AdContentToValue(history_item.ad_content));
-
-  dict.Set(kCategoryContentKey,
+  return base::Value::Dict()
+      .Set(kCreatedAtKey, base::TimeToValue(history_item.created_at))
+      .Set(kAdContentKey, AdContentToValue(history_item.ad_content))
+      .Set(kCategoryContentKey,
            CategoryContentToValue(history_item.category_content));
-
-  return dict;
 }
 
 base::Value::List HistoryItemToDetailRowsValue(
     const HistoryItemInfo& history_item) {
   base::Value::List list;
 
-  base::Value::Dict dict;
-  dict.Set(kUIAdContentKey, AdContentToValue(history_item.ad_content));
-  dict.Set(kUICategoryContentKey,
-           CategoryContentToValue(history_item.category_content));
+  auto dict =
+      base::Value::Dict()
+          .Set(kUIAdContentKey, AdContentToValue(history_item.ad_content))
+          .Set(kUICategoryContentKey,
+               CategoryContentToValue(history_item.category_content));
 
   list.Append(std::move(dict));
 
@@ -98,11 +94,12 @@ base::Value::List HistoryItemsToUIValue(const HistoryItemList& history_items) {
   int uuid = 0;
 
   for (const auto& history_item : history_items) {
-    base::Value::Dict dict;
-    dict.Set(kUIUuidKey, base::NumberToString(uuid++));
-    dict.Set(kUIJavaScriptTimestampKey,
-             history_item.created_at.ToJsTimeIgnoringNull());
-    dict.Set(kUIDetailRowsKey, HistoryItemToDetailRowsValue(history_item));
+    auto dict =
+        base::Value::Dict()
+            .Set(kUIUuidKey, base::NumberToString(uuid++))
+            .Set(kUIJavaScriptTimestampKey,
+                 history_item.created_at.ToJsTimeIgnoringNull())
+            .Set(kUIDetailRowsKey, HistoryItemToDetailRowsValue(history_item));
 
     list.Append(std::move(dict));
   }

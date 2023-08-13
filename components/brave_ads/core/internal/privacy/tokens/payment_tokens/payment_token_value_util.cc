@@ -41,12 +41,14 @@ base::Value::List PaymentTokensToValue(const PaymentTokenList& payment_tokens) {
       continue;
     }
 
-    base::Value::Dict dict;
-    dict.Set(kTransactionIdKey, payment_token.transaction_id);
-    dict.Set(kUnblindedTokenKey, *unblinded_token_base64);
-    dict.Set(kPublicKey, *public_key_base64);
-    dict.Set(kConfirmationTypeKey, payment_token.confirmation_type.ToString());
-    dict.Set(kAdTypeKey, payment_token.ad_type.ToString());
+    auto dict = base::Value::Dict()
+                    .Set(kTransactionIdKey, payment_token.transaction_id)
+                    .Set(kUnblindedTokenKey, *unblinded_token_base64)
+                    .Set(kPublicKey, *public_key_base64)
+                    .Set(kConfirmationTypeKey,
+                         payment_token.confirmation_type.ToString())
+                    .Set(kAdTypeKey, payment_token.ad_type.ToString());
+
     list.Append(std::move(dict));
   }
 

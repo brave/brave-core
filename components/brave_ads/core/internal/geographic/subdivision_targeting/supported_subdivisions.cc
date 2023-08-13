@@ -19,9 +19,8 @@ base::Value::List ToValueList(const SupportedSubdivisions& subdivisions) {
   base::Value::List list;
 
   for (const auto& [subdivision, name] : subdivisions) {
-    base::Value::Dict dict;
-    dict.Set("subdivision", subdivision);
-    dict.Set("name", name);
+    auto dict =
+        base::Value::Dict().Set("subdivision", subdivision).Set("name", name);
 
     list.Append(std::move(dict));
   }

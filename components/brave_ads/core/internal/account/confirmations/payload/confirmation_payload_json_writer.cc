@@ -25,22 +25,20 @@ constexpr char kTypeKey[] = "type";
 }  // namespace
 
 std::string WriteConfirmationPayload(const ConfirmationInfo& confirmation) {
-  base::Value::Dict dict;
-
-  dict.Set(kTransactionIdKey, confirmation.transaction_id);
-
-  dict.Set(kCreativeInstanceIdKey, confirmation.creative_instance_id);
-
-  dict.Set(kTypeKey, confirmation.type.ToString());
-
-  dict.Merge(confirmation.user_data.dynamic.Clone());
-  dict.Merge(confirmation.user_data.fixed.Clone());
+  auto dict =
+      base::Value::Dict()
+          .Set(kTransactionIdKey, confirmation.transaction_id)
+          .Set(kCreativeInstanceIdKey, confirmation.creative_instance_id)
+          .Set(kTypeKey, confirmation.type.ToString());
 
   if (confirmation.reward) {
     base::Value::Dict reward_dict =
         BuildRewardConfirmationPayload(*confirmation.reward);
     dict.Merge(std::move(reward_dict));
   }
+
+  dict.Merge(confirmation.user_data.dynamic.Clone());
+  dict.Merge(confirmation.user_data.fixed.Clone());
 
   std::string json;
   CHECK(base::JSONWriter::Write(dict, &json));

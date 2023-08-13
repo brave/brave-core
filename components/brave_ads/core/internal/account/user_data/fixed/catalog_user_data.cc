@@ -27,9 +27,7 @@ base::Value::Dict BuildCatalogUserData() {
   }
 
   base::Value::List list;
-
-  base::Value::Dict dict;
-  dict.Set(kIdKey, GetCatalogId());
+  auto dict = base::Value::Dict().Set(kIdKey, GetCatalogId());
   list.Append(std::move(dict));
 
   user_data.Set(kCatalogKey, std::move(list));

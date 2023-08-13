@@ -53,8 +53,8 @@ void BuildConversionUserData(const std::string& creative_instance_id,
               list.Append(std::move(*verifiable_conversion_user_data));
             }
 
-            base::Value::Dict user_data;
-            user_data.Set(kConversionKey, std::move(list));
+            auto user_data =
+                base::Value::Dict().Set(kConversionKey, std::move(list));
 
             std::move(callback).Run(std::move(user_data));
           },

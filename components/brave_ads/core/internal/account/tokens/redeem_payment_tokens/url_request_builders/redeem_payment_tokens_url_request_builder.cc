@@ -53,11 +53,9 @@ base::Value::Dict BuildCredential(
       token_preimage->EncodeBase64();
   CHECK(token_preimage_base64);
 
-  base::Value::Dict dict;
-  dict.Set("signature", *verification_signature_base64);
-  dict.Set("t", *token_preimage_base64);
-
-  return dict;
+  return base::Value::Dict()
+      .Set("signature", *verification_signature_base64)
+      .Set("t", *token_preimage_base64);
 }
 
 }  // namespace
@@ -102,11 +100,9 @@ std::string RedeemPaymentTokensUrlRequestBuilder::BuildBody(
   CHECK(!payload.empty());
   CHECK(!user_data_.empty());
 
-  base::Value::Dict dict;
-
-  base::Value::List list = BuildPaymentRequestDTO(payload);
-  dict.Set("paymentCredentials", std::move(list));
-  dict.Set("payload", payload);
+  auto dict = base::Value::Dict()
+                  .Set("paymentCredentials", BuildPaymentRequestDTO(payload))
+                  .Set("payload", payload);
 
   dict.Merge(std::move(user_data_));
 
@@ -116,8 +112,7 @@ std::string RedeemPaymentTokensUrlRequestBuilder::BuildBody(
 }
 
 std::string RedeemPaymentTokensUrlRequestBuilder::BuildPayload() const {
-  base::Value::Dict dict;
-  dict.Set("paymentId", wallet_.payment_id);
+  const auto dict = base::Value::Dict().Set("paymentId", wallet_.payment_id);
 
   std::string json;
   CHECK(base::JSONWriter::Write(dict, &json));
@@ -131,12 +126,11 @@ base::Value::List RedeemPaymentTokensUrlRequestBuilder::BuildPaymentRequestDTO(
   base::Value::List list;
 
   for (const auto& payment_token : payment_tokens_) {
-    base::Value::Dict dict;
-
-    dict.Set("credential",
-             base::Value(BuildCredential(payment_token, payload)));
-
-    dict.Set("confirmationType", payment_token.confirmation_type.ToString());
+    auto dict = base::Value::Dict()
+                    .Set("credential",
+                         base::Value(BuildCredential(payment_token, payload)))
+                    .Set("confirmationType",
+                         payment_token.confirmation_type.ToString());
 
     const absl::optional<std::string> public_key_base64 =
         payment_token.public_key.EncodeBase64();

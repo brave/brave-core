@@ -23,12 +23,10 @@ base::Value::Dict BuildConversionActionTypeUserData(
   CHECK_NE(ConversionActionType::kUndefined,
            conversion_queue_item.conversion.action_type);
 
-  base::Value::Dict user_data = base::Value::Dict().Set(
+  return base::Value::Dict().Set(
       kConversionActionTypeKey,
       ConversionActionTypeToString(
           conversion_queue_item.conversion.action_type));
-
-  return user_data;
 }
 
 absl::optional<base::Value::Dict> MaybeBuildVerifiableConversionUserData(
@@ -51,8 +49,7 @@ absl::optional<base::Value::Dict> MaybeBuildVerifiableConversionUserData(
     return absl::nullopt;
   }
 
-  base::Value::Dict user_data;
-  user_data.Set(
+  return base::Value::Dict().Set(
       kVerifiableConversionEnvelopeKey,
       base::Value::Dict()
           .Set(kVerifiableConversionEnvelopeAlgorithmKey,
@@ -63,7 +60,6 @@ absl::optional<base::Value::Dict> MaybeBuildVerifiableConversionUserData(
                sealed_verifiable_conversion_envelope->ephemeral_public_key)
           .Set(kVerifiableConversionEnvelopeNonceKey,
                sealed_verifiable_conversion_envelope->nonce));
-  return user_data;
 }
 
 }  // namespace brave_ads

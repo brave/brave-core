@@ -39,10 +39,11 @@ base::Value::List ConfirmationTokensToValue(
       continue;
     }
 
-    base::Value::Dict dict;
-    dict.Set(kUnblindedTokenKey, *unblinded_token_base64);
-    dict.Set(kPublicKey, *public_key_base64);
-    dict.Set(kSignature, confirmation_token.signature);
+    auto dict = base::Value::Dict()
+                    .Set(kUnblindedTokenKey, *unblinded_token_base64)
+                    .Set(kPublicKey, *public_key_base64)
+                    .Set(kSignature, confirmation_token.signature);
+
     list.Append(std::move(dict));
   }
 

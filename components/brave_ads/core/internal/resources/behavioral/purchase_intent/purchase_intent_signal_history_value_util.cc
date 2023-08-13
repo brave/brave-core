@@ -13,14 +13,10 @@ namespace brave_ads {
 
 base::Value::Dict PurchaseIntentSignalHistoryToValue(
     const PurchaseIntentSignalHistoryInfo& purchase_intent_signal_history) {
-  base::Value::Dict dict;
-
-  dict.Set("created_at",
-           base::TimeToValue(purchase_intent_signal_history.created_at));
-
-  dict.Set("weight", purchase_intent_signal_history.weight);
-
-  return dict;
+  return base::Value::Dict()
+      .Set("created_at",
+           base::TimeToValue(purchase_intent_signal_history.created_at))
+      .Set("weight", purchase_intent_signal_history.weight);
 }
 
 PurchaseIntentSignalHistoryInfo PurchaseIntentSignalHistoryFromValue(

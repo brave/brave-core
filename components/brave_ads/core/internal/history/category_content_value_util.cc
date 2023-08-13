@@ -20,13 +20,10 @@ constexpr char kLegacyUserReactionTypeKey[] = "opt_action";
 
 base::Value::Dict CategoryContentToValue(
     const CategoryContentInfo& category_content) {
-  base::Value::Dict dict;
-
-  dict.Set(kCategoryKey, category_content.category);
-  dict.Set(kUserReactionTypeKey,
+  return base::Value::Dict()
+      .Set(kCategoryKey, category_content.category)
+      .Set(kUserReactionTypeKey,
            static_cast<int>(category_content.user_reaction_type));
-
-  return dict;
 }
 
 CategoryContentInfo CategoryContentFromValue(const base::Value::Dict& dict) {

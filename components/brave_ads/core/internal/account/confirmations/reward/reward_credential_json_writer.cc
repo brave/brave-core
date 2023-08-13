@@ -61,9 +61,10 @@ absl::optional<std::string> WriteRewardCredential(
     return absl::nullopt;
   }
 
-  base::Value::Dict dict;
-  dict.Set(kVerificationSignatureKey, *verification_signature_base64);
-  dict.Set(kTokenPreimageKey, *token_preimage_base64);
+  const auto dict =
+      base::Value::Dict()
+          .Set(kVerificationSignatureKey, *verification_signature_base64)
+          .Set(kTokenPreimageKey, *token_preimage_base64);
 
   std::string json;
   CHECK(base::JSONWriter::Write(dict, &json));

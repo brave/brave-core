@@ -41,12 +41,10 @@ base::Value::Dict EpsilonGreedyBanditArmsToValue(
   base::Value::Dict dict;
 
   for (const auto& [segment, arm] : arms) {
-    base::Value::Dict arm_dict;
-    arm_dict.Set(kSegmentKey, segment);
-    arm_dict.Set(kPullsKey, arm.pulls);
-    arm_dict.Set(kValueKey, arm.value);
-
-    dict.Set(segment, std::move(arm_dict));
+    dict.Set(segment, base::Value::Dict()
+                          .Set(kSegmentKey, segment)
+                          .Set(kPullsKey, arm.pulls)
+                          .Set(kValueKey, arm.value));
   }
 
   return dict;

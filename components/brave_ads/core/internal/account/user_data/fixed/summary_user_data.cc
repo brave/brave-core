@@ -30,10 +30,9 @@ base::Value::Dict BuildSummaryUserData(
   const AdTypeBucketMap buckets = BuildBuckets(payment_tokens);
 
   base::Value::List list;
-  for (const auto& [ad_format, confirmations] : buckets) {
-    base::Value::Dict dict;
 
-    dict.Set(kAdFormatKey, ad_format);
+  for (const auto& [ad_format, confirmations] : buckets) {
+    auto dict = base::Value::Dict().Set(kAdFormatKey, ad_format);
 
     for (const auto& [confirmation_type, count] : confirmations) {
       dict.Set(confirmation_type, count);
@@ -43,6 +42,7 @@ base::Value::Dict BuildSummaryUserData(
   }
 
   user_data.Set(kSummaryKey, std::move(list));
+
   return user_data;
 }
 
