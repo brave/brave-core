@@ -10,7 +10,9 @@ import {
 } from 'chrome://resources/brave/polymer_overriding.js'
 import { loadTimeData } from '../i18n_setup.js'
 import '../brave_system_page/brave_performance_page.js'
+// <if expr="enable_brave_vpn and is_win">
 import '../brave_system_page/brave_vpn_page.js'
+// </if>
 import '../shortcuts_page/shortcuts_page.js'
 import { Router } from '../router.js'
 
@@ -77,10 +79,20 @@ RegisterPolymerTemplateModifications({
           label="${loadTimeData.getString('braveHelpTipsClosingLastTab')}"
         >
         </settings-toggle-button>
+      `
+    )
 
+    // <if expr="enable_brave_vpn and is_win">
+    templateContent.appendChild(
+      html`
         <settings-brave-vpn-page prefs="{{prefs}}">
         </settings-brave-vpn-page>
+      `
+    )
+    // </if>
 
+    templateContent.appendChild(
+      html`
         <settings-brave-performance-page prefs="{{prefs}}">
         </settings-brave-performance-page>
       `
