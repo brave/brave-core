@@ -34,7 +34,6 @@ TEST_F(BraveAdsIssuersUtilTest, HasIssuersChanged) {
 
 TEST_F(BraveAdsIssuersUtilTest, HasIssuersChangedOnInitialFetch) {
   // Arrange
-  ads_client_mock_.ClearPref(prefs::kIssuers);
 
   // Act
   const IssuersInfo issuers = BuildIssuersForTesting(

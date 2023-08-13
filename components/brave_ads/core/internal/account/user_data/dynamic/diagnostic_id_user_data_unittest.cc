@@ -20,8 +20,7 @@ class BraveAdsDiagnosticIdUserDataTest : public UnitTestBase {};
 TEST_F(BraveAdsDiagnosticIdUserDataTest,
        BuildDiagnosticIdUserDataForRewardsUser) {
   // Arrange
-  SetDefaultStringPref(prefs::kDiagnosticId,
-                       "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
+  SetStringPref(prefs::kDiagnosticId, "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
 
   // Act
 
@@ -36,8 +35,7 @@ TEST_F(BraveAdsDiagnosticIdUserDataTest,
   // Arrange
   DisableBraveRewardsForTesting();
 
-  SetDefaultStringPref(prefs::kDiagnosticId,
-                       "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
+  SetStringPref(prefs::kDiagnosticId, "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
 
   // Act
 
@@ -48,7 +46,7 @@ TEST_F(BraveAdsDiagnosticIdUserDataTest,
 TEST_F(BraveAdsDiagnosticIdUserDataTest,
        DoNotBuildDiagnosticUserDataIfDiagnosticIdIsInvalid) {
   // Arrange
-  SetDefaultStringPref(prefs::kDiagnosticId, "INVALID");
+  SetStringPref(prefs::kDiagnosticId, "INVALID");
 
   // Act
 
@@ -59,7 +57,7 @@ TEST_F(BraveAdsDiagnosticIdUserDataTest,
 TEST_F(BraveAdsDiagnosticIdUserDataTest,
        DoNotBuildDiagnosticIdUserDataIfDiagnosticIdIsEmpty) {
   // Arrange
-  SetDefaultStringPref(prefs::kDiagnosticId, "");
+  SetStringPref(prefs::kDiagnosticId, "");
 
   // Act
 

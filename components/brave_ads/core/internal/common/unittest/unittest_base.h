@@ -128,7 +128,7 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
 
   void MockAdsClientAddObserver();
 
-  void MockDefaultAdsClient();
+  void MockAdsClient();
 
   void MockSetBooleanPref(AdsClientMock& mock);
   void MockSetIntegerPref(AdsClientMock& mock);

@@ -32,7 +32,7 @@ class BraveAdsLegacyRewardsMigrationIssue25384Test : public UnitTestBase {
 
 TEST_F(BraveAdsLegacyRewardsMigrationIssue25384Test, Migrate) {
   // Arrange
-  SetDefaultBooleanPref(prefs::kHasMigratedRewardsState, false);
+  SetBooleanPref(prefs::kHasMigratedRewardsState, false);
 
   EXPECT_CALL(ads_client_mock_, Load(kConfirmationStateFilename, _));
 

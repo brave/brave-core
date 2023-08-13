@@ -14,10 +14,6 @@
 
 namespace brave_ads {
 
-using PrefMap = base::flat_map</*uuid*/ std::string, /*value*/ std::string>;
-
-PrefMap& Prefs();
-
 void MockShowNotificationAd(AdsClientMock& mock);
 void MockCloseNotificationAd(AdsClientMock& mock);
 
@@ -33,7 +29,6 @@ void MockLoadDataResource(AdsClientMock& mock);
 
 void MockRunDBTransaction(AdsClientMock& mock, Database& database);
 
-void MockDefaultPrefs();
 void MockGetBooleanPref(const AdsClientMock& mock);
 void MockGetIntegerPref(const AdsClientMock& mock);
 void MockGetDoublePref(const AdsClientMock& mock);

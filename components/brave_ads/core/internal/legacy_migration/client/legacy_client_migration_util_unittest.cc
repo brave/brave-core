@@ -17,7 +17,7 @@ class BraveAdsLegacyClientMigrationUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsLegacyClientMigrationUtilTest, HasMigrated) {
   // Arrange
-  SetDefaultBooleanPref(prefs::kHasMigratedClientState, true);
+  SetBooleanPref(prefs::kHasMigratedClientState, true);
 
   // Act
 
@@ -27,7 +27,7 @@ TEST_F(BraveAdsLegacyClientMigrationUtilTest, HasMigrated) {
 
 TEST_F(BraveAdsLegacyClientMigrationUtilTest, HasNotMigrated) {
   // Arrange
-  SetDefaultBooleanPref(prefs::kHasMigratedClientState, false);
+  SetBooleanPref(prefs::kHasMigratedClientState, false);
 
   // Act
 

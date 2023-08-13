@@ -6,8 +6,8 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/device_id_diagnostic_entry.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util_constants.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds.*

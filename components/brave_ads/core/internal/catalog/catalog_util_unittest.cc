@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/catalog_permission_rule_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -19,16 +18,20 @@ class BraveAdsCatalogUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsCatalogUtilTest, ResetCatalog) {
   // Arrange
-  ForceCatalogPermissionRuleForTesting();
+  SetCatalogId(kCatalogId);
+  SetCatalogVersion(1);
+  SetCatalogPing(base::Hours(1));
+  SetCatalogLastUpdated(Now());
 
   // Act
   ResetCatalog();
 
   // Assert
-  EXPECT_TRUE(!ads_client_mock_.HasPrefPath(prefs::kCatalogId) &&
-              !ads_client_mock_.HasPrefPath(prefs::kCatalogVersion) &&
-              !ads_client_mock_.HasPrefPath(prefs::kCatalogPing) &&
-              !ads_client_mock_.HasPrefPath(prefs::kCatalogLastUpdated));
+  EXPECT_EQ("", ads_client_mock_.GetStringPref(prefs::kCatalogId));
+  EXPECT_EQ(0, ads_client_mock_.GetIntegerPref(prefs::kCatalogVersion));
+  EXPECT_EQ(7'200'000, ads_client_mock_.GetInt64Pref(prefs::kCatalogPing));
+  EXPECT_EQ(DistantPast(),
+            ads_client_mock_.GetTimePref(prefs::kCatalogLastUpdated));
 }
 
 TEST_F(BraveAdsCatalogUtilTest, CatalogExists) {

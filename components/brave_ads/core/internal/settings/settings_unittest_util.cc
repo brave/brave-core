@@ -14,28 +14,28 @@
 namespace brave_ads {
 
 void DisableBraveRewardsForTesting() {
-  SetDefaultBooleanPref(brave_rewards::prefs::kEnabled, false);
+  SetBooleanPref(brave_rewards::prefs::kEnabled, false);
 }
 
 void DisableBraveNewsAdsForTesting() {
-  SetDefaultBooleanPref(brave_news::prefs::kBraveNewsOptedIn, false);
-  SetDefaultBooleanPref(brave_news::prefs::kNewTabPageShowToday, false);
+  SetBooleanPref(brave_news::prefs::kBraveNewsOptedIn, false);
+  SetBooleanPref(brave_news::prefs::kNewTabPageShowToday, false);
 }
 
 void DisableNewTabPageAdsForTesting() {
-  SetDefaultBooleanPref(
-      ntp_background_images::prefs::kNewTabPageShowBackgroundImage, false);
-  SetDefaultBooleanPref(ntp_background_images::prefs::
-                            kNewTabPageShowSponsoredImagesBackgroundImage,
-                        false);
+  SetBooleanPref(ntp_background_images::prefs::kNewTabPageShowBackgroundImage,
+                 false);
+  SetBooleanPref(ntp_background_images::prefs::
+                     kNewTabPageShowSponsoredImagesBackgroundImage,
+                 false);
 }
 
 void DisableNotificationAdsForTesting() {
-  SetDefaultBooleanPref(prefs::kOptedInToNotificationAds, false);
+  SetBooleanPref(prefs::kOptedInToNotificationAds, false);
 }
 
 void SetMaximumNotificationAdsPerHourForTesting(const int max_ads_per_hour) {
-  SetDefaultInt64Pref(prefs::kMaximumNotificationAdsPerHour, max_ads_per_hour);
+  SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, max_ads_per_hour);
 }
 
 }  // namespace brave_ads

@@ -11,7 +11,7 @@
 #include "base/check_op.h"
 #include "base/containers/flat_map.h"
 #include "base/notreached.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util_constants.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"

@@ -117,7 +117,7 @@ You can add one or more responses per request, which will be returned in the giv
 
 | mock  | type  | default  | example  |
 |---|---|---|---|
-| Device id  |  |  | `MockDeviceId();`  |
+| Device identifier  |  |  | `MockDeviceId();`  |
 | Build channel  | `kRelease`, `kBeta` or `kNightly`  | `kRelease`  | `MockBuildChannel(BuildChannelType::kRelease);`  |
 | Platform  | `kWindows`, `kMacOS`, `kLinux`, `kAndroid` or `kIOS`  | `kWindows`  | `MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);`  |
 | Is network connection available  | boolean  | `true`  | `MockIsNetworkConnectionAvailable(ads_client_mock_, false);`  |
@@ -126,6 +126,6 @@ You can add one or more responses per request, which will be returned in the giv
 | Can show notification ads  | boolean  | `true`  | `MockCanShowNotificationAds(ads_client_mock_, false);`  |
 | Can show notification ads while browser is backgrounded  | boolean  | `true`  | `MockCanShowNotificationAdsWhileBrowserIsBackgrounded(ads_client_mock_, false);`  |
 | Browsing history  | vector<GURL>  |  | `MockGetBrowsingHistory(ads_client_mock_, {GURL("https://foo.com"), GURL("https://bar.com")});`  |
-| Mock URL responses  | URLResponseMap  |  | See [mocking server responses](#mocking-server-responses)  |
+| Mock URL responses  | URLResponseMap  |  | See [mocking server responses](#mocking-server-responses).  |
 
-See [unittest_mock_util.h](unittest_mock_util.h) and `UnitTestBase::MockDefaultPrefs` for default prefs.
+See [unittest_mock_util.h](./unittest_mock_util.h), [unittest_pref_registry_util.h](./unittest_pref_registry_util.h), [unittest_pref_util.h](./unittest_pref_util.h), and [unittest_constants.h](./unittest_constants.h).

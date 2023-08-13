@@ -13,7 +13,7 @@
 namespace brave_ads {
 
 void InitializeCommandLineSwitches();
-void CleanupCommandLineSwitches();
+void ShutdownCommandLineSwitches();
 
 void AppendCommandLineSwitches(
     const CommandLineSwitchList& command_line_switches);

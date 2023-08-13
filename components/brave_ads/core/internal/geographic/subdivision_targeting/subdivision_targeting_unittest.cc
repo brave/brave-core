@@ -180,7 +180,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest, ShouldAutoDetectForUnsupportedLocale) {
 TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldAllowIfDisabledAndCountryIsSupported) {
   // Arrange
-  SetDefaultStringPref(prefs::kSubdivisionTargetingSubdivision, "DISABLED");
+  SetStringPref(prefs::kSubdivisionTargetingSubdivision, "DISABLED");
 
   // Act
   NotifyDidInitializeAds();
@@ -194,8 +194,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldAllowAndAutoDetectIfCountryIsSupported) {
   // Arrange
-  SetDefaultStringPref(prefs::kSubdivisionTargetingAutoDetectedSubdivision,
-                       "US-CA");
+  SetStringPref(prefs::kSubdivisionTargetingAutoDetectedSubdivision, "US-CA");
 
   // Act
   NotifyDidInitializeAds();
@@ -224,7 +223,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest, ShouldNotAllowIfCountryIsUnsupported) {
 TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldNotAllowIfLocaleAndSubdivisionCountriesMismatch) {
   // Arrange
-  SetDefaultStringPref(prefs::kSubdivisionTargetingSubdivision, "CA-QC");
+  SetStringPref(prefs::kSubdivisionTargetingSubdivision, "CA-QC");
 
   // Act
   NotifyDidInitializeAds();

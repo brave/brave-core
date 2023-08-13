@@ -40,7 +40,7 @@ void InitializeCommandLineSwitches() {
   brave_rewards::RewardsFlags::SetForceParsingForTesting(true);
 }
 
-void CleanupCommandLineSwitches() {
+void ShutdownCommandLineSwitches() {
   brave_rewards::RewardsFlags::SetForceParsingForTesting(false);
 }
 

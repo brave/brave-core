@@ -50,7 +50,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokens) {
        {{net::HTTP_OK, BuildRedeemPaymentTokensUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  SetDefaultTimePref(prefs::kNextTokenRedemptionAt, Now());
+  SetTimePref(prefs::kNextTokenRedemptionAt, Now());
 
   privacy::SetPaymentTokensForTesting(/*count*/ 1);
 
@@ -90,7 +90,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokensMultipleTimes) {
         {net::HTTP_OK, BuildRedeemPaymentTokensUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  SetDefaultTimePref(prefs::kNextTokenRedemptionAt, Now());
+  SetTimePref(prefs::kNextTokenRedemptionAt, Now());
 
   const privacy::PaymentTokenList payment_tokens =
       privacy::SetPaymentTokensForTesting(/*count*/ 1);
@@ -136,7 +136,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, ScheduleNextTokenRedemption) {
        {{net::HTTP_OK, BuildRedeemPaymentTokensUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  SetDefaultTimePref(prefs::kNextTokenRedemptionAt, Now());
+  SetTimePref(prefs::kNextTokenRedemptionAt, Now());
 
   privacy::SetPaymentTokensForTesting(/*count*/ 1);
 
@@ -169,7 +169,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, ScheduleNextTokenRedemption) {
 
 TEST_F(BraveAdsRedeemPaymentTokensTest, NoPaymentTokens) {
   // Arrange
-  SetDefaultTimePref(prefs::kNextTokenRedemptionAt, Now());
+  SetTimePref(prefs::kNextTokenRedemptionAt, Now());
 
   // Act
   EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
@@ -211,7 +211,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, Retry) {
         {net::HTTP_OK, BuildRedeemPaymentTokensUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  SetDefaultTimePref(prefs::kNextTokenRedemptionAt, Now());
+  SetTimePref(prefs::kNextTokenRedemptionAt, Now());
 
   privacy::SetPaymentTokensForTesting(/*count*/ 1);
 
