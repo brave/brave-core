@@ -19,8 +19,10 @@
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
+#include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_news {
@@ -107,9 +109,14 @@ mojom::ArticlePtr PickRouletteAndRemove(
 FeedV2Builder::FeedV2Builder(
     PublishersController& publishers_controller,
     ChannelsController& channels_controller,
+    PrefService& prefs,
+    history::HistoryService& history_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : fetcher_(publishers_controller, channels_controller, url_loader_factory) {
-}
+    : fetcher_(publishers_controller, channels_controller, url_loader_factory),
+      signal_calculator_(publishers_controller,
+                         channels_controller,
+                         prefs,
+                         history_service) {}
 
 FeedV2Builder::~FeedV2Builder() = default;
 
@@ -119,15 +126,38 @@ void FeedV2Builder::Build(BuildFeedCallback callback) {
     return;
   }
 
-  fetcher_.FetchFeed(base::BindOnce(
-      [](FeedV2Builder* builder, BuildFeedCallback callback, FeedItems items,
-         ETags tags) {
-        builder->raw_feed_items_ = std::move(items);
-        builder->BuildFeedFromArticles(std::move(callback));
-      },
-      // Unretained is safe here because the FeedFetcher is owned by this and
-      // uses weak pointers internally.
-      base::Unretained(this), std::move(callback)));
+  FetchFeed(std::move(callback));
+}
+
+void FeedV2Builder::FetchFeed(BuildFeedCallback callback) {
+  fetcher_.FetchFeed(
+      base::BindOnce(&FeedV2Builder::OnFetchedFeed,
+                     // Unretained is safe here because the FeedFetcher is owned
+                     // by this and uses weak pointers internally.
+                     base::Unretained(this), std::move(callback)));
+}
+
+void FeedV2Builder::OnFetchedFeed(BuildFeedCallback callback,
+                                  FeedItems items,
+                                  ETags tags) {
+  raw_feed_items_ = std::move(items);
+  CalculateSignals(std::move(callback));
+}
+
+void FeedV2Builder::CalculateSignals(BuildFeedCallback callback) {
+  signal_calculator_.GetSignals(
+      raw_feed_items_,
+      base::BindOnce(
+          &FeedV2Builder::OnCalculatedSignals,
+          // Unretained is safe here because we own the SignalCalculator, and it
+          // uses WeakPtr for its internal callbacks.
+          base::Unretained(this), std::move(callback)));
+}
+
+void FeedV2Builder::OnCalculatedSignals(BuildFeedCallback callback,
+                                        Signals signals) {
+  signals_ = std::move(signals);
+  BuildFeedFromArticles(std::move(callback));
 }
 
 void FeedV2Builder::BuildFeedFromArticles(BuildFeedCallback callback) {

@@ -10,7 +10,10 @@
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
+#include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "components/history/core/browser/history_service.h"
+#include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_news {
@@ -22,6 +25,8 @@ class FeedV2Builder {
   FeedV2Builder(
       PublishersController& publishers_controller,
       ChannelsController& channels_controller,
+      PrefService& prefs,
+      history::HistoryService& history_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   FeedV2Builder(const FeedV2Builder&) = delete;
   FeedV2Builder& operator=(const FeedV2Builder&) = delete;
@@ -30,11 +35,19 @@ class FeedV2Builder {
   void Build(BuildFeedCallback callback);
 
  private:
+  void FetchFeed(BuildFeedCallback callback);
+  void OnFetchedFeed(BuildFeedCallback callback, FeedItems items, ETags etags);
+
+  void CalculateSignals(BuildFeedCallback callback);
+  void OnCalculatedSignals(BuildFeedCallback callback, Signals signals);
+
   void BuildFeedFromArticles(BuildFeedCallback callback);
 
   FeedFetcher fetcher_;
+  SignalCalculator signal_calculator_;
 
   FeedItems raw_feed_items_;
+  Signals signals_;
 };
 
 }  // namespace brave_news
