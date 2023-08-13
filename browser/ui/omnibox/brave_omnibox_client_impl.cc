@@ -7,6 +7,7 @@
 
 #include "base/values.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
+#include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/constants/pref_names.h"
@@ -59,6 +60,8 @@ BraveOmniboxClientImpl::BraveOmniboxClientImpl(LocationBar* location_bar,
                                                Profile* profile)
     : ChromeOmniboxClient(location_bar, browser, profile),
       profile_(profile),
+      search_engine_tracker_(
+          SearchEngineTrackerFactory::GetForBrowserContext(profile)),
       scheme_classifier_(profile) {
   // Record initial search count p3a value.
   const auto& search_p3a = profile_->GetPrefs()->GetList(kSearchCountPrefName);
@@ -83,15 +86,6 @@ bool BraveOmniboxClientImpl::IsAutocompleteEnabled() const {
   return profile_->GetPrefs()->GetBoolean(omnibox::kAutocompleteEnabled);
 }
 
-void BraveOmniboxClientImpl::OnInputAccepted(const AutocompleteMatch& match) {
-  if (IsSearchEvent(match)) {
-    // TODO(iefremov): Optimize this.
-    WeeklyStorage storage(profile_->GetPrefs(), kSearchCountPrefName);
-    storage.AddDelta(1);
-    RecordSearchEventP3A(storage.GetWeeklySum());
-  }
-}
-
 void BraveOmniboxClientImpl::OnURLOpenedFromOmnibox(OmniboxLog* log) {
   if (log->selection.line <= 0) {
     return;
@@ -101,4 +95,31 @@ void BraveOmniboxClientImpl::OnURLOpenedFromOmnibox(OmniboxLog* log) {
     brave_search_conversion::p3a::RecordPromoTrigger(
         g_browser_process->local_state(), GetConversionTypeFromMatch(match));
   }
+}
+
+void BraveOmniboxClientImpl::OnAutocompleteAccept(
+    const GURL& destination_url,
+    TemplateURLRef::PostContent* post_content,
+    WindowOpenDisposition disposition,
+    ui::PageTransition transition,
+    AutocompleteMatchType::Type match_type,
+    base::TimeTicks match_selection_timestamp,
+    bool destination_url_entered_without_scheme,
+    bool destination_url_entered_with_http_scheme,
+    const std::u16string& text,
+    const AutocompleteMatch& match,
+    const AutocompleteMatch& alternative_nav_match,
+    IDNA2008DeviationCharacter deviation_char_in_hostname) {
+  if (IsSearchEvent(match)) {
+    // TODO(iefremov): Optimize this.
+    WeeklyStorage storage(profile_->GetPrefs(), kSearchCountPrefName);
+    storage.AddDelta(1);
+    RecordSearchEventP3A(storage.GetWeeklySum());
+    search_engine_tracker_->RecordLocationBarQuery();
+  }
+  ChromeOmniboxClient::OnAutocompleteAccept(
+      destination_url, post_content, disposition, transition, match_type,
+      match_selection_timestamp, destination_url_entered_without_scheme,
+      destination_url_entered_with_http_scheme, text, match,
+      alternative_nav_match, deviation_char_in_hostname);
 }

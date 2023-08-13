@@ -18,6 +18,7 @@ static_library("brave_search_conversion") {
 
   deps = [
     "//base",
+    "//brave/components/p3a_utils",
     "//brave/components/search_engines",
     "//components/prefs",
     "//components/search_engines",

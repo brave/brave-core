@@ -56,11 +56,6 @@ void OmniboxEditModel::PasteAndGo(const std::u16string& text,
   if (view_) {
     view_->RevertAll();
   }
-  AutocompleteMatch match;
-  GURL alternate_nav_url;
-  ClassifyString(text, &match, &alternate_nav_url);
-
-  controller_->client()->OnInputAccepted(match);
 
   PasteAndGo_Chromium(text, match_selection_timestamp);
 }

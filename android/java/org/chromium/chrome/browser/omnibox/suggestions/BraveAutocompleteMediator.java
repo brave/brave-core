@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
@@ -23,14 +24,18 @@ import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabWindowManager;
+import org.chromium.components.omnibox.AutocompleteMatch;
+import org.chromium.components.omnibox.OmniboxSuggestionType;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.PropertyModel;
+import org.chromium.url.GURL;
 
 class BraveAutocompleteMediator extends AutocompleteMediator implements BraveSuggestionHost {
     private static final String AUTOCOMPLETE_ENABLED = "brave.autocomplete_enabled";
 
+    private Context mContext;
     private boolean mNativeInitialized;
     private DropdownItemViewInfoListManager mDropdownViewInfoListManager;
 
@@ -52,6 +57,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator implements BraveSug
                 modalDialogManagerSupplier, activityTabSupplier, shareDelegateSupplier,
                 locationBarDataProvider, bringTabToFrontCallback, tabWindowManagerSupplier,
                 bookmarkState, omniboxActionDelegate, openHistoryClustersDelegate);
+        mContext = context;
     }
 
     @Override
@@ -70,6 +76,19 @@ class BraveAutocompleteMediator extends AutocompleteMediator implements BraveSug
         if (!mNativeInitialized) return;
 
         super.onUrlFocusChange(hasFocus);
+    }
+
+    @Override
+    void loadUrlForOmniboxMatch(int matchIndex, @NonNull AutocompleteMatch suggestion,
+            @NonNull GURL url, long inputStart, boolean inVisibleSuggestionList) {
+        super.loadUrlForOmniboxMatch(
+                matchIndex, suggestion, url, inputStart, inVisibleSuggestionList);
+        if (suggestion.getType() == OmniboxSuggestionType.SEARCH_WHAT_YOU_TYPED
+                || suggestion.getType() == OmniboxSuggestionType.SEARCH_SUGGEST) {
+            if (mContext != null && mContext instanceof BraveActivity) {
+                ((BraveActivity) mContext).getMiscAndroidMetrics().recordLocationBarQuery();
+            }
+        }
     }
 
     @Override

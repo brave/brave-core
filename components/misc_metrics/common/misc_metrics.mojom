@@ -5,11 +5,14 @@
 
 module misc_metrics.mojom;
 
-// Handler for Privacy Hub events from UI.
-interface PrivacyHubMetrics {
+// Handler for Android misc metric events from UI.
+interface MiscAndroidMetrics {
   // Records view of Privacy Hub report.
-  RecordView();
+  RecordPrivacyHubView();
 
   // Records enabled status of Privacy Hub report.
-  RecordEnabledStatus(bool isEnabled);
+  RecordPrivacyHubEnabledStatus(bool isEnabled);
+
+  // Records a location bar search query event, for measuring "queries before churn".
+  RecordLocationBarQuery();
 };

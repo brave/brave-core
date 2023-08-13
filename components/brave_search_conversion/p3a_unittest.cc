@@ -84,7 +84,7 @@ TEST_F(BraveSearchConversionP3ATest, TestOmniboxTriggerAndDefaultEngine) {
     // Also should not record twice
     histogram_tester_.ExpectTotalCount(type_info.histogram_name, 2);
 
-    RecordDefaultEngineChange(GetPrefs());
+    RecordDefaultEngineConversion(GetPrefs());
 
     histogram_tester_.ExpectTotalCount(type_info.histogram_name, 3);
     histogram_tester_.ExpectBucketCount(type_info.histogram_name, 3, 1);
@@ -107,11 +107,42 @@ TEST_F(BraveSearchConversionP3ATest, TestOmniboxShownAndDefaultEngine) {
     // Should not record twice
     histogram_tester_.ExpectTotalCount(type_info.histogram_name, 1);
 
-    RecordDefaultEngineChange(GetPrefs());
+    RecordDefaultEngineConversion(GetPrefs());
 
     histogram_tester_.ExpectTotalCount(type_info.histogram_name, 2);
     histogram_tester_.ExpectBucketCount(type_info.histogram_name, 2, 1);
   }
+}
+
+TEST_F(BraveSearchConversionP3ATest, TestQueriesBeforeChurn) {
+  histogram_tester_.ExpectTotalCount(kSearchQueriesBeforeChurnHistogramName, 0);
+
+  // user switches away from brave
+  RecordDefaultEngineChurn(GetPrefs());
+  histogram_tester_.ExpectUniqueSample(kSearchQueriesBeforeChurnHistogramName,
+                                       0, 1);
+
+  // user switches back to brave
+  RecordDefaultEngineConversion(GetPrefs());
+  for (size_t i = 0; i < 7; i++) {
+    RecordLocationBarQuery(GetPrefs());
+  }
+
+  histogram_tester_.ExpectTotalCount(kSearchQueriesBeforeChurnHistogramName, 1);
+
+  // user switches away from brave again
+  RecordDefaultEngineChurn(GetPrefs());
+  histogram_tester_.ExpectTotalCount(kSearchQueriesBeforeChurnHistogramName, 2);
+  histogram_tester_.ExpectBucketCount(kSearchQueriesBeforeChurnHistogramName, 4,
+                                      1);
+
+  // use switches away again, should not record since the user already churned
+  // before and they have not made any queries
+  RecordDefaultEngineConversion(GetPrefs());
+  RecordDefaultEngineChurn(GetPrefs());
+  histogram_tester_.ExpectTotalCount(kSearchQueriesBeforeChurnHistogramName, 2);
+  histogram_tester_.ExpectBucketCount(kSearchQueriesBeforeChurnHistogramName, 4,
+                                      1);
 }
 
 }  // namespace p3a

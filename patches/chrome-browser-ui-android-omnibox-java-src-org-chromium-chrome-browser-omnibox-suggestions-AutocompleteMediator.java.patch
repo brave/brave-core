@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator.java
+index f7bcce140aca2638651b13cfb77c2e9bf71e866a..c8b1773894aa20f27125f76d3806ba1977b002dc 100644
+--- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator.java
++++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator.java
+@@ -809,7 +809,7 @@ class AutocompleteMediator implements OnSuggestionsReceivedListener,
+      * @param inputStart The timestamp the input was started.
+      * @param inVisibleSuggestionList Whether the suggestion is in the visible suggestion list.
+      */
+-    private void loadUrlForOmniboxMatch(int matchIndex, @NonNull AutocompleteMatch suggestion,
++    void loadUrlForOmniboxMatch(int matchIndex, @NonNull AutocompleteMatch suggestion,
+             @NonNull GURL url, long inputStart, boolean inVisibleSuggestionList) {
+         try (TraceEvent e = TraceEvent.scoped("AutocompleteMediator.loadUrlFromOmniboxMatch")) {
+             OmniboxMetrics.recordFocusToOpenTime(System.currentTimeMillis() - mUrlFocusTime);
