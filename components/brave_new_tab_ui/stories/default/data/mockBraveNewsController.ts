@@ -192,6 +192,7 @@ export const feed: BraveNews.Feed = {
     promotedArticle: undefined,
     deal: undefined,
     article: {
+      isDiscover: true,
       data: {
         categoryName: 'Top News',
         description: 'Here\'s everything you need to know about the Haunted Hallows event, including how to unlock the Batmobile.',
@@ -217,6 +218,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Sports',
                   'publishTime': {
@@ -250,6 +252,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Sports',
                   'publishTime': {
@@ -283,6 +286,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Technology',
                   'publishTime': {
@@ -311,6 +315,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Science',
                   'publishTime': {
@@ -378,6 +383,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Top News',
                   'publishTime': {
@@ -406,6 +412,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Top News',
                   'publishTime': {
@@ -434,6 +441,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Top News',
                   'publishTime': {
@@ -467,6 +475,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Business',
                   'publishTime': {
@@ -500,6 +509,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Cars',
                   'publishTime': {
@@ -533,6 +543,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Home',
                   'publishTime': {
@@ -561,6 +572,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Entertainment',
                   'publishTime': {
@@ -594,6 +606,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Entertainment',
                   'publishTime': {
@@ -622,6 +635,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Entertainment',
                   'publishTime': {
@@ -659,6 +673,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Science',
                   'publishTime': {
@@ -692,6 +707,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Sports',
                   'publishTime': {
@@ -725,6 +741,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Entertainment',
                   'publishTime': {
@@ -753,6 +770,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Entertainment',
                   'publishTime': {
@@ -781,6 +799,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Entertainment',
                   'publishTime': {
@@ -814,6 +833,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Technology',
                   'publishTime': {
@@ -842,6 +862,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Technology',
                   'publishTime': {
@@ -875,6 +896,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Technology',
                   'publishTime': {
@@ -1000,6 +1022,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Top News',
                   'publishTime': {
@@ -1033,6 +1056,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Health',
                   'publishTime': {
@@ -1061,6 +1085,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Entertainment',
                   'publishTime': {
@@ -1098,6 +1123,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Sports',
                   'publishTime': {
@@ -1131,6 +1157,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Culture',
                   'publishTime': {
@@ -1164,6 +1191,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Business',
                   'publishTime': {
@@ -1192,6 +1220,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Sports',
                   'publishTime': {
@@ -1259,6 +1288,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Brave',
                   'publishTime': {
@@ -1287,6 +1317,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Brave',
                   'publishTime': {
@@ -1315,6 +1346,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Brave',
                   'publishTime': {
@@ -1348,6 +1380,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Entertainment',
                   'publishTime': {
@@ -1381,6 +1414,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Business',
                   'publishTime': {
@@ -1414,6 +1448,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Top News',
                   'publishTime': {
@@ -1442,6 +1477,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Health',
                   'publishTime': {
@@ -1475,6 +1511,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Business',
                   'publishTime': {
@@ -1503,6 +1540,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Top News',
                   'publishTime': {
@@ -1540,6 +1578,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Technology',
                   'publishTime': {
@@ -1573,6 +1612,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Business',
                   'publishTime': {
@@ -1606,6 +1646,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Culture',
                   'publishTime': {
@@ -1634,6 +1675,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Culture',
                   'publishTime': {
@@ -1662,6 +1704,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Culture',
                   'publishTime': {
@@ -1695,6 +1738,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Sports',
                   'publishTime': {
@@ -1723,6 +1767,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Top News',
                   'publishTime': {
@@ -1756,6 +1801,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Technology',
                   'publishTime': {
@@ -1881,6 +1927,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Cars',
                   'publishTime': {
@@ -1914,6 +1961,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Business',
                   'publishTime': {
@@ -1942,6 +1990,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: undefined,
               deal: undefined,
               article: {
+                isDiscover: true,
                 'data': {
                   'categoryName': 'Top News',
                   'publishTime': {
@@ -1974,19 +2023,19 @@ export const feed: BraveNews.Feed = {
 }
 
 export const mockBraveNewsController: Partial<BraveNewsControllerRemote> = {
-  async getLocale () {
+  async getLocale() {
     return { locale: 'en-US' }
   },
 
-  async getFeed () {
+  async getFeed() {
     return { feed }
   },
 
-  async getPublishers () {
+  async getPublishers() {
     return { publishers }
   },
 
-  async getChannels () {
+  async getChannels() {
     const channelNames = Object.values(publishers).reduce((prev, next) => {
       for (const locale of next.locales) {
         for (const channel of locale.channels) {
@@ -2002,19 +2051,19 @@ export const mockBraveNewsController: Partial<BraveNewsControllerRemote> = {
     }
   },
 
-  async setChannelSubscribed (channelId, subscribed) {
+  async setChannelSubscribed(channelId, subscribed) {
     return { updated: { ...(await mockBraveNewsController.getChannels!())[channelId], subscribed } }
   },
 
-  async findFeeds () {
+  async findFeeds() {
     return { results: [] }
   },
 
-  async subscribeToNewDirectFeed () {
+  async subscribeToNewDirectFeed() {
     return { isValidFeed: false, isDuplicate: false, publishers: await mockBraveNewsController.getChannels!() }
   },
 
-  async setPublisherPref (publisherId, newStatus) {
+  async setPublisherPref(publisherId, newStatus) {
     publishers[publisherId].userEnabledStatus = newStatus
     return {
       newStatus

@@ -26,6 +26,7 @@
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
+#include "brave/components/brave_news/browser/feed_v2_builder.h"
 #include "brave/components/brave_news/browser/locales_helper.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
@@ -33,6 +34,7 @@
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
@@ -90,6 +92,7 @@ BraveNewsController::BraveNewsController(
       api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
       private_cdn_request_helper_(GetNetworkTrafficAnnotationTag(),
                                   url_loader_factory),
+      url_loader_factory_(url_loader_factory),
       direct_feed_controller_(prefs_, url_loader_factory),
       unsupported_publisher_migrator_(prefs_,
                                       &direct_feed_controller_,
@@ -168,6 +171,22 @@ void BraveNewsController::GetFeed(GetFeedCallback callback) {
     return;
   }
   feed_controller_.GetOrFetchFeed(std::move(callback));
+}
+
+void BraveNewsController::GetFeedV2(GetFeedV2Callback callback) {
+  if (!GetIsEnabled(prefs_) ||
+      !base::FeatureList::IsEnabled(
+          brave_news::features::kBraveNewsFeedUpdate)) {
+    std::move(callback).Run(mojom::FeedV2::New());
+    return;
+  }
+
+  if (!feed_v2_builder_) {
+    feed_v2_builder_ = std::make_unique<FeedV2Builder>(
+        publishers_controller_, channels_controller_, url_loader_factory_);
+  }
+
+  feed_v2_builder_->Build(std::move(callback));
 }
 
 void BraveNewsController::GetPublishers(GetPublishersCallback callback) {
