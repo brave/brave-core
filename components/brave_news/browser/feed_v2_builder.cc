@@ -29,8 +29,8 @@ namespace brave_news {
 
 namespace {
 
-// constexpr int kBlockInlineMin = 1;
-// constexpr int kBlockInlineMax = 5;
+constexpr int kBlockInlineMin = 1;
+constexpr int kBlockInlineMax = 5;
 // constexpr double kInlineDiscoveryRatio = 0.25;
 // constexpr int kSpecialCardEveryN = 2;
 // constexpr double kAdsToDiscoverRatio = 0.25;
@@ -43,11 +43,11 @@ constexpr double kPopRecencyHalfLifeInHours = 18;
 //   return base::RandDouble() < 0.5;
 // }
 
-double GetPopRecency(const mojom::ArticlePtr& article) {
-  auto& publish_time = article->data->publish_time;
+double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
+  auto& publish_time = article->publish_time;
 
   // TODO(fallaciousreasoning): Use the new popularity field instead.
-  double popularity = article->data->score == 0 ? 50 : article->data->score;
+  double popularity = article->score == 0 ? 50 : article->score;
   double multiplier = publish_time > base::Time::Now() - base::Hours(5) ? 2 : 1;
   auto dt = base::Time::Now() - publish_time;
 
@@ -55,9 +55,9 @@ double GetPopRecency(const mojom::ArticlePtr& article) {
          pow(0.5, dt.InHours() / kPopRecencyHalfLifeInHours);
 }
 
-double GetArticleWeight(const mojom::ArticlePtr& article,
+double GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
                         const Signals& signals) {
-  auto it = signals.find(article->data->url.spec());
+  auto it = signals.find(article->url.spec());
   if (it == signals.end()) {
     return 0.0;
   }
@@ -71,10 +71,9 @@ double GetArticleWeight(const mojom::ArticlePtr& article,
          GetPopRecency(article);
 }
 
-mojom::ArticlePtr PickRouletteAndRemove(
-    std::vector<mojom::ArticlePtr>& articles,
+mojom::FeedItemMetadataPtr PickRouletteAndRemove(
+    std::vector<mojom::FeedItemMetadataPtr>& articles,
     const Signals& signals) {
-
   double total_weight = 0;
   for (const auto& article : articles) {
     total_weight += GetArticleWeight(article, signals);
@@ -99,9 +98,41 @@ mojom::ArticlePtr PickRouletteAndRemove(
     }
   }
 
-  mojom::ArticlePtr picked = std::move(articles[i]);
+  auto picked = std::move(articles[i]);
   articles.erase(articles.begin() + i);
   return picked;
+}
+
+// Generates a standard block:
+// 1. Hero Article
+// 2. 1 - 5 following articles
+std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
+    std::vector<mojom::FeedItemMetadataPtr>& articles,
+    const Signals& signals) {
+  std::vector<mojom::FeedItemV2Ptr> result;
+  if (articles.empty()) {
+    return result;
+  }
+
+  auto hero_article = PickRouletteAndRemove(articles, signals);
+  if (!hero_article) {
+    return result;
+  }
+
+  result.push_back(mojom::FeedItemV2::NewHero(
+      mojom::HeroArticle::New(std::move(hero_article))));
+
+  auto follow_count = base::RandInt(kBlockInlineMin, kBlockInlineMax);
+  for (auto i = 0; i < follow_count; ++i) {
+    auto generated = PickRouletteAndRemove(articles, signals);
+    if (!generated) {
+      continue;
+    }
+    result.push_back(mojom::FeedItemV2::NewArticle(
+        mojom::Article::New(std::move(generated), false)));
+  }
+
+  return result;
 }
 
 }  // namespace
@@ -163,24 +194,20 @@ void FeedV2Builder::OnCalculatedSignals(BuildFeedCallback callback,
 void FeedV2Builder::BuildFeedFromArticles(BuildFeedCallback callback) {
   auto feed = mojom::FeedV2::New();
 
-  std::vector<mojom::ArticlePtr> articles;
-  std::vector<mojom::PromotedArticlePtr> ads;
+  std::vector<mojom::FeedItemMetadataPtr> articles;
 
   for (const auto& item : raw_feed_items_) {
     if (item.is_null()) {
       continue;
     }
     if (item->is_article()) {
-      articles.push_back(item->get_article()->Clone());
-    }
-    if (item->is_promoted_article()) {
-      ads.push_back(item->get_promoted_article()->Clone());
+      articles.push_back(item->get_article()->data->Clone());
     }
   }
 
-  mojom::ArticlePtr article;
-  while ((article = PickRouletteAndRemove(articles, signals_))) {
-    feed->items.push_back(mojom::FeedItemV2::NewArticle(std::move(article)));
+  std::vector<mojom::FeedItemV2Ptr> entries;
+  while (!(entries = GenerateBlock(articles, signals_)).empty()) {
+    base::ranges::move(entries, std::back_inserter(feed->items));
   }
 
   std::move(callback).Run(std::move(feed));
