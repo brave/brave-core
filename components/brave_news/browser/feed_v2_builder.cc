@@ -34,7 +34,7 @@ namespace {
 // constexpr double kInlineDiscoveryRatio = 0.25;
 // constexpr int kSpecialCardEveryN = 2;
 // constexpr double kAdsToDiscoverRatio = 0.25;
-constexpr double kSourceSubscribedMin = 1e-5;
+constexpr double kSourceSubscribedMin = 1e-6;
 constexpr double kSourceSubscribedMax = 1;
 constexpr double kSourceVisitsMin = 0.2;
 constexpr double kPopRecencyHalfLifeInHours = 18;
