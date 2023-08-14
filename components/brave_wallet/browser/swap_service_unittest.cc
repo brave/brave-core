@@ -556,6 +556,20 @@ TEST_F(SwapServiceUnitTest, GetPriceQuoteURL) {
             "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
             "skipValidation=true");
 
+  url = swap_service_->GetPriceQuoteURL(params.Clone(),
+                                        mojom::kBaseMainnetChainId);
+  EXPECT_EQ(url,
+            "https://base.api.0x.org/swap/v1/price?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "skipValidation=true");
+
   // KO: unsupported network
   url = swap_service_->GetPriceQuoteURL(params.Clone(), "0x3");
   EXPECT_EQ(url, "");
@@ -686,6 +700,19 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayloadURL) {
             "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
             "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d");
 
+  url = swap_service_->GetTransactionPayloadURL(params.Clone(),
+                                                mojom::kBaseMainnetChainId);
+  EXPECT_EQ(url,
+            "https://base.api.0x.org/swap/v1/quote?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d");
+
   // KO: unsupported network
   url = swap_service_->GetTransactionPayloadURL(params.Clone(), "0x3");
   EXPECT_EQ(url, "");
@@ -703,6 +730,7 @@ TEST_F(SwapServiceUnitTest, IsSwapSupported) {
       mojom::kCeloMainnetChainId,
       mojom::kOptimismMainnetChainId,
       mojom::kArbitrumMainnetChainId,
+      mojom::kBaseMainnetChainId,
   });
 
   for (auto& chain_id : supported_chain_ids) {

@@ -25,6 +25,8 @@ export const getNetworkLogo = (chainId: string, symbol: string): string => {
     return 'chrome://erc-token-images/arb.png'
   if (chainId === BraveWallet.NEON_EVM_MAINNET_CHAIN_ID)
     return 'chrome://erc-token-images/neon.png'
+  if (chainId === BraveWallet.BASE_MAINNET_CHAIN_ID)
+    return 'chrome://erc-token-images/base.png'
   if (chainId === AllNetworksOption.chainId)
     return AllNetworksOption.iconUrls[0]
 
