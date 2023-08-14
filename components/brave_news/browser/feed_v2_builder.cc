@@ -36,7 +36,7 @@ namespace {
 
 constexpr int kBlockInlineMin = 1;
 constexpr int kBlockInlineMax = 5;
-// constexpr double kInlineDiscoveryRatio = 0.25;
+constexpr double kInlineDiscoveryRatio = 0.25;
 constexpr double kSourceSubscribedMin = 1e-6;
 constexpr double kSourceSubscribedMax = 1;
 constexpr double kSourceVisitsMin = 0.2;
@@ -61,14 +61,17 @@ double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
          pow(0.5, dt.InHours() / kPopRecencyHalfLifeInHours);
 }
 
-double GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
+const Signal* GetSignal(const mojom::FeedItemMetadataPtr& article,
                         const Signals& signals) {
   auto it = signals.find(article->url.spec());
   if (it == signals.end()) {
-    return 0.0;
+    return nullptr;
   }
+  return &it->second;
+}
 
-  const Signal& signal = it->second;
+double GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
+                        const Signal& signal) {
   double source_visits_projected =
       kSourceVisitsMin + signal.visit_weight * (1 - kSourceVisitsMin);
   double source_subscribed_projected =
@@ -82,12 +85,21 @@ std::string PickRandom(const std::vector<std::string>& items) {
   return items[base::RandInt(0, items.size() - 1)];
 }
 
+using ShouldConsiderPredicate = bool(const Signal& signal);
+
 mojom::FeedItemMetadataPtr PickRouletteAndRemove(
     std::vector<mojom::FeedItemMetadataPtr>& articles,
-    const Signals& signals) {
+    const Signals& signals,
+    ShouldConsiderPredicate predicate = [](const auto& signal) {
+      return true;
+    }) {
   double total_weight = 0;
   for (const auto& article : articles) {
-    total_weight += GetArticleWeight(article, signals);
+    const auto* signal = GetSignal(article, signals);
+    if (!signal || !predicate(*signal)) {
+      continue;
+    }
+    total_weight += GetArticleWeight(article, *signal);
   }
 
   // Non of the items are eligible to be picked.
@@ -103,7 +115,12 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
   uint64_t i;
   for (i = 0; i < articles.size(); ++i) {
     auto& article = articles[i];
-    current_weight += GetArticleWeight(article, signals);
+    const auto* signal = GetSignal(article, signals);
+    if (!signal || !predicate(*signal)) {
+      continue;
+    }
+
+    current_weight += GetArticleWeight(article, *signal);
     if (current_weight > picked_value) {
       break;
     }
@@ -112,6 +129,18 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
   auto picked = std::move(articles[i]);
   articles.erase(articles.begin() + i);
   return picked;
+}
+
+// Picking a discovery article works the same way as as a normal roulette
+// selection, but we only consider articles that:
+// 1. The user hasn't subscribed to.
+// 2. The user hasn't visited.
+mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
+    std::vector<mojom::FeedItemMetadataPtr>& articles,
+    const Signals& signals) {
+  return PickRouletteAndRemove(articles, signals, [](const auto& signal) {
+    return !signal.subscribed && signal.visit_weight == 0;
+  });
 }
 
 // Generates a standard block:
@@ -136,14 +165,18 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
 
   auto follow_count = base::RandInt(kBlockInlineMin, kBlockInlineMax);
   for (auto i = 0; i < follow_count; ++i) {
-    // TODO: 1/discover ratio % of the time, we should do a discover card here,
-    // instead of a roulette card.
-    auto generated = PickRouletteAndRemove(articles, signals);
+    // discover ratio % of the time, we should do a discover card here instead
+    // of a roulette card.
+    // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4rkb0vecgekl
+    bool is_discover = base::RandDouble() < kInlineDiscoveryRatio;
+    auto generated = is_discover
+                         ? PickDiscoveryArticleAndRemove(articles, signals)
+                         : PickRouletteAndRemove(articles, signals);
     if (!generated) {
       continue;
     }
     result.push_back(mojom::FeedItemV2::NewArticle(
-        mojom::Article::New(std::move(generated), false)));
+        mojom::Article::New(std::move(generated), is_discover)));
   }
 
   return result;
