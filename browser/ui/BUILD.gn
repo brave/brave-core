@@ -425,8 +425,8 @@ source_set("ui") {
     ]
   }
 
-  # brave's obsolete infobar is only used on Windows now.
-  if (is_win) {
+  # brave's obsolete infobar is only used on Windows and Mac now.
+  if (is_win || is_mac) {
     sources += [
       "startup/brave_obsolete_system_infobar_delegate.cc",
       "startup/brave_obsolete_system_infobar_delegate.h",
