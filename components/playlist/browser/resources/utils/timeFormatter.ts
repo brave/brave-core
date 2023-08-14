@@ -33,9 +33,7 @@ export function formatTimeInSeconds (timeInSeconds: number, delim: DelimType) {
     return parts.join(':')
   }
 
-  const parts = []
-  if (hours) parts.push(`${hours}h`)
-  if (minutes) parts.push(`${minutes}m`)
-  if (seconds) parts.push(`${seconds}s`)
+  const parts = [`${minutes ?? 0}m`, `${seconds ?? 0}s`]
+  if (hours) parts.unshift(`${hours}h`)
   return parts.join(' ')
 }

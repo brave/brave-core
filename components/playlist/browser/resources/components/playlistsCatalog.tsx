@@ -15,7 +15,11 @@ import { Playlist } from 'gen/brave/components/playlist/common/mojom/playlist.mo
 import PlayLaterCardOverlayImage from '../assets/playlater-card-overlay.svg'
 import PlaylistInfo from './playlistInfo'
 import { useSelector } from 'react-redux'
-import { ApplicationState, useTotalDuration } from '../reducers/states'
+import {
+  ApplicationState,
+  useTotalDuration,
+  useTotalSize
+} from '../reducers/states'
 
 interface ThumbnailProps {
   isDefaultPlaylist: boolean
@@ -127,6 +131,7 @@ function PlaylistCard ({ playlist }: { playlist: Playlist }) {
   const hasBackground = isDefaultPlaylist || !!thumbnailUrl
 
   const totalDuration = useTotalDuration(playlist)
+  const totalSize = useTotalSize(playlist)
 
   return (
     <StyledLink to={`/playlist/${playlist.id}`}>
@@ -144,6 +149,7 @@ function PlaylistCard ({ playlist }: { playlist: Playlist }) {
           isDefaultPlaylist={isDefaultPlaylist}
           itemCount={playlist.items.length}
           totalDuration={totalDuration}
+          totalSize={totalSize}
           hasBackground={hasBackground}
         />
       </PlaylistCardContainer>

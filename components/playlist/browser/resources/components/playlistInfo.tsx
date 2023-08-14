@@ -13,6 +13,7 @@ interface Props {
   isDefaultPlaylist: boolean
   playlistName: string
   totalDuration?: number
+  totalSize: string
   itemCount: number
   className?: string
 
@@ -56,6 +57,7 @@ export default function PlaylistInfo ({
   playlistName,
   itemCount,
   totalDuration,
+  totalSize,
   nameColor,
   detailColor
 }: Props) {
@@ -65,17 +67,14 @@ export default function PlaylistInfo ({
         {isDefaultPlaylist ? 'Play Later' : playlistName}{' '}
       </PlaylistName>
       <PlaylistDetail color={detailColor}>{itemCount} items</PlaylistDetail>
-      {!!totalDuration && (
+      {totalDuration !== undefined && (
         <PlaylistDetail color={detailColor}>
           {formatTimeInSeconds(totalDuration, 'space')}
         </PlaylistDetail>
       )}
-      {
-        // TODO(sko) We can't get the file size for now
-        // !!itemCount && (
-        //   <PlaylistDetail className='playlist-detail'>300 mb</PlaylistDetail>
-        // )
-      }
+      {totalSize && (
+        <PlaylistDetail color={detailColor}>{totalSize}</PlaylistDetail>
+      )}
     </PlaylistInfoContainer>
   )
 }

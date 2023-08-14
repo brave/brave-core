@@ -58,7 +58,8 @@ class PlaylistMediaFileDownloader
 
     // Called when target media file generation succeed.
     virtual void OnMediaFileReady(const std::string& id,
-                                  const std::string& media_file_path) = 0;
+                                  const std::string& media_file_path,
+                                  int64_t received_bytes) = 0;
     // Called when target media file generation failed.
     virtual void OnMediaFileGenerationFailed(const std::string& id) = 0;
 
@@ -95,11 +96,17 @@ class PlaylistMediaFileDownloader
  private:
   void ResetDownloadStatus();
   void DownloadMediaFile(const GURL& url);
-  void OnMediaFileDownloaded(const std::string& mime_type, base::FilePath path);
-  void OnRenameFile(const base::FilePath& new_path, bool result);
+  void OnMediaFileDownloaded(const std::string& mime_type,
+                             base::FilePath path,
+                             int64_t received_bytes);
+  void OnRenameFile(const base::FilePath& new_path,
+                    int64_t received_bytes,
+                    bool result);
 
   void NotifyFail(const std::string& id);
-  void NotifySucceed(const std::string& id, const std::string& media_file_path);
+  void NotifySucceed(const std::string& id,
+                     const std::string& media_file_path,
+                     int64_t received_bytes);
 
   void ScheduleToCancelDownloadItem(const std::string& guid);
   void CancelDownloadItem(const std::string& guid);

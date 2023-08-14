@@ -319,7 +319,8 @@ class PlaylistService : public KeyedService,
   void OnMediaFileDownloadFinished(bool update_media_src_and_retry_on_fail,
                                    DownloadMediaFileCallback callback,
                                    mojom::PlaylistItemPtr item,
-                                   const std::string& media_file_path);
+                                   const std::string& media_file_path,
+                                   int64_t received_bytes);
 
   // KeyedService overrides:
   void Shutdown() override;

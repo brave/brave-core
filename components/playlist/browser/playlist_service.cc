@@ -953,6 +953,7 @@ void PlaylistService::RemoveLocalDataForItemImpl(
   CHECK(net::FileURLToFilePath(item->media_path, &media_path));
 
   item->cached = false;
+  item->media_file_bytes = 0;
   DCHECK(item->media_source.is_valid()) << "media_source should be valid";
   item->media_path = item->media_source;
   UpdatePlaylistItemValue(item->id,
@@ -968,7 +969,8 @@ void PlaylistService::OnMediaFileDownloadFinished(
     bool update_media_src_and_retry_on_fail,
     DownloadMediaFileCallback callback,
     mojom::PlaylistItemPtr item,
-    const std::string& media_file_path) {
+    const std::string& media_file_path,
+    int64_t received_bytes) {
   DCHECK(item);
   DCHECK(IsValidPlaylistItem(item->id));
 
@@ -992,6 +994,9 @@ void PlaylistService::OnMediaFileDownloadFinished(
   new_item->cached = !media_file_path.empty();
   if (new_item->cached) {
     new_item->media_path = GURL("file://" + media_file_path);
+    if (received_bytes) {
+      new_item->media_file_bytes = received_bytes;
+    }
   }
   UpdatePlaylistItemValue(new_item->id,
                           base::Value(ConvertPlaylistItemToValue(new_item)));
