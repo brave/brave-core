@@ -218,8 +218,8 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
   std::vector<mojom::FeedItemV2Ptr> result;
 
   if (TossCoin()) {
-    result.push_back(
-        mojom::FeedItemV2::NewAdvert(mojom::PromotedArticle::New()));
+    result.push_back(mojom::FeedItemV2::NewAdvert(
+        mojom::PromotedArticle::New(mojom::FeedItemMetadata::New(), "test")));
   } else {
     if (!suggested_publisher_ids.empty()) {
       uint64_t preferred_count = 3;
