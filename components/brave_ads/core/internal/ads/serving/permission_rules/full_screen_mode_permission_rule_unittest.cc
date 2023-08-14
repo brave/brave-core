@@ -23,7 +23,6 @@ class BraveAdsFullScreenModePermissionRuleTest : public UnitTestBase {
 
 TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAllow) {
   // Arrange
-  MockIsBrowserInFullScreenMode(ads_client_mock_, false);
 
   // Act
 

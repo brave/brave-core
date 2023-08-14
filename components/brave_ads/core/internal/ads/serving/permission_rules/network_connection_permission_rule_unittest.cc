@@ -23,7 +23,6 @@ class BraveAdsNetworkConnectionPermissionRuleTest : public UnitTestBase {
 
 TEST_F(BraveAdsNetworkConnectionPermissionRuleTest, ShouldAllow) {
   // Arrange
-  MockIsNetworkConnectionAvailable(ads_client_mock_, true);
 
   // Act
 

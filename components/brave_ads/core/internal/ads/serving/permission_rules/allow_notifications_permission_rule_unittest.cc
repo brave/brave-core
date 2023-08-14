@@ -19,7 +19,6 @@ class BraveAdsAllowNotificationsPermissionRuleTest : public UnitTestBase {
 
 TEST_F(BraveAdsAllowNotificationsPermissionRuleTest, ShouldAllow) {
   // Arrange
-  MockCanShowNotificationAds(ads_client_mock_, true);
 
   // Act
 
