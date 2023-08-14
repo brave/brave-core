@@ -1,7 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="pt-PT">
+<translation id="885805571521218129">Isto reflete a estimativa do intervalo de lucros dos Anúncios do Brave deste mês.</translation>
 <translation id="3478449063771497234">As notificações estão desativadas</translation>
+<translation id="370665806235115550">A carregar...</translation>
 <translation id="8220484609979012449">\n\nAinda pode enviar contribuições de criptomoedas para este criador através da carteira Web3.</translation>
 <translation id="6385969012847057348">Este criador não pode receber contribuições de <ph name="CUSTODIAN"/>.</translation>
 <translation id="6268134562674951939">Não tem tokens suficientes</translation>
@@ -40,6 +42,8 @@
 <translation id="4748689412569009273">Qual o emoji que descreve a sua experiência com o Brave?</translation>
 <translation id="7335142069363686805">Avalie já</translation>
 <translation id="6681362094306959654">Está a gostar do Brave?</translation>
+<translation id="8041093619605951337">Feliz</translation>
+<translation id="6826743502395386800">Triste</translation>
 <translation id="5488843227043643519">Que tal deixar uma avaliação na Play Store?</translation>
 <translation id="5867854497245948308">Agradecemos os seus comentários.</translation>
 <translation id="4935400164159327304">Diga-nos como podemos melhorar o Brave.</translation>
@@ -73,7 +77,7 @@
 <translation id="1118970888826017401">Ative o suporte para ignorar o redirecionamento principal de URLs de monitorização.</translation>
 <translation id="94154759592465111">Bloquear scripts</translation>
 <translation id="7714773920987474116">Bloqueia JavaScript (pode causar problemas nos sites)</translation>
-<translation id="1660979054779793659">YouTube</translation>
+<translation id="995782501881226248">Youtube</translation>
 <translation id="2233004324252915283">Bloquear conteúdo recomendado do YouTube</translation>
 <translation id="1005372663692637999">Bloqueia os elementos do cartão seguinte e final em youtube.com.</translation>
 <translation id="5152595963250646670">Bloquear elementos de distração do YouTube</translation>
@@ -136,11 +140,6 @@
 <translation id="1276592121036104130">Carregar conteúdo novo</translation>
 <translation id="3189348785087463371">Promovido</translation>
 <translation id="7554145152551782675">Mais ofertas Brave</translation>
-<translation id="1717242776111689224">Ativar as Notícias Brave</translation>
-<translation id="4732255422524275223">As suas fontes</translation>
-<translation id="152579389256498990">URL do feed ou site</translation>
-<translation id="4975944254857623648">Fontes predefinidas</translation>
-<translation id="253886574765651454">Adicionar fonte</translation>
 <translation id="254100925533869330">Não existe conteúdo</translation>
 <translation id="7172792761509429092">O Brave News não tem conteúdo para apresentar.</translation>
 <translation id="1771307734839364850">Escolher origens de conteúdo</translation>
@@ -152,6 +151,8 @@
 <translation id="6686219838158572786">Requerer que todas as ligações utilizem HTTPS (restrito)</translation>
 <translation id="4221284400051835823">Atualizar para HTTPS sempre que possível (predefinição)</translation>
 <translation id="4690906712010847708">Não atualizar ligações para HTTPS (desativado)</translation>
+<translation id="693506469193748756">Esqueçam-se de mim quando fechar este site</translation>
+<translation id="6975864539539353406">Limpa os cookies e outros dados do site ao fechar um site</translation>
 <translation id="1680858055899097121">Não manter separadores entre sessões de navegação</translation>
 <translation id="7142548388914389999">Permitir análises de produtos que preservam a privacidade (P3A)</translation>
 <translation id="5254037869598726291">As informações anónimas das P3A ajudam o Brave a calcular uma estimativa da utilização geral e a assegurar que melhoramos as funcionalidades mais populares.</translation>
@@ -180,6 +181,7 @@
 <translation id="8308305244351876417">Permite que o áudio seja reproduzido quando acede a outro separador no Brave, quando muda para outra aplicação ou quando o ecrã do seu dispositivo está desligado.</translation>
 <translation id="4150201353443180367">Exibição</translation>
 <translation id="2433507940547922241">Aspeto</translation>
+<translation id="9040069796107003510">Ícone das Recompensas Brave</translation>
 <translation id="6333347122924254968">Apresentar ícone das Recompensas Brave na barra de endereço</translation>
 <translation id="8495235435594442882">Ativar a barra de ferramentas em baixo</translation>
 <translation id="6587448235155023666">As suas modificações terão efeito da próxima vez que reiniciar o Brave</translation>
@@ -252,13 +254,13 @@
 <translation id="4254029385847607686">DEZEMBRO</translation>
 <translation id="3960619311638643872">VPN Brave</translation>
 <translation id="1772301834467143364">Notícias Brave</translation>
-<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Definições</translation>
 <translation id="6020176662032623904">Criador verificado</translation>
 <translation id="2369994359029526515">Criador não verificado</translation>
 <translation id="6112368337882254910">Contribuição Automática</translation>
 <translation id="7861645265922445992">Reivindicar Recompensas</translation>
-<translation id="8494748383523030337">O seu saldo</translation>
+<translation id="1848737374354350807">Saldo</translation>
 <translation id="4781696154289395607">Contribuiu <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="2429828319207652823">Houve um problema ao processar a sua contribuição.</translation>
 <translation id="2221902203895354376">Está disponível uma concessão de tokens.</translation>
@@ -322,8 +324,8 @@
 <translation id="8185825081026121627">Ganhe o Token de Atenção Básica pela visualização de privacidade preservando os anúncios do Brave Rewards.</translation>
 <translation id="5321518976657560663">Erro de Reposição</translation>
 <translation id="4114170343590425996">Ocorreu um erro ao repor as «Recompensas Brave». Por favor, reinicie o Brave e tente novamente.</translation>
-<translation id="6393502589311632553">Exibir Anúncios quando o Brave não está a ser utilizado</translation>
-<translation id="3349204812119681938">Repor Recompensas Brave</translation>
+<translation id="6417420737057016607">Anúncios do Brave</translation>
+<translation id="5611966874859284786">Mostrar notificações de anúncios quando o Brave não está a ser utilizado</translation>
 <translation id="6606319453795180219">Esta ação irá eliminar as suas Recompensas Brave e repor todos os seus dados de Recompensas Brave</translation>
 <translation id="8293206222192510085">Adicionar marcador</translation>
 <translation id="340492034650766959">Eliminar marcador</translation>
@@ -456,6 +458,7 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="8903462729414407077">Obtenha atualizações semanais</translation>
 <translation id="7450323860390658083">Saiba quais os sites por si visitados que menos respeitam a privacidade.\n\nEstas estatísticas de privacidade são visíveis apenas por si.  Nenhuns dados pessoais ou histórico de navegação permanecem no browser Brave do seu dispositivo.</translation>
 <translation id="6170159749517116894">Ativar relatórios de privacidade</translation>
+<translation id="1669047024429367828">Visibilidade</translation>
 <translation id="5966707198760109579">Semana</translation>
 <translation id="8987927404178983737">Mês</translation>
 <translation id="4302754476737420523">3 Meses</translation>
@@ -509,6 +512,7 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="8235783939971604011">Dar gorjetas é uma forma de encorajar pessoalmente o conteúdo ou os criadores da sua preferência. Receba gorjetas!</translation>
 <translation id="4215679190414901888">Por último, comecemos a configuração</translation>
 <translation id="3494356595346329740">Pode alterar isto mais tarde.</translation>
+<translation id="3286390186030710347">Controlo de deslize</translation>
 <translation id="3115702351969988294">Quão frequentemente quer visualizar anúncios?</translation>
 <translation id="2353222426385080466">Mais anúncios privados, mais recompensas.</translation>
 <translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> anúncios por hora</translation>
@@ -533,6 +537,7 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="5187052478998910855">Precisa ser atualizado quanto ao Rewards?</translation>
 <translation id="8622329973403382303">Proceda a uma viagem rápida para rever como funciona e entrar para a história como uma estrela rock do Rewards!</translation>
 <translation id="3479552764303398839">Agora não</translation>
+<translation id="7138272885617540195">Permitir que as ligações da aplicação sejam abertas em aplicações fora do Brave</translation>
 <translation id="8792121506918889955">Política de utilização WebRTC IP</translation>
 <translation id="8798099450830957504">Predefinição</translation>
 <translation id="1822560017823072927">Interfaces públicas e privadas pré-definidas</translation>
@@ -557,7 +562,6 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="8289942708804097960">Compre criptomoedas com um cartão de crédito ou débito.</translation>
 <translation id="841880029259839903">Envie criptomoedas ou transfira de uma conta para outra.</translation>
 <translation id="8226778393040773102">Trocar tokens e ativos</translation>
-<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/> processará o endereço Ethereum e o endereço IP para realizar uma transação (incluindo a obtenção de cotações). <ph name="DEX_PROVIDER"/> usará estes dados APENAS para processar transações.</translation>
 <translation id="1783600039044302171">Proteja as suas criptomoedas com uma palavra-passe</translation>
 <translation id="3726490322412361740">Introduzir palavra-passe</translation>
 <translation id="3038243139480464605">Verificar palavra-passe</translation>
@@ -598,7 +602,6 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="1144810021918451336">Não o protege contra websites, transferências e extensões perigosos.</translation>
 <translation id="5760476995887363522">As frases não correspondem. Tente novamente.</translation>
 <translation id="2360588547830602174">Falha na recuperação da conta. Tente de novo, por favor.</translation>
-<translation id="6392640873800632439">Preço de mercado em <ph name="ASSET"/></translation>
 <translation id="6748108480210050150">De</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -608,7 +611,6 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="2589431635772931954">Endereço ou URL</translation>
 <translation id="5517732667776806421">Informação da soma de verificação em falta</translation>
 <translation id="4006711930669471508">Informação da soma de verificação inválida</translation>
-<translation id="632241521608275119">Tolerância de desvio</translation>
 <translation id="1987317783729300807">Contas</translation>
 <translation id="3535654229833214438">Transações</translation>
 <translation id="2449682593754783720">1 hora</translation>
@@ -750,6 +752,11 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="5317780077021120954">Guardar</translation>
 <translation id="4979796155378508955">A transação pode não ser propagada para a rede se o valor de nonce personalizado for não sequencial ou tiver outros erros.</translation>
 <translation id="6122742277607781713">Portfólio</translation>
+<translation id="3567988240819868195">Mercado</translation>
+<translation id="4576965889365503638">INFORMAÇÕES</translation>
+<translation id="152455748535966757">Classificação</translation>
+<translation id="4958716607782044952">Volume de 24h</translation>
+<translation id="128834189395075789">Capitalização bolsista</translation>
 <translation id="750843150060816463">Preço do Gas (GWEI)</translation>
 <translation id="1426320910664514906">Limite da gasolina</translation>
 <translation id="6389441740143786465">Desativar centro de partilha</translation>
@@ -761,10 +768,7 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="1367951781824006909">Selecione um ficheiro</translation>
 <translation id="8648684608605749476">Bloqueie cookies de terceiros na Navegação anónima.</translation>
 <translation id="1118876217803190221">Saldo insuficiente</translation>
-<translation id="275990379543116961">Fundos insuficientes para gás</translation>
-<translation id="3292453499915466604">Liquidez insuficiente</translation>
 <translation id="3025158262797849291">Formato de número não reconhecido</translation>
-<translation id="3380365263193509176">Erro desconhecido</translation>
 <translation id="5932938770824268122">Chave privada</translation>
 <translation id="2472882733835903303">Mostrar chave privada</translation>
 <translation id="4391056902675005799">Ocultar chave privada</translation>
@@ -834,7 +838,6 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="6727102863431372879">Definir</translation>
 <translation id="3074127054582480056">Atenção</translation>
 <translation id="2280319752798785157">Contribuição Mensal</translation>
-<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Apresentar o preenchimento automático na barra de endereços</translation>
 <translation id="8982438328166986164">Apresenta sugestões de sites com base nos marcadores e no histórico de navegação.</translation>
@@ -1051,11 +1054,12 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="5382684862562314222">Os token BAT ainda não são suportados em carteiras Uphold na sua região.</translation>
 <translation id="6996157559236886133">Erro: funcionalidade da conta Uphold limitada</translation>
 <translation id="1677961202754619328">De acordo com o Uphold, atualmente existem algumas limitações na sua conta Uphold. Inicie sessão na sua conta Uphold, verifique se existem avisos ou requisitos de conta restantes a serem preenchidos e tente novamente.</translation>
-<translation id="6417420737057016607">Anúncios do Brave</translation>
 <translation id="5425006356459378415">Recompensas Brave não disponíveis</translation>
 <translation id="833643743158564518">Os novos registos no Brave Rewards estão desativados na sua região de momento. Contudo, pode sempre tentar novamente mais tarde. <ph name="LEARN_MORE"/></translation>
 <translation id="8528916244724490964">Todas as redes</translation>
+<translation id="7748944510530490017">Redes principais</translation>
 <translation id="2781668117338732220">Redes secundárias</translation>
+<translation id="282560918037172384">Redes de teste</translation>
 <translation id="6309721369749814582">O domínio <ph name="DOMAIN"/> não está registado</translation>
 <translation id="4071347720273751665">Parece que introduziu um endereço de ENS. Precisamos de utilizar uma resolução de terceiros para resolver este pedido, para que o seu domínio e endereço IP possam ser vistos. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">Usar domínio ENS offchain</translation>
@@ -1149,4 +1153,9 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="6344103698928069918">Numa lista de reprodução, retomar a reprodução a partir do momento da última pausa</translation>
 <translation id="8141583471142904652">Audição contínua</translation>
 <translation id="851432578283946230">Toca automaticamente o item seguinte na lista de reprodução</translation>
+<translation id="7853202427316060426">Atividade</translation>
+<translation id="4932733599132424254">Data</translation>
+<translation id="346505172740911461">Preço de mercado</translation>
+<translation id="4709355193533327244">Ainda sem transações.</translation>
+<translation id="4931644613135313937">As transações que fizer serão apresentadas aqui.</translation>
 </translationbundle>
