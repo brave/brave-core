@@ -18,7 +18,8 @@ import {
 import {
   BraveWallet,
   WalletState,
-  RefreshOpts
+  RefreshOpts,
+  UpdateAccountNamePayloadType
 } from '../../constants/types'
 import {
   AddAccountPayloadType,
@@ -347,5 +348,14 @@ handler.on(WalletActions.getOnRampCurrencies.type, async (store: Store) => {
   const currencies = (await blockchainRegistry.getOnRampCurrencies()).currencies
   await store.dispatch(WalletActions.setOnRampCurrencies(currencies))
 })
+
+handler.on(
+  WalletActions.updateAccountName.type,
+  async (_store: Store, payload: UpdateAccountNamePayloadType) => {
+    const { keyringService } = getAPIProxy()
+    const result =
+      await keyringService.setAccountName(payload.accountId, payload.name)
+    return result.success
+  })
 
 export default handler.middleware

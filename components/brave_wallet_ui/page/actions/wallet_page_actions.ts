@@ -33,7 +33,6 @@ export const {
   setShowAddModal,
   setShowIsRestoring,
   showRecoveryPhrase,
-  updateAccountName,
   updateNFTMetadata,
   updateNftMetadataError,
   selectPriceTimeframe,

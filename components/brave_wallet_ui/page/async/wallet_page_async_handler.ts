@@ -11,8 +11,7 @@ import * as WalletPageActions from '../actions/wallet_page_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
 import {
   BraveWallet,
-  NFTMetadataReturnType,
-  UpdateAccountNamePayloadType
+  NFTMetadataReturnType
 } from '../../constants/types'
 import {
   CreateWalletPayloadType,
@@ -169,12 +168,6 @@ handler.on(WalletPageActions.importAccountFromJson.type, async (store: Store, pa
   } else {
     store.dispatch(WalletPageActions.setImportAccountError(true))
   }
-})
-
-handler.on(WalletPageActions.updateAccountName.type, async (store: Store, payload: UpdateAccountNamePayloadType) => {
-  const keyringService = getWalletPageApiProxy().keyringService
-  const result = await keyringService.setAccountName(payload.accountId, payload.name)
-  return result.success
 })
 
 handler.on(WalletPageActions.addHardwareAccounts.type, async (store: Store, accounts: BraveWallet.HardwareWalletAccount[]) => {
