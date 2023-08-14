@@ -33,6 +33,12 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
   database::SaveCreativePromotedContentAds({});
 
   // Assert
+  database_table_.GetAll(
+      base::BindOnce([](const bool success, const SegmentList& /*segments*/,
+                        const CreativePromotedContentAdList& creative_ads) {
+        ASSERT_TRUE(success);
+        EXPECT_TRUE(creative_ads.empty());
+      }));
 }
 
 TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,

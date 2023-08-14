@@ -76,6 +76,8 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
 TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
        DoNotServeWhenUserBecomesActive) {
   // Arrange
+
+  // Assert
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd).Times(0);
 
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
@@ -84,8 +86,6 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
 
   // Act
   ServeAd();
-
-  // Assert
 }
 
 TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,

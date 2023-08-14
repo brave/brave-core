@@ -17,13 +17,13 @@ class BraveAdsUserIdleDetectionTest : public UnitTestBase {};
 TEST_F(BraveAdsUserIdleDetectionTest, RewardsUserDidBecomeActive) {
   // Arrange
   const UserIdleDetection user_idle_detection;
+
+  // Assert
   EXPECT_CALL(ads_client_mock_, Log);
 
   // Act
   NotifyUserDidBecomeActive(/*idle_time*/ base::Seconds(10),
                             /*screen_was_locked*/ false);
-
-  // Assert
 }
 
 TEST_F(BraveAdsUserIdleDetectionTest, NonRewardsUserDidBecomeActive) {
@@ -31,26 +31,26 @@ TEST_F(BraveAdsUserIdleDetectionTest, NonRewardsUserDidBecomeActive) {
   DisableBraveRewardsForTesting();
 
   const UserIdleDetection user_idle_detection;
+
+  // Assert
   EXPECT_CALL(ads_client_mock_, Log).Times(0);
 
   // Act
   NotifyUserDidBecomeActive(/*idle_time*/ base::Seconds(10),
                             /*screen_was_locked*/ false);
-
-  // Assert
 }
 
 TEST_F(BraveAdsUserIdleDetectionTest,
        RewardsUserDidBecomeActiveWhileScreenWasLocked) {
   // Arrange
   const UserIdleDetection user_idle_detection;
+
+  // Assert
   EXPECT_CALL(ads_client_mock_, Log).Times(2);
 
   // Act
   NotifyUserDidBecomeActive(/*idle_time*/ base::Seconds(10),
                             /*screen_was_locked*/ true);
-
-  // Assert
 }
 
 TEST_F(BraveAdsUserIdleDetectionTest,
@@ -59,24 +59,24 @@ TEST_F(BraveAdsUserIdleDetectionTest,
   DisableBraveRewardsForTesting();
 
   const UserIdleDetection user_idle_detection;
+
+  // Assert
   EXPECT_CALL(ads_client_mock_, Log).Times(0);
 
   // Act
   NotifyUserDidBecomeActive(/*idle_time*/ base::Seconds(10),
                             /*screen_was_locked*/ true);
-
-  // Assert
 }
 
 TEST_F(BraveAdsUserIdleDetectionTest, RewardsUserDidBecomeIdle) {
   // Arrange
   const UserIdleDetection user_idle_detection;
+
+  // Assert
   EXPECT_CALL(ads_client_mock_, Log);
 
   // Act
   NotifyUserDidBecomeIdle();
-
-  // Assert
 }
 
 TEST_F(BraveAdsUserIdleDetectionTest, NonRewardsUserDidBecomeIdle) {
@@ -84,12 +84,12 @@ TEST_F(BraveAdsUserIdleDetectionTest, NonRewardsUserDidBecomeIdle) {
   DisableBraveRewardsForTesting();
 
   const UserIdleDetection user_idle_detection;
+
+  // Assert
   EXPECT_CALL(ads_client_mock_, Log).Times(0);
 
   // Act
   NotifyUserDidBecomeIdle();
-
-  // Assert
 }
 
 }  // namespace brave_ads

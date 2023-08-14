@@ -7,9 +7,10 @@
 
 #include <utility>
 
-#include "base/functional/bind.h"
+#include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
@@ -17,32 +18,21 @@
 
 namespace brave_ads {
 
+using testing::_;
+
 class BraveAdsTransactionsTest : public UnitTestBase {};
 
 TEST_F(BraveAdsTransactionsTest, Add) {
   // Arrange
 
-  // Act
-  const TransactionInfo transaction =
-      AddTransaction("42a33833-0a08-4cbb-ab3e-458e020221ab", "segment", 0.01,
-                     AdType::kNotificationAd, ConfirmationType::kViewed,
-                     base::BindOnce([](const bool success,
-                                       const TransactionInfo& /*transaction*/) {
-                       ASSERT_TRUE(success);
-                     }));
-
   // Assert
-  TransactionList expected_transactions = {transaction};
+  base::MockCallback<AddTransactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true, _));
 
-  GetTransactionsForDateRange(
-      DistantPast(), DistantFuture(),
-      base::BindOnce(
-          [](const TransactionList& expected_transactions, const bool success,
-             const TransactionList& transactions) {
-            ASSERT_TRUE(success);
-            EXPECT_EQ(expected_transactions, transactions);
-          },
-          std::move(expected_transactions)));
+  // Act
+  const TransactionInfo transaction = AddTransaction(
+      kCreativeInstanceId, kSegment, /*value*/ 0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewed, callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
@@ -70,20 +60,13 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
 
   SaveTransactionsForTesting(transactions);
 
-  // Act
-  TransactionList expected_transactions = {transaction_2, transaction_3};
-
-  GetTransactionsForDateRange(
-      Now(), DistantFuture(),
-      base::BindOnce(
-          [](const TransactionList& expected_transactions, const bool success,
-             const TransactionList& transactions) {
-            ASSERT_TRUE(success);
-            EXPECT_EQ(expected_transactions, transactions);
-          },
-          std::move(expected_transactions)));
-
   // Assert
+  const TransactionList expected_transactions = {transaction_2, transaction_3};
+  base::MockCallback<GetTransactionsCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true, expected_transactions));
+
+  // Act
+  GetTransactionsForDateRange(Now(), DistantFuture(), callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsTest, RemoveAll) {
@@ -102,18 +85,12 @@ TEST_F(BraveAdsTransactionsTest, RemoveAll) {
 
   SaveTransactionsForTesting(transactions);
 
-  // Act
-  RemoveAllTransactions(
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
-
   // Assert
-  GetTransactionsForDateRange(
-      DistantPast(), DistantFuture(),
-      base::BindOnce(
-          [](const bool success, const TransactionList& transactions) {
-            ASSERT_TRUE(success);
-            EXPECT_TRUE(transactions.empty());
-          }));
+  base::MockCallback<RemoveAllTransactionsCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true));
+
+  // Act
+  RemoveAllTransactions(callback.Get());
 }
 
 }  // namespace brave_ads

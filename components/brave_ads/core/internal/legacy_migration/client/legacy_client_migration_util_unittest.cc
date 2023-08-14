@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::client {
+namespace brave_ads {
 
 class BraveAdsLegacyClientMigrationUtilTest : public UnitTestBase {};
 
@@ -22,7 +22,7 @@ TEST_F(BraveAdsLegacyClientMigrationUtilTest, HasMigrated) {
   // Act
 
   // Assert
-  EXPECT_TRUE(HasMigrated());
+  EXPECT_TRUE(HasMigratedClientState());
 }
 
 TEST_F(BraveAdsLegacyClientMigrationUtilTest, HasNotMigrated) {
@@ -32,7 +32,7 @@ TEST_F(BraveAdsLegacyClientMigrationUtilTest, HasNotMigrated) {
   // Act
 
   // Assert
-  EXPECT_FALSE(HasMigrated());
+  EXPECT_FALSE(HasMigratedClientState());
 }
 
-}  // namespace brave_ads::client
+}  // namespace brave_ads

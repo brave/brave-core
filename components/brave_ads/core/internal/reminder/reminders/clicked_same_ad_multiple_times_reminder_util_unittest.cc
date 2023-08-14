@@ -203,28 +203,26 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        RemindUserTheyDoNotNeedToClickToEarnRewards) {
   // Arrange
+
+  // Assert
   EXPECT_CALL(ads_client_mock_,
               ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes));
 
   // Act
   RemindUserTheyDoNotNeedToClickToEarnRewards();
-
-  // Assert
 }
 
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        RemindUserMultipleTimesTheyDoNotNeedToClickToEarnRewards) {
   // Arrange
-  EXPECT_CALL(ads_client_mock_,
-              ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes))
-      .Times(2);
-
-  RemindUserTheyDoNotNeedToClickToEarnRewards();
-
-  // Act
   RemindUserTheyDoNotNeedToClickToEarnRewards();
 
   // Assert
+  EXPECT_CALL(ads_client_mock_,
+              ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes));
+
+  // Act
+  RemindUserTheyDoNotNeedToClickToEarnRewards();
 }
 
 }  // namespace brave_ads

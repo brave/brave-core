@@ -7,8 +7,9 @@
 
 #include <utility>
 
-#include "base/functional/bind.h"
+#include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/ad_type.h"
+#include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
@@ -348,15 +349,9 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   expected_transaction.confirmation_type = ConfirmationType::kViewed;
   expected_transactions.push_back(expected_transaction);
 
-  GetTransactionsForDateRange(
-      DistantPast(), DistantFuture(),
-      base::BindOnce(
-          [](const TransactionList& expected_transactions, const bool success,
-             const TransactionList& transactions) {
-            ASSERT_TRUE(success);
-            EXPECT_EQ(expected_transactions, transactions);
-          },
-          std::move(expected_transactions)));
+  base::MockCallback<GetTransactionsCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true, expected_transactions));
+  GetTransactionsForDateRange(DistantPast(), DistantFuture(), callback.Get());
 }
 
 TEST_F(BraveAdsAccountTest, DepositForNonCash) {
@@ -385,15 +380,9 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
   expected_transaction.confirmation_type = ConfirmationType::kClicked;
   expected_transactions.push_back(expected_transaction);
 
-  GetTransactionsForDateRange(
-      DistantPast(), DistantFuture(),
-      base::BindOnce(
-          [](const TransactionList& expected_transactions, const bool success,
-             const TransactionList& transactions) {
-            ASSERT_TRUE(success);
-            EXPECT_EQ(expected_transactions, transactions);
-          },
-          std::move(expected_transactions)));
+  base::MockCallback<GetTransactionsCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true, expected_transactions));
+  GetTransactionsForDateRange(DistantPast(), DistantFuture(), callback.Get());
 }
 
 TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
@@ -413,13 +402,10 @@ TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   EXPECT_TRUE(failed_to_process_deposit_);
   EXPECT_FALSE(statement_of_accounts_did_change_);
 
-  GetTransactionsForDateRange(
-      DistantPast(), DistantFuture(),
-      base::BindOnce(
-          [](const bool success, const TransactionList& transactions) {
-            ASSERT_TRUE(success);
-            EXPECT_TRUE(transactions.empty());
-          }));
+  base::MockCallback<GetTransactionsCallback> callback;
+  EXPECT_CALL(callback,
+              Run(/*success*/ true, /*transactions*/ testing::IsEmpty()));
+  GetTransactionsForDateRange(DistantPast(), DistantFuture(), callback.Get());
 }
 
 TEST_F(BraveAdsAccountTest, GetStatement) {
@@ -469,37 +455,36 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
 
   SaveTransactionsForTesting(transactions);
 
-  // Act
-  Account::GetStatement(base::BindOnce([](mojom::StatementInfoPtr statement) {
-    ASSERT_TRUE(statement);
-
-    mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
-    expected_statement->min_earnings_last_month =
-        0.01 * kMinEstimatedEarningsMultiplier.Get();
-    expected_statement->max_earnings_last_month = 0.01;
-    expected_statement->min_earnings_this_month =
-        0.05 * kMinEstimatedEarningsMultiplier.Get();
-    expected_statement->max_earnings_this_month = 0.05;
-    expected_statement->next_payment_date =
-        TimeFromString("7 January 2021 23:59:59.999", /*is_local*/ false);
-    expected_statement->ads_received_this_month = 3;
-    expected_statement->ad_types_received_this_month = {{"ad_notification", 3}};
-
-    EXPECT_EQ(expected_statement, statement);
-  }));
-
   // Assert
+  mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
+  expected_statement->min_earnings_last_month =
+      0.01 * kMinEstimatedEarningsMultiplier.Get();
+  expected_statement->max_earnings_last_month = 0.01;
+  expected_statement->min_earnings_this_month =
+      0.05 * kMinEstimatedEarningsMultiplier.Get();
+  expected_statement->max_earnings_this_month = 0.05;
+  expected_statement->next_payment_date =
+      TimeFromString("7 January 2021 23:59:59.999", /*is_local*/ false);
+  expected_statement->ads_received_this_month = 3;
+  expected_statement->ad_types_received_this_month = {{"ad_notification", 3}};
+
+  base::MockCallback<GetStatementOfAccountsCallback> callback;
+  EXPECT_CALL(callback, Run(testing::Eq(std::ref(expected_statement))));
+
+  // Act
+  Account::GetStatement(callback.Get());
 }
 
 TEST_F(BraveAdsAccountTest, DoNotGetStatementForNonRewardsUser) {
   // Arrange
   DisableBraveRewardsForTesting();
 
-  // Act
-  Account::GetStatement(base::BindOnce(
-      [](mojom::StatementInfoPtr statement) { EXPECT_FALSE(statement); }));
-
   // Assert
+  base::MockCallback<GetStatementOfAccountsCallback> callback;
+  EXPECT_CALL(callback, Run(/*statement*/ testing::IsFalse()));
+
+  // Act
+  Account::GetStatement(callback.Get());
 }
 
 }  // namespace brave_ads

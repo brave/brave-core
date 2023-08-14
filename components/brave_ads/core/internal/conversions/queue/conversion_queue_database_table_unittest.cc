@@ -33,6 +33,12 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest, SaveEmptyConversionQueue) {
   SaveConversionQueueItemsForTesting(conversion_queue_items);
 
   // Assert
+  database_table_.GetAll(
+      base::BindOnce([](const bool success,
+                        const ConversionQueueItemList& conversion_queue_items) {
+        ASSERT_TRUE(success);
+        EXPECT_TRUE(conversion_queue_items.empty());
+      }));
 }
 
 TEST_F(BraveAdsConversionQueueDatabaseTableTest, SaveConversionQueue) {

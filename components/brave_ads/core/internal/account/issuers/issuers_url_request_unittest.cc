@@ -44,6 +44,7 @@ TEST_F(BraveAdsIssuersUrlRequestTest, FetchIssuers) {
        {{net::HTTP_OK, BuildIssuersUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
+  // Assert
   EXPECT_CALL(issuers_url_request_delegate_mock_,
               OnDidFetchIssuers(BuildIssuersForTesting()));
   EXPECT_CALL(issuers_url_request_delegate_mock_, OnFailedToFetchIssuers)
@@ -55,8 +56,6 @@ TEST_F(BraveAdsIssuersUrlRequestTest, FetchIssuers) {
 
   // Act
   issuers_url_request_->PeriodicallyFetch();
-
-  // Assert
 }
 
 TEST_F(BraveAdsIssuersUrlRequestTest,

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
 
-#include "base/test/bind.h"
+#include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder.h"
@@ -42,11 +42,10 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
-  // Act
-  BuildConfirmationUserData(
-      transaction,
-      base::BindLambdaForTesting([&transaction](const UserDataInfo& user_data) {
-        // Assert
+  // Assert
+  base::MockCallback<BuildConfirmationUserDataCallback> callback;
+  EXPECT_CALL(callback, Run)
+      .WillOnce([&transaction](const UserDataInfo& user_data) {
         ConfirmationInfo expected_confirmation;
         expected_confirmation.transaction_id = kTransactionId;
         expected_confirmation.creative_instance_id = kCreativeInstanceId;
@@ -57,7 +56,10 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
 
         EXPECT_EQ(expected_confirmation,
                   BuildNonRewardConfirmation(transaction, user_data));
-      }));
+      });
+
+  // Act
+  BuildConfirmationUserData(transaction, callback.Get());
 }
 
 }  // namespace brave_ads

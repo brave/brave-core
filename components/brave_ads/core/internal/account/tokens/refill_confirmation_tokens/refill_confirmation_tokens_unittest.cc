@@ -156,7 +156,9 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, IssuersPublicKeyMismatch) {
 
   SetIssuers(issuers);
 
-  // Act
+  const WalletInfo wallet = GetWalletForTesting();
+
+  // Assert
   EXPECT_CALL(refill_confirmation_tokens_delegate_mock_,
               OnDidRefillConfirmationTokens())
       .Times(0);
@@ -172,10 +174,8 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, IssuersPublicKeyMismatch) {
               OnDidRetryRefillingConfirmationTokens())
       .Times(0);
 
-  const WalletInfo wallet = GetWalletForTesting();
+  // Act
   refill_confirmation_tokens_->MaybeRefill(wallet);
-
-  // Assert
 }
 
 TEST_F(BraveAdsRefillConfirmationTokensTest, InvalidIssuersFormat) {

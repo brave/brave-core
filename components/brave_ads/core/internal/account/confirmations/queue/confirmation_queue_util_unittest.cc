@@ -261,10 +261,10 @@ TEST_F(BraveAdsConversionQueueUtilTest, RebuildRewardConfirmationQueueItem) {
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
+  // Assert
   base::MockCallback<RebuildConfirmationQueueItemCallback> callback;
   EXPECT_CALL(callback, Run)
       .WillOnce([&confirmation](const ConfirmationInfo& rebuilt_confirmation) {
-        // Assert
         EXPECT_NE(confirmation, rebuilt_confirmation);
       });
 
@@ -283,10 +283,10 @@ TEST_F(BraveAdsConversionQueueUtilTest, RebuildNonRewardConfirmationQueueItem) {
       BuildNonRewardConfirmation(transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
+  // Assert
   base::MockCallback<RebuildConfirmationQueueItemCallback> callback;
   EXPECT_CALL(callback, Run)
       .WillOnce([&confirmation](const ConfirmationInfo& rebuilt_confirmation) {
-        // Assert
         EXPECT_EQ(confirmation, rebuilt_confirmation);
       });
 

@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base_util.h"
 
 #include <cstdint>
+#include <string>
 #include <utility>
 #include <vector>
 

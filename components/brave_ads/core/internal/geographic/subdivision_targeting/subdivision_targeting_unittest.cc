@@ -91,12 +91,11 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 
   NotifyDidInitializeAds();
 
+  // Assert
   EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
 
   // Act
   ads_client_mock_.SetBooleanPref(prefs::kOptedInToNotificationAds, false);
-
-  // Assert
 }
 
 TEST_F(BraveAdsSubdivisionTargetingTest,
@@ -108,14 +107,13 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 
   NotifyDidInitializeAds();
 
+  // Assert
   EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
 
   // Act
   ads_client_mock_.SetBooleanPref(brave_news::prefs::kBraveNewsOptedIn, false);
   ads_client_mock_.SetBooleanPref(brave_news::prefs::kNewTabPageShowToday,
                                   false);
-
-  // Assert
 }
 
 TEST_F(BraveAdsSubdivisionTargetingTest,

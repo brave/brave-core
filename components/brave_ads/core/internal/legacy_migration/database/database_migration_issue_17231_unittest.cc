@@ -34,6 +34,7 @@ TEST_F(BraveAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
   database_table.GetAll(
       base::BindOnce([](const bool success,
                         const ConversionQueueItemList& conversion_queue_items) {
+        // Assert
         ASSERT_TRUE(success);
 
         ConversionInfo conversion;
@@ -55,8 +56,6 @@ TEST_F(BraveAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
 
         EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
       }));
-
-  // Assert
 }
 
 TEST_F(BraveAdsDatabaseMigrationIssue17231Test,
@@ -70,6 +69,7 @@ TEST_F(BraveAdsDatabaseMigrationIssue17231Test,
   database_table.GetAll(base::BindOnce([](const bool success,
                                           const CreativeSetConversionList&
                                               creative_set_conversions) {
+    // Assert
     ASSERT_TRUE(success);
 
     const std::vector<std::string> creative_set_ids = {
@@ -519,8 +519,6 @@ TEST_F(BraveAdsDatabaseMigrationIssue17231Test,
     EXPECT_TRUE(ContainersEq(expected_creative_set_conversions,
                              creative_set_conversions));
   }));
-
-  // Assert
 }
 
 }  // namespace brave_ads

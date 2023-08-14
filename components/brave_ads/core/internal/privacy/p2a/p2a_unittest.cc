@@ -25,12 +25,11 @@ TEST_F(BraveAdsP2ATest, RecordEvent) {
   // Arrange
   const base::Value::List events = base::test::ParseJsonList(kEventsAsJson);
 
+  // Assert
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents(Eq(std::ref(events))));
 
   // Act
   RecordEvent({"event_1", "event_2"});
-
-  // Assert
 }
 
 }  // namespace brave_ads::privacy::p2a

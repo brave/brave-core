@@ -361,6 +361,7 @@ void UnitTestBase::MockSetTimePref(AdsClientMock& mock) {
             NotifyPrefDidChange(path);
           }));
 }
+
 void UnitTestBase::SetUpIntegrationTest() {
   CHECK(is_integration_test_)
       << "|SetUpIntegrationTest| should only be called if |SetUpForTesting| is "
@@ -373,11 +374,11 @@ void UnitTestBase::SetUpIntegrationTest() {
   ads_->SetFlags(BuildFlags());
 
   ads_->Initialize(GetWallet(),
-                   base::BindOnce(&UnitTestBase::InitializeCallback,
+                   base::BindOnce(&UnitTestBase::SetUpIntegrationTestCallback,
                                   weak_factory_.GetWeakPtr()));
 }
 
-void UnitTestBase::InitializeCallback(const bool success) {
+void UnitTestBase::SetUpIntegrationTestCallback(const bool success) {
   ASSERT_TRUE(success);
 
   NotifyDidInitializeAds();

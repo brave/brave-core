@@ -4,7 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
+
+#include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
@@ -12,7 +15,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::confirmations {
+namespace brave_ads {
 
 namespace {
 constexpr char kInvalidJsonFilename[] = "invalid.json";
@@ -29,13 +32,15 @@ TEST_F(BraveAdsLegacyConfirmationMigrationTest, Migrate) {
   // Arrange
   CopyFileFromTestPathToTempPath(kConfirmationStateFilename);
 
-  // Act
-  Migrate(base::BindOnce([](const bool success) {
-    ASSERT_TRUE(success);
+  // Assert
+  base::MockCallback<InitializeCallback> callback;
+  EXPECT_CALL(callback, Run).WillOnce([](const bool success) {
+    EXPECT_TRUE(success);
+    EXPECT_TRUE(HasMigratedConfirmation());
+  });
 
-    // Assert
-    EXPECT_TRUE(HasMigrated());
-  }));
+  // Act
+  MigrateConfirmationState(callback.Get());
 }
 
 TEST_F(BraveAdsLegacyConfirmationMigrationTest, InvalidState) {
@@ -43,11 +48,15 @@ TEST_F(BraveAdsLegacyConfirmationMigrationTest, InvalidState) {
   CopyFileFromTestPathToTempPath(kInvalidJsonFilename,
                                  kConfirmationStateFilename);
 
-  // Act
-  Migrate(base::BindOnce([](const bool success) {
-    // Assert
+  // Assert
+  base::MockCallback<InitializeCallback> callback;
+  EXPECT_CALL(callback, Run).WillOnce([](const bool success) {
     EXPECT_FALSE(success);
-  }));
+    EXPECT_FALSE(HasMigratedConfirmation());
+  });
+
+  // Act
+  MigrateConfirmationState(callback.Get());
 }
 
-}  // namespace brave_ads::confirmations
+}  // namespace brave_ads

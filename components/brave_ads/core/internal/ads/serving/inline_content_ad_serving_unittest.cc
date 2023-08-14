@@ -145,8 +145,6 @@ TEST_F(BraveAdsInlineContentAdServingTest,
             EXPECT_TRUE(serving_delegate->failed_to_serve_ad());
           },
           base::Unretained(&serving_delegate_)));
-
-  // Assert
 }
 
 TEST_F(BraveAdsInlineContentAdServingTest,
@@ -170,8 +168,6 @@ TEST_F(BraveAdsInlineContentAdServingTest,
             EXPECT_TRUE(serving_delegate->failed_to_serve_ad());
           },
           base::Unretained(&serving_delegate_)));
-
-  // Assert
 }
 
 }  // namespace brave_ads

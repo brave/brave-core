@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 
 #include "base/strings/string_util.h"
-#include "base/test/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
@@ -76,39 +76,39 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
+  // Assert
+  base::MockCallback<BuildConfirmationUserDataCallback> callback;
+  EXPECT_CALL(callback, Run).WillOnce([=](const UserDataInfo& user_data) {
+    const absl::optional<ConfirmationInfo> confirmation =
+        BuildRewardConfirmation(&token_generator_mock_, transaction, user_data);
+    ASSERT_TRUE(confirmation);
+
+    ConfirmationInfo expected_confirmation;
+
+    expected_confirmation.transaction_id = kTransactionId;
+    expected_confirmation.creative_instance_id = kCreativeInstanceId;
+    expected_confirmation.type = ConfirmationType::kViewed;
+    expected_confirmation.ad_type = AdType::kNotificationAd;
+    expected_confirmation.created_at = Now();
+    expected_confirmation.was_created = false;
+
+    expected_confirmation.reward = BuildRewardForTesting(*confirmation);
+
+    expected_confirmation.user_data.dynamic = base::test::ParseJsonDict(
+        R"({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2","systemTimestamp":"1996-07-08T09:00:00.000Z"})");
+
+    const std::string expected_fixed_data = base::ReplaceStringPlaceholders(
+        R"({"buildChannel":"release","catalog":[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"1996-07-08T09:00:00.000Z","platform":"windows","rotating_hash":"jBdiJH7Hu3wj31WWNLjKV5nVxFxWSDWkYh5zXCS3rXY=","segment":"untargeted","studies":[],"versionNumber":"$1"})",
+        {GetBrowserVersionNumber()}, nullptr);
+    expected_confirmation.user_data.fixed =
+        base::test::ParseJsonDict(expected_fixed_data);
+    ASSERT_TRUE(IsValid(expected_confirmation));
+
+    EXPECT_EQ(expected_confirmation, confirmation);
+  });
+
   // Act
-  BuildConfirmationUserData(
-      transaction,
-      base::BindLambdaForTesting([=](const UserDataInfo& user_data) {
-        const absl::optional<ConfirmationInfo> confirmation =
-            BuildRewardConfirmation(&token_generator_mock_, transaction,
-                                    user_data);
-        ASSERT_TRUE(confirmation);
-
-        // Assert
-        ConfirmationInfo expected_confirmation;
-
-        expected_confirmation.transaction_id = kTransactionId;
-        expected_confirmation.creative_instance_id = kCreativeInstanceId;
-        expected_confirmation.type = ConfirmationType::kViewed;
-        expected_confirmation.ad_type = AdType::kNotificationAd;
-        expected_confirmation.created_at = Now();
-        expected_confirmation.was_created = false;
-
-        expected_confirmation.reward = BuildRewardForTesting(*confirmation);
-
-        expected_confirmation.user_data.dynamic = base::test::ParseJsonDict(
-            R"({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2","systemTimestamp":"1996-07-08T09:00:00.000Z"})");
-
-        const std::string expected_fixed_data = base::ReplaceStringPlaceholders(
-            R"({"buildChannel":"release","catalog":[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"1996-07-08T09:00:00.000Z","platform":"windows","rotating_hash":"jBdiJH7Hu3wj31WWNLjKV5nVxFxWSDWkYh5zXCS3rXY=","segment":"untargeted","studies":[],"versionNumber":"$1"})",
-            {GetBrowserVersionNumber()}, nullptr);
-        expected_confirmation.user_data.fixed =
-            base::test::ParseJsonDict(expected_fixed_data);
-        ASSERT_TRUE(IsValid(expected_confirmation));
-
-        EXPECT_EQ(expected_confirmation, confirmation);
-      }));
+  BuildConfirmationUserData(transaction, callback.Get());
 }
 
 TEST_F(BraveAdsRewardConfirmationUtilTest,

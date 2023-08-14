@@ -65,6 +65,8 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, Serve) {
 
 TEST_F(BraveAdsNotificationAdIntegrationTest, DoNotServe) {
   // Arrange
+
+  // Assert
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd).Times(0);
 
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
@@ -73,8 +75,6 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, DoNotServe) {
 
   // Act
   ServeAd();
-
-  // Assert
 }
 
 TEST_F(BraveAdsNotificationAdIntegrationTest,

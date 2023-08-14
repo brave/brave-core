@@ -5,10 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/dynamic/confirmation_dynamic_user_data_builder.h"
 
-#include "base/functional/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/build_user_data_callback.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
@@ -33,14 +34,14 @@ TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest,
        BuildConfirmationUserDataForRewardsUser) {
   // Arrange
 
+  // Assert
+  const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
+      R"({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2","systemTimestamp":"2020-11-18T12:00:00.000Z"})");
+  base::MockCallback<BuildUserDataCallback> callback;
+  EXPECT_CALL(callback, Run(testing::Eq(std::ref(expected_user_data))));
+
   // Act
-  BuildDynamicUserData(base::BindOnce([](base::Value::Dict user_data) {
-    // Assert
-    EXPECT_EQ(
-        base::test::ParseJsonDict(
-            R"({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2","systemTimestamp":"2020-11-18T12:00:00.000Z"})"),
-        user_data);
-  }));
+  BuildDynamicUserData(callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest,
@@ -48,11 +49,12 @@ TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest,
   // Arrange
   DisableBraveRewardsForTesting();
 
+  // Assert
+  base::MockCallback<BuildUserDataCallback> callback;
+  EXPECT_CALL(callback, Run(testing::IsEmpty()));
+
   // Act
-  BuildDynamicUserData(base::BindOnce([](base::Value::Dict user_data) {
-    // Assert
-    EXPECT_TRUE(user_data.empty());
-  }));
+  BuildDynamicUserData(callback.Get());
 }
 
 }  // namespace brave_ads

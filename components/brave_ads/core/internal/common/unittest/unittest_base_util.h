@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_BASE_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_BASE_UTIL_H_
 
-#include <string>
-
 #include "base/files/scoped_temp_dir.h"
 #include "brave/components/brave_ads/core/database.h"
 #include "brave/components/brave_ads/core/internal/ads_client_mock.h"

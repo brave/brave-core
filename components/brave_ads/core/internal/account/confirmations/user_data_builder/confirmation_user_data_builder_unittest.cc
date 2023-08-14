@@ -7,8 +7,8 @@
 
 #include <string>
 
-#include "base/functional/bind.h"
 #include "base/json/json_writer.h"
+#include "base/test/mock_callback.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
@@ -45,21 +45,23 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
       /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ false);
 
-  // Act
-  BuildConfirmationUserData(
-      transaction, base::BindOnce([](const UserDataInfo& user_data) {
-        // Assert
-        EXPECT_EQ(
-            base::test::ParseJsonDict(
-                R"({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2","systemTimestamp":"2020-11-18T12:00:00.000Z"})"),
-            user_data.dynamic);
+  // Assert
+  base::MockCallback<BuildConfirmationUserDataCallback> callback;
+  EXPECT_CALL(callback, Run).WillOnce([](const UserDataInfo& user_data) {
+    EXPECT_EQ(
+        base::test::ParseJsonDict(
+            R"({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2","systemTimestamp":"2020-11-18T12:00:00.000Z"})"),
+        user_data.dynamic);
 
-        std::string json;
-        ASSERT_TRUE(base::JSONWriter::Write(user_data.fixed, &json));
-        const std::string pattern =
-            R"({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":".{44}","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})";
-        EXPECT_TRUE(RE2::FullMatch(json, pattern));
-      }));
+    std::string json;
+    ASSERT_TRUE(base::JSONWriter::Write(user_data.fixed, &json));
+    const std::string pattern =
+        R"({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":".{44}","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})";
+    EXPECT_TRUE(RE2::FullMatch(json, pattern));
+  });
+
+  // Act
+  BuildConfirmationUserData(transaction, callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -73,21 +75,23 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
       /*value*/ 0.0, ConfirmationType::kConversion, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ false);
 
-  // Act
-  BuildConfirmationUserData(
-      transaction, base::BindOnce([](const UserDataInfo& user_data) {
-        // Assert
-        EXPECT_EQ(
-            base::test::ParseJsonDict(
-                R"({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2","systemTimestamp":"2020-11-18T12:00:00.000Z"})"),
-            user_data.dynamic);
+  // Assert
+  base::MockCallback<BuildConfirmationUserDataCallback> callback;
+  EXPECT_CALL(callback, Run).WillOnce([](const UserDataInfo& user_data) {
+    EXPECT_EQ(
+        base::test::ParseJsonDict(
+            R"({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2","systemTimestamp":"2020-11-18T12:00:00.000Z"})"),
+        user_data.dynamic);
 
-        std::string json;
-        ASSERT_TRUE(base::JSONWriter::Write(user_data.fixed, &json));
-        const std::string pattern =
-            R"({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversion":\[{"action":"view"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":".{44}","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})";
-        EXPECT_TRUE(RE2::FullMatch(json, pattern));
-      }));
+    std::string json;
+    ASSERT_TRUE(base::JSONWriter::Write(user_data.fixed, &json));
+    const std::string pattern =
+        R"({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversion":\[{"action":"view"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":".{44}","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})";
+    EXPECT_TRUE(RE2::FullMatch(json, pattern));
+  });
+
+  // Act
+  BuildConfirmationUserData(transaction, callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -101,21 +105,23 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
       /*value*/ 0.0, ConfirmationType::kConversion, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ false);
 
-  // Act
-  BuildConfirmationUserData(
-      transaction, base::BindOnce([](const UserDataInfo& user_data) {
-        // Assert
-        EXPECT_EQ(
-            base::test::ParseJsonDict(
-                R"({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2","systemTimestamp":"2020-11-18T12:00:00.000Z"})"),
-            user_data.dynamic);
+  // Assert
+  base::MockCallback<BuildConfirmationUserDataCallback> callback;
+  EXPECT_CALL(callback, Run).WillOnce([](const UserDataInfo& user_data) {
+    EXPECT_EQ(
+        base::test::ParseJsonDict(
+            R"({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2","systemTimestamp":"2020-11-18T12:00:00.000Z"})"),
+        user_data.dynamic);
 
-        std::string json;
-        ASSERT_TRUE(base::JSONWriter::Write(user_data.fixed, &json));
-        const std::string pattern =
-            R"({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversion":\[{"action":"click"},{"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":".{44}","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})";
-        EXPECT_TRUE(RE2::FullMatch(json, pattern));
-      }));
+    std::string json;
+    ASSERT_TRUE(base::JSONWriter::Write(user_data.fixed, &json));
+    const std::string pattern =
+        R"({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversion":\[{"action":"click"},{"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":".{44}","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})";
+    EXPECT_TRUE(RE2::FullMatch(json, pattern));
+  });
+
+  // Act
+  BuildConfirmationUserData(transaction, callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -127,13 +133,12 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
       /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ false);
 
+  // Assert
+  base::MockCallback<BuildConfirmationUserDataCallback> callback;
+  EXPECT_CALL(callback, Run(UserDataInfo{}));
+
   // Act
-  BuildConfirmationUserData(transaction,
-                            base::BindOnce([](const UserDataInfo& user_data) {
-                              // Assert
-                              EXPECT_TRUE(user_data.dynamic.empty());
-                              EXPECT_TRUE(user_data.fixed.empty());
-                            }));
+  BuildConfirmationUserData(transaction, callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -149,16 +154,15 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
       /*value*/ 0.0, ConfirmationType::kConversion, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ false);
 
-  // Act
-  BuildConfirmationUserData(
-      transaction, base::BindOnce([](const UserDataInfo& user_data) {
-        // Assert
-        EXPECT_TRUE(user_data.dynamic.empty());
+  // Assert
+  UserDataInfo expected_user_data;
+  expected_user_data.fixed =
+      base::test::ParseJsonDict(R"({"conversion":[{"action":"view"}]})");
+  base::MockCallback<BuildConfirmationUserDataCallback> callback;
+  EXPECT_CALL(callback, Run(expected_user_data));
 
-        EXPECT_EQ(
-            base::test::ParseJsonDict(R"({"conversion":[{"action":"view"}]})"),
-            user_data.fixed);
-      }));
+  // Act
+  BuildConfirmationUserData(transaction, callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -174,18 +178,20 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
       /*value*/ 0.0, ConfirmationType::kConversion, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ false);
 
-  // Act
-  BuildConfirmationUserData(
-      transaction, base::BindOnce([](const UserDataInfo& user_data) {
-        // Assert
-        EXPECT_TRUE(user_data.dynamic.empty());
+  // Assert
+  base::MockCallback<BuildConfirmationUserDataCallback> callback;
+  EXPECT_CALL(callback, Run).WillOnce([](const UserDataInfo& user_data) {
+    EXPECT_TRUE(user_data.dynamic.empty());
 
-        std::string json;
-        ASSERT_TRUE(base::JSONWriter::Write(user_data.fixed, &json));
-        const std::string pattern =
-            R"({"conversion":\[{"action":"click"},{"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}}]})";
-        EXPECT_TRUE(RE2::FullMatch(json, pattern));
-      }));
+    std::string json;
+    ASSERT_TRUE(base::JSONWriter::Write(user_data.fixed, &json));
+    const std::string pattern =
+        R"({"conversion":\[{"action":"click"},{"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}}]})";
+    EXPECT_TRUE(RE2::FullMatch(json, pattern));
+  });
+
+  // Act
+  BuildConfirmationUserData(transaction, callback.Get());
 }
 
 }  // namespace brave_ads

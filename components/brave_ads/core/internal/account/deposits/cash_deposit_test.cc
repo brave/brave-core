@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/deposits/cash_deposit.h"
 
-#include "base/functional/bind.h"
+#include "base/test/mock_callback.h"
+#include "brave/components/brave_ads/core/internal/account/deposits/deposit_interface.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -32,31 +33,27 @@ class BraveAdsCashDepositIntegrationTest : public UnitTestBase {
 
 TEST_F(BraveAdsCashDepositIntegrationTest, GetValue) {
   // Arrange
-  CashDeposit deposit;
-
-  // Act
 
   // Assert
-  deposit.GetValue(kCreativeInstanceId,
-                   base::BindOnce([](const bool success, const double value) {
-                     EXPECT_TRUE(success);
-                     EXPECT_EQ(1.0, value);
-                   }));
+  base::MockCallback<GetDepositCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true, /*value*/ 1.0));
+
+  // Act
+  CashDeposit deposit;
+  deposit.GetValue(kCreativeInstanceId, callback.Get());
 }
 
 TEST_F(BraveAdsCashDepositIntegrationTest,
        DoNotGetValueForMissingCreativeInstanceId) {
   // Arrange
-  CashDeposit deposit;
-
-  // Act
 
   // Assert
-  deposit.GetValue(kMissingCreativeInstanceId,
-                   base::BindOnce([](const bool success, const double value) {
-                     EXPECT_FALSE(success);
-                     EXPECT_EQ(0.0, value);
-                   }));
+  base::MockCallback<GetDepositCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ false, /*value*/ 0.0));
+
+  // Act
+  CashDeposit deposit;
+  deposit.GetValue(kMissingCreativeInstanceId, callback.Get());
 }
 
 }  // namespace brave_ads

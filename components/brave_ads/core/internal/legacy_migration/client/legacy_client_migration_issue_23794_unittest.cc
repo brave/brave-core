@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::client {
+namespace brave_ads {
 
 namespace {
 constexpr char kClientIssue23794Filename[] = "client_issue_23794.json";
@@ -31,15 +31,12 @@ TEST_F(BraveAdsLegacyClientMigrationIssue23794Test, Migrate) {
                                  kClientStateFilename);
 
   // Act
-  Migrate(base::BindOnce([](const bool success) {
+  MigrateClientState(base::BindOnce([](const bool success) {
     ASSERT_TRUE(success);
 
     // Assert
-    EXPECT_TRUE(HasMigrated());
+    EXPECT_TRUE(HasMigratedClientState());
   }));
-
-  // Assert
-  EXPECT_TRUE(HasMigrated());
 }
 
-}  // namespace brave_ads::client
+}  // namespace brave_ads

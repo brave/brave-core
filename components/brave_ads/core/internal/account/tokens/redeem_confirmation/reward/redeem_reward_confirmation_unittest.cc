@@ -63,7 +63,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, Redeem) {
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
+  // Assert
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
@@ -73,10 +73,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, Redeem) {
   EXPECT_CALL(redeem_confirmation_delegate_mock_, OnFailedToRedeemConfirmation)
       .Times(0);
 
+  // Act
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
-
-  // Assert
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest, RetryRedeemingIfNoIssuers) {
@@ -92,7 +91,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, RetryRedeemingIfNoIssuers) {
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
+  // Assert
   EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
       .Times(0);
 
@@ -100,10 +99,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, RetryRedeemingIfNoIssuers) {
               OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry*/ true));
 
+  // Act
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
-
-  // Assert
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
@@ -127,7 +125,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
+  // Assert
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
@@ -137,10 +135,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   EXPECT_CALL(redeem_confirmation_delegate_mock_, OnFailedToRedeemConfirmation)
       .Times(0);
 
+  // Act
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
-
-  // Assert
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
@@ -168,7 +165,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
+  // Assert
   EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
       .Times(0);
 
@@ -176,10 +173,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
               OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry*/ true));
 
+  // Act
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
-
-  // Assert
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
@@ -208,7 +204,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
+  // Assert
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
@@ -219,10 +215,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
+  // Act
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
-
-  // Assert
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
@@ -251,7 +246,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
+  // Assert
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
@@ -262,10 +257,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ true));
 
+  // Act
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
-
-  // Assert
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
@@ -294,7 +288,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
+  // Assert
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
@@ -305,10 +299,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ true));
 
+  // Act
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
-
-  // Assert
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
@@ -336,7 +329,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
+  // Assert
   EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
       .Times(0);
 
@@ -344,10 +337,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
               OnFailedToRedeemConfirmation(_,
                                            /*should_retry*/ true));
 
+  // Act
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
-
-  // Assert
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
@@ -389,7 +381,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
+  // Assert
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
@@ -400,10 +392,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
+  // Act
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
-
-  // Assert
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
@@ -446,7 +437,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
+  // Assert
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
@@ -457,10 +448,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
+  // Act
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
-
-  // Assert
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
@@ -496,7 +486,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
+  // Assert
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
@@ -507,10 +497,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
+  // Act
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
-
-  // Assert
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
@@ -552,7 +541,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
+  // Assert
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
@@ -563,10 +552,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
+  // Act
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
-
-  // Assert
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
@@ -609,7 +597,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
+  // Assert
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
@@ -620,10 +608,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
+  // Act
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
-
-  // Assert
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
@@ -665,7 +652,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
+  // Assert
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
@@ -676,10 +663,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ true));
 
+  // Act
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
-
-  // Assert
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
@@ -721,7 +707,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
+  // Assert
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
@@ -732,10 +718,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
+  // Act
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
-
-  // Assert
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
@@ -778,7 +763,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
+  // Assert
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
@@ -789,10 +774,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
+  // Act
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
-
-  // Assert
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
@@ -832,7 +816,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
+  // Assert
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
@@ -843,10 +827,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
+  // Act
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
-
-  // Assert
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
@@ -886,7 +869,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
+  // Assert
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
@@ -897,10 +880,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
+  // Act
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
-
-  // Assert
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
@@ -943,7 +925,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
+  // Assert
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
@@ -954,10 +936,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
+  // Act
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
-
-  // Assert
 }
 
 }  // namespace brave_ads

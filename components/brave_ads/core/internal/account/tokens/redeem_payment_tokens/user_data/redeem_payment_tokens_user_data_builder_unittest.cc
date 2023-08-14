@@ -5,9 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/redeem_payment_tokens/user_data/redeem_payment_tokens_user_data_builder.h"
 
-#include "base/functional/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/build_user_data_callback.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/payment_tokens/payment_tokens_unittest_util.h"
 
@@ -20,17 +21,15 @@ class BraveAdsRedeemPaymentTokensUserDataBuilderTest : public UnitTestBase {};
 TEST_F(BraveAdsRedeemPaymentTokensUserDataBuilderTest, BuildUserData) {
   // Arrange
 
+  // Assert
+  const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
+      R"({"platform":"windows","totals":[{"ad_format":"ad_notification","view":2}]})");
+  base::MockCallback<BuildUserDataCallback> callback;
+  EXPECT_CALL(callback, Run(testing::Eq(std::ref(expected_user_data))));
+
   // Act
   BuildRedeemPaymentTokensUserData(
-      privacy::BuildPaymentTokensForTesting(/*count*/ 2),
-      base::BindOnce([](base::Value::Dict user_data) {
-        EXPECT_EQ(
-            base::test::ParseJsonDict(
-                R"({"platform":"windows","totals":[{"ad_format":"ad_notification","view":2}]})"),
-            user_data);
-      }));
-
-  // Assert
+      privacy::BuildPaymentTokensForTesting(/*count*/ 2), callback.Get());
 }
 
 }  // namespace brave_ads

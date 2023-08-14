@@ -141,8 +141,7 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
   void MockSetTimePref(AdsClientMock& mock);
 
   void SetUpIntegrationTest();
-  void InitializeCallback(bool success);
-
+  void SetUpIntegrationTestCallback(bool success);
   base::ScopedTempDir temp_dir_;
 
   bool is_integration_test_ = false;

@@ -72,6 +72,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
   // Act
 
   // Assert
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDaypartExclusionRuleTest,
