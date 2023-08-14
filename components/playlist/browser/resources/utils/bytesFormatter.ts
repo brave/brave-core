@@ -14,7 +14,7 @@ import { PlaylistItem } from 'gen/brave/components/playlist/common/mojom/playlis
 export function formatBytes (bytes: bigint) {
   // Here, we convert the bytes into number first so that we can
   // get digits in decimal places.
-  const mb = Number(bytes) / 1_000_000
+  const mb = Number(bytes) / (1 << 20)
 
   const toFixedDigit = (num: number) => {
     // We're trying to keep 3 digits
@@ -29,11 +29,11 @@ export function formatBytes (bytes: bigint) {
     return num.toFixed(2) // N.NN
   }
 
-  if (mb < 1000) {
+  if (mb < 1024) {
     return toFixedDigit(mb) + ' MB'
   }
 
-  return toFixedDigit(mb / 1000) + ' GB'
+  return toFixedDigit(mb / 1024) + ' GB'
 }
 
 export function getFormattedTotalBytes (item: PlaylistItem[]) {
