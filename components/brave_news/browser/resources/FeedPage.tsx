@@ -21,14 +21,15 @@ const FeedContainer = styled.div`
   gap: 12px;
 `
 
+const MAX_ITEMS = 250;
 export default function FeedPage(props: Props) {
   const { feed } = useInspectContext();
   return <div>
-    The Feed ({feed?.items.length} items. Truncated at 100)
+    The Feed ({feed?.items.length} items. Truncated at {MAX_ITEMS})
     <FeedContainer>
-      {feed?.items.slice(0, 100).map((item, index) => {
+      {feed?.items.slice(0, MAX_ITEMS).map((item, index) => {
         if (item.advert) {
-          return <Advert info={item.advert} key={item.advert.creativeInstanceId} />
+          return <Advert info={item.advert} key={index} />
         }
         if (item.article) {
           return <Article info={item.article} key={item.article.data.urlHash} />

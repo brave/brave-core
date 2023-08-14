@@ -17,6 +17,7 @@
 #include "base/containers/cxx20_erase_vector.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/rand_util.h"
 #include "base/ranges/algorithm.h"
@@ -37,8 +38,6 @@ namespace {
 constexpr int kBlockInlineMin = 1;
 constexpr int kBlockInlineMax = 5;
 // constexpr double kInlineDiscoveryRatio = 0.25;
-// constexpr int kSpecialCardEveryN = 2;
-// constexpr double kAdsToDiscoverRatio = 0.25;
 constexpr double kSourceSubscribedMin = 1e-6;
 constexpr double kSourceSubscribedMax = 1;
 constexpr double kSourceVisitsMin = 0.2;
@@ -119,6 +118,7 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
 std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
     std::vector<mojom::FeedItemMetadataPtr>& articles,
     const Signals& signals) {
+  DVLOG(1) << __FUNCTION__;
   std::vector<mojom::FeedItemV2Ptr> result;
   if (articles.empty()) {
     return result;
@@ -151,6 +151,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
     const Publishers& publishers,
     const std::string& channel,
     const std::string& locale) {
+  DVLOG(1) << __FUNCTION__;
   // First, create a set of all publishers in this channel.
   base::flat_set<std::string> allowed_publishers;
   for (const auto& [id, publisher] : publishers) {
@@ -210,6 +211,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
 
 std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
     std::vector<std::string>& suggested_publisher_ids) {
+  DVLOG(1) << __FUNCTION__;
   // Note: This step is not implemented properly yet. It should
   // 1. Display an advert, if we have one
   // 2. Fallback to a discover card.
@@ -218,8 +220,14 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
   std::vector<mojom::FeedItemV2Ptr> result;
 
   if (TossCoin()) {
+    LOG(ERROR) << "Generated advert";
+    auto metadata = mojom::FeedItemMetadata::New(
+        "ad", base::Time::Now(), "Advert", "Some handy info",
+        GURL("https://example.com"), "foo",
+        mojom::Image::NewImageUrl(GURL("https://example.com/favicon.ico")), "",
+        "", 0.0, "Now");
     result.push_back(mojom::FeedItemV2::NewAdvert(
-        mojom::PromotedArticle::New(mojom::FeedItemMetadata::New(), "test")));
+        mojom::PromotedArticle::New(std::move(metadata), "test")));
   } else {
     if (!suggested_publisher_ids.empty()) {
       uint64_t preferred_count = 3;
@@ -232,6 +240,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
       suggested_publisher_ids.erase(suggested_publisher_ids.begin(),
                                     suggested_publisher_ids.begin() + count);
 
+      LOG(ERROR) << "Generated discover card";
       result.push_back(mojom::FeedItemV2::NewDiscover(
           mojom::Discover::New(std::move(suggestions))));
     }
@@ -245,11 +254,13 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
 FeedV2Builder::FeedV2Builder(
     PublishersController& publishers_controller,
     ChannelsController& channels_controller,
+    SuggestionsController& suggestions_controller,
     PrefService& prefs,
     history::HistoryService& history_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : publishers_controller_(publishers_controller),
       channels_controller_(channels_controller),
+      suggestions_controller_(suggestions_controller),
       prefs_(prefs),
       fetcher_(publishers_controller, channels_controller, url_loader_factory),
       signal_calculator_(publishers_controller,
@@ -269,6 +280,7 @@ void FeedV2Builder::Build(BuildFeedCallback callback) {
 }
 
 void FeedV2Builder::FetchFeed(BuildFeedCallback callback) {
+  DVLOG(1) << __FUNCTION__;
   fetcher_.FetchFeed(
       base::BindOnce(&FeedV2Builder::OnFetchedFeed,
                      // Unretained is safe here because the FeedFetcher is owned
@@ -279,11 +291,15 @@ void FeedV2Builder::FetchFeed(BuildFeedCallback callback) {
 void FeedV2Builder::OnFetchedFeed(BuildFeedCallback callback,
                                   FeedItems items,
                                   ETags tags) {
+  DVLOG(1) << __FUNCTION__;
+
   raw_feed_items_ = std::move(items);
   CalculateSignals(std::move(callback));
 }
 
 void FeedV2Builder::CalculateSignals(BuildFeedCallback callback) {
+  DVLOG(1) << __FUNCTION__;
+
   signal_calculator_.GetSignals(
       raw_feed_items_,
       base::BindOnce(
@@ -295,11 +311,30 @@ void FeedV2Builder::CalculateSignals(BuildFeedCallback callback) {
 
 void FeedV2Builder::OnCalculatedSignals(BuildFeedCallback callback,
                                         Signals signals) {
+  DVLOG(1) << __FUNCTION__;
+
   signals_ = std::move(signals);
+  GetSuggestedPublisherIds(std::move(callback));
+}
+
+void FeedV2Builder::GetSuggestedPublisherIds(BuildFeedCallback callback) {
+  DVLOG(1) << __FUNCTION__;
+  suggestions_controller_->GetSuggestedPublisherIds(
+      base::BindOnce(&FeedV2Builder::OnGotSuggestedPublisherIds,
+                     // todo: WEAKPTR
+                     base::Unretained(this), std::move(callback)));
+}
+
+void FeedV2Builder::OnGotSuggestedPublisherIds(
+    BuildFeedCallback callback,
+    const std::vector<std::string>& suggested_ids) {
+  DVLOG(1) << __FUNCTION__;
+  suggested_publisher_ids_ = suggested_ids;
   BuildFeedFromArticles(std::move(callback));
 }
 
 void FeedV2Builder::BuildFeedFromArticles(BuildFeedCallback callback) {
+  DVLOG(1) << __FUNCTION__;
   const auto& publishers = publishers_controller_->GetLastPublishers();
   const auto& locale = publishers_controller_->GetLastLocale();
 
@@ -314,8 +349,8 @@ void FeedV2Builder::BuildFeedFromArticles(BuildFeedCallback callback) {
     }
   }
 
-  // TODO: Get these.
-  std::vector<std::string> suggested_publisher_ids;
+  // Make a copy of these - we're going to edit the copy to prevent duplicates.
+  std::vector<std::string> suggested_publisher_ids = suggested_publisher_ids_;
 
   auto feed = mojom::FeedV2::New();
 

@@ -17,6 +17,8 @@ export default function Cluster({ info }: Props) {
     <Card>
       Cluster: {info.type} {info.id}
     </Card>
-    {info.articles.map(a => a.article ? <Article info={a.article} /> : <HeroArticle info={a.hero!} />)}
+    {info.articles.map(a => a.article
+      ? <Article key={a.article.data.urlHash} info={a.article} />
+      : <HeroArticle key={a.hero!.data.urlHash} info={a.hero!} />)}
   </>
 }

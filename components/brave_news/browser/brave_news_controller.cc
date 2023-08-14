@@ -184,8 +184,8 @@ void BraveNewsController::GetFeedV2(GetFeedV2Callback callback) {
 
   if (!feed_v2_builder_) {
     feed_v2_builder_ = std::make_unique<FeedV2Builder>(
-        publishers_controller_, channels_controller_, *prefs_.get(),
-        *history_service_.get(), url_loader_factory_);
+        publishers_controller_, channels_controller_, suggestions_controller_,
+        *prefs_.get(), *history_service_.get(), url_loader_factory_);
   }
 
   feed_v2_builder_->Build(std::move(callback));
