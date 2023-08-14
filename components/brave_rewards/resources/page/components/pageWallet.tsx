@@ -209,11 +209,21 @@ class PageWallet extends React.Component<Props, State> {
     window.open(externalWallet.accountUrl, '_self', 'noreferrer')
   }
 
+  getAccountActivityLink = () => {
+    const { externalWallet } = this.props.rewardsData
+
+    if (!externalWallet) {
+      return undefined
+    }
+
+    return externalWallet.status === mojom.WalletStatus.kConnected
+         ? externalWallet.activityUrl : externalWallet.accountUrl
+  }
+
   getBalanceToken = (key: string) => {
     const {
       monthlyReport,
-      parameters,
-      externalWallet
+      parameters
     } = this.props.rewardsData
 
     let value = 0.0
@@ -224,7 +234,7 @@ class PageWallet extends React.Component<Props, State> {
     return {
       value: value.toFixed(3),
       converted: convertBalance(value, parameters.rate),
-      link: externalWallet && externalWallet.status === 2 /* VERIFIED */ && key === 'ads' ? externalWallet.activityUrl : undefined
+      link: key === 'ads' ? this.getAccountActivityLink() : undefined
     }
   }
 
