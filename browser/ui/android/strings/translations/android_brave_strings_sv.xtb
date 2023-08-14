@@ -1,7 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sv">
+<translation id="885805571521218129">Detta återspeglar ditt beräknade intäktsintervall för Brave Ads den här månaden.</translation>
 <translation id="3478449063771497234">Aviseringar har inaktiverats</translation>
+<translation id="370665806235115550">Läser in...</translation>
 <translation id="8220484609979012449">\n\nDu kan fortfarande skicka kryptobidrag till den här skaparen genom att använda din Web3-plånbok.</translation>
 <translation id="6385969012847057348">Den här kreatören kan inte ta emot bidrag från <ph name="CUSTODIAN"/>.</translation>
 <translation id="6268134562674951939">Du har inte tillräckligt med tokens</translation>
@@ -40,6 +42,8 @@
 <translation id="4748689412569009273">Hur betygsätter du din upplevelse av Brave med en emoji?</translation>
 <translation id="7335142069363686805">Betygsätt nu</translation>
 <translation id="6681362094306959654">Gillar du Brave?</translation>
+<translation id="8041093619605951337">Glad</translation>
+<translation id="6826743502395386800">Ledsen</translation>
 <translation id="5488843227043643519">Vill du ge ett betyg i Play Butik?</translation>
 <translation id="5867854497245948308">Tack för din feedback!</translation>
 <translation id="4935400164159327304">Berätta hur vi kan förbättra Brave.</translation>
@@ -73,7 +77,7 @@
 <translation id="1118970888826017401">Aktivera stöd för att kringgå spårningsadresser för omdirigering på toppnivå.</translation>
 <translation id="94154759592465111">Blockera script</translation>
 <translation id="7714773920987474116">Blockerar JavaScript (kan få webbplatser att krascha)</translation>
-<translation id="1660979054779793659">YouTube</translation>
+<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Blockera rekommenderat innehåll på YouTube</translation>
 <translation id="1005372663692637999">Blockerar nästa och slutkortselementen på youtube.com.</translation>
 <translation id="5152595963250646670">Blockera distraherande element på YouTube</translation>
@@ -136,11 +140,6 @@
 <translation id="1276592121036104130">Ladda nytt innehåll</translation>
 <translation id="3189348785087463371">Marknadsförd</translation>
 <translation id="7554145152551782675">Fler Brave-erbjudanden</translation>
-<translation id="1717242776111689224">Aktivera Brave News</translation>
-<translation id="4732255422524275223">Dina källor</translation>
-<translation id="152579389256498990">Feed eller webbplats-URL</translation>
-<translation id="4975944254857623648">Standardkällor</translation>
-<translation id="253886574765651454">Lägg till källa</translation>
 <translation id="254100925533869330">Inget innehåll</translation>
 <translation id="7172792761509429092">Brave News har inget innehåll att visa.</translation>
 <translation id="1771307734839364850">Välj innehållskällor</translation>
@@ -152,6 +151,8 @@
 <translation id="6686219838158572786">Kräv att alla anslutningar använder HTTPS (strikt)</translation>
 <translation id="4221284400051835823">Uppgradera till HTTPS när det är möjligt (standard)</translation>
 <translation id="4690906712010847708">Uppgradera inte anslutningar till HTTPS (inaktiverad)</translation>
+<translation id="693506469193748756">Glöm mig när jag stänger den här webbplatsen</translation>
+<translation id="6975864539539353406">Rensa cookies och andra webbplatsdata när du stänger en webbplats</translation>
 <translation id="1680858055899097121">Behåll inte flikarna mellan surfsessioner</translation>
 <translation id="7142548388914389999">Tillåt integritetsbevarande produktanalys (P3A)</translation>
 <translation id="5254037869598726291">Anonymiserad P3A-info hjälper Brave att uppskatta den totala användningen och se till att vi förbättrar populära funktioner.</translation>
@@ -180,6 +181,7 @@
 <translation id="8308305244351876417">Tillåter att ljud spelas upp när du växlar till en annan flik i Brave, en annan app eller enhetens skärm är avstängd.</translation>
 <translation id="4150201353443180367">Skärm</translation>
 <translation id="2433507940547922241">Utseende</translation>
+<translation id="9040069796107003510">Brave Rewards-ikon</translation>
 <translation id="6333347122924254968">Visa ikonen Brave-belöningar i adressfältet</translation>
 <translation id="8495235435594442882">Aktivera nedre verktygsfältet</translation>
 <translation id="6587448235155023666">Dina ändringar träder i kraft nästa gång du startar om Brave</translation>
@@ -252,13 +254,13 @@
 <translation id="4254029385847607686">DECEMBER</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
-<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Inställningar</translation>
 <translation id="6020176662032623904">Verifierad skapare</translation>
 <translation id="2369994359029526515">Overifierad skapare</translation>
 <translation id="6112368337882254910">Bidra automatiskt</translation>
 <translation id="7861645265922445992">Hämta Rewards</translation>
-<translation id="8494748383523030337">Ditt saldo</translation>
+<translation id="1848737374354350807">Saldo</translation>
 <translation id="4781696154289395607">Du har bidragit med <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="2429828319207652823">Det gick inte att behandla ditt bidrag.</translation>
 <translation id="2221902203895354376">En tokentilldelning är tillgänglig!</translation>
@@ -322,8 +324,8 @@ Denna borttagning är permanent och det finns inget sätt att återställa data.
 <translation id="8185825081026121627">Tjäna BAT (Basic Attention Token), för att se annonser från Brave Rewards som respekterar din integritet.</translation>
 <translation id="5321518976657560663">Återställningsfel</translation>
 <translation id="4114170343590425996">Det gick inte att återställa Brave Rewards. Starta om Brave och försök igen.</translation>
-<translation id="6393502589311632553">Visa annonser när Brave inte används</translation>
-<translation id="3349204812119681938">Återställ Brave Rewards</translation>
+<translation id="6417420737057016607">Brave annonser</translation>
+<translation id="5611966874859284786">Visa annonser när Brave inte används</translation>
 <translation id="6606319453795180219">Detta kommer att radera dina Brave Rewards och återställa alla dina Brave Rewards-data</translation>
 <translation id="8293206222192510085">Lägg till bokmärke</translation>
 <translation id="340492034650766959">Ta bort bokmärke</translation>
@@ -456,6 +458,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="8903462729414407077">Få uppdateringar varje vecka</translation>
 <translation id="7450323860390658083">Bli informerad om vilka webbplatser du besöker som inkräktar mest på integriteten.\n\nEndast du kan se denna integritetsstatistik. Ingen personlig information eller surfhistorik lämnar någonsin Brave-webbläsaren på din enhet.</translation>
 <translation id="6170159749517116894">Aktivera integritetsrapporter</translation>
+<translation id="1669047024429367828">Synlighet</translation>
 <translation id="5966707198760109579">Vecka</translation>
 <translation id="8987927404178983737">Månad</translation>
 <translation id="4302754476737420523">3 månader</translation>
@@ -509,6 +512,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="8235783939971604011">Dricks är ett sätt att personligen uppmuntra och stödja innehåll eller skapare som du gillar. Börja dricksa!</translation>
 <translation id="4215679190414901888">Till sist, låt oss konfigurera dina inställningar</translation>
 <translation id="3494356595346329740">Du kan ändra detta senare.</translation>
+<translation id="3286390186030710347">Reglage</translation>
 <translation id="3115702351969988294">Hur ofta vill du se annonser?</translation>
 <translation id="2353222426385080466">Fler privata annonser, fler belöningar.</translation>
 <translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> annonser per timme</translation>
@@ -533,6 +537,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="5187052478998910855">Behöver du en repetition om Belöningar?</translation>
 <translation id="8622329973403382303">Ta en snabb rundtur för att friska upp minnet av hur det fungerar för att gå till historien som en Belöningarnas rockstjärna!</translation>
 <translation id="3479552764303398839">Inte nu</translation>
+<translation id="7138272885617540195">Tillåt applänkar att öppnas i appar utanför Brave</translation>
 <translation id="8792121506918889955">WebRTC IP-hanteringspolicy</translation>
 <translation id="8798099450830957504">Standard</translation>
 <translation id="1822560017823072927">Offentliga och privata standardgränssnitt</translation>
@@ -557,7 +562,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="8289942708804097960">Köp krypto med Apple Pay eller betalkort.</translation>
 <translation id="841880029259839903">Skicka krypto eller för över från ett konto till ett annat.</translation>
 <translation id="8226778393040773102">Byt tokens och resurser</translation>
-<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/> kommer att bearbeta Ethereum-adressen och IP-adressen för att uppfylla en transaktion (inklusive att få offerter).<ph name="DEX_PROVIDER"/> kommer ENDAST att använda dessa uppgifter för behandling av transaktioner.</translation>
 <translation id="1783600039044302171">Skydda din krypto med ett lösenord</translation>
 <translation id="3726490322412361740">Ange lösenord</translation>
 <translation id="3038243139480464605">Bekräfta lösenord</translation>
@@ -598,7 +602,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="1144810021918451336">Skyddar dig inte mot farliga webbplatser, nedladdningar eller tillägg.</translation>
 <translation id="5760476995887363522">Meningarna matchade inte. Försök igen.</translation>
 <translation id="2360588547830602174">Kontoåterställningen misslyckades. Försök igen.</translation>
-<translation id="6392640873800632439">Marknadspris i <ph name="ASSET"/></translation>
 <translation id="6748108480210050150">Från</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -608,7 +611,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="2589431635772931954">Adress eller URL</translation>
 <translation id="5517732667776806421">Information om kontrollsumma saknas</translation>
 <translation id="4006711930669471508">Ogiltig information om kontrollsumma</translation>
-<translation id="632241521608275119">Tolererade transaktionskostnader</translation>
 <translation id="1987317783729300807">Konton</translation>
 <translation id="3535654229833214438">Transaktioner</translation>
 <translation id="2449682593754783720">1 timme</translation>
@@ -750,6 +752,11 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="5317780077021120954">Spara</translation>
 <translation id="4979796155378508955">Transaktionen får inte spridas i nätverket om det anpassade nonce-värdet inte är sekventiellt eller har andra fel.</translation>
 <translation id="6122742277607781713">Portfolio</translation>
+<translation id="3567988240819868195">Marknad</translation>
+<translation id="4576965889365503638">INFORMATION</translation>
+<translation id="152455748535966757">Rang</translation>
+<translation id="4958716607782044952">24h volym</translation>
+<translation id="128834189395075789">Börsvärde</translation>
 <translation id="750843150060816463">Bränslepris (Gwei)</translation>
 <translation id="1426320910664514906">Gasgräns</translation>
 <translation id="6389441740143786465">Inaktivera Sharing Hub</translation>
@@ -761,10 +768,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="1367951781824006909">Välj fil</translation>
 <translation id="8648684608605749476">Blockera cookies från tredje part med inkognitoläget</translation>
 <translation id="1118876217803190221">Otillräcklig balans</translation>
-<translation id="275990379543116961">Otillräckliga medel för gas</translation>
-<translation id="3292453499915466604">Otillräcklig likviditet</translation>
 <translation id="3025158262797849291">Okänt nummerformat</translation>
-<translation id="3380365263193509176">Okänt fel</translation>
 <translation id="5932938770824268122">Privat nyckel</translation>
 <translation id="2472882733835903303">Visa privat nyckel</translation>
 <translation id="4391056902675005799">Dölj privat nyckel</translation>
@@ -834,7 +838,6 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="6727102863431372879">Ange</translation>
 <translation id="3074127054582480056">Viktigt</translation>
 <translation id="2280319752798785157">Månatligt bidrag</translation>
-<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Visa textförslag i adressfältet</translation>
 <translation id="8982438328166986164">Visa förslag på webbplatser baserat på dina bokmärken och webbhistorik.</translation>
@@ -1051,11 +1054,12 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="5382684862562314222">BAT stöds ännu inte i din region på Uphold.</translation>
 <translation id="6996157559236886133">Fel: Begränsad funktionalitet för Uphold-konto</translation>
 <translation id="1677961202754619328">Enligt Uphold finns det för närvarande vissa begränsningar i ditt Uphold-konto. Logga in på ditt Uphold-konto och kontrollera om det finns några meddelanden eller kvarstående kontokrav som behöver slutföras och försök sedan igen.</translation>
-<translation id="6417420737057016607">Brave annonser</translation>
 <translation id="5425006356459378415">Brave Rewards är inte tillgängligt</translation>
 <translation id="833643743158564518">Nya registrerade Brave Rewards-medlemmar är för närvarande inaktiverade i din region. Du kan alltid försöka igen senare. <ph name="LEARN_MORE"/></translation>
 <translation id="8528916244724490964">Alla nätverk</translation>
+<translation id="7748944510530490017">Primära nätverk</translation>
 <translation id="2781668117338732220">Sekundära nätverk</translation>
+<translation id="282560918037172384">Testnätverk</translation>
 <translation id="6309721369749814582">Domän <ph name="DOMAIN"/> är inte registrerad</translation>
 <translation id="4071347720273751665">Det verkar som att du har angett en ENS-adress. Vi måste använda namnuppslag från tredje part för namnuppslag av denna begäran, vilket kan innebära att de kan se din IP-adress och domän. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">Använd ENS-domän utanför kedja</translation>
@@ -1149,4 +1153,9 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="6344103698928069918">För en spellista återupptar du uppspelningen från den senaste pausen.</translation>
 <translation id="8141583471142904652">Kontinuerligt lyssnande</translation>
 <translation id="851432578283946230">Spelar automatiskt upp nästa post i spellistan</translation>
+<translation id="7853202427316060426">Aktivitet</translation>
+<translation id="4932733599132424254">Datum</translation>
+<translation id="346505172740911461">Marknadspris</translation>
+<translation id="4709355193533327244">Inga transaktioner att visa ännu</translation>
+<translation id="4931644613135313937">Efter en transaktion kan du se den här.</translation>
 </translationbundle>
