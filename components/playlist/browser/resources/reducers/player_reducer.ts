@@ -48,7 +48,10 @@ const playerReducer: Reducer<PlayerState | undefined> = (
       if (state.currentList && state.currentItem) {
         const items = state.currentList.items
         const currentIndex = items.indexOf(state.currentItem)
-        console.assert(currentIndex !== -1)
+        if (currentIndex === -1) {
+          throw new Error("Couldn't find the index of the current item ")
+        }
+
         if (currentIndex !== items.length - 1) {
           const currentItem = items[currentIndex + 1]
           state = { ...state, currentItem }
@@ -60,7 +63,10 @@ const playerReducer: Reducer<PlayerState | undefined> = (
       if (state.currentList && state.currentItem) {
         const items = state.currentList.items
         const currentIndex = items.indexOf(state.currentItem)
-        console.assert(currentIndex !== -1)
+        if (currentIndex === -1) {
+          throw new Error("Couldn't find the index of the current item ")
+        }
+
         if (currentIndex !== 0) {
           const currentItem = items[currentIndex - 1]
           state = { ...state, currentItem }
