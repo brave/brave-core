@@ -30,7 +30,7 @@ BraveFederatedService::BraveFederatedService(
     : prefs_(prefs),
       local_state_(local_state),
       browser_context_path_(browser_context_path),
-      url_loader_factory_(url_loader_factory) {
+      url_loader_factory_(std::move(url_loader_factory)) {
   Init();
 }
 
@@ -77,20 +77,12 @@ void BraveFederatedService::OnPreferenceChanged(const std::string& pref_name) {
   }
 }
 
-bool BraveFederatedService::IsFederatedLearningEnabled() {
-  return brave_federated::features::IsFederatedLearningEnabled();
-}
-
-bool BraveFederatedService::IsOperationalPatternsEnabled() {
-  return brave_federated::features::IsOperationalPatternsEnabled();
-}
-
 bool BraveFederatedService::IsP3AEnabled() {
   return local_state_->GetBoolean(p3a::kP3AEnabled);
 }
 
 bool BraveFederatedService::ShouldStartOperationalPatterns() {
-  return IsP3AEnabled() && IsOperationalPatternsEnabled();
+  return IsP3AEnabled() && kOperationalPatternsEnabled.Get();
 }
 
 void BraveFederatedService::MaybeStartOrStopOperationalPatterns() {

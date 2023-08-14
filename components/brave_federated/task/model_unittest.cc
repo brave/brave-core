@@ -13,8 +13,6 @@
 
 // npm run test -- brave_unit_tests --filter=BraveFederatedLearning*
 
-using testing::ElementsAreArray;
-
 namespace brave_federated {
 
 api::config::ModelSpec kModelSpec = [] {
@@ -81,7 +79,7 @@ TEST(BraveFederatedLearningModelTest, Train) {
 
   // Act
   auto train_result = model.Train(test_data);
-  PerformanceReport train_report = train_result.value();
+  PerformanceReportInfo train_report = train_result.value();
 
   // Assert
   EXPECT_EQ(train_report.dataset_size, test_data.size());
@@ -126,7 +124,7 @@ TEST(BraveFederatedLearningModelTest, Evaluate) {
 
   // Act
   auto result = model.Evaluate(test_data);
-  PerformanceReport evaluate_report = result.value();
+  PerformanceReportInfo evaluate_report = result.value();
 
   // Assert
   EXPECT_EQ(evaluate_report.dataset_size, test_data.size());

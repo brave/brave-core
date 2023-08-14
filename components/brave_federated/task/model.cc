@@ -11,13 +11,26 @@
 
 #include "base/check_op.h"
 #include "base/rand_util.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_federated/task/model_util.h"
 
 namespace brave_federated {
 
-PerformanceReport::PerformanceReport(
+namespace {
+
+base::ThreadTicks GetThreadTicksIfSupported() {
+  if (base::ThreadTicks::IsSupported()) {
+    return base::ThreadTicks::Now();
+  }
+
+  return {};
+}
+
+}  // namespace
+
+PerformanceReportInfo::PerformanceReportInfo(
     size_t dataset_size,
     float loss,
     float accuracy,
@@ -29,8 +42,9 @@ PerformanceReport::PerformanceReport(
       parameters(parameters),
       metrics(metrics) {}
 
-PerformanceReport::PerformanceReport(const PerformanceReport& other) = default;
-PerformanceReport::~PerformanceReport() = default;
+PerformanceReportInfo::PerformanceReportInfo(
+    const PerformanceReportInfo& other) = default;
+PerformanceReportInfo::~PerformanceReportInfo() = default;
 
 Model::Model(const api::config::ModelSpec& model_spec)
     : num_iterations_(model_spec.num_iterations),
@@ -55,7 +69,7 @@ Weights Model::GetWeights() const {
   return weights_;
 }
 
-void Model::SetWeights(const Weights& new_weights) {
+void Model::SetWeights(Weights new_weights) {
   weights_ = std::move(new_weights);
 }
 
@@ -73,14 +87,6 @@ size_t Model::GetModelSize() const {
 
 size_t Model::GetBatchSize() const {
   return batch_size_;
-}
-
-base::ThreadTicks Model::GetThreadTicksIfSupported() const {
-  if (base::ThreadTicks::IsSupported()) {
-    return base::ThreadTicks::Now();
-  }
-
-  return base::ThreadTicks();
 }
 
 base::expected<std::vector<float>, std::string> Model::Predict(
@@ -107,7 +113,7 @@ base::expected<std::vector<float>, std::string> Model::Predict(
   return prediction;
 }
 
-base::expected<PerformanceReport, std::string> Model::Train(
+base::expected<PerformanceReportInfo, std::string> Model::Train(
     const DataSet& train_dataset) {
   if (train_dataset.empty()) {
     return base::unexpected("FL: Training data empty");
@@ -133,8 +139,7 @@ base::expected<PerformanceReport, std::string> Model::Train(
   std::vector<float> err(batch_size_, 0);
   float training_loss = 0.0;
 
-  data_prep_duration +=
-      base::TimeDelta(GetThreadTicksIfSupported() - data_start_thread_ticks);
+  data_prep_duration += GetThreadTicksIfSupported() - data_start_thread_ticks;
 
   for (int iteration = 0; iteration < num_iterations_; iteration++) {
     data_start_thread_ticks = GetThreadTicksIfSupported();
@@ -157,22 +162,23 @@ base::expected<PerformanceReport, std::string> Model::Train(
     auto pred = Predict(x);
     if (!pred.has_value()) {
       std::string error_message = "FL: Train predict failed in iteration " +
-                                  std::to_string(iteration) + " of " +
-                                  std::to_string(num_iterations_);
+                                  base::NumberToString(iteration) + " of " +
+                                  base::NumberToString(num_iterations_);
       return base::unexpected(error_message);
     }
 
-    err = LinearAlgebraUtil::SubtractVector(y, pred.value());
+    err = linear_algebra_util::SubtractVector(y, pred.value());
 
-    d_w = LinearAlgebraUtil::MultiplyMatrixVector(
-        LinearAlgebraUtil::TransposeMatrix(x), err);
-    d_w = LinearAlgebraUtil::MultiplyVectorScalar(d_w, (-2.0 / batch_size_));
+    auto transpose_matrix = linear_algebra_util::TransposeMatrix(x);
+    d_w = linear_algebra_util::MultiplyMatrixVector(transpose_matrix, err);
+    d_w = linear_algebra_util::MultiplyVectorScalar(d_w, (-2.0 / batch_size_));
 
     const float d_b =
         (-2.0 / batch_size_) * std::accumulate(err.begin(), err.end(), 0.0);
 
-    weights_ = LinearAlgebraUtil::SubtractVector(
-        p_w, LinearAlgebraUtil::MultiplyVectorScalar(d_w, learning_rate_));
+    auto update =
+        linear_algebra_util::MultiplyVectorScalar(d_w, learning_rate_);
+    weights_ = linear_algebra_util::SubtractVector(p_w, update);
     bias_ = p_b - learning_rate_ * d_b;
 
     if (iteration % 250 == 0) {
@@ -180,17 +186,17 @@ base::expected<PerformanceReport, std::string> Model::Train(
       if (!loss_pred.has_value()) {
         std::string error_message =
             "FL: Train loss predict failed in iteration " +
-            std::to_string(iteration) + " of " +
-            std::to_string(num_iterations_);
+            base::NumberToString(iteration) + " of " +
+            base::NumberToString(num_iterations_);
         return base::unexpected(error_message);
       }
       training_loss = ComputeNegativeLogLikelihood(y, loss_pred.value());
     }
 
     data_prep_duration +=
-        base::TimeDelta(execution_start_thread_ticks - data_start_thread_ticks);
-    training_duration += base::TimeDelta(GetThreadTicksIfSupported() -
-                                         execution_start_thread_ticks);
+        execution_start_thread_ticks - data_start_thread_ticks;
+    training_duration +=
+        GetThreadTicksIfSupported() - execution_start_thread_ticks;
   }
 
   float accuracy = training_loss;
@@ -200,15 +206,15 @@ base::expected<PerformanceReport, std::string> Model::Train(
       {"training_duration_in_seconds", training_duration.InSecondsF()}};
 
   std::vector<Weights> reported_model = {weights_, {bias_}};
-  return PerformanceReport(train_dataset.size(),  // dataset_size
-                           training_loss,         // loss
-                           accuracy,              // accuracy
-                           reported_model,        // parameters
-                           metrics                // metrics
+  return PerformanceReportInfo(train_dataset.size(),  // dataset_size
+                               training_loss,         // loss
+                               accuracy,              // accuracy
+                               reported_model,        // parameters
+                               metrics                // metrics
   );
 }
 
-base::expected<PerformanceReport, std::string> Model::Evaluate(
+base::expected<PerformanceReportInfo, std::string> Model::Evaluate(
     const DataSet& test_dataset) {
   if (test_dataset.empty()) {
     return base::unexpected("FL: Test data empty");
@@ -256,19 +262,18 @@ base::expected<PerformanceReport, std::string> Model::Evaluate(
   float test_loss =
       ComputeNegativeLogLikelihood(ground_truth, loss_predicted.value());
 
-  auto data_prep_duration = base::TimeDelta(exec_start_ts - data_start_ts);
-  auto evaluation_duration =
-      base::TimeDelta(GetThreadTicksIfSupported() - exec_start_ts);
+  auto data_prep_duration = exec_start_ts - data_start_ts;
+  auto evaluation_duration = GetThreadTicksIfSupported() - exec_start_ts;
 
   std::map<std::string, double> metrics = {
       {"data_prep_duration_in_seconds", data_prep_duration.InSecondsF()},
       {"evaluation_duration_in_seconds", evaluation_duration.InSecondsF()}};
 
-  return PerformanceReport(test_dataset.size(),  // dataset_size
-                           test_loss,            // loss
-                           accuracy,             // accuracy
-                           {},                   // parameters
-                           metrics               // metrics
+  return PerformanceReportInfo(test_dataset.size(),  // dataset_size
+                               test_loss,            // loss
+                               accuracy,             // accuracy
+                               {},                   // parameters
+                               metrics               // metrics
   );
 }
 

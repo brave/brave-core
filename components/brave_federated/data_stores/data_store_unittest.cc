@@ -9,13 +9,10 @@
 
 #include "base/check.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/path_service.h"
+#include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/brave_federated/data_stores/data_store.h"
-#include "content/public/test/browser_task_environment.h"
 #include "sql/statement.h"
-#include "sql/test/scoped_error_expecter.h"
-#include "sql/test/test_helpers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=DataStoreTest*
@@ -55,7 +52,7 @@ class DataStoreTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
-  raw_ptr<DataStore> data_store_;
+  std::unique_ptr<DataStore> data_store_;
 };
 
 void DataStoreTest::SetUp() {
@@ -65,7 +62,8 @@ void DataStoreTest::SetUp() {
   DataStoreTask data_store_task({0, "test_federated_task",
                                  /* max_number_of_records */ 50,
                                  base::Days(30)});
-  data_store_ = new DataStore(std::move(data_store_task), db_path);
+  data_store_ =
+      std::make_unique<DataStore>(std::move(data_store_task), db_path);
   ASSERT_TRUE(data_store_->InitializeDatabase());
 }
 

@@ -44,7 +44,7 @@ BraveFederatedServiceFactory::~BraveFederatedServiceFactory() = default;
 
 KeyedService* BraveFederatedServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  if (!base::FeatureList::IsEnabled(features::kFederatedLearning)) {
+  if (!base::FeatureList::IsEnabled(kFederatedLearning)) {
     return nullptr;
   }
 

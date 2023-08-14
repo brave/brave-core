@@ -18,23 +18,22 @@ using Vector = std::vector<float>;
 using DataSet = std::vector<Sample>;
 using Matrix = std::vector<Vector>;
 
-class LinearAlgebraUtil {
- public:
-  static Vector AddVectorScalar(Vector v, float a);
-  static Vector AddVectors(Vector v1, Vector v2);
-  static Vector SubtractVector(Vector v1, Vector v2);
+namespace linear_algebra_util {
 
-  static Vector MultiplyVectorScalar(Vector v, float a);
-  static Vector MultiplyMatrixVector(Matrix mat, Vector v);
+Vector AddVectorScalar(Vector vector, float scalar);
+Vector AddVectors(Vector vector_1, Vector& vector_2);
+Vector SubtractVector(Vector vector_1, Vector& vector_2);
 
-  static Matrix TransposeMatrix(Matrix mat);
+Vector MultiplyVectorScalar(Vector vector, float scalar);
+Vector MultiplyMatrixVector(Matrix matrix, Vector& vector);
 
- private:
-  static Vector MatrixXfToVector(const Eigen::MatrixXf& v);
-  static Matrix MatrixXfToMatrix(const Eigen::MatrixXf& mat);
-  static Eigen::MatrixXf MatrixToMatrixXf(Matrix mat);
-};
+Matrix TransposeMatrix(Matrix& matrix);
 
+Vector MatrixXfToVector(const Eigen::MatrixXf& vector);
+Matrix MatrixXfToMatrix(const Eigen::MatrixXf& matrix);
+Eigen::MatrixXf MatrixToMatrixXf(Matrix& matrix);
+
+}  // namespace linear_algebra_util
 }  // namespace brave_federated
 
 #endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_UTIL_LINEAR_ALGEBRA_UTIL_H_

@@ -4,9 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_federated/eligibility_service.h"
-#include "brave/components/brave_federated/eligibility_service_observer.h"
 
 #include "base/logging.h"
+#include "base/power_monitor/power_monitor.h"
+#include "brave/components/brave_federated/eligibility_service_observer.h"
 
 namespace brave_federated {
 
@@ -24,13 +25,13 @@ EligibilityService::~EligibilityService() {
   net::NetworkChangeNotifier::RemoveNetworkChangeObserver(this);
 }
 
-void EligibilityService::AddObserver(EligibilityObserver* observer) {
+void EligibilityService::AddObserver(EligibilityServiceObserver* observer) {
   CHECK(observer);
 
   observers_.AddObserver(observer);
 }
 
-void EligibilityService::RemoveObserver(EligibilityObserver* observer) {
+void EligibilityService::RemoveObserver(EligibilityServiceObserver* observer) {
   CHECK(observer);
 
   observers_.RemoveObserver(observer);

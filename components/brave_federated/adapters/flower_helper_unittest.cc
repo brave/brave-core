@@ -6,6 +6,8 @@
 #include "brave/components/brave_federated/adapters/flower_helper.h"
 
 #include <map>
+#include <sstream>
+#include <string>
 #include <vector>
 
 #include "brave/components/brave_federated/task/typing.h"
@@ -23,11 +25,12 @@ TEST(BraveFederatedLearningFlowerHelperTest, BuildAnonymousGetTasksPayload) {
   // Arrange
 
   // Act
-  const std::string payload = BuildGetTasksPayload();
+  absl::optional<std::string> payload = BuildGetTasksPayload();
+  ASSERT_TRUE(payload.has_value());
 
   // Assert
   flower::PullTaskInsRequest request;
-  request.ParseFromString(payload);
+  request.ParseFromString(payload.value());
 
   flower::Node node = request.node();
   EXPECT_EQ(node.node_id(), 0U);
@@ -75,7 +78,7 @@ TEST(BraveFederatedLearningFlowerHelperTest, ParseFitTaskListFromResponseBody) {
   TaskType task_type = task.GetType();
   EXPECT_EQ(task_type, TaskType::kTraining);
 
-  std::vector<Weights> task_parameters = task.GetParameters();
+  const std::vector<Weights>& task_parameters = task.GetParameters();
   EXPECT_EQ(task_parameters.size(), 2U);
   EXPECT_EQ(task_parameters, test_parameters);
 
@@ -128,7 +131,7 @@ TEST(BraveFederatedLearningFlowerHelperTest,
   TaskType task_type = task.GetType();
   EXPECT_EQ(task_type, TaskType::kEvaluation);
 
-  std::vector<Weights> task_parameters = task.GetParameters();
+  const std::vector<Weights>& task_parameters = task.GetParameters();
   EXPECT_EQ(task_parameters.size(), 2U);
   EXPECT_EQ(task_parameters, test_parameters);
 
@@ -212,16 +215,18 @@ TEST(BraveFederatedLearningFlowerHelperTest, BuildPostTrainTaskResultsPayload) {
   const std::vector<Weights> test_parameters = {{1, 2, 3}, {4, 5, 6}};
   std::map<std::string, double> metrics = {{"alpha", 0.42}, {"beta", 42.0}};
 
-  PerformanceReport performance_report =
-      PerformanceReport(dataset_size, loss, accuracy, test_parameters, metrics);
+  PerformanceReportInfo performance_report = PerformanceReportInfo(
+      dataset_size, loss, accuracy, test_parameters, metrics);
   TaskResult task_result = TaskResult(task, performance_report);
 
   // Act
-  const std::string payload = BuildUploadTaskResultsPayload(task_result);
+  absl::optional<std::string> payload =
+      BuildUploadTaskResultsPayload(task_result);
+  ASSERT_TRUE(payload.has_value());
 
   // Assert
   flower::PushTaskResRequest request;
-  request.ParseFromString(payload);
+  request.ParseFromString(payload.value());
 
   flower::TaskRes flower_task_result = request.task_res_list(0);
   EXPECT_EQ(flower_task_result.task_id(), "");
@@ -230,10 +235,10 @@ TEST(BraveFederatedLearningFlowerHelperTest, BuildPostTrainTaskResultsPayload) {
 
   flower::Task flower_task = flower_task_result.task();
   flower::ClientMessage client_message = flower_task.legacy_client_message();
-  flower::ClientMessage_FitRes fit_result = client_message.fit_res();
+  const flower::ClientMessage_FitRes& fit_result = client_message.fit_res();
   EXPECT_EQ(static_cast<size_t>(fit_result.num_examples()), dataset_size);
 
-  std::vector<Weights> parameters =
+  const std::vector<Weights>& parameters =
       GetVectorsFromParameters(fit_result.parameters());
   EXPECT_EQ(parameters.size(), 2U);
   EXPECT_EQ(parameters, test_parameters);
@@ -258,16 +263,18 @@ TEST(BraveFederatedLearningFlowerHelperTest,
   const std::vector<Weights> test_parameters = {{1, 2, 3}, {4, 5, 6}};
   std::map<std::string, double> metrics = {{"alpha", 0.42}, {"beta", 42.0}};
 
-  PerformanceReport performance_report =
-      PerformanceReport(dataset_size, loss, accuracy, test_parameters, metrics);
+  PerformanceReportInfo performance_report = PerformanceReportInfo(
+      dataset_size, loss, accuracy, test_parameters, metrics);
   TaskResult task_result = TaskResult(task, performance_report);
 
   // Act
-  const std::string payload = BuildUploadTaskResultsPayload(task_result);
+  absl::optional<std::string> payload =
+      BuildUploadTaskResultsPayload(task_result);
+  ASSERT_TRUE(payload.has_value());
 
   // Assert
   flower::PushTaskResRequest request;
-  request.ParseFromString(payload);
+  request.ParseFromString(payload.value());
 
   flower::TaskRes flower_task_result = request.task_res_list(0);
   EXPECT_EQ(flower_task_result.task_id(), "");
@@ -276,7 +283,7 @@ TEST(BraveFederatedLearningFlowerHelperTest,
 
   flower::Task flower_task = flower_task_result.task();
   flower::ClientMessage client_message = flower_task.legacy_client_message();
-  flower::ClientMessage_EvaluateRes evaluate_result =
+  const flower::ClientMessage_EvaluateRes& evaluate_result =
       client_message.evaluate_res();
   EXPECT_EQ(static_cast<size_t>(evaluate_result.num_examples()), dataset_size);
   EXPECT_EQ(evaluate_result.loss(), loss);
@@ -301,15 +308,16 @@ TEST(BraveFederatedLearningFlowerHelperTest,
   const std::vector<Weights> test_parameters = {{1, 2, 3}, {4, 5, 6}};
   std::map<std::string, double> metrics = {{"alpha", 0.42}, {"beta", 42.0}};
 
-  PerformanceReport performance_report =
-      PerformanceReport(dataset_size, loss, accuracy, test_parameters, metrics);
+  PerformanceReportInfo performance_report = PerformanceReportInfo(
+      dataset_size, loss, accuracy, test_parameters, metrics);
   TaskResult task_result = TaskResult(task, performance_report);
 
   // Act
-  const std::string payload = BuildUploadTaskResultsPayload(task_result);
+  absl::optional<std::string> payload =
+      BuildUploadTaskResultsPayload(task_result);
 
   // Assert
-  EXPECT_EQ(payload, "");
+  EXPECT_FALSE(payload.has_value());
 }
 
 }  // namespace brave_federated

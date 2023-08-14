@@ -7,7 +7,6 @@
 
 #include <vector>
 
-#include "base/feature_list.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -20,7 +19,7 @@ TEST(BraveFederatedLearningFeaturesTest, FederatedLearningEnabled) {
   // Arrange
 
   // Act
-  const bool is_enabled = features::IsFederatedLearningEnabled();
+  const bool is_enabled = IsFederatedLearningEnabled();
 
   // Assert
   EXPECT_FALSE(is_enabled);
@@ -36,8 +35,7 @@ TEST(BraveFederatedLearningFeaturesTest, DefaultOperationalPatternsEnabled) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
   // Act
-  const bool operational_patterns_enabled =
-      features::IsOperationalPatternsEnabled();
+  const bool operational_patterns_enabled = kOperationalPatternsEnabled.Get();
 
   // Assert
   const bool expected_operational_patterns_enabled = false;
@@ -48,13 +46,9 @@ TEST(BraveFederatedLearningFeaturesTest, DefaultOperationalPatternsEnabled) {
 TEST(BraveFederatedLearningFeaturesTest, OperationalPatternsEnabled) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams kFederatedLearningParameters;
-  const char kFieldTrialParameterOperationalPatternsEnabled[] =
-      "operational_patterns_enabled";
-  kFederatedLearningParameters[kFieldTrialParameterOperationalPatternsEnabled] =
-      "true";
-  enabled_features.emplace_back(features::kFederatedLearning,
-                                kFederatedLearningParameters);
+  base::FieldTrialParams params;
+  params["operational_patterns_enabled"] = "true";
+  enabled_features.emplace_back(kFederatedLearning, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -62,8 +56,7 @@ TEST(BraveFederatedLearningFeaturesTest, OperationalPatternsEnabled) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
   // Act
-  const bool operational_patterns_enabled =
-      features::IsOperationalPatternsEnabled();
+  const bool operational_patterns_enabled = kOperationalPatternsEnabled.Get();
 
   // Assert
   const bool expected_operational_patterns_enabled = true;
@@ -81,23 +74,21 @@ TEST(BraveFederatedLearningFeaturesTest, DefaultCollectionSlotSizeInSeconds) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
   // Act
-  const int collection_slot_size = features::GetCollectionSlotSizeInSeconds();
+  const base::TimeDelta collection_slot_size =
+      kCollectionSlotSizeInSeconds.Get();
 
   // Assert
-  const int expected_collection_slot_size = 30 * base::Time::kSecondsPerMinute;
+  const base::TimeDelta expected_collection_slot_size =
+      base::Seconds(30 * base::Time::kSecondsPerMinute);
   EXPECT_EQ(expected_collection_slot_size, collection_slot_size);
 }
 
 TEST(BraveFederatedLearningFeaturesTest, CollectionSizeInSeconds) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams kFederatedLearningParameters;
-  const char kFieldTrialParameterCollectionSlotSizeInSeconds[] =
-      "collection_slot_size_in_seconds";
-  kFederatedLearningParameters
-      [kFieldTrialParameterCollectionSlotSizeInSeconds] = "420";
-  enabled_features.emplace_back(features::kFederatedLearning,
-                                kFederatedLearningParameters);
+  base::FieldTrialParams params;
+  params["collection_slot_size_in_seconds"] = "420s";
+  enabled_features.emplace_back(kFederatedLearning, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -105,10 +96,11 @@ TEST(BraveFederatedLearningFeaturesTest, CollectionSizeInSeconds) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
   // Act
-  const int collection_slot_size = features::GetCollectionSlotSizeInSeconds();
+  const base::TimeDelta collection_slot_size =
+      kCollectionSlotSizeInSeconds.Get();
 
   // Assert
-  const int expected_collection_slot_size = 420;
+  const base::TimeDelta expected_collection_slot_size = base::Seconds(420);
   EXPECT_EQ(expected_collection_slot_size, collection_slot_size);
 }
 
@@ -122,23 +114,20 @@ TEST(BraveFederatedLearningFeaturesTest, DefaultMockTaskDuration) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
   // Act
-  const int mock_task_duration = features::GetMockTaskDurationInSeconds();
+  const base::TimeDelta mock_task_duration = kMockTaskDurationInSeconds.Get();
 
   // Assert
-  const int expected_mock_task_duration = 2 * base::Time::kSecondsPerMinute;
+  const base::TimeDelta expected_mock_task_duration =
+      base::Seconds(2 * base::Time::kSecondsPerMinute);
   EXPECT_EQ(expected_mock_task_duration, mock_task_duration);
 }
 
 TEST(BraveFederatedLearningFeaturesTest, MockTaskDuration) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams kFederatedLearningParameters;
-  const char kFieldTrialParameterMockTaskDurationInSeconds[] =
-      "mock_task_duration_in_seconds";
-  kFederatedLearningParameters[kFieldTrialParameterMockTaskDurationInSeconds] =
-      "600";
-  enabled_features.emplace_back(features::kFederatedLearning,
-                                kFederatedLearningParameters);
+  base::FieldTrialParams params;
+  params["mock_task_duration_in_seconds"] = "420s";
+  enabled_features.emplace_back(kFederatedLearning, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -146,10 +135,10 @@ TEST(BraveFederatedLearningFeaturesTest, MockTaskDuration) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
   // Act
-  const int mock_task_duration = features::GetMockTaskDurationInSeconds();
+  const base::TimeDelta mock_task_duration = kMockTaskDurationInSeconds.Get();
 
   // Assert
-  const int expected_mock_task_duration = 10 * base::Time::kSecondsPerMinute;
+  const base::TimeDelta expected_mock_task_duration = base::Seconds(420);
   EXPECT_EQ(expected_mock_task_duration, mock_task_duration);
 }
 
@@ -163,26 +152,22 @@ TEST(BraveFederatedLearningFeaturesTest, DefaultCollectionIdLifetimeInSeconds) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
   // Act
-  const int collection_id_lifetime =
-      features::GetCollectionIdLifetimeInSeconds();
+  const base::TimeDelta collection_id_lifetime =
+      kCollectionIdLifetimeInSeconds.Get();
 
   // Assert
-  const int expected_collection_id_lifetime = 1 * base::Time::kHoursPerDay *
-                                              base::Time::kMinutesPerHour *
-                                              base::Time::kSecondsPerMinute;
+  const base::TimeDelta expected_collection_id_lifetime =
+      base::Seconds(1 * base::Time::kHoursPerDay * base::Time::kMinutesPerHour *
+                    base::Time::kSecondsPerMinute);
   EXPECT_EQ(expected_collection_id_lifetime, collection_id_lifetime);
 }
 
 TEST(BraveFederatedLearningFeaturesTest, CollectionIdLifetimeInSeconds) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams kFederatedLearningParameters;
-  const char kFieldTrialParameterCollectionIdLifetimeInSeconds[] =
-      "collection_id_lifetime_in_seconds";
-  kFederatedLearningParameters
-      [kFieldTrialParameterCollectionIdLifetimeInSeconds] = "2592000";
-  enabled_features.emplace_back(features::kFederatedLearning,
-                                kFederatedLearningParameters);
+  base::FieldTrialParams params;
+  params["collection_id_lifetime_in_seconds"] = "420s";
+  enabled_features.emplace_back(kFederatedLearning, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -190,13 +175,11 @@ TEST(BraveFederatedLearningFeaturesTest, CollectionIdLifetimeInSeconds) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
   // Act
-  const int collection_id_lifetime =
-      features::GetCollectionIdLifetimeInSeconds();
+  const base::TimeDelta collection_id_lifetime =
+      kCollectionIdLifetimeInSeconds.Get();
 
   // Assert
-  const int expected_collection_id_lifetime = 30 * base::Time::kHoursPerDay *
-                                              base::Time::kMinutesPerHour *
-                                              base::Time::kSecondsPerMinute;
+  const base::TimeDelta expected_collection_id_lifetime = base::Seconds(420);
   EXPECT_EQ(expected_collection_id_lifetime, collection_id_lifetime);
 }
 
@@ -204,7 +187,7 @@ TEST(BraveFederatedLearningFeaturesTest, DefaultMockCollectionRequests) {
   // Arrange
 
   // Act
-  const bool mock_collection_requests = features::MockCollectionRequests();
+  const bool mock_collection_requests = kMockCollectionRequests.Get();
 
   // Assert
   EXPECT_FALSE(mock_collection_requests);

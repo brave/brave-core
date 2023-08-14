@@ -73,7 +73,7 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
           ->GetForProfile(profile);
   brave_federated::AsyncDataStore* notification_ad_async_data_store = nullptr;
 
-  if (brave_federated::features::IsAdTimingLocalDataCollectionEnabled()) {
+  if (brave_federated::kAdTimingLocalDataCollectionEnabled.Get()) {
     auto* federated_service =
         brave_federated::BraveFederatedServiceFactory::GetForBrowserContext(
             profile);

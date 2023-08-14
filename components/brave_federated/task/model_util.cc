@@ -18,7 +18,7 @@ float ComputeNegativeLogLikelihood(const std::vector<float>& true_labels,
   const size_t batch_size = true_labels.size();
 
   for (size_t i = 0; i < batch_size; i++) {
-    DCHECK_GT(predictions.at(i), 0.0);
+    CHECK_GT(predictions.at(i), 0.0);
     log_error += (true_labels.at(i) * log(predictions.at(i)) +
                   (1.0 - true_labels.at(i)) * log(1 - predictions.at(i)));
   }

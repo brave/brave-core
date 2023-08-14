@@ -5,8 +5,9 @@
 
 #include "brave/components/brave_federated/config_utils.h"
 
+#include "base/files/file_util.h"
 #include "base/json/json_reader.h"
-#include "brave/components/brave_federated/api/config.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_federated/features.h"
 
 namespace brave_federated {
@@ -20,21 +21,21 @@ LearningServiceConfig::LearningServiceConfig() {
                        .always_use_initial_delay = true};
   request_task_policy_ = {
       .num_errors_to_ignore = 0,
-      .initial_delay_ms =
-          features::GetFederatedLearningUpdateCycleInSeconds() * 1000,
+      .initial_delay_ms = static_cast<int>(
+          kFederatedLearningUpdateCycleInSeconds.Get().InMilliseconds()),
       .multiply_factor = 2.0,
       .jitter_factor = 0.0,
       .maximum_backoff_ms =
-          16 * features::GetFederatedLearningUpdateCycleInSeconds() * 1000,
+          16 * kFederatedLearningUpdateCycleInSeconds.Get().InMilliseconds(),
       .always_use_initial_delay = true};
   post_results_policy_ = {
       .num_errors_to_ignore = 0,
-      .initial_delay_ms =
-          features::GetFederatedLearningUpdateCycleInSeconds() * 1000,
+      .initial_delay_ms = static_cast<int>(
+          kFederatedLearningUpdateCycleInSeconds.Get().InMilliseconds()),
       .multiply_factor = 2.0,
       .jitter_factor = 0.0,
       .maximum_backoff_ms =
-          16 * features::GetFederatedLearningUpdateCycleInSeconds() * 1000,
+          16 * kFederatedLearningUpdateCycleInSeconds.Get().InMilliseconds(),
       .always_use_initial_delay = true};
   model_spec_.num_params = 32, model_spec_.batch_size = 32,
   model_spec_.learning_rate = 0.01, model_spec_.num_iterations = 500,
@@ -78,19 +79,19 @@ void LearningServiceConfig::InitServiceConfigFromJSONString(
   const auto& reconnect_policy = config->reconnect_policy;
   const auto& request_task_policy = config->request_task_policy;
   const auto& post_results_policy = config->post_results_policy;
-  copyModelSpec(config->model_spec, model_spec_);
+  CopyModelSpec(config->model_spec, model_spec_);
 
   // Convert api::config::BackoffPolicy to BackoffEntry::Policy
   // parent class
-  convertPolicy<api::config::BackoffPolicy, net::BackoffEntry::Policy>(
+  ConvertPolicy<api::config::BackoffPolicy, net::BackoffEntry::Policy>(
       reconnect_policy, reconnect_policy_);
-  convertPolicy<api::config::BackoffPolicy, net::BackoffEntry::Policy>(
+  ConvertPolicy<api::config::BackoffPolicy, net::BackoffEntry::Policy>(
       request_task_policy, request_task_policy_);
-  convertPolicy<api::config::BackoffPolicy, net::BackoffEntry::Policy>(
+  ConvertPolicy<api::config::BackoffPolicy, net::BackoffEntry::Policy>(
       post_results_policy, post_results_policy_);
 }
 
-void LearningServiceConfig::copyModelSpec(const api::config::ModelSpec& src,
+void LearningServiceConfig::CopyModelSpec(const api::config::ModelSpec& src,
                                           api::config::ModelSpec& dst) {
   dst.num_params = src.num_params;
   dst.batch_size = src.batch_size;
@@ -99,8 +100,8 @@ void LearningServiceConfig::copyModelSpec(const api::config::ModelSpec& src,
   dst.threshold = src.threshold;
 }
 
-template <typename S, typename T>
-void LearningServiceConfig::convertPolicy(const S& src, T& dst) {
+template <typename T, typename U>
+void LearningServiceConfig::ConvertPolicy(const T& src, U& dst) {
   dst.num_errors_to_ignore = src.num_errors_to_ignore;
   dst.initial_delay_ms = src.initial_delay_ms;
   dst.multiply_factor = src.multiply_factor;
@@ -109,21 +110,5 @@ void LearningServiceConfig::convertPolicy(const S& src, T& dst) {
       base::StringToInt64(src.maximum_backoff_ms, &dst.maximum_backoff_ms);
   DCHECK(ret);
   dst.always_use_initial_delay = src.always_use_initial_delay;
-}
-
-net::BackoffEntry::Policy LearningServiceConfig::GetReconnectPolicy() {
-  return reconnect_policy_;
-}
-
-net::BackoffEntry::Policy LearningServiceConfig::GetRequestTaskPolicy() {
-  return request_task_policy_;
-}
-
-net::BackoffEntry::Policy LearningServiceConfig::GetPostResultsPolicy() {
-  return post_results_policy_;
-}
-
-api::config::ModelSpec& LearningServiceConfig::GetModelSpec() {
-  return model_spec_;
 }
 }  // namespace brave_federated

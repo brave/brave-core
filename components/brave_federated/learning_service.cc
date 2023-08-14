@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_federated/learning_service.h"
 
+#include <map>
 #include <utility>
 #include <vector>
 
@@ -43,7 +44,7 @@ base::expected<TaskResult, std::string> LoadDatasetAndRunTask(
 LearningService::LearningService(
     EligibilityService* eligibility_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : url_loader_factory_(url_loader_factory),
+    : url_loader_factory_(std::move(url_loader_factory)),
       eligibility_service_(eligibility_service) {
   CHECK(!init_task_timer_);
 
@@ -70,12 +71,10 @@ LearningService::LearningService(
   post_results_backoff_entry_ =
       std::make_unique<net::BackoffEntry>(post_results_policy_.get());
 
-  const int init_federated_service_wait_time_in_seconds =
-      brave_federated::features::GetInitFederatedServiceWaitTimeInSeconds();
   init_task_timer_ = std::make_unique<base::OneShotTimer>();
-  init_task_timer_->Start(
-      FROM_HERE, base::Seconds(init_federated_service_wait_time_in_seconds),
-      this, &LearningService::Init);
+  init_task_timer_->Start(FROM_HERE,
+                          kInitFederatedServiceWaitTimeInSeconds.Get(), this,
+                          &LearningService::Init);
 }
 
 LearningService::~LearningService() {
@@ -98,16 +97,6 @@ void LearningService::Init() {
   }
 
   VLOG(1) << "FL: Eligibility: " << eligibility_service_->IsEligible();
-}
-
-void LearningService::OnEligibilityChanged(bool is_eligible) {
-  if (is_eligible) {
-    StartParticipating();
-    VLOG(1) << "FL: Eligibility changed, started participating.";
-  } else {
-    StopParticipating();
-    VLOG(1) << "FL: Eligibility changed, stopped participating.";
-  }
 }
 
 void LearningService::StartParticipating() {
@@ -140,6 +129,16 @@ void LearningService::GetTasks() {
       &LearningService::HandleTasksOrReconnect, weak_factory_.GetWeakPtr()));
 }
 
+void LearningService::StartCommunicationAdapter() {
+  const net::BackoffEntry::Policy reconnect_policy =
+      learning_service_config_->GetReconnectPolicy();
+  const net::BackoffEntry::Policy request_task_policy =
+      learning_service_config_->GetRequestTaskPolicy();
+
+  communication_adapter_ = std::make_unique<CommunicationAdapter>(
+      url_loader_factory_, reconnect_policy, request_task_policy);
+}
+
 void LearningService::HandleTasksOrReconnect(TaskList tasks,
                                              base::TimeDelta reconnect) {
   if (tasks.empty()) {
@@ -151,14 +150,14 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks,
   }
 
   Task task = tasks.at(0);
-  float lr = 0.01;
+  float learning_rate = 0.01;
   std::map<std::string, float> config = task.GetConfig();
   auto cursor = config.find("lr");
   if (cursor != config.end()) {
-    lr = cursor->second;
-    VLOG(2) << "FL: Learning rate applied from server: " << lr;
+    learning_rate = cursor->second;
+    VLOG(2) << "FL: Learning rate applied from server: " << learning_rate;
   }
-  model_spec_->learning_rate = lr;
+  model_spec_->learning_rate = learning_rate;
 
   if (static_cast<int>(task.GetParameters().at(0).size()) !=
           model_spec_->num_params &&
@@ -217,14 +216,14 @@ void LearningService::OnUploadTaskResults(TaskResultResponse response) {
   VLOG(1) << "FL: Reconnecting in " << reconnect;
 }
 
-void LearningService::StartCommunicationAdapter() {
-  const net::BackoffEntry::Policy reconnect_policy =
-      learning_service_config_->GetReconnectPolicy();
-  const net::BackoffEntry::Policy request_task_policy =
-      learning_service_config_->GetRequestTaskPolicy();
-
-  communication_adapter_ = std::make_unique<CommunicationAdapter>(
-      url_loader_factory_, reconnect_policy, request_task_policy);
+void LearningService::OnEligibilityChanged(bool is_eligible) {
+  if (is_eligible) {
+    StartParticipating();
+    VLOG(1) << "FL: Eligibility changed, started participating.";
+  } else {
+    StopParticipating();
+    VLOG(1) << "FL: Eligibility changed, stopped participating.";
+  }
 }
 
 }  // namespace brave_federated

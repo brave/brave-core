@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_ELIGIBILITY_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_ELIGIBILITY_SERVICE_H_
 
-#include "base/power_monitor/power_monitor.h"
+#include "base/power_monitor/power_observer.h"
 #include "net/base/network_change_notifier.h"
 
 namespace brave_federated {
 
-class EligibilityObserver;
+class EligibilityServiceObserver;
 
 // Certain classes of federated tasks might be computationally and bandwidth
 // expensive to run on the client. For these classes we require the client's
@@ -28,8 +28,8 @@ class EligibilityService
   EligibilityService(const EligibilityService&) = delete;
   EligibilityService& operator=(const EligibilityService&) = delete;
 
-  void AddObserver(EligibilityObserver* observer);
-  void RemoveObserver(EligibilityObserver* observer);
+  void AddObserver(EligibilityServiceObserver* observer);
+  void RemoveObserver(EligibilityServiceObserver* observer);
 
   bool IsEligible() const;
 
@@ -47,10 +47,11 @@ class EligibilityService
 
   void NotifyObservers(bool is_eligible);
 
-  base::ObserverList<EligibilityObserver> observers_;
+  base::ObserverList<EligibilityServiceObserver> observers_;
   bool is_eligible_ = false;
   bool is_on_battery_power_ = false;
-  net::NetworkChangeNotifier::ConnectionType connection_type_;
+  net::NetworkChangeNotifier::ConnectionType connection_type_ =
+      net::NetworkChangeNotifier::CONNECTION_UNKNOWN;
 };
 
 }  // namespace brave_federated

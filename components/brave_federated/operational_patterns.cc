@@ -87,14 +87,14 @@ void OperationalPatterns::Start() {
   CHECK(!collection_timer_);
 
   const int collection_id_lifetime =
-      brave_federated::features::GetCollectionIdLifetimeInSeconds();
+      kCollectionIdLifetimeInSeconds.Get().InSeconds();
   const int collection_slot_size =
-      brave_federated::features::GetCollectionSlotSizeInSeconds();
+      kCollectionSlotSizeInSeconds.Get().InSeconds();
   const int collection_timer_interval =
-      brave_federated::features::GetCollectionTimerIntervalInSeconds();
+      kCollectionTimerIntervalInSeconds.Get().InSeconds();
   const int mock_training_duration =
-      brave_federated::features::GetMockTaskDurationInSeconds();
-  const bool mock_collection_requests = features::MockCollectionRequests();
+      kMockTaskDurationInSeconds.Get().InSeconds();
+  const bool mock_collection_requests = kMockCollectionRequests.Get();
 
   VLOG(1) << "Starting operational patterns with:\n"
           << " collection_id_lifetime=" << collection_id_lifetime << "s\n"
@@ -164,11 +164,9 @@ void OperationalPatterns::StartRepeatingCollectionTimer() {
   const int collection_slot = GetCollectionSlot();
   VLOG(2) << "Start Repeating Collection Timer in slot " << collection_slot;
 
-  const int collection_timer_interval_in_seconds =
-      brave_federated::features::GetCollectionTimerIntervalInSeconds();
   collection_timer_ = std::make_unique<base::RepeatingTimer>();
   collection_timer_->Start(
-      FROM_HERE, base::Seconds(collection_timer_interval_in_seconds), this,
+      FROM_HERE, kCollectionTimerIntervalInSeconds.Get(), this,
       &OperationalPatterns::OnRepeatingCollectionTimerFired);
 }
 
@@ -196,12 +194,9 @@ void OperationalPatterns::StartMockTaskTimer() {
   const int collection_slot = GetCollectionSlot();
   VLOG(2) << "Start Mock Task Timer in slot " << collection_slot;
 
-  const int mock_training_duration_in_seconds =
-      brave_federated::features::GetMockTaskDurationInSeconds();
   mock_task_timer_ = std::make_unique<base::RetainingOneShotTimer>();
-  mock_task_timer_->Start(FROM_HERE,
-                          base::Seconds(mock_training_duration_in_seconds),
-                          this, &OperationalPatterns::OnMockTaskTimerFired);
+  mock_task_timer_->Start(FROM_HERE, kMockTaskDurationInSeconds.Get(), this,
+                          &OperationalPatterns::OnMockTaskTimerFired);
 }
 
 void OperationalPatterns::OnMockTaskTimerFired() {
@@ -258,7 +253,7 @@ void OperationalPatterns::SendCollectionPing(int slot) {
 
   VLOG(2) << "Payload " << payload;
 
-  if (brave_federated::features::MockCollectionRequests()) {
+  if (kMockCollectionRequests.Get()) {
     OnCollectionPingSendSuccess();
     return;
   }
@@ -310,7 +305,7 @@ void OperationalPatterns::SendDeletePing() {
 
   VLOG(2) << "Payload " << payload;
 
-  if (brave_federated::features::MockCollectionRequests()) {
+  if (kMockCollectionRequests.Get()) {
     OnDeletePingSendSuccess();
     return;
   }
@@ -365,10 +360,8 @@ void OperationalPatterns::MaybeResetCollectionId() {
 
 void OperationalPatterns::ResetCollectionId() {
   collection_id_ = CreateCollectionId();
-  const int collection_id_lifetime_in_seconds =
-      brave_federated::features::GetCollectionIdLifetimeInSeconds();
   collection_id_expiration_time_ =
-      base::Time::Now() + base::Seconds(collection_id_lifetime_in_seconds);
+      base::Time::Now() + kCollectionIdLifetimeInSeconds.Get();
 
   VLOG(1) << base::TimeFormatShortDateAndTime(base::Time::Now())
           << " Reset collection ID to " << collection_id_;

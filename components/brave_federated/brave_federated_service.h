@@ -52,10 +52,7 @@ class BraveFederatedService : public KeyedService {
  private:
   void Init();
 
-  void OnPreferenceChanged(const std::string& key);
-
-  bool IsFederatedLearningEnabled();
-  bool IsOperationalPatternsEnabled();
+  void OnPreferenceChanged(const std::string& pref_name);
   bool IsP3AEnabled();
 
   bool ShouldStartOperationalPatterns();

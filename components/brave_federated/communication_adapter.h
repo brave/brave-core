@@ -33,22 +33,23 @@ class CommunicationAdapter {
  public:
   explicit CommunicationAdapter(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      const net::BackoffEntry::Policy reconnect_policy,
-      const net::BackoffEntry::Policy request_task_policy);
+      net::BackoffEntry::Policy reconnect_policy,
+      net::BackoffEntry::Policy request_task_policy);
   ~CommunicationAdapter();
 
   using UploadResultCallback = base::OnceCallback<void(TaskResultResponse)>;
   using GetTaskCallback = base::OnceCallback<void(TaskList, base::TimeDelta)>;
 
   void GetTasks(GetTaskCallback callback);
-  void OnGetTasks(GetTaskCallback callback,
-                  const std::unique_ptr<std::string> response_body);
   void UploadTaskResult(const TaskResult& result,
                         UploadResultCallback callback);
-  void OnUploadTaskResult(UploadResultCallback callback,
-                          const std::unique_ptr<std::string> response_body);
 
  private:
+  void OnGetTasks(GetTaskCallback& callback,
+                  const std::unique_ptr<std::string> response_body);
+  void OnUploadTaskResult(UploadResultCallback& callback,
+                          const std::unique_ptr<std::string> response_body);
+
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
 

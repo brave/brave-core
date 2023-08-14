@@ -272,7 +272,7 @@
       "stored locally and automatically erased after one month. No data "      \
       "leaves the client.",                                                    \
       kOsDesktop,                                                              \
-      FEATURE_VALUE_TYPE(brave_federated::features::kFederatedLearning),       \
+      FEATURE_VALUE_TYPE(brave_federated::kFederatedLearning),                 \
   })
 
 #define CRYPTO_WALLETS_FEATURE_ENTRIES                                      \

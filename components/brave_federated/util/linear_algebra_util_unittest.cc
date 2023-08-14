@@ -11,13 +11,13 @@
 
 namespace brave_federated {
 
-TEST(BraveFederatedLearningLinearAlgebraUtilTest, SubtractVector) {
+TEST(BraveFederatedLearninglinear_algebra_utilTest, SubtractVector) {
   // Arrange
   Vector vector_1 = {1.0, 2.0, 3.0};
   Vector vector_2 = {1.0, 2.0, 3.0};
 
   // Act
-  Vector result = LinearAlgebraUtil::SubtractVector(vector_1, vector_2);
+  Vector result = linear_algebra_util::SubtractVector(vector_1, vector_2);
 
   // Assert
   EXPECT_EQ(3U, result.size());
@@ -26,14 +26,14 @@ TEST(BraveFederatedLearningLinearAlgebraUtilTest, SubtractVector) {
   EXPECT_EQ(result[2], 0.0);
 }
 
-TEST(BraveFederatedLearningLinearAlgebraUtilTest, MultiplyMatrixVector) {
+TEST(BraveFederatedLearninglinear_algebra_utilTest, MultiplyMatrixVector) {
   // Arrange
   Matrix matrix = {{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 9.0}};
   Vector vector = {1.0, 2.0, 3.0};
 
   // Act
   std::vector<float> result =
-      LinearAlgebraUtil::MultiplyMatrixVector(matrix, vector);
+      linear_algebra_util::MultiplyMatrixVector(matrix, vector);
 
   // Assert
   EXPECT_EQ(3U, result.size());
@@ -41,13 +41,13 @@ TEST(BraveFederatedLearningLinearAlgebraUtilTest, MultiplyMatrixVector) {
   EXPECT_EQ(expected, result);
 }
 
-TEST(BraveFederatedLearningLinearAlgebraUtilTest, AddVectorScalar) {
+TEST(BraveFederatedLearninglinear_algebra_utilTest, AddVectorScalar) {
   // Arrange
   Vector vector = {1.0, 2.0, 3.0};
   float scalar = 1.0;
 
   // Act
-  Vector result = LinearAlgebraUtil::AddVectorScalar(vector, scalar);
+  Vector result = linear_algebra_util::AddVectorScalar(vector, scalar);
 
   // Assert
   EXPECT_EQ(3U, result.size());
@@ -56,13 +56,13 @@ TEST(BraveFederatedLearningLinearAlgebraUtilTest, AddVectorScalar) {
   EXPECT_EQ(vector[2] + scalar, result[2]);
 }
 
-TEST(BraveFederatedLearningLinearAlgebraUtilTest, AddVectors) {
+TEST(BraveFederatedLearninglinear_algebra_utilTest, AddVectors) {
   // Arrange
   Vector vector_1 = {1.0, 2.0, 3.0};
   Vector vector_2 = {1.0, 2.0, 3.0};
 
   // Act
-  Vector result = LinearAlgebraUtil::AddVectors(vector_1, vector_2);
+  Vector result = linear_algebra_util::AddVectors(vector_1, vector_2);
 
   // Assert
   EXPECT_EQ(3U, result.size());
@@ -71,13 +71,13 @@ TEST(BraveFederatedLearningLinearAlgebraUtilTest, AddVectors) {
   EXPECT_EQ(vector_1[2] + vector_2[2], result[2]);
 }
 
-TEST(BraveFederatedLearningLinearAlgebraUtilTest, MultiplyVectorScalar) {
+TEST(BraveFederatedLearninglinear_algebra_utilTest, MultiplyVectorScalar) {
   // Arrange
   Vector vector = {1.0, 2.0, 3.0};
   float scalar = 2.0;
 
   // Act
-  Vector result = LinearAlgebraUtil::MultiplyVectorScalar(vector, scalar);
+  Vector result = linear_algebra_util::MultiplyVectorScalar(vector, scalar);
 
   // Assert
   EXPECT_EQ(3U, result.size());
@@ -86,12 +86,12 @@ TEST(BraveFederatedLearningLinearAlgebraUtilTest, MultiplyVectorScalar) {
   EXPECT_EQ(vector[2] * scalar, result[2]);
 }
 
-TEST(BraveFederatedLearningLinearAlgebraUtilTest, TransposeMatrix) {
+TEST(BraveFederatedLearninglinear_algebra_utilTest, TransposeMatrix) {
   // Arrange
   Matrix matrix = {{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}};
 
   // Act
-  Matrix result = LinearAlgebraUtil::TransposeMatrix(matrix);
+  Matrix result = linear_algebra_util::TransposeMatrix(matrix);
 
   // Assert
   EXPECT_EQ(3U, result.size());

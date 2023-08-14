@@ -117,7 +117,7 @@ TEST_F(BraveFederatedOperationalPatternsUtilTest,
   feature_parameters["collection_slot_size_in_seconds"] = "10";
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(
-      {{features::kFederatedLearning, feature_parameters}}, {});
+      {{kFederatedLearning, feature_parameters}}, {});
 
   // Act
   const base::Time::Exploded exploded_time = {

@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_UTIL_SYNTHETIC_DATASET_H_
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_UTIL_SYNTHETIC_DATASET_H_
 
-#include <string>
 #include <vector>
 
 #include "brave/components/brave_federated/util/linear_algebra_util.h"
@@ -29,16 +28,12 @@ class SyntheticDataset {
 
   SyntheticDataset SeparateTestData(int num_training);
 
-  size_t size();
+  size_t Size();
   int CountFeatures();
   DataSet GetDataPoints();
 
  private:
-  float Softmax(float z);
-  std::vector<Weights> GetDefaultWeights();
-  std::vector<float> GetDefaultBias();
-
-  DataSet data_points_ = {};
+  DataSet data_points_;
 };
 
 }  // namespace brave_federated

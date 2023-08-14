@@ -25,7 +25,7 @@ FederatedTaskHandler::FederatedTaskHandler(const Task& task,
 FederatedTaskHandler::~FederatedTaskHandler() = default;
 
 base::expected<TaskResult, std::string> FederatedTaskHandler::Run() {
-  PerformanceReport report(0, 0, 0, {}, {});
+  PerformanceReportInfo report(0, 0, 0, {}, {});
   if (task_.GetType() == TaskType::kTraining) {
     auto result = model_->Train(training_data_);
     if (!result.has_value()) {

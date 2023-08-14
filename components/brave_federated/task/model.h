@@ -7,31 +7,29 @@
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_MODEL_H_
 
 #include <map>
-#include <memory>
 #include <string>
 #include <vector>
 
-#include "base/time/time.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_federated/api/config.h"
 #include "brave/components/brave_federated/util/linear_algebra_util.h"
 
 namespace brave_federated {
 
-struct PerformanceReport {
+struct PerformanceReportInfo {
   size_t dataset_size;
   float loss;
   float accuracy;
   std::vector<Weights> parameters;
   std::map<std::string, double> metrics;
 
-  PerformanceReport(size_t dataset_size,
-                    float loss,
-                    float accuracy,
-                    const std::vector<Weights>& parameters,
-                    const std::map<std::string, double>& metrics);
-  PerformanceReport(const PerformanceReport& other);
-  ~PerformanceReport();
+  PerformanceReportInfo(size_t dataset_size,
+                        float loss,
+                        float accuracy,
+                        const std::vector<Weights>& parameters,
+                        const std::map<std::string, double>& metrics);
+  PerformanceReportInfo(const PerformanceReportInfo& other);
+  ~PerformanceReportInfo();
 };
 
 // This class implements basic linear model functionality to support training
@@ -45,13 +43,13 @@ class Model {
 
   base::expected<std::vector<float>, std::string> Predict(
       const DataSet& dataset);
-  base::expected<PerformanceReport, std::string> Train(
+  base::expected<PerformanceReportInfo, std::string> Train(
       const DataSet& train_dataset);
-  base::expected<PerformanceReport, std::string> Evaluate(
+  base::expected<PerformanceReportInfo, std::string> Evaluate(
       const DataSet& test_dataset);
 
   Weights GetWeights() const;
-  void SetWeights(const Weights& new_weights);
+  void SetWeights(Weights new_weights);
 
   float GetBias() const;
   void SetBias(float new_bias);
@@ -60,14 +58,12 @@ class Model {
   size_t GetBatchSize() const;
 
  private:
-  base::ThreadTicks GetThreadTicksIfSupported() const;
-
   const int num_iterations_;
   const int batch_size_;
   const float learning_rate_;
   const float threshold_;
 
-  Weights weights_ = {};
+  Weights weights_;
   float bias_ = 0.0;
 };
 

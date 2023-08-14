@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_federated/communication_adapter.h"
 
+#include <cstddef>
+#include <functional>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -13,7 +15,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/brave_federated/adapters/flower_helper.h"
-#include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_request_headers.h"
@@ -23,7 +24,6 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_federated {
@@ -31,7 +31,7 @@ namespace brave_federated {
 namespace {
 
 // Maximum size of the federated server response in bytes.
-const int kMaxFederatedServerResponseSizeBytes = 1024 * 1024;  // 1 MB
+const size_t kMaxFederatedServerResponseSizeBytes = 1024 * 1024;  // 1 MB
 
 std::unique_ptr<network::ResourceRequest> MakeResourceRequest() {
   auto request = std::make_unique<network::ResourceRequest>();
@@ -39,7 +39,6 @@ std::unique_ptr<network::ResourceRequest> MakeResourceRequest() {
   request->headers.SetHeader("Accept", "application/protobuf");
   request->headers.SetHeader("X-Brave-FL-Federated-Learning", "?1");
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
   request->method = net::HttpRequestHeaders::kPostMethod;
   return request;
 }
@@ -98,25 +97,49 @@ void CommunicationAdapter::GetTasks(GetTaskCallback callback) {
   VLOG(2) << "FL: Requesting tasks list " << request->method << " "
           << request->url;
 
-  const std::string payload = BuildGetTasksPayload();
+  absl::optional<std::string> payload = BuildGetTasksPayload();
+  if (!payload.has_value()) {
+    return;
+  }
 
   url_loader_ = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
-  url_loader_->AttachStringForUpload(payload, "application/protobuf");
+  url_loader_->AttachStringForUpload(payload.value(), "application/protobuf");
   url_loader_->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&CommunicationAdapter::OnGetTasks,
-                     weak_factory_.GetWeakPtr(), std::move(callback)),
+                     weak_factory_.GetWeakPtr(), std::ref(callback)),
+      kMaxFederatedServerResponseSizeBytes);
+}
+
+void CommunicationAdapter::UploadTaskResult(const TaskResult& result,
+                                            UploadResultCallback callback) {
+  auto request = MakeResourceRequest();
+  VLOG(2) << "FL: Posting Task results " << request->method << " "
+          << request->url;
+
+  absl::optional<std::string> payload = BuildUploadTaskResultsPayload(result);
+  if (!payload.has_value()) {
+    return;
+  }
+
+  url_loader_ = network::SimpleURLLoader::Create(
+      std::move(request), GetNetworkTrafficAnnotationTag());
+  url_loader_->AttachStringForUpload(payload.value(), "application/protobuf");
+  url_loader_->DownloadToString(
+      url_loader_factory_.get(),
+      base::BindOnce(&CommunicationAdapter::OnUploadTaskResult,
+                     weak_factory_.GetWeakPtr(), std::ref(callback)),
       kMaxFederatedServerResponseSizeBytes);
 }
 
 void CommunicationAdapter::OnGetTasks(
-    GetTaskCallback callback,
+    GetTaskCallback& callback,
     const std::unique_ptr<std::string> response_body) {
   CHECK(url_loader_);
   CHECK(url_loader_->ResponseInfo());
 
-  bool failed_request =
+  const bool failed_request =
       !url_loader_->ResponseInfo() || !url_loader_->ResponseInfo()->headers;
   reconnect_backoff_entry_->InformOfRequest(!failed_request);
   base::TimeDelta reconnect_delay_in_seconds =
@@ -130,49 +153,33 @@ void CommunicationAdapter::OnGetTasks(
 
   auto headers = url_loader_->ResponseInfo()->headers;
   int response_code = headers->response_code();
-  if (response_code == net::HTTP_OK &&
-      headers->HasHeaderValue("Content-Type", "application/protobuf")) {
-    auto task_list = ParseTaskListFromResponseBody(*response_body);
 
-    request_task_backoff_entry_->InformOfRequest(task_list.has_value());
-    base::TimeDelta request_task_delay_in_seconds =
-        request_task_backoff_entry_->GetTimeUntilRelease();
-    if (!task_list.has_value()) {
-      VLOG(2) << "FL: ParseTaskList failed. Reason: " << task_list.error()
-              << ". Retrying in " << request_task_delay_in_seconds;
-      return std::move(callback).Run({}, request_task_delay_in_seconds);
-    }
-
-    VLOG(2) << "FL: Received " << task_list.value().size()
-            << " tasks from FL service";
-
-    return std::move(callback).Run(task_list.value(),
-                                   request_task_delay_in_seconds);
+  if (response_code != net::HTTP_OK ||
+      !headers->HasHeaderValue("Content-Type", "application/protobuf")) {
+    VLOG(2) << "FL: Failed to request tasks. Response code: " << response_code;
+    return std::move(callback).Run({}, reconnect_delay_in_seconds);
   }
 
-  VLOG(2) << "FL: Failed to request tasks. Response code: " << response_code;
-}
+  auto task_list = ParseTaskListFromResponseBody(*response_body);
 
-void CommunicationAdapter::UploadTaskResult(const TaskResult& result,
-                                            UploadResultCallback callback) {
-  auto request = MakeResourceRequest();
-  VLOG(2) << "FL: Posting Task results " << request->method << " "
-          << request->url;
+  request_task_backoff_entry_->InformOfRequest(task_list.has_value());
+  base::TimeDelta request_task_delay_in_seconds =
+      request_task_backoff_entry_->GetTimeUntilRelease();
+  if (!task_list.has_value()) {
+    VLOG(2) << "FL: ParseTaskList failed. Reason: " << task_list.error()
+            << ". Retrying in " << request_task_delay_in_seconds;
+    return std::move(callback).Run({}, request_task_delay_in_seconds);
+  }
 
-  const std::string payload = BuildUploadTaskResultsPayload(result);
+  VLOG(2) << "FL: Received " << task_list.value().size()
+          << " tasks from FL service";
 
-  url_loader_ = network::SimpleURLLoader::Create(
-      std::move(request), GetNetworkTrafficAnnotationTag());
-  url_loader_->AttachStringForUpload(payload, "application/protobuf");
-  url_loader_->DownloadToString(
-      url_loader_factory_.get(),
-      base::BindOnce(&CommunicationAdapter::OnUploadTaskResult,
-                     weak_factory_.GetWeakPtr(), std::move(callback)),
-      kMaxFederatedServerResponseSizeBytes);
+  return std::move(callback).Run(task_list.value(),
+                                 request_task_delay_in_seconds);
 }
 
 void CommunicationAdapter::OnUploadTaskResult(
-    UploadResultCallback callback,
+    UploadResultCallback& callback,
     std::unique_ptr<std::string> response_body) {
   CHECK(url_loader_);
   CHECK(url_loader_->ResponseInfo());
@@ -185,13 +192,15 @@ void CommunicationAdapter::OnUploadTaskResult(
 
   auto headers = url_loader_->ResponseInfo()->headers;
   int response_code = headers->response_code();
-  if (response_code == net::HTTP_OK) {
-    TaskResultResponse response(/*successful*/ true);
+
+  if (response_code != net::HTTP_OK) {
+    VLOG(2) << "FL: Failed to post task results. Response code: "
+            << response_code;
+    TaskResultResponse response(/*successful*/ false);
     return std::move(callback).Run(response);
   }
 
-  VLOG(2) << "FL: Response code is not 200" << response_code;
-  TaskResultResponse response(/*successful*/ false);
+  TaskResultResponse response(/*successful*/ true);
   return std::move(callback).Run(response);
 }
 

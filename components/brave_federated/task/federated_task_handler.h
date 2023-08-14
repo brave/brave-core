@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 #include <tuple>
-#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "base/types/expected.h"
@@ -19,7 +18,7 @@
 namespace brave_federated {
 
 class Model;
-struct PerformanceReport;
+struct PerformanceReportInfo;
 using ModelWeights = std::tuple<Weights, float>;
 
 // This class is a wrapper around the federated learning Task and its Model. It
@@ -36,13 +35,13 @@ class FederatedTaskHandler final {
   void SetTestData(const DataSet& test_data);
 
  private:
-  PerformanceReport Evaluate();
-  PerformanceReport Train();
+  PerformanceReportInfo Evaluate();
+  PerformanceReportInfo Train();
 
   const Task task_;
   const std::unique_ptr<Model> model_;
-  DataSet training_data_ = {};
-  DataSet test_data_ = {};
+  DataSet training_data_;
+  DataSet test_data_;
 };
 
 }  // namespace brave_federated

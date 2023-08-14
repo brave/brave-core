@@ -22,26 +22,26 @@ struct TaskId {
   std::string group_id;
   std::string family_id;
 
-  bool IsValid() const {
+  [[nodiscard]] bool IsValid() const {
     return !id.empty() && !group_id.empty() && !family_id.empty();
   }
 };
 
 class Task {
  public:
-  Task(const TaskId& task_id,
-       const TaskType& type,
-       const std::string& token,
+  Task(TaskId task_id,
+       TaskType type,
+       std::string token,
        const std::vector<Weights>& parameters,
        const std::map<std::string, float>& config);
   Task(const Task& other);
   ~Task();
 
-  const TaskId& GetId() const;
-  const TaskType& GetType() const;
-  const std::string& GetToken() const;
-  const std::vector<Weights>& GetParameters() const;
-  const std::map<std::string, float>& GetConfig() const;
+  const TaskId& GetId() const { return task_id_; }
+  const TaskType& GetType() const { return type_; }
+  const std::string& GetToken() const { return token_; }
+  const std::vector<Weights>& GetParameters() const { return parameters_; }
+  const std::map<std::string, float>& GetConfig() const { return config_; }
 
  private:
   const TaskId task_id_;
@@ -53,24 +53,24 @@ class Task {
 
 class TaskResult {
  public:
-  TaskResult(const Task& task, const PerformanceReport& report);
+  TaskResult(const Task& task, const PerformanceReportInfo& report);
   TaskResult(const TaskResult& other);
   ~TaskResult();
 
-  const Task& GetTask() const;
-  const PerformanceReport& GetReport() const;
+  const Task& GetTask() const { return task_; }
+  const PerformanceReportInfo& GetReport() const { return report_; }
 
  private:
   const Task task_;
-  const PerformanceReport report_;
+  const PerformanceReportInfo report_;
 };
 
 class TaskResultResponse {
  public:
   explicit TaskResultResponse(bool success);
-  ~TaskResultResponse();
+  ~TaskResultResponse() = default;
 
-  bool IsSuccessful();
+  bool IsSuccessful() const;
 
  private:
   const bool success_;

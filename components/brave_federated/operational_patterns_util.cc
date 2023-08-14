@@ -31,7 +31,7 @@ int GetCollectionSlot() {
       now.hour * base::Time::kMinutesPerHour * base::Time::kSecondsPerMinute +
       now.minute * base::Time::kSecondsPerMinute + now.second;
   const int slot_size_in_seconds =
-      brave_federated::features::GetCollectionSlotSizeInSeconds();
+      kCollectionSlotSizeInSeconds.Get().InSeconds();
   return (month_to_date_in_seconds + seconds_today) / slot_size_in_seconds;
 }
 
