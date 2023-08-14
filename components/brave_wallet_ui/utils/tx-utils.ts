@@ -265,6 +265,35 @@ export const isFilecoinTransaction = (tx?: {
   return tx?.txDataUnion.filTxData !== undefined
 }
 
+function getTypedSolanaInstructionToAddress(
+  to: string
+): (value: TypedSolanaInstructionWithParams) => string {
+  return (instruction) => {
+    const { toAccount, newAccount } = getSolInstructionAccountParamsObj(
+      instruction.accountParams,
+      instruction.accountMetas
+    )
+
+    switch (instruction.type) {
+      case 'Transfer':
+      case 'TransferWithSeed':
+      case 'CloseAccount':
+      case 'WithdrawNonceAccount': {
+        return toAccount ?? ''
+      }
+
+      case 'CreateAccount':
+      case 'CreateAccountWithSeed': {
+        return newAccount ?? ''
+      }
+
+      case undefined:
+      default:
+        return toAccount || newAccount || to || ''
+    }
+  }
+}
+
 export const getToAddressesFromSolanaTransaction = (
   tx: SolanaTransactionInfo
 ) => {
@@ -276,33 +305,7 @@ export const getToAddressesFromSolanaTransaction = (
     return [to]
   }
 
-  const addresses = instructions.map((instruction) => {
-    const {
-      toAccount,
-      newAccount
-    } = getSolInstructionAccountParamsObj(
-      instruction.accountParams,
-      instruction.accountMetas
-    )
-
-    switch (instruction.type) {
-      case 'Transfer':
-      case 'TransferWithSeed':
-      case 'WithdrawNonceAccount': {
-        return toAccount ?? ''
-      }
-
-      case 'CreateAccount':
-      case 'CreateAccountWithSeed': {
-        return (
-          newAccount ?? ''
-        )
-      }
-
-      case undefined:
-      default: return to ?? ''
-    }
-  })
+  const addresses = instructions.map(getTypedSolanaInstructionToAddress(to))
 
   return [...new Set(addresses.filter(a => !!a))] // unique, non empty addresses
 }
