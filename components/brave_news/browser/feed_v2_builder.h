@@ -6,8 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_V2_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_V2_BUILDER_H_
 
+#include <memory>
+#include <string>
 #include <vector>
+
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
@@ -38,18 +42,19 @@ class FeedV2Builder {
   void Build(BuildFeedCallback callback);
 
  private:
-  void FetchFeed(BuildFeedCallback callback);
-  void OnFetchedFeed(BuildFeedCallback callback, FeedItems items, ETags etags);
+  void FetchFeed();
+  void OnFetchedFeed(FeedItems items, ETags etags);
 
-  void CalculateSignals(BuildFeedCallback callback);
-  void OnCalculatedSignals(BuildFeedCallback callback, Signals signals);
+  void CalculateSignals();
+  void OnCalculatedSignals(Signals signals);
 
-  void GetSuggestedPublisherIds(BuildFeedCallback callback);
+  void GetSuggestedPublisherIds();
   void OnGotSuggestedPublisherIds(
-      BuildFeedCallback callback,
       const std::vector<std::string>& suggested_ids);
 
-  void BuildFeedFromArticles(BuildFeedCallback callback);
+  void BuildFeedFromArticles();
+
+  void NotifyBuildCompleted(BuildFeedCallback callback);
 
   raw_ref<PublishersController> publishers_controller_;
   raw_ref<ChannelsController> channels_controller_;
@@ -62,6 +67,11 @@ class FeedV2Builder {
   FeedItems raw_feed_items_;
   Signals signals_;
   std::vector<std::string> suggested_publisher_ids_;
+
+  bool is_building_ = false;
+  std::vector<BuildFeedCallback> pending_callbacks_;
+
+  base::WeakPtrFactory<FeedV2Builder> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_news

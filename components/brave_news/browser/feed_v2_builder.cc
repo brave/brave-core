@@ -5,10 +5,8 @@
 
 #include "brave/components/brave_news/browser/feed_v2_builder.h"
 
-#include <cstddef>
-#include <cstdint>
+#include <algorithm>
 #include <iterator>
-#include <locale>
 #include <string>
 #include <utility>
 #include <vector>
@@ -25,7 +23,6 @@
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -42,11 +39,30 @@ constexpr double kSourceSubscribedMax = 1;
 constexpr double kSourceVisitsMin = 0.2;
 constexpr double kPopRecencyHalfLifeInHours = 18;
 
+std::vector<mojom::FeedItemMetadataPtr> GetArticles(
+    const FeedItems& feed_items) {
+  std::vector<mojom::FeedItemMetadataPtr> articles;
+  base::flat_set<GURL> seen_articles;
+  for (const auto& item : feed_items) {
+    if (item.is_null()) {
+      continue;
+    }
+    if (item->is_article()) {
+      // Because we download feeds from multiple locales, it's possible there
+      // will be duplicate articles, which we should filter out.
+      if (seen_articles.contains(item->get_article()->data->url)) {
+        continue;
+      }
+      seen_articles.insert(item->get_article()->data->url);
+
+      articles.push_back(item->get_article()->data->Clone());
+    }
+  }
+  return articles;
+}
+
 bool TossCoin() {
-  auto result = base::RandDouble();
-  LOG(ERROR) << "Flip Result: " << result << "("
-             << (result < 0.5 ? "true" : "false") << ")";
-  return result < 0.5;
+  return base::RandDouble() < 0.5;
 }
 
 double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
@@ -267,7 +283,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
   std::vector<mojom::FeedItemV2Ptr> result;
 
   if (TossCoin()) {
-    LOG(ERROR) << "Generated advert";
+    DVLOG(1) << "Generating advert";
     auto metadata = mojom::FeedItemMetadata::New(
         "ad", base::Time::Now(), "Advert", "Some handy info",
         GURL("https://example.com"), "foo",
@@ -287,7 +303,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
       suggested_publisher_ids.erase(suggested_publisher_ids.begin(),
                                     suggested_publisher_ids.begin() + count);
 
-      LOG(ERROR) << "Generated discover card";
+      DVLOG(1) << "Generating publisher suggestions (discover)";
       result.push_back(mojom::FeedItemV2::NewDiscover(
           mojom::Discover::New(std::move(suggestions))));
     }
@@ -318,33 +334,39 @@ FeedV2Builder::FeedV2Builder(
 FeedV2Builder::~FeedV2Builder() = default;
 
 void FeedV2Builder::Build(BuildFeedCallback callback) {
-  if (raw_feed_items_.size()) {
-    BuildFeedFromArticles(std::move(callback));
+  pending_callbacks_.push_back(std::move(callback));
+
+  if (is_building_) {
     return;
   }
 
-  FetchFeed(std::move(callback));
+  is_building_ = true;
+
+  if (raw_feed_items_.size()) {
+    BuildFeedFromArticles();
+    return;
+  }
+
+  FetchFeed();
 }
 
-void FeedV2Builder::FetchFeed(BuildFeedCallback callback) {
+void FeedV2Builder::FetchFeed() {
   DVLOG(1) << __FUNCTION__;
   fetcher_.FetchFeed(
       base::BindOnce(&FeedV2Builder::OnFetchedFeed,
                      // Unretained is safe here because the FeedFetcher is owned
                      // by this and uses weak pointers internally.
-                     base::Unretained(this), std::move(callback)));
+                     base::Unretained(this)));
 }
 
-void FeedV2Builder::OnFetchedFeed(BuildFeedCallback callback,
-                                  FeedItems items,
-                                  ETags tags) {
+void FeedV2Builder::OnFetchedFeed(FeedItems items, ETags tags) {
   DVLOG(1) << __FUNCTION__;
 
   raw_feed_items_ = std::move(items);
-  CalculateSignals(std::move(callback));
+  CalculateSignals();
 }
 
-void FeedV2Builder::CalculateSignals(BuildFeedCallback callback) {
+void FeedV2Builder::CalculateSignals() {
   DVLOG(1) << __FUNCTION__;
 
   signal_calculator_.GetSignals(
@@ -353,34 +375,31 @@ void FeedV2Builder::CalculateSignals(BuildFeedCallback callback) {
           &FeedV2Builder::OnCalculatedSignals,
           // Unretained is safe here because we own the SignalCalculator, and it
           // uses WeakPtr for its internal callbacks.
-          base::Unretained(this), std::move(callback)));
+          base::Unretained(this)));
 }
 
-void FeedV2Builder::OnCalculatedSignals(BuildFeedCallback callback,
-                                        Signals signals) {
+void FeedV2Builder::OnCalculatedSignals(Signals signals) {
   DVLOG(1) << __FUNCTION__;
 
   signals_ = std::move(signals);
-  GetSuggestedPublisherIds(std::move(callback));
+  GetSuggestedPublisherIds();
 }
 
-void FeedV2Builder::GetSuggestedPublisherIds(BuildFeedCallback callback) {
+void FeedV2Builder::GetSuggestedPublisherIds() {
   DVLOG(1) << __FUNCTION__;
   suggestions_controller_->GetSuggestedPublisherIds(
       base::BindOnce(&FeedV2Builder::OnGotSuggestedPublisherIds,
-                     // todo: WEAKPTR
-                     base::Unretained(this), std::move(callback)));
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void FeedV2Builder::OnGotSuggestedPublisherIds(
-    BuildFeedCallback callback,
     const std::vector<std::string>& suggested_ids) {
   DVLOG(1) << __FUNCTION__;
   suggested_publisher_ids_ = suggested_ids;
-  BuildFeedFromArticles(std::move(callback));
+  BuildFeedFromArticles();
 }
 
-void FeedV2Builder::BuildFeedFromArticles(BuildFeedCallback callback) {
+void FeedV2Builder::BuildFeedFromArticles() {
   DVLOG(1) << __FUNCTION__;
   const auto& publishers = publishers_controller_->GetLastPublishers();
   const auto& locale = publishers_controller_->GetLastLocale();
@@ -397,26 +416,9 @@ void FeedV2Builder::BuildFeedFromArticles(BuildFeedCallback callback) {
   }
 
   // Make a copy of these - we're going to edit the copy to prevent duplicates.
-  std::vector<std::string> suggested_publisher_ids = suggested_publisher_ids_;
+  auto suggested_publisher_ids = suggested_publisher_ids_;
+  auto articles = GetArticles(raw_feed_items_);
   auto feed = mojom::FeedV2::New();
-
-  std::vector<mojom::FeedItemMetadataPtr> articles;
-  base::flat_set<GURL> seen_articles;
-  for (const auto& item : raw_feed_items_) {
-    if (item.is_null()) {
-      continue;
-    }
-    if (item->is_article()) {
-      // Because we download feeds from multiple locales, it's possible there
-      // will be duplicate articles, which we should filter out.
-      if (seen_articles.contains(item->get_article()->data->url)) {
-        continue;
-      }
-      seen_articles.insert(item->get_article()->data->url);
-
-      articles.push_back(item->get_article()->data->Clone());
-    }
-  }
 
   auto add_items = [&feed](std::vector<mojom::FeedItemV2Ptr>& items) {
     base::ranges::move(items, std::back_inserter(feed->items));
@@ -425,12 +427,15 @@ void FeedV2Builder::BuildFeedFromArticles(BuildFeedCallback callback) {
   // Step 1: Generate a block
   // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.rkq699fwps0
   auto initial_block = GenerateBlock(articles, signals_);
+  DVLOG(1) << "Step 1: Standard Block (" << initial_block.size()
+           << " articles)";
   add_items(initial_block);
 
   // Step 2: Generate a top news block
   // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.7z05nb4b269d
   auto top_news_block = GenerateChannelBlock(articles, signals_, publishers,
                                              kTopNewsChannel, locale);
+  DVLOG(1) << "Step 2: Top News Block";
   add_items(top_news_block);
 
   // Repeat step 3 - 5 until we don't have any more articles to add to the feed.
@@ -444,37 +449,34 @@ void FeedV2Builder::BuildFeedFromArticles(BuildFeedCallback callback) {
     // Step 3: Block Generation
     // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.os2ze8cesd8v
     if (iteration_type == 0) {
-      DVLOG(1) << "Type 0: Block";
+      DVLOG(1) << "Step 3: Standard Block";
       items = GenerateBlock(articles, signals_);
-    }
-    // Step 4: Block or Cluster Generation
-    // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.tpvsjkq0lzmy
-    else if (iteration_type == 1) {
+    } else if (iteration_type == 1) {
+      // Step 4: Block or Cluster Generation
+      // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.tpvsjkq0lzmy
       // Half the time, a normal block
       if (TossCoin()) {
-        DVLOG(1) << "Type 1: Block";
+        DVLOG(1) << "Step 4: Standard Block";
         items = GenerateBlock(articles, signals_);
-      }
-      // If we have any subscribed channels, display a channel cluster.
-      else if (!subscribed_channels.empty()) {
+      } else if (!subscribed_channels.empty()) {
+        // If we have any subscribed channels, display a channel cluster.
         // TODO(fallaciousreasoning): When we have topic support, add them here
         // too.
-        DVLOG(1) << "Type 1: Cluster Block";
-        items = GenerateChannelBlock(articles, signals_, publishers,
-                                     PickRandom(subscribed_channels), locale);
+        auto channel = PickRandom(subscribed_channels);
+        DVLOG(1) << "Step 4: Cluster Block (channel: " << channel << ")";
+        items = GenerateChannelBlock(articles, signals_, publishers, channel,
+                                     locale);
       } else {
-        DVLOG(1) << "Type 1: Nothing";
+        DVLOG(1) << "Step 4: Nothing (no subscribed channels)";
       }
-    }
-
-    // Step 5: Optional special card
-    // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.n1ipt86esc34
-    else if (iteration_type == 2) {
+    } else if (iteration_type == 2) {
+      // Step 5: Optional special card
+      // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.n1ipt86esc34
       if (TossCoin()) {
-        DVLOG(1) << "Type 2: Special Block";
+        DVLOG(1) << "Step 5: Special Block";
         items = GenerateSpecialBlock(suggested_publisher_ids);
       } else {
-        DVLOG(1) << "Type 2: None";
+        DVLOG(1) << "Step 5: None (approximately half the time)";
       }
     } else {
       NOTREACHED();
@@ -492,7 +494,13 @@ void FeedV2Builder::BuildFeedFromArticles(BuildFeedCallback callback) {
     ++iteration;
   }
 
-  std::move(callback).Run(std::move(feed));
+  // Fire all the pending callbacks.
+  for (auto& callback : pending_callbacks_) {
+    std::move(callback).Run(feed->Clone());
+  }
+
+  pending_callbacks_.clear();
+  is_building_ = false;
 }
 
 }  // namespace brave_news
