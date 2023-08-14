@@ -44,7 +44,10 @@ constexpr double kSourceVisitsMin = 0.2;
 constexpr double kPopRecencyHalfLifeInHours = 18;
 
 bool TossCoin() {
-  return base::RandDouble() < 0.5;
+  auto result = base::RandDouble();
+  LOG(ERROR) << "Flip Result: " << result << "("
+             << (result < 0.5 ? "true" : "false") << ")";
+  return result < 0.5;
 }
 
 double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
@@ -351,6 +354,8 @@ void FeedV2Builder::BuildFeedFromArticles(BuildFeedCallback callback) {
 
   // Make a copy of these - we're going to edit the copy to prevent duplicates.
   std::vector<std::string> suggested_publisher_ids = suggested_publisher_ids_;
+  LOG(ERROR) << "Have " << suggested_publisher_ids.size()
+             << " suggested publishers";
 
   auto feed = mojom::FeedV2::New();
 
