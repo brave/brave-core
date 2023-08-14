@@ -629,14 +629,23 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           No thanks
         </message>
         <!-- obsolete system InfoBar -->
-        <if expr="is_win">
+        <if expr="is_win or is_macosx">
           <message name="IDS_OBSOLETE_SYSTEM_INFOBAR_DONT_SHOW_BUTTON" desc="The text for don't show again button">
             Don't show again
           </message>
+        </if>
+        <if expr="is_win">
           <message name="IDS_OBSOLETE_SYSTEM_CONFIRM_DIALOG_CONTENT" desc="The text for obsolete system confirm dialog">
             By clicking OK, you acknowledge that your installation of Brave will NOT receive critical security fixes until you update to Windows 10 or later. This warning will NOT show again.
           </message>
         </if>
+        <if expr="is_macosx">
+          <message name="IDS_OBSOLETE_SYSTEM_CONFIRM_DIALOG_CONTENT" desc="The text for obsolete system confirm dialog">
+            By clicking OK, you acknowledge that your installation of Brave will NOT receive critical security fixes until you update to macOS 10.15 or later. This warning will NOT show again.
+          </message>
+        </if>
+
+        <!-- Download bubble -->
         <message name="IDS_DOWNLOAD_BUBBLE_ITEM_CTX_MENU_REMOVE_ITEM" desc="Text for the download bubble context menu item for removing item from the list">
           Remove from list
         </message>
