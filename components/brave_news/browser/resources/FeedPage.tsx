@@ -32,7 +32,7 @@ export default function FeedPage(props: Props) {
           return <Advert info={item.advert} key={index} />
         }
         if (item.article) {
-          return <Article info={item.article} key={item.article.data.urlHash} />
+          return <Article info={item.article} key={item.article.data.url.url} />
         }
         if (item.cluster) {
           return <Cluster info={item.cluster} key={index} />
@@ -41,7 +41,7 @@ export default function FeedPage(props: Props) {
           return <Discover info={item.discover} key={index} />
         }
         if (item.hero) {
-          return <HeroArticle info={item.hero} key={item.hero.data.urlHash} />
+          return <HeroArticle info={item.hero} key={item.hero.data.url.url} />
         }
 
         throw new Error("Invalid item!" + JSON.stringify(item))

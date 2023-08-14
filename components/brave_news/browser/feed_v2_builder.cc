@@ -355,12 +355,19 @@ void FeedV2Builder::BuildFeedFromArticles(BuildFeedCallback callback) {
   auto feed = mojom::FeedV2::New();
 
   std::vector<mojom::FeedItemMetadataPtr> articles;
-
+  base::flat_set<GURL> seen_articles;
   for (const auto& item : raw_feed_items_) {
     if (item.is_null()) {
       continue;
     }
     if (item->is_article()) {
+      // Because we download feeds from multiple locales, it's possible there
+      // will be duplicate articles, which we should filter out.
+      if (seen_articles.contains(item->get_article()->data->url)) {
+        continue;
+      }
+      seen_articles.insert(item->get_article()->data->url);
+
       articles.push_back(item->get_article()->data->Clone());
     }
   }
