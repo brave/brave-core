@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index e9b34c78999b00440378010a8e35e6e8a502ca77..5dbe33432e88c08ada5cea5b86be8e8feb4ad3eb 100644
+index e9b34c78999b00440378010a8e35e6e8a502ca77..9f0b6de11c0481cf7a8583ebbd7b28d7935eb5d1 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
 @@ -117,7 +117,7 @@ group("setup_runtime_deps") {
@@ -25,7 +25,7 @@ index e9b34c78999b00440378010a8e35e6e8a502ca77..5dbe33432e88c08ada5cea5b86be8e8f
      ldflags += [ "/ENTRY:MainEntryPoint" ]
    }
 -}
-+sources -= [packed_files_rc_file] sources += [invoker.packed_files_rc_file] if (defined(invoker.extra_deps)) { deps += invoker.extra_deps } }} mini_installer("mini_installer") { packed_files_rc_file = packed_files_rc_file } mini_installer("delta_installer") { packed_files_rc_file = "$target_gen_dir/packed_delta_files.rc" extra_deps = [ "//brave:delta_installer_archive" ] }
++sources -= [packed_files_rc_file] sources += [invoker.packed_files_rc_file] if (defined(invoker.extra_deps)) { deps += invoker.extra_deps } }} mini_installer("mini_installer") { packed_files_rc_file = packed_files_rc_file } mini_installer("delta_installer_unsigned") { packed_files_rc_file = "$target_gen_dir/packed_delta_files.rc" extra_deps = [ "//brave:delta_installer_archive" ] }
  
  # previous_version_mini_installer.exe can't be generated in an x86 Debug
  # component build because it requires too much memory.
