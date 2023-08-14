@@ -91,10 +91,8 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
 
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
   // Check that the metric is reported on startup.
-  // For some reason we record kNoSwitch twice, even though
-  // kDefaultSearchEngineMetric is only updated once at this point.
   histogram_tester_->ExpectUniqueSample(kSwitchSearchEngineMetric,
-                                        SearchEngineSwitchP3A::kNoSwitch, 2);
+                                        SearchEngineSwitchP3A::kNoSwitch, 1);
 
   // Load service for switching the default search engine.
   auto* service =
