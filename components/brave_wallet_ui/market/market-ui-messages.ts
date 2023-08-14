@@ -78,8 +78,13 @@ export const sendMessageToMarketUiFrame = (targetWindow: Window | null, message:
   }
 }
 
-export const sendMessageToWalletUi = (targetWindow: Window | null, message: MarketCommandMessage) => {
-  if (targetWindow) {
-    targetWindow.postMessage(message, braveWalletOrigin)
+export const sendMessageToWalletUi =
+  (
+    targetWindow: Window | null,
+    message: MarketCommandMessage,
+    origin: string
+  ) => {
+    if (targetWindow) {
+      targetWindow.postMessage(message, origin)
+    }
   }
-}
