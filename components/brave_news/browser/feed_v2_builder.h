@@ -43,6 +43,10 @@ class FeedV2Builder {
 
   void BuildFeedFromArticles(BuildFeedCallback callback);
 
+  raw_ref<PublishersController> publishers_controller_;
+  raw_ref<ChannelsController> channels_controller_;
+  raw_ref<PrefService> prefs_;
+
   FeedFetcher fetcher_;
   SignalCalculator signal_calculator_;
 

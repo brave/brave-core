@@ -6,6 +6,7 @@ import * as React from 'react';
 import { Discover as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import styled from 'styled-components';
 import Card from './Card';
+import { useInspectContext } from '../context';
 
 const Row = styled.div`
   display: flex;
@@ -19,9 +20,10 @@ interface Props {
 }
 
 export default function Component({ info }: Props) {
+  const { publishers } = useInspectContext();
   return <Row>
-    {info.publishers.map(p => <Card key={p.publisherId}>
-      {p.publisherName}
+    {info.publisherIds.map(p => <Card key={p}>
+      {publishers[p]?.publisherName}
     </Card>)}
   </Row>
 }

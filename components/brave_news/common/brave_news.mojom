@@ -151,7 +151,7 @@ union ArticleElements {
 };
 
 struct Discover {
-  array<Publisher> publishers;
+  array<string> publisher_ids;
 };
 
 struct Cluster {
