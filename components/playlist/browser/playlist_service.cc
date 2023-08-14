@@ -969,18 +969,19 @@ void PlaylistService::OnMediaFileDownloadFinished(
     bool update_media_src_and_retry_on_fail,
     DownloadMediaFileCallback callback,
     mojom::PlaylistItemPtr item,
-    const std::string& media_file_path,
-    int64_t received_bytes) {
+    const base::expected<
+        PlaylistMediaFileDownloadManager::DownloadResult,
+        PlaylistMediaFileDownloadManager::DownloadFailureReason>& result) {
   DCHECK(item);
   DCHECK(IsValidPlaylistItem(item->id));
 
-  VLOG(2) << __func__ << ": " << item->id << " result path" << media_file_path;
-
-  if (media_file_path.empty() && update_media_src_and_retry_on_fail) {
+  if (!result.has_value() &&
+      result.error() !=
+          PlaylistMediaFileDownloadManager::DownloadFailureReason::kCanceled &&
+      update_media_src_and_retry_on_fail) {
     VLOG(2) << __func__ << ": downloading " << item->id << " from "
             << item->media_source.spec()
             << " failed. Try updating media src and download";
-
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(&PlaylistService::RecoverLocalDataForItem,
                                   weak_factory_.GetWeakPtr(), item->id,
@@ -989,23 +990,30 @@ void PlaylistService::OnMediaFileDownloadFinished(
     return;
   }
 
+  auto media_file_path =
+      result.has_value() ? result.value().media_file_path : std::string();
+  auto received_bytes = result.has_value() ? result.value().received_bytes : 0;
+
+  VLOG(2) << __func__ << ": " << item->id << " result path" << media_file_path;
+
   // The item's other data could have been updated.
-  auto new_item = GetPlaylistItem(item->id);
-  new_item->cached = !media_file_path.empty();
-  if (new_item->cached) {
-    new_item->media_path = GURL("file://" + media_file_path);
+  item = GetPlaylistItem(item->id);
+
+  item->cached = !media_file_path.empty();
+  if (item->cached) {
+    item->media_path = GURL("file://" + media_file_path);
     if (received_bytes) {
-      new_item->media_file_bytes = received_bytes;
+      item->media_file_bytes = received_bytes;
     }
   }
-  UpdatePlaylistItemValue(new_item->id,
-                          base::Value(ConvertPlaylistItemToValue(new_item)));
-  NotifyPlaylistChanged(new_item->cached ? mojom::PlaylistEvent::kItemCached
-                                         : mojom::PlaylistEvent::kItemAborted,
-                        new_item->id);
+  UpdatePlaylistItemValue(item->id,
+                          base::Value(ConvertPlaylistItemToValue(item)));
+  NotifyPlaylistChanged(item->cached ? mojom::PlaylistEvent::kItemCached
+                                     : mojom::PlaylistEvent::kItemAborted,
+                        item->id);
 
   if (callback) {
-    std::move(callback).Run(new_item.Clone());
+    std::move(callback).Run(item.Clone());
   }
 }
 

@@ -139,6 +139,20 @@ void ShowRemovePlaylistDialog(content::WebContents* contents,
       playlist_id);
 }
 
+void ShowMoveItemsDialog(content::WebContents* contents,
+                         const std::string& playlist_id,
+                         const std::vector<std::string>& items) {
+  DVLOG(2) << __FUNCTION__;
+  PlaylistMoveDialog::MoveParam param;
+  param.service = playlist::PlaylistServiceFactory::GetForBrowserContext(
+      contents->GetBrowserContext());
+  param.playlist_id = playlist_id;
+  base::ranges::copy(items, std::back_inserter(param.items));
+
+  PlaylistActionDialog::Show<PlaylistMoveDialog>(
+      FindBrowserViewFromSidebarContents(contents), std::move(param));
+}
+
 }  // namespace playlist
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -322,15 +336,23 @@ void PlaylistMoveDialog::OnSavedItemsChanged(
   }
 }
 
+PlaylistMoveDialog::MoveParam::MoveParam() = default;
+PlaylistMoveDialog::MoveParam::MoveParam(MoveParam&&) = default;
+PlaylistMoveDialog::MoveParam& PlaylistMoveDialog::MoveParam::operator=(
+    MoveParam&&) = default;
+PlaylistMoveDialog::MoveParam::~MoveParam() = default;
+
 PlaylistMoveDialog::PlaylistMoveDialog(PassKey,
                                        playlist::PlaylistTabHelper* tab_helper)
-    : tab_helper_(tab_helper) {
+    : PlaylistMoveDialog(raw_ptr(tab_helper)) {}
+
+PlaylistMoveDialog::PlaylistMoveDialog(PassKey, MoveParam param)
+    : PlaylistMoveDialog(std::move(param)) {}
+
+PlaylistMoveDialog::PlaylistMoveDialog(
+    absl::variant<raw_ptr<playlist::PlaylistTabHelper>, MoveParam> source)
+    : source_(std::move(source)) {
   set_margins(gfx::Insets(24));
-
-  const auto& items = tab_helper_->saved_items();
-
-  DCHECK(items.size());
-  DCHECK(CanMoveItems(items));
 
   SetTitle(l10n_util::GetStringUTF16(IDS_PLAYLIST_MOVE_MEDIA_DIALOG_TITLE));
 
@@ -338,7 +360,18 @@ PlaylistMoveDialog::PlaylistMoveDialog(PassKey,
                        views::BoxLayout::Orientation::kVertical))
       ->set_between_child_spacing(24);
 
-  AddChildView(std::make_unique<TiledItemsView>(items));
+  if (is_from_tab_helper()) {
+    const auto& items = get_tab_helper()->saved_items();
+    DCHECK(items.size());
+    AddChildView(std::make_unique<TiledItemsView>(items));
+  } else {
+    auto service = get_move_param().service;
+    std::vector<playlist::mojom::PlaylistItemPtr> items;
+    for (const auto& item_id : get_move_param().items) {
+      items.push_back(service->GetPlaylistItem(item_id));
+    }
+    AddChildView(std::make_unique<TiledItemsView>(items));
+  }
 
   contents_container_ = AddChildView(std::make_unique<views::BoxLayoutView>());
   contents_container_->SetOrientation(views::BoxLayout::Orientation::kVertical);
@@ -347,7 +380,9 @@ PlaylistMoveDialog::PlaylistMoveDialog(PassKey,
 
   EnterChoosePlaylistMode();
 
-  tab_helper_observation_.Observe(tab_helper_);
+  if (is_from_tab_helper()) {
+    tab_helper_observation_.Observe(get_tab_helper());
+  }
 }
 
 PlaylistMoveDialog::~PlaylistMoveDialog() = default;
@@ -380,23 +415,30 @@ void PlaylistMoveDialog::EnterChoosePlaylistMode() {
   scroll_view->SetBorder(views::CreateThemedRoundedRectBorder(
       /*thickness=*/1,
       /*corner_radius=*/4.f, kColorBravePlaylistListBorder));
-
   list_view_ =
       scroll_view->SetContents(std::make_unique<SelectablePlaylistsView>(
-          tab_helper_->GetAllPlaylists(), base::DoNothing()));
-  const auto& items = tab_helper_->saved_items();
-  DCHECK_GE(items.size(), 1u);
-  DCHECK_EQ(items.front()->parents.size(), 1u);
+          is_from_tab_helper() ? get_tab_helper()->GetAllPlaylists()
+                               : get_move_param().service->GetAllPlaylists(),
+          base::DoNothing()));
 
-  std::string candidate_playlist_id = items.front()->parents.front();
-  if (items.size() > 1u &&
-      !std::all_of(items.begin() + 1, items.end(),
-                   [&candidate_playlist_id](const auto& item) {
-                     return item->parents.front() == candidate_playlist_id;
-                   })) {
-    // When items belong to different playlists, set the default playlist as
-    // candidate.
-    candidate_playlist_id = playlist::kDefaultPlaylistID;
+  std::string candidate_playlist_id;
+  if (is_from_tab_helper()) {
+    const auto& items = get_tab_helper()->saved_items();
+    DCHECK_GE(items.size(), 1u);
+    DCHECK_EQ(items.front()->parents.size(), 1u);
+
+    candidate_playlist_id = items.front()->parents.front();
+    if (items.size() > 1u &&
+        !std::all_of(items.begin() + 1, items.end(),
+                     [&candidate_playlist_id](const auto& item) {
+                       return item->parents.front() == candidate_playlist_id;
+                     })) {
+      // When items belong to different playlists, set the default playlist as
+      // candidate.
+      candidate_playlist_id = playlist::kDefaultPlaylistID;
+    }
+  } else {
+    candidate_playlist_id = get_move_param().playlist_id;
   }
   list_view_->SetSelected({candidate_playlist_id});
 
@@ -470,30 +512,70 @@ void PlaylistMoveDialog::OnMoveToPlaylist() {
   auto selected = list_view_->GetSelected();
   DCHECK_EQ(selected.size(), 1u);
 
-  // Before doing operation, reset observation so that we don't try to rebuild
-  // views. It's okay because this view is about to be closed.
-  tab_helper_observation_.Reset();
-
-  std::vector<playlist::mojom::PlaylistItemPtr> items;
-  base::ranges::transform(tab_helper_->saved_items(), std::back_inserter(items),
-                          [](const auto& item) { return item->Clone(); });
-  tab_helper_->MoveItems(std::move(items), selected.front()->Clone());
+  if (is_from_tab_helper()) {
+    // Before doing operation, reset observation so that we don't try to
+    // rebuild views. It's okay because this view is about to be closed.
+    tab_helper_observation_.Reset();
+    std::vector<playlist::mojom::PlaylistItemPtr> items;
+    base::ranges::transform(get_tab_helper()->saved_items(),
+                            std::back_inserter(items),
+                            [](const auto& item) { return item->Clone(); });
+    get_tab_helper()->MoveItems(std::move(items), selected.front()->Clone());
+  } else {
+    auto& move_param = get_move_param();
+    for (const auto& item_id : move_param.items) {
+      move_param.service->MoveItem(
+          move_param.playlist_id,
+          /* to_playlist_id= */ selected.front()->id.value(), item_id);
+    }
+  }
 }
 
 void PlaylistMoveDialog::OnCreatePlaylistAndMove() {
   DCHECK(new_playlist_name_textfield_ &&
          new_playlist_name_textfield_->GetText().size());
 
-  // Before doing operation, reset observation so that we don't try to rebuild
-  // views. It's okay because this view is about to be closed.
-  tab_helper_observation_.Reset();
+  if (is_from_tab_helper()) {
+    // Before doing operation, reset observation so that we don't try to
+    // rebuild views. It's okay because this view is about to be closed.
+    tab_helper_observation_.Reset();
 
-  std::vector<playlist::mojom::PlaylistItemPtr> items;
-  base::ranges::transform(tab_helper_->saved_items(), std::back_inserter(items),
-                          [](const auto& item) { return item->Clone(); });
-  tab_helper_->MoveItemsToNewPlaylist(
-      std::move(items),
-      base::UTF16ToUTF8(new_playlist_name_textfield_->GetText()));
+    std::vector<playlist::mojom::PlaylistItemPtr> items;
+    base::ranges::transform(get_tab_helper()->saved_items(),
+                            std::back_inserter(items),
+                            [](const auto& item) { return item->Clone(); });
+    get_tab_helper()->MoveItemsToNewPlaylist(
+        std::move(items),
+        base::UTF16ToUTF8(new_playlist_name_textfield_->GetText()));
+  } else {
+    auto service = get_move_param().service;
+    auto on_create_playlist = base::BindOnce(
+        [](MoveParam param, base::WeakPtr<playlist::PlaylistService> service,
+           playlist::mojom::PlaylistPtr target_playlist) {
+          if (!service) {
+            return;
+          }
+
+          if (!target_playlist) {
+            LOG(ERROR) << "Failed to create a new playlist before moving items "
+                          "to it";
+            return;
+          }
+
+          for (const auto& item_id : param.items) {
+            service->MoveItem(param.playlist_id,
+                              /* to_playlist_id= */ target_playlist->id.value(),
+                              item_id);
+          }
+        },
+        std::move(get_move_param()), service->GetWeakPtr());
+
+    auto new_playlist = playlist::mojom::Playlist::New();
+    new_playlist->name =
+        base::UTF16ToUTF8(new_playlist_name_textfield_->GetText());
+    service->CreatePlaylist(std::move(new_playlist),
+                            std::move(on_create_playlist));
+  }
 }
 
 BEGIN_METADATA(PlaylistMoveDialog, PlaylistActionDialog)
@@ -524,11 +606,11 @@ PlaylistRemovePlaylistConfirmDialog::PlaylistRemovePlaylistConfirmDialog(
   if (description->GetPreferredSize().width() > kDescriptionMaxWidth) {
     description->SetMaximumWidthSingleLine(kDescriptionMaxWidth);
     description->SetMultiLine(true);
-    // As views::Label::CalculatePreferred() size depends on the current width
-    // of it, sets default size so that we can get proper size. If line breaking
-    // makes the preferred size smaller than kDescriptionMaxWidth,
-    // the description will be resized based on that by the non client frame
-    // view.
+    // As views::Label::CalculatePreferred() size depends on the current
+    // width of it, sets default size so that we can get proper size. If
+    // line breaking makes the preferred size smaller than
+    // kDescriptionMaxWidth, the description will be resized based on
+    // that by the non client frame view.
     description->SetSize({kDescriptionMaxWidth, 0});
   }
 

@@ -49,6 +49,7 @@ export default function PlaylistPlayer ({
       {playlist?.items.map(item => (
         <PlaylistItem
           key={item.id}
+          playlist={playlist}
           item={item}
           onClick={() =>
             postMessageToPlayer({

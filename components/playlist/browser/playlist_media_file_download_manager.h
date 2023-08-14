@@ -11,6 +11,7 @@
 
 #include "base/containers/queue.h"
 #include "base/gtest_prod_util.h"
+#include "base/types/expected.h"
 #include "brave/components/playlist/browser/playlist_media_file_downloader.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 
@@ -27,6 +28,16 @@ namespace playlist {
 class PlaylistMediaFileDownloadManager
     : public PlaylistMediaFileDownloader::Delegate {
  public:
+  struct DownloadResult {
+    std::string media_file_path;
+    int64_t received_bytes = 0;
+  };
+
+  enum class DownloadFailureReason {
+    kFailed,
+    kCanceled,
+  };
+
   struct DownloadJob {
     // This struct is move-only type.
     DownloadJob();
@@ -47,9 +58,9 @@ class PlaylistMediaFileDownloadManager
 
     // If the manage fails to download file, the |media_file_path| will be
     // empty.
-    base::OnceCallback<void(mojom::PlaylistItemPtr item,
-                            const std::string& media_file_path,
-                            int64_t received_bytes)>
+    base::OnceCallback<void(
+        mojom::PlaylistItemPtr item,
+        const base::expected<DownloadResult, DownloadFailureReason>& result)>
         on_finish_callback;
   };
 

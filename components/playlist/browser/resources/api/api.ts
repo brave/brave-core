@@ -65,6 +65,10 @@ class API {
     )
   }
 
+  moveItemFromPlaylist (playlistId: string, itemId: string[]) {
+    this.#nativeUI.showMoveItemsUI(playlistId, itemId)
+  }
+
   removeItemFromPlaylist (playlistId: string, itemId: string) {
     this.#pageHandler.removeItemFromPlaylist(playlistId, itemId)
   }
