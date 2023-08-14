@@ -213,8 +213,6 @@ void UnitTestBase::Initialize() {
       GetWalletForTesting(),  // IN-TEST
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
-  // Fast forward until no tasks remain to ensure
-  // "EnsureSqliteInitialized" tasks have fired before running tests.
   task_environment_.FastForwardUntilNoTasksRemain();
 }
 
