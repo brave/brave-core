@@ -116,7 +116,7 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
 
 // Generates a standard block:
 // 1. Hero Article
-// 2. 1 - 5 following articles
+// 2. 1 - 5 Inline Articles (a percentage of which might be discover cards).
 std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
     std::vector<mojom::FeedItemMetadataPtr>& articles,
     const Signals& signals) {
@@ -136,6 +136,8 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
 
   auto follow_count = base::RandInt(kBlockInlineMin, kBlockInlineMax);
   for (auto i = 0; i < follow_count; ++i) {
+    // TODO: 1/discover ratio % of the time, we should do a discover card here,
+    // instead of a roulette card.
     auto generated = PickRouletteAndRemove(articles, signals);
     if (!generated) {
       continue;
@@ -147,6 +149,11 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
   return result;
 }
 
+// Generates a Channel Block
+// 1 Hero Articles (from the channel)
+// 1 - 5 Inline Articles (from the channel)
+// This function is the same as GenerateBlock, except that the available
+// articles are filtered to only be from the specified channel.
 std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
     std::vector<mojom::FeedItemMetadataPtr>& articles,
     const Signals& signals,
@@ -211,6 +218,11 @@ std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
   return result;
 }
 
+// Generates a "Special Block" this will be one of the following:
+// 1. An advert, if we have one
+// 2. A "Discover" entry, which suggests some more publishers for the user to
+// subscribe to.
+// 3. Nothing.
 std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
     std::vector<std::string>& suggested_publisher_ids) {
   DVLOG(1) << __FUNCTION__;
@@ -353,9 +365,6 @@ void FeedV2Builder::BuildFeedFromArticles(BuildFeedCallback callback) {
 
   // Make a copy of these - we're going to edit the copy to prevent duplicates.
   std::vector<std::string> suggested_publisher_ids = suggested_publisher_ids_;
-  LOG(ERROR) << "Have " << suggested_publisher_ids.size()
-             << " suggested publishers";
-
   auto feed = mojom::FeedV2::New();
 
   std::vector<mojom::FeedItemMetadataPtr> articles;
@@ -387,8 +396,8 @@ void FeedV2Builder::BuildFeedFromArticles(BuildFeedCallback callback) {
 
   // Step 2: Generate a top news block
   // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.7z05nb4b269d
-  auto top_news_block =
-      GenerateChannelBlock(articles, signals_, publishers, "Top News", locale);
+  auto top_news_block = GenerateChannelBlock(articles, signals_, publishers,
+                                             kTopNewsChannel, locale);
   add_items(top_news_block);
 
   // Repeat step 3 - 5 until we don't have any more articles to add to the feed.

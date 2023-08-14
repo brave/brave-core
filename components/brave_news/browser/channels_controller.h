@@ -25,6 +25,7 @@ using Channels = base::flat_map<std::string, mojom::ChannelPtr>;
 using ChannelsCallback = base::OnceCallback<void(Channels)>;
 
 constexpr char kTopSourcesChannel[] = "Top Sources";
+constexpr char kTopNewsChannel[] = "Top News";
 
 class ChannelsController : public PublishersController::Observer {
  public:
