@@ -21,13 +21,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.Toolbar
+            <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/wallet_toolbar_bg_color"
                 android:translationZ="10dp"
-                app:collapseIcon="@drawable/ic_baseline_arrow_back_24"
+                app:title="@string/wallet"
+                app:titleCentered="true"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:titleTextColor="@color/wallet_text_color" />
         </com.google.android.material.appbar.AppBarLayout>

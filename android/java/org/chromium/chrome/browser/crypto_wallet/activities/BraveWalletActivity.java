@@ -23,10 +23,11 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.appbar.MaterialToolbar;
 
 import org.chromium.base.ActivityState;
 import org.chromium.base.ApplicationStatus;
@@ -69,7 +70,7 @@ import java.util.List;
 public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNextPage {
     private static final String TAG = "BWalletBaseActivity";
 
-    private Toolbar mToolbar;
+    private MaterialToolbar mToolbar;
 
     private View mCryptoLayout;
     private View mCryptoOnboardingLayout;
@@ -123,8 +124,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         }
         mShowBiometricPrompt = true;
         mToolbar = findViewById(R.id.toolbar);
-        mToolbar.setTitleTextColor(getResources().getColor(android.R.color.black));
-        mToolbar.setTitle("");
         mToolbar.setOverflowIcon(
                 ContextCompat.getDrawable(this, R.drawable.ic_baseline_more_vert_24));
         setSupportActionBar(mToolbar);
