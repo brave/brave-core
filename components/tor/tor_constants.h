@@ -14,7 +14,6 @@ namespace tor {
 extern const base::FilePath::CharType kTorProfileDir[];
 
 constexpr char kTorProfileID[] = "Tor::Profile";
-constexpr char kOnionDomain[] = "onion";
 
 }  // namespace tor
 

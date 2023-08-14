@@ -5,8 +5,8 @@
 
 #include "brave/components/tor/renderer/onion_domain_throttle.h"
 
-#include "brave/components/tor/tor_constants.h"
 #include "net/base/net_errors.h"
+#include "net/base/url_util.h"
 #include "services/network/public/cpp/resource_request.h"
 
 namespace tor {
@@ -20,7 +20,7 @@ OnionDomainThrottle::~OnionDomainThrottle() = default;
 void OnionDomainThrottle::WillStartRequest(network::ResourceRequest* request,
                                            bool* defer) {
   bool is_tor = read_is_tor_cb_.Run();
-  if (!is_tor && request->url.DomainIs(kOnionDomain)) {
+  if (!is_tor && net::IsOnion(request->url)) {
     delegate_->CancelWithError(net::ERR_BLOCKED_BY_CLIENT);
   }
 }

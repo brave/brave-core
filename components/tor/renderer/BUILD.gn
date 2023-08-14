@@ -14,7 +14,6 @@ source_set("renderer") {
   ]
 
   deps = [
-    "//brave/components/tor:common",
     "//net",
     "//services/network/public/cpp",
     "//third_party/blink/public/common",
