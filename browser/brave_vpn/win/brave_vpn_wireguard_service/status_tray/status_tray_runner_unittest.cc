@@ -7,11 +7,8 @@
 
 #include <memory>
 
-#include "base/files/file_util.h"
-#include "base/path_service.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/brave_vpn_tray_command_ids.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/tray_menu_model.h"
-#include "brave/components/constants/brave_paths.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/models/simple_menu_model.h"
 
@@ -69,24 +66,6 @@ TEST_F(StatusTrayRunnerTest, RebuildMenu) {
   StatusTrayRunner::GetInstance()->SetTunnelServiceRunningForTesting(true);
   menu_model.MenuWillShow();
   CheckConnectedMenuState(&menu_model);
-}
-
-TEST_F(StatusTrayRunnerTest, FindPakPath) {
-  base::FilePath test_data_dir;
-  base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-  base::FilePath wireguard = test_data_dir.Append(L"wireguard");
-  // Looking to upper directory.
-  EXPECT_EQ(StatusTrayRunner::GetInstance()->FindPakFilePath(
-                wireguard.Append(L"BraveVpnWireguardService"), "en-US"),
-            base::FilePath(wireguard.Append(L"Locales").Append(L"en-US.pak")));
-  // Looking to current directory.
-  EXPECT_EQ(
-      StatusTrayRunner::GetInstance()->FindPakFilePath(wireguard, "en-US"),
-      base::FilePath(wireguard.Append(L"Locales").Append(L"en-US.pak")));
-  // Fallback to english locale.
-  EXPECT_EQ(
-      StatusTrayRunner::GetInstance()->FindPakFilePath(wireguard, "de-DE"),
-      base::FilePath(wireguard.Append(L"Locales").Append(L"en-US.pak")));
 }
 
 }  // namespace brave_vpn

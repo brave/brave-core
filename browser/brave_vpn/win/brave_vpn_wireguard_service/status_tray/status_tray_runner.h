@@ -16,10 +16,6 @@
 #include "brave/components/brave_vpn/common/win/brave_windows_service_watcher.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace base {
-class FilePath;
-}  // namespace base
-
 namespace ui {
 class SimpleMenuModel;
 }  // namespace ui
@@ -49,9 +45,6 @@ class StatusTrayRunner : public TrayMenuModel::Delegate {
   StatusTrayRunner();
   ~StatusTrayRunner() override;
 
-  base::FilePath FindPakFilePath(const base::FilePath& assets_path,
-                                 const std::string& locale);
-  void LoadLocaleResources();
   bool IsTunnelServiceRunning() const;
   void SetupStatusIcon();
   void SignalExit();

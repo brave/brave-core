@@ -330,6 +330,12 @@ Let's get you connected!
     <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_DISCONNECT_ITEM" desc="Title of the system tray menu item for disconnect command.">
       Disconnect
     </message>
+    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_NOTIFICATION_CONNECTED" desc="Notification message of the system tray notification when vpn connected.">
+      Brave VPN - Connected
+    </message>
+    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_NOTIFICATION_DISCONNECTED" desc="Notification message of the system tray notification when vpn disconnected.">
+      Brave VPN - Disconnected
+    </message>
     <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_MANAGE_ACCOUNT_ITEM" desc="Title of the system tray menu item for the command to open an account page in the browser.">
       Manage Account
     </message>        

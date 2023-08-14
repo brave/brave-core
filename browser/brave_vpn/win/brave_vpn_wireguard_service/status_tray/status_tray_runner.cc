@@ -14,12 +14,8 @@
 #include <string>
 #include <utility>
 
-#include "base/files/file_util.h"
-#include "base/i18n/rtl.h"
 #include "base/logging.h"
-#include "base/path_service.h"
 #include "base/run_loop.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/task/single_thread_task_executor.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/brave_vpn_tray_command_ids.h"
@@ -35,20 +31,11 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/simple_menu_model.h"
-#include "ui/base/resource/resource_bundle.h"
 #include "ui/native_theme/native_theme.h"
 
 namespace brave_vpn {
 
 namespace {
-
-base::FilePath GetResourcesPakFilePath(base::FilePath assets_path,
-                                       const std::string& locale) {
-  auto pak_path = assets_path;
-  pak_path = pak_path.AppendASCII("Locales");
-  pak_path = pak_path.AppendASCII(locale + ".pak");
-  return pak_path;
-}
 
 void OpenURLInBrowser(const char* url) {
   if (reinterpret_cast<ULONG_PTR>(
@@ -237,32 +224,6 @@ void StatusTrayRunner::SubscribeForStorageUpdates() {
       &StatusTrayRunner::OnStorageUpdated, weak_factory_.GetWeakPtr()));
 }
 
-base::FilePath StatusTrayRunner::FindPakFilePath(
-    const base::FilePath& assets_path,
-    const std::string& locale) {
-  auto pak_path = GetResourcesPakFilePath(assets_path.DirName(), locale);
-  if (base::PathExists(pak_path)) {
-    return pak_path;
-  }
-  pak_path = GetResourcesPakFilePath(assets_path, locale);
-  if (base::PathExists(pak_path)) {
-    return pak_path;
-  }
-  if (locale != "en-US") {
-    return FindPakFilePath(assets_path, "en-US");
-  }
-  NOTREACHED_NORETURN();
-}
-
-void StatusTrayRunner::LoadLocaleResources() {
-  base::FilePath assets_path;
-  base::PathService::Get(base::DIR_ASSETS, &assets_path);
-  auto pak_path =
-      FindPakFilePath(assets_path, base::i18n::GetConfiguredLocale());
-  DCHECK(base::PathExists(pak_path));
-  ui::ResourceBundle::InitSharedInstanceWithPakPath(pak_path);
-}
-
 HRESULT StatusTrayRunner::Run() {
   if (!wireguard::GetLastUsedConfigPath().has_value()) {
     VLOG(1) << "Last used config not found.";
@@ -285,7 +246,7 @@ HRESULT StatusTrayRunner::Run() {
   base::SingleThreadTaskExecutor task_executor(base::MessagePumpType::UI);
   base::ThreadPoolInstance::CreateAndStartWithDefaultParams(
       "Brave VPN Wireguard status tray process");
-  LoadLocaleResources();
+
   SetupStatusIcon();
   SubscribeForStorageUpdates();
 

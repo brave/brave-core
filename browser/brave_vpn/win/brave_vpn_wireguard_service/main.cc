@@ -8,10 +8,12 @@
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/process/memory.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/win/process_startup_helper.h"
 #include "base/win/scoped_com_initializer.h"
 #include "base/win/windows_types.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/brave_wireguard_service_crash_reporter_client.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/resources/resource_loader.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/install_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_service_runner.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_tunnel_service.h"
@@ -22,12 +24,31 @@
 #include "components/crash/core/app/crashpad.h"
 #include "components/crash/core/app/fallback_crash_handling_win.h"
 #include "components/crash/core/app/run_as_crashpad_handler_win.h"
+#include "components/grit/brave_components_strings.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 const char kUserDataDir[] = "user-data-dir";
 const char kProcessType[] = "type";
 const char kLogFile[] = "log-file";
 }  // namespace
+
+// List of commands executed on user level and interacting with users.
+absl::optional<int> ProcessUserLevelCommands(
+    const base::CommandLine& command_line) {
+  brave_vpn::LoadLocaleResources();
+  // User level command line. In this mode creates an invisible window and sets
+  // an icon in the status tray to interact with the user. The icon shows a
+  // pop-up menu to control the connection of the Wireguard VPN without
+  // interacting with the browser.
+  if (command_line.HasSwitch(
+          brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName)) {
+    return brave_vpn::StatusTrayRunner::GetInstance()->Run();
+  }
+
+  return absl::nullopt;
+}
 
 int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE prev, wchar_t*, int) {
   // Initialize the CommandLine singleton from the environment.
@@ -78,14 +99,6 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE prev, wchar_t*, int) {
     PLOG(ERROR) << "Failed to initialize COM";
     return -1;
   }
-  // User level command line. In this mode creates an invisible window and sets
-  // an icon in the status tray to interact with the user. The icon shows a
-  // pop-up menu to control the connection of the Wireguard VPN without
-  // interacting with the browser.
-  if (command_line->HasSwitch(
-          brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName)) {
-    return brave_vpn::StatusTrayRunner::GetInstance()->Run();
-  }
 
   // System level command line. In this mode, loads the tunnel.dll and passes it
   // the path to the config. all control of the service is given to tunnel.dll,
@@ -113,6 +126,10 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE prev, wchar_t*, int) {
     return success ? 0 : 1;
   }
 
+  auto result = ProcessUserLevelCommands(*command_line);
+  if (result.has_value()) {
+    return result.value();
+  }
   // Runs BraveVpnWireguardService, called by system SCM.
   return brave_vpn::WireguardServiceRunner::GetInstance()->RunAsService();
 }

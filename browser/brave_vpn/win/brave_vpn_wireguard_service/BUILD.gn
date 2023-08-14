@@ -46,17 +46,20 @@ executable("brave_vpn_wireguard_service") {
   deps = [
     ":brave_vpn_wireguard_binaries",
     ":version_resources",
+    "resources",
     "service",
     "status_tray",
     "//base",
     "//base:base_static",
     "//brave/components/brave_vpn/common/wireguard/win",
+    "//brave/components/resources:strings_grit",
     "//build/win:default_exe_manifest",
     "//chrome/install_static:install_static_util",
     "//components/crash/core/app",
     "//components/crash/core/app:crash_export_thunks",
     "//components/crash/core/app:run_as_crashpad_handler",
     "//components/version_info:channel",
+    "//third_party/abseil-cpp:absl",
   ]
 
   public_configs = [ "//build/config/win:windowed" ]
@@ -71,4 +74,12 @@ process_version_rc_template("version_resources") {
   sources = [ "brave_vpn_wireguard_service.ver" ]
 
   output = "$target_gen_dir/brave_vpn_wireguard_service.rc"
+}
+
+group("unit_tests") {
+  testonly = true
+  deps = [
+    "resources:unit_tests",
+    "status_tray:unit_tests",
+  ]
 }
