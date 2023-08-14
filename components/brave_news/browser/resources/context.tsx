@@ -19,8 +19,6 @@ export interface InspectContext {
   channels: { [key: string]: Channel },
   page: Page,
   setPage: (page: Page) => void,
-  locale: string,
-  setLocale: (locale: string) => void
 }
 
 export const api = BraveNewsController.getRemote();
@@ -30,8 +28,6 @@ const Context = React.createContext<InspectContext>({
   channels: {},
   page: 'feed',
   setPage: () => { },
-  locale: 'en_US',
-  setLocale: () => { },
   feed: undefined,
 })
 
@@ -44,17 +40,14 @@ export default function InspectContext(props: React.PropsWithChildren<{}>) {
   const { result: channels } = usePromise(() => api.getChannels().then(c => c.channels as { [key: string]: Channel }), [])
   const { result: feed } = usePromise(() => api.getFeedV2().then(r => r.feed ), [])
   const [page, setPage] = React.useState<Page>('feed')
-  const [locale, setLocale] = React.useState<string>('en_US')
 
   const context = React.useMemo<InspectContext>(() => ({
     publishers: publishers ?? {},
     channels: channels ?? {},
     page,
     setPage,
-    locale,
-    setLocale,
     feed
-  }), [publishers, channels, page, locale, feed])
+  }), [publishers, channels, page, feed])
 
   return <Context.Provider value={context}>
     {props.children}
