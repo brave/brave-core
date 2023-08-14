@@ -71,6 +71,12 @@ const App = () => {
   const [depositableAssets, setDepositableAssets] = React.useState<BraveWallet.BlockchainToken[]>([])
   const [defaultCurrencies, setDefaultCurrencies] = React.useState<DefaultCurrencies>()
 
+  // Constants
+  const origin =
+    window.location.ancestorOrigins[0] === braveWalletPanelOrigin
+      ? braveWalletPanelOrigin
+      : braveWalletOrigin
+
   // Memos
   const visibleCoinMarkets = React.useMemo(() => {
     const searchResults = searchTerm === '' ? coinMarkets : searchCoinMarkets(coinMarkets, searchTerm)
@@ -92,16 +98,16 @@ const App = () => {
       command: MarketUiCommand.SelectBuy,
       payload: coinMarket
     }
-    sendMessageToWalletUi(parent, message)
-  }, [])
+    sendMessageToWalletUi(parent, message, origin)
+  }, [origin])
 
   const onClickDeposit = React.useCallback((coinMarket: BraveWallet.CoinMarket) => {
     const message: SelectDepositMessage = {
       command: MarketUiCommand.SelectDeposit,
       payload: coinMarket
     }
-    sendMessageToWalletUi(parent, message)
-  }, [])
+    sendMessageToWalletUi(parent, message, origin)
+  }, [origin])
 
   const onUpdateIframeHeight = React.useCallback(
     (height: number) => {
@@ -109,8 +115,8 @@ const App = () => {
         command: MarketUiCommand.UpdateIframeHeight,
         payload: height
       }
-      sendMessageToWalletUi(parent, message)
-    }, [])
+      sendMessageToWalletUi(parent, message, origin)
+    }, [origin])
 
   const onSelectFilter = (value: MarketAssetFilterOption) => {
     setCurrentFilter(value)
@@ -158,8 +164,8 @@ const App = () => {
       command: MarketUiCommand.SelectCoinMarket,
       payload: coinMarket
     }
-    sendMessageToWalletUi(parent, message)
-  }, [])
+    sendMessageToWalletUi(parent, message, origin)
+  }, [origin])
 
   // Effects
   React.useEffect(() => {
