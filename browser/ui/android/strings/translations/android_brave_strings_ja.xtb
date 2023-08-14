@@ -1,7 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ja">
+<translation id="885805571521218129">これは、今月のBrave広告の推定収益範囲を反映しています。</translation>
 <translation id="3478449063771497234">通知は無効です</translation>
+<translation id="370665806235115550">Loading...</translation>
 <translation id="8220484609979012449">\n\nWeb3ウォレットを使用すれば、このクリエイターに暗号通貨で支援を送ることができます。</translation>
 <translation id="6385969012847057348">このクリエイターは<ph name="CUSTODIAN"/>からの支援を受け取ることができません。</translation>
 <translation id="6268134562674951939">トークンが不足しています</translation>
@@ -40,6 +42,8 @@
 <translation id="4748689412569009273">Braveでの体験を1つの絵文字で表現すると？</translation>
 <translation id="7335142069363686805">今すぐ評価</translation>
 <translation id="6681362094306959654">Braveをリンクしますか？</translation>
+<translation id="8041093619605951337">満足</translation>
+<translation id="6826743502395386800">不満</translation>
 <translation id="5488843227043643519">Play Storeに評価を登録しますか？</translation>
 <translation id="5867854497245948308">フィードバックありがとうございます！</translation>
 <translation id="4935400164159327304">Braveをどのように改善できるかについてご意見をお聞かせください。</translation>
@@ -73,7 +77,7 @@
 <translation id="1118970888826017401">トップレベルのリダイレクト追跡URLのバイパスに対するサポートを有効にします</translation>
 <translation id="94154759592465111">スクリプトをブロックする</translation>
 <translation id="7714773920987474116">JavaScript をブロック（サイト破損の可能性あり）</translation>
-<translation id="1660979054779793659">YouTube</translation>
+<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">YouTubeのおすすめコンテンツをブロック</translation>
 <translation id="1005372663692637999">youtube.comで自動再生とエンドカードをブロック</translation>
 <translation id="5152595963250646670">YouTubeの表示要素をブロック</translation>
@@ -136,11 +140,6 @@
 <translation id="1276592121036104130">新しいコンテンツを読み込む</translation>
 <translation id="3189348785087463371">プロモーション</translation>
 <translation id="7554145152551782675">その他のBraveオファー</translation>
-<translation id="1717242776111689224">Braveニュースを有効にする</translation>
-<translation id="4732255422524275223">ソース</translation>
-<translation id="152579389256498990">フィードまたはサイトURL</translation>
-<translation id="4975944254857623648">デフォルトのソース</translation>
-<translation id="253886574765651454">ソースを追加</translation>
 <translation id="254100925533869330">コンテンツがありません</translation>
 <translation id="7172792761509429092">Braveニュースには、表示するコンテンツがありません</translation>
 <translation id="1771307734839364850">コンテンツのソースを選択</translation>
@@ -152,6 +151,8 @@
 <translation id="6686219838158572786">すべての接続に HTTPS を使用することを要求する（厳格）</translation>
 <translation id="4221284400051835823">可能な限りHTTPSにアップグレードする（デフォルト）</translation>
 <translation id="4690906712010847708">接続をHTTPSにアップグレードしない（無効）</translation>
+<translation id="693506469193748756">このサイトを閉じる際にデータを削除</translation>
+<translation id="6975864539539353406">サイトを閉じる際に、Cookieやその他のサイトデータを消去します</translation>
 <translation id="1680858055899097121">セッション間でタブを保持しない</translation>
 <translation id="7142548388914389999">プライバシーを保護したプロダクト分析 (P3A) を許可する</translation>
 <translation id="5254037869598726291">匿名化されたP3A情報は、Braveが全体的な使用状況を推定し、よく使われている機能を改善するために役立ちます。</translation>
@@ -180,6 +181,7 @@
 <translation id="8308305244351876417">Braveの他のタブや他のアプリに切り替えたり、デバイスの画面がオフの状態でもオーディオを再生できるようにします。</translation>
 <translation id="4150201353443180367">表示</translation>
 <translation id="2433507940547922241">デザイン</translation>
+<translation id="9040069796107003510">Braveリワードアイコン</translation>
 <translation id="6333347122924254968">アドレスバーにBraveリワードのアイコンを表示</translation>
 <translation id="8495235435594442882">下部のツールバーを有効にします</translation>
 <translation id="6587448235155023666">変更は、次にBraveを再起動した際に有効になります</translation>
@@ -252,13 +254,13 @@
 <translation id="4254029385847607686">12月</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
-<translation id="7760215798627399379"><ph name="VALUE"/>米ドル</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> 米ドル</translation>
 <translation id="8428213095426709021">設定</translation>
 <translation id="6020176662032623904">認証済</translation>
 <translation id="2369994359029526515">未認証</translation>
 <translation id="6112368337882254910">自動支援</translation>
 <translation id="7861645265922445992">リワードを受け取る</translation>
-<translation id="8494748383523030337">残高</translation>
+<translation id="1848737374354350807">残高:</translation>
 <translation id="4781696154289395607">あなたは<ph name="BAT_VALUE"/> BATを寄付しました。</translation>
 <translation id="2429828319207652823">支援の実行中に問題が発生しました。</translation>
 <translation id="2221902203895354376">トークンの付与が可能です！</translation>
@@ -322,8 +324,8 @@
 <translation id="8185825081026121627">プライバシーを重視するBrave Rewardsの広告を表示してBATポイントを獲得しましょう！</translation>
 <translation id="5321518976657560663">リセットエラー</translation>
 <translation id="4114170343590425996">Brave Rewards のリセット中にエラーが発生しました。Braveを再起動してもう一度お試しください。</translation>
-<translation id="6393502589311632553">Braveを使用していない時にも広告を表示</translation>
-<translation id="3349204812119681938">Brave Rewards をリセット</translation>
+<translation id="6417420737057016607">Brave広告</translation>
+<translation id="5611966874859284786">Braveが使用されていないときに通知広告を表示します</translation>
 <translation id="6606319453795180219">これにより、Brave Rewardsが削除され、「Brave Rewards」データがすべてリセットされます</translation>
 <translation id="8293206222192510085">ブックマークに追加</translation>
 <translation id="340492034650766959">ブックマークを削除</translation>
@@ -456,6 +458,7 @@
 <translation id="8903462729414407077">毎週のアップデートを利用</translation>
 <translation id="7450323860390658083">どのプライバシーウェブサイトにアクセスしているが通知されます。\n\nこれらのプライバシー統計情報を閲覧できるのはあなただけです。個人データや閲覧履歴によって、Braveブラウザがデバイスに残ることはありません。</translation>
 <translation id="6170159749517116894">プライバシーレポートをONにする</translation>
+<translation id="1669047024429367828">公開範囲</translation>
 <translation id="5966707198760109579">週</translation>
 <translation id="8987927404178983737">月</translation>
 <translation id="4302754476737420523">3か月</translation>
@@ -509,6 +512,7 @@
 <translation id="8235783939971604011">チッピングは、あなたが好きなコンテンツやクリエイターを個人的に応援し、サポートする方法の1つです。チッピングしよう！</translation>
 <translation id="4215679190414901888">最後に、設定を行いましょう</translation>
 <translation id="3494356595346329740">これを後で変更できます。</translation>
+<translation id="3286390186030710347">スライダー</translation>
 <translation id="3115702351969988294">どれくらいの頻度で広告を見たいですか。</translation>
 <translation id="2353222426385080466">プライベート広告が増えるとリワードが追加されます</translation>
 <translation id="1201128255476890443">広告<ph name="ADS_PER_HOUR"/>件 / 時</translation>
@@ -533,6 +537,7 @@
 <translation id="5187052478998910855">Rewardsについておさらいが必要ですか？</translation>
 <translation id="8622329973403382303">クイックツアーをご覧になり、Rewardsの達人として歴史に名を残すための仕組みをマスターしてください！</translation>
 <translation id="3479552764303398839">後で</translation>
+<translation id="7138272885617540195">Brave外のアプリでアプリのリンクを開くことを許可</translation>
 <translation id="8792121506918889955">WebRTC IP処理ポリシー</translation>
 <translation id="8798099450830957504">既定</translation>
 <translation id="1822560017823072927">デフォルトのパブリックインターフェイスとプライベートインターフェイス</translation>
@@ -557,7 +562,6 @@
 <translation id="8289942708804097960">クレジットカードまたはデビットカードで暗号資産を購入しましょう。</translation>
 <translation id="841880029259839903">あるアカウントから別のアカウントへ暗号資産を送信また転送できます。</translation>
 <translation id="8226778393040773102">トークンとアセットをスワップ</translation>
-<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/>は、取引を遂行するためにイーサリアムアドレスとIPアドレスを処理します (見積もりの取得を含みます)。 <ph name="DEX_PROVIDER"/>は、取引を処理する目的でのみこのデータを使用します。</translation>
 <translation id="1783600039044302171">暗号資産をパスワードで保護</translation>
 <translation id="3726490322412361740">パスワードを入力してください</translation>
 <translation id="3038243139480464605">パスワードを確認</translation>
@@ -598,7 +602,6 @@
 <translation id="1144810021918451336">危険なウェブサイト、ダウンロード、拡張機能からの保護を無効にする</translation>
 <translation id="5760476995887363522">フレーズが一致しません。もう一度お試しください。</translation>
 <translation id="2360588547830602174">アカウントの復元に失敗しました。もう一度お試しください。</translation>
-<translation id="6392640873800632439"><ph name="ASSET"/> の市場価格</translation>
 <translation id="6748108480210050150">送信元</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -608,7 +611,6 @@
 <translation id="2589431635772931954">アドレスまたはURL</translation>
 <translation id="5517732667776806421">チェックサム情報がありません</translation>
 <translation id="4006711930669471508">チェックサム情報が無効です</translation>
-<translation id="632241521608275119">価格変動の許容値</translation>
 <translation id="1987317783729300807">アカウント</translation>
 <translation id="3535654229833214438">取引</translation>
 <translation id="2449682593754783720">1時間</translation>
@@ -750,6 +752,11 @@
 <translation id="5317780077021120954">保存</translation>
 <translation id="4979796155378508955">カスタムノンス値が非シーケンシャルである場合、またはその他のエラーがある場合は、トランザクションがネットワークに伝搬されないことがあります。</translation>
 <translation id="6122742277607781713">ポートフォリオ</translation>
+<translation id="3567988240819868195">市場</translation>
+<translation id="4576965889365503638">情報</translation>
+<translation id="152455748535966757">ランク</translation>
+<translation id="4958716607782044952">24時間のボリューム</translation>
+<translation id="128834189395075789">マーケットキャップ</translation>
 <translation id="750843150060816463">ガス価格 (Gwei)</translation>
 <translation id="1426320910664514906">Gasリミット</translation>
 <translation id="6389441740143786465">共有ハブを無効にする</translation>
@@ -761,10 +768,7 @@
 <translation id="1367951781824006909">ファイルを選択</translation>
 <translation id="8648684608605749476">プライベートモードでサードパーティの Cookie をブロックします</translation>
 <translation id="1118876217803190221">残高不足です</translation>
-<translation id="275990379543116961">ガス代のための資金が不足しています</translation>
-<translation id="3292453499915466604">不十分な流動性</translation>
 <translation id="3025158262797849291">数字の形式が正しくありません</translation>
-<translation id="3380365263193509176">不明なエラー</translation>
 <translation id="5932938770824268122">秘密鍵</translation>
 <translation id="2472882733835903303">秘密鍵を表示</translation>
 <translation id="4391056902675005799">秘密鍵を非表示</translation>
@@ -834,7 +838,6 @@
 <translation id="6727102863431372879">設定</translation>
 <translation id="3074127054582480056">アテンション</translation>
 <translation id="2280319752798785157">毎月の支援</translation>
-<translation id="7732576862074737148">≈ <ph name="VALUE"/> 米ドル</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">アドレス入力時にオートコンプリートを表示</translation>
 <translation id="8982438328166986164">ブックマークおよび閲覧履歴に基づきおすすめのウェブサイトを表示します。</translation>
@@ -1051,11 +1054,12 @@
 <translation id="5382684862562314222">お住まいの地域では、UpholdでBATがサポートされていません。</translation>
 <translation id="6996157559236886133">エラー: Upholdアカウントの機能が制限されています</translation>
 <translation id="1677961202754619328">Upholdによると、現在お客様のUpholdアカウントに何らかの制限があるようです。Upholdアカウントにログインし、お知らせまたは満たすべきアカウント要件  (Upholdに送信すべき追加の情報など) がないかをご確認ください。</translation>
-<translation id="6417420737057016607">Brave広告</translation>
 <translation id="5425006356459378415">Brave Rewardsをご利用いただけません</translation>
 <translation id="833643743158564518">現在お住まいの地域では、Brave Rewardsの新規登録が無効化されています。後ほどもう一度お試しください。<ph name="LEARN_MORE"/></translation>
 <translation id="8528916244724490964">すべてのネットワーク</translation>
+<translation id="7748944510530490017">プライマリネットワーク</translation>
 <translation id="2781668117338732220">セカンダリネットワーク</translation>
+<translation id="282560918037172384">テストネットワーク</translation>
 <translation id="6309721369749814582">ドメイン「<ph name="DOMAIN"/>」は登録されていません</translation>
 <translation id="4071347720273751665">ENSアドレスが入力されたようです。この要求を解決するには、サードパーティのリゾルバを使用する必要がありますが、IPアドレスとドメインが表示される可能性があります。<ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">ENSオフチェーンドメインを使用する</translation>
@@ -1149,4 +1153,9 @@
 <translation id="6344103698928069918">プレイリストで最後に一時停止したところから再生を開始します</translation>
 <translation id="8141583471142904652">連続再生</translation>
 <translation id="851432578283946230">プレイリスト内の次のアイテムを自動再生します</translation>
+<translation id="7853202427316060426">アクティビティ</translation>
+<translation id="4932733599132424254">日付</translation>
+<translation id="346505172740911461">市場価格</translation>
+<translation id="4709355193533327244">表示可能なトランザクションがまだありません。</translation>
+<translation id="4931644613135313937">実行したトランザクションはこちらで確認できます。</translation>
 </translationbundle>
