@@ -39,11 +39,11 @@ const DefaultStateOverrides& GetDefaultStateOverrides() {
     DefaultStateOverrides sorted_overrides =
         std::move(GetUnsortedDefaultStateOverrides());
     DCHECK_EQ(GetUnsortedDefaultStateOverrides().capacity(), 0u);
-    DLOG_IF(ERROR, sorted_overrides.size() > kDefaultStateOverridesReserve)
-        << "Please increase kDefaultStateOverridesReserve. Feature overrides "
-           "count: "
-        << sorted_overrides.size()
-        << ", reserve size: " << kDefaultStateOverridesReserve;
+    // DLOG_IF(ERROR, sorted_overrides.size() > kDefaultStateOverridesReserve)
+    //     << "Please increase kDefaultStateOverridesReserve. Feature overrides "
+    //        "count: "
+    //     << sorted_overrides.size()
+    //     << ", reserve size: " << kDefaultStateOverridesReserve;
     return sorted_overrides;
   }());
   return *default_state_overrides;

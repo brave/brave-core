@@ -14,7 +14,6 @@
 #include <vector>
 
 #include "base/containers/contains.h"
-#include "base/containers/cxx20_erase_vector.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
@@ -403,6 +402,7 @@ void FeedV2Builder::BuildFeedFromArticles(BuildFeedCallback callback) {
     // Step 3: Block Generation
     // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.os2ze8cesd8v
     if (iteration_type == 0) {
+      DVLOG(1) << "Type 0: Block";
       items = GenerateBlock(articles, signals_);
     }
     // Step 4: Block or Cluster Generation
@@ -410,14 +410,18 @@ void FeedV2Builder::BuildFeedFromArticles(BuildFeedCallback callback) {
     else if (iteration_type == 1) {
       // Half the time, a normal block
       if (TossCoin()) {
+        DVLOG(1) << "Type 1: Block";
         items = GenerateBlock(articles, signals_);
       }
       // If we have any subscribed channels, display a channel cluster.
       else if (!subscribed_channels.empty()) {
         // TODO(fallaciousreasoning): When we have topic support, add them here
         // too.
+        DVLOG(1) << "Type 1: Cluster Block";
         items = GenerateChannelBlock(articles, signals_, publishers,
                                      PickRandom(subscribed_channels), locale);
+      } else {
+        DVLOG(1) << "Type 1: Nothing";
       }
     }
 
@@ -425,23 +429,25 @@ void FeedV2Builder::BuildFeedFromArticles(BuildFeedCallback callback) {
     // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.n1ipt86esc34
     else if (iteration_type == 2) {
       if (TossCoin()) {
+        DVLOG(1) << "Type 2: Special Block";
         items = GenerateSpecialBlock(suggested_publisher_ids);
+      } else {
+        DVLOG(1) << "Type 2: None";
       }
     } else {
       NOTREACHED();
     }
 
-    if (items.empty()) {
+    // If we couldn't generate a normal block, break.
+    if (iteration_type == 0 && items.empty()) {
       break;
     }
 
+    DVLOG(1) << "Adding " << items.size() << " new articles (iteration type is "
+             << iteration_type << "). Currently have " << feed->items.size()
+             << " articles";
     add_items(items);
     ++iteration;
-  }
-
-  std::vector<mojom::FeedItemV2Ptr> entries;
-  while (!(entries = GenerateBlock(articles, signals_)).empty()) {
-    add_items(entries);
   }
 
   std::move(callback).Run(std::move(feed));
