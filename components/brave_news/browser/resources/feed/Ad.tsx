@@ -5,13 +5,21 @@
 import * as React from 'react';
 import Card from './Card';
 import { PromotedArticle } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
+import styled from 'styled-components';
 
 interface Props {
   info: PromotedArticle
 }
 
+const Container = styled(Card)`
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
 export default function Advert(props: Props) {
-  return <Card>
+  return <Container>
     This is a useful & relevant advert
-  </Card>
+  </Container>
 }
