@@ -1,7 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="th">
+<translation id="885805571521218129">สิ่งนี้แสดงถึงช่วงรายได้โดยประมาณของคุณสำหรับ Brave Ads ในเดือนนี้</translation>
 <translation id="3478449063771497234">ระบบจะปิดใช้การแจ้งเตือน</translation>
+<translation id="370665806235115550">กำลังโหลด...</translation>
 <translation id="8220484609979012449">\n\nคุณยังคงสามารถส่งเงินสนับสนุนเป็นคริปโตให้ผู้สร้างรายนี้ได้โดยการใช้กระเป๋าเงิน Web3</translation>
 <translation id="6385969012847057348">ผู้สร้างรายนี้ไม่สามารถรับเงินสนับสนุนจาก <ph name="CUSTODIAN"/></translation>
 <translation id="6268134562674951939">คุณมีโทเค็นไม่เพียงพอ</translation>
@@ -40,6 +42,8 @@
 <translation id="4748689412569009273">บอกเล่าประสบการณ์ของคุณกับ Brave ด้วยหนึ่งอิโมจิได้หรือไม่</translation>
 <translation id="7335142069363686805">ให้คะแนนตอนนี้</translation>
 <translation id="6681362094306959654">คุณชอบ Brave ใช่ไหม</translation>
+<translation id="8041093619605951337">มีความสุข</translation>
+<translation id="6826743502395386800">เสียใจ</translation>
 <translation id="5488843227043643519">ต้องการให้คะแนนที่ Play Store หรือไม่</translation>
 <translation id="5867854497245948308">ขอบคุณสำหรับความคิดเห็นของคุณ!</translation>
 <translation id="4935400164159327304">แจ้งให้เราทราบว่าควรปรับปรุง Brave อย่างไรบ้าง</translation>
@@ -73,7 +77,7 @@
 <translation id="1118970888826017401">เปิดใช้การรองรับในการเลี่ยงเปลี่ยนเส้นทาง URL ติดตามระดับสูง</translation>
 <translation id="94154759592465111">สคริปต์บล็อก</translation>
 <translation id="7714773920987474116">บล็อก JavaScript (อาจทำเว็บเสียหาย)</translation>
-<translation id="1660979054779793659">Youtube</translation>
+<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">บล็อกเนื้อหาที่แนะนำของ YouTube</translation>
 <translation id="1005372663692637999">บล็อกองค์ประกอบการ์ดถัดไปและการ์ดสิ้นสุดบน youtube.com</translation>
 <translation id="5152595963250646670">บล็อกองค์ประกอบรบกวนของ YouTube</translation>
@@ -136,11 +140,6 @@
 <translation id="1276592121036104130">โหลดเนื้อหาใหม่</translation>
 <translation id="3189348785087463371">โปรโมทแล้ว</translation>
 <translation id="7554145152551782675">ข้อเสนอของ Brave เพิ่มเติม</translation>
-<translation id="1717242776111689224">เปิดใช้งาน Brave News</translation>
-<translation id="4732255422524275223">แหล่งที่มาของคุณ</translation>
-<translation id="152579389256498990">ฟีดหรือ URL ของเว็บไซต์</translation>
-<translation id="4975944254857623648">แหล่งข้อมูลเริ่มต้น</translation>
-<translation id="253886574765651454">เพิ่มแหล่งข้อมูล</translation>
 <translation id="254100925533869330">ไม่มีเนื้อหา</translation>
 <translation id="7172792761509429092">Brave News ไม่มีเนื้อหาให้แสดง</translation>
 <translation id="1771307734839364850">เลือกแหล่งที่มาเนื้อหา</translation>
@@ -152,6 +151,8 @@
 <translation id="6686219838158572786">จำเป็นต้องใช้ทุกการเชื่อมต่อเพื่อใช้ HTTPS (เข้มงวด)</translation>
 <translation id="4221284400051835823">อัปเกรดเป็น HTTPS เมื่อเป็นไปได้ (ค่าเริ่มต้น)</translation>
 <translation id="4690906712010847708">ไม่ต้องอัปเกรดการเชื่อมต่อเป็น HTTPS (ปิดใช้งาน)</translation>
+<translation id="693506469193748756">ไม่ต้องจำฉันเมื่อฉันปิดเว็บไซต์นี้</translation>
+<translation id="6975864539539353406">ล้างคุกกี้และข้อมูลอื่นๆ ของไซต์เมื่อคุณปิดไซต์</translation>
 <translation id="1680858055899097121">อย่าคงแท็บไว้เมื่อจบการท่องเว็บแต่ละรอบ</translation>
 <translation id="7142548388914389999">อนุญาตการวิเคราะห์ผลิตภัณฑ์โดยรักษาความเป็นส่วนตัว (P3A)</translation>
 <translation id="5254037869598726291">ข้อมูล P3A ที่ไม่ระบุชื่อช่วยให้ Brave ประเมินการใช้งานโดยรวม และช่วยให้มั่นใจว่าเรากำลังปรับปรุงฟีเจอร์ยอดนิยม</translation>
@@ -180,6 +181,7 @@
 <translation id="8308305244351876417">อนุญาตให้เปิดเสียงเมื่อคุณเปลี่ยนเป็นแท็บอื่นใน Brave หรือเปลี่ยนเป็นแอปอื่น หรือเมื่อปิดหน้าจออุปกรณ์</translation>
 <translation id="4150201353443180367">การแสดงผล</translation>
 <translation id="2433507940547922241">ลักษณะที่ปรากฏ</translation>
+<translation id="9040069796107003510">ไอคอน Brave Rewards</translation>
 <translation id="6333347122924254968">แสดงไอคอน Brave Rewards ในแถบที่อยู่</translation>
 <translation id="8495235435594442882">เปิดใช้งานแถบเครื่องมือด้านล่าง</translation>
 <translation id="6587448235155023666">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิดใช้งาน Brave อีกครั้ง</translation>
@@ -252,13 +254,13 @@
 <translation id="4254029385847607686">ธันวาคม</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">ข่าว Brave</translation>
-<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">การตั้งค่า</translation>
 <translation id="6020176662032623904">ผู้สร้างยืนยันตัวตนแล้ว</translation>
 <translation id="2369994359029526515">ผู้สร้างยังไม่ยืนยันตัวตน</translation>
 <translation id="6112368337882254910">มีส่วนร่วมอัตโนมัติ</translation>
 <translation id="7861645265922445992">รับ Rewards</translation>
-<translation id="8494748383523030337">ยอดของคุณ</translation>
+<translation id="1848737374354350807">ยอดคงเหลือ:</translation>
 <translation id="4781696154289395607">คุณได้สนับสนุน <ph name="BAT_VALUE"/> BAT</translation>
 <translation id="2429828319207652823">มีปัญหาในการประมวลผลการบริจาคของคุณ</translation>
 <translation id="2221902203895354376">มีโทเค็นพร้อมมอบให้!</translation>
@@ -322,8 +324,8 @@
 <translation id="8185825081026121627">รับ Basic Attention Token เมื่อชมโฆษณา Brave Rewards ที่รักษาความเป็นส่วนตัว</translation>
 <translation id="5321518976657560663">ข้อผิดพลาดในการรีเซ็ต</translation>
 <translation id="4114170343590425996">มีข้อผิดพลาดเกิดขึ้นขณะรีเซ็ต Brave Rewards โปรดเปิดใช้งาน Brave ใหม่แล้วลองอีกครั้ง</translation>
-<translation id="6393502589311632553">แสดงโฆษณาเมื่อไม่ได้ใช้งาน Brave</translation>
-<translation id="3349204812119681938">รีเซ็ต Brave Rewards</translation>
+<translation id="6417420737057016607">เบรฟ แอดส์ (Brave Ads)</translation>
+<translation id="5611966874859284786">แสดงการแจ้งเตือนโฆษณาเมื่อไม่ได้ใช้งาน Brave</translation>
 <translation id="6606319453795180219">การดำเนินการนี้จะลบ Brave Rewards ของคุณและรีเซ็ตข้อมูล Brave Rewards ใหม่ทั้งหมด</translation>
 <translation id="8293206222192510085">เพิ่มบุ๊กมาร์ก</translation>
 <translation id="340492034650766959">ลบบุ๊กมาร์ก</translation>
@@ -456,6 +458,7 @@
 <translation id="8903462729414407077">รับอัปเดตประจำสัปดาห์</translation>
 <translation id="7450323860390658083">รับข้อมูลเกี่ยวกับเว็บไซต์ที่คุณเยี่ยมชมเว็บไซต์ใดที่รุกล้ำความเป็นส่วนตัวมากที่สุด โดยคุณเท่านั้นที่สามารถเห็นสถิติความเป็นส่วนตัวนี้ ไม่มีข้อมูลส่วนตัวหรือประวัติการค้นหาใดหลุดออกไปจากเบราว์เซอร์ Brave บนอุปกรณ์ของคุณได้</translation>
 <translation id="6170159749517116894">เปิดรายงานความเป็นส่วนตัว</translation>
+<translation id="1669047024429367828">ทัศนวิสัย</translation>
 <translation id="5966707198760109579">สัปดาห์</translation>
 <translation id="8987927404178983737">เดือน</translation>
 <translation id="4302754476737420523">3 เดือน</translation>
@@ -509,6 +512,7 @@
 <translation id="8235783939971604011">การให้ทิปเป็นวิธีส่งกำลังใจและให้การสนับสนุนเนื้อหาหรือผู้สร้างที่คุณชื่นชอบ ไปให้ทิปกัน!</translation>
 <translation id="4215679190414901888">และท้ายที่สุด ถึงเวลาตั้งค่าแล้ว</translation>
 <translation id="3494356595346329740">สามารถแก้ไขในภายหลังได้</translation>
+<translation id="3286390186030710347">ตัวเลื่อน</translation>
 <translation id="3115702351969988294">คุณต้องการเห็นโฆษณาบ่อยแค่ไหน</translation>
 <translation id="2353222426385080466">ชมโฆษณาส่วนตัวมากขึ้นเพื่อรับรางวัลที่มากขึ้น</translation>
 <translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> โฆษณาต่อชั่วโมง</translation>
@@ -533,6 +537,7 @@
 <translation id="5187052478998910855">อยากฟื้นวิชาเก็บ Reward รึเปล่า</translation>
 <translation id="8622329973403382303">ดูบทแนะนำฉบับย่อเพื่อเติมเกร็ดความรู้ว่าคุณต้องทำอย่างไรเพื่อให้ถูกจารึกเป็นดาวเด่นแห่งวงการ Reward</translation>
 <translation id="3479552764303398839">ไม่ใช่ตอนนี้</translation>
+<translation id="7138272885617540195">อนุญาตให้เปิดลิงก์แอปในแอปนอก Brave</translation>
 <translation id="8792121506918889955">นโยบายการจัดการ WebRTC IP</translation>
 <translation id="8798099450830957504">ค่าเริ่มต้น</translation>
 <translation id="1822560017823072927">อินเตอร์เฟซสาธารณะและส่วนตัวเริ่มต้น</translation>
@@ -557,7 +562,6 @@
 <translation id="8289942708804097960">ซื้อคริปโตด้วยบัตรเครดิตหรือบัตรเดบิต</translation>
 <translation id="841880029259839903">ส่งคริปโตหรือโอนจากบัญชีหนึ่งไปยังอีกบัญชีหนึ่ง</translation>
 <translation id="8226778393040773102">แลกเปลี่ยนโทเค็นและสินทรัพย์</translation>
-<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/> จะประมวลผลที่อยู่ Ethereum และที่อยู่ IP เพื่อดำเนินธุรกรรมให้สำเร็จ (รวมถึงการขอรับใบเสนอราคา) โดย <ph name="DEX_PROVIDER"/> จะจะใช้ข้อมูลนี้เพื่อวัตถุประสงค์ในการประมวลผลธุรกรรมเท่านั้น</translation>
 <translation id="1783600039044302171">รักษาความปลอดภัยคริปโตของคุณด้วยรหัสผ่าน</translation>
 <translation id="3726490322412361740">ป้อนรหัสผ่าน</translation>
 <translation id="3038243139480464605">ยืนยันรหัสผ่าน</translation>
@@ -598,7 +602,6 @@
 <translation id="1144810021918451336">ไม่ป้องกันคุณจากเว็บไซต์ การดาวน์โหลด และส่วนขยายที่เป็นอันตราย</translation>
 <translation id="5760476995887363522">กลุ่มคำไม่ตรงกัน กรุณาลองอีกครั้ง</translation>
 <translation id="2360588547830602174">การกู้คืนบัญชีล้มเหลว กรุณาลองอีกครั้ง</translation>
-<translation id="6392640873800632439">ราคาตลาดใน <ph name="ASSET"/></translation>
 <translation id="6748108480210050150">จาก</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -608,7 +611,6 @@
 <translation id="2589431635772931954">ที่อยู่หรือ URL</translation>
 <translation id="5517732667776806421">ไม่มีข้อมูลผลรวมตรวจสอบ</translation>
 <translation id="4006711930669471508">ข้อมูลผลรวมตรวจสอบไม่ถูกต้อง</translation>
-<translation id="632241521608275119">ค่าเผื่อความคลาดเคลื่อน</translation>
 <translation id="1987317783729300807">บัญชี</translation>
 <translation id="3535654229833214438">ธุรกรรม</translation>
 <translation id="2449682593754783720">1 ชั่วโมง</translation>
@@ -750,6 +752,11 @@
 <translation id="5317780077021120954">บันทึก</translation>
 <translation id="4979796155378508955">ไม่สามารถเผยแพร่ธุรกรรมในเครือข่ายได้หากค่า Nonce ที่กำหนดเองไม่ต่อเนื่องหรือมีข้อผิดพลาดอื่นๆ</translation>
 <translation id="6122742277607781713">พอร์ตโฟลิโอ</translation>
+<translation id="3567988240819868195">ตลาด</translation>
+<translation id="4576965889365503638">ข้อมูล</translation>
+<translation id="152455748535966757">อันดับ</translation>
+<translation id="4958716607782044952">ปริมาณการซื้อขาย 24 ชั่วโมง</translation>
+<translation id="128834189395075789">มูลค่าตามราคาตลาด</translation>
 <translation id="750843150060816463">ราคาแก๊ส (GWEI)</translation>
 <translation id="1426320910664514906">วงเงินแก็ส</translation>
 <translation id="6389441740143786465">ปิดใช้งานการแชร์ฮับ</translation>
@@ -761,10 +768,7 @@
 <translation id="1367951781824006909">เลือกไฟล์</translation>
 <translation id="8648684608605749476">บล็อกคุกกี้ของบุคคลที่สามในโหมดไม่ระบุตัวตน</translation>
 <translation id="1118876217803190221">ยอดคงเหลือไม่เพียงพอ</translation>
-<translation id="275990379543116961">เงินทุนไม่เพียงพอสำหรับค่าแก๊ส</translation>
-<translation id="3292453499915466604">สภาพคล่องไม่เพียงพอ</translation>
 <translation id="3025158262797849291">รูปแบบตัวเลขที่ไม่รู้จัก</translation>
-<translation id="3380365263193509176">ข้อผิดพลาดที่ไม่รู้จัก</translation>
 <translation id="5932938770824268122">คีย์ส่วนตัว</translation>
 <translation id="2472882733835903303">แสดงคีย์ส่วนตัว</translation>
 <translation id="4391056902675005799">ซ่อนคีย์ส่วนตัว</translation>
@@ -834,7 +838,6 @@
 <translation id="6727102863431372879">ตั้งค่า</translation>
 <translation id="3074127054582480056">โปรดระวัง</translation>
 <translation id="2280319752798785157">การสนับสนุนรายเดือน</translation>
-<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">แสดงรายการที่ดำเนินการอัตโนมัติในแถบที่อยู่</translation>
 <translation id="8982438328166986164">แสดงเว็บไซต์แนะนำตามบุ๊กมาร์กและประวัติการเข้าชมของคุณ</translation>
@@ -1051,11 +1054,12 @@
 <translation id="5382684862562314222">ยังไม่รองรับ BAT ในภูมิภาคของคุณบน Uphold</translation>
 <translation id="6996157559236886133">ข้อผิดพลาด: จำกัดฟังก์ชันการทำงานของบัญชี Uphold</translation>
 <translation id="1677961202754619328">ตามระเบียบของ Uphold ขณะนี้มีข้อจำกัดบางประการสำหรับบัญชี Uphold ของคุณ กรุณาลงชื่อเข้าใช้บัญชี Uphold ของคุณและตรวจสอบว่ามีการแจ้งเตือนหรือข้อกำหนดบัญชีที่เหลือที่ต้องดำเนินการให้เสร็จสิ้นหรือไม่ แล้วลองอีกครั้ง</translation>
-<translation id="6417420737057016607">เบรฟ แอดส์ (Brave Ads)</translation>
 <translation id="5425006356459378415">ไม่สามารถใช้งาน Brave Rewards</translation>
 <translation id="833643743158564518">ขณะนี้ไม่สามารถลงทะเบียน Brave Rewards ใหม่ในภูมิภาคของคุณได้ แต่คุณสามารถลองอีกครั้งในภายหลังได้เสมอ <ph name="LEARN_MORE"/></translation>
 <translation id="8528916244724490964">ทุกเครือข่าย</translation>
+<translation id="7748944510530490017">เครือข่ายหลัก</translation>
 <translation id="2781668117338732220">เครือข่ายสำรอง</translation>
+<translation id="282560918037172384">เครือข่ายทดสอบ</translation>
 <translation id="6309721369749814582">ยังไม่ได้ลงทะเบียนโดเมน <ph name="DOMAIN"/></translation>
 <translation id="4071347720273751665">ดูเหมือนคุณจะกรอกที่อยู่ ENS เราต้องใช้ตัวแปลงจากบุคคลที่สามเพื่อแปลงคำขอนี้ ซึ่งบุคคลที่สามอาจทราบที่อยู่ IP และโดเมนของคุณได้ <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">ใช้โดเมนนอกเครือข่ายบล็อกเชนของ ENS</translation>
@@ -1149,4 +1153,9 @@
 <translation id="6344103698928069918">สำหรับเพลย์ลิสต์ ให้เล่นไฟล์ต่อจากจุดที่หยุดชั่วคราวครั้งสุดท้าย</translation>
 <translation id="8141583471142904652">การฟังอย่างต่อเนื่อง</translation>
 <translation id="851432578283946230">เล่นรายการถัดไปอัตโนมัติในเพลย์ลิสต์</translation>
+<translation id="7853202427316060426">กิจกรรม</translation>
+<translation id="4932733599132424254">วันที่</translation>
+<translation id="346505172740911461">ราคาตลาด</translation>
+<translation id="4709355193533327244">ยังไม่มีธุรกรรมให้ดู</translation>
+<translation id="4931644613135313937">เมื่อคุณทำธุรกรรมแล้ว คุณจะสามารถดูได้ที่นี่</translation>
 </translationbundle>
