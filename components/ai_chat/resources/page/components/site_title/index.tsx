@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import classnames from '$web-common/classnames'
+import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 
@@ -33,7 +34,7 @@ function Tooltip(props: ToolTipProps) {
 
   return (
     <div className={tooltipStyles}>
-      Page content will be sent to Brave Leo along with your messages. Click the disconnect button on the right to start a new conversation about a different topic
+      {getLocale('pageContentWarning')}
     </div>
   )
 }
