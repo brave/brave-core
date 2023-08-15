@@ -8,6 +8,7 @@
 package org.chromium.chrome.browser.crypto_wallet.modal;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -95,6 +96,7 @@ public class BraveWalletPanel implements DialogInterface {
     private AllAccountsInfo mAllAccountsInfo;
     private AccountInfo mSelectedAccount;
     private NetworkInfo mSelectedNetwork;
+    private Context mContext;
     private final Observer<AllAccountsInfo> mAllAccountsInfoObserver = allAccountsInfo -> {
         mAllAccountsInfo = allAccountsInfo;
         mSelectedAccount = mAllAccountsInfo.selectedAccount;
@@ -129,10 +131,11 @@ public class BraveWalletPanel implements DialogInterface {
         mHandler = new Handler(Looper.getMainLooper());
         mAnchorViewHost = anchorViewHost;
         mOnDismissListener = onDismissListener;
+        mContext = mAnchorViewHost.getContext();
         mActivity = BraveActivity.getChromeTabbedActivity();
         mBraveWalletPanelServices = braveWalletPanelServices;
 
-        mPopupWindow = new PopupWindow(mAnchorViewHost.getContext());
+        mPopupWindow = new PopupWindow(mContext);
         mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mPopupWindow.setElevation(20);
@@ -219,6 +222,8 @@ public class BraveWalletPanel implements DialogInterface {
             } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "handleMenuItemClick action_view_on_block_explorer " + e);
             }
+        } else if (item.getItemId() == R.id.action_help_center) {
+            WalletUtils.openWalletHelpCenter(mContext);
         }
         return true;
     }
@@ -395,7 +400,7 @@ public class BraveWalletPanel implements DialogInterface {
     }
 
     private void setUpViews() {
-        LayoutInflater inflater = LayoutInflater.from(mAnchorViewHost.getContext());
+        LayoutInflater inflater = LayoutInflater.from(mContext);
         mPopupView = (ViewGroup) inflater.inflate(R.layout.brave_wallet_panel_layout, null);
 
         int deviceWidth = ConfigurationUtils.getDisplayMetrics(mActivity).get("width");

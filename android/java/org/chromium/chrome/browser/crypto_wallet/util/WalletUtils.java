@@ -19,6 +19,7 @@ import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxData;
 import org.chromium.brave_wallet.mojom.TxDataUnion;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.mojo_base.mojom.TimeDelta;
 
 import java.nio.ByteBuffer;
@@ -151,5 +152,10 @@ public class WalletUtils {
             return null;
         }
         return NetworkInfo.deserialize(ByteBuffer.wrap(bytes));
+    }
+
+    public static void openWalletHelpCenter(Context context) {
+        if (context == null) return;
+        TabUtils.openUrlInCustomTab(context, WalletConstants.WALLET_HELP_CENTER);
     }
 }
