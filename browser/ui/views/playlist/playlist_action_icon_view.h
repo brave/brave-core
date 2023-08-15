@@ -43,8 +43,7 @@ class PlaylistActionIconView : public PageActionIconView,
   enum class State { kNone, kAdded, kFound };
 
   playlist::PlaylistTabHelper* playlist_tab_helper() {
-    return playlist::PlaylistTabHelper::FromWebContents(
-        GetWebContents());
+    return playlist::PlaylistTabHelper::FromWebContents(GetWebContents());
   }
 
   void UpdateState(bool has_saved, bool found_items);
