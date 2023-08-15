@@ -47,7 +47,8 @@ export function createWalletApiBase () {
       'AutoPinEnabled',
       'OnRampAssets',
       'OffRampAssets',
-      'CoingeckoId'
+      'CoingeckoId',
+      'TokenSuggestionRequests'
     ],
     endpoints: ({ mutation, query }) => ({})
   })

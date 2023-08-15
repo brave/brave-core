@@ -76,7 +76,6 @@ const defaultState: PanelState = {
     chainId: ''
   },
   hardwareWalletCode: undefined,
-  suggestedTokenRequest: undefined,
   selectedTransactionId: undefined
 }
 
@@ -170,13 +169,6 @@ export const createPanelReducer = (initialState: PanelState) => {
     return {
       ...state,
       hardwareWalletCode: payload
-    }
-  })
-
-  reducer.on(PanelActions.addSuggestToken.type, (state: PanelState, payload: BraveWallet.AddSuggestTokenRequest): PanelState => {
-    return {
-      ...state,
-      suggestedTokenRequest: payload
     }
   })
 

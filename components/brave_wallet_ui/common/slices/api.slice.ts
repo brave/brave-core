@@ -105,6 +105,9 @@ import { getAccountBalancesKey } from '../../utils/balance-utils'
 import { onRampEndpoints } from './endpoints/on-ramp.endpoints'
 import { offRampEndpoints } from './endpoints/off-ramp.endpoints'
 import { coingeckoEndpoints } from './endpoints/coingecko-endpoints'
+import {
+  tokenSuggestionsEndpoints //
+} from './endpoints/token_suggestions.endpoints'
 
 type GetAccountTokenCurrentBalanceArg = {
   accountId: BraveWallet.AccountId
@@ -2828,6 +2831,8 @@ export function createWalletApi () {
     .injectEndpoints({ endpoints: offRampEndpoints })
     // coingecko endpoints
     .injectEndpoints({ endpoints: coingeckoEndpoints })
+    // token suggestion request endpoints
+    .injectEndpoints({ endpoints: tokenSuggestionsEndpoints })
 }
 
 export type WalletApi = ReturnType<typeof createWalletApi>
@@ -2841,6 +2846,7 @@ export const {
   useAddUserTokenMutation,
   useApproveERC20AllowanceMutation,
   useApproveHardwareTransactionMutation,
+  useApproveOrDeclineTokenSuggestionMutation,
   useApproveTransactionMutation,
   useCancelTransactionMutation,
   useClosePanelUIMutation,
@@ -2866,6 +2872,7 @@ export const {
   useGetNftPinningStatusQuery,
   useGetOffRampAssetsQuery,
   useGetOnRampAssetsQuery,
+  useGetPendingTokenSuggestionRequestsQuery,
   useGetPriceHistoryQuery,
   useGetPricesHistoryQuery,
   useGetRewardsBalanceQuery,
@@ -2897,6 +2904,7 @@ export const {
   useLazyGetIsTxSimulationEnabledQuery,
   useLazyGetNetworksRegistryQuery,
   useLazyGetNftDiscoveryEnabledStatusQuery,
+  useLazyGetPendingTokenSuggestionRequestsQuery,
   useLazyGetRewardsBalanceQuery,
   useLazyGetRewardsEnabledQuery,
   useLazyGetSelectedAccountIdQuery,
@@ -3068,7 +3076,7 @@ export const useGetNetworkQuery = (
     args === skipToken ? skipToken : undefined,
     {
       selectFromResult: (res) => ({
-        isLoading: res.isLoading,
+        isLoading: res.isLoading || res.isFetching,
         error: res.error,
         data:
           res.data && args !== skipToken

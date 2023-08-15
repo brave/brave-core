@@ -43,11 +43,6 @@ export type SwitchEthereumChainProcessedPayload = {
   approved: boolean
 }
 
-export type AddSuggestTokenProcessedPayload = {
-  approved: boolean
-  contractAddress: string
-}
-
 export type GetEncryptionPublicKeyProcessedPayload = {
   requestId: string
   approved: boolean

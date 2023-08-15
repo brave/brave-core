@@ -14,7 +14,6 @@ import {
 } from '../../constants/types'
 import {
   ConnectWithSitePayloadType,
-  AddSuggestTokenProcessedPayload,
   ShowConnectToSitePayload,
   EthereumChainRequestPayload,
   SignMessageProcessedPayload,
@@ -37,7 +36,6 @@ import {
 import { Store } from '../../common/async/types'
 import { getLocale } from '../../../common/locale'
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
-import { isRemoteImageURL } from '../../utils/string-utils'
 import { HardwareVendor } from 'components/brave_wallet_ui/common/api/hardware_keyrings'
 
 const handler = new AsyncActionHandler()
@@ -126,20 +124,6 @@ async function getPendingSignAllTransactionsRequests () {
 
   if (requests && requests.length) {
     return requests
-  }
-  return null
-}
-
-async function getPendingAddSuggestTokenRequest () {
-  const braveWalletService = getWalletPanelApiProxy().braveWalletService
-  const requests =
-    (await braveWalletService.getPendingAddSuggestTokenRequests()).requests
-  if (requests && requests.length) {
-    const logo = requests[0].token.logo
-    if (logo !== '' && !isRemoteImageURL(logo)) {
-      requests[0].token.logo = `chrome://erc-token-images/${logo}`
-    }
-    return requests[0]
   }
   return null
 }
@@ -497,24 +481,6 @@ handler.on(PanelActions.signAllTransactionsProcessed.type, async (store: Store, 
   panelHandler.closeUI()
 })
 
-handler.on(PanelActions.addSuggestToken.type, async (store: Store, payload: BraveWallet.AddSuggestTokenRequest[]) => {
-  store.dispatch(PanelActions.navigateTo('addSuggestedToken'))
-  const apiProxy = getWalletPanelApiProxy()
-  apiProxy.panelHandler.showUI()
-})
-
-handler.on(PanelActions.addSuggestTokenProcessed.type, async (store: Store, payload: AddSuggestTokenProcessedPayload) => {
-  const apiProxy = getWalletPanelApiProxy()
-  const braveWalletService = apiProxy.braveWalletService
-  braveWalletService.notifyAddSuggestTokenRequestsProcessed(payload.approved, [payload.contractAddress])
-  const addSuggestTokenRequest = await getPendingAddSuggestTokenRequest()
-  if (addSuggestTokenRequest) {
-    store.dispatch(PanelActions.addSuggestToken(addSuggestTokenRequest))
-    return
-  }
-  apiProxy.panelHandler.closeUI()
-})
-
 handler.on(PanelActions.setupWallet.type, async (store) => {
   chrome.tabs.create({ url: 'chrome://wallet' }, () => {
     if (chrome.runtime.lastError) {
@@ -630,11 +596,7 @@ handler.on(WalletActions.initialize.type, async (store) => {
       store.dispatch(PanelActions.switchEthereumChain(switchChainRequest))
       return
     }
-    const addSuggestTokenRequest = await getPendingAddSuggestTokenRequest()
-    if (addSuggestTokenRequest) {
-      store.dispatch(PanelActions.addSuggestToken(addSuggestTokenRequest))
-      return
-    }
+
     const getEncryptionPublicKeyRequest = await getPendingGetEncryptionPublicKeyRequest()
     if (getEncryptionPublicKeyRequest) {
       store.dispatch(PanelActions.getEncryptionPublicKey(getEncryptionPublicKeyRequest))

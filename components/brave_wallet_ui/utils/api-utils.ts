@@ -37,3 +37,16 @@ export const getPriceIdForToken = (
 
   return token.symbol.toLowerCase()
 }
+
+export function handleEndpointError(
+  endpointName: string,
+  friendlyMessage: string,
+  error: any
+) {
+  const message = `${friendlyMessage}: ${error?.message || error}`
+  console.log(`error in: ${endpointName || 'endpoint'}: ${message}`)
+  console.error(error)
+  return {
+    error: friendlyMessage
+  }
+}
