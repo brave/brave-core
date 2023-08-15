@@ -562,7 +562,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
        {{net::HTTP_OK, /*response_body*/ R"(
             {
               "batchProof": "emZH1a/Y+Q/ub1n7FuWZdkS/989iw4wNl2AnSNMmCQgy4f4ocjDJbHsWMnXWJUAIDPMHilVNJ1SXVctZ8TleBw==",
-              "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw="
+              "publicKey": "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g="
             }
           )"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);

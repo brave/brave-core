@@ -201,7 +201,7 @@ TEST_F(BraveAdsAccountTest, DoNotGetInvalidIssuers) {
                     "associatedValue": ""
                   },
                   {
-                    "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=",
+                    "publicKey": "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=",
                     "associatedValue": ""
                   },
                   {

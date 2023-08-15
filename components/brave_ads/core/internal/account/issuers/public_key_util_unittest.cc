@@ -16,7 +16,7 @@ namespace {
 
 constexpr char kPublicKey[] = "bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=";
 constexpr char kMissingPublicKey[] =
-    "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw==";
+    "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g==";
 
 }  // namespace
 

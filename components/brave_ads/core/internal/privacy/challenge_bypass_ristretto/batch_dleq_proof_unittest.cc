@@ -27,11 +27,6 @@
 
 namespace brave_ads::privacy::cbr {
 
-namespace {
-constexpr char kBatchDLEQProofBase64[] =
-    R"(y0a409PTX6g97xC0Xq8cCuY7ElLPaP+QJ6DaHNfqlQWizBYCSWdaleakKatkyNswfPmkQuhL7awmzQ0ygEUGDw==)";
-}  // namespace
-
 class BraveAdsBatchDLEQProofTest : public UnitTestBase {};
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToInitialize) {

@@ -56,7 +56,7 @@ TEST_F(BraveAdsIssuersUtilTest, HasIssuersNotChanged) {
   const IssuersInfo issuers = BuildIssuersForTesting(
       7'200'000,
       {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
-       {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
+       {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
       {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
        {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
@@ -122,7 +122,7 @@ TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesExistForConfirmationsType) {
   // Act
   const bool does_exist = PublicKeyExistsForIssuerType(
       IssuerType::kConfirmations,
-      /*public_key*/ "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=");
+      /*public_key*/ "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=");
 
   // Assert
   EXPECT_TRUE(does_exist);
@@ -172,7 +172,7 @@ TEST_F(BraveAdsIssuersUtilTest, GetIssuersForType) {
   const IssuersInfo issuers = BuildIssuersForTesting(
       7'200'000,
       {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
-       {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
+       {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
       {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
        {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
@@ -193,7 +193,7 @@ TEST_F(BraveAdsIssuersUtilTest, DoNotGetIssuersForMissingType) {
   const IssuersInfo issuers = BuildIssuersForTesting(
       7'200'000,
       {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
-       {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
+       {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
       {});
 
   // Act
@@ -207,7 +207,7 @@ TEST_F(BraveAdsIssuersUtilTest, IsIssuersValid) {
   const IssuersInfo issuers = BuildIssuersForTesting(
       7'200'000,
       {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
-       {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
+       {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
       {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
        {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1},
        {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
@@ -227,7 +227,7 @@ TEST_F(BraveAdsIssuersUtilTest, IsIssuersInvalid) {
   const IssuersInfo issuers = BuildIssuersForTesting(
       7'200'000,
       {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
-       {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
+       {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
       {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
        {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1},
        {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
