@@ -29,14 +29,14 @@ import components.perf_test_utils as perf_test_utils
 
 def main():
   parser = argparse.ArgumentParser(
-    formatter_class=argparse.RawTextHelpFormatter,
-    description='A tool to run perf tests and report the results',
-    epilog = R'''
-Example usage to compare a few configuration locally:
-npm run perf_tests -- compare\compare_with_on_off_feature.json5 compare
+      formatter_class=argparse.RawTextHelpFormatter,
+      description='A tool to run perf tests and report the results.'
+                  'Use it via npm run perf_tests',
+      epilog=R'''
+Example usage to launch tests locally:
+npm run perf_tests -- compare\compare_with_on_off_feature.json5
      --variations-repo-dir=e:\work\brave-variations
      --local-run
-
 
 Example usage for CI:
 npm run perf_tests -- smoke-brave.json5 v1.58.45

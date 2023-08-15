@@ -33,21 +33,59 @@ class CommonOptions:
 
   @classmethod
   def add_parser_args(cls, parser: argparse.ArgumentParser) -> None:
-    parser.add_argument('config', type=str, help = 'The path or URL to the config')
-    parser.add_argument('targets',
+    parser.add_argument(
+        'config',
+        type=str,
+        help='The path/URL to a config. See configs/**/.json for examples.')
+    parser.add_argument(
+        'targets',
+        type=str,
+        nargs='?',
+        help='Format: tag1[:<path_or_url1>],..,tagN[:<path_or_urlN>].'
+             'Empty value enables the compare mode (see --compare).')
+    parser.add_argument(
+        '--working-directory',
+        type=str,
+        help='A main directory to store binaries, artifacts and results.'
+        'Is equal to a temp directory by default.')
+    parser.add_argument('--verbose',
+                        action='store_true',
+                        help='Enable verbose logging.')
+    parser.add_argument(
+        '--variations-repo-dir',
+        type=str,
+        help='A path to brave-variation repository to use Griffin in tests')
+    parser.add_argument('--target_os',
                         type=str,
-                        nargs='?',
-                        help='Format: tag1[:<binary_or_apk_filepath1>],..,tagN[:<binary_or_apk_filepathN>]')
-    parser.add_argument('--verbose', action='store_true', help = 'Enable verbose logging')
-    parser.add_argument('--ci-mode', action='store_true')
-    parser.add_argument('--variations-repo-dir', type=str)
-    parser.add_argument('--working-directory', type=str)
-    parser.add_argument('--target_os', type=str)
-    parser.add_argument('--no-report', action='store_true')
-    parser.add_argument('--report-only', action='store_true')
-    parser.add_argument('--report-on-failure', action='store_true')
-    parser.add_argument('--local-run', action='store_true')
-    parser.add_argument('--compare', action='store_true')
+                        choices=['windows', 'macos', 'linux', 'android'])
+    parser.add_argument(
+        '--local-run',
+        action='store_true',
+        help='Store results locally as html, don\'t report to the dashboard')
+    parser.add_argument('--compare',
+                        action='store_true',
+                        help='Use compare mode with multiple entries in config.'
+                        'See configs/compare/*.json5 for examples')
+
+    parser.add_argument('--ci-mode',
+                        action='store_true',
+                        help='Used for CI (brave-browser-test-perf-* builds).')
+    parser.add_argument('--no-report',
+                        action='store_true',
+                        help='[ci-mode] Don\'t to the dashboard')
+    parser.add_argument(
+        '--report-only',
+        action='store_true',
+        help='[ci-mode] Don\'t run tests, only report the previous run'
+        'to the dashboard.')
+    parser.add_argument(
+        '--report-on-failure',
+        action='store_true',
+        help='[ci-mode] Report to the dashboard despite test failures')
+
+    parser.add_argument('--more-help',
+                        action='help',
+                        help='Show this help message and exit.')
 
   @classmethod
   def from_args(cls, args) -> 'CommonOptions':

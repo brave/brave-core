@@ -291,8 +291,7 @@ class BraveBrowserTypeImpl(BrowserType):
     if target_os == 'mac':
       self._DownloadDmgAndExtract(tag, out_dir)
     else:
-      DownloadArchiveAndUnpack(out_dir,
-                                self._GetZipDownloadUrl(tag, target_os))
+      DownloadArchiveAndUnpack(out_dir, self._GetZipDownloadUrl(tag, target_os))
 
     return os.path.join(out_dir, self.GetBinaryPath(target_os))
 

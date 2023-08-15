@@ -94,10 +94,12 @@ def DownloadFile(url: str, output: str):
   with open(output, 'wb') as output_file:
     output_file.write(data)
 
+
 def DownloadArchiveAndUnpack(output_directory: str, url: str):
   _, f = tempfile.mkstemp(dir=output_directory)
   DownloadFile(url, f)
   extract_zip(f, output_directory)
+
 
 def LoadJsonConfig(config: str, working_directory: str) -> dict:
   if config.startswith('https://'):
