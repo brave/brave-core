@@ -5,12 +5,16 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import static org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter.ACCOUNTS_FRAGMENT_POSITION;
+import static org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter.MARKET_FRAGMENT_POSITION;
+import static org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter.NFT_GRID_FRAGMENT_POSITION;
+import static org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter.PORTFOLIO_FRAGMENT_POSITION;
+import static org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter.TRANSACTIONS_ACTIVITY_FRAGMENT_POSITION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.ONBOARDING_ACTION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.ONBOARDING_FIRST_PAGE_ACTION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.RESTORE_WALLET_ACTION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.UNLOCK_WALLET_ACTION;
 
-import android.os.Build;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,8 +26,7 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
-
-import com.google.android.material.tabs.TabLayout;
+import androidx.viewpager2.widget.ViewPager2;
 
 import org.chromium.base.ActivityState;
 import org.chromium.base.ApplicationStatus;
@@ -49,6 +52,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.custom_layout.BottomNavigationViewWithIndicator;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.components.browser_ui.modaldialog.AppModalPresenter;
@@ -75,6 +79,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private CryptoFragmentPageAdapter mCryptoFragmentPageAdapter;
     private ModalDialogManager mModalDialogManager;
     private CryptoWalletOnboardingPagerAdapter mCryptoWalletOnboardingPagerAdapter;
+    private BottomNavigationViewWithIndicator mBottomNavigationView;
     private boolean mShowBiometricPrompt;
     private boolean mIsFromDapps;
     private WalletModel mWalletModel;
@@ -125,12 +130,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         setSupportActionBar(mToolbar);
 
         mBuySendSwapButton = findViewById(R.id.buy_send_swap_button);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            // For Android 7 and above use vector images for send/swap button.
-            // For Android 5 and 6 it is a bitmap specified in activity_brave_wallet.xml.
-            mBuySendSwapButton.setImageResource(R.drawable.ic_swap_icon);
-            mBuySendSwapButton.setBackgroundResource(R.drawable.ic_swap_bg);
-        }
+        mBottomNavigationView = findViewById(R.id.wallet_bottom_navigation);
 
         try {
             mWalletModel = BraveActivity.getBraveActivity().getWalletModel();
@@ -138,7 +138,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
             // Update network model to use default network.
             getNetworkModel().updateMode(NetworkModel.Mode.WALLET_MODE);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "triggerLayoutInflation " + e);
+            Log.e(TAG, "triggerLayoutInflation", e);
         }
 
         mBuySendSwapButton.setOnClickListener(v -> {
@@ -155,12 +155,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         });
 
         mPendingTxNotification = findViewById(R.id.pending_tx_notification);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            // For Android 7 and above use vector images for send/swap button.
-            // For Android 5 and 6 it is a bitmap specified in activity_brave_wallet.xml.
-            mPendingTxNotification.setImageResource(R.drawable.ic_pending_tx_notification_icon);
-            mPendingTxNotification.setBackgroundResource(R.drawable.ic_pending_tx_notification_bg);
-        }
 
         mPendingTxNotification.setOnClickListener(v -> {
             PortfolioFragment portfolioFragment =
@@ -246,8 +240,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         List<NavigationItem> navigationItems = new ArrayList<>();
         mShowBiometricPrompt = true;
         mCryptoLayout.setVisibility(View.GONE);
-        mPendingTxNotification.setVisibility(View.GONE);
-        mBuySendSwapButton.setVisibility(View.GONE);
         mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
         if (type == ONBOARDING_FIRST_PAGE_ACTION) {
             SetupWalletFragment setupWalletFragment =
@@ -333,15 +325,27 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         mCryptoOnboardingLayout.setVisibility(View.GONE);
         mCryptoLayout.setVisibility(View.VISIBLE);
 
-        ViewPager viewPager = findViewById(R.id.navigation_view_pager);
-        mCryptoFragmentPageAdapter =
-                new CryptoFragmentPageAdapter(getSupportFragmentManager(), this);
+        ViewPager2 viewPager = findViewById(R.id.navigation_view_pager);
+        viewPager.setUserInputEnabled(false);
+        mCryptoFragmentPageAdapter = new CryptoFragmentPageAdapter(this);
         viewPager.setAdapter(mCryptoFragmentPageAdapter);
-        viewPager.setOffscreenPageLimit(mCryptoFragmentPageAdapter.getCount() - 1);
-        TabLayout tabLayout = findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        viewPager.setOffscreenPageLimit(mCryptoFragmentPageAdapter.getItemCount() - 1);
 
-        if (mBuySendSwapButton != null) mBuySendSwapButton.setVisibility(View.VISIBLE);
+        mBottomNavigationView.setOnItemSelectedListener(menuItem -> {
+            final int menuItemId = menuItem.getItemId();
+            if (menuItemId == R.id.action_wallet_portfolio) {
+                viewPager.setCurrentItem(PORTFOLIO_FRAGMENT_POSITION, true);
+            } else if (menuItemId == R.id.action_wallet_nfts) {
+                viewPager.setCurrentItem(NFT_GRID_FRAGMENT_POSITION, true);
+            } else if (menuItemId == R.id.action_wallet_activity) {
+                viewPager.setCurrentItem(TRANSACTIONS_ACTIVITY_FRAGMENT_POSITION, true);
+            } else if (menuItemId == R.id.action_wallet_accounts) {
+                viewPager.setCurrentItem(ACCOUNTS_FRAGMENT_POSITION, true);
+            } else if (menuItemId == R.id.action_wallet_explore) {
+                viewPager.setCurrentItem(MARKET_FRAGMENT_POSITION, true);
+            }
+            return true;
+        });
 
         if (mKeyringService != null) {
             mKeyringService.isWalletBackedUp(backed_up -> {
@@ -377,8 +381,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         addRemoveSecureFlag(true);
         mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
         mCryptoLayout.setVisibility(View.GONE);
-        mPendingTxNotification.setVisibility(View.GONE);
-        mBuySendSwapButton.setVisibility(View.GONE);
 
         List<NavigationItem> navigationItems = new ArrayList<>();
         addBackupWalletSequence(navigationItems, false);
@@ -394,23 +396,13 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private void showWalletBackupBanner() {
         final ViewGroup backupTopBannerLayout = (ViewGroup) findViewById(R.id.wallet_backup_banner);
         backupTopBannerLayout.setVisibility(View.VISIBLE);
-        backupTopBannerLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                backupBannerOnClick();
-            }
-        });
+        backupTopBannerLayout.setOnClickListener(view -> backupBannerOnClick());
         ImageView bannerClose = backupTopBannerLayout.findViewById(R.id.backup_banner_close);
-        bannerClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                backupTopBannerLayout.setVisibility(View.GONE);
-            }
-        });
+        bannerClose.setOnClickListener(view -> backupTopBannerLayout.setVisibility(View.GONE));
     }
 
-    public void setPendingTxNotificationVisibility(int visibility) {
-        mPendingTxNotification.setVisibility(visibility);
+    public void showPendingTxNotification(final boolean show) {
+        mPendingTxNotification.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override

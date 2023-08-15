@@ -223,11 +223,6 @@
       <item name="textAllCaps">false</item>
     </style>
 
-    <style name="BraveWalletToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="actionMenuTextColor">@color/wallet_text_color</item>
-        <item name="android:textColorPrimary">@color/wallet_text_color</item>
-    </style>
-
     <style name="BraveWalletOnboarding">
         <item name="ic_onboarding_backup">@drawable/ic_onboarding_backup</item>
         <item name="ic_onboarding_intro">@drawable/ic_onboarding_intro</item>

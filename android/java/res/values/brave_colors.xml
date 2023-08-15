@@ -99,6 +99,11 @@
     <color name="brave_button_color">#4C54D2</color>
     <color name="brave_button_pressed">#7278C5</color>
 
+    <!--  Wallet gradient colors  -->
+    <color name="wallet_gradient_center_color">#BF14A2</color>
+    <color name="wallet_gradient_end_color">#F73A1C</color>
+    <color name="wallet_gradient_start_color">#4C54D2</color>
+
     <!-- Brave news colors -->
     <!-- <color name="card_background">#DC353535</color> -->    
     <color name="card_background">#F23B3E4F</color>
