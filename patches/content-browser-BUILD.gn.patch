@@ -1,0 +1,13 @@
+diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
+index 9c10d729b8e8f4ce9a7a6f945a3a18bfbb4492cb..63d597d143f3c8500dfdc2a17b588aa2550988d1 100644
+--- a/content/browser/BUILD.gn
++++ b/content/browser/BUILD.gn
+@@ -2351,7 +2351,7 @@ source_set("browser") {
+     "worker_host/worker_script_loader_factory.cc",
+     "worker_host/worker_script_loader_factory.h",
+   ]
+-
++  import("//brave/content/browser/picture_in_picture/sources.gni") sources += content_browser_picture_in_picture_sources
+   if (use_starscan) {
+     sources += [
+       "starscan_load_observer.cc",

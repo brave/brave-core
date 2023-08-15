@@ -1,0 +1,9 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+content_browser_picture_in_picture_sources = [
+  "//brave/content/browser/picture_in_picture/brave_video_picture_in_picture_window_controller_impl.cc",
+  "//brave/content/browser/picture_in_picture/brave_video_picture_in_picture_window_controller_impl.h",
+]
