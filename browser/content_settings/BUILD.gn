@@ -3,19 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-source_set("content_settings") {
-  sources = [
-    "brave_global_value_map.cc",
-    "brave_global_value_map.h",
-  ]
-
-  deps = [
-    "//base",
-    "//components/content_settings/core/browser",
-    "//components/content_settings/core/common",
-  ]
-}
-
 source_set("unit_tests") {
   testonly = true
 
