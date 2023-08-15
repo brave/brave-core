@@ -1,10 +1,10 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_CONTENT_SETTINGS_BRAVE_GLOBAL_VALUE_MAP_H_
-#define BRAVE_BROWSER_CONTENT_SETTINGS_BRAVE_GLOBAL_VALUE_MAP_H_
+#ifndef BRAVE_COMPONENTS_CONTENT_SETTINGS_CORE_BROWSER_BRAVE_GLOBAL_VALUE_MAP_H_
+#define BRAVE_COMPONENTS_CONTENT_SETTINGS_CORE_BROWSER_BRAVE_GLOBAL_VALUE_MAP_H_
 
 #include <memory>
 
@@ -33,4 +33,4 @@ class BraveGlobalValueMap : public GlobalValueMap {
 
 }  // namespace content_settings
 
-#endif  // BRAVE_BROWSER_CONTENT_SETTINGS_BRAVE_GLOBAL_VALUE_MAP_H_
+#endif  // BRAVE_COMPONENTS_CONTENT_SETTINGS_CORE_BROWSER_BRAVE_GLOBAL_VALUE_MAP_H_
