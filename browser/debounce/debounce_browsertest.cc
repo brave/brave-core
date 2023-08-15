@@ -219,6 +219,16 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, Redirect) {
   NavigateToURLAndWaitForRedirects(original_url, landing_url);
 }
 
+// Check that URLs ending with a '.' are properly debounced.
+IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, URLThatEndsWithADot) {
+  ASSERT_TRUE(InstallMockExtension());
+  ToggleDebouncePref(true);
+  GURL base_url = embedded_test_server()->GetURL("simple.a.com.", "/");
+  GURL landing_url = embedded_test_server()->GetURL("simple.b.com", "/");
+  GURL original_url = add_redirect_param(base_url, landing_url);
+  NavigateToURLAndWaitForRedirects(original_url, landing_url);
+}
+
 // Test with pref off
 IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, DisabledIfPrefOff) {
   ASSERT_TRUE(InstallMockExtension());

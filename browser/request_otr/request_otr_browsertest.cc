@@ -322,6 +322,19 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
   ASSERT_FALSE(IsShowingInterstitial());
 }
 
+// Check that URLs ending with a '.' are properly included or excluded.
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, URLThatEndsWithADot) {
+  ASSERT_TRUE(InstallMockExtension());
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAsk);
+  GURL url1 = embedded_test_server()->GetURL("www.b.com.", "/simple.html");
+  NavigateTo(url1);
+  ASSERT_TRUE(IsShowingInterstitial());
+  GURL url2 =
+      embedded_test_server()->GetURL("notsensitive.b.com.", "/simple.html");
+  NavigateTo(url2);
+  ASSERT_FALSE(IsShowingInterstitial());
+}
+
 // Check that URLs are added to history after navigation. (This is a sanity
 // check.)
 IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
