@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_SIGNAL_CALCULATOR_H_
 
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 #include "base/containers/flat_map.h"

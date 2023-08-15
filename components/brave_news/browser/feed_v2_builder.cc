@@ -7,6 +7,7 @@
 
 #include <stddef.h>
 #include <algorithm>
+#include <cmath>
 #include <iterator>
 #include <string>
 #include <tuple>
@@ -25,7 +26,6 @@
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -60,8 +60,10 @@ constexpr double kSourceVisitsMin = 0.2;
 // day the popularity score will be halved.
 constexpr double kPopRecencyHalfLifeInHours = 18;
 
-using ArticleSignal = std::tuple<mojom::FeedItemMetadataPtr, Signal, double>;
-using ArticleSignals = std::vector<ArticleSignal>;
+// An ArticleInfo is a tuple of (item, signal, weighting). They're stored like
+// this for performance, so we only need to calculate things once.
+using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, Signal, double>;
+using ArticleInfos = std::vector<ArticleInfo>;
 
 const Signal* GetSignal(const mojom::FeedItemMetadataPtr& article,
                         const Signals& signals) {
@@ -76,6 +78,7 @@ double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
   auto& publish_time = article->publish_time;
 
   // TODO(fallaciousreasoning): Use the new popularity field instead.
+  // https://github.com/brave/brave-browser/issues/32173
   double popularity = article->score == 0 ? 50 : article->score;
   double multiplier = publish_time > base::Time::Now() - base::Hours(5) ? 2 : 1;
   auto dt = base::Time::Now() - publish_time;
@@ -96,12 +99,13 @@ double GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
 
 std::string PickRandom(const std::vector<std::string>& items) {
   CHECK(!items.empty());
+  // Note: RandInt is inclusive, hence the minus 1
   return items[base::RandInt(0, items.size() - 1)];
 }
 
-ArticleSignals GetArticleInfos(const FeedItems& feed_items,
-                               const Signals& signals) {
-  ArticleSignals articles;
+ArticleInfos GetArticleInfos(const FeedItems& feed_items,
+                             const Signals& signals) {
+  ArticleInfos articles;
   base::flat_set<GURL> seen_articles;
   for (const auto& item : feed_items) {
     if (item.is_null()) {
@@ -132,14 +136,47 @@ ArticleSignals GetArticleInfos(const FeedItems& feed_items,
   return articles;
 }
 
+// Randomly true/false with equal probability.
 bool TossCoin() {
   return base::RandDouble() < 0.5;
 }
 
+// This is a Box Muller transform for getting a normally distributed value
+// between [0, 1] (inclusive)
+// https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
+double GetNormal() {
+  double u;
+  double v;
+
+  do {
+    u = base::RandDouble();
+  } while (u == 0);
+  do {
+    v = base::RandDouble();
+  } while (v == 0);
+
+  double result = sqrt(-2.0 * log(u)) * cos(2 * 3.1415 * v);
+  result = result / 10 + 0.5;
+
+  // Resample if outside the [0, 1] range
+  if (result > 1 || result < 0) {
+    return GetNormal();
+  }
+
+  return result;
+}
+
+// Returns a normally distributed value between min (inclusive) and max
+// (exclusive).
+int GetNormal(int min, int max) {
+  return min + floor((max - min) * GetNormal());
+}
+
 using ShouldConsiderPredicate = bool(const Signal& signal);
 
+// Picks an article with a probability article_weight/sum(article_weights).
 mojom::FeedItemMetadataPtr PickRouletteAndRemove(
-    ArticleSignals& articles,
+    ArticleInfos& articles,
     ShouldConsiderPredicate predicate = [](const auto& signal) {
       return true;
     }) {
@@ -151,12 +188,10 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
     total_weight += weight;
   }
 
-  // Non of the items are eligible to be picked.
+  // None of the items are eligible to be picked.
   if (total_weight == 0) {
     return nullptr;
   }
-
-  DCHECK_GT(articles.size(), 0u);
 
   double picked_value = base::RandDouble() * total_weight;
   double current_weight = 0;
@@ -183,9 +218,9 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
 // Picking a discovery article works the same way as as a normal roulette
 // selection, but we only consider articles that:
 // 1. The user hasn't subscribed to.
-// 2. The user hasn't visited.
+// 2. **AND** The user hasn't visited.
 mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
-    ArticleSignals& articles) {
+    ArticleInfos& articles) {
   return PickRouletteAndRemove(articles, [](const auto& signal) {
     return !signal.subscribed && signal.visit_weight == 0;
   });
@@ -194,7 +229,7 @@ mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
 // Generates a standard block:
 // 1. Hero Article
 // 2. 1 - 5 Inline Articles (a percentage of which might be discover cards).
-std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleSignals& articles) {
+std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles) {
   DVLOG(1) << __FUNCTION__;
   std::vector<mojom::FeedItemV2Ptr> result;
   if (articles.empty()) {
@@ -209,7 +244,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleSignals& articles) {
   result.push_back(mojom::FeedItemV2::NewHero(
       mojom::HeroArticle::New(std::move(hero_article))));
 
-  auto follow_count = base::RandInt(kBlockInlineMin, kBlockInlineMax);
+  auto follow_count = GetNormal(kBlockInlineMin, kBlockInlineMax + 1);
   for (auto i = 0; i < follow_count; ++i) {
     // discover ratio % of the time, we should do a discover card here instead
     // of a roulette card.
@@ -233,7 +268,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleSignals& articles) {
 // This function is the same as GenerateBlock, except that the available
 // articles are filtered to only be from the specified channel.
 std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
-    ArticleSignals& articles,
+    ArticleInfos& articles,
     const Publishers& publishers,
     const std::string& channel,
     const std::string& locale) {
@@ -256,7 +291,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
   }
 
   // now, filter articles to only include articles in the channel.
-  ArticleSignals allowed_articles;
+  ArticleInfos allowed_articles;
   for (auto i = 0u; i < articles.size(); ++i) {
     auto& article_info = articles[i];
     if (!base::Contains(allowed_publishers,
@@ -429,7 +464,6 @@ void FeedV2Builder::OnGotSuggestedPublisherIds(
 }
 
 void FeedV2Builder::BuildFeedFromArticles() {
-  auto start = base::Time::Now();
   DVLOG(1) << __FUNCTION__;
   const auto& publishers = publishers_controller_->GetLastPublishers();
   const auto& locale = publishers_controller_->GetLastLocale();
@@ -522,9 +556,6 @@ void FeedV2Builder::BuildFeedFromArticles() {
     add_items(items);
     ++iteration;
   }
-
-  LOG(ERROR) << "Generation took " << (base::Time::Now() - start).InSecondsF()
-             << ". Iterations: " << iteration;
 
   // Fire all the pending callbacks.
   for (auto& callback : pending_callbacks_) {

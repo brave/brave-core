@@ -82,8 +82,7 @@ void SignalCalculator::OnGotHistory(
     std::vector<mojom::FeedItemMetadataPtr> articles,
     SignalsCallback callback,
     history::QueryResults results) {
-  // TODO(fallaciousreasoning): Actually get the locale.
-  const char locale[] = "en_US";
+  const auto& locale = publishers_controller_->GetLastLocale();
 
   auto& publishers = publishers_controller_->GetLastPublishers();
   auto channels = channels_controller_->GetChannelsFromPublishers(
