@@ -449,6 +449,19 @@ class SettingsViewController: TableViewController {
     }
 
     tabs.rows.append(autoCloseTabsRow)
+    
+    if !Preferences.Privacy.privateBrowsingOnly.value {
+      let privateTabsRow = Row(
+        text: Strings.TabsSettings.privateTabsSettingsTitle,
+        selection: { [unowned self] in
+          let vc = UIHostingController(rootView: PrivateTabsView(tabManager: tabManager))
+          self.navigationController?.pushViewController(vc, animated: true)
+        },
+        image: UIImage(braveSystemNamed: "leo.product.private-window"),
+        accessory: .disclosureIndicator)
+      
+      tabs.rows.append(privateTabsRow)
+    }
 
     return tabs
   }()
@@ -594,11 +607,6 @@ class SettingsViewController: TableViewController {
           detailText: Strings.Privacy.browserLockDescription,
           option: Preferences.Privacy.lockWithPasscode,
           image: UIImage(braveSystemNamed: "leo.biometric.login")),
-        .boolRow(
-          title: Strings.Privacy.privateBrowsingLock,
-          detailText: Strings.Privacy.privateBrowsingLockDescription,
-          option: Preferences.Privacy.privateBrowsingLock,
-          image: UIImage(braveSystemNamed: "leo.lock")),
         Row(
           text: Strings.Login.loginListNavigationTitle,
           selection: { [unowned self] in
@@ -607,7 +615,7 @@ class SettingsViewController: TableViewController {
               windowProtection: self.windowProtection)
             loginsPasswordsViewController.settingsDelegate = self.settingsDelegate
             self.navigationController?.pushViewController(loginsPasswordsViewController, animated: true)
-          }, image: UIImage(braveSystemNamed: "leo.outside"), accessory: .disclosureIndicator),
+          }, image: UIImage(braveSystemNamed: "leo.outside"), accessory: .disclosureIndicator)
       ]
     )
   }()
