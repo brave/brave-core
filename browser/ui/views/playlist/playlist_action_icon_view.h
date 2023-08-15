@@ -44,7 +44,7 @@ class PlaylistActionIconView : public PageActionIconView,
 
   playlist::PlaylistTabHelper* playlist_tab_helper() {
     return playlist::PlaylistTabHelper::FromWebContents(
-        last_web_contents_.get());
+        GetWebContents());
   }
 
   void UpdateState(bool has_saved, bool found_items);
@@ -62,8 +62,6 @@ class PlaylistActionIconView : public PageActionIconView,
   raw_ptr<Browser> browser_ = nullptr;
 
   State state_ = State::kNone;
-
-  raw_ptr<content::WebContents> last_web_contents_ = nullptr;
 
   base::ScopedObservation<playlist::PlaylistTabHelper,
                           playlist::PlaylistTabHelperObserver>

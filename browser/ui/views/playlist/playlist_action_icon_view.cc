@@ -72,7 +72,6 @@ void PlaylistActionIconView::ShowPlaylistBubble() {
   }
 
   DCHECK(saved_item_count || found_item_count > 1u);
-  DCHECK_EQ(last_web_contents_, GetWebContents());
   PlaylistActionBubbleView::ShowBubble(browser_, this, playlist_tab_helper);
 }
 
@@ -86,8 +85,7 @@ const gfx::VectorIcon& PlaylistActionIconView::GetVectorIcon() const {
 }
 
 void PlaylistActionIconView::UpdateImpl() {
-  if (auto old_contents = std::exchange(last_web_contents_, GetWebContents());
-      old_contents == last_web_contents_) {
+  if (!GetWebContents()) {
     return;
   }
 
@@ -133,12 +131,10 @@ void PlaylistActionIconView::UpdateState(bool has_saved, bool found_items) {
                        : found_items ? State::kFound
                                      : State::kNone;
   if (auto old_state = std::exchange(state_, target_state);
-      old_state == target_state) {
-    return;
+      old_state != target_state) {
+    DVLOG(2) << __FUNCTION__ << " " << static_cast<int>(target_state);
+    UpdateIconImage();
   }
-
-  DVLOG(2) << __FUNCTION__ << " " << static_cast<int>(target_state);
-  UpdateIconImage();
   UpdateVisibilityPerState();
 }
 
