@@ -32,7 +32,13 @@ export const Modal = styled(StyledDiv)`
   width: 440px;
   z-index: 20;
   @media screen and (max-width: 570px) {
-    width: 90%;
+    width: unset;
+    height: unset;
+    border-radius: 16px 16px 0px 0px;
+    top: 32px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
   }
   @media (prefers-color-scheme: dark) {
     box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.36);
