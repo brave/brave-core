@@ -61,16 +61,16 @@ TEST_F(BraveAdsConversionResourceTest, DoNotLoadMissingResource) {
   // Arrange
   EXPECT_CALL(ads_client_mock_, LoadFileResource(kConversionResourceId,
                                                  ::testing::_, ::testing::_))
-      .WillOnce(::testing::Invoke([](const std::string& /*id*/,
-                                     const int /*version*/,
-                                     LoadFileCallback callback) {
-        const base::FilePath path =
-            GetFileResourcePath().AppendASCII(kMissingResourceId);
+      .WillOnce(
+          ::testing::Invoke([](const std::string& /*id*/, const int /*version*/,
+                               LoadFileCallback callback) {
+            const base::FilePath path =
+                GetFileResourcePath().AppendASCII(kMissingResourceId);
 
-        base::File file(
-            path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
-        std::move(callback).Run(std::move(file));
-      }));
+            base::File file(path, base::File::Flags::FLAG_OPEN |
+                                      base::File::Flags::FLAG_READ);
+            std::move(callback).Run(std::move(file));
+          }));
 
   // Act
   LoadResource(kCountryComponentId);
