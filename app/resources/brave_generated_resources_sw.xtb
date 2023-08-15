@@ -14,10 +14,6 @@
 <translation id="8294286161128352783">Kwenye ukurasa mpya wa kichupo pekee</translation>
 <translation id="6406506848690869874">Oanisha</translation>
 <translation id="1544192797660353713">Pochi</translation>
-<translation id="2445484935443597917">Unda Wasifu Mpya</translation>
-<translation id="744341768939279100">Unda wasifu mpya</translation>
-<translation id="2666990579225592931">Fungua Dirisha la Mgeni</translation>
-<translation id="4986483413015198747">Fungua dirisha la mgeni</translation>
 <translation id="8275068909952022340">Zaidi…</translation>
 <translation id="1990886731975529483">Sakinisha na kuendesha Google Widevine</translation>
 <translation id="8926389886865778422">Nisiulizwe tena</translation>
@@ -243,11 +239,23 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7537601449003285327">Tundika kwenye upau wa kazi</translation>
 <translation id="2307973900865360088">Weka kwenye Dock</translation>
 <translation id="961012016278832836">Urithi wa Microsoft Edge</translation>
-<translation id="6436994631426134065">Imehamishwa kutoka<ph name="BROWSER_NAME"/>.</translation>
+<translation id="6436994631426134065">Imehamishwa kutoka <ph name="BROWSER_NAME"/>.</translation>
 <translation id="1386966479075994683">Panua Vichupo</translation>
 <translation id="480565261566115689">Punguza Vichupo</translation>
 <translation id="7194343495483122559">Panua vichupo</translation>
 <translation id="1199054713803577378">Punguza vichupo</translation>
+<translation id="8120600068258956006">Ongeza kwenye Orodha ya Kucheza</translation>
+<translation id="650694591627983430">Maudhui yanayopatikana katika ukurasa huu</translation>
+<translation id="1824323294233307883">Yameongezwa kwenye Cheza Baadaye</translation>
+<translation id="4830689155681863580">Fungua kwenye Orodha ya Kucheza</translation>
+<translation id="5330442669942072852">Fungua Folda</translation>
+<translation id="8101564000331197174">Ondoa katika Orodha ya Kucheza</translation>
+<translation id="838254185387128227">Maudhui zaidi kwenye Ukurasa Huu...</translation>
+<translation id="326641288623143307">Weka Yaliyochaguliwa</translation>
+<translation id="5856970744810677796">Fungua kwenye Orodha ya Kucheza</translation>
+<translation id="2803313416453193357">Fungua Folda</translation>
+<translation id="333558915234875673">Maudhui zaidi kwenye ukurasa huu...</translation>
+<translation id="5145233969981669502">Weka Yaliyochaguliwa</translation>
 <translation id="9156965752763025780">Mabadiliko yako yataanza kufanya kazi wakati ujao utakapozindua upya Brave.</translation>
 <translation id="7179921470347911571">Zindua Sasa</translation>
 <translation id="4472575034687746823">Anza</translation>

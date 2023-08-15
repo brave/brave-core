@@ -1,7 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="nl">
+<translation id="885805571521218129">Dit toont uw geschatte inkomstenvoor Brave-advertenties deze maand.</translation>
 <translation id="3478449063771497234">Meldingen zijn uitgeschakeld</translation>
+<translation id="370665806235115550">Bezig met laden...</translation>
 <translation id="8220484609979012449">\n\nU kunt nog steeds crypto-bijdragen sturen aan deze maker door uw Web3-wallet te gebruiken.</translation>
 <translation id="6385969012847057348">Deze maker kan geen bijdragen ontvangen van <ph name="CUSTODIAN"/>.</translation>
 <translation id="6268134562674951939">U hebt niet genoeg tokens</translation>
@@ -40,6 +42,8 @@
 <translation id="4748689412569009273">Geef in één emoji weer wat u van Brave vindt</translation>
 <translation id="7335142069363686805">Nu beoordelen</translation>
 <translation id="6681362094306959654">Bevalt Brave?</translation>
+<translation id="8041093619605951337">Blij</translation>
+<translation id="6826743502395386800">Verdrietig</translation>
 <translation id="5488843227043643519">Wilt u een beoordeling in de Play Store geven?</translation>
 <translation id="5867854497245948308">Bedankt voor uw feedback!</translation>
 <translation id="4935400164159327304">Laat ons weten hoe we Brave kunnen verbeteren.</translation>
@@ -73,7 +77,7 @@
 <translation id="1118970888826017401">Schakel ondersteuning in voor het omzeilen van omleidings-/tracerings-URL's van het hoogste niveau.</translation>
 <translation id="94154759592465111">Blokkeer scripts</translation>
 <translation id="7714773920987474116">Hiermee wordt JavaScript geblokkeerd (websites werken hierdoor mogelijk niet)</translation>
-<translation id="1660979054779793659">YouTube</translation>
+<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Aanbevolen content van YouTube blokkeren</translation>
 <translation id="1005372663692637999">Blokkeert de elementen voor de volgende content en aftiteling op youtube.com.</translation>
 <translation id="5152595963250646670">Afleidende elementen van YouTube blokkeren</translation>
@@ -136,11 +140,6 @@
 <translation id="1276592121036104130">Nieuwe inhoud laden</translation>
 <translation id="3189348785087463371">Gepromote inhoud</translation>
 <translation id="7554145152551782675">Meer Brave-aanbiedingen</translation>
-<translation id="1717242776111689224">Brave Nieuws inschakelen</translation>
-<translation id="4732255422524275223">Uw bronnen</translation>
-<translation id="152579389256498990">URL van feed of website</translation>
-<translation id="4975944254857623648">Standaardbronnen</translation>
-<translation id="253886574765651454">Bron toevoegen</translation>
 <translation id="254100925533869330">Geen content</translation>
 <translation id="7172792761509429092">Er is geen content weer te geven voor Brave News.</translation>
 <translation id="1771307734839364850">Kies contentbronnen</translation>
@@ -152,6 +151,8 @@
 <translation id="6686219838158572786">Alle verbindingen moeten HTTPS gebruiken (streng)</translation>
 <translation id="4221284400051835823">Gebruik HTTPS indien dit mogelijk is (standaard)</translation>
 <translation id="4690906712010847708">Waardeer verbindingen niet op naar HTTPS (uitgeschakeld)</translation>
+<translation id="693506469193748756">Vergeet me zodra ik deze site afsluit</translation>
+<translation id="6975864539539353406">Verwijdert cookies en andere sitegegevens wanneer u een site afsluit</translation>
 <translation id="1680858055899097121">Blijf niet tussen tabbladen doorbladeren.</translation>
 <translation id="7142548388914389999">Productanalyse met privacybescherming (P3A) toestaan</translation>
 <translation id="5254037869598726291">Op basis van geanonimiseerde P3A-gegevens kan Brave het algemene gebruik schatten en kunnen we populaire functies verbeteren.</translation>
@@ -180,6 +181,7 @@
 <translation id="8308305244351876417">Maakt audio afspelen mogelijk wanneer u naar een ander tabblad in Brave of naar een andere app gaat of wanneer het scherm van uw apparaat uit is.</translation>
 <translation id="4150201353443180367">Weergave</translation>
 <translation id="2433507940547922241">Vormgeving</translation>
+<translation id="9040069796107003510">Brave Beloningen-pictogram</translation>
 <translation id="6333347122924254968">Het Brave Beloningen-pictogram tonen in de adresbalk</translation>
 <translation id="8495235435594442882">Schakel de onderste werkbalk in</translation>
 <translation id="6587448235155023666">Je veranderingen zullen de volgende keer dat je Brave opstart in effect gaan</translation>
@@ -252,13 +254,13 @@
 <translation id="4254029385847607686">DECEMBER</translation>
 <translation id="3960619311638643872">Brave-VPN</translation>
 <translation id="1772301834467143364">Brave-nieuws</translation>
-<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">instellingen</translation>
 <translation id="6020176662032623904">Geverifieerde ontwikkelaar</translation>
 <translation id="2369994359029526515">Niet-geverifieerde ontwikkelaar</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="7861645265922445992">Beloningen claimen</translation>
-<translation id="8494748383523030337">Je saldo</translation>
+<translation id="1848737374354350807">Balance</translation>
 <translation id="4781696154289395607">Jij hebt <ph name="BAT_VALUE"/> BAT bijgedragen.</translation>
 <translation id="2429828319207652823">Er is een probleem opgetreden bij het verwerken van je bijdrage.</translation>
 <translation id="2221902203895354376">Er is een tokentoewijzing beschikbaar!</translation>
@@ -322,8 +324,8 @@
 <translation id="8185825081026121627">Verdien Basic Attention Token door privacyvriendelijke Brave Rewards advertenties te bekijken.</translation>
 <translation id="5321518976657560663">Resetfout</translation>
 <translation id="4114170343590425996">Er is een fout opgetreden bij het opnieuw instellen van Brave Rewards. Start Brave opnieuw en probeer het opnieuw.</translation>
-<translation id="6393502589311632553">Advertenties weergeven wanneer Brave niet in gebruik is</translation>
-<translation id="3349204812119681938">Reset Brave Rewards</translation>
+<translation id="6417420737057016607">Brave Advertenties</translation>
+<translation id="5611966874859284786">Melding van advertenties weergeven wanneer Brave niet in gebruik is</translation>
 <translation id="6606319453795180219">Hierdoor worden uw Brave-beloningen verwijderd en al uw gegevens van Brave-beloningen gereset</translation>
 <translation id="8293206222192510085">Voeg Bladwijzer toe</translation>
 <translation id="340492034650766959">Bladwijzer verwijderen</translation>
@@ -456,6 +458,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="8903462729414407077">Ontvang wekelijks updates</translation>
 <translation id="7450323860390658083">Wees op de hoogte van welke websites de grootste bedreiging vormen voor je privacy.\n\nAlleen jij kunt deze privacystatistieken zien. Je persoonlijke gegevens en browsergeschiedenis verlaten nooit de Brave-browser op je apparaat.</translation>
 <translation id="6170159749517116894">Zet privacyrapporten aan</translation>
+<translation id="1669047024429367828">Zichtbaarheid</translation>
 <translation id="5966707198760109579">Week</translation>
 <translation id="8987927404178983737">Maand</translation>
 <translation id="4302754476737420523">3 maanden</translation>
@@ -509,6 +512,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="8235783939971604011">Een fooi geven is een manier om inhoud of makers waar u van houdt persoonlijk aan te moedigen en te steunen. Laten we een fooi geven!</translation>
 <translation id="4215679190414901888">Laten we dan nu de instellingen toepassen</translation>
 <translation id="3494356595346329740">U kunt dit later wijzigen.</translation>
+<translation id="3286390186030710347">Schuifknop</translation>
 <translation id="3115702351969988294">Hoe vaak wilt u advertenties zien?</translation>
 <translation id="2353222426385080466">Meer privéadvertenties, meer beloningen.</translation>
 <translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> advertenties per uur</translation>
@@ -533,6 +537,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="5187052478998910855">Heeft u een opfrisser nodig over Rewards?</translation>
 <translation id="8622329973403382303">Neem een snelle tour om erachter te komen hoe het werkt om de geschiedenis in te gaan als een Rewards rockster!</translation>
 <translation id="3479552764303398839">Niet nu</translation>
+<translation id="7138272885617540195">Sta app-links toe om apps buiten Brave te openen</translation>
 <translation id="8792121506918889955">WebRTC IP-verwerkingsbeleid</translation>
 <translation id="8798099450830957504">Standaard</translation>
 <translation id="1822560017823072927">Standaard openbare- en privé-interface</translation>
@@ -557,7 +562,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="8289942708804097960">Koop crypto met een creditcard of betaalkaart.</translation>
 <translation id="841880029259839903">Verzend of maak crypto over van het ene account naar het andere.</translation>
 <translation id="8226778393040773102">Tokens en assets wisselen</translation>
-<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/> verwerkt het Ethereum-adres en IP-adres om een transactie uit te voeren (inclusief het ophalen van prijsindicaties). <ph name="DEX_PROVIDER"/> gebruikt deze gegevens ALLEEN voor het verwerken van transacties.</translation>
 <translation id="1783600039044302171">Je crypto met een wachtwoord beveiligen</translation>
 <translation id="3726490322412361740">Wachtwoord invoeren</translation>
 <translation id="3038243139480464605">Wachtwoord verifiëren</translation>
@@ -598,7 +602,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1144810021918451336">Beschermt u niet tegen gevaarlijke websites, downloads en extensies.</translation>
 <translation id="5760476995887363522">Woorden komen niet overeen. Probeer het opnieuw.</translation>
 <translation id="2360588547830602174">Accountherstel mislukt; probeer het opnieuw.</translation>
-<translation id="6392640873800632439">Marktprijs in <ph name="ASSET"/></translation>
 <translation id="6748108480210050150">Van</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -608,7 +611,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="2589431635772931954">Adres of URL</translation>
 <translation id="5517732667776806421">Checksum-gegevens ontbreken</translation>
 <translation id="4006711930669471508">Ongeldige checksum-gegevens</translation>
-<translation id="632241521608275119">Risicotolerantie</translation>
 <translation id="1987317783729300807">Accounts</translation>
 <translation id="3535654229833214438">Transacties</translation>
 <translation id="2449682593754783720">1 uur</translation>
@@ -750,6 +752,11 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="5317780077021120954">Opslaan</translation>
 <translation id="4979796155378508955">Transactie wordt mogelijk niet aan het netwerk doorgegeven indien aangepaste nonce-waarde niet-sequentieel is of andere fouten bevat.</translation>
 <translation id="6122742277607781713">Portfolio</translation>
+<translation id="3567988240819868195">Markt</translation>
+<translation id="4576965889365503638">INFORMATIE</translation>
+<translation id="152455748535966757">Rang</translation>
+<translation id="4958716607782044952">24-uur volume</translation>
+<translation id="128834189395075789">Beurskapitalisatie</translation>
 <translation id="750843150060816463">Gasprijs (Gwei)</translation>
 <translation id="1426320910664514906">Gaslimiet</translation>
 <translation id="6389441740143786465">Sharing Hub uitschakelen</translation>
@@ -761,10 +768,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1367951781824006909">Een bestand selecteren</translation>
 <translation id="8648684608605749476">Cookies van derden blokkeren in incognitomodus</translation>
 <translation id="1118876217803190221">Onvoldoende saldo</translation>
-<translation id="275990379543116961">Onvoldoende saldo voor gas</translation>
-<translation id="3292453499915466604">Onvoldoende liquide middelen</translation>
 <translation id="3025158262797849291">Niet-herkende getalopmaak</translation>
-<translation id="3380365263193509176">Onbekende fout</translation>
 <translation id="5932938770824268122">Prive sleutel</translation>
 <translation id="2472882733835903303">Privésleutel weergeven</translation>
 <translation id="4391056902675005799">Privésleutel verbergen</translation>
@@ -834,7 +838,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6727102863431372879">Instellen</translation>
 <translation id="3074127054582480056">Attentie</translation>
 <translation id="2280319752798785157">Maandelijkse bijdrage</translation>
-<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Automatische aanvulling weergeven in adresbalk</translation>
 <translation id="8982438328166986164">Hiermee worden websitesuggesties weergegeven op basis van uw bladwijzers en browsegeschiedenis.</translation>
@@ -1051,11 +1054,12 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="5382684862562314222">BAT wordt nog niet ondersteund in jouw regio voor Uphold.</translation>
 <translation id="6996157559236886133">Fout: beperkte Uphold-accountfunctionaliteit</translation>
 <translation id="1677961202754619328">Volgens Uphold gelden er momenteel enkele beperkingen voor uw Uphold-account. Log in bij uw Uphold-account en controleer of er meldingen zijn en of er gegevens ontbreken. Probeer het vervolgens opnieuw.</translation>
-<translation id="6417420737057016607">Brave Advertenties</translation>
 <translation id="5425006356459378415">Brave Rewards is niet beschikbaar</translation>
 <translation id="833643743158564518">Nieuwe aanmeldingen voor Brave Rewards zijn momenteel uitgeschakeld in uw regio. U kunt het later echter altijd opnieuw proberen. <ph name="LEARN_MORE"/></translation>
 <translation id="8528916244724490964">Alle netwerken</translation>
+<translation id="7748944510530490017">Primaire netwerken</translation>
 <translation id="2781668117338732220">Secundaire netwerken</translation>
+<translation id="282560918037172384">Testnetwerken</translation>
 <translation id="6309721369749814582">Domein <ph name="DOMAIN"/> is niet geregistreerd</translation>
 <translation id="4071347720273751665">U hebt een ENS-adres ingevoerd. We hebben een omzetter van een derde partij nodig om deze aanvraag om te zetten. Deze omzetter kan mogelijk uw IP-adres en domein zien. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">ENS-domein buiten blockchain gebruiken</translation>
@@ -1149,4 +1153,9 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6344103698928069918">Bij playlists het afspelen hervatten vanaf het punt waar u het laatst gestopt bent</translation>
 <translation id="8141583471142904652">Zonder onderbreking afspelen</translation>
 <translation id="851432578283946230">Speelt automatisch de volgende items op uw playlist af</translation>
+<translation id="7853202427316060426">Activiteit</translation>
+<translation id="4932733599132424254">Datum</translation>
+<translation id="346505172740911461">Marktprijs</translation>
+<translation id="4709355193533327244">Nog geen transacties om te bekijken.</translation>
+<translation id="4931644613135313937">Zodra u een transactie doet, kunt u deze hier bekijken.</translation>
 </translationbundle>

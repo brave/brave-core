@@ -2,9 +2,12 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="kn">
 <translation id="130631256467250065">ನಿಮ್ಮ ಸಾಧನವನ್ನು ನೀವು ಮುಂದಿನ ಬಾರಿ ಮರುಪ್ರಾರಂಭಿಸಿದಾಗ ನಿಮ್ಮ ಬದಲಾವಣೆಗಳು ಕಾರ್ಯಗತಗೊಳ್ಳುತ್ತವೆ.</translation>
+<translation id="1555506416658437797">ಪಾವತಿ ವಿಧಾನಗಳನ್ನು ಎಡಿಟ್ ಮಾಡಿ.</translation>
 <translation id="7999989146447764333">Brave ನಲ್ಲಿ ಕ್ರ್ಯಾಶ್ ವರದಿ ಮಾಡುವಿಕೆ ಲಭ್ಯವಿಲ್ಲ.</translation>
 <translation id="1953231710324290369">ನೀವು ಸುರಕ್ಷಿತ Brave ಪುಟವನ್ನು ವೀಕ್ಷಿಸುತ್ತಿರುವಿರಿ</translation>
+<translation id="907470742420136113">ಪಾವತಿ ವಿಧಾನಗಳನ್ನು ಭರ್ತಿ ಮಾಡಲು Brave ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಮಾರ್ಪಡಿಸಲು ಪ್ರಯತ್ನಿಸುತ್ತಿದೆ.</translation>
 <translation id="4847979153841887006">Brave ಲೋಗೋ</translation>
+<translation id="336808635693308470">ಪಾವತಿ ವಿಧಾನಗಳನ್ನು ಎಡಿಟ್ ಮಾಡಲು Brave ಪ್ರಯತ್ನಿಸುತ್ತಿದೆ.</translation>
 <translation id="7932149101545999102"><ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> ಓಪನ್ ಸೋರ್ಸ್ ಯೋಜನೆ ಮತ್ತು ಇತರ <ph name="BEGIN_LINK_OSS"/>ಓಪನ್ ಸೋರ್ಸ್ ಸಾಫ್ಟ್‌ವೇರ್<ph name="END_LINK_OSS"/> ನಿಂದ Brave ಅನ್ನು ಮಾಡಲು ಸಾಧ್ಯ.</translation>
 <translation id="8746410156982274638">ಇದಕ್ಕೆ ಹೋಗಿ
           Brave ಮೆನು &gt;
@@ -27,6 +30,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
           ಮತ್ತು ನಿಮ್ಮ ಕಾನ್ಫಿಗರೇಶನ್ ಅನ್ನು "ಯಾವುದೇ ಪ್ರಾಕ್ಸಿ ಇಲ್ಲ" ಅಥವಾ "ನೇರವಾಗಿ" ಗೆ ಹೊಂದಿಸಲಾಗಿದೆಯೇ ಎಂಬುದನ್ನು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ.</translation>
+<translation id="585620188971323280">ಪಾವತಿ ವಿಧಾನಗಳನ್ನು ಭರ್ತಿ ಮಾಡಲು ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಮಾರ್ಪಡಿಸಿ.</translation>
 <translation id="2765022094254723779">ಇತರ <ph name="BEGIN_LINK_OSS"/>ಓಪನ್ ಸೋರ್ಸ್ ಸಾಫ್ಟ್‌ವೇರ್<ph name="END_LINK_OSS"/> ನಿಂದ Brave ಅನ್ನು ಸಾಕಾರಗೊಳಿಸಲಾಗಿದೆ.</translation>
 <translation id="9156965752763025780">ನೀವು ಮುಂದಿನ ಬಾರಿ Brave ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿದಾಗ ನಿಮ್ಮ ಬದಲಾವಣೆಗಳು ಕಾರ್ಯಗತಗೊಳ್ಳುತ್ತವೆ.</translation>
 <translation id="6477625882876869143"><ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> ಓಪನ್ ಸೋರ್ಸ್ ಪ್ರಾಜೆಕ್ಟ್‌ನಿಂದ Brave ಅನ್ನು ಸಾಕಾರಗೊಳಿಸಲಾಗಿದೆ.</translation>
@@ -41,5 +45,6 @@
 <translation id="8187289872471304532">ಇದಕ್ಕೆ ಹೋಗಿ
           ಅಪ್ಲಿಕೇಶನ್‌ಗಳು &gt; ಸಿಸ್ಟಂ ಪ್ರಾಶಸ್ತ್ಯಗಳು &gt; ನೆಟ್‌ವರ್ಕ್ &gt; ಸುಧಾರಿತ &gt; ಪ್ರಾಕ್ಸಿಗಳು
           ಮತ್ತು ಆಯ್ಕೆ ಮಾಡಿದ ಯಾವುದೇ ಪ್ರಾಕ್ಸಿಗಳ ಆಯ್ಕೆಯನ್ನು ರದ್ದುಮಾಡಿ.</translation>
+<translation id="4159376633403260073">ನೀವು ಸುರಕ್ಷಿತ Brave for Testing ಪುಟವನ್ನು ವೀಕ್ಷಿಸುತ್ತಿದ್ದೀರಿ</translation>
 <translation id="88187049159266777">Brave ಅನ್ನು ಸರಿಯಾಗಿ ಸ್ಥಗಿತಗೊಳಿಸಲಾಗಿಲ್ಲ.</translation>
 </translationbundle>

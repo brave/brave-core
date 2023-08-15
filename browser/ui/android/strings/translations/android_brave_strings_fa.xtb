@@ -1,7 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fa">
+<translation id="885805571521218129">محدوده درآمد تخمینی شما را برای آگهی‌های Brave در این ماه نشان می‌دهد.</translation>
 <translation id="3478449063771497234">اعلان‌ها غیرفعال شده‌اند</translation>
+<translation id="370665806235115550">در حال بارکردن…</translation>
 <translation id="8220484609979012449">\n\nبا استفاده از کیف پول Web3، همچنان می‌توانید کمک‌های رمزارز را به این پدیدآورنده ارسال کنید.</translation>
 <translation id="6385969012847057348">این سازنده قادر به دریافت مشارکت از <ph name="CUSTODIAN"/> نیست.</translation>
 <translation id="6268134562674951939">توکن کافی ندارید</translation>
@@ -40,6 +42,8 @@
 <translation id="4748689412569009273">با یک ایموجی نشان دهید، تجربه شما از کار با Brave چگونه است؟</translation>
 <translation id="7335142069363686805">اکنون امتیاز دهید</translation>
 <translation id="6681362094306959654">آیا Brave را دوست دارید؟</translation>
+<translation id="8041093619605951337">خوشحال</translation>
+<translation id="6826743502395386800">غمگین</translation>
 <translation id="5488843227043643519">آیا تمایل دارید در Play Store امتیاز خود را ثبت کنید؟</translation>
 <translation id="5867854497245948308">از بازخورد شما سپاسگزاریم!</translation>
 <translation id="4935400164159327304">به ما بگویید که چگونه می‌توانیم Brave را بهبود دهیم.</translation>
@@ -73,7 +77,7 @@
 <translation id="1118970888826017401">برای دور زدن بالاترین درجه تغییر مسیر ردیابی نشانی‌های وب‌سایت پشتیبانی را فعال کنید.</translation>
 <translation id="94154759592465111">مسدود کردن اسکریپت</translation>
 <translation id="7714773920987474116">جاوااسکریپت را مسدود می‌کند (ممکن است منجر به خرابی سایت‌ها شود)</translation>
-<translation id="1660979054779793659">Youtube</translation>
+<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">مسدود کردن محتوای توصیه‌شده YouTube</translation>
 <translation id="1005372663692637999">عناصر کارت پایان و قسمت بعدی را در youtube.com مسدود می‌کند.</translation>
 <translation id="5152595963250646670">مسدود کردن عناصر مزاحم YouTube</translation>
@@ -136,11 +140,6 @@
 <translation id="1276592121036104130">بار کردن محتوای جدید</translation>
 <translation id="3189348785087463371">ارتقایافته</translation>
 <translation id="7554145152551782675">پیشنهادهای بیشتر از Brave</translation>
-<translation id="1717242776111689224">فعال کردن «اخبار Brave»</translation>
-<translation id="4732255422524275223">منابع شما</translation>
-<translation id="152579389256498990">فید یا نشانی سایت</translation>
-<translation id="4975944254857623648">منابع پیش‌فرض</translation>
-<translation id="253886574765651454">افزودن منبع</translation>
 <translation id="254100925533869330">محتوایی وجود ندارد</translation>
 <translation id="7172792761509429092">اخبار Brave محتوایی برای نمایش ندارد.</translation>
 <translation id="1771307734839364850">انتخاب منابع محتوا</translation>
@@ -152,6 +151,8 @@
 <translation id="6686219838158572786">همه اتصالات را ملزم به استفاده از HTTPS (سخت) کنید</translation>
 <translation id="4221284400051835823">در هر‌زمانی‌که امکان‌پذیر است به HTTPS ارتقاء دهید (پیش‌فرض)</translation>
 <translation id="4690906712010847708">اتصالات را به HTTPS ارتقاء ندهید (غیرفعال)</translation>
+<translation id="693506469193748756">وقتی این سایت را می‌بندم مرا فراموش کن</translation>
+<translation id="6975864539539353406">وقتی سایتی را می‌بندید، کوکی‌ها و سایر اطلاعات سایت را پاک می‌کند</translation>
 <translation id="1680858055899097121">بین جلسه‌های مرور وب، زبانه‌ها نگه داشته نمی‌شوند</translation>
 <translation id="7142548388914389999">مجاز کردن تجزیه‌وتحلیل‌های محصول حفاظت‌کننده از حریم‌خصوصی (P3A)</translation>
 <translation id="5254037869598726291">اطلاعات P3A بی‌نام‌شده به Brave کمک می‌کند مصرف کلی را تخمین بزند و تضمین می‌کند که ما ویژگی‌های پرطرفدار را بهبود می‌بخشیم.</translation>
@@ -180,6 +181,7 @@
 <translation id="8308305244351876417">وقتی به زبانه دیگری در Brave یا به برنامه دیگری بروید، یا صفحه دستگاه خاموش باشد، اجازه می‌دهد صدا پخش شود.</translation>
 <translation id="4150201353443180367">صفحه نمایش</translation>
 <translation id="2433507940547922241">شکل ظاهری</translation>
+<translation id="9040069796107003510">نماد پاداش‌های Brave</translation>
 <translation id="6333347122924254968">نمایش نماد Brave Rewards در نوار نشانی</translation>
 <translation id="8495235435594442882">فعال کردن نوار ابزار پایین</translation>
 <translation id="6587448235155023666">دفعه بعدی که Brave را راه‌اندازی می‌کنید، تغییرات شما اجرایی می‌شوند.</translation>
@@ -252,13 +254,13 @@
 <translation id="4254029385847607686">دسامبر</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
-<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">تنظیمات</translation>
 <translation id="6020176662032623904">پدیدآورنده تأییدشده</translation>
 <translation id="2369994359029526515">پدیدآورنده تأییدنشده</translation>
 <translation id="6112368337882254910">کمک خودکار</translation>
 <translation id="7861645265922445992">مطالبه پاداش‌ها</translation>
-<translation id="8494748383523030337">موجودی شما</translation>
+<translation id="1848737374354350807">صورت‌حساب</translation>
 <translation id="4781696154289395607">شما <ph name="BAT_VALUE"/> BAT کمک کرده‌اید.</translation>
 <translation id="2429828319207652823">مشکلی در پردازش کمکتان وجود داشت.</translation>
 <translation id="2221902203895354376">امتیار توکن موجود است!</translation>
@@ -322,8 +324,8 @@
 <translation id="8185825081026121627">با تماشای آگهی‌های «پاداش‌های Brave» که حریم‌خصوصی را رعایت می‌کنند، «توکن توجه پایه» کسب کنید.</translation>
 <translation id="5321518976657560663">خطای بازنشانی</translation>
 <translation id="4114170343590425996">خطایی در بازنشانی «پاداش‌های Brave» رخ داد. لطفاً مرورگر Brave را مجدداً راه‌اندازی و دوباره امتحان کنید.</translation>
-<translation id="6393502589311632553">نشان دادن آگهی هنگام مورد استفاده نبودن Brave</translation>
-<translation id="3349204812119681938">بازنشانی پاداش‌های Brave</translation>
+<translation id="6417420737057016607">آگهی‌های Brave</translation>
+<translation id="5611966874859284786">وقتی از Brave استفاده نمی‌شود، آگهی‌های اعلان نشان داده شود</translation>
 <translation id="6606319453795180219">با این کار، Brave Rewards شما حذف می‌شود و تمام داده‌های Brave Rewards بازنشانی می‌شود</translation>
 <translation id="8293206222192510085">افزودن نشانک</translation>
 <translation id="340492034650766959">حذف نشانک</translation>
@@ -456,6 +458,7 @@
 <translation id="8903462729414407077">دریافت به‌روزرسانی‌های هفتگی</translation>
 <translation id="7450323860390658083">بدانید کدام وب‌سایت‌هایی که بازدید می‌کنید، بیشتر به حریم‌خصوصی تجاوز می‌کنند.\n\nفقط شما می‌توانید این آمار حریم‌خصوصی را مشاهده کنید. هیچ‌گونه داده شخصی یا سابقه مروری از مرورگر Brave در دستگاهتان خارج نمی‌شود.</translation>
 <translation id="6170159749517116894">روشن کردن گزارش‌های حریم‌خصوصی</translation>
+<translation id="1669047024429367828">قابلیت دیدن</translation>
 <translation id="5966707198760109579">هفته</translation>
 <translation id="8987927404178983737">ماه</translation>
 <translation id="4302754476737420523">3 ماه</translation>
@@ -509,6 +512,7 @@
 <translation id="8235783939971604011">انعام دادن روشی است برای تشویق شخصی و پشتیبانی از محتوا یا سازندگان مورد علاقه‌تان. انعام بدهید!</translation>
 <translation id="4215679190414901888">در آخر، بیایید تنظیمات اصلی را انجام دهیم</translation>
 <translation id="3494356595346329740">بعداً می‌توانید این مورد را تغییر دهید.</translation>
+<translation id="3286390186030710347">کشویی</translation>
 <translation id="3115702351969988294">چندوقت یکبار می‌خواهید آگهی‌ها را ببینید؟</translation>
 <translation id="2353222426385080466">آگهی‌های خصوصی بیشتر، جوایز بیشتر.</translation>
 <translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> آگهی در ساعت</translation>
@@ -533,6 +537,7 @@
 <translation id="5187052478998910855">به مرور اطلاعات مربوط به Rewards نیاز دارید؟</translation>
 <translation id="8622329973403382303">گشت سریعی بزنید تا نحوه عملکرد برای پیوستن به تاریخ به‌عنوان ستاره راک Rewards را مرور کنید!</translation>
 <translation id="3479552764303398839">اکنون نه</translation>
+<translation id="7138272885617540195">به پیوندهای برنامه اجازه دهید در برنامه‌های خارج از Brave باز شوند</translation>
 <translation id="8792121506918889955">خط‌مشی مدیریت WebRTC IP</translation>
 <translation id="8798099450830957504">پیش‌فرض</translation>
 <translation id="1822560017823072927">رابط‌های عمومی و خصوصی پیش‌فرض</translation>
@@ -557,7 +562,6 @@
 <translation id="8289942708804097960">با کارت نقدی یا کارت اعتباری‌تان رمز ارز بخرید.</translation>
 <translation id="841880029259839903">رمزارز ارسال کنید یا از یک حساب به حساب دیگری منتقل کنید.</translation>
 <translation id="8226778393040773102">مبادله توکن‌ها و دارایی‌ها</translation>
-<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/> آدرس اتریوم و آدرس IP را برای انجام یک تراکنش (از جمله دریافت مظنه) پردازش می‌کند. <ph name="DEX_PROVIDER"/> از این داده‌ها فقط برای پردازش تراکنش‌ها استفاده می‌کند.</translation>
 <translation id="1783600039044302171">از رمزارزتان با گذرواژه حفاظت کنید</translation>
 <translation id="3726490322412361740">گذرواژه را وارد کنید</translation>
 <translation id="3038243139480464605">تأیید گذرواژه</translation>
@@ -598,7 +602,6 @@
 <translation id="1144810021918451336">از شما در برابر وب‌سایت‌ها، بارگیری‌ها، و افزونه‌های خطرناک محافظت نمی‌کند.</translation>
 <translation id="5760476995887363522">عبارت‌ها مطابقت نداشتند. لطفاً دوباره امتحان کنید.</translation>
 <translation id="2360588547830602174">حساب بازیابی نشد. لطفاً دوباره امتحان کنید</translation>
-<translation id="6392640873800632439">قیمت بازار در <ph name="ASSET"/></translation>
 <translation id="6748108480210050150">از</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -608,7 +611,6 @@
 <translation id="2589431635772931954">نشانی یا URL</translation>
 <translation id="5517732667776806421">فاقد اطلاعات چک‌سام</translation>
 <translation id="4006711930669471508">اطلاعات چک‌سام نامعتبر است</translation>
-<translation id="632241521608275119">نوسانات قیمت</translation>
 <translation id="1987317783729300807">حساب‌ها</translation>
 <translation id="3535654229833214438">تراکنش‌ها</translation>
 <translation id="2449682593754783720">1 ساعت</translation>
@@ -750,6 +752,11 @@
 <translation id="5317780077021120954">ذخیره</translation>
 <translation id="4979796155378508955">اگر مقدار نانس سفارشی غیرمتوالی یا دارای خطاهای دیگری باشد، ممکن است تراکنش در شبکه منتشر نشود.</translation>
 <translation id="6122742277607781713">پرتفوی</translation>
+<translation id="3567988240819868195">بازار</translation>
+<translation id="4576965889365503638">اطلاعات</translation>
+<translation id="152455748535966757">رتبه</translation>
+<translation id="4958716607782044952">حجم 24 ساعت</translation>
+<translation id="128834189395075789">ارزش بازار</translation>
 <translation id="750843150060816463">قیمت گس (Gwei)</translation>
 <translation id="1426320910664514906">محدوده گاز</translation>
 <translation id="6389441740143786465">غیرفعال کردن هاب اشتراک‌گذاری</translation>
@@ -761,10 +768,7 @@
 <translation id="1367951781824006909">انتخاب یک فایل</translation>
 <translation id="8648684608605749476">مسدود کردن کوکی‌های شخص ثالث در «حالت ناشناس»</translation>
 <translation id="1118876217803190221">موجودی کافی نیست</translation>
-<translation id="275990379543116961">وجوه برای گس کافی نیست</translation>
-<translation id="3292453499915466604">نقدینگی کافی نیست</translation>
 <translation id="3025158262797849291">قالب عدد تشخیص داده نشد</translation>
-<translation id="3380365263193509176">خطای ناشناس</translation>
 <translation id="5932938770824268122">کلید شخصی</translation>
 <translation id="2472882733835903303">نمایش کلید خصوصی</translation>
 <translation id="4391056902675005799">پنهان کردن کلید خصوصی</translation>
@@ -834,7 +838,6 @@
 <translation id="6727102863431372879">تنظیم</translation>
 <translation id="3074127054582480056">توجه</translation>
 <translation id="2280319752798785157">کمک ماهانه</translation>
-<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">نشان دادن تکمیل خودکار در نوار نشانی</translation>
 <translation id="8982438328166986164">پیشنهادهای وب‌سایت را بر اساس نشانک‌ها و سابقه مرور شما نمایش می‌دهد.</translation>
@@ -1051,11 +1054,12 @@
 <translation id="5382684862562314222">BAT هنوز در منطقه شما در Uphold پشتیبانی نمی‌شود.</translation>
 <translation id="6996157559236886133">خطا: عملکرد حساب Uphold محدود است</translation>
 <translation id="1677961202754619328">بر اساس Uphold، در حال حاضر محدودیت‌هایی در حساب Uphold شما وجود دارد. لطفاً وارد حساب Uphold خود شوید و وجود اعلان یا الزامات حساب تکمیل‌نشده را بررسی کنید، سپس دوباره امتحان کنید.</translation>
-<translation id="6417420737057016607">آگهی‌های Brave</translation>
 <translation id="5425006356459378415">Brave Rewards در دسترس نمی‌باشد</translation>
 <translation id="833643743158564518">ثبت‌نام‌های جدید برای پاداش‌های Brave در حال حاضر در منطقه شما غیرفعال است. با این حال، همیشه می‌توانید بعداً دوباره امتحان کنید. <ph name="LEARN_MORE"/></translation>
 <translation id="8528916244724490964">تمام شبکه‌ها</translation>
+<translation id="7748944510530490017">شبکه‌های اصلی</translation>
 <translation id="2781668117338732220">شبکه‌های ثانویه</translation>
+<translation id="282560918037172384">آزمایش شبکه‌ها</translation>
 <translation id="6309721369749814582">دامنه <ph name="DOMAIN"/> ثبت نشده است</translation>
 <translation id="4071347720273751665">به نظر می‌رسد که یک آدرس ENS وارد کرده‌اید. ما برای حل این درخواست به یک حل‌کننده‌ی شخص ثالث نیاز داریم که ممکن است به آدرس IP و دامنه شما دسترسی پیدا کند. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">از دامنه برون زنجیره‌ای ENS استفاده کنید</translation>
@@ -1149,4 +1153,9 @@
 <translation id="6344103698928069918">برای فهرست پخش، از نقطه آخرین مکث، پخش را از سر بگیرید</translation>
 <translation id="8141583471142904652">گوش دادن مداوم</translation>
 <translation id="851432578283946230">به‌صورت خودکار آیتم‌های بعدی را در فهرست پخش شما پخش می‌کند</translation>
+<translation id="7853202427316060426">فعالیت</translation>
+<translation id="4932733599132424254">تاریخ</translation>
+<translation id="346505172740911461">قیمت بازار</translation>
+<translation id="4709355193533327244">هنوز هیچ تراکنشی برای مشاهده وجود ندارد.</translation>
+<translation id="4931644613135313937">پس از انجام معامله، می‌توانید آن را در اینجا مشاهده کنید.</translation>
 </translationbundle>

@@ -1,7 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ar">
+<translation id="885805571521218129">يعكس هذا نطاق أرباحك المقدرة لإعلانات موقع Brave لهذا الشهر.</translation>
 <translation id="3478449063771497234">تم تعطيل الإشعارات</translation>
+<translation id="370665806235115550">جارٍ التحميل...</translation>
 <translation id="8220484609979012449">\n\nبإمكانك إرسال المساهمات المشفرة إلى منشئ المحتوى هذا باستخدام محفظة Web3 خاصتك.</translation>
 <translation id="6385969012847057348">منشئ المحتوى هذا غير قادر على تلقي أي مساهمات من <ph name="CUSTODIAN"/>.</translation>
 <translation id="6268134562674951939">ليس لديك ما يكفي من الرموز المميزة</translation>
@@ -40,6 +42,8 @@
 <translation id="4748689412569009273">عبر بأحد رموز المشاعر، كيف كانت تجربتك مع Brave؟</translation>
 <translation id="7335142069363686805">قيّم الآن</translation>
 <translation id="6681362094306959654">هل تحب Brave؟</translation>
+<translation id="8041093619605951337">أشعر بالسعادة</translation>
+<translation id="6826743502395386800">أشعر بالحزن</translation>
 <translation id="5488843227043643519">هل تريد ترك تقييم على متجر Play؟</translation>
 <translation id="5867854497245948308">شكرًا على تعليقاتك!</translation>
 <translation id="4935400164159327304">أخبرنا كيف يمكننا تحسين Brave.</translation>
@@ -73,7 +77,7 @@
 <translation id="1118970888826017401">تمكين الدعم لتجاوز عناوين URL لتتبع إعادة التوجيه ذات المستوى الأعلى.</translation>
 <translation id="94154759592465111">حظر النصوص</translation>
 <translation id="7714773920987474116">حظر JavaScript (قد يتسبب في تعطل بعض المواقع)</translation>
-<translation id="1660979054779793659">Youtube</translation>
+<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">حظر المحتوى المقترح من YouTube</translation>
 <translation id="1005372663692637999">يحظر عناصر البطاقة التالية والنهائية على youtube.com.</translation>
 <translation id="5152595963250646670">حظر عناصر التشويش على YouTube</translation>
@@ -136,11 +140,6 @@
 <translation id="1276592121036104130">تحميل محتوى جديد</translation>
 <translation id="3189348785087463371">تمت ترقيته</translation>
 <translation id="7554145152551782675">المزيد من عروض Brave</translation>
-<translation id="1717242776111689224">تمكين أخبار Brave</translation>
-<translation id="4732255422524275223">مصادرك</translation>
-<translation id="152579389256498990">موجز ويب أو عنوان URL الموقع</translation>
-<translation id="4975944254857623648">مصادر افتراضية</translation>
-<translation id="253886574765651454">إضافة مصدر</translation>
 <translation id="254100925533869330">لا يوجد مختوى</translation>
 <translation id="7172792761509429092">ليس لدي خدمة أخبار Brave محتوى لعرضه.</translation>
 <translation id="1771307734839364850">اختيار مصادر المحتوى</translation>
@@ -152,6 +151,8 @@
 <translation id="6686219838158572786">يلزم وجود جميع الاتصالات باستخدام HTTPS (مقيّد)</translation>
 <translation id="4221284400051835823">الترقية إلى HTTPS كلما أمكن ذلك (افتراضي)</translation>
 <translation id="4690906712010847708">عدم بترقية الاتصالات إلى HTTPS (معطل)</translation>
+<translation id="693506469193748756">لا تتذكرني فور أن أغلق هذا الموقع</translation>
+<translation id="6975864539539353406">يتم مسح البيانات الخاصة بالكوكيز ومعلومات الموقع الأخرى عند إغلاق الموقع</translation>
 <translation id="1680858055899097121">لا تواصل استخدام علامات التبويب بين جلسات التصفح</translation>
 <translation id="7142548388914389999">السماح بتحليلات المنتج التي تحافظ على الخصوصية (P3A)</translation>
 <translation id="5254037869598726291">تساعد معلومات P3A مجهولة المصدر Brave على تقدير الاستخدام الكلي، وتضمن أننا ’re نقوم بتحسين الميزات الشائعة.</translation>
@@ -180,7 +181,8 @@
 <translation id="8308305244351876417">يسمح بتشغيل الصوت عند التبديل إلى علامة تبويب أخرى في Brave أو تطبيق آخر أو عند إيقاف تشغيل شاشة جهازك.</translation>
 <translation id="4150201353443180367">عرض</translation>
 <translation id="2433507940547922241">المظهر</translation>
-<translation id="6333347122924254968">إظهار أَيقونة "مكافآت متصفح Brave" في شريط العنواين</translation>
+<translation id="9040069796107003510">أيقونة المكافآت الخاصة بموقع (Brave (Brave Rewards</translation>
+<translation id="6333347122924254968">إظهار رمز "مكافآت متصفح Brave" في شريط العنواين</translation>
 <translation id="8495235435594442882">تمكين شريط الأدوات السفلي</translation>
 <translation id="6587448235155023666">ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل متصفح Brave</translation>
 <translation id="8701563696941209024">إعادة بدء التشغيل الآن</translation>
@@ -252,13 +254,13 @@
 <translation id="4254029385847607686">ديسمبر/كانون الأول</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
-<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
+<translation id="7732576862074737148">≈<ph name="VALUE"/>دولار أمريكي</translation>
 <translation id="8428213095426709021">الإعدادات</translation>
 <translation id="6020176662032623904">مُنشِئ مُصدَّق عليه</translation>
 <translation id="2369994359029526515">مُنشِئ غير مُصدَّق عليه</translation>
 <translation id="6112368337882254910">مساهمة تلقائية</translation>
 <translation id="7861645265922445992">المطالبة بالمكافآت</translation>
-<translation id="8494748383523030337">رصيدك</translation>
+<translation id="1848737374354350807">الرصيد</translation>
 <translation id="4781696154289395607">لقد ساهمت <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="2429828319207652823">كانت هناك مشكلة في معالجة مساهمتك.</translation>
 <translation id="2221902203895354376">منحة الرموز المميزة متاحة!</translation>
@@ -322,8 +324,8 @@
 <translation id="8185825081026121627">اربح عملة Basic Attention الرمزية مقابل استعراضك لإعلانات Brave Rewards التي تحترم الخصوصية.</translation>
 <translation id="5321518976657560663">حدث خطأ أثناء إعادة التعيين</translation>
 <translation id="4114170343590425996">لقد حدث خطأ أثناء إعادة تعيين مكافآت Brave. يرجى إعادة تشغيل متصفح Brave وإعادة المحاولة مرةً أخرى.</translation>
-<translation id="6393502589311632553">عرض الإعلانات عندما لا يكون Brave قيد الاستخدام</translation>
-<translation id="3349204812119681938">إعادة تعيين Brave Rewards</translation>
+<translation id="6417420737057016607">إعلانات Brave</translation>
+<translation id="5611966874859284786">يتم عرض الإشعارات الخاصة بالإعلانات عندما لا يتم استخدام موقع Brave</translation>
 <translation id="6606319453795180219">سيؤدي ذلك إلى حذف مكافآت Brave الخاصة بك وإعادة تعيين جميع بيانات مكافآت Brave الخاصة بك</translation>
 <translation id="8293206222192510085">إضافة إشارة مرجعية</translation>
 <translation id="340492034650766959">حذف إشارة مرجعية</translation>
@@ -452,6 +454,7 @@
 <translation id="8903462729414407077">احصل على تحديثات أسبوعية</translation>
 <translation id="7450323860390658083">كُن على اطلاع بالمواقع الإلكترونية التي تزورها التي تعد الأكثر تغلغلًا في الخصوصية.\n\nيمكنك فقط مشاهدة إحصائيات الخصوصية هذه. لا توجد بيانات شخصية أو سجل تصفح يترك متصفح Brave على جهازك.</translation>
 <translation id="6170159749517116894">قم بتشغيل تقارير الخصوصية</translation>
+<translation id="1669047024429367828">الرؤية</translation>
 <translation id="5966707198760109579">الأسبوع</translation>
 <translation id="8987927404178983737">شهر</translation>
 <translation id="4302754476737420523">3 أشهر</translation>
@@ -505,6 +508,7 @@
 <translation id="8235783939971604011">الإكرامية هي وسيلة لتشجيع ودعم المحتوى أو المنشئين الذين تحبهم. هيا امنحهم بعضاً منها!</translation>
 <translation id="4215679190414901888">أخيرًا، دعنا نُكمل الإعدادات لك.</translation>
 <translation id="3494356595346329740">يمكنك تغيير هذا لاحقاً.</translation>
+<translation id="3286390186030710347">الشريط المنزلق</translation>
 <translation id="3115702351969988294">كم مرة تريد مشاهدة الإعلانات؟</translation>
 <translation id="2353222426385080466">كلما زادت الإعلانات الخاصة، زادت المكافآت.</translation>
 <translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/>  إعلانات في الساعة</translation>
@@ -529,6 +533,7 @@
 <translation id="5187052478998910855">هل تحتاج إلى تذكير بـ Rewards؟</translation>
 <translation id="8622329973403382303">قم بجولة سريعة للتعرف على الطريقة التي تعمل بها لتدخل التاريخ كنجم Rewards لامع!</translation>
 <translation id="3479552764303398839">ليس الآن</translation>
+<translation id="7138272885617540195">يتم السماح لروابط التطبيقات بالفتح في التطبيقات خارج موقع Brave</translation>
 <translation id="8792121506918889955">سياسة التعامل مع WebRTC IP</translation>
 <translation id="8798099450830957504">التلقائي</translation>
 <translation id="1822560017823072927">الواجهات الافتراضية العامة والخاصة</translation>
@@ -553,7 +558,6 @@
 <translation id="8289942708804097960">شراء العملة المشفرة ببطاقة ائتمان أو بطاقة خصم.</translation>
 <translation id="841880029259839903">إرسال وحدات crypto المشفرة أو قم بتحويلها من حساب إلى آخر.</translation>
 <translation id="8226778393040773102">استبدال الرموز المميزة والأصول</translation>
-<translation id="5841646075632490135">سوف يعالج <ph name="DEX_PROVIDER"/> عنوان إيثريوم وعنوان IP لاستكمال المعاملة (بما في ذلك الحصول على قوائم الأسعار). سوف يستخدم <ph name="DEX_PROVIDER"/> فقط هذه البيانات لأغراض معالجة المعاملات.</translation>
 <translation id="1783600039044302171">تأمين تشفير crypto الخاص بك بكلمة مرور</translation>
 <translation id="3726490322412361740">أدخل كلمة المرور</translation>
 <translation id="3038243139480464605">تحقق من كلمة المرور</translation>
@@ -594,7 +598,6 @@
 <translation id="1144810021918451336">لا يحميك من مواقع الويب والتنزيلات والإضافات الخطيرة.</translation>
 <translation id="5760476995887363522">العبارات غير متطابقة. حاول مرة أخرى.</translation>
 <translation id="2360588547830602174">فشل استرداد الحساب، حاول مرة أخرى.</translation>
-<translation id="6392640873800632439">سعر السوق في <ph name="ASSET"/></translation>
 <translation id="6748108480210050150">من</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -604,7 +607,6 @@
 <translation id="2589431635772931954">العنوان أو URL</translation>
 <translation id="5517732667776806421">معلومات مجموع اختياري مفقودة</translation>
 <translation id="4006711930669471508">معلومات مجموع اختياري غير صحيحة</translation>
-<translation id="632241521608275119">تحمُّل الانزلاق</translation>
 <translation id="1987317783729300807">الحسابات</translation>
 <translation id="3535654229833214438">المعاملات</translation>
 <translation id="2449682593754783720">ساعة واحدة</translation>
@@ -746,6 +748,11 @@
 <translation id="5317780077021120954">حفظ</translation>
 <translation id="4979796155378508955">لا يجوز نشر المعاملة في الشبكة إذا كانت قيمة الرقم الخاص المخصص غير متسلسلة أو بها أخطاء أخرى.</translation>
 <translation id="6122742277607781713">ملف تعريف شخصي</translation>
+<translation id="3567988240819868195">السوق</translation>
+<translation id="4576965889365503638">معلومات</translation>
+<translation id="152455748535966757">التصنيف</translation>
+<translation id="4958716607782044952">حجم التداول خلال 24 ساعة</translation>
+<translation id="128834189395075789">القيمة السوقية</translation>
 <translation id="750843150060816463">سعر عملة جاس (Gwei)</translation>
 <translation id="1426320910664514906">الحد الأقصى لوحدات جاس</translation>
 <translation id="6389441740143786465">تعطيل مركز المشاركة</translation>
@@ -757,10 +764,7 @@
 <translation id="1367951781824006909">اختيار ملف</translation>
 <translation id="8648684608605749476">حظر ملفات تعريف الارتباط التابعة لجهات خارجية في وضع التصفّح المتخفي</translation>
 <translation id="1118876217803190221">رصيد غير كافٍ</translation>
-<translation id="275990379543116961">أموال غير كافية للغاز</translation>
-<translation id="3292453499915466604">سيولة غير كافية</translation>
 <translation id="3025158262797849291">تنسيق أرقام غير معروف</translation>
-<translation id="3380365263193509176">خطأ غير معروف</translation>
 <translation id="5932938770824268122">المفتاح الخاص</translation>
 <translation id="2472882733835903303">قم بإظهار المفتاح الخاص</translation>
 <translation id="4391056902675005799">قم بإخفاء المفتاح الخاص</translation>
@@ -830,7 +834,6 @@
 <translation id="6727102863431372879">تعيين</translation>
 <translation id="3074127054582480056">تنبيه</translation>
 <translation id="2280319752798785157">المساهمة الشهرية</translation>
-<translation id="7732576862074737148">≈<ph name="VALUE"/>دولار أمريكي</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> لعملة BAT</translation>
 <translation id="5802665280774361839">إظهار الإكمال التلقائي في شريط العناوين</translation>
 <translation id="8982438328166986164">يعرض اقتراحات مواقع الويب بناءً على الإشارات المرجعية وسجل التصفح.</translation>
@@ -1047,11 +1050,12 @@
 <translation id="5382684862562314222">لم يتم دعم BAT حتى الآن في منطقتك بعد، في Uphold.</translation>
 <translation id="6996157559236886133">خطأ: وظائف محدودة لحساب Uphold</translation>
 <translation id="1677961202754619328">وفقًا لـمنصة Uphold، هناك حاليًا بعض القيود على حساب Uphold الخاص بك. يُرجى تسجيل الدخول إلى حساب Uphold الخاص بك والتحقق مما إذا كانت هناك أي إشعارات أو متطلبات حساب متبقية مطلوب إكمالها، ثم حاول مرة أخرى.</translation>
-<translation id="6417420737057016607">إعلانات Brave</translation>
 <translation id="5425006356459378415">مكافآت Brave غير متوفرة</translation>
 <translation id="833643743158564518">تم تعطيل عمليات تسجيل الدخول الجديدة في مكافآت Brave حاليًا في منطقتك. ولكن يمكنك دائمًا إعادة المحاولة لاحقًا. <ph name="LEARN_MORE"/></translation>
 <translation id="8528916244724490964">كل الشبكات</translation>
+<translation id="7748944510530490017">الشبكات الأساسية</translation>
 <translation id="2781668117338732220">الشبكات الثانوية</translation>
+<translation id="282560918037172384">اختبار الشبكات</translation>
 <translation id="6309721369749814582">النطاق <ph name="DOMAIN"/> غير مسجل</translation>
 <translation id="4071347720273751665">يبدو أنك أدخلت عنوان ENS. سنحتاج إلى استخدام محلل تابع لجهة خارجية لحل هذا الطلب، والذي قد يكون قادرًا على رؤية عنوان IP والنطاق لديك. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">استخدام نطاق خدمة اسم إيثريوم (ENS) خارج السلسة</translation>
@@ -1145,4 +1149,9 @@
 <translation id="6344103698928069918">لعرض قائمة تشغيل، استأنف التشغيل من النقطة التي توقفت عندها</translation>
 <translation id="8141583471142904652">الاستماع المستمر</translation>
 <translation id="851432578283946230">يشغل العناصر التالية في قائمة التشغيل تلقائيًا</translation>
+<translation id="7853202427316060426">النشاط</translation>
+<translation id="4932733599132424254">التاريخ</translation>
+<translation id="346505172740911461">سعر السوق</translation>
+<translation id="4709355193533327244">لا توجد معاملات للعرض حتى الآن.</translation>
+<translation id="4931644613135313937">عندما تقوم بإجراء معاملة، ستتمكن من الاطلاع عليها من هنا.</translation>
 </translationbundle>

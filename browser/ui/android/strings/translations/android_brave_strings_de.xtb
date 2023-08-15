@@ -1,7 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="de">
+<translation id="885805571521218129">Dies stellt Ihre geschätzte Verdienstspanne für Brave-Anzeigen dar.</translation>
 <translation id="3478449063771497234">Benachrichtigungen sind deaktiviert</translation>
+<translation id="370665806235115550">Laden...</translation>
 <translation id="8220484609979012449">\n\nSie können trotzdem Kyptobeiträge an diesen Ersteller senden, indem Sie Ihr Web3-Wallet nutzen.</translation>
 <translation id="6385969012847057348">Der Ersteller kann keine Beiträge von <ph name="CUSTODIAN"/> erhalten.</translation>
 <translation id="6268134562674951939">Sie haben nicht genügend Token</translation>
@@ -13,7 +15,7 @@
 <translation id="5379685283876547860">Beitrag gesendet!</translation>
 <translation id="1041398280582063935">Ihre Unterstützung teilen</translation>
 <translation id="8855543392451028706">Willkommen! Benutzer können diesen Content-Ersteller mit Beiträgen unterstützen und sich dadurch für die tollen Inhalte erkenntlich zeigen.</translation>
-<translation id="1235176624390585199"><ph name="TITLE"/> für <ph name="PROVIDER"/></translation>
+<translation id="1235176624390585199"><ph name="TITLE"/> auf <ph name="PROVIDER"/></translation>
 <translation id="3699420827646925694">Von <ph name="CUSTODIAN"/> abgemeldet</translation>
 <translation id="9038728316393235637">Bei <ph name="CUSTODIAN"/> anmelden</translation>
 <translation id="7063168612616047608">Vielen Dank, dass Sie Ihre Lieblingsersteller unterstützen.</translation>
@@ -40,6 +42,8 @@
 <translation id="4748689412569009273">Wie würden Sie ihre Erfahrung mit Brave als Emoji darstellen?</translation>
 <translation id="7335142069363686805">Jetzt bewerten</translation>
 <translation id="6681362094306959654">Gefällt Ihnen Brave?</translation>
+<translation id="8041093619605951337">Fröhlich</translation>
+<translation id="6826743502395386800">Traurig</translation>
 <translation id="5488843227043643519">Möchten Sie eine Play Store-Bewertung abgeben?</translation>
 <translation id="5867854497245948308">Danke für Ihr Feedback!</translation>
 <translation id="4935400164159327304">Lassen Sie uns wissen, wie wir Brave verbessern können.</translation>
@@ -73,7 +77,7 @@
 <translation id="1118970888826017401">Unterstützung für die Umgehung von Top-Level-Redirect-Tracking-URLs aktivieren.</translation>
 <translation id="94154759592465111">Skripte blockieren</translation>
 <translation id="7714773920987474116">Blockiert JavaScript (kann zu Fehlfunktionen auf Websites führen)</translation>
-<translation id="1660979054779793659">YouTube</translation>
+<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Empfohlene YouTube-Inhalte blockieren</translation>
 <translation id="1005372663692637999">Blockiert die Elemente für die nächsten Inhalte und den Abspann auf youtube.com.</translation>
 <translation id="5152595963250646670">Ablenkende YouTube-Elemente blockieren</translation>
@@ -136,11 +140,6 @@
 <translation id="1276592121036104130">Neue Inhalte laden</translation>
 <translation id="3189348785087463371">Befördert</translation>
 <translation id="7554145152551782675">Mehr Brave-Angebote</translation>
-<translation id="1717242776111689224">Brave Nachrichten aktivieren</translation>
-<translation id="4732255422524275223">Ihre Quellen</translation>
-<translation id="152579389256498990">Feed- oder Website-URL</translation>
-<translation id="4975944254857623648">Standardquellen</translation>
-<translation id="253886574765651454">Quelle hinzufügen</translation>
 <translation id="254100925533869330">Keine Inhalte</translation>
 <translation id="7172792761509429092">Brave-Nachrichten haben keine Inhalte zum Anzeigen.</translation>
 <translation id="1771307734839364850">Inhaltsquellen wählen</translation>
@@ -152,6 +151,8 @@
 <translation id="6686219838158572786">Alle Verbindungen müssen HTTPS verwenden (streng)</translation>
 <translation id="4221284400051835823">Wann immer möglich auf HTTPS upgraden (Standard)</translation>
 <translation id="4690906712010847708">Verbindungen nicht auf HTTPS upgraden (deaktiviert)</translation>
+<translation id="693506469193748756">Vergiss mich, wenn ich diese Seite schließe</translation>
+<translation id="6975864539539353406">Löscht Cookies und andere Seitendaten, wenn Sie eine Seite schließen</translation>
 <translation id="1680858055899097121">Registerkarten zwischen Browsersitzungen nicht beibehalten</translation>
 <translation id="7142548388914389999">Erlaubt Produktanalyse, die den Datenschutz respektiert (P3A)</translation>
 <translation id="5254037869598726291">Mit anonymisierten P3A-Informationen kann Brave die Gesamtnutzung einschätzen und sicherstellen, dass wir beliebte Funktionen verbessern.</translation>
@@ -180,7 +181,8 @@
 <translation id="8308305244351876417">Erlaubt die Wiedergabe, wenn Sie zu einem anderen Brave-Tab oder einer anderen App wechseln oder sich Ihr Gerätebildschirm abschaltet.</translation>
 <translation id="4150201353443180367">Ansicht</translation>
 <translation id="2433507940547922241">Darstellung</translation>
-<translation id="6333347122924254968">Brave-Belohnungen-Symbol in der Adressleiste anzeigen</translation>
+<translation id="9040069796107003510">Brave Rewards-Symbol</translation>
+<translation id="6333347122924254968">Brave Rewards-Symbol in der Adressleiste anzeigen</translation>
 <translation id="8495235435594442882">Untere Werkzeugleiste aktivieren</translation>
 <translation id="6587448235155023666">Ihre Änderungen werden beim nächsten Neustart von Brave wirksam</translation>
 <translation id="8701563696941209024">JETZT NEU STARTEN</translation>
@@ -252,13 +254,13 @@
 <translation id="4254029385847607686">DEZEMBER</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
-<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Einstellungen</translation>
 <translation id="6020176662032623904">Verifizierter Urheber</translation>
 <translation id="2369994359029526515">Unverifizierter Urheber</translation>
 <translation id="6112368337882254910">Automatische Spenden</translation>
 <translation id="7861645265922445992">Belohnungen in Anspruch nehmen</translation>
-<translation id="8494748383523030337">Ihr Kontostand</translation>
+<translation id="1848737374354350807">Guthaben:</translation>
 <translation id="4781696154289395607">Sie haben <ph name="BAT_VALUE"/> BAT gegeben.</translation>
 <translation id="2429828319207652823">Bei der Verarbeitung Ihres Beitrags ist ein Fehler aufgetreten.</translation>
 <translation id="2221902203895354376">Kostenlose Token sind verfügbar!</translation>
@@ -322,8 +324,8 @@
 <translation id="8185825081026121627">Verdienen Sie Token für Aufmerksamkeit, indem Sie sich Brave-Belohnungen-Werbung ansehen, die den Datenschutz respektiert.</translation>
 <translation id="5321518976657560663">Rücksetzungsfehler</translation>
 <translation id="4114170343590425996">Beim Zurücksetzen von Brave Rewards ist ein Fehler aufgetreten. Bitte starten Sie Brave neu und versuchen Sie es erneut.</translation>
-<translation id="6393502589311632553">Anzeigen zeigen, wenn Brave nicht verwendet wird</translation>
-<translation id="3349204812119681938">Brave Rewards zurücksetzen</translation>
+<translation id="6417420737057016607">Brave-Werbung</translation>
+<translation id="5611966874859284786">Benachrichtigungsanzeigen anzeigen, wenn Brave gerade nicht genutzt wird</translation>
 <translation id="6606319453795180219">Dadurch werden Ihre Brave-Belohnungen gelöscht und alle Ihre Brave-Belohnungs-Daten zurückgesetzt</translation>
 <translation id="8293206222192510085">Lesezeichen hinzufügen</translation>
 <translation id="340492034650766959">Lesezeichen löschen</translation>
@@ -456,6 +458,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="8903462729414407077">Wöchentliche Updates erhalten</translation>
 <translation id="7450323860390658083">Informiere dich darüber, welche der von dir besuchten Websites am meisten in die Privatsphäre eingreifen.\n\nNur du siehst diese Datenschutzstatistik. Persönliche Daten oder Browserverlauf verlassen nie den Brave Browser auf deinem Gerät.</translation>
 <translation id="6170159749517116894">Privatsphäreberichte aktivieren</translation>
+<translation id="1669047024429367828">Sichtbarkeit</translation>
 <translation id="5966707198760109579">Woche</translation>
 <translation id="8987927404178983737">Monat</translation>
 <translation id="4302754476737420523">3 Monate</translation>
@@ -509,6 +512,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="8235783939971604011">Tipping ist ein Weg, um Inhalte bzw. Ersteller, die Sie lieben, individuell zu ermutigen und zu unterstützen. Spenden ahoi!</translation>
 <translation id="4215679190414901888">Lassen Sie uns mit der Einrichtung beginnen</translation>
 <translation id="3494356595346329740">Sie können das später ändern.</translation>
+<translation id="3286390186030710347">Schieberegler</translation>
 <translation id="3115702351969988294">Wie oft möchten Sie Anzeigen sehen?</translation>
 <translation id="2353222426385080466">Mehr private Anzeigen, mehr Belohnungen.</translation>
 <translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> Anzeigen pro Stunde</translation>
@@ -533,6 +537,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="5187052478998910855">Brauchen Sie eine kleine Erinnerung über Rewards?</translation>
 <translation id="8622329973403382303">Machen Sie eine schnelle Tour, um Ihre Kenntnisse darüber, wie es funktioniert, aufzufrischen und als Rewards-Rockstar in die Geschichte einzugehen!</translation>
 <translation id="3479552764303398839">Jetzt nicht</translation>
+<translation id="7138272885617540195">Erlauben, dass Anwendungslinks in Anwendungen außerhalb von Brave geöffnet werden</translation>
 <translation id="8792121506918889955">WebRTC-IP-Nutzungsrichtlinien</translation>
 <translation id="8798099450830957504">Standardeinstellung</translation>
 <translation id="1822560017823072927">Voreingestellte öffentliche und private Benutzerschnittstellen</translation>
@@ -557,7 +562,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="8289942708804097960">Kryptowährung mit Kredit- oder Debitkarte kaufen.</translation>
 <translation id="841880029259839903">Kryptowährungen senden oder zwischen Konten überweisen.</translation>
 <translation id="8226778393040773102">Token und Assets tauschen</translation>
-<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/> verarbeitet die Ethereum-Adresse und IP-Adresse, um eine Transaktion durchzuführen (einschließlich des Einholens von Angeboten). <ph name="DEX_PROVIDER"/> wird diese Daten NUR zur Abwicklung von Transaktionen verwenden.</translation>
 <translation id="1783600039044302171">Schütze deine Kryptowährung mit einem Passwort</translation>
 <translation id="3726490322412361740">Passwort eingeben</translation>
 <translation id="3038243139480464605">Passwort verifizieren</translation>
@@ -598,7 +602,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="1144810021918451336">Schützt Sie nicht vor gefährlichen Websites, Downloads und Erweiterungen.</translation>
 <translation id="5760476995887363522">Die Formulierungen stimmen nicht überein. Bitte erneut versuchen.</translation>
 <translation id="2360588547830602174">Die Wiederherstellung des Kontos schlug fehl. Bitte erneut versuchen.</translation>
-<translation id="6392640873800632439">Marktpreis in <ph name="ASSET"/></translation>
 <translation id="6748108480210050150">Von</translation>
 <translation id="3318280255740629162">25 %</translation>
 <translation id="2636487255623744079">50 %</translation>
@@ -608,7 +611,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2589431635772931954">Adresse oder URL</translation>
 <translation id="5517732667776806421">Fehlende Prüfsummeninformationen</translation>
 <translation id="4006711930669471508">Ungültige Prüfsummeninformationen</translation>
-<translation id="632241521608275119">Schlupftoleranz</translation>
 <translation id="1987317783729300807">Konten</translation>
 <translation id="3535654229833214438">Transaktionen</translation>
 <translation id="2449682593754783720">1 Stunde</translation>
@@ -750,6 +752,11 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="5317780077021120954">Speichern</translation>
 <translation id="4979796155378508955">Die Transaktion wird möglicherweise nicht an das Netzwerk weitergegeben, wenn der benutzerdefinierte Nonce-Wert nicht sequenziell ist oder andere Fehler aufweist.</translation>
 <translation id="6122742277607781713">Portfolio</translation>
+<translation id="3567988240819868195">Markt</translation>
+<translation id="4576965889365503638">INFORMATION</translation>
+<translation id="152455748535966757">Rang</translation>
+<translation id="4958716607782044952">24-Std.-Volumen</translation>
+<translation id="128834189395075789">Marktkapitalisierung</translation>
 <translation id="750843150060816463">Gaspreis (Gwei)</translation>
 <translation id="1426320910664514906">Gaslimit</translation>
 <translation id="6389441740143786465">Freigabe-Hub deaktivieren</translation>
@@ -761,10 +768,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="1367951781824006909">Datei auswählen</translation>
 <translation id="8648684608605749476">Cookies von Drittanbietern im Inkognitomodus blockieren</translation>
 <translation id="1118876217803190221">Guthaben reicht nicht aus.</translation>
-<translation id="275990379543116961">Unzureichende Mittel für Gebühr</translation>
-<translation id="3292453499915466604">Unzureichende Liquidität</translation>
 <translation id="3025158262797849291">Unbekanntes Zahlenformat</translation>
-<translation id="3380365263193509176">Unbekannter Fehler</translation>
 <translation id="5932938770824268122">Private Key</translation>
 <translation id="2472882733835903303">Privaten Schlüssel anzeigen</translation>
 <translation id="4391056902675005799">Privaten Schlüssel ausblenden</translation>
@@ -834,7 +838,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="6727102863431372879">Festlegen</translation>
 <translation id="3074127054582480056">Achtung</translation>
 <translation id="2280319752798785157">Monatlicher Beitrag</translation>
-<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Autovervollständigung in der Adressleiste anzeigen</translation>
 <translation id="8982438328166986164">Zeigt Website-Vorschläge basierend auf Ihren Lesezeichen und Ihrem Browserverlauf an.</translation>
@@ -1051,11 +1054,12 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="5382684862562314222">BAT wird in Ihrer Region auf Uphold noch nicht unterstützt.</translation>
 <translation id="6996157559236886133">Fehler: Eingeschränkte Funktionalität des Uphold-Kontos</translation>
 <translation id="1677961202754619328">Laut Uphold gibt es derzeit einige Einschränkungen für Ihr Uphold-Konto. Bitte melden Sie sich bei Ihrem Uphold-Konto an und sehen Sie nach, ob es noch Hinweise oder verbleibende Kontoanforderungen zu vervollständigen gibt, und versuchen Sie es dann erneut.</translation>
-<translation id="6417420737057016607">Brave-Werbung</translation>
 <translation id="5425006356459378415">Brave-Belohnungen nicht verfügbar</translation>
 <translation id="833643743158564518">Neuregistrierungen für Brave-Belohnungen sind derzeit in Ihrer Region deaktiviert. Sie können es jedoch zu einem späteren Zeitpunkt erneut versuchen.  <ph name="LEARN_MORE"/></translation>
 <translation id="8528916244724490964">Alle Netzwerke</translation>
+<translation id="7748944510530490017">Primäre Netzwerke</translation>
 <translation id="2781668117338732220">Sekundärnetzwerke</translation>
+<translation id="282560918037172384">Testnetzwerke</translation>
 <translation id="6309721369749814582">Domäne <ph name="DOMAIN"/> ist nicht registriert</translation>
 <translation id="4071347720273751665">Es sieht so aus, als hätten Sie eine ENS-Adresse eingegeben. Wir müssen einen Auflöser eines Drittanbieters verwenden, um diese Anfrage aufzulösen. Dieser kann möglicherweise Ihre IP-Adresse und Ihre Domain sehen. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">ENS-Offchain-Domain verwenden</translation>
@@ -1149,4 +1153,9 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="6344103698928069918">Setzen Sie die Wiedergabe für eine Playlist dort fort, wo Sie sie zuletzt angehalten haben.</translation>
 <translation id="8141583471142904652">Ohne Unterbrechung hören</translation>
 <translation id="851432578283946230">Spielt automatisch die nächsten Titel in Ihrer Playlist ab</translation>
+<translation id="7853202427316060426">Aktivität</translation>
+<translation id="4932733599132424254">Datum</translation>
+<translation id="346505172740911461">Marktpreis</translation>
+<translation id="4709355193533327244">Es gibt noch keine Transaktionen, die angezeigt werden können</translation>
+<translation id="4931644613135313937">Sobald Sie eine Transaktion durchgeführt haben, können Sie sie hier einsehen.</translation>
 </translationbundle>

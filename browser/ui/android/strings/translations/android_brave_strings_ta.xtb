@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ta">
+<translation id="370665806235115550">ஏற்றுகிறது…</translation>
 <translation id="5012991400231464322">மாத பங்களிப்புகள்</translation>
 <translation id="1177863135347784049">தனிப்பயன்</translation>
 <translation id="2524310205387880526">பிரேவை மதிப்பிடு</translation>
@@ -8,6 +9,7 @@
 <translation id="7307834434086582547">பிரேவ் கவசங்களை இயக்கு/முடக்கு</translation>
 <translation id="3570081523466826008">HTTPSக்கு இணைப்புகளை தரமுயர்த்து</translation>
 <translation id="2278950434998763147">வெற்று HTTP-க்கு பதிலாக பாதுகாப்பான HTTPS இணைப்பை பயன்படுத்தி சில தளங்களை திற.</translation>
+<translation id="995782501881226248">YouTube</translation>
 <translation id="6052725679982758334">சமூக ஊடகம் தடுத்தல்</translation>
 <translation id="7498695072878479744">கூகிள் உள்நுழைவு பொத்தான்களை மூன்றாம் தரப்பு தளங்களில் அனுமதி</translation>
 <translation id="863171915776379000">முகநூல் உள்நுழைவுகள் மற்றும் உட்பதித்த இடுகைகளை அனுமதி</translation>
@@ -26,7 +28,6 @@
 <translation id="59174027418879706">செயலாக்கப்பட்டது</translation>
 <translation id="7823038307453615214">பிரேவ் செய்திகளை காட்டு</translation>
 <translation id="6527303717912515753">பகிர்</translation>
-<translation id="1717242776111689224">பிரேவ் செய்திகளை இயக்கு</translation>
 <translation id="7459000603787995422">வெளியேறுகையில் தாவல்களை மூடு</translation>
 <translation id="4448697385961650078">தடமிகள் &amp; விளம்பரங்கள் தடு</translation>
 <translation id="1680858055899097121">உலாவல் அமர்வுகளுக்கு இடையே தாவல்களை நிலைத்திருக்காதே</translation>
@@ -42,7 +43,6 @@
 <translation id="6332924730165919598">எல்லா தாவல்களையும் மூடல் பிரேவை மூடும்</translation>
 <translation id="4150201353443180367">காட்சியமைவு</translation>
 <translation id="2433507940547922241">தோற்றம்</translation>
-<translation id="6333347122924254968">முகவரிப்பட்டையில் பிரேவ் வெகுமதிகள் படவுருவைக் காட்டு</translation>
 <translation id="8495235435594442882">அடிப்புற கருவிப்பட்டையை இயக்கு</translation>
 <translation id="6587448235155023666">அடுத்த முறை நீங்கள் பிரேவை மறுஏவும்போது உங்கள் மாற்றங்கள் செயல்படும்.</translation>
 <translation id="8701563696941209024">இப்போது மறுஏவு</translation>
@@ -120,8 +120,7 @@
 <translation id="8050847734948770789">பிரேவ் வெகுமதிகளை இயக்கு</translation>
 <translation id="5321518976657560663">பிழையை அகரமாக்கு</translation>
 <translation id="4114170343590425996">பிரேவ் வெகுமதிகளை அகரமாக்குவதில் பிழை. பிரேவை மறுஏவி மீண்டும் முயலவும்.</translation>
-<translation id="6393502589311632553">பிரேவ் பயன்பாட்டிலில்லாதபோது விளம்பரங்கள் காட்டு</translation>
-<translation id="3349204812119681938">பிரேவ் வெகுமதிகளை அகரமாக்கு</translation>
+<translation id="6417420737057016607">பிரேவ் விளம்பரங்கள்</translation>
 <translation id="8457451314607652708">புத்தகக்குறிகளை இறக்குமதி செய்</translation>
 <translation id="1008186147501209563">புத்தகக்குறிகளை ஏற்று</translation>
 <translation id="7473245612074035141">அமைத்திட துவங்கு</translation>
@@ -231,7 +230,6 @@
 <translation id="5045550434625856497">தவறான கடவுச்சொல்</translation>
 <translation id="1367951781824006909">கோப்பைத் தேர்வுசெய்க</translation>
 <translation id="8648684608605749476">மறைநிலை அம்சத்தில் மூன்றாம் தரப்பு குக்கீகளைத் தடுக்கும்</translation>
-<translation id="3380365263193509176">அறியப்படாத பிழை</translation>
 <translation id="5932938770824268122">தனிப்பட்ட விசை</translation>
 <translation id="6666273175654835609">சமர்ப்பிக்கப்பட்டது</translation>
 <translation id="1165039591588034296">பிழை</translation>
@@ -262,7 +260,6 @@
 <translation id="6040143037577758943">மூடு</translation>
 <translation id="5456039738087398178">முகப்புத்திரை நிரல் பலகை</translation>
 <translation id="703185154752046151">நிரல் பலகை முகப்புத்திரையில் சேர்க்கப்பட்டது</translation>
-<translation id="6417420737057016607">பிரேவ் விளம்பரங்கள்</translation>
 <translation id="4850886885716139402">காட்சி</translation>
 <translation id="5939518447894949180">மீட்டமை</translation>
 <translation id="5916664084637901428">இயக்கு</translation>
@@ -274,4 +271,5 @@
 <translation id="4195643157523330669">புதிய தாவலில் திற</translation>
 <translation id="4243710787042215766">மறைநிலை தாவலில் திற</translation>
 <translation id="8261506727792406068">நீக்கு</translation>
+<translation id="4932733599132424254">தேதி</translation>
 </translationbundle>
