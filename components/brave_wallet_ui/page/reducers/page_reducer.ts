@@ -22,7 +22,6 @@ import {
   ImportAccountPayloadType,
   ImportFilecoinAccountPayloadType,
   ImportFromExternalWalletPayloadType,
-  RemoveAccountPayloadType,
   RestoreWalletPayloadType,
   UpdateSelectedAssetType,
   UpdateNftPinningStatusType
@@ -66,7 +65,6 @@ export const WalletPageAsyncActions = {
   importFromCryptoWallets: createAction<ImportFromExternalWalletPayloadType>('importFromCryptoWallets'),
   importFromMetaMask: createAction<ImportFromExternalWalletPayloadType>('importFromMetaMask'),
   openWalletSettings: createAction('openWalletSettings'),
-  removeAccount: createAction<RemoveAccountPayloadType>('removeAccount'),
   restoreWallet: createAction<RestoreWalletPayloadType>('restoreWallet'),
   selectAsset: createAction<UpdateSelectedAssetType>('selectAsset'),
   updateNFTPinStatus: createAction<BraveWallet.TokenPinOverview | undefined>('updateNFTPinStatus'),

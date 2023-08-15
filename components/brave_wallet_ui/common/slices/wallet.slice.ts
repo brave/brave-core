@@ -29,6 +29,7 @@ import {
 } from '../constants/action_types'
 import {
   AddAccountPayloadType,
+  RemoveAccountPayloadType
 } from '../../page/constants/action_types'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 
@@ -215,6 +216,9 @@ export const WalletAsyncActions = {
   ),
   updateAccountName: createAction<UpdateAccountNamePayloadType>(
     'updateAccountName'
+  ),
+  removeAccount: createAction<RemoveAccountPayloadType>(
+    'removeAccount'
   )
 }
 

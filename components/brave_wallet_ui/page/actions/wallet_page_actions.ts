@@ -20,7 +20,6 @@ export const {
   importFromMetaMask,
   openWalletSettings,
   recoveryWordsAvailable,
-  removeAccount,
   restoreWallet,
   selectAsset,
   selectCoinMarket,
