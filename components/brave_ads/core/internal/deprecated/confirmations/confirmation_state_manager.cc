@@ -19,18 +19,18 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_info.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_token_info.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_value_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_value_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
-#include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
-#include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/public_key.h"
-#include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token.h"
-#include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/confirmation_tokens/confirmation_token_info.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/confirmation_tokens/confirmation_tokens_value_util.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/payment_tokens/payment_token_value_util.h"
 
 namespace brave_ads {
 
@@ -198,14 +198,14 @@ absl::optional<RewardInfo> ConfirmationStateManager::GetReward(
 
   // Token
   if (const auto* const value = dict.FindString("payment_token")) {
-    reward.token = privacy::cbr::Token(*value);
+    reward.token = cbr::Token(*value);
   } else {
     return absl::nullopt;
   }
 
   // Blinded token
   if (const auto* const value = dict.FindString("blinded_payment_token")) {
-    reward.blinded_token = privacy::cbr::BlindedToken(*value);
+    reward.blinded_token = cbr::BlindedToken(*value);
   } else {
     return absl::nullopt;
   }
@@ -214,7 +214,7 @@ absl::optional<RewardInfo> ConfirmationStateManager::GetReward(
     // Unblinded token
     if (const auto* const value =
             unblinded_token_dict->FindString("unblinded_token")) {
-      reward.unblinded_token = privacy::cbr::UnblindedToken(*value);
+      reward.unblinded_token = cbr::UnblindedToken(*value);
     } else {
       return absl::nullopt;
     }
@@ -222,7 +222,7 @@ absl::optional<RewardInfo> ConfirmationStateManager::GetReward(
     // Public key
     if (const auto* const value =
             unblinded_token_dict->FindString("public_key")) {
-      reward.public_key = privacy::cbr::PublicKey(*value);
+      reward.public_key = cbr::PublicKey(*value);
     } else {
       return absl::nullopt;
     }
@@ -400,12 +400,12 @@ std::string ConfirmationStateManager::ToJson() {
   dict.Set("confirmations", GetConfirmationsAsDictionary(confirmations_));
 
   // Unblinded tokens
-  dict.Set("unblinded_tokens", privacy::ConfirmationTokensToValue(
-                                   confirmation_tokens_.GetAllTokens()));
+  dict.Set("unblinded_tokens",
+           ConfirmationTokensToValue(confirmation_tokens_.GetAllTokens()));
 
   // Payment tokens
   dict.Set("unblinded_payment_tokens",
-           privacy::PaymentTokensToValue(payment_tokens_.GetAllTokens()));
+           PaymentTokensToValue(payment_tokens_.GetAllTokens()));
 
   // Write to JSON
   std::string json;
@@ -454,8 +454,8 @@ bool ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
     return false;
   }
 
-  privacy::ConfirmationTokenList filtered_confirmation_tokens =
-      privacy::ConfirmationTokensFromValue(*list);
+  ConfirmationTokenList filtered_confirmation_tokens =
+      ConfirmationTokensFromValue(*list);
 
   if (wallet_ && !filtered_confirmation_tokens.empty()) {
     const std::string public_key = wallet_->public_key;
@@ -463,8 +463,7 @@ bool ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
     filtered_confirmation_tokens.erase(
         base::ranges::remove_if(
             filtered_confirmation_tokens,
-            [&public_key](
-                const privacy::ConfirmationTokenInfo& confirmation_token) {
+            [&public_key](const ConfirmationTokenInfo& confirmation_token) {
               const absl::optional<std::string> unblinded_token_base64 =
                   confirmation_token.unblinded_token.EncodeBase64();
               return !unblinded_token_base64 ||
@@ -486,7 +485,7 @@ bool ConfirmationStateManager::ParsePaymentTokensFromDictionary(
     return false;
   }
 
-  payment_tokens_.SetTokens(privacy::PaymentTokensFromValue(*list));
+  payment_tokens_.SetTokens(PaymentTokensFromValue(*list));
 
   return true;
 }

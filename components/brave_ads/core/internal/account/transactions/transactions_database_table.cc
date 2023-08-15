@@ -241,7 +241,7 @@ void Transactions::GetForDateRange(const base::Time from_time,
       base::BindOnce(&GetCallback, std::move(callback)));
 }
 
-void Transactions::Update(const privacy::PaymentTokenList& payment_tokens,
+void Transactions::Update(const PaymentTokenList& payment_tokens,
                           ResultCallback callback) const {
   std::vector<std::string> transaction_ids;
   for (const auto& payment_token : payment_tokens) {

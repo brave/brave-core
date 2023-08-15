@@ -9,9 +9,9 @@
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_info.h"
-#include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token_preimage.h"
-#include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_key.h"
-#include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_signature.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token_preimage.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_key.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_signature.h"
 
 namespace brave_ads::json::writer {
 
@@ -31,14 +31,14 @@ absl::optional<std::string> WriteRewardCredential(
     return absl::nullopt;
   }
 
-  absl::optional<privacy::cbr::VerificationKey> verification_key =
+  absl::optional<cbr::VerificationKey> verification_key =
       reward->unblinded_token.DeriveVerificationKey();
   if (!verification_key) {
     return absl::nullopt;
   }
 
-  const absl::optional<privacy::cbr::VerificationSignature>
-      verification_signature = verification_key->Sign(payload);
+  const absl::optional<cbr::VerificationSignature> verification_signature =
+      verification_key->Sign(payload);
   if (!verification_signature) {
     return absl::nullopt;
   }
@@ -49,7 +49,7 @@ absl::optional<std::string> WriteRewardCredential(
     return absl::nullopt;
   }
 
-  const absl::optional<privacy::cbr::TokenPreimage> token_preimage =
+  const absl::optional<cbr::TokenPreimage> token_preimage =
       reward->unblinded_token.GetTokenPreimage();
   if (!token_preimage) {
     return absl::nullopt;

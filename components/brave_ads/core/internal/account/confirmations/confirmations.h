@@ -11,21 +11,18 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_delegate.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/redeem_confirmation/redeem_confirmation_delegate.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_delegate.h"
 
 namespace brave_ads {
 
-namespace privacy {
 class TokenGeneratorInterface;
-}  // namespace privacy
-
 struct TransactionInfo;
 struct UserDataInfo;
 
 class Confirmations final : public ConfirmationQueueDelegate,
                             public RedeemConfirmationDelegate {
  public:
-  explicit Confirmations(privacy::TokenGeneratorInterface* token_generator);
+  explicit Confirmations(TokenGeneratorInterface* token_generator);
 
   Confirmations(const Confirmations&) = delete;
   Confirmations& operator=(const Confirmations&) = delete;
@@ -59,7 +56,7 @@ class Confirmations final : public ConfirmationQueueDelegate,
 
   raw_ptr<ConfirmationDelegate> delegate_ = nullptr;
 
-  const raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
+  const raw_ptr<TokenGeneratorInterface> token_generator_ =
       nullptr;  // NOT OWNED
 
   ConfirmationQueue queue_;

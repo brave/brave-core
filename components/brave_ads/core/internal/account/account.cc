@@ -20,16 +20,16 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/redeem_payment_tokens/redeem_payment_tokens.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/refill_confirmation_tokens/refill_confirmation_tokens.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens.h"
+#include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_interface.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 
@@ -54,7 +54,7 @@ void UpdateIssuers(const IssuersInfo& issuers) {
 
 }  // namespace
 
-Account::Account(privacy::TokenGeneratorInterface* token_generator)
+Account::Account(TokenGeneratorInterface* token_generator)
     : token_generator_(token_generator) {
   CHECK(token_generator_);
 
@@ -386,8 +386,7 @@ void Account::OnDidFetchIssuers(const IssuersInfo& issuers) {
   MaybeRefillConfirmationTokens();
 }
 
-void Account::OnDidRedeemPaymentTokens(
-    const privacy::PaymentTokenList& payment_tokens) {
+void Account::OnDidRedeemPaymentTokens(const PaymentTokenList& payment_tokens) {
   const database::table::Transactions database_table;
   database_table.Update(payment_tokens, base::BindOnce([](const bool success) {
                           if (!success) {

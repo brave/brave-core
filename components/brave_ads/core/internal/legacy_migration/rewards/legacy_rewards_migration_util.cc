@@ -6,12 +6,12 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_util.h"
 
 #include "base/containers/extend.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_payment_tokens_json_reader.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_payments_json_reader.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_history_json_reader.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/payment_info.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/payment_tokens/payment_token_info.h"
 
 namespace brave_ads::rewards {
 
@@ -28,7 +28,7 @@ absl::optional<TransactionList> BuildTransactionsFromJson(
     return absl::nullopt;
   }
 
-  const absl::optional<privacy::PaymentTokenList> payment_tokens =
+  const absl::optional<PaymentTokenList> payment_tokens =
       json::reader::ReadPaymentTokens(json);
   if (!payment_tokens) {
     return absl::nullopt;

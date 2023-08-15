@@ -7,16 +7,16 @@
 
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/confirmation_tokens/confirmation_tokens_util.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/payment_tokens/payment_token_util.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/payment_tokens/payment_tokens_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -26,7 +26,7 @@ using ::testing::NiceMock;
 
 class BraveAdsConfirmationsUtilTest : public UnitTestBase {
  protected:
-  NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
+  NiceMock<TokenGeneratorMock> token_generator_mock_;
 };
 
 TEST_F(BraveAdsConfirmationsUtilTest, IsInvalidToken) {
@@ -43,9 +43,9 @@ TEST_F(BraveAdsConfirmationsUtilTest, ResetTokens) {
   // Arrange
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
-  privacy::SetConfirmationTokensForTesting(/*count*/ 2);
+  SetConfirmationTokensForTesting(/*count*/ 2);
 
-  privacy::SetPaymentTokensForTesting(/*count*/ 1);
+  SetPaymentTokensForTesting(/*count*/ 1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed,
@@ -64,9 +64,9 @@ TEST_F(BraveAdsConfirmationsUtilTest, ResetTokens) {
       ConfirmationStateManager::GetInstance().GetConfirmations();
   EXPECT_TRUE(confirmations.empty());
 
-  EXPECT_TRUE(privacy::ConfirmationTokensIsEmpty());
+  EXPECT_TRUE(ConfirmationTokensIsEmpty());
 
-  EXPECT_TRUE(privacy::PaymentTokensIsEmpty());
+  EXPECT_TRUE(PaymentTokensIsEmpty());
 }
 
 TEST_F(BraveAdsConfirmationsUtilTest, ResetIfNoTokens) {
@@ -80,9 +80,9 @@ TEST_F(BraveAdsConfirmationsUtilTest, ResetIfNoTokens) {
       ConfirmationStateManager::GetInstance().GetConfirmations();
   EXPECT_TRUE(confirmations.empty());
 
-  EXPECT_TRUE(privacy::ConfirmationTokensIsEmpty());
+  EXPECT_TRUE(ConfirmationTokensIsEmpty());
 
-  EXPECT_TRUE(privacy::PaymentTokensIsEmpty());
+  EXPECT_TRUE(PaymentTokensIsEmpty());
 }
 
 }  // namespace brave_ads

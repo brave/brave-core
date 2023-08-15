@@ -9,7 +9,7 @@
 
 namespace brave_ads {
 
-AdTypeBucketMap BuildBuckets(const privacy::PaymentTokenList& payment_tokens) {
+AdTypeBucketMap BuildBuckets(const PaymentTokenList& payment_tokens) {
   AdTypeBucketMap buckets;
 
   for (const auto& payment_token : payment_tokens) {

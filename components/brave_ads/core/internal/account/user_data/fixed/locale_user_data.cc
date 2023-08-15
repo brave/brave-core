@@ -8,8 +8,8 @@
 #include <string>
 
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/internal/common/locale/country_code_anonymity_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
-#include "brave/components/brave_ads/core/internal/privacy/locale/country_code_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/l10n/common/locale_util.h"
 
@@ -29,17 +29,17 @@ base::Value::Dict BuildLocaleUserData() {
     return user_data;
   }
 
-  auto& build_channel = GlobalState::GetInstance()->BuildChannel();
+  const auto& build_channel = GlobalState::GetInstance()->BuildChannel();
   if (!build_channel.is_release) {
     return user_data;
   }
 
   const std::string country_code = brave_l10n::GetDefaultISOCountryCodeString();
 
-  if (privacy::IsCountryCodeMemberOfAnonymitySet(country_code)) {
+  if (IsCountryCodeMemberOfAnonymitySet(country_code)) {
     user_data.Set(kCountryCodeKey, country_code);
   } else {
-    if (privacy::ShouldClassifyCountryCodeAsOther(country_code)) {
+    if (ShouldClassifyCountryCodeAsOther(country_code)) {
       user_data.Set(kCountryCodeKey, kOtherCountryCode);
     }
   }

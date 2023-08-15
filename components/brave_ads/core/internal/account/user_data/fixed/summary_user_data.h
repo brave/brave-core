@@ -7,12 +7,11 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_FIXED_SUMMARY_USER_DATA_H_
 
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/payment_tokens/payment_token_info.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 
 namespace brave_ads {
 
-base::Value::Dict BuildSummaryUserData(
-    const privacy::PaymentTokenList& payment_tokens);
+base::Value::Dict BuildSummaryUserData(const PaymentTokenList& payment_tokens);
 
 }  // namespace brave_ads
 

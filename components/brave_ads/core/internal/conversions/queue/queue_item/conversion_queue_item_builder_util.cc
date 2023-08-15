@@ -6,8 +6,8 @@
 #include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_builder_util.h"
 
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
-#include "brave/components/brave_ads/core/internal/privacy/random/random_util.h"
 
 namespace brave_ads {
 
@@ -19,9 +19,9 @@ constexpr base::TimeDelta kDebugProcessQueueItemAfter = base::Minutes(1);
 }  // namespace
 
 base::Time ProcessQueueItemAt() {
-  return base::Time::Now() +
-         (ShouldDebug() ? kDebugProcessQueueItemAfter
-                        : privacy::RandTimeDelta(kProcessQueueItemAfter));
+  return base::Time::Now() + (ShouldDebug()
+                                  ? kDebugProcessQueueItemAfter
+                                  : RandTimeDelta(kProcessQueueItemAfter));
 }
 
 }  // namespace brave_ads

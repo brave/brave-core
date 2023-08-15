@@ -19,8 +19,7 @@ constexpr char kAdFormatKey[] = "ad_format";
 
 }  // namespace
 
-base::Value::Dict BuildSummaryUserData(
-    const privacy::PaymentTokenList& payment_tokens) {
+base::Value::Dict BuildSummaryUserData(const PaymentTokenList& payment_tokens) {
   base::Value::Dict user_data;
 
   if (!UserHasJoinedBraveRewards()) {

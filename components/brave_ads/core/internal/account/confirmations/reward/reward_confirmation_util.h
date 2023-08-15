@@ -12,19 +12,16 @@
 
 namespace brave_ads {
 
-namespace privacy {
-class TokenGeneratorInterface;
-}  // namespace privacy
-
 struct ConfirmationInfo;
 struct UserDataInfo;
+class TokenGeneratorInterface;
 struct TransactionInfo;
 
 absl::optional<std::string> BuildRewardCredential(
     const ConfirmationInfo& confirmation);
 
 absl::optional<ConfirmationInfo> BuildRewardConfirmation(
-    privacy::TokenGeneratorInterface* token_generator,
+    TokenGeneratorInterface* token_generator,
     const TransactionInfo& transaction,
     const UserDataInfo& user_data);
 

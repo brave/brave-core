@@ -6,10 +6,10 @@
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_id_pattern/verifiable_conversion_id_pattern_util.h"
 
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
+#include "brave/components/brave_ads/core/internal/conversions/resource/conversion_resource_id_pattern_search_in_types.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_id_pattern/parsers/verifiable_conversion_id_html_meta_tag_parser_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_id_pattern/parsers/verifiable_conversion_id_html_parser_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_id_pattern/parsers/verifiable_conversion_id_url_redirects_parser_util.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversion_resource_id_pattern_search_in_types.h"
 #include "url/gurl.h"
 
 namespace brave_ads {

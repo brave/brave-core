@@ -15,12 +15,12 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/payload/confirmation_payload_json_writer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_info.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_util.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_key.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_signature.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
-#include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
-#include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_key.h"
-#include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_signature.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/confirmation_tokens/confirmation_tokens_util.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/payment_tokens/payment_token_util.h"
 
 namespace brave_ads {
 
@@ -31,7 +31,7 @@ constexpr char kVerificationSignatureKey[] = "signature";
 bool Verify(const ConfirmationInfo& confirmation) {
   CHECK(confirmation.reward);
 
-  absl::optional<privacy::cbr::VerificationKey> verification_key =
+  absl::optional<cbr::VerificationKey> verification_key =
       confirmation.reward->unblinded_token.DeriveVerificationKey();
   if (!verification_key) {
     return false;
@@ -51,8 +51,8 @@ bool Verify(const ConfirmationInfo& confirmation) {
   const base::Value::Dict& dict = root->GetDict();
 
   if (const auto* const value = dict.FindString(kVerificationSignatureKey)) {
-    const privacy::cbr::VerificationSignature verification_signature =
-        privacy::cbr::VerificationSignature(*value);
+    const cbr::VerificationSignature verification_signature =
+        cbr::VerificationSignature(*value);
     if (!verification_signature.has_value()) {
       return false;
     }
@@ -91,9 +91,9 @@ void ResetTokens() {
   ConfirmationStateManager::GetInstance().reset_confirmations();
   ConfirmationStateManager::GetInstance().Save();
 
-  privacy::RemoveAllConfirmationTokens();
+  RemoveAllConfirmationTokens();
 
-  privacy::RemoveAllPaymentTokens();
+  RemoveAllPaymentTokens();
 }
 
 }  // namespace brave_ads

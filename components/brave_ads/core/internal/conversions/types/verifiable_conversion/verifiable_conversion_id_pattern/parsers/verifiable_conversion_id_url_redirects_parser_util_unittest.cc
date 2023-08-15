@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_id_pattern/parsers/verifiable_conversion_id_url_redirects_parser_util.h"
 
-#include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversion_resource_id_pattern_info.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversion_resource_id_pattern_search_in_types.h"
+#include "brave/components/brave_ads/core/internal/conversions/resource/conversion_resource_id_pattern_info.h"
+#include "brave/components/brave_ads/core/internal/conversions/resource/conversion_resource_id_pattern_search_in_types.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 

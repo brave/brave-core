@@ -12,22 +12,22 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/redeem_confirmation/non_reward/redeem_non_reward_confirmation_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/redeem_confirmation/non_reward/url_request_builders/create_non_reward_confirmation_url_request_builder_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/redeem_confirmation/reward/redeem_reward_confirmation_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/redeem_confirmation/reward/url_request_builders/create_reward_confirmation_url_request_builder_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/redeem_confirmation/reward/url_request_builders/create_reward_confirmation_url_request_builder_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/redeem_confirmation/reward/url_request_builders/fetch_payment_token_url_request_builder_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/redeem_non_reward_confirmation_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/url_request_builders/create_non_reward_confirmation_url_request_builder_util.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/create_reward_confirmation_url_request_builder_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/create_reward_confirmation_url_request_builder_util.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/fetch_payment_token_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/net/http/http_status_code.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_alias.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -82,7 +82,7 @@ class BraveAdsConfirmationQueueTest : public ConfirmationQueueDelegate,
     did_exhaust_queue_ = false;
   }
 
-  NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
+  NiceMock<TokenGeneratorMock> token_generator_mock_;
 
   std::unique_ptr<ConfirmationQueue> confirmation_queue_;
 
@@ -98,7 +98,7 @@ TEST_F(BraveAdsConfirmationQueueTest, AddRewardConfirmationToQueue) {
   // Arrange
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
-  privacy::SetConfirmationTokensForTesting(/*count*/ 1);
+  SetConfirmationTokensForTesting(/*count*/ 1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed,
@@ -155,7 +155,7 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessRewardConfirmationInQueue) {
        {{net::HTTP_OK, BuildFetchPaymentTokenUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  privacy::SetConfirmationTokensForTesting(/*count*/ 1);
+  SetConfirmationTokensForTesting(/*count*/ 1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed,
@@ -234,7 +234,7 @@ TEST_F(BraveAdsConfirmationQueueTest,
        {{net::HTTP_OK, BuildFetchPaymentTokenUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  privacy::SetConfirmationTokensForTesting(/*count*/ 2);
+  SetConfirmationTokensForTesting(/*count*/ 2);
 
   AdvanceClockTo(
       TimeFromString("November 18 2023 19:00:00.000", /*is_local*/ true));

@@ -13,17 +13,17 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/user_data_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_interface.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
-Confirmations::Confirmations(privacy::TokenGeneratorInterface* token_generator)
+Confirmations::Confirmations(TokenGeneratorInterface* token_generator)
     : token_generator_(token_generator) {
   CHECK(token_generator_);
 

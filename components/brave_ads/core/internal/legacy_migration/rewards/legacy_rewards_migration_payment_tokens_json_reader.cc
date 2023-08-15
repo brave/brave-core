@@ -11,8 +11,7 @@
 
 namespace brave_ads::rewards::json::reader {
 
-absl::optional<privacy::PaymentTokenList> ReadPaymentTokens(
-    const std::string& json) {
+absl::optional<PaymentTokenList> ReadPaymentTokens(const std::string& json) {
   const absl::optional<base::Value> root = base::JSONReader::Read(json);
   if (!root || !root->is_dict()) {
     return absl::nullopt;

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/summary_user_data_util.h"
 
-#include "brave/components/brave_ads/core/internal/privacy/tokens/payment_tokens/payment_tokens_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -24,26 +24,22 @@ TEST(BraveAdsSummaryUserDataUtilTest, BuildBucketsIfNoPaymentTokens) {
 
 TEST(BraveAdsSummaryUserDataUtilTest, BuildBuckets) {
   // Arrange
-  privacy::PaymentTokenList payment_tokens;
+  PaymentTokenList payment_tokens;
 
-  const privacy::PaymentTokenInfo payment_token_1 =
-      privacy::BuildPaymentTokenForTesting(ConfirmationType::kViewed,
-                                           AdType::kNotificationAd);
+  const PaymentTokenInfo payment_token_1 = BuildPaymentTokenForTesting(
+      ConfirmationType::kViewed, AdType::kNotificationAd);
   payment_tokens.push_back(payment_token_1);
 
-  const privacy::PaymentTokenInfo payment_token_2 =
-      privacy::BuildPaymentTokenForTesting(ConfirmationType::kViewed,
-                                           AdType::kNotificationAd);
+  const PaymentTokenInfo payment_token_2 = BuildPaymentTokenForTesting(
+      ConfirmationType::kViewed, AdType::kNotificationAd);
   payment_tokens.push_back(payment_token_2);
 
-  const privacy::PaymentTokenInfo payment_token_3 =
-      privacy::BuildPaymentTokenForTesting(ConfirmationType::kClicked,
-                                           AdType::kNotificationAd);
+  const PaymentTokenInfo payment_token_3 = BuildPaymentTokenForTesting(
+      ConfirmationType::kClicked, AdType::kNotificationAd);
   payment_tokens.push_back(payment_token_3);
 
-  const privacy::PaymentTokenInfo payment_token_4 =
-      privacy::BuildPaymentTokenForTesting(ConfirmationType::kViewed,
-                                           AdType::kInlineContentAd);
+  const PaymentTokenInfo payment_token_4 = BuildPaymentTokenForTesting(
+      ConfirmationType::kViewed, AdType::kInlineContentAd);
   payment_tokens.push_back(payment_token_4);
 
   // Act

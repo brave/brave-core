@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/confirmation_tokens_permission_rule.h"
 
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -21,7 +21,7 @@ class BraveAdsConfirmationTokensPermissionRuleTest : public UnitTestBase {
 TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
        ShouldAllowIfDoesNotExceedCap) {
   // Arrange
-  privacy::SetConfirmationTokensForTesting(/*count*/ 10);
+  SetConfirmationTokensForTesting(/*count*/ 10);
 
   // Act
 
@@ -53,7 +53,7 @@ TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
 TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
        ShouldNotAllowIfExceedsCap) {
   // Arrange
-  privacy::SetConfirmationTokensForTesting(/*count*/ 9);
+  SetConfirmationTokensForTesting(/*count*/ 9);
 
   // Act
 

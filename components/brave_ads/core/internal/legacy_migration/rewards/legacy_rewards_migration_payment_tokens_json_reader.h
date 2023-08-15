@@ -8,13 +8,12 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/core/internal/privacy/tokens/payment_tokens/payment_token_info.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::rewards::json::reader {
 
-absl::optional<privacy::PaymentTokenList> ReadPaymentTokens(
-    const std::string& json);
+absl::optional<PaymentTokenList> ReadPaymentTokens(const std::string& json);
 
 }  // namespace brave_ads::rewards::json::reader
 

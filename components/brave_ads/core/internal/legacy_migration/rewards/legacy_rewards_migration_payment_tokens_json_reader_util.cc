@@ -8,8 +8,8 @@
 #include <string>
 
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/public_key.h"
-#include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 
 namespace brave_ads::rewards::json::reader {
 
@@ -19,16 +19,16 @@ constexpr char kPaymentTokenListKey[] = "unblinded_payment_tokens";
 constexpr char kUnblindedTokenKey[] = "unblinded_token";
 constexpr char kPublicKeyKey[] = "public_key";
 
-absl::optional<privacy::PaymentTokenInfo> ParsePaymentToken(
+absl::optional<PaymentTokenInfo> ParsePaymentToken(
     const base::Value::Dict& dict) {
-  privacy::PaymentTokenInfo payment_token;
+  PaymentTokenInfo payment_token;
 
   // Public key
   const std::string* const public_key = dict.FindString(kPublicKeyKey);
   if (!public_key) {
     return absl::nullopt;
   }
-  payment_token.public_key = privacy::cbr::PublicKey(*public_key);
+  payment_token.public_key = cbr::PublicKey(*public_key);
   if (!payment_token.public_key.has_value()) {
     return absl::nullopt;
   }
@@ -39,8 +39,7 @@ absl::optional<privacy::PaymentTokenInfo> ParsePaymentToken(
   if (!unblinded_token) {
     return absl::nullopt;
   }
-  payment_token.unblinded_token =
-      privacy::cbr::UnblindedToken(*unblinded_token);
+  payment_token.unblinded_token = cbr::UnblindedToken(*unblinded_token);
   if (!payment_token.unblinded_token.has_value()) {
     return absl::nullopt;
   }
@@ -48,9 +47,9 @@ absl::optional<privacy::PaymentTokenInfo> ParsePaymentToken(
   return payment_token;
 }
 
-absl::optional<privacy::PaymentTokenList> GetPaymentTokensFromList(
+absl::optional<PaymentTokenList> GetPaymentTokensFromList(
     const base::Value::List& list) {
-  privacy::PaymentTokenList payment_tokens;
+  PaymentTokenList payment_tokens;
 
   for (const auto& item : list) {
     const auto* item_dict = item.GetIfDict();
@@ -58,7 +57,7 @@ absl::optional<privacy::PaymentTokenList> GetPaymentTokensFromList(
       return absl::nullopt;
     }
 
-    const absl::optional<privacy::PaymentTokenInfo> payment_token =
+    const absl::optional<PaymentTokenInfo> payment_token =
         ParsePaymentToken(*item_dict);
     if (!payment_token) {
       return absl::nullopt;
@@ -72,11 +71,11 @@ absl::optional<privacy::PaymentTokenList> GetPaymentTokensFromList(
 
 }  // namespace
 
-absl::optional<privacy::PaymentTokenList> ParsePaymentTokens(
+absl::optional<PaymentTokenList> ParsePaymentTokens(
     const base::Value::Dict& dict) {
   const auto* const list = dict.FindList(kPaymentTokenListKey);
   if (!list) {
-    return privacy::PaymentTokenList{};
+    return PaymentTokenList{};
   }
 
   return GetPaymentTokensFromList(*list);

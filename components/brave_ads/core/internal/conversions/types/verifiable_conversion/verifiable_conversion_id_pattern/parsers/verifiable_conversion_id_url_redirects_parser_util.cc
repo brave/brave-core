@@ -8,7 +8,7 @@
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversion_resource_id_pattern_info.h"
+#include "brave/components/brave_ads/core/internal/conversions/resource/conversion_resource_id_pattern_info.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 

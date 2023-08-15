@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/privacy/random/random_util.h"
+#include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 
 namespace brave_ads {
 
@@ -31,7 +31,7 @@ base::Time Timer::Start(const base::Location& location,
 base::Time Timer::StartWithPrivacy(const base::Location& location,
                                    const base::TimeDelta delay,
                                    base::OnceClosure user_task) {
-  base::TimeDelta rand_delay = privacy::RandTimeDelta(delay);
+  base::TimeDelta rand_delay = RandTimeDelta(delay);
   if (rand_delay.is_negative()) {
     rand_delay = base::Seconds(1);
   }

@@ -20,7 +20,7 @@ namespace {
 
 TransactionList GetUnreconciledTransactionsForDateRange(
     const TransactionList& transactions,
-    const privacy::PaymentTokenList& payment_tokens,
+    const PaymentTokenList& payment_tokens,
     const base::Time from_time,
     const base::Time to_time) {
   const size_t payment_token_count = payment_tokens.size();
@@ -57,7 +57,7 @@ TransactionInfo BuildTransaction(const base::Time time, const double value) {
 
 TransactionList GetAllUnreconciledTransactions(
     const TransactionList& transactions,
-    const privacy::PaymentTokenList& payment_tokens) {
+    const PaymentTokenList& payment_tokens) {
   const base::Time from_time = GetTimeInDistantPast();
   const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
 

@@ -138,8 +138,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, UpdateTransactions) {
 
   SaveTransactionsForTesting(transactions);
 
-  privacy::PaymentTokenList payment_tokens;
-  privacy::PaymentTokenInfo payment_token;
+  PaymentTokenList payment_tokens;
+  PaymentTokenInfo payment_token;
   payment_token.transaction_id = transaction_2.id;
   payment_tokens.push_back(payment_token);
 

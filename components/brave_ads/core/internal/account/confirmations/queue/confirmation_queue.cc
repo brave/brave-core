@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/redeem_confirmation/redeem_confirmation_factory.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_factory.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 
 namespace brave_ads {

@@ -9,7 +9,7 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_delegate.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/redeem_confirmation/redeem_confirmation_delegate.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_delegate.h"
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
 
 namespace brave_ads {

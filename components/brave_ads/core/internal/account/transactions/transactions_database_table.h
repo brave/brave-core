@@ -11,9 +11,9 @@
 #include "base/functional/callback_forward.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/ads_client_callback.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/payment_tokens/payment_token_info.h"
 
 namespace base {
 class Time;
@@ -33,7 +33,7 @@ class Transactions final : public TableInterface {
                        base::Time to_time,
                        GetTransactionsCallback callback) const;
 
-  void Update(const privacy::PaymentTokenList& payment_tokens,
+  void Update(const PaymentTokenList& payment_tokens,
               ResultCallback callback) const;
 
   void Delete(ResultCallback callback) const;

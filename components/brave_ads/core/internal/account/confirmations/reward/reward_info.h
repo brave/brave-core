@@ -8,10 +8,10 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
-#include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/public_key.h"
-#include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token.h"
-#include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 
 namespace brave_ads {
 
@@ -28,10 +28,10 @@ struct RewardInfo final {
 
   [[nodiscard]] bool IsValid() const;
 
-  privacy::cbr::Token token;
-  privacy::cbr::BlindedToken blinded_token;
-  privacy::cbr::UnblindedToken unblinded_token;
-  privacy::cbr::PublicKey public_key;
+  cbr::Token token;
+  cbr::BlindedToken blinded_token;
+  cbr::UnblindedToken unblinded_token;
+  cbr::PublicKey public_key;
   std::string signature;
   std::string credential_base64url;
 };

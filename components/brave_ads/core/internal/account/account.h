@@ -17,17 +17,13 @@
 #include "brave/components/brave_ads/core/internal/account/account_observer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_delegate.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/redeem_payment_tokens/redeem_payment_tokens_delegate.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/refill_confirmation_tokens/refill_confirmation_tokens_delegate.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_delegate.h"
+#include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/payment_tokens/payment_token_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
-
-namespace privacy {
-class TokenGeneratorInterface;
-}  // namespace privacy
 
 class AdType;
 class ConfirmationType;
@@ -35,6 +31,7 @@ class Confirmations;
 class IssuersUrlRequest;
 class RedeemPaymentTokens;
 class RefillConfirmationTokens;
+class TokenGeneratorInterface;
 struct IssuersInfo;
 struct TransactionInfo;
 
@@ -44,7 +41,7 @@ class Account final : public AdsClientNotifierObserver,
                       public RedeemPaymentTokensDelegate,
                       public RefillConfirmationTokensDelegate {
  public:
-  explicit Account(privacy::TokenGeneratorInterface* token_generator);
+  explicit Account(TokenGeneratorInterface* token_generator);
 
   Account(const Account&) = delete;
   Account& operator=(const Account&) = delete;
@@ -138,7 +135,7 @@ class Account final : public AdsClientNotifierObserver,
 
   // RedeemPaymentTokensDelegate:
   void OnDidRedeemPaymentTokens(
-      const privacy::PaymentTokenList& payment_tokens) override;
+      const PaymentTokenList& payment_tokens) override;
 
   // RefillConfirmationTokensDelegate:
   void OnWillRefillConfirmationTokens() override;
@@ -151,7 +148,7 @@ class Account final : public AdsClientNotifierObserver,
 
   base::ObserverList<AccountObserver> observers_;
 
-  const raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
+  const raw_ptr<TokenGeneratorInterface> token_generator_ =
       nullptr;  // NOT OWNED
 
   std::unique_ptr<Confirmations> confirmations_;

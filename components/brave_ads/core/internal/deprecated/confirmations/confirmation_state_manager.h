@@ -12,9 +12,9 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/confirmation_tokens/confirmation_tokens.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/payment_tokens/payment_tokens.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
@@ -53,22 +53,22 @@ class ConfirmationStateManager final {
   bool RemoveConfirmation(const ConfirmationInfo& confirmation);
   void reset_confirmations() { confirmations_.clear(); }
 
-  const privacy::ConfirmationTokens& GetConfirmationTokens() const {
+  const ConfirmationTokens& GetConfirmationTokens() const {
     CHECK(is_initialized_);
     return confirmation_tokens_;
   }
 
-  privacy::ConfirmationTokens& GetConfirmationTokens() {
+  ConfirmationTokens& GetConfirmationTokens() {
     CHECK(is_initialized_);
     return confirmation_tokens_;
   }
 
-  const privacy::PaymentTokens& GetPaymentTokens() const {
+  const PaymentTokens& GetPaymentTokens() const {
     CHECK(is_initialized_);
     return payment_tokens_;
   }
 
-  privacy::PaymentTokens& GetPaymentTokens() {
+  PaymentTokens& GetPaymentTokens() {
     CHECK(is_initialized_);
     return payment_tokens_;
   }
@@ -89,8 +89,8 @@ class ConfirmationStateManager final {
 
   ConfirmationList confirmations_;
 
-  privacy::ConfirmationTokens confirmation_tokens_;
-  privacy::PaymentTokens payment_tokens_;
+  ConfirmationTokens confirmation_tokens_;
+  PaymentTokens payment_tokens_;
 
   base::WeakPtrFactory<ConfirmationStateManager> weak_factory_{this};
 };
