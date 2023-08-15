@@ -7,6 +7,7 @@ import pathlib
 import platform
 
 USE_PYTHON3 = True
+PRESUBMIT_VERSION = '2.0.0'
 
 
 def CheckChange(input_api, output_api):
@@ -14,9 +15,9 @@ def CheckChange(input_api, output_api):
   results = []
   testing_env = dict(input_api.environ)
   testing_path = pathlib.Path(input_api.PresubmitLocalPath())
-  vpython3_path = input_api.os_path.join(testing_path, '..', '..', '..',
-                                         'third_party', 'crossbench',
-                                         '.vpython3')
+  vpython3_spec_path = input_api.os_path.join(testing_path, '..', '..', '..',
+                                              'third_party', 'crossbench',
+                                              '.vpython3')
   testing_env['PYTHONPATH'] = input_api.os_path.pathsep.join(
       map(str, [testing_path]))
 
@@ -28,7 +29,7 @@ def CheckChange(input_api, output_api):
             cmd=[
                 input_api.python3_executable,
                 '-vpython-spec',
-                vpython3_path,
+                vpython3_spec_path,
                 '-m',
                 'pytype',
                 '--keep-going',
@@ -44,7 +45,3 @@ def CheckChange(input_api, output_api):
   # Run all test
   results += input_api.RunTests(tests)
   return results
-
-
-def CheckChangeOnUpload(input_api, output_api):
-  return CheckChange(input_api, output_api)
