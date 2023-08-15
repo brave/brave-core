@@ -3282,9 +3282,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BLOCK_COOKIE_NOTICES_ACTION_TEXT" desc="Block cookie consent notices action text">
       Got it
     </message>
-    <message name="IDS_STOP_BLOCKING" desc="Block cookie consent notices action text">
-      Stop blocking
-    </message>
     <message name="IDS_BLOCK_COOKIE_NOTICES_TITLE" desc="Block cookie consent notices title">
       Brave is blocking cookie consent notices.
     </message>

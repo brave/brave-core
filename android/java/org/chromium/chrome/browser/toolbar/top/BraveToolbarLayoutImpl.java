@@ -996,21 +996,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
         }));
 
-        TextView txtNoThanks = mCookieConsentTooltip.findViewById(R.id.txt_no_thanks);
-        txtNoThanks.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mFilterListAndroidHandler != null) {
-                    mFilterListAndroidHandler.enableFilter(
-                            FilterListConstants.COOKIE_LIST_UUID, false);
-                }
-                if (mCookieListOptInPageAndroidHandler != null) {
-                    mCookieListOptInPageAndroidHandler.onTooltipNoClicked();
-                }
-                mCookieConsentTooltip.dismiss();
-            }
-        }));
-
         if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()) {
             mCookieConsentTooltip.show();
             SharedPreferencesManager.getInstance().writeBoolean(

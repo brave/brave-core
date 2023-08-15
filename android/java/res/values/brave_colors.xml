@@ -242,7 +242,6 @@
     <color name="rewards_tipping_text_color">#212529</color>
     <color name="vbat_warning_color">#FFD43B</color>
 
-    <color name="cookie_consent_action_color">@color/brave_action_color</color>
     <color name="cookie_consent_text_color">#212529</color>
     <color name="cookie_consent_tooltip_color">@android:color/white</color>
 
