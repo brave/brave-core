@@ -183,6 +183,7 @@ export const AccountListItem = ({
     if (userVisibleTokensInfo.length === 0) {
       return Amount.empty()
     }
+
     // Return a 0 balance if the account has no
     // assets to display.
     if (
@@ -190,6 +191,11 @@ export const AccountListItem = ({
         .length === 0
     ) {
       return new Amount(0)
+    }
+
+    // Wait for spot prices
+    if (!spotPriceRegistry) {
+      return Amount.empty()
     }
 
     const amounts =
@@ -211,7 +217,7 @@ export const AccountListItem = ({
 
     return !reducedAmounts.isUndefined()
       ? reducedAmounts
-      : Amount.empty()
+      : new Amount(0)
   }, [
     account,
     userVisibleTokensInfo,
@@ -262,28 +268,26 @@ export const AccountListItem = ({
           </AccountDescription>
         </AccountAndAddress>
       </NameAndIcon>
-      <Row
-        width='unset'
-      >
+      <Row width='unset'>
+        {!isPanel ? (
+          tokensWithBalances.length ? (
+            <TokenIconsStack tokens={tokensWithBalances} />
+          ) : (
+            <>
+              <LoadingSkeleton width={60} height={14} />
+              <HorizontalSpace space='26px' />
+            </>
+          )
+        ) : null}
+
         {accountsFiatValue.isUndefined() ? (
           <>
-            {!isPanel &&
-              <>
-                <LoadingSkeleton width={60} height={14} />
-                <HorizontalSpace space='26px' /></>
-            }
             <LoadingSkeleton width={60} height={14} />
             <HorizontalSpace space='12px' />
           </>
         ) : (
           <>
-            {!isPanel &&
-              <TokenIconsStack tokens={tokensWithBalances} />
-            }
-            <AccountBalanceText
-              textSize='14px'
-              isBold={true}
-            >
+            <AccountBalanceText textSize='14px' isBold={true}>
               {accountsFiatValue.formatAsFiat(defaultFiatCurrency)}
             </AccountBalanceText>
           </>

@@ -3,7 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { BraveWallet } from '../constants/types'
+import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../common/constants/magics'
+import { BraveWallet, SupportedTestNetworks } from '../constants/types'
 import { AllNetworksOption } from './network-filter-options'
 
 export const getNetworkLogo = (chainId: string, symbol: string): string => {
@@ -68,7 +69,15 @@ export const makeNetworkAsset = <T extends BraveWallet.NetworkInfo | undefined>(
     decimals: network.decimals,
     visible: true,
     tokenId: '',
-    coingeckoId: '',
+    coingeckoId:
+      // skip getting prices of known testnet tokens
+      // except Goerli ETH, which has real-world value
+      SupportedTestNetworks.includes(network.chainId) ?
+      network.chainId === BraveWallet.GOERLI_CHAIN_ID &&
+      network.symbol.toLowerCase() === 'eth'
+        ? 'goerli-eth'
+        : SKIP_PRICE_LOOKUP_COINGECKO_ID
+      : '',
     chainId: network.chainId,
     coin: network.coin
   } as UndefinedIf<BraveWallet.BlockchainToken, T>

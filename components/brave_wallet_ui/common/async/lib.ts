@@ -26,6 +26,7 @@ import {
 import { getAccountType } from '../../utils/account-utils'
 import { getAssetIdKey, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
 import { getVisibleNetworksList } from '../slices/api.slice'
+import { makeNetworkAsset } from '../../options/asset-options'
 
 import getAPIProxy from './bridge'
 import { Dispatch, State } from './types'
@@ -397,24 +398,7 @@ export function refreshVisibleTokenInfo (targetNetwork?: BraveWallet.NetworkInfo
     const networkList = await getVisibleNetworksList(api)
 
     async function inner (network: BraveWallet.NetworkInfo) {
-      // Creates a network's Native Asset if not returned
-      const nativeAsset: BraveWallet.BlockchainToken = {
-        contractAddress: '',
-        decimals: network.decimals,
-        isErc20: false,
-        isErc721: false,
-        isErc1155: false,
-        isNft: false,
-        isSpam: false,
-        logo: network.iconUrls[0] ?? '',
-        name: network.symbolName,
-        symbol: network.symbol,
-        visible: false,
-        tokenId: '',
-        coingeckoId: '',
-        chainId: network.chainId,
-        coin: network.coin
-      }
+      const nativeAsset = makeNetworkAsset(network)
 
       // Get a list of user tokens for each coinType and network.
       const getTokenList = await braveWalletService.getUserAssets(network.chainId, network.coin)
