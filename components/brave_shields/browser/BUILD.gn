@@ -65,9 +65,6 @@ if (!is_ios) {
       "filter_list_catalog_entry.h",
       "filter_list_service.cc",
       "filter_list_service.h",
-      "https_everywhere_recently_used_cache.h",
-      "https_everywhere_service.cc",
-      "https_everywhere_service.h",
     ]
 
     deps = [
@@ -99,7 +96,6 @@ if (!is_ios) {
       "//mojo/public/cpp/bindings",
       "//third_party/abseil-cpp:absl",
       "//third_party/blink/public/mojom:mojom_platform_headers",
-      "//third_party/leveldatabase",
       "//third_party/re2",
       "//third_party/zlib/google:zip",
       "//url",

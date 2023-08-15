@@ -97,11 +97,6 @@ function AdvancedControlsContent () {
     if (getSiteSettings) getSiteSettings()
   }
 
-  const handleHTTPSEverywhereEnabledChange = (isEnabled: boolean) => {
-    getPanelBrowserAPI().dataHandler.setHTTPSEverywhereEnabled(isEnabled)
-    if (getSiteSettings) getSiteSettings()
-  }
-
   const handleForgetFirstPartyStorageEnabledChange = (isEnabled: boolean) => {
     getPanelBrowserAPI().dataHandler.setForgetFirstPartyStorageEnabled(
       isEnabled
@@ -110,7 +105,6 @@ function AdvancedControlsContent () {
   }
 
   const adsListCount = siteBlockInfo?.adsList.length ?? 0
-  const httpRedirectsListCount = siteBlockInfo?.httpRedirectsList.length ?? 0
   const jsListCount = siteBlockInfo?.blockedJsList.length ?? 0
   const isHttpsByDefaultEnabled = loadTimeData.getBoolean('isHttpsByDefaultEnabled')
   const isTorProfile = loadTimeData.getBoolean('isTorProfile')
@@ -150,26 +144,6 @@ function AdvancedControlsContent () {
             <span>{adsListCount > 99 ? '99+' : adsListCount}</span>
           </S.CountButton>
         </S.ControlGroup>
-        {!isHttpsByDefaultEnabled && <S.ControlGroup>
-          <label>
-            <span>{getLocale('braveShieldsConnectionsUpgraded')}</span>
-            <Toggle
-              onChange={handleHTTPSEverywhereEnabledChange}
-              isOn={siteSettings?.isHttpsEverywhereEnabled}
-              size='sm'
-              accessibleLabel='Enable HTTPS'
-              disabled={siteBlockInfo?.isBraveShieldsManaged}
-            />
-          </label>
-          <S.CountButton
-            title={httpRedirectsListCount.toString()}
-            aria-label={getLocale('braveShieldsConnectionsUpgraded')}
-            onClick={() => setViewType?.(ViewType.HttpsList)}
-            disabled={httpRedirectsListCount <= 0}
-          >
-            {httpRedirectsListCount > 99 ? '99+' : httpRedirectsListCount}
-          </S.CountButton>
-        </S.ControlGroup>}
         {(isHttpsByDefaultEnabled && !isTorProfile) && <S.ControlGroup>
           <div className="col-2">
             <Select

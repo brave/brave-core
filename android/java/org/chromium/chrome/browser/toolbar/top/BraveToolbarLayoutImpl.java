@@ -296,26 +296,27 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)) {
             mBraveShieldsHandler.loadDisconnectEntityList(getContext());
         }
-        mBraveShieldsHandler.addObserver(new BraveShieldsMenuObserver() {
-            @Override
-            public void onMenuTopShieldsChanged(boolean isOn, boolean isTopShield) {
-                Tab currentTab = getToolbarDataProvider().getTab();
-                if (currentTab == null) {
-                    return;
-                }
-                if (isTopShield) {
-                    updateBraveShieldsButtonState(currentTab);
-                }
-                if (currentTab.isLoading()) {
-                    currentTab.stopLoading();
-                }
-                currentTab.reloadIgnoringCache();
-                if (null != mBraveShieldsHandler) {
-                    // Clean the Bravery Panel
-                    mBraveShieldsHandler.updateValues(0, 0, 0, 0);
-                }
-            }
-        });
+        mBraveShieldsHandler.addObserver(
+                new BraveShieldsMenuObserver() {
+                    @Override
+                    public void onMenuTopShieldsChanged(boolean isOn, boolean isTopShield) {
+                        Tab currentTab = getToolbarDataProvider().getTab();
+                        if (currentTab == null) {
+                            return;
+                        }
+                        if (isTopShield) {
+                            updateBraveShieldsButtonState(currentTab);
+                        }
+                        if (currentTab.isLoading()) {
+                            currentTab.stopLoading();
+                        }
+                        currentTab.reloadIgnoringCache();
+                        if (null != mBraveShieldsHandler) {
+                            // Clean the Bravery Panel
+                            mBraveShieldsHandler.updateValues(0, 0, 0);
+                        }
+                    }
+                });
         mBraveShieldsContentSettingsObserver = new BraveShieldsContentSettingsObserver() {
             @Override
             public void blockEvent(int tabId, String blockType, String subresource) {

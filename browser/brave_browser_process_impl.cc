@@ -31,7 +31,6 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/browser/brave_farbling_service.h"
-#include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/constants/pref_names.h"
@@ -214,7 +213,6 @@ ProfileManager* BraveBrowserProcessImpl::profile_manager() {
 void BraveBrowserProcessImpl::StartBraveServices() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  https_everywhere_service()->Start();
   resource_component();
 
   if (base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
@@ -344,16 +342,6 @@ BraveBrowserProcessImpl::URLSanitizerComponentInstaller() {
             local_data_files_service());
   }
   return url_sanitizer_component_installer_.get();
-}
-
-brave_shields::HTTPSEverywhereService*
-BraveBrowserProcessImpl::https_everywhere_service() {
-  if (!created_https_everywhere_service_) {
-    https_everywhere_service_ = brave_shields::HTTPSEverywhereServiceFactory(
-        brave_component_updater_delegate()->GetTaskRunner());
-    created_https_everywhere_service_ = true;
-  }
-  return https_everywhere_service_.get();
 }
 
 brave_component_updater::LocalDataFilesService*

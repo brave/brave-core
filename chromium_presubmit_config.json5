@@ -168,9 +168,6 @@
       "android/java/org/chromium/chrome/browser/qrreader/CameraSource\\.java",
       "browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/BraveNotificationManagerProxyImpl\\.java",
     ],
-    "leveldb::DB::Open": [
-      "components/brave_shields/browser/https_everywhere_service\\.cc",
-    ],
     "/\\s+UTF8String\\s*]": [
       "base/mac/conversions\\.h",
       "browser/mac/sparkle_glue\\.mm",

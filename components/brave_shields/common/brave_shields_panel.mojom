@@ -42,7 +42,6 @@ interface DataHandler {
   SetCookieBlockMode(CookieBlockMode mode);
   SetHttpsUpgradeMode(HttpsUpgradeMode mode);
   SetIsNoScriptsEnabled(bool is_enabled);
-  SetHTTPSEverywhereEnabled(bool is_enabled);
   SetBraveShieldsEnabled(bool is_enabled);
   SetForgetFirstPartyStorageEnabled(bool is_enabled);
   OpenWebCompatWindow();
@@ -68,7 +67,6 @@ struct SiteSettings {
   AdBlockMode ad_block_mode;
   FingerprintMode fingerprint_mode;
   CookieBlockMode cookie_block_mode;
-  bool is_https_everywhere_enabled;
   HttpsUpgradeMode https_upgrade_mode;
   bool is_noscript_enabled;
   bool is_forget_first_party_storage_enabled;

@@ -88,7 +88,6 @@ android_test_exception_sources = [
   "//brave/components/brave_rewards/browser/test/rewards_promotion_browsertest.cc",
   "//brave/components/brave_rewards/browser/test/rewards_publisher_browsertest.cc",
   "//brave/components/brave_rewards/browser/test/rewards_state_browsertest.cc",
-  "//brave/components/brave_shields/browser/https_everywhere_service_browsertest.cc",
   "//brave/components/brave_shields/browser/test_filters_provider.cc",
   "//brave/components/content_settings/renderer/brave_content_settings_agent_impl_browsertest.cc",
   "//brave/third_party/blink/renderer/modules/brave/navigator_browsertest.cc",
