@@ -45,7 +45,7 @@ TEST_F(BraveAdsNotificationAdServedAtPredictorVariableTest,
        GetValueWithoutTime) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
-      std::make_unique<NotificationAdServedAtPredictorVariable>(DistantPast());
+      std::make_unique<NotificationAdServedAtPredictorVariable>(base::Time());
 
   // Act
 

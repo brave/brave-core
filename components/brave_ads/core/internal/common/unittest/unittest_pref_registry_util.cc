@@ -44,7 +44,7 @@ void RegisterPrefs() {
   RegisterStringPref(prefs::kCatalogId, "");
   RegisterIntegerPref(prefs::kCatalogVersion, 0);
   RegisterInt64Pref(prefs::kCatalogPing, 7'200'000);
-  RegisterTimePref(prefs::kCatalogLastUpdated, DistantPast());
+  RegisterTimePref(prefs::kCatalogLastUpdated, base::Time());
 
   RegisterInt64Pref(prefs::kIssuerPing, 0);
   RegisterListPref(prefs::kIssuers);
