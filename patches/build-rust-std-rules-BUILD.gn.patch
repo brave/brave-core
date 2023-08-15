@@ -1,0 +1,13 @@
+diff --git a/build/rust/std/rules/BUILD.gn b/build/rust/std/rules/BUILD.gn
+index ddf69ad82a76aa314e82550af81a4804998a6706..2b92e98ab0f381454f5e4673398396878f55ccfb 100644
+--- a/build/rust/std/rules/BUILD.gn
++++ b/build/rust/std/rules/BUILD.gn
+@@ -343,7 +343,7 @@ cargo_crate("compiler_builtins") {
+   output_dir =
+       "$root_out_dir/local_rustc_sysroot/lib/rustlib/$rust_abi_target/lib/"
+ 
+-  if (current_cpu == "arm64") {
++  if (current_cpu == "arm64" && !is_android && !is_ios) {
+     build_script_outputs = [ "outlined_atomics.rs" ]
+   }
+ }
