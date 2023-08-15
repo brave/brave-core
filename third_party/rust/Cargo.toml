@@ -519,7 +519,7 @@ path = "fnv/v1/crate"
 package = "fnv"
 
 [patch.crates-io.font-types_v0_3]
-path = "font_types/v0_3/crate"
+path = "../../../third_party/rust/font_types/v0_3/crate"
 package = "font-types"
 
 [patch.crates-io.forest_bigint_v0_1]
@@ -927,7 +927,7 @@ path = "../../../third_party/rust/proc_macro2/v1/crate"
 package = "proc-macro2"
 
 [patch.crates-io.qr_code_v2]
-path = "qr_code/v2/crate"
+path = "../../../third_party/rust/qr_code/v2/crate"
 package = "qr_code"
 
 [patch.crates-io.quick-xml_v0_27]
@@ -975,7 +975,7 @@ path = "../../../third_party/rust/rand/v0_8/crate"
 package = "rand"
 
 [patch.crates-io.read-fonts_v0_5]
-path = "read_fonts/v0_5/crate"
+path = "../../../third_party/rust/read_fonts/v0_5/crate"
 package = "read-fonts"
 
 [patch.crates-io.regex-syntax_v0_6]
@@ -1119,7 +1119,7 @@ path = "siphasher/v0_3/crate"
 package = "siphasher"
 
 [patch.crates-io.skrifa_v0_4]
-path = "skrifa/v0_4/crate"
+path = "../../../third_party/rust/skrifa/v0_4/crate"
 package = "skrifa"
 
 [patch.crates-io.slab_v0_4]
