@@ -21,4 +21,9 @@ void DialogClientView::SetupButtonsLayoutVertically() {
       kVerticalButtonsSpacing));
 }
 
+void DialogClientView::IgnoreNextWindowStationaryStateChanged() {
+  DCHECK(input_protector_);
+  input_protector_->IgnoreNextWindowStationaryStateChanged();
+}
+
 }  // namespace views
