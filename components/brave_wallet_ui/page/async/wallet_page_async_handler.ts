@@ -17,7 +17,6 @@ import {
   CreateWalletPayloadType,
   UpdateSelectedAssetType,
   ImportAccountPayloadType,
-  RemoveAccountPayloadType,
   ImportAccountFromJsonPayloadType,
   ImportFromExternalWalletPayloadType,
   ImportFilecoinAccountPayloadType,
@@ -174,18 +173,6 @@ handler.on(WalletPageActions.addHardwareAccounts.type, async (store: Store, acco
   const keyringService = getWalletPageApiProxy().keyringService
   keyringService.addHardwareAccounts(accounts)
   store.dispatch(WalletPageActions.setShowAddModal(false))
-})
-
-handler.on(WalletPageActions.removeAccount.type, async (store: Store, payload: RemoveAccountPayloadType) => {
-  const { keyringService } = getWalletPageApiProxy()
-  const { success } = await keyringService.removeAccount(
-    payload.accountId,
-    payload.password
-  )
-
-  if (success) {
-    store.dispatch(WalletPageActions.setShowAddModal(false))
-  }
 })
 
 handler.on(WalletPageActions.checkWalletsToImport.type, async (store) => {

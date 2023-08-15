@@ -7,7 +7,7 @@ import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 // actions
-import { WalletPageActions } from '../../../../page/actions'
+import { WalletActions } from '../../../../common/actions'
 import { AccountsTabActions, AccountsTabState } from '../../../../page/reducers/accounts-tab-reducer'
 
 // utils
@@ -60,7 +60,7 @@ export const ConfirmPasswordModal = () => {
         accountId.kind === BraveWallet.AccountKind.kHardware ||
         accountId.kind === BraveWallet.AccountKind.kImported
       ) {
-        dispatch(WalletPageActions.removeAccount({ accountId, password }))
+        dispatch(WalletActions.removeAccount({ accountId, password }))
       }
 
       dispatch(AccountsTabActions.setAccountToRemove(undefined)) // close modal

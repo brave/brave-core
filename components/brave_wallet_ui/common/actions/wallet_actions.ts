@@ -77,5 +77,6 @@ export const {
   setHidePortfolioSmallBalances,
   setShowNetworkLogoOnNfts,
   setIsRefreshingNetworksAndTokens,
-  updateAccountName
+  updateAccountName,
+  removeAccount
 } = WalletActions

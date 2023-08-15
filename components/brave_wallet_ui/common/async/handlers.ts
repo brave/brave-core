@@ -23,6 +23,7 @@ import {
 } from '../../constants/types'
 import {
   AddAccountPayloadType,
+  RemoveAccountPayloadType
 } from '../../page/constants/action_types'
 
 // Utils
@@ -357,5 +358,16 @@ handler.on(
       await keyringService.setAccountName(payload.accountId, payload.name)
     return result.success
   })
+
+handler.on(
+  WalletActions.removeAccount.type,
+  async (_store: Store, payload: RemoveAccountPayloadType) => {
+    const { keyringService } = getAPIProxy()
+    await keyringService.removeAccount(
+      payload.accountId,
+      payload.password
+    )
+  }
+)
 
 export default handler.middleware
