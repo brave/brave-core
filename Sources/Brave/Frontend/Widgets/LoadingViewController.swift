@@ -70,8 +70,12 @@ public class AuthenticationController: LoadingViewController {
     }
 
     if !windowProtection.isPassCodeAvailable {
-      showSetPasscodeError(viewType: viewType) {
+      if viewType == .tabTray {
         completion?(false, LAError.passcodeNotSet)
+      } else {
+        showSetPasscodeError(viewType: viewType) {
+          completion?(false, LAError.passcodeNotSet)
+        }
       }
     } else {
       windowProtection.presentAuthenticationForViewController(
@@ -91,7 +95,7 @@ public class AuthenticationController: LoadingViewController {
 
     alert.addAction(
       UIAlertAction(title: Strings.OKString, style: .default, handler: { _ in
-          completion()
+        completion()
       })
     )
     

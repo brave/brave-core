@@ -12,6 +12,7 @@ import Combine
 import Data
 import SnapKit
 import BraveUI
+import LocalAuthentication
 
 protocol TabTrayDelegate: AnyObject {
   /// Notifies the delegate that order of tabs on tab tray has changed.
@@ -600,7 +601,12 @@ class TabTrayController: AuthenticationController {
 
   @objc func togglePrivateModeAction() {
     if !privateMode, Preferences.Privacy.privateBrowsingLock.value {
-      askForAuthentication(viewType: .tabTray)
+      askForAuthentication(viewType: .tabTray) { [weak self] success, error in
+        if !success, error == LAError.passcodeNotSet {
+          // If Pin code is not set in this device, private mode is enabled default
+          self?.toggleModeChanger()
+        }
+      }
     } else {
       toggleModeChanger()
     }

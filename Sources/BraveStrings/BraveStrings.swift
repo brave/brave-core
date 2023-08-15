@@ -3340,16 +3340,6 @@ extension Strings {
         "BrowserLockDescription", tableName: "BraveShared", bundle: .module,
         value: "Unlock Brave with Touch ID, Face ID or system passcode.",
         comment: "Description for setting to enable the browser lock privacy feature")
-    public static let privateBrowsingLock =
-      NSLocalizedString(
-        "privacy.private.browsing.lock.title", tableName: "BraveShared", bundle: .module,
-        value: "Private Browsing Lock",
-        comment: "Title for setting to enable the private browsing lock privacy feature")
-    public static let privateBrowsingLockDescription =
-      NSLocalizedString(
-        "privacy.private.browsing.lock.description", tableName: "BraveShared", bundle: .module,
-        value: "Require Passcode to Unlock Private Browsing",
-        comment: "Description for setting to enable the browser lock privacy feature")
     public static let tabTraySetPasscodeAlertDescription =
       NSLocalizedString(
         "privacy.tab.tray.passcode.alert",
@@ -3357,6 +3347,41 @@ extension Strings {
         bundle: .module,
         value: "To switch private browsing mode, you must first set a passcode on your device.",
         comment: "The message displayed in alert when a user needs to set a passcode")
+  }
+}
+
+extension Strings {
+  public struct TabsSettings {
+    public static let privateTabsSettingsTitle =
+      NSLocalizedString(
+        "tabs.settings.privateTabsSettingsTitle", tableName: "BraveShared", bundle: .module,
+        value: "Private Tabs",
+        comment: "")
+    public static let privateBrowsingLockTitleFaceID =
+      NSLocalizedString(
+        "tabs.settings.privateBrowsingLockTitleFaceID", tableName: "BraveShared", bundle: .module,
+        value: "Require Face ID",
+        comment: "")
+    public static let privateBrowsingLockTitleTouchID =
+      NSLocalizedString(
+        "tabs.settings.privateBrowsingLockTitleTouchID", tableName: "BraveShared", bundle: .module,
+        value: "Require Touch ID",
+        comment: "")
+    public static let privateBrowsingLockTitlePinCode =
+      NSLocalizedString(
+        "tabs.settings.privateBrowsingLockTitlePinCode", tableName: "BraveShared", bundle: .module,
+        value: "Require Pin Code",
+        comment: "")
+    public static let persistentPrivateBrowsingTitle =
+      NSLocalizedString(
+        "tabs.settings.persistentPrivateBrowsingTitle", tableName: "BraveShared", bundle: .module,
+        value: "Keep Private Tabs",
+        comment: "")
+    public static let persistentPrivateBrowsingDescription =
+      NSLocalizedString(
+        "tabs.settings.persistentPrivateBrowsingTitle", tableName: "BraveShared", bundle: .module,
+        value: "Keep private browsing tabs open when you close the app, ensuring private browsing sessions continue seamlessly.",
+        comment: "")
   }
 }
 
