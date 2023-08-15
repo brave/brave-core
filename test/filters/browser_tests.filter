@@ -815,6 +815,7 @@
 # This test fails because we override the support article URL to point to our
 # own support article
 -WebHidExtensionBrowserTest.HidConnectionTracker
+-WebHidExtensionFeatureEnabledBrowserTest.HidConnectionTracker
 
 # These tests fail because we disable field trials via
 # disable_fieldtrial_testing_config
