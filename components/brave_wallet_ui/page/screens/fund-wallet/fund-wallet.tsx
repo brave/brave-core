@@ -8,6 +8,12 @@ import { useSelector } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useParams } from 'react-router'
 
+// Selectors
+import {
+  useSafeUISelector
+} from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
+
 // utils
 import { getLocale } from '../../../../common/locale'
 import {
@@ -88,6 +94,7 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // queries
   const { data: selectedNetworkFromFilter = AllNetworksOption } =
@@ -394,6 +401,7 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
                   userAssetList={assetListSearchResults}
                   estimatedItemSize={itemSize}
                   renderToken={renderToken}
+                  maximumViewableTokens={isPanel ? 2.5 : 4.5}
                 />
               ) : (
                 <Column>
