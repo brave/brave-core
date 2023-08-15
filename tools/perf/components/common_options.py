@@ -3,17 +3,20 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+# pylint: disable=too-many-instance-attributes
+
 import argparse
+import os
 import sys
 import tempfile
-
-from typing import Optional, List
+from typing import List, Optional
 
 import components.path_util as path_util
 
 with path_util.SysPath(path_util.GetTelemetryDir()):
   with path_util.SysPath(path_util.GetChromiumPerfDir()):
-    from core.perf_benchmark import PerfBenchmark  # pylint: disable=import-error
+    from core.perf_benchmark import \
+        PerfBenchmark  # pylint: disable=import-error
 
 
 class CommonOptions:
@@ -42,7 +45,7 @@ class CommonOptions:
         type=str,
         nargs='?',
         help='Format: tag1[:<path_or_url1>],..,tagN[:<path_or_urlN>].'
-             'Empty value enables the compare mode (see --compare).')
+        'Empty value enables the compare mode (see --compare).')
     parser.add_argument(
         '--working-directory',
         type=str,
@@ -95,11 +98,12 @@ class CommonOptions:
         raise RuntimeError('Set --working-directory for --ci-mode')
       options.working_directory = tempfile.mkdtemp(prefix='perf-test-')
     else:
-      options.working_directory = args.working_directory
+      options.working_directory = os.path.expanduser(args.working_directory)
 
     options.verbose = args.verbose
     options.ci_mode = args.ci_mode
-    options.variations_repo_dir = args.variations_repo_dir
+    if args.variations_repo_dir is not None:
+      options.variations_repo_dir = os.path.expanduser(args.variations_repo_dir)
     if args.target_os is not None:
       options.target_os = PerfBenchmark.FixupTargetOS(args.target_os)
 
@@ -111,6 +115,7 @@ class CommonOptions:
 
     options.local_run = args.local_run or compare
     options.do_run_tests = not args.report_only
-    options.do_report = not args.no_report and not args.local_run and not compare
+    options.do_report = (not args.no_report and not args.local_run
+                         and not compare)
 
     return options

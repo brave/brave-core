@@ -7,7 +7,7 @@
 # Therefore has the same code conventions (including pylint).
 # pylint: disable=line-too-long, import-error, super-with-arguments
 # pylint: disable=no-name-in-module, too-few-public-methods
-
+# pytype: disable=import-error
 import collections
 import time
 

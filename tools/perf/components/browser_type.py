@@ -11,7 +11,6 @@ import re
 import shutil
 import subprocess
 import sys
-import tempfile
 from distutils.dir_util import copy_tree
 from enum import Enum
 from typing import List, Optional, Tuple

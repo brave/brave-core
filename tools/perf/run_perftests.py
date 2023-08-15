@@ -1,8 +1,8 @@
 #!/usr/bin/env vpython3
-# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# you can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 r"""A tool run telemetry perftests and report the results to dashboard
 
 Use npm run perf_tests to call this script.
@@ -10,14 +10,13 @@ Use npm run perf_tests to call this script.
 The tool:
 1. Downloads browser binaries.
 2. Runs the set of telemetry perftests from the provided config.
-3. Reports the results to brave-perf-dashboard.appspot.com or store them as
+3. Reports the results to brave-perf-dashboard.appspot.com or stores them as
    local .html files.
 
-The tool is best run on specially prepared hardware/OS to minimize jitter.
+The tool gives more stable results on prepared hardware/OS to minimize jitter.
 
 """
 import argparse
-from codecs import ignore_errors
 import logging
 import sys
 import os
@@ -31,14 +30,13 @@ def main():
   parser = argparse.ArgumentParser(
       formatter_class=argparse.RawTextHelpFormatter,
       description='A tool to run perf tests and report the results.'
-                  'Use it via npm run perf_tests',
+      'Use npm run perf_tests to launch it',
       epilog=R'''
-Example usage to launch tests locally:
-npm run perf_tests -- compare\compare_with_on_off_feature.json5
-     --variations-repo-dir=e:\work\brave-variations
-     --local-run
+To some launch tests locally:
+npm run perf_tests -- compare/compare_with_on_off_feature.json5
+     --variations-repo-dir=~/work/brave-variations
 
-Example usage for CI:
+On CI:
 npm run perf_tests -- smoke-brave.json5 v1.58.45
      --working-directory=e:\work\brave\src\out\100
      --variations-repo-dir=e:\work\brave-variations
