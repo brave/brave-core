@@ -15,6 +15,7 @@
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
+#include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/prefs/pref_service.h"
@@ -22,9 +23,8 @@
 namespace brave_news {
 
 struct Signal {
-  bool subscribed;
-  double visit_weight;
-  double pop_recency;
+  bool subscribed = false;
+  double visit_weight = 0;
 };
 
 using Signals = base::flat_map<std::string, Signal>;
@@ -46,6 +46,8 @@ class SignalCalculator {
   void OnGotHistory(std::vector<mojom::FeedItemMetadataPtr> articles,
                     SignalsCallback callback,
                     history::QueryResults results);
+
+  bool IsPublisherSubscribed(const mojom::PublisherPtr& publisher);
 
   base::CancelableTaskTracker task_tracker_;
 

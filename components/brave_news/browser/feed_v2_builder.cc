@@ -34,32 +34,6 @@ namespace brave_news {
 
 namespace {
 
-// Minimum number of articles in an inline block.
-constexpr int kBlockInlineMin = 1;
-
-// Maximum number of articles in an inline block.
-constexpr int kBlockInlineMax = 5;
-
-// Ratio of inline articles to discovery articles.
-constexpr double kInlineDiscoveryRatio = 0.25;
-
-// Weighting for unsubscribed sources. Small but non-zero, so we still include
-// them in the feed.
-constexpr double kSourceSubscribedMin = 1e-5;
-
-// Weighting for subscribed sources (either this or |kSourceSubscribedMin| will
-// be applied).
-constexpr double kSourceSubscribedMax = 1;
-
-// Multiplier for unvisited sources. |visit_weighting| is in the range [0, 1]
-// inclusive and will be shifted by this (i.e. [0, 1] ==> [0.2, 1.2]). This
-// ensures we still show unvisited sources in the feed.
-constexpr double kSourceVisitsMin = 0.2;
-
-// Every N hours the popRecency half life will halve. I.e, if this was 24, every
-// day the popularity score will be halved.
-constexpr double kPopRecencyHalfLifeInHours = 18;
-
 // An ArticleInfo is a tuple of (item, signal, weighting). They're stored like
 // this for performance, so we only need to calculate things once.
 using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, Signal, double>;
@@ -75,6 +49,10 @@ const Signal* GetSignal(const mojom::FeedItemMetadataPtr& article,
 }
 
 double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
+  // Every N hours the popRecency half life will halve. I.e, if this was 24,
+  // every day the popularity score will be halved.
+  constexpr double kPopRecencyHalfLifeInHours = 18;
+
   auto& publish_time = article->publish_time;
 
   // TODO(fallaciousreasoning): Use the new popularity field instead.
@@ -89,6 +67,19 @@ double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
 
 double GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
                         const Signal& signal) {
+  // Weighting for unsubscribed sources. Small but non-zero, so we still include
+  // them in the feed.
+  constexpr double kSourceSubscribedMin = 1e-5;
+
+  // Weighting for subscribed sources (either this or |kSourceSubscribedMin|
+  // will be applied).
+  constexpr double kSourceSubscribedMax = 1;
+
+  // Multiplier for unvisited sources. |visit_weighting| is in the range [0, 1]
+  // inclusive and will be shifted by this (i.e. [0, 1] ==> [0.2, 1.2]). This
+  // ensures we still show unvisited sources in the feed.
+  constexpr double kSourceVisitsMin = 0.2;
+
   double source_visits_projected =
       kSourceVisitsMin + signal.visit_weight * (1 - kSourceVisitsMin);
   double source_subscribed_projected =
@@ -142,7 +133,7 @@ bool TossCoin() {
 }
 
 // This is a Box Muller transform for getting a normally distributed value
-// between [0, 1] (inclusive)
+// between [0, 1)
 // https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
 double GetNormal() {
   double u;
@@ -177,12 +168,12 @@ using ShouldConsiderPredicate = bool(const Signal& signal);
 // Picks an article with a probability article_weight/sum(article_weights).
 mojom::FeedItemMetadataPtr PickRouletteAndRemove(
     ArticleInfos& articles,
-    ShouldConsiderPredicate predicate = [](const auto& signal) {
+    ShouldConsiderPredicate should_consider = [](const auto& signal) {
       return true;
     }) {
   double total_weight = 0;
   for (const auto& [article, signal, weight] : articles) {
-    if (!predicate(signal)) {
+    if (!should_consider(signal)) {
       continue;
     }
     total_weight += weight;
@@ -199,7 +190,7 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
   uint64_t i;
   for (i = 0; i < articles.size(); ++i) {
     auto& [article, signal, weight] = articles[i];
-    if (!predicate(signal)) {
+    if (!should_consider(signal)) {
       continue;
     }
 
@@ -244,11 +235,18 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles) {
   result.push_back(mojom::FeedItemV2::NewHero(
       mojom::HeroArticle::New(std::move(hero_article))));
 
+  // Minimum number of articles in an inline block.
+  constexpr int kBlockInlineMin = 1;
+
+  // Maximum number of articles in an inline block.
+  constexpr int kBlockInlineMax = 5;
   auto follow_count = GetNormal(kBlockInlineMin, kBlockInlineMax + 1);
   for (auto i = 0; i < follow_count; ++i) {
+    // Ratio of inline articles to discovery articles.
     // discover ratio % of the time, we should do a discover card here instead
     // of a roulette card.
     // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4rkb0vecgekl
+    constexpr double kInlineDiscoveryRatio = 0.25;
     bool is_discover = base::RandDouble() < kInlineDiscoveryRatio;
     auto generated = is_discover ? PickDiscoveryArticleAndRemove(articles)
                                  : PickRouletteAndRemove(articles);

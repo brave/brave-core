@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "brave/components/brave_news/browser/feed_fetcher.h"
-#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 
 namespace brave_news {
@@ -27,28 +26,6 @@ std::vector<mojom::FeedItemMetadataPtr> GetArticles(const FeedItems& feed) {
     }
   }
   return articles;
-}
-
-constexpr double kPopRecencyHalfLifeInHours = 18;
-
-double GetPopRecency(const mojom::FeedItemMetadataPtr& data) {
-  auto& publish_time = data->publish_time;
-
-  // If the article doesn't have a score, default to 50
-  double popularity = data->score == 0 ? 50 : data->score;
-
-  // Double the score on articles from the last 5 hours.
-  double multiplier = publish_time > base::Time::Now() - base::Hours(5) ? 2 : 1;
-
-  auto dt = base::Time::Now() - publish_time;
-  return multiplier * popularity *
-         pow(0.5, dt.InHours() / kPopRecencyHalfLifeInHours);
-}
-
-bool IsPublisherSubscribed(mojom::UserEnabled user_enabled,
-                           bool channel_subscribed) {
-  return user_enabled == mojom::UserEnabled::ENABLED ||
-         (channel_subscribed && user_enabled != mojom::UserEnabled::DISABLED);
 }
 
 }  // namespace
@@ -84,8 +61,8 @@ void SignalCalculator::OnGotHistory(
     history::QueryResults results) {
   const auto& locale = publishers_controller_->GetLastLocale();
 
-  auto& publishers = publishers_controller_->GetLastPublishers();
-  auto channels = channels_controller_->GetChannelsFromPublishers(
+  const auto& publishers = publishers_controller_->GetLastPublishers();
+  const auto& channels = channels_controller_->GetChannelsFromPublishers(
       publishers, &prefs_.get());
   base::flat_map<std::string, std::vector<std::string>> origin_visits;
   for (const auto& item : results) {
@@ -128,65 +105,56 @@ void SignalCalculator::OnGotHistory(
   }
 
   Signals signals;
+  auto add_publisher_signal = [&](const std::string& key,
+                                  const mojom::PublisherPtr& publisher) {
+    const auto& visits = publisher_visits.at(publisher->publisher_id);
+    signals[key] = {
+        .subscribed = IsPublisherSubscribed(publisher),
+        .visit_weight =
+            visits.size() / static_cast<double>(total_publisher_visits)};
+  };
 
   // Add article signals
   for (const auto& article : articles) {
     const auto& publisher = publishers.at(article->publisher_id);
-
-    bool channel_subscribed = false;
-    for (const auto& locale_info : publisher->locales) {
-      for (const auto& channel : locale_info->channels) {
-        if (channels_controller_->GetChannelSubscribed(locale_info->locale,
-                                                       channel)) {
-          channel_subscribed = true;
-          break;
-        }
-      }
-    }
-    auto& visits = publisher_visits.at(article->publisher_id);
-    signals[article->url.spec()] = {
-        .subscribed = IsPublisherSubscribed(publisher->user_enabled_status,
-                                            channel_subscribed),
-        .visit_weight =
-            visits.size() / static_cast<double>(total_publisher_visits),
-        .pop_recency = GetPopRecency(article)};
+    add_publisher_signal(article->url.spec(), publisher);
   }
 
   // Add publisher signals
-  for (const auto& it : publishers) {
-    bool channel_subscribed = false;
-    for (const auto& locale_info : it.second->locales) {
-      for (const auto& channel : locale_info->channels) {
-        if (channels_controller_->GetChannelSubscribed(locale_info->locale,
-                                                       channel)) {
-          channel_subscribed = true;
-          break;
-        }
-      }
-    }
-    auto& visits = publisher_visits.at(it.first);
-    signals[it.first] = {
-        .subscribed = IsPublisherSubscribed(it.second->user_enabled_status,
-                                            channel_subscribed),
-        .visit_weight =
-            visits.size() / static_cast<double>(total_publisher_visits),
-        .pop_recency = 0};
+  for (const auto& [id, publisher] : publishers) {
+    add_publisher_signal(id, publisher);
   }
 
   // Add channel signals
   for (const auto& channel : channels) {
     auto it = channel_visits.find(channel.first);
-    std::vector<std::string> visits =
-        it == channel_visits.end() ? std::vector<std::string>{} : it->second;
+    auto visit_count = it == channel_visits.end() ? 0 : it->second.size();
     signals[channel.first] = {
         .subscribed =
             channels_controller_->GetChannelSubscribed(locale, channel.first),
         .visit_weight =
-            visits.size() / static_cast<double>(total_channel_visits),
-        .pop_recency = 0};
+            visit_count / static_cast<double>(total_channel_visits)};
   }
 
   std::move(callback).Run(std::move(signals));
+}
+
+bool SignalCalculator::IsPublisherSubscribed(
+    const mojom::PublisherPtr& publisher) {
+  bool channel_subscribed = false;
+  for (const auto& locale_info : publisher->locales) {
+    for (const auto& channel : locale_info->channels) {
+      if (channels_controller_->GetChannelSubscribed(locale_info->locale,
+                                                     channel)) {
+        channel_subscribed = true;
+        break;
+      }
+    }
+  }
+
+  return publisher->user_enabled_status == mojom::UserEnabled::ENABLED ||
+         (channel_subscribed &&
+          publisher->user_enabled_status != mojom::UserEnabled::DISABLED);
 }
 
 }  // namespace brave_news
