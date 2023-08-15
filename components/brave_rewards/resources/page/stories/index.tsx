@@ -51,6 +51,7 @@ export function ConnectWallet () {
       <WithThemeVariables>
         <LayoutManager layout={narrow ? 'narrow' : 'wide'}>
           <ConnectWalletModal
+            currentCountryCode='US'
             providers={providers}
             onContinue={actionLogger('onContinue')}
             onClose={actionLogger('onClose')}
