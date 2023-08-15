@@ -37,6 +37,11 @@
   align-items: center;
   justify-content: center;
 
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--leo-effect-focus-state);
+  }
+
   img {
     width: 16px;
     height: 16px;

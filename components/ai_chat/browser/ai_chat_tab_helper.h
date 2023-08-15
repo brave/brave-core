@@ -133,7 +133,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
   std::string BuildLlama2GenerateQuestionsPrompt(bool is_video,
                                                  const std::string content);
   mojom::AutoGenerateQuestionsPref GetAutoGeneratePref();
-  bool ShouldFetchPageContent();
 
   raw_ptr<PrefService> pref_service_;
   std::unique_ptr<AIChatAPI> ai_chat_api_ = nullptr;

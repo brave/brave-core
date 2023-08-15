@@ -162,7 +162,7 @@ void AIChatTabHelper::MaybeGeneratePageText() {
     return;
   }
 
-  if (ShouldFetchPageContent()) {
+  if (!should_page_content_be_disconnected_) {
     is_page_text_fetch_in_progress_ = true;
     FetchPageContent(
         web_contents(),
@@ -786,10 +786,6 @@ mojom::AutoGenerateQuestionsPref AIChatTabHelper::GetAutoGeneratePref() {
   }
 
   return pref;
-}
-
-bool AIChatTabHelper::ShouldFetchPageContent() {
-  return !should_page_content_be_disconnected_;
 }
 
 void AIChatTabHelper::PrimaryPageChanged(content::Page& page) {

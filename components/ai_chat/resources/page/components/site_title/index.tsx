@@ -33,7 +33,7 @@ function Tooltip(props: ToolTipProps) {
   })
 
   return (
-    <div className={tooltipStyles}>
+    <div role="tooltip" id="page-content-warning-tooltip" className={tooltipStyles}>
       {getLocale('pageContentWarning')}
     </div>
   )
@@ -54,16 +54,27 @@ function SiteTitle (props: SiteTitleProps) {
     setIsTooltipVisible(false)
   }
 
+  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape") {
+      setIsTooltipVisible(false)
+    }
+  }
+
    return (
-    <div
-      className={styles.box}
-      onMouseOver={showTooltipWithDelay}
-      onMouseOut={hideTooltip}
-      onTouchStart={() => setIsTooltipVisible(true)}
-      onTouchEnd={() => setIsTooltipVisible(false)}
-    >
+    <div className={styles.box}>
       <Tooltip isVisible={isTooltipVisible} />
-      <div className={styles.favIconBox}>
+      <div
+        aria-describedby='page-content-warning-tooltip'
+        tabIndex={0}
+        className={styles.favIconBox}
+        onMouseOver={showTooltipWithDelay}
+        onMouseOut={hideTooltip}
+        onTouchStart={() => setIsTooltipVisible(true)}
+        onTouchEnd={() => setIsTooltipVisible(false)}
+        onFocus={() => setIsTooltipVisible(true)}
+        onBlur={() => setIsTooltipVisible(false)}
+        onKeyDown={handleOnKeyDown}
+      >
         { props.favIconUrl && <img src={props.favIconUrl} /> }
       </div>
       <div className={styles.titleBox}>
