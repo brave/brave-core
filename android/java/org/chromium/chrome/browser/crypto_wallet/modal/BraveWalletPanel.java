@@ -428,8 +428,8 @@ public class BraveWalletPanel implements DialogInterface {
         });
         mCvSolConnectionStatus = mPopupView.findViewById(R.id.v_dapps_panel_sol_connection_status);
         mBtnConnectedStatus = mPopupView.findViewById(R.id.sp_dapps_panel_state);
-        mBtnConnectedStatus.setOnClickListener(onConnectedAccountClick);
-        mCvSolConnectionStatus.setOnClickListener(onConnectedAccountClick);
+        mBtnConnectedStatus.setOnClickListener(mOnConnectedAccountClick);
+        mCvSolConnectionStatus.setOnClickListener(mOnConnectedAccountClick);
         mPopupWindow.setContentView(mPopupView);
         mContainerConstraintLayout = mPopupView.findViewById(R.id.container_constraint_panel);
         mAccountImage = mPopupView.findViewById(R.id.iv_dapps_panel_account_image);
@@ -456,7 +456,7 @@ public class BraveWalletPanel implements DialogInterface {
         setUpObservers();
     }
 
-    private final View.OnClickListener onConnectedAccountClick = v -> {
+    private final View.OnClickListener mOnConnectedAccountClick = v -> {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.openBraveWalletDAppsActivity(
