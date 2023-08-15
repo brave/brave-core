@@ -25,6 +25,7 @@ import {
   makeBraveWalletAutoPinServiceObserver,
   makeBraveWalletPinServiceObserver,
   makeBraveWalletServiceObserver,
+  makeBraveWalletServiceTokenObserver,
   makeJsonRpcServiceObserver,
   makeKeyringServiceObserver,
   makeTxServiceObserver
@@ -55,6 +56,7 @@ proxy.addJsonRpcServiceObserver(makeJsonRpcServiceObserver(store))
 proxy.addKeyringServiceObserver(makeKeyringServiceObserver(store))
 proxy.addTxServiceObserver(makeTxServiceObserver(store))
 proxy.addBraveWalletServiceObserver(makeBraveWalletServiceObserver(store))
+proxy.addBraveWalletServiceTokenObserver(makeBraveWalletServiceTokenObserver(store))
 proxy.addBraveWalletPinServiceObserver(makeBraveWalletPinServiceObserver(store))
 proxy.addBraveWalletAutoPinServiceObserver(makeBraveWalletAutoPinServiceObserver(store))
 
