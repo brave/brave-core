@@ -446,10 +446,7 @@ public class PortfolioFragment
     private void updatePendingTxNotification() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity)
-            if (hasPendingTx())
-                ((BraveWalletActivity) activity).setPendingTxNotificationVisibility(View.VISIBLE);
-            else
-                ((BraveWalletActivity) activity).setPendingTxNotificationVisibility(View.GONE);
+            ((BraveWalletActivity) activity).showPendingTxNotification(hasPendingTx());
     }
 
     private NetworkModel getNetworkModel() {

@@ -2550,8 +2550,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PORTFOLIO" desc="Brave crypto wallet section Portfolio">
       Portfolio
     </message>
-    <message name="IDS_MARKET" desc="Brave crypto wallet section Market">
-      Market
+    <message name="IDS_EXPLORE" desc="Brave crypto wallet section Explore">
+      Explore
     </message>
     <message name="IDS_INFORMATION" desc="Brave crypto wallet information label">
       INFORMATION
