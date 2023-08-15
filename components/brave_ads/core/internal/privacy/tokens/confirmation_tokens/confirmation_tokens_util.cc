@@ -28,12 +28,6 @@ absl::optional<ConfirmationTokenInfo> MaybeGetConfirmationToken() {
       .GetToken();
 }
 
-const ConfirmationTokenList& GetAllConfirmationTokens() {
-  return ConfirmationStateManager::GetInstance()
-      .GetConfirmationTokens()
-      .GetAllTokens();
-}
-
 void AddConfirmationTokens(const ConfirmationTokenList& confirmation_tokens) {
   ConfirmationStateManager::GetInstance().GetConfirmationTokens().AddTokens(
       confirmation_tokens);

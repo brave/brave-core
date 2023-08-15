@@ -13,8 +13,6 @@ namespace brave_ads::privacy {
 
 absl::optional<ConfirmationTokenInfo> MaybeGetConfirmationToken();
 
-const ConfirmationTokenList& GetAllConfirmationTokens();
-
 void AddConfirmationTokens(const ConfirmationTokenList& confirmation_tokens);
 
 bool RemoveConfirmationToken(const ConfirmationTokenInfo& confirmation_token);
