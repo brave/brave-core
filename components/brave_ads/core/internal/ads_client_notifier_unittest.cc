@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/ads_client_notifier.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/mock_ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/internal/ads_client_notifier_observer_mock.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -64,7 +64,7 @@ void Notify(const AdsClientNotifier& queued_notifier) {
   queued_notifier.NotifyDidSolveAdaptiveCaptcha();
 }
 
-void ExpectNotifierCalls(MockAdsClientNotifierObserver& observer,
+void ExpectNotifierCalls(AdsClientNotifierObserverMock& observer,
                          int expected_calls_count) {
   EXPECT_CALL(observer, OnNotifyDidInitializeAds()).Times(expected_calls_count);
   EXPECT_CALL(observer, OnNotifyLocaleDidChange(kLocale))
@@ -122,7 +122,7 @@ TEST(BraveAdsAdsClientNotifierTest, FireQueuedNotifications) {
   queued_notifier.set_should_queue_notifications_for_testing(
       /*should_queue_notifications*/ true);
 
-  StrictMock<MockAdsClientNotifierObserver> observer;
+  StrictMock<AdsClientNotifierObserverMock> observer;
   queued_notifier.AddObserver(&observer);
 
   // Act
@@ -151,7 +151,7 @@ TEST(BraveAdsAdsClientNotifierTest, FireQueuedNotifications) {
 
 TEST(BraveAdsAdsClientNotifierTest, NotificationsNotFiredIfWereQueued) {
   // Arrange
-  StrictMock<MockAdsClientNotifierObserver> observer;
+  StrictMock<AdsClientNotifierObserverMock> observer;
   ExpectNotifierCalls(observer, /*expected_calls_count*/ 0);
 
   // Act
@@ -170,7 +170,7 @@ TEST(BraveAdsAdsClientNotifierTest, NotificationsNotFiredIfWereQueued) {
 
 TEST(BraveAdsAdsClientNotifierTest, ShouldNotQueueNotifications) {
   // Arrange
-  StrictMock<MockAdsClientNotifierObserver> observer;
+  StrictMock<AdsClientNotifierObserverMock> observer;
   ExpectNotifierCalls(observer, /*expected_calls_count*/ 1);
 
   AdsClientNotifier queued_notifier;

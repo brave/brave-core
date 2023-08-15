@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_MOCK_ADS_CLIENT_NOTIFIER_OBSERVER_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_MOCK_ADS_CLIENT_NOTIFIER_OBSERVER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CLIENT_NOTIFIER_OBSERVER_MOCK_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CLIENT_NOTIFIER_OBSERVER_MOCK_H_
 
 #include <string>
 #include <vector>
@@ -14,10 +14,20 @@
 
 namespace brave_ads {
 
-class MockAdsClientNotifierObserver : public AdsClientNotifierObserver {
+class AdsClientNotifierObserverMock : public AdsClientNotifierObserver {
  public:
-  MockAdsClientNotifierObserver();
-  ~MockAdsClientNotifierObserver() override;
+  AdsClientNotifierObserverMock();
+
+  AdsClientNotifierObserverMock(const AdsClientNotifierObserverMock&) = delete;
+  AdsClientNotifierObserverMock& operator=(
+      const AdsClientNotifierObserverMock&) = delete;
+
+  AdsClientNotifierObserverMock(AdsClientNotifierObserverMock&&) noexcept =
+      delete;
+  AdsClientNotifierObserverMock& operator=(
+      AdsClientNotifierObserverMock&&) noexcept = delete;
+
+  ~AdsClientNotifierObserverMock() override;
 
   MOCK_METHOD0(OnNotifyDidInitializeAds, void());
   MOCK_METHOD1(OnNotifyLocaleDidChange, void(const std::string&));
@@ -47,4 +57,4 @@ class MockAdsClientNotifierObserver : public AdsClientNotifierObserver {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_MOCK_ADS_CLIENT_NOTIFIER_OBSERVER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CLIENT_NOTIFIER_OBSERVER_MOCK_H_
