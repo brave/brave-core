@@ -50,9 +50,15 @@ struct PlaylistItem {
   // When it's |cached|, |media_path| and |thumbnail_path| will be
   // local path.
   bool cached;
+  uint64 media_file_bytes;
 
   string author;
+
+  // This value is from base::TimeDeltaToValue. It's converting base::TimeDelta
+  // to microseconds.
+  // TODO(sko) We might be able to use base::Time mojo type directly.
   string duration;
+
   int32 last_played_position;
 
   // Playlists that contain this item. Could have multiple |Playlist| in case

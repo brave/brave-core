@@ -139,3 +139,7 @@ export const getBlockchainTokenInfo = async (
     token: null
   }
 }
+
+export const translateToNftGateway = async (url: string | undefined) => {
+  return url
+}

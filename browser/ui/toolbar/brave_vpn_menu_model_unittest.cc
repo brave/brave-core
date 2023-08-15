@@ -5,12 +5,17 @@
 
 #include "brave/browser/ui/toolbar/brave_vpn_menu_model.h"
 
+#include <memory>
+
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/test/base/scoped_testing_local_state.h"
+#include "chrome/test/base/testing_browser_process.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -24,24 +29,29 @@ class BraveVPNMenuModelUnitTest : public testing::Test {
   ~BraveVPNMenuModelUnitTest() override = default;
 
   PrefService* prefs() { return &prefs_; }
-  void SetUp() override { brave_vpn::RegisterProfilePrefs(prefs_.registry()); }
+
+  void SetUp() override {
+    local_state_ = std::make_unique<ScopedTestingLocalState>(
+        TestingBrowserProcess::GetGlobal());
+    brave_vpn::RegisterProfilePrefs(prefs_.registry());
+  }
+
+  TestingPrefServiceSimple* local_state() { return local_state_->Get(); }
 
  private:
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  std::unique_ptr<ScopedTestingLocalState> local_state_;
 };
 
 #if BUILDFLAG(IS_WIN)
 TEST_F(BraveVPNMenuModelUnitTest, TrayIconEnabled) {
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeature(
-      brave_vpn::features::kBraveVPNUseWireguardService);
+  local_state()->SetBoolean(brave_vpn::prefs::kBraveVPNWireguardEnabled, true);
 
   BraveVPNMenuModel menu_model(nullptr, prefs());
 
   // Cases with Enabled value.
   menu_model.SetTrayIconEnabledForTesting(true);
   prefs()->SetBoolean(brave_vpn::prefs::kBraveVPNShowButton, true);
-
   EXPECT_TRUE(menu_model.IsTrayIconEnabled());
   menu_model.Clear();
   EXPECT_EQ(menu_model.GetItemCount(), 0u);
@@ -55,9 +65,23 @@ TEST_F(BraveVPNMenuModelUnitTest, TrayIconEnabled) {
         menu_model.GetLabelAt(tray_index.value()),
         l10n_util::GetStringUTF16(IDS_BRAVE_VPN_HIDE_VPN_TRAY_ICON_MENU_ITEM));
   }
+
+  // Wireguard protocol disbled in the setting.
+  local_state()->SetBoolean(brave_vpn::prefs::kBraveVPNWireguardEnabled, false);
+  EXPECT_TRUE(menu_model.IsTrayIconEnabled());
+  menu_model.Clear();
+  EXPECT_EQ(menu_model.GetItemCount(), 0u);
+  menu_model.Build();
+  EXPECT_NE(menu_model.GetItemCount(), 0u);
+  {
+    EXPECT_FALSE(
+        menu_model.GetIndexOfCommandId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON));
+  }
+
   // Cases with Disabled value.
   menu_model.SetTrayIconEnabledForTesting(false);
   prefs()->SetBoolean(brave_vpn::prefs::kBraveVPNShowButton, false);
+  local_state()->SetBoolean(brave_vpn::prefs::kBraveVPNWireguardEnabled, true);
   EXPECT_FALSE(menu_model.IsTrayIconEnabled());
   menu_model.Clear();
   EXPECT_EQ(menu_model.GetItemCount(), 0u);
@@ -73,9 +97,7 @@ TEST_F(BraveVPNMenuModelUnitTest, TrayIconEnabled) {
   }
 }
 TEST_F(BraveVPNMenuModelUnitTest, TrayIconDisabled) {
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(
-      brave_vpn::features::kBraveVPNUseWireguardService);
+  local_state()->SetBoolean(brave_vpn::prefs::kBraveVPNWireguardEnabled, false);
 
   BraveVPNMenuModel menu_model(nullptr, prefs());
 

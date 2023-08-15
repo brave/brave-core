@@ -6,53 +6,35 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ZEBPAY_ZEBPAY_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ZEBPAY_ZEBPAY_H_
 
-#include <set>
 #include <string>
 
-#include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/endpoints/zebpay/get_balance/get_balance_zebpay.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
-#include "brave/components/brave_rewards/core/wallet_provider/zebpay/connect_zebpay_wallet.h"
-#include "brave/components/brave_rewards/core/wallet_provider/zebpay/get_zebpay_wallet.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/core/endpoints/zebpay/get_balance_zebpay.h"
+#include "brave/components/brave_rewards/core/wallet_provider/wallet_provider.h"
 
 namespace brave_rewards::internal {
 class RewardsEngineImpl;
 
 namespace zebpay {
 
-using FetchBalanceCallback = base::OnceCallback<void(mojom::Result, double)>;
-
-class ZebPay {
+class ZebPay final : public wallet_provider::WalletProvider {
  public:
   explicit ZebPay(RewardsEngineImpl& engine);
 
-  ~ZebPay();
+  const char* WalletType() const override;
 
-  void FetchBalance(FetchBalanceCallback callback);
+  void FetchBalance(
+      base::OnceCallback<void(mojom::Result, double)> callback) override;
 
-  void ConnectWallet(const base::flat_map<std::string, std::string>& args,
-                     ConnectExternalWalletCallback callback);
-
-  void GetWallet(GetExternalWalletCallback callback);
-
-  mojom::ExternalWalletPtr GetWallet();
-
-  mojom::ExternalWalletPtr GetWalletIf(
-      const std::set<mojom::WalletStatus>& statuses);
-
-  [[nodiscard]] bool SetWallet(mojom::ExternalWalletPtr wallet);
-
-  [[nodiscard]] bool LogOutWallet();
+  std::string GetFeeAddress() const override;
 
  private:
-  void OnFetchBalance(FetchBalanceCallback callback,
+  void OnFetchBalance(base::OnceCallback<void(mojom::Result, double)> callback,
                       endpoints::GetBalanceZebPay::Result&& result);
 
   const raw_ref<RewardsEngineImpl> engine_;
-  ConnectZebPayWallet connect_wallet_;
-  GetZebPayWallet get_wallet_;
 };
 
 }  // namespace zebpay

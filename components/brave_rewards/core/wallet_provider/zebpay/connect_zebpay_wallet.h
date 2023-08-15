@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_ZEBPAY_CONNECT_ZEBPAY_WALLET_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_ZEBPAY_CONNECT_ZEBPAY_WALLET_H_
 
-#include "brave/components/brave_rewards/core/endpoints/zebpay/post_oauth/post_oauth_zebpay.h"
+#include "brave/components/brave_rewards/core/endpoints/zebpay/post_oauth_zebpay.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 

@@ -11,6 +11,7 @@
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -1247,6 +1248,63 @@ void BraveWalletService::MigrateUserAssetsAddIsSpam(PrefService* prefs) {
     }
   }
   prefs->SetBoolean(kBraveWalletUserAssetsAddIsSpamMigrated, true);
+}
+
+bool ShouldMigrateRemovedPreloadedNetwork(PrefService* prefs,
+                                          mojom::CoinType coin,
+                                          const std::string& chain_id) {
+  if (CustomChainExists(prefs, chain_id, coin)) {
+    return false;
+  }
+
+  const auto& selected_networks =
+      prefs->GetDict(kBraveWalletSelectedNetworksPerOrigin);
+
+  const auto* coin_dict =
+      selected_networks.FindDict(GetPrefKeyForCoinType(coin));
+  if (!coin_dict) {
+    return false;
+  }
+
+  for (auto origin : *coin_dict) {
+    const auto* chain_id_each = origin.second.GetIfString();
+    if (!chain_id_each) {
+      continue;
+    }
+
+    if (base::ToLowerASCII(*chain_id_each) == chain_id) {
+      return true;
+    }
+  }
+
+  return GetCurrentChainId(prefs, coin, absl::nullopt) == chain_id;
+}
+
+void BraveWalletService::MigrateFantomMainnetAsCustomNetwork(
+    PrefService* prefs) {
+  if (prefs->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated)) {
+    return;
+  }
+
+  if (ShouldMigrateRemovedPreloadedNetwork(prefs, mojom::CoinType::ETH,
+                                           mojom::kFantomMainnetChainId)) {
+    AddCustomNetwork(
+        prefs, {mojom::kFantomMainnetChainId,
+                "Fantom Opera",
+                {"https://ftmscan.com"},
+                {},
+                0,
+                {GURL("https://rpc.ftm.tools")},
+                "FTM",
+                "Fantom",
+                18,
+                mojom::CoinType::ETH,
+                GetSupportedKeyringsForNetwork(mojom::CoinType::ETH,
+                                               mojom::kFantomMainnetChainId),
+                true});
+  }
+
+  prefs->SetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated, true);
 }
 
 // static

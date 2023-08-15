@@ -41,8 +41,10 @@ class BraveWebUIBubbleManagerT : public WebUIBubbleManagerT<T>,
         browser_(browser) {}
 
   base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
-      const absl::optional<gfx::Rect>& anchor) override {
-    auto bubble_view = WebUIBubbleManagerT<T>::CreateWebUIBubbleDialog(anchor);
+      const absl::optional<gfx::Rect>& anchor,
+      views::BubbleBorder::Arrow arrow) override {
+    auto bubble_view =
+        WebUIBubbleManagerT<T>::CreateWebUIBubbleDialog(anchor, arrow);
     bubble_view_ = bubble_view.get();
     brave_observer_ =
         WalletBubbleFocusObserver::CreateForView(bubble_view_, browser_);

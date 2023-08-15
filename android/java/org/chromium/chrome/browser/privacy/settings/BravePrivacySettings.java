@@ -101,6 +101,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_SOCIAL_BLOCKING_LINKEDIN = "social_blocking_linkedin";
     private static final String PREF_WEBRTC_POLICY = "webrtc_policy";
     private static final String PREF_UNSTOPPABLE_DOMAINS = "unstoppable_domains";
+    private static final String PREF_CONTENT_FILTERING = "content_filtering";
     private static final String PREF_ENS = "ens";
     private static final String PREF_SNS = "sns";
     private static final String PREF_REQUEST_OTR = "request_otr";
@@ -119,7 +120,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             PREF_SHIELDS_SUMMARY, PREF_BLOCK_TRACKERS_ADS, PREF_DE_AMP, PREF_DEBOUNCE,
             PREF_HTTPS_UPGRADE, PREF_HTTPSE, PREF_HTTPS_FIRST_MODE, PREF_BLOCK_SCRIPTS,
             PREF_BLOCK_CROSS_SITE_COOKIES, PREF_FINGERPRINTING_PROTECTION,
-            PREF_FINGERPRINT_LANGUAGE, PREF_FORGET_FIRST_PARTY_STORAGE,
+            PREF_FINGERPRINT_LANGUAGE, PREF_CONTENT_FILTERING, PREF_FORGET_FIRST_PARTY_STORAGE,
             PREF_CLEAR_DATA_SECTION, //  clear data automatically  section
             PREF_CLEAR_ON_EXIT, PREF_CLEAR_BROWSING_DATA,
             PREF_BRAVE_SOCIAL_BLOCKING_SECTION, // social blocking section
@@ -386,14 +387,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     return false;
                 });
             }
-        }
-
-        if (mCookieListOptInPageAndroidHandler != null) {
-            mCookieListOptInPageAndroidHandler.shouldShowDialog(shouldShowDialog -> {
-                if (!shouldShowDialog) {
-                    removePreferenceIfPresent(PREF_BLOCK_COOKIE_CONSENT_NOTICES);
-                }
-            });
         }
 
         updateBravePreferences();

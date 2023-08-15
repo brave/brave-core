@@ -20,15 +20,20 @@ HRESULT HRESULTFromLastError() {
 }
 
 bool IsWindowsServiceRunning(const std::wstring& service_name) {
-  return GetWindowsServiceStatus(service_name) == SERVICE_RUNNING;
+  auto status = GetWindowsServiceStatus(service_name);
+  if (!status.has_value()) {
+    return false;
+  }
+  return status.value() == SERVICE_RUNNING;
 }
 
-DWORD GetWindowsServiceStatus(const std::wstring& service_name) {
+absl::optional<DWORD> GetWindowsServiceStatus(
+    const std::wstring& service_name) {
   ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT));
   if (!scm.IsValid()) {
     VLOG(1) << "::OpenSCManager failed. service_name: " << service_name
             << ", error: " << std::hex << HRESULTFromLastError();
-    return false;
+    return absl::nullopt;
   }
   ScopedScHandle service(
       ::OpenService(scm.Get(), service_name.c_str(), SERVICE_QUERY_STATUS));
@@ -36,11 +41,11 @@ DWORD GetWindowsServiceStatus(const std::wstring& service_name) {
   // Service registered and has not exceeded the number of auto-configured
   // restarts.
   if (!service.IsValid()) {
-    return false;
+    return absl::nullopt;
   }
   SERVICE_STATUS service_status = {0};
   if (!::QueryServiceStatus(service.Get(), &service_status)) {
-    return false;
+    return absl::nullopt;
   }
   return service_status.dwCurrentState;
 }

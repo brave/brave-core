@@ -6,7 +6,10 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
-import { WalletButton } from '../../shared/style'
+import {
+  WalletButton,
+  Row
+} from '../../shared/style'
 
 export const Button = styled(WalletButton)`
   display: flex;
@@ -21,4 +24,8 @@ export const Button = styled(WalletButton)`
 export const ButtonIcon = styled(Icon)`
   --leo-icon-size: 24px;
   color: ${leo.color.icon.default};
+`
+
+export const LeftRightContainer = styled(Row)`
+  min-width: 25%;
 `

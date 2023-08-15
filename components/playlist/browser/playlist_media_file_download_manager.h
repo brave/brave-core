@@ -38,17 +38,18 @@ class PlaylistMediaFileDownloadManager
 
     mojom::PlaylistItemPtr item;
 
-    base::RepeatingCallback<void(const mojom::PlaylistItemPtr& /*item*/,
-                                 int64_t /*total_bytes*/,
-                                 int64_t /*received_bytes*/,
-                                 int /*percent_complete*/,
-                                 base::TimeDelta /*time_remaining*/)>
+    base::RepeatingCallback<void(const mojom::PlaylistItemPtr& item,
+                                 int64_t total_bytes,
+                                 int64_t received_bytes,
+                                 int percent_complete,
+                                 base::TimeDelta time_remaining)>
         on_progress_callback;
 
     // If the manage fails to download file, the |media_file_path| will be
     // empty.
-    base::OnceCallback<void(mojom::PlaylistItemPtr /*item*/,
-                            const std::string& /*media_file_path*/)>
+    base::OnceCallback<void(mojom::PlaylistItemPtr item,
+                            const std::string& media_file_path,
+                            int64_t received_bytes)>
         on_finish_callback;
   };
 
@@ -88,7 +89,8 @@ class PlaylistMediaFileDownloadManager
                                      int percent_complete,
                                      base::TimeDelta time_remaining) override;
   void OnMediaFileReady(const std::string& id,
-                        const std::string& media_file_path) override;
+                        const std::string& media_file_path,
+                        int64_t received_bytes) override;
   void OnMediaFileGenerationFailed(const std::string& id) override;
   base::SequencedTaskRunner* GetTaskRunner() override;
 

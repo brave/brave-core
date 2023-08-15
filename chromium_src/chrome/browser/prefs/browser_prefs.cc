@@ -11,6 +11,7 @@
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/constants/pref_names.h"
@@ -35,6 +36,10 @@
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #endif
 
 #if !BUILDFLAG(ENABLE_EXTENSIONS)
@@ -172,6 +177,11 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
 #endif
 
   decentralized_dns::MigrateObsoleteLocalStatePrefs(local_state);
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
+  // Migrating the feature flag here because dependencies relying on its value.
+  brave_vpn::MigrateWireguardFeatureFlag(local_state);
+#endif
 
 #if !BUILDFLAG(IS_ANDROID)
   // Added 10/2022

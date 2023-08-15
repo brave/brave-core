@@ -19,7 +19,6 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
@@ -40,6 +39,7 @@
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
@@ -262,9 +262,9 @@ void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL, true);
   UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON, true);
 #if BUILDFLAG(IS_WIN)
-  UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON,
-                       base::FeatureList::IsEnabled(
-                           brave_vpn::features::kBraveVPNUseWireguardService));
+  UpdateCommandEnabled(
+      IDC_TOGGLE_BRAVE_VPN_TRAY_ICON,
+      brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state()));
 #endif
   UpdateCommandEnabled(IDC_SEND_BRAVE_VPN_FEEDBACK, true);
   UpdateCommandEnabled(IDC_ABOUT_BRAVE_VPN, true);

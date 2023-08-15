@@ -8,7 +8,7 @@
 #include <string>
 #include <utility>
 
-#include "brave/components/brave_rewards/core/endpoints/post_connect/zebpay/post_connect_zebpay.h"
+#include "brave/components/brave_rewards/core/endpoints/brave/post_connect_zebpay.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"

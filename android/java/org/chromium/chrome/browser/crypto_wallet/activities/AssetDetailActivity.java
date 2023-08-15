@@ -49,7 +49,6 @@ import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.app.domain.BuyModel;
 import org.chromium.chrome.browser.app.domain.MarketModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.app.helpers.ImageLoader;
@@ -548,8 +547,8 @@ public class AssetDetailActivity
         }
         if (JavaUtils.anyNull(mWalletModel, mAssetNetwork)) return;
 
-        mWalletModel.getCryptoModel().getBuyModel().isBuySupported(mAssetNetwork, mAssetSymbol,
-                mContractAddress, mChainId, BuyModel.SUPPORTED_RAMP_PROVIDERS, isBuyEnabled -> {
+        TokenUtils.isBuySupported(mWalletModel.getBlockchainRegistry(), mAssetNetwork, mAssetSymbol,
+                mContractAddress, mChainId, isBuyEnabled -> {
                     if (isBuyEnabled) {
                         AndroidUtils.show(mBtnBuy);
                     } else {

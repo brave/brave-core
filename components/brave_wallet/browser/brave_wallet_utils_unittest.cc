@@ -847,7 +847,8 @@ TEST(BraveWalletUtilsUnitTest, GetKnownChain) {
   const base::flat_set<std::string> non_eip1559_networks = {
       brave_wallet::mojom::kLocalhostChainId,
       brave_wallet::mojom::kBinanceSmartChainMainnetChainId,
-      brave_wallet::mojom::kAuroraMainnetChainId};
+      brave_wallet::mojom::kAuroraMainnetChainId,
+      brave_wallet::mojom::kNeonEVMMainnetChainId};
 
   auto known_chains = GetAllKnownChains(&prefs, mojom::CoinType::ETH);
   ASSERT_FALSE(known_chains.empty());
@@ -951,11 +952,10 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
 TEST(BraveWalletUtilsUnitTest, GetAllKnownEthNetworkIds) {
   const std::vector<std::string> expected_network_ids(
       {"mainnet", mojom::kAuroraMainnetChainId, mojom::kPolygonMainnetChainId,
-       mojom::kBinanceSmartChainMainnetChainId, mojom::kAvalancheMainnetChainId,
-       mojom::kFantomMainnetChainId, mojom::kOptimismMainnetChainId, "goerli",
-       "sepolia", "http://localhost:7545/",
-       mojom::kFilecoinEthereumMainnetChainId,
-       mojom::kFilecoinEthereumTestnetChainId});
+       mojom::kBinanceSmartChainMainnetChainId, mojom::kOptimismMainnetChainId,
+       mojom::kAvalancheMainnetChainId, mojom::kFilecoinEthereumMainnetChainId,
+       mojom::kNeonEVMMainnetChainId, "goerli", "sepolia",
+       mojom::kFilecoinEthereumTestnetChainId, "http://localhost:7545/"});
   ASSERT_EQ(GetAllKnownChains(nullptr, mojom::CoinType::ETH).size(),
             expected_network_ids.size());
   EXPECT_EQ(GetAllKnownEthNetworkIds(), expected_network_ids);

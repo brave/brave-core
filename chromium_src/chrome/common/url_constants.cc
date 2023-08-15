@@ -246,7 +246,7 @@ const char kChromeEnterpriseSignInLearnMoreURL[] =
 
 const char kMacOsObsoleteURL[] =
     "https://support.brave.com/hc/en-us/articles/"
-    "360025390311-How-do-I-download-and-install-Brave-";
+    "18347246446733-Changes-to-macOS-desktop-browser-requirements";
 #endif
 
 #if BUILDFLAG(IS_WIN)

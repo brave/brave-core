@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/core/common/random_util.h"
-#include "brave/components/brave_rewards/core/endpoints/post_connect/uphold/post_connect_uphold.h"
+#include "brave/components/brave_rewards/core/endpoints/brave/post_connect_uphold.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
@@ -27,7 +27,7 @@ using wallet_provider::ConnectExternalWallet;
 namespace uphold {
 
 ConnectUpholdWallet::ConnectUpholdWallet(RewardsEngineImpl& engine)
-    : ConnectExternalWallet(engine) {
+    : ConnectExternalWallet(engine), card_(engine), server_(engine) {
   // TODO(https://github.com/brave/brave-browser/issues/31698)
   eligibility_checker_.Start(FROM_HERE, base::Minutes(1), this,
                              &ConnectUpholdWallet::CheckEligibility);
@@ -64,7 +64,7 @@ void ConnectUpholdWallet::OnAuthorize(ConnectExternalWalletCallback callback,
 
   const std::string access_token = std::move(result.value());
 
-  engine_->uphold()->GetUser(
+  server_.get_me().Request(
       access_token,
       // NOLINTNEXTLINE
       base::BindOnce(
@@ -112,7 +112,7 @@ void ConnectUpholdWallet::OnGetUser(ConnectExternalWalletCallback callback,
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
   }
 
-  engine_->uphold()->GetCapabilities(
+  server_.get_capabilities().Request(
       access_token,
       base::BindOnce(
           // NOLINTNEXTLINE
@@ -159,7 +159,7 @@ void ConnectUpholdWallet::OnGetCapabilities(
         mojom::ConnectExternalWalletError::kUpholdInsufficientCapabilities));
   }
 
-  engine_->uphold()->CreateCard(
+  card_.CreateBATCardIfNecessary(
       access_token,
       base::BindOnce(&ConnectUpholdWallet::OnCreateCard, base::Unretained(this),
                      std::move(callback), access_token, country_id));
@@ -212,7 +212,7 @@ void ConnectUpholdWallet::CheckEligibility() {
     return;
   }
 
-  engine_->uphold()->GetUser(
+  server_.get_me().Request(
       // NOLINTNEXTLINE
       wallet->token, base::BindOnce(static_cast<void (ConnectUpholdWallet::*)(
                                         mojom::Result, const User&) const>(
@@ -254,7 +254,7 @@ void ConnectUpholdWallet::OnGetUser(mojom::Result result,
     return;
   }
 
-  engine_->uphold()->GetCapabilities(
+  server_.get_capabilities().Request(
       wallet->token,
       base::BindOnce(
           // NOLINTNEXTLINE

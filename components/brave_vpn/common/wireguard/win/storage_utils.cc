@@ -20,6 +20,7 @@ constexpr wchar_t kBraveVpnWireguardServiceRegistryStoragePath[] =
     L"Software\\BraveSoftware\\Vpn\\";
 constexpr wchar_t kBraveWireguardConfigKeyName[] = L"ConfigPath";
 constexpr wchar_t kBraveWireguardEnableTrayIconKeyName[] = L"EnableTrayIcon";
+constexpr wchar_t kBraveWireguardActiveKeyName[] = L"WireGuardActive";
 constexpr uint16_t kBraveVpnWireguardMaxFailedAttempts = 3;
 }  // namespace
 
@@ -88,6 +89,35 @@ absl::optional<base::FilePath> GetLastUsedConfigPath() {
     return absl::nullopt;
   }
   return base::FilePath(value);
+}
+
+void SetWireguardActive(bool value) {
+  base::win::RegKey storage;
+  if (storage.Create(HKEY_CURRENT_USER,
+                     GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
+                     KEY_SET_VALUE) != ERROR_SUCCESS) {
+    return;
+  }
+
+  if (storage.WriteValue(kBraveWireguardActiveKeyName, DWORD(value)) !=
+      ERROR_SUCCESS) {
+    VLOG(1) << "False to write registry value";
+  }
+}
+
+bool IsWireguardActive() {
+  base::win::RegKey storage;
+  if (storage.Open(HKEY_CURRENT_USER,
+                   GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
+                   KEY_QUERY_VALUE) != ERROR_SUCCESS) {
+    return true;
+  }
+  DWORD value = 1;
+  if (storage.ReadValueDW(kBraveWireguardActiveKeyName, &value) !=
+      ERROR_SUCCESS) {
+    return true;
+  }
+  return value == 1;
 }
 
 }  // namespace wireguard

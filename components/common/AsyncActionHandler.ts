@@ -5,7 +5,7 @@
 
 import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from 'redux'
 
-type Handler<T> = (store: MiddlewareAPI, payload: T) => void
+type Handler<T> = (store: MiddlewareAPI, payload: T) => unknown
 type Handlers = Map<string, Array<Handler<unknown>>>
 
 /**

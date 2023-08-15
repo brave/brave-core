@@ -5,6 +5,7 @@
 
 import { BraveWallet, WalletRoutes, TokenStandards } from '../constants/types'
 import { getLocale } from '../../common/locale'
+import { loadTimeData } from '../../common/loadTimeData'
 
 export const stripERC20TokenImageURL = (url?: string) =>
   url?.replace('chrome://erc-token-images/', '')
@@ -114,12 +115,17 @@ export const getNFTTokenStandard = (token: BraveWallet.BlockchainToken) => {
 
 /**
  * Checks if the component is displayed in a local storybook env
- * Uses hostname for the check
+ * Uses loadTimeData for the check,
+ * since it is not defined the same in storybook as it is in production
  * There maybe a better way to do this
- * @returns true if the hostname is local
+ * @returns true if loadTimeData returns either a placeholder or an empty value
  */
-export const isComponentInStorybook = (hostname: string = window.location.hostname) => {
-  return ['localhost', '127.0.0.1'].includes(window.location.hostname)
+export const isComponentInStorybook = () => {
+  const nftDisplayOrigin =
+    loadTimeData.getString('braveWalletNftBridgeUrl') || ''
+  return (
+    nftDisplayOrigin === 'braveWalletNftBridgeUrl' || nftDisplayOrigin === ''
+  )
 }
 
 

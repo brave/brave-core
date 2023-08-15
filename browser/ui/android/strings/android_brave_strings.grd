@@ -503,6 +503,51 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_UNSTOPPABLE_DOMAINS_TITLE" desc="Title for Unstoppable Domains settings.">
         Unstoppable Domains
       </message>
+      <message name="IDS_CONTENT_FILTERING_TITLE" desc="Title for Content Filtering settings.">
+        Content Filtering
+      </message>
+      <message name="IDS_CONTENT_FILTERING_SUMMARY" desc="Summary for Content Filtering settings.">
+        Enable custom filters that block regional and language-specific trackers and Annoyances
+      </message>
+      <message name="IDS_FILTER_LISTS_TITLE" desc="Title for Filter Lists settings.">
+        Filter Lists
+      </message>
+      <message name="IDS_CUSTOM_FILTER_LISTS" desc="Title for Custom filter lists.">
+        Custom filter lists
+      </message>
+      <message name="IDS_CUSTOM_FILTER_LIST_TITLE" desc="Title for Add Custom filter lists.">
+        Custom filter list
+      </message>
+      <message name="IDS_ADD_CUSTOM_FILTER_LIST" desc="Add custom filter list text.">
+        Add custom filter list
+      </message>
+      <message name="IDS_CUSTOM_FILTER_LIST_URL" desc="Custom filter list url edittext title.">
+        Custom Filter List URL
+      </message>
+      <message name="IDS_ENTER_FILTER_LIST_URL_HERE" desc="Enter filter list url here edittext hint.">
+        Enter filter list URL here
+      </message>
+      <message name="IDS_CUSTOM_FILTER_INVALID_URL" desc="Invalid url error text for custom filter.">
+        Invalid URL
+      </message>
+      <message name="IDS_EDIT_CUSTOM_FILTER_LIST" desc="Edit custom filter list text for menu item.">
+        Edit Custom filter list
+      </message>
+      <message name="IDS_ADD_CUSTOM_FILTER_SUMMARY" desc="Add custom filter summary.">
+        Add additional lists created and maintained by your trusted community.\n\nOnly subscribe to lists from entities you trust. Your browser will periodically check for list updates from the URL you enter, revealing your IP address to their server.
+      </message>
+      <message name="IDS_LAST_UPDATED_CUSTOM_FILTER" desc="Last updated time for custom filter.">
+        Last updated <ph name="TIME">%1$s<ex>1 hours ago</ex></ph>
+      </message>
+      <message name="IDS_DASHED" desc="Dashed when custom filter item last update time is zero." translateable="false">
+        -
+      </message>
+      <message name="IDS_DOWNLOAD_FAILED_CUSTOM_FILTER" desc="Custom filter Download failed.">
+        Download failed
+      </message>
+      <message name="IDS_UPDATE_FAILED_CUSTOM_FILTER" desc="Custom filter Update failed.">
+        <ph name="TIME">%1$s<ex>1 hours ago</ex></ph> Update failed
+      </message>
       <message name="IDS_ASSET_PRICE" desc="Text for asset price.">
         <ph name="ASSET_NAME">%1$s<ex>Ethereum</ex></ph> Price (<ph name="ASSET_SYMBOL">%2$s<ex>ETH</ex></ph>)
       </message>
@@ -2155,9 +2200,6 @@ Are you sure you want to do this?
     <message name="IDS_SEARCH_TOKENS" desc="Brave wallet search tokens control hint">
       Search tokens
     </message>
-    <message name="IDS_WALLET_BUY_MAINNET_BUTTON_TEXT" desc="Buy button on main net text">
-      Select Purchase Method
-    </message>
     <message name="IDS_BRAVE_UI_BRAVE_WALLET" desc="Title for Brave Wallet Settings. [CHAR-LIMIT=27]">
       Brave Wallet
     </message>
@@ -2205,30 +2247,6 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_BRAVE_WALLET_RESET_SETTINGS_CONFIRMATION_PHRASE" desc="The phrase users should type to reset Brave Wallet">
       Yes
-    </message>
-    <message name="IDS_BRAVE_WALLET_SELECT_FOLLOWING_OPTIONS" desc="Brave Wallet text for selecting available options">
-      Select one of the following options
-    </message>
-    <message name="IDS_BRAVE_WALLET_BUY_CRYPTO_VISA_MASTERCARD" desc="Brave Wallet text buying cryptocurrencies with Visa or Mastercard">
-      Buy crypto with Visa or Mastercard.
-    </message>
-    <message name="IDS_BRAVE_WALLET_INSTANT_BUY" desc="Brave Wallet text buying cryptocurrencies instantly with lower fees">
-      Instant buy with your bank account. Lower fees.
-    </message>
-    <message name="IDS_BRAVE_WALLET_RAMP_NETWORK_TITLE" desc="Brave Wallet title for Ramp.Network" translateable="false">
-      Ramp.Network
-    </message>
-    <message name="IDS_BRAVE_WALLET_RAMP_NETWORK_SHORT" desc="Brave Wallet title for Ramp.Network short version" translateable="false">
-      Ramp
-    </message>
-    <message name="IDS_BRAVE_WALLET_SARDINE_TITLE" desc="Brave Wallet title for Sardine" translateable="false">
-      Sardine
-    </message>
-    <message name="IDS_BRAVE_WALLET_TRANSAK_TITLE" desc="Brave Wallet title for Transak" translateable="false">
-      Transak
-    </message>
-    <message name="IDS_BRAVE_WALLET_BUY_WITH_RAMP_PROVIDER" desc="Brave Wallet text for ramp provider button">
-      Buy with <ph name="RAMP_PROVIDER">%1$s</ph>
     </message>
     <message name="IDS_BRAVE_WALLET_CLEAR_TX_AND_NONCE_SETTING_TITLE" desc="The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0">
       Clear transaction &amp; nonce info
@@ -2303,7 +2321,7 @@ Are you sure you want to do this?
       Supports speeds of up to 100 Mbps
     </message>
     <message name="IDS_USE_WIREGUARD" desc="Brave VPN plan text">
-      Uses Wireguard secure encrypted VPN tunnel
+      Uses WireGuard secure encrypted VPN tunnel
     </message>
     <message name="IDS_NEVER_SHARE_INFO" desc="Brave VPN plan text">
       We never share or sell your info
@@ -3277,13 +3295,16 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Enter your Brave Wallet password
     </message>
     <message name="IDS_BLOCK_COOKIE_NOTICES_ACTION_TEXT" desc="Block cookie consent notices action text">
-      Block cookie notices
+      Got it
+    </message>
+    <message name="IDS_STOP_BLOCKING" desc="Block cookie consent notices action text">
+      Stop blocking
     </message>
     <message name="IDS_BLOCK_COOKIE_NOTICES_TITLE" desc="Block cookie consent notices title">
-      Tired of cookie consent notices?
+      Brave is blocking cookie consent notices.
     </message>
     <message name="IDS_BLOCK_COOKIE_NOTICES_TEXT" desc="Block cookie consent notices text">
-      Brave already blocks third-party cookies. We can block cookie consent notices, too.
+      Brave already blocks harmful cookies. Now, we automatically block those annoying cookie consent notices, too.
     </message>
     <message name="IDS_BRAVE_WALLET_SIGN_WARNING" desc="Sign panel warning message">
       Note that Brave can't verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you're sure you want to take this action, and trust the requesting site.

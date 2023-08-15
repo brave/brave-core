@@ -9,13 +9,17 @@
 
 #include <string>
 #include "base/feature_list.h"
+#include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/filter_list.mojom-forward.h"
 #include "brave/components/brave_shields/common/filter_list.mojom-shared.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "ui/base/l10n/time_format.h"
 
 namespace brave_shields {
 
@@ -48,6 +52,57 @@ void FilterListService::EnableFilter(const std::string& filterListUuid,
                                      bool shouldEnableFilter) {
   ad_block_service_->regional_service_manager()->EnableFilterList(
       filterListUuid, shouldEnableFilter);
+}
+
+void FilterListService::GetSubscriptions(GetSubscriptionsCallback callback) {
+  std::vector<mojom::SubscriptionInfoPtr> items;
+  std::vector<SubscriptionInfo> subscriptions_ =
+      ad_block_service_->subscription_service_manager()->GetSubscriptions();
+  base::Time now = base::Time::Now();
+  for (const auto& subscription : subscriptions_) {
+    auto info = mojom::SubscriptionInfo::New();
+    info->enabled = subscription.enabled;
+    if (subscription.title) {
+      info->title = subscription.title.value();
+    }
+
+    base::TimeDelta relative_time_delta =
+        now - subscription.last_successful_update_attempt;
+    if (relative_time_delta < base::TimeDelta()) {
+      relative_time_delta = base::TimeDelta();
+    }
+
+    const auto time_str = ui::TimeFormat::Simple(
+        ui::TimeFormat::Format::FORMAT_ELAPSED,
+        ui::TimeFormat::Length::LENGTH_LONG, relative_time_delta);
+
+    if (subscription.homepage) {
+      info->homepage = subscription.homepage.value();
+    }
+    info->subscription_url = subscription.subscription_url;
+    info->last_update_attempt = subscription.last_update_attempt;
+    info->last_successful_update_attempt =
+        subscription.last_successful_update_attempt;
+    info->last_updated_pretty_text = base::UTF16ToUTF8(time_str);
+    info->expires = subscription.expires;
+    items.push_back(std::move(info));
+  }
+  std::move(callback).Run(std::move(items));
+}
+
+void FilterListService::CreateSubscription(const GURL& subscription_url) {
+  ad_block_service_->subscription_service_manager()->CreateSubscription(
+      subscription_url);
+}
+
+void FilterListService::EnableSubscription(const GURL& sub_url, bool enabled) {
+  ad_block_service_->subscription_service_manager()->EnableSubscription(
+      sub_url, enabled);
+}
+
+void FilterListService::DeleteSubscription(const GURL& sub_url) {
+  ad_block_service_->subscription_service_manager()->DeleteSubscription(
+      sub_url);
 }
 
 }  // namespace brave_shields

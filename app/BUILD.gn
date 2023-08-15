@@ -94,7 +94,7 @@ source_set("browser_tests") {
       "//chrome/app:command_ids",
       "//chrome/browser",
       "//chrome/browser/companion/core",
-      "//chrome/browser/companion/visual_search/",
+      "//chrome/browser/companion/visual_search:flags",
       "//chrome/browser/enterprise/connectors/analysis:features",
       "//chrome/browser/promos:utils",
       "//chrome/browser/ui",

@@ -1039,6 +1039,7 @@ const string kCeloMainnetChainId = "0xa4ec";
 const string kOptimismMainnetChainId = "0xa";
 const string kAuroraMainnetChainId = "0x4e454152";
 const string kArbitrumMainnetChainId = "0xa4b1";
+const string kNeonEVMMainnetChainId = "0xe9ac0d6";
 const string kFilecoinEthereumMainnetChainId = "0x13a";  // Filecoin eth mainnet
 const string kFilecoinEthereumTestnetChainId = "0x4cb2f";  // Filecoin eth calibration
 const string kSolanaMainnet = "0x65";
@@ -1054,6 +1055,7 @@ const string kGodwokenChainId = "0x116ea";
 const string kPalmChainId = "0x2a15c308d";
 const string kPolygonZKEVMChainId = "0x44d";
 const string kZkSyncEraChainId = "0x144";
+const string kBaseMainnetChainId = "0x2105";
 
 // https://github.com/satoshilabs/slips/blob/master/slip-0044.md
 enum CoinType {
@@ -2116,6 +2118,7 @@ struct BlowfishERC1155TransferData {
   BlowfishEVMAmount amount;
   BlowfishEVMContract contract;
   BlowfishEVMMetadata metadata;
+  string name;
   string? token_id;
   BlowfishPrice? asset_price;
 };

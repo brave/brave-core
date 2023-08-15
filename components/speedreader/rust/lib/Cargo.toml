@@ -18,7 +18,6 @@ include = [
 ]
 
 [dependencies]
-flate2 = { version = "1.0.25", features = ["rust_backend"], default-features = false }
 html5ever = "0.25.1"
 kuchiki = "0.8.1"
 lol_html = "0.3.0"

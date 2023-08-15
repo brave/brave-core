@@ -750,7 +750,7 @@ export interface CreateAccountOptionsType {
   icon: string
 }
 
-export interface NFTAtrribute {
+export interface NFTAttribute {
   traitType: string
   value: string,
   traitRarity?: string
@@ -776,7 +776,7 @@ export interface NFTMetadataReturnType {
     facebook: string
     logo: string
   },
-  attributes?: NFTAtrribute[]
+  attributes?: NFTAttribute[]
 }
 
 export interface TransactionProviderError {
@@ -1005,7 +1005,8 @@ export enum TokenStandards {
 }
 
 export type ERC721Metadata = {
-  image?: string
+  image?: string,
+  image_url?: string
 }
 
 export type AddressMessageInfo = {

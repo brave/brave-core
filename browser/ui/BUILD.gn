@@ -366,6 +366,8 @@ source_set("ui") {
           "views/brave_vpn/brave_vpn_fallback_dialog_view.h",
           "webui/settings/brave_settings_secure_dns_handler.cc",
           "webui/settings/brave_settings_secure_dns_handler.h",
+          "webui/settings/brave_vpn/brave_vpn_handler.cc",
+          "webui/settings/brave_vpn/brave_vpn_handler.h",
         ]
       }
     }
@@ -425,8 +427,8 @@ source_set("ui") {
     ]
   }
 
-  # brave's obsolete infobar is only used on Windows now.
-  if (is_win) {
+  # brave's obsolete infobar is only used on Windows and Mac now.
+  if (is_win || is_mac) {
     sources += [
       "startup/brave_obsolete_system_infobar_delegate.cc",
       "startup/brave_obsolete_system_infobar_delegate.h",
@@ -574,6 +576,7 @@ source_set("ui") {
     ]
     if (is_win) {
       deps += [
+        "//brave/components/brave_vpn/common/win",
         "//brave/components/brave_vpn/common/wireguard",
         "//brave/components/brave_vpn/common/wireguard/win",
       ]
@@ -935,6 +938,8 @@ source_set("ui") {
       "views/wallet_bubble_focus_observer.h",
       "wallet_bubble_manager_delegate_impl.cc",
       "wallet_bubble_manager_delegate_impl.h",
+      "webui/brave_news_internals/brave_news_internals_ui.cc",
+      "webui/brave_news_internals/brave_news_internals_ui.h",
       "webui/brave_wallet/ledger/ledger_ui.cc",
       "webui/brave_wallet/ledger/ledger_ui.h",
       "webui/brave_wallet/market/market_ui.cc",
@@ -958,6 +963,8 @@ source_set("ui") {
       "//brave/browser/ui/brave_wallet",
       "//brave/browser/ui/webui/brave_wallet/common_handler",
       "//brave/browser/ui/webui/brave_wallet/panel_handler",
+      "//brave/components/brave_news/browser",
+      "//brave/components/brave_news/browser/resources:generated_resources",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/brave_wallet_ui:resources",

@@ -629,14 +629,23 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           No thanks
         </message>
         <!-- obsolete system InfoBar -->
-        <if expr="is_win">
+        <if expr="is_win or is_macosx">
           <message name="IDS_OBSOLETE_SYSTEM_INFOBAR_DONT_SHOW_BUTTON" desc="The text for don't show again button">
             Don't show again
           </message>
+        </if>
+        <if expr="is_win">
           <message name="IDS_OBSOLETE_SYSTEM_CONFIRM_DIALOG_CONTENT" desc="The text for obsolete system confirm dialog">
             By clicking OK, you acknowledge that your installation of Brave will NOT receive critical security fixes until you update to Windows 10 or later. This warning will NOT show again.
           </message>
         </if>
+        <if expr="is_macosx">
+          <message name="IDS_OBSOLETE_SYSTEM_CONFIRM_DIALOG_CONTENT" desc="The text for obsolete system confirm dialog">
+            By clicking OK, you acknowledge that your installation of Brave will NOT receive critical security fixes until you update to macOS 10.15 or later. This warning will NOT show again.
+          </message>
+        </if>
+
+        <!-- Download bubble -->
         <message name="IDS_DOWNLOAD_BUBBLE_ITEM_CTX_MENU_REMOVE_ITEM" desc="Text for the download bubble context menu item for removing item from the list">
           Remove from list
         </message>
@@ -963,6 +972,18 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
 
       <!-- Brave VPN -->
       <if expr="enable_brave_vpn">
+        <message name="IDS_SETTINGS_VPN_PAGE_TITLE" desc="Title of the vpn settings page">
+          Brave VPN
+        </message>
+        <message name="IDS_SETTINGS_VPN_PAGE_USE_WIREGUARD_TITLE" desc="Title of the WireGuard option on the vpn settings page">
+          Use WireGuard protocol in Brave VPN
+        </message>
+        <message name="IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_CONNECTED" desc="Title of the WireGuard sub label on the vpn settings page when brave vpn connected">
+          This setting cannot be changed while Brave VPN is connected.
+        </message>
+        <message name="IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_DISCONNECTED" desc="Title of the WireGuard sub label on the vpn settings page when brave vpn connected">
+          Requires browser restart.
+        </message>        
         <message name="IDS_SETTINGS_SHOW_VPN_BUTTON" desc="The label for showing vpn button in the toolbar">
           Show VPN button
         </message>
@@ -1211,6 +1232,27 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_PLAYLIST_NEW_PLAYLIST_DIALOG_OK" desc="A label for 'OK' button for a dialog to create a new playlist">
           Create
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_EDIT" desc="Context menu item on Playlist to enter editing mode">
+          Edit
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_SHARE" desc="Context menu item on Playlist to share it">
+          Share
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_KEEP_FOR_OFFLINE_PLAYING" desc="Context menu item on Playlist to cache all items">
+          Keep for offline playing
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_REMOVE_PLAYED_CONTENTS" desc="Context menu item on Playlist to clear cache for played contents">
+          Remove played contents
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_MOVE" desc="Context menu item on Playlist item to move it to another folder">
+          Move
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_REMOVE_OFFLINE_DATA" desc="Context menu item on Playlist item to clear cache for the item">
+          Remove offline data
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_REMOVE_FROM_PLAYLIST" desc="Context menu item on Playlist item to remove it from the folder">
+          Remove from playlist
         </message>
       </if> <!-- enable_playlist_webui -->
       <!--Add new items to the appropriate sections above -->

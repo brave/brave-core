@@ -2,9 +2,12 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="es">
 <translation id="130631256467250065">Los cambios se aplicarán la próxima vez que reinicies el dispositivo.</translation>
+<translation id="1555506416658437797">editar los métodos de pago.</translation>
 <translation id="7999989146447764333">Los informes de errores no se encuentran disponibles en Brave.</translation>
 <translation id="1953231710324290369">Estás viendo una página de Brave segura</translation>
+<translation id="907470742420136113">Brave está intentando modificar la configuración para completar los métodos de pago.</translation>
 <translation id="4847979153841887006">Logotipo de Brave</translation>
+<translation id="336808635693308470">Brave está intentando editar los métodos de pago.</translation>
 <translation id="7932149101545999102">Brave se ha creado gracias al proyecto de software libre <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> y a otro <ph name="BEGIN_LINK_OSS"/>software libre<ph name="END_LINK_OSS"/>.</translation>
 <translation id="8746410156982274638">Accede al
           menú de Brave, haz clic en
@@ -27,6 +30,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
           y asegúrate de que esté seleccionada la opción de configuración sin proxy o directa.</translation>
+<translation id="585620188971323280">modificar la configuración para completar los métodos de pago.</translation>
 <translation id="2765022094254723779">Brave también se ha podido crear gracias a otro <ph name="BEGIN_LINK_OSS"/>software libre<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Los cambios se aplicarán la próxima vez que reinicies Brave.</translation>
 <translation id="6477625882876869143">Brave se ha podido crear gracias al proyecto de software libre <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>.</translation>
@@ -41,5 +45,6 @@
 <translation id="8187289872471304532">Accede a
           Aplicaciones &gt; Preferencias del Sistema &gt; Red &gt; Configuración avanzada &gt; Proxies
           y desactiva las casillas de verificación de los proxies seleccionados.</translation>
+<translation id="4159376633403260073">Estás viendo una página segura de Brave for Testing</translation>
 <translation id="88187049159266777">Brave no se ha cerrado correctamente.</translation>
 </translationbundle>

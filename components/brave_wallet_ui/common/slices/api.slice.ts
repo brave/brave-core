@@ -645,7 +645,7 @@ export function createWalletApi () {
             ).unwrap()
 
             if (metadata?.image) {
-              tokenArg.logo = metadata?.image || tokenArg.logo
+              tokenArg.logo = metadata?.image || metadata?.image_url || tokenArg.logo
             }
           }
 
@@ -2824,8 +2824,8 @@ export const {
   useClosePanelUIMutation,
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
-  useGetHardwareAccountDiscoveryBalanceQuery,
   useGetAddressByteCodeQuery,
+  useGetAutopinEnabledQuery,
   useGetCoingeckoIdQuery,
   useGetCombinedTokenBalanceForAllAccountsQuery,
   useGetDefaultFiatCurrencyQuery,
@@ -2834,9 +2834,18 @@ export const {
   useGetExternalRewardsWalletQuery,
   useGetFVMAddressQuery,
   useGetGasEstimation1559Query,
+  useGetHardwareAccountDiscoveryBalanceQuery,
+  useGetIpfsGatewayTranslatedNftUrlQuery,
+  useGetIPFSUrlFromGatewayLikeUrlQuery,
   useGetIsTxSimulationEnabledQuery,
   useGetNetworksRegistryQuery,
   useGetNftDiscoveryEnabledStatusQuery,
+  useGetNftMetadataQuery,
+  useGetNftPinningStatusQuery,
+  useGetOffRampAssetsQuery,
+  useGetOnRampAssetsQuery,
+  useGetPriceHistoryQuery,
+  useGetPricesHistoryQuery,
   useGetRewardsBalanceQuery,
   useGetRewardsEnabledQuery,
   useGetSelectedAccountIdQuery,
@@ -2846,8 +2855,6 @@ export const {
   useGetSwapSupportedNetworkIdsQuery,
   useGetTokenBalancesForChainIdQuery,
   useGetTokenBalancesRegistryQuery,
-  useGetPriceHistoryQuery,
-  useGetPricesHistoryQuery,
   useGetTokenSpotPricesQuery,
   useGetTokensRegistryQuery,
   useGetTransactionsQuery,
@@ -2863,6 +2870,8 @@ export const {
   useLazyGetEVMTransactionSimulationQuery,
   useLazyGetExternalRewardsWalletQuery,
   useLazyGetGasEstimation1559Query,
+  useLazyGetIpfsGatewayTranslatedNftUrlQuery,
+  useLazyGetIPFSUrlFromGatewayLikeUrlQuery,
   useLazyGetIsTxSimulationEnabledQuery,
   useLazyGetNetworksRegistryQuery,
   useLazyGetNftDiscoveryEnabledStatusQuery,
@@ -2879,9 +2888,6 @@ export const {
   useLazyGetTokensRegistryQuery,
   useLazyGetTransactionsQuery,
   useLazyGetUserTokensRegistryQuery,
-  useGetNftMetadataQuery,
-  useGetNftPinningStatusQuery,
-  useGetAutopinEnabledQuery,
   useNewUnapprovedTxAddedMutation,
   useOpenPanelUIMutation,
   usePrefetch,
@@ -2910,8 +2916,6 @@ export const {
   useUpdateUnapprovedTransactionSpendAllowanceMutation,
   useUpdateUserAssetVisibleMutation,
   useUpdateUserTokenMutation,
-  useGetOnRampAssetsQuery,
-  useGetOffRampAssetsQuery
 } = walletApi
 
 // Derived Data Queries

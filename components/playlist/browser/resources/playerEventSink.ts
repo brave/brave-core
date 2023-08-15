@@ -7,6 +7,7 @@ import { PlayerState } from 'components/playlist/browser/resources/reducers/stat
 
 import { getAllActions } from './api/getAllActions'
 
+// Used to mirror state of Player from Playlist side.
 export default function startReceivingPlayerEvents () {
   window.onmessage = e => {
     if (e.origin !== 'chrome-untrusted://playlist-player') {

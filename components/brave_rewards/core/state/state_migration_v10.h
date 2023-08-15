@@ -7,7 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_V10_H_
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/endpoints/get_wallet/get_wallet.h"
+#include "brave/components/brave_rewards/core/endpoints/brave/get_wallet.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {

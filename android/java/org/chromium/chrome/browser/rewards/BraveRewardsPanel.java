@@ -15,7 +15,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.text.Html;
@@ -1006,7 +1005,7 @@ public class BraveRewardsPanel
                     }));
         } else {
             DecimalFormat df = new DecimalFormat("#.###");
-            df.setRoundingMode(RoundingMode.FLOOR);
+            df.setRoundingMode(RoundingMode.CEILING);
             df.setMinimumFractionDigits(3);
             TextView estimatedRange = mPopupView.findViewById(R.id.estimated_range);
             String minValue = df.format(minEarningsThisMonth);
@@ -1023,13 +1022,11 @@ public class BraveRewardsPanel
 
     @Override
     public void onGetUserType(int userType) {
-        switch (userType) {
-            case UserType.LEGACY_UNCONNECTED:
-                showVbatExpireNotice();
-                break;
-            case UserType.UNCONNECTED:
-                newInstallViewChanges();
-                break;
+        if (UserType.LEGACY_UNCONNECTED == userType
+                && mBraveRewardsNativeWorker.getVbatDeadline() > System.currentTimeMillis()) {
+            showVbatExpireNotice();
+        } else if (UserType.UNCONNECTED == userType) {
+            newInstallViewChanges();
         }
     }
 
@@ -1052,7 +1049,7 @@ public class BraveRewardsPanel
                     }
 
                     DecimalFormat df = new DecimalFormat("#.###");
-                    df.setRoundingMode(RoundingMode.FLOOR);
+                    df.setRoundingMode(RoundingMode.CEILING);
                     df.setMinimumFractionDigits(3);
                     TextView batBalanceText = mPopupView.findViewById(R.id.bat_balance_text);
                     batBalanceText.setText(df.format(walletBalance));

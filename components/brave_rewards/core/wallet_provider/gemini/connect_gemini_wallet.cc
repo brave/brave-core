@@ -11,7 +11,7 @@
 #include "brave/components/brave_rewards/core/common/random_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/endpoint/gemini/gemini_server.h"
-#include "brave/components/brave_rewards/core/endpoints/post_connect/gemini/post_connect_gemini.h"
+#include "brave/components/brave_rewards/core/endpoints/brave/post_connect_gemini.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"

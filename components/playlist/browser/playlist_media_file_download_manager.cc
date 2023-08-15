@@ -48,8 +48,9 @@ void PlaylistMediaFileDownloadManager::DownloadMediaFile(
   // If either media file controller is generating a playlist media file,
   // delay the next playlist generation. It will be triggered when the current
   // one is finished.
-  if (!IsCurrentDownloadingInProgress())
+  if (!IsCurrentDownloadingInProgress()) {
     TryStartingDownloadTask();
+  }
 }
 
 void PlaylistMediaFileDownloadManager::CancelDownloadRequest(
@@ -71,11 +72,13 @@ void PlaylistMediaFileDownloadManager::CancelAllDownloadRequests() {
 }
 
 void PlaylistMediaFileDownloadManager::TryStartingDownloadTask() {
-  if (IsCurrentDownloadingInProgress())
+  if (IsCurrentDownloadingInProgress()) {
     return;
+  }
 
-  if (pending_media_file_creation_jobs_.empty())
+  if (pending_media_file_creation_jobs_.empty()) {
     return;
+  }
 
   current_job_ = PopNextJob();
   if (!current_job_) {
@@ -111,8 +114,9 @@ PlaylistMediaFileDownloadManager::PopNextJob() {
 
 std::string
 PlaylistMediaFileDownloadManager::GetCurrentDownloadingPlaylistItemID() const {
-  if (IsCurrentDownloadingInProgress())
+  if (IsCurrentDownloadingInProgress()) {
     return media_file_downloader_->current_playlist_id();
+  }
 
   return {};
 }
@@ -149,7 +153,8 @@ void PlaylistMediaFileDownloadManager::OnMediaFileDownloadProgressed(
 
 void PlaylistMediaFileDownloadManager::OnMediaFileReady(
     const std::string& id,
-    const std::string& media_file_path) {
+    const std::string& media_file_path,
+    int64_t received_bytes) {
   VLOG(2) << __func__ << ": " << id << " is ready.";
   if (!current_job_ || !current_job_->item) {
     return;
@@ -161,7 +166,7 @@ void PlaylistMediaFileDownloadManager::OnMediaFileReady(
 
   if (current_job_->on_finish_callback) {
     std::move(current_job_->on_finish_callback)
-        .Run(std::move(current_job_->item), media_file_path);
+        .Run(std::move(current_job_->item), media_file_path, received_bytes);
   }
   current_job_.reset();
 
@@ -184,7 +189,7 @@ void PlaylistMediaFileDownloadManager::OnMediaFileGenerationFailed(
 
   if (current_job_->on_finish_callback) {
     std::move(current_job_->on_finish_callback)
-        .Run(std::move(current_job_->item), {});
+        .Run(std::move(current_job_->item), {}, {});
   }
   current_job_.reset();
   CancelCurrentDownloadingPlaylistItem();

@@ -60,8 +60,8 @@ wycheproof = "0.4"
 
 [dependencies.adblock]
 default-features = false
-version = "0.7"
-features = ["full-regex-handling", "debug-info", "css-validation"]
+version = "0.8"
+features = ["full-regex-handling", "regex-debug-info", "css-validation"]
 gn-variables-lib = "if (is_ios) {\n    features += [\n      \"content-blocking\",\n      \"serde_json\",\n    ]\n    deps += [ \"//third_party/rust/serde_json/v1:lib\" ]\n  } else {\n    features += [\n      \"object-pooling\",\n      \"lifeguard\",\n      \"unsync-regex-caching\",\n    ]\n    deps += [ \"//brave/third_party/rust/lifeguard/v0_6:lib\" ]\n  }\n"
 
 [dependencies.bigdecimal]
@@ -106,11 +106,6 @@ features = ["alloc", "std"]
 default-features = false
 version = "0.10"
 features = ["color", "regex"]
-
-[dependencies.flate2]
-default-features = false
-version = "1"
-features = ["rust_backend"]
 
 [dependencies.html5ever]
 version = "0.25"
@@ -209,8 +204,8 @@ build-script-outputs = ["tables.rs"]
 [dependencies.uuid]
 version = "0.8"
 features = ["serde"]
-[patch.crates-io.adblock_v0_7]
-path = "adblock/v0_7/crate"
+[patch.crates-io.adblock_v0_8]
+path = "adblock/v0_8/crate"
 package = "adblock"
 
 [patch.crates-io.addchain_v0_2]
@@ -512,10 +507,6 @@ package = "ff"
 [patch.crates-io.ff_v0_13]
 path = "ff/v0_13/crate"
 package = "ff"
-
-[patch.crates-io.flate2_v1]
-path = "flate2/v1/crate"
-package = "flate2"
 
 [patch.crates-io.fnv_v1]
 path = "fnv/v1/crate"
@@ -1000,10 +991,6 @@ package = "remove_dir_all"
 [patch.crates-io.ripemd_v0_1]
 path = "ripemd/v0_1/crate"
 package = "ripemd"
-
-[patch.crates-io.rmp-serde_v0_13]
-path = "rmp_serde/v0_13/crate"
-package = "rmp-serde"
 
 [patch.crates-io.rmp-serde_v0_15]
 path = "rmp_serde/v0_15/crate"

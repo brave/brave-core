@@ -11,14 +11,12 @@ import * as WalletPageActions from '../actions/wallet_page_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
 import {
   BraveWallet,
-  NFTMetadataReturnType,
-  UpdateAccountNamePayloadType
+  NFTMetadataReturnType
 } from '../../constants/types'
 import {
   CreateWalletPayloadType,
   UpdateSelectedAssetType,
   ImportAccountPayloadType,
-  RemoveAccountPayloadType,
   ImportAccountFromJsonPayloadType,
   ImportFromExternalWalletPayloadType,
   ImportFilecoinAccountPayloadType,
@@ -171,28 +169,10 @@ handler.on(WalletPageActions.importAccountFromJson.type, async (store: Store, pa
   }
 })
 
-handler.on(WalletPageActions.updateAccountName.type, async (store: Store, payload: UpdateAccountNamePayloadType) => {
-  const keyringService = getWalletPageApiProxy().keyringService
-  const result = await keyringService.setAccountName(payload.accountId, payload.name)
-  return result.success
-})
-
 handler.on(WalletPageActions.addHardwareAccounts.type, async (store: Store, accounts: BraveWallet.HardwareWalletAccount[]) => {
   const keyringService = getWalletPageApiProxy().keyringService
   keyringService.addHardwareAccounts(accounts)
   store.dispatch(WalletPageActions.setShowAddModal(false))
-})
-
-handler.on(WalletPageActions.removeAccount.type, async (store: Store, payload: RemoveAccountPayloadType) => {
-  const { keyringService } = getWalletPageApiProxy()
-  const { success } = await keyringService.removeAccount(
-    payload.accountId,
-    payload.password
-  )
-
-  if (success) {
-    store.dispatch(WalletPageActions.setShowAddModal(false))
-  }
 })
 
 handler.on(WalletPageActions.checkWalletsToImport.type, async (store) => {

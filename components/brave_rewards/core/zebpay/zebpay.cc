@@ -3,13 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/zebpay/zebpay.h"
+
+#include <memory>
 #include <utility>
 
+#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-#include "brave/components/brave_rewards/core/wallet/wallet_util.h"
-#include "brave/components/brave_rewards/core/zebpay/zebpay.h"
+#include "brave/components/brave_rewards/core/wallet_provider/zebpay/connect_zebpay_wallet.h"
+#include "brave/components/brave_rewards/core/wallet_provider/zebpay/get_zebpay_wallet.h"
 
 using brave_rewards::internal::endpoints::GetBalanceZebPay;
 using brave_rewards::internal::endpoints::RequestFor;
@@ -17,11 +21,17 @@ using brave_rewards::internal::endpoints::RequestFor;
 namespace brave_rewards::internal::zebpay {
 
 ZebPay::ZebPay(RewardsEngineImpl& engine)
-    : engine_(engine), connect_wallet_(engine), get_wallet_(engine) {}
+    : WalletProvider(engine), engine_(engine) {
+  connect_wallet_ = std::make_unique<ConnectZebPayWallet>(engine);
+  get_wallet_ = std::make_unique<GetZebPayWallet>(engine);
+}
 
-ZebPay::~ZebPay() = default;
+const char* ZebPay::WalletType() const {
+  return constant::kWalletZebPay;
+}
 
-void ZebPay::FetchBalance(FetchBalanceCallback callback) {
+void ZebPay::FetchBalance(
+    base::OnceCallback<void(mojom::Result, double)> callback) {
   auto wallet = GetWalletIf({mojom::WalletStatus::kConnected});
   if (!wallet) {
     return std::move(callback).Run(mojom::Result::FAILED, 0.0);
@@ -32,8 +42,9 @@ void ZebPay::FetchBalance(FetchBalanceCallback callback) {
                            std::move(callback)));
 }
 
-void ZebPay::OnFetchBalance(FetchBalanceCallback callback,
-                            GetBalanceZebPay::Result&& result) {
+void ZebPay::OnFetchBalance(
+    base::OnceCallback<void(mojom::Result, double)> callback,
+    GetBalanceZebPay::Result&& result) {
   if (!GetWalletIf({mojom::WalletStatus::kConnected})) {
     return std::move(callback).Run(mojom::Result::FAILED, 0.0);
   }
@@ -56,30 +67,8 @@ void ZebPay::OnFetchBalance(FetchBalanceCallback callback,
   std::move(callback).Run(mojom::Result::OK, result.value());
 }
 
-void ZebPay::ConnectWallet(const base::flat_map<std::string, std::string>& args,
-                           ConnectExternalWalletCallback callback) {
-  connect_wallet_.Run(args, std::move(callback));
-}
-
-void ZebPay::GetWallet(GetExternalWalletCallback callback) {
-  get_wallet_.Run(std::move(callback));
-}
-
-mojom::ExternalWalletPtr ZebPay::GetWallet() {
-  return wallet::GetWallet(*engine_, constant::kWalletZebPay);
-}
-
-mojom::ExternalWalletPtr ZebPay::GetWalletIf(
-    const std::set<mojom::WalletStatus>& statuses) {
-  return wallet::GetWalletIf(*engine_, constant::kWalletZebPay, statuses);
-}
-
-bool ZebPay::SetWallet(mojom::ExternalWalletPtr wallet) {
-  return wallet::SetWallet(*engine_, std::move(wallet));
-}
-
-bool ZebPay::LogOutWallet() {
-  return wallet::LogOutWallet(*engine_, constant::kWalletZebPay);
+std::string ZebPay::GetFeeAddress() const {
+  return "";
 }
 
 }  // namespace brave_rewards::internal::zebpay

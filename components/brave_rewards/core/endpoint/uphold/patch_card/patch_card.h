@@ -94,16 +94,16 @@ class PatchCard {
 
   void Request(const std::string& token,
                const std::string& address,
-               PatchCardCallback);
+               PatchCardCallback) const;
 
  private:
-  std::string GetUrl(const std::string& address);
+  std::string GetUrl(const std::string& address) const;
 
-  std::string GeneratePayload();
+  std::string GeneratePayload() const;
 
-  mojom::Result CheckStatusCode(int status_code);
+  mojom::Result CheckStatusCode(int status_code) const;
 
-  void OnRequest(PatchCardCallback, mojom::UrlResponsePtr);
+  void OnRequest(PatchCardCallback, mojom::UrlResponsePtr) const;
 
   const raw_ref<RewardsEngineImpl> engine_;
 };

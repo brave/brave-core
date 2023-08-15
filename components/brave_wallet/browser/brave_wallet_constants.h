@@ -12,14 +12,13 @@
 #include "base/no_destructor.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/switches.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/webui/web_ui_util.h"
 
 namespace brave_wallet {
 
 constexpr char kBraveServicesKeyHeader[] = "x-brave-key";
-
-constexpr char kAssetRatioBaseURL[] = "https://ratios.wallet.brave.com";
 
 constexpr uint256_t kDefaultSendEthGasLimit = 21000;
 constexpr uint256_t kDefaultERC20TransferGasLimit = 300000;
@@ -572,6 +571,12 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_SITE_PERMISSIONS_TRUST},
     {"braveWalletSitePermissionsRevoke",
      IDS_BRAVE_WALLET_SITE_PERMISSIONS_REVOKE},
+    {"braveWalletChangeNetwork", IDS_BRAVE_WALLET_CHANGE_NETWORK},
+    {"braveWalletChangeAccount", IDS_BRAVE_WALLET_CHANGE_ACCOUNT},
+    {"braveWalletActive", IDS_BRAVE_WALLET_ACTIVE},
+    {"braveWalletNotConnected", IDS_BRAVE_WALLET_NOT_CONNECTED},
+    {"braveWalletConnectedAccounts", IDS_BRAVE_WALLET_CONNECTED_ACCOUNTS},
+    {"braveWalletAvailableAccounts", IDS_BRAVE_WALLET_AVAILABLE_ACCOUNTS},
     {"braveWalletSitePermissionsNewAccount",
      IDS_BRAVE_WALLET_SITE_PERMISSIONS_NEW_ACCOUNT},
     {"braveWalletPanelNotConnected", IDS_BRAVE_WALLET_PANEL_NOT_CONNECTED},
@@ -1322,6 +1327,7 @@ constexpr char kFantomSwapBaseAPIURL[] = "https://fantom.api.0x.org/";
 constexpr char kCeloSwapBaseAPIURL[] = "https://celo.api.0x.org/";
 constexpr char kOptimismSwapBaseAPIURL[] = "https://optimism.api.0x.org/";
 constexpr char kArbitrumSwapBaseAPIURL[] = "https://arbitrum.api.0x.org/";
+constexpr char kBaseSwapBaseAPIURL[] = "https://base.api.0x.org/";
 constexpr char kSwapBaseAPIURL[] = "https://api.0x.org/";
 constexpr char kBuyTokenPercentageFee[] = "0.00875";
 constexpr char kEVMFeeRecipient[] =
@@ -1373,6 +1379,8 @@ const base::flat_map<std::string, std::string>&
 GetEthBalanceScannerContractAddresses();
 bool HasJupiterFeesForTokenMint(const std::string& mint);
 const std::vector<std::string>& GetEthSupportedNftInterfaces();
+// Returns the URL for the Ratios service.
+const std::string GetAssetRatioBaseURL();
 
 }  // namespace brave_wallet
 

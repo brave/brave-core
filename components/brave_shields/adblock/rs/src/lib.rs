@@ -82,7 +82,7 @@ mod ffi {
             exceptions: &CxxVector<CxxString>,
         ) -> VecStringResult;
         /// Returns the blocker debug info containing regex info.
-        fn get_debug_info(&self) -> BlockerDebugInfo;
+        fn get_regex_debug_info(&self) -> RegexDebugInfo;
         /// Removes a regex entry by the id.
         fn discard_regex(&mut self, regex_id: u64);
         /// Sets a discard policy for the regex manager.
@@ -125,7 +125,7 @@ mod ffi {
         usage_count: usize,
     }
 
-    struct BlockerDebugInfo {
+    struct RegexDebugInfo {
         regex_data: Vec<RegexDebugEntry>,
         compiled_regex_count: usize,
     }

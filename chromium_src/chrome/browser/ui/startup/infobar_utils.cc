@@ -9,7 +9,7 @@
 #include "chrome/browser/ui/startup/google_api_keys_infobar_delegate.h"
 #include "components/infobars/content/content_infobar_manager.h"
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 #include "chrome/browser/ui/startup/obsolete_system_infobar_delegate.h"
 #endif
 
@@ -23,13 +23,13 @@ class BraveGoogleKeysInfoBarDelegate {
 #define ShowIfNotOffTheRecordProfile ShowIfNotOffTheRecordProfileBrave
 #define GoogleApiKeysInfoBarDelegate BraveGoogleKeysInfoBarDelegate
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 #define ObsoleteSystemInfoBarDelegate BraveObsoleteSystemInfoBarDelegate
 #endif
 
 #include "src/chrome/browser/ui/startup/infobar_utils.cc"
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 #undef ObsoleteSystemInfoBarDelegate
 #endif
 

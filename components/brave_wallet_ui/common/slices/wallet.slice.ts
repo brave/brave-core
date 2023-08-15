@@ -10,7 +10,8 @@ import {
   DefaultCurrencies,
   SolFeeEstimates,
   NetworkFilterType,
-  RefreshOpts
+  RefreshOpts,
+  UpdateAccountNamePayloadType
 } from '../../constants/types'
 import {
   AddSitePermissionPayloadType,
@@ -28,6 +29,7 @@ import {
 } from '../constants/action_types'
 import {
   AddAccountPayloadType,
+  RemoveAccountPayloadType
 } from '../../page/constants/action_types'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 
@@ -209,7 +211,15 @@ export const WalletAsyncActions = {
   addAccount: createAction<AddAccountPayloadType>('addAccount'), // alias for keyringService.addAccount
   getOnRampCurrencies: createAction('getOnRampCurrencies'),
   autoLockMinutesChanged: createAction('autoLockMinutesChanged'), // No reducer or API logic for this (UNUSED)
-  updateTokenPinStatus: createAction<BraveWallet.BlockchainToken>('updateTokenPinStatus')
+  updateTokenPinStatus: createAction<BraveWallet.BlockchainToken>(
+    'updateTokenPinStatus'
+  ),
+  updateAccountName: createAction<UpdateAccountNamePayloadType>(
+    'updateAccountName'
+  ),
+  removeAccount: createAction<RemoveAccountPayloadType>(
+    'removeAccount'
+  )
 }
 
 // slice

@@ -26,6 +26,8 @@ static_library("browser") {
     "feed_controller.h",
     "feed_fetcher.cc",
     "feed_fetcher.h",
+    "feed_v2_builder.cc",
+    "feed_v2_builder.h",
     "html_parsing.cc",
     "html_parsing.h",
     "locales_helper.cc",

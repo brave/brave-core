@@ -7,11 +7,13 @@ import * as React from 'react'
 
 import { font } from '@brave/leo/tokens/css'
 import styled, { css } from 'styled-components'
+import { formatTimeInSeconds } from '../utils/timeFormatter'
 
 interface Props {
   isDefaultPlaylist: boolean
   playlistName: string
-  totalDuration: number
+  totalDuration?: number
+  totalSize: string
   itemCount: number
   className?: string
 
@@ -24,6 +26,7 @@ export const PlaylistInfoContainer = styled.div`
   grid-template-rows: repeat(2, auto);
   grid-template-columns: repeat(3, auto);
   column-gap: 8px;
+  justify-content: start;
 `
 
 export const PlaylistName = styled.div<{ color?: string }>`
@@ -48,13 +51,13 @@ export const PlaylistDetail = styled.div<{ color?: string }>`
       color: ${p.color};
     `};
 `
-
 export default function PlaylistInfo ({
   className,
   isDefaultPlaylist,
   playlistName,
   itemCount,
   totalDuration,
+  totalSize,
   nameColor,
   detailColor
 }: Props) {
@@ -64,13 +67,14 @@ export default function PlaylistInfo ({
         {isDefaultPlaylist ? 'Play Later' : playlistName}{' '}
       </PlaylistName>
       <PlaylistDetail color={detailColor}>{itemCount} items</PlaylistDetail>
-      {!!totalDuration && <PlaylistDetail>{totalDuration}</PlaylistDetail>}
-      {
-        // TODO(sko) We can't get the file size for now
-        // !!itemCount && (
-        //   <PlaylistDetail className='playlist-detail'>300 mb</PlaylistDetail>
-        // )
-      }
+      {totalDuration !== undefined && (
+        <PlaylistDetail color={detailColor}>
+          {formatTimeInSeconds(totalDuration, 'space')}
+        </PlaylistDetail>
+      )}
+      {totalSize && (
+        <PlaylistDetail color={detailColor}>{totalSize}</PlaylistDetail>
+      )}
     </PlaylistInfoContainer>
   )
 }

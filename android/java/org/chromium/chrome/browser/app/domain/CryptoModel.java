@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.app.domain;
 import android.content.Context;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
@@ -54,25 +53,18 @@ public class CryptoModel {
     private SwapService mSwapService;
     private CryptoSharedActions mCryptoSharedActions;
     private CryptoSharedData mSharedData;
-    // SolanaProvider for solana dapps
     private LiveData<List<TransactionInfo>> mPendingTransactions;
-    private MediatorLiveData<Boolean> _mIsSwapEnabled;
     private final MutableLiveData<Integer> _mCoinTypeMutableLiveData =
             new MutableLiveData<>(CoinType.ETH);
     public final LiveData<Integer> mCoinTypeMutableLiveData = _mCoinTypeMutableLiveData;
 
     private final Object mLock = new Object();
     private Context mContext;
-    private SendModel mSendModel;
 
     private NetworkModel mNetworkModel;
     private PortfolioModel mPortfolioModel;
-    private BuyModel mBuyModel;
-    // Todo: create method to create and return new models for Asset, Account,
-    //  TransactionConfirmation, SwapModel, AssetModel, SendModel
 
     public LiveData<List<AccountInfo>> mAccountInfosFromKeyRingModel;
-    public LiveData<Boolean> mIsSwapEnabled;
     private TransactionsModel mTransactionsModel;
 
     public CryptoModel(Context context, TxService txService, KeyringService keyringService,
@@ -98,12 +90,6 @@ public class CryptoModel {
         mPortfolioModel = new PortfolioModel(context, mTxService, mKeyringService,
                 mBlockchainRegistry, mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy,
                 mBraveWalletService, mAssetRatioService, mSharedData);
-        _mIsSwapEnabled = new MediatorLiveData<>();
-        mIsSwapEnabled = _mIsSwapEnabled;
-        _mIsSwapEnabled.addSource(mNetworkModel.mChainId, chainId -> {
-            mSwapService.isSwapSupported(
-                    chainId, isSwapSupported -> { _mIsSwapEnabled.postValue(isSwapSupported); });
-        });
     }
 
     public void resetServices(Context context, TxService mTxService, KeyringService mKeyringService,
@@ -125,9 +111,6 @@ public class CryptoModel {
             mPortfolioModel.resetServices(context, mTxService, mKeyringService, mBlockchainRegistry,
                     mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
                     mAssetRatioService);
-            if (mBuyModel != null) {
-                mBuyModel.resetServices(mAssetRatioService, mBlockchainRegistry);
-            }
             if (mTransactionsModel != null) {
                 mTransactionsModel.resetServices(mContext, mTxService, mKeyringService,
                         mBlockchainRegistry, mJsonRpcService, mEthTxManagerProxy,
@@ -256,13 +239,6 @@ public class CryptoModel {
         return mNetworkModel;
     }
 
-    public BuyModel getBuyModel() {
-        if (mBuyModel == null) {
-            mBuyModel = new BuyModel(mAssetRatioService, mBlockchainRegistry);
-        }
-        return mBuyModel;
-    }
-
     public PortfolioModel getPortfolioModel() {
         return mPortfolioModel;
     }
@@ -274,14 +250,6 @@ public class CryptoModel {
                     mBraveWalletService, mAssetRatioService, mSharedData);
         }
         return mTransactionsModel;
-    }
-
-    public SendModel createSendModel() {
-        if (mSendModel != null) return mSendModel;
-        mSendModel =
-                new SendModel(mTxService, mKeyringService, mBlockchainRegistry, mJsonRpcService,
-                        mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService, null);
-        return mSendModel;
     }
 
     public UserAssetModel createUserAssetModel(WalletCoinAdapter.AdapterType type) {
@@ -348,12 +316,6 @@ public class CryptoModel {
     public void isNftDiscoveryEnabled(Callback1<Boolean> callback) {
         mBraveWalletService.getNftDiscoveryEnabled(
                 isNftDiscoveryEnabled -> { callback.call(isNftDiscoveryEnabled); });
-    }
-
-    // Clear buy send swap model
-    public void clearBSS() {
-        mSendModel = null;
-        mBuyModel = null;
     }
 
     /*

@@ -9,7 +9,8 @@
 #include "base/no_destructor.h"
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_service_win.h"
-#include "brave/components/brave_vpn/common/features.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "chrome/browser/browser_process.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "content/public/browser/browser_context.h"
 
@@ -38,8 +39,8 @@ KeyedService* BraveVpnWireguardObserverFactory::BuildServiceInstanceFor(
 BraveVpnWireguardObserverService*
 BraveVpnWireguardObserverFactory::GetServiceForContext(
     content::BrowserContext* context) {
-  DCHECK(base::FeatureList::IsEnabled(
-      brave_vpn::features::kBraveVPNUseWireguardService));
+  DCHECK(
+      brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state()));
   DCHECK(brave_vpn::IsAllowedForContext(context));
   return static_cast<BraveVpnWireguardObserverService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));

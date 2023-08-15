@@ -90,18 +90,18 @@ class PostCards {
   explicit PostCards(RewardsEngineImpl& engine);
   ~PostCards();
 
-  void Request(const std::string& token, PostCardsCallback);
+  void Request(const std::string& token, PostCardsCallback) const;
 
  private:
-  std::string GetUrl();
+  std::string GetUrl() const;
 
-  std::string GeneratePayload();
+  std::string GeneratePayload() const;
 
-  mojom::Result CheckStatusCode(int status_code);
+  mojom::Result CheckStatusCode(int status_code) const;
 
-  mojom::Result ParseBody(const std::string& body, std::string* id);
+  mojom::Result ParseBody(const std::string& body, std::string* id) const;
 
-  void OnRequest(PostCardsCallback, mojom::UrlResponsePtr);
+  void OnRequest(PostCardsCallback, mojom::UrlResponsePtr) const;
 
   const raw_ref<RewardsEngineImpl> engine_;
 };

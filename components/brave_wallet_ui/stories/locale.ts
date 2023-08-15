@@ -460,7 +460,7 @@ provideStrings({
   braveWalletBuySardineDescription: 'Easiest, fastest and cheapest way to buy crypto with card and bank transfers.',
   braveWalletBuyTransakDescription: 'Instant buy with your bank account. Lower fees.',
   braveWalletBuyStripeDescription: 'Buy Crypto with Stripe at crypto.link.',
-  braveWalletBuyCoinbaseDescription: 'Buy crypto with Visa or Mastercard.',
+  braveWalletBuyCoinbaseDescription: 'Buy with the most trusted name in crypto.',
   braveWalletBuyWithRamp: 'Buy with Ramp',
   braveWalletBuyWithSardine: 'Buy with Sardine',
   braveWalletBuyWithTransak: 'Buy with Transak',
@@ -566,6 +566,14 @@ provideStrings({
   braveWalletSitePermissionsNewAccount: 'New account',
   braveWalletSitePermissionsTrust: 'Trust',
   braveWalletSitePermissionsRevoke: 'Revoke',
+
+  // DApp Connection Panel
+  braveWalletChangeNetwork: 'Change network',
+  braveWalletChangeAccount: 'Change account',
+  braveWalletActive: 'Active',
+  braveWalletNotConnected: 'Not connected',
+  braveWalletConnectedAccounts: 'Connected accounts',
+  braveWalletAvailableAccounts: 'Available accounts',
 
   // Transaction Detail Box
   braveWalletTransactionDetailBoxFunction: 'FUNCTION TYPE',

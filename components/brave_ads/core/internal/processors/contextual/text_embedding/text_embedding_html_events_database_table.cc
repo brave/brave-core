@@ -89,6 +89,8 @@ void GetAllCallback(GetTextEmbeddingHtmlEventsCallback callback,
                                    /*text_embedding_html_events*/ {});
   }
 
+  CHECK(command_response->result);
+
   TextEmbeddingHtmlEventList text_embedding_html_events;
 
   for (const auto& record : command_response->result->get_records()) {

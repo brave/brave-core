@@ -38,9 +38,9 @@ public class CryptoFragmentPageAdapter extends FragmentStateAdapter {
 
     private PortfolioFragment mCurrentPortfolioFragment;
 
-    public CryptoFragmentPageAdapter(FragmentActivity fm) {
-        super(fm);
-        Resources resources = fm.getResources();
+    public CryptoFragmentPageAdapter(@NonNull final FragmentActivity activity) {
+        super(activity);
+        Resources resources = activity.getResources();
         mTitles = new ArrayList<>(Arrays.asList(resources.getString(R.string.portfolio),
                 resources.getString(R.string.brave_wallet_nfts),
                 resources.getString(R.string.brave_wallet_activity),

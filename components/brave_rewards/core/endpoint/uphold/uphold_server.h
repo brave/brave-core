@@ -24,17 +24,19 @@ class UpholdServer {
   explicit UpholdServer(RewardsEngineImpl& engine);
   ~UpholdServer();
 
-  uphold::GetCapabilities& get_capabilities() { return get_capabilities_; }
+  const uphold::GetCapabilities& get_capabilities() const {
+    return get_capabilities_;
+  }
 
-  uphold::GetCards& get_cards() { return get_cards_; }
+  const uphold::GetCards& get_cards() const { return get_cards_; }
 
   uphold::GetCard& get_card() { return get_card_; }
 
   uphold::GetMe& get_me() { return get_me_; }
 
-  uphold::PostCards& post_cards() { return post_cards_; }
+  const uphold::PostCards& post_cards() const { return post_cards_; }
 
-  uphold::PatchCard& patch_card() { return patch_card_; }
+  const uphold::PatchCard& patch_card() const { return patch_card_; }
 
  private:
   uphold::GetCapabilities get_capabilities_;

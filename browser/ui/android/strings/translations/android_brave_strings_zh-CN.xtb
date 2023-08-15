@@ -1,7 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-CN">
+<translation id="885805571521218129">这反映了你对本月Brave 广告的预期收益范围。</translation>
 <translation id="3478449063771497234">通知被禁用</translation>
+<translation id="370665806235115550">正在加载...</translation>
 <translation id="8220484609979012449">\\n\n 您仍然可以使用 Web3 钱包向该创作者发送加密捐款。</translation>
 <translation id="6385969012847057348">此创作者无法接收到来自 <ph name="CUSTODIAN"/>的捐款。</translation>
 <translation id="6268134562674951939">您没有足够的代币</translation>
@@ -40,6 +42,8 @@
 <translation id="4748689412569009273">以一个表情表达，您使用 Brave 的体验如何？</translation>
 <translation id="7335142069363686805">立即评分</translation>
 <translation id="6681362094306959654">喜欢 Brave 吗？</translation>
+<translation id="8041093619605951337">高兴</translation>
+<translation id="6826743502395386800">悲伤</translation>
 <translation id="5488843227043643519">为 Play Store 评分？</translation>
 <translation id="5867854497245948308">感谢您的宝贵意见！</translation>
 <translation id="4935400164159327304">让我们知道如何改善 Brave。</translation>
@@ -73,7 +77,7 @@
 <translation id="1118970888826017401">启用绕过顶级重定向跟踪链接支持。</translation>
 <translation id="94154759592465111">拦截脚本</translation>
 <translation id="7714773920987474116">拦截 JavaScript（可能导致一些网站无法正常运作）</translation>
-<translation id="1660979054779793659">YouTube</translation>
+<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">屏蔽 YouTube 推荐内容</translation>
 <translation id="1005372663692637999">屏蔽 youtube.com 上的上一页和尾页卡元素。</translation>
 <translation id="5152595963250646670">屏蔽 YouTube 的干扰元素</translation>
@@ -136,11 +140,6 @@
 <translation id="1276592121036104130">加载新内容</translation>
 <translation id="3189348785087463371">已宣传</translation>
 <translation id="7554145152551782675">更多 Brave 优惠</translation>
-<translation id="1717242776111689224">启用 Brave 新闻</translation>
-<translation id="4732255422524275223">你的新闻源</translation>
-<translation id="152579389256498990">Feed 或网站 URL</translation>
-<translation id="4975944254857623648">默认源</translation>
-<translation id="253886574765651454">添加源</translation>
 <translation id="254100925533869330">没有内容</translation>
 <translation id="7172792761509429092">Brave News 没有内容可以显示。</translation>
 <translation id="1771307734839364850">选择内容来源</translation>
@@ -152,6 +151,8 @@
 <translation id="6686219838158572786">要求所有连接使用 HTTPS（严格）</translation>
 <translation id="4221284400051835823">尽可能升级到 HTTPS（默认）</translation>
 <translation id="4690906712010847708">不要将连接升级到 HTTPS（禁用）</translation>
+<translation id="693506469193748756">关闭此网站后勿扰</translation>
+<translation id="6975864539539353406">关闭网站时清除 cookie 和其他网站数据</translation>
 <translation id="1680858055899097121">不要在浏览会话之间保留标签页</translation>
 <translation id="7142548388914389999">允许保留隐私的产品分析 (P3A)</translation>
 <translation id="5254037869598726291">匿名的 P3A 信息有助于 Brave 估计总体使用量，并确保我们’在改进受欢迎的功能。</translation>
@@ -180,6 +181,7 @@
 <translation id="8308305244351876417">当您切换到 Brave 或其他应用程序的另一个标签或设备屏幕关闭时，允许继续播放音频。</translation>
 <translation id="4150201353443180367">显示</translation>
 <translation id="2433507940547922241">外观</translation>
+<translation id="9040069796107003510">Brave 奖励图标</translation>
 <translation id="6333347122924254968">在地址栏显示 Brave 奖励图标</translation>
 <translation id="8495235435594442882">启用底部工具栏</translation>
 <translation id="6587448235155023666">您所做的更改将在您下次重新启动 Brave 时生效</translation>
@@ -252,13 +254,13 @@
 <translation id="4254029385847607686">十二月</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave 新闻</translation>
-<translation id="7760215798627399379"><ph name="VALUE"/> 美元</translation>
+<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">设置</translation>
 <translation id="6020176662032623904">已验证的创建者</translation>
 <translation id="2369994359029526515">未验证的创建者</translation>
 <translation id="6112368337882254910">自动贡献</translation>
 <translation id="7861645265922445992">领取奖励</translation>
-<translation id="8494748383523030337">您的余额</translation>
+<translation id="1848737374354350807">余额：</translation>
 <translation id="4781696154289395607">您已捐赠了 <ph name="BAT_VALUE"/> 个 基本注意力代币 (BAT)。</translation>
 <translation id="2429828319207652823">处理您的贡献时出现问题。</translation>
 <translation id="2221902203895354376">有可用的代币津贴。</translation>
@@ -322,8 +324,8 @@
 <translation id="8185825081026121627">通过查看“Brave 奖励”计划中保护隐私的广告来赚取基本的代币。</translation>
 <translation id="5321518976657560663">重置错误</translation>
 <translation id="4114170343590425996">重置 Brave 奖励时出错。请重新启动 Brave，然后重试。</translation>
-<translation id="6393502589311632553">在没使用 Brave 时显示广告</translation>
-<translation id="3349204812119681938">重设 Brave 奖励</translation>
+<translation id="6417420737057016607">Brave广告</translation>
+<translation id="5611966874859284786">在不使用 Brave 时显示通知广告</translation>
 <translation id="6606319453795180219">这将会删除您的 Brave Rewards 并重置您的所有 Brave Rewards 数据</translation>
 <translation id="8293206222192510085">添加书签</translation>
 <translation id="340492034650766959">删除书签</translation>
@@ -456,6 +458,7 @@
 <translation id="8903462729414407077">获取每周更新</translation>
 <translation id="7450323860390658083">知道你访问的站点中，哪些对用户隐私的侵犯最严重。\n\n只有你能看到这些隐私统计数据。没有个人数据或浏览历史会离开你的设备上的Brave浏览器。</translation>
 <translation id="6170159749517116894">打开隐私报告</translation>
+<translation id="1669047024429367828">可见性</translation>
 <translation id="5966707198760109579">周</translation>
 <translation id="8987927404178983737">月</translation>
 <translation id="4302754476737420523">3 个月</translation>
@@ -509,6 +512,7 @@
 <translation id="8235783939971604011">打赏是一种以个人身份鼓励和支持自己喜欢的内容或创作者的方式。赶快领取赏金吧！</translation>
 <translation id="4215679190414901888">最后，让我们来帮你设置一下</translation>
 <translation id="3494356595346329740">您可以稍后再更改。</translation>
+<translation id="3286390186030710347">滑块</translation>
 <translation id="3115702351969988294">您想多久看到广告一次？</translation>
 <translation id="2353222426385080466">更多的私人广告，更多的奖励。</translation>
 <translation id="1201128255476890443">每小时 <ph name="ADS_PER_HOUR"/> 则广告</translation>
@@ -533,6 +537,7 @@
 <translation id="5187052478998910855">需要重新了解一下 Rewards？</translation>
 <translation id="8622329973403382303">赶快来快速浏览一下它是如何成为 Rewards 摇滚明星的历史记录吧！</translation>
 <translation id="3479552764303398839">以后再说</translation>
+<translation id="7138272885617540195">允许在 Brave 之外的应用程序中打开应用程序链接</translation>
 <translation id="8792121506918889955">WebRTC IP 处理政策</translation>
 <translation id="8798099450830957504">默认</translation>
 <translation id="1822560017823072927">默认公共和私人接口</translation>
@@ -557,7 +562,6 @@
 <translation id="8289942708804097960">用信用卡或借记卡购买加密货币。</translation>
 <translation id="841880029259839903">发送加密货币，或将加密货币从一个账户转入另一个账户。</translation>
 <translation id="8226778393040773102">兑换代币和资产</translation>
-<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/>会处理以太坊地址和 IP 地址以完成交易（包括获得报价）。 <ph name="DEX_PROVIDER"/>仅会将此数据用于处理交易目的。</translation>
 <translation id="1783600039044302171">使用密码保护您的加密货币</translation>
 <translation id="3726490322412361740">输入密码</translation>
 <translation id="3038243139480464605">验证密码</translation>
@@ -598,7 +602,6 @@
 <translation id="1144810021918451336">不能保护您免受危险网站、下载和扩展名的侵害。</translation>
 <translation id="5760476995887363522">密语不匹配，请重试。</translation>
 <translation id="2360588547830602174">账户恢复失败。请重试。</translation>
-<translation id="6392640873800632439"><ph name="ASSET"/>市场价格</translation>
 <translation id="6748108480210050150">来自</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -608,7 +611,6 @@
 <translation id="2589431635772931954">地址或 URL</translation>
 <translation id="5517732667776806421">缺少校验和信息</translation>
 <translation id="4006711930669471508">校验和信息无效</translation>
-<translation id="632241521608275119">滑点公差</translation>
 <translation id="1987317783729300807">帐号</translation>
 <translation id="3535654229833214438">交易</translation>
 <translation id="2449682593754783720">1 小时</translation>
@@ -750,6 +752,11 @@
 <translation id="5317780077021120954">保存</translation>
 <translation id="4979796155378508955">如果自定义 nonce 值不连续或有其他错误，则交易可能不会传播到网络。</translation>
 <translation id="6122742277607781713">投资组合</translation>
+<translation id="3567988240819868195">市场</translation>
+<translation id="4576965889365503638">信息</translation>
+<translation id="152455748535966757">排名</translation>
+<translation id="4958716607782044952">24 小时容量</translation>
+<translation id="128834189395075789">市值</translation>
 <translation id="750843150060816463">Gas 价格 (Gwei)</translation>
 <translation id="1426320910664514906">Gas Limit</translation>
 <translation id="6389441740143786465">禁用分享库</translation>
@@ -761,10 +768,7 @@
 <translation id="1367951781824006909">选择文件</translation>
 <translation id="8648684608605749476">在无痕模式下阻止第三方 Cookie</translation>
 <translation id="1118876217803190221">余额不足</translation>
-<translation id="275990379543116961">gas 资金不足</translation>
-<translation id="3292453499915466604">流动性不足</translation>
 <translation id="3025158262797849291">不可识别号码格式</translation>
-<translation id="3380365263193509176">未知错误</translation>
 <translation id="5932938770824268122">私钥</translation>
 <translation id="2472882733835903303">显示私钥</translation>
 <translation id="4391056902675005799">隐藏私钥</translation>
@@ -834,7 +838,6 @@
 <translation id="6727102863431372879">设定</translation>
 <translation id="3074127054582480056">注意</translation>
 <translation id="2280319752798785157">每月捐款</translation>
-<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">在地址栏中显示自动完成</translation>
 <translation id="8982438328166986164">根据您的书签和浏览历史显示网站建议。</translation>
@@ -1051,11 +1054,12 @@
 <translation id="5382684862562314222">您所在地区的 Uphold 尚不支持 BAT。</translation>
 <translation id="6996157559236886133">错误：Uphold 账户功能受限</translation>
 <translation id="1677961202754619328">据 Uphold 称，目前您的 Uphold 账户受到一些限制。请登录您的 Uphold 账户并检查是否有任何通知或其他账户要求需要完成，然后重试。</translation>
-<translation id="6417420737057016607">Brave广告</translation>
 <translation id="5425006356459378415">Brave Rewards 不可用</translation>
 <translation id="833643743158564518">您所在地区目前已禁用 Brave 奖励的新注册。但是，您可以稍后再试。<ph name="LEARN_MORE"/></translation>
 <translation id="8528916244724490964">所有网络</translation>
+<translation id="7748944510530490017">主要网络</translation>
 <translation id="2781668117338732220">次要网络</translation>
+<translation id="282560918037172384">测试网络</translation>
 <translation id="6309721369749814582">域名 <ph name="DOMAIN"/> 未注册</translation>
 <translation id="4071347720273751665">似乎您已经输入了一个 ENS 地址。我们需要使用第三方解析器来解析此请求，该解析器可能能够看到您的 IP 地址和域。<ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">使用 ENS 链下域</translation>
@@ -1149,4 +1153,9 @@
 <translation id="6344103698928069918">对于播放列表，从上次暂停的点开始继续播放</translation>
 <translation id="8141583471142904652">连续听</translation>
 <translation id="851432578283946230">自动播放播放列表中的下一个项目</translation>
+<translation id="7853202427316060426">活动</translation>
+<translation id="4932733599132424254">日期</translation>
+<translation id="346505172740911461">市场价</translation>
+<translation id="4709355193533327244">尚无可查看的交易。</translation>
+<translation id="4931644613135313937">交易完成后即可在此查看交易。</translation>
 </translationbundle>

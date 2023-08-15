@@ -63,7 +63,6 @@ skrifa = "0.4"
 libc = "0.2.107"
 
 # speedreader
-flate2 = { version = "1.0.25", features = ["rust_backend"], default-features = false }
 kuchiki = "0.8.1"
 lol_html = "0.3.0"
 # regex = "1"
@@ -229,9 +228,9 @@ if (is_mac) {
 '''
 
 [dependencies.adblock]
-version = "0.7.17"
+version = "0.8.0"
 default-features = false
-features = ["full-regex-handling", "debug-info", "css-validation"]
+features = ["full-regex-handling", "regex-debug-info", "css-validation"]
 gn-variables-lib = '''
 if (is_ios) {
     features += [

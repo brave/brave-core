@@ -11,8 +11,8 @@ import {
   useSelector
 } from 'react-redux'
 
-// // actions
-import { WalletPageActions } from '../../../../page/actions'
+// actions
+import { WalletActions } from '../../../../common/actions'
 import {
   AccountsTabState,
   AccountsTabActions
@@ -121,7 +121,7 @@ export const AccountSettingsModal = () => {
     }
 
     const result = dispatch(
-      WalletPageActions.updateAccountName({
+      WalletActions.updateAccountName({
         accountId: selectedAccount.accountId,
         name: accountName
       })

@@ -19,6 +19,8 @@ bool IsVPNTrayIconEnabled();
 void EnableVPNTrayIcon(bool value);
 absl::optional<base::FilePath> GetLastUsedConfigPath();
 bool ShouldFallbackToIKEv2();
+void SetWireguardActive(bool value);
+bool IsWireguardActive();
 }  // namespace wireguard
 }  // namespace brave_vpn
 

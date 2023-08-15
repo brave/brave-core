@@ -14,10 +14,6 @@
 <translation id="8294286161128352783">Само на страницата на нов раздел</translation>
 <translation id="6406506848690869874">Синхр</translation>
 <translation id="1544192797660353713">Портфейл</translation>
-<translation id="2445484935443597917">Създаване на нов потребителски профил</translation>
-<translation id="744341768939279100">Създаване на нов профил</translation>
-<translation id="2666990579225592931">Отваряне на прозорец в режим на гост</translation>
-<translation id="4986483413015198747">Отваряне на прозорец на гост</translation>
 <translation id="8275068909952022340">Още…</translation>
 <translation id="1990886731975529483">Инсталирайте и стартирайте Google Widevine</translation>
 <translation id="8926389886865778422">Без повторно питане</translation>
@@ -248,6 +244,7 @@
 <translation id="480565261566115689">Минимизиране на разделите</translation>
 <translation id="7194343495483122559">Разгъване на разделите</translation>
 <translation id="1199054713803577378">Минимизиране на разделите</translation>
+<translation id="8120600068258956006">Добавяне към плейлист</translation>
 <translation id="9156965752763025780">Промените ви ще влязат в сила следващия път, когато стартирате отново Brave.</translation>
 <translation id="7179921470347911571">Презареди сега</translation>
 <translation id="4472575034687746823">Първи стъпки</translation>

@@ -33,7 +33,7 @@ import { mockEthMainnet, mockNetworks } from '../../../stories/mock-data/mock-ne
 import {
   mockAccountAssetOptions,
   mockBasicAttentionToken,
-  mockErc20TokensList
+  mockErc20TokensList,
 } from '../../../stories/mock-data/mock-asset-options'
 import {
   mockFilSendTransaction,
@@ -42,6 +42,8 @@ import {
 } from '../../../stories/mock-data/mock-transaction-info'
 import { blockchainTokenEntityAdaptor } from '../../slices/entities/blockchain-token.entity'
 import { findAccountByAccountId } from '../../../utils/account-utils'
+import { CommonNftMetadata } from '../../slices/endpoints/nfts.endpoints'
+import { mockNFTMetadata } from '../../../stories/mock-data/mock-nft-metadata'
 
 export const makeMockedStoreWithSpy = () => {
   const store = createStore(combineReducers({
@@ -193,11 +195,11 @@ export class MockedWalletApiProxy {
     deserializeTransaction(mockedErc20ApprovalTransaction)
   ]
 
-  constructor (overrides?: WalletApiDataOverrides | undefined) {
+  constructor(overrides?: WalletApiDataOverrides | undefined) {
     this.applyOverrides(overrides)
   }
 
-  applyOverrides (overrides?: WalletApiDataOverrides | undefined) {
+  applyOverrides(overrides?: WalletApiDataOverrides | undefined) {
     if (!overrides) {
       return
     }
@@ -296,13 +298,13 @@ export class MockedWalletApiProxy {
 
   keyringService: Partial<
     InstanceType<typeof BraveWallet.KeyringServiceInterface>
-    > = {
+  > = {
     getAllAccounts: async (): Promise<{
       allAccounts: BraveWallet.AllAccountsInfo
     }> => {
       const selectedAccount = findAccountByAccountId(
-          this.accountInfos,
-          this.selectedAccountId
+        this.accountInfos,
+        this.selectedAccountId
       )
       assert(selectedAccount)
       const allAccounts: BraveWallet.AllAccountsInfo = {
@@ -495,7 +497,7 @@ export class MockedWalletApiProxy {
       return {
         amount:
           this.nativeBalanceRegistry[walletAddress][
-          blockchainTokenEntityAdaptor.selectId({
+            blockchainTokenEntityAdaptor.selectId({
               coin: BraveWallet.CoinType.ETH,
               chainId,
               contractAddress: tokenMintAddress,
@@ -507,7 +509,57 @@ export class MockedWalletApiProxy {
         decimals: 9,
         uiAmountString: '',
         error: 0,
+        errorMessage: ''
+      }
+    },
+    getERC721Metadata: async (contract, tokenId, chainId) => {
+      const mockedMetadata =
+        mockNFTMetadata.find(
+          (d) =>
+            d.tokenID === tokenId && d.contractInformation.address === contract
+        ) || mockNFTMetadata[0]
+      return {
+        error: 0,
         errorMessage: '',
+        tokenUrl: mockedMetadata.contractInformation.logo,
+        response: JSON.stringify({
+          attributes: [
+            {
+              trait_type: 'mocked trait name',
+              value: '100%'
+            } as { trait_type: string; value: string }
+          ],
+          description: mockedMetadata.contractInformation.description,
+          image: mockedMetadata.imageURL,
+          name: mockedMetadata.contractInformation.name
+        } as CommonNftMetadata)
+      }
+    },
+    getERC1155Metadata: async (contract, tokenId, chainId) => {
+      return this.jsonRpcService.getERC721Metadata!(contract, tokenId, chainId)
+    },
+    getSolTokenMetadata: async (chainId, tokenMintAddress) => {
+      const mockedMetadata =
+        mockNFTMetadata.find(
+          (d) =>
+            d.tokenID === tokenMintAddress &&
+            d.contractInformation.address === tokenMintAddress
+        ) || mockNFTMetadata[0]
+      return {
+        error: 0,
+        errorMessage: '',
+        tokenUrl: mockedMetadata.contractInformation.logo,
+        response: JSON.stringify({
+          attributes: [
+            {
+              trait_type: 'mocked trait name',
+              value: '100%'
+            } as { trait_type: string; value: string }
+          ],
+          description: mockedMetadata.contractInformation.description,
+          image: mockedMetadata.imageURL,
+          name: mockedMetadata.contractInformation.name
+        } as CommonNftMetadata)
       }
     }
   }
@@ -641,11 +693,29 @@ export class MockedWalletApiProxy {
     }
   }
 
-  setMockedQuote (newQuote: typeof this.mockQuote) {
+  braveWalletIpfsService: Partial<
+    InstanceType<typeof BraveWallet.IpfsServiceInterface>
+  > = {
+    extractIPFSUrlFromGatewayLikeUrl: async function (url: string) {
+      return { ipfsUrl: url }
+    },
+    translateToNFTGatewayURL: async function (url: string) {
+      return {
+        translatedUrl: url
+      }
+    },
+    translateToGatewayURL: async function (url: string) {
+      return {
+        translatedUrl: url
+      }
+    }
+  }
+
+  setMockedQuote(newQuote: typeof this.mockQuote) {
     this.mockQuote = newQuote
   }
 
-  setMockedTransactionPayload (newTx: typeof this.mockQuote) {
+  setMockedTransactionPayload(newTx: typeof this.mockQuote) {
     this.mockTransaction = newTx
   }
 

@@ -361,6 +361,12 @@
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_SWITCH" desc="Site Permissions panel switch account for connected site">Switch</message>
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_TRUST" desc="Site Permissions panel trust account for connected site">Trust</message>
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_REVOKE" desc="Site Permissions panel revoke account for connected site">Revoke</message>
+  <message name="IDS_BRAVE_WALLET_CHANGE_NETWORK" desc="DApp settings panel, change network button">Change network</message>
+  <message name="IDS_BRAVE_WALLET_CHANGE_ACCOUNT" desc="DApp settings panel, change account button">Change account</message>
+  <message name="IDS_BRAVE_WALLET_ACTIVE" desc="DApp settings panel, acive network status">Active</message>
+  <message name="IDS_BRAVE_WALLET_NOT_CONNECTED" desc="DApp settings panel, account not connected status">Not connected</message>
+  <message name="IDS_BRAVE_WALLET_CONNECTED_ACCOUNTS" desc="DApp settings panel, connected accounts list">Connected accounts</message>
+  <message name="IDS_BRAVE_WALLET_AVAILABLE_ACCOUNTS" desc="DApp settings panel, available accounts list">Available accounts</message>
   <message name="IDS_BRAVE_WALLET_PANEL_DISCONNECTED" desc="Brave Wallet panel disconnected status">Disconnected</message>
   <message name="IDS_BRAVE_WALLET_PANEL_BLOCKED" desc="Brave Wallet panel blocked status">Blocked</message>
   <message name="IDS_BRAVE_WALLET_TITLE" desc="Brave Wallet Title">Wallet</message>
@@ -576,7 +582,7 @@
   <message name="IDS_BRAVE_WALLET_BUY_SARDINE_DESCRIPTION" desc="Sardine description in buy options list">Easiest, fastest and cheapest way to buy crypto with card and bank transfers.</message>
   <message name="IDS_BRAVE_WALLET_BUY_TRANSAK_DESCRIPTION" desc="Transak description in buy options list">Instant buy with your bank account. Lower fees.</message>
   <message name="IDS_BRAVE_WALLET_BUY_STRIPE_DESCRIPTION" desc="Stripe description in buy options list">Buy Crypto with Stripe at crypto.link.</message>
-  <message name="IDS_BRAVE_WALLET_BUY_COINBASE_DESCRIPTION" desc="Coinbase Pay description in buy options list">Buy crypto with Visa or Mastercard.</message>
+  <message name="IDS_BRAVE_WALLET_BUY_COINBASE_DESCRIPTION" desc="Coinbase Pay description in buy options list">Buy with the most trusted name in crypto.</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_ALL" desc="Network Filter Selector All Networks">All Networks</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_LOW_TO_HIGH" desc="Asset Filter Selector Low to High">Low to High</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_HIGH_TO_LOW" desc="Asset Filter Selector High to Low">High to Low</message>
