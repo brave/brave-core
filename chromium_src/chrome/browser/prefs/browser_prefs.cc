@@ -6,6 +6,7 @@
 #include "brave/browser/brave_local_state_prefs.h"
 #include "brave/browser/brave_profile_prefs.h"
 #include "brave/browser/brave_rewards/rewards_prefs_util.h"
+#include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
@@ -265,6 +266,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
 #endif
 
   brave_search_conversion::p3a::MigrateObsoleteLocalStatePrefs(local_state);
+  brave_stats::MigrateObsoleteLocalStatePrefs(local_state);
 
   // END_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
 }
