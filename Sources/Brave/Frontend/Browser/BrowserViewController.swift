@@ -1331,7 +1331,8 @@ public class BrowserViewController: UIViewController {
         dataSource: backgroundDataSource,
         feedDataSource: feedDataSource,
         rewards: rewards,
-        privateBrowsingManager: privateBrowsingManager
+        privateBrowsingManager: privateBrowsingManager,
+        p3aUtils: braveCore.p3aUtils
       )
       // Donate NewTabPage Activity For Custom Suggestions
       let newTabPageActivity =
