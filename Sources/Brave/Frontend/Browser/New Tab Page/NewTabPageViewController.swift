@@ -130,6 +130,8 @@ class NewTabPageViewController: UIViewController {
   private let notifications: NewTabPageNotifications
   private var cancellables: Set<AnyCancellable> = []
   private let privateBrowsingManager: PrivateBrowsingManager
+  
+  private let p3aHelper: NewTabPageP3AHelper
 
   init(
     tab: Tab,
@@ -137,17 +139,21 @@ class NewTabPageViewController: UIViewController {
     dataSource: NTPDataSource,
     feedDataSource: FeedDataSource,
     rewards: BraveRewards,
-    privateBrowsingManager: PrivateBrowsingManager
+    privateBrowsingManager: PrivateBrowsingManager,
+    p3aUtils: BraveP3AUtils
   ) {
     self.tab = tab
     self.rewards = rewards
     self.feedDataSource = feedDataSource
     self.privateBrowsingManager = privateBrowsingManager
     self.backgroundButtonsView = NewTabPageBackgroundButtonsView(privateBrowsingManager: privateBrowsingManager)
+    self.p3aHelper = .init(p3aUtils: p3aUtils)
     background = NewTabPageBackground(dataSource: dataSource)
     notifications = NewTabPageNotifications(rewards: rewards)
     collectionView = NewTabCollectionView(frame: .zero, collectionViewLayout: layout)
     super.init(nibName: nil, bundle: nil)
+    
+    self.p3aHelper.dataSource = self
 
     Preferences.NewTabPage.showNewTabPrivacyHub.observe(from: self)
     Preferences.NewTabPage.showNewTabFavourites.observe(from: self)
@@ -453,6 +459,16 @@ class NewTabPageViewController: UIViewController {
 
   private func reportSponsoredImageBackgroundEvent(_ event: BraveAds.NewTabPageAdEventType) {
     if case .sponsoredImage(let sponsoredBackground) = background.currentBackground {
+      let eventType: NewTabPageP3AHelper.EventType? = {
+        switch event {
+        case .clicked: return .tapped
+        case .viewed: return .viewed
+        default: return nil
+        }
+      }()
+      if let eventType {
+        p3aHelper.recordEvent(eventType, on: sponsoredBackground)
+      }
       rewards.ads.reportNewTabPageAdEvent(
         background.wallpaperId.uuidString,
         creativeInstanceId: sponsoredBackground.creativeInstanceId,
@@ -1063,6 +1079,16 @@ extension NewTabPageViewController {
         value: sponsoredPercent
       )
     }
+  }
+}
+
+// MARK: - NewTabPageP3AHelperDataSource
+extension NewTabPageViewController: NewTabPageP3AHelperDataSource {
+  var currentTabURL: URL? {
+    tab?.url
+  }
+  var isRewardsEnabled: Bool {
+    rewards.isEnabled
   }
 }
 
