@@ -10,22 +10,35 @@ import Combine
 class SyncViewController: AuthenticationController {
 
   private let isModallyPresented: Bool
+  private let dismissPresenter: Bool
   private var localAuthObservers = Set<AnyCancellable>()
 
   // MARK: Lifecycle
-
+  
+  /// Constructor for Sync View Controller that enables
+  /// functionality related with local authentication and internet connection
+  /// - Parameters:
+  ///   - windowProtection: WindowProtection for passcode window functionality
+  ///   - requiresAuthentication: Boolean determines viewing the screen requires local auth
+  ///   - isAuthenticationCancellable: Determines if the niometric authentication has cancel function
+  ///   - isModallyPresented: Checks  if view controller presented modally in order to determine dismiss type
+  ///   - dismissPresenter: Boolean that determines cancel functionality dismisses the presented controller
   init(windowProtection: WindowProtection? = nil,
        requiresAuthentication: Bool = false,
        isAuthenticationCancellable: Bool = true,
-       isModallyPresented: Bool = false) {
+       isModallyPresented: Bool = false,
+       dismissPresenter: Bool = true) {
     self.isModallyPresented = isModallyPresented
+    self.dismissPresenter = dismissPresenter
     super.init(windowProtection: windowProtection, requiresAuthentication: requiresAuthentication)
     
     windowProtection?.isCancellable = isAuthenticationCancellable
     
     windowProtection?.cancelPressed
       .sink { [weak self] _ in
-        self?.dismissSyncController()
+        if dismissPresenter {
+          self?.dismissSyncController()
+        }
       }.store(in: &localAuthObservers)
   }
 

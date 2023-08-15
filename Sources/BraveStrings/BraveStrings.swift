@@ -3286,7 +3286,7 @@ extension Strings {
         "login.syncSetPasscodeAlertDescription",
         tableName: "BraveShared",
         bundle: .module,
-        value: "To setup sync chain or see settings, you must first set a passcode on your device.",
+        value: "To add a device to sync chain or toggle password sync, you must first set a passcode on your device.",
         comment: "The message displayed in alert when a user needs to set a passcode")
   }
 }

@@ -196,70 +196,62 @@ class SyncWelcomeViewController: SyncViewController {
 
   @objc
   private func newToSyncAction() {
-    askForAuthentication() { [weak self] status, error in
-      guard let self = self, status else { return }
+    let addDevice = SyncSelectDeviceTypeViewController()
+    addDevice.syncInitHandler = { [weak self] (title, type) in
+      guard let self = self else { return }
       
-      let addDevice = SyncSelectDeviceTypeViewController()
-      addDevice.syncInitHandler = { [weak self] (title, type) in
-        guard let self = self else { return }
-        
-        func pushAddDeviceVC() {
-          self.syncServiceObserver = nil
-          guard self.syncAPI.isInSyncGroup else {
-            addDevice.disableNavigationPrevention()
-            let alert = UIAlertController(title: Strings.syncUnsuccessful, message: Strings.syncUnableCreateGroup, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
-            addDevice.present(alert, animated: true, completion: nil)
-            return
-          }
-          
-          let view = SyncAddDeviceViewController(title: title, type: type, syncAPI: self.syncAPI)
-          view.addDeviceHandler = self.pushSettings
-          view.navigationItem.hidesBackButton = true
-          self.navigationController?.pushViewController(view, animated: true)
-        }
-        
-        if self.syncAPI.isInSyncGroup {
-          pushAddDeviceVC()
+      func pushAddDeviceVC() {
+        self.syncServiceObserver = nil
+        guard self.syncAPI.isInSyncGroup else {
+          addDevice.disableNavigationPrevention()
+          let alert = UIAlertController(title: Strings.syncUnsuccessful, message: Strings.syncUnableCreateGroup, preferredStyle: .alert)
+          alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
+          addDevice.present(alert, animated: true, completion: nil)
           return
         }
         
-        addDevice.enableNavigationPrevention()
-        
-        // DidJoinSyncChain result should be also checked when creating a new chain
-        self.syncAPI.setDidJoinSyncChain { result in
-          if result {
-            self.syncDeviceInfoObserver = self.syncAPI.addDeviceStateObserver { [weak self] in
-              guard let self else { return }
-              self.syncServiceObserver = nil
-              self.syncDeviceInfoObserver = nil
-              
-              pushAddDeviceVC()
-            }
-          } else {
-            self.syncAPI.leaveSyncGroup()
-            addDevice.disableNavigationPrevention()
-            self.navigationController?.popViewController(animated: true)
-          }
-        }
-        
-        self.syncAPI.joinSyncGroup(codeWords: self.syncAPI.getSyncCode(), syncProfileService: self.syncProfileServices)
-        self.handleSyncSetupFailure()
+        let view = SyncAddDeviceViewController(title: title, type: type, syncAPI: self.syncAPI)
+        view.addDeviceHandler = self.pushSettings
+        view.navigationItem.hidesBackButton = true
+        self.navigationController?.pushViewController(view, animated: true)
       }
       
-      self.navigationController?.pushViewController(addDevice, animated: true)
+      if self.syncAPI.isInSyncGroup {
+        pushAddDeviceVC()
+        return
+      }
+      
+      addDevice.enableNavigationPrevention()
+      
+      // DidJoinSyncChain result should be also checked when creating a new chain
+      self.syncAPI.setDidJoinSyncChain { result in
+        if result {
+          self.syncDeviceInfoObserver = self.syncAPI.addDeviceStateObserver { [weak self] in
+            guard let self else { return }
+            self.syncServiceObserver = nil
+            self.syncDeviceInfoObserver = nil
+            
+            pushAddDeviceVC()
+          }
+        } else {
+          self.syncAPI.leaveSyncGroup()
+          addDevice.disableNavigationPrevention()
+          self.navigationController?.popViewController(animated: true)
+        }
+      }
+      
+      self.syncAPI.joinSyncGroup(codeWords: self.syncAPI.getSyncCode(), syncProfileService: self.syncProfileServices)
+      self.handleSyncSetupFailure()
     }
+    
+    navigationController?.pushViewController(addDevice, animated: true)
   }
 
   @objc
   private func existingUserAction() {
-    askForAuthentication() { [weak self] status, error in
-      guard let self = self, status else { return }
-      
-      let pairCamera = SyncPairCameraViewController(syncAPI: syncAPI)
-      pairCamera.delegate = self
-      self.navigationController?.pushViewController(pairCamera, animated: true)
-    }
+    let pairCamera = SyncPairCameraViewController(syncAPI: syncAPI)
+    pairCamera.delegate = self
+    navigationController?.pushViewController(pairCamera, animated: true)
   }
   
   @objc
@@ -288,8 +280,7 @@ class SyncWelcomeViewController: SyncViewController {
       syncAPI: syncAPI,
       syncProfileService: syncProfileServices,
       tabManager: tabManager,
-      windowProtection: windowProtection,
-      requiresAuthentication: false)
+      windowProtection: windowProtection)
     
     navigationController?.pushViewController(syncSettingsVC, animated: true)
   }

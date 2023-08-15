@@ -698,10 +698,9 @@ class TabTrayController: AuthenticationController {
         syncAPI: braveCore.syncAPI,
         syncProfileService: braveCore.syncProfileService,
         tabManager: tabManager,
-        windowProtection: windowProtection,
-        requiresAuthentication: true)
+        windowProtection: windowProtection)
       
-        syncSettingsScreen.syncStatusDelegate = self
+        syncSettingsScreen.syncStatusDelegate = self 
       
         openInsideSettingsNavigation(with: syncSettingsScreen)
       default:
