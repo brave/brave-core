@@ -501,6 +501,7 @@ brave_java_base_sources = [
   "//brave/android/java/org/chromium/base/BraveFeatureList.java",
   "//brave/android/java/org/chromium/base/BravePreferenceKeys.java",
   "//brave/android/java/org/chromium/base/BraveReflectionUtil.java",
+  "//brave/android/java/org/chromium/base/library_loader/BraveLibraryLoader.java",
 ]
 
 brave_java_base_module_sources = [
