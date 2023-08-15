@@ -7,16 +7,16 @@ import { getAllActions } from './api/getAllActions'
 import { PlayerMessagePayload } from './api/playerApi'
 import { types } from './constants/playlist_types'
 
-export function handlePlayerMessage ({
-  actionType,
-  data
-}: PlayerMessagePayload) {
-  switch (actionType) {
-    case types.PLAYLIST_ITEM_SELECTED:
-      getAllActions().selectPlaylistItem(data)
+export function handlePlayerMessage (payload: PlayerMessagePayload) {
+  switch (payload.actionType) {
+    case types.PLAYLIST_ITEM_SELECTED: {
+      getAllActions().selectPlaylistItem(payload)
       break
-    default:
-      console.error(`Unknown action type: ${actionType}`)
+    }
+    case types.SELECTED_PLAYLIST_UPDATED: {
+      getAllActions().selectedPlaylistUpdated(payload)
+      break
+    }
   }
 }
 

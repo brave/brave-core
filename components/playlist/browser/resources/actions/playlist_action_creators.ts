@@ -13,15 +13,22 @@ import { CachingProgress, PlayerState } from '../reducers/states'
 
 // Constants
 import { types } from '../constants/playlist_types'
+import {
+  ItemSelectedPayload,
+  SelectedPlaylistUpdatedPayload
+} from '../api/playerApi'
 
+// Actions used by App ---------------------------------------------------------
 export const playlistLoaded = (playlists: Playlist[]) =>
   action(types.PLAYLIST_LOADED, playlists)
 
-export const selectPlaylist = (playlist: Playlist) =>
-  action(types.PLAYLIST_SELECTED, playlist)
+// Actions used by Player ------------------------------------------------------
+export const selectPlaylistItem = (payload: ItemSelectedPayload) =>
+  action(types.PLAYLIST_ITEM_SELECTED, payload)
 
-export const selectPlaylistItem = (playlist: PlaylistItem) =>
-  action(types.PLAYLIST_ITEM_SELECTED, playlist)
+export const selectedPlaylistUpdated = (
+  payload: SelectedPlaylistUpdatedPayload
+) => action(types.SELECTED_PLAYLIST_UPDATED, payload)
 
 export const cachingProgressChanged = (cachingProgress: CachingProgress) =>
   action(types.PLAYLIST_CACHING_PROGRESS_CHANGED, cachingProgress)
@@ -34,3 +41,7 @@ export const playerStartedPlayingItem = (playlist: PlaylistItem | undefined) =>
 
 export const playerStoppedPlayingItem = (playlist: PlaylistItem | undefined) =>
   action(types.PLAYER_STOPPED_PLAYING_ITEM)
+
+export const playNextItem = () => action(types.PLAYER_PLAY_NEXT_ITEM)
+
+export const playPreviousItem = () => action(types.PLAYER_PLAY_PREVIOUS_ITEM)

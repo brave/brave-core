@@ -42,6 +42,7 @@ export interface PlaylistData {
 }
 
 export interface PlayerState {
+  currentList: Playlist | undefined
   currentItem: PlaylistItem | undefined
   playing: boolean
 }

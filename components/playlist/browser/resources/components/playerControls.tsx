@@ -9,6 +9,8 @@ import Icon from '@brave/leo/react/icon'
 import styled from 'styled-components'
 import { color } from '@brave/leo/tokens/css'
 
+import { getAllActions } from '../api/getAllActions'
+
 interface Props {
   videoElement?: HTMLVideoElement | null
   className?: string
@@ -73,7 +75,10 @@ export default function PlayerControls ({ videoElement, className }: Props) {
   return (
     <Container className={className}>
       <div>
-        <Control iconName='start-outline' onClick={() => {}}></Control>
+        <Control
+          iconName='start-outline'
+          onClick={() => getAllActions().playPreviousItem()}
+        ></Control>
         <Control
           iconName='rewind-15'
           onClick={() => videoElement && (videoElement.currentTime -= 15)}
@@ -93,7 +98,10 @@ export default function PlayerControls ({ videoElement, className }: Props) {
           iconName='forward-15'
           onClick={() => videoElement && (videoElement.currentTime += 15)}
         ></Control>
-        <Control iconName='end-outline' onClick={() => {}}></Control>
+        <Control
+          iconName='end-outline'
+          onClick={() => getAllActions().playNextItem()}
+        ></Control>
       </div>
       <div>
         <Control iconName='autoplay-off' onClick={() => {}}></Control>

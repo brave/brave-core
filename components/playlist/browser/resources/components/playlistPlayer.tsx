@@ -9,7 +9,7 @@ import { RouteComponentProps, Redirect } from 'react-router-dom'
 
 import VideoFrame from './videoFrame'
 import PlaylistItem from './playlistItem'
-import { ApplicationState, usePlaylist } from '../reducers/states'
+import { ApplicationState, PlayerState, usePlaylist } from '../reducers/states'
 import postMessageToPlayer from '../api/playerApi'
 import { types } from '../constants/playlist_types'
 
@@ -21,11 +21,21 @@ export default function PlaylistPlayer ({
   match
 }: RouteComponentProps<MatchParams>) {
   const playlist = usePlaylist(match.params.playlistId)
+  const lastPlayerState = useSelector<
+    ApplicationState,
+    PlayerState | undefined
+  >(applicationState => applicationState.playlistData?.lastPlayerState)
 
-  const playing = useSelector<ApplicationState, boolean>(
-    applicationState =>
-      !!applicationState.playlistData?.lastPlayerState?.playing
-  )
+  React.useEffect(() => {
+    // When playlist updated and player is working, notify that the current
+    // list has changed.
+    if (playlist && lastPlayerState) {
+      postMessageToPlayer({
+        actionType: types.SELECTED_PLAYLIST_UPDATED,
+        currentList: playlist
+      })
+    }
+  }, [playlist])
 
   if (!playlist) {
     // After deleting a playlist from header, this could happen. In this case,
@@ -35,7 +45,7 @@ export default function PlaylistPlayer ({
 
   return (
     <>
-      <VideoFrame playing={playing} />
+      <VideoFrame playing={!!lastPlayerState?.currentItem} />
       {playlist?.items.map(item => (
         <PlaylistItem
           key={item.id}
@@ -43,7 +53,8 @@ export default function PlaylistPlayer ({
           onClick={() =>
             postMessageToPlayer({
               actionType: types.PLAYLIST_ITEM_SELECTED,
-              data: item
+              currentList: playlist,
+              currentItem: item
             })
           }
         />
