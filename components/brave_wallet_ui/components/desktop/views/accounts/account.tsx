@@ -203,6 +203,7 @@ export const Account = () => {
 
   const {
     data: tokenBalancesRegistry,
+    isLoading: isLoadingBalances
   } = useBalancesFetcher(selectedAccount && networkList
     ? {
         accounts: [selectedAccount],
@@ -368,14 +369,24 @@ export const Account = () => {
               action={() => onSelectAsset(asset)}
               account={selectedAccount}
               assetBalance={
-                getBalance(selectedAccount.accountId, asset, tokenBalancesRegistry)
+                isLoadingBalances
+                  ? ''
+                  : getBalance(
+                    selectedAccount.accountId,
+                    asset,
+                    tokenBalancesRegistry
+                  )
               }
               token={asset}
               spotPrice={
                 spotPriceRegistry && !isLoadingSpotPrices
                   ? getTokenPriceAmountFromRegistry(spotPriceRegistry, asset)
                     .format()
-                  : ''
+                  : !spotPriceRegistry &&
+                    !isLoadingSpotPrices &&
+                    !isLoadingBalances
+                    ? '0'
+                    : ''
               }
             />
           )}

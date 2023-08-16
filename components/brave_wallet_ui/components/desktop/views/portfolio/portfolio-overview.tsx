@@ -308,7 +308,7 @@ export const PortfolioOverview = () => {
       return Amount.empty()
     }
 
-    if (isLoadingSpotPrices) {
+    if (isLoadingSpotPrices || isLoadingBalances) {
       return Amount.empty()
     }
 
@@ -331,7 +331,8 @@ export const PortfolioOverview = () => {
       visibleAssetOptions,
       spotPriceRegistry,
       isLoadingSpotPrices,
-      usersFilteredAccounts.length
+      usersFilteredAccounts.length,
+      isLoadingBalances
     ])
 
   const formattedFullPortfolioFiatBalance = React.useMemo(() => {
@@ -375,8 +376,16 @@ export const PortfolioOverview = () => {
       return ''
     }
 
+    if (
+      !isFetchingPortfolioPriceHistory &&
+      oldestValue.isZero() &&
+      difference.isZero()
+    ) {
+      return '0'
+    }
+
     return `${difference.div(oldestValue).times(100).format(2)}`
-  }, [change])
+  }, [change, isFetchingPortfolioPriceHistory])
 
   const fiatValueChange = React.useMemo(() => {
     const { difference, oldestValue } = change
@@ -452,10 +461,16 @@ export const PortfolioOverview = () => {
           action={() => onSelectAsset(item.asset)}
           key={getAssetIdKey(item.asset)}
           assetBalance={
-            selectedGroupAssetsByItem ===
-              AccountsGroupByOption.id
-              ? getBalance(account?.accountId, item.asset, tokenBalancesRegistry)
-              : item.assetBalance
+            isLoadingBalances
+              ? ''
+              : selectedGroupAssetsByItem ===
+                AccountsGroupByOption.id
+                ? getBalance(
+                  account?.accountId,
+                  item.asset,
+                  tokenBalancesRegistry
+                )
+                : item.assetBalance
           }
           account={
             selectedGroupAssetsByItem ===
@@ -471,7 +486,11 @@ export const PortfolioOverview = () => {
                 spotPriceRegistry,
                 item.asset
               ).format()
-              : ''
+              : !spotPriceRegistry &&
+                !isLoadingSpotPrices &&
+                !isLoadingBalances
+                ? '0'
+                : ''
           }
         />
       }
@@ -486,7 +505,8 @@ export const PortfolioOverview = () => {
     hidePortfolioBalances,
     spotPriceRegistry,
     isLoadingSpotPrices,
-    tokenBalancesRegistry
+    tokenBalancesRegistry,
+    isLoadingBalances
   ])
 
   // effects
