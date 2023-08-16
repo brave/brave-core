@@ -271,7 +271,7 @@ public struct NewsSettingsView: View {
       OptInView { @MainActor in
         Preferences.BraveNews.isShowingOptIn.value = false
         // Initialize ads if it hasn't already been done
-        await dataSource.ads?.initialize(walletInfo: .init())
+        await dataSource.ads?.initialize()
         if dataSource.isSourcesExpired {
           await withCheckedContinuation { c in
             dataSource.load {

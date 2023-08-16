@@ -588,7 +588,7 @@ class NewTabPageViewController: UIViewController {
       Preferences.BraveNews.userOptedIn.value = true
       Preferences.BraveNews.isShowingOptIn.value = false
       Preferences.BraveNews.isEnabled.value = true
-      rewards.ads.initialize(walletInfo: .init()) { [weak self] _ in
+      rewards.ads.initialize() { [weak self] _ in
         // Initialize ads if it hasn't already been done
         self?.loadFeedContents()
       }
