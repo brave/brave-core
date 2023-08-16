@@ -86,7 +86,7 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
 
         TextView backupBtn = view.findViewById(R.id.accounts_backup);
         backupBtn.setOnClickListener(
-                v -> { ((BraveWalletActivity) getActivity()).backupBannerOnClick(); });
+                v -> { ((BraveWalletActivity) getActivity()).showOnboardingLayout(); });
 
         AppCompatImageView settingsBtn = view.findViewById(R.id.accounts_settings);
         settingsBtn.setOnClickListener(v -> {
