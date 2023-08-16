@@ -13,7 +13,7 @@
     Summarize
   </message>
   <message name="IDS_CHAT_UI_ABOUT_TITLE" desc="A concise title that summarizes the purpose of AIChat">
-    About Brave AI
+    About Brave Leo
   </message>
    <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION" desc="An outlining the functioning of AIChat">
     The AI Chat feature provides summaries of the web page you are browsing and includes a chat interface that allows you to submit questions and receive responses about the content of that page.  The accuracy of summaries is not guaranteed and may include facts and fiction. You should not submit sensitive or private information and should exercise caution with any text related to health, finance or personal safety and similar cases.
