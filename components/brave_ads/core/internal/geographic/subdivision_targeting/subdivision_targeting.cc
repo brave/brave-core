@@ -105,7 +105,7 @@ void SubdivisionTargeting::MaybeAllowForLocale(const std::string& locale) {
 
   const std::string country_code = brave_l10n::GetISOCountryCode(locale);
 
-  if (!DoesSupportCountryCode(country_code)) {
+  if (!ShouldTargetSubdivisionCountryCode(country_code)) {
     BLOG(1, "Subdivision targeting is unsupported for " << country_code
                                                         << " country code");
 
@@ -122,7 +122,7 @@ void SubdivisionTargeting::MaybeAllowForLocale(const std::string& locale) {
 
   absl::optional<std::string> subdivision_country_code;
   if (!subdivision.empty()) {
-    subdivision_country_code = GetCountryCode(subdivision);
+    subdivision_country_code = GetSubdivisionCountryCode(subdivision);
   }
 
   if (country_code != subdivision_country_code) {
@@ -132,7 +132,7 @@ void SubdivisionTargeting::MaybeAllowForLocale(const std::string& locale) {
         prefs::kShouldAllowSubdivisionTargeting, false);
   }
 
-  if (!DoesCountryCodeSupportSubdivision(country_code, subdivision)) {
+  if (!ShouldTargetSubdivision(country_code, subdivision)) {
     BLOG(1, subdivision << " subdivision is unsupported for " << country_code
                         << " country code");
 

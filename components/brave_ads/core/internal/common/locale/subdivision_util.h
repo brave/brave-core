@@ -12,7 +12,8 @@
 
 namespace brave_ads {
 
-absl::optional<std::string> GetCountryCode(const std::string& subdivision);
+absl::optional<std::string> GetSubdivisionCountryCode(
+    const std::string& subdivision);
 absl::optional<std::string> GetSubdivisionCode(const std::string& subdivision);
 
 }  // namespace brave_ads

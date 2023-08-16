@@ -22,7 +22,7 @@ bool DoesCreativeAdSupportSubdivision(const CreativeAdInfo& creative_ad,
                                       const std::string& subdivision) {
   return creative_ad.geo_targets.find(subdivision) !=
              creative_ad.geo_targets.cend() ||
-         creative_ad.geo_targets.find(GetCountryCode(subdivision)) !=
+         creative_ad.geo_targets.find(GetSubdivisionCountryCode(subdivision)) !=
              creative_ad.geo_targets.cend();
 }
 

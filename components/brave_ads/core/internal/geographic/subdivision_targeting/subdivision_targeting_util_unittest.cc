@@ -11,45 +11,45 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsSubdivisionTargetingUtilTest, DoesSupportCountryCode) {
+TEST(BraveAdsSubdivisionTargetingUtilTest, ShouldTargetSubdivisionCountryCode) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_TRUE(DoesSupportCountryCode(
+  EXPECT_TRUE(ShouldTargetSubdivisionCountryCode(
       /*United States of America*/ "US"));
-  EXPECT_TRUE(DoesSupportCountryCode(/*Canada*/ "CA"));
-}
-
-TEST(BraveAdsSubdivisionTargetingUtilTest, DoesNotSupportCountryCode) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_FALSE(DoesSupportCountryCode("XX"));
-}
-
-TEST(BraveAdsSubdivisionTargetingUtilTest, DoesCountryCodeSupportSubdivision) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_TRUE(DoesCountryCodeSupportSubdivision(
-      /*United States of America*/ "US", /**/ "US-CA"));
+  EXPECT_TRUE(ShouldTargetSubdivisionCountryCode(/*Canada*/ "CA"));
 }
 
 TEST(BraveAdsSubdivisionTargetingUtilTest,
-     DoesNotCountryCodeSupportSubdivision) {
+     ShouldNotTargetSubdivisionCountryCode) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_FALSE(DoesCountryCodeSupportSubdivision(
-      /*United States of America*/ "US", /**/ "US-XX"));
+  EXPECT_FALSE(ShouldTargetSubdivisionCountryCode("XX"));
+}
+
+TEST(BraveAdsSubdivisionTargetingUtilTest, ShouldTargetSubdivision) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(ShouldTargetSubdivision(
+      /*United States of America*/ "US", /*subdivision*/ "US-CA"));
+}
+
+TEST(BraveAdsSubdivisionTargetingUtilTest, ShouldNotTargetSubdivision) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(ShouldTargetSubdivision(
+      /*United States of America*/ "US", /*subdivision*/ "US-XX"));
 }
 
 }  // namespace brave_ads

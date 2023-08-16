@@ -11,12 +11,12 @@
 
 namespace brave_ads {
 
-bool DoesSupportCountryCode(const std::string& country_code) {
+bool ShouldTargetSubdivisionCountryCode(const std::string& country_code) {
   return base::Contains(GetSupportedSubdivisions(), country_code);
 }
 
-bool DoesCountryCodeSupportSubdivision(const std::string& country_code,
-                                       const std::string& subdivision) {
+bool ShouldTargetSubdivision(const std::string& country_code,
+                             const std::string& subdivision) {
   const auto iter = GetSupportedSubdivisions().find(country_code);
   if (iter == GetSupportedSubdivisions().cend()) {
     return false;

@@ -11,13 +11,22 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsSubdivisionUtilTest, GetCountryCode) {
+TEST(BraveAdsSubdivisionUtilTest, GetSubdivisionCountryCode) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_EQ("US", GetCountryCode(/*subdivision*/ "US-CA"));
+  EXPECT_EQ("US", GetSubdivisionCountryCode(/*subdivision*/ "US-CA"));
+}
+
+TEST(BraveAdsSubdivisionUtilTest, DoNotGetSubdivisionCountryCode) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(GetSubdivisionCountryCode({}));
 }
 
 TEST(BraveAdsSubdivisionUtilTest, GetSubdivisionCode) {
@@ -27,6 +36,15 @@ TEST(BraveAdsSubdivisionUtilTest, GetSubdivisionCode) {
 
   // Assert
   EXPECT_EQ("CA", GetSubdivisionCode(/*subdivision*/ "US-CA"));
+}
+
+TEST(BraveAdsSubdivisionUtilTest, DoNotGetSubdivisionCode) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(GetSubdivisionCode({}));
 }
 
 }  // namespace brave_ads
