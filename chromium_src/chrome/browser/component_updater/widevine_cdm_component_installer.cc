@@ -163,8 +163,9 @@ class Arm64DllInstaller : public base::RefCountedThreadSafe<Arm64DllInstaller> {
 WidevineCdmComponentInstallerPolicy::WidevineCdmComponentInstallerPolicy(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : url_loader_factory_(url_loader_factory),
-      task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
-          update_client::kTaskTraits)) {}
+      task_runner_(base::ThreadPool::CreateSingleThreadTaskRunner(
+          {base::TaskPriority::USER_BLOCKING},
+          base::SingleThreadTaskRunnerThreadMode::DEDICATED)) {}
 
 CrxInstaller::Result WidevineCdmComponentInstallerPolicy::OnCustomInstall(
     const base::Value::Dict& manifest,
