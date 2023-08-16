@@ -210,7 +210,10 @@ private extension AdblockFilterListCatalogEntry {
   /// This method returns the default value for this filter list if the user does not manually toggle it.
   /// - Warning: Make sure you use `componentID` to identify the filter list, as `uuid` will be deprecated in the future.
   var defaultToggle: Bool {
-    let componentIDsToOverride = [FilterList.mobileAnnoyancesComponentID]
+    let componentIDsToOverride = [
+      FilterList.mobileAnnoyancesComponentID,
+      FilterList.cookieConsentNoticesComponentID
+    ]
     
     if componentIDsToOverride.contains(componentId) {
       return true
