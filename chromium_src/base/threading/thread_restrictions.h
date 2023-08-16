@@ -15,9 +15,12 @@ class IpfsService;
 namespace brave {
 class ProcessLauncher;
 }
+
+#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 namespace component_updater {
-class WidevineCdmComponentInstallerPolicy;
+class Arm64DllInstaller;
 }
+#endif
 
 #define BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H_BASE \
   friend class ::BraveBrowsingDataRemoverDelegate;     \
@@ -25,9 +28,9 @@ class WidevineCdmComponentInstallerPolicy;
   friend class brave::ProcessLauncher;
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-// WidevineCdmComponentInstallerPolicy needs to use TimedWait:
+// Arm64DllInstaller needs to use TimedWait:
 #define BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_WIDEVINE_ARM64_DLL_FIX \
-  friend class component_updater::WidevineCdmComponentInstallerPolicy;
+  friend class component_updater::Arm64DllInstaller;
 #else
 #define BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_WIDEVINE_ARM64_DLL_FIX
 #endif

@@ -118,55 +118,51 @@ BASE_FEATURE(kBraveWidevineArm64DllFix,
 
 namespace component_updater {
 
-void RegisterWidevineCdmComponent(
-    ComponentUpdateService* cus,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    base::OnceCallback<void()> callback) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  if (!IsWidevineOptedIn()) {
-    return;
-  }
-  CHECK(url_loader_factory);
-  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<WidevineCdmComponentInstallerPolicy>(
-          url_loader_factory->Clone()));
-  installer->Register(cus, std::move(callback));
-}
-
 class WidevineCdmComponentInstallerPolicy
     : public WidevineCdmComponentInstallerPolicy_ChromiumImpl {
  public:
   WidevineCdmComponentInstallerPolicy(
-      std::unique_ptr<network::PendingSharedURLLoaderFactory>
-          pending_url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
  private:
   CrxInstaller::Result OnCustomInstall(
       const base::Value::Dict& manifest,
       const base::FilePath& install_dir) override;
-  void DownloadArm64Dll(const base::FilePath& install_dir);
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
+};
+
+class Arm64DllInstaller : public base::RefCountedThreadSafe<Arm64DllInstaller> {
+ public:
+  Arm64DllInstaller(
+      std::unique_ptr<network::PendingSharedURLLoaderFactory>
+          pending_url_loader_factory);
+  void Start(const base::FilePath& install_dir);
+  CrxInstaller::Result WaitForCompletion();
+
+ protected:
+  virtual ~Arm64DllInstaller() = default;
+
+ private:
+  friend class base::RefCountedThreadSafe<Arm64DllInstaller>;
+
   void OnArm64DllDownloadComplete(const base::FilePath& install_dir,
                                   base::FilePath zip_path);
   bool ExtractArm64Dll(const base::FilePath& install_dir,
                        base::FilePath zip_path);
   bool AddArm64ArchToManifest(const base::FilePath& install_dir);
-  void ResetForNextUpdate();
 
   std::unique_ptr<network::PendingSharedURLLoaderFactory>
       pending_url_loader_factory_;
-  scoped_refptr<base::SequencedTaskRunner> task_runner_;
   std::unique_ptr<network::SimpleURLLoader> loader_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   base::WaitableEvent installed_;
   CrxInstaller::Result result_;
-  base::WeakPtrFactory<WidevineCdmComponentInstallerPolicy> weak_ptr_factory_{
-      this};
 };
 
 WidevineCdmComponentInstallerPolicy::WidevineCdmComponentInstallerPolicy(
-    std::unique_ptr<network::PendingSharedURLLoaderFactory>
-        pending_url_loader_factory)
-    : pending_url_loader_factory_(std::move(pending_url_loader_factory)),
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : url_loader_factory_(url_loader_factory),
       task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           update_client::kTaskTraits)) {}
 
@@ -180,32 +176,20 @@ CrxInstaller::Result WidevineCdmComponentInstallerPolicy::OnCustomInstall(
                     "Consider removing our WIDEVINE_ARM64_DLL_FIX.";
     return CrxInstaller::Result(0);
   }
-  // Reset the result after a potential previous invocation:
-  result_ = CrxInstaller::Result(0);
-  task_runner_->PostTask(
+  scoped_refptr<Arm64DllInstaller> installer =
+      base::MakeRefCounted<Arm64DllInstaller>(url_loader_factory_->Clone());
+    task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&WidevineCdmComponentInstallerPolicy::DownloadArm64Dll,
-                     weak_ptr_factory_.GetWeakPtr(), install_dir));
-  // Blocking the thread with a wait is pretty nasty. Unfortunately, we have no
-  // other choice: Upstream's implementation of OnCustomInstall is synchronous
-  // and making it asynchronous via a callback would require too many changes.
-  // At least, upstream guarantees that the thread is blocking. Furthermore,
-  // the Widevine component doesn't get installed / updated too often so the
-  // effects are limited. Finally, we use TimedWait(...) instead of Wait(...) to
-  // really make sure that we do not block the thread forever.
-  base::ScopedAllowBaseSyncPrimitives allow_wait;
-  bool success =
-      installed_.TimedWait(base::Seconds(kOverallDownloadTimeoutSecs));
-  ResetForNextUpdate();
-  if (!success) {
-    LOG(ERROR) << "Arm64 DLL download timeout expired.";
-    return CrxInstaller::Result(update_client::InstallError::GENERIC_ERROR);
-  }
-  return result_;
+      base::BindOnce(&Arm64DllInstaller::Start, installer, install_dir));
+  return installer->WaitForCompletion();
 }
 
-void WidevineCdmComponentInstallerPolicy::DownloadArm64Dll(
-    const base::FilePath& install_dir) {
+Arm64DllInstaller::Arm64DllInstaller(
+    std::unique_ptr<network::PendingSharedURLLoaderFactory>
+        pending_url_loader_factory)
+    : pending_url_loader_factory_(std::move(pending_url_loader_factory)) {}
+
+void Arm64DllInstaller::Start(const base::FilePath& install_dir) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = GURL(kBraveWidevineArm64DllUrl.Get());
 
@@ -223,11 +207,29 @@ void WidevineCdmComponentInstallerPolicy::DownloadArm64Dll(
   loader_->DownloadToTempFile(
       url_loader_factory_.get(),
       base::BindOnce(
-          &WidevineCdmComponentInstallerPolicy::OnArm64DllDownloadComplete,
-          weak_ptr_factory_.GetWeakPtr(), install_dir));
+          &Arm64DllInstaller::OnArm64DllDownloadComplete,
+          base::RetainedRef(this), install_dir));
 }
 
-void WidevineCdmComponentInstallerPolicy::OnArm64DllDownloadComplete(
+CrxInstaller::Result Arm64DllInstaller::WaitForCompletion() {
+  // Blocking the thread with a wait is pretty nasty. Unfortunately, we have no
+  // other choice: Upstream's implementation of OnCustomInstall is synchronous
+  // and making it asynchronous via a callback would require too many changes.
+  // At least, upstream guarantees that the thread is blocking. Furthermore,
+  // the Widevine component doesn't get installed / updated too often so the
+  // effects are limited. Finally, we use TimedWait(...) instead of Wait(...) to
+  // really make sure that we do not block the thread forever.
+  base::ScopedAllowBaseSyncPrimitives allow_wait;
+  bool success =
+      installed_.TimedWait(base::Seconds(kOverallDownloadTimeoutSecs));
+  if (!success) {
+    LOG(ERROR) << "Arm64 DLL download timeout expired.";
+    return CrxInstaller::Result(update_client::InstallError::GENERIC_ERROR);
+  }
+  return result_;
+}
+
+void Arm64DllInstaller::OnArm64DllDownloadComplete(
     const base::FilePath& install_dir,
     base::FilePath zip_path) {
   if (zip_path.empty()) {
@@ -246,7 +248,7 @@ void WidevineCdmComponentInstallerPolicy::OnArm64DllDownloadComplete(
   installed_.Signal();
 }
 
-bool WidevineCdmComponentInstallerPolicy::ExtractArm64Dll(
+bool Arm64DllInstaller::ExtractArm64Dll(
     const base::FilePath& install_dir,
     base::FilePath zip_path) {
   base::FilePath arm64_directory = GetPlatformDirectory(install_dir);
@@ -270,7 +272,7 @@ bool WidevineCdmComponentInstallerPolicy::ExtractArm64Dll(
 // not in the list of supported architectures, then the component is
 // uninstalled. To prevent this from happening to our WIDEVINE_ARM64_DLL_FIX,
 // we need to add "arm64" to the list of supported architectures.
-bool WidevineCdmComponentInstallerPolicy::AddArm64ArchToManifest(
+bool Arm64DllInstaller::AddArm64ArchToManifest(
     const base::FilePath& install_dir) {
   base::FilePath manifest_path = install_dir.AppendASCII("manifest.json");
 
@@ -317,9 +319,19 @@ bool WidevineCdmComponentInstallerPolicy::AddArm64ArchToManifest(
   return true;
 }
 
-void WidevineCdmComponentInstallerPolicy::ResetForNextUpdate() {
-  loader_.reset();
-  installed_.Reset();
+void RegisterWidevineCdmComponent(
+    ComponentUpdateService* cus,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    base::OnceCallback<void()> callback) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  if (!IsWidevineOptedIn()) {
+    return;
+  }
+  CHECK(url_loader_factory);
+  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
+      std::make_unique<WidevineCdmComponentInstallerPolicy>(
+          url_loader_factory));
+  installer->Register(cus, std::move(callback));
 }
 
 }  // namespace component_updater
