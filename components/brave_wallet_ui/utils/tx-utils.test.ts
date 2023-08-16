@@ -17,12 +17,14 @@ import {
 } from '../stories/mock-data/mock-asset-options'
 import { mockEthMainnet } from '../stories/mock-data/mock-networks'
 import { mockFilSendTransaction, mockTransactionInfo } from '../stories/mock-data/mock-transaction-info'
+import { mockEthAccount } from '../stories/mock-data/mock-wallet-accounts'
 import Amount from './amount'
 import {
   accountHasInsufficientFundsForGas,
   accountHasInsufficientFundsForTransaction,
   findTransactionToken,
   getETHSwapTransactionBuyAndSellTokens,
+  getIsRevokeApprovalTx,
   getTransactionGas,
   getTransactionStatusString,
   toTxDataUnion
@@ -118,6 +120,8 @@ describe('getETHSwapTransactionBuyAndSellTokens', () => {
         confirmedTime: { microseconds: Date.now() },
         createdTime: { microseconds: Date.now() },
         fromAddress: mockAccount.address,
+        effectiveRecipient: mockAccount.address,
+        fromAccountId: mockAccount.accountId,
         groupId: undefined,
         id: 'swap',
         originInfo: undefined,
@@ -565,7 +569,6 @@ describe('toTxDataUnion', () => {
       gasLimit: '',
       maxFee: '0',
       to: 'to',
-      from: 'from',
       value: 'value'
     }
 
@@ -576,5 +579,28 @@ describe('toTxDataUnion', () => {
     expect(union.ethTxData).toBe(undefined)
     expect(union.ethTxData1559).toBe(undefined)
     expect(union.solanaTxData).toBe(undefined)
+  })
+})
+
+describe('getIsRevokeApprovalTx', () => {
+  test('correctly detects revocations', () => {
+    expect(getIsRevokeApprovalTx({
+      ...mockTransactionInfo,
+      txType: BraveWallet.TransactionType.ERC20Approve,
+      txArgs: [
+        mockEthAccount.address, // spender
+        '0' // amount
+      ]
+    })).toBe(true)
+  })
+  test('correctly detects non-revocation approvals', () => {
+    expect(getIsRevokeApprovalTx({
+      ...mockTransactionInfo,
+      txType: BraveWallet.TransactionType.ERC20Approve,
+      txArgs: [
+        mockEthAccount.address, // spender
+        '10' // amount
+      ]
+    })).toBe(false)
   })
 })
