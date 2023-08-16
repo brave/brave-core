@@ -81,6 +81,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private ModalDialogManager mModalDialogManager;
     private CryptoWalletOnboardingPagerAdapter mCryptoWalletOnboardingPagerAdapter;
     private BottomNavigationViewWithIndicator mBottomNavigationView;
+    private ViewPager2 mViewPager;
     private boolean mShowBiometricPrompt;
     private boolean mIsFromDapps;
     private WalletModel mWalletModel;
@@ -200,6 +201,9 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         mModalDialogManager = new ModalDialogManager(
                 new AppModalPresenter(this), ModalDialogManager.ModalDialogType.APP);
 
+        mViewPager = findViewById(R.id.navigation_view_pager);
+        mViewPager.setUserInputEnabled(false);
+
         onInitialLayoutInflationComplete();
     }
 
@@ -216,6 +220,16 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                     setCryptoLayout();
                 }
             });
+        }
+    }
+
+    @Override
+    public void onStartWithNative() {
+        super.onStartWithNative();
+        if (mCryptoFragmentPageAdapter == null) {
+            mCryptoFragmentPageAdapter = new CryptoFragmentPageAdapter(this);
+            mViewPager.setAdapter(mCryptoFragmentPageAdapter);
+            mViewPager.setOffscreenPageLimit(mCryptoFragmentPageAdapter.getItemCount() - 1);
         }
     }
 
@@ -323,12 +337,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
 
         mCryptoOnboardingLayout.setVisibility(View.GONE);
         mCryptoLayout.setVisibility(View.VISIBLE);
-
-        ViewPager2 viewPager = findViewById(R.id.navigation_view_pager);
-        viewPager.setUserInputEnabled(false);
-        mCryptoFragmentPageAdapter = new CryptoFragmentPageAdapter(this);
-        viewPager.setAdapter(mCryptoFragmentPageAdapter);
-        viewPager.setOffscreenPageLimit(mCryptoFragmentPageAdapter.getItemCount() - 1);
 
         mBottomNavigationView.setOnItemSelectedListener(menuItem -> {
             final int menuItemId = menuItem.getItemId();
