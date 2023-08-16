@@ -462,18 +462,32 @@ void RewardsServiceImpl::StartEngineProcessIfNecessary() {
   auto options = HandleFlags(RewardsFlags::ForCurrentProcess());
   PrepareEngineEnvForTesting(*options);
   engine_factory_->CreateRewardsEngine(
-      engine_.BindNewEndpointAndPassReceiver(),
       receiver_.BindNewEndpointAndPassRemote(), std::move(options),
       base::BindOnce(&RewardsServiceImpl::OnEngineCreated, AsWeakPtr()));
 }
 
-void RewardsServiceImpl::OnEngineCreated() {
-  if (!Connected()) {
-    return;
+void RewardsServiceImpl::OnEngineCreated(
+    mojo::PendingAssociatedRemote<mojom::RewardsEngine> remote) {
+  if (!remote) {
+    return BLOG(0, "Failed to create the RewardsEngine!");
   }
 
-  engine_->Initialize(
-      base::BindOnce(&RewardsServiceImpl::OnEngineInitialized, AsWeakPtr()));
+  engine_.Bind(std::move(remote));
+
+  StartNotificationTimers();
+
+  if (!ready_->is_signaled()) {
+    ready_->Signal();
+  }
+
+  RecordBackendP3AStats(/*delay_report*/ true);
+  p3a_daily_timer_.Start(
+      FROM_HERE, base::Time::Now() + kP3ADailyReportInterval,
+      base::BindOnce(&RewardsServiceImpl::OnP3ADailyTimer, AsWeakPtr()));
+
+  for (auto& observer : observers_) {
+    observer.OnRewardsInitialized(this);
+  }
 }
 
 void RewardsServiceImpl::CreateRewardsWallet(
@@ -836,25 +850,6 @@ void RewardsServiceImpl::Shutdown() {
   RewardsService::Shutdown();
 }
 
-void RewardsServiceImpl::OnEngineInitialized(mojom::Result result) {
-  if (result == mojom::Result::OK) {
-    StartNotificationTimers();
-  }
-
-  if (!ready_->is_signaled()) {
-    ready_->Signal();
-  }
-
-  RecordBackendP3AStats(/*delay_report*/ true);
-  p3a_daily_timer_.Start(
-      FROM_HERE, base::Time::Now() + kP3ADailyReportInterval,
-      base::BindOnce(&RewardsServiceImpl::OnP3ADailyTimer, AsWeakPtr()));
-
-  for (auto& observer : observers_) {
-    observer.OnRewardsInitialized(this);
-  }
-}
-
 void RewardsServiceImpl::IsAutoContributeSupported(
     base::OnceCallback<void(bool)> callback) {
   IsAutoContributeSupportedForClient(std::move(callback));
@@ -929,9 +924,6 @@ void RewardsServiceImpl::OnPublisherStateLoaded(
     LoadPublisherStateCallback callback,
     const std::string& data) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!Connected()) {
-    return;
-  }
 
   std::move(callback).Run(
       data.empty() ? mojom::Result::NO_PUBLISHER_STATE : mojom::Result::OK,

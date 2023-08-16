@@ -18,7 +18,7 @@ struct RewardsEngineOptions {
 
 interface RewardsEngineFactory {
   CreateRewardsEngine(
-      pending_associated_receiver<RewardsEngine> engine_receiver,
-      pending_associated_remote<RewardsEngineClient> client_remote,
-      RewardsEngineOptions options) => ();
+    pending_associated_remote<RewardsEngineClient> client_remote,
+    RewardsEngineOptions options
+  ) => (pending_associated_remote<RewardsEngine>? engine_remote);
 };

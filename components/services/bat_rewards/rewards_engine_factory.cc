@@ -19,28 +19,45 @@ RewardsEngineFactory::RewardsEngineFactory(
 RewardsEngineFactory::~RewardsEngineFactory() = default;
 
 void RewardsEngineFactory::CreateRewardsEngine(
-    mojo::PendingAssociatedReceiver<mojom::RewardsEngine> engine_receiver,
     mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote,
     mojom::RewardsEngineOptionsPtr options,
     CreateRewardsEngineCallback callback) {
-  if (!engine_) {
-    // Set global options for the current process. This must be done before
-    // the `RewardsEngineImpl` constructor is invoked so that subobjects see the
-    // correct values.
-    _environment = options->environment;
-    is_testing = options->is_testing;
-    is_debug = options->is_debug;
-    state_migration_target_version_for_testing =
-        options->state_migration_target_version_for_testing;
-    reconcile_interval = options->reconcile_interval;
-    retry_interval = options->retry_interval;
-
-    engine_ = mojo::MakeSelfOwnedAssociatedReceiver(
-        std::make_unique<RewardsEngineImpl>(std::move(client_remote)),
-        std::move(engine_receiver));
+  if (engine_) {
+    return std::move(callback).Run({});
   }
 
-  std::move(callback).Run();
+  // Set global options for the current process. This must be done before
+  // the `RewardsEngineImpl` constructor is invoked so that subobjects see the
+  // correct values.
+  _environment = options->environment;
+  is_testing = options->is_testing;
+  is_debug = options->is_debug;
+  state_migration_target_version_for_testing =
+      options->state_migration_target_version_for_testing;
+  reconcile_interval = options->reconcile_interval;
+  retry_interval = options->retry_interval;
+
+  mojo::PendingAssociatedRemote<mojom::RewardsEngine> remote;
+  auto receiver = remote.InitWithNewEndpointAndPassReceiver();
+  engine_ = mojo::MakeSelfOwnedAssociatedReceiver(
+      std::make_unique<RewardsEngineImpl>(
+          std::move(client_remote),
+          base::BindOnce(&RewardsEngineFactory::OnCreateRewardsEngine,
+                         base::Unretained(this), std::move(callback),
+                         std::move(remote))),
+      std::move(receiver));
+}
+
+void RewardsEngineFactory::OnCreateRewardsEngine(
+    CreateRewardsEngineCallback callback,
+    mojo::PendingAssociatedRemote<mojom::RewardsEngine> remote,
+    mojom::Result result) {
+  if (result != mojom::Result::OK) {
+    engine_->Close();
+    std::move(callback).Run({});
+  }
+
+  std::move(callback).Run(std::move(remote));
 }
 
 }  // namespace brave_rewards::internal
