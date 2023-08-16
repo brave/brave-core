@@ -53,6 +53,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.custom_layout.BottomNavigationViewWithIndicator;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
@@ -107,6 +108,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
             if (mKeyringService != null) {
                 mKeyringService.lock();
             }
+        } else if (item.getItemId() == R.id.help_center) {
+            WalletUtils.openWalletHelpCenter(this);
         }
         return super.onOptionsItemSelected(item);
     }

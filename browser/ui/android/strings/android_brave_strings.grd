@@ -2206,6 +2206,9 @@ Are you sure you want to do this?
     <message name="IDS_BRAVE_WALLET_TOOLBAR_LOCK" desc="Title for brave wallet toolbar lock option.">
       Lock
     </message>
+    <message name="IDS_BRAVE_WALLET_HELP_CENTER" desc="Title for help center link">
+      Help center
+    </message>
     <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOOLBAR" desc="Title for Brave wallet NFT detail screen toolbar.">
       NFT Detail
     </message>

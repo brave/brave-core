@@ -16,6 +16,11 @@
   <item android:id="@+id/settings"
       android:icon="@drawable/ic_wallet_settings"
       android:title="@string/brave_ui_settings"
-      app:iconTint="@color/wallet_text_color"
+      app:iconTint="@color/brave_wallet_day_night_text_color"
+      app:showAsAction="never" />
+  <item android:id="@+id/help_center"
+      android:icon="@drawable/ic_info"
+      android:title="@string/brave_wallet_help_center"
+      app:iconTint="@color/brave_wallet_day_night_text_color"
       app:showAsAction="never" />
 </menu>

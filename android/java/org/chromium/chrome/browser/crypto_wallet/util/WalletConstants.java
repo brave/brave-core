@@ -18,8 +18,8 @@ import java.util.Map;
 
 public final class WalletConstants {
     // Radius of the oval used to round the corners in density-independent pixels.
-    public final static int RECT_SHARP_ROUNDED_CORNERS_DP = 4;
-    public final static int RECT_ROUNDED_CORNERS_DP = 12;
+    public static final int RECT_SHARP_ROUNDED_CORNERS_DP = 4;
+    public static final int RECT_ROUNDED_CORNERS_DP = 12;
 
     public static final long MILLI_SECOND = 1000;
 
@@ -44,6 +44,9 @@ public final class WalletConstants {
     // NFT Auto Discovery
     public static final String NFT_DISCOVERY_LEARN_MORE_LINK =
             "https://github.com/brave/brave-browser/wiki/NFT-Discovery";
+
+    public static final String WALLET_HELP_CENTER =
+            "https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet";
 
     // Regex
     public static final String REGX_ANY_ETH_ADDRESS = ".*(0x[a-fA-F0-9]{40}).*";
