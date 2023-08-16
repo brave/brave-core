@@ -11,6 +11,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/device_chooser_content_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
@@ -91,7 +92,14 @@ Browser* FindBrowserAndAdjustBubbleForBraveWalletPanel(
       browser->tab_strip_model()->GetActiveWebContents
 
 #define BubbleDialogDelegateView BraveBubbleDialogDelegateView
+
+#define SetExtraView(...)    \
+  SetExtraView(__VA_ARGS__); \
+  SetFootnoteView(device_chooser_content_view_->CreateFootnoteView(browser))
+
 #include "src/chrome/browser/ui/views/permissions/chooser_bubble_ui.cc"
+
+#undef SetExtraView
 #undef BubbleDialogDelegateView
 #undef GetActiveWebContents
 #undef FindBrowserWithWebContents
