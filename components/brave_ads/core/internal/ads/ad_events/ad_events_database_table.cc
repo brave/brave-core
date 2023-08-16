@@ -216,7 +216,7 @@ void MigrateToV32(mojom::DBTransactionInfo* transaction) {
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
       "UPDATE ad_events SET confirmation_type = 'bookmark' WHERE "
-      "confirmation_type == 'saved'";
+      "confirmation_type == 'saved';";
   transaction->commands.push_back(std::move(command));
 }
 

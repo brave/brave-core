@@ -92,7 +92,7 @@ void DatabaseManager::CreateOrOpenCallback(
     return Create(std::move(callback));
   }
 
-  NotifyDidCreateOrOpenDatabase();
+  NotifyDidOpenDatabase();
 
   MaybeMigrate(from_version, std::move(callback));
 }
@@ -119,7 +119,7 @@ void DatabaseManager::CreateCallback(ResultCallback callback,
 
   BLOG(1, "Created database for schema version " << to_version);
 
-  NotifyDidCreateOrOpenDatabase();
+  NotifyDidCreateDatabase();
 
   NotifyDatabaseIsReady();
 
@@ -183,9 +183,15 @@ void DatabaseManager::NotifyWillCreateOrOpenDatabase() const {
   }
 }
 
-void DatabaseManager::NotifyDidCreateOrOpenDatabase() const {
+void DatabaseManager::NotifyDidCreateDatabase() const {
   for (DatabaseManagerObserver& observer : observers_) {
-    observer.OnDidCreateOrOpenDatabase();
+    observer.OnDidCreateDatabase();
+  }
+}
+
+void DatabaseManager::NotifyDidOpenDatabase() const {
+  for (DatabaseManagerObserver& observer : observers_) {
+    observer.OnDidOpenDatabase();
   }
 }
 
