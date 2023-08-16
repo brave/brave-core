@@ -152,6 +152,7 @@ class BraveNewsController : public KeyedService,
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
   api_request_helper::APIRequestHelper api_request_helper_;
   brave_private_cdn::PrivateCDNRequestHelper private_cdn_request_helper_;
+  raw_ptr<history::HistoryService> history_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   DirectFeedController direct_feed_controller_;

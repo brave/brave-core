@@ -180,6 +180,10 @@ void PublishersController::GetLocale(
       base::Unretained(this), std::move(callback)));
 }
 
+const std::string& PublishersController::GetLastLocale() const {
+  return default_locale_;
+}
+
 void PublishersController::EnsurePublishersIsUpdating() {
   // Only 1 update at a time, other calls for data will wait for
   // the current operation via the `on_current_update_complete_` OneShotEvent.

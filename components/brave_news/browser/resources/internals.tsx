@@ -11,6 +11,7 @@ import InspectContext, { useInspectContext } from './context'
 import PageInfo from './PageInfo'
 import FeedPage from './FeedPage'
 import SignalsPage from './SignalsPage'
+import Button from '@brave/leo/react/button'
 
 const Grid = styled.div`
   display: grid;
@@ -41,6 +42,8 @@ function App() {
         Publishers: {Object.keys(publishers).length}
         <br />
         Channels: {Object.keys(channels).length}
+        <br />
+        <Button onClick={() => window.location.reload()}>Refresh</Button>
       </div>
     </Grid>
   )
