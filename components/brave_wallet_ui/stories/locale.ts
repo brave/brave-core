@@ -73,7 +73,7 @@ provideStrings({
 
   // Portfolio SubView
   braveWalletAccounts: 'Accounts',
-  braveWalletAccount: 'Account',
+  braveWalletSubviewAccount: 'Account',
   braveWalletOwner: 'Owner',
   braveWalletActivity: 'Activity',
   braveWalletTransactions: 'Transactions',

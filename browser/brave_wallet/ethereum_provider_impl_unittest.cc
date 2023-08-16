@@ -14,6 +14,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -100,15 +101,6 @@ void GetErrorCodeMessage(base::Value formed_response,
   }
 }
 
-const char kValidSIWEMessage[] =
-    "example.com wants you to sign in with your Ethereum account:\n"
-    "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2\n\n\n"
-    "URI: https://example.com/login\n"
-    "Version: 1\n"
-    "Chain ID: 1\n"
-    "Nonce: 32891756\n"
-    "Issued At: 2021-09-30T16:25:24Z)";
-
 void ValidateErrorCode(EthereumProviderImpl* provider,
                        const std::string& payload,
                        mojom::ProviderError expected) {
@@ -146,8 +138,6 @@ absl::optional<base::Value> ToValue(const network::ResourceRequest& request) {
   return base::JSONReader::Read(request_string,
                                 base::JSONParserOptions::JSON_PARSE_RFC);
 }
-
-}  // namespace
 
 class TestEventsListener : public brave_wallet::mojom::EventsListener {
  public:
@@ -209,6 +199,8 @@ class TestEventsListener : public brave_wallet::mojom::EventsListener {
  private:
   mojo::Receiver<brave_wallet::mojom::EventsListener> observer_receiver_{this};
 };
+
+}  // namespace
 
 class EthereumProviderImplUnitTest : public testing::Test {
  public:
@@ -515,6 +507,21 @@ class EthereumProviderImplUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  std::string GetSIWEMessage(const std::string& domain,
+                             const std::string& account,
+                             const std::string& uri,
+                             const std::string& network) {
+    return base::StringPrintf(
+        "%s wants you to sign in with your Ethereum account:\n"
+        "%s\n\n\n"
+        "URI: %s\n"
+        "Version: 1\n"
+        "Chain ID: %s\n"
+        "Nonce: 32891756\n"
+        "Issued At: 2021-09-30T16:25:24Z)",
+        domain.c_str(), account.c_str(), uri.c_str(), network.c_str());
+  }
+
   void SignMessageHardware(bool user_approved,
                            const std::string& address,
                            const std::string& message,
@@ -672,6 +679,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
 
   const mojom::SignMessageRequestPtr& GetSignMessageQueueFront() const {
     return brave_wallet_service_->sign_message_requests_.front();
+  }
+  const mojom::SignMessageErrorPtr& GetSignMessageErrorQueueFront() const {
+    return brave_wallet_service_->sign_message_errors_.front();
   }
 
   std::vector<mojom::SignMessageRequestPtr> GetPendingSignMessageRequests() {
@@ -1655,9 +1665,11 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsLocked) {
 TEST_F(EthereumProviderImplUnitTest, SignMessage) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+  Navigate(GURL("https://brave.com"));
   for (const auto& message : {
            std::string("0x1234"),
-           ToHex(kValidSIWEMessage),
+           ToHex(GetSIWEMessage("https://brave.com", account_0->address,
+                                "https://brave.com/login", "1")),
        }) {
     SCOPED_TRACE(message);
     std::string signature;
@@ -1689,8 +1701,6 @@ TEST_F(EthereumProviderImplUnitTest, SignMessage) {
     EXPECT_TRUE(signature.empty());
     EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
     EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
-    GURL url("https://brave.com");
-    Navigate(url);
     AddEthereumPermission(account_0->account_id);
     SignMessage(true, account_0->address, message, &signature, &error,
                 &error_message);
@@ -1725,21 +1735,87 @@ TEST_F(EthereumProviderImplUnitTest, SignMessage) {
 TEST_F(EthereumProviderImplUnitTest, SigninWithEthereumError) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+  auto account_1 = GetAccountUtils().EnsureEthAccount(1);
   std::string signature;
   mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
-  SetNetwork(mojom::kGoerliChainId, absl::nullopt);
+  CreateBraveWalletTabHelper();
+  brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);
   Navigate(GURL("https://brave.com"));
   AddEthereumPermission(account_0->account_id);
 
-  SignMessage(true, account_0->address, ToHex(kValidSIWEMessage), &signature,
-              &error, &error_message);
+  struct {
+    std::string domain;
+    std::string address;
+    std::string uri;
+    std::string network;
+    mojom::SignMessageErrorType siwe_err_type;
+    std::string siwe_err_msg;
+    absl::optional<std::string> chain_id;
+    mojom::ProviderError provider_err;
+    std::string provider_err_msg;
+  } cases[]{
+      {"https://brave.com", account_0->address, "https://brave.com/login",
+       "5566", mojom::SignMessageErrorType::kChainIdMismatched,
+       l10n_util::GetStringFUTF8(
+           IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
+           l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_NETWORK),
+           base::StrCat({l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_CHAIN_ID),
+                         u": 5566"})),
+       std::string("5566"), mojom::ProviderError::kInternalError,
+       l10n_util::GetStringFUTF8(
+           IDS_BRAVE_WALLET_SIGN_MESSAGE_CHAIN_ID_MISMATCH, u"5566")},
+      {"https://brave.com", account_1->address, "https://brave.com/login", "1",
+       mojom::SignMessageErrorType::kAccountMismatched,
+       l10n_util::GetStringFUTF8(
+           IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
+           l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_ACCOUNT),
+           base::ASCIIToUTF16(account_1->address)),
+       absl::nullopt, mojom::ProviderError::kInternalError,
+       l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_ACCOUNT_MISMATCH,
+                                 base::ASCIIToUTF16(account_1->address))},
+      {"https://example.com", account_0->address, "https://brave.com/login",
+       "1", mojom::SignMessageErrorType::kDomainMismatched,
+       l10n_util::GetStringFUTF8(
+           IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
+           l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_DOMAIN),
+           u"https://example.com"),
+       absl::nullopt, mojom::ProviderError::kInternalError,
+       l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_DOMAIN_MISMATCH,
+                                 u"https://example.com")},
+      {"https://brave.com", account_0->address, "https://example.com/login",
+       "1", mojom::SignMessageErrorType::kDomainMismatched,
+       l10n_util::GetStringFUTF8(
+           IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
+           l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_DOMAIN),
+           u"https://example.com/login"),
+       absl::nullopt, mojom::ProviderError::kInternalError,
+       l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_DOMAIN_MISMATCH,
+                                 u"https://example.com/login")},
+  };
+  for (const auto& invalid_case : cases) {
+    const std::string& siwe_message =
+        GetSIWEMessage(invalid_case.domain, invalid_case.address,
+                       invalid_case.uri, invalid_case.network);
+    SCOPED_TRACE(siwe_message);
+    SignMessage(true, account_0->address, ToHex(siwe_message), &signature,
+                &error, &error_message);
+    EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
+    EXPECT_EQ(GetSignMessageErrorQueueFront()->origin_info,
+              MakeOriginInfo(GetOrigin()));
+    EXPECT_EQ(GetSignMessageErrorQueueFront()->type,
+              invalid_case.siwe_err_type);
+    EXPECT_EQ(GetSignMessageErrorQueueFront()->localized_err_msg,
+              invalid_case.siwe_err_msg);
+    EXPECT_EQ(GetSignMessageErrorQueueFront()->chain_id, invalid_case.chain_id);
 
-  EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kInternalError);
-  EXPECT_EQ(error_message,
-            l10n_util::GetStringFUTF8(
-                IDS_BRAVE_WALLET_SIGN_MESSAGE_CHAIN_ID_MISMATCH, u"1"));
+    EXPECT_TRUE(signature.empty());
+    EXPECT_EQ(error, invalid_case.provider_err);
+    EXPECT_EQ(error_message, invalid_case.provider_err_msg);
+
+    brave_wallet_service_->NotifySignMessageErrorProcessed(
+        GetSignMessageErrorQueueFront()->id);
+  }
 }
 
 TEST_F(EthereumProviderImplUnitTest, RecoverAddress) {
