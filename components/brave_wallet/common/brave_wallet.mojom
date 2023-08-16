@@ -1709,10 +1709,18 @@ interface BraveWalletService {
   ResetWebSitePermission(CoinType coin, string formed_website)
     => (bool success);
 
+  // TODO(darkdh): Move these bridging methods into EthereumProviderService when
+  // we split EthereumProviderImpl into EthereumProviderHost and
+  // EthereumProviderService https://github.com/brave/brave-browser/issues/32313
+
   // These are used for UI notifying native when the user approve/reject SignMessage[Hardware]Request
   NotifySignMessageRequestProcessed(bool approved, int32 id, ByteArrayStringUnion? signature, string? error);
   // Obtains the pending sign message requests
   GetPendingSignMessageRequests() => (array<SignMessageRequest> requests);
+
+  GetPendingSignMessageErrors() => (array<SignMessageError> errors);
+  // Used for UI notifying native when the error has been displayed to users
+  NotifySignMessageErrorProcessed(string error_id);
 
   GetPendingSignTransactionRequests() => (array<SignTransactionRequest> requests);
   // Used for UI notifying native when the user approve/reject sign

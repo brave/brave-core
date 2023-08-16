@@ -66,3 +66,19 @@ struct SignMessageRequest {
   CoinType coin;
   string chain_id;
 };
+
+enum SignMessageErrorType {
+  kChainIdMismatched,
+  kAccountMismatched,
+  kDomainMismatched
+};
+
+struct SignMessageError {
+  string id;
+  OriginInfo origin_info;
+  SignMessageErrorType type;
+  // Localized error message for UI display
+  string localized_err_msg;
+  // It contains value only when type is kChainIdMismatched
+  string? chain_id;
+};

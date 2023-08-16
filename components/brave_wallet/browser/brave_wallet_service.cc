@@ -1482,6 +1482,31 @@ void BraveWalletService::NotifySignMessageRequestProcessed(
   std::move(callback).Run(approved, std::move(signature), error);
 }
 
+void BraveWalletService::GetPendingSignMessageErrors(
+    GetPendingSignMessageErrorsCallback callback) {
+  std::vector<mojom::SignMessageErrorPtr> errors;
+  if (sign_message_errors_.empty()) {
+    std::move(callback).Run(std::move(errors));
+    return;
+  }
+
+  for (const auto& error : sign_message_errors_) {
+    errors.push_back(error.Clone());
+  }
+
+  std::move(callback).Run(std::move(errors));
+}
+
+void BraveWalletService::NotifySignMessageErrorProcessed(
+    const std::string& id) {
+  if (sign_message_errors_.empty() || sign_message_errors_.front()->id != id) {
+    VLOG(1) << "id: " << id << " is not expected, should be "
+            << sign_message_errors_.front()->id;
+    return;
+  }
+  sign_message_errors_.pop_front();
+}
+
 void BraveWalletService::GetPendingSignTransactionRequests(
     GetPendingSignTransactionRequestsCallback callback) {
   std::vector<mojom::SignTransactionRequestPtr> requests;
@@ -1641,6 +1666,10 @@ void BraveWalletService::AddSignMessageRequest(
   }
   sign_message_requests_.push_back(std::move(request));
   sign_message_callbacks_.push_back(std::move(callback));
+}
+
+void BraveWalletService::AddSignMessageError(mojom::SignMessageErrorPtr error) {
+  sign_message_errors_.push_back(std::move(error));
 }
 
 void BraveWalletService::AddSignTransactionRequest(
