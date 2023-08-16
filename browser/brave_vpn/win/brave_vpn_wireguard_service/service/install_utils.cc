@@ -129,6 +129,8 @@ bool UninstallBraveWireguardService() {
                  << last_used_config.value().DirName();
   }
   RemoveFromStartup(brave_vpn::GetBraveVpnWireguardServiceName().c_str());
+  wireguard::RemoveStorageKey();
+
   if (!installer::InstallServiceWorkItem::DeleteService(
           brave_vpn::GetBraveVpnWireguardServiceName(),
           brave_vpn::wireguard::
