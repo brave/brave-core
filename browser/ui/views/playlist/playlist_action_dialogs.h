@@ -88,7 +88,19 @@ class PlaylistMoveDialog : public PlaylistActionDialog,
 
   using PassKey = base::PassKey<PlaylistActionDialog>;
 
+  struct MoveParam {
+    MoveParam();
+    MoveParam(MoveParam&&);
+    MoveParam& operator=(MoveParam&&);
+    ~MoveParam();
+
+    raw_ptr<playlist::PlaylistService> service;
+    std::string playlist_id;
+    std::vector<std::string> items;
+  };
+
   PlaylistMoveDialog(PassKey, playlist::PlaylistTabHelper* tab_helper);
+  PlaylistMoveDialog(PassKey, MoveParam param);
   ~PlaylistMoveDialog() override;
 
   static bool CanMoveItems(
@@ -115,6 +127,9 @@ class PlaylistMoveDialog : public PlaylistActionDialog,
     kCreate,
   };
 
+  explicit PlaylistMoveDialog(
+      absl::variant<raw_ptr<playlist::PlaylistTabHelper>, MoveParam> source);
+
   void OnNewPlaylistPressed(const ui::Event& event);
   void OnBackPressed(const ui::Event& event);
 
@@ -126,7 +141,16 @@ class PlaylistMoveDialog : public PlaylistActionDialog,
   void OnMoveToPlaylist();
   void OnCreatePlaylistAndMove();
 
-  raw_ptr<playlist::PlaylistTabHelper> tab_helper_;
+  bool is_from_tab_helper() const {
+    return absl::holds_alternative<raw_ptr<playlist::PlaylistTabHelper>>(
+        source_);
+  }
+  raw_ptr<playlist::PlaylistTabHelper> get_tab_helper() {
+    return absl::get<raw_ptr<playlist::PlaylistTabHelper>>(source_);
+  }
+  MoveParam& get_move_param() { return absl::get<MoveParam>(source_); }
+
+  absl::variant<raw_ptr<playlist::PlaylistTabHelper>, MoveParam> source_;
 
   Mode mode_ = Mode::kChoose;
 

@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_PLAYLIST_PLAYLIST_DIALOGS_H_
 
 #include <string>
+#include <vector>
 
 namespace content {
 class WebContents;
@@ -17,6 +18,9 @@ namespace playlist {
 void ShowCreatePlaylistDialog(content::WebContents* contents);
 void ShowRemovePlaylistDialog(content::WebContents* contents,
                               const std::string& playlist_id);
+void ShowMoveItemsDialog(content::WebContents* contents,
+                         const std::string& playlist_id,
+                         const std::vector<std::string>& items);
 
 }  // namespace playlist
 

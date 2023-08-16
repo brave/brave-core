@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
@@ -57,6 +58,8 @@ class PlaylistUI : public ui::UntrustedWebUIController,
   // playlist::mojom::NativeUI:
   void ShowCreatePlaylistUI() override;
   void ShowRemovePlaylistUI(const std::string& playlist_id) override;
+  void ShowMoveItemsUI(const std::string& playlist_id,
+                       const std::vector<std::string>& items) override;
 
  private:
   base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;

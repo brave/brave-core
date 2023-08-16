@@ -12,7 +12,10 @@ import Icon from '@brave/leo/react/icon'
 
 import DefaultThumbnailIcon from '../assets/playlist-thumbnail-icon.svg'
 import ContextualMenuAnchorButton from './contextualMenu'
-import { PlaylistItem as PlaylistItemMojo } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
+import {
+  Playlist,
+  PlaylistItem as PlaylistItemMojo
+} from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 import {
   formatTimeInSeconds,
   microSecondsToSeconds
@@ -20,8 +23,10 @@ import {
 import { getLocalizedString } from '../utils/l10n'
 import { formatBytes } from '../utils/bytesFormatter'
 import { ApplicationState, CachingProgress } from '../reducers/states'
+import { getPlaylistAPI } from '../api/api'
 
 interface Props {
+  playlist: Playlist
   item: PlaylistItemMojo
   onClick: (id: string) => void
 }
@@ -112,6 +117,7 @@ const ColoredSpan = styled.span<{ color: any }>`
 `
 
 export default function PlaylistItem ({
+  playlist,
   item: {
     id,
     name,
@@ -195,21 +201,31 @@ export default function PlaylistItem ({
             {
               name: getLocalizedString('bravePlaylistContextMenuMove'),
               iconName: 'folder-exchange',
-              onClick: () => {}
+              onClick: () =>
+                getPlaylistAPI().moveItemFromPlaylist(playlist.id!, [id])
             },
-            {
-              name: getLocalizedString(
-                'bravePlaylistContextMenuRemoveOfflineData'
-              ),
-              iconName: 'cloud-off',
-              onClick: () => {}
-            },
+            cached
+              ? {
+                  name: getLocalizedString(
+                    'bravePlaylistContextMenuRemoveOfflineData'
+                  ),
+                  iconName: 'cloud-off',
+                  onClick: () => getPlaylistAPI().removeLocalData(id)
+                }
+              : {
+                  name: getLocalizedString(
+                    'bravePlaylistContextMenuKeepForOfflinePlaying'
+                  ),
+                  iconName: 'cloud-download',
+                  onClick: () => getPlaylistAPI().recoverLocalData(id)
+                },
             {
               name: getLocalizedString(
                 'bravePlaylistContextMenuRemoveFromPlaylist'
               ),
               iconName: 'trash',
-              onClick: () => {}
+              onClick: () =>
+                getPlaylistAPI().removeItemFromPlaylist(playlist.id!, id)
             }
           ]}
           onShowMenu={() => setShowingMenu(true)}

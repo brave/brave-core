@@ -138,6 +138,8 @@ interface PlaylistNativeUI {
   ShowCreatePlaylistUI();
 
   ShowRemovePlaylistUI(string playlist_id);
+
+  ShowMoveItemsUI(string playlist_id, array<string> item_id);
 };
 
 // UI-side handler for response from the service.
