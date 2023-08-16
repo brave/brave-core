@@ -29,7 +29,6 @@ SpeedReaderThrottle::MaybeCreateThrottleFor(
     SpeedreaderService* speedreader_service,
     base::WeakPtr<SpeedreaderThrottleDelegate> speedreader_delegate,
     const GURL& url,
-    bool check_disabled_sites,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner) {
   DCHECK(speedreader_delegate);
   if (!speedreader_delegate->IsPageDistillationAllowed()) {

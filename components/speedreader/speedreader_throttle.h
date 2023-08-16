@@ -47,7 +47,6 @@ class SpeedReaderThrottle : public body_sniffer::BodySnifferThrottle {
       SpeedreaderService* speedreader_service,
       base::WeakPtr<SpeedreaderThrottleDelegate> delegate,
       const GURL& url,
-      bool check_disabled_sites,
       scoped_refptr<base::SingleThreadTaskRunner> task_runner);
 
   // Implements blink::URLLoaderThrottle.

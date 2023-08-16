@@ -871,7 +871,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
           speedreader::SpeedReaderThrottle::MaybeCreateThrottleFor(
               g_brave_browser_process->speedreader_rewriter_service(),
-              speedreader_service, tab_helper->GetWeakPtr(), request.url, false,
+              speedreader_service, tab_helper->GetWeakPtr(), request.url,
               base::SingleThreadTaskRunner::GetCurrentDefault());
       if (throttle) {
         result.push_back(std::move(throttle));
