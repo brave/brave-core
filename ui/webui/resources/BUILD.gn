@@ -191,6 +191,7 @@ leo_icons = [
   "expand.svg",
   "eye-off.svg",
   "eye-on.svg",
+  "erase.svg",
   "file-corrupted.svg",
   "file-edit.svg",
   "file.svg",
@@ -216,6 +217,7 @@ leo_icons = [
   "launch-off.svg",
   "launch.svg",
   "link-normal.svg",
+  "link-broken.svg",
   "list-bullet-default.svg",
   "list-checks.svg",
   "list-settings.svg",
@@ -327,8 +329,6 @@ leo_icons = [
   "window-tab-new.svg",
   "window.svg",
   "windows-open.svg",
-  "erase.svg",
-  "plug-connected-x.svg",
 ]
 
 if (enable_brave_vpn_panel) {

@@ -82,7 +82,7 @@ function SiteTitle (props: SiteTitleProps) {
       </div>
       <div className={styles.actions}>
         <Button kind="plain" onClick={props.onDisconnectClick}>
-          <Icon name="plug-connected-x" />
+          <Icon name="link-broken" />
         </Button>
       </div>
     </div>
