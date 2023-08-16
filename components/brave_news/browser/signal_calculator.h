@@ -22,11 +22,7 @@
 
 namespace brave_news {
 
-struct Signal {
-  bool subscribed = false;
-  double visit_weight = 0;
-};
-
+using Signal = mojom::SignalPtr;
 using Signals = base::flat_map<std::string, Signal>;
 using SignalsCallback = base::OnceCallback<void(Signals)>;
 

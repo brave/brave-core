@@ -25,6 +25,7 @@
 namespace brave_news {
 
 using BuildFeedCallback = mojom::BraveNewsController::GetFeedV2Callback;
+using GetSignalsCallback = mojom::BraveNewsController::GetSignalsCallback;
 
 class FeedV2Builder {
  public:
@@ -40,6 +41,7 @@ class FeedV2Builder {
   ~FeedV2Builder();
 
   void Build(BuildFeedCallback callback);
+  void GetSignals(GetSignalsCallback callback);
 
  private:
   void FetchFeed();

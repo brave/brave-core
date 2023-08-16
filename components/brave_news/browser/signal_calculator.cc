@@ -109,20 +109,18 @@ void SignalCalculator::OnGotHistory(
   // Add publisher signals
   for (const auto& [id, publisher] : publishers) {
     const auto& visits = publisher_visits.at(publisher->publisher_id);
-    signals[id] = {.subscribed = IsPublisherSubscribed(publisher),
-                   .visit_weight = visits.size() /
-                                   static_cast<double>(total_publisher_visits)};
+    signals[id] = mojom::Signal::New(
+        IsPublisherSubscribed(publisher),
+        visits.size() / static_cast<double>(total_publisher_visits));
   }
 
   // Add channel signals
   for (const auto& channel : channels) {
     auto it = channel_visits.find(channel.first);
     auto visit_count = it == channel_visits.end() ? 0 : it->second.size();
-    signals[channel.first] = {
-        .subscribed =
-            channels_controller_->GetChannelSubscribed(locale, channel.first),
-        .visit_weight =
-            visit_count / static_cast<double>(total_channel_visits)};
+    signals[channel.first] = mojom::Signal::New(
+        channels_controller_->GetChannelSubscribed(locale, channel.first),
+        visit_count / static_cast<double>(total_channel_visits));
   }
 
   std::move(callback).Run(std::move(signals));

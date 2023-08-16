@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
@@ -26,6 +27,7 @@
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -39,13 +41,13 @@ namespace {
 using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, Signal, double>;
 using ArticleInfos = std::vector<ArticleInfo>;
 
-const Signal* GetSignal(const mojom::FeedItemMetadataPtr& article,
-                        const Signals& signals) {
+const Signal GetSignal(const mojom::FeedItemMetadataPtr& article,
+                       const Signals& signals) {
   auto it = signals.find(article->publisher_id);
   if (it == signals.end()) {
     return nullptr;
   }
-  return &it->second;
+  return it->second->Clone();
 }
 
 double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
@@ -81,9 +83,9 @@ double GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
   constexpr double kSourceVisitsMin = 0.2;
 
   double source_visits_projected =
-      kSourceVisitsMin + signal.visit_weight * (1 - kSourceVisitsMin);
+      kSourceVisitsMin + signal->visit_weight * (1 - kSourceVisitsMin);
   double source_subscribed_projected =
-      signal.subscribed ? kSourceSubscribedMax : kSourceSubscribedMin;
+      signal->subscribed ? kSourceSubscribedMax : kSourceSubscribedMin;
   return source_visits_projected * source_subscribed_projected *
          GetPopRecency(article);
 }
@@ -112,15 +114,16 @@ ArticleInfos GetArticleInfos(const FeedItems& feed_items,
 
       seen_articles.insert(article->data->url);
 
-      const auto* signal = GetSignal(article->data, signals);
+      auto signal = GetSignal(article->data, signals);
 
       // If we don't have a signal for this article, filter it out.
       if (!signal) {
         continue;
       }
 
-      auto pair = std::tuple(article->data->Clone(), *signal,
-                             GetArticleWeight(article->data, *signal));
+      std::tuple<mojom::FeedItemMetadataPtr, Signal, double> pair =
+          std::tuple(article->data->Clone(), std::move(signal),
+                     GetArticleWeight(article->data, signal));
       articles.push_back(std::move(pair));
     }
   }
@@ -213,7 +216,7 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
 mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
     ArticleInfos& articles) {
   return PickRouletteAndRemove(articles, [](const auto& signal) {
-    return !signal.subscribed && signal.visit_weight == 0;
+    return !signal->subscribed && signal->visit_weight == 0;
   });
 }
 
@@ -410,6 +413,24 @@ void FeedV2Builder::Build(BuildFeedCallback callback) {
   }
 
   FetchFeed();
+}
+
+void FeedV2Builder::GetSignals(GetSignalsCallback callback) {
+  auto cb = base::BindOnce(
+      [](FeedV2Builder* builder, GetSignalsCallback callback,
+         mojom::FeedV2Ptr _) {
+        base::flat_map<std::string, Signal> signals;
+        for (const auto& [key, value] : builder->signals_) {
+          signals[key] = value->Clone();
+        }
+        std::move(callback).Run(std::move(signals));
+      },
+      this, std::move(callback));
+  if (signals_.empty()) {
+    Build(std::move(cb));
+    return;
+  }
+  std::move(cb).Run(/* feed */ nullptr);
 }
 
 void FeedV2Builder::FetchFeed() {
