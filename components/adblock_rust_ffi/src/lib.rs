@@ -60,12 +60,16 @@ pub unsafe extern "C" fn engine_create_from_buffer(
     data: *const c_char,
     data_size: size_t,
 ) -> *mut Engine {
-    let data: &[u8] = std::slice::from_raw_parts(data as *const u8, data_size);
-    let rules = std::str::from_utf8(data).unwrap_or_else(|_| {
-        eprintln!("Failed to parse filter list with invalid UTF-8 content");
-        ""
-    });
-    engine_create_from_str(rules).1
+    if data_size == 0 {
+        Box::into_raw(Box::new(Engine::default()))
+    } else {
+        let data: &[u8] = std::slice::from_raw_parts(data as *const u8, data_size);
+        let rules = std::str::from_utf8(data).unwrap_or_else(|_| {
+            eprintln!("Failed to parse filter list with invalid UTF-8 content");
+            ""
+        });
+        engine_create_from_str(rules).1
+    }
 }
 
 /// Create a new `Engine`, interpreting `data` as a C string and then parsing as
@@ -78,12 +82,21 @@ pub unsafe extern "C" fn engine_create_from_buffer_with_metadata(
     data_size: size_t,
     metadata: *mut *mut FilterListMetadata,
 ) -> *mut Engine {
-    let data: &[u8] = std::slice::from_raw_parts(data as *const u8, data_size);
-    let rules = std::str::from_utf8(data).unwrap_or_else(|_| {
-        eprintln!("Failed to parse filter list with invalid UTF-8 content");
-        ""
-    });
-    let (metadata_ptr, engine_ptr) = engine_create_from_str(rules);
+    let (metadata_ptr, engine_ptr) = if data_size == 0 {
+        let metadata = FilterListMetadata::default();
+        let engine = Engine::default();
+        (
+            Box::into_raw(Box::new(metadata)),
+            Box::into_raw(Box::new(engine)),
+        )
+    } else {
+        let data: &[u8] = std::slice::from_raw_parts(data as *const u8, data_size);
+        let rules = std::str::from_utf8(data).unwrap_or_else(|_| {
+            eprintln!("Failed to parse filter list with invalid UTF-8 content");
+            ""
+        });
+        engine_create_from_str(rules)
+    };
     *metadata = metadata_ptr;
     engine_ptr
 }
@@ -126,12 +139,16 @@ pub unsafe extern "C" fn read_list_metadata(
     data: *const c_char,
     data_size: size_t,
 ) -> *mut FilterListMetadata {
-    let data: &[u8] = std::slice::from_raw_parts(data as *const u8, data_size);
-    let list = std::str::from_utf8(data).unwrap_or_else(|_| {
-        eprintln!("Failed to parse filter list with invalid UTF-8 content");
-        ""
-    });
-    let metadata = adblock::lists::read_list_metadata(list);
+    let metadata = if data_size == 0 {
+        adblock::lists::FilterListMetadata::default()
+    } else {
+        let data: &[u8] = std::slice::from_raw_parts(data as *const u8, data_size);
+        let list = std::str::from_utf8(data).unwrap_or_else(|_| {
+            eprintln!("Failed to parse filter list with invalid UTF-8 content");
+            ""
+        });
+        adblock::lists::read_list_metadata(list)
+    };
     Box::into_raw(Box::new(metadata))
 }
 
@@ -295,6 +312,9 @@ pub unsafe extern "C" fn engine_deserialize(
     data: *const c_char,
     data_size: size_t,
 ) -> bool {
+    if data_size == 0 {
+        return true;
+    }
     let data: &[u8] = std::slice::from_raw_parts(data as *const u8, data_size);
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
