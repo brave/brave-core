@@ -4,12 +4,15 @@
 
 import { ExternalWalletProvider } from '../../shared/lib/external_wallet'
 
-export type ProviderPayoutStatus = 'off' | 'processing' | 'complete'
+export type ProviderPayoutStatus = 'hidden' | 'off' | 'processing' | 'complete'
 
 export function getProviderPayoutStatus (
   payoutStatus: Record<string, ProviderPayoutStatus>,
-  walletProvider: ExternalWalletProvider | null
+  walletProvider: ExternalWalletProvider | null,
+  earningsDisabled: boolean
 ): ProviderPayoutStatus {
-  const key = walletProvider || 'unverified'
-  return payoutStatus[key] || 'off'
+  if (!walletProvider || earningsDisabled) {
+    return 'hidden'
+  }
+  return payoutStatus[walletProvider] || 'off'
 }

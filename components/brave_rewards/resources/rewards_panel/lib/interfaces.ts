@@ -84,6 +84,7 @@ export interface HostState {
   openTime: number
   loading: boolean
   rewardsEnabled: boolean
+  earningsDisabled: boolean
   requestedView: RequestedView | null
   balance: Optional<number>
   settings: Settings

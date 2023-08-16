@@ -37,6 +37,7 @@ export const localeStrings = {
   set: 'Set',
   changeAmount: 'Change amount',
   cancel: 'Cancel',
+  earningsDisabledText: 'It looks like you’re unable to earn from Brave Ads. $1Learn more.$2',
 
   grantCaptchaTitle: 'Confirm you are a human being',
   grantCaptchaFailedTitle: 'Hmm… Not Quite. Try Again.',

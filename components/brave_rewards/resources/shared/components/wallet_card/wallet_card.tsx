@@ -10,7 +10,6 @@ import Icon from '@brave/leo/react/icon'
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
 import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
-import { UserType } from '../../lib/user_type'
 import { Optional } from '../../../shared/lib/optional'
 
 import { TokenAmount } from '../token_amount'
@@ -37,7 +36,6 @@ const monthFormatter = new Intl.DateTimeFormat(undefined, {
 })
 
 interface Props {
-  userType: UserType
   balance: Optional<number>
   externalWallet: ExternalWallet | null
   providerPayoutStatus: ProviderPayoutStatus
@@ -180,7 +178,6 @@ export function WalletCard (props: Props) {
           ? <style.summaryBox>
               <RewardsSummary
                 data={props.summaryData}
-                userType={props.userType}
                 providerPayoutStatus={props.providerPayoutStatus}
                 autoContributeEnabled={props.autoContributeEnabled}
                 hideAdEarnings={Boolean(props.externalWallet)}
@@ -203,15 +200,12 @@ export function WalletCard (props: Props) {
               }
             </style.summaryBox>
           : <style.pendingBox>
-              {
-                props.userType === 'connected' &&
-                  <PendingRewardsView
-                    minEarnings={props.minEarningsLastMonth}
-                    maxEarnings={props.maxEarningsLastMonth}
-                    nextPaymentDate={props.nextPaymentDate}
-                    providerPayoutStatus={props.providerPayoutStatus}
-                  />
-              }
+              <PendingRewardsView
+                minEarnings={props.minEarningsLastMonth}
+                maxEarnings={props.maxEarningsLastMonth}
+                nextPaymentDate={props.nextPaymentDate}
+                providerPayoutStatus={props.providerPayoutStatus}
+              />
             </style.pendingBox>
       }
     </style.root>

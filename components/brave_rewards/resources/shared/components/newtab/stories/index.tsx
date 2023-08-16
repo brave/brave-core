@@ -35,7 +35,8 @@ export function Card () {
       <WithThemeVariables>
         <div style={{ width: '284px' }}>
           <RewardsCard
-            rewardsEnabled={false}
+            rewardsEnabled={true}
+            earningsDisabled={true}
             userType='connected'
             vbatDeadline={Date.parse('2023-01-01T00:00:00-05:00')}
             isUnsupportedRegion={false}

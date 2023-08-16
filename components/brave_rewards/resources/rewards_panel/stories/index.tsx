@@ -39,6 +39,7 @@ function createHost (): Host {
     loading: false,
     requestedView: null,
     rewardsEnabled: true,
+    earningsDisabled: true,
     settings: {
       autoContributeEnabled: true,
       autoContributeAmount: 5
@@ -85,7 +86,7 @@ function createHost (): Host {
       nextPaymentDate: Date.now() + 1000 * 60 * 60 * 24 * 3
     },
     payoutStatus: {
-      uphold: 'complete'
+      uphold: 'off'
     },
     publisherInfo: {
       id: 'brave.com',
@@ -121,7 +122,7 @@ function createHost (): Host {
     availableCountries: ['US'],
     defaultCountry: 'US',
     declaredCountry: 'US',
-    userType: 'unconnected',
+    userType: 'connected',
     publishersVisitedCount: 4
   })
 

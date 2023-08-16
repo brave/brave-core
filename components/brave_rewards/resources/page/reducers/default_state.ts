@@ -11,6 +11,7 @@ import * as Rewards from '../lib/types'
 export function defaultState (): Rewards.State {
   return {
     userType: 'unconnected',
+    earningsDisabled: false,
     isAcSupported: false,
     enabledContribute: false,
     contributionMinTime: 8,

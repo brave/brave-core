@@ -12,6 +12,7 @@ export function getInitialState (): HostState {
     loading: true,
     requestedView: null,
     rewardsEnabled: false,
+    earningsDisabled: false,
     balance: optional<number>(),
     settings: {
       autoContributeEnabled: false,

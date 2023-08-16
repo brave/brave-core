@@ -42,6 +42,7 @@ export function RewardsContextAdapter (props: { children: React.ReactNode }) {
 
 export interface RewardsProps {
   rewardsEnabled: boolean
+  earningsDisabled: boolean
   userType: string
   isUnsupportedRegion: boolean
   declaredCountry: string
@@ -95,10 +96,11 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
   const providerPayoutStatus = () => {
     const { payoutStatus } = props.parameters
     if (!payoutStatus) {
-      return 'off'
+      return 'hidden'
     }
     const walletProvider = externalWallet ? externalWallet.provider : null
-    return getProviderPayoutStatus(payoutStatus, walletProvider)
+    return getProviderPayoutStatus(
+      payoutStatus, walletProvider, props.earningsDisabled)
   }
 
   const canConnectAccount = () => {
@@ -130,6 +132,7 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
   return (
     <RewardsCard
       rewardsEnabled={props.rewardsEnabled}
+      earningsDisabled={props.earningsDisabled}
       userType={userTypeFromString(props.userType)}
       vbatDeadline={props.parameters.vbatDeadline}
       isUnsupportedRegion={props.isUnsupportedRegion}

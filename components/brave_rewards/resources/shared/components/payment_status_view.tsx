@@ -86,6 +86,10 @@ interface Props {
 export function PaymentStatusView (props: Props) {
   const { getString } = React.useContext(LocaleContext)
 
+  if (props.providerPayoutStatus === 'hidden') {
+    return null
+  }
+
   if (props.minEarnings <= 0) {
     return null
   }

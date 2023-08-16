@@ -5,6 +5,8 @@
 
 import * as React from 'react'
 
+import Icon from '@brave/leo/react/icon'
+
 import { AdsHistory } from '../lib/types'
 import { useActions, useRewardsData } from '../lib/redux_hooks'
 import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
@@ -48,6 +50,7 @@ export function AdsPanel () {
     externalWalletProviderList: state.externalWalletProviderList,
     parameters: state.parameters,
     userType: state.userType,
+    earningsDisabled: state.earningsDisabled,
     modalAdsHistory: state.ui.modalAdsHistory,
     showAdsSettings: state.ui.adsSettings
   }))
@@ -267,20 +270,18 @@ export function AdsPanel () {
   function renderPaymentItems () {
     const providerPayoutStatus = getProviderPayoutStatus(
       data.parameters.payoutStatus,
-      externalWallet ? externalWallet.provider : null)
+      externalWallet ? externalWallet.provider : null,
+      data.earningsDisabled)
 
     return (
       <>
         <style.paymentStatus>
-          {
-            data.userType === 'connected' &&
-              <PaymentStatusView
-                minEarnings={adsData.adsMinEarningsLastMonth}
-                maxEarnings={adsData.adsMaxEarningsLastMonth}
-                nextPaymentDate={adsData.adsNextPaymentDate}
-                providerPayoutStatus={providerPayoutStatus}
-              />
-          }
+          <PaymentStatusView
+            minEarnings={adsData.adsMinEarningsLastMonth}
+            maxEarnings={adsData.adsMaxEarningsLastMonth}
+            nextPaymentDate={adsData.adsNextPaymentDate}
+            providerPayoutStatus={providerPayoutStatus}
+          />
         </style.paymentStatus>
         <PanelItem label={getString('adsCurrentEarnings')}>
           {renderEarnings()}
@@ -290,6 +291,32 @@ export function AdsPanel () {
         </PanelItem>
       </>
     )
+  }
+
+  function renderAlerts () {
+    if (data.earningsDisabled) {
+      return (
+        <style.alert>
+          <style.alertIcon>
+            <Icon name='warning-circle-filled' />
+          </style.alertIcon>
+          <div>
+            {
+              formatMessage(getString('earningsDisabledText'), {
+                tags: {
+                  $1: (content) => (
+                    <NewTabLink key='link' href={'https://brave.com'}>
+                      {content}
+                    </NewTabLink>
+                  )
+                }
+              })
+            }
+          </div>
+        </style.alert>
+      )
+    }
+    return null
   }
 
   function renderContent () {
@@ -312,6 +339,7 @@ export function AdsPanel () {
     return (
       <>
         {renderDescription()}
+        {renderAlerts()}
         {
           data.userType === 'unconnected'
             ? renderConnectAcount()

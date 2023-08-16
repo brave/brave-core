@@ -29,6 +29,7 @@ export const localeStrings = {
   donationDescLearnMore: 'Learn more about contributions.',
   donationVisitSome: 'Have you contributed to your favorite content creator today?',
   donationTotalDonations: 'Total on-demand contributions this month',
+  earningsDisabledText: 'It looks like you’re unable to earn from Brave Ads. $1Learn more.$2',
   monthlyTipsEmpty: 'No monthly contributions set up yet.',
   monthlyTipsTitle: 'Monthly Contributions',
   monthlyTipsDesc: 'Set up recurring monthly contributions so you can continually support your favorite creators.',

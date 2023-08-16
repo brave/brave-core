@@ -14,6 +14,7 @@ import { LimitedView } from './limited_view'
 import { NavBar } from './navbar'
 import { PanelOverlays } from './panel_overlays'
 import { PublisherCard } from './publisher_card'
+import { AlertBox } from './alert_box'
 
 import * as urls from '../../shared/lib/rewards_urls'
 
@@ -53,6 +54,8 @@ export function Panel () {
     React.useState<OnboardingResult | null>(null)
   const [rewardsEnabled, setRewardsEnabled] =
     React.useState(host.state.rewardsEnabled)
+  const [earningsDisabled, setEarningsDisabled] =
+    React.useState(host.state.earningsDisabled)
   const [declaredCountry, setDeclaredCountry] =
     React.useState(host.state.declaredCountry)
 
@@ -69,6 +72,7 @@ export function Panel () {
 
     setRequestedView(state.requestedView)
     setRewardsEnabled(state.rewardsEnabled)
+    setEarningsDisabled(state.earningsDisabled)
     setDeclaredCountry(state.declaredCountry)
     setAvailableCountries(state.availableCountries)
     setDefaultCountry(state.defaultCountry)
@@ -107,14 +111,13 @@ export function Panel () {
   const walletProvider = externalWallet ? externalWallet.provider : null
 
   const providerPayoutStatus = getProviderPayoutStatus(
-    payoutStatus, walletProvider)
+    payoutStatus, walletProvider, earningsDisabled)
 
   function renderFull () {
     const onSettingsClick = () => host.openRewardsSettings()
     return (
       <>
         <WalletCard
-          userType={userType}
           balance={balance}
           externalWallet={externalWallet}
           providerPayoutStatus={providerPayoutStatus}
@@ -131,6 +134,7 @@ export function Panel () {
           onExternalWalletAction={host.handleExternalWalletAction}
           onManageAds={onSettingsClick}
         />
+        <AlertBox />
         {activeView === 'tip' && <PublisherCard />}
         <NavBar
           canTip={Boolean(publisherInfo)}

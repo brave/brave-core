@@ -561,3 +561,20 @@ export const vbatNotice = styled.div`
     margin-bottom: 10px;
   }
 `
+
+export const alert = styled.div`
+  margin: 16px 0;
+  padding: 16px;
+  border-radius: 8px;
+  background: ${leo.color.systemfeedback.errorBackground};
+  color: ${leo.color.text.primary};
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+
+  a {
+    color: ${leo.color.icon.interactive};
+    text-decoration: none;
+    font-weight: 600;
+  }
+`

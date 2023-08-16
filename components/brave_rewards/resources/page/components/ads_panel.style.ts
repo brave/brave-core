@@ -5,6 +5,7 @@
 
 import styled from 'styled-components'
 
+import * as leo from '@brave/leo/tokens/css'
 import * as mixins from '../../shared/lib/css_mixins'
 
 export const root = styled.div``
@@ -235,4 +236,28 @@ export const connectUnavailable = styled.div`
     color: #4C54D2;
     text-decoration: none;
   }
+`
+
+export const alert = styled.div`
+  margin: 16px 0;
+  padding: 16px;
+  border-radius: 8px;
+  background: ${leo.color.systemfeedback.errorBackground};
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  display: flex;
+  gap: 16px;
+
+  a {
+    font-weight: 600;
+    text-decoration: none;
+    color: ${leo.color.icon.interactive};
+  }
+`
+
+export const alertIcon = styled.div`
+  padding-top: 2px;
+  color: ${leo.color.systemfeedback.errorIcon};
+  --leo-icon-size: 20px;
 `

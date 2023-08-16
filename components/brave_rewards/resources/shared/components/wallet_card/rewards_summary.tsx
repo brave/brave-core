@@ -5,7 +5,6 @@
 import * as React from 'react'
 
 import { LocaleContext } from '../../lib/locale_context'
-import { UserType } from '../../lib/user_type'
 import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
 import { PendingRewardsView } from './pending_rewards_view'
 import { TokenAmount } from '../token_amount'
@@ -27,7 +26,6 @@ export interface RewardsSummaryData {
 
 interface Props {
   data: RewardsSummaryData
-  userType: UserType
   providerPayoutStatus: ProviderPayoutStatus
   autoContributeEnabled: boolean
   hideAdEarnings: boolean
@@ -91,15 +89,12 @@ export function RewardsSummary (props: Props) {
             </tbody>
           </table>
         </style.dataTable>
-        {
-          props.userType === 'connected' &&
-            <PendingRewardsView
-              minEarnings={props.minEarningsLastMonth}
-              maxEarnings={props.maxEarningsLastMonth}
-              nextPaymentDate={props.nextPaymentDate}
-              providerPayoutStatus={props.providerPayoutStatus}
-            />
-        }
+        <PendingRewardsView
+          minEarnings={props.minEarningsLastMonth}
+          maxEarnings={props.maxEarningsLastMonth}
+          nextPaymentDate={props.nextPaymentDate}
+          providerPayoutStatus={props.providerPayoutStatus}
+        />
       </style.body>
     </style.root>
   )

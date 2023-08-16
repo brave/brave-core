@@ -12,6 +12,7 @@ export const reduxState: Rewards.ApplicationState = {
     ...defaultState(),
 
     isAcSupported: true,
+    earningsDisabled: true,
     enabledContribute: true,
     contributionMinTime: 8,
     contributionMinVisits: 1,

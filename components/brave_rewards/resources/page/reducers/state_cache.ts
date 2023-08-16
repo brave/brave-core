@@ -33,6 +33,7 @@ function readCachedState (state: Rewards.State) {
   return {
     ...state,
     userType: userTypeFromString(String(cached.userType || '')),
+    earningsDisabled: Boolean(cached.earningsDisabled),
     isAcSupported: Boolean(cached.isAcSupported),
     enabledContribute: Boolean(cached.enabledContribute),
     contributionMinTime: Number(cached.contributionMinTime) || 0,

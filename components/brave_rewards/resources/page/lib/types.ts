@@ -31,6 +31,7 @@ export type Address = { address: string, qr: string | null }
 
 export interface State {
   userType: UserType
+  earningsDisabled: boolean
   adsData: AdsData
   adsHistory: AdsHistory[]
   autoContributeList: Publisher[]

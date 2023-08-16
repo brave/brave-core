@@ -58,7 +58,6 @@ export function Wallet () {
       <WithThemeVariables>
         <div style={{ width: '375px' }}>
           <WalletCard
-            userType={'connected'}
             balance={optional(0)}
             externalWallet={externalWallet && null}
             providerPayoutStatus={'complete'}
