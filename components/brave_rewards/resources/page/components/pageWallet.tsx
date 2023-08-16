@@ -568,6 +568,7 @@ class PageWallet extends React.Component<Props, State> {
         {
           modalConnect
             ? <ConnectWalletModal
+                currentCountryCode={this.props.rewardsData.currentCountryCode}
                 providers={this.generateExternalWalletProviderList(externalWalletProviderList)}
                 onContinue={this.onConnectWalletContinue}
                 onClose={this.toggleVerifyModal}
