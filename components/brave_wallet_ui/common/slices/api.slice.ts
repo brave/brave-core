@@ -645,7 +645,8 @@ export function createWalletApi () {
             ).unwrap()
 
             if (metadata?.image) {
-              tokenArg.logo = metadata?.image || metadata?.image_url || tokenArg.logo
+              tokenArg.logo =
+                metadata?.image || metadata?.image_url || tokenArg.logo
             }
           }
 
@@ -777,6 +778,27 @@ export function createWalletApi () {
               : ['UNKNOWN_ERROR']
         }
       ),
+      invalidateUserTokensRegistry: mutation<boolean, void>({
+        queryFn: async (arg, api, extraOptions, baseQuery) => {
+          try {
+            const { cache } = baseQuery(undefined)
+            cache.clearUserTokensRegistry()
+            return { data: true }
+          } catch (error) {
+            const message = 'Could not invalidate user tokens registry'
+            console.log(message)
+            console.error(error)
+            return {
+              error: message
+            }
+          }
+        },
+        invalidatesTags: (res, err, arg) =>
+          res
+            ? [{ type: 'UserBlockchainTokens', id: TOKEN_TAG_IDS.REGISTRY }]
+            : ['UNKNOWN_ERROR']
+      }),
+
       //
       // Token balances
       //
