@@ -26,11 +26,13 @@
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 
+#include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
+#include "base/metrics/field_trial_params.h"
 #include "base/synchronization/waitable_event.h"
 #include "base/threading/thread_restrictions.h"
 #include "base/time/time.h"
@@ -101,13 +103,20 @@ constexpr net::NetworkTrafficAnnotationTag traffic_annotation =
             "the feature is enabled."
         })");
 
-}  // namespace
-
-namespace component_updater {
-
+// Upstream may release a new version of the Arm64 DLL at any time. In this
+// case, we want to update its download URL without having to ship a new browser
+// build. Storing the URL in a feature parameter makes this possible:
+BASE_DECLARE_FEATURE(kBraveWidevineArm64DllFix);
+constexpr base::FeatureParam<std::string> kBraveWidevineArm64DllUrl{
+    &kBraveWidevineArm64DllFix, "widevine_arm64_dll_url",
+    "https://dl.google.com/widevine-cdm/4.10.2557.0-win-arm64.zip"};
 BASE_FEATURE(kBraveWidevineArm64DllFix,
              "BraveWidevineArm64DllFix",
              base::FEATURE_ENABLED_BY_DEFAULT);
+
+}  // namespace
+
+namespace component_updater {
 
 void RegisterWidevineCdmComponent(
     ComponentUpdateService* cus,
