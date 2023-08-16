@@ -14,8 +14,8 @@
 // for the case when the flag becomes obsolete in the future and needs to be
 // removed.
 
-#ifndef BRAVE_BROWSER_WIDEVINE_BUILDFLAGS_H_
-#define BRAVE_BROWSER_WIDEVINE_BUILDFLAGS_H_
+#ifndef BRAVE_COMPONENTS_WIDEVINE_STATIC_BUILDFLAGS_H_
+#define BRAVE_COMPONENTS_WIDEVINE_STATIC_BUILDFLAGS_H_
 
 #include "build/build_config.h"
 #include "build/buildflag.h"  // IWYU pragma: export
@@ -26,4 +26,4 @@
 #define BUILDFLAG_INTERNAL_WIDEVINE_ARM64_DLL_FIX() (0)
 #endif
 
-#endif  // BRAVE_BROWSER_WIDEVINE_BUILDFLAGS_H_
+#endif  // BRAVE_COMPONENTS_WIDEVINE_STATIC_BUILDFLAGS_H_

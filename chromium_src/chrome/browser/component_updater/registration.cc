@@ -3,18 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/widevine/static_buildflags.h"
 #include "chrome/browser/component_updater/registration.h"
+#include "brave/components/widevine/static_buildflags.h"
 
 #define RegisterComponentsForUpdate RegisterComponentsForUpdate_ChromiumImpl
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 #define RegisterWidevineCdmComponent(cus) \
-  RegisterWidevineCdmComponent(cus, \
+  RegisterWidevineCdmComponent(cus,       \
                                g_browser_process->shared_url_loader_factory())
 #else
-#define RegisterWidevineCdmComponent(cus) \
-   RegisterWidevineCdmComponent(cus)
+#define RegisterWidevineCdmComponent(cus) RegisterWidevineCdmComponent(cus)
 #endif
 
 #include "src/chrome/browser/component_updater/registration.cc"
