@@ -313,6 +313,14 @@ export default class Amount {
     return new Amount(this.value.integerValue(BigNumber.ROUND_DOWN))
   }
 
+  toAbsoluteValue (): Amount {
+    if (this.value === undefined || this.value.isNaN()) {
+      return Amount.empty()
+    }
+
+    return new Amount(this.value.absoluteValue())
+  }
+
   // Abbreviate number in units of 1000 e.g., 100000 becomes 100k
   abbreviate (
     decimals: number,
