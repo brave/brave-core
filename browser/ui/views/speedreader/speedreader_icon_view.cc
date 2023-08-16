@@ -123,7 +123,6 @@ speedreader::DistillState SpeedreaderIconView::GetDistillState() const {
     if (tab_helper) {
       return tab_helper->PageDistillState();
     }
-    }
   }
   return {};
 }

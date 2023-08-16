@@ -109,19 +109,18 @@ bool TransitToOriginalDirection(DistillState& state, DistillState&& desired) {
 
 bool Transit(DistillState& state, DistillState&& desired) {
   if (absl::holds_alternative<DistillStates::None>(desired)) {
-    // Nothing to do.
+    return false;
   } else if (absl::holds_alternative<DistillStates::ViewOriginal>(desired)) {
     return TransitToOriginalDirection(state, std::move(desired));
   } else if (absl::holds_alternative<DistillStates::Pending>(desired)) {
     return TransitToDistilledDirection(
         state, absl::get<DistillStates::Pending>(desired).reason);
-  } else {
-    CHECK(absl::holds_alternative<DistillStates::Distilled>(desired));
-    return TransitToDistilledDirection(
-        state, DistillStates::Pending::Reason::kNone,
-        absl::get<DistillStates::Distilled>(desired).result);
   }
-  return false;
+
+  CHECK(absl::holds_alternative<DistillStates::Distilled>(desired));
+  return TransitToDistilledDirection(
+      state, DistillStates::Pending::Reason::kNone,
+      absl::get<DistillStates::Distilled>(desired).result);
 }
 
 void PerformStateTransition(DistillState& state) {
