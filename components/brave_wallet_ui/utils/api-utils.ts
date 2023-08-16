@@ -2,7 +2,8 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { BraveWallet } from '../constants/types'
+import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../common/constants/magics'
+import { BraveWallet, SupportedTestNetworks } from '../constants/types'
 
 export const getPriceIdForToken = (
   token: Pick<
@@ -15,6 +16,18 @@ export const getPriceIdForToken = (
 ) => {
   if (token?.coingeckoId) {
     return token.coingeckoId.toLowerCase()
+  }
+
+  // Skip price of testnet tokens other than goerli-eth
+  if (SupportedTestNetworks.includes(token.chainId)) {
+    // Goerli ETH has a real-world value
+    if (
+      token.chainId === BraveWallet.GOERLI_CHAIN_ID &&
+      !token.contractAddress
+    ) {
+      return 'goerli-eth' // coingecko id
+    }
+    return SKIP_PRICE_LOOKUP_COINGECKO_ID
   }
 
   const isEthereumNetwork = token.chainId === BraveWallet.MAINNET_CHAIN_ID
