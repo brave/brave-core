@@ -59,6 +59,8 @@ class BraveRewardsNativeWorker
 
   double GetVbatDeadline(JNIEnv* env);
 
+  void GetPayoutStatus();
+
   void GetUserType(JNIEnv* env);
 
   void FetchBalance(JNIEnv* env);
