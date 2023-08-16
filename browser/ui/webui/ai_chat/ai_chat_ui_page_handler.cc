@@ -156,6 +156,15 @@ void AIChatUIPageHandler::OpenBraveLeoSettings() {
   }
 }
 
+void AIChatUIPageHandler::OpenBraveLeoWiki() {
+  if (active_chat_tab_helper_) {
+    active_chat_tab_helper_->web_contents()->OpenURL(
+        {GURL("https://github.com/brave/brave-browser/wiki/Brave-Leo"),
+         content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+         ui::PAGE_TRANSITION_LINK, false});
+  }
+}
+
 void AIChatUIPageHandler::MarkAgreementAccepted() {
   profile_->GetPrefs()->SetBoolean(ai_chat::prefs::kBraveChatHasSeenDisclaimer,
                                    true);
