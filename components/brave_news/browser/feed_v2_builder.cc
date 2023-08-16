@@ -41,7 +41,7 @@ using ArticleInfos = std::vector<ArticleInfo>;
 
 const Signal* GetSignal(const mojom::FeedItemMetadataPtr& article,
                         const Signals& signals) {
-  auto it = signals.find(article->url.spec());
+  auto it = signals.find(article->publisher_id);
   if (it == signals.end()) {
     return nullptr;
   }

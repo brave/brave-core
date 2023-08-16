@@ -105,24 +105,13 @@ void SignalCalculator::OnGotHistory(
   }
 
   Signals signals;
-  auto add_publisher_signal = [&](const std::string& key,
-                                  const mojom::PublisherPtr& publisher) {
-    const auto& visits = publisher_visits.at(publisher->publisher_id);
-    signals[key] = {
-        .subscribed = IsPublisherSubscribed(publisher),
-        .visit_weight =
-            visits.size() / static_cast<double>(total_publisher_visits)};
-  };
-
-  // Add article signals
-  for (const auto& article : articles) {
-    const auto& publisher = publishers.at(article->publisher_id);
-    add_publisher_signal(article->url.spec(), publisher);
-  }
 
   // Add publisher signals
   for (const auto& [id, publisher] : publishers) {
-    add_publisher_signal(id, publisher);
+    const auto& visits = publisher_visits.at(publisher->publisher_id);
+    signals[id] = {.subscribed = IsPublisherSubscribed(publisher),
+                   .visit_weight = visits.size() /
+                                   static_cast<double>(total_publisher_visits)};
   }
 
   // Add channel signals
