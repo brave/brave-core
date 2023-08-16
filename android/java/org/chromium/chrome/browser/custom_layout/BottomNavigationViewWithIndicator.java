@@ -123,7 +123,7 @@ public class BottomNavigationViewWithIndicator
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        if (isLaidOut()) {
+        if (isAttachedToWindow()) {
             mIndicator.roundOut(mBounds);
             mShape.setBounds(mBounds);
             mShape.draw(canvas);
@@ -131,7 +131,7 @@ public class BottomNavigationViewWithIndicator
     }
 
     private void onItemSelected(int itemId, boolean animate) {
-        if (!isLaidOut()) return;
+        if (!isAttachedToWindow()) return;
 
         // Interrupt any current animation, but don't set the end values,
         // if it's in the middle of a movement we want it to start from
