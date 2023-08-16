@@ -13,6 +13,9 @@ import FeedPage from './FeedPage'
 import SignalsPage from './SignalsPage'
 import Button from '@brave/leo/react/button'
 import { spacing } from '@brave/leo/tokens/css'
+import { setIconBasePath } from '@brave/leo/react/icon'
+
+setIconBasePath('//resources/brave-icons')
 
 const Grid = styled.div`
   display: grid;
