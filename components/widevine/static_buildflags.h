@@ -20,7 +20,7 @@
 #include "build/build_config.h"
 #include "build/buildflag.h"  // IWYU pragma: export
 
-#if BUILDFLAG(IS_WIN)// && defined(ARCH_CPU_ARM64)
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_ARM64)
 #define BUILDFLAG_INTERNAL_WIDEVINE_ARM64_DLL_FIX() (1)
 #else
 #define BUILDFLAG_INTERNAL_WIDEVINE_ARM64_DLL_FIX() (0)
