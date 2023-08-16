@@ -159,14 +159,6 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
             }
           },
           cellReuseId: "DefaultBrowserCalloutCell"),
-        .boolRow(
-          title: "Cookie consent notice blocking callout shown",
-          detailText: "Flag determining if callout to show the cookie consent blocking callout was shown",
-          toggleValue: Preferences.FullScreenCallout.blockCookieConsentNoticesCalloutCompleted.value,
-          valueChange: {
-            Preferences.FullScreenCallout.blockCookieConsentNoticesCalloutCompleted.value = $0
-          },
-          cellReuseId: "CookieConsentNoticeBlockingCalloutCell"),
       ],
       footer: .title("These are the preferences that stored in preferences for determining the If certain elements are shown to user.")
     )
