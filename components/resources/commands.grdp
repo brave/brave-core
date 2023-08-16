@@ -112,6 +112,9 @@
   <message name="IDS_IDC_COPY_URL">
     Copy URL
   </message>
+  <message name="IDS_IDC_OPEN_GUEST_PROFILE">
+    Open Guest profile
+  </message>
   <message name="IDS_IDC_OPEN_IN_CHROME">
     Open in Brave
   </message>
