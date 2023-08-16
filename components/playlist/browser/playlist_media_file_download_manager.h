@@ -30,7 +30,7 @@ class PlaylistMediaFileDownloadManager
  public:
   struct DownloadResult {
     std::string media_file_path;
-    int64_t received_bytes = 0;
+    uint64_t received_bytes = 0u;
   };
 
   enum class DownloadFailureReason {
