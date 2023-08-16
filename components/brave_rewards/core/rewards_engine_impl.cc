@@ -21,8 +21,10 @@ using std::placeholders::_1;
 namespace brave_rewards::internal {
 
 RewardsEngineImpl::RewardsEngineImpl(
-    mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote)
-    : client_(std::move(client_remote)),
+    mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote,
+    CreateRewardsEngineCallback callback)
+    : receiver_(this),
+      client_(std::move(client_remote)),
       promotion_(*this),
       publisher_(*this),
       media_(*this),
@@ -39,6 +41,8 @@ RewardsEngineImpl::RewardsEngineImpl(
       zebpay_(*this) {
   DCHECK(base::ThreadPoolInstance::Get());
   set_client_for_logging(client_.get());
+
+  InitializeDatabase(ToLegacyCallback(std::move(callback)));
 }
 
 RewardsEngineImpl::~RewardsEngineImpl() {
@@ -47,16 +51,6 @@ RewardsEngineImpl::~RewardsEngineImpl() {
 
 // mojom::RewardsEngine implementation begin (in the order of appearance in
 // Mojom)
-void RewardsEngineImpl::Initialize(InitializeCallback callback) {
-  if (ready_state_ != ReadyState::kUninitialized) {
-    BLOG(0, "Already initializing");
-    return std::move(callback).Run(mojom::Result::FAILED);
-  }
-
-  ready_state_ = ReadyState::kInitializing;
-  InitializeDatabase(ToLegacyCallback(std::move(callback)));
-}
-
 void RewardsEngineImpl::GetEnvironment(GetEnvironmentCallback callback) {
   std::move(callback).Run(_environment);
 }
@@ -90,10 +84,6 @@ void RewardsEngineImpl::GetRewardsParameters(
 
 void RewardsEngineImpl::GetAutoContributeProperties(
     GetAutoContributePropertiesCallback callback) {
-  if (!IsReady()) {
-    return std::move(callback).Run(mojom::AutoContributeProperties::New());
-  }
-
   auto props = mojom::AutoContributeProperties::New();
   props->enabled_contribute = state()->GetAutoContributeEnabled();
   props->amount = state()->GetAutoContributionAmount();
@@ -105,42 +95,26 @@ void RewardsEngineImpl::GetAutoContributeProperties(
 
 void RewardsEngineImpl::GetPublisherMinVisitTime(
     GetPublisherMinVisitTimeCallback callback) {
-  if (!IsReady()) {
-    return std::move(callback).Run(0);
-  }
-
   std::move(callback).Run(state()->GetPublisherMinVisitTime());
 }
 
 void RewardsEngineImpl::GetPublisherMinVisits(
     GetPublisherMinVisitsCallback callback) {
-  if (!IsReady()) {
-    return std::move(callback).Run(0);
-  }
-
   std::move(callback).Run(state()->GetPublisherMinVisits());
 }
 
 void RewardsEngineImpl::GetAutoContributeEnabled(
     GetAutoContributeEnabledCallback callback) {
-  if (!IsReady()) {
-    return std::move(callback).Run(false);
-  }
-
   std::move(callback).Run(state()->GetAutoContributeEnabled());
 }
 
 void RewardsEngineImpl::GetReconcileStamp(GetReconcileStampCallback callback) {
-  if (!IsReady()) {
-    return std::move(callback).Run(0);
-  }
-
   std::move(callback).Run(state()->GetReconcileStamp());
 }
 
 void RewardsEngineImpl::OnLoad(mojom::VisitDataPtr visit_data,
                                uint64_t current_time) {
-  if (!IsReady() || !visit_data || visit_data->domain.empty()) {
+  if (!visit_data || visit_data->domain.empty()) {
     return;
   }
 
@@ -158,10 +132,6 @@ void RewardsEngineImpl::OnLoad(mojom::VisitDataPtr visit_data,
 }
 
 void RewardsEngineImpl::OnUnload(uint32_t tab_id, uint64_t current_time) {
-  if (!IsReady()) {
-    return;
-  }
-
   OnHide(tab_id, current_time);
   auto iter = current_pages_.find(tab_id);
   if (iter != current_pages_.end()) {
@@ -170,19 +140,11 @@ void RewardsEngineImpl::OnUnload(uint32_t tab_id, uint64_t current_time) {
 }
 
 void RewardsEngineImpl::OnShow(uint32_t tab_id, uint64_t current_time) {
-  if (!IsReady()) {
-    return;
-  }
-
   last_tab_active_time_ = current_time;
   last_shown_tab_id_ = tab_id;
 }
 
 void RewardsEngineImpl::OnHide(uint32_t tab_id, uint64_t current_time) {
-  if (!IsReady()) {
-    return;
-  }
-
   if (tab_id != last_shown_tab_id_ || last_tab_active_time_ == 0) {
     return;
   }
@@ -208,10 +170,6 @@ void RewardsEngineImpl::OnHide(uint32_t tab_id, uint64_t current_time) {
 }
 
 void RewardsEngineImpl::OnForeground(uint32_t tab_id, uint64_t current_time) {
-  if (!IsReady()) {
-    return;
-  }
-
   // When performing automated testing, ignore changes in browser window
   // activation. When running tests in parallel, activation changes can
   // interfere with AC calculations on some platforms.
@@ -227,10 +185,6 @@ void RewardsEngineImpl::OnForeground(uint32_t tab_id, uint64_t current_time) {
 }
 
 void RewardsEngineImpl::OnBackground(uint32_t tab_id, uint64_t current_time) {
-  if (!IsReady()) {
-    return;
-  }
-
   // When performing automated testing, ignore changes in browser window
   // activation. When running tests in parallel, activation changes can
   // interfere with AC calculations on some platforms.
@@ -248,10 +202,6 @@ void RewardsEngineImpl::OnXHRLoad(
     const std::string& first_party_url,
     const std::string& referrer,
     mojom::VisitDataPtr visit_data) {
-  if (!IsReady()) {
-    return;
-  }
-
   std::string type = media()->GetLinkType(url, first_party_url, referrer);
   if (type.empty()) {
     return;
@@ -340,10 +290,6 @@ void RewardsEngineImpl::GetPublisherActivityFromUrl(
 
 void RewardsEngineImpl::GetAutoContributionAmount(
     GetAutoContributionAmountCallback callback) {
-  if (!IsReady()) {
-    return std::move(callback).Run(0);
-  }
-
   std::move(callback).Run(state()->GetAutoContributionAmount());
 }
 
@@ -375,10 +321,6 @@ void RewardsEngineImpl::RemoveRecurringTip(
 }
 
 void RewardsEngineImpl::GetCreationStamp(GetCreationStampCallback callback) {
-  if (!IsReady()) {
-    return std::move(callback).Run(0);
-  }
-
   std::move(callback).Run(state()->GetCreationStamp());
 }
 
@@ -555,20 +497,12 @@ void RewardsEngineImpl::SetInlineTippingPlatformEnabled(
 void RewardsEngineImpl::GetInlineTippingPlatformEnabled(
     mojom::InlineTipsPlatforms platform,
     GetInlineTippingPlatformEnabledCallback callback) {
-  if (!IsReady()) {
-    return std::move(callback).Run(false);
-  }
-
   std::move(callback).Run(state()->GetInlineTippingPlatformEnabled(platform));
 }
 
 void RewardsEngineImpl::GetShareURL(
     const base::flat_map<std::string, std::string>& args,
     GetShareURLCallback callback) {
-  if (!IsReady()) {
-    return std::move(callback).Run("");
-  }
-
   std::move(callback).Run(publisher()->GetShareURL(args));
 }
 
@@ -681,11 +615,7 @@ void RewardsEngineImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
 }
 
 void RewardsEngineImpl::Shutdown(ShutdownCallback callback) {
-  if (!IsReady()) {
-    return std::move(callback).Run(mojom::Result::FAILED);
-  }
-
-  ready_state_ = ReadyState::kShuttingDown;
+  // TODO(sszaloki)
   client_->ClearAllNotifications();
 
   database()->FinishAllInProgressContributions(
@@ -764,21 +694,8 @@ database::Database* RewardsEngineImpl::database() {
   return &database_;
 }
 
-bool RewardsEngineImpl::IsShuttingDown() const {
-  return ready_state_ == ReadyState::kShuttingDown;
-}
-
-bool RewardsEngineImpl::IsUninitialized() const {
-  return ready_state_ == ReadyState::kUninitialized;
-}
-
-bool RewardsEngineImpl::IsReady() const {
-  return ready_state_ == ReadyState::kReady;
-}
-
-void RewardsEngineImpl::InitializeDatabase(LegacyResultCallback callback) {
-  DCHECK(ready_state_ == ReadyState::kInitializing);
-
+void RewardsEngineImpl::InitializeDatabase(
+    LegacyCreateRewardsEngineCallback callback) {
   LegacyResultCallback finish_callback = std::bind(
       &RewardsEngineImpl::OnInitialized, this, _1, std::move(callback));
 
@@ -789,8 +706,6 @@ void RewardsEngineImpl::InitializeDatabase(LegacyResultCallback callback) {
 
 void RewardsEngineImpl::OnDatabaseInitialized(mojom::Result result,
                                               LegacyResultCallback callback) {
-  DCHECK(ready_state_ == ReadyState::kInitializing);
-
   if (result != mojom::Result::OK) {
     BLOG(0, "Database could not be initialized. Error: " << result);
     callback(result);
@@ -804,8 +719,6 @@ void RewardsEngineImpl::OnDatabaseInitialized(mojom::Result result,
 
 void RewardsEngineImpl::OnStateInitialized(LegacyResultCallback callback,
                                            mojom::Result result) {
-  DCHECK(ready_state_ == ReadyState::kInitializing);
-
   if (result != mojom::Result::OK) {
     BLOG(0, "Failed to initialize state");
     callback(result);
@@ -816,29 +729,17 @@ void RewardsEngineImpl::OnStateInitialized(LegacyResultCallback callback,
 }
 
 void RewardsEngineImpl::OnInitialized(mojom::Result result,
-                                      LegacyResultCallback callback) {
-  DCHECK(ready_state_ == ReadyState::kInitializing);
-
+    LegacyCreateRewardsEngineCallback callback) {
   if (result == mojom::Result::OK) {
     StartServices();
+    callback(receiver_.BindNewEndpointAndPassRemote());
   } else {
     BLOG(0, "Failed to initialize wallet " << result);
+    callback({});
   }
-
-  while (!ready_callbacks_.empty()) {
-    auto ready_callback = std::move(ready_callbacks_.front());
-    ready_callbacks_.pop();
-    ready_callback();
-  }
-
-  ready_state_ = ReadyState::kReady;
-
-  callback(result);
 }
 
 void RewardsEngineImpl::StartServices() {
-  DCHECK(ready_state_ == ReadyState::kInitializing);
-
   publisher()->SetPublisherServerListTimer();
   contribution()->SetAutoContributeTimer();
   contribution()->SetMonthlyContributionTimer();
@@ -856,20 +757,7 @@ void RewardsEngineImpl::OnAllDone(mojom::Result result,
 
 template <typename T>
 void RewardsEngineImpl::WhenReady(T callback) {
-  switch (ready_state_) {
-    case ReadyState::kReady:
-      callback();
-      break;
-    case ReadyState::kShuttingDown:
-      NOTREACHED();
-      break;
-    default:
-      ready_callbacks_.push(std::function<void()>(
-          [shared_callback = std::make_shared<T>(std::move(callback))]() {
-            (*shared_callback)();
-          }));
-      break;
-  }
+  callback();
 }
 
 }  // namespace brave_rewards::internal

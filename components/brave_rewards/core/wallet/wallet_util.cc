@@ -403,13 +403,11 @@ bool LogOutWallet(RewardsEngineImpl& engine,
   engine.database()->SaveEventLog(log::kWalletDisconnected,
                                   wallet_type + abbreviated_address);
 
-  if (!engine.IsShuttingDown()) {
-    engine.client()->ExternalWalletLoggedOut();
-    engine.client()->ShowNotification(notification.empty()
-                                          ? notifications::kWalletDisconnected
-                                          : notification,
-                                      {}, base::DoNothing());
-  }
+  // TODO(sszaloki)
+  engine.client()->ExternalWalletLoggedOut();
+  engine.client()->ShowNotification(
+      notification.empty() ? notifications::kWalletDisconnected : notification,
+      {}, base::DoNothing());
 
   return true;
 }

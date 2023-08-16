@@ -127,9 +127,10 @@ ConnectExternalWallet::GetCode(
 }
 
 void ConnectExternalWallet::CheckLinkage() {
-  if (!engine_->IsReady()) {
-    return linkage_checker_.Reset();
-  }
+    // TODO(sszaloki)
+  //if (!engine_->IsReady()) {
+  //  return linkage_checker_.Reset();
+  //}
 
   if (GetWalletIf(
           *engine_, WalletType(),

@@ -30,10 +30,17 @@
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "brave/components/brave_rewards/core/zebpay/zebpay.h"
+#include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 
 namespace brave_rewards::internal {
+
+using CreateRewardsEngineCallback = base::OnceCallback<void(
+    mojo::PendingAssociatedRemote<brave_rewards::mojom::RewardsEngine>)>;
+
+using LegacyCreateRewardsEngineCallback = std::function<void(
+    mojo::PendingAssociatedRemote<brave_rewards::mojom::RewardsEngine>)>;
 
 inline mojom::Environment _environment = mojom::Environment::PRODUCTION;
 inline bool is_debug = false;
@@ -53,7 +60,8 @@ inline constexpr uint64_t kPublisherListRefreshInterval =
 class RewardsEngineImpl : public mojom::RewardsEngine {
  public:
   explicit RewardsEngineImpl(
-      mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote);
+      mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote,
+      CreateRewardsEngineCallback callback);
 
   ~RewardsEngineImpl() override;
 
@@ -63,8 +71,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   // mojom::RewardsEngine implementation begin (in the order of appearance in
   // Mojom)
-  void Initialize(InitializeCallback callback) override;
-
   void GetEnvironment(GetEnvironmentCallback callback) override;
 
   void CreateRewardsWallet(const std::string& country,
@@ -249,10 +255,11 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   template <typename Callback>
   void LoadURL(mojom::UrlRequestPtr request, Callback callback) {
     DCHECK(request);
-    if (IsShuttingDown()) {
-      BLOG(1, request->url + " will not be executed as we are shutting down");
-      return;
-    }
+    // TODO(sszaloki)
+    //if (IsShuttingDown()) {
+    //  BLOG(1, request->url + " will not be executed as we are shutting down");
+    //  return;
+    //}
 
     if (!request->skip_log) {
       BLOG(5,
@@ -385,12 +392,8 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   zebpay::ZebPay* zebpay() { return &zebpay_; }
 
-  bool IsShuttingDown() const;
-
   // This method is virtualised for test-only purposes.
   virtual database::Database* database();
-
-  bool IsReady() const;
 
  private:
   enum class ReadyState {
@@ -400,16 +403,15 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
     kShuttingDown
   };
 
-  bool IsUninitialized() const;
-
-  virtual void InitializeDatabase(LegacyResultCallback callback);
+  virtual void InitializeDatabase(LegacyCreateRewardsEngineCallback callback);
 
   void OnDatabaseInitialized(mojom::Result result,
                              LegacyResultCallback callback);
 
   void OnStateInitialized(LegacyResultCallback callback, mojom::Result result);
 
-  void OnInitialized(mojom::Result result, LegacyResultCallback callback);
+  void OnInitialized(mojom::Result result,
+                     LegacyCreateRewardsEngineCallback callback);
 
   void StartServices();
 
@@ -418,6 +420,7 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   template <typename T>
   void WhenReady(T callback);
 
+  mojo::AssociatedReceiver<mojom::RewardsEngine> receiver_;
   mojo::AssociatedRemote<mojom::RewardsEngineClient> client_;
 
   promotion::Promotion promotion_;
@@ -438,8 +441,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   std::map<uint32_t, mojom::VisitData> current_pages_;
   uint64_t last_tab_active_time_ = 0;
   uint32_t last_shown_tab_id_ = -1;
-  std::queue<std::function<void()>> ready_callbacks_;
-  ReadyState ready_state_ = ReadyState::kUninitialized;
 };
 
 }  // namespace brave_rewards::internal

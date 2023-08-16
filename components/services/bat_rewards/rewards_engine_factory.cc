@@ -8,8 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-
 namespace brave_rewards::internal {
 
 RewardsEngineFactory::RewardsEngineFactory(
@@ -19,7 +17,6 @@ RewardsEngineFactory::RewardsEngineFactory(
 RewardsEngineFactory::~RewardsEngineFactory() = default;
 
 void RewardsEngineFactory::CreateRewardsEngine(
-    mojo::PendingAssociatedReceiver<mojom::RewardsEngine> engine_receiver,
     mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote,
     mojom::RewardsEngineOptionsPtr options,
     CreateRewardsEngineCallback callback) {
@@ -35,12 +32,9 @@ void RewardsEngineFactory::CreateRewardsEngine(
     reconcile_interval = options->reconcile_interval;
     retry_interval = options->retry_interval;
 
-    engine_ = mojo::MakeSelfOwnedAssociatedReceiver(
-        std::make_unique<RewardsEngineImpl>(std::move(client_remote)),
-        std::move(engine_receiver));
+    engine_ = std::make_unique<RewardsEngineImpl>(std::move(client_remote),
+                                                  std::move(callback));
   }
-
-  std::move(callback).Run();
 }
 
 }  // namespace brave_rewards::internal

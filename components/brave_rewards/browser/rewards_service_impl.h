@@ -344,7 +344,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void Reset();
 
-  void OnEngineCreated();
+  void OnEngineCreated(
+      mojo::PendingAssociatedRemote<mojom::RewardsEngine> remote);
 
   void OnLegacyStateLoaded(LoadLegacyStateCallback callback,
                            std::pair<std::string, base::Value> data);
@@ -373,8 +374,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnSetPublisherExclude(const std::string& publisher_key,
                              const bool exclude,
                              const mojom::Result result);
-
-  void OnEngineInitialized(mojom::Result result);
 
   void OnClaimPromotion(ClaimPromotionCallback callback,
                         const mojom::Result result,

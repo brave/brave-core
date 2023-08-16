@@ -202,9 +202,10 @@ void ConnectUpholdWallet::OnCreateCard(ConnectExternalWalletCallback callback,
 }
 
 void ConnectUpholdWallet::CheckEligibility() {
-  if (!engine_->IsReady()) {
-    return eligibility_checker_.Reset();
-  }
+  // TODO(sszaloki)
+  //if (!engine_->IsReady()) {
+  //  return eligibility_checker_.Reset();
+  //}
 
   auto wallet =
       engine_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected});

@@ -11,8 +11,6 @@ import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 
 interface RewardsEngine {
-  Initialize() => (Result result);
-
   GetEnvironment() => (Environment environment);
 
   CreateRewardsWallet(string country)

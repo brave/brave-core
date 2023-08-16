@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_REWARDS_REWARDS_ENGINE_FACTORY_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_REWARDS_REWARDS_ENGINE_FACTORY_H_
 
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/services/bat_rewards/public/interfaces/rewards_engine_factory.mojom.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
@@ -26,14 +27,13 @@ class RewardsEngineFactory : public mojom::RewardsEngineFactory {
   RewardsEngineFactory& operator=(const RewardsEngineFactory&) = delete;
 
   void CreateRewardsEngine(
-      mojo::PendingAssociatedReceiver<mojom::RewardsEngine> engine_receiver,
       mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote,
       mojom::RewardsEngineOptionsPtr options,
       CreateRewardsEngineCallback callback) override;
 
  private:
   mojo::Receiver<mojom::RewardsEngineFactory> receiver_;
-  mojo::SelfOwnedAssociatedReceiverRef<mojom::RewardsEngine> engine_;
+  std::unique_ptr<RewardsEngineImpl> engine_;
 };
 
 }  // namespace brave_rewards::internal
