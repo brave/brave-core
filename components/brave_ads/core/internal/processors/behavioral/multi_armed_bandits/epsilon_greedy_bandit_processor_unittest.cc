@@ -172,9 +172,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, ProcessSegmentNotInResource) {
   processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
-  const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
-  const auto iter = arms.find(segment);
-  EXPECT_TRUE(iter == arms.cend());
+  EXPECT_FALSE(base::Contains(GetEpsilonGreedyBanditArms(), segment));
 }
 
 TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, ProcessChildSegment) {

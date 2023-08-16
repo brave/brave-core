@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
@@ -40,7 +41,7 @@ SegmentList GetSegments(const CatalogInfo& catalog) {
       for (const auto& segment : creative_set.segments) {
         CHECK(!segment.name.empty());
 
-        if (exists.find(segment.name) != std::cend(exists)) {
+        if (base::Contains(exists, segment.name)) {
           continue;
         }
 
@@ -74,7 +75,7 @@ SegmentList GetParentSegments(const SegmentList& segments) {
     const std::string parent_segment = GetParentSegment(segment);
     CHECK(!parent_segment.empty());
 
-    if (exists.find(parent_segment) != std::cend(exists)) {
+    if (base::Contains(exists, parent_segment)) {
       continue;
     }
 

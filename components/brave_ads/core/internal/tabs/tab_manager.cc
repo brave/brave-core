@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 
 #include "base/check.h"
+#include "base/containers/contains.h"
 #include "base/hash/hash.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -55,7 +56,7 @@ absl::optional<TabInfo> TabManager::GetLastVisible() const {
 }
 
 absl::optional<TabInfo> TabManager::MaybeGetForId(const int32_t id) const {
-  if (tabs_.find(id) == tabs_.cend()) {
+  if (!base::Contains(tabs_, id)) {
     return absl::nullopt;
   }
 
@@ -65,7 +66,7 @@ absl::optional<TabInfo> TabManager::MaybeGetForId(const int32_t id) const {
 ///////////////////////////////////////////////////////////////////////////////
 
 TabInfo& TabManager::GetOrCreateForId(const int32_t id) {
-  if (tabs_.find(id) == tabs_.cend()) {
+  if (!base::Contains(tabs_, id)) {
     TabInfo tab;
     tab.id = id;
     tabs_[id] = tab;

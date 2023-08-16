@@ -24,7 +24,7 @@ bool ShouldTargetSubdivision(const std::string& country_code,
 
   const auto& [_, subdivisions] = *iter;
 
-  return subdivisions.find(subdivision) != subdivisions.cend();
+  return base::Contains(subdivisions, subdivision);
 }
 
 }  // namespace brave_ads

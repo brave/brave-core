@@ -39,8 +39,7 @@ bool DoesRequireResource() {
 void MaybeAddOrResetArms(EpsilonGreedyBanditArmMap& arms) {
   for (const base::StringPiece value : GetSegments()) {
     std::string segment = static_cast<std::string>(value);
-    const auto iter = arms.find(segment);
-    if (iter != arms.cend()) {
+    if (base::Contains(arms, segment)) {
       BLOG(3, "Epsilon greedy bandit arm already exists for " << segment
                                                               << " segment");
 
