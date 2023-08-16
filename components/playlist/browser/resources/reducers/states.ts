@@ -14,6 +14,11 @@ import {
 import { getItemDurationInSeconds } from '../utils/timeFormatter'
 import { getFormattedTotalBytes } from '../utils/bytesFormatter'
 
+export enum PlaylistEditMode {
+  RENAME = 'rename',
+  BULK_EDIT = 'bulkedit'
+}
+
 // For security reason, we're embedding player to an <iframe>. And these two
 // states are mutually exclusive.
 export interface ApplicationState {
@@ -37,6 +42,8 @@ export interface PlaylistData {
   currentList: Playlist | undefined
   // TODO(sko) Investigate if it's possible to remove this and use ApplicationState.playerState.
   lastPlayerState: PlayerState | undefined
+
+  playlistEditMode: PlaylistEditMode | undefined
 
   cachingProgress: Map<string, CachingProgress>
 }
@@ -66,4 +73,10 @@ export function useTotalSize (playlist?: Playlist) {
   return React.useMemo(() => {
     return getFormattedTotalBytes(playlist?.items ?? [])
   }, [playlist])
+}
+
+export function usePlaylistEditMode () {
+  return useSelector<ApplicationState, PlaylistEditMode | undefined>(
+    applicationState => applicationState.playlistData?.playlistEditMode
+  )
 }

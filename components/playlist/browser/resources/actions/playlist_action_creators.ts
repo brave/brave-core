@@ -9,7 +9,11 @@ import {
   Playlist,
   PlaylistItem
 } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m'
-import { CachingProgress, PlayerState } from '../reducers/states'
+import {
+  CachingProgress,
+  PlayerState,
+  PlaylistEditMode
+} from '../reducers/states'
 
 // Constants
 import { types } from '../constants/playlist_types'
@@ -21,6 +25,9 @@ import {
 // Actions used by App ---------------------------------------------------------
 export const playlistLoaded = (playlists: Playlist[]) =>
   action(types.PLAYLIST_LOADED, playlists)
+
+export const playlistUpdated = (playlist: Playlist) =>
+  action(types.PLAYLIST_UPDATED, playlist)
 
 // Actions used by Player ------------------------------------------------------
 export const selectPlaylistItem = (payload: ItemSelectedPayload) =>
@@ -45,3 +52,6 @@ export const playerStoppedPlayingItem = (playlist: PlaylistItem | undefined) =>
 export const playNextItem = () => action(types.PLAYER_PLAY_NEXT_ITEM)
 
 export const playPreviousItem = () => action(types.PLAYER_PLAY_PREVIOUS_ITEM)
+
+export const setPlaylistEditMode = (editMode: PlaylistEditMode | undefined) =>
+  action(types.PLAYLIST_SET_EDIT_MODE, editMode)

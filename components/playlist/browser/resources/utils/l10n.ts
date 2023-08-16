@@ -14,6 +14,8 @@ export type Message =
   | 'bravePlaylistContextMenuMove'
   | 'bravePlaylistContextMenuRemoveOfflineData'
   | 'bravePlaylistContextMenuRemoveFromPlaylist'
+  | 'bravePlaylistContextMenuRenamePlaylist'
+  | 'bravePlaylistContextMenuDeletePlaylist'
 
 export function getLocalizedString (message: Message) {
   return getLocale(message)
