@@ -239,5 +239,9 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   func discoverEthAllowances(_ completion: @escaping ([BraveWallet.AllowanceInfo]) -> Void) {
     completion([])
   }
+  
+  func convertFevm(toFvmAddress isMainnet: Bool, fevmAddresses: [String], completion: @escaping ([String: String]) -> Void) {
+    completion([:])
+  }
 }
 #endif

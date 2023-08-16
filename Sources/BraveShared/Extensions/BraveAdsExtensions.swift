@@ -9,7 +9,7 @@ import Shared
 import UIKit
 
 extension BraveAds {
-  public func initialize(walletInfo: BraveAds.WalletInfo, completion: @escaping (Bool) -> Void) {
+  public func initialize(walletInfo: BraveAds.WalletInfo? = nil, completion: @escaping (Bool) -> Void) {
     self.initialize(
       with: .init(deviceId: UIDevice.current.identifierForVendor?.uuidString ?? ""),
       buildChannelInfo: .init(
@@ -22,7 +22,7 @@ extension BraveAds {
   }
   
   @discardableResult
-  @MainActor public func initialize(walletInfo: BraveAds.WalletInfo) async -> Bool {
+  @MainActor public func initialize(walletInfo: BraveAds.WalletInfo? = nil) async -> Bool {
     await withCheckedContinuation { c in
       self.initialize(walletInfo: walletInfo) { success in
         c.resume(returning: success)

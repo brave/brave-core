@@ -83,7 +83,7 @@ public class BraveRewards: NSObject {
           recoverySeed: Data(seed).base64EncodedString()
         )
       }
-      self.ads.initialize(walletInfo: walletInfo ?? .init()) { success in
+      self.ads.initialize(walletInfo: walletInfo) { success in
         if !success {
           self.isAdsInitialized = false
         } else {
@@ -168,7 +168,7 @@ public class BraveRewards: NSObject {
           at: configuration.storageURL.appendingPathComponent("ads")
         )
         if ads.isEnabled {
-          ads.initialize(walletInfo: .init()) { _ in }
+          ads.initialize() { _ in }
         }
       }
     }
