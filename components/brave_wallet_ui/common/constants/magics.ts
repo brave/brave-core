@@ -16,6 +16,11 @@ export const WRAPPED_SOL_CONTRACT_ADDRESS = 'So111111111111111111111111111111111
 export const UNKNOWN_TOKEN_COINGECKO_ID = 'UNKNOWN_TOKEN'
 
 /**
+ * use this ID to prevent looking up a token's price on coingecko
+ */
+export const SKIP_PRICE_LOOKUP_COINGECKO_ID ='skip-coingecko-price'
+
+/**
  * Fiat value threshold for hidding small balances on the portolio view.
  * This may turn into a pref in the future.
  */

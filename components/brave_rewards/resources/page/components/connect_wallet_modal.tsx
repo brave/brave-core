@@ -37,6 +37,7 @@ interface ExternalWalletProvider {
 }
 
 interface Props {
+  currentCountryCode: string
   providers: ExternalWalletProvider[]
   onContinue: (provider: string) => void
   onClose: () => void
@@ -82,9 +83,14 @@ export function ConnectWalletModal (props: Props) {
               <style.panelListItem>
                {getString('connectWalletListItem1')}
               </style.panelListItem>
-              <style.panelListItem>
-                {getString('connectWalletListItem2')}
-              </style.panelListItem>
+              {
+                // For now, hide the second panel list item about
+                // being able to top up if Rewards country is India.
+                props.currentCountryCode !== 'IN' &&
+                <style.panelListItem>
+                  {getString('connectWalletListItem2')}
+                </style.panelListItem>
+              }
               <style.panelListItem>
                 {getString('connectWalletListItem3')}
               </style.panelListItem>

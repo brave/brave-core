@@ -18,6 +18,7 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // Constants
 import { maxConcurrentPriceRequests, maxBatchSizePrice } from '../constants'
+import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../../constants/magics'
 
 // Utils
 import {
@@ -96,6 +97,8 @@ export const pricingEndpoints = ({
 
           // dedupe ids to prevent duplicate price requests
           const uniqueIds = [...new Set(ids)]
+            // skip flagged coins such as testnet coins other than Goerli-ETH
+            .filter(id => id !== SKIP_PRICE_LOOKUP_COINGECKO_ID)
 
           if (!uniqueIds.length) {
             throw new Error('no token ids provided for price lookup')
@@ -147,11 +150,25 @@ export const pricingEndpoints = ({
             }
           )
 
-          return {
-            data: results.flat().reduce((acc, assetPrice) => {
+          const registry: SpotPriceRegistry = results
+            .flat()
+            .reduce((acc, assetPrice) => {
               acc[assetPrice.fromAsset.toLowerCase()] = assetPrice
               return acc
             }, {})
+          
+          // add skipped value
+          registry[SKIP_PRICE_LOOKUP_COINGECKO_ID] = {
+            assetTimeframeChange: (
+              timeframe ?? BraveWallet.AssetPriceTimeframe.Live
+            ).toString(),
+            fromAsset: SKIP_PRICE_LOOKUP_COINGECKO_ID,
+            price: '0',
+            toAsset: toCurrency
+          }
+
+          return {
+            data: registry
           }
         } catch (error) {
           const msg = `Unable to fetch prices`
@@ -217,6 +234,7 @@ export const pricingEndpoints = ({
               }
             ]
     }),
+
     getPricesHistory: query<TokenPriceHistory[], GetPricesHistoryArg>({
       queryFn: async (
         { tokens, vsAsset, timeframe, tokenBalancesRegistry },
@@ -231,6 +249,8 @@ export const pricingEndpoints = ({
 
           // dedupe tokens to prevent duplicate price history requests
           const uniqueIds = [...new Set(tokens.map(getPriceIdForToken))]
+            // skip flagged coins such as testnet coins other than Goerli-ETH
+            .filter((id) => id !== SKIP_PRICE_LOOKUP_COINGECKO_ID)
 
           const history = await mapLimit(
             uniqueIds,

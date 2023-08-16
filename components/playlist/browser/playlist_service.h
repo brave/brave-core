@@ -316,11 +316,13 @@ class PlaylistService : public KeyedService,
                                      int64_t received_bytes,
                                      int percent_complete,
                                      base::TimeDelta remaining_time);
-  void OnMediaFileDownloadFinished(bool update_media_src_and_retry_on_fail,
-                                   DownloadMediaFileCallback callback,
-                                   mojom::PlaylistItemPtr item,
-                                   const std::string& media_file_path,
-                                   int64_t received_bytes);
+  void OnMediaFileDownloadFinished(
+      bool update_media_src_and_retry_on_fail,
+      DownloadMediaFileCallback callback,
+      mojom::PlaylistItemPtr item,
+      const base::expected<
+          PlaylistMediaFileDownloadManager::DownloadResult,
+          PlaylistMediaFileDownloadManager::DownloadFailureReason>& result);
 
   // KeyedService overrides:
   void Shutdown() override;

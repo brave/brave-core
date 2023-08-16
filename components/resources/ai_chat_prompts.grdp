@@ -62,7 +62,9 @@ This is an article:
 <message name="IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT_LLAMA2" translateable="false">
 This is a video transcript:
 
+&lt;transcript&gt;
 <ph name="TRANSCRIPT">$1</ph>
+&lt;/transcript&gt;
 
 <ph name= "USER_PROMPT">$2</ph>
 </message>
@@ -70,7 +72,9 @@ This is a video transcript:
 <message name="IDS_AI_CHAT_LLAMA2_GENERATE_QUESTIONS_VIDEO" translateable="false">
 This is a video transcript:
 
+&lt;transcript&gt;
 <ph name="TRANSCRIPT">$1</ph>
+&lt;/transcript&gt;
 
 Propose up to 3 very short questions, around 10 words, that a reader may ask about this video. Consider intriguing or unusual elements of the content, or structurally important.
 </message>

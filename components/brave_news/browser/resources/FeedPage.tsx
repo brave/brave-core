@@ -21,17 +21,18 @@ const FeedContainer = styled.div`
   gap: 12px;
 `
 
+const MAX_ITEMS = 250;
 export default function FeedPage(props: Props) {
   const { feed } = useInspectContext();
   return <div>
-    The Feed ({feed?.items.length} items. Truncated at 100)
+    The Feed ({feed?.items.length} items. Truncated at {MAX_ITEMS})
     <FeedContainer>
-      {feed?.items.slice(0, 100).map((item, index) => {
+      {feed?.items.slice(0, MAX_ITEMS).map((item, index) => {
         if (item.advert) {
-          return <Advert info={item.advert} key={item.advert.creativeInstanceId} />
+          return <Advert info={item.advert} key={index} />
         }
         if (item.article) {
-          return <Article info={item.article} key={item.article.data.urlHash} />
+          return <Article info={item.article} key={item.article.data.url.url} />
         }
         if (item.cluster) {
           return <Cluster info={item.cluster} key={index} />
@@ -40,7 +41,7 @@ export default function FeedPage(props: Props) {
           return <Discover info={item.discover} key={index} />
         }
         if (item.hero) {
-          return <HeroArticle info={item.hero} key={item.hero.data.urlHash} />
+          return <HeroArticle info={item.hero} key={item.hero.data.url.url} />
         }
 
         throw new Error("Invalid item!" + JSON.stringify(item))

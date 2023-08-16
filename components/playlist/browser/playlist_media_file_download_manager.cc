@@ -122,6 +122,12 @@ PlaylistMediaFileDownloadManager::GetCurrentDownloadingPlaylistItemID() const {
 }
 
 void PlaylistMediaFileDownloadManager::CancelCurrentDownloadingPlaylistItem() {
+  if (current_job_ && current_job_->on_finish_callback) {
+    std::move(current_job_->on_finish_callback)
+        .Run(current_job_->item->Clone(),
+             base::unexpected(DownloadFailureReason::kCanceled));
+  }
+
   media_file_downloader_->RequestCancelCurrentPlaylistGeneration();
   current_job_.reset();
 }
@@ -166,7 +172,8 @@ void PlaylistMediaFileDownloadManager::OnMediaFileReady(
 
   if (current_job_->on_finish_callback) {
     std::move(current_job_->on_finish_callback)
-        .Run(std::move(current_job_->item), media_file_path, received_bytes);
+        .Run(std::move(current_job_->item),
+             DownloadResult(media_file_path, received_bytes));
   }
   current_job_.reset();
 
@@ -189,7 +196,8 @@ void PlaylistMediaFileDownloadManager::OnMediaFileGenerationFailed(
 
   if (current_job_->on_finish_callback) {
     std::move(current_job_->on_finish_callback)
-        .Run(std::move(current_job_->item), {}, {});
+        .Run(std::move(current_job_->item),
+             base::unexpected(DownloadFailureReason::kFailed));
   }
   current_job_.reset();
   CancelCurrentDownloadingPlaylistItem();

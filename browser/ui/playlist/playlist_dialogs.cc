@@ -19,6 +19,12 @@ void ShowRemovePlaylistDialog(content::WebContents* web_contents,
                               const std::string& playlist_id) {
   NOTREACHED();
 }
+
+void ShowMoveItemsDialog(content::WebContents* contents,
+                         const std::string& playlist_id,
+                         const std::vector<std::string>& items) {
+  NOTREACHED();
+}
 // #else functions are defined in playlist_action_dialogs.cc
 #endif
 

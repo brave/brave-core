@@ -19,6 +19,7 @@ import { AllNetworksOption } from '../../../../options/network-filter-options'
 import {
   EditVisibleAssetsOptions
 } from '../../../../options/nav-options'
+import { makeNetworkAsset } from '../../../../options/asset-options'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -133,23 +134,7 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
 
   // Memos
   const nativeAsset = React.useMemo(() => {
-    return selectedNetwork && {
-      contractAddress: '',
-      decimals: selectedNetwork.decimals,
-      isErc20: false,
-      isErc721: false,
-      isErc1155: false,
-      isNft: false,
-      isSpam: false,
-      logo: selectedNetwork.iconUrls[0] ?? '',
-      name: selectedNetwork.symbolName,
-      symbol: selectedNetwork.symbol,
-      visible: true,
-      tokenId: '',
-      coingeckoId: '',
-      chainId: selectedNetwork.chainId,
-      coin: selectedNetwork.coin
-    }
+    return selectedNetwork && makeNetworkAsset(selectedNetwork)
   }, [selectedNetwork])
 
   const fullTokenListAllChains = React.useMemo(() => {

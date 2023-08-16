@@ -1300,6 +1300,13 @@ void VerticalTabStripRegionView::ScrollActiveTabToBeVisible() {
   auto* active_tab = original_region_view_->tab_strip_->tab_at(active_index);
   CHECK(active_tab);
 
+  if (!contents_view_->Contains(active_tab)) {
+    // Reportedly, contents_view_ and active sometimes tab belong to different
+    // view trees and it causes CHECK failure while converting coordinates.
+    // https://github.com/brave/brave-browser/issues/32183
+    return;
+  }
+
   gfx::RectF tab_bounds_in_contents_view(active_tab->GetLocalBounds());
   views::View::ConvertRectToTarget(active_tab, contents_view_,
                                    &tab_bounds_in_contents_view);

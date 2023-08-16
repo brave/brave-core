@@ -29,6 +29,7 @@ type VirtualizedTokensListProps = {
   renderToken: RenderTokenFunc
   estimatedItemSize: number
   getItemSize: (index: number) => number
+  maximumViewableTokens?: number
 }
 
 type ListItemProps<T extends UserAssetInfoType | BraveWallet.BlockchainToken = UserAssetInfoType> = {
@@ -68,11 +69,17 @@ export const VirtualizedTokensList = ({
   renderToken,
   userAssetList,
   estimatedItemSize,
-  getItemSize
+  getItemSize,
+  maximumViewableTokens
 }: VirtualizedTokensListProps) => {
   // computed
   // last item shown as 50% visible to indicate that scrolling is possible here
-  const minimumItems = (Math.min(4.5, userAssetList.length || 1)) // min: 1, max: 4.5
+  const maxTokens =
+    maximumViewableTokens !== undefined
+      ? maximumViewableTokens
+      : 4.5
+  const minimumItems =
+    (Math.min(maxTokens, userAssetList.length || 1)) // min: 1, max: 4.5
   const listHeight = estimatedItemSize * minimumItems
 
   // render

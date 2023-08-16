@@ -92,6 +92,7 @@ BraveNewsController::BraveNewsController(
       api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
       private_cdn_request_helper_(GetNetworkTrafficAnnotationTag(),
                                   url_loader_factory),
+      history_service_(history_service),
       url_loader_factory_(url_loader_factory),
       direct_feed_controller_(prefs_, url_loader_factory),
       unsupported_publisher_migrator_(prefs_,
@@ -183,7 +184,8 @@ void BraveNewsController::GetFeedV2(GetFeedV2Callback callback) {
 
   if (!feed_v2_builder_) {
     feed_v2_builder_ = std::make_unique<FeedV2Builder>(
-        publishers_controller_, channels_controller_, url_loader_factory_);
+        publishers_controller_, channels_controller_, suggestions_controller_,
+        *prefs_.get(), *history_service_.get(), url_loader_factory_);
   }
 
   feed_v2_builder_->Build(std::move(callback));

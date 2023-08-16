@@ -178,6 +178,11 @@ void PlaylistUI::ShowRemovePlaylistUI(const std::string& playlist_id) {
   playlist::ShowRemovePlaylistDialog(web_ui()->GetWebContents(), playlist_id);
 }
 
+void PlaylistUI::ShowMoveItemsUI(const std::string& playlist_id,
+                                 const std::vector<std::string>& items) {
+  playlist::ShowMoveItemsDialog(web_ui()->GetWebContents(), playlist_id, items);
+}
+
 WEB_UI_CONTROLLER_TYPE_IMPL(PlaylistUI)
 
 ////////////////////////////////////////////////////////////////////////////////

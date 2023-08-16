@@ -6,12 +6,19 @@ import * as React from 'react';
 import { Discover as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import styled from 'styled-components';
 import Card from './Card';
+import { useInspectContext } from '../context';
 
 const Row = styled.div`
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
-  justify-content: space-between;
+  margin-top: 8px;
+`
+
+const Suggestion = styled(Card)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 interface Props {
@@ -19,9 +26,13 @@ interface Props {
 }
 
 export default function Component({ info }: Props) {
-  return <Row>
-    {info.publishers.map(p => <Card key={p.publisherId}>
-      {p.publisherName}
-    </Card>)}
-  </Row>
+  const { publishers } = useInspectContext();
+  return <Card>
+    Based on your interests, you might like these publishers:
+    <Row>
+      {info.publisherIds.map(p => <Suggestion key={p}>
+        {publishers[p]?.publisherName}
+      </Suggestion>)}
+    </Row>
+  </Card>
 }
