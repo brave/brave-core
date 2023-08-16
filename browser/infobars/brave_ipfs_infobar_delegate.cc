@@ -18,9 +18,9 @@
 #include "ui/views/vector_icons.h"
 
 // BraveIPFSInfoBarDelegateObserver
-BraveIPFSInfoBarDelegateObserver::BraveIPFSInfoBarDelegateObserver() {}
+BraveIPFSInfoBarDelegateObserver::BraveIPFSInfoBarDelegateObserver() = default;
 
-BraveIPFSInfoBarDelegateObserver::~BraveIPFSInfoBarDelegateObserver() {}
+BraveIPFSInfoBarDelegateObserver::~BraveIPFSInfoBarDelegateObserver() = default;
 
 // BraveIPFSInfoBarDelegate
 // static
@@ -50,8 +50,7 @@ bool BraveIPFSInfoBarDelegate::HasCheckbox() const {
 }
 
 std::u16string BraveIPFSInfoBarDelegate::GetCheckboxText() const {
-  NOTREACHED();
-  return std::u16string();
+  NOTREACHED_NORETURN();
 }
 
 void BraveIPFSInfoBarDelegate::SetCheckboxChecked(bool checked) {
@@ -105,9 +104,8 @@ std::u16string BraveIPFSInfoBarDelegate::GetButtonLabel(
       return brave_l10n::GetLocalizedResourceUTF16String(
           IDS_BRAVE_IPFS_INFOBAR_NEVER);
     default:
-      NOTREACHED();
+      NOTREACHED_NORETURN();
   }
-  return std::u16string();
 }
 
 std::vector<int> BraveIPFSInfoBarDelegate::GetButtonsOrder() const {

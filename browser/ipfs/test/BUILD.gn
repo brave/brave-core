@@ -67,7 +67,7 @@ source_set("browsertests") {
       "//brave/browser/ui/views/infobars:infobars",
       "//brave/common:common",
       "//brave/components/constants",
-      "//brave/components/infobars/core:core",
+      "//brave/components/infobars/core",
       "//brave/components/ipfs",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",

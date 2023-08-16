@@ -24,8 +24,8 @@ class ContentInfoBarManager;
 class BraveIPFSInfoBarDelegateObserver {
  public:
   BraveIPFSInfoBarDelegateObserver();
-  virtual ~BraveIPFSInfoBarDelegateObserver();
   virtual void OnRedirectToIPFS(bool remember) = 0;
+  virtual ~BraveIPFSInfoBarDelegateObserver();
 };
 
 class BraveIPFSInfoBarDelegate : public BraveConfirmInfoBarDelegate {
@@ -34,7 +34,7 @@ class BraveIPFSInfoBarDelegate : public BraveConfirmInfoBarDelegate {
   BraveIPFSInfoBarDelegate& operator=(const BraveIPFSInfoBarDelegate&) = delete;
 
   BraveIPFSInfoBarDelegate(
-      std::unique_ptr<BraveIPFSInfoBarDelegateObserver> observer_,
+      std::unique_ptr<BraveIPFSInfoBarDelegateObserver> observer,
       PrefService* local_state);
   ~BraveIPFSInfoBarDelegate() override;
 

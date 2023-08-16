@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_INFOBAR_BRAVE_CONFIRM_INFOBAR_
-#define BRAVE_BROWSER_UI_VIEWS_INFOBAR_BRAVE_CONFIRM_INFOBAR_
+#ifndef BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_CONFIRM_INFOBAR_H_
+#define BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_CONFIRM_INFOBAR_H_
 
 #include <memory>
 
@@ -36,15 +36,12 @@ class BraveConfirmInfoBar : public InfoBarView {
   // InfoBarView:
   void Layout() override;
 
-  BraveConfirmInfoBarDelegate* GetDelegate();
+  BraveConfirmInfoBarDelegate* GetDelegate() const;
 
-  views::MdTextButton* ok_button_for_testing() { return ok_button_; }
-
- protected:
+ private:
   // InfoBarView:
   int GetContentMinimumWidth() const override;
 
- private:
   void OkButtonPressed();
   void CancelButtonPressed();
   void ExtraButtonPressed();
@@ -63,6 +60,8 @@ class BraveConfirmInfoBar : public InfoBarView {
   raw_ptr<views::MdTextButton> extra_button_ = nullptr;
   raw_ptr<views::Link> link_ = nullptr;
   raw_ptr<views::Checkbox> checkbox_ = nullptr;
+
+  base::WeakPtrFactory<BraveConfirmInfoBar> weak_ptr_factory_{this};
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_INFOBAR_BRAVE_CONFIRM_INFOBAR_
+#endif  // BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_CONFIRM_INFOBAR_H_

@@ -886,7 +886,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Learn more about IPFS and privacy
       </message>
       <message name="IDS_BRAVE_IPFS_INFOBAR_TEXT" desc="Text that promotes turning on autoredirect to the configured gateway setting">
-        Would you like to handle content-addressed resources with native IPFS support (ipfs:// and ipns://) built into Brave?
+        This page is available on the IPFS network. Would you like to load IPFS pages using Brave's built-in support (via ipfs:// or ipns://)?
       </message>
       <message name="IDS_BRAVE_IPFS_INFOBAR_APPROVE" desc="Turns on promoted setting">
         Always

@@ -43,7 +43,7 @@ BraveConfirmInfoBar::BraveConfirmInfoBar(
       [this](ConfirmInfoBarDelegate::InfoBarButton type,
              void (BraveConfirmInfoBar::*click_function)()) {
         auto* button = AddChildView(std::make_unique<views::MdTextButton>(
-            base::BindRepeating(click_function, base::Unretained(this)),
+            base::BindRepeating(click_function, weak_ptr_factory_.GetWeakPtr()),
             GetDelegate()->GetButtonLabel(type)));
         button->SetProperty(
             views::kMarginsKey,
@@ -70,9 +70,6 @@ BraveConfirmInfoBar::BraveConfirmInfoBar(
   if (buttons & ConfirmInfoBarDelegate::BUTTON_CANCEL) {
     cancel_button_ = create_button(ConfirmInfoBarDelegate::BUTTON_CANCEL,
                                    &BraveConfirmInfoBar::CancelButtonPressed);
-    if (features::IsChromeRefresh2023()) {
-      cancel_button_->SetStyle(ui::ButtonStyle::kTonal);
-    }
     if (buttons == ConfirmInfoBarDelegate::BUTTON_CANCEL ||
         delegate_ptr->IsProminent(ConfirmInfoBarDelegate::BUTTON_CANCEL)) {
       cancel_button_->SetProminent(true);
@@ -89,9 +86,6 @@ BraveConfirmInfoBar::BraveConfirmInfoBar(
   if (buttons & ConfirmInfoBarDelegate::BUTTON_EXTRA) {
     extra_button_ = create_button(ConfirmInfoBarDelegate::BUTTON_EXTRA,
                                   &BraveConfirmInfoBar::ExtraButtonPressed);
-    if (features::IsChromeRefresh2023()) {
-      extra_button_->SetStyle(ui::ButtonStyle::kTonal);
-    }
     if (buttons == ConfirmInfoBarDelegate::BUTTON_EXTRA ||
         delegate_ptr->IsProminent(ConfirmInfoBarDelegate::BUTTON_EXTRA)) {
       extra_button_->SetProminent(true);
@@ -108,13 +102,10 @@ BraveConfirmInfoBar::BraveConfirmInfoBar(
   link_ = AddChildView(CreateLink(delegate_ptr->GetLinkText()));
 
   if (delegate_ptr->HasCheckbox()) {
-    // We don't consider case where ok/cancel button and check box exist
-    // together.
-    // DCHECK(!ok_button_ && !cancel_button_);
     checkbox_ = AddChildView(std::make_unique<views::Checkbox>(
         delegate_ptr->GetCheckboxText(),
         base::BindRepeating(&BraveConfirmInfoBar::CheckboxPressed,
-                            base::Unretained(this))));
+                            weak_ptr_factory_.GetWeakPtr())));
   }
 }
 
@@ -129,8 +120,7 @@ views::MdTextButton* BraveConfirmInfoBar::GetButtonById(int id) {
     case ConfirmInfoBarDelegate::BUTTON_EXTRA:
       return extra_button_;
     default:
-      NOTREACHED();
-      return nullptr;
+      NOTREACHED_NORETURN();
   }
 }
 
@@ -222,7 +212,7 @@ void BraveConfirmInfoBar::ExtraButtonPressed() {
   }
 }
 
-BraveConfirmInfoBarDelegate* BraveConfirmInfoBar::GetDelegate() {
+BraveConfirmInfoBarDelegate* BraveConfirmInfoBar::GetDelegate() const {
   return reinterpret_cast<BraveConfirmInfoBarDelegate*>(delegate());
 }
 
@@ -239,8 +229,8 @@ int BraveConfirmInfoBar::NonLabelWidth() const {
   const int button_spacing = layout_provider->GetDistanceMetric(
       views::DISTANCE_RELATED_BUTTON_HORIZONTAL);
 
-  const int button_count =
-      (ok_button_ ? 1 : 0) + (cancel_button_ ? 1 : 0) + (extra_button_ ? 1 : 0);
+  const int button_count = GetDelegate()->GetButtonsOrder().size();
+  ;
 
   int width =
       (label_->GetText().empty() || button_count == 0) ? 0 : label_spacing;

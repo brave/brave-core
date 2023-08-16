@@ -71,7 +71,7 @@ namespace ipfs {
 class BraveIPFSInfoBarDelegateObserverImpl
     : public BraveIPFSInfoBarDelegateObserver {
  public:
-  BraveIPFSInfoBarDelegateObserverImpl(
+  explicit BraveIPFSInfoBarDelegateObserverImpl(
       base::WeakPtr<IPFSTabHelper> ipfs_tab_helper)
       : ipfs_tab_helper_(ipfs_tab_helper) {}
 
@@ -86,7 +86,7 @@ class BraveIPFSInfoBarDelegateObserverImpl
     }
   }
 
-  ~BraveIPFSInfoBarDelegateObserverImpl() override {}
+  ~BraveIPFSInfoBarDelegateObserverImpl() override = default;
 
  private:
   base::WeakPtr<IPFSTabHelper> ipfs_tab_helper_;
