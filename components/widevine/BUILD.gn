@@ -1,0 +1,13 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("constants") {
+  sources = [ "constants.h" ]
+}
+
+source_set("static_buildflags") {
+  sources = [ "static_buildflags.h" ]
+  deps = [ "//build:buildflag_header_h" ]
+}

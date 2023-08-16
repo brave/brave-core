@@ -46,6 +46,7 @@ source_set("constants") {
   deps = [
     "//base",
     "//brave/components/ipfs/buildflags",
+    "//brave/components/widevine:static_buildflags",
   ]
 }
 
