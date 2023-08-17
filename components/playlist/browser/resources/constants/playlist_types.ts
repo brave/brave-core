@@ -7,9 +7,11 @@ export const enum types {
   // Types for Playlist --------------------------------------------------------
   PLAYLIST_LOADED = '@@playlist/PLAYLIST_LOADED',
 
+  PLAYLIST_UPDATED = '@@playlist/PLAYLIST_UPDATED',
+
   PLAYLIST_ITEM_SELECTED = '@@playlist/PLAYLIST_ITEM_SELECTED',
 
-  SELECTED_PLAYLIST_UPDATED = '@@playlist/PLAYLIST_UPDATED',
+  SELECTED_PLAYLIST_UPDATED = '@@playlist/SELECTED_PLAYLIST_UPDATED',
 
   PLAYLIST_PLAYER_STATE_CHANGED = '@@playlist/PLAYLIST_PLAYER_STATE_CHANGED',
 
@@ -22,7 +24,9 @@ export const enum types {
 
   PLAYER_PLAY_NEXT_ITEM = '@@playlist/PLAYER_PLAY_NEXT_ITEM',
 
-  PLAYER_PLAY_PREVIOUS_ITEM = '@@playlist/PLAYER_PLAY_PREVIOUS_ITEM'
+  PLAYER_PLAY_PREVIOUS_ITEM = '@@playlist/PLAYER_PLAY_PREVIOUS_ITEM',
+
+  PLAYLIST_SET_EDIT_MODE = '@@playlist/PLAYLIST_EDIT_MODE'
 
   // TODO(sko) Need more actions for each events
 }

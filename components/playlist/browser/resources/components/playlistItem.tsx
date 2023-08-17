@@ -28,7 +28,9 @@ import { getPlaylistAPI } from '../api/api'
 interface Props {
   playlist: Playlist
   item: PlaylistItemMojo
-  onClick: (id: string) => void
+  isEditing: boolean
+  isSelected?: boolean
+  onClick: (item: PlaylistItemMojo) => void
 }
 
 const ThumbnailStyle = css`
@@ -116,18 +118,27 @@ const ColoredSpan = styled.span<{ color: any }>`
   color: ${p => p.color};
 `
 
+const StyledCheckBox = styled(Icon)<{ checked: boolean }>`
+  --leo-icon-size: 20px;
+  color: ${p => (p.checked ? color.icon.interactive : color.icon.default)};
+`
+
 export default function PlaylistItem ({
   playlist,
-  item: {
+  item,
+  isEditing,
+  isSelected,
+  onClick
+}: Props) {
+  const {
     id,
     name,
     cached,
     mediaFileBytes,
     duration,
     thumbnailPath: { url: thumbnailUrl }
-  },
-  onClick
-}: Props) {
+  } = item
+
   const anchorElem = React.useRef<HTMLAnchorElement>(null)
 
   const scrollToThisIfNeeded = React.useCallback(() => {
@@ -156,11 +167,17 @@ export default function PlaylistItem ({
 
   return (
     <PlaylistItemContainer
-      onClick={() => !showingMenu && onClick(id)}
+      onClick={() => !showingMenu && onClick(item)}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={e => setHovered(false)}
     >
       <a ref={anchorElem} href={`#${id}`} />
+      {isEditing &&
+        (isSelected ? (
+          <StyledCheckBox checked={true} name='check-circle-filled' />
+        ) : (
+          <StyledCheckBox checked={false} name='radio-unchecked' />
+        ))}
       {thumbnailUrl ? (
         <StyledThumbnail src={thumbnailUrl} />
       ) : (
@@ -195,7 +212,7 @@ export default function PlaylistItem ({
           </ItemDetailsContainer>
         }
       </ItemInfoContainer>
-      {(hovered || showingMenu) && (
+      {(hovered || showingMenu) && !isEditing && (
         <ContextualMenuAnchorButton
           items={[
             {

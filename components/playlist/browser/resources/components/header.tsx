@@ -9,13 +9,21 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
 import Icon from '@brave/leo/react/icon'
-import { color, font, spacing } from '@brave/leo/tokens/css'
+import { color, font, spacing, radius } from '@brave/leo/tokens/css'
+import LeoButton from '@brave/leo/react/button'
 
 import PlaylistInfo from './playlistInfo'
-import { usePlaylist, useTotalDuration, useTotalSize } from '../reducers/states'
+import {
+  PlaylistEditMode,
+  usePlaylist,
+  usePlaylistEditMode,
+  useTotalDuration,
+  useTotalSize
+} from '../reducers/states'
 import ContextualMenuAnchorButton from './contextualMenu'
 import { getPlaylistAPI } from '../api/api'
 import { getLocalizedString } from '../utils/l10n'
+import { getAllActions } from '../api/getAllActions'
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -69,37 +77,53 @@ const LeoButtonContainer = styled.button`
   cursor: pointer;
 `
 
-function NewPlaylistButton () {
-  return (
+const StyledInput = styled.input`
+  flex-grow: 1;
+  color: ${color.text.primary};
+  font: ${font.primary.heading.h4};
+  border: none;
+  border-radius: ${radius[8]};
+  background: ${color.container.highlight};
+  padding: 10px 8px;
+`
+
+const SaveButton = styled(LeoButton)`
+  width: fit-content;
+  min-width: 72px;
+  flex-grow: 0;
+  --leo-button-padding: 10px;
+`
+
+function BackButton ({
+  playlistEditMode
+}: {
+  playlistEditMode?: PlaylistEditMode
+}) {
+  return playlistEditMode === PlaylistEditMode.BULK_EDIT ? (
     <LeoButtonContainer
-      onClick={() => {
-        getPlaylistAPI().showCreatePlaylistUI()
-      }}
+      onClick={() => getAllActions().setPlaylistEditMode(undefined)}
     >
-      <ColoredIcon name='plus-add' color={color.icon.default} />
+      <ColoredIcon name='arrow-left' color={color.icon.default} />
     </LeoButtonContainer>
+  ) : (
+    <StyledLink to='/'>
+      <ColoredIcon name='arrow-left' color={color.icon.default} />
+    </StyledLink>
   )
 }
 
-function SettingButton () {
-  return (
-    <LeoButtonContainer onClick={() => {}}>
-      <ColoredIcon name='settings' color={color.icon.default} />
-    </LeoButtonContainer>
-  )
-}
-
-export default function Header ({ playlistId }: HeaderProps) {
+function PlaylistHeader ({ playlistId }: { playlistId: string }) {
   const playlist = usePlaylist(playlistId)
-
-  const contextualMenuItems = playlist
+  const contextualMenuItems = playlist?.items.length
     ? [
         {
           name: getLocalizedString('bravePlaylistContextMenuEdit'),
           iconName: 'list-bullet-default',
-          onClick: () => {}
+          onClick: () =>
+            getAllActions().setPlaylistEditMode(PlaylistEditMode.BULK_EDIT)
         },
-        { name: 'Share', iconName: 'share-macos', onClick: () => {} },
+        // TODO(sko) We don't support this yet.
+        // { name: 'Share', iconName: 'share-macos', onClick: () => {} },
         {
           name: getLocalizedString(
             'bravePlaylistContextMenuKeepForOfflinePlaying'
@@ -120,29 +144,78 @@ export default function Header ({ playlistId }: HeaderProps) {
   const isDefaultPlaylist = playlist?.id === 'default'
   if (contextualMenuItems && !isDefaultPlaylist) {
     contextualMenuItems.unshift({
-      name: 'Rename',
+      name: getLocalizedString('bravePlaylistContextMenuRenamePlaylist'),
       iconName: 'edit-box',
-      onClick: () => {}
+      onClick: () => {
+        getAllActions().setPlaylistEditMode(PlaylistEditMode.RENAME)
+      }
     })
     contextualMenuItems.push({
-      name: 'Delete playlist',
+      name: getLocalizedString('bravePlaylistContextMenuDeletePlaylist'),
       iconName: 'trash',
       onClick: () => {
-        getPlaylistAPI().showRemovePlaylistUI(playlistId!)
+        getPlaylistAPI().showRemovePlaylistUI(playlistId)
       }
     })
   }
 
   const totalDuration = useTotalDuration(playlist)
   const totalSize = useTotalSize(playlist)
+  const playlistEditMode = usePlaylistEditMode()
 
-  return (
-    <HeaderContainer>
-      {playlist ? (
+  const [newName, setNewName] = React.useState(playlist?.name)
+  const hasNewName = !!newName && newName !== playlist?.name
+
+  const onSave = () => {
+    if (!playlist || !hasNewName) {
+      return
+    }
+
+    getPlaylistAPI().renamePlaylist(playlist.id!, newName)
+    getAllActions().setPlaylistEditMode(undefined)
+  }
+
+  React.useEffect(() => {
+    // on unmount, resets 'edit mode'.
+    return () => {
+      getAllActions().setPlaylistEditMode(undefined)
+    }
+  }, [])
+
+  return !playlist ? null : (
+    <>
+      <BackButton playlistEditMode={playlistEditMode} />
+      {playlistEditMode === PlaylistEditMode.RENAME ? (
         <>
-          <StyledLink to='/'>
-            <ColoredIcon name='arrow-left' color={color.icon.default} />
-          </StyledLink>
+          <StyledInput
+            type='text'
+            defaultValue={playlist.name}
+            autoFocus
+            onChange={e => setNewName(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Escape') {
+                getAllActions().setPlaylistEditMode(undefined)
+                e.preventDefault()
+                return
+              }
+
+              if (e.key === 'Enter') {
+                onSave()
+                e.preventDefault()
+              }
+            }}
+          />
+          <SaveButton
+            kind='filled'
+            size='small'
+            onClick={onSave}
+            isDisabled={!hasNewName}
+          >
+            Save
+          </SaveButton>
+        </>
+      ) : (
+        <>
           <StyledPlaylistInfo
             isDefaultPlaylist={isDefaultPlaylist}
             itemCount={playlist.items.length}
@@ -152,18 +225,56 @@ export default function Header ({ playlistId }: HeaderProps) {
             nameColor={color.text.primary}
             detailColor={color.text.secondary}
           />
-          <ContextualMenuAnchorButton items={contextualMenuItems} />
+          {!!contextualMenuItems.length && (
+            <ContextualMenuAnchorButton items={contextualMenuItems} />
+          )}
         </>
+      )}
+    </>
+  )
+}
+
+function NewPlaylistButton () {
+  return (
+    <LeoButtonContainer
+      onClick={() => {
+        getPlaylistAPI().showCreatePlaylistUI()
+      }}
+    >
+      <ColoredIcon name='plus-add' color={color.icon.default} />
+    </LeoButtonContainer>
+  )
+}
+
+function SettingButton () {
+  return (
+    <LeoButtonContainer onClick={() => {}}>
+      <ColoredIcon name='settings' color={color.icon.default} />
+    </LeoButtonContainer>
+  )
+}
+
+function PlaylistsCatalogHeader () {
+  return (
+    <>
+      <GradientIcon name='product-playlist-bold-add-color' />
+      <ProductNameContainer>
+        <ColoredSpan color={color.text.secondary}>Brave</ColoredSpan>
+        <ColoredSpan color={color.text.primary}>Playlist</ColoredSpan>
+      </ProductNameContainer>
+      <NewPlaylistButton />
+      <SettingButton />
+    </>
+  )
+}
+
+export default function Header ({ playlistId }: HeaderProps) {
+  return (
+    <HeaderContainer>
+      {playlistId ? (
+        <PlaylistHeader playlistId={playlistId} />
       ) : (
-        <>
-          <GradientIcon name='product-playlist-bold-add-color' />
-          <ProductNameContainer>
-            <ColoredSpan color={color.text.secondary}>Brave</ColoredSpan>
-            <ColoredSpan color={color.text.primary}>Playlist</ColoredSpan>
-          </ProductNameContainer>
-          <NewPlaylistButton />
-          <SettingButton />
-        </>
+        <PlaylistsCatalogHeader />
       )}
     </HeaderContainer>
   )

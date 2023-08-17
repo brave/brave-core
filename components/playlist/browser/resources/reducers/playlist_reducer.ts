@@ -21,6 +21,7 @@ const playlistReducer: Reducer<PlaylistData | undefined> = (
       lists: [],
       currentList: undefined,
       lastPlayerState: undefined,
+      playlistEditMode: undefined,
       cachingProgress: new Map()
     }
   }
@@ -50,9 +51,21 @@ const playlistReducer: Reducer<PlaylistData | undefined> = (
       state = { ...state, currentList, lists: [...playlists] }
       break
 
-    case types.SELECTED_PLAYLIST_UPDATED:
-      const playlist = action.payload
-      state = { ...state, currentList: playlist }
+    case types.PLAYLIST_UPDATED:
+      const updatedPlaylist = action.payload
+      state = { ...state, lists: [...state.lists] }
+      if (state.currentList?.id === updatedPlaylist.id) {
+        state.currentList = updatedPlaylist
+      }
+
+      const index = state.lists.findIndex(e => {
+        return e.id === updatedPlaylist.id
+      })
+      if (index !== -1) {
+        state.lists[index] = updatedPlaylist
+      } else {
+        state.lists.push(updatedPlaylist)
+      }
       break
 
     case types.PLAYLIST_PLAYER_STATE_CHANGED:
@@ -73,6 +86,9 @@ const playlistReducer: Reducer<PlaylistData | undefined> = (
 
       state = { ...state, cachingProgress: newCachingProgress }
       break
+
+    case types.PLAYLIST_SET_EDIT_MODE:
+      state = { ...state, playlistEditMode: action.payload }
   }
   return state
 }
