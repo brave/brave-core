@@ -10,8 +10,8 @@
 
 #include <string>
 
+#include "base/apple/scoped_objc_class_swizzler.h"
 #include "base/mac/foundation_util.h"
-#include "base/mac/scoped_objc_class_swizzler.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_app_controller_mac.h"
