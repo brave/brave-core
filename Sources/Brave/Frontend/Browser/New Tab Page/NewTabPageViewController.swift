@@ -201,6 +201,10 @@ class NewTabPageViewController: UIViewController {
 
     // This is a one-off view, adding it to the NTP only if necessary.
     if NTPDefaultBrowserCalloutProvider.shouldShowCallout {
+      // Never show Default Browser Notification over an NPT SI
+      if let ntpBackground = background.currentBackground, case .sponsoredImage = ntpBackground {
+        return
+      }
       sections.insert(NTPDefaultBrowserCalloutProvider(), at: 0)
     }
 

@@ -61,7 +61,7 @@ public enum FullScreenCalloutType: CaseIterable {
 public struct FullScreenCalloutManager {
   /// It determines whether we should show show the designated callout or not and sets corresponding preferences accordingly.
   /// Returns true if the callout should be shown.
-  public static func shouldShowDefaultBrowserCallout(calloutType: FullScreenCalloutType) -> Bool {
+  public static func shouldShowCallout(calloutType: FullScreenCalloutType) -> Bool {
     guard Preferences.Onboarding.isNewRetentionUser.value == true,
       let appRetentionLaunchDate = Preferences.DAU.appRetentionLaunchDate.value,
       !calloutType.preferenceValue.value
