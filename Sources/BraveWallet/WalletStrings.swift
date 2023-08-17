@@ -731,7 +731,7 @@ extension Strings {
       comment: "The subtitle of the last step of creating a new wallet."
     )
     public static let onboardingCompletedButtonTitle = NSLocalizedString(
-      "wallet.onbordingCompletedTitle",
+      "wallet.onboardingCompletedButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Go to my portfolio",
@@ -1067,7 +1067,7 @@ extension Strings {
       comment: "The title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device."
     )
     public static let biometricsSetupSubTitle = NSLocalizedString(
-      "wallet.biometricsSetupTitle",
+      "wallet.biometricsSetupSubTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Would you like to use %@ to unlock Brave Wallet?",
