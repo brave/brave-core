@@ -13,6 +13,10 @@ struct WebsiteRedirects {
     let hostToRedirectTo: String
     /// What hosts should be redirected. Due to compat reasons not every host may be easily replaced.
     let eligibleHosts: Set<String>
+    /// Any additional predicates on whether or not the URL should redirect (requires all to be satified)
+    ///
+    /// It can be assumed that any URL passed into these predicates will be a eligible host
+    var additionalPredicates: [(URL) -> Bool] = []
     /// What hosts should not be redirected. It's either due to web compat reasons or to let user explicitely type a url to not override it.
     /// Reddit is good example, regular reddit.com and new.reddit.com point to the same new user interface.
     /// So we redirect all regular reddit.com link, but the user may explicitely go to new.reddit.com without having to disable the reddit redirect toggle.
@@ -22,6 +26,10 @@ struct WebsiteRedirects {
   private static let reddit = Rule(
     hostToRedirectTo: "old.reddit.com",
     eligibleHosts: ["reddit.com", "www.reddit.com", "np.reddit.com", "amp.reddit.com", "i.reddit.com"],
+    additionalPredicates: [ { url in
+        !url.path.hasPrefix("/media")
+      }
+    ],
     excludedHosts: ["new.reddit.com"])
   
   private static let npr = Rule(
@@ -53,6 +61,7 @@ struct WebsiteRedirects {
       .first(where: { $0.eligibleHosts.contains(host) })
     
     guard let redirect = foundMatch,
+          redirect.additionalPredicates.allSatisfy({ $0(url) }),
           var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return nil }
     
     // For privacy reasons we do not redirect websites if username or password are present.

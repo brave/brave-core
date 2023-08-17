@@ -74,6 +74,11 @@ class WebsiteRedirectsTests: XCTestCase {
     
     XCTAssertEqual(WebsiteRedirects.redirect(
       for: try url("https://www.reddit.com/r/brave")), try url("https://old.reddit.com/r/brave"))
+    
+    // Skip media redirect
+    
+    XCTAssertNil(WebsiteRedirects.redirect(
+      for: try url("https://reddit.com/media?url=https%3A%2F%2Fi.redd.it%2Fimageid.jpg")))
   }
   
   func testNpr() throws {
