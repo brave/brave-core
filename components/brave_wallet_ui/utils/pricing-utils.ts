@@ -50,6 +50,10 @@ export const computeFiatAmount = ({ spotPriceRegistry, value, token }: {
     | 'decimals'
   >
 }): Amount => {
+  if (!spotPriceRegistry && value === '0') {
+    return Amount.zero()
+  }
+
   if (!spotPriceRegistry || !value) {
     return Amount.empty()
   }

@@ -269,7 +269,7 @@ export const AccountListItem = ({
         </AccountAndAddress>
       </NameAndIcon>
       <Row width='unset'>
-        {!isPanel ? (
+        {!isPanel && !accountsFiatValue.isZero() ? (
           tokensWithBalances.length ? (
             <TokenIconsStack tokens={tokensWithBalances} />
           ) : (
