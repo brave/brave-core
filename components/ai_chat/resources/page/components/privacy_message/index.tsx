@@ -29,7 +29,7 @@ function PrivacyMessage () {
         <p>{getLocale('aboutDescription')}</p>
         <p>
           {aboutDescription2.beforeTag}
-          <a onClick={handleAnchorClick} href="https://google.com" target="_blank">
+          <a onClick={handleAnchorClick} href="https://github.com/brave/brave-browser/wiki/Brave-Leo" target="_blank">
             {aboutDescription2.duringTag}
           </a>
           {aboutDescription2.afterTag}
