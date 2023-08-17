@@ -64,6 +64,7 @@ import { WalletSelectors } from '../common/selectors'
 import { PanelSelectors } from './selectors'
 import {
   useGetNetworkQuery,
+  useGetPendingTokenSuggestionRequestsQuery,
   useGetSelectedChainQuery,
   useSetNetworkMutation,
   useSetSelectedAccountMutation
@@ -90,7 +91,6 @@ function Container () {
 
   // wallet selectors (unsafe)
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
-  const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
   const favoriteApps = useUnsafeWalletSelector(WalletSelectors.favoriteApps)
   const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
 
@@ -107,7 +107,6 @@ function Container () {
   const addChainRequest = useUnsafePanelSelector(PanelSelectors.addChainRequest)
   const signMessageData = useUnsafePanelSelector(PanelSelectors.signMessageData)
   const switchChainRequest = useUnsafePanelSelector(PanelSelectors.switchChainRequest)
-  const suggestedTokenRequest = useUnsafePanelSelector(PanelSelectors.suggestedTokenRequest)
   const getEncryptionPublicKeyRequest = useUnsafePanelSelector(PanelSelectors.getEncryptionPublicKeyRequest)
   const decryptRequest = useUnsafePanelSelector(PanelSelectors.decryptRequest)
   const connectingAccounts = useUnsafePanelSelector(PanelSelectors.connectingAccounts)
@@ -128,6 +127,8 @@ function Container () {
         }
       : skipToken
   )
+  const { data: addTokenRequests = [] } =
+    useGetPendingTokenSuggestionRequestsQuery()
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
   // consider rendering a "loading" indicator when `hasInitialized === false`, and
@@ -222,20 +223,6 @@ function Container () {
 
   const onAddAsset = () => {
     dispatch(WalletPanelActions.expandWalletAddAsset())
-  }
-
-  const onAddSuggestedToken = () => {
-    if (!suggestedTokenRequest) {
-      return
-    }
-    dispatch(WalletPanelActions.addSuggestTokenProcessed({ approved: true, contractAddress: suggestedTokenRequest.token.contractAddress }))
-  }
-
-  const onCancelAddSuggestedToken = () => {
-    if (!suggestedTokenRequest) {
-      return
-    }
-    dispatch(WalletPanelActions.addSuggestTokenProcessed({ approved: false, contractAddress: suggestedTokenRequest.token.contractAddress }))
   }
 
   const onAddNetwork = () => {
@@ -399,17 +386,11 @@ function Container () {
     )
   }
 
-  if (selectedPanel === 'addSuggestedToken') {
+  if (addTokenRequests.length) {
     return (
       <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>
-          <AddSuggestedTokenPanel
-            onCancel={onCancelAddSuggestedToken}
-            onAddToken={onAddSuggestedToken}
-            originInfo={suggestedTokenRequest?.origin ?? activeOrigin}
-            token={suggestedTokenRequest?.token}
-            selectedNetwork={selectedNetwork}
-          />
+          <AddSuggestedTokenPanel />
         </StyledExtensionWrapper>
       </PanelWrapper>
     )

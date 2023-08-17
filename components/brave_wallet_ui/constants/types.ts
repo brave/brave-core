@@ -90,7 +90,6 @@ export interface PanelTitleObjectType {
 export type PanelTypes =
   | 'accounts'
   | 'addEthereumChain'
-  | 'addSuggestedToken'
   | 'allowReadingEncryptedMessage' // For grep: 'decryptRequest'
   | 'approveTransaction'
   | 'apps'
@@ -283,7 +282,6 @@ export interface PanelState {
   decryptRequest: BraveWallet.DecryptRequest
   switchChainRequest: BraveWallet.SwitchChainRequest
   hardwareWalletCode?: HardwareWalletResponseCodeType
-  suggestedTokenRequest?: BraveWallet.AddSuggestTokenRequest
   selectedTransactionId?: string
 }
 

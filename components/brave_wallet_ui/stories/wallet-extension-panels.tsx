@@ -840,23 +840,9 @@ _ConnectHardwareWallet.story = {
 }
 
 export const _AddSuggestedToken = () => {
-  const onCancel = () => {
-    // Doesn't do anything in storybook
-  }
-
-  const onAddToken = () => {
-    // Doesn't do anything in storybook
-  }
-
   return (
     <StyledExtensionWrapper>
-      <AddSuggestedTokenPanel
-        onCancel={onCancel}
-        onAddToken={onAddToken}
-        originInfo={originInfo}
-        token={mockNewAssetOptions[2]}
-        selectedNetwork={mockNetworks[0]}
-      />
+      <AddSuggestedTokenPanel />
     </StyledExtensionWrapper>
   )
 }
