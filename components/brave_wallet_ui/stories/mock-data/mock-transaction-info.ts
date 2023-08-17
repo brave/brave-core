@@ -4,7 +4,12 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Types
-import { mockAccount, mockFilecoinAccount, mockSolanaAccount } from '../../common/constants/mocks'
+import {
+  mockAccount,
+  mockFilecoinAccount,
+  mockSolanaAccount,
+  mockSolanaAccountInfo
+} from '../../common/constants/mocks'
 import {
   BraveWallet,
   SerializableTransactionInfo
@@ -16,9 +21,9 @@ import { FileCoinTransactionInfo } from '../../utils/tx-utils'
 import { mockOriginInfo } from './mock-origin-info'
 
 export const mockTransactionInfo: SerializableTransactionInfo = {
-  chainId: '0x0',
-  fromAddress: mockAccount.address,
   fromAccountId: mockAccount.accountId,
+  chainId: BraveWallet.GOERLI_CHAIN_ID,
+  fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
   id: '465a4d6646-kjlwf665',
   txArgs: ['0x0d8775f648430679a709e98d2b0cb6250d2887ef', '0x15ddf09c97b0000'],
   txDataUnion: {
@@ -55,7 +60,7 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
 }
 
 export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
-  chainId: '0x0',
+  chainId: BraveWallet.SOLANA_MAINNET,
   fromAddress: mockSolanaAccount.address,
   fromAccountId: mockSolanaAccount.accountId,
   id: 'sol-tx',
@@ -83,16 +88,16 @@ export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
       },
       splTokenMintAddress: '',
       staticAccountKeys: [],
-      toWalletAddress: '',
+      toWalletAddress: mockSolanaAccountInfo.address,
       txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer,
-      version: 1
+      version: 1,
     },
     filTxData: undefined
   },
   txHash: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
   txStatus: 0,
   txParams: ['address', 'amount'],
-  txType: BraveWallet.TransactionType.ERC20Transfer,
+  txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer,
   createdTime: { microseconds: 0 },
   submittedTime: { microseconds: 0 },
   confirmedTime: { microseconds: 0 },
