@@ -9,6 +9,8 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
@@ -224,6 +226,14 @@ mojom::DBCommandResponseInfo::StatusType Database::Migrate(
 
 void Database::ErrorCallback(const int error, sql::Statement* statement) {
   VLOG(0) << "Database error: " << db_.GetDiagnosticInfo(error, statement);
+
+  {
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
+    // migration failure dumps.
+    SCOPED_CRASH_KEY_STRING1024("SqlDiagnosticInfo", "value",
+                                db_.GetDiagnosticInfo(error, statement));
+    base::debug::DumpWithoutCrashing();
+  }
 }
 
 void Database::MemoryPressureListenerCallback(
