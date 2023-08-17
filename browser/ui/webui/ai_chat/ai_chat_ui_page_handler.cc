@@ -123,11 +123,13 @@ void AIChatUIPageHandler::GetConversationHistory(
 
 void AIChatUIPageHandler::GetSuggestedQuestions(
     GetSuggestedQuestionsCallback callback) {
-  bool can_generate;
-  mojom::AutoGenerateQuestionsPref auto_generate;
-  std::move(callback).Run(active_chat_tab_helper_->GetSuggestedQuestions(
-                              can_generate, auto_generate),
-                          can_generate, auto_generate);
+  if (active_chat_tab_helper_) {
+    bool can_generate;
+    mojom::AutoGenerateQuestionsPref auto_generate;
+    std::move(callback).Run(active_chat_tab_helper_->GetSuggestedQuestions(
+                                can_generate, auto_generate),
+                            can_generate, auto_generate);
+  }
 }
 
 void AIChatUIPageHandler::GenerateQuestions() {
