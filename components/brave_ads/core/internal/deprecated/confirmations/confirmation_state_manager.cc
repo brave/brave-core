@@ -13,8 +13,6 @@
 #include "base/json/json_writer.h"
 #include "base/json/values_util.h"
 #include "base/ranges/algorithm.h"
-#include "base/strings/string_number_conversions.h"
-#include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
@@ -294,9 +292,8 @@ bool ConfirmationStateManager::GetConfirmationsFromDictionary(
     if (const auto* const value = item_dict->FindString("transaction_id")) {
       confirmation.transaction_id = *value;
     } else {
-      // Migrate legacy confirmations
-      confirmation.transaction_id =
-          base::Uuid::GenerateRandomV4().AsLowercaseString();
+      BLOG(0, "Missing confirmation transaction id");
+      continue;
     }
 
     // Creative instance id
@@ -320,20 +317,16 @@ bool ConfirmationStateManager::GetConfirmationsFromDictionary(
     if (const auto* const value = item_dict->FindString("ad_type")) {
       confirmation.ad_type = AdType(*value);
     } else {
-      // Migrate legacy confirmations, this value is not used right now so safe
-      // to set to |kNotificationAd|
-      confirmation.ad_type = AdType::kNotificationAd;
+      BLOG(0, "Missing confirmation ad type");
+      continue;
     }
 
     // Created at
     if (const auto* const value = item_dict->Find("created_at")) {
       confirmation.created_at = base::ValueToTime(value).value_or(base::Time());
-    } else if (const auto* const legacy_string_value =
-                   item_dict->FindString("timestamp_in_seconds")) {
-      double value_as_double;
-      if (base::StringToDouble(*legacy_string_value, &value_as_double)) {
-        confirmation.created_at = base::Time::FromDoubleT(value_as_double);
-      }
+    } else {
+      BLOG(0, "Missing confirmation created at");
+      continue;
     }
 
     // Was created
