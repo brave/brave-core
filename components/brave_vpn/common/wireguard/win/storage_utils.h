@@ -21,6 +21,8 @@ absl::optional<base::FilePath> GetLastUsedConfigPath();
 bool ShouldFallbackToIKEv2();
 void SetWireguardActive(bool value);
 bool IsWireguardActive();
+
+void RemoveStorageKey();
 }  // namespace wireguard
 }  // namespace brave_vpn
 

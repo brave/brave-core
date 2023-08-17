@@ -60,7 +60,6 @@ executable("brave_vpn_wireguard_service") {
   ]
 
   public_configs = [ "//build/config/win:windowed" ]
-  public_deps = [ "//build/win:default_exe_manifest" ]
 
   libs = [
     "userenv.lib",  # For GetUserProfileDirectoryW()

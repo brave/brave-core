@@ -44,6 +44,9 @@ namespace {
 base::FilePath GetResourcesPakFilePath(const std::string& locale) {
   base::FilePath pak_path;
   base::PathService::Get(base::DIR_ASSETS, &pak_path);
+#if defined(OFFICIAL_BUILD)
+  pak_path = pak_path.DirName();
+#endif
   pak_path = pak_path.AppendASCII("Locales");
   pak_path = pak_path.AppendASCII(locale + ".pak");
   return pak_path;
@@ -196,7 +199,6 @@ void StatusTrayRunner::OnServiceStateChanged(int mask) {
 
 void StatusTrayRunner::SubscribeForServiceStopNotifications(
     const std::wstring& name) {
-  LOG(ERROR) << __func__ << ":" << name;
   if (service_watcher_) {
     if (service_watcher_->GetServiceName() == name) {
       service_watcher_->StartWatching();
@@ -238,9 +240,21 @@ void StatusTrayRunner::SubscribeForStorageUpdates() {
 }
 
 HRESULT StatusTrayRunner::Run() {
-  if (!wireguard::GetLastUsedConfigPath().has_value() ||
-      StatusTray::IconWindowExists() || !wireguard::IsVPNTrayIconEnabled() ||
-      !wireguard::IsWireguardActive()) {
+  if (!wireguard::GetLastUsedConfigPath().has_value()) {
+    VLOG(1) << "Last used config not found.";
+    return S_OK;
+  }
+  if (!wireguard::IsVPNTrayIconEnabled()) {
+    VLOG(1) << "Tray icon was hidden by user.";
+    return S_OK;
+  }
+  if (!wireguard::IsWireguardActive()) {
+    VLOG(1) << "Wireguard VPN is not enabled in settings.";
+    return S_OK;
+  }
+
+  if (StatusTray::IconWindowExists()) {
+    VLOG(1) << "Tray icon is already visible.";
     return S_OK;
   }
 

@@ -120,5 +120,15 @@ bool IsWireguardActive() {
   return value == 1;
 }
 
+void RemoveStorageKey() {
+  if (base::win::RegKey(HKEY_LOCAL_MACHINE,
+                        kBraveVpnWireguardServiceRegistryStoragePath,
+                        KEY_ALL_ACCESS)
+          .DeleteKey(brave_vpn::GetBraveVpnWireguardServiceName().c_str()) !=
+      ERROR_SUCCESS) {
+    VLOG(1) << "Failed to delete storage registry value";
+  }
+}
+
 }  // namespace wireguard
 }  // namespace brave_vpn
