@@ -14,7 +14,7 @@
 
 namespace views {
 
-std::unique_ptr<StyledLabel> CreateStyledLabelForFootnote(
+std::unique_ptr<StyledLabel> CreateStyledLabelForDialogFootnote(
     Browser* browser,
     const std::u16string& footnote,
     const std::vector<std::u16string>& replacements,

@@ -117,8 +117,9 @@ void AddWidevineFootnoteView(
   const std::vector<GURL> urls{GURL(kWidevineLearnMoreUrl),
                                GURL(kExtensionSettingsURL)};
 
-  dialog_delegate_view->SetFootnoteView(views::CreateStyledLabelForFootnote(
-      browser, footnote, replacements, urls));
+  dialog_delegate_view->SetFootnoteView(
+      views::CreateStyledLabelForDialogFootnote(browser, footnote, replacements,
+                                                urls));
 }
 #else
 void AddAdditionalWidevineViewControlsIfNeeded(
@@ -224,8 +225,9 @@ void AddFootnoteViewIfNeeded(
   const std::vector<GURL> urls{GURL(chrome::kChromeUIContentSettingsURL),
                                GURL(kPermissionPromptLearnMoreUrl)};
 
-  dialog_delegate_view->SetFootnoteView(views::CreateStyledLabelForFootnote(
-      browser, footnote, replacements, urls));
+  dialog_delegate_view->SetFootnoteView(
+      views::CreateStyledLabelForDialogFootnote(browser, footnote, replacements,
+                                                urls));
 }
 
 }  // namespace

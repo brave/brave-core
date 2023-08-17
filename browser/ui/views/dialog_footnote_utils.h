@@ -17,7 +17,9 @@ class Browser;
 
 namespace views {
 
-std::unique_ptr<StyledLabel> CreateStyledLabelForFootnote(
+// Creates a styled label with clickable links that can be shown in dialog
+// footnotes (such as Permission prompt and similar).
+std::unique_ptr<StyledLabel> CreateStyledLabelForDialogFootnote(
     Browser* browser,
     const std::u16string& footnote,
     const std::vector<std::u16string>& replacements,

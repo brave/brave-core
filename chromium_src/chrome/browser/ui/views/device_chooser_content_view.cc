@@ -18,7 +18,7 @@ std::unique_ptr<views::View> DeviceChooserContentView::CreateFootnoteView(
     Browser* browser) {
   if (chooser_controller_->GetType() ==
       permissions::ChooserControllerType::kBluetooth) {
-    return views::CreateStyledLabelForFootnote(
+    return views::CreateStyledLabelForDialogFootnote(
         browser,
         l10n_util::GetStringUTF16(
             IDS_PERMISSIONS_BLUETOOTH_CHOOSER_PRIVACY_WARNING_TEXT),
