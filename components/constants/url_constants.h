@@ -16,6 +16,7 @@ extern const char kP3ASettingsLink[];
 extern const char kImportDataHelpURL[];
 extern const char kCryptoWalletsLearnMoreURL[];
 extern const char kPermissionPromptLearnMoreUrl[];
+extern const char kPermissionPromptHardwareAccessPrivacyRisksURL[];
 extern const char kSpeedreaderLearnMoreUrl[];
 extern const char kWebDiscoveryLearnMoreUrl[];
 extern const char kBraveSearchHost[];

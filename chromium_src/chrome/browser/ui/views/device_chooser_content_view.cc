@@ -23,7 +23,7 @@ std::unique_ptr<views::View> DeviceChooserContentView::CreateFootnoteView(
         l10n_util::GetStringUTF16(
             IDS_PERMISSIONS_BLUETOOTH_CHOOSER_PRIVACY_WARNING_TEXT),
         {brave_l10n::GetLocalizedResourceUTF16String(IDS_LEARN_MORE)},
-        {GURL(kPermissionPromptLearnMoreUrl)});
+        {GURL(kPermissionPromptHardwareAccessPrivacyRisksURL)});
   }
 
   return nullptr;
