@@ -12,7 +12,8 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 import { BraveWallet } from '../../../constants/types'
 
 // Components
-import { SelectNetwork, CreateNetworkIcon } from '../../shared'
+import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
+import { SelectNetwork } from '../../shared/select-network/index'
 
 // Styled Components
 import {

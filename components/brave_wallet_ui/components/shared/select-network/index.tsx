@@ -12,7 +12,7 @@ import { BraveWallet } from '../../../constants/types'
 import { useGetVisibleNetworksQuery } from '../../../common/slices/api.slice'
 
 // components
-import SelectNetworkItem from '../select-network-item'
+import { SelectNetworkItem } from '../select-network-item/index'
 
 interface Props {
   onSelectCustomNetwork: (network: BraveWallet.NetworkInfo) => void
