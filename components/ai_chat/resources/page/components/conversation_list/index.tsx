@@ -73,13 +73,13 @@ function ConversationList (props: ConversationListProps) {
       {props.suggestedQuestions.length > 0 && (
         <div className={styles.suggestedQuestionsBox}>
           <div className={styles.suggestedQuestionLabel}>
-            Suggested follow-ups
+            <Icon name="product-brave-ai" />
+            <div>Suggested follow-ups</div>
           </div>
-          <div>
+          <div className={styles.questionsList}>
             {props.suggestedQuestions.map((question, id) => (
               <Button key={id} kind='outline' onClick={() => props.onQuestionSubmit(question)}>
-                <span className={styles.buttonBox}>
-                  <Icon name="product-brave-ai" />
+                <span className={styles.buttonText}>
                   {question}
                 </span>
               </Button>

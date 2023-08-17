@@ -81,7 +81,7 @@ function SiteTitle (props: SiteTitleProps) {
         <p className={styles.title}>{props.siteInfo?.title}</p>
       </div>
       <div>
-        <Button aria-label="Disconnect button" title="Disconnect button" kind="plain-faint" onClick={props.onDisconnectButtonClick}>
+        <Button aria-label="Disconnect" title="Disconnect" kind="plain-faint" onClick={props.onDisconnectButtonClick}>
           <Icon name="link-broken" />
         </Button>
       </div>
