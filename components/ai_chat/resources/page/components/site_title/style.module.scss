@@ -49,10 +49,6 @@
   }
 }
 
-.actions {
-  --leo-icon-color: var(--leo-color-text-secondary);
-}
-
 .tooltip {
   position: absolute;
   top: 50px;
@@ -83,4 +79,5 @@
 .tooltipVisible {
   opacity: 1;
   visibility: visible;
+  transition: none;
 }

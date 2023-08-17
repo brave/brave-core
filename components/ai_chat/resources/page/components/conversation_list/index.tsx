@@ -76,8 +76,8 @@ function ConversationList (props: ConversationListProps) {
             Suggested follow-ups
           </div>
           <div>
-            {props.suggestedQuestions.map(question => (
-              <Button kind='outline' onClick={() => props.onQuestionSubmit(question)}>
+            {props.suggestedQuestions.map((question, id) => (
+              <Button key={id} kind='outline' onClick={() => props.onQuestionSubmit(question)}>
                 <span className={styles.buttonBox}>
                   <Icon name="product-brave-ai" />
                   {question}

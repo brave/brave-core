@@ -26,10 +26,10 @@ function Main (props: MainProps) {
           <div className={styles.logoTitle}>Brave <span>Leo</span></div>
         </div>
         <div className={styles.actions}>
-          <Button kind="plain" title="Erase conversation history" onClick={props.onEraseClick}>
+          <Button kind="plain-faint" aria-label="Erase conversation history" title="Erase conversation history" onClick={props.onEraseClick}>
               <Icon name="erase" />
           </Button>
-          <Button kind="plain" title="Settings" onClick={props.onSettingsClick}>
+          <Button kind="plain-faint" aria-label="Settings" title="Settings" onClick={props.onSettingsClick}>
               <Icon name="settings" />
           </Button>
         </div>
