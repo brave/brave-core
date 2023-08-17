@@ -17,7 +17,13 @@
   p {
     margin-top: 0;
     margin-bottom: 24px;
-    font-size: 14px;
+    font: var(--leo-font-primary-default-regular);
+  }
+
+  a {
+    font: var(--leo-font-primary-default-semibold);
+    color: var(--leo-color-text-interactive);
+    text-decoration: none;
   }
 
   figure {
