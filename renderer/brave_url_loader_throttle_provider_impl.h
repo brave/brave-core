@@ -8,8 +8,10 @@
 
 #include <memory>
 
-#include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "chrome/renderer/url_loader_throttle_provider_impl.h"
+
+class BraveContentRendererClient;
 
 class BraveURLLoaderThrottleProviderImpl
     : public URLLoaderThrottleProviderImpl {
@@ -17,8 +19,7 @@ class BraveURLLoaderThrottleProviderImpl
   BraveURLLoaderThrottleProviderImpl(
       blink::ThreadSafeBrowserInterfaceBrokerProxy* broker,
       blink::URLLoaderThrottleProviderType type,
-      ChromeContentRendererClient* chrome_content_renderer_client,
-      base::RepeatingCallback<bool()> read_is_tor_cb);
+      ChromeContentRendererClient* chrome_content_renderer_client);
   ~BraveURLLoaderThrottleProviderImpl() override;
 
   BraveURLLoaderThrottleProviderImpl(
@@ -32,7 +33,7 @@ class BraveURLLoaderThrottleProviderImpl
       const blink::WebURLRequest& request) override;
 
  private:
-  base::RepeatingCallback<bool()> read_is_tor_cb_;
+  raw_ptr<BraveContentRendererClient> brave_content_renderer_client_ = nullptr;
 };
 
 #endif  // BRAVE_RENDERER_BRAVE_URL_LOADER_THROTTLE_PROVIDER_IMPL_H_

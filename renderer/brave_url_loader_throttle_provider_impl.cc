@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/renderer/brave_content_renderer_client.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/renderer/onion_domain_throttle.h"
@@ -16,12 +17,12 @@
 BraveURLLoaderThrottleProviderImpl::BraveURLLoaderThrottleProviderImpl(
     blink::ThreadSafeBrowserInterfaceBrokerProxy* broker,
     blink::URLLoaderThrottleProviderType type,
-    ChromeContentRendererClient* chrome_content_renderer_client,
-    base::RepeatingCallback<bool()> read_is_tor_cb)
+    ChromeContentRendererClient* chrome_content_renderer_client)
     : URLLoaderThrottleProviderImpl(broker,
                                     type,
                                     chrome_content_renderer_client),
-      read_is_tor_cb_(read_is_tor_cb) {}
+      brave_content_renderer_client_(static_cast<BraveContentRendererClient*>(
+          chrome_content_renderer_client)) {}
 
 BraveURLLoaderThrottleProviderImpl::~BraveURLLoaderThrottleProviderImpl() =
     default;
@@ -33,9 +34,9 @@ BraveURLLoaderThrottleProviderImpl::CreateThrottles(
   auto throttles =
       URLLoaderThrottleProviderImpl::CreateThrottles(render_frame_id, request);
 #if BUILDFLAG(ENABLE_TOR)
-  auto onion_domain_throttle =
-      std::make_unique<tor::OnionDomainThrottle>(read_is_tor_cb_);
-  if (onion_domain_throttle) {
+  if (auto onion_domain_throttle =
+          tor::OnionDomainThrottle::MaybeCreateThrottle(
+              brave_content_renderer_client_->IsTorProcess())) {
     throttles.emplace_back(std::move(onion_domain_throttle));
   }
 #endif

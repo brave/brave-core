@@ -6,7 +6,8 @@
 #ifndef BRAVE_COMPONENTS_TOR_RENDERER_ONION_DOMAIN_THROTTLE_H_
 #define BRAVE_COMPONENTS_TOR_RENDERER_ONION_DOMAIN_THROTTLE_H_
 
-#include "base/functional/callback.h"
+#include <memory>
+
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 
 namespace tor {
@@ -15,17 +16,19 @@ namespace tor {
 // domain
 class OnionDomainThrottle : public blink::URLLoaderThrottle {
  public:
-  explicit OnionDomainThrottle(base::RepeatingCallback<bool()> read_is_tor_cb);
   ~OnionDomainThrottle() override;
   OnionDomainThrottle(const OnionDomainThrottle&) = delete;
   OnionDomainThrottle& operator=(const OnionDomainThrottle&) = delete;
+
+  static std::unique_ptr<blink::URLLoaderThrottle> MaybeCreateThrottle(
+      bool is_tor);
 
   // blink::URLLoaderThrottle
   void WillStartRequest(network::ResourceRequest* request,
                         bool* defer) override;
 
  private:
-  base::RepeatingCallback<bool()> read_is_tor_cb_;
+  OnionDomainThrottle();
 };
 
 }  // namespace tor

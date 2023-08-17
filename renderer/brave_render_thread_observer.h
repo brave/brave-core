@@ -27,7 +27,7 @@ class BraveRenderThreadObserver
   BraveRenderThreadObserver();
   ~BraveRenderThreadObserver() override;
 
-  bool is_tor_process() { return is_tor_process_; }
+  bool is_tor_process() const { return is_tor_process_; }
 
   // Return the dynamic parameters - those that may change while the
   // render process is running.

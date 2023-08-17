@@ -192,16 +192,10 @@ void BraveContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
 std::unique_ptr<blink::URLLoaderThrottleProvider>
 BraveContentRendererClient::CreateURLLoaderThrottleProvider(
     blink::URLLoaderThrottleProviderType provider_type) {
-  // BraveRenderThreadObserver::SetInitialConfiguration hasn't been called
-  // when we are about to create throttle so we pass readcallback in
-  // so throttles can get correct config when needed. Also
-  // BraveContentRendererClient will outlive ThrottleProvider
   return std::make_unique<BraveURLLoaderThrottleProviderImpl>(
-      browser_interface_broker_.get(), provider_type, this,
-      base::BindRepeating(&BraveContentRendererClient::ReadIsTor,
-                          base::Unretained(this)));
+      browser_interface_broker_.get(), provider_type, this);
 }
 
-bool BraveContentRendererClient::ReadIsTor() const {
+bool BraveContentRendererClient::IsTorProcess() const {
   return brave_observer_->is_tor_process();
 }

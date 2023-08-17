@@ -46,8 +46,9 @@ class BraveContentRendererClient : public ChromeContentRendererClient {
   CreateURLLoaderThrottleProvider(
       blink::URLLoaderThrottleProviderType provider_type) override;
 
+  bool IsTorProcess() const;
+
  private:
-  bool ReadIsTor() const;
   std::unique_ptr<BraveRenderThreadObserver> brave_observer_;
   brave_search::BraveSearchServiceWorkerHolder
       brave_search_service_worker_holder_;
