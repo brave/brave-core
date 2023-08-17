@@ -9,6 +9,8 @@ import android.annotation.SuppressLint;
 import android.content.pm.ApplicationInfo;
 import android.os.Build;
 
+import androidx.annotation.VisibleForTesting;
+
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.BundleUtils;
 import org.chromium.build.NativeLibraries;
@@ -17,7 +19,17 @@ import org.chromium.build.NativeLibraries;
  * Class to override upstream's LibraryLoader.loadWithSystemLinkerAlreadyLocked
  * See also BraveLibraryLoaderClassAdapter
  */
-public class BraveLibraryLoader {
+public class BraveLibraryLoader extends LibraryLoader {
+    @VisibleForTesting
+    public BraveLibraryLoader() {
+        super();
+    }
+
+    public static LibraryLoader sInstance = new BraveLibraryLoader();
+    public static LibraryLoader getInstance() {
+        return sInstance;
+    }
+
     public void loadWithSystemLinkerAlreadyLocked(ApplicationInfo appInfo, boolean inZygote) {
         try {
             callChromiumLoadWithSystemLinkerAlreadyLocked(appInfo, inZygote);
@@ -28,9 +40,16 @@ public class BraveLibraryLoader {
 
     private void callChromiumLoadWithSystemLinkerAlreadyLocked(
             ApplicationInfo appInfo, boolean inZygote) {
-        BraveReflectionUtil.InvokeMethod(LibraryLoader.class, this,
-                "loadWithSystemLinkerAlreadyLocked", ApplicationInfo.class, appInfo, Boolean.class,
+        // This is invoked, but got into endless recursion, because down here
+        // BraveLibraryLoader.loadWithSystemLinkerAlreadyLocked is invoked instead of
+        // LibraryLoader.loadWithSystemLinkerAlreadyLocked
+        BraveReflectionUtil.InvokeMethod(LibraryLoader.class, (LibraryLoader) this,
+                "loadWithSystemLinkerAlreadyLocked", ApplicationInfo.class, appInfo, boolean.class,
                 inZygote);
+
+        // This would work if the super method would be public:
+        // public void loadWithSystemLinkerAlreadyLocked
+        // super.loadWithSystemLinkerAlreadyLocked(appInfo, inZygote);
     }
 
     @SuppressLint({"UnsafeDynamicallyLoadedCode"})

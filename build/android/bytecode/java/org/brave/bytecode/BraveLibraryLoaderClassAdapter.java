@@ -19,8 +19,10 @@ public class BraveLibraryLoaderClassAdapter extends BraveClassVisitor {
 
     public BraveLibraryLoaderClassAdapter(ClassVisitor visitor) {
         super(visitor);
-        changeSuperName(sLibraryLoaderClassName, sBraveLibraryLoaderClassName);
-        changeMethodOwner(sLibraryLoaderClassName, "loadWithSystemLinkerAlreadyLocked",
-                sBraveLibraryLoaderClassName);
+        changeMethodOwner(sLibraryLoaderClassName, "getInstance", sBraveLibraryLoaderClassName);
+        deleteField(sBraveLibraryLoaderClassName, "sInstance");
+
+        makeProtectedField(sLibraryLoaderClassName, "sInstance");
+        makePublicMethod(sLibraryLoaderClassName, "loadWithSystemLinkerAlreadyLocked");
     }
 }

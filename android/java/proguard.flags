@@ -44,5 +44,11 @@
     *** initTabHelpers(...);
 }
 
+-keep class org.chromium.base.library_loader.BraveLibraryLoader { *; }
+
+-keep class org.chromium.base.library_loader.LibraryLoader {
+    *** loadWithSystemLinkerAlreadyLocked(...);
+}
+
 -keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
 

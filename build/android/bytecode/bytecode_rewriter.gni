@@ -6,6 +6,7 @@
 import("//build/config/python.gni")
 
 brave_bytecode_jars = [
+  "obj/android_webview/nonembedded/nonembedded_java.javac.jar",
   "obj/base/base_java.javac.jar",
   "obj/brave/android/features/tab_ui/java.javac.jar",
   "obj/brave/android/java/org/chromium/chrome/browser/search_engines/java.javac.jar",
@@ -16,6 +17,7 @@ brave_bytecode_jars = [
   "obj/brave/components/browser_ui/site_settings/android/java.javac.jar",
   "obj/chrome/android/base_module_java.javac.jar",
   "obj/chrome/android/chrome_java.javac.jar",
+  "chrome/android/monochrome_java.javac.jar",
   "obj/chrome/android/features/tab_ui/java.javac.jar",
   "obj/chrome/browser/download/internal/android/java.javac.jar",
   "obj/chrome/browser/flags/java.javac.jar",
@@ -38,6 +40,9 @@ brave_bytecode_jars = [
   "obj/components/external_intents/android/java.javac.jar",
   "obj/components/permissions/android/java.javac.jar",
   "obj/components/sync/android/sync_java.javac.jar",
+  "obj/content/public/android/content_full_java.javac.jar",
+  "obj/content/public/android/content_main_dex_java.javac.jar",
+  "obj/url/gurl_java.javac.jar",
 ]
 
 template("brave_bytecode_rewriter") {
