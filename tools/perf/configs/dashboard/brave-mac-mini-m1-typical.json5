@@ -34,7 +34,8 @@
     },
     {
       "name": "speedometer2",
-      "pageset-repeat": 50
+      "pageset-repeat": 10,
+      "extra-benchmark-args": ["--iteration-count=50"],
     }
   ]
 }

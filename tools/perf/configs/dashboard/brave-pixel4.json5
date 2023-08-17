@@ -10,7 +10,8 @@
   "benchmarks": [
     {
       "name": "speedometer2",
-      "pageset-repeat": 5
+      "pageset-repeat": 5,
+      "extra-benchmark-args": ["--iteration-count=10"],
     }
   ]
 }
