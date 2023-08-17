@@ -159,6 +159,7 @@ class RunableConfiguration:
       assert self.binary.telemetry_browser_type
       args.append(f'--browser={self.binary.telemetry_browser_type}')
     args.append('--pageset-repeat=%d' % benchmark_config.pageset_repeat)
+    args.extend(benchmark_config.extra_benchmark_args)
 
     if len(benchmark_config.stories) > 0:
       for story in benchmark_config.stories:

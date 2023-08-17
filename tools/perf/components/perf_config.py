@@ -58,18 +58,22 @@ class BenchmarkConfig:
   name: str
   pageset_repeat: int = 1
   stories: List[str]
+  extra_benchmark_args: List[str]
 
   def __init__(self, json: Optional[dict] = None):
+    self.stories = []
+    self.extra_benchmark_args = []
     if not json:
       return
     assert isinstance(json, dict)
     self.name = json['name']
     self.pageset_repeat = json['pageset-repeat']
-    self.stories = []
     if 'stories' in json:
       story_list: List[str] = json['stories']
       for story in story_list:
         self.stories.append(story)
+    if 'extra-benchmark-args' in json:
+      self.extra_benchmark_args = json['extra-benchmark-args']
 
 
 class PerfConfig:
