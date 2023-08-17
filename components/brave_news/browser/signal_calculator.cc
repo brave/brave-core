@@ -80,6 +80,12 @@ void SignalCalculator::OnGotHistory(
 
   for (auto& [publisher_id, publisher] : publishers) {
     auto host = publisher->site_url.host();
+
+    // Direct feeds don't get a site_url, just a source, so fallback to that.
+    if (host.empty()) {
+      host = publisher->feed_source.host();
+    }
+
     auto history_it = origin_visits.find(host);
     if (history_it == origin_visits.end()) {
       publisher_visits[publisher_id] = {};
@@ -128,6 +134,11 @@ void SignalCalculator::OnGotHistory(
 
 bool SignalCalculator::IsPublisherSubscribed(
     const mojom::PublisherPtr& publisher) {
+  // Direct feeds are deleted when removed.
+  if (publisher->type == mojom::PublisherType::DIRECT_SOURCE) {
+    return true;
+  }
+
   bool channel_subscribed = false;
   for (const auto& locale_info : publisher->locales) {
     for (const auto& channel : locale_info->channels) {
