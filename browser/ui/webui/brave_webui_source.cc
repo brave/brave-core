@@ -180,6 +180,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "solidColorTitle", IDS_BRAVE_NEW_TAB_SOLID_COLOR},
         { "gradientColorTitle", IDS_BRAVE_NEW_TAB_GRADIENT_COLOR},
         { "refreshBackgroundOnNewTab", IDS_BRAVE_NEW_TAB_REFRESH_BACKGROUND_ON_NEW_TAB},  // NOLINT
+        { "rewardsOpenPanel", IDS_BRAVE_NEW_TAB_REWARDS_OPEN_PANEL },
 
         // search promotion
         { "searchPromotionNTPPopupTitle1", IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_1},  // NOLINT

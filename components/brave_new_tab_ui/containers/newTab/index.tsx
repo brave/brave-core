@@ -38,8 +38,10 @@ import BraveNewsHint from '../../components/default/braveNews/hint'
 import GridWidget from './gridWidget'
 import SponsoredImageClickArea from '../../components/default/sponsoredImage/sponsoredImageClickArea'
 
-import { setIconBasePath } from '@brave/leo/react/icon'
+import Icon, { setIconBasePath } from '@brave/leo/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
+
+import * as style from './style'
 
 interface Props {
   newTabData: NewTab.State
@@ -495,6 +497,20 @@ class NewTabPage extends React.Component<Props, State> {
       return null
     }
 
+    const customMenuItems = [
+      {
+        label: 'rewardsOpenPanel',
+        renderIcon: () => {
+          return (
+            <style.batIcon>
+              <Icon name='product-bat-outline' />
+            </style.batIcon>
+          )
+        },
+        onClick: () => { chrome.braveRewards.openRewardsPanel() }
+      }
+    ]
+
     return (
       <Rewards
         {...rewardsState}
@@ -512,6 +528,7 @@ class NewTabPage extends React.Component<Props, State> {
         showContent={showContent}
         onShowContent={this.setForegroundStackWidget.bind(this, 'rewards')}
         onDismissNotification={this.dismissNotification}
+        customMenuItems={customMenuItems}
       />
     )
   }
