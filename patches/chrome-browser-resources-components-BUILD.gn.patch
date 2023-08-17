@@ -1,0 +1,10 @@
+diff --git a/chrome/browser/resources/components/BUILD.gn b/chrome/browser/resources/components/BUILD.gn
+index 48601b7891a7d6e265d6519d889ce0b7f6b235c6..7045362c30a0c6400b6f1e87072abf35da0a4c41 100644
+--- a/chrome/browser/resources/components/BUILD.gn
++++ b/chrome/browser/resources/components/BUILD.gn
+@@ -14,4 +14,5 @@ build_webui("build") {
+ 
+   ts_definitions = [ "//tools/typescript/definitions/chrome_send.d.ts" ]
+   ts_deps = [ "//ui/webui/resources/js:build_ts" ]
++  import("//brave/browser/resources/components/sources.gni") static_files += brave_components_static_files preprocess_deps = brave_components_preprocess_extra_deps
+ }

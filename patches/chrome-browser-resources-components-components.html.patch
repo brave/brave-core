@@ -1,24 +1,12 @@
 diff --git a/chrome/browser/resources/components/components.html b/chrome/browser/resources/components/components.html
-index a06744107006447976693c9a2748356348895e53..cc102bd35222550597f6c967bd81a31d6ef871dd 100644
+index a06744107006447976693c9a2748356348895e53..d7a73113350f6cc3268b6b8405d3f162f9a5133f 100644
 --- a/chrome/browser/resources/components/components.html
 +++ b/chrome/browser/resources/components/components.html
-@@ -27,6 +27,9 @@
-   </if>
- 
-   <div id="header"><h1>$i18n{componentsTitle}</h1></div>
-+  <button id="button-check-update-all" guest-disabled>
-+    $i18n{checkUpdate}
-+  </button>
-   <div id="component-placeholder"></div>
-   <div id="component-template" hidden>
- 
-@@ -63,6 +66,9 @@
-                     <span dir="ltr" jscontent="version"
-                         jsvalues=".id: 'version-' + id"></span>
-                 </span>
-+                <span>
-+                  <span class="component-id" dir="ltr" jscontent="id"></span>
-+                </span>
-               </div>
-             </div>
-           </div>
+@@ -5,6 +5,7 @@
+ <title>$i18n{componentsTitle}</title>
+ <link rel="stylesheet" href="chrome://resources/css/text_defaults.css">
+ <link rel="stylesheet" href="components.css">
++<link rel="stylesheet" href="components_brave_additions.css">
+ <if expr="chromeos_lacros or chromeos_ash">
+   <link rel="stylesheet" href="chrome://resources/css/os_header.css">
+ </if>

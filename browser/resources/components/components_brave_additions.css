@@ -1,0 +1,17 @@
+.component-id {
+  color: #888;
+  font-family: monospace;
+}
+.component-id::before {
+  content: '(';
+}
+.component-id::after {
+  content: ')';
+}
+.button-check-update {
+  display: none;
+}
+#button-check-update-all {
+  padding: 1em 1.5em;
+  margin-bottom: 1em;
+}
