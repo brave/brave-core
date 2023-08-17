@@ -134,9 +134,8 @@ class WidevineCdmComponentInstallerPolicy
 
 class Arm64DllInstaller : public base::RefCountedThreadSafe<Arm64DllInstaller> {
  public:
-  Arm64DllInstaller(
-      std::unique_ptr<network::PendingSharedURLLoaderFactory>
-          pending_url_loader_factory);
+  Arm64DllInstaller(std::unique_ptr<network::PendingSharedURLLoaderFactory>
+                        pending_url_loader_factory);
   void Start(const base::FilePath& install_dir);
   CrxInstaller::Result WaitForCompletion();
 
@@ -179,9 +178,8 @@ CrxInstaller::Result WidevineCdmComponentInstallerPolicy::OnCustomInstall(
   }
   scoped_refptr<Arm64DllInstaller> installer =
       base::MakeRefCounted<Arm64DllInstaller>(url_loader_factory_->Clone());
-    task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&Arm64DllInstaller::Start, installer, install_dir));
+  task_runner_->PostTask(FROM_HERE, base::BindOnce(&Arm64DllInstaller::Start,
+                                                   installer, install_dir));
   return installer->WaitForCompletion();
 }
 
@@ -207,9 +205,8 @@ void Arm64DllInstaller::Start(const base::FilePath& install_dir) {
   }
   loader_->DownloadToTempFile(
       url_loader_factory_.get(),
-      base::BindOnce(
-          &Arm64DllInstaller::OnArm64DllDownloadComplete,
-          base::RetainedRef(this), install_dir));
+      base::BindOnce(&Arm64DllInstaller::OnArm64DllDownloadComplete,
+                     base::RetainedRef(this), install_dir));
 }
 
 CrxInstaller::Result Arm64DllInstaller::WaitForCompletion() {
@@ -249,9 +246,8 @@ void Arm64DllInstaller::OnArm64DllDownloadComplete(
   installed_.Signal();
 }
 
-bool Arm64DllInstaller::ExtractArm64Dll(
-    const base::FilePath& install_dir,
-    base::FilePath zip_path) {
+bool Arm64DllInstaller::ExtractArm64Dll(const base::FilePath& install_dir,
+                                        base::FilePath zip_path) {
   base::FilePath arm64_directory = GetPlatformDirectory(install_dir);
   base::File::Error error;
   if (base::CreateDirectoryAndGetError(arm64_directory, &error)) {
