@@ -268,6 +268,7 @@ void AIChatTabHelper::DisconnectPageContents() {
 
 void AIChatTabHelper::ClearConversationHistory() {
   chat_history_.clear();
+  ai_chat_api_->ClearAllQueries();
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {

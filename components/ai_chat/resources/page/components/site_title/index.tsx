@@ -15,7 +15,7 @@ import { SiteInfo } from '../../api/page_handler'
 interface SiteTitleProps {
   siteInfo?: SiteInfo
   favIconUrl?: string
-  onDisconnectClick?: () => void
+  onDisconnectButtonClick?: () => void
 }
 
 type Timer = ReturnType<typeof setTimeout>
@@ -81,7 +81,7 @@ function SiteTitle (props: SiteTitleProps) {
         <p className={styles.title}>{props.siteInfo?.title}</p>
       </div>
       <div className={styles.actions}>
-        <Button kind="plain" onClick={props.onDisconnectClick}>
+        <Button kind="plain" onClick={props.onDisconnectButtonClick}>
           <Icon name="link-broken" />
         </Button>
       </div>

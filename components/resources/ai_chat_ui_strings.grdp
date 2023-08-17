@@ -43,6 +43,6 @@
     No Thanks
   </message>
   <message name="IDS_CHAT_UI_PAGE_CONTENT_WARNING" desc="Description about page content being sent to a remote LLM">
-     Page content will be sent to Brave Leo along with your messages. Click the disconnect button on the right to start a new conversation about a different topic
+     Page content will be sent to Brave Leo along with your messages. Click the disconnect button to start a new conversation about a different topic
   </message>
 </grit-part>

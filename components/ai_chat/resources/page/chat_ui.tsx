@@ -75,7 +75,7 @@ function App () {
         <SiteTitle
         siteInfo={model.siteInfo}
         favIconUrl={model.favIconUrl}
-        onDisconnectClick={handlePageContentDisconnect}
+        onDisconnectButtonClick={handlePageContentDisconnect}
       />
       )
     }
