@@ -3162,6 +3162,9 @@ extension BrowserViewController {
   }
 
   public func handleNavigationPath(path: NavigationPath) {
+    // Remove Default Browser Callout if an external url is triggered
+    Preferences.General.defaultBrowserCalloutDismissed.value = true
+    
     executeAfterSetup {
       NavigationPath.handle(nav: path, with: self)
     }

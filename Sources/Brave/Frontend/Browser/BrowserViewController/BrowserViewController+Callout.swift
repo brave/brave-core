@@ -268,7 +268,7 @@ extension BrowserViewController {
       return false
     }
 
-    if presentedViewController != nil || !FullScreenCalloutManager.shouldShowDefaultBrowserCallout(calloutType: calloutType) {
+    if presentedViewController != nil || !FullScreenCalloutManager.shouldShowCallout(calloutType: calloutType) {
       return false
     }
     

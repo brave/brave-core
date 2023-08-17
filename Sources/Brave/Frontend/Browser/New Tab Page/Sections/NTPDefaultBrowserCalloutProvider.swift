@@ -16,9 +16,29 @@ class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
   private typealias DefaultBrowserCalloutCell = NewTabCenteredCollectionViewCell<DefaultBrowserCalloutView>
   
   static var shouldShowCallout: Bool {
-    !Preferences.General.defaultBrowserCalloutDismissed.value &&
+    let defaultBrowserDisplayCriteria = !Preferences.General.defaultBrowserCalloutDismissed.value &&
     !Preferences.Onboarding.basicOnboardingDefaultBrowserSelected.value &&
     AppConstants.buildChannel == .release
+    
+    guard let appRetentionLaunchDate = Preferences.DAU.appRetentionLaunchDate.value else {
+      return defaultBrowserDisplayCriteria
+    }
+    
+    // User should not see default browser first 7 days
+    // also after 14 days
+    var defaultBrowserTimeConstraintCriteria = false
+    
+    let rightNow = Date()
+    let first7DayPeriod = appRetentionLaunchDate.addingTimeInterval(
+      AppConstants.buildChannel.isPublic ? 7.days : 7.minutes)
+    let first14DayPeriod = appRetentionLaunchDate.addingTimeInterval(
+      AppConstants.buildChannel.isPublic ? 17.days : 14.minutes)
+    
+    if rightNow > first7DayPeriod, rightNow < first14DayPeriod {
+      defaultBrowserTimeConstraintCriteria = true
+    }
+    
+    return defaultBrowserDisplayCriteria && defaultBrowserTimeConstraintCriteria
   }
   
   func registerCells(to collectionView: UICollectionView) {
