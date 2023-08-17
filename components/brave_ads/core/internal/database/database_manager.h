@@ -45,7 +45,8 @@ class DatabaseManager final {
                                   bool success) const;
 
   void NotifyWillCreateOrOpenDatabase() const;
-  void NotifyDidCreateOrOpenDatabase() const;
+  void NotifyDidCreateDatabase() const;
+  void NotifyDidOpenDatabase() const;
   void NotifyFailedToCreateOrOpenDatabase() const;
   void NotifyWillMigrateDatabase(int from_version, int to_version) const;
   void NotifyDidMigrateDatabase(int from_version, int to_version) const;

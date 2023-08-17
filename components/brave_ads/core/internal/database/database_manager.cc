@@ -21,18 +21,6 @@
 
 namespace brave_ads {
 
-namespace {
-
-// TODO(https://github.com/brave/brave-browser/issues/32066): Remove brave ads
-// migration failure dumps
-void DoDumpWithoutCrashing(const int from_version, const int to_version) {
-  SCOPED_CRASH_KEY_NUMBER("FromVersion", "value", from_version);
-  SCOPED_CRASH_KEY_NUMBER("ToVersion", "value", to_version);
-  base::debug::DumpWithoutCrashing();
-}
-
-}  // namespace
-
 DatabaseManager::DatabaseManager() = default;
 
 DatabaseManager::~DatabaseManager() = default;
@@ -92,7 +80,7 @@ void DatabaseManager::CreateOrOpenCallback(
     return Create(std::move(callback));
   }
 
-  NotifyDidCreateOrOpenDatabase();
+  NotifyDidOpenDatabase();
 
   MaybeMigrate(from_version, std::move(callback));
 }
@@ -119,7 +107,7 @@ void DatabaseManager::CreateCallback(ResultCallback callback,
 
   BLOG(1, "Created database for schema version " << to_version);
 
-  NotifyDidCreateOrOpenDatabase();
+  NotifyDidCreateDatabase();
 
   NotifyDatabaseIsReady();
 
@@ -131,12 +119,14 @@ void DatabaseManager::MaybeMigrate(const int from_version,
   const int to_version = database::kVersion;
   if (from_version == to_version) {
     BLOG(1, "Database is up to date on schema version " << from_version);
+    NotifyDatabaseIsReady();
     return std::move(callback).Run(/*success*/ true);
   }
 
   if (from_version > to_version) {
     BLOG(0, "Failed to migrate database from schema version "
                 << from_version << " to schema version " << to_version);
+    NotifyFailedToMigrateDatabase(from_version, to_version);
     return std::move(callback).Run(/*success*/ false);
   }
 
@@ -157,7 +147,13 @@ void DatabaseManager::MigrateFromVersionCallback(const int from_version,
   const int to_version = database::kVersion;
 
   if (!success) {
-    DoDumpWithoutCrashing(from_version, to_version);
+    {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
+      // migration failure dumps.
+      SCOPED_CRASH_KEY_NUMBER("FromVersion", "value", from_version);
+      SCOPED_CRASH_KEY_NUMBER("ToVersion", "value", to_version);
+      base::debug::DumpWithoutCrashing();
+    }
 
     BLOG(1, "Failed to migrate database from schema version "
                 << from_version << " to schema version " << to_version);
@@ -181,9 +177,15 @@ void DatabaseManager::NotifyWillCreateOrOpenDatabase() const {
   }
 }
 
-void DatabaseManager::NotifyDidCreateOrOpenDatabase() const {
+void DatabaseManager::NotifyDidCreateDatabase() const {
   for (DatabaseManagerObserver& observer : observers_) {
-    observer.OnDidCreateOrOpenDatabase();
+    observer.OnDidCreateDatabase();
+  }
+}
+
+void DatabaseManager::NotifyDidOpenDatabase() const {
+  for (DatabaseManagerObserver& observer : observers_) {
+    observer.OnDidOpenDatabase();
   }
 }
 

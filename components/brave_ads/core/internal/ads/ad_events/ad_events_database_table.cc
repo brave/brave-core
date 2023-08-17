@@ -216,7 +216,7 @@ void MigrateToV32(mojom::DBTransactionInfo* transaction) {
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
       "UPDATE ad_events SET confirmation_type = 'bookmark' WHERE "
-      "confirmation_type == 'saved'";
+      "confirmation_type == 'saved';";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -276,7 +276,7 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
       "DELETE FROM $1 WHERE creative_set_id NOT IN (SELECT creative_set_id "
       "from creative_ads) AND creative_set_id NOT IN (SELECT creative_set_id "
       "from creative_set_conversions) AND DATETIME('now') >= "
-      "DATETIME(created_at, 'unixepoch', '+3 month');",
+      "DATETIME(created_at, '1601-01-01 00:00:00', '+3 month');",
       {GetTableName()}, nullptr);
   transaction->commands.push_back(std::move(command));
 

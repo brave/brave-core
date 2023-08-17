@@ -191,9 +191,8 @@ void UnitTestBase::Initialize() {
 
   MockDefaultPrefs();
 
-  SetUpMocks();
-
   if (is_integration_test_) {
+    SetUpMocks();
     return SetUpIntegrationTest();
   }
 
@@ -201,16 +200,18 @@ void UnitTestBase::Initialize() {
 
   MockBuildChannel(BuildChannelType::kRelease);
 
+  SetUpMocks();
+
   global_state_->Flags() = *BuildFlags();
+
+  global_state_->GetDatabaseManager().CreateOrOpen(
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   global_state_->GetClientStateManager().Load(
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   global_state_->GetConfirmationStateManager().Load(
       GetWalletForTesting(),  // IN-TEST
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
-
-  global_state_->GetDatabaseManager().CreateOrOpen(
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   // Fast forward until no tasks remain to ensure
