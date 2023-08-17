@@ -33,6 +33,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -84,6 +85,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     private PortfolioHelper mPortfolioHelper;
     private NetworkInfo mNetworkInfo;
 
+    private boolean mActive;
     private RecyclerView mRvNft;
     private WalletNftAdapter mWalletNftAdapter;
     private ProgressBar mPbAssetDiscovery;
@@ -156,6 +158,9 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     @Override
     public void onResume() {
         super.onResume();
+        mActive = true;
+        recordP3AView();
+
         if (JavaUtils.anyNull(mWalletModel) || !mCanRunOnceWhenResumed
                 || !SharedPreferencesManager.getInstance().readBoolean(
                         SHOW_NFT_DISCOVERY_DIALOG, true))
@@ -167,6 +172,12 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
                 mCanRunOnceWhenResumed = false;
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mActive = false;
     }
 
     @Override
@@ -205,6 +216,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         mPortfolioModel.mNftModels.observe(getViewLifecycleOwner(), nftDataModels -> {
             if (mPortfolioModel.mPortfolioHelper == null) return;
             mNftDataModels = nftDataModels;
+            recordP3AView();
             setUpNftList(nftDataModels, mPortfolioModel.mPortfolioHelper.getPerTokenCryptoSum(),
                     mPortfolioModel.mPortfolioHelper.getPerTokenFiatSum());
         });
@@ -383,6 +395,20 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
 
         bottomSheetDialogFragment.show(getParentFragmentManager(),
                 EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
+    }
+
+    private void recordP3AView() {
+        if (!mActive) {
+            return;
+        }
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity) {
+            BraveWalletActivity walletActivity = (BraveWalletActivity) activity;
+            BraveWalletP3a walletP3A = walletActivity.getBraveWalletP3A();
+            if (walletP3A != null) {
+                walletP3A.recordNftGalleryView(mNftDataModels.size());
+            }
+        }
     }
 
     private NetworkModel getNetworkModel() {

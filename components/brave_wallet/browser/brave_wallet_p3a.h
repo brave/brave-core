@@ -34,6 +34,9 @@ extern const char kBraveWalletDailyHistogramName[];
 extern const char kBraveWalletWeeklyHistogramName[];
 extern const char kBraveWalletMonthlyHistogramName[];
 extern const char kBraveWalletNewUserReturningHistogramName[];
+extern const char kBraveWalletNFTCountHistogramName[];
+extern const char kBraveWalletNFTNewUserHistogramName[];
+extern const char kBraveWalletNFTDiscoveryEnabledHistogramName[];
 
 class BraveWalletService;
 class KeyringService;
@@ -76,6 +79,7 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   void ReportOnboardingAction(mojom::OnboardingAction action) override;
   void ReportTransactionSent(mojom::CoinType coin, bool new_send) override;
   void RecordActiveWalletCount(int count, mojom::CoinType coin_type) override;
+  void RecordNFTGalleryView(int nft_count) override;
 
   // KeyringServiceObserverBase:
   void KeyringCreated(mojom::KeyringId keyring_id) override;
@@ -88,6 +92,7 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   absl::optional<mojom::OnboardingAction> GetLastOnboardingAction();
   void RecordOnboardingHistogram();
   void MaybeRecordNewUserBalance();
+  void ReportNftDiscoverySetting();
   raw_ptr<BraveWalletService> wallet_service_;
   raw_ptr<KeyringService> keyring_service_;
   raw_ptr<PrefService> profile_prefs_;
@@ -100,7 +105,8 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
 
   mojo::ReceiverSet<mojom::BraveWalletP3A> receivers_;
   base::RepeatingTimer update_timer_;
-  PrefChangeRegistrar pref_change_registrar_;
+  PrefChangeRegistrar local_state_change_registrar_;
+  PrefChangeRegistrar profile_pref_change_registrar_;
 };
 
 }  // namespace brave_wallet

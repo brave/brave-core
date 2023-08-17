@@ -23,6 +23,8 @@ const char kBraveWalletP3ALastReportTime[] =
     "brave.wallet.wallet_p3a_last_report_time";
 const char kBraveWalletP3AFirstReportTime[] =
     "brave.wallet.wallet_p3a_first_report_time";
+extern const char kBraveWalletP3ANFTGalleryUsed[] =
+    "brave.wallet.wallet_p3a_nft_gallery_used";
 const char kBraveWalletP3ANewUserBalanceReported[] =
     "brave.wallet.p3a_new_user_balance_reported";
 const char kBraveWalletP3AWeeklyStorage[] =

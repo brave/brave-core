@@ -18,6 +18,7 @@ extern const char kBraveWalletPingReportedUnlockTime[];
 extern const char kBraveWalletP3ALastReportTime[];
 extern const char kBraveWalletP3AFirstReportTime[];
 extern const char kBraveWalletP3AWeeklyStorage[];
+extern const char kBraveWalletP3ANFTGalleryUsed[];
 extern const char kBraveWalletSelectedWalletAccount[];
 extern const char kBraveWalletSelectedEthDappAccount[];
 extern const char kBraveWalletSelectedSolDappAccount[];

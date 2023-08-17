@@ -21,6 +21,7 @@ class BraveWalletP3APrivate : public mojom::BraveWalletP3A {
       mojom::OnboardingAction onboarding_action) override;
   void ReportTransactionSent(mojom::CoinType coin, bool new_send) override;
   void RecordActiveWalletCount(int count, mojom::CoinType coin_type) override;
+  void RecordNFTGalleryView(int nft_count) override;
 };
 
 }  // namespace brave_wallet

@@ -11,6 +11,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
@@ -231,6 +232,40 @@ TEST_F(BraveWalletP3AUnitTest, JSProviders) {
   };
   test_func(mojom::CoinType::ETH, kEthProviderHistogramName);
   test_func(mojom::CoinType::SOL, kSolProviderHistogramName);
+}
+
+TEST_F(BraveWalletP3AUnitTest, NFTGalleryViews) {
+  histogram_tester_->ExpectTotalCount(kBraveWalletNFTCountHistogramName, 0);
+  histogram_tester_->ExpectTotalCount(kBraveWalletNFTNewUserHistogramName, 0);
+
+  wallet_p3a_->RecordNFTGalleryView(0);
+  histogram_tester_->ExpectUniqueSample(kBraveWalletNFTCountHistogramName, 0,
+                                        1);
+  histogram_tester_->ExpectUniqueSample(kBraveWalletNFTNewUserHistogramName, 1,
+                                        1);
+
+  wallet_p3a_->RecordNFTGalleryView(6);
+  histogram_tester_->ExpectBucketCount(kBraveWalletNFTCountHistogramName, 2, 1);
+  // new user histogram should only be reported once, ever
+  histogram_tester_->ExpectUniqueSample(kBraveWalletNFTNewUserHistogramName, 1,
+                                        1);
+}
+
+TEST_F(BraveWalletP3AUnitTest, NFTDiscoveryEnabled) {
+  histogram_tester_->ExpectTotalCount(
+      kBraveWalletNFTDiscoveryEnabledHistogramName, 0);
+
+  local_state_->Get()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  histogram_tester_->ExpectUniqueSample(
+      kBraveWalletNFTDiscoveryEnabledHistogramName, 0, 1);
+
+  profile_->GetPrefs()->SetBoolean(kBraveWalletNftDiscoveryEnabled, true);
+  histogram_tester_->ExpectBucketCount(
+      kBraveWalletNFTDiscoveryEnabledHistogramName, 1, 1);
+
+  profile_->GetPrefs()->SetBoolean(kBraveWalletNftDiscoveryEnabled, false);
+  histogram_tester_->ExpectBucketCount(
+      kBraveWalletNFTDiscoveryEnabledHistogramName, 0, 2);
 }
 
 }  // namespace brave_wallet
