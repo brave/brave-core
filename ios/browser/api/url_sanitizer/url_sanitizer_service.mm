@@ -6,12 +6,13 @@
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
 
 #include <string>
+#include "base/memory/raw_ptr.h"
 #include "brave/ios/browser/api/url_sanitizer/url_sanitizer_service+private.h"
 #import "net/base/mac/url_conversions.h"
 #include "url/gurl.h"
 
 @interface URLSanitizerService () {
-  brave::URLSanitizerService* urlSanitizer_;  // NOT OWNED
+  raw_ptr<brave::URLSanitizerService> urlSanitizer_;  // NOT OWNED
 }
 
 @end
@@ -19,7 +20,7 @@
 @implementation URLSanitizerService
 
 - (instancetype)initWithURLSanitizerService:
-    (brave::URLSanitizerService*)urlSanitizer {
+    (raw_ptr<brave::URLSanitizerService>)urlSanitizer {
   self = [super init];
   if (self) {
     urlSanitizer_ = urlSanitizer;
