@@ -92,7 +92,6 @@ const SaveButton = styled(LeoButton)`
   min-width: 72px;
   flex-grow: 0;
   --leo-button-padding: 10px;
-  --radius: ${radius.full};
 `
 
 function BackButton ({
@@ -164,22 +163,15 @@ function PlaylistHeader ({ playlistId }: { playlistId: string }) {
   const totalSize = useTotalSize(playlist)
   const playlistEditMode = usePlaylistEditMode()
 
-  const [hasNewName, setHasNewName] = React.useState(true)
-  const inputElementRef = React.useRef<HTMLInputElement>(null)
+  const [newName, setNewName] = React.useState(playlist?.name)
+  const hasNewName = !!newName && newName !== playlist?.name
 
   const onSave = () => {
-    if (
-      !playlist ||
-      playlist?.name === inputElementRef.current?.value ||
-      hasNewName
-    ) {
+    if (!playlist || !hasNewName) {
       return
     }
 
-    getPlaylistAPI().renamePlaylist(
-      playlist.id!,
-      inputElementRef.current!.value
-    )
+    getPlaylistAPI().renamePlaylist(playlist.id!, newName)
     getAllActions().setPlaylistEditMode(undefined)
   }
 
@@ -190,21 +182,16 @@ function PlaylistHeader ({ playlistId }: { playlistId: string }) {
     }
   }, [])
 
-  return !playlist ? (
-    <></>
-  ) : (
+  return !playlist ? null : (
     <>
       <BackButton playlistEditMode={playlistEditMode} />
       {playlistEditMode === PlaylistEditMode.RENAME ? (
         <>
           <StyledInput
-            ref={inputElementRef}
             type='text'
             defaultValue={playlist.name}
             autoFocus
-            onChange={e => {
-              setHasNewName(!!e.target.value)
-            }}
+            onChange={e => setNewName(e.target.value)}
             onKeyDown={e => {
               if (e.key === 'Escape') {
                 getAllActions().setPlaylistEditMode(undefined)
@@ -238,11 +225,8 @@ function PlaylistHeader ({ playlistId }: { playlistId: string }) {
             nameColor={color.text.primary}
             detailColor={color.text.secondary}
           />
-          {contextualMenuItems.length ? (
+          {!!contextualMenuItems.length && (
             <ContextualMenuAnchorButton items={contextualMenuItems} />
-          ) : (
-            // We need to this so that 0 is not rendered.
-            <></>
           )}
         </>
       )}

@@ -53,16 +53,16 @@ const playlistReducer: Reducer<PlaylistData | undefined> = (
 
     case types.PLAYLIST_UPDATED:
       const updatedPlaylist = action.payload
-      state = { ...state }
+      state = { ...state, lists: [...state.lists] }
       if (state.currentList?.id === updatedPlaylist.id) {
         state.currentList = updatedPlaylist
       }
 
-      const oldPlaylist = state.lists.find(e => {
+      const index = state.lists.findIndex(e => {
         return e.id === updatedPlaylist.id
       })
-      if (oldPlaylist) {
-        state.lists[state.lists.indexOf(oldPlaylist)] = updatedPlaylist
+      if (index !== -1) {
+        state.lists[index] = updatedPlaylist
       } else {
         state.lists.push(updatedPlaylist)
       }

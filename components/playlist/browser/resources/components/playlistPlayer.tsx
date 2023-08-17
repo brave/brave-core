@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 import { RouteComponentProps, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { color, radius } from '@brave/leo/tokens/css'
+import { color } from '@brave/leo/tokens/css'
 import LeoButton from '@brave/leo/react/button'
 
 import VideoFrame from './videoFrame'
@@ -43,7 +43,6 @@ const StyledEditButton = styled(LeoButton)`
   width: fit-content;
   flex-grow: 0;
   --leo-button-padding: 10px 12px;
-  --radius: ${radius.full};
 
   &:last-child {
     margin-left: auto;
@@ -130,6 +129,8 @@ export default function PlaylistPlayer ({
   // Share single callback among multiple items.
   const onItemClick = React.useCallback(
     item => {
+      if (!playlist) return
+
       if (editMode === PlaylistEditMode.BULK_EDIT) {
         const newSelectedSet = new Set(selectedSet)
         if (newSelectedSet.has(item.id)) {
@@ -143,7 +144,7 @@ export default function PlaylistPlayer ({
 
       postMessageToPlayer({
         actionType: types.PLAYLIST_ITEM_SELECTED,
-        currentList: playlist!,
+        currentList: playlist,
         currentItem: item
       })
     },
