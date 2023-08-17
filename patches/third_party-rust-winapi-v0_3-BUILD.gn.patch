@@ -1,10 +1,10 @@
 diff --git a/third_party/rust/winapi/v0_3/BUILD.gn b/third_party/rust/winapi/v0_3/BUILD.gn
-index f7edafac06ae7c016abd3e3f28c0764ec04bdfa0..5c0d1e01968abd311f5aba42a7e7b0c878ac3c72 100644
+index f7edafac06ae7c016abd3e3f28c0764ec04bdfa0..2feb2565f5cf8690d78a1a496b2b303ab337a198 100644
 --- a/third_party/rust/winapi/v0_3/BUILD.gn
 +++ b/third_party/rust/winapi/v0_3/BUILD.gn
 @@ -42,4 +42,5 @@ cargo_crate("lib") {
    ]
    build_root = "crate/build.rs"
    build_sources = [ "crate/build.rs" ]
-+  features += [ "timezoneapi" ]
++  features += [ "basetsd", "cfg", "cfgmgr32", "devpropdef", "excpt", "ktmtypes", "libloaderapi", "limits", "ntdef", "ntstatus", "processthreadsapi", "reason", "rpcndr", "timezoneapi", "vadefs", "vcruntime", "wincontypes", "wingdi", "windef", "winreg", "winuser", "wtypesbase" ]
  }
