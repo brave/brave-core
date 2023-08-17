@@ -10,7 +10,13 @@ import styled from 'styled-components'
 // Components
 import Header from './header'
 import PlaylistsCatalog from './playlistsCatalog'
-import PlaylistPlayer from './playlistPlayer'
+import PlaylistFolder from './playlistFolder'
+import VideoFrame from './videoFrame'
+import {
+  PlaylistEditMode,
+  useLastPlayerState,
+  usePlaylistEditMode
+} from '../reducers/states'
 
 const HeaderWrapper = styled.header<{ isPlaylistPlayerPage: boolean }>`
   position: sticky;
@@ -22,6 +28,9 @@ const HeaderWrapper = styled.header<{ isPlaylistPlayerPage: boolean }>`
 `
 
 export default function App () {
+  const lastPlayerState = useLastPlayerState()
+  const editMode = usePlaylistEditMode()
+
   return (
     <>
       <Route
@@ -29,15 +38,24 @@ export default function App () {
         children={({ match }) => {
           const playlistId = match?.params.playlistId
           return (
-            <HeaderWrapper isPlaylistPlayerPage={!!playlistId}>
-              <Header playlistId={playlistId} />
-            </HeaderWrapper>
+            <>
+              <HeaderWrapper isPlaylistPlayerPage={!!playlistId}>
+                <Header playlistId={playlistId} />
+              </HeaderWrapper>
+              <VideoFrame
+                visible={
+                  !!lastPlayerState?.currentItem &&
+                  editMode !== PlaylistEditMode.BULK_EDIT
+                }
+                isMiniPlayer={lastPlayerState?.currentList?.id !== playlistId}
+              />
+            </>
           )
         }}
       />
       <section>
         <Switch>
-          <Route path='/playlist/:playlistId' component={PlaylistPlayer} />
+          <Route path='/playlist/:playlistId' component={PlaylistFolder} />
           <Route path='/' component={PlaylistsCatalog}></Route>
         </Switch>
       </section>

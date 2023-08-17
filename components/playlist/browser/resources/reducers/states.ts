@@ -80,3 +80,9 @@ export function usePlaylistEditMode () {
     applicationState => applicationState.playlistData?.playlistEditMode
   )
 }
+
+export function useLastPlayerState () {
+  return useSelector<ApplicationState, PlayerState | undefined>(
+    applicationState => applicationState.playlistData?.lastPlayerState
+  )
+}

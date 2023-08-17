@@ -4,19 +4,16 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 import { RouteComponentProps, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { color } from '@brave/leo/tokens/css'
 import LeoButton from '@brave/leo/react/button'
 
-import VideoFrame from './videoFrame'
 import PlaylistItem from './playlistItem'
 import {
-  ApplicationState,
-  PlayerState,
   PlaylistEditMode,
+  useLastPlayerState,
   usePlaylist,
   usePlaylistEditMode
 } from '../reducers/states'
@@ -98,25 +95,22 @@ function EditActionsContainer ({
   )
 }
 
-export default function PlaylistPlayer ({
+export default function PlaylistFolder ({
   match
 }: RouteComponentProps<MatchParams>) {
   const playlist = usePlaylist(match.params.playlistId)
-  const lastPlayerState = useSelector<
-    ApplicationState,
-    PlayerState | undefined
-  >(applicationState => applicationState.playlistData?.lastPlayerState)
+  const lastPlayerState = useLastPlayerState()
 
   React.useEffect(() => {
     // When playlist updated and player is working, notify that the current
     // list has changed.
-    if (playlist && lastPlayerState) {
+    if (playlist && playlist?.id === lastPlayerState?.currentList?.id) {
       postMessageToPlayer({
         actionType: types.SELECTED_PLAYLIST_UPDATED,
         currentList: playlist
       })
     }
-  }, [playlist])
+  }, [playlist, lastPlayerState])
 
   const [selectedSet, setSelectedSet] = React.useState(new Set<string>())
   const editMode = usePlaylistEditMode()
@@ -159,7 +153,6 @@ export default function PlaylistPlayer ({
 
   return (
     <>
-      <VideoFrame visible={!!lastPlayerState?.currentItem && !editMode} />
       {editMode === PlaylistEditMode.BULK_EDIT && (
         <EditActionsContainer
           playlistId={playlist.id!}
