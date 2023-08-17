@@ -30,7 +30,6 @@ export const body = styled.div`
   border-radius: 0 0 8px 8px;
   overflow: hidden;
   padding-top: 6px;
-  padding-bottom: 6px;
 
   .brave-theme-dark & {
     background: rgb(23, 23, 31, 0.62);
@@ -102,6 +101,10 @@ export const dataTable = styled.div`
 
   tr:last-child {
     border-bottom: none;
+
+    td:last-child {
+      padding-bottom: 16px;
+    }
   }
 
   td.exchange {
