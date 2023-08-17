@@ -36,6 +36,7 @@ source_set("unit_tests") {
   sources = [ "status_tray_runner_unittest.cc" ]
   deps = [
     ":status_tray",
+    "//brave/components/constants",
     "//testing/gtest",
   ]
 }
