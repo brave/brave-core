@@ -15,8 +15,6 @@ source_set("application_context") {
     "//base",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/https_upgrade_exceptions/browser",
-    "//brave/ios/browser/component_updater",
-    "//brave/ios/browser/local_data_file_service",
     "//ios/chrome/browser/application_context",
   ]
 }

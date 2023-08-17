@@ -6,14 +6,16 @@
 #include <string>
 
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
-#include "brave/ios/browser/local_data_file_service/local_data_file_service_installer_delegate.h"
 
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
 
 #import "base/command_line.h"
 #import "base/task/sequenced_task_runner.h"
+
+#include "ios/chrome/browser/shared/model/application_context/application_context.h"
 
 BraveApplicationContextImpl::BraveApplicationContextImpl(
     base::SequencedTaskRunner* local_state_task_runner,
@@ -33,8 +35,11 @@ BraveApplicationContextImpl::~BraveApplicationContextImpl() {
 brave_component_updater::BraveComponent::Delegate*
 BraveApplicationContextImpl::brave_component_updater_delegate() {
   if (!brave_component_updater_delegate_) {
-    brave_component_updater_delegate_ = std::make_unique<
-        local_data_file_service::LocalDataFileServiceDelegate>();
+    brave_component_updater_delegate_ =
+        std::make_unique<brave::BraveComponentUpdaterDelegate>(
+            GetApplicationContext()->GetComponentUpdateService(),
+            GetApplicationContext()->GetLocalState(),
+            GetApplicationContext()->GetApplicationLocale());
   }
 
   return brave_component_updater_delegate_.get();
