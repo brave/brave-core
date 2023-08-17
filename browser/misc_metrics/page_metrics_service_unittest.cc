@@ -31,7 +31,7 @@ class PageMetricsServiceUnitTest : public testing::Test {
         profile_.get(), ServiceAccessType::EXPLICIT_ACCESS);
     misc_metrics::PageMetricsService::RegisterPrefs(local_state_.registry());
     page_metrics_service_ =
-        new PageMetricsService(&local_state_, history_service_);
+        std::make_unique<PageMetricsService>(&local_state_, history_service_);
   }
 
  protected:
@@ -39,8 +39,8 @@ class PageMetricsServiceUnitTest : public testing::Test {
   TestingPrefServiceSimple local_state_;
   base::HistogramTester histogram_tester_;
   std::unique_ptr<TestingProfile> profile_;
+  std::unique_ptr<PageMetricsService> page_metrics_service_;
   raw_ptr<history::HistoryService> history_service_;
-  raw_ptr<PageMetricsService> page_metrics_service_;
 };
 
 TEST_F(PageMetricsServiceUnitTest, DomainsLoadedCount) {
