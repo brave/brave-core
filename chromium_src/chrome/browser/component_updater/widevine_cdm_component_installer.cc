@@ -122,21 +122,24 @@ class WidevineCdmComponentInstallerPolicy
     : public WidevineCdmComponentInstallerPolicy_ChromiumImpl {
  public:
   WidevineCdmComponentInstallerPolicy(
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      std::unique_ptr<network::PendingSharedURLLoaderFactory>
+          pending_url_loader_factory);
 
  private:
   CrxInstaller::Result OnCustomInstall(
       const base::Value::Dict& manifest,
       const base::FilePath& install_dir) override;
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  std::unique_ptr<network::PendingSharedURLLoaderFactory>
+      pending_url_loader_factory_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
 };
 
 class Arm64DllInstaller : public base::RefCountedThreadSafe<Arm64DllInstaller> {
  public:
-  Arm64DllInstaller(std::unique_ptr<network::PendingSharedURLLoaderFactory>
-                        pending_url_loader_factory);
-  void Start(const base::FilePath& install_dir);
+  Arm64DllInstaller() = default;
+  void Start(std::unique_ptr<network::PendingSharedURLLoaderFactory>
+                 pending_url_loader_factory,
+             const base::FilePath& install_dir);
   CrxInstaller::Result WaitForCompletion();
 
  protected:
@@ -151,19 +154,17 @@ class Arm64DllInstaller : public base::RefCountedThreadSafe<Arm64DllInstaller> {
                        base::FilePath zip_path);
   bool AddArm64ArchToManifest(const base::FilePath& install_dir);
 
-  std::unique_ptr<network::PendingSharedURLLoaderFactory>
-      pending_url_loader_factory_;
   std::unique_ptr<network::SimpleURLLoader> loader_;
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   base::WaitableEvent installed_;
   CrxInstaller::Result result_;
 };
 
 WidevineCdmComponentInstallerPolicy::WidevineCdmComponentInstallerPolicy(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : url_loader_factory_(url_loader_factory),
+    std::unique_ptr<network::PendingSharedURLLoaderFactory>
+        pending_url_loader_factory)
+    : pending_url_loader_factory_(std::move(pending_url_loader_factory)),
       task_runner_(base::ThreadPool::CreateSingleThreadTaskRunner(
-          {base::TaskPriority::USER_BLOCKING},
+          {base::MayBlock(), base::TaskPriority::USER_BLOCKING},
           base::SingleThreadTaskRunnerThreadMode::DEDICATED)) {}
 
 CrxInstaller::Result WidevineCdmComponentInstallerPolicy::OnCustomInstall(
@@ -177,34 +178,28 @@ CrxInstaller::Result WidevineCdmComponentInstallerPolicy::OnCustomInstall(
     return CrxInstaller::Result(0);
   }
   scoped_refptr<Arm64DllInstaller> installer =
-      base::MakeRefCounted<Arm64DllInstaller>(url_loader_factory_->Clone());
-  task_runner_->PostTask(FROM_HERE, base::BindOnce(&Arm64DllInstaller::Start,
-                                                   installer, install_dir));
+      base::MakeRefCounted<Arm64DllInstaller>();
+  task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&Arm64DllInstaller::Start, installer,
+                     std::move(pending_url_loader_factory_), install_dir));
   return installer->WaitForCompletion();
 }
 
-Arm64DllInstaller::Arm64DllInstaller(
+void Arm64DllInstaller::Start(
     std::unique_ptr<network::PendingSharedURLLoaderFactory>
-        pending_url_loader_factory)
-    : pending_url_loader_factory_(std::move(pending_url_loader_factory)) {}
-
-void Arm64DllInstaller::Start(const base::FilePath& install_dir) {
+        pending_url_loader_factory,
+    const base::FilePath& install_dir) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = GURL(kBraveWidevineArm64DllUrl.Get());
-
-  // This implementation does not expect to run concurrently.
-  CHECK(!loader_);
   loader_ = network::SimpleURLLoader::Create(std::move(resource_request),
                                              traffic_annotation);
   loader_->SetTimeoutDuration(base::Seconds(kDownloadRequestTimeoutSecs));
-  if (!url_loader_factory_) {
-    // We are assigning to this field here (instead of, say, the constructor)
-    // because it needs to be done on the right sequence.
-    url_loader_factory_ = network::SharedURLLoaderFactory::Create(
-        std::move(pending_url_loader_factory_));
-  }
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory =
+      network::SharedURLLoaderFactory::Create(
+          std::move(pending_url_loader_factory));
   loader_->DownloadToTempFile(
-      url_loader_factory_.get(),
+      url_loader_factory.get(),
       base::BindOnce(&Arm64DllInstaller::OnArm64DllDownloadComplete,
                      base::RetainedRef(this), install_dir));
 }
@@ -230,6 +225,7 @@ CrxInstaller::Result Arm64DllInstaller::WaitForCompletion() {
 void Arm64DllInstaller::OnArm64DllDownloadComplete(
     const base::FilePath& install_dir,
     base::FilePath zip_path) {
+  VLOG(2) << "Arm64 DLL download complete.";
   if (zip_path.empty()) {
     net::Error error = net::Error(loader_->NetError());
     LOG(ERROR) << "Arm64 DLL download failed. Error: "
@@ -243,11 +239,15 @@ void Arm64DllInstaller::OnArm64DllDownloadComplete(
           CrxInstaller::Result(update_client::InstallError::GENERIC_ERROR);
     }
   }
+  // The loader needs to be destroyed on the current sequence. We therefore
+  // need to do it here, and cannot wait until the destructor does it.
+  loader_.reset();
   installed_.Signal();
 }
 
 bool Arm64DllInstaller::ExtractArm64Dll(const base::FilePath& install_dir,
                                         base::FilePath zip_path) {
+  VLOG(2) << "Extracting Arm64 DLL.";
   base::FilePath arm64_directory = GetPlatformDirectory(install_dir);
   base::File::Error error;
   if (base::CreateDirectoryAndGetError(arm64_directory, &error)) {
@@ -271,6 +271,7 @@ bool Arm64DllInstaller::ExtractArm64Dll(const base::FilePath& install_dir,
 // we need to add "arm64" to the list of supported architectures.
 bool Arm64DllInstaller::AddArm64ArchToManifest(
     const base::FilePath& install_dir) {
+  VLOG(2) << "Adding Arm64 to manifest.json.";
   base::FilePath manifest_path = install_dir.AppendASCII("manifest.json");
 
   std::string json_content;
@@ -320,6 +321,7 @@ void RegisterWidevineCdmComponent(
     ComponentUpdateService* cus,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     base::OnceCallback<void()> callback) {
+  VLOG(1) << "RegisterWidevineCdmComponent";
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (!IsWidevineOptedIn()) {
     return;
@@ -327,7 +329,7 @@ void RegisterWidevineCdmComponent(
   CHECK(url_loader_factory);
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<WidevineCdmComponentInstallerPolicy>(
-          url_loader_factory));
+          url_loader_factory->Clone()));
   installer->Register(cus, std::move(callback));
 }
 
