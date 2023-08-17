@@ -284,7 +284,7 @@ handler.on(WalletActions.updateUserAsset.type, async (store: Store, payload: Upd
     const addResult = await braveWalletService.addUserAsset(updated)
     if (addResult.success) {
       refreshBalancesPricesAndHistory(store)
-      refreshVisibleTokenInfo()
+      await store.dispatch(refreshVisibleTokenInfo())
     }
   }
 })
