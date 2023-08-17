@@ -193,7 +193,7 @@ void Deposits::PurgeExpired(ResultCallback callback) const {
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::ReplaceStringPlaceholders(
       "DELETE FROM $1 WHERE DATETIME('now') >= "
-      "DATETIME(expire_at, 'unixepoch');",
+      "DATETIME(expire_at, '1601-01-01 00:00:00');",
       {GetTableName()}, nullptr);
   transaction->commands.push_back(std::move(command));
 
