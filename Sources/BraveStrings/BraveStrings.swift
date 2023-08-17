@@ -3379,7 +3379,7 @@ extension Strings {
         comment: "")
     public static let persistentPrivateBrowsingDescription =
       NSLocalizedString(
-        "tabs.settings.persistentPrivateBrowsingTitle", tableName: "BraveShared", bundle: .module,
+        "tabs.settings.persistentPrivateBrowsingDescription", tableName: "BraveShared", bundle: .module,
         value: "Keep private browsing tabs open when you close the app, ensuring private browsing sessions continue seamlessly.",
         comment: "")
   }
