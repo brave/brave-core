@@ -9,6 +9,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/command_line.h"
@@ -17,8 +18,6 @@
 #include "base/version.h"
 #include "brave/components/constants/brave_switches.h"
 #include "build/build_config.h"
-#include "chrome/browser/browser_process.h"
-#include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/common/pref_names.h"
 #include "components/component_updater/component_updater_command_line_config_policy.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -48,12 +47,12 @@ namespace component_updater {
 // a custom message signing protocol and it does not depend on using HTTPS.
 BraveConfigurator::BraveConfigurator(
     const base::CommandLine* cmdline,
-    PrefService* pref_service)
+    PrefService* pref_service,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : configurator_impl_(ComponentUpdaterCommandLineConfigPolicy(cmdline),
-        false),
-      pref_service_(pref_service) {
-  DCHECK(pref_service_);
-}
+                         false),
+      pref_service_(raw_ref<PrefService>::from_ptr(pref_service)),
+      url_loader_factory_(std::move(url_loader_factory)) {}
 
 BraveConfigurator::~BraveConfigurator() = default;
 
@@ -125,8 +124,7 @@ BraveConfigurator::GetNetworkFetcherFactory() {
   if (!network_fetcher_factory_) {
     network_fetcher_factory_ =
         base::MakeRefCounted<update_client::NetworkFetcherChromiumFactory>(
-            g_browser_process->system_network_context_manager()
-                ->GetSharedURLLoaderFactory(),
+            url_loader_factory_,
             // Never send cookies for component update downloads.
             base::BindRepeating([](const GURL& url) { return false; }));
   }
@@ -175,7 +173,7 @@ bool BraveConfigurator::EnabledCupSigning() const {
 }
 
 PrefService* BraveConfigurator::GetPrefService() const {
-  return pref_service_;
+  return base::to_address(pref_service_);
 }
 
 update_client::ActivityDataService* BraveConfigurator::GetActivityDataService()

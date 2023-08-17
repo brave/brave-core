@@ -11,7 +11,7 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
-#include "brave/browser/component_updater/brave_component_installer.h"
+#include "brave/components/brave_component_updater/browser/brave_component_installer.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
