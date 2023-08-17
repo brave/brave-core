@@ -1,0 +1,35 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#ifndef BRAVE_COMPONENTS_QUERY_FILTER_UTILS_H_
+#define BRAVE_COMPONENTS_QUERY_FILTER_UTILS_H_
+
+#include <string>
+
+#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "url/gurl.h"
+
+namespace query_filter {
+absl::optional<GURL> ApplyQueryFilter(const GURL& original_url);
+
+// This function will return a new url stripping known tracking query params.
+// If nothing is to be stripped, a null value is returned.
+//
+// `initiator_url` specifies the origin initiating the resource request.
+// If there were redirects, this is the url prior to any redirects.
+// `redirect_source_url` specifies the url that we are currently navigating
+// from, including any redirects that might have happened. `request_url`
+// specifies where we are navigating to. `request_method` indicates the HTTP
+// method of the request. `internal_redirect` indicates wether or not this is an
+// internal redirect or not. This function returns the url we should redirect to
+// or a `absl::nullopt` value if nothing is changed.
+absl::optional<GURL> MaybeApplyQueryStringFilter(
+    const GURL& initiator_url,
+    const GURL& redirect_source_url,
+    const GURL& request_url,
+    const std::string& request_method,
+    const bool internal_redirect);
+}  // namespace query_filter
+#endif  // BRAVE_COMPONENTS_QUERY_FILTER_UTILS_H_
