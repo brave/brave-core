@@ -7,6 +7,9 @@
     If the command is only available on a platform we don't support (i.e.
     ChromeOS) prefer to not add the command.
   -->
+  <message name="IDS_IDC_ADD_NEW_PROFILE">
+    Add new profile
+  </message>
   <message name="IDS_IDC_BACK">
     Back
   </message>
@@ -111,6 +114,9 @@
   </message>
   <message name="IDS_IDC_COPY_URL">
     Copy URL
+  </message>
+  <message name="IDS_IDC_OPEN_GUEST_PROFILE">
+    Open Guest profile
   </message>
   <message name="IDS_IDC_OPEN_IN_CHROME">
     Open in Brave
