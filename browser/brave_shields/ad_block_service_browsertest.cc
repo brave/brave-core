@@ -84,7 +84,6 @@ const char kRegionalAdBlockComponentTest64PublicKey[] =
 
 using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
-using brave_shields::features::kBraveAdblockCookieListDefault;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
 using brave_shields::features::kBraveAdblockScriptletDebugLogs;
@@ -2468,16 +2467,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   EXPECT_EQ(base::Value(true), result_first.value);
 }
 
-class DefaultCookieListFlagEnabledTest : public AdBlockServiceTest {
- public:
-  DefaultCookieListFlagEnabledTest() {
-    feature_list_.InitAndEnableFeature(kBraveAdblockCookieListDefault);
-  }
-
- private:
-  base::test::ScopedFeatureList feature_list_;
-};
-
 class CookieListPrefObserver {
  public:
   explicit CookieListPrefObserver(PrefService* local_state) {
@@ -2504,7 +2493,7 @@ class CookieListPrefObserver {
 
 // Test that the `brave-adblock-default-1p-blocking` flag forces the Cookie
 // List UUID to be enabled, until manually enabled and then disabled again.
-IN_PROC_BROWSER_TEST_F(DefaultCookieListFlagEnabledTest, ListEnabled) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ListEnabled) {
   ASSERT_TRUE(
       InstallRegionalAdBlockExtension(brave_shields::kCookieListUuid, false));
 
