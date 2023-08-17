@@ -287,6 +287,7 @@ export const DAppConnectionMain = (props: Props) => {
       <VerticalSpace space='8px' />
       <SectionButton
         onClick={() => onSelectOption('networks')}
+        data-test-id='select-network-button'
       >
         <Row
           width='unset'

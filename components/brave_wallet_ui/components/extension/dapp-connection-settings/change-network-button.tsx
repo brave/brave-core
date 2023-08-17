@@ -26,7 +26,7 @@ import {
 // Styled Components
 import {
   NetworkButton,
-  NameText,
+  NetworkName,
   ActiveIndicator
 } from './dapp-connection-settings.style'
 import {
@@ -55,6 +55,7 @@ export const ChangeNetworkButton = (props: Props) => {
   return (
     <NetworkButton
       onClick={onClick}
+      data-test-chain-id={'chain-' + network.chainId}
     >
       <Row
         width='unset'
@@ -64,12 +65,9 @@ export const ChangeNetworkButton = (props: Props) => {
           marginRight={8}
           size='big'
         />
-        <NameText
-          textSize='14px'
-          isBold={false}
-        >
+        <NetworkName>
           {network.chainName}
-        </NameText>
+        </NetworkName>
       </Row>
       {selectedNetwork?.chainId === network.chainId &&
         <ActiveIndicator>

@@ -22,6 +22,7 @@ export const SettingsButton = styled(WalletButton)`
   margin-right: 16px;
   background-color: transparent;
   position: relative;
+  z-index: 10;
 `
 
 export const ConnectedIcon = styled(Icon) <{
@@ -45,6 +46,16 @@ export const ConnectedText = styled(Text) <{
       : leo.color.icon.default
   };
   line-height: 24px;
+`
+
+export const OverlapForClick = styled.div`
+  display: flex;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 11;
 `
 
 export const SettingsBubbleWrapper = styled.div`
@@ -150,6 +161,18 @@ export const NameText = styled(Text)`
   line-height: 24px;
   word-break: break-all;
   text-align: left;
+`
+
+export const NetworkName = styled.span`
+  font-family: 'Poppins';
+  color: ${leo.color.text.primary};
+  line-height: 24px;
+  word-wrap: wrap;
+  word-break: break-all;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
 `
 
 export const DescriptionText = styled(Text)`
