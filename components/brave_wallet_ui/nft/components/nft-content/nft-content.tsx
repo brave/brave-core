@@ -15,6 +15,7 @@ import { DisplayMode } from '../../nft-ui-messages'
 // components
 import Placeholder from '../../../assets/svg-icons/nft-placeholder.svg'
 import { NftMultimedia } from '../nft-multimedia/nft-multimedia'
+import { stripChromeImageURL } from '../../../utils/string-utils'
 
 interface Props {
   isLoading?: boolean
@@ -31,7 +32,7 @@ export const NftContent = (props: Props) => {
   } = props
 
   const url = React.useMemo(() => {
-    return imageUrl ? imageUrl?.replace('chrome://image?', '') : Placeholder
+    return stripChromeImageURL(imageUrl) ?? Placeholder
   }, [imageUrl])
 
   return (
