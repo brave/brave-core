@@ -43,6 +43,12 @@ constexpr char kWireguardConfigTemplate[] = R"(
 
 namespace wireguard {
 
+bool IsWireguardServiceRegistered() {
+  return brave_vpn::GetWindowsServiceStatus(
+             brave_vpn::GetBraveVpnWireguardServiceName())
+      .has_value();
+}
+
 bool IsBraveVPNWireguardTunnelServiceRunning() {
   auto status =
       GetWindowsServiceStatus(GetBraveVpnWireguardTunnelServiceName());
