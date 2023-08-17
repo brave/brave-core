@@ -7,6 +7,9 @@ import { BraveWallet, WalletRoutes, TokenStandards } from '../constants/types'
 import { getLocale } from '../../common/locale'
 import { loadTimeData } from '../../common/loadTimeData'
 
+export const stripChromeImageURL = (url?: string) =>
+  url?.replace('chrome://image?', '')
+
 export const stripERC20TokenImageURL = (url?: string) =>
   url?.replace('chrome://erc-token-images/', '')
 
