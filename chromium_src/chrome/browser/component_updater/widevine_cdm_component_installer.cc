@@ -179,10 +179,14 @@ CrxInstaller::Result WidevineCdmComponentInstallerPolicy::OnCustomInstall(
   }
   scoped_refptr<Arm64DllInstaller> installer =
       base::MakeRefCounted<Arm64DllInstaller>();
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory =
+      network::SharedURLLoaderFactory::Create(
+          std::move(pending_url_loader_factory_));
+  // Restore pending_url_loader_factory_ for future invocations of this method:
+  pending_url_loader_factory_ = url_loader_factory->Clone();
   task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&Arm64DllInstaller::Start, installer,
-                     std::move(pending_url_loader_factory_), install_dir));
+      FROM_HERE, base::BindOnce(&Arm64DllInstaller::Start, installer,
+                                url_loader_factory->Clone(), install_dir));
   return installer->WaitForCompletion();
 }
 
