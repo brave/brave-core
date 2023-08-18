@@ -8,7 +8,6 @@ import BraveUI
 import BraveCore
 import Static
 import Shared
-import ZIPFoundation
 import BraveShared
 
 private class RewardsInternalsSharableCell: UITableViewCell, TableViewReusable {
@@ -168,15 +167,30 @@ class RewardsInternalsShareController: UITableViewController {
           if FileManager.default.fileExists(atPath: self.zipPath.path) {
             try FileManager.default.removeItem(at: self.zipPath)
           }
-          try FileManager.default.zipItem(at: self.dropDirectory, to: self.zipPath, shouldKeepParent: false, compressionMethod: .deflate, progress: self.shareProgress)
-          DispatchQueue.main.async {
-            let controller = UIActivityViewController(activityItems: [self.zipPath], applicationActivities: nil)
-            controller.popoverPresentationController?.sourceView = self.tableView.cellForRow(at: senderIndexPath) ?? self.tableView
-            controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
-            controller.completionWithItemsHandler = { _, _, _, _ in
-              self.cleanup()
+          let readingIntent: NSFileAccessIntent =
+            .readingIntent(with: self.dropDirectory, options: [.forUploading])
+          NSFileCoordinator().coordinate(
+            with: [readingIntent],
+            queue: .init()
+          ) { error in
+            if let error {
+              adsRewardsLog.error("Failed to zip up internals files. Error: \(error.localizedDescription)")
+              return
             }
-            self.present(controller, animated: true)
+            do {
+              try FileManager.default.moveItem(at: readingIntent.url, to: self.zipPath)
+              DispatchQueue.main.async {
+                let controller = UIActivityViewController(activityItems: [self.zipPath], applicationActivities: nil)
+                controller.popoverPresentationController?.sourceView = self.tableView.cellForRow(at: senderIndexPath) ?? self.tableView
+                controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
+                controller.completionWithItemsHandler = { _, _, _, _ in
+                  self.cleanup()
+                }
+                self.present(controller, animated: true)
+              }
+            } catch { 
+              adsRewardsLog.error("Failed to move coordinated rewards internals zip file. Error: \(error.localizedDescription)")
+            }
           }
         } catch {
           adsRewardsLog.error("Failed to zip directory: \(error.localizedDescription)")

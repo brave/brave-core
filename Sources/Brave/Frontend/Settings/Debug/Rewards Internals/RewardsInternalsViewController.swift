@@ -108,34 +108,32 @@ class RewardsInternalsViewController: TableViewController {
 struct RewardsInternalsBasicInfoGenerator: RewardsInternalsFileGenerator {
   func generateFiles(at path: String, using builder: RewardsInternalsSharableBuilder, completion: @escaping (Error?) -> Void) {
     // Only 1 file to make here
-    var internals: BraveCore.BraveRewards.RewardsInternalsInfo?
-    builder.ledger.rewardsInternalInfo { info in
-      internals = info
-    }
-    guard let info = internals else {
-      completion(RewardsInternalsSharableError.rewardsInternalsUnavailable)
-      return
-    }
-
-    let data: [String: Any] = [
-      "Rewards Profile Info": [
-        "Key Info Seed": "\(info.isKeyInfoSeedValid ? "Valid" : "Invalid")",
-        "Rewards Payment ID": info.paymentId,
-        "Rewards Profile Creation Date": builder.dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(info.bootStamp))),
-      ],
-      "Device Info": [
-        "DeviceCheck Status": DCDevice.current.isSupported ? "Supported" : "Not supported",
-        "DeviceCheck Enrollment State": DeviceCheckClient.isDeviceEnrolled() ? "Enrolled" : "Not enrolled",
-        "OS": "\(UIDevice.current.systemName) \(UIDevice.current.systemVersion)",
-        "Model": UIDevice.current.model,
-      ],
-    ]
-
-    do {
-      try builder.writeJSON(from: data, named: "basic", at: path)
-      completion(nil)
-    } catch {
-      completion(error)
+    builder.ledger.rewardsInternalInfo { internals in
+      guard let info = internals else {
+        completion(RewardsInternalsSharableError.rewardsInternalsUnavailable)
+        return
+      }
+      
+      let data: [String: Any] = [
+        "Rewards Profile Info": [
+          "Key Info Seed": "\(info.isKeyInfoSeedValid ? "Valid" : "Invalid")",
+          "Rewards Payment ID": info.paymentId,
+          "Rewards Profile Creation Date": builder.dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(info.bootStamp))),
+        ],
+        "Device Info": [
+          "DeviceCheck Status": DCDevice.current.isSupported ? "Supported" : "Not supported",
+          "DeviceCheck Enrollment State": DeviceCheckClient.isDeviceEnrolled() ? "Enrolled" : "Not enrolled",
+          "OS": "\(UIDevice.current.systemName) \(UIDevice.current.systemVersion)",
+          "Model": UIDevice.current.model,
+        ],
+      ]
+      
+      do {
+        try builder.writeJSON(from: data, named: "basic", at: path)
+        completion(nil)
+      } catch {
+        completion(error)
+      }
     }
   }
 }
