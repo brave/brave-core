@@ -12,7 +12,7 @@ import { getLocale } from '$web-common/locale'
 import { CreateAccountOptionsType } from '../../../../../constants/types'
 
 // components
-import { DividerLine } from '../../../../extension'
+import { DividerLine } from '../../../../extension/divider/index'
 import AccountTypeItem from '../account-type-item'
 
 // style

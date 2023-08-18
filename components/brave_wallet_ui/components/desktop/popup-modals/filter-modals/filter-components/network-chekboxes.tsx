@@ -13,8 +13,8 @@ import {
 
 // Components
 import {
-  CreateNetworkIcon
-} from '../../../../shared'
+  CreateNetworkIcon //
+} from '../../../../shared/create-network-icon/index'
 
 // Utils
 import {

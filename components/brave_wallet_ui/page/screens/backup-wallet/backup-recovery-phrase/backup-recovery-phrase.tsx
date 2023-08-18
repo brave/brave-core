@@ -43,7 +43,9 @@ import { RecoveryPhrase } from '../../../../components/desktop/recovery-phrase/r
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { CopiedToClipboardConfirmation } from '../../../../components/desktop/copied-to-clipboard-confirmation/copied-to-clipboard-confirmation'
 import { OnboardingNewWalletStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
-import { NavButton } from '../../../../components/extension'
+import {
+  NavButton //
+} from '../../../../components/extension/buttons/nav-button/index'
 import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 
 export const BackupRecoveryPhrase = () => {

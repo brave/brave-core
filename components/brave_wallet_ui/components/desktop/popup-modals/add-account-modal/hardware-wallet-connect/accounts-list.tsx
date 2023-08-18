@@ -30,8 +30,8 @@ import {
   FilecoinNetwork
 } from '../../../../../constants/types'
 import { getLocale } from '../../../../../../common/locale'
-import { NavButton } from '../../../../extension'
-import { SearchBar } from '../../../../shared'
+import { NavButton } from '../../../../extension/buttons/nav-button/index'
+import { SearchBar } from '../../../../shared/search-bar/index'
 import { NetworkFilterSelector } from '../../../network-filter-selector'
 import { DisclaimerText } from '../style'
 import { Skeleton } from '../../../../shared/loading-skeleton/styles'

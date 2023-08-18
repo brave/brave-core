@@ -16,7 +16,7 @@ import { LOCAL_STORAGE_KEYS } from '../../../common/constants/local-storage-keys
 
 // Components
 import NetworkFilterItem from './network-filter-item'
-import { CreateNetworkIcon } from '../../shared'
+import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
 
 // Utils
 import { WalletActions } from '../../../common/actions'

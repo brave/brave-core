@@ -41,14 +41,15 @@ import {
   useScopedBalanceUpdater
 } from '../../../common/hooks/use-scoped-balance-updater'
 
-import { PortfolioAssetItem } from '../../desktop'
+// Components
+import { PortfolioAssetItem } from '../../desktop/portfolio-asset-item/index'
 
 interface Props {
   selectedAccount?: BraveWallet.AccountInfo
   onAddAsset: () => void
 }
 
-const AssetsPanel = (props: Props) => {
+export const AssetsPanel = (props: Props) => {
   const { selectedAccount, onAddAsset } = props
 
   const routeToAssetDetails = (url: string) => {

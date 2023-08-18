@@ -9,7 +9,7 @@ import { BraveWallet } from '../../../constants/types'
 import { AllNetworksOption } from '../../../options/network-filter-options'
 
 // Components
-import { CreateNetworkIcon } from '../'
+import { CreateNetworkIcon } from '../create-network-icon/index'
 
 // Styled Components
 import {
@@ -25,7 +25,7 @@ export interface Props {
   onSelectCustomNetwork: (network: BraveWallet.NetworkInfo) => void
 }
 
-function SelectNetworkItem (props: Props) {
+export function SelectNetworkItem (props: Props) {
   const { network, selectedNetwork, onSelectCustomNetwork } = props
 
   // methods

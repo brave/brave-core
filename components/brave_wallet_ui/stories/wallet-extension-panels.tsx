@@ -20,22 +20,41 @@ import { filterAppList } from '../utils/filter-app-list'
 
 // Components
 import {
-  ConnectWithSite,
-  ConnectedPanel,
-  Panel,
-  WelcomePanel,
-  SignPanel,
-  AllowAddChangeNetworkPanel,
-  ConfirmTransactionPanel,
-  ConnectHardwareWalletPanel,
-  SitePermissions,
-  AddSuggestedTokenPanel,
-  TransactionsPanel,
-  TransactionDetailPanel,
-  AssetsPanel,
-  EncryptionKeyPanel
-} from '../components/extension'
-import { AppList } from '../components/shared'
+  ConnectWithSite //
+} from
+'../components/extension/connect-with-site-panel/connect-with-site-panel'
+import {
+  ConfirmTransactionPanel //
+} from //
+'../components/extension/confirm-transaction-panel/confirm-transaction-panel'
+import { ConnectedPanel } from '../components/extension/connected-panel/index'
+import { Panel } from '../components/extension/panel/index'
+import { WelcomePanel } from '../components/extension/welcome-panel/index'
+import { SignPanel } from '../components/extension/sign-panel/index'
+import {
+  AllowAddChangeNetworkPanel //
+} from '../components/extension/allow-add-change-network-panel/index'
+import {
+  ConnectHardwareWalletPanel //
+} from '../components/extension/connect-hardware-wallet-panel/index'
+import {
+  SitePermissions //
+} from '../components/extension/site-permissions-panel/index'
+import {
+  AddSuggestedTokenPanel //
+} from '../components/extension/add-suggested-token-panel/index'
+import {
+  TransactionsPanel //
+} from '../components/extension/transactions-panel/index'
+import {
+  TransactionDetailPanel //
+} from '../components/extension/transaction-detail-panel/index'
+import { AssetsPanel } from '../components/extension/assets-panel/index'
+import {
+  EncryptionKeyPanel //
+} from '../components/extension/encryption-key-panel/index'
+
+import { AppList } from '../components/shared/app-list/index'
 import { SelectAccountWithHeader } from '../components/buy-send-swap/select-account-with-header'
 import { CreateAccountTab } from '../components/buy-send-swap/create-account'
 import { SelectNetworkWithHeader } from '../components/buy-send-swap/select-network-with-header'

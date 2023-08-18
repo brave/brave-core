@@ -10,7 +10,7 @@ export interface Props {
   eTldPlusOne: string
 }
 
-const CreateSiteOrigin = (props: Props) => {
+export const CreateSiteOrigin = (props: Props) => {
   const { originSpec, eTldPlusOne } = props
 
   const url = React.useMemo(() => {

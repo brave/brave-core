@@ -41,7 +41,9 @@ import {
   NewPasswordInput,
   NewPasswordValues
 } from '../../../../components/shared/password-input/new-password-input'
-import { NavButton } from '../../../../components/extension'
+import {
+  NavButton //
+} from '../../../../components/extension/buttons/nav-button/index'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 import { RecoveryInput } from './recovery-input'

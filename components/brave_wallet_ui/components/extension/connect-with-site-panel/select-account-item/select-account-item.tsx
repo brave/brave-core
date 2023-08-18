@@ -29,7 +29,8 @@ import {
   LeftSide,
   SelectedIcon
 } from './select-account-item.style'
-import { LoadingSkeleton, Tooltip } from '../../../shared'
+import { LoadingSkeleton } from '../../../shared/loading-skeleton/index'
+import { Tooltip } from '../../../shared/tooltip/index'
 
 // Utils
 import { reduceAccountDisplayName } from '../../../../utils/reduce-account-name'

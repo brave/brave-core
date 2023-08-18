@@ -39,7 +39,7 @@ import {
 import { getChecksumEthAddress } from '../async/lib'
 
 // ToDo: Remove isSendTab prop once we fully migrate to Send Tab
-export default function useSend (isSendTab?: boolean) {
+export function useSend (isSendTab?: boolean) {
   // redux
   const dispatch = useDispatch()
   const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
@@ -569,3 +569,4 @@ export default function useSend (isSendTab?: boolean) {
     sendAssetOptions
   }
 }
+export default useSend

@@ -41,7 +41,7 @@ interface Props {
   network: BraveWallet.NetworkInfo | undefined
 }
 
-function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config: Config) {
+export function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config: Config) {
   const {
     size,
     marginLeft,

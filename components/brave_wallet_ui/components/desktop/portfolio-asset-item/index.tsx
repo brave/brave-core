@@ -24,8 +24,14 @@ import {
 } from '../../../common/hooks/useOnClickOutside'
 
 // Components
-import { withPlaceholderIcon, CreateNetworkIcon, LoadingSkeleton } from '../../shared'
-import { WithHideBalancePlaceholder } from '../'
+import {
+  withPlaceholderIcon //
+} from '../../shared/create-placeholder-icon/index'
+import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
+import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
+import {
+  WithHideBalancePlaceholder //
+} from '../with-hide-balance-placeholder/index'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
 import {
   AssetItemMenu

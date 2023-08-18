@@ -24,7 +24,7 @@ export interface Props {
   toggleFavorite: () => void
 }
 
-export default class AppListItem extends React.PureComponent<Props> {
+export class AppListItem extends React.PureComponent<Props> {
   getSrc (src?: string) {
     return src || ''
   }
@@ -51,3 +51,5 @@ export default class AppListItem extends React.PureComponent<Props> {
     )
   }
 }
+
+export default AppListItem

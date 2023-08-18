@@ -29,7 +29,8 @@ import {
 
 // components
 import { IconsWrapper, MediumAssetIcon, NetworkIconWrapper } from '../style'
-import { withPlaceholderIcon, CreateNetworkIcon } from '..'
+import { withPlaceholderIcon } from '../create-placeholder-icon/index'
+import { CreateNetworkIcon } from '../create-network-icon/index'
 
 // styles
 import {

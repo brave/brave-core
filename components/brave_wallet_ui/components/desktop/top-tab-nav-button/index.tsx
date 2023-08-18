@@ -13,7 +13,7 @@ export interface Props {
   onSubmit: () => void
 }
 
-export default class TopTabNavButton extends React.PureComponent<Props, {}> {
+export class TopTabNavButton extends React.PureComponent<Props, {}> {
   render () {
     const { onSubmit, text, isSelected } = this.props
     return (
@@ -24,3 +24,5 @@ export default class TopTabNavButton extends React.PureComponent<Props, {}> {
     )
   }
 }
+
+export default TopTabNavButton

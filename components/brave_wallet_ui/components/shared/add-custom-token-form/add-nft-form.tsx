@@ -19,11 +19,9 @@ import {
 } from '../../../common/slices/entities/network.entity'
 
 // hooks
-import {
-  useAssetManagement,
-  useLib,
-  useTokenInfo
-} from '../../../common/hooks'
+import useAssetManagement from '../../../common/hooks/assets-management'
+import { useLib } from '../../../common/hooks/useLib'
+import useTokenInfo from '../../../common/hooks/token'
 import {
   useGetNetworksRegistryQuery,
   useGetSelectedChainQuery
@@ -37,7 +35,9 @@ import {
 import { WalletSelectors } from '../../../common/selectors'
 
 // components
-import { SelectNetworkDropdown } from '../../desktop'
+import {
+  SelectNetworkDropdown //
+} from '../../desktop/select-network-dropdown/index'
 import Tooltip from '../tooltip'
 import { FormErrorsList } from './form-errors-list'
 

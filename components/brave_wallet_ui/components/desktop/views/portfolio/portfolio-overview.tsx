@@ -63,11 +63,11 @@ import {
 } from '../../../../options/group-assets-by-options'
 
 // Components
-import { LoadingSkeleton } from '../../../shared'
+import { LoadingSkeleton } from '../../../shared/loading-skeleton/index'
 import {
   SegmentedControl
 } from '../../../shared/segmented-control/segmented-control'
-import { PortfolioAssetItem } from '../../'
+import { PortfolioAssetItem } from '../../portfolio-asset-item/index'
 import { TokenLists } from './components/token-lists/token-list'
 import {
   PortfolioOverviewChart //

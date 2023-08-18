@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
-import { SearchBar } from '../../shared'
+import { SearchBar } from '../../shared/search-bar/index'
 
 // Styled Components
 import {
@@ -23,7 +23,7 @@ export interface Props {
   searchAction?: (event: any) => void | undefined
 }
 
-export default class PanelHeader extends React.PureComponent<Props> {
+export class PanelHeader extends React.PureComponent<Props> {
   navigate = (path: PanelTypes) => () => {
     this.props.action(path)
   }
@@ -46,3 +46,5 @@ export default class PanelHeader extends React.PureComponent<Props> {
     )
   }
 }
+
+export default PanelHeader

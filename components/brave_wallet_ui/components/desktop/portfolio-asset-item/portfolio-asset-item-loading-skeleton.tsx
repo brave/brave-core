@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // Components
-import { LoadingSkeleton } from '../../shared'
+import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
 
 // Styled Components
 import { StyledWrapper, NameAndIcon, NameColumn, Spacer, BalanceColumn, ButtonArea } from './style'

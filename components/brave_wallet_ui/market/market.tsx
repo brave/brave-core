@@ -55,8 +55,10 @@ import { marketGridHeaders } from '../options/market-data-headers'
 
 // components
 import { TopRow } from '../components/desktop/views/market/style'
-import { AssetsFilterDropdown } from '../components/desktop'
-import { SearchBar } from '../components/shared'
+import {
+  AssetsFilterDropdown //
+} from '../components/desktop/assets-filter-dropdown/index'
+import { SearchBar } from '../components/shared/search-bar/index'
 import { MarketGrid } from '../components/shared/market-grid/market-grid'
 
 const App = () => {

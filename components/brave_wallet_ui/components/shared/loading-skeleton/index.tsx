@@ -10,7 +10,7 @@ export interface LoadingSkeletonProps extends LoadingSkeletonStyleProps {
   wrapper?: React.FunctionComponent
 }
 
-const LoadingSkeleton = (props: LoadingSkeletonProps) => {
+export const LoadingSkeleton = (props: LoadingSkeletonProps) => {
   const { count = 1, wrapper: Wrapper, ...styleProps } = props
   const elements: React.ReactElement[] = []
   const inline = styleProps.inline ?? false

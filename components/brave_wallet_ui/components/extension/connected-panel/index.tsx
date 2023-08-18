@@ -25,7 +25,7 @@ import { WalletSelectors } from '../../../common/selectors'
 import { getBalance } from '../../../utils/balance-utils'
 
 // Hooks
-import { useExplorer } from '../../../common/hooks'
+import { useExplorer } from '../../../common/hooks/explorer'
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetSelectedChainQuery,
@@ -54,8 +54,11 @@ import {
 // Components
 import {
   ConnectedHeader
-} from '../'
-import { SelectNetworkButton, LoadingSkeleton } from '../../shared'
+} from '../connected-header/index'
+import {
+  SelectNetworkButton //
+} from '../../shared/select-network-button/select-network-button'
+import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
 import { PanelBottomNav } from '../panel-bottom-nav/panel-bottom-nav'
 
 // Styled Components

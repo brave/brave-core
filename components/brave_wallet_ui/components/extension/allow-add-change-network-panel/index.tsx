@@ -7,8 +7,9 @@ import { BraveWallet } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 
 // Components
-import { NavButton, PanelTab } from '..'
-import { CreateSiteOrigin } from '../../shared'
+import { NavButton } from '../buttons/nav-button'
+import { PanelTab } from '../panel-tab/index'
+import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
 
 // Styled Components
 import {
@@ -41,7 +42,7 @@ export interface Props {
   onApproveChangeNetwork: () => void
 }
 
-function AllowAddChangeNetworkPanel (props: Props) {
+export function AllowAddChangeNetworkPanel (props: Props) {
   const {
     originInfo,
     networkPayload,

@@ -5,7 +5,8 @@
 import * as React from 'react'
 
 import { getLocale } from '../../../../common/locale'
-import { NavButton, Panel } from '../'
+import { NavButton } from '../buttons/nav-button/index'
+import { Panel } from '../panel/index'
 
 // Styled Components
 import {

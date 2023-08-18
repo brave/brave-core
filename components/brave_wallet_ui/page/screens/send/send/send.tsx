@@ -38,7 +38,7 @@ import { findAccountByAccountId } from '../../../../utils/account-utils'
 import { getPriceIdForToken } from '../../../../utils/api-utils'
 
 // Hooks
-import { useSend } from '../../../../common/hooks'
+import { useSend } from '../../../../common/hooks/send'
 import {
   useScopedBalanceUpdater
 } from '../../../../common/hooks/use-scoped-balance-updater'

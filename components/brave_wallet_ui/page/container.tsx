@@ -43,7 +43,14 @@ import {
 } from './screens/page-screen.styles'
 
 // components
-import { CryptoView, LockScreen, WalletPageLayout, WalletSubViewLayout } from '../components/desktop'
+import { CryptoView } from '../components/desktop/views/crypto/index'
+import { LockScreen } from '../components/desktop/lock-screen/index'
+import {
+  WalletPageLayout //
+} from '../components/desktop/wallet-page-layout/index'
+import {
+  WalletSubViewLayout
+} from '../components/desktop/wallet-sub-view-layout/index'
 import { Skeleton } from '../components/shared/loading-skeleton/styles'
 import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
 import { BackupWalletRoutes } from './screens/backup-wallet/backup-wallet.routes'

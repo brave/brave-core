@@ -66,7 +66,7 @@ import CopyTooltip from '../../shared/copy-tooltip/copy-tooltip'
 import {
   AccountDetailsMenu
 } from '../wallet-menus/account-details-menu'
-import { LoadingSkeleton } from '../../shared'
+import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
 
 // Styled Components
 import {

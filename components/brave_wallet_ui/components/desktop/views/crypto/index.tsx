@@ -29,7 +29,10 @@ import {
 import { StyledWrapper } from './style'
 
 // components
-import { WalletBanner, EditVisibleAssetsModal } from '../../'
+import { WalletBanner } from '../../wallet-banner/index'
+import {
+  EditVisibleAssetsModal //
+} from '../../popup-modals/edit-visible-assets-modal/index'
 import { PortfolioOverview } from '../portfolio/portfolio-overview'
 import { PortfolioAsset } from '../portfolio/portfolio-asset'
 import { PortfolioNftAsset } from '../portfolio/portfolio-nft-asset'
@@ -65,7 +68,7 @@ export interface Props {
   sessionRoute: string | undefined
 }
 
-const CryptoView = (props: Props) => {
+export const CryptoView = (props: Props) => {
   const {
     onOpenWalletSettings,
     defaultEthereumWallet,

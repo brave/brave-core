@@ -20,7 +20,7 @@ import {
 } from '../../../../utils/pricing-utils'
 
 // Hooks
-import { useLib } from '../../../../common/hooks'
+import { useLib } from '../../../../common/hooks/useLib'
 
 // Query hooks
 import {

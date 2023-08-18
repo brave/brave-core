@@ -35,7 +35,7 @@ const findTokensWithMismatchedVisibility = (left: BraveWallet.BlockchainToken[],
       leftValue.tokenId === rightValue.tokenId &&
       leftValue.visible !== rightValue.visible))
 
-export default function useAssetManagement () {
+export function useAssetManagement () {
   // selectors
   const userVisibleTokensInfo =
     useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
@@ -185,3 +185,5 @@ export default function useAssetManagement () {
     addOrRemoveTokenInLocalStorage
   }
 }
+
+export default useAssetManagement

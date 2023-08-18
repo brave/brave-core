@@ -12,7 +12,7 @@ import { BraveWallet, PanelTypes } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 
 // components
-import { Tooltip } from '../../shared'
+import { Tooltip } from '../../shared/tooltip/index'
 
 // style
 import {

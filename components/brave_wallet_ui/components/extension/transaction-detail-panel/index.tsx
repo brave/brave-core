@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Hooks
-import { useExplorer } from '../../../common/hooks'
+import { useExplorer } from '../../../common/hooks/explorer'
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
@@ -82,7 +82,7 @@ import {
 import Header from '../../buy-send-swap/select-header'
 import { StatusBubble } from '../../shared/style'
 import { TransactionStatusTooltip } from '../transaction-status-tooltip'
-import { Tooltip } from '../../shared'
+import { Tooltip } from '../../shared/tooltip/index'
 import { Skeleton } from '../../shared/loading-skeleton/styles'
 
 interface Props {
@@ -91,7 +91,7 @@ interface Props {
   onBack: () => void
 }
 
-const TransactionDetailPanel = (props: Props) => {
+export const TransactionDetailPanel = (props: Props) => {
   // props
   const {
     transactionId,

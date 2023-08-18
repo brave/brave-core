@@ -14,7 +14,7 @@ export interface Props {
   icon: string
 }
 
-export default class SideNavButton extends React.PureComponent<Props, {}> {
+export class SideNavButton extends React.PureComponent<Props, {}> {
   render () {
     const { onSubmit, text, isSelected, icon } = this.props
     return (
@@ -25,3 +25,5 @@ export default class SideNavButton extends React.PureComponent<Props, {}> {
     )
   }
 }
+
+export default SideNavButton

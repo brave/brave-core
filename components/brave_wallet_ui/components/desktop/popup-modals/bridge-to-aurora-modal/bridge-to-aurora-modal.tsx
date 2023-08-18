@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { getLocale } from '../../../../../common/locale'
 
-import { PopupModal } from '../..'
+import { PopupModal } from '../../popup-modals/index'
 import {
   ButtonText,
   Description,

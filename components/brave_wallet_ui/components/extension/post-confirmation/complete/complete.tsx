@@ -11,7 +11,8 @@ import { getLocale } from '$web-common/locale'
 import { usePendingTransactions } from '../../../../common/hooks/use-pending-transaction'
 
 // Components
-import { NavButton, Panel } from '../..'
+import { NavButton } from '../../buttons/nav-button/index'
+import { Panel } from '../../panel/index'
 import { SuccessIcon, Title } from './complete.style'
 import {
   ButtonRow,

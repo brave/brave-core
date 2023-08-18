@@ -22,11 +22,10 @@ import {
 } from '../../../constants/types'
 
 // hooks
-import {
-  useAssetManagement,
-  useLib,
-  useTokenInfo
-} from '../../../common/hooks'
+import { useLib } from '../../../common/hooks/useLib'
+import useAssetManagement from '../../../common/hooks/assets-management'
+import useTokenInfo from '../../../common/hooks/token'
+
 import {
   useGetCoingeckoIdQuery,
   useGetNetworksRegistryQuery
@@ -36,7 +35,7 @@ import {
 } from '../../../common/slices/api.slice.extra'
 
 // components
-import { SelectNetworkDropdown } from '../../desktop'
+import { SelectNetworkDropdown } from '../../desktop/select-network-dropdown/index'
 import Tooltip from '../tooltip'
 import { FormErrorsList } from './form-errors-list'
 

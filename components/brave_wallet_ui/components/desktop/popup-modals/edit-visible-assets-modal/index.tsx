@@ -27,8 +27,8 @@ import { checkIfTokensMatch } from '../../../../utils/asset-utils'
 
 // components
 import {
-  PopupModal
-} from '../..'
+  PopupModal //
+} from '../../popup-modals/index'
 import { VirtualizedVisibleAssetsList } from './virtualized-visible-assets-list'
 import { AddAsset } from '../../add-asset/add-asset'
 import {
@@ -65,7 +65,7 @@ import {
 import { PaddedRow } from '../style'
 
 // hooks
-import { useAssetManagement } from '../../../../common/hooks'
+import { useAssetManagement } from '../../../../common/hooks/assets-management'
 import { useSelector } from 'react-redux'
 import {
   useGetSelectedChainQuery,
@@ -82,7 +82,7 @@ export interface Props {
   onClose: () => void
 }
 
-const EditVisibleAssetsModal = ({ onClose }: Props) => {
+export const EditVisibleAssetsModal = ({ onClose }: Props) => {
   // routing
   const { hash } = useLocation()
 

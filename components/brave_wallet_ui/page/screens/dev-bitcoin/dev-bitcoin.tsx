@@ -9,7 +9,9 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { useState } from 'react'
 import { BraveWallet } from '../../../constants/types'
-import { LoadingSkeleton } from '../../../components/shared'
+import {
+  LoadingSkeleton //
+} from '../../../components/shared/loading-skeleton/index'
 
 const StyledWrapper = styled.div`
   display: flex;

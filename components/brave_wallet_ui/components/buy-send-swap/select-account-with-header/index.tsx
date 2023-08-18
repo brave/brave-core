@@ -4,7 +4,8 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { BraveWallet } from '../../../constants/types'
-import { SearchBar, SelectAccount } from '../../shared'
+import { SearchBar } from '../../shared/search-bar/index'
+import { SelectAccount } from '../../shared/select-account/index'
 import Header from '../../buy-send-swap/select-header'
 import { getLocale } from '../../../../common/locale'
 // Styled Components

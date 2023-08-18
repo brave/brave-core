@@ -14,8 +14,12 @@ import { getLocale } from '../../../../../common/locale'
 import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 
 // components
-import { WalletPageLayout } from '../../../../components/desktop'
-import { NavButton } from '../../../../components/extension'
+import {
+  WalletPageLayout //
+} from '../../../../components/desktop/wallet-page-layout/index'
+import {
+  NavButton //
+} from '../../../../components/extension/buttons/nav-button'
 import {
   OnboardingDisclosures,
   OnboardingDisclosuresNextSteps

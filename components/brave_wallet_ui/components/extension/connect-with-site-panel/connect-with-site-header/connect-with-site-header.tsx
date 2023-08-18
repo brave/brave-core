@@ -12,7 +12,8 @@ import { BraveWallet } from '../../../../constants/types'
 import { getLocale } from '../../../../../common/locale'
 
 // Components
-import { CreateSiteOrigin, Tooltip } from '../../../shared'
+import { CreateSiteOrigin } from '../../../shared/create-site-origin/index'
+import { Tooltip } from '../../../shared/tooltip/index'
 
 // Styled Components
 import {

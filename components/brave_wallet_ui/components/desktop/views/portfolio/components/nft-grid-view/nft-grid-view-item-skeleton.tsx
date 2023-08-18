@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { NFTWrapper } from './style'
-import { LoadingSkeleton } from '../../../../../shared'
+import { LoadingSkeleton } from '../../../../../shared/loading-skeleton/index'
 import { VerticalSpace } from '../../../../../shared/style'
 
 export const NftGridViewItemSkeleton = () => {

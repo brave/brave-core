@@ -12,7 +12,7 @@ import { getLocale } from '../../../../../../common/locale'
 // components
 import { HardwareWalletAccountsList } from './accounts-list'
 import { AuthorizeHardwareDeviceIFrame } from '../../../../shared/authorize-hardware-device/authorize-hardware-device'
-import { NavButton } from '../../../../extension'
+import { NavButton } from '../../../../extension/buttons/nav-button/index'
 
 // Styled Components
 import { DisclaimerText, InfoIcon } from '../style'
@@ -49,7 +49,7 @@ import {
 import { LedgerError } from '../../../../../common/hardware/ledgerjs/ledger-messages'
 
 // hooks
-import { useLib } from '../../../../../common/hooks'
+import { useLib } from '../../../../../common/hooks/useLib'
 
 export interface Props {
   selectedAccountType: CreateAccountOptionsType

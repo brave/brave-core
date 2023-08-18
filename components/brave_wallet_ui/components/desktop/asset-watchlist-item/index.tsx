@@ -19,7 +19,9 @@ import Amount from '../../../utils/amount'
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'
 
 // Components
-import { withPlaceholderIcon } from '../../shared'
+import {
+  withPlaceholderIcon //
+} from '../../shared/create-placeholder-icon/index'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
 
 // Styled Components
