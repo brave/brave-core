@@ -359,6 +359,8 @@ Permissions you've already given to websites and apps may apply to this account.
       </if>
       <if expr="not is_android and not chromeos_ash">
          </if>
+      <if expr="toolkit_views">
+        </if>
       <if expr="not is_android and not is_chromeos">
         </if>
       <if expr="not is_android">

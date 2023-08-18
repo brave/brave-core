@@ -356,7 +356,7 @@ CHAR_LIMIT guidelines:
         No preloading
       </message>
       <message name="IDS_PRELOAD_PAGES_NO_PRELOADING_SUMMARY" desc="Short explanation of what the no preloading mode does in the Preload Pages setting.">
-        Pages load only after you open them.
+        Pages load only after you open them
       </message>
       <message name="IDS_PRELOAD_PAGES_STANDARD_PRELOADING_TITLE" desc="Name of the standard preloading option for the Preload Pages settings page. This option enables preloading pages that Brave believes the user is likely to navigate to. [CHAR_LIMIT=32]">
         Standard preloading
@@ -1500,6 +1500,18 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_PRIVACY_GUIDE_MSBB_ITEM_FOUR" desc="Fourth bullet point that describes the details of the MSBB toggle.">
         If you also share Brave usage reports, those reports include the URLs you visit
       </message>
+      <message name="IDS_PRIVACY_GUIDE_MSBB_ITEM_TWO_V3" desc="Second bullet point that describes the details of the MSBB toggle.">
+        From the address bar, you can open page info to see additional info about the page you're visiting
+      </message>
+      <message name="IDS_PRIVACY_GUIDE_MSBB_ITEM_THREE_V3" desc="Third bullet point that describes the details of the MSBB toggle.">
+        If you also save your bookmarks in your Brave sync chain, you can track product prices in Brave and get notified when the price drops
+      </message>
+      <message name="IDS_PRIVACY_GUIDE_MSBB_ITEM_FOUR_V3" desc="Forth bullet point that describes the details of the MSBB toggle.">
+        URLs you visit are sent to Brave to predict what sites you might visit next and to show you additional info about the page you're visiting
+      </message>
+      <message name="IDS_PRIVACY_GUIDE_MSBB_ITEM_FIVE_V3" desc="Fifth bullet point that describes the details of the MSBB toggle.">
+        If you also share Brave usage reports, those reports include the URLs you visit
+      </message>
       <message name="IDS_PRIVACY_GUIDE_HISTORY_SYNC_TOGGLE" desc="Title for the history sync toggle.">
         History sync
       </message>
@@ -1516,10 +1528,10 @@ Your Brave account may have other forms of browsing history like searches and ac
         Choose when to block third-party cookies
       </message>
       <message name="IDS_PRIVACY_GUIDE_COOKIES_BLOCK_INCOGNITO_TITLE" desc="Title for the radio button for blocking third-party cookies in private.">
-        Block while using private
+        Block while using Private
       </message>
       <message name="IDS_PRIVACY_GUIDE_COOKIES_BLOCK_INCOGNITO_DESCRIPTION" desc="Description for the radio button for blocking third-party cookies in private.">
-        While in private, sites can’t use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
+        While in Private, sites can’t use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
       </message>
       <message name="IDS_PRIVACY_GUIDE_COOKIES_BLOCK_ALWAYS_TITLE" desc="Title for the radio button for blocking third-party cookies always.">
         Block all the time
@@ -1581,8 +1593,14 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_PRIVACY_GUIDE_SB_STANDARD_ITEM_TWO" desc="Second bullet point that describes the details of the Safe Browsing control.">
         Checks URLs with a list of unsafe sites stored in Brave
       </message>
+      <message name="IDS_PRIVACY_GUIDE_SB_STANDARD_ITEM_TWO_PROXY" desc="Second bullet point that describes the details of the Safe Browsing control with proxy.">
+        Sends an obfuscated portion of the URL to Brave through a privacy server that hides your IP address
+      </message>
       <message name="IDS_PRIVACY_GUIDE_SB_STANDARD_ITEM_THREE" desc="Third bullet point that describes the details of the Safe Browsing control.">
         If a site tries to steal your password, or when you download a harmful file, Brave may send URLs including bits of page content to Safe Browsing
+      </message>
+      <message name="IDS_PRIVACY_GUIDE_SB_STANDARD_ITEM_THREE_PROXY" desc="Third bullet point that describes the details of the Safe Browsing control with proxy.">
+        If a site tries to steal your password, or when you download a harmful file, Brave may send URLs including bits of page content to Brave
       </message>
       <message name="IDS_PRIVACY_GUIDE_SB_ENHANCED_ITEM_ONE" desc="First bullet point that describes the details of the Safe Browsing control.">
         Predicts and warns you about dangerous events before they happen
@@ -1604,6 +1622,15 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_PRIVACY_GUIDE_SB_ENHANCED_ITEM_SEVEN" desc="Seventh bullet point that describes the details of the Safe Browsing control.">
         Temporarily links this data to your Brave sync chain when you’re signed in, to protect you across Brave apps
+      </message>
+      <message name="IDS_PRIVACY_GUIDE_SEARCH_SUGGESTIONS_ITEM_ONE" desc="First bullet point that describes the details of the search suggestions toggle.">
+        When you tap or type in the address bar or search box, you'll see suggestions from your default search engine. This is off in Private.
+      </message>
+      <message name="IDS_PRIVACY_GUIDE_SEARCH_SUGGESTIONS_ITEM_TWO" desc="Second bullet point that describes the details of the search suggestions toggle.">
+        What you type in the address bar or search box is sent to your default search engine
+      </message>
+      <message name="IDS_PRIVACY_GUIDE_SEARCH_SUGGESTIONS_ITEM_THREE" desc="Third bullet point that describes the details of the search suggestions toggle.">
+        Depending on your settings, Brave may also send cookies and your current URL
       </message>
 
       <!-- Safety check -->
@@ -1719,6 +1746,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_SUMMARY" desc="Summary for Safe Browsing enhanced protection mode.">
         Faster, proactive protection against dangerous websites, downloads, and extensions. Warns you about password breaches. Requires browsing data to be sent to Brave.
       </message>
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_SUMMARY_UPDATED" desc="Summary for Safe Browsing enhanced protection mode.">
+        Real-time, proactive protection against dangerous sites, downloads, and extensions that’s based on your browsing data getting sent to Brave
+      </message>
       <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_TITLE" desc="Title for Safe Browsing standard protection mode. [CHAR_LIMIT=32]">
         Standard protection
       </message>
@@ -1728,31 +1758,67 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_SUMMARY_UPDATED" desc="Summary for Safe Browsing standard protection mode.">
         Protects against sites, downloads, and extensions that are known to be dangerous. If a page does something suspicious, URLs and bits of page content are sent to Google Safe Browsing.
       </message>
+      <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_SUMMARY_UPDATED_PROXY" desc="Summary for Safe Browsing standard protection mode with proxy.">
+        Protects against sites, downloads, and extensions that are known to be dangerous. When you visit a site, Brave sends an obfuscated portion of the URL to Brave through a privacy server that hides your IP address. If a site does something suspicious, full URLs and bits of page content are also sent.
+      </message>
       <message name="IDS_SAFE_BROWSING_NO_PROTECTION_TITLE" desc="Title for Safe Browsing no protection mode. [CHAR_LIMIT=32]">
         No protection (not recommended)
       </message>
       <message name="IDS_SAFE_BROWSING_NO_PROTECTION_SUMMARY" desc="Summary for Safe Browsing no protection mode.">
         Does not protect you against dangerous websites, downloads, and extensions. You’ll still get Safe Browsing protection, where available, in other Brave services, like Gmail and Search.
       </message>
+      <message name="IDS_SAFE_BROWSING_NO_PROTECTION_SUMMARY_UPDATED" desc="Summary for Safe Browsing no protection mode.">
+        Does not protect you against dangerous websites, downloads, and extensions. Your Safe Browsing settings in other Brave products won't be affected.
+      </message>
 
       <!-- Safe Browsing enhanced protection preferences -->
       <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_SUBTITLE" desc="Subtitle for Safe Browsing enhanced protection mode.">
         Enhanced protection:
       </message>
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_SUBTITLE_UPDATED" desc="Subtitle for Safe Browsing enhanced protection mode.">
+        Enhanced protection
+      </message>
       <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_BULLET_ONE" desc="First bullet point under the Safe Browsing enhanced protection mode">
         Predicts and warns you about dangerous events before they happen.
+      </message>
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_BULLET_ONE_UPDATED" desc="First bullet point that describes the details of the Safe Browsing control.">
+        Warns you about dangerous sites, even ones Brave didn’t know about before, by analyzing more data from sites than standard protection. You can choose to skip Brave warnings.
       </message>
       <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_BULLET_TWO" desc="Second bullet point under the Safe Browsing enhanced protection mode">
         Keeps you safe on Brave and may be used to improve your security in other Brave apps when you are signed in.
       </message>
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_BULLET_TWO_UPDATED" desc="Second bullet point that describes the details of the Safe Browsing control.">
+        In-depth scans for suspicious downloads.
+      </message>
       <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_BULLET_THREE" desc="Third bullet point under the Safe Browsing enhanced protection mode">
         Improves security for you and everyone on the web.
+      </message>
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_BULLET_THREE_UPDATED" desc="Third bullet point that describes the details of the Safe Browsing control.">
+        When you're signed in, protects you across Brave services.
       </message>
       <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_BULLET_FOUR" desc="Fourth bullet point under the Safe Browsing enhanced protection mode">
         Warns you if passwords are exposed in a data breach.
       </message>
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_BULLET_FOUR_UPDATED" desc="Fourth bullet point that describes the details of the Safe Browsing control.">
+        Improves security for you and everyone on the web.
+      </message>
       <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_BULLET_FIVE" desc="Fifth bullet point under the Safe Browsing enhanced protection mode">
         Sends URLs to Safe Browsing to check them. Also sends a small sample of pages, downloads, extension activity, and system information to help discover new threats. Temporarily links this data to your Brave sync chain when you’re signed in, to protect you across Brave apps.
+      </message>
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_BULLET_FIVE_UPDATED" desc="Fifth bullet point that describes the details of the Safe Browsing control.">
+        Warns you if you use a password that has been compromised in a data breach.
+      </message>
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_BULLET_SIX_UPDATED" desc="Sixth bullet point that describes the details of the Safe Browsing control.">
+        Sends the URLs of sites you visit and a small sample of page content, downloads, extension activity, and system information to Google Safe Browsing to check if they’re harmful.
+      </message>
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_BULLET_SEVEN_UPDATED" desc="Seventh bullet point that describes the details of the Safe Browsing control.">
+        When you’re signed in, this data is linked to your Brave sync chain to protect you across Brave services, for example increasing protection in Gmail after a security incident.
+      </message>
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_BULLET_EIGHT_UPDATED" desc="Eighth bullet point that describes the details of the Safe Browsing control.">
+        Doesn’t noticeably slow down your browser or device.
+      </message>
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_LEARN_MORE_LABEL" desc="The text for a link to a help center article that gives more information about Safe Browsing.">
+        Learn more about <ph name="BEGIN_LINK">&lt;link&gt;</ph>how Brave keeps your data private<ph name="END_LINK">&lt;/link&gt;</ph>
       </message>
 
       <!-- Safe Browsing standard protection preferences -->
@@ -1767,6 +1833,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_BULLET_TWO" desc="Second bullet point under the Safe Browsing standard protection mode.">
         Checks URLs with a list of unsafe sites stored in Brave. If a site tries to steal your password, or when you download a harmful file, Brave may also send URLs, including bits of page content, to Safe Browsing.
+      </message>
+      <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_BULLET_TWO_PROXY" desc="Second bullet point under the Safe Browsing standard protection mode when proxy is enabled.">
+        Sends an obfuscated portion of the URL to Brave through a privacy server that hides your IP address. If a site tries to steal your password, or when you download a harmful file, Brave may also send URLs, including bits of page content, to Brave.
       </message>
       <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_EXTENDED_REPORTING_TITLE" desc="Title for Safe Browsing extended reporting.">
         Help improve security on the web
@@ -2392,9 +2461,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK_SELECTED" desc="Announcement when the Private tab stack is selected.">
         Switched to Private tabs
       </message>
-      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_UNDO_TAB_CLOSED" desc="Content description for the undo tab closed 'button.">
-        Reopen closed tab
-      </message>
       <message name="IDS_ACCESSIBILITY_UNDO_CLOSED_TAB_ANNOUNCEMENT_MESSAGE" desc="Message spoken out loud for accessibility when a user decides to undo a closed tab.">
         Restored <ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph>, tab
       </message>
@@ -2403,9 +2469,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB" desc="Content description for the tab title.">
         <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, tab
-      </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED" desc="Content description for the tab title of the currently selected tab.">
-        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, tab, selected
       </message>
       <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_CLOSE_TAB" desc="Content description for the close tab button.">
         Close <ph name="TAB_TITLE">%1$s<ex>Brave</ex></ph> tab
@@ -2497,10 +2560,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Password manager dialogs -->
-      <message name="IDS_PASSWORD_GENERATION_DIALOG_TITLE" desc="Text shown in a modal dialog that displays a generated password. This dialog is triggered by the user requesting to generate a password.">
-        Suggested password
-      </message>
-      <message name="IDS_PASSWORD_GENERATION_DIALOG_TITLE_UPM_BRANDED" desc="Text shown in a modal dialog that displays a generated password. This dialog is triggered by the user requesting to generate a password. Unified Password Manager version.">
+      <message name="IDS_PASSWORD_GENERATION_DIALOG_TITLE" desc="Text shown in a modal dialog that displays a generated password. This dialog is triggered by the user requesting to generate a password. Unified Password Manager version.">
         Use strong password?
       </message>
       <message name="IDS_PASSWORD_GENERATION_DIALOG_CANCEL_BUTTON" desc="Text for the cancel button belonging to the modal dialog that displays a generated password. Can be used by the user to cancel the password generation flow.">
@@ -2911,7 +2971,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         {FILE_COUNT, plural, =1 {# Page} other {# Pages}}
       </message>
       <message name="IDS_DOWNLOAD_PAGE" desc="Download this page.">
-        Download page
+        Download this page
       </message>
       <message name="IDS_DOWNLOAD_MANAGER_NO_DOWNLOADS" desc="Text appearing on an empty tab that indicates that downloaded files appear on this tab.">
         Files that you download appear here
@@ -2966,6 +3026,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_DOWNLOAD_MANAGER_EXPLORE_OFFLINE" desc="Tab text for the offline content in download home which contains recommended offline content for the user.">
         Explore Offline
+      </message>
+      <message name="IDS_DOWNLOAD_FILE_TYPE_NOT_SUPPORTED" desc="Error message shown to user when a file can't de downloaded due to it's file format (e.g. .pdf, .docx, .apk).">
+        Cannot download file. File format not supported.
       </message>
 
       <!-- Browsing History UI -->
@@ -3134,6 +3197,20 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_DEVICE_LOCK_CREATE_LOCK_BUTTON" desc="Text for the button that navigates the user to create a profile lock on the device.">
         Create a profile lock
+      </message>
+
+      <!-- Strings for a missing device lock. -->
+      <message name="IDS_MISSING_DEVICE_LOCK_TITLE" translateable="false" desc="">
+        Continue without a car profile lock?
+      </message>
+      <message name="IDS_MISSING_DEVICE_LOCK_DESCRIPTION" translateable="false" desc="">
+        Opening Brave without a profile lock will remove your your saved passwords and payment methods from the car. Using a profile lock keeps this data secure.
+      </message>
+      <message name="IDS_MISSING_DEVICE_LOCK_REMOVE_LOCAL_DATA" translateable="false" desc="">
+        Also clear bookmarks, history, and more from this car
+      </message>
+      <message name="IDS_DELETE_AND_CONTINUE" translateable="false" desc="">
+        Delete &amp; continue
       </message>
 
       <!-- Strings for Streamlined Signin and Unified Consent. -->
@@ -3572,7 +3649,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         New tab
       </message>
       <message name="IDS_ADAPTIVE_TOOLBAR_BUTTON_PREFERENCE_SHARE" desc="Title name for the share option in the preference.">
-        Share
+        Share this page
       </message>
       <message name="IDS_ADAPTIVE_TOOLBAR_BUTTON_PREFERENCE_VOICE_SEARCH" desc="Title name for the voice search option in the preference.">
         Voice search
@@ -3829,6 +3906,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_BOOKMARK_TOOLBAR_SEARCH" desc="Button text for bookmark search action on the bookmark action bar [CHAR_LIMIT=32]">
         Search your bookmarks
       </message>
+      <message name="IDS_BOOKMARK_TOOLBAR_SEARCH_TITLE" desc="Toolbar search title [CHAR_LIMIT=32]">
+        Search
+      </message>
       <message name="IDS_BOOKMARK_NO_RESULT" desc="Text explaining that no bookmarks are found to match a search query">
         Can’t find that bookmark. Check your spelling or add a new bookmark.
       </message>
@@ -3926,6 +4006,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_SORT_SUBMENU" desc="Sub-menu in the bookmarks manager for sort/view options. [CHAR_LIMIT=24]">
         Sort and view options
+      </message>
+      <message name="IDS_SORT_BY_MANUAL" desc="Option in the bookmarks manager to sort manually. [CHAR_LIMIT=24]">
+        Sort by manual order
       </message>
       <message name="IDS_SORT_BY_NEWEST" desc="Option in the bookmarks manager to sort by newest. [CHAR_LIMIT=24]">
         Sort by newest
@@ -4049,13 +4132,13 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Tab opened in background.
       </message>
       <message name="IDS_MENU_OPEN_IN_CHROME" desc="Context sensitive menu item for opening a link in Brave. [CHAR_LIMIT=30]">
-        Open in Brave
+        Open in Brave browser
       </message>
       <message name="IDS_MENU_OPEN_IN_INCOGNITO_CHROME" desc="Context sensitive menu item for opening a link in Brave in a Private tab. [CHAR_LIMIT=30]" translateable="false">
         Open in Private Brave
       </message>
-      <message name="IDS_MENU_OPEN_IN_PRODUCT" desc="App menu item for opening link in the browser. [CHAR_LIMIT=30]">
-        Open in <ph name="PRODUCT_NAME">%1$s<ex>Brave</ex></ph>
+      <message name="IDS_MENU_OPEN_IN_PRODUCT" desc="App menu item for opening link in the browser. [CHAR_LIMIT=40]">
+        Open in <ph name="PRODUCT_NAME">%1$s<ex>Brave</ex></ph> browser
       </message>
       <message name="IDS_MENU_OPEN_IN_PRODUCT_DEFAULT" desc="Default title for menu item for opening link in browser. [CHAR_LIMIT=30]">
         Open in browser
@@ -4156,10 +4239,10 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Signed out. Opens dialog to sign in and turn on sync.
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_HOME" desc="Content description for the home button.">
-        Home
+        Open the home page
       </message>
       <message name="IDS_ACCESSIBILITY_BTN_REFRESH" desc="Content description for the refresh page button.">
-        Refresh page
+        Reload this page
       </message>
       <message name="IDS_ACCESSIBILITY_BTN_STOP_LOADING" desc="Content description for the stop loading page button.">
         Stop page loading
@@ -4398,6 +4481,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_PAGE_INSIGHTS_HUB_TITLE_TEXT" desc="The title of Page Insights Sheet.">
         Related Insights
       </message>
+      <message name="IDS_PAGE_INSIGHTS_BACK_BUTTON_DESCRIPTION" desc="The content description of back button in page insights sheet.">
+        Page insights back button
+      </message>
+      <message name="IDS_PAGE_INSIGHTS_LOADING_INDICATOR_DESCRIPTION" desc="The loading indicator for Page Insights Hub while the related content is being fetched from server.">
+        Page insights Loading Indicator
+      </message>
 
       <!-- WebFeed -->
       <message name="IDS_WEB_FEED_FOLLOW_LOADING_DESCRIPTION" desc="The content description of the loading spinner after the user presses Follow and is waiting for a response.">
@@ -4436,8 +4525,14 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_STORIES_READY_DESCRIPTION" desc="The body text of the dialog presented a few times after a successful Web Feed follow request, when content from that Web Feed is immediately available. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
         You'll now see stories from <ph name="SITE_NAME">%1$s<ex>Reuters</ex></ph> when you open a new tab. Sites you follow are saved in your Brave account. You can manage them in Discover settings.
       </message>
+      <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_STORIES_READY_DESCRIPTION_WITH_UI_UPDATE" desc="The body text of the dialog presented a few times after a successful Web Feed follow request, when content from that Web Feed is immediately available.">
+        You'll now see content from and about <ph name="SITE_NAME">%1$s<ex>Reuters</ex></ph> in Following. The sites and searches you follow are saved in your Brave sync chain. You can manage your follows in settings at any time.
+      </message>
       <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_STORIES_NOT_READY_DESCRIPTION" desc="The body text of the dialog presented a few times after a successful Web Feed follow request, when content from that Web Feed is not readily available. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
         Soon, you’ll see stories from <ph name="SITE_NAME">%1$s<ex>Reuters</ex></ph> when you open a new tab. Sites you follow are saved in your Brave account. You can manage them in Discover settings.
+      </message>
+      <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_STORIES_NOT_READY_DESCRIPTION_WITH_UI_UPDATE" desc="The body text of the dialog presented a few times after a successful Web Feed follow request, when content from that Web Feed is not readily available.">
+        Soon, you'll see content from and about <ph name="SITE_NAME">%1$s<ex>Reuters</ex></ph> in Following. The sites and searches you follow are saved in your Brave sync chain. You can manage your follows in settings at any time.
       </message>
       <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_GO_TO_FOLLOWING" desc="The main action of the dialog presented a few times after a successful Web Feed follow request, when content from from that Web Feed is immediately available. It will take the user to the Following feed.">
         Go to Following
@@ -5222,10 +5317,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Share
       </message>
 
-      <message name="IDS_QR_CODE_SCAN_TAB_LABEL" desc="Scan tab label for QR Code sharing activity.">
-        Scan
-      </message>
-
       <message name="IDS_QR_CODE_SHARE_DESCRIPTION" desc="Text on QR Code sharing tab describing how to use the QR Code.">
         To share with profiles nearby, let them scan this QR Code
       </message>
@@ -5331,44 +5422,8 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         GIF Copied
       </message>
 
-      <message name="IDS_QR_CODE_CAMERA_FRAMING_RECT_DESCRIPTION" desc="Text under the framing rectangle in QR Code camera preview.">
-        Position QR Code/barcode in this frame.
-      </message>
-
-      <message name="IDS_QR_CODE_PERMISSION_DESCRIPTION" desc="Text on QR Code sharing tab indicating that permissions need to be given.">
-        To scan a QR Code, let Brave use your camera
-      </message>
-
-      <message name="IDS_QR_CODE_OPEN_SETTINGS_DESCRIPTION" desc="Text on QR Code sharing tab indicating that user needs to open settings to give camera permission.">
-        To scan a QR Code, change your settings so that Brave can use your camera
-      </message>
-
-      <message name="IDS_QR_CODE_PERMISSION_CONTINUE_LABEL" desc="Text on button on QR Code sharing tab triggering camera permission dialog.">
-        Continue
-      </message>
-
-      <message name="IDS_QR_CODE_NO_CAMERA_ERROR" desc="Error text shown when no camera is found.">
-        To scan a QR Code, use a device with a camera.
-      </message>
-
-      <message name="IDS_QR_CODE_DISABLED_CAMERA_ERROR" desc="Error text shown when the camera is disabled by the device policy manager.">
-        The organization that manages your device has turned off your camera.
-      </message>
-
-      <message name="IDS_QR_CODE_IN_USE_CAMERA_ERROR" desc="Error text shown when the camera is in use by other apps.">
-        Can't open your camera. Restart your device and try again.
-      </message>
-
-      <message name="IDS_QR_CODE_HARDWARE_CAMERA_ERROR" desc="Error text shown when the camera cannot start due to a hardware error.">
-        Can't open your camera. Something went wrong.
-      </message>
-
       <message name="IDS_QR_CODE_OPEN_SETTINGS_LABEL" desc="Text on button on QR Code sharing tab triggering Android settings.">
         Open Settings
-      </message>
-
-      <message name="IDS_QR_CODE_NOT_A_URL_LABEL" desc="Text on toast on QR Code scanning tab indicating that the QR Code does not correspond to a URL and can not be opened.">
-        This QR Code is not a URL: <ph name="QrCodeValue">%1$s<ex>QR Code Text</ex></ph>
       </message>
 
       <message name="IDS_QR_CODE_FILENAME_PREFIX" desc="File name prefix for downloaded qrcode that is followed by timestamp.">
@@ -5644,7 +5699,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         chrome_stylized_highlight_
       </message>
       <message name="IDS_CONTENT_CREATION_NOTE_TEMPLATE_SELECTED" desc="Announcment string for accessibility when selected template changes.">
-        <ph name="TEMPLATE_TITLE">%1$s<ex>Classic</ex> template selected</ph>
+        <ph name="TEMPLATE_TITLE">%1$s<ex>Classic</ex></ph> template selected
       </message>
       <message name="IDS_CONTENT_CREATION_NOTE_DIALOG_DESCRIPTION" desc="Accessibility information for note template picking dialog.">
         Select a template for your highlight.
@@ -5842,6 +5897,41 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_PLEASE_WAIT_PROGRESS_MESSAGE" desc="Message on the progress dialog used when waiting for an operation to complete.">
         Please wait…
+      </message>
+
+      <!-- Read Aloud ("Listen to this page") player strings -->
+      <message name="IDS_READALOUD_CLOSE_PLAYER_BUTTON_CONTENT_DESCRIPTION" desc="Accessibility string for the button that closes the 'Listen to this page' player.">
+        Tap to close “Listen to this page”.
+      </message>
+      <message name="IDS_READALOUD_PLAYER_NAME" desc="Name of the Read Aloud player for accessiblity.">
+        “Listen to this page” player.
+      </message>
+      <message name="IDS_READALOUD_PLAYER_OPENED_AT_FULL_HEIGHT" desc="Accessibility string spoken when the 'Listen to this page' player bottom sheet expands to its full height.">
+        “Listen to this page” player opened at full height.
+      </message>
+      <message name="IDS_READALOUD_PLAYER_MINIMIZED" desc="Accessibility string spoken when the 'Listen to this page' player bottom sheet shrinks to its minimized height.">
+        “Listen to this page” player minimized.
+      </message>
+      <message name="IDS_READALOUD_CHROME_NOW_PLAYING" desc="Text in 'Listen to this page' player appearing before the title of the currently playing page.">
+        Brave now playing
+      </message>
+      <message name="IDS_READALOUD_REPLAY" desc="Accessibility string for the button that rewinds 'Listen to this page' playback by the specified number of seconds.">
+        Back <ph name="NUMBER_OF_SECONDS">%1$s<ex>10</ex></ph> seconds
+      </message>
+      <message name="IDS_READALOUD_FORWARD" desc="Accessibility string for the button that seeks 'Listen to this page' playback forward by the specified number of seconds.">
+        Forward <ph name="NUMBER_OF_SECONDS">%1$s<ex>30</ex></ph> seconds
+      </message>
+      <message name="IDS_READALOUD_PLAY" desc="Accessibility string for the 'Listen to this page' play button.">
+        Play
+      </message>
+      <message name="IDS_READALOUD_PAUSE" desc="Accessibility string for the 'Listen to this page' pause button.">
+        Pause
+      </message>
+      <message name="IDS_READALOUD_SPEED_MENU_BUTTON" desc="Accessibility string for the 'Listen to this page' playback speed menu button.">
+        Playback speed: <ph name="PLAYBACK_SPEED">%1$s<ex>1.0</ex></ph>. Click to change.
+      </message>
+      <message name="IDS_READALOUD_OPTIONS_MENU_BUTTON" desc="Accessibility string for the 'Listen to this page' options menu button.">
+        More options
       </message>
     </messages>
   </release>

@@ -683,8 +683,8 @@ Permissions you've already given to websites and apps may apply to this account.
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_DEEP_SCANNING_PROMPT" desc="Subpage summary of warning for Deep Scanning.">
         Brave recommends scanning this file because it may be dangerous
       </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_WARNING_BLOCKED_LEARN_MORE_LINK" desc="Text for the link to the help page about why Brave blocks some downloaded files. This string will be embedded in a longer sentence that makes up the whole label.">
-        Brave blocks some downloads
+      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_WARNING_BLOCKED_LEARN_MORE_LINK" desc="Text for the link to the help page about why Brave blocks some downloaded files.">
+        Learn why Brave blocks some downloads
       </message>
 
       <!-- Download Shelf Items -->
@@ -1439,18 +1439,20 @@ Permissions you've already given to websites and apps may apply to this account.
         Share a Brave tab
       </message>
       <!-- Idle timeout bubble. -->
-      <message name="IDS_IDLE_BUBBLE_TITLE_CLOSE" desc="Title of a bubble that informs the user that Brave closed automatically, because they were away from the computer for X minutes.">
-        Brave was automatically closed
-      </message>
-      <message name="IDS_IDLE_BUBBLE_BODY_CLOSE_AND_CLEAR" desc="Body of a bubble that informs the user that Brave closed + cleared data automatically, because they were away from the computer for X minutes.">
-        Your organization closes Brave when it isn't used for <ph name="TIMEOUT_DURATION">$1<ex>30 minutes</ex></ph>. Browsing data was deleted. This could include history, autofill, and downloads.
-      </message>
-      <message name="IDS_IDLE_BUBBLE_BODY_CLEAR" desc="Body of a bubble that informs the user that Brave cleared data automatically, because they were away from the computer for X minutes.">
-        Your organization deletes Brave data when it isn't used for <ph name="TIMEOUT_DURATION">$1<ex>30 minutes</ex></ph>. This could include history, autofill, and downloads.
-      </message>
-      <message name="IDS_IDLE_BUBBLE_BODY_CLOSE" desc="Body of a bubble that informs the user that Brave closed automatically, because they were away from the computer for X minutes.">
-        Your organization closes Brave when it isn't used for <ph name="TIMEOUT_DURATION">$1<ex>30 minutes</ex></ph>.
-      </message>
+      <if expr="toolkit_views">
+        <message name="IDS_IDLE_BUBBLE_TITLE_CLOSE" desc="Title of a bubble that informs the user that Brave closed automatically, because they were away from the computer for X minutes.">
+          Brave was automatically closed
+        </message>
+        <message name="IDS_IDLE_BUBBLE_BODY_CLOSE_AND_CLEAR" desc="Body of a bubble that informs the user that Brave closed + cleared data automatically, because they were away from the computer for X minutes.">
+          Your organization closes Brave when it isn't used for <ph name="TIMEOUT_DURATION">$1<ex>30 minutes</ex></ph>. Browsing data was deleted. This could include history, autofill, and downloads.
+        </message>
+        <message name="IDS_IDLE_BUBBLE_BODY_CLEAR" desc="Body of a bubble that informs the user that Brave cleared data automatically, because they were away from the computer for X minutes.">
+          Your organization deletes Brave data when it isn't used for <ph name="TIMEOUT_DURATION">$1<ex>30 minutes</ex></ph>. This could include history, autofill, and downloads.
+        </message>
+        <message name="IDS_IDLE_BUBBLE_BODY_CLOSE" desc="Body of a bubble that informs the user that Brave closed automatically, because they were away from the computer for X minutes.">
+          Your organization closes Brave when it isn't used for <ph name="TIMEOUT_DURATION">$1<ex>30 minutes</ex></ph>.
+        </message>
+      </if>
       <!-- Idle timeout dialog. -->
       <if expr="not is_android and not is_chromeos">
         <message name="IDS_IDLE_TIMEOUT_CLOSE_TITLE" desc="Title of the Idle Timeout dialog, warning the user that their windows are about to close.">

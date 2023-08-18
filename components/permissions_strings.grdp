@@ -46,8 +46,11 @@
     <message name="IDS_NOTIFICATIONS_INFOBAR_TEXT" desc="Text requesting permission for Web Notifications.">
       <ph name="site">$1<ex>mail.google.com</ex></ph> wants to send you notifications
     </message>
+    <message name="IDS_MIDI_INFOBAR_TEXT" desc="Text requesting permission for a site to access MIDI devices.">
+      <ph name="URL">$1<ex>www.google.com</ex></ph> wants to use your MIDI devices
+    </message>
     <message name="IDS_MIDI_SYSEX_INFOBAR_TEXT" desc="Text requesting permission for a site to access MIDI devices with system exclusive messages.">
-      <ph name="URL">$1<ex>www.google.com</ex></ph> wants to get full control of your MIDI devices
+      <ph name="URL">$1<ex>www.google.com</ex></ph> wants to control and reprogram your MIDI devices (SysEx)
     </message>
     <message name="IDS_STORAGE_ACCESS_INFOBAR_TEXT" desc="Permission request shown if the user is visiting a site needs access to its data while it is embedded into another site.">
       <ph name="EMBEDDED_URL">$1<ex>news.site</ex></ph> wants to use cookies and site data on <ph name="TOP_LEVEL_URL">$2<ex>content_domain.site</ex></ph>
@@ -92,8 +95,11 @@
   <message name="IDS_NOTIFICATION_PERMISSIONS_FRAGMENT" desc="Permission sentence fragment to show following the prompt 'This site wants to:' in a permissions request">
     Show notifications
   </message>
-  <message name="IDS_MIDI_SYSEX_PERMISSION_FRAGMENT" desc="Permission asked in the permission bubble when a URL wants to access MIDI devices with system exclusive messages, along with other permissions requests. Preceded by the prompt 'This site would like to:'">
+  <message name="IDS_MIDI_PERMISSION_FRAGMENT" desc="Permission asked in the permission bubble when a URL wants to access MIDI devices, along with other permissions requests. Preceded by the prompt 'This site would like to:'">
     Use your MIDI devices
+  </message>
+  <message name="IDS_MIDI_SYSEX_PERMISSION_FRAGMENT" desc="Permission asked in the permission bubble when a URL wants to access MIDI devices with system exclusive messages, along with other permissions requests. Preceded by the prompt 'This site would like to:'">
+    Control and reprogram your MIDI devices (SysEx)
   </message>
   <message name="IDS_MEDIA_CAPTURE_AUDIO_ONLY_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions bubble when a web page requests access to the computer's microphone.">
     Use your microphone
@@ -128,7 +134,7 @@ Do you want to allow <ph name="EMBEDDED_URL">$1<ex>news.site</ex></ph> to use co
 This will otherwise be blocked by your privacy settings. This will allow the content you interacted with to work correctly, but may allow <ph name="EMBEDDED_URL">$1<ex>news.site</ex></ph> to track your activity.
   </message>
   <message name="IDS_STORAGE_ACCESS_PERMISSION_TWO_ORIGIN_EXPLANATION" desc="The body content of a dialog box that's prompting the user for permission. In the description below, “www.myfavoritesite.com” and “Google Docs” are just used as examples. This sentence describes the consequences of granting this permission. When the user agrees, both “www.myfavoritesite.com” and “Google Docs” can know that the user visited www.myfavoritesite.com.A user might visit a site called www.myfavoritesite.com. That site might embed content and services from other sites. Embedded content can include things like text, images, audio, and services (for example, Google Docs). In this example, the dialog box is shown by Google Docs. The permission is to enable a connection between www.myfavoritesite.com and Google Docs and to allow Google Docs to access information that services has previously saved about the user. For example, Google Docs would need this permission to verify the user's identity and display the user's documents as they browse www.myfavoritesite.com.">
-    <ph name="EMBEDDED_URL">$1<ex>google.com</ex></ph> will know that you visited <ph name="TOP_LEVEL_URL">$2<ex>top-level-site.com</ex></ph>. <ph name="HELP_CENTER_LINK">$3<ex>Learn more about embedded content</ex></ph>.
+    <ph name="EMBEDDED_URL">$1<ex>google.com</ex></ph> will know that you visited <ph name="TOP_LEVEL_URL">$2<ex>top-level-site.com</ex></ph>.
   </message>
   <message name="IDS_STORAGE_ACCESS_PERMISSION_TWO_ORIGIN_LINK" desc="The last sentence of a dialog box that's prompting the user for permission. 1) “embedded content” is the name of a setting in Brave settings.">
     Learn more about embedded content
@@ -237,8 +243,11 @@ This will otherwise be blocked by your privacy settings. This will allow the con
     <message name="IDS_NOTIFICATION_PERMISSIONS_CHIP" desc="Button text representing a request for showing notifications from a website. When clicked, shows a permission prompt bubble with more information.">
       Get notifications?
     </message>
+    <message name="IDS_MIDI_PERMISSION_CHIP" desc="Button text representing a request for accessing MIDI devices from a website. When clicked, shows a permission prompt bubble with more information.">
+      Use MIDI devices?
+    </message>
     <message name="IDS_MIDI_SYSEX_PERMISSION_CHIP" desc="Button text representing a request for accessing MIDI devices from a website. When clicked, shows a permission prompt bubble with more information.">
-      Connect MIDI device?
+      Control and reprogram MIDI devices?
     </message>
     <message name="IDS_MEDIA_CAPTURE_AUDIO_ONLY_PERMISSION_CHIP" desc="Button text representing a request for accessing the computer's microphone from a website. When clicked, shows a permission prompt bubble with more information.">
       Use microphone?
