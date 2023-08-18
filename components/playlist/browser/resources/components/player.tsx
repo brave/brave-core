@@ -17,28 +17,41 @@ import { getAllActions } from '../api/getAllActions'
 import PlayerControls from './playerControls'
 import { color, font } from '@brave/leo/tokens/css'
 import PlayerSeeker from './playerSeeker'
+import { playlistControlsAreaHeight } from '../constants/style'
 
 const StyledVideo = styled.video`
   width: 100vw;
   aspect-ratio: 16 / 9;
+  margin-bottom: 8px;
 `
 
 const PlayerContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
+  overflow: hidden;
   user-select: none; // In order to drag-and-drop on the seeker works well.
 `
 
 const ControlsContainer = styled.div`
+  ${playlistControlsAreaHeight}
+  height: var(--player-controls-area-height);
+
   display: flex;
   flex-direction: column;
-  padding: 24px 16px;
+  padding: 0px repeat(3, 16px);
   gap: 8px;
+  flex-shrink: 0;
+  justify-content: center;
 `
 
-const StyledTitle = styled.span`
+const StyledTitle = styled.div`
   color: ${color.text.primary};
-  font: ${font.primary.xSmall.regular};
+  font: ${font.primary.large.semibold};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
 const StyledPlayerControls = styled(PlayerControls)`
@@ -79,6 +92,11 @@ export default function Player () {
 
   return (
     <PlayerContainer>
+      <ControlsContainer>
+        <StyledTitle>{currentItem?.name}</StyledTitle>
+        <PlayerSeeker videoElement={videoElement} />
+        <StyledPlayerControls videoElement={videoElement} />
+      </ControlsContainer>
       <StyledVideo
         ref={setVideoElement}
         autoPlay
@@ -94,11 +112,6 @@ export default function Player () {
             : currentItem?.mediaPath.url
         }
       />
-      <ControlsContainer>
-        <StyledTitle>{currentItem?.name}</StyledTitle>
-        <PlayerSeeker videoElement={videoElement} />
-        <StyledPlayerControls videoElement={videoElement} />
-      </ControlsContainer>
     </PlayerContainer>
   )
 }

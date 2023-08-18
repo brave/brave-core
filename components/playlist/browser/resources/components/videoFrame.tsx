@@ -6,15 +6,35 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
 
+import { color } from '@brave/leo/tokens/css'
+
+import { playlistControlsAreaHeight } from '../constants/style'
+
 interface Props {
   visible: boolean
+  isMiniPlayer: boolean
 }
 
 const StyledVideoFrame = styled.iframe<Props>`
+  ${playlistControlsAreaHeight}
+
   width: 100vw;
-  // 16:9 aspect ratio for video and fixed height for the controls area
-  height: calc(56vw + 160px);
   border: none;
+  ${p =>
+    p.isMiniPlayer
+      ? css`
+          position: fixed;
+          bottom: 0;
+          height: var(--player-controls-area-height);
+          z-index: 1;
+          border-top: 1px solid ${color.divider.subtle};
+        `
+      : css`
+          // 16:9 aspect ratio for video and fixed height for the controls area
+          height: calc(56vw + var(--player-controls-area-height));
+          margin-bottom: 8px;
+        `}
+
   ${({ visible }) =>
     !visible &&
     css`
@@ -22,7 +42,7 @@ const StyledVideoFrame = styled.iframe<Props>`
     `}
 `
 
-export default function VideoFrame ({ visible }: Props) {
+export default function VideoFrame (props: Props) {
   return (
     <StyledVideoFrame
       id='player'
@@ -34,7 +54,7 @@ export default function VideoFrame ({ visible }: Props) {
       allow='autoplay; fullscreen;'
       scrolling='no'
       sandbox='allow-scripts allow-same-origin'
-      visible={visible}
+      {...props}
     />
   )
 }
