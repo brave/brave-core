@@ -11,4 +11,4 @@ import iconsMeta from '@brave/leo/icons/meta'
 
 setIconBasePath('//resources/brave-icons')
 
-window['icons'] = new Set(Object.keys(iconsMeta.icons))
+window['leoIcons'] = new Set(Object.keys(iconsMeta.icons))

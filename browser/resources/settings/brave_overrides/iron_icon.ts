@@ -6,7 +6,7 @@
 import { RegisterStyleOverride, RegisterPolymerPrototypeModification } from 'chrome://resources/brave/polymer_overriding.js'
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
-const leoIcons = (window as any)['icons'] as Set<string>
+const leoIcons = (window as any)['leoIcons'] as Set<string>
 
 // Maps Chromium icons to their equivalent Brave icons.
 const iconMap: { [key: string]: string } = {
