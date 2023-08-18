@@ -31,7 +31,6 @@ class CookieListOptInService : public KeyedService,
   void Bind(
       mojo::PendingReceiver<mojom::CookieListOptInPageAndroidHandler> receiver);
 
-  void ShouldShowDialog(ShouldShowDialogCallback callback) override;
   void OnTooltipShown() override;
   void OnTooltipNoClicked() override;
   void OnTooltipYesClicked() override;

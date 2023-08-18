@@ -19,8 +19,6 @@ interface CookieListOptInPageHandler {
 };
 
 interface CookieListOptInPageAndroidHandler {
-  ShouldShowDialog() => (bool should_show_dialog);
-
   OnTooltipShown();
   OnTooltipNoClicked();
   OnTooltipYesClicked();
