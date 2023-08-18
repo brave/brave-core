@@ -376,7 +376,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 if (purchases != null && purchases.size() == 1) {
                     Purchase purchase = purchases.get(0);
                     mBraveVpnPrefModel.setPurchaseToken(purchase.getPurchaseToken());
-                    mBraveVpnPrefModel.setProductId(purchase.getSkus().get(0).toString());
+                    mBraveVpnPrefModel.setProductId(purchase.getProducts().get(0).toString());
                     if (BraveVpnPrefUtils.isResetConfiguration()) {
                         BraveVpnUtils.dismissProgressDialog();
                         BraveVpnUtils.openBraveVpnProfileActivity(getActivity());

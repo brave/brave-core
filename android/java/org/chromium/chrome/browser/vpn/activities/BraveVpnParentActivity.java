@@ -91,11 +91,14 @@ public abstract class BraveVpnParentActivity
             @Override
             public void onQueryPurchasesResponse(
                     @NonNull BillingResult billingResult, @NonNull List<Purchase> purchases) {
+                Log.e("BraveVPN", "Size : " + purchases.size());
                 mBraveVpnPrefModel = new BraveVpnPrefModel();
                 if (purchases != null && purchases.size() == 1) {
+                    Log.e("BraveVPN", "onQueryPurchasesResponse : 1");
                     Purchase purchase = purchases.get(0);
+                    Log.e("BraveVPN", purchase.toString());
                     mBraveVpnPrefModel.setPurchaseToken(purchase.getPurchaseToken());
-                    mBraveVpnPrefModel.setProductId(purchase.getSkus().get(0).toString());
+                    mBraveVpnPrefModel.setProductId(purchase.getProducts().get(0).toString());
                     BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
                             mBraveVpnPrefModel.getPurchaseToken(),
                             mBraveVpnPrefModel.getProductId(),

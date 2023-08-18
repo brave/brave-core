@@ -643,7 +643,7 @@ public abstract class BraveActivity extends ChromeActivity
                 if (purchases != null && purchases.size() == 1) {
                     Purchase purchase = purchases.get(0);
                     mPurchaseToken = purchase.getPurchaseToken();
-                    mProductId = purchase.getSkus().get(0).toString();
+                    mProductId = purchase.getProducts().get(0).toString();
                     BraveVpnNativeWorker.getInstance().verifyPurchaseToken(mPurchaseToken,
                             mProductId, BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
                 } else {
