@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_SERVICE_STATUS_TRAY_STATUS_TRAY_RUNNER_H_
 
 #include <memory>
+#include <string>
 
 #include "base/no_destructor.h"
 #include "base/win/registry.h"
@@ -14,6 +15,10 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/tray_menu_model.h"
 #include "brave/components/brave_vpn/common/win/brave_windows_service_watcher.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+
+namespace base {
+class FilePath;
+}  // namespace base
 
 namespace ui {
 class SimpleMenuModel;
@@ -39,9 +44,14 @@ class StatusTrayRunner : public TrayMenuModel::Delegate {
  private:
   friend class base::NoDestructor<StatusTrayRunner>;
 
+  FRIEND_TEST_ALL_PREFIXES(StatusTrayRunnerTest, FindPakPath);
+
   StatusTrayRunner();
   ~StatusTrayRunner() override;
 
+  base::FilePath FindPakFilePath(const base::FilePath& assets_path,
+                                 const std::string& locale);
+  void LoadLocaleResources();
   bool IsTunnelServiceRunning() const;
   void SetupStatusIcon();
   void SignalExit();
