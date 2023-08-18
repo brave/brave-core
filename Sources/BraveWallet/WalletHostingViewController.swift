@@ -55,6 +55,7 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
   
   public init(
     walletStore: WalletStore,
+    webImageDownloader: WebImageDownloaderType,
     presentingContext: PresentingContext = .default,
     onUnlock: (() -> Void)? = nil
   ) {
@@ -65,6 +66,7 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
       rootView: CryptoView(
         walletStore: walletStore,
         keyringStore: walletStore.keyringStore,
+        webImageDownloader: webImageDownloader,
         presentingContext: presentingContext
       )
     )

@@ -7,6 +7,7 @@ import BraveCore
 import Combine
 import Preferences
 import Data
+import BraveUI
 
 enum PendingRequest: Equatable {
   case transactions([BraveWallet.TransactionInfo])

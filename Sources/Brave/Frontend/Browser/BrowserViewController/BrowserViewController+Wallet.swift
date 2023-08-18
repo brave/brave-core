@@ -16,7 +16,10 @@ import Growth
 
 extension WalletStore {
   /// Creates a WalletStore based on whether or not the user is in Private Mode
-  static func from(ipfsApi: IpfsAPI, privateMode: Bool) -> WalletStore? {
+  static func from(
+    ipfsApi: IpfsAPI,
+    privateMode: Bool
+  ) -> WalletStore? {
     guard
       let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: privateMode),
       let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: privateMode),
@@ -100,7 +103,8 @@ extension BrowserViewController {
     let controller = WalletPanelHostingController(
       walletStore: walletStore,
       tabDappStore: tabDappStore,
-      origin: origin
+      origin: origin,
+      webImageDownloader: braveCore.webImageDownloader
     )
     controller.delegate = self
     let popover = PopoverController(contentController: controller)
@@ -143,6 +147,7 @@ extension BrowserViewController: BraveWalletDelegate {
   public func walletPanel(_ panel: WalletPanelHostingController, presentWalletWithContext: PresentingContext, walletStore: WalletStore) {
     let walletHostingController = WalletHostingViewController(
       walletStore: walletStore,
+      webImageDownloader: braveCore.webImageDownloader,
       presentingContext: presentWalletWithContext
     )
     walletHostingController.delegate = self

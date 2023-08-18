@@ -31,7 +31,7 @@ private struct SourceImageView: View {
       .frame(width: imageHeight*2, height: imageHeight)
       .overlay(
         source.coverURL.map {
-          WebImageReader(url: $0) { image, isFinished in
+          WebImageReader(url: $0) { image in
             if let image {
               Image(uiImage: image)
                 .resizable()

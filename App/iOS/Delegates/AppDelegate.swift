@@ -7,7 +7,6 @@ import Storage
 import AVFoundation
 import MessageUI
 import SDWebImage
-import SDWebImageSVGNativeCoder
 import SwiftKeychainWrapper
 import LocalAuthentication
 import CoreSpotlight
@@ -89,7 +88,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     MenuHelper.defaultHelper.setItems()
 
     SDImageCodersManager.shared.addCoder(PrivateCDNImageCoder())
-    SDImageCodersManager.shared.addCoder(SDImageSVGNativeCoder.shared)
 
     // Temporary fix for Bug 1390871 - NSInvalidArgumentException: -[WKContentView menuHelperFindInPage]: unrecognized selector
     if let clazz = NSClassFromString("WKCont" + "ent" + "View"), let swizzledMethod = class_getInstanceMethod(TabWebViewMenuHelper.self, #selector(TabWebViewMenuHelper.swizzledMenuHelperFindInPage)) {

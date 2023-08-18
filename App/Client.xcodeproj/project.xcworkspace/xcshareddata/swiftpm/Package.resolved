@@ -54,15 +54,6 @@
       }
     },
     {
-      "identity" : "sdwebimagesvgnativecoder",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SDWebImage/SDWebImageSVGNativeCoder.git",
-      "state" : {
-        "revision" : "2e5522fa9d95b2bfccbf38b1c97cd68f06931b02",
-        "version" : "0.1.1"
-      }
-    },
-    {
       "identity" : "sdwebimageswiftui",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDWebImage/SDWebImageSwiftUI",
@@ -78,15 +69,6 @@
       "state" : {
         "revision" : "f222cbdf325885926566172f6f5f06af95473158",
         "version" : "5.6.0"
-      }
-    },
-    {
-      "identity" : "svgnative-xcode",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SDWebImage/svgnative-Xcode.git",
-      "state" : {
-        "revision" : "46c0196664b445c59d8c9c2f55c076cd9869f980",
-        "version" : "0.1.0-beta"
       }
     },
     {

@@ -20,20 +20,26 @@ struct NFTImageView<Placeholder: View>: View {
   }
   
   var body: some View {
-    if urlString.hasPrefix("data:image/") {
-      WebImageReader(url: URL(string: urlString)) { image, isFinished in
-        if let image = image {
-          Image(uiImage: image)
+    if let url = URL(string: urlString) {
+      if url.absoluteString.hasPrefix("data:image/") {
+        WebImageReader(url: url) { image in
+          if let image = image {
+            Image(uiImage: image)
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+          } else {
+            placeholder()
+          }
+        }
+      } else if url.isSecureWebPage() {
+        if url.absoluteString.hasSuffix(".gif") {
+          WebImage(url: url)
             .resizable()
+            .placeholder { placeholder() }
+            .indicator(.activity)
             .aspectRatio(contentMode: .fit)
         } else {
-          placeholder()
-        }
-      }
-    } else {
-      if let url = URL(string: urlString), url.isSecureWebPage() {
-        if urlString.hasSuffix(".svg") {
-          WebImageReader(url: url) { image, isFinished in
+          WebImageReader(url: url) { image in
             if let image = image {
               Image(uiImage: image)
                 .resizable()
@@ -42,16 +48,12 @@ struct NFTImageView<Placeholder: View>: View {
               placeholder()
             }
           }
-        } else {
-          WebImage(url: url)
-            .resizable()
-            .placeholder { placeholder() }
-            .indicator(.activity)
-            .aspectRatio(contentMode: .fit)
         }
       } else {
         placeholder()
       }
+    } else {
+      placeholder()
     }
   }
 }

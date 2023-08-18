@@ -5,83 +5,70 @@
 
 import SwiftUI
 import SDWebImage
-import SDWebImageSVGNativeCoder
 
-private class WalletWebImageManager: ObservableObject {
-  /// loaded image, note when progressive loading, this will published multiple times with different partial image
-  @Published public var image: UIImage?
-  /// loaded image data, may be nil if hit from memory cache. This will only published once loading is finished
-  @Published public var isFinished: Bool = false
-  /// loading error
-  @Published public var error: Error?
+public protocol WebImageDownloaderType: AnyObject {
+  func downloadImage(url: URL) async -> UIImage?
+  func imageFromData(data: Data) async -> UIImage?
+}
 
-  private var manager = SDWebImageManager.shared
-  private var operation: SDWebImageOperation?
+struct WebImageDownloaderKey: EnvironmentKey {
+  static var defaultValue: WebImageDownloaderType = SDWebImageManager.shared
+}
 
-  private var supportedCoders: [SDImageCoder] = [SDImageSVGNativeCoder.shared, SDImageAPNGCoder.shared, SDImageGIFCoder.shared]
-  
-  init() {}
+extension EnvironmentValues {
+  public var webImageDownloader: WebImageDownloaderType {
+    get { self[WebImageDownloaderKey.self] }
+    set { self[WebImageDownloaderKey.self] = newValue }
+  }
+}
 
-  func load(url: URL?, options: SDWebImageOptions = []) {
-    operation = manager.loadImage(
-      with: url, options: options, progress: nil,
-      completed: { [weak self] image, data, error, _, finished, _ in
-        guard let self = self else { return }
-        self.image = image
-        self.error = error
-        if finished {
-          self.isFinished = true
+extension SDWebImageManager: WebImageDownloaderType {
+  public func downloadImage(url: URL) async -> UIImage? {
+    var operation: SDWebImageCombinedOperation?
+    return await withTaskCancellationHandler {
+      await withCheckedContinuation { continuation in
+        operation = loadImage(with: url, progress: nil) { image, _, _, _, _, _ in
+          continuation.resume(returning: image)
         }
-      })
-  }
-
-  func cancel() {
-    operation?.cancel()
-    operation = nil
+      }
+    } onCancel: { [operation] in
+      operation?.cancel()
+    }
   }
   
-  func load(base64Str: String, options: [SDImageCoderOption: Any] = [:]) {
-    guard base64Str.hasPrefix("data:image/") else { return }
-    guard let dataString = base64Str.separatedBy(",").last else { return }
-    
-    let data = Data(base64Encoded: dataString, options: .ignoreUnknownCharacters)
-    for coder in supportedCoders where coder.canDecode(from: data) {
-      image = coder.decodedImage(with: data, options: options)
-      break
-    }
+  public func imageFromData(data: Data) async -> UIImage? {
+    SDImageCodersManager.shared.decodedImage(with: data)
   }
 }
 
 public struct WebImageReader<Content: View>: View {
-  @StateObject private var imageManager: WalletWebImageManager = .init()
-  var url: URL?
-  var options: SDWebImageOptions
-  var coderOptions: [SDImageCoderOption: Any]
+  var url: URL
+  
+  @Environment(\.webImageDownloader) private var imageDownloader: WebImageDownloaderType
+  
+  @State private var image: UIImage?
 
-  private var content: (_ image: UIImage?, _ isFinished: Bool) -> Content
+  private var content: (_ image: UIImage?) -> Content
 
   public init(
-    url: URL?,
-    options: SDWebImageOptions = [],
-    coderOptions: [SDImageCoderOption: Any] = [:],
-    @ViewBuilder content: @escaping (_ image: UIImage?, _ isFinished: Bool) -> Content
+    url: URL,
+    @ViewBuilder content: @escaping (_ image: UIImage?) -> Content
   ) {
     self.content = content
     self.url = url
-    self.options = options
-    self.coderOptions = coderOptions
   }
 
   public var body: some View {
-    content(imageManager.image, imageManager.isFinished)
-      .onAppear {
-        if let urlString = url?.absoluteString {
-          if urlString.hasPrefix("data:image/") {
-            imageManager.load(base64Str: urlString)
-          } else if !imageManager.isFinished {
-              imageManager.load(url: url, options: options)
-          }
+    content(image)
+      .task {
+        if url.absoluteString.hasPrefix("data:image/"),
+           let dataString = url.absoluteString.separatedBy(",").last,
+           let data = Data(base64Encoded: dataString, options: .ignoreUnknownCharacters) {
+          image = await imageDownloader.imageFromData(data: data)
+        } else {
+          image = await imageDownloader.downloadImage(url: url)
         }
       }
+      .id(url)
   }
 }
