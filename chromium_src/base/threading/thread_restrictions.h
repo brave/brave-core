@@ -18,7 +18,7 @@ class ProcessLauncher;
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 namespace component_updater {
-class Arm64DllInstaller;
+class WidevineArm64DllInstaller;
 }
 #endif
 
@@ -28,9 +28,9 @@ class Arm64DllInstaller;
   friend class brave::ProcessLauncher;
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-// Arm64DllInstaller needs to use TimedWait:
+// WidevineArm64DllInstaller needs to use TimedWait:
 #define BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_WIDEVINE_ARM64_DLL_FIX \
-  friend class component_updater::Arm64DllInstaller;
+  friend class component_updater::WidevineArm64DllInstaller;
 #else
 #define BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_WIDEVINE_ARM64_DLL_FIX
 #endif
