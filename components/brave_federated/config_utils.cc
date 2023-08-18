@@ -13,12 +13,14 @@
 namespace brave_federated {
 
 LearningServiceConfig::LearningServiceConfig() {
-  reconnect_policy_ = {.num_errors_to_ignore = 0,
-                       .initial_delay_ms = 10 * 1000,
-                       .multiply_factor = 2.0,
-                       .jitter_factor = 0.0,
-                       .maximum_backoff_ms = 60 * 10 * 1000,
-                       .always_use_initial_delay = true};
+  reconnect_policy_ = {
+      .num_errors_to_ignore = 0,
+      .initial_delay_ms = 10 * base::Time::kMillisecondsPerSecond,
+      .multiply_factor = 2.0,
+      .jitter_factor = 0.0,
+      .maximum_backoff_ms = 10 * base::Time::kSecondsPerMinute *
+                            base::Time::kMillisecondsPerSecond,
+      .always_use_initial_delay = true};
   request_task_policy_ = {
       .num_errors_to_ignore = 0,
       .initial_delay_ms = static_cast<int>(

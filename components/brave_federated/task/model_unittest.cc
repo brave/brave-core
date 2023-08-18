@@ -4,41 +4,41 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_federated/task/model.h"
+
 #include <cstddef>
 
 #include "brave/components/brave_federated/api/config.h"
 #include "brave/components/brave_federated/util/linear_algebra_util.h"
-#include "testing/gmock/include/gmock/gmock.h"
-#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveFederatedLearning*
 
 namespace brave_federated {
 
-api::config::ModelSpec kModelSpec = [] {
-  api::config::ModelSpec kModelSpec;
-  kModelSpec.num_params = 64;
-  kModelSpec.batch_size = 32;
-  kModelSpec.learning_rate = 0.1;
-  kModelSpec.num_iterations = 10;
-  kModelSpec.threshold = 0.7;
-  return kModelSpec;
+api::config::ModelSpec k_model_spec = [] {
+  api::config::ModelSpec spec;
+  spec.num_params = 64;
+  spec.batch_size = 32;
+  spec.learning_rate = 0.1;
+  spec.num_iterations = 10;
+  spec.threshold = 0.7;
+  return spec;
 }();
 
 TEST(BraveFederatedLearningModelTest, GetModelSize) {
   // Arrange
-  Model model(kModelSpec);
+  Model model(k_model_spec);
 
   // Act
   size_t model_size = model.GetModelSize();
 
   // Assert
-  EXPECT_EQ(static_cast<int>(model_size), kModelSpec.num_params);
+  EXPECT_EQ(static_cast<int>(model_size), k_model_spec.num_params);
 }
 
 TEST(BraveFederatedLearningModelTest, GetModelSizeAfterSettingWeights) {
   // Arrange
-  Model model(kModelSpec);
+  Model model(k_model_spec);
   Weights weights = {1.0, 2.0, 3.0, 4.0, 5.0};
 
   // Act
@@ -51,13 +51,13 @@ TEST(BraveFederatedLearningModelTest, GetModelSizeAfterSettingWeights) {
 
 TEST(BraveFederatedLearningModelTest, GetBatchSize) {
   // Arrange
-  Model model(kModelSpec);
+  Model model(k_model_spec);
   Weights weights = {1.0, 2.0, 3.0, 4.0, 5.0};
 
   // Act
 
   // Assert
-  EXPECT_EQ(static_cast<int>(model.GetBatchSize()), kModelSpec.batch_size);
+  EXPECT_EQ(static_cast<int>(model.GetBatchSize()), k_model_spec.batch_size);
 }
 
 TEST(BraveFederatedLearningModelTest, Train) {
