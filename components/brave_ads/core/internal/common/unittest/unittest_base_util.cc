@@ -22,10 +22,14 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/database.h"
+#include "brave/components/brave_ads/core/flags_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_current_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -46,6 +50,20 @@ AdEventMap& AdEventHistory() {
 }
 
 }  // namespace
+
+void MockFlags() {
+  GlobalState::GetInstance()->Flags() = *BuildFlags();
+
+  if (OverriddenCommandLine()) {
+    return;
+  }
+
+  // Use the staging environment for tests if the command line was not
+  // overridden in |SetUpMocks|.
+  CHECK(GlobalState::HasInstance());
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kStaging;
+}
 
 void MockShowNotificationAd(AdsClientMock& mock) {
   ON_CALL(mock, ShowNotificationAd)

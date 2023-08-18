@@ -124,8 +124,6 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
   NiceMock<PlatformHelperMock> platform_helper_mock_;
 
  private:
-  void Initialize();
-
   void MockAdsClientAddObserver();
 
   void MockAdsClient();
@@ -140,20 +138,23 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
   void MockSetListPref(AdsClientMock& mock);
   void MockSetTimePref(AdsClientMock& mock);
 
+  void SetUpTest();
   void SetUpIntegrationTest();
   void SetUpIntegrationTestCallback(bool success);
-  base::ScopedTempDir temp_dir_;
+  void SetUpUnitTest();
 
-  bool is_integration_test_ = false;
+  base::ScopedTempDir temp_dir_;
 
   bool setup_called_ = false;
   bool teardown_called_ = false;
 
+  bool is_integration_test_ = false;
+
   brave_l10n::test::ScopedDefaultLocale scoped_default_locale_;
 
-  std::unique_ptr<AdsImpl> ads_;
-
   std::unique_ptr<Database> database_;
+
+  std::unique_ptr<AdsImpl> ads_;
 
   std::unique_ptr<GlobalState> global_state_;
 

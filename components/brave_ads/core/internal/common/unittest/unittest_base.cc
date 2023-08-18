@@ -16,8 +16,6 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/database.h"
-#include "brave/components/brave_ads/core/flags_util.h"
-#include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
@@ -36,17 +34,6 @@
 namespace brave_ads {
 
 using ::testing::Invoke;
-
-namespace {
-
-mojom::WalletInfoPtr GetWallet() {
-  mojom::WalletInfoPtr wallet = mojom::WalletInfo::New();
-  wallet->payment_id = kWalletPaymentId;
-  wallet->recovery_seed = kWalletRecoverySeed;
-  return wallet;
-}
-
-}  // namespace
 
 UnitTestBase::UnitTestBase()
     : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
@@ -78,7 +65,13 @@ void UnitTestBase::SetUpForTesting(const bool is_integration_test) {
 
   is_integration_test_ = is_integration_test;
 
-  Initialize();
+  InitializeCommandLineSwitches();
+
+  RegisterPrefs();
+
+  MockAdsClient();
+
+  is_integration_test_ ? SetUpIntegrationTest() : SetUpUnitTest();
 }
 
 AdsImpl& UnitTestBase::GetAds() const {
@@ -182,39 +175,6 @@ void UnitTestBase::AdvanceClockToMidnight(const bool is_local) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-void UnitTestBase::Initialize() {
-  InitializeCommandLineSwitches();
-
-  MockAdsClient();
-
-  RegisterPrefs();
-
-  if (is_integration_test_) {
-    SetUpMocks();
-    return SetUpIntegrationTest();
-  }
-
-  global_state_ = std::make_unique<GlobalState>(&ads_client_mock_);
-
-  MockBuildChannel(BuildChannelType::kRelease);
-
-  SetUpMocks();
-
-  global_state_->Flags() = *BuildFlags();
-
-  global_state_->GetDatabaseManager().CreateOrOpen(
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
-
-  global_state_->GetClientStateManager().Load(
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
-
-  global_state_->GetConfirmationStateManager().Load(
-      GetWalletForTesting(),  // IN-TEST
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
-
-  task_environment_.FastForwardUntilNoTasksRemain();
-}
 
 void UnitTestBase::MockAdsClientAddObserver() {
   ON_CALL(ads_client_mock_, AddObserver)
@@ -360,6 +320,14 @@ void UnitTestBase::MockSetTimePref(AdsClientMock& mock) {
           }));
 }
 
+void UnitTestBase::SetUpTest() {
+  MockBuildChannel(BuildChannelType::kRelease);
+
+  SetUpMocks();
+
+  MockFlags();
+}
+
 void UnitTestBase::SetUpIntegrationTest() {
   CHECK(is_integration_test_)
       << "|SetUpIntegrationTest| should only be called if |SetUpForTesting| is "
@@ -367,11 +335,9 @@ void UnitTestBase::SetUpIntegrationTest() {
 
   ads_ = std::make_unique<AdsImpl>(&ads_client_mock_);
 
-  MockBuildChannel(BuildChannelType::kRelease);
+  SetUpTest();
 
-  ads_->SetFlags(BuildFlags());
-
-  ads_->Initialize(GetWallet(),
+  ads_->Initialize(GetWalletPtrForTesting(),  // IN-TEST
                    base::BindOnce(&UnitTestBase::SetUpIntegrationTestCallback,
                                   weak_factory_.GetWeakPtr()));
 }
@@ -382,6 +348,28 @@ void UnitTestBase::SetUpIntegrationTestCallback(const bool success) {
   NotifyDidInitializeAds();
 
   task_environment_.RunUntilIdle();
+}
+
+void UnitTestBase::SetUpUnitTest() {
+  CHECK(!is_integration_test_)
+      << "|SetUpUnitTest| should only be called if |SetUpForTesting| is not "
+         "initialized for integration testing";
+
+  global_state_ = std::make_unique<GlobalState>(&ads_client_mock_);
+
+  SetUpTest();
+
+  global_state_->GetDatabaseManager().CreateOrOpen(
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
+
+  global_state_->GetClientStateManager().Load(
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
+
+  global_state_->GetConfirmationStateManager().Load(
+      GetWalletForTesting(),  // IN-TEST
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
+
+  task_environment_.FastForwardUntilNoTasksRemain();
 }
 
 }  // namespace brave_ads

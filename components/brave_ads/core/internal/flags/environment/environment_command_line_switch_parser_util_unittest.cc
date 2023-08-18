@@ -10,6 +10,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/command_line_switch_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util_constants.h"
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_types_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
@@ -19,8 +20,6 @@
 namespace brave_ads {
 
 namespace {
-
-constexpr char kRewardsSwitch[] = "rewards";
 
 struct ParamInfo final {
   CommandLineSwitchInfo command_line_switch;

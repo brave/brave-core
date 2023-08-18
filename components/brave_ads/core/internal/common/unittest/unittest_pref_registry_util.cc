@@ -68,8 +68,7 @@ void RegisterPrefs() {
 }
 
 bool HasRegisteredPrefPath(const std::string& path) {
-  const std::string uuid = GetUuidForCurrentTestAndValue(path);
-  return base::Contains(Prefs(), uuid);
+  return base::Contains(Prefs(), GetUuidForCurrentTestAndValue(path));
 }
 
 }  // namespace brave_ads

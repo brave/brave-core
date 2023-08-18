@@ -12,6 +12,8 @@
 
 namespace brave_ads {
 
+void MockFlags();
+
 void MockShowNotificationAd(AdsClientMock& mock);
 void MockCloseNotificationAd(AdsClientMock& mock);
 

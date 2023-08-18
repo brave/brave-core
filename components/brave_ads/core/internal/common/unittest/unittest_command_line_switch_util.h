@@ -9,11 +9,14 @@
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/common/unittest/command_line_switch_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 void InitializeCommandLineSwitches();
 void ShutdownCommandLineSwitches();
+
+absl::optional<std::string>& OverriddenCommandLine();
 
 void AppendCommandLineSwitches(
     const CommandLineSwitchList& command_line_switches);
