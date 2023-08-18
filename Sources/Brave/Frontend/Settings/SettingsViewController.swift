@@ -7,7 +7,6 @@ import Shared
 import BraveShared
 import Preferences
 import Static
-import SwiftKeychainWrapper
 import LocalAuthentication
 import SwiftyJSON
 import Data

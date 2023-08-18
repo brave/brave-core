@@ -6,7 +6,6 @@
 import Foundation
 import Storage
 import Shared
-import SwiftKeychainWrapper
 import BraveCore
 import UIKit
 import BraveUI

@@ -21,7 +21,6 @@
 		278BB9FF297B0A1E00690BE3 /* TopNewsListWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278BB9FE297B0A1E00690BE3 /* TopNewsListWidget.swift */; };
 		279A828E28FEF01E00F55A5E /* BraveWidgets.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = CA0391E5271E1382000EB13C /* BraveWidgets.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
 		279A829228FEF0BF00F55A5E /* BraveShared in Frameworks */ = {isa = PBXBuildFile; productRef = 279A829128FEF0BF00F55A5E /* BraveShared */; };
-		279A9BCC2823370100F40FC6 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 279A9BCB2823370100F40FC6 /* SwiftKeychainWrapper */; };
 		279C432E2853E51E00A9F708 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 279C432D2853E51E00A9F708 /* DesignSystem */; };
 		27A28ED528C00C1D001466A4 /* LockScreenShortcutWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A28ED428C00C19001466A4 /* LockScreenShortcutWidget.swift */; };
 		27BEDCCC28AD37CE0073425E /* BraveWidgets.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = CA0391E5271E1382000EB13C /* BraveWidgets.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
@@ -341,7 +340,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				270ECFC82838210F0089B8B7 /* Brave in Frameworks */,
-				279A9BCC2823370100F40FC6 /* SwiftKeychainWrapper in Frameworks */,
 				7DDE6308292FEC9500B8B585 /* SDWebImage in Frameworks */,
 				27FA218B2837FB0100FA2C45 /* Storage in Frameworks */,
 				27FA21832837FB0100FA2C45 /* Data in Frameworks */,
@@ -784,7 +782,6 @@
 			);
 			name = Client;
 			packageProductDependencies = (
-				279A9BCB2823370100F40FC6 /* SwiftKeychainWrapper */,
 				27FA217E2837FB0100FA2C45 /* BraveShared */,
 				27FA21802837FB0100FA2C45 /* BraveWallet */,
 				27FA21822837FB0100FA2C45 /* Data */,
@@ -880,7 +877,6 @@
 			);
 			mainGroup = F84B21B51A090F8100AAB793;
 			packageReferences = (
-				2775689A25ACF7B500C129AF /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */,
 				7DDE6306292FEC9500B8B585 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				272FC5B22979F3DF0027C53D /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				27F344A429847EEC00933B31 /* XCRemoteSwiftPackageReference "swift-collections" */,
@@ -3086,14 +3082,6 @@
 				minimumVersion = 2.2.0;
 			};
 		};
-		2775689A25ACF7B500C129AF /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/jrendel/SwiftKeychainWrapper";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.1;
-			};
-		};
 		27F344A429847EEC00933B31 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-collections.git";
@@ -3141,11 +3129,6 @@
 		279A829128FEF0BF00F55A5E /* BraveShared */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = BraveShared;
-		};
-		279A9BCB2823370100F40FC6 /* SwiftKeychainWrapper */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2775689A25ACF7B500C129AF /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */;
-			productName = SwiftKeychainWrapper;
 		};
 		279C432D2853E51E00A9F708 /* DesignSystem */ = {
 			isa = XCSwiftPackageProductDependency;

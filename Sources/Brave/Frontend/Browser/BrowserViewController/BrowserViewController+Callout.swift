@@ -8,7 +8,6 @@ import Preferences
 import BraveCore
 import BraveUI
 import Shared
-import SwiftKeychainWrapper
 import SwiftUI
 import BraveVPN
 import Onboarding
@@ -297,20 +296,6 @@ extension BrowserViewController {
   }
   
   // MARK: Non-Conditional Callouts Methods
-  
-  func presentPassCodeMigration() {
-    if KeychainWrapper.sharedAppContainerKeychain.authenticationInfo() != nil {
-      let controller = PasscodeMigrationViewController()
-      controller.rootView.dismiss = { [unowned controller] enableBrowserLock in
-        KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(nil)
-        Preferences.Privacy.lockWithPasscode.value = enableBrowserLock
-        controller.dismiss(animated: true)
-      }
-      controller.modalPresentationStyle = .overFullScreen
-      // No animation to ensure we don't leak the users tabs
-      present(controller, animated: false)
-    }
-  }
   
   func presentVPNInAppEventCallout() {
     // If the onboarding has not completed we do not show any promo screens.
