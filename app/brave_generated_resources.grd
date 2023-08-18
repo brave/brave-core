@@ -885,6 +885,21 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_IPFS_LEARN_MORE">
         Learn more about IPFS and privacy
       </message>
+      <message name="IDS_BRAVE_IPFS_INFOBAR_TEXT" desc="Text that promotes turning on autoredirect to the configured gateway setting">
+        This page is available on the IPFS network. Would you like to load IPFS pages using Brave's built-in support (via ipfs:// or ipns://)?
+      </message>
+      <message name="IDS_BRAVE_IPFS_INFOBAR_APPROVE" desc="Turns on promoted setting">
+        Always
+      </message>
+      <message name="IDS_BRAVE_IPFS_INFOBAR_APPROVE_ONCE" desc="Redirects to the ipfs:// or ipns:// resource for once">
+        Only This Time
+      </message>
+      <message name="IDS_BRAVE_IPFS_INFOBAR_NEVER" desc="Closed infobar and disables it showing">
+        No Thanks
+      </message>
+      <message name="IDS_BRAVE_IPFS_INFOBAR_LINK" desc="Link redirects to the privacy description article">
+        Learn how this affects my privacy
+      </message>
 
       <!-- Brave Wayback Machine -->
       <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT" desc="The label for sorry message when page is not available on infobar">
