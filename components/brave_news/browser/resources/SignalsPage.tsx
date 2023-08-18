@@ -9,7 +9,7 @@ import Card from './feed/Card';
 import Radio from '@brave/leo/react/radioButton'
 import Dropdown from '@brave/leo/react/dropdown';
 import Flex from '../../../brave_new_tab_ui/components/Flex'
-import { Channel, Publisher } from '../../../../../out/Component/gen/brave/components/brave_news/common/brave_news.mojom.m';
+import { Channel, Publisher } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import styled from 'styled-components';
 import { color, effect, radius, spacing } from '@brave/leo/tokens/css';
 

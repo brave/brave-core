@@ -40,8 +40,8 @@ namespace {
 using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, Signal, double>;
 using ArticleInfos = std::vector<ArticleInfo>;
 
-const Signal GetSignal(const mojom::FeedItemMetadataPtr& article,
-                       const Signals& signals) {
+Signal GetSignal(const mojom::FeedItemMetadataPtr& article,
+                 const Signals& signals) {
   auto it = signals.find(article->publisher_id);
   if (it == signals.end()) {
     return nullptr;
