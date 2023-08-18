@@ -46,7 +46,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
                     android:fontFamily="sans-serif" 
-                    android:textColor="@color/brave_stats_ads_color"/>
+                    android:textColor="@color/brave_stats_pager_ads_color"/>
 
                 <TextView
                     android:id="@+id/ads_trackers_text"
@@ -56,7 +56,7 @@
                     android:layout_margin="16dp"
                     android:fontFamily="sans-serif"
                     android:gravity="center_horizontal"
-                    android:textColor="@color/brave_stats_title_color"/>
+                    android:textColor="@color/brave_stats_pager_title_color"/>
 
             </LinearLayout>
 
@@ -79,7 +79,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
                     android:fontFamily="sans-serif" 
-                    android:textColor="@color/brave_stats_data_saved_color"/>
+                    android:textColor="@color/brave_stats_pager_data_saved_color"/>
 
                 <TextView
                     android:id="@+id/data_saved_text"
@@ -89,7 +89,7 @@
                     android:layout_margin="16dp"
                     android:fontFamily="sans-serif"
                     android:gravity="center_horizontal"
-                    android:textColor="@color/brave_stats_title_color"/>
+                    android:textColor="@color/brave_stats_pager_title_color"/>
 
             </LinearLayout>
 
@@ -111,7 +111,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
                     android:fontFamily="sans-serif"
-                    android:textColor="@color/brave_stats_text_color"/>
+                    android:textColor="@color/brave_stats_pager_time_count_color"/>
 
                 <TextView
                     android:id="@+id/time_saved_text"
@@ -121,7 +121,7 @@
                     android:layout_margin="16dp"
                     android:fontFamily="sans-serif" 
                     android:gravity="center_horizontal"
-                    android:textColor="@color/brave_stats_title_color"/>
+                    android:textColor="@color/brave_stats_pager_title_color"/>
 
             </LinearLayout>
 
