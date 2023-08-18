@@ -4724,12 +4724,36 @@ extension Strings {
 
 // MARK: - Cookie consent notices
 extension Strings {
-  /// A title for a popup that notifies the user that we can block cookie consent notices
+  /// A title for a setting that enables cookie consent notices
   public static let blockCookieConsentNotices = NSLocalizedString(
     "BlockCookieConsentNotices",
     tableName: "BraveShared", bundle: .module,
     value: "Block Cookie Consent Notices",
-    comment: "A title for a toggle that allows user to block cookie consent notices"
+    comment: "A title for a setting that enables cookie consent notices"
+  )
+  
+  /// A title for a popup that informs the user that brave is blocking cookie consent notices
+  public static let blockCookieConsentNoticesPopupTitle = NSLocalizedString(
+    "BlockCookieConsentNoticesPopupTitle",
+    tableName: "BraveShared", bundle: .module,
+    value: "Brave is blocking cookie consent notices",
+    comment: "A title for a popup that informs the user that brave is blocking cookie consent notices"
+  )
+  
+  /// A title for a popup that informs the user that brave is blocking cookie consent notices
+  public static let blockCookieConsentNoticesPopupDescription = NSLocalizedString(
+    "BlockCookieConsentNoticesPopupDescription",
+    tableName: "BraveShared", bundle: .module,
+    value: "Brave already blocks harmful cookies. Now, we automatically block those annoying cookie consent notices, too.",
+    comment: "A description of why we are blocking cookie consent notices found on the cookie consent blocking popup"
+  )
+  
+  /// A title for a button that dismisses the popup informing a use that brave is blocking cookie consent notices
+  public static let blockCookieConsentNoticesDismissButtonTitle = NSLocalizedString(
+    "BlockCookieConsentNoticesDismissButtonTitle",
+    tableName: "BraveShared", bundle: .module,
+    value: "Got it",
+    comment: "A title for a button that dismisses the popup informing a use that brave is blocking cookie consent notices"
   )
 }
 
