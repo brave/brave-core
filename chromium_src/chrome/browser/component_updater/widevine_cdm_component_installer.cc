@@ -55,7 +55,7 @@ using update_client::CrxInstaller;
 namespace component_updater {
 
 void RegisterWidevineCdmComponent(ComponentUpdateService* cus,
-                                  base::OnceCallback<void()> callback) {
+                                  base::OnceClosure callback) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (!IsWidevineOptedIn()) {
     return;
@@ -316,7 +316,7 @@ bool WidevineArm64DllInstaller::AddArm64ArchToManifest() {
 void RegisterWidevineCdmComponent(
     ComponentUpdateService* cus,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    base::OnceCallback<void()> callback) {
+    base::OnceClosure callback) {
   VLOG(1) << "RegisterWidevineCdmComponent";
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (!IsWidevineOptedIn()) {
