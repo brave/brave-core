@@ -149,8 +149,7 @@ void BraveRewardsNativeWorker::OnGetRewardsParameters(
 
 double BraveRewardsNativeWorker::GetVbatDeadline(JNIEnv* env) {
   if (parameters_) {
-    base::Time vbat_deadline = parameters_->vbat_deadline;
-    if (!vbat_deadline.is_null()) {
+    if (!parameters_->vbat_deadline.is_null()) {
       return floor(parameters_->vbat_deadline.ToDoubleT() *
                    base::Time::kMillisecondsPerSecond);
     }
