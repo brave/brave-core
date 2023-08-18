@@ -49,6 +49,16 @@ if (!is_android) {
       "//brave/components/ipfs",
       "//components/user_prefs",
     ]
+    if (!is_android) {
+      brave_browser_infobar_sources += [
+        "//brave/browser/infobars/brave_ipfs_infobar_delegate.cc",
+        "//brave/browser/infobars/brave_ipfs_infobar_delegate.h",
+      ]
+      brave_browser_infobar_deps += [
+        "//brave/browser/ui/views/infobars:infobars",
+        "//brave/components/infobars/core:core",
+      ]
+    }
   }
 
   if (enable_brave_wayback_machine) {

@@ -16,6 +16,7 @@
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
+#include "build/buildflag.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/shell_integration.h"
 #include "chrome/common/channel_info.h"
@@ -27,6 +28,10 @@
 #include "net/base/url_util.h"
 #include "net/http/http_status_code.h"
 #include "url/origin.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/infobars/brave_ipfs_infobar_delegate.h"
+#endif
 
 namespace {
 
@@ -61,6 +66,32 @@ void SetupIPFSProtocolHandler(const std::string& protocol) {
 }  // namespace
 
 namespace ipfs {
+
+#if !BUILDFLAG(IS_ANDROID)
+class BraveIPFSInfoBarDelegateObserverImpl
+    : public BraveIPFSInfoBarDelegateObserver {
+ public:
+  explicit BraveIPFSInfoBarDelegateObserverImpl(
+      base::WeakPtr<IPFSTabHelper> ipfs_tab_helper)
+      : ipfs_tab_helper_(ipfs_tab_helper) {}
+
+  void OnRedirectToIPFS(bool enable_gateway_autoredirect) override {
+    if (ipfs_tab_helper_.get() &&
+        ipfs_tab_helper_->ipfs_resolved_url_.is_valid()) {
+      if (enable_gateway_autoredirect) {
+        ipfs_tab_helper_->pref_service_->SetBoolean(
+            kIPFSAutoRedirectToConfiguredGateway, true);
+      }
+      ipfs_tab_helper_->LoadUrl(ipfs_tab_helper_->ipfs_resolved_url_);
+    }
+  }
+
+  ~BraveIPFSInfoBarDelegateObserverImpl() override = default;
+
+ private:
+  base::WeakPtr<IPFSTabHelper> ipfs_tab_helper_;
+};
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 IPFSTabHelper::~IPFSTabHelper() = default;
 
@@ -143,6 +174,20 @@ void IPFSTabHelper::LoadUrl(const GURL& gurl) {
 }
 
 void IPFSTabHelper::UpdateLocationBar() {
+#if !BUILDFLAG(IS_ANDROID)
+  auto* content_infobar_manager =
+      infobars::ContentInfoBarManager::FromWebContents(web_contents());
+  // Check whether content_infobar_manager is present for unit tests
+  if (content_infobar_manager && ipfs_resolved_url_.is_valid() &&
+      !pref_service_->GetBoolean(kIPFSAutoRedirectToConfiguredGateway)) {
+    BraveIPFSInfoBarDelegate::Create(
+        content_infobar_manager,
+        std::make_unique<BraveIPFSInfoBarDelegateObserverImpl>(
+            weak_ptr_factory_.GetWeakPtr()),
+        pref_service_);
+  }
+#endif
+
   if (web_contents()->GetDelegate())
     web_contents()->GetDelegate()->NavigationStateChanged(
         web_contents(), content::INVALIDATE_TYPE_URL);

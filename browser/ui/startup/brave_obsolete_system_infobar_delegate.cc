@@ -62,6 +62,10 @@ int BraveObsoleteSystemInfoBarDelegate::GetButtons() const {
   return BUTTON_NONE;
 }
 
+std::vector<int> BraveObsoleteSystemInfoBarDelegate::GetButtonsOrder() const {
+  return {};
+}
+
 void BraveObsoleteSystemInfoBarDelegate::OnConfirmDialogClosing(bool suppress) {
   if (suppress) {
     if (PrefService* local_state = g_browser_process->local_state()) {

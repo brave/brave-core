@@ -54,3 +54,6 @@ const char kIPFSPublicNFTGatewayAddress[] =
 
 // Stores list of CIDs that are pinned localy
 const char kIPFSPinnedCids[] = "brave.ipfs.local_pinned_cids";
+
+// Stores info whether IPFS promo infobar was shown yet
+const char kShowIPFSPromoInfobar[] = "brave.ipfs.show_ipfs_promo_infobar";
