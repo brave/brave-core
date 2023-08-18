@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 6f3722cd64029848c1737ced63889cf7cb41c5aa..b6cc02b81f52a5b27c04cd8b5fa7fdd0a9c8e0c6 100644
+index 6f3722cd64029848c1737ced63889cf7cb41c5aa..7195ef1e5fc2c67861001a44e7070dea584fae62 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -58,6 +58,15 @@ index 6f3722cd64029848c1737ced63889cf7cb41c5aa..b6cc02b81f52a5b27c04cd8b5fa7fdd0
  
      {% block extra_uses_permissions %}
      {% endblock %}
+@@ -200,7 +213,7 @@ by a child template that "extends" this file.
+         android:networkSecurityConfig="@xml/network_security_config"
+         android:allowAudioPlaybackCapture="false"
+         android:appComponentFactory="org.chromium.chrome.browser.base.SplitCompatAppComponentFactory"
+-        android:enableOnBackInvokedCallback="true"
++        android:enableOnBackInvokedCallback="false"
+         {% block extra_application_attributes %}{% endblock %}>
+ 
+         {% if channel in ['canary', 'dev', 'default'] %}
 @@ -349,6 +362,7 @@ by a child template that "extends" this file.
              <intent-filter>
                  <action android:name="com.sec.android.airview.HOVER" />
