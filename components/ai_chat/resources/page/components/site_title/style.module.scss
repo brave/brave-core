@@ -52,7 +52,8 @@
 
 .tooltip {
   position: absolute;
-  top: 50px;
+  top: 40px;
+  right: 0;
   z-index: 2;
   height: fit-content;
   max-width: 260px;
@@ -69,7 +70,7 @@
     position: absolute;
     display: block;
     width: 0px;
-    left: 10px;
+    right: 10px;
     top: -5px;
     border: 5px solid transparent;
     border-top: 0;

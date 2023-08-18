@@ -63,10 +63,14 @@ function SiteTitle (props: SiteTitleProps) {
    return (
     <div className={styles.box}>
       <Tooltip isVisible={isTooltipVisible} />
+      <div className={styles.favIconBox}>
+        { props.favIconUrl && <img src={props.favIconUrl} /> }
+      </div>
+      <div className={styles.titleBox}>
+        <p className={styles.title}>{props.siteInfo?.title}</p>
+      </div>
       <div
         aria-describedby='page-content-warning-tooltip'
-        tabIndex={0}
-        className={styles.favIconBox}
         onMouseOver={showTooltipWithDelay}
         onMouseOut={hideTooltip}
         onTouchStart={() => setIsTooltipVisible(true)}
@@ -75,13 +79,11 @@ function SiteTitle (props: SiteTitleProps) {
         onBlur={() => setIsTooltipVisible(false)}
         onKeyDown={handleOnKeyDown}
       >
-        { props.favIconUrl && <img src={props.favIconUrl} /> }
-      </div>
-      <div className={styles.titleBox}>
-        <p className={styles.title}>{props.siteInfo?.title}</p>
-      </div>
-      <div>
-        <Button aria-label="Disconnect" title="Disconnect" kind="plain-faint" onClick={props.onDisconnectButtonClick}>
+        <Button
+          aria-label="Disconnect"
+          kind="plain-faint"
+          onClick={props.onDisconnectButtonClick}
+        >
           <Icon name="link-broken" />
         </Button>
       </div>
