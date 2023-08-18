@@ -338,7 +338,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ClickingOnReaderButton) {
 
   ClickReaderButton();
   EXPECT_TRUE(GetReaderButton()->GetVisible());
-  EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
+  EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
       tab_helper()->PageDistillState()));
 
   EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
@@ -394,6 +394,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreader) {
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
       tab_helper()->PageDistillState()));
+  EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
+      tab_helper()->PageDistillState()));
 
   ClickReaderButton();
   WaitDistilled();
@@ -410,6 +412,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreader) {
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
       tab_helper()->PageDistillState()));
+  EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
+      tab_helper()->PageDistillState()));
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, TogglingSiteSpeedreader) {
@@ -424,7 +428,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, TogglingSiteSpeedreader) {
 
     speedreader_service()->EnableForSite(ActiveWebContents(), false);
     EXPECT_TRUE(WaitForLoadStop(ActiveWebContents()));
-    EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
+    EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
         tab_helper()->PageDistillState()));
     EXPECT_TRUE(GetReaderButton()->GetVisible());
 
@@ -452,7 +456,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ReloadContent) {
 
   speedreader_service()->EnableForSite(tab_helper_1->web_contents(), false);
   content::WaitForLoadStop(contents_1);
-  EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
+  EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
       tab_helper_1->PageDistillState()));
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper_2->PageDistillState()));
@@ -460,9 +464,9 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ReloadContent) {
   contents_2->GetController().Reload(content::ReloadType::NORMAL, false);
   content::WaitForLoadStop(contents_2);
 
-  EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
+  EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
       tab_helper_1->PageDistillState()));
-  EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
+  EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
       tab_helper_2->PageDistillState()));
 }
 

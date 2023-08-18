@@ -127,14 +127,19 @@ base::WeakPtr<SpeedreaderTabHelper> SpeedreaderTabHelper::GetWeakPtr() {
 }
 
 void SpeedreaderTabHelper::ProcessIconClick() {
-  if (absl::holds_alternative<DistillStates::ViewOriginal>(distill_state_)) {
-    GetDistilledHTML(base::BindOnce(&SpeedreaderTabHelper::OnGetDocumentSource,
-                                    weak_factory_.GetWeakPtr()));
-  } else if (absl::holds_alternative<DistillStates::Distilled>(
-                 distill_state_)) {
-    TransitStateTo(DistillStates::ViewOriginal{
-        .reason = DistillStates::ViewOriginal::Reason::kUserAction,
-        .url = web_contents()->GetLastCommittedURL()});
+  if (DistillStates::IsViewOriginal(distill_state_)) {
+    const auto& vo = absl::get<DistillStates::ViewOriginal>(distill_state_);
+    if (!vo.was_auto_distilled ||
+        !GetSpeedreaderService()->IsEnabledForSite(web_contents())) {
+      GetDistilledHTML(
+          base::BindOnce(&SpeedreaderTabHelper::OnGetDocumentSource,
+                         weak_factory_.GetWeakPtr()));
+    } else {
+      TransitStateTo(DistillStates::Distilling(
+          DistillStates::Distilling::Reason::kAutomatic));
+    }
+  } else if (DistillStates::IsDistilled(distill_state_)) {
+    OnShowOriginalPage();
   }
 }
 
@@ -153,13 +158,16 @@ bool SpeedreaderTabHelper::MaybeUpdateCachedState(
 
   const DistillState state =
       SpeedreaderExtendedInfoHandler::GetCachedMode(entry, speedreader_service);
-  const bool cached = !absl::holds_alternative<DistillStates::None>(state);
-  if (cached) {
-    distill_state_ = state;
-  } else {
-    SpeedreaderExtendedInfoHandler::ClearPersistedData(entry);
+  if (DistillStates::IsDistilled(state)) {
+    if (handle->IsServedFromBackForwardCache() ||
+        DistillStates::IsDistilledAutomatically(state)) {
+      distill_state_ = state;
+      return true;
+    }
   }
-  return cached;
+  SpeedreaderExtendedInfoHandler::ClearPersistedData(entry);
+
+  return false;
 }
 
 void SpeedreaderTabHelper::OnBubbleClosed() {
@@ -204,9 +212,10 @@ void SpeedreaderTabHelper::HideReaderModeToolbar() {
 }
 
 void SpeedreaderTabHelper::OnShowOriginalPage() {
-  TransitStateTo(DistillStates::ViewOriginal{
-      .reason = DistillStates::ViewOriginal::Reason::kUserAction,
-      .url = web_contents()->GetLastCommittedURL()});
+  if (!DistillStates::IsDistilled(distill_state_)) {
+    return;
+  }
+  TransitStateTo(DistillStates::ViewOriginal());
 }
 
 void SpeedreaderTabHelper::ClearPersistedData() {
@@ -230,8 +239,12 @@ void SpeedreaderTabHelper::ProcessNavigation(
 
   toolbar_hidden_ = false;
 
-  if (DistillStates::IsTransition(distill_state_)) {
-    PerformStateTransition(distill_state_);
+  if (DistillStates::IsDistilling(distill_state_)) {
+    // State will be determined in OnDistillComplete.
+    return;
+  }
+  if (DistillStates::IsDistillReverting(distill_state_)) {
+    TransitStateTo(DistillStates::ViewOriginal(), true);
     return;
   }
 
@@ -241,16 +254,21 @@ void SpeedreaderTabHelper::ProcessNavigation(
       rewriter_service &&
       rewriter_service->URLLooksReadable(navigation_handle->GetURL());
 
-  if (url_looks_readable &&
-      GetSpeedreaderService()->IsEnabledForSite(navigation_handle->GetURL())) {
+  const bool enabled_for_site =
+      GetSpeedreaderService()->IsEnabledForSite(navigation_handle->GetURL());
+
+  if (url_looks_readable && enabled_for_site) {
     // Speedreader enabled for this page.
-    TransitStateTo(
-        DistillStates::Pending{.reason =
-                                   DistillStates::Pending::Reason::kAutomatic},
-        true);
+    TransitStateTo(DistillStates::Distilling(
+                       DistillStates::Distilling::Reason::kAutomatic),
+                   true);
   } else {
-    TransitStateTo(
-        DistillStates::ViewOriginal{.url = navigation_handle->GetURL()}, true);
+    const auto reason =
+        url_looks_readable
+            ? DistillStates::ViewOriginal::Reason::kNone
+            : DistillStates::ViewOriginal::Reason::kNotDistillable;
+    TransitStateTo(DistillStates::DistillReverting(reason, false), true);
+    TransitStateTo(DistillStates::ViewOriginal(), true);
   }
 }
 
@@ -338,7 +356,7 @@ void SpeedreaderTabHelper::WebContentsDestroyed() {
 }
 
 bool SpeedreaderTabHelper::IsPageDistillationAllowed() {
-  return DistillStates::IsPending(distill_state_) ||
+  return DistillStates::IsDistilling(distill_state_) ||
          DistillStates::IsDistilled(distill_state_);
 }
 
@@ -352,14 +370,14 @@ std::string SpeedreaderTabHelper::TakePageContent() {
 
 void SpeedreaderTabHelper::OnDistillComplete(DistillationResult result) {
   // Perform a state transition
-  TransitStateTo(DistillStates::Distilled{.result = result});
+  TransitStateTo(DistillStates::Distilled(result));
 
 #if BUILDFLAG(IS_ANDROID)
   // Attempt to reset page scale after a successful distillation.
   // This is done by mocking a pinch gesture on Android,
   // see chrome/android/java/src/org/chromium/chrome/browser/ZoomController.java
   // and ui/android/event_forwarder.cc
-  if (PageStateIsDistilled(distill_state_)) {
+  if (DistillStates::IsDistilled(distill_state_)) {
     ui::ViewAndroid* view = web_contents()->GetNativeView();
     int64_t time_ms = base::TimeTicks::Now().ToUptimeMillis();
     SendGestureEvent(view, ui::GESTURE_EVENT_TYPE_PINCH_BEGIN, time_ms, 0.f);
@@ -377,12 +395,10 @@ void SpeedreaderTabHelper::OnSiteEnableSettingChanged(
   }
 
   if (enabled_on_site) {
-    TransitStateTo(DistillStates::Pending{
-        .reason = DistillStates::Pending::Reason::kManual});
+    TransitStateTo(DistillStates::Distilling(
+        DistillStates::Distilled::Reason::kAutomatic));
   } else {
-    TransitStateTo(DistillStates::ViewOriginal{
-        .reason = DistillStates::ViewOriginal::Reason::kUserAction,
-        .url = web_contents()->GetLastCommittedURL()});
+    TransitStateTo(DistillStates::ViewOriginal());
   }
   HideSpeedreaderBubble();
 }
@@ -418,8 +434,9 @@ void SpeedreaderTabHelper::OnResult(
     const dom_distiller::DistillabilityResult& result) {
   if (DistillStates::IsNotDistillable(distill_state_) &&
       result.is_distillable) {
-    TransitStateTo(DistillStates::ViewOriginal(
-        {.url = web_contents()->GetLastCommittedURL()}));
+    TransitStateTo(DistillStates::DistillReverting(
+        DistillStates::DistillReverting::Reason::kNone, false));
+    TransitStateTo(DistillStates::ViewOriginal());
   }
 }
 
@@ -449,15 +466,15 @@ void SpeedreaderTabHelper::SetDocumentAttribute(const std::string& attribute,
 void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
   if (!success) {
     // TODO(boocmp): Show error dialog [Distillation failed on this page].
-    TransitStateTo(DistillStates::ViewOriginal{
-        .reason = DistillStates::ViewOriginal::Reason::kError,
-        .url = web_contents()->GetLastCommittedURL()});
+    TransitStateTo(DistillStates::DistillReverting(
+        DistillStates::DistillReverting::Reason::kError, false));
+    TransitStateTo(DistillStates::ViewOriginal());
     return;
   }
 
   single_show_content_.swap(html);
-  TransitStateTo(DistillStates::Pending{
-      .reason = DistillStates::Pending::Reason::kManual});
+  TransitStateTo(
+      DistillStates::Distilling(DistillStates::Distilling::Reason::kManual));
 }
 
 SpeedreaderService* SpeedreaderTabHelper::GetSpeedreaderService() {
@@ -465,9 +482,9 @@ SpeedreaderService* SpeedreaderTabHelper::GetSpeedreaderService() {
       web_contents()->GetBrowserContext());
 }
 
-void SpeedreaderTabHelper::TransitStateTo(DistillState desired_state,
+void SpeedreaderTabHelper::TransitStateTo(const DistillState& desired_state,
                                           bool no_reload) {
-  if (Transit(distill_state_, std::move(desired_state)) && !no_reload) {
+  if (Transit(distill_state_, desired_state) && !no_reload) {
     ClearPersistedData();
     ReloadContents();
   }

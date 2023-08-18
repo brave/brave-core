@@ -36,10 +36,6 @@ class ViewAndroid;
 
 namespace speedreader {
 
-namespace test {
-void SetShowOriginalLinkTitle(const std::u16string* title);
-}
-
 class SpeedreaderBubbleView;
 
 enum class SpeedreaderBubbleLocation : int {
@@ -156,7 +152,8 @@ class SpeedreaderTabHelper
 
   SpeedreaderService* GetSpeedreaderService();
 
-  void TransitStateTo(DistillState desired_state, bool no_reload = false);
+  void TransitStateTo(const DistillState& desired_state,
+                      bool no_reload = false);
 
 #if BUILDFLAG(IS_ANDROID)
   friend class ui::ViewAndroid;

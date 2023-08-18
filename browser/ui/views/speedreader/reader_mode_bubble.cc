@@ -130,9 +130,8 @@ void ReaderModeBubble::Init() {
                               gfx::Insets::TLBR(24, 24, 0, 24), gfx::Insets());
     site_toggle_->SetCallback(base::BindRepeating(
         &ReaderModeBubble::OnSiteToggled, base::Unretained(this)));
-    site_toggle_->SetIsOn(GetSpeedreaderService()->GetEnabledForSiteSetting(
-                              tab_helper_->web_contents()) ==
-                          CONTENT_SETTING_ALLOW);
+    site_toggle_->SetIsOn(
+        GetSpeedreaderService()->IsEnabledForSite(tab_helper_->web_contents()));
   }
 
   // Always use speedreader for all sites

@@ -20,6 +20,7 @@ namespace {
 constexpr char kSpeedreaderKey[] = "speedreader";
 
 constexpr char kPageSavedDistilled[] = "distilled";
+constexpr char kPageSavedDistilledManual[] = "distilled manually";
 
 struct SpeedreaderNavigationData : public base::SupportsUserData::Data {
   explicit SpeedreaderNavigationData(const std::string& value) : value(value) {}
@@ -43,8 +44,11 @@ void SpeedreaderExtendedInfoHandler::PersistMode(
     DistillState state) {
   DCHECK(entry);
   std::unique_ptr<SpeedreaderNavigationData> data;
-  if (speedreader::DistillStates::IsDistilled(state)) {
+  if (DistillStates::IsDistilledAutomatically(state)) {
     data = std::make_unique<SpeedreaderNavigationData>(kPageSavedDistilled);
+  } else if (DistillStates::IsDistilled(state)) {
+    data =
+        std::make_unique<SpeedreaderNavigationData>(kPageSavedDistilledManual);
   }
 
   entry->SetUserData(kSpeedreaderKey, std::move(data));
@@ -57,10 +61,17 @@ DistillState SpeedreaderExtendedInfoHandler::GetCachedMode(
   DCHECK(entry);
   const auto* data = static_cast<SpeedreaderNavigationData*>(
       entry->GetUserData(kSpeedreaderKey));
-  if (data && data->value == kPageSavedDistilled) {
-    return DistillStates::Distilled();
+  if (!data) {
+    return {};
   }
-  return {};
+  if (data->value == kPageSavedDistilled) {
+    return DistillStates::Distilled(
+        DistillStates::Distilled::Reason::kAutomatic,
+        DistillationResult::kSuccess);
+  }
+
+  return DistillStates::Distilled(DistillStates::Distilled::Reason::kManual,
+                                  DistillationResult::kSuccess);
 }
 
 // static

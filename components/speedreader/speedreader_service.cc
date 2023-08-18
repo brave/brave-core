@@ -143,7 +143,7 @@ void SpeedreaderService::EnableForSite(const GURL& url, bool enabled) {
   }
   const ContentSetting setting =
       enabled ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK;
-  if (IsEnabledForSite(url) == setting) {
+  if (GetEnabledForSiteSetting(url) == setting) {
     return;
   }
   if (!content_rules_) {

@@ -20,118 +20,136 @@ namespace speedreader {
 
 namespace DistillStates {
 
-bool IsTransition(const State& state) {
-  if (absl::holds_alternative<None>(state)) {
-    return false;
-  }
-  if (const auto* s = absl::get_if<ViewOriginal>(&state)) {
-    return s->reason == ViewOriginal::Reason::kUserAction;
-  }
-  if (IsPending(state)) {
-    return true;
-  } else if (IsDistilled(state)) {
-    return false;
-  }
-  NOTREACHED();
-  return false;
+ViewOriginal::ViewOriginal() = default;
+
+ViewOriginal::ViewOriginal(ViewOriginal::Reason reason, bool was_auto_distilled)
+    : reason(reason), was_auto_distilled(was_auto_distilled) {}
+
+ViewOriginal::ViewOriginal(const DistillReverting& state)
+    : ViewOriginal(state.reason, state.was_auto_distilled) {}
+
+Distilling::Distilling(Distilling::Reason reason) : reason(reason) {}
+
+Distilled::Distilled(DistillationResult result)
+    : Distilling(Distilling::Reason::kNone), result(result) {}
+
+Distilled::Distilled(Distilled::Reason reason, DistillationResult result)
+    : Distilling(reason), result(result) {}
+
+Distilled::Distilled(const Distilling& state, DistillationResult result)
+    : Distilled(state.reason, result) {}
+
+DistillReverting::DistillReverting(const Distilling& state, Reason reason)
+    : ViewOriginal(reason, state.reason == Distilling::Reason::kAutomatic) {}
+
+DistillReverting::DistillReverting(const Distilled& state,
+                                   DistillReverting::Reason reason)
+    : ViewOriginal(reason, state.reason == Distilled::Reason::kAutomatic) {}
+
+bool IsViewOriginal(const State& state) {
+  return absl::holds_alternative<ViewOriginal>(state);
 }
 
-bool IsPending(const State& state) {
-  return absl::holds_alternative<Pending>(state);
+bool IsDistilling(const State& state) {
+  return absl::holds_alternative<Distilling>(state);
 }
 
 bool IsDistilled(const State& state) {
   return absl::holds_alternative<Distilled>(state);
 }
 
-bool IsDistillable(const State& state) {
-  return IsDistilled(state) ||
-         (IsViewOriginal(state) &&
-          absl::get<DistillStates::ViewOriginal>(state).reason !=
-              DistillStates::ViewOriginal::Reason::kError);
-}
-
-bool IsViewOriginal(const State& state) {
-  return absl::holds_alternative<ViewOriginal>(state);
+bool IsDistillReverting(const State& state) {
+  return absl::holds_alternative<DistillReverting>(state);
 }
 
 bool IsNotDistillable(const State& state) {
   return IsViewOriginal(state) &&
          absl::get<DistillStates::ViewOriginal>(state).reason ==
-             DistillStates::ViewOriginal::Reason::kError;
+             DistillStates::ViewOriginal::Reason::kNotDistillable;
+}
+
+bool IsDistillable(const State& state) {
+  return IsDistilled(state) ||
+         (IsViewOriginal(state) &&
+          absl::get<DistillStates::ViewOriginal>(state).reason !=
+              DistillStates::ViewOriginal::Reason::kNotDistillable);
+}
+
+bool IsDistilledAutomatically(const State& state) {
+  if (const auto* d = absl::get_if<Distilled>(&state)) {
+    return d->reason == Distilled::Reason::kAutomatic;
+  }
+  return false;
+}
+
+bool Transit(State& state, const State& desired) {
+  if (absl::holds_alternative<None>(state)) {
+    state = desired;
+    return false;
+  }
+
+  if (IsViewOriginal(state)) {
+    if (IsDistillReverting(desired)) {
+      state = ViewOriginal(absl::get<DistillReverting>(desired));
+      return false;
+    }
+    if (IsDistilling(desired)) {
+      state = desired;
+      return true;
+    }
+    if (IsDistilled(desired)) {
+      state = Distilling(absl::get<Distilled>(desired));
+      return true;
+    }
+    DCHECK(IsViewOriginal(desired));
+    // Already view original
+    return false;
+  }
+
+  if (IsDistillReverting(state)) {
+    if (IsViewOriginal(desired)) {
+      state = ViewOriginal(absl::get<DistillReverting>(state));
+      return true;
+    }
+  }
+
+  if (IsDistilling(state)) {
+    if (IsDistilled(desired)) {
+      const auto& d = absl::get<Distilled>(desired);
+      if (d.result == DistillationResult::kFail) {
+        state = ViewOriginal(ViewOriginal::Reason::kError, false);
+        return false;
+      }
+      state = Distilled(absl::get<Distilling>(state), d.result);
+      return false;
+    }
+    if (IsViewOriginal(desired) || IsDistillReverting(desired)) {
+      return false;
+    }
+  }
+
+  if (IsDistilled(state)) {
+    if (IsDistillReverting(desired)) {
+      state = desired;
+      return true;
+    }
+    if (IsViewOriginal(desired)) {
+      state = DistillReverting(
+          absl::get<ViewOriginal>(desired).reason,
+          absl::get<Distilled>(state).reason == Distilled::Reason::kAutomatic);
+      return true;
+    }
+    if (IsDistilled(desired) || IsDistilling(desired)) {
+      // Already distilled.
+      return false;
+    }
+  }
+
+  NOTREACHED();
+  return false;
 }
 
 }  // namespace DistillStates
-
-bool TransitToDistilledDirection(
-    DistillState& state,
-    DistillStates::Pending::Reason reason,
-    DistillationResult result = DistillationResult::kNone) {
-  if (absl::holds_alternative<DistillStates::Pending>(state)) {
-    if (result == DistillationResult::kSuccess) {
-      state = DistillStates::Distilled(result);
-      return false;
-    } else {
-      // Distillation failed.
-      state = DistillStates::ViewOriginal(
-          DistillStates::ViewOriginal::Reason::kError);
-    }
-    return false;
-  }
-  if (absl::holds_alternative<DistillStates::ViewOriginal>(state)) {
-    state = DistillStates::Pending(reason);
-    return true;
-  }
-  if (absl::holds_alternative<DistillStates::Distilled>(state)) {
-    // Already distilled.
-    return false;
-  }
-
-  NOTREACHED();
-  return false;
-}
-
-bool TransitToOriginalDirection(DistillState& state, DistillState&& desired) {
-  if (absl::holds_alternative<DistillStates::ViewOriginal>(state)) {
-    // Already shows original.
-    state = std::move(desired);
-    return false;
-  }
-  if (absl::holds_alternative<DistillStates::Pending>(state) ||
-      absl::holds_alternative<DistillStates::Distilled>(state)) {
-    state = std::move(desired);
-    return true;
-  }
-
-  NOTREACHED();
-  return false;
-}
-
-bool Transit(DistillState& state, DistillState&& desired) {
-  if (absl::holds_alternative<DistillStates::None>(desired)) {
-    return false;
-  } else if (absl::holds_alternative<DistillStates::ViewOriginal>(desired)) {
-    return TransitToOriginalDirection(state, std::move(desired));
-  } else if (absl::holds_alternative<DistillStates::Pending>(desired)) {
-    return TransitToDistilledDirection(
-        state, absl::get<DistillStates::Pending>(desired).reason);
-  }
-
-  CHECK(absl::holds_alternative<DistillStates::Distilled>(desired));
-  return TransitToDistilledDirection(
-      state, DistillStates::Pending::Reason::kNone,
-      absl::get<DistillStates::Distilled>(desired).result);
-}
-
-void PerformStateTransition(DistillState& state) {
-  if (absl::holds_alternative<DistillStates::None>(state)) {
-    NOTREACHED() << "'None' is not transition state.";
-    return;
-  }
-  if (auto* s = absl::get_if<DistillStates::ViewOriginal>(&state)) {
-    s->reason = DistillStates::ViewOriginal::Reason::kNone;
-  }
-}
 
 void DistillPage(const GURL& url,
                  std::string body,
