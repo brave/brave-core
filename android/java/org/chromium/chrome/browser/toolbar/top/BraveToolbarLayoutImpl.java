@@ -510,11 +510,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()
                             && !url.getSpec().startsWith(UrlConstants.CHROME_SCHEME)
                             && !UrlUtilities.isNTPUrl(url.getSpec())) {
-                        SharedPreferencesManager.getInstance().writeInt(
-                                BravePreferenceKeys.LOADED_SITE_COUNT,
-                                SharedPreferencesManager.getInstance().readInt(
-                                        BravePreferenceKeys.LOADED_SITE_COUNT, 0)
-                                        + 1);
                         maybeShowCookieConsentTooltip();
                     }
                 }
@@ -938,6 +933,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mFilterListAndroidHandler != null) {
             mFilterListAndroidHandler.isFilterListEnabled(
                     FilterListConstants.COOKIE_LIST_UUID, isEnabled -> {
+                        SharedPreferencesManager.getInstance().writeInt(
+                                BravePreferenceKeys.LOADED_SITE_COUNT,
+                                SharedPreferencesManager.getInstance().readInt(
+                                        BravePreferenceKeys.LOADED_SITE_COUNT, 0)
+                                        + 1);
                         if (isEnabled
                                 && SharedPreferencesManager.getInstance().readBoolean(
                                         BravePreferenceKeys.SHOULD_SHOW_COOKIE_CONSENT_NOTICE, true)
