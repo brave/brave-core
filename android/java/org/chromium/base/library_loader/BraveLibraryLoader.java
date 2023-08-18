@@ -11,7 +11,6 @@ import android.os.Build;
 
 import androidx.annotation.VisibleForTesting;
 
-import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.BundleUtils;
 import org.chromium.build.NativeLibraries;
 
@@ -30,26 +29,14 @@ public class BraveLibraryLoader extends LibraryLoader {
         return sInstance;
     }
 
-    public void loadWithSystemLinkerAlreadyLocked(ApplicationInfo appInfo, boolean inZygote) {
-        try {
-            callChromiumLoadWithSystemLinkerAlreadyLocked(appInfo, inZygote);
-        } catch (UnsatisfiedLinkError ex) {
-            loadLibsfromSplits();
-        }
+    public void preloadAlreadyLocked(String packageName, boolean inZygote) {
+        assert false : "preloadAlreadyLocked should be redirected to parent in bytecode!";
     }
 
-    private void callChromiumLoadWithSystemLinkerAlreadyLocked(
-            ApplicationInfo appInfo, boolean inZygote) {
-        // This is invoked, but got into endless recursion, because down here
-        // BraveLibraryLoader.loadWithSystemLinkerAlreadyLocked is invoked instead of
-        // LibraryLoader.loadWithSystemLinkerAlreadyLocked
-        BraveReflectionUtil.InvokeMethod(LibraryLoader.class, (LibraryLoader) this,
-                "loadWithSystemLinkerAlreadyLocked", ApplicationInfo.class, appInfo, boolean.class,
-                inZygote);
-
-        // This would work if the super method would be public:
-        // public void loadWithSystemLinkerAlreadyLocked
-        // super.loadWithSystemLinkerAlreadyLocked(appInfo, inZygote);
+    public void loadWithSystemLinkerAlreadyLocked(ApplicationInfo appInfo, boolean inZygote) {
+        setEnvForNative();
+        preloadAlreadyLocked(appInfo.packageName, inZygote);
+        loadLibsfromSplits();
     }
 
     @SuppressLint({"UnsafeDynamicallyLoadedCode"})
