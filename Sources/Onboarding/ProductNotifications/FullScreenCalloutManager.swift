@@ -22,7 +22,7 @@ public enum FullScreenCalloutType: CaseIterable {
    - Cookie Notification
    - VPN Link Receipt
   */
-  case p3a, vpnUpdateBilling, bottomBar, vpnPromotion, defaultBrowser, rewards, vpnLinkReceipt
+  case p3a, vpnUpdateBilling, bottomBar, vpnPromotion, defaultBrowser, rewards, blockCookieConsentNotices, vpnLinkReceipt
 
   /// The number of days passed to show certain type of callout
   var period: Int {
@@ -33,6 +33,7 @@ public enum FullScreenCalloutType: CaseIterable {
     case .vpnPromotion: return 4
     case .defaultBrowser: return 10
     case .rewards: return 8
+    case .blockCookieConsentNotices: return 0
     case .vpnLinkReceipt: return 0
     }
   }
@@ -52,6 +53,8 @@ public enum FullScreenCalloutType: CaseIterable {
       return Preferences.DefaultBrowserIntro.completed
     case .rewards:
       return Preferences.FullScreenCallout.rewardsCalloutCompleted
+    case .blockCookieConsentNotices:
+      return Preferences.FullScreenCallout.blockCookieConsentNoticesCalloutCompleted
     case .vpnLinkReceipt:
       return Preferences.Onboarding.vpnLinkReceiptShown
     }

@@ -39,6 +39,11 @@ extension Preferences {
 
 extension Preferences {
   public final class FullScreenCallout {
+    /// Whether the block cookie consent notices callout is shown.
+    public static let blockCookieConsentNoticesCalloutCompleted = Option<Bool>(
+      key: "fullScreenCallout.full-screen-cookie-consent-notices-callout-completed",
+      default: false)
+    
     /// Whether the bottom bar callout is shown.
     public static let bottomBarCalloutCompleted = Option<Bool>(
       key: "fullScreenCallout.full-screen-bottom-bar-callout-completed",
