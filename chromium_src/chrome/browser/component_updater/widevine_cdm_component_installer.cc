@@ -76,7 +76,6 @@ namespace {
 // needs 3 Mbps at a minimum and recommends 25 Mbps for high-quality streams.
 // So 1 Mbps seems like a conservative number.
 constexpr int kDownloadRequestTimeoutSecs = 60;
-constexpr int kOverallDownloadTimeoutSecs = kDownloadRequestTimeoutSecs + 1;
 
 constexpr net::NetworkTrafficAnnotationTag traffic_annotation =
     net::DefineNetworkTrafficAnnotation("widevine_updater", R"(
@@ -217,12 +216,7 @@ CrxInstaller::Result Arm64DllInstaller::WaitForCompletion() {
   // effects are limited. Finally, we use TimedWait(...) instead of Wait(...) to
   // really make sure that we do not block the thread forever.
   base::ScopedAllowBaseSyncPrimitives allow_wait;
-  bool success =
-      installed_.TimedWait(base::Seconds(kOverallDownloadTimeoutSecs));
-  if (!success) {
-    LOG(ERROR) << "Arm64 DLL download timeout expired.";
-    return CrxInstaller::Result(update_client::InstallError::GENERIC_ERROR);
-  }
+  installed_.Wait();
   return result_;
 }
 
