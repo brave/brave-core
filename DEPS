@@ -28,7 +28,7 @@ deps = {
       'packages': [
           {
               'package': 'chromium/third_party/android_deps/libs/com_google_android_play_core',
-              'version': 'version:2@1.10.0.cr1',
+              'version': 'version:2@1.10.3.cr1',
           },
       ],
       'condition': 'checkout_android',
