@@ -183,14 +183,11 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private ChromeSwitchPreference mClearBrowsingDataOnExit;
     private Preference mUstoppableDomains;
     private ChromeSwitchPreference mFingerprntLanguagePref;
-    private CookieListOptInPageAndroidHandler mCookieListOptInPageAndroidHandler;
     private FilterListAndroidHandler mFilterListAndroidHandler;
 
     @Override
     public void onConnectionError(MojoException e) {
-        mCookieListOptInPageAndroidHandler = null;
         mFilterListAndroidHandler = null;
-        initCookieListOptInPageAndroidHandler();
         initFilterListAndroidHandler();
     }
 
@@ -203,21 +200,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                 FilterListServiceFactory.getInstance().getFilterListAndroidHandler(this);
     }
 
-    private void initCookieListOptInPageAndroidHandler() {
-        if (mCookieListOptInPageAndroidHandler != null) {
-            return;
-        }
-
-        mCookieListOptInPageAndroidHandler =
-                CookieListOptInServiceFactory.getInstance().getCookieListOptInPageAndroidHandler(
-                        this);
-    }
-
     @Override
     public void onDestroy() {
-        if (mCookieListOptInPageAndroidHandler != null) {
-            mCookieListOptInPageAndroidHandler.close();
-        }
         if (mFilterListAndroidHandler != null) {
             mFilterListAndroidHandler.close();
         }
@@ -233,7 +217,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
 
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_privacy_preferences);
 
-        initCookieListOptInPageAndroidHandler();
         initFilterListAndroidHandler();
 
         mHttpsePref = (ChromeSwitchPreference) findPreference(PREF_HTTPSE);
@@ -392,6 +375,15 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     return false;
                 });
             }
+        }
+
+        if (mFilterListAndroidHandler != null) {
+            mFilterListAndroidHandler.isFilterListEnabled(
+                    FilterListConstants.COOKIE_LIST_UUID, isEnabled -> {
+                        if (!isEnabled) {
+                            removePreferenceIfPresent(PREF_BLOCK_COOKIE_CONSENT_NOTICES);
+                        }
+                    });
         }
 
         updateBravePreferences();
