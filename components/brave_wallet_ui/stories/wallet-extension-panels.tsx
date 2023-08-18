@@ -842,7 +842,9 @@ _ConnectHardwareWallet.story = {
 export const _AddSuggestedToken = () => {
   return (
     <StyledExtensionWrapper>
-      <AddSuggestedTokenPanel />
+      <WalletPanelStory>
+        <AddSuggestedTokenPanel />
+      </WalletPanelStory>
     </StyledExtensionWrapper>
   )
 }

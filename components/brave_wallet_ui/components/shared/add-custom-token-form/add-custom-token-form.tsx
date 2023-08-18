@@ -36,7 +36,7 @@ import {
 } from '../../../common/slices/api.slice.extra'
 
 // components
-import { SelectNetworkDropdown } from '../../desktop'
+import { SelectNetworkDropdown } from '../../desktop/select-network-dropdown/index'
 import Tooltip from '../tooltip'
 import { FormErrorsList } from './form-errors-list'
 

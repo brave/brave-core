@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 // Styled Components
 import {
@@ -21,26 +22,23 @@ import {
 import { URLText } from '../shared-panel-styles'
 
 // Components
-import {
-  withPlaceholderIcon,
-  Tooltip,
-  CreateSiteOrigin,
-  LoadingSkeleton
-} from '../../shared'
-import { NavButton } from '..'
+import withPlaceholderIcon from '../../shared/create-placeholder-icon/index'
+import { Tooltip } from '../../shared/tooltip/index'
+import CreateSiteOrigin from '../../shared/create-site-origin/index'
+import LoadingSkeleton from '../../shared/loading-skeleton/index'
+import { NavButton } from '../buttons/nav-button/index'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import { getLocale } from '../../../../common/locale'
 
 // Hooks
-import { useExplorer } from '../../../common/hooks'
+import useExplorer from '../../../common/hooks/explorer'
 import {
   useApproveOrDeclineTokenSuggestionMutation,
   useGetNetworkQuery,
   useGetPendingTokenSuggestionRequestsQuery
 } from '../../../common/slices/api.slice'
-import { skipToken } from '@reduxjs/toolkit/dist/query'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, {
   size: 'big',
