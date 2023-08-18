@@ -17,7 +17,7 @@ namespace brave_vpn {
 namespace wireguard {
 
 bool IsBraveVPNWireguardTunnelServiceRunning();
-
+bool IsWireguardServiceRegistered();
 void WireguardGenerateKeypair(WireguardGenerateKeypairCallback callback);
 absl::optional<std::string> CreateWireguardConfig(
     const std::string& client_private_key,

@@ -16,10 +16,10 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
-#include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 #include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
+#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils.h"
 #include "chrome/browser/browser_process.h"
 #include "components/prefs/pref_service.h"
 #include "components/version_info/version_info.h"
@@ -95,10 +95,9 @@ void BraveVpnHandler::HandleIsWireguardServiceRegistered(
     const base::Value::List& args) {
   AllowJavascript();
 
-  auto status = brave_vpn::GetWindowsServiceStatus(
-      brave_vpn::GetBraveVpnWireguardServiceName());
-
-  ResolveJavascriptCallback(args[0], base::Value(status.has_value()));
+  ResolveJavascriptCallback(
+      args[0],
+      base::Value(brave_vpn::wireguard::IsWireguardServiceRegistered()));
 }
 
 void BraveVpnHandler::HandleIsBraveVpnConnected(const base::Value::List& args) {
