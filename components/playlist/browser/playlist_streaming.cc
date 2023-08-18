@@ -58,12 +58,13 @@ void PlaylistStreaming::QueryPrompt(
         data_received_callback,
     api_request_helper::APIRequestHelper::ResultCallback
         data_completed_callback) {
-  LOG(ERROR) << "data_source : "
-             << "PlaylistStreaming::QueryPrompt";
+  // LOG(ERROR) << "data_source : "
+  //            << "PlaylistStreaming::QueryPrompt";
   base::flat_map<std::string, std::string> headers;
   // headers.emplace("Range", "bytes=0-4000");
-  LOG(ERROR) << "data_source"
-             << "PlaylistStreaming : url : " << url << " method : " << method;
+  // LOG(ERROR) << "data_source"
+  //            << "PlaylistStreaming : url : " << url << " method : " <<
+  //            method;
   api_request_helper_->RequestSSE(method, GURL(url), "", "application/json",
                                   std::move(data_received_callback),
                                   std::move(data_completed_callback), headers,

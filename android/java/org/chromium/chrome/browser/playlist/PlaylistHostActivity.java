@@ -31,11 +31,13 @@ import com.brave.playlist.model.PlaylistItemModel;
 import com.brave.playlist.model.PlaylistModel;
 import com.brave.playlist.model.PlaylistOptionsModel;
 import com.brave.playlist.util.ConstantUtils;
+import com.brave.playlist.util.HLSParsingUtil;
 import com.brave.playlist.util.MediaUtils;
 import com.brave.playlist.util.PlaylistUtils;
 import com.brave.playlist.view.bottomsheet.MoveOrCopyToPlaylistBottomSheet;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.PlaybackException;
+import com.google.android.exoplayer2.source.hls.playlist.HlsMediaPlaylist.Segment;
 import com.google.android.exoplayer2.upstream.BaseDataSource;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSourceException;
@@ -43,6 +45,7 @@ import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.upstream.HttpUtil;
 import com.google.android.exoplayer2.upstream.TransferListener;
+import com.google.android.exoplayer2.util.UriUtil;
 import com.google.android.exoplayer2.util.Util;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
@@ -78,8 +81,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 public class PlaylistHostActivity extends AsyncInitializationActivity
         implements ConnectionErrorHandler, PlaylistOptionsListener,
@@ -88,6 +93,7 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
     public static PlaylistService mPlaylistService;
     private PlaylistViewModel mPlaylistViewModel;
     private PlaylistServiceObserverImpl mPlaylistServiceObserver;
+    Queue<Segment> segmentsQueue = new LinkedList<Segment>();
     // private FileOutputStream fileOutputStream = null;
     // private PlaylistStreamingObserverImpl mPlaylistStreamingObserver;
 
@@ -134,70 +140,77 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
 
         mPlaylistViewModel.getOpenPlaylistStream().observe(
                 PlaylistHostActivity.this, playlistItemModel -> {
+                    String extension = playlistItemModel.getMediaPath().substring(
+                            playlistItemModel.getMediaPath().lastIndexOf("."));
+                    Log.e("data_source", "extension : " + extension);
+                    // if (playlistItemModel.isCached() && extension == ".m3u8") {
+                    final String manifestUrl = HLSParsingUtil.getContentManifestUrl(
+                            PlaylistHostActivity.this, playlistItemModel);
                     if (mPlaylistService != null) {
-                        Log.e("data_source", "queryPrompt");
-                        mPlaylistService.queryPrompt(playlistItemModel.getMediaSrc(), "GET");
-                        if (mPlaylistViewModel == null) {
-                            return;
-                        }
-                        Log.e("data_source", "onResponseStarted");
-                        mPlaylistViewModel.setPlaylistItemToOpen(playlistItemModel);
-
+                        // Log.e("data_source", "queryPrompt : "+manifestUrl);
+                        mPlaylistService.queryPrompt(manifestUrl, "GET");
                         PlaylistStreamingObserver playlistStreamingObserverImpl =
                                 new PlaylistStreamingObserver() {
                                     @Override
                                     public void onResponseStarted(String url, long contentLength) {
                                         try {
+                                            Log.e("data_source",
+                                                    "onResponseStarted : " + manifestUrl);
                                             File mediaFile = new File(
                                                     MediaUtils
-                                                            .getTempFile(PlaylistHostActivity.this)
+                                                            .getTempManifestFile(
+                                                                    PlaylistHostActivity.this)
                                                             .getAbsolutePath());
                                             if (mediaFile.exists()) {
                                                 mediaFile.delete();
                                             }
-                                            // fileOutputStream = new FileOutputStream(mediaFile);
                                         } catch (Exception ex) {
                                             ex.printStackTrace();
                                         }
-                                        // Start videoPlayer page
-                                        //  if (mPlaylistViewModel == null) {
-                                        //      return;
-                                        //  }
-                                        //  Log.e("data_source", "onResponseStarted");
-                                        //  mPlaylistViewModel.setPlaylistItemToOpen(playlistItemModel);
                                     }
 
                                     @Override
                                     public void onDataReceived(byte[] response) {
-                                        Log.e("data_source", "onDataReceived : " + response.length);
-                                        // PostTask.postTask(
-                                        //         TaskTraits.USER_VISIBLE_MAY_BLOCK, () -> {
+                                        // Log.e("data_source",
+                                        //         "onDataReceived : " + response.length);
                                         try {
-                                            // MediaUtils.writeToFile(response,
-                                            // PlaylistHostActivity.this); String text = "Hello \n";
                                             MediaUtils.writeToFile(response,
                                                     MediaUtils
-                                                            .getTempFile(PlaylistHostActivity.this)
+                                                            .getTempManifestFile(
+                                                                    PlaylistHostActivity.this)
                                                             .getAbsolutePath());
-                                            // fileOutputStream.write(response);
                                         } catch (Exception ex) {
                                             ex.printStackTrace();
                                         }
-                                        // });
                                     }
 
                                     @Override
                                     public void onDataCompleted() {
+                                        // Log.e("data_source", "onDataCompleted : "+manifestUrl);
                                         try {
-                                            // fileOutputStream.close();
+                                            List<Segment> segments =
+                                                    HLSParsingUtil.getContentSegments(
+                                                            MediaUtils
+                                                                    .getTempManifestFile(
+                                                                            PlaylistHostActivity
+                                                                                    .this)
+                                                                    .getAbsolutePath(),
+                                                            manifestUrl);
+                                            for (Segment segment : segments) {
+                                                // Log.e("data_source",
+                                                //         "segment.url : " +
+                                                //         UriUtil.resolve(manifestUrl,
+                                                //         segment.url));
+                                                segmentsQueue.add(segment);
+                                            }
+                                            mPlaylistService.clearObserverForStreaming();
+                                            Segment segment = segmentsQueue.poll();
+                                            if (segment != null) {
+                                                downalodHLSFile(manifestUrl, segment);
+                                            }
                                         } catch (Exception ex) {
                                             ex.printStackTrace();
                                         }
-                                        // if (mPlaylistViewModel == null) {
-                                        //     return;
-                                        // }
-                                        // Log.e("data_source", "onDataCompleted");
-                                        // mPlaylistViewModel.setPlaylistItemToOpen(playlistItemModel);
                                     }
 
                                     @Override
@@ -209,6 +222,93 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
 
                         mPlaylistService.addObserverForStreaming(playlistStreamingObserverImpl);
                     }
+
+                    // } else {
+                    //     if (mPlaylistService != null) {
+                    //         Log.e("data_source", "queryPrompt");
+                    //         mPlaylistService.queryPrompt(playlistItemModel.getMediaSrc(), "GET");
+                    //         if (mPlaylistViewModel == null) {
+                    //             return;
+                    //         }
+                    //         Log.e("data_source", "onResponseStarted");
+                    //         mPlaylistViewModel.setPlaylistItemToOpen(playlistItemModel);
+
+                    //         PlaylistStreamingObserver playlistStreamingObserverImpl =
+                    //                 new PlaylistStreamingObserver() {
+                    //                     @Override
+                    //                     public void onResponseStarted(
+                    //                             String url, long contentLength) {
+                    //                         try {
+                    //                             File mediaFile = new File(
+                    //                                     MediaUtils
+                    //                                             .getTempFile(
+                    //                                                     PlaylistHostActivity.this)
+                    //                                             .getAbsolutePath());
+                    //                             if (mediaFile.exists()) {
+                    //                                 mediaFile.delete();
+                    //                             }
+                    //                             // fileOutputStream = new
+                    //                             // FileOutputStream(mediaFile);
+                    //                         } catch (Exception ex) {
+                    //                             ex.printStackTrace();
+                    //                         }
+                    //                         // Start videoPlayer page
+                    //                         //  if (mPlaylistViewModel == null) {
+                    //                         //      return;
+                    //                         //  }
+                    //                         //  Log.e("data_source", "onResponseStarted");
+                    //                         //
+                    //                         mPlaylistViewModel.setPlaylistItemToOpen(playlistItemModel);
+                    //                     }
+
+                    //                     @Override
+                    //                     public void onDataReceived(byte[] response) {
+                    //                         Log.e("data_source",
+                    //                                 "onDataReceived : " + response.length);
+                    //                         // PostTask.postTask(
+                    //                         //         TaskTraits.USER_VISIBLE_MAY_BLOCK, () -> {
+                    //                         try {
+                    //                             // MediaUtils.writeToFile(response,
+                    //                             // PlaylistHostActivity.this); String text =
+                    //                             "Hello
+                    //                             // \n";
+                    //                             MediaUtils.writeToFile(response,
+                    //                                     MediaUtils
+                    //                                             .getTempFile(
+                    //                                                     PlaylistHostActivity.this)
+                    //                                             .getAbsolutePath());
+                    //                             // fileOutputStream.write(response);
+                    //                         } catch (Exception ex) {
+                    //                             ex.printStackTrace();
+                    //                         }
+                    //                         // });
+                    //                     }
+
+                    //                     @Override
+                    //                     public void onDataCompleted() {
+                    //                         try {
+                    //                             // fileOutputStream.close();
+                    //                         } catch (Exception ex) {
+                    //                             ex.printStackTrace();
+                    //                         }
+                    //                         // if (mPlaylistViewModel == null) {
+                    //                         //     return;
+                    //                         // }
+                    //                         // Log.e("data_source", "onDataCompleted");
+                    //                         //
+                    //                         mPlaylistViewModel.setPlaylistItemToOpen(playlistItemModel);
+                    //                     }
+
+                    //                     @Override
+                    //                     public void close() {}
+
+                    //                     @Override
+                    //                     public void onConnectionError(MojoException e) {}
+                    //                 };
+
+                    //         mPlaylistService.addObserverForStreaming(playlistStreamingObserverImpl);
+                    //     }
+                    // }
                 });
 
         mPlaylistViewModel.getCreatePlaylistOption().observe(
@@ -645,5 +745,66 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
     @Override
     public boolean shouldStartGpuProcess() {
         return true;
+    }
+
+    private void downalodHLSFile(String manifestUrl, Segment segment) {
+        if (mPlaylistService != null) {
+            // Log.e("data_source", "queryPrompt : "+manifestUrl);
+            mPlaylistService.queryPrompt(UriUtil.resolve(manifestUrl, segment.url), "GET");
+            PlaylistStreamingObserver playlistStreamingObserverImpl =
+                    new PlaylistStreamingObserver() {
+                        @Override
+                        public void onResponseStarted(String url, long contentLength) {
+                            try {
+                                Log.e("data_source", "onResponseStarted : " + segment.url);
+                                // File mediaFile = new File(
+                                //         MediaUtils
+                                //                 .getTempFile(
+                                //                         PlaylistHostActivity.this)
+                                //                 .getAbsolutePath());
+                                // if (mediaFile.exists()) {
+                                //     mediaFile.delete();
+                                // }
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onDataReceived(byte[] response) {
+                            // Log.e("data_source",
+                            //         "onDataReceived : " + response.length);
+                            try {
+                                MediaUtils.writeToFile(response,
+                                        MediaUtils.getTempFile(PlaylistHostActivity.this)
+                                                .getAbsolutePath());
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onDataCompleted() {
+                            // Log.e("data_source", "onDataCompleted : "+segment.url);
+                            try {
+                                mPlaylistService.clearObserverForStreaming();
+                                Segment newSegment = segmentsQueue.poll();
+                                if (newSegment != null) {
+                                    downalodHLSFile(manifestUrl, newSegment);
+                                }
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void close() {}
+
+                        @Override
+                        public void onConnectionError(MojoException e) {}
+                    };
+
+            mPlaylistService.addObserverForStreaming(playlistStreamingObserverImpl);
+        }
     }
 }

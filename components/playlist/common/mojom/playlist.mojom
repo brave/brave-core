@@ -136,6 +136,7 @@ interface PlaylistService {
 
   AddObserver(pending_remote<PlaylistServiceObserver> observer);
   AddObserverForStreaming(pending_remote<PlaylistStreamingObserver> observer);
+  ClearObserverForStreaming();
 };
 
 // WebUI will delegate some UIs to native UI via this interface. While
