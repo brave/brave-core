@@ -44,7 +44,6 @@ var package = Package(
     .plugin(name: "LeoAssetsPlugin", targets: ["LeoAssetsPlugin"])
   ],
   dependencies: [
-    .package(url: "https://github.com/weichsel/ZIPFoundation", from: "0.9.15"),
     .package(url: "https://github.com/SnapKit/SnapKit", from: "5.0.1"),
     .package(url: "https://github.com/cezheng/Fuzi", from: "3.1.3"),
     .package(url: "https://github.com/SwiftyJSON/SwiftyJSON", from: "5.0.0"),
@@ -355,7 +354,6 @@ var braveTarget: PackageDescription.Target = .target(
     "Fuzi",
     "SnapKit",
     "Static",
-    "ZIPFoundation",
     "SDWebImage",
     "Then",
     "SwiftKeychainWrapper",
