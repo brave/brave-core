@@ -77,6 +77,14 @@ export const adTypeInfo = styled.span`
     left: 100%;
     padding-left: 12px;
   }
+
+  .layout-narrow & .tooltip {
+    top: 100%;
+    transform: none;
+    left: -80px;
+    padding-left: 0;
+    padding-top: 12px;
+  }
 `
 
 export const infoTooltip = styled.div`
@@ -96,6 +104,12 @@ export const infoTooltip = styled.div`
     width: 9px;
     top: calc(50% - 4px);
     left: -4px;
+  }
+
+  .layout-narrow &:before {
+    top: -4px;
+    left: 82px;
+    padding-left: 0;
   }
 `
 
