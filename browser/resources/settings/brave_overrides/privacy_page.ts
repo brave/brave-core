@@ -22,7 +22,9 @@ function InsertGoogleSignInSubpage (
           <div id="page-title" class="content-settings-header secondary"></div>
           <settings-category-default-radio-group
               id="googleSignInDefault"
-              category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]">
+              category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]"
+              allow-option-icon="user"
+              block-option-icon="user-off">
           </settings-category-default-radio-group>
           <category-setting-exceptions
             id="googleSignInExceptions"
@@ -95,7 +97,9 @@ function InsertLocalhostAccessSubpage (
           <div id="page-title" class="content-settings-header secondary"></div>
           <settings-category-default-radio-group
               id="localhostAccessDefault"
-              category="[[contentSettingsTypesEnum_.LOCALHOST_ACCESS]]">
+              category="[[contentSettingsTypesEnum_.LOCALHOST_ACCESS]]"
+              allow-option-icon="smartphone-desktop"
+              block-option-icon="smartphone-desktop-off">
           </settings-category-default-radio-group>
           <category-setting-exceptions
             id="localhostExceptions"
@@ -170,7 +174,9 @@ function InsertAutoplaySubpage (
           <div id="page-title" class="content-settings-header secondary"></div>
           <settings-category-default-radio-group
               id="autoplayDefault"
-              category="[[contentSettingsTypesEnum_.AUTOPLAY]]">
+              category="[[contentSettingsTypesEnum_.AUTOPLAY]]"
+              allow-option-icon="autoplay-on"
+              block-option-icon="autoplay-off">
           </settings-category-default-radio-group>
           <category-setting-exceptions
             id="autoplayExceptions"
@@ -240,7 +246,9 @@ function InsertEthereumSubpage (
           <div id="page-title" class="content-settings-header secondary"></div>
           <settings-category-default-radio-group
               id="ethereumDefault"
-              category="[[contentSettingsTypesEnum_.ETHEREUM]]">
+              category="[[contentSettingsTypesEnum_.ETHEREUM]]"
+              allow-option-icon="ethereum-on"
+              block-option-icon="ethereum-off">
           </settings-category-default-radio-group>
           <category-setting-exceptions
             id="ethereumExceptions"
@@ -311,7 +319,9 @@ function InsertSolanaSubpage (
           <div id="page-title" class="content-settings-header secondary"></div>
           <settings-category-default-radio-group
               id="solanaDefault"
-              category="[[contentSettingsTypesEnum_.SOLANA]]">
+              category="[[contentSettingsTypesEnum_.SOLANA]]"
+              allow-option-icon="solana-on"
+              block-option-icon="solana-off">
           </settings-category-default-radio-group>
           <category-setting-exceptions
             id="solanaExceptions"
