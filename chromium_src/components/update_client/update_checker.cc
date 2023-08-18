@@ -12,7 +12,8 @@
 namespace update_client {
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-constexpr char kHasArm64Key[] = "brave_upstream_has_arm64";
+constexpr char kUpstreamHasArm64WidevineKey[] =
+    "brave_upstream_has_arm64_widevine";
 #endif
 
 SequentialUpdateChecker::SequentialUpdateChecker(
@@ -122,7 +123,8 @@ void SequentialUpdateChecker::UpdateResultAvailable(
     CHECK(!results->list.empty());
     auto r = results->list.begin();
     if (r->extension_id == kWidevineComponentId && fake_architecture.empty()) {
-      bool upstream_has_arm64 = GetPersistedFlag(r->extension_id, kHasArm64Key);
+      bool upstream_has_arm64 =
+          GetPersistedFlag(r->extension_id, kUpstreamHasArm64WidevineKey);
       if (upstream_has_arm64) {
         VLOG(1) << "Skipping WIDEVINE_ARM64_DLL_FIX because we already saw "
                    "once that upstream offers Arm64 binaries for Widevine. "
@@ -141,7 +143,7 @@ void SequentialUpdateChecker::UpdateResultAvailable(
           // us not fall back to x64 in the benign case where we are on the
           // latest version of Arm64 Widevine and are getting a "noupdate"
           // response.
-          SetPersistedFlag(r->extension_id, kHasArm64Key);
+          SetPersistedFlag(r->extension_id, kUpstreamHasArm64WidevineKey);
         }
       }
     }
