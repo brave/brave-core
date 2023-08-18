@@ -46,9 +46,9 @@
 #include "third_party/zlib/google/zip.h"
 #include "url/gurl.h"
 
-#endif
-
 using update_client::CrxInstaller;
+
+#endif
 
 #if !BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 
