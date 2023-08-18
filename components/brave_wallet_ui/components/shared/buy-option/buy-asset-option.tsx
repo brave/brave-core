@@ -31,6 +31,7 @@ import {
 import { IconsWrapper, MediumAssetIcon, NetworkIconWrapper } from '../style'
 import { withPlaceholderIcon } from '../create-placeholder-icon/index'
 import { CreateNetworkIcon } from '../create-network-icon/index'
+import { NftIcon } from '../nft-icon/nft-icon'
 
 // styles
 import {
@@ -53,7 +54,12 @@ interface Props {
   selectedCurrency?: string
 }
 
-const AssetIconWithPlaceholder = withPlaceholderIcon(MediumAssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
+const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 8 } as const
+const AssetIconWithPlaceholder = withPlaceholderIcon(
+  MediumAssetIcon,
+  ICON_CONFIG
+)
+const NftAssetIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 
 export const BuyAssetOptionItem = React.forwardRef<HTMLButtonElement, Props>(({
   onClick,
@@ -121,7 +127,13 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLButtonElement, Props>(({
     >
       <NameAndIcon>
         <IconsWrapper marginRight='14px'>
-          <AssetIconWithPlaceholder asset={token} network={tokenNetwork} />
+          {token.isErc721
+            ? <NftAssetIconWithPlaceholder
+                asset={token}
+                network={tokenNetwork}
+              />
+            : <AssetIconWithPlaceholder asset={token} network={tokenNetwork} />
+          }
           {tokenNetwork &&
             !isPanel &&
             checkIfTokenNeedsNetworkIcon(
