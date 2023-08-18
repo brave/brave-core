@@ -522,6 +522,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                 }
             }
         } else if (PREF_REQUEST_OTR.equals(key)) {
+            UserPrefs.get(Profile.getLastUsedRegularProfile())
+                    .setInteger(BravePref.REQUEST_OTR_ACTION_OPTION, (int) newValue);
             setRequestOtrPref();
         } else if (PREF_FINGERPRINT_LANGUAGE.equals(key)) {
             UserPrefs.get(Profile.getLastUsedRegularProfile())
@@ -807,11 +809,11 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private void setRequestOtrPref() {
         int requestOtrPrefValue = UserPrefs.get(Profile.getLastUsedRegularProfile())
                                           .getInteger(BravePref.REQUEST_OTR_ACTION_OPTION);
-        if (requestOtrPrefValue == BraveShieldsContentSettings.ASK) {
+        if (requestOtrPrefValue == BraveShieldsContentSettings.ALWAYS) {
             mRequestOtrPref.setCheckedIndex(0);
             mRequestOtrPref.setSummary(
                     getActivity().getResources().getString(R.string.request_otr_option_1));
-        } else if (requestOtrPrefValue == BraveShieldsContentSettings.ALWAYS) {
+        } else if (requestOtrPrefValue == BraveShieldsContentSettings.ASK) {
             mRequestOtrPref.setCheckedIndex(1);
             mRequestOtrPref.setSummary(
                     getActivity().getResources().getString(R.string.request_otr_option_2));
