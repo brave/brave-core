@@ -16,7 +16,6 @@
 #include "base/time/time.h"
 #include "brave/components/brave_federated/adapters/flower_helper.h"
 #include "brave/components/brave_federated/task/typing.h"
-#include "net/base/load_flags.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"

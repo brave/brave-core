@@ -253,7 +253,7 @@ base::expected<PerformanceReportInfo, std::string> Model::Evaluate(
       total_correct++;
     }
   }
-  float accuracy = total_correct / test_dataset.size();
+  float accuracy = static_cast<float>(total_correct / test_dataset.size());
 
   auto loss_predicted = Predict(features);
   if (!loss_predicted.has_value()) {
