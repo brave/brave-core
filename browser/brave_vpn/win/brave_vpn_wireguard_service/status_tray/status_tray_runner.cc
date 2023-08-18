@@ -237,8 +237,9 @@ void StatusTrayRunner::SubscribeForStorageUpdates() {
       &StatusTrayRunner::OnStorageUpdated, weak_factory_.GetWeakPtr()));
 }
 
-base::FilePath StatusTrayRunner::FindPakFilePath(base::FilePath assets_path,
-                                                 const std::string& locale) {
+base::FilePath StatusTrayRunner::FindPakFilePath(
+    const base::FilePath& assets_path,
+    const std::string& locale) {
   auto pak_path = GetResourcesPakFilePath(assets_path.DirName(), locale);
   if (base::PathExists(pak_path)) {
     return pak_path;

@@ -49,7 +49,7 @@ class StatusTrayRunner : public TrayMenuModel::Delegate {
   StatusTrayRunner();
   ~StatusTrayRunner() override;
 
-  base::FilePath FindPakFilePath(base::FilePath assets_path,
+  base::FilePath FindPakFilePath(const base::FilePath& assets_path,
                                  const std::string& locale);
   void LoadLocaleResources();
   bool IsTunnelServiceRunning() const;
