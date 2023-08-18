@@ -7,7 +7,6 @@ import Storage
 import AVFoundation
 import MessageUI
 import SDWebImage
-import SwiftKeychainWrapper
 import LocalAuthentication
 import CoreSpotlight
 import UserNotifications
@@ -61,14 +60,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     #endif
     
     AppState.shared.state = .launching(options: launchOptions ?? [:], active: false)
-
-    // Passcode checking, must happen on immediate launch
-    if !DataController.shared.storeExists() {
-      // Reset password authentication prior to `WindowProtection`
-      // This reset is done if there is no database as the user will be locked out
-      // upon reinstall.
-      KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(nil)
-    }
     
     // Set the Safari UA for browsing.
     setUserAgent()

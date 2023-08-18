@@ -3,27 +3,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Foundation
-import SwiftKeychainWrapper
 
 fileprivate let KeychainKeyAuthenticationInfo = "authenticationInfo"
 fileprivate let AllowedPasscodeFailedAttempts = 3
-
-// MARK: - Helper methods for accessing Authentication information from the Keychain
-public extension KeychainWrapper {
-  func authenticationInfo() -> AuthenticationKeychainInfo? {
-    NSKeyedUnarchiver.setClass(AuthenticationKeychainInfo.self, forClassName: "AuthenticationKeychainInfo")
-    return object(forKey: KeychainKeyAuthenticationInfo) as? AuthenticationKeychainInfo
-  }
-
-  func setAuthenticationInfo(_ info: AuthenticationKeychainInfo?) {
-    NSKeyedArchiver.setClassName("AuthenticationKeychainInfo", for: AuthenticationKeychainInfo.self)
-    if let info = info {
-      set(info, forKey: KeychainKeyAuthenticationInfo)
-    } else {
-      removeObject(forKey: KeychainKeyAuthenticationInfo)
-    }
-  }
-}
 
 open class AuthenticationKeychainInfo: NSObject, NSSecureCoding {
   fileprivate(set) open var passcode: String?

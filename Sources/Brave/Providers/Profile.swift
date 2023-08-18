@@ -9,7 +9,6 @@
 // increased startup times which may lead to termination by the OS.
 import Shared
 import Storage
-import SwiftKeychainWrapper
 import Foundation
 import os.log
 
@@ -89,7 +88,6 @@ extension Profile {
 open class BrowserProfile: Profile {
 
   fileprivate let name: String
-  fileprivate let keychain: KeychainWrapper
   public var isShutdown = false
 
   public  let files: FileAccessor
@@ -111,7 +109,6 @@ open class BrowserProfile: Profile {
     Logger.module.debug("Initing profile \(localName) on thread \(Thread.current).")
     self.name = localName
     self.files = ProfileFileAccessor(localName: localName)
-    self.keychain = KeychainWrapper.sharedAppContainerKeychain
 
     if clear {
       do {

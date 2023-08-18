@@ -10,7 +10,6 @@ import Shared
 import Combine
 import Preferences
 import BraveUI
-import SwiftKeychainWrapper
 import os.log
 
 public class WindowProtection {

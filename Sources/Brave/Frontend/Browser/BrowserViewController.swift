@@ -1114,9 +1114,7 @@ public class BrowserViewController: UIViewController {
   }
 
   override public func viewDidAppear(_ animated: Bool) {
-    // Passcode Migration has highest priority, it should be presented over everything else
-    presentPassCodeMigration()
-
+    
     // Present Onboarding to new users, existing users will not see the onboarding
     presentOnboardingIntro()
 
