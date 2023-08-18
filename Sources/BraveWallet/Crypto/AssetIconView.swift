@@ -58,8 +58,8 @@ struct AssetIconView: View {
         image
           .resizable()
           .aspectRatio(contentMode: .fit)
-      } else {
-        WebImageReader(url: URL(string: token.logo)) { image, isFinished in
+      } else if let url = URL(string: token.logo) {
+        WebImageReader(url: url) { image in
           if let image = image {
             Image(uiImage: image)
               .resizable()
@@ -68,6 +68,8 @@ struct AssetIconView: View {
             fallbackMonogram
           }
         }
+      } else {
+        fallbackMonogram
       }
     }
     .frame(width: min(length, maxLength ?? length), height: min(length, maxLength ?? length))

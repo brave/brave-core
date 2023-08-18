@@ -20,7 +20,8 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
   public init(
     walletStore: WalletStore,
     tabDappStore: TabDappStore,
-    origin: URLOrigin
+    origin: URLOrigin,
+    webImageDownloader: WebImageDownloaderType
   ) {
     gesture = WalletInteractionGestureRecognizer(
       keyringStore: walletStore.keyringStore
@@ -49,7 +50,7 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
             self.dismiss(
               animated: true,
               completion: {
-                let walletHostingController = WalletHostingViewController(walletStore: walletStore, presentingContext: .buySendSwap(destination))
+                let walletHostingController = WalletHostingViewController(walletStore: walletStore, webImageDownloader: webImageDownloader, presentingContext: .buySendSwap(destination))
                 walletHostingController.delegate = self.delegate
                 self.present(walletHostingController, animated: true)
               })

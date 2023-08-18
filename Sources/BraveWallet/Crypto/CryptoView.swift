@@ -14,6 +14,7 @@ import Preferences
 public struct CryptoView: View {
   var walletStore: WalletStore
   @ObservedObject var keyringStore: KeyringStore
+  var webImageDownloader: WebImageDownloaderType
   var presentingContext: PresentingContext
   @Environment(\.presentationMode) @Binding private var presentationMode
 
@@ -26,10 +27,12 @@ public struct CryptoView: View {
   public init(
     walletStore: WalletStore,
     keyringStore: KeyringStore,
+    webImageDownloader: WebImageDownloaderType,
     presentingContext: PresentingContext
   ) {
     self.walletStore = walletStore
     self.keyringStore = keyringStore
+    self.webImageDownloader = webImageDownloader
     self.presentingContext = presentingContext
   }
 
@@ -272,6 +275,7 @@ public struct CryptoView: View {
       .init(action: { [appRatingRequestAction] in
         appRatingRequestAction?()
       }))
+    .environment(\.webImageDownloader, webImageDownloader)
     .onChange(of: visibleScreen) { newValue in
       if case .panelUnlockOrSetup = presentingContext, newValue == .crypto {
         dismissAction()

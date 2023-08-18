@@ -6,6 +6,7 @@
 import Foundation
 import BraveCore
 import BraveShared
+import BraveUI
 
 #if DEBUG
 

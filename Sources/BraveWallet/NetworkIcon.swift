@@ -22,7 +22,7 @@ struct NetworkIcon: View {
           .saturation(grayscale ? 0 : 1)
       } else if let urlString = network.iconUrls.first,
                 let url = URL(string: urlString) {
-        WebImageReader(url: url) { image, isFinished in
+        WebImageReader(url: url) { image in
           if let image = image {
             Image(uiImage: image)
               .aspectRatio(contentMode: .fit)
