@@ -197,6 +197,8 @@ public class PortfolioFragment
                     mPendingTxs = transactionInfos;
                     if (mCurrentPendingTx == null && mPendingTxs.size() > 0) {
                         mCurrentPendingTx = mPendingTxs.get(0);
+                    } else if (mPendingTxs.size() == 0) {
+                        mCurrentPendingTx = null;
                     }
                     updatePendingTxNotification();
                 });
@@ -416,7 +418,7 @@ public class PortfolioFragment
                                 .getAccountNameForTransaction(mCurrentPendingTx));
         approveTxBottomSheetDialogFragment.setApprovedTxObserver(this);
         approveTxBottomSheetDialogFragment.show(
-                getFragmentManager(), ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
+                getParentFragmentManager(), ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
     }
 
     private void showEditVisibleDialog() {
