@@ -182,7 +182,7 @@ bool SequentialUpdateChecker::GetPersistedFlag(const std::string& extension_id,
   return !update_context_->persisted_data->GetString(extension_id, key).empty();
 }
 
-#endif
+#endif  // BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 
 std::unique_ptr<UpdateChecker> SequentialUpdateChecker::Create(
     scoped_refptr<Configurator> config,
