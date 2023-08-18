@@ -6,15 +6,16 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_THUMBNAIL_DOWNLOADER_H_
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_THUMBNAIL_DOWNLOADER_H_
 
+#include <list>
 #include <memory>
 #include <string>
 
 #include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
 #include "base/gtest_prod_util.h"
+#include "base/memory/ref_counted_memory.h"
 #include "base/memory/scoped_refptr.h"
-#include "brave/components/api_request_helper/api_request_helper.h"
-
+#include "services/network/public/cpp/simple_url_loader.h"
 namespace content {
 class BrowserContext;
 }  // namespace content
@@ -22,6 +23,10 @@ class BrowserContext;
 namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
+
+namespace gfx {
+class Image;
+}  // namespace gfx
 
 #if BUILDFLAG(IS_ANDROID)
 namespace base {
@@ -37,6 +42,11 @@ class PlaylistThumbnailDownloader {
  public:
   class Delegate {
    public:
+    virtual void SanitizeImage(
+        std::unique_ptr<std::string> image,
+        base::OnceCallback<void(scoped_refptr<base::RefCountedBytes>)>
+            callback) = 0;
+
     // If |path| is empty, thumbnail fetching for |id| is failed.
     virtual void OnThumbnailDownloaded(const std::string& id,
                                        const base::FilePath& path) = 0;
@@ -52,41 +62,51 @@ class PlaylistThumbnailDownloader {
   void DownloadThumbnail(const std::string& id,
                          const GURL& thumbnail_url,
                          const base::FilePath& target_thumbnail_path);
+  void DownloadThumbnail(const std::string& id,
+                         const GURL& thumbnail_url,
+                         base::OnceCallback<void(gfx::Image)> callback);
+
   void CancelDownloadRequest(const std::string& id);
   void CancelAllDownloadRequests();
 
-  bool has_download_requests() const { return ticket_map_.size(); }
+  bool has_download_requests() const { return url_loader_map_.size(); }
 
  private:
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ResetAll);
 
-  using APIRequestHelper = api_request_helper::APIRequestHelper;
-  using TicketMap = base::flat_map<std::string, APIRequestHelper::Ticket>;
+  using URLLoaders = std::list<std::unique_ptr<network::SimpleURLLoader>>;
+  using URLLoaderIter = URLLoaders::iterator;
+  using IDToURLLoaderIterMap = base::flat_map<std::string, URLLoaderIter>;
 
-  void OnThumbnailDownloaded(
-      const std::string& id,
-      base::FilePath path,
-      const base::flat_map<std::string, std::string>& response_headers);
+  URLLoaderIter CreateURLLoaderHandler(const GURL& url);
+  void Cancel(const URLLoaderIter& ticket);
 
-#if BUILDFLAG(IS_ANDROID)
-  void RenameFilePerFormat(const std::string& id,
-                           const base::FilePath& path,
-                           const std::string& extension);
-  void OnRenameFilePerFormat(const std::string& id,
-                             const base::FilePath& new_path,
-                             bool result);
+  void SaveResponseToFile(URLLoaderIter iter,
+                          const std::string& id,
+                          base::FilePath path,
+                          std::unique_ptr<std::string> response_body);
+  void ConvertResponseToImage(URLLoaderIter iter,
+                              const std::string& id,
+                              base::OnceCallback<void(gfx::Image)> callback,
+                              std::unique_ptr<std::string> response_body);
 
-  scoped_refptr<base::SequencedTaskRunner> task_runner_;
-#endif
+  void WriteToFile(const base::FilePath& path,
+                   base::OnceCallback<void(base::FilePath)> callback,
+                   scoped_refptr<base::RefCountedBytes> image);
+
+  scoped_refptr<base::SequencedTaskRunner> GetOrCreateTaskRunner();
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  URLLoaders url_loaders_;
+  IDToURLLoaderIterMap url_loader_map_;
 
-  std::unique_ptr<api_request_helper::APIRequestHelper> request_helper_;
-  TicketMap ticket_map_;
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
   bool pause_download_for_testing_ = false;
 
   raw_ptr<Delegate> delegate_;
+
+  base::WeakPtrFactory<PlaylistThumbnailDownloader> weak_ptr_factory_{this};
 };
 
 }  // namespace playlist

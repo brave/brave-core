@@ -160,27 +160,6 @@ void APIRequestHelper::DeleteAndSendResult(Ticket iter,
   std::move(callback).Run(std::move(result));
 }
 
-APIRequestHelper::Ticket APIRequestHelper::Download(
-    const GURL& url,
-    const std::string& payload,
-    const std::string& payload_content_type,
-    const base::FilePath& path,
-    DownloadCallback callback,
-    const base::flat_map<std::string, std::string>& headers,
-    const APIRequestOptions& request_options) {
-  auto iter = CreateURLLoaderHandler(
-      {}, url, payload, payload_content_type,
-      request_options.auto_retry_on_network_change,
-      request_options.enable_cache, false /*allow_http_error_result*/, headers);
-  iter->get()->url_loader_->DownloadToFile(
-      url_loader_factory_.get(),
-      base::BindOnce(&APIRequestHelper::OnDownload,
-                     weak_ptr_factory_.GetWeakPtr(), iter, std::move(callback)),
-      path);
-
-  return iter;
-}
-
 void APIRequestHelper::Cancel(const Ticket& ticket) {
   url_loaders_.erase(ticket);
 }
@@ -207,12 +186,14 @@ APIRequestHelper::Ticket APIRequestHelper::CreateURLLoaderHandler(
   }
 
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  if (!method.empty())
+  if (!method.empty()) {
     request->method = method;
+  }
 
   if (!headers.empty()) {
-    for (auto entry : headers)
+    for (auto entry : headers) {
       request->headers.SetHeader(entry.first, entry.second);
+    }
   }
 
   auto url_loader =
@@ -257,29 +238,6 @@ APIRequestHelper::Ticket APIRequestHelper::CreateRequestURLLoaderHandler(
     handler->url_loader_->SetTimeoutDuration(request_options.timeout.value());
   }
   return iter;
-}
-
-void APIRequestHelper::OnDownload(Ticket iter,
-                                  DownloadCallback callback,
-                                  base::FilePath path) {
-  std::unique_ptr<network::SimpleURLLoader> loader =
-      std::move(iter->get()->url_loader_);
-  base::flat_map<std::string, std::string> headers;
-  if (loader->ResponseInfo()) {
-    auto headers_list = loader->ResponseInfo()->headers;
-    if (headers_list) {
-      size_t header_iter = 0;
-      std::string key;
-      std::string value;
-      while (headers_list->EnumerateHeaderLines(&header_iter, &key, &value)) {
-        key = base::ToLowerASCII(key);
-        headers[key] = value;
-      }
-    }
-  }
-
-  Cancel(iter);
-  std::move(callback).Run(path, std::move(headers));
 }
 
 APIRequestHelper::URLLoaderHandler::URLLoaderHandler(

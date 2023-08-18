@@ -13,6 +13,7 @@
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
@@ -24,10 +25,15 @@
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/image_fetcher/image_decoder_impl.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/sessions/content/session_tab_helper.h"
+#include "services/data_decoder/public/cpp/data_decoder.h"
+#include "third_party/skia/include/core/SkBitmap.h"
+#include "ui/gfx/codec/png_codec.h"
+#include "ui/gfx/image/image.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
@@ -44,6 +50,11 @@
 namespace playlist {
 
 namespace {
+
+data_decoder::DataDecoder* GetDataDecoder() {
+  static base::NoDestructor<data_decoder::DataDecoder> data_decoder;
+  return data_decoder.get();
+}
 
 class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
  public:
@@ -78,8 +89,64 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
 #endif  // BUILDFLAG(IS_ANDROID)
   }
 
+  void SanitizeImage(
+      std::unique_ptr<std::string> image,
+      base::OnceCallback<void(scoped_refptr<base::RefCountedBytes>)> callback)
+      override {
+    DecodeImageInIsolatedProcess(
+        std::move(image),
+        base::BindOnce(&PlaylistServiceDelegateImpl::EncodeAsPNG,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  }
+
  private:
+  scoped_refptr<base::SequencedTaskRunner> GetOrCreateTaskRunner() {
+    if (!task_runner_) {
+      task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+           base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
+    }
+    return task_runner_;
+  }
+
+  void DecodeImageInIsolatedProcess(
+      std::unique_ptr<std::string> image,
+      base::OnceCallback<void(const gfx::Image&)> callback) {
+    if (!image_decoder_) {
+      image_decoder_ = std::make_unique<ImageDecoderImpl>();
+    }
+
+    image_decoder_->DecodeImage(std::move(*image),
+                                gfx::Size() /* No particular size desired. */,
+                                GetDataDecoder(), std::move(callback));
+  }
+
+  void EncodeAsPNG(
+      base::OnceCallback<void(scoped_refptr<base::RefCountedBytes>)> callback,
+      const gfx::Image& decoded_image) {
+    auto encode = base::BindOnce(
+        [](const SkBitmap& bitmap) {
+          auto encoded = base::MakeRefCounted<base::RefCountedBytes>();
+          if (!gfx::PNGCodec::EncodeBGRASkBitmap(
+                  bitmap, /*discard_transparency=*/false, &encoded->data())) {
+            DVLOG(2) << "Failed to encode image as PNG";
+          }
+
+          return encoded;
+        },
+        decoded_image.AsBitmap());
+
+    GetOrCreateTaskRunner()->PostTaskAndReplyWithResult(
+        FROM_HERE, std::move(encode), std::move(callback));
+  }
+
   raw_ptr<Profile> profile_;
+
+  std::unique_ptr<image_fetcher::ImageDecoder> image_decoder_;
+
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
+
+  base::WeakPtrFactory<PlaylistServiceDelegateImpl> weak_ptr_factory_{this};
 };
 
 }  // namespace
