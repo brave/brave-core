@@ -18,7 +18,7 @@ import { WalletSelectors } from '../../../common/selectors'
 import { BraveWallet } from '../../../constants/types'
 
 // Components
-import { NavButton } from '../../extension'
+import { NavButton } from '../../extension/buttons/nav-button/index'
 import { LockPanel } from '../../extension/lock-panel'
 
 // Utils

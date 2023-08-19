@@ -21,8 +21,9 @@ import { PanelActions } from '../../../panel/actions'
 import { isHardwareAccount } from '../../../utils/account-utils'
 
 // Components
-import { NavButton, PanelTab } from '../'
-import { CreateSiteOrigin } from '../../shared'
+import { NavButton } from '../buttons/nav-button/index'
+import { PanelTab } from '../panel-tab/index'
+import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
 
 // Styled Components
 import {

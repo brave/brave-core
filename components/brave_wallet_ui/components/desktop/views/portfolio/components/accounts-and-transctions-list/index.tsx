@@ -40,9 +40,11 @@ import {
 
 // Components
 import {
-  PortfolioTransactionItem,
+  PortfolioTransactionItem //
+} from '../../../../portfolio-transaction-item/index'
+import {
   PortfolioAccountItem
-} from '../../../../'
+} from '../../../../portfolio-account-item/index'
 import {
   SegmentedControl
 } from '../../../../../shared/segmented-control/segmented-control'

@@ -16,7 +16,7 @@ export interface Props {
 
 const txKeys = Object.keys(BraveWallet.TransactionType)
 
-const TransactionDetailBox = (props: Props) => {
+export const TransactionDetailBox = (props: Props) => {
   const { transactionInfo } = props
   const {
     txArgs,

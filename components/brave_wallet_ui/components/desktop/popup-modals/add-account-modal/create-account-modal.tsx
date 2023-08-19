@@ -33,7 +33,8 @@ import { WalletPageActions } from '../../../../page/actions'
 import { WalletActions } from '../../../../common/actions'
 
 // components
-import { DividerLine, NavButton } from '../../../../components/extension'
+import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
+import { DividerLine } from '../../../../components/extension/divider/index'
 import PopupModal from '..'
 import { SelectAccountType } from './select-account-type'
 import { Select } from 'brave-ui/components'

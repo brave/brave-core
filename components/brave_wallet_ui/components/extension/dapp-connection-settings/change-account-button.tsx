@@ -23,7 +23,7 @@ import Amount from '../../../utils/amount'
 import {
   CreateAccountIcon
 } from '../../shared/create-account-icon/create-account-icon'
-import { LoadingSkeleton } from '../../shared'
+import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
 
 // Selectors
 import {

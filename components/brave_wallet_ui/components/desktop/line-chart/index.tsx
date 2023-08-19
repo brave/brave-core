@@ -63,7 +63,7 @@ const EmptyChartData = [
   }
 ]
 
-function LineChart ({
+export function LineChart ({
   priceData,
   isLoading,
   isDisabled,

@@ -12,8 +12,9 @@ import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { getLocale, splitStringForTag } from '../../../../common/locale'
 
 // Components
-import { NavButton, PanelTab } from '..'
-import { CreateSiteOrigin } from '../../shared'
+import { NavButton } from '../buttons/nav-button/index'
+import { PanelTab } from '../panel-tab/index'
+import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
 
 // Styled Components
 import {
@@ -44,7 +45,7 @@ export interface Props {
   onCancel: () => void
 }
 
-function EncryptionKeyPanel (props: Props) {
+export function EncryptionKeyPanel (props: Props) {
   const {
     panelType,
     accounts,

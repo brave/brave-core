@@ -11,7 +11,7 @@ import { BraveWallet } from '../../../../constants/types'
 import { getLocale } from '../../../../../common/locale'
 
 // Components
-import { PopupModal } from '../..'
+import { PopupModal } from '../../popup-modals/index'
 import { AddNftForm } from '../../../shared/add-custom-token-form/add-nft-form'
 
 // Styles

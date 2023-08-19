@@ -8,7 +8,7 @@ import * as React from 'react'
 import { getLocale, splitStringForTag } from '../../../../../common/locale'
 
 // components
-import { PopupModal } from '../..'
+import { PopupModal } from '../../popup-modals/index'
 
 // styles
 import {

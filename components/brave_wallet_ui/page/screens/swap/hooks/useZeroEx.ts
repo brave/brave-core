@@ -23,7 +23,7 @@ import {
   useGetDefaultFiatCurrencyQuery
 } from '../../../../common/slices/api.slice'
 import { useSelectedAccountQuery } from '../../../../common/slices/api.slice.extra'
-import { useLib } from '../../../../common/hooks'
+import { useLib } from '../../../../common/hooks/useLib'
 
 export function useZeroEx (params: SwapParams) {
   // Queries

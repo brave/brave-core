@@ -20,7 +20,7 @@ import withPlaceholderIcon from
   '../../../../../../components/shared/create-placeholder-icon'
 import {
   CreateNetworkIcon
-} from '../../../../../../components/shared'
+} from '../../../../../../components/shared/create-network-icon/index'
 
 // Styled Components
 import {

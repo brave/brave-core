@@ -22,8 +22,10 @@ import {
 
 // Components
 import PopupModal from '../../../desktop/popup-modals'
-import { NavButton } from '../../../extension'
-import { withPlaceholderIcon } from '../../../shared'
+import { NavButton } from '../../../extension/buttons/nav-button/index'
+import {
+  withPlaceholderIcon //
+} from '../../../shared/create-placeholder-icon/index'
 
 // Styled Components
 import {

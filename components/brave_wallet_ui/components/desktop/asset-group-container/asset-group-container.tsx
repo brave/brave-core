@@ -36,10 +36,9 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { BraveWallet } from '../../../constants/types'
 
 // Components
-import {
-  CreateNetworkIcon,
-  LoadingSkeleton
-} from '../../shared'
+import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
+import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
+
 import {
   CreateAccountIcon
 } from '../../shared/create-account-icon/create-account-icon'

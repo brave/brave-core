@@ -15,7 +15,7 @@ import { getLocale } from '../../../../common/locale'
 import { WalletSelectors } from '../../../common/selectors'
 
 // Components
-import { SearchBar } from '../../shared'
+import { SearchBar } from '../../shared/search-bar/index'
 import Header from '../select-header'
 import { SelectCurrencyItem } from '../select-currency-item/select-currency-item'
 

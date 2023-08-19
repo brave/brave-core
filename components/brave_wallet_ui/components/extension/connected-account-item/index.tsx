@@ -45,7 +45,7 @@ export interface Props {
   account: BraveWallet.AccountInfo
 }
 
-const SitePermissionAccountItem = (props: Props) => {
+export const ConnectedAccountItem = (props: Props) => {
   const {
     account
   } = props
@@ -135,4 +135,4 @@ const SitePermissionAccountItem = (props: Props) => {
   )
 }
 
-export default SitePermissionAccountItem
+export default ConnectedAccountItem

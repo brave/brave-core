@@ -33,7 +33,7 @@ import {
 import * as WalletPanelActions from '../../../panel/actions/wallet_panel_actions'
 
 // Components
-import { Panel } from '../index'
+import { Panel } from '../panel/index'
 import { TransactionSubmittedOrSigned } from './submitted_or_signed'
 import { TransactionComplete } from './complete'
 import { TransactionFailed } from './failed'

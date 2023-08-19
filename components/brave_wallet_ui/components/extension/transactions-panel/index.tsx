@@ -18,7 +18,7 @@ import { PanelActions } from '../../../panel/actions'
 import { useGetTransactionsQuery } from '../../../common/slices/api.slice'
 
 // Components
-import { TransactionsListItem } from '../'
+import { TransactionsListItem } from '../transaction-list-item/index'
 
 // Styled Components
 import { ScrollContainer } from '../../../stories/style'

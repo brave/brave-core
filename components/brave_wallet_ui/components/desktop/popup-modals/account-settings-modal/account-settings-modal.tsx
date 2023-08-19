@@ -34,7 +34,7 @@ import {
 } from '../../../../constants/types'
 
 // components
-import { NavButton } from '../../../extension'
+import { NavButton } from '../../../extension/buttons/nav-button/index'
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
 import PopupModal from '../index'
 import PasswordInput from '../../../shared/password-input/index'

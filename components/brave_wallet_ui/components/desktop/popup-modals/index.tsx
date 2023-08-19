@@ -29,7 +29,7 @@ export interface Props {
 
 const ESC_KEY = 'Escape'
 
-const PopupModal = React.forwardRef<HTMLDivElement, Props>(
+export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
   (props: Props, forwardedRef) => {
     const {
       title,

@@ -48,11 +48,9 @@ import Amount from '../../../utils/amount'
 import {
   CreateAccountIcon
 } from '../../shared/create-account-icon/create-account-icon'
-import {
-  CreateNetworkIcon,
-  CreateSiteOrigin,
-  LoadingSkeleton
-} from '../../shared'
+import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
+import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
+import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
 
 // Styled Components
 import {

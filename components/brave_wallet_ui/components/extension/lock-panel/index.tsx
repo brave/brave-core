@@ -16,8 +16,8 @@ import { WalletActions } from '../../../common/actions'
 import { WalletState } from '../../../constants/types'
 
 // components
-import { PasswordInput } from '../../shared'
-import { NavButton } from '../'
+import { PasswordInput } from '../../shared/password-input/index'
+import { NavButton } from '../buttons/nav-button/index'
 
 // style
 import {

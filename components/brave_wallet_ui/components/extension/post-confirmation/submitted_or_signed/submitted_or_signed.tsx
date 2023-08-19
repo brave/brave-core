@@ -11,14 +11,14 @@ import {
 } from '../../../../constants/types'
 
 // Hooks
-import { useExplorer } from '../../../../common/hooks'
+import { useExplorer } from '../../../../common/hooks/explorer'
 import { useGetSelectedChainQuery } from '../../../../common/slices/api.slice'
 
 // Utils
 import { getLocale } from '$web-common/locale'
 
 // Styled components
-import { Panel } from '../..'
+import { Panel } from '../../panel/index'
 import { SubmittedOrSignedIcon, Title } from './submitted_or_signed.style'
 import {
   ButtonRow,

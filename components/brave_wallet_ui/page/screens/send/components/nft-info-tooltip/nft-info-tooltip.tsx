@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // Hooks
-import { useExplorer } from '../../../../../common/hooks'
+import { useExplorer } from '../../../../../common/hooks/explorer'
 
 // Types
 import { BraveWallet } from '../../../../../constants/types'

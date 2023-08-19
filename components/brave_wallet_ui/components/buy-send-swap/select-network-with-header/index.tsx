@@ -16,7 +16,7 @@ import {
 import { getLocale } from '../../../../common/locale'
 
 // Components
-import { SelectNetwork } from '../../shared'
+import { SelectNetwork } from '../../shared/select-network/index'
 import Header from '../select-header'
 
 // Styled Components

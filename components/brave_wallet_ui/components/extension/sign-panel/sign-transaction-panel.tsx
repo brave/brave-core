@@ -60,7 +60,7 @@ import {
 
 import { DetailColumn } from '../transaction-box/style'
 import { getSolanaTransactionInstructionParamsAndType } from '../../../utils/solana-instruction-utils'
-import { Tooltip } from '../../shared'
+import { Tooltip } from '../../shared/tooltip/index'
 
 export interface Props {
   signMode: 'signTx' | 'signAllTxs'

@@ -46,7 +46,7 @@ import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
 
 // Components
-import { PopupModal } from '../..'
+import { PopupModal } from '../../popup-modals/index'
 import {
   FilterNetworksSection
 } from './filter-components/filter-networks-section'

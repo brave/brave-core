@@ -5,7 +5,8 @@
 import * as React from 'react'
 
 // Components
-import { PanelHeader, PanelHeaderSlim } from '../'
+import { PanelHeader } from '../panel-header/index'
+import { PanelHeaderSlim } from '../panel-header-slim/panel-header-slim'
 
 // Styled Components
 import {
@@ -23,7 +24,7 @@ export interface Props {
   searchAction?: (event: any) => void | undefined
 }
 
-export default class Panel extends React.PureComponent<Props> {
+export class Panel extends React.PureComponent<Props> {
   render () {
     const {
       title,
@@ -53,3 +54,5 @@ export default class Panel extends React.PureComponent<Props> {
     )
   }
 }
+
+export default Panel

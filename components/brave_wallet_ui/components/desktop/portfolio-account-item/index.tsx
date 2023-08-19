@@ -14,7 +14,7 @@ import {
 } from '../../../constants/types'
 
 // Hooks
-import { useExplorer } from '../../../common/hooks'
+import { useExplorer } from '../../../common/hooks/explorer'
 import {
   useOnClickOutside
 } from '../../../common/hooks/useOnClickOutside'

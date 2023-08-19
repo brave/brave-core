@@ -40,7 +40,7 @@ import { WalletSelectors } from '../../../../common/selectors'
 import { PageSelectors } from '../../../../page/selectors'
 
 // Components
-import { LineChart } from '../../'
+import { LineChart } from '../../line-chart/index'
 import {
   LineChartControls
 } from '../../line-chart/line-chart-controls/line-chart-controls'
@@ -51,7 +51,9 @@ import { BridgeToAuroraModal } from '../../popup-modals/bridge-to-aurora-modal/b
 import {
   useScopedBalanceUpdater
 } from '../../../../common/hooks/use-scoped-balance-updater'
-import { useMultiChainBuyAssets } from '../../../../common/hooks'
+import {
+  useMultiChainBuyAssets //
+} from '../../../../common/hooks/use-multi-chain-buy-assets'
 import {
   useUnsafePageSelector,
   useUnsafeWalletSelector

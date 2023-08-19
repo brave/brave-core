@@ -18,9 +18,9 @@ import { BraveWallet } from '../../../../constants/types'
 import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
 
 // components
-import { PopupModal } from '../..'
-import { NavButton } from '../../../extension'
-import { PasswordInput } from '../../../shared'
+import { PopupModal } from '../../popup-modals/index'
+import { NavButton } from '../../../extension/buttons/nav-button/index'
+import { PasswordInput } from '../../../shared/password-input/index'
 
 // style
 import {

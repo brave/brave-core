@@ -46,8 +46,10 @@ import {
 // components
 import { AccountFilterSelector } from '../../../components/desktop/account-filter-selector/account-filter-selector'
 import { NetworkFilterSelector } from '../../../components/desktop/network-filter-selector/index'
-import { PortfolioTransactionItem } from '../../../components/desktop'
-import { SearchBar } from '../../../components/shared'
+import {
+  PortfolioTransactionItem //
+} from '../../../components/desktop/portfolio-transaction-item/index'
+import { SearchBar } from '../../../components/shared/search-bar/index'
 
 // styles
 import {

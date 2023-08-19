@@ -22,9 +22,11 @@ import { useGetNetworkQuery } from '../../../../../common/slices/api.slice'
 
 // Components
 import {
-  withPlaceholderIcon,
-  CreateNetworkIcon
-} from '../../../../../components/shared'
+  withPlaceholderIcon //
+} from '../../../../../components/shared/create-placeholder-icon/index'
+import {
+  CreateNetworkIcon //
+} from '../../../../../components/shared/create-network-icon/index'
 import { NftIcon } from '../../../../../components/shared/nft-icon/nft-icon'
 import { NFTInfoTooltip } from '../nft-info-tooltip/nft-info-tooltip'
 

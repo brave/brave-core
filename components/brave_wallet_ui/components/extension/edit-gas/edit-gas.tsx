@@ -9,7 +9,8 @@ import { getLocale } from '../../../../common/locale'
 import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
 import { UpdateUnapprovedTransactionGasFieldsType } from '../../../common/constants/action_types'
 
-import { NavButton, Panel } from '..'
+import { NavButton } from '../buttons/nav-button/index'
+import { Panel } from '../panel/index'
 
 // Utils
 import Amount from '../../../utils/amount'

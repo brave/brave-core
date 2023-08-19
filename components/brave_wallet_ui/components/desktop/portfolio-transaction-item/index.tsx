@@ -51,7 +51,7 @@ import { openBlockExplorerURL } from '../../../utils/block-explorer-utils'
 import { makeAccountRoute } from '../../../utils/routes-utils'
 
 // Hooks
-import { useExplorer } from '../../../common/hooks'
+import { useExplorer } from '../../../common/hooks/explorer'
 import {
   useGetAccountInfosRegistryQuery,
   useGetDefaultFiatCurrencyQuery,

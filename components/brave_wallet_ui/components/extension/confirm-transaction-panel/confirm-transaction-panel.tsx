@@ -13,7 +13,7 @@ import { WalletSelectors } from '../../../common/selectors'
 
 // Hooks
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
-import { useExplorer } from '../../../common/hooks'
+import { useExplorer } from '../../../common/hooks/explorer'
 import {
   useGetAddressByteCodeQuery
 } from '../../../common/slices/api.slice'
@@ -28,7 +28,8 @@ import Tooltip from '../../shared/tooltip/index'
 import withPlaceholderIcon from '../../shared/create-placeholder-icon'
 
 // Components
-import { PanelTab, TransactionDetailBox } from '..'
+import { PanelTab } from '../panel-tab/index'
+import { TransactionDetailBox } from '../transaction-box/index'
 import EditAllowance from '../edit-allowance'
 import AdvancedTransactionSettingsButton from '../advanced-transaction-settings/button'
 import AdvancedTransactionSettings from '../advanced-transaction-settings'

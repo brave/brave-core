@@ -18,7 +18,9 @@ import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 import ExamplePhrase from './images/example-recovery-phrase.svg'
 
 // components
-import { NavButton } from '../../../../components/extension'
+import {
+  NavButton //
+} from '../../../../components/extension/buttons/nav-button/index'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { OnboardingNewWalletStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { ArticleLinkBubble } from '../../onboarding/onboarding-success/components/article-link-bubble/article-link-bubble'

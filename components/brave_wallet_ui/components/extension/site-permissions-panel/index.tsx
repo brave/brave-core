@@ -23,11 +23,9 @@ import { WalletSelectors } from '../../../common/selectors'
 import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 
 // Components
-import {
-  DividerLine,
-  ConnectedAccountItem
-} from '../'
-import { CreateSiteOrigin } from '../../shared'
+import { DividerLine } from '../divider/index'
+import { ConnectedAccountItem } from '../connected-account-item/index'
+import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
 
 // Styled Components
 import {

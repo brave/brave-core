@@ -17,7 +17,7 @@ import {
 // Components
 import {
   TopTabNavButton
-} from '../'
+} from '../top-tab-nav-button/index'
 
 export interface Props {
   tabList: TopTabNavObjectType[]
@@ -25,7 +25,7 @@ export interface Props {
   onSelectTab: (id: TabNavTypes) => void
 }
 
-function TopTabNav (props: Props) {
+export function TopTabNav (props: Props) {
   const {
     tabList,
     selectedTab,

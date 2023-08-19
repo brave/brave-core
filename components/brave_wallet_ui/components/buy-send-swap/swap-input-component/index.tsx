@@ -33,7 +33,10 @@ import {
 } from '../../../common/hooks/use-safe-selector'
 
 // Components
-import { withPlaceholderIcon, Tooltip } from '../../shared'
+import {
+  withPlaceholderIcon //
+} from '../../shared/create-placeholder-icon/index'
+import { Tooltip } from '../../shared/tooltip/index'
 
 // Styled Components
 import {

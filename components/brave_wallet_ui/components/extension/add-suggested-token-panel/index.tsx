@@ -46,7 +46,7 @@ const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, {
   marginRight: 0
 })
 
-function AddSuggestedTokenPanel() {
+export function AddSuggestedTokenPanel() {
   // queries
   const {
     data: suggestions = [],

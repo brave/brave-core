@@ -34,7 +34,9 @@ import {
   SwapAssetAmountSymbol,
 } from './swap.style'
 import { EditButton, NetworkText, StyledWrapper, TopRow } from './style'
-import { CreateNetworkIcon, LoadingSkeleton, withPlaceholderIcon } from '../../shared'
+import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
+import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
+import { withPlaceholderIcon } from '../../shared/create-placeholder-icon/index'
 import { IconsWrapper as SwapAssetIconWrapper, NetworkIconWrapper } from '../../shared/style'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
 import { Origin } from './common/origin'

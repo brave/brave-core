@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
-import { NavButton } from '../../../../extension'
+import { NavButton } from '../../../../extension/buttons/nav-button/index'
 
 // Styled Components
 import {

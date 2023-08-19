@@ -11,7 +11,9 @@ import { skipToken } from '@reduxjs/toolkit/query'
 import { BraveWallet } from '../../../../../../constants/types'
 
 // hooks
-import { useAssetManagement } from '../../../../../../common/hooks'
+import {
+  useAssetManagement //
+} from '../../../../../../common/hooks/assets-management'
 import {
   useGetIpfsGatewayTranslatedNftUrlQuery //
 } from '../../../../../../common/slices/api.slice'

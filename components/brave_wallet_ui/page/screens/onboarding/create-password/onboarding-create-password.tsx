@@ -16,7 +16,9 @@ import { WalletRoutes, WalletState } from '../../../../constants/types'
 import { WalletPageActions } from '../../../actions'
 
 // components
-import { NavButton } from '../../../../components/extension'
+import {
+  NavButton //
+} from '../../../../components/extension/buttons/nav-button/index'
 import { NewPasswordInput, NewPasswordValues } from '../../../../components/shared/password-input/new-password-input'
 import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
