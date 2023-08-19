@@ -7,6 +7,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -686,6 +687,38 @@ TEST(HDKeyUnitTest, Bip84TestVectors) {
       "03025324888E429AB8E3DBAF1F7802648B9CD01E9B418485C5FA4C1B9B5700E1A6");
   EXPECT_EQ(static_cast<HDKey*>(base.get())->GetSegwitAddress(false),
             "bc1q8c6fshw2dlwun7ekn9qwf37cu2rn755upcp6el");
+}
+
+TEST(HDKeyUnitTest, GetZCashTransparentAddress) {
+  auto seed = MnemonicToSeed(
+      "abandon abandon abandon abandon abandon abandon abandon abandon abandon "
+      "abandon abandon about",
+      "");
+
+  ASSERT_TRUE(seed);
+
+  std::unique_ptr<HDKey> m_key = HDKey::GenerateFromSeed(*seed);
+
+  {
+    auto base = m_key->DeriveChildFromPath("m/44'/133'/1'/0/0");
+    EXPECT_EQ(
+        static_cast<HDKey*>(base.get())->GetZCashTransparentAddress(false),
+        "t1Hxm2pmTLYuKhyLeZoSPjsHPFLWePSTDka");
+  }
+
+  {
+    auto base = m_key->DeriveChildFromPath("m/44'/133'/1'/1/1");
+    EXPECT_EQ(
+        static_cast<HDKey*>(base.get())->GetZCashTransparentAddress(false),
+        "t1MhfG9BdcchMh1R1THE6yGUgopfEp7hSAy");
+  }
+
+  {
+    auto base = m_key->DeriveChildFromPath("m/44'/133'/1'/1/2");
+    EXPECT_EQ(
+        static_cast<HDKey*>(base.get())->GetZCashTransparentAddress(false),
+        "t1KD4D7F7Ur89pVox3CZi5LvAcsGV3xXFuX");
+  }
 }
 
 }  // namespace brave_wallet

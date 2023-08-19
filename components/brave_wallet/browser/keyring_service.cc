@@ -30,10 +30,12 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_keyring.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
@@ -156,6 +158,10 @@ std::string KeyringIdPrefString(mojom::KeyringId keyring_id) {
       return "bitcoin_84";
     case mojom::KeyringId::kBitcoin84Testnet:
       return "bitcoin_84_test";
+    case mojom::KeyringId::kZCashMainnet:
+      return "zcash_mainnet";
+    case mojom::KeyringId::kZCashTestnet:
+      return "zcash_testnet";
   }
   NOTREACHED();
   return "";
@@ -174,6 +180,10 @@ std::string GetRootPath(mojom::KeyringId keyring_id) {
     return "m/84'/0'";
   } else if (keyring_id == mojom::KeyringId::kBitcoin84Testnet) {
     return "m/84'/1'";
+  } else if (keyring_id == mojom::KeyringId::kZCashMainnet) {
+    return "m/44'/133'";
+  } else if (keyring_id == mojom::KeyringId::kZCashTestnet) {
+    return "m/44'/1'";
   }
 
   NOTREACHED();
@@ -2151,6 +2161,12 @@ HDKeyring* KeyringService::CreateKeyringInternal(mojom::KeyringId keyring_id,
   } else if (keyring_id == mojom::kBitcoinKeyring84TestId) {
     keyrings_[mojom::kBitcoinKeyring84TestId] =
         std::make_unique<BitcoinKeyring>(true);
+  } else if (keyring_id == mojom::KeyringId::kZCashMainnet) {
+    keyrings_[mojom::KeyringId::kZCashMainnet] =
+        std::make_unique<ZCashKeyring>(false);
+  } else if (keyring_id == mojom::KeyringId::kZCashTestnet) {
+    keyrings_[mojom::KeyringId::kZCashTestnet] =
+        std::make_unique<ZCashKeyring>(true);
   }
   auto* keyring = GetHDKeyringById(keyring_id);
   DCHECK(keyring) << "No HDKeyring for " << keyring_id;

@@ -38,6 +38,8 @@ static_library("common") {
     "brave_wallet_types.h",
     "common_utils.cc",
     "common_utils.h",
+    "encoding_utils.cc",
+    "encoding_utils.h",
     "eth_abi_utils.cc",
     "eth_abi_utils.h",
     "eth_address.cc",
@@ -66,6 +68,8 @@ static_library("common") {
     "switches.h",
     "value_conversion_utils.cc",
     "value_conversion_utils.h",
+    "zcash_utils.cc",
+    "zcash_utils.h",
   ]
   deps = [
     ":common_constants",
@@ -129,6 +133,7 @@ source_set("unit_tests") {
     "bitcoin_utils_unittest.cc",
     "brave_wallet_types_unittest.cc",
     "common_utils_unittest.cc",
+    "encoding_utils_unittest.cc",
     "eth_abi_utils_unittest.cc",
     "eth_request_helper_unittest.cc",
     "eth_sign_typed_data_helper_unittest.cc",
@@ -139,6 +144,7 @@ source_set("unit_tests") {
     "solana_utils_unittest.cc",
     "string_utils_unittest.cc",
     "value_conversion_utils_unittest.cc",
+    "zcash_utils_unittest.cc",
   ]
 
   deps = [

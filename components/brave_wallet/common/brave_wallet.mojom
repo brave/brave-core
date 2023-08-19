@@ -634,6 +634,8 @@ enum KeyringId {
   kFilecoinTestnet = 3,
   kBitcoin84 = 4,
   kBitcoin84Testnet = 5,
+  kZCashMainnet = 6,
+  kZCashTestnet = 7,
 };
 
 const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
@@ -1096,6 +1098,8 @@ const string kFilecoinTestnet = "t";
 const string kFilecoinMainnet = "f";
 const string kBitcoinMainnet = "bitcoin_mainnet";
 const string kBitcoinTestnet = "bitcoin_testnet";
+const string kZCashMainnet = "zcash_mainnet";
+const string kZCashTestnet = "zcash_testnet";
 const string kArbitrumNovaChainId = "0xa4ba";
 const string kGnosisChainId = "0x64";
 const string kGodwokenChainId = "0x116ea";
@@ -1348,6 +1352,12 @@ interface JsonRpcService {
 };
 
 struct BitcoinKeyId {
+  uint32 account;
+  uint32 change;
+  uint32 index;
+};
+
+struct ZCashKeyId {
   uint32 account;
   uint32 change;
   uint32 index;

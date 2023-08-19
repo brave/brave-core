@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include "base/strings/sys_string_conversions.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 
 @implementation NSData (Base58)

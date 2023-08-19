@@ -14,6 +14,7 @@
 #include "base/notreached.h"
 #include "base/sys_byteorder.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"

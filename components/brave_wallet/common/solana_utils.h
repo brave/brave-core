@@ -25,17 +25,6 @@ absl::optional<std::tuple<uint16_t, size_t>> CompactU16Decode(
     const std::vector<uint8_t>& compact_u16,
     size_t start_index);
 
-// A bridge function to call DecodeBase58 in bitcoin-core.
-// It will return false if length of decoded byte array does not match len
-// param.
-bool Base58Decode(const std::string& str,
-                  std::vector<uint8_t>* ret,
-                  int len,
-                  bool strict = true);
-// A bridge function to call EncodeBase58 in bitcoin-core.
-std::string Base58Encode(const std::vector<uint8_t>& bytes);
-std::string Base58Encode(base::span<const uint8_t> bytes);
-
 bool IsBase58EncodedSolanaPubkey(const std::string& key);
 
 bool Uint8ArrayDecode(const std::string& str,

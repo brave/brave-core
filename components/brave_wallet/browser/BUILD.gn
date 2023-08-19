@@ -353,6 +353,8 @@ source_set("hd_keyring") {
     "hd_keyring.h",
     "solana_keyring.cc",
     "solana_keyring.h",
+    "zcash/zcash_keyring.cc",
+    "zcash/zcash_keyring.h",
   ]
 
   deps = [
