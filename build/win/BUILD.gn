@@ -37,3 +37,9 @@ sign("create_signed_installer") {
   outputs = [ "$root_out_dir/$brave_installer_exe" ]
   deps = [ "//chrome/installer/mini_installer" ]
 }
+
+sign("signed_delta_installer") {
+  sources = [ "$root_out_dir/delta_installer_unsigned.exe" ]
+  outputs = [ "$root_out_dir/delta_installer.exe" ]
+  deps = [ "//chrome/installer/mini_installer:delta_installer_unsigned" ]
+}
