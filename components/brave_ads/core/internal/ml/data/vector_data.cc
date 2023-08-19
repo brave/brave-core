@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
+#include <cmath>
+#include <cstddef>
 #include <limits>
 #include <numeric>
 #include <utility>
@@ -176,6 +178,12 @@ void VectorData::DivideByScalar(const float scalar) {
   }
 }
 
+float VectorData::GetSum() const {
+  return static_cast<float>(std::accumulate(
+      storage_->values().cbegin(), storage_->values().cend(), 0.0,
+      [](const float& lhs, const float rhs) -> float { return lhs + rhs; }));
+}
+
 float VectorData::GetNorm() const {
   return static_cast<float>(sqrt(
       std::accumulate(storage_->values().cbegin(), storage_->values().cend(),
@@ -184,12 +192,42 @@ float VectorData::GetNorm() const {
                       })));
 }
 
+void VectorData::ToDistribution() {
+  const float vector_sum = GetSum();
+  if (vector_sum > kMinimumVectorLength) {
+    for (float& value : storage_->values()) {
+      value /= vector_sum;
+    }
+  }
+}
+
+void VectorData::Softmax() {
+  double maximum = -std::numeric_limits<double>::infinity();
+  for (float& value : storage_->values()) {
+    maximum = (value > maximum) ? value : maximum;
+  }
+  double sum_exp = 0.0;
+  for (float& value : storage_->values()) {
+    const double value_exp = std::exp(value - maximum);
+    sum_exp += value_exp;
+  }
+  for (float& value : storage_->values()) {
+    value = std::exp(value - maximum) / sum_exp;
+  }
+}
+
 void VectorData::Normalize() {
   const float vector_norm = GetNorm();
   if (vector_norm > kMinimumVectorLength) {
     for (float& value : storage_->values()) {
       value /= vector_norm;
     }
+  }
+}
+
+void VectorData::Tanh() {
+  for (float& value : storage_->values()) {
+    value = tanh(value);
   }
 }
 

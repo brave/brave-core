@@ -13,12 +13,14 @@ PipelineInfo::PipelineInfo(const int version,
                            std::string timestamp,
                            std::string locale,
                            TransformationVector transformations,
-                           LinearModel linear_model)
+                           LinearModel linear_model,
+                           NeuralModel neural_model)
     : version(version),
       timestamp(std::move(timestamp)),
       locale(std::move(locale)),
       transformations(std::move(transformations)),
-      linear_model(std::move(linear_model)) {}
+      linear_model(std::move(linear_model)),
+      neural_model(std::move(neural_model)) {}
 
 PipelineInfo::PipelineInfo() = default;
 

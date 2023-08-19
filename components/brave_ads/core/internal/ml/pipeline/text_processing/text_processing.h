@@ -13,6 +13,7 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 #include "brave/components/brave_ads/core/internal/ml/model/linear/linear.h"
+#include "brave/components/brave_ads/core/internal/ml/model/neural/neural.h"
 
 namespace brave_ads::ml::pipeline {
 
@@ -55,6 +56,7 @@ class TextProcessing final {
   std::string locale_ = "en";
   TransformationVector transformations_;
   LinearModel linear_model_;
+  NeuralModel neural_model_;
 };
 
 }  // namespace brave_ads::ml::pipeline

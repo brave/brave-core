@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <utility>
 
+#include <iostream>
+
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
@@ -22,6 +24,8 @@ namespace brave_ads::ml::pipeline {
 // static
 base::expected<TextProcessing, std::string> TextProcessing::CreateFromValue(
     base::Value::Dict dict) {
+  std::cout << "\n\n\nsetting pipeline from create value\n\n\n";
+
   TextProcessing text_processing;
   if (!text_processing.SetPipeline(std::move(dict))) {
     return base::unexpected(
@@ -51,10 +55,13 @@ void TextProcessing::SetPipeline(PipelineInfo pipeline) {
   timestamp_ = pipeline.timestamp;
   locale_ = pipeline.locale;
   linear_model_ = std::move(pipeline.linear_model);
+  neural_model_ = std::move(pipeline.neural_model);
   transformations_ = std::move(pipeline.transformations);
 }
 
 bool TextProcessing::SetPipeline(base::Value::Dict dict) {
+  std::cout << "\n\n\nset pipeline\n\n\n";
+
   absl::optional<PipelineInfo> pipeline = ParsePipelineValue(std::move(dict));
 
   if (pipeline) {
@@ -73,6 +80,8 @@ absl::optional<PredictionMap> TextProcessing::Apply(
   std::unique_ptr<Data> current_data = std::move(input_data);
   CHECK(current_data);
 
+  BLOG(0, "\n\n\nstarting apply\n\n\n");
+
   const size_t transformation_count = transformations_.size();
   for (size_t i = 0; i < transformation_count; ++i) {
     current_data = transformations_[i]->Apply(current_data);
@@ -82,15 +91,26 @@ absl::optional<PredictionMap> TextProcessing::Apply(
     }
   }
 
+  BLOG(0, transformation_count);
+  BLOG(0, "\n\n\nafter after\n\n\n");
+
   // TODO(https://github.com/brave/brave-browser/issues/31180): Refactor
   // TextProcessing to make it more reliable.
   if (current_data->GetType() != DataType::kVector) {
     BLOG(0, "Linear model predictions failed due to an invalid model");
     return absl::nullopt;
   }
-  const VectorData* const vector_data =
-      static_cast<VectorData*>(current_data.get());
-  return linear_model_.GetTopPredictions(*vector_data);
+  // const VectorData* const vector_data =
+  //     static_cast<VectorData*>(current_data.get());
+  //  return linear_model_.GetTopPredictions(*vector_data);
+
+  BLOG(0, "\n\n\ntest test test test\n\n\n");
+
+  // const std::vector<float> vector_temp{1.0F, 2.0F, 3.0F, 4.0F, 5.0F};
+  // const VectorData vector_data(vector_temp);
+  // const VectorData* vector_data_ptr = &vector_data;
+  const VectorData* const vector_data = static_cast<VectorData*>(current_data.get());
+  return neural_model_.GetTopPredictions(*vector_data);
 }
 
 absl::optional<PredictionMap> TextProcessing::GetTopPredictions(
@@ -119,6 +139,7 @@ absl::optional<PredictionMap> TextProcessing::ClassifyPage(
   if (!IsInitialized()) {
     return PredictionMap{};
   }
+  BLOG(0, text);
 
   return GetTopPredictions(text);
 }
