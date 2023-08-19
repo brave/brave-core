@@ -34,7 +34,6 @@ function PrivacyMessage () {
           </a>
           {aboutDescription2.afterTag}
         </p>
-        <p>{getLocale('aboutNote')}</p>
       </section>
     </div>
   )

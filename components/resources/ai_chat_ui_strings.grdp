@@ -16,13 +16,10 @@
     About Brave Leo
   </message>
    <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION" desc="An outlining the functioning of AIChat">
-    The AI Chat feature provides summaries of the web page you are browsing and includes a chat interface that allows you to submit questions and receive responses about the content of that page.  The accuracy of summaries is not guaranteed and may include facts and fiction. You should not submit sensitive or private information and should exercise caution with any text related to health, finance or personal safety and similar cases.
+    The AI Chat feature provides summaries of the web page you are browsing and includes a chat interface that allows you to submit questions and receive responses about the content of that page.  The accuracy of summaries is not guaranteed and may include inaccurate, misleading and false information. You should not submit sensitive or private information and should exercise caution with any text related to health, finance or personal safety and similar cases.
   </message>
   <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION_2" desc="An outlining the functioning of AIChat (cont)">
     Brave's AI Chat uses a self-hosted <ph name="LINK_BEFORE">$1</ph>large language model<ph name="LINK_AFTER">$2</ph>  The AI Chat feature does not collect nor otherwise process identifiers such as an IP Address that can be linked to you.  No personal data is retained by the AI model.
-  </message>
-  <message name="IDS_CHAT_UI_ABOUT_NOTE" desc="An advisory statement that notifies users of potentially confidential data shared with AIChat">
-    The legal basis relied on to process any personal data submitted is that it is necessary for the legitimate interests of Brave and end users submitting queries.
   </message>
   <message name="IDS_CHAT_UI_PLACEHOLDER_LABEL" desc="Placeholder text for an input box allowing users to send messages to the AI service">
     Enter a prompt here
