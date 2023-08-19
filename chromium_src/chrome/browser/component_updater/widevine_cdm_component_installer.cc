@@ -108,7 +108,7 @@ constexpr net::NetworkTrafficAnnotationTag traffic_annotation =
 BASE_DECLARE_FEATURE(kBraveWidevineArm64DllFix);
 constexpr base::FeatureParam<std::string> kBraveWidevineArm64DllUrl{
     &kBraveWidevineArm64DllFix, "widevine_arm64_dll_url",
-    "https://dl.google.com/widevine-cdm/4.10.2557.0-win-arm64.zip"};
+    "https://dl.google.com/widevine-cdm/4.10.2662.3-win-arm64.zip"};
 BASE_FEATURE(kBraveWidevineArm64DllFix,
              "BraveWidevineArm64DllFix",
              base::FEATURE_ENABLED_BY_DEFAULT);
