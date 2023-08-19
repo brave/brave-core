@@ -62,10 +62,10 @@ TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadInvalidResource) {
 TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadMissingResource) {
   // Arrange
   EXPECT_CALL(ads_client_mock_, LoadFileResource(kAntiTargetingResourceId,
-                                                 testing::_, testing::_))
-      .WillOnce(testing::Invoke([](const std::string& /*id*/,
-                                   const int /*version*/,
-                                   LoadFileCallback callback) {
+                                                 ::testing::_, ::testing::_))
+      .WillOnce(::testing::Invoke([](const std::string& /*id*/,
+                                     const int /*version*/,
+                                     LoadFileCallback callback) {
         const base::FilePath path =
             GetFileResourcePath().AppendASCII(kMissingResourceId);
 

@@ -25,7 +25,7 @@ TEST_F(BraveAdsTransactionsTest, Add) {
 
   // Assert
   base::MockCallback<AddTransactionCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ true, testing::_));
+  EXPECT_CALL(callback, Run(/*success*/ true, ::testing::_));
 
   // Act
   const TransactionInfo transaction = AddTransaction(

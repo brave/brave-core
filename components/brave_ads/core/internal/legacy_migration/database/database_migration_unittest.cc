@@ -93,7 +93,7 @@ TEST_P(BraveAdsDatabaseMigrationTest, MigrateFromSchema) {
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsDatabaseMigrationTest,
-                         testing::Range(0, database::kVersion + 1),
+                         ::testing::Range(0, database::kVersion + 1),
                          TestParamToString);
 
 }  // namespace brave_ads

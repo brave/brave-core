@@ -52,20 +52,18 @@ AdEventMap& AdEventHistory() {
 void MockFlags() {
   GlobalState::GetInstance()->Flags() = *BuildFlags();
 
-  if (OverriddenCommandLine()) {
-    return;
+  // Use the staging environment for tests if we did not append command line
+  // switches in |SetUpMocks|.
+  if (!DidAppendCommandLineSwitches()) {
+    CHECK(GlobalState::HasInstance());
+    GlobalState::GetInstance()->Flags().environment_type =
+        mojom::EnvironmentType::kStaging;
   }
-
-  // Use the staging environment for tests if the command line was not
-  // overridden in |SetUpMocks|.
-  CHECK(GlobalState::HasInstance());
-  GlobalState::GetInstance()->Flags().environment_type =
-      mojom::EnvironmentType::kStaging;
 }
 
 void MockShowNotificationAd(AdsClientMock& mock) {
   ON_CALL(mock, ShowNotificationAd)
-      .WillByDefault(testing::Invoke([](const NotificationAdInfo& ad) {
+      .WillByDefault(::testing::Invoke([](const NotificationAdInfo& ad) {
         // TODO(https://github.com/brave/brave-browser/issues/29587): Decouple
         // reminders from push notification ads.
         const bool is_reminder_valid = !ad.placement_id.empty() &&
@@ -78,14 +76,14 @@ void MockShowNotificationAd(AdsClientMock& mock) {
 
 void MockCloseNotificationAd(AdsClientMock& mock) {
   ON_CALL(mock, CloseNotificationAd)
-      .WillByDefault(testing::Invoke([](const std::string& placement_id) {
+      .WillByDefault(::testing::Invoke([](const std::string& placement_id) {
         CHECK(!placement_id.empty());
       }));
 }
 
 void MockRecordAdEventForId(const AdsClientMock& mock) {
   ON_CALL(mock, RecordAdEventForId)
-      .WillByDefault(testing::Invoke(
+      .WillByDefault(::testing::Invoke(
           [](const std::string& id, const std::string& ad_type,
              const std::string& confirmation_type, const base::Time time) {
             CHECK(!id.empty());
@@ -101,7 +99,7 @@ void MockRecordAdEventForId(const AdsClientMock& mock) {
 
 void MockGetAdEventHistory(const AdsClientMock& mock) {
   ON_CALL(mock, GetAdEventHistory)
-      .WillByDefault(testing::Invoke(
+      .WillByDefault(::testing::Invoke(
           [](const std::string& ad_type,
              const std::string& confirmation_type) -> std::vector<base::Time> {
             CHECK(!ad_type.empty());
@@ -135,7 +133,7 @@ void MockGetAdEventHistory(const AdsClientMock& mock) {
 
 void MockResetAdEventHistoryForId(const AdsClientMock& mock) {
   ON_CALL(mock, ResetAdEventHistoryForId)
-      .WillByDefault(testing::Invoke([](const std::string& id) {
+      .WillByDefault(::testing::Invoke([](const std::string& id) {
         CHECK(!id.empty());
 
         const std::string uuid = GetUuidForCurrentTestAndValue(id);
@@ -145,16 +143,16 @@ void MockResetAdEventHistoryForId(const AdsClientMock& mock) {
 
 void MockSave(AdsClientMock& mock) {
   ON_CALL(mock, Save)
-      .WillByDefault(testing::Invoke([](const std::string& /*name*/,
-                                        const std::string& /*value*/,
-                                        SaveCallback callback) {
+      .WillByDefault(::testing::Invoke([](const std::string& /*name*/,
+                                          const std::string& /*value*/,
+                                          SaveCallback callback) {
         std::move(callback).Run(/*success*/ true);
       }));
 }
 
 void MockLoad(AdsClientMock& mock, const base::ScopedTempDir& temp_dir) {
   ON_CALL(mock, Load)
-      .WillByDefault(testing::Invoke(
+      .WillByDefault(::testing::Invoke(
           [&temp_dir](const std::string& name, LoadCallback callback) {
             base::FilePath path = temp_dir.GetPath().AppendASCII(name);
             if (!base::PathExists(path)) {
@@ -174,7 +172,7 @@ void MockLoad(AdsClientMock& mock, const base::ScopedTempDir& temp_dir) {
 void MockLoadFileResource(AdsClientMock& mock,
                           const base::ScopedTempDir& temp_dir) {
   ON_CALL(mock, LoadFileResource)
-      .WillByDefault(testing::Invoke(
+      .WillByDefault(::testing::Invoke(
           [&temp_dir](const std::string& id, const int /*version*/,
                       LoadFileCallback callback) {
             base::FilePath path = temp_dir.GetPath().AppendASCII(id);
@@ -193,7 +191,7 @@ void MockLoadFileResource(AdsClientMock& mock,
 void MockLoadDataResource(AdsClientMock& mock) {
   ON_CALL(mock, LoadDataResource)
       .WillByDefault(
-          testing::Invoke([](const std::string& name) -> std::string {
+          ::testing::Invoke([](const std::string& name) -> std::string {
             return ReadFileFromDataResourcePathToString(name).value_or("");
           }));
 }
@@ -201,8 +199,8 @@ void MockLoadDataResource(AdsClientMock& mock) {
 void MockRunDBTransaction(AdsClientMock& mock, Database& database) {
   ON_CALL(mock, RunDBTransaction)
       .WillByDefault(
-          testing::Invoke([&database](mojom::DBTransactionInfoPtr transaction,
-                                      RunDBTransactionCallback callback) {
+          ::testing::Invoke([&database](mojom::DBTransactionInfoPtr transaction,
+                                        RunDBTransactionCallback callback) {
             CHECK(transaction);
 
             mojom::DBCommandResponseInfoPtr command_response =
@@ -216,7 +214,7 @@ void MockRunDBTransaction(AdsClientMock& mock, Database& database) {
 
 void MockGetBooleanPref(const AdsClientMock& mock) {
   ON_CALL(mock, GetBooleanPref)
-      .WillByDefault(testing::Invoke([](const std::string& path) -> bool {
+      .WillByDefault(::testing::Invoke([](const std::string& path) -> bool {
         int value;
         CHECK(base::StringToInt(GetPrefValue(path), &value));
         return static_cast<bool>(value);
@@ -225,7 +223,7 @@ void MockGetBooleanPref(const AdsClientMock& mock) {
 
 void MockGetIntegerPref(const AdsClientMock& mock) {
   ON_CALL(mock, GetIntegerPref)
-      .WillByDefault(testing::Invoke([](const std::string& path) -> int {
+      .WillByDefault(::testing::Invoke([](const std::string& path) -> int {
         int value;
         CHECK(base::StringToInt(GetPrefValue(path), &value));
         return value;
@@ -234,7 +232,7 @@ void MockGetIntegerPref(const AdsClientMock& mock) {
 
 void MockGetDoublePref(const AdsClientMock& mock) {
   ON_CALL(mock, GetDoublePref)
-      .WillByDefault(testing::Invoke([](const std::string& path) -> double {
+      .WillByDefault(::testing::Invoke([](const std::string& path) -> double {
         double value;
         CHECK(base::StringToDouble(GetPrefValue(path), &value));
         return value;
@@ -244,14 +242,14 @@ void MockGetDoublePref(const AdsClientMock& mock) {
 void MockGetStringPref(const AdsClientMock& mock) {
   ON_CALL(mock, GetStringPref)
       .WillByDefault(
-          testing::Invoke([](const std::string& path) -> std::string {
+          ::testing::Invoke([](const std::string& path) -> std::string {
             return GetPrefValue(path);
           }));
 }
 
 void MockGetInt64Pref(const AdsClientMock& mock) {
   ON_CALL(mock, GetInt64Pref)
-      .WillByDefault(testing::Invoke([](const std::string& path) -> int64_t {
+      .WillByDefault(::testing::Invoke([](const std::string& path) -> int64_t {
         int64_t value;
         CHECK(base::StringToInt64(GetPrefValue(path), &value));
         return value;
@@ -260,7 +258,7 @@ void MockGetInt64Pref(const AdsClientMock& mock) {
 
 void MockGetUint64Pref(const AdsClientMock& mock) {
   ON_CALL(mock, GetUint64Pref)
-      .WillByDefault(testing::Invoke([](const std::string& path) -> uint64_t {
+      .WillByDefault(::testing::Invoke([](const std::string& path) -> uint64_t {
         uint64_t value;
         CHECK(base::StringToUint64(GetPrefValue(path), &value));
         return value;
@@ -269,17 +267,18 @@ void MockGetUint64Pref(const AdsClientMock& mock) {
 
 void MockGetTimePref(const AdsClientMock& mock) {
   ON_CALL(mock, GetTimePref)
-      .WillByDefault(testing::Invoke([](const std::string& path) -> base::Time {
-        int64_t value;
-        CHECK(base::StringToInt64(GetPrefValue(path), &value));
-        return base::Time::FromDeltaSinceWindowsEpoch(
-            base::Microseconds(value));
-      }));
+      .WillByDefault(
+          ::testing::Invoke([](const std::string& path) -> base::Time {
+            int64_t value;
+            CHECK(base::StringToInt64(GetPrefValue(path), &value));
+            return base::Time::FromDeltaSinceWindowsEpoch(
+                base::Microseconds(value));
+          }));
 }
 
 void MockGetDictPref(const AdsClientMock& mock) {
   ON_CALL(mock, GetDictPref)
-      .WillByDefault(testing::Invoke(
+      .WillByDefault(::testing::Invoke(
           [](const std::string& path) -> absl::optional<base::Value::Dict> {
             const absl::optional<base::Value> root =
                 base::JSONReader::Read(GetPrefValue(path));
@@ -295,7 +294,7 @@ void MockGetDictPref(const AdsClientMock& mock) {
 
 void MockGetListPref(const AdsClientMock& mock) {
   ON_CALL(mock, GetListPref)
-      .WillByDefault(testing::Invoke(
+      .WillByDefault(::testing::Invoke(
           [](const std::string& path) -> absl::optional<base::Value::List> {
             const absl::optional<base::Value> root =
                 base::JSONReader::Read(GetPrefValue(path));
@@ -311,13 +310,13 @@ void MockGetListPref(const AdsClientMock& mock) {
 
 void MockClearPref(AdsClientMock& mock) {
   ON_CALL(mock, ClearPref)
-      .WillByDefault(testing::Invoke(
+      .WillByDefault(::testing::Invoke(
           [](const std::string& path) { ClearPrefValue(path); }));
 }
 
 void MockHasPrefPath(const AdsClientMock& mock) {
   ON_CALL(mock, HasPrefPath)
-      .WillByDefault(testing::Invoke([](const std::string& path) -> bool {
+      .WillByDefault(::testing::Invoke([](const std::string& path) -> bool {
         return HasPrefPathValue(path);
       }));
 }

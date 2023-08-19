@@ -56,7 +56,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
   ForcePermissionRulesForTesting();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(testing::Invoke([](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([](const NotificationAdInfo& ad) {
         // Assert
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
@@ -100,7 +100,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerViewedEvent) {
   ForcePermissionRulesForTesting();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
@@ -134,7 +134,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerClickedEvent) {
   ForcePermissionRulesForTesting();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
         EXPECT_CALL(ads_client_mock_, CloseNotificationAd(ad.placement_id));
@@ -165,7 +165,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerDismissedEvent) {
   ForcePermissionRulesForTesting();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
@@ -198,7 +198,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerTimedOutEvent) {
   ForcePermissionRulesForTesting();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 

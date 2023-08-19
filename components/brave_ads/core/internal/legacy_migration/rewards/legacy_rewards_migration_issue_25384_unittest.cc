@@ -32,7 +32,7 @@ TEST_F(BraveAdsLegacyRewardsMigrationIssue25384Test, Migrate) {
   // Arrange
   SetBooleanPref(prefs::kHasMigratedRewardsState, false);
 
-  EXPECT_CALL(ads_client_mock_, Load(kConfirmationStateFilename, testing::_));
+  EXPECT_CALL(ads_client_mock_, Load(kConfirmationStateFilename, ::testing::_));
 
   // Act
   rewards::Migrate(

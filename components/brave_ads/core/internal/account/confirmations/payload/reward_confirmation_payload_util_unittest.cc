@@ -21,7 +21,7 @@ namespace brave_ads {
 
 class BraveAdsRewardConfirmationPayloadUtilTest : public UnitTestBase {
  protected:
-  testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
+  ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
 };
 
 TEST_F(BraveAdsRewardConfirmationPayloadUtilTest,

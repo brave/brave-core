@@ -31,7 +31,7 @@ class BraveAdsIssuersUrlRequestTest : public UnitTestBase {
   }
 
   std::unique_ptr<IssuersUrlRequest> issuers_url_request_;
-  testing::NiceMock<IssuersUrlRequestDelegateMock>
+  ::testing::NiceMock<IssuersUrlRequestDelegateMock>
       issuers_url_request_delegate_mock_;
 };
 
@@ -92,7 +92,7 @@ TEST_F(BraveAdsIssuersUrlRequestTest, RetryFetchingIssuersIfNonHttpOkResponse) {
   EXPECT_CALL(issuers_url_request_delegate_mock_, OnDidRetryFetchingIssuers);
 
   ON_CALL(issuers_url_request_delegate_mock_, OnDidFetchIssuers)
-      .WillByDefault(testing::Invoke(
+      .WillByDefault(::testing::Invoke(
           [](const IssuersInfo& issuers) { SetIssuers(issuers); }));
 
   // Act

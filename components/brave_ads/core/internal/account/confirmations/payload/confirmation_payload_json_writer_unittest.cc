@@ -21,7 +21,7 @@ namespace brave_ads {
 
 class BraveAdsConfirmationPayloadJsonWriterTest : public UnitTestBase {
  protected:
-  testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
+  ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
 };
 
 TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,

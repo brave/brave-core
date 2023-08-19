@@ -24,7 +24,8 @@ TEST_F(BraveAdsP2ATest, RecordEvent) {
   const base::Value::List events = base::test::ParseJsonList(kEventsAsJson);
 
   // Assert
-  EXPECT_CALL(ads_client_mock_, RecordP2AEvents(testing::Eq(std::ref(events))));
+  EXPECT_CALL(ads_client_mock_,
+              RecordP2AEvents(::testing::Eq(std::ref(events))));
 
   // Act
   RecordEvent({"event_1", "event_2"});

@@ -7,7 +7,6 @@
 
 #include "base/check.h"
 #include "base/command_line.h"
-#include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_string_util.h"
@@ -45,9 +44,9 @@ void ShutdownCommandLineSwitches() {
   brave_rewards::RewardsFlags::SetForceParsingForTesting(false);
 }
 
-absl::optional<std::string>& OverriddenCommandLine() {
-  static base::NoDestructor<absl::optional<std::string>> command_line;
-  return *command_line;
+absl::optional<bool>& DidAppendCommandLineSwitches() {
+  static absl::optional<bool> command_line;
+  return command_line;
 }
 
 void AppendCommandLineSwitches(
@@ -68,7 +67,7 @@ void AppendCommandLineSwitches(
                                     command_line_switch.value);
   }
 
-  OverriddenCommandLine() = command_line->GetCommandLineString();
+  DidAppendCommandLineSwitches() = true;
 }
 
 std::string SanitizeCommandLineSwitch(

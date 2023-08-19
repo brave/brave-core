@@ -39,7 +39,7 @@ base::Value::Dict BuildUrlResponseBody() {
 
 class BraveAdsGetSignedTokensUrlRequestUtilTest : public UnitTestBase {
  protected:
-  testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
+  ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
 };
 
 TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest, ParseCaptchaId) {

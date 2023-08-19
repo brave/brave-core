@@ -143,7 +143,7 @@ std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
 INSTANTIATE_TEST_SUITE_P(
     ,
     BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest,
-    testing::ValuesIn(kTests),
+    ::testing::ValuesIn(kTests),
     TestParamToString);
 
 }  // namespace brave_ads

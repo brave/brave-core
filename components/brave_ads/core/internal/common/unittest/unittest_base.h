@@ -30,7 +30,7 @@ namespace brave_ads {
 class Database;
 class GlobalState;
 
-class UnitTestBase : public AdsClientNotifier, public testing::Test {
+class UnitTestBase : public AdsClientNotifier, public ::testing::Test {
  public:
   UnitTestBase();
 
@@ -42,7 +42,7 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
 
   ~UnitTestBase() override;
 
-  // testing::Test:
+  // ::testing::Test:
   void SetUp() override;
   void TearDown() override;
 
@@ -50,12 +50,11 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
   // Override |SetUp| and call |SetUpForTesting| with |is_integration_test| set
   // to |true| to test functionality and performance under product-like
   // circumstances with data to replicate live settings to simulate what a real
-  // user scenario looks like from start to finish. You should mock AdsClient
-  // and copy mock files and directories before initialization in |SetUpMocks|.
+  // user scenario looks like from start to finish.
   void SetUpForTesting(bool is_integration_test);
 
-  // Override |SetUpMocks| to mock AdsClient and to copy mock files and
-  // directories before initialization.
+  // Override |SetUpMocks| to mock command line switches, file system, prefs,
+  // and the |AdsClient| before initialization.
   virtual void SetUpMocks() {}
 
   // Convenience function for accessing AdsImpl from integration tests.
@@ -121,9 +120,9 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
 
   base::test::TaskEnvironment task_environment_;
 
-  testing::NiceMock<AdsClientMock> ads_client_mock_;
+  ::testing::NiceMock<AdsClientMock> ads_client_mock_;
 
-  testing::NiceMock<PlatformHelperMock> platform_helper_mock_;
+  ::testing::NiceMock<PlatformHelperMock> platform_helper_mock_;
 
  private:
   void MockAdsClientAddObserver();

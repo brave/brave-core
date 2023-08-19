@@ -49,7 +49,7 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsThisMonth) {
   expected_statement->ad_types_received_this_month = {{"ad_notification", 2}};
 
   base::MockCallback<BuildStatementCallback> callback;
-  EXPECT_CALL(callback, Run(testing::Eq(std::ref(expected_statement))));
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
 
   // Act
   BuildStatement(callback.Get());
@@ -122,7 +122,7 @@ TEST_F(BraveAdsStatementTest,
   expected_statement->ad_types_received_this_month = {{"ad_notification", 3}};
 
   base::MockCallback<BuildStatementCallback> callback;
-  EXPECT_CALL(callback, Run(testing::Eq(std::ref(expected_statement))));
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
 
   // Act
   BuildStatement(callback.Get());
@@ -182,7 +182,7 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
   expected_statement->ad_types_received_this_month = {{"ad_notification", 3}};
 
   base::MockCallback<BuildStatementCallback> callback;
-  EXPECT_CALL(callback, Run(testing::Eq(std::ref(expected_statement))));
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
 
   // Act
   BuildStatement(callback.Get());
@@ -204,7 +204,7 @@ TEST_F(BraveAdsStatementTest, GetForNoTransactions) {
   expected_statement->ad_types_received_this_month = {};
 
   base::MockCallback<BuildStatementCallback> callback;
-  EXPECT_CALL(callback, Run(testing::Eq(std::ref(expected_statement))));
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
 
   // Act
   BuildStatement(callback.Get());
@@ -256,7 +256,7 @@ TEST_F(BraveAdsStatementTest, GetWithFilteredTransactions) {
                                                       {"new_tab_page_ad", 1}};
 
   base::MockCallback<BuildStatementCallback> callback;
-  EXPECT_CALL(callback, Run(testing::Eq(std::ref(expected_statement))));
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
 
   // Act
   BuildStatement(callback.Get());

@@ -41,10 +41,10 @@ class BraveAdsRefillConfirmationTokensTest : public UnitTestBase {
         &refill_confirmation_tokens_delegate_mock_);
   }
 
-  testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
+  ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
 
   std::unique_ptr<RefillConfirmationTokens> refill_confirmation_tokens_;
-  testing::NiceMock<RefillConfirmationTokensDelegateMock>
+  ::testing::NiceMock<RefillConfirmationTokensDelegateMock>
       refill_confirmation_tokens_delegate_mock_;
 };
 
@@ -194,7 +194,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act
-  const testing::InSequence seq;
+  const ::testing::InSequence seq;
 
   EXPECT_CALL(refill_confirmation_tokens_delegate_mock_,
               OnFailedToRefillConfirmationTokens());
@@ -272,7 +272,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act
-  const testing::InSequence seq;
+  const ::testing::InSequence seq;
 
   EXPECT_CALL(refill_confirmation_tokens_delegate_mock_,
               OnFailedToRefillConfirmationTokens());

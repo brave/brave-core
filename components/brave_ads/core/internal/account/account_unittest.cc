@@ -83,7 +83,7 @@ class BraveAdsAccountTest : public AccountObserver, public UnitTestBase {
     statement_of_accounts_did_change_ = true;
   }
 
-  testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
+  ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
 
   std::unique_ptr<Account> account_;
 
@@ -402,7 +402,7 @@ TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
 
   base::MockCallback<GetTransactionsCallback> callback;
   EXPECT_CALL(callback,
-              Run(/*success*/ true, /*transactions*/ testing::IsEmpty()));
+              Run(/*success*/ true, /*transactions*/ ::testing::IsEmpty()));
   GetTransactionsForDateRange(DistantPast(), DistantFuture(), callback.Get());
 }
 
@@ -467,7 +467,7 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
   expected_statement->ad_types_received_this_month = {{"ad_notification", 3}};
 
   base::MockCallback<GetStatementOfAccountsCallback> callback;
-  EXPECT_CALL(callback, Run(testing::Eq(std::ref(expected_statement))));
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
 
   // Act
   Account::GetStatement(callback.Get());
@@ -479,7 +479,7 @@ TEST_F(BraveAdsAccountTest, DoNotGetStatementForNonRewardsUser) {
 
   // Assert
   base::MockCallback<GetStatementOfAccountsCallback> callback;
-  EXPECT_CALL(callback, Run(/*statement*/ testing::IsFalse()));
+  EXPECT_CALL(callback, Run(/*statement*/ ::testing::IsFalse()));
 
   // Act
   Account::GetStatement(callback.Get());

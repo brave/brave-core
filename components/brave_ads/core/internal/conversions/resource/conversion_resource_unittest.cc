@@ -59,11 +59,11 @@ TEST_F(BraveAdsConversionResourceTest, DoNotLoadInvalidResource) {
 
 TEST_F(BraveAdsConversionResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  EXPECT_CALL(ads_client_mock_,
-              LoadFileResource(kConversionResourceId, testing::_, testing::_))
-      .WillOnce(testing::Invoke([](const std::string& /*id*/,
-                                   const int /*version*/,
-                                   LoadFileCallback callback) {
+  EXPECT_CALL(ads_client_mock_, LoadFileResource(kConversionResourceId,
+                                                 ::testing::_, ::testing::_))
+      .WillOnce(::testing::Invoke([](const std::string& /*id*/,
+                                     const int /*version*/,
+                                     LoadFileCallback callback) {
         const base::FilePath path =
             GetFileResourcePath().AppendASCII(kMissingResourceId);
 

@@ -22,7 +22,7 @@ class BraveAdsGlobalStateTest : public ::testing::Test {
 
   base::test::TaskEnvironment task_environment_;
 
-  testing::NiceMock<AdsClientMock> ads_client_mock_;
+  ::testing::NiceMock<AdsClientMock> ads_client_mock_;
 
   std::unique_ptr<GlobalState> global_state_;
 };

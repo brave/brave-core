@@ -32,7 +32,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
   const base::Value::Dict expected_user_data =
       base::test::ParseJsonDict(R"({"conversion":[{"action":"view"}]})");
   base::MockCallback<BuildUserDataCallback> callback;
-  EXPECT_CALL(callback, Run(testing::Eq(std::ref(expected_user_data))));
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
 
   // Act
   BuildConversionUserData(kCreativeInstanceId, callback.Get());
@@ -72,7 +72,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
   const base::Value::Dict expected_user_data =
       base::test::ParseJsonDict(R"({"conversion":[{"action":"view"}]})");
   base::MockCallback<BuildUserDataCallback> callback;
-  EXPECT_CALL(callback, Run(testing::Eq(std::ref(expected_user_data))));
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
 
   // Act
   BuildConversionUserData(kCreativeInstanceId, callback.Get());
@@ -110,7 +110,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
 
   // Assert
   base::MockCallback<BuildUserDataCallback> callback;
-  EXPECT_CALL(callback, Run(testing::IsEmpty()));
+  EXPECT_CALL(callback, Run(::testing::IsEmpty()));
 
   // Act
   BuildConversionUserData(kMissingCreativeInstanceId, callback.Get());
@@ -125,7 +125,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
 
   // Assert
   base::MockCallback<BuildUserDataCallback> callback;
-  EXPECT_CALL(callback, Run(testing::IsEmpty()));
+  EXPECT_CALL(callback, Run(::testing::IsEmpty()));
 
   // Act
   BuildConversionUserData(kMissingCreativeInstanceId, callback.Get());
@@ -137,7 +137,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
 
   // Assert
   base::MockCallback<BuildUserDataCallback> callback;
-  EXPECT_CALL(callback, Run(testing::IsEmpty()));
+  EXPECT_CALL(callback, Run(::testing::IsEmpty()));
 
   // Act
   BuildConversionUserData(kCreativeInstanceId, callback.Get());

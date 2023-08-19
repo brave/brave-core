@@ -98,45 +98,45 @@ void MockPlatformHelper(const PlatformHelperMock& mock,
     }
   }
 
-  ON_CALL(mock, IsMobile()).WillByDefault(testing::Return(is_mobile));
-  ON_CALL(mock, GetName()).WillByDefault(testing::Return(name));
-  ON_CALL(mock, GetType()).WillByDefault(testing::Return(type));
+  ON_CALL(mock, IsMobile()).WillByDefault(::testing::Return(is_mobile));
+  ON_CALL(mock, GetName()).WillByDefault(::testing::Return(name));
+  ON_CALL(mock, GetType()).WillByDefault(::testing::Return(type));
 }
 
 void MockIsNetworkConnectionAvailable(const AdsClientMock& mock,
                                       const bool is_available) {
   ON_CALL(mock, IsNetworkConnectionAvailable())
-      .WillByDefault(testing::Return(is_available));
+      .WillByDefault(::testing::Return(is_available));
 }
 
 void MockIsBrowserActive(const AdsClientMock& mock,
                          const bool is_browser_active) {
   ON_CALL(mock, IsBrowserActive())
-      .WillByDefault(testing::Return(is_browser_active));
+      .WillByDefault(::testing::Return(is_browser_active));
 }
 
 void MockIsBrowserInFullScreenMode(const AdsClientMock& mock,
                                    const bool is_browser_in_full_screen_mode) {
   ON_CALL(mock, IsBrowserInFullScreenMode())
-      .WillByDefault(testing::Return(is_browser_in_full_screen_mode));
+      .WillByDefault(::testing::Return(is_browser_in_full_screen_mode));
 }
 
 void MockCanShowNotificationAds(AdsClientMock& mock, const bool can_show) {
   ON_CALL(mock, CanShowNotificationAds())
-      .WillByDefault(testing::Return(can_show));
+      .WillByDefault(::testing::Return(can_show));
 }
 
 void MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
     const AdsClientMock& mock,
     const bool can_show) {
   ON_CALL(mock, CanShowNotificationAdsWhileBrowserIsBackgrounded())
-      .WillByDefault(testing::Return(can_show));
+      .WillByDefault(::testing::Return(can_show));
 }
 
 void MockGetBrowsingHistory(AdsClientMock& mock,
                             const std::vector<GURL>& history) {
   ON_CALL(mock, GetBrowsingHistory)
-      .WillByDefault(testing::Invoke(
+      .WillByDefault(::testing::Invoke(
           [history](const size_t max_count, const size_t /*days_ago*/,
                     GetBrowsingHistoryCallback callback) {
             CHECK_LE(history.size(), max_count);
@@ -148,7 +148,7 @@ void MockGetBrowsingHistory(AdsClientMock& mock,
 void MockUrlResponses(AdsClientMock& mock,
                       const URLResponseMap& url_responses) {
   ON_CALL(mock, UrlRequest)
-      .WillByDefault(testing::Invoke(
+      .WillByDefault(::testing::Invoke(
           [url_responses](const mojom::UrlRequestInfoPtr& url_request,
                           UrlRequestCallback callback) {
             const absl::optional<mojom::UrlResponseInfo> url_response =

@@ -35,7 +35,7 @@ class BraveAdsConversionQueueUtilTest : public UnitTestBase {
         TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
   }
 
-  testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
+  ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
 };
 
 TEST_F(BraveAdsConversionQueueUtilTest, AddRewardConfirmationQueueItem) {

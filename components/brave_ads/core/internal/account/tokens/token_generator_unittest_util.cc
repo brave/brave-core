@@ -141,7 +141,7 @@ void MockTokenGenerator(const TokenGeneratorMock& mock, const size_t count) {
   CHECK_GT(count, 0U);
 
   ON_CALL(mock, Generate(count))
-      .WillByDefault(testing::Return(BuildTokensForTesting(count)));
+      .WillByDefault(::testing::Return(BuildTokensForTesting(count)));
 }
 
 std::vector<cbr::Token> BuildTokensForTesting(const size_t count) {

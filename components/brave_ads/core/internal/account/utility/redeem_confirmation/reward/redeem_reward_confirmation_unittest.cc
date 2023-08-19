@@ -29,9 +29,9 @@ namespace brave_ads {
 
 class BraveAdsRedeemRewardConfirmationTest : public UnitTestBase {
  protected:
-  testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
+  ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
 
-  testing::NiceMock<RedeemConfirmationDelegateMock>
+  ::testing::NiceMock<RedeemConfirmationDelegateMock>
       redeem_confirmation_delegate_mock_;
   base::WeakPtrFactory<RedeemConfirmationDelegateMock>
       confirmation_delegate_weak_factory_{&redeem_confirmation_delegate_mock_};
@@ -332,7 +332,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnFailedToRedeemConfirmation(testing::_,
+              OnFailedToRedeemConfirmation(::testing::_,
                                            /*should_retry*/ true));
 
   // Act

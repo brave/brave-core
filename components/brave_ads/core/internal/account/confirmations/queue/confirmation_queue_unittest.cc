@@ -82,7 +82,7 @@ class BraveAdsConfirmationQueueTest : public ConfirmationQueueDelegate,
     did_exhaust_queue_ = false;
   }
 
-  testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
+  ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
 
   std::unique_ptr<ConfirmationQueue> confirmation_queue_;
 

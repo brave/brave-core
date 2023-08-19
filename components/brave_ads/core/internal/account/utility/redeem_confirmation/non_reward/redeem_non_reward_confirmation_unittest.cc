@@ -31,7 +31,7 @@ class BraveAdsRedeemNonRewardConfirmationTest : public UnitTestBase {
     DisableBraveRewardsForTesting();
   }
 
-  testing::NiceMock<RedeemConfirmationDelegateMock>
+  ::testing::NiceMock<RedeemConfirmationDelegateMock>
       redeem_confirmation_delegate_mock_;
   base::WeakPtrFactory<RedeemConfirmationDelegateMock>
       confirmation_delegate_weak_factory_{&redeem_confirmation_delegate_mock_};

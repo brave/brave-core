@@ -70,7 +70,7 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
 
   // Assert
   base::MockCallback<BuildUserDataCallback> callback;
-  EXPECT_CALL(callback, Run(testing::IsEmpty()));
+  EXPECT_CALL(callback, Run(::testing::IsEmpty()));
 
   // Act
   BuildFixedUserData(transaction, callback.Get());
@@ -117,7 +117,7 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
   const base::Value::Dict expected_user_data =
       base::test::ParseJsonDict(R"({"conversion":[{"action":"click"}]})");
   base::MockCallback<BuildUserDataCallback> callback;
-  EXPECT_CALL(callback, Run(testing::Eq(std::ref(expected_user_data))));
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
 
   // Act
   BuildFixedUserData(transaction, callback.Get());
