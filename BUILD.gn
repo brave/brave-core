@@ -307,7 +307,7 @@ group("create_dist") {
     }
 
     if (build_delta_installer) {
-      deps += [ "//chrome/installer/mini_installer:delta_installer" ]
+      deps += [ "//brave/build/win:signed_delta_installer" ]
     }
   }
   if (is_mac) {
