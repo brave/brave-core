@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
+#include <cmath>
+#include <cstddef>
 #include <limits>
 #include <numeric>
 #include <utility>
@@ -48,6 +50,8 @@ class VectorDataStorage {
     return points_[index];
   }
 
+  std::vector<uint32_t>& points() { return points_; }
+  const std::vector<uint32_t>& points() const { return points_; }
   std::vector<float>& values() { return values_; }
   const std::vector<float>& values() const { return values_; }
   size_t DimensionCount() const { return dimension_count_; }
@@ -176,6 +180,12 @@ void VectorData::DivideByScalar(const float scalar) {
   }
 }
 
+float VectorData::GetSum() const {
+  return static_cast<float>(std::accumulate(
+      storage_->values().cbegin(), storage_->values().cend(), 0.0,
+      [](const float& lhs, const float rhs) -> float { return lhs + rhs; }));
+}
+
 float VectorData::GetNorm() const {
   return static_cast<float>(sqrt(
       std::accumulate(storage_->values().cbegin(), storage_->values().cend(),
@@ -184,12 +194,42 @@ float VectorData::GetNorm() const {
                       })));
 }
 
+void VectorData::ToDistribution() {
+  const float vector_sum = GetSum();
+  if (vector_sum > kMinimumVectorLength) {
+    for (float& value : storage_->values()) {
+      value /= vector_sum;
+    }
+  }
+}
+
+void VectorData::Softmax() {
+  float maximum = -std::numeric_limits<float>::infinity();
+  for (float& value : storage_->values()) {
+    maximum = (value > maximum) ? value : maximum;
+  }
+  float sum_exp = 0.0;
+  for (float& value : storage_->values()) {
+    const float value_exp = std::exp(value - maximum);
+    sum_exp += value_exp;
+  }
+  for (float& value : storage_->values()) {
+    value = std::exp(value - maximum) / sum_exp;
+  }
+}
+
 void VectorData::Normalize() {
   const float vector_norm = GetNorm();
   if (vector_norm > kMinimumVectorLength) {
     for (float& value : storage_->values()) {
       value /= vector_norm;
     }
+  }
+}
+
+void VectorData::Tanh() {
+  for (float& value : storage_->values()) {
+    value = tanh(value);
   }
 }
 
@@ -217,6 +257,21 @@ size_t VectorData::GetNonZeroElementCount() const {
 
 const std::vector<float>& VectorData::GetData() const {
   return storage_->values();
+}
+
+const std::vector<float>& VectorData::GetData(
+    std::vector<float>& dense_vector) const {
+  size_t dimension_count = GetDimensionCount();
+  if (storage_->values().size() == dimension_count) {
+    return storage_->values();
+  }
+  if (dense_vector.size() != dimension_count) {
+    return storage_->values();
+  }
+  for (size_t i = 0; i < storage_->points().size(); i++) {
+    dense_vector[storage_->points()[i]] = storage_->values()[i];
+  }
+  return dense_vector;
 }
 
 }  // namespace brave_ads::ml
