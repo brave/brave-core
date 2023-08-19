@@ -337,7 +337,7 @@ void UnitTestBase::SetUpIntegrationTest() {
 }
 
 void UnitTestBase::SetUpIntegrationTestCallback(const bool success) {
-  ASSERT_TRUE(success);
+  ASSERT_TRUE(success) << "Failed to initialize ads";
 
   NotifyDidInitializeAds();
 
@@ -354,14 +354,20 @@ void UnitTestBase::SetUpUnitTest() {
   SetUpTest();
 
   global_state_->GetDatabaseManager().CreateOrOpen(
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
+      base::BindOnce([](const bool success) {
+        ASSERT_TRUE(success) << "Failed to create or open database";
+      }));
 
   global_state_->GetClientStateManager().Load(
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
+      base::BindOnce([](const bool success) {
+        ASSERT_TRUE(success) << "Failed to load client state";
+      }));
 
   global_state_->GetConfirmationStateManager().Load(
       GetWalletForTesting(),  // IN-TEST
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
+      base::BindOnce([](const bool success) {
+        ASSERT_TRUE(success) << "Failed to load confirmation state";
+      }));
 
   task_environment_.FastForwardUntilNoTasksRemain();
 }
