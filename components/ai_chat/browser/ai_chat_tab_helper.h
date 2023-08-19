@@ -77,6 +77,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
       bool& can_generate,
       mojom::AutoGenerateQuestionsPref& auto_generate);
   bool HasPageContent();
+  void DisconnectPageContents();
+  void ClearConversationHistory();
 
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
@@ -147,6 +149,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   std::vector<std::string> suggested_questions_;
   bool has_generated_questions_ = false;
   bool is_video_ = false;
+  bool should_page_content_be_disconnected_ = false;
   // Store the unique ID for each navigation so that
   // we can ignore API responses for previous navigations.
   int64_t current_navigation_id_;

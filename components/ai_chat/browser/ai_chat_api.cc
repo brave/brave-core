@@ -173,3 +173,9 @@ void AIChatAPI::QueryPrompt(
                                 headers, {});
   }
 }
+
+void AIChatAPI::ClearAllQueries() {
+  // TODO(nullhook): Keep track of in-progress requests and cancel them
+  // individually. This would be useful to keep some in-progress requests alive.
+  api_request_helper_.CancelAll();
+}

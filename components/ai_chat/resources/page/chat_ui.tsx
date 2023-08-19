@@ -50,6 +50,10 @@ function App () {
     model.generateSuggestedQuestions()
   }
 
+  const handlePageContentDisconnect = () => {
+    getPageHandlerInstance().pageHandler.disconnectPageContents()
+  }
+
   let conversationList = <PrivacyMessage />
   let siteTitleElement = null
   let promptAutoSuggestionElement = null
@@ -71,6 +75,7 @@ function App () {
         <SiteTitle
         siteInfo={model.siteInfo}
         favIconUrl={model.favIconUrl}
+        onDisconnectButtonClick={handlePageContentDisconnect}
       />
       )
     }
@@ -104,6 +109,7 @@ function App () {
         siteTitle={siteTitleElement}
         promptAutoSuggestion={promptAutoSuggestionElement}
         onSettingsClick={() => getPageHandlerInstance().pageHandler.openBraveLeoSettings()}
+        onEraseClick={() => getPageHandlerInstance().pageHandler.clearConversationHistory()}
       />
     </BraveCoreThemeProvider>
   )

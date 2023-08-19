@@ -161,11 +161,14 @@ void AIChatTabHelper::MaybeGeneratePageText() {
                "primary main frame";
     return;
   }
-  is_page_text_fetch_in_progress_ = true;
-  FetchPageContent(
-      web_contents(),
-      base::BindOnce(&AIChatTabHelper::OnTabContentRetrieved,
-                     weak_ptr_factory_.GetWeakPtr(), current_navigation_id_));
+
+  if (!should_page_content_be_disconnected_) {
+    is_page_text_fetch_in_progress_ = true;
+    FetchPageContent(
+        web_contents(),
+        base::BindOnce(&AIChatTabHelper::OnTabContentRetrieved,
+                       weak_ptr_factory_.GetWeakPtr(), current_navigation_id_));
+  }
 }
 
 void AIChatTabHelper::MaybeGenerateQuestions() {
@@ -232,7 +235,9 @@ void AIChatTabHelper::CleanUp() {
   is_page_text_fetch_in_progress_ = false;
   is_request_in_progress_ = false;
   has_generated_questions_ = false;
+  should_page_content_be_disconnected_ = false;
   OnSuggestedQuestionsChanged();
+  ai_chat_api_->ClearAllQueries();
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
@@ -253,6 +258,22 @@ std::vector<std::string> AIChatTabHelper::GetSuggestedQuestions(
 
 bool AIChatTabHelper::HasPageContent() {
   return !article_text_.empty();
+}
+
+void AIChatTabHelper::DisconnectPageContents() {
+  CleanUp();
+
+  should_page_content_be_disconnected_ = true;
+}
+
+void AIChatTabHelper::ClearConversationHistory() {
+  chat_history_.clear();
+  ai_chat_api_->ClearAllQueries();
+
+  // Trigger an observer update to refresh the UI.
+  for (auto& obs : observers_) {
+    obs.OnHistoryUpdate();
+  }
 }
 
 void AIChatTabHelper::GenerateQuestions() {

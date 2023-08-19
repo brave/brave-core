@@ -9,6 +9,9 @@
   justify-content: flex-start;
   align-items: center;
   gap: 16px;
+  font: var(--leo-font-primary-small-regular);
+  color: var(--leo-color-text-secondary);
+  position: relative;
 }
 
 .titleBox {
@@ -16,11 +19,10 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  flex: 1 1 auto;
 }
 
 .title {
-  font: var(--leo-font-primary-small-regular);
-  color: var(--leo-color-text-secondary);
   padding: 0;
   margin: 0;
 }
@@ -36,9 +38,48 @@
   align-items: center;
   justify-content: center;
 
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--leo-effect-focus-state);
+  }
+
   img {
     width: 16px;
     height: 16px;
     object-fit: contain;
   }
+}
+
+.tooltip {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  z-index: 2;
+  height: fit-content;
+  max-width: 260px;
+  background-color: var(--leo-color-container-background);
+  padding: 16px;
+  box-shadow: var(--leo-effect-elevation-03);
+  border-radius: 5px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+
+  &::before {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 0px;
+    right: 10px;
+    top: -5px;
+    border: 5px solid transparent;
+    border-top: 0;
+    border-bottom: 5px solid var(--leo-color-container-background);
+  }
+}
+
+.tooltipVisible {
+  opacity: 1;
+  visibility: visible;
+  transition: none;
 }

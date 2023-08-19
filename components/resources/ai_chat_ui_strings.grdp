@@ -25,7 +25,7 @@
     The legal basis relied on to process any personal data submitted is that it is necessary for the legitimate interests of Brave and end users submitting queries.
   </message>
   <message name="IDS_CHAT_UI_PLACEHOLDER_LABEL" desc="Placeholder text for an input box allowing users to send messages to the AI service">
-    Ask Brave AI
+    Enter a prompt here
   </message>
   <message name="IDS_CHAT_UI_API_ERROR" desc="Describes an error occured submitting the API request">
     There was an error processing your message, please try again.
@@ -41,5 +41,8 @@
   </message>
   <message name="IDS_CHAT_UI_NO_THANKS_BUTTON_LABEL" desc="A button label to skip suggested questions option">
     No Thanks
+  </message>
+  <message name="IDS_CHAT_UI_PAGE_CONTENT_WARNING" desc="Description about page content being sent to a remote LLM">
+     Disconnect to stop sending this page content to Leo, and start a new conversation
   </message>
 </grit-part>

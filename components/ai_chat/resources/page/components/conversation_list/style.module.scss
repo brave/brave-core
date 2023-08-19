@@ -30,27 +30,31 @@
 
 .suggestedQuestionsBox {
   padding: 16px 16px 16px 64px;
-
-  leo-button {
-    span {
-      align-items: center;
-    }
-  }
-
-  div {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    gap: 8px;
-  }
 }
 
 .suggestedQuestionLabel {
+  --leo-icon-size: 18px;
+
   font: var(--leo-font-secondary-small-regular);
   color: var(--leo-color-text-secondary);
   padding-bottom: 16px;
+  display: flex;
+  gap: 6px;
 }
 
+.buttonText {
+  display: flex;
+  align-items: flex-start;
+  text-align: left;
+  font: var(--leo-font-secondary-default-regular);
+}
+
+.questionsList {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 8px;
+}
 
 .avatar {
   --leo-icon-size: 18px;
@@ -74,12 +78,4 @@
   margin: 0;
   white-space: pre-wrap;
   padding-top: 5px;
-}
-
-.buttonBox {
-  --leo-icon-size: 20px;
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
-  text-align: left;
 }
