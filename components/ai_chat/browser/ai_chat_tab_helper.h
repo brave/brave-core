@@ -106,11 +106,11 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void OnPageHasContentChanged();
 
   // content::WebContentsObserver:
-  void PrimaryPageChanged(content::Page& page) override;
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
   void WebContentsDestroyed() override;
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
+  void TitleWasSet(content::NavigationEntry* entry) override;
 
   // favicon::FaviconDriverObserver
   void OnFaviconUpdated(favicon::FaviconDriver* favicon_driver,
@@ -153,6 +153,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // Store the unique ID for each navigation so that
   // we can ignore API responses for previous navigations.
   int64_t current_navigation_id_;
+  bool is_same_document_navigation_ = false;
 
   base::WeakPtrFactory<AIChatTabHelper> weak_ptr_factory_{this};
   WEB_CONTENTS_USER_DATA_KEY_DECL();

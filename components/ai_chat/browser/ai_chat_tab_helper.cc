@@ -753,13 +753,38 @@ void AIChatTabHelper::DidFinishNavigation(
   // Store current navigation ID of the main document
   // so that we can ignore async responses against any navigated-away-from
   // documents.
-  if (!navigation_handle->IsInMainFrame() ||
-      navigation_handle->IsSameDocument()) {
+  if (!navigation_handle->IsInMainFrame()) {
+    DVLOG(3) << "FinishNavigation NOT in main frame";
     return;
   }
   DVLOG(2) << __func__ << navigation_handle->GetNavigationId()
-           << " url: " << navigation_handle->GetURL().spec();
+           << " url: " << navigation_handle->GetURL().spec()
+           << " same document? " << navigation_handle->IsSameDocument();
   current_navigation_id_ = navigation_handle->GetNavigationId();
+  // Allow same-document navigation, as content often changes as a result
+  // of framgment / pushState / replaceState navigations.
+  // Content won't be retrieved immediately and we don't have a similar
+  // "DOM Content Loaded" event, so let's wait for something else such as
+  // page title changing, or a timer completing before calling
+  // |MaybeGeneratePageText|.
+  is_same_document_navigation_ = navigation_handle->IsSameDocument();
+  // Experimentally only call |CleanUp| _if_ a same-page navigation
+  // results in a page title change (see |TtileWasSet|).
+  if (!is_same_document_navigation_) {
+    CleanUp();
+  }
+}
+
+void AIChatTabHelper::TitleWasSet(content::NavigationEntry* entry) {
+  DVLOG(3) << __func__ << entry->GetTitle();
+  if (is_same_document_navigation_) {
+    // Seems as good a time as any to check for content after a same-document
+    // navigation.
+    // We only perform CleanUp here in case it was a minor pushState / fragment
+    // navigation and didn't result in new content.
+    CleanUp();
+    MaybeGeneratePageText();
+  }
 }
 
 void AIChatTabHelper::OnFaviconUpdated(
@@ -787,10 +812,6 @@ mojom::AutoGenerateQuestionsPref AIChatTabHelper::GetAutoGeneratePref() {
   }
 
   return pref;
-}
-
-void AIChatTabHelper::PrimaryPageChanged(content::Page& page) {
-  CleanUp();
 }
 
 void AIChatTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
