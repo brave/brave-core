@@ -25,8 +25,8 @@ constexpr char kIssue25384ConfirmationStateFilename[] =
 class BraveAdsLegacyRewardsMigrationIssue25384Test : public UnitTestBase {
  protected:
   void SetUpMocks() override {
-    CopyFileFromTestPathToTempPath(kIssue25384ConfirmationStateFilename,
-                                   kConfirmationStateFilename);
+    ASSERT_TRUE(CopyFileFromTestPathToTempPath(
+        kIssue25384ConfirmationStateFilename, kConfirmationStateFilename));
   }
 };
 

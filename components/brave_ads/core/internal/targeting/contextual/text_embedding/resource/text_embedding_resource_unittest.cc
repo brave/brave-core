@@ -52,7 +52,8 @@ TEST_F(BraveAdsTextEmbeddingResourceTest, IsNotInitialized) {
 
 TEST_F(BraveAdsTextEmbeddingResourceTest, DoNotLoadInvalidResource) {
   // Arrange
-  CopyFileFromTestPathToTempPath(kInvalidResourceId, kTextEmbeddingResourceId);
+  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kInvalidResourceId,
+                                             kTextEmbeddingResourceId));
 
   // Act
   LoadResource(kLanguageComponentId);

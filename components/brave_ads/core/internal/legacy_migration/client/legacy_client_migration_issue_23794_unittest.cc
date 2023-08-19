@@ -27,8 +27,8 @@ class BraveAdsLegacyClientMigrationIssue23794Test : public UnitTestBase {
 
 TEST_F(BraveAdsLegacyClientMigrationIssue23794Test, Migrate) {
   // Arrange
-  CopyFileFromTestPathToTempPath(kClientIssue23794Filename,
-                                 kClientStateFilename);
+  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kClientIssue23794Filename,
+                                             kClientStateFilename));
 
   // Act
   MigrateClientState(base::BindOnce([](const bool success) {

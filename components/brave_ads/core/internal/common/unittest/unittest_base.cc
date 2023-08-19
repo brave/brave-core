@@ -94,10 +94,7 @@ bool UnitTestBase::CopyFileFromTestPathToTempPath(
   const base::FilePath from_test_path = GetTestPath().AppendASCII(from_path);
   const base::FilePath to_temp_path = temp_dir_.GetPath().AppendASCII(to_path);
 
-  const bool success = base::CopyFile(from_test_path, to_temp_path);
-  CHECK(success) << "Failed to copy file from " << from_test_path << " to "
-                 << to_temp_path;
-  return success;
+  return base::CopyFile(from_test_path, to_temp_path);
 }
 
 bool UnitTestBase::CopyFileFromTestPathToTempPath(
@@ -115,11 +112,8 @@ bool UnitTestBase::CopyDirectoryFromTestPathToTempPath(
   const base::FilePath from_test_path = GetTestPath().AppendASCII(from_path);
   const base::FilePath to_temp_path = temp_dir_.GetPath().AppendASCII(to_path);
 
-  const bool success = base::CopyDirectory(from_test_path, to_temp_path,
-                                           /*recursive*/ true);
-  CHECK(success) << "Failed to copy directory from " << from_test_path << " to "
-                 << to_temp_path;
-  return success;
+  return base::CopyDirectory(from_test_path, to_temp_path,
+                             /*recursive*/ true);
 }
 
 bool UnitTestBase::CopyDirectoryFromTestPathToTempPath(

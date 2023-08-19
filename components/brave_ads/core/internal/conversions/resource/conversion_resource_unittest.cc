@@ -50,7 +50,8 @@ TEST_F(BraveAdsConversionResourceTest, IsNotInitialized) {
 
 TEST_F(BraveAdsConversionResourceTest, DoNotLoadInvalidResource) {
   // Arrange
-  CopyFileFromTestPathToTempPath(kInvalidResourceId, kConversionResourceId);
+  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kInvalidResourceId,
+                                             kConversionResourceId));
 
   // Act
   LoadResource(kCountryComponentId);

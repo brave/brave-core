@@ -30,7 +30,7 @@ class BraveAdsLegacyConfirmationMigrationTest : public UnitTestBase {
 
 TEST_F(BraveAdsLegacyConfirmationMigrationTest, Migrate) {
   // Arrange
-  CopyFileFromTestPathToTempPath(kConfirmationStateFilename);
+  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kConfirmationStateFilename));
 
   // Assert
   base::MockCallback<InitializeCallback> callback;
@@ -45,8 +45,8 @@ TEST_F(BraveAdsLegacyConfirmationMigrationTest, Migrate) {
 
 TEST_F(BraveAdsLegacyConfirmationMigrationTest, InvalidState) {
   // Arrange
-  CopyFileFromTestPathToTempPath(kInvalidJsonFilename,
-                                 kConfirmationStateFilename);
+  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kInvalidJsonFilename,
+                                             kConfirmationStateFilename));
 
   // Assert
   base::MockCallback<InitializeCallback> callback;

@@ -52,8 +52,8 @@ TEST_F(BraveAdsTextClassificationResourceTest, IsNotInitialized) {
 
 TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadInvalidResource) {
   // Arrange
-  CopyFileFromTestPathToTempPath(kInvalidResourceId,
-                                 kTextClassificationResourceId);
+  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kInvalidResourceId,
+                                             kTextClassificationResourceId));
 
   // Act
   LoadResource(kLanguageComponentId);

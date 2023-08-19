@@ -52,7 +52,8 @@ TEST_F(BraveAdsPurchaseIntentResourceTest, IsNotInitialized) {
 
 TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadInvalidResource) {
   // Arrange
-  CopyFileFromTestPathToTempPath(kInvalidResourceId, kPurchaseIntentResourceId);
+  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kInvalidResourceId,
+                                             kPurchaseIntentResourceId));
 
   // Act
   LoadResource(kCountryComponentId);

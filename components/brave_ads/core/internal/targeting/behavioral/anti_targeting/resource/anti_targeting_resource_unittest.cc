@@ -52,7 +52,8 @@ TEST_F(BraveAdsAntiTargetingResourceTest, IsNotInitialized) {
 
 TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadInvalidResource) {
   // Arrange
-  CopyFileFromTestPathToTempPath(kInvalidResourceId, kAntiTargetingResourceId);
+  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kInvalidResourceId,
+                                             kAntiTargetingResourceId));
 
   // Act
   LoadResource(kCountryComponentId);
