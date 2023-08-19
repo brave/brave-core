@@ -40,7 +40,7 @@ void SuccessfullyMigrated(InitializeCallback callback) {
 void MigrateCallback(InitializeCallback callback,
                      const absl::optional<std::string>& json) {
   if (!json) {
-    // Confirmations state does not exist
+    // Confirmation state does not exist
     return SuccessfullyMigrated(std::move(callback));
   }
 

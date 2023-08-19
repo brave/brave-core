@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_PREF_INFO_H_
 
 #include <string>
-#include <tuple>
 
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

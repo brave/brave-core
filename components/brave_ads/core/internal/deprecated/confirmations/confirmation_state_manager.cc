@@ -137,7 +137,7 @@ ConfirmationStateManager& ConfirmationStateManager::GetInstance() {
 
 void ConfirmationStateManager::Load(const absl::optional<WalletInfo>& wallet,
                                     InitializeCallback callback) {
-  BLOG(3, "Loading confirmations state");
+  BLOG(3, "Loading confirmation state");
 
   wallet_ = wallet;
 
@@ -151,20 +151,20 @@ void ConfirmationStateManager::LoadCallback(
     InitializeCallback callback,
     const absl::optional<std::string>& json) {
   if (!json) {
-    BLOG(3, "Confirmations state does not exist, creating default state");
+    BLOG(3, "Confirmation state does not exist, creating default state");
 
     is_initialized_ = true;
 
     Save();
   } else {
     if (!FromJson(*json)) {
-      BLOG(0, "Failed to load confirmations state");
-      BLOG(3, "Failed to parse confirmations state: " << *json);
+      BLOG(0, "Failed to load confirmation state");
+      BLOG(3, "Failed to parse confirmation state: " << *json);
 
       return std::move(callback).Run(/*success*/ false);
     }
 
-    BLOG(3, "Successfully loaded confirmations state");
+    BLOG(3, "Successfully loaded confirmation state");
 
     is_initialized_ = true;
   }
@@ -177,16 +177,16 @@ void ConfirmationStateManager::Save() {
     return;
   }
 
-  BLOG(9, "Saving confirmations state");
+  BLOG(9, "Saving confirmation state");
 
   AdsClientHelper::GetInstance()->Save(
       kConfirmationStateFilename, ToJson(),
       base::BindOnce([](const bool success) {
         if (!success) {
-          return BLOG(0, "Failed to save confirmations state");
+          return BLOG(0, "Failed to save confirmation state");
         }
 
-        BLOG(9, "Successfully saved confirmations state");
+        BLOG(9, "Successfully saved confirmation state");
       }));
 }
 
