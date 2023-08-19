@@ -29,8 +29,6 @@
 
 namespace brave_ads {
 
-using ::testing::NiceMock;
-
 class BraveAdsRewardConfirmationUtilTest : public UnitTestBase {
  protected:
   void SetUp() override {
@@ -42,7 +40,7 @@ class BraveAdsRewardConfirmationUtilTest : public UnitTestBase {
         TimeFromString("Mon, 8 Jul 1996 09:25:00", /*is_local*/ false));
   }
 
-  NiceMock<TokenGeneratorMock> token_generator_mock_;
+  testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
 };
 
 TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardCredential) {

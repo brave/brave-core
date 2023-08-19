@@ -16,10 +16,6 @@ namespace brave_ads {
 
 namespace {
 
-using testing::ElementsAre;
-using testing::Mock;
-using testing::StrictMock;
-
 constexpr char kLocale[] = "Locale";
 constexpr char kPrefPath[] = "PrefPath";
 constexpr char kManifestVersion[] = "ManifestVersion";
@@ -79,19 +75,20 @@ void ExpectNotifierCalls(AdsClientNotifierObserverMock& observer,
       .Times(expected_calls_count);
   EXPECT_CALL(observer,
               OnNotifyTabTextContentDidChange(
-                  kTabId, ElementsAre(GURL(kRedirectChainUrl)), kText))
+                  kTabId, testing::ElementsAre(GURL(kRedirectChainUrl)), kText))
       .Times(expected_calls_count);
   EXPECT_CALL(observer,
               OnNotifyTabHtmlContentDidChange(
-                  kTabId, ElementsAre(GURL(kRedirectChainUrl)), kHtml))
+                  kTabId, testing::ElementsAre(GURL(kRedirectChainUrl)), kHtml))
       .Times(expected_calls_count);
   EXPECT_CALL(observer, OnNotifyTabDidStartPlayingMedia(kTabId))
       .Times(expected_calls_count);
   EXPECT_CALL(observer, OnNotifyTabDidStopPlayingMedia(kTabId))
       .Times(expected_calls_count);
-  EXPECT_CALL(observer,
-              OnNotifyTabDidChange(kTabId, ElementsAre(GURL(kRedirectChainUrl)),
-                                   kIsVisible))
+  EXPECT_CALL(
+      observer,
+      OnNotifyTabDidChange(
+          kTabId, testing::ElementsAre(GURL(kRedirectChainUrl)), kIsVisible))
       .Times(expected_calls_count);
   EXPECT_CALL(observer, OnNotifyDidCloseTab(kTabId))
       .Times(expected_calls_count);
@@ -122,7 +119,7 @@ TEST(BraveAdsAdsClientNotifierTest, FireQueuedNotifications) {
   queued_notifier.set_should_queue_notifications_for_testing(
       /*should_queue_notifications*/ true);
 
-  StrictMock<AdsClientNotifierObserverMock> observer;
+  testing::StrictMock<AdsClientNotifierObserverMock> observer;
   queued_notifier.AddObserver(&observer);
 
   // Act
@@ -130,28 +127,28 @@ TEST(BraveAdsAdsClientNotifierTest, FireQueuedNotifications) {
   Notify(queued_notifier);
 
   // Assert
-  Mock::VerifyAndClearExpectations(&observer);
+  testing::Mock::VerifyAndClearExpectations(&observer);
 
   // Act
   ExpectNotifierCalls(observer, /*expected_calls_count*/ 1);
   queued_notifier.NotifyPendingObservers();
 
   // Assert
-  Mock::VerifyAndClearExpectations(&observer);
+  testing::Mock::VerifyAndClearExpectations(&observer);
 
   // Act
   ExpectNotifierCalls(observer, /*expected_calls_count*/ 1);
   Notify(queued_notifier);
 
   // Assert
-  Mock::VerifyAndClearExpectations(&observer);
+  testing::Mock::VerifyAndClearExpectations(&observer);
 
   queued_notifier.RemoveObserver(&observer);
 }
 
 TEST(BraveAdsAdsClientNotifierTest, NotificationsNotFiredIfWereQueued) {
   // Arrange
-  StrictMock<AdsClientNotifierObserverMock> observer;
+  testing::StrictMock<AdsClientNotifierObserverMock> observer;
   ExpectNotifierCalls(observer, /*expected_calls_count*/ 0);
 
   // Act
@@ -170,7 +167,7 @@ TEST(BraveAdsAdsClientNotifierTest, NotificationsNotFiredIfWereQueued) {
 
 TEST(BraveAdsAdsClientNotifierTest, ShouldNotQueueNotifications) {
   // Arrange
-  StrictMock<AdsClientNotifierObserverMock> observer;
+  testing::StrictMock<AdsClientNotifierObserverMock> observer;
   ExpectNotifierCalls(observer, /*expected_calls_count*/ 1);
 
   AdsClientNotifier queued_notifier;

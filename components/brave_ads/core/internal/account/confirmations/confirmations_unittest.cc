@@ -21,8 +21,6 @@
 
 namespace brave_ads {
 
-using ::testing::NiceMock;
-
 class BraveAdsConfirmationsTest : public UnitTestBase {
  protected:
   void SetUp() override {
@@ -31,7 +29,7 @@ class BraveAdsConfirmationsTest : public UnitTestBase {
     confirmations_ = std::make_unique<Confirmations>(&token_generator_mock_);
   }
 
-  NiceMock<TokenGeneratorMock> token_generator_mock_;
+  testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
 
   std::unique_ptr<Confirmations> confirmations_;
 };

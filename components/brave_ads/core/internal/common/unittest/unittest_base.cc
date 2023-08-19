@@ -33,8 +33,6 @@
 
 namespace brave_ads {
 
-using ::testing::Invoke;
-
 UnitTestBase::UnitTestBase()
     : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
       scoped_default_locale_(brave_l10n::test::ScopedDefaultLocale(  // IN-TEST
@@ -172,7 +170,7 @@ void UnitTestBase::AdvanceClockToMidnight(const bool is_local) {
 
 void UnitTestBase::MockAdsClientAddObserver() {
   ON_CALL(ads_client_mock_, AddObserver)
-      .WillByDefault(Invoke([=](AdsClientNotifierObserver* observer) {
+      .WillByDefault(testing::Invoke([=](AdsClientNotifierObserver* observer) {
         CHECK(observer);
         AddObserver(observer);
       }));
@@ -234,32 +232,35 @@ void UnitTestBase::MockAdsClient() {
 
 void UnitTestBase::MockSetBooleanPref(AdsClientMock& mock) {
   ON_CALL(mock, SetBooleanPref)
-      .WillByDefault(Invoke([=](const std::string& path, const bool value) {
-        SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
-        NotifyPrefDidChange(path);
-      }));
+      .WillByDefault(
+          testing::Invoke([=](const std::string& path, const bool value) {
+            SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
+            NotifyPrefDidChange(path);
+          }));
 }
 
 void UnitTestBase::MockSetIntegerPref(AdsClientMock& mock) {
   ON_CALL(mock, SetIntegerPref)
-      .WillByDefault(Invoke([=](const std::string& path, const int value) {
-        SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
-        NotifyPrefDidChange(path);
-      }));
+      .WillByDefault(
+          testing::Invoke([=](const std::string& path, const int value) {
+            SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
+            NotifyPrefDidChange(path);
+          }));
 }
 
 void UnitTestBase::MockSetDoublePref(AdsClientMock& mock) {
   ON_CALL(mock, SetDoublePref)
-      .WillByDefault(Invoke([=](const std::string& path, const double value) {
-        SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
-        NotifyPrefDidChange(path);
-      }));
+      .WillByDefault(
+          testing::Invoke([=](const std::string& path, const double value) {
+            SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
+            NotifyPrefDidChange(path);
+          }));
 }
 
 void UnitTestBase::MockSetStringPref(AdsClientMock& mock) {
   ON_CALL(mock, SetStringPref)
-      .WillByDefault(
-          Invoke([=](const std::string& path, const std::string& value) {
+      .WillByDefault(testing::Invoke(
+          [=](const std::string& path, const std::string& value) {
             SetPrefValue(path, value);
             NotifyPrefDidChange(path);
           }));
@@ -267,24 +268,26 @@ void UnitTestBase::MockSetStringPref(AdsClientMock& mock) {
 
 void UnitTestBase::MockSetInt64Pref(AdsClientMock& mock) {
   ON_CALL(mock, SetInt64Pref)
-      .WillByDefault(Invoke([=](const std::string& path, const int64_t value) {
-        SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
-        NotifyPrefDidChange(path);
-      }));
+      .WillByDefault(
+          testing::Invoke([=](const std::string& path, const int64_t value) {
+            SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
+            NotifyPrefDidChange(path);
+          }));
 }
 
 void UnitTestBase::MockSetUint64Pref(AdsClientMock& mock) {
   ON_CALL(mock, SetUint64Pref)
-      .WillByDefault(Invoke([=](const std::string& path, const uint64_t value) {
-        SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
-        NotifyPrefDidChange(path);
-      }));
+      .WillByDefault(
+          testing::Invoke([=](const std::string& path, const uint64_t value) {
+            SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
+            NotifyPrefDidChange(path);
+          }));
 }
 
 void UnitTestBase::MockSetDictPref(AdsClientMock& mock) {
   ON_CALL(mock, SetDictPref)
-      .WillByDefault(
-          Invoke([=](const std::string& path, base::Value::Dict value) {
+      .WillByDefault(testing::Invoke(
+          [=](const std::string& path, base::Value::Dict value) {
             std::string json;
             CHECK(base::JSONWriter::Write(value, &json));
             SetPrefValue(path, json);
@@ -294,8 +297,8 @@ void UnitTestBase::MockSetDictPref(AdsClientMock& mock) {
 
 void UnitTestBase::MockSetListPref(AdsClientMock& mock) {
   ON_CALL(mock, SetListPref)
-      .WillByDefault(
-          Invoke([=](const std::string& path, base::Value::List value) {
+      .WillByDefault(testing::Invoke(
+          [=](const std::string& path, base::Value::List value) {
             std::string json;
             CHECK(base::JSONWriter::Write(value, &json));
             SetPrefValue(path, json);
@@ -306,7 +309,7 @@ void UnitTestBase::MockSetListPref(AdsClientMock& mock) {
 void UnitTestBase::MockSetTimePref(AdsClientMock& mock) {
   ON_CALL(mock, SetTimePref)
       .WillByDefault(
-          Invoke([=](const std::string& path, const base::Time value) {
+          testing::Invoke([=](const std::string& path, const base::Time value) {
             SetPrefValue(
                 path, base::NumberToString(
                           value.ToDeltaSinceWindowsEpoch().InMicroseconds()));

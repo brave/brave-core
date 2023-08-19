@@ -14,8 +14,6 @@
 
 namespace brave_ads {
 
-using ::testing::NiceMock;
-
 class BraveAdsGlobalStateTest : public ::testing::Test {
  protected:
   void SetUp() override {
@@ -24,7 +22,7 @@ class BraveAdsGlobalStateTest : public ::testing::Test {
 
   base::test::TaskEnvironment task_environment_;
 
-  NiceMock<AdsClientMock> ads_client_mock_;
+  testing::NiceMock<AdsClientMock> ads_client_mock_;
 
   std::unique_ptr<GlobalState> global_state_;
 };

@@ -29,8 +29,6 @@
 
 namespace brave_ads {
 
-using ::testing::NiceMock;
-
 namespace {
 
 void AddHistoryItem() {
@@ -85,7 +83,7 @@ class BraveAdsUserReactionsTest : public AccountObserver,
     did_add_history_ = true;
   }
 
-  NiceMock<TokenGeneratorMock> token_generator_mock_;
+  testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
 
   std::unique_ptr<Account> account_;
 

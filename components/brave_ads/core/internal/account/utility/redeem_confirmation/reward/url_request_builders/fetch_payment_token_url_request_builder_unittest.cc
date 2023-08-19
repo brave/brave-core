@@ -17,11 +17,9 @@
 
 namespace brave_ads {
 
-using ::testing::NiceMock;
-
 class BraveAdsFetchPaymentTokenUrlRequestBuilderTest : public UnitTestBase {
  protected:
-  NiceMock<TokenGeneratorMock> token_generator_mock_;
+  testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
 };
 
 TEST_F(BraveAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {

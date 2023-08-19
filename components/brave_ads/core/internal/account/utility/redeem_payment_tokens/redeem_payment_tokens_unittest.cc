@@ -27,9 +27,6 @@
 
 namespace brave_ads {
 
-using ::testing::InSequence;
-using ::testing::NiceMock;
-
 class BraveAdsRedeemPaymentTokensTest : public UnitTestBase {
  protected:
   BraveAdsRedeemPaymentTokensTest()
@@ -38,7 +35,7 @@ class BraveAdsRedeemPaymentTokensTest : public UnitTestBase {
   }
 
   std::unique_ptr<RedeemPaymentTokens> redeem_payment_tokens_;
-  NiceMock<RedeemPaymentTokensDelegateMock>
+  testing::NiceMock<RedeemPaymentTokensDelegateMock>
       redeem_payment_tokens_delegate_mock_;
 };
 
@@ -216,7 +213,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, Retry) {
   SetPaymentTokensForTesting(/*count*/ 1);
 
   // Act
-  const InSequence seq;
+  const testing::InSequence seq;
 
   EXPECT_CALL(redeem_payment_tokens_delegate_mock_,
               OnFailedToRedeemPaymentTokens());

@@ -20,8 +20,6 @@
 
 namespace brave_ads {
 
-using ::testing::NiceMock;
-
 namespace {
 
 constexpr char kExpectedUrl[] =
@@ -34,7 +32,7 @@ constexpr char kExpectedContent[] =
 class BraveAdsCreateRewardConfirmationUrlRequestBuilderTest
     : public UnitTestBase {
  protected:
-  NiceMock<TokenGeneratorMock> token_generator_mock_;
+  testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
 };
 
 TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,

@@ -21,9 +21,6 @@
 
 namespace brave_ads {
 
-using ::testing::Invoke;
-using ::testing::NiceMock;
-
 class BraveAdsIssuersUrlRequestTest : public UnitTestBase {
  protected:
   void SetUp() override {
@@ -34,7 +31,8 @@ class BraveAdsIssuersUrlRequestTest : public UnitTestBase {
   }
 
   std::unique_ptr<IssuersUrlRequest> issuers_url_request_;
-  NiceMock<IssuersUrlRequestDelegateMock> issuers_url_request_delegate_mock_;
+  testing::NiceMock<IssuersUrlRequestDelegateMock>
+      issuers_url_request_delegate_mock_;
 };
 
 TEST_F(BraveAdsIssuersUrlRequestTest, FetchIssuers) {
@@ -94,8 +92,8 @@ TEST_F(BraveAdsIssuersUrlRequestTest, RetryFetchingIssuersIfNonHttpOkResponse) {
   EXPECT_CALL(issuers_url_request_delegate_mock_, OnDidRetryFetchingIssuers);
 
   ON_CALL(issuers_url_request_delegate_mock_, OnDidFetchIssuers)
-      .WillByDefault(
-          Invoke([](const IssuersInfo& issuers) { SetIssuers(issuers); }));
+      .WillByDefault(testing::Invoke(
+          [](const IssuersInfo& issuers) { SetIssuers(issuers); }));
 
   // Act
   issuers_url_request_->PeriodicallyFetch();

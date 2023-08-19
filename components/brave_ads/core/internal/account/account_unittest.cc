@@ -44,8 +44,6 @@
 
 namespace brave_ads {
 
-using ::testing::NiceMock;
-
 class BraveAdsAccountTest : public AccountObserver, public UnitTestBase {
  protected:
   void SetUp() override {
@@ -85,7 +83,7 @@ class BraveAdsAccountTest : public AccountObserver, public UnitTestBase {
     statement_of_accounts_did_change_ = true;
   }
 
-  NiceMock<TokenGeneratorMock> token_generator_mock_;
+  testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
 
   std::unique_ptr<Account> account_;
 

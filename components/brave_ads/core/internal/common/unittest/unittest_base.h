@@ -27,8 +27,6 @@ class TimeDelta;
 
 namespace brave_ads {
 
-using ::testing::NiceMock;
-
 class Database;
 class GlobalState;
 
@@ -123,9 +121,9 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
 
   base::test::TaskEnvironment task_environment_;
 
-  NiceMock<AdsClientMock> ads_client_mock_;
+  testing::NiceMock<AdsClientMock> ads_client_mock_;
 
-  NiceMock<PlatformHelperMock> platform_helper_mock_;
+  testing::NiceMock<PlatformHelperMock> platform_helper_mock_;
 
  private:
   void MockAdsClientAddObserver();

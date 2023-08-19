@@ -14,8 +14,6 @@
 
 namespace brave_ads {
 
-using ::testing::Return;
-
 // Signing Key:
 //   p9d55MfQAPcFDoc57gratS4ZwP7eqSFR9EzQ0LjdrwU=
 
@@ -143,7 +141,7 @@ void MockTokenGenerator(const TokenGeneratorMock& mock, const size_t count) {
   CHECK_GT(count, 0U);
 
   ON_CALL(mock, Generate(count))
-      .WillByDefault(Return(BuildTokensForTesting(count)));
+      .WillByDefault(testing::Return(BuildTokensForTesting(count)));
 }
 
 std::vector<cbr::Token> BuildTokensForTesting(const size_t count) {

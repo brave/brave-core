@@ -15,8 +15,6 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-using ::testing::Invoke;
-
 namespace brave_ads {
 
 namespace {
@@ -93,7 +91,7 @@ TEST_F(BraveAdsNotificationAdUtilTest, DoNotServeAtRegularIntervals) {
 TEST_F(BraveAdsNotificationAdUtilTest, ShowNotificationAd) {
   // Arrange
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([](const NotificationAdInfo& ad) {
+      .WillOnce(testing::Invoke([](const NotificationAdInfo& ad) {
         // Act
 
         // Assert
@@ -107,7 +105,7 @@ TEST_F(BraveAdsNotificationAdUtilTest, ShowNotificationAd) {
 TEST_F(BraveAdsNotificationAdUtilTest, DismissNotificationAd) {
   // Arrange
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([](const NotificationAdInfo& ad) {
+      .WillOnce(testing::Invoke([](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
@@ -125,7 +123,7 @@ TEST_F(BraveAdsNotificationAdUtilTest, DismissNotificationAd) {
 TEST_F(BraveAdsNotificationAdUtilTest, CloseNotificationAd) {
   // Arrange
   EXPECT_CALL(ads_client_mock_, CloseNotificationAd)
-      .WillOnce(Invoke([](const std::string& placement_id) {
+      .WillOnce(testing::Invoke([](const std::string& placement_id) {
         // Act
 
         // Assert
@@ -133,7 +131,7 @@ TEST_F(BraveAdsNotificationAdUtilTest, CloseNotificationAd) {
       }));
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([](const NotificationAdInfo& ad) {
+      .WillOnce(testing::Invoke([](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
@@ -151,7 +149,7 @@ TEST_F(BraveAdsNotificationAdUtilTest, CloseNotificationAd) {
 TEST_F(BraveAdsNotificationAdUtilTest, NotificationAdTimedOut) {
   // Arrange
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([](const NotificationAdInfo& ad) {
+      .WillOnce(testing::Invoke([](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 

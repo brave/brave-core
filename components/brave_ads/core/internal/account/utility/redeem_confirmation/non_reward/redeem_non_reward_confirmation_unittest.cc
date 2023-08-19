@@ -23,8 +23,6 @@
 
 namespace brave_ads {
 
-using ::testing::NiceMock;
-
 class BraveAdsRedeemNonRewardConfirmationTest : public UnitTestBase {
  protected:
   void SetUp() override {
@@ -33,7 +31,8 @@ class BraveAdsRedeemNonRewardConfirmationTest : public UnitTestBase {
     DisableBraveRewardsForTesting();
   }
 
-  NiceMock<RedeemConfirmationDelegateMock> redeem_confirmation_delegate_mock_;
+  testing::NiceMock<RedeemConfirmationDelegateMock>
+      redeem_confirmation_delegate_mock_;
   base::WeakPtrFactory<RedeemConfirmationDelegateMock>
       confirmation_delegate_weak_factory_{&redeem_confirmation_delegate_mock_};
 };

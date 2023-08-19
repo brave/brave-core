@@ -24,8 +24,6 @@
 
 namespace brave_ads {
 
-using ::testing::NiceMock;
-
 class BraveAdsConversionQueueUtilTest : public UnitTestBase {
  protected:
   void SetUp() override {
@@ -37,7 +35,7 @@ class BraveAdsConversionQueueUtilTest : public UnitTestBase {
         TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
   }
 
-  NiceMock<TokenGeneratorMock> token_generator_mock_;
+  testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
 };
 
 TEST_F(BraveAdsConversionQueueUtilTest, AddRewardConfirmationQueueItem) {

@@ -22,9 +22,6 @@
 
 namespace brave_ads {
 
-using testing::_;
-using testing::Invoke;
-
 class BraveAdsTextClassificationResourceTest : public UnitTestBase {
  protected:
   void SetUp() override {
@@ -64,10 +61,11 @@ TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadInvalidResource) {
 
 TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  EXPECT_CALL(ads_client_mock_,
-              LoadFileResource(kTextClassificationResourceId, _, _))
-      .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
-                          LoadFileCallback callback) {
+  EXPECT_CALL(ads_client_mock_, LoadFileResource(kTextClassificationResourceId,
+                                                 testing::_, testing::_))
+      .WillOnce(testing::Invoke([](const std::string& /*id*/,
+                                   const int /*version*/,
+                                   LoadFileCallback callback) {
         const base::FilePath path =
             GetFileResourcePath().AppendASCII(kMissingResourceId);
 
