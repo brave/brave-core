@@ -46,6 +46,7 @@ executable("brave_vpn_wireguard_service") {
   deps = [
     ":brave_vpn_wireguard_binaries",
     ":version_resources",
+    "notifications",
     "resources",
     "service",
     "status_tray",

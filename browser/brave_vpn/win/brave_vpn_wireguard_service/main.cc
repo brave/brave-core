@@ -13,6 +13,7 @@
 #include "base/win/scoped_com_initializer.h"
 #include "base/win/windows_types.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/brave_wireguard_service_crash_reporter_client.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/notifications/notification_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/resources/resource_loader.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/install_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_service_runner.h"
@@ -47,6 +48,25 @@ absl::optional<int> ProcessUserLevelCommands(
     return brave_vpn::StatusTrayRunner::GetInstance()->Run();
   }
 
+  // User level command line. Publishes notification to system notification
+  // center when vpn connected.
+  if (command_line.HasSwitch(
+          brave_vpn::kBraveVpnWireguardServiceNotifyConnectedSwitchName)) {
+    brave_vpn::ShowDesktopNotification(
+        base::UTF16ToWide(l10n_util::GetStringUTF16(
+            IDS_BRAVE_VPN_WIREGUARD_TRAY_NOTIFICATION_CONNECTED)));
+    return 0;
+  }
+
+  // User level command line. Publishes notification to system notification
+  // center when vpn disconnected.
+  if (command_line.HasSwitch(
+          brave_vpn::kBraveVpnWireguardServiceNotifyDisconnectedSwitchName)) {
+    brave_vpn::ShowDesktopNotification(
+        base::UTF16ToWide(l10n_util::GetStringUTF16(
+            IDS_BRAVE_VPN_WIREGUARD_TRAY_NOTIFICATION_DISCONNECTED)));
+    return 0;
+  }
   return absl::nullopt;
 }
 

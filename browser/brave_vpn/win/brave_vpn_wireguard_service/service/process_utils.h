@@ -6,8 +6,10 @@
 #ifndef BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_SERVICE_SERVICE_PROCESS_UTILS_H_
 #define BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_SERVICE_SERVICE_PROCESS_UTILS_H_
 
+#include <string>
+
 namespace brave_vpn {
-void RunTrayProcessAsUser();
+void RunWireGuardCommandForUsers(const std::string& command);
 }  // namespace brave_vpn
 
 #endif  // BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_SERVICE_SERVICE_PROCESS_UTILS_H_
