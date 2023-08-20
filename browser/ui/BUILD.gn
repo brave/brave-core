@@ -798,6 +798,8 @@ source_set("ui") {
       "views/brave_actions/brave_shields_action_view.h",
       "views/frame/vertical_tab_strip_region_view.cc",
       "views/frame/vertical_tab_strip_region_view.h",
+      "views/frame/vertical_tab_strip_root_view.cc",
+      "views/frame/vertical_tab_strip_root_view.h",
       "views/frame/vertical_tab_strip_widget_delegate_view.cc",
       "views/frame/vertical_tab_strip_widget_delegate_view.h",
       "views/location_bar/brave_location_bar_view.cc",

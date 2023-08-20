@@ -48,13 +48,17 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
       gfx::Point point_in_local_coords) const override;
   gfx::Rect ConvertUnpinnedContainerIdealBoundsToLocal(
       gfx::Rect ideal_bounds) const override;
-  BrowserRootView::DropTarget* GetDropTarget(
-      gfx::Point loc_in_local_coords) override;
   void OnThemeChanged() override;
   void PaintChildren(const views::PaintInfo& info) override;
   void ChildPreferredSizeChanged(views::View* child) override;
   void SetActiveTab(absl::optional<size_t> prev_active_index,
                     absl::optional<size_t> new_active_index) override;
+
+  // BrowserRootView::DropTarget
+  BrowserRootView::DropTarget* GetDropTarget(
+      gfx::Point loc_in_local_coords) override;
+  BrowserRootView::DropIndex GetDropIndex(
+      const ui::DropTargetEvent& event) override;
 
  private:
   bool ShouldShowVerticalTabs() const;

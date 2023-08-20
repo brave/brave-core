@@ -44,6 +44,13 @@ class BraveTabContainer : public TabContainerImpl {
   void OnPaintBackground(gfx::Canvas* canvas) override;
   void PaintChildren(const views::PaintInfo& paint_info) override;
 
+  // BrowserRootView::DropTarget
+  BrowserRootView::DropIndex GetDropIndex(
+      const ui::DropTargetEvent& event) override;
+  void HandleDragUpdate(
+      const absl::optional<BrowserRootView::DropIndex>& index) override;
+  void HandleDragExited() override;
+
  private:
   void UpdateLayoutOrientation();
 

@@ -191,8 +191,9 @@ void BraveCompoundTabContainer::TransferTabBetweenContainers(
     layout_dirty = true;
   }
 
-  if (layout_dirty)
+  if (layout_dirty) {
     Layout();
+  }
 }
 
 void BraveCompoundTabContainer::Layout() {
@@ -299,6 +300,34 @@ int BraveCompoundTabContainer::GetUnpinnedContainerIdealLeadingX() const {
   return 0;
 }
 
+BrowserRootView::DropIndex BraveCompoundTabContainer::GetDropIndex(
+    const ui::DropTargetEvent& event) {
+  TabContainer* sub_drop_target = GetTabContainerAt(event.location());
+  CHECK(sub_drop_target);
+  CHECK(sub_drop_target->GetDropTarget(
+      ConvertPointToTarget(this, sub_drop_target, event.location())));
+
+  // Convert to `sub_drop_target`'s local coordinate space.
+  const gfx::Point loc_in_sub_target = ConvertPointToTarget(
+      this, sub_drop_target->GetViewForDrop(), event.location());
+  const ui::DropTargetEvent adjusted_event = ui::DropTargetEvent(
+      event.data(), gfx::PointF(loc_in_sub_target),
+      gfx::PointF(loc_in_sub_target), event.source_operations());
+
+  if (sub_drop_target == base::to_address(pinned_tab_container_)) {
+    // Pinned tab container shares an index and coordinate space, so no
+    // adjustments needed.
+    return sub_drop_target->GetDropIndex(adjusted_event);
+  } else {
+    // For the unpinned container, we need to transform the output to the
+    // correct index space.
+    const BrowserRootView::DropIndex sub_target_index =
+        sub_drop_target->GetDropIndex(adjusted_event);
+    return {sub_target_index.value + NumPinnedTabs(),
+            sub_target_index.drop_before, sub_target_index.drop_in_group};
+  }
+}
+
 BrowserRootView::DropTarget* BraveCompoundTabContainer::GetDropTarget(
     gfx::Point loc_in_local_coords) {
   if (!ShouldShowVerticalTabs()) {
@@ -312,7 +341,11 @@ BrowserRootView::DropTarget* BraveCompoundTabContainer::GetDropTarget(
     return nullptr;
   }
 
-  return GetTabContainerAt(loc_in_local_coords);
+  if (GetTabContainerAt(loc_in_local_coords)) {
+    return this;
+  }
+
+  return nullptr;
 }
 
 void BraveCompoundTabContainer::OnThemeChanged() {
