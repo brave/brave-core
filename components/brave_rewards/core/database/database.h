@@ -45,7 +45,7 @@ class Database {
   explicit Database(RewardsEngineImpl& engine);
   virtual ~Database();
 
-  void Initialize(LegacyResultCallback callback);
+  void Initialize(ResultCallback callback);
 
   void Close(LegacyResultCallback callback);
 
@@ -83,9 +83,10 @@ class Database {
                                  double amount,
                                  LegacyResultCallback callback);
 
-  void GetBalanceReportInfo(mojom::ActivityMonth month,
-                            int year,
-                            GetBalanceReportCallback callback);
+  void GetBalanceReportInfo(
+      mojom::ActivityMonth month,
+      int year,
+      mojom::RewardsEngine::GetBalanceReportCallback callback);
 
   void GetAllBalanceReports(GetBalanceReportListCallback callback);
 

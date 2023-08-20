@@ -33,15 +33,15 @@ class DatabaseBalanceReport : public DatabaseTable {
 
   void GetRecord(mojom::ActivityMonth month,
                  int year,
-                 GetBalanceReportCallback callback);
+                 mojom::RewardsEngine::GetBalanceReportCallback callback);
 
   void GetAllRecords(GetBalanceReportListCallback callback);
 
   void DeleteAllRecords(LegacyResultCallback callback);
 
  private:
-  void OnGetRecord(mojom::DBCommandResponsePtr response,
-                   GetBalanceReportCallback callback);
+  void OnGetRecord(mojom::RewardsEngine::GetBalanceReportCallback callback,
+                   mojom::DBCommandResponsePtr response);
 
   void OnGetAllRecords(mojom::DBCommandResponsePtr response,
                        GetBalanceReportListCallback callback);

@@ -9,6 +9,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/uuid.h"
+#include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_common.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
@@ -115,8 +116,7 @@ void CredentialsCommon::OnSaveUnblindedCreds(ResultCallback callback,
 
   engine_->database()->UpdateCredsBatchStatus(
       trigger.id, trigger.type, mojom::CredsBatchStatus::FINISHED,
-      [callback = std::make_shared<decltype(callback)>(std::move(callback))](
-          mojom::Result result) { std::move(*callback).Run(result); });
+      ToLegacyCallback(std::move(callback)));
 }
 
 }  // namespace credential

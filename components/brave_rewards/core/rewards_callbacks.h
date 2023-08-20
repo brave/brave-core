@@ -74,9 +74,6 @@ using GetAllMonthlyReportIdsCallback =
 using GetAllPromotionsCallback =
     std::function<void(base::flat_map<std::string, mojom::PromotionPtr>)>;
 
-using GetBalanceReportCallback =
-    std::function<void(mojom::Result, mojom::BalanceReportInfoPtr)>;
-
 using GetBalanceReportListCallback = std::function<void(
     std::vector<mojom::BalanceReportInfoPtr>)>;  // TODO(sszaloki): unused?
 

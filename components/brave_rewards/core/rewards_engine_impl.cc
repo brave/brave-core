@@ -54,7 +54,7 @@ void RewardsEngineImpl::Initialize(InitializeCallback callback) {
   }
 
   ready_state_ = ReadyState::kInitializing;
-  InitializeDatabase(ToLegacyCallback(std::move(callback)));
+  InitializeDatabase(std::move(callback));
 }
 
 void RewardsEngineImpl::GetEnvironment(GetEnvironmentCallback callback) {
@@ -321,8 +321,7 @@ void RewardsEngineImpl::SetAutoContributeEnabled(bool enabled) {
 void RewardsEngineImpl::GetBalanceReport(mojom::ActivityMonth month,
                                          int32_t year,
                                          GetBalanceReportCallback callback) {
-  WhenReady([this, month, year,
-             callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, month, year, callback = std::move(callback)]() mutable {
     database()->GetBalanceReportInfo(month, year, std::move(callback));
   });
 }
@@ -776,25 +775,27 @@ bool RewardsEngineImpl::IsReady() const {
   return ready_state_ == ReadyState::kReady;
 }
 
-void RewardsEngineImpl::InitializeDatabase(LegacyResultCallback callback) {
+void RewardsEngineImpl::InitializeDatabase(ResultCallback callback) {
   DCHECK(ready_state_ == ReadyState::kInitializing);
 
-  LegacyResultCallback finish_callback = std::bind(
-      &RewardsEngineImpl::OnInitialized, this, _1, std::move(callback));
+  auto finish_callback =
+      base::BindOnce(&RewardsEngineImpl::OnInitialized, base::Unretained(this),
+                     std::move(callback));
 
-  auto database_callback = std::bind(&RewardsEngineImpl::OnDatabaseInitialized,
-                                     this, _1, finish_callback);
-  database()->Initialize(database_callback);
+  auto database_callback =
+      base::BindOnce(&RewardsEngineImpl::OnDatabaseInitialized,
+                     base::Unretained(this), std::move(finish_callback));
+
+  database()->Initialize(std::move(database_callback));
 }
 
-void RewardsEngineImpl::OnDatabaseInitialized(mojom::Result result,
-                                              LegacyResultCallback callback) {
+void RewardsEngineImpl::OnDatabaseInitialized(ResultCallback callback,
+                                              mojom::Result result) {
   DCHECK(ready_state_ == ReadyState::kInitializing);
 
   if (result != mojom::Result::OK) {
     BLOG(0, "Database could not be initialized. Error: " << result);
-    callback(result);
-    return;
+    return std::move(callback).Run(result);
   }
 
   state()->Initialize(base::BindOnce(&RewardsEngineImpl::OnStateInitialized,
@@ -802,21 +803,20 @@ void RewardsEngineImpl::OnDatabaseInitialized(mojom::Result result,
                                      std::move(callback)));
 }
 
-void RewardsEngineImpl::OnStateInitialized(LegacyResultCallback callback,
+void RewardsEngineImpl::OnStateInitialized(ResultCallback callback,
                                            mojom::Result result) {
   DCHECK(ready_state_ == ReadyState::kInitializing);
 
   if (result != mojom::Result::OK) {
     BLOG(0, "Failed to initialize state");
-    callback(result);
-    return;
+    return std::move(callback).Run(result);
   }
 
-  callback(mojom::Result::OK);
+  std::move(callback).Run(mojom::Result::OK);
 }
 
-void RewardsEngineImpl::OnInitialized(mojom::Result result,
-                                      LegacyResultCallback callback) {
+void RewardsEngineImpl::OnInitialized(ResultCallback callback,
+                                      mojom::Result result) {
   DCHECK(ready_state_ == ReadyState::kInitializing);
 
   if (result == mojom::Result::OK) {
@@ -828,7 +828,7 @@ void RewardsEngineImpl::OnInitialized(mojom::Result result,
   ready_state_ = ReadyState::kReady;
   ready_event_.Signal();
 
-  callback(result);
+  std::move(callback).Run(result);
 }
 
 void RewardsEngineImpl::StartServices() {

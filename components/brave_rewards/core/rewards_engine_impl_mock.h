@@ -36,7 +36,7 @@ class MockRewardsEngineImpl : private AddMockRewardsClient,
 
   database::MockDatabase* mock_database();
 
-  MOCK_METHOD1(InitializeDatabase, void(LegacyResultCallback));
+  MOCK_METHOD1(InitializeDatabase, void(ResultCallback));
 
   MOCK_METHOD0(database, database::Database*());
 

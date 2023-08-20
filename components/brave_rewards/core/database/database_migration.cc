@@ -71,8 +71,7 @@ DatabaseMigration::DatabaseMigration(RewardsEngineImpl& engine)
 
 DatabaseMigration::~DatabaseMigration() = default;
 
-void DatabaseMigration::Start(uint32_t table_version,
-                              LegacyResultCallback callback) {
+void DatabaseMigration::Start(uint32_t table_version, ResultCallback callback) {
   const uint32_t start_version = table_version + 1;
   DCHECK_GT(start_version, 0u);
 
@@ -83,8 +82,7 @@ void DatabaseMigration::Start(uint32_t table_version,
                                       : database::GetCurrentVersion();
 
   if (target_version == table_version) {
-    callback(mojom::Result::OK);
-    return;
+    return std::move(callback).Run(mojom::Result::OK);
   }
 
   // Migration 30 archives and clears the user's unblinded tokens table. It
@@ -164,24 +162,11 @@ void DatabaseMigration::Start(uint32_t table_version,
   command->type = mojom::DBCommand::Type::VACUUM;
   transaction->commands.push_back(std::move(command));
 
-  const std::string message =
-      base::StringPrintf("%d->%d", start_version, migrated_version);
-
   engine_->RunDBTransaction(
-      std::move(transaction), [this, callback, message, migrated_version](
-                                  mojom::DBCommandResponsePtr response) {
-        if (response &&
-            response->status == mojom::DBCommandResponse::Status::RESPONSE_OK) {
-          // The event_log table was introduced in v29.
-          if (migrated_version >= 29) {
-            engine_->database()->SaveEventLog(log::kDatabaseMigrated, message);
-          }
-          callback(mojom::Result::OK);
-          return;
-        }
-
-        callback(mojom::Result::FAILED);
-      });
+      std::move(transaction),
+      base::BindOnce(&DatabaseMigration::RunDBTransactionCallback,
+                     base::Unretained(this), std::move(callback), start_version,
+                     migrated_version));
 }
 
 void DatabaseMigration::SetTargetVersionForTesting(uint32_t version) {
@@ -200,6 +185,26 @@ void DatabaseMigration::GenerateCommand(mojom::DBTransaction* transaction,
   command->type = mojom::DBCommand::Type::EXECUTE;
   command->command = optimized_query;
   transaction->commands.push_back(std::move(command));
+}
+
+void DatabaseMigration::RunDBTransactionCallback(
+    ResultCallback callback,
+    uint32_t start_version,
+    int migrated_version,
+    mojom::DBCommandResponsePtr response) {
+  if (response &&
+      response->status == mojom::DBCommandResponse::Status::RESPONSE_OK) {
+    // The event_log table was introduced in v29.
+    if (migrated_version >= 29) {
+      engine_->database()->SaveEventLog(
+          log::kDatabaseMigrated,
+          base::StringPrintf("%d->%d", start_version, migrated_version));
+    }
+
+    return std::move(callback).Run(mojom::Result::OK);
+  }
+
+  std::move(callback).Run(mojom::Result::FAILED);
 }
 
 }  // namespace database

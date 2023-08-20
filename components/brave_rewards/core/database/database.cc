@@ -38,8 +38,8 @@ Database::Database(RewardsEngineImpl& engine)
 
 Database::~Database() = default;
 
-void Database::Initialize(LegacyResultCallback callback) {
-  initialize_.Start(callback);
+void Database::Initialize(ResultCallback callback) {
+  initialize_.Start(std::move(callback));
 }
 
 void Database::Close(LegacyResultCallback callback) {
@@ -106,10 +106,11 @@ void Database::SaveBalanceReportInfoItem(mojom::ActivityMonth month,
   balance_report_.SetAmount(month, year, type, amount, callback);
 }
 
-void Database::GetBalanceReportInfo(mojom::ActivityMonth month,
-                                    int year,
-                                    GetBalanceReportCallback callback) {
-  balance_report_.GetRecord(month, year, callback);
+void Database::GetBalanceReportInfo(
+    mojom::ActivityMonth month,
+    int year,
+    mojom::RewardsEngine::GetBalanceReportCallback callback) {
+  balance_report_.GetRecord(month, year, std::move(callback));
 }
 
 void Database::GetAllBalanceReports(GetBalanceReportListCallback callback) {

@@ -20,11 +20,11 @@ class DatabaseInitialize {
   explicit DatabaseInitialize(RewardsEngineImpl& engine);
   ~DatabaseInitialize();
 
-  void Start(LegacyResultCallback callback);
+  void Start(ResultCallback callback);
 
  private:
-  void OnInitialize(mojom::DBCommandResponsePtr response,
-                    LegacyResultCallback callback);
+  void OnInitialize(ResultCallback callback,
+                    mojom::DBCommandResponsePtr response);
 
   const raw_ref<RewardsEngineImpl> engine_;
   DatabaseMigration migration_;

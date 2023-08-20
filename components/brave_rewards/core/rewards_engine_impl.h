@@ -402,14 +402,13 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   bool IsUninitialized() const;
 
-  virtual void InitializeDatabase(LegacyResultCallback callback);
+  virtual void InitializeDatabase(ResultCallback callback);
 
-  void OnDatabaseInitialized(mojom::Result result,
-                             LegacyResultCallback callback);
+  void OnDatabaseInitialized(ResultCallback callback, mojom::Result result);
 
-  void OnStateInitialized(LegacyResultCallback callback, mojom::Result result);
+  void OnStateInitialized(ResultCallback callback, mojom::Result result);
 
-  void OnInitialized(mojom::Result result, LegacyResultCallback callback);
+  void OnInitialized(ResultCallback callback, mojom::Result result);
 
   void StartServices();
 
