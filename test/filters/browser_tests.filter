@@ -307,15 +307,6 @@
 -TrustedVaultEncryptionKeysTabHelperBrowserTest.ShouldBindAddRecoveryMethodApiInMainFrame
 -TrustedVaultEncryptionKeysTabHelperBrowserTest.ShouldNotBindEncryptionKeysApiInPrerendering
 
-# These tests fail because BRAVE_COSMETIC_FILTERING has an initial default value
-# of CONTENT_SETTING_DEFAULT which is not allowed as an integer value by
-# content_settings::ParseContentSettingValue
-# https://github.com/brave/brave-browser/issues/25733
--UnusedSitePermissionsServiceBrowserTest.RevokeAllContentSettingTypes
--UnusedSitePermissionsServiceBrowserTest.TestIncognitoProfile
--UnusedSitePermissionsServiceBrowserTest.TestNavigationUpdatesLastUsedDate
--UnusedSitePermissionsServiceBrowserTest.TestRevokeUnusedPermissions
-
 # These tests fail because of the following failed DCHECK in web_view_guest.cc:
 # render_frame_host->IsActive() || (content::SiteIsolationPolicy::IsSiteIsolationForGuestsEnabled() && render_frame_host->IsInLifecycleState( RenderFrameHost::LifecycleState::kPendingDeletion))
 -ContentScriptTrackerAppBrowserTest.WebViewContentScript
