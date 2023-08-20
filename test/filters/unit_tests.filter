@@ -254,16 +254,6 @@
 -SavedTabGroupKeyedServiceUnitTest.*
 -TabLifecycleUnitTest.CannotDiscardPictureInPictureWindow
 
-# These tests fail because BRAVE_COSMETIC_FILTERING has an initial default value
-# of CONTENT_SETTING_DEFAULT which is not allowed as an integer value by
-# content_settings::ParseContentSettingValue
-# https://github.com/brave/brave-browser/issues/25733
--SafetyHubHandlerTest.HandleAcknowledgeRevokedUnusedSitePermissionsList
--SafetyHubHandlerTest.HandleAllowPermissionsAgainForUnusedSite
--SafetyHubHandlerTest.RevokeAllContentSettingTypes
--SiteSettingsPermissionsHandlerTest.HandleAcknowledgeRevokedUnusedSitePermissionsList
--SiteSettingsPermissionsHandlerTest.HandleAllowPermissionsAgainForUnusedSite
-
 # These tests fail because we disable the media router via
 # prefs::kEnableMediaRouter
 -CastDialogSinkViewTest.ButtonsAccessibleName
