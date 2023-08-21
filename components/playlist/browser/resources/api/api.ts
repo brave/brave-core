@@ -89,6 +89,16 @@ class API {
     )
   }
 
+  updateItemLastPlayedPosition (
+    playlistItemId: string,
+    lastPlayedPosition: number
+  ) {
+    this.#pageHandler.updateItemLastPlayedPosition(
+      playlistItemId,
+      lastPlayedPosition
+    )
+  }
+
   removeLocalData (playlistItemId: string) {
     this.#pageHandler.removeLocalDataForItem(playlistItemId)
   }
@@ -117,6 +127,8 @@ class API {
   ) {
     this.#pageCallbackRouter.onMediaFileDownloadProgressed.addListener(listener)
   }
+
+  // addItemUpdatedListener()
 }
 
 export function getPlaylistAPI (): API {

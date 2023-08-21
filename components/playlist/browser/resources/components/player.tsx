@@ -18,6 +18,10 @@ import PlayerControls from './playerControls'
 import { color, font } from '@brave/leo/tokens/css'
 import PlayerSeeker from './playerSeeker'
 import { playlistControlsAreaHeight } from '../constants/style'
+import {
+  notifyEventsToTopFrame,
+  PlaylistTypes
+} from '../api/playerEventsNotifier'
 
 const StyledVideo = styled.video`
   width: 100vw;
@@ -64,9 +68,11 @@ function useStateRouter () {
     applicationState => applicationState.playerState
   )
   React.useEffect(() => {
-    // Note that we are checking this condition as per SonarCloud.
-    if (location.protocol.startsWith('chrome-untrusted:')) {
-      window.parent.postMessage(playerState, 'chrome-untrusted://playlist')
+    if (playerState) {
+      notifyEventsToTopFrame({
+        type: PlaylistTypes.PLAYLIST_PLAYER_STATE_CHANGED,
+        data: playerState
+      })
     }
   }, [playerState])
 }
@@ -88,6 +94,16 @@ export default function Player () {
       // even we clear the src attribute.
       videoElement.pause()
     }
+
+    if (videoElement && currentItem) {
+      if (
+        videoElement.src !== currentItem?.mediaSource.url &&
+        videoElement.src !== currentItem?.mediaPath.url
+      ) {
+        videoElement.src = currentItem.mediaSource.url
+        videoElement.currentTime = currentItem.lastPlayedPosition
+      }
+    }
   }, [currentItem, videoElement])
 
   return (
@@ -103,14 +119,30 @@ export default function Player () {
         onPlay={() => getPlayerActions().playerStartedPlayingItem(currentItem)}
         onPause={() => getPlayerActions().playerStoppedPlayingItem(currentItem)}
         onEnded={() => {
+          if (currentItem) {
+            notifyEventsToTopFrame({
+              type: PlaylistTypes.PLAYLIST_LAST_PLAYED_POSITION_OF_CURRENT_ITEM_CHANGED,
+              data: {
+                ...currentItem,
+                lastPlayedPosition: videoElement!.duration
+              }
+            })
+          }
+
           getPlayerActions().playerStoppedPlayingItem(currentItem)
           getPlayerActions().playNextItem() // In case the current item is the last one, nothing will happen
         }}
-        src={
-          videoElement?.src === currentItem?.mediaSource.url
-            ? currentItem?.mediaSource.url // We were already playing the item with the original source url instead of cached file
-            : currentItem?.mediaPath.url
-        }
+        onTimeUpdate={() => {
+          if (!currentItem) return
+
+          notifyEventsToTopFrame({
+            type: PlaylistTypes.PLAYLIST_LAST_PLAYED_POSITION_OF_CURRENT_ITEM_CHANGED,
+            data: {
+              ...currentItem,
+              lastPlayedPosition: videoElement!.currentTime
+            }
+          })
+        }}
       />
     </PlayerContainer>
   )
