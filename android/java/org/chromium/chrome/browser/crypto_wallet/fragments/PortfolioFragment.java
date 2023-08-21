@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -69,7 +70,6 @@ public class PortfolioFragment
     private static final String TAG = "PortfolioFragment";
     private TextView mBalance;
     private Button mBtnChangeNetwork;
-    private HashMap<String, TransactionInfo[]> mPendingTxInfos;
 
     private String mFiatSumString;
 
@@ -87,7 +87,6 @@ public class PortfolioFragment
     private SmoothLineChartEquallySpaced mChartES;
     private PortfolioModel mPortfolioModel;
     private ProgressBar mPbAssetDiscovery;
-    private List<NetworkInfo> mAllNetworkInfos;
     private NetworkSelectorModel mNetworkSelectionModel;
 
     public static PortfolioFragment newInstance() {
@@ -108,7 +107,7 @@ public class PortfolioFragment
             mPortfolioModel = mWalletModel.getCryptoModel().getPortfolioModel();
             mWalletModel.getCryptoModel().getPortfolioModel().discoverAssetsOnAllSupportedChains();
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onCreate " + e);
+            Log.e(TAG, "onCreate", e);
         }
     }
 
@@ -146,7 +145,7 @@ public class PortfolioFragment
         });
 
         mBtnChangeNetwork = view.findViewById(R.id.fragment_portfolio_btn_change_networks);
-        mBtnChangeNetwork.setOnClickListener(v -> { openNetworkSelection(); });
+        mBtnChangeNetwork.setOnClickListener(v -> openNetworkSelection());
         mBtnChangeNetwork.setOnLongClickListener(v -> {
             NetworkInfo networkInfo = null;
             if (mWalletModel != null) {
@@ -159,19 +158,12 @@ public class PortfolioFragment
         });
 
         mBalance = view.findViewById(R.id.balance);
-        mBalance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updatePortfolioGetPendingTx();
-            }
-        });
+        mBalance.setOnClickListener(v -> updatePortfolioGetPendingTx());
         if (mWalletModel != null) setUpObservers();
         return view;
     }
 
     private void setUpObservers() {
-        getNetworkModel().mCryptoNetworks.observe(getViewLifecycleOwner(),
-                allNetworkInfos -> { mAllNetworkInfos = allNetworkInfos; });
         mNetworkSelectionModel = getNetworkModel().openNetworkSelectorModel(PortfolioFragment.TAG,
                 NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, getLifecycle());
         // Show pending transactions fab to process pending txs
@@ -221,10 +213,8 @@ public class PortfolioFragment
                                             R.string.brave_wallet_create_account_description,
                                             networkInfo.symbolName))
                                     .setPositiveButton(R.string.brave_action_yes,
-                                            (dialog, which) -> {
-                                                mWalletModel.createAccountAndSetDefaultNetwork(
-                                                        networkInfo);
-                                            })
+                                            (dialog, which) -> mWalletModel.createAccountAndSetDefaultNetwork(
+                                                    networkInfo))
                                     .setNegativeButton(
                                             R.string.brave_action_no, (dialog, which) -> {
                                                 getNetworkModel().clearCreateAccountState();
@@ -240,7 +230,7 @@ public class PortfolioFragment
         assert getActivity() != null;
 
         TextView editVisibleAssets = view.findViewById(R.id.edit_visible_assets);
-        editVisibleAssets.setOnClickListener(v -> { showEditVisibleDialog(); });
+        editVisibleAssets.setOnClickListener(v -> showEditVisibleDialog());
 
         RadioGroup radioGroup = view.findViewById(R.id.portfolio_duration_radio_group);
         mPreviousCheckedRadioId = radioGroup.getCheckedRadioButtonId();
@@ -283,18 +273,18 @@ public class PortfolioFragment
             return;
         }
 
-        Utils.openAssetDetailsActivity(getActivity(), asset);
+        Utils.openAssetDetailsActivity(requireContext(), asset);
     }
 
     private void openNetworkSelection() {
-        Intent intent = NetworkSelectorActivity.createIntent(getContext(),
+        Intent intent = NetworkSelectorActivity.createIntent(requireContext(),
                 NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, PortfolioFragment.TAG);
         startActivity(intent);
     }
 
-    private void AdjustTrendControls() {
-        TextView trendTimeframe = getView().findViewById(R.id.trend_timeframe);
-        TextView trendPercentage = getView().findViewById(R.id.trend_percentage);
+    private void adjustTrendControls() {
+        TextView trendTimeframe = requireView().findViewById(R.id.trend_timeframe);
+        TextView trendPercentage = requireView().findViewById(R.id.trend_percentage);
 
         if (mPortfolioHelper.isFiatHistoryEmpty()) {
             trendTimeframe.setVisibility(View.GONE);
@@ -305,17 +295,17 @@ public class PortfolioFragment
             Double currentFiatSum = mPortfolioHelper.getTotalFiatSum();
             Double mostRecentFiatSum = mPortfolioHelper.getMostRecentFiatSum();
 
-            Double percents = ((currentFiatSum - mostRecentFiatSum) / mostRecentFiatSum) * 100;
+            double percents = ((currentFiatSum - mostRecentFiatSum) / mostRecentFiatSum) * 100;
             trendPercentage.setText(
                     String.format(Locale.getDefault(), "%.2f%%", Math.abs(percents)));
             if (mostRecentFiatSum > currentFiatSum) {
                 trendPercentage.setTextColor(
-                        getResources().getColor(R.color.wallet_negative_trend_color));
+                        ContextCompat.getColor(requireContext(), R.color.wallet_negative_trend_color));
                 trendPercentage.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.ic_down_icon, 0, 0, 0);
             } else {
                 trendPercentage.setTextColor(
-                        getResources().getColor(R.color.wallet_positive_trend_color));
+                        ContextCompat.getColor(requireContext(), R.color.wallet_positive_trend_color));
                 trendPercentage.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.ic_up_icon, 0, 0, 0);
             }
@@ -334,14 +324,12 @@ public class PortfolioFragment
         }
 
         mPortfolioHelper.setFiatHistoryTimeframe(mCurrentTimeframeType);
-        mPortfolioHelper.calculateFiatHistory(() -> {
-            PostTask.runOrPostTask(TaskTraits.UI_DEFAULT, () -> {
-                mChartES.setColors(new int[] {0xFFF73A1C, 0xFFBF14A2, 0xFF6F4CD2});
-                mChartES.setData(mPortfolioHelper.getFiatHistory());
+        mPortfolioHelper.calculateFiatHistory(() -> PostTask.runOrPostTask(TaskTraits.UI_DEFAULT, () -> {
+            mChartES.setColors(new int[] {0xFFF73A1C, 0xFFBF14A2, 0xFF6F4CD2});
+            mChartES.setData(mPortfolioHelper.getFiatHistory());
 
-                AdjustTrendControls();
-            });
-        });
+            adjustTrendControls();
+        }));
     }
 
     private void updatePortfolioGetPendingTx() {
@@ -359,19 +347,15 @@ public class PortfolioFragment
                     if (!AndroidUtils.canUpdateFragmentUi(this)) return;
                     mPortfolioHelper = portfolioHelper;
 
-                    final String fiatSumString = String.format(
+                    mFiatSumString = String.format(
                             Locale.getDefault(), "$%,.2f", mPortfolioHelper.getTotalFiatSum());
-
-                    mFiatSumString = fiatSumString;
                     mBalance.setText(mFiatSumString);
                     mBalance.invalidate();
 
                     LiveDataUtil.observeOnce(
-                            getNetworkModel().mCryptoNetworks, networkInfos -> {
-                                setUpCoinList(mPortfolioHelper.getUserAssets(),
-                                        mPortfolioHelper.getPerTokenCryptoSum(),
-                                        mPortfolioHelper.getPerTokenFiatSum(), networkInfos);
-                            });
+                            getNetworkModel().mCryptoNetworks, networkInfos -> setUpCoinList(mPortfolioHelper.getUserAssets(),
+                                    mPortfolioHelper.getPerTokenCryptoSum(),
+                                    mPortfolioHelper.getPerTokenFiatSum(), networkInfos));
                     updatePortfolioGraph();
                 });
     }
@@ -413,17 +397,14 @@ public class PortfolioFragment
 
         bottomSheetDialogFragment.setSelectedNetwork(mNetworkInfo);
         bottomSheetDialogFragment.setDismissListener(
-                new EditVisibleAssetsBottomSheetDialogFragment.DismissListener() {
-                    @Override
-                    public void onDismiss(boolean isAssetsListChanged) {
-                        if (isAssetsListChanged) {
-                            updatePortfolioGetPendingTx();
-                        }
+                isAssetsListChanged -> {
+                    if (isAssetsListChanged) {
+                        updatePortfolioGetPendingTx();
                     }
                 });
 
         bottomSheetDialogFragment.show(
-                getFragmentManager(), EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
+                getParentFragmentManager(), EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
     }
 
     private void updateNextPendingTx() {
