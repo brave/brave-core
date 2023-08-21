@@ -9,12 +9,12 @@
 #include <functional>
 #include <vector>
 
+#include "base/apple/foundation_util.h"
 #include "base/base_paths.h"
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "base/mac/foundation_util.h"
 #include "base/path_service.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
@@ -103,7 +103,7 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
         DCHECK(GetApplicationContext());
 
         base::FilePath destination_file_path =
-            base::mac::NSStringToFilePath(filePath);
+            base::apple::NSStringToFilePath(filePath);
 
         listener(BraveBookmarksExporterStateStarted);
 
@@ -148,7 +148,7 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 
         listener(BraveBookmarksExporterStateStarted);
         base::FilePath destination_file_path =
-            base::mac::NSStringToFilePath(filePath);
+            base::apple::NSStringToFilePath(filePath);
 
         // Create artificial nodes
         auto bookmark_bar_node = [exporter getBookmarksBarNode];

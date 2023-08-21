@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 
 #include "base/apple/bundle_locations.h"
+#include "base/apple/foundation_util.h"
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/i18n/icu_util.h"
 #include "base/logging.h"
-#include "base/mac/foundation_util.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
@@ -152,7 +152,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     }
 
     NSBundle* baseBundle = base::apple::OuterBundle();
-    base::mac::SetBaseBundleID(
+    base::apple::SetBaseBundleID(
         base::SysNSStringToUTF8([baseBundle bundleIdentifier]).c_str());
 
     // Register all providers before calling any Chromium code.

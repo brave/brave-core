@@ -9,11 +9,11 @@
 #include <memory>
 #include <vector>
 
+#import "base/apple/foundation_util.h"
 #include "base/base64.h"
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
-#import "base/mac/foundation_util.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #import "base/notreached.h"
@@ -147,12 +147,12 @@ namespace {
         SecTrustCopyCertificateChain(trust));
     for (CFIndex i = 1; i < cert_count; i++) {
       SecCertificateRef secCertificate =
-          base::mac::CFCastStrict<SecCertificateRef>(
+          base::apple::CFCastStrict<SecCertificateRef>(
               CFArrayGetValueAtIndex(certificateChain, i));
       intermediates.emplace_back(secCertificate, base::scoped_policy::RETAIN);
     }
     SecCertificateRef secCertificate =
-        base::mac::CFCastStrict<SecCertificateRef>(
+        base::apple::CFCastStrict<SecCertificateRef>(
             CFArrayGetValueAtIndex(certificateChain, 0));
     return net::x509_util::CreateX509CertificateFromSecCertificate(
         base::ScopedCFTypeRef<SecCertificateRef>(secCertificate,

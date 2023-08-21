@@ -17,12 +17,12 @@
 #include <string>
 #include <utility>
 
+#include "base/apple/foundation_util.h"
+#include "base/apple/scoped_cftyperef.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/location.h"
-#include "base/mac/foundation_util.h"
 #include "base/mac/mac_util.h"
-#include "base/mac/scoped_cftyperef.h"
 #include "base/mac/scoped_ioobject.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -93,7 +93,7 @@ std::string GetVolumeUUIDFromBSDName(const std::string& bsd_name) {
     return {};
   }
 
-  const CFUUIDRef volume_uuid = base::mac::GetValueFromDictionary<CFUUIDRef>(
+  const CFUUIDRef volume_uuid = base::apple::GetValueFromDictionary<CFUUIDRef>(
       disk_description, kDADiskDescriptionVolumeUUIDKey);
   if (volume_uuid == nullptr) {
     return {};
