@@ -8,6 +8,7 @@ import BraveUI
 
 extension BraveCore.WebImageDownloader: WebImageDownloaderType {
   @MainActor public func downloadImage(url: URL) async -> UIImage? {
+    guard url.isWebPage() else { return nil }
     return await withCheckedContinuation { continuation in
       downloadImage(url) { image, _, _ in
         continuation.resume(returning: image)
