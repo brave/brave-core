@@ -89,7 +89,7 @@ class SpeedreaderTabHelper
 
   // Hides speedreader information
   void HideSpeedreaderBubble();
-  
+
   // Handler for when the bubble is dismissed.
   void OnBubbleClosed();
 

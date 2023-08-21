@@ -122,7 +122,8 @@ bool Transit(State& state, const State& desired) {
       state = Distilled(absl::get<Distilling>(state), d.result);
       return false;
     }
-    if (IsDistillReverting(desired) || IsDistilling(desired)) {
+    if (IsDistillReverting(desired) || IsDistilling(desired) ||
+        IsViewOriginal(desired)) {
       state = desired;
       return false;
     }
@@ -139,7 +140,7 @@ bool Transit(State& state, const State& desired) {
           absl::get<Distilled>(state).reason == Distilled::Reason::kAutomatic);
       return true;
     }
-    if (IsDistilled(desired)) {
+    if (IsDistilled(desired) || IsDistilling(desired)) {
       // Already distilled.
       return false;
     }
