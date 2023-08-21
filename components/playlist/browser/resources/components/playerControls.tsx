@@ -9,7 +9,7 @@ import Icon from '@brave/leo/react/icon'
 import styled from 'styled-components'
 import { color } from '@brave/leo/tokens/css'
 
-import { getAllActions } from '../api/getAllActions'
+import { getPlayerActions } from '../api/getPlayerActions'
 
 interface Props {
   videoElement?: HTMLVideoElement | null
@@ -77,7 +77,7 @@ export default function PlayerControls ({ videoElement, className }: Props) {
       <div>
         <Control
           iconName='start-outline'
-          onClick={() => getAllActions().playPreviousItem()}
+          onClick={() => getPlayerActions().playPreviousItem()}
         ></Control>
         <Control
           iconName='rewind-15'
@@ -100,7 +100,7 @@ export default function PlayerControls ({ videoElement, className }: Props) {
         ></Control>
         <Control
           iconName='end-outline'
-          onClick={() => getAllActions().playNextItem()}
+          onClick={() => getPlayerActions().playNextItem()}
         ></Control>
       </div>
       <div>

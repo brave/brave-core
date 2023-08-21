@@ -7,7 +7,10 @@ import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
-import { ApplicationState, PlaylistData } from 'components/playlist/browser/resources/reducers/states'
+import {
+  ApplicationState,
+  PlaylistData
+} from 'components/playlist/browser/resources/reducers/states'
 
 // Components for playlist
 import { CloseCircleOIcon } from 'brave-ui/components/icons'
@@ -21,7 +24,7 @@ import * as playlistActions from '../actions/playlist_action_creators'
 import { getPlaylistAPI } from '../api/api'
 
 import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
-import { getAllActions } from '../api/getAllActions'
+import { getPlaylistActions } from '../api/getPlaylistActions'
 import postMessageToPlayer from '../api/playerApi'
 import { types } from '../constants/playlist_types'
 
@@ -120,7 +123,7 @@ export class PlaylistPage extends React.Component<Props, State> {
                   name={item.name}
                   cached={item.cached}
                   thumbnailUrl={this.getImgSrc(item)}
-                  onClick={(e) => this.onClickItem(e)}
+                  onClick={e => this.onClickItem(e)}
                 />
               )
             },
@@ -229,7 +232,7 @@ export class PlaylistPage extends React.Component<Props, State> {
   selectPlaylist = (playlistId: string) => {
     const playlist = this.findPlaylistWithId(playlistId)
     if (!playlist) return
-    getAllActions().selectPlaylist(playlist)
+    getPlaylistActions().selectPlaylist(playlist)
   }
 
   removePlaylist = (playlistId: string) => {

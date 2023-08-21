@@ -8,16 +8,14 @@ import store from '../store'
 import * as PlaylistActions from '../actions/playlist_action_creators'
 import { bindActionCreators, Dispatch } from 'redux'
 
-type Action = typeof PlaylistActions
+let actions: typeof PlaylistActions
 
-let actions: Action
-
-// returns actions bound to dispatch.
-export function getAllActions () {
-   actions = actions || getActionsForDispatch(store.dispatch.bind(store))
-   return actions
+function getPlaylistActionsForDispatch (dispatch: Dispatch) {
+  return bindActionCreators(PlaylistActions, dispatch)
 }
 
-export function getActionsForDispatch (dispatch: Dispatch) {
-    return bindActionCreators(PlaylistActions, dispatch)
+// returns actions bound to dispatch.
+export function getPlaylistActions () {
+  actions = actions || getPlaylistActionsForDispatch(store.dispatch.bind(store))
+  return actions
 }
