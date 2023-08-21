@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 
-#include <vector>
-
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_unittest_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"

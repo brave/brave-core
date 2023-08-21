@@ -8,17 +8,13 @@
 
 #include <string>
 
-#include "base/values.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 struct VerifiableConversionEnvelopeInfo;
 
-absl::optional<VerifiableConversionEnvelopeInfo>
-MaybeBuildVerifiableConversionEnvelope(const base::Value::Dict& user_data);
-
-absl::optional<std::string> OpenVerifiableConversionEnvelope(
+absl::optional<std::string> OpenVerifiableConversionEnvelopeForTesting(
     const VerifiableConversionEnvelopeInfo& verifiable_conversion_envelope,
     const std::string& advertiser_secret_key_base64);
 

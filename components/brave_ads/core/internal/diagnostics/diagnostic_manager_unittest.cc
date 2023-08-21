@@ -7,11 +7,12 @@
 
 #include "base/test/values_test_util.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
-#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -23,16 +24,14 @@ class BraveAdsDiagnosticManagerTest : public UnitTestBase {};
 
 TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
   // Arrange
-  AdvanceClockTo(
-      TimeFromString("Wed, 18 Nov 1970 12:34:56", /*is_local*/ true));
-
-  auto& sys_info = GlobalState::GetInstance()->SysInfo();
-  sys_info.device_id =
-      "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
+  MockDeviceId();
 
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 
-  SetCatalogId("da5dd0e8-71e9-4607-a45b-13e28b607a81");
+  AdvanceClockTo(
+      TimeFromString("Wed, 18 Nov 1970 12:34:56", /*is_local*/ true));
+
+  SetCatalogId(kCatalogId);
   SetCatalogLastUpdated(Now());
 
   AdvanceClockTo(TimeFromString("Mon, 8 Jul 1996 09:25:00", /*is_local*/ true));
@@ -69,7 +68,7 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
                 },
                 {
                   "name": "Catalog ID",
-                  "value": "da5dd0e8-71e9-4607-a45b-13e28b607a81"
+                  "value": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
                 },
                 {
                   "name": "Catalog last updated",

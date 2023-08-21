@@ -19,7 +19,7 @@ class BraveAdsInlineContentAdsPerHourPermissionRuleTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsInlineContentAdsPerHourPermissionRuleTest,
-       AllowAdIfThereAreNoAdEvents) {
+       ShouldAllowIfThereAreNoAdEvents) {
   // Arrange
 
   // Act
@@ -29,22 +29,22 @@ TEST_F(BraveAdsInlineContentAdsPerHourPermissionRuleTest,
 }
 
 TEST_F(BraveAdsInlineContentAdsPerHourPermissionRuleTest,
-       AllowAdIfDoesNotExceedCap) {
+       ShouldAllowIfDoesNotExceedCap) {
   // Arrange
 
   // Act
-  RecordAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumInlineContentAdsPerHour.Get() - 1);
+  RecordAdEventsForTesting(AdType::kInlineContentAd, ConfirmationType::kServed,
+                           /*count*/ kMaximumInlineContentAdsPerHour.Get() - 1);
 
   // Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsInlineContentAdsPerHourPermissionRuleTest,
-       AllowAdIfDoesNotExceedCapAfter1Hour) {
+       ShouldAllowIfDoesNotExceedCapAfter1Hour) {
   // Arrange
-  RecordAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumInlineContentAdsPerHour.Get());
+  RecordAdEventsForTesting(AdType::kInlineContentAd, ConfirmationType::kServed,
+                           /*count*/ kMaximumInlineContentAdsPerHour.Get());
 
   // Act
   AdvanceClockBy(base::Hours(1));
@@ -54,10 +54,10 @@ TEST_F(BraveAdsInlineContentAdsPerHourPermissionRuleTest,
 }
 
 TEST_F(BraveAdsInlineContentAdsPerHourPermissionRuleTest,
-       DoNotAllowAdIfExceedsCapWithin1Hour) {
+       ShouldNotAllowIfExceedsCapWithin1Hour) {
   // Arrange
-  RecordAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed,
-                 /*count*/ kMaximumInlineContentAdsPerHour.Get());
+  RecordAdEventsForTesting(AdType::kInlineContentAd, ConfirmationType::kServed,
+                           /*count*/ kMaximumInlineContentAdsPerHour.Get());
 
   // Act
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));

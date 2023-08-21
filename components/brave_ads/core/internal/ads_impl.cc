@@ -334,9 +334,9 @@ void AdsImpl::MigrateRewardsStateCallback(mojom::WalletInfoPtr wallet,
     return FailedToInitialize(std::move(callback));
   }
 
-  client::Migrate(base::BindOnce(&AdsImpl::MigrateClientStateCallback,
-                                 weak_factory_.GetWeakPtr(), std::move(wallet),
-                                 std::move(callback)));
+  MigrateClientState(base::BindOnce(&AdsImpl::MigrateClientStateCallback,
+                                    weak_factory_.GetWeakPtr(),
+                                    std::move(wallet), std::move(callback)));
 }
 
 void AdsImpl::MigrateClientStateCallback(mojom::WalletInfoPtr wallet,
@@ -358,7 +358,7 @@ void AdsImpl::LoadClientStateCallback(mojom::WalletInfoPtr wallet,
     return FailedToInitialize(std::move(callback));
   }
 
-  confirmations::Migrate(base::BindOnce(
+  MigrateConfirmationState(base::BindOnce(
       &AdsImpl::MigrateConfirmationStateCallback, weak_factory_.GetWeakPtr(),
       std::move(wallet), std::move(callback)));
 }

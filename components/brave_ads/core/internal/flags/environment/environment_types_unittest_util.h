@@ -12,7 +12,7 @@
 
 namespace brave_ads {
 
-std::string EnvironmentTypeEnumToString(
+std::string EnvironmentTypeEnumToStringForTesting(
     mojom::EnvironmentType environment_type);
 
 }  // namespace brave_ads

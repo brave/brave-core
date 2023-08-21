@@ -23,24 +23,24 @@ UserReactions::~UserReactions() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void UserReactions::OnDidLikeAd(const AdContentInfo& ad_content) {
-  account_->Deposit(ad_content.creative_instance_id, ad_content.type,
-                    ad_content.segment, ConfirmationType::kUpvoted);
+  account_->Deposit(ad_content.creative_instance_id, ad_content.segment,
+                    ad_content.type, ConfirmationType::kUpvoted);
 }
 
 void UserReactions::OnDidDislikeAd(const AdContentInfo& ad_content) {
-  account_->Deposit(ad_content.creative_instance_id, ad_content.type,
-                    ad_content.segment, ConfirmationType::kDownvoted);
+  account_->Deposit(ad_content.creative_instance_id, ad_content.segment,
+                    ad_content.type, ConfirmationType::kDownvoted);
 }
 
 void UserReactions::OnDidMarkAdAsInappropriate(
     const AdContentInfo& ad_content) {
-  account_->Deposit(ad_content.creative_instance_id, ad_content.type,
-                    ad_content.segment, ConfirmationType::kFlagged);
+  account_->Deposit(ad_content.creative_instance_id, ad_content.segment,
+                    ad_content.type, ConfirmationType::kFlagged);
 }
 
 void UserReactions::OnDidSaveAd(const AdContentInfo& ad_content) {
-  account_->Deposit(ad_content.creative_instance_id, ad_content.type,
-                    ad_content.segment, ConfirmationType::kSaved);
+  account_->Deposit(ad_content.creative_instance_id, ad_content.segment,
+                    ad_content.type, ConfirmationType::kSaved);
 }
 
 }  // namespace brave_ads

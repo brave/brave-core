@@ -20,18 +20,18 @@ namespace {
 
 TransactionList GetUnreconciledTransactionsForDateRange(
     const TransactionList& transactions,
-    const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
+    const PaymentTokenList& payment_tokens,
     const base::Time from_time,
     const base::Time to_time) {
-  const size_t unblinded_payment_token_count = unblinded_payment_tokens.size();
+  const size_t payment_token_count = payment_tokens.size();
 
-  if (transactions.size() < unblinded_payment_token_count) {
+  if (transactions.size() < payment_token_count) {
     BLOG(0, "Invalid transaction history");
     return {};
   }
 
   const TransactionList unreconciled_transactions(
-      transactions.cend() - static_cast<int>(unblinded_payment_token_count),
+      transactions.cend() - static_cast<int>(payment_token_count),
       transactions.cend());
 
   return GetTransactionsForDateRange(unreconciled_transactions, from_time,
@@ -57,13 +57,13 @@ TransactionInfo BuildTransaction(const base::Time time, const double value) {
 
 TransactionList GetAllUnreconciledTransactions(
     const TransactionList& transactions,
-    const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
+    const PaymentTokenList& payment_tokens) {
   const base::Time from_time = GetTimeInDistantPast();
   const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
 
   TransactionList unreconciled_transactions =
-      GetUnreconciledTransactionsForDateRange(
-          transactions, unblinded_payment_tokens, from_time, to_time);
+      GetUnreconciledTransactionsForDateRange(transactions, payment_tokens,
+                                              from_time, to_time);
 
   for (auto& transaction : unreconciled_transactions) {
     // |created_at|, |value| and |confirmation_type| are set from legacy state

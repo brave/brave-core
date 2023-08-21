@@ -6,17 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_BASE_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_BASE_UTIL_H_
 
-#include <string>
-
 #include "base/files/scoped_temp_dir.h"
 #include "brave/components/brave_ads/core/database.h"
 #include "brave/components/brave_ads/core/internal/ads_client_mock.h"
 
 namespace brave_ads {
 
-using PrefMap = base::flat_map</*uuid*/ std::string, /*value*/ std::string>;
-
-PrefMap& Prefs();
+void MockFlags();
 
 void MockShowNotificationAd(AdsClientMock& mock);
 void MockCloseNotificationAd(AdsClientMock& mock);
@@ -33,7 +29,6 @@ void MockLoadDataResource(AdsClientMock& mock);
 
 void MockRunDBTransaction(AdsClientMock& mock, Database& database);
 
-void MockDefaultPrefs();
 void MockGetBooleanPref(const AdsClientMock& mock);
 void MockGetIntegerPref(const AdsClientMock& mock);
 void MockGetDoublePref(const AdsClientMock& mock);

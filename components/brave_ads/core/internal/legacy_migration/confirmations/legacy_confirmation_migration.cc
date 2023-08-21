@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_ads::confirmations {
+namespace brave_ads {
 
 namespace {
 
@@ -33,8 +33,8 @@ void SuccessfullyMigrated(InitializeCallback callback) {
 
 }  // namespace
 
-void Migrate(InitializeCallback callback) {
-  if (HasMigrated()) {
+void MigrateConfirmationState(InitializeCallback callback) {
+  if (HasMigratedConfirmation()) {
     return std::move(callback).Run(/*success*/ true);
   }
 
@@ -75,4 +75,4 @@ void Migrate(InitializeCallback callback) {
           std::move(callback)));
 }
 
-}  // namespace brave_ads::confirmations
+}  // namespace brave_ads

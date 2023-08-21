@@ -50,7 +50,8 @@ class BraveAdsDatabaseMigrationTest : public UnitTestBase,
 
     const std::string database_filename =
         base::StringPrintf("database_schema_%d.sqlite", GetSchemaVersion());
-    CopyFileFromTestPathToTempPath(database_filename, kDatabaseFilename);
+    ASSERT_TRUE(
+        CopyFileFromTestPathToTempPath(database_filename, kDatabaseFilename));
   }
 
   // DatabaseManagerObserver:
@@ -92,7 +93,7 @@ TEST_P(BraveAdsDatabaseMigrationTest, MigrateFromSchema) {
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsDatabaseMigrationTest,
-                         testing::Range(0, database::kVersion + 1),
+                         ::testing::Range(0, database::kVersion + 1),
                          TestParamToString);
 
 }  // namespace brave_ads

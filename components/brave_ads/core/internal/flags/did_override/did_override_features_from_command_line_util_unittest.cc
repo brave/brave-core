@@ -16,21 +16,22 @@
 #include "brave/components/brave_ads/common/notification_ad_feature.h"
 #include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/brave_ads/common/user_attention_feature.h"
-#include "brave/components/brave_ads/core/internal/account/account_feature.h"
+#include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
+#include "brave/components/brave_ads/core/internal/account/utility/tokens_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_feature.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/command_line_switch_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_feature.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_feature.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_feature.h"
 #include "components/variations/variations_switches.h"
 
@@ -62,7 +63,8 @@ struct ParamInfo final {
       base::StrCat({kTextClassificationFeature.name,
                     "<TrialName.GroupName:param/value"})},
      true},
-    {{::switches::kEnableFeatures, kAccountFeature.name}, true},
+    {{::switches::kEnableFeatures, kAccountStatementFeature.name}, true},
+    {{::switches::kEnableFeatures, kAccountTokensFeature.name}, true},
     {{::switches::kEnableFeatures, kAntiTargetingFeature.name}, true},
     {{::switches::kEnableFeatures, kConversionsFeature.name}, true},
     {{::switches::kEnableFeatures, kEligibleAdFeature.name}, true},
@@ -83,7 +85,10 @@ struct ParamInfo final {
     {{variations::switches::kForceFieldTrialParams,
       base::JoinString({"Foo", kUserActivityFeature.name, "Bar"}, ",")},
      true},
-    {{variations::switches::kForceFieldTrialParams, kAccountFeature.name},
+    {{variations::switches::kForceFieldTrialParams,
+      kAccountStatementFeature.name},
+     true},
+    {{variations::switches::kForceFieldTrialParams, kAccountTokensFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams, kAntiTargetingFeature.name},
      true},
@@ -176,7 +181,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsDidOverrideFeaturesFromCommandLineUtilTest,
-                         testing::ValuesIn(kTests),
+                         ::testing::ValuesIn(kTests),
                          TestParamToString);
 
 }  // namespace brave_ads

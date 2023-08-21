@@ -5,17 +5,15 @@
 
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_handler_util.h"
 
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
-
-using ::testing::Invoke;
 
 namespace brave_ads {
 
@@ -23,7 +21,7 @@ namespace {
 
 void BuildAndShowNotificationAd() {
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
   ShowNotificationAd(ad);
 }
@@ -34,7 +32,6 @@ class BraveAdsNotificationAdUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsNotificationAdUtilTest, CanServeIfUserIsActive) {
   // Arrange
-  MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
   // Act
 
@@ -64,7 +61,7 @@ TEST_F(BraveAdsNotificationAdUtilTest, ShouldServe) {
 TEST_F(BraveAdsNotificationAdUtilTest,
        ShouldNotServeIfOptedOutOfNotificationAds) {
   // Arrange
-  DisableNotificationAds();
+  DisableNotificationAdsForTesting();
 
   // Act
 
@@ -84,7 +81,6 @@ TEST_F(BraveAdsNotificationAdUtilTest, CanServeAtRegularIntervals) {
 
 TEST_F(BraveAdsNotificationAdUtilTest, DoNotServeAtRegularIntervals) {
   // Arrange
-  MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
   // Act
 
@@ -95,7 +91,7 @@ TEST_F(BraveAdsNotificationAdUtilTest, DoNotServeAtRegularIntervals) {
 TEST_F(BraveAdsNotificationAdUtilTest, ShowNotificationAd) {
   // Arrange
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([](const NotificationAdInfo& ad) {
         // Act
 
         // Assert
@@ -109,7 +105,7 @@ TEST_F(BraveAdsNotificationAdUtilTest, ShowNotificationAd) {
 TEST_F(BraveAdsNotificationAdUtilTest, DismissNotificationAd) {
   // Arrange
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
@@ -127,7 +123,7 @@ TEST_F(BraveAdsNotificationAdUtilTest, DismissNotificationAd) {
 TEST_F(BraveAdsNotificationAdUtilTest, CloseNotificationAd) {
   // Arrange
   EXPECT_CALL(ads_client_mock_, CloseNotificationAd)
-      .WillOnce(Invoke([](const std::string& placement_id) {
+      .WillOnce(::testing::Invoke([](const std::string& placement_id) {
         // Act
 
         // Assert
@@ -135,7 +131,7 @@ TEST_F(BraveAdsNotificationAdUtilTest, CloseNotificationAd) {
       }));
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
@@ -153,7 +149,7 @@ TEST_F(BraveAdsNotificationAdUtilTest, CloseNotificationAd) {
 TEST_F(BraveAdsNotificationAdUtilTest, NotificationAdTimedOut) {
   // Arrange
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 

@@ -6,8 +6,8 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/confirmations_issuer_util.h"
 
 #include "base/uuid.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuer_constants.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_constants.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 

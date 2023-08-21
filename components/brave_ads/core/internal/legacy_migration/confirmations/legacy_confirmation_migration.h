@@ -8,10 +8,10 @@
 
 #include "brave/components/brave_ads/core/ads_callback.h"
 
-namespace brave_ads::confirmations {
+namespace brave_ads {
 
-void Migrate(InitializeCallback callback);
+void MigrateConfirmationState(InitializeCallback callback);
 
-}  // namespace brave_ads::confirmations
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_CONFIRMATIONS_LEGACY_CONFIRMATION_MIGRATION_H_

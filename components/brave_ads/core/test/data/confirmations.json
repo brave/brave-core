@@ -1,6 +1,6 @@
 {
   "confirmations": {
-    "failed_confirmations": []
+    "queue": []
   },
   "unblinded_payment_tokens": [],
   "unblinded_tokens": []

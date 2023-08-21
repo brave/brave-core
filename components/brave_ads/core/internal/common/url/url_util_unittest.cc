@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 
-#include <string>
-
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 

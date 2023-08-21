@@ -40,8 +40,13 @@ void InitializeCommandLineSwitches() {
   brave_rewards::RewardsFlags::SetForceParsingForTesting(true);
 }
 
-void CleanupCommandLineSwitches() {
+void ShutdownCommandLineSwitches() {
   brave_rewards::RewardsFlags::SetForceParsingForTesting(false);
+}
+
+absl::optional<bool>& DidAppendCommandLineSwitches() {
+  static absl::optional<bool> command_line;
+  return command_line;
 }
 
 void AppendCommandLineSwitches(
@@ -61,6 +66,8 @@ void AppendCommandLineSwitches(
     command_line->AppendSwitchASCII(command_line_switch.key,
                                     command_line_switch.value);
   }
+
+  DidAppendCommandLineSwitches() = true;
 }
 
 std::string SanitizeCommandLineSwitch(

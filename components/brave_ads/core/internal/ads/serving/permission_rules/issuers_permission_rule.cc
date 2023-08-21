@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/issuers_permission_rule.h"
 
-#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 
 namespace brave_ads {
 

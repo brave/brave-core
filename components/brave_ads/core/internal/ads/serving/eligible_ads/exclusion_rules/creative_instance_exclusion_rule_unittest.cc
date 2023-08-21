@@ -17,7 +17,8 @@ namespace brave_ads {
 
 class BraveAdsCreativeInstanceExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, AllowAdIfThereAreNoAdEvents) {
+TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
+       ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -36,7 +37,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, AdAllowedAfter1Hour) {
   creative_ad.creative_instance_id = kCreativeInstanceId;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = BuildAdEvent(
+  const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
   ad_events.push_back(ad_event);
 
@@ -58,20 +59,20 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event_1 = BuildAdEvent(
+  const AdEventInfo ad_event_1 = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
   ad_events.push_back(ad_event_1);
 
-  const AdEventInfo ad_event_2 = BuildAdEvent(
+  const AdEventInfo ad_event_2 = BuildAdEventForTesting(
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kServed, Now());
   ad_events.push_back(ad_event_2);
 
   const AdEventInfo ad_event_3 =
-      BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
-                   ConfirmationType::kServed, Now());
+      BuildAdEventForTesting(creative_ad, AdType::kPromotedContentAd,
+                             ConfirmationType::kServed, Now());
   ad_events.push_back(ad_event_3);
 
-  const AdEventInfo ad_event_4 = BuildAdEvent(
+  const AdEventInfo ad_event_4 = BuildAdEventForTesting(
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kServed, Now());
   ad_events.push_back(ad_event_4);
 
@@ -92,7 +93,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
   creative_ad.creative_instance_id = kCreativeInstanceId;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = BuildAdEvent(
+  const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
   ad_events.push_back(ad_event);
 

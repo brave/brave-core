@@ -5,9 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_in_to_brave_news_ads_diagnostic_entry.h"
 
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_conversions_util.h"
-#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 
 namespace brave_ads {
 
@@ -24,11 +23,7 @@ std::string OptedInToBraveNewsAdsDiagnosticEntry::GetName() const {
 }
 
 std::string OptedInToBraveNewsAdsDiagnosticEntry::GetValue() const {
-  const bool is_opted_in = AdsClientHelper::GetInstance()->GetBooleanPref(
-                               brave_news::prefs::kBraveNewsOptedIn) &&
-                           AdsClientHelper::GetInstance()->GetBooleanPref(
-                               brave_news::prefs::kNewTabPageShowToday);
-  return BoolToString(is_opted_in);
+  return BoolToString(UserHasOptedInToBraveNewsAds());
 }
 
 }  // namespace brave_ads

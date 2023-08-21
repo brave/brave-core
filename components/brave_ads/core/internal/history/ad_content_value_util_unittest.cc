@@ -39,7 +39,7 @@ TEST_F(BraveAdsAdContentValueUtilTest, FromValue) {
 
   // Assert
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ false);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ false);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad, kPlacementId);
   const AdContentInfo expected_ad_content =
       BuildAdContent(ad, ConfirmationType::kViewed, kTitle, kDescription);
@@ -49,7 +49,7 @@ TEST_F(BraveAdsAdContentValueUtilTest, FromValue) {
 TEST_F(BraveAdsAdContentValueUtilTest, ToValue) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_uuids*/ false);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ false);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad, kPlacementId);
   const AdContentInfo ad_content =
       BuildAdContent(ad, ConfirmationType::kViewed, kTitle, kDescription);

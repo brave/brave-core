@@ -11,28 +11,28 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::confirmations {
+namespace brave_ads {
 
 class BraveAdsLegacyConfirmationMigrationUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsLegacyConfirmationMigrationUtilTest, HasMigrated) {
   // Arrange
-  SetDefaultBooleanPref(prefs::kHasMigratedConfirmationState, true);
+  SetBooleanPref(prefs::kHasMigratedConfirmationState, true);
 
   // Act
 
   // Assert
-  EXPECT_TRUE(HasMigrated());
+  EXPECT_TRUE(HasMigratedConfirmation());
 }
 
 TEST_F(BraveAdsLegacyConfirmationMigrationUtilTest, HasNotMigrated) {
   // Arrange
-  SetDefaultBooleanPref(prefs::kHasMigratedConfirmationState, false);
+  SetBooleanPref(prefs::kHasMigratedConfirmationState, false);
 
   // Act
 
   // Assert
-  EXPECT_FALSE(HasMigrated());
+  EXPECT_FALSE(HasMigratedConfirmation());
 }
 
-}  // namespace brave_ads::confirmations
+}  // namespace brave_ads

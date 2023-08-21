@@ -22,9 +22,9 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
+#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
 namespace brave_ads {
@@ -132,7 +132,7 @@ void NotificationAdServing::GetForUserModelCallback(
 }
 
 void NotificationAdServing::UpdateMaximumAdsPerHour() {
-  const int ads_per_hour = GetMaximumNotificationAdsPerHourSetting();
+  const int ads_per_hour = GetMaximumNotificationAdsPerHour();
   BLOG(1, "Maximum notification ads per hour changed to " << ads_per_hour);
 
   if (!ShouldServeAdsAtRegularIntervals()) {
@@ -151,7 +151,7 @@ void NotificationAdServing::MaybeServeAdAtNextRegularInterval() {
     return;
   }
 
-  const int ads_per_hour = GetMaximumNotificationAdsPerHourSetting();
+  const int ads_per_hour = GetMaximumNotificationAdsPerHour();
   if (ads_per_hour == 0) {
     return;
   }

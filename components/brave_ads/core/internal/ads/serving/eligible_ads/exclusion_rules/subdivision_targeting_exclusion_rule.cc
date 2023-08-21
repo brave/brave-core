@@ -7,24 +7,17 @@
 
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/common/locale/subdivision_util.h"
+#include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 
 namespace brave_ads {
 
 namespace {
-
-bool DoesCreativeAdSupportSubdivision(const CreativeAdInfo& creative_ad,
-                                      const std::string& subdivision) {
-  return creative_ad.geo_targets.find(subdivision) !=
-             creative_ad.geo_targets.cend() ||
-         creative_ad.geo_targets.find(GetCountryCode(subdivision)) !=
-             creative_ad.geo_targets.cend();
-}
 
 bool DoesCreativeAdTargetSubdivision(const CreativeAdInfo& creative_ad) {
   const auto iter = base::ranges::find_if(
@@ -36,6 +29,13 @@ bool DoesCreativeAdTargetSubdivision(const CreativeAdInfo& creative_ad) {
       });
 
   return iter != creative_ad.geo_targets.cend();
+}
+
+bool DoesCreativeAdTargetSubdivision(const CreativeAdInfo& creative_ad,
+                                     const std::string& subdivision) {
+  return base::Contains(creative_ad.geo_targets, subdivision) ||
+         base::Contains(creative_ad.geo_targets,
+                        GetSubdivisionCountryCode(subdivision));
 }
 
 }  // namespace
@@ -78,7 +78,7 @@ bool SubdivisionTargetingExclusionRule::DoesRespectCap(
     return false;
   }
 
-  return DoesCreativeAdSupportSubdivision(creative_ad, subdivision);
+  return DoesCreativeAdTargetSubdivision(creative_ad, subdivision);
 }
 
 }  // namespace brave_ads

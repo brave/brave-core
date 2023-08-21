@@ -22,7 +22,8 @@ class BraveAdsCreativeSetConversionBuilderTest : public UnitTestBase {};
 TEST_F(BraveAdsCreativeSetConversionBuilderTest, BuildCreativeSetConversion) {
   // Arrange
   const mojom::SearchResultAdInfoPtr search_result_ad =
-      BuildSearchResultAdWithConversion(/*should_use_random_uuids*/ false);
+      BuildSearchResultAdWithConversionForTesting(
+          /*should_use_random_uuids*/ false);
 
   // Act
   const absl::optional<CreativeSetConversionInfo> creative_set_conversion =
@@ -45,7 +46,7 @@ TEST_F(BraveAdsCreativeSetConversionBuilderTest,
        DoNotBuildCreativeSetConversionIfAdDoesNotSupportConversions) {
   // Arrange
   const mojom::SearchResultAdInfoPtr search_result_ad =
-      BuildSearchResultAd(/*should_use_random_uuids*/ true);
+      BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true);
 
   // Act
 

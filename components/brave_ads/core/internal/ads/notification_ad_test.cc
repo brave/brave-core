@@ -23,9 +23,6 @@
 
 namespace brave_ads {
 
-using ::testing::_;
-using ::testing::Invoke;
-
 class BraveAdsNotificationAdIntegrationTest : public UnitTestBase {
  protected:
   void SetUp() override {
@@ -51,13 +48,13 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, Serve) {
   ForcePermissionRulesForTesting();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([](const NotificationAdInfo& ad) {
         // Assert
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
       }));
 
-  EXPECT_CALL(ads_client_mock_, RecordP2AEvents(_));
+  EXPECT_CALL(ads_client_mock_, RecordP2AEvents);
 
   // Act
   ServeAd();
@@ -65,6 +62,8 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, Serve) {
 
 TEST_F(BraveAdsNotificationAdIntegrationTest, DoNotServe) {
   // Arrange
+
+  // Assert
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd).Times(0);
 
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
@@ -73,8 +72,6 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, DoNotServe) {
 
   // Act
   ServeAd();
-
-  // Assert
 }
 
 TEST_F(BraveAdsNotificationAdIntegrationTest,
@@ -92,7 +89,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
   ForcePermissionRulesForTesting();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
@@ -102,12 +99,12 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
           EXPECT_TRUE(success);
           ASSERT_TRUE(
               NotificationAdManager::GetInstance().Exists(ad.placement_id));
-          EXPECT_EQ(1U, GetAdEventCount(AdType::kNotificationAd,
-                                        ConfirmationType::kServed));
-          EXPECT_EQ(1U, GetAdEventCount(AdType::kNotificationAd,
-                                        ConfirmationType::kViewed));
-          EXPECT_EQ(1U, GetHistoryItemCount());
-          EXPECT_EQ(1U, GetTransactionCount());
+          EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNotificationAd,
+                                                  ConfirmationType::kServed));
+          EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNotificationAd,
+                                                  ConfirmationType::kViewed));
+          EXPECT_EQ(1U, GetHistoryItemCountForTesting());
+          EXPECT_EQ(1U, GetTransactionCountForTesting());
         });
 
         EXPECT_CALL(ads_client_mock_, AddTrainingSample).Times(0);
@@ -126,7 +123,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
   ForcePermissionRulesForTesting();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
         EXPECT_CALL(ads_client_mock_, CloseNotificationAd(ad.placement_id));
@@ -135,10 +132,10 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
         EXPECT_CALL(callback, Run).WillOnce([](const bool success) {
           // Assert
           EXPECT_TRUE(success);
-          EXPECT_EQ(1U, GetAdEventCount(AdType::kNotificationAd,
-                                        ConfirmationType::kClicked));
-          EXPECT_EQ(1U, GetHistoryItemCount());
-          EXPECT_EQ(1U, GetTransactionCount());
+          EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNotificationAd,
+                                                  ConfirmationType::kClicked));
+          EXPECT_EQ(1U, GetHistoryItemCountForTesting());
+          EXPECT_EQ(1U, GetTransactionCountForTesting());
         });
 
         EXPECT_CALL(ads_client_mock_, AddTrainingSample);
@@ -157,7 +154,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
   ForcePermissionRulesForTesting();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
@@ -167,10 +164,11 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
           EXPECT_TRUE(success);
           EXPECT_FALSE(
               NotificationAdManager::GetInstance().Exists(ad.placement_id));
-          EXPECT_EQ(1U, GetAdEventCount(AdType::kNotificationAd,
-                                        ConfirmationType::kDismissed));
-          EXPECT_EQ(1U, GetHistoryItemCount());
-          EXPECT_EQ(1U, GetTransactionCount());
+          EXPECT_EQ(1U,
+                    GetAdEventCountForTesting(AdType::kNotificationAd,
+                                              ConfirmationType::kDismissed));
+          EXPECT_EQ(1U, GetHistoryItemCountForTesting());
+          EXPECT_EQ(1U, GetTransactionCountForTesting());
         });
 
         EXPECT_CALL(ads_client_mock_, AddTrainingSample);
@@ -189,7 +187,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerTimedOutEvent) {
   ForcePermissionRulesForTesting();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
@@ -199,8 +197,8 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerTimedOutEvent) {
           EXPECT_TRUE(success);
           EXPECT_FALSE(
               NotificationAdManager::GetInstance().Exists(ad.placement_id));
-          EXPECT_EQ(0U, GetHistoryItemCount());
-          EXPECT_EQ(0U, GetTransactionCount());
+          EXPECT_EQ(0U, GetHistoryItemCountForTesting());
+          EXPECT_EQ(0U, GetTransactionCountForTesting());
         });
 
         EXPECT_CALL(ads_client_mock_, AddTrainingSample);

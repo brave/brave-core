@@ -16,20 +16,17 @@ constexpr char kTypeKey[] = "type";
 }  // namespace
 
 base::Value::Dict NotificationAdToValue(const NotificationAdInfo& ad) {
-  base::Value::Dict dict;
-
-  dict.Set(kTypeKey, ad.type.ToString());
-  dict.Set(kNotificationAdPlacementIdKey, ad.placement_id);
-  dict.Set(kNotificationAdCreativeInstanceIdKey, ad.creative_instance_id);
-  dict.Set(kNotificationAdCreativeSetIdKey, ad.creative_set_id);
-  dict.Set(kNotificationAdCampaignIdKey, ad.campaign_id);
-  dict.Set(kNotificationAdAdvertiserIdKey, ad.advertiser_id);
-  dict.Set(kNotificationAdSegmentKey, ad.segment);
-  dict.Set(kNotificationAdTitleKey, ad.title);
-  dict.Set(kNotificationAdBodyKey, ad.body);
-  dict.Set(kNotificationAdTargetUrlKey, ad.target_url.spec());
-
-  return dict;
+  return base::Value::Dict()
+      .Set(kTypeKey, ad.type.ToString())
+      .Set(kNotificationAdPlacementIdKey, ad.placement_id)
+      .Set(kNotificationAdCreativeInstanceIdKey, ad.creative_instance_id)
+      .Set(kNotificationAdCreativeSetIdKey, ad.creative_set_id)
+      .Set(kNotificationAdCampaignIdKey, ad.campaign_id)
+      .Set(kNotificationAdAdvertiserIdKey, ad.advertiser_id)
+      .Set(kNotificationAdSegmentKey, ad.segment)
+      .Set(kNotificationAdTitleKey, ad.title)
+      .Set(kNotificationAdBodyKey, ad.body)
+      .Set(kNotificationAdTargetUrlKey, ad.target_url.spec());
 }
 
 base::Value::List NotificationAdsToValue(

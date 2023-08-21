@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_value_util.h"
 
-#include <ostream>
 #include <string>
 #include <utility>
 
@@ -112,10 +111,6 @@ base::Value::List IssuersToValue(const IssuerList& issuers) {
       continue;
     }
 
-    base::Value::Dict dict;
-
-    dict.Set(kNameKey, *name);
-
     base::Value::List public_keys_list;
     for (const auto& [public_key, associated_value] : issuer.public_keys) {
       base::Value::Dict public_key_dict;
@@ -125,7 +120,10 @@ base::Value::List IssuersToValue(const IssuerList& issuers) {
 
       public_keys_list.Append(std::move(public_key_dict));
     }
-    dict.Set(kPublicKeysKey, std::move(public_keys_list));
+
+    auto dict = base::Value::Dict()
+                    .Set(kNameKey, *name)
+                    .Set(kPublicKeysKey, std::move(public_keys_list));
 
     list.Append(std::move(dict));
   }

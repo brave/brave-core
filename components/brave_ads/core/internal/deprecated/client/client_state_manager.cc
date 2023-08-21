@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 
-#include <cstdint>
 #include <utility>
 
 #include "base/check.h"
@@ -15,13 +14,13 @@
 #include "brave/components/brave_ads/core/ad_info.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/history/history_constants.h"
-#include "build/build_config.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
+#include "build/build_config.h"
 
 namespace brave_ads {
 

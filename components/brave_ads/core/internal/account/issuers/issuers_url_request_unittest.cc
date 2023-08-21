@@ -21,9 +21,6 @@
 
 namespace brave_ads {
 
-using ::testing::Invoke;
-using ::testing::NiceMock;
-
 class BraveAdsIssuersUrlRequestTest : public UnitTestBase {
  protected:
   void SetUp() override {
@@ -34,17 +31,20 @@ class BraveAdsIssuersUrlRequestTest : public UnitTestBase {
   }
 
   std::unique_ptr<IssuersUrlRequest> issuers_url_request_;
-  NiceMock<IssuersUrlRequestDelegateMock> issuers_url_request_delegate_mock_;
+  ::testing::NiceMock<IssuersUrlRequestDelegateMock>
+      issuers_url_request_delegate_mock_;
 };
 
 TEST_F(BraveAdsIssuersUrlRequestTest, FetchIssuers) {
   // Arrange
   const URLResponseMap url_responses = {
-      {BuildIssuersUrlPath(), {{net::HTTP_OK, BuildIssuersUrlResponseBody()}}}};
+      {BuildIssuersUrlPath(),
+       {{net::HTTP_OK, BuildIssuersUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
+  // Assert
   EXPECT_CALL(issuers_url_request_delegate_mock_,
-              OnDidFetchIssuers(BuildIssuers()));
+              OnDidFetchIssuers(BuildIssuersForTesting()));
   EXPECT_CALL(issuers_url_request_delegate_mock_, OnFailedToFetchIssuers)
       .Times(0);
   EXPECT_CALL(issuers_url_request_delegate_mock_, OnWillRetryFetchingIssuers)
@@ -54,8 +54,6 @@ TEST_F(BraveAdsIssuersUrlRequestTest, FetchIssuers) {
 
   // Act
   issuers_url_request_->PeriodicallyFetch();
-
-  // Assert
 }
 
 TEST_F(BraveAdsIssuersUrlRequestTest,
@@ -85,7 +83,7 @@ TEST_F(BraveAdsIssuersUrlRequestTest, RetryFetchingIssuersIfNonHttpOkResponse) {
        {{net::HTTP_INTERNAL_SERVER_ERROR,
          /*response_body*/ net::GetHttpReasonPhrase(
              net::HTTP_INTERNAL_SERVER_ERROR)},
-        {net::HTTP_OK, BuildIssuersUrlResponseBody()}}}};
+        {net::HTTP_OK, BuildIssuersUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   EXPECT_CALL(issuers_url_request_delegate_mock_, OnDidFetchIssuers);
@@ -94,8 +92,8 @@ TEST_F(BraveAdsIssuersUrlRequestTest, RetryFetchingIssuersIfNonHttpOkResponse) {
   EXPECT_CALL(issuers_url_request_delegate_mock_, OnDidRetryFetchingIssuers);
 
   ON_CALL(issuers_url_request_delegate_mock_, OnDidFetchIssuers)
-      .WillByDefault(
-          Invoke([](const IssuersInfo& issuers) { SetIssuers(issuers); }));
+      .WillByDefault(::testing::Invoke(
+          [](const IssuersInfo& issuers) { SetIssuers(issuers); }));
 
   // Act
   issuers_url_request_->PeriodicallyFetch();

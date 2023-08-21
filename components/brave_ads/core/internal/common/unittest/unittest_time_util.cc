@@ -24,7 +24,8 @@ base::Time TimeFromString(const std::string& time_string, const bool is_local) {
 }
 
 base::Time DistantPast() {
-  return {};
+  // Just after the myth of the beginning of time.
+  return base::Time() + base::Microseconds(1);
 }
 
 std::string DistantPastAsISO8601() {
@@ -32,6 +33,7 @@ std::string DistantPastAsISO8601() {
 }
 
 base::Time Now() {
+  // The time for action is now. It's never too late to do something.
   return base::Time::Now();
 }
 
@@ -40,6 +42,9 @@ std::string NowAsISO8601() {
 }
 
 base::Time DistantFuture() {
+  // Chrome timestamps are 64-bit and will not overflow at 03:14:08 UTC on 19
+  // January 2038. However, I only like to think about so far into the future
+  // because it comes soon enough.
   return base::Time::FromDoubleT(
       /*Tuesday, 19 January 2038 03:14:07*/ 2147483647);
 }

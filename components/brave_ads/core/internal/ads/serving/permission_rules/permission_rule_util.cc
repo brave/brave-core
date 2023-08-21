@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_util.h"
 
-#include <string>
-
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_interface.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 

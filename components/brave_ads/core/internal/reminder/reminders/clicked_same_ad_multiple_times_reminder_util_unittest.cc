@@ -38,7 +38,8 @@ HistoryItemInfo AddHistory(
   AdInfo ad;
   for (int i = 0; i < count; i++) {
     if (i == 0 || should_use_random_creative_instance_uuid) {
-      ad = BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+      ad = BuildAdForTesting(AdType::kNotificationAd,
+                             /*should_use_random_uuids*/ true);
       CHECK(ad.IsValid());
     }
 
@@ -135,8 +136,8 @@ TEST_F(
     BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
     RemindUserAfterClickingTheSameAdMultipleTimesOnTheCuspOfExpiringHistory) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
   AddHistory(ad, ConfirmationType::kClicked);
   AddHistory(ad, ConfirmationType::kClicked);
@@ -185,8 +186,8 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        DoNotRemindTheUserForTheSameAdWithDifferentConfirmationTypes) {
   // Arrange
-  const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ true);
+  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
+                                      /*should_use_random_uuids*/ true);
 
   AddHistory(ad, ConfirmationType::kServed);
   AddHistory(ad, ConfirmationType::kViewed);
@@ -202,28 +203,26 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        RemindUserTheyDoNotNeedToClickToEarnRewards) {
   // Arrange
+
+  // Assert
   EXPECT_CALL(ads_client_mock_,
               ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes));
 
   // Act
   RemindUserTheyDoNotNeedToClickToEarnRewards();
-
-  // Assert
 }
 
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        RemindUserMultipleTimesTheyDoNotNeedToClickToEarnRewards) {
   // Arrange
-  EXPECT_CALL(ads_client_mock_,
-              ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes))
-      .Times(2);
-
-  RemindUserTheyDoNotNeedToClickToEarnRewards();
-
-  // Act
   RemindUserTheyDoNotNeedToClickToEarnRewards();
 
   // Assert
+  EXPECT_CALL(ads_client_mock_,
+              ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes));
+
+  // Act
+  RemindUserTheyDoNotNeedToClickToEarnRewards();
 }
 
 }  // namespace brave_ads

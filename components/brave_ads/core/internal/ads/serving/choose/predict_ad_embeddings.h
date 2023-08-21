@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/sample_ads.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pacing/pacing.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
-#include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {

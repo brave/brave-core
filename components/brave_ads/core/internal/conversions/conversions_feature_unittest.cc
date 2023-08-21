@@ -40,7 +40,7 @@ TEST(BraveAdsConversionsFeatureTest, IsDisabled) {
   EXPECT_FALSE(IsConversionFeatureEnabled());
 }
 
-TEST(BraveAdsConversionsFeatureTest, GetConversionsResourceVersion) {
+TEST(BraveAdsConversionsFeatureTest, GetConversionResourceVersion) {
   // Arrange
   base::FieldTrialParams params;
   params["resource_version"] = "0";
@@ -59,7 +59,7 @@ TEST(BraveAdsConversionsFeatureTest, GetConversionsResourceVersion) {
   EXPECT_EQ(0, kConversionResourceVersion.Get());
 }
 
-TEST(BraveAdsConversionsFeatureTest, DefaultConversionsResourceVersion) {
+TEST(BraveAdsConversionsFeatureTest, DefaultConversionResourceVersion) {
   // Arrange
 
   // Act
@@ -69,7 +69,7 @@ TEST(BraveAdsConversionsFeatureTest, DefaultConversionsResourceVersion) {
 }
 
 TEST(BraveAdsConversionsFeatureTest,
-     DefaultConversionsResourceVersionWhenDisabled) {
+     DefaultConversionResourceVersionWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 

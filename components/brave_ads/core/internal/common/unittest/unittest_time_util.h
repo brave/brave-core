@@ -16,12 +16,12 @@ namespace brave_ads {
 
 base::Time TimeFromString(const std::string& time_string, bool is_local);
 
+// The distance between the past, present and future is only a persistent
+// illusion. Albert Einstein.
 base::Time DistantPast();
 std::string DistantPastAsISO8601();
-
 base::Time Now();
 std::string NowAsISO8601();
-
 base::Time DistantFuture();
 std::string DistantFutureAsISO8601();
 

@@ -61,12 +61,12 @@ TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
                                 /*should_fire_event*/ true);
 
   // Assert
-  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
-                                ConfirmationType::kServed));
-  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
-                                ConfirmationType::kViewed));
-  EXPECT_EQ(1U, GetHistoryItemCount());
-  EXPECT_EQ(1U, GetTransactionCount());
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kPromotedContentAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kPromotedContentAd,
+                                          ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetHistoryItemCountForTesting());
+  EXPECT_EQ(1U, GetTransactionCountForTesting());
 }
 
 TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
@@ -81,14 +81,14 @@ TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
                                 /*should_fire_event*/ true);
 
   // Assert
-  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
-                                ConfirmationType::kServed));
-  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
-                                ConfirmationType::kViewed));
-  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
-                                ConfirmationType::kClicked));
-  EXPECT_EQ(2U, GetHistoryItemCount());
-  EXPECT_EQ(2U, GetTransactionCount());
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kPromotedContentAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kPromotedContentAd,
+                                          ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kPromotedContentAd,
+                                          ConfirmationType::kClicked));
+  EXPECT_EQ(2U, GetHistoryItemCountForTesting());
+  EXPECT_EQ(2U, GetTransactionCountForTesting());
 }
 
 }  // namespace brave_ads

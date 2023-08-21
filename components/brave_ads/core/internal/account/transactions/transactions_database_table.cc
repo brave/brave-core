@@ -241,12 +241,11 @@ void Transactions::GetForDateRange(const base::Time from_time,
       base::BindOnce(&GetCallback, std::move(callback)));
 }
 
-void Transactions::Update(
-    const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
-    ResultCallback callback) const {
+void Transactions::Update(const PaymentTokenList& payment_tokens,
+                          ResultCallback callback) const {
   std::vector<std::string> transaction_ids;
-  for (const auto& unblinded_payment_token : unblinded_payment_tokens) {
-    transaction_ids.push_back(unblinded_payment_token.transaction_id);
+  for (const auto& payment_token : payment_tokens) {
+    transaction_ids.push_back(payment_token.transaction_id);
   }
   transaction_ids.emplace_back(rewards::kMigrationUnreconciledTransactionId);
 

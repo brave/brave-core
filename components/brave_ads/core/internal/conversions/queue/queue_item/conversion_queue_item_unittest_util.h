@@ -6,18 +6,28 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_QUEUE_QUEUE_ITEM_CONVERSION_QUEUE_ITEM_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_QUEUE_QUEUE_ITEM_CONVERSION_QUEUE_ITEM_UNITTEST_UTIL_H_
 
+#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_info.h"
 
 namespace brave_ads {
 
+class AdType;
+class ConfirmationType;
 struct ConversionInfo;
 
-void SaveConversionQueueItems(
-    const ConversionQueueItemList& conversion_queue_items);
-
-ConversionQueueItemList BuildConversionQueueItems(
+ConversionQueueItemList BuildConversionQueueItemsForTesting(
     const ConversionInfo& conversion,
     size_t count);
+
+void SaveConversionQueueItemsForTesting(
+    const ConversionQueueItemList& conversion_queue_items);
+
+void BuildAndSaveConversionQueueItemsForTesting(
+    const AdType& ad_type,
+    const ConfirmationType& confirmation_type,
+    bool is_verifiable,
+    bool should_use_random_uuids,
+    int count);
 
 }  // namespace brave_ads
 

@@ -19,7 +19,7 @@ class BraveAdsNewTabPageAdInfoTest : public UnitTestBase {};
 TEST_F(BraveAdsNewTabPageAdInfoTest, IsValid) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
 
   // Act

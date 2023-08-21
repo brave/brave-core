@@ -8,11 +8,11 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 
-namespace brave_ads::confirmations {
+namespace brave_ads {
 
-bool HasMigrated() {
+bool HasMigratedConfirmation() {
   return AdsClientHelper::GetInstance()->GetBooleanPref(
       prefs::kHasMigratedConfirmationState);
 }
 
-}  // namespace brave_ads::confirmations
+}  // namespace brave_ads

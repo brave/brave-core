@@ -22,7 +22,7 @@ namespace {
 constexpr base::TimeDelta kTimeConstraint = base::Hours(1);
 
 bool DoesRespectCap(const std::vector<base::Time>& history) {
-  const int ads_per_hour = GetMaximumNotificationAdsPerHourSetting();
+  const int ads_per_hour = GetMaximumNotificationAdsPerHour();
   if (ads_per_hour == 0) {
     // Never respect cap if set to 0
     return false;

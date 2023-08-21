@@ -12,11 +12,11 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/history/history_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -71,22 +71,22 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
 
   // Act
   TriggerSearchResultAdEvent(
-      BuildSearchResultAd(/*should_use_random_uuids*/ true),
+      BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
   TriggerSearchResultAdEvent(
-      BuildSearchResultAd(/*should_use_random_uuids*/ true),
+      BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
   // Assert
-  EXPECT_EQ(
-      2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
-  EXPECT_EQ(
-      2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
-  EXPECT_EQ(2U, GetHistoryItemCount());
-  EXPECT_EQ(2U, GetTransactionCount());
+  EXPECT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kViewed));
+  EXPECT_EQ(2U, GetHistoryItemCountForTesting());
+  EXPECT_EQ(2U, GetTransactionCountForTesting());
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
@@ -102,38 +102,38 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  SearchResultAd::DeferTriggeringOfAdViewedEventForTesting();
+  SearchResultAd::DeferTriggeringOfAdViewedEvent();
 
   // Act
   TriggerSearchResultAdEvent(
       // This ad viewed event triggering will be deferred.
-      BuildSearchResultAd(/*should_use_random_uuids*/ true),
+      BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
   TriggerSearchResultAdEvent(
       // This ad viewed event will be queued as the previous ad viewed event has
       // not completed.
-      BuildSearchResultAd(/*should_use_random_uuids*/ true),
+      BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
-  ASSERT_EQ(
-      2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
-  ASSERT_EQ(
-      1U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
-  ASSERT_EQ(1U, GetHistoryItemCount());
-  ASSERT_EQ(1U, GetTransactionCount());
+  ASSERT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kServed));
+  ASSERT_EQ(1U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kViewed));
+  ASSERT_EQ(1U, GetHistoryItemCountForTesting());
+  ASSERT_EQ(1U, GetTransactionCountForTesting());
 
-  SearchResultAd::TriggerDeferredAdViewedEventForTesting();
+  SearchResultAd::TriggerDeferredAdViewedEvent();
 
   // Assert
-  EXPECT_EQ(
-      2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
-  EXPECT_EQ(
-      2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
-  EXPECT_EQ(2U, GetHistoryItemCount());
-  EXPECT_EQ(2U, GetTransactionCount());
+  EXPECT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kViewed));
+  EXPECT_EQ(2U, GetHistoryItemCountForTesting());
+  EXPECT_EQ(2U, GetTransactionCountForTesting());
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
@@ -150,7 +150,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
                                                     disabled_features);
 
   const mojom::SearchResultAdInfoPtr search_result_ad =
-      BuildSearchResultAd(/*should_use_random_uuids*/ true);
+      BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true);
 
   TriggerSearchResultAdEvent(search_result_ad.Clone(),
                              mojom::SearchResultAdEventType::kViewed,
@@ -162,20 +162,20 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
                              /*should_fire*/ true);
 
   // Assert
-  EXPECT_EQ(
-      1U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
-  EXPECT_EQ(
-      1U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
-  EXPECT_EQ(
-      1U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kClicked));
-  EXPECT_EQ(2U, GetHistoryItemCount());
-  EXPECT_EQ(2U, GetTransactionCount());
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kClicked));
+  EXPECT_EQ(2U, GetHistoryItemCountForTesting());
+  EXPECT_EQ(2U, GetTransactionCountForTesting());
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
-       TriggerViewedEventsIfBraveRewardsAreDisabled) {
+       TriggerViewedEventsForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -190,49 +190,49 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
 
   // Act
   TriggerSearchResultAdEvent(
-      BuildSearchResultAd(/*should_use_random_uuids*/ true),
+      BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
   TriggerSearchResultAdEvent(
-      BuildSearchResultAd(/*should_use_random_uuids*/ true),
+      BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
   // Assert
-  EXPECT_EQ(
-      2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
-  EXPECT_EQ(
-      2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
-  EXPECT_EQ(0U, GetHistoryItemCount());
-  EXPECT_EQ(0U, GetTransactionCount());
+  EXPECT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kViewed));
+  EXPECT_EQ(0U, GetHistoryItemCountForTesting());
+  EXPECT_EQ(0U, GetTransactionCountForTesting());
 }
 
 TEST_F(
     BraveAdsSearchResultAdIntegrationTest,
     DoNotTriggerViewedEventIfShouldNotAlwaysTriggerAdEventsAndBraveRewardsAreDisabled) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   // Act
   TriggerSearchResultAdEvent(
-      BuildSearchResultAd(/*should_use_random_uuids*/ true),
+      BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ false);
 
   // Assert
-  EXPECT_EQ(
-      0U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
-  EXPECT_EQ(
-      0U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
-  EXPECT_EQ(0U, GetHistoryItemCount());
-  EXPECT_EQ(0U, GetTransactionCount());
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kViewed));
+  EXPECT_EQ(0U, GetHistoryItemCountForTesting());
+  EXPECT_EQ(0U, GetTransactionCountForTesting());
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
-       TriggerQueuedViewedEventsIfBraveRewardsAreDisabled) {
+       TriggerQueuedViewedEventsForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -245,44 +245,44 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  SearchResultAd::DeferTriggeringOfAdViewedEventForTesting();
+  SearchResultAd::DeferTriggeringOfAdViewedEvent();
 
   // Act
   TriggerSearchResultAdEvent(
       // This ad viewed event triggering will be deferred.
-      BuildSearchResultAd(/*should_use_random_uuids*/ true),
+      BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
   TriggerSearchResultAdEvent(
       // This ad viewed event will be queued as the previous ad viewed event has
       // not completed.
-      BuildSearchResultAd(/*should_use_random_uuids*/ true),
+      BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
-  ASSERT_EQ(
-      2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
-  ASSERT_EQ(
-      1U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
-  ASSERT_EQ(0U, GetHistoryItemCount());
-  ASSERT_EQ(0U, GetTransactionCount());
+  ASSERT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kServed));
+  ASSERT_EQ(1U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kViewed));
+  ASSERT_EQ(0U, GetHistoryItemCountForTesting());
+  ASSERT_EQ(0U, GetTransactionCountForTesting());
 
-  SearchResultAd::TriggerDeferredAdViewedEventForTesting();
+  SearchResultAd::TriggerDeferredAdViewedEvent();
 
   // Assert
-  EXPECT_EQ(
-      2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
-  EXPECT_EQ(
-      2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
-  EXPECT_EQ(0U, GetHistoryItemCount());
-  EXPECT_EQ(0U, GetTransactionCount());
+  EXPECT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kViewed));
+  EXPECT_EQ(0U, GetHistoryItemCountForTesting());
+  EXPECT_EQ(0U, GetTransactionCountForTesting());
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
-       TriggerClickedEventIfBraveRewardsAreDisabled) {
+       TriggerClickedEventForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -296,7 +296,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
                                                     disabled_features);
 
   const mojom::SearchResultAdInfoPtr search_result_ad =
-      BuildSearchResultAd(/*should_use_random_uuids*/ true);
+      BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true);
 
   TriggerSearchResultAdEvent(search_result_ad.Clone(),
                              mojom::SearchResultAdEventType::kViewed,
@@ -308,24 +308,24 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
                              /*should_fire*/ true);
 
   // Assert
-  EXPECT_EQ(
-      1U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
-  EXPECT_EQ(
-      1U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
-  EXPECT_EQ(
-      1U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kClicked));
-  EXPECT_EQ(0U, GetHistoryItemCount());
-  EXPECT_EQ(0U, GetTransactionCount());
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kClicked));
+  EXPECT_EQ(0U, GetHistoryItemCountForTesting());
+  EXPECT_EQ(0U, GetTransactionCountForTesting());
 }
 
 TEST_F(
     BraveAdsSearchResultAdIntegrationTest,
     DoNotTriggerClickedEventIfShouldNotAlwaysTriggerAdEventsAndBraveRewardsAreDisabled) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   const mojom::SearchResultAdInfoPtr search_result_ad =
-      BuildSearchResultAd(/*should_use_random_uuids*/ true);
+      BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true);
 
   TriggerSearchResultAdEvent(search_result_ad.Clone(),
                              mojom::SearchResultAdEventType::kViewed,
@@ -337,14 +337,14 @@ TEST_F(
                              /*should_fire*/ false);
 
   // Assert
-  EXPECT_EQ(
-      0U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
-  EXPECT_EQ(
-      0U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
-  EXPECT_EQ(
-      0U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kClicked));
-  EXPECT_EQ(0U, GetHistoryItemCount());
-  EXPECT_EQ(0U, GetTransactionCount());
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kViewed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kSearchResultAd,
+                                          ConfirmationType::kClicked));
+  EXPECT_EQ(0U, GetHistoryItemCountForTesting());
+  EXPECT_EQ(0U, GetTransactionCountForTesting());
 }
 
 }  // namespace brave_ads

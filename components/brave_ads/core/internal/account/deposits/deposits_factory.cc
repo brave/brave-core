@@ -7,9 +7,9 @@
 
 #include "base/notreached.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
-#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/cash_deposit.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/non_cash_deposit.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 
 namespace brave_ads {
 

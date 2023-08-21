@@ -11,7 +11,6 @@
 #include "base/functional/callback.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {

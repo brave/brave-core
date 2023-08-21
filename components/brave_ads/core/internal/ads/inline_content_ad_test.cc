@@ -77,8 +77,8 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, Serve) {
         EXPECT_EQ(kDimensions, dimensions);
         EXPECT_TRUE(ad);
         EXPECT_TRUE(ad->IsValid());
-        EXPECT_EQ(1U, GetAdEventCount(AdType::kInlineContentAd,
-                                      ConfirmationType::kServed));
+        EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                                ConfirmationType::kServed));
       });
 
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
@@ -111,8 +111,8 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
         ASSERT_EQ(kDimensions, dimensions);
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
-        ASSERT_EQ(1U, GetAdEventCount(AdType::kInlineContentAd,
-                                      ConfirmationType::kServed));
+        ASSERT_EQ(1U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                                ConfirmationType::kServed));
 
         // Act
         TriggerInlineContentAdEvent(ad->placement_id, ad->creative_instance_id,
@@ -120,10 +120,10 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
                                     /*should_fire_event*/ true);
 
         // Assert
-        EXPECT_EQ(1U, GetAdEventCount(AdType::kInlineContentAd,
-                                      ConfirmationType::kViewed));
-        EXPECT_EQ(1U, GetHistoryItemCount());
-        EXPECT_EQ(1U, GetTransactionCount());
+        EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                                ConfirmationType::kViewed));
+        EXPECT_EQ(1U, GetHistoryItemCountForTesting());
+        EXPECT_EQ(1U, GetTransactionCountForTesting());
       });
 
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
@@ -141,8 +141,8 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
         ASSERT_EQ(kDimensions, dimensions);
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
-        ASSERT_EQ(1U, GetAdEventCount(AdType::kInlineContentAd,
-                                      ConfirmationType::kServed));
+        ASSERT_EQ(1U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                                ConfirmationType::kServed));
 
         TriggerInlineContentAdEvent(ad->placement_id, ad->creative_instance_id,
                                     mojom::InlineContentAdEventType::kViewed,
@@ -154,12 +154,12 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
                                     /*should_fire_event*/ true);
 
         // Assert
-        EXPECT_EQ(1U, GetAdEventCount(AdType::kInlineContentAd,
-                                      ConfirmationType::kViewed));
-        EXPECT_EQ(1U, GetAdEventCount(AdType::kInlineContentAd,
-                                      ConfirmationType::kClicked));
-        EXPECT_EQ(2U, GetHistoryItemCount());
-        EXPECT_EQ(2U, GetTransactionCount());
+        EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                                ConfirmationType::kViewed));
+        EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kInlineContentAd,
+                                                ConfirmationType::kClicked));
+        EXPECT_EQ(2U, GetHistoryItemCountForTesting());
+        EXPECT_EQ(2U, GetTransactionCountForTesting());
       });
 
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());

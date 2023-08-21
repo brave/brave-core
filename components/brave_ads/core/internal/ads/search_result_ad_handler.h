@@ -38,8 +38,8 @@ class SearchResultAd final : public SearchResultAdEventHandlerDelegate {
                     mojom::SearchResultAdEventType event_type,
                     TriggerAdEventCallback callback);
 
-  static void DeferTriggeringOfAdViewedEventForTesting();
-  static void TriggerDeferredAdViewedEventForTesting();
+  static void DeferTriggeringOfAdViewedEvent();
+  static void TriggerDeferredAdViewedEvent();
 
  private:
   void FireServedEventCallback(mojom::SearchResultAdInfoPtr ad_mojom,

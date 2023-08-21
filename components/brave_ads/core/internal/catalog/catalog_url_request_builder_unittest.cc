@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -17,9 +16,6 @@ class BraveAdsCatalogUrlRequestBuilderTest : public UnitTestBase {};
 
 TEST_F(BraveAdsCatalogUrlRequestBuilderTest, BuildUrl) {
   // Arrange
-  GlobalState::GetInstance()->Flags().environment_type =
-      mojom::EnvironmentType::kStaging;
-
   CatalogUrlRequestBuilder url_request_builder;
 
   // Act

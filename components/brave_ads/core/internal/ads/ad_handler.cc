@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion/conversion_info.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
 
 namespace brave_ads {
@@ -126,14 +126,14 @@ void AdHandler::TriggerSearchResultAdEvent(
 void AdHandler::OnDidConvertAd(const ConversionInfo& conversion) {
   CHECK(conversion.IsValid());
 
-  account_->Deposit(conversion.creative_instance_id, conversion.ad_type,
-                    conversion.segment, ConfirmationType::kConversion);
+  account_->Deposit(conversion.creative_instance_id, conversion.segment,
+                    conversion.ad_type, ConfirmationType::kConversion);
 }
 
 void AdHandler::OnDidTransferAd(const AdInfo& ad) {
   CHECK(ad.IsValid());
 
-  account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
+  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kTransferred);
 }
 

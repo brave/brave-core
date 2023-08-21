@@ -20,7 +20,7 @@ class BraveAdsBrowserIsActivePermissionRuleTest : public UnitTestBase {
   const BrowserIsActivePermissionRule permission_rule_;
 };
 
-TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, AllowAd) {
+TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, ShouldAllow) {
   // Arrange
 
   // Act
@@ -31,7 +31,7 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, AllowAd) {
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, DoNotAllowAd) {
+TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, ShouldNotAllow) {
   // Arrange
 
   // Act
@@ -43,7 +43,7 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, DoNotAllowAd) {
 }
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
-       AllowAdIfPermissionRuleIsDisabled) {
+       ShouldAllowIfPermissionRuleIsDisabled) {
   // Arrange
   base::FieldTrialParams params;
   params["should_only_serve_ads_if_browser_is_active"] = "false";
@@ -65,7 +65,7 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
 }
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
-       DoNotAllowAdIfWindowIsActiveAndBrowserIsBackgrounded) {
+       ShouldNotAllowIfWindowIsActiveAndBrowserIsBackgrounded) {
   // Arrange
 
   // Act
@@ -77,12 +77,24 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
 }
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
-       DoNotAllowAdIfWindowIsInactiveAndBrowserIsForegrounded) {
+       ShouldNotAllowIfWindowIsInactiveAndBrowserIsForegrounded) {
   // Arrange
 
   // Act
   NotifyBrowserDidResignActive();
   NotifyBrowserDidEnterForeground();
+
+  // Assert
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
+}
+
+TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
+       ShouldNotAllowIfWindowIsInactiveAndBrowserIsBackgrounded) {
+  // Arrange
+
+  // Act
+  NotifyBrowserDidResignActive();
+  NotifyBrowserDidEnterBackground();
 
   // Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());

@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_util.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -85,7 +84,6 @@ TEST_F(BraveAdsNotificationAdServingUtilTest, SetServeAdAt) {
 TEST_F(BraveAdsNotificationAdServingUtilTest,
        CalculateDelayBeforeServingTheFirstAd) {
   // Arrange
-  ads_client_mock_.ClearPref(prefs::kServeAdAt);
 
   // Act
 
@@ -119,7 +117,7 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
   // Arrange
   SetServeAdAt(Now());
 
-  AdvanceClockBy(base::Seconds(1));
+  AdvanceClockBy(base::Milliseconds(1));
 
   // Act
 

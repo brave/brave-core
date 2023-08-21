@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/history/filters/history_filter_factory.h"
 
-#include <ostream>
-
 #include "base/notreached.h"
 #include "brave/components/brave_ads/core/internal/history/filters/confirmation_history_filter.h"
 

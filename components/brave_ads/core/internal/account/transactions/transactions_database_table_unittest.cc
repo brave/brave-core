@@ -7,7 +7,9 @@
 
 #include <utility>
 
-#include "base/functional/bind.h"
+#include "base/test/mock_callback.h"
+#include "brave/components/brave_ads/core/ads_client_callback.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_container_util.h"
@@ -17,173 +19,171 @@
 
 namespace brave_ads::database::table {
 
+namespace {
+
+void ExpectTransactionsEq(const TransactionList expected_transactions) {
+  base::MockCallback<GetTransactionsCallback> callback;
+  EXPECT_CALL(callback, Run)
+      .WillOnce([&expected_transactions](const bool success,
+                                         const TransactionList& transactions) {
+        EXPECT_TRUE(success);
+        EXPECT_TRUE(ContainersEq(expected_transactions, transactions));
+      });
+
+  const Transactions database_table;
+  database_table.GetAll(callback.Get());
+}
+
+}  // namespace
+
 class BraveAdsTransactionsDatabaseTableTest : public UnitTestBase {};
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
   // Arrange
 
   // Act
-  SaveTransactions({});
+  SaveTransactionsForTesting({});
 
   // Assert
-  const Transactions database_table;
-  database_table.GetAll(base::BindOnce(
-      [](const bool success, const TransactionList& transactions) {
-        ASSERT_TRUE(success);
-        EXPECT_TRUE(transactions.empty());
-      }));
+  ExpectTransactionsEq({});
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo transaction_1 = BuildTransaction(
-      /*value*/ 0.01, ConfirmationType::kViewed, DistantFuture());
+  const TransactionInfo transaction_1 = BuildTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed, DistantFuture(),
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_1);
 
   AdvanceClockBy(base::Days(5));
 
-  const TransactionInfo transaction_2 =
-      BuildUnreconciledTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
+  const TransactionInfo transaction_2 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.03, ConfirmationType::kClicked,
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_2);
 
   // Act
-  SaveTransactions(transactions);
+  SaveTransactionsForTesting(transactions);
 
   // Assert
-  const Transactions database_table;
-  database_table.GetAll(base::BindOnce(
-      [](const TransactionList& expected_transactions, const bool success,
-         const TransactionList& transactions) {
-        ASSERT_TRUE(success);
-        EXPECT_TRUE(ContainersEq(expected_transactions, transactions));
-      },
-      std::move(transactions)));
+  ExpectTransactionsEq(transactions);
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo transaction = BuildTransaction(
-      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
+  const TransactionInfo transaction = BuildTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction);
 
-  SaveTransactions(transactions);
+  SaveTransactionsForTesting(transactions);
 
   // Act
-  SaveTransactions(transactions);
+  SaveTransactionsForTesting(transactions);
 
   // Assert
-  const Transactions database_table;
-  database_table.GetAll(base::BindOnce(
-      [](const TransactionList& expected_transactions, const bool success,
-         const TransactionList& transactions) {
-        ASSERT_TRUE(success);
-        EXPECT_TRUE(ContainersEq(expected_transactions, transactions));
-      },
-      std::move(transactions)));
+  ExpectTransactionsEq(transactions);
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo transaction_1 = BuildTransaction(
-      /*value*/ 0.01, ConfirmationType::kViewed, DistantFuture());
+  const TransactionInfo transaction_1 = BuildTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed, DistantFuture(),
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_1);
 
   AdvanceClockBy(base::Days(5));
 
-  const TransactionInfo transaction_2 =
-      BuildUnreconciledTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
+  const TransactionInfo transaction_2 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.03, ConfirmationType::kClicked,
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_2);
 
-  SaveTransactions(transactions);
-
-  // Act
-  TransactionList expected_transactions = {transaction_2};
-
-  const Transactions database_table;
-  database_table.GetForDateRange(
-      Now(), DistantFuture(),
-      base::BindOnce(
-          [](const TransactionList& expected_transactions, const bool success,
-             const TransactionList& transactions) {
-            ASSERT_TRUE(success);
-            EXPECT_EQ(expected_transactions, transactions);
-          },
-          std::move(expected_transactions)));
+  SaveTransactionsForTesting(transactions);
 
   // Assert
+  const TransactionList expected_transactions = {transaction_2};
+  base::MockCallback<GetTransactionsCallback> callback;
+  EXPECT_CALL(callback, Run)
+      .WillOnce([&expected_transactions](const bool success,
+                                         const TransactionList& transactions) {
+        EXPECT_TRUE(success);
+        EXPECT_TRUE(ContainersEq(expected_transactions, transactions));
+      });
+
+  // Act
+  const Transactions database_table;
+  database_table.GetForDateRange(Now(), DistantFuture(), callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, UpdateTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo transaction_1 = BuildTransaction(
-      /*value*/ 0.01, ConfirmationType::kViewed, DistantFuture());
+  const TransactionInfo transaction_1 = BuildTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed, DistantFuture(),
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_1);
 
-  TransactionInfo transaction_2 =
-      BuildUnreconciledTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
+  TransactionInfo transaction_2 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.03, ConfirmationType::kClicked,
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_2);
 
-  SaveTransactions(transactions);
+  SaveTransactionsForTesting(transactions);
 
-  privacy::UnblindedPaymentTokenList unblinded_payment_tokens;
-  privacy::UnblindedPaymentTokenInfo unblinded_payment_token;
-  unblinded_payment_token.transaction_id = transaction_2.id;
-  unblinded_payment_tokens.push_back(unblinded_payment_token);
+  PaymentTokenList payment_tokens;
+  PaymentTokenInfo payment_token;
+  payment_token.transaction_id = transaction_2.id;
+  payment_tokens.push_back(payment_token);
+
+  // Assert
+  transaction_2.reconciled_at = Now();
+  const TransactionList expected_transactions = {transaction_1, transaction_2};
+  base::MockCallback<ResultCallback> callback;
+  EXPECT_CALL(callback, Run)
+      .WillOnce([&expected_transactions](const bool success) {
+        EXPECT_TRUE(success);
+        ExpectTransactionsEq(expected_transactions);
+      });
 
   // Act
   const Transactions database_table;
-  database_table.Update(
-      unblinded_payment_tokens,
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
-
-  transaction_2.reconciled_at = Now();
-
-  // Assert
-  TransactionList expected_transactions = {transaction_1, transaction_2};
-
-  database_table.GetAll(base::BindOnce(
-      [](const TransactionList& expected_transactions, const bool success,
-         const TransactionList& transactions) {
-        ASSERT_TRUE(success);
-        EXPECT_TRUE(ContainersEq(expected_transactions, transactions));
-      },
-      std::move(expected_transactions)));
+  database_table.Update(payment_tokens, callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, DeleteTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo transaction_1 = BuildTransaction(
-      /*value*/ 0.01, ConfirmationType::kViewed, DistantFuture());
+  const TransactionInfo transaction_1 = BuildTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed, DistantFuture(),
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo transaction_2 =
-      BuildUnreconciledTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
+  const TransactionInfo transaction_2 = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.03, ConfirmationType::kClicked,
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_2);
 
-  SaveTransactions(transactions);
-
-  const Transactions database_table;
-
-  // Act
-  database_table.Delete(
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
+  SaveTransactionsForTesting(transactions);
 
   // Assert
-  database_table.GetAll(base::BindOnce(
-      [](const bool success, const TransactionList& transactions) {
-        ASSERT_TRUE(success);
-        EXPECT_TRUE(transactions.empty());
-      }));
+  base::MockCallback<ResultCallback> callback;
+  EXPECT_CALL(callback, Run).WillOnce([](const bool success) {
+    EXPECT_TRUE(success);
+    ExpectTransactionsEq({});
+  });
+
+  // Act
+  const Transactions database_table;
+  database_table.Delete(callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, TableName) {

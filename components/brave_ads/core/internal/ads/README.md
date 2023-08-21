@@ -10,7 +10,7 @@ An advertisement, or ad, is a form of marketing communication that is used to pr
 | promoted content ad  | no² ³  | Only when opted-in to Brave News  | Displayed on the Brave News feed  |
 | search result ad  | no² ³  | Always, but the frequency is capped when the user has joined Brave Rewards.  | Displayed on [search.brave.com](search.brave.com)  |
 
-Users are rewarded for ad impressions if they join [Brave Rewards](brave://rewards).
+Users are rewarded for ad impressions if they join Brave Rewards.
 
 1. `kServed` events should not be manually triggered as they are handled when calling `MaybeServe`. `PurgeOrphanedAdEventsForType` should be called periodically to remove orphaned served events, i.e., ads that were served but never viewed.
 2. `kServed` events should not be manually triggered as they are handled when calling `TriggerEvent` with `kViewed` unless already triggerd by ¹.

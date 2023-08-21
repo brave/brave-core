@@ -12,12 +12,12 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -28,7 +28,7 @@ namespace {
 
 NewTabPageAdInfo BuildAndSaveAd() {
   const CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeNewTabPageAds({creative_ad});
   return BuildNewTabPageAd(creative_ad);
 }
@@ -42,7 +42,7 @@ class BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    DisableBraveRewards();
+    DisableBraveRewardsForTesting();
 
     event_handler_.SetDelegate(this);
   }
@@ -115,8 +115,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
   EXPECT_FALSE(did_click_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_EQ(1U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kServed));
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
@@ -138,10 +138,10 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
   EXPECT_FALSE(did_click_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_EQ(1U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(1U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kViewed));
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
@@ -159,10 +159,10 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
             mojom::NewTabPageAdEventType::kViewed, /*should_fire_event*/ false);
 
   // Assert
-  EXPECT_EQ(1U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(1U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kViewed));
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
@@ -175,10 +175,10 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
             mojom::NewTabPageAdEventType::kViewed, /*should_fire_event*/ false);
 
   // Assert
-  EXPECT_EQ(0U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(0U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kViewed));
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
@@ -201,12 +201,12 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
   EXPECT_TRUE(did_click_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_EQ(1U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(1U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
-  EXPECT_EQ(1U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kClicked));
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
@@ -226,12 +226,12 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
             /*should_fire_event*/ false);
 
   // Assert
-  EXPECT_EQ(1U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(1U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
-  EXPECT_EQ(1U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kClicked));
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
@@ -245,10 +245,10 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
             /*should_fire_event*/ false);
 
   // Assert
-  EXPECT_EQ(0U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(0U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kViewed));
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
@@ -265,8 +265,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-  EXPECT_EQ(0U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kServed));
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
@@ -283,8 +283,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-  EXPECT_EQ(0U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kServed));
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
@@ -302,8 +302,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-  EXPECT_EQ(0U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kServed));
 }
 
 }  // namespace brave_ads

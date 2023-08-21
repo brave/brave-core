@@ -17,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_delegate.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+
 namespace brave_ads {
 
 class Account;

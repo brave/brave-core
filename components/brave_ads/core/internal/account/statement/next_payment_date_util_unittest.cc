@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/statement/next_payment_date_util.h"
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/account/account_feature.h"
+#include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -23,14 +23,15 @@ TEST_F(BraveAdsNextPaymentDateUtilTest,
   base::FieldTrialParams params;
   params["next_payment_day"] = "5";
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(kAccountFeature,
-                                                         params);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kAccountStatementFeature, params);
 
   AdvanceClockTo(TimeFromString("1 January 2020", /*is_local*/ false));
 
   TransactionList transactions;
-  const TransactionInfo transaction = BuildTransaction(
-      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
+  const TransactionInfo transaction = BuildTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction);
 
   AdvanceClockTo(TimeFromString("1 February 2020", /*is_local*/ false));
@@ -54,8 +55,8 @@ TEST_F(BraveAdsNextPaymentDateUtilTest,
   base::FieldTrialParams params;
   params["next_payment_day"] = "5";
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(kAccountFeature,
-                                                         params);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kAccountStatementFeature, params);
 
   AdvanceClockTo(TimeFromString("1 February 2020", /*is_local*/ false));
 
@@ -80,14 +81,15 @@ TEST_F(BraveAdsNextPaymentDateUtilTest,
   base::FieldTrialParams params;
   params["next_payment_day"] = "5";
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(kAccountFeature,
-                                                         params);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kAccountStatementFeature, params);
 
   AdvanceClockTo(TimeFromString("31 January 2020", /*is_local*/ false));
 
   TransactionList transactions;
-  const TransactionInfo transaction = BuildTransaction(
-      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
+  const TransactionInfo transaction = BuildTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
+      /*should_use_random_uuids*/ true);
   transactions.push_back(transaction);
 
   const base::Time next_token_redemption_at =
@@ -110,8 +112,8 @@ TEST_F(
   base::FieldTrialParams params;
   params["next_payment_day"] = "5";
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(kAccountFeature,
-                                                         params);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kAccountStatementFeature, params);
 
   AdvanceClockTo(TimeFromString("11 January 2020", /*is_local*/ false));
 
@@ -137,8 +139,8 @@ TEST_F(
   base::FieldTrialParams params;
   params["next_payment_day"] = "5";
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(kAccountFeature,
-                                                         params);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kAccountStatementFeature, params);
 
   AdvanceClockTo(TimeFromString("31 January 2020", /*is_local*/ false));
 

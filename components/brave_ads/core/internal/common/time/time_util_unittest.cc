@@ -64,7 +64,7 @@ constexpr char ScopedLibcTZ::kTZ[];
 #endif  // BUILDFLAG(IS_LINUX)
 
 class BraveAdsTimeUtilTest : public UnitTestBase,
-                             public testing::WithParamInterface<bool> {
+                             public ::testing::WithParamInterface<bool> {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();

@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_in_to_notification_ads_diagnostic_entry.h"
 
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds.*
 
@@ -31,7 +31,7 @@ TEST_F(BraveAdsOptedInToNotificationAdsDiagnosticEntryTest, IsOptedIn) {
 
 TEST_F(BraveAdsOptedInToNotificationAdsDiagnosticEntryTest, IsOptedOut) {
   // Arrange
-  DisableNotificationAds();
+  DisableNotificationAdsForTesting();
 
   // Act
   const OptedInToNotificationAdsDiagnosticEntry diagnostic_entry;

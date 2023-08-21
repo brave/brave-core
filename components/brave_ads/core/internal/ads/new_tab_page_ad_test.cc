@@ -12,12 +12,12 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/history/history_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -86,8 +86,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, Serve) {
         // Assert
         EXPECT_TRUE(ad);
         EXPECT_TRUE(ad->IsValid());
-        EXPECT_EQ(1U, GetAdEventCount(AdType::kNewTabPageAd,
-                                      ConfirmationType::kServed));
+        EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                                ConfirmationType::kServed));
       });
 
   // Act
@@ -136,8 +136,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
         // Assert
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
-        ASSERT_EQ(1U, GetAdEventCount(AdType::kNewTabPageAd,
-                                      ConfirmationType::kServed));
+        ASSERT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                                ConfirmationType::kServed));
 
         // Act
         TriggerNewTabPageAdEvent(ad->placement_id, ad->creative_instance_id,
@@ -145,19 +145,19 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
                                  /*should_fire_event*/ true);
 
         // Assert
-        EXPECT_EQ(1U, GetAdEventCount(AdType::kNewTabPageAd,
-                                      ConfirmationType::kViewed));
-        EXPECT_EQ(1U, GetHistoryItemCount());
-        EXPECT_EQ(1U, GetTransactionCount());
+        EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                                ConfirmationType::kViewed));
+        EXPECT_EQ(1U, GetHistoryItemCountForTesting());
+        EXPECT_EQ(1U, GetTransactionCountForTesting());
       });
 
   GetAds().MaybeServeNewTabPageAd(callback.Get());
 }
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest,
-       TriggerViewedEventIfBraveRewardsAreDisabled) {
+       TriggerViewedEventForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -176,19 +176,19 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
                            /*should_fire_event*/ true);
 
   // Assert
-  EXPECT_EQ(1U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(1U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
-  EXPECT_EQ(0U, GetHistoryItemCount());
-  EXPECT_EQ(0U, GetTransactionCount());
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kViewed));
+  EXPECT_EQ(0U, GetHistoryItemCountForTesting());
+  EXPECT_EQ(0U, GetTransactionCountForTesting());
 }
 
 TEST_F(
     BraveAdsNewTabPageAdIntegrationTest,
-    DoNotTriggerViewedEventIfShouldNotAlwaysTriggerAdEventsAndBraveRewardsAreDisabled) {
+    DoNotTriggerViewedEventIfShouldNotAlwaysTriggerAdEventsAndRewardsAreDisabled) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   // Act
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
@@ -196,12 +196,12 @@ TEST_F(
                            /*should_fire_event*/ false);
 
   // Assert
-  EXPECT_EQ(0U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(0U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
-  EXPECT_EQ(0U, GetHistoryItemCount());
-  EXPECT_EQ(0U, GetTransactionCount());
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kViewed));
+  EXPECT_EQ(0U, GetHistoryItemCountForTesting());
+  EXPECT_EQ(0U, GetTransactionCountForTesting());
 }
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
@@ -225,8 +225,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
         // Assert
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
-        ASSERT_EQ(1U, GetAdEventCount(AdType::kNewTabPageAd,
-                                      ConfirmationType::kServed));
+        ASSERT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                                ConfirmationType::kServed));
 
         TriggerNewTabPageAdEvent(ad->placement_id, ad->creative_instance_id,
                                  mojom::NewTabPageAdEventType::kViewed,
@@ -238,21 +238,21 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
                                  /*should_fire_event*/ true);
 
         // Assert
-        EXPECT_EQ(1U, GetAdEventCount(AdType::kNewTabPageAd,
-                                      ConfirmationType::kViewed));
-        EXPECT_EQ(1U, GetAdEventCount(AdType::kNewTabPageAd,
-                                      ConfirmationType::kClicked));
-        EXPECT_EQ(2U, GetHistoryItemCount());
-        EXPECT_EQ(2U, GetTransactionCount());
+        EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                                ConfirmationType::kViewed));
+        EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                                ConfirmationType::kClicked));
+        EXPECT_EQ(2U, GetHistoryItemCountForTesting());
+        EXPECT_EQ(2U, GetTransactionCountForTesting());
       });
 
   GetAds().MaybeServeNewTabPageAd(callback.Get());
 }
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest,
-       TriggerClickedEventIfBraveRewardsAreDisabled) {
+       TriggerClickedEventForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -275,21 +275,21 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
                            /*should_fire_event*/ true);
 
   // Assert
-  EXPECT_EQ(1U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(1U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
-  EXPECT_EQ(1U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
-  EXPECT_EQ(0U, GetHistoryItemCount());
-  EXPECT_EQ(0U, GetTransactionCount());
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kClicked));
+  EXPECT_EQ(0U, GetHistoryItemCountForTesting());
+  EXPECT_EQ(0U, GetTransactionCountForTesting());
 }
 
 TEST_F(
     BraveAdsNewTabPageAdIntegrationTest,
     DoNotTriggerClickedEventIfShouldNotAlwaysTriggerAdEventsAndBraveRewardsAreDisabled) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
                            mojom::NewTabPageAdEventType::kViewed,
@@ -301,14 +301,14 @@ TEST_F(
                            /*should_fire_event*/ false);
 
   // Assert
-  EXPECT_EQ(0U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(0U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
-  EXPECT_EQ(0U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
-  EXPECT_EQ(0U, GetHistoryItemCount());
-  EXPECT_EQ(0U, GetTransactionCount());
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kServed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kViewed));
+  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kNewTabPageAd,
+                                          ConfirmationType::kClicked));
+  EXPECT_EQ(0U, GetHistoryItemCountForTesting());
+  EXPECT_EQ(0U, GetTransactionCountForTesting());
 }
 
 }  // namespace brave_ads

@@ -18,8 +18,8 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
+#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -47,12 +47,12 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForChildSegment) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_2.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_2);
 
@@ -62,10 +62,11 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForChildSegment) {
   CreativeNewTabPageAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModel({/*interest_segments*/ "technology & computing-software"},
-                     /*latent_interest_segments*/ {},
-                     /*purchase_intent_segments*/ {},
-                     /*text_embedding_html_events*/ {}),
+      BuildUserModelForTesting(
+          {/*interest_segments*/ "technology & computing-software"},
+          /*latent_interest_segments*/ {},
+          /*purchase_intent_segments*/ {},
+          /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNewTabPageAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -80,7 +81,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForChildSegment) {
 TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForParentSegment) {
   // Arrange
   CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad.segment = "technology & computing";
   database::SaveCreativeNewTabPageAds({creative_ad});
 
@@ -88,10 +89,11 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForParentSegment) {
   CreativeNewTabPageAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModel({/*interest_segments*/ "technology & computing-software"},
-                     /*latent_interest_segments*/ {},
-                     /*purchase_intent_segments*/ {},
-                     /*text_embedding_html_events*/ {}),
+      BuildUserModelForTesting(
+          {/*interest_segments*/ "technology & computing-software"},
+          /*latent_interest_segments*/ {},
+          /*purchase_intent_segments*/ {},
+          /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNewTabPageAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -106,7 +108,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForParentSegment) {
 TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForUntargetedSegment) {
   // Arrange
   CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad.segment = "untargeted";
   database::SaveCreativeNewTabPageAds({creative_ad});
 
@@ -114,10 +116,10 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForUntargetedSegment) {
   CreativeNewTabPageAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModel({/*interest_segments*/ "finance-banking"},
-                     /*latent_interest_segments*/ {},
-                     /*purchase_intent_segments*/ {},
-                     /*text_embedding_html_events*/ {}),
+      BuildUserModelForTesting({/*interest_segments*/ "finance-banking"},
+                               /*latent_interest_segments*/ {},
+                               /*purchase_intent_segments*/ {},
+                               /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNewTabPageAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -134,17 +136,17 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForMultipleSegments) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_2.segment = "finance-banking";
   creative_ads.push_back(creative_ad_2);
 
   CreativeNewTabPageAdInfo creative_ad_3 =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_3.segment = "food & drink";
   creative_ads.push_back(creative_ad_3);
 
@@ -155,7 +157,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForMultipleSegments) {
                                                     creative_ad_3};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModel(
+      BuildUserModelForTesting(
           {/*interest_segments*/ "technology & computing", "food & drink"},
           /*latent_interest_segments*/ {},
           /*purchase_intent_segments*/ {},
@@ -174,7 +176,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForMultipleSegments) {
 TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForNoSegments) {
   // Arrange
   CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad.segment = "untargeted";
   database::SaveCreativeNewTabPageAds({creative_ad});
 
@@ -197,16 +199,16 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForNoSegments) {
 TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
   // Arrange
   CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad.segment = "technology & computing";
   database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModel({/*interest_segments*/ "UNMATCHED"},
-                     /*latent_interest_segments*/ {},
-                     /*purchase_intent_segments*/ {},
-                     /*text_embedding_html_events*/ {}),
+      BuildUserModelForTesting({/*interest_segments*/ "UNMATCHED"},
+                               /*latent_interest_segments*/ {},
+                               /*purchase_intent_segments*/ {},
+                               /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNewTabPageAdList& creative_ads) {
         // Assert
@@ -220,7 +222,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfNoEligibleAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModel(
+      BuildUserModelForTesting(
           {/*interest_segments*/ "technology & computing", "food & drink"},
           /*latent_interest_segments*/ {},
           /*purchase_intent_segments*/ {},
@@ -238,12 +240,12 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
@@ -256,7 +258,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   CreativeNewTabPageAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModel(
+      BuildUserModelForTesting(
           {/*interest_segments*/ "technology & computing", "food & drink"},
           /*latent_interest_segments*/ {},
           /*purchase_intent_segments*/ {},
@@ -277,13 +279,13 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetPacedAds) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_1.segment = "technology & computing";
   creative_ad_1.pass_through_rate = 0.1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_2.segment = "food & drink";
   creative_ad_2.pass_through_rate = 0.5;
   creative_ads.push_back(creative_ad_2);
@@ -296,7 +298,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetPacedAds) {
   CreativeNewTabPageAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModel(
+      BuildUserModelForTesting(
           {/*interest_segments*/ "technology & computing", "food & drink"},
           /*latent_interest_segments*/ {},
           /*purchase_intent_segments*/ {},
@@ -317,19 +319,19 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetPrioritizedAds) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_1.segment = "technology & computing";
   creative_ad_1.priority = 1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_2.segment = "finance-banking";
   creative_ad_2.priority = 1;
   creative_ads.push_back(creative_ad_2);
 
   CreativeNewTabPageAdInfo creative_ad_3 =
-      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_3.segment = "food & drink";
   creative_ad_3.priority = 2;
   creative_ads.push_back(creative_ad_3);
@@ -340,7 +342,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetPrioritizedAds) {
   CreativeNewTabPageAdList expected_creative_ads = {creative_ad_1};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModel(
+      BuildUserModelForTesting(
           {/*interest_segments*/ "technology & computing", "food & drink"},
           /*latent_interest_segments*/ {},
           /*purchase_intent_segments*/ {},

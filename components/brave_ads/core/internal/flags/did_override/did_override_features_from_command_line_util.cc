@@ -16,40 +16,35 @@
 #include "brave/components/brave_ads/common/notification_ad_feature.h"
 #include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/brave_ads/common/user_attention_feature.h"
-#include "brave/components/brave_ads/core/internal/account/account_feature.h"
+#include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
+#include "brave/components/brave_ads/core/internal/account/utility/tokens_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_feature.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_feature.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_feature.h"
 
 namespace brave_ads {
 
 namespace {
 
-const base::Feature* const kFeatures[] = {&kAccountFeature,
-                                          &kAntiTargetingFeature,
-                                          &kConversionsFeature,
-                                          &kEligibleAdFeature,
-                                          &kEpsilonGreedyBanditFeatures,
-                                          &kExclusionRulesFeature,
-                                          &kInlineContentAdFeature,
-                                          &kNewTabPageAdFeature,
-                                          &kNotificationAdFeature,
-                                          &kPermissionRulesFeature,
-                                          &kPromotedContentAdFeature,
-                                          &kPurchaseIntentFeature,
-                                          &kSearchResultAdFeature,
-                                          &kTextClassificationFeature,
-                                          &kUserActivityFeature,
-                                          &kUserAttentionFeature};
+const base::Feature* const kFeatures[] = {
+    &kAccountStatementFeature, &kTextClassificationFeature,
+    &kAccountTokensFeature,    &kUserActivityFeature,
+    &kAntiTargetingFeature,    &kConversionsFeature,
+    &kEligibleAdFeature,       &kEpsilonGreedyBanditFeatures,
+    &kExclusionRulesFeature,   &kInlineContentAdFeature,
+    &kNewTabPageAdFeature,     &kNotificationAdFeature,
+    &kPermissionRulesFeature,  &kPromotedContentAdFeature,
+    &kPurchaseIntentFeature,   &kSearchResultAdFeature,
+    &kUserAttentionFeature};
 
 constexpr char kFeaturesSeparators[] = ",:<";
 

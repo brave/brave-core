@@ -17,7 +17,7 @@
 
 namespace brave_ads {
 
-void ForceNewTabPageAdServingVersion(const int version) {
+void ForceNewTabPageAdServingVersionForTesting(const int version) {
   std::map<std::string, std::string> params;
   params["version"] = base::NumberToString(version);
 

@@ -13,9 +13,9 @@
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
-#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_handler_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
@@ -23,12 +23,12 @@
 #include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_event_predictor_variable_util.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_served_at_predictor_variable_util.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
-#include "brave/components/brave_ads/core/internal/privacy/p2a/opportunities/p2a_opportunity.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feedback_info.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feedback_info.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
+#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection_util.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
@@ -166,7 +166,7 @@ void NotificationAdHandler::OnOpportunityAroseToServeNotificationAd(
     const SegmentList& segments) {
   BLOG(1, "Opportunity arose to serve a notification ad");
 
-  privacy::p2a::RecordAdOpportunity(AdType::kNotificationAd, segments);
+  p2a::RecordAdOpportunity(AdType::kNotificationAd, segments);
 }
 
 void NotificationAdHandler::OnDidServeNotificationAd(
@@ -204,7 +204,7 @@ void NotificationAdHandler::OnDidFireNotificationAdViewedEvent(
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
-  account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
+  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kViewed);
 
   SetNotificationAdServedAtPredictorVariable(base::Time::Now());
@@ -222,7 +222,7 @@ void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
-  account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
+  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kClicked);
 
   epsilon_greedy_bandit_processor_->Process(
@@ -243,7 +243,7 @@ void NotificationAdHandler::OnDidFireNotificationAdDismissedEvent(
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kDismissed);
 
-  account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
+  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kDismissed);
 
   epsilon_greedy_bandit_processor_->Process(

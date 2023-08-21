@@ -5,12 +5,13 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/public_key_util.h"
 
+#include "base/containers/contains.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
 
 namespace brave_ads {
 
 bool PublicKeyExists(const IssuerInfo& issuer, const std::string& public_key) {
-  return issuer.public_keys.find(public_key) != issuer.public_keys.cend();
+  return base::Contains(issuer.public_keys, public_key);
 }
 
 }  // namespace brave_ads

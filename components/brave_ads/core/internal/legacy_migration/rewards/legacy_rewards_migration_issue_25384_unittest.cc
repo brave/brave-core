@@ -15,8 +15,6 @@
 
 namespace brave_ads {
 
-using ::testing::_;
-
 namespace {
 constexpr char kIssue25384ConfirmationStateFilename[] =
     "confirmations_issue_25384.json";
@@ -25,16 +23,16 @@ constexpr char kIssue25384ConfirmationStateFilename[] =
 class BraveAdsLegacyRewardsMigrationIssue25384Test : public UnitTestBase {
  protected:
   void SetUpMocks() override {
-    CopyFileFromTestPathToTempPath(kIssue25384ConfirmationStateFilename,
-                                   kConfirmationStateFilename);
+    ASSERT_TRUE(CopyFileFromTestPathToTempPath(
+        kIssue25384ConfirmationStateFilename, kConfirmationStateFilename));
   }
 };
 
 TEST_F(BraveAdsLegacyRewardsMigrationIssue25384Test, Migrate) {
   // Arrange
-  SetDefaultBooleanPref(prefs::kHasMigratedRewardsState, false);
+  SetBooleanPref(prefs::kHasMigratedRewardsState, false);
 
-  EXPECT_CALL(ads_client_mock_, Load(kConfirmationStateFilename, _));
+  EXPECT_CALL(ads_client_mock_, Load(kConfirmationStateFilename, ::testing::_));
 
   // Act
   rewards::Migrate(

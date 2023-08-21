@@ -7,8 +7,6 @@
 
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
-#include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -21,9 +19,10 @@ TEST_F(BraveAdsCreativeConversionSetUrlPatternUtilTest,
        DoesCreativeSetConversionUrlPatternMatchRedirectChain) {
   // Arrange
   const CreativeSetConversionInfo creative_set_conversion =
-      BuildCreativeSetConversion(kCreativeSetId,
-                                 /*url_pattern*/ "https://foo.com/*",
-                                 /*observation_window*/ base::Days(3));
+      BuildCreativeSetConversionForTesting(
+          kCreativeSetId,
+          /*url_pattern*/ "https://foo.com/*",
+          /*observation_window*/ base::Days(3));
 
   // Act
 
@@ -37,9 +36,10 @@ TEST_F(BraveAdsCreativeConversionSetUrlPatternUtilTest,
        DoesCreativeSetConversionUrlPatternNotMatchRedirectChain) {
   // Arrange
   const CreativeSetConversionInfo creative_set_conversion =
-      BuildCreativeSetConversion(kCreativeSetId,
-                                 /*url_pattern*/ "https://foo.com/*",
-                                 /*observation_window*/ base::Days(3));
+      BuildCreativeSetConversionForTesting(
+          kCreativeSetId,
+          /*url_pattern*/ "https://foo.com/*",
+          /*observation_window*/ base::Days(3));
 
   // Act
 

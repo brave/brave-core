@@ -17,10 +17,10 @@
 #include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
-#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
 
 namespace brave_ads {
@@ -75,13 +75,13 @@ void SearchResultAd::TriggerEvent(
 }
 
 // static
-void SearchResultAd::DeferTriggeringOfAdViewedEventForTesting() {
+void SearchResultAd::DeferTriggeringOfAdViewedEvent() {
   CHECK(!g_defer_triggering_of_ad_viewed_event_for_testing);
   g_defer_triggering_of_ad_viewed_event_for_testing = true;
 }
 
 // static
-void SearchResultAd::TriggerDeferredAdViewedEventForTesting() {
+void SearchResultAd::TriggerDeferredAdViewedEvent() {
   CHECK(g_defer_triggering_of_ad_viewed_event_for_testing);
   CHECK(g_deferred_search_result_ad_for_testing);
   g_defer_triggering_of_ad_viewed_event_for_testing = false;
@@ -160,7 +160,7 @@ void SearchResultAd::OnDidFireSearchResultAdViewedEvent(
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
-  account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
+  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kViewed);
 }
 
@@ -174,7 +174,7 @@ void SearchResultAd::OnDidFireSearchResultAdClickedEvent(
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
-  account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
+  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kClicked);
 }
 

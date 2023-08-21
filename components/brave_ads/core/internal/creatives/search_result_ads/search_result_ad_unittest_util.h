@@ -10,8 +10,9 @@
 
 namespace brave_ads {
 
-mojom::SearchResultAdInfoPtr BuildSearchResultAd(bool should_use_random_uuids);
-mojom::SearchResultAdInfoPtr BuildSearchResultAdWithConversion(
+mojom::SearchResultAdInfoPtr BuildSearchResultAdForTesting(
+    bool should_use_random_uuids);
+mojom::SearchResultAdInfoPtr BuildSearchResultAdWithConversionForTesting(
     bool should_use_random_uuids);
 
 }  // namespace brave_ads

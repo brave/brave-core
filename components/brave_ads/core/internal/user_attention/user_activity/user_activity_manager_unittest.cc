@@ -6,9 +6,9 @@
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -543,10 +543,9 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidResignActiveEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BraveAdsUserActivityManagerTest,
-       DoNotRecordEventIfBraveRewardsAreDisabled) {
+TEST_F(BraveAdsUserActivityManagerTest, DoNotRecordEventForNonRewardsUser) {
   // Arrange
-  DisableBraveRewards();
+  DisableBraveRewardsForTesting();
 
   const UserActivityEventType event_type =
       UserActivityEventType::kInitializedAds;

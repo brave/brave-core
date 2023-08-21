@@ -18,9 +18,9 @@
 #include "brave/components/brave_ads/core/history_sort_types.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_generator.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_handler.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator.h"
 #include "brave/components/brave_ads/core/internal/reminder/reminder.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_reactions/user_reactions.h"
@@ -145,7 +145,7 @@ class AdsImpl final : public Ads, public AccountObserver {
 
   GlobalState global_state_;
 
-  privacy::TokenGenerator token_generator_;
+  TokenGenerator token_generator_;
   Account account_;
 
   AdHandler ad_handler_;
