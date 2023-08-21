@@ -51,7 +51,11 @@ class WaybackMachineURLFetcher final {
       api_request_helper::APIRequestResult api_request_result);
 
   // Clear sensitive data such as username/password from |url|.
-  GURL GetSanitizedURL(const GURL& url) const;
+  GURL GetSanitizedInputURL(const GURL& url) const;
+
+  // Return empty GURL if |url| is not https/http and its domain is not
+  // archive.org.
+  GURL GetSanitizedWaybackURL(const GURL& url) const;
 
   raw_ptr<Client> client_ = nullptr;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
