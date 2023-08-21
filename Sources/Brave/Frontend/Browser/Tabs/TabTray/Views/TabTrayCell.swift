@@ -30,7 +30,9 @@ class TabCell: UICollectionViewCell {
     endPoint: CGPoint(x: 0, y: 1)
   )
   let titleLabel: UILabel
-  let favicon: UIImageView = UIImageView()
+  let favicon: UIImageView = UIImageView().then {
+    $0.contentMode = .scaleAspectFit
+  }
   let closeButton: UIButton
 
   var animator: SwipeAnimator!
