@@ -18,6 +18,7 @@ public class BraveWalletProvider {
     public static final String UPHOLD_ORIGIN_URL = "http://uphold.com";
 
     public static final String BITFLYER_REDIRECT_URL = "rewards://bitflyer";
+    public static final String ZEBPAY_REDIRECT_URL = "rewards://zebpay";
 
     // Wallet types
     public static final String UPHOLD = "uphold";
