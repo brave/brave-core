@@ -102,23 +102,55 @@ class WaybackMachineURLFetcherUnitTest : public testing::Test {
 
 TEST_F(WaybackMachineURLFetcherUnitTest, SanitizedResponse) {
   SetResponseText("");
-  Fetch(GURL());
+  Fetch(GURL::EmptyGURL());
   SetResponseText(
-      R"({"archived_snapshots":{"closest":{"url":"https://example.com/favicon.ico"}}})");
-  Fetch(GURL("https://example.com/favicon.ico"));
+      R"({"archived_snapshots":{"closest":{"url":"https://web.archive.org/favicon.ico"}}})");
+  Fetch(GURL("https://web.archive.org/favicon.ico"));
   // broken json
   SetResponseText(
-      R"(,{"archived_snapshots":{"closest":{"url":"https://example.com/favicon.ico"}}})");
-  Fetch(GURL());
+      R"(,{"archived_snapshots":{"closest":{"url":"https://web.archive.com/favicon.ico"}}})");
+  Fetch(GURL::EmptyGURL());
 }
 
 TEST_F(WaybackMachineURLFetcherUnitTest, InputURLSanitizeTest) {
   constexpr char kInputURL[] = "http://myid:mypwd@test.com/";
   constexpr char kSanitizedURL[] = "http://test.com/";
   EXPECT_EQ(GURL(kSanitizedURL),
-            wayback_url_loader_->GetSanitizedURL(GURL(kInputURL)));
+            wayback_url_loader_->GetSanitizedInputURL(GURL(kInputURL)));
 
   // Test sanitized url is passed to url loader.
   TestFetchURL(GURL(kInputURL),
                GURL(base::StrCat({kWaybackQueryURL, kSanitizedURL})));
+}
+
+TEST_F(WaybackMachineURLFetcherUnitTest, WaybackURLSanitizeTest) {
+  // Blocked non http/https sheme urls.
+  SetResponseText(
+      R"({"archived_snapshots":{"closest":{"url":"javascript:abcd"}}})");
+  Fetch(GURL::EmptyGURL());
+
+  SetResponseText(
+      R"({"archived_snapshots":{"closest":{"url":"chrome://abcd"}}})");
+  Fetch(GURL::EmptyGURL());
+
+  SetResponseText(
+      R"({"archived_snapshots":{"closest":{"url":"brave://abcd"}}})");
+  Fetch(GURL::EmptyGURL());
+
+  SetResponseText(
+      R"({"archived_snapshots":{"closest":{"url":"file://abcd"}}})");
+  Fetch(GURL::EmptyGURL());
+
+  SetResponseText(
+      R"({"archived_snapshots":{"closest":{"url":"http://another_archive.org/favicon.ico"}}})");
+  Fetch(GURL::EmptyGURL());
+
+  SetResponseText(
+      R"({"archived_snapshots":{"closest":{"url":"http://web.archive.org/favicon.ico"}}})");
+  // Check above http url is upgraded to https.
+  Fetch(GURL("https://web.archive.org/favicon.ico"));
+
+  SetResponseText(
+      R"({"archived_snapshots":{"closest":{"url":"https://web.archive.org/favicon.ico"}}})");
+  Fetch(GURL("https://web.archive.org/favicon.ico"));
 }
