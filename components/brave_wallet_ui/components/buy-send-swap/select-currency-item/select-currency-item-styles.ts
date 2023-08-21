@@ -23,8 +23,8 @@ export const StyledWrapper = styled(WalletButton)`
   border: 1px solid ${leo.color.divider.subtle};
 
   &:hover {
-    border-color: ${leo.color.interaction.buttonPrimaryBackground};
-    background-color: ${leo.color.container.interactiveBackground};
+    border-color: ${leo.color.button.background};
+    background-color: ${leo.color.container.interactive};
   }
 `
 

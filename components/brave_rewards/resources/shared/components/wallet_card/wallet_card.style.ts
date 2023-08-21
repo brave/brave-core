@@ -61,13 +61,15 @@ export const earningsInfo = styled.div`
   }
 `
 
-export const earningsTooltip = styled.div`
+export const earningsTooltip = styled.div.attrs({
+  'data-theme': 'light'
+})`
   position: relative;
   padding: 16px;
   background: ${leo.color.white};
   box-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
   border-radius: 8px;
-  color: ${leo.color.light.text.primary};
+  color: ${leo.color.text.primary};
   font-size: 12px;
   line-height: 18px;
   font-weight: 400;
@@ -84,11 +86,13 @@ export const earningsTooltip = styled.div`
   }
 `
 
-export const manageAds = styled.div`
+export const manageAds = styled.div.attrs({
+  'data-theme': 'light'
+})`
   margin-top: 14px;
 
   button {
-    color: ${leo.color.light.text.interactive};
+    color: ${leo.color.text.interactive};
     font-weight: 600;
     font-size: 12px;
     line-height: 16px;
@@ -104,7 +108,7 @@ export const manageAds = styled.div`
   .icon {
     height: 9px;
     width: auto;
-    color: ${leo.color.light.icon.interactive};
+    color: ${leo.color.icon.interactive};
   }
 `
 
@@ -213,13 +217,15 @@ export const balanceInfo = styled.div`
   }
 `
 
-export const balanceTooltip = styled.div`
+export const balanceTooltip = styled.div.attrs({
+  'data-theme': 'light'
+})`
   position: relative;
   padding: 16px;
   background: ${leo.color.white};
   box-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
   border-radius: 8px;
-  color: ${leo.color.light.text.primary};
+  color: ${leo.color.text.primary};
   font-size: 12px;
   line-height: 18px;
   font-weight: 400;

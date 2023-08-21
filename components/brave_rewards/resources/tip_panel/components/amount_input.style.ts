@@ -42,7 +42,7 @@ export const selector = styled.div`
   }
 
   button.selected {
-    background: ${leo.color.container.interactiveBackground};
+    background: ${leo.color.container.background};
     color: ${leo.color.text.interactive};
   }
 `

@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { radius } from '@brave/leo/tokens/css'
 import styled from 'styled-components'
 
 export const Box = styled.div`
@@ -31,7 +32,7 @@ export const CloseButton = styled.button`
   height: 28px;
   padding: 4px;
   justify-content: center;
-  border-radius: var(--leo-radius-8);
+  border-radius: ${radius.m};
   border: 0;
   cursor: pointer;
   align-items: center;

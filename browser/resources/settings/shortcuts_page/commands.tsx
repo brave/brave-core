@@ -18,16 +18,16 @@ import Button from '@brave/leo/react/button'
 setIconBasePath('chrome://resources/brave-icons')
 
 const Container = styled.div`
-  padding: ${spacing[24]};
+  padding: ${spacing['2Xl']};
 `
 
 const CommandsContainer = styled.div`
   display: flex;
   flex-direction: column;
   font: ${font.primary.default.regular};
-  margin-bottom: ${spacing[24]};
+  margin-bottom: ${spacing['2Xl']};
   border: 1px solid ${color.divider.subtle};
-  border-radius: ${radius[8]};
+  border-radius: ${radius.m};
 `
 
 const SearchContainer = styled.div`
@@ -40,11 +40,11 @@ const SearchBox = styled.input`
   all: unset;
 
   border: 1px solid ${color.divider.subtle};
-  border-top-left-radius: ${radius[8]};
-  border-top-right-radius: ${radius[8]};
+  border-top-left-radius: ${radius.m};
+  border-top-right-radius: ${radius.m};
   background: ${color.container.highlight};
   color: ${color.text.secondary};
-  padding: ${spacing[16]} ${spacing[24]} ${spacing[16]} 44px;
+  padding: ${spacing.xl} ${spacing['2Xl']} ${spacing.xl} 44px;
   flex: 1;
 
   &:hover {
@@ -60,7 +60,7 @@ const SearchBox = styled.input`
 const SearchIcon = styled(Icon)`
   --leo-icon-size: 16px;
   position: absolute;
-  left: ${spacing[16]};
+  left: ${spacing.xl};
   top: 50%;
   transform: translateY(-50%);
 `

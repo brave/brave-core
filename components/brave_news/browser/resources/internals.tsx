@@ -12,6 +12,7 @@ import PageInfo from './PageInfo'
 import FeedPage from './FeedPage'
 import SignalsPage from './SignalsPage'
 import Button from '@brave/leo/react/button'
+import { spacing } from '@brave/leo/tokens/css'
 
 const Grid = styled.div`
   display: grid;
@@ -23,7 +24,7 @@ const Grid = styled.div`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: var(--leo-spacing-8);
+  gap: ${spacing.m};
   max-width: 800px;
   margin: 0 auto;
 `

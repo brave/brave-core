@@ -45,7 +45,7 @@ export const ActionButton = styled(WalletButton)`
   font-size: 12px;
   line-height: 18px;
   background: transparent;
-  color: ${leo.color.interaction.buttonPrimaryBackground};
+  color: ${leo.color.button.background};
   border: none;
   cursor: pointer;
 `

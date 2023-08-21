@@ -9,10 +9,10 @@ import Icon from '@brave/leo/react/icon'
 import { WalletButton, Text } from '../../../shared/style'
 import { layoutSmallWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
-export const StyledButton = styled(WalletButton) <{ isSelected?: boolean }>`
+export const StyledButton = styled(WalletButton)<{ isSelected?: boolean }>`
   --button-background-hover: ${leo.color.container.highlight};
   @media (prefers-color-scheme: dark) {
-    --button-background-hover: ${leo.color.dark.gray[20]};
+    --button-background-hover: ${leo.color.primitive.gray[80]};
   }
   --icon-color: ${(p) =>
     p.isSelected
@@ -26,7 +26,7 @@ export const StyledButton = styled(WalletButton) <{ isSelected?: boolean }>`
   };
   --indicator-color: ${(p) =>
     p.isSelected
-      ? leo.color.interaction.buttonPrimaryBackground
+      ? leo.color.button.background
       : 'none'
   };
   &:hover {

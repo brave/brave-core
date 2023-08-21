@@ -15,7 +15,7 @@ const Kbd = styled.div<{ large?: boolean; square?: boolean }>`
   line-height: 18px;
 
   border: 1px solid ${color.divider.subtle};
-  border-radius: ${radius[12]};
+  border-radius: ${radius.m};
   padding: 4px 10px;
   background: linear-gradient(180deg, #F6F7F9 0%, #FFFFFF 100%);
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05), inset 0px 1px 0px #FFFFFF;
@@ -37,8 +37,8 @@ const Kbd = styled.div<{ large?: boolean; square?: boolean }>`
     props.large &&
     css`
       min-width: 32px;
-      border-radius: ${radius[12]};
-      padding: ${spacing[16]};
+      border-radius: ${radius.l};
+      padding: ${spacing.xl};
       font: ${font.primary.heading.h3};
       box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.05), inset 0px 1px 0px #ffffff;
       background: linear-gradient(180deg, #f4f6f8 0%, #ffffff 100%);

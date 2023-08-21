@@ -11,9 +11,11 @@ import * as mixins from '../../shared/lib/css_mixins'
 
 import selectArrow from '../assets/select_arrow.svg'
 
-export const root = styled.div`
+export const root = styled.div.attrs({
+  'data-theme': 'light'
+})`
   margin-top: 10px;
-  color: ${leo.color.light.text.primary};
+  color: ${leo.color.text.primary};
 
   --toggle-button-width: 40px;
   --toggle-button-handle-margin: 2px;
@@ -23,7 +25,7 @@ export const root = styled.div`
     -webkit-appearance: none;
     background:
       url(/${selectArrow}) calc(100% - 11px) center no-repeat,
-      ${leo.color.light.container.highlight};
+      ${leo.color.container.highlight};
     background-size: 11px;
     border-radius: 8px;
     border: none;
@@ -35,9 +37,9 @@ export const root = styled.div`
     &[disabled] {
       background:
         url(/${selectArrow}) calc(100% - 11px) center no-repeat,
-        ${leo.color.light.container.disabled};
+        ${leo.color.container.disabled};
       background-size: 11px;
-      color: ${leo.color.light.text.disabled}
+      color: ${leo.color.text.disabled}
     }
   }
 `
@@ -65,9 +67,11 @@ export const adTypeLabel = styled.div`
   gap: 9px;
 `
 
-export const adTypeInfo = styled.span`
+export const adTypeInfo = styled.span.attrs({
+  'data-theme': 'light'
+})`
   --leo-icon-size: 14px;
-  color: ${leo.color.light.icon.default};
+  color: ${leo.color.icon.default};
 
   ${mixins.tooltipAnchor}
 
@@ -87,14 +91,16 @@ export const adTypeInfo = styled.span`
   }
 `
 
-export const infoTooltip = styled.div`
+export const infoTooltip = styled.div.attrs({
+  'data-theme': 'light'
+})`
   ${mixins.tooltipContainer}
 
   width: 274px;
   padding: 16px;
   font-size: 14px;
   line-height: 24px;
-  color: ${leo.color.light.text.primary};
+  color: ${leo.color.text.primary};
   border-radius: 8px;
   box-shadow: 0px 4px 16px -2px rgba(0, 0, 0, 0.08);
   background: ${leo.color.white};
@@ -117,12 +123,14 @@ export const adTypeToggle = styled.div``
 
 export const adTypeConfig = styled.div``
 
-export const adTypeCount = styled.div`
+export const adTypeCount = styled.div.attrs({
+  'data-theme': 'light'
+})`
   justify-self: end;
   font-size: 14px;
   line-height: 24px;
 
   .disabled {
-    color: ${leo.color.light.text.tertiary};
+    color: ${leo.color.text.tertiary};
   }
 `
