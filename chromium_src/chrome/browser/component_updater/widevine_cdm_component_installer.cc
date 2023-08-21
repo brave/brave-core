@@ -206,7 +206,7 @@ void WidevineArm64DllInstaller::Start(
   loader_->DownloadToTempFile(
       url_loader_factory.get(),
       base::BindOnce(&WidevineArm64DllInstaller::OnArm64DllDownloadComplete,
-                     base::RetainedRef(this)));
+                     this));
 }
 
 CrxInstaller::Result WidevineArm64DllInstaller::WaitForCompletion() {
