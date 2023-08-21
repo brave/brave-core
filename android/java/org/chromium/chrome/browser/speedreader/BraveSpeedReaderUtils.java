@@ -9,7 +9,6 @@ import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.content_public.browser.WebContents;
-import org.chromium.url.GURL;
 
 @JNINamespace("speedreader")
 public class BraveSpeedReaderUtils {

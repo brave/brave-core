@@ -42,6 +42,9 @@ content::BrowserContext* SpeedreaderServiceFactory::GetBrowserContextToUse(
 
 KeyedService* SpeedreaderServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
+  if (!features::IsSpeedreaderEnabled()) {
+    return nullptr;
+  }
   return new SpeedreaderService(
       context, HostContentSettingsMapFactory::GetForProfile(context));
 }
