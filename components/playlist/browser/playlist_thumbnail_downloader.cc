@@ -212,7 +212,7 @@ PlaylistThumbnailDownloader::GetOrCreateTaskRunner() {
   if (!task_runner_) {
     task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
         {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-         base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
+         base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN});
   }
   return task_runner_;
 }
