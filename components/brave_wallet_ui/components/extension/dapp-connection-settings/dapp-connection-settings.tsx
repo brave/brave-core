@@ -86,7 +86,8 @@ import {
   PointerShadow,
   BackgroundBlur,
   FavIcon,
-  NetworkIconWrapper
+  NetworkIconWrapper,
+  OverlapForClick
 } from './dapp-connection-settings.style'
 
 export type DAppConnectionOptionsType =
@@ -295,7 +296,8 @@ export const DAppConnectionSettings = () => {
   return (
     <>
       <SettingsButton
-        onMouseDown={() => setShowSettings(prev => !prev)}
+        onClick={() => setShowSettings(prev => !prev)}
+        data-test-id='dapp-settings-button'
       >
         <ConnectedIcon
           name={
@@ -321,6 +323,7 @@ export const DAppConnectionSettings = () => {
       </SettingsButton>
       {showSettings &&
         <>
+          <OverlapForClick />
           <SettingsBubbleWrapper>
             <Pointer />
             <PointerShadow />
