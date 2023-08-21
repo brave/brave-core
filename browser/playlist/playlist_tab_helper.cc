@@ -261,8 +261,10 @@ void PlaylistTabHelper::UpdateSavedItemFromCurrentContents() {
   base::ranges::for_each(
       service_->GetAllPlaylistItems(),
       [this, &should_notify](const auto& item) {
-        const auto& current_url = web_contents()->GetVisibleURL();
-        if (item->page_source != current_url) {
+        const auto& current_url =
+            web_contents()->GetVisibleURL().GetWithoutRef();
+        const GURL page_source_url = GURL(item->page_source).GetWithoutRef();
+        if (page_source_url != current_url) {
           return;
         }
 
