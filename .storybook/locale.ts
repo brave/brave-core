@@ -177,7 +177,7 @@ let locale: Record<string, string> = {
   tipOnLike: 'Tip on like',
   titleBAT: 'Basic Attention token (BAT)',
   titleBTC: 'BitCoin (BTC)',
-  titleETH: 'Etherium (ETH)',
+  titleETH: 'Ethereum (ETH)',
   titleLTC: 'Lite Coin (LTC)',
   tokens: 'tokens',
   total: 'Total',
