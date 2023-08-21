@@ -14,6 +14,9 @@
 #else
 #include "brave/components/misc_metrics/privacy_hub_metrics.h"
 #endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/browser/ai_chat_metrics.h"
+#endif
 
 namespace misc_metrics {
 
@@ -24,6 +27,9 @@ ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state) {
 #else
   privacy_hub_metrics_ =
       std::make_unique<misc_metrics::PrivacyHubMetrics>(local_state);
+#endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  ai_chat_metrics_ = std::make_unique<ai_chat::AIChatMetrics>(local_state);
 #endif
 }
 
@@ -43,12 +49,21 @@ PrivacyHubMetrics* ProcessMiscMetrics::privacy_hub_metrics() {
 }
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+ai_chat::AIChatMetrics* ProcessMiscMetrics::ai_chat_metrics() {
+  return ai_chat_metrics_.get();
+}
+#endif
+
 void ProcessMiscMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
 #if !BUILDFLAG(IS_ANDROID)
   MenuMetrics::RegisterPrefs(registry);
   VerticalTabMetrics::RegisterPrefs(registry);
 #else
   PrivacyHubMetrics::RegisterPrefs(registry);
+#endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  ai_chat::AIChatMetrics::RegisterPrefs(registry);
 #endif
 }
 
