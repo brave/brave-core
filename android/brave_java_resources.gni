@@ -848,6 +848,7 @@ brave_java_resources = [
   "java/res/layout/fragment_add_custom_filter_lists.xml",
   "java/res/layout/fragment_add_switch_ethereum_chain.xml",
   "java/res/layout/fragment_add_token.xml",
+  "java/res/layout/fragment_assets.xml",
   "java/res/layout/fragment_backup_wallet.xml",
   "java/res/layout/fragment_brave_ads_onboarding.xml",
   "java/res/layout/fragment_brave_bookmark_import_export_dialog.xml",
