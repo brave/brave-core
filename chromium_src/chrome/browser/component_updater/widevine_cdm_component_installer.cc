@@ -33,6 +33,7 @@
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/metrics/field_trial_params.h"
+#include "base/sequence_checker.h"
 #include "base/synchronization/waitable_event.h"
 #include "base/threading/thread_restrictions.h"
 #include "base/time/time.h"
@@ -155,6 +156,8 @@ class WidevineArm64DllInstaller
   std::unique_ptr<network::SimpleURLLoader> loader_;
   base::WaitableEvent installed_;
   CrxInstaller::Result result_;
+
+  SEQUENCE_CHECKER(sequence_checker_);
 };
 
 WidevineCdmComponentInstallerPolicy::WidevineCdmComponentInstallerPolicy(
@@ -190,11 +193,14 @@ CrxInstaller::Result WidevineCdmComponentInstallerPolicy::OnCustomInstall(
 
 WidevineArm64DllInstaller::WidevineArm64DllInstaller(
     const base::FilePath& install_dir)
-    : install_dir_(install_dir) {}
+    : install_dir_(install_dir) {
+  DETACH_FROM_SEQUENCE(sequence_checker_);
+}
 
 void WidevineArm64DllInstaller::Start(
     std::unique_ptr<network::PendingSharedURLLoaderFactory>
         pending_url_loader_factory) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = GURL(kBraveWidevineArm64DllUrl.Get());
   loader_ = network::SimpleURLLoader::Create(std::move(resource_request),
@@ -224,6 +230,7 @@ CrxInstaller::Result WidevineArm64DllInstaller::WaitForCompletion() {
 
 void WidevineArm64DllInstaller::OnArm64DllDownloadComplete(
     base::FilePath zip_path) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << "Arm64 DLL download complete.";
   if (zip_path.empty()) {
     net::Error error = net::Error(loader_->NetError());
