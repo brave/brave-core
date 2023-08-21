@@ -7,6 +7,7 @@
 #include <string>
 #include <utility>
 
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/database/database_balance_report.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
@@ -102,10 +103,9 @@ TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
         std::move(callback).Run(db_error_response->Clone());
       });
 
-  MockFunction<GetBalanceReportCallback> callback;
-  EXPECT_CALL(callback, Call).Times(1);
-  balance_report_.GetRecord(mojom::ActivityMonth::MAY, 2020,
-                            callback.AsStdFunction());
+  base::MockCallback<mojom::RewardsEngine::GetBalanceReportCallback> callback;
+  EXPECT_CALL(callback, Run).Times(1);
+  balance_report_.GetRecord(mojom::ActivityMonth::MAY, 2020, callback.Get());
 
   task_environment_.RunUntilIdle();
 }

@@ -14,7 +14,6 @@
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 using std::placeholders::_1;
-using std::placeholders::_2;
 
 namespace brave_rewards::internal {
 namespace report {
@@ -27,16 +26,18 @@ void Report::GetMonthly(const mojom::ActivityMonth month,
                         const int year,
                         GetMonthlyReportCallback callback) {
   auto balance_callback =
-      std::bind(&Report::OnBalance, this, _1, _2, month, year, callback);
+      base::BindOnce(&Report::OnBalance, base::Unretained(this), month, year,
+                     std::move(callback));
 
-  engine_->database()->GetBalanceReportInfo(month, year, balance_callback);
+  engine_->database()->GetBalanceReportInfo(month, year,
+                                            std::move(balance_callback));
 }
 
-void Report::OnBalance(const mojom::Result result,
-                       mojom::BalanceReportInfoPtr balance_report,
-                       const mojom::ActivityMonth month,
+void Report::OnBalance(const mojom::ActivityMonth month,
                        const uint32_t year,
-                       GetMonthlyReportCallback callback) {
+                       GetMonthlyReportCallback callback,
+                       const mojom::Result result,
+                       mojom::BalanceReportInfoPtr balance_report) {
   if (result != mojom::Result::OK || !balance_report) {
     BLOG(0, "Could not get balance report");
     callback(result, nullptr);

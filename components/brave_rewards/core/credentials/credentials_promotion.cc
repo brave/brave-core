@@ -10,6 +10,7 @@
 
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_promotion.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
@@ -416,9 +417,7 @@ void CredentialsPromotion::Completed(ResultCallback callback,
   }
 
   engine_->database()->PromotionCredentialCompleted(
-      trigger.id,
-      [callback = std::make_shared<decltype(callback)>(std::move(callback))](
-          mojom::Result result) { std::move(*callback).Run(result); });
+      trigger.id, ToLegacyCallback(std::move(callback)));
   engine_->client()->UnblindedTokensReady();
 }
 

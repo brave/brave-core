@@ -22,13 +22,18 @@ class DatabaseMigration {
   explicit DatabaseMigration(RewardsEngineImpl& engine);
   ~DatabaseMigration();
 
-  void Start(uint32_t table_version, LegacyResultCallback callback);
+  void Start(uint32_t table_version, ResultCallback callback);
 
   static void SetTargetVersionForTesting(uint32_t version);
 
  private:
   void GenerateCommand(mojom::DBTransaction* transaction,
                        const std::string& query);
+
+  void RunDBTransactionCallback(ResultCallback callback,
+                                uint32_t start_version,
+                                int migrated_version,
+                                mojom::DBCommandResponsePtr response);
 
   const raw_ref<RewardsEngineImpl> engine_;
   static uint32_t test_target_version_;

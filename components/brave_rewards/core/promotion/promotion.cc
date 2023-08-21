@@ -13,6 +13,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
@@ -462,8 +463,7 @@ void Promotion::CredentialsProcessed(ResultCallback callback,
   if (result == mojom::Result::NOT_FOUND) {
     engine_->database()->UpdatePromotionStatus(
         promotion_id, mojom::PromotionStatus::OVER,
-        [callback = std::make_shared<decltype(callback)>(std::move(callback))](
-            mojom::Result result) { std::move(*callback).Run(result); });
+        ToLegacyCallback(std::move(callback)));
     return;
   }
 
@@ -475,8 +475,7 @@ void Promotion::CredentialsProcessed(ResultCallback callback,
 
   engine_->database()->UpdatePromotionStatus(
       promotion_id, mojom::PromotionStatus::FINISHED,
-      [callback = std::make_shared<decltype(callback)>(std::move(callback))](
-          mojom::Result result) { std::move(*callback).Run(result); });
+      ToLegacyCallback(std::move(callback)));
 }
 
 void Promotion::Retry(

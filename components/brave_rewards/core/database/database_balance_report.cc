@@ -169,13 +169,13 @@ void DatabaseBalanceReport::SetAmount(mojom::ActivityMonth month,
   engine_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabaseBalanceReport::GetRecord(mojom::ActivityMonth month,
-                                      int year,
-                                      GetBalanceReportCallback callback) {
+void DatabaseBalanceReport::GetRecord(
+    mojom::ActivityMonth month,
+    int year,
+    mojom::RewardsEngine::GetBalanceReportCallback callback) {
   if (month == mojom::ActivityMonth::ANY || year == 0) {
     BLOG(1, "Record size is not correct " << month << "/" << year);
-    callback(mojom::Result::FAILED, {});
-    return;
+    return std::move(callback).Run(mojom::Result::FAILED, {});
   }
 
   auto transaction = mojom::DBTransaction::New();
@@ -215,25 +215,24 @@ void DatabaseBalanceReport::GetRecord(mojom::ActivityMonth month,
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseBalanceReport::OnGetRecord, this, _1, callback);
-
-  engine_->RunDBTransaction(std::move(transaction), transaction_callback);
+  engine_->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseBalanceReport::OnGetRecord,
+                     base::Unretained(this), std::move(callback)));
 }
-void DatabaseBalanceReport::OnGetRecord(mojom::DBCommandResponsePtr response,
-                                        GetBalanceReportCallback callback) {
+void DatabaseBalanceReport::OnGetRecord(
+    mojom::RewardsEngine::GetBalanceReportCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
-    callback(mojom::Result::FAILED, {});
-    return;
+    return std::move(callback).Run(mojom::Result::FAILED, {});
   }
 
   if (response->result->get_records().size() != 1) {
     BLOG(1, "Record size is not correct: "
                 << response->result->get_records().size());
-    callback(mojom::Result::FAILED, {});
-    return;
+    return std::move(callback).Run(mojom::Result::FAILED, {});
   }
 
   auto* record = response->result->get_records()[0].get();
@@ -246,7 +245,7 @@ void DatabaseBalanceReport::OnGetRecord(mojom::DBCommandResponsePtr response,
   info->recurring_donation = GetDoubleColumn(record, 4);
   info->one_time_donation = GetDoubleColumn(record, 5);
 
-  callback(mojom::Result::OK, std::move(info));
+  std::move(callback).Run(mojom::Result::OK, std::move(info));
 }
 
 void DatabaseBalanceReport::GetAllRecords(
