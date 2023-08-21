@@ -1054,6 +1054,7 @@ const string kGodwokenChainId = "0x116ea";
 const string kPalmChainId = "0x2a15c308d";
 const string kPolygonZKEVMChainId = "0x44d";
 const string kZkSyncEraChainId = "0x144";
+const string kBaseMainnetChainId = "0x2105";
 
 // https://github.com/satoshilabs/slips/blob/master/slip-0044.md
 enum CoinType {
