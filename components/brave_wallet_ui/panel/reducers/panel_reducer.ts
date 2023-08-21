@@ -55,7 +55,8 @@ const defaultState: PanelState = {
     chainId: ''
   },
   hardwareWalletCode: undefined,
-  selectedTransactionId: undefined
+  selectedTransactionId: undefined,
+  signMessageErrorData: []
 }
 
 export const createPanelReducer = (initialState: PanelState) => {
@@ -157,6 +158,16 @@ export const createPanelReducer = (initialState: PanelState) => {
       return {
         ...state,
         selectedTransactionId: payload
+      }
+    }
+  )
+
+  reducer.on(
+    PanelActions.signMessageError.type,
+    (state: PanelState, payload: BraveWallet.SignMessageError[]): PanelState => {
+      return {
+        ...state,
+        signMessageErrorData: payload
       }
     }
   )

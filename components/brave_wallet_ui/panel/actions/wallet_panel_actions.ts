@@ -63,3 +63,7 @@ export const signAllTransactionsHardware = createAction<SignAllTransactionsHardw
 export const signAllTransactionsProcessed = createAction<SignAllTransactionsProcessedPayload>('signAllTransactionsProcessed')
 export const setCloseOnDeactivate
   = createAction<boolean>('setCloseOnDeactivate')
+export const signMessageError =
+  createAction<BraveWallet.SignMessageError[]>('signMessageError')
+export const signMessageErrorProcessed =
+  createAction<string>('signMessageErrorProcessed')

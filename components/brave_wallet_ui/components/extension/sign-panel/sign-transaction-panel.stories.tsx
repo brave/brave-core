@@ -16,6 +16,9 @@ import {
 import { WalletPanelStory } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { SignTransactionPanel } from './sign-transaction-panel'
 import {
+  SignInWithEthereumError
+} from './sign_in_with_ethereum_error'
+import {
   deserializeTransaction //
 } from '../../../utils/model-serialization-utils'
 import { BraveWallet } from '../../../constants/types'
@@ -71,6 +74,22 @@ export const _SignSolanaTxPanel = () => {
 
 _SignSolanaTxPanel.story = {
   name: 'Sign Solana Transaction Panel'
+}
+
+export const _SignInWithEthereumError = () => {
+  return (
+    <WalletPanelStory
+      panelStateOverride={{
+        selectedPanel: 'siweError'
+      }}
+    >
+      <SignInWithEthereumError />
+    </WalletPanelStory>
+  )
+}
+
+_SignInWithEthereumError.story = {
+  name: 'Sign in with Ethereum Error Panel'
 }
 
 export default {

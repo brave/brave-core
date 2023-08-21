@@ -17,15 +17,35 @@ import { mockEthAccount } from '../../../stories/mock-data/mock-wallet-accounts'
 const signMessageData: BraveWallet.SignMessageRequest = {
   id: 0,
   accountId: mockEthAccount.accountId,
-  message: 'To avoid digital cat burglars, sign below to authenticate with CryptoKitties.',
   originInfo: mockOriginInfo,
   coin: BraveWallet.CoinType.ETH,
-  isEip712: true,
-  domainHash: '',
-  domain: '',
-  primaryHash: '',
-  messageBytes: undefined,
-  chainId: BraveWallet.MAINNET_CHAIN_ID
+  chainId: BraveWallet.MAINNET_CHAIN_ID,
+  signData: {
+    ethSignTypedData: undefined,
+    solanaSignData: undefined,
+    ethSiweData: {
+      address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
+      expirationTime: '02/16/2024',
+      issuedAt: '02/01/2024',
+      nonce: '5f654',
+      notBefore: '',
+      requestId: '22',
+      resources: undefined,
+      statement: 'This is a test statement',
+      uri: {
+        url: mockOriginInfo.originSpec
+      },
+      version: 1,
+      chainId: BigInt(123),
+      origin: {
+        host: '',
+        nonceIfOpaque: undefined,
+        port: 0,
+        scheme: ''
+      }
+    },
+    ethStandardSignData: undefined
+  }
 }
 
 const evilUnicodeMessage = 'Sign into \u202E EVIL'

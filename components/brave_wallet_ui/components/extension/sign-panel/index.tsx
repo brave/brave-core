@@ -26,6 +26,7 @@ import { isHardwareAccount } from '../../../utils/account-utils'
 import { NavButton } from '../buttons/nav-button/index'
 import { PanelTab } from '../panel-tab/index'
 import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
+import { SignInWithEthereum } from './sign_in_with_ethereum'
 
 // Styled Components
 import {
@@ -102,6 +103,7 @@ export const SignPanel = (props: Props) => {
   const { account } = useAccountQuery(selectedQueueData?.accountId)
   const ethStandardSignData = selectedQueueData.signData.ethStandardSignData
   const ethSignTypedData = selectedQueueData.signData.ethSignTypedData
+  const ethSIWETypedData = selectedQueueData.signData.ethSiweData
 
   // memos
   const orb = useAccountOrb(account)
@@ -164,6 +166,16 @@ export const SignPanel = (props: Props) => {
       setSignStep(SignDataSteps.SignRisk)
     }
   }, [showWarning])
+
+  if (ethSIWETypedData) {
+    return (
+      <SignInWithEthereum
+        data={selectedQueueData}
+        onCancel={onCancel}
+        onSignIn={onSign}
+      />
+    )
+  }
 
   // render
   return (
