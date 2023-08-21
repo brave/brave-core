@@ -10,7 +10,6 @@
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/companion/core/features.h"
 #include "chrome/browser/companion/visual_search/features.h"
-#include "chrome/browser/dips/dips_features.h"
 #include "chrome/browser/domain_reliability/service_factory.h"
 #include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
 #include "chrome/browser/promos/promos_features.h"
@@ -49,6 +48,7 @@
 #include "components/signin/public/base/signin_buildflags.h"
 #include "components/subresource_filter/core/common/common_features.h"
 #include "content/public/common/content_features.h"
+#include "content/public/common/dips_utils.h"
 #include "content/public/test/browser_test.h"
 #include "gpu/config/gpu_finch_features.h"
 #include "media/base/media_switches.h"
@@ -162,7 +162,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &companion::features::internal::kSidePanelCompanion2,
     &companion::visual_search::features::kVisualSearchSuggestions,
     &content_settings::features::kUserBypassUI,
-    &dips::kFeature,
     &enterprise_connectors::kLocalContentAnalysisEnabled,
 #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
     &enterprise_signals::features::kDeviceSignalsConsentDialog,
@@ -184,6 +183,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kDesktopPWAsLinkCapturing,
 #endif
     &features::kDigitalGoodsApi,
+    &features::kDIPS,
     &features::kExtensionsMenuInAppMenu,
     &features::kFedCm,
     &features::kFedCmWithoutThirdPartyCookies,

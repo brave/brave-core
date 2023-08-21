@@ -616,7 +616,7 @@
 -SystemNetworkContextManagerWithCustomProxyConfigBrowserTest.InitialCustomProxyConfig
 -SystemNetworkContextManagerWithIpProtectionFlagsEnabledAndCommandLineSettingsEnabled.EnableIpProtectionProxyCommandLineOverridesFeature
 
-# These tests fail because we disable DIPS via dips::kFeature
+# These tests fail because we disable DIPS via features::kDIPS
 -All/DIPSSiteDataAccessDetectorTest.AttributeSameSiteIframesSiteDataAccessTo1P/*
 -All/DIPSSiteDataAccessDetectorTest.AttributeSameSiteNestedIframesSiteDataAccessTo1P/*
 -All/DIPSSiteDataAccessDetectorTest.DiscardFencedFrameCookieClientAccess/*
