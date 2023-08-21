@@ -253,10 +253,10 @@ extension NFTStore: BraveWalletKeyringServiceObserver {
   }
   public func autoLockMinutesChanged() {
   }
-  public func selectedAccountChanged(_ coinType: BraveWallet.CoinType) {
-    DispatchQueue.main.async { [self] in
-      update()
-    }
+  public func selectedWalletAccountChanged(_ account: BraveWallet.AccountInfo) {
+  }
+  
+  public func selectedDappAccountChanged(_ coin: BraveWallet.CoinType, account: BraveWallet.AccountInfo?) {
   }
   
   public func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {

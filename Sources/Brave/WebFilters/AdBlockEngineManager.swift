@@ -188,11 +188,24 @@ public actor AdBlockEngineManager: Sendable {
       $0.order < $1.order
     })
     
-    let results = await AdblockEngine.createEngines(from: resourcesWithVersion, scripletResourcesURL: scripletResourcesURL)
+    let results = await CachedAdBlockEngine.createEngines(
+      from: resourcesWithVersion, scripletResourcesURL: scripletResourcesURL
+    )
+
+    let validEngines = results.compactMap { result in
+      do {
+        return try result.get()
+      } catch {
+        ContentBlockerManager.log.error("Failed to compile engine: \(String(describing: error))")
+        return nil
+      }
+    }
+    
     self.compiledResources = Set(resourcesWithVersion)
-    await stats.set(engines: results.engines)
+    await stats.set(engines: validEngines)
+    
     #if DEBUG
-    debug(compiledResults: results.compileResults)
+    ContentBlockerManager.log.error("Recompiled engines")
     #endif
   }
   
@@ -212,60 +225,3 @@ public actor AdBlockEngineManager: Sendable {
     enabledResources.insert(resource)
   }
 }
-
-#if DEBUG
-private extension AdBlockEngineManager {
-  /// A method that logs info on the given resources
-  func debug(compiledResults: [ResourceWithVersion: Result<Void, Error>]) {
-    log.debug("Loaded \(compiledResults.count) (total) engine resources:")
-    
-    compiledResults.sorted(by: { $0.key.order < $1.key.order })
-      .forEach { (resourceWithVersion, compileResult) in
-        let resultString: String
-        
-        switch compileResult {
-        case .success:
-          resultString = "✔︎"
-        case .failure(let error):
-          resultString = "\(error)"
-        }
-        
-        let sourceDebugString = [
-          "", resourceWithVersion.debugDescription,
-          "\(resultString)",
-        ].joined(separator: " ")
-        
-        log.debug("\(sourceDebugString)")
-      }
-  }
-}
-
-extension AdBlockEngineManager.ResourceWithVersion: CustomDebugStringConvertible {
-  public var debugDescription: String {
-    return [
-      "#\(order)",
-      "\(resource.source.debugDescription).\(resource.type.debugDescription)",
-      "v\(version ?? "nil")",
-    ].joined(separator: " ")
-  }
-}
-
-extension AdBlockEngineManager.Source: CustomDebugStringConvertible {
-  public var debugDescription: String {
-    switch self {
-    case .filterList(let uuid): return "filterList(\(uuid))"
-    case .filterListURL(let uuid): return "filterListURL(\(uuid))"
-    case .adBlock: return "adBlock"
-    }
-  }
-}
-
-extension AdBlockEngineManager.ResourceType: CustomDebugStringConvertible {
-  public var debugDescription: String {
-    switch self {
-    case .dat: return "dat"
-    case .ruleList: return "ruleList"
-    }
-  }
-}
-#endif

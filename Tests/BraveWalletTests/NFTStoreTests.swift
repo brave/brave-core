@@ -63,7 +63,12 @@ class NFTStoreTests: XCTestCase {
       completion(true)
     }
     keyringService._allAccounts = {
-      $0(.init(accounts: [solAccount, ethAccount1, ethAccount2]))
+      $0(.init(
+        accounts: [solAccount, ethAccount1, ethAccount2],
+        selectedAccount: ethAccount1,
+        ethDappSelectedAccount: ethAccount1,
+        solDappSelectedAccount: solAccount
+      ))
     }
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }

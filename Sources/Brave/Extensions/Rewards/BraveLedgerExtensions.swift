@@ -9,7 +9,7 @@ import Shared
 import BraveShared
 import os.log
 
-extension BraveLedger {
+extension BraveRewardsAPI {
 
   public var isLedgerTransferExpired: Bool {
     if Locale.current.regionCode != "JP" {
@@ -149,7 +149,7 @@ extension BraveLedger {
     }
     return await withCheckedContinuation { c in
       self.claimPromotion(promotion.id, publicKey: attestation.publicKeyHash) { result, nonce in
-        if result != .ledgerOk {
+        if result != .ok {
           c.resume(returning: false)
           return
         }
@@ -161,7 +161,7 @@ extension BraveLedger {
           solution.blob = try verification.attestationBlob.bsonData().base64EncodedString()
           
           self.attestPromotion(promotion.id, solution: solution) { result, promotion in
-            if result == .ledgerOk {
+            if result == .ok {
               self.updatePendingAndFinishedPromotions {
                 c.resume(returning: true)
               }

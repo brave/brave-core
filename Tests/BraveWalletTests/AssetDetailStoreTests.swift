@@ -230,11 +230,20 @@ class AssetDetailStoreTests: XCTestCase {
       completion(true, [.init(date: Date(), price: "0.99")])
     }
     
+    let keyring = BraveWallet.KeyringInfo.mockDefaultKeyringInfo
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._keyringInfo = {
-      $1(.mockDefaultKeyringInfo)
+      $1(keyring)
     }
     keyringService._addObserver = { _ in }
+    keyringService._allAccounts = { completion in
+      completion(.init(
+        accounts: keyring.accountInfos,
+        selectedAccount: keyring.accountInfos.first,
+        ethDappSelectedAccount: keyring.accountInfos.first,
+        solDappSelectedAccount: nil
+      ))
+    }
     
     let mockEthBalance: Double = 1
     let ethBalanceWei = formatter.weiString(
@@ -256,9 +265,6 @@ class AssetDetailStoreTests: XCTestCase {
       $0("usd")
     }
     walletService._addObserver = { _ in }
-    walletService._selectedCoin = {
-      $0(.eth)
-    }
     
     let mockAssetManager = TestableWalletUserAssetManager()
     mockAssetManager._getAllUserAssetsInNetworkAssets = { _ in

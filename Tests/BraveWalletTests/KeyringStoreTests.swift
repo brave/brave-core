@@ -15,7 +15,6 @@ class KeyringStoreTests: XCTestCase {
   private func setupServices() -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService) {
     let currentNetwork: BraveWallet.NetworkInfo = .mockMainnet
     let currentChainId = currentNetwork.chainId
-    let currentSelectedCoin: BraveWallet.CoinType = .eth
     let currentSelectedAccount: BraveWallet.AccountInfo = .mockEthAccount
     
     let keyringService = BraveWallet.TestKeyringService()
@@ -33,7 +32,14 @@ class KeyringStoreTests: XCTestCase {
     }
     keyringService._addObserver = { _ in }
     keyringService._isLocked = { $0(false) }
-    keyringService._selectedAccount = { $1(currentSelectedAccount.address) }
+    keyringService._allAccounts = { completion in
+      completion(.init(
+        accounts: [currentSelectedAccount],
+        selectedAccount: currentSelectedAccount,
+        ethDappSelectedAccount: [currentSelectedAccount].first(where: { $0.coin == .eth }),
+        solDappSelectedAccount: [currentSelectedAccount].first(where: { $0.coin == .sol })
+      ))
+    }
     keyringService._setSelectedAccount = { $1(true) }
     
     let rpcService = BraveWallet.TestJsonRpcService()
@@ -47,7 +53,6 @@ class KeyringStoreTests: XCTestCase {
     
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
-    walletService._selectedCoin = { $0(currentSelectedCoin) }
     
     return (keyringService, rpcService, walletService)
   }

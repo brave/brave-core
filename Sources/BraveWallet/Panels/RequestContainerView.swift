@@ -37,8 +37,7 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
             )
           case .switchChain(let request):
             SuggestedNetworkView(
-              mode: .switchNetworks(chainId: request.chainId),
-              originInfo: request.originInfo,
+              mode: .switchNetworks(request),
               cryptoStore: cryptoStore,
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
@@ -46,8 +45,7 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
             )
           case .addChain(let request):
             SuggestedNetworkView(
-              mode: .addNetwork(request.networkInfo),
-              originInfo: request.originInfo,
+              mode: .addNetwork(request),
               cryptoStore: cryptoStore,
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,

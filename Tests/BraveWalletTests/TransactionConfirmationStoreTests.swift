@@ -53,6 +53,12 @@ import BraveCore
     rpcService._erc20TokenAllowance = { _, _, _, _, completion in
       completion("16345785d8a0000", .success, "") // 0.1000
     }
+    rpcService._solanaBalance = { accountAddress, chainId, completion in
+      completion(0, .success, "")
+    }
+    rpcService._splTokenAccountBalance = { _, tokenMintAddress, _, completion in
+      completion("", UInt8(0), "", .success, "")
+    }
     let txService = BraveWallet.TestTxService()
     txService._addObserver = { _ in }
     txService._allTransactionInfo = { coin, chainId, address, completion in
@@ -72,7 +78,6 @@ import BraveCore
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
     walletService._addObserver = { _ in }
-    walletService._selectedCoin = { $0(BraveWallet.CoinType.eth) }
     let mockAssetManager = TestableWalletUserAssetManager()
     mockAssetManager._getAllUserAssetsInNetworkAssets = { _ in
       []
@@ -495,6 +500,7 @@ private extension BraveWallet.BlockchainToken {
     isErc721: false,
     isErc1155: false,
     isNft: false,
+    isSpam: false,
     symbol: "DAI",
     decimals: 18,
     visible: false,

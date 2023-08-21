@@ -35,6 +35,7 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
       isErc721: self.isERC721,
       isErc1155: self.isERC1155,
       isNft: self.isNFT,
+      isSpam: false, // TODO: Handle `isSpam` in `WalletUserAsset`
       symbol: self.symbol,
       decimals: self.decimals,
       visible: self.visible,

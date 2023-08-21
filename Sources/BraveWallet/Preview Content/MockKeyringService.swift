@@ -67,6 +67,7 @@ class MockKeyringService: BraveWalletKeyringService {
         keyringId: keyringId,
         kind: .imported,
         address: address,
+        bitcoinAccountIndex: 0,
         uniqueKey: address
       ),
       address: address,
@@ -188,8 +189,8 @@ class MockKeyringService: BraveWalletKeyringService {
     }
     return address
   }
-
-  func importAccount(_ accountName: String, privateKey: String, completion: @escaping (Bool, String) -> Void) {
+  
+  func importAccount(_ accountName: String, privateKey: String, coin: BraveWallet.CoinType, completion: @escaping (BraveWallet.AccountInfo?) -> Void) {
     let address = nextImportedAddress()
     let info = BraveWallet.AccountInfo(
       accountId: .init(
@@ -197,6 +198,7 @@ class MockKeyringService: BraveWalletKeyringService {
         keyringId: BraveWallet.KeyringId.default,
         kind: .imported,
         address: address,
+        bitcoinAccountIndex: 0,
         uniqueKey: address
       ),
       address: address,
@@ -208,15 +210,15 @@ class MockKeyringService: BraveWalletKeyringService {
     observers.allObjects.forEach {
       $0.accountsChanged()
     }
-    completion(true, info.address)
+    completion(info)
   }
 
-  func importFilecoinAccount(_ accountName: String, privateKey: String, network: String, completion: @escaping (Bool, String) -> Void) {
-    completion(false, "")
+  func importFilecoinAccount(_ accountName: String, privateKey: String, network: String, completion: @escaping (BraveWallet.AccountInfo?) -> Void) {
+    completion(nil)
   }
 
-  func importAccount(fromJson accountName: String, password: String, json: String, completion: @escaping (Bool, String) -> Void) {
-    completion(false, "")
+  func importAccount(fromJson accountName: String, password: String, json: String, completion: @escaping (BraveWallet.AccountInfo?) -> Void) {
+    completion(nil)
   }
 
   func importAccount(_ accountName: String, privateKey: String, coin: BraveWallet.CoinType, completion: @escaping (Bool, String) -> Void) {
@@ -338,6 +340,7 @@ class MockKeyringService: BraveWalletKeyringService {
         keyringId: keyringId,
         kind: .derived,
         address: "btc1",
+        bitcoinAccountIndex: 0,
         uniqueKey: "btc1"
       ),
       address: "btc1",
@@ -359,6 +362,7 @@ extension BraveWallet.AccountInfo {
       keyringId: BraveWallet.KeyringId.default,
       kind: .derived,
       address: "mock_eth_id",
+      bitcoinAccountIndex: 0,
       uniqueKey: "mock_eth_id"
     ),
     address: "mock_eth_id",
@@ -372,6 +376,7 @@ extension BraveWallet.AccountInfo {
       keyringId: BraveWallet.KeyringId.solana,
       kind: .derived,
       address: "mock_sol_id",
+      bitcoinAccountIndex: 0,
       uniqueKey: "mock_sol_id"
     ),
     address: "mock_sol_id",
@@ -385,6 +390,7 @@ extension BraveWallet.AccountInfo {
       keyringId: BraveWallet.KeyringId.filecoin,
       kind: .derived,
       address: "mock_fil_id",
+      bitcoinAccountIndex: 0,
       uniqueKey: "mock_fil_id"
     ),
     address: "mock_fil_id",

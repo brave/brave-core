@@ -161,7 +161,7 @@ struct SignTransactionView: View {
             }
             .foregroundColor(Color(.bravePrimary))
             .font(.callout)
-            Text(urlOrigin: currentRequest.originInfo.origin)
+            Text(originInfo: currentRequest.originInfo)
               .foregroundColor(Color(.braveLabel))
               .font(.subheadline)
               .multilineTextAlignment(.center)

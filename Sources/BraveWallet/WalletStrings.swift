@@ -4479,5 +4479,12 @@ extension Strings {
       value: "Deposit or purchase tokens to get started. If you don't see tokens from an imported account, check the filters and display settings. Unknown tokens may need to be added as custom assets.",
       comment: "The title of the empty state in Portfolio when no assets are shown."
     )
+    public static let internalErrorMessage = NSLocalizedString(
+      "wallet.internalErrorMessage",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "An internal error has occurred",
+      comment: "The title of a button that Deselects all visible options."
+    )
   }
 }

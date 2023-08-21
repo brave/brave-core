@@ -20,7 +20,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
   let rewards: BraveRewards
   var actionHandler: ((Action) -> Void)?
 
-  private var ledgerObserver: LedgerObserver?
+  private var rewardsObserver: RewardsObserver?
   private var publisher: BraveCore.BraveRewards.PublisherInfo? {
     didSet {
       let isVerified = publisher?.status != .notVerified
@@ -65,7 +65,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
   }
 
   private func reloadData() {
-    guard let ledger = self.rewards.ledger else {
+    guard let rewardsAPI = self.rewards.rewardsAPI else {
       self.rewardsView.statusView.setVisibleStatus(status: .rewardsOff, animated: false)
       return
     }
@@ -76,12 +76,12 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
       if let url = self.tab.url, !url.isLocal, !InternalURL.isValid(url: url) {
         self.rewardsView.publisherView.isHidden = false
         self.rewardsView.publisherView.hostLabel.text = url.baseDomain
-        ledger.fetchPublisherActivity(from: url, faviconURL: nil, publisherBlob: nil, tabId: UInt64(self.tab.rewardsId))
+        rewardsAPI.fetchPublisherActivity(from: url, faviconURL: nil, publisherBlob: nil, tabId: UInt64(self.tab.rewardsId))
       } else {
         self.rewardsView.publisherView.isHidden = true
       }
-      ledger.fetchPromotions(nil)
-      ledger.listAutoContributePublishers { [weak self] list in
+      rewardsAPI.fetchPromotions(nil)
+      rewardsAPI.listAutoContributePublishers { [weak self] list in
         guard let self = self else { return }
         self.supportedListCount = list.count
         self.rewardsView.statusView.setVisibleStatus(status: list.isEmpty ? .rewardsOnNoCount : .rewardsOn, animated: false)
@@ -101,12 +101,12 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
 
     rewardsView.rewardsToggle.isOn = rewards.isEnabled
 
-    rewards.startLedgerService { [weak self] in
+    rewards.startRewardsService { [weak self] in
       guard let self = self else { return }
-      if let ledger = self.rewards.ledger {
-        let observer = LedgerObserver(ledger: ledger)
-        ledger.add(observer)
-        self.ledgerObserver = observer
+      if let rewardsAPI = self.rewards.rewardsAPI {
+        let observer = RewardsObserver(rewardsAPI: rewardsAPI)
+        rewardsAPI.add(observer)
+        self.rewardsObserver = observer
 
         observer.fetchedPanelPublisher = { [weak self] publisher, tabId in
           guard let self = self else { return }
@@ -166,7 +166,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
   @objc private func tappedHostLabel(_ gesture: UITapGestureRecognizer) {
     if gesture.state != .ended { return }
     guard let publisher = publisher else { return }
-    rewards.ledger?.refreshPublisher(withId: publisher.id) { [weak self] status in
+    rewards.rewardsAPI?.refreshPublisher(withId: publisher.id) { [weak self] status in
       guard let self = self else { return }
       let copy = publisher.copy() as! BraveCore.BraveRewards.PublisherInfo  // swiftlint:disable:this force_cast
       copy.status = status

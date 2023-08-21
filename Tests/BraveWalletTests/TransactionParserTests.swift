@@ -20,6 +20,7 @@ private extension BraveWallet.AccountInfo {
         keyringId: coin.keyringId,
         kind: .derived,
         address: address,
+        bitcoinAccountIndex: 0,
         uniqueKey: address
       ),
       address: address,
@@ -33,10 +34,22 @@ class TransactionParserTests: XCTestCase {
   
   private let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
   private let accountInfos: [BraveWallet.AccountInfo] = [
-    .init(address: "0x1234567890123456789012345678901234567890", name: "Ethereum Account 1"),
-    .init(address: "0x0987654321098765432109876543210987654321", name: "Ethereum Account 2"),
-    .init(address: "0xaaaaaaaaaabbbbbbbbbbccccccccccdddddddddd", name: "Solana Account 1", coin: .sol),
-    .init(address: "0xeeeeeeeeeeffffffffff11111111112222222222", name: "Solana Account 2", coin: .sol)
+    BraveWallet.AccountInfo.previewAccount,
+    (BraveWallet.AccountInfo.previewAccount.copy() as! BraveWallet.AccountInfo).then {
+      $0.name = "Ethereum Account 2"
+      $0.address = "0x0987654321098765432109876543210987654321"
+      $0.accountId.address = "0x0987654321098765432109876543210987654321"
+    },
+    (BraveWallet.AccountInfo.mockSolAccount.copy() as! BraveWallet.AccountInfo).then {
+      $0.name = "Solana Account 1"
+      $0.address = "0xaaaaaaaaaabbbbbbbbbbccccccccccdddddddddd"
+      $0.accountId.address = "0xaaaaaaaaaabbbbbbbbbbccccccccccdddddddddd"
+    },
+    (BraveWallet.AccountInfo.mockSolAccount.copy() as! BraveWallet.AccountInfo).then {
+      $0.name = "Solana Account 2"
+      $0.address = "0xeeeeeeeeeeffffffffff11111111112222222222"
+      $0.accountId.address = "0xeeeeeeeeeeffffffffff11111111112222222222"
+    }
   ]
   private let tokens: [BraveWallet.BlockchainToken] = [
     .previewToken, .previewDaiToken, .mockUSDCToken, .mockSolToken, .mockSpdToken, .mockSolanaNFTToken
@@ -78,7 +91,8 @@ class TransactionParserTests: XCTestCase {
     )
     let transaction = BraveWallet.TransactionInfo(
       id: "1",
-      fromAddress: "0x1234567890123456789012345678901234567890",
+      fromAddress: accountInfos[0].accountId.address,
+      from: accountInfos[0].accountId,
       txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
       txDataUnion: .init(ethTxData1559: transactionData),
       txStatus: .confirmed,
@@ -96,8 +110,8 @@ class TransactionParserTests: XCTestCase {
     
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
-      namedFromAddress: "Ethereum Account 1",
-      fromAddress: "0x1234567890123456789012345678901234567890",
+      namedFromAddress: accountInfos[0].name,
+      fromAddress: accountInfos[0].address,
       namedToAddress: "Ethereum Account 2",
       toAddress: "0x0987654321098765432109876543210987654321",
       networkSymbol: "ETH",
@@ -173,7 +187,8 @@ class TransactionParserTests: XCTestCase {
     )
     let transaction = BraveWallet.TransactionInfo(
       id: "2",
-      fromAddress: "0x1234567890123456789012345678901234567890",
+      fromAddress: accountInfos[0].address,
+      from: accountInfos[0].accountId,
       txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
       txDataUnion: .init(ethTxData1559: transactionData),
       txStatus: .confirmed,
@@ -191,8 +206,8 @@ class TransactionParserTests: XCTestCase {
     
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
-      namedFromAddress: "Ethereum Account 1",
-      fromAddress: "0x1234567890123456789012345678901234567890",
+      namedFromAddress: accountInfos[0].name,
+      fromAddress: accountInfos[0].address,
       namedToAddress: "Ethereum Account 2",
       toAddress: "0x0987654321098765432109876543210987654321",
       networkSymbol: "ETH",
@@ -255,7 +270,8 @@ class TransactionParserTests: XCTestCase {
     )
     let transaction = BraveWallet.TransactionInfo(
       id: "3",
-      fromAddress: "0x1234567890123456789012345678901234567890",
+      fromAddress: accountInfos[0].address,
+      from: accountInfos[0].accountId,
       txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
       txDataUnion: .init(ethTxData1559: transactionData),
       txStatus: .confirmed,
@@ -277,8 +293,8 @@ class TransactionParserTests: XCTestCase {
     
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
-      namedFromAddress: "Ethereum Account 1",
-      fromAddress: "0x1234567890123456789012345678901234567890",
+      namedFromAddress: accountInfos[0].name,
+      fromAddress: accountInfos[0].address,
       namedToAddress: "0x Exchange Proxy",
       toAddress: "0xDef1C0ded9bec7F1a1670819833240f027b25EfF",
       networkSymbol: "ETH",
@@ -345,7 +361,8 @@ class TransactionParserTests: XCTestCase {
     )
     let transaction = BraveWallet.TransactionInfo(
       id: "3",
-      fromAddress: "0x1234567890123456789012345678901234567890",
+      fromAddress: accountInfos[0].address,
+      from: accountInfos[0].accountId,
       txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
       txDataUnion: .init(ethTxData1559: transactionData),
       txStatus: .confirmed,
@@ -367,8 +384,8 @@ class TransactionParserTests: XCTestCase {
     
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
-      namedFromAddress: "Ethereum Account 1",
-      fromAddress: "0x1234567890123456789012345678901234567890",
+      namedFromAddress: accountInfos[0].name,
+      fromAddress: accountInfos[0].address,
       namedToAddress: "0x Exchange Proxy",
       toAddress: "0xDef1C0ded9bec7F1a1670819833240f027b25EfF",
       networkSymbol: "ETH",
@@ -435,7 +452,8 @@ class TransactionParserTests: XCTestCase {
     )
     let transaction = BraveWallet.TransactionInfo(
       id: "4",
-      fromAddress: "0x1234567890123456789012345678901234567890",
+      fromAddress: accountInfos[0].address,
+      from: accountInfos[0].accountId,
       txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
       txDataUnion: .init(ethTxData1559: transactionData),
       txStatus: .confirmed,
@@ -453,8 +471,8 @@ class TransactionParserTests: XCTestCase {
     
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
-      namedFromAddress: "Ethereum Account 1",
-      fromAddress: "0x1234567890123456789012345678901234567890",
+      namedFromAddress: accountInfos[0].name,
+      fromAddress: accountInfos[0].address,
       namedToAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress.truncatedAddress,
       toAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
       networkSymbol: "ETH",
@@ -519,7 +537,8 @@ class TransactionParserTests: XCTestCase {
     )
     let transaction = BraveWallet.TransactionInfo(
       id: "5",
-      fromAddress: "0x1234567890123456789012345678901234567890",
+      fromAddress: accountInfos[0].address,
+      from: accountInfos[0].accountId,
       txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
       txDataUnion: .init(ethTxData1559: transactionData),
       txStatus: .confirmed,
@@ -537,8 +556,8 @@ class TransactionParserTests: XCTestCase {
     
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
-      namedFromAddress: "Ethereum Account 1",
-      fromAddress: "0x1234567890123456789012345678901234567890",
+      namedFromAddress: accountInfos[0].name,
+      fromAddress: accountInfos[0].address,
       namedToAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress.truncatedAddress,
       toAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
       networkSymbol: "ETH",
@@ -603,7 +622,8 @@ class TransactionParserTests: XCTestCase {
     )
     let transaction = BraveWallet.TransactionInfo(
       id: "6",
-      fromAddress: "0x1234567890123456789012345678901234567890",
+      fromAddress: accountInfos[0].address,
+      from: accountInfos[0].accountId,
       txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
       txDataUnion: .init(ethTxData1559: transactionData),
       txStatus: .confirmed,
@@ -625,8 +645,8 @@ class TransactionParserTests: XCTestCase {
     
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
-      namedFromAddress: "Ethereum Account 1",
-      fromAddress: "0x1234567890123456789012345678901234567890",
+      namedFromAddress: accountInfos[0].name,
+      fromAddress: accountInfos[0].address,
       namedToAddress: "Ethereum Account 2",
       toAddress: "0x0987654321098765432109876543210987654321",
       networkSymbol: "ETH",
@@ -667,8 +687,8 @@ class TransactionParserTests: XCTestCase {
     let transactionData: BraveWallet.SolanaTxData = .init(
       recentBlockhash: "",
       lastValidBlockHeight: 0,
-      feePayer: "0xaaaaaaaaaabbbbbbbbbbccccccccccdddddddddd",
-      toWalletAddress: "0xeeeeeeeeeeffffffffff11111111112222222222",
+      feePayer: accountInfos[2].accountId.address,
+      toWalletAddress: accountInfos[3].accountId.address,
       splTokenMintAddress: "",
       lamports: 100000000,
       amount: 0,
@@ -691,7 +711,8 @@ class TransactionParserTests: XCTestCase {
     )
     let transaction = BraveWallet.TransactionInfo(
       id: "7",
-      fromAddress: "0xaaaaaaaaaabbbbbbbbbbccccccccccdddddddddd",
+      fromAddress: accountInfos[2].accountId.address,
+      from: accountInfos[2].accountId,
       txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
       txDataUnion: .init(solanaTxData: transactionData),
       txStatus: .confirmed,
@@ -709,10 +730,10 @@ class TransactionParserTests: XCTestCase {
     )
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
-      namedFromAddress: "Solana Account 1",
-      fromAddress: "0xaaaaaaaaaabbbbbbbbbbccccccccccdddddddddd",
-      namedToAddress: "Solana Account 2",
-      toAddress: "0xeeeeeeeeeeffffffffff11111111112222222222",
+      namedFromAddress: accountInfos[2].name,
+      fromAddress: accountInfos[2].accountId.address,
+      namedToAddress: accountInfos[3].name,
+      toAddress: accountInfos[3].accountId.address,
       networkSymbol: "SOL",
       details: .solSystemTransfer(
         .init(
@@ -764,8 +785,8 @@ class TransactionParserTests: XCTestCase {
     let transactionData: BraveWallet.SolanaTxData = .init(
       recentBlockhash: "",
       lastValidBlockHeight: 0,
-      feePayer: "0xaaaaaaaaaabbbbbbbbbbccccccccccdddddddddd",
-      toWalletAddress: "0xeeeeeeeeeeffffffffff11111111112222222222",
+      feePayer: accountInfos[2].accountId.address,
+      toWalletAddress: accountInfos[3].accountId.address,
       splTokenMintAddress: BraveWallet.BlockchainToken.mockSpdToken.contractAddress,
       lamports: 0,
       amount: 43210000,
@@ -788,7 +809,8 @@ class TransactionParserTests: XCTestCase {
     )
     let transaction = BraveWallet.TransactionInfo(
       id: "7",
-      fromAddress: "0xaaaaaaaaaabbbbbbbbbbccccccccccdddddddddd",
+      fromAddress: accountInfos[2].accountId.address,
+      from: accountInfos[2].accountId,
       txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
       txDataUnion: .init(solanaTxData: transactionData),
       txStatus: .confirmed,
@@ -806,10 +828,10 @@ class TransactionParserTests: XCTestCase {
     )
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
-      namedFromAddress: "Solana Account 1",
-      fromAddress: "0xaaaaaaaaaabbbbbbbbbbccccccccccdddddddddd",
-      namedToAddress: "Solana Account 2",
-      toAddress: "0xeeeeeeeeeeffffffffff11111111112222222222",
+      namedFromAddress: accountInfos[2].name,
+      fromAddress: accountInfos[2].accountId.address,
+      namedToAddress: accountInfos[3].name,
+      toAddress: accountInfos[3].accountId.address,
       networkSymbol: "SOL",
       details: .solSplTokenTransfer(
         .init(
@@ -848,8 +870,8 @@ class TransactionParserTests: XCTestCase {
     let transactionData: BraveWallet.SolanaTxData = .init(
       recentBlockhash: "",
       lastValidBlockHeight: 0,
-      feePayer: "0xaaaaaaaaaabbbbbbbbbbccccccccccdddddddddd",
-      toWalletAddress: "0xeeeeeeeeeeffffffffff11111111112222222222",
+      feePayer: accountInfos[2].accountId.address,
+      toWalletAddress: accountInfos[3].accountId.address,
       splTokenMintAddress: BraveWallet.BlockchainToken.mockSolanaNFTToken.contractAddress,
       lamports: 0,
       amount: 1,
@@ -872,7 +894,8 @@ class TransactionParserTests: XCTestCase {
     )
     let transaction = BraveWallet.TransactionInfo(
       id: "7",
-      fromAddress: "0xaaaaaaaaaabbbbbbbbbbccccccccccdddddddddd",
+      fromAddress: accountInfos[2].accountId.address,
+      from: accountInfos[2].accountId,
       txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
       txDataUnion: .init(solanaTxData: transactionData),
       txStatus: .confirmed,
@@ -890,10 +913,10 @@ class TransactionParserTests: XCTestCase {
     )
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
-      namedFromAddress: "Solana Account 1",
-      fromAddress: "0xaaaaaaaaaabbbbbbbbbbccccccccccdddddddddd",
-      namedToAddress: "Solana Account 2",
-      toAddress: "0xeeeeeeeeeeffffffffff11111111112222222222",
+      namedFromAddress: accountInfos[2].name,
+      fromAddress: accountInfos[2].accountId.address,
+      namedToAddress: accountInfos[3].name,
+      toAddress: accountInfos[3].accountId.address,
       networkSymbol: "SOL",
       details: .solSplTokenTransfer(
         .init(

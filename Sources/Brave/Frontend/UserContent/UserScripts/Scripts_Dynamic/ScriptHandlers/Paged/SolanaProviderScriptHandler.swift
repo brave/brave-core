@@ -8,6 +8,7 @@ import WebKit
 import BraveCore
 import BraveShared
 import os.log
+import Strings
 
 class SolanaProviderScriptHandler: TabContentScript {
   
@@ -108,7 +109,6 @@ class SolanaProviderScriptHandler: TabContentScript {
         }
       case .disconnect:
         provider.disconnect()
-        tab.emitSolanaEvent(.disconnect)
         replyHandler("{:}", nil)
       case .signAndSendTransaction:
         let (result, error) = await signAndSendTransaction(args: body.args)
@@ -143,7 +143,7 @@ class SolanaProviderScriptHandler: TabContentScript {
   /// Given optional args `{onlyIfTrusted: Bool}`, will return the base 58 encoded public key for success or the error dictionary for failures.
   @MainActor func connect(args: String?) async -> (Any?, String?) {
     guard let tab = tab, let provider = tab.walletSolProvider else {
-      return (nil, buildErrorJson(status: .internalError, errorMessage: "Internal error"))
+      return (nil, buildErrorJson(status: .internalError, errorMessage: Strings.Wallet.internalErrorMessage))
     }
     var param: [String: MojoBase.Value]?
     if let args = args {
@@ -234,7 +234,7 @@ class SolanaProviderScriptHandler: TabContentScript {
       return (publicKey, nil)
     } else {
       guard let encodedResult = MojoBase.Value(dictionaryValue: result).jsonObject else {
-        return (nil, buildErrorJson(status: .internalError, errorMessage: "Internal error"))
+        return (nil, buildErrorJson(status: .internalError, errorMessage: Strings.Wallet.internalErrorMessage))
       }
       return (encodedResult, nil)
     }
@@ -260,7 +260,7 @@ class SolanaProviderScriptHandler: TabContentScript {
       version: version
     )
     guard let transactionDict = transactionDict.jsonObject else {
-      return (nil, buildErrorJson(status: .internalError, errorMessage: "Internal error"))
+      return (nil, buildErrorJson(status: .internalError, errorMessage: Strings.Wallet.internalErrorMessage))
     }
     return (transactionDict, nil)
   }
@@ -294,7 +294,7 @@ class SolanaProviderScriptHandler: TabContentScript {
     }
     guard serializedTransactionDicts.count == serializedTxs.count,
           let encodedSerializedTxDicts = MojoBase.Value(listValue: serializedTransactionDicts).jsonObject else {
-      return (nil, buildErrorJson(status: .internalError, errorMessage: "Internal error"))
+      return (nil, buildErrorJson(status: .internalError, errorMessage: Strings.Wallet.internalErrorMessage))
     }
     return (encodedSerializedTxDicts, nil)
   }

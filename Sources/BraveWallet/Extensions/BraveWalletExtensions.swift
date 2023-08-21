@@ -88,7 +88,7 @@ extension BraveWallet.TransactionInfo {
 extension BraveWallet.OriginInfo {
   /// If the current OriginInfo matches the Brave Wallet origin
   var isBraveWalletOrigin: Bool {
-    origin == WalletConstants.braveWalletOrigin
+    originSpec == WalletConstants.braveWalletOriginSpec
   }
 }
 

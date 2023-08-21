@@ -72,7 +72,7 @@ struct TransactionHeader: View {
         ))
       )
       if let originInfo = originInfo {
-        Text(urlOrigin: originInfo.origin)
+        Text(originInfo: originInfo)
           .foregroundColor(Color(.braveLabel))
           .font(.subheadline)
           .multilineTextAlignment(.center)

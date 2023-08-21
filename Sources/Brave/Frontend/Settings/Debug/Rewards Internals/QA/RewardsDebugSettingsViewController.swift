@@ -94,7 +94,7 @@ class RewardsDebugSettingsViewController: TableViewController {
   }
 
   @objc private func customUserAgentEditingEnded() {
-    rewards.ledger?.customUserAgent = customUserAgentTextField.text
+    rewards.rewardsAPI?.customUserAgent = customUserAgentTextField.text
   }
 
   private var numpadDismissalToolbar: UIToolbar {
@@ -140,7 +140,7 @@ class RewardsDebugSettingsViewController: TableViewController {
     customUserAgentTextField.delegate = self
     customUserAgentTextField.frame = CGRect(x: 0, y: 0, width: 125, height: 32)
     customUserAgentTextField.inputAccessoryView = numpadDismissalToolbar
-    customUserAgentTextField.text = rewards.ledger?.customUserAgent
+    customUserAgentTextField.text = rewards.rewardsAPI?.customUserAgent
 
     KeyboardHelper.defaultHelper.addDelegate(self)
 
@@ -165,13 +165,13 @@ class RewardsDebugSettingsViewController: TableViewController {
           Row(
             text: "Internals",
             selection: { [unowned self] in
-              if let ledger = self.rewards.ledger {
-                let controller = RewardsInternalsDebugViewController(ledger: ledger)
+              if let rewardsAPI = self.rewards.rewardsAPI {
+                let controller = RewardsInternalsDebugViewController(rewardsAPI: rewardsAPI)
                 self.navigationController?.pushViewController(controller, animated: true)
               } else {
-                self.rewards.startLedgerService {
-                  guard let ledger = self.rewards.ledger else { return }
-                  let controller = RewardsInternalsDebugViewController(ledger: ledger)
+                self.rewards.startRewardsService {
+                  guard let rewardsAPI = self.rewards.rewardsAPI else { return }
+                  let controller = RewardsInternalsDebugViewController(rewardsAPI: rewardsAPI)
                   self.navigationController?.pushViewController(controller, animated: true)
                 }
               }
@@ -242,9 +242,9 @@ class RewardsDebugSettingsViewController: TableViewController {
   }
 
   private func fetchAndClaimPromotions() async {
-    guard let ledger = rewards.ledger else { return }
+    guard let rewardsAPI = rewards.rewardsAPI else { return }
     let activePromotions: [BraveCore.BraveRewards.Promotion] = await withCheckedContinuation { c in
-      ledger.fetchPromotions { promotions in
+      rewardsAPI.fetchPromotions { promotions in
         c.resume(returning: promotions.filter { $0.status == .active })
       }
     }
@@ -260,7 +260,7 @@ class RewardsDebugSettingsViewController: TableViewController {
     var failuresCount: Int = 0
     
     for promo in activePromotions {
-      let success = await ledger.claimPromotion(promo)
+      let success = await rewardsAPI.claimPromotion(promo)
       if success {
         successCount += 1
         claimedAmount += promo.approximateValue

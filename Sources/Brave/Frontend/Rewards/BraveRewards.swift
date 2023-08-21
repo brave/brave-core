@@ -23,8 +23,8 @@ public class BraveRewards: NSObject {
   }
 
   private(set) var ads: BraveAds
-  private(set) var ledger: BraveLedger?
-  var ledgerServiceDidStart: ((BraveLedger) -> Void)?
+  private(set) var rewardsAPI: BraveRewardsAPI?
+  var rewardsServiceDidStart: ((BraveRewardsAPI) -> Void)?
 
   private let configuration: Configuration
 
@@ -49,20 +49,20 @@ public class BraveRewards: NSObject {
     reportLastAdsUsageP3A()
   }
 
-  func startLedgerService(_ completion: (() -> Void)?) {
-    if ledger != nil {
+  func startRewardsService(_ completion: (() -> Void)?) {
+    if rewardsAPI != nil {
       // Already started
       completion?()
       return
     }
     let storagePath = configuration.storageURL.appendingPathComponent("ledger").path
-    ledger = BraveLedger(stateStoragePath: storagePath)
-    ledger?.initializeLedgerService { [weak self] in
-      guard let self = self, let ledger = self.ledger else { return }
+    rewardsAPI = BraveRewardsAPI(stateStoragePath: storagePath)
+    rewardsAPI?.initializeRewardsService { [weak self] in
+      guard let self = self, let rewardsAPI = self.rewardsAPI else { return }
       if self.ads.isEnabled {
         self.fetchWalletAndInitializeAds()
       }
-      self.ledgerServiceDidStart?(ledger)
+      self.rewardsServiceDidStart?(rewardsAPI)
       completion?()
     }
   }
@@ -73,8 +73,8 @@ public class BraveRewards: NSObject {
       return
     }
     isAdsInitialized = true
-    guard let ledger = ledger else { return }
-    ledger.currentWalletInfo { wallet in
+    guard let rewardsAPI = rewardsAPI else { return }
+    rewardsAPI.currentWalletInfo { wallet in
       var walletInfo: BraveAds.WalletInfo?
       if let wallet {
         let seed = wallet.recoverySeed.map(\.uint8Value)
@@ -123,7 +123,7 @@ public class BraveRewards: NSObject {
       Preferences.Rewards.rewardsToggledOnce.value = true
       createWalletIfNeeded { [weak self] in
         guard let self = self else { return }
-        self.ledger?.setAutoContributeEnabled(newValue)
+        self.rewardsAPI?.setAutoContributeEnabled(newValue)
         let wasEnabled = self.ads.isEnabled
         if !wasEnabled && newValue {
           Preferences.Rewards.adsEnabledTimestamp.value = Date()
@@ -149,9 +149,9 @@ public class BraveRewards: NSObject {
       return
     }
     isCreatingWallet = true
-    startLedgerService {
-      guard let ledger = self.ledger else { return }
-      ledger.createWalletAndFetchDetails { [weak self] success in
+    startRewardsService {
+      guard let rewardsAPI = self.rewardsAPI else { return }
+      rewardsAPI.createWalletAndFetchDetails { [weak self] success in
         self?.isCreatingWallet = false
         completion?()
       }
@@ -185,7 +185,7 @@ public class BraveRewards: NSObject {
   ) {
     let tabId = Int(tab.rewardsId)
     if isSelected {
-      ledger?.selectedTabId = UInt32(tabId)
+      rewardsAPI?.selectedTabId = UInt32(tabId)
       tabRetrieved(tabId, url: url, html: nil)
     }
     if isAdsInitialized && !isPrivate {
@@ -214,12 +214,12 @@ public class BraveRewards: NSObject {
         tabId: tabId
       )
     }
-    ledger?.reportLoadedPage(url: url, tabId: UInt32(tabId))
+    rewardsAPI?.reportLoadedPage(url: url, tabId: UInt32(tabId))
   }
 
   /// Report any XHR load happening in the page
   func reportXHRLoad(url: URL, tabId: Int, firstPartyURL: URL, referrerURL: URL?) {
-    ledger?.reportXHRLoad(
+    rewardsAPI?.reportXHRLoad(
       url,
       tabId: UInt32(tabId),
       firstPartyURL: firstPartyURL,
@@ -241,7 +241,7 @@ public class BraveRewards: NSObject {
 
   /// Report that a tab with a given id navigated to a new page in the same tab
   func reportTabNavigation(tabId: UInt32) {
-    ledger?.reportTabNavigationOrClosed(tabId: tabId)
+    rewardsAPI?.reportTabNavigationOrClosed(tabId: tabId)
   }
 
   /// Report that a tab with a given id was closed by the user
@@ -249,11 +249,11 @@ public class BraveRewards: NSObject {
     if isAdsInitialized {
       ads.reportTabClosed(tabId: tabId)
     }
-    ledger?.reportTabNavigationOrClosed(tabId: UInt32(tabId))
+    rewardsAPI?.reportTabNavigationOrClosed(tabId: UInt32(tabId))
   }
 
   private func tabRetrieved(_ tabId: Int, url: URL, html: String?) {
-    ledger?.fetchPublisherActivity(from: url, faviconURL: nil, publisherBlob: html, tabId: UInt64(tabId))
+    rewardsAPI?.fetchPublisherActivity(from: url, faviconURL: nil, publisherBlob: html, tabId: UInt64(tabId))
   }
   
   // MARK: - P3A

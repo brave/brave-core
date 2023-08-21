@@ -44,8 +44,8 @@ struct AddAccountView: View {
         }
       }
     } else {
-      let handler: (Bool, String) -> Void = { success, _ in
-        if success {
+      let handler: (BraveWallet.AccountInfo?) -> Void = { accountInfo in
+        if accountInfo != nil {
           onCreate?()
           appRatingRequest?()
           presentationMode.dismiss()

@@ -16,7 +16,7 @@ import XCTest
   func testConnectFailure() async {
     let provider: BraveWallet.TestSolanaProvider = .init()
     provider._connect = { params, completion in
-      completion(.internalError, "Internal error", "")
+      completion(.internalError, Strings.Wallet.internalErrorMessage, "")
     }
     let tab = Tab(configuration: .init())
     let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
@@ -31,7 +31,7 @@ import XCTest
       return
     }
     XCTAssertEqual(code, Int32(BraveWallet.SolanaProviderError.internalError.rawValue))
-    XCTAssertEqual(message, "Internal error")
+    XCTAssertEqual(message, Strings.Wallet.internalErrorMessage)
   }
   
   /// Test `connect()`, given no parameters, the success flow will return a tuple `(result: Any?, error: String?)`
@@ -94,7 +94,7 @@ import XCTest
     
     let provider: BraveWallet.TestSolanaProvider = .init()
     provider._signAndSendTransaction = { signTransactionParam, sendOptions, completion in
-      completion(.internalError, "Internal error", [:])
+      completion(.internalError, Strings.Wallet.internalErrorMessage, [:])
     }
     let tab = Tab(configuration: .init())
     let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
@@ -109,7 +109,7 @@ import XCTest
       return
     }
     XCTAssertEqual(code, Int32(BraveWallet.SolanaProviderError.internalError.rawValue))
-    XCTAssertEqual(message, "Internal error")
+    XCTAssertEqual(message, Strings.Wallet.internalErrorMessage)
   }
   
   /// Test `signAndSendTransaction()`, given a json string `{serializedMessage: [Uint8], signatures: [Buffer]}`, the success flow will
@@ -193,7 +193,7 @@ import XCTest
     
     let provider: BraveWallet.TestSolanaProvider = .init()
     provider._signMessage = { _, _, completion in
-      completion(.internalError, "Internal error", [:])
+      completion(.internalError, Strings.Wallet.internalErrorMessage, [:])
     }
     let tab = Tab(configuration: .init())
     let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
@@ -208,7 +208,7 @@ import XCTest
       return
     }
     XCTAssertEqual(code, Int32(BraveWallet.SolanaProviderError.internalError.rawValue))
-    XCTAssertEqual(message, "Internal error")
+    XCTAssertEqual(message, Strings.Wallet.internalErrorMessage)
   }
   
   /// Test `signMessage()`, given a json string `{[[UInt8]]}`, the success flow will return a tuple `(result: Any?, error: String?)`
@@ -303,7 +303,7 @@ import XCTest
     
     let provider: BraveWallet.TestSolanaProvider = .init()
     provider._signTransaction = { _, completion in
-      completion(.internalError, "Internal error", [], .legacy)
+      completion(.internalError, Strings.Wallet.internalErrorMessage, [], .legacy)
     }
     let tab = Tab(configuration: .init())
     let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
@@ -318,7 +318,7 @@ import XCTest
       return
     }
     XCTAssertEqual(code, Int32(BraveWallet.SolanaProviderError.internalError.rawValue))
-    XCTAssertEqual(message, "Internal error")
+    XCTAssertEqual(message, Strings.Wallet.internalErrorMessage)
   }
   
   /// Test `signTransaction()`, given a json string `{serializedMessage: Buffer, signatures: {publicKey: String, signature: Buffer}}`,
@@ -417,7 +417,7 @@ import XCTest
     
     let provider: BraveWallet.TestSolanaProvider = .init()
     provider._signAllTransactions = { _, completion in
-      completion(.internalError, "Internal error", [], [])
+      completion(.internalError, Strings.Wallet.internalErrorMessage, [], [])
     }
     let tab = Tab(configuration: .init())
     let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
@@ -432,7 +432,7 @@ import XCTest
       return
     }
     XCTAssertEqual(code, Int32(BraveWallet.SolanaProviderError.internalError.rawValue))
-    XCTAssertEqual(message, "Internal error")
+    XCTAssertEqual(message, Strings.Wallet.internalErrorMessage)
   }
   
   /// Test `signAllTransactions()`, given a json string `[{serializedMessage: Buffer, signatures: {publicKey: String, signature: Buffer}}]`,

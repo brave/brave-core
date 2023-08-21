@@ -526,6 +526,7 @@ struct CustomNetworkDetailsView: View {
       symbolName: model.networkSymbol.input,
       decimals: Int32(model.networkDecimals.input) ?? 18,
       coin: .eth,
+      supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:)),
       isEip1559: false
     )
     networkStore.addCustomNetwork(network) { accepted, errMsg in

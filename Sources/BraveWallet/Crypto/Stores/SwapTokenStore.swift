@@ -246,12 +246,14 @@ public class SwapTokenStore: ObservableObject {
   @MainActor private func createEthSwapTransaction() async -> Bool {
     self.isMakingTx = true
     defer { self.isMakingTx = false }
-    let coin = await walletService.selectedCoin()
+    guard let accountInfo = self.accountInfo else {
+      self.state = .error(Strings.Wallet.unknownError)
+      self.clearAllAmount()
+      return false
+    }
+    let coin = accountInfo.coin
     let network = await rpcService.network(coin, origin: nil)
-    guard
-      let accountInfo = self.accountInfo,
-      let swapParams = self.swapParameters(for: .perSellAsset, in: network)
-    else {
+    guard let swapParams = self.swapParameters(for: .perSellAsset, in: network) else {
       self.state = .error(Strings.Wallet.unknownError)
       self.clearAllAmount()
       return false
@@ -267,7 +269,7 @@ public class SwapTokenStore: ObservableObject {
     let gasLimit = "0x\(weiFormatter.weiString(from: swapResponse.estimatedGas, radix: .hex, decimals: 0) ?? "0")"  // already in wei
     let value = "0x\(weiFormatter.weiString(from: swapResponse.value, radix: .hex, decimals: 0) ?? "0")"  // already in wei
     let data: [NSNumber] = .init(hexString: swapResponse.data) ?? .init()
-    
+
     if network.isEip1559 {
       let baseData: BraveWallet.TxData = .init(
         nonce: "",
@@ -360,7 +362,7 @@ public class SwapTokenStore: ObservableObject {
     else {
       return false
     }
-    
+
     // IMPORTANT SECURITY NOTICE
     //
     // The token allowance suggested by Swap is always unlimited,
@@ -375,8 +377,7 @@ public class SwapTokenStore: ObservableObject {
     let allowance = WalletConstants.MAX_UINT256
     self.isMakingTx = true
     defer { self.isMakingTx = false }
-    let coin = await walletService.selectedCoin()
-    let network = await rpcService.network(coin, origin: nil)
+    let network = await rpcService.network(accountInfo.coin, origin: nil)
     let (success, data) = await ethTxManagerProxy.makeErc20ApproveData(spenderAddress, amount: allowance)
     guard success else {
       return false
@@ -461,8 +462,7 @@ public class SwapTokenStore: ObservableObject {
     }
 
     // Get ETH balance for this account because gas can only be paid in ETH
-    let coin = await walletService.selectedCoin()
-    let network = await rpcService.network(coin, origin: nil)
+    let network = await rpcService.network(accountInfo.coin, origin: nil)
     let (balance, status, _) = await rpcService.balance(accountInfo.address, coin: network.coin, chainId: network.chainId)
     if status == BraveWallet.ProviderError.success {
       let fee = gasLimit * gasPrice
@@ -674,6 +674,9 @@ public class SwapTokenStore: ObservableObject {
   }
 
   @MainActor func createSwapTransaction() async -> Bool {
+    guard let accountInfo else {
+      return false
+    }
     switch state {
     case .error, .idle:
       // will never come here
@@ -681,8 +684,7 @@ public class SwapTokenStore: ObservableObject {
     case let .lowAllowance(spenderAddress):
       return await createERC20ApprovalTransaction(spenderAddress)
     case .swap:
-      let coin = await walletService.selectedCoin()
-      switch coin {
+      switch accountInfo.coin {
       case .eth:
         return await createEthSwapTransaction()
       case .sol:
@@ -697,13 +699,16 @@ public class SwapTokenStore: ObservableObject {
     Task { @MainActor in
       // reset jupiter quote before fetching new quote
       self.jupiterQuote = nil
-      let coin = await walletService.selectedCoin()
-      let network = await rpcService.network(coin, origin: nil)
+      guard let accountInfo else {
+        self.state = .idle
+        return
+      }
+      let network = await rpcService.network(accountInfo.coin, origin: nil)
       guard let swapParams = self.swapParameters(for: base, in: network) else {
         self.state = .idle
         return
       }
-      switch coin {
+      switch accountInfo.coin {
       case .eth:
         await fetchEthPriceQuote(base: base, swapParams: swapParams, network: network)
       case .sol:
@@ -787,63 +792,60 @@ public class SwapTokenStore: ObservableObject {
     }
 
     // All tokens from token registry
-    walletService.selectedCoin { [weak self] coinType in
-      guard let self = self else { return }
-      self.rpcService.network(coinType, origin: nil) { network in
-        // Closure run after validating the prefilledToken (if applicable)
-        let continueClosure: (BraveWallet.NetworkInfo) -> Void = { [weak self] network in
-          guard let self = self else { return }
-          self.blockchainRegistry.allTokens(network.chainId, coin: network.coin) { tokens in
-            // Native token on the current selected network
-            let nativeAsset = network.nativeToken
-            // Custom tokens added by users
-            let userAssets = self.assetManager.getAllUserAssetsInNetworkAssets(networks: [network]).flatMap { $0.tokens }
-            let customTokens = userAssets.filter { asset in
-              !tokens.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(asset.contractAddress) == .orderedSame })
-            }
-            let sortedCustomTokens = customTokens.sorted {
-              if $0.contractAddress(in: network).caseInsensitiveCompare(nativeAsset.contractAddress) == .orderedSame {
-                return true
-              } else {
-                return $0.symbol < $1.symbol
-              }
-            }
-            self.allTokens = (sortedCustomTokens + tokens.sorted(by: { $0.symbol < $1.symbol })).filter { !$0.isNft }
-            // Seems like user assets always include the selected network's native asset
-            // But let's make sure all token list includes the native asset
-            if !self.allTokens.contains(where: { $0.symbol.lowercased() == nativeAsset.symbol.lowercased() }) {
-              self.allTokens.insert(nativeAsset, at: 0)
-            }
-            updateSelectedTokens(in: network)
+    self.rpcService.network(accountInfo.coin, origin: nil) { network in
+      // Closure run after validating the prefilledToken (if applicable)
+      let continueClosure: (BraveWallet.NetworkInfo) -> Void = { [weak self] network in
+        guard let self = self else { return }
+        self.blockchainRegistry.allTokens(network.chainId, coin: network.coin) { tokens in
+          // Native token on the current selected network
+          let nativeAsset = network.nativeToken
+          // Custom tokens added by users
+          let userAssets = self.assetManager.getAllUserAssetsInNetworkAssets(networks: [network]).flatMap { $0.tokens }
+          let customTokens = userAssets.filter { asset in
+            !tokens.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(asset.contractAddress) == .orderedSame })
           }
+          let sortedCustomTokens = customTokens.sorted {
+            if $0.contractAddress(in: network).caseInsensitiveCompare(nativeAsset.contractAddress) == .orderedSame {
+              return true
+            } else {
+              return $0.symbol < $1.symbol
+            }
+          }
+          self.allTokens = (sortedCustomTokens + tokens.sorted(by: { $0.symbol < $1.symbol })).filter { !$0.isNft }
+          // Seems like user assets always include the selected network's native asset
+          // But let's make sure all token list includes the native asset
+          if !self.allTokens.contains(where: { $0.symbol.lowercased() == nativeAsset.symbol.lowercased() }) {
+            self.allTokens.insert(nativeAsset, at: 0)
+          }
+          updateSelectedTokens(in: network)
         }
-        
-        // validate the `prefilledToken`
-        if let prefilledToken = self.prefilledToken {
-          if prefilledToken.coin == network.coin && prefilledToken.chainId == network.chainId {
-            self.selectedFromToken = prefilledToken
-            continueClosure(network)
-          } else {
-            self.rpcService.allNetworks(prefilledToken.coin) { allNetworksForTokenCoin in
-              guard let networkForToken = allNetworksForTokenCoin.first(where: { $0.chainId == prefilledToken.chainId }) else {
-                // don't set prefilled token if it belongs to a network we don't know
-                continueClosure(network)
-                return
-              }
-              self.rpcService.setNetwork(networkForToken.chainId, coin: networkForToken.coin, origin: nil) { success in
-                if success {
-                  self.selectedFromToken = prefilledToken
-                  continueClosure(networkForToken) // network changed
-                } else {
-                  continueClosure(network)
-                }
-              }
-            }
-          }
-          self.prefilledToken = nil
-        } else { // `prefilledToken` is nil
+      }
+      
+      // validate the `prefilledToken`
+      if let prefilledToken = self.prefilledToken {
+        if prefilledToken.coin == network.coin && prefilledToken.chainId == network.chainId {
+          self.selectedFromToken = prefilledToken
           continueClosure(network)
+        } else {
+          self.rpcService.allNetworks(prefilledToken.coin) { allNetworksForTokenCoin in
+            guard let networkForToken = allNetworksForTokenCoin.first(where: { $0.chainId == prefilledToken.chainId }) else {
+              // don't set prefilled token if it belongs to a network we don't know
+              continueClosure(network)
+              return
+            }
+            self.rpcService.setNetwork(networkForToken.chainId, coin: networkForToken.coin, origin: nil) { success in
+              if success {
+                self.selectedFromToken = prefilledToken
+                continueClosure(networkForToken) // network changed
+              } else {
+                continueClosure(network)
+              }
+            }
+          }
         }
+        self.prefilledToken = nil
+      } else { // `prefilledToken` is nil
+        continueClosure(network)
       }
     }
   }
@@ -861,13 +863,14 @@ public class SwapTokenStore: ObservableObject {
 
   #if DEBUG
   func setUpTest(
+    fromAccount: BraveWallet.AccountInfo = .mockEthAccount,
     selectedFromToken: BraveWallet.BlockchainToken = .previewToken,
     selectedToToken: BraveWallet.BlockchainToken = .previewDaiToken,
     sellAmount: String? = "0.01",
     buyAmount: String? = nil,
     jupiterQuote: BraveWallet.JupiterQuote? = nil
   ) {
-    accountInfo = .init()
+    accountInfo = fromAccount
     self.selectedFromToken = selectedFromToken
     self.selectedToToken = selectedToToken
     if let sellAmount {
@@ -914,21 +917,24 @@ extension SwapTokenStore: BraveWalletKeyringServiceObserver {
   public func autoLockMinutesChanged() {
   }
 
-  public func selectedAccountChanged(_ coinType: BraveWallet.CoinType) {
+  public func selectedWalletAccountChanged(_ account: BraveWallet.AccountInfo) {
     Task { @MainActor in
-      let network = await rpcService.network(coinType, origin: nil)
+      let network = await rpcService.network(account.coin, origin: nil)
       let isSwapSupported = await swapService.isSwapSupported(network.chainId)
-      guard isSwapSupported else { return }
+      guard isSwapSupported else {
+        accountInfo = account
+        return
+      }
       
-      let keyringInfo = await keyringService.keyringInfo(coinType.keyringId)
-      if !keyringInfo.accountInfos.isEmpty {
-        let accountAddress = await keyringService.selectedAccount(coinType)
-        let selectedAccountInfo = keyringInfo.accountInfos.first(where: { $0.address == accountAddress }) ?? keyringInfo.accountInfos.first!
-        prepare(with: selectedAccountInfo) { [self] in
-          fetchPriceQuote(base: .perSellAsset)
-        }
+      selectedFromToken = nil
+      selectedToToken = nil
+      prepare(with: account) { [self] in
+        fetchPriceQuote(base: .perSellAsset)
       }
     }
+  }
+  
+  public func selectedDappAccountChanged(_ coin: BraveWallet.CoinType, account: BraveWallet.AccountInfo?) {
   }
   
   public func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {
@@ -939,10 +945,15 @@ extension SwapTokenStore: BraveWalletJsonRpcServiceObserver {
   public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType, origin: URLOrigin?) {
     Task { @MainActor in
       let isSwapSupported = await swapService.isSwapSupported(chainId)
-      guard isSwapSupported, let accountInfo = accountInfo else { return }
+      guard isSwapSupported else { return }
+      guard let _ = await walletService.ensureSelectedAccount(forChain: coin, chainId: chainId),
+        let selectedAccount = await keyringService.allAccounts().selectedAccount else {
+        assertionFailure("selectedAccount should never be nil.")
+        return
+      }
       selectedFromToken = nil
       selectedToToken = nil
-      prepare(with: accountInfo) { [self] in
+      prepare(with: selectedAccount) { [self] in
         fetchPriceQuote(base: .perSellAsset)
       }
     }

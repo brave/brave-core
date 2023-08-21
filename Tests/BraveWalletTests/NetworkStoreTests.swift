@@ -15,7 +15,6 @@ import BraveCore
   private func setupServices() -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService, BraveWallet.TestSwapService) {
     let currentNetwork: BraveWallet.NetworkInfo = .mockMainnet
     let currentChainId = currentNetwork.chainId
-    let currentSelectedCoin: BraveWallet.CoinType = .eth
     let allNetworks: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
       .eth: [.mockMainnet, .mockGoerli, .mockSepolia, .mockPolygon, .mockCustomNetwork],
       .sol: [.mockSolana, .mockSolanaTestnet]
@@ -35,6 +34,14 @@ import BraveCore
     }
     keyringService._addObserver = { _ in }
     keyringService._isLocked = { $0(false) }
+    keyringService._allAccounts = { completion in
+      completion(.init(
+        accounts: [.previewAccount],
+        selectedAccount: .previewAccount,
+        ethDappSelectedAccount: .previewAccount,
+        solDappSelectedAccount: nil
+      ))
+    }
     
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }
@@ -50,7 +57,9 @@ import BraveCore
     
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
-    walletService._selectedCoin = { $0(currentSelectedCoin) }
+    walletService._ensureSelectedAccountForChain = { coin, chainId, completion in
+      completion(BraveWallet.AccountInfo.previewAccount.accountId)
+    }
     
     let swapService = BraveWallet.TestSwapService()
     swapService._isSwapSupported = { $1(true) }
@@ -199,6 +208,7 @@ private extension BraveWallet.NetworkInfo {
     symbolName: "TEST",
     decimals: 18,
     coin: .eth,
+    supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:)),
     isEip1559: false
   )
 }

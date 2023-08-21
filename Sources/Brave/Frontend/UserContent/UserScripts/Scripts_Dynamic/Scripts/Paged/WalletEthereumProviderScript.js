@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-window.__firefox__.execute(function($) {
+window.__firefox__.execute(function($, $Object) {
   
 if (window.isSecureContext) {
   function post(method, payload) {
@@ -30,7 +30,7 @@ if (window.isSecureContext) {
     }));
   }
   
-  Object.defineProperty(window, 'ethereum', {
+  const provider = {
     value: {
       chainId: undefined,
       networkVersion: undefined,
@@ -93,7 +93,9 @@ if (window.isSecureContext) {
         return post('isUnlocked', {})
       }),
     }
-  });
+  };
+  $Object.defineProperty(window, 'ethereum', provider);
+  $Object.defineProperty(window, 'braveEthereum', provider);
 }
   
 });

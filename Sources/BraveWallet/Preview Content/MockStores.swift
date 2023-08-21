@@ -69,6 +69,7 @@ extension NetworkStore {
         symbolName: "MOCK",
         decimals: 18,
         coin: .eth,
+        supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:)),
         isEip1559: false
       )
     ) { _, _ in }
@@ -94,6 +95,7 @@ extension BuyTokenStore {
   static var previewStore: BuyTokenStore {
     .init(
       blockchainRegistry: MockBlockchainRegistry(),
+      keyringService: MockKeyringService(),
       rpcService: MockJsonRpcService(),
       walletService: BraveWallet.TestBraveWalletService.previewWalletService,
       assetRatioService: BraveWallet.TestAssetRatioService.previewAssetRatioService,
@@ -257,8 +259,6 @@ extension BraveWallet.TestSolanaTxManagerProxy {
 extension BraveWallet.TestBraveWalletService {
   static var previewWalletService: BraveWallet.TestBraveWalletService {
     let walletService = BraveWallet.TestBraveWalletService()
-    walletService._selectedCoin = { $0(.eth) }
-    
     return walletService
   }
 }

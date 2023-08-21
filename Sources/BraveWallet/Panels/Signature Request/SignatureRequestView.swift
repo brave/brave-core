@@ -180,7 +180,7 @@ struct SignatureRequestView: View {
                   .foregroundColor(Color(.secondaryBraveLabel))
               }
             }
-            Text(urlOrigin: currentRequest.originInfo.origin)
+            Text(originInfo: currentRequest.originInfo)
               .font(.caption)
               .foregroundColor(Color(.braveLabel))
               .multilineTextAlignment(.center)

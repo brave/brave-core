@@ -70,11 +70,11 @@ extension BraveCore.BraveRewards.ContributionProcessor {
 }
 
 class RewardsInternalsContributionListController: TableViewController {
-  private let ledger: BraveLedger
+  private let rewardsAPI: BraveRewardsAPI
   private var contributions: [BraveCore.BraveRewards.ContributionInfo] = []
 
-  init(ledger: BraveLedger) {
-    self.ledger = ledger
+  init(rewardsAPI: BraveRewardsAPI) {
+    self.rewardsAPI = rewardsAPI
     super.init(style: .grouped)
   }
 
@@ -90,7 +90,7 @@ class RewardsInternalsContributionListController: TableViewController {
       $0.accessibilityLabel = Strings.RewardsInternals.shareInternalsTitle
     }
 
-    ledger.allContributions { contributions in
+    rewardsAPI.allContributions { contributions in
       self.contributions = contributions
       self.reloadData()
     }
@@ -131,7 +131,7 @@ class RewardsInternalsContributionListController: TableViewController {
   }
 
   @objc private func tappedShare() {
-    let controller = RewardsInternalsShareController(ledger: self.ledger, initiallySelectedSharables: [.contributions])
+    let controller = RewardsInternalsShareController(rewardsAPI: self.rewardsAPI, initiallySelectedSharables: [.contributions])
     let container = UINavigationController(rootViewController: controller)
     present(container, animated: true)
   }
@@ -141,8 +141,8 @@ class RewardsInternalsContributionListController: TableViewController {
 /// including through auto-contribute, tips, etc.
 struct RewardsInternalsContributionsGenerator: RewardsInternalsFileGenerator {
   func generateFiles(at path: String, using builder: RewardsInternalsSharableBuilder, completion: @escaping (Error?) -> Void) {
-    let ledger = builder.ledger
-    ledger.allContributions { contributions in
+    let rewardsAPI = builder.rewardsAPI
+    rewardsAPI.allContributions { contributions in
       let conts = contributions.map { cont -> [String: Any] in
         return [
           "ID": cont.contributionId,

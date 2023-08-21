@@ -17,6 +17,7 @@ extension BraveWallet.BlockchainToken {
     isErc721: false,
     isErc1155: false,
     isNft: false,
+    isSpam: false,
     symbol: "ETH",
     decimals: 18,
     visible: false,
@@ -34,6 +35,7 @@ extension BraveWallet.BlockchainToken {
     isErc721: false,
     isErc1155: false,
     isNft: false,
+    isSpam: false,
     symbol: "DAI",
     decimals: 18,
     visible: false,
@@ -51,6 +53,7 @@ extension BraveWallet.BlockchainToken {
     isErc721: false,
     isErc1155: false,
     isNft: false,
+    isSpam: false,
     symbol: "USDC",
     decimals: 6,
     visible: false,
@@ -68,6 +71,7 @@ extension BraveWallet.BlockchainToken {
     isErc721: false,
     isErc1155: false,
     isNft: false,
+    isSpam: false,
     symbol: "SOL",
     decimals: 9,
     visible: false,
@@ -85,6 +89,7 @@ extension BraveWallet.BlockchainToken {
     isErc721: false,
     isErc1155: false,
     isNft: false,
+    isSpam: false,
     symbol: "SPD",
     decimals: 6,
     visible: false,
@@ -102,6 +107,7 @@ extension BraveWallet.BlockchainToken {
     isErc721: true,
     isErc1155: false,
     isNft: true,
+    isSpam: false,
     symbol: "XENFT",
     decimals: 0,
     visible: true,
@@ -119,6 +125,7 @@ extension BraveWallet.BlockchainToken {
     isErc721: false,
     isErc1155: false,
     isNft: true,
+    isSpam: false,
     symbol: "SOLNFT",
     decimals: 0,
     visible: true,
@@ -137,6 +144,7 @@ extension BraveWallet.AccountInfo {
         keyringId: BraveWallet.KeyringId.default,
         kind: .derived,
         address: "0x879240B2D6179E9EC40BC2AFFF9E9EC40BC2AFFF",
+        bitcoinAccountIndex: 0,
         uniqueKey: "0x879240B2D6179E9EC40BC2AFFF9E9EC40BC2AFFF"
       ),
       address: "0x879240B2D6179E9EC40BC2AFFF9E9EC40BC2AFFF",
@@ -150,7 +158,8 @@ extension BraveWallet.TransactionInfo {
   static var previewConfirmedSend: BraveWallet.TransactionInfo {
     BraveWallet.TransactionInfo(
       id: "fce43e63-1f68-4685-9d40-035f13250a4c",
-      fromAddress: "0x879240B2D6179E9EC40BC2AFFF9E9EC40BC2AFFF",
+      fromAddress: BraveWallet.AccountInfo.previewAccount.accountId.address,
+      from: BraveWallet.AccountInfo.previewAccount.accountId,
       txHash: "0x46fbd9d5ed775b9e5836aacaf0ed7a78bf5f5a4da451f23238c6123ed0fd51bf",
       txDataUnion: .init(
         ethTxData1559: .init(
@@ -186,7 +195,8 @@ extension BraveWallet.TransactionInfo {
   static var previewConfirmedSwap: BraveWallet.TransactionInfo {
     BraveWallet.TransactionInfo(
       id: "2531db97-6d1d-4906-a1b2-f829c41f489e",
-      fromAddress: "0x879240B2D6179E9EC40BC2AFFF9E9EC40BC2AFFF",
+      fromAddress: BraveWallet.AccountInfo.previewAccount.accountId.address,
+      from: BraveWallet.AccountInfo.previewAccount.accountId,
       txHash: "0xe21f7110753a8a42793c0b6c0c649aac1545488e57a3f57541b9f199d6b2be11",
       txDataUnion: .init(
         ethTxData1559: .init(
@@ -226,7 +236,8 @@ extension BraveWallet.TransactionInfo {
   static var previewConfirmedERC20Approve: BraveWallet.TransactionInfo {
     BraveWallet.TransactionInfo(
       id: "19819c05-612a-47c5-84b0-e95045d15b37",
-      fromAddress: "0x879240B2D6179E9EC40BC2AFFF9E9EC40BC2AFFF",
+      fromAddress: BraveWallet.AccountInfo.previewAccount.accountId.address,
+      from: BraveWallet.AccountInfo.previewAccount.accountId,
       txHash: "0x46d0ecf2ec9829d451154767c98ae372413bac809c25b16d1946aba100663e4b",
       txDataUnion: .init(
         ethTxData1559: .init(
@@ -263,13 +274,14 @@ extension BraveWallet.TransactionInfo {
   static var previewConfirmedSolSystemTransfer: BraveWallet.TransactionInfo {
     BraveWallet.TransactionInfo(
       id: "3d3c7715-f5f2-4f70-ab97-7fb8d3b2a3cd",
-      fromAddress: "6WRQXT2wMAkSjTjGQSqfEnuqgnqskTp5FnT28tScDsAd",
+      fromAddress: BraveWallet.AccountInfo.mockSolAccount.accountId.address,
+      from: BraveWallet.AccountInfo.mockSolAccount.accountId,
       txHash: "2rbyfcSQ9xCem4wtpjMYD4u6PdKE9YcBurCHDgkMcAaBMh8CirQvuLYtj8AyaYu62ekwWKM1UDZ2VLRB4uN96Fcu",
       txDataUnion: .init(
         solanaTxData: .init(
           recentBlockhash: "",
           lastValidBlockHeight: 0,
-          feePayer: "6WRQXT2wMAkSjTjGQSqfEnuqgnqskTp5FnT28tScDsAd",
+          feePayer: BraveWallet.AccountInfo.mockSolAccount.accountId.address,
           toWalletAddress: "FoVyVfWMwoK7QgS4fcULpPSdLEp2PB5aj5ATs8VhPEv2",
           splTokenMintAddress: "",
           lamports: UInt64(100000000),
@@ -301,13 +313,14 @@ extension BraveWallet.TransactionInfo {
   static var previewConfirmedSolTokenTransfer: BraveWallet.TransactionInfo {
     BraveWallet.TransactionInfo(
       id: "12345675-f5f2-4f70-ab97-7fb8d3b2a3cd",
-      fromAddress: "6WRQXT2wMAkSjTjGQSqfEnuqgnqskTp5FnT28tScDsAd",
+      fromAddress: BraveWallet.AccountInfo.mockSolAccount.accountId.address,
+      from: BraveWallet.AccountInfo.mockSolAccount.accountId,
       txHash: "",
       txDataUnion: .init(
         solanaTxData: .init(
           recentBlockhash: "",
           lastValidBlockHeight: 0,
-          feePayer: "6WRQXT2wMAkSjTjGQSqfEnuqgnqskTp5FnT28tScDsAd",
+          feePayer: BraveWallet.AccountInfo.mockSolAccount.accountId.address,
           toWalletAddress: "FoVyVfWMwoK7QgS4fcULpPSdLEp2PB5aj5ATs8VhPEv2",
           splTokenMintAddress: "0x1111111111222222222233333333334444444444",
           lamports: UInt64(0),

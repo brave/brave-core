@@ -97,7 +97,7 @@ struct PendingTransactionView: View {
               .frame(maxWidth: .infinity, maxHeight: .infinity)
               .background(Color(.braveDisabled))
           } else {
-            if let url = originInfo.origin.url {
+            if let url = URL(string: originInfo.originSpec) {
               FaviconReader(url: url) { image in
                 if let image = image {
                   Image(uiImage: image)
@@ -113,7 +113,8 @@ struct PendingTransactionView: View {
         }
         .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
         .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
-        Text(urlOrigin: originInfo.origin)
+
+        Text(originInfo: originInfo)
           .font(.subheadline)
           .foregroundColor(Color(.braveLabel))
           .multilineTextAlignment(.center)

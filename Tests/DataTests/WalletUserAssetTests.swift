@@ -11,9 +11,9 @@ import BraveCore
 
 class WalletUserAssetTests: CoreDataTestCase {
   
-  let asset = BraveWallet.BlockchainToken(contractAddress: "0x123", name: "mockAsset", logo: "", isErc20: true, isErc721: false, isErc1155: false, isNft: false, symbol: "MA", decimals: 16, visible: true, tokenId: "", coingeckoId: "", chainId: "0x1", coin: .eth)
-  let asset2 = BraveWallet.BlockchainToken(contractAddress: "0x123", name: "mockAsset2", logo: "", isErc20: true, isErc721: false, isErc1155: false, isNft: false, symbol: "MA", decimals: 16, visible: false, tokenId: "", coingeckoId: "", chainId: "0x1", coin: .eth)
-  let asset3 = BraveWallet.BlockchainToken(contractAddress: "0x123", name: "mockAsset3", logo: "", isErc20: true, isErc721: false, isErc1155: false, isNft: false, symbol: "MA", decimals: 16, visible: false, tokenId: "", coingeckoId: "", chainId: "0x1", coin: .eth)
+  let asset = BraveWallet.BlockchainToken(contractAddress: "0x123", name: "mockAsset", logo: "", isErc20: true, isErc721: false, isErc1155: false, isNft: false, isSpam: false, symbol: "MA", decimals: 16, visible: true, tokenId: "", coingeckoId: "", chainId: "0x1", coin: .eth)
+  let asset2 = BraveWallet.BlockchainToken(contractAddress: "0x123", name: "mockAsset2", logo: "", isErc20: true, isErc721: false, isErc1155: false, isNft: false, isSpam: false, symbol: "MA", decimals: 16, visible: false, tokenId: "", coingeckoId: "", chainId: "0x1", coin: .eth)
+  let asset3 = BraveWallet.BlockchainToken(contractAddress: "0x123", name: "mockAsset3", logo: "", isErc20: true, isErc721: false, isErc1155: false, isNft: false, isSpam: false, symbol: "MA", decimals: 16, visible: false, tokenId: "", coingeckoId: "", chainId: "0x1", coin: .eth)
   
   let fetchRequest = NSFetchRequest<WalletUserAsset>(entityName:"WalletUserAsset")
   
