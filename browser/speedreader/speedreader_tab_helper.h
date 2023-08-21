@@ -89,9 +89,7 @@ class SpeedreaderTabHelper
 
   // Hides speedreader information
   void HideSpeedreaderBubble();
-
-  void HideReaderModeToolbar();
-
+  
   // Handler for when the bubble is dismissed.
   void OnBubbleClosed();
 
@@ -166,8 +164,6 @@ class SpeedreaderTabHelper
   bool is_visible_ = false;
 
   std::string single_show_content_;
-
-  bool toolbar_hidden_ = false;
 
   DistillState distill_state_{DistillStates::ViewOriginal()};
 

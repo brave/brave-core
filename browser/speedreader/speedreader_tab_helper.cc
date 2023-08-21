@@ -197,11 +197,6 @@ void SpeedreaderTabHelper::HideSpeedreaderBubble() {
   }
 }
 
-void SpeedreaderTabHelper::HideReaderModeToolbar() {
-  toolbar_hidden_ = true;
-  UpdateUI();
-}
-
 void SpeedreaderTabHelper::OnShowOriginalPage() {
   if (!DistillStates::IsDistilled(distill_state_)) {
     return;
@@ -228,8 +223,6 @@ void SpeedreaderTabHelper::ProcessNavigation(
     return;
   }
 
-  toolbar_hidden_ = false;
-
   if (DistillStates::IsDistilling(distill_state_)) {
     // State will be determined in OnDistillComplete.
     return;
@@ -248,18 +241,17 @@ void SpeedreaderTabHelper::ProcessNavigation(
   const bool enabled_for_site =
       GetSpeedreaderService()->IsEnabledForSite(navigation_handle->GetURL());
 
+  const auto reason =
+      url_looks_readable ? DistillStates::ViewOriginal::Reason::kNone
+                         : DistillStates::ViewOriginal::Reason::kNotDistillable;
+  TransitStateTo(DistillStates::DistillReverting(reason, false), true);
+  TransitStateTo(DistillStates::ViewOriginal(), true);
+
   if (url_looks_readable && enabled_for_site) {
     // Speedreader enabled for this page.
     TransitStateTo(DistillStates::Distilling(
                        DistillStates::Distilling::Reason::kAutomatic),
                    true);
-  } else {
-    const auto reason =
-        url_looks_readable
-            ? DistillStates::ViewOriginal::Reason::kNone
-            : DistillStates::ViewOriginal::Reason::kNotDistillable;
-    TransitStateTo(DistillStates::DistillReverting(reason, false), true);
-    TransitStateTo(DistillStates::ViewOriginal(), true);
   }
 }
 
@@ -278,7 +270,7 @@ void SpeedreaderTabHelper::UpdateUI() {
 #if !BUILDFLAG(IS_ANDROID)
   if (const auto* browser =
           chrome::FindBrowserWithWebContents(web_contents())) {
-    if (toolbar_hidden_ || !DistillStates::IsDistilled(PageDistillState())) {
+    if (!DistillStates::IsDistilled(PageDistillState())) {
       static_cast<BraveBrowserWindow*>(browser->window())
           ->HideReaderModeToolbar();
     } else {

@@ -69,10 +69,9 @@ bool IsNotDistillable(const State& state) {
 }
 
 bool IsDistillable(const State& state) {
-  return IsDistilled(state) ||
-         (IsViewOriginal(state) &&
-          absl::get<DistillStates::ViewOriginal>(state).reason !=
-              DistillStates::ViewOriginal::Reason::kNotDistillable);
+  return IsViewOriginal(state) &&
+         absl::get<DistillStates::ViewOriginal>(state).reason !=
+             DistillStates::ViewOriginal::Reason::kNotDistillable;
 }
 
 bool IsDistilledAutomatically(const State& state) {
@@ -109,7 +108,7 @@ bool Transit(State& state, const State& desired) {
   if (IsDistillReverting(state)) {
     if (IsViewOriginal(desired)) {
       state = ViewOriginal(absl::get<DistillReverting>(state));
-      return true;
+      return false;
     }
   }
 
@@ -123,7 +122,8 @@ bool Transit(State& state, const State& desired) {
       state = Distilled(absl::get<Distilling>(state), d.result);
       return false;
     }
-    if (IsViewOriginal(desired) || IsDistillReverting(desired)) {
+    if (IsDistillReverting(desired) || IsDistilling(desired)) {
+      state = desired;
       return false;
     }
   }
@@ -139,7 +139,7 @@ bool Transit(State& state, const State& desired) {
           absl::get<Distilled>(state).reason == Distilled::Reason::kAutomatic);
       return true;
     }
-    if (IsDistilled(desired) || IsDistilling(desired)) {
+    if (IsDistilled(desired)) {
       // Already distilled.
       return false;
     }

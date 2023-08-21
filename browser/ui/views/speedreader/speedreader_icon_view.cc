@@ -40,7 +40,8 @@ SpeedreaderIconView::~SpeedreaderIconView() = default;
 
 void SpeedreaderIconView::UpdateImpl() {
   const auto state = GetDistillState();
-  if (!speedreader::DistillStates::IsDistillable(state)) {
+  if (!speedreader::DistillStates::IsDistilled(state) &&
+      !speedreader::DistillStates::IsDistillable(state)) {
     SetVisible(false);
     return;
   }

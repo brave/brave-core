@@ -92,8 +92,7 @@ static jboolean JNI_BraveSpeedReaderUtils_TabSupportsDistillation(
     return false;
   }
 
-  return DistillStates::IsDistillable(tab_helper->PageDistillState()) ||
-         speedreader->IsEnabledForSite(web_contents);
+  return DistillStates::IsDistillable(tab_helper->PageDistillState());
 }
 
 static void JNI_BraveSpeedReaderUtils_SingleShotSpeedreaderForWebContent(
