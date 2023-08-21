@@ -77,7 +77,7 @@ namespace {
 // So 1 Mbps seems like a conservative number.
 constexpr int kDownloadRequestTimeoutSecs = 60;
 
-constexpr net::NetworkTrafficAnnotationTag traffic_annotation =
+constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
     net::DefineNetworkTrafficAnnotation("widevine_updater", R"(
         semantics {
           sender: "Widevine Component Updater"
@@ -198,7 +198,7 @@ void WidevineArm64DllInstaller::Start(
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = GURL(kBraveWidevineArm64DllUrl.Get());
   loader_ = network::SimpleURLLoader::Create(std::move(resource_request),
-                                             traffic_annotation);
+                                             kTrafficAnnotation);
   loader_->SetTimeoutDuration(base::Seconds(kDownloadRequestTimeoutSecs));
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory =
       network::SharedURLLoaderFactory::Create(
