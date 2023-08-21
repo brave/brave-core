@@ -89,6 +89,7 @@ source_set("net") {
     "//brave/components/decentralized_dns/content",
     "//brave/components/ipfs/buildflags",
     "//brave/components/update_client:buildflags",
+    "//brave/components/widevine:static_buildflags",
     "//brave/extensions:common",
     "//components/content_settings/core/browser",
     "//components/prefs",

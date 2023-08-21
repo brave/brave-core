@@ -15,10 +15,10 @@ source_set("widevine") {
   # Remove when https://github.com/brave/brave-browser/issues/10644 is resolved
   check_includes = false
   deps = [
-    ":constants",
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/components/constants",
+    "//brave/components/widevine:constants",
     "//chrome/common",
     "//components/component_updater/",
     "//components/content_settings/core/common",
@@ -43,10 +43,6 @@ source_set("widevine") {
   ]
 }
 
-source_set("constants") {
-  sources = [ "constants.h" ]
-}
-
 source_set("unittest") {
   testonly = true
 
@@ -67,12 +63,12 @@ source_set("browser_tests") {
   ]
 
   deps = [
-    ":constants",
     ":widevine",
     "//base",
     "//brave/browser",
     "//brave/common",
     "//brave/components/constants",
+    "//brave/components/widevine:constants",
     "//chrome/browser",
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile",

@@ -3,7 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-brave_components_update_client_deps = [ "//brave/components/constants" ]
+brave_components_update_client_deps = [
+  "//brave/components/constants",
+  "//brave/components/widevine:constants",
+]
 
 brave_components_update_client_public_deps =
     [ "//brave/components/update_client:buildflags" ]
