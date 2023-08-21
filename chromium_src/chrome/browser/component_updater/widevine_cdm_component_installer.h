@@ -15,18 +15,20 @@
 #define RegisterWidevineCdmComponent_WasDefined
 #endif
 
-namespace component_updater {
-
-class ComponentUpdateService;
-
-void RegisterWidevineCdmComponent(
-    ComponentUpdateService* cus,
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+#define RegisterWidevineCdmComponent(cus)                                     \
+  RegisterWidevineCdmComponent(                                               \
+      cus, scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory, \
+      base::OnceCallback<void()> callback = base::DoNothing())
+#else
+#define RegisterWidevineCdmComponent(cus) \
+  RegisterWidevineCdmComponent(           \
+      cus, base::OnceCallback<void()> callback = base::DoNothing())
 #endif
-    base::OnceCallback<void()> callback = base::DoNothing());
 
-}  // namespace component_updater
+#include "src/chrome/browser/component_updater/widevine_cdm_component_installer.h"  // IWYU pragma: export
+
+#undef RegisterWidevineCdmComponent
 
 #ifdef RegisterWidevineCdmComponent_WasDefined
 #pragma pop_macro("RegisterWidevineCdmComponent")
