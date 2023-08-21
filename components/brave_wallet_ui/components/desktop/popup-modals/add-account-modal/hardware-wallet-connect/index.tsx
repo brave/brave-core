@@ -97,7 +97,9 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
   const [selectedDerivationPaths, setSelectedDerivationPaths] = React.useState<string[]>([])
   const [connectionError, setConnectionError] = React.useState<ErrorMessage | undefined>(undefined)
   const [selectedDerivationScheme, setSelectedDerivationScheme] = React.useState<HardwareDerivationScheme>(
-    selectedAccountType.coin === CoinType.SOL ? SolDerivationPaths.Default : LedgerDerivationPaths.LedgerLive
+    selectedAccountType.coin === CoinType.SOL
+      ? SolDerivationPaths.Default
+      : LedgerDerivationPaths.LedgerLive
   )
   const [showAccountsList, setShowAccountsList] = React.useState<boolean>(false)
   const [filecoinNetwork, setFilecoinNetwork] = React.useState<FilecoinNetwork>('f')
@@ -269,7 +271,9 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
 
   return (
     <>
-      {(selectedAccountType.coin !== CoinType.FIL && selectedAccountType.coin !== CoinType.SOL) &&
+      {(selectedAccountType.coin !== CoinType.FIL &&
+        selectedAccountType.coin !== CoinType.SOL
+      ) &&
         <>
           <HardwareTitle>{getLocale('braveWalletConnectHardwareTitle')}</HardwareTitle>
           <HardwareButtonRow>

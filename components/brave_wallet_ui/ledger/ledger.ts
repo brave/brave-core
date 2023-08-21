@@ -10,7 +10,9 @@ import { SolanaLedgerUntrustedMessagingTransport } from '../common/hardware/ledg
 import { EthereumLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/eth-ledger-untrusted-transport'
 import { FilecoinLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/fil-ledger-untrusted-transport'
 
-const setUpAuthorizeButtonListener = (targetUrl: string, coinType: CoinType) => {
+const setUpAuthorizeButtonListener = (
+  targetUrl: string, coinType: CoinType
+) => {
   const untrustedMessagingTransport = getUntrustedMessagingTransport(coinType, targetUrl)
   window.addEventListener('DOMContentLoaded', (event) => {
     const authorizeBtn = document.getElementById('authorize')
@@ -28,7 +30,10 @@ const setUpAuthorizeButtonListener = (targetUrl: string, coinType: CoinType) => 
   })
 }
 
-const getUntrustedMessagingTransport = (coinType: CoinType, targetUrl: string): LedgerUntrustedMessagingTransport => {
+const getUntrustedMessagingTransport = (
+  coinType: CoinType,
+  targetUrl: string
+): LedgerUntrustedMessagingTransport => {
   switch (coinType) {
     case CoinType.SOL:
       return new SolanaLedgerUntrustedMessagingTransport(window.parent, targetUrl)

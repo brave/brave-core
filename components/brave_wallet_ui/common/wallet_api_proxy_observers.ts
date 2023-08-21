@@ -89,7 +89,11 @@ export function makeJsonRpcServiceObserver (store: Store) {
       selectedWalletAccountChanged: function (account: BraveWallet.AccountInfo) {
         store.dispatch(walletApi.endpoints.invalidateSelectedAccount.initiate())
       },
-      selectedDappAccountChanged: function (coin: CoinType, account: BraveWallet.AccountInfo | null) {
+      selectedDappAccountChanged:
+        function (
+          coin: CoinType,
+          account: BraveWallet.AccountInfo | null
+        ) {
         // TODO: Handle this event.
       }
     })

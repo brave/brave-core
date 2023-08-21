@@ -207,7 +207,11 @@ export async function signLedgerSolanaTransaction (
     return { success: result.status }
 }
 
-export async function signMessageWithHardwareKeyring (vendor: HardwareVendor, path: string, messageData: Omit<SignMessageRequest, 'originInfo'>): Promise<SignHardwareOperationResult> {
+export async function signMessageWithHardwareKeyring (
+  vendor: HardwareVendor,
+  path: string,
+  messageData: Omit<SignMessageRequest, 'originInfo'>
+): Promise<SignHardwareOperationResult> {
   const deviceKeyring = getHardwareKeyring(vendor, messageData.coin)
   const signTypedData = messageData.signData.ethSignTypedData
   const standardSignData = messageData.signData.ethStandardSignData
@@ -220,7 +224,10 @@ export async function signMessageWithHardwareKeyring (vendor: HardwareVendor, pa
                                              signTypedData.primaryHash)
     }
     if (!standardSignData) {
-      return { success: false, error: getLocale('braveWalletUnknownInternalError') }
+      return {
+        success: false,
+        error: getLocale('braveWalletUnknownInternalError')
+      }
     }
     return deviceKeyring.signPersonalMessage(path, standardSignData.message)
   } else if (deviceKeyring instanceof TrezorBridgeKeyring) {
@@ -232,7 +239,10 @@ export async function signMessageWithHardwareKeyring (vendor: HardwareVendor, pa
                                              signTypedData.primaryHash)
     }
     if (!standardSignData) {
-      return { success: false, error: getLocale('braveWalletUnknownInternalError') }
+      return {
+        success: false,
+        error: getLocale('braveWalletUnknownInternalError')
+      }
     }
     return deviceKeyring.signPersonalMessage(path, standardSignData.message)
   } else if (deviceKeyring instanceof SolanaLedgerBridgeKeyring) {
@@ -242,7 +252,12 @@ export async function signMessageWithHardwareKeyring (vendor: HardwareVendor, pa
   return { success: false, error: getLocale('braveWalletUnknownKeyringError') }
 }
 
-export async function signRawTransactionWithHardwareKeyring (vendor: HardwareVendor, path: string, message: BraveWallet.ByteArrayStringUnion, coin: CoinType, onAuthorized?: () => void): Promise<SignHardwareOperationResult> {
+export async function signRawTransactionWithHardwareKeyring (
+  vendor: HardwareVendor,
+  path: string,
+  message: BraveWallet.ByteArrayStringUnion,
+  coin: CoinType, onAuthorized?: () => void
+): Promise<SignHardwareOperationResult> {
   const deviceKeyring = getHardwareKeyring(vendor, coin, onAuthorized)
 
   if (deviceKeyring instanceof SolanaLedgerBridgeKeyring && message.bytes) {
@@ -254,7 +269,9 @@ export async function signRawTransactionWithHardwareKeyring (vendor: HardwareVen
   return { success: false, error: getLocale('braveWalletUnknownKeyringError') }
 }
 
-export async function cancelHardwareOperation (vendor: HardwareVendor, coin: CoinType) {
+export async function cancelHardwareOperation (
+  vendor: HardwareVendor, coin: CoinType
+) {
   const deviceKeyring = getHardwareKeyring(vendor, coin)
   if (deviceKeyring instanceof EthereumLedgerBridgeKeyring || deviceKeyring instanceof TrezorBridgeKeyring || deviceKeyring instanceof SolanaLedgerBridgeKeyring) {
     return deviceKeyring.cancelOperation()

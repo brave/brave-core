@@ -120,9 +120,12 @@ export const ImportAccountModal = () => {
     history.push(WalletRoutes.Accounts)
   }, [setImportError])
 
-  const importAccount = React.useCallback((accountName: string, privateKey: string, coin: CoinType) => {
-    dispatch(WalletPageActions.importAccount({ accountName, privateKey, coin }))
-  }, [])
+  const importAccount = React.useCallback(
+    (accountName: string, privateKey: string, coin: CoinType) => {
+      dispatch(
+        WalletPageActions
+          .importAccount({ accountName, privateKey, coin }))
+    }, [])
 
   const importFilecoinAccount = React.useCallback((accountName: string, privateKey: string, network: string) => {
     dispatch(WalletPageActions.importFilecoinAccount({ accountName, privateKey, network }))
@@ -168,7 +171,11 @@ export const ImportAccountModal = () => {
       if (selectedAccountType?.coin === CoinType.FIL) {
         importFilecoinAccount(accountName, privateKey, filecoinNetwork)
       } else {
-        importAccount(accountName, privateKey, selectedAccountType?.coin || CoinType.ETH)
+        importAccount(
+          accountName,
+          privateKey,
+          selectedAccountType?.coin || CoinType.ETH
+        )
       }
       return
     }

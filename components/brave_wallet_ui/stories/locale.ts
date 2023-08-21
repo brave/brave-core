@@ -492,7 +492,8 @@ provideStrings({
 
   // Sign in with Ethereum
   braveWalletSignInWithBraveWallet: 'Sign in with Brave Wallet',
-  braveWalletSignInWithBraveWalletMessage: 'You are signing into $1. Brave wallet will share your wallet address with $1.',
+  braveWalletSignInWithBraveWalletMessage:
+    'You are signing into $1. Brave wallet will share your wallet address with $1.',
   braveWalletSeeDetails: 'See details',
   braveWalletSignIn: 'Sign in',
   braveWalletOrigin: 'Origin',

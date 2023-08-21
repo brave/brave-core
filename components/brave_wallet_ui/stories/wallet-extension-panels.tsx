@@ -530,7 +530,7 @@ export const _SignData = () => {
     signData: {
       ethStandardSignData: undefined,
       ethSignTypedData: {
-        message: 'To avoid digital cat burglars, sign below to authenticate with CryptoKitties.',
+        message: 'Sign below to authenticate with CryptoKitties.',
         domain: '',
         domainHash: undefined,
         primaryHash: undefined

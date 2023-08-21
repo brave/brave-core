@@ -305,7 +305,10 @@ function toByteArrayStringUnion<D extends keyof BraveWallet.ByteArrayStringUnion
   return Object.assign({}, unionItem) as BraveWallet.ByteArrayStringUnion
 }
 
-handler.on(PanelActions.signMessageHardware.type, async (store, messageData: SignMessageRequest) => {
+handler.on(PanelActions.signMessageHardware.type, async (
+  store,
+  messageData: SignMessageRequest
+) => {
   const apiProxy = getWalletPanelApiProxy()
   const hardwareAccount = await findHardwareAccountInfo(messageData.address)
   if (!hardwareAccount || !hardwareAccount.hardware) {
@@ -500,7 +503,10 @@ handler.on(PanelActions.signMessageError.type, async (store: Store) => {
   panelHandler.showUI()
 })
 
-handler.on(PanelActions.signMessageErrorProcessed.type, async (store: Store, id: string) => {
+handler.on(PanelActions.signMessageErrorProcessed.type, async (
+  store: Store,
+  id: string
+) => {
   const { braveWalletService, panelHandler } = getWalletPanelApiProxy()
   braveWalletService.notifySignMessageErrorProcessed(id)
   const requests = await getPendingSignMessageErrors()
