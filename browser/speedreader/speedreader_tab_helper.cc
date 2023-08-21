@@ -312,8 +312,9 @@ void SpeedreaderTabHelper::DOMContentLoaded(
     UpdateUI();
   }
 
-  static base::NoDestructor<std::u16string> kSpeedreaderData(
-      GetSpeedreaderData({{"minutesText", IDS_READER_MODE_MINUTES_TEXT}}));
+  static base::NoDestructor<std::u16string> kSpeedreaderData(GetSpeedreaderData(
+      {{"showOriginalLinkText", IDS_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK},
+       {"minutesText", IDS_READER_MODE_MINUTES_TEXT}}));
 
   static base::NoDestructor<std::u16string> kJsScript(base::UTF8ToUTF16(
       ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
