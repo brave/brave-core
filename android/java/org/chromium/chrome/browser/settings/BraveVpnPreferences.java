@@ -372,10 +372,16 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         InAppPurchaseWrapper.getInstance().queryPurchases();
         LiveDataUtil.observeOnce(InAppPurchaseWrapper.getInstance().getPurchases(), purchases -> {
             mBraveVpnPrefModel = new BraveVpnPrefModel();
-            if (purchases != null && purchases.size() == 1) {
-                Purchase purchase = purchases.get(0);
-                mBraveVpnPrefModel.setPurchaseToken(purchase.getPurchaseToken());
-                mBraveVpnPrefModel.setProductId(purchase.getProducts().get(0).toString());
+            Purchase activePurchase = null;
+            for (Purchase purchase: purchases) {
+                if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+                    activePurchase = purchase;
+                    break;
+                }
+            }
+            if (activePurchase != null) {
+                mBraveVpnPrefModel.setPurchaseToken(activePurchase.getPurchaseToken());
+                mBraveVpnPrefModel.setProductId(activePurchase.getProducts().get(0).toString());
                 if (BraveVpnPrefUtils.isResetConfiguration()) {
                     BraveVpnUtils.dismissProgressDialog();
                     BraveVpnUtils.openBraveVpnProfileActivity(getActivity());

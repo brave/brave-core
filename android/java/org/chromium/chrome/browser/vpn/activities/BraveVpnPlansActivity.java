@@ -25,6 +25,7 @@ import com.android.billingclient.api.SkuDetails;
 import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.chrome.R;
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
@@ -60,6 +61,11 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     private void initializeViews() {
         setContentView(R.layout.activity_brave_vpn_plan);
 
+        if (BraveVpnUtils.isBraveVpnFeatureEnable() && !InAppPurchaseWrapper.getInstance().isBillingClientReady()) {
+            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
+                    BraveVpnPlansActivity.this);
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -94,10 +100,13 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                 new InAppPurchaseWrapper.QueryProductDetailsResponse() {
                     @Override
                     public void onProductDetails(Map<String, ProductDetails> productDetailsMap) {
+                        Log.e("BraveVPN", "queryProductDetailsAsync MONTHLY 1");
                         ProductDetails monthlyProductDetails = productDetailsMap.get(
                                 InAppPurchaseWrapper.getInstance().getProductId(
                                         InAppPurchaseWrapper.SubscriptionType.MONTHLY));
+                        Log.e("BraveVPN", "queryProductDetailsAsync MONTHLY 2");
                         if (monthlyProductDetails != null) {
+                            Log.e("BraveVPN", "queryProductDetailsAsync MONTHLY 3");
                             mMonthlySelectorLayout.setOnClickListener(v
                                     -> InAppPurchaseWrapper.getInstance().initiatePurchase(
                                             BraveVpnPlansActivity.this, monthlyProductDetails));
@@ -146,10 +155,6 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                     }
                 });
 
-        BraveVpnUtils.showProgressDialog(
-                BraveVpnPlansActivity.this, getResources().getString(R.string.vpn_connect_text));
-        mIsVerification = true;
-        verifySubscription();
 
         // SkuDetails monthlySkuDetails = InAppPurchaseWrapper.getInstance().getSkuDetails(
         //         getPackageName().equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
@@ -200,6 +205,15 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         //     Toast.LENGTH_LONG)
         //             .show();
         // }
+    }
+
+    @Override
+    public void finishNativeInitialization() {
+        super.finishNativeInitialization();
+        BraveVpnUtils.showProgressDialog(
+                BraveVpnPlansActivity.this, getResources().getString(R.string.vpn_connect_text));
+        mIsVerification = true;
+        verifySubscription();
     }
 
     @Override

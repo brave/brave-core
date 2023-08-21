@@ -94,6 +94,10 @@ public class InAppPurchaseWrapper {
                 || productId.equals(RELEASE_MONTHLY_SUBSCRIPTION);
     }
 
+    public boolean isBillingClientReady() {
+        return mBillingClient != null && mBillingClient.isReady();
+    }
+
     public void startBillingServiceConnection(Context context) {
         mBillingClient = BillingClient.newBuilder(context)
                                  .enablePendingPurchases()
@@ -154,7 +158,9 @@ public class InAppPurchaseWrapper {
 
         mBillingClient.queryProductDetailsAsync(
                 queryProductDetailsParams, (billingResult, productDetailsList) -> {
+                    Log.e("BraveVPN", "mBillingClient.queryProductDetailsAsync 1");
                     if (billingResult.getResponseCode() == OK) {
+                        Log.e("BraveVPN", "mBillingClient.queryProductDetailsAsync 2");
                         for (ProductDetails productDetail : productDetailsList) {
                             productDetails.put(productDetail.getProductId(), productDetail);
                         }

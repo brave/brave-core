@@ -639,10 +639,16 @@ public abstract class BraveActivity extends ChromeActivity
     private void verifySubscription() {
         InAppPurchaseWrapper.getInstance().queryPurchases();
         LiveDataUtil.observeOnce(InAppPurchaseWrapper.getInstance().getPurchases(), purchases -> {
-            if (purchases != null && purchases.size() == 1) {
-                Purchase purchase = purchases.get(0);
-                mPurchaseToken = purchase.getPurchaseToken();
-                mProductId = purchase.getProducts().get(0).toString();
+            Purchase activePurchase = null;
+            for (Purchase purchase: purchases) {
+                if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+                    activePurchase = purchase;
+                    break;
+                }
+            }
+            if (activePurchase != null) {
+                mPurchaseToken = activePurchase.getPurchaseToken();
+                mProductId = activePurchase.getProducts().get(0).toString();
                 BraveVpnNativeWorker.getInstance().verifyPurchaseToken(mPurchaseToken, mProductId,
                         BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
             } else {

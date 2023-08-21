@@ -23,6 +23,7 @@ import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
+import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 
 public class BraveVpnProfileActivity extends BraveVpnParentActivity {
     private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
@@ -47,6 +48,11 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
 
     private void initializeViews() {
         setContentView(R.layout.activity_brave_vpn_profile);
+
+        if (BraveVpnUtils.isBraveVpnFeatureEnable() && !InAppPurchaseWrapper.getInstance().isBillingClientReady()) {
+            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
+                    BraveVpnProfileActivity.this);
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -84,7 +90,11 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
                 BraveVpnUtils.openBraveVpnSupportActivity(BraveVpnProfileActivity.this);
             }
         });
+    }
 
+    @Override
+    public void finishNativeInitialization() {
+        super.finishNativeInitialization();
         if (getIntent() != null
                 && getIntent().getBooleanExtra(BraveVpnUtils.VERIFY_CREDENTIALS_FAILED, false)) {
             verifySubscription();
