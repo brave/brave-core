@@ -288,7 +288,7 @@ bool WidevineArm64DllInstaller::AddArm64ArchToManifest() {
     return false;
   }
 
-  base::Value* accept_arch = root_dict->FindByDottedPath("accept_arch");
+  base::Value* accept_arch = root_dict->Find("accept_arch");
   if (!accept_arch) {
     LOG(ERROR) << "Could not find accept_arch field.";
     return false;
