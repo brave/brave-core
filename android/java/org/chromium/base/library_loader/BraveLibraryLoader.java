@@ -9,10 +9,13 @@ import android.annotation.SuppressLint;
 import android.content.pm.ApplicationInfo;
 import android.os.Build;
 
+import androidx.annotation.RequiresApi;
 import androidx.annotation.VisibleForTesting;
 
 import org.chromium.base.BundleUtils;
 import org.chromium.build.NativeLibraries;
+
+import java.util.Arrays;
 
 /**
  * Class to override upstream's LibraryLoader.loadWithSystemLinkerAlreadyLocked
@@ -36,14 +39,23 @@ public class BraveLibraryLoader extends LibraryLoader {
     public void loadWithSystemLinkerAlreadyLocked(ApplicationInfo appInfo, boolean inZygote) {
         setEnvForNative();
         preloadAlreadyLocked(appInfo.packageName, inZygote);
-        loadLibsfromSplits();
+        loadLibsfromSplits(appInfo, inZygote);
     }
 
-    @SuppressLint({"UnsafeDynamicallyLoadedCode"})
-    private void loadLibsfromSplits() {
+    @SuppressLint({"UnsafeDynamicallyLoadedCode", "NewApi"})
+    private void loadLibsfromSplits(ApplicationInfo appInfo, boolean inZygote) {
+        assert !inZygote || android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q;
+
         String splitName = getSplitNameByCurrentAbi();
-        for (String library : NativeLibraries.LIBRARIES) {
-            System.load(BundleUtils.getNativeLibraryPath(library, splitName));
+        if (inZygote && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            String apkPath = getSplitApkPath(appInfo, splitName);
+            for (String library : NativeLibraries.LIBRARIES) {
+                System.load(getNativeLibraryPath(library, apkPath, appInfo));
+            }
+        } else {
+            for (String library : NativeLibraries.LIBRARIES) {
+                System.load(BundleUtils.getNativeLibraryPath(library, splitName));
+            }
         }
     }
 
@@ -62,6 +74,28 @@ public class BraveLibraryLoader extends LibraryLoader {
             default:
                 assert false;
                 return "config.arm64_v8a";
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private static String getSplitApkPath(ApplicationInfo appInfo, String splitName) {
+        String[] splitNames = appInfo.splitNames;
+        if (splitNames == null) {
+            return null;
+        }
+        int idx = Arrays.binarySearch(splitNames, splitName);
+        return idx < 0 ? null : appInfo.splitSourceDirs[idx];
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String getNativeLibraryPath(
+            String libraryName, String apkPath, ApplicationInfo appInfo) {
+        try {
+            String primaryCpuAbi =
+                    (String) appInfo.getClass().getField("primaryCpuAbi").get(appInfo);
+            return apkPath + "!/lib/" + primaryCpuAbi + "/" + System.mapLibraryName(libraryName);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }
