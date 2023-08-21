@@ -80,18 +80,11 @@ public class CachedAdBlockEngine {
         do {
           let model = try self.cachedCosmeticFilterModel(forFrameURL: frameURL)
           
-          let selectorsJSON = self.engine.stylesheetForCosmeticRulesIncluding(
+          let selectors = try self.engine.stylesheetForCosmeticRulesIncluding(
             classes: classes, ids: ids, exceptions: model?.exceptions ?? []
           )
-          
-          guard let data = selectorsJSON.data(using: .utf8) else {
-            continuation.resume(returning: nil)
-            return
-          }
-          
-          let decoder = JSONDecoder()
-          let result = try decoder.decode([String].self, from: data)
-          continuation.resume(returning: (self.source, Set(result)))
+
+          continuation.resume(returning: (self.source, Set(selectors)))
         } catch {
           continuation.resume(throwing: error)
         }
@@ -172,20 +165,41 @@ public class CachedAdBlockEngine {
     }
   }
   
+  /// Create multiple engines from the given resources by grouping them by their source
+  /// - Parameter resources: The resources to compile the engines from
+  /// - Returns: An array of compilation results
+  static func createEngines(
+    from resources: [AdBlockEngineManager.ResourceWithVersion],
+    scripletResourcesURL: URL?
+  ) async -> [Result<CachedAdBlockEngine, Error>] {
+    let groupedResources = Dictionary(grouping: resources, by: \.resource.source)
+    
+    return await groupedResources.asyncConcurrentMap { source, resources -> Result<CachedAdBlockEngine, Error> in
+      do {
+        let engine = try await createEngine(
+          from: resources, source: source, scripletResourcesURL: scripletResourcesURL
+        )
+        return .success(engine)
+      } catch {
+        return .failure(error)
+      }
+    }
+  }
+  
   /// Create an engine from the given resources
   static func createEngine(
     from resources: [AdBlockEngineManager.ResourceWithVersion],
     source: AdBlockEngineManager.Source,
     scripletResourcesURL: URL?
-  ) async throws -> (engine: CachedAdBlockEngine, compileResults: [AdBlockEngineManager.ResourceWithVersion: Result<Void, Error>]) {
+  ) async throws -> CachedAdBlockEngine {
     return try await withCheckedThrowingContinuation { continuation in
       let serialQueue = DispatchQueue(label: "com.brave.WrappedAdBlockEngine.\(UUID().uuidString)")
       
       serialQueue.async {
         do {
-          let results = try AdblockEngine.createEngine(from: resources, scripletResourcesURL: scripletResourcesURL)
-          let cachedEngine = CachedAdBlockEngine(engine: results.engine, source: source, serialQueue: serialQueue)
-          continuation.resume(returning: (cachedEngine, results.compileResults))
+          let engine = try AdblockEngine.createEngine(from: resources, scripletResourcesURL: scripletResourcesURL)
+          let cachedEngine = CachedAdBlockEngine(engine: engine, source: source, serialQueue: serialQueue)
+          continuation.resume(returning: cachedEngine)
         } catch {
           continuation.resume(throwing: error)
         }

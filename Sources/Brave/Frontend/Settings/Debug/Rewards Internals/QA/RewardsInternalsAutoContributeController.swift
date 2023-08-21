@@ -9,7 +9,7 @@ import BraveUI
 
 class RewardsInternalsAutoContributeController: UITableViewController {
 
-  let ledger: BraveLedger
+  let rewardsAPI: BraveRewardsAPI
   private var publishers: [BraveCore.BraveRewards.PublisherInfo] = []
   private var autocontributeProperties: BraveCore.BraveRewards.AutoContributeProperties?
   private let percentFormatter = NumberFormatter().then {
@@ -21,8 +21,8 @@ class RewardsInternalsAutoContributeController: UITableViewController {
     $0.timeStyle = .none
   }
 
-  init(ledger: BraveLedger) {
-    self.ledger = ledger
+  init(rewardsAPI: BraveRewardsAPI) {
+    self.rewardsAPI = rewardsAPI
     super.init(style: .grouped)
   }
 
@@ -37,12 +37,12 @@ class RewardsInternalsAutoContributeController: UITableViewController {
     tableView.register(AutoContributePublisherCell.self)
     title = "Auto-Contribute"
 
-    ledger.listAutoContributePublishers { [weak self] list in
+    rewardsAPI.listAutoContributePublishers { [weak self] list in
       guard let self = self else { return }
       self.publishers = list
       self.tableView.reloadData()
     }
-    ledger.fetchAutoContributeProperties { [weak self] properties in
+    rewardsAPI.fetchAutoContributeProperties { [weak self] properties in
       self?.autocontributeProperties = properties
       self?.tableView.reloadData()
     }

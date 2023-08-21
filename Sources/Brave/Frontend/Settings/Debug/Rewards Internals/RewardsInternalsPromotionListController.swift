@@ -34,10 +34,10 @@ extension BraveCore.BraveRewards.PromotionType {
 }
 
 class RewardsInternalsPromotionListController: TableViewController {
-  private let ledger: BraveLedger
+  private let rewardsAPI: BraveRewardsAPI
 
-  init(ledger: BraveLedger) {
-    self.ledger = ledger
+  init(rewardsAPI: BraveRewardsAPI) {
+    self.rewardsAPI = rewardsAPI
     super.init(style: .grouped)
   }
 
@@ -53,7 +53,7 @@ class RewardsInternalsPromotionListController: TableViewController {
       $0.accessibilityLabel = Strings.RewardsInternals.shareInternalsTitle
     }
 
-    ledger.updatePendingAndFinishedPromotions {
+    rewardsAPI.updatePendingAndFinishedPromotions {
       self.reloadData()
     }
   }
@@ -69,7 +69,7 @@ class RewardsInternalsPromotionListController: TableViewController {
       $0.maximumFractionDigits = 3
     }
 
-    let promotions = (ledger.pendingPromotions + ledger.finishedPromotions).sorted(by: { $0.claimedAt < $1.claimedAt })
+    let promotions = (rewardsAPI.pendingPromotions + rewardsAPI.finishedPromotions).sorted(by: { $0.claimedAt < $1.claimedAt })
     dataSource.sections = promotions.map { promo in
       var rows = [
         Row(text: Strings.RewardsInternals.status, detailText: promo.status.displayText),
@@ -94,7 +94,7 @@ class RewardsInternalsPromotionListController: TableViewController {
   }
 
   @objc private func tappedShare() {
-    let controller = RewardsInternalsShareController(ledger: self.ledger, initiallySelectedSharables: [.promotions])
+    let controller = RewardsInternalsShareController(rewardsAPI: self.rewardsAPI, initiallySelectedSharables: [.promotions])
     let container = UINavigationController(rootViewController: controller)
     present(container, animated: true)
   }
@@ -104,9 +104,9 @@ class RewardsInternalsPromotionListController: TableViewController {
 /// or has pending to claim
 struct RewardsInternalsPromotionsGenerator: RewardsInternalsFileGenerator {
   func generateFiles(at path: String, using builder: RewardsInternalsSharableBuilder, completion: @escaping (Error?) -> Void) {
-    let ledger = builder.ledger
-    ledger.updatePendingAndFinishedPromotions {
-      let promotions = ledger.finishedPromotions + ledger.pendingPromotions
+    let rewardsAPI = builder.rewardsAPI
+    rewardsAPI.updatePendingAndFinishedPromotions {
+      let promotions = rewardsAPI.finishedPromotions + rewardsAPI.pendingPromotions
       let promos = promotions.map { promo -> [String: Any] in
         var data: [String: Any] = [
           "ID": promo.id,

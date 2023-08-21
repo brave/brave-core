@@ -64,6 +64,7 @@ extension BraveWallet.NetworkInfo: Identifiable {
       isErc721: false,
       isErc1155: false,
       isNft: false,
+      isSpam: false,
       symbol: symbol,
       decimals: decimals,
       visible: false,
@@ -139,7 +140,7 @@ extension BraveWallet.NetworkInfo: Identifiable {
 extension BraveWallet.SignMessageRequest {
   static var previewRequest: BraveWallet.SignMessageRequest {
     .init(
-      originInfo: .init(origin: .init(url: URL(string: "https://app.uniswap.org")!), originSpec: "", eTldPlusOne: "uniswap.org"),
+      originInfo: .init(originSpec: "https://app.uniswap.org", eTldPlusOne: "uniswap.org"),
       id: 1,
       address: "",
       domain: "example.com",

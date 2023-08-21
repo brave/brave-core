@@ -118,6 +118,14 @@ class MockJsonRpcService: BraveWalletJsonRpcService {
     completion("", .success, "")
   }
   
+  func addHiddenNetwork(_ coin: BraveWallet.CoinType, chainId: String, completion: @escaping (Bool) -> Void) {
+    completion(false)
+  }
+  
+  func removeHiddenNetwork(_ coin: BraveWallet.CoinType, chainId: String, completion: @escaping (Bool) -> Void) {
+    completion(false)
+  }
+  
   func addEthereumChain(forOrigin chain: BraveWallet.NetworkInfo, origin: URLOrigin, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
     completion("", .chainDisconnected, "Error Message")
   }
@@ -125,7 +133,7 @@ class MockJsonRpcService: BraveWalletJsonRpcService {
   func addEthereumChainRequestCompleted(_ chainId: String, approved: Bool) {
   }
   
-  func notifySwitchChainRequestProcessed(_ approved: Bool, origin: URLOrigin) {
+  func notifySwitchChainRequestProcessed(_ requestId: String, approved: Bool) {
   }
   
   func setCustomNetworkForTesting(_ chainId: String, coin: BraveWallet.CoinType, providerUrl: URL) {
@@ -263,6 +271,7 @@ extension BraveWallet.NetworkInfo {
     symbolName: "Ethereum",
     decimals: 18,
     coin: .eth,
+    supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:)),
     isEip1559: true
   )
   static let mockGoerli: BraveWallet.NetworkInfo = .init(
@@ -276,6 +285,7 @@ extension BraveWallet.NetworkInfo {
     symbolName: "Ethereum",
     decimals: 18,
     coin: .eth,
+    supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:)),
     isEip1559: true
   )
   static let mockSepolia: BraveWallet.NetworkInfo = .init(
@@ -289,6 +299,7 @@ extension BraveWallet.NetworkInfo {
     symbolName: "Ethereum",
     decimals: 18,
     coin: .eth,
+    supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:)),
     isEip1559: true
   )
   static let mockPolygon: BraveWallet.NetworkInfo = .init(
@@ -302,6 +313,7 @@ extension BraveWallet.NetworkInfo {
     symbolName: "MATIC",
     decimals: 18,
     coin: .eth,
+    supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:)),
     isEip1559: true
   )
   static let mockCelo: BraveWallet.NetworkInfo = .init(
@@ -315,6 +327,7 @@ extension BraveWallet.NetworkInfo {
     symbolName: "CELO",
     decimals: 18,
     coin: .eth,
+    supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:)),
     isEip1559: false
   )
   static let mockSolana: BraveWallet.NetworkInfo = .init(
@@ -328,6 +341,7 @@ extension BraveWallet.NetworkInfo {
     symbolName: "Solana",
     decimals: 9,
     coin: .sol,
+    supportedKeyrings: [BraveWallet.KeyringId.solana.rawValue].map(NSNumber.init(value:)),
     isEip1559: false
   )
   static let mockSolanaTestnet: BraveWallet.NetworkInfo = .init(
@@ -341,6 +355,7 @@ extension BraveWallet.NetworkInfo {
     symbolName: "Solana",
     decimals: 9,
     coin: .sol,
+    supportedKeyrings: [BraveWallet.KeyringId.solana.rawValue].map(NSNumber.init(value:)),
     isEip1559: false
   )
 }

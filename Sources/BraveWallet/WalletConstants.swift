@@ -20,8 +20,11 @@ public struct WalletConstants {
   /// The wei value used for unlimited allowance in an ERC 20 transaction.
   static let MAX_UINT256 = "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
   
-  /// The origin used for transactions/requests from Brave Wallet.
+  /// The `URLOrigin` used for transactions/requests from Brave Wallet.
   static let braveWalletOrigin: URLOrigin = .init(url: URL(string: "chrome://wallet")!)
+  
+  /// The `OriginInfo.originSpec` used for transactions/requests from Brave Wallet.
+  static let braveWalletOriginSpec = "chrome://wallet"
   
   /// The url to Brave Help Center for Wallet.
   static let braveWalletSupportURL = URL(string: "https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet")!
@@ -74,7 +77,7 @@ public struct WalletConstants {
   ]
   
   /// The currently supported coin types.
-  static var supportedCoinTypes: OrderedSet<BraveWallet.CoinType> {
+  public static var supportedCoinTypes: OrderedSet<BraveWallet.CoinType> {
     return [.eth, .sol]
   }
   

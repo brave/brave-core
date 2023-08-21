@@ -42,8 +42,8 @@ class BraveRewardsSettingsViewController: TableViewController {
       )
     ]
 
-    if let ledger = rewards.ledger {
-      ledger.rewardsInternalInfo { [weak self] info in
+    if let rewardsAPI = rewards.rewardsAPI {
+      rewardsAPI.rewardsInternalInfo { [weak self] info in
         if let info = info, !info.paymentId.isEmpty {
           self?.dataSource.sections += [
             Section(rows: [
@@ -51,7 +51,7 @@ class BraveRewardsSettingsViewController: TableViewController {
                 text: Strings.RewardsInternals.title,
                 selection: {
                   guard let self = self else { return }
-                  let controller = RewardsInternalsViewController(ledger: ledger)
+                  let controller = RewardsInternalsViewController(rewardsAPI: rewardsAPI)
                   self.navigationController?.pushViewController(controller, animated: true)
                 }, accessory: .disclosureIndicator)
             ])
@@ -66,7 +66,7 @@ class BraveRewardsSettingsViewController: TableViewController {
 
     title = Strings.braveRewardsTitle
 
-    rewards.startLedgerService { [weak self] in
+    rewards.startRewardsService { [weak self] in
       guard let self = self else { return }
       self.reloadSections()
     }

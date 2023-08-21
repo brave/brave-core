@@ -267,7 +267,7 @@ extension Tab: BraveWalletProviderDelegate {
   }
   
   /// Returns the selected account if present in `allowedAccounts`, otherwise returns `allowedAccounts`
-  private func filterAllowedAccounts(
+  func filterAllowedAccounts(
     _ allowedAccounts: [String],
     selectedAccount: String?
   ) -> [String] {
@@ -275,22 +275,6 @@ extension Tab: BraveWalletProviderDelegate {
       return [selectedAccount]
     }
     return allowedAccounts
-  }
-
-  /// Helper to fetch the allowed accounts for the current coin. Unlike `allowedAccounts(_:accounts:)`
-  /// this will filter the selected account to the front of the array if it is an allowed/permitted account
-  @MainActor func allowedAccountsForCurrentCoin() async -> [String] {
-    guard let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: false),
-          let walletService = BraveWallet.ServiceFactory.get(privateMode: false) else {
-      return []
-    }
-    let coin = await walletService.selectedCoin()
-    let allAccounts = await keyringService.keyringInfo(coin.keyringId).accountInfos.map(\.address)
-    guard let allowedAccounts = getAllowedAccounts(coin, accounts: allAccounts) else {
-      return []
-    }
-    let selectedAccounts = await keyringService.selectedAccount(coin)
-    return filterAllowedAccounts(allowedAccounts, selectedAccount: selectedAccounts)
   }
   
   /// Fetches all allowed accounts for the current origin.
@@ -484,18 +468,21 @@ extension Tab: BraveWalletEventsListener {
       asFunction: false
     )
     
-    let coin: BraveWallet.CoinType = .eth
-    let keyring = await keyringService.keyringInfo(coin.keyringId)
+    let isKeyringLocked = await keyringService.isLocked()
     let selectedAccount: String
-    if keyring.isLocked {
+    if isKeyringLocked {
       // Check for locked status before assigning account address.
       // `getAllowedAccounts` is not async, can't check locked status.
       selectedAccount = valueOrUndefined(Optional<String>.none)
     } else {
-      let allAccounts = keyring.accountInfos.map(\.address)
-      if let allowedAccounts = getAllowedAccounts(coin, accounts: allAccounts) {
-        let selectedAccountForCoin = await keyringService.selectedAccount(coin)
-        let filteredAllowedAccounts = filterAllowedAccounts(allowedAccounts, selectedAccount: selectedAccountForCoin)
+      let allAccounts = await keyringService.allAccounts()
+      let allEthAccounts = allAccounts.accounts.filter { $0.coin == .eth }
+      if let allowedAccounts = getAllowedAccounts(.eth, accounts: allEthAccounts.map(\.address)) {
+        let selectedAccountForCoin = allAccounts.ethDappSelectedAccount
+        let filteredAllowedAccounts = filterAllowedAccounts(
+          allowedAccounts,
+          selectedAccount: selectedAccountForCoin?.address
+        )
         selectedAccount = valueOrUndefined(filteredAllowedAccounts.first)
       } else {
         selectedAccount = valueOrUndefined(Optional<String>.none)
@@ -535,6 +522,10 @@ extension Tab: BraveWalletSolanaEventsListener {
       await updateSolanaProperties()
     }
   }
+  
+  func disconnectEvent() {
+    emitSolanaEvent(.disconnect)
+  }
 
   func emitSolanaEvent(_ event: Web3ProviderEvent) {
     guard Preferences.Wallet.defaultSolWallet.value == Preferences.Wallet.WalletType.brave.rawValue,
@@ -568,7 +559,7 @@ extension Tab: BraveWalletSolanaEventsListener {
     )
     // publicKey
     if let keyringService = walletKeyringService,
-       let publicKey = await keyringService.selectedAccount(.sol),
+       let publicKey = await keyringService.allAccounts().solDappSelectedAccount?.address,
        self.isSolanaAccountConnected(publicKey) {
       await webView.evaluateSafeJavaScript(
         functionName: """
@@ -607,19 +598,24 @@ extension Tab: BraveWalletKeyringServiceObserver {
   }
   
   func unlocked() {
-    guard let origin = url?.origin else { return }
+    guard let origin = url?.origin,
+          let keyringService = walletKeyringService else { return }
     Task { @MainActor in
       // check domain already has some permitted accounts for this Tab's URLOrigin
       let permissionRequestManager = WalletProviderPermissionRequestsManager.shared
-      if permissionRequestManager.hasPendingRequest(for: origin, coinType: .eth) {
-        let pendingRequests = permissionRequestManager.pendingRequests(for: origin, coinType: .eth)
-        let accounts = await allowedAccountsForCurrentCoin()
-        if !accounts.isEmpty {
-          for request in pendingRequests {
-            // cancel the requests if `allowedAccounts` is not empty for this domain
-            permissionRequestManager.cancelRequest(request)
-            // let wallet provider know we have allowed accounts for this domain
-            request.providerHandler?(.none, accounts)
+      let allAccounts = await keyringService.allAccounts().accounts
+      for coin in WalletConstants.supportedCoinTypes {
+        let allAccountsForCoin = allAccounts.filter { $0.coin == coin }
+        if permissionRequestManager.hasPendingRequest(for: origin, coinType: coin) {
+          let pendingRequests = permissionRequestManager.pendingRequests(for: origin, coinType: coin)
+          let accounts = getAllowedAccounts(coin, accounts: allAccountsForCoin.map(\.address)) ?? []
+          if !accounts.isEmpty {
+            for request in pendingRequests {
+              // cancel the requests if `allowedAccounts` is not empty for this domain
+              permissionRequestManager.cancelRequest(request)
+              // let wallet provider know we have allowed accounts for this domain
+              request.providerHandler?(.none, accounts)
+            }
           }
         }
       }
@@ -635,7 +631,10 @@ extension Tab: BraveWalletKeyringServiceObserver {
   func autoLockMinutesChanged() {
   }
   
-  func selectedAccountChanged(_ coin: BraveWallet.CoinType) {
+  func selectedWalletAccountChanged(_ account: BraveWallet.AccountInfo) {
+  }
+  
+  func selectedDappAccountChanged(_ coin: BraveWallet.CoinType, account: BraveWallet.AccountInfo?) {
   }
   
   func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {

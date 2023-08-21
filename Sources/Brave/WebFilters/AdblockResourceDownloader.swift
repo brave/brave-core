@@ -145,12 +145,11 @@ public actor AdblockResourceDownloader: Sendable {
           return
         }
         
-        var wasTruncated: Bool = false
-        let encodedContentRuleList = AdblockEngine.contentBlockerRules(fromFilterSet: filterSet, truncated: &wasTruncated)
+        let result = try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
         
         // try to compile
         try await ContentBlockerManager.shared.compile(
-          encodedContentRuleList: encodedContentRuleList, for: blocklistType,
+          encodedContentRuleList: result.rulesJSON, for: blocklistType,
           modes: modes
         )
       } catch {

@@ -1239,8 +1239,22 @@ extension TabManager: NSFetchedResultsControllerDelegate {
       let tabsForDomain = self.allTabs.filter { $0.url?.domainURL.absoluteString.caseInsensitiveCompare(domainURL) == .orderedSame }
       tabsForDomain.forEach { tab in
         Task { @MainActor in
-          let accounts = await tab.allowedAccountsForCurrentCoin()
-          tab.accountsChangedEvent(Array(accounts))
+          let privateMode = privateBrowsingManager.isPrivateBrowsing
+          guard let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: privateMode) else {
+            return
+          }
+          let allAccounts = await keyringService.allAccounts()
+          // iOS does not have `HostContentSettingsMap`, so we must
+          // implement `SolanaProviderImpl::OnContentSettingChanged`
+          if let selectedSolAccount = allAccounts.solDappSelectedAccount,
+             tab.isSolanaAccountConnected(selectedSolAccount.address), // currently connected
+             !tab.isAccountAllowed(.sol, account: selectedSolAccount.address) { // user revoked access
+            tab.walletSolProvider?.disconnect()
+          }
+          
+          let ethAccountAddressess = allAccounts.accounts.filter { $0.coin == .eth }.map(\.address)
+          let allowedEthAccountAddresses = tab.getAllowedAccounts(.eth, accounts: ethAccountAddressess) ?? []
+          tab.accountsChangedEvent(Array(allowedEthAccountAddresses))
         }
       }
     }

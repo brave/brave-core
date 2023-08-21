@@ -73,27 +73,27 @@ extension BrowserViewController {
     popover.present(from: topToolbar.locationView.rewardsButton, on: self)
     popover.popoverDidDismiss = { [weak self] _ in
       guard let self = self else { return }
-      if let tabId = self.tabManager.selectedTab?.rewardsId, self.rewards.ledger?.selectedTabId == 0 {
+      if let tabId = self.tabManager.selectedTab?.rewardsId, self.rewards.rewardsAPI?.selectedTabId == 0 {
         // Show the tab currently visible
-        self.rewards.ledger?.selectedTabId = tabId
+        self.rewards.rewardsAPI?.selectedTabId = tabId
       }
     }
     // Hide the current tab
-    rewards.ledger?.selectedTabId = 0
+    rewards.rewardsAPI?.selectedTabId = 0
     // Fetch new promotions
-    rewards.ledger?.fetchPromotions(nil)
+    rewards.rewardsAPI?.fetchPromotions(nil)
   }
 
   func claimPendingPromotions() {
     guard
-      let ledger = rewards.ledger,
-      case let promotions = ledger.pendingPromotions.filter({ $0.status == .active }),
+      let rewardsAPI = rewards.rewardsAPI,
+      case let promotions = rewardsAPI.pendingPromotions.filter({ $0.status == .active }),
       !promotions.isEmpty else {
       return
     }
     Task {
       for promo in promotions {
-        let success = await ledger.claimPromotion(promo)
+        let success = await rewardsAPI.claimPromotion(promo)
         adsRewardsLog.info("[BraveRewards] Auto-Claim Promotion - \(success) for \(promo.approximateValue)")
       }
     }
@@ -133,21 +133,21 @@ extension BrowserViewController {
   }
 
   func setupLedger() {
-    guard let ledger = rewards.ledger else { return }
+    guard let rewardsAPI = rewards.rewardsAPI else { return }
     // Update defaults
-    ledger.setMinimumVisitDuration(8)
-    ledger.setMinimumNumberOfVisits(1)
-    ledger.setContributionAmount(Double.greatestFiniteMagnitude)
+    rewardsAPI.setMinimumVisitDuration(8)
+    rewardsAPI.setMinimumNumberOfVisits(1)
+    rewardsAPI.setContributionAmount(Double.greatestFiniteMagnitude)
 
-    // Create ledger observer
-    let rewardsObserver = LedgerObserver(ledger: ledger)
-    ledger.add(rewardsObserver)
-    ledgerObserver = rewardsObserver
+    // Create rewards observer
+    let rewardsObserver = RewardsObserver(rewardsAPI: rewardsAPI)
+    rewardsAPI.add(rewardsObserver)
+    self.rewardsObserver = rewardsObserver
 
     rewardsObserver.walletInitalized = { [weak self] result in
       guard let self = self, let client = self.deviceCheckClient else { return }
-      if result == .ledgerOk, !DeviceCheckClient.isDeviceEnrolled() {
-        ledger.setupDeviceCheckEnrollment(client) {}
+      if result == .ok, !DeviceCheckClient.isDeviceEnrolled() {
+        rewardsAPI.setupDeviceCheckEnrollment(client) {}
         self.updateRewardsButtonState()
       }
     }
@@ -164,10 +164,10 @@ extension BrowserViewController {
     promotionFetchTimer = Timer.scheduledTimer(
       withTimeInterval: 1.hours,
       repeats: true,
-      block: { [weak self, weak ledger] _ in
-        guard let self = self, let ledger = ledger else { return }
+      block: { [weak self, weak rewardsAPI] _ in
+        guard let self = self, let rewardsAPI = rewardsAPI else { return }
         if self.rewards.isEnabled {
-          ledger.fetchPromotions(nil)
+          rewardsAPI.fetchPromotions(nil)
         }
       }
     )
@@ -222,7 +222,7 @@ extension BrowserViewController: BraveAdsCaptchaHandler {
     }
     Task {
       do {
-        try await rewards.ledger?.solveAdaptiveCaptcha(paymentId: paymentId, captchaId: captchaId)
+        try await rewards.rewardsAPI?.solveAdaptiveCaptcha(paymentId: paymentId, captchaId: captchaId)
       } catch {
         // Increase failure count, stop attempting attestation altogether passed a specific count
         Preferences.Rewards.adaptiveCaptchaFailureCount.value += 1

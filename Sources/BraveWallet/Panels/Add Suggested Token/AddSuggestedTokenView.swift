@@ -28,7 +28,7 @@ struct AddSuggestedTokenView: View {
           Text(Strings.Wallet.addSuggestedTokenSubtitle)
             .font(.headline)
             .foregroundColor(Color(.bravePrimary))
-          Text(urlOrigin: originInfo.origin)
+          Text(originInfo: originInfo)
             .font(.footnote)
             .foregroundColor(Color(.braveLabel))
         }
@@ -145,8 +145,7 @@ struct AddSuggestedTokenView_Previews: PreviewProvider {
     AddSuggestedTokenView(
       token: .previewToken,
       originInfo: .init(
-        origin: .init(url: URL(string: "https://app.uniswap.org")!),
-        originSpec: "",
+        originSpec: "https://app.uniswap.org",
         eTldPlusOne: "uniswap.org"
       ),
       cryptoStore: .previewStore,

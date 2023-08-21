@@ -29,8 +29,8 @@ extension PendingRequest: Identifiable {
     case let .switchChain(chainRequest): return "switchChain-\(chainRequest.chainId)"
     case let .addSuggestedToken(tokenRequest): return "addSuggestedToken-\(tokenRequest.token.id)"
     case let .signMessage(signRequests): return "signMessage-\(signRequests.map(\.id))"
-    case let .getEncryptionPublicKey(request): return "getEncryptionPublicKey-\(request.address)-\(request.originInfo.origin)"
-    case let .decrypt(request): return "decrypt-\(request.address)-\(request.originInfo.origin)"
+    case let .getEncryptionPublicKey(request): return "getEncryptionPublicKey-\(request.address)-\(request.requestId)"
+    case let .decrypt(request): return "decrypt-\(request.address)-\(request.requestId)"
     case let .signTransaction(requests): return "signTransaction-\(requests.map(\.id))"
     case let .signAllTransactions(requests): return "signAllTransactions-\(requests.map(\.id))"
     }
@@ -38,12 +38,12 @@ extension PendingRequest: Identifiable {
 }
 
 enum WebpageRequestResponse: Equatable {
-  case switchChain(approved: Bool, originInfo: BraveWallet.OriginInfo)
+  case switchChain(approved: Bool, requestId: String)
   case addNetwork(approved: Bool, chainId: String)
   case addSuggestedToken(approved: Bool, token: BraveWallet.BlockchainToken)
   case signMessage(approved: Bool, id: Int32)
-  case getEncryptionPublicKey(approved: Bool, originInfo: BraveWallet.OriginInfo)
-  case decrypt(approved: Bool, originInfo: BraveWallet.OriginInfo)
+  case getEncryptionPublicKey(approved: Bool, requestId: String)
+  case decrypt(approved: Bool, requestId: String)
   case signTransaction(approved: Bool, id: Int32)
   case signAllTransactions(approved: Bool, id: Int32)
 }
@@ -197,6 +197,7 @@ public class CryptoStore: ObservableObject {
     }
     let store = BuyTokenStore(
       blockchainRegistry: blockchainRegistry,
+      keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
@@ -471,8 +472,8 @@ public class CryptoStore: ObservableObject {
     completion: ((_ error: String?) -> Void)? = nil
   ) {
     switch response {
-    case let .switchChain(approved, originInfo):
-      rpcService.notifySwitchChainRequestProcessed(approved, origin: originInfo.origin)
+    case let .switchChain(approved, requestId):
+      rpcService.notifySwitchChainRequestProcessed(requestId, approved: approved)
     case let .addNetwork(approved, chainId):
       // for add network request, approval requires network call so we must
       // wait for `onAddEthereumChainRequestCompleted` to know success/failure
@@ -494,10 +495,10 @@ public class CryptoStore: ObservableObject {
       walletService.notifyAddSuggestTokenRequestsProcessed(approved, contractAddresses: [token.contractAddress])
     case let .signMessage(approved, id):
       walletService.notifySignMessageRequestProcessed(approved, id: id, signature: nil, error: nil)
-    case let .getEncryptionPublicKey(approved, originInfo):
-      walletService.notifyGetPublicKeyRequestProcessed(approved, origin: originInfo.origin)
-    case let .decrypt(approved, originInfo):
-      walletService.notifyDecryptRequestProcessed(approved, origin: originInfo.origin)
+    case let .getEncryptionPublicKey(approved, requestId):
+      walletService.notifyGetPublicKeyRequestProcessed(requestId, approved: approved)
+    case let .decrypt(approved, requestId):
+      walletService.notifyDecryptRequestProcessed(requestId, approved: approved)
     case let .signTransaction(approved, id):
       walletService.notifySignTransactionRequestProcessed(approved, id: id, signature: nil, error: nil)
     case let .signAllTransactions(approved, id):
@@ -519,7 +520,7 @@ public class CryptoStore: ObservableObject {
       }
       let pendingSwitchChainRequests = await rpcService.pendingSwitchChainRequests()
       pendingSwitchChainRequests.forEach {
-        handleWebpageRequestResponse(.switchChain(approved: false, originInfo: $0.originInfo))
+        handleWebpageRequestResponse(.switchChain(approved: false, requestId: $0.requestId))
       }
       let pendingAddSuggestedTokenRequets = await walletService.pendingAddSuggestTokenRequests()
       pendingAddSuggestedTokenRequets.forEach {
@@ -527,11 +528,11 @@ public class CryptoStore: ObservableObject {
       }
       let pendingGetEncryptionPublicKeyRequests = await walletService.pendingGetEncryptionPublicKeyRequests()
       pendingGetEncryptionPublicKeyRequests.forEach {
-        handleWebpageRequestResponse(.getEncryptionPublicKey(approved: false, originInfo: $0.originInfo))
+        handleWebpageRequestResponse(.getEncryptionPublicKey(approved: false, requestId: $0.requestId))
       }
       let pendingDecryptRequests = await walletService.pendingDecryptRequests()
       pendingDecryptRequests.forEach {
-        handleWebpageRequestResponse(.decrypt(approved: false, originInfo: $0.originInfo))
+        handleWebpageRequestResponse(.decrypt(approved: false, requestId: $0.requestId))
       }
     }
   }
@@ -595,7 +596,9 @@ extension CryptoStore: BraveWalletKeyringServiceObserver {
   }
   public func autoLockMinutesChanged() {
   }
-  public func selectedAccountChanged(_ coinType: BraveWallet.CoinType) {
+  public func selectedWalletAccountChanged(_ account: BraveWallet.AccountInfo) {
+  }
+  public func selectedDappAccountChanged(_ coin: BraveWallet.CoinType, account: BraveWallet.AccountInfo?) {
   }
   public func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {
   }

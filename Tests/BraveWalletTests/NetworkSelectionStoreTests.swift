@@ -21,7 +21,6 @@ import Preferences
   private func setupServices() -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService, BraveWallet.TestSwapService) {
     let currentNetwork: BraveWallet.NetworkInfo = .mockMainnet
     let currentChainId = currentNetwork.chainId
-    let currentSelectedCoin: BraveWallet.CoinType = .eth
     
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._keyringInfo = { keyringId, completion in
@@ -37,6 +36,14 @@ import Preferences
     }
     keyringService._addObserver = { _ in }
     keyringService._isLocked = { $0(false) }
+    keyringService._allAccounts = { completion in
+      completion(.init(
+        accounts: [.previewAccount],
+        selectedAccount: .previewAccount,
+        ethDappSelectedAccount: .previewAccount,
+        solDappSelectedAccount: nil
+      ))
+    }
     
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }
@@ -52,7 +59,9 @@ import Preferences
     
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
-    walletService._selectedCoin = { $0(currentSelectedCoin) }
+    walletService._ensureSelectedAccountForChain = { coin, chainId, completion in
+      completion(BraveWallet.AccountInfo.previewAccount.accountId)
+    }
     
     let swapService = BraveWallet.TestSwapService()
     swapService._isSwapSupported = { $1(true) }
@@ -200,13 +209,12 @@ import Preferences
   }
   
   func testDismissAddAccountAfterCreation() async {
-    let (_, rpcService, walletService, swapService) = setupServices()
-    
+    let (keyringService, rpcService, walletService, swapService) = setupServices()
+
     var accountInfosDict: [BraveWallet.CoinType: [BraveWallet.AccountInfo]] = [
       .eth: [.mockEthAccount]
     ]
     
-    let keyringService = BraveWallet.TestKeyringService()
     keyringService._keyringInfo = { keyringId, completion in
       let accountInfos: [BraveWallet.AccountInfo]
       switch keyringId {
@@ -230,7 +238,15 @@ import Preferences
     }
     keyringService._addObserver = { _ in }
     keyringService._isLocked = { $0(false) }
-    
+    keyringService._allAccounts = { completion in
+      completion(.init(
+        accounts: accountInfosDict.values.flatMap { $0 },
+        selectedAccount: accountInfosDict[.eth]?.first,
+        ethDappSelectedAccount: accountInfosDict[.eth]?.first,
+        solDappSelectedAccount: accountInfosDict[.sol]?.first
+      ))
+    }
+
     let networkStore = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,

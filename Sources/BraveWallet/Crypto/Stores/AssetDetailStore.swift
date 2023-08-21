@@ -202,11 +202,11 @@ class AssetDetailStore: ObservableObject {
         self.isInitialState = false
         self.isLoadingChart = false
         
+        let selectedCoin = await keyringService.allAccounts().selectedAccount?.coin ?? .eth
         // selected network used because we don't have `chainId` on CoinMarket
-        let selectedCoin = await self.walletService.selectedCoin()
         let selectedNetwork = await self.rpcService.network(selectedCoin, origin: nil)
         self.isBuySupported = await self.isBuyButtonSupported(in: selectedNetwork, for: coinMarket.symbol)
-        
+
         // below is all not supported from Market tab
         self.isSendSupported = false
         self.isSwapSupported = false
@@ -384,7 +384,10 @@ extension AssetDetailStore: BraveWalletKeyringServiceObserver {
   func autoLockMinutesChanged() {
   }
 
-  func selectedAccountChanged(_ coin: BraveWallet.CoinType) {
+  func selectedWalletAccountChanged(_ account: BraveWallet.AccountInfo) {
+  }
+  
+  func selectedDappAccountChanged(_ coin: BraveWallet.CoinType, account: BraveWallet.AccountInfo?) {
   }
   
   func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {

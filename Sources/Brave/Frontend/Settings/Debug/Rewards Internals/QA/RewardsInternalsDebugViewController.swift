@@ -14,12 +14,12 @@ import DeviceCheck
 /// A place where all rewards debugging information will live.
 class RewardsInternalsDebugViewController: TableViewController {
 
-  private let ledger: BraveLedger
+  private let rewardsAPI: BraveRewardsAPI
   private var internalsInfo: BraveCore.BraveRewards.RewardsInternalsInfo?
   private var transferrableTokens: Double = 0.0
 
-  init(ledger: BraveLedger) {
-    self.ledger = ledger
+  init(rewardsAPI: BraveRewardsAPI) {
+    self.rewardsAPI = rewardsAPI
     super.init(style: .insetGrouped)
   }
 
@@ -37,7 +37,7 @@ class RewardsInternalsDebugViewController: TableViewController {
       $0.accessibilityLabel = Strings.RewardsInternals.shareInternalsTitle
     }
 
-    ledger.rewardsInternalInfo { info in
+    rewardsAPI.rewardsInternalInfo { info in
       self.internalsInfo = info
       self.reloadSections()
     }
@@ -73,7 +73,7 @@ class RewardsInternalsDebugViewController: TableViewController {
       ),
     ]
     
-    if let balance = ledger.balance {
+    if let balance = rewardsAPI.balance {
       let keyMaps = [
         "anonymous": Strings.RewardsInternals.anonymous,
         "uphold": "Uphold",
@@ -98,19 +98,19 @@ class RewardsInternalsDebugViewController: TableViewController {
           Row(
             text: Strings.RewardsInternals.promotionsTitle,
             selection: { [unowned self] in
-              let controller = RewardsInternalsPromotionListController(ledger: self.ledger)
+              let controller = RewardsInternalsPromotionListController(rewardsAPI: self.rewardsAPI)
               self.navigationController?.pushViewController(controller, animated: true)
             }, accessory: .disclosureIndicator),
           Row(
             text: Strings.RewardsInternals.contributionsTitle,
             selection: { [unowned self] in
-              let controller = RewardsInternalsContributionListController(ledger: self.ledger)
+              let controller = RewardsInternalsContributionListController(rewardsAPI: self.rewardsAPI)
               self.navigationController?.pushViewController(controller, animated: true)
             }, accessory: .disclosureIndicator),
           Row(
             text: "Auto-Contribute",
             selection: { [unowned self] in
-              let controller = RewardsInternalsAutoContributeController(ledger: self.ledger)
+              let controller = RewardsInternalsAutoContributeController(rewardsAPI: self.rewardsAPI)
               self.navigationController?.pushViewController(controller, animated: true)
             }, accessory: .disclosureIndicator),
         ]
@@ -121,7 +121,7 @@ class RewardsInternalsDebugViewController: TableViewController {
   }
 
   @objc private func tappedShare() {
-    let controller = RewardsInternalsShareController(ledger: self.ledger, initiallySelectedSharables: RewardsInternalsSharable.qa, sharables: RewardsInternalsSharable.qa)
+    let controller = RewardsInternalsShareController(rewardsAPI: self.rewardsAPI, initiallySelectedSharables: RewardsInternalsSharable.qa, sharables: RewardsInternalsSharable.qa)
     let container = UINavigationController(rootViewController: controller)
     present(container, animated: true)
   }

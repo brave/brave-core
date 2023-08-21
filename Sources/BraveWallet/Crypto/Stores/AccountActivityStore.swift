@@ -291,14 +291,16 @@ extension AccountActivityStore: BraveWalletKeyringServiceObserver {
   func autoLockMinutesChanged() {
   }
   
-  func selectedAccountChanged(_ coin: BraveWallet.CoinType) {
+  func selectedWalletAccountChanged(_ account: BraveWallet.AccountInfo) {
     guard observeAccountUpdates else { return }
-    keyringService.keyringInfo(coin.keyringId) { [self] keyringInfo in
-      keyringService.selectedAccount(coin) { [self] accountAddress in
-        account = keyringInfo.accountInfos.first(where: { $0.address == accountAddress }) ?? keyringInfo.accountInfos.first!
-        update()
-      }
-    }
+    self.account = account
+    update()
+  }
+  
+  func selectedDappAccountChanged(_ coin: BraveWallet.CoinType, account: BraveWallet.AccountInfo?) {
+    guard observeAccountUpdates, let account else { return }
+    self.account = account
+    update()
   }
   
   func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {

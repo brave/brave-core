@@ -44,13 +44,13 @@ struct SwapTransactionConfirmationView: View {
     VStack {
       if let originInfo = parsedTransaction?.transaction.originInfo {
         Group {
-          if originInfo.origin == WalletConstants.braveWalletOrigin {
+          if originInfo.isBraveWalletOrigin {
             Image(uiImage: UIImage(sharedNamed: "brave.logo")!)
               .resizable()
               .aspectRatio(contentMode: .fit)
               .foregroundColor(Color(.braveOrange))
           } else {
-            originInfo.origin.url.map { url in
+            if let url = URL(string: originInfo.originSpec) {
               FaviconReader(url: url) { image in
                 if let image = image {
                   Image(uiImage: image)
@@ -67,7 +67,8 @@ struct SwapTransactionConfirmationView: View {
           }
         }
         .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
-        Text(urlOrigin: originInfo.origin)
+        
+        Text(originInfo: originInfo)
           .foregroundColor(Color(.braveLabel))
           .font(.subheadline)
           .multilineTextAlignment(.center)
@@ -252,8 +253,7 @@ struct SwapTransactionConfirmationView_Previews: PreviewProvider {
   static var transaction: BraveWallet.TransactionInfo {
     let transaction: BraveWallet.TransactionInfo = .init()
     transaction.originInfo = .init(
-      origin: WalletConstants.braveWalletOrigin,
-      originSpec: "brave://wallet",
+      originSpec: WalletConstants.braveWalletOriginSpec,
       eTldPlusOne: ""
     )
     return transaction

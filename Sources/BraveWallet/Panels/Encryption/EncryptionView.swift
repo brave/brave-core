@@ -81,7 +81,7 @@ struct EncryptionView: View {
                 .foregroundColor(Color(.secondaryBraveLabel))
             }
           }
-          Text(urlOrigin: request.originInfo.origin)
+          Text(originInfo: request.originInfo)
             .font(.caption)
             .foregroundColor(Color(.braveLabel))
             .multilineTextAlignment(.center)
@@ -96,13 +96,13 @@ struct EncryptionView: View {
       Group {
         if case .getEncryptionPublicKey = request {
           ScrollView {
-            Text(urlOrigin: request.originInfo.origin) + Text(" \(Strings.Wallet.getEncryptionPublicKeyRequestMessage)")
+            Text(originInfo: request.originInfo) + Text(" \(Strings.Wallet.getEncryptionPublicKeyRequestMessage)")
           }
           .padding(20)
         } else if case let .decrypt(decryptRequest) = request {
           ScrollView {
             SensitiveTextView(
-              text: decryptRequest.unsafeMessage ?? "",
+              text: decryptRequest.unsafeMessage,
               isCopyEnabled: false,
               isShowingText: $isShowingDecryptMessage
             )
@@ -222,9 +222,9 @@ struct EncryptionView: View {
   private func handleAction(approved: Bool) {
     switch request {
     case .getEncryptionPublicKey(let request):
-      cryptoStore.handleWebpageRequestResponse(.getEncryptionPublicKey(approved: approved, originInfo: request.originInfo))
+      cryptoStore.handleWebpageRequestResponse(.getEncryptionPublicKey(approved: approved, requestId: request.requestId))
     case .decrypt(let request):
-      cryptoStore.handleWebpageRequestResponse(.decrypt(approved: approved, originInfo: request.originInfo))
+      cryptoStore.handleWebpageRequestResponse(.decrypt(approved: approved, requestId: request.requestId))
     }
     onDismiss()
   }
@@ -235,19 +235,20 @@ struct EncryptionView_Previews: PreviewProvider {
   static var previews: some View {
     let address = BraveWallet.AccountInfo.previewAccount.address
     let originInfo = BraveWallet.OriginInfo(
-      origin: .init(url: URL(string: "https://brave.com")!),
-      originSpec: "",
+      originSpec: WalletConstants.braveWalletOriginSpec,
       eTldPlusOne: ""
     )
     let requests: [EncryptionView.EncryptionType] = [
       .getEncryptionPublicKey(
         .init(
+          requestId: UUID().uuidString,
           originInfo: originInfo,
           address: address
         )
       ),
       .decrypt(
         .init(
+          requestId: UUID().uuidString,
           originInfo: originInfo,
           address: address,
           unsafeMessage: "Secret message"
