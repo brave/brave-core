@@ -19,7 +19,7 @@ OBJC_EXPORT
 - (void)downloadImage:(NSURL*)url
            completion:(void (^)(UIImage* _Nullable image,
                                 NSInteger httpResponseCode,
-                                NSURL* url))completion;
+                                NSURL* _Nullable url))completion;
 
 + (nullable UIImage*)imageFromData:(NSData*)data;
 @end

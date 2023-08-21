@@ -49,8 +49,14 @@ static const float animated_image_frame_delay = 2.0;
            completion:(void (^)(UIImage* _Nullable image,
                                 NSInteger httpResponseCode,
                                 NSURL* url))completion {
+  GURL url_ = net::GURLWithNSURL(url);
+  if (!url_.is_valid() || url_.is_empty()) {
+    completion(nullptr, -1, nullptr);
+    return;
+  }
+
   image_fetcher_->DownloadImage(
-      net::GURLWithNSURL(url), WebImage::max_svg_size, WebImage::max_svg_size,
+      url_, WebImage::max_svg_size, WebImage::max_svg_size,
       base::BindOnce(^(int download_id, int http_status_code,
                        const GURL& request_url,
                        const std::vector<SkBitmap>& bitmaps,
