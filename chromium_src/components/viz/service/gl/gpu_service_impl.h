@@ -12,7 +12,7 @@
 #define InitializeWithHost                                             \
   InitializeWithHost_ChromiumImpl(                                     \
       mojo::PendingRemote<mojom::GpuHost> pending_gpu_host,            \
-      gpu::GpuProcessActivityFlags activity_flags,                     \
+      gpu::GpuProcessShmCount use_shader_cache_shm_count,              \
       scoped_refptr<gl::GLSurface> default_offscreen_surface,          \
       gpu::SyncPointManager* sync_point_manager,                       \
       gpu::SharedImageManager* shared_image_manager,                   \
