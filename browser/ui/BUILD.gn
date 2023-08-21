@@ -287,6 +287,7 @@ source_set("ui") {
       "views/brave_shields/cookie_list_opt_in_bubble_host.h",
       "views/brave_tab_search_bubble_host.cc",
       "views/brave_tab_search_bubble_host.h",
+      "views/bubble/brave_webui_bubble_manager.h",
       "views/commands/default_accelerators_views.cc",
       "views/crash_report_permission_ask_dialog_view.cc",
       "views/crash_report_permission_ask_dialog_view.h",

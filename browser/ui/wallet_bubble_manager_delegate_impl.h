@@ -17,8 +17,7 @@
 
 namespace brave_wallet {
 
-template <typename T>
-class BraveWebUIBubbleManagerT;
+class WalletWebUIBubbleManager;
 
 class WalletBubbleManagerDelegateImpl : public WalletBubbleManagerDelegate {
  public:
@@ -41,8 +40,7 @@ class WalletBubbleManagerDelegateImpl : public WalletBubbleManagerDelegate {
  private:
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   GURL webui_url_;
-  std::unique_ptr<BraveWebUIBubbleManagerT<WalletPanelUI>>
-      webui_bubble_manager_;
+  std::unique_ptr<WalletWebUIBubbleManager> webui_bubble_manager_;
 };
 
 }  // namespace brave_wallet
