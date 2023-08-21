@@ -9,7 +9,11 @@ import {
   CoinType,
   OriginInfo
 } from 'gen/brave/components/brave_wallet/common/base.mojom.m.js'
-import { SignMessageRequest } from 'gen/brave/components/brave_wallet/common/sign_message_request.mojom.m.js'
+import {
+  SignMessageRequest,
+  SignMessageError,
+  SignMessageErrorType
+} from 'gen/brave/components/brave_wallet/common/sign_message_request.mojom.m.js'
 import { HardwareWalletResponseCodeType } from '../common/hardware/types'
 import { NftsPinningStatusType } from '../page/constants/action_types'
 
@@ -19,7 +23,9 @@ export {
   BraveWallet,
   CoinType,
   OriginInfo,
-  SignMessageRequest
+  SignMessageRequest,
+  SignMessageError,
+  SignMessageErrorType
 }
 export { Url } from 'gen/url/mojom/url.mojom.m.js'
 export { Origin } from 'gen/url/mojom/origin.mojom.m.js'
@@ -125,6 +131,7 @@ export type PanelTypes =
   | 'activity' // Transactions
   | 'currencies'
   | 'transactionStatus'
+  | 'siweError'
 
 export type NavTypes =
   | 'crypto'
@@ -293,6 +300,7 @@ export interface PanelState {
   switchChainRequest: BraveWallet.SwitchChainRequest
   hardwareWalletCode?: HardwareWalletResponseCodeType
   selectedTransactionId?: string
+  signMessageErrorData: SignMessageError[]
 }
 
 export interface PageState {

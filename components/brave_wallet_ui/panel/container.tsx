@@ -87,6 +87,9 @@ import {
 import { useSelectedAccountQuery } from '../common/slices/api.slice.extra'
 import { usePendingTransactions } from '../common/hooks/use-pending-transaction'
 import PageContainer from '../page/container'
+import {
+  SignInWithEthereumError
+} from '../components/extension/sign-panel/sign_in_with_ethereum_error'
 
 // Allow BigInts to be stringified
 (BigInt.prototype as any).toJSON = function () {
@@ -469,6 +472,14 @@ function Container () {
             signMode={selectedPanel === 'signAllTransactions' ? 'signAllTxs' : 'signTx'}
           />
         </LongWrapper>
+      </PanelWrapper>
+    )
+  }
+
+  if (selectedPanel === 'siweError') {
+    return (
+      <PanelWrapper>
+        <SignInWithEthereumError />
       </PanelWrapper>
     )
   }

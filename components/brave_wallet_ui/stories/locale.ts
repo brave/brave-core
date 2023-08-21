@@ -490,6 +490,24 @@ provideStrings({
   braveWalletSignTransactionButton: 'Sign',
   braveWalletApproveTransaction: 'Approve transaction',
 
+  // Sign in with Ethereum
+  braveWalletSignInWithBraveWallet: 'Sign in with Brave Wallet',
+  braveWalletSignInWithBraveWalletMessage: 'You are signing into $1. Brave wallet will share your wallet address with $1.',
+  braveWalletSeeDetails: 'See details',
+  braveWalletSignIn: 'Sign in',
+  braveWalletOrigin: 'Origin',
+  braveWalletAddress: 'Address',
+  braveWalletStatement: 'Statement',
+  braveWalletUri: 'URI',
+  braveWalletVersion: 'Version',
+  braveWalletNonce: 'Nonce',
+  braveWalletIssuedAt: 'Issued at',
+  braveWalletExpirationTime: 'Expiration time',
+  braveWalletNotBefore: 'Not before',
+  braveWalletRequestId: 'Request ID',
+  braveWalletResources: 'Resources',
+  braveWalletSecurityRiskDetected: 'Security risk detected',
+
   // Encryption Key Panel
   braveWalletProvideEncryptionKeyTitle: 'A DApp is requesting your public encryption key',
   braveWalletProvideEncryptionKeyDescription: '$1$url$2 is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.',
@@ -517,7 +535,7 @@ provideStrings({
   braveWalletAllowAddNetworkUrl: 'Network URL',
   braveWalletAllowAddNetworkDetailsButton: 'View all details',
   braveWalletAllowAddNetworkButton: 'Approve',
-  braveWalletAllowAddNetworkChainID: 'Chain ID',
+  braveWalletChainId: 'Chain ID',
   braveWalletAllowAddNetworkCurrencySymbol: 'Currency symbol',
   braveWalletAllowAddNetworkExplorer: 'Block explorer URL',
   braveWalletAllowChangeNetworkTitle: 'Allow this site to switch the network?',

@@ -111,6 +111,16 @@ async function getPendingSignMessageRequests () {
   return null
 }
 
+async function getPendingSignMessageErrors () {
+  const braveWalletService = getWalletPanelApiProxy().braveWalletService
+  const errors =
+    (await braveWalletService.getPendingSignMessageErrors()).errors
+  if (errors && errors.length) {
+    return errors
+  }
+  return null
+}
+
 async function getPendingSignTransactionRequests () {
   const { braveWalletService } = getWalletPanelApiProxy()
   const { requests } = await braveWalletService.getPendingSignTransactionRequests()
@@ -484,6 +494,23 @@ handler.on(PanelActions.signAllTransactionsProcessed.type, async (store: Store, 
   panelHandler.closeUI()
 })
 
+handler.on(PanelActions.signMessageError.type, async (store: Store) => {
+  store.dispatch(PanelActions.navigateTo('siweError'))
+  const { panelHandler } = getWalletPanelApiProxy()
+  panelHandler.showUI()
+})
+
+handler.on(PanelActions.signMessageErrorProcessed.type, async (store: Store, id: string) => {
+  const { braveWalletService, panelHandler } = getWalletPanelApiProxy()
+  braveWalletService.notifySignMessageErrorProcessed(id)
+  const requests = await getPendingSignMessageErrors()
+  if (requests) {
+    store.dispatch(PanelActions.signMessageError(requests))
+    return
+  }
+  panelHandler.closeUI()
+})
+
 handler.on(PanelActions.setupWallet.type, async (store) => {
   chrome.tabs.create({ url: 'chrome://wallet' }, () => {
     if (chrome.runtime.lastError) {
@@ -594,6 +621,13 @@ handler.on(WalletActions.initialize.type, async (store) => {
       store.dispatch(PanelActions.signMessage(signMessageRequests))
       return
     }
+
+    const signMessageErrors = await getPendingSignMessageErrors()
+    if (signMessageErrors) {
+      store.dispatch(PanelActions.signMessageError(signMessageErrors))
+      return
+    }
+
     const switchChainRequest = await getPendingSwitchChainRequest()
     if (switchChainRequest) {
       store.dispatch(PanelActions.switchEthereumChain(switchChainRequest))

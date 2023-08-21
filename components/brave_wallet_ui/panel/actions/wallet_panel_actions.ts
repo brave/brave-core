@@ -17,7 +17,8 @@ import {
 import {
   BraveWallet,
   SignMessageRequest,
-  PanelTypes
+  PanelTypes,
+  SignMessageError
 } from '../../constants/types'
 import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
@@ -59,3 +60,7 @@ export const signTransactionProcessed = createAction<SignMessageProcessedPayload
 export const signAllTransactions = createAction<BraveWallet.SignAllTransactionsRequest[]>('signAllTransactions')
 export const signAllTransactionsHardware = createAction<BraveWallet.SignAllTransactionsRequest>('signAllTransactionsHardware')
 export const signAllTransactionsProcessed = createAction<SignAllTransactionsProcessedPayload>('signAllTransactionsProcessed')
+export const signMessageError =
+  createAction<SignMessageError[]>('signMessageError')
+export const signMessageErrorProcessed =
+  createAction<string>('signMessageErrorProcessed')

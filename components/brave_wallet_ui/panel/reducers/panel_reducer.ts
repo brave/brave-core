@@ -10,7 +10,8 @@ import {
   OriginInfo,
   PanelState,
   PanelTypes,
-  SignMessageRequest
+  SignMessageRequest,
+  SignMessageError
 } from '../../constants/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import {
@@ -82,7 +83,8 @@ const defaultState: PanelState = {
     chainId: ''
   },
   hardwareWalletCode: undefined,
-  selectedTransactionId: undefined
+  selectedTransactionId: undefined,
+  signMessageErrorData: []
 }
 
 export const createPanelReducer = (initialState: PanelState) => {
@@ -184,6 +186,16 @@ export const createPanelReducer = (initialState: PanelState) => {
       return {
         ...state,
         selectedTransactionId: payload
+      }
+    }
+  )
+
+  reducer.on(
+    PanelActions.signMessageError.type,
+    (state: PanelState, payload: SignMessageError[]): PanelState => {
+      return {
+        ...state,
+        signMessageErrorData: payload
       }
     }
   )

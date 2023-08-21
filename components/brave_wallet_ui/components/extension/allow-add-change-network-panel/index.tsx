@@ -120,7 +120,7 @@ export function AllowAddChangeNetworkPanel (props: Props) {
           {selectedTab === 'details' &&
             <>
               <MessageBoxColumn>
-                <NetworkTitle>{getLocale('braveWalletAllowAddNetworkChainID')}</NetworkTitle>
+                <NetworkTitle>{getLocale('braveWalletChainId')}</NetworkTitle>
                 <NetworkDetail>{networkPayload.chainId}</NetworkDetail>
               </MessageBoxColumn>
               <MessageBoxColumn>
