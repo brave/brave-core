@@ -398,7 +398,7 @@ public class TxFragment extends Fragment {
     private void fillMaxFee(TextView textView, String gasLimit, String maxFeePerGas) {
         final double[] gasFeeArr = ParsedTransactionFees.calcGasFee(mTxNetwork,
                 Utils.getOrDefault(
-                        mAssetPrices, mTxNetwork.symbol.toLowerCase(Locale.getDefault()), 0.0d),
+                        mAssetPrices, mTxNetwork.symbol.toLowerCase(Locale.ENGLISH), 0.0d),
                 true, gasLimit, "0", maxFeePerGas, false, mSolanaEstimatedTxFee);
         textView.setText(String.format(getResources().getString(R.string.wallet_maximum_fee),
                 String.format(Locale.getDefault(), "%.2f", gasFeeArr[1]),

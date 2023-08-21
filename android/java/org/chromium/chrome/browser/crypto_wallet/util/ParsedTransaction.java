@@ -468,7 +468,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
         } else {
             // The rest cases falls through to default
             final double price = Utils.getOrDefault(
-                    assetPrices, txNetwork.symbol.toLowerCase(Locale.getDefault()), 0.0d);
+                    assetPrices, txNetwork.symbol.toLowerCase(Locale.ENGLISH), 0.0d);
             for (String k : assetPrices.keySet()) {
                 String v = String.valueOf(assetPrices.get(k));
             }
