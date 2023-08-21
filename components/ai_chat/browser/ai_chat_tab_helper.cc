@@ -17,6 +17,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/browser/constants.h"
 #include "brave/components/ai_chat/browser/page_content_fetcher.h"
@@ -458,6 +459,13 @@ std::string AIChatTabHelper::BuildLlama2Prompt(std::string user_message) {
   // Always use a generic system message
   std::string system_message =
       l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC);
+  base::Time::Exploded exploded;
+  base::Time::Now().LocalExplode(&exploded);
+  std::string date_string =
+      base::StringPrintf("Y:%d M:%02d D:%02d", exploded.year, exploded.month,
+                         exploded.day_of_month);
+  std::string today_system_message =
+      base::ReplaceStringPlaceholders(system_message, {date_string}, nullptr);
 
   auto conversation_history = GetConversationHistory();
 
@@ -495,14 +503,14 @@ std::string AIChatTabHelper::BuildLlama2Prompt(std::string user_message) {
   // If there's no conversation history, then we just send a (partial)
   // first sequence.
   if (conversation_history.empty() || conversation_history.size() <= 1) {
-    return BuildLlama2FirstSequence(system_message, first_user_message,
+    return BuildLlama2FirstSequence(today_system_message, first_user_message,
                                     absl::nullopt, absl::nullopt);
   }
 
   // Use the first two messages to build the first sequence,
   // which includes the system prompt.
   std::string prompt =
-      BuildLlama2FirstSequence(system_message, first_user_message,
+      BuildLlama2FirstSequence(today_system_message, first_user_message,
                                conversation_history[1].text, absl::nullopt);
 
   // Loop through the rest of the history two at a time building subsequent
