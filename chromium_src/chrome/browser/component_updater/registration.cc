@@ -4,8 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/component_updater/registration.h"
-#include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
 #include "brave/components/widevine/static_buildflags.h"
+#include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
 
 #define RegisterComponentsForUpdate RegisterComponentsForUpdate_ChromiumImpl
 
