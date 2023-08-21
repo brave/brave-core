@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 import { withKnobs } from '@storybook/addon-knobs'
 
 import store from '../store'
-import { getAllActions } from '../api/getAllActions'
+import { getPlaylistActions } from '../api/getPlaylistActions'
 import { mockData } from './mockData'
 import { MemoryRouter } from 'react-router-dom'
 import App from '../components/app.v1'
@@ -42,4 +42,4 @@ export const AppV1 = () => {
   return <App />
 }
 
-getAllActions().playlistLoaded(mockData)
+getPlaylistActions().playlistLoaded(mockData)

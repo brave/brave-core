@@ -6,7 +6,7 @@
 import { Reducer } from 'redux'
 
 import { PlayerState } from '../reducers/states'
-import { types } from '../constants/playlist_types'
+import { types } from '../constants/player_types'
 import { SelectedPlaylistUpdatedPayload } from '../api/playerApi'
 
 const playerReducer: Reducer<PlayerState | undefined> = (

@@ -5,7 +5,7 @@
 
 import { PlayerState } from 'components/playlist/browser/resources/reducers/states'
 
-import { getAllActions } from './api/getAllActions'
+import { getPlaylistActions } from './api/getPlaylistActions'
 
 // Used to mirror state of Player from Playlist side.
 export default function startReceivingPlayerEvents () {
@@ -15,6 +15,6 @@ export default function startReceivingPlayerEvents () {
       return
     }
 
-    getAllActions().playerStateChanged(e.data as PlayerState)
+    getPlaylistActions().playerStateChanged(e.data as PlayerState)
   }
 }

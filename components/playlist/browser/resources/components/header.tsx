@@ -23,7 +23,7 @@ import {
 import ContextualMenuAnchorButton from './contextualMenu'
 import { getPlaylistAPI } from '../api/api'
 import { getLocalizedString } from '../utils/l10n'
-import { getAllActions } from '../api/getAllActions'
+import { getPlaylistActions } from '../api/getPlaylistActions'
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -101,7 +101,7 @@ function BackButton ({
 }) {
   return playlistEditMode === PlaylistEditMode.BULK_EDIT ? (
     <LeoButtonContainer
-      onClick={() => getAllActions().setPlaylistEditMode(undefined)}
+      onClick={() => getPlaylistActions().setPlaylistEditMode(undefined)}
     >
       <ColoredIcon name='arrow-left' color={color.icon.default} />
     </LeoButtonContainer>
@@ -120,7 +120,7 @@ function PlaylistHeader ({ playlistId }: { playlistId: string }) {
           name: getLocalizedString('bravePlaylistContextMenuEdit'),
           iconName: 'list-bullet-default',
           onClick: () =>
-            getAllActions().setPlaylistEditMode(PlaylistEditMode.BULK_EDIT)
+            getPlaylistActions().setPlaylistEditMode(PlaylistEditMode.BULK_EDIT)
         },
         // TODO(sko) We don't support this yet.
         // { name: 'Share', iconName: 'share-macos', onClick: () => {} },
@@ -147,7 +147,7 @@ function PlaylistHeader ({ playlistId }: { playlistId: string }) {
       name: getLocalizedString('bravePlaylistContextMenuRenamePlaylist'),
       iconName: 'edit-box',
       onClick: () => {
-        getAllActions().setPlaylistEditMode(PlaylistEditMode.RENAME)
+        getPlaylistActions().setPlaylistEditMode(PlaylistEditMode.RENAME)
       }
     })
     contextualMenuItems.push({
@@ -172,13 +172,13 @@ function PlaylistHeader ({ playlistId }: { playlistId: string }) {
     }
 
     getPlaylistAPI().renamePlaylist(playlist.id!, newName)
-    getAllActions().setPlaylistEditMode(undefined)
+    getPlaylistActions().setPlaylistEditMode(undefined)
   }
 
   React.useEffect(() => {
     // on unmount, resets 'edit mode'.
     return () => {
-      getAllActions().setPlaylistEditMode(undefined)
+      getPlaylistActions().setPlaylistEditMode(undefined)
     }
   }, [])
 
@@ -194,7 +194,7 @@ function PlaylistHeader ({ playlistId }: { playlistId: string }) {
             onChange={e => setNewName(e.target.value)}
             onKeyDown={e => {
               if (e.key === 'Escape') {
-                getAllActions().setPlaylistEditMode(undefined)
+                getPlaylistActions().setPlaylistEditMode(undefined)
                 e.preventDefault()
                 return
               }

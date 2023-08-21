@@ -3,18 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { getAllActions } from './api/getAllActions'
+import { getPlayerActions } from './api/getPlayerActions'
 import { PlayerMessagePayload } from './api/playerApi'
-import { types } from './constants/playlist_types'
+import { types } from './constants/player_types'
 
 export function handlePlayerMessage (payload: PlayerMessagePayload) {
   switch (payload.actionType) {
     case types.PLAYLIST_ITEM_SELECTED: {
-      getAllActions().selectPlaylistItem(payload)
+      getPlayerActions().selectPlaylistItem(payload)
       break
     }
     case types.SELECTED_PLAYLIST_UPDATED: {
-      getAllActions().selectedPlaylistUpdated(payload)
+      getPlayerActions().selectedPlaylistUpdated(payload)
       break
     }
   }

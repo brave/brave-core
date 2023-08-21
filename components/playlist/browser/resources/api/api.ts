@@ -13,7 +13,7 @@ import {
 } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
-import { getAllActions } from './getAllActions'
+import { getPlaylistActions } from './getPlaylistActions'
 
 type PlaylistEventListener = (event: PlaylistEvent) => void
 
@@ -49,7 +49,7 @@ class API {
     this.#pageHandler
       .renamePlaylist(playlistId, newName)
       .then(({ updatedPlaylist }) => {
-        getAllActions().playlistUpdated(updatedPlaylist)
+        getPlaylistActions().playlistUpdated(updatedPlaylist)
       })
   }
 

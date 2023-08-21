@@ -13,7 +13,7 @@ import {
   ApplicationState,
   PlayerState
 } from 'components/playlist/browser/resources/reducers/states'
-import { getAllActions } from '../api/getAllActions'
+import { getPlayerActions } from '../api/getPlayerActions'
 import PlayerControls from './playerControls'
 import { color, font } from '@brave/leo/tokens/css'
 import PlayerSeeker from './playerSeeker'
@@ -100,11 +100,11 @@ export default function Player () {
       <StyledVideo
         ref={setVideoElement}
         autoPlay
-        onPlay={() => getAllActions().playerStartedPlayingItem(currentItem)}
-        onPause={() => getAllActions().playerStoppedPlayingItem(currentItem)}
+        onPlay={() => getPlayerActions().playerStartedPlayingItem(currentItem)}
+        onPause={() => getPlayerActions().playerStoppedPlayingItem(currentItem)}
         onEnded={() => {
-          getAllActions().playerStoppedPlayingItem(currentItem)
-          getAllActions().playNextItem() // In case the current item is the last one, nothing will happen
+          getPlayerActions().playerStoppedPlayingItem(currentItem)
+          getPlayerActions().playNextItem() // In case the current item is the last one, nothing will happen
         }}
         src={
           videoElement?.src === currentItem?.mediaSource.url

@@ -8,7 +8,7 @@ import {
   PlaylistItem
 } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m'
 
-import { types } from '../constants/playlist_types'
+import { types } from '../constants/player_types'
 
 function getPlayerWindow () {
   return (document.getElementById('player') as HTMLIFrameElement)?.contentWindow

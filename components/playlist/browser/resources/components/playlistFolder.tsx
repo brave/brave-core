@@ -18,8 +18,8 @@ import {
   usePlaylistEditMode
 } from '../reducers/states'
 import postMessageToPlayer from '../api/playerApi'
-import { types } from '../constants/playlist_types'
-import { getAllActions } from '../api/getAllActions'
+import { types } from '../constants/player_types'
+import { getPlaylistActions } from '../api/getPlaylistActions'
 import { getPlaylistAPI } from '../api/api'
 
 interface MatchParams {
@@ -47,7 +47,7 @@ const StyledEditButton = styled(LeoButton)`
 `
 
 function exitEditMode () {
-  getAllActions().setPlaylistEditMode(undefined)
+  getPlaylistActions().setPlaylistEditMode(undefined)
 }
 
 function EditActionsContainer ({

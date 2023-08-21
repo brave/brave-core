@@ -12,11 +12,11 @@ import '@brave/leo/tokens/css/variables.css'
 
 import store from '../store'
 import { mockData } from './mockData'
-import { getAllActions } from '../api/getAllActions'
+import { getPlaylistActions } from '../api/getPlaylistActions'
 import PlaylistsCatalog from '../components/playlistsCatalog'
 import Player from '../components/player'
 import { handlePlayerMessage } from '../playerApiSink'
-import { types } from '../constants/playlist_types'
+import { types } from '../constants/player_types'
 import ContextualMenuAnchorButton from '../components/contextualMenu'
 
 export default {
@@ -46,7 +46,7 @@ export default {
   ]
 }
 
-getAllActions().playlistLoaded(mockData)
+getPlaylistActions().playlistLoaded(mockData)
 
 export const Catalog = () => {
   return <PlaylistsCatalog />
