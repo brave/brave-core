@@ -9,12 +9,6 @@
 #include "brave/components/widevine/static_buildflags.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
-#ifdef RegisterWidevineCdmComponent
-#pragma push_macro("RegisterWidevineCdmComponent")
-#undef RegisterWidevineCdmComponent
-#define RegisterWidevineCdmComponent_WasDefined
-#endif
-
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 #define RegisterWidevineCdmComponent(cus)                                     \
   RegisterWidevineCdmComponent(                                               \
@@ -29,10 +23,5 @@
 #include "src/chrome/browser/component_updater/widevine_cdm_component_installer.h"  // IWYU pragma: export
 
 #undef RegisterWidevineCdmComponent
-
-#ifdef RegisterWidevineCdmComponent_WasDefined
-#pragma pop_macro("RegisterWidevineCdmComponent")
-#undef RegisterWidevineCdmComponent_WasDefined
-#endif
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_COMPONENT_UPDATER_WIDEVINE_CDM_COMPONENT_INSTALLER_H_
