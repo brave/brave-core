@@ -14,6 +14,8 @@ import android.app.Activity;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.android.billingclient.api.AcknowledgePurchaseParams;
 import com.android.billingclient.api.BillingClient;
@@ -23,6 +25,7 @@ import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesResponseListener;
 import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.QueryPurchasesParams;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 
@@ -61,6 +64,16 @@ public class InAppPurchaseWrapper {
 
     private static volatile InAppPurchaseWrapper sInAppPurchaseWrapper;
     private static Object mutex = new Object();
+
+    private MutableLiveData<List<Purchase>> mutablePurchases = new MutableLiveData();
+    private LiveData<List<Purchase>> purchases = mutablePurchases;
+    private void setPurchases(List<Purchase> purchases) {
+        mutablePurchases.postValue(purchases);
+    }
+
+    public LiveData<List<Purchase>> getPurchases() {
+        return purchases;
+    }
 
     private InAppPurchaseWrapper() {}
 
@@ -130,7 +143,17 @@ public class InAppPurchaseWrapper {
     }
 
     public void queryPurchases(PurchasesResponseListener purchasesResponseListener) {
-        mBillingClient.queryPurchasesAsync(SUBS, purchasesResponseListener);
+        mBillingClient.queryPurchasesAsync(QueryPurchasesParams.newBuilder()
+                                                   .setProductType(BillingClient.ProductType.SUBS)
+                                                   .build(),
+                purchasesResponseListener);
+    }
+
+    public void queryPurchases() {
+        mBillingClient.queryPurchasesAsync(QueryPurchasesParams.newBuilder()
+                                                   .setProductType(BillingClient.ProductType.SUBS)
+                                                   .build(),
+                (billingResult, list) -> { setPurchases(list); });
     }
 
     public void purchase(Activity activity, SkuDetails skuDetails) {
