@@ -97,7 +97,8 @@ export const SignPanel = (props: Props) => {
 
   // state
   const [signStep, setSignStep] = React.useState<SignDataSteps>(SignDataSteps.SignData)
-  const [selectedQueueData, setSelectedQueueData] = React.useState<BraveWallet.SignMessageRequest>(signMessageData[0])
+  const [selectedQueueData, setSelectedQueueData] =
+    React.useState<BraveWallet.SignMessageRequest>(signMessageData[0])
   const [renderUnicode, setRenderUnicode] = React.useState<boolean>(true)
 
   const { account } = useAccountQuery(selectedQueueData?.accountId)
@@ -228,7 +229,10 @@ export const SignPanel = (props: Props) => {
             />
           </TabRow>
 
-          {(hasUnicode(selectedQueueData.signData.ethStandardSignData?.message ?? '') ||
+          {(hasUnicode(
+            selectedQueueData
+              .signData
+              .ethStandardSignData?.message ?? '') ||
             hasUnicode(ethSignTypedData?.message ?? '') ||
             hasUnicode(ethSignTypedData?.domain ?? '')) &&
             <WarningBox warningType='warning'>

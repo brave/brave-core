@@ -27,14 +27,19 @@ export const emptyNetwork: BraveWallet.NetworkInfo = {
   isEip1559: true
 }
 
-export const getNetworkInfo = (chainId: string, coin: BraveWallet.CoinType, list: BraveWallet.NetworkInfo[]) => {
-  for (let it of list) {
-    if (it.chainId === chainId && it.coin === coin) {
-      return it
+export const getNetworkInfo =
+  (
+    chainId: string,
+    coin: BraveWallet.CoinType,
+    list: BraveWallet.NetworkInfo[]
+  ) => {
+    for (let it of list) {
+      if (it.chainId === chainId && it.coin === coin) {
+        return it
+      }
     }
+    return emptyNetwork
   }
-  return emptyNetwork
-}
 
 export const networkSupportsAccount = (
   network: BraveWallet.NetworkInfo,
@@ -79,8 +84,10 @@ export type TxDataPresence = {
   btcTxData?: Partial<BraveWallet.TxDataUnion['btcTxData']> | undefined
 }
 
-export const getCoinFromTxDataUnion = <T extends TxDataPresence>(txDataUnion: T): BraveWallet.CoinType => {
-  if (txDataUnion.ethTxData || txDataUnion.ethTxData1559) { return BraveWallet.CoinType.ETH }
+export const getCoinFromTxDataUnion =
+  <T extends TxDataPresence>(txDataUnion: T): BraveWallet.CoinType => {
+  if (txDataUnion.ethTxData ||
+      txDataUnion.ethTxData1559) { return BraveWallet.CoinType.ETH }
   if (txDataUnion.filTxData) { return BraveWallet.CoinType.FIL }
   if (txDataUnion.solanaTxData) { return BraveWallet.CoinType.SOL }
   if (txDataUnion.btcTxData) { return BraveWallet.CoinType.BTC }

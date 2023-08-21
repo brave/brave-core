@@ -124,12 +124,14 @@ export const createPanelReducer = (initialState: PanelState) => {
     }
   })
 
-  reducer.on(PanelActions.signMessage.type, (state, payload: BraveWallet.SignMessageRequest[]) => {
-    return {
-      ...state,
-      signMessageData: payload
-    }
-  })
+  reducer.on(
+    PanelActions.signMessage.type,
+    (state, payload: BraveWallet.SignMessageRequest[]) => {
+      return {
+        ...state,
+        signMessageData: payload
+      }
+    })
 
   reducer.on(PanelActions.signTransaction.type, (state: PanelState, payload: BraveWallet.SignTransactionRequest[]): PanelState => {
     return {
