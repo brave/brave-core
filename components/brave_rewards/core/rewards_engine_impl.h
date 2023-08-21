@@ -7,11 +7,11 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REWARDS_ENGINE_IMPL_H_
 
 #include <map>
-#include <queue>
 #include <string>
 #include <utility>
 
 #include "base/containers/flat_map.h"
+#include "base/one_shot_event.h"
 #include "base/types/always_false.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
 #include "brave/components/brave_rewards/core/api/api.h"
@@ -438,7 +438,7 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   std::map<uint32_t, mojom::VisitData> current_pages_;
   uint64_t last_tab_active_time_ = 0;
   uint32_t last_shown_tab_id_ = -1;
-  std::queue<std::function<void()>> ready_callbacks_;
+  base::OneShotEvent ready_event_;
   ReadyState ready_state_ = ReadyState::kUninitialized;
 };
 

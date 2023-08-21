@@ -825,13 +825,8 @@ void RewardsEngineImpl::OnInitialized(mojom::Result result,
     BLOG(0, "Failed to initialize wallet " << result);
   }
 
-  while (!ready_callbacks_.empty()) {
-    auto ready_callback = std::move(ready_callbacks_.front());
-    ready_callbacks_.pop();
-    ready_callback();
-  }
-
   ready_state_ = ReadyState::kReady;
+  ready_event_.Signal();
 
   callback(result);
 }
@@ -864,10 +859,9 @@ void RewardsEngineImpl::WhenReady(T callback) {
       NOTREACHED();
       break;
     default:
-      ready_callbacks_.push(std::function<void()>(
-          [shared_callback = std::make_shared<T>(std::move(callback))]() {
-            (*shared_callback)();
-          }));
+      ready_event_.Post(
+          FROM_HERE,
+          base::BindOnce([](T callback) { callback(); }, std::move(callback)));
       break;
   }
 }
