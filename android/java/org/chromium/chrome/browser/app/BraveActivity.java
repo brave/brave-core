@@ -147,6 +147,7 @@ import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.chrome.browser.settings.developer.BraveQAPreferences;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.share.ShareDelegate.ShareOrigin;
+import org.chromium.chrome.browser.shields.ContentFilteringFragment;
 import org.chromium.chrome.browser.site_settings.BraveWalletEthereumConnectedSites;
 import org.chromium.chrome.browser.speedreader.BraveSpeedReaderUtils;
 import org.chromium.chrome.browser.tab.Tab;
@@ -1297,6 +1298,11 @@ public abstract class BraveActivity extends ChromeActivity
     public void openBraveNewsSettings() {
         SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
         settingsLauncher.launchSettingsActivity(this, BraveNewsPreferencesV2.class);
+    }
+
+    public void openBraveContentFilteringSettings() {
+        SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
+        settingsLauncher.launchSettingsActivity(this, ContentFilteringFragment.class);
     }
 
     public void openBraveWalletSettings() {
