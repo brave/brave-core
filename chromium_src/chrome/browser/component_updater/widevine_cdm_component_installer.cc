@@ -215,8 +215,8 @@ CrxInstaller::Result WidevineArm64DllInstaller::WaitForCompletion() {
   // and making it asynchronous via a callback would require too many changes.
   // At least, upstream guarantees that the thread is blocking. Furthermore,
   // the Widevine component doesn't get installed / updated too often so the
-  // effects are limited. Finally, we use TimedWait(...) instead of Wait(...) to
-  // really make sure that we do not block the thread forever.
+  // effects are limited. We use a timeout when downloading the Arm64 DLL to
+  // make sure that we do not block the thread forever.
   base::ScopedAllowBaseSyncPrimitives allow_wait;
   installed_.Wait();
   return result_;
