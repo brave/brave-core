@@ -177,6 +177,11 @@
     <color name="brave_stats_data_saved_color">#737ADE</color>
     <color name="brave_state_time_count_color">#FFFFFF</color>
 
+    <color name="brave_stats_pager_ads_color">#CD4400</color>
+    <color name="brave_stats_pager_data_saved_color">#545FF8</color>
+    <color name="brave_stats_pager_time_count_color">#687485</color>
+    <color name="brave_stats_pager_title_color">#3F4855</color>
+
     <color name="brave_stats_title_color">#868E96</color>
     <color name="brave_stats_text_color">#212529</color>
     <color name="brave_stats_text_light_color">#212529</color>
@@ -189,14 +194,15 @@
     <color name="brave_stats_bg_color_20_alpha">#33212529</color>
     <color name="brave_stats_close_button_color">#495057</color>
     <color name="brave_stats_radio_group_bg">#E9E9F4</color>
-    <color name="brave_stats_empty_text_color">#339AF0</color>
+    <color name="brave_stats_empty_text_color">#0D0F14</color>
     <color name="brave_stats_empty_bg_color">#335DB5FC</color>
-    <color name="brave_stats_empty_border_color">#5DB5FC</color>
+    <color name="brave_stats_empty_border_color">#EEF6FF</color>
     <color name="brave_stats_radio_button_active">@android:color/white</color>
     <color name="brave_stats_share_data_save_no">#A1A5E6</color>
     <color name="brave_stats_share_info">@android:color/white</color>
     <color name="brave_stats_share_time_saved_no">@android:color/white</color>
     <color name="brave_stats_share_trackers_ads_no">@color/onboarding_indicator_selected_color</color>
+    <color name="brave_stats_ic_clock_color">#399FFF</color>
 
     <color name="topsite_bg_color">#DADCE8</color>
 
