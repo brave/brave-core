@@ -8,6 +8,7 @@
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
+#include "brave/browser/ui/views/dialog_footnote_utils.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -42,48 +43,6 @@
 #endif
 
 namespace {
-
-std::unique_ptr<views::StyledLabel> CreateStyledLabelForFootnote(
-    Browser* browser,
-    const std::u16string& footnote,
-    const std::vector<std::u16string>& replacements,
-    const std::vector<GURL>& urls) {
-  // For now, only two links are added to permission bubble footnote.
-  DCHECK_EQ(2UL, replacements.size());
-  DCHECK_EQ(replacements.size(), urls.size());
-
-  std::vector<size_t> offsets;
-  std::u16string footnote_text =
-      base::ReplaceStringPlaceholders(footnote, replacements, &offsets);
-
-  auto label = std::make_unique<views::StyledLabel>();
-  label->SetText(footnote_text);
-  label->SetDefaultTextStyle(views::style::STYLE_SECONDARY);
-
-  auto add_link = [&](size_t idx, GURL url) {
-    DCHECK(idx < offsets.size());
-    DCHECK(idx < replacements.size());
-
-    gfx::Range link_range(offsets[idx],
-                          offsets[idx] + replacements[idx].length());
-
-    views::StyledLabel::RangeStyleInfo link_style =
-        views::StyledLabel::RangeStyleInfo::CreateForLink(base::BindRepeating(
-            [](Browser* browser, const GURL& url) {
-              chrome::AddSelectedTabWithURL(browser, url,
-                                            ui::PAGE_TRANSITION_LINK);
-            },
-            base::Unretained(browser), std::move(url)));
-
-    label->AddStyleRange(link_range, link_style);
-  };
-
-  for (size_t i = 0; i < urls.size(); ++i) {
-    add_link(i, urls[i]);
-  }
-
-  return label;
-}
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 class DontAskAgainCheckbox : public views::Checkbox {
@@ -160,7 +119,8 @@ void AddWidevineFootnoteView(
                                GURL(kExtensionSettingsURL)};
 
   dialog_delegate_view->SetFootnoteView(
-      CreateStyledLabelForFootnote(browser, footnote, replacements, urls));
+      views::CreateStyledLabelForDialogFootnote(browser, footnote, replacements,
+                                                urls));
 }
 #else
 void AddAdditionalWidevineViewControlsIfNeeded(
@@ -276,7 +236,8 @@ void AddFootnoteViewIfNeeded(
                                GURL(kPermissionPromptLearnMoreUrl)};
 
   dialog_delegate_view->SetFootnoteView(
-      CreateStyledLabelForFootnote(browser, footnote, replacements, urls));
+      views::CreateStyledLabelForDialogFootnote(browser, footnote, replacements,
+                                                urls));
 }
 
 }  // namespace

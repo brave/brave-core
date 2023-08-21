@@ -290,6 +290,8 @@ source_set("ui") {
       "views/commands/default_accelerators_views.cc",
       "views/crash_report_permission_ask_dialog_view.cc",
       "views/crash_report_permission_ask_dialog_view.h",
+      "views/dialog_footnote_utils.cc",
+      "views/dialog_footnote_utils.h",
       "views/download/brave_download_item_view.cc",
       "views/download/brave_download_item_view.h",
       "views/frame/brave_browser_frame.cc",

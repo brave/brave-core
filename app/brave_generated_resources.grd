@@ -263,6 +263,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Brave does not review extensions for security and safety. Install this extension only if you trust the developer.
       </message>
 
+      <!-- Permissions -->
+      <message name="IDS_PERMISSIONS_BLUETOOTH_CHOOSER_PRIVACY_WARNING_TEXT" desc="Privacy warning text displayed right before Bluetooth devices list available to Pair.">
+        Granting access to a Bluetooth device will allow the site to read identifying and potentially sensitive information about you. Only allow sites you trust to access Bluetooth devices. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
+      </message>
+
       <!-- Tor -->
       <message name="IDS_BRAVE_TOR_SETTINGS_SECTION" desc="Open Tor settings section">
         Tor windows
@@ -998,7 +1003,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_DISCONNECTED" desc="Title of the WireGuard sub label on the vpn settings page when brave vpn connected">
           Requires browser restart.
-        </message>        
+        </message>
         <message name="IDS_SETTINGS_SHOW_VPN_BUTTON" desc="The label for showing vpn button in the toolbar">
           Show VPN button
         </message>

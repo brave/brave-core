@@ -66,6 +66,10 @@ BASE_FEATURE(kFileSystemAccessAPI,
              "FileSystemAccessAPI",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kBraveWebBluetoothAPI,
+             "BraveWebBluetoothAPI",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 BASE_FEATURE(kBraveWebSerialAPI,
              "BraveWebSerialAPI",
              base::FEATURE_DISABLED_BY_DEFAULT);
