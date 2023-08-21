@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import static org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter.ACCOUNTS_FRAGMENT_POSITION;
 import static org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter.MARKET_FRAGMENT_POSITION;
-import static org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter.NFT_GRID_FRAGMENT_POSITION;
 import static org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter.PORTFOLIO_FRAGMENT_POSITION;
 import static org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter.TRANSACTIONS_ACTIVITY_FRAGMENT_POSITION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.ONBOARDING_ACTION;
@@ -345,8 +344,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
             final int menuItemId = menuItem.getItemId();
             if (menuItemId == R.id.action_wallet_portfolio) {
                 mViewPager.setCurrentItem(PORTFOLIO_FRAGMENT_POSITION, true);
-            } else if (menuItemId == R.id.action_wallet_nfts) {
-                mViewPager.setCurrentItem(NFT_GRID_FRAGMENT_POSITION, true);
             } else if (menuItemId == R.id.action_wallet_activity) {
                 mViewPager.setCurrentItem(TRANSACTIONS_ACTIVITY_FRAGMENT_POSITION, true);
             } else if (menuItemId == R.id.action_wallet_accounts) {

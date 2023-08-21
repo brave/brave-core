@@ -29,10 +29,9 @@ import java.util.List;
  */
 public class CryptoFragmentPageAdapter extends FragmentStateAdapter {
     public static final int PORTFOLIO_FRAGMENT_POSITION = 0;
-    public static final int NFT_GRID_FRAGMENT_POSITION = 1;
-    public static final int TRANSACTIONS_ACTIVITY_FRAGMENT_POSITION = 2;
-    public static final int ACCOUNTS_FRAGMENT_POSITION = 3;
-    public static final int MARKET_FRAGMENT_POSITION = 4;
+    public static final int TRANSACTIONS_ACTIVITY_FRAGMENT_POSITION = 1;
+    public static final int ACCOUNTS_FRAGMENT_POSITION = 2;
+    public static final int MARKET_FRAGMENT_POSITION = 3;
 
     private final List<String> mTitles;
 
@@ -42,7 +41,6 @@ public class CryptoFragmentPageAdapter extends FragmentStateAdapter {
         super(activity);
         Resources resources = activity.getResources();
         mTitles = new ArrayList<String>(Arrays.asList(resources.getString(R.string.portfolio),
-                resources.getString(R.string.brave_wallet_nfts),
                 resources.getString(R.string.brave_wallet_activity),
                 resources.getString(R.string.accounts), resources.getString(R.string.explore)));
     }
@@ -58,8 +56,6 @@ public class CryptoFragmentPageAdapter extends FragmentStateAdapter {
             case PORTFOLIO_FRAGMENT_POSITION:
                 mCurrentPortfolioFragment = PortfolioFragment.newInstance();
                 return mCurrentPortfolioFragment;
-            case NFT_GRID_FRAGMENT_POSITION:
-                return NftGridFragment.newInstance();
             case TRANSACTIONS_ACTIVITY_FRAGMENT_POSITION:
                 return TransactionsFragment.newInstance();
             case ACCOUNTS_FRAGMENT_POSITION:
