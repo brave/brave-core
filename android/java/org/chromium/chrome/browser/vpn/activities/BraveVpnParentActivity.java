@@ -92,35 +92,6 @@ public abstract class BraveVpnParentActivity
     }
 
     protected void verifySubscription() {
-        // InAppPurchaseWrapper.getInstance().queryPurchases(new PurchasesResponseListener() {
-        //     @Override
-        //     public void onQueryPurchasesResponse(
-        //             @NonNull BillingResult billingResult, @NonNull List<Purchase> purchases) {
-        //         PostTask.postTask(
-        //         TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
-        //             Log.e("BraveVPN", "Size : " + purchases.size());
-        //         mBraveVpnPrefModel = new BraveVpnPrefModel();
-        //         if (purchases != null && purchases.size() == 1) {
-        //             Log.e("BraveVPN", "onQueryPurchasesResponse : 1");
-        //             Purchase purchase = purchases.get(0);
-        //             Log.e("BraveVPN", purchase.toString());
-        //             mBraveVpnPrefModel.setPurchaseToken(purchase.getPurchaseToken());
-        //             mBraveVpnPrefModel.setProductId(purchase.getProducts().get(0).toString());
-        //             BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
-        //                     mBraveVpnPrefModel.getPurchaseToken(),
-        //                     mBraveVpnPrefModel.getProductId(),
-        //                     BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
-        //         } else {
-        //             if (!mIsVerification) {
-        //                 BraveVpnApiResponseUtils.queryPurchaseFailed(BraveVpnParentActivity.this);
-        //             } else {
-        //                 BraveVpnUtils.dismissProgressDialog();
-        //             }
-        //         }
-        //      });
-        //     }
-        // });
-
         InAppPurchaseWrapper.getInstance().queryPurchases();
         LiveDataUtil.observeOnce(InAppPurchaseWrapper.getInstance().getPurchases(), purchases -> {
             Log.e("BraveVPN", "Size : " + purchases.size());

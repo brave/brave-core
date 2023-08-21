@@ -166,6 +166,7 @@ import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
@@ -636,21 +637,18 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private void verifySubscription() {
-        InAppPurchaseWrapper.getInstance().queryPurchases(new PurchasesResponseListener() {
-            @Override
-            public void onQueryPurchasesResponse(
-                    @NonNull BillingResult billingResult, @NonNull List<Purchase> purchases) {
-                if (purchases != null && purchases.size() == 1) {
-                    Purchase purchase = purchases.get(0);
-                    mPurchaseToken = purchase.getPurchaseToken();
-                    mProductId = purchase.getProducts().get(0).toString();
-                    BraveVpnNativeWorker.getInstance().verifyPurchaseToken(mPurchaseToken,
-                            mProductId, BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
-                } else {
-                    BraveVpnApiResponseUtils.queryPurchaseFailed(BraveActivity.this);
-                    if (!mIsVerification) {
-                        BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
-                    }
+        InAppPurchaseWrapper.getInstance().queryPurchases();
+        LiveDataUtil.observeOnce(InAppPurchaseWrapper.getInstance().getPurchases(), purchases -> {
+            if (purchases != null && purchases.size() == 1) {
+                Purchase purchase = purchases.get(0);
+                mPurchaseToken = purchase.getPurchaseToken();
+                mProductId = purchase.getProducts().get(0).toString();
+                BraveVpnNativeWorker.getInstance().verifyPurchaseToken(mPurchaseToken, mProductId,
+                        BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
+            } else {
+                BraveVpnApiResponseUtils.queryPurchaseFailed(BraveActivity.this);
+                if (!mIsVerification) {
+                    BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
                 }
             }
         });

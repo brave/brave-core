@@ -18,6 +18,7 @@ import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesResponseListener;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.ui.widget.Toast;
@@ -42,13 +43,12 @@ public class BraveVpnApiResponseUtils {
     public static void handleOnGetSubscriberCredential(Activity activity, boolean isSuccess) {
         if (isSuccess) {
             if (!BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
-                InAppPurchaseWrapper.getInstance().queryPurchases(new PurchasesResponseListener() {
-                    @Override
-                    public void onQueryPurchasesResponse(@NonNull BillingResult billingResult,
-                            @NonNull List<Purchase> purchases) {
-                        InAppPurchaseWrapper.getInstance().processPurchases(activity, purchases);
-                    }
-                });
+                InAppPurchaseWrapper.getInstance().queryPurchases();
+                LiveDataUtil.observeOnce(
+                        InAppPurchaseWrapper.getInstance().getPurchases(), purchases -> {
+                            InAppPurchaseWrapper.getInstance().processPurchases(
+                                    activity, purchases);
+                        });
             }
             BraveVpnNativeWorker.getInstance().getTimezonesForRegions();
         } else {
