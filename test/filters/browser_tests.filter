@@ -107,6 +107,7 @@
 -SearchPreloadUnifiedFallbackBrowserTest.PrefetchSucceedAfterPrerenderFailed
 -SearchPreloadUnifiedFallbackBrowserTest.PrerenderHintReceivedAfterCompletion
 -SearchPreloadUnifiedFallbackBrowserTest.ServingToPrerenderingUntilCompletion
+-SearchPreloadUnifiedFallbackBrowserTest.ServingToPrerenderNavigationTwice
 
 # These tests fail because of the following failed expectation in prerender_test_util.cc:
 # Expected: (host_id) != (RenderFrameHost::kNoFrameTreeNodeId), actual: -1 vs -1
@@ -123,6 +124,7 @@
 -All/PrerenderingChangePasswordNavigationThrottleBrowserTest.*
 -All/PrerenderNewTabPageBrowserTest.NewTabPagePrerenderNonHttps/*
 -All/PrerenderNewTabPageBrowserTest.PrerenderTriggeredByNewTabPageAndActivate/*
+-All/PrerenderNewTabPageBrowserTest.PrerenderTriggeredCanceled/*
 -All/PrerenderOmniboxSearchSuggestionReloadBrowserTest.*
 -All/SafeBrowsingBlockingPageDelayedWarningPrerenderingBrowserTest.*
 -All/SafeBrowsingPrerenderBrowserTest.*
@@ -281,7 +283,10 @@
 -IsolatedWebAppBrowserServiceWorkerTest.ServiceWorkerPartitioned
 -IsolatedWebAppBrowsingDataClearingTest.CacheCleared
 -IsolatedWebAppBrowsingDataClearingTest.ClearBrowserDataAllTime
+-IsolatedWebAppBrowsingDataClearingTest.ClearBrowserDataTimeRanged
 -IsolatedWebAppBrowsingDataClearingTest.CookieCleared
+-IsolatedWebAppBrowsingDataClearingTest.ControlledFrameClearSiteDataHeader
+-IsolatedWebAppBrowsingDataClearingTest.CrossOriginIframeClearSiteDataHeader
 -IsolatedWebAppBrowsingDataClearingTest.DataClearedOnUninstall
 -IsolatedWebAppBrowsingDataClearingTest.LocalStorageCleared
 -IsolatedWebAppDevToolsTest.ErrorPage
@@ -321,6 +326,7 @@
 # These tests fail because we patch
 # AccountConsistencyModeManager::ComputeAccountConsistencyMethod to return
 # AccountConsistencyMethod::kDisabled
+-ContextMenuWithFilteringForSupervisedUsersBrowserTest.SaveLinkAsEntryIsDisabledForUrlsBlockedByAsyncCheckerForChild
 -ContextMenuWithFilteringForSupervisedUsersBrowserTest.SaveLinkAsEntryIsEnabledForUrlsAllowedByAsyncCheckerForChild
 -ContextMenuWithoutFilteringForSupervisedUsersBrowserTest.SaveLinkAsEntryIsDisabledForUrlsBlockedByAsyncCheckerForChild
 -ContextMenuWithoutFilteringForSupervisedUsersBrowserTest.SaveLinkAsEntryIsEnabledForUrlsAllowedByAsyncCheckerForChild
@@ -374,6 +380,9 @@
 -BackgroundPage/ExtensionPreferenceApiTest.OnChangeSplit/0
 -BackgroundPage/ExtensionPreferenceApiTest.Standard/0
 -EventPage/ExtensionPreferenceApiEventPageTest.ThirdPartyCookiesAllowed/0
+-ThirdPartyPartitionedStorageAccessibilityCanBeDisabledTest.Basic/*
+-ThirdPartyPartitionedStorageAccessibilitySharedWorkerTest.*
+-ThirdPartyPartitionedStorageAccessibilityTest.*
 
 # These tests fail because we disable creation of CookieControlsIconView in
 # PageActionIconController::Init's switch
@@ -398,7 +407,7 @@
 # is coming from Brave extension?
 -PrivacyBudgetBrowserTestWithTestRecorderParameterized/PrivacyBudgetBrowserTestWithTestRecorder.RecordingFeaturesCalledInWorker/*
 
-# This test times out because we Disable "Use a prediction service to load
+# These tests time out because we Disable "Use a prediction service to load
 # pages more quickly" (via prefetch::prefs::kNetworkPredictionOptions pref).
 -All/LoadingPredictorNetworkIsolationKeyBrowserTest.*
 -All/PredictionManagerBrowserTest.*
@@ -563,8 +572,11 @@
 # identity_manager->AreRefreshTokensLoaded()
 -EnterpriseWelcomeUIDialogPixelTest.InvokeUi_default/*
 -EnterpriseWelcomeUIWindowPixelTest.InvokeUi_default/*
+-ForceSigninProfilePickerCreationFlowBrowserTest.ForceSigninAbortedBySyncDeclined
+-ForceSigninProfilePickerCreationFlowBrowserTest.ForceSigninSuccessful
 -GaiaRemoteConsentFlowParamBrowserTest.*
 -PasswordRevampedManagementBubbleBrowserTest.InvokeUi_ManagePasswordBubbleWithRevampedDesign/*
+-PlusAddressServiceBrowserTest.VerifySupportsPlusAddresses
 -SyncConfirmationUIDialogPixelTest.InvokeUi_default/*
 -SyncConfirmationUIWindowPixelTest.InvokeUi_default/*
 
@@ -576,6 +588,8 @@
 -All/SupervisedUserServiceBrowserTest.ProfileName/Regular
 -All/SupervisedUserServiceBrowserTest.ProfileName/Supervised
 -IpProtectionAuthTokenProviderBrowserTest.NetworkServiceCanRequestTokens
+-IpProtectionConfigProviderBrowserTest.ExpectedReceiverSetStateAfterNetworkServiceCrash
+-IpProtectionConfigProviderBrowserTest.NetworkServiceCanRequestTokens
 -SupervisionRemovalExtensionTest.RemoveCustodianApprovalRequirement
 
 # These tests fail or time out because IdentityManager never loads refresh
@@ -618,6 +632,7 @@
 -All/PermissionPromptBubbleBaseViewBrowserTest.InvokeUi_storage_access/*
 -AutoPictureInPictureTabHelperBrowserTest.ImmediatelyClosesAutopipIfTabIsAlreadyFocused
 -AutoPictureInPictureTabHelperBrowserTest.OpensAndClosesVideoAutopip
+-AutoPictureInPictureTabHelperBrowserTest.RespectsAutoPictureInPictureContentSetting
 -AutoPictureInPictureTabHelperBrowserTest.ShowsMostRecentlyHiddenTab
 -DeviceChooserExtensionBrowserTests/DeviceChooserExtensionBrowserTest.ChooserAnchoredToExtensionIcon/WebHid
 -DeviceChooserExtensionBrowserTests/DeviceChooserExtensionBrowserTest.ChooserAnchoredToExtensionIcon/WebUsb
@@ -716,109 +731,15 @@
 # These tests crash because we disable 
 # enterprise_connectors::kLocalContentAnalysisEnabled feature
 -All/ContentAnalysisAfterPrintPreviewBrowserTest.*/*
--All/ContentAnalysisBeforePrintPreviewBrowserTest.PrintWithPreview/4
--All/ContentAnalysisBeforePrintPreviewBrowserTest.PrintWithPreview/5
--All/ContentAnalysisBeforePrintPreviewBrowserTest.PrintWithPreview/6
--All/ContentAnalysisBeforePrintPreviewBrowserTest.PrintWithPreview/7
--All/ContentAnalysisBeforePrintPreviewBrowserTest.SystemPrintFromPrintPreview/4
--All/ContentAnalysisBeforePrintPreviewBrowserTest.SystemPrintFromPrintPreview/5
--All/ContentAnalysisBeforePrintPreviewBrowserTest.SystemPrintFromPrintPreview/6
--All/ContentAnalysisBeforePrintPreviewBrowserTest.SystemPrintFromPrintPreview/7
--All/ContentAnalysisBeforePrintPreviewBrowserTest.WindowDotPrint/4
--All/ContentAnalysisBeforePrintPreviewBrowserTest.WindowDotPrint/6
+-All/ContentAnalysisBeforePrintPreviewBrowserTest.PrintWithPreview/*
+-All/ContentAnalysisBeforePrintPreviewBrowserTest.SystemPrintFromPrintPreview/*
+-All/ContentAnalysisBeforePrintPreviewBrowserTest.WindowDotPrint/*
 -All/ContentAnalysisScriptedPreviewlessPrintAfterDialogBrowserTest.*/*
 -All/ContentAnalysisScriptedPreviewlessPrintBeforeDialogBrowserTest.*/*
 -ConnectorsServiceAnalysisProfileBrowserTest.Affiliation/*
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/1
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/10
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/11
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/13
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/14
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/15
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/17
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/18
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/19
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/2
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/21
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/22
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/23
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/26
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/27
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/3
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/30
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/31
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/34
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/35
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/38
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/39
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/42
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/43
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/46
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/47
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/5
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/6
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/7
--ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/9
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/1
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/10
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/11
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/13
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/14
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/15
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/17
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/18
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/19
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/2
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/21
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/22
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/23
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/26
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/27
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/3
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/30
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/31
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/34
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/35
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/38
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/39
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/42
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/43
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/46
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/47
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/5
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/6
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/7
--ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/9
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/1
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/10
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/11
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/13
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/14
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/15
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/17
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/18
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/19
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/2
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/21
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/22
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/23
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/26
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/27
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/3
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/30
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/31
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/34
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/35
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/38
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/39
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/42
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/43
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/46
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/47
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/5
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/6
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/7
--ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/9
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/*
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/*
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/*
 -ContentAnalysisDialogAppearanceBrowserTest.*
 -ContentAnalysisDialogCustomMessageAppearanceBrowserTest.*
 -EnterpriseReportingPrivateGetContextInfoBaseBrowserTest.TestAllProviderNamesSet
@@ -873,7 +794,8 @@
 -WebHidExtensionBrowserTest.DeviceConnectAndOpenDeviceWhenServiceWorkerStopped
 -WebHidExtensionBrowserTest.HidConnectionTracker
 -WebHidExtensionFeatureEnabledBrowserTest.HidConnectionTracker
--WebUsbExtensionFeatureEnabledBrowserTest.UsbConnectionTracker
+-WebUsbExtensionBrowserTest.DeviceConnectAndOpenDeviceWhenServiceWorkerStopped
+-WebUsbExtensionBrowserTest.UsbConnectionTracker
 
 # These tests fail because we disable field trials via
 # disable_fieldtrial_testing_config
@@ -897,6 +819,7 @@
 -All/BrowserFrameColorProviderTest.BaselineThemeIgnoresNativeThemeColor/1
 -All/BrowserFrameColorProviderTest.BrowserFrameTracksBrowserColorVariant/1
 -All/BrowserFrameColorProviderTest.BrowserFrameTracksIsGrayscale/1
+-All/BrowserFrameColorProviderTest.GrayscaleIgnoresUserColor/1
 -All/BrowserFrameColorProviderTest.GrayscaleUsesBaselinePalette/1
 -All/BrowserFrameColorProviderTest.IncognitoAlwaysDarkMode/1
 -All/BrowserFrameColorProviderTest.IncognitoAlwaysIgnoresUserColor/1
@@ -905,6 +828,7 @@
 -All/BrowserFrameColorProviderTest.UseDeviceIgnoresTheme/1
 -All/BrowserFrameColorProviderTest.UserColorProfilePrefTrackedCorrectly/1
 -All/BrowserFrameColorProviderTest.UserColorTracksAutogeneratedThemeColor/1
+-All/NativeChromeColorMixerWinBrowsertest.HeaderColorsFollowAccentColor/*
 -AppMenuBrowserTestRefreshOnly.*
 -BrowserCommandControllerBrowserTestRefreshOnly.*
 -FirstRunIntroPixelTest.InvokeUi_default/CR2023
@@ -970,6 +894,15 @@
 # Page Info cookies view.
 -All/PageInfoBubbleViewBrowserTestCookiesSubpage.LinkInDescriptionForCookiesSettings/*
 -All/PageInfoBubbleViewBrowserTestCookiesSubpage.ToggleForBlockingThirdPartyCookies/1
+
+# These tests fail because we disable Journeys via
+# history_clusters::internal::kJourneys
+-RenameJourneys/HistoryClustersPolicyTest.HistoryClustersVisible/*
+
+# These tests fail because we patch safe_browsing::IsEnhancedProtectionEnabled
+# to return false
+-ExtensionTelemetryServiceBrowserTest.*
+-ExtensionTelemetryServiceBrowserTestWithInterceptRemoteHostsContactedInRendererEnabled.InterceptsRemoteHostContactedSignalInRenderer
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
@@ -1164,6 +1097,7 @@
 -DevToolsNetInfoTest.*
 -DevToolsPolicyTest.*
 -DevToolsProtocolTest.*
+-DevToolsProtocolTest_PrefetchHoldbackDisabledIfCDPClientConnected.*
 -DevToolsSyncTest.*
 -DevToolsTagTest.*
 -DevToolsTest.NewWindowFromBrowserContext
@@ -1218,7 +1152,6 @@
 -ExtensionSettingsUIBrowserTest.*
 -ExtensionTabUtilBrowserTest.*
 -ExtensionTagsTest.*
--ExtensionTelemetryServiceBrowserTest.*
 -ExtensionUninstallDialogViewInteractiveBrowserTest.*
 -ExtensionURLRewriteBrowserTest.*
 -ExtensionWebRequestApiTest.*
@@ -1301,6 +1234,7 @@
 -IncognitoProfileMainNetworkContext/NetworkContextConfigurationManagedProxySettingsBrowserTest.*
 -IncognitoProfileMainNetworkContext/NetworkContextConfigurationProxyOnStartBrowserTest.*
 -IncognitoProfileMainNetworkContext/NetworkContextConfigurationProxySettingsBrowserTest.*
+-InspectUISharedStorageTest.*
 -InspectUITest.*
 -IntentChipButtonBrowserTest.*
 -IntentChipButtonSkipIntentPickerBrowserTest.ClickingChipOpensApp
@@ -1455,7 +1389,9 @@
 -ProfileKeyedServiceBrowserTest.GuestProfileOTR_NeededServices
 -ProfileKeyedServiceBrowserTest.GuestProfileParent_NeededServices
 -ProfileKeyedServiceBrowserTest.SystemProfileOTR_NeededServices
+-ProfileKeyedServiceBrowserTest.SystemProfileOTR_ServicesThatCanBeCreated
 -ProfileKeyedServiceBrowserTest.SystemProfileParent_NeededServices
+-ProfileKeyedServiceBrowserTest.SystemProfileParent_ServicesThatCanBeCreated
 -ProfileListDesktopBrowserTest.*
 -ProfileMainNetworkContext/NetworkContextConfigurationBrowserTest.*
 -ProfileMainNetworkContext/NetworkContextConfigurationDataPacBrowserTest.*
