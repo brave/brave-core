@@ -18,13 +18,12 @@ class BraveTabSwitcherModeTTCoordinator extends TabSwitcherModeTTCoordinator {
     private MenuButtonCoordinator mBraveMenuButtonCoordinator;
 
     BraveTabSwitcherModeTTCoordinator(ViewStub tabSwitcherToolbarStub,
-            ViewStub tabSwitcherFullscreenToolbarStub, MenuButtonCoordinator menuButtonCoordinator,
-            boolean isGridTabSwitcherEnabled, boolean isTabToGtsAnimationEnabled,
-            BooleanSupplier isIncognitoModeEnabledSupplier,
+            MenuButtonCoordinator menuButtonCoordinator, boolean isGridTabSwitcherEnabled,
+            boolean isTabToGtsAnimationEnabled, BooleanSupplier isIncognitoModeEnabledSupplier,
             ToolbarColorObserverManager toolbarColorObserverManager) {
-        super(tabSwitcherToolbarStub, tabSwitcherFullscreenToolbarStub, menuButtonCoordinator,
-                isGridTabSwitcherEnabled, isTabToGtsAnimationEnabled,
-                isIncognitoModeEnabledSupplier, toolbarColorObserverManager);
+        super(tabSwitcherToolbarStub, menuButtonCoordinator, isGridTabSwitcherEnabled,
+                isTabToGtsAnimationEnabled, isIncognitoModeEnabledSupplier,
+                toolbarColorObserverManager);
 
         mBraveMenuButtonCoordinator = menuButtonCoordinator;
     }

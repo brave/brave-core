@@ -57,14 +57,14 @@ class BraveAutocompleteMediator extends AutocompleteMediator implements BraveSug
     }
 
     @Override
-    public void onTextChanged(String textWithoutAutocomplete, String textWithAutocomplete) {
+    public void onTextChanged(String textWithoutAutocomplete) {
         if (ProfileManager.isInitialized()
                 && !UserPrefs.get(Profile.getLastUsedRegularProfile())
                             .getBoolean(AUTOCOMPLETE_ENABLED)) {
             return;
         }
 
-        super.onTextChanged(textWithoutAutocomplete, textWithAutocomplete);
+        super.onTextChanged(textWithoutAutocomplete);
     }
 
     @Override

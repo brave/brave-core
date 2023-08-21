@@ -148,6 +148,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -686,7 +687,7 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                 "org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator",
-                ToolbarControlContainer.class, ViewStub.class, ViewStub.class, ToolbarLayout.class,
+                ToolbarControlContainer.class, ViewStub.class, ToolbarLayout.class,
                 ToolbarDataProvider.class, ToolbarTabController.class, UserEducationHelper.class,
                 List.class, OneshotSupplier.class, ThemeColorProvider.class,
                 ThemeColorProvider.class, MenuButtonCoordinator.class, MenuButtonCoordinator.class,
@@ -829,7 +830,7 @@ public class BytecodeTest {
                 Context.class, SelectableListLayout.class, SelectionDelegate.class,
                 SearchDelegate.class, DragReorderableRecyclerViewAdapter.class, boolean.class,
                 OneshotSupplier.class, BookmarkModel.class, BookmarkOpener.class,
-                BookmarkUiPrefs.class, ModalDialogManager.class));
+                BookmarkUiPrefs.class, ModalDialogManager.class, Runnable.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/bookmarks/BookmarkManagerCoordinator",
                 "org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerCoordinator",
@@ -844,7 +845,7 @@ public class BytecodeTest {
                         boolean.class, boolean.class, ObservableSupplierImpl.class, Profile.class,
                         BookmarkUndoController.class, ModelList.class, BookmarkUiPrefs.class,
                         Runnable.class, BookmarkImageFetcher.class, ShoppingService.class,
-                        SnackbarManager.class));
+                        SnackbarManager.class, Consumer.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkBridge",
                 "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge", long.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkModel",

@@ -1282,6 +1282,7 @@ if (is_android) {
       "//components/variations/android:variations_java",
       "//content/public/android:content_full_java",
       "//third_party/androidx:androidx_appcompat_appcompat_java",
+      "//third_party/androidx:androidx_fragment_fragment_java",
       "//third_party/androidx:androidx_preference_preference_java",
       "//third_party/androidx:androidx_recyclerview_recyclerview_java",
       "//third_party/androidx:androidx_test_runner_java",
