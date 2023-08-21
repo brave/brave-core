@@ -20,6 +20,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.SkuDetails;
 import com.google.android.material.tabs.TabLayout;
 
@@ -31,6 +32,8 @@ import org.chromium.chrome.browser.vpn.adapters.BraveVpnPlanPagerAdapter;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 import org.chromium.ui.widget.Toast;
+
+import java.util.Map;
 
 public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
@@ -79,64 +82,130 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         removedValueText.setPaintFlags(
                 removedValueText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-        SkuDetails monthlySkuDetails = InAppPurchaseWrapper.getInstance().getSkuDetails(
-                getPackageName().equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
-                        ? InAppPurchaseWrapper.RELEASE_MONTHLY_SUBSCRIPTION
-                        : InAppPurchaseWrapper.NIGHTLY_MONTHLY_SUBSCRIPTION);
-
-        SkuDetails yearlySkuDetails = InAppPurchaseWrapper.getInstance().getSkuDetails(
-                getPackageName().equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
-                        ? InAppPurchaseWrapper.RELEASE_YEARLY_SUBSCRIPTION
-                        : InAppPurchaseWrapper.NIGHTLY_YEARLY_SUBSCRIPTION);
         TextView monthlySubscriptionText = findViewById(R.id.monthly_subscription_text);
         monthlySubscriptionText.setText(
                 String.format(getResources().getString(R.string.monthly_subscription), ""));
+        TextView monthlySubscriptionAmountText =
+                findViewById(R.id.monthly_subscription_amount_text);
+        mMonthlySelectorLayout = findViewById(R.id.monthly_selector_layout);
 
-        if (monthlySkuDetails != null && yearlySkuDetails != null) {
-            mMonthlySelectorLayout = findViewById(R.id.monthly_selector_layout);
-            mMonthlySelectorLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    InAppPurchaseWrapper.getInstance().purchase(
-                            BraveVpnPlansActivity.this, monthlySkuDetails);
-                }
-            });
+        InAppPurchaseWrapper.getInstance().queryProductDetailsAsync(
+                InAppPurchaseWrapper.SubscriptionType.MONTHLY,
+                new InAppPurchaseWrapper.QueryProductDetailsResponse() {
+                    @Override
+                    public void onProductDetails(Map<String, ProductDetails> productDetailsMap) {
+                        ProductDetails monthlyProductDetails = productDetailsMap.get(
+                                InAppPurchaseWrapper.getInstance().getProductId(
+                                        InAppPurchaseWrapper.SubscriptionType.MONTHLY));
+                        if (monthlyProductDetails != null) {
+                            mMonthlySelectorLayout.setOnClickListener(v
+                                    -> InAppPurchaseWrapper.getInstance().initiatePurchase(
+                                            BraveVpnPlansActivity.this, monthlyProductDetails));
+                            if (monthlyProductDetails.getSubscriptionOfferDetails() != null) {
+                                monthlySubscriptionAmountText.setText(
+                                        String.format(getResources().getString(
+                                                              R.string.monthly_subscription_amount),
+                                                monthlyProductDetails.getSubscriptionOfferDetails()
+                                                        .get(0)
+                                                        .getPricingPhases()
+                                                        .getPricingPhaseList()
+                                                        .get(0)
+                                                        .getFormattedPrice()));
+                            }
+                        }
+                    }
+                });
 
-            TextView monthlySubscriptionAmountText =
-                    findViewById(R.id.monthly_subscription_amount_text);
-            monthlySubscriptionAmountText.setText(
-                    String.format(getResources().getString(R.string.monthly_subscription_amount),
-                            monthlySkuDetails.getPrice()));
+        TextView yearlySubscriptionAmountText = findViewById(R.id.yearly_subscription_amount_text);
+        mYearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
 
-            mYearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
-            mYearlySelectorLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    InAppPurchaseWrapper.getInstance().purchase(
-                            BraveVpnPlansActivity.this, yearlySkuDetails);
-                }
-            });
+        InAppPurchaseWrapper.getInstance().queryProductDetailsAsync(
+                InAppPurchaseWrapper.SubscriptionType.YEARLY,
+                new InAppPurchaseWrapper.QueryProductDetailsResponse() {
+                    @Override
+                    public void onProductDetails(Map<String, ProductDetails> productDetailsMap) {
+                        ProductDetails yearlyProductDetails = productDetailsMap.get(
+                                InAppPurchaseWrapper.getInstance().getProductId(
+                                        InAppPurchaseWrapper.SubscriptionType.YEARLY));
+                        if (yearlyProductDetails != null) {
+                            mYearlySelectorLayout.setOnClickListener(v
+                                    -> InAppPurchaseWrapper.getInstance().initiatePurchase(
+                                            BraveVpnPlansActivity.this, yearlyProductDetails));
+                            if (yearlyProductDetails.getSubscriptionOfferDetails() != null) {
+                                yearlySubscriptionAmountText.setText(
+                                        String.format(getResources().getString(
+                                                              R.string.yearly_subscription_amount),
+                                                yearlyProductDetails.getSubscriptionOfferDetails()
+                                                        .get(0)
+                                                        .getPricingPhases()
+                                                        .getPricingPhaseList()
+                                                        .get(0)
+                                                        .getFormattedPrice()));
+                            }
+                        }
+                    }
+                });
 
-            TextView yearlySubscriptionAmountText =
-                    findViewById(R.id.yearly_subscription_amount_text);
-            yearlySubscriptionAmountText.setText(
-                    String.format(getResources().getString(R.string.yearly_subscription_amount),
-                            yearlySkuDetails.getPrice()));
-            BraveVpnUtils.showProgressDialog(BraveVpnPlansActivity.this,
-                    getResources().getString(R.string.vpn_connect_text));
-            mIsVerification = true;
-            verifySubscription();
-        } else {
-            Toast.makeText(BraveVpnPlansActivity.this, R.string.purchased_failed, Toast.LENGTH_LONG)
-                    .show();
-        }
+        BraveVpnUtils.showProgressDialog(
+                BraveVpnPlansActivity.this, getResources().getString(R.string.vpn_connect_text));
+        mIsVerification = true;
+        verifySubscription();
+
+        // SkuDetails monthlySkuDetails = InAppPurchaseWrapper.getInstance().getSkuDetails(
+        //         getPackageName().equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
+        //                 ? InAppPurchaseWrapper.RELEASE_MONTHLY_SUBSCRIPTION
+        //                 : InAppPurchaseWrapper.NIGHTLY_MONTHLY_SUBSCRIPTION);
+
+        // SkuDetails yearlySkuDetails = InAppPurchaseWrapper.getInstance().getSkuDetails(
+        //         getPackageName().equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
+        //                 ? InAppPurchaseWrapper.RELEASE_YEARLY_SUBSCRIPTION
+        //                 : InAppPurchaseWrapper.NIGHTLY_YEARLY_SUBSCRIPTION);
+
+        // if (monthlySkuDetails != null && yearlySkuDetails != null) {
+        //     mMonthlySelectorLayout = findViewById(R.id.monthly_selector_layout);
+        //     mMonthlySelectorLayout.setOnClickListener(new View.OnClickListener() {
+        //         @Override
+        //         public void onClick(View v) {
+        //             InAppPurchaseWrapper.getInstance().purchase(
+        //                     BraveVpnPlansActivity.this, monthlySkuDetails);
+        //         }
+        //     });
+
+        //     TextView monthlySubscriptionAmountText =
+        //             findViewById(R.id.monthly_subscription_amount_text);
+        //     monthlySubscriptionAmountText.setText(
+        //             String.format(getResources().getString(R.string.monthly_subscription_amount),
+        //                     monthlySkuDetails.getPrice()));
+
+        //     mYearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
+        //     mYearlySelectorLayout.setOnClickListener(new View.OnClickListener() {
+        //         @Override
+        //         public void onClick(View v) {
+        //             InAppPurchaseWrapper.getInstance().purchase(
+        //                     BraveVpnPlansActivity.this, yearlySkuDetails);
+        //         }
+        //     });
+
+        //     TextView yearlySubscriptionAmountText =
+        //             findViewById(R.id.yearly_subscription_amount_text);
+        //     yearlySubscriptionAmountText.setText(
+        //             String.format(getResources().getString(R.string.yearly_subscription_amount),
+        //                     yearlySkuDetails.getPrice()));
+        //     BraveVpnUtils.showProgressDialog(BraveVpnPlansActivity.this,
+        //             getResources().getString(R.string.vpn_connect_text));
+        //     mIsVerification = true;
+        //     verifySubscription();
+        // } else {
+        //     Toast.makeText(BraveVpnPlansActivity.this, R.string.purchased_failed,
+        //     Toast.LENGTH_LONG)
+        //             .show();
+        // }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_brave_vpn, menu);
         MenuItem item = menu.findItem(R.id.restore);
-        item.setVisible(true);
         if (mShouldShowRestoreMenu) {
             mShouldShowRestoreMenu = false;
             item.setVisible(true);

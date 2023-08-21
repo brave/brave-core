@@ -8,7 +8,6 @@
 package org.chromium.chrome.browser.vpn.utils;
 
 import static com.android.billingclient.api.BillingClient.BillingResponseCode.OK;
-import static com.android.billingclient.api.BillingClient.SkuType.SUBS;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,16 +21,18 @@ import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesResponseListener;
 import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.QueryProductDetailsParams;
 import com.android.billingclient.api.QueryPurchasesParams;
-import com.android.billingclient.api.SkuDetails;
-import com.android.billingclient.api.SkuDetailsParams;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
@@ -50,20 +51,20 @@ public class InAppPurchaseWrapper {
     private BillingClient mBillingClient;
     private int mRetryCount;
 
-    private final Map<String, SkuDetails> mSkusWithSkuDetails = new HashMap<>();
-
-    public SkuDetails getSkuDetails(String sku) {
-        return mSkusWithSkuDetails.get(sku);
-    }
-
-    public static final List<String> NIGHTLY_SUBS_SKUS = new ArrayList<>(
+    public static final List<String> NIGHTLY_SUBS_PRODUCT_IDS = new ArrayList<>(
             Arrays.asList(NIGHTLY_MONTHLY_SUBSCRIPTION, NIGHTLY_YEARLY_SUBSCRIPTION));
 
-    public static final List<String> RELEASE_SUBS_SKUS = new ArrayList<>(
+    public static final List<String> RELEASE_SUBS_PRODUCT_IDS = new ArrayList<>(
             Arrays.asList(RELEASE_MONTHLY_SUBSCRIPTION, RELEASE_YEARLY_SUBSCRIPTION));
 
     private static volatile InAppPurchaseWrapper sInAppPurchaseWrapper;
     private static Object mutex = new Object();
+
+    public enum SubscriptionType { MONTHLY, YEARLY }
+
+    public interface QueryProductDetailsResponse {
+        default void onProductDetails(Map<String, ProductDetails> productDetails) {}
+    }
 
     private MutableLiveData<List<Purchase>> mutablePurchases = new MutableLiveData();
     private LiveData<List<Purchase>> purchases = mutablePurchases;
@@ -128,25 +129,38 @@ public class InAppPurchaseWrapper {
         return false;
     }
 
-    private void querySkuDetailsAsync(List<String> skuList) {
-        SkuDetailsParams params = SkuDetailsParams.newBuilder()
-                                          .setSkusList(skuList)
-                                          .setType(BillingClient.SkuType.SUBS)
-                                          .build();
-        mBillingClient.querySkuDetailsAsync(params, (billingResult, skuDetailsList) -> {
-            if (billingResult.getResponseCode() == OK && skuDetailsList != null) {
-                for (SkuDetails skuDetails : skuDetailsList) {
-                    mSkusWithSkuDetails.put(skuDetails.getSku(), skuDetails);
-                }
-            }
-        });
+    public String getProductId(SubscriptionType subscriptionType) {
+        boolean isReleaseBuild = ContextUtils.getApplicationContext().getPackageName().equals(
+                BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME);
+        if (isReleaseBuild) {
+            return subscriptionType == SubscriptionType.MONTHLY ? RELEASE_MONTHLY_SUBSCRIPTION
+                                                                : RELEASE_YEARLY_SUBSCRIPTION;
+        } else {
+            return subscriptionType == SubscriptionType.MONTHLY ? NIGHTLY_MONTHLY_SUBSCRIPTION
+                                                                : NIGHTLY_YEARLY_SUBSCRIPTION;
+        }
     }
 
-    public void queryPurchases(PurchasesResponseListener purchasesResponseListener) {
-        mBillingClient.queryPurchasesAsync(QueryPurchasesParams.newBuilder()
-                                                   .setProductType(BillingClient.ProductType.SUBS)
-                                                   .build(),
-                purchasesResponseListener);
+    public void queryProductDetailsAsync(SubscriptionType subscriptionType,
+            QueryProductDetailsResponse queryProductDetailsResponse) {
+        Map<String, ProductDetails> productDetails = new HashMap<>();
+        List<QueryProductDetailsParams.Product> products = new ArrayList<>();
+        products.add(QueryProductDetailsParams.Product.newBuilder()
+                             .setProductId(getProductId(subscriptionType))
+                             .setProductType(BillingClient.ProductType.SUBS)
+                             .build());
+        QueryProductDetailsParams queryProductDetailsParams =
+                QueryProductDetailsParams.newBuilder().setProductList(products).build();
+
+        mBillingClient.queryProductDetailsAsync(
+                queryProductDetailsParams, (billingResult, productDetailsList) -> {
+                    if (billingResult.getResponseCode() == OK) {
+                        for (ProductDetails productDetail : productDetailsList) {
+                            productDetails.put(productDetail.getProductId(), productDetail);
+                        }
+                        queryProductDetailsResponse.onProductDetails(productDetails);
+                    }
+                });
     }
 
     public void queryPurchases() {
@@ -156,12 +170,20 @@ public class InAppPurchaseWrapper {
                 (billingResult, list) -> { setPurchases(list); });
     }
 
-    public void purchase(Activity activity, SkuDetails skuDetails) {
-        BillingFlowParams billingFlowParams =
-                BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build();
+    public void initiatePurchase(Activity activity, ProductDetails productDetails) {
+        String offerToken = productDetails.getSubscriptionOfferDetails().get(0).getOfferToken();
+        List<BillingFlowParams.ProductDetailsParams> productDetailsParamsList = new ArrayList<>();
+        productDetailsParamsList.add(BillingFlowParams.ProductDetailsParams.newBuilder()
+                                             .setProductDetails(productDetails)
+                                             .setOfferToken(offerToken)
+                                             .build());
 
-        int responseCode =
-                mBillingClient.launchBillingFlow(activity, billingFlowParams).getResponseCode();
+        BillingFlowParams billingFlowParams =
+                BillingFlowParams.newBuilder()
+                        .setProductDetailsParamsList(productDetailsParamsList)
+                        .build();
+
+        BillingResult billingResult = mBillingClient.launchBillingFlow(activity, billingFlowParams);
     }
 
     public void processPurchases(Context context, List<Purchase> purchases) {
@@ -244,8 +266,6 @@ public class InAppPurchaseWrapper {
         public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
             if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                 retryCount = 0;
-                querySkuDetailsAsync(NIGHTLY_SUBS_SKUS);
-                querySkuDetailsAsync(RELEASE_SUBS_SKUS);
             }
         }
     };
