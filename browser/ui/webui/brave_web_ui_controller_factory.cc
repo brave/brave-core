@@ -192,7 +192,11 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
                                              const GURL& url) {
   // This will get called a lot to check all URLs, so do a quick check of other
   // schemes to filter out most URLs.
-  if (!content::HasWebUIScheme(url)) {
+  //
+  // This has a narrow scoper scope than content::HasWebUIScheme(url) which also
+  // allows both `chrome-untrusted` and `chrome-devtools`.
+  if (!url.SchemeIs(content::kBraveUIScheme) &&
+      !url.SchemeIs(content::kChromeUIScheme)) {
     return nullptr;
   }
 
