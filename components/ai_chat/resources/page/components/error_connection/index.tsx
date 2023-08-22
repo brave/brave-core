@@ -4,10 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import styles from './style.module.scss'
+import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
-// import { getLocale } from '$web-common/locale'
+
+import styles from './style.module.scss'
 
 interface PromptAutoSuggestionProps {
   onRetry?: () => void
@@ -18,10 +19,10 @@ function ErrorConnection (props: PromptAutoSuggestionProps) {
     <div className={styles.box}>
       <Icon name="warning-circle-filled" className={styles.icon} />
       <div>
-        <p>There was a network issue connecting to Leo, check your connection and try again.</p>
+        <p>{getLocale('errorNetworkLabel')}</p>
         <div className={styles.actionsBox}>
           <Button onClick={props.onRetry}>
-            Retry
+            {getLocale('retryButtonLabel')}
           </Button>
         </div>
       </div>

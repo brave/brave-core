@@ -4,15 +4,17 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import styles from './style.module.scss'
+import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
+
+import styles from './style.module.scss'
 
 function ErrorRateLimit () {
   return (
     <div className={styles.box}>
       <Icon name="warning-circle-filled" className={styles.icon} />
       <div>
-        <p>You've reached the maximum number of questions for Leo. Please try again in a few hours.</p>
+        <p>{getLocale('errorRateLimit')}.</p>
       </div>
     </div>
   )
