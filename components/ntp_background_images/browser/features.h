@@ -18,9 +18,9 @@ BASE_DECLARE_FEATURE(kBraveNTPSuperReferralWallpaper);
 
 BASE_DECLARE_FEATURE(kBraveNTPBrandedWallpaper);
 
-// Show initial branded wallpaper after nth new tab page for fresh installs.
+// Show initial branded wallpaper after nth new tab page for fresh opens.
 constexpr base::FeatureParam<int> kInitialCountToBrandedWallpaper{
-    &kBraveNTPBrandedWallpaper, "initial_count_to_branded_wallpaper", 0};
+    &kBraveNTPBrandedWallpaper, "initial_count_to_branded_wallpaper", 1};
 
 // Show branded wallpaper every nth new tab page.
 constexpr base::FeatureParam<int> kCountToBrandedWallpaper{

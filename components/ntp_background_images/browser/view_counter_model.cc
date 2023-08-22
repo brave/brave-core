@@ -17,8 +17,10 @@ namespace ntp_background_images {
 ViewCounterModel::ViewCounterModel(PrefService* prefs) : prefs_(prefs) {
   CHECK(prefs);
 
+  // When browser is restarted or component is updated, we reset to "initial"
+  // count.
   count_to_branded_wallpaper_ =
-      prefs->GetInteger(prefs::kCountToBrandedWallpaper);
+      features::kInitialCountToBrandedWallpaper.Get();
 }
 
 ViewCounterModel::~ViewCounterModel() = default;
@@ -103,9 +105,6 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
     // Randomize campaign index for next time.
     current_campaign_index_ = base::RandInt(0, total_campaign_count_ - 1);
   }
-
-  prefs_->SetInteger(prefs::kCountToBrandedWallpaper,
-                     count_to_branded_wallpaper_);
 }
 
 void ViewCounterModel::RegisterPageViewForBackgroundImages() {

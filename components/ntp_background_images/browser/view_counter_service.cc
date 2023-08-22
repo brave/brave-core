@@ -60,11 +60,8 @@ void ViewCounterService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
 void ViewCounterService::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(
-      prefs::kBrandedWallpaperNotificationDismissed, false);
-  registry->RegisterIntegerPref(
-      prefs::kCountToBrandedWallpaper,
-      features::kInitialCountToBrandedWallpaper.Get());
+  registry->RegisterBooleanPref(prefs::kBrandedWallpaperNotificationDismissed,
+                                false);
   registry->RegisterBooleanPref(
       prefs::kNewTabPageShowSponsoredImagesBackgroundImage, true);
   // Integer type is used because this pref is used by radio button group in

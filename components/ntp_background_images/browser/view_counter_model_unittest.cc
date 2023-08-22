@@ -29,10 +29,6 @@ class ViewCounterModelTest : public testing::Test {
 
   sync_preferences::TestingPrefServiceSyncable* prefs() { return &prefs_; }
 
-  void SetCountToBrandedWallPaper(int count) {
-    prefs()->SetInteger(prefs::kCountToBrandedWallpaper, count);
-  }
-
  protected:
   sync_preferences::TestingPrefServiceSyncable prefs_;
 };
@@ -82,9 +78,8 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesTest) {
 }
 
 TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountToBrandedWallpaperTest) {
-  SetCountToBrandedWallPaper(1);
-
   ViewCounterModel model(prefs());
+  model.count_to_branded_wallpaper_ = 1;
 
   model.SetCampaignsTotalBrandedImageCount(kTestCampaignsTotalImageCount);
 
