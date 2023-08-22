@@ -21,6 +21,7 @@ bool IsFlagExpired(const flags_ui::FlagsStorage* storage,
 #if BUILDFLAG(ENABLE_PLAYLIST)
   version_info::Channel channel = chrome::GetChannel();
 
+#if BUILDFLAG(IS_ANDROID)
   // Enable playlist feature only for nightly/development.
   if ((base::EqualsCaseInsensitiveASCII(kPlaylistFeatureInternalName,
                                         internal_name) ||
@@ -30,7 +31,8 @@ bool IsFlagExpired(const flags_ui::FlagsStorage* storage,
        channel == version_info::Channel::BETA)) {
     return true;
   }
-#endif
+#endif  // BUILDFLAG(IS_ANDROID)
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
   if (base::EqualsCaseInsensitiveASCII(flag_descriptions::kHttpsUpgradesName,
                                        internal_name)) {
