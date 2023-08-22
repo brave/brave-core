@@ -6,7 +6,8 @@
 #include "brave/browser/extensions/brave_extension_management.h"
 
 #define BRAVE_EXTENSION_MANAGEMENT_FACTORY_BUILD_SERVICE_INSTANCE_FOR \
-  return new BraveExtensionManagement(Profile::FromBrowserContext(context));
+  return std::make_unique<BraveExtensionManagement>(                  \
+      Profile::FromBrowserContext(context));
 
 #include "src/chrome/browser/extensions/extension_management.cc"
 #undef BRAVE_EXTENSION_MANAGEMENT_FACTORY_BUILD_SERVICE_INSTANCE_FOR
