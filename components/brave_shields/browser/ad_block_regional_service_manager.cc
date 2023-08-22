@@ -235,11 +235,15 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
   auto catalog_entry =
       brave_shields::FindAdBlockFilterListByUUID(filter_list_catalog_, uuid);
 
+  if (catalog_entry == filter_list_catalog_.end()) {
+    return;
+  }
   // Enable or disable the specified filter list
-  DCHECK(catalog_entry != filter_list_catalog_.end());
   auto it = regional_filters_providers_.find(uuid);
   if (enabled) {
-    DCHECK(it == regional_filters_providers_.end());
+    if (it != regional_filters_providers_.end()) {
+      return;
+    }
     auto regional_filters_provider =
         std::make_unique<AdBlockComponentFiltersProvider>(
             component_update_service_, *catalog_entry);
@@ -248,7 +252,9 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
     regional_filters_providers_.insert(
         {uuid, std::move(regional_filters_provider)});
   } else {
-    DCHECK(it != regional_filters_providers_.end());
+    if (it == regional_filters_providers_.end()) {
+      return;
+    }
     AdBlockFiltersProviderManager::GetInstance()->RemoveProvider(
         it->second.get());
     it->second->UnregisterComponent();
