@@ -132,11 +132,9 @@ void DistillPageText(
     AddTextNodesToVector(content_node, &text_node_contents);
   }
 
-  // tokens + max_new_tokens must be <= 4096 (llama2)
-  // 8092 chars, ~3,098 tokens (reserved for article)
-  // 1k chars, ~380 tokens (reserved for prompt)
-  std::string contents_text = base::UTF16ToUTF8(
-      base::JoinString(text_node_contents, u" ").substr(0, 8092));
+  std::string contents_text =
+      base::UTF16ToUTF8(base::JoinString(text_node_contents, u" "));
+
   if (contents_text.empty()) {
     std::move(callback).Run({});
     return;
