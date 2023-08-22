@@ -488,7 +488,7 @@ std::string AIChatTabHelper::BuildLlama2Prompt(std::string user_message) {
 
   // If there's no conversation history, then we just send a (partial)
   // first sequence.
-  if (conversation_history.size() == 0) {
+  if (conversation_history.empty() || conversation_history.size() <= 1) {
     return BuildLlama2FirstSequence(system_message, first_user_message,
                                     absl::nullopt, absl::nullopt);
   }
