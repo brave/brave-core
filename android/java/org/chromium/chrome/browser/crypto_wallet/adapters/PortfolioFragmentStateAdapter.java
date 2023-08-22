@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import org.chromium.chrome.R;
-
 import org.chromium.chrome.browser.crypto_wallet.fragments.AssetsFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.NftGridFragment;
 
@@ -23,7 +22,6 @@ import java.util.Arrays;
  * @see org.chromium.chrome.browser.crypto_wallet.fragments.PortfolioFragment
  */
 public class PortfolioFragmentStateAdapter extends FragmentStateAdapter {
-
     private static final int ASSETS_FRAGMENT_POSITION = 0;
     private static final int NFT_GRID_FRAGMENT_POSITION = 1;
 
@@ -34,7 +32,8 @@ public class PortfolioFragmentStateAdapter extends FragmentStateAdapter {
 
     public PortfolioFragmentStateAdapter(@NonNull final Fragment fragment) {
         super(fragment);
-        mTitles = new ArrayList<>(Arrays.asList(fragment.getString(R.string.assets), fragment.getString(R.string.brave_wallet_nfts)));
+        mTitles = new ArrayList<>(Arrays.asList(fragment.getString(R.string.assets),
+                fragment.getString(R.string.brave_wallet_nfts)));
     }
 
     @NonNull

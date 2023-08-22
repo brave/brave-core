@@ -19,7 +19,6 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -60,6 +59,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpac
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
+import org.chromium.ui.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
@@ -68,8 +68,7 @@ import java.util.Locale;
 /**
  * Assets fragment displayed under portfolio section of Brave Wallet.
  */
-public class AssetsFragment
-        extends Fragment implements OnWalletListItemClick, ApprovedTxObserver {
+public class AssetsFragment extends Fragment implements OnWalletListItemClick, ApprovedTxObserver {
     private static final String TAG = "AssetsFragment";
     private TextView mBalance;
     private Button mBtnChangeNetwork;
@@ -167,8 +166,8 @@ public class AssetsFragment
     }
 
     private void setUpObservers() {
-        mNetworkSelectionModel = getNetworkModel().openNetworkSelectorModel(TAG,
-                NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, getLifecycle());
+        mNetworkSelectionModel = getNetworkModel().openNetworkSelectorModel(
+                TAG, NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, getLifecycle());
         // Show pending transactions fab to process pending txs
         mNetworkSelectionModel.getSelectedNetwork().observe(
                 getViewLifecycleOwner(), localNetworkInfo -> {
@@ -216,8 +215,10 @@ public class AssetsFragment
                                             R.string.brave_wallet_create_account_description,
                                             networkInfo.symbolName))
                                     .setPositiveButton(R.string.brave_action_yes,
-                                            (dialog, which) -> mWalletModel.createAccountAndSetDefaultNetwork(
-                                                    networkInfo))
+                                            (dialog, which)
+                                                    -> mWalletModel
+                                                               .createAccountAndSetDefaultNetwork(
+                                                                       networkInfo))
                                     .setNegativeButton(
                                             R.string.brave_action_no, (dialog, which) -> {
                                                 getNetworkModel().clearCreateAccountState();
@@ -278,8 +279,8 @@ public class AssetsFragment
     }
 
     private void openNetworkSelection() {
-        Intent intent = NetworkSelectorActivity.createIntent(requireContext(),
-                NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, TAG);
+        Intent intent = NetworkSelectorActivity.createIntent(
+                requireContext(), NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, TAG);
         startActivity(intent);
     }
 
@@ -300,13 +301,13 @@ public class AssetsFragment
             trendPercentage.setText(
                     String.format(Locale.getDefault(), "%.2f%%", Math.abs(percents)));
             if (mostRecentFiatSum > currentFiatSum) {
-                trendPercentage.setTextColor(
-                        ContextCompat.getColor(requireContext(), R.color.wallet_negative_trend_color));
+                trendPercentage.setTextColor(ContextCompat.getColor(
+                        requireContext(), R.color.wallet_negative_trend_color));
                 trendPercentage.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.ic_down_icon, 0, 0, 0);
             } else {
-                trendPercentage.setTextColor(
-                        ContextCompat.getColor(requireContext(), R.color.wallet_positive_trend_color));
+                trendPercentage.setTextColor(ContextCompat.getColor(
+                        requireContext(), R.color.wallet_positive_trend_color));
                 trendPercentage.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.ic_up_icon, 0, 0, 0);
             }
@@ -325,12 +326,13 @@ public class AssetsFragment
         }
 
         mPortfolioHelper.setFiatHistoryTimeframe(mCurrentTimeframeType);
-        mPortfolioHelper.calculateFiatHistory(() -> PostTask.runOrPostTask(TaskTraits.UI_DEFAULT, () -> {
-            mChartES.setColors(new int[] {0xFFF73A1C, 0xFFBF14A2, 0xFF6F4CD2});
-            mChartES.setData(mPortfolioHelper.getFiatHistory());
+        mPortfolioHelper.calculateFiatHistory(
+                () -> PostTask.runOrPostTask(TaskTraits.UI_DEFAULT, () -> {
+                    mChartES.setColors(new int[] {0xFFF73A1C, 0xFFBF14A2, 0xFF6F4CD2});
+                    mChartES.setData(mPortfolioHelper.getFiatHistory());
 
-            adjustTrendControls();
-        }));
+                    adjustTrendControls();
+                }));
     }
 
     private void updatePortfolioGetPendingTx() {
@@ -353,8 +355,9 @@ public class AssetsFragment
                     mBalance.setText(mFiatSumString);
                     mBalance.invalidate();
 
-                    LiveDataUtil.observeOnce(
-                            getNetworkModel().mCryptoNetworks, networkInfos -> setUpCoinList(mPortfolioHelper.getUserAssets(),
+                    LiveDataUtil.observeOnce(getNetworkModel().mCryptoNetworks,
+                            networkInfos
+                            -> setUpCoinList(mPortfolioHelper.getUserAssets(),
                                     mPortfolioHelper.getPerTokenCryptoSum(),
                                     mPortfolioHelper.getPerTokenFiatSum(), networkInfos));
                     updatePortfolioGraph();
@@ -397,15 +400,14 @@ public class AssetsFragment
                         WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST, false);
 
         bottomSheetDialogFragment.setSelectedNetwork(mNetworkInfo);
-        bottomSheetDialogFragment.setDismissListener(
-                isAssetsListChanged -> {
-                    if (isAssetsListChanged) {
-                        updatePortfolioGetPendingTx();
-                    }
-                });
+        bottomSheetDialogFragment.setDismissListener(isAssetsListChanged -> {
+            if (isAssetsListChanged) {
+                updatePortfolioGetPendingTx();
+            }
+        });
 
-        bottomSheetDialogFragment.show(
-                getParentFragmentManager(), EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
+        bottomSheetDialogFragment.show(getParentFragmentManager(),
+                EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
     }
 
     private void updateNextPendingTx() {
@@ -429,8 +431,9 @@ public class AssetsFragment
 
     private void updatePendingTxNotification() {
         Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity)
+        if (activity instanceof BraveWalletActivity) {
             ((BraveWalletActivity) activity).showPendingTxNotification(hasPendingTx());
+        }
     }
 
     private NetworkModel getNetworkModel() {
