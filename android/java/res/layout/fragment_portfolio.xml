@@ -23,6 +23,17 @@
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:layout_gravity="center"
+            android:background="@drawable/wallet_chip_outline"
+
+            app:tabSelectedTextColor="@color/brave_wallet_day_night_text_color"
+            app:tabTextAppearance="@style/BraveChipTabTextAppearance"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@android:color/transparent"
+            app:tabIndicatorGravity="stretch"
+            app:tabIndicatorHeight="?actionBarSize"
+            app:tabMode="fixed"
+            app:tabRippleColor="@null"
+            app:tabIndicator="@drawable/chip_outline_selected"
             />
 
         <androidx.viewpager2.widget.ViewPager2

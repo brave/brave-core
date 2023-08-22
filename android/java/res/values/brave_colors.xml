@@ -35,6 +35,7 @@
     <color name="wallet_dn_bg_primary">#F8F9FA</color>
     <color name="brave_wallet_day_night_bull">#FF2AC194</color>
     <color name="brave_wallet_day_night_bear">#FFEE6374</color>
+    <color name="brave_wallet_day_night_chip_selected">#EDEEF1</color>
 
     <!-- Text colors -->
     <color name="brave_theme_subtitle_text">#868E96</color>
