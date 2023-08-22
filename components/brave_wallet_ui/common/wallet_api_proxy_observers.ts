@@ -12,6 +12,30 @@ import { WalletPageActions } from '../page/actions'
 import { walletApi } from './slices/api.slice'
 import { getCoinFromTxDataUnion } from '../utils/network-utils'
 
+export function  makeBraveWalletServiceTokenObserver (store: Store) {
+  const braveWalletServiceTokenObserverReceiver = new BraveWallet.BraveWalletServiceTokenObserverReceiver({
+    onTokenAdded(token) {
+      store.dispatch(
+        walletApi.endpoints.invalidateUserTokensRegistry.initiate()
+      )
+      store.dispatch(WalletActions.getAllTokensList())
+      store.dispatch(
+        WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: false })
+      )
+    },
+    onTokenRemoved(token) {
+      store.dispatch(
+        walletApi.endpoints.invalidateUserTokensRegistry.initiate()
+      )
+      store.dispatch(WalletActions.getAllTokensList())
+      store.dispatch(
+        WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true })
+      )
+    },
+  })
+  return braveWalletServiceTokenObserverReceiver
+}
+
 export function makeJsonRpcServiceObserver (store: Store) {
     const jsonRpcServiceObserverReceiver = new BraveWallet.JsonRpcServiceObserverReceiver({
       chainChangedEvent: function (chainId, coin, origin) {

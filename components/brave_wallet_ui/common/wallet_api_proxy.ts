@@ -40,6 +40,10 @@ export class WalletApiProxy {
     this.braveWalletService.addObserver(observer.$.bindNewPipeAndPassRemote())
   }
 
+  addBraveWalletServiceTokenObserver (observer: BraveWallet.BraveWalletServiceTokenObserverReceiver) {
+    this.braveWalletService.addTokenObserver(observer.$.bindNewPipeAndPassRemote())
+  }
+
   addBraveWalletPinServiceObserver (observer: BraveWallet.BraveWalletPinServiceObserverReceiver) {
     this.braveWalletPinService.addObserver(observer.$.bindNewPipeAndPassRemote())
   }
