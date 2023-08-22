@@ -7,7 +7,7 @@ import UIKit
 import BraveUI
 import BraveStrings
 
-protocol TabSyncHeaderViewDelegate {
+protocol TabSyncHeaderViewDelegate: AnyObject {
   func toggleSection(_ header: TabSyncHeaderView, section: Int)
   func hideForNow(_ header: TabSyncHeaderView, section: Int)
   func openAll(_ header: TabSyncHeaderView, section: Int)
@@ -21,7 +21,7 @@ class TabSyncHeaderView: UITableViewHeaderFooterView, TableViewReusable {
     static let iconSize = 20.0
   }
   
-  var delegate: TabSyncHeaderViewDelegate?
+  weak var delegate: TabSyncHeaderViewDelegate?
   var section = 0
   var isCollapsed = false {
     didSet {
@@ -184,7 +184,7 @@ class TabSyncTableViewCell: UITableViewCell, TableViewReusable {
     static let imageSize = 32.0
   }
   
-  var delegate: TabSyncHeaderViewDelegate?
+  weak var delegate: TabSyncHeaderViewDelegate?
   
   let imageIconView = UIImageView().then {
     $0.contentMode = .scaleAspectFit
