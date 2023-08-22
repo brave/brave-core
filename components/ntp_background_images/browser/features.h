@@ -20,11 +20,11 @@ BASE_DECLARE_FEATURE(kBraveNTPBrandedWallpaper);
 
 // Show initial branded wallpaper after nth new tab page for fresh installs.
 constexpr base::FeatureParam<int> kInitialCountToBrandedWallpaper{
-    &kBraveNTPBrandedWallpaper, "initial_count_to_branded_wallpaper", 1};
+    &kBraveNTPBrandedWallpaper, "initial_count_to_branded_wallpaper", 0};
 
 // Show branded wallpaper every nth new tab page.
 constexpr base::FeatureParam<int> kCountToBrandedWallpaper{
-    &kBraveNTPBrandedWallpaper, "count_to_branded_wallpaper", 3};
+    &kBraveNTPBrandedWallpaper, "count_to_branded_wallpaper", 2};
 
 }  // namespace features
 }  // namespace ntp_background_images

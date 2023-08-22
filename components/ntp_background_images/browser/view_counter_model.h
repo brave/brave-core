@@ -71,7 +71,7 @@ class ViewCounterModel {
 
   // For NTP SI.
   raw_ptr<PrefService> prefs_ = nullptr;
-  int count_to_branded_wallpaper_ = 1;
+  int count_to_branded_wallpaper_ = 0;
   bool always_show_branded_wallpaper_ = false;
   bool show_branded_wallpaper_ = true;
   size_t current_campaign_index_ = 0;
