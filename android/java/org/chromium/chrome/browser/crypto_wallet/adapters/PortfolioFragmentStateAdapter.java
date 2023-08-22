@@ -34,7 +34,7 @@ public class PortfolioFragmentStateAdapter extends FragmentStateAdapter {
 
     public PortfolioFragmentStateAdapter(@NonNull final Fragment fragment) {
         super(fragment);
-        mTitles = new ArrayList<>(Arrays.asList("Assets", fragment.getString(R.string.brave_wallet_nfts)));
+        mTitles = new ArrayList<>(Arrays.asList(fragment.getString(R.string.assets), fragment.getString(R.string.brave_wallet_nfts)));
     }
 
     @NonNull
