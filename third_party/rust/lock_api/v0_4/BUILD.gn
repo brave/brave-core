@@ -37,4 +37,8 @@ cargo_crate("lib") {
   build_deps = [ "//third_party/rust/autocfg/v1:buildrs_support" ]
   build_root = "crate/build.rs"
   build_sources = [ "crate/build.rs" ]
+  rustflags = [
+    "--cfg",
+    "has_const_fn_trait_bound",
+  ]
 }

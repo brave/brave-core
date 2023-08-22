@@ -65,4 +65,8 @@ cargo_crate("lib") {
   features = [ "std" ]
   build_root = "crate/build.rs"
   build_sources = [ "crate/build.rs" ]
+  rustflags = [
+    "--cfg",
+    "has_i128",
+  ]
 }

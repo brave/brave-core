@@ -1,0 +1,22 @@
+From 5178e6a72e04675d32b19c5dfbe185388550143e Mon Sep 17 00:00:00 2001
+From: bridiver <34129+bridiver@users.noreply.github.com>
+Date: Wed, 23 Aug 2023 09:22:12 -0700
+Subject: [PATCH] skip autocfg probe_type
+
+---
+ third_party/rust/slab/v0_4/crate/build.rs | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/third_party/rust/slab/v0_4/crate/build.rs b/third_party/rust/slab/v0_4/crate/build.rs
+index b60351aaf2..6a56d34911 100644
+--- a/third_party/rust/slab/v0_4/crate/build.rs
++++ b/third_party/rust/slab/v0_4/crate/build.rs
+@@ -1,4 +1,5 @@
+ fn main() {
++    return; #[allow(unused)]
+     let cfg = match autocfg::AutoCfg::new() {
+         Ok(cfg) => cfg,
+         Err(e) => {
+-- 
+2.34.1
+

@@ -58,4 +58,20 @@ cargo_crate("lib") {
   ]
   build_root = "crate/build.rs"
   build_sources = [ "crate/build.rs" ]
+  rustflags = [
+    "--cfg",
+    "has_i128",
+    "--cfg",
+    "has_to_int_unchecked",
+    "--cfg",
+    "has_reverse_bits",
+    "--cfg",
+    "has_leading_trailing_ones",
+    "--cfg",
+    "has_int_assignop_ref",
+    "--cfg",
+    "has_div_euclid",
+    "--cfg",
+    "has_copysign",
+  ]
 }
