@@ -26,7 +26,7 @@ export const StyledButton = styled(WalletButton)<{ isSelected?: boolean }>`
   };
   --indicator-color: ${(p) =>
     p.isSelected
-      ? leo.color.button.background
+      ? leo.color.icon.interactive
       : 'none'
   };
   &:hover {

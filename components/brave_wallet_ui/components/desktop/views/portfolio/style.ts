@@ -212,8 +212,9 @@ export const SelectTimelineWrapper = styled(Row)`
 
 export const ControlsRow = styled(Row)`
   box-shadow: 0px -1px 1px rgba(0, 0, 0, 0.02);
-  border-radius: 16px;
+  border-radius: 16px 16px 0px 0px;
   padding: 24px 16px;
+  background-color: ${leo.color.container.background};
   @media screen and (max-width: ${layoutPanelWidth}px) {
     padding: 16px;
   }
@@ -248,10 +249,7 @@ export const BalanceAndChangeWrapper = styled(Column)`
 export const CircleButton = styled(WalletButton) <{
   marginRight?: number
 }>`
-  --button-border-color: ${leo.color.primary[20]};
-  @media (prefers-color-scheme: dark) {
-    --button-border-color: ${leo.color.primary[50]};
-  }
+  --button-border-color: ${leo.color.divider.interactive};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -345,4 +343,14 @@ export const ToggleVisibilityButton = styled(WalletButton)`
 export const EyeIcon = styled(Icon)`
   --leo-icon-size: 20px;
   color: ${leo.color.icon.default};
+`
+
+export const ContentWrapper = styled(Column) <{
+  isPanel: boolean
+}>`
+  background-color: ${(p) =>
+    p.isPanel
+      ? leo.color.container.background
+      : 'transparent'
+  };
 `

@@ -13,9 +13,13 @@ import {
 
 // Selectors
 import {
+  useSafeUISelector,
   useSafeWalletSelector
 } from '../../../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../../../common/selectors'
+import {
+  UISelectors,
+  WalletSelectors
+} from '../../../../../../common/selectors'
 
 // Types
 import {
@@ -78,7 +82,8 @@ import {
   ButtonIcon,
   SearchBarWrapper,
   ControlBarWrapper,
-  SearchButtonWrapper
+  SearchButtonWrapper,
+  ContentWrapper
 } from '../../style'
 
 interface Props {
@@ -123,6 +128,7 @@ export const TokenLists = ({
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(WalletSelectors.assetAutoDiscoveryCompleted)
   const selectedGroupAssetsByItem =
     useSafeWalletSelector(WalletSelectors.selectedGroupAssetsByItem)
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
@@ -610,7 +616,12 @@ export const TokenLists = ({
 
   // render
   return (
-    <>
+    <ContentWrapper
+      fullWidth={true}
+      fullHeight={isPanel}
+      justifyContent='flex-start'
+      isPanel={isPanel}
+    >
       {!isPortfolio &&
         <FilterTokenRow
           horizontalPadding={horizontalPadding}
@@ -727,6 +738,6 @@ export const TokenLists = ({
           </Column>
         )
       }
-    </>
+    </ContentWrapper>
   )
 }

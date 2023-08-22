@@ -7,12 +7,23 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import { layoutSmallWidth, layoutTopPosition } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{
+  isPanel: boolean
+}>`
+  --nav-background: ${leo.color.container.background};
+  @media (prefers-color-scheme: dark) {
+    /* #1C2026 does not exist in design system */
+    --nav-background: ${(p) =>
+    p.isPanel
+      ? '#1C2026'
+      : leo.color.container.background
+  };
+  }
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: ${leo.color.container.background};
+  background-color: var(--nav-background);
   border-radius: 16px;
   position: absolute;
   top: ${layoutTopPosition}px;

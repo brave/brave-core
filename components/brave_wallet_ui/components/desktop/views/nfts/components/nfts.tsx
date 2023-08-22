@@ -16,8 +16,15 @@ import {
 import { useNftPin } from '../../../../../common/hooks/nft-pin'
 
 // selectors
-import { useSafeWalletSelector, useUnsafeWalletSelector } from '../../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../../common/selectors'
+import {
+  useSafeUISelector,
+  useSafeWalletSelector,
+  useUnsafeWalletSelector
+} from '../../../../../common/hooks/use-safe-selector'
+import {
+  UISelectors,
+  WalletSelectors
+} from '../../../../../common/selectors'
 
 // actions
 import { WalletActions } from '../../../../../common/actions'
@@ -56,7 +63,8 @@ import {
   CircleButton,
   SearchBarWrapper,
   ControlBarWrapper,
-  SearchButtonWrapper
+  SearchButtonWrapper,
+  ContentWrapper
 } from '../../portfolio/style'
 import { AssetGroupContainer } from '../../../asset-group-container/asset-group-container'
 import { networkEntityAdapter } from '../../../../../common/slices/entities/network.entity'
@@ -88,6 +96,7 @@ export const Nfts = (props: Props) => {
   const selectedGroupAssetsByItem = useSafeWalletSelector(WalletSelectors.selectedGroupAssetsByItem)
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(WalletSelectors.assetAutoDiscoveryCompleted)
   const isRefreshingTokens = useSafeWalletSelector(WalletSelectors.isRefreshingNetworksAndTokens)
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
@@ -332,7 +341,12 @@ export const Nfts = (props: Props) => {
   }, [assetAutoDiscoveryCompleted])
 
   return (
-    <>
+    <ContentWrapper
+      fullWidth={true}
+      fullHeight={isPanel}
+      justifyContent='flex-start'
+      isPanel={isPanel}
+    >
       {isNftPinningFeatureEnabled && isIpfsBannerVisible && nonFungibleTokens.length > 0 &&
         <Row
           justifyContent='center'
@@ -441,6 +455,6 @@ export const Nfts = (props: Props) => {
           onCancel={hideNftDiscoveryModal}
         />
       )}
-    </>
+    </ContentWrapper>
   )
 }

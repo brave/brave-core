@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
 import CloseIcon from '../../../assets/svg-icons/close.svg'
 import {
   WalletButton,
@@ -41,7 +42,7 @@ export const Modal = styled.div<{
   max-width: ${p => p.width ? p.width : '580px'};
   max-height: 90vh;
   height: ${(p) => p.height ?? 'unset'};
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${leo.color.container.background};
   border-radius: ${(p) => p.borderRadius ? p.borderRadius : 8}px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
