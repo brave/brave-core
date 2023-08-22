@@ -47,7 +47,7 @@ PredictionMap NeuralModel::Predict(const VectorData& data) const {
     for (const auto& vector : matricies_[i]) {
       float dot_product = vector * layer_input;
       next_layer_input.push_back(dot_product);
-      BLOG(2, dot_product);
+      // BLOG(2, dot_product);
     }
     layer_input = VectorData(std::move(next_layer_input));
     if (post_matrix_functions_[i] == "tanh") {

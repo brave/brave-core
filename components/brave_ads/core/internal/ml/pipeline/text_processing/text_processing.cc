@@ -129,6 +129,10 @@ absl::optional<PredictionMap> TextProcessing::GetTopPredictions(
   for (const auto& prediction : *predictions) {
     if (prediction.second > expected_prob) {
       rtn[prediction.first] = prediction.second;
+
+      BLOG(0, "\n\n");
+      BLOG(0, prediction.first);
+      BLOG(0, prediction.second);
     }
   }
   return rtn;

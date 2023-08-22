@@ -51,20 +51,34 @@ std::unique_ptr<Data> MappedTokensTransformation::Apply(
       text, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
   std::map<unsigned, double> frequencies;
-  for (const auto& token : tokens) {
-    const auto iter = token_categories_mapping_.find(token);
-    if (iter == token_categories_mapping_.end()) {
-      BLOG(9, token << " - token not found in category mapping");
-      continue;
-    }
+  size_t tokens_length = tokens.size();
+  for (size_t i = 0; i < tokens_length; i++) {
 
-    BLOG(9, token << " - token found in category mapping");
-    std::vector<int> categories = iter->second;
-    for (const auto& category_index : categories) {
-      ++frequencies[category_index];
+    std::string token_candidate = "";
+    for (size_t j = 0; j < 5; j++) {
+      if (i + j >= tokens_length) {
+        continue;
+      }
+      std::string token_separator = (j > 0) ? "-" : "";
+      std::string token_candidate_addition = token_separator + tokens[i + j];
+      token_candidate += token_candidate_addition;
+
+      const auto iter = token_categories_mapping_.find(token_candidate);
+      if (iter == token_categories_mapping_.end()) {
+        BLOG(9, token_candidate << " - token not found in category mapping");
+        continue;
+      }
+
+      BLOG(2, token_candidate);
+      BLOG(9, token_candidate << " - token found in category mapping");
+      std::vector<int> categories = iter->second;
+      for (const auto& category_index : categories) {
+        ++frequencies[category_index];
+      }
     }
   }
 
+  BLOG(2, "\n\ntoken mapping finished\n\n");
   return std::make_unique<VectorData>(vector_dimension_, frequencies);
 }
 
