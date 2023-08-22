@@ -397,15 +397,6 @@
   <message name="IDS_IDC_LIVE_CAPTION">
     Toggle live captions
   </message>
-  <message name="IDS_IDC_SIDEBAR_SHOW_OPTION_ALWAYS">
-    Show sidebar
-  </message>
-  <message name="IDS_IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER">
-    Show sidebar on mouseover
-  </message>
-  <message name="IDS_IDC_SIDEBAR_SHOW_OPTION_NEVER">
-    Hide sidebar
-  </message>
   <message name="IDS_IDC_SHOW_BRAVE_WALLET_PANEL">
     Show Brave Wallet panel
   </message>
