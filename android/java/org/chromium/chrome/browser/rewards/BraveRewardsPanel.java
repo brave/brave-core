@@ -1687,8 +1687,10 @@ public class BraveRewardsPanel
             return mActivity.getResources().getString(R.string.uphold);
         } else if (walletType.equals(BraveWalletProvider.GEMINI)) {
             return mActivity.getResources().getString(R.string.gemini);
-        } else {
+        } else if (walletType.equals(BraveWalletProvider.BITFLYER){
             return mActivity.getResources().getString(R.string.bitflyer);
+        } else {
+            return mActivity.getResources().getString(R.string.zebpay);
         }
     }
 
@@ -1702,7 +1704,8 @@ public class BraveRewardsPanel
             if (walletStatus == WalletStatus.CONNECTED
                     && (walletType.equals(BraveWalletProvider.UPHOLD)
                             || walletType.equals(BraveWalletProvider.BITFLYER)
-                            || walletType.equals(BraveWalletProvider.GEMINI))) {
+                            || walletType.equals(BraveWalletProvider.GEMINI)
+                            || walletType.equals(BraveWalletProvider.ZEBPAY))) {
                 mPopupView.findViewById(R.id.auto_contribute_summary_seperator)
                         .setVisibility(View.GONE);
                 mPopupView.findViewById(R.id.rewards_from_ads_summary_layout)
@@ -2096,8 +2099,10 @@ public class BraveRewardsPanel
             return R.drawable.uphold_white;
         } else if (walletType.equals(BraveWalletProvider.GEMINI)) {
             return R.drawable.ic_gemini_logo_white;
-        } else {
+        } else if (walletType.equals(BraveWalletProvider.BITFLYER)) {
             return R.drawable.ic_logo_bitflyer;
+        } else {
+            return R.drawable.ic_logo_zebpay;
         }
     }
 }
