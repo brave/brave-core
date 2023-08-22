@@ -141,6 +141,12 @@ struct Publisher {
   UserEnabled user_enabled_status = UserEnabled.NOT_MODIFIED;
 };
 
+// Used to display information about why an article was displayed.
+struct Signal {
+  bool subscribed;
+  double visit_weight;
+};
+
 struct HeroArticle {
   FeedItemMetadata data;
 };
@@ -217,6 +223,7 @@ interface BraveNewsController {
 
   GetFeed() => (Feed feed);
   GetFeedV2() => (FeedV2 feed);
+  GetSignals() => (map<string, Signal> signals);
 
   // Deprecated by https://github.com/brave/brave-core/pull/16038. Use
   // |AddPublishersListener| instead.

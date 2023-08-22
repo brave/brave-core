@@ -80,6 +80,12 @@ void SignalCalculator::OnGotHistory(
 
   for (auto& [publisher_id, publisher] : publishers) {
     auto host = publisher->site_url.host();
+
+    // Direct feeds don't get a site_url, just a source, so fallback to that.
+    if (host.empty()) {
+      host = publisher->feed_source.host();
+    }
+
     auto history_it = origin_visits.find(host);
     if (history_it == origin_visits.end()) {
       publisher_visits[publisher_id] = {};
@@ -105,35 +111,22 @@ void SignalCalculator::OnGotHistory(
   }
 
   Signals signals;
-  auto add_publisher_signal = [&](const std::string& key,
-                                  const mojom::PublisherPtr& publisher) {
-    const auto& visits = publisher_visits.at(publisher->publisher_id);
-    signals[key] = {
-        .subscribed = IsPublisherSubscribed(publisher),
-        .visit_weight =
-            visits.size() / static_cast<double>(total_publisher_visits)};
-  };
-
-  // Add article signals
-  for (const auto& article : articles) {
-    const auto& publisher = publishers.at(article->publisher_id);
-    add_publisher_signal(article->url.spec(), publisher);
-  }
 
   // Add publisher signals
   for (const auto& [id, publisher] : publishers) {
-    add_publisher_signal(id, publisher);
+    const auto& visits = publisher_visits.at(publisher->publisher_id);
+    signals[id] = mojom::Signal::New(
+        IsPublisherSubscribed(publisher),
+        visits.size() / static_cast<double>(total_publisher_visits));
   }
 
   // Add channel signals
   for (const auto& channel : channels) {
     auto it = channel_visits.find(channel.first);
     auto visit_count = it == channel_visits.end() ? 0 : it->second.size();
-    signals[channel.first] = {
-        .subscribed =
-            channels_controller_->GetChannelSubscribed(locale, channel.first),
-        .visit_weight =
-            visit_count / static_cast<double>(total_channel_visits)};
+    signals[channel.first] = mojom::Signal::New(
+        channels_controller_->GetChannelSubscribed(locale, channel.first),
+        visit_count / static_cast<double>(total_channel_visits));
   }
 
   std::move(callback).Run(std::move(signals));
@@ -141,6 +134,11 @@ void SignalCalculator::OnGotHistory(
 
 bool SignalCalculator::IsPublisherSubscribed(
     const mojom::PublisherPtr& publisher) {
+  // Direct feeds are deleted when removed.
+  if (publisher->type == mojom::PublisherType::DIRECT_SOURCE) {
+    return true;
+  }
+
   bool channel_subscribed = false;
   for (const auto& locale_info : publisher->locales) {
     for (const auto& channel : locale_info->channels) {

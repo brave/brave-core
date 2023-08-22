@@ -92,6 +92,7 @@ class BraveNewsController : public KeyedService,
   void GetLocale(GetLocaleCallback callback) override;
   void GetFeed(GetFeedCallback callback) override;
   void GetFeedV2(GetFeedV2Callback callback) override;
+  void GetSignals(GetSignalsCallback callback) override;
   void GetPublishers(GetPublishersCallback callback) override;
   void AddPublishersListener(
       mojo::PendingRemote<mojom::PublishersListener> listener) override;

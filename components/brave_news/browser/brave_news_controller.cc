@@ -191,6 +191,23 @@ void BraveNewsController::GetFeedV2(GetFeedV2Callback callback) {
   feed_v2_builder_->Build(std::move(callback));
 }
 
+void BraveNewsController::GetSignals(GetSignalsCallback callback) {
+  if (!GetIsEnabled(prefs_) ||
+      !base::FeatureList::IsEnabled(
+          brave_news::features::kBraveNewsFeedUpdate)) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  if (!feed_v2_builder_) {
+    feed_v2_builder_ = std::make_unique<FeedV2Builder>(
+        publishers_controller_, channels_controller_, suggestions_controller_,
+        *prefs_.get(), *history_service_.get(), url_loader_factory_);
+  }
+
+  feed_v2_builder_->GetSignals(std::move(callback));
+}
+
 void BraveNewsController::GetPublishers(GetPublishersCallback callback) {
   if (!GetIsEnabled(prefs_)) {
     std::move(callback).Run({});
