@@ -26,23 +26,6 @@
 #include "ui/gfx/canvas.h"
 #include "ui/views/view_utils.h"
 
-namespace {
-VerticalTabStripRegionView::State GetVerticalTabState(const Browser* browser) {
-  DCHECK(browser);
-  auto* browser_view = static_cast<BraveBrowserView*>(
-      BrowserView::GetBrowserViewForBrowser(browser));
-  if (browser_view) {
-    auto* vertical_region_view =
-        browser_view->vertical_tab_strip_widget_delegate_view()
-            ->vertical_tab_strip_region_view();
-    DCHECK(vertical_region_view);
-
-    return vertical_region_view->state();
-  }
-  return VerticalTabStripRegionView::State();
-}
-}  // namespace
-
 BraveTabContainer::BraveTabContainer(
     TabContainerController& controller,
     TabHoverCardController* hover_card_controller,
@@ -326,10 +309,6 @@ BrowserRootView::DropIndex BraveTabContainer::GetDropIndex(
     return TabContainerImpl::GetDropIndex(event);
   }
 
-  bool is_vtab_expanded =
-      GetVerticalTabState(tab_slot_controller_->GetBrowser()) ==
-      VerticalTabStripRegionView::State::kExpanded;
-
   // Force animations to stop, otherwise it makes the index calculation tricky.
   CompleteAnimationAndLayout();
 
@@ -342,64 +321,56 @@ BrowserRootView::DropIndex BraveTabContainer::GetDropIndex(
   // location.
   for (TabSlotView* view : views) {
     const int max_y = view->y() + view->height();
-    const int max_x = view->x() + view->width();
     if (y >= max_y) {
       continue;
     }
 
     if (view->GetTabSlotViewType() == TabSlotView::ViewType::kTab) {
       Tab* const tab = static_cast<Tab*>(view);
-      // When the vertical tab strip state is expanded, pinned tabs are
-      // organized in a grid view. Therefore, it's important to also consider
-      // the x-axis location.
-      if (is_vtab_expanded && tab->data().pinned && x >= max_x) {
-        continue;
-      }
 
       // Closing tabs should be skipped.
       if (tab->closing()) {
         continue;
       }
 
+      if (tab->data().pinned && !IsPointInTab(tab, gfx::Point(x, y))) {
+        continue;
+      }
+
+      // When a tab is dropped between pinned tabs, it will add a new tab
+      // among unpinned tabs. As a result, there's no need to check the hot
+      // height for pinned tabs.
       const int model_index = GetModelIndexOf(tab).value();
-      const bool first_in_group =
-          tab->group().has_value() &&
-          model_index == controller_->GetFirstTabInGroup(tab->group().value());
+      if (!tab->data().pinned) {
+        const bool first_in_group =
+            tab->group().has_value() &&
+            model_index ==
+                controller_->GetFirstTabInGroup(tab->group().value());
 
-      // When hovering over the left or right quarter of a tab, the drop
-      // indicator will point between tabs.
-      const int hot_height = tab->height() / 4;
+        // When hovering over the top or bottom quarter of a tab, the drop
+        // indicator will point between tabs.
+        const int hot_height = tab->height() / 4;
 
-      if (y >= (max_y - hot_height)) {
-        return {model_index + 1, true /* drop_before */,
-                false /* drop_in_group */};
-      } else if (y < tab->y() + hot_height) {
-        return {model_index, true /* drop_before */, first_in_group};
-      } else {
-        // When the vertical tab is in an expanded state and also pinned, it's
-        // important to confirm whether the event location is within the pinned
-        // tab.
-        if (is_vtab_expanded && tab->data().pinned &&
-            !IsPointInTab(tab, gfx::Point(x, y))) {
-          continue;
+        if (y >= (max_y - hot_height)) {
+          return {model_index + 1, true /* drop_before */,
+                  false /* drop_in_group */};
         }
 
-        return {model_index, false /* drop_before */,
-                false /* drop_in_group */};
+        if (y < tab->y() + hot_height) {
+          return {model_index, true /* drop_before */, first_in_group};
+        }
       }
+
+      return {model_index, false /* drop_before */, false /* drop_in_group */};
+
     } else {
       TabGroupHeader* const group_header = static_cast<TabGroupHeader*>(view);
       const int first_tab_index =
           controller_->GetFirstTabInGroup(group_header->group().value())
               .value();
 
-      if (y < max_y - group_header->height() / 2) {
-        return {first_tab_index, true /* drop_before */,
-                false /* drop_in_group */};
-      } else {
-        return {first_tab_index, true /* drop_before */,
-                true /* drop_in_group */};
-      }
+      return {first_tab_index, true /* drop_before */,
+              y >= max_y - group_header->height() / 2 /* drop_in_group */};
     }
   }
 
