@@ -46,16 +46,16 @@ base::expected<Task, std::string> ParseTask(
       .family_id = task_instruction.workload_id(),
   };
   if (!task_id.IsValid()) {
-    return base::unexpected("FL: Invalid task id received from FL service");
+    return base::unexpected("Invalid task id received from FL service");
   }
 
   if (!task_instruction.has_task()) {
-    return base::unexpected("FL: Task object is missing from task instruction");
+    return base::unexpected("Task object is missing from task instruction");
   }
   const flower::Task& flower_task = task_instruction.task();
 
   if (!flower_task.has_legacy_server_message()) {
-    return base::unexpected("FL: Server message is missing from task object");
+    return base::unexpected("Server message is missing from task object");
   }
   const flower::ServerMessage& message = flower_task.legacy_server_message();
 
@@ -66,31 +66,29 @@ base::expected<Task, std::string> ParseTask(
     type = TaskType::kTraining;
 
     if (!message.fit_ins().has_parameters()) {
-      return base::unexpected(
-          "FL: Parameters are missing from fit instruction");
+      return base::unexpected("Parameters are missing from fit instruction");
     }
     parameters = GetVectorsFromParameters(message.fit_ins().parameters());
     if (parameters.empty()) {
       return base::unexpected(
-          "FL: Parameters vectors received from FL service are empty");
+          "Parameters vectors received from FL service are empty");
     }
     config = ConfigsFromProto(message.fit_ins().config());
   } else if (message.has_evaluate_ins()) {
     type = TaskType::kEvaluation;
 
     if (!message.evaluate_ins().has_parameters()) {
-      return base::unexpected(
-          "FL: Parameters are missing from eval instruction");
+      return base::unexpected("Parameters are missing from eval instruction");
     }
     parameters = GetVectorsFromParameters(message.evaluate_ins().parameters());
     if (parameters.empty()) {
       return base::unexpected(
-          "FL: Parameters vectors received from FL service are empty");
+          "Parameters vectors received from FL service are empty");
     }
     config = ConfigsFromProto(message.evaluate_ins().config());
   } else {
     return base::unexpected(
-        "FL: Received unrecognized instruction from FL service");
+        "Received unrecognized instruction from FL service");
   }
 
   return Task(task_id, type, "token", parameters, config);
@@ -100,11 +98,11 @@ base::expected<TaskList, std::string> ParseTaskListFromResponseBody(
     const std::string& response_body) {
   flower::PullTaskInsResponse response;
   if (!response.ParseFromString(response_body)) {
-    return base::unexpected("FL: Failed to parse response body");
+    return base::unexpected("Failed to parse response body");
   }
 
   if (response.task_ins_list_size() == 0) {
-    return base::unexpected("FL: No tasks received from FL service");
+    return base::unexpected("No tasks received from FL service");
   }
 
   TaskList task_list;
@@ -122,7 +120,7 @@ base::expected<TaskList, std::string> ParseTaskListFromResponseBody(
     return task_list;
   }
 
-  return base::unexpected("FL: Failed to parse PullTaskInsRes");
+  return base::unexpected("Failed to parse PullTaskInsRes");
 }
 
 absl::optional<std::string> BuildUploadTaskResultsPayload(

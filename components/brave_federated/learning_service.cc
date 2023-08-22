@@ -185,7 +185,7 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks,
 void LearningService::OnTaskResultComputed(
     base::expected<TaskResult, std::string> result) {
   if (!result.has_value()) {
-    VLOG(1) << result.error();
+    VLOG(1) << "FL: " << result.error();
     return;
   }
 

@@ -92,13 +92,13 @@ size_t Model::GetBatchSize() const {
 base::expected<std::vector<float>, std::string> Model::Predict(
     const DataSet& dataset) {
   if (dataset.empty()) {
-    return base::unexpected("FL: Predict input is empty");
+    return base::unexpected("Predict input is empty");
   }
 
   std::vector<float> prediction(dataset.size(), 0.0);
   for (size_t i = 0; i < dataset.size(); i++) {
     if (dataset.at(i).size() != weights_.size()) {
-      return base::unexpected("FL: Predict input size mismatch in dataset");
+      return base::unexpected("Predict input size mismatch in dataset");
     }
 
     float z = 0.0;
@@ -116,11 +116,11 @@ base::expected<std::vector<float>, std::string> Model::Predict(
 base::expected<PerformanceReportInfo, std::string> Model::Train(
     const DataSet& train_dataset) {
   if (train_dataset.empty()) {
-    return base::unexpected("FL: Training data empty");
+    return base::unexpected("Training data empty");
   }
 
   if (train_dataset.size() < GetBatchSize()) {
-    return base::unexpected("FL: Batch size > training dataset size");
+    return base::unexpected("Batch size > training dataset size");
   }
 
   auto data_prep_duration = base::TimeDelta();
@@ -161,7 +161,7 @@ base::expected<PerformanceReportInfo, std::string> Model::Train(
 
     auto pred = Predict(x);
     if (!pred.has_value()) {
-      std::string error_message = "FL: Train predict failed in iteration " +
+      std::string error_message = "Train predict failed in iteration " +
                                   base::NumberToString(iteration) + " of " +
                                   base::NumberToString(num_iterations_);
       return base::unexpected(error_message);
@@ -184,10 +184,9 @@ base::expected<PerformanceReportInfo, std::string> Model::Train(
     if (iteration % 250 == 0) {
       auto loss_pred = Predict(x);
       if (!loss_pred.has_value()) {
-        std::string error_message =
-            "FL: Train loss predict failed in iteration " +
-            base::NumberToString(iteration) + " of " +
-            base::NumberToString(num_iterations_);
+        std::string error_message = "Train loss predict failed in iteration " +
+                                    base::NumberToString(iteration) + " of " +
+                                    base::NumberToString(num_iterations_);
         return base::unexpected(error_message);
       }
       training_loss = ComputeNegativeLogLikelihood(y, loss_pred.value());
@@ -217,7 +216,7 @@ base::expected<PerformanceReportInfo, std::string> Model::Train(
 base::expected<PerformanceReportInfo, std::string> Model::Evaluate(
     const DataSet& test_dataset) {
   if (test_dataset.empty()) {
-    return base::unexpected("FL: Test data empty");
+    return base::unexpected("Test data empty");
   }
 
   auto data_start_ts = GetThreadTicksIfSupported();
@@ -237,7 +236,7 @@ base::expected<PerformanceReportInfo, std::string> Model::Evaluate(
 
   auto predicted = Predict(features);
   if (!predicted.has_value()) {
-    return base::unexpected("FL: Evaluate predict failed");
+    return base::unexpected("Evaluate predict failed");
   }
 
   std::vector<float> predicted_value = predicted.value();
@@ -257,7 +256,7 @@ base::expected<PerformanceReportInfo, std::string> Model::Evaluate(
 
   auto loss_predicted = Predict(features);
   if (!loss_predicted.has_value()) {
-    return base::unexpected("FL: Evaluate loss predict failed");
+    return base::unexpected("Evaluate loss predict failed");
   }
   float test_loss =
       ComputeNegativeLogLikelihood(ground_truth, loss_predicted.value());
