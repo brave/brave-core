@@ -123,15 +123,40 @@ export const DepositFundsScreen = (props: Props) => {
     return (mainnetsList || []).map(makeNetworkAsset)
   }, [mainnetsList])
 
+  // Combine all NFTs from each collection
+  // into a single "asset" for depositing purposes.
+  const nftCollectionAssets: BraveWallet.BlockchainToken[] =
+    React.useMemo(() => {
+      const nftContractTokens: BraveWallet.BlockchainToken[] = []
+      for (const token of combinedTokensList) {
+        if (
+          token.isNft &&
+          !nftContractTokens.find(
+            (t) =>
+              t.contractAddress === token.contractAddress &&
+              t.name === token.name &&
+              t.symbol === token.symbol
+          )
+        ) {
+          nftContractTokens.push({
+            ...token,
+            tokenId: '' // remove token ID
+          })
+        }
+      }
+      return nftContractTokens
+    }, [combinedTokensList])
+
   const fullAssetsList: BraveWallet.BlockchainToken[] = React.useMemo(() => {
     // separate BAT from other tokens in the list so they can be placed higher in the list
     const { bat, nonBat } = getBatTokensFromList(combinedTokensList)
     return [
       ...mainnetNetworkAssetsList,
       ...bat,
-      ...nonBat.filter((token) => token.contractAddress)
+      ...nonBat.filter((token) => token.contractAddress && !token.tokenId),
+      ...nftCollectionAssets
     ]
-  }, [mainnetNetworkAssetsList, combinedTokensList])
+  }, [mainnetNetworkAssetsList, combinedTokensList, nftCollectionAssets])
 
   const assetsForFilteredNetwork: UserAssetInfoType[] = React.useMemo(() => {
     const assets = selectedNetworkFilter.chainId === AllNetworksOption.chainId
