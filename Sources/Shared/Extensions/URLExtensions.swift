@@ -418,7 +418,8 @@ extension URL {
       "rumble.com", "gorf.tv", "odysee.com", "brighteon.com",
       "lbry.tv", "luminarypodcasts.com", "marthastewart.com",
       "bbcgoodfood.com", "bt.com", "skysports.com", "sky.co.nz",
-      "kayosports.com.au", "listennotes.com", "vid.puffyan.us"
+      "kayosports.com.au", "listennotes.com", "vid.puffyan.us",
+      "twitter.com", "x.com"
     ])
 
     /// Additional sites for Japanese locale
