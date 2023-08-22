@@ -8,6 +8,7 @@
 
 #include <limits>
 #include <numeric>
+#include <ostream>
 #include <vector>
 
 #include "base/notreached.h"
