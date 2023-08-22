@@ -256,14 +256,14 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
   base::test::SingleThreadTaskEnvironment task_environment;
   TestingPrefServiceSimple local_pref_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
-  std::unique_ptr<ViewCounterService> view_counter_;
+  std::unique_ptr<NTPBackgroundImagesService> service_;
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
   std::unique_ptr<BraveNTPCustomBackgroundService> custom_bi_service_;
   raw_ptr<TestDelegate> delegate_ = nullptr;
 #endif
 
-  std::unique_ptr<NTPBackgroundImagesService> service_;
+  std::unique_ptr<ViewCounterService> view_counter_;
   brave_ads::AdsServiceMock ads_service_mock_;
 };
 
