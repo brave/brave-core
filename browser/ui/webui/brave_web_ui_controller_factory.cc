@@ -31,6 +31,7 @@
 #include "chrome/common/url_constants.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/url_utils.h"
 #include "url/gurl.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -191,6 +192,12 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
                                              Profile* profile,
                                              const GURL& url) {
+  // This will get called a lot to check all URLs, so do a quick check of other
+  // schemes to filter out most URLs.
+  if (!content::HasWebUIScheme(url)) {
+    return nullptr;
+  }
+
   if (url.host_piece() == kAdblockHost ||
       url.host_piece() == kAdblockInternalsHost ||
       url.host_piece() == kWebcompatReporterHost ||
