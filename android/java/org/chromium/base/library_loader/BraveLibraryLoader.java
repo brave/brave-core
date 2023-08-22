@@ -12,6 +12,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.VisibleForTesting;
 
+import org.chromium.base.BraveBundleUtils;
 import org.chromium.base.BundleUtils;
 import org.chromium.build.NativeLibraries;
 
@@ -46,34 +47,16 @@ public class BraveLibraryLoader extends LibraryLoader {
     private void loadLibsfromSplits(ApplicationInfo appInfo, boolean inZygote) {
         assert !inZygote || android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q;
 
-        String splitName = getSplitNameByCurrentAbi();
+        String splitName = BraveBundleUtils.getSplitSuffixByCurrentAbi();
         if (inZygote && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             String apkPath = getSplitApkPath(appInfo, splitName);
             for (String library : NativeLibraries.LIBRARIES) {
-                System.load(getNativeLibraryPath(library, apkPath, appInfo));
+                System.load(getNativeLibraryPathUseAppInfo(library, apkPath, appInfo));
             }
         } else {
             for (String library : NativeLibraries.LIBRARIES) {
                 System.load(BundleUtils.getNativeLibraryPath(library, splitName));
             }
-        }
-    }
-
-    private String getSplitNameByCurrentAbi() {
-        assert Build.SUPPORTED_ABIS.length > 0;
-        String currentAbi = Build.SUPPORTED_ABIS[0];
-        switch (currentAbi) {
-            case "arm64-v8a":
-                return "config.arm64_v8a";
-            case "armeabi-v7a":
-                return "config.armeabi_v7a";
-            case "x86_64":
-                return "config.x86_64";
-            case "x86":
-                return "config.x86";
-            default:
-                assert false;
-                return "config.arm64_v8a";
         }
     }
 
@@ -88,7 +71,7 @@ public class BraveLibraryLoader extends LibraryLoader {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private String getNativeLibraryPath(
+    private String getNativeLibraryPathUseAppInfo(
             String libraryName, String apkPath, ApplicationInfo appInfo) {
         try {
             String primaryCpuAbi =
