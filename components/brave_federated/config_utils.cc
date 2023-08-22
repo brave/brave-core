@@ -8,6 +8,7 @@
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/time/time.h"
 #include "brave/components/brave_federated/features.h"
 
 namespace brave_federated {

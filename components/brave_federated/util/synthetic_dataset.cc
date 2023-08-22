@@ -14,12 +14,13 @@
 
 #include "base/check_op.h"
 #include "base/rand_util.h"
+#include "base/time/time.h"
 
 namespace brave_federated {
 
 namespace {
 const int kMaxDay = 7;
-const int kMaxTime = 144;
+const int kMaxTime = 6 * base::Time::kHoursPerDay;
 
 float Softmax(float z) {
   return 1.0 / (1 + exp(-1.0 * z));
