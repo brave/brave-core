@@ -37,9 +37,8 @@ BraveApplicationContextImpl::brave_component_updater_delegate() {
   if (!brave_component_updater_delegate_) {
     brave_component_updater_delegate_ =
         std::make_unique<brave::BraveComponentUpdaterDelegate>(
-            GetApplicationContext()->GetComponentUpdateService(),
-            GetApplicationContext()->GetLocalState(),
-            GetApplicationContext()->GetApplicationLocale());
+            GetComponentUpdateService(), GetLocalState(),
+            GetApplicationLocale());
   }
 
   return brave_component_updater_delegate_.get();
@@ -51,7 +50,6 @@ BraveApplicationContextImpl::local_data_files_service() {
     local_data_files_service_ =
         brave_component_updater::LocalDataFilesServiceFactory(
             brave_component_updater_delegate());
-    local_data_files_service_.get()->Start();
   }
   return local_data_files_service_.get();
 }
@@ -64,4 +62,9 @@ BraveApplicationContextImpl::url_sanitizer_component_installer() {
             local_data_files_service());
   }
   return url_sanitizer_component_installer_.get();
+}
+
+void BraveApplicationContextImpl::StartBraveServices() {
+  // Start the local data file service
+  local_data_files_service()->Start();
 }

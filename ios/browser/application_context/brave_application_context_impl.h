@@ -17,7 +17,7 @@ class CommandLine;
 class SequencedTaskRunner;
 }  // namespace base
 
-/// This extends the behaviors or the ApplicationContext
+/// This extends the behaviors of the ApplicationContext
 class BraveApplicationContextImpl : public ApplicationContextImpl {
  public:
   // Out-of-line constructor declaration
@@ -33,6 +33,9 @@ class BraveApplicationContextImpl : public ApplicationContextImpl {
   BraveApplicationContextImpl(const BraveApplicationContextImpl&) = delete;
   BraveApplicationContextImpl& operator=(const BraveApplicationContextImpl&) =
       delete;
+
+  // Start any services that we may need later
+  void StartBraveServices();
 
   // Out-of-line destructor declaration
   ~BraveApplicationContextImpl() override;

@@ -136,6 +136,7 @@ void BraveWebMainParts::SetupFieldTrials() {
 
 void BraveWebMainParts::PreMainMessageLoopRun() {
   application_context_->PreMainMessageLoopRun();
+  application_context_->StartBraveServices();
 
   // ContentSettingsPattern need to be initialized before creating the
   // ChromeBrowserState.
