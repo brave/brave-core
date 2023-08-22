@@ -14,7 +14,8 @@ from components.browser_type import BraveVersion, BrowserType
 from components.common_options import CommonOptions
 from components.perf_config import RunnerConfig
 from components.perf_profile import GetProfilePath
-from components.perf_test_utils import GetProcessOutput
+from components.perf_test_utils import (DownloadArchiveAndUnpack,
+                                        GetProcessOutput)
 
 with path_util.SysPath(path_util.GetTelemetryDir()):
   from telemetry.internal.backends import \
@@ -128,9 +129,15 @@ def PrepareBinary(binary_dir: str, artifacts_dir: str, config: RunnerConfig,
   binary_location = None
   package = None
   is_android = common_options.target_os == 'android'
-  if config.location:  # local binary
+  if config.location:  # explicit binary/archive location
     if os.path.exists(config.location):
       binary_location = config.location
+    elif config.location.startswith('https:'):
+      DownloadArchiveAndUnpack(binary_dir, config.location)
+      binary_location = os.path.join(
+          binary_dir,
+          config.browser_type.GetBinaryPath(common_options.target_os))
+      assert os.path.exists(binary_location)
     elif config.location.startswith('package:') and is_android:
       package = config.location[len('package:'):]
     else:

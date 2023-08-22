@@ -11,17 +11,14 @@ import re
 import shutil
 import subprocess
 import sys
-import tempfile
 from distutils.dir_util import copy_tree
 from enum import Enum
 from typing import List, Optional, Tuple
-from urllib.request import urlopen
-
-from lib.util import extract_zip
 
 import components.path_util as path_util
 from components.common_options import CommonOptions
-from components.perf_test_utils import GetProcessOutput
+from components.perf_test_utils import (DownloadArchiveAndUnpack, DownloadFile,
+                                        GetProcessOutput)
 
 
 def ToChromiumPlatform(target_os: str) -> str:
@@ -88,14 +85,6 @@ class ChromiumVersion(_BaseVersion):
     return self._version[0]
 
 
-def _DownloadFile(url: str, output: str):
-  logging.debug('Downloading %s', url)
-  f = urlopen(url)
-  data = f.read()
-  with open(output, 'wb') as output_file:
-    output_file.write(data)
-
-
 def _GetBraveDownloadUrl(tag: BraveVersion, binary: str) -> str:
   return ('https://github.com/brave/brave-browser/releases/download/' +
           f'{tag}/{binary}')
@@ -107,19 +96,13 @@ def _GetChromeDownloadUrl(version: ChromiumVersion,
           f'{str(version)}/{chrome_platform}/chrome-{chrome_platform}.zip')
 
 
-def _DownloadArchiveAndUnpack(output_directory: str, url: str):
-  _, f = tempfile.mkstemp(dir=output_directory)
-  _DownloadFile(url, f)
-  extract_zip(f, output_directory)
-
-
 def _DownloadWinInstallerAndExtract(out_dir: str, url: str,
                                     expected_install_path: str,
                                     binary_name: str) -> str:
   if not os.path.exists(out_dir):
     os.makedirs(out_dir)
   installer_filename = os.path.join(out_dir, os.pardir, 'temp_installer.exe')
-  _DownloadFile(url, installer_filename)
+  DownloadFile(url, installer_filename)
   GetProcessOutput(
       [installer_filename, '--chrome-sxs', '--do-not-launch-chrome'], None,
       True)
@@ -232,7 +215,7 @@ class BrowserType:
                                    'production', common_options.ci_mode)
 
   def GetBinaryPath(self, target_os: str) -> str:
-    if sys.platform == 'win32':
+    if target_os == 'windows':
       return os.path.join(self.name + '.exe')
 
     if target_os == 'mac':
@@ -275,7 +258,7 @@ class BraveBrowserTypeImpl(BrowserType):
     dmg_name = f'Brave-Browser-{self._channel}-{mac_platform}.dmg'
     dmg_path = os.path.join(out_dir, dmg_name)
 
-    _DownloadFile(_GetBraveDownloadUrl(tag, dmg_name), dmg_path)
+    DownloadFile(_GetBraveDownloadUrl(tag, dmg_name), dmg_path)
 
     _, output = GetProcessOutput(
         ['hdiutil', 'attach', '-noautoopen', '-nobrowse', dmg_path], check=True)
@@ -301,14 +284,13 @@ class BraveBrowserTypeImpl(BrowserType):
     if target_os == 'android':
       url = _GetBraveDownloadUrl(tag, 'BraveMonoarm64.apk')
       apk_filename = os.path.join(out_dir, os.pardir, 'BraveMonoarm64.apk')
-      _DownloadFile(url, apk_filename)
+      DownloadFile(url, apk_filename)
       return apk_filename
 
     if target_os == 'mac':
       self._DownloadDmgAndExtract(tag, out_dir)
     else:
-      _DownloadArchiveAndUnpack(out_dir,
-                                self._GetZipDownloadUrl(tag, target_os))
+      DownloadArchiveAndUnpack(out_dir, self._GetZipDownloadUrl(tag, target_os))
 
     return os.path.join(out_dir, self.GetBinaryPath(target_os))
 
@@ -408,16 +390,20 @@ class ChromeOfficialBrowserTypeImpl(ChromeBrowserTypeImpl):
 
 
 class ChromeTestingBrowserTypeImpl(ChromeBrowserTypeImpl):
+  def GetBinaryPath(self, target_os: str) -> str:
+    chrome_platform = ToChromiumPlatform(target_os)
+    return os.path.join(f'chrome-{chrome_platform}',
+                        super().GetBinaryPath(target_os))
+
   def DownloadBrowserBinary(self, tag: BraveVersion, out_dir: str,
                             common_options: CommonOptions) -> str:
     chrome_platform = ToChromiumPlatform(common_options.target_os)
     version = tag.to_chromium_version(common_options.ci_mode)
     url = _GetChromeDownloadUrl(version, chrome_platform)
 
-    _DownloadArchiveAndUnpack(out_dir, url)
+    DownloadArchiveAndUnpack(out_dir, url)
     _FixUpUnpackedBrowser(out_dir)
-    return os.path.join(out_dir, f'chrome-{chrome_platform}',
-                        self.GetBinaryPath(common_options.target_os))
+    return os.path.join(out_dir, self.GetBinaryPath(common_options.target_os))
 
 
 def ParseFieldTrialMode(

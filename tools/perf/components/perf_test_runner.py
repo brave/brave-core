@@ -285,7 +285,8 @@ def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
       os.makedirs(binary_dir)
       os.makedirs(artifacts_dir)
       binary = PrepareBinary(binary_dir, artifacts_dir, config, common_options)
-      logging.info('%s : %s directory %s', description, binary, artifacts_dir)
+      logging.info('%s binary: %s artifacts: %s', description, binary,
+                   artifacts_dir)
     runable_configurations.append(
         RunableConfiguration(config, benchmarks, binary, artifacts_dir,
                              common_options))

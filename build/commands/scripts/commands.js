@@ -375,8 +375,9 @@ program
   .action(runFuzzer.bind(null, parsedArgs.unknown))
 
   program
-  .command('run_perf_tests <perf_config> <targets>')
+  .command('run_perf_tests [perf_config] [targets]')
   .allowUnknownOption(true)
+  .description('Call npm run perf_tests -- --more-help for detailed help')
   .action(perfTests.runPerfTests.bind(null, parsedArgs.unknown))
 
 program
