@@ -10,6 +10,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/ui/toolbar/app_menu_icons.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -185,6 +186,12 @@ void BraveAppMenuModel::Build() {
   BuildBrowserSection();
   BuildMoreToolsSubMenu();
   BuildHelpSubMenu();
+
+  ApplyLeoIcons(this);
+  ApplyLeoIcons(bookmark_sub_menu_model());
+  for (const auto& submenu : sub_menus()) {
+    ApplyLeoIcons(submenu.get());
+  }
 }
 
 void BraveAppMenuModel::BuildTabsAndWindowsSection() {
@@ -212,11 +219,11 @@ void BraveAppMenuModel::BuildBraveProductsSection() {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (IsCommandIdEnabled(IDC_BRAVE_VPN_MENU)) {
-    sub_menus_.push_back(std::make_unique<BraveVPNMenuModel>(
+    sub_menus().push_back(std::make_unique<BraveVPNMenuModel>(
         browser(), browser()->profile()->GetPrefs()));
     InsertSubMenuWithStringIdAt(GetNextIndexOfBraveProductsSection(),
                                 IDC_BRAVE_VPN_MENU, IDS_BRAVE_VPN_MENU,
-                                sub_menus_.back().get());
+                                sub_menus().back().get());
     need_separator = true;
   } else if (IsCommandIdEnabled(IDC_SHOW_BRAVE_VPN_PANEL)) {
     InsertItemWithStringIdAt(GetNextIndexOfBraveProductsSection(),
@@ -327,10 +334,10 @@ void BraveAppMenuModel::BuildMoreToolsSubMenu() {
 
 #if defined(TOOLKIT_VIEWS)
   if (sidebar::CanUseSidebar(browser())) {
-    sub_menus_.push_back(std::make_unique<SidebarMenuModel>(browser()));
+    sub_menus().push_back(std::make_unique<SidebarMenuModel>(browser()));
     more_tools_menu_model->InsertSubMenuWithStringIdAt(
         next_target_index++, IDC_SIDEBAR_SHOW_OPTION_MENU,
-        IDS_SIDEBAR_SHOW_OPTION_TITLE, sub_menus_.back().get());
+        IDS_SIDEBAR_SHOW_OPTION_TITLE, sub_menus().back().get());
     more_tools_menu_model->InsertSeparatorAt(next_target_index++,
                                              ui::NORMAL_SEPARATOR);
   }
@@ -365,9 +372,9 @@ void BraveAppMenuModel::BuildMoreToolsSubMenu() {
 void BraveAppMenuModel::BuildHelpSubMenu() {
   // Put help sub menu above the settings menu.
   if (const auto index = GetIndexOfCommandId(IDC_OPTIONS)) {
-    sub_menus_.push_back(std::make_unique<BraveHelpMenuModel>(this));
+    sub_menus().push_back(std::make_unique<BraveHelpMenuModel>(this));
     InsertSubMenuWithStringIdAt(*index, IDC_HELP_MENU, IDS_HELP_MENU,
-                                sub_menus_.back().get());
+                                sub_menus().back().get());
   }
 }
 

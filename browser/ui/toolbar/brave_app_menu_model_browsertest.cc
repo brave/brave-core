@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/functional/callback_helpers.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
@@ -23,6 +24,7 @@
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -93,8 +95,9 @@ class BraveAppMenuModelBrowserTest : public InProcessBrowserTest {
 void CheckCommandsAreDisabledInMenuModel(
     ui::SimpleMenuModel* model,
     const std::vector<int>& disabled_commands) {
-  for (int id : disabled_commands)
+  for (int id : disabled_commands) {
     EXPECT_FALSE(model->GetIndexOfCommandId(id).has_value());
+  }
 }
 
 void CheckCommandsAreDisabledInMenuModel(
@@ -486,3 +489,40 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, BraveIpfsMenuTest) {
   }
 }
 #endif
+
+void CheckMenuIcons(ui::MenuModel* menu,
+                    int submenu_depth,
+                    std::u16string path = u"") {
+  constexpr int kIconlessCommands[] = {
+      // Header, with no icon
+      IDC_RECENT_TABS_NO_DEVICE_TABS,
+      // Header, with no icon
+      RecentTabsSubMenuModel::kDisabledRecentlyClosedHeaderCommandId};
+  for (size_t i = 0; i < menu->GetItemCount(); ++i) {
+    auto command_id = menu->GetCommandIdAt(i);
+    // Skip separators & commands which deliberately have no icons
+    if (command_id == -1 || base::Contains(kIconlessCommands, command_id)) {
+      continue;
+    }
+
+    auto label = menu->GetLabelAt(i);
+    auto icon = menu->GetIconAt(i);
+    EXPECT_FALSE(icon.IsEmpty()) << "\"" << path << label << "\""
+                                 << " for Command Id: " << command_id
+                                 << " (at index " << i << ") has no icon";
+
+    if (auto* submenu = menu->GetSubmenuModelAt(i)) {
+      if (submenu_depth > 0) {
+        CheckMenuIcons(submenu, submenu_depth - 1, path + label + +u" > ");
+      }
+    }
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuItemsHaveIcons) {
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  BraveAppMenuModel model(browser_view->toolbar(), browser());
+  model.Init();
+
+  CheckMenuIcons(&model, 1);
+}
