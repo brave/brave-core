@@ -6,12 +6,15 @@
 source_set("url_sanitizer") {
   configs += [ "//build/config/compiler:enable_arc" ]
   sources = [
+    "url_sanitizer_factory_wrappers.h",
+    "url_sanitizer_factory_wrappers.mm",
     "url_sanitizer_service_factory.h",
     "url_sanitizer_service_factory.mm",
   ]
   deps = [
     "//base",
     "//brave/components/url_sanitizer/browser",
+    "//brave/ios/browser/api/url_sanitizer",
     "//brave/ios/browser/application_context",
     "//brave/ios/browser/keyed_service",
     "//components/keyed_service/core",
