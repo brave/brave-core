@@ -82,4 +82,14 @@ cargo_crate("lib") {
   build_root = "crate/build.rs"
   build_sources = [ "crate/build.rs" ]
   build_script_outputs = [ "radix_bases.rs" ]
+  rustflags = [
+    "--cfg",
+    "has_try_from",
+  ]
+  if (current_cpu == "arm64" || current_cpu == "x64") {
+    rustflags += [
+      "--cfg",
+      "u64_digit",
+    ]
+  }
 }

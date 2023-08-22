@@ -1,4 +1,5 @@
 fn main() {
+    return; #[allow(unused)]
     let cfg = match autocfg::AutoCfg::new() {
         Ok(cfg) => cfg,
         Err(e) => {

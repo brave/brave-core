@@ -562,12 +562,6 @@ Config.prototype.buildArgs = function () {
     // We want it to be enabled for all configurations
     args.disable_android_lint = false
 
-    if (this.targetArch === 'arm64') {
-      // TODO: Ideally we should properly compile our rust libraries in order to
-      // be able to use default 'standard' flow integrity. For now just revert
-      // it to 'pac'.
-      args.arm_control_flow_integrity = 'pac'
-    }
     args.android_aab_to_apk = this.androidAabToApk
 
     // These do not exist on android
