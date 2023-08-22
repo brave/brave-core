@@ -11,6 +11,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
+#include "base/timer/timer.h"
 
 class PrefService;
 
@@ -53,6 +54,8 @@ class ViewCounterModel {
   friend class NTPBackgroundImagesViewCounterTest;
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPSponsoredImagesTest);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
+                           NTPSponsoredImagesCountResetTimerTest);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
                            NTPSponsoredImagesCountToBrandedWallpaperTest);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPBackgroundImagesTest);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
@@ -69,6 +72,8 @@ class ViewCounterModel {
 
   void RegisterPageViewForBackgroundImages();
 
+  void OnTimerCountsResetExpired();
+
   // For NTP SI.
   raw_ptr<PrefService> prefs_ = nullptr;
   int count_to_branded_wallpaper_ = 0;
@@ -78,6 +83,7 @@ class ViewCounterModel {
   size_t total_campaign_count_ = 0;
   std::vector<size_t> campaigns_total_branded_image_count_;
   std::vector<size_t> campaigns_current_branded_image_index_;
+  base::RepeatingTimer timer_counts_reset_;
 
   // For NTP BI.
   int current_wallpaper_image_index_ = 0;

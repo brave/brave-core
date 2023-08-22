@@ -8,19 +8,29 @@
 #include "base/check.h"
 #include "base/logging.h"
 #include "base/rand_util.h"
+#include "base/time/time.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
 namespace ntp_background_images {
 
+namespace {
+
+constexpr base::TimeDelta kCountsResetTimeDelay = base::Days(1);
+
+}  // namespace
+
 ViewCounterModel::ViewCounterModel(PrefService* prefs) : prefs_(prefs) {
   CHECK(prefs);
 
   // When browser is restarted or component is updated, we reset to "initial"
   // count.
-  count_to_branded_wallpaper_ =
-      features::kInitialCountToBrandedWallpaper.Get();
+  count_to_branded_wallpaper_ = features::kInitialCountToBrandedWallpaper.Get();
+
+  // We also reset when a specific amount of time is elapsed when in SI mode
+  timer_counts_reset_.Start(FROM_HERE, kCountsResetTimeDelay, this,
+                            &ViewCounterModel::OnTimerCountsResetExpired);
 }
 
 ViewCounterModel::~ViewCounterModel() = default;
@@ -151,6 +161,14 @@ void ViewCounterModel::Reset() {
   total_campaign_count_ = 0;
   campaigns_total_branded_image_count_.clear();
   campaigns_current_branded_image_index_.clear();
+}
+
+void ViewCounterModel::OnTimerCountsResetExpired() {
+  // Only reset count after timer expires for SI images
+  if (!always_show_branded_wallpaper_ && show_branded_wallpaper_) {
+    count_to_branded_wallpaper_ =
+        features::kInitialCountToBrandedWallpaper.Get();
+  }
 }
 
 }  // namespace ntp_background_images
