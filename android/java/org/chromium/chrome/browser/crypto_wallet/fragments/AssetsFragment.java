@@ -25,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -101,7 +102,7 @@ public class AssetsFragment
         setHasOptionsMenu(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             Api33AndPlusBackPressHelper.create(
-                    this, requireActivity(), () -> requireActivity().finish());
+                    this, (FragmentActivity) requireActivity(), () -> requireActivity().finish());
         }
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
