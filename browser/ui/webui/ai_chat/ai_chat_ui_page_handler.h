@@ -65,6 +65,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void OpenBraveLeoWiki() override;
   void DisconnectPageContents() override;
   void ClearConversationHistory() override;
+  void RetryAPIRequest() override;
 
   // content::WebContentsObserver:
   void OnVisibilityChanged(content::Visibility visibility) override;
@@ -73,6 +74,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   // ChatTabHelper::Observer
   void OnHistoryUpdate() override;
   void OnAPIRequestInProgress(bool in_progress) override;
+  void OnAPIResponseError(mojom::APIError error) override;
   void OnSuggestedQuestionsChanged(
       std::vector<std::string> questions,
       bool has_generated,

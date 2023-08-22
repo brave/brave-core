@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import getPageHandlerInstance, { ConversationTurn, SiteInfo, AutoGenerateQuestionsPref } from '../api/page_handler'
+import getPageHandlerInstance, { ConversationTurn, SiteInfo, AutoGenerateQuestionsPref, APIError } from '../api/page_handler'
 import { loadTimeData } from '$web-common/loadTimeData'
 
 function toBlobURL (data: number[] | null) {
@@ -22,6 +22,7 @@ export function useConversationHistory() {
   const [userAutoGeneratePref, setUserAutoGeneratePref] = React.useState<AutoGenerateQuestionsPref>()
   const [siteInfo, setSiteInfo] = React.useState<SiteInfo | null>()
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
+  const [currentError, setCurrentError] = React.useState<APIError | null>()
 
   const getConversationHistory = () => {
     getPageHandlerInstance().pageHandler.getConversationHistory().then(res => setConversationHistory(res.conversationHistory))
@@ -87,6 +88,7 @@ export function useConversationHistory() {
 
     getPageHandlerInstance().callbackRouter.onFaviconImageDataChanged.addListener((faviconImageData: number[]) => setFavIconUrl(toBlobURL(faviconImageData)))
     getPageHandlerInstance().callbackRouter.onSiteInfoChanged.addListener((siteInfo: SiteInfo) => setSiteInfo(siteInfo))
+    getPageHandlerInstance().callbackRouter.onAPIResponseError.addListener((error: APIError) => setCurrentError(error))
   }, [])
 
   return {
@@ -97,6 +99,7 @@ export function useConversationHistory() {
     userAutoGeneratePref,
     siteInfo,
     favIconUrl,
+    currentError,
     generateSuggestedQuestions,
     setUserAllowsAutoGenerating,
   }

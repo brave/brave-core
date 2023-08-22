@@ -13,6 +13,7 @@ interface MainProps {
   inputBox: React.ReactNode
   siteTitle?: React.ReactNode
   promptAutoSuggestion?: React.ReactNode
+  currentErrorElement?: React.ReactNode
   onSettingsClick?: () => void
   onEraseClick?: () => void
 }
@@ -41,6 +42,11 @@ function Main (props: MainProps) {
           </div>
         )}
         {props.conversationList}
+        {props.currentErrorElement && (
+          <div className={styles.errorContainer}>
+            {props.currentErrorElement}
+          </div>
+        )}
       </div>
       <div className={styles.inputBox}>
         {props.promptAutoSuggestion}

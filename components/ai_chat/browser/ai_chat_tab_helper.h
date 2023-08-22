@@ -48,6 +48,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
     // We are on a page where we can read the content, so we can perform
     // page-specific actions.
     virtual void OnAPIRequestInProgress(bool in_progress) {}
+    virtual void OnAPIResponseError(mojom::APIError error) {}
     virtual void OnSuggestedQuestionsChanged(
         std::vector<std::string> questions,
         bool has_generated,
@@ -69,6 +70,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void UpdateOrCreateLastAssistantEntry(std::string text);
   void MakeAPIRequestWithConversationHistoryUpdate(
       const mojom::ConversationTurn& turn);
+  void RetryAPIRequest();
   bool IsRequestInProgress();
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
@@ -137,6 +139,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   std::string BuildLlama2GenerateQuestionsPrompt(bool is_video,
                                                  const std::string content);
   mojom::AutoGenerateQuestionsPref GetAutoGeneratePref();
+  void SetAPIError(const mojom::APIError& error);
 
   raw_ptr<PrefService> pref_service_;
   std::unique_ptr<AIChatAPI> ai_chat_api_ = nullptr;
@@ -158,6 +161,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // we can ignore API responses for previous navigations.
   int64_t current_navigation_id_;
   bool is_same_document_navigation_ = false;
+  mojom::APIError current_error_ = mojom::APIError::None;
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 

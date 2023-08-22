@@ -20,6 +20,7 @@ import { CharacterType, ConversationTurnVisibility  } from '../api/page_handler'
 import PrivacyMessage from '../components/privacy_message'
 import SiteTitle from '../components/site_title'
 import PromptAutoSuggestion from '../components/prompt_auto_suggestion'
+import ErrorRateLimit from '../components/error_rate_limit'
 
 const DATA = [
   {text: 'What is pointer compression?', characterType: CharacterType.HUMAN, visibility: ConversationTurnVisibility.VISIBLE },
@@ -75,6 +76,7 @@ export const _Main = (props: StoryProps) => {
   let conversationList = <PrivacyMessage />
   let siteTitleElement = null
   let promptAutoSuggestionElement = null
+  let currentErrorElement = null
 
   if (hasSeenAgreement) {
     conversationList = (
@@ -94,6 +96,10 @@ export const _Main = (props: StoryProps) => {
       <PromptAutoSuggestion
       />
     )
+
+    currentErrorElement = (
+      <ErrorRateLimit />
+    )
   }
 
   const inputBox = (
@@ -103,6 +109,7 @@ export const _Main = (props: StoryProps) => {
       onSubmit={handleSubmit}
       hasSeenAgreement={hasSeenAgreement}
       onHandleAgreeClick={() => {}}
+      disabled={false}
     />
   )
 
@@ -113,6 +120,7 @@ export const _Main = (props: StoryProps) => {
         inputBox={inputBox}
         siteTitle={siteTitleElement}
         promptAutoSuggestion={promptAutoSuggestionElement}
+        currentErrorElement={currentErrorElement}
       />
     </div>
   )

@@ -7,6 +7,15 @@
   border-radius: 8px;
   border: 1px solid var(--leo-color-divider-strong);
   display: flex;
+
+  &:has(textarea:disabled) {
+    border-color: var(--leo-color-divider-subtle);
+    background: var(--leo-color-container-highlight);
+
+    &::placeholder {
+      color: var(--leo-color-text-disabled);
+    }
+  }
 }
 
 .textareaBox {
