@@ -15,7 +15,7 @@ import os.log
 import Onboarding
 
 extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSharingScriptHandlerDelegate {
-
+  static var didShowStorageFullWarning = false
   func createPlaylistPopover(item: PlaylistInfo, tab: Tab?) -> PopoverController {
     
     let folderName = PlaylistItem.getItem(uuid: item.tagId)?.playlistFolder?.title ?? Strings.PlaylistFolders.playlistSavedFolderTitle
@@ -298,7 +298,8 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSh
   func addToPlaylist(item: PlaylistInfo, folderUUID: String? = nil, completion: ((_ didAddItem: Bool) -> Void)? = nil) {
     PlaylistP3A.recordUsage()
     
-    if PlaylistManager.shared.isDiskSpaceEncumbered() {
+    if PlaylistManager.shared.isDiskSpaceEncumbered() && !BrowserViewController.didShowStorageFullWarning {
+      BrowserViewController.didShowStorageFullWarning = true
       let style: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
       let alert = UIAlertController(
         title: Strings.PlayList.playlistDiskSpaceWarningTitle, message: Strings.PlayList.playlistDiskSpaceWarningMessage, preferredStyle: style)
