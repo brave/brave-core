@@ -90,7 +90,8 @@ class CookieListOptInBrowserTest : public InProcessBrowserTest {
   explicit CookieListOptInBrowserTest(bool enable_feature) {
     if (enable_feature) {
       scoped_feature_list_.InitWithFeatures(
-          {features::kBraveAdblockCookieListOptIn}, {});
+          {features::kBraveAdblockCookieListOptIn},
+          {features::kBraveAdblockCookieListDefault});
     } else {
       scoped_feature_list_.InitWithFeatures(
           {}, {features::kBraveAdblockCookieListOptIn});
@@ -278,7 +279,7 @@ class CookieListOptInFeatureOffBrowserTest : public CookieListOptInBrowserTest {
 IN_PROC_BROWSER_TEST_F(CookieListOptInFeatureOffBrowserTest, FeatureOff) {
   WaitForSessionRestore();
   EXPECT_FALSE(GetBubbleWebContents());
-  EXPECT_FALSE(IsCookieListFilterEnabled());
+  EXPECT_TRUE(IsCookieListFilterEnabled());
   EXPECT_FALSE(g_browser_process->local_state()->GetBoolean(
       prefs::kAdBlockCookieListOptInShown));
 }
