@@ -73,6 +73,7 @@ import {
 interface Props {
   isConnected: boolean
   isPermissionDenied: boolean
+  isChromeOrigin: boolean
   onSelectOption: (option: DAppConnectionOptionsType) => void
   getAccountsFiatValue: (account: BraveWallet.AccountInfo) => Amount
 }
@@ -81,6 +82,7 @@ export const DAppConnectionMain = (props: Props) => {
   const {
     isConnected,
     isPermissionDenied,
+    isChromeOrigin,
     onSelectOption,
     getAccountsFiatValue
   } = props
@@ -116,13 +118,6 @@ export const DAppConnectionMain = (props: Props) => {
     selectedAccount
   ])
 
-  const showConnectOptions = React.useMemo(() => {
-    if (activeOrigin.originSpec.startsWith('chrome')) {
-      return false
-    }
-    return !isPermissionDenied
-  }, [isPermissionDenied, activeOrigin.originSpec])
-
   // Methods
   const onClickConnect = React.useCallback(() => {
     if (!selectedAccount) {
@@ -150,139 +145,143 @@ export const DAppConnectionMain = (props: Props) => {
 
   return (
     <>
-      <Row
-        justifyContent='flex-start'
-        marginBottom={16}
-      >
-        <ConnectedIcon
-          name={
-            isConnected
-              ? 'check-circle-filled'
-              : 'social-dribbble'
-          }
-          dappConnected={isConnected}
-          size='16px'
-        />
-        <HorizontalSpace space='8px' />
-        <ConnectedText
-          dappConnected={isConnected}
-          textSize='16px'
-          isBold={true}
-        >
-          {connectionStatusText}
-        </ConnectedText>
-      </Row>
-      <SectionRow>
-        <Row
-          width='unset'
-        >
-          <FavIcon
-            size='32px'
-            marginRight='16px'
-            src={
-              `chrome://favicon/size/64@1x/${activeOrigin.originSpec}`
-            }
-          />
-          <Column
-            alignItems='flex-start'
-            padding='0px 8px 0px 0px'
+      {!isChromeOrigin &&
+        <>
+          <Row
+            justifyContent='flex-start'
+            marginBottom={16}
           >
-            <NameText
-              textSize='14px'
+            <ConnectedIcon
+              name={
+                isConnected
+                  ? 'check-circle-filled'
+                  : 'social-dribbble'
+              }
+              dappConnected={isConnected}
+              size='16px'
+            />
+            <HorizontalSpace space='8px' />
+            <ConnectedText
+              dappConnected={isConnected}
+              textSize='16px'
               isBold={true}
             >
-              {activeOrigin.eTldPlusOne}
-            </NameText>
-            <DescriptionText
-              textSize='12px'
-              isBold={false}
-            >
-              <CreateSiteOrigin
-                originSpec={activeOrigin.originSpec}
-                eTldPlusOne={activeOrigin.eTldPlusOne}
-              />
-            </DescriptionText>
-          </Column>
-        </Row>
-        {showConnectOptions &&
-          <Row
-            width='unset'
-          >
-            <Button
-              size='small'
-              onClick={
-                isConnected
-                  ? onClickDisconnect
-                  : onClickConnect
-              }
-            >
-              {
-                isConnected
-                  ? getLocale('braveWalletSitePermissionsDisconnect')
-                  : getLocale('braveWalletAddAccountConnect')
-              }
-            </Button>
+              {connectionStatusText}
+            </ConnectedText>
           </Row>
-        }
-      </SectionRow>
-      {showConnectOptions &&
-        <>
-          <VerticalSpace space='8px' />
-          <SectionButton
-            onClick={() => onSelectOption('accounts')}
-          >
+          <SectionRow>
             <Row
               width='unset'
             >
-              {selectedAccount &&
-                <CreateAccountIcon
-                  size='medium'
-                  account={selectedAccount}
-                  marginRight={16}
-                />
-              }
+              <FavIcon
+                size='32px'
+                marginRight='16px'
+                src={
+                  `chrome://favicon/size/64@1x/${activeOrigin.originSpec}`
+                }
+              />
               <Column
                 alignItems='flex-start'
+                padding='0px 8px 0px 0px'
               >
                 <NameText
                   textSize='14px'
                   isBold={true}
                 >
-                  {selectedAccount?.name}
+                  {activeOrigin.eTldPlusOne}
                 </NameText>
                 <DescriptionText
                   textSize='12px'
                   isBold={false}
                 >
-                  {
-                    reduceAddress(
-                      selectedAccount?.accountId?.address ?? '')
-                  }
+                  <CreateSiteOrigin
+                    originSpec={activeOrigin.originSpec}
+                    eTldPlusOne={activeOrigin.eTldPlusOne}
+                  />
                 </DescriptionText>
-                {selectedAccountFiatValue.isUndefined() ? (
-                  <>
-                    <VerticalSpace space='3px' />
-                    <LoadingSkeleton width={60} height={12} />
-                    <VerticalSpace space='3px' />
-                  </>
-                ) : (
-                  <DescriptionText
-                    textSize='12px'
-                    isBold={false}
-                  >
-                    {
-                      selectedAccountFiatValue
-                        .formatAsFiat(defaultFiatCurrency)
-                    }
-                  </DescriptionText>
-                )}
               </Column>
             </Row>
-            <ButtonIcon />
-          </SectionButton>
+            {!isPermissionDenied &&
+              <Row
+                width='unset'
+              >
+                <Button
+                  size='small'
+                  onClick={
+                    isConnected
+                      ? onClickDisconnect
+                      : onClickConnect
+                  }
+                >
+                  {
+                    isConnected
+                      ? getLocale('braveWalletSitePermissionsDisconnect')
+                      : getLocale('braveWalletAddAccountConnect')
+                  }
+                </Button>
+              </Row>
+            }
+          </SectionRow>
+          {!isPermissionDenied &&
+            <>
+              <VerticalSpace space='8px' />
+              <SectionButton
+                onClick={() => onSelectOption('accounts')}
+              >
+                <Row
+                  width='unset'
+                >
+                  {selectedAccount &&
+                    <CreateAccountIcon
+                      size='medium'
+                      account={selectedAccount}
+                      marginRight={16}
+                    />
+                  }
+                  <Column
+                    alignItems='flex-start'
+                  >
+                    <NameText
+                      textSize='14px'
+                      isBold={true}
+                    >
+                      {selectedAccount?.name}
+                    </NameText>
+                    <DescriptionText
+                      textSize='12px'
+                      isBold={false}
+                    >
+                      {
+                        reduceAddress(
+                          selectedAccount?.accountId?.address ?? '')
+                      }
+                    </DescriptionText>
+                    {selectedAccountFiatValue.isUndefined() ? (
+                      <>
+                        <VerticalSpace space='3px' />
+                        <LoadingSkeleton width={60} height={12} />
+                        <VerticalSpace space='3px' />
+                      </>
+                    ) : (
+                      <DescriptionText
+                        textSize='12px'
+                        isBold={false}
+                      >
+                        {
+                          selectedAccountFiatValue
+                            .formatAsFiat(defaultFiatCurrency)
+                        }
+                      </DescriptionText>
+                    )}
+                  </Column>
+                </Row>
+                <ButtonIcon />
+              </SectionButton>
+            </>
+          }
+          <VerticalSpace space='8px' />
         </>
       }
-      <VerticalSpace space='8px' />
       <SectionButton
         onClick={() => onSelectOption('networks')}
         data-test-id='select-network-button'

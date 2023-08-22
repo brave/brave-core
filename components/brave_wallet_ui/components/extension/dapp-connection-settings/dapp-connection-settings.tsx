@@ -32,8 +32,7 @@ import {
 
 // Types
 import {
-  BraveWallet,
-  WalletOrigin
+  BraveWallet
 } from '../../../constants/types'
 
 // Queries
@@ -166,10 +165,11 @@ export const DAppConnectionSettings = () => {
   )
 
   // Memos
+  const isChromeOrigin = React.useMemo(() => {
+    return activeOrigin.originSpec.startsWith('chrome')
+  }, [activeOrigin.originSpec])
+
   const isConnected = React.useMemo((): boolean => {
-    if (activeOrigin.originSpec === WalletOrigin) {
-      return true
-    }
     if (!selectedAccount || isPermissionDenied) {
       return false
     }
@@ -184,7 +184,6 @@ export const DAppConnectionSettings = () => {
   }, [
     connectedAccounts,
     selectedAccount,
-    activeOrigin,
     selectedCoin,
     isSolanaConnected,
     isPermissionDenied
@@ -298,23 +297,28 @@ export const DAppConnectionSettings = () => {
       <SettingsButton
         onClick={() => setShowSettings(prev => !prev)}
         data-test-id='dapp-settings-button'
+        showConnectionStatus={!isChromeOrigin}
       >
-        <ConnectedIcon
-          name={
-            isConnected
-              ? 'check-circle-filled'
-              : 'social-dribbble'
-          }
-          dappConnected={isConnected}
-          size='12px'
-        />
+        {!isChromeOrigin &&
+          <ConnectedIcon
+            name={
+              isConnected
+                ? 'check-circle-filled'
+                : 'social-dribbble'
+            }
+            dappConnected={isConnected}
+            size='12px'
+          />
+        }
         <FavIcon
           size='20px'
           src={
             `chrome://favicon/size/64@1x/${activeOrigin.originSpec}`
           }
         />
-        <NetworkIconWrapper>
+        <NetworkIconWrapper
+          showConnectionStatus={!isChromeOrigin}
+        >
           <CreateNetworkIcon
             network={selectedNetwork}
             size='tiny'
@@ -336,6 +340,7 @@ export const DAppConnectionSettings = () => {
                   isConnected={isConnected}
                   isPermissionDenied={isPermissionDenied}
                   getAccountsFiatValue={getAccountsFiatValue}
+                  isChromeOrigin={isChromeOrigin}
                 />
               }
               {selectedOption === 'networks' &&
