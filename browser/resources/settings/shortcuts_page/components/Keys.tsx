@@ -60,7 +60,8 @@ const keySymbols = {
   'Meta': <Padded>⌘</Padded>,
   'Alt': <Padded>⌥</Padded>,
   'AltGr': <Padded>⌥</Padded>,
-  'Control': <Padded>⌃</Padded>
+  'Control': <Padded>⌃</Padded>,
+  ' ': 'Space'
 }
 
 export default function Keys({
@@ -73,7 +74,7 @@ export default function Keys({
   return (
     <>
       {keys.map((k, i) => (
-        <Kbd key={i} large={large} square={k.length <= 2}>
+        <Kbd key={i} large={large} square={k.length <= 2 && k !== ' '}>
           {keySymbols[k]}
           {k}
         </Kbd>
