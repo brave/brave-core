@@ -12,6 +12,10 @@ import Preferences
 import BraveUI
 import os.log
 
+public enum AuthViewType {
+  case general, sync, tabTray, passwords
+}
+
 public class WindowProtection {
 
   private class LockedViewController: UIViewController {
@@ -123,13 +127,13 @@ public class WindowProtection {
   }
   
   private let onCancelPressed = PassthroughSubject<Void, Never>()
-  private let didFinalizeAuthentication = PassthroughSubject<Bool, Never>()
+  private let didFinalizeAuthentication = PassthroughSubject<(Bool, AuthViewType), Never>()
 
   var cancelPressed: AnyPublisher<Void, Never> {
     onCancelPressed.eraseToAnyPublisher()
   }
   
-  var finalizedAuthentication: AnyPublisher<Bool, Never> {
+  var finalizedAuthentication: AnyPublisher<(Bool, AuthViewType), Never> {
     didFinalizeAuthentication.eraseToAnyPublisher()
   }
     
@@ -178,7 +182,7 @@ public class WindowProtection {
     isVisible = false
   }
 
-  private func updateVisibleStatusForForeground(_ determineLockWithPasscode: Bool = true, completion: ((Bool, LAError.Code?) -> Void)? = nil) {
+  private func updateVisibleStatusForForeground(_ determineLockWithPasscode: Bool = true, viewType: AuthViewType = .general, completion: ((Bool, LAError.Code?) -> Void)? = nil) {
     var error: NSError?
     if !context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error),
       (error as? LAError)?.code == .passcodeNotSet {
@@ -192,19 +196,19 @@ public class WindowProtection {
       let isLocked = Preferences.Privacy.lockWithPasscode.value
       isVisible = isLocked
       if isLocked {
-        presentLocalAuthentication() { status, error in
+        presentLocalAuthentication(viewType: viewType) { status, error in
           completion?(status, error)
         }
       }
     } else {
       isVisible = true
-      presentLocalAuthentication() { status, error in
+      presentLocalAuthentication(viewType: viewType) { status, error in
         completion?(status, error)
       }
     }
   }
 
-  private func presentLocalAuthentication(completion: ((Bool, LAError.Code?) -> Void)? = nil) {
+  private func presentLocalAuthentication(viewType: AuthViewType = .general, completion: ((Bool, LAError.Code?) -> Void)? = nil) {
     if !context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil) {
       completion?(false, .passcodeNotSet)
       return
@@ -235,18 +239,18 @@ public class WindowProtection {
           }
         }
         
-        self.didFinalizeAuthentication.send(success)
+        self.didFinalizeAuthentication.send((success, viewType))
       }
     }
   }
 
-  func presentAuthenticationForViewController(determineLockWithPasscode: Bool = true, completion: ((Bool, LAError.Code?) -> Void)? = nil) {
+  func presentAuthenticationForViewController(determineLockWithPasscode: Bool = true, viewType: AuthViewType, completion: ((Bool, LAError.Code?) -> Void)? = nil) {
     if isVisible {
       return
     }
 
     context = LAContext()
-    updateVisibleStatusForForeground(determineLockWithPasscode) { status, error in
+    updateVisibleStatusForForeground(determineLockWithPasscode, viewType: viewType) { status, error in
       completion?(status, error)
     }
   }

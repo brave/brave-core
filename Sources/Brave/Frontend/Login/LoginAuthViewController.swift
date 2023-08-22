@@ -74,7 +74,7 @@ class LoginAuthViewController: UITableViewController {
         completion?(false, .passcodeNotSet)
       }
     } else {
-      windowProtection.presentAuthenticationForViewController(determineLockWithPasscode: false) { status, error in
+      windowProtection.presentAuthenticationForViewController(determineLockWithPasscode: false, viewType: .passwords) { status, error in
         completion?(status, error)
       }
     }

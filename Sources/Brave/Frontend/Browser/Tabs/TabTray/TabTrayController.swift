@@ -311,8 +311,8 @@ class TabTrayController: AuthenticationController {
     }.store(in: &localAuthObservers)
     
     windowProtection?.finalizedAuthentication
-      .sink { [weak self] success in
-        if success {
+      .sink { [weak self] success, viewType in
+        if success, viewType == .tabTray {
           self?.toggleModeChanger()
         }
         self?.navigationController?.popViewController(animated: true)

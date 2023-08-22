@@ -35,19 +35,6 @@ public class LoadingViewController: UIViewController {
 }
 
 public class AuthenticationController: LoadingViewController {
-  enum AuthViewType {
-    case sync, tabTray
-    
-    var detailText: String {
-      switch self {
-      case .sync:
-        return Strings.Sync.syncSetPasscodeAlertDescription
-      case .tabTray:
-        return Strings.Privacy.tabTraySetPasscodeAlertDescription
-      }
-    }
-  }
-  
   let windowProtection: WindowProtection?
   let requiresAuthentication: Bool
   
@@ -88,7 +75,7 @@ public class AuthenticationController: LoadingViewController {
       }
     } else {
       windowProtection.presentAuthenticationForViewController(
-        determineLockWithPasscode: false) { status, error in
+        determineLockWithPasscode: false, viewType: viewType) { status, error in
           completion?(status, error)
       }
     }
@@ -97,9 +84,20 @@ public class AuthenticationController: LoadingViewController {
   /// An alert presenter for passcode error to warn user to setup passcode to use feature
   /// - Parameter completion: block after Ok button is pressed
   func showSetPasscodeError(viewType: AuthViewType, completion: @escaping (() -> Void)) {
+    var alertMessage: String?
+    
+    switch viewType {
+    case .sync:
+      alertMessage = Strings.Sync.syncSetPasscodeAlertDescription
+    case .tabTray:
+      alertMessage = Strings.Privacy.tabTraySetPasscodeAlertDescription
+    default:
+      alertMessage = nil
+    }
+    
     let alert = UIAlertController(
       title: Strings.Sync.syncSetPasscodeAlertTitle,
-      message: viewType.detailText,
+      message: alertMessage,
       preferredStyle: .alert)
 
     alert.addAction(
