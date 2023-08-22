@@ -662,9 +662,11 @@
 -HttpsUpgradesBrowserTest.SlowHttps_ShouldInterstitial/*
 -HttpsUpgradesBrowserTest.URLsAutocompletedWithHttpSchemeAreUpgraded/*
 -HttpsUpgradesBrowserTest.URLsTypedWithHttpSchemeNoUpgrades/*
--HttpsUpgradesBrowserTest.UrlWithHttpScheme_ShouldUpgrade/*
+-HttpsUpgradesBrowserTest.URLsTypedWithHttpSchemeNoUpgradesAllowlist/HttpsFirstModeWithSiteEngagementAndHttpsUpgrades
+-HttpsUpgradesBrowserTest.URLsTypedWithHttpSchemeNoUpgradesAllowlist/HttpsUpgradesOnly
 -HttpsUpgradesBrowserTest.UrlWithHttpScheme_BrokenSSL_ShouldInterstitial/*
 -HttpsUpgradesBrowserTest.UrlWithHttpScheme_BrokenSSL_ShouldInterstitial_SiteEngagement/*
+-HttpsUpgradesBrowserTest.UrlWithHttpScheme_ShouldUpgrade/*
 -HttpsUpgradesBrowserTest.UrlWithHttpsScheme_ShouldLoad/*
 
 # These tests fail because we change the Learn More link in the HTTPS First
