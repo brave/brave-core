@@ -5,6 +5,16 @@
 
 import * as React from 'react'
 
+// Selectors
+import {
+  UISelectors
+} from '../../../common/selectors'
+
+// Hooks
+import {
+  useSafeUISelector
+} from '../../../common/hooks/use-safe-selector'
+
 // Options
 import {
   NavOptions,
@@ -24,9 +34,13 @@ import {
 } from './wallet-nav.style'
 
 export const WalletNav = () => {
+  // Selectors
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   return (
-    <Wrapper>
+    <Wrapper
+      isPanel={isPanel}
+    >
 
       <PanelOptionsWrapper>
         <Section>

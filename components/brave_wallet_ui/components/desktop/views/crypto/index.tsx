@@ -49,8 +49,14 @@ import { WalletPageActions } from '../../../../page/actions'
 import {
   Column
 } from '../../../shared/style'
-import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../common/selectors'
+import {
+  useSafeWalletSelector,
+  useSafeUISelector
+} from '../../../../common/hooks/use-safe-selector'
+import {
+  WalletSelectors,
+  UISelectors
+} from '../../../../common/selectors'
 import {
   WalletPageWrapper
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
@@ -84,6 +90,7 @@ export const CryptoView = (props: Props) => {
   const selectedAccount = useSelector(({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab.selectedAccount)
 
   const isNftPinningFeatureEnabled = useSafeWalletSelector(WalletSelectors.isNftPinningFeatureEnabled)
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   const dispatch = useDispatch()
 
@@ -194,6 +201,7 @@ export const CryptoView = (props: Props) => {
             wrapContentInBox={true}
             noCardPadding={true}
             cardHeader={<PortfolioOverviewHeader />}
+            useDarkBackground={isPanel}
           >
             <StyledWrapper>
               <Column fullWidth={true} padding="20px 20px 0px 20px">
@@ -217,6 +225,7 @@ export const CryptoView = (props: Props) => {
             wrapContentInBox={true}
             noCardPadding={true}
             cardHeader={<PortfolioOverviewHeader />}
+            useDarkBackground={isPanel}
           >
             <StyledWrapper>
               <Column fullWidth={true} padding="20px 20px 0px 20px">

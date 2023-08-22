@@ -41,9 +41,6 @@ export const Button = styled(StyledButton) <{
   isSelected: boolean
 }>`
   --selected-background-color: ${leo.color.container.background};
-  @media (prefers-color-scheme: dark) {
-    --selected-background-color: ${leo.color.gray[20]};
-  }
   background-color: ${(p) =>
     p.isSelected
       ? 'var(--selected-background-color)'

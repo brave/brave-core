@@ -91,11 +91,16 @@ export const ContainerCard = styled.div<
     hideCardHeader?: boolean
     noMinCardHeight?: boolean
     noBorderRadius?: boolean
+    useDarkBackground?: boolean
   }>`
   display: flex;
   flex: none;
   flex-direction: column;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) =>
+    p.useDarkBackground
+      ? leo.color.page.background
+      : leo.color.container.background
+  };
   border-radius: ${(p) =>
     p.hideCardHeader
       ? '24px' : '0px 0px 24px 24px'
@@ -166,6 +171,7 @@ export const CardHeaderWrapper = styled.div<{
 export const CardHeader = styled.div<{
   shadowOpacity?: number
   isPanel?: boolean
+  useDarkBackground?: boolean
 }>`
   --shadow-opacity: ${(p) =>
     p.shadowOpacity !== undefined
@@ -173,7 +179,11 @@ export const CardHeader = styled.div<{
       : 0
   };
   display: flex;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) =>
+    p.useDarkBackground
+      ? leo.color.page.background
+      : leo.color.container.background
+  };
   border-radius: ${(p) => p.isPanel ? '0px' : '24px 24px 0px 0px'};
   width: 100%;
   padding: ${(p) => p.isPanel ? '0px' : '0px 32px'};
@@ -218,11 +228,7 @@ export const StaticBackground = styled.div`
   bottom: 0px;
   left: 0px;
   right: 0px;
-  background-color: ${leo.color.container.highlight};
-  @media (prefers-color-scheme: dark) {
-    /* #17171F does not exist in design system */
-    background-color: #17171F;
-  }
+  background-color: ${leo.color.page.background};
 `
 
 export const BackgroundGradientWrapper = styled.div`
@@ -232,7 +238,7 @@ export const BackgroundGradientWrapper = styled.div`
   left: 0px;
   right: 0px;
   opacity: 0.5;
-  background-color: ${leo.color.container.highlight};
+  background-color: ${leo.color.page.background};
 `
 
 export const BackgroundGradientTopLayer = styled.div`

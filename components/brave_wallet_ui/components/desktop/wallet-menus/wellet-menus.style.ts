@@ -24,6 +24,7 @@ export const StyledWrapper = styled.div<
   padding: 8px 8px 0px 8px;
   background-color: ${leo.color.container.background};
   border-radius: 8px;
+  border: 1px solid ${leo.color.divider.subtle};
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   position: absolute;
   top: ${(p) => p.yPosition !== undefined ? p.yPosition : 35}px;

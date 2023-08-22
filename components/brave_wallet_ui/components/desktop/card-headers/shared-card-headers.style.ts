@@ -27,10 +27,7 @@ export const CircleButton = styled(WalletButton) <{
   size?: number,
   marginRight?: number
 }>`
-  --button-border-color: ${leo.color.primary[20]};
-  @media (prefers-color-scheme: dark) {
-    --button-border-color: ${leo.color.primary[50]};
-  }
+  --button-border-color: ${leo.color.divider.interactive};
   display: flex;
   align-items: center;
   justify-content: center;

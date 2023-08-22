@@ -57,6 +57,7 @@ export interface Props {
   cardHeader?: JSX.Element | undefined | null
   noMinCardHeight?: boolean
   noBorderRadius?: boolean
+  useDarkBackground?: boolean
   children?: React.ReactNode
 }
 
@@ -74,7 +75,8 @@ export const WalletPageWrapper = (props: Props) => {
     hideHeaderMenu,
     hideDivider,
     noMinCardHeight,
-    noBorderRadius
+    noBorderRadius,
+    useDarkBackground
   } = props
 
   // Wallet Selectors (safe)
@@ -202,6 +204,7 @@ export const WalletPageWrapper = (props: Props) => {
               hideCardHeader={!cardHeader}
               noMinCardHeight={noMinCardHeight}
               noBorderRadius={noBorderRadius}
+              useDarkBackground={useDarkBackground}
             >
               {children}
             </ContainerCard>
@@ -215,6 +218,7 @@ export const WalletPageWrapper = (props: Props) => {
                 <CardHeader
                   shadowOpacity={headerShadowOpacity}
                   isPanel={isPanel}
+                  useDarkBackground={useDarkBackground}
                 >
                   <CardHeaderContentWrapper
                     dividerOpacity={headerDividerOpacity}
