@@ -1,0 +1,32 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("query_filter") {
+  sources = [
+    "utils.cc",
+    "utils.h",
+  ]
+  deps = [
+    "//base",
+    "//net",
+    "//third_party/re2",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "utils_unittest.cc" ]
+
+  deps = [
+    ":query_filter",
+    "//base",
+    "//base/test:test_support",
+    "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
+    "//url",
+  ]
+}

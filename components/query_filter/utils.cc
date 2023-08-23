@@ -1,9 +1,9 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/net/brave_query_filter.h"
+#include "brave/components/query_filter/utils.h"
 
 #include <string>
 #include <vector>
@@ -13,10 +13,10 @@
 #include "base/strings/string_piece.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/re2/src/re2/re2.h"
-#include "url/gurl.h"
 
-namespace {
+namespace query_filter {
 
 static constexpr auto kSimpleQueryStringTrackers =
     base::MakeFixedFlatSet<base::StringPiece>(
@@ -117,14 +117,13 @@ absl::optional<std::string> StripQueryParameter(const base::StringPiece& query,
   return absl::nullopt;
 }
 
-}  // namespace
-
 absl::optional<GURL> ApplyQueryFilter(const GURL& original_url) {
   const auto& query = original_url.query_piece();
   const std::string& spec = original_url.spec();
   const auto clean_query_value = StripQueryParameter(query, spec);
-  if (!clean_query_value.has_value())
+  if (!clean_query_value.has_value()) {
     return absl::nullopt;
+  }
   const auto& clean_query = clean_query_value.value();
   if (clean_query.length() < query.length()) {
     GURL::Replacements replacements;
@@ -137,3 +136,43 @@ absl::optional<GURL> ApplyQueryFilter(const GURL& original_url) {
   }
   return absl::nullopt;
 }
+
+absl::optional<GURL> MaybeApplyQueryStringFilter(
+    const GURL& initiator_url,
+    const GURL& redirect_source_url,
+    const GURL& request_url,
+    const std::string& request_method,
+    const bool internal_redirect) {
+  if (!request_url.has_query()) {
+    // Optimization:
+    // If there are no query params then we have nothing to strip.
+    return absl::nullopt;
+  }
+  if (request_method != "GET") {
+    return absl::nullopt;
+  }
+
+  if (redirect_source_url.is_valid()) {
+    if (internal_redirect) {
+      // Ignore internal redirects since we trigger them.
+      return absl::nullopt;
+    }
+
+    if (net::registry_controlled_domains::SameDomainOrHost(
+            redirect_source_url, request_url,
+            net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+      // Same-site redirects are exempted.
+      return absl::nullopt;
+    }
+  } else if (initiator_url.is_valid() &&
+             net::registry_controlled_domains::SameDomainOrHost(
+                 initiator_url, request_url,
+                 net::registry_controlled_domains::
+                     INCLUDE_PRIVATE_REGISTRIES)) {
+    // Same-site requests are exempted.
+    return absl::nullopt;
+  }
+
+  return ApplyQueryFilter(request_url);
+}
+}  // namespace query_filter
