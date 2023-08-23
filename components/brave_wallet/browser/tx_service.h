@@ -245,16 +245,17 @@ class TxService : public KeyedService,
 
   raw_ptr<PrefService> prefs_;  // NOT OWNED
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
+
+  scoped_refptr<value_store::ValueStoreFactory> store_factory_;
+  std::unique_ptr<TxStorageDelegateImpl> delegate_;
+  std::unique_ptr<AccountResolverDelegate> account_resolver_delegate_;
   base::flat_map<mojom::CoinType, std::unique_ptr<TxManager>> tx_manager_map_;
+
   mojo::RemoteSet<mojom::TxServiceObserver> observers_;
   mojo::ReceiverSet<mojom::TxService> tx_service_receivers_;
   mojo::ReceiverSet<mojom::EthTxManagerProxy> eth_tx_manager_receivers_;
   mojo::ReceiverSet<mojom::SolanaTxManagerProxy> solana_tx_manager_receivers_;
   mojo::ReceiverSet<mojom::FilTxManagerProxy> fil_tx_manager_receivers_;
-
-  scoped_refptr<value_store::ValueStoreFactory> store_factory_;
-  std::unique_ptr<TxStorageDelegateImpl> delegate_;
-  std::unique_ptr<AccountResolverDelegate> account_resolver_delegate_;
 
   base::WeakPtrFactory<TxService> weak_factory_;
 };
