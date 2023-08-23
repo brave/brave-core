@@ -9,13 +9,15 @@ import styled from 'styled-components'
 
 import { PlaylistItem } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
+import { color, font } from '@brave/leo/tokens/css'
+
 import {
   ApplicationState,
-  PlayerState
-} from 'components/playlist/browser/resources/reducers/states'
+  PlayerState,
+  useAutoPlayEnabled
+} from '../reducers/states'
 import { getPlayerActions } from '../api/getPlayerActions'
 import PlayerControls from './playerControls'
-import { color, font } from '@brave/leo/tokens/css'
 import PlayerSeeker from './playerSeeker'
 import { playlistControlsAreaHeight } from '../constants/style'
 
@@ -78,6 +80,8 @@ export default function Player () {
     applicationState => applicationState.playerState?.currentItem
   )
 
+  const autoPlayEnabled = useAutoPlayEnabled()
+
   const [videoElement, setVideoElement] =
     React.useState<HTMLVideoElement | null>(null)
 
@@ -104,7 +108,7 @@ export default function Player () {
         onPause={() => getPlayerActions().playerStoppedPlayingItem(currentItem)}
         onEnded={() => {
           getPlayerActions().playerStoppedPlayingItem(currentItem)
-          getPlayerActions().playNextItem() // In case the current item is the last one, nothing will happen
+          if (autoPlayEnabled) getPlayerActions().playNextItem() // In case the current item is the last one, nothing will happen
         }}
         src={
           videoElement?.src === currentItem?.mediaSource.url

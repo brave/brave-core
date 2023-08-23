@@ -4,12 +4,14 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useSelector } from 'react-redux'
 
 import Icon from '@brave/leo/react/icon'
 import styled from 'styled-components'
 import { color } from '@brave/leo/tokens/css'
 
 import { getPlayerActions } from '../api/getPlayerActions'
+import { ApplicationState, useAutoPlayEnabled } from '../reducers/states'
 
 interface Props {
   videoElement?: HTMLVideoElement | null
@@ -48,6 +50,12 @@ function Control ({
 
 export default function PlayerControls ({ videoElement, className }: Props) {
   const [isPlaying, setPlaying] = React.useState(false)
+
+  const autoPlayEnabled = useAutoPlayEnabled()
+
+  const shuffleEnabled = useSelector<ApplicationState, boolean | undefined>(
+    applicationState => applicationState.playerState?.shuffleEnabled
+  )
 
   React.useEffect(() => {
     if (videoElement) {
@@ -104,8 +112,14 @@ export default function PlayerControls ({ videoElement, className }: Props) {
         ></Control>
       </div>
       <div>
-        <Control iconName='autoplay-off' onClick={() => {}}></Control>
-        <Control iconName='shuffle-on' onClick={() => {}}></Control>
+        <Control
+          iconName={autoPlayEnabled ? 'autoplay-on' : 'autoplay-off'}
+          onClick={() => getPlayerActions().toggleAutoPlay()}
+        ></Control>
+        <Control
+          iconName={shuffleEnabled ? 'shuffle-on' : 'shuffle-off'}
+          onClick={() => getPlayerActions().toggleShuffle()}
+        ></Control>
         <Control iconName='sidepanel-open' onClick={() => {}}></Control>
         <Control
           iconName='picture-in-picture'
