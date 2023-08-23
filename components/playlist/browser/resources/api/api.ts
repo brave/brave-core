@@ -127,8 +127,6 @@ class API {
   ) {
     this.#pageCallbackRouter.onMediaFileDownloadProgressed.addListener(listener)
   }
-
-  // addItemUpdatedListener()
 }
 
 export function getPlaylistAPI (): API {
