@@ -88,7 +88,7 @@ std::string GetAffiliateAddress(const std::string& chain_id) {
 }
 
 brave_wallet::mojom::BraveSwapFeeResponsePtr GetBraveFeeInternal(
-    brave_wallet::mojom::BraveSwapFeeParamsPtr params) {
+    const brave_wallet::mojom::BraveSwapFeeParamsPtr& params) {
   const auto& percentage_fee = GetFeePercentage(params->chain_id);
   if (!percentage_fee) {
     return nullptr;
