@@ -93,10 +93,10 @@ class WaybackMachineURLFetcherUnitTest : public testing::Test {
   GURL expected_fetch_url_;
   std::string response_text_;
   base::test::TaskEnvironment task_environment_;
-  std::unique_ptr<WaybackMachineURLFetcher> wayback_url_loader_;
-  network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<WaybackClient> client_;
+  network::TestURLLoaderFactory url_loader_factory_;
+  std::unique_ptr<WaybackMachineURLFetcher> wayback_url_loader_;
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
