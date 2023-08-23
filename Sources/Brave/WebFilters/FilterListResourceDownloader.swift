@@ -19,11 +19,6 @@ public class FilterListResourceDownloader {
   /// - Warning: You need to wait for `DataController.shared.initializeOnce()` to be called before using this instance
   public static let shared = FilterListResourceDownloader()
   
-  /// A list of loaded versions for the filter lists with the componentId as the key and version as the value
-  private var loadedRuleListVersions = Preferences.Option<[String: String]>(
-    key: "filter_list_resource_downloader.loaded-adblock-versions", default: [:]
-  )
-  
   /// Object responsible for getting component updates
   private var adBlockService: AdblockService?
   /// The filter list subscription
@@ -265,7 +260,7 @@ public class FilterListResourceDownloader {
     if loadContentBlockers {
       let blocklistType = ContentBlockerManager.BlocklistType.filterList(componentId: componentId, isAlwaysAggressive: isAlwaysAggressive)
       let modes = await blocklistType.allowedModes.asyncFilter { mode in
-        if let loadedVersion = loadedRuleListVersions.value[componentId] {
+        if let loadedVersion = await FilterListStorage.shared.loadedRuleListVersions.value[componentId] {
           // if we know the loaded version we can just check it (optimization)
           return loadedVersion != version
         } else {
@@ -285,7 +280,7 @@ public class FilterListResourceDownloader {
           options: .all, modes: modes
         )
         
-        loadedRuleListVersions.value[componentId] = version
+        await FilterListStorage.shared.loadedRuleListVersions.value[componentId] = version
       } catch {
         ContentBlockerManager.log.error(
           "Failed to convert filter list `\(componentId)` to content blockers: \(error)"
