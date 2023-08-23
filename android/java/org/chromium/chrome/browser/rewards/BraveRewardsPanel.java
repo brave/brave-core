@@ -165,6 +165,7 @@ public class BraveRewardsPanel
     private BraveRewardsHelper mIconFetcher;
 
     private LinearLayout mRewardsSummaryDetailLayout;
+    private LinearLayout mPayoutStatusBannerLayout;
     private CardView mRewardsTipLayout;
     private LinearLayout mBtnTip;
     private ImageView mImgTip;
@@ -339,6 +340,8 @@ public class BraveRewardsPanel
         mRewardsMainLayout = mPopupView.findViewById(R.id.rewards_main_layout);
         mRewardsSummaryDetailLayout =
                 mPopupView.findViewById(R.id.brave_rewards_panel_summary_layout_id);
+        mPayoutStatusBannerLayout =
+                mPopupView.findViewById(R.id.brave_rewards_panel_payout_layout_id);
         mRewardsTipLayout = mPopupView.findViewById(R.id.brave_rewards_panel_tip_layout_id);
 
         mRewardsVbatExpireNoticeModal =
@@ -347,6 +350,7 @@ public class BraveRewardsPanel
 
         mWalletBalanceProgress = mPopupView.findViewById(R.id.wallet_progress_bar_group);
     }
+
     // Rewards main layout changes
     private void showRewardsMainUI() {
         if (mRewardsMainLayout == null) {
@@ -1011,6 +1015,18 @@ public class BraveRewardsPanel
             } else {
                 final String estimatedValue = minValue + " - " + maxValue;
                 estimatedRange.setText(estimatedValue);
+            }
+        }
+        showPayoutStatusBanner(nextPaymentDate);
+    }
+
+    private void showPayoutStatusBanner(double nextPaymentDate) {
+        String payoutStatus = mBraveRewardsNativeWorker.getPayoutStatus();
+        if (mPayoutStatusBannerLayout != null && nextPaymentDate > 0
+                && !TextUtils.isEmpty(payoutStatus) && mExternalWallet != null
+                && mExternalWallet.getStatus() == WalletStatus.CONNECTED) {
+            Log.e(TAG, "payoutStatus : " + payoutStatus);
+            if (payoutStatus.equals("complete")) {
             }
         }
     }

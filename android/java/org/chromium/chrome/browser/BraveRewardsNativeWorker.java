@@ -562,6 +562,13 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public String getPayoutStatus() {
+        synchronized (lock) {
+            return BraveRewardsNativeWorkerJni.get().getPayoutStatus(
+                    mNativeBraveRewardsNativeWorker);
+        }
+    }
+
     @CalledByNative
     public void OnRefreshPublisher(int status, String publisherKey) {
         for (BraveRewardsObserver observer : mObservers) {
@@ -841,5 +848,6 @@ public class BraveRewardsNativeWorker {
         void setAutoContributionAmount(long nativeBraveRewardsNativeWorker, double amount);
         void getAutoContributionAmount(long nativeBraveRewardsNativeWorker);
         void getAdsAccountStatement(long nativeBraveRewardsNativeWorker);
+        String getPayoutStatus(long nativeBraveRewardsNativeWorker);
     }
 }
