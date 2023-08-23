@@ -5,6 +5,8 @@
 import UIKit
 import SnapKit
 import Shared
+import Preferences
+import Combine
 
 protocol ReaderModeBarViewDelegate: AnyObject {
   func readerModeSettingsTapped(_ view: UIView)
@@ -25,12 +27,26 @@ class ReaderModeBarView: UIView {
     $0.tintColor = .braveLabel
     $0.accessibilityIdentifier = "ReaderModeBarView.settingsButton"
   }
+  
+  private var privateBrowsingManager: PrivateBrowsingManager
 
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-
-    backgroundColor = .urlBarBackground
-
+  private var cancellables: Set<AnyCancellable> = []
+  private func updateColors(_ isPrivateBrowsing: Bool) {
+    if isPrivateBrowsing {
+      overrideUserInterfaceStyle = .dark
+      backgroundColor = .privateModeBackground
+    } else {
+      overrideUserInterfaceStyle = DefaultTheme(
+        rawValue: Preferences.General.themeNormalMode.value)?.userInterfaceStyleOverride ?? .unspecified
+      backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
+    }
+  }
+  
+  init(privateBrowsingManager: PrivateBrowsingManager) {
+    self.privateBrowsingManager = privateBrowsingManager
+    
+    super.init(frame: .zero)
+    
     addSubview(readerModeButton)
     readerModeButton.addTarget(self, action: #selector(tappedSettingsButton), for: .touchUpInside)
     readerModeButton.snp.makeConstraints {
@@ -50,6 +66,24 @@ class ReaderModeBarView: UIView {
       $0.trailing.equalToSuperview().inset(16)
       $0.centerY.equalToSuperview()
     }
+    
+    privateBrowsingManager
+      .$isPrivateBrowsing
+      .removeDuplicates()
+      .sink(receiveValue: { [weak self] isPrivateBrowsing in
+        self?.updateColors(isPrivateBrowsing)
+      })
+      .store(in: &cancellables)
+    
+    Preferences.General.nightModeEnabled.objectWillChange
+      .receive(on: RunLoop.main)
+      .sink { [weak self] _ in
+        guard let self = self else { return }
+        self.updateColors(self.privateBrowsingManager.isPrivateBrowsing)
+      }
+      .store(in: &cancellables)
+    
+    updateColors(privateBrowsingManager.isPrivateBrowsing)
   }
 
   required init?(coder aDecoder: NSCoder) {

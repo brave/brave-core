@@ -111,7 +111,7 @@ extension BrowserViewController {
 
   func showReaderModeBar(animated: Bool) {
     if self.readerModeBar == nil {
-      let readerModeBar = ReaderModeBarView(frame: CGRect.zero)
+      let readerModeBar = ReaderModeBarView(privateBrowsingManager: tabManager.privateBrowsingManager)
       readerModeBar.delegate = self
       view.insertSubview(readerModeBar, aboveSubview: webViewContainer)
       self.readerModeBar = readerModeBar
