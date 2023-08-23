@@ -19,8 +19,13 @@ class TabGroupStyle : public TabGroupStyle_ChromiumImpl {
   using TabGroupStyle_ChromiumImpl::TabGroupStyle_ChromiumImpl;
 
   static const int kStrokeThicknessForVerticalTabs;
+  
+  static const int kTitleAdjustment;
 
   SkPath GetUnderlinePath(gfx::Rect local_bounds) const override;
+  
+  int TabGroupStyle::GetTitleAdjustmentToTabGroupHeaderDesiredWidth(
+    const std::u16string title) const override;
 
  private:
   bool ShouldShowVerticalTabs() const;
