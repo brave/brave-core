@@ -58,6 +58,10 @@ struct VPNMenuButton: View {
     }
     switch BraveVPN.vpnState {
     case .notPurchased, .expired:
+      // Expired Subcriptions can cause glitch because of connect on demand
+      // Disconnect VPN before showing Purchase
+      BraveVPN.disconnect(skipChecks: true)
+
       guard let vc = vpnState.enableVPNDestinationVC else { return }
       displayVPNDestination(vc)
     case .purchased:

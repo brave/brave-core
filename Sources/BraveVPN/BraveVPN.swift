@@ -354,7 +354,12 @@ public class BraveVPN {
 
   /// Disconnects the vpn.
   /// The vpn must be configured prior to that otherwise it does nothing.
-  public static func disconnect() {
+  public static func disconnect(skipChecks: Bool = false) {
+    if skipChecks {
+      helper.disconnectVPN()
+      return
+    }
+    
     if reconnectPending {
       logAndStoreError("Can't disconnect the vpn while reconnect is still pending.")
       return
