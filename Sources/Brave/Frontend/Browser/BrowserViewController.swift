@@ -450,6 +450,7 @@ public class BrowserViewController: UIViewController {
     Preferences.Playlist.enablePlaylistMenuBadge.observe(from: self)
     Preferences.Playlist.enablePlaylistURLBarButton.observe(from: self)
     Preferences.Playlist.syncSharedFoldersAutomatically.observe(from: self)
+    Preferences.NewTabPage.backgroundSponsoredImages.observe(from: self)
     ShieldPreferences.blockAdsAndTrackingLevelRaw.observe(from: self)
     
     pageZoomListener = NotificationCenter.default.addObserver(forName: PageZoomView.notificationName, object: nil, queue: .main) { [weak self] _ in
@@ -464,6 +465,7 @@ public class BrowserViewController: UIViewController {
       guard let self = self else { return }
       self.updateRewardsButtonState()
       self.setupAdsNotificationHandler()
+      self.recordAdsUsageType()
     }
     Preferences.Playlist.webMediaSourceCompatibility.observe(from: self)
     Preferences.PrivacyReports.captureShieldsData.observe(from: self)
@@ -551,6 +553,7 @@ public class BrowserViewController: UIViewController {
     recordAccessibilityDocumentsDirectorySizeP3A()
     recordTimeBasedNumberReaderModeUsedP3A(activated: false)
     PlaylistP3A.recordHistogram()
+    recordAdsUsageType()
     
     // Revised Review Handling
     AppReviewManager.shared.handleAppReview(for: .revisedCrossPlatform, using: self)
@@ -3145,6 +3148,8 @@ extension BrowserViewController: PreferencesObserver {
       updateURLBarWalletButton()
     case Preferences.Playlist.syncSharedFoldersAutomatically.key:
       syncPlaylistFolders()
+    case Preferences.NewTabPage.backgroundSponsoredImages.key:
+      recordAdsUsageType()
     default:
       Logger.module.debug("Received a preference change for an unknown key: \(key, privacy: .public) on \(type(of: self), privacy: .public)")
       break

@@ -181,6 +181,24 @@ extension BrowserViewController {
       value: storage.combinedValue
     )
   }
+  
+  func recordAdsUsageType() {
+    enum Answer: Int, CaseIterable {
+      case none = 0
+      case ntpOnly = 1
+      case pushOnly = 2
+      case ntpAndPush = 3
+    }
+    var answer: Answer = .none
+    if rewards.ads.isEnabled && Preferences.NewTabPage.backgroundSponsoredImages.value {
+      answer = .ntpAndPush
+    } else if rewards.ads.isEnabled {
+      answer = .pushOnly
+    } else if Preferences.NewTabPage.backgroundSponsoredImages.value {
+      answer = .ntpOnly
+    }
+    UmaHistogramEnumeration("Brave.Rewards.AdTypesEnabled", sample: answer)
+  }
 }
 
 extension P3AFeatureUsage {
