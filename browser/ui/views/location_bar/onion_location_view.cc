@@ -164,8 +164,10 @@ void OnionLocationView::Update(content::WebContents* web_contents,
     return;
   tor::OnionLocationTabHelper* helper =
       tor::OnionLocationTabHelper::FromWebContents(web_contents);
-  if (!helper)
+  if (!helper || helper->onion_location().is_empty()) {
     return;
+  }
+
   SetVisible(helper->should_show_icon() && show_page_actions);
   reinterpret_cast<OnionLocationButtonView*>(button_.get())
       ->SetOnionLocation(helper->onion_location());

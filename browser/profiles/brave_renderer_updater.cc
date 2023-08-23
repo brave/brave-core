@@ -69,6 +69,7 @@ void BraveRendererUpdater::InitializeRenderer(
   Profile* profile =
       Profile::FromBrowserContext(render_process_host->GetBrowserContext());
   is_wallet_allowed_for_context_ = brave_wallet::IsAllowedForContext(profile);
+  renderer_configuration->SetInitialConfiguration(profile->IsTor());
   UpdateRenderer(&renderer_configuration);
 }
 
