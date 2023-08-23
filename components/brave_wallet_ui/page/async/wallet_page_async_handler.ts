@@ -16,7 +16,6 @@ import {
 import {
   CreateWalletPayloadType,
   UpdateSelectedAssetType,
-  ImportAccountFromJsonPayloadType,
   ImportFromExternalWalletPayloadType,
   RestoreWalletPayloadType,
   ImportWalletErrorPayloadType,
@@ -130,16 +129,6 @@ handler.on(WalletPageActions.selectAsset.type, async (store: Store, payload: Upd
     }
   } else {
     store.dispatch(WalletPageActions.selectPriceTimeframe(payload.timeFrame))
-  }
-})
-
-handler.on(WalletPageActions.importAccountFromJson.type, async (store: Store, payload: ImportAccountFromJsonPayloadType) => {
-  const keyringService = getWalletPageApiProxy().keyringService
-  const result = await keyringService.importAccountFromJson(payload.accountName, payload.password, payload.json)
-  if (result.account) {
-    store.dispatch(WalletActions.setImportAccountError(false))
-  } else {
-    store.dispatch(WalletActions.setImportAccountError(true))
   }
 })
 

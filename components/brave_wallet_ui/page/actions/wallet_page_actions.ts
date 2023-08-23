@@ -13,7 +13,6 @@ export const {
   createWallet,
   getNFTMetadata,
   hasMnemonicError,
-  importAccountFromJson,
   importFromCryptoWallets,
   importFromMetaMask,
   openWalletSettings,

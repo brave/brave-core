@@ -27,7 +27,6 @@ import {
 } from '../../../../constants/types'
 
 // actions
-import { WalletPageActions } from '../../../../page/actions'
 import { WalletActions } from '../../../../common/actions'
 
 // components
@@ -139,7 +138,9 @@ export const ImportAccountModal = () => {
     }, [])
 
   const importAccountFromJson = React.useCallback((accountName: string, password: string, json: string) => {
-    dispatch(WalletPageActions.importAccountFromJson({ accountName, password, json }))
+    dispatch(
+      WalletActions
+        .importAccountFromJson({ accountName, password, json }))
   }, [])
 
   const handleAccountNameChanged = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
