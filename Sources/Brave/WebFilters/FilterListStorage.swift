@@ -6,9 +6,15 @@
 import Foundation
 import Data
 import BraveCore
+import Preferences
 
 @MainActor class FilterListStorage: ObservableObject {
   static let shared = FilterListStorage(persistChanges: true)
+  
+  /// A list of loaded versions for the filter lists with the componentId as the key and version as the value
+  var loadedRuleListVersions = Preferences.Option<[String: String]>(
+    key: "filter_list_resource_downloader.loaded-adblock-versions", default: [:]
+  )
   
   /// Wether or not these settings are stored in memory or persisted
   let persistChanges: Bool
