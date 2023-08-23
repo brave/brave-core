@@ -83,6 +83,8 @@ class ConfirmBubble : public PlaylistActionBubbleView,
     void Layout() override;
   };
 
+  void ResetChildViews();
+
   void OpenInPlaylist();
   void ChangeFolder();
   void RemoveFromPlaylist();
@@ -152,44 +154,7 @@ ConfirmBubble::ConfirmBubble(Browser* browser,
                        /*between_child_spacing =*/4))
       ->set_cross_axis_alignment(
           views::BoxLayout::CrossAxisAlignment::kStretch);
-
-  constexpr int kIconSize = 16;
-  added_folder_row_ = AddChildView(std::make_unique<Row>(
-      l10n_util::GetStringFUTF16(IDS_PLAYLIST_ADDED_TO_PLAYLIST_FOLDER,
-                                 playlist_tab_helper_->GetSavedFolderName()),
-      ui::ImageModel::FromVectorIcon(kLeoCheckCircleFilledIcon,
-                                     kColorBravePlaylistAddedIcon, kIconSize)));
-  AddChildView(std::make_unique<views::Separator>());
-  AddChildView(std::make_unique<Row>(
-      l10n_util::GetStringUTF16(IDS_PLAYLIST_OPEN_IN_PLAYLIST),
-      ui::ImageModel::FromVectorIcon(kLeoProductPlaylistIcon,
-                                     ui::kColorMenuIcon, kIconSize),
-      base::BindRepeating(&ConfirmBubble::OpenInPlaylist,
-                          base::Unretained(this))));
-  if (PlaylistMoveDialog::CanMoveItems(playlist_tab_helper_->saved_items())) {
-    AddChildView(std::make_unique<Row>(
-        l10n_util::GetStringUTF16(IDS_PLAYLIST_CHANGE_FOLDER),
-        ui::ImageModel::FromVectorIcon(kLeoFolderExchangeIcon,
-                                       ui::kColorMenuIcon, kIconSize),
-        base::BindRepeating(&ConfirmBubble::ChangeFolder,
-                            base::Unretained(this))));
-  }
-  AddChildView(std::make_unique<Row>(
-      l10n_util::GetStringUTF16(IDS_PLAYLIST_REMOVE_FROM_PLAYLIST),
-      ui::ImageModel::FromVectorIcon(kLeoTrashIcon, ui::kColorMenuIcon,
-                                     kIconSize),
-      base::BindRepeating(&ConfirmBubble::RemoveFromPlaylist,
-                          base::Unretained(this))));
-
-  if (playlist_tab_helper->GetUnsavedItems().size()) {
-    AddChildView(std::make_unique<views::Separator>());
-    AddChildView(std::make_unique<Row>(
-        l10n_util::GetStringUTF16(IDS_PLAYLIST_MORE_MEDIA_IN_THIS_PAGE),
-        ui::ImageModel::FromVectorIcon(kLeoProductPlaylistIcon,
-                                       ui::kColorMenuIcon, kIconSize),
-        base::BindRepeating(&ConfirmBubble::MoreMediaInContents,
-                            base::Unretained(this))));
-  }
+  ResetChildViews();
 
   playlist_tab_helper_observation_.Observe(playlist_tab_helper_);
 }
@@ -200,9 +165,71 @@ void ConfirmBubble::PlaylistTabHelperWillBeDestroyed() {
 
 void ConfirmBubble::OnSavedItemsChanged(
     const std::vector<playlist::mojom::PlaylistItemPtr>& items) {
-  added_folder_row_->SetText(
+  ResetChildViews();
+  SizeToContents();
+}
+
+void ConfirmBubble::ResetChildViews() {
+  RemoveAllChildViews();
+
+  constexpr int kIconSize = 16;
+  added_folder_row_ = AddChildView(std::make_unique<Row>(
       l10n_util::GetStringFUTF16(IDS_PLAYLIST_ADDED_TO_PLAYLIST_FOLDER,
-                                 playlist_tab_helper_->GetSavedFolderName()));
+                                 playlist_tab_helper_->GetSavedFolderName()),
+      ui::ImageModel::FromVectorIcon(kLeoCheckCircleFilledIcon,
+                                     kColorBravePlaylistAddedIcon, kIconSize)));
+  bool added_separator = false;
+  auto add_separator_if_needed = [&added_separator, this] {
+    if (added_separator) {
+      return;
+    }
+
+    added_separator = !!AddChildView(std::make_unique<views::Separator>());
+  };
+
+  const auto& saved_items = playlist_tab_helper_->saved_items();
+
+  if (saved_items.front()->parents.size()) {
+    add_separator_if_needed();
+    AddChildView(std::make_unique<Row>(
+        l10n_util::GetStringUTF16(IDS_PLAYLIST_OPEN_IN_PLAYLIST),
+        ui::ImageModel::FromVectorIcon(kLeoProductPlaylistIcon,
+                                       ui::kColorMenuIcon, kIconSize),
+        base::BindRepeating(&ConfirmBubble::OpenInPlaylist,
+                            base::Unretained(this))));
+  }
+
+  if (PlaylistMoveDialog::CanMoveItems(saved_items)) {
+    add_separator_if_needed();
+    AddChildView(std::make_unique<Row>(
+        l10n_util::GetStringUTF16(IDS_PLAYLIST_CHANGE_FOLDER),
+        ui::ImageModel::FromVectorIcon(kLeoFolderExchangeIcon,
+                                       ui::kColorMenuIcon, kIconSize),
+        base::BindRepeating(&ConfirmBubble::ChangeFolder,
+                            base::Unretained(this))));
+  }
+
+  if (base::ranges::none_of(saved_items, [](const auto& item) {
+        return item->parents.empty();
+      })) {
+    add_separator_if_needed();
+    AddChildView(std::make_unique<Row>(
+        l10n_util::GetStringUTF16(IDS_PLAYLIST_REMOVE_FROM_PLAYLIST),
+        ui::ImageModel::FromVectorIcon(kLeoTrashIcon, ui::kColorMenuIcon,
+                                       kIconSize),
+        base::BindRepeating(&ConfirmBubble::RemoveFromPlaylist,
+                            base::Unretained(this))));
+  }
+
+  if (playlist_tab_helper_->GetUnsavedItems().size()) {
+    AddChildView(std::make_unique<views::Separator>());
+    AddChildView(std::make_unique<Row>(
+        l10n_util::GetStringUTF16(IDS_PLAYLIST_MORE_MEDIA_IN_THIS_PAGE),
+        ui::ImageModel::FromVectorIcon(kLeoProductPlaylistIcon,
+                                       ui::kColorMenuIcon, kIconSize),
+        base::BindRepeating(&ConfirmBubble::MoreMediaInContents,
+                            base::Unretained(this))));
+  }
 }
 
 void ConfirmBubble::OpenInPlaylist() {
