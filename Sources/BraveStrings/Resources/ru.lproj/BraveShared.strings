@@ -52,17 +52,8 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Включить";
 
-/* Label for the Face ID/Passcode item in Settings */
-"AuthenticationFaceIDPasscodeSetting" = "Face ID и код доступа";
-
 /* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
 "AuthenticationLoginsTouchReason" = "Так вы подтвердите, что именно вы выполняете вход в Brave.";
-
-/* Label for the Passcode item in Settings */
-"AuthenticationPasscode" = "Код-пароль";
-
-/* Label for the Touch ID/Passcode item in Settings */
-"AuthenticationTouchIDPasscodeSetting" = "Touch ID и код доступа";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Отмена";
@@ -115,14 +106,17 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Не удалось применить параметр. Повторите попытку.";
 
-/* A title for a toggle that allows user to block cookie consent notices */
+/* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Блокировка уведомлений о согласии на использование файлов cookie";
 
-/* A description for a popup that notifies the user that we can block cookie consent notices */
-"BlockCookieConsentNoticesPopupDescription" = "Brave уже блокирует сторонние файлы cookie. Но мы можем избавить вас и от уведомлений о согласии на использование файлов cookie.";
+/* A title for a button that dismisses the popup informing a use that brave is blocking cookie consent notices */
+"BlockCookieConsentNoticesDismissButtonTitle" = "Готово";
 
-/* A title for a popup that notifies the user that we can block cookie consent notices */
-"BlockCookieConsentNoticesPopupTitle" = "Устали от уведомлений о согласии на использование файлов cookie?";
+/* A description of why we are blocking cookie consent notices found on the cookie consent blocking popup */
+"BlockCookieConsentNoticesPopupDescription" = "Brave уже по умолчанию блокирует вредоносные файлы cookie. Теперь мы сделали автоматической и блокировку уведомлений о согласии на использование файлов cookie.";
+
+/* A title for a popup that informs the user that brave is blocking cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "Brave блокирует уведомления о файлах cookie";
 
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "Блокирует сохранение на сайтах информации о ваших предыдущих посещениях.";
@@ -253,23 +247,11 @@
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Разговоры";
 
-/* Setting to enable the browser lock privacy feature */
+/* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "Блокировка браузера";
 
-/* No comment provided by engineer. */
+/* Description for setting to enable the browser lock privacy feature */
 "BrowserLockDescription" = "Для разблокировки Brave используйте Touch ID, Face ID или системный код-пароль.";
-
-/* A button title for the action to move to the next step of the browser lock migration process. */
-"browserLockMigrationContinueButtonTitle" = "Продолжить";
-
-/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
-"browserLockMigrationNoPasscodeSetup" = "Включите аутентификацию: откройте настройки устройства и выберите «%@».";
-
-/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
-"browserLockMigrationSubtitle" = "Мы упростили разблокировку Brave. Теперь доступ к браузеру можно получить с помощью Touch ID, Face ID или кода-пароля для телефона.";
-
-/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
-"browserLockMigrationTitle" = "Открывайте Brave с помощью Face ID, Touch ID или кода-пароля";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "История просмотров";
@@ -1013,7 +995,7 @@
 "login.loginListSearchBarPlaceHolderTitle" = "Укажите запрос";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.syncSetPasscodeAlertDescription" = "Чтобы создать цепь синхронизации или посмотреть настройки, установите код доступа на устройстве.";
+"login.syncSetPasscodeAlertDescription" = "Чтобы добавить устройство в цепь синхронизации или включить/отключить синхронизацию паролей, установите код доступа на устройстве.";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Последнее изменение: %@";
@@ -1090,11 +1072,17 @@
 /* Title for adding new folder */
 "NewFolderTitle" = "Новая папка";
 
+/* Context menu item for opening a new private browsing window */
+"NewPrivateWindowTitle" = "Новое окно в режиме инкогнито";
+
 /* New sync code button title */
 "NewSyncCode" = "Запустить новую цепочку синхронизации";
 
 /* New Tab title */
 "NewTab" = "Новая вкладка";
+
+/* Context menu item for opening a new window */
+"NewWindowTitle" = "Новое окно";
 
 /* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
 "nightMode.modeTitle" = "Тема";
@@ -1119,9 +1107,6 @@
 
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "Вы ввели не все слова";
-
-/* An action (button title) that does not block cookie consent notices and dismisses the popup */
-"NoThanks" = "Нет, спасибо";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Для ссылок на NPR автоматически открывать текстовую версию сайта (text.npr.org).";
@@ -1336,6 +1321,12 @@
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Открыть изображение в новой вкладке";
 
+/* Context menu item for opening a link in a new private browsing window */
+"OpenInNewPrivateWindowTitle" = "Открыть в новом окне инкогнито";
+
+/* Context menu item for opening a link in a new window */
+"OpenInNewWindowTitle" = "Открыть в новом окне";
+
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "Открыть в новой приватной вкладке";
 
@@ -1510,6 +1501,15 @@
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "Пароли";
 
+/* Setting to allow the app to restore private browsing tabs */
+"PersistentPrivateBrowsing" = "Возобновляемый режим инкогнито";
+
+/* Persistent private browsing alert message to existing users */
+"PersistentPrivateBrowsingAlertMessage" = "Если вы закроете приложение и откроете его снова, Brave восстановит вкладки, открытые в режиме инкогнито.";
+
+/* Persistent private browsing alert title to existing users */
+"PersistentPrivateBrowsingAlertTitle" = "Восстановление вкладок инкогнито";
+
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Автор фото: %@";
 
@@ -1558,6 +1558,12 @@
 /* Text indicator on the table cell If a video is expired */
 "playList.expiredLabelTitle" = "Срок действия закончился.";
 
+/* Number of items in the playlsit folder. Example: '10 items' */
+"playlist.folderItemCountPlural" = "Объектов: %d";
+
+/* Title for when there's a single item inside of a folder */
+"playlist.foldersCountSingular" = "Объектов: %d";
+
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "При загрузке этого ресурса произошла ошибка.";
 
@@ -1587,6 +1593,12 @@
 
 /* The title for the alert that shows up when an item is expired */
 "playList.pictureInPictureErrorTitle" = "При переходе в режим «Картинка в картинке» произошла ошибка";
+
+/* Playlist alert message when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingBody" = "Плейлист уже открыт в другом окне.";
+
+/* Playlist alert title when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingTitle" = "Произошла ошибка";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionFooterText" = "Параметр включает или отключает автовоспроизведение открытого плейлиста, но не влияет на то, загружается ли следующее видео из списка автоматически.";
@@ -1888,6 +1900,9 @@
 /* Settings privacy section title */
 "Privacy" = "Конфиденциальность";
 
+/* The message displayed in alert when a user needs to set a passcode */
+"privacy.tab.tray.passcode.alert" = "Чтобы включить или отключить режим инкогнито, установите код доступа на устройстве.";
+
 /* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
 "privacyHub.allTimeListsButtonText" = "За все время";
 
@@ -2125,6 +2140,9 @@
 /* Open Tab action title */
 "recently.closed.open" = "Открыть";
 
+/* Re-open Last Tab action title */
+"recently.closed.reopen.latest" = "Открыть последнюю закрытую вкладку";
+
 /* Description for alert to ask user for opening last closed tab in list */
 "recently.closed.shake.description" = "Открыть недавно закрытую вкладку?";
 
@@ -2219,16 +2237,16 @@
 "RestoredFavoritesFolderName" = "Восстановленное избранное";
 
 /* Restore Tabs Affirmative Action */
-"RestoreTabAffirmativeButtonTitle" = "ОК";
+"RestoreTabAffirmativeButtonTitle" = "Да";
 
 /* Restore Tabs Negative Action */
 "RestoreTabNegativeButtonTitle" = "Нет";
 
 /* Restore Tabs Prompt Description */
-"RestoreTabOnCrashAlertMessage" = "В Brave произошел сбой. Восстановить вкладки?";
+"RestoreTabOnCrashAlertMessage" = "Работа браузера Brave была завершена некорректно.\nВосстановить вкладки?";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Приносим извинения";
+"RestoreTabOnCrashAlertTitle" = "Неожиданное завершение работы";
 
 /* Body for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "С Brave Rewards вы можете просматривать рекламу из Brave Ads без замедления работы и отслеживания активности. Ваши данные находятся под надежной защитой. ";
@@ -3112,6 +3130,24 @@
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "Включить";
 
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingDescription" = "Вкладки инкогнито будут оставаться открытыми при закрытии приложения, сохраняя возможность продолжить сеанс.";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingTitle" = "Не закрывать вкладки инкогнито";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleFaceID" = "Запрашивать Face ID";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitlePinCode" = "Запрашивать пин-код";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleTouchID" = "Запрашивать Touch ID";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateTabsSettingsTitle" = "Личные вкладки";
+
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Панель навигации";
 
@@ -3532,6 +3568,9 @@
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Ненадежное подключение";
 
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Выберите наиболее подходящую категорию проблемы.";
+
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Отсутствует соединение с Интернетом";
 
@@ -3876,9 +3915,6 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Да";
-
-/* An action (button title) that enables cookie consent blocking and dismisses the popup */
-"YesBlockCookieConsentNotices" = "Да, блокировать уведомления о согласии на использование файлов cookie";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "Удалить";

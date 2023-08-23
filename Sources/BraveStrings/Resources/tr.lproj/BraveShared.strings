@@ -52,17 +52,8 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Açık";
 
-/* Label for the Face ID/Passcode item in Settings */
-"AuthenticationFaceIDPasscodeSetting" = "Yüz Kimliği ve Parola";
-
 /* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
 "AuthenticationLoginsTouchReason" = "Bu işlem, Brave erişiminizin kimliğini doğrular";
-
-/* Label for the Passcode item in Settings */
-"AuthenticationPasscode" = "Geçiş kodu";
-
-/* Label for the Touch ID/Passcode item in Settings */
-"AuthenticationTouchIDPasscodeSetting" = "Dokunmatik Kimlik ve Parola";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "İptal";
@@ -115,14 +106,17 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Tercih ayarlanamadı. Lütfen yeniden deneyin.";
 
-/* A title for a toggle that allows user to block cookie consent notices */
+/* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Çerez Onay Bildirimlerini Engelle";
 
-/* A description for a popup that notifies the user that we can block cookie consent notices */
-"BlockCookieConsentNoticesPopupDescription" = "Brave, üçüncü taraf çerezlerini zaten engelliyor. Çerez onay bildirimlerini de engelleyebiliriz.";
+/* A title for a button that dismisses the popup informing a use that brave is blocking cookie consent notices */
+"BlockCookieConsentNoticesDismissButtonTitle" = "Anlaşıldı";
 
-/* A title for a popup that notifies the user that we can block cookie consent notices */
-"BlockCookieConsentNoticesPopupTitle" = "Çerez onay bildirimlerinden bıktınız mı?";
+/* A description of why we are blocking cookie consent notices found on the cookie consent blocking popup */
+"BlockCookieConsentNoticesPopupDescription" = "Brave, zararlı çerezleri zaten engelliyor. Artık, şu sinir bozucu çerez rızası uyarılarını da otomatik olarak engelleyeceğiz.";
+
+/* A title for a popup that informs the user that brave is blocking cookie consent notices */
+"BlockCookieConsentNoticesPopupTitle" = "Brave, çerez rızası uyarılarını engelliyor";
 
 /* No comment provided by engineer. */
 "BlockCookiesDescription" = "Web sitelerinin önceki ziyaretleriniz hakkında bilgi depolamasını engeller.";
@@ -253,23 +247,11 @@
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Sohbet";
 
-/* Setting to enable the browser lock privacy feature */
+/* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "Tarayıcı Kilidi";
 
-/* No comment provided by engineer. */
+/* Description for setting to enable the browser lock privacy feature */
 "BrowserLockDescription" = "Touch ID, Face ID veya sistem geçiş koduyla Brave'in kilidini açın.";
-
-/* A button title for the action to move to the next step of the browser lock migration process. */
-"browserLockMigrationContinueButtonTitle" = "Devam et";
-
-/* Displayed to the user when they don't have a passcode set on their phone, therefore cannot use the Browser Lock feature. \"%@\" will be filled with either \"Touch ID & Passcode\" or \"Face ID & Passcode\" */
-"browserLockMigrationNoPasscodeSetup" = "ID veya geçiş kodu ayarlamadınız mı? Ayarlar'ı açın, ardından \"%@\" öğesine dokunun";
-
-/* Subtitle on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
-"browserLockMigrationSubtitle" = "Brave Geçiş Kodlarını basitleştirdik. Artık Brave'e telefonunuzda kullandığınız aynı ID veya geçiş koduyla erişebilirsiniz.";
-
-/* Title on the screen shown to the user when they are being migrated from the old Passcode feature to the new Browser Lock feature */
-"browserLockMigrationTitle" = "Apple Face ID, Touch ID veya geçiş kodunuzla Brave'i açın";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Arama Geçmişi";
@@ -1013,7 +995,7 @@
 "login.loginListSearchBarPlaceHolderTitle" = "Filtrele";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.syncSetPasscodeAlertDescription" = "Senkronizasyon zincirini ayarlamak veya ayarları görmek için, öncelikle cihazınızda bir parola belirlemeniz gerekiyor.";
+"login.syncSetPasscodeAlertDescription" = "Senkronizasyon zincirine bir cihaz eklemek veya şifre senkronizasyonunu açmak veya kapatmak için, önce cihazınıza bir pin kodu belirlemeniz gerekmektedir.";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Son değiştirilen %@";
@@ -1090,11 +1072,17 @@
 /* Title for adding new folder */
 "NewFolderTitle" = "Yeni klasör";
 
+/* Context menu item for opening a new private browsing window */
+"NewPrivateWindowTitle" = "Yeni Kişisel Pencere";
+
 /* New sync code button title */
 "NewSyncCode" = "Yeni bir Eşitleme Zinciri başlatın";
 
 /* New Tab title */
 "NewTab" = "Yeni Sekme";
+
+/* Context menu item for opening a new window */
+"NewWindowTitle" = "Yeni Pencere";
 
 /* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
 "nightMode.modeTitle" = "Mod";
@@ -1119,9 +1107,6 @@
 
 /* Error title for when the sync code does not have the correct amount of words */
 "NotEnoughWordsTitle" = "Yeterli Sözcük Yok";
-
-/* An action (button title) that does not block cookie consent notices and dismisses the popup */
-"NoThanks" = "Hayır, teşekkürler";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "NPR bağlantıları otomatik olarak metin tabanlı sürümlerine (text.npr.org adresindeki) yönlendirir.";
@@ -1336,6 +1321,12 @@
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Resmi Yeni Sekmede Aç";
 
+/* Context menu item for opening a link in a new private browsing window */
+"OpenInNewPrivateWindowTitle" = "Yeni Gizli Pencerede Aç";
+
+/* Context menu item for opening a link in a new window */
+"OpenInNewWindowTitle" = "Yeni Pencerede Aç";
+
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "Yeni Gizli Sekmede Aç";
 
@@ -1510,6 +1501,15 @@
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "Şifreler";
 
+/* Setting to allow the app to restore private browsing tabs */
+"PersistentPrivateBrowsing" = "Kalıcı Gizli Gezinti";
+
+/* Persistent private browsing alert message to existing users */
+"PersistentPrivateBrowsingAlertMessage" = "Brave'in, uygulamayı kapatsanız / yeniden açsanız bile özel gezinti sekmelerini geri yüklemesine olanak tanır";
+
+/* Persistent private browsing alert title to existing users */
+"PersistentPrivateBrowsingAlertTitle" = "Özel Sekmeleri Geri Yükle";
+
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Fotoğraf : %@";
 
@@ -1558,6 +1558,12 @@
 /* Text indicator on the table cell If a video is expired */
 "playList.expiredLabelTitle" = "Süresi Dolmuş";
 
+/* Number of items in the playlsit folder. Example: '10 items' */
+"playlist.folderItemCountPlural" = "%d öğe";
+
+/* Title for when there's a single item inside of a folder */
+"playlist.foldersCountSingular" = "%d öğe";
+
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Kaynak yüklenirken bir sorun meydana geldi!";
 
@@ -1587,6 +1593,12 @@
 
 /* The title for the alert that shows up when an item is expired */
 "playList.pictureInPictureErrorTitle" = "Üzgünüz, resimde resim görüntülenmeye çalışılırken bir hata oluştu.";
+
+/* Playlist alert message when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingBody" = "Oynatma listesi, başka bir pencerede zaten etkin";
+
+/* Playlist alert title when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingTitle" = "Özür dileriz";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionFooterText" = "Bu seçenek, Oynatma Listesi açıldığında otomatik oynatmayı etkinleştirir/devre dışı bırakır. Ancak, bu seçenek listedeki bir sonraki videoyu yüklerken otomatik oynatmayı etkilemez.";
@@ -1888,6 +1900,9 @@
 /* Settings privacy section title */
 "Privacy" = "Gizlilik";
 
+/* The message displayed in alert when a user needs to set a passcode */
+"privacy.tab.tray.passcode.alert" = "Özel gezinme moduna geçmek için, önce cihazınıza bir pin kodu belirlemeniz gerekmektedir.";
+
 /* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
 "privacyHub.allTimeListsButtonText" = "Tüm zamanlar listeleri";
 
@@ -2125,6 +2140,9 @@
 /* Open Tab action title */
 "recently.closed.open" = "Aç";
 
+/* Re-open Last Tab action title */
+"recently.closed.reopen.latest" = "Kapatılan Son Sekmeyi Yeniden Aç";
+
 /* Description for alert to ask user for opening last closed tab in list */
 "recently.closed.shake.description" = "Son kapatılan sekmeyi açmak istiyor musunuz?";
 
@@ -2219,16 +2237,16 @@
 "RestoredFavoritesFolderName" = "Geri Yüklenen Sık Kullanılanlar";
 
 /* Restore Tabs Affirmative Action */
-"RestoreTabAffirmativeButtonTitle" = "Tamam";
+"RestoreTabAffirmativeButtonTitle" = "Evet";
 
 /* Restore Tabs Negative Action */
 "RestoreTabNegativeButtonTitle" = "Hayır";
 
 /* Restore Tabs Prompt Description */
-"RestoreTabOnCrashAlertMessage" = "Görünüşe göre Brave çökmüş. Sekmelerinizi geri yüklemek ister misiniz?";
+"RestoreTabOnCrashAlertMessage" = "Ne yazık ki Brave çöktü veya düzgün şekilde kapatılmadı.\nSekmeleriniz geri yüklensin mi?";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Şey, bu utanç verici.";
+"RestoreTabOnCrashAlertTitle" = "Brave, beklenmedik bir şekilde kapandı.";
 
 /* Body for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "Brave Rewards ile Brave Ads ağından gizlilik korumalı reklamları görüntüleyebilirsiniz. İzleyici yok. Yavaşlama yok. Üstelik verileriniz tamamen güvende kalır.";
@@ -3112,6 +3130,24 @@
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "Açık";
 
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingDescription" = "Uygulamayı kapattığınızda özel gezinme sekmelerini açık tutarak, gizli gezinti oturumlarının zahmetsizce devam etmesini sağlayın.";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingTitle" = "Özel Sekmeleri Tut";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleFaceID" = "Yüz Kimliği Gerektir";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitlePinCode" = "PIN Kodu Gerektir";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleTouchID" = "Dokunma Kimliği Gerektir";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateTabsSettingsTitle" = "Gizli Sekmeler";
+
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Gezinti Araç Çubuğu";
 
@@ -3532,6 +3568,9 @@
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Bağlantı güvenilirliği sorunu";
 
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Lütfen sorunu tarif eden kategoriyi seçin.";
+
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Bağlandığında internet yok";
 
@@ -3876,9 +3915,6 @@
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Evet";
-
-/* An action (button title) that enables cookie consent blocking and dismisses the popup */
-"YesBlockCookieConsentNotices" = "Evet, çerez onay bildirimlerini engelle";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "Evet, Sil";
